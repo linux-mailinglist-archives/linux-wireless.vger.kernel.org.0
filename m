@@ -2,90 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17BFC673125
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 06:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C222B673160
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 06:49:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229379AbjASFYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Jan 2023 00:24:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55642 "EHLO
+        id S229515AbjASFt4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 00:49:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbjASFYk (ORCPT
+        with ESMTP id S229915AbjASFtx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Jan 2023 00:24:40 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0751A2720;
-        Wed, 18 Jan 2023 21:24:38 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ny9zl55CFz4xFv;
-        Thu, 19 Jan 2023 16:24:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1674105876;
-        bh=6nBdNP12YTHnDhZVD+lqgd4S488WUtiIdc8rEpXgK5Q=;
-        h=Date:From:To:Cc:Subject:From;
-        b=l80paEW3Uliu6RmUo93MJxcfLWpv2VWMZA4Z/jnoxvx5FAMi9XDxOYfr0bV63m+lX
-         y+fkKYGbQB4HE0tq7GLP2rmKSFy3THCFFJksBB9HgFfHuILtp9U9TRQYF7i18zKc0n
-         wOuocxCISHL28ueub8Gqh6gZ7SVrKvCDtVinJ/2RxjkY03m6HKvXxhSsRZmuefsmEb
-         0Sw86yEf+gZz3plzwtrKv62256JbpMbJ9LeUo0PU6FqaGJHN7nwIl0XxJbEhZrf+jE
-         rnDgHLKLqszPjgW7hz/XmHmOVufqgnDXnv5BtC2tlSFatyl2Wl+wy/kEkO6qy9AK8U
-         QBjxcQJpV8F3Q==
-Date:   Thu, 19 Jan 2023 16:24:34 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: build warning after merge of the wireless-next tree
-Message-ID: <20230119162434.227ff777@canb.auug.org.au>
+        Thu, 19 Jan 2023 00:49:53 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE140BC;
+        Wed, 18 Jan 2023 21:49:51 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30J4EeVe015389;
+        Thu, 19 Jan 2023 05:49:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=TvLSxJKDlVSsYYhn2BY8VF0yC5B8to9hVsiCxE4epnk=;
+ b=KwT8kheedk5k0XzYrO5mTUXzH7YXa1RCWfXdGhRMuO2QXS5Sdf6bSlZJoykSRLuti9zd
+ PN5hMRR3bI0nxgnTSdjpWR9kikBClK+gGCXQIH4ZUSPrlKxeWdHcwbz4pY8qzmCwCr43
+ KijkPAzjhz95jwjBmM+SWJFyXiGQhgCFJzKnDNvDMHHfPMVbGIgyhrEz1tB0cD59GCYc
+ gLuDxOOcKXS7okX9bMOVxxoIKQg/SVvFtixeMUay4I1TxDGXkid02oeFmubBkPTETD3q
+ 9YnGw9m4HVfABmlTTkz1ghG8cbOBY2P1gOhvmZgYU2qpU/6lWKzsuRVE6nXhe9p17301 ow== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n6debt8a2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Jan 2023 05:49:31 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30J5nUjm027196
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Jan 2023 05:49:30 GMT
+Received: from [10.50.23.189] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Wed, 18 Jan
+ 2023 21:49:28 -0800
+Message-ID: <a4f47e6e-637d-8eb8-6bc1-a2dfc8e3632a@quicinc.com>
+Date:   Thu, 19 Jan 2023 11:17:59 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Lc6cW.PKTdwX9SczYaDttPe";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 2/2] wifi: ath10k: update the channel list if change in
+ channel flags.
+To:     Wen Gong <quic_wgong@quicinc.com>, <ath10k@lists.infradead.org>,
+        <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_mpubbise@quicinc.com>
+References: <20221222124221.30894-1-quic_youghand@quicinc.com>
+ <20221222124221.30894-3-quic_youghand@quicinc.com>
+ <17047ffb-9c68-8339-a339-c51a2e721083@quicinc.com>
+Content-Language: en-US
+From:   "Youghandhar Chintala (Temp)" <quic_youghand@quicinc.com>
+In-Reply-To: <17047ffb-9c68-8339-a339-c51a2e721083@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XshOoqtEjauMBIV8xfz67Qos_iC8ft_x
+X-Proofpoint-ORIG-GUID: XshOoqtEjauMBIV8xfz67Qos_iC8ft_x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-18_05,2023-01-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=906 adultscore=0 bulkscore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 suspectscore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301190044
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/Lc6cW.PKTdwX9SczYaDttPe
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On 1/19/2023 7:56 AM, Wen Gong wrote:
+> On 12/22/2022 8:42 PM, Youghandhar Chintala wrote:
+> ...
+>>   +static void ath10k_mac_beacon_notifier(struct wiphy *wiphy)
+>> +{
+>> +    struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+>> +    struct ath10k *ar = hw->priv;
+>> +
+>> +    if (ath10k_update_channel_list(ar))
+>> +        ath10k_warn(ar, "failed to update channel list\n");
+>> +}
+>> +
+>
+> Will this called while scan is running?
+> On ath11k, if send channel list to firmware, then the running scan 
+> will be cancel and removed.
+> I guess this is same for ath10k.
+>
+>> ...
 
-After merging the wireless-next tree, today's linux-next build (htmldocs)
-produced this warning:
+Yes Wen. You are right.
 
-include/net/mac80211.h:1553: warning: Function parameter or member 'eht' no=
-t described in 'ieee80211_rx_status'
+Regards,
 
-Introduced by commit
+Youghandhar
 
-  f66c48af7a11 ("mac80211: support minimal EHT rate reporting on RX")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/Lc6cW.PKTdwX9SczYaDttPe
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPI1BIACgkQAVBC80lX
-0GzHYAgAlWGA+UKcUvXnKXfzwDlFUT/7L8E95YnBON/yt9N6oCKJWEUQafV/xL8+
-Y3B4yQajraXNWD7av3d1EGY2ViwltMl4kt6wZ86csZuIV9LezGSpa+cqHvHCPC32
-YcBFr1P23YM7B4fe4q2f1bWVilsSZN9G46spNqIP8TKgLBx0x2Y2NW5R11RkFOJn
-4WKGkG/mP/7YxvQDC80is/pr1Wv5uvXJVMfEie54yMdwhXRpxXKi1yLoaUe9QY1T
-cU6Mma8RlhYTvRQGomsYqOvNPyq+fiw8KTMbFTTcHIPaeadFtPPE/ko+9FoQiXPP
-AUcjLdp0yfB8CXzKfQendHi18aSZyQ==
-=WQvD
------END PGP SIGNATURE-----
-
---Sig_/Lc6cW.PKTdwX9SczYaDttPe--
