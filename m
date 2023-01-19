@@ -2,122 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 814036745BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 23:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D036745F2
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 23:26:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjASWRQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Jan 2023 17:17:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51002 "EHLO
+        id S230178AbjASW02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 17:26:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjASWQZ (ORCPT
+        with ESMTP id S230348AbjASWY4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Jan 2023 17:16:25 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53D30A95AA;
-        Thu, 19 Jan 2023 13:57:13 -0800 (PST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30JLlbHM030199;
-        Thu, 19 Jan 2023 21:56:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=uEw62BCO1kAE3MnqsTANbbpQMbTsLDdWyYH4p4E1DCA=;
- b=JeBeAbeePVqEpUQNApMZ8YIYEPuLwCZ2G/HwUA0cmJLkPk7ui0A5vQFQYJEVqdVbML5U
- e91pt5oFbU7tm1Nh7A8SxsxN045+sZTvEQ5k8ODQuVBWfdMnWWEOx2plljcn1hE/uFx1
- 3c3qdPwGLHTfGV+Xj1XOZLv9pGhrORCY0KStHgA+e6dM1txf3fJgNK7v77HTGl6GazGJ
- vDcd9/OoOTa4KBu/a3iDR5icyiDw5I5jPYFd9BbKlvc9N3qsIOsgjCHSEzgOptqfLcJ/
- HoXfR0nLDnjtgu6JzBG5EYU4milBxTfxfY0/ItTN9LsByz11xbMq6hTzsAZfSsNbZ4cY 7Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7e3d866k-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Jan 2023 21:56:56 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30JLuu21027289;
-        Thu, 19 Jan 2023 21:56:56 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n7e3d8667-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Jan 2023 21:56:56 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30JJkuri025991;
-        Thu, 19 Jan 2023 21:56:54 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
-        by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3n3m18897y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Jan 2023 21:56:54 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-        by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30JLuqn966453836
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 19 Jan 2023 21:56:52 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 66B7458059;
-        Thu, 19 Jan 2023 21:56:52 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9964F5805B;
-        Thu, 19 Jan 2023 21:56:49 +0000 (GMT)
-Received: from [9.160.87.67] (unknown [9.160.87.67])
-        by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 19 Jan 2023 21:56:49 +0000 (GMT)
-Message-ID: <1c7a7395-dabf-ddbf-00eb-9e7e44910750@linux.ibm.com>
-Date:   Thu, 19 Jan 2023 16:56:49 -0500
+        Thu, 19 Jan 2023 17:24:56 -0500
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9479A295C;
+        Thu, 19 Jan 2023 14:11:22 -0800 (PST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <mkarcher@zedat.fu-berlin.de>)
+          id 1pId7s-000ES9-TO; Thu, 19 Jan 2023 23:11:16 +0100
+Received: from pd9f631ca.dip0.t-ipconnect.de ([217.246.49.202] helo=[192.168.144.87])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <Michael.Karcher@fu-berlin.de>)
+          id 1pId7s-002cf1-Mu; Thu, 19 Jan 2023 23:11:16 +0100
+Message-ID: <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
+Date:   Thu, 19 Jan 2023 23:11:09 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 10/10] iommu/s390: Use GFP_KERNEL in sleepable contexts
-Content-Language: en-US
-To:     Jason Gunthorpe <jgg@nvidia.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Cc:     Alex Williamson <alex.williamson@redhat.com>,
-        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, nouveau@lists.freedesktop.org,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        virtualization@lists.linux-foundation.org
-References: <10-v2-ce66f632bd0d+484-iommu_map_gfp_jgg@nvidia.com>
-From:   Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <10-v2-ce66f632bd0d+484-iommu_map_gfp_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: u9tb2Epyw4L_fk2u2w9vs35Q310gGVQW
-X-Proofpoint-ORIG-GUID: CtIEVTzNTPEu57hDSdzSORw4_xg43p3H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-19_14,2023-01-19_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=773 clxscore=1015 impostorscore=0 mlxscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301190181
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+        linux-xtensa@linux-xtensa.org,
+        Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>,
+        Arnd Bergmann <arnd@arndb.de>
+References: <CAHk-=wgf929uGOVpiWALPyC7pv_9KbwB2EAvQ3C4woshZZ5zqQ@mail.gmail.com>
+ <20221227082932.798359-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
+ <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
+ <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
+ <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
+ <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
+ <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
+ <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
+ <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
+From:   "Michael.Karcher" <Michael.Karcher@fu-berlin.de>
+Subject: Re: Calculating array sizes in C - was: Re: Build
+ regressions/improvements in v6.2-rc1
+In-Reply-To: <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: Michael.Karcher@fu-berlin.de
+X-Originating-IP: 217.246.49.202
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/18/23 1:00 PM, Jason Gunthorpe wrote:
-> These contexts are sleepable, so use the proper annotation. The GFP_ATOMIC
-> was added mechanically in the prior patches.
-> 
-> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  arch/s390/pci/pci_dma.c    | 2 +-
->  drivers/iommu/s390-iommu.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+Isn't this supposed to be caught by this check:
+>>>
+>>>          a, __same_type(a, NULL)
+>>>
+>>> ?
+>>
+>> Yeah, but gcc thinks it is smarter than us...
+>> Probably it drops the test, assuming UB cannot happen.
+> Hmm, sounds like a GGC bug to me then. Not sure how to fix this then.
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
+I don't see a clear bug at this point. We are talking about the C expression
+
+   __same_type((void*)0, (void*)0)? 0 : sizeof((void*)0)/sizeof(*((void*0))
+
+This expression is valid (assuming __same_type works, which is a GCC 
+extension), and should return 0. As of now, I have no indication that 
+this expression does not return 0. Also, it is true that this expression 
+contains the suspicious pattern "sizeof(void*)/sizeof(void)", which is 
+does not calculate the size of any array. GCC is free to emit as much 
+warnings is it wants for any kind of expressions. From a C standard 
+point of view, it's just a "quality of implementation" issue, and an 
+implementation that emits useless warnings is of low quality, but not 
+non-conforming.
+
+In this case, we requested that gcc refuses to compile if it emits any 
+kind of warning, which instructs gcc to reject programs that would be 
+valid according to the C standard, but are deemed to be "likely incorrect".
+
+I suggest to file a bug against gcc complaining about a "spurious 
+warning", and using "-Werror -Wno-error-sizeof-pointer-div" until gcc is 
+adapted to not emit the warning about the pointer division if the result 
+is not used.
+
+
+Regards,
+   Michael Karcher
 
