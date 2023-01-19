@@ -2,131 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E556731EB
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 07:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8417F67327B
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 08:32:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjASGq5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Jan 2023 01:46:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
+        id S229820AbjASHcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 02:32:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbjASGqx (ORCPT
+        with ESMTP id S229620AbjASHc2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Jan 2023 01:46:53 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E7D5F1B1
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 22:46:51 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 30J6khkxF027805, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 30J6khkxF027805
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Thu, 19 Jan 2023 14:46:43 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 19 Jan 2023 14:46:44 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 19 Jan
- 2023 14:46:44 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <damon.chen@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: disallow enter PS mode after create TDLS link
-Date:   Thu, 19 Jan 2023 14:46:31 +0800
-Message-ID: <20230119064631.66971-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 19 Jan 2023 02:32:28 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0411552B0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 23:32:26 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id n7so937459wrx.5
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Jan 2023 23:32:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yOAGtEwwl9ah5X14+fr3xyjQkxYKgtW7wTdmd7LaFEg=;
+        b=vRIRpio+Aom4lroZdxIv5dfYLWZdktfYVL3jHgETXcsxRJ2IKyD1BV36YuWKt8r1nQ
+         +07wunX4ZC3IPo0SiFKP/4cW4rCUCfgTlN/S3oDPCkSQ31hkzmGIEBxm3gnmd4L6UmKl
+         skGsnD6BenqldlGA2OrrmLySBX41OvAjMUQRJ8cUUO+fWk72verQOTsg+UiyW/fjh7X1
+         z5zfL1pWRMbdqXu+TUTUh+4KfrCuKlXZ/i2QJReFETSj/UWiGssDGb/4JCGsPml6Njtc
+         k+zsV+4nZoM+MsAECNOaZY1mX1Eygrw9Sjwbj8l1hy5tTux8/UmnXFK4RdG5XA8ZJ+a4
+         Jxlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yOAGtEwwl9ah5X14+fr3xyjQkxYKgtW7wTdmd7LaFEg=;
+        b=7ZfEbcEcaZHdNBNE+jVcl02H9y9uWiFgveTR9UqrLjHqrAtR3/ToQpgYzdYJbdVqoR
+         yj7NxjKwnTTeoLJvwbUybW+UXeyInulmwKJIVyZrJT8IUMrVdg+fAecPXNGdwboPi/Ho
+         1qKdgQYmMDnP87iYQtUqHu1BwLKwuOZzgtHq1fUs5OpiX6ERNmVLFLsMMvMRMAArogEf
+         1cL8cFKFvFpDs3Tz3ma+pXdSle0lqNYrHVG5vxoawEjQW66V3V9J4CSYcqaJN/uJ01Iw
+         cXOyCxpI3E9r4dNOCaspVHXbqf8IyevNYTKrZ7RZXlfF4SJ5j5Tkhthyv6Ma9Wv8Mx1M
+         zKwg==
+X-Gm-Message-State: AFqh2krGh6G1MfJPZegbiWF9nWZllpvJxSQ69/bi2XU/p1/NSuFQ/1c6
+        Uq/nJDN9DIkSN1Hk9GKEsBVxfA==
+X-Google-Smtp-Source: AMrXdXsYozDSX5UXzU8eViFCPgDNSOimFqf7m+5mZ3D5VIeY9Dv8lV1BtejtIKH3WhVddwYIOFPnhQ==
+X-Received: by 2002:a5d:4dc9:0:b0:2be:21fc:ae3 with SMTP id f9-20020a5d4dc9000000b002be21fc0ae3mr7080130wru.11.1674113545389;
+        Wed, 18 Jan 2023 23:32:25 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id w10-20020a5d404a000000b00275970a85f4sm32958865wrp.74.2023.01.18.23.32.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 23:32:24 -0800 (PST)
+Message-ID: <0662e292-91b4-0b1a-f012-83cb2f316353@linaro.org>
+Date:   Thu, 19 Jan 2023 08:32:22 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: trusted connection
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 01/19/2023 06:25:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: =?big5?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvMTkgpFekyCAwMzozNzowMA==?=
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH] dt-bindings: net: wireless: minor whitespace and name
+ cleanups
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        de Goede <hdegoede@redhat.com>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, ath11k@lists.infradead.org
+References: <20230118175413.360153-1-krzysztof.kozlowski@linaro.org>
+ <87bkmv85tb.fsf@kernel.org>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <87bkmv85tb.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+On 19/01/2023 06:13, Kalle Valo wrote:
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
+> 
+>> Minor cleanups:
+>>  - Drop redundant blank lines,
+>>  - Correct indentaion in examples,
+>>  - Correct node names in examples to drop underscore and use generic
+>>    name.
+>>
+>> No functional impact except adjusting to preferred coding style.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> ---
+>>  .../bindings/net/wireless/esp,esp8089.yaml    | 20 +++---
+>>  .../bindings/net/wireless/ieee80211.yaml      |  1 -
+>>  .../bindings/net/wireless/mediatek,mt76.yaml  |  1 -
+>>  .../bindings/net/wireless/qcom,ath11k.yaml    | 11 ++-
+>>  .../bindings/net/wireless/silabs,wfx.yaml     |  1 -
+>>  .../bindings/net/wireless/ti,wlcore.yaml      | 70 +++++++++----------
+>>  6 files changed, 50 insertions(+), 54 deletions(-)
+> 
+> Thanks for the cleanup. Would you like to me to take this to
+> wireless-next or do you have other plans?
 
-Buffer STA on TDLS links are not currently supported. Therefore, it
-is not allowed to enter the PS mode after TDLS link is established.
+Go ahead and grab it for wireless-next, please. Thanks!
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 10 ++++++++--
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- 2 files changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 4cf4a81ed4f79..23550e193976d 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2206,8 +2206,9 @@ static bool rtw89_traffic_stats_track(struct rtw89_dev *rtwdev)
- 
- static void rtw89_vif_enter_lps(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- {
--	if (rtwvif->wifi_role != RTW89_WIFI_ROLE_STATION &&
--	    rtwvif->wifi_role != RTW89_WIFI_ROLE_P2P_CLIENT)
-+	if ((rtwvif->wifi_role != RTW89_WIFI_ROLE_STATION &&
-+	     rtwvif->wifi_role != RTW89_WIFI_ROLE_P2P_CLIENT) ||
-+	    rtwvif->tdls_peer)
- 		return;
- 
- 	if (rtwvif->stats.tx_tfc_lv == RTW89_TFC_IDLE &&
-@@ -2466,9 +2467,12 @@ int rtw89_core_sta_disassoc(struct rtw89_dev *rtwdev,
- 			    struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta)
- {
-+	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
- 
- 	rtwdev->total_sta_assoc--;
-+	if (sta->tdls)
-+		rtwvif->tdls_peer--;
- 	rtwsta->disassoc = true;
- 
- 	return 0;
-@@ -2587,6 +2591,8 @@ int rtw89_core_sta_assoc(struct rtw89_dev *rtwdev,
- 	}
- 
- 	rtwdev->total_sta_assoc++;
-+	if (sta->tdls)
-+		rtwvif->tdls_peer++;
- 	rtw89_phy_ra_assoc(rtwdev, sta);
- 	rtw89_mac_bf_assoc(rtwdev, vif, sta);
- 	rtw89_mac_bf_monitor_calc(rtwdev, sta, false);
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 39c5a003e36cc..a762eef699fa0 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2452,6 +2452,7 @@ struct rtw89_vif {
- 	bool last_a_ctrl;
- 	bool dyn_tb_bedge_en;
- 	u8 def_tri_idx;
-+	u32 tdls_peer;
- 	struct work_struct update_beacon_work;
- 	struct rtw89_addr_cam_entry addr_cam;
- 	struct rtw89_bssid_cam_entry bssid_cam;
--- 
-2.25.1
+Best regards,
+Krzysztof
 
