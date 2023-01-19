@@ -2,81 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1208567307E
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 05:42:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17BFC673125
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Jan 2023 06:24:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbjASEmj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Jan 2023 23:42:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56678 "EHLO
+        id S229379AbjASFYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 00:24:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230002AbjASEmG (ORCPT
+        with ESMTP id S229878AbjASFYk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Jan 2023 23:42:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68CD56E821;
-        Wed, 18 Jan 2023 20:39:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Thu, 19 Jan 2023 00:24:40 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0751A2720;
+        Wed, 18 Jan 2023 21:24:38 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9808661B13;
-        Thu, 19 Jan 2023 04:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 01E05C433F0;
-        Thu, 19 Jan 2023 04:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674102017;
-        bh=myjt/Ku6FGvHxyQe5o8SwWtOXjmFnmf3xhU0A5snvDQ=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=GNvrOteKGlf3eKSpUirAZ3vvAoSkT5Nf1SHrLebIIMdjeWzmvv5q8hB3Wm84JKn5W
-         EExUsSDenYqJ30q0nIzLSHbzt6FH7tRbj0Gza9aVSEY1gd/F/SU5JkpGgJpaUbkvU/
-         oPIHOx9OhsKLLjTVpSLPd6Ww83P/KYCrU4tRy7ulBzap3tAYzJ9QSZPdUu6x7YMHGZ
-         yBct5ZAPffRu7dlAKeg3oFnTH6TO+vclV02lPGyJTg0vPadu8AkaWSQYahuRU3+eSH
-         qVTsHGy4wxlGyxWGtGlcEQR3UtGO0POF+KvoraodJo9h86pu6xUaHFfq9liLfK935s
-         OUoZh9wwULT2g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D8747C5C7C4;
-        Thu, 19 Jan 2023 04:20:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ny9zl55CFz4xFv;
+        Thu, 19 Jan 2023 16:24:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1674105876;
+        bh=6nBdNP12YTHnDhZVD+lqgd4S488WUtiIdc8rEpXgK5Q=;
+        h=Date:From:To:Cc:Subject:From;
+        b=l80paEW3Uliu6RmUo93MJxcfLWpv2VWMZA4Z/jnoxvx5FAMi9XDxOYfr0bV63m+lX
+         y+fkKYGbQB4HE0tq7GLP2rmKSFy3THCFFJksBB9HgFfHuILtp9U9TRQYF7i18zKc0n
+         wOuocxCISHL28ueub8Gqh6gZ7SVrKvCDtVinJ/2RxjkY03m6HKvXxhSsRZmuefsmEb
+         0Sw86yEf+gZz3plzwtrKv62256JbpMbJ9LeUo0PU6FqaGJHN7nwIl0XxJbEhZrf+jE
+         rnDgHLKLqszPjgW7hz/XmHmOVufqgnDXnv5BtC2tlSFatyl2Wl+wy/kEkO6qy9AK8U
+         QBjxcQJpV8F3Q==
+Date:   Thu, 19 Jan 2023 16:24:34 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: build warning after merge of the wireless-next tree
+Message-ID: <20230119162434.227ff777@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2023-01-18
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <167410201688.30214.13535859451267128930.git-patchwork-notify@kernel.org>
-Date:   Thu, 19 Jan 2023 04:20:16 +0000
-References: <20230118073749.AF061C433EF@smtp.kernel.org>
-In-Reply-To: <20230118073749.AF061C433EF@smtp.kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/Lc6cW.PKTdwX9SczYaDttPe";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+--Sig_/Lc6cW.PKTdwX9SczYaDttPe
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This pull request was applied to netdev/net.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi all,
 
-On Wed, 18 Jan 2023 07:37:49 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
+After merging the wireless-next tree, today's linux-next build (htmldocs)
+produced this warning:
 
-Here is the summary with links:
-  - pull-request: wireless-2023-01-18
-    https://git.kernel.org/netdev/net/c/edb5b63e5673
+include/net/mac80211.h:1553: warning: Function parameter or member 'eht' no=
+t described in 'ieee80211_rx_status'
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Introduced by commit
 
+  f66c48af7a11 ("mac80211: support minimal EHT rate reporting on RX")
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/Lc6cW.PKTdwX9SczYaDttPe
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPI1BIACgkQAVBC80lX
+0GzHYAgAlWGA+UKcUvXnKXfzwDlFUT/7L8E95YnBON/yt9N6oCKJWEUQafV/xL8+
+Y3B4yQajraXNWD7av3d1EGY2ViwltMl4kt6wZ86csZuIV9LezGSpa+cqHvHCPC32
+YcBFr1P23YM7B4fe4q2f1bWVilsSZN9G46spNqIP8TKgLBx0x2Y2NW5R11RkFOJn
+4WKGkG/mP/7YxvQDC80is/pr1Wv5uvXJVMfEie54yMdwhXRpxXKi1yLoaUe9QY1T
+cU6Mma8RlhYTvRQGomsYqOvNPyq+fiw8KTMbFTTcHIPaeadFtPPE/ko+9FoQiXPP
+AUcjLdp0yfB8CXzKfQendHi18aSZyQ==
+=WQvD
+-----END PGP SIGNATURE-----
+
+--Sig_/Lc6cW.PKTdwX9SczYaDttPe--
