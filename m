@@ -2,110 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C11F76759A5
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 17:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE65F675A2F
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 17:40:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjATQPs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Jan 2023 11:15:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49214 "EHLO
+        id S229924AbjATQkA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Jan 2023 11:40:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbjATQPo (ORCPT
+        with ESMTP id S230287AbjATQj6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Jan 2023 11:15:44 -0500
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62B2779EB9
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 08:15:36 -0800 (PST)
-Received: from [192.168.0.66] ([92.154.77.116]) by mrelayeu.kundenserver.de
- (mreue107 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MmkjY-1ossYL0wNi-00jpAB; Fri, 20 Jan 2023 17:10:07 +0100
-Message-ID: <17d8494a-ebae-e317-6096-c8621d0f33e3@green-communications.fr>
-Date:   Fri, 20 Jan 2023 17:10:04 +0100
+        Fri, 20 Jan 2023 11:39:58 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FCD423C
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 08:39:56 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id q5so701719wrv.0
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 08:39:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pGYySup8p6S2QLbw0VKiZbUhVbWmQ+yt84mNVfAu/t0=;
+        b=UApWjzlXda6CKOsxYSAekXBHCiPYv6pVkiWHbI7PK6NXlDBf2dZaBDBu3pcMBX4Dvp
+         6pVJCoYaf28tSrmY+cQXTcE5NCML/7/aNdhPsd9f1zZGxwjZ8KtIc0zafg1CDt+MmL1t
+         ht+1uJ+qps8er08SQIPj8jCpqo9gs3doYVucXRacX8doWIlUzIZI6fYKJoTuT8NrG42t
+         MEw5W4JoUE4dXTKy6NU3b03SLyKAPuoCmZGqaBryF9fm76CMUuyzmAcMzhe2Gc9aBSvv
+         rVqHAHr0IWrNPbn8V79yED7CryU1Vk3Sen0HSlqKLB5YcHIC9rN/57uXiyLuvli0/Rbt
+         Yz+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pGYySup8p6S2QLbw0VKiZbUhVbWmQ+yt84mNVfAu/t0=;
+        b=RWf1V4d2kpQgccG2GU1oOkLu1XR7FRDLNYyDjC54ZTkk5sZq+2ycEmyfnwduxpaN2v
+         8a8dbNykMUpOFc6/IvSgNASEoMA/vtiYyeEux81Zq0o7ufy+AZllCuRrWQfsyoojqZ3w
+         GK3fsK4U2xTH6khXhlgl2V/VuT27VDU855WrvDc4yPGTEjivGVw4N+tr0+6owNPt0q+U
+         AZrbhYq6jwCRFbh0u506jZfrUtxCXDRhAF1l9JWg9l7YGLRPkxVyDbNKbt7+hFSYUXwz
+         n1/CyK56ZXGAU5BIe3hnDlYh0a9x4/iEbnavO0PmAQTRwe4Rpe31SmFJJL5hAmAhrscd
+         m9wQ==
+X-Gm-Message-State: AFqh2koskVPka1ZuidqdtMDWiGGlDvEI0dLVtByHeTIXf83pvY/cHxdm
+        bS+CxT+BQAuYWt0eOZTUiezPjw==
+X-Google-Smtp-Source: AMrXdXtZ9DWblZSaKSzMSMqI/0YMAXlKAx5MWIAT7Z2mmChtlRMs75VNjLqzEiOVvNoaJZ95nuiIUg==
+X-Received: by 2002:a05:6000:98d:b0:25f:8ead:96cc with SMTP id by13-20020a056000098d00b0025f8ead96ccmr14507795wrb.70.1674232794812;
+        Fri, 20 Jan 2023 08:39:54 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id z12-20020adfd0cc000000b002bdff778d87sm13385996wrh.34.2023.01.20.08.39.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Jan 2023 08:39:54 -0800 (PST)
+Message-ID: <0bb76233-062c-a1c5-da88-4f04feccd5b2@linaro.org>
+Date:   Fri, 20 Jan 2023 17:39:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
+ Thunderbird/102.7.0
+Subject: Re: [PATCH] dt-bindings: leds: Document Bluetooth and WLAN triggers
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Cc:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+References: <a85c256af01f64389a078c2b37c3b72a27d97536.1668005062.git.geert+renesas@glider.be>
 Content-Language: en-US
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20221226083328.29051-1-quic_ramess@quicinc.com>
- <20221226083328.29051-2-quic_ramess@quicinc.com>
- <74c57dc34af10537f98f5bb9b6ce80e5676e09b0.camel@sipsolutions.net>
- <1609a645-3e23-7e37-9aa1-94f970e481e2@green-communications.fr>
- <Y8q5Z98S3pODD77W@lore-desk>
-From:   Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
-Subject: Re: [PATCH 1/2] nl80211: add support to enable/disable bss color
- collision detection
-In-Reply-To: <Y8q5Z98S3pODD77W@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <a85c256af01f64389a078c2b37c3b72a27d97536.1668005062.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ObD765wio49tePRoLNkQoY65FCwoq76N2r4NslnAaTOOEu7KI1U
- WFvZ/6CpT4VOxURHjfWLzWNsbf5Jf6J76c08W5SXmIAl/7pn1Q9UFARbl4UZ/S68/mJIKUi
- uuIdpwhASY6iNHxNG1OZSzwTkUjm3jS++y0201Nfbd6jWQdHs/s3yK48uBqNTzkyReIPomq
- 1h1wxZz7CsovK3JoYLUZw==
-UI-OutboundReport: notjunk:1;M01:P0:dCs7UqmLsZw=;P4BjHl9s1MP/NlmSePXUU0Fztwz
- ELOrT1JDcWJDXOr6VnqDvR3MwnklLlC12izCo7TONXwS/Yf4GiIHP9vTu7gwxMjAUJBbd6qbP
- Lm4D1ZEsXr/fL0/RwP2EuLmemV3Bb9KMquFWCgmvS4j+yef/ZGcM9f63gF7/NTOFND4DznzTP
- 102sQGBOmgGCaGyW/U/hO8zDv2b2uSCXh3TCIHuhRqjh2VXYrR/D9ta5hqAjEPLplpChwTqmJ
- t1/9hiEs9eiMhsotwHpmuvXChAkLGbcjhBz61qmOdzPcXUHSfpqKWKYjYbsM1AAef4g6MAVEs
- PlvYsX9BK9aDyyAQ7SYqVclwYedJVeLeBiWUIcmI9FnOhOAOXCkbaUl4qmqu5448tsrudzcT1
- 73IoXIihMYxB+U3S1CjpqlYCBbgIuMxagjV9nc8oWfoY6WlMGfOJ8HnKT7FWw90Th8aaHREBY
- X0ZxZoNpkNY76x9SX5Nzy3tRSXpClYzWmrkslw5lK7i8FaMAkfrnFYMPOll1aHE96yBv5BTFr
- nUUf/kAJn5pu93BTzOE3yMJ/A1t0FQhIGyk6m72qpRXRLzXTlFQPEJeviyH82MC8CUtkp3NJe
- p1b7wN9CAAkYAh3Q1AJAUZahkRpRho9UeAnNlVM09zrv7A+KpgXI1UgFqSvNSOGP3prBkNWjk
- sNsFEVNKvN45L8cPdOxEQHzAfEEbGuTgc9Gd0qW03Q==
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20/01/2023 16:55, Lorenzo Bianconi wrote:
->> On 19/01/2023 15:02, Johannes Berg wrote:
->>> On Mon, 2022-12-26 at 14:03 +0530, Rameshkumar Sundaram wrote:
->>>> As per 802.11ax-2021, STAs shall process BSS Color Change Announcement
->>>> (BCCA) from AP and switch to new color, but some STAs aren't processing
->>>> BCCA from AP and not doing color switch, causing them to drop data
->>>> frames from AP post color change.
->>>>
->>>> Provide an option to disable color collision detection and therefore
->>>> not to do BCCA to mitigate the same from AP. If it's required in case
->>>> where STA supports BCCA handling, then it can enabled in AP using this
->>>> option.
->>>>
->>>
->>> You should probably split this into cfg80211 and mac80211.
->>>
->>> Also, this doesn't really seem to make a lot of _sense_ since nothing in
->>> the kernel actually acts on detection of a color collision - hostapd is
->>> acting on that.
->>>
->>> So since you can easily make hostapd ignore the event, why do you even
->>> need this?
->>
->> This may not be related, but the software color collision detection sends a
->> netlink message for every colliding frame and it can hose up the system if
->> the other network is very active.
->>
->> Also, cfg80211_bss_color_notify() complains that the wdev lock isn't held.
+On 09/11/2022 15:46, Geert Uytterhoeven wrote:
+> Add the missing trigger patterns for Bluetooth and WLAN activity, which
+> are already in active use.
 > 
-> Hi Nicolas,
+> While at it, move the mmc pattern comment where it belongs, and restore
+> alphabetical sort order.
 > 
-> I agree, I think we can ratelimit netlink messages sent by the kernel to
-> userspace (e.g. to hostapd), I would say every 500ms is ok.
-> I guess we can move cfg80211_obss_color_collision_notify() in a dedicated
-> delayed_work so we can grab wdev mutex (cfg80211_obss_color_collision_notify is
-> currently running in interrupt context).
-> To give an idea, what do you think about patch below? (please note it is just
-> compiled tested so far).
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> arch/arm64/boot/dts/renesas/r8a774a1-hihope-rzg2m-rev2.dtb: leds: bt_active_led:linux,default-trigger: 'oneOf' conditional failed, one must be fixed:
+> 	'hci0-power' is not one of ['backlight', 'default-on', 'heartbeat', 'disk-activity', 'ide-disk', 'timer', 'pattern']
+> 	'hci0-power' does not match '^mmc[0-9]+$'
+> 	From schema: Documentation/devicetree/bindings/leds/leds-gpio.yaml
+> arch/arm64/boot/dts/renesas/r8a774a1-hihope-rzg2m-rev2.dtb: leds: wlan_active_led:linux,default-trigger: 'oneOf' conditional failed, one must be fixed:
+> 	'phy0tx' is not one of ['backlight', 'default-on', 'heartbeat', 'disk-activity', 'ide-disk', 'timer', 'pattern']
+> 	'phy0tx' does not match '^mmc[0-9]+$'
+> 	From schema: Documentation/devicetree/bindings/leds/leds-gpio.yaml
 
-I think it should fix the problem, I'll try to test it.
+This patch got lost... Rob, Lee or Pavel, can you pick it up?
 
-Thanks!
+It's with Rob's approval:
+https://lore.kernel.org/all/166861772609.231295.14812410099261417331.robh@kernel.org/
 
-> Regards,
-> Lorenzo
+> ---
+>  Documentation/devicetree/bindings/leds/common.yaml | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/leds/common.yaml b/Documentation/devicetree/bindings/leds/common.yaml
+> index f5c57a580078ea23..d34bb58c00371402 100644
+> --- a/Documentation/devicetree/bindings/leds/common.yaml
+> +++ b/Documentation/devicetree/bindings/leds/common.yaml
+> @@ -98,9 +98,13 @@ properties:
+>              # LED alters the brightness for the specified duration with one software
+>              # timer (requires "led-pattern" property)
+>            - pattern
+> -        # LED is triggered by SD/MMC activity
+> -      - pattern: "^mmc[0-9]+$"
+>        - pattern: "^cpu[0-9]*$"
+> +      - pattern: "^hci[0-9]+-power$"
+> +        # LED is triggered by Bluetooth activity
+> +      - pattern: "^mmc[0-9]+$"
+> +        # LED is triggered by SD/MMC activity
+> +      - pattern: "^phy[0-9]+tx$"
+> +        # LED is triggered by WLAN activity
+>  
+>    led-pattern:
+>      description: |
+
+Best regards,
+Krzysztof
 
