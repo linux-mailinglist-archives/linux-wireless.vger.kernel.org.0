@@ -2,126 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C641A67473E
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 00:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5093F67482B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 01:42:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230073AbjASXbb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Jan 2023 18:31:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41506 "EHLO
+        id S229630AbjATAmk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Jan 2023 19:42:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbjASXba (ORCPT
+        with ESMTP id S229703AbjATAmi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Jan 2023 18:31:30 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA24D367E2;
-        Thu, 19 Jan 2023 15:31:29 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id iv8-20020a05600c548800b003db04a0a46bso287255wmb.0;
-        Thu, 19 Jan 2023 15:31:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ezoMouCrKxN4+hC09aQCsVRt36siV05JqIOGZbWNQRU=;
-        b=btGyoBdXiWG3DqyDFEK9RVcWkizaGuwvn2PeDbboPaiGF862dbDGbjXNrwisNX/zx/
-         YAInkdd9Agq9+8/Nr/9y8UO9XEan73Z1D3PCuxGtf3hG9xCLA6lVTk6GphGd3FO7MreW
-         b0m5Cy4vyXF81ug+d1guxip6Ci4Z0k7yji9kXHUuU+ELHcbyHB6ScUTUUm7Dt073a3u2
-         T8yJK1mY2NWWE3muTnEBhSGBoqAnHyG1eimDuo7POyGF9LXM3kiaVKZwZpEY7YbIVXDj
-         ZfZl/Ux/lKumKuU7IL8XmDI9P2JC9tJ5BqI6bfdbFlSdqmmPoS+VI/07M5vREPIDp7I5
-         oElA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ezoMouCrKxN4+hC09aQCsVRt36siV05JqIOGZbWNQRU=;
-        b=nnu1ci0IZciLpcqmMAbjbf7b8z7u2HHeeW8ZNAcn+XC7/Hq/r6ka5TJD8AFU9vs++H
-         Kj6UFa2k1fMDPyil9Pf4hasfCkK/Gdi/UcRVWd8le8Avf6LYHmqc05HsCnJo+1KCnGp7
-         mkg5xuE1EzUKLVYHv+uUr6iv6hx3iBcd7pVg/0frAaX1nrwMsX8tWiYgXiM/md+QelDH
-         Yrr91tcukWXm/4LVjbHfMABmRYdPXJjudxrhJsubxOlpGKui3rbnk+qWxe0xvHdHqDwK
-         du4Zt6QXuB9saObAicgKPFrIyXO3qB6LX8GjHgY2jxNc7sp8gs9JjkClJ3H8u4j8p0ho
-         uUxQ==
-X-Gm-Message-State: AFqh2kqMdQvkBJ3ZJQ+Lar4aw0bSZQdo9/zWtDYRJsG2VHjZpR4Z8r/C
-        2Kz6ntQ/tUjbAcc4OhO9SxU=
-X-Google-Smtp-Source: AMrXdXvyKpwLXDKTyfszH3LHONdiwNNvToDyaMbTuv9Fr0BtB+sDZhcPzM1bniwh2nat6fDBbeiZlQ==
-X-Received: by 2002:a05:600c:3b29:b0:3da:f7a9:50ca with SMTP id m41-20020a05600c3b2900b003daf7a950camr3128955wms.0.1674171088155;
-        Thu, 19 Jan 2023 15:31:28 -0800 (PST)
-Received: from [192.168.1.100] (p57935ca5.dip0.t-ipconnect.de. [87.147.92.165])
-        by smtp.gmail.com with ESMTPSA id f18-20020a7bcd12000000b003db0659c454sm598599wmj.32.2023.01.19.15.31.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Jan 2023 15:31:27 -0800 (PST)
-Message-ID: <750e22fd-ff90-0005-ce14-85c55824b261@gmail.com>
-Date:   Fri, 20 Jan 2023 00:31:25 +0100
+        Thu, 19 Jan 2023 19:42:38 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A20BB4A230
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 16:42:37 -0800 (PST)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30K0Nf9F022939;
+        Fri, 20 Jan 2023 00:42:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=dcmEx5oOmofBfvPm6M4zS+VuS9JPhpJdaHVdoi4Uxnc=;
+ b=a0dtsf4o4iMt74LcIx7Qem4ry+RrfQwGi9tjEjuyrQj0SSkjcWwXcTdjLqIy1PP98+zU
+ +2lc32DRh14hhMJ5D/ZQX0b8gHDwlhXcuNFhUxbWDk0higvjGMe/tffMDjrnilnpDzMx
+ W0/XVlkl2hCq/Pe7dFIr47HQPgwduiJaP91KcIVt+U5Krm+/CAVr0JnrdB9C+84sSkpQ
+ wTg9g+a+jTL9vH42BNpESy3giIhW6X9KoulUQaf7FVeU8NAF8ZUVWZLxnaNkv0TUQ7Xh
+ X7AgGHatCTUQ20BPGvrEVis6DwS43EoLWKU+bZkwaTWFGCCEsrZG8ywdp96qS9k8enQo 3A== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n6xktjpsn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 20 Jan 2023 00:42:34 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30K0gXBX003177
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 20 Jan 2023 00:42:33 GMT
+Received: from [10.110.52.22] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Thu, 19 Jan
+ 2023 16:42:32 -0800
+Message-ID: <0b77bad5-f55c-73d5-7cd0-dfed57871f25@quicinc.com>
+Date:   Thu, 19 Jan 2023 16:42:31 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] staging: r8188eu: Fix some endian problems
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        gregkh@linuxfoundation.org
-Cc:     phil@philpotter.co.uk, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Gaurav Pathak <gauravpathak129@gmail.com>
-References: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [RFC 3/4] wifi: nl80211: validate RU puncturing bitmap
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Muna Sinada <quic_msinada@quicinc.com>
+CC:     <linux-wireless@vger.kernel.org>
+References: <1670006154-6092-1-git-send-email-quic_msinada@quicinc.com>
+ <1670006154-6092-4-git-send-email-quic_msinada@quicinc.com>
+ <3df39d4f2e2e64bd3899cfbe7bade547e54330f7.camel@sipsolutions.net>
 Content-Language: en-US
-From:   Philipp Hortmann <philipp.g.hortmann@gmail.com>
-In-Reply-To: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <3df39d4f2e2e64bd3899cfbe7bade547e54330f7.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: X6r2sZvvrAoSD9UlABJTRli3NKyhXv89
+X-Proofpoint-GUID: X6r2sZvvrAoSD9UlABJTRli3NKyhXv89
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-19_16,2023-01-19_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ clxscore=1015 spamscore=0 mlxlogscore=314 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 mlxscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301200002
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/19/23 20:12, Larry Finger wrote:
-> Sparse lists the following warnings:
+On 1/19/2023 7:37 AM, Johannes Berg wrote:
+> Frankly I'm not happy for this to be stuck into set_interface() like
+> that - can we add it to set_channel() only or something? At least there
+> should be too? And read it only if the channel is actually touched? This
+> feels very ad-hoc.
 > 
->    CHECK   drivers/staging/r8188eu/core/rtw_mlme.c
-> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49: warning: incorrect type in
-> 					 argument 2 (different base types)
-> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    expected restricted
-> 					 __le16 [usertype] mstatus_rpt
-> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    got unsigned short
-> 					 [assigned] [usertype] media_status_rpt
-> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57: warning: incorrect type in
-> 					 argument 2 (different base types)
-> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    expected restricted
-> 					 __le16 [usertype] mstatus_rpt
-> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    got unsigned short
-> 					 [assigned] [usertype] media_status
->    CHECK   drivers/staging/r8188eu/core/rtw_mlme_ext.c
-> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58: warning: incorrect type
-> 					 in argument 2 (different base types)
-> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    expected restricted
-> 					 __le16 [usertype] mstatus_rpt
-> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    got unsigned short
-> 					 [assigned] [usertype] media_status
-> 
-> The second argument of rtl8188e_set_FwMediaStatus_cmd() needs to be in CPU
-> order, not little-endian; however, when it uses that value to call
-> FillH2CCmd_88E() the parameter must be in little-endian order as that
-> value will be sent to the firmware. Note that the conversion from LE to CPU
-> order was le16_to_cpu() rather than the correct cpu_to_le16.
-> 
-> The definition of FillH2CCmd_88E() is revised, and the proper conversion
-> routine is used.
-> 
-> Note that the original code performed one byte swap on the secong argument
-> of FillH2CCmd_88E(), and got the correct answer even though the semantics
-> were very wrong.
-> 
-> Signed-off-by: Larry Finger<Larry.Finger@lwfinger.net>
-> Reportewd-by: Gaurav Pathak<gauravpathak129@gmail.com>
+> johannes
 
+Hi Johannes,
 
-Checkpatch does not like the "w" in "Reportewd-by:".
+I will work on these comments.
 
-Tested on x86_64
-Tested-by: Philipp Hortmann <philipp.g.hortmann@gmail.com> # Edimax N150
+Secondly, this RFC uses ieee80211_valid_disable_subchannel_bitmap() 
+defined in following RFC you sent:
+https://patchwork.kernel.org/project/linux-wireless/patch/20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid/
 
+Is there is any plan for the next version?
+If not, I can move the validation function defined in cfg80211 to 
+mac80211 from the following patch-set:
+https://patchwork.kernel.org/project/linux-wireless/patch/20220214223051.3610-3-quic_alokad@quicinc.com/
 
+You had asked me about exporting this during the review as well.
 
+Please let me know so that I can incorporate accordingly.
+Thanks.
