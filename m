@@ -2,105 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BEFA674C17
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 06:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C802674BFA
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 06:18:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbjATFXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Jan 2023 00:23:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55368 "EHLO
+        id S231300AbjATFSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Jan 2023 00:18:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjATFXg (ORCPT
+        with ESMTP id S230215AbjATFSV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Jan 2023 00:23:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30EEF518E2
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 21:13:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 47A9EB8229C
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 18:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C308C433D2;
-        Thu, 19 Jan 2023 18:36:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674153379;
-        bh=zd/EkAAlkdTq8J7TE4rPZJX0/BqiOxjrGk4JpUHzfQk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZviGmF8HOGozsdQ7L8Oyfy/gFcyT/irK2N7YuQGF2vJKOKLOleY1EIx/qxi4ZTAiU
-         LzH+8pokS3vsMf1ZXVs+GDSxoySrnlyxOkBsUG9YS2EpQdfaDcJQ19MLf4weDs1+ow
-         l/LnufHM14Jryy7GuMA7wj0KWw8El2deZseCTS5mLL8kxtEEz9MzdpO/pMfcmtuOkC
-         KTUk5aLv+xJPOcORWQzy0cPFgI/Bc6/BNlBfhjuS94olF3GVPp56f+DmhZFrHxrJLb
-         LhVZhp+XGrlR7FSB2SjKheeyI6BVXaZj40ewX8z72nX4TAhefOND6h1EvUYU5+Z71O
-         LItcsn7Z8UfnQ==
-Date:   Thu, 19 Jan 2023 19:36:15 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] nl80211: add support to enable/disable bss color
- collision detection
-Message-ID: <Y8mNn18XeUcEjLWe@lore-desk>
-References: <20221226083328.29051-1-quic_ramess@quicinc.com>
- <20221226083328.29051-2-quic_ramess@quicinc.com>
- <74c57dc34af10537f98f5bb9b6ce80e5676e09b0.camel@sipsolutions.net>
- <1609a645-3e23-7e37-9aa1-94f970e481e2@green-communications.fr>
- <2a2332211b2ca9daa968a3644006f5c9e0c88a00.camel@sipsolutions.net>
+        Fri, 20 Jan 2023 00:18:21 -0500
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5BCDF957;
+        Thu, 19 Jan 2023 21:07:32 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id o17-20020a05600c511100b003db021ef437so2812082wms.4;
+        Thu, 19 Jan 2023 21:07:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HhMPVNs8pc5Gcf/TDLS+cJfOurg6Vice8ut9+SSmMY8=;
+        b=lPBcCni7LAwqOkrg3tNCH8jOSMnkyLgfAXhdSPuWk9jqGAy9XkKAhwTW8VXN/9cXFV
+         /EN0DPv42as4B6vtPxwtHVBwWplBaFE/xI5qQE1NXH2AxyMx+9gxLM6ptWd4KJEHRmzb
+         PWErnbqiYuGQMwvJmYfqM0L2mhGwa+odHughUHnkGdEyq6xKmjaDieso4h0auyn1xV0/
+         lBCEyQlbbCtZSbCcG8TVIhyA7/s3F7B1TPz8ZVSzu0Eb+ilsNuvhPuFTvNLaf5EP+9e8
+         SOaQlWzjm95h2IVLfV4LSD8eAOj5Q8/S5SKJDdPTZEuZbGPPrCSjmErCocWV6VcxF625
+         40sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HhMPVNs8pc5Gcf/TDLS+cJfOurg6Vice8ut9+SSmMY8=;
+        b=aCsddHc2ydYxmY8WAPB7NdvGA8XCFIBJveipTumBJ6rzR9qoozt9dQ7k1IJHk7vn2j
+         9tnu1HUxV8W4/xY89Y4pFiTemdLQlRpSGU7/Q0I8sSPzSl20ZV9CLXSfhtTPPUcjbhRB
+         Q5koJG+d+kSt3M+rZCiHy/yC2X+4ZiYj3fy7HrzdtfUUAPYkN3iNWRvB5eLj551aAzId
+         9WzFaaJl2m1qzWuOGG3t3oFY0EBh7XqIqeU65VwllOvk2xVPb1R5E4nKRqqkdFiomRX3
+         slzHWcSR2IMCktAd/zict30VP4EBBCbt6N6M1zdAoO7L41Vy5z9idvK6ADSFeHHGrw3/
+         c0lg==
+X-Gm-Message-State: AFqh2koPFMCfXugtjvPuTLSSBEw2dP8n0x4lXLtgC9HeGxqIB6znShS1
+        wzQXP+bubcKz3r07xfX2mwxGJqTAiZbUTw==
+X-Google-Smtp-Source: AMrXdXuIRvrqtfIdcYDBTulA2LssPIlvNF6wzU/SosHvPjy1IlAsQclQWt+6yA36sTmWOi1wqynaYg==
+X-Received: by 2002:a05:600c:3412:b0:3da:f678:1d47 with SMTP id y18-20020a05600c341200b003daf6781d47mr12556081wmp.14.1674191250364;
+        Thu, 19 Jan 2023 21:07:30 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id x15-20020a05600c188f00b003db122d5ac2sm1036738wmp.15.2023.01.19.21.07.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jan 2023 21:07:29 -0800 (PST)
+Date:   Fri, 20 Jan 2023 08:07:26 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     gregkh@linuxfoundation.org, phil@philpotter.co.uk,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Gaurav Pathak <gauravpathak129@gmail.com>
+Subject: Re: [PATCH] staging: r8188eu: Fix some endian problems
+Message-ID: <Y8ohjkgNjyQPD+Dd@kadam>
+References: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CjbjeWRTJw133AO1"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2a2332211b2ca9daa968a3644006f5c9e0c88a00.camel@sipsolutions.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Thu, Jan 19, 2023 at 01:12:19PM -0600, Larry Finger wrote:
+> Sparse lists the following warnings:
+> 
+>   CHECK   drivers/staging/r8188eu/core/rtw_mlme.c
+> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49: warning: incorrect type in
+> 					 argument 2 (different base types)
+> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    expected restricted
+> 					 __le16 [usertype] mstatus_rpt
+> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    got unsigned short
+> 					 [assigned] [usertype] media_status_rpt
+> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57: warning: incorrect type in
+> 					 argument 2 (different base types)
+> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    expected restricted
+> 					 __le16 [usertype] mstatus_rpt
+> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    got unsigned short
+> 					 [assigned] [usertype] media_status
+>   CHECK   drivers/staging/r8188eu/core/rtw_mlme_ext.c
+> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58: warning: incorrect type
+> 					 in argument 2 (different base types)
+> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    expected restricted
+> 					 __le16 [usertype] mstatus_rpt
+> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    got unsigned short
+> 					 [assigned] [usertype] media_status
+> 
+> The second argument of rtl8188e_set_FwMediaStatus_cmd() needs to be in CPU
+> order, not little-endian; however, when it uses that value to call
+> FillH2CCmd_88E() the parameter must be in little-endian order as that
+> value will be sent to the firmware. Note that the conversion from LE to CPU
+> order was le16_to_cpu() rather than the correct cpu_to_le16.
+> 
+> The definition of FillH2CCmd_88E() is revised, and the proper conversion
+> routine is used.
+> 
+> Note that the original code performed one byte swap on the secong argument
+> of FillH2CCmd_88E(), and got the correct answer even though the semantics
+> were very wrong.
+> 
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Reportewd-by: Gaurav Pathak <gauravpathak129@gmail.com>
+         ^
+Extra 'w'.
 
---CjbjeWRTJw133AO1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Dan Carpenter <error27@gmail.com>
 
-> On Thu, 2023-01-19 at 15:52 +0100, Nicolas Cavallari wrote:
-> >=20
-> > This may not be related, but the software color collision detection=20
-> > sends a netlink message for every colliding frame and it can hose up th=
-e=20
-> > system if the other network is very active.
-> >=20
-> > Also, cfg80211_bss_color_notify() complains that the wdev lock isn't he=
-ld.
->=20
-> Yay.
->=20
-> Lorenzo can you take a look at that?
+regards,
+dan carpenter
 
-It seems fine to me, I am just wondering if we need to forward the info to =
-the
-hw (if it supports hw color collision detection) if we just flip
-collision_detection_enabled field in ieee80211_change_beacon().
-What do you think?
-
-Regards,
-Lorenzo
-
->=20
-> johannes
-
---CjbjeWRTJw133AO1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY8mNnwAKCRA6cBh0uS2t
-rF1WAQDn0Cpq8dywuxhT9abbxS+UcqmUcLXe506jMOtSe0qEgQD+ISFZ0CY7xESa
-GESufErqWNSQzx08Bf2a03IvzoCfIg8=
-=9anP
------END PGP SIGNATURE-----
-
---CjbjeWRTJw133AO1--
