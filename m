@@ -2,83 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4A5675CC2
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 19:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D24D2675DAF
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 20:11:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbjATS3w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Jan 2023 13:29:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41054 "EHLO
+        id S230090AbjATTL1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Jan 2023 14:11:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjATS3v (ORCPT
+        with ESMTP id S229547AbjATTL0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Jan 2023 13:29:51 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8811C7B2C2;
-        Fri, 20 Jan 2023 10:29:50 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <mkarcher@zedat.fu-berlin.de>)
-          id 1pIw91-002ZeP-SB; Fri, 20 Jan 2023 19:29:43 +0100
-Received: from pd9f631ca.dip0.t-ipconnect.de ([217.246.49.202] helo=[192.168.144.87])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_128_GCM_SHA256
-          (envelope-from <Michael.Karcher@fu-berlin.de>)
-          id 1pIw91-002DWz-Lq; Fri, 20 Jan 2023 19:29:43 +0100
-Message-ID: <9e037a3d-56a6-6a06-834a-48c0b8d9225f@fu-berlin.de>
-Date:   Fri, 20 Jan 2023 19:29:42 +0100
+        Fri, 20 Jan 2023 14:11:26 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B95DBCB;
+        Fri, 20 Jan 2023 11:11:25 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id p185so5252093oif.2;
+        Fri, 20 Jan 2023 11:11:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=BFyYTpVG5ZzCzfnTs8oNkGAEsfN9nPz+uDFLXCK3bOc=;
+        b=Ztw6p5ICi2lkwk8EqwAPw3IqQfXkqMLi7SBoOL1bqe8ExOT/EUCaUmLjxV3oPBf4yY
+         3FNRQEnf3v+ILni/t00bpVIOe+kXTAzEDqZKOVRQrzNNlaiDzcCtWazBZ42hlzH/Xpn2
+         MxTQr7zrtOgFN7yuR283M6S33WxgpVGggsdSvspaAYjemSUBozC9Crfg+MRkBI6xKCbJ
+         +E90pozRoRwAr6CWiPMp8WgFowZMjqEJyvNwjArvdgYACf/sEtEEIBwq58397t1VbtPd
+         6uMMBFrYnNsepKWCFajpnQfEkk8k/D11hzsT8RP2pt5l0lxvPeBNob+LADz81R35e8BE
+         S21Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BFyYTpVG5ZzCzfnTs8oNkGAEsfN9nPz+uDFLXCK3bOc=;
+        b=DSsNwT/cSHm74I/fOi0+7VCpcJ2zy2gt7nKlFw29ui1+06SKnna3ZR2tIi0T9k5GIM
+         EnMbzcqC7zzH07uthjQE0EGUsnGCXwYjZZ0T96SN5S60LZRuidQs76+5wpNcTUak/+Br
+         6YXmiWqM4Ug/z3IMvv8nd1GDTXcXU5l7kyBl1mEVGs0/ZLoUbi06ztB9uUs8AAFVucfQ
+         CbGpXVTu9QI32kTlMxR5loaHcFwewoY0xt0I/iYw07zprp2JveQLEXr4CDBVa2lQBnGm
+         B5OENUZ4exOCogt3SSyr6152kwywdD9hBJEgJH0jF4bNqZ+uG3SiQtFZantxnEOD4Jxe
+         5+Nw==
+X-Gm-Message-State: AFqh2kpyFXi5kqMxSjv+EnyxRlnWykron2ZplneOeesoGWewtkEsh8Uq
+        RTjI4e/6SECpcHfIEce1xOqfgpg4gcg=
+X-Google-Smtp-Source: AMrXdXtXTrCPMZlTu+cC+8XlgcCVVJtyBbU5CtrCwyWsvX0/7hB7Rmtd51lEkRZkJOuLQ+8i+4g/Sg==
+X-Received: by 2002:a05:6808:3b0:b0:35e:2b7f:daa6 with SMTP id n16-20020a05680803b000b0035e2b7fdaa6mr6789297oie.28.1674241884248;
+        Fri, 20 Jan 2023 11:11:24 -0800 (PST)
+Received: from localhost.localdomain ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id c6-20020aca1c06000000b0035763a9a36csm3684463oic.44.2023.01.20.11.11.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jan 2023 11:11:23 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     gregkh@linuxfoundation.org
+Cc:     phil@philpotter.co.uk, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Gaurav Pathak <gauravpathak129@gmail.com>
+Subject: [PATCH V2] staging: r8188eu: Fix some endian problems
+Date:   Fri, 20 Jan 2023 13:11:19 -0600
+Message-Id: <20230120191119.13163-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: Calculating array sizes in C - was: Re: Build
- regressions/improvements in v6.2-rc1
-To:     Segher Boessenkool <segher@kernel.crashing.org>,
-        Rob Landley <rob@landley.net>
-Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-mips@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
-References: <alpine.DEB.2.22.394.2212270933530.311423@ramsan.of.borg>
- <c05bee5d-0d69-289b-fe4b-98f4cd31a4f5@physik.fu-berlin.de>
- <CAMuHMdXNJveXHeS=g-aHbnxtyACxq1wCeaTg8LbpYqJTCqk86g@mail.gmail.com>
- <3800eaa8-a4da-b2f0-da31-6627176cb92e@physik.fu-berlin.de>
- <CAMuHMdWbBRkhecrqcir92TgZnffMe8ku2t7PcVLqA6e6F-j=iw@mail.gmail.com>
- <429140e0-72fe-c91c-53bc-124d33ab5ffa@physik.fu-berlin.de>
- <CAMuHMdWpHSsAB3WosyCVgS6+t4pU35Xfj3tjmdCDoyS2QkS7iw@mail.gmail.com>
- <0d238f02-4d78-6f14-1b1b-f53f0317a910@physik.fu-berlin.de>
- <1732342f-49fe-c20e-b877-bc0a340e1a50@fu-berlin.de>
- <0f51dac4-836b-0ff2-38c6-5521745c1c88@landley.net>
- <20230120105341.GI25951@gate.crashing.org>
-From:   "Michael.Karcher" <Michael.Karcher@fu-berlin.de>
-In-Reply-To: <20230120105341.GI25951@gate.crashing.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Original-Sender: Michael.Karcher@fu-berlin.de
-X-Originating-IP: 217.246.49.202
-X-ZEDAT-Hint: T
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!
-> Can someone please file a GCC PR?  With reduced testcase preferably.
+Sparse lists the following warnings:
 
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108483
+  CHECK   drivers/staging/r8188eu/core/rtw_mlme.c
+drivers/staging/r8188eu/core/rtw_mlme.c:1197:49: warning: incorrect type in
+					 argument 2 (different base types)
+drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    expected restricted
+					 __le16 [usertype] mstatus_rpt
+drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    got unsigned short
+					 [assigned] [usertype] media_status_rpt
+drivers/staging/r8188eu/core/rtw_mlme.c:1275:57: warning: incorrect type in
+					 argument 2 (different base types)
+drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    expected restricted
+					 __le16 [usertype] mstatus_rpt
+drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    got unsigned short
+					 [assigned] [usertype] media_status
+  CHECK   drivers/staging/r8188eu/core/rtw_mlme_ext.c
+drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58: warning: incorrect type
+					 in argument 2 (different base types)
+drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    expected restricted
+					 __le16 [usertype] mstatus_rpt
+drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    got unsigned short
+					 [assigned] [usertype] media_status
 
-There you are.
+The second argument of rtl8188e_set_FwMediaStatus_cmd() needs to be in CPU
+order, not little-endian; however, when it uses that value to call
+FillH2CCmd_88E() the parameter must be in little-endian order as that
+value will be sent to the firmware. Note that the conversion from LE to CPU
+order was le16_to_cpu() rather than the correct cpu_to_le16.
 
-Kind regars,
-   Michael Karcher
+The definition of FillH2CCmd_88E() is revised, and the proper conversion
+routine is used.
+
+Note that the original code performed one byte swap on the secong argument
+of FillH2CCmd_88E(), and got the correct answer even though the semantics
+were very wrong.
+
+Tested-by: Philipp Hortmann <philipp.g.hortmann@gmail.com> # Edimax N150
+Reviewed-by: Dan Carpenter <error27@gmail.com>
+Reported-by: Gaurav Pathak <gauravpathak129@gmail.com>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+v1 -> v2: Fixed typo in the Reported line.
+---
+Greg,
+
+I intended this patch as an example for Gaurav, but as it has not been
+resubmitted, I am sending it to you. If you thing he deserves to be the
+author, then please edit the patch before applying. Thanks, Larry
+---
+
+ drivers/staging/r8188eu/hal/rtl8188e_cmd.c     | 4 ++--
+ drivers/staging/r8188eu/include/rtl8188e_cmd.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/staging/r8188eu/hal/rtl8188e_cmd.c b/drivers/staging/r8188eu/hal/rtl8188e_cmd.c
+index 8310d7f53982..788904d4655c 100644
+--- a/drivers/staging/r8188eu/hal/rtl8188e_cmd.c
++++ b/drivers/staging/r8188eu/hal/rtl8188e_cmd.c
+@@ -193,9 +193,9 @@ void rtl8188e_set_FwPwrMode_cmd(struct adapter *adapt, u8 Mode)
+ 
+ }
+ 
+-void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, __le16 mstatus_rpt)
++void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, u16 mstatus_rpt)
+ {
+-	u16 mst_rpt = le16_to_cpu(mstatus_rpt);
++	__le16 mst_rpt = cpu_to_le16(mstatus_rpt);
+ 
+ 	FillH2CCmd_88E(adapt, H2C_COM_MEDIA_STATUS_RPT, sizeof(mst_rpt), (u8 *)&mst_rpt);
+ }
+diff --git a/drivers/staging/r8188eu/include/rtl8188e_cmd.h b/drivers/staging/r8188eu/include/rtl8188e_cmd.h
+index 1e01c1662f9a..c785cf8ed683 100644
+--- a/drivers/staging/r8188eu/include/rtl8188e_cmd.h
++++ b/drivers/staging/r8188eu/include/rtl8188e_cmd.h
+@@ -85,6 +85,6 @@ void rtl8188e_Add_RateATid(struct adapter *padapter, u32 bitmap, u8 arg,
+ void rtl8188e_set_p2p_ps_offload_cmd(struct adapter *adapt, u8 p2p_ps_state);
+ 
+ void CheckFwRsvdPageContent(struct adapter *adapt);
+-void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, __le16 mstatus_rpt);
++void rtl8188e_set_FwMediaStatus_cmd(struct adapter *adapt, u16 mstatus_rpt);
+ 
+ #endif/* __RTL8188E_CMD_H__ */
+-- 
+2.39.0
 
