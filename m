@@ -2,1022 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0CB675BFF
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 18:49:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B5F5675C2F
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 18:54:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230199AbjATRtz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Jan 2023 12:49:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
+        id S229699AbjATRyA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Jan 2023 12:54:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230427AbjATRtx (ORCPT
+        with ESMTP id S229813AbjATRx6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Jan 2023 12:49:53 -0500
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA3866FF8F
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 09:49:48 -0800 (PST)
-Received: by mail-pg1-x54a.google.com with SMTP id r126-20020a632b84000000b004393806c06eso2904863pgr.4
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 09:49:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pmSuPjkUlHoxyA1rF/IrmI8kVQAGnmW8cX1/pMfWANg=;
-        b=DrM40k9e3HxusEjUGiMzNaajfr8QzI9XRGf+9GgGAjL0ttuVqQfhxktXw2H++e3EcL
-         Edefqj3nq+CBBrf0bHH2cRfd7TyMtjCCbr7ONaublV3BiGDnpyfjKSda5OGFQ07qzKR0
-         v9pajFSiN0D94qTUm7JX0rm5k7R1nv6iKy4kq8hIczUEuBRsIpcgHb64uoLPW2d5bKfA
-         lvFc9xmwMOiKD2cWpN2VbnORWw6JdVlPaBB83vvb3xtJJlfKivK4CSZXMW3vQhPwEdT0
-         gktFNciOv6Ei6buVfRoLpDfKlJm515CzhnkzlgdFL1v2d9kCIpZtmA07TzTgAIlEXeN4
-         8XqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pmSuPjkUlHoxyA1rF/IrmI8kVQAGnmW8cX1/pMfWANg=;
-        b=vwi2RZLpKmoTC412PVL0NUrqSPALMEefy7LkDfv/iVBI8thQsoaqwYiqorRYEsGuPb
-         SMqHzMJu13kIQsjbLfBLmEpQecDT8xhAuEzT3mL+BmRd/wbYFG12Mjp/Lh1WU/HEBhaJ
-         3ri+1rTguosoA+vD/lL+liUORlDf3MjuhcmQdmnR0HsWMccnv95PqjWR53rMSVFoAZu0
-         pO49uy6weB0y+yxzqzWqEI7eu1otv24e7bgsl/s6eZdtH5oHO/NXP9iwfoOQYKkoKagX
-         h24n8//Zz/JvrnOESZCAxPNXuuZsiedYxufboHps8i7ekBdsz8UwzOvfoB9QdUT/ZIEN
-         MtOQ==
-X-Gm-Message-State: AFqh2kr+ggIhL+6siBLoUMauH9naRD3u3kErzNyRTk9u1TkYoOtsRMfj
-        s2s8l1NfRklfkGzmcPW3mqqoQtwFato=
-X-Google-Smtp-Source: AMrXdXsoQMIkSW/aNhFWJP5/Dp69adNypNDIVMbOpvqaAvFjxgr1j2xpndbMsUXGGei1xmfoWe6ljac1Sms=
-X-Received: from jaewan1.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:e59])
- (user=jaewan job=sendgmr) by 2002:a63:2546:0:b0:473:e502:9a21 with SMTP id
- l67-20020a632546000000b00473e5029a21mr1481829pgl.238.1674236988303; Fri, 20
- Jan 2023 09:49:48 -0800 (PST)
-Date:   Fri, 20 Jan 2023 17:49:34 +0000
-In-Reply-To: <20230120174934.3528469-1-jaewan@google.com>
-Mime-Version: 1.0
-References: <20230120174934.3528469-1-jaewan@google.com>
-X-Mailer: git-send-email 2.39.0.246.g2a6d74b583-goog
-Message-ID: <20230120174934.3528469-3-jaewan@google.com>
-Subject: [PATCH v4 2/2] mac80211_hwsim: handle FTM requests with virtio
-From:   Jaewan Kim <jaewan@google.com>
-To:     gregkh@linuxfoundation.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-team@android.com, adelva@google.com,
-        Jaewan Kim <jaewan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        Fri, 20 Jan 2023 12:53:58 -0500
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2054.outbound.protection.outlook.com [40.107.93.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9727402F6;
+        Fri, 20 Jan 2023 09:53:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jKwTwhEOI2/vKWprvfhYxukFWV1hORC3apUFwJDo2g4NIv8TZQR2gqf6s3KkVYoU30eS9qBIwLLblyVbvAV34UqOoaQSs5reamaYvzE350fm/62IWhVgr2GTNpEdwqmPq2Fkwa6vE+JcM2FgrsIvNXjJkXML/wbRFpj/YsBnjasmbQNWKCiiMnUvN1mgdbE2q6JTD1tiBnWQSxkM/55cMvEpebfScKSYJ6lJdxFUxY5+YM1YoZVi+ihjeAOvlTH6FVT16KMNJ9qGg3ZH/GkUDDCeoYQFzLVMKDVcDh5ll6wiMpbC95ZFTvkW4cWZ9Z9Vs/vUENvyC5MU6RXNlXrRAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cXFt93pMtQTD3Nr5BElncWhLzk/oOeSjayXm6n79zuw=;
+ b=i7BF2hVOIQ3YlJNTULTu2B68T5G+R9CjuSqjvagzh4tBs5GmNsLXx51wkll2UYfRWgBeZdCtkIsaiehqzR3ybXVvbF6QTRjydo9VYW0NZ1mUrHNuJ/1U3/UhHTLv3mdTlM0uq64naoHMyaH+sTVBvgXTruaFJ8bL7CPe2m4rF+p9oEn/8q+8UKJZNBSZN9J2tkGk3zpnfuknK/pwmIISXc6rtyLKDvmSg5WNsJec89HOQn5S/bYSr0UT1d3zyFGugJVoEPAgkT9quPW7U4W68Gfycm4QrMGYt+MmTZdMQWm6hqM9o9zjm+Rhbr5EltuClgYAeHuP8VtaK6KbKyVkKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cXFt93pMtQTD3Nr5BElncWhLzk/oOeSjayXm6n79zuw=;
+ b=DrF3k+K+897Yq50c0abDAZ6YHYeB9xWUTjXZ0pCSws1N29HXJ3TDUxMxQNvFNz0yZNTVu/YOje/Gco99n0OaPgWEu8q221L3VpCSTqzbrsYfCk8iwiHYKoE0CU/dKNE89cHW9mKyy1FNkbVi5iQaA3ZVqLoqbrP6T9a0QIZIW/QhYWh6AIxhw8IJZcD5bvRvc77NqNoP5eTbkUBbk1bYpETUgWFNKPg5T/rPrGDUfTNJjWox3goggBJGPbG8rK8Op1PDykN6zHDEhA6QmZrXnodKunBw5SR+v1Zuk2Wr7G2byH3knDOdQ1hYP+XXZ7KD7eaWwT9Jhsvipo96YZP2+g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM6PR12MB4076.namprd12.prod.outlook.com (2603:10b6:5:213::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Fri, 20 Jan
+ 2023 17:53:41 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f8b0:df13:5f8d:12a]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f8b0:df13:5f8d:12a%9]) with mapi id 15.20.6002.013; Fri, 20 Jan 2023
+ 17:53:41 +0000
+Date:   Fri, 20 Jan 2023 13:53:40 -0400
+From:   Jason Gunthorpe <jgg@nvidia.com>
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-s390@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-tegra@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, nouveau@lists.freedesktop.org,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH 1/8] iommu: Add a gfp parameter to iommu_map()
+Message-ID: <Y8rVJGyTKAjXjLwV@nvidia.com>
+References: <1-v1-6e8b3997c46d+89e-iommu_map_gfp_jgg@nvidia.com>
+ <4fd1b194-29ef-621d-4059-a8336058f217@arm.com>
+ <Y7hZOwerwljDKoQq@nvidia.com>
+ <Y8pd50mdNShTyVRX@8bytes.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y8pd50mdNShTyVRX@8bytes.org>
+X-ClientProxiedBy: MN2PR03CA0029.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::34) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM6PR12MB4076:EE_
+X-MS-Office365-Filtering-Correlation-Id: e29fdfc1-a93a-4424-19c0-08dafb0f440c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: f6qU6mqG7QQPIANewSeV3NY/O6fs4qOmTSfk9eK3ubu9AyrR1Anxe0vmSpG10K3DWpbZ9mn+/9wXZJpPWZoiR3md3epyfFdJkMwD1B82Vxq/js99fWzuIYoJr0hqGfRlVJZagOwxyNI8B5ViK6l5TINHNSnIInltEgJF5u0Td0xURxNGpW1euuiQ3iG4Vd7ceq1JbqIqu1ZSCd2E3BJBjCxMulhP140Uk/sqYRtAyRh/r42qK0XuwQlsNUt+b+dshRTT6FbbxsYSvGhtnkCIEyEJLPu3+4D5mNxyJaRTDJS3iTO7qwX4G0GZ9co6/dfeE6XjqxfhOfra918zxu8u6ageYBix5Sl8VpC8GAiOpHNk5wZWKW/qdKPjhxAjNkbayedJLlvQvCtoDj/iAxrXYzu2bQfVL3bl1ZiHruNyOi+doxL6tK5URthNNG1Yl1W5mOqTHCRY/mNQxhTIYoBY1vpva13nNn7zHx9wmQu/ZQpA0ggvaBd2Eh6cDP0EjTifOK83jDHVb/byllW0dqkJud1whWIvZO0Cm+Aj1/3AypijWJuan/nUdJB7EFvXhxmnxkUgKcybKWtThY0SCEcLN5Qx1N4xjVYP7esNJOJNAToXJJgQwW7eaOt+QMqocAyMZL6dyzhbQxscA64t1BBRxA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(346002)(39860400002)(366004)(136003)(376002)(451199015)(66476007)(38100700002)(66556008)(5660300002)(478600001)(86362001)(316002)(8936002)(66946007)(4744005)(7416002)(2906002)(4326008)(6916009)(41300700001)(8676002)(26005)(186003)(2616005)(54906003)(6506007)(36756003)(6512007)(6486002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8v1EMXBN73/TrR2ymZ61ASZdsthvduOnp0JZ6UJItEqeJepd8eAVU6K1Jhnt?=
+ =?us-ascii?Q?mDjxgkEMVIrj/bjh1Zx1u3DnlsOIM9XXW7xCNzCVWBO2u3D2wUEHzzQg0Su1?=
+ =?us-ascii?Q?3zcQmxgFb/nj04eBQbjW060wF60MXYY9vBiZXDehCKAClS+HXaC9vRs/lHES?=
+ =?us-ascii?Q?IxKQfymRS/3DeIQmQNfe91HTd6raseBBLXhfKYqZN6cRiu5hq6Vkwep+xCJO?=
+ =?us-ascii?Q?r3qquSbMNLcjCtC3oiXaE/WmOM4G1gxafA9NrA+Y0Z/ibN174RqAOi5lMBNH?=
+ =?us-ascii?Q?5cXjgxxPwdFA5Jyniahx0ScHEiG6VR+vYQzQC6KSIdvzoAK4cx3U11F6O+oD?=
+ =?us-ascii?Q?PpXytuzURAysCVMqDnsEuzxVb5zg722xy1wvxzetAN6mkbGq20uzkzXlxehV?=
+ =?us-ascii?Q?oTaTmK2KHHOt8mgFusxeAF68eQt7+9hwgqx34QLSbUBvVTvRsugWslELuOuj?=
+ =?us-ascii?Q?1Vf49DLhosezcSprLKncMfDiOB+lliDnuT9qVWlc/Y2/1UIidUxk6HIgjm8x?=
+ =?us-ascii?Q?pTn3z4O+5JWfK3wwV5NoJyBUr+2NUWVbGifatEsJF++/mN6hwBesHJyZwmsb?=
+ =?us-ascii?Q?5vdZg426Hwx/FgYlWhZv6kzihSqj6JtaKxwHlZkinOBOL9lwrbThQKdkg1XC?=
+ =?us-ascii?Q?5zsRIl/FA0StWJ3gJ46tAxlNvcUb4zSVxU5Jt1Pwo9XuzOdJeOavoD5w9q3z?=
+ =?us-ascii?Q?aVe36csh7yNtT1j8fB05xnfJHDXPxrPciW7hm7aieWst4InpWdFBkqPdfiGF?=
+ =?us-ascii?Q?s/lH/xFfWRIM4GNKBQtkbvhdlHVYDG8Rr6IXrsGhZHDFTchwZKj8m+qKlrW3?=
+ =?us-ascii?Q?XduIzE8+DUvWoroATR1hXDj4jcqXRwela2x9fRT0pGMM7ofM2T4CKv1cEI4r?=
+ =?us-ascii?Q?tfs9NX1aaIqBhNnUHIq6T5KvXNTQ5ryETOgfGH1NBQlagFFVT3y6rt9oACpS?=
+ =?us-ascii?Q?jwOu5HfZc1CxlvU5gqELhJuzU74vo4FQAwNZV59kE0b3BmTAVrkLjqh+Ds0/?=
+ =?us-ascii?Q?2RFa8zX7HQaPd+S6tu5tXc/xoP+vn4xmjAaRo4Ki4avXBXGz3oHdzTQCKa2P?=
+ =?us-ascii?Q?FnPJ/OCZc9Yw822T2tKpQy7lci+6Sy1ojeBobphKiyLIYI/eKvr5t5TFA97Q?=
+ =?us-ascii?Q?kBymkNkxj7KaXpR5YVs/0V75LTJfv2BXQ0EFcc667lVWlz0kx4EvcxyUjKMu?=
+ =?us-ascii?Q?vUjniN7MEp02WN5wMPozpgXPajQ6HKnYSvdI2BLsbGTOh5UGfc4q+l6hKbTV?=
+ =?us-ascii?Q?l9RmF4ZpepGbEIO0d2dPQjod8n6H/QaWv39uFP+GuUmXiaVxyFuUOPgZzKjS?=
+ =?us-ascii?Q?o/bOuYLizTog3+p1x+72B3/+uJFPVzu4eIpRJXDdB8V/RPkxrDTtJgGagv0w?=
+ =?us-ascii?Q?OWXbno3cNXWjxDpi3VhDIP+hqbu/Frrx/1T/cyPd4gcm1FZhAyUrt47TQeAs?=
+ =?us-ascii?Q?huM7u5pF9aW+fZcW24foaSJGN7v04Y7sAM3R/ccJ6/qzyrHw9gFLTh/Vfsz+?=
+ =?us-ascii?Q?tj8rPV9vW2RoSsDRwsvvP4bZvkxmJeqRMsBVjoGqQf5gkUkN3uwrZQ3L4EiF?=
+ =?us-ascii?Q?3q+iP4mIYpeIHLdhp1oYXyWlrMgO3yUnR6KcLSVL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e29fdfc1-a93a-4424-19c0-08dafb0f440c
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2023 17:53:41.3258
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S/ShNRiahaTIoIB6a/UQRktiU0bLbxGlrw3I9KvaFFDMptah/1bC4Sxj+oCgwfl+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4076
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This CL allows mac80211_hwsim to receive FTM request and send FTM response.
-It passthrough request to wmediumd and gets response with virtio
-to get the FTM information with another STA.
+On Fri, Jan 20, 2023 at 10:24:55AM +0100, Joerg Roedel wrote:
+> On Fri, Jan 06, 2023 at 01:24:11PM -0400, Jason Gunthorpe wrote:
+> > I think it is just better to follow kernel convention and have
+> > allocation functions include the GFP because it is a clear signal to
+> > the user that there is an allocation hidden inside the API. The whole
+> > point of gfp is not to have multitudes of every function for every
+> > allocation mode.
+> 
+> Well, having GFP parameters is not a strict kernel convention. There are
+> places doing it differently and have sleeping and atomic variants of
+> APIs. I have to say I like the latter more. But given that this leads to
+> an invasion of API functions here which all do the same under the hood, I
+> agree it is better to go with a GFP parameter here.
 
-This CL adds following commands
- - HWSIM_CMD_START_PMSR: To send request to wmediumd
- - HWSIM_CMD_ABORT_PMSR: To send abort to wmediumd
- - HWSIM_CMD_REPORT_PMSR: To receive response from wmediumd
+Ok, I think we are done with this series, I'll stick it in linux-next
+for a bit and send you a PR so the trees stay in sync
 
-Request and response are formatted the same way as pmsr.c.
-One exception is for sending rate_info -- hwsim_rate_info_attributes is
-added to send rate_info as is.
-
-Signed-off-by: Jaewan Kim <jaewan@google.com>
----
- drivers/net/wireless/mac80211_hwsim.c | 679 +++++++++++++++++++++++++-
- drivers/net/wireless/mac80211_hwsim.h |  54 +-
- include/net/cfg80211.h                |  10 +
- net/wireless/nl80211.c                |  11 +-
- 4 files changed, 737 insertions(+), 17 deletions(-)
-
-diff --git drivers/net/wireless/mac80211_hwsim.c drivers/net/wireless/mac80211_hwsim.c
-index f7ca2e1a2c52..f4a094872753 100644
---- drivers/net/wireless/mac80211_hwsim.c
-+++ drivers/net/wireless/mac80211_hwsim.c
-@@ -721,6 +721,8 @@ struct mac80211_hwsim_data {
- 
- 	/* only used when pmsr capability is supplied */
- 	struct cfg80211_pmsr_capabilities pmsr_capa;
-+	struct cfg80211_pmsr_request *pmsr_request;
-+	struct wireless_dev *pmsr_request_wdev;
- 
- 	struct mac80211_hwsim_link_data link_data[IEEE80211_MLD_MAX_NUM_LINKS];
- };
-@@ -750,6 +752,13 @@ struct hwsim_radiotap_ack_hdr {
- 	__le16 rt_chbitmask;
- } __packed;
- 
-+static struct mac80211_hwsim_data *get_hwsim_data_ref_from_addr(const u8 *addr)
-+{
-+	return rhashtable_lookup_fast(&hwsim_radios_rht,
-+				      addr,
-+				      hwsim_rht_params);
-+}
-+
- /* MAC80211_HWSIM netlink family */
- static struct genl_family hwsim_genl_family;
- 
-@@ -763,6 +772,81 @@ static const struct genl_multicast_group hwsim_mcgrps[] = {
- 
- /* MAC80211_HWSIM netlink policy */
- 
-+static const struct nla_policy
-+hwsim_rate_info_policy[HWSIM_RATE_INFO_ATTR_MAX + 1] = {
-+	[HWSIM_RATE_INFO_ATTR_FLAGS] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_MCS] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_LEGACY] = { .type = NLA_U16 },
-+	[HWSIM_RATE_INFO_ATTR_NSS] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_BW] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_HE_GI] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_HE_DCM] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_HE_RU_ALLOC] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_N_BOUNDED_CH] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_EHT_GI] = { .type = NLA_U8 },
-+	[HWSIM_RATE_INFO_ATTR_EHT_RU_ALLOC] = { .type = NLA_U8 },
-+};
-+
-+static const struct nla_policy
-+hwsim_ftm_result_policy[NL80211_PMSR_FTM_RESP_ATTR_MAX + 1] = {
-+	[NL80211_PMSR_FTM_RESP_ATTR_FAIL_REASON] = { .type = NLA_U32 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_BURST_INDEX] = { .type = NLA_U16 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_NUM_FTMR_ATTEMPTS] = { .type = NLA_U32 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_NUM_FTMR_SUCCESSES] = { .type = NLA_U32 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_BUSY_RETRY_TIME] = { .type = NLA_U8 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_NUM_BURSTS_EXP] = { .type = NLA_U8 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_BURST_DURATION] = { .type = NLA_U8 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_FTMS_PER_BURST] = { .type = NLA_U8 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_RSSI_AVG] = { .type = NLA_U32 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_RSSI_SPREAD] = { .type = NLA_U32 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_TX_RATE] =
-+		NLA_POLICY_NESTED(hwsim_rate_info_policy),
-+	[NL80211_PMSR_FTM_RESP_ATTR_RX_RATE] =
-+		NLA_POLICY_NESTED(hwsim_rate_info_policy),
-+	[NL80211_PMSR_FTM_RESP_ATTR_RTT_AVG] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_RTT_VARIANCE] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_RTT_SPREAD] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_DIST_AVG] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_DIST_VARIANCE] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_DIST_SPREAD] = { .type = NLA_U64 },
-+	[NL80211_PMSR_FTM_RESP_ATTR_LCI] = { .type = NLA_STRING },
-+	[NL80211_PMSR_FTM_RESP_ATTR_CIVICLOC] = { .type = NLA_STRING },
-+};
-+
-+static const struct nla_policy
-+hwsim_pmsr_resp_type_policy[NL80211_PMSR_TYPE_MAX + 1] = {
-+	[NL80211_PMSR_TYPE_FTM] = NLA_POLICY_NESTED(hwsim_ftm_result_policy),
-+};
-+
-+static const struct nla_policy
-+hwsim_pmsr_resp_policy[NL80211_PMSR_RESP_ATTR_MAX + 1] = {
-+	[NL80211_PMSR_RESP_ATTR_STATUS] = { .type = NLA_U32 },
-+	[NL80211_PMSR_RESP_ATTR_HOST_TIME] = { .type = NLA_U64 },
-+	[NL80211_PMSR_RESP_ATTR_AP_TSF] = { .type = NLA_U64 },
-+	[NL80211_PMSR_RESP_ATTR_FINAL] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_RESP_ATTR_DATA] =
-+		NLA_POLICY_NESTED(hwsim_pmsr_resp_type_policy),
-+};
-+
-+static const struct nla_policy
-+hwsim_pmsr_peer_result_policy[NL80211_PMSR_PEER_ATTR_MAX + 1] = {
-+	[NL80211_PMSR_PEER_ATTR_ADDR] = NLA_POLICY_ETH_ADDR_COMPAT,
-+	[NL80211_PMSR_PEER_ATTR_CHAN] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_PEER_ATTR_REQ] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_PEER_ATTR_RESP] =
-+		NLA_POLICY_NESTED(hwsim_pmsr_resp_policy),
-+};
-+
-+static const struct nla_policy
-+hwsim_pmsr_peers_result_policy[NL80211_PMSR_ATTR_MAX + 1] = {
-+	[NL80211_PMSR_ATTR_MAX_PEERS] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_ATTR_REPORT_AP_TSF] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_ATTR_TYPE_CAPA] = { .type = NLA_REJECT },
-+	[NL80211_PMSR_ATTR_PEERS] =
-+		NLA_POLICY_NESTED_ARRAY(hwsim_pmsr_peer_result_policy),
-+};
-+
- static const struct nla_policy
- hwsim_ftm_capa_policy[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_CAPA_ATTR_ASAP] = { .type = NLA_FLAG },
-@@ -780,7 +864,7 @@ hwsim_ftm_capa_policy[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1] = {
- };
- 
- static const struct nla_policy
--hwsim_pmsr_type_policy[NL80211_PMSR_TYPE_MAX + 1] = {
-+hwsim_pmsr_capa_type_policy[NL80211_PMSR_TYPE_MAX + 1] = {
- 	[NL80211_PMSR_TYPE_FTM] = NLA_POLICY_NESTED(hwsim_ftm_capa_policy),
- };
- 
-@@ -790,7 +874,7 @@ hwsim_pmsr_capa_policy[NL80211_PMSR_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_ATTR_REPORT_AP_TSF] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_ATTR_TYPE_CAPA] =
--		NLA_POLICY_NESTED(hwsim_pmsr_type_policy),
-+		NLA_POLICY_NESTED(hwsim_pmsr_capa_type_policy),
- 	[NL80211_PMSR_ATTR_PEERS] = { .type = NLA_REJECT }, // only for request.
- };
- 
-@@ -823,6 +907,7 @@ static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
- 	[HWSIM_ATTR_CIPHER_SUPPORT] = { .type = NLA_BINARY },
- 	[HWSIM_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- 	[HWSIM_ATTR_PMSR_SUPPORT] = NLA_POLICY_NESTED(hwsim_pmsr_capa_policy),
-+	[HWSIM_ATTR_PMSR_RESULT] = NLA_POLICY_NESTED(hwsim_pmsr_peers_result_policy),
- };
- 
- #if IS_REACHABLE(CONFIG_VIRTIO)
-@@ -3142,16 +3227,578 @@ static int mac80211_hwsim_change_sta_links(struct ieee80211_hw *hw,
- 	return 0;
- }
- 
--static int mac80211_hwsim_start_pmsr(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+static int mac80211_hwsim_send_pmsr_ftm_request_peer(struct sk_buff *msg,
-+						     struct cfg80211_pmsr_ftm_request_peer *request)
-+{
-+	void *ftm;
-+
-+	if (!request || !request->requested)
-+		return -EINVAL;
-+
-+	ftm = nla_nest_start(msg, NL80211_PMSR_TYPE_FTM);
-+	if (!ftm)
-+		return -ENOBUFS;
-+
-+	if (nla_put_u32(msg, NL80211_PMSR_FTM_REQ_ATTR_PREAMBLE,
-+			request->preamble))
-+		return -ENOBUFS;
-+
-+	if (nla_put_u16(msg, NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD,
-+			request->burst_period))
-+		return -ENOBUFS;
-+
-+	if (request->asap &&
-+	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_ASAP))
-+		return -ENOBUFS;
-+
-+	if (request->request_lci &&
-+	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI))
-+		return -ENOBUFS;
-+
-+	if (request->request_civicloc &&
-+	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_REQUEST_CIVICLOC))
-+		return -ENOBUFS;
-+
-+	if (request->trigger_based &&
-+	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED))
-+		return -ENOBUFS;
-+
-+	if (request->non_trigger_based &&
-+	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED))
-+		return -ENOBUFS;
-+
-+	if (request->lmr_feedback &&
-+	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK))
-+		return -ENOBUFS;
-+
-+	if (nla_put_u8(msg, NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP,
-+		       request->num_bursts_exp))
-+		return -ENOBUFS;
-+
-+	if (nla_put_u8(msg, NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION,
-+		       request->burst_duration))
-+		return -ENOBUFS;
-+
-+	if (nla_put_u8(msg, NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST,
-+		       request->ftms_per_burst))
-+		return -ENOBUFS;
-+
-+	if (nla_put_u8(msg, NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES,
-+		       request->ftmr_retries))
-+		return -ENOBUFS;
-+
-+	if (nla_put_u8(msg, NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR,
-+		       request->bss_color))
-+		return -ENOBUFS;
-+
-+	nla_nest_end(msg, ftm);
-+
-+	return 0;
-+}
-+
-+static int mac80211_hwsim_send_pmsr_request_peer(struct sk_buff *msg,
-+						 struct cfg80211_pmsr_request_peer *request)
-+{
-+	void *peer, *chandef, *req, *data;
-+	int err;
-+
-+	peer = nla_nest_start(msg, NL80211_PMSR_ATTR_PEERS);
-+	if (!peer)
-+		return -ENOBUFS;
-+
-+	if (nla_put(msg, NL80211_PMSR_PEER_ATTR_ADDR, ETH_ALEN,
-+		    request->addr))
-+		return -ENOBUFS;
-+
-+	chandef = nla_nest_start(msg, NL80211_PMSR_PEER_ATTR_CHAN);
-+	if (!chandef)
-+		return -ENOBUFS;
-+
-+	err = cfg80211_send_chandef(msg, &request->chandef);
-+	if (err)
-+		return err;
-+
-+	nla_nest_end(msg, chandef);
-+
-+	req = nla_nest_start(msg, NL80211_PMSR_PEER_ATTR_REQ);
-+	if (request->report_ap_tsf &&
-+	    nla_put_flag(msg, NL80211_PMSR_REQ_ATTR_GET_AP_TSF))
-+		return -ENOBUFS;
-+
-+	data = nla_nest_start(msg, NL80211_PMSR_REQ_ATTR_DATA);
-+	if (!data)
-+		return -ENOBUFS;
-+
-+	mac80211_hwsim_send_pmsr_ftm_request_peer(msg, &request->ftm);
-+	nla_nest_end(msg, data);
-+	nla_nest_end(msg, req);
-+	nla_nest_end(msg, peer);
-+
-+	return 0;
-+}
-+
-+static int mac80211_hwsim_send_pmsr_request(struct sk_buff *msg,
-+					    struct cfg80211_pmsr_request *request)
-+{
-+	int err;
-+	void *pmsr;
-+
-+	pmsr = nla_nest_start(msg, NL80211_ATTR_PEER_MEASUREMENTS);
-+	if (!pmsr)
-+		return -ENOBUFS;
-+
-+	if (nla_put_u32(msg, NL80211_ATTR_TIMEOUT, request->timeout))
-+		return -ENOBUFS;
-+
-+	if (!is_zero_ether_addr(request->mac_addr)) {
-+		if (nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, request->mac_addr))
-+			return -ENOBUFS;
-+		if (nla_put(msg, NL80211_ATTR_MAC_MASK, ETH_ALEN,
-+			    request->mac_addr_mask))
-+			return -ENOBUFS;
-+	}
-+
-+	for (int i = 0; i < request->n_peers; i++) {
-+		err = mac80211_hwsim_send_pmsr_request_peer(msg,
-+							    &request->peers[i]);
-+		if (err)
-+			return err;
-+	}
-+
-+	nla_nest_end(msg, pmsr);
-+
-+	return 0;
-+}
-+
-+static int mac80211_hwsim_start_pmsr(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
- 				     struct cfg80211_pmsr_request *request)
- {
--	return -EOPNOTSUPP;
-+	struct mac80211_hwsim_data *data = hw->priv;
-+	u32 _portid = READ_ONCE(data->wmediumd);
-+	int err = 0;
-+	struct sk_buff *skb = NULL;
-+	void *msg_head;
-+	void *pmsr;
-+
-+	if (!_portid && !hwsim_virtio_enabled)
-+		return -EOPNOTSUPP;
-+
-+	mutex_lock(&data->mutex);
-+
-+	if (data->pmsr_request) {
-+		err = -EBUSY;
-+		goto out_err;
-+	}
-+
-+	skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+
-+	if (!skb) {
-+		err = -ENOMEM;
-+		goto out_err;
-+	}
-+
-+	msg_head = genlmsg_put(skb, 0, 0, &hwsim_genl_family, 0,
-+			       HWSIM_CMD_START_PMSR);
-+
-+	if (nla_put(skb, HWSIM_ATTR_ADDR_TRANSMITTER,
-+		    ETH_ALEN, data->addresses[1].addr)) {
-+		err = -ENOMEM;
-+		goto out_err;
-+	}
-+
-+	pmsr = nla_nest_start(skb, HWSIM_ATTR_PMSR_REQUEST);
-+	if (!pmsr) {
-+		err = -ENOMEM;
-+		goto out_err;
-+	}
-+
-+	err = mac80211_hwsim_send_pmsr_request(skb, request);
-+	if (err)
-+		goto out_err;
-+
-+	nla_nest_end(skb, pmsr);
-+
-+	genlmsg_end(skb, msg_head);
-+	if (hwsim_virtio_enabled)
-+		hwsim_tx_virtio(data, skb);
-+	else
-+		hwsim_unicast_netgroup(data, skb, _portid);
-+
-+out_err:
-+	if (err && skb)
-+		nlmsg_free(skb);
-+
-+	if (!err) {
-+		data->pmsr_request = request;
-+		data->pmsr_request_wdev = ieee80211_vif_to_wdev(vif);
-+	}
-+
-+	mutex_unlock(&data->mutex);
-+	return err;
- }
- 
--static void mac80211_hwsim_abort_pmsr(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+static void mac80211_hwsim_abort_pmsr(struct ieee80211_hw *hw,
-+				      struct ieee80211_vif *vif,
- 				      struct cfg80211_pmsr_request *request)
- {
--	// Do nothing for now.
-+	struct mac80211_hwsim_data *data = hw->priv;
-+	u32 _portid = READ_ONCE(data->wmediumd);
-+	struct sk_buff *skb = NULL;
-+	int err = 0;
-+	void *msg_head;
-+	void *pmsr;
-+
-+	if (!_portid && !hwsim_virtio_enabled)
-+		return;
-+
-+	mutex_lock(&data->mutex);
-+
-+	if (data->pmsr_request != request) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+
-+	if (err)
-+		goto out_err;
-+
-+	skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!skb) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+
-+	msg_head = genlmsg_put(skb, 0, 0, &hwsim_genl_family, 0,
-+			       HWSIM_CMD_ABORT_PMSR);
-+
-+	if (nla_put(skb, HWSIM_ATTR_ADDR_TRANSMITTER,
-+		    ETH_ALEN, data->addresses[1].addr)) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+
-+	pmsr = nla_nest_start(skb, HWSIM_ATTR_PMSR_REQUEST);
-+	if (!pmsr) {
-+		err = -ENOMEM;
-+		goto out_err;
-+	}
-+
-+	err = mac80211_hwsim_send_pmsr_request(skb, request);
-+	if (err)
-+		goto out_err;
-+
-+	err = nla_nest_end(skb, pmsr);
-+	if (err)
-+		goto out_err;
-+
-+	genlmsg_end(skb, msg_head);
-+	if (hwsim_virtio_enabled)
-+		hwsim_tx_virtio(data, skb);
-+	else
-+		hwsim_unicast_netgroup(data, skb, _portid);
-+
-+out_err:
-+	if (err && skb)
-+		nlmsg_free(skb);
-+
-+	mutex_unlock(&data->mutex);
-+}
-+
-+static int mac80211_hwsim_parse_rate_info(struct nlattr *rateattr,
-+					  struct rate_info *rate_info,
-+					  struct genl_info *info)
-+{
-+	struct nlattr *tb[HWSIM_RATE_INFO_ATTR_MAX + 1];
-+	int ret;
-+
-+	ret = nla_parse_nested(tb, HWSIM_RATE_INFO_ATTR_MAX,
-+			       rateattr, hwsim_rate_info_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_FLAGS])
-+		rate_info->flags = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_FLAGS]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_MCS])
-+		rate_info->mcs = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_MCS]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_LEGACY])
-+		rate_info->legacy = nla_get_u16(tb[HWSIM_RATE_INFO_ATTR_LEGACY]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_NSS])
-+		rate_info->nss = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_NSS]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_BW])
-+		rate_info->bw = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_BW]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_HE_GI])
-+		rate_info->he_gi = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_HE_GI]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_HE_DCM])
-+		rate_info->he_dcm = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_HE_DCM]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_HE_RU_ALLOC])
-+		rate_info->he_ru_alloc =
-+			nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_HE_RU_ALLOC]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_N_BOUNDED_CH])
-+		rate_info->n_bonded_ch =
-+			nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_N_BOUNDED_CH]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_EHT_GI])
-+		rate_info->eht_gi = nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_EHT_GI]);
-+
-+	if (tb[HWSIM_RATE_INFO_ATTR_EHT_RU_ALLOC])
-+		rate_info->eht_ru_alloc =
-+			nla_get_u8(tb[HWSIM_RATE_INFO_ATTR_EHT_RU_ALLOC]);
-+
-+	return 0;
-+}
-+
-+static int mac80211_hwsim_parse_ftm_result(struct nlattr *ftm,
-+					   struct cfg80211_pmsr_ftm_result *result,
-+					   struct genl_info *info)
-+{
-+	struct nlattr *tb[NL80211_PMSR_FTM_RESP_ATTR_MAX + 1];
-+	int ret;
-+
-+	ret = nla_parse_nested(tb, NL80211_PMSR_FTM_RESP_ATTR_MAX,
-+			       ftm, hwsim_ftm_result_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_FAIL_REASON])
-+		result->failure_reason =
-+			nla_get_u32(tb[NL80211_PMSR_FTM_RESP_ATTR_FAIL_REASON]);
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_BURST_INDEX])
-+		result->burst_index =
-+			nla_get_u16(tb[NL80211_PMSR_FTM_RESP_ATTR_BURST_INDEX]);
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_NUM_FTMR_ATTEMPTS]) {
-+		result->num_ftmr_attempts_valid = 1;
-+		result->num_ftmr_attempts =
-+			nla_get_u32(tb[NL80211_PMSR_FTM_RESP_ATTR_NUM_FTMR_ATTEMPTS]);
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_NUM_FTMR_SUCCESSES]) {
-+		result->num_ftmr_successes_valid = 1;
-+		result->num_ftmr_successes =
-+			nla_get_u32(tb[NL80211_PMSR_FTM_RESP_ATTR_NUM_FTMR_SUCCESSES]);
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_BUSY_RETRY_TIME])
-+		result->busy_retry_time =
-+			nla_get_u8(tb[NL80211_PMSR_FTM_RESP_ATTR_BUSY_RETRY_TIME]);
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_NUM_BURSTS_EXP])
-+		result->num_bursts_exp =
-+			nla_get_u8(tb[NL80211_PMSR_FTM_RESP_ATTR_NUM_BURSTS_EXP]);
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_BURST_DURATION])
-+		result->burst_duration =
-+			nla_get_u8(tb[NL80211_PMSR_FTM_RESP_ATTR_BURST_DURATION]);
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_FTMS_PER_BURST])
-+		result->ftms_per_burst =
-+			nla_get_u8(tb[NL80211_PMSR_FTM_RESP_ATTR_FTMS_PER_BURST]);
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_RSSI_AVG]) {
-+		result->rssi_avg_valid = 1;
-+		result->rssi_avg =
-+			nla_get_s32(tb[NL80211_PMSR_FTM_RESP_ATTR_RSSI_AVG]);
-+	}
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_RSSI_SPREAD]) {
-+		result->rssi_spread_valid = 1;
-+		result->rssi_spread =
-+			nla_get_s32(tb[NL80211_PMSR_FTM_RESP_ATTR_RSSI_SPREAD]);
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_TX_RATE]) {
-+		result->tx_rate_valid = 1;
-+		ret = mac80211_hwsim_parse_rate_info(tb[NL80211_PMSR_FTM_RESP_ATTR_TX_RATE],
-+						     &result->tx_rate, info);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_RX_RATE]) {
-+		result->rx_rate_valid = 1;
-+		ret = mac80211_hwsim_parse_rate_info(tb[NL80211_PMSR_FTM_RESP_ATTR_RX_RATE],
-+						     &result->rx_rate, info);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_RTT_AVG]) {
-+		result->rtt_avg_valid = 1;
-+		result->rtt_avg =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_RESP_ATTR_RTT_AVG]);
-+	}
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_RTT_VARIANCE]) {
-+		result->rtt_variance_valid = 1;
-+		result->rtt_variance =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_RESP_ATTR_RTT_VARIANCE]);
-+	}
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_RTT_SPREAD]) {
-+		result->rtt_spread_valid = 1;
-+		result->rtt_spread =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_RESP_ATTR_RTT_SPREAD]);
-+	}
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_DIST_AVG]) {
-+		result->dist_avg_valid = 1;
-+		result->dist_avg =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_RESP_ATTR_DIST_AVG]);
-+	}
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_DIST_VARIANCE]) {
-+		result->dist_variance_valid = 1;
-+		result->dist_variance =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_RESP_ATTR_DIST_VARIANCE]);
-+	}
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_DIST_SPREAD]) {
-+		result->dist_spread_valid = 1;
-+		result->dist_spread =
-+			nla_get_u64(tb[NL80211_PMSR_FTM_RESP_ATTR_DIST_SPREAD]);
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_LCI]) {
-+		result->lci = nla_data(tb[NL80211_PMSR_FTM_RESP_ATTR_LCI]);
-+		result->lci_len = nla_len(tb[NL80211_PMSR_FTM_RESP_ATTR_LCI]);
-+	}
-+
-+	if (tb[NL80211_PMSR_FTM_RESP_ATTR_CIVICLOC]) {
-+		result->civicloc = nla_data(tb[NL80211_PMSR_FTM_RESP_ATTR_CIVICLOC]);
-+		result->civicloc_len = nla_len(tb[NL80211_PMSR_FTM_RESP_ATTR_CIVICLOC]);
-+	}
-+
-+	return 0;
-+}
-+
-+static int mac80211_hwsim_parse_pmsr_resp(struct nlattr *resp,
-+					  struct cfg80211_pmsr_result *result,
-+					  struct genl_info *info)
-+{
-+	struct nlattr *tb[NL80211_PMSR_RESP_ATTR_MAX + 1];
-+	struct nlattr *pmsr;
-+	int rem;
-+	int ret;
-+
-+	ret = nla_parse_nested(tb, NL80211_PMSR_RESP_ATTR_MAX, resp,
-+			       hwsim_pmsr_resp_policy, info->extack);
-+
-+	if (tb[NL80211_PMSR_RESP_ATTR_STATUS])
-+		result->status = nla_get_u32(tb[NL80211_PMSR_RESP_ATTR_STATUS]);
-+
-+	if (tb[NL80211_PMSR_RESP_ATTR_HOST_TIME])
-+		result->host_time = nla_get_u64(tb[NL80211_PMSR_RESP_ATTR_HOST_TIME]);
-+
-+	if (tb[NL80211_PMSR_RESP_ATTR_AP_TSF]) {
-+		result->ap_tsf_valid = 1;
-+		result->ap_tsf = nla_get_u64(tb[NL80211_PMSR_RESP_ATTR_AP_TSF]);
-+	}
-+
-+	result->final = !!tb[NL80211_PMSR_RESP_ATTR_FINAL];
-+
-+	if (tb[NL80211_PMSR_RESP_ATTR_DATA]) {
-+		nla_for_each_nested(pmsr, tb[NL80211_PMSR_RESP_ATTR_DATA], rem) {
-+			switch (nla_type(pmsr)) {
-+			case NL80211_PMSR_TYPE_FTM:
-+				result->type = NL80211_PMSR_TYPE_FTM;
-+				ret = mac80211_hwsim_parse_ftm_result(pmsr, &result->ftm, info);
-+				if (ret)
-+					return ret;
-+				break;
-+			default:
-+				NL_SET_ERR_MSG_ATTR(info->extack,
-+						    pmsr, "Unknown pmsr resp type");
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int mac80211_hwsim_parse_pmsr_result(struct nlattr *peer,
-+					    struct cfg80211_pmsr_result *result,
-+					    struct genl_info *info)
-+{
-+	struct nlattr *tb[NL80211_PMSR_PEER_ATTR_MAX + 1];
-+	int ret;
-+
-+	if (!peer)
-+		return -EINVAL;
-+
-+	ret = nla_parse_nested(tb, NL80211_PMSR_PEER_ATTR_MAX, peer,
-+			       hwsim_pmsr_peer_result_policy, info->extack);
-+	if (ret)
-+		return ret;
-+
-+	if (tb[NL80211_PMSR_PEER_ATTR_ADDR])
-+		memcpy(result->addr, nla_data(tb[NL80211_PMSR_PEER_ATTR_ADDR]),
-+		       ETH_ALEN);
-+
-+	if (tb[NL80211_PMSR_PEER_ATTR_RESP]) {
-+		ret = mac80211_hwsim_parse_pmsr_resp(tb[NL80211_PMSR_PEER_ATTR_RESP], result, info);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+};
-+
-+static int hwsim_pmsr_report_nl(struct sk_buff *msg, struct genl_info *info)
-+{
-+	struct nlattr *reqattr;
-+	const u8 *src;
-+	int err = 0;
-+	int rem;
-+	struct nlattr *peers, *peer;
-+	struct mac80211_hwsim_data *data;
-+
-+	src = nla_data(info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER]);
-+	data = get_hwsim_data_ref_from_addr(src);
-+	if (!data)
-+		return -EINVAL;
-+
-+	mutex_lock(&data->mutex);
-+	if (!data->pmsr_request) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+
-+	reqattr = info->attrs[HWSIM_ATTR_PMSR_RESULT];
-+	if (!reqattr) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+
-+	peers = nla_find_nested(reqattr, NL80211_PMSR_ATTR_PEERS);
-+	if (!peers) {
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+
-+	nla_for_each_nested(peer, peers, rem) {
-+		struct cfg80211_pmsr_result result;
-+
-+		err = mac80211_hwsim_parse_pmsr_result(peer, &result, info);
-+		if (err)
-+			goto out_err;
-+
-+		cfg80211_pmsr_report(data->pmsr_request_wdev,
-+				     data->pmsr_request, &result, GFP_KERNEL);
-+	}
-+
-+	cfg80211_pmsr_complete(data->pmsr_request_wdev, data->pmsr_request,
-+			       GFP_KERNEL);
-+
-+out_err:
-+	data->pmsr_request = NULL;
-+	data->pmsr_request_wdev = NULL;
-+
-+	mutex_unlock(&data->mutex);
-+	return err;
- }
- 
- #define HWSIM_COMMON_OPS					\
-@@ -4826,13 +5473,6 @@ static void hwsim_mon_setup(struct net_device *dev)
- 	eth_hw_addr_set(dev, addr);
- }
- 
--static struct mac80211_hwsim_data *get_hwsim_data_ref_from_addr(const u8 *addr)
--{
--	return rhashtable_lookup_fast(&hwsim_radios_rht,
--				      addr,
--				      hwsim_rht_params);
--}
--
- static void hwsim_register_wmediumd(struct net *net, u32 portid)
- {
- 	struct mac80211_hwsim_data *data;
-@@ -5508,6 +6148,11 @@ static const struct genl_small_ops hwsim_ops[] = {
- 		.doit = hwsim_get_radio_nl,
- 		.dumpit = hwsim_dump_radio_nl,
- 	},
-+	{
-+		.cmd = HWSIM_CMD_REPORT_PMSR,
-+		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit = hwsim_pmsr_report_nl,
-+	}
- };
- 
- static struct genl_family hwsim_genl_family __ro_after_init = {
-@@ -5519,7 +6164,7 @@ static struct genl_family hwsim_genl_family __ro_after_init = {
- 	.module = THIS_MODULE,
- 	.small_ops = hwsim_ops,
- 	.n_small_ops = ARRAY_SIZE(hwsim_ops),
--	.resv_start_op = HWSIM_CMD_DEL_MAC_ADDR + 1,
-+	.resv_start_op = __HWSIM_CMD_MAX,
- 	.mcgrps = hwsim_mcgrps,
- 	.n_mcgrps = ARRAY_SIZE(hwsim_mcgrps),
- };
-@@ -5663,6 +6308,7 @@ static int hwsim_virtio_handle_cmd(struct sk_buff *skb)
- 	struct genlmsghdr *gnlh;
- 	struct nlattr *tb[HWSIM_ATTR_MAX + 1];
- 	struct genl_info info = {};
-+	struct netlink_ext_ack extack;
- 	int err;
- 
- 	nlh = nlmsg_hdr(skb);
-@@ -5679,6 +6325,7 @@ static int hwsim_virtio_handle_cmd(struct sk_buff *skb)
- 	}
- 
- 	info.attrs = tb;
-+	info.extack = &extack;
- 
- 	switch (gnlh->cmd) {
- 	case HWSIM_CMD_FRAME:
-@@ -5687,10 +6334,14 @@ static int hwsim_virtio_handle_cmd(struct sk_buff *skb)
- 	case HWSIM_CMD_TX_INFO_FRAME:
- 		hwsim_tx_info_frame_received_nl(skb, &info);
- 		break;
-+	case HWSIM_CMD_REPORT_PMSR:
-+		hwsim_pmsr_report_nl(skb, &info);
-+		break;
- 	default:
- 		pr_err_ratelimited("hwsim: invalid cmd: %d\n", gnlh->cmd);
- 		return -EPROTO;
- 	}
-+
- 	return 0;
- }
- 
-diff --git drivers/net/wireless/mac80211_hwsim.h drivers/net/wireless/mac80211_hwsim.h
-index 81cd02d2555c..1d54fe4c402f 100644
---- drivers/net/wireless/mac80211_hwsim.h
-+++ drivers/net/wireless/mac80211_hwsim.h
-@@ -81,6 +81,9 @@ enum hwsim_tx_control_flags {
-  *	to this receiver address for a given station.
-  * @HWSIM_CMD_DEL_MAC_ADDR: remove the MAC address again, the attributes
-  *	are the same as to @HWSIM_CMD_ADD_MAC_ADDR.
-+ * @HWSIM_CMD_START_PMSR: start PMSR
-+ * @HWSIM_CMD_ABORT_PMSR: abort PMSR
-+ * @HWSIM_CMD_REPORT_PMSR: report PMSR results
-  * @__HWSIM_CMD_MAX: enum limit
-  */
- enum {
-@@ -93,6 +96,9 @@ enum {
- 	HWSIM_CMD_GET_RADIO,
- 	HWSIM_CMD_ADD_MAC_ADDR,
- 	HWSIM_CMD_DEL_MAC_ADDR,
-+	HWSIM_CMD_START_PMSR,
-+	HWSIM_CMD_ABORT_PMSR,
-+	HWSIM_CMD_REPORT_PMSR,
- 	__HWSIM_CMD_MAX,
- };
- #define HWSIM_CMD_MAX (_HWSIM_CMD_MAX - 1)
-@@ -143,10 +149,11 @@ enum {
-  * @HWSIM_ATTR_MLO_SUPPORT: claim MLO support (exact parameters TBD) for
-  *	the new radio
-  * @HWSIM_ATTR_PMSR_SUPPORT: claim peer measurement support
-+ * @HWSIM_ATTR_PMSR_REQUEST: peer measurement request
-+ * @HWSIM_ATTR_PMSR_RESULT: peer measurement result
-  * @__HWSIM_ATTR_MAX: enum limit
-  */
- 
--
- enum {
- 	HWSIM_ATTR_UNSPEC,
- 	HWSIM_ATTR_ADDR_RECEIVER,
-@@ -175,6 +182,8 @@ enum {
- 	HWSIM_ATTR_CIPHER_SUPPORT,
- 	HWSIM_ATTR_MLO_SUPPORT,
- 	HWSIM_ATTR_PMSR_SUPPORT,
-+	HWSIM_ATTR_PMSR_REQUEST,
-+	HWSIM_ATTR_PMSR_RESULT,
- 	__HWSIM_ATTR_MAX,
- };
- #define HWSIM_ATTR_MAX (__HWSIM_ATTR_MAX - 1)
-@@ -279,4 +288,47 @@ enum {
- 	HWSIM_VQ_RX,
- 	HWSIM_NUM_VQS,
- };
-+
-+/**
-+ * enum hwsim_rate_info -- bitrate information.
-+ *
-+ * Information about a receiving or transmitting bitrate
-+ * that can be mapped to struct rate_info
-+ *
-+ * @HWSIM_RATE_INFO_ATTR_FLAGS: bitflag of flags from &enum rate_info_flags
-+ * @HWSIM_RATE_INFO_ATTR_MCS: mcs index if struct describes an HT/VHT/HE rate
-+ * @HWSIM_RATE_INFO_ATTR_LEGACY: bitrate in 100kbit/s for 802.11abg
-+ * @HWSIM_RATE_INFO_ATTR_NSS: number of streams (VHT & HE only)
-+ * @HWSIM_RATE_INFO_ATTR_BW: bandwidth (from &enum rate_info_bw)
-+ * @HWSIM_RATE_INFO_ATTR_HE_GI: HE guard interval (from &enum nl80211_he_gi)
-+ * @HWSIM_RATE_INFO_ATTR_HE_DCM: HE DCM value
-+ * @HWSIM_RATE_INFO_ATTR_HE_RU_ALLOC:  HE RU allocation (from &enum nl80211_he_ru_alloc,
-+ *	only valid if bw is %RATE_INFO_BW_HE_RU)
-+ * @HWSIM_RATE_INFO_ATTR_N_BOUNDED_CH: In case of EDMG the number of bonded channels (1-4)
-+ * @HWSIM_RATE_INFO_ATTR_EHT_GI: EHT guard interval (from &enum nl80211_eht_gi)
-+ * @HWSIM_RATE_INFO_ATTR_EHT_RU_ALLOC: EHT RU allocation (from &enum nl80211_eht_ru_alloc,
-+ *	only valid if bw is %RATE_INFO_BW_EHT_RU)
-+ * @NUM_HWSIM_RATE_INFO_ATTRS: internal
-+ * @HWSIM_RATE_INFO_ATTR_MAX: highest attribute number
-+ */
-+enum hwsim_rate_info_attributes {
-+	__HWSIM_RATE_INFO_ATTR_INVALID,
-+
-+	HWSIM_RATE_INFO_ATTR_FLAGS,
-+	HWSIM_RATE_INFO_ATTR_MCS,
-+	HWSIM_RATE_INFO_ATTR_LEGACY,
-+	HWSIM_RATE_INFO_ATTR_NSS,
-+	HWSIM_RATE_INFO_ATTR_BW,
-+	HWSIM_RATE_INFO_ATTR_HE_GI,
-+	HWSIM_RATE_INFO_ATTR_HE_DCM,
-+	HWSIM_RATE_INFO_ATTR_HE_RU_ALLOC,
-+	HWSIM_RATE_INFO_ATTR_N_BOUNDED_CH,
-+	HWSIM_RATE_INFO_ATTR_EHT_GI,
-+	HWSIM_RATE_INFO_ATTR_EHT_RU_ALLOC,
-+
-+	/* keep last */
-+	NUM_HWSIM_RATE_INFO_ATTRS,
-+	HWSIM_RATE_INFO_ATTR_MAX = NUM_HWSIM_RATE_INFO_ATTRS - 1
-+};
-+
- #endif /* __MAC80211_HWSIM_H */
-diff --git include/net/cfg80211.h include/net/cfg80211.h
-index 33f775b0f0b0..4223e81e0d26 100644
---- include/net/cfg80211.h
-+++ include/net/cfg80211.h
-@@ -938,6 +938,16 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
- 				  const struct cfg80211_chan_def *chandef,
- 				  enum nl80211_iftype iftype);
- 
-+/**
-+ * cfg80211_send_chandef - sends the channel definition.
-+ * @msg: the msg to send channel definition
-+ * @chandef: the channel definition to check
-+ *
-+ * Returns: 0 if sent the channel definition to msg, < 0 on error
-+ **/
-+int cfg80211_send_chandef(struct sk_buff *msg,
-+			  const struct cfg80211_chan_def *chandef);
-+
- /**
-  * ieee80211_chanwidth_rate_flags - return rate flags for channel width
-  * @width: the channel width of the channel
-diff --git net/wireless/nl80211.c net/wireless/nl80211.c
-index b972a2135654..f9dda1801f50 100644
---- net/wireless/nl80211.c
-+++ net/wireless/nl80211.c
-@@ -3742,8 +3742,8 @@ static int nl80211_set_wiphy(struct sk_buff *skb, struct genl_info *info)
- 	return result;
- }
- 
--static int nl80211_send_chandef(struct sk_buff *msg,
--				const struct cfg80211_chan_def *chandef)
-+int cfg80211_send_chandef(struct sk_buff *msg,
-+			  const struct cfg80211_chan_def *chandef)
- {
- 	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
- 		return -EINVAL;
-@@ -3774,6 +3774,13 @@ static int nl80211_send_chandef(struct sk_buff *msg,
- 		return -ENOBUFS;
- 	return 0;
- }
-+EXPORT_SYMBOL(cfg80211_send_chandef);
-+
-+static int nl80211_send_chandef(struct sk_buff *msg,
-+				const struct cfg80211_chan_def *chandef)
-+{
-+	return cfg80211_send_chandef(msg, chandef);
-+}
- 
- static int nl80211_send_iface(struct sk_buff *msg, u32 portid, u32 seq, int flags,
- 			      struct cfg80211_registered_device *rdev,
--- 
-2.39.0.246.g2a6d74b583-goog
-
+Thanks,
+Jason
