@@ -2,131 +2,246 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE65F675A2F
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 17:40:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F20B675AE0
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 18:14:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjATQkA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Jan 2023 11:40:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49994 "EHLO
+        id S229701AbjATROZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Jan 2023 12:14:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230287AbjATQj6 (ORCPT
+        with ESMTP id S229542AbjATROZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Jan 2023 11:39:58 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FCD423C
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 08:39:56 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id q5so701719wrv.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 08:39:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pGYySup8p6S2QLbw0VKiZbUhVbWmQ+yt84mNVfAu/t0=;
-        b=UApWjzlXda6CKOsxYSAekXBHCiPYv6pVkiWHbI7PK6NXlDBf2dZaBDBu3pcMBX4Dvp
-         6pVJCoYaf28tSrmY+cQXTcE5NCML/7/aNdhPsd9f1zZGxwjZ8KtIc0zafg1CDt+MmL1t
-         ht+1uJ+qps8er08SQIPj8jCpqo9gs3doYVucXRacX8doWIlUzIZI6fYKJoTuT8NrG42t
-         MEw5W4JoUE4dXTKy6NU3b03SLyKAPuoCmZGqaBryF9fm76CMUuyzmAcMzhe2Gc9aBSvv
-         rVqHAHr0IWrNPbn8V79yED7CryU1Vk3Sen0HSlqKLB5YcHIC9rN/57uXiyLuvli0/Rbt
-         Yz+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pGYySup8p6S2QLbw0VKiZbUhVbWmQ+yt84mNVfAu/t0=;
-        b=RWf1V4d2kpQgccG2GU1oOkLu1XR7FRDLNYyDjC54ZTkk5sZq+2ycEmyfnwduxpaN2v
-         8a8dbNykMUpOFc6/IvSgNASEoMA/vtiYyeEux81Zq0o7ufy+AZllCuRrWQfsyoojqZ3w
-         GK3fsK4U2xTH6khXhlgl2V/VuT27VDU855WrvDc4yPGTEjivGVw4N+tr0+6owNPt0q+U
-         AZrbhYq6jwCRFbh0u506jZfrUtxCXDRhAF1l9JWg9l7YGLRPkxVyDbNKbt7+hFSYUXwz
-         n1/CyK56ZXGAU5BIe3hnDlYh0a9x4/iEbnavO0PmAQTRwe4Rpe31SmFJJL5hAmAhrscd
-         m9wQ==
-X-Gm-Message-State: AFqh2koskVPka1ZuidqdtMDWiGGlDvEI0dLVtByHeTIXf83pvY/cHxdm
-        bS+CxT+BQAuYWt0eOZTUiezPjw==
-X-Google-Smtp-Source: AMrXdXtZ9DWblZSaKSzMSMqI/0YMAXlKAx5MWIAT7Z2mmChtlRMs75VNjLqzEiOVvNoaJZ95nuiIUg==
-X-Received: by 2002:a05:6000:98d:b0:25f:8ead:96cc with SMTP id by13-20020a056000098d00b0025f8ead96ccmr14507795wrb.70.1674232794812;
-        Fri, 20 Jan 2023 08:39:54 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id z12-20020adfd0cc000000b002bdff778d87sm13385996wrh.34.2023.01.20.08.39.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jan 2023 08:39:54 -0800 (PST)
-Message-ID: <0bb76233-062c-a1c5-da88-4f04feccd5b2@linaro.org>
-Date:   Fri, 20 Jan 2023 17:39:52 +0100
+        Fri, 20 Jan 2023 12:14:25 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C766837B45;
+        Fri, 20 Jan 2023 09:14:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674234863; x=1705770863;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BfH+DhemtVbRApOmVu9miMo8w9suHcbrBpKwXq6ubtM=;
+  b=DIa/M1FH0aUzcvsq7yQ1NsipPirrMRRCg8ov4Z6UR/eN/Oy/dJTVmGpK
+   IYX3kNRW6+WlS/VckYedouMAm9hiy0pR2ca0iOTpybjzBw78t6kTu8ew6
+   ZkqXcOO9ST6HJHwL/Jl7ZSIsK8Pb5SU8jmk43+Xv04NqRmXu2jUk4B54i
+   d1t8H8iFNcQ3jz7jM333t1YXv0KEhrYWtybtwofoUSpjWu1ZRAGQtllOI
+   PVoA9ucl94Ag51hc1dHf3tdtiZ8FeEveXKch/ll1+z77VE2QGoFzH2xHZ
+   Xebjm/AssutRgTaT3Hg1AuJyCbtGQXoNKPoPkpxIe7aEaFMaxoczQYjqf
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10596"; a="326907271"
+X-IronPort-AV: E=Sophos;i="5.97,232,1669104000"; 
+   d="scan'208";a="326907271"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2023 09:14:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10596"; a="803128754"
+X-IronPort-AV: E=Sophos;i="5.97,232,1669104000"; 
+   d="scan'208";a="803128754"
+Received: from lkp-server01.sh.intel.com (HELO 5646d64e7320) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Jan 2023 09:14:20 -0800
+Received: from kbuild by 5646d64e7320 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pIuxw-0002jq-0P;
+        Fri, 20 Jan 2023 17:14:12 +0000
+Date:   Sat, 21 Jan 2023 01:13:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     sound-open-firmware@alsa-project.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ d514392f17fd4d386cfadde7f849d97db4ca1fb0
+Message-ID: <63cacbd5.EvTYTGZtWc/zCwC9%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH] dt-bindings: leds: Document Bluetooth and WLAN triggers
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-References: <a85c256af01f64389a078c2b37c3b72a27d97536.1668005062.git.geert+renesas@glider.be>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <a85c256af01f64389a078c2b37c3b72a27d97536.1668005062.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 09/11/2022 15:46, Geert Uytterhoeven wrote:
-> Add the missing trigger patterns for Bluetooth and WLAN activity, which
-> are already in active use.
-> 
-> While at it, move the mmc pattern comment where it belongs, and restore
-> alphabetical sort order.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> arch/arm64/boot/dts/renesas/r8a774a1-hihope-rzg2m-rev2.dtb: leds: bt_active_led:linux,default-trigger: 'oneOf' conditional failed, one must be fixed:
-> 	'hci0-power' is not one of ['backlight', 'default-on', 'heartbeat', 'disk-activity', 'ide-disk', 'timer', 'pattern']
-> 	'hci0-power' does not match '^mmc[0-9]+$'
-> 	From schema: Documentation/devicetree/bindings/leds/leds-gpio.yaml
-> arch/arm64/boot/dts/renesas/r8a774a1-hihope-rzg2m-rev2.dtb: leds: wlan_active_led:linux,default-trigger: 'oneOf' conditional failed, one must be fixed:
-> 	'phy0tx' is not one of ['backlight', 'default-on', 'heartbeat', 'disk-activity', 'ide-disk', 'timer', 'pattern']
-> 	'phy0tx' does not match '^mmc[0-9]+$'
-> 	From schema: Documentation/devicetree/bindings/leds/leds-gpio.yaml
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: d514392f17fd4d386cfadde7f849d97db4ca1fb0  Add linux-next specific files for 20230120
 
-This patch got lost... Rob, Lee or Pavel, can you pick it up?
+Error/Warning reports:
 
-It's with Rob's approval:
-https://lore.kernel.org/all/166861772609.231295.14812410099261417331.robh@kernel.org/
+https://lore.kernel.org/oe-kbuild-all/202301191616.R33Dvxk4-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202301192229.wL7iPJxS-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202301201120.aIaz7dT4-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202301202042.herfGxx6-lkp@intel.com
 
-> ---
->  Documentation/devicetree/bindings/leds/common.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/leds/common.yaml b/Documentation/devicetree/bindings/leds/common.yaml
-> index f5c57a580078ea23..d34bb58c00371402 100644
-> --- a/Documentation/devicetree/bindings/leds/common.yaml
-> +++ b/Documentation/devicetree/bindings/leds/common.yaml
-> @@ -98,9 +98,13 @@ properties:
->              # LED alters the brightness for the specified duration with one software
->              # timer (requires "led-pattern" property)
->            - pattern
-> -        # LED is triggered by SD/MMC activity
-> -      - pattern: "^mmc[0-9]+$"
->        - pattern: "^cpu[0-9]*$"
-> +      - pattern: "^hci[0-9]+-power$"
-> +        # LED is triggered by Bluetooth activity
-> +      - pattern: "^mmc[0-9]+$"
-> +        # LED is triggered by SD/MMC activity
-> +      - pattern: "^phy[0-9]+tx$"
-> +        # LED is triggered by WLAN activity
->  
->    led-pattern:
->      description: |
+Error/Warning: (recently discovered and may have been fixed)
 
-Best regards,
-Krzysztof
+Documentation/virt/kvm/api.rst:5070: WARNING: Unexpected indentation.
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_dp_training.c:1585:38: warning: variable 'result' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5253:24: sparse:    left side has type restricted __le16
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5253:24: sparse:    right side has type restricted __le32
+idma64.c:(.text+0x6a): undefined reference to `devm_platform_ioremap_resource'
 
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/net/dsa/microchip/ksz_ptp.c:217 ksz_ptp_clock_register() warn: passing zero to 'PTR_ERR'
+drivers/nvmem/imx-ocotp.c:599:21: sparse: sparse: symbol 'imx_ocotp_layout' was not declared. Should it be static?
+drivers/nvmem/layouts/sl28vpd.c:143:21: sparse: sparse: symbol 'sl28vpd_layout' was not declared. Should it be static?
+mm/hugetlb.c:3101 alloc_hugetlb_folio() error: uninitialized symbol 'h_cg'.
+mm/zsmalloc.c:900:20: warning: unused function 'obj_allocated' [-Wunused-function]
+sound/soc/sof/sof-audio.c:329 sof_prepare_widgets_in_path() error: we previously assumed 'swidget' could be null (see line 306)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- arc-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- arm-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- arm-randconfig-s032-20230119
+|   `-- drivers-nvmem-imx-ocotp.c:sparse:sparse:symbol-imx_ocotp_layout-was-not-declared.-Should-it-be-static
+|-- arm64-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- csky-randconfig-m041-20230119
+|   |-- drivers-net-dsa-microchip-ksz_ptp.c-ksz_ptp_clock_register()-warn:passing-zero-to-PTR_ERR
+|   `-- sound-soc-sof-sof-audio.c-sof_prepare_widgets_in_path()-error:we-previously-assumed-swidget-could-be-null-(see-line-)
+|-- csky-randconfig-r025-20230119
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- csky-randconfig-s043-20230119
+|   |-- drivers-net-wireless-realtek-rtl8xxxu-rtl8xxxu_core.c:sparse:left-side-has-type-restricted-__le16
+|   |-- drivers-net-wireless-realtek-rtl8xxxu-rtl8xxxu_core.c:sparse:right-side-has-type-restricted-__le32
+|   `-- drivers-net-wireless-realtek-rtl8xxxu-rtl8xxxu_core.c:sparse:sparse:invalid-assignment:
+|-- i386-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- ia64-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- ia64-randconfig-c033-20230119
+|   `-- drivers-net-ethernet-microchip-vcap-vcap_api.c:WARNING-opportunity-for-kmemdup
+|-- ia64-randconfig-s052-20230119
+|   `-- drivers-nvmem-imx-ocotp.c:sparse:sparse:symbol-imx_ocotp_layout-was-not-declared.-Should-it-be-static
+|-- loongarch-randconfig-r024-20230119
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- loongarch-randconfig-s042-20230119
+|   `-- drivers-nvmem-layouts-sl28vpd.c:sparse:sparse:symbol-sl28vpd_layout-was-not-declared.-Should-it-be-static
+|-- m68k-randconfig-c004-20230119
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- mips-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- openrisc-randconfig-s033-20230119
+|   `-- drivers-nvmem-imx-ocotp.c:sparse:sparse:symbol-imx_ocotp_layout-was-not-declared.-Should-it-be-static
+|-- powerpc-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- riscv-randconfig-s041-20230119
+|   `-- drivers-nvmem-imx-ocotp.c:sparse:sparse:symbol-imx_ocotp_layout-was-not-declared.-Should-it-be-static
+|-- s390-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- sparc-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+|-- x86_64-allnoconfig
+|   `-- Documentation-virt-kvm-api.rst:WARNING:Unexpected-indentation.
+|-- x86_64-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_dp_training.c:warning:variable-result-set-but-not-used
+`-- x86_64-randconfig-m001
+clang_recent_errors
+|-- s390-randconfig-r044-20230119
+|   `-- idma64.c:(.text):undefined-reference-to-devm_platform_ioremap_resource
+`-- x86_64-randconfig-a012
+    `-- mm-zsmalloc.c:warning:unused-function-obj_allocated
+
+elapsed time: 882m
+
+configs tested: 79
+configs skipped: 3
+
+gcc tested configs:
+x86_64                            allnoconfig
+um                             i386_defconfig
+i386                                defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+arc                                 defconfig
+alpha                               defconfig
+arm                                 defconfig
+i386                          randconfig-a001
+x86_64                          rhel-8.3-func
+m68k                             allyesconfig
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                           allyesconfig
+powerpc                           allnoconfig
+x86_64                         rhel-8.3-kunit
+ia64                             allmodconfig
+arm                  randconfig-r046-20230119
+x86_64                        randconfig-a002
+arm                              allyesconfig
+arc                  randconfig-r043-20230119
+m68k                             allmodconfig
+i386                          randconfig-a003
+arc                              allyesconfig
+arm64                            allyesconfig
+alpha                            allyesconfig
+x86_64                           rhel-8.3-kvm
+x86_64                        randconfig-a006
+i386                          randconfig-a005
+x86_64                           rhel-8.3-bpf
+x86_64                        randconfig-a004
+sparc64                          alldefconfig
+riscv                             allnoconfig
+sparc                       sparc32_defconfig
+m68k                          hp300_defconfig
+i386                             allyesconfig
+powerpc                 mpc85xx_cds_defconfig
+parisc                           alldefconfig
+riscv                    nommu_virt_defconfig
+mips                         bigsur_defconfig
+arm                        keystone_defconfig
+sh                   secureedge5410_defconfig
+i386                          randconfig-a014
+riscv                    nommu_k210_defconfig
+s390                                defconfig
+i386                          randconfig-a012
+x86_64                        randconfig-a013
+i386                          randconfig-a016
+riscv                          rv32_defconfig
+s390                             allmodconfig
+sh                               allmodconfig
+i386                   debian-10.3-kselftests
+x86_64                        randconfig-a011
+i386                              debian-10.3
+i386                          randconfig-c001
+mips                             allyesconfig
+x86_64                        randconfig-a015
+s390                             allyesconfig
+powerpc                          allmodconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+x86_64                        randconfig-a005
+hexagon              randconfig-r045-20230119
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+riscv                randconfig-r042-20230119
+x86_64                        randconfig-a003
+hexagon              randconfig-r041-20230119
+s390                 randconfig-r044-20230119
+i386                          randconfig-a006
+x86_64                        randconfig-k001
+i386                          randconfig-a004
+arm                           omap1_defconfig
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
