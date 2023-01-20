@@ -2,121 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C802674BFA
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 06:18:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8CB2674D86
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Jan 2023 07:58:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231300AbjATFSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Jan 2023 00:18:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52204 "EHLO
+        id S229473AbjATG5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Jan 2023 01:57:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230215AbjATFSV (ORCPT
+        with ESMTP id S229513AbjATG5t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Jan 2023 00:18:21 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5BCDF957;
-        Thu, 19 Jan 2023 21:07:32 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id o17-20020a05600c511100b003db021ef437so2812082wms.4;
-        Thu, 19 Jan 2023 21:07:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HhMPVNs8pc5Gcf/TDLS+cJfOurg6Vice8ut9+SSmMY8=;
-        b=lPBcCni7LAwqOkrg3tNCH8jOSMnkyLgfAXhdSPuWk9jqGAy9XkKAhwTW8VXN/9cXFV
-         /EN0DPv42as4B6vtPxwtHVBwWplBaFE/xI5qQE1NXH2AxyMx+9gxLM6ptWd4KJEHRmzb
-         PWErnbqiYuGQMwvJmYfqM0L2mhGwa+odHughUHnkGdEyq6xKmjaDieso4h0auyn1xV0/
-         lBCEyQlbbCtZSbCcG8TVIhyA7/s3F7B1TPz8ZVSzu0Eb+ilsNuvhPuFTvNLaf5EP+9e8
-         SOaQlWzjm95h2IVLfV4LSD8eAOj5Q8/S5SKJDdPTZEuZbGPPrCSjmErCocWV6VcxF625
-         40sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HhMPVNs8pc5Gcf/TDLS+cJfOurg6Vice8ut9+SSmMY8=;
-        b=aCsddHc2ydYxmY8WAPB7NdvGA8XCFIBJveipTumBJ6rzR9qoozt9dQ7k1IJHk7vn2j
-         9tnu1HUxV8W4/xY89Y4pFiTemdLQlRpSGU7/Q0I8sSPzSl20ZV9CLXSfhtTPPUcjbhRB
-         Q5koJG+d+kSt3M+rZCiHy/yC2X+4ZiYj3fy7HrzdtfUUAPYkN3iNWRvB5eLj551aAzId
-         9WzFaaJl2m1qzWuOGG3t3oFY0EBh7XqIqeU65VwllOvk2xVPb1R5E4nKRqqkdFiomRX3
-         slzHWcSR2IMCktAd/zict30VP4EBBCbt6N6M1zdAoO7L41Vy5z9idvK6ADSFeHHGrw3/
-         c0lg==
-X-Gm-Message-State: AFqh2koPFMCfXugtjvPuTLSSBEw2dP8n0x4lXLtgC9HeGxqIB6znShS1
-        wzQXP+bubcKz3r07xfX2mwxGJqTAiZbUTw==
-X-Google-Smtp-Source: AMrXdXuIRvrqtfIdcYDBTulA2LssPIlvNF6wzU/SosHvPjy1IlAsQclQWt+6yA36sTmWOi1wqynaYg==
-X-Received: by 2002:a05:600c:3412:b0:3da:f678:1d47 with SMTP id y18-20020a05600c341200b003daf6781d47mr12556081wmp.14.1674191250364;
-        Thu, 19 Jan 2023 21:07:30 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id x15-20020a05600c188f00b003db122d5ac2sm1036738wmp.15.2023.01.19.21.07.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jan 2023 21:07:29 -0800 (PST)
-Date:   Fri, 20 Jan 2023 08:07:26 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     gregkh@linuxfoundation.org, phil@philpotter.co.uk,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Gaurav Pathak <gauravpathak129@gmail.com>
-Subject: Re: [PATCH] staging: r8188eu: Fix some endian problems
-Message-ID: <Y8ohjkgNjyQPD+Dd@kadam>
-References: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
+        Fri, 20 Jan 2023 01:57:49 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F564230
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Jan 2023 22:57:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674197866; x=1705733866;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VaQHAueuwYRd3OQVg1mwsKXWw0ugHxT/AkI25NGmqkE=;
+  b=NXlhM3calO/C6Km4OhE+eP5lPmPudGqmYTIEi/qtJ9KaRvoFjZ1LcIhv
+   Dz/A0FGxQFghBOMjXt2MRW5Hu/bS/OjBCGQzyhiy0wSL44NU6uR1f+hgx
+   Pd4sOuceC3b5H2N5IsGIdU8a6xxOlsQOmLzdielF4GdFY78uC1B2SElTK
+   L5bRtehXEhUUPLd2zY+eSF6M21mRII6HeBWW4SZGbmjptjqDSqyvh3Mbv
+   QY4Zyf6Eb84gwjX4QILk1c0w0taUc/O2W6xzS80d4E+XyvqprJdAw+BOP
+   3DQRStnsZKb7jEt0H+K3LAlsfwPTkNCQfWUm49VD7Vzo3hQTts8rxsFEF
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="411749996"
+X-IronPort-AV: E=Sophos;i="5.97,231,1669104000"; 
+   d="scan'208";a="411749996"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 22:57:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="690949207"
+X-IronPort-AV: E=Sophos;i="5.97,231,1669104000"; 
+   d="scan'208";a="690949207"
+Received: from lkp-server01.sh.intel.com (HELO 5646d64e7320) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 19 Jan 2023 22:57:44 -0800
+Received: from kbuild by 5646d64e7320 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pIlLM-0002II-03;
+        Fri, 20 Jan 2023 06:57:44 +0000
+Date:   Fri, 20 Jan 2023 14:57:08 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 4ca69027691a0039279b64cfa0aa511d9c9fde59
+Message-ID: <63ca3b44.Tp1OJL2FyeMlT3N0%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230119191219.12080-1-Larry.Finger@lwfinger.net>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 19, 2023 at 01:12:19PM -0600, Larry Finger wrote:
-> Sparse lists the following warnings:
-> 
->   CHECK   drivers/staging/r8188eu/core/rtw_mlme.c
-> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49: warning: incorrect type in
-> 					 argument 2 (different base types)
-> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    expected restricted
-> 					 __le16 [usertype] mstatus_rpt
-> drivers/staging/r8188eu/core/rtw_mlme.c:1197:49:    got unsigned short
-> 					 [assigned] [usertype] media_status_rpt
-> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57: warning: incorrect type in
-> 					 argument 2 (different base types)
-> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    expected restricted
-> 					 __le16 [usertype] mstatus_rpt
-> drivers/staging/r8188eu/core/rtw_mlme.c:1275:57:    got unsigned short
-> 					 [assigned] [usertype] media_status
->   CHECK   drivers/staging/r8188eu/core/rtw_mlme_ext.c
-> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58: warning: incorrect type
-> 					 in argument 2 (different base types)
-> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    expected restricted
-> 					 __le16 [usertype] mstatus_rpt
-> drivers/staging/r8188eu/core/rtw_mlme_ext.c:6842:58:    got unsigned short
-> 					 [assigned] [usertype] media_status
-> 
-> The second argument of rtl8188e_set_FwMediaStatus_cmd() needs to be in CPU
-> order, not little-endian; however, when it uses that value to call
-> FillH2CCmd_88E() the parameter must be in little-endian order as that
-> value will be sent to the firmware. Note that the conversion from LE to CPU
-> order was le16_to_cpu() rather than the correct cpu_to_le16.
-> 
-> The definition of FillH2CCmd_88E() is revised, and the proper conversion
-> routine is used.
-> 
-> Note that the original code performed one byte swap on the secong argument
-> of FillH2CCmd_88E(), and got the correct answer even though the semantics
-> were very wrong.
-> 
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Reportewd-by: Gaurav Pathak <gauravpathak129@gmail.com>
-         ^
-Extra 'w'.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 4ca69027691a0039279b64cfa0aa511d9c9fde59  wifi: wireless: deny wireless extensions on MLO-capable devices
 
-Reviewed-by: Dan Carpenter <error27@gmail.com>
+elapsed time: 724m
 
-regards,
-dan carpenter
+configs tested: 73
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+alpha                               defconfig
+arc                                 defconfig
+powerpc                           allnoconfig
+s390                                defconfig
+um                             i386_defconfig
+x86_64                            allnoconfig
+um                           x86_64_defconfig
+s390                             allmodconfig
+sh                               allmodconfig
+s390                             allyesconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-bpf
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                              defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+arm                                 defconfig
+x86_64                               rhel-8.3
+m68k                             allyesconfig
+x86_64                           allyesconfig
+m68k                             allmodconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+arm64                            allyesconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a013
+arm                              allyesconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                                defconfig
+x86_64                        randconfig-a015
+ia64                             allmodconfig
+arm                  randconfig-r046-20230119
+arc                  randconfig-r043-20230119
+i386                             allyesconfig
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+sh                           se7722_defconfig
+powerpc                  storcenter_defconfig
+sh                          rsk7269_defconfig
+powerpc                       maple_defconfig
+ia64                                defconfig
+sh                        sh7757lcr_defconfig
+openrisc                  or1klitex_defconfig
+sh                          sdk7786_defconfig
+parisc                              defconfig
+xtensa                          iss_defconfig
+sh                         ecovec24_defconfig
+
+clang tested configs:
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+x86_64                          rhel-8.3-rust
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a001
+s390                 randconfig-r044-20230119
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+hexagon              randconfig-r045-20230119
+riscv                randconfig-r042-20230119
+hexagon              randconfig-r041-20230119
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
