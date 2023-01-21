@@ -2,75 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2EF26764CE
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Jan 2023 08:03:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63E8A6764E9
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Jan 2023 08:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjAUHDl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Jan 2023 02:03:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45704 "EHLO
+        id S229661AbjAUHW0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Jan 2023 02:22:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbjAUHDk (ORCPT
+        with ESMTP id S229544AbjAUHWZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Jan 2023 02:03:40 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 372176E0F5
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Jan 2023 23:03:39 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 30L73Xe84021415, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 30L73Xe84021415
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Sat, 21 Jan 2023 15:03:33 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Sat, 21 Jan 2023 15:03:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Sat, 21 Jan 2023 15:03:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b]) by
- RTEXMBS04.realtek.com.tw ([fe80::15b5:fc4b:72f3:424b%5]) with mapi id
- 15.01.2375.007; Sat, 21 Jan 2023 15:03:34 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-CC:     "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH v2 4/4] wifi: rtl8xxxu: Add LED control code for RTL8723AU
-Thread-Topic: [PATCH v2 4/4] wifi: rtl8xxxu: Add LED control code for
- RTL8723AU
-Thread-Index: AQHZLOeYSV1ao7V8CkO4gS6pTGZmeK6n7PcA
-Date:   Sat, 21 Jan 2023 07:03:34 +0000
-Message-ID: <74292a220fa1671d58af7251d7603b51ca4742f4.camel@realtek.com>
-References: <b8235bca-60c3-d0fe-a958-53c6dd3ba3f6@gmail.com>
-         <73323811-aa58-a1be-7867-a5d45b7ae3d6@gmail.com>
-In-Reply-To: <73323811-aa58-a1be-7867-a5d45b7ae3d6@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [111.252.173.81]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzEvMjEg5LiK5Y2IIDAyOjAzOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2CD975175FE26A4A9782F85DC85E1FFA@realtek.com>
-Content-Transfer-Encoding: base64
+        Sat, 21 Jan 2023 02:22:25 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB646E40C;
+        Fri, 20 Jan 2023 23:22:24 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BC56AB82A2B;
+        Sat, 21 Jan 2023 07:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC40C433D2;
+        Sat, 21 Jan 2023 07:22:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1674285741;
+        bh=Q46aDo5XwLJPjm2uOBtn3vHeb9D259JKNiPEH8WSJ0U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mGqiy+3l5XFHVHcy03XzYZmNJgN2Sqo8dJMeSOH9gSASyqOGFvTuENZmO75QFEO4c
+         IBKklzYa4BKgjtrIK3fMmiwiYdv3XVcTQXSfY5ShdhPPqF7+/7DniYzC6jYFyhVeqh
+         adjtF3+W/uYJ9nzjXzyUDImIA+1wqMlrySn5tKgY=
+Date:   Sat, 21 Jan 2023 08:22:18 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jaewan Kim <jaewan@google.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-team@android.com, adelva@google.com
+Subject: Re: [PATCH v4 0/2] mac80211_hwsim: Add PMSR support
+Message-ID: <Y8uSqgjXH1WcZKBC@kroah.com>
+References: <20230120174934.3528469-1-jaewan@google.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230120174934.3528469-1-jaewan@google.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIzLTAxLTIwIGF0IDE3OjU1ICswMjAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
-Og0KPiBCeSBkZWZhdWx0IHRoZSBMRUQgd2lsbCBibGluayB3aGVuIHRoZXJlIGlzIHNvbWUgYWN0
-aXZpdHkuDQo+IA0KPiBUaGlzIGlzIG9ubHkgY29tcGlsZSB0ZXN0ZWQuDQo+IA0KPiBTaWduZWQt
-b2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gDQoN
-CiANClJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KDQo=
+On Fri, Jan 20, 2023 at 05:49:32PM +0000, Jaewan Kim wrote:
+> Dear Kernel maintainers,
+> 
+> I'm proposing series of CLs for adding PMSR support in the mac80211_hwsim.
+> 
+> PMSR (peer measurement) is generalized measurement between STAs,
+> and currently FTM (fine time measurement or flight time measurement)
+> is the one and only measurement.
+> 
+> FTM measures the RTT (round trip time) and FTM can be used to measure
+> distances between two STAs. RTT is often referred as 'measuring distance'
+> as well.
+> 
+> 
+> Kernel had already defined protocols for PMSR in the
+> include/uapi/linux/nl80211.h and relevant parsing/sending code are in the
+> net/wireless/pmsr.c, but they are only used in intel's iwlwifi driver.
+> 
+> This series of CLs are the first attempt to utilize PMSR in the mac80211_hwsim.
+> 
+> CLs are tested with iw tool on Virtual Android device (a.k.a. Cuttlefish).
+> Hope this explains my CLs.
+> 
+> Many Thanks,
+> 
+> 
+> Jaewan Kim (2):
+>   mac80211_hwsim: add PMSR capability support
+>   mac80211_hwsim: handle FTM requests with virtio
+> 
+>  drivers/net/wireless/mac80211_hwsim.c | 827 +++++++++++++++++++++++++-
+>  drivers/net/wireless/mac80211_hwsim.h |  56 +-
+>  include/net/cfg80211.h                |  20 +
+>  net/wireless/nl80211.c                |  28 +-
+>  4 files changed, 913 insertions(+), 18 deletions(-)
+> 
+> -- 
+> 2.39.0.246.g2a6d74b583-goog
+> 
+
+Hi,
+
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
