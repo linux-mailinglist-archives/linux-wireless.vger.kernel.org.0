@@ -2,133 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 557DE676552
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Jan 2023 09:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 140B6676592
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Jan 2023 11:04:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229878AbjAUIzk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Jan 2023 03:55:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39740 "EHLO
+        id S229526AbjAUKEn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Jan 2023 05:04:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbjAUIze (ORCPT
+        with ESMTP id S229484AbjAUKEm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Jan 2023 03:55:34 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3B265F00
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Jan 2023 00:55:32 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30L8jPOo006064;
-        Sat, 21 Jan 2023 08:55:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=VT3gdqmdYNrkQDnFHZsLbEbJsJKcMkleVZP+7NyTuIQ=;
- b=JU8tj70Kf4JbRrY9GfHHRb5P/EgwSLYrWX8FPQ/0LKMkPJ0mV2owZu2H1y6QHLIWnsot
- Ca7DkAa67XC3RUfY4a74IoNx7AgEcAwDQyygynr9K6vA83FLWM/CAIEEwJ3wdKTOn4qP
- VqRjOOtADNPnw714cMf0JeAN8PLj0/HdRbw+24qz4UfLowDM+WcwxIR6E1s57njrVcfV
- VHf0XGzMRBMDoHgNKJPk7PUh5Jz6hEp9s+EdapMFQ4QzuwKl7C7iV5k7WxfTR7sNVtv/
- IUeL8U/6CZAtS9dmk2lhsrRyKMO0ILvPjuSLvNFZqGopC8iY6+HWTOxKPqsbh8nts18G 8A== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n89htr6ma-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 21 Jan 2023 08:55:28 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30L8tSF2028763
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 21 Jan 2023 08:55:28 GMT
-Received: from [10.216.53.73] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Sat, 21 Jan
- 2023 00:55:26 -0800
-Message-ID: <ee6c0210-8bec-f924-4f5d-e2f23395a58a@quicinc.com>
-Date:   Sat, 21 Jan 2023 14:25:23 +0530
+        Sat, 21 Jan 2023 05:04:42 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56AAF65EDC;
+        Sat, 21 Jan 2023 02:04:40 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id az20so19669927ejc.1;
+        Sat, 21 Jan 2023 02:04:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lFsFRg5RfveDHrVd5rP7zwnXWjQK+oYVFSSoe+tPeXw=;
+        b=Jj7Dy3+LLiPdBvAlYJp3+zJIodOkOFiksEI2pP/I6babOKOr+gv4y5L7N3VJqmBEoi
+         vQoeZvtPojAtqhRc2JTn1Iz6wHkDzUmGlW97AA9D69aCDJC0cei67YUL9wOm3abggcmS
+         zipZFdO6v3962PvVf01trernDsiGneXNgOYOfW19I04BCEZVE+GJeDRIq8U9S0DH5UyW
+         acjUBGuooGgvTfp26uPTLf699XJfVTat8x9AvCODtjgezfU9wazkWXX9zKQbOrGf0lIe
+         BYzOQsXbS1yyOFz5zx3pxqTg86tKdF0K4ff/KtDYaCZdKP8zL6aii8wI9mGvjEwYKvks
+         OwIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lFsFRg5RfveDHrVd5rP7zwnXWjQK+oYVFSSoe+tPeXw=;
+        b=QvBg4MBwljsx7b4mcSQ0C5/2pMZoqF9WN3lMrwJSqTtEm1tPDf5pZ8ZpBPCycVbP/m
+         fPQ7Ozl+gG3vqlfb+QBs93lvLNF0WhUO+MT+pX6IJqz8jSEc2PsmY/3F4iWVnucQzfSz
+         037bDqztl/VVTWtVOqOO9HOSvXXw/roa3V++ferVdHVij92s5W3NnD2riJH4YrFrhbBq
+         ldgJoY9fqYtHoMBh2UvtOU7HZ+pgzsdv5SRxTuQw54IcVWIKJaeWwOvoQGDSLpqtl7C5
+         If3SFDDLh4x1v8CyfDOdEGwWRE/42wH8OmYWCzbbTShPwWx+ZrKXuQhftdc+SHiJIE2U
+         zlsA==
+X-Gm-Message-State: AFqh2kofyCs/tnLwuQOTSLEBrZp74Bs+qZbRKrvuCQut9NmxRv+ozIxg
+        aveMaK/3X7RHPJCfjUmc+UM=
+X-Google-Smtp-Source: AMrXdXsBi+GE/siU9cL+3WOKY7qtamXDMRh7RT8xax/vg8C7zX2vxKrmKrcKgL4RFLvccYLYvHKi9w==
+X-Received: by 2002:a17:906:ddb:b0:7b2:757a:1411 with SMTP id p27-20020a1709060ddb00b007b2757a1411mr28388788eji.9.1674295478807;
+        Sat, 21 Jan 2023 02:04:38 -0800 (PST)
+Received: from [0.0.0.0] (tor-exit-46.for-privacy.net. [2a0b:f4c2:2::46])
+        by smtp.gmail.com with ESMTPSA id q18-20020a17090676d200b00857c2c29553sm14854715ejn.197.2023.01.21.02.04.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Jan 2023 02:04:38 -0800 (PST)
+From:   persmule@gmail.com
+X-Google-Original-From: equu@openmail.cc
+To:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org
+Cc:     linux-pci@vger.kernel.org, robh@kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        equu@openmail.cc
+Subject: [PATCH 2/3] wifi: ath9k: stop loading incompatible DT cal data
+Date:   Sat, 21 Jan 2023 18:00:43 +0800
+Message-Id: <20230121100043.1497633-1-equu@openmail.cc>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <ea4e2fed-383d-829d-8a2a-9239768ccd94@openmail.cc>
+References: <ea4e2fed-383d-829d-8a2a-9239768ccd94@openmail.cc>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/3] wifi: cfg80211: Extend cfg80211_new_sta() for MLD AP
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20221206080226.1702646-1-quic_vjakkam@quicinc.com>
- <20221206080226.1702646-2-quic_vjakkam@quicinc.com>
- <f6a13b05feb05eb648dbd4b6f91932d75b353fbf.camel@sipsolutions.net>
-From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-In-Reply-To: <f6a13b05feb05eb648dbd4b6f91932d75b353fbf.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 7V1-Lt3FVUDWa_TiwTNq4eHWjpkVFERx
-X-Proofpoint-GUID: 7V1-Lt3FVUDWa_TiwTNq4eHWjpkVFERx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-21_04,2023-01-20_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0
- impostorscore=0 mlxlogscore=712 suspectscore=0 clxscore=1015 phishscore=1
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301210086
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks Johannes for reviewing the patches.
+From: Edward Chow <equu@openmail.cc>
 
+As reported in https://github.com/openwrt/openwrt/pull/11345 , ath9k
+would load calibration data from a device tree node declared
+incompatible.
 
-On 1/18/2023 9:11 PM, Johannes Berg wrote:
-> Hi,
->
->> + * @mlo_params_valid: Indicates @assoc_link_id and @mld_addr fields are valid.
->> + *	Drivers use this only in cfg80211_new_sta() calls when AP MLD's MLME/SME
->> + *	is offload to driver. Drivers won't fill this information in
->> + *	cfg80211_del_sta_sinfo(), get_station() and dump_station() callbacks.
->>
->> + * @mld_addr: MLD address if the station is an MLD. Otherwise, set to all zeros.
->
->> +	if (sinfo->mlo_params_valid) {
->> +		if (nla_put_u8(msg, NL80211_ATTR_MLO_LINK_ID,
->> +			       sinfo->assoc_link_id))
->> +			goto nla_put_failure;
->> +
->> +		if (!is_zero_ether_addr(sinfo->mld_addr) &&
->> +		    nla_put(msg, NL80211_ATTR_MLD_ADDR, ETH_ALEN,
->> +			    sinfo->mld_addr))
->>
->
-> It'd be invalid, but now you could have mlo_params_valid == true &&
-> is_zero_ether_addr(sinfo->mld_addr), which would lead to a very strange
-> situation for userspace, it would see a link ID but no MLD address.
+Now, ath9k will first check whether the device tree node is compatible
+with it, using the functionality introduced with the first patch of
+this series, ("PCI: of: Match pci devices or drivers against OF DT
+nodes") and only proceed loading calibration data from compatible node.
 
+Signed-off-by: Edward Chow <equu@openmail.cc>
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h |  1 +
+ drivers/net/wireless/ath/ath9k/init.c  | 26 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath9k/pci.c   |  2 +-
+ 3 files changed, 28 insertions(+), 1 deletion(-)
 
-Only link ID and no MLD address also a valid combination. It indicates 
-the connected STA is non-MLD.  User space needs the link ID information 
-to determine "STA connected to which affiliated AP of the AP MLD".
-
->
-> With the documented requirement that
-> 	mlo_params_valid == (mld_addr is valid)
-
-
-No, I think there is some misinterpretation of the documentation here. 
-Let me submit new patch-set after adding more detailed text in the 
-documentation.
-
-Actually what I mean,  cfg80211 can consider parsing both the 
-"assoc_link_id" and "mld_addr" fields when "mlo_params_valid" is true. 
-"assoc_link_id" will be set to link ID of the affiliated AP on which STA 
-(MLD/non-MLD) completed association. "mld_addr" will be set to MLD 
-address of the STA if applicable (i.e., MLD STA) . Otherwise, will be 
-set to zeros (i.e., non-MLD STA).
-
---
-
-veeru
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index 2cc23605c9fc..4f6f0383a5f8 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -35,6 +35,7 @@ struct ath_node;
+ struct ath_vif;
+ 
+ extern struct ieee80211_ops ath9k_ops;
++extern struct pci_driver ath_pci_driver;
+ extern int ath9k_modparam_nohwcrypt;
+ extern int ath9k_led_blink;
+ extern bool is_ath9k_unloaded;
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 4f00400c7ffb..f88a48e8456b 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -22,6 +22,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_net.h>
++#include <linux/pci.h>
+ #include <linux/nvmem-consumer.h>
+ #include <linux/relay.h>
+ #include <linux/dmi.h>
+@@ -577,6 +578,31 @@ static int ath9k_nvmem_request_eeprom(struct ath_softc *sc)
+ 	size_t len;
+ 	int err;
+ 
++	/* devm_nvmem_cell_get() will get a cell first from the OF
++	 * DT node representing the given device with nvmem-cell-name
++	 * "calibration", and from the global lookup table as a fallback,
++	 * and an ath9k device could be either a pci one or a platform one.
++	 *
++	 * If the OF DT node is not compatible with the real device, the
++	 * calibration data got from the node should not be applied.
++	 *
++	 * dev_is_pci(sc->dev) && ( no OF node || caldata not from node
++	 * || not compatible ) -> do not use caldata .
++	 *
++	 * !dev_is_pci(sc->dev) -> always use caldata .
++	 */
++	if (dev_is_pci(sc->dev) &&
++	    (!sc->dev->of_node ||
++	     !of_property_match_string(sc->dev->of_node,
++				       "nvmem-cell-names",
++				       "calibration") ||
++	     !of_pci_node_match_driver(sc->dev->of_node,
++				       &ath_pci_driver)))
++		/* follow the "just return 0;" convention as
++		 * noted below.
++		 */
++		return 0;
++
+ 	cell = devm_nvmem_cell_get(sc->dev, "calibration");
+ 	if (IS_ERR(cell)) {
+ 		err = PTR_ERR(cell);
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index a074e23013c5..fcb19761e60d 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -1074,7 +1074,7 @@ static SIMPLE_DEV_PM_OPS(ath9k_pm_ops, ath_pci_suspend, ath_pci_resume);
+ 
+ MODULE_DEVICE_TABLE(pci, ath_pci_id_table);
+ 
+-static struct pci_driver ath_pci_driver = {
++struct pci_driver ath_pci_driver = {
+ 	.name       = "ath9k",
+ 	.id_table   = ath_pci_id_table,
+ 	.probe      = ath_pci_probe,
+-- 
+2.39.0
 
