@@ -2,147 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3493767862B
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 20:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8761767876C
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 21:18:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232016AbjAWTVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Jan 2023 14:21:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
+        id S232193AbjAWUSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Jan 2023 15:18:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231863AbjAWTVW (ORCPT
+        with ESMTP id S231485AbjAWUST (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Jan 2023 14:21:22 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C17B126E1
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 11:21:20 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id s67so9760633pgs.3
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 11:21:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WDXuP5MYYXAbh/GyrwzOk8WyuxyPQCqxZw3q4s3iD6c=;
-        b=tkgcEhOicbtfDwCpvIXKnd8G/FRlL5uYYpKH27sdSg0dZinBGyNI6cfbqXcMQ0INuI
-         C1vXl3B5WfROQHaBB0ZgIO3DsbL8TTj4olwIR8Ff8qa9Mwt6nTxLZAT5FaJB+xs56xnK
-         kVn6WRm+zPNaXAoPyvmPoZJesLk00cfksfuo5LjkfIVGYLZXHeQDXVgDWba83T0JDL9f
-         paDtjpJa/3TzNyFo77rj/ulC4nTXdGJQ6eubkNb35Z8FDePEJYd6WRLBU0HwgDwNbOgu
-         HaDZQhhPOShpXz4hg0RNu6HNR4i95FnsPr2qF0ogzCM5h0eEPZ1xul/uaFP/kdBaUX5+
-         YTXQ==
+        Mon, 23 Jan 2023 15:18:19 -0500
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB7034C23;
+        Mon, 23 Jan 2023 12:18:18 -0800 (PST)
+Received: by mail-oi1-f176.google.com with SMTP id r9so11396465oie.13;
+        Mon, 23 Jan 2023 12:18:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WDXuP5MYYXAbh/GyrwzOk8WyuxyPQCqxZw3q4s3iD6c=;
-        b=E+5HSXvD8nJ3YhWYc9M+5r/wDmkHgn6OD6ZXDIxhvLRqyBtL6gApfNZPPvxwgFdPTf
-         0R/gR1EYL1+EzBgWI7u9mwsvyXqoGSkcAMhbp55YNQSjU2sWT1pkPG+veD02IuxR7F6S
-         pdjLMReEEXGX2KgPKcRaNS5VAhqkuu7jgLfVXhd4HHI3m8ciG//fVGbEaeD7J61XgkG6
-         sG8vBm+nvLz3+ZFc1pj343RgLHduOrIXPTx3lxdqUbGC9lI9IFWuY2D26YPqZdKeHDhH
-         DpiH/pvCnRsrGm9RWMVZyrwCk5h44jcn5mB0d0efOGpUBKvUJbZ87mtujrMu4kWBjoe/
-         l6jQ==
-X-Gm-Message-State: AFqh2krAHAfrfk8bKaWLA10t+wYCkHRy+dS4gR3kYyjEYj+bgzP1rSXA
-        0y4a/Zn73ZgQcKu5ev7gqFDbQei8ZIdVTIr/UAebUw==
-X-Google-Smtp-Source: AMrXdXuuuKT2bxKJ14LORsl1MPDgTLtc1xr4HHO60shSDgnHFBxnsV//IpkEZxYIMzwOctILURRm6BLFnwBEv1J5vyc=
-X-Received: by 2002:a63:a5e:0:b0:4b4:e491:c331 with SMTP id
- z30-20020a630a5e000000b004b4e491c331mr654902pgk.19.1674501679691; Mon, 23 Jan
- 2023 11:21:19 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mK0iGLqhByM+nmssrOHeinttd969xwUfXTpdV4dep5c=;
+        b=n/ZgXUNNpvEd+LVPWGtU33CCgPl/CxQ15SOHcmMCX9i7VvOG7Gpyh3NAen0b3PTBuk
+         8LUpeQOKDC97BvrD1suzTd2LMRI2XZRDc4omHS93RX97pKsputDMR9FKGRH6TBLEWwje
+         mPms+nhq0UcPV/wwWDCygp5yundkZOrS6jD64ByiLb7lvz3HLI4o/OsQfjPdoH120VVN
+         M5gQsMcupzL/7XwHKI3K3kh9wdYDNAW9BE0/5raRZOy1SZ+XPxZFLO6WRkHSCb/aYdc0
+         hHNJpw0sxCAbXZaOgNZfKkuf89FpdL8TftRun4UQ2EIS8VGkNuHlxUAXOgg1Oa5HwRhc
+         RaGA==
+X-Gm-Message-State: AFqh2kpLy1O/IpnoHislKCa5lZEULFiqJLdlOqD5RBnR0Uab+crQejS9
+        cBEL5mbUjo/XPWkMObd68w==
+X-Google-Smtp-Source: AMrXdXvG469eglRB6stlMcR9S5LSQ9Bd8cqzftLdjrwTlwQV82cvdD2vmDaBK/X/vfCMNq4asQc4ZA==
+X-Received: by 2002:aca:3205:0:b0:364:be69:fbc with SMTP id y5-20020aca3205000000b00364be690fbcmr12402093oiy.9.1674505097515;
+        Mon, 23 Jan 2023 12:18:17 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id w21-20020a056808091500b0036eafb8eee9sm147503oih.22.2023.01.23.12.18.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jan 2023 12:18:17 -0800 (PST)
+Received: (nullmailer pid 2454843 invoked by uid 1000);
+        Mon, 23 Jan 2023 20:18:16 -0000
+Date:   Mon, 23 Jan 2023 14:18:16 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, Felix Fietkau <nbd@nbd.name>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        ath11k@lists.infradead.org, de Goede <hdegoede@redhat.com>,
+        devicetree@vger.kernel.org,
+        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: net: wireless: minor whitespace and name
+ cleanups
+Message-ID: <167450509566.2454785.18050476344855369899.robh@kernel.org>
+References: <20230118175413.360153-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-References: <20221105194943.826847-1-robimarko@gmail.com> <20221105194943.826847-2-robimarko@gmail.com>
- <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
- <877czn8c2n.fsf@kernel.org> <CA+HBbNFCFtJwzN=6SCsWnDmAjPkmxE4guH1RrLc+-HByLcVVXA@mail.gmail.com>
- <87k02jzgkz.fsf@kernel.org> <CA+HBbNHi0zTeV0DRmwLjZu+XzUQEZQNnSpBMeQeUPiBu3v-2BQ@mail.gmail.com>
- <87358hyp3x.fsf@kernel.org> <CA+HBbNGdOrOiCxhSouZ6uRPRnZmsBSAL+wWpLkczMK9cO8Mczg@mail.gmail.com>
- <877cxsdrax.fsf@kernel.org> <CA+HBbNGbg88_3FDu+EZhqMj0UKb8Ja_vyYsxGtmJ_HGt4fNVBQ@mail.gmail.com>
- <87y1q8ccc4.fsf@kernel.org>
-In-Reply-To: <87y1q8ccc4.fsf@kernel.org>
-From:   Robert Marko <robert.marko@sartura.hr>
-Date:   Mon, 23 Jan 2023 20:21:08 +0100
-Message-ID: <CA+HBbNH2fzr_knOE9EWD4bUi-guvRa07FAxc9WyCH0jK10BLvw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        gregkh@linuxfoundation.org, elder@linaro.org,
-        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
-        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
-        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, ansuelsmth@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230118175413.360153-1-krzysztof.kozlowski@linaro.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 12, 2023 at 10:49 AM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Robert Marko <robert.marko@sartura.hr> writes:
->
-> > On Thu, Jan 12, 2023 at 10:40 AM Kalle Valo <kvalo@kernel.org> wrote:
-> >>
-> >> Robert Marko <robert.marko@sartura.hr> writes:
-> >>
-> >> > On Wed, Jan 11, 2023 at 6:10 PM Kalle Valo <kvalo@kernel.org> wrote:
-> >> >>
-> >> >> Robert Marko <robert.marko@sartura.hr> writes:
-> >> >>
-> >> >> >> Really sorry, I just didn't manage to get this finalised due to other
-> >> >> >> stuff and now I'm leaving for a two week vacation :(
-> >> >> >
-> >> >> > Any news regarding this, I have a PR for ipq807x support in OpenWrt
-> >> >> > and the current workaround for supporting AHB + PCI or multiple PCI
-> >> >> > cards is breaking cards like QCA6390 which are obviously really
-> >> >> > popular.
-> >> >>
-> >> >> Sorry, came back only on Monday and trying to catch up slowly. But I
-> >> >> submitted the RFC now:
-> >> >>
-> >> >> https://patchwork.kernel.org/project/linux-wireless/patch/20230111170033.32454-1-kvalo@kernel.org/
-> >> >
-> >> > Great, thanks for that.
-> >> >
-> >> > Does it depend on firmware-2 being available?
-> >>
-> >> The final solution for the users will require firmware-2.bin. But for a
-> >> quick test you can omit the feature bit test by replacing
-> >> "test_bit(ATH11K_FW_FEATURE_MULTI_QRTR_ID, ab->fw.fw_features)" with
-> >> "true". Just make sure that the firmware release you are using supports
-> >> this feature, I believe only recent QCN9074 releases do that.
-> >
-> > I was able to test on IPQ8074+QCN9074 yesterday by just bypassing the
-> > test and it worked.
-> >
-> > Sideffect is that until firmware-2.bin is available cards like QCA6390
-> > wont work like with my hack.
->
-> Not following here, can you elaborate what won't work with QCA6390?
 
+On Wed, 18 Jan 2023 18:54:13 +0100, Krzysztof Kozlowski wrote:
+> Minor cleanups:
+>  - Drop redundant blank lines,
+>  - Correct indentaion in examples,
+>  - Correct node names in examples to drop underscore and use generic
+>    name.
+> 
+> No functional impact except adjusting to preferred coding style.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  .../bindings/net/wireless/esp,esp8089.yaml    | 20 +++---
+>  .../bindings/net/wireless/ieee80211.yaml      |  1 -
+>  .../bindings/net/wireless/mediatek,mt76.yaml  |  1 -
+>  .../bindings/net/wireless/qcom,ath11k.yaml    | 11 ++-
+>  .../bindings/net/wireless/silabs,wfx.yaml     |  1 -
+>  .../bindings/net/wireless/ti,wlcore.yaml      | 70 +++++++++----------
+>  6 files changed, 50 insertions(+), 54 deletions(-)
+> 
 
-Our downstream hack does not work with QCA6390, so that is why its quite
-important for OpenWrt to have a generic solution that works on all cards.
-
-Regards,
-Robert
->
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
-
-
--- 
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura Ltd.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+Acked-by: Rob Herring <robh@kernel.org>
