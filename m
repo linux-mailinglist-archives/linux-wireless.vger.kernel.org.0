@@ -2,145 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C19FC67760A
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 09:06:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B04C67765B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 09:37:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231506AbjAWIGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Jan 2023 03:06:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46060 "EHLO
+        id S231480AbjAWIhZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Jan 2023 03:37:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230074AbjAWIGN (ORCPT
+        with ESMTP id S230492AbjAWIhZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Jan 2023 03:06:13 -0500
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2101.outbound.protection.outlook.com [40.107.243.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E1B125AD;
-        Mon, 23 Jan 2023 00:06:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dTfv7M6OV3DMAOiKddl1H8YYyivFh13QzRGMkJfCXtnEwlt5gTfWugjyqryrLQDO7DS0LQHnyNS4NZFxwL1EaLPYJ0Jez5Onnqo+iwhG7Fq4iGb/BJf5dJ9GjKUiPNv4FPdnAjfSf7ummlGuTlbyJMOwVLKqhRQ9+sK8ux6m9fpZRWltYQ/zf6+0uMsqNpoK55s0/pdBvJ2KlJN3AVQHMWLuCsyqfuoP8J4/WRVKXFLwkSHYRnYpGxdGXkPrM4nm0Uosbj7Ed7Jo0qzPNr6fsttdi3ZeDetIfBgZW9LjDW4YolW054pbKf/3oiyr0EbihBRvP9RdsNM8iJqXJ10oDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=37nqR+UcfAdML+Fhd8dE/2KXGDWWP9JdRdHagFWt0VI=;
- b=OqrQGLF9Nz9G116Stb4G0Splol3Nm6+U3yJgTX2KkO5vIjtdbZzQrEpHesckOAu8IRWSc9S37mKgHifnMP/SWqA7bBBIhBOj7WcoRKBzszrK7QzZG9JU3XBdjsZbYVmR4GF8UG/hzOoGf5znvSttCS8BNTPFjDQdf138FmtRz3HikD4VdYQRIv0uVSo3wNdV/QhvR6+UJLiJzGQLUmaHDCfLTfPC9VV2a35bqxXEtz1h/1NfCkYPnyHXzW+XL6Spf4Pyp/7934FFNWQeGl3xWTxROl3OeAY6MnnL18l/hqQpheaE3pUvqMIs0icxqedCJRJtIFxhbm3CeTww9sr5NQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Mon, 23 Jan 2023 03:37:25 -0500
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05F821CAFC
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 00:37:24 -0800 (PST)
+Received: by mail-ot1-x32a.google.com with SMTP id j16-20020a056830271000b0067202045ee9so6903992otu.7
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 00:37:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=37nqR+UcfAdML+Fhd8dE/2KXGDWWP9JdRdHagFWt0VI=;
- b=gJBjxdU3aoTFPQcLdK8dJlq+fhWY7znR2a2y/iKrx8Tj+0LsWK3IOywvfDmR9F4ErnoftW7voporDtJgcKH+hAYfBxyyH8W/0tKe8pNNxqpUaSuTNrVWVgFmeaaPyeeH7KKqkLf0GRNGmbBXfeppqoO8yucvNqwbyC8jt0BF570=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by CO6PR13MB5372.namprd13.prod.outlook.com (2603:10b6:303:14f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Mon, 23 Jan
- 2023 08:06:10 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb5c:910f:3730:fd65]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb5c:910f:3730:fd65%5]) with mapi id 15.20.6002.033; Mon, 23 Jan 2023
- 08:06:09 +0000
-Date:   Mon, 23 Jan 2023 09:06:03 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Doug Brown <doug@schmorgal.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Dan Williams <dcbw@redhat.com>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] wifi: libertas: IE handling fixes
-Message-ID: <Y84/69P2y84WVWok@corigine.com>
-References: <20230123053132.30710-1-doug@schmorgal.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230123053132.30710-1-doug@schmorgal.com>
-X-ClientProxiedBy: AM0PR10CA0007.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:17c::17) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0mK2gsoCtl4YUCKnSrL6Jh9HbWOZuwz1LQAYPc4ESbs=;
+        b=fcay3T2ZC35q3/2qPRcPsZj60U+fgn4jFnwaFxjdPARDTeli/xDUVuNV3Jskgw1G0D
+         EqI31AlHBn0HgYVQTt/XV9U2MYA653ZsQOEawmJkBT+5KE1920aornQGmmc7Zd98VAXX
+         9j9j7HMdleq+Lu0PqHuI2qD1YMz/F8mfgShiUAn1TgpD9LgrVdD5uo7HmCl7rf3Ushfy
+         3RPCVV1RieRPOfwZep3wq7H9LlFTc8IDiBcHnIsKGwDleW5fhy5/LmW0xhtzPjaehsfI
+         5taSzF0MAzPbQyIDryI43TxBEAeCfs4J+CraH6VLZZAfJd1lKEu4hIjHLE8FZnE8WlgV
+         6QVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0mK2gsoCtl4YUCKnSrL6Jh9HbWOZuwz1LQAYPc4ESbs=;
+        b=pINaidnKLPGwYSkWBq6UYBMxvkKR29LgQnWUPCMKdUhzM/GjKG5xOWKvUhvF/DRiTi
+         DCb2rcpZpx1Eyg9hIYtr8+xsv+1hX1pkATCjUNFZgYjmjeiYBtTMHjoW5FFLetcok56J
+         X/ArNYRp2QLSxVMs4xsv/0VkBqWTumCuvHJBdP4lo+N7GLy+mCrtbSu7rfvtBqv8YINU
+         A8cyrA/Bpd86xdXmpB/ZUwfN/tVTq+eN5xtRSJ/g++ZHC2BupWhlOli85FCLYbImzgIM
+         WvTi5stUBhnZ909CCDTAY7zrT+XssYkmPge52JaWKXs8sfpgTqTn7/nJQTWqczJspmNX
+         4hyw==
+X-Gm-Message-State: AFqh2kpSTw1ju8gjHM/rj0SGT+ZbgEEIYFwdOs6Zn+spNowW79q8+JPj
+        3n5+NaGgiZtbeTaHTf38JGaJAh/NjaTnot/GLSOsoSZa2gCvkQ==
+X-Google-Smtp-Source: AMrXdXvQd9Y+c0i1b4jIsp8LDoUJmpeZSOddgJBlQ9C2kLF0+1Kd6j0Sy0jB662A/061eWiZYLSqtO0OyZcAmMSjW8M=
+X-Received: by 2002:a9d:68c9:0:b0:684:c4cc:6a38 with SMTP id
+ i9-20020a9d68c9000000b00684c4cc6a38mr1650275oto.306.1674463043099; Mon, 23
+ Jan 2023 00:37:23 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|CO6PR13MB5372:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7565fb55-39a9-4065-aad4-08dafd18afad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JJ9WtsTKZZYLi6hiuf7Dhxmt9JoFUL+XkVwzPDdnQCRvwEihh0EudZ0royWOb07pcz3sJ0GBOKS+lA3FxqdzolpKAtyLuzGzADKtXeq67oBbv52I7hZ4tXAB2VXIWyNqLWz/6onFElQIuI/kqfPskFt5l85/64nHDUWyqG0S7XBf8E0xcxPTd4xjYq6ZuthOUNd5tXc/AGD5D03JpSP0/Pe8ENDeQC4xVDkidCDZx0V5SnyJYNirNYiFBFtWvTZqIszB8xgqVHPCme1Pv9VNrfrVcpiBQDZ14Z08u75POU5nDYCinIb5PPUgvOx4g8MGw0MjISz9/nosLCG3ojKFOOjANqV4ZGBDCjVqjuQsZzjigEvQJq3Cggaj+lK+PdoPj2fZbnVwwnipI36w08RRmr0QkHbKuhJyVTw+kOiTskP9z2ns9CPE5+pGhX5ekCdXb7OmX2HImjb2sUvMI3KZ4cyQMkdt39ZvqenC78cq1Npxnx5liJy18q0GHF6Oma3ddjvBGDpv4WchxfPxkk2HdWzI9MgGT36d3Ff7ca6l1eEOa+fp5bQbrV0zxVMVpbg2s3L2ReVM0p5kncoyB4kMjgIm/rw64WKG9Of7CTp5vT/QNRGtt6V720k4crygtE/0gjPLVzNOmwOT5KnUBIgq7bdgjeqAhUyAPEPMY3WGZoz9eiH5kNrwk5Lo5Rbvrv7w
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(396003)(366004)(136003)(376002)(39830400003)(451199015)(36756003)(4326008)(66556008)(41300700001)(66946007)(44832011)(2906002)(8936002)(83380400001)(38100700002)(66476007)(7416002)(8676002)(6486002)(5660300002)(86362001)(6512007)(6506007)(6666004)(186003)(54906003)(316002)(6916009)(478600001)(2616005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Md7Xk4NNympgDlaJ5/DN5lcJu7vRBnl5ExkFJCCK/4/6essD585LU+sAmAAS?=
- =?us-ascii?Q?JpPcrkJRktbVRFAZ8Y9bN+3lhqFMIyBg+BztTmgHlJGv9U1iLXYr4BmAMYi3?=
- =?us-ascii?Q?07GHh5tEqQ8UrCO8ZOSUxcFY/ltzIpsAlQ9IxPSpLwxE3estlAkjLlgU7JRB?=
- =?us-ascii?Q?WloRJxHXq1g+bsuT+axq2HEaUYEfaOOPc2PlQZE9cifaN1fG4CIk2YHThfEe?=
- =?us-ascii?Q?oqMEYOIH7SPRLJ4nZlo0JlQ0wJ2l8hohU6YgOrOjBERhi4FTc87Xl2zYiW3F?=
- =?us-ascii?Q?hBlSQoV5bh5ghdeZNf7LbRlSE1a2PrqaDU19tl/QeGu7o2t6xin51uYgyBUD?=
- =?us-ascii?Q?dJ1eJljvj7AnSvZdVAM45P8GY1eypuALwHwtKT7Q8SpnleyBcIde5bsgCgDc?=
- =?us-ascii?Q?8jrYdCH1EorkrPMBe+W03icbAwFye3uYIIdaYx5r4PS2RkfKZPTuRd4lQrXe?=
- =?us-ascii?Q?sH/EsNqWgd1vcPIimymjN/nyYMIh/OfD7P/SxDA5LNgXsufkys09NQ52IA7p?=
- =?us-ascii?Q?4AOpgcq/V8Oh2Hy4MMq4v6jEyLGy4fW4YaGUQIWFGKSfovs57zyFRyOo+BhY?=
- =?us-ascii?Q?o4IfEbRCEF/GShz7hhgcMBWXSHuTxoIc9IYoVLzjpZOpPj2QQfKbF9HfA92F?=
- =?us-ascii?Q?8VqR1K2qtSD3acDCVSbtcJF6HSXMO9P0il1Xh+Y1EQ2LTJgJaMaqyO2bkxqI?=
- =?us-ascii?Q?YQb+YprG4n1RbIy4fPRajY2VdjeMzIk9ctCzhCyX/tN7WbhQJ5nhuv7cRE6b?=
- =?us-ascii?Q?y/ssGFNIFio7aBm5sCsMPV6gOWNFdiJ9jAlZXsPoBX9b1ooOdWppVhs/bPmV?=
- =?us-ascii?Q?xCd/p+GwWGRG7ezDWnBerJgIZPQAdL0O2fODjsVOd9ldPp7rUiMm8eNGj1Xe?=
- =?us-ascii?Q?PyNITDMtZiOsdIlHMv8oPOvTVHBnz+dqa8wCr3yRy3k8n6hxaa9C4T8n6jZ/?=
- =?us-ascii?Q?jGBCV9Ax/S4HTOCNi7SDkQN2VXAWP75gtSQFyV046z/1PEMbj7wn+/tnhIBT?=
- =?us-ascii?Q?Gvuaa1jctDwU0Ox8dgzlu/j/W8yDtPGTdtxE+PPlVP9NWDTt0Qbq/817BVME?=
- =?us-ascii?Q?2r5yDF096NJKW3/6DDvtOZOIUOc7mckRCzaEI7dL9u/REioVuvKNTmu4EoUN?=
- =?us-ascii?Q?VAlnGrJxuSFBJhnaC8673fEv94Rg+BdkMBe9I0a+eGt0bkG3ThTcRj30h676?=
- =?us-ascii?Q?tpQNIK+FEgpzmsJsEL8Qfa7zL3hCZDp5WVSJYlcYqnCAhKlApwVJRamznmM7?=
- =?us-ascii?Q?CFhu3Uakz0mwIS1xbnMrX2qgTNNAmFURiDn+5kXl7bToSbTmreuasU59+PT+?=
- =?us-ascii?Q?3S16ZEASmZNuBKIFRDV6TBJi4nT56WkmVhUnTB/PkFwAOCFVpwWsBw82tM5B?=
- =?us-ascii?Q?5puuAp3w6LTYf20QVZQagVWyFW8abLDtF3aCVemQPfrFaS3ZdUMXH2bCXM+c?=
- =?us-ascii?Q?Z2EikkMNsxQysejh4lVP8sjwgGH75MzbprvNmbtEomvkaeMQQuJ2dW4x/gel?=
- =?us-ascii?Q?kpG7ERE2Gdi2EisuU5FVWtqns8SjPw/lg0KOFemWGhm0tDl6U+GPDddFmNlK?=
- =?us-ascii?Q?bTHHn5faHbR3SzMq897Yi/g6gIqbJt/TsMRfYwihdEaotYehNC+g7m6W+a9p?=
- =?us-ascii?Q?HM073WsdOzyRBWKOWizVtYbVKePkNthPslHT0iBazbOkIscIEhuR+4p5bItV?=
- =?us-ascii?Q?ST9ijQ=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7565fb55-39a9-4065-aad4-08dafd18afad
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2023 08:06:09.6344
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hwHXQrN60tcGRihHLdUDnsRFTMo/NQIWyiaVZWtcUrSGl6LoFGgPYhm3iOAt0IxKAu1479ZiYl+mOEWVBJ5sSCKqR0P0XVLxVqGJ1/zs33c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR13MB5372
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date:   Mon, 23 Jan 2023 14:07:10 +0530
+Message-ID: <CABPxzY+_Mjercvvh5XHmtHdNCKXDupVbL4PKXgzZPiUesRsRMA@mail.gmail.com>
+Subject: iwlwifi: Monitor mode broken with 6.1.0
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Emmanuel Grumbach <egrumbach@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 22, 2023 at 09:31:28PM -0800, Doug Brown wrote:
-> This series implements two fixes for the libertas driver that restore
-> compatibility with modern wpa_supplicant versions, and adds (or at least
-> improves) support for WPS in the process.
-> 
-> 1) Better handling of the RSN/WPA IE in association requests:
->    The previous logic was always just grabbing the first one, and didn't
->    handle multiple IEs properly, which wpa_supplicant adds nowadays.
-> 
-> 2) Support for IEs in scan requests:
->    Modern wpa_supplicant always adds an "extended capabilities" IE,
->    which violates max_scan_ie_len in this driver. Go ahead and allow
->    scan IEs, and handle WPS based on the info that Dan provided.
-> 
-> These changes have been tested on a Marvell PXA168-based device with a
-> Marvell 88W8686 Wi-Fi chipset. I've confirmed that with these changes
-> applied, modern wpa_supplicant versions connect properly and WPS also
-> works correctly (tested with "wpa_cli -i wlan0 wps_pbc any").
+Hi,
 
-Thanks,
+I am using the ath.git (ea726a8d305a : was testing external Atheros
+cards) + linux-firmware (bb2d42d) and the monitor mode stopped working
+with iwlwifi. There is a warning from UBSAN: "UBSAN:
+shift-out-of-bounds in
+drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:657:22".
 
-this looks good to me. So, FWIIW,
+The root cause was this c6ce1c74ef292 which defaults the assignment to
+0xFFFF and then that was being used for the shift.
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+I have tried to fix the warning with the below patch (just for an
+experiment, not a proper one), the warning is gone, but no frames are
+seen in Wireshark.
+
+Below is the version information, any help is appreciated, monitor
+mode is important for me.
+
+lspci: Network controller: Intel Corporation Wi-Fi 6 AX201 (rev 20)
+
+[  +0.003790] iwlwifi 0000:00:14.3: api flags index 2 larger than
+supported by driver
+[  +0.000046] iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version:
+89.3.35.37
+[  +0.001519] iwlwifi 0000:00:14.3: loaded firmware version
+72.daa05125.0 QuZ-a0-hr-b0-72.ucode op_mode iwlmvm
+[  +0.034887] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX201
+160MHz, REV=0x351
+[  +0.000083] thermal thermal_zone7: failed to read out thermal zone (-61)
+[  +0.122144] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
+[  +0.065701] iwlwifi 0000:00:14.3: base HW address: 4c:79:6e:90:94:71
+[  +0.019826] iwlwifi 0000:00:14.3 wlp0s20f3: renamed from wlan0
+[ +14.210987] device mon0 entered promiscuous mode
+[Jan24 18:20] device mon0 left promiscuous mode
+
+---
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 83abfe996138..591f9fdd0ec4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -654,9 +654,13 @@ static int iwl_mvm_mac_ctxt_cmd_listener(struct
+iwl_mvm *mvm,
+                                         u32 action)
+ {
+        struct iwl_mac_ctx_cmd cmd = {};
+-       u32 tfd_queue_msk = BIT(mvm->snif_queue);
++       u32 tfd_queue_msk = 0;
+        int ret;
+
++       if (mvm->snif_queue != IWL_MVM_INVALID_QUEUE) {
++               tfd_queue_msk = BIT(mvm->snif_queue);
++       }
++
+        WARN_ON(vif->type != NL80211_IFTYPE_MONITOR);
+
+        iwl_mvm_mac_ctxt_cmd_common(mvm, vif, &cmd, NULL, action);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 515dd3e0730d..784a7f72b819 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2084,6 +2084,7 @@ static int iwl_mvm_add_int_sta_with_queue(struct
+iwl_mvm *mvm, int macidx,
+                }
+
+                *queue = txq;
++               sta->tfd_queue_msk = BIT(*queue);
+        }
+
+        return 0;
+@@ -2092,11 +2093,15 @@ static int
+iwl_mvm_add_int_sta_with_queue(struct iwl_mvm *mvm, int macidx,
+ int iwl_mvm_add_aux_sta(struct iwl_mvm *mvm, u32 lmac_id)
+ {
+        int ret;
++       u32 tfd_queue_msk = 0;
+
+        lockdep_assert_held(&mvm->mutex);
++       if (mvm->aux_queue != IWL_MVM_INVALID_QUEUE) {
++               tfd_queue_msk = BIT(mvm->aux_queue);
++       }
+
+        /* Allocate aux station and assign to it the aux queue */
+-       ret = iwl_mvm_allocate_int_sta(mvm, &mvm->aux_sta, BIT(mvm->aux_queue),
++       ret = iwl_mvm_allocate_int_sta(mvm, &mvm->aux_sta, tfd_queue_msk,
+                                       NL80211_IFTYPE_UNSPECIFIED,
+                                       IWL_STA_AUX_ACTIVITY);
+        if (ret)
