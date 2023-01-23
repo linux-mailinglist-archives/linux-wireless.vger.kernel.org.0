@@ -2,110 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 452826784E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 19:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3493767862B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 20:21:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232118AbjAWS3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Jan 2023 13:29:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
+        id S232016AbjAWTVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Jan 2023 14:21:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231994AbjAWS3c (ORCPT
+        with ESMTP id S231863AbjAWTVW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Jan 2023 13:29:32 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D4332E4E
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 10:29:01 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30NHeqOi001396;
-        Mon, 23 Jan 2023 18:28:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=TupMFhSd8ETnc31eiZFpGtqvSKkOhN/wRS1DjV9krh8=;
- b=KT1CwMbLBWcG2FOq65daJAtyndBYtVhf/Oezu39v2ZfCrWP/jQ3iOIlhhtaC3/DsUkOL
- Ypf4Vn8f+GoqQQjJNW12e6Wv4ZYS/3xxedUzjeOhYvdWb++OcW/U+3VIslPpcUcKfbOy
- BE63s3xL+E9vJxodTn9Bwr8HMN5UyqSPLLMLAN39rgtYiK/P+DI1ZQF4LcWu+Lz9czx6
- 7ZWCsjquS8A22Ln6NCippcvKhtZZZTeZdpiSDQWChp2vpEL9uCVnUScOBfPuYTBDgKIS
- dGOblNcXVIF+L7oVpv/5lRLFRt//QsjzJb9w8NaYl6Uc0RMC9AcsKVqC1qv2PddAYKUr XA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3n89gtbhtr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 23 Jan 2023 18:28:10 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30NISAtG006081
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 23 Jan 2023 18:28:10 GMT
-Received: from [10.110.116.68] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 23 Jan
- 2023 10:28:09 -0800
-Message-ID: <6a67f821-759e-aac5-abf3-d2234c3bd6aa@quicinc.com>
-Date:   Mon, 23 Jan 2023 10:28:09 -0800
+        Mon, 23 Jan 2023 14:21:22 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C17B126E1
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 11:21:20 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id s67so9760633pgs.3
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 11:21:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WDXuP5MYYXAbh/GyrwzOk8WyuxyPQCqxZw3q4s3iD6c=;
+        b=tkgcEhOicbtfDwCpvIXKnd8G/FRlL5uYYpKH27sdSg0dZinBGyNI6cfbqXcMQ0INuI
+         C1vXl3B5WfROQHaBB0ZgIO3DsbL8TTj4olwIR8Ff8qa9Mwt6nTxLZAT5FaJB+xs56xnK
+         kVn6WRm+zPNaXAoPyvmPoZJesLk00cfksfuo5LjkfIVGYLZXHeQDXVgDWba83T0JDL9f
+         paDtjpJa/3TzNyFo77rj/ulC4nTXdGJQ6eubkNb35Z8FDePEJYd6WRLBU0HwgDwNbOgu
+         HaDZQhhPOShpXz4hg0RNu6HNR4i95FnsPr2qF0ogzCM5h0eEPZ1xul/uaFP/kdBaUX5+
+         YTXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WDXuP5MYYXAbh/GyrwzOk8WyuxyPQCqxZw3q4s3iD6c=;
+        b=E+5HSXvD8nJ3YhWYc9M+5r/wDmkHgn6OD6ZXDIxhvLRqyBtL6gApfNZPPvxwgFdPTf
+         0R/gR1EYL1+EzBgWI7u9mwsvyXqoGSkcAMhbp55YNQSjU2sWT1pkPG+veD02IuxR7F6S
+         pdjLMReEEXGX2KgPKcRaNS5VAhqkuu7jgLfVXhd4HHI3m8ciG//fVGbEaeD7J61XgkG6
+         sG8vBm+nvLz3+ZFc1pj343RgLHduOrIXPTx3lxdqUbGC9lI9IFWuY2D26YPqZdKeHDhH
+         DpiH/pvCnRsrGm9RWMVZyrwCk5h44jcn5mB0d0efOGpUBKvUJbZ87mtujrMu4kWBjoe/
+         l6jQ==
+X-Gm-Message-State: AFqh2krAHAfrfk8bKaWLA10t+wYCkHRy+dS4gR3kYyjEYj+bgzP1rSXA
+        0y4a/Zn73ZgQcKu5ev7gqFDbQei8ZIdVTIr/UAebUw==
+X-Google-Smtp-Source: AMrXdXuuuKT2bxKJ14LORsl1MPDgTLtc1xr4HHO60shSDgnHFBxnsV//IpkEZxYIMzwOctILURRm6BLFnwBEv1J5vyc=
+X-Received: by 2002:a63:a5e:0:b0:4b4:e491:c331 with SMTP id
+ z30-20020a630a5e000000b004b4e491c331mr654902pgk.19.1674501679691; Mon, 23 Jan
+ 2023 11:21:19 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [RFC 3/4] wifi: nl80211: validate RU puncturing bitmap
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Muna Sinada <quic_msinada@quicinc.com>
-CC:     <linux-wireless@vger.kernel.org>
-References: <1670006154-6092-1-git-send-email-quic_msinada@quicinc.com>
- <1670006154-6092-4-git-send-email-quic_msinada@quicinc.com>
- <3df39d4f2e2e64bd3899cfbe7bade547e54330f7.camel@sipsolutions.net>
- <0b77bad5-f55c-73d5-7cd0-dfed57871f25@quicinc.com>
- <1a063de0aba4a6e2bcf5cacaa661ca8b73c1ffad.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <1a063de0aba4a6e2bcf5cacaa661ca8b73c1ffad.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: vM02tsQkOLijv1FRDIDs121bN-9gsioC
-X-Proofpoint-ORIG-GUID: vM02tsQkOLijv1FRDIDs121bN-9gsioC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-23_12,2023-01-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- suspectscore=0 impostorscore=0 bulkscore=0 mlxlogscore=625 adultscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 mlxscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2301230177
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221105194943.826847-1-robimarko@gmail.com> <20221105194943.826847-2-robimarko@gmail.com>
+ <20221107174727.GA7535@thinkpad> <87cz9xcqbd.fsf@kernel.org>
+ <877czn8c2n.fsf@kernel.org> <CA+HBbNFCFtJwzN=6SCsWnDmAjPkmxE4guH1RrLc+-HByLcVVXA@mail.gmail.com>
+ <87k02jzgkz.fsf@kernel.org> <CA+HBbNHi0zTeV0DRmwLjZu+XzUQEZQNnSpBMeQeUPiBu3v-2BQ@mail.gmail.com>
+ <87358hyp3x.fsf@kernel.org> <CA+HBbNGdOrOiCxhSouZ6uRPRnZmsBSAL+wWpLkczMK9cO8Mczg@mail.gmail.com>
+ <877cxsdrax.fsf@kernel.org> <CA+HBbNGbg88_3FDu+EZhqMj0UKb8Ja_vyYsxGtmJ_HGt4fNVBQ@mail.gmail.com>
+ <87y1q8ccc4.fsf@kernel.org>
+In-Reply-To: <87y1q8ccc4.fsf@kernel.org>
+From:   Robert Marko <robert.marko@sartura.hr>
+Date:   Mon, 23 Jan 2023 20:21:08 +0100
+Message-ID: <CA+HBbNH2fzr_knOE9EWD4bUi-guvRa07FAxc9WyCH0jK10BLvw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] wifi: ath11k: use unique QRTR instance ID
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Manivannan Sadhasivam <mani@kernel.org>,
+        Robert Marko <robimarko@gmail.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        gregkh@linuxfoundation.org, elder@linaro.org,
+        hemantk@codeaurora.org, quic_jhugo@quicinc.com,
+        quic_qianyu@quicinc.com, bbhatt@codeaurora.org,
+        mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, ansuelsmth@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/20/2023 1:20 AM, Johannes Berg wrote:
-> Hi Aloka,
-> 
->> Secondly, this RFC uses ieee80211_valid_disable_subchannel_bitmap()
->> defined in following RFC you sent:
->> https://patchwork.kernel.org/project/linux-wireless/patch/20220325140859.e48bf244f157.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid/
-> 
-> Yes, I saw that.
-> 
->> Is there is any plan for the next version?
-> 
-> Am I correct that by basing your work here on top of that, you're OK
-> with that being included, and we've concluded the discussion about where
-> and how the puncturing bitmap should be stored? This patchset was an
-> RFC, I'm personally happy with the design, but really also want to hear
-> your opinion and perspective on it.
-> 
-> 
-> Anyway if that's the case then I'll go and resubmit the patch - we also
-> made some more fixes to it since, I think. I'm not sure I'll get to it
-> today, but I'll do it soon.
-> 
-> johannes
+On Thu, Jan 12, 2023 at 10:49 AM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Robert Marko <robert.marko@sartura.hr> writes:
+>
+> > On Thu, Jan 12, 2023 at 10:40 AM Kalle Valo <kvalo@kernel.org> wrote:
+> >>
+> >> Robert Marko <robert.marko@sartura.hr> writes:
+> >>
+> >> > On Wed, Jan 11, 2023 at 6:10 PM Kalle Valo <kvalo@kernel.org> wrote:
+> >> >>
+> >> >> Robert Marko <robert.marko@sartura.hr> writes:
+> >> >>
+> >> >> >> Really sorry, I just didn't manage to get this finalised due to other
+> >> >> >> stuff and now I'm leaving for a two week vacation :(
+> >> >> >
+> >> >> > Any news regarding this, I have a PR for ipq807x support in OpenWrt
+> >> >> > and the current workaround for supporting AHB + PCI or multiple PCI
+> >> >> > cards is breaking cards like QCA6390 which are obviously really
+> >> >> > popular.
+> >> >>
+> >> >> Sorry, came back only on Monday and trying to catch up slowly. But I
+> >> >> submitted the RFC now:
+> >> >>
+> >> >> https://patchwork.kernel.org/project/linux-wireless/patch/20230111170033.32454-1-kvalo@kernel.org/
+> >> >
+> >> > Great, thanks for that.
+> >> >
+> >> > Does it depend on firmware-2 being available?
+> >>
+> >> The final solution for the users will require firmware-2.bin. But for a
+> >> quick test you can omit the feature bit test by replacing
+> >> "test_bit(ATH11K_FW_FEATURE_MULTI_QRTR_ID, ab->fw.fw_features)" with
+> >> "true". Just make sure that the firmware release you are using supports
+> >> this feature, I believe only recent QCN9074 releases do that.
+> >
+> > I was able to test on IPQ8074+QCN9074 yesterday by just bypassing the
+> > test and it worked.
+> >
+> > Sideffect is that until firmware-2.bin is available cards like QCA6390
+> > wont work like with my hack.
+>
+> Not following here, can you elaborate what won't work with QCA6390?
 
-Yes, we are okay with the bitmap being part of the bss_conf/link_conf.
-Please send the new version with fixes as soon as you can, I'm still 
-looking into your comments regarding the design Muna sent.
+
+Our downstream hack does not work with QCA6390, so that is why its quite
+important for OpenWrt to have a generic solution that works on all cards.
+
+Regards,
+Robert
+>
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+
+
+-- 
+Robert Marko
+Staff Embedded Linux Engineer
+Sartura Ltd.
+Lendavska ulica 16a
+10000 Zagreb, Croatia
+Email: robert.marko@sartura.hr
+Web: www.sartura.hr
