@@ -2,211 +2,356 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBE26782CB
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 18:17:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49CA8678415
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Jan 2023 19:05:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233438AbjAWRRy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Jan 2023 12:17:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53922 "EHLO
+        id S233179AbjAWSFp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Jan 2023 13:05:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233558AbjAWRRq (ORCPT
+        with ESMTP id S233077AbjAWSFp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Jan 2023 12:17:46 -0500
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBB930182;
-        Mon, 23 Jan 2023 09:17:14 -0800 (PST)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30NEJN7P009518;
-        Mon, 23 Jan 2023 18:16:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=R1aMUGjTbxhxY6hkyKRGBk4zxbzWjzxiNcedON6udFo=;
- b=Zm5ggXoNZruq7Bb3b8N1qmVGlQxdkRIHa80INaPpZBBpXyjLW8eCZLOi26l5A6+RB5/w
- Z+PZ3/cL4Va46yqtmJi5PORwYTY46FioxWKylbeuPxm436newkRnSC7hmZnYsKWHL2Kb
- E8O4kMxS5/CdwDsQ4mM0v4xIMFleF1b25tB/cNt2YL3f/fwzgGAIWdrLxxMD8SuKdWQu
- cPFgMv67SOjqXrPKNSoqvl1+YjTlQbFYmJvNya7GzzdG/j6Oyh9icv6JPWXR/j9Hrm2V
- cNegJauCMm20Z1Gl+nUL+NtrY2i2G1zVxWNtOmY+nTZipz1phWQlTPi0LXd8tXF5+ztP QA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3n89epk4d1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 23 Jan 2023 18:16:41 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 995FC100038;
-        Mon, 23 Jan 2023 18:16:37 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 89E49228A2B;
-        Mon, 23 Jan 2023 18:16:37 +0100 (CET)
-Received: from [10.201.21.26] (10.201.21.26) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Mon, 23 Jan
- 2023 18:16:34 +0100
-Message-ID: <e068c541-b492-a513-6212-fd698e4fc9c4@foss.st.com>
-Date:   Mon, 23 Jan 2023 18:16:33 +0100
+        Mon, 23 Jan 2023 13:05:45 -0500
+X-Greylist: delayed 590 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Jan 2023 10:05:22 PST
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D06303D7
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 10:05:22 -0800 (PST)
+Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0EDFA22509B
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 17:55:33 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 50AAC900080
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Jan 2023 17:55:31 +0000 (UTC)
+Received: from carson-dt.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id B7DB013C2B0;
+        Mon, 23 Jan 2023 09:55:30 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B7DB013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1674496530;
+        bh=o4zhEB0ZlSZFGzFu+924v82SgbHbMX7DSAx+W5xf1ko=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U9IcgX7sP/jWufbgMQHqEWmcD7A1yRWLRl34IjQll35qb0szY4w4jkAnGsF4a4pcH
+         BrcG2O7a3e0LCXLgPi99a+LuqWVxvn+nW7Sf4qWXq4h+5LHu4mES3zlDh3N5dGU7fS
+         74mlL4bLiXGepQ7BXopxde8sgsqTIeDUfe44S6rA=
+From:   carson.vandegriffe@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Carson Vandegriffe <carson.vandegriffe@candelatech.com>
+Subject: [RFC PATCH] wifi: mt76: mt7916: Support per-radio configuration 'firmware' file.
+Date:   Mon, 23 Jan 2023 09:55:00 -0800
+Message-Id: <20230123175500.3375542-1-carson.vandegriffe@candelatech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2 02/13] spi: Replace all spi->chip_select and
- spi->cs_gpiod references with function call
-To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-        <broonie@kernel.org>, <miquel.raynal@bootlin.com>,
-        <richard@nod.at>, <vigneshr@ti.com>, <jic23@kernel.org>,
-        <tudor.ambarus@microchip.com>, <pratyush@kernel.org>,
-        <sanju.mehta@amd.com>, <chin-ting_kuo@aspeedtech.com>,
-        <clg@kaod.org>, <kdasu.kdev@gmail.com>, <f.fainelli@gmail.com>,
-        <rjui@broadcom.com>, <sbranden@broadcom.com>,
-        <eajames@linux.ibm.com>, <olteanv@gmail.com>, <han.xu@nxp.com>,
-        <john.garry@huawei.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <narmstrong@baylibre.com>,
-        <khilman@baylibre.com>, <matthias.bgg@gmail.com>,
-        <haibo.chen@nxp.com>, <linus.walleij@linaro.org>,
-        <daniel@zonque.org>, <haojian.zhuang@gmail.com>,
-        <robert.jarzmik@free.fr>, <agross@kernel.org>,
-        <bjorn.andersson@linaro.org>, <heiko@sntech.de>,
-        <krzysztof.kozlowski@linaro.org>, <andi@etezian.org>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-        <wens@csie.org>, <jernej.skrabec@gmail.com>, <samuel@sholland.org>,
-        <masahisa.kojima@linaro.org>, <jaswinder.singh@linaro.org>,
-        <rostedt@goodmis.org>, <mingo@redhat.com>,
-        <l.stelmach@samsung.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <alex.aring@gmail.com>, <stefan@datenfreihafen.org>,
-        <kvalo@kernel.org>, <thierry.reding@gmail.com>,
-        <jonathanh@nvidia.com>, <skomatineni@nvidia.com>,
-        <sumit.semwal@linaro.org>, <christian.koenig@amd.com>,
-        <j.neuschaefer@gmx.net>, <vireshk@kernel.org>, <rmfrfs@gmail.com>,
-        <johan@kernel.org>, <elder@kernel.org>,
-        <gregkh@linuxfoundation.org>
-CC:     <git@amd.com>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <radu_nicolae.pirea@upb.ro>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <claudiu.beznea@microchip.com>,
-        <bcm-kernel-feedback-list@broadcom.com>, <fancer.lancer@gmail.com>,
-        <kernel@pengutronix.de>, <festevam@gmail.com>, <linux-imx@nxp.com>,
-        <jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>,
-        <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
-        <tali.perry1@gmail.com>, <venture@google.com>, <yuenn@google.com>,
-        <benjaminfair@google.com>, <yogeshgaur.83@gmail.com>,
-        <konrad.dybcio@somainline.org>, <alim.akhtar@samsung.com>,
-        <ldewangan@nvidia.com>, <michal.simek@amd.com>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-wpan@vger.kernel.org>,
-        <libertas-dev@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <linux-iio@vger.kernel.org>, <michael@walle.cc>,
-        <palmer@dabbelt.com>, <linux-riscv@lists.infradead.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <greybus-dev@lists.linaro.org>, <linux-staging@lists.linux.dev>,
-        <amitrkcian2002@gmail.com>
-References: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
- <20230119185342.2093323-3-amit.kumar-mahapatra@amd.com>
-Content-Language: en-US
-From:   Patrice CHOTARD <patrice.chotard@foss.st.com>
-In-Reply-To: <20230119185342.2093323-3-amit.kumar-mahapatra@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.201.21.26]
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-23_12,2023-01-23_01,2022-06-22_01
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1674496532-EQLu4qy0ZLys
+X-MDID-O: us5-at1-1674496532-EQLu4qy0ZLys
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Amit
+From: Carson Vandegriffe <carson.vandegriffe@candelatech.com>
 
-On 1/19/23 19:53, Amit Kumar Mahapatra wrote:
-> Supporting multi-cs in spi drivers would require the chip_select & cs_gpiod
-> members of struct spi_device to be an array. But changing the type of these
-> members to array would break the spi driver functionality. To make the
-> transition smoother introduced four new APIs to get/set the
-> spi->chip_select & spi->cs_gpiod and replaced all spi->chip_select and
-> spi->cs_gpiod references with get or set API calls.
-> While adding multi-cs support in further patches the chip_select & cs_gpiod
-> members of the spi_device structure would be converted to arrays & the
-> "idx" parameter of the APIs would be used as array index i.e.,
-> spi->chip_select[idx] & spi->cs_gpiod[idx] respectively.
-> 
-> Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-> ---
+This lets users specify the upper band that the 7916 radio should use.
+Upon reboot, the 7916 will be using that upper band.
 
-[...]
+Example config file:
 
->  drivers/spi/spi-stm32-qspi.c      | 12 ++++++------
+myhost@: cat /usr/lib/firmware/mediatek/fwcfg-mmio-0000\:04\:00.0.txt
 
-[...]
+high_band=6
 
-> diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-> index 9131660c1afb..b9e61372dcfb 100644
-> --- a/drivers/spi/spi-stm32-qspi.c
-> +++ b/drivers/spi/spi-stm32-qspi.c
-> @@ -359,7 +359,7 @@ static int stm32_qspi_get_mode(u8 buswidth)
->  static int stm32_qspi_send(struct spi_device *spi, const struct spi_mem_op *op)
->  {
->  	struct stm32_qspi *qspi = spi_controller_get_devdata(spi->master);
-> -	struct stm32_qspi_flash *flash = &qspi->flash[spi->chip_select];
-> +	struct stm32_qspi_flash *flash = &qspi->flash[spi_get_chipselect(spi, 0)];
->  	u32 ccr, cr;
->  	int timeout, err = 0, err_poll_status = 0;
->  
-> @@ -564,7 +564,7 @@ static int stm32_qspi_transfer_one_message(struct spi_controller *ctrl,
->  	struct spi_mem_op op;
->  	int ret = 0;
->  
-> -	if (!spi->cs_gpiod)
-> +	if (!spi_get_csgpiod(spi, 0))
->  		return -EOPNOTSUPP;
->  
->  	ret = pm_runtime_resume_and_get(qspi->dev);
-> @@ -573,7 +573,7 @@ static int stm32_qspi_transfer_one_message(struct spi_controller *ctrl,
->  
->  	mutex_lock(&qspi->lock);
->  
-> -	gpiod_set_value_cansleep(spi->cs_gpiod, true);
-> +	gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), true);
->  
->  	list_for_each_entry(transfer, &msg->transfers, transfer_list) {
->  		u8 dummy_bytes = 0;
-> @@ -626,7 +626,7 @@ static int stm32_qspi_transfer_one_message(struct spi_controller *ctrl,
->  	}
->  
->  end_of_transfer:
-> -	gpiod_set_value_cansleep(spi->cs_gpiod, false);
-> +	gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), false);
->  
->  	mutex_unlock(&qspi->lock);
->  
-> @@ -669,8 +669,8 @@ static int stm32_qspi_setup(struct spi_device *spi)
->  
->  	presc = DIV_ROUND_UP(qspi->clk_rate, spi->max_speed_hz) - 1;
->  
-> -	flash = &qspi->flash[spi->chip_select];
-> -	flash->cs = spi->chip_select;
-> +	flash = &qspi->flash[spi_get_chipselect(spi, 0)];
-> +	flash->cs = spi_get_chipselect(spi, 0);
->  	flash->presc = presc;
->  
->  	mutex_lock(&qspi->lock);
+Signed-off-by: Carson Vandegriffe <carson.vandegriffe@candelatech.com>
+---
+ This patch is against the 5.19.17+ kernel.
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  14 ++
+ .../wireless/mediatek/mt76/mt7915/eeprom.c    | 164 ++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |   3 +-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  10 ++
+ 4 files changed, 190 insertions(+), 1 deletion(-)
 
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 812c1eb8866a..2b1b730aeb2d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -961,6 +961,20 @@ struct mt76_sta_stats {
+ 	u32 rx_ampdu_len[15];
+ };
+ 
++static inline const char *mt76_bus_str(enum mt76_bus_type bus)
++{
++	switch (bus) {
++	case MT76_BUS_MMIO:
++		return "mmio";
++	case MT76_BUS_USB:
++		return "usb";
++	case MT76_BUS_SDIO:
++		return "sdio";
++	}
++
++	return "unknown";
++}
++
+ static inline
+ void mt76_inc_ampdu_bucket(int ampdu_len, struct mt76_sta_stats *stats)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index fdef6a3a6cb3..04edadcf5107 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -108,6 +108,28 @@ mt7915_eeprom_load_default(struct mt7915_dev *dev)
+ 	return ret;
+ }
+ 
++static const struct firmware
++*mt7915_eeprom_load_file(struct mt7915_dev *dev, const char *dir, const char *file)
++{
++	char filename[100];
++	const struct firmware *fw = NULL;
++	int ret;
++
++	if (!file)
++		return ERR_PTR(-ENOENT);
++
++	if (!dir)
++		dir = ".";
++
++	snprintf(filename, sizeof(filename), "%s/%s", dir, file);
++	ret = request_firmware(&fw, filename, dev->mt76.dev);
++
++	if (ret)
++		return ERR_PTR(ret);
++
++	return fw;
++}
++
+ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ {
+ 	int ret;
+@@ -139,6 +161,122 @@ static int mt7915_eeprom_load(struct mt7915_dev *dev)
+ 	return mt7915_check_eeprom(dev);
+ }
+ 
++static int mt7915_fetch_fwcfg_file(struct mt7915_dev *dev)
++{
++	char filename[100];
++	const struct firmware *fw;
++	const char *buf;
++	size_t i = 0;
++	char val[100];
++	size_t key_idx;
++	size_t val_idx;
++	char c;
++	long t;
++
++	dev->fwcfg.flags = 0;
++
++	/* fwcfg-<bus>-<id>.txt */
++	scnprintf(filename, sizeof(filename), "fwcfg-%s-%s.txt",
++		  mt76_bus_str(dev->mt76.bus->type), dev_name(dev->mt76.dev));
++
++	fw = mt7915_eeprom_load_file(dev, MT7915_FIRMWARE_BD, filename);
++	if (IS_ERR(fw))
++		return PTR_ERR(fw);
++
++	/* Now, attempt to parse results.
++	 * Format is key=value
++	 */
++	buf = (const char *)(fw->data);
++	while (i < fw->size) {
++start_again:
++		/* First, eat space, or entire line if we have # as first char */
++		c = buf[i];
++		while (isspace(c)) {
++			i++;
++			if (i >= fw->size)
++				goto done;
++			c = buf[i];
++		}
++		/* Eat comment ? */
++		if (c == '#') {
++			i++;
++			while (i < fw->size) {
++				c = buf[i];
++				i++;
++				if (c == '\n')
++					goto start_again;
++			}
++			/* Found no newline, must be done. */
++			goto done;
++		}
++
++		/* If here, we have start of token, store it in 'filename' to save space */
++		key_idx = 0;
++		while (i < fw->size) {
++			c = buf[i];
++			if (c == '=') {
++				i++;
++				c = buf[i];
++				/* Eat any space after the '=' sign. */
++				while (i < fw->size) {
++					if (!isspace(c))
++						break;
++					i++;
++					c = buf[i];
++				}
++				break;
++			}
++			if (isspace(c)) {
++				i++;
++				continue;
++			}
++			filename[key_idx] = c;
++			key_idx++;
++			if (key_idx >= sizeof(filename)) {
++				/* Too long, bail out. */
++				goto done;
++			}
++			i++;
++		}
++		filename[key_idx] = 0; /* null terminate */
++
++		/* We have found the key, now find the value */
++		val_idx = 0;
++		while (i < fw->size) {
++			c = buf[i];
++			if (isspace(c))
++				break;
++			val[val_idx] = c;
++			val_idx++;
++			if (val_idx >= sizeof(val)) {
++				/* Too long, bail out. */
++				goto done;
++			}
++			i++;
++		}
++		val[val_idx] = 0; /* null terminate value */
++
++		/* We have key and value now. */
++		dev_warn(dev->mt76.dev, "fwcfg key: %s  val: %s\n",
++			 filename, val);
++
++		/* Assign key and values as appropriate */
++		if (strcasecmp(filename, "high_band") == 0) {
++			if (kstrtol(val, 0, &t) == 0) {
++				dev->fwcfg.high_band = t;
++				dev->fwcfg.flags |= MT7915_FWCFG_HIGH_BAND;
++			}
++		} else {
++			dev_warn(dev->mt76.dev, "Unknown fwcfg key name -:%s:-, val: %s\n",
++				 filename, val);
++		}
++	}
++
++done:
++	release_firmware(fw);
++	return 0;
++}
++
+ static void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
+@@ -149,6 +287,29 @@ static void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+ 	val = FIELD_GET(MT_EE_WIFI_CONF0_BAND_SEL, val);
+ 
+ 	if (!is_mt7915(&dev->mt76)) {
++		/* fwcfg intervention to set upper band to 5GHz or 6GHz */
++		if ((dev->fwcfg.flags & MT7915_FWCFG_HIGH_BAND) &&
++		    val == MT_EE_V2_BAND_SEL_5GHZ_6GHZ) {
++			dev_info(dev->mt76.dev, "FWCFG: Overriding 7916 high_band with %luGHz\n",
++				 (unsigned long)dev->fwcfg.high_band);
++
++			if (dev->fwcfg.high_band == 5) {
++				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + phy->band_idx],
++						 MT_EE_V2_BAND_SEL_5GHZ,
++						 MT_EE_WIFI_CONF0_BAND_SEL);
++			}
++			if (dev->fwcfg.high_band == 6) {
++				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + phy->band_idx],
++						 MT_EE_V2_BAND_SEL_6GHZ,
++						 MT_EE_WIFI_CONF0_BAND_SEL);
++			}
++
++			/* force to buffer mode */
++			dev->flash_mode = true;
++			val = eeprom[MT_EE_WIFI_CONF + phy->band_idx];
++			val = FIELD_GET(MT_EE_WIFI_CONF0_BAND_SEL, val);
++		}
++
+ 		switch (val) {
+ 		case MT_EE_V2_BAND_SEL_5GHZ:
+ 			phy->mt76->cap.has_5ghz = true;
+@@ -270,6 +431,9 @@ int mt7915_eeprom_init(struct mt7915_dev *dev)
+ {
+ 	int ret;
+ 
++	/* First, see if we have a special config file for this firmware */
++	mt7915_fetch_fwcfg_file(dev);
++
+ 	dev->bin_file_mode = mt76_check_bin_file_mode(&dev->mt76);
+ 
+ 	if (dev->bin_file_mode) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index f82e36664994..2a31b973c843 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -1195,7 +1195,6 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 	if (ret)
+ 		goto unreg_dev;
+ 
+-	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+ 
+ 	if (phy2) {
+ 		ret = mt7915_register_ext_phy(dev, phy2);
+@@ -1203,6 +1202,8 @@ int mt7915_register_device(struct mt7915_dev *dev)
+ 			goto unreg_thermal;
+ 	}
+ 
++	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
++
+ 	mt7915_init_debugfs(&dev->phy);
+ 
+ 	dev->ser.hw_init_done = true;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index dabf9dce7ed6..f8266de129dd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -5,6 +5,7 @@
+ #define __MT7915_H
+ 
+ #include <linux/interrupt.h>
++#include <linux/firmware.h>
+ #include <linux/ktime.h>
+ #include "../mt76_connac.h"
+ #include "regs.h"
+@@ -28,6 +29,8 @@
+ #define MT7915_RX_RING_SIZE		1536
+ #define MT7915_RX_MCU_RING_SIZE		512
+ 
++#define MT7915_FIRMWARE_BD		"mediatek"
++
+ #define MT7915_FIRMWARE_WA		"mediatek/mt7915_wa.bin"
+ #define MT7915_FIRMWARE_WM		"mediatek/mt7915_wm.bin"
+ #define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
+@@ -467,6 +470,13 @@ struct mt7915_dev {
+ 	u8 dpd_chan_num_5g;
+ 	u8 dpd_chan_num_6g;
+ 
++	struct {
++#define MT7915_FWCFG_HIGH_BAND	BIT(1)
++
++		u32 flags; /* let us know which fields have been set */
++		u32 high_band;	/* sets upper-band to use ('5' or '6')GHz */
++	} fwcfg;
++
+ 	struct {
+ 		u8 debug_wm;
+ 		u8 debug_wa;
+-- 
+2.34.1
 
-Thanks
-Patrice
