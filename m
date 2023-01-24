@@ -2,82 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21ADD67942E
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 10:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1774A679587
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 11:43:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233698AbjAXJ13 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Jan 2023 04:27:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
+        id S233391AbjAXKnB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Jan 2023 05:43:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbjAXJ1W (ORCPT
+        with ESMTP id S232664AbjAXKnA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Jan 2023 04:27:22 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6291555C;
-        Tue, 24 Jan 2023 01:26:51 -0800 (PST)
+        Tue, 24 Jan 2023 05:43:00 -0500
+Received: from metanate.com (unknown [IPv6:2001:8b0:1628:5005::111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C3CEF82;
+        Tue, 24 Jan 2023 02:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ctJgpO7IHWdhLMWOxSQ2U3kHoPMeDR9uKIVG3QAMmmo=;
-        t=1674552411; x=1675762011; b=p/k36Bg3qtlMpMFCZItuebK3VOK9aR9zGAF+LOqAz+QR03h
-        Wbpmkt72SYJgcTip/BCxAq/Fhdd0aHIDR+nbuBbdkjUem5AiraSWQbzGPGmgRBlQhypyw1ATMHuWU
-        NivarzGPmydDIT1JlDmurT8nYlop2pzzjVleQ/YKVoHLvUsGYFUbera9/n20liAGVB9hnd90VsW35
-        qIVtFZvMW2BHc2LUeXCUGdLYPNfpXHWFIghK5lHBldgLX0KrB8BpKHEFbQlNaWlKosaRkiZRbZPxJ
-        03SkTXpwVdSmUNwNLH0Wwyl7Da5UOKzYyMT1oeYs4Gv7kCtn8Lb+dpDUHt9z6P7A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pKFZi-00AoMW-31;
-        Tue, 24 Jan 2023 10:26:43 +0100
-Message-ID: <758384602b93da0f242ee5d82847a1b4ab102b91.camel@sipsolutions.net>
-Subject: Re: [PATCH next] wifi: nl80211: emit CMD_START_AP on multicast
- group when an AP is started
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Alvin =?UTF-8?Q?=C5=A0ipraga?= <ALSI@bang-olufsen.dk>
-Cc:     Alvin =?UTF-8?Q?=C5=A0ipraga?= <alvin@pqrs.dk>,
+        d=metanate.com; s=stronger; h=Content-Transfer-Encoding:Message-Id:Date:
+        Subject:Cc:To:From:Content-Type:Reply-To:Content-ID:Content-Description:
+        In-Reply-To:References; bh=+94z0GDF0YwFoOENdLk8LueRV02gPpcPCokC9qXRlYg=; b=Xj
+        I+/zScQTaOW1cJeIgcHY/CCrH9KKVg6mvlJpEDP0rxHzGTvFbWTw5Y2ZM1+Iq+Xy6Zh4UG7EmG27w
+        cpbYZXECiVdWynbzF815ZKgnHXEETp1FMyaeha8LYmPBKaaYIdVM/YyXRrt3B7K7ZCxmCCihA0APV
+        jK/n8mUQRh0qZuG/ApKp8K4cRIkuGEZB6zQEF+y/BLyQt8eVas716louM66kUTkUAZDCvMKmXHQS3
+        GD9FFykFFd6H/CrbFqYuqae/pm8TWHaXNmqPOeJYqCJjGnLeuUVQ1oOIbOiE0zMbpSMTRB+aJBgZg
+        qeXqRUSRq6wfpJ2GKP7mHcRJD9vfPiJA==;
+Received: from [81.174.171.191] (helo=donbot.metanate.com)
+        by email.metanate.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <john@metanate.com>)
+        id 1pKGlS-0008HV-J2;
+        Tue, 24 Jan 2023 10:42:54 +0000
+From:   John Keeping <john@metanate.com>
+To:     netdev@vger.kernel.org
+Cc:     John Keeping <john@metanate.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Tue, 24 Jan 2023 10:26:41 +0100
-In-Reply-To: <20230121130717.l5ynezk4rug7fypb@bang-olufsen.dk>
-References: <20221209152836.1667196-1-alvin@pqrs.dk>
-         <c7eac35785bf672b3b9da45c41baa4149a632daa.camel@sipsolutions.net>
-         <20230121130717.l5ynezk4rug7fypb@bang-olufsen.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        =?UTF-8?q?Alvin=20=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] brcmfmac: support CQM RSSI notification with older firmware
+Date:   Tue, 24 Jan 2023 10:42:48 +0000
+Message-Id: <20230124104248.2917465-1-john@metanate.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Authenticated: YES
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Using the BCM4339 firmware from linux-firmware (version "BCM4339/2 wl0:
+Sep  5 2019 11:05:52 version 6.37.39.113 (r722271 CY)" from
+cypress/cyfmac4339-sdio.bin) the RSSI respose is only 4 bytes, which
+results in an error being logged.
 
-> > Seems like you should include the link ID or something?
->=20
-> Thanks for your review, you are quite right. I didn't give much thought
-> to MLO as I am not too familiar with it. Is something like the below
-> what you are looking for?
+It seems that older devices send only the RSSI field and neither SNR nor
+noise is included.  Handle this by accepting a 4 byte message and
+reading only the RSSI from it.
 
-Yes, that looks good.
+Fixes: 7dd56ea45a66 ("brcmfmac: add support for CQM RSSI notifications")
+Signed-off-by: John Keeping <john@metanate.com>
+---
+v2:
+- Cast to __be32* to fix a Sparse warning (kernel test robot)
 
-> Speaking of which: I drew inspiration from nl80211_send_ap_stopped()
-> which see also doesn't include the link ID. Would you like me to include
-> a second patch in v2 which adds the link ID to that function along the
-> same lines?
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Maybe have that as a separate patch, but yeah, good idea - thanks for
-looking!
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b115902eb475..43dc0faee92d 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -6489,18 +6489,20 @@ static s32 brcmf_notify_rssi(struct brcmf_if *ifp,
+ {
+ 	struct brcmf_cfg80211_vif *vif = ifp->vif;
+ 	struct brcmf_rssi_be *info = data;
+-	s32 rssi, snr, noise;
++	s32 rssi, snr = 0, noise = 0;
+ 	s32 low, high, last;
+ 
+-	if (e->datalen < sizeof(*info)) {
++	if (e->datalen >= sizeof(*info)) {
++		rssi = be32_to_cpu(info->rssi);
++		snr = be32_to_cpu(info->snr);
++		noise = be32_to_cpu(info->noise);
++	} else if (e->datalen >= sizeof(rssi)) {
++		rssi = be32_to_cpu(*(__be32 *)data);
++	} else {
+ 		brcmf_err("insufficient RSSI event data\n");
+ 		return 0;
+ 	}
+ 
+-	rssi = be32_to_cpu(info->rssi);
+-	snr = be32_to_cpu(info->snr);
+-	noise = be32_to_cpu(info->noise);
+-
+ 	low = vif->cqm_rssi_low;
+ 	high = vif->cqm_rssi_high;
+ 	last = vif->cqm_rssi_last;
+-- 
+2.39.1
 
-johannes
