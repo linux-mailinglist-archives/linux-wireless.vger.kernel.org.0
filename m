@@ -2,44 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8371D6792D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 09:15:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21ADD67942E
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 10:27:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231538AbjAXIPf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Jan 2023 03:15:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45060 "EHLO
+        id S233698AbjAXJ13 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Jan 2023 04:27:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjAXIPe (ORCPT
+        with ESMTP id S233641AbjAXJ1W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Jan 2023 03:15:34 -0500
+        Tue, 24 Jan 2023 04:27:22 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4567DC
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Jan 2023 00:15:32 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6291555C;
+        Tue, 24 Jan 2023 01:26:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=h5P/w6x891psTS2y2uhkCXgAj+J7UHFjwE56OO7boPY=;
-        t=1674548133; x=1675757733; b=GC+eR1I02rKSdAPUHf1A8adLVwlm8NHtfF7WKxKSo4VvOk/
-        jUmiE0e+eeLIHDY0VpdpuvpABJXw2uqHWjDvE+ctosifXF5cX4MLSCw9/LE/SzTAJ3NRGfdM6ZvNY
-        OQjdJbSdF0V0CPI3QNdylc59bjf2QMn52NIqHHEZFwu3VBxzevl6sJEqv0u6hjEelaUGQQq0qSjpv
-        BdKfV2We7QvK95etAhak4+iERJX2W9l2mooHBPwvkvBs72+cf/gu39MDvPQU9KtfuQEfakW24gjJW
-        Y/JhEGsfDfliNWUd0s8GgSGixHQtFjmA70eY7ZsIHtCj+I5nRW/wjxbcFODF6Hwg==;
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ctJgpO7IHWdhLMWOxSQ2U3kHoPMeDR9uKIVG3QAMmmo=;
+        t=1674552411; x=1675762011; b=p/k36Bg3qtlMpMFCZItuebK3VOK9aR9zGAF+LOqAz+QR03h
+        Wbpmkt72SYJgcTip/BCxAq/Fhdd0aHIDR+nbuBbdkjUem5AiraSWQbzGPGmgRBlQhypyw1ATMHuWU
+        NivarzGPmydDIT1JlDmurT8nYlop2pzzjVleQ/YKVoHLvUsGYFUbera9/n20liAGVB9hnd90VsW35
+        qIVtFZvMW2BHc2LUeXCUGdLYPNfpXHWFIghK5lHBldgLX0KrB8BpKHEFbQlNaWlKosaRkiZRbZPxJ
+        03SkTXpwVdSmUNwNLH0Wwyl7Da5UOKzYyMT1oeYs4Gv7kCtn8Lb+dpDUHt9z6P7A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pKESo-00An6w-0f;
-        Tue, 24 Jan 2023 09:15:30 +0100
-Message-ID: <8f6ef579e218a77cef08926f5472e5534d457e8a.camel@sipsolutions.net>
-Subject: Re: BUG: KASAN: use-after-free in ieee80211_mgd_auth
+        id 1pKFZi-00AoMW-31;
+        Tue, 24 Jan 2023 10:26:43 +0100
+Message-ID: <758384602b93da0f242ee5d82847a1b4ab102b91.camel@sipsolutions.net>
+Subject: Re: [PATCH next] wifi: nl80211: emit CMD_START_AP on multicast
+ group when an AP is started
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Alexander Wetzel <alexander@wetzel-home.de>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 24 Jan 2023 09:15:29 +0100
-In-Reply-To: <c80f04d2-8159-a02a-9287-26e5ec838826@wetzel-home.de>
-References: <20230112173808.6205-1-alexander@wetzel-home.de>
-         <1d2ac266daf0e68d60d5a7074f96b2962c733a41.camel@sipsolutions.net>
-         <c80f04d2-8159-a02a-9287-26e5ec838826@wetzel-home.de>
+To:     Alvin =?UTF-8?Q?=C5=A0ipraga?= <ALSI@bang-olufsen.dk>
+Cc:     Alvin =?UTF-8?Q?=C5=A0ipraga?= <alvin@pqrs.dk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Tue, 24 Jan 2023 10:26:41 +0100
+In-Reply-To: <20230121130717.l5ynezk4rug7fypb@bang-olufsen.dk>
+References: <20221209152836.1667196-1-alvin@pqrs.dk>
+         <c7eac35785bf672b3b9da45c41baa4149a632daa.camel@sipsolutions.net>
+         <20230121130717.l5ynezk4rug7fypb@bang-olufsen.dk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
@@ -54,17 +62,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-01-23 at 22:50 +0100, Alexander Wetzel wrote:
-> >=20
-> Ancient bug. The problematic code was added with
-> 'commit fffd0934b939 ("cfg80211: rework key operation")'
-> in 2009, kernel 2.6.32.
->=20
-> The fix is trivial, I'll probably just zero key and key-len when not=20
-> using wext. But maybe I find a more wext-only solution.
->=20
+Hi,
 
-Is that actually good enough - what if you have wext and then wext
-again, but didn't use it or something?
+> > Seems like you should include the link ID or something?
+>=20
+> Thanks for your review, you are quite right. I didn't give much thought
+> to MLO as I am not too familiar with it. Is something like the below
+> what you are looking for?
+
+Yes, that looks good.
+
+> Speaking of which: I drew inspiration from nl80211_send_ap_stopped()
+> which see also doesn't include the link ID. Would you like me to include
+> a second patch in v2 which adds the link ID to that function along the
+> same lines?
+
+Maybe have that as a separate patch, but yeah, good idea - thanks for
+looking!
 
 johannes
