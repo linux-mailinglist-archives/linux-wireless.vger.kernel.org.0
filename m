@@ -2,60 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30E3667965D
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 12:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A0AB6796F4
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 12:45:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233899AbjAXLO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Jan 2023 06:14:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44830 "EHLO
+        id S234279AbjAXLpf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Jan 2023 06:45:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233930AbjAXLOw (ORCPT
+        with ESMTP id S233828AbjAXLpc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Jan 2023 06:14:52 -0500
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA7181284C
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Jan 2023 03:14:49 -0800 (PST)
-Received: from [192.168.0.203] ([151.127.53.97]) by mrelayeu.kundenserver.de
- (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1M9WeC-1pNYVv2ErM-005dS7; Tue, 24 Jan 2023 12:14:23 +0100
-Message-ID: <eac1cf31-518f-6542-24c6-69e6c059f3c9@green-communications.fr>
-Date:   Tue, 24 Jan 2023 12:13:42 +0100
+        Tue, 24 Jan 2023 06:45:32 -0500
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3E7583B652;
+        Tue, 24 Jan 2023 03:45:29 -0800 (PST)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1674560725;
+        bh=ueaOOEssXCx/XZD9ovp2eZuzf1Ukyz4ic9KSrbyuqqA=;
+        h=From:To:Cc:Subject:Date;
+        b=UVKfT44bNM7/J3j4OuZbUDMCVi++xz4o+L+jVvxzzMOlo7dtFFGRdbpvX+ERq+pWF
+         vnhUwsKX/jqNSfbvPf62Vg024OJhrKOqkNSMytcbT7wzmAJNcNVyC6J9opXDUfAM3W
+         V42jL7vpJw9smCNYHj4DenIogikzWSWxMBv1mR30=
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>,
+        stable@vger.kernel.org
+Subject: [PATCH] wifi: cfg80211: Fix use after free for wext
+Date:   Tue, 24 Jan 2023 12:45:15 +0100
+Message-Id: <20230124114515.186771-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 1/2] nl80211: add support to enable/disable bss color
- collision detection
-Content-Language: en-US
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20221226083328.29051-1-quic_ramess@quicinc.com>
- <20221226083328.29051-2-quic_ramess@quicinc.com>
- <74c57dc34af10537f98f5bb9b6ce80e5676e09b0.camel@sipsolutions.net>
- <1609a645-3e23-7e37-9aa1-94f970e481e2@green-communications.fr>
- <Y8q5Z98S3pODD77W@lore-desk>
-From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-In-Reply-To: <Y8q5Z98S3pODD77W@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:oE3dX4RdequYSrBHTUbDn30PfJAs+olUvBaNQZ0dN2uEXLP//tu
- tkp8/zSD/XZhXxetf421bXRlpg9cl92kzLzulLF7lCOLwAig62HxYMsGZmIAyPlSByuSWev
- ABxd8wqTWmvwMxSnrhi565vsSKiIUZVxGSkF2VyV7g6g5InrQ91oOFUqIvjBVYO4Fz158Z6
- h5YSEquMPhpgVv+znkIRw==
-UI-OutboundReport: notjunk:1;M01:P0:Vl/qQ6SuslU=;L2McOHb4hLMTam33CIGM5BLgfSr
- Wnu/ttorfviXOSTwzlqhtPAzq1gmDTR22roMpUBRN8ti33AJ/GNCqT2OV8P1pyV/vGuk7k7/c
- 4dqKFrNAyZEYmz0dBBgOPjeCQA4LAgrPfFikxm4DLJmPQHaRCMTVqteMX/fcLLsSpwRmTjH6S
- z7zgzyetUvszYhImD+5MvzXrfY2QlKeCySRUl85yR/GKkBQ5VdroZPpSBcAd+GyfpK6TxIXHE
- xIV0Xkm4NOzMnbo8vRMG5D/+64Q4T3rdqmOcm0ka0EwSe7X1i6VEaYrKWLVTha3c7BJ1F49o2
- V6tQPFzyBpi2KnXeHWANw9jRgIL6FoxQuvqQ4r/0zP5sqa8j4fjLIrjLXlVp3rY0sPGK+v1Na
- AhXCiT/b9vRgz3/1comQkOyQQJ/0PMOVwxfy+epeq/3P7zcuvOvJkoywbqS3esAOI0DtYtfA0
- BW3NVG3/bgNzmxFrhATF78vr/AnsLSFML2FpxTUYC+yW78rlOCPLe3tG5QQJZza7dISgCvoFw
- n2A8XMvN+bGpE+WcknD/6JSBdS63AO8FU8jG0FHIpGV3vqNf1oNtdc34BreOkYFZSgr8yIf6V
- K76pvHQ5+pjQqrrkVBBQPZVdKMBKNOBTk3h80aEJjtlXLhiZq0v9rZsX43FdTzMMo3QBIjiiw
- t6jE4Qwlvtv86Zq29NZlVVtUOukDNjZNgozRDkOnGw==
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,35 +42,98 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Lorenzo,
+Key information in wext.connect is not reset on (re)connect and can hold
+data from a previous connection.
 
-On 20/01/2023 16:55, Lorenzo Bianconi wrote:
-> I agree, I think we can ratelimit netlink messages sent by the kernel to
-> userspace (e.g. to hostapd), I would say every 500ms is ok.
-> I guess we can move cfg80211_obss_color_collision_notify() in a dedicated
-> delayed_work so we can grab wdev mutex (cfg80211_obss_color_collision_notify is
-> currently running in interrupt context).
-> To give an idea, what do you think about patch below? (please note it is just
-> compiled tested so far).
+Reset key data to avoid that drivers or mac80211 incorrectly detect a
+WEP connection request and access the freed or already reused memory.
 
-The patch does not work, the fix appears easy:
-> +void ieee80211_color_collision_detection_work(struct work_struct *work)
-> +{
-> +	struct delayed_work *delayed_work = to_delayed_work(work);
-> +	struct ieee80211_link_data *link =
-> +		container_of(delayed_work, struct ieee80211_link_data,
-> +			     dfs_cac_timer_work);
+Additionally optimize cfg80211_sme_connect() and avoid an useless
+schedule of conn_work.
 
-This should probably be color_collision_detect_work.
+Fixes: fffd0934b939 ("cfg80211: rework key operation")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c80f04d2-8159-a02a-9287-26e5ec838826@wetzel-home.de
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
 
-> +	struct ieee80211_sub_if_data *sdata = link->sdata;
-> +
-> +	sdata_lock(sdata);
+---
+I was first wondering if the dangling scheduled work was part of the
+problem. It's kind of pointless to schedule a work and then just do the job
+yourself. While it turned out to be benign I still added it to the fix here.
 
-It crashed here, link is NULL.
+Alexander
+---
+ net/wireless/sme.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-> +	cfg80211_obss_color_collision_notify(sdata->dev, link->color_bitmap,
-> +					     GFP_KERNEL);
-> +	sdata_unlock(sdata);
-> +}
-Will test the fixed version later.
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 123248b2c0be..8d8176e31e31 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -285,6 +285,15 @@ void cfg80211_conn_work(struct work_struct *work)
+ 	wiphy_unlock(&rdev->wiphy);
+ }
+ 
++static void cfg80211_step_auth_next(struct cfg80211_conn *conn,
++				    struct cfg80211_bss *bss)
++{
++	memcpy(conn->bssid, bss->bssid, ETH_ALEN);
++	conn->params.bssid = conn->bssid;
++	conn->params.channel = bss->channel;
++	conn->state = CFG80211_CONN_AUTHENTICATE_NEXT;
++}
++
+ /* Returned bss is reference counted and must be cleaned up appropriately. */
+ static struct cfg80211_bss *cfg80211_get_conn_bss(struct wireless_dev *wdev)
+ {
+@@ -302,10 +311,7 @@ static struct cfg80211_bss *cfg80211_get_conn_bss(struct wireless_dev *wdev)
+ 	if (!bss)
+ 		return NULL;
+ 
+-	memcpy(wdev->conn->bssid, bss->bssid, ETH_ALEN);
+-	wdev->conn->params.bssid = wdev->conn->bssid;
+-	wdev->conn->params.channel = bss->channel;
+-	wdev->conn->state = CFG80211_CONN_AUTHENTICATE_NEXT;
++	cfg80211_step_auth_next(wdev->conn, bss);
+ 	schedule_work(&rdev->conn_work);
+ 
+ 	return bss;
+@@ -597,7 +603,12 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
+ 	wdev->conn->params.ssid_len = wdev->u.client.ssid_len;
+ 
+ 	/* see if we have the bss already */
+-	bss = cfg80211_get_conn_bss(wdev);
++	bss = cfg80211_get_bss(wdev->wiphy, wdev->conn->params.channel,
++			       wdev->conn->params.bssid,
++			       wdev->conn->params.ssid,
++			       wdev->conn->params.ssid_len,
++			       wdev->conn_bss_type,
++			       IEEE80211_PRIVACY(wdev->conn->params.privacy));
+ 
+ 	if (prev_bssid) {
+ 		memcpy(wdev->conn->prev_bssid, prev_bssid, ETH_ALEN);
+@@ -608,6 +619,7 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
+ 	if (bss) {
+ 		enum nl80211_timeout_reason treason;
+ 
++		cfg80211_step_auth_next(wdev->conn, bss);
+ 		err = cfg80211_conn_do_work(wdev, &treason);
+ 		cfg80211_put_bss(wdev->wiphy, bss);
+ 	} else {
+@@ -1464,6 +1476,13 @@ int cfg80211_connect(struct cfg80211_registered_device *rdev,
+ 	} else {
+ 		if (WARN_ON(connkeys))
+ 			return -EINVAL;
++
++		/* connect can point to wdev->connect
++		 * and may hold outdated key data
++		 */
++		connect->key = NULL;
++		connect->key_len = 0;
++		connect->key_idx = 0;
+ 	}
+ 
+ 	wdev->connect_keys = connkeys;
+-- 
+2.39.0
+
