@@ -2,123 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 799B0679B29
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 15:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 729A3679BA4
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Jan 2023 15:22:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233593AbjAXOKJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Jan 2023 09:10:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47952 "EHLO
+        id S234766AbjAXOW3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Jan 2023 09:22:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234788AbjAXOKB (ORCPT
+        with ESMTP id S234664AbjAXOW2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Jan 2023 09:10:01 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5D7A42BE8
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Jan 2023 06:10:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 2D27CCE1B18
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Jan 2023 14:09:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18523C433D2;
-        Tue, 24 Jan 2023 14:09:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674569396;
-        bh=sUSQ4rRR2voo2ldj3QiVRjuvbcztF53dx1O09U7qYPE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fgo/aXDqlADdG/gzPAmab7GsI6zR9KgqMek7O50kMuM/zJdMbYSeE8UKewm03SmzK
-         5tE2VP4rYydyXZMVHS7KvjACOXM0z1ZmNHLN3zntM8ZBhyleuLe+pq6AK7ngOadHSS
-         GhLgjr8Ei2DWAqLiwE6wBOWqHPKHhfUUaR6R1vo/i7wdTgRiGq7hp04Q5/FLeBy+tI
-         hm6wulGlEHK6c3fX8FcXi+oNgb09o5rnkiCI2uBAKNDHo3vjzB8mN8CSbJkiWsWgy7
-         khetK+M617cv/b3uSandB6U15su966EH88IW7dEwLTEtjjU7DM/P1Ppz3WAeT0kxdG
-         tZuvLDsk8sF7w==
-Date:   Tue, 24 Jan 2023 15:09:52 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] nl80211: add support to enable/disable bss color
- collision detection
-Message-ID: <Y8/msHegwheXGWze@lore-desk>
-References: <20221226083328.29051-1-quic_ramess@quicinc.com>
- <20221226083328.29051-2-quic_ramess@quicinc.com>
- <74c57dc34af10537f98f5bb9b6ce80e5676e09b0.camel@sipsolutions.net>
- <1609a645-3e23-7e37-9aa1-94f970e481e2@green-communications.fr>
- <Y8q5Z98S3pODD77W@lore-desk>
- <eac1cf31-518f-6542-24c6-69e6c059f3c9@green-communications.fr>
+        Tue, 24 Jan 2023 09:22:28 -0500
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 12B9D8E;
+        Tue, 24 Jan 2023 06:22:08 -0800 (PST)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1674570126;
+        bh=pXJdbbsxWGnLLPpXbOLRYT8yZ0cLmYHXZUm5pq/GWWA=;
+        h=From:To:Cc:Subject:Date;
+        b=Wl77VnMc7RMg5urwC5VCXUPFN4hPG+3Qygb2dpi9L4pzqZi270jAqGg1jj7zOUgAR
+         gER7lz8sZgZDURcuNDY23yG21tHYlRUdnO9b+HWLhTTlPi3u0V2NnLA3RCAb+nTkan
+         oLmSS6qlc8FfMoWw9cZCNwPhdtfFqgxk7gFcTgBE=
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net,
+        Alexander Wetzel <alexander@wetzel-home.de>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] wifi: cfg80211: Fix use after free for wext
+Date:   Tue, 24 Jan 2023 15:18:56 +0100
+Message-Id: <20230124141856.356646-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UXJYoUx10BtVHe1a"
-Content-Disposition: inline
-In-Reply-To: <eac1cf31-518f-6542-24c6-69e6c059f3c9@green-communications.fr>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Key information in wext.connect is not reset on (re)connect and can hold
+data from a previous connection.
 
---UXJYoUx10BtVHe1a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reset key data to avoid that drivers or mac80211 incorrectly detect a
+WEP connection request and access the freed or already reused memory.
 
-> Hi Lorenzo,
->=20
-> On 20/01/2023 16:55, Lorenzo Bianconi wrote:
-> > I agree, I think we can ratelimit netlink messages sent by the kernel to
-> > userspace (e.g. to hostapd), I would say every 500ms is ok.
-> > I guess we can move cfg80211_obss_color_collision_notify() in a dedicat=
-ed
-> > delayed_work so we can grab wdev mutex (cfg80211_obss_color_collision_n=
-otify is
-> > currently running in interrupt context).
-> > To give an idea, what do you think about patch below? (please note it i=
-s just
-> > compiled tested so far).
->=20
-> The patch does not work, the fix appears easy:
-> > +void ieee80211_color_collision_detection_work(struct work_struct *work)
-> > +{
-> > +	struct delayed_work *delayed_work =3D to_delayed_work(work);
-> > +	struct ieee80211_link_data *link =3D
-> > +		container_of(delayed_work, struct ieee80211_link_data,
-> > +			     dfs_cac_timer_work);
->=20
-> This should probably be color_collision_detect_work.
+Additionally optimize cfg80211_sme_connect() and avoid an useless
+schedule of conn_work.
 
-Yep, sorry. It is just a copy paste issue :)
-I will share a new version.
+Fixes: fffd0934b939 ("cfg80211: rework key operation")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c80f04d2-8159-a02a-9287-26e5ec838826@wetzel-home.de
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
 
-Regards,
-Lorenzo
+---
+V2 changes:
+- updated comment
+- reset more key data
 
->=20
-> > +	struct ieee80211_sub_if_data *sdata =3D link->sdata;
-> > +
-> > +	sdata_lock(sdata);
->=20
-> It crashed here, link is NULL.
->=20
-> > +	cfg80211_obss_color_collision_notify(sdata->dev, link->color_bitmap,
-> > +					     GFP_KERNEL);
-> > +	sdata_unlock(sdata);
-> > +}
-> Will test the fixed version later.
+---
+ net/wireless/sme.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
---UXJYoUx10BtVHe1a
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 123248b2c0be..0cc841c0c59b 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -285,6 +285,15 @@ void cfg80211_conn_work(struct work_struct *work)
+ 	wiphy_unlock(&rdev->wiphy);
+ }
+ 
++static void cfg80211_step_auth_next(struct cfg80211_conn *conn,
++				    struct cfg80211_bss *bss)
++{
++	memcpy(conn->bssid, bss->bssid, ETH_ALEN);
++	conn->params.bssid = conn->bssid;
++	conn->params.channel = bss->channel;
++	conn->state = CFG80211_CONN_AUTHENTICATE_NEXT;
++}
++
+ /* Returned bss is reference counted and must be cleaned up appropriately. */
+ static struct cfg80211_bss *cfg80211_get_conn_bss(struct wireless_dev *wdev)
+ {
+@@ -302,10 +311,7 @@ static struct cfg80211_bss *cfg80211_get_conn_bss(struct wireless_dev *wdev)
+ 	if (!bss)
+ 		return NULL;
+ 
+-	memcpy(wdev->conn->bssid, bss->bssid, ETH_ALEN);
+-	wdev->conn->params.bssid = wdev->conn->bssid;
+-	wdev->conn->params.channel = bss->channel;
+-	wdev->conn->state = CFG80211_CONN_AUTHENTICATE_NEXT;
++	cfg80211_step_auth_next(wdev->conn, bss);
+ 	schedule_work(&rdev->conn_work);
+ 
+ 	return bss;
+@@ -597,7 +603,12 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
+ 	wdev->conn->params.ssid_len = wdev->u.client.ssid_len;
+ 
+ 	/* see if we have the bss already */
+-	bss = cfg80211_get_conn_bss(wdev);
++	bss = cfg80211_get_bss(wdev->wiphy, wdev->conn->params.channel,
++			       wdev->conn->params.bssid,
++			       wdev->conn->params.ssid,
++			       wdev->conn->params.ssid_len,
++			       wdev->conn_bss_type,
++			       IEEE80211_PRIVACY(wdev->conn->params.privacy));
+ 
+ 	if (prev_bssid) {
+ 		memcpy(wdev->conn->prev_bssid, prev_bssid, ETH_ALEN);
+@@ -608,6 +619,7 @@ static int cfg80211_sme_connect(struct wireless_dev *wdev,
+ 	if (bss) {
+ 		enum nl80211_timeout_reason treason;
+ 
++		cfg80211_step_auth_next(wdev->conn, bss);
+ 		err = cfg80211_conn_do_work(wdev, &treason);
+ 		cfg80211_put_bss(wdev->wiphy, bss);
+ 	} else {
+@@ -1464,6 +1476,15 @@ int cfg80211_connect(struct cfg80211_registered_device *rdev,
+ 	} else {
+ 		if (WARN_ON(connkeys))
+ 			return -EINVAL;
++
++		/* connect can point to wdev->wext.connect which
++		 * can hold key data from a previous connection
++		 */
++		connect->key = NULL;
++		connect->key_len = 0;
++		connect->key_idx = 0;
++		connect->crypto.cipher_group = 0;
++		connect->crypto.n_ciphers_pairwise = 0;
+ 	}
+ 
+ 	wdev->connect_keys = connkeys;
+-- 
+2.39.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY8/msAAKCRA6cBh0uS2t
-rI7GAP9cHNQ2OD3bpQyWnbor78X4lca5ghTsqvOQwjII59oUEgD+KTMnOcxwvUEc
-8TP1mK6SZYd9dKJyWpSRtiSoGN0PXQU=
-=erja
------END PGP SIGNATURE-----
-
---UXJYoUx10BtVHe1a--
