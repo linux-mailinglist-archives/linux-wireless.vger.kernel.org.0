@@ -2,83 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F72F67CD83
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 15:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4768F67CE32
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 15:33:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231755AbjAZOTW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 09:19:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51818 "EHLO
+        id S232249AbjAZOda (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 09:33:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231908AbjAZOTK (ORCPT
+        with ESMTP id S232272AbjAZOd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 09:19:10 -0500
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BC156A70C
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 06:18:42 -0800 (PST)
-Received: by mail-il1-f198.google.com with SMTP id h24-20020a056e021d9800b0030be8a5dd68so1246939ila.13
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 06:18:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+nF+RW16YJdagWMfMttlQoNAWgrztV2W7ki7kcH6wQ=;
-        b=lQecHggteKx9Vf1gS7gY//K+IRRK9ET6wO/GXEWOctnvFVdxsDocrZOCJN08npi678
-         p/mLt2WjcxcaOAnVm3PLIdeC9i93QjXDWKpkuupZu59P2dSE+v9GljEXJIcW2YEiNk4v
-         ywsnYKiac3GVlCxSaBvsclnRSX1lyygNB603bYY16r1AX4ywT+j2GkbzHuPVn2Gy0zZV
-         QKtyVuj1eKw5Ce9c0bEzxHXIUArBBJYQYp8YjqyC91OB3uMwRJNEDjOGrlbGoiamDVm3
-         dWjUX1NnV6EKUrRQNvJiQDdvdOV5hsuxhKthhhY6oV+R+KdMeDfmh+0i5VDkj5qf6Kih
-         zDaA==
-X-Gm-Message-State: AFqh2kouFoMWUPnXyFX+uHfk1N03B0U4BMQ/Yf2MVXheNnetM4EJPnBA
-        rv9T5UrHBy0KKDRUQJQ8WpodwFquoBcTC6YeD8isYpQ6Qeiz
-X-Google-Smtp-Source: AMrXdXtcH4ugW0dNRQ7ZfF6SczQn0xpplKw5P7FtIjRWz13PZ+9UZq2GtmXnv95pBDcikeb1+ZgB8qxL2nPtmQ7KXoZTTbDWmJFG
+        Thu, 26 Jan 2023 09:33:26 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBD062782
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 06:33:20 -0800 (PST)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30QESJkC017884;
+        Thu, 26 Jan 2023 14:33:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=TLAytvOvXoEJzc+E1XvqDfnxoJR6WwJkjPNLQYZJMGM=;
+ b=DZ8jtZRYywD9wZWV9NGSnQk93WfRsNDRQQHwkvs/5KcIqDYBko3tyzUyeyBRjh63fLQ+
+ ofCXWKM+16w/B0gkdffy+QXQEbjiXSedHQqHK4WKgB1LA+BfsgPY9LN6WtgsCBaFSeQt
+ jn6IXZzEXQaBblptuCLrHIrlvpJj3GEYoQcsXknZI9//OQ/ycLruTAvUTIgpYnw9MWUb
+ WNZZBepTaLLKGBoGKO5SO1D0Rw3uYg02CpU++qmVuMi74Fi9cxRCFWuGB6Zhj+hOC8Ph
+ gqjT+iEaMPf85KHS5KW3jsXbnklR7l/GzEP5ASiDfq6sElfUP5CD5PM3oRJjBzhCGVd0 4w== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3najkhc6pg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Jan 2023 14:33:17 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30QEXGEK022547
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Jan 2023 14:33:16 GMT
+Received: from cnss-mw-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Thu, 26 Jan 2023 06:33:15 -0800
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>, <quic_vjakkam@quicinc.com>
+Subject: [PATCH v2 0/2] wifi: changes for MLD AP when SME offload to driver
+Date:   Thu, 26 Jan 2023 20:02:54 +0530
+Message-ID: <20230126143256.960563-1-quic_vjakkam@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Received: by 2002:a02:3407:0:b0:39e:a16b:99c6 with SMTP id
- x7-20020a023407000000b0039ea16b99c6mr3610706jae.167.1674742696299; Thu, 26
- Jan 2023 06:18:16 -0800 (PST)
-Date:   Thu, 26 Jan 2023 06:18:16 -0800
-In-Reply-To: <000000000000788a6905f0c06160@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000080d62605f32b6bcb@google.com>
-Subject: Re: [syzbot] INFO: task hung in rfkill_sync_work
-From:   syzbot <syzbot+9ef743bba3a17c756174@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com, hdanton@sina.com,
-        johannes@sipsolutions.net, krzysztof.kozlowski@canonical.com,
-        krzysztof.kozlowski@linaro.org, kuba@kernel.org, linma@zju.edu.cn,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: udGrBISLlWSzNM-uuhrSRxHogUYXtiNt
+X-Proofpoint-GUID: udGrBISLlWSzNM-uuhrSRxHogUYXtiNt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-26_06,2023-01-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ adultscore=0 spamscore=0 suspectscore=0 mlxlogscore=529 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301260139
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has bisected this issue to:
+This series contains changes needed for MLD AP when driver's SME in use.
 
-commit 3e3b5dfcd16a3e254aab61bd1e8c417dd4503102
-Author: Lin Ma <linma@zju.edu.cn>
-Date:   Tue Nov 16 15:26:52 2021 +0000
+Veerendranath Jakkam (2):
+  wifi: cfg80211: Extend cfg80211_new_sta() for MLD AP
+  wifi: cfg80211: Extend cfg80211_update_owe_info_event() for MLD AP
 
-    NFC: reorder the logic in nfc_{un,}register_device
+ .../net/wireless/quantenna/qtnfmac/event.c    |  1 +
+ include/net/cfg80211.h                        | 34 +++++++++++++++++++
+ net/wireless/nl80211.c                        | 27 +++++++++++++++
+ net/wireless/trace.h                          | 14 +++++---
+ 4 files changed, 72 insertions(+), 4 deletions(-)
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=110cbe1e480000
-start commit:   9d2f6060fe4c Merge tag 'trace-v6.2-1' of git://git.kernel...
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=130cbe1e480000
-console output: https://syzkaller.appspot.com/x/log.txt?x=150cbe1e480000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=85327a149d5f50f
-dashboard link: https://syzkaller.appspot.com/bug?extid=9ef743bba3a17c756174
-userspace arch: i386
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=156edba0480000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15556074480000
+-- 
+2.25.1
 
-Reported-by: syzbot+9ef743bba3a17c756174@syzkaller.appspotmail.com
-Fixes: 3e3b5dfcd16a ("NFC: reorder the logic in nfc_{un,}register_device")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
