@@ -2,160 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B71A67D01B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 16:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C2067D225
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 17:52:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231593AbjAZPZZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 10:25:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36312 "EHLO
+        id S230234AbjAZQw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 11:52:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232833AbjAZPZX (ORCPT
+        with ESMTP id S230130AbjAZQw4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 10:25:23 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2FA830FD
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 07:24:58 -0800 (PST)
-X-UUID: 9191ec629d8d11ed945fc101203acc17-20230126
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=3dKWFEC1kWyb3EmuK7Zh3wU7fkjvKPnwHRC0ByIs4AE=;
-        b=rAVoVrW3jyo2DyPw581acEFkQ6heRB6zddcv5TMpNDYR6aim55wCrvwkG6c6JCSIehN0D3gVGQtM22Z/QHRJwu3t7Mft7hDh53aLY4VKt+92SVlNdr0C22x/LSXpPjzyOnwfFxcY1UTkPd9q+NAtya/OoKd43NcHAxSb2EQrA0Y=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.18,REQID:c3e2892a-d249-471c-8493-b4ce02bf71f3,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-INFO: VERSION:1.1.18,REQID:c3e2892a-d249-471c-8493-b4ce02bf71f3,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-        elease,TS:-5
-X-CID-META: VersionHash:3ca2d6b,CLOUDID:2abcabf6-ff42-4fb0-b929-626456a83c14,B
-        ulkID:230126232450E6OBI7OS,BulkQuantity:0,Recheck:0,SF:17|19|102,TC:nil,Co
-        ntent:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,O
-        SA:0
-X-CID-BVR: 0,NGT
-X-UUID: 9191ec629d8d11ed945fc101203acc17-20230126
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <shayne.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 370652134; Thu, 26 Jan 2023 23:24:47 +0800
-Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Thu, 26 Jan 2023 23:24:46 +0800
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (172.21.101.239)
- by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Thu, 26 Jan 2023 23:24:46 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=POZGo12J8JYpazKo4vWL3/6wdVv9E+2eNwMJWYbXaiUgOrgAEFLMeK6x5hBaocj9jPWhs+hRvVFTT0vlJrnYBnbht1TzomXaAt3XaqUYUrUDWsLwEf1COJDyphruNFQcaQESn6itviqD+D0PTuUCCJ4RC3dt2amDJ4X80tn7Rb42Xs7dqCY2amkJeCl9xcRwDfeYU4rUAvMfYyq475BRLTlvVh2aCHl1AJqxD0PLDRZw9iB7AQUn1PtKHq/Da8GWiixC2wRWvnmPM/R7sMiVukvvLVlIwD9kKmK5EMkK56UJHHqPuIBxsPFc/RLnU+OBQgXz+W5SM/3JmZIBcfqJ+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3dKWFEC1kWyb3EmuK7Zh3wU7fkjvKPnwHRC0ByIs4AE=;
- b=kS32IwnE/6glQPtf/JGWVK3fAJ5W/SH5qCfPw+wsNlHqAoFd+B5b35nppTCmDHk6aDop0CzU+8JeMfMc1XxYc7v1gI+LUVDPlTJKLmbskyS/BXhJfFSntrHT14+eKhzlaE8VVjLJ09x7JqP804wifbSN4b5pHBRu2bGoS4QyCS7Yp/kIo9DVfysGXqGRTN+S9rxLjS/LulupDOEyrESVb6EGKUYCeGPjny63cfgn2aWiIrtnFxz3TJNnu4umPdCPO79Vc/676HEzE/AY3SuF2QKECkzBrDnplAqjPJ6yN6iP0moVWaK1aQIUG6Fs6AGoS62Lc34gqBLe9Ml+2Chxcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
+        Thu, 26 Jan 2023 11:52:56 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B6C2698
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 08:52:54 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id qx13so6634436ejb.13
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 08:52:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3dKWFEC1kWyb3EmuK7Zh3wU7fkjvKPnwHRC0ByIs4AE=;
- b=oMhcVaixFHCh0xPP8JhQDdarDX/0p5KO89ok6Hbbt4iVrQUyxdNKpNyQdCFauxCYnFKYRKpBVWt/eTq/lr9ysGBs6al8t+kKJr0J6oy7okDjjSjsK1ZAWY+smafBUPAsuAyy3zg6YV7H623q8Ftbrg844qvGUFUCGcPtx7UTUfY=
-Received: from SEZPR03MB6468.apcprd03.prod.outlook.com (2603:1096:101:47::9)
- by TYZPR03MB7204.apcprd03.prod.outlook.com (2603:1096:400:33a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.22; Thu, 26 Jan
- 2023 15:24:44 +0000
-Received: from SEZPR03MB6468.apcprd03.prod.outlook.com
- ([fe80::56e7:bf25:29f9:18c0]) by SEZPR03MB6468.apcprd03.prod.outlook.com
- ([fe80::56e7:bf25:29f9:18c0%6]) with mapi id 15.20.6043.021; Thu, 26 Jan 2023
- 15:24:44 +0000
-From:   shayne.chen@mediatek.com
-To:     "lorenzo@kernel.org" <lorenzo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "nbd@nbd.name" <nbd@nbd.name>,
-        =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
-        <Evelyn.Tsai@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
-        =?utf-8?B?Qm8gSmlhbyAo54Sm5rOiKQ==?= <Bo.Jiao@mediatek.com>
-Subject: Re: [PATCH 06/13] wifi: mt76: add EHT rate stats for ethtool
-Thread-Topic: [PATCH 06/13] wifi: mt76: add EHT rate stats for ethtool
-Thread-Index: AQHZK1fjyrDdAAPw/E+Nqi2wW/3JY66w3fGA
-Date:   Thu, 26 Jan 2023 15:24:44 +0000
-Message-ID: <8250eae28a0cb2d130baf87b771fd17f3cc5e61b.camel@mediatek.com>
-References: <20230109165731.682-1-shayne.chen@mediatek.com>
-         <20230109165731.682-7-shayne.chen@mediatek.com>
-         <Y8gaqTqI/un8dgZd@lore-desk>
-In-Reply-To: <Y8gaqTqI/un8dgZd@lore-desk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SEZPR03MB6468:EE_|TYZPR03MB7204:EE_
-x-ms-office365-filtering-correlation-id: 257e5928-aa74-432e-30ca-08daffb173b6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hGm+F8bz3lkqCGETSV+qNIplBJBEwjBjPC2NAV1jT2K5+HqVhkoOS/1DkHWoMwvuwBmPa+XYSiv/JZpPsi7gRIiAiuyMmMvc7vVD6s7DCQoJwTYXADLvR8Y7PmC2jo07VUjDnsBvtK0IxZdHikk4htlneHWG0w19A6GtLVX9FZ7bgfqZM4W4x1oUKeNxZAMgBtHZ3v8L+aJ80P4oIePba2n00b1Nbky1bS1UTl3md4kUl7zyc4cmF9nhKX7EHJncAoLgFW6JvCAxptseP/wFX/dGg01zsvaDiNRRfp34/+TCBAjyPfPN5tC6lI46mwte0iPstMbsl08KuUtW31yEwJb1TSVfVb2viRwtYVFzO4+xQq+wVSrflP+i6/AClsI6c6Uv8hHQEUDx2UiSB/n70JXCl+YnOWS9itDkw3OsYq6i1HYhhA3qXzHj0hf29SzItetY2JB0uNWzVKCLy5HiO6rHhpznIs2CMzYJp+ScAv5CWroCj75feyT/Iko1E8xjh6w4eeGFdT0/vx9ihU6gkpR5OpKe1652Oyx6+KgRtIib3YrSU5V6piNCXHRqs+LDPN0zEewmI728JcPmaW9prb1pTcUzGDL/9htm1HEtHxawCItIumUqC/4KpQD7x/vuUjP9bxi6Sk6slwre4n92l76fSAqVHKahNJ3hZTGQktIwCuA9iHIWh75OOMQlFCR4d7R6voYW/8ax6zzavBSiLMzejLIWphhJCu+kjw8S48rCjVFjxEpc1ZiEtmz/DhpLgE+Xmk2ZHWSbvgkxt5r8mg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR03MB6468.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(136003)(39850400004)(396003)(346002)(366004)(451199018)(186003)(26005)(6512007)(38070700005)(83380400001)(54906003)(107886003)(86362001)(71200400001)(36756003)(85182001)(8676002)(6486002)(478600001)(6506007)(316002)(91956017)(64756008)(66556008)(4326008)(66446008)(66476007)(6916009)(66946007)(38100700002)(122000001)(5660300002)(2906002)(76116006)(8936002)(41300700001)(2616005)(99106002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dTVDR0JQVEExVHpYeTFCVWdBZW1RVmgyTXR6dC9YTTBCaGlKQUdXNXhEeUJh?=
- =?utf-8?B?S0UxeFNzd1NDSEJDd3BwK3VqSGZITGJRQytCamhYaG9CYytoTTBNMU5YQXRo?=
- =?utf-8?B?RitZakxkUUxQcVBIK041a21JUWJFaVdGSXdETVRKdlpWVHhZc1dvQnhseXZz?=
- =?utf-8?B?MXJUcEZJODVrK0tJN3l6OVh4RjljR3ZZMDcyWTA2bHRuTjcxL2xoZmx4Mjdn?=
- =?utf-8?B?bmgvY29ubWhzcjFKQXVEUDk4NHRFd1BnQzdEaGRXMlBaNmI1ZlJxMkVOMytE?=
- =?utf-8?B?eC9VdDRRR2RTa0NsOE40YlRLVHJjcGI2VnFxOGtUWDJCNm5jYk8rQjlBbzlU?=
- =?utf-8?B?UklwV3B5QnFpRTVkNGVpYkRKQUJZQTk1Mk5IWGQ4OG5RdnlIQi9LeXlRVk1K?=
- =?utf-8?B?QUtqUmJmRUtIcHpheTAvdVlHQ1BQc1dTajJ2K3ZpS0psdkJwRHlGRElVQmla?=
- =?utf-8?B?aDVvVzdlU0EwTUhIRW9VVWF1ZkwzVkZPUEVUbnZNSm1mMFZQWVcyWHRqY2ZQ?=
- =?utf-8?B?UUFObzR0Q3RaVG5kbjlheUhUT3hpRGdhblhJcW9PVlA4ZWlYTlErRWdlenRS?=
- =?utf-8?B?dS8zWWhIWk5sZlN5VUNFOHV6REtuK2NzVno0a2RZc2pVR0hMbm1RWUQySEp1?=
- =?utf-8?B?WnVUa016S0k5QjZqZTEvMDc0b0pGSi9MelNtSzdWa1FlM25CcmpvSzdlM1d6?=
- =?utf-8?B?S042NlFOUFdWRDBFMEIwalZuSC9EMUtjdG0vMkIwdk9JNnVkWGhIR1JZczZX?=
- =?utf-8?B?MDByam5VY0lkczYwU0taNGtrckN0M3liNDA5MjlQSmNjU2F2eUpSNWJLeFcv?=
- =?utf-8?B?Uzd5SGJ2NS9VWmhnTG9UajFCa0NRNlE0M3lDd1FaeWJmamdoVmc4ejNFaU9n?=
- =?utf-8?B?TXpPODQ2NnlOQldUNy9BazRheWt1L0tGcitTV3d1dXhkVXptbkNxU2JzWDJu?=
- =?utf-8?B?NmtURlZiMy9CY2ZvbzNUTkM3TGllTk50UmdtZW1iQnYxY3ZpVlBCeVBVVmlG?=
- =?utf-8?B?THJnUkYyaUVmdER1UEpnczFCUXcrV3VBajFTWDBsMGhQS1cxTTVYc1BFVjVY?=
- =?utf-8?B?T1E4NC9TRVpMYktmVDltaThYRFExNDdaRFRzUFhubXQ1Sy9oZ3V5c0ZxM3RV?=
- =?utf-8?B?eTV2Sm5HTi93c1NDSnRlVy85dFYvVlRjaTZWVVNKN3lXMHJhS3kveHVUc2Zh?=
- =?utf-8?B?cDdrWFRMb2JQdzcxMTVRRXVlclBRZHg1dGFFbFhSQXRUZldqemUvV1Nwc1RE?=
- =?utf-8?B?WThPekwzMlhwMjJaR1JVOHh5clZ5RWN2UkUxa1Q1K25iQmRWMDIwSmZZK28r?=
- =?utf-8?B?YzlkM1dpWWVYcVV4V1ZvTEJ5dFV3ZzJvQ1gyeEhjU2o4NnF1eEQzdlpNZFpn?=
- =?utf-8?B?dHlLQ29yd1BVK0hTTm1zbHdFNFJtUnYyNlFGcjUzVnhQVDVIVGdrWUtXRzRL?=
- =?utf-8?B?ZW5rRzlnMFNNZ1c2b05BOXdXQmtqLzFMSWRRYTlsM2djOUNmazhqVEhBWmpM?=
- =?utf-8?B?WHdxNThYYVpQbEttTVdZcDBwZXZnN01SOUpmTmhWMkQrQkpFVkYvQ2srWnpB?=
- =?utf-8?B?T0xWekc1RGlyNjlPQXdLWGtlQ2l5RkllZ0pPSWFWTDYvN0dqQXVuenMvWE1T?=
- =?utf-8?B?Y3QyUERrR0ZaV1RIYlJsVWtwSHpzVHh5K0E5NklUU09xMFlOQytiak9HRk9K?=
- =?utf-8?B?ZmhNaVl4Tkw5eTlRRzhUbGtpbldWL0g4eXY1WXJPc3pyT253eUh2S0NZMmZQ?=
- =?utf-8?B?SjdKb21DaXhNbnNkQm9nYzlXdm9nakRTQ2grZFhMR2lxOG02Z2xzNWVwaHZM?=
- =?utf-8?B?Q3JtSkFKSkdPMXBubXFqYk1Gb2JGUE9vTTNxWVRibFQyMUZ2YjRjYlFiNElP?=
- =?utf-8?B?WnRxa0czRHNacllqS0w3eTZRdytNK0ZrNGEwZ3g5Y3VWYjc4bDg1SGUySkM1?=
- =?utf-8?B?YkxpTzFGdXQxUnVVTmU4SG1xRVJiN091MEhqdXdsbHZpZDhzSkpuQlpQTGxw?=
- =?utf-8?B?QUUzZEhKOGh6WHBRM3pzMWxQcFIzUHJ0c2EzZ29QZW9zNG9ETWlyRFlZc2JX?=
- =?utf-8?B?MDRub1FxNjM0QkIvcmt2Q01yQ0FaQUlkV2ticWNJRWJZN2M1cXdsZmxrN2Ni?=
- =?utf-8?B?b1BNRFMxRHY2VFNxSlBRN1YySVJ3ODc4aGcwRENkQTIySERJZ3JxeXRyZ29K?=
- =?utf-8?B?aWc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4F1CDACA55657243A115E7C544BB7AF8@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR03MB6468.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 257e5928-aa74-432e-30ca-08daffb173b6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jan 2023 15:24:44.1647
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JmuHq3ooY0UR+K/fO6QrDV2zEPbiiWzZBKmoV8Ub2q2PSSoStuXyTTiXVZsbWOf/kE56E0CQqml9u9++tSpPW/KrgXo1BEqHvk6e3MoAMM0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB7204
-X-MTK:  N
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
-        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
+        d=gmail.com; s=20210112;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ABuWhvb9SeszbSZosuiCFsBdaufR0DeEmAek7hdmn4s=;
+        b=mGhkJhVzIGYwV3qcsROFESt/NlN6/RA6B0wmrOPRkEAFpCAnQo8kekCTozaYvWCuC+
+         9uZwDMsDz+RFFHsPSHkK5Hn9enRbaxgN3mweEXfHYJ7QtE7pQ1Ibtv+n/n36JUY6gzQi
+         N4Qu6ZJR+L0xMckmv2V8XfM/RhsHl/o26HRgh4mAB99PadP/9HgLmjEFXtiLze652o8X
+         L4zD/sCIvEAx1iHDxB4EhPEDgmUc+5f2Jd3hMYDfttSCTVBsUFHtLcj10ECTecItzicd
+         NiN2ShdDBx1OYhjqEWXcctlMtkdd51uiIkTq0eV7cCAcMz0g/cnr0iYnKD25jNhQpRCv
+         deFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ABuWhvb9SeszbSZosuiCFsBdaufR0DeEmAek7hdmn4s=;
+        b=zIMv6xXjwOIQ6A1wOMADdNYFjTSHj1FtCJbzPMZGISs9xWNGb0xu73gQ0Gl442lzX5
+         v/6ybF1MDSwQJ+3XYR0e2pJphM2OBVj2IkFK8QKzelyQ2clzd0ZjKGMPPhU3+8NjFJhJ
+         gbybA3oaDmKyqXEo5/ygfjrm6Hnd8OV5kS3I94uS47ttY1y1TnEibVdq5KZRF8N1T5nG
+         Dmj3tjIagJbQz4bWgvnQZShEzI0FYRO3SiyRgQ4S2B9rvNaCWZCHrvr8zWRMCGUglXLL
+         pINgoheWz71g1rgrQG7//9BRbQlZNKum8O1GgEIxfYGRQJ6EAsx9kzyq01dFSr6I4VBY
+         rG7w==
+X-Gm-Message-State: AFqh2kq4L8AS7tFDfFNFXjW2Ib2Pu1k8ogoOD2HRnibNZVL0saJzg2/9
+        z+qzQNORbUDErkzMaLyjH4gqp8IQIsU=
+X-Google-Smtp-Source: AMrXdXvCAHE8SKEe5lNMecqYwPPe2RwdzxYDKMomlv/LblovQcaSspqKloJMNNd6VPoxuLgaIPRVxw==
+X-Received: by 2002:a17:907:d15:b0:862:e612:effe with SMTP id gn21-20020a1709070d1500b00862e612effemr54663567ejc.14.1674751972579;
+        Thu, 26 Jan 2023 08:52:52 -0800 (PST)
+Received: from smtpclient.apple ([2001:9e8:f12f:c200:289e:467c:f188:afa6])
+        by smtp.gmail.com with ESMTPSA id og10-20020a1709071dca00b007be301a1d51sm830075ejc.211.2023.01.26.08.52.51
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 26 Jan 2023 08:52:52 -0800 (PST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
+Subject: Re: [RFC v2 5/6] mac80211_hwsim: add TPC per packet support
+From:   Jonas Jelonek <jelonek.jonas@gmail.com>
+In-Reply-To: <3e269bce8d73577fb1183697655d6ad66edf866f.camel@sipsolutions.net>
+Date:   Thu, 26 Jan 2023 17:52:21 +0100
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E26F68F9-337D-4163-AA0F-A43E50864AEB@gmail.com>
+References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
+ <20220920104032.496697-6-jelonek.jonas@gmail.com>
+ <5d15d193c76dcc2cbd59b26912973e3bce34c776.camel@sipsolutions.net>
+ <951FA42C-E52F-4FDB-AB73-AEF76435380C@gmail.com>
+ <3e269bce8d73577fb1183697655d6ad66edf866f.camel@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+X-Mailer: Apple Mail (2.3731.300.101.1.3)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -163,46 +77,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIzLTAxLTE4IGF0IDE3OjEzICswMTAwLCBMb3JlbnpvIEJpYW5jb25pIHdyb3Rl
-Og0KPiA+IEFkZCBzdXBwb3J0IHRvIGdldCBFSFQgcmF0ZSBzdGF0cyBmcm9tIGV0aHRvb2wuDQo+
-ID4gVGhpcyBpcyB0aGUgcHJlbGltaW5hcnkgcGF0Y2ggdG8gYWRkIEVIVCBzdXBwb3J0IGZvciBt
-dDc5OTYuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogU2hheW5lIENoZW4gPHNoYXluZS5jaGVu
-QG1lZGlhdGVrLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc2LmggICAgICAgIHwgMiArLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9t
-ZWRpYXRlay9tdDc2L210Nzk5Ni9tYWluLmMgfCA2ICsrKysrKw0KPiA+ICAyIGZpbGVzIGNoYW5n
-ZWQsIDcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQg
-YS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYuaA0KPiA+IGIvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmgNCj4gPiBpbmRleCBiM2ZkM2FiZmRk
-OWYuLjNkM2M2OGI5ZTFjZiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9t
-ZWRpYXRlay9tdDc2L210NzYuaA0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3Ni5oDQo+ID4gQEAgLTI3Miw3ICsyNzIsNyBAQCBlbnVtIG10NzZfcGh5X3R5
-cGUgew0KPiA+ICANCj4gPiAgc3RydWN0IG10NzZfc3RhX3N0YXRzIHsNCj4gPiAgCXU2NCB0eF9t
-b2RlW19fTVRfUEhZX1RZUEVfTUFYXTsNCj4gPiAtCXU2NCB0eF9id1s0XTsJCS8qIDIwLCA0MCwg
-ODAsIDE2MCAqLw0KPiA+ICsJdTY0IHR4X2J3WzVdOwkJLyogMjAsIDQwLCA4MCwgMTYwLCAzMjAg
-Ki8NCj4gDQo+IEhpIFNoYXluZSwNCj4gDQpIaSBMb3JlbnpvLA0KDQo+IEkgdGhpbmsgdGhpcyBj
-aGFuZ2Ugd2lsbCBicmVhayBtdDc5MTUgZXRodG9vbCBzdXBwb3J0LiBJbiBwYXJ0aWN1bGFyDQo+
-IGl0IHdpbGwNCj4gYnJlYWsgdHhfYncgZm9yIGxvb3AgaW4gbXQ3Nl9ldGh0b29sX3dvcmtlcigp
-Lg0KPiANCkknbGwgZml4IHRoaXMgaW4gdjIgYnkgYWRkaW5nIGFuIGFkZGl0aW9uYWwgZWh0IHBh
-cmFtZXRlciB0bw0KbXQ3Nl9ldGh0b29sX3dvcmtlcigpLCB0aGFua3MuDQoNClJlZ2FyZHMsDQpT
-aGF5bmUNCg0KPiBSZWdhcmRzLA0KPiBMb3JlbnpvDQo+IA0KPiA+ICAJdTY0IHR4X25zc1s0XTsJ
-CS8qIDEsIDIsIDMsIDQgKi8NCj4gPiAgCXU2NCB0eF9tY3NbMTZdOwkJLyogbWNzIGlkeCAqLw0K
-PiA+ICAJdTY0IHR4X2J5dGVzOw0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210Nzk5Ni9tYWluLmMNCj4gPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L21lZGlhdGVrL210NzYvbXQ3OTk2L21haW4uYw0KPiA+IGluZGV4IGM0MjNiMDUyZTRmNC4uOWVh
-MmUxMTk4NDc3IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTk2L21haW4uYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3OTk2L21haW4uYw0KPiA+IEBAIC0xMDg0LDEwICsxMDg0LDE0IEBAIHN0YXRp
-YyBjb25zdCBjaGFyDQo+ID4gbXQ3OTk2X2dzdHJpbmdzX3N0YXRzW11bRVRIX0dTVFJJTkdfTEVO
-XSA9IHsNCj4gPiAgCSJ2X3R4X21vZGVfaGVfZXh0X3N1IiwNCj4gPiAgCSJ2X3R4X21vZGVfaGVf
-dGIiLA0KPiA+ICAJInZfdHhfbW9kZV9oZV9tdSIsDQo+ID4gKwkidl90eF9tb2RlX2VodF9zdSIs
-DQo+ID4gKwkidl90eF9tb2RlX2VodF90cmlnIiwNCj4gPiArCSJ2X3R4X21vZGVfZWh0X211IiwN
-Cj4gPiAgCSJ2X3R4X2J3XzIwIiwNCj4gPiAgCSJ2X3R4X2J3XzQwIiwNCj4gPiAgCSJ2X3R4X2J3
-XzgwIiwNCj4gPiAgCSJ2X3R4X2J3XzE2MCIsDQo+ID4gKwkidl90eF9id18zMjAiLA0KPiA+ICAJ
-InZfdHhfbWNzXzAiLA0KPiA+ICAJInZfdHhfbWNzXzEiLA0KPiA+ICAJInZfdHhfbWNzXzIiLA0K
-PiA+IEBAIC0xMTAwLDYgKzExMDQsOCBAQCBzdGF0aWMgY29uc3QgY2hhcg0KPiA+IG10Nzk5Nl9n
-c3RyaW5nc19zdGF0c1tdW0VUSF9HU1RSSU5HX0xFTl0gPSB7DQo+ID4gIAkidl90eF9tY3NfOSIs
-DQo+ID4gIAkidl90eF9tY3NfMTAiLA0KPiA+ICAJInZfdHhfbWNzXzExIiwNCj4gPiArCSJ2X3R4
-X21jc18xMiIsDQo+ID4gKwkidl90eF9tY3NfMTMiLA0KPiA+ICB9Ow0KPiA+ICANCj4gPiAgI2Rl
-ZmluZSBNVDc5OTZfU1NUQVRTX0xFTiBBUlJBWV9TSVpFKG10Nzk5Nl9nc3RyaW5nc19zdGF0cykN
-Cj4gPiAtLSANCj4gPiAyLjI1LjENCj4gPiANCg==
+
+> On 19. Jan 2023, at 16:09, Johannes Berg <johannes@sipsolutions.net> =
+wrote:
+>=20
+> On Thu, 2023-01-19 at 15:32 +0100, Jonas Jelonek wrote:
+>>>=20
+>>> Not sure I like this either - I think we should probably create the
+>>> wiphys dynamically for most features these days?
+>>=20
+>> just to make sure I got it correctly: so you propose that these
+>> params, that are=20
+>> currently done with module_param(), should be switched to a dynamic
+>> netlink approach, or only for TPC and RCTBL for now?
+>=20
+> We do have dynamic parameters for all the module parameters I believe,
+> but we've shied away from actually removing the existing module
+> parameters for legacy/compatibility reasons.
+>=20
+> However, I think that for new parameters, there's really no good =
+reason
+> to provide module parameters, since the test scripting etc. can
+> dynamically create wiphys with the necessary capabilities. Even the
+> hostap/hwsim tests can and do already do that :)
+
+=46rom what I=E2=80=99ve seen there is no dynamic parameter for RCTBL =
+yet but I can combine
+this with my additional TPC parameter. Then this can be set via netlink.
+
+>> As a first step I focused on providing a proof-of-concept
+>> implementation in hwsim for my
+>> TPC proposal, implementing netlink to set tx power and other could be
+>> part of the next step.
+>> Do you think this could be fine or do you propose something =
+different?
+>=20
+> I'm not quite sure what you mean by that, tbh. I guess I kind of =
+thought
+> you were going to adjust minstrel to do TPC automatically.
+>=20
+> We already have netlink support for setting per-station TX power which =
+I
+> guess this should then listen to? See =
+NL80211_ATTR_STA_TX_POWER_SETTING
+> and NL80211_ATTR_STA_TX_POWER etc. I think it's not supported in
+> mac80211, but probably could easily be after your patches?
+
+I guess that can be part of some follow-up patches after these patches =
+here are upstream.
+I would agree that this should somehow listen to the mentioned =
+attributes then.
+
+We want to do joint RC and TPC in minstrel, and to allow fine-grained =
+TPC as it is already
+possible with RC. Minstrel will also be adjusted in one of the next =
+steps.
+This RFC basically should =E2=80=9Cprepare=E2=80=9D mac80211 to be used =
+for fine-grained TPC. I think,
+driver support and Minstrel support should be the next steps after the =
+structures are fixed.
+But I include hwsim here to have at least a test-case. Hope you get what =
+I mean :)
+
+Jonas
 
