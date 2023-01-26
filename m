@@ -2,85 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC10F67D418
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 19:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E970667D4FB
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 20:01:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231835AbjAZSZk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 13:25:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
+        id S232416AbjAZTB6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 14:01:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229721AbjAZSZj (ORCPT
+        with ESMTP id S232380AbjAZTBs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 13:25:39 -0500
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B1261869;
-        Thu, 26 Jan 2023 10:25:26 -0800 (PST)
-Received: from fedcomp.intra.ispras.ru (unknown [46.242.14.200])
-        by mail.ispras.ru (Postfix) with ESMTPSA id C55AB44C1003;
-        Thu, 26 Jan 2023 18:25:21 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C55AB44C1003
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1674757521;
-        bh=Afq4b2X8eBtK6SxOlqW9d62Bwf0KZ0SsOAymNkS7amw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=kdpTNvL3PZpEagtlTlMTtFOwQbQ5HB+uXPkNZ5x+X29xL9t2yZpBXyJSIlJ7imTca
-         gIO7l0btapr9pXKIe6Bi5HwqU60PseWBqrXsPbKwq5MAUbNRpIaxN5RUDaQZ4ptbzp
-         TQZxFaGLQZr0s21HG4q4IUfLgwwgsVbTeEOf5VKg=
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        Thu, 26 Jan 2023 14:01:48 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BACF69B22;
+        Thu, 26 Jan 2023 11:01:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=n6OTwXbqkvWKaUiJIlak8SUyFhFuvaI0XUfB/XFglaY=; b=0yivqRtx8oA+bkclJMFmY7I0Z2
+        LcN/cI0mJpodqwqtpjSO5x61IvhuqVioDgtHeDtVl5IaC9s9YLk1yRk3JriGWnM/k5dIV8RK6sf27
+        PfLYz/ZXqq8JHoSw5+3uRoIy6dMdM2rlzce699zEZ9CNrWyLffGYmge4vbLrfquJcjk4MNwoIA+F2
+        6qHIQlfP8sXmUR8+/y5USlXmM5T1KIY1dvY0ZgjbfEkRfUmf/MlR4uWKtjzqSnufa/iUNATHVqnjw
+        NCCG30zQnq4Vh0N41UQERypl1mhigEo4AsE8PljYAoTJ8hXgLRg6HXVF+vX1eHcq/b+KITanherFQ
+        q+cC7f/A==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pL7V9-00CEvd-Pq; Thu, 26 Jan 2023 19:01:35 +0000
+Date:   Thu, 26 Jan 2023 11:01:35 -0800
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>,
+        junyuu@chromium.org, Kalle Valo <kvalo@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Oliver Neukum <oneukum@suse.com>,
-        Mohammed Shafi Shajakhan <mohammed@qca.qualcomm.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-        syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Subject: [PATCH] wifi: ath6kl: reduce WARN to dev_dbg() in callback
-Date:   Thu, 26 Jan 2023 21:24:31 +0300
-Message-Id: <20230126182431.867984-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 1/2] wifi: ath11k: Use platform_get_irq() to get the
+ interrupt
+Message-ID: <Y9LODwJPQpPs32Ds@bombadil.infradead.org>
+References: <20230124110057.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230124110057.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The warn is triggered on a known race condition that is correctly handled.
-Using WARN() hinders automated testing. Reducing severity.
+On Tue, Jan 24, 2023 at 11:01:00AM -0800, Douglas Anderson wrote:
+> For the same reasons talked about in commit 9503a1fc123d ("ath9k: Use
+> platform_get_irq() to get the interrupt"), we should be using
+> platform_get_irq() in ath11k. Let's make the switch.
 
-Fixes: de2070fc4aa7 ("ath6kl: Fix kernel panic on continuous driver load/unload")
-Reported-and-tested-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
----
- drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The commit log is rather weak, it is better to re-state what the commit
+log in 9503a1fc123d states as it is stronger, and very clear.
 
-diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-index c68848819a52..9b88d96bfe96 100644
---- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-+++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
-@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
- 	 * Thus the possibility of ar->htc_target being NULL
- 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
- 	 */
--	if (WARN_ON_ONCE(!target)) {
--		ath6kl_err("Target not yet initialized\n");
-+	if (!target) {
-+		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
- 		status = -EINVAL;
- 		goto free_skb;
- 	}
--- 
-2.34.1
+To that end. Why not write an SmPL Coccinelle grammer patch for this
+and put it on scripts/coccinelle/api ? Then hunt / convert things which
+will use DT as well and where this is actually useful / likely buggy.
 
+  Luis
