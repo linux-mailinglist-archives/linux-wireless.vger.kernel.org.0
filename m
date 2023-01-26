@@ -2,165 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D09AC67D6BE
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 21:47:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E6CA67D884
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 23:36:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232148AbjAZUrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 15:47:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53084 "EHLO
+        id S232333AbjAZWgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 17:36:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjAZUrK (ORCPT
+        with ESMTP id S231743AbjAZWge (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 15:47:10 -0500
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F9E24C95;
-        Thu, 26 Jan 2023 12:46:34 -0800 (PST)
-Received: by mail-lj1-x22f.google.com with SMTP id j15so2377945ljg.8;
-        Thu, 26 Jan 2023 12:46:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e8JRQs423qpWUog+nHFrhwfEo9FGIHhJlHpgtXHnAI8=;
-        b=CsuY8hOc0S6TR3cGDg1ExGVIPOKn+OqJ1OwxwuO0c8Gdz2WpuxTlcEP+ZPFz3Khu5F
-         475ELIhic+XXrq8MLA7tnMYq0CUF/u/GlT7ksJOKJ+9SF8OzL7cikSLpwu+vlDbPo/+v
-         o4EuGtkgRM1pipK8GTVOHiRBBm8I26P6qj66tdVgOb5Py5a7Xnz+q/qIjkt11N2zpMRk
-         xN/7D0VapK/jGTPA1fxq0lNuyZoliqV296SJh01eyNJvVjfwE6kjR69QdrmEEWNtAHP6
-         FV6cMMcQe0mHT0U22M/B9oceNBLNeLuwNd9o64spofEtq2H02/uA+JpZQT+o0gpoNMbs
-         6CCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e8JRQs423qpWUog+nHFrhwfEo9FGIHhJlHpgtXHnAI8=;
-        b=UIHs2FlG/AwJbe8bCVB1CKtACCL0AIA1YzjhTC6I8qb+WKPeoAWcBpiqFcNynVmjiM
-         7bD/LeObK29mjgpy3KX3jv7zK5c82l8VNUYY8bbvD6wNUo6vV0dKLaL3z9Y1XXWDmNQB
-         rJG/598q9JIc7++zX9ziuTAXGnBLBWdbRFyeTLEGYt1A+MYxTIL5VWVowpNr5i0Mepuu
-         aKxua3UQ8mIoTj+wxHwHCUnZ9uzWvokFBXATTKEGXMSts4Bf+1dg9U3sjj6ajExayMsG
-         caOnpxzkXhZ7gUkzDgbNj6EZHvUm4SPLrWvZ5uiQ09OFZ1IsY6KJ5Ir9q96tQ7FiN57D
-         ExkQ==
-X-Gm-Message-State: AFqh2kriAy5jud22BVB3t/ASu4f1BhZeABoXI6pQJYgZdWCjiQEZF2Dr
-        5P88w6q4VkqhQMV1D14twaNX+FxhK2l5BfZ6KmKfWCpVOrk=
-X-Google-Smtp-Source: AMrXdXu5PjFxdJB5hjmPujykCvCLIaf5NB7r9JeAmJ8eyeje/IITqH8iAEreW99bV6+d700rH1R32SF16e+bCJKaYpY=
-X-Received: by 2002:a2e:8e84:0:b0:289:ae03:644b with SMTP id
- z4-20020a2e8e84000000b00289ae03644bmr2348689ljk.66.1674765981705; Thu, 26 Jan
- 2023 12:46:21 -0800 (PST)
+        Thu, 26 Jan 2023 17:36:34 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017763C07
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 14:36:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674772587; x=1706308587;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5mRifkGlXc6XfDKZS86GYjYFLQ8aLEqQOg0lRpWkuBk=;
+  b=LeZdv9pjn2ah5VJ3QnnRcGQSPX+AVp31alp86g23/hnfYcNYfL5vKFU5
+   X/ZfsFhL75XxHoDnTZ6S1xN0wiZ5MllNphAYOfARnDt1Tzp53ToKBI3Oy
+   p1A8RJeKQIaJ02kCJwxluUsEPyHMAEyMB5Gv3nnAI60QG1JWosuf3sqmo
+   8z+mTY/wrIWZw+XvZ0ri8fF2RHTYWd23slR9R2ToTRKeE/uW5380CA3fM
+   aQRXzaPtAEDGsyOxdMOOKhxn8dlqbvj24Pj0EdpYJkvMdoDW3u5Wl/gcR
+   UiAD4Rya++r45Kb1jO++XOFm13R/PGYdn/vqN9lb9jt6N7AN2kHegzymM
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="329098535"
+X-IronPort-AV: E=Sophos;i="5.97,249,1669104000"; 
+   d="scan'208";a="329098535"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2023 14:28:50 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="612986116"
+X-IronPort-AV: E=Sophos;i="5.97,249,1669104000"; 
+   d="scan'208";a="612986116"
+Received: from razgilad-mobl7.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.211.193])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2023 14:28:48 -0800
+From:   gregory.greenman@intel.com
+To:     kvalo@kernel.org, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/12] iwlwifi: updates intended for v6.3 2023-01-27 
+Date:   Fri, 27 Jan 2023 00:28:09 +0200
+Message-Id: <20230126222821.305122-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <0d0de1bc949d24e08174205c13c0b59bd73c1ea8.1674384302.git.geert+renesas@glider.be>
- <167460363944.4058.4676712965831302643.git-patchwork-notify@kernel.org>
- <Y9FG5Wg0PmP4zfV6@google.com> <CABBYNZJEU-GD5J6K8_Ur4PWLvP10VNJGP7e_43H0=W3DOS=PNw@mail.gmail.com>
- <Y9IzMWnOq+r2/4V2@google.com>
-In-Reply-To: <Y9IzMWnOq+r2/4V2@google.com>
-From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date:   Thu, 26 Jan 2023 12:46:09 -0800
-Message-ID: <CABBYNZ+Na7os7D_C_iV22UhyhobxiETjKkngPWVr14QAph6DfQ@mail.gmail.com>
-Subject: Re: [PATCH v2] dt-bindings: leds: Document Bluetooth and WLAN triggers
-To:     Lee Jones <lee@kernel.org>
-Cc:     patchwork-bot+bluetooth@kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        jacek.anaszewski@gmail.com, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        robh@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Lee,
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-On Thu, Jan 26, 2023 at 12:00 AM Lee Jones <lee@kernel.org> wrote:
->
-> On Wed, 25 Jan 2023, Luiz Augusto von Dentz wrote:
->
-> > Hi Lee,
-> >
-> > On Wed, Jan 25, 2023 at 7:16 AM Lee Jones <lee@kernel.org> wrote:
-> > >
-> > > On Tue, 24 Jan 2023, patchwork-bot+bluetooth@kernel.org wrote:
-> > >
-> > > > Hello:
-> > > >
-> > > > This patch was applied to bluetooth/bluetooth-next.git (master)
-> > > > by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
-> > > >
-> > > > On Sun, 22 Jan 2023 11:47:27 +0100 you wrote:
-> > > > > Add the missing trigger patterns for Bluetooth and WLAN activity,=
- which
-> > > > > are already in active use.
-> > > > >
-> > > > > While at it, move the mmc pattern comment where it belongs, and r=
-estore
-> > > > > alphabetical sort order.
-> > > > >
-> > > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > > > Reviewed-by: Rob Herring <robh@kernel.org>
-> > > > >
-> > > > > [...]
-> > > >
-> > > > Here is the summary with links:
-> > > >   - [v2] dt-bindings: leds: Document Bluetooth and WLAN triggers
-> > > >     https://git.kernel.org/bluetooth/bluetooth-next/c/ef017002b93b
-> > >
-> > > Why are you taking LED patches through the Bluetooth tree?
-> >
-> > I assume there isn't a tree dedicated to dt-bindings/leds
->
-> % ./scripts/get_maintainer.pl -f Documentation/devicetree/bindings/leds/c=
-ommon.yaml
->  Pavel Machek <pavel@ucw.cz> (maintainer:LED SUBSYSTEM,in file)
->  Lee Jones <lee@kernel.org> (maintainer:LED SUBSYSTEM)
->  Rob Herring <robh+dt@kernel.org> (maintainer:OPEN FIRMWARE AND FLATTENED=
- DEVICE TREE BINDINGS)
->  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org> (maintainer:OPEN=
- FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
->  Jacek Anaszewski <jacek.anaszewski@gmail.com> (in file)
->  linux-leds@vger.kernel.org (open list:LED SUBSYSTEM)
->  devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE=
- TREE BINDINGS)
->  linux-kernel@vger.kernel.org (open list)
+Hi,
 
-Well this doesn't tell us what parts of the dt_bindings have a
-dedicated tree and which doesn't, anyway this doesn't show
-linux-bluetooth so I wonder why people are CCing it.
+Here is the second set of patches intended for v6.3. 
+It's the usual development, new features, cleanups and bugfixes.
 
-> > not to mention this was submitted to linux-bluetooth and nobody else
-> > other than Rob reviewed it,
->
-> To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
->     Rob Herring <robh+dt@kernel.org>,
->     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
->     Jacek Anaszewski <jacek.anaszewski@gmail.com>
-> Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
->     linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org,
->     linux-renesas-soc@vger.kernel.org,
->     Geert Uytterhoeven <geert+renesas@glider.be>,
->     Rob Herring <robh@kernel.org>
->
-> > anyway I'd be happy if the dt-bindings patches
-> > would be handled elsewhere.
->
-> Yep, we got this. :)
+The changes are:
+* WTSN improvement
+* Sniffer mode updates for EHT
+* Fixes and cleanups
+* Advancing FW API version
 
-So if it starts with dt-binding: prefix shall we ignore? Or is just
-for dt-bindings: leds? Or perhaps we can just ignore patches received
-as CC: rather than directly To: field.
+As usual, I'm pushing this to a pending branch, for kbuild bot,
+and will send a pull-request later.
 
->
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+Please review.
 
+Thanks,
+Gregory
 
+Avraham Stern (1):
+  wifi: iwlwifi: mvm: report hardware timestamps in RX/TX status
 
---=20
-Luiz Augusto von Dentz
+Ayala Barazani (1):
+  wifi: iwlwifi: mvm: Support STEP equalizer settings from BIOS.
+
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mention the response structure in the kerneldoc
+
+Golan Ben Ami (1):
+  wifi: iwlwifi: bump FW API to 74 for AX devices
+
+Gregory Greenman (2):
+  wifi: iwlwifi: mvm: always send nullfunc frames on MGMT queue
+  wifi: iwlwifi: mei: fix compilation errors in rfkill()
+
+Heiner Kallweit (1):
+  wifi: iwlwifi: improve tag handling in iwl_request_firmware
+
+Mordechay Goodstein (3):
+  wifi: iwlwifi: rx: add sniffer support for EHT mode
+  wifi: iwlwifi: mvm: add sniffer meta data APIs
+  wifi: iwlwifi: mvm: simplify by using SKB MAC header pointer
+
+Mukesh Sisodiya (1):
+  wifi: iwlwifi: mvm: Reset rate index if rate is wrong
+
+Tom Rix (1):
+  wifi: iwlwifi: mvm: remove h from printk format specifier
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |   2 +-
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  19 ++
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  | 138 +++++++++++++-
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    | 145 ++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   1 +
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  59 +++++-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |  19 +-
+ .../intel/iwlwifi/iwl-context-info-gen3.h     |  21 ++-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  12 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |   4 +
+ drivers/net/wireless/intel/iwlwifi/mei/main.c |   6 +-
+ .../net/wireless/intel/iwlwifi/mvm/Makefile   |   1 +
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   6 +-
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   8 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  13 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  80 ++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   8 +
+ .../wireless/intel/iwlwifi/mvm/time-sync.c    | 176 ++++++++++++++++++
+ .../wireless/intel/iwlwifi/mvm/time-sync.h    |  30 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  12 +-
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |   5 +
+ 22 files changed, 697 insertions(+), 72 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/time-sync.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/time-sync.h
+
+-- 
+2.38.1
+
