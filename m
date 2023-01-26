@@ -2,104 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 717D667C83F
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 11:17:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 266EF67C895
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 11:31:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236508AbjAZKRR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 05:17:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+        id S236251AbjAZKbJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 05:31:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236355AbjAZKRQ (ORCPT
+        with ESMTP id S230178AbjAZKbI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 05:17:16 -0500
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78E953430A;
-        Thu, 26 Jan 2023 02:16:47 -0800 (PST)
-Received: by mail-pg1-x529.google.com with SMTP id 7so762253pga.1;
-        Thu, 26 Jan 2023 02:16:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N25kb8917DsEocMyJFvAiiipeCXaDAmvWVoSKk7Ucb0=;
-        b=J7dO80kzV3/qF3wGrZBEcsJCeJEp5R/pt3hGmXvqpAEmso/l5D0u0sgHZ9RX0xvomZ
-         2dXKQeZ7zV7XD2xGzCpF9px9ss3aPwnTXgST9A0Uwgza423jYi/HHbKXn30hs8pHiu2p
-         A2YvV4WXVMrfd404HQKm2lhJdiefVdJ4hka/Wv7qWnUBsu58j6fWmc6KHywb2EbEnaO/
-         xa6eVNhGPFffCvLG0vLIpx5VjW6WGgpcFIYtC3JAbXzwpovK5GFHnDCw15gLnss4zqiB
-         OZ89/CLLoE1HbK/sNFKMwqmug8CSOfk1w27usyit/ZFFB+ffZtyYuWW5HfDSWLOpaEip
-         1ODA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N25kb8917DsEocMyJFvAiiipeCXaDAmvWVoSKk7Ucb0=;
-        b=d7tT/ZEg+U4KJdUUCbRB/IGawtYqjojxXjpD97tfQUjAMK48sfwlKYqMgsbeuM42ZS
-         UZXMGn0+qzNAdsodTZatfuJcN2PB6yofF1o/Hb3qqSY8GxbUkAH51jnFYeHXvTWhWfsE
-         aU+A+VRC0jgzxfhJfORsDSzmqotu1kA8PaGtclft7A0hLQARNoZarJWBc/9Tc19wJA+B
-         K7KBJryqsnYvYNnNwoLVPtycZ4R30qhToPsF2hgqWkdTsBX+4/M1zb6Wff/Ksb95diyp
-         4gkbjPlw3zEhAX+lM6aawPPnnUViPnJuh44ZNJ8pHjno6ZUNNGNTwy738iNuF988X3nA
-         TnqA==
-X-Gm-Message-State: AFqh2kreLO9SqagSEpc20Rwnl4FoioVCN8YKcSvJHqXcmN1ICYhXLCLq
-        aslU4u8FU4fwJv87StA1c+HBEUb0C4hbYZNQNg0=
-X-Google-Smtp-Source: AMrXdXuMrEBm+4oiJayh39LZrd1yppbt7a1PGYiFSqbjJHTWfkPRXLJ75/k1Yg/4x1L+XesT/pbGxb/r2VgM0gsID0k=
-X-Received: by 2002:aa7:9010:0:b0:578:6897:597c with SMTP id
- m16-20020aa79010000000b005786897597cmr4172567pfo.35.1674728206647; Thu, 26
- Jan 2023 02:16:46 -0800 (PST)
-MIME-Version: 1.0
-References: <20230124110057.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
-In-Reply-To: <20230124110057.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Thu, 26 Jan 2023 11:16:35 +0100
-Message-ID: <CAOiHx=niyEho+tJJ-dvOr3wOYiEOsvCvvJbxQvXGGoHbdxFhBQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] wifi: ath11k: Use platform_get_irq() to get the interrupt
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>,
-        junyuu@chromium.org, Kalle Valo <kvalo@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
+        Thu, 26 Jan 2023 05:31:08 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23CD34014
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 02:31:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=Ang0T1CjTMF7XS5S6tGypgX3zgYghdcNj7spIodOMrk=;
+        t=1674729064; x=1675938664; b=JRSG7TK+Y8dQFKEGbiBK0lnfo3doCt8FCwiDBttywj2ElLN
+        W+B5x8W/prtMdvy1swlpWfXCgSBTvsnANPhmQFIQtQuNbX+XIVPAhzqvX3pLwc/+sqWquaPNzwyxY
+        qLAZ37AFys20yMrwLtgQ5M7SYqmF5fsPBfyASx4vu0slPraa29nQiLfwDVp8ke/B+n1N/tRU97ALU
+        /1cSIEeHIMwqQJ6eqV/S1N0nPibUrRUMOkyBm4OmVnAC7MpYuBz6bhT4gKKF++8aZpjnXXt3xsd4Y
+        +kG94cIFQFZ5Q7gO/lqoXf+WrlR7P9bE4B8OA6K625NqNFMljfdzitibQe++ECAw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pKzX3-00CctT-2g;
+        Thu, 26 Jan 2023 11:31:01 +0100
+Message-ID: <8ae3732af14499d35704afe7c246d173af091b4e.camel@sipsolutions.net>
+Subject: Re: [PATCH] nl80211: Allow authentication frames and set keys on
+ NAN interface
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Vinay Gannevaram <quic_vganneva@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 26 Jan 2023 11:31:00 +0100
+In-Reply-To: <1674568319-27964-1-git-send-email-quic_vganneva@quicinc.com>
+References: <1674568319-27964-1-git-send-email-quic_vganneva@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 24 Jan 2023 at 20:05, Douglas Anderson <dianders@chromium.org> wrote:
->
-> For the same reasons talked about in commit 9503a1fc123d ("ath9k: Use
-> platform_get_irq() to get the interrupt"), we should be using
-> platform_get_irq() in ath11k. Let's make the switch.
->
-> Without this change, WiFi wasn't coming up on my Qualcomm sc7280-based
-> hardware. Specifically, "platform_get_resource(pdev, IORESOURCE_IRQ,
-> i)" was failing even for i=0. Digging into the platform device there
-> truly were no IRQs present in the list of resources when the call was
-> made.
->
-> I didn't dig into what changed between 5.15 (where
-> platform_get_resource() seems to work) and mainline Linux (where it
-> doesn't). Given the zeal robot report for ath9k I assume it's a known
-> issue. I'll mark this as "fixing" the patch that introduced the
-> platform_get_resource() call since it should have always been fine to
-> just call platform_get_irq() and that'll make sure it goes back as far
-> as it needs to go.
+On Tue, 2023-01-24 at 19:21 +0530, Vinay Gannevaram wrote:
+> Wi-Fi Aware R4 specification defines NAN Pairing which uses PASN handshak=
+e
+> to authenticate the peer and generate keys. Hence allow to register and t=
+ransmit
+> the PASN authentication frames on NAN interface and set the keys to drive=
+r or
+> underlying modules on NAN interface
+>=20
 
-Since I recently stumbled upon this in a different (external) driver,
-it's likely a1a2b7125e10 ("of/platform: Drop static setup of IRQ
-resource from DT core").
+I'd be a little worried that there are drivers not expecting this -
+maybe needs a feature flag? even for userspace to understand if it's
+available?
 
-Regards
-Jonas
+johannes
