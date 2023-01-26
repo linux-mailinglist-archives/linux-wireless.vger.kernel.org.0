@@ -2,50 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC3267C4B7
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 08:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97AC267C558
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 09:01:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233508AbjAZHOe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 02:14:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47238 "EHLO
+        id S236251AbjAZIBG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 03:01:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233264AbjAZHOc (ORCPT
+        with ESMTP id S236249AbjAZIBD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 02:14:32 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC6E04940D;
-        Wed, 25 Jan 2023 23:14:30 -0800 (PST)
+        Thu, 26 Jan 2023 03:01:03 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5317669B23;
+        Thu, 26 Jan 2023 00:00:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5387BB81CFE;
-        Thu, 26 Jan 2023 07:14:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBC9C4339C;
-        Thu, 26 Jan 2023 07:14:27 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id BBB69CE0FE6;
+        Thu, 26 Jan 2023 08:00:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ED4C4339B;
+        Thu, 26 Jan 2023 08:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674717268;
-        bh=2buijH5NC03JTe4ruxSgx6ayDJXbPvvqXaW977NwBNw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KrN3PHd+UbX/mQnRrPrHxU3oxNZUTe7VLsZ1geNM4mbrHxAV6s4TdG5CBZCpA41xV
-         jHT4HiWjxyO46LiVhTM5bkbNTRVzLdODPYsOCLdcPWqD+7r/bJefi/K0CqsjtMeINv
-         IKAX/+DY2KLvFgf0RizXERcJYFQZ8vs3WAAyTuXMZX17gpUZge42XwJfjfaa5T7VGw
-         9gJk9qEj3nZlIZPVBTQssj4w/oI3QuctdRXh2yrYzvYrLPbnSesFS4LBe4Ia88u2xb
-         xY9FjHJWgz1e24PfS2NAM5smvyuMFyJ8Jefd3MieusY1Pi1ga7zSqRXfAW3U+7uIXq
-         WIKjo9BEOLz1Q==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     davem@davemloft.net
-Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-        Jakub Kicinski <kuba@kernel.org>, kvalo@kernel.org,
-        martin.lau@kernel.org, ast@kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH net-next 01/11] net: add missing includes of linux/net.h
-Date:   Wed, 25 Jan 2023 23:14:14 -0800
-Message-Id: <20230126071424.1250056-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230126071424.1250056-1-kuba@kernel.org>
-References: <20230126071424.1250056-1-kuba@kernel.org>
+        s=k20201202; t=1674720056;
+        bh=w0GyxWtuZcSCJLuH4x+Imjzwl60UHza1uCdMsCstLZ8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=In7j/G3aHj0zUfdQn9EUP96LDFSx8DSrzm8RD3NDnpy15PMsiUtL0U7JIiRMPSUag
+         +9DAns2GS9mFk0oKN9/ixWhHGTYa4t86Ow4n9LOORddrI52CtVC/smabFlaGjfSUWU
+         j5jl7qZ/fFpHEruQI5KrLy0JYrUZBSJE6PAC7UiYo5mOpGkIbLw5PJW2wDvjWt6TxE
+         85Hd3wcczhWI4GYDrbWoOeX83mk7jKmkGdIhHXTdCmtVML8ZxBw1t7sSz/bsfLS2T8
+         FqfPyQkCfzj6mjaJ8Ko5iGeyttiKTIFIysh98qTRp5dUYw4lxK5AjRVQBzYUQXWiup
+         XOYhf9wX0SBqw==
+Date:   Thu, 26 Jan 2023 08:00:49 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc:     patchwork-bot+bluetooth@kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        jacek.anaszewski@gmail.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        robh@kernel.org
+Subject: Re: [PATCH v2] dt-bindings: leds: Document Bluetooth and WLAN
+ triggers
+Message-ID: <Y9IzMWnOq+r2/4V2@google.com>
+References: <0d0de1bc949d24e08174205c13c0b59bd73c1ea8.1674384302.git.geert+renesas@glider.be>
+ <167460363944.4058.4676712965831302643.git-patchwork-notify@kernel.org>
+ <Y9FG5Wg0PmP4zfV6@google.com>
+ <CABBYNZJEU-GD5J6K8_Ur4PWLvP10VNJGP7e_43H0=W3DOS=PNw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABBYNZJEU-GD5J6K8_Ur4PWLvP10VNJGP7e_43H0=W3DOS=PNw@mail.gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,45 +63,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-linux/net.h will soon not be included by linux/skbuff.h.
-Fix the cases where source files were depending on the implicit
-include.
+On Wed, 25 Jan 2023, Luiz Augusto von Dentz wrote:
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: kvalo@kernel.org
-CC: martin.lau@kernel.org
-CC: ast@kernel.org
-CC: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/intersil/orinoco/hermes.c | 1 +
- include/linux/igmp.h                           | 1 +
- 2 files changed, 2 insertions(+)
+> Hi Lee,
+> 
+> On Wed, Jan 25, 2023 at 7:16 AM Lee Jones <lee@kernel.org> wrote:
+> >
+> > On Tue, 24 Jan 2023, patchwork-bot+bluetooth@kernel.org wrote:
+> >
+> > > Hello:
+> > >
+> > > This patch was applied to bluetooth/bluetooth-next.git (master)
+> > > by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+> > >
+> > > On Sun, 22 Jan 2023 11:47:27 +0100 you wrote:
+> > > > Add the missing trigger patterns for Bluetooth and WLAN activity, which
+> > > > are already in active use.
+> > > >
+> > > > While at it, move the mmc pattern comment where it belongs, and restore
+> > > > alphabetical sort order.
+> > > >
+> > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > > >
+> > > > [...]
+> > >
+> > > Here is the summary with links:
+> > >   - [v2] dt-bindings: leds: Document Bluetooth and WLAN triggers
+> > >     https://git.kernel.org/bluetooth/bluetooth-next/c/ef017002b93b
+> >
+> > Why are you taking LED patches through the Bluetooth tree?
+> 
+> I assume there isn't a tree dedicated to dt-bindings/leds
 
-diff --git a/drivers/net/wireless/intersil/orinoco/hermes.c b/drivers/net/wireless/intersil/orinoco/hermes.c
-index 256946552742..4888286727ff 100644
---- a/drivers/net/wireless/intersil/orinoco/hermes.c
-+++ b/drivers/net/wireless/intersil/orinoco/hermes.c
-@@ -38,6 +38,7 @@
-  * under either the MPL or the GPL.
-  */
- 
-+#include <linux/net.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/delay.h>
-diff --git a/include/linux/igmp.h b/include/linux/igmp.h
-index 78890143f079..b19d3284551f 100644
---- a/include/linux/igmp.h
-+++ b/include/linux/igmp.h
-@@ -15,6 +15,7 @@
- #include <linux/in.h>
- #include <linux/ip.h>
- #include <linux/refcount.h>
-+#include <linux/sockptr.h>
- #include <uapi/linux/igmp.h>
- 
- static inline struct igmphdr *igmp_hdr(const struct sk_buff *skb)
+% ./scripts/get_maintainer.pl -f Documentation/devicetree/bindings/leds/common.yaml
+ Pavel Machek <pavel@ucw.cz> (maintainer:LED SUBSYSTEM,in file)
+ Lee Jones <lee@kernel.org> (maintainer:LED SUBSYSTEM)
+ Rob Herring <robh+dt@kernel.org> (maintainer:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org> (maintainer:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+ Jacek Anaszewski <jacek.anaszewski@gmail.com> (in file)
+ linux-leds@vger.kernel.org (open list:LED SUBSYSTEM)
+ devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+ linux-kernel@vger.kernel.org (open list)
+
+> not to mention this was submitted to linux-bluetooth and nobody else
+> other than Rob reviewed it,
+
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+    Rob Herring <robh+dt@kernel.org>,
+    Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+    Jacek Anaszewski <jacek.anaszewski@gmail.com>                                      
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+    linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+    linux-renesas-soc@vger.kernel.org,
+    Geert Uytterhoeven <geert+renesas@glider.be>,
+    Rob Herring <robh@kernel.org>
+
+> anyway I'd be happy if the dt-bindings patches
+> would be handled elsewhere.
+
+Yep, we got this. :)
+
 -- 
-2.39.1
-
+Lee Jones [李琼斯]
