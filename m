@@ -2,108 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56AA767D891
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Jan 2023 23:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A6467DA89
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 01:16:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233018AbjAZWgy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 17:36:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38360 "EHLO
+        id S229448AbjA0AQB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Jan 2023 19:16:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233238AbjAZWgn (ORCPT
+        with ESMTP id S229681AbjA0AP6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 17:36:43 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341DC37F00
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 14:36:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674772601; x=1706308601;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iygedBPO5jUtaM9KdJmA4GjW+aAo0AXJJGGZYuCd+ZI=;
-  b=IfWepGkYVvw0dU3n4HLrD1OuZ67YM+wl9IXhRpuXeiKc2R9ERRCPfIb9
-   apxpwbku+LcqD+e78mQMvQddSrzp1N99yjwXzeKNgsmC+knV0mCkWnFWq
-   cr9NFWPggm6vef5ydL5krzHg72Uqs9ITacv9N1wwXw3qOLEIQyYiG3YEW
-   XufYGN5pO6IVpUB2yGh3FcPHH1EaZ8HAtbrzfjIHXoLJOUdYlDLdJxeJ9
-   Xlivt/RJCLm/CIm6BZFBUaTIYKTXww4UzrxM9ykVtaXJSlIqt5hPxc9Xy
-   qJ5qUd4WT/gsoHPHVe4J45aK8iNCekG3C9VMh5rHepuSAYUQ35L8bP6Y2
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="329098777"
-X-IronPort-AV: E=Sophos;i="5.97,249,1669104000"; 
-   d="scan'208";a="329098777"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2023 14:29:41 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="612986328"
-X-IronPort-AV: E=Sophos;i="5.97,249,1669104000"; 
-   d="scan'208";a="612986328"
-Received: from razgilad-mobl7.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.211.193])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2023 14:29:40 -0800
-From:   gregory.greenman@intel.com
-To:     kvalo@kernel.org, johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/12] wifi: iwlwifi: mei: fix compilation errors in rfkill()
-Date:   Fri, 27 Jan 2023 00:28:21 +0200
-Message-Id: <20230126222821.305122-2-gregory.greenman@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230126222821.305122-1-gregory.greenman@intel.com>
-References: <20230126222821.305122-1-gregory.greenman@intel.com>
+        Thu, 26 Jan 2023 19:15:58 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 215547375B
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 16:15:25 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id qx13so9495241ejb.13
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 16:15:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m9gs0dujYLDK5Km9E6B0zUz0zQnJrvjlEkzrn/38rjE=;
+        b=k+StCfZrhSYGIQk1shkv2rEzQETfPAXTVQlXYvtrSHn7IDgrZ5C+gvwr2djjaxHyIB
+         sp0ahWWcmN22OMeZ9rqSuCVF7uWeulh/yJed6vw/BUC1T/fN1x2Z4VsES/HJgyTdoscA
+         dxXUa2uc0n+Fm1zAqzu1T01X7FlO+xZwgW0Xc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m9gs0dujYLDK5Km9E6B0zUz0zQnJrvjlEkzrn/38rjE=;
+        b=Okw+iTrOOYlksyKOKaf4+896arJm/7gHemBCyHgX8qzP5ptmBvRXtFIH57Oj7JBJ3T
+         CBXUhzcHBnUhAteEKdj8JLV4PKRG/1HaClb706LhwygRwIAtV1JFKQRMDWnlpS2ypR2f
+         A4Nsp0kqU92TxJf7RQS/aGAbAkLIMmjc/NiPeNbUzVW5gTbolkSts2o0IMnz1wGAnFuM
+         izm/EXf1YwDpXzXd4YgBFjE4ZBcZlXcWr3NNd4oGU30yHUWVdr3DqoN6ANR4HyJq8sjr
+         b6aVNKwtqd7RjkKCqlP+RF3tvNG/4Zni3Xtrd6ElY+ODfosIMBHu9tcmb/AvGiHKnZY7
+         BQ8A==
+X-Gm-Message-State: AFqh2krKO+aVDRBgDbI1U/4OVmvIE1krfDYg/H6dRxYmVcVIbSgn7/4R
+        xMxJ9PhCw3vrUdEHHprquAlU6E2s/szf2Wb9/vo=
+X-Google-Smtp-Source: AMrXdXuzP4KrLV0RcxMpTTLSfjXsKoWOsN7v2V6kbzAOSF9YYnN5esXRyJ8OvD+wEd50swqFurEYaw==
+X-Received: by 2002:a17:906:8618:b0:877:5772:25f with SMTP id o24-20020a170906861800b008775772025fmr35024748ejx.60.1674778499906;
+        Thu, 26 Jan 2023 16:14:59 -0800 (PST)
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com. [209.85.221.41])
+        by smtp.gmail.com with ESMTPSA id b18-20020a170906709200b0087bd2ebe474sm27798ejk.208.2023.01.26.16.14.56
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jan 2023 16:14:57 -0800 (PST)
+Received: by mail-wr1-f41.google.com with SMTP id q5so3567895wrv.0
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Jan 2023 16:14:56 -0800 (PST)
+X-Received: by 2002:a5d:6b51:0:b0:2bf:c5cc:e1d6 with SMTP id
+ x17-20020a5d6b51000000b002bfc5cce1d6mr97439wrw.659.1674778496421; Thu, 26 Jan
+ 2023 16:14:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230124110057.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
+ <Y9LODwJPQpPs32Ds@bombadil.infradead.org>
+In-Reply-To: <Y9LODwJPQpPs32Ds@bombadil.infradead.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 26 Jan 2023 16:14:42 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WEQL+Kik9ZkvtzNKN+-ofZ=-g3OzyUnnJc7PWnRzLdEw@mail.gmail.com>
+Message-ID: <CAD=FV=WEQL+Kik9ZkvtzNKN+-ofZ=-g3OzyUnnJc7PWnRzLdEw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] wifi: ath11k: Use platform_get_irq() to get the interrupt
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Youghandhar Chintala <quic_youghand@quicinc.com>,
+        junyuu@chromium.org, Kalle Valo <kvalo@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+Hi,
 
-The rfkill() callback was invoked with wrong parameters.
-It was missed since MEI is defined now as depending on BROKEN.
-Fix that.
+On Thu, Jan 26, 2023 at 11:01 AM Luis Chamberlain <mcgrof@kernel.org> wrote:
+>
+> On Tue, Jan 24, 2023 at 11:01:00AM -0800, Douglas Anderson wrote:
+> > For the same reasons talked about in commit 9503a1fc123d ("ath9k: Use
+> > platform_get_irq() to get the interrupt"), we should be using
+> > platform_get_irq() in ath11k. Let's make the switch.
+>
+> The commit log is rather weak, it is better to re-state what the commit
+> log in 9503a1fc123d states as it is stronger, and very clear.
 
-Fixes: d288067ede4b ("wifi: iwlwifi: mei: avoid blocking sap messages handling due to rtnl lock")
-Fixes: 5aa7ce31bd84 ("wifi: iwlwifi: mei: make sure ownership confirmed message is sent")
-Fixes: 95170a46b7dd ("wifi: iwlwifi: mei: don't send SAP commands if AMT is disabled")
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Sure. Adding in the info that Jonas provided about what commit
+specifically broke me would also be nice. I'll try to send out a new
+CL with improved wording tomorrow.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index f9d11935ed97..67dfb77fedf7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -788,7 +788,7 @@ static void iwl_mei_handle_amt_state(struct mei_cl_device *cldev,
- 	if (mei->amt_enabled)
- 		iwl_mei_set_init_conf(mei);
- 	else if (iwl_mei_cache.ops)
--		iwl_mei_cache.ops->rfkill(iwl_mei_cache.priv, false, false);
-+		iwl_mei_cache.ops->rfkill(iwl_mei_cache.priv, false);
- 
- 	schedule_work(&mei->netdev_work);
- 
-@@ -829,7 +829,7 @@ static void iwl_mei_handle_csme_taking_ownership(struct mei_cl_device *cldev,
- 		 */
- 		mei->csme_taking_ownership = true;
- 
--		iwl_mei_cache.ops->rfkill(iwl_mei_cache.priv, true, true);
-+		iwl_mei_cache.ops->rfkill(iwl_mei_cache.priv, true);
- 	} else {
- 		iwl_mei_send_sap_msg(cldev,
- 				     SAP_MSG_NOTIF_CSME_OWNERSHIP_CONFIRMED);
-@@ -1774,7 +1774,7 @@ int iwl_mei_register(void *priv, const struct iwl_mei_ops *ops)
- 			if (mei->amt_enabled)
- 				iwl_mei_send_sap_msg(mei->cldev,
- 						     SAP_MSG_NOTIF_WIFIDR_UP);
--			ops->rfkill(priv, mei->link_prot_state, false);
-+			ops->rfkill(priv, mei->link_prot_state);
- 		}
- 	}
- 	ret = 0;
--- 
-2.38.1
 
+> To that end. Why not write an SmPL Coccinelle grammer patch for this
+> and put it on scripts/coccinelle/api ? Then hunt / convert things which
+> will use DT as well and where this is actually useful / likely buggy.
+
+That sounds like a great idea. ...but not something I'm going to do.
+I'm not personally on a mission to track down everyone hitting this
+particular issue. Hopefully those that were involved in commit
+a1a2b7125e10 ("of/platform: Drop static setup of IRQ resource from DT
+core") made some effort to hunt problems down and it seems like,
+maybe, the zeal robot was part of that effort? In my case, the ath11k
+bug hit me and that's what I need fixed. I tried to be a friendly
+citizen and also fixup ath5k because it was super obvious that it was
+the same issue and the same code.
+
+-Doug
