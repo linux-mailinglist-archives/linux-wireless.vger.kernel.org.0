@@ -2,68 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBD5367EDD6
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 19:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE87267EF1C
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 21:04:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232155AbjA0Ss5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Jan 2023 13:48:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S229468AbjA0UEa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Jan 2023 15:04:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231962AbjA0Sst (ORCPT
+        with ESMTP id S233254AbjA0UEK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Jan 2023 13:48:49 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED06086EBC
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Jan 2023 10:48:17 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30REs3CM006507;
-        Fri, 27 Jan 2023 18:47:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=rOelrGtj1bwuwdcd2F3b40zFFYD91MRqsAvsvUzrXpw=;
- b=IaWEo9wPtHv71l4pi8rr2bRlP+hlhiFsiSbRvDDbEfpyu7PlgKFoZ99A56oNIZzsrGvl
- 2DeYqQf2IrJE+fGDPNP0wFNyimE7RXXob5gJv+IlF7jOWyR1a0lgCzaA/t/PRexgkHpb
- QqXJ1PadPHP3eaZLqwcb583jYg2rq7IXJkHy38JbkyqmnGnjmib4mXiMDKfChGxP9pR5
- MNtod4AZhoQb8hcIhQ7q2s0raDeYAmUIuowX/4cmWiQn3JUJ0c5rAY3MeQmmfBxIl8hf
- +wqmcQ7qUgXdv9iPtM81zZr67X7HpWo758ZqJhBWUSTN69+PF6ltZSwgUzoUW60tL5Mo JA== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nc956s51q-1
+        Fri, 27 Jan 2023 15:04:10 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D2112F20
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Jan 2023 12:02:28 -0800 (PST)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30RJeT8Y003894;
+        Fri, 27 Jan 2023 20:02:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=kU7XYuKyzW8hQcA0tQEyAxxlKHY2nKRVd4ER+ogj5nk=;
+ b=EUz3sAd8G61a3kzs4cG3C3k7p9wOSAW+3VSg08cTA19a4/m6c1Tg0M12U81X9GQcGIZz
+ urP1M50W4PEyImT74QwmzOWfGJVTqTPtwWujwS7Y3X5Lrvvq6UW23IMPdHvS8lTPS5IT
+ oMazUs/SO28PujtelP5MkVyZVZUvN5BRpFi+XsVCxkRquktOlIHLvu/b/ssQBujMBM89
+ zfCP9lLQJL8lkY+OQbvmmct/xfuOSfCfcD0Ym8e02sWvluVrd+5+7M0DtpkTcMwogowo
+ sYUZjiTHxocPzCMmYQ+RqGTpqinMMbeaT9Iry/NWNPdlH8iDXOHpNFrpIQwCKiEmS9qQ SQ== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nc9yss8bm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Jan 2023 18:47:49 +0000
-Received: from nasanex01a.na.qualcomm.com ([10.52.223.231])
-        by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30RIlmOT029513
+        Fri, 27 Jan 2023 20:02:23 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30RK2MvE032686
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Jan 2023 18:47:48 GMT
-Received: from hu-vganneva-hyd.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.36; Fri, 27 Jan 2023 10:47:47 -0800
-From:   Vinay Gannevaram <quic_vganneva@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2] nl80211: Allow authentication frames and set keys on NAN interface
-Date:   Sat, 28 Jan 2023 00:17:36 +0530
-Message-ID: <1674845256-4300-1-git-send-email-quic_vganneva@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        Fri, 27 Jan 2023 20:02:22 GMT
+Received: from [10.48.245.22] (10.49.16.6) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 27 Jan
+ 2023 12:02:22 -0800
+Message-ID: <dfce2942-cb1c-0990-319d-f47e5ccd953f@quicinc.com>
+Date:   Fri, 27 Jan 2023 12:02:21 -0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH] wifi: mac80211: mlme: handle EHT channel puncturing
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     Muna Sinada <quic_msinada@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>
+References: <20230127123930.4fbc74582331.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+Content-Language: en-US
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <20230127123930.4fbc74582331.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Th74YNptj8cNYts4ckSaoSuWXmf1l0Rv
-X-Proofpoint-ORIG-GUID: Th74YNptj8cNYts4ckSaoSuWXmf1l0Rv
+X-Proofpoint-ORIG-GUID: oVpzBXReX4zNJo5LnAy326J3wqT_w4xb
+X-Proofpoint-GUID: oVpzBXReX4zNJo5LnAy326J3wqT_w4xb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-27_12,2023-01-27_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 priorityscore=1501
- bulkscore=0 suspectscore=0 malwarescore=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301270173
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1011 mlxscore=0 phishscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 impostorscore=0 mlxlogscore=543 spamscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301270184
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,95 +80,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wi-Fi Aware R4 specification defines NAN Pairing which uses PASN handshake
-to authenticate the peer and generate keys. Hence allow to register and transmit
-the PASN authentication frames on NAN interface and set the keys to driver or
-underlying modules on NAN interface.
+On 1/27/2023 3:39 AM, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> Handle the Puncturing info received from the AP in the
+> EHT Operation element in beacons.
+> 
+> +
+> +static bool ieee80211_valid_disable_subchannel_bitmap(u16 *bitmap,
+> +						      enum nl80211_chan_width bw)
 
-The driver needs to configure the feature flag NL80211_EXT_FEATURE_SECURE_NAN,
-which also helps userspace modules to know if the driver supports secure NAN.
-
-Signed-off-by: Vinay Gannevaram <quic_vganneva@quicinc.com>
----
-v2:
- - Add feature flag to indicate SECURE_NAN support from driver
----
- include/uapi/linux/nl80211.h |  5 +++++
- net/wireless/nl80211.c       | 14 +++++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 8ecb0fb..07352a9 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -6296,6 +6296,10 @@ enum nl80211_feature_flags {
-  *	might apply, e.g. no scans in progress, no offchannel operations
-  *	in progress, and no active connections.
-  *
-+ * @NL80211_EXT_FEATURE_SECURE_NAN: Device supports NAN Pairing which enables
-+ *	authentication, data encryption and message integrity.
-+ *
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -6364,6 +6368,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_FILS_CRYPTO_OFFLOAD,
- 	NL80211_EXT_FEATURE_RADAR_BACKGROUND,
- 	NL80211_EXT_FEATURE_POWERED_ADDR_CHANGE,
-+	NL80211_EXT_FEATURE_SECURE_NAN,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 64cf611..cf96d63 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1548,10 +1548,13 @@ static int nl80211_key_allowed(struct wireless_dev *wdev)
- 		if (wdev->connected)
- 			return 0;
- 		return -ENOLINK;
-+	case NL80211_IFTYPE_NAN:
-+		if (wiphy_ext_feature_isset(wdev->wiphy,
-+					    NL80211_EXT_FEATURE_SECURE_NAN))
-+			return 0;
- 	case NL80211_IFTYPE_UNSPECIFIED:
- 	case NL80211_IFTYPE_OCB:
- 	case NL80211_IFTYPE_MONITOR:
--	case NL80211_IFTYPE_NAN:
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 	case NL80211_IFTYPE_WDS:
- 	case NUM_NL80211_IFTYPES:
-@@ -12253,6 +12256,9 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+		if (wiphy_ext_feature_isset(wdev->wiphy,
-+					    NL80211_EXT_FEATURE_SECURE_NAN))
-+			break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -12310,6 +12316,9 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	case NL80211_IFTYPE_P2P_GO:
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+		if (wiphy_ext_feature_isset(wdev->wiphy,
-+					    NL80211_EXT_FEATURE_SECURE_NAN))
-+			break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -12447,6 +12456,9 @@ static int nl80211_tx_mgmt_cancel_wait(struct sk_buff *skb, struct genl_info *in
- 	case NL80211_IFTYPE_P2P_DEVICE:
- 		break;
- 	case NL80211_IFTYPE_NAN:
-+		if (wiphy_ext_feature_isset(wdev->wiphy,
-+					    NL80211_EXT_FEATURE_SECURE_NAN))
-+			break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
--- 
-2.7.4
+Please export this function instead of making it static as we need to 
+use it for AP mode as well.
+Thanks.
 
