@@ -2,38 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B01A67E7C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 15:08:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 559C867E7FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 15:17:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233014AbjA0OIm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Jan 2023 09:08:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53526 "EHLO
+        id S232100AbjA0ORP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Jan 2023 09:17:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233231AbjA0OIl (ORCPT
+        with ESMTP id S229898AbjA0OQz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Jan 2023 09:08:41 -0500
-X-Greylist: delayed 331 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 Jan 2023 06:08:39 PST
-Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4CB2113C0
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Jan 2023 06:08:39 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        Fri, 27 Jan 2023 09:16:55 -0500
+X-Greylist: delayed 395 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 Jan 2023 06:16:53 PST
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [IPv6:2a01:4f8:150:2161:1:b009:f236:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F362829E34
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Jan 2023 06:16:53 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
          client-signature RSA-PSS (4096 bits) client-digest SHA256)
         (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by mailout1.hostsharing.net (Postfix) with ESMTPS id 324C0100A854F;
-        Fri, 27 Jan 2023 15:01:08 +0100 (CET)
+        by mailout3.hostsharing.net (Postfix) with ESMTPS id AD42A101F4041;
+        Fri, 27 Jan 2023 15:10:14 +0100 (CET)
 Received: from localhost (unknown [89.246.108.87])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id 0B5DD602EB97;
-        Fri, 27 Jan 2023 15:01:08 +0100 (CET)
-X-Mailbox-Line: From 111c7ee895f12d951e95a2edcd06d87ca26a7d0f Mon Sep 17 00:00:00 2001
-Message-Id: <cover.1674827105.git.lukas@wunner.de>
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 58D2F6029A9F;
+        Fri, 27 Jan 2023 15:10:14 +0100 (CET)
+X-Mailbox-Line: From 320de5005ff3b8fd76be2d2b859fd021689c3681 Mon Sep 17 00:00:00 2001
+Message-Id: <320de5005ff3b8fd76be2d2b859fd021689c3681.1674827105.git.lukas@wunner.de>
+In-Reply-To: <cover.1674827105.git.lukas@wunner.de>
+References: <cover.1674827105.git.lukas@wunner.de>
 From:   Lukas Wunner <lukas@wunner.de>
-Date:   Fri, 27 Jan 2023 15:00:00 +0100
-Subject: [PATCH 0/3] mwifiex material for next
+Date:   Fri, 27 Jan 2023 15:01:00 +0100
+Subject: [PATCH 1/3] wifi: mwifiex: Add missing compatible string for SD8787
 To:     Kalle Valo <kvalo@kernel.org>,
         Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
@@ -41,40 +43,38 @@ To:     Kalle Valo <kvalo@kernel.org>,
         Xinming Hu <huxinming820@gmail.com>
 Cc:     linux-wireless@vger.kernel.org, Sherry Sun <sherry.sun@nxp.com>,
         Matt Ranostay <mranostay@ti.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Amend mwifiex with a missing compatible string, add support for
-SD8978 chips (aka IW416) and silence a gratuitous message on probe.
+Commit e3fffc1f0b47 ("devicetree: document new marvell-8xxx and
+pwrseq-sd8787 options") documented a compatible string for SD8787 in
+the devicetree bindings, but neglected to add it to the mwifiex driver.
 
-The firmware for SD8978 is available at the following URL, I've reached
-out to NXP to get it into the linux-firmware repository:
+Fixes: e3fffc1f0b47 ("devicetree: document new marvell-8xxx and pwrseq-sd8787 options")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v4.11+
+Cc: Matt Ranostay <mranostay@ti.com>
+---
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-https://github.com/NXP/imx-firmware/raw/lf-5.15.52_2.1.0/nxp/FwImage_IW416_SD/sdiouartiw416_combo_v0.bin
-
-Thanks!
-
-Lukas Wunner (3):
-  wifi: mwifiex: Add missing compatible string for SD8787
-  wifi: mwifiex: Support SD8978 chipset
-  wifi: mwifiex: Support firmware hotfix version in GET_HW_SPEC
-    responses
-
- .../bindings/net/wireless/marvell-8xxx.txt    |  4 ++-
- drivers/net/wireless/marvell/mwifiex/Kconfig  |  5 ++--
- drivers/net/wireless/marvell/mwifiex/cmdevt.c |  5 ++++
- drivers/net/wireless/marvell/mwifiex/fw.h     |  1 +
- drivers/net/wireless/marvell/mwifiex/sdio.c   | 26 +++++++++++++++++--
- drivers/net/wireless/marvell/mwifiex/sdio.h   |  1 +
- include/linux/mmc/sdio_ids.h                  |  1 +
- 7 files changed, 38 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index b8dc3b5c9ad9..9f506efa5370 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -480,6 +480,7 @@ static struct memory_type_mapping mem_type_mapping_tbl[] = {
+ };
+ 
+ static const struct of_device_id mwifiex_sdio_of_match_table[] = {
++	{ .compatible = "marvell,sd8787" },
+ 	{ .compatible = "marvell,sd8897" },
+ 	{ .compatible = "marvell,sd8997" },
+ 	{ }
 -- 
 2.39.1
 
