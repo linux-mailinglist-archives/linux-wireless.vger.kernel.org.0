@@ -2,73 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F053A67DABF
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 01:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 772D167DE93
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Jan 2023 08:35:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbjA0A1w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Jan 2023 19:27:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35182 "EHLO
+        id S232752AbjA0HfH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Jan 2023 02:35:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232413AbjA0A1t (ORCPT
+        with ESMTP id S232112AbjA0HfG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Jan 2023 19:27:49 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E90422D;
-        Thu, 26 Jan 2023 16:27:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=4tsT3/dH8/GvxCkoJ1Hrq2573zBWw14jX8XahqqhkXs=; b=jb9voXpfNEv7q8s+ZARwZ//4C+
-        pWX9ZeeD363nsjjTWWcxk50UOO0LPdtz2EUiVwsIOwRw5gr3RsJv3k2R/YVgciXdghCvIaR7L6oid
-        S+Fv4zP/64rAPI2h3IvHYudgJl/PjZwAKcqwBXqFQHPsL8h+maQ4xedxwWTXxuORsLjrBE+1HFta9
-        7GISKkRpshMOx3DhE2R05N2eUnC6IUHaNfyV7G3qvY5M6atGkYp7ZYTtKUiqY1Wb6zR3L/2nKwFf4
-        qohEapgYWvUwN0px0O7ZMw+/dCQdFLvPEv98pdZnogzSa3iH6xWKPgQLDvMitW4NHf9azXJLewNh5
-        BPzycLRg==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pLCap-00Czd1-Ok; Fri, 27 Jan 2023 00:27:47 +0000
-Date:   Thu, 26 Jan 2023 16:27:47 -0800
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>,
-        junyuu@chromium.org, Kalle Valo <kvalo@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 1/2] wifi: ath11k: Use platform_get_irq() to get the
- interrupt
-Message-ID: <Y9Mag0CmfhRKdmZD@bombadil.infradead.org>
-References: <20230124110057.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
- <Y9LODwJPQpPs32Ds@bombadil.infradead.org>
- <CAD=FV=WEQL+Kik9ZkvtzNKN+-ofZ=-g3OzyUnnJc7PWnRzLdEw@mail.gmail.com>
+        Fri, 27 Jan 2023 02:35:06 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F087816332;
+        Thu, 26 Jan 2023 23:35:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91A73619B5;
+        Fri, 27 Jan 2023 07:35:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7235BC433EF;
+        Fri, 27 Jan 2023 07:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1674804905;
+        bh=70plA/u/jZ1FXvVzCBcMxvArW3LDXt8FKc9u4FfzeTU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mjrUiFDEhSSm6WnLsbbOFlsBXUe5PkjgkqHD/+VLjkB1U6XUglWWxPZsAOvWZv2rt
+         sw3VTPQtAZ1y+ew+a+qme5Hu6M1d6ojLRuSEPR2QfWCG1D7ZKMG35+Oe2hJtvTzlzv
+         jqtqbd2WzZirahnNJw+YlH/aES82j3+KLiwX5Jmo=
+Date:   Fri, 27 Jan 2023 08:35:02 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc:     stable@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH 5.10 0/1] mt76: move mt76_init_tx_queue in common code
+Message-ID: <Y9N+ptDV4QKj8h2C@kroah.com>
+References: <20230112115850.9208-2-n.zhandarovich@fintech.ru>
+ <20230122155910.32635-1-n.zhandarovich@fintech.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAD=FV=WEQL+Kik9ZkvtzNKN+-ofZ=-g3OzyUnnJc7PWnRzLdEw@mail.gmail.com>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230122155910.32635-1-n.zhandarovich@fintech.ru>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Jan 26, 2023 at 04:14:42PM -0800, Doug Anderson wrote:
-> > To that end. Why not write an SmPL Coccinelle grammer patch for this
-> > and put it on scripts/coccinelle/api ? Then hunt / convert things which
-> > will use DT as well and where this is actually useful / likely buggy.
-> 
-> That sounds like a great idea. ...but not something I'm going to do.
+On Sun, Jan 22, 2023 at 07:59:10AM -0800, Nikita Zhandarovich wrote:
+> My apologies, I should've have explained my reasoning for the patch better (and sooner).
 
-:*(
+I'm sorry, but I have no context here at all.  Always properly quote the
+email you are referring to.  Remember, some of us get 1000+ emails a day
+and can't remember anything we wrote in response an hour later, let
+alone days or weeks.
 
-  Luis
+confused,
+
+greg k-h
