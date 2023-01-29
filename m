@@ -2,98 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 717A867FF7C
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Jan 2023 15:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7AB67FF38
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Jan 2023 13:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229999AbjA2OUf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Jan 2023 09:20:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33254 "EHLO
+        id S233753AbjA2Mth (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Jan 2023 07:49:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229741AbjA2OUe (ORCPT
+        with ESMTP id S229605AbjA2Mtg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Jan 2023 09:20:34 -0500
-X-Greylist: delayed 5882 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 Jan 2023 06:20:30 PST
-Received: from pro152-32.mxout.rediffmailpro.com (pro152-32.mxout.rediffmailpro.com [119.252.152.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 939B41A949
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Jan 2023 06:20:30 -0800 (PST)
-Received: from pro-237-223.rediffmailpro.com (unknown [10.50.252.5])
-        by pro152-32.mxout.rediffmailpro.com (Postfix) with ESMTP id 470171E3983
-        for <linux-wireless@vger.kernel.org>; Sun, 29 Jan 2023 18:12:25 +0530 (IST)
-X-REDIFF-Delivered-Remotely-To: linux-wireless@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rediffmailpro.com;
-        s=epro; t=1674996144;
-        bh=uQ0T6f7lRwLn26U6HZ825MDJrEyY1KR9wF5Whiksay4=;
-        h=MIME-Version:From:Date:Message-ID:Subject:To;
-        b=CYigt0jhb6iGAwK50kgyDVnT82yVkRW2bUakEzYEx0FNx+AUIGQGt+G9A+41FXG+U
-         bC3oLA3UiEzkhtvGnB1aWPof6cyu1Jh9c1XYiOJ6otwDjBZbpyp0FZq7A3DkmaOOW3
-         Ih4Oby6/uhFSHgVFB+qQrQfNygHQi3Puv+CogFvg=
-Received: (qmail 21299 invoked from network); 29 Jan 2023 12:42:24 -0000
-x-m-msg: 2fba2de75e7b680624dc19b1753d2818; a6da7d6asas6dasd77; 5dad65ad5sd;
-X-OUT-VDRT-SpamState: 1\SPAM
-X-OUT-VDRT-SpamScore: 300
-X-OUT-VDRT-SpamCause: gggruggvucftvghtrhhoucdtuddrgedvhedrudeftddggeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedttdenucdnodfutggrmhihqdfoohhnvgihqdgvnhculdeftddtmdenucfjughrpefkffggfghrhffutgfgsehtjeertddtfeejnecuhfhrohhmpedfldgurhdmuehorhihshhovhihtghhucfuvghrhhhihicuvfhulhhusgdfuceothhrtheisehnihhthhihrghmohhtohhrshdrtghomheqnecuggftrfgrthhtvghrnhepjedtgfevvdffheeliefhueeghfekffekteeigfehieejueeikeetveevvdelgeeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpohhuth
-X-Dedup-Identifier: 1674996144_21273_16830_pro-237-223
-Received: from unknown (HELO ?192.168.0.110?) (trt6@nithyamotors.com@102.69.220.39)
-  by mailserver with SMTP; 29 Jan 2023 12:42:23 -0000
-Message-ID: <9ee078ab-a6f4-efa4-cd2a-f66fc7469af4@nithyamotors.com>
-Date:   Sun, 29 Jan 2023 12:40:51 +0000
+        Sun, 29 Jan 2023 07:49:36 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CCE1E2BC;
+        Sun, 29 Jan 2023 04:49:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1674996564; bh=JjSLd0m8cRytyvJTD2h8ilJ4qprOTJIhhPyxhW1Hs7M=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=WYhpWPQxOm7A8S4H4+YBbhRKOw/lEN0MzGaJzVaFzLAbwuu0qZOH70cCEYv3AzbDE
+         a31G6KvCyRMbea+br5jmmMQm0fFjdm1ljNOm0Id2OO1pvkcWKH5Xtk0wFpCaZ79okn
+         9ktF532/5WD4Hf5UHqGriGP4ZjwYk8y7DI8qJEP7BpREs/1EtFFpJ2dfF/ch/EV1Xi
+         bnquxJ41ALG1Jt7ovudZbWvKrsV5ghRwGZAeuTHuUjC2ZPzb/Ls79elts93xMwoskn
+         IB/g3SlSNR2JqvCILHa+LQM+xi0mFfQEw13ypsFzUrC17gnsVotFljBJPqtZOAUlXg
+         4ajGuV4/0T3Bg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from probook ([95.223.44.193]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mwwdl-1oSutz2s8Z-00yNTj; Sun, 29
+ Jan 2023 13:49:24 +0100
+From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] wl1251: Fix a typo ("boradcast")
+Date:   Sun, 29 Jan 2023 13:49:18 +0100
+Message-Id: <20230129124919.1305057-1-j.neuschaefer@gmx.net>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Reply-To: dr_serhiytulub@zohomail.com
-Content-Language: en-US
-From:   "(dr)Borysovych Serhiy Tulub" <trt6@nithyamotors.com>
-Subject: REF
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=ADVANCE_FEE_4_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [119.252.152.32 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  2.6 ADVANCE_FEE_4_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ijQXBCwdC00JRP2C79RCUndGcFf6aXNCkRiUS+d0Xs4LzjmeRKr
+ eD2pc3hQsmGq/UedJfaTUTqxhaqN5bIcc+aA8jeHIWmBAm8D5SeXH7b4ay7ECwFFMyzFMgO
+ +bdOJPivDMhCDzxFmXGAYOynnEDESvhm5Zf4IHxPogw6m/cUw/WQnDSmT91dyp5shNxal56
+ mKoGl1BE0a0ZA5VE56Giw==
+UI-OutboundReport: notjunk:1;M01:P0:6HIQhe0tTsI=;wWunIsnufDb2HeOu1FgjQM8684R
+ elQTRIyDhTfDqtqdHBdTWh6HN8ifIT8q2h3aB1/lRqE69hUsm4fdf3MXEIn4gUbdAnM/QDl8W
+ 4VR3P9E2FSvN222u7MC9KbNs+CbNozdxU2QLktV4XdV18I5mysdtltCQ+hMgZ4M+HTLZ1wxiD
+ /b8UY/Kn0XYRwLisKacxhG9WhV0bmB1pZUFknRT6JNAGUXvZEV+eTeRQQacq/D4XmoaptHTst
+ UOHCaDVCx3c0OuMTgzRp8PNPWkZkGsfKL0c2xctfV5nAN4bg9k0byNYwjLdL6PTaTCKKXo6l7
+ E+N9foSKxvGs8IteCiYRQwTqseHg6j3Qmp/GHVmd4jMKD1UHFMNGetmdJu38bjigdbpv4HgJD
+ HtEC4g68bF+TnHXAhITfAGbsFHBCGM0JLQQzkc61gPdXkQ6j3yPMWGzbRu9CLMGeM1O2qrhHP
+ AwF5A0qTIhsT2lemGGO2yjikFa2oe0Silt5pqjgbT1Qdzoo6FUdioyCbgYoXuicy4jN3QYT8a
+ 0O+kiYc90wiUcItZFUzS7HhPtlhS/21zwIhNteh5rVwq7NX5jKmk6EB8+DHxENVyHpPfTmUX6
+ xhKyX0U6mwjXC+Xd6uK95A5yR1Uah7O1SI7zOuk4ndKLS7pPRIXKEn7FjFtHV/N6edj7xrd9C
+ xFhGXwLwH48TZ0GU/I770oWL3ueG9hxIFPA8+yJ6OiU8zVM9ASAVwahJawjlOmT7ArM3j4W1v
+ ZxCTMowDPXivIGAaWasf5gyfbptR09x5WA4tjqaJVtwzEXYE3KmVb3pD1270nvZcubyKrzqYZ
+ lO2NUDGr8hmPxkYiW1Q6hAHpqiETdxc4JbG2BX/rJdpKVF6nJht24cEJTxF525lsIYxjctLIu
+ QUM03/Xyn1+4hgFTHKkPZwibCDHSyx4pywm1rtdnnw9MGKvQMJMfzyedJPkI40zIMSgw+oYkW
+ OfhIgy+qDO0fgQxJb3coI2DP/jY=
+X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+It should be "broadcast".
 
--- 
-FROM: Dr. Serhiy Tulub
-SATURDAY 28TH JANUARY, 2023
+Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+=2D--
+ drivers/net/wireless/ti/wl1251/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  
+diff --git a/drivers/net/wireless/ti/wl1251/init.c b/drivers/net/wireless/=
+ti/wl1251/init.c
+index a19cce3a7e6f0..5663f197ea69f 100644
+=2D-- a/drivers/net/wireless/ti/wl1251/init.c
++++ b/drivers/net/wireless/ti/wl1251/init.c
+@@ -373,7 +373,7 @@ int wl1251_hw_init(struct wl1251 *wl)
+ 	if (ret < 0)
+ 		goto out_free_data_path;
 
-Good Day,
-
-I FOUND YOU TRUSTWORTHY OF THIS TRANSACTION
-
-  
-
-Please accept my apologies if this request does not meet your personal ethics as it is not intended to cause you any embarrassment in whatever form. I got your contact from internet directory and decided to contact you for this transaction that is based on trust and your outstanding, I have an interesting business proposal for you that will be of immense benefit to both of us. The need to contact you arose due to the invasion of Ukraine by Russian troops Please grant me the benefit of doubt and hear me out.
-
-I am contacting you to seek your partnership in a pending business project,which I have here in my hand and ready to be executed without hitches from Ukraine to your country,I have all the modalities fashioned out to give this business an excellent outcome.
-
-I am confident that you will give your consideration to this proposal and respond positively within a short period of time. As soon as you give your positive response to this proposal, I will not hesitate in sending you the detailed information of this great investment partnership opportunity.
-
-Regards.
-
-I await your quick reply for more details.
-
-Kind Regards
-
-Note: if you found this email in your junk/spam, it's because of your internet isp server.
+-	/* Beacons and boradcast settings */
++	/* Beacons and broadcast settings */
+ 	ret =3D wl1251_hw_init_beacon_broadcast(wl);
+ 	if (ret < 0)
+ 		goto out_free_data_path;
+=2D-
+2.39.0
 
