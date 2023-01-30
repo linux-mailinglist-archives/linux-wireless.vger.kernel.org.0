@@ -2,44 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C99C6807AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jan 2023 09:43:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3D226807B2
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jan 2023 09:44:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235845AbjA3In0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Jan 2023 03:43:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58108 "EHLO
+        id S235375AbjA3IoZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Jan 2023 03:44:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235893AbjA3InZ (ORCPT
+        with ESMTP id S236048AbjA3IoW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Jan 2023 03:43:25 -0500
+        Mon, 30 Jan 2023 03:44:22 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5296C17CE6
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 00:43:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1644E199F6
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 00:44:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=41aLsVAUYCh1JfjjZhisDFRiu7nyXeHg2S0BWoUhRPI=;
-        t=1675068203; x=1676277803; b=O+YaI+YM3763PiJxNzJ1PnqLjKMHvIMqJQe+XXo+r41RKfV
-        5I4fBBXVPBRlU7wP0PZeJPoZzk5f+KPMK5HdPwDX7+SrDECRveNDM+i5dj4VUKlEWPohUROtjTq0h
-        dGd8uKlZr1ZIgolAa7X6WFxuy3wOApTPYnbTEH2v+5vhIphTXetFexuEhPMxA3mz860qcwpTGu8FY
-        IMYTOA15av3WYa63GRz7nggmQky63/R0J62bxk8qhPd/NIzKHrS986sr3PrTypfOvC+VOZo++N3Rl
-        pS+qN197Ye0vJv5yQxY6ZNuH5bLCJIC6XvH+L6bB9Wi71BTE5H/13Me1aknS+QCw==;
+        Resent-Cc:Resent-Message-ID; bh=lc8scgfsSmP1/Z/ihenx0w7HRnTEJbbQvXK7KO2eJkw=;
+        t=1675068262; x=1676277862; b=HGZRoHiMiJtmPRFrIJYWQz5lbpm8S24FS3w6vI4COjLiW3p
+        lOmME5mM83mZE/vrRZN614WADtfQw60TLQArx5hSL/vUxkosY3zvECyiuVNVPG3jV8KbIyJAbfeoi
+        glvfWvnXsrWn1QGeuHJxpbTFNU9qrD5F5AqN3sxWKlqL+J16E1xP778oxFdXCTulktsN2phQRhlt7
+        XGUFnJuk85Dg8B2VaY0fnIXMjcOcTNew5tW6B/03ciZB4T1I0lwqY+GLj3zhG3UMv9DiKD/A73Yrr
+        PADOwsgmv120jjDtJeiJOiRbO4b2Q5vXk3CRm2+r+oJRAASz/qEwbmUAAIu+7q8w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pMPl2-00G1GZ-1m;
-        Mon, 30 Jan 2023 09:43:20 +0100
-Message-ID: <80942093ceebd3978dea562de42f618c7d9d5450.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 3/6] wifi: nl80211: configure puncturing in
- NL80211_CMD_CHANNEL_SWITCH
+        id 1pMPlz-00G1Hr-31;
+        Mon, 30 Jan 2023 09:44:20 +0100
+Message-ID: <a48bbacf2fe68fb796db2541861e0afb550647f3.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 4/6] wifi: mac80211: configure puncturing bitmap in
+ channel_switch()
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Aloka Dixit <quic_alokad@quicinc.com>,
         linux-wireless@vger.kernel.org
-Date:   Mon, 30 Jan 2023 09:43:19 +0100
-In-Reply-To: <20230130072239.26345-4-quic_alokad@quicinc.com>
+Date:   Mon, 30 Jan 2023 09:44:19 +0100
+In-Reply-To: <20230130072239.26345-5-quic_alokad@quicinc.com>
 References: <20230130072239.26345-1-quic_alokad@quicinc.com>
-         <20230130072239.26345-4-quic_alokad@quicinc.com>
+         <20230130072239.26345-5-quic_alokad@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
@@ -55,35 +55,41 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Sun, 2023-01-29 at 23:22 -0800, Aloka Dixit wrote:
+> Validate and set the puncturing bitmap in bss_conf for new channel.
 >=20
-> + * @punct_bitmap: Preamble puncturing bitmap. Each bit represents a 20 M=
-Hz
-> + *	channel with lowest bit corresponding to the lowest frequency. Bit se=
-t
-> + *	to 1 indicates that the channel is punctured. Higher 16 bits are
-> + *	currently unused.
+> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+> ---
+>  include/net/mac80211.h |  3 +++
+>  net/mac80211/cfg.c     | 13 +++++++++++++
+>  2 files changed, 16 insertions(+)
+>=20
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index b1c17c7ac044..87db6055d331 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -645,6 +645,7 @@ struct ieee80211_fils_discovery {
+>   * @csa_active: marks whether a channel switch is going on. Internally i=
+t is
+>   *	write-protected by sdata_lock and local->mtx so holding either is fin=
+e
+>   *	for read access.
+> + * @csa_punct_bitmap: new pucturing bitmap for channel switch
 
-> @@ -1384,6 +1388,7 @@ struct cfg80211_csa_settings {
->  	bool radar_required;
->  	bool block_tx;
->  	u8 count;
-> +	u32 punct_bitmap;
+typo: puncturing
 
-again internally I think we can stick to u16 for now
-
-> +++ b/net/mac80211/cfg.c
-> @@ -1297,9 +1297,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, =
-struct net_device *dev,
->  	}
+>   * @mu_mimo_owner: indicates interface owns MU-MIMO capability
+>   * @chanctx_conf: The channel context this interface is assigned to, or =
+%NULL
+>   *	when it is not assigned. This pointer is RCU-protected due to the TX
+> @@ -741,6 +742,8 @@ struct ieee80211_bss_conf {
+>  	u32 eht_puncturing;
 > =20
->  	if (params->eht_cap) {
-> -		if (!ieee80211_valid_disable_subchannel_bitmap(
-> -							&params->punct_bitmap,
-> -							params->chandef.width))
-> +		if (!ieee80211_valid_disable_subchannel_bitmap(&params->punct_bitmap,
-> +							       params->chandef.width))
->  			return -EINVAL;
+>  	bool csa_active;
+> +	u32 csa_punct_bitmap;
 
-That got rebased into the wrong patch maybe?
+
+And one more ;-)
+
+I think u16 is enough for now
 
 johannes
