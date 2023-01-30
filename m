@@ -2,95 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C74681060
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jan 2023 15:03:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D696810AF
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jan 2023 15:05:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237048AbjA3ODD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Jan 2023 09:03:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42766 "EHLO
+        id S237082AbjA3OFp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Jan 2023 09:05:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236987AbjA3OCv (ORCPT
+        with ESMTP id S237075AbjA3OFo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Jan 2023 09:02:51 -0500
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A423B0E2;
-        Mon, 30 Jan 2023 06:02:42 -0800 (PST)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id E9DB2852C0;
-        Mon, 30 Jan 2023 15:02:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1675087360;
-        bh=I9qoCeiFdZwWtoDstV4Bw6+TIyjJzJfTohVx+3k+nHM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=aHzsJyV4HCWjKDnrmzaXgjc6ANf9EO2SGRrlOJyxOSPQ9qOh3Z5d881HR1PoTK+B9
-         fkxy05jJPp2wCXOsNbno+htj1nkobuTCQCXmqYxscBG6ycPBltVapv33SVS3lwVGOg
-         TN/f9zDXcjSREe7toqfiYbDc1W6XUYxuV7ZzCNAMf5aEi3Qgn5ym5fUg/zg+l46LRT
-         Xbrwnl8YufnLMbodkaPzbEHmZG2FjbNFX7vxkbERKBPuqOtO/Jsc/gxY0QWy9MxcXP
-         RU0oWmuOIMu9VOVQQrf6UGzDYYWJpf6CClqJjIFj8FOUceJXKRoyQ7aUlurhTc/0JL
-         XxMCHbUUHhP1Q==
-Message-ID: <22ab680d-cb57-74ab-1a37-c7d7b5c29895@denx.de>
-Date:   Mon, 30 Jan 2023 15:02:38 +0100
+        Mon, 30 Jan 2023 09:05:44 -0500
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B5C2A172
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 06:05:42 -0800 (PST)
+Received: by mail-io1-xd2f.google.com with SMTP id l7so2055142ioa.7
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 06:05:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Qb6zMVyzjtj0/TQ/Lyc3HSKCfDqcZxkwmAqIFLNINM=;
+        b=BeH6FnitCZVR0iI8gmCER8IMJQNBB9NGcYTMaGX+FL0/YdxrRBrh7iRP5ou+BuabkR
+         EbE2h0BytgkGmKEhV0h5JP8bgdlMAwqSHCjKgMTq6ua8kGtj3den1FGKohq96yftyIsP
+         bHhD01xY4jrU0CBScgm6zigpUW3eMQ10lZKf7xh7C80mtrO+7mqK8CGgTzusyjeurlBB
+         J5hiN3KFQNBHgmaiJE9vc48vqRD5nzGcYI5HOwrlBISi80zq4JNvO+ilk9HoafF45JtR
+         kx+UWfEBfyY12byYGRApJ8rnswNpFRzl6hNpEiVXUiEEmIhN7S1ZsfRQQ+YxGu35pA1/
+         xuCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/Qb6zMVyzjtj0/TQ/Lyc3HSKCfDqcZxkwmAqIFLNINM=;
+        b=QB60S8v2OXvPgYWXNGaaTvb2JqLufT2yB/zd1/5bTvu3QHKEWqxzf78WePtY/Ftu8x
+         WCEy3TY9Tyh1sbVUzljpnC8r5eUXuiiWaZd5ncaVtUVrhVzsxSJakF+yhB7HAPoVMtfZ
+         H/hYZa24u4/nx7UcqZVxHbiZkmkF8cT458m/Wa8uKVs3kVezcCHiI0lJq4mcEw+hDxlI
+         a+aLd30vIvhqgzpCA9HFUDeSh8Z1o4JXLwcnKQKaCr4TaQaPyfw8JGxR+zyFwBX+TZab
+         rceAV+iAye1uDy3sklUak5N1yCqHuKaP4xmLO8607RtctITFOCnZDeseqPgNw2/JCTt4
+         TIHQ==
+X-Gm-Message-State: AO0yUKWeLsUH5JCLoADruGFc2Upf6unVWnqHBiJKKcx3nf0cjUwZ2PUO
+        eEBE4AAy3TH9kZwIO8l7QXAchOLvAIj1gAtARiHFtpC0iHM=
+X-Google-Smtp-Source: AK7set8i73j2W5MrUkGmaATl3/fl0ZwGGUj/7GzNZuA/U713Mx2VRsiEqZSrl87R92Elath1nwYywvhdl8mku6BqjiQ=
+X-Received: by 2002:a02:6f51:0:b0:3b1:4f93:69b8 with SMTP id
+ b17-20020a026f51000000b003b14f9369b8mr567256jae.117.1675087541420; Mon, 30
+ Jan 2023 06:05:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH] wifi: rsi: Adding new driver Maintainers
-To:     Ganapathi Kondraju <ganapathi.kondraju@silabs.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        netdev@vger.kernel.org,
-        Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        narasimha.anumolu@silabs.com, amol.hanwate@silabs.com,
-        shivanadam.gude@silabs.com, srinivas.chappidi@silabs.com
-References: <1675071591-7138-1-git-send-email-ganapathi.kondraju@silabs.com>
-Content-Language: en-US
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <1675071591-7138-1-git-send-email-ganapathi.kondraju@silabs.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.6 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Eugene Konev <uejikov@gmail.com>
+Date:   Mon, 30 Jan 2023 21:05:30 +0700
+Message-ID: <CAO7DJoAXrB8e+q2uHD6Cq6A2UV5pN0=6ieAVV+yJp0ht1bPhyg@mail.gmail.com>
+Subject: [PATCH] Update regulatory info for Russia (RU) on 5GHz
+To:     sforshee@kernel.org
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/30/23 10:39, Ganapathi Kondraju wrote:
-> Silicon Labs acquired Redpine Signals recently. It needs to continue
-> giving support to the existing REDPINE WIRELESS DRIVER. Added new
-> Maintainers for it.
-> 
-> Signed-off-by: Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
-> ---
->   MAINTAINERS | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ea941dc..af07b88 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17709,8 +17709,13 @@ S:	Maintained
->   F:	drivers/net/wireless/realtek/rtw89/
->   
->   REDPINE WIRELESS DRIVER
-> +M:	Narasimha Anumolu <narasimha.anumolu@silabs.com>
-> +M:	Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
-> +M:	Amol Hanwate <amol.hanwate@silabs.com>
-> +M:	Shivanadam Gude <shivanadam.gude@silabs.com>
-> +M:	Jérôme Pouiller <jerome.pouiller@silabs.com>
+Update regulatory info for Russia on 5GHz in accordance with
+current regulatory rules.
 
-Please keep the list sorted.
+Source: https://docs.cntd.ru/document/902048009?section=3Dtext
+
+Signed-off-by: Eugene Konev <uejikov@gmail.com>
+---
+ db.txt | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/db.txt b/db.txt
+index 3f74194..9bc2c1c 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1500,10 +1500,11 @@ country RS: DFS-ETSI
+        # 60 GHz band channels 1-4, ref: Etsi En 302 567
+        (57000 - 66000 @ 2160), (40)
+
+-country RU:
++# Source: https://docs.cntd.ru/document/902048009?section=3Dtext
++country RU: DFS-ETSI
+        (2400 - 2483.5 @ 40), (20)
+-       (5150 - 5350 @ 160), (20), NO-OUTDOOR
+-       (5650 - 5850 @ 160), (20), NO-OUTDOOR
++       (5150 - 5350 @ 160), (200 mW), NO-OUTDOOR, DFS
++       (5650 - 5850 @ 160), (200 mW), NO-OUTDOOR, DFS
+        # 60 GHz band channels 1-4, ref: Changes to NLA 124_Order
+=E2=84=96129_22042015.pdf
+        (57000 - 66000 @ 2160), (40), NO-OUTDOOR
+
+--=20
+2.30.2
