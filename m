@@ -2,125 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5DCE680719
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jan 2023 09:11:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCCE5680792
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Jan 2023 09:40:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235689AbjA3ILT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Jan 2023 03:11:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36890 "EHLO
+        id S235453AbjA3IkL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Jan 2023 03:40:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235698AbjA3ILR (ORCPT
+        with ESMTP id S230340AbjA3IkJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Jan 2023 03:11:17 -0500
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8A27ED7
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 00:10:52 -0800 (PST)
-Received: by mail-vs1-xe36.google.com with SMTP id k4so11617374vsc.4
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 00:10:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ymIAXtCd2MxqtYWvrJZz0PEkm0tFm2YFN6GsAuKltPg=;
-        b=VjBFoQyvxVbZcRjLUrbibXw4+MT8g0UWQSD5G0+jS0OLvVW/KtzPBQ3zu/A9gW63DF
-         f/l3VAfgTqNXiiLTav7jolzt/AvRqrG8xKKncUHoUpkN+9/+rg586QUbOmYg2O/hoYVa
-         iGDrVeTGq4FqWr/Zfhu+fazosEJH8l5CAD642AYSppVIR3mh7EEedUIRs2Bn5x4yzMYK
-         V68lgUNYYVPPGMEIihaSvz7cwNBmtjzuMUaFDRBLdVIbgcknFyCpeNLdOAsL5Ad0Mun4
-         Bp89Q+gJkGPhaIqayZ5HBeoJVUg87pDRxwX1F2+xan/kajjdNkzp/HZTfln2s//WsK/T
-         VISQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ymIAXtCd2MxqtYWvrJZz0PEkm0tFm2YFN6GsAuKltPg=;
-        b=2ZgGibYrwpbJvlzJda5l04eL4VkCEMzU81dLKnzd4xx+vzicn0wso4SSjJdW6uyLUQ
-         ZPaJ3JQuqEEtp+ToGhWj4ACzWfF9whtXevNmQBLJuBthdYwd8U4d/j7KNzB4HCgbhXGz
-         YeIk9RdPlVCaVs9jat1+KMWazF1trGHq7r2nzMlsw6gfxp56soV56+3L4EqrGBGPCpvJ
-         bm3pRpF+3OHWJcI1LR9zbCrag/TJ//JtSSVIPevUvlxPAV6cH+Pg8fjxLSD0ThJTbYTH
-         Nqtq0L/8/CJXJUMM5TgX04O31DzGF7BotSzJr5takg+A09KNDXU51vmaCWBKmpfA82UH
-         3leg==
-X-Gm-Message-State: AO0yUKXDAMTFqkyFQ1A0RzdPGbdEsnN03/KSFD98TovoxsPv4S+ejXr3
-        BsIxW2fVO3EfCBZZ9wnGJUo1Zqf5+OKt5ORjEs/brA==
-X-Google-Smtp-Source: AK7set9o1e8iWYYvaoq70mZHQVo6LDmk5L7AnpPp1CiDFpmmDUsbP/J1TrEQHND2L6dETz8Z0PbBef9gd1pXrlqpqi4=
-X-Received: by 2002:a67:d998:0:b0:3eb:8780:ced6 with SMTP id
- u24-20020a67d998000000b003eb8780ced6mr2091574vsj.12.1675066145479; Mon, 30
- Jan 2023 00:09:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20230124145430.365495-1-jaewan@google.com> <20230124145430.365495-2-jaewan@google.com>
- <Y8//ZflAidKNJAVQ@kroah.com> <CABZjns5FRY+_WD_G=sjiBxjSwaydgL-wgTAR-PSeh-42OTieRg@mail.gmail.com>
- <Y9dWztPR3FxkLv26@kroah.com>
-In-Reply-To: <Y9dWztPR3FxkLv26@kroah.com>
-From:   Jaewan Kim <jaewan@google.com>
-Date:   Mon, 30 Jan 2023 17:08:54 +0900
-Message-ID: <CABZjns6nER31ZbBKQ_QKU0Hrh5V5U_W6Q4vGsE7kt7S5YYy3mg@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] mac80211_hwsim: add PMSR capability support
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-team@android.com, adelva@google.com
+        Mon, 30 Jan 2023 03:40:09 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50418DBC5
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 00:40:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=1DlDSFxydq/rBTe24CEHXtRwAkk01w1TtAxPlC/wazA=;
+        t=1675068008; x=1676277608; b=Rs23bI6Ey6kTIInY6z2UF5zQ4L17eReCBjyi3szwMOlWm+4
+        6UaQxFSpFEVKLo5TprQj6Fa5RFskXu33JTzyOO6+ZUx1NHiQ60eY2Eb5qynElRQmLQ0Ndcsfx5c2U
+        FGSo/GohS7fUlfyLJ+GFAtBv9+c5KPKYf4eVh18fyQzF/PzgRSpUjcJxs9l9qqccTpwUHLlfZSFxA
+        EFoGt/gzue1bP8yRZ8u2IWWc5+JWcnef7SpDfuIWdI9GTXQwAp0dddLQXKSHgd8jkPS3UrgQZYtZH
+        KF0R0/TKCBTtuBeF50iD92PePdypYZjkBuf5Fbtr5mzuHwhJl/s7E7R2iQuhx4bA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pMPht-00G1CM-0z;
+        Mon, 30 Jan 2023 09:40:05 +0100
+Message-ID: <3552eaee6a02d0b76dc4353b0d5556c3fe503d8e.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 1/6] wifi: nl80211: configure puncturing bitmap in
+ NL80211_CMD_START_AP
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Aloka Dixit <quic_alokad@quicinc.com>,
+        linux-wireless@vger.kernel.org
+Cc:     Muna Sinada <quic_msinada@quicinc.com>
+Date:   Mon, 30 Jan 2023 09:40:04 +0100
+In-Reply-To: <20230130072239.26345-2-quic_alokad@quicinc.com>
+References: <20230130072239.26345-1-quic_alokad@quicinc.com>
+         <20230130072239.26345-2-quic_alokad@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 30, 2023 at 2:34 PM Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Jan 30, 2023 at 12:48:37AM +0900, Jaewan Kim wrote:
-> > On Wed, Jan 25, 2023 at 12:55 AM Greg KH <gregkh@linuxfoundation.org> w=
-rote:
-> > > > +static int parse_ftm_capa(const struct nlattr *ftm_capa,
-> > > > +                       struct cfg80211_pmsr_capabilities *out)
-> > > > +{
-> > > > +     struct nlattr *tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1];
-> > > > +     int ret =3D nla_parse_nested(tb, NL80211_PMSR_FTM_CAPA_ATTR_M=
-AX,
-> > > > +                                ftm_capa, hwsim_ftm_capa_policy, N=
-ULL);
-> > > > +     if (ret) {
-> > > > +             pr_err("mac80211_hwsim: malformed FTM capability");
-> > >
-> > > dev_err()?
-> >
-> > Is dev_err() the printing error for device code?
->
-> I am sorry, but I can not understand this question, can you rephrase it?
+On Sun, 2023-01-29 at 23:22 -0800, Aloka Dixit wrote:
+>=20
+> v3: Validation and storing the bitmap moved to MAC80211.
 
-I just wanted to know better about `dev_err()`,
-because all existing code in this file uses `pr_err()`,
-and there's no good documentation for `dev_err()`.
+I think I'd prefer we move the validation function to cfg80211 so both
+can use it, this way all potential non-mac80211 drivers have to do it as
+well, and then they'll move the function _anyway_ to do the validation
+in a single place, I'd hope?
 
-Given your answer below, it seems like that `pr_err()` isn't a good
-choice in this file.
-Am I correct?
+> + * @punct_bitmap: Preamble puncturing bitmap. Each bit represents a 20 M=
+Hz
+> + *	channel, lowest bit corresponding to the lowest frequency. Bit set
+> + *	to 1 indicates that the channel is punctured. Higher 16 bits are
+> + *	reserved.
+>   */
+>  struct cfg80211_ap_settings {
+>  	struct cfg80211_chan_def chandef;
+> @@ -1350,6 +1354,7 @@ struct cfg80211_ap_settings {
+>  	struct cfg80211_fils_discovery fils_discovery;
+>  	struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
+>  	struct cfg80211_mbssid_config mbssid_config;
+> +	u32 punct_bitmap;
 
->
-> > If so, would it be better to propose another change for replacing all
-> > pr_err() with dev_err() in this file?
->
-> Odds are, yes, but that should be independent of your change to add a
-> new feature.
+Internally I think we can continue to use u16, that's trivial to change
+later.
 
-Got it. Then I'll break the consistency in this file for my change,
-and also propose another change for using `dev_err()` instead of `pr_err()`=
-.
+> + * @NL80211_EXT_FEATURE_EHT_PUNCTURING: Driver supports preamble punctur=
+ing in
+> + *	EHT.
 
->
-> thanks,
->
-> greg k-h
+That should probably make some mention of AP mode? It's not optional in
+any way for client, after all, and also not relevant to the API how
+client does it.
 
+> +static int nl80211_parse_punct_bitmap(struct cfg80211_registered_device =
+*rdev,
+> +				      struct genl_info *info,
+> +				      u32 *bitmap)
+> +{
+> +	if (!bitmap ||
+> +	    !wiphy_ext_feature_isset(&rdev->wiphy,
+> +				     NL80211_EXT_FEATURE_EHT_PUNCTURING))
+> +		return -EINVAL;
+> +
+> +	*bitmap =3D nla_get_u32(info->attrs[NL80211_ATTR_PUNCT_BITMAP]) & 0xFFF=
+F;
 
+As the top bits are *reserved* then you should check that they're indeed
+zero - now they're ignored, which is generally bad. They might not
+always be.
 
---=20
-Jaewan Kim (=EA=B9=80=EC=9E=AC=EC=99=84) | Software Engineer in Google Kore=
-a |
-jaewan@google.com | +82-10-2781-5078
+johannes
