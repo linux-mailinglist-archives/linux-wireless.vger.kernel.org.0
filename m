@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69EA4682074
+	by mail.lfdr.de (Postfix) with ESMTP id 1ECE8682073
 	for <lists+linux-wireless@lfdr.de>; Tue, 31 Jan 2023 01:12:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbjAaAMu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Jan 2023 19:12:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50348 "EHLO
+        id S230077AbjAaAMt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Jan 2023 19:12:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229997AbjAaAMr (ORCPT
+        with ESMTP id S229740AbjAaAMr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 30 Jan 2023 19:12:47 -0500
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E2411ABC1
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EA2F1A968
         for <linux-wireless@vger.kernel.org>; Mon, 30 Jan 2023 16:12:45 -0800 (PST)
 Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UNfqVZ019313;
-        Tue, 31 Jan 2023 00:12:41 GMT
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UM5Uro016606;
+        Tue, 31 Jan 2023 00:12:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=qcppdkim1;
- bh=wK0V3YwpFP8VwohhJnN9C0esMddpUK/xTkm8WLEyZlE=;
- b=Ig6akcnoKTe3wnshHePRF4Q82R3mcLZOtqHCChJ0XpODRPHeC+EjouZ8Jxe25fF47UPJ
- GIRk/NpHPw/V/L48F8SiGWfR7X/8lUMFETN7nWFvEbd27tkg90ZGf/77HJGD23wpbNco
- cMwPkaoAhElqZlGvloT8PeUwAcked7UQyGPqz1fPanf00W6Ojq6y+5HOIOkRi1Sd7Cid
- c8dXRyjEXZJ7erqn+z/w99/hP7ZgM3oruDvcGpSfBzB8Q2y0tZTVgQiTJ7NEBRr8B2/U
- suGoAujezWrHgBHYYSZ/SeG4Kt2v9PCNKrpDc0MlE9hg9G4Twsxpxpu8GCEyMwgJxl5J kQ== 
+ bh=c6E17MzJxjRAuZpweRFJvv/+dP5OLfuVgQrTt+/EdWY=;
+ b=j/86ixHGCToxVG0yFIyEX48bez0gdMinMNq4z+juzn/x6qhShs05ka9cyx9I5RPeco7g
+ RrskNiSx//gOB1DBx7Y0mp2Ns4imP7bWprv/A+I5/h85TbWpv8U2hiz18DR3bNWARml4
+ KLOi7ZllFYbewZTYjsVZXlFd5v59/Oc99pj8uN+FE5lBATVBeZcs+Is3oDoDFve5q1Mg
+ Fap2menFg526iJRAdEjSHm20vs/CHi/lvHMbeSNObO/uGTD9CIVsbR8LLSodioERwS/X
+ iLSjhA7p5mMMe/RZMPV9pbRUEgg8RyN/NBuRzDQh+NM3gs7Z7EHIaK9oFIp37AFqnZwU Vw== 
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ncut2n9eb-1
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ncut2n9ec-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Tue, 31 Jan 2023 00:12:41 +0000
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30V0CeZI006388
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30V0CebG006391
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Tue, 31 Jan 2023 00:12:40 GMT
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
@@ -41,10 +41,11 @@ Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  15.2.986.36; Mon, 30 Jan 2023 16:12:40 -0800
 From:   Aloka Dixit <quic_alokad@quicinc.com>
 To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>
-Subject: [PATCH v4 1/4] cfg80211: move puncturing bitmap validation from mac80211
-Date:   Mon, 30 Jan 2023 16:12:24 -0800
-Message-ID: <20230131001227.25014-2-quic_alokad@quicinc.com>
+CC:     Aloka Dixit <quic_alokad@quicinc.com>,
+        Muna Sinada <quic_msinada@quicinc.com>
+Subject: [PATCH v4 2/4] wifi: nl80211: validate and configure puncturing bitmap
+Date:   Mon, 30 Jan 2023 16:12:25 -0800
+Message-ID: <20230131001227.25014-3-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230131001227.25014-1-quic_alokad@quicinc.com>
 References: <20230131001227.25014-1-quic_alokad@quicinc.com>
@@ -56,8 +57,8 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 9O78f31G-Z25yfLYYT08XDT5gHfNtxrl
-X-Proofpoint-ORIG-GUID: 9O78f31G-Z25yfLYYT08XDT5gHfNtxrl
+X-Proofpoint-GUID: QBAqzpSIulMvRhplJ4dzuAXAZrb-EV9u
+X-Proofpoint-ORIG-GUID: QBAqzpSIulMvRhplJ4dzuAXAZrb-EV9u
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
  definitions=2023-01-30_18,2023-01-30_01,2022-06-22_01
@@ -75,223 +76,180 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-- Move ieee80211_valid_disable_subchannel_bitmap() from mlme.c to
-chan.c, rename it as cfg80211_valid_disable_subchannel_bitmap() and
-export it.
-- Modify the prototype to include struct cfg80211_chan_def instead of
-only bandwidth to support a check which returns false if the primary
-channel is punctured.
+- New feature flag, NL80211_EXT_FEATURE_PUNCTURING, to advertise
+driver support for preamble puncturing.
+- New attribute, NL80211_ATTR_PUNCT_BITMAP, to receive a puncturing
+bitmap from the userspace during AP bring up (NL80211_CMD_START_AP)
+and channel switch (NL80211_CMD_CHANNEL_SWITCH) operations. Each bit
+corresponds to a 20 MHz channel in the operating bandwidth, lowest bit
+for the lowest channel. Bit set to 1 indicates that the channel is
+punctured. Higher 16 bits are reserved.
+- New members added to structures cfg80211_ap_settings and
+cfg80211_csa_settings to propagate the bitmap to MAC80211 after
+validation.
 
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
 ---
- include/net/cfg80211.h | 12 +++++++
- net/mac80211/mlme.c    | 73 ++++--------------------------------------
- net/wireless/chan.c    | 69 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 87 insertions(+), 67 deletions(-)
+ include/net/cfg80211.h       |  8 ++++++++
+ include/uapi/linux/nl80211.h | 12 ++++++++++++
+ net/wireless/nl80211.c       | 38 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 58 insertions(+)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 54a77d906b2d..505a1072b5b4 100644
+index 505a1072b5b4..f70f28776dc0 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -8906,4 +8906,16 @@ static inline int cfg80211_color_change_notify(struct net_device *dev)
- 					 0, 0);
- }
- 
-+/**
-+ * cfg80211_valid_disable_subchannel_bitmap - validate puncturing bitmap
-+ * @bitmap: bitmap to be validated
-+ * @chandef: channel definition
-+ *
-+ * Validate the puncturing bitmap.
-+ *
-+ * Return: %true if the bitmap is valid. %false otherwise.
-+ */
-+bool cfg80211_valid_disable_subchannel_bitmap(u16 *bitmap,
-+					      const struct cfg80211_chan_def *chandef);
-+
- #endif /* __NET_CFG80211_H */
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index a14a5ea2bffd..09703cae2fbb 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -88,67 +88,6 @@ MODULE_PARM_DESC(probe_wait_ms,
+@@ -1316,6 +1316,9 @@ struct cfg80211_unsol_bcast_probe_resp {
+  * @fils_discovery: FILS discovery transmission parameters
+  * @unsol_bcast_probe_resp: Unsolicited broadcast probe response parameters
+  * @mbssid_config: AP settings for multiple bssid
++ * @punct_bitmap: Preamble puncturing bitmap. Each bit represents
++ *	a 20 MHz channel, lowest bit corresponding to the lowest channel.
++ *	Bit set to 1 indicates that the channel is punctured.
   */
- #define IEEE80211_SIGNAL_AVE_MIN_COUNT	4
+ struct cfg80211_ap_settings {
+ 	struct cfg80211_chan_def chandef;
+@@ -1350,6 +1353,7 @@ struct cfg80211_ap_settings {
+ 	struct cfg80211_fils_discovery fils_discovery;
+ 	struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
+ 	struct cfg80211_mbssid_config mbssid_config;
++	u16 punct_bitmap;
+ };
  
--struct ieee80211_per_bw_puncturing_values {
--	u8 len;
--	const u16 *valid_values;
--};
--
--static const u16 puncturing_values_80mhz[] = {
--	0x8, 0x4, 0x2, 0x1
--};
--
--static const u16 puncturing_values_160mhz[] = {
--	 0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1, 0xc0, 0x30, 0xc, 0x3
--};
--
--static const u16 puncturing_values_320mhz[] = {
--	0xc000, 0x3000, 0xc00, 0x300, 0xc0, 0x30, 0xc, 0x3, 0xf000, 0xf00,
--	0xf0, 0xf, 0xfc00, 0xf300, 0xf0c0, 0xf030, 0xf00c, 0xf003, 0xc00f,
--	0x300f, 0xc0f, 0x30f, 0xcf, 0x3f
--};
--
--#define IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(_bw) \
--	{ \
--		.len = ARRAY_SIZE(puncturing_values_ ## _bw ## mhz), \
--		.valid_values = puncturing_values_ ## _bw ## mhz \
--	}
--
--static const struct ieee80211_per_bw_puncturing_values per_bw_puncturing[] = {
--	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(80),
--	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(160),
--	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(320)
--};
--
--static bool ieee80211_valid_disable_subchannel_bitmap(u16 *bitmap,
--						      enum nl80211_chan_width bw)
--{
--	u32 idx, i;
--
--	switch (bw) {
--	case NL80211_CHAN_WIDTH_80:
--		idx = 0;
--		break;
--	case NL80211_CHAN_WIDTH_160:
--		idx = 1;
--		break;
--	case NL80211_CHAN_WIDTH_320:
--		idx = 2;
--		break;
--	default:
--		*bitmap = 0;
--		break;
--	}
--
--	if (!*bitmap)
--		return true;
--
--	for (i = 0; i < per_bw_puncturing[idx].len; i++)
--		if (per_bw_puncturing[idx].valid_values[i] == *bitmap)
--			return true;
--
--	return false;
--}
--
- /*
-  * Extract from the given disabled subchannel bitmap (raw format
-  * from the EHT Operation Element) the bits for the subchannel
-@@ -206,8 +145,8 @@ ieee80211_handle_puncturing_bitmap(struct ieee80211_link_data *link,
- 			ieee80211_extract_dis_subch_bmap(eht_oper, chandef,
- 							 bitmap);
+ /**
+@@ -1367,6 +1371,9 @@ struct cfg80211_ap_settings {
+  * @radar_required: whether radar detection is required on the new channel
+  * @block_tx: whether transmissions should be blocked while changing
+  * @count: number of beacons until switch
++ * @punct_bitmap: Preamble puncturing bitmap. Each bit represents
++ *	a 20 MHz channel, lowest bit corresponding to the lowest channel.
++ *	Bit set to 1 indicates that the channel is punctured.
+  */
+ struct cfg80211_csa_settings {
+ 	struct cfg80211_chan_def chandef;
+@@ -1379,6 +1386,7 @@ struct cfg80211_csa_settings {
+ 	bool radar_required;
+ 	bool block_tx;
+ 	u8 count;
++	u16 punct_bitmap;
+ };
  
--		if (ieee80211_valid_disable_subchannel_bitmap(&bitmap,
--							      chandef->width))
-+		if (cfg80211_valid_disable_subchannel_bitmap(&bitmap,
-+							     chandef))
- 			break;
- 		link->u.mgd.conn_flags |=
- 			ieee80211_chandef_downgrade(chandef);
-@@ -5638,8 +5577,8 @@ static bool ieee80211_config_puncturing(struct ieee80211_link_data *link,
- 	    extracted == link->conf->eht_puncturing)
- 		return true;
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 8ecb0fbee721..4dfd6990fa97 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2752,6 +2752,12 @@ enum nl80211_commands {
+  *	the incoming frame RX timestamp.
+  * @NL80211_ATTR_TD_BITMAP: Transition Disable bitmap, for subsequent
+  *	(re)associations.
++ *
++ * @NL80211_ATTR_PUNCT_BITMAP: (u32) Preamble puncturing bitmap, lowest
++ *	bit corresponds to the lowest 20 MHz channel. Each bit set to 1
++ *	indicates that the sub-channel is punctured. Higher 16 bits are
++ *	reserved.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3281,6 +3287,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_RX_HW_TIMESTAMP,
+ 	NL80211_ATTR_TD_BITMAP,
  
--	if (!ieee80211_valid_disable_subchannel_bitmap(&bitmap,
--						       link->conf->chandef.width)) {
-+	if (!cfg80211_valid_disable_subchannel_bitmap(&bitmap,
-+						      &link->conf->chandef)) {
- 		link_info(link,
- 			  "Got an invalid disable subchannel bitmap from AP %pM: bitmap = 0x%x, bw = 0x%x. disconnect\n",
- 			  link->u.mgd.bssid,
-@@ -7132,8 +7071,8 @@ ieee80211_setup_assoc_link(struct ieee80211_sub_if_data *sdata,
- 			u16 bitmap;
++	NL80211_ATTR_PUNCT_BITMAP,
++
+ 	/* add attributes here, update the policy in nl80211.c */
  
- 			bitmap = get_unaligned_le16(disable_subchannel_bitmap);
--			if (ieee80211_valid_disable_subchannel_bitmap(&bitmap,
--								      link->conf->chandef.width))
-+			if (cfg80211_valid_disable_subchannel_bitmap(&bitmap,
-+								     &link->conf->chandef))
- 				ieee80211_handle_puncturing_bitmap(link,
- 								   eht_oper,
- 								   bitmap,
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index 0e5835cd8c61..0b7e81db383d 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -1460,3 +1460,72 @@ struct cfg80211_chan_def *wdev_chandef(struct wireless_dev *wdev,
- 	}
+ 	__NL80211_ATTR_AFTER_LAST,
+@@ -6296,6 +6304,8 @@ enum nl80211_feature_flags {
+  *	might apply, e.g. no scans in progress, no offchannel operations
+  *	in progress, and no active connections.
+  *
++ * @NL80211_EXT_FEATURE_PUNCT: Driver supports preamble puncturing in AP mode.
++ *
+  * @NUM_NL80211_EXT_FEATURES: number of extended features.
+  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
+  */
+@@ -6365,6 +6375,8 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_RADAR_BACKGROUND,
+ 	NL80211_EXT_FEATURE_POWERED_ADDR_CHANGE,
+ 
++	NL80211_EXT_FEATURE_PUNCT,
++
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
+ 	MAX_NL80211_EXT_FEATURES = NUM_NL80211_EXT_FEATURES - 1
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 64cf6110ce9d..d2219f43a2ea 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -805,6 +805,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+ 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
++	[NL80211_ATTR_PUNCT_BITMAP] = { .type = NLA_U32 },
+ };
+ 
+ /* policy for the key attributes */
+@@ -3173,6 +3174,27 @@ static bool nl80211_can_set_dev_channel(struct wireless_dev *wdev)
+ 		wdev->iftype == NL80211_IFTYPE_P2P_GO;
  }
- EXPORT_SYMBOL(wdev_chandef);
-+
-+struct cfg80211_per_bw_puncturing_values {
-+	u8 len;
-+	const u16 *valid_values;
-+};
-+
-+static const u16 puncturing_values_80mhz[] = {
-+	0x8, 0x4, 0x2, 0x1
-+};
-+
-+static const u16 puncturing_values_160mhz[] = {
-+	 0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1, 0xc0, 0x30, 0xc, 0x3
-+};
-+
-+static const u16 puncturing_values_320mhz[] = {
-+	0xc000, 0x3000, 0xc00, 0x300, 0xc0, 0x30, 0xc, 0x3, 0xf000, 0xf00,
-+	0xf0, 0xf, 0xfc00, 0xf300, 0xf0c0, 0xf030, 0xf00c, 0xf003, 0xc00f,
-+	0x300f, 0xc0f, 0x30f, 0xcf, 0x3f
-+};
-+
-+#define CFG80211_PER_BW_VALID_PUNCTURING_VALUES(_bw) \
-+	{ \
-+		.len = ARRAY_SIZE(puncturing_values_ ## _bw ## mhz), \
-+		.valid_values = puncturing_values_ ## _bw ## mhz \
-+	}
-+
-+static const struct cfg80211_per_bw_puncturing_values per_bw_puncturing[] = {
-+	CFG80211_PER_BW_VALID_PUNCTURING_VALUES(80),
-+	CFG80211_PER_BW_VALID_PUNCTURING_VALUES(160),
-+	CFG80211_PER_BW_VALID_PUNCTURING_VALUES(320)
-+};
-+
-+bool cfg80211_valid_disable_subchannel_bitmap(u16 *bitmap,
-+					      const struct cfg80211_chan_def *chandef)
+ 
++static int nl80211_parse_punct_bitmap(struct cfg80211_registered_device *rdev,
++				      struct genl_info *info,
++				      const struct cfg80211_chan_def *chandef,
++				      u16 *punct_bitmap)
 +{
-+	u32 idx, i, start_freq;
++	u32 bitmap;
 +
-+	switch (chandef->width) {
-+	case NL80211_CHAN_WIDTH_80:
-+		idx = 0;
-+		start_freq = chandef->center_freq1 - 40;
-+		break;
-+	case NL80211_CHAN_WIDTH_160:
-+		idx = 1;
-+		start_freq = chandef->center_freq1 - 80;
-+		break;
-+	case NL80211_CHAN_WIDTH_320:
-+		idx = 2;
-+		start_freq = chandef->center_freq1 - 160;
-+		break;
-+	default:
-+		*bitmap = 0;
-+		break;
++	if (!wiphy_ext_feature_isset(&rdev->wiphy, NL80211_EXT_FEATURE_PUNCT))
++		return -EINVAL;
++
++	bitmap = nla_get_u32(info->attrs[NL80211_ATTR_PUNCT_BITMAP]);
++	if (bitmap & 0xFFFF0000)
++		return -EINVAL;
++
++	*punct_bitmap = bitmap;
++	if (!cfg80211_valid_disable_subchannel_bitmap(punct_bitmap, chandef))
++		return -EINVAL;
++
++	return 0;
++}
++
+ int nl80211_parse_chandef(struct cfg80211_registered_device *rdev,
+ 			  struct genl_info *info,
+ 			  struct cfg80211_chan_def *chandef)
+@@ -5918,6 +5940,14 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 		goto out;
+ 	}
+ 
++	if (info->attrs[NL80211_ATTR_PUNCT_BITMAP]) {
++		err = nl80211_parse_punct_bitmap(rdev, info,
++						 &params->chandef,
++						 &params->punct_bitmap);
++		if (err)
++			goto out;
 +	}
 +
-+	if (!*bitmap)
-+		return true;
+ 	if (!cfg80211_reg_can_beacon_relax(&rdev->wiphy, &params->chandef,
+ 					   wdev->iftype)) {
+ 		err = -EINVAL;
+@@ -10057,6 +10087,14 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[NL80211_ATTR_CH_SWITCH_BLOCK_TX])
+ 		params.block_tx = true;
+ 
++	if (info->attrs[NL80211_ATTR_PUNCT_BITMAP]) {
++		err = nl80211_parse_punct_bitmap(rdev, info,
++						 &params.chandef,
++						 &params.punct_bitmap);
++		if (err)
++			goto free;
++	}
 +
-+	/* check if primary channel is punctured */
-+	if (*bitmap & (u16)BIT((chandef->chan->center_freq - start_freq) / 20))
-+		return false;
-+
-+	for (i = 0; i < per_bw_puncturing[idx].len; i++)
-+		if (per_bw_puncturing[idx].valid_values[i] == *bitmap)
-+			return true;
-+
-+	return false;
-+}
-+EXPORT_SYMBOL(cfg80211_valid_disable_subchannel_bitmap);
+ 	wdev_lock(wdev);
+ 	err = rdev_channel_switch(rdev, dev, &params);
+ 	wdev_unlock(wdev);
 -- 
 2.39.0
 
