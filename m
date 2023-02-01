@@ -2,81 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D19686114
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 09:01:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1CD686172
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 09:19:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbjBAIBG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Feb 2023 03:01:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51628 "EHLO
+        id S231687AbjBAITD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Feb 2023 03:19:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbjBAIBF (ORCPT
+        with ESMTP id S231515AbjBAISl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Feb 2023 03:01:05 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB75953558
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Feb 2023 00:01:01 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pN83A-0000Xj-1T; Wed, 01 Feb 2023 09:01:00 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pN838-0000ua-1j; Wed, 01 Feb 2023 09:00:58 +0100
-Date:   Wed, 1 Feb 2023 09:00:58 +0100
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Andreas Henriksson <andreas@fatal.se>
-Cc:     linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>
-Subject: Re: rtw88: rtw8822cu (LM842) stalls completely, needs replugging to
- wake up.
-Message-ID: <20230201080058.GH13319@pengutronix.de>
-References: <20230131114611.sm6m3fc4g5n7lhqc@fatal.se>
+        Wed, 1 Feb 2023 03:18:41 -0500
+X-Greylist: delayed 66 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 01 Feb 2023 00:18:35 PST
+Received: from unicom146.biz-email.net (unicom146.biz-email.net [210.51.26.146])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9D55EF9E
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Feb 2023 00:18:35 -0800 (PST)
+Received: from ([60.208.111.195])
+        by unicom146.biz-email.net ((D)) with ASMTP (SSL) id XCT00022;
+        Wed, 01 Feb 2023 16:17:22 +0800
+Received: from localhost.localdomain (10.200.104.97) by
+ jtjnmail201607.home.langchao.com (10.100.2.7) with Microsoft SMTP Server id
+ 15.1.2507.16; Wed, 1 Feb 2023 16:17:23 +0800
+From:   Bo Liu <liubo03@inspur.com>
+To:     <johannes@sipsolutions.net>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Bo Liu <liubo03@inspur.com>
+Subject: [PATCH] rfkill: Use sysfs_emit() to instead of sprintf()
+Date:   Wed, 1 Feb 2023 03:17:18 -0500
+Message-ID: <20230201081718.3289-1-liubo03@inspur.com>
+X-Mailer: git-send-email 2.18.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230131114611.sm6m3fc4g5n7lhqc@fatal.se>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.200.104.97]
+tUid:   2023201161722c1fec020585c9a7868fd32a9a6500108
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 31, 2023 at 12:46:11PM +0100, Andreas Henriksson wrote:
-> Hello,
-> 
-> I've tested the rtw88 usb driver additions that was merged in 6.2-rc1 on an LM842 dongle (rtw8822cu)
-> and would like to ask if anyone else has noticed the problems I'm seeing.
-> After downloading a certain amount of data the traffic just completely stalls. No error messages
-> (not even when using rtw88_core with debug_mask=0xff).
-> 
-> My dongle:
-> https://www.lm-technologies.com/product/wifi-802-11ac-bluetooth-5-0-2t2r-usb-combi-adapter-lm842/
+Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+should only use sysfs_emit() or sysfs_emit_at() when formatting the
+value to be returned to user space.
 
-That's the same dongle as I have. I didn't notice any problems myself,
-but I'll try to reproduce next week.
+Signed-off-by: Bo Liu <liubo03@inspur.com>
+---
+ net/rfkill/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-> [  134.250277] rtw_8822cu 1-1:1.2: Firmware version 9.9.13, H2C version 15
-> [  134.310449] rtw_8822cu 1-1:1.2: WOW Firmware version 9.9.4, H2C version 15
-
-I had some hope I could tell you to use the latest firmware files, but
-these are the newest already :-/
-
-Sascha
-
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index b390ff245d5e..a103b2da4ed2 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -685,7 +685,7 @@ static ssize_t name_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%s\n", rfkill->name);
++	return sysfs_emit(buf, "%s\n", rfkill->name);
+ }
+ static DEVICE_ATTR_RO(name);
+ 
+@@ -694,7 +694,7 @@ static ssize_t type_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%s\n", rfkill_types[rfkill->type]);
++	return sysfs_emit(buf, "%s\n", rfkill_types[rfkill->type]);
+ }
+ static DEVICE_ATTR_RO(type);
+ 
+@@ -703,7 +703,7 @@ static ssize_t index_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%d\n", rfkill->idx);
++	return sysfs_emit(buf, "%d\n", rfkill->idx);
+ }
+ static DEVICE_ATTR_RO(index);
+ 
+@@ -712,7 +712,7 @@ static ssize_t persistent_show(struct device *dev,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%d\n", rfkill->persistent);
++	return sysfs_emit(buf, "%d\n", rfkill->persistent);
+ }
+ static DEVICE_ATTR_RO(persistent);
+ 
+@@ -721,7 +721,7 @@ static ssize_t hard_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_HW) ? 1 : 0 );
++	return sysfs_emit(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_HW) ? 1 : 0 );
+ }
+ static DEVICE_ATTR_RO(hard);
+ 
+@@ -730,7 +730,7 @@ static ssize_t soft_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_SW) ? 1 : 0 );
++	return sysfs_emit(buf, "%d\n", (rfkill->state & RFKILL_BLOCK_SW) ? 1 : 0 );
+ }
+ 
+ static ssize_t soft_store(struct device *dev, struct device_attribute *attr,
+@@ -764,7 +764,7 @@ static ssize_t hard_block_reasons_show(struct device *dev,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "0x%lx\n", rfkill->hard_block_reasons);
++	return sysfs_emit(buf, "0x%lx\n", rfkill->hard_block_reasons);
+ }
+ static DEVICE_ATTR_RO(hard_block_reasons);
+ 
+@@ -783,7 +783,7 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+ 
+-	return sprintf(buf, "%d\n", user_state_from_blocked(rfkill->state));
++	return sysfs_emit(buf, "%d\n", user_state_from_blocked(rfkill->state));
+ }
+ 
+ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.27.0
+
