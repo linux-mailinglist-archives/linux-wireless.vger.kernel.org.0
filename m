@@ -2,137 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C2B5686C2D
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 17:55:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39CF0686C46
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 17:58:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230437AbjBAQzI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Feb 2023 11:55:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54270 "EHLO
+        id S231673AbjBAQ6E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Feb 2023 11:58:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230432AbjBAQzF (ORCPT
+        with ESMTP id S231543AbjBAQ6A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Feb 2023 11:55:05 -0500
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5929728C5
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Feb 2023 08:54:56 -0800 (PST)
-Received: by mail-pj1-x1036.google.com with SMTP id ha3-20020a17090af3c300b00230222051a6so2599017pjb.2
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Feb 2023 08:54:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CuWcrDVG77MlzAzG1Dc9fCEJWh5XQzqPcKQwClqpGQk=;
-        b=elsctNm6DvnStQNg/FiqgVT58WMOCUG7xRLbpU1S3BHrK2CrWN3bs69y3FSS53aQIT
-         VGfpRUFDv+zQ/9PPxQBjX0Hn5y15GaAc1Lhq8hOuApj/9xVEah0bavBFheTs7kb6viHU
-         uzT67e9IFG4XJUH4X4EBou9OUYS6NnHgTRD/I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CuWcrDVG77MlzAzG1Dc9fCEJWh5XQzqPcKQwClqpGQk=;
-        b=zntI/Ywd8lDyygkmxNkr8xcLOkkjO4DfOJdliZqWyWz2AMOlQDW1xbuVNSMdxsImsV
-         qvl5cbS1gHg0BCFClye3zXCEBSO8RC11KvSsYVgbz696hVFSBHsonziAfQQ6R2FHJjp6
-         +hsdo49KcOwhd6XkEvR673mSOVn5muQBMwLvxAXEU00IXSBYw1a1qFJ+AMehE+64vDpu
-         Tn4DjvKbS9kZ0brg2cqsFEXAlqT+aI4p+eJh6VgtI3vzCgdWpKz1Ec2pUquSyOQkYFRQ
-         16Wceondg5ump49e163YXYj+cJFInWU8JKiXcHTxJxkQZTeQEr4psrzdfFAiKMxPMlEe
-         aQ5w==
-X-Gm-Message-State: AO0yUKWQSc5Y8EFBYfAda60XcCAGeScTMZ5PCyC+Oa5o+jUODTowLdu2
-        Lxld6cCuC0qW6fej61hH6WYi9Q==
-X-Google-Smtp-Source: AK7set9yAZQ6+dqWsBd9DE4iXXS9o4iyPyJ7iSp8CiKtvLQ+kk68I2UOsZmjpeyAcBcmjYLHtzQXLQ==
-X-Received: by 2002:a05:6a20:7da4:b0:bd:79a:a215 with SMTP id v36-20020a056a207da400b000bd079aa215mr4272667pzj.29.1675270496006;
-        Wed, 01 Feb 2023 08:54:56 -0800 (PST)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:ba26:efe8:5132:5fcf])
-        by smtp.gmail.com with ESMTPSA id b15-20020aa7870f000000b0058119caa82csm11605090pfo.205.2023.02.01.08.54.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 08:54:55 -0800 (PST)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc:     Kalle Valo <kvalo@kernel.org>, junyuu@chromium.org,
-        Youghandhar Chintala <quic_youghand@quicinc.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Marc Zyngier <maz@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: ath5k: Use platform_get_irq() to get the interrupt
-Date:   Wed,  1 Feb 2023 08:54:43 -0800
-Message-Id: <20230201084131.v2.2.Ic4f8542b0588d7eb4bc6e322d4af3d2064e84ff0@changeid>
-X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-In-Reply-To: <20230201084131.v2.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
-References: <20230201084131.v2.1.I69cf3d56c97098287fe3a70084ee515098390b70@changeid>
+        Wed, 1 Feb 2023 11:58:00 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E6A7B402;
+        Wed,  1 Feb 2023 08:57:54 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D37961889;
+        Wed,  1 Feb 2023 16:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4DFC433D2;
+        Wed,  1 Feb 2023 16:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675270673;
+        bh=wgoFWDzet3MEnQEk+UbM8HUIOsFtAK8npPJ49HGAO1o=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=u9X4Gr7TjZ6UkgVwjSehC9yfCUt//67EjPYTXTHnJ+aTE6aXNoDaG/fZz03jXnElM
+         c315hFd6D+lNgE3Ekgg0QaNB3z7pxxWqm4plvstpHb14GQ0FGDiib2q7//3OZr4/JT
+         i0jWp+SqAe/OVftlr6AN17B1kIJdLkIF0i/EuIo2IVSpqxiD6qKmMLkB+1ogV6NLc6
+         JidEOiKwk15fIiFO+dc5Qsvoe66Y0tsqMeopIu++n7efbaGm5W5Uc31U7fqGait52w
+         WnE8sOF8lc6h19Dd3hynSSTPWQGh4Vapzj+sPUAC+hBsgiEQz8Z/aI5T8L99Afd+Hr
+         1f40qveSqB9TQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        jic23@kernel.org, tudor.ambarus@microchip.com, pratyush@kernel.org,
+        sanju.mehta@amd.com, chin-ting_kuo@aspeedtech.com, clg@kaod.org,
+        kdasu.kdev@gmail.com, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, eajames@linux.ibm.com, olteanv@gmail.com,
+        han.xu@nxp.com, john.garry@huawei.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, khilman@baylibre.com,
+        matthias.bgg@gmail.com, haibo.chen@nxp.com,
+        linus.walleij@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        agross@kernel.org, heiko@sntech.de, krzysztof.kozlowski@linaro.org,
+        andi@etezian.org, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, wens@csie.org,
+        jernej.skrabec@gmail.com, samuel@sholland.org,
+        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
+        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
+        kvalo@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
+        skomatineni@nvidia.com, sumit.semwal@linaro.org,
+        christian.koenig@amd.com, j.neuschaefer@gmx.net,
+        vireshk@kernel.org, rmfrfs@gmail.com, johan@kernel.org,
+        elder@kernel.org, gregkh@linuxfoundation.org,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Cc:     git@amd.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
+        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
+        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
+        alim.akhtar@samsung.com, ldewangan@nvidia.com,
+        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-mtd@lists.infradead.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        michael@walle.cc, palmer@dabbelt.com,
+        linux-riscv@lists.infradead.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, greybus-dev@lists.linaro.org,
+        linux-staging@lists.linux.dev, amitrkcian2002@gmail.com
+In-Reply-To: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
+References: <20230119185342.2093323-1-amit.kumar-mahapatra@amd.com>
+Subject: Re: (subset) [PATCH v2 00/13] spi: Add support for
+ stacked/parallel memories
+Message-Id: <167527065195.537421.10361370461620477483.b4-ty@kernel.org>
+Date:   Wed, 01 Feb 2023 16:57:31 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.0
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As of commit a1a2b7125e10 ("of/platform: Drop static setup of IRQ
-resource from DT core"), we need to use platform_get_irq() instead of
-platform_get_resource() to get our IRQs because
-platform_get_resource() simply won't get them anymore.
+On Fri, 20 Jan 2023 00:23:29 +0530, Amit Kumar Mahapatra wrote:
+> This patch is in the continuation to the discussions which happened on
+> 'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
+> adding dt-binding support for stacked/parallel memories.
+> 
+> This patch series updated the spi-nor, spi core and the spi drivers
+> to add stacked and parallel memories support.
+> 
+> [...]
 
-This was already fixed in several other Atheros WiFi drivers,
-apparently in response to Zeal Robot reports. An example of another
-fix is commit 9503a1fc123d ("ath9k: Use platform_get_irq() to get the
-interrupt"). ath5k seems to have been missed in this effort, though.
+Applied to
 
-Fixes: a1a2b7125e10 ("of/platform: Drop static setup of IRQ resource from DT core")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
-I'm not setup to actually test this, but I figured that I might as
-well go all the way and fix all the instances of the same pattern that
-I found in the ath drivers since the old call was actually breaking me
-in ath11k. I did at least confirm that the code compiles for me.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-If folks would rather not land an untested patch like this, though,
-feel free to drop this and just land patch #1 as long as that one
-looks OK.
+Thanks!
 
-Changes in v2:
-- Update commit message and point to patch that broke us (Jonas)
+[01/13] spi: Add APIs in spi core to set/get spi->chip_select and spi->cs_gpiod
+        commit: 303feb3cc06ac0665d0ee9c1414941200e60e8a3
+[02/13] spi: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[03/13] net: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[04/13] iio: imu: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[05/13] mtd: devices: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[06/13] staging: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
+[07/13] platform/x86: serial-multi-instantiate: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        (no commit info)
 
- drivers/net/wireless/ath/ath5k/ahb.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index 2c9cec8b53d9..28a1e5eff204 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -113,15 +113,13 @@ static int ath_ahb_probe(struct platform_device *pdev)
- 		goto err_out;
- 	}
- 
--	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (res == NULL) {
--		dev_err(&pdev->dev, "no IRQ resource found\n");
--		ret = -ENXIO;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "no IRQ resource found: %d\n", irq);
-+		ret = irq;
- 		goto err_iounmap;
- 	}
- 
--	irq = res->start;
--
- 	hw = ieee80211_alloc_hw(sizeof(struct ath5k_hw), &ath5k_hw_ops);
- 	if (hw == NULL) {
- 		dev_err(&pdev->dev, "no memory for ieee80211_hw\n");
--- 
-2.39.1.456.gfc5497dd1b-goog
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
