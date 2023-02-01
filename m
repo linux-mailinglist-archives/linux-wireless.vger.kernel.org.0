@@ -2,144 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3AFB687056
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 22:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84E9368708B
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 22:43:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230361AbjBAVGi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Feb 2023 16:06:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47132 "EHLO
+        id S230375AbjBAVnU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Feb 2023 16:43:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbjBAVGe (ORCPT
+        with ESMTP id S229510AbjBAVnT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Feb 2023 16:06:34 -0500
-Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D35A16E42C
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Feb 2023 13:06:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1675285591; x=1706821591;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iRKnL0h2vDqLOR7wwetQc+wVcIvEQsrF0Mp7+5R7hA4=;
-  b=otyZloB9e0K6hpj44tyj6PjgxSqcL23PUAGKENM74MG54tKY9V4Nc9PP
-   WOrxJlKHykKg0SJ3RWXq5U64ZXcTN/2G4U/K2n6kaGc7S6vATGr6IMBRR
-   4leSLyADZRW1fGZC7mkfIBKtXK+FJKkgWhww0ercifnxo6IcGSb0ZZyrF
-   E/uKQsiAajCUth2u4Q1Vp2zq9LtHg+ZKrmNzJOqlvBhEv7LRp3ieCZm/j
-   zLSYFnefIcz3jqOFZhDb1P/of03P96ipXNexWBuvJIGfUfA1aE2WJeUdP
-   J6pSUYbAB0YFOmIdA7SgA9htmHuB88f6FzUrN2IS3IBTPb9h83+1Lx7Lv
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.97,265,1669046400"; 
-   d="scan'208";a="222354877"
-Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 02 Feb 2023 05:06:29 +0800
-IronPort-SDR: SXRJDolaSo2yG5ml6kxfIX2pqjD5y9o4+vZUdnq+FTsfHh7jMrVTLJn8AgCmsCZeNdGFVwVn/0
- C5zcmPeIspMpXsJ/hYd5Az2WFhXGKl+/SS/U7YU0LzeVZcW93r1ZA9HFKGWdl2WJGmH7wlvlkN
- giPKAOKQA8ICqXxJ/9ROYpCdXoQ9+jBvrWLmnosM/6jHA6FMb/aLjBYK88CqYDt7JQj+dDrQmJ
- k3muUpiF+swl3R8Y0v/oK/FvVIfu/onnRKUtpxsVCZ/DzyPaWLKeSl3iU+zjN7NKVpO2IYdsQB
- jJA=
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 01 Feb 2023 12:18:08 -0800
-IronPort-SDR: ro6+q9kS8ABgPI5l106TREhfcf15IvIbgD0FiDCQqiGBnfxzTDuPP1Iq54JQfpHltQXlv6wBOo
- KHEm3EvU16ovNhIsyzum2sZXL4N7dxkn2ENnvPUKXK0bHLzGb3VNZrl5Uk9sa2HFXzZbtbIJM1
- JFmsoW0tWECnG1TSMsCUcvg+4g9JnlzrIYoWPVlVFCCIAGQVyP0gsRYEbJOj0Zkit9K4C8cES/
- m+/PmKAQHqQmp0jmCrG90+/xgj6roUelo0A5z9RJgGOiq0mSo104VMY9eyBsr1PUFgHOQleg0g
- +Vc=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 01 Feb 2023 13:06:29 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4P6ZGY1cW4z1Rwrq
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Feb 2023 13:06:29 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1675285588; x=1677877589; bh=iRKnL0h2vDqLOR7wwetQc+wVcIvEQsrF0Mp
-        7+5R7hA4=; b=V8ZS818BsRUL1nCwybqdEYTe8Wx0WBi6qOXAxFoZKbXfCBwwWFf
-        VOosxalLJs4cfWKySVQbx1ZrLB5YonTFBaoj/OLDVfT8cUBJ8bD5tiSE5hzQ46RF
-        TEakRsy3ipmA2B41lBPZ393WOLeL83l8wWtcOnR/4nSLayBR+cXU60TKUAZZkqU3
-        m9id8XIALxEB+iWm2k7m3TXJnm913IifTzv30TSMO2LexFx2Yy+QwW5uL0PLMTEh
-        vHlfWflhhZbCIVwDj00GWrUNQ6CJKTuSmUOhYwjGnWlId5TVTF+fr24Bl74RV9QG
-        GmSDm/bX8s7qZ+Mjsw8eY/3NXzRSKvHjbdA==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id lGr9sLtMJ_tB for <linux-wireless@vger.kernel.org>;
-        Wed,  1 Feb 2023 13:06:28 -0800 (PST)
-Received: from [10.225.163.79] (unknown [10.225.163.79])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4P6ZGV4bwJz1RvLy;
-        Wed,  1 Feb 2023 13:06:26 -0800 (PST)
-Message-ID: <7cf17a27-13dc-e6b4-c34c-47454239af30@opensource.wdc.com>
-Date:   Thu, 2 Feb 2023 06:06:25 +0900
+        Wed, 1 Feb 2023 16:43:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC9DEC57;
+        Wed,  1 Feb 2023 13:43:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F09DBB822BB;
+        Wed,  1 Feb 2023 21:43:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C076C433EF;
+        Wed,  1 Feb 2023 21:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675287795;
+        bh=n5zwfnJq/0k7NqmhaM7dDS0iPBkLiQGnHNC0chJvoyo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=LbLSy0ip7DQZscgc8KHtS0nzvggLwtqJ5rHcAlvuMqiMbPxZXB6Ysfe/NlR/fII8y
+         yuf/fl/Aj7+BjiG8cy/KpwOE1SlIfxUlyTYFv+yCONgj6sNQCl27z7FjkjF2otAAV9
+         SwGjr74/6Sip7yBA3gaVKK2FpHyeV98wV2kEUDjbxlNjhXby6fMOeHK1OC5CEQ1ShF
+         5UXxJag6TMquAS1jvsYi7vCsew4jNCkIDIdJh06j08892/Zrw5FTy5RTk3Z5TSTAjm
+         oNS8Quy6fDI2xiC7po2qgXO2sss9f/XAFjvQ8vrB/+jNMUwZpvVaGTUh+8qurEStGR
+         s0pMk8QNoEGxg==
+Date:   Wed, 1 Feb 2023 15:43:13 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mad Horse <equu@openmail.cc>
+Cc:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org,
+        linux-pci@vger.kernel.org, robh@kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH 2/3] wifi: ath9k: stop loading incompatible DT cal data
+Message-ID: <20230201214313.GA1898614@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v3] powerpc: macio: Make remove callback of macio driver
- void returned
-Content-Language: en-US
-To:     Dawei Li <set_pte_at@outlook.com>, mpe@ellerman.id.au
-Cc:     npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
-References: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab8ff515-19ec-fe3f-0237-c30275e9744d@openmail.cc>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/1/23 23:36, Dawei Li wrote:
-> Commit fc7a6209d571 ("bus: Make remove callback return void") forces
-> bus_type::remove be void-returned, it doesn't make much sense for any
-> bus based driver implementing remove callbalk to return non-void to
-> its caller.
-> 
-> This change is for macio bus based drivers.
-> 
-> Signed-off-by: Dawei Li <set_pte_at@outlook.com>
-> ---
-> v2 -> v3
-> - Rebased on latest powerpc/next.
-> - cc' to relevant subsysem lists.
-> 
-> v1 -> v2
-> - Revert unneeded changes.
-> - Rebased on latest powerpc/next.
-> 
-> v1
-> - https://lore.kernel.org/all/TYCP286MB2323FCDC7ECD87F8D97CB74BCA189@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM/
-> ---
->  arch/powerpc/include/asm/macio.h                | 2 +-
->  drivers/ata/pata_macio.c                        | 4 +---
->  drivers/macintosh/rack-meter.c                  | 4 +---
->  drivers/net/ethernet/apple/bmac.c               | 4 +---
->  drivers/net/ethernet/apple/mace.c               | 4 +---
->  drivers/net/wireless/intersil/orinoco/airport.c | 4 +---
->  drivers/scsi/mac53c94.c                         | 5 +----
->  drivers/scsi/mesh.c                             | 5 +----
->  drivers/tty/serial/pmac_zilog.c                 | 7 ++-----
->  sound/aoa/soundbus/i2sbus/core.c                | 4 +---
->  10 files changed, 11 insertions(+), 32 deletions(-)
+On Wed, Feb 01, 2023 at 11:02:59AM +0800, Mad Horse wrote:
+> 在 2023/1/18 03:46, Bjorn Helgaas 写道:
 
-For the ata bits:
+> > Suggest structure like this (flesh out with the relevant DT property
+> > names, etc):
+> >
+> >   For PCI ath9k devices, load calibration data only if there is a DT
+> >   node corresponding to the device with XXX ...
+> >
+> > More details: https://chris.beams.io/posts/git-commit/
+> >
+> Thanks for pointing it out. The commit log of the last two patch has
+> been reworded with required content, and sent to the current thread
+> earlier.
 
-Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Thanks.  Sending updated version as replies to the original series
+posting makes it hard to keep track of what's happening.  Better if
+you send a "v2" series of *all* the patches, even if some of them
+haven't changed.  There are a few hints here, although it's not very
+explicit:
 
--- 
-Damien Le Moal
-Western Digital Research
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=v6.1#n633
 
+Also, you use multiple email addresses, and if you can figure out how
+to at least make the display names the same, it will make the
+conversation easier to follow.  Here's what it looks like in mutt:
+
+  - Jan  7  9:14 Mad Horse       [PATCH] pci: Add functions ...
+  - Jan 10  9:24 To Mad Horse    ├─>
+  - Jan 17  4:01 Mad Horse       ├─>[PATCH 1/3] PCI: of: Match ...
+  - Jan 17  4:02 Mad Horse       ├─>[PATCH 2/3] wifi: ath9k: stop ...
+  - Jan 17  4:02 Mad Horse       ├─>[PATCH 3/3] wifi: ath10k: only ...
+  - Jan 17  4:29 Mad Horse       ├─>[PATCH 1/3] PCI: of: Match pci ...
+  - Jan 17  3:27 Edward Chow     ├─>[PATCH 1/3] PCI: of: Match pci ...
+  - Jan 17  3:28 Edward Chow     ├─>[PATCH 3/3] wifi: ath10k: only ...
+  - Jan 21  4:00 persmule@gmail. ├─>[PATCH 2/3] wifi: ath9k: stop ...
+  - Jan 21  4:06 persmule@gmail. ├─>[PATCH 3/3] wifi: ath10k: only ...
+  - Jan 17  3:27 Edward Chow     └─>[PATCH 2/3] wifi: ath9k: stop ...
+  - Jan 17 13:46 To Edward Chow    └─>
+  - Jan 31 21:02 Mad Horse           └─>
+
+This also shows the problem with updated versions in the same thread.
+I can work out that "Jan 17 1/3", "Jan 21 2/3", and "Jan 21 3/3" are
+supposed to be the newest versions, but tools like patchwork and b4
+are not smart enough to do that, so it's really hard to apply this.
+
+If you just post an updated series, e.g.,
+
+  [PATCH v2 0/3] PCI: ...
+  |-> [PATCH v2 1/3] PCI: of: Match ...
+  |-> [PATCH v2 1/3] PCI: of: Match ...
+  |-> [PATCH v2 1/3] PCI: of: Match ...
+
+then everything will be nice and clean and easy to review and apply.
+
+Bjorn
