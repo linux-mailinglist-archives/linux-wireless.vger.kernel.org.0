@@ -2,134 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFF5685DE2
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 04:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5945C685FB3
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Feb 2023 07:16:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231200AbjBADVw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Jan 2023 22:21:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48682 "EHLO
+        id S230095AbjBAGQq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Feb 2023 01:16:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbjBADVu (ORCPT
+        with ESMTP id S229719AbjBAGQp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Jan 2023 22:21:50 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9F29E3433E
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Jan 2023 19:21:36 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3113LGAA0029704, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3113LGAA0029704
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
-        Wed, 1 Feb 2023 11:21:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.9; Wed, 1 Feb 2023 11:21:21 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 1 Feb 2023
- 11:21:21 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: use passed channel in set_tx_shape_dfir()
-Date:   Wed, 1 Feb 2023 11:20:57 +0800
-Message-ID: <20230201032057.7349-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 1 Feb 2023 01:16:45 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B770D10F9
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Jan 2023 22:16:44 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3115Nq8Z024028;
+        Wed, 1 Feb 2023 06:16:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=CdtZRRyJ9n/kgTnulxjQCuBH7OMELgOTKZ8nHJaFjJs=;
+ b=T2k5h1bJsqJPXMGyHzC8/VlwYDGEobDpAfKUO1qm9eWQ5DgkzHI5U1n4fMhxI4yNt1+2
+ sDpDpuy3Gm7J/j8ohY89y1WzQt1jSwd25l9Dfi1/Wy1ucX7V5XiW4/vhUV5ZjJlyHeDY
+ dOnyr6EJL6WMPc9kas23V8L6hUK+iuQRHyHp+cl1qTxuu2eSce55C//MH+ViElCuoV+P
+ 3W1nm6t6dhjsYdrTzM9KRSjom+lpAciTzf4UPaax8yvWiqJyn3n63r0WVUJh8u/Df6/L
+ 9HtI1kz+iDTEP8v8FV3WIqvfn6Qiz6e3h6iLZU8LWjpIT9ZCd1T+ys479FOd3uwOLhWD qQ== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3new3ub4p2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 01 Feb 2023 06:16:40 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3116Gdcl006417
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 1 Feb 2023 06:16:39 GMT
+Received: from ramess-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Tue, 31 Jan 2023 22:16:37 -0800
+From:   Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Subject: [PATCH] wifi: cfg80211: Allow action frames to be transmitted with link BSS in MLD
+Date:   Wed, 1 Feb 2023 11:46:02 +0530
+Message-ID: <20230201061602.3918-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hMCAs_cuPCIBUDQSUeCcWjfUy5DivRWZ
+X-Proofpoint-ORIG-GUID: hMCAs_cuPCIBUDQSUeCcWjfUy5DivRWZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-01_02,2023-01-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 clxscore=1015 suspectscore=0 mlxscore=0 mlxlogscore=601
+ impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302010053
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+Currently action frames TX only with ML address as A3(BSSID) are
+allowed in an ML AP, but TX for a non-ML Station can happen in any
+link of an ML BSS with link BSS address as A3.
+In case of an MLD, if User-space has provided a valid link_id in
+action frame TX request, allow transmission of the frame in that link.
 
-In path of setting channel and setting TX power, the rtw89_chan instance
-to be used is controlled by top and passed down. The set_tx_shape_dfir()
-is in path of setting TX power, so it should use the passed rtw89_chan
-instead of querying it itself. Otherwise, it might encounter mismatch
-between parameters if multi-channel.
-
-For example,
-rtw89_8852ce 0000:04:00.0: set tx shape dfir by unknown ch: 155 on 2GHz
-
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 4 ++--
- drivers/net/wireless/realtek/rtw89/rtw8852c.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/wireless/mlme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index c6345228d049f..8c543a6551209 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -1618,6 +1618,7 @@ static void rtw8852b_set_txpwr_ref(struct rtw89_dev *rtwdev,
- }
- 
- static void rtw8852b_bb_set_tx_shape_dfir(struct rtw89_dev *rtwdev,
-+					  const struct rtw89_chan *chan,
- 					  u8 tx_shape_idx,
- 					  enum rtw89_phy_idx phy_idx)
- {
-@@ -1637,7 +1638,6 @@ static void rtw8852b_bb_set_tx_shape_dfir(struct rtw89_dev *rtwdev,
- 	__DECL_DFIR_PARAM(sharp_14,
- 			  0x023B13FF, 0x001C42DE, 0x00FDB0AD, 0x00F60F6E,
- 			  0x00FD8F92, 0x0602D011, 0x0001C02C, 0x00FFF00A);
--	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	u8 ch = chan->channel;
- 	const u32 *param;
- 	u32 addr;
-@@ -1678,7 +1678,7 @@ static void rtw8852b_set_tx_shape(struct rtw89_dev *rtwdev,
- 	u8 tx_shape_ofdm = rtw89_8852b_tx_shape[band][RTW89_RS_OFDM][regd];
- 
- 	if (band == RTW89_BAND_2G)
--		rtw8852b_bb_set_tx_shape_dfir(rtwdev, tx_shape_cck, phy_idx);
-+		rtw8852b_bb_set_tx_shape_dfir(rtwdev, chan, tx_shape_cck, phy_idx);
- 
- 	rtw89_phy_write32_mask(rtwdev, R_DCFO_OPT, B_TXSHAPE_TRIANGULAR_CFG,
- 			       tx_shape_ofdm);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 00fbb65355061..c51943919da5a 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -1968,6 +1968,7 @@ static void rtw8852c_set_txpwr_ref(struct rtw89_dev *rtwdev,
- }
- 
- static void rtw8852c_bb_set_tx_shape_dfir(struct rtw89_dev *rtwdev,
-+					  const struct rtw89_chan *chan,
- 					  u8 tx_shape_idx,
- 					  enum rtw89_phy_idx phy_idx)
- {
-@@ -1991,7 +1992,6 @@ static void rtw8852c_bb_set_tx_shape_dfir(struct rtw89_dev *rtwdev,
- 	__DECL_DFIR_ADDR(filter,
- 			 0x45BC, 0x45CC, 0x45D0, 0x45D4, 0x45D8, 0x45C0,
- 			 0x45C4, 0x45C8);
--	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
- 	u8 ch = chan->channel;
- 	const u32 *param;
- 	int i;
-@@ -2032,7 +2032,7 @@ static void rtw8852c_set_tx_shape(struct rtw89_dev *rtwdev,
- 	u8 tx_shape_ofdm = rtw89_8852c_tx_shape[band][RTW89_RS_OFDM][regd];
- 
- 	if (band == RTW89_BAND_2G)
--		rtw8852c_bb_set_tx_shape_dfir(rtwdev, tx_shape_cck, phy_idx);
-+		rtw8852c_bb_set_tx_shape_dfir(rtwdev, chan, tx_shape_cck, phy_idx);
- 
- 	rtw89_phy_tssi_ctrl_set_bandedge_cfg(rtwdev,
- 					     (enum rtw89_mac_idx)phy_idx,
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 58e1fb18f85a..81d3f40d6235 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -742,7 +742,10 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+ 		case NL80211_IFTYPE_AP:
+ 		case NL80211_IFTYPE_P2P_GO:
+ 		case NL80211_IFTYPE_AP_VLAN:
+-			if (!ether_addr_equal(mgmt->bssid, wdev_address(wdev)))
++			if (!ether_addr_equal(mgmt->bssid, wdev_address(wdev)) &&
++			    (params->link_id < 0 ||
++			     !ether_addr_equal(mgmt->bssid,
++					       wdev->links[params->link_id].addr)))
+ 				err = -EINVAL;
+ 			break;
+ 		case NL80211_IFTYPE_MESH_POINT:
+
+base-commit: 4ca69027691a0039279b64cfa0aa511d9c9fde59
 -- 
-2.25.1
+2.17.1
 
