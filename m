@@ -2,249 +2,226 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D2D6884AC
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 17:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C3CC688540
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 18:19:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232107AbjBBQkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Feb 2023 11:40:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
+        id S231678AbjBBRTe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Feb 2023 12:19:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230047AbjBBQkn (ORCPT
+        with ESMTP id S229662AbjBBRTd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Feb 2023 11:40:43 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 482576A33D;
-        Thu,  2 Feb 2023 08:40:42 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id gr7so7634633ejb.5;
-        Thu, 02 Feb 2023 08:40:42 -0800 (PST)
+        Thu, 2 Feb 2023 12:19:33 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B612B626
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 09:19:32 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id u21so2755183edv.3
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Feb 2023 09:19:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1JxadcUmstQQisxG5SMmC/yE89rXvA6AYxcU2YUnVDQ=;
-        b=F0H3B8NAgseBrYAc9OhvFrrJcHUs5RxsmEgusiWeYI4oHZkbOFHj9Ncu15Uvbi4tCO
-         GCoGClEA/o94QYw0U1UfeOAEL80uwq+5tCfPJWGsWnHH8HpmO1lWGzeCrAsIdF4Fu6zR
-         kNR+WhBg1xqNyaBWvq3l+bklN9GSWeF5rkZflnjP5JjP6Pm7phnd2Ab56G7cA8boFLp0
-         xzt+aopsRq/bEYAtjRCwCMmTji3jBwX9xCOCD4tzAC2fkbovQWodfYFH0SLzujYlkR2S
-         3SeXJQSQvZdrRrWbPhPWjXi7p2pGkVjdnp+X80CVTlvacpypSO18F0i1MgCSG84IgzXR
-         jpqA==
+        d=broadcom.com; s=google;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UR7XNlIcXIGv6ssDhJveXZMlYjmGvB06IHja3PWQJ8s=;
+        b=Y35xF9NzHJMGQT5Id8w7eq3betCo2vQvHPSrwA6IWMT6H5gJeh9Q68GJpdw/0eBQ4j
+         vd1sCRdGnaTbClv73joKSf4XkvaENLjfJL2dklzLDxVzXBL+CD8QYrYPqCtAY1uzAd4o
+         QjgIP1lIjN3L78Ks3/jmukoEhXEjRl7qPU5tk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1JxadcUmstQQisxG5SMmC/yE89rXvA6AYxcU2YUnVDQ=;
-        b=kIYh5nPLxn++Y2JG3hn9AfOEfKPVuMBW1ZEk0WdU+5sMNs9QBxkQVMOlwQqn3TTvrq
-         52J8oee9p/Z7OnuEfLBVRRO+DUav15ojCYfDXFKk04c5V3dQzTC6rehhpczLrw8quLIT
-         Pj221va3ZlAci508fXMS1WnqJo++wgUN2Oj2KWfGn2cfnRDnyCmCGPbKOxi23vtODWML
-         7jT64ztKn0tW//fuQq54g2EFZSGvWHEb0+0ajvH4sgtNXmM1/xiknndhKYd5kLqy9DlQ
-         X9PjkONYDnVLt8nnQSMSGNiymkc1QhaL5J5yDoGCpruDEYkxB3EhWg10my6BlBlWJmNc
-         6ntA==
-X-Gm-Message-State: AO0yUKWPAXovexVWMXoxw29qPbOUTZ8tYZvL3wVSLY6zLi5FNHgFEaS4
-        MLKj3YLcOsHbzLsza1RYve8=
-X-Google-Smtp-Source: AK7set8DElzpOFybgSqmpPkVSDP76pQ9uMXg+BggB0EZ9TIGd1XdSGpOOvGTm4L9iJVvil59yp3mTw==
-X-Received: by 2002:a17:906:c156:b0:88d:ba89:1835 with SMTP id dp22-20020a170906c15600b0088dba891835mr2844484ejc.6.1675356040636;
-        Thu, 02 Feb 2023 08:40:40 -0800 (PST)
-Received: from jernej-laptop.localnet (82-149-19-102.dynamic.telemach.net. [82.149.19.102])
-        by smtp.gmail.com with ESMTPSA id by13-20020a0564021b0d00b004a277d55a6csm3387108edb.1.2023.02.02.08.40.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Feb 2023 08:40:40 -0800 (PST)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
-        vigneshr@ti.com, jic23@kernel.org, tudor.ambarus@microchip.com,
-        pratyush@kernel.org, sanju.mehta@amd.com,
-        chin-ting_kuo@aspeedtech.com, clg@kaod.org, kdasu.kdev@gmail.com,
-        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
-        eajames@linux.ibm.com, olteanv@gmail.com, han.xu@nxp.com,
-        john.garry@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        narmstrong@baylibre.com, khilman@baylibre.com,
-        matthias.bgg@gmail.com, haibo.chen@nxp.com,
-        linus.walleij@linaro.org, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        agross@kernel.org, bjorn.andersson@linaro.org, heiko@sntech.de,
-        krzysztof.kozlowski@linaro.org, andi@etezian.org,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-        wens@csie.org, samuel@sholland.org, masahisa.kojima@linaro.org,
-        jaswinder.singh@linaro.org, rostedt@goodmis.org, mingo@redhat.com,
-        l.stelmach@samsung.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alex.aring@gmail.com,
-        stefan@datenfreihafen.org, kvalo@kernel.org,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-        palmer@dabbelt.com
-Cc:     git@amd.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
-        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
-        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
-        alim.akhtar@samsung.com, ldewangan@nvidia.com,
-        thierry.reding@gmail.com, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v3 01/13] spi: Replace all spi->chip_select and spi->cs_gpiod
- references with function call
-Date:   Thu, 02 Feb 2023 17:40:35 +0100
-Message-ID: <4802797.31r3eYUQgx@jernej-laptop>
-In-Reply-To: <20230202152258.512973-2-amit.kumar-mahapatra@amd.com>
-References: <20230202152258.512973-1-amit.kumar-mahapatra@amd.com>
- <20230202152258.512973-2-amit.kumar-mahapatra@amd.com>
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UR7XNlIcXIGv6ssDhJveXZMlYjmGvB06IHja3PWQJ8s=;
+        b=pmwKeIt6A6SpOL+IQ20JrDbk4tWOTSprfF6cj4AYYSDIvPfa9kVZSrXk0ZHVfDyGWD
+         G/B8ExgyePFdCFucyEUHXBlQfhzmxO8Gq7nQpDcTdgI4UNqDaXhCAtwS2zGZLEukh0Yn
+         ux59Uz4MEvU7gGdA4msNgU4rbyh31gdd2Phudu1ao5zNym7zZQaeiGm/CuDr+CcE0DHZ
+         fa5/SM9PwI69BmYN3Hk8U6gemARdHiCB+p6e1k3k5UzYAU8scilYuixkXTmhbAJ94TEd
+         Qt+IoSSUMXDE5ciN5Clt+Br7+xBk9cWUz+DUrf9BYIj7quSOdoVlFwAjKgOC5uBz9SYH
+         qXHg==
+X-Gm-Message-State: AO0yUKUYV9tVGjl5gdJgR/sSBoJli84EXDz+iBx+BWlK9rf5d2cCrslQ
+        UhY4xpvpB6XJn0KRu12UvKLJIA==
+X-Google-Smtp-Source: AK7set80xx+Vx8ETHcrki+ZuU+Tr95Gu87uLKpi+Zlsy8wKVgjyICjGAIr69H+ZRG6PzIU96dPUvAA==
+X-Received: by 2002:aa7:cfc3:0:b0:499:70a8:f918 with SMTP id r3-20020aa7cfc3000000b0049970a8f918mr6677576edy.16.1675358370959;
+        Thu, 02 Feb 2023 09:19:30 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id ka6-20020a170907920600b0088f8a61eb48sm48572ejb.154.2023.02.02.09.19.29
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 02 Feb 2023 09:19:30 -0800 (PST)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Hector Martin <marcan@marcan.st>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        "'Hector Martin' via BRCM80211-DEV-LIST,PDL" 
+        <brcm80211-dev-list.pdl@broadcom.com>
+CC:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexander Prutskov <alep@cypress.com>,
+        "Chi-Hsien Lin" <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Ian Lin <ian.lin@infineon.com>,
+        Soontak Lee <soontak.lee@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Aditya Garg <gargaditya08@live.com>, <asahi@lists.linux.dev>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Date:   Thu, 02 Feb 2023 18:19:28 +0100
+Message-ID: <1861323f100.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <4fb4af22-d115-de62-3bda-c1ae02e097ee@marcan.st>
+References: <20230131112840.14017-1-marcan@marcan.st>
+ <20230131112840.14017-2-marcan@marcan.st>
+ <CAOiHx=mYxFx0kr5s=4X_qywZBpPqCbrNjLnTXfigPOnqZSxjag@mail.gmail.com>
+ <4fb4af22-d115-de62-3bda-c1ae02e097ee@marcan.st>
+User-Agent: AquaMail/1.41.0 (build: 104100234)
+Subject: Re: [PATCH v2 1/5] brcmfmac: Drop all the RAW device IDs
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000095aa4705f3bac4b8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi!
+--00000000000095aa4705f3bac4b8
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Dne =C4=8Detrtek, 02. februar 2023 ob 16:22:46 CET je Amit Kumar Mahapatra=
-=20
-napisal(a):
-> Supporting multi-cs in spi drivers would require the chip_select & cs_gpi=
-od
-> members of struct spi_device to be an array. But changing the type of the=
-se
-> members to array would break the spi driver functionality. To make the
-> transition smoother introduced four new APIs to get/set the
-> spi->chip_select & spi->cs_gpiod and replaced all spi->chip_select and
-> spi->cs_gpiod references with get or set API calls.
-> While adding multi-cs support in further patches the chip_select & cs_gpi=
-od
-> members of the spi_device structure would be converted to arrays & the
-> "idx" parameter of the APIs would be used as array index i.e.,
-> spi->chip_select[idx] & spi->cs_gpiod[idx] respectively.
->=20
-> Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-> Acked-by: Heiko Stuebner <heiko@sntech.de> # Rockchip drivers
-> Reviewed-by: Michal Simek <michal.simek@amd.com>
-> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org> # Aspeed driver
-> Reviewed-by: Dhruva Gole <d-gole@ti.com> # SPI Cadence QSPI
-> Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com> # spi-stm32-qs=
-pi
-> Acked-by: William Zhang <william.zhang@broadcom.com> # bcm63xx-hsspi driv=
-er
-> ---
->  drivers/spi/spi-altera-core.c     |  2 +-
->  drivers/spi/spi-amd.c             |  4 ++--
->  drivers/spi/spi-ar934x.c          |  2 +-
->  drivers/spi/spi-armada-3700.c     |  4 ++--
->  drivers/spi/spi-aspeed-smc.c      | 13 +++++++------
->  drivers/spi/spi-at91-usart.c      |  2 +-
->  drivers/spi/spi-ath79.c           |  4 ++--
->  drivers/spi/spi-atmel.c           | 26 +++++++++++++-------------
->  drivers/spi/spi-au1550.c          |  4 ++--
->  drivers/spi/spi-axi-spi-engine.c  |  2 +-
->  drivers/spi/spi-bcm-qspi.c        | 10 +++++-----
->  drivers/spi/spi-bcm2835.c         | 19 ++++++++++---------
->  drivers/spi/spi-bcm2835aux.c      |  4 ++--
->  drivers/spi/spi-bcm63xx-hsspi.c   | 22 +++++++++++-----------
->  drivers/spi/spi-bcm63xx.c         |  2 +-
->  drivers/spi/spi-cadence-quadspi.c |  5 +++--
->  drivers/spi/spi-cadence-xspi.c    |  4 ++--
->  drivers/spi/spi-cadence.c         |  4 ++--
->  drivers/spi/spi-cavium.c          |  8 ++++----
->  drivers/spi/spi-coldfire-qspi.c   |  8 ++++----
->  drivers/spi/spi-davinci.c         | 18 +++++++++---------
->  drivers/spi/spi-dln2.c            |  6 +++---
->  drivers/spi/spi-dw-core.c         |  2 +-
->  drivers/spi/spi-dw-mmio.c         |  4 ++--
->  drivers/spi/spi-falcon.c          |  2 +-
->  drivers/spi/spi-fsi.c             |  2 +-
->  drivers/spi/spi-fsl-dspi.c        | 16 ++++++++--------
->  drivers/spi/spi-fsl-espi.c        |  6 +++---
->  drivers/spi/spi-fsl-lpspi.c       |  2 +-
->  drivers/spi/spi-fsl-qspi.c        |  6 +++---
->  drivers/spi/spi-fsl-spi.c         |  2 +-
->  drivers/spi/spi-geni-qcom.c       |  6 +++---
->  drivers/spi/spi-gpio.c            |  4 ++--
->  drivers/spi/spi-gxp.c             |  4 ++--
->  drivers/spi/spi-hisi-sfc-v3xx.c   |  2 +-
->  drivers/spi/spi-img-spfi.c        | 14 +++++++-------
->  drivers/spi/spi-imx.c             | 30 +++++++++++++++---------------
->  drivers/spi/spi-ingenic.c         |  4 ++--
->  drivers/spi/spi-intel.c           |  2 +-
->  drivers/spi/spi-jcore.c           |  4 ++--
->  drivers/spi/spi-lantiq-ssc.c      |  6 +++---
->  drivers/spi/spi-mem.c             |  4 ++--
->  drivers/spi/spi-meson-spicc.c     |  2 +-
->  drivers/spi/spi-microchip-core.c  |  6 +++---
->  drivers/spi/spi-mpc512x-psc.c     |  8 ++++----
->  drivers/spi/spi-mpc52xx.c         |  2 +-
->  drivers/spi/spi-mt65xx.c          |  6 +++---
->  drivers/spi/spi-mt7621.c          |  2 +-
->  drivers/spi/spi-mux.c             |  8 ++++----
->  drivers/spi/spi-mxic.c            | 10 +++++-----
->  drivers/spi/spi-mxs.c             |  2 +-
->  drivers/spi/spi-npcm-fiu.c        | 20 ++++++++++----------
->  drivers/spi/spi-nxp-fspi.c        | 10 +++++-----
->  drivers/spi/spi-omap-100k.c       |  2 +-
->  drivers/spi/spi-omap-uwire.c      |  8 ++++----
->  drivers/spi/spi-omap2-mcspi.c     | 24 ++++++++++++------------
->  drivers/spi/spi-orion.c           |  4 ++--
->  drivers/spi/spi-pci1xxxx.c        |  4 ++--
->  drivers/spi/spi-pic32-sqi.c       |  2 +-
->  drivers/spi/spi-pic32.c           |  4 ++--
->  drivers/spi/spi-pl022.c           |  4 ++--
->  drivers/spi/spi-pxa2xx.c          |  6 +++---
->  drivers/spi/spi-qcom-qspi.c       |  2 +-
->  drivers/spi/spi-rb4xx.c           |  2 +-
->  drivers/spi/spi-rockchip-sfc.c    |  2 +-
->  drivers/spi/spi-rockchip.c        | 26 ++++++++++++++------------
->  drivers/spi/spi-rspi.c            | 10 +++++-----
->  drivers/spi/spi-s3c64xx.c         |  2 +-
->  drivers/spi/spi-sc18is602.c       |  4 ++--
->  drivers/spi/spi-sh-msiof.c        |  6 +++---
->  drivers/spi/spi-sh-sci.c          |  2 +-
->  drivers/spi/spi-sifive.c          |  6 +++---
->  drivers/spi/spi-sn-f-ospi.c       |  2 +-
->  drivers/spi/spi-st-ssc4.c         |  2 +-
->  drivers/spi/spi-stm32-qspi.c      | 12 ++++++------
->  drivers/spi/spi-sun4i.c           |  2 +-
->  drivers/spi/spi-sun6i.c           |  2 +-
+On February 2, 2023 6:25:28 AM "'Hector Martin' via BRCM80211-DEV-LIST,PDL" 
+<brcm80211-dev-list.pdl@broadcom.com> wrote:
 
-=46or sun4i, sun6i:
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+> On 31/01/2023 23.17, Jonas Gorski wrote:
+>> On Tue, 31 Jan 2023 at 12:36, Hector Martin <marcan@marcan.st> wrote:
+>>>
+>>> These device IDs are only supposed to be visible internally, in devices
+>>> without a proper OTP. They should never be seen in devices in the wild,
+>>> so drop them to avoid confusion.
+>>
+>> I think these can still show up in embedded platforms where the
+>> OTP/SPROM is provided on-flash.
+>>
+>> E.g. https://forum.archive.openwrt.org/viewtopic.php?id=55367&p=4
+>> shows this bootlog on an BCM4709A0 router with two BCM43602 wifis:
+>>
+>> [    3.237132] pci 0000:01:00.0: [14e4:aa52] type 00 class 0x028000
+>> [    3.237174] pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+>> [    3.237199] pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x003fffff 64bit]
+>> [    3.237302] pci 0000:01:00.0: supports D1 D2
+>> ...
+>> [    3.782384] pci 0001:03:00.0: [14e4:aa52] type 00 class 0x028000
+>> [    3.782440] pci 0001:03:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+>> [    3.782474] pci 0001:03:00.0: reg 0x18: [mem 0x00000000-0x003fffff 64bit]
+>> [    3.782649] pci 0001:03:00.0: supports D1 D2
+>>
+>> 0xaa52 == 43602 (BRCM_PCIE_43602_RAW_DEVICE_ID)
+>>
+>> Rafał can probably provide more info there.
+>>
+>> Regards
+>> Jonas
+>
+> Arend, any comments on these platforms?
 
-Best regards,
-Jernej
+Huh? I already replied to that couple of days ago or did I only imagine 
+doing that.
 
->  drivers/spi/spi-synquacer.c       |  6 +++---
->  drivers/spi/spi-tegra114.c        | 28 ++++++++++++++--------------
->  drivers/spi/spi-tegra20-sflash.c  |  2 +-
->  drivers/spi/spi-tegra20-slink.c   |  6 +++---
->  drivers/spi/spi-tegra210-quad.c   |  8 ++++----
->  drivers/spi/spi-ti-qspi.c         | 16 ++++++++--------
->  drivers/spi/spi-topcliff-pch.c    |  4 ++--
->  drivers/spi/spi-wpcm-fiu.c        | 12 ++++++------
->  drivers/spi/spi-xcomm.c           |  2 +-
->  drivers/spi/spi-xilinx.c          |  6 +++---
->  drivers/spi/spi-xlp.c             |  4 ++--
->  drivers/spi/spi-zynq-qspi.c       |  2 +-
->  drivers/spi/spi-zynqmp-gqspi.c    |  2 +-
->  drivers/spi/spidev.c              |  6 +++---
->  include/trace/events/spi.h        | 10 +++++-----
->  92 files changed, 315 insertions(+), 310 deletions(-)
+Regards,
+Arend
 
 
 
+
+--00000000000095aa4705f3bac4b8
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDMwGh4Kfa9F+psfZmi
+mNmrT7Uc2lQayhvkksE9sFavaTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzAyMDIxNzE5MzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAUNTDGCXmLbVcVHPsSjPi5g3hQmbdCMq3yEDc
+D46QHBQY43XZl5YR+M4aXELsSSy6/0woS3VmFKy5vnezO9qafoiNJl5kJiV4nyJTmhkZaVUiBfsG
+Y8VeREoYheUm6szEysdzCuiPNhDTe6CVDqtdf24fyA6KyU8QyNTcm/lEDMvCpDz68Go1Jpq4hJr4
+XNwaUZi1xaDH0s+PB21vhH//LLsjKceAbAOaIcuTFq9CZeweeeM4ALdz7usrf/KN9Xy+78OmvvU5
+0UxA2ibsYVk8kJ0lzUok3A9eVAuSho501CmTl5jru252O8I+VS1ig9zE+Bv++cRLUwmgZDi1p90u
+Zw==
+--00000000000095aa4705f3bac4b8--
