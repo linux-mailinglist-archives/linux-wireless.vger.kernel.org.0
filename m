@@ -2,157 +2,221 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E679E6876D4
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 08:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B346877EF
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 09:53:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbjBBH4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Feb 2023 02:56:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51032 "EHLO
+        id S232229AbjBBIxU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Feb 2023 03:53:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232057AbjBBH4P (ORCPT
+        with ESMTP id S232241AbjBBIxM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Feb 2023 02:56:15 -0500
-Received: from smtp161.vfemail.net (smtp161.vfemail.net [146.59.185.161])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FFA7E6DB
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Feb 2023 23:56:13 -0800 (PST)
-Received: (qmail 28652 invoked from network); 2 Feb 2023 07:56:11 +0000
-Received: from localhost (HELO nl101-3.vfemail.net) ()
-  by smtpout.vfemail.net with ESMTPS (ECDHE-RSA-AES256-GCM-SHA384 encrypted); 2 Feb 2023 07:56:11 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=openmail.cc; h=from:to:cc
-        :subject:date:message-id:in-reply-to:references:mime-version
-        :content-transfer-encoding; s=2018; bh=vkUokFEKUNrbGw2Y9QiZUTjdI
-        5XpPUPWkM46g3tjAUg=; b=jzxun3AS3h401SZB1QhFYTNKTWxZXucf8QCVPEWQv
-        tBgtwIhV5KPUTxlhml4SaAG2j1lFpoDmblZvlDYqJkdSRAX141IwwvLhAk0w9Il4
-        Te7KyiIpp3kV3EWU3xXrYfi5Gq7XjtN0MHXWrcFUo3t1O7meZFFztwYSVzP0ZtNH
-        pQ=
-Received: (qmail 14461 invoked from network); 2 Feb 2023 07:56:11 -0000
-Received: by simscan 1.4.0 ppid: 13438, pid: 14402, t: 0.9448s
-         scanners:none
-Received: from unknown (HELO bmwxMDEudmZlbWFpbC5uZXQ=) (ZXF1dUBvcGVubWFpbC5jYw==@MTkyLjE2OC4xLjE5Mg==)
-  by nl101.vfemail.net with ESMTPA; 2 Feb 2023 07:56:10 -0000
-From:   equu@openmail.cc
-To:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org
-Cc:     linux-pci@vger.kernel.org, robh@kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        equu@openmail.cc, kernel test robot <lkp@intel.com>
-Subject: [PATCH v3 3/3] wifi: ath10k: only load compatible DT cal data
-Date:   Thu,  2 Feb 2023 15:55:24 +0800
-Message-Id: <20230202075524.2911058-4-equu@openmail.cc>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230202075524.2911058-1-equu@openmail.cc>
-References: <ab8ff515-19ec-fe3f-0237-c30275e9744d@openmail.cc>
- <20230202075524.2911058-1-equu@openmail.cc>
+        Thu, 2 Feb 2023 03:53:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A7074496
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 00:52:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1675327943;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JPaVjyoJuKENDwrdqNad/mRuPE82XGCumCLGtU8F6T4=;
+        b=KPsMAy9NTqd8cu8jGIGJDlX+8iuD2VVdIo+I+WEUp9VFtiUkG82802nwk/2vSmLflfiyTa
+        FLL8lgP1L4v+h2VjcAsCJqZf62cXL+m7N5S3IlbY+qKPv3v8tUo9y9Gg8UsD53eQfvsp02
+        NtfH8Rdr/2pwXjbVlhzYIZgpR47s++o=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-148-gtgcvS6pN1mxe0nsIXIGpA-1; Thu, 02 Feb 2023 03:52:18 -0500
+X-MC-Unique: gtgcvS6pN1mxe0nsIXIGpA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B8CB3C02584;
+        Thu,  2 Feb 2023 08:52:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.33.36.97])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 615FF140EBF6;
+        Thu,  2 Feb 2023 08:52:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <000000000000b0b3c005f3a09383@google.com>
+References: <000000000000b0b3c005f3a09383@google.com>
+To:     jhubbard@nvidia.com, David Hildenbrand <david@redhat.com>
+Cc:     syzbot <syzbot+a440341a59e3b7142895@syzkaller.appspotmail.com>,
+        dhowells@redhat.com, davem@davemloft.net, edumazet@google.com,
+        hch@lst.de, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] general protection fault in skb_dequeue (3)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <822862.1675327935.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date:   Thu, 02 Feb 2023 08:52:15 +0000
+Message-ID: <822863.1675327935@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Edward Chow <equu@openmail.cc>
+Hi John, David,
 
-ath10k might also be sensitive to the issue reported on
-https://github.com/openwrt/openwrt/pull/11345 , loading calibration
-data from a device tree node declared incompatible.
+Could you have a look at this?
 
-ath10k will first check whether the device tree node is compatible
-with it, using the functionality introduced with the first patch of
-this series, ("PCI: of: Match pci devices or drivers against OF DT
-nodes") and only proceed loading calibration data from compatible node.
+> syzbot found the following issue on:
+> =
 
-Signed-off-by: Edward Chow <equu@openmail.cc>
-Reported-by: kernel test robot <lkp@intel.com>
+> HEAD commit:    80bd9028feca Add linux-next specific files for 20230131
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D1468e3694800=
+00
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D904dc2f450ea=
+ad4a
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Da440341a59e3b7=
+142895
+> compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binut=
+ils for Debian) 2.35.2
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D12c5d2be48=
+0000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D11259a794800=
+00
+> ...
+> The issue was bisected to:
+> =
+
+> commit 920756a3306a35f1c08f25207d375885bef98975
+> Author: David Howells <dhowells@redhat.com>
+> Date:   Sat Jan 21 12:51:18 2023 +0000
+> =
+
+>     block: Convert bio_iov_iter_get_pages to use iov_iter_extract_pages
+> =
+
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D170384f94=
+80000
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=3D148384f94=
+80000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D108384f94800=
+00
+> ...
+> general protection fault, probably for non-canonical address 0xdffffc000=
+0000001: 0000 [#1] PREEMPT SMP KASAN
+> KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+> CPU: 0 PID: 2838 Comm: kworker/u4:6 Not tainted 6.2.0-rc6-next-20230131-=
+syzkaller-09515-g80bd9028feca #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS =
+Google 01/12/2023
+> Workqueue: phy4 ieee80211_iface_work
+> RIP: 0010:__skb_unlink include/linux/skbuff.h:2321 [inline]
+> RIP: 0010:__skb_dequeue include/linux/skbuff.h:2337 [inline]
+> RIP: 0010:skb_dequeue+0xf5/0x180 net/core/skbuff.c:3511
+
+I don't think this is specifically related to anything networking.  I've r=
+un
+it a few times and weird stuff happens in various places.  I'm wondering i=
+f
+it's related to FOLL_PIN in some way.
+
+The syzbot test in question does the following:
+
+   #{"repeat":true,"procs":1,"slowdown":1,"sandbox":"none","sandbox_arg":0=
+,"netdev":true,"cgroups":true,"close_fds":true,"usb":true,"wifi":true,"sys=
+ctl":true,"tmpdir":true}
+   socket(0x0, 0x2, 0x0)
+   epoll_create(0x7)
+   r0 =3D creat(&(0x7f0000000040)=3D'./bus\x00', 0x9)
+   ftruncate(r0, 0x800)
+   lseek(r0, 0x200, 0x2)
+   r1 =3D open(&(0x7f0000000000)=3D'./bus\x00', 0x24000, 0x0)  <-- O_DIREC=
+T
+   sendfile(r0, r1, 0x0, 0x1dd00)
+
+Basically a DIO splice from a file to itself.
+
+I've hand-written my own much simpler tester (see attached).  You need to =
+run
+at least two copies in parallel, I think, to trigger the bug.  It's possib=
+le
+truncate is interfering somehow.
+
+David
 ---
- drivers/net/wireless/ath/ath10k/core.c | 29 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/pci.c  |  2 +-
- drivers/net/wireless/ath/ath10k/pci.h  |  2 ++
- 3 files changed, 32 insertions(+), 1 deletion(-)
+#define _GNU_SOURCE =
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 5eb131ab916f..a1cf65679046 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -13,6 +13,7 @@
- #include <linux/ctype.h>
- #include <linux/pm_qos.h>
- #include <linux/nvmem-consumer.h>
-+#include <linux/of_pci.h>
- #include <asm/byteorder.h>
- 
- #include "core.h"
-@@ -26,6 +27,7 @@
- #include "testmode.h"
- #include "wmi-ops.h"
- #include "coredump.h"
-+#include "pci.h"
- 
- unsigned int ath10k_debug_mask;
- EXPORT_SYMBOL(ath10k_debug_mask);
-@@ -1958,6 +1960,33 @@ static int ath10k_download_cal_nvmem(struct ath10k *ar, const char *cell_name)
- 	size_t len;
- 	int ret;
- 
-+	/* devm_nvmem_cell_get() will get a cell first from the OF
-+	 * DT node representing the given device with nvmem-cell-name
-+	 * "calibration", and from the global lookup table as a fallback,
-+	 * and an ath10k device could be either a pci one or a platform one.
-+	 *
-+	 * If the OF DT node is not compatible with the real device, the
-+	 * calibration data got from the node should not be applied.
-+	 *
-+	 * dev_is_pci(ar->dev) && ( no OF node || caldata not from node
-+	 * || not compatible ) -> do not use caldata .
-+	 *
-+	 * !dev_is_pci(ar->dev) -> always use caldata .
-+	 *
-+	 * The judgement for compatibility differs with ath9k for many
-+	 * DT using "qcom,ath10k" as compatibility string.
-+	 */
-+	if (dev_is_pci(ar->dev) &&
-+	    (!ar->dev->of_node ||
-+	     (of_property_match_string(ar->dev->of_node,
-+				       "nvmem-cell-names",
-+				       cell_name) < 0) ||
-+	     !of_device_is_compatible(ar->dev->of_node,
-+				      "qcom,ath10k") ||
-+	     !of_pci_node_match_driver(ar->dev->of_node,
-+				       &ath10k_pci_driver)))
-+		return -ENOENT;
-+
- 	cell = devm_nvmem_cell_get(ar->dev, cell_name);
- 	if (IS_ERR(cell)) {
- 		ret = PTR_ERR(cell);
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index 728d607289c3..5d9f6046f8cf 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -3780,7 +3780,7 @@ static SIMPLE_DEV_PM_OPS(ath10k_pci_pm_ops,
- 			 ath10k_pci_pm_suspend,
- 			 ath10k_pci_pm_resume);
- 
--static struct pci_driver ath10k_pci_driver = {
-+struct pci_driver ath10k_pci_driver = {
- 	.name = "ath10k_pci",
- 	.id_table = ath10k_pci_id_table,
- 	.probe = ath10k_pci_probe,
-diff --git a/drivers/net/wireless/ath/ath10k/pci.h b/drivers/net/wireless/ath/ath10k/pci.h
-index 480cd97ab739..de676797b736 100644
---- a/drivers/net/wireless/ath/ath10k/pci.h
-+++ b/drivers/net/wireless/ath/ath10k/pci.h
-@@ -209,6 +209,8 @@ static inline struct ath10k_pci *ath10k_pci_priv(struct ath10k *ar)
- #define DIAG_ACCESS_CE_TIMEOUT_US 10000 /* 10 ms */
- #define DIAG_ACCESS_CE_WAIT_US	50
- 
-+extern struct pci_driver ath10k_pci_driver;
-+
- void ath10k_pci_write32(struct ath10k *ar, u32 offset, u32 value);
- void ath10k_pci_soc_write32(struct ath10k *ar, u32 addr, u32 val);
- void ath10k_pci_reg_write32(struct ath10k *ar, u32 addr, u32 val);
--- 
-2.39.1
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/sendfile.h>
+#include <sys/wait.h>
+
+#define file_size 0x800
+#define send_size 0x1dd00
+#define repeat_count 1000
+
+int main(int argc, char *argv[])
+{
+	int in, out, i, wt;
+
+	if (argc !=3D 2 || !argv[1][0]) {
+		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
+		exit(2);
+	}
+
+	for (i =3D 0; i < repeat_count; i++) {
+		switch (fork()) {
+		case -1:
+			perror("fork");
+			exit(1);
+		case 0:
+			out =3D creat(argv[1], 0666);
+			if (out < 0) {
+				perror(argv[1]);
+				exit(1);
+			}
+
+			if (ftruncate(out, file_size) < 0) {
+				perror("ftruncate");
+				exit(1);
+			}
+
+			if (lseek(out, file_size, SEEK_SET) < 0) {
+				perror("lseek");
+				exit(1);
+			}
+
+			in =3D open(argv[1], O_RDONLY | O_DIRECT | O_NOFOLLOW);
+			if (in < 0) {
+				perror("open");
+				exit(1);
+			}
+
+			if (sendfile(out, in, NULL, send_size) < 0) {
+				perror("sendfile");
+				exit(1);
+			}
+			exit(0);
+
+		default:
+			if (wait(&wt) < 0) {
+				perror("wait");
+				exit(1);
+			}
+			break;
+		}
+	}
+
+	exit(0);
+}
 
