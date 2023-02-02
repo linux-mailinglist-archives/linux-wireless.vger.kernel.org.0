@@ -2,605 +2,335 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82944688173
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 16:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 163286881C0
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 16:24:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232465AbjBBPP4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Feb 2023 10:15:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59578 "EHLO
+        id S232841AbjBBPXn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Feb 2023 10:23:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjBBPPz (ORCPT
+        with ESMTP id S232853AbjBBPXc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Feb 2023 10:15:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028BC3D918
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 07:15:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675350917;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3mVIRCsoBvNLP2+6cVUlv2beBcs4GjkZr5MMjkDCtbM=;
-        b=PH8wC+OcXvucnC+3oFpISB5WjfvwY1c8nedUC95mtbr6AD7xkdPhOhwLQTONcJ347VYZLy
-        DhLeV8jPZz2QtqvC4BB9AcsDXBzA93GrHpFAgjn6t27Fe4uQOOfdtM/ZpkUXFIiTYBA1QN
-        +d69Ix+EJ/WerJcBqXg3ZL9DNBW+KUY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-85-kP-lbJsxPbmKGoPD32Zf1A-1; Thu, 02 Feb 2023 10:15:14 -0500
-X-MC-Unique: kP-lbJsxPbmKGoPD32Zf1A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7AF9100F906;
-        Thu,  2 Feb 2023 15:15:11 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.33.36.97])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0AC102026D4B;
-        Thu,  2 Feb 2023 15:15:09 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <e8065d6a-d2f9-60aa-8541-8dfc8e9b608f@redhat.com>
-References: <e8065d6a-d2f9-60aa-8541-8dfc8e9b608f@redhat.com> <000000000000b0b3c005f3a09383@google.com> <822863.1675327935@warthog.procyon.org.uk>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     dhowells@redhat.com, jhubbard@nvidia.com,
-        syzbot <syzbot+a440341a59e3b7142895@syzkaller.appspotmail.com>,
-        davem@davemloft.net, edumazet@google.com, hch@lst.de,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] general protection fault in skb_dequeue (3)
+        Thu, 2 Feb 2023 10:23:32 -0500
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0376F738;
+        Thu,  2 Feb 2023 07:23:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nPjqR+CAbbBXEj4uP79s77U8NOjK1NYbQ7LQPNY4j3IDNtrqCPbiEcJKEcYb1Ogw+bcFrZ3zaRDUL9H6R+ZiCgG1oIDcYx/2eZNmLguAy1y16QwTq20sjhltt2P1+eJV9qJ+88ALHPUyJ3sMzEHxGePNUhX588kfeUCriO9cczsoFz509/dDqMGVnHnciOfGRON5c8qhWpdktx2gSmu6wjLTJhU78NFyWreRmM+sh9My473g3XrMzlsuNjdX7oohXeFcL6v8oqzGKDD0Jo3lAjk5erpbbVqMpl7zo7NUwinYKtHeu8L0j51bT/3ijo3uZD0MifkRcGKrmTyXqlrqWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QAdrgk3KyVhnaGF18PzqgBxbw1BjQvL7UPZPp2UbjjY=;
+ b=Uv1L5sZBXwrBPIGXY1J9fZAVPUfmEsgw5E5EpRagk4ywQzkAL6rzJjR3FtPlkaYctan/dPMTOt+gE+zZgEJXdnbPWutpccY43/RxqTr6PXiMlBoRjMnA9Yn9wtCt9+ykaZM6u7oN7b0v2D6YGMrm9uRpPK3LP7Picffp1Rfq7nLi+u2IvtIQXg5D9GEjvyONpx05fa9wAIP/esdfmES0xW4S9C8WJBZfAPRR10JyO/TcDeHaTnBrOfsGLoK7DPhVSguaIcNtndVvmxb2wxh1akWcYHIFfXkjkvqP590m0dMLsC2NbikTC4dZDzg0AuYu1PwikE5tGGujkcnJKvILWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QAdrgk3KyVhnaGF18PzqgBxbw1BjQvL7UPZPp2UbjjY=;
+ b=Ku2sGK+cTW6lGognkYR3NL9pqtjApXF7suy2t0glywjHAJX1BPAJyVuZHVdX6EnLnel8L2eQcc2C53w9Gg7VSW7ToqJi1xGX1lD/pdl41EEXygdaiLNrB6WUdYm5M3G+bOmW02LGMdO4Xq/6N/EKF/TOvoFyJx81c9/Syk6SbkE=
+Received: from MW3PR06CA0025.namprd06.prod.outlook.com (2603:10b6:303:2a::30)
+ by CY5PR12MB6178.namprd12.prod.outlook.com (2603:10b6:930:25::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.24; Thu, 2 Feb
+ 2023 15:23:27 +0000
+Received: from CO1NAM11FT004.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:2a:cafe::c2) by MW3PR06CA0025.outlook.office365.com
+ (2603:10b6:303:2a::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.23 via Frontend
+ Transport; Thu, 2 Feb 2023 15:23:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CO1NAM11FT004.mail.protection.outlook.com (10.13.175.89) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6064.28 via Frontend Transport; Thu, 2 Feb 2023 15:23:25 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 2 Feb
+ 2023 09:23:24 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 2 Feb
+ 2023 09:23:23 -0600
+Received: from xhdsgoud40.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
+ Transport; Thu, 2 Feb 2023 09:23:00 -0600
+From:   Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+To:     <broonie@kernel.org>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>, <vigneshr@ti.com>, <jic23@kernel.org>,
+        <tudor.ambarus@microchip.com>, <pratyush@kernel.org>,
+        <sanju.mehta@amd.com>, <chin-ting_kuo@aspeedtech.com>,
+        <clg@kaod.org>, <kdasu.kdev@gmail.com>, <f.fainelli@gmail.com>,
+        <rjui@broadcom.com>, <sbranden@broadcom.com>,
+        <eajames@linux.ibm.com>, <olteanv@gmail.com>, <han.xu@nxp.com>,
+        <john.garry@huawei.com>, <shawnguo@kernel.org>,
+        <s.hauer@pengutronix.de>, <narmstrong@baylibre.com>,
+        <khilman@baylibre.com>, <matthias.bgg@gmail.com>,
+        <haibo.chen@nxp.com>, <linus.walleij@linaro.org>,
+        <daniel@zonque.org>, <haojian.zhuang@gmail.com>,
+        <robert.jarzmik@free.fr>, <agross@kernel.org>,
+        <bjorn.andersson@linaro.org>, <heiko@sntech.de>,
+        <krzysztof.kozlowski@linaro.org>, <andi@etezian.org>,
+        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
+        <wens@csie.org>, <jernej.skrabec@gmail.com>, <samuel@sholland.org>,
+        <masahisa.kojima@linaro.org>, <jaswinder.singh@linaro.org>,
+        <rostedt@goodmis.org>, <mingo@redhat.com>,
+        <l.stelmach@samsung.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <alex.aring@gmail.com>, <stefan@datenfreihafen.org>,
+        <kvalo@kernel.org>
+CC:     <git@amd.com>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <joel@jms.id.au>,
+        <andrew@aj.id.au>, <radu_nicolae.pirea@upb.ro>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <claudiu.beznea@microchip.com>,
+        <bcm-kernel-feedback-list@broadcom.com>, <fancer.lancer@gmail.com>,
+        <kernel@pengutronix.de>, <festevam@gmail.com>, <linux-imx@nxp.com>,
+        <jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>,
+        <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
+        <tali.perry1@gmail.com>, <venture@google.com>, <yuenn@google.com>,
+        <benjaminfair@google.com>, <yogeshgaur.83@gmail.com>,
+        <konrad.dybcio@somainline.org>, <alim.akhtar@samsung.com>,
+        <ldewangan@nvidia.com>, <thierry.reding@gmail.com>,
+        <jonathanh@nvidia.com>, <michal.simek@amd.com>,
+        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        <linux-amlogic@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        <linux-rockchip@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-wpan@vger.kernel.org>,
+        <libertas-dev@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <linux-iio@vger.kernel.org>, <michael@walle.cc>,
+        <palmer@dabbelt.com>, <linux-riscv@lists.infradead.org>,
+        <amitrkcian2002@gmail.com>,
+        "Amit Kumar Mahapatra" <amit.kumar-mahapatra@amd.com>
+Subject: [PATCH v3 00/13] spi: Add support for stacked/parallel memories
+Date:   Thu, 2 Feb 2023 20:52:45 +0530
+Message-ID: <20230202152258.512973-1-amit.kumar-mahapatra@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1265628.1675350909.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Thu, 02 Feb 2023 15:15:09 +0000
-Message-ID: <1265629.1675350909@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT004:EE_|CY5PR12MB6178:EE_
+X-MS-Office365-Filtering-Correlation-Id: e03217f4-f0ab-401f-4c97-08db05316e04
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HGoBFrVFE/2Yqra9zYUlLmwedm/NxSqf90KDCExavRhRcFtyXvi+PzZOULOs+pqTo2Xm+A1rm6YTp2qpUlYxPUyw4tKokRlyGA3tMxCX7nMbJW6BSJsUtSZXA8CGWjwFekn/sTnKsDwco6YQf9bcYSWMaP5ypDp/Vxe8XoF0DBl2JEe5zMAbtMBzjXyrNsNKrW2Vtp4xK917rI8KkAmqeCGgRFT8UxTMVoVuA33NOwZ1Q7ca1G8wodyNJTl8D1ttIRRsip+0LOL71krUcxaX07WeoIA5smfTlS0RmhQymkOs+ezpMjxu7NjL624HG40Ov9Gyd4P1Y9/mnhhqUyhnM5oaFSKP44vDohc8cKarQP1YtnMcavPKRiawbH0IF3FFyuC0eVXkrM13E4rbIRuSW/MdXRVp/N+LZ8Hz0mcPveiu4QYsozDiziiwa7Zz9urFjdW1/NHL2r9jEad9yqKlJbIYVeFeFHBfxV4HSHvL9yOKoqoiLFvldft/wk5Eb3JYtznQifBRRKGZYfDeWf3khdqdOl4SOQyC1et5kKaphdBhsG8OU2l9pcyAmkBe/DhOc5QC6Fvf5sqwj2wBlwU3B/1pf/AsRSIoxLVe1FfyJP2Q3ZZd0ENuflQTp66l1eyA6E7ZIsd86O+oD2aLSf4IURLm4itdwlPkw2WrhJs1XfwXdsnckphM6aDumKZ6o0xad/yjGaS/Gujk0MS1Q1GEo18S+IzT0wmTsj6z1EAksj3c31YtZnXMBc5UxCsmQ9FFBDwOzgDy90XC2++DwA7HaZY3HfzlCRIhyEnxE20G/B7ailcQ5/LAXTR+ofzJhsBCZ3lsdNnQkXAtdhfeNkmk+TU0iYuLnXutmJ/prWF33EgcMVYOyW88WSJKD8q1yh32wVw9II8/r26PBmfQEztTLA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230025)(4636009)(346002)(396003)(376002)(39860400002)(136003)(451199018)(46966006)(40470700004)(36840700001)(356005)(186003)(81166007)(26005)(70586007)(4326008)(921005)(70206006)(1076003)(82310400005)(41300700001)(2616005)(8936002)(6666004)(8676002)(966005)(7366002)(5660300002)(7336002)(7276002)(7416002)(478600001)(86362001)(47076005)(7406005)(316002)(336012)(83380400001)(36756003)(426003)(40460700003)(110136005)(82740400003)(2906002)(54906003)(40480700001)(36860700001)(2101003)(83996005)(36900700001)(41080700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2023 15:23:25.8494
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e03217f4-f0ab-401f-4c97-08db05316e04
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT004.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6178
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Hildenbrand <david@redhat.com> wrote:
+This patch is in the continuation to the discussions which happened on
+'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
+adding dt-binding support for stacked/parallel memories.
 
-> At first, I wondered if that's related to shared anonymous pages getting
-> pinned R/O that would trigger COW-unsharing ... but I don't even see whe=
-re we
-> are supposed to use FOLL_PIN vs. FOLL_GET here? IOW, we're not even supp=
-osed
-> to access user space memory (neither FOLL_GET nor FOLL_PIN) but still en=
-d up
-> with a change in behavior.
+This patch series updated the spi-nor, spi core and the spi drivers
+to add stacked and parallel memories support.
 
-I'm not sure that using FOLL_PIN is part of the problem here.
+The first patch
+https://lore.kernel.org/all/20230119185342.2093323-1-amit.kumar-mahapatra@amd.com/ 
+of the previous series got applied to 
+https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+But the rest of the patches in the series did not get applied due to merge 
+conflict, so send the remaining patches in the series after rebasing it 
+on top of for-next branch.
+---
+BRANCH: for-next
 
-sendfile() is creating a transient buffer attached to a pipe, doing a DIO =
-read
-into it (which uses iov_iter_extract_pages() to populate a bio) and then f=
-eeds
-the pages from the pipe one at a time using a BVEC-type iterator to a buff=
-ered
-write.
+Changes in v3:
+- Rebased the patches on top of 
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+- Added a patch to convert spi_nor_otp_region_len(nor) & 
+  spi_nor_otp_n_regions(nor) macros into inline functions
+- Added Reviewed-by & Acked-by tags
+ 
+Changes in v2:
+- Rebased the patches on top of v6.2-rc1
+- Created separate patch to add get & set APIs for spi->chip_select &
+  spi->cs_gpiod, and replaced all spi->chip_select and spi->cs_gpiod
+  references with the API calls.
+- Created separate patch to add get & set APIs for nor->params.
+---
+Amit Kumar Mahapatra (13):
+  spi: Replace all spi->chip_select and spi->cs_gpiod references with
+    function call
+  net: Replace all spi->chip_select and spi->cs_gpiod references with
+    function call
+  iio: imu: Replace all spi->chip_select and spi->cs_gpiod references
+    with function call
+  mtd: devices: Replace all spi->chip_select and spi->cs_gpiod
+    references with function call
+  staging: Replace all spi->chip_select and spi->cs_gpiod references
+    with function call
+  platform/x86: serial-multi-instantiate: Replace all spi->chip_select
+    and spi->cs_gpiod references with function call
+  spi: Add stacked and parallel memories support in SPI core
+  mtd: spi-nor: Convert macros with inline functions
+  mtd: spi-nor: Add APIs to set/get nor->params
+  mtd: spi-nor: Add stacked memories support in spi-nor
+  spi: spi-zynqmp-gqspi: Add stacked memories support in GQSPI driver
+  mtd: spi-nor: Add parallel memories support in spi-nor
+  spi: spi-zynqmp-gqspi: Add parallel memories support in GQSPI driver
 
-Note that iov_iter_extract_pages() does not pin/get pages when accessing a
-BVEC, KVEC, XARRAY or PIPE iterator.  However, in this case, this should n=
-ot
-matter as the pipe is holding refs on the pages in the buffer.
+ drivers/iio/imu/adis16400.c                   |   2 +-
+ drivers/mtd/devices/mtd_dataflash.c           |   2 +-
+ drivers/mtd/spi-nor/atmel.c                   |  17 +-
+ drivers/mtd/spi-nor/core.c                    | 665 +++++++++++++++---
+ drivers/mtd/spi-nor/core.h                    |   8 +
+ drivers/mtd/spi-nor/debugfs.c                 |   4 +-
+ drivers/mtd/spi-nor/gigadevice.c              |   4 +-
+ drivers/mtd/spi-nor/issi.c                    |  11 +-
+ drivers/mtd/spi-nor/macronix.c                |   6 +-
+ drivers/mtd/spi-nor/micron-st.c               |  39 +-
+ drivers/mtd/spi-nor/otp.c                     |  48 +-
+ drivers/mtd/spi-nor/sfdp.c                    |  29 +-
+ drivers/mtd/spi-nor/spansion.c                |  50 +-
+ drivers/mtd/spi-nor/sst.c                     |   7 +-
+ drivers/mtd/spi-nor/swp.c                     |  22 +-
+ drivers/mtd/spi-nor/winbond.c                 |  10 +-
+ drivers/mtd/spi-nor/xilinx.c                  |  18 +-
+ drivers/net/ethernet/adi/adin1110.c           |   2 +-
+ drivers/net/ethernet/asix/ax88796c_main.c     |   2 +-
+ drivers/net/ethernet/davicom/dm9051.c         |   2 +-
+ drivers/net/ethernet/qualcomm/qca_debug.c     |   2 +-
+ drivers/net/ieee802154/ca8210.c               |   2 +-
+ drivers/net/wan/slic_ds26522.c                |   2 +-
+ .../net/wireless/marvell/libertas/if_spi.c    |   2 +-
+ drivers/net/wireless/silabs/wfx/bus_spi.c     |   2 +-
+ drivers/net/wireless/st/cw1200/cw1200_spi.c   |   2 +-
+ .../platform/x86/serial-multi-instantiate.c   |   3 +-
+ drivers/spi/spi-altera-core.c                 |   2 +-
+ drivers/spi/spi-amd.c                         |   4 +-
+ drivers/spi/spi-ar934x.c                      |   2 +-
+ drivers/spi/spi-armada-3700.c                 |   4 +-
+ drivers/spi/spi-aspeed-smc.c                  |  13 +-
+ drivers/spi/spi-at91-usart.c                  |   2 +-
+ drivers/spi/spi-ath79.c                       |   4 +-
+ drivers/spi/spi-atmel.c                       |  26 +-
+ drivers/spi/spi-au1550.c                      |   4 +-
+ drivers/spi/spi-axi-spi-engine.c              |   2 +-
+ drivers/spi/spi-bcm-qspi.c                    |  10 +-
+ drivers/spi/spi-bcm2835.c                     |  19 +-
+ drivers/spi/spi-bcm2835aux.c                  |   4 +-
+ drivers/spi/spi-bcm63xx-hsspi.c               |  22 +-
+ drivers/spi/spi-bcm63xx.c                     |   2 +-
+ drivers/spi/spi-cadence-quadspi.c             |   5 +-
+ drivers/spi/spi-cadence-xspi.c                |   4 +-
+ drivers/spi/spi-cadence.c                     |   4 +-
+ drivers/spi/spi-cavium.c                      |   8 +-
+ drivers/spi/spi-coldfire-qspi.c               |   8 +-
+ drivers/spi/spi-davinci.c                     |  18 +-
+ drivers/spi/spi-dln2.c                        |   6 +-
+ drivers/spi/spi-dw-core.c                     |   2 +-
+ drivers/spi/spi-dw-mmio.c                     |   4 +-
+ drivers/spi/spi-falcon.c                      |   2 +-
+ drivers/spi/spi-fsi.c                         |   2 +-
+ drivers/spi/spi-fsl-dspi.c                    |  16 +-
+ drivers/spi/spi-fsl-espi.c                    |   6 +-
+ drivers/spi/spi-fsl-lpspi.c                   |   2 +-
+ drivers/spi/spi-fsl-qspi.c                    |   6 +-
+ drivers/spi/spi-fsl-spi.c                     |   2 +-
+ drivers/spi/spi-geni-qcom.c                   |   6 +-
+ drivers/spi/spi-gpio.c                        |   4 +-
+ drivers/spi/spi-gxp.c                         |   4 +-
+ drivers/spi/spi-hisi-sfc-v3xx.c               |   2 +-
+ drivers/spi/spi-img-spfi.c                    |  14 +-
+ drivers/spi/spi-imx.c                         |  30 +-
+ drivers/spi/spi-ingenic.c                     |   4 +-
+ drivers/spi/spi-intel.c                       |   2 +-
+ drivers/spi/spi-jcore.c                       |   4 +-
+ drivers/spi/spi-lantiq-ssc.c                  |   6 +-
+ drivers/spi/spi-mem.c                         |   4 +-
+ drivers/spi/spi-meson-spicc.c                 |   2 +-
+ drivers/spi/spi-microchip-core.c              |   6 +-
+ drivers/spi/spi-mpc512x-psc.c                 |   8 +-
+ drivers/spi/spi-mpc52xx.c                     |   2 +-
+ drivers/spi/spi-mt65xx.c                      |   6 +-
+ drivers/spi/spi-mt7621.c                      |   2 +-
+ drivers/spi/spi-mux.c                         |   8 +-
+ drivers/spi/spi-mxic.c                        |  10 +-
+ drivers/spi/spi-mxs.c                         |   2 +-
+ drivers/spi/spi-npcm-fiu.c                    |  20 +-
+ drivers/spi/spi-nxp-fspi.c                    |  10 +-
+ drivers/spi/spi-omap-100k.c                   |   2 +-
+ drivers/spi/spi-omap-uwire.c                  |   8 +-
+ drivers/spi/spi-omap2-mcspi.c                 |  24 +-
+ drivers/spi/spi-orion.c                       |   4 +-
+ drivers/spi/spi-pci1xxxx.c                    |   4 +-
+ drivers/spi/spi-pic32-sqi.c                   |   2 +-
+ drivers/spi/spi-pic32.c                       |   4 +-
+ drivers/spi/spi-pl022.c                       |   4 +-
+ drivers/spi/spi-pxa2xx.c                      |   6 +-
+ drivers/spi/spi-qcom-qspi.c                   |   2 +-
+ drivers/spi/spi-rb4xx.c                       |   2 +-
+ drivers/spi/spi-rockchip-sfc.c                |   2 +-
+ drivers/spi/spi-rockchip.c                    |  26 +-
+ drivers/spi/spi-rspi.c                        |  10 +-
+ drivers/spi/spi-s3c64xx.c                     |   2 +-
+ drivers/spi/spi-sc18is602.c                   |   4 +-
+ drivers/spi/spi-sh-msiof.c                    |   6 +-
+ drivers/spi/spi-sh-sci.c                      |   2 +-
+ drivers/spi/spi-sifive.c                      |   6 +-
+ drivers/spi/spi-sn-f-ospi.c                   |   2 +-
+ drivers/spi/spi-st-ssc4.c                     |   2 +-
+ drivers/spi/spi-stm32-qspi.c                  |  12 +-
+ drivers/spi/spi-sun4i.c                       |   2 +-
+ drivers/spi/spi-sun6i.c                       |   2 +-
+ drivers/spi/spi-synquacer.c                   |   6 +-
+ drivers/spi/spi-tegra114.c                    |  28 +-
+ drivers/spi/spi-tegra20-sflash.c              |   2 +-
+ drivers/spi/spi-tegra20-slink.c               |   6 +-
+ drivers/spi/spi-tegra210-quad.c               |   8 +-
+ drivers/spi/spi-ti-qspi.c                     |  16 +-
+ drivers/spi/spi-topcliff-pch.c                |   4 +-
+ drivers/spi/spi-wpcm-fiu.c                    |  12 +-
+ drivers/spi/spi-xcomm.c                       |   2 +-
+ drivers/spi/spi-xilinx.c                      |   6 +-
+ drivers/spi/spi-xlp.c                         |   4 +-
+ drivers/spi/spi-zynq-qspi.c                   |   2 +-
+ drivers/spi/spi-zynqmp-gqspi.c                |  58 +-
+ drivers/spi/spi.c                             | 213 ++++--
+ drivers/spi/spidev.c                          |   6 +-
+ drivers/staging/fbtft/fbtft-core.c            |   2 +-
+ drivers/staging/greybus/spilib.c              |   2 +-
+ include/linux/mtd/spi-nor.h                   |  18 +-
+ include/linux/spi/spi.h                       |  34 +-
+ include/trace/events/spi.h                    |  10 +-
+ 124 files changed, 1321 insertions(+), 592 deletions(-)
 
-I have found that the issue goes away if I add an extra get_page() into
-iov_iter_extract_pipe_pages() and don't release it (the page is then leake=
-d).
-
-This makes me think that the problem might be due to the pages getting
-recycled from the pipe before DIO has finished writing to them - but that
-shouldn't be the case as the splice has to be synchronous - we can't mark =
-data
-in the pipe as 'produced' until we've finished reading it.
-
-I've also turned on CONFIG_DEBUG_PAGE_REF with a twist of my own to use a =
-page
-flag to mark the pages of interest and only trace those pages (see attache=
-d
-patch) - and that consistently shows the pages being released after the bi=
-o is
-cleared.
-
-Further, when it does arise, the issue only happens when two or more copie=
-s of
-the test program are run in parallel - which makes me wonder if truncate i=
-s
-implicated, except that that would have to happen inside the filesystem an=
-d be
-nothing to do with the pipe in the middle of sendfile().
-
-David
---
-commit 8ec9d7d951166d77e283079151b496632c290958
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Nov 13 13:21:01 2020 +0000
-
-    mm: Add a page bit to trigger page_ref tracing
-    =
-
-    Add a facility to mark a page using an extra page bit so that the page=
- is
-    flagged in tracing.  Also make it possible to restrict the tracepoint =
-to
-    only marked pages.  The mark is automatically removed when the page is
-    freed.
-    =
-
-    Enable the followng:
-    =
-
-            CONFIG_DEBUG_PAGE_REF
-            CONFIG_DEBUG_PAGE_MARK
-            CONFIG_DEBUG_PAGE_REF_ONLY_MARKED
-    =
-
-    and then enable the page_ref tracepoints:
-    =
-
-            echo 1 >/sys/kernel/debug/tracing/events/page_ref/enable
-    =
-
-    and it shows the fate of pages created by readahead for the netfs help=
-ers.
-    =
-
-    This also contains some bits to turn it on.  If you want to trace a
-    filesystem other than XFS, you need to change the magic numbers in the
-    patch.
-    =
-
-    Signed-off-by: David Howells <dhowells@redhat.com>
-
-diff --git a/block/bio.c b/block/bio.c
-index fc57f0aa098e..69b62ebf68ed 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -20,6 +20,7 @@
- #include <linux/blk-crypto.h>
- #include <linux/xarray.h>
- =
-
-+#include <trace/events/page_ref.h>
- #include <trace/events/block.h>
- #include "blk.h"
- #include "blk-rq-qos.h"
-@@ -1174,10 +1175,17 @@ void __bio_release_pages(struct bio *bio, bool mar=
-k_dirty)
- 	struct bio_vec *bvec;
- =
-
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (mark_dirty && !PageCompound(bvec->bv_page))
--			set_page_dirty_lock(bvec->bv_page);
--		bio_release_page(bio, bvec->bv_page);
-+		if (PageDebugMark(bvec->bv_page))
-+			trace_page_ref_set(bvec->bv_page, 999);
- 	}
-+
-+	if (bio_flagged(bio, BIO_PAGE_REFFED) ||
-+	    bio_flagged(bio, BIO_PAGE_PINNED))
-+		bio_for_each_segment_all(bvec, bio, iter_all) {
-+			if (mark_dirty && !PageCompound(bvec->bv_page))
-+				set_page_dirty_lock(bvec->bv_page);
-+			bio_release_page(bio, bvec->bv_page);
-+		}
- }
- EXPORT_SYMBOL_GPL(__bio_release_pages);
- =
-
-diff --git a/fs/splice.c b/fs/splice.c
-index 5969b7a1d353..4c2f13f5d6d5 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -304,6 +304,7 @@ ssize_t generic_file_splice_read(struct file *in, loff=
-_t *ppos,
- 	int ret;
- =
-
- 	iov_iter_pipe(&to, ITER_DEST, pipe, len);
-+	to.debug =3D true;
- 	init_sync_kiocb(&kiocb, in);
- 	kiocb.ki_pos =3D *ppos;
- 	ret =3D call_read_iter(in, &kiocb, &to);
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index b2c09997d79c..cafa26637067 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -484,8 +484,8 @@ void zero_fill_bio(struct bio *bio);
- =
-
- static inline void bio_release_pages(struct bio *bio, bool mark_dirty)
- {
--	if (bio_flagged(bio, BIO_PAGE_REFFED) ||
--	    bio_flagged(bio, BIO_PAGE_PINNED))
-+	//if (bio_flagged(bio, BIO_PAGE_REFFED) ||
-+	//    bio_flagged(bio, BIO_PAGE_PINNED))
- 		__bio_release_pages(bio, mark_dirty);
- }
- =
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 69e93a0c1277..80cbf784239e 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -138,6 +138,9 @@ enum pageflags {
- #endif
- #ifdef CONFIG_KASAN_HW_TAGS
- 	PG_skip_kasan_poison,
-+#endif
-+#ifdef CONFIG_DEBUG_PAGE_MARK
-+	PG_debug_mark,
- #endif
- 	__NR_PAGEFLAGS,
- =
-
-@@ -694,6 +697,15 @@ static __always_inline bool PageKsm(struct page *page=
-)
- TESTPAGEFLAG_FALSE(Ksm, ksm)
- #endif
- =
-
-+#ifdef CONFIG_DEBUG_PAGE_MARK
-+/*
-+ * Debug marks are just used for page_ref tracepoint control and display.
-+ */
-+PAGEFLAG(DebugMark, debug_mark, PF_ANY)
-+#else
-+TESTPAGEFLAG_FALSE(DebugMark, debug_mark)
-+#endif
-+
- u64 stable_page_flags(struct page *page);
- =
-
- /**
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index d7c2d33baa7f..7bc1a94d9cbb 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -24,7 +24,11 @@ DECLARE_TRACEPOINT(page_ref_unfreeze);
-  *
-  * See trace_##name##_enabled(void) in include/linux/tracepoint.h
-  */
--#define page_ref_tracepoint_active(t) tracepoint_enabled(t)
-+#ifndef CONFIG_DEBUG_PAGE_REF_ONLY_MARKED
-+#define page_ref_tracepoint_active(p, t) tracepoint_enabled(t)
-+#else
-+#define page_ref_tracepoint_active(p, t) (tracepoint_enabled(t) && PageDe=
-bugMark(p))
-+#endif
- =
-
- extern void __page_ref_set(struct page *page, int v);
- extern void __page_ref_mod(struct page *page, int v);
-@@ -36,7 +40,7 @@ extern void __page_ref_unfreeze(struct page *page, int v=
-);
- =
-
- #else
- =
-
--#define page_ref_tracepoint_active(t) false
-+#define page_ref_tracepoint_active(page, t) false
- =
-
- static inline void __page_ref_set(struct page *page, int v)
- {
-@@ -97,7 +101,7 @@ static inline int page_count(const struct page *page)
- static inline void set_page_count(struct page *page, int v)
- {
- 	atomic_set(&page->_refcount, v);
--	if (page_ref_tracepoint_active(page_ref_set))
-+	if (page_ref_tracepoint_active(page, page_ref_set))
- 		__page_ref_set(page, v);
- }
- =
-
-@@ -118,7 +122,7 @@ static inline void init_page_count(struct page *page)
- static inline void page_ref_add(struct page *page, int nr)
- {
- 	atomic_add(nr, &page->_refcount);
--	if (page_ref_tracepoint_active(page_ref_mod))
-+	if (page_ref_tracepoint_active(page, page_ref_mod))
- 		__page_ref_mod(page, nr);
- }
- =
-
-@@ -130,7 +134,7 @@ static inline void folio_ref_add(struct folio *folio, =
-int nr)
- static inline void page_ref_sub(struct page *page, int nr)
- {
- 	atomic_sub(nr, &page->_refcount);
--	if (page_ref_tracepoint_active(page_ref_mod))
-+	if (page_ref_tracepoint_active(page, page_ref_mod))
- 		__page_ref_mod(page, -nr);
- }
- =
-
-@@ -143,7 +147,7 @@ static inline int page_ref_sub_return(struct page *pag=
-e, int nr)
- {
- 	int ret =3D atomic_sub_return(nr, &page->_refcount);
- =
-
--	if (page_ref_tracepoint_active(page_ref_mod_and_return))
-+	if (page_ref_tracepoint_active(page, page_ref_mod_and_return))
- 		__page_ref_mod_and_return(page, -nr, ret);
- 	return ret;
- }
-@@ -156,7 +160,7 @@ static inline int folio_ref_sub_return(struct folio *f=
-olio, int nr)
- static inline void page_ref_inc(struct page *page)
- {
- 	atomic_inc(&page->_refcount);
--	if (page_ref_tracepoint_active(page_ref_mod))
-+	if (page_ref_tracepoint_active(page, page_ref_mod))
- 		__page_ref_mod(page, 1);
- }
- =
-
-@@ -168,7 +172,7 @@ static inline void folio_ref_inc(struct folio *folio)
- static inline void page_ref_dec(struct page *page)
- {
- 	atomic_dec(&page->_refcount);
--	if (page_ref_tracepoint_active(page_ref_mod))
-+	if (page_ref_tracepoint_active(page, page_ref_mod))
- 		__page_ref_mod(page, -1);
- }
- =
-
-@@ -181,7 +185,7 @@ static inline int page_ref_sub_and_test(struct page *p=
-age, int nr)
- {
- 	int ret =3D atomic_sub_and_test(nr, &page->_refcount);
- =
-
--	if (page_ref_tracepoint_active(page_ref_mod_and_test))
-+	if (page_ref_tracepoint_active(page, page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -nr, ret);
- 	return ret;
- }
-@@ -195,7 +199,7 @@ static inline int page_ref_inc_return(struct page *pag=
-e)
- {
- 	int ret =3D atomic_inc_return(&page->_refcount);
- =
-
--	if (page_ref_tracepoint_active(page_ref_mod_and_return))
-+	if (page_ref_tracepoint_active(page, page_ref_mod_and_return))
- 		__page_ref_mod_and_return(page, 1, ret);
- 	return ret;
- }
-@@ -209,7 +213,7 @@ static inline int page_ref_dec_and_test(struct page *p=
-age)
- {
- 	int ret =3D atomic_dec_and_test(&page->_refcount);
- =
-
--	if (page_ref_tracepoint_active(page_ref_mod_and_test))
-+	if (page_ref_tracepoint_active(page, page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -1, ret);
- 	return ret;
- }
-@@ -223,7 +227,7 @@ static inline int page_ref_dec_return(struct page *pag=
-e)
- {
- 	int ret =3D atomic_dec_return(&page->_refcount);
- =
-
--	if (page_ref_tracepoint_active(page_ref_mod_and_return))
-+	if (page_ref_tracepoint_active(page, page_ref_mod_and_return))
- 		__page_ref_mod_and_return(page, -1, ret);
- 	return ret;
- }
-@@ -237,7 +241,7 @@ static inline bool page_ref_add_unless(struct page *pa=
-ge, int nr, int u)
- {
- 	bool ret =3D atomic_add_unless(&page->_refcount, nr, u);
- =
-
--	if (page_ref_tracepoint_active(page_ref_mod_unless))
-+	if (page_ref_tracepoint_active(page, page_ref_mod_unless))
- 		__page_ref_mod_unless(page, nr, ret);
- 	return ret;
- }
-@@ -317,7 +321,7 @@ static inline int page_ref_freeze(struct page *page, i=
-nt count)
- {
- 	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, 0) =3D=3D cou=
-nt);
- =
-
--	if (page_ref_tracepoint_active(page_ref_freeze))
-+	if (page_ref_tracepoint_active(page, page_ref_freeze))
- 		__page_ref_freeze(page, count, ret);
- 	return ret;
- }
-@@ -333,7 +337,7 @@ static inline void page_ref_unfreeze(struct page *page=
-, int count)
- 	VM_BUG_ON(count =3D=3D 0);
- =
-
- 	atomic_set_release(&page->_refcount, count);
--	if (page_ref_tracepoint_active(page_ref_unfreeze))
-+	if (page_ref_tracepoint_active(page, page_ref_unfreeze))
- 		__page_ref_unfreeze(page, count);
- }
- =
-
-diff --git a/include/linux/uio.h b/include/linux/uio.h
-index 514e3b7b06b8..89272c05d74d 100644
---- a/include/linux/uio.h
-+++ b/include/linux/uio.h
-@@ -45,6 +45,7 @@ struct iov_iter {
- 	bool nofault;
- 	bool data_source;
- 	bool user_backed;
-+	bool debug;
- 	union {
- 		size_t iov_offset;
- 		int last_offset;
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags=
-.h
-index 412b5a46374c..5f3b9b0e4b53 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -103,6 +103,12 @@
- #define IF_HAVE_PG_SKIP_KASAN_POISON(flag,string)
- #endif
- =
-
-+#ifdef CONFIG_DEBUG_PAGE_MARK
-+#define IF_HAVE_PG_DEBUG_MARK(flag,string) ,{1UL << flag, string}
-+#else
-+#define IF_HAVE_PG_DEBUG_MARK(flag,string)
-+#endif
-+
- #define __def_pageflag_names						\
- 	{1UL << PG_locked,		"locked"	},		\
- 	{1UL << PG_waiters,		"waiters"	},		\
-@@ -132,7 +138,8 @@ IF_HAVE_PG_IDLE(PG_young,		"young"		)		\
- IF_HAVE_PG_IDLE(PG_idle,		"idle"		)		\
- IF_HAVE_PG_ARCH_X(PG_arch_2,		"arch_2"	)		\
- IF_HAVE_PG_ARCH_X(PG_arch_3,		"arch_3"	)		\
--IF_HAVE_PG_SKIP_KASAN_POISON(PG_skip_kasan_poison, "skip_kasan_poison")
-+IF_HAVE_PG_SKIP_KASAN_POISON(PG_skip_kasan_poison, "skip_kasan_poison")	\
-+IF_HAVE_PG_DEBUG_MARK(PG_debug_mark,	"debug_mark"	)
- =
-
- #define show_page_flags(flags)						\
- 	(flags) ? __print_flags(flags, "|",				\
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index d69a05950555..7ac030208a2c 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -10,9 +10,11 @@
- #include <linux/vmalloc.h>
- #include <linux/splice.h>
- #include <linux/compat.h>
-+#include <linux/page-flags.h>
- #include <net/checksum.h>
- #include <linux/scatterlist.h>
- #include <linux/instrumented.h>
-+#include <trace/events/page_ref.h>
- =
-
- #define PIPE_PARANOIA /* for now */
- =
-
-@@ -1331,6 +1333,10 @@ static ssize_t pipe_get_pages(struct iov_iter *i,
- 		struct page *page =3D append_pipe(i, left, &off);
- 		if (!page)
- 			break;
-+		if (i->debug && !PageDebugMark(page)) {
-+			//SetPageDebugMark(page);
-+			get_page(page);
-+		}
- 		chunk =3D min_t(size_t, left, PAGE_SIZE - off);
- 		get_page(*p++ =3D page);
- 	}
-@@ -1955,6 +1961,11 @@ static ssize_t iov_iter_extract_pipe_pages(struct i=
-ov_iter *i,
- 		struct page *page =3D append_pipe(i, left, &offset);
- 		if (!page)
- 			break;
-+		if (i->debug && !PageDebugMark(page)) {
-+			SetPageDebugMark(page);
-+			trace_page_ref_set(page, 888);
-+			//get_page(page);
-+		}
- 		chunk =3D min_t(size_t, left, PAGE_SIZE - offset);
- 		left -=3D chunk;
- 		*p++ =3D page;
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index fca699ad1fb0..111a946a676f 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -149,6 +149,23 @@ config DEBUG_PAGE_REF
- 	  kernel code.  However the runtime performance overhead is virtually
- 	  nil until the tracepoints are actually enabled.
- =
-
-+config DEBUG_PAGE_MARK
-+	bool "Reserve a page bit to mark pages to be debugged"
-+	depends on DEBUG_PAGE_REF
-+	help
-+	  This option adds an extra page flag that can be used to mark pages
-+	  for debugging.  The mark can be observed in the page_ref tracepoints.
-+	  The mark isn't set on any pages without alteration of the code.  This
-+	  is intended for filesystem debugging and code to set the mark must be
-+	  added manually into the source.
-+
-+config DEBUG_PAGE_REF_ONLY_MARKED
-+	bool "Only trace marked pages"
-+	depends on DEBUG_PAGE_REF && DEBUG_PAGE_MARK
-+	help
-+	  This option restricts the page_ref tracepoints to only track marked
-+	  pages.
-+
- config DEBUG_RODATA_TEST
-     bool "Testcase for the marking rodata read-only"
-     depends on STRICT_KERNEL_RWX
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0745aedebb37..37f146e5b2eb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1102,6 +1102,9 @@ static inline void __free_one_page(struct page *page=
-,
- =
-
- 	VM_BUG_ON(!zone_is_initialized(zone));
- 	VM_BUG_ON_PAGE(page->flags & PAGE_FLAGS_CHECK_AT_PREP, page);
-+#ifdef CONFIG_DEBUG_PAGE_MARK
-+	ClearPageDebugMark(page);
-+#endif
- =
-
- 	VM_BUG_ON(migratetype =3D=3D -1);
- 	if (likely(!is_migrate_isolate(migratetype)))
-diff --git a/mm/readahead.c b/mm/readahead.c
-index b10f0cf81d80..c5558daf3a56 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -248,6 +248,10 @@ void page_cache_ra_unbounded(struct readahead_control=
- *ractl,
- 		folio =3D filemap_alloc_folio(gfp_mask, 0);
- 		if (!folio)
- 			break;
-+#define XFS_SUPER_MAGIC 0x58465342	/* "XFSB" */
-+		if (mapping->host->i_sb->s_magic =3D=3D XFS_SUPER_MAGIC)
-+			folio_set_debug_mark(folio);
-+
- 		if (filemap_add_folio(mapping, folio, index + i,
- 					gfp_mask) < 0) {
- 			folio_put(folio);
-@@ -809,6 +813,7 @@ void readahead_expand(struct readahead_control *ractl,
- 		page =3D __page_cache_alloc(gfp_mask);
- 		if (!page)
- 			return;
-+		//SetPageDebugMark(page);
- 		if (add_to_page_cache_lru(page, mapping, index, gfp_mask) < 0) {
- 			put_page(page);
- 			return;
-@@ -832,6 +837,7 @@ void readahead_expand(struct readahead_control *ractl,
- 		page =3D __page_cache_alloc(gfp_mask);
- 		if (!page)
- 			return;
-+		//SetPageDebugMark(page);
- 		if (add_to_page_cache_lru(page, mapping, index, gfp_mask) < 0) {
- 			put_page(page);
- 			return;
+-- 
+2.25.1
 
