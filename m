@@ -2,217 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E281C68782D
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 10:03:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF041687CC8
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Feb 2023 12:58:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232365AbjBBJDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Feb 2023 04:03:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45490 "EHLO
+        id S231339AbjBBL6d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Feb 2023 06:58:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232301AbjBBJDe (ORCPT
+        with ESMTP id S230287AbjBBL6c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Feb 2023 04:03:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A875754543
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 01:02:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675328566;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=De3EEQ1m72Gwo/6RnWtloeFaKS85eTsg/vaPSBwqp1U=;
-        b=WAp1Jiw1Et9/pJBJtxioBqs6UVbA22lXI8YZNGFV0sPwqHtfFbEBHK025bytECwel4n9Vw
-        Vtj8Y/2FrqhGKyE3y8FhI6RxCNesrb8xktQClGNDM9LRM+qhWFgcmg+tRz2Xfoc8dZKtzz
-        YCUttRt9D9VrhAVN52fywjQQ1SlP1qQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-455-eXW4VqcdO22F-8W5CUh_3Q-1; Thu, 02 Feb 2023 04:02:45 -0500
-X-MC-Unique: eXW4VqcdO22F-8W5CUh_3Q-1
-Received: by mail-wm1-f72.google.com with SMTP id bg25-20020a05600c3c9900b003da1f6a7b2dso2492169wmb.1
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Feb 2023 01:02:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=De3EEQ1m72Gwo/6RnWtloeFaKS85eTsg/vaPSBwqp1U=;
-        b=1vK1AiWznAx+YTKhdJ6yP01N6nircGeGr7ZhDvdlqhT3nxrtJOPuFc0ORLNUmvopIh
-         ISbdgnDM9z036ce537/Jpv6MCArW6gkmAzBOChSJxd8VjibXnNlRx4+NFyzKOxI553+z
-         dXCRqaaohC+PrFHGASyDH0I2Cr7ZW+a3s2bz4w1ztQsFXiBt3t39rWkBDfolOcpso7Q3
-         zIK5tXpyRU5vzfSQdHdEkTY6z2jyKNFgjkVznBPj5F66qd/OMX61NRGv+ma15pFAd3BI
-         ZYv71J7tesD0zeU6E4mDpvCjs22W+Cba6UIVf42Hae60/PfPyHNCLBREda/VHpRannYP
-         2PSQ==
-X-Gm-Message-State: AO0yUKXneunexHE1mFWwpQfYnaFQGhE/X4IbD/9IxblJnbPiP3dOfig3
-        WSlZfm7XYvinbwYMX4zceOy3LCEbV6Ttrgp+g1L/oWPwFOX8Nz6JYPQRXwFdJVGspiXWivpTCn6
-        vtbdTA23HNbp4tG3nbEXymlsWWNU=
-X-Received: by 2002:a05:600c:5127:b0:3df:e1cc:94ff with SMTP id o39-20020a05600c512700b003dfe1cc94ffmr243182wms.28.1675328564404;
-        Thu, 02 Feb 2023 01:02:44 -0800 (PST)
-X-Google-Smtp-Source: AK7set+fCz01ItwOkICqUjPGvI9tDwbLemLD7FdONgucCuAKb9cdtz4cX1DC5V0lyMB/NcT5nCtZrQ==
-X-Received: by 2002:a05:600c:5127:b0:3df:e1cc:94ff with SMTP id o39-20020a05600c512700b003dfe1cc94ffmr243149wms.28.1675328564119;
-        Thu, 02 Feb 2023 01:02:44 -0800 (PST)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id t1-20020a1c7701000000b003b47b80cec3sm4027759wmi.42.2023.02.02.01.02.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Feb 2023 01:02:43 -0800 (PST)
-Message-ID: <e8065d6a-d2f9-60aa-8541-8dfc8e9b608f@redhat.com>
-Date:   Thu, 2 Feb 2023 10:02:42 +0100
+        Thu, 2 Feb 2023 06:58:32 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C64D38001A
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 03:58:31 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E55A61AC3
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 11:58:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B5DC433EF;
+        Thu,  2 Feb 2023 11:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675339110;
+        bh=aHIYVDB4QBzvaLw5nZhAS8dWTzidYBxnfIjidaH3gZE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=uyPjx/mA827z8aOfycuIoPZ9fgC5/tyyhHaX+217L6jMoCCD4UMth1RTO2dxDPRwF
+         PP8KxN4H2Ojndse/Aa4/ML02440U7QA5/BTTlpvYkJ/A/CB+g5yn/lgxoVCWihdrAP
+         lJ1rBHvstWRzy48Ndq2TdfD4R0azaUsN07ElkWr0sOtqVNKQDCaCHF6HeyxgTr5TW8
+         a65Pp3ZPGURzAb0ASL/cmLJwH2MiT5OACg+/v6uZA0V9C9oQBET1UXRN9+MZAw+R30
+         ShE2B8MWX7dqjFq6DV2vQIhkfA6sXqptln7oq8lRwg9k+m+cO1wAXm3WMtWgTypZvV
+         q5foIqGaj2FQg==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt76x0u: report firmware version through ethtool
+Date:   Thu,  2 Feb 2023 12:58:23 +0100
+Message-Id: <dbd95e7dd92a127103e2af4e6d122b4c54c07a97.1675338964.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [syzbot] general protection fault in skb_dequeue (3)
-Content-Language: en-US
-To:     David Howells <dhowells@redhat.com>, jhubbard@nvidia.com
-Cc:     syzbot <syzbot+a440341a59e3b7142895@syzkaller.appspotmail.com>,
-        davem@davemloft.net, edumazet@google.com, hch@lst.de,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-References: <000000000000b0b3c005f3a09383@google.com>
- <822863.1675327935@warthog.procyon.org.uk>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <822863.1675327935@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02.02.23 09:52, David Howells wrote:
-> Hi John, David,
-> 
-> Could you have a look at this?
-> 
->> syzbot found the following issue on:
->>
->> HEAD commit:    80bd9028feca Add linux-next specific files for 20230131
->> git tree:       linux-next
->> console output: https://syzkaller.appspot.com/x/log.txt?x=1468e369480000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=904dc2f450eaad4a
->> dashboard link: https://syzkaller.appspot.com/bug?extid=a440341a59e3b7142895
->> compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
->> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12c5d2be480000
->> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11259a79480000
->> ...
->> The issue was bisected to:
->>
->> commit 920756a3306a35f1c08f25207d375885bef98975
->> Author: David Howells <dhowells@redhat.com>
->> Date:   Sat Jan 21 12:51:18 2023 +0000
->>
->>      block: Convert bio_iov_iter_get_pages to use iov_iter_extract_pages
->>
->> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=170384f9480000
->> final oops:     https://syzkaller.appspot.com/x/report.txt?x=148384f9480000
->> console output: https://syzkaller.appspot.com/x/log.txt?x=108384f9480000
->> ...
->> general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
->> KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
->> CPU: 0 PID: 2838 Comm: kworker/u4:6 Not tainted 6.2.0-rc6-next-20230131-syzkaller-09515-g80bd9028feca #0
->> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/12/2023
->> Workqueue: phy4 ieee80211_iface_work
->> RIP: 0010:__skb_unlink include/linux/skbuff.h:2321 [inline]
->> RIP: 0010:__skb_dequeue include/linux/skbuff.h:2337 [inline]
->> RIP: 0010:skb_dequeue+0xf5/0x180 net/core/skbuff.c:3511
-> 
-> I don't think this is specifically related to anything networking.  I've run
-> it a few times and weird stuff happens in various places.  I'm wondering if
-> it's related to FOLL_PIN in some way.
-> 
-> The syzbot test in question does the following:
-> 
->     #{"repeat":true,"procs":1,"slowdown":1,"sandbox":"none","sandbox_arg":0,"netdev":true,"cgroups":true,"close_fds":true,"usb":true,"wifi":true,"sysctl":true,"tmpdir":true}
->     socket(0x0, 0x2, 0x0)
->     epoll_create(0x7)
->     r0 = creat(&(0x7f0000000040)='./bus\x00', 0x9)
->     ftruncate(r0, 0x800)
->     lseek(r0, 0x200, 0x2)
->     r1 = open(&(0x7f0000000000)='./bus\x00', 0x24000, 0x0)  <-- O_DIRECT
->     sendfile(r0, r1, 0x0, 0x1dd00)
-> 
-> Basically a DIO splice from a file to itself.
-> 
-> I've hand-written my own much simpler tester (see attached).  You need to run
-> at least two copies in parallel, I think, to trigger the bug.  It's possible
-> truncate is interfering somehow.
-> 
-> David
-> ---
-> #define _GNU_SOURCE
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <unistd.h>
-> #include <fcntl.h>
-> #include <sys/sendfile.h>
-> #include <sys/wait.h>
-> 
-> #define file_size 0x800
-> #define send_size 0x1dd00
-> #define repeat_count 1000
-> 
-> int main(int argc, char *argv[])
-> {
-> 	int in, out, i, wt;
-> 
-> 	if (argc != 2 || !argv[1][0]) {
-> 		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
-> 		exit(2);
-> 	}
-> 
-> 	for (i = 0; i < repeat_count; i++) {
-> 		switch (fork()) {
-> 		case -1:
-> 			perror("fork");
-> 			exit(1);
-> 		case 0:
-> 			out = creat(argv[1], 0666);
-> 			if (out < 0) {
-> 				perror(argv[1]);
-> 				exit(1);
-> 			}
-> 
-> 			if (ftruncate(out, file_size) < 0) {
-> 				perror("ftruncate");
-> 				exit(1);
-> 			}
-> 
-> 			if (lseek(out, file_size, SEEK_SET) < 0) {
-> 				perror("lseek");
-> 				exit(1);
-> 			}
-> 
-> 			in = open(argv[1], O_RDONLY | O_DIRECT | O_NOFOLLOW);
-> 			if (in < 0) {
-> 				perror("open");
-> 				exit(1);
-> 			}
-> 
-> 			if (sendfile(out, in, NULL, send_size) < 0) {
-> 				perror("sendfile");
-> 				exit(1);
-> 			}
-> 			exit(0);
+Run mt76x02_set_ethtool_fwver utility routine in mt76x0u_load_firmware()
+in order to report firmware version through ethtool
 
-[as raised on IRC]
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-At first, I wondered if that's related to shared anonymous pages getting 
-pinned R/O that would trigger COW-unsharing ... but I don't even see 
-where we are supposed to use FOLL_PIN vs. FOLL_GET here? IOW, we're not 
-even supposed to access user space memory (neither FOLL_GET nor 
-FOLL_PIN) but still end up with a change in behavior.
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c
+index 45502fd4693f..6dc1f51f5658 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c
+@@ -148,6 +148,7 @@ static int mt76x0u_load_firmware(struct mt76x02_dev *dev)
+ 	mt76_wr(dev, MT_USB_DMA_CFG, val);
+ 
+ 	ret = mt76x0u_upload_firmware(dev, hdr);
++	mt76x02_set_ethtool_fwver(dev, hdr);
+ 	release_firmware(fw);
+ 
+ 	mt76_wr(dev, MT_FCE_PSE_CTRL, 1);
 -- 
-Thanks,
-
-David / dhildenb
+2.39.1
 
