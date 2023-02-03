@@ -2,149 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 610AE688C94
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 02:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 821FF688D1F
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 03:37:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231829AbjBCBdx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Feb 2023 20:33:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56646 "EHLO
+        id S229602AbjBCChQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Feb 2023 21:37:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbjBCBdv (ORCPT
+        with ESMTP id S229554AbjBCChP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Feb 2023 20:33:51 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568F4841A0;
-        Thu,  2 Feb 2023 17:33:50 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E965261D4B;
-        Fri,  3 Feb 2023 01:33:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6580C433D2;
-        Fri,  3 Feb 2023 01:33:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675388029;
-        bh=bjDwmYYIor+YSh/XeUJiaj8ABWRiVuYnCU4UAHUmbfY=;
-        h=Date:From:To:Cc:Subject:From;
-        b=agtOjEulK8eS408HbFj/8bKSMzpQ4Rpa/cpGLvmeZCCI8WR83tO+WPeQeblDK65IP
-         gvFFTeVERlV00bWOyzltUr8n9Pzdfce1qaLgc5k0DYSfY+qjLXMLvL7W65kZd6S5Qd
-         gO3D+WwOtRVwUl/EZaK1RqBISr8jp0ERvWh3hZ3rt+Kp76uPXco3SwikAwNinJHib7
-         tJXiDGyq4kZDi+LFTHQOnzyC0EyAsgKWC5ptdJTr6WbnfsXGIli7Oxry/GYtKnQ3gE
-         E7hbKwDonueSDqNIPvyKibYfBxmJmXWdnBfGBsqafGxxrNeR8UdyUyD1MWEbeDAo9w
-         QRwhbuZ5MCTMg==
-Date:   Thu, 2 Feb 2023 19:34:05 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH][next] wifi: mwifiex: Replace one-element array with
- flexible-array member
-Message-ID: <Y9xkjXeElSEQ0FPY@work>
+        Thu, 2 Feb 2023 21:37:15 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E521A945
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 18:37:13 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3132au7F3019567, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3132au7F3019567
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 3 Feb 2023 10:36:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.9; Fri, 3 Feb 2023 10:37:02 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 3 Feb 2023
+ 10:37:02 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <johannes@sipsolutions.net>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: mac80211: make ieee80211_get_tx_power() return error if tx_power is INT_MIN
+Date:   Fri, 3 Feb 2023 10:36:36 +0800
+Message-ID: <20230203023636.4418-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-One-element arrays are deprecated, and we are replacing them with flexible
-array members instead. So, replace one-element array with flexible-array
-member in struct mwifiex_ie_types_rates_param_set.
+UBSAN warns if use_chanctx but not implement ops get_txpower(), because
+sdata->vif.bss_conf.txpower is still INT_MIN during ieee80211_register_hw().
+To fix this simply, return error to indicate dbm is invalid, and then
+doesn't report the value to user space at that moment.
 
-These are the only binary differences I see after the change:
+ UBSAN: signed-integer-overflow in net/wireless/nl80211.c:3816:5
+ -2147483648 * 100 cannot be represented in type 'int'
+ CPU: 0 PID: 20433 Comm: insmod Tainted: G        WC OE
+ Call Trace:
+  dump_stack+0x74/0x92
+  ubsan_epilogue+0x9/0x50
+  handle_overflow+0x8d/0xd0
+  ? nla_put+0x5e/0xc0
+  __ubsan_handle_mul_overflow+0xe/0x10
+  nl80211_send_iface+0x688/0x6b0 [cfg80211]
+  ? __alloc_skb+0x9b/0x1f0
+  nl80211_notify_iface+0x4d/0xb0 [cfg80211]
+  cfg80211_register_wdev+0x78/0xb0 [cfg80211]
+  cfg80211_netdev_notifier_call+0x200/0x620 [cfg80211]
+  ? _raw_spin_unlock_bh+0x1e/0x20
+  ? igmp6_group_added+0x6f/0xe0
+  ? _raw_spin_unlock_bh+0x1e/0x20
+  ? mld_del_delrec+0xf8/0x170
+  ? __ipv6_dev_mc_inc+0x1fe/0x460
+  ? ipv6_dev_mc_inc+0x10/0x20
+  ? ipv6_add_dev+0x476/0x630
+  ? addrconf_notify+0x31a/0xcf0
+  ? inetdev_init+0x11a/0x1d0
+  ? inetdev_event+0x4c2/0x640
+  ? skb_dequeue+0x60/0x70
+  raw_notifier_call_chain+0x5c/0xa0
+  call_netdevice_notifiers_info+0x52/0xb0
+  register_netdevice+0x53e/0x640
+  ieee80211_if_add+0x60e/0x8f0 [mac80211]
+  ieee80211_register_hw+0xda5/0x1170 [mac80211]
+  ? ieee80211_register_hw+0xda5/0x1170 [mac80211]
+  ? rtw89_regd_init+0xf0/0xf0 [rtw89_core]
+  rtw89_core_register+0x206/0x860 [rtw89_core]
+  rtw89_pci_probe+0x7fe/0xce0 [rtw89_pci]
+  local_pci_probe+0x47/0xa0
 
-mwifiex.o
-_@@ -50154,7 +50154,7 @@
-                        23514: R_X86_64_32S     kmalloc_caches+0x50
-    23518:      call   2351d <mwifiex_scan_networks+0x11d>
-                        23519: R_X86_64_PLT32   __tsan_read8-0x4
--   2351d:      mov    $0x225,%edx
-+   2351d:      mov    $0x224,%edx
-    23522:      mov    $0xdc0,%esi
-    23527:      mov    0x0(%rip),%rdi        # 2352e <mwifiex_scan_networks+0x12e>
-                        2352a: R_X86_64_PC32    kmalloc_caches+0x4c
-scan.o
-_@@ -5582,7 +5582,7 @@
-                        4394: R_X86_64_32S      kmalloc_caches+0x50
-     4398:      call   439d <mwifiex_scan_networks+0x11d>
-                        4399: R_X86_64_PLT32    __tsan_read8-0x4
--    439d:      mov    $0x225,%edx
-+    439d:      mov    $0x224,%edx
-     43a2:      mov    $0xdc0,%esi
-     43a7:      mov    0x0(%rip),%rdi        # 43ae <mwifiex_scan_networks+0x12e>
-                        43aa: R_X86_64_PC32     kmalloc_caches+0x4c
-
-and the reason for that is the following line:
-
-drivers/net/wireless/marvell/mwifiex/scan.c:
-1517         scan_cfg_out = kzalloc(sizeof(union mwifiex_scan_cmd_config_tlv),
-1518                                GFP_KERNEL);
-
-sizeof(union mwifiex_scan_cmd_config_tlv) is now one-byte smaller due to the
-flex-array transformation:
-
-  46 union mwifiex_scan_cmd_config_tlv {
-  47         /* Scan configuration (variable length) */
-  48         struct mwifiex_scan_cmd_config config;
-  49         /* Max allocated block */
-  50         u8 config_alloc_buf[MAX_SCAN_CFG_ALLOC];
-  51 };
-
-Notice that MAX_SCAN_CFG_ALLOC is defined in terms of
-sizeof(struct mwifiex_ie_types_rates_param_set), see:
-
-  26 /* Memory needed to store supported rate */
-  27 #define RATE_TLV_MAX_SIZE   (sizeof(struct mwifiex_ie_types_rates_param_set) \
-  28                                 + HOSTCMD_SUPPORTED_RATES)
-
-  37 /* Maximum memory needed for a mwifiex_scan_cmd_config with all TLVs at max */
-  38 #define MAX_SCAN_CFG_ALLOC (sizeof(struct mwifiex_scan_cmd_config)        \
-  39                                 + sizeof(struct mwifiex_ie_types_num_probes)   \
-  40                                 + sizeof(struct mwifiex_ie_types_htcap)       \
-  41                                 + CHAN_TLV_MAX_SIZE                 \
-  42                                 + RATE_TLV_MAX_SIZE                 \
-  43                                 + WILDCARD_SSID_TLV_MAX_SIZE)
-
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -fstrict-flex-arrays=3 [1].
-
-Link: https://github.com/KSPP/linux/issues/79
-Link: https://github.com/KSPP/linux/issues/252
-Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/marvell/mwifiex/fw.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/cfg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 9616bd8b49f1..8c7c744683bc 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -794,7 +794,7 @@ struct mwifiex_ie_types_chan_band_list_param_set {
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f5d43f42f6d8a..d70198420e527 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3033,6 +3033,10 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
+ 	else
+ 		*dbm = sdata->vif.bss_conf.txpower;
  
- struct mwifiex_ie_types_rates_param_set {
- 	struct mwifiex_ie_types_header header;
--	u8 rates[1];
-+	u8 rates[];
- } __packed;
++	/* With use_chanctx, txpower could be INT_MIN causing UBSAN warning. */
++	if (*dbm == INT_MIN)
++		return -EINVAL;
++
+ 	return 0;
+ }
  
- struct mwifiex_ie_types_ssid_param_set {
 -- 
-2.34.1
+2.25.1
 
