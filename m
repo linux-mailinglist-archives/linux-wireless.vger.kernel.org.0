@@ -2,96 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 869BB688E9A
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 05:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ADC6688F4F
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 07:02:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231277AbjBCEcr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Feb 2023 23:32:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51250 "EHLO
+        id S230147AbjBCGB7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Feb 2023 01:01:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbjBCEcp (ORCPT
+        with ESMTP id S229914AbjBCGB6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Feb 2023 23:32:45 -0500
-X-Greylist: delayed 910 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Feb 2023 20:32:43 PST
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.216])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A12DC10FA;
-        Thu,  2 Feb 2023 20:32:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=ZP/G2
-        /Wc7Zu5bVyWuLioRq1av3H4XStIgza6mcAOiVM=; b=YJhjVkWntd6e37EVVkgEk
-        3p9BjAnddXGF0adc+AJmUfm546JQLGRXB8mT7zYeb2hwlcmJC0HRMt166iaMmeEa
-        n3G6tN7/l0gHN1ydsebmCN+/sp9BQ0CGIcsQ0esB7elmbPMSCMTW8vwiUNZmxHgP
-        XZ7CIUMoHyX6PLVRW1QoCE=
-Received: from leanderwang-LC2.localdomain (unknown [111.206.145.21])
-        by zwqz-smtp-mta-g2-4 (Coremail) with SMTP id _____wAnLCyvitxjfZi1Cg--.56355S2;
-        Fri, 03 Feb 2023 12:16:47 +0800 (CST)
-From:   Zheng Wang <zyytlz.wz@163.com>
-To:     srini.raju@purelifi.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zheng Wang <zyytlz.wz@163.com>
-Subject: [PATCH] wifi: plfxlc: fix potential NULL pointer dereference in plfxlc_usb_wreq_async()
-Date:   Fri,  3 Feb 2023 12:16:44 +0800
-Message-Id: <20230203041644.581649-1-zyytlz.wz@163.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 3 Feb 2023 01:01:58 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E493C7EFFA
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Feb 2023 22:01:56 -0800 (PST)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3135GRpU014954;
+        Fri, 3 Feb 2023 06:01:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=GpwkIKb4WWfHoxJY7CLIBhBQccI9hMNf41QOvyw1O6M=;
+ b=pAiW0yzglTCPY42xK8wp4Tshe4RTnnEWrGbV1TehN6Q2uH4ZjJWcxyOF1GG0X+55kXyS
+ mkduG5vRcwu5yXt5t2e3rmiFRxovbROOqTtLd4WC4t2Sv+Ovt3aIVXnx4zt4SbJzEvv7
+ +kiUp2aRVk4RXnJ6wjNoZSf7mA6lqij14LD61aiJHgbsr3ENl5JnArdCvOROIKoDTM0g
+ hiGGzpfoKDdqpYgabH+un+rvtwYXgn6eEDW7A8fUnHxKv04lG0Myt1PAaTsU1zM8wdN5
+ HBpz68xuu34IJCkwmR3p4jZbWnwp7xXacPhawleVWM3onNLFWBUQXzzxL87g2dUAhGWa HQ== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ngahqtchf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 03 Feb 2023 06:01:52 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31361pjE000800
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 3 Feb 2023 06:01:51 GMT
+Received: from mpubbise-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Thu, 2 Feb 2023 22:01:49 -0800
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Subject: [PATCH v4 0/3] Enable low power mode when WLAN is not active
+Date:   Fri, 3 Feb 2023 11:31:25 +0530
+Message-ID: <20230203060128.19625-1-quic_mpubbise@quicinc.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wAnLCyvitxjfZi1Cg--.56355S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CF1rtr43ur4UtryfCw4kWFg_yoW8GrWDpF
-        s5GasI9w1UJr47Ja1xJFs2vFWFgan5Kry8KF4xZa98urZ5JwnYy3ySga4aq3W8Zr4UX3W7
-        XryUtry3WFnxG3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE_HUrUUUUU=
-X-Originating-IP: [111.206.145.21]
-X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/1tbiQhALU1aEEPGiVgAAsN
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: UldMrlP0bNZexW3d-tsbFX2Lx1HuwTeK
+X-Proofpoint-GUID: UldMrlP0bNZexW3d-tsbFX2Lx1HuwTeK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-03_02,2023-02-02_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
+ impostorscore=0 phishscore=0 bulkscore=0 priorityscore=1501
+ mlxlogscore=999 malwarescore=0 adultscore=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2212070000 definitions=main-2302030055
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Although the usb_alloc_urb uses GFP_ATOMIC, tring to make sure the memory
- allocated not to be NULL. But in some low-memory situation, it's still
- possible to return NULL. It'll pass urb as argument in
- usb_fill_bulk_urb, which will finally lead to a NULL pointer dereference.
+Currently, WLAN chip is powered once during driver probe and is kept
+ON (powered) always even when WLAN is not active; keeping the chip
+powered ON all the time will consume extra power which is not
+desirable for battery operated devices. Same is the case with non-WoW
+suspend, chip will not be put into low power mode when the system is
+suspended resulting in higher battery drain.
 
-Fix it by adding additional check.
+Send QMI MODE OFF command to firmware during WiFi OFF to put device
+into low power mode.
 
-Note that, as a bug found by static analysis, it can be a false
-positive or hard to trigger.
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
 
-Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Manikanta Pubbisetty (3):
+  ath11k: Fix double free issue during SRNG deinit
+  ath11k: Move hardware initialization logic to start()
+  ath11k: Enable low power mode when WLAN is not active
 ---
- drivers/net/wireless/purelifi/plfxlc/usb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+V4:
+ - Code changes in ath11k_core_stop_device()
 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
-index 76d0a778636a..ac149aa64908 100644
---- a/drivers/net/wireless/purelifi/plfxlc/usb.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
-@@ -496,10 +496,17 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
- 	struct urb *urb = usb_alloc_urb(0, GFP_ATOMIC);
- 	int r;
- 
-+	if (!urb) {
-+		r = -ENOMEM;
-+		kfree(urb);
-+		goto out;
-+	}
- 	usb_fill_bulk_urb(urb, udev, usb_sndbulkpipe(udev, EP_DATA_OUT),
- 			  (void *)buffer, buffer_len, complete_fn, context);
- 
- 	r = usb_submit_urb(urb, GFP_ATOMIC);
-+
-+out:
- 	if (r)
- 		dev_err(&udev->dev, "Async write submit failed (%d)\n", r);
- 
+V3:
+ - Removed patch "ath11k: Fix failed to parse regulatory event print" as it is not needed anymore
+ - Fixed a potential deadlock scenario reported by lockdep around ab->core_lock with V2 changes
+ - Fixed other minor issues that were found during code review
+ - Spelling corrections in the commit messages
+
+V2:
+ - "Enable low power mode when WLAN is not active" has been enabled only for WCN6750
+   as the device shutdown and turn-on changes are not same for all chipsets in ath11k.
+   A future patch will be sent to enable the logic for other devices.
+
+ - Rebased on ToT
+
+ drivers/net/wireless/ath/ath11k/ahb.c  |  45 ++++
+ drivers/net/wireless/ath/ath11k/core.c | 294 ++++++++++++++++++-------
+ drivers/net/wireless/ath/ath11k/core.h |  10 +-
+ drivers/net/wireless/ath/ath11k/hal.c  |   1 +
+ drivers/net/wireless/ath/ath11k/hif.h  |  11 +
+ drivers/net/wireless/ath/ath11k/mac.c  |  33 +--
+ drivers/net/wireless/ath/ath11k/pci.c  |  26 +++
+ drivers/net/wireless/ath/ath11k/qmi.c  |   3 +-
+ 8 files changed, 311 insertions(+), 112 deletions(-)
+
 -- 
-2.25.1
+2.38.0
 
