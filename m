@@ -2,53 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACAC2689B8F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 15:26:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D82689C10
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 15:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232912AbjBCO0C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Feb 2023 09:26:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
+        id S233146AbjBCOlr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Feb 2023 09:41:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232757AbjBCOZ7 (ORCPT
+        with ESMTP id S231233AbjBCOlq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Feb 2023 09:25:59 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94CE66EF4;
-        Fri,  3 Feb 2023 06:25:56 -0800 (PST)
+        Fri, 3 Feb 2023 09:41:46 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05414C00;
+        Fri,  3 Feb 2023 06:41:45 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 60C85B82AE1;
-        Fri,  3 Feb 2023 14:25:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D886C4339E;
-        Fri,  3 Feb 2023 14:25:54 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0BCE8CE303C;
+        Fri,  3 Feb 2023 14:41:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A98C433A0;
+        Fri,  3 Feb 2023 14:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675434354;
-        bh=FnFLurR6aD/mKesWSxbnPpuvd9h9JjFxABX7sLbaerw=;
+        s=k20201202; t=1675435301;
+        bh=aSsCAsgpLn8Nh2RoLgCu1FwifDval96mr38LdqDofP4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=LypUN7+vWTtApRbYwlIRwDyFFUy4NZfOQX3n4Iuc7sKfAAyX+lrYAykQjof2WQrTW
-         FRndf+FaBC4flW6GXdwnFCabsdlzw0ruzcqCfo9eYXUoT25pm89haMBSj+tcZJ+Ahc
-         7mCedUfjlFNh2R3b/ygk0eY0cW42Eprn0lrRNc3R2LVvN8AHa8Xrdo8rmjyTi67WdV
-         G7N5EdVyS2NX9kLAWWCPiyKx86qzeUlEDH0p/yeNkZOvSeQ/tO7AYn2sow9d+SrJmg
-         MK/jS54K0tyRnxC+jicY7BuKH6vSICoRU8ISslV8k95A1xryDrohtcZPM+EjEgYf4p
-         2ARiXfjvlybkg==
-Received: by mail-vk1-f169.google.com with SMTP id bs10so2642664vkb.3;
-        Fri, 03 Feb 2023 06:25:54 -0800 (PST)
-X-Gm-Message-State: AO0yUKXzVABjuCUDtqDqAy+wYbbB7mLVODbXkXfIk98iVzn4ysPzi85C
-        +6D/tzZpmUDG2hDnZyevj0u5RtlKErmmwVEiiQ==
-X-Google-Smtp-Source: AK7set9my47fjo1R5MeR5tTewDUSl58zHnQOe/TtN8yQK66dTbm6kplm7GEpozoTzdalO33nKv531UzRMo3cj+AIHhw=
-X-Received: by 2002:a05:6122:419:b0:3e8:551c:46f with SMTP id
- e25-20020a056122041900b003e8551c046fmr1559055vkd.19.1675434352823; Fri, 03
- Feb 2023 06:25:52 -0800 (PST)
+        b=lQARH19+JJc/qQ657fHWRjoOsZ7uM7xGiTACSr4Z7TpaOID0SQHPeDW1QSfCSSE+y
+         a7bvfj0+8l0DsbwuGhkXfD6tLSaqmaapz01S1pmZeBEzDTxoLUaWXrDIoLXfSjBN1u
+         SEInskwTuXKoSXMlk5EkrMREPMPc0BkoN/609UxQYw4JQaBy/5+J3AlbBZWXlrBq9v
+         MaDKx8xxgipmb23CH6Qp5lITlrfLoMdfZ3hrxaWijHjU/N6z+E+oqrrRXDBazAvz5s
+         HYsR/VzG4OSByOG/aDq9RSIKohWhmqU2Lhsv08cHrA6ll/XsfyGCdukZmgZlOK+0ZA
+         9NNAmk+GRo9Fw==
+Received: by mail-vs1-f46.google.com with SMTP id e9so5575958vsj.3;
+        Fri, 03 Feb 2023 06:41:41 -0800 (PST)
+X-Gm-Message-State: AO0yUKUvlUzp9VMJeHLeMm76KuF75w666Q90UfgvFAiQU4iYnVzk+zuH
+        QJOCgH5EFxG9zlq6enxwXe5zO+xvjRRqK3OGMg==
+X-Google-Smtp-Source: AK7set91RP4lU4aTvuhe1XUgAHWEWaGbEJPsanRYf49Cujn2Gdpsc3aBBiPBWZFzfWUsAj6GCPQGp5EnCAQIU7z2r0w=
+X-Received: by 2002:a05:6102:3e0c:b0:3b5:1fe4:f1c2 with SMTP id
+ j12-20020a0561023e0c00b003b51fe4f1c2mr1612207vsv.0.1675435300404; Fri, 03 Feb
+ 2023 06:41:40 -0800 (PST)
 MIME-Version: 1.0
-References: <20230203-dt-bindings-network-class-v1-0-452e0375200d@jannau.net> <20230203-dt-bindings-network-class-v1-1-452e0375200d@jannau.net>
-In-Reply-To: <20230203-dt-bindings-network-class-v1-1-452e0375200d@jannau.net>
+References: <20230203-dt-bindings-network-class-v1-0-452e0375200d@jannau.net>
+In-Reply-To: <20230203-dt-bindings-network-class-v1-0-452e0375200d@jannau.net>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 3 Feb 2023 08:25:37 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+kJA0VS-SF67mhQFg0dS9KcQ-36ctGVsD78=wkrM7GUw@mail.gmail.com>
-Message-ID: <CAL_Jsq+kJA0VS-SF67mhQFg0dS9KcQ-36ctGVsD78=wkrM7GUw@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/3] dt-bindings: net: Add network-class schema for
- mac-address properties
+Date:   Fri, 3 Feb 2023 08:41:28 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKD7gD86_B93M19rBCWn+rmSw24vOGEhqi9Nvne1Xixwg@mail.gmail.com>
+Message-ID: <CAL_JsqKD7gD86_B93M19rBCWn+rmSw24vOGEhqi9Nvne1Xixwg@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/3] dt-bindings: net: Add network-class.yaml schema
 To:     Janne Grunau <j@jannau.net>
 Cc:     "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
@@ -61,8 +60,8 @@ Cc:     "David S. Miller" <davem@davemloft.net>,
         netdev@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,92 +71,38 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Fri, Feb 3, 2023 at 7:56 AM Janne Grunau <j@jannau.net> wrote:
 >
-> The ethernet-controller schema specifies "mac-address" and
-> "local-mac-address" but other network devices such as wireless network
-> adapters use mac addresses as well.
 > The Devicetree Specification, Release v0.3 specifies in section 4.3.1
-> a generic "Network Class Binding" with "address-bits", "mac-address",
-> "local-mac-address" and "max-frame-size". This schema specifies the
-> "address-bits" property and moves "local-mac-address" and "mac-address"
-> over from ethernet-controller.yaml.
-> The schema currently does not restrict MAC address size based on
-> address-bits.
->
-> Signed-off-by: Janne Grunau <j@jannau.net>
-> ---
->  .../bindings/net/ethernet-controller.yaml          | 18 +---------
->  .../devicetree/bindings/net/network-class.yaml     | 40 ++++++++++++++++++++++
->  2 files changed, 41 insertions(+), 17 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> index 00be387984ac..a5f6a09dfdea 100644
-> --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> @@ -17,23 +17,6 @@ properties:
->      $ref: /schemas/types.yaml#/definitions/string
->      description: Human readable label on a port of a box.
->
-> -  local-mac-address:
-> -    description:
-> -      Specifies the MAC address that was assigned to the network device.
-> -    $ref: /schemas/types.yaml#/definitions/uint8-array
-> -    minItems: 6
-> -    maxItems: 6
-> -
-> -  mac-address:
-> -    description:
-> -      Specifies the MAC address that was last used by the boot
-> -      program; should be used in cases where the MAC address assigned
-> -      to the device by the boot program is different from the
-> -      local-mac-address property.
-> -    $ref: /schemas/types.yaml#/definitions/uint8-array
-> -    minItems: 6
-> -    maxItems: 6
-> -
->    max-frame-size:
->      $ref: /schemas/types.yaml#/definitions/uint32
->      description:
-> @@ -226,6 +209,7 @@ dependencies:
->    pcs-handle-names: [pcs-handle]
->
->  allOf:
-> +  - $ref: /schemas/net/network-class.yaml#
->    - if:
->        properties:
->          phy-mode:
-> diff --git a/Documentation/devicetree/bindings/net/network-class.yaml b/Documentation/devicetree/bindings/net/network-class.yaml
-> new file mode 100644
-> index 000000000000..676aec1c458e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/network-class.yaml
-> @@ -0,0 +1,40 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/network-class.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Network Class Bindings
-> +
-> +maintainers:
-> +  - Devicetree Specification Mailing List <devicetree-spec@vger.kernel.org>
-> +
-> +properties:
-> +  address-bits:
-> +    description:
-> +      Specifies number of address bits required to address the device described
-> +      by this node. This property specifies number of bits in MAC address.
-> +      If unspecified, the default value is 48.
+> a "Network Class Binding". This covers MAC address and maximal frame
+> size properties. "local-mac-address" and "mac-address" with a fixed
+> address-size of 48 bits is already in the ethernet-controller.yaml
+> schema so move those over.
+> I think the only commonly used values for address-size are 48 and 64
+> bits (EUI-48 and EUI-64). Unfortunately I was not able to restrict the
+> mac-address size based on the address-size. This seems to be an side
+> effect of the array definition and I was not able to restrict "minItems"
+> or "maxItems" based on the address-size value in an "if"-"then"-"else"
+> block.
+> An easy way out would be to restrict address-size to 48-bits for now.
 
-You can drop the last sentence.
+I've never seen 64-bits used...
 
-> +    default: 48
-> +    enum: [48, 64]
+> I've ignored "max-frame-size" since the description in
+> ethernet-controller.yaml claims there is a contradiction in the
+> Devicetree specification. I suppose it is describing the property
+> "max-frame-size" with "Specifies maximum packet length ...".
 
-I wonder if we should just deprecate this property. I see 1 occurrence
-and no consumer in the kernel tree at least. I guess one could set the
-length, but not have mac addresses in the DT. Otherwise you could just
-infer the length from the property length. Anyways, a conversation for
-another time I guess.
+Please include it and we'll fix the spec. It is clearly wrong. 2 nios
+boards use 1518 and the consumer for them says it is MTU. Everything
+else clearly uses mtu with 1500 or 9000.
+
+> My understanding from the dt-schema README is that network-class.yaml
+> should live in the dt-schema repository since it describes properties
+> from the Devicetree specification. How is the synchronization handled in
+> this case? The motivation for this series is to fix dtbs_check failures
+> for Apple silicon devices both in the tree and upcoming ones.
+
+Let's add it to the kernel, then later we can copy it to dtschema,
+bump the minimum version the kernel requires, and delete the kernel
+copy.
 
 Rob
