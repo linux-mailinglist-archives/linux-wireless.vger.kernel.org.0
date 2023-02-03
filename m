@@ -2,70 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B772468A016
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 18:15:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB8268A0EF
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Feb 2023 18:54:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233728AbjBCRPb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Feb 2023 12:15:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59228 "EHLO
+        id S233505AbjBCRyl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Feb 2023 12:54:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233724AbjBCRP2 (ORCPT
+        with ESMTP id S232526AbjBCRyf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Feb 2023 12:15:28 -0500
-Received: from smtp161.vfemail.net (smtp161.vfemail.net [146.59.185.161])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9F0A8A00
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Feb 2023 09:15:24 -0800 (PST)
-Received: (qmail 32683 invoked from network); 3 Feb 2023 17:15:23 +0000
-Received: from localhost (HELO nl101-3.vfemail.net) ()
-  by smtpout.vfemail.net with ESMTPS (ECDHE-RSA-AES256-GCM-SHA384 encrypted); 3 Feb 2023 17:15:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=openmail.cc; h=message-id
-        :date:mime-version:from:subject:to:cc:references:in-reply-to
-        :content-type:content-transfer-encoding; s=2018; bh=ggl3wDMwxRQu
-        E7GebVROC5jrBccyl7QBS7ttNF5Pvpw=; b=gatIzgkuBCJQroRliw1BWu3TZp9O
-        OxjfdQrcQAHe1RnPwFsdeSJnS2Lxd/nOYCSEiRSYhJZXQ75NUBWIuLoBP5Yp8Xc8
-        VzIuaceWQXZ+fBdmASec8xWtIJdHt6VDh3x6cxqcFGl35JqWxFykyftEXbfkL26G
-        T2qlrphp8381Qq0=
-Received: (qmail 90973 invoked from network); 3 Feb 2023 17:15:22 -0000
-Received: by simscan 1.4.0 ppid: 90589, pid: 90886, t: 1.2471s
-         scanners:none
-Received: from unknown (HELO bmwxMDEudmZlbWFpbC5uZXQ=) (ZXF1dUBvcGVubWFpbC5jYw==@MTkyLjE2OC4xLjE5Mg==)
-  by nl101.vfemail.net with ESMTPA; 3 Feb 2023 17:15:21 -0000
-Message-ID: <aef1d48b-cfc2-1a5d-d26c-deae85875d43@openmail.cc>
-Date:   Sat, 4 Feb 2023 01:15:10 +0800
+        Fri, 3 Feb 2023 12:54:35 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86121ADB86
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Feb 2023 09:54:25 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id o13so5776153pjg.2
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Feb 2023 09:54:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=R8ufPH7bTftRwsQjzz55HUv+bYFzzWYZWI0aqKJbnlM=;
+        b=RjJmJmOStcp52nBMq8W2804rVNjEMR6y0Zk8U9GC2UFTaj19G+HlCKWNpqRPKTrZsJ
+         thQA2JF/Xtf8RWp3HVFDXeXRWrDuDEitexR85nIx12VHc89pXL3o2QhQiphpZgDPnqKs
+         bro+6C/iyRt/sIxOvUywY0BqUViCm+O3I3diM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R8ufPH7bTftRwsQjzz55HUv+bYFzzWYZWI0aqKJbnlM=;
+        b=6Mu3zWN69r/o9hk6dVxYYEDP+xSTspIyNIZPr0cUBCcGewp/YX12yRUVgk+IwVCrsh
+         j8Ju4eMidxjkya2GJ6OdfdIuQSVMRoZTCwbg94hE/8OY1me1i6fo81AtHLRihZX/9BXP
+         JjH9h6vZqv619tNpILA7dK6lxhajJbc0WwV00mKRk92oRwFZ9NdBkqc5Dibs7tI/5O/7
+         JFTxmKYIU3AJtx1CmGLPUsCKLKya2cCW1PXWwURNqyCFf1l4RlJ+Ux3k3NTqOj3osPOx
+         DVsVkIfNdKAzpLejwzquMm6na7d/lExR2Pioebm6vPoSd2sbRGwHP9ha8f/jEIfWSL6F
+         3YQw==
+X-Gm-Message-State: AO0yUKVjJ4tLn1UWXl5M4flrLuGzk3AIb6XV28prb0rjmzBGUrjmz3Il
+        oKY+Jp/HsId+6Kk/WKP7PnLcXg==
+X-Google-Smtp-Source: AK7set8kyDB7ke6F1jZoIVEstiFpFa+7n6l6dDQrd+DcHUlMDeWxnH/+duod2iw0p7EJb++f6sHo+w==
+X-Received: by 2002:a17:902:c651:b0:196:3f29:779f with SMTP id s17-20020a170902c65100b001963f29779fmr6881496pls.6.1675446865049;
+        Fri, 03 Feb 2023 09:54:25 -0800 (PST)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id 13-20020a170902c14d00b00186a437f4d7sm1880088plj.147.2023.02.03.09.54.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Feb 2023 09:54:24 -0800 (PST)
+Message-ID: <63dd4a50.170a0220.c7a03.3a65@mx.google.com>
+X-Google-Original-Message-ID: <202302031754.@keescook>
+Date:   Fri, 3 Feb 2023 17:54:24 +0000
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] brcmfmac: Replace one-element array with
+ flexible-array member
+References: <Y9xjizhMujNEtpB4@work>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-From:   equu@openmail.cc
-Subject: Re: [PATCH v5 3/3] wifi: ath10k: only load compatible DT cal data
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org,
-        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, kernel test robot <lkp@intel.com>
-References: <ab8ff515-19ec-fe3f-0237-c30275e9744d@openmail.cc>
- <20230203104822.361415-1-equu@openmail.cc>
- <20230203104822.361415-4-equu@openmail.cc>
- <CAL_JsqKq1Yv+svKMS3R=TmDui1VJEjinoPFoDAAgr8tBbV1aSQ@mail.gmail.com>
-In-Reply-To: <CAL_JsqKq1Yv+svKMS3R=TmDui1VJEjinoPFoDAAgr8tBbV1aSQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y9xjizhMujNEtpB4@work>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> I think this can be done a bit cleaner and like other drivers. I see 2 options.
-> The first way is use VID/PID compatible strings and don't set the
-> of_node pointer if there is a mismatch.
-Where should I do this? In pci_set_of_node() from drivers/pci/of.c?
-> Upon further thought, why can't you decide all this just on PCI
-> VID/PID? The giant switch statement in ath10k_pci_probe() could all
-> just be struct of driver_data from the PCI match table.
+On Thu, Feb 02, 2023 at 07:29:47PM -0600, Gustavo A. R. Silva wrote:
+> One-element arrays are deprecated, and we are replacing them with flexible
+> array members instead. So, replace one-element array with flexible-array
+> member in struct brcmf_tlv.
+> 
+> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+> routines on memcpy() and help us make progress towards globally
+> enabling -fstrict-flex-arrays=3 [1].
+> 
+> This results in no differences in binary output.
+> 
+> Link: https://github.com/KSPP/linux/issues/79
+> Link: https://github.com/KSPP/linux/issues/253
+> Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-I cannot decide all this just on PCI VID/PID because PCI VID/PID cannot tell whether calibration data are stored in the device (like most expansion cards) or not (for example, in an NVRAM cell referenced by the device tree).
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
+-- 
+Kees Cook
