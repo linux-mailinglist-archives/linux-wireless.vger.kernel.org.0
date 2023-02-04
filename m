@@ -2,74 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D96D968AC39
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Feb 2023 21:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE44068AD6A
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Feb 2023 00:30:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbjBDUJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 4 Feb 2023 15:09:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49314 "EHLO
+        id S231230AbjBDXa2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Feb 2023 18:30:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjBDUJ5 (ORCPT
+        with ESMTP id S229578AbjBDXa1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 4 Feb 2023 15:09:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30AC224C8D
-        for <linux-wireless@vger.kernel.org>; Sat,  4 Feb 2023 12:09:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675541352;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=/WaCBskwLyuFZAeD+BROUlg6POGlmNuR7JtD/rOXxGw=;
-        b=UlV+z+UGvFNxHNAl2WV1vUhn7lLe0WiLg4Jp23v5Yxrz/VDNmq2WErTkNvxfxnU0LKq6V+
-        EFT8cKuFEqPZpW0AgLKD25zAUkKjdrJMV/GSumEXZK/nSA+N2v6lY7wvnv3sUC4+0K4FoB
-        rR37w8KFh7hqtjlZoERcGfP8OGbNfe4=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-422-h0ijN0vSMiKTJRtL6WtJeA-1; Sat, 04 Feb 2023 15:09:08 -0500
-X-MC-Unique: h0ijN0vSMiKTJRtL6WtJeA-1
-Received: by mail-qv1-f69.google.com with SMTP id px22-20020a056214051600b00537657b0449so4444432qvb.23
-        for <linux-wireless@vger.kernel.org>; Sat, 04 Feb 2023 12:09:08 -0800 (PST)
+        Sat, 4 Feb 2023 18:30:27 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990D7C148;
+        Sat,  4 Feb 2023 15:30:26 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id lu11so24891023ejb.3;
+        Sat, 04 Feb 2023 15:30:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=48zrL7dDekd40DOwd/bnDnGHKiZSAz1cWiLL1H5HRVk=;
+        b=Toim7KqVELHZdsy6UfwGn1snV4wW+zIFBpdU1NpsrUYcRQ5YfI7pOodl2fCPrlhJr8
+         H2jwij7U03WnAPaeXhS7sahjW1TGz/9QjRFqxgt4XhKkh44SIOCzGCrloIH40ka/VF7S
+         rhar49JPz26lEtSnFEIMHccOYbdr31CnSrX65zkOeg/wjACZa+lgSg9UzmdQwbtcyxje
+         cXxBOjz/nP6Jsd9b0J+TpqDWohky5HlN3WMC6q03dJWzmBF3K4ZvzMvHv34NM9v3BJdw
+         CsYDnBvLHxKDNlQEvLlfe4Z4RAvvoh1GOtpsRT9ZZLKzmK6RPv/fLbZguJu1n26oj1uJ
+         wVEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/WaCBskwLyuFZAeD+BROUlg6POGlmNuR7JtD/rOXxGw=;
-        b=Umn8wVqJJJuKV1TVkrsIDyYOnnSd8cFavC/7Olvy7VA5bwEw7JTy0nhu9i4SGrjxIR
-         9WRYjWVON+O2jjvUMzzfBnVDHy3j1uWZDaVqzfMRvYrcmk+8ynSQgvX0XU8z/cQSrDfF
-         3hOYrtybVL6fbPSz4L9EVbqYytgR1SIhdavoSkWmt6S295O37F79zgtCVOc3db+G3eAD
-         XQL7jUZHIpcQuPMhQUTryKUSKhQ5gIuNYQA/GWS2O/OtnsTQ/0LdKzsoZ1hOFwx5HsYC
-         bDmY68/PSlsokqegWqj6TJZgKUfAnf0m/tmVJ2kxvNn8sQ1En2Xox0dF+l5K6Wvou+69
-         ebuQ==
-X-Gm-Message-State: AO0yUKW1oQkdWX12RX4F/yOao6hndDab8cEhMb12yU5hHfCp7OT5/54c
-        C/YNDepPoUujAZVKtKFn5sucnRI7T4SJVVxji9WWb7CwlfEpeBgHGxfQq1Tadu25JOOf8YDi0Ta
-        dBtCiUSRMpnxDAifLuzC3d/Ax15U=
-X-Received: by 2002:ac8:5756:0:b0:3ba:19e5:3e45 with SMTP id 22-20020ac85756000000b003ba19e53e45mr3388193qtx.13.1675541347777;
-        Sat, 04 Feb 2023 12:09:07 -0800 (PST)
-X-Google-Smtp-Source: AK7set8A94jVY4UFhKq+MGGkEfrBwfqPSgkhmWjhq+AOIShxahEwEUVaVYuzs1h1UCXCT1EJocHikg==
-X-Received: by 2002:ac8:5756:0:b0:3ba:19e5:3e45 with SMTP id 22-20020ac85756000000b003ba19e53e45mr3388168qtx.13.1675541347551;
-        Sat, 04 Feb 2023 12:09:07 -0800 (PST)
-Received: from localhost.localdomain.com (024-205-208-113.res.spectrum.com. [24.205.208.113])
-        by smtp.gmail.com with ESMTPSA id v11-20020a05620a122b00b0070648cf78bdsm4230548qkj.54.2023.02.04.12.09.05
+        bh=48zrL7dDekd40DOwd/bnDnGHKiZSAz1cWiLL1H5HRVk=;
+        b=akmwQgvarMd8Rw5TGouJRgHcnri1C42DbEyWkXgX4wOmgtDwTzjbVIZZ5oqShtyW2J
+         uTDxtM4p2DZ5asIEmxU7C5jLaSZt0dcrNfflPpMk5r0TPpQR1yPPYUleiL6SyVg6FRBx
+         z+ZO4QPJN+SwymzIZPj5RhGEEwykTe6VF3NOI3IS/R1M72+jsoDh/Jp1lUqOLci7+Zt0
+         WKAaEdLWbv01lJ6bpl8HAFEYK0HTkSVo6aTTlido3Gm4idSa8pZkoJelwOgvwmf2UyO2
+         0UQzj+MlVnbC07UbBPFiYILpeWi/Msy51T/RQwUuz+sLavZB6Cjgg7g8Lmsa3Y72KB4I
+         T1oQ==
+X-Gm-Message-State: AO0yUKWc6WiqqLX1nV9L0lxAxZxO5t6stJWMUMo6ktUYT8hqvgc5iQDe
+        XTQeimuAvy/Ip/BuhS8PJxEYzXVETUQ=
+X-Google-Smtp-Source: AK7set8TPW9qzjxVs8EfQtcw+B2AqS66LrxaaAxIrqe7rGr0/fqwTbrfZOwPLLHyFeimrVxjmz3IYw==
+X-Received: by 2002:a17:906:cc8f:b0:889:d998:1576 with SMTP id oq15-20020a170906cc8f00b00889d9981576mr14880064ejb.66.1675553424888;
+        Sat, 04 Feb 2023 15:30:24 -0800 (PST)
+Received: from localhost.localdomain (dynamic-2a01-0c22-7777-cc00-f22f-74ff-fe21-0725.c22.pool.telefonica.de. [2a01:c22:7777:cc00:f22f:74ff:fe21:725])
+        by smtp.googlemail.com with ESMTPSA id v5-20020a1709061dc500b0084d4e9a13cbsm3386658ejh.221.2023.02.04.15.30.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Feb 2023 12:09:07 -0800 (PST)
-From:   Tom Rix <trix@redhat.com>
-To:     kune@deine-taler.de, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
-Subject: [PATCH] net: wireless: zd1211rw: remove redundant decls
-Date:   Sat,  4 Feb 2023 12:09:02 -0800
-Message-Id: <20230204200902.1709343-1-trix@redhat.com>
-X-Mailer: git-send-email 2.26.3
+        Sat, 04 Feb 2023 15:30:24 -0800 (PST)
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     tony0620emma@gmail.com, kvalo@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>, pkshih@realtek.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v2 0/4] rtw88: four small code-cleanups and refactorings
+Date:   Sun,  5 Feb 2023 00:29:57 +0100
+Message-Id: <20230204233001.1511643-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,31 +71,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-building with W=2 has these errors
-redundant redeclaration of ‘zd_rf_generic_patch_6m’ [-Werror=redundant-decls]
-redundant redeclaration of ‘zd_rf_patch_6m_band_edge’ [-Werror=redundant-decls]
+Hello,
 
-Remove the second decls.
+this series consists of four small patches which clean up and refactor
+existing code in preparation for SDIO support. Functionality is
+supposed to stay the same with these changes.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/net/wireless/zydas/zd1211rw/zd_rf.h | 3 ---
- 1 file changed, 3 deletions(-)
+The goal of the first two patches is to make it easier to understand
+the allowed values in the queue by using enum rtw_tx_queue_type instead
+of u8.
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_rf.h b/drivers/net/wireless/zydas/zd1211rw/zd_rf.h
-index 8bfec9e75125..9ca69df3d288 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_rf.h
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_rf.h
-@@ -85,9 +85,6 @@ static inline int zd_rf_should_patch_cck_gain(struct zd_rf *rf)
- 	return rf->patch_cck_gain;
- }
- 
--int zd_rf_patch_6m_band_edge(struct zd_rf *rf, u8 channel);
--int zd_rf_generic_patch_6m(struct zd_rf *rf, u8 channel);
--
- /* Functions for individual RF chips */
- 
- int zd_rf_init_rf2959(struct zd_rf *rf);
+The third patch in this series moves the rtw_tx_queue_type code out of
+pci.c so it can be re-used by SDIO (and also USB) HCIs.
+
+The last patch is another small cleanup to improve readability of the
+code by using (already existing) macros instead of magic BIT(n).
+
+
+Changes since v1 at [0]:
+- add "wifi" to the subject of all patches
+- add Ping-Ke's Acked-by to patches 2 and 4 (thank you!)
+- add const keyword in patch 1
+- add array bounds checking in patch 3
+- remove references to another series from the cover letter as it's
+  not needed as a precondition / dependency anymore
+
+
+[0] https://lore.kernel.org/netdev/20220114234825.110502-1-martin.blumenstingl@googlemail.com/
+
+
+Martin Blumenstingl (4):
+  wifi: rtw88: pci: Use enum type for rtw_hw_queue_mapping() and
+    ac_to_hwq
+  wifi: rtw88: pci: Change queue datatype to enum rtw_tx_queue_type
+  wifi: rtw88: Move enum rtw_tx_queue_type mapping code to tx.{c,h}
+  wifi: rtw88: mac: Use existing macros in rtw_pwr_seq_parser()
+
+ drivers/net/wireless/realtek/rtw88/mac.c |  4 +-
+ drivers/net/wireless/realtek/rtw88/pci.c | 50 ++++++------------------
+ drivers/net/wireless/realtek/rtw88/tx.c  | 41 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/tx.h  |  3 ++
+ 4 files changed, 57 insertions(+), 41 deletions(-)
+
 -- 
-2.26.3
+2.39.1
 
