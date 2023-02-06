@@ -2,49 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C6FB68C595
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Feb 2023 19:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 238A068C6D6
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Feb 2023 20:32:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbjBFSTE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Feb 2023 13:19:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39970 "EHLO
+        id S229973AbjBFTck (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Feb 2023 14:32:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229741AbjBFSTC (ORCPT
+        with ESMTP id S229930AbjBFTcj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Feb 2023 13:19:02 -0500
-X-Greylist: delayed 404 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 06 Feb 2023 10:19:01 PST
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4251AF
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Feb 2023 10:19:01 -0800 (PST)
-Received: from dispatch1-us1.ppe-hosted.com (localhost.localdomain [127.0.0.1])
-        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2607F23078A
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Feb 2023 18:12:17 +0000 (UTC)
+        Mon, 6 Feb 2023 14:32:39 -0500
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CBBFF03
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Feb 2023 11:32:37 -0800 (PST)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5A059940087;
-        Mon,  6 Feb 2023 18:12:15 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D55B38C008C;
+        Mon,  6 Feb 2023 19:32:35 +0000 (UTC)
 Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id CE76413C2B0;
-        Mon,  6 Feb 2023 10:12:14 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com CE76413C2B0
+        by mail3.candelatech.com (Postfix) with ESMTP id 3356013C2B0;
+        Mon,  6 Feb 2023 11:32:35 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3356013C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1675707134;
-        bh=Pc82vDA2UuclTIllc0A73dHYWTlIy/zYDbg8TOVJOD0=;
+        s=default; t=1675711955;
+        bh=IzYP8Uu/DUpj9qXN19YJ6WiKd2gyURFljQ3uNgOb5pc=;
         h=From:To:Cc:Subject:Date:From;
-        b=pvL+P2CJrieiNxHyceOoC4U0CzmhntYilcmGqGsaVBfzelxoVprnkhQgXMUvnBqD0
-         zbKSJvp82ekC/u9yflyvswBdC/yUEt37sKdC/J5/JFcF2oM/LulDP6ZUk3wSVT7Zac
-         /FpBK8CklWauTwEFwVs802L4HAOXp+umhkdQXLxY=
+        b=hvyaCIIstBgX3vjme9+SbHPj1XzePxbHgar2DRBOYCIE166TnJhIi6Icl4vztOvLZ
+         P32M7ZqMJg7L1Zl3j71kLsyr5l1t78BXQ+GnKWrV9OWkWDFP5aeZpn3atCjPzm0T7f
+         pyFthQsI6JgWB4LRHwjy09JN+B7WjgNMx+c/UQyE=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Deren.Wu@mediatek.com, Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wifi: mt76: mt7921:  Allow disabling deep-sleep and beacon filtering.
-Date:   Mon,  6 Feb 2023 10:12:10 -0800
-Message-Id: <20230206181210.1307902-1-greearb@candelatech.com>
+Subject: [PATCH] wifi: mt76: mt7921:  retry dma-disable on startup.
+Date:   Mon,  6 Feb 2023 11:32:33 -0800
+Message-Id: <20230206193233.1716090-1-greearb@candelatech.com>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1675707136-otzBtr_JiE5i
-X-MDID-O: us5-at1-1675707136-otzBtr_JiE5i
+X-MDID: 1675711956-gFbVqQJNuqpw
+X-MDID-O: us5-at1-1675711956-gFbVqQJNuqpw
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -57,208 +53,247 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-Semi permanently by use of module parameters.  This is helpful to me because
-I want to see beacon RSSI reported without having to poke debugfs every
-time a station re-associates.
+My system with lots of mtk7921k radios in it often fails to bring up
+a few of them.  Adding a retry to the dma-disable logic appears to
+fix the problem:
+
+[   10.774941] mt7921e 0000:1d:00.0: ASIC revision: 79610010
+[   10.776284] mt7921e 0000:1d:00.0: mt7921_dma_disable failed with timeout, force: 1
+[   10.776285] mt7921e 0000:1d:00.0: mt7921_dma_disable failed: -110 (try 0/3)
+[   10.778282] mt7921e 0000:1c:00.0: HW/SW Version: 0x8a108a10, Build Time: 20230117170855a
+[   10.788427] mt7921e 0000:1c:00.0: WM Firmware Version: ____010000, Build Time: 20230117170942
+[   10.852198] mt7921e 0000:1d:00.0: HW/SW Version: 0x8a108a10, Build Time: 20230117170855a
+[   10.862222] mt7921e 0000:1d:00.0: WM Firmware Version: ____010000, Build Time: 20230117170942
+
+Add additional logging to find other errors that could keep the radio from working
+at all.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- .../wireless/mediatek/mt76/mt7921/debugfs.c   | 16 +++++++++---
- .../net/wireless/mediatek/mt76/mt7921/init.c  | 10 +++++---
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 25 +++++++++++++------
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  2 ++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- 5 files changed, 40 insertions(+), 14 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 56 ++++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   | 34 ++++++++---
+ 2 files changed, 69 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-index e72d66e704af..a7eb80730d91 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
-@@ -4,6 +4,9 @@
- #include "mt7921.h"
- #include "eeprom.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+index d1f10f6d9adc..54308ebbc39d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
+@@ -92,8 +92,11 @@ static int mt7921_dma_disable(struct mt7921_dev *dev, bool force)
  
-+extern bool mt7921_disable_pm;
-+extern bool mt7921_disable_deep_sleep;
-+
- static int
- mt7921_reg_set(void *data, u64 val)
- {
-@@ -272,7 +275,7 @@ mt7921_pm_set(void *data, u64 val)
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
--	if (val == pm->enable_user)
-+	if (val == pm->enable_user && val == pm->enable)
- 		goto out;
- 
- 	if (!pm->enable_user) {
-@@ -318,11 +321,11 @@ mt7921_deep_sleep_set(void *data, u64 val)
- 		return -EOPNOTSUPP;
- 
- 	mt7921_mutex_acquire(dev);
--	if (pm->ds_enable_user == enable)
-+	if (pm->ds_enable_user == enable && pm->ds_enable == enable)
- 		goto out;
- 
- 	pm->ds_enable_user = enable;
--	pm->ds_enable = enable && !monitor;
-+	pm->ds_enable = enable && !monitor && !mt7921_disable_deep_sleep;
- 	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
- out:
- 	mt7921_mutex_release(dev);
-@@ -362,6 +365,13 @@ mt7921_pm_stats(struct seq_file *s, void *data)
- 		   jiffies_to_msecs(doze_time));
- 
- 	seq_printf(s, "low power wakes: %9d\n", pm->stats.lp_wake);
-+	seq_printf(s, "\nlast-beacon-filter-setting: %d\n", dev->beacon_filter_setting);
-+	seq_printf(s, "pm.enable: %d\n", pm->enable);
-+	seq_printf(s, "pm.user_enable: %d\n", pm->enable_user);
-+	seq_printf(s, "pm.deep_sleep_enable: %d\n", pm->ds_enable);
-+	seq_printf(s, "pm.user_deep_sleep_enable: %d\n", pm->ds_enable_user);
-+	seq_printf(s, "modparm-disable-pm: %d\n", mt7921_disable_pm);
-+	seq_printf(s, "modparm-disable-deep-sleep-pm: %d\n", mt7921_disable_deep_sleep);
+ 	if (!mt76_poll(dev, MT_WFDMA0_GLO_CFG,
+ 		       MT_WFDMA0_GLO_CFG_TX_DMA_BUSY |
+-		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000))
++		       MT_WFDMA0_GLO_CFG_RX_DMA_BUSY, 0, 1000)) {
++		dev_info(dev->mt76.dev,
++			 "%s failed with timeout, force: %d", __func__, force);
+ 		return -ETIMEDOUT;
++	}
  
  	return 0;
  }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index aadb229003c9..cdefab4e7546 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -7,6 +7,9 @@
- #include "mcu.h"
- #include "eeprom.h"
- 
-+extern bool mt7921_disable_pm;
-+extern bool mt7921_disable_deep_sleep;
-+
- static const struct ieee80211_iface_limit if_limits[] = {
- 	{
- 		.max = MT7921_MAX_INTERFACES,
-@@ -98,7 +101,6 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
--	ieee80211_hw_set(hw, CONNECTION_MONITOR);
- 
- 	if (dev->pm.enable)
- 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
-@@ -158,6 +160,8 @@ static int __mt7921_init_hardware(struct mt7921_dev *dev)
+@@ -224,70 +227,97 @@ int mt7921_wpdma_reinit_cond(struct mt7921_dev *dev)
+ int mt7921_dma_init(struct mt7921_dev *dev)
  {
  	int ret;
++	int i;
  
-+	dev->beacon_filter_setting = -1; /* initialize to un-set */
+ 	mt76_dma_attach(&dev->mt76);
+ 
+-	ret = mt7921_dma_disable(dev, true);
+-	if (ret)
+-		return ret;
++	for (i = 0; i < 3; i++) {
++		ret = mt7921_dma_disable(dev, true);
++		if (ret == 0)
++			break;
++		dev_info(dev->mt76.dev,
++			 "mt7921_dma_disable failed: %d (try %d/3)", ret, i);
++	}
 +
- 	/* force firmware operation mode into normal state,
- 	 * which should be set before firmware download stage.
- 	 */
-@@ -286,9 +290,9 @@ int mt7921_register_device(struct mt7921_dev *dev)
- 	dev->pm.stats.last_doze_event = jiffies;
- 	if (!mt76_is_usb(&dev->mt76)) {
- 		dev->pm.enable_user = true;
--		dev->pm.enable = true;
-+		dev->pm.enable = !mt7921_disable_pm;
- 		dev->pm.ds_enable_user = true;
--		dev->pm.ds_enable = true;
-+		dev->pm.ds_enable = !mt7921_disable_deep_sleep;
- 	}
++	if (ret < 0)
++		return ret; /* all dma disable retries failed */
  
- 	if (!mt76_is_mmio(&dev->mt76))
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index be3bd1a78435..f95b54deee9e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -9,6 +9,15 @@
- #include "mt7921.h"
- #include "mcu.h"
+ 	ret = mt7921_wfsys_reset(dev);
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt7921_wfsys_reset failed: %d", ret);
+ 		return ret;
++	}
  
-+bool mt7921_disable_pm;
-+module_param_named(disable_pm, mt7921_disable_pm, bool, 0644);
-+MODULE_PARM_DESC(disable_pm, "disable runtime-pm");
-+
-+bool mt7921_disable_deep_sleep;
-+module_param_named(disable_deep_sleep, mt7921_disable_deep_sleep, bool, 0644);
-+MODULE_PARM_DESC(disable_deep_sleep, "disable runtime deep-sleep");
-+
-+
- static void
- mt7921_gen_ppe_thresh(u8 *he_ppet, int nss)
- {
-@@ -352,7 +361,8 @@ static int mt7921_add_interface(struct ieee80211_hw *hw,
- 		mtxq->wcid = idx;
- 	}
+ 	/* init tx queue */
+ 	ret = mt76_connac_init_tx_queues(dev->phy.mt76, MT7921_TXQ_BAND0,
+ 					 MT7921_TX_RING_SIZE,
+ 					 MT_TX_RING_BASE, 0);
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt76_connac_init_tx_queues failed: %d", ret);
+ 		return ret;
++	}
  
--	vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
-+	if (dev->pm.enable)
-+		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
- out:
- 	mt7921_mutex_release(dev);
+ 	mt76_wr(dev, MT_WFDMA0_TX_RING0_EXT_CTRL, 0x4);
  
-@@ -522,13 +532,12 @@ mt7921_sniffer_interface_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
- 	bool monitor = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
+ 	/* command to WM */
+ 	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_WM, MT7921_TXQ_MCU_WM,
+ 				  MT7921_TX_MCU_RING_SIZE, MT_TX_RING_BASE);
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt76_init_mcu_queue failed: %d", ret);
+ 		return ret;
++	}
  
- 	mt7921_mcu_set_sniffer(dev, vif, monitor);
--	pm->enable = pm->enable_user && !monitor;
--	pm->ds_enable = pm->ds_enable_user && !monitor;
-+	pm->enable = pm->enable_user && !monitor && !mt7921_disable_pm;
-+	pm->ds_enable = pm->ds_enable_user && !monitor && !mt7921_disable_deep_sleep;
+ 	/* firmware download */
+ 	ret = mt76_init_mcu_queue(&dev->mt76, MT_MCUQ_FWDL, MT7921_TXQ_FWDL,
+ 				  MT7921_TX_FWDL_RING_SIZE, MT_TX_RING_BASE);
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt76_init_mcu_queue failed: %d", ret);
+ 		return ret;
++	}
  
- 	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
+ 	/* event from WM before firmware download */
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
+ 			       MT7921_RXQ_MCU_WM,
+ 			       MT7921_RX_MCU_RING_SIZE,
+ 			       MT_RX_BUF_SIZE, MT_RX_EVENT_RING_BASE);
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt76_queue_alloc failed: %d", ret);
+ 		return ret;
++	}
  
--	if (monitor)
--		mt7921_mcu_set_beacon_filter(dev, vif, false);
-+	mt7921_mcu_set_beacon_filter(dev, vif, pm->enable);
+ 	/* Change mcu queue after firmware download */
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
+ 			       MT7921_RXQ_MCU_WM,
+ 			       MT7921_RX_MCU_RING_SIZE,
+ 			       MT_RX_BUF_SIZE, MT_WFDMA0(0x540));
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt76_queue_alloc (after-fw-download) failed: %d", ret);
+ 		return ret;
++	}
+ 
+ 	/* rx data */
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN],
+ 			       MT7921_RXQ_BAND0, MT7921_RX_RING_SIZE,
+ 			       MT_RX_BUF_SIZE, MT_RX_DATA_RING_BASE);
+-	if (ret)
++	if (ret) {
++		dev_info(dev->mt76.dev, "mt76_queue_alloc (rx-data) failed: %d", ret);
+ 		return ret;
++	}
+ 
+ 	ret = mt76_init_queues(dev, mt7921_poll_rx);
+-	if (ret < 0)
++	if (ret < 0) {
++		dev_info(dev->mt76.dev, "mt76_init_queues failed: %d", ret);
+ 		return ret;
++	}
+ 
+ 	netif_napi_add_tx(&dev->mt76.tx_napi_dev, &dev->mt76.tx_napi,
+ 			  mt7921_poll_tx);
+ 	napi_enable(&dev->mt76.tx_napi);
+ 
+-	return mt7921_dma_enable(dev);
++	ret = mt7921_dma_enable(dev);
++	if (ret < 0)
++		dev_info(dev->mt76.dev, "mt7921_dma_enable failed: %d", ret);
++	return ret;
  }
  
- void mt7921_set_runtime_pm(struct mt7921_dev *dev)
-@@ -537,11 +546,11 @@ void mt7921_set_runtime_pm(struct mt7921_dev *dev)
- 	struct mt76_connac_pm *pm = &dev->pm;
- 	bool monitor = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
+ void mt7921_dma_cleanup(struct mt7921_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 7c923bb97c5d..e6e72c85c8d4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -262,22 +262,30 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	int ret;
  
--	pm->enable = pm->enable_user && !monitor;
-+	pm->enable = pm->enable_user && !monitor && !mt7921_disable_pm;
- 	ieee80211_iterate_active_interfaces(hw,
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7921_pm_interface_iter, dev);
--	pm->ds_enable = pm->ds_enable_user && !monitor;
-+	pm->ds_enable = pm->ds_enable_user && !monitor && !mt7921_disable_deep_sleep;
- 	mt76_connac_mcu_set_deep_sleep(&dev->mt76, pm->ds_enable);
- }
+ 	ret = pcim_enable_device(pdev);
+-	if (ret)
++	if (ret) {
++		pr_info("pcim_enable_device failed: %d\n", ret);
+ 		return ret;
++	}
  
-@@ -682,7 +691,7 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		mt7921_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
--		mt7921_mcu_set_beacon_filter(dev, vif, info->assoc);
-+		mt7921_mcu_set_beacon_filter(dev, vif, info->assoc && dev->pm.enable);
+ 	ret = pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
+-	if (ret)
++	if (ret) {
++		pr_info("pcim_iomap_regions failed: %d\n", ret);
+ 		return ret;
++	}
+ 
+ 	pci_set_master(pdev);
+ 
+ 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
+-	if (ret < 0)
++	if (ret < 0) {
++		pr_info("pci_alloc_irq_vectors failed: %d\n", ret);
+ 		return ret;
++	}
+ 
+ 	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+-	if (ret)
++	if (ret) {
++		pr_info("dma_set_mask failed: %d\n", ret);
+ 		goto err_free_pci_vec;
++	}
+ 
+ 	if (mt7921_disable_aspm)
+ 		mt76_pci_disable_aspm(pdev);
+@@ -285,6 +293,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt7921_ops,
+ 				 &drv_ops);
+ 	if (!mdev) {
++		pr_info("mt76_alloc_device failed (ENOMEM?)\n");
+ 		ret = -ENOMEM;
+ 		goto err_free_pci_vec;
  	}
+@@ -304,6 +313,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	bus_ops = devm_kmemdup(dev->mt76.dev, dev->bus_ops, sizeof(*bus_ops),
+ 			       GFP_KERNEL);
+ 	if (!bus_ops) {
++		dev_info(mdev->dev, "devm_kmemdup bus-opps failed (ENOMEM?)\n");
+ 		ret = -ENOMEM;
+ 		goto err_free_dev;
+ 	}
+@@ -314,8 +324,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	dev->mt76.bus = bus_ops;
  
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index c6224908b494..322f396d90be 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -812,6 +812,8 @@ int mt7921_mcu_set_beacon_filter(struct mt7921_dev *dev,
- {
- 	int err;
+ 	ret = __mt7921e_mcu_drv_pmctrl(dev);
+-	if (ret)
++	if (ret) {
++		dev_info(mdev->dev, "__mt7921e_mcu_drv_pmctrl failed: %d\n", ret);
+ 		goto err_free_dev;
++	}
  
-+	dev->beacon_filter_setting = enable;
-+
- 	if (enable) {
- 		err = mt7921_mcu_uni_bss_bcnft(dev, vif, true);
- 		if (err)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index ab92537dabd6..bcb4da214688 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -232,6 +232,7 @@ struct mt7921_dev {
- 	struct work_struct init_work;
+ 	mdev->rev = (mt7921_l1_rr(dev, MT_HW_CHIPID) << 16) |
+ 		    (mt7921_l1_rr(dev, MT_HW_REV) & 0xff);
+@@ -327,16 +339,22 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
  
- 	u8 fw_debug;
-+	s8 beacon_filter_setting; /* -1 not set, 0 disabled, 1 enabled */
+ 	ret = devm_request_irq(mdev->dev, pdev->irq, mt7921_irq_handler,
+ 			       IRQF_SHARED, KBUILD_MODNAME, dev);
+-	if (ret)
++	if (ret) {
++		dev_info(mdev->dev, "devm_request_irq failed: %d\n", ret);
+ 		goto err_free_dev;
++	}
  
- 	struct mt76_connac_pm pm;
- 	struct mt76_connac_coredump coredump;
+ 	ret = mt7921_dma_init(dev);
+-	if (ret)
++	if (ret) {
++		dev_info(mdev->dev, "mt7921_dma_init failed: %d\n", ret);
+ 		goto err_free_irq;
++	}
+ 
+ 	ret = mt7921_register_device(dev);
+-	if (ret)
++	if (ret) {
++		dev_info(mdev->dev, "mt7921_register_device failed failed: %d\n", ret);
+ 		goto err_free_irq;
++	}
+ 
+ 	return 0;
+ 
 -- 
-2.39.0
+2.39.1
 
