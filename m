@@ -2,147 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C729F68E239
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 21:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4852268E2B2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 22:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbjBGUxU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Feb 2023 15:53:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41670 "EHLO
+        id S229728AbjBGVPC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Feb 2023 16:15:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjBGUxQ (ORCPT
+        with ESMTP id S229509AbjBGVPB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Feb 2023 15:53:16 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E253B652;
-        Tue,  7 Feb 2023 12:53:15 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id c13so4137518ejz.1;
-        Tue, 07 Feb 2023 12:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YfKELKMAnQFkkEbZHEYEZttNxlmjlMVEh0XNdBoEsjw=;
-        b=e1mwDgXaY5E6n859Lh8E/kA9NZHYyP0k8s2hCe1rVhBqfHpVx2nL0YTe0MZ/wz2muP
-         sYRVk2PWCxOlDfKJiEYlUoBZl1Ac9dgZlGQUxRRsfo+TJ4hBpI5bJ6GGFt/iv7yZpRuV
-         QJwv/W3L55N3/gC0OcYRYriT9MeJNabif8VtIjcuEG+Uk72Ib/UpIy3A4Wl21UycyGeV
-         khphF77pzIvpuuNw3it4HAM5Bhbv+J+/cXG7jY1bIIVSkuk0pymjT4CR2+CXdZ7aILGi
-         +dV8eymgVbI7VDVjM4FRnhr/cX1PTT27Ux51VwSTwf6Ea8dAeAkQ/9jIrMwF1hoVs8mR
-         tT/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YfKELKMAnQFkkEbZHEYEZttNxlmjlMVEh0XNdBoEsjw=;
-        b=Il/dbBq2ROQMePEn958QJ/AYzTSyxoFhLxtHhGZZERGNALdM2WOn9Qva81c5+PYOG5
-         zxK5Bh7qX+GWT4Y0hTTlQDub/L6ThCFATuDLvO25vnYGqPDPG9Jpmr9V6BkTHga5NZO9
-         InsjahmordlUkbT/4PEIAbyAMZ3fv/yK553eA5R69Qpl6XI5aDXgY1WhSpdcwqkxiEDq
-         rzi6mxGaPKLTh/z5Uz1x/kRBe++Icrwt61JUsBbxLEk3YF2WlnJp65DoddC8PpNNEP21
-         KLDugsz6D//7O+BQx8xkW2XQaLKGW9AsdJ/xr2cizqD5e6QUVS6/EbVFL09sGmyvb9U6
-         kYAQ==
-X-Gm-Message-State: AO0yUKUQvHUScV233RfBdtvmquU9qt8+2z4/+C+D6avkJL0INX65jnxH
-        Ts4dTXAJ0z9xLwlxo/d/yKY=
-X-Google-Smtp-Source: AK7set8gSzfFyLFzaRMOX6lLIPCjFSzze6dgA1JenhwCC1vYAs7beQOSSrNlWqOlog2SIUGPkEcD0g==
-X-Received: by 2002:a17:906:bc54:b0:8aa:d923:faf0 with SMTP id s20-20020a170906bc5400b008aad923faf0mr104030ejv.10.1675803193728;
-        Tue, 07 Feb 2023 12:53:13 -0800 (PST)
-Received: from localhost ([2001:b07:5d37:537d:cd23:cd6e:ae14:44fe])
-        by smtp.gmail.com with ESMTPSA id g4-20020a170906348400b007add62dafbasm7323912ejb.157.2023.02.07.12.53.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 12:53:13 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 07 Feb 2023 20:53:09 +0000
-Message-Id: <CQCMNHG923N3.3991UZTUP9WFA@vincent-arch>
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        "Bartosz Golaszewski" <bartosz.golaszewski@linaro.org>,
-        "Tony Lindgren" <tony@atomide.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        "Devarsh Thakkar" <devarsht@ti.com>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
-        "Stefan Schmidt" <stefan@datenfreihafen.org>,
-        "Miquel Raynal" <miquel.raynal@bootlin.com>,
-        <linux-gpio@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-doc-tw-discuss@lists.sourceforge.net>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
-        <linux-m68k@lists.linux-m68k.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-sh@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-wpan@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <linux-arch@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Cc:     "Bartosz Golaszewski" <brgl@bgdev.pl>,
-        "Jonathan Corbet" <corbet@lwn.net>, "Alex Shi" <alexs@kernel.org>,
-        "Yanteng Si" <siyanteng@loongson.cn>,
-        "Hu Haowen" <src.res@email.cn>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
-        "Andrew Lunn" <andrew@lunn.ch>,
-        "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
-        "Gregory Clement" <gregory.clement@bootlin.com>,
-        "Alim Akhtar" <alim.akhtar@samsung.com>,
-        "Nicholas Piggin" <npiggin@gmail.com>,
-        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        "Rich Felker" <dalias@libc.org>,
-        "Mun Yew Tham" <mun.yew.tham@intel.com>,
-        "Keerthy" <j-keerthy@ti.com>,
-        "Mika Westerberg" <mika.westerberg@linux.intel.com>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        "Alexander Aring" <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Arend van Spriel" <aspriel@gmail.com>,
-        "Franky Lin" <franky.lin@broadcom.com>,
-        "Hante Meuleman" <hante.meuleman@broadcom.com>,
-        "Kalle Valo" <kvalo@kernel.org>, "Qiang Zhao" <qiang.zhao@nxp.com>,
-        "Li Yang" <leoyang.li@nxp.com>, "Lee Jones" <lee@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Frank Rowand" <frowand.list@gmail.com>,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>
-Subject: Re: [PATCH v3 01/12] gpiolib: remove empty asm/gpio.h files
-References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
- <20230207142952.51844-2-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20230207142952.51844-2-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tue, 7 Feb 2023 16:15:01 -0500
+Received: from out28-38.mail.aliyun.com (out28-38.mail.aliyun.com [115.124.28.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6CF37555
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Feb 2023 13:14:55 -0800 (PST)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.07514376|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0663572-0.00554589-0.928097;FP=0|0|0|0|0|0|0|0;HT=ay29a033018047212;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.REjomz7_1675804491;
+Received: from eq59.localnet(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.REjomz7_1675804491)
+          by smtp.aliyun-inc.com;
+          Wed, 08 Feb 2023 05:14:52 +0800
+From:   Aiden Leong <aiden.leong@aibsd.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: Re: [PATCH v3] wifi: iwlwifi: pcie: fix the order of scanning
+ iwl_dev_info_table
+Date:   Wed, 08 Feb 2023 05:14:50 +0800
+Message-ID: <5815091.MhkbZ0Pkbq@eq59>
+In-Reply-To: <51e9eeb2cd84f0f8ff92981b47a8e77e11047847.camel@intel.com>
+References: <20230119175657.9205-1-aiden.leong@aibsd.com>
+ <51e9eeb2cd84f0f8ff92981b47a8e77e11047847.camel@intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="nextPart1763909.VLH7GnMWUR";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> The arm and sh versions of this file are identical to the generic
-> versions and can just be removed.
->
-> The drivers that actually use the sh3 specific version also include
-> cpu/gpio.h directly, with the exception of magicpanelr2, which is
-> easily fixed. This leaves coldfire as the only gpio driver
-> that needs something custom for gpiolib.
->
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+--nextPart1763909.VLH7GnMWUR
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Aiden Leong <aiden.leong@aibsd.com>
+Date: Wed, 08 Feb 2023 05:14:50 +0800
+Message-ID: <5815091.MhkbZ0Pkbq@eq59>
+MIME-Version: 1.0
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+On Wednesday, February 8, 2023 1:44:39 AM CST Greenman, Gregory wrote:
+> On Fri, 2023-01-20 at 01:56 +0800, Aiden Leong wrote:
+> 
+> > Fix a bug introduced by:
+> > commit 32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new
+> >  config table"), so now we pick the FIRST matching config.
+> > 
+> > Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
+> > ---
+> >  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+ index
+> > 99768d6a6032..05764eef15a7 100644
+> > --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > @@ -1456,7 +1456,7 @@ iwl_pci_find_dev_info(u16 device, u16
+> > subsystem_device,
+ if (!num_devices)
+> >                 return NULL;
+> >  
+> > -       for (i = num_devices - 1; i >= 0; i--) {
+> > +       for (i = 0; i < num_devices; i++) {
+> >                 const struct iwl_dev_info *dev_info =
+> > &iwl_dev_info_table[i];
+ 
+> >                 if (dev_info->device != (u16)IWL_CFG_ANY &&
+> 
+> 
+> It failed or internal testing, so it's more complicated. To traverse this
+> table
+ from the beginning to the end requires some changes to the table
+> itself and the "goto" wasn't omitted by a mistake, but for a reason...
+> For the device that you have (device id 0x4DF0, sub-device id 0x0244,
+> right?)
+ is it enough to have the first fix (disable
+> tx_with_siso_diversity)?
+
+Hi Gregory,
+That's exactly why I put a warning in previous emails.
+My opinion will be a little different than yours in this situation.
+1. We SHOULD traverse this table from top to bottom to keep our source tree as 
+clean as possible.
+2. One simple option is to reverse every config items in this table so the 
+logic keep the same.
+3. Your team(I assume Luca Coelho is your colleague) may need to provide 
+further explaination about the `goto` line, since each change in kernel should 
+have a reason.
+4. 0x4DF0, 0x0244 is correct. The question is: Will Intel release products 
+with same pid+subID but differenct STEP/RF_TYPE/RF_ID etc? If so, pid+subID 
+won't be enough.
+
+To sum up, there will be three patches:
+1. This patch still fixes the BUG introduced by the `goto` change.
+2. Patch 2 should be [PATCH 1/2] in previous email.
+3. Patch 3 reverses every items in this table. Your team can fine-tune the 
+order of each items. I won't submit this patch.
+
+If you like my ideas, please merge patch1&2 along with another ident fix patch.
+
+BTW, it has been a month since the first email. I'd appreciate if you reply 
+soon.
+
+Cheers,
+Aiden
+--nextPart1763909.VLH7GnMWUR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEENSNFoSpoTSrmxF9vGvlck5mKYvIFAmPiv0oACgkQGvlck5mK
+YvJNVAf/bGJRVFmGGGYOUfYy6ptLUn3WRSMoQ80pcse0jZ/79iN+pcIaM0K8Nwrb
+mbUuZ3z0NY3toM9DVO3/tXbjwZyo+80lt2c4MO/aYBhIaBUikryMkQXvpMRVHgf2
+HxRRJ0qqL3p+mBBlZhHKRFafBZTfNQLsY0P/Z+uuvRPbHGr66PKoYPCLwTwx8QwN
+ZpBz2USbKFZXo5QkeqPHT4XCRkHyZh6wsJIRyitV2lLDZ4UWO3MiuEgfm4S5z8z8
+0Q3E5UrYPzAl3wK/VEVE4bC7rEZvZDPOhJ56H/OJV2/J7r0AjfKU9hPHgajSdgtQ
+nMEAM+ZCDe8kCWI/eo7alKSvUu+Khw==
+=NOBh
+-----END PGP SIGNATURE-----
+
+--nextPart1763909.VLH7GnMWUR--
+
+
+
