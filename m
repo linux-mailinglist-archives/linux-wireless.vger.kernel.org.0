@@ -2,103 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8C568DF9F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 19:12:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F52C68E054
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 19:44:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231272AbjBGSMO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Feb 2023 13:12:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37872 "EHLO
+        id S231586AbjBGSn5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Feb 2023 13:43:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbjBGSMN (ORCPT
+        with ESMTP id S230445AbjBGSnx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Feb 2023 13:12:13 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDE313D44
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Feb 2023 10:12:12 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id p26so44709241ejx.13
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Feb 2023 10:12:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
-        b=Oi3R4zoiPlz+fMNusXKiWVXFC2bfv6LENlE2PWSgmGSL4+9N/Neyzkq7D7rl1Y6HPo
-         +4e3gsB+GWCmLxxX5SOv2+n8yD1H/hFeGoViXIsqEGBBq/w1VO/RdbOnyuNdiNNNe4bU
-         pxIaqAT0YnYOQe4yJK2Gyu4YDZP9OOyYec3PyI9EmQfRPnEXhmJbaOKlrOpIlYGSm05q
-         64aZXK6fK2VqQqupi3+xoLn8+a6ovDcI0p/StqmYcT8PksDIz8GObWCdKsHlcN5a+bJN
-         RczbAF5hvaUoei8oxV+YhzJGjiTsKXgJjvW6+27BEvCNkAR9RIj3Axh+4RE0HUqcKRDo
-         /aBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/rL+TycpMQLfB5P4Zn9xgGfUWg8yPCNTwrE46ZNldMM=;
-        b=TKxWxIT1vAS+Jm9KD4fiPZUN4ldXc+1pn53tRHKnX/XnRj3o4iM7wYEKXiQMTzA566
-         UtsvYKlFIVCRdKGI+S0Sx7OlHMCjQP9mo8P4HMapKVrHHNNHfVVA1IjtcIdMnLtjSerJ
-         +fE2qn1dO2vfC2lXzBbWw0N5fODJ4+cOfiEhfu5avlyUyfte9jZDfjUGPfcxK/J0qKpu
-         yRcakyz8IW8bjREYQC5wq/wdzQRQPG3gfC+Ncklb7b+21UI5yQbpDORN4lB0T96NJqoO
-         w/krkW0ms0qw/NeElwHI3jdlrUrSFM496kmzHtEIfXgnSuBfKuG6z5A+ZEo4AFvRry+I
-         VDig==
-X-Gm-Message-State: AO0yUKV7CeK3eEnc1AYQECyRcR41i/DnqstItecHhiMMyTHaA2qjBaHc
-        B7giQcuE0+6g2WHHOQNi9cltqaZVHf02gHMtJl4=
-X-Google-Smtp-Source: AK7set9aMe79qtuKS+exWaaUJ0SaCJHhfLLpUxMpoHTK1ceZaRCYoE5k//nCmLc8Q0stONSXIZQRU2Qs7/hN0MoC0lc=
-X-Received: by 2002:a17:906:d0cc:b0:887:9adb:da53 with SMTP id
- bq12-20020a170906d0cc00b008879adbda53mr857266ejb.166.1675793530863; Tue, 07
- Feb 2023 10:12:10 -0800 (PST)
+        Tue, 7 Feb 2023 13:43:53 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06221E1D5;
+        Tue,  7 Feb 2023 10:43:51 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 856E1B81AB2;
+        Tue,  7 Feb 2023 18:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D06C433D2;
+        Tue,  7 Feb 2023 18:43:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675795429;
+        bh=z46LV0K67pYt+9sG+8XPfphcBy3wjoS4vl+j+OOVUvk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=icQIS6QVs3SIYrh/ewyBWxOXyRdTzSi5iQLtHvNEjG7lvYhQ+DvHhk+3KEs5qU2sU
+         TMTqOav5kG8GY5JR22dKb78qqMAt/Bg2JYkWEyM+MGuclGw0hQvMcVEtbzsmiJlItD
+         IEGaquWuCLNILvUo5685guZahlOFm7IGWB2GaIQ6/vE/h0SUH8mRyEHQMupAISjrjW
+         fnVVq+bZn0SaHzKt6ZHA6LtwE38N/APEa35C82I5WgacjEtf/+fE+N1kuSQDae5KOg
+         NbPJHolFeXjK9+XKnt9280QC9hb68ZWPxwLnKvG03l5612lhbMN4Z8sBFUzc9BZ9vj
+         q3xPIHrd6PLJg==
+Date:   Tue, 7 Feb 2023 10:43:45 -0800
+From:   Lee Jones <lee@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Devarsh Thakkar <devarsht@ti.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-doc-tw-discuss@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-wpan@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
+        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Hu Haowen <src.res@email.cn>,
+        Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alexander Aring <alex.aring@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH v3 06/12] gpiolib: split linux/gpio/driver.h out of
+ linux/gpio.h
+Message-ID: <Y+Kb4Ql+I7/Abm48@google.com>
+References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
+ <20230207142952.51844-7-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Received: by 2002:a05:640c:f88:b0:1a5:7bad:2559 with HTTP; Tue, 7 Feb 2023
- 10:12:10 -0800 (PST)
-Reply-To: dravasmith27@gmail.com
-From:   Dr Ava Smith <harikunda1116@gmail.com>
-Date:   Tue, 7 Feb 2023 10:12:10 -0800
-Message-ID: <CAGEpkWqK+40u87mxdK+88B11WWWaxO36i6Ga7Mymwe=5y3tPVw@mail.gmail.com>
-Subject: GREETINGS FROM DR AVA SMITH
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62f listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5133]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [harikunda1116[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [harikunda1116[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [dravasmith27[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230207142952.51844-7-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 07 Feb 2023, Andy Shevchenko wrote:
+
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Almost all gpio drivers include linux/gpio/driver.h, and other
+> files should not rely on includes from this header.
+> 
+> Remove the indirect include from here and include the correct
+> headers directly from where they are used.
+> 
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  arch/arm/mach-omap1/irq.c                              | 1 +
+>  arch/arm/mach-orion5x/board-rd88f5182.c                | 1 +
+>  arch/arm/mach-s3c/s3c64xx.c                            | 1 +
+>  arch/arm/mach-sa1100/assabet.c                         | 1 +
+>  arch/arm/plat-orion/gpio.c                             | 1 +
+>  drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c | 1 +
+>  include/linux/gpio.h                                   | 2 --
+>  include/linux/mfd/ucb1x00.h                            | 1 +
+
+Acked-by: Lee Jones <lee@kernel.org>
+
+>  8 files changed, 7 insertions(+), 2 deletions(-)
+
 -- 
-Hello Dear,
-how are you today?hope you are fine
-My name is Dr Ava Smith ,Am an English and French nationalities.
-I will give you pictures and more details about me as soon as i hear from you
-Thanks
-Ava
+Lee Jones [李琼斯]
