@@ -2,89 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98B6E68CBF8
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 02:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E819268CEDA
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 06:24:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbjBGBez (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Feb 2023 20:34:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37930 "EHLO
+        id S230060AbjBGFYb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Feb 2023 00:24:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230297AbjBGBew (ORCPT
+        with ESMTP id S229940AbjBGFYW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Feb 2023 20:34:52 -0500
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD9C2F7AC;
-        Mon,  6 Feb 2023 17:34:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=tZWkCJrGrg0CgOQ/KDtg58bqJacvpTUQpLyNlTnrySs=; b=duOAIAbGYd5mxT4ixKQCZRLbCb
-        lrCA8ogNU46SpMPvMKMnuwUEopuVnJRdNEBeZV7nE3qTWsp0fkNpRqwolaN8Rl5FCc+Zo9t0QFUz8
-        f2vDD42t06VYQ7XoBg17UtNGokleyafXrAkg6OoEiTGIP+sJPg39KOTKxhet7pd52fOM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1pPCsb-004FpP-6f; Tue, 07 Feb 2023 02:34:41 +0100
-Date:   Tue, 7 Feb 2023 02:34:41 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Janne Grunau <j@jannau.net>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Mailing List <devicetree-spec@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, van Spriel <arend@broadcom.com>,
-        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RFC 0/3] dt-bindings: net: Add network-class.yaml schema
-Message-ID: <Y+GqsTLXRKyg0BdV@lunn.ch>
-References: <20230203-dt-bindings-network-class-v1-0-452e0375200d@jannau.net>
- <CAL_JsqKD7gD86_B93M19rBCWn+rmSw24vOGEhqi9Nvne1Xixwg@mail.gmail.com>
- <20230206163154.GA9004@jannau.net>
+        Tue, 7 Feb 2023 00:24:22 -0500
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 638072B095;
+        Mon,  6 Feb 2023 21:24:20 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0Vb5hf8c_1675747451;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0Vb5hf8c_1675747451)
+          by smtp.aliyun-inc.com;
+          Tue, 07 Feb 2023 13:24:17 +0800
+From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To:     kvalo@kernel.org
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH] ath10k: Remove redundant assignment to changed_flags
+Date:   Tue,  7 Feb 2023 13:24:10 +0800
+Message-Id: <20230207052410.26337-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230206163154.GA9004@jannau.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> > > I've ignored "max-frame-size" since the description in
-> > > ethernet-controller.yaml claims there is a contradiction in the
-> > > Devicetree specification. I suppose it is describing the property
-> > > "max-frame-size" with "Specifies maximum packet length ...".
-> > 
-> > Please include it and we'll fix the spec. It is clearly wrong. 2 nios
-> > boards use 1518 and the consumer for them says it is MTU. Everything
-> > else clearly uses mtu with 1500 or 9000.
-> 
-> Ok, the example in the pdf is 'max-frame-size = <1518>;'. I'll include 
-> it with the description of ethernet-controller.yaml which specifies it 
-> as MTU.
+Variable changed_flags is assigned, but is not effectively used, so
+delete it.
 
-You need to be careful here. Frame and MTU are different things.
+drivers/net/wireless/ath/ath10k/mac.c:6024:22: warning: parameter 'changed_flags' set but not used.
 
-The IEEE 802.3 standard says nothing about MTU. I believe MTU is an IP
-concept. It is the size of the SDU an Ethernet PDU can carry. This is
-typically 1500.
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3963
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Historically, the max Ethernet frame size was 1518. But with 802.1Q
-which added the VLAN header, all modern hardware actual uses 1522 to
-accommodate the extra 4 bytes VLAN header. So i would not actually put
-max-frame-size = <1518> anywhere, because it will get copy/pasted and
-break VLAN setups.
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index ec8d5b29bc72..7675858f069b 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -6030,7 +6030,6 @@ static void ath10k_configure_filter(struct ieee80211_hw *hw,
+ 
+ 	mutex_lock(&ar->conf_mutex);
+ 
+-	changed_flags &= SUPPORTED_FILTERS;
+ 	*total_flags &= SUPPORTED_FILTERS;
+ 	ar->filter_flags = *total_flags;
+ 
+-- 
+2.20.1.7.g153144c
 
-It looks like the ibm,emac.txt makes this error, max-frame-size =
-<5dc>; 0x5dc is 1500. And there are a few powerpc .dtc using
-1500/0x5dc, which are probably broken.
-
-      Andrew
