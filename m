@@ -2,139 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F52C68E054
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 19:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE5C68E222
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Feb 2023 21:49:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231586AbjBGSn5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Feb 2023 13:43:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38404 "EHLO
+        id S229525AbjBGUtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Feb 2023 15:49:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230445AbjBGSnx (ORCPT
+        with ESMTP id S229441AbjBGUtp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Feb 2023 13:43:53 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06221E1D5;
-        Tue,  7 Feb 2023 10:43:51 -0800 (PST)
+        Tue, 7 Feb 2023 15:49:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45E8CDD2;
+        Tue,  7 Feb 2023 12:49:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 856E1B81AB2;
-        Tue,  7 Feb 2023 18:43:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D06C433D2;
-        Tue,  7 Feb 2023 18:43:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D2E761169;
+        Tue,  7 Feb 2023 20:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E85C433EF;
+        Tue,  7 Feb 2023 20:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675795429;
-        bh=z46LV0K67pYt+9sG+8XPfphcBy3wjoS4vl+j+OOVUvk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=icQIS6QVs3SIYrh/ewyBWxOXyRdTzSi5iQLtHvNEjG7lvYhQ+DvHhk+3KEs5qU2sU
-         TMTqOav5kG8GY5JR22dKb78qqMAt/Bg2JYkWEyM+MGuclGw0hQvMcVEtbzsmiJlItD
-         IEGaquWuCLNILvUo5685guZahlOFm7IGWB2GaIQ6/vE/h0SUH8mRyEHQMupAISjrjW
-         fnVVq+bZn0SaHzKt6ZHA6LtwE38N/APEa35C82I5WgacjEtf/+fE+N1kuSQDae5KOg
-         NbPJHolFeXjK9+XKnt9280QC9hb68ZWPxwLnKvG03l5612lhbMN4Z8sBFUzc9BZ9vj
-         q3xPIHrd6PLJg==
-Date:   Tue, 7 Feb 2023 10:43:45 -0800
-From:   Lee Jones <lee@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-gpio@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-wpan@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v3 06/12] gpiolib: split linux/gpio/driver.h out of
- linux/gpio.h
-Message-ID: <Y+Kb4Ql+I7/Abm48@google.com>
-References: <20230207142952.51844-1-andriy.shevchenko@linux.intel.com>
- <20230207142952.51844-7-andriy.shevchenko@linux.intel.com>
+        s=k20201202; t=1675802982;
+        bh=T6G70bbso9b+ZXRdkYRuUprPT0mR17BdhO9Oo4NPLlw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=QfenOZLM1lQGUd2TtlyIE+6SUKQxz0evl+ZPL60PjGMEysXFd2gdg6P9IX7j4WoHO
+         Vc0q7G+C273g9I0c00ItmI2lzY3YJhHI+Tk6HIt3LyKZB8mdjc/IMGLY+FSZeHg+/N
+         xq9ECITt5plvO9IuT/QvncTZigK0vVgxW+i8ipHOqPsbWMHugLuFAGkaHTpPMtZpRk
+         RDb+6i8kftCTQskCTuGdil2yDqjexbRqiyQnHPcuREZssVt7c1HdC2Sr3QxJMaez4c
+         jkh/BdKzYWFqo5KfoyFunZiQkGF0Ccq9Ew9piTK183ALTzGYL2qJHPT+pZhEFda7HZ
+         sO80RK3FHClRA==
+Date:   Tue, 7 Feb 2023 14:49:40 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, Chia-Yuan Li <leo.li@realtek.com>,
+        Chin-Yen Lee <timlee@realtek.com>,
+        Po-Hao Huang <phhuang@realtek.com>,
+        linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] wifi: rtw89: pci: enable CLK_REQ, ASPM, L1 and
+ L1ss for 8852c
+Message-ID: <20230207204940.GA2373732@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230207142952.51844-7-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220819064811.37700-5-pkshih@realtek.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 07 Feb 2023, Andy Shevchenko wrote:
-
-> From: Arnd Bergmann <arnd@arndb.de>
+On Fri, Aug 19, 2022 at 02:48:10PM +0800, Ping-Ke Shih wrote:
+> From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> Almost all gpio drivers include linux/gpio/driver.h, and other
-> files should not rely on includes from this header.
-> 
-> Remove the indirect include from here and include the correct
-> headers directly from where they are used.
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  arch/arm/mach-omap1/irq.c                              | 1 +
->  arch/arm/mach-orion5x/board-rd88f5182.c                | 1 +
->  arch/arm/mach-s3c/s3c64xx.c                            | 1 +
->  arch/arm/mach-sa1100/assabet.c                         | 1 +
->  arch/arm/plat-orion/gpio.c                             | 1 +
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/led.c | 1 +
->  include/linux/gpio.h                                   | 2 --
->  include/linux/mfd/ucb1x00.h                            | 1 +
+> 8852CE controls CLKREQ, ASPM L1, L1ss via wifi registers
+> instead, so change them accordingly.
 
-Acked-by: Lee Jones <lee@kernel.org>
+> ...
+>  static void rtw89_pci_l1ss_set(struct rtw89_dev *rtwdev, bool enable)
+>  {
+> +	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+>  	int ret;
+>  
+> -	if (enable)
+> -		ret = rtw89_pci_config_byte_set(rtwdev, RTW89_PCIE_TIMER_CTRL,
+> -						RTW89_PCIE_BIT_L1SUB);
+> -	else
+> -		ret = rtw89_pci_config_byte_clr(rtwdev, RTW89_PCIE_TIMER_CTRL,
+> -						RTW89_PCIE_BIT_L1SUB);
+> -	if (ret)
+> -		rtw89_err(rtwdev, "failed to %s L1SS, ret=%d",
+> -			  enable ? "set" : "unset", ret);
+> +	if (chip_id == RTL8852A || chip_id == RTL8852B) {
+> +		if (enable)
+> +			ret = rtw89_pci_config_byte_set(rtwdev,
+> +							RTW89_PCIE_TIMER_CTRL,
+> +							RTW89_PCIE_BIT_L1SUB);
+> +		else
+> +			ret = rtw89_pci_config_byte_clr(rtwdev,
+> +							RTW89_PCIE_TIMER_CTRL,
+> +							RTW89_PCIE_BIT_L1SUB);
+> +		if (ret)
+> +			rtw89_err(rtwdev, "failed to %s L1SS, ret=%d",
+> +				  enable ? "set" : "unset", ret);
+> +	} else if (chip_id == RTL8852C) {
+> +		ret = rtw89_pci_config_byte_clr(rtwdev, RTW89_PCIE_L1SS_STS_V1,
+> +						RTW89_PCIE_BIT_ASPM_L11 |
+> +						RTW89_PCIE_BIT_PCI_L11);
+> +		if (ret)
+> +			rtw89_warn(rtwdev, "failed to unset ASPM L1.1, ret=%d", ret);
+> +		if (enable)
+> +			rtw89_write32_clr(rtwdev, R_AX_PCIE_MIX_CFG_V1,
+> +					  B_AX_L1SUB_DISABLE);
+> +		else
+> +			rtw89_write32_set(rtwdev, R_AX_PCIE_MIX_CFG_V1,
+> +					  B_AX_L1SUB_DISABLE);
+> +	}
+>  }
 
->  8 files changed, 7 insertions(+), 2 deletions(-)
+We get here via this path:
 
--- 
-Lee Jones [李琼斯]
+  rtw89_pci_probe
+    rtw89_pci_l1ss_cfg
+      pci_read_config_dword(pdev, l1ss_cap_ptr + PCI_L1SS_CTL1, &l1ss_ctrl);
+      if (l1ss_ctrl & PCI_L1SS_CTL1_L1SS_MASK)
+	rtw89_pci_l1ss_set(rtwdev, true);
+
+This looks like it might be a problem because L1SS configuration is
+owned by the PCI core, not by the device driver.  The PCI core
+provides sysfs user interfaces that can enable and disable L1SS at
+run-time without notification to the driver (see [1]).
+
+The user may enable or disable L1SS using those sysfs interfaces, and
+this code in the rtw89 driver will not be called.
+
+Bjorn
+
+P.S. rtw89_pci_l1ss_set() is only called from rtw89_pci_l1ss_cfg()
+which always supplies "enable == true", so it looks like that
+parameter is not needed.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-bus-pci?id=v6.1#n410
