@@ -2,151 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF7D68F681
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Feb 2023 19:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0628768F8AE
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Feb 2023 21:17:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbjBHSDN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Feb 2023 13:03:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39198 "EHLO
+        id S232050AbjBHURL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Feb 2023 15:17:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231820AbjBHSCz (ORCPT
+        with ESMTP id S231624AbjBHURJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Feb 2023 13:02:55 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E9253E4F
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Feb 2023 10:02:17 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id az4-20020a05600c600400b003dff767a1f1so2115880wmb.2
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Feb 2023 10:02:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M5KNVHSrC7/cdAAppvSovX1BQYH1mlKeTzSZkndabzI=;
-        b=lhYn0UKt1gI8oDRgPLyn7ikFvTDGwf2Vq24dv2LgPHiV8ihqRT2k7qLxUMyUBPC8iL
-         1kjRzv0p5FOr/OPZoPqTsOomSmdtG6dRIDCmM2zWnykN/NsN+pnvQRcekBxPpLb+7dnJ
-         WMII8V513jFjWV6EbLbZAVMg7+7MzRwZc69Es0ZafU8E7dTwE8PemItdaGxExyYCNWB8
-         VicfQ5HP97OFsOvy5HtV54Dl9qvPAh4xrxJ0Tfty7jVCL1BqJCUFOP0rvw4UZintMu+r
-         YcjZHNEqmas9yN+Xvh+FoJd90tCEohAYODXdGcG3sjItNhs8JWgRGQ4Vm8tIfLxbUBbk
-         X96A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M5KNVHSrC7/cdAAppvSovX1BQYH1mlKeTzSZkndabzI=;
-        b=mTQR4j8W52tsBp0jpafvOxn8d6T0mYVCJPM0tpvzwOQS9fDdb5Y6FxnTKlV14NDZqr
-         xQndQWFyJ9SDYl3KroRtwzfx8tcumXA7MPyTMXZkniPHcABalfCLsPhCuymYpOYefBHL
-         dGnEKSd3EapIqYfVhKHLaBWpaSnyACZjTi/wdUBoFShNF+3N/9xFv6cJsgNN0rHrersN
-         yqrAZuTvVyYHgTCLa2bjpSiH+3hKECu7ugJNs5kQ/PugmXR0R8HHocEcdb6SS5koLpJi
-         O6KNVXrqggUJTGZONfP4wHUhw7PjOYSplHTq4/OKkQhoviMcUq+/rODttsgsbCZZ0rPN
-         BuKg==
-X-Gm-Message-State: AO0yUKXx/CrM5tSwEPrPkUOyGwNAW1es8lcqWCp/MBJpyqiLNdGkX+Df
-        cJLM0zqSCNmsp0COiGlt1zz00A==
-X-Google-Smtp-Source: AK7set/N7X08/6/zDIwTs2SW3WqzqwHVir4In+cx7rhLGQNf+mB7g+wx8kSFQo+gWqS8ovXbhXrHVg==
-X-Received: by 2002:a05:600c:9a2:b0:3dd:393c:20b5 with SMTP id w34-20020a05600c09a200b003dd393c20b5mr7247364wmp.35.1675879326639;
-        Wed, 08 Feb 2023 10:02:06 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id j40-20020a05600c1c2800b003dc4480df80sm3034104wms.34.2023.02.08.10.02.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 10:02:06 -0800 (PST)
-Message-ID: <80f5271e-6fe6-df5a-beff-f3723110edf7@linaro.org>
-Date:   Wed, 8 Feb 2023 19:02:01 +0100
+        Wed, 8 Feb 2023 15:17:09 -0500
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94F194C10
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Feb 2023 12:17:03 -0800 (PST)
+Received: (wp-smtpd smtp.wp.pl 40124 invoked from network); 8 Feb 2023 21:16:59 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1675887419; bh=TiixG+XfCI+6ARDvvHxIncEYUlRRdPVqZbEughK+Ino=;
+          h=From:To:Cc:Subject;
+          b=jxRVuMvbWnPjxbRPB1z1TBZ0XJBJHGXuI5Rg5pvbB5qIo5lqdxtqbSuwO6W5jWoMK
+           zWDt0cYHYKk6RWlHMMoZLlbLx9/i0kHEvOYxI8jru6WozzOCVPd+DFQydwxXd3yPLE
+           8ruxKYZNGJw6DmX8Qs2g+kkwkFeq/NULEsczk4cM=
+Received: from 89-64-15-40.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.15.40])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <jiasheng@iscas.ac.cn>; 8 Feb 2023 21:16:59 +0100
+Date:   Wed, 8 Feb 2023 21:16:58 +0100
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iwl4965: Add missing check for
+ create_singlethread_workqueue
+Message-ID: <20230208201658.GA1435569@wp.pl>
+References: <20230208063032.42763-1-jiasheng@iscas.ac.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v4 02/18] ARM: s3c24xx: Use the right include
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
- <20230208173343.37582-3-andriy.shevchenko@linux.intel.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230208173343.37582-3-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230208063032.42763-1-jiasheng@iscas.ac.cn>
+X-WP-MailID: 7eca2eb9216ec3b4e515e2e46af58c62
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [wdNV]                               
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08/02/2023 18:33, Andy Shevchenko wrote:
-> From: Linus Walleij <linus.walleij@linaro.org>
+On Wed, Feb 08, 2023 at 02:30:31PM +0800, Jiasheng Jiang wrote:
+> Add the check for the return value of the create_singlethread_workqueue
+> in order to avoid NULL pointer dereference.
 > 
-> The file s3c64xx.c is including <linux/gpio.h> despite using no
-> symbols from the file, however it needs it to implicitly bring in
-> of_have_populated_dt() so include <linux/of.h> explicitly instead.
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
+>  static void
+> @@ -6618,7 +6622,11 @@ il4965_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  		goto out_disable_msi;
+>  	}
+>  
+> -	il4965_setup_deferred_work(il);
+> +	err = il4965_setup_deferred_work(il);
+> +	if (err) {
+> +		goto out_free_irq;
+> +	}
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+{} not needded.
 
