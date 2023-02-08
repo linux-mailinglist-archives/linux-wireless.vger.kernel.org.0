@@ -2,132 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E8D68E848
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Feb 2023 07:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8381768E869
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Feb 2023 07:38:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjBHGas (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Feb 2023 01:30:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54060 "EHLO
+        id S229984AbjBHGiV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Feb 2023 01:38:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbjBHGar (ORCPT
+        with ESMTP id S229817AbjBHGiU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Feb 2023 01:30:47 -0500
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C13541BAC0;
-        Tue,  7 Feb 2023 22:30:45 -0800 (PST)
-Received: from localhost.localdomain (unknown [124.16.138.125])
-        by APP-03 (Coremail) with SMTP id rQCowAAXHSWKQeNjwYbxAw--.22488S3;
-        Wed, 08 Feb 2023 14:30:35 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     stf_xl@wp.pl, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: [PATCH 2/2] iwl3945: Add missing check for create_singlethread_workqueue
-Date:   Wed,  8 Feb 2023 14:30:32 +0800
-Message-Id: <20230208063032.42763-2-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230208063032.42763-1-jiasheng@iscas.ac.cn>
-References: <20230208063032.42763-1-jiasheng@iscas.ac.cn>
+        Wed, 8 Feb 2023 01:38:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B0330B22
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Feb 2023 22:38:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16CC1614CB
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Feb 2023 06:38:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7A7C433EF;
+        Wed,  8 Feb 2023 06:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675838298;
+        bh=mhD/EWgGszxPsFh3WqoLAHO21oXmXSla6vlTemTi2JM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=JqMKT4C9EvWY9KrjrGCZgxAG8EGkWmCMXr4/cB/9sfBuNGrdPqc1j8nz4h/Odzx2D
+         e85Q1p76QPfNH4sU1WB1O6Qyh7MkmGn0aluCQIXZPuZrY+bKhJ/0Tuak9z+jkAxYK5
+         acQk4wWyw6gMIj5mF6MGWPO2SAQVTYaHlrED37io0PpRr76GfAz/BWYMXEWGN+Tlvp
+         voOeYRIEJg53OGunbhbKnTvWMC0dnXEkkCIlbfeZ3hqOfqd1DDp9vZRXqpRdS5p/It
+         7/2lNVx/wOuLQFl5V61xJnrU66vd8ctDAP04MlCtlDH+EHRf1xengu04Pg1QG7WuQ7
+         bE8S1C34UtZxw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Aloka Dixit <quic_alokad@quicinc.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: Re: [PATCH] wifi: mac80211: mlme: handle EHT channel puncturing
+References: <20230127123930.4fbc74582331.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+Date:   Wed, 08 Feb 2023 08:38:14 +0200
+In-Reply-To: <20230127123930.4fbc74582331.I3547481d49f958389f59dfeba3fcc75e72b0aa6e@changeid>
+        (Johannes Berg's message of "Fri, 27 Jan 2023 12:39:31 +0100")
+Message-ID: <87h6vw7jc9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: rQCowAAXHSWKQeNjwYbxAw--.22488S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1kKw1kurWrZw4fAryDAwb_yoW8Kr4UpF
-        s5ZrZI9w4rJr4UGayUJanrZ3WrWr4xX39rGFZagw13u3WqvwnYqw40qFy2yr1rJrWqgF13
-        AF4Ut3yruryUtrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUPC14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
-        x26xkF7I0E14v26r1I6r4UM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-        Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
-        ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr0_GcWl
-        e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
-        8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-        jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
-        kIwI1lc2xSY4AK67AK6r47MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
-        MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67
-        AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0
-        cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
-        80aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI
-        43ZEXa7VUj9qXJUUUUU==
-X-Originating-IP: [124.16.138.125]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the check for the return value of the create_singlethread_workqueue
-in order to avoid NULL pointer dereference.
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
----
- drivers/net/wireless/intel/iwlegacy/3945-mac.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> Handle the Puncturing info received from the AP in the
+> EHT Operation element in beacons.
+>
+> If the info is invalid:
+>  - during association: disable EHT connection for the AP
+>  - after association: disconnect
+>
+> This commit includes many (internal) bugfixes and spec
+> updates various people.
+>
+> Co-developed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-index d7e99d50b287..9eaf5ec133f9 100644
---- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
-@@ -3372,10 +3372,12 @@ static DEVICE_ATTR(dump_errors, 0200, NULL, il3945_dump_error_log);
-  *
-  *****************************************************************************/
- 
--static void
-+static int
- il3945_setup_deferred_work(struct il_priv *il)
- {
- 	il->workqueue = create_singlethread_workqueue(DRV_NAME);
-+	if (!il->workqueue)
-+		return -ENOMEM;
- 
- 	init_waitqueue_head(&il->wait_command_queue);
- 
-@@ -3392,6 +3394,8 @@ il3945_setup_deferred_work(struct il_priv *il)
- 	timer_setup(&il->watchdog, il_bg_watchdog, 0);
- 
- 	tasklet_setup(&il->irq_tasklet, il3945_irq_tasklet);
-+
-+	return 0;
- }
- 
- static void
-@@ -3712,7 +3716,10 @@ il3945_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	}
- 
- 	il_set_rxon_channel(il, &il->bands[NL80211_BAND_2GHZ].channels[5]);
--	il3945_setup_deferred_work(il);
-+	err = il3945_setup_deferred_work(il);
-+	if (err)
-+		goto out_remove_sysfs;
-+
- 	il3945_setup_handlers(il);
- 	il_power_initialize(il);
- 
-@@ -3724,7 +3731,7 @@ il3945_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	err = il3945_setup_mac(il);
- 	if (err)
--		goto out_remove_sysfs;
-+		goto out_destroy_workqueue;
- 
- 	il_dbgfs_register(il, DRV_NAME);
- 
-@@ -3733,9 +3740,10 @@ il3945_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	return 0;
- 
--out_remove_sysfs:
-+out_destroy_workqueue:
- 	destroy_workqueue(il->workqueue);
- 	il->workqueue = NULL;
-+out_remove_sysfs:
- 	sysfs_remove_group(&pdev->dev.kobj, &il3945_attribute_group);
- out_release_irq:
- 	free_irq(il->pci_dev->irq, il);
+Miri's s-o-b missing.
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
