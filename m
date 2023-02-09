@@ -2,183 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAED1690C30
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Feb 2023 15:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0130A690DFC
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Feb 2023 17:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230517AbjBIOvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Feb 2023 09:51:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39790 "EHLO
+        id S229863AbjBIQJ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Feb 2023 11:09:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbjBIOvX (ORCPT
+        with ESMTP id S229707AbjBIQJ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Feb 2023 09:51:23 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654765EF87
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Feb 2023 06:51:21 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id j6-20020a9d7686000000b0068d4ba9d141so599167otl.6
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Feb 2023 06:51:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+45oAMlRxllOV5mEk36eYzQgbkIxoIdswbMRX1ouTyc=;
-        b=pBgGuj/KVi21hKAlCfOj9OKz9jUS3E1Pyu8FohvjjmfYM114tVxVpEw6/ntRBOLRwb
-         YxAUDWMjldinK4dNgVJHxsBFK3wUAeo/w2Ej3k9jQVGLwvZY25M407Wj3b1CEyRwuNEf
-         qBKNPGfJlMCNG9i6q4ukZMZnmxZlOeIrAnUrJ/3SB5R72d0imez7amt4mJnlj8tYod5a
-         FuxnWzK6JQ5YO1ASpztQKxUz6nqrvyDcBv84MRH+QXbiKD81A6rPdvtp4xVy11T1wrk3
-         9jQXVZnk8px+PHnAFxFwct9PpyAsex0NvNSpMxpiz58h5BjSRe4fuurCKLqEaA1in5Dk
-         72sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+45oAMlRxllOV5mEk36eYzQgbkIxoIdswbMRX1ouTyc=;
-        b=BomGPtppEEVPACzXlz645Pcmv+iv4j3ijwTO2vFQ8Rem13d/lxsVAO3BNMCZjvcQX/
-         zuAm510GD/ws9uxLXi4OHa3lN2j+qH+R0fhfhJFfy/CKHXI+Q62m9ax0lcezTXZIIdck
-         QFVPqd6l5qfGZUT7o3I8sKL9484ZQRFy6SR7TYPOnIWB9z6VIYCB/A7fVBgBTACk59QU
-         rn/uT/2mudRfVgfAOLaL/I0iX3PII+tqXm79U9qO15qmqtx/YnGQOZ0Q0j4/gm/atiJV
-         kvRGnSVVW4TOWwpPitLqoIV27EvHXqiF0HHnV61Pqj0OiUE3b4/1F+DM0ySPQC71csff
-         OJAA==
-X-Gm-Message-State: AO0yUKVp2A/NZGIzX808R8teNK4LqL/cxXl4E79IQptsgXy354BXeLu+
-        2fWcWHs08CAdLBGkMfUY3T+kGCr7xlJFfNBZKAA=
-X-Google-Smtp-Source: AK7set+T30XswFbgfjcaMPn+3RPSnlWTbluDf9pwFin2/VLn6NalC3GX0H1ZXHlR3KYtE6Vfcb3QIUqCkblBZGO18N4=
-X-Received: by 2002:a9d:7c8b:0:b0:684:9679:acb3 with SMTP id
- q11-20020a9d7c8b000000b006849679acb3mr1066451otn.79.1675954280698; Thu, 09
- Feb 2023 06:51:20 -0800 (PST)
+        Thu, 9 Feb 2023 11:09:27 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E1B54C1D;
+        Thu,  9 Feb 2023 08:09:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B970619EE;
+        Thu,  9 Feb 2023 16:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058BCC4339B;
+        Thu,  9 Feb 2023 16:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675958961;
+        bh=0M/80MVd16v9rBzSC03ir0k/yTUZTebVxlTZPrgIvNo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=d/NQIopcyTOmfXh0Oe5f9loEh9fWJBEN7zdyfNum9bv9Cn/azjJTEqIeTlI/RfBt5
+         3rrN6Md9mErpOWka1J7AXprUCkfEQq9e7Vv7lm3enNfTPaS9rsQPlgzv7qyHqhUiF5
+         KMVVZG4aAN2/TDkSI278bd34zuEoa9YWb1rkp6m2IVyPAhDHNAnMGRfh3h361mLMGk
+         WcW6NnSEbVAydeL/NKId2E5zFPjv5EwufXJaxphGdg+jtO1tV8PVttElQzPGK2w0pD
+         aXX8tsXyRdhsF3/DQTaEaEKJSBjlMfJdmMtER1xe0LKxr6JqhHM/fmLrwJjq/WNNzn
+         NmW5u1O3YwuJA==
+Received: by mail-vk1-f172.google.com with SMTP id i38so1205352vkd.0;
+        Thu, 09 Feb 2023 08:09:20 -0800 (PST)
+X-Gm-Message-State: AO0yUKUTxsNsGo+XbxfW0Z9yby5lbB4tlrxQVL3qjHsmPa5egyS/d5+A
+        HjcYuAngdF4QljG6ig2ahxzKbx3Xn67WtA2kng==
+X-Google-Smtp-Source: AK7set9aPL1yHxtKO96ECAzw2gdVVnMz0shz/0LHQsodjryYcX0FU9j1ko12Gj4Tl1fgXZ7dNENAWxvgLOC/dD7HRvA=
+X-Received: by 2002:a05:6122:1461:b0:3d5:d30f:81c2 with SMTP id
+ r1-20020a056122146100b003d5d30f81c2mr2315587vkp.14.1675958959955; Thu, 09 Feb
+ 2023 08:09:19 -0800 (PST)
 MIME-Version: 1.0
-References: <CABPxzY+_Mjercvvh5XHmtHdNCKXDupVbL4PKXgzZPiUesRsRMA@mail.gmail.com>
- <714df952bf0b0f53a2f7a6714083e93e39632f49.camel@intel.com> <CABPxzYKc58mqCjyy+rzbrhZm5wCRKUm1Vs=HiP9OVsVSO3DiKA@mail.gmail.com>
-In-Reply-To: <CABPxzYKc58mqCjyy+rzbrhZm5wCRKUm1Vs=HiP9OVsVSO3DiKA@mail.gmail.com>
-From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Date:   Thu, 9 Feb 2023 20:21:09 +0530
-Message-ID: <CABPxzYLhzNgM3pRZT1LuPMA_SWwOss12KZzF5+QEkKuOnazQ3A@mail.gmail.com>
-Subject: Re: iwlwifi: Monitor mode broken with 6.1.0
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "egrumbach@gmail.com" <egrumbach@gmail.com>
+References: <ab8ff515-19ec-fe3f-0237-c30275e9744d@openmail.cc> <20230209045026.1806587-4-equu@openmail.cc>
+In-Reply-To: <20230209045026.1806587-4-equu@openmail.cc>
+From:   Rob Herring <robh@kernel.org>
+Date:   Thu, 9 Feb 2023 10:09:08 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKTRqaROZh416TBMmfEpYLbfa3ejwhe8+ryDecPthQ6Ew@mail.gmail.com>
+Message-ID: <CAL_JsqKTRqaROZh416TBMmfEpYLbfa3ejwhe8+ryDecPthQ6Ew@mail.gmail.com>
+Subject: Re: [PATCH v6 3/3] wifi: ath10k: only load compatible DT cal data
+To:     equu@openmail.cc
+Cc:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org,
+        linux-pci@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 23, 2023 at 9:41 PM Krishna Chaitanya
-<chaitanya.mgit@gmail.com> wrote:
+On Wed, Feb 8, 2023 at 10:51 PM <equu@openmail.cc> wrote:
 >
-> On Mon, Jan 23, 2023 at 6:29 PM Greenman, Gregory
-> <gregory.greenman@intel.com> wrote:
-> >
-> > Hi!
-> >
-> > On Mon, 2023-01-23 at 14:07 +0530, Krishna Chaitanya wrote:
-> > > Hi,
-> > >
-> > > I am using the ath.git (ea726a8d305a : was testing external Atheros
-> > > cards) + linux-firmware (bb2d42d) and the monitor mode stopped working
-> > > with iwlwifi. There is a warning from UBSAN: "UBSAN:
-> > > shift-out-of-bounds in
-> > > drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:657:22".
-> > >
-> > > The root cause was this c6ce1c74ef292 which defaults the assignment to
-> > > 0xFFFF and then that was being used for the shift.
-> > >
-> > > I have tried to fix the warning with the below patch (just for an
-> > > experiment, not a proper one), the warning is gone, but no frames are
-> > > seen in Wireshark.
-> > >
-> > > Below is the version information, any help is appreciated, monitor
-> > > mode is important for me.
-> > >
-> > > lspci: Network controller: Intel Corporation Wi-Fi 6 AX201 (rev 20)
-> > >
-> > > [  +0.003790] iwlwifi 0000:00:14.3: api flags index 2 larger than
-> > > supported by driver
-> > > [  +0.000046] iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version:
-> > > 89.3.35.37
-> > > [  +0.001519] iwlwifi 0000:00:14.3: loaded firmware version
-> > > 72.daa05125.0 QuZ-a0-hr-b0-72.ucode op_mode iwlmvm
-> > > [  +0.034887] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX201
-> > > 160MHz, REV=0x351
-> > > [  +0.000083] thermal thermal_zone7: failed to read out thermal zone (-61)
-> > > [  +0.122144] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
-> > > [  +0.065701] iwlwifi 0000:00:14.3: base HW address: 4c:79:6e:90:94:71
-> > > [  +0.019826] iwlwifi 0000:00:14.3 wlp0s20f3: renamed from wlan0
-> > > [ +14.210987] device mon0 entered promiscuous mode
-> > > [Jan24 18:20] device mon0 left promiscuous mode
-> > >
-> > > ---
-> > > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> > > b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> > > index 83abfe996138..591f9fdd0ec4 100644
-> > > --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> > > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-> > > @@ -654,9 +654,13 @@ static int iwl_mvm_mac_ctxt_cmd_listener(struct
-> > > iwl_mvm *mvm,
-> > >                                          u32 action)
-> > >  {
-> > >         struct iwl_mac_ctx_cmd cmd = {};
-> > > -       u32 tfd_queue_msk = BIT(mvm->snif_queue);
-> > > +       u32 tfd_queue_msk = 0;
-> > >         int ret;
-> > >
-> > > +       if (mvm->snif_queue != IWL_MVM_INVALID_QUEUE) {
-> > > +               tfd_queue_msk = BIT(mvm->snif_queue);
-> > > +       }
-> > > +
-> > >         WARN_ON(vif->type != NL80211_IFTYPE_MONITOR);
-> > >
-> > >         iwl_mvm_mac_ctxt_cmd_common(mvm, vif, &cmd, NULL, action);
-> > > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-> > > b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-> > > index 515dd3e0730d..784a7f72b819 100644
-> > > --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-> > > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-> > > @@ -2084,6 +2084,7 @@ static int iwl_mvm_add_int_sta_with_queue(struct
-> > > iwl_mvm *mvm, int macidx,
-> > >                 }
-> > >
-> > >                 *queue = txq;
-> > > +               sta->tfd_queue_msk = BIT(*queue);
-> > >         }
-> > >
-> > >         return 0;
-> > > @@ -2092,11 +2093,15 @@ static int
-> > > iwl_mvm_add_int_sta_with_queue(struct iwl_mvm *mvm, int macidx,
-> > >  int iwl_mvm_add_aux_sta(struct iwl_mvm *mvm, u32 lmac_id)
-> > >  {
-> > >         int ret;
-> > > +       u32 tfd_queue_msk = 0;
-> > >
-> > >         lockdep_assert_held(&mvm->mutex);
-> > > +       if (mvm->aux_queue != IWL_MVM_INVALID_QUEUE) {
-> > > +               tfd_queue_msk = BIT(mvm->aux_queue);
-> > > +       }
-> > >
-> > >         /* Allocate aux station and assign to it the aux queue */
-> > > -       ret = iwl_mvm_allocate_int_sta(mvm, &mvm->aux_sta, BIT(mvm->aux_queue),
-> > > +       ret = iwl_mvm_allocate_int_sta(mvm, &mvm->aux_sta, tfd_queue_msk,
-> > >                                        NL80211_IFTYPE_UNSPECIFIED,
-> > >                                        IWL_STA_AUX_ACTIVITY);
-> > >         if (ret)
-> >
-> > This bug was already fixed in our internal repository. You can use the driver from [1]
-> > until this fix will make it's way to the upstream (please use master branch).
-> >
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/backport-iwlwifi.git
-> Excellent, thanks for the reply.
+> From: Edward Chow <equu@openmail.cc>
 >
-> The driver in [1] was not building due to 20b0b53aca436 but it was simple
-> to fix, after installation (and reboot) the warning is gone, but still
-> unable to sniff.
+> ath10k might also be sensitive to the issue reported on
+> https://github.com/openwrt/openwrt/pull/11345 , loading calibration
+> data from a device tree node declared incompatible.
 >
-> FW is now updated to:
-> loaded firmware version 77.2dda880d.0 QuZ-a0-hr-b0-77.ucode op_mode iwlmvm
-Any ideas why it still doesn't work? Should I try something else,
-please suggest.
+> ath10k will first check whether the device tree node is compatible
+> with it, using the functionality introduced with the first patch of
+> this series, ("PCI: of: Match pci devices or drivers against OF DT
+> nodes") and only proceed loading calibration data from compatible node.
+>
+> Signed-off-by: Edward Chow <equu@openmail.cc>
+> Reported-by: kernel test robot <lkp@intel.com>
+
+This is for fixes created as a result of kernel test robot report.
+Reports on your broken patches should not have this.
+
+> ---
+>  drivers/net/wireless/ath/ath10k/core.c | 31 ++++++++++++++++++++++++++
+>  drivers/net/wireless/ath/ath10k/hw.h   |  4 ++++
+>  drivers/net/wireless/ath/ath10k/pci.c  | 18 ++++++++++++++-
+>  drivers/net/wireless/ath/ath10k/pci.h  |  2 ++
+>  4 files changed, 54 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 5eb131ab916f..4c9e8140aeff 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -13,6 +13,8 @@
+>  #include <linux/ctype.h>
+>  #include <linux/pm_qos.h>
+>  #include <linux/nvmem-consumer.h>
+> +#include <linux/of_pci.h>
+> +#include <linux/pci.h>
+>  #include <asm/byteorder.h>
+>
+>  #include "core.h"
+> @@ -26,6 +28,7 @@
+>  #include "testmode.h"
+>  #include "wmi-ops.h"
+>  #include "coredump.h"
+> +#include "pci.h"
+>
+>  unsigned int ath10k_debug_mask;
+>  EXPORT_SYMBOL(ath10k_debug_mask);
+> @@ -1958,6 +1961,34 @@ static int ath10k_download_cal_nvmem(struct ath10k *ar, const char *cell_name)
+>         size_t len;
+>         int ret;
+>
+> +       /* devm_nvmem_cell_get() will get a cell first from the OF
+> +        * DT node representing the given device with nvmem-cell-name
+> +        * "calibration", and from the global lookup table as a fallback,
+> +        * and an ath10k device could be either a pci one or a platform one.
+> +        *
+> +        * If the OF DT node is not compatible with the real device, the
+> +        * calibration data got from the node should not be applied.
+> +        *
+> +        * dev_is_pci(ar->dev) && ( no OF node || caldata not from node
+> +        * || not compatible ) -> do not use caldata .
+> +        *
+> +        * !dev_is_pci(ar->dev) -> always use caldata .
+> +        *
+> +        * The judgement for compatibility differs with ath9k for many
+> +        * DT using "qcom,ath10k" as compatibility string.
+> +        */
+> +       if (dev_is_pci(ar->dev) &&
+> +           (!ar->dev->of_node ||
+> +            (of_property_match_string(ar->dev->of_node,
+> +                                      "nvmem-cell-names",
+> +                                      cell_name) < 0) ||
+> +            !of_device_get_match_data(ar->dev) ||
+> +            !(((const struct ath10k_hw_misc_flags *)
+> +               of_device_get_match_data(ar->dev))->need_calibration) ||
+> +            !of_pci_node_match_driver(ar->dev->of_node,
+> +                                      &ath10k_pci_driver)))
+
+That is just plain ugly and not understandable. Why do you still need
+of_pci_node_match_driver()? If compatible using VID/PID doesn't match
+the actual VID/PID, then you should never probe.
+
+The prior explanations didn't really clear things up either. I'm
+really at a loss as to what are the scenarios you need to work. Please
+enumerate what are the different scenarios of what's in the DTs and
+how you need the kernel/driver to respond.
+
+Rob
