@@ -2,110 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF51368FECC
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Feb 2023 05:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A071C68FF84
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Feb 2023 05:51:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbjBIEa0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Feb 2023 23:30:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
+        id S229566AbjBIEvZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Feb 2023 23:51:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbjBIEaQ (ORCPT
+        with ESMTP id S229519AbjBIEvX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Feb 2023 23:30:16 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A98EB3B64B;
-        Wed,  8 Feb 2023 20:29:43 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 88ECBB8201A;
-        Thu,  9 Feb 2023 04:22:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1454C433EF;
-        Thu,  9 Feb 2023 04:22:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675916532;
-        bh=r896al9/ic3TVzWhQihrH5WWe9yq5i1aPuOB0FJblUQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BN/W1fmhyUDYnWQNFRl0yiZAlLtkPZOeM9PRJliT8ril6wiUbcRvBv1HMVz8E0tvT
-         mbyq5LYLXG+Q0iC3FE+j8oPN8wrX8CzcUUbhXZ8fLkv6SW7OFkTdgoSDQ4Z4S7676q
-         ekM+HlbJO6e1a7rJmpHX2uhrjQmq5U7OdTYpCuhnJvE8DoMV488k6BQ9GV5iJQMl+R
-         Z4eAbD3zOtPVRjxwl6mYHQRaDOaj1IjnIDvEt0MNJ02q3yVnhiKjhsmUqY3r16pJbp
-         2l1erYVmeAs/OrQ3L+bCLx5ypvDAgc3kGR5MyqzFDCB3QgSGPs4TzDKRQdWSO0Gb80
-         XNY+n6Qa5PJyg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Rob Clark <robdclark@gmail.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Elliot Berman <quic_eberman@quicinc.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andy Gross <agross@kernel.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Alex Elder <elder@kernel.org>, Sean Paul <sean@poorly.run>,
-        Paolo Abeni <pabeni@redhat.com>, Kalle Valo <kvalo@kernel.org>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        David Airlie <airlied@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Amit Kucheria <amitk@kernel.org>,
-        Amol Maheshwari <amahesh@qti.qualcomm.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-pm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-scsi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, ath10k@lists.infradead.org,
-        freedreno@lists.freedesktop.org, iommu@lists.linux.dev,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] firmware: qcom_scm: Move qcom_scm.h to include/linux/firmware/qcom/
-Date:   Wed,  8 Feb 2023 20:23:26 -0800
-Message-Id: <167591660372.1230100.2523010471979974316.b4-ty@kernel.org>
+        Wed, 8 Feb 2023 23:51:23 -0500
+Received: from smtp161.vfemail.net (smtp161.vfemail.net [146.59.185.161])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 241DF10C3
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Feb 2023 20:51:21 -0800 (PST)
+Received: (qmail 21926 invoked from network); 9 Feb 2023 04:51:20 +0000
+Received: from localhost (HELO nl101-3.vfemail.net) ()
+  by smtpout.vfemail.net with ESMTPS (ECDHE-RSA-AES256-GCM-SHA384 encrypted); 9 Feb 2023 04:51:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=openmail.cc; h=from:to:cc
+        :subject:date:message-id:in-reply-to:references:mime-version
+        :content-transfer-encoding; s=2018; bh=WssdM5a1RcW2/J6PdZ6f5OpYU
+        CpCFUw6rGH2tDY9h2M=; b=bjlGUb+nTzpY+F7xbUkbldJoVmYUSoZPUO8CbMuqZ
+        Gzauz2dhAfOQIG4Bx6PUGLJGUjB1dcoNAp/R6jaqTPXjG2c6eB6P9QMsWq57lh6D
+        tlDB9Uf9A505A86evd+AIIAF7OpP+5pwl7ASXTFW/fjy5BSKWy1M3vhyPhOTHVY7
+        e0=
+Received: (qmail 87683 invoked from network); 9 Feb 2023 04:51:19 -0000
+Received: by simscan 1.4.0 ppid: 87524, pid: 87638, t: 1.5055s
+         scanners:none
+Received: from unknown (HELO bmwxMDEudmZlbWFpbC5uZXQ=) (ZXF1dUBvcGVubWFpbC5jYw==@MTkyLjE2OC4xLjE5Mg==)
+  by nl101.vfemail.net with ESMTPA; 9 Feb 2023 04:51:18 -0000
+From:   equu@openmail.cc
+To:     lpieralisi@kernel.org, toke@toke.dk, kvalo@kernel.org
+Cc:     linux-pci@vger.kernel.org, robh@kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        equu@openmail.cc, kernel test robot <lkp@intel.com>
+Subject: [PATCH v6 0/3] PCI: of: Load extra data only from compatible DT nodes
+Date:   Thu,  9 Feb 2023 12:50:24 +0800
+Message-Id: <20230209045026.1806587-1-equu@openmail.cc>
 X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230203210956.3580811-1-quic_eberman@quicinc.com>
-References: <20230203210956.3580811-1-quic_eberman@quicinc.com>
+In-Reply-To: <ab8ff515-19ec-fe3f-0237-c30275e9744d@openmail.cc>
+References: <ab8ff515-19ec-fe3f-0237-c30275e9744d@openmail.cc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 3 Feb 2023 13:09:52 -0800, Elliot Berman wrote:
-> Move include/linux/qcom_scm.h to include/linux/firmware/qcom/qcom_scm.h.
-> This removes 1 of a few remaining Qualcomm-specific headers into a more
-> approciate subdirectory under include/.
-> 
-> 
+From: Edward Chow <equu@openmail.cc>
 
-Applied, thanks!
+In order to solve the issue reported in
+https://github.com/openwrt/openwrt/pull/11345 , this patchset attempt
+to add mechanisms to ckeck whether an OF DT node is compatible to the
+PCI device installed on the corresponding location or the driver for
+it, and make ath9k and ath10k only load extra data from compatible
+nodes.
 
-[1/1] firmware: qcom_scm: Move qcom_scm.h to include/linux/firmware/qcom/
-      commit: 3bf90eca76c98c55c975fa817799789b9176f9f3
+V5 -> V6:
+3, handle generic "qcom,ath10k" via of_device_get_match_data()
 
-Best regards,
+Signed-off-by: Edward Chow <equu@openmail.cc>
+Reported-by: kernel test robot <lkp@intel.com>
+
+Edward Chow (3):
+  PCI: of: Match pci devices or drivers against OF DT nodes
+  wifi: ath9k: stop loading incompatible DT cal data
+  wifi: ath10k: only load compatible DT cal data
+
+ drivers/net/wireless/ath/ath10k/core.c |  31 +++
+ drivers/net/wireless/ath/ath10k/hw.h   |   4 +
+ drivers/net/wireless/ath/ath10k/pci.c  |  18 +-
+ drivers/net/wireless/ath/ath10k/pci.h  |   2 +
+ drivers/net/wireless/ath/ath9k/ath9k.h |   1 +
+ drivers/net/wireless/ath/ath9k/init.c  |  27 +++
+ drivers/net/wireless/ath/ath9k/pci.c   |   2 +-
+ drivers/pci/of.c                       | 299 +++++++++++++++++++++++++
+ drivers/pci/pci-driver.c               |   5 -
+ drivers/pci/pci.h                      |  56 +++++
+ include/linux/of_pci.h                 |  25 +++
+ include/linux/pci.h                    |   6 +
+ 12 files changed, 469 insertions(+), 7 deletions(-)
+
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.39.1
+
