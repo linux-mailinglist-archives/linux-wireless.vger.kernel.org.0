@@ -2,149 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA33B690BD2
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Feb 2023 15:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAED1690C30
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Feb 2023 15:51:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230497AbjBIObS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Feb 2023 09:31:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53910 "EHLO
+        id S230517AbjBIOvY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Feb 2023 09:51:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbjBIObC (ORCPT
+        with ESMTP id S230394AbjBIOvX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Feb 2023 09:31:02 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CF85D3DF;
-        Thu,  9 Feb 2023 06:30:57 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 7D695CE24F3;
-        Thu,  9 Feb 2023 14:30:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C41C433EF;
-        Thu,  9 Feb 2023 14:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675953052;
-        bh=n5q92jtNB++4BoYIauYygzacB4DdXZvQYlYHsoaQZHo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=L4cNRE4MQxZhPNyBF/08CXXf/FWNQlzUwcRLG/0S65J/4ZChTqeAH+gdyIm7+puo/
-         e1NMfqyqjToGWx/m2stUfU7oe9VJ+8njI+o0jyklZ6aQ10e0wIfN7idp96BYLv9Fv3
-         QhfxNouUc0qZTgyD3UIjJF1eoI/sa7sYlEflw9jIrrOTdIfoFZo0OmH5vYc0Tjwjlg
-         7k/6gJhmjkwo6pEOCZrEJ5FmUMlxfm8y1s7LLhR+jeJXraVBKucJ1jUqjs66gKI0qH
-         XjavWBRymrRU2MvlL95tjkP7Fwb0aTwHP4DAbOFosKC6AT8CudX5DVtLZ+LDNj9wE2
-         dDufUua3aqd7w==
-Date:   Thu, 9 Feb 2023 14:30:29 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Cc:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        jic23@kernel.org, tudor.ambarus@microchip.com, pratyush@kernel.org,
-        sanju.mehta@amd.com, chin-ting_kuo@aspeedtech.com, clg@kaod.org,
-        kdasu.kdev@gmail.com, f.fainelli@gmail.com, rjui@broadcom.com,
-        sbranden@broadcom.com, eajames@linux.ibm.com, olteanv@gmail.com,
-        han.xu@nxp.com, john.garry@huawei.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, narmstrong@baylibre.com,
-        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
-        linus.walleij@linaro.org, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        agross@kernel.org, bjorn.andersson@linaro.org, heiko@sntech.de,
-        krzysztof.kozlowski@linaro.org, andi@etezian.org,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-        wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org,
-        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
-        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
-        kvalo@kernel.org, git@amd.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
-        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
-        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
-        alim.akhtar@samsung.com, ldewangan@nvidia.com,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-mtd@lists.infradead.org, lars@metafoo.de,
-        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
-        michael@walle.cc, palmer@dabbelt.com,
-        linux-riscv@lists.infradead.org, amitrkcian2002@gmail.com,
-        Dhruva Gole <d-gole@ti.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        William Zhang <william.zhang@broadcom.com>
-Subject: Re: [PATCH v3 01/13] spi: Replace all spi->chip_select and
- spi->cs_gpiod references with function call
-Message-ID: <Y+UDhWK6u9NkMTxv@sirena.org.uk>
-References: <20230202152258.512973-1-amit.kumar-mahapatra@amd.com>
- <20230202152258.512973-2-amit.kumar-mahapatra@amd.com>
+        Thu, 9 Feb 2023 09:51:23 -0500
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654765EF87
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Feb 2023 06:51:21 -0800 (PST)
+Received: by mail-ot1-x32b.google.com with SMTP id j6-20020a9d7686000000b0068d4ba9d141so599167otl.6
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Feb 2023 06:51:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+45oAMlRxllOV5mEk36eYzQgbkIxoIdswbMRX1ouTyc=;
+        b=pBgGuj/KVi21hKAlCfOj9OKz9jUS3E1Pyu8FohvjjmfYM114tVxVpEw6/ntRBOLRwb
+         YxAUDWMjldinK4dNgVJHxsBFK3wUAeo/w2Ej3k9jQVGLwvZY25M407Wj3b1CEyRwuNEf
+         qBKNPGfJlMCNG9i6q4ukZMZnmxZlOeIrAnUrJ/3SB5R72d0imez7amt4mJnlj8tYod5a
+         FuxnWzK6JQ5YO1ASpztQKxUz6nqrvyDcBv84MRH+QXbiKD81A6rPdvtp4xVy11T1wrk3
+         9jQXVZnk8px+PHnAFxFwct9PpyAsex0NvNSpMxpiz58h5BjSRe4fuurCKLqEaA1in5Dk
+         72sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+45oAMlRxllOV5mEk36eYzQgbkIxoIdswbMRX1ouTyc=;
+        b=BomGPtppEEVPACzXlz645Pcmv+iv4j3ijwTO2vFQ8Rem13d/lxsVAO3BNMCZjvcQX/
+         zuAm510GD/ws9uxLXi4OHa3lN2j+qH+R0fhfhJFfy/CKHXI+Q62m9ax0lcezTXZIIdck
+         QFVPqd6l5qfGZUT7o3I8sKL9484ZQRFy6SR7TYPOnIWB9z6VIYCB/A7fVBgBTACk59QU
+         rn/uT/2mudRfVgfAOLaL/I0iX3PII+tqXm79U9qO15qmqtx/YnGQOZ0Q0j4/gm/atiJV
+         kvRGnSVVW4TOWwpPitLqoIV27EvHXqiF0HHnV61Pqj0OiUE3b4/1F+DM0ySPQC71csff
+         OJAA==
+X-Gm-Message-State: AO0yUKVp2A/NZGIzX808R8teNK4LqL/cxXl4E79IQptsgXy354BXeLu+
+        2fWcWHs08CAdLBGkMfUY3T+kGCr7xlJFfNBZKAA=
+X-Google-Smtp-Source: AK7set+T30XswFbgfjcaMPn+3RPSnlWTbluDf9pwFin2/VLn6NalC3GX0H1ZXHlR3KYtE6Vfcb3QIUqCkblBZGO18N4=
+X-Received: by 2002:a9d:7c8b:0:b0:684:9679:acb3 with SMTP id
+ q11-20020a9d7c8b000000b006849679acb3mr1066451otn.79.1675954280698; Thu, 09
+ Feb 2023 06:51:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iWU3nY956KPhZko1"
-Content-Disposition: inline
-In-Reply-To: <20230202152258.512973-2-amit.kumar-mahapatra@amd.com>
-X-Cookie: Androphobia:
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CABPxzY+_Mjercvvh5XHmtHdNCKXDupVbL4PKXgzZPiUesRsRMA@mail.gmail.com>
+ <714df952bf0b0f53a2f7a6714083e93e39632f49.camel@intel.com> <CABPxzYKc58mqCjyy+rzbrhZm5wCRKUm1Vs=HiP9OVsVSO3DiKA@mail.gmail.com>
+In-Reply-To: <CABPxzYKc58mqCjyy+rzbrhZm5wCRKUm1Vs=HiP9OVsVSO3DiKA@mail.gmail.com>
+From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date:   Thu, 9 Feb 2023 20:21:09 +0530
+Message-ID: <CABPxzYLhzNgM3pRZT1LuPMA_SWwOss12KZzF5+QEkKuOnazQ3A@mail.gmail.com>
+Subject: Re: iwlwifi: Monitor mode broken with 6.1.0
+To:     "Greenman, Gregory" <gregory.greenman@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "egrumbach@gmail.com" <egrumbach@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---iWU3nY956KPhZko1
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Feb 02, 2023 at 08:52:46PM +0530, Amit Kumar Mahapatra wrote:
-> Supporting multi-cs in spi drivers would require the chip_select & cs_gpi=
-od
-> members of struct spi_device to be an array. But changing the type of the=
-se
-> members to array would break the spi driver functionality. To make the
-> transition smoother introduced four new APIs to get/set the
-
-This break an arm multi_v7_defconfig build:
-
-/build/stage/linux/drivers/spi/spi-pl022.c: In function =E2=80=98pl022_tran=
-sfer_one_message=E2=80=99:
-/build/stage/linux/drivers/spi/spi-pl022.c:1592:31: error: =E2=80=98struct =
-spi_message=E2=80=99 has no member named =E2=80=98spi_get_csgpiod=E2=80=99
- 1592 |         pl022->cur_gpiod =3D msg->spi_get_csgpiod(spi, 0);
-      |                               ^~
-/build/stage/linux/drivers/spi/spi-pl022.c:1592:49: error: =E2=80=98spi=E2=
-=80=99 undeclared (first use in this function)
- 1592 |         pl022->cur_gpiod =3D msg->spi_get_csgpiod(spi, 0);
-      |                                                 ^~~
-/build/stage/linux/drivers/spi/spi-pl022.c:1592:49: note: each undeclared i=
-dentifier is reported only once for each function it appears in
-
---iWU3nY956KPhZko1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPlA4QACgkQJNaLcl1U
-h9Ai+wf+IWbvrI/uIEjinXzailRkkSP40/uzdnv8AAKF5zA3laimeZYZPCoKfD4X
-GzBSQEjiZOJmPZ0wBaHHFFaxHSBlL6rtUoA6r+EEktjzWc6vOsmoUVRt74R+ZMHw
-1FyvWR07nFAstJD2rPfPhIZ5bt4yiRX/CmA2SxN1qW74IwjKYAy6jLvbpSAZ4byY
-KRnij11f/xqUuiao0L/PTya+dYLUOBEQvXm5JBAIqhZaQVH4G7Ppov0MR15cEMug
-OG9oMzu197RFh7WgO6lj8rI9Cssl4vvj6+3owDZ/nK+LFq62Z6AvBGbaP7SoHOOI
-Xcz8JdTcCAH0XAgza9flmPUQME9cmQ==
-=4wBC
------END PGP SIGNATURE-----
-
---iWU3nY956KPhZko1--
+On Mon, Jan 23, 2023 at 9:41 PM Krishna Chaitanya
+<chaitanya.mgit@gmail.com> wrote:
+>
+> On Mon, Jan 23, 2023 at 6:29 PM Greenman, Gregory
+> <gregory.greenman@intel.com> wrote:
+> >
+> > Hi!
+> >
+> > On Mon, 2023-01-23 at 14:07 +0530, Krishna Chaitanya wrote:
+> > > Hi,
+> > >
+> > > I am using the ath.git (ea726a8d305a : was testing external Atheros
+> > > cards) + linux-firmware (bb2d42d) and the monitor mode stopped working
+> > > with iwlwifi. There is a warning from UBSAN: "UBSAN:
+> > > shift-out-of-bounds in
+> > > drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:657:22".
+> > >
+> > > The root cause was this c6ce1c74ef292 which defaults the assignment to
+> > > 0xFFFF and then that was being used for the shift.
+> > >
+> > > I have tried to fix the warning with the below patch (just for an
+> > > experiment, not a proper one), the warning is gone, but no frames are
+> > > seen in Wireshark.
+> > >
+> > > Below is the version information, any help is appreciated, monitor
+> > > mode is important for me.
+> > >
+> > > lspci: Network controller: Intel Corporation Wi-Fi 6 AX201 (rev 20)
+> > >
+> > > [  +0.003790] iwlwifi 0000:00:14.3: api flags index 2 larger than
+> > > supported by driver
+> > > [  +0.000046] iwlwifi 0000:00:14.3: TLV_FW_FSEQ_VERSION: FSEQ Version:
+> > > 89.3.35.37
+> > > [  +0.001519] iwlwifi 0000:00:14.3: loaded firmware version
+> > > 72.daa05125.0 QuZ-a0-hr-b0-72.ucode op_mode iwlmvm
+> > > [  +0.034887] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX201
+> > > 160MHz, REV=0x351
+> > > [  +0.000083] thermal thermal_zone7: failed to read out thermal zone (-61)
+> > > [  +0.122144] iwlwifi 0000:00:14.3: Detected RF HR B3, rfid=0x10a100
+> > > [  +0.065701] iwlwifi 0000:00:14.3: base HW address: 4c:79:6e:90:94:71
+> > > [  +0.019826] iwlwifi 0000:00:14.3 wlp0s20f3: renamed from wlan0
+> > > [ +14.210987] device mon0 entered promiscuous mode
+> > > [Jan24 18:20] device mon0 left promiscuous mode
+> > >
+> > > ---
+> > > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> > > b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> > > index 83abfe996138..591f9fdd0ec4 100644
+> > > --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> > > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> > > @@ -654,9 +654,13 @@ static int iwl_mvm_mac_ctxt_cmd_listener(struct
+> > > iwl_mvm *mvm,
+> > >                                          u32 action)
+> > >  {
+> > >         struct iwl_mac_ctx_cmd cmd = {};
+> > > -       u32 tfd_queue_msk = BIT(mvm->snif_queue);
+> > > +       u32 tfd_queue_msk = 0;
+> > >         int ret;
+> > >
+> > > +       if (mvm->snif_queue != IWL_MVM_INVALID_QUEUE) {
+> > > +               tfd_queue_msk = BIT(mvm->snif_queue);
+> > > +       }
+> > > +
+> > >         WARN_ON(vif->type != NL80211_IFTYPE_MONITOR);
+> > >
+> > >         iwl_mvm_mac_ctxt_cmd_common(mvm, vif, &cmd, NULL, action);
+> > > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > > b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > > index 515dd3e0730d..784a7f72b819 100644
+> > > --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > > @@ -2084,6 +2084,7 @@ static int iwl_mvm_add_int_sta_with_queue(struct
+> > > iwl_mvm *mvm, int macidx,
+> > >                 }
+> > >
+> > >                 *queue = txq;
+> > > +               sta->tfd_queue_msk = BIT(*queue);
+> > >         }
+> > >
+> > >         return 0;
+> > > @@ -2092,11 +2093,15 @@ static int
+> > > iwl_mvm_add_int_sta_with_queue(struct iwl_mvm *mvm, int macidx,
+> > >  int iwl_mvm_add_aux_sta(struct iwl_mvm *mvm, u32 lmac_id)
+> > >  {
+> > >         int ret;
+> > > +       u32 tfd_queue_msk = 0;
+> > >
+> > >         lockdep_assert_held(&mvm->mutex);
+> > > +       if (mvm->aux_queue != IWL_MVM_INVALID_QUEUE) {
+> > > +               tfd_queue_msk = BIT(mvm->aux_queue);
+> > > +       }
+> > >
+> > >         /* Allocate aux station and assign to it the aux queue */
+> > > -       ret = iwl_mvm_allocate_int_sta(mvm, &mvm->aux_sta, BIT(mvm->aux_queue),
+> > > +       ret = iwl_mvm_allocate_int_sta(mvm, &mvm->aux_sta, tfd_queue_msk,
+> > >                                        NL80211_IFTYPE_UNSPECIFIED,
+> > >                                        IWL_STA_AUX_ACTIVITY);
+> > >         if (ret)
+> >
+> > This bug was already fixed in our internal repository. You can use the driver from [1]
+> > until this fix will make it's way to the upstream (please use master branch).
+> >
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/backport-iwlwifi.git
+> Excellent, thanks for the reply.
+>
+> The driver in [1] was not building due to 20b0b53aca436 but it was simple
+> to fix, after installation (and reboot) the warning is gone, but still
+> unable to sniff.
+>
+> FW is now updated to:
+> loaded firmware version 77.2dda880d.0 QuZ-a0-hr-b0-77.ucode op_mode iwlmvm
+Any ideas why it still doesn't work? Should I try something else,
+please suggest.
