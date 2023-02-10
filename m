@@ -2,103 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD387691DF8
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 12:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 565C3691EDF
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 13:13:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232002AbjBJLQz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Feb 2023 06:16:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57352 "EHLO
+        id S232043AbjBJMNo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Feb 2023 07:13:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231660AbjBJLQt (ORCPT
+        with ESMTP id S231400AbjBJMNn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Feb 2023 06:16:49 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0791272DD2
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Feb 2023 03:16:39 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pQROO-0003KX-Ok; Fri, 10 Feb 2023 12:16:36 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pQROM-003xEb-EO; Fri, 10 Feb 2023 12:16:35 +0100
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pQROM-008k9f-P8; Fri, 10 Feb 2023 12:16:34 +0100
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        kernel@pengutronix.de, Alexander Hochbaum <alex@appudo.com>,
-        Da Xue <da@libre.computer>, Po-Hao Huang <phhuang@realtek.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH v2 3/3] wifi: rtw88: usb: drop now unnecessary URB size check
-Date:   Fri, 10 Feb 2023 12:16:32 +0100
-Message-Id: <20230210111632.1985205-4-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230210111632.1985205-1-s.hauer@pengutronix.de>
-References: <20230210111632.1985205-1-s.hauer@pengutronix.de>
+        Fri, 10 Feb 2023 07:13:43 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEAC75C4B1
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Feb 2023 04:13:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=M2nh510caYP0iWno/JthUVqfjLGpoB0x9i0PGMtZbi0=;
+        t=1676031222; x=1677240822; b=sOqdLMVPwyFuyzsuNotlAlKE4we8KQ/4Kz9rIFZNqc8CKpp
+        KDKY08LHgY4UV+UXPMuA2JOHwTO6wRuJ/Iey2t3PZ2/fP+ZsQ+kHqzjOCkD8/5fI+YzYFsW97450k
+        fcuEC7C+sdkwI+s/Aw0vuGy0YtkcrAMOqG75YrZVtsfBG1aV/TP96nSbhCz2B6D4sUssysXQfbkzY
+        wEgtDW7g5pOteHVaBDG/FGUlK+OTPSjEH3mO/mzJCYSRAN7qMn3n1nsyyKjQrXWi9hHIgvFeYeTPt
+        vBvQbZ8pHL10481duqLjCuKJt9r5oHlo3VWWppNIoTBSlS2nFBBXkaihIgdBvTMg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pQSHb-008Hdt-15;
+        Fri, 10 Feb 2023 13:13:39 +0100
+Message-ID: <35950fde52b5578e83b713cf8c90d4fc5fb77605.camel@sipsolutions.net>
+Subject: Re: Reassociation is broken via CMD_CONNECT
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     James Prestwood <prestwoj@gmail.com>,
+        linux-wireless@vger.kernel.org
+Date:   Fri, 10 Feb 2023 13:13:38 +0100
+In-Reply-To: <52d15e34cf20ddb372b2791c18776405f57d2516.camel@gmail.com>
+References: <52d15e34cf20ddb372b2791c18776405f57d2516.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now that we send URBs with the URB_ZERO_PACKET flag set we no longer
-need to make sure that the URB sizes are not multiple of the
-bulkout_size. Drop the check.
+Hi James,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/wireless/realtek/rtw88/usb.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+Sorry, lost track of the mailing list a bit.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 1a09c9288198a..2a8336b1847a5 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -414,24 +414,11 @@ static int rtw_usb_write_data_rsvd_page(struct rtw_dev *rtwdev, u8 *buf,
- 					u32 size)
- {
- 	const struct rtw_chip_info *chip = rtwdev->chip;
--	struct rtw_usb *rtwusb;
- 	struct rtw_tx_pkt_info pkt_info = {0};
--	u32 len, desclen;
--
--	rtwusb = rtw_get_usb_priv(rtwdev);
- 
- 	pkt_info.tx_pkt_size = size;
- 	pkt_info.qsel = TX_DESC_QSEL_BEACON;
--
--	desclen = chip->tx_pkt_desc_sz;
--	len = desclen + size;
--	if (len % rtwusb->bulkout_size == 0) {
--		len += RTW_USB_PACKET_OFFSET_SZ;
--		pkt_info.offset = desclen + RTW_USB_PACKET_OFFSET_SZ;
--		pkt_info.pkt_offset = 1;
--	} else {
--		pkt_info.offset = desclen;
--	}
-+	pkt_info.offset = chip->tx_pkt_desc_sz;
- 
- 	return rtw_usb_write_data(rtwdev, &pkt_info, buf);
- }
--- 
-2.30.2
+> "previous BSSID, to be used in ASSOCIATE and CONNECT commands to
+> specify a request to reassociate within an ESS, i.e., to use
+> Reassociate Request frame"
+>=20
+> But this actually isn't true when using CMD_CONNECT. The kernel does a
+> full re-connect if PREV_BSSID is provided (easily verified by kernel
+> logs which show an Authenticate frame being sent).
 
+The authentication frame doesn't really have anything to do with whether
+you use associate or reassociate? It's still required, unless you did
+FT, but that's orthogonal?
+
+Feels like it's working as designed?
+
+johannes
