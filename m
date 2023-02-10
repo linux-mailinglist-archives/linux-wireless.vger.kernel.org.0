@@ -2,72 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 565C3691EDF
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 13:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B68691F0B
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 13:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232043AbjBJMNo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Feb 2023 07:13:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39236 "EHLO
+        id S231952AbjBJMZM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Feb 2023 07:25:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231400AbjBJMNn (ORCPT
+        with ESMTP id S231269AbjBJMZJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Feb 2023 07:13:43 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEAC75C4B1
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Feb 2023 04:13:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=M2nh510caYP0iWno/JthUVqfjLGpoB0x9i0PGMtZbi0=;
-        t=1676031222; x=1677240822; b=sOqdLMVPwyFuyzsuNotlAlKE4we8KQ/4Kz9rIFZNqc8CKpp
-        KDKY08LHgY4UV+UXPMuA2JOHwTO6wRuJ/Iey2t3PZ2/fP+ZsQ+kHqzjOCkD8/5fI+YzYFsW97450k
-        fcuEC7C+sdkwI+s/Aw0vuGy0YtkcrAMOqG75YrZVtsfBG1aV/TP96nSbhCz2B6D4sUssysXQfbkzY
-        wEgtDW7g5pOteHVaBDG/FGUlK+OTPSjEH3mO/mzJCYSRAN7qMn3n1nsyyKjQrXWi9hHIgvFeYeTPt
-        vBvQbZ8pHL10481duqLjCuKJt9r5oHlo3VWWppNIoTBSlS2nFBBXkaihIgdBvTMg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pQSHb-008Hdt-15;
-        Fri, 10 Feb 2023 13:13:39 +0100
-Message-ID: <35950fde52b5578e83b713cf8c90d4fc5fb77605.camel@sipsolutions.net>
-Subject: Re: Reassociation is broken via CMD_CONNECT
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 10 Feb 2023 13:13:38 +0100
-In-Reply-To: <52d15e34cf20ddb372b2791c18776405f57d2516.camel@gmail.com>
-References: <52d15e34cf20ddb372b2791c18776405f57d2516.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Fri, 10 Feb 2023 07:25:09 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C7E7359E;
+        Fri, 10 Feb 2023 04:24:57 -0800 (PST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pQSSV-00082x-0K; Fri, 10 Feb 2023 13:24:55 +0100
+Message-ID: <10a47408-3019-403d-97b1-c9f36e52e130@leemhuis.info>
+Date:   Fri, 10 Feb 2023 13:24:54 +0100
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: Resume after suspend broken, reboots instead on kernel 6.1
+ onwards x86_64 RTW88
+Content-Language: en-US, de-DE
+To:     gary.chang@realtek.com, Yan-Hsuan Chuang <tony0620emma@gmail.com>
+Cc:     regressions@lists.linux.dev, linux-wireless@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Kalle Valo <kvalo@kernel.org>,
+        Paul Gover <pmw.gover@yahoo.co.uk>, stable@vger.kernel.org
+References: <3739412.kQq0lBPeGt.ref@ryzen> <3739412.kQq0lBPeGt@ryzen>
+From:   "Linux kernel regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <3739412.kQq0lBPeGt@ryzen>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1676031897;76a6ebd0;
+X-HE-SMSGID: 1pQSSV-00082x-0K
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi James,
+[adding Chih-Kang Chang (author), Kalle (committer) and LKML to the list
+of recipients]
 
-Sorry, lost track of the mailing list a bit.
+[anyone who replies to this: feel free to remove stable@vger.kernel.org
+from the recipients, this is a mainline regression]
 
-> "previous BSSID, to be used in ASSOCIATE and CONNECT commands to
-> specify a request to reassociate within an ESS, i.e., to use
-> Reassociate Request frame"
->=20
-> But this actually isn't true when using CMD_CONNECT. The kernel does a
-> full re-connect if PREV_BSSID is provided (easily verified by kernel
-> logs which show an Authenticate frame being sent).
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
-The authentication frame doesn't really have anything to do with whether
-you use associate or reassociate? It's still required, unless you did
-FT, but that's orthogonal?
+On 09.02.23 20:59, Paul Gover wrote:
+> Suspend/Resume was working OK on kernel 6.0.13, broken since 6.1.1
+> (I've not tried kernels between those, except in the bisect below.)
+> All subsequent 6,1 kernels exhibit the same behaviour.
+> 
+> Suspend works OK, but on Resume, there's a flicker, and then it reboots.
+> Sometimes the screen gets restored to its contents at the time of suspend. but 
+> less than a second later, it starts rebooting.
+> To reproduce, simply boot, suspend, and resume.
+> 
+> Git bisect blames RTW88
+> commit 6bf3a083407b5d404d70efc3a5ac75b472e5efa9
 
-Feels like it's working as designed?
+TWIMC, that's "wifi: rtw88: add flag check before enter or leave IPS"
 
-johannes
+> I'll attach bisect log, dmesg and configs to the bug I've opened 
+> 	https://bugzilla.kernel.org/show_bug.cgi?id=217016
+> 
+> dmesg from the following boot show a hardware error.
+> It's not there when the system resumes or reboots with 6.0.13,
+> and if I don't suspend & resume, there are no reported errors.
+> 
+> The problem occurs under both Wayland and X11, and from the command line via 
+> echo mem>/sys/power.state
+> 
+> 
+> Vanilla kernels, untainted, compiled with GCC; my system is Gentoo FWIW, but I 
+> do my own kernels direct from a git clone of stable.
+> 
+> Couldn't find anything similar with Google or the mailing lists.
+> 
+> **Hardware:**
+> 
+> HP Laptop 15-bw0xx
+> AMD A9-9420 RADEON R5, 5 COMPUTE CORES
+> Stoney [Radeon R2/R3/R4/R5 Graphics]
+> 4 GB memory
+> RTL8723DE PCIe adapter
+> 
+> **Kernel**
+> 
+> Kernel command line:
+> psmouse.synaptics_intertouch=1 pcie_aspm=force rdrand=force rootfstype=f2fs 
+> root=LABEL=gentoo
+> 
+> CONFIG_RTW88=m
+> CONFIG_RTW88_CORE=m
+> CONFIG_RTW88_PCI=m
+> CONFIG_RTW88_8723D=m
+> # CONFIG_RTW88_8822BE is not set
+> # CONFIG_RTW88_8822CE is not set
+> CONFIG_RTW88_8723DE=m
+> # CONFIG_RTW88_8821CE is not set
+> # CONFIG_RTW88_DEBUG is not set
+> # CONFIG_RTW88_DEBUGFS is not set
+> # CONFIG_RTW89 is not set
+
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
+
+#regzbot ^introduced 6bf3a083407b
+#regzbot title wifi: rtw88: resume broken (reboot)
+#regzbot ignore-activity
+
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
+
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
