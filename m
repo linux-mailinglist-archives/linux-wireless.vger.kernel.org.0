@@ -2,158 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A18E06916DC
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 03:51:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C38E691703
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 04:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230350AbjBJCvd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Feb 2023 21:51:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42858 "EHLO
+        id S230108AbjBJDJz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Feb 2023 22:09:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbjBJCvc (ORCPT
+        with ESMTP id S229933AbjBJDJy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Feb 2023 21:51:32 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819827431E;
-        Thu,  9 Feb 2023 18:51:03 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sendonly@marcansoft.com)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 866D541EF0;
-        Fri, 10 Feb 2023 02:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-        t=1675997461; bh=oD5HXirQeIT2xQaWWuTkE6auxXaVpayxwb02Xu0ejvk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=phtFB7EMV0dIgZRy6d78jqpkAKFrcJvZYPNkaq/BBPM7eJL4vUkz0H84W/0FBqV5L
-         tU4eNzOAiUujSEX/dtAfzxu12UO087CEkFrXQWq7iWoTi/3uHCPslYnaSih2rLyqpt
-         NwxxFZpw8EwXXhpW/lCM8PYubVCm+4Jvr/hVXB5YeJt+YL3DPWpd1uVw2oY9qlNTjY
-         y9FnYsHIt2+ia0IGNGsMd7zel4iXNdRVEm6BbtPgpxKbFlvmT+RPzLHiV67+inwATj
-         /DdHGtKlAWbp9SwdeUpKZJKfFYIQdbGzRW+ec42tVWTSNgtLcC/IxZSegy2MsmET5E
-         UJL4G3RrEyCMg==
-From:   Hector Martin <marcan@marcan.st>
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Alexander Prutskov <alep@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Ian Lin <ian.lin@infineon.com>,
-        Soontak Lee <soontak.lee@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Aditya Garg <gargaditya08@live.com>,
-        Jonas Gorski <jonas.gorski@gmail.com>, asahi@lists.linux.dev,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hector Martin <marcan@marcan.st>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH v3 4/4] brcmfmac: pcie: Perform correct BCM4364 firmware selection
-Date:   Fri, 10 Feb 2023 11:50:09 +0900
-Message-Id: <20230210025009.21873-5-marcan@marcan.st>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230210025009.21873-1-marcan@marcan.st>
-References: <20230210025009.21873-1-marcan@marcan.st>
+        Thu, 9 Feb 2023 22:09:54 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294452597A
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Feb 2023 19:09:52 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31A39dFB2023826, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31A39dFB2023826
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 10 Feb 2023 11:09:39 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 10 Feb 2023 11:09:40 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 10 Feb 2023 11:09:39 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Fri, 10 Feb 2023 11:09:39 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Timlee <timlee@realtek.com>
+Subject: pull request: rtw88: 8822c: Update normal firmware to v9.9.14
+Thread-Topic: pull request: rtw88: 8822c: Update normal firmware to v9.9.14
+Thread-Index: AQHZPP0cT5hgR6R3akSr29YtOEwlqQ==
+Date:   Fri, 10 Feb 2023 03:09:39 +0000
+Message-ID: <95bf72c328de6450d8e0136317ea849830e4f67e.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzIvOSDkuIvljYggMTE6NDU6MDA=?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C1ED3F9C5D610A4CBA2575EE3C72646C@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This chip exists in two revisions (B2=r3 and B3=r4) on different
-platforms, and was added without regard to doing proper firmware
-selection or differentiating between them. Fix this to have proper
-per-revision firmwares and support Apple NVRAM selection.
-
-Revision B2 is present on at least these Apple T2 Macs:
-
-kauai:    MacBook Pro 15" (Touch/2018-2019)
-maui:     MacBook Pro 13" (Touch/2018-2019)
-lanai:    Mac mini (Late 2018)
-ekans:    iMac Pro 27" (5K, Late 2017)
-
-And these non-T2 Macs:
-
-nihau:    iMac 27" (5K, 2019)
-
-Revision B3 is present on at least these Apple T2 Macs:
-
-bali:     MacBook Pro 16" (2019)
-trinidad: MacBook Pro 13" (2020, 4 TB3)
-borneo:   MacBook Pro 16" (2019, 5600M)
-kahana:   Mac Pro (2019)
-kahana:   Mac Pro (2019, Rack)
-hanauma:  iMac 27" (5K, 2020)
-kure:     iMac 27" (5K, 2020, 5700/XT)
-
-v2: Also fix the firmware interface for 4364, from BCA to WCC.
-
-Fixes: 24f0bd136264 ("brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Hector Martin <marcan@marcan.st>
----
- .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index d54394885af7..f320b6ce8bff 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -57,7 +57,8 @@ BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
- BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
- BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
- BRCMF_FW_DEF(4359, "brcmfmac4359-pcie");
--BRCMF_FW_DEF(4364, "brcmfmac4364-pcie");
-+BRCMF_FW_CLM_DEF(4364B2, "brcmfmac4364b2-pcie");
-+BRCMF_FW_CLM_DEF(4364B3, "brcmfmac4364b3-pcie");
- BRCMF_FW_DEF(4365B, "brcmfmac4365b-pcie");
- BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
- BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
-@@ -88,7 +89,8 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43570_CHIP_ID, 0xFFFFFFFF, 43570),
- 	BRCMF_FW_ENTRY(BRCM_CC_4358_CHIP_ID, 0xFFFFFFFF, 4358),
- 	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
--	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFFF, 4364),
-+	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0x0000000F, 4364B2), /* 3 */
-+	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFF0, 4364B3), /* 4 */
- 	BRCMF_FW_ENTRY(BRCM_CC_4365_CHIP_ID, 0x0000000F, 4365B),
- 	BRCMF_FW_ENTRY(BRCM_CC_4365_CHIP_ID, 0xFFFFFFF0, 4365C),
- 	BRCMF_FW_ENTRY(BRCM_CC_4366_CHIP_ID, 0x0000000F, 4366B),
-@@ -2003,6 +2005,11 @@ static int brcmf_pcie_read_otp(struct brcmf_pciedev_info *devinfo)
- 		base = 0x8c0;
- 		words = 0xb2;
- 		break;
-+	case BRCM_CC_4364_CHIP_ID:
-+		coreid = BCMA_CORE_CHIPCOMMON;
-+		base = 0x8c0;
-+		words = 0x1a0;
-+		break;
- 	case BRCM_CC_4377_CHIP_ID:
- 	case BRCM_CC_4378_CHIP_ID:
- 		coreid = BCMA_CORE_GCI;
-@@ -2611,7 +2618,7 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_2G_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_5G_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_RAW_DEVICE_ID, WCC),
--	BRCMF_PCIE_DEVICE(BRCM_PCIE_4364_DEVICE_ID, BCA),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4364_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_DEVICE_ID, BCA),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_2G_DEVICE_ID, BCA),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4365_5G_DEVICE_ID, BCA),
--- 
-2.35.1
-
+SGksDQoNClVwZGF0ZSA4ODIyYyBmaXJtd2FyZSBvZiBydHc4OCBkcml2ZXIgdG8gdjkuOS4xNA0K
+DQpUaGFuayB5b3UNClBpbmctS2UNCg0KLS0tDQpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2luY2Ug
+Y29tbWl0IDVjMTFhMzc0Mjk0NzgxMGVlOGJmZmJkNDc2ZWI1YTFiMGM3OTk5ZjI6DQoNCiAgYW1k
+Z3B1OiBBZGQgVkNOIDQuMC4yIGZpcm13YXJlICgyMDIzLTAxLTI1IDA3OjQwOjQxIC0wNTAwKQ0K
+DQphcmUgYXZhaWxhYmxlIGluIHRoZSBHaXQgcmVwb3NpdG9yeSBhdDoNCg0KICBodHRwczovL2dp
+dGh1Yi5jb20vcGtzaGloL2xpbnV4LWZpcm13YXJlLmdpdCBIRUFEDQoNCmZvciB5b3UgdG8gZmV0
+Y2ggY2hhbmdlcyB1cCB0byBjM2YzYmFhZGExY2NjOWI0YzhmNGJkODM4MDM2MTEwYmU2NDAwY2U1
+Og0KDQogIHJ0dzg4OiA4ODIyYzogVXBkYXRlIG5vcm1hbCBmaXJtd2FyZSB0byB2OS45LjE0ICgy
+MDIzLTAyLTEwIDExOjAyOjIxICswODAwKQ0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpDaGluLVllbiBMZWUgKDEpOg0K
+ICAgICAgcnR3ODg6IDg4MjJjOiBVcGRhdGUgbm9ybWFsIGZpcm13YXJlIHRvIHY5LjkuMTQNCg0K
+IHJ0dzg4L3J0dzg4MjJjX2Z3LmJpbiB8IEJpbiAyMDI1NTIgLT4gMjAyNTUyIGJ5dGVzDQogMSBm
+aWxlIGNoYW5nZWQsIDAgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkNCg0KDQo=
