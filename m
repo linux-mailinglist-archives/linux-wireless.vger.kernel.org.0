@@ -2,90 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B297E691D45
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 11:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E2D691DD5
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Feb 2023 12:13:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbjBJKwf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Feb 2023 05:52:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36560 "EHLO
+        id S232350AbjBJLNY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Feb 2023 06:13:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231415AbjBJKwe (ORCPT
+        with ESMTP id S231954AbjBJLNU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Feb 2023 05:52:34 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E61F1B33E
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Feb 2023 02:52:33 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pQR14-0006vJ-EM; Fri, 10 Feb 2023 11:52:30 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pQR12-0007mg-Fc; Fri, 10 Feb 2023 11:52:28 +0100
-Date:   Fri, 10 Feb 2023 11:52:28 +0100
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     Neo Jou <neojou@gmail.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        kernel@pengutronix.de, Alexander Hochbaum <alex@appudo.com>,
-        Da Xue <da@libre.computer>, Po-Hao Huang <phhuang@realtek.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        Viktor Petrenko <g0000ga@gmail.com>
-Subject: Re: [PATCH 2/2] wifi: rtw88: usb: Fix urbs with size multiple of
- bulkout_size
-Message-ID: <20230210105228.GK23347@pengutronix.de>
-References: <20230210092642.685905-1-s.hauer@pengutronix.de>
- <20230210092642.685905-3-s.hauer@pengutronix.de>
+        Fri, 10 Feb 2023 06:13:20 -0500
+Received: from exchange.fintech.ru (e10edge.fintech.ru [195.54.195.159])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8806272DCC;
+        Fri, 10 Feb 2023 03:12:38 -0800 (PST)
+Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
+ (195.54.195.169) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 10 Feb
+ 2023 14:12:31 +0300
+Received: from KANASHIN1.fintech.ru (10.0.253.125) by Ex16-01.fintech.ru
+ (10.0.10.18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Fri, 10 Feb
+ 2023 14:12:31 +0300
+From:   Natalia Petrova <n.petrova@fintech.ru>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+CC:     Natalia Petrova <n.petrova@fintech.ru>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        <linux-wireless@vger.kernel.org>, <b43-dev@lists.infradead.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lvc-project@linuxtesting.org>
+Subject: [PATCH] b43legacy: Add checking for null for ssb_get_devtypedata(dev)
+Date:   Fri, 10 Feb 2023 14:12:28 +0300
+Message-ID: <20230210111228.370513-1-n.petrova@fintech.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230210092642.685905-3-s.hauer@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.0.253.125]
+X-ClientProxiedBy: Ex16-01.fintech.ru (10.0.10.18) To Ex16-01.fintech.ru
+ (10.0.10.18)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 10, 2023 at 10:26:42AM +0100, Sascha Hauer wrote:
-> The hardware can't handle urbs with a data size of multiple of
-> bulkout_size. With such a packet the endpoint gets stuck and only
-> replugging the hardware helps.
-> 
-> Fix this by moving the header eight bytes down, thus making the packet
-> eight bytes bigger. The same is done in rtw_usb_write_data_rsvd_page()
-> already, but not yet for the tx data.
-> 
-> Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/net/wireless/realtek/rtw88/tx.h  |  2 ++
->  drivers/net/wireless/realtek/rtw88/usb.c | 34 +++++++++++++++---------
->  2 files changed, 24 insertions(+), 12 deletions(-)
+Function ssb_get_devtypedata(dev) may return null (next call
+B43legacy_WARN_ON(!wl) is used for error handling, including null-value).
+Therefore, a check is added before calling b43legacy_wireless_exit(),
+where the argument containing this value is expected to be dereferenced.
 
-Please ignore this patch. The problem is real and this patch fixes it,
-but it's way cleaner and more straight forward to just go the USB way
-and set the URB_ZERO_PACKET flag. I'll send an updated series shortly.
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
-Sascha
+Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
+Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
+---
+ drivers/net/wireless/broadcom/b43legacy/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
+index 760136638a95..1ae65679d704 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/main.c
++++ b/drivers/net/wireless/broadcom/b43legacy/main.c
+@@ -3871,7 +3871,7 @@ static int b43legacy_probe(struct ssb_device *dev,
+ 	return err;
+ 
+ err_wireless_exit:
+-	if (first)
++	if (first && wl)
+ 		b43legacy_wireless_exit(dev, wl);
+ 	return err;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.34.1
+
