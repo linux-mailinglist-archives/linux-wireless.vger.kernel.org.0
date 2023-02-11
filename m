@@ -2,266 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3466F692E8F
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Feb 2023 07:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD2C5692FE7
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Feb 2023 11:09:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjBKGOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Feb 2023 01:14:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34104 "EHLO
+        id S229710AbjBKKJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Feb 2023 05:09:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjBKGOP (ORCPT
+        with ESMTP id S229523AbjBKKJI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Feb 2023 01:14:15 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2803635B8
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Feb 2023 22:14:05 -0800 (PST)
-X-UUID: 4669c4baa9d311eda06fc9ecc4dadd91-20230211
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=6UqsLLax6Dcnb/KEB84XQVctgBYv1fuTZX05cSHxEGc=;
-        b=HomXrpnl7RF7E6Sa6rnpyYS7L2WEqBnDdWeoqbYOPq7t/MwhzjCe0+zjcd/c0YIzaHvP/fAlKtnnM7eBPaHJSy9l8SmKE3X+G+M2as9qsH5/vZasI+iuEJVqLDtHmElKBfCIMp628z5QdgOA7KhouM8ydgXPePoPfjgUb5kNtHc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.19,REQID:45e8a290-2231-4279-8ff9-23438b06c04d,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:885ddb2,CLOUDID:5e0bf656-dd49-462e-a4be-2143a3ddc739,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0,NGT
-X-UUID: 4669c4baa9d311eda06fc9ecc4dadd91-20230211
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 943413341; Sat, 11 Feb 2023 14:14:00 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Sat, 11 Feb 2023 14:13:59 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sat, 11 Feb 2023 14:13:58 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        MeiChia Chiu <meichia.chiu@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7996: fix radiotap bitfield
-Date:   Sat, 11 Feb 2023 14:13:58 +0800
-Message-ID: <79c72b8b101f561bae2350b7945cb41bef86aa83.1676095591.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Sat, 11 Feb 2023 05:09:08 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26C632E44;
+        Sat, 11 Feb 2023 02:09:02 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id B70BE42300;
+        Sat, 11 Feb 2023 10:08:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1676110140; bh=xgElBP+tjDeZkk5no9nEVPZ3v18CazedQGwUh/vJETY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=JTGXd2AlOil2xNP6nYXSH5OsC7cMUTKh+G/WVZq/vjZOIFMtzd48SnDx53Mg/VcND
+         NfPRMPuvczFn4Ie2BgxvPlQHe7bAhsXUjKVuBCsB4E+L6BagmaMBpMRNa3ntuui5WS
+         PEZzsusPZw8DNVpngYjxdVpa60xQOIrDys+JMkVs28ZbiaV5w/5SMCMPzmvSaZHzFe
+         N6+bO8EH8aZX8biwIz84pNymvzZ3vuSll3vEg0g+QXUKEgAfvxuMiFdXlgE7DIGNjZ
+         RSKFel60jXPwhiambKMVND1UKQ0yLdnnuionb/8wQZ91Wmam+5AvQbr5igoVWIaKR8
+         x+SQSq5juSoRQ==
+Message-ID: <624c0a20-f4e6-14a5-02a2-eaf7b36e9331@marcan.st>
+Date:   Sat, 11 Feb 2023 19:08:50 +0900
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 1/4] wifi: brcmfmac: Rename Cypress 89459 to BCM4355
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Alexander Prutskov <alep@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Ian Lin <ian.lin@infineon.com>,
+        Soontak Lee <soontak.lee@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Aditya Garg <gargaditya08@live.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        "asahi@lists.linux.dev" <asahi@lists.linux.dev>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>
+References: <20230210025009.21873-1-marcan@marcan.st>
+ <20230210025009.21873-2-marcan@marcan.st>
+ <0cd45af5812345878faf0dc8fa6b0963@realtek.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <0cd45af5812345878faf0dc8fa6b0963@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Update radiotap bitfield.
+On 10/02/2023 12.42, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Hector Martin <marcan@marcan.st>
+>> Sent: Friday, February 10, 2023 10:50 AM
+>> To: Arend van Spriel <aspriel@gmail.com>; Franky Lin <franky.lin@broadcom.com>; Hante Meuleman
+>> <hante.meuleman@broadcom.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller <davem@davemloft.net>; Eric
+>> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>
+>> Cc: Alexander Prutskov <alep@cypress.com>; Chi-Hsien Lin <chi-hsien.lin@cypress.com>; Wright Feng
+>> <wright.feng@cypress.com>; Ian Lin <ian.lin@infineon.com>; Soontak Lee <soontak.lee@cypress.com>; Joseph
+>> chuang <jiac@cypress.com>; Sven Peter <sven@svenpeter.dev>; Alyssa Rosenzweig <alyssa@rosenzweig.io>;
+>> Aditya Garg <gargaditya08@live.com>; Jonas Gorski <jonas.gorski@gmail.com>; asahi@lists.linux.dev;
+>> linux-wireless@vger.kernel.org; brcm80211-dev-list.pdl@broadcom.com; SHA-cyfmac-dev-list@infineon.com;
+>> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Hector Martin <marcan@marcan.st>; Arend van Spriel
+>> <arend.vanspriel@broadcom.com>
+>> Subject: [PATCH v3 1/4] wifi: brcmfmac: Rename Cypress 89459 to BCM4355
+>>
+>> The commit that introduced support for this chip incorrectly claimed it
+>> is a Cypress-specific part, while in actuality it is just a variant of
+>> BCM4355 silicon (as evidenced by the chip ID).
+>>
+>> The relationship between Cypress products and Broadcom products isn't
+>> entirely clear but given what little information is available and prior
+>> art in the driver, it seems the convention should be that originally
+>> Broadcom parts should retain the Broadcom name.
+>>
+>> Thus, rename the relevant constants and firmware file. Also rename the
+>> specific 89459 PCIe ID to BCM43596, which seems to be the original
+>> subvariant name for this PCI ID (as defined in the out-of-tree bcmdhd
+>> driver).
+>>
+>> v2: Since Cypress added this part and will presumably be providing
+>> its supported firmware, we keep the CYW designation for this device.
+>>
+>> v3: Drop the RAW device ID in this commit. We don't do this for the
+>> other chips since apparently some devices with them exist in the wild,
+>> but there is already a 4355 entry with the Broadcom subvendor and WCC
+>> firmware vendor, so adding a generic fallback to Cypress seems
+>> redundant (no reason why a device would have the raw device ID *and* an
+>> explicitly programmed subvendor).
+> 
+> Do you really want to add changes of v2 and v3 to commit message? Or,
+> just want to let reviewers know that? If latter one is what you want,
+> move them after s-o-b with delimiter ---
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 54 ++++++++++---------
- .../net/wireless/mediatek/mt76/mt7996/mac.h   | 41 +++++++-------
- 2 files changed, 47 insertions(+), 48 deletions(-)
+Both; I thought those things were worth mentioning in the commit message
+as it stands on its own, and left the version tags in so reviewers know
+when they were introduced.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c9a9f0e31771..3c3506c7c87a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -260,12 +260,9 @@ mt7996_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
- 				 struct ieee80211_radiotap_he *he,
- 				 __le32 *rxv)
- {
--	u32 ru_h, ru_l;
--	u8 ru, offs = 0;
-+	u32 ru, offs = 0;
- 
--	ru_l = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC_L);
--	ru_h = le32_get_bits(rxv[1], MT_PRXV_HE_RU_ALLOC_H);
--	ru = (u8)(ru_l | ru_h << 4);
-+	ru = le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC);
- 
- 	status->bw = RATE_INFO_BW_HE_RU;
- 
-@@ -330,18 +327,23 @@ mt7996_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32 *rxv)
- 
- 	he_mu->flags2 |= MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
- 			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
--				 le32_get_bits(rxv[2], MT_CRXV_HE_NUM_USER));
-+				 le32_get_bits(rxv[4], MT_CRXV_HE_NUM_USER));
- 
--	he_mu->ru_ch1[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU0);
-+	he_mu->ru_ch1[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU0) & 0xff;
- 
- 	if (status->bw >= RATE_INFO_BW_40) {
- 		he_mu->flags1 |= HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
--		he_mu->ru_ch2[0] = le32_get_bits(rxv[3], MT_CRXV_HE_RU1);
-+		he_mu->ru_ch2[0] = le32_get_bits(rxv[16], MT_CRXV_HE_RU1) & 0xff;
- 	}
- 
- 	if (status->bw >= RATE_INFO_BW_80) {
--		he_mu->ru_ch1[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU2);
--		he_mu->ru_ch2[1] = le32_get_bits(rxv[3], MT_CRXV_HE_RU3);
-+		u32 ru_h, ru_l;
-+
-+		he_mu->ru_ch1[1] = le32_get_bits(rxv[16], MT_CRXV_HE_RU2) & 0xff;
-+
-+		ru_l = le32_get_bits(rxv[16], MT_CRXV_HE_RU3_L);
-+		ru_h = le32_get_bits(rxv[17], MT_CRXV_HE_RU3_H) & 0x7;
-+		he_mu->ru_ch2[1] = (u8)(ru_l | ru_h << 4);
- 	}
- }
- 
-@@ -364,23 +366,23 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			 HE_BITS(DATA2_TXOP_KNOWN),
- 	};
- 	struct ieee80211_radiotap_he *he = NULL;
--	u32 ltf_size = le32_get_bits(rxv[2], MT_CRXV_HE_LTF_SIZE) + 1;
-+	u32 ltf_size = le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
- 
- 	status->flag |= RX_FLAG_RADIOTAP_HE;
- 
- 	he = skb_push(skb, sizeof(known));
- 	memcpy(he, &known, sizeof(known));
- 
--	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[14]) |
--		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[2]);
--	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[11]);
--	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[2]) |
-+	he->data3 = HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[9]) |
-+		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[4]);
-+	he->data4 = HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[13]);
-+	he->data5 = HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[5]) |
- 		    le16_encode_bits(ltf_size,
- 				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SIZE);
- 	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
- 		he->data5 |= HE_BITS(DATA5_TXBF);
--	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[14]) |
--		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[14]);
-+	he->data6 = HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[9]) |
-+		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[9]);
- 
- 	switch (mode) {
- 	case MT_PHY_TYPE_HE_SU:
-@@ -389,22 +391,22 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
- 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[14]) |
--			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data3 |= HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG, rxv[8]) |
-+			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
- 		break;
- 	case MT_PHY_TYPE_HE_EXT_SU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_EXT_SU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN) |
- 			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
- 		break;
- 	case MT_PHY_TYPE_HE_MU:
- 		he->data1 |= HE_BITS(DATA1_FORMAT_MU) |
- 			     HE_BITS(DATA1_UL_DL_KNOWN);
- 
--		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[2]);
--		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[7]);
-+		he->data3 |= HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
-+		he->data4 |= HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[8]);
- 
- 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
- 		mt7996_mac_decode_he_mu_radiotap(skb, rxv);
-@@ -415,10 +417,10 @@ mt7996_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv, u8 mode)
- 			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
- 			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
- 
--		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[11]) |
--			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[11]);
-+		he->data4 |= HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK, rxv[13]) |
-+			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK, rxv[13]);
- 
- 		mt7996_mac_decode_he_radiotap_ru(status, he, rxv);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-index 27184cbac619..2cc218f735d8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-@@ -102,8 +102,7 @@ enum rx_pkt_type {
- #define MT_PRXV_NSTS			GENMASK(10, 7)
- #define MT_PRXV_TXBF			BIT(11)
- #define MT_PRXV_HT_AD_CODE		BIT(12)
--#define MT_PRXV_HE_RU_ALLOC_L		GENMASK(31, 28)
--#define MT_PRXV_HE_RU_ALLOC_H		GENMASK(3, 0)
-+#define MT_PRXV_HE_RU_ALLOC		GENMASK(30, 22)
- #define MT_PRXV_RCPI3			GENMASK(31, 24)
- #define MT_PRXV_RCPI2			GENMASK(23, 16)
- #define MT_PRXV_RCPI1			GENMASK(15, 8)
-@@ -113,34 +112,32 @@ enum rx_pkt_type {
- #define MT_PRXV_TX_MODE			GENMASK(14, 11)
- #define MT_PRXV_FRAME_MODE		GENMASK(2, 0)
- #define MT_PRXV_DCM			BIT(5)
--#define MT_PRXV_NUM_RX			BIT(8, 6)
- 
- /* C-RXV */
--#define MT_CRXV_HT_STBC			GENMASK(1, 0)
--#define MT_CRXV_TX_MODE			GENMASK(7, 4)
--#define MT_CRXV_FRAME_MODE		GENMASK(10, 8)
--#define MT_CRXV_HT_SHORT_GI		GENMASK(14, 13)
--#define MT_CRXV_HE_LTF_SIZE		GENMASK(18, 17)
--#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(20)
--#define MT_CRXV_HE_PE_DISAMBIG		BIT(23)
--#define MT_CRXV_HE_NUM_USER		GENMASK(30, 24)
--#define MT_CRXV_HE_UPLINK		BIT(31)
--#define MT_CRXV_HE_RU0			GENMASK(7, 0)
--#define MT_CRXV_HE_RU1			GENMASK(15, 8)
--#define MT_CRXV_HE_RU2			GENMASK(23, 16)
--#define MT_CRXV_HE_RU3			GENMASK(31, 24)
--
--#define MT_CRXV_HE_MU_AID		GENMASK(30, 20)
-+#define MT_CRXV_HE_NUM_USER		GENMASK(26, 20)
-+#define MT_CRXV_HE_LTF_SIZE		GENMASK(28, 27)
-+#define MT_CRXV_HE_LDPC_EXT_SYM		BIT(30)
-+
-+#define MT_CRXV_HE_PE_DISAMBIG		BIT(1)
-+#define MT_CRXV_HE_UPLINK		BIT(2)
-+
-+#define MT_CRXV_HE_MU_AID		GENMASK(27, 17)
-+#define MT_CRXV_HE_BEAM_CHNG		BIT(29)
-+
-+#define MT_CRXV_HE_DOPPLER		BIT(0)
-+#define MT_CRXV_HE_BSS_COLOR		GENMASK(15, 10)
-+#define MT_CRXV_HE_TXOP_DUR		GENMASK(19, 17)
- 
- #define MT_CRXV_HE_SR_MASK		GENMASK(11, 8)
- #define MT_CRXV_HE_SR1_MASK		GENMASK(16, 12)
- #define MT_CRXV_HE_SR2_MASK             GENMASK(20, 17)
- #define MT_CRXV_HE_SR3_MASK             GENMASK(24, 21)
- 
--#define MT_CRXV_HE_BSS_COLOR		GENMASK(5, 0)
--#define MT_CRXV_HE_TXOP_DUR		GENMASK(12, 6)
--#define MT_CRXV_HE_BEAM_CHNG		BIT(13)
--#define MT_CRXV_HE_DOPPLER		BIT(16)
-+#define MT_CRXV_HE_RU0			GENMASK(8, 0)
-+#define MT_CRXV_HE_RU1			GENMASK(17, 9)
-+#define MT_CRXV_HE_RU2			GENMASK(26, 18)
-+#define MT_CRXV_HE_RU3_L		GENMASK(31, 27)
-+#define MT_CRXV_HE_RU3_H		GENMASK(3, 0)
- 
- enum tx_header_format {
- 	MT_HDR_FORMAT_802_3,
--- 
-2.18.0
-
+- Hector
