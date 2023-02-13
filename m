@@ -2,106 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B0BD694695
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 14:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE21694699
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 14:09:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjBMNI6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 08:08:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50086 "EHLO
+        id S229748AbjBMNJh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 08:09:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230015AbjBMNI5 (ORCPT
+        with ESMTP id S229756AbjBMNJf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 08:08:57 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6CA1ABF7
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 05:08:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD0B16102A
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 13:08:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D95C433EF;
-        Mon, 13 Feb 2023 13:08:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676293721;
-        bh=qPqEjWQmVdVsPqCHjQ6KQTtRmaxlbsWrGrdFABEQqLo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ZomLdiUZ1sjCer0lOEGjL7mUxYoM8CbPkXlP/REgTROVbl+NN8cK1VGG8c+zRdBHv
-         XcZEpbgbeqjo0nrjsU8VKzaKZcoDFuL90Sb6eNVu5syyiKN1ZjGXamSmXhTgZeUl4J
-         E8Zi4mi4RuW8tllFzRB3QVyk3qNSWUNV9Qc4IMTRGNYisJmNnp7NnnEnWpTGso27xS
-         CPe/KdkKh0L1J/CeBEWUcApeWa6T2T+CC6xPrZjTVMK6Aa2lCz1IxfoMCut4/IGIzE
-         CiZHSdaIh+BgXYd4cIKzF0wzD9a6htwFE4JO4zI90wB4McoukSU3bLwy7XfsHxtP7w
-         IKRjJjaPYljpw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     =?utf-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
-Cc:     =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
-        <Evelyn.Tsai@mediatek.com>,
-        "linux-mediatek\@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        =?utf-8?B?TGVvbiBZZW4gKOmhj+iJrw==?= =?utf-8?B?5YSSKQ==?= 
-        <Leon.Yen@mediatek.com>,
-        =?utf-8?B?U2hheW5lIENoZW4g?= =?utf-8?B?KOmZs+i7kuS4nik=?= 
-        <Shayne.Chen@mediatek.com>, "nbd\@nbd.name" <nbd@nbd.name>,
-        "lorenzo\@kernel.org" <lorenzo@kernel.org>,
-        =?utf-8?B?U3RlbGxhIENoYW5nICjlvLXmm4nkvakp?= 
-        <Stella.Chang@mediatek.com>, Sean Wang <Sean.Wang@mediatek.com>,
-        =?utf-8?B?S00gTGluICjmnpfmmIbmsJEp?= <km.lin@mediatek.com>,
-        =?utf-8?B?U291bCBIdWFuZyAo6buD6Iez5pi2KQ==?= 
-        <Soul.Huang@mediatek.com>,
-        =?utf-8?B?WU4gQ2hlbiAo6Zmz5b2l5a+nKQ==?= <YN.Chen@mediatek.com>,
-        =?utf-8?B?UG9zaCBTdW4gKOWtq+eRnuW7tyk=?= <posh.sun@mediatek.com>,
-        =?utf-8?Q?Eric-SY_Chang_=28=E5=BC=B5=E6=9B=B8?=
-         =?utf-8?Q?=E6=BA=90=29?= <Eric-SY.Chang@mediatek.com>,
-        =?utf-8?B?Q0gg?= =?utf-8?B?WWVoICjokYnlv5fosaop?= 
-        <ch.yeh@mediatek.com>,
-        =?utf-8?B?Um9i?= =?utf-8?B?aW4gQ2hpdSAo6YKx5ZyL5r+xKQ==?= 
-        <robin.chiu@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: mt76: support ww power config in dts node
-References: <70b8acb74fef12b10a74501cccd20e0c12f3f134.1675348583.git.deren.wu@mediatek.com>
-        <87cz6k7b59.fsf@kernel.org>
-        <56d3c87227c07caaa92b6b7d4e85b26e780b3a23.camel@mediatek.com>
-Date:   Mon, 13 Feb 2023 15:08:31 +0200
-In-Reply-To: <56d3c87227c07caaa92b6b7d4e85b26e780b3a23.camel@mediatek.com>
-        ("Deren Wu \=\?utf-8\?B\?KOatpuW+t+S7gSkiJ3M\=\?\= message of "Wed, 8 Feb 2023
- 10:04:43 +0000")
-Message-ID: <87bklx67cg.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 13 Feb 2023 08:09:35 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911409001
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 05:09:34 -0800 (PST)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31DBSPDJ004107;
+        Mon, 13 Feb 2023 13:09:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=cHUipU6ET/S0aJAmNFojqgGyyTKEOme+s69n5meWiTo=;
+ b=K7l1uv44gRin6zYLglgTs/Rn7wY3d/2QV9xMiH0OFOU2xqIrzALAH3zDuVI4CYjU0Om6
+ fwKXI361vUNycVL1BnLc/ExahddqLOpj9hf/DyIywOGdGOKyMPhUC0KV+ppiDdVZDh8w
+ BpkTZSU4jH54e+NtUY5ljnnOjZrCHMa5Py9GQgD7HSZtAwHNxj8rgBGOyfegoNCxtKWb
+ U62Uh1c5CDtfemHf1z0gGCxeXdezp81NF/SDX8mZrYA3sfq1L1Bfv5N17yCNa+mjEGYm
+ wMmr2cmN69rmElYKnwYkpAxbu3IspZvQXaK/NU5yyxU+CzVwaLMgyk9MqxhQ4XUnzPsW GA== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3np0qpv6ht-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Feb 2023 13:09:25 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31DD9OqN008555
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Feb 2023 13:09:24 GMT
+Received: from rajkbhag-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.36; Mon, 13 Feb 2023 05:09:23 -0800
+From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Subject: [PATCH 0/2] ath11k: factory test mode support
+Date:   Mon, 13 Feb 2023 18:38:52 +0530
+Message-ID: <20230213130854.2473-1-quic_rajkbhag@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: UPeCKMRv_u3LvK8va6PqrpMMfftLnmTP
+X-Proofpoint-ORIG-GUID: UPeCKMRv_u3LvK8va6PqrpMMfftLnmTP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-13_09,2023-02-13_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 clxscore=1011 bulkscore=0 mlxlogscore=850
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302130118
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Deren Wu (=E6=AD=A6=E5=BE=B7=E4=BB=81)" <Deren.Wu@mediatek.com> writes:
+Device is booted in factory test mode to calibrate the board.
+The commands are sent from a userspace application, which is
+sent to firmware using wmi commands. Firmware will send the
+response back to the application which stores the calibration
+data in caldata.bin file. This file will be loaded when the
+device boots up normally next time.
 
-> Hi Kalle,
->
-> On Wed, 2023-02-08 at 11:35 +0200, Kalle Valo wrote:
->> Deren Wu <deren.wu@mediatek.com> writes:
->>=20
->> > support new node for WW regulatory domain
->>=20
->> The commit log doesn't really explain much. What does this patch do
->> exactly?
->>=20
-> In STA mode, if the host stays in ww regulatory doamin ("00"),
-> NL80211_DFS_UNSET would be set to driver. In such case, mt76 cannot
-> find out the proper dts node to limit power settings. We apply this
-> patch to have a proper power mapping for ww domain.
+Govindaraj Saminathan (1):
+  wifi: ath11k: factory test mode support
 
-Ok. In the future, please always this kind of information to the commit
-log. One vague phrase is not a proper commit log, more info about that
-in the wiki below.
+Sowmiya Sree Elavalagan (1):
+  wifi: ath11k: Allow ath11k to boot without caldata in ftm mode
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+ drivers/net/wireless/ath/ath11k/ahb.c        |   3 +-
+ drivers/net/wireless/ath/ath11k/core.c       |  20 +-
+ drivers/net/wireless/ath/ath11k/core.h       |  14 +-
+ drivers/net/wireless/ath/ath11k/debug.h      |   2 +
+ drivers/net/wireless/ath/ath11k/mac.c        |  13 +-
+ drivers/net/wireless/ath/ath11k/pci.c        |   3 +-
+ drivers/net/wireless/ath/ath11k/qmi.c        |  10 +-
+ drivers/net/wireless/ath/ath11k/testmode.c   | 323 ++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/testmode.h   |  21 +-
+ drivers/net/wireless/ath/ath11k/testmode_i.h |  19 ++
+ drivers/net/wireless/ath/ath11k/wmi.c        |  40 ++-
+ drivers/net/wireless/ath/ath11k/wmi.h        |  20 ++
+ drivers/net/wireless/ath/ath11k/wow.c        |   3 +-
+ 13 files changed, 427 insertions(+), 64 deletions(-)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+
+base-commit: ddd8e84e007263f3aa8993f32a3dd4dc8ec0876a
+-- 
+2.17.1
+
