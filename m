@@ -2,113 +2,183 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9EB16952AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 22:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B4D6952DD
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 22:16:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229806AbjBMVGT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 16:06:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59022 "EHLO
+        id S229642AbjBMVQk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 16:16:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbjBMVGR (ORCPT
+        with ESMTP id S229468AbjBMVQj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 16:06:17 -0500
-Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E27D41E9F0;
-        Mon, 13 Feb 2023 13:06:05 -0800 (PST)
-Date:   Mon, 13 Feb 2023 21:05:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemb.ch;
-        s=protonmail; t=1676322356; x=1676581556;
-        bh=vNl8muu2zut514XDhaSVpRfwNoz1vy088PrrWi2ZfbM=;
-        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=aQHLisANKfKW84wW5vil1FfFh7d+lduBBQIpSZXJ44V7qOa/zQXaOQqfZ138AVAMN
-         zBem9xE+mX67WwimkwcQIMeiaBCAs2cmCq27Hxoa18XuOMX66DPt3R4qoJcPPWSIUa
-         3gffxU9ILyO0SUndvsjCGkB0CBNKMvsNd61aLLAZ0GZwtKj/FLCkjRcLXokRpTgYV6
-         DJesDsBwpPRyZsvVhIWec2DS8/A43yFRRXnapLwXhrrlvgmvQLsFKPcsoZL6hU3i4C
-         cnknkrfYaELOA3OYdjKyJhfCukTROwN406rjcKSd0mqpqXUaInGsIqC4RA3s97NRLy
-         B58vsCiE066NQ==
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-From:   Marc Bornand <dev.mbornand@systemb.ch>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Marc Bornand <dev.mbornand@systemb.ch>,
-        Yohan Prod'homme <kernel@zoddo.fr>, stable@vger.kernel.org
-Subject: [PATCH v3] Set ssid when authenticating
-Message-ID: <20230213210521.1672392-1-dev.mbornand@systemb.ch>
-Feedback-ID: 65519157:user:proton
+        Mon, 13 Feb 2023 16:16:39 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0768219F31;
+        Mon, 13 Feb 2023 13:16:37 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8C538B81910;
+        Mon, 13 Feb 2023 21:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8487C433EF;
+        Mon, 13 Feb 2023 21:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676322995;
+        bh=J/mGmXb0y317qnmiYd6Y9Gqf2IMMx2ljXhRztgwYXk4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=btGLzvIIxF85HtUnkx72Y8Y0hIaAvS3vM111XNlvj7X3n/IKYW2vmKFRhRYBUY4Qj
+         Jw6sggDShIpRDqWLzPMt8okA6QZJMxxHRuuSwq4rpiJPTMQAnfKd66JdnYpqhXjheX
+         kOkKH/yOmkHkJtoHfCI4O9v9/MPHc4uGmtVi9l3ll7IC9sP7Znn+Iiv7PwyNu4APIZ
+         uKOLFLLN1rL/fJ43Jn3anDR3xG7M46zhjCsM1EUcP6VPOukvAcHdrr2XkDOjwUdROB
+         VcdYPJy31Uajwh/3UU2rlAWjimvbfnKQT2pr2Fivj6/3BcXOi55U0GpuQnp+PJzvNO
+         YSNoUPKCgp4gA==
+Date:   Mon, 13 Feb 2023 15:16:33 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, "Leo.Li" <leo.li@realtek.com>,
+        Timlee <timlee@realtek.com>, Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v2 4/5] wifi: rtw89: pci: enable CLK_REQ, ASPM, L1 and
+ L1ss for 8852c
+Message-ID: <20230213211633.GA2931225@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0c5a56d67a64491eb0bac952da1d60b5@realtek.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-changes since v2:
-- The code was tottaly rewritten based on the disscution of the
-  v2 patch.
-- the ssid is set in __cfg80211_connect_result() and only if the ssid is
-  not already set.
-- Do not add an other ssid reset path since it is already done in
-  __cfg80211_disconnected()
+On Mon, Feb 13, 2023 at 01:46:51AM +0000, Ping-Ke Shih wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> > Sent: Thursday, February 9, 2023 6:04 AM
+> > To: Ping-Ke Shih <pkshih@realtek.com>
+> > Cc: Kalle Valo <kvalo@kernel.org>; Leo.Li <leo.li@realtek.com>; Timlee <timlee@realtek.com>; Bernie Huang
+> > <phhuang@realtek.com>; linux-wireless@vger.kernel.org; linux-pci@vger.kernel.org
+> > Subject: Re: [PATCH v2 4/5] wifi: rtw89: pci: enable CLK_REQ, ASPM, L1 and L1ss for 8852c
 
-When a connexion was established without going through
-NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
-Now we set it in __cfg80211_connect_result() when it is not already set.
+It would be better if your email client allows you to respond without
+the unnecessary repetition of the From/To/Cc/Subject lines above.  For
+example, this would be sufficient:
 
-Reported-by: Yohan Prod'homme <kernel@zoddo.fr>
-Fixes: 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
-Cc: linux-wireless@vger.kernel.org
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216711
-Signed-off-by: Marc Bornand <dev.mbornand@systemb.ch>
----
- net/wireless/sme.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+  > On Thursday, February 9, 2023 6:04 AM, Bjorn Helgaas wrote:
+  > > On Wed, Feb 08, 2023 at 09:15:50AM +0000, Ping-Ke Shih wrote:
+  > > > On Fri, Aug 19, 2022 at 02:48:10PM, Ping-Ke Shih wrote:
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 4b5b6ee0fe01..629d7b5f65c1 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -723,6 +723,7 @@ void __cfg80211_connect_result(struct net_device *dev,
- =09=09=09       bool wextev)
- {
- =09struct wireless_dev *wdev =3D dev->ieee80211_ptr;
-+=09const struct element *ssid;
- =09const struct element *country_elem =3D NULL;
- =09const u8 *country_data;
- =09u8 country_datalen;
-@@ -883,6 +884,21 @@ void __cfg80211_connect_result(struct net_device *dev,
- =09=09=09=09   country_data, country_datalen);
- =09kfree(country_data);
+Then it's shorter and easier to figure out who wrote what.
 
-+=09if (wdev->u.client.ssid_len =3D=3D 0) {
-+=09=09rcu_read_lock();
-+=09=09for_each_valid_link(cr, link) {
-+=09=09=09ssid =3D ieee80211_bss_get_elem(cr->links[link].bss,
-+=09=09=09=09=09=09      WLAN_EID_SSID);
-+
-+=09=09=09if (ssid->datalen =3D=3D 0)
-+=09=09=09=09continue;
-+
-+=09=09=09memcpy(wdev->u.client.ssid, ssid->data, ssid->datalen);
-+=09=09=09wdev->u.client.ssid_len =3D ssid->datalen;
-+=09=09}
-+=09=09rcu_read_unlock();
-+=09}
-+
- =09return;
- out:
- =09for_each_valid_link(cr, link)
---
-2.39.1
+> > On Wed, Feb 08, 2023 at 09:15:50AM +0000, Ping-Ke Shih wrote:
+> > > > -----Original Message-----
+> > > > From: Bjorn Helgaas <helgaas@kernel.org>
 
+> > > The chunk of code is to configure L1SS of chip specific setting
+> > > along with standard PCI capability, and normally the setting and
+> > > capability are consistent.  An exception is that PCI capability is
+> > > enabled but chip specific setting is disabled, when we want to use
+> > > module parameter to disable chip specific setting experimentally to
+> > > resolve interoperability problem on some platforms.
+> > 
+> > This is a significant usability problem.  An interoperability problem
+> > means the device doesn't work correctly for some users, and there's no
+> > obvious reason *why* it doesn't work, so they don't know how to fix
+> > it.
+> > 
+> > Module parameters are not a solution because users don't know when
+> > they are needed or how to use them.  This leads to situations like
+> > [1,2,3], where users waste a lot of time flailing around to get the
+> > device to work, and the eventual "solution" is to replace it with
+> > something else:
+> > 
+> >   After replacing the Realtek card with Intel AX200 I do not have the
+> >   described problem anymore.
+> 
+> A cause of interoperability problem could be due to PCI bridge side
+> configured by BIOS. We have fixed this kind of problem many times before.
+> Maybe, this device has less tolerance to handle PCI signals. The module
+> parameter is an alternative way to help users to resolve the problem in
+> their platforms. If people buy a computer with this device built-in, he
+> will meet this problem in low probability because ODM will verify this
+> ahead. If people buy this device themselves to install to their platforms,
+> it is hard to guarantee it can work well, because cause of interoperability
+> could be bride side as mentioned in beginning. 
 
+The BIOS or PCI core should configure both the bridge and the endpoint
+so they are consistent.  If the driver needs to do something, e.g.,
+via a module parameter, that means there's a BIOS or PCI core defect
+that should be fixed.  It should be fixed in the PCI core, not in the
+individual driver.
+
+> > > We don't suggest the use case that L1SS of PCI capability is
+> > > disabled but chip specific setting is enabled, because hardware
+> > > could get abnormal occasionally. Also, it could also get unexpected
+> > > behavior suddenly if we change L1SS dynamically.
+> > >
+> > > Summary:
+> > >
+> > >    PCI capability      chip specific setting       comment
+> > >    --------------      ---------------------       -------
+> > >    enabled             enabled                     ok, currently support
+> > >    disabled            disabled                    ok, currently support
+> > >    enabled             disabled                    experimental case via module parameter
+> > >    disabled            enabled                     don't suggest
+> > 
+> > I think the fact that you need chip-specific code here is a hardware
+> > defect in the rtw89 device.  The whole point of L1SS being in the PCIe
+> > spec is so generic software can configure it without having to know
+> > chip-specific details.
+> > 
+> > > With above reasons, if users meet problem or unexpected result after
+> > > changing L1SS, we may tell them this hardware can't dynamically
+> > > configure L1SS via sysfs interfaces.
+> > 
+> > How can we make this better, so the device works and users never have
+> > to specify those module parameters?
+> 
+> Normally, users don't need to specify this module parameter. If it's
+> really needed, we can add a quirk along with DMI vendor and product
+> name to configure automatically. But, indeed we still need a user to
+> try that module parameter can work on a certain platform.
+
+The fact that the parameter exists means *some* users do need it.  And
+that is a huge problem because those users don't *know* they need it;
+they just see a device that doesn't work, and they don't know why.
+All they can do is try random combinations of parameters to see what
+seems to work.  This just doesn't scale for users that deal with a
+dozen different devices in their system.  We can't expect them to
+fiddle with module parameters for each.
+
+> > Would it help if we had a way to make a quirk that meant "never enable
+> > L1SS for this device"?  Obviously that's not ideal because we want the
+> > power savings of L1SS, but the power saving is only worthwhile if the
+> > device always *works*.
+> > 
+> > Or maybe we could have a quirk that means "the PCI core will never
+> > change the L1SS configuration for this device"?  Would that help?
+> 
+> In fact, we only don't suggest to change L1SS "dynamically". Initially,
+> enable or disable L1SS is usable, and driver will set chip-specific 
+> setting along with standard PCI configuration.
+
+If your device is implemented correctly per the PCIe spec, there
+should be no problem with changing L1SS configuration dynamically.  Of
+course if there are PCI core defects that mean it doesn't work, those
+can and should be fixed.
+
+> So, I think it would be okay to have a quirk that "never change L1SS
+> dynamically".  But, I'm not sure if switching L1SS is a common
+> option for average users?  I mean L1SS normally is configured by
+> developers only, so restrictions aren't always good to them, because
+> they should know what they are doing. 
+
+There are sysfs options for changing L1SS configuration, and it's
+reasonable for users to change that based on changing workload.  I
+expect tools like powertop to take advantage of that eventually.
+
+Bjorn
