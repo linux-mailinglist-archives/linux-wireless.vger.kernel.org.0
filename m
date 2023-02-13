@@ -2,77 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E13D1694DEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 18:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE58694E14
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 18:33:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjBMR02 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 12:26:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40174 "EHLO
+        id S230022AbjBMRdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 12:33:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbjBMR01 (ORCPT
+        with ESMTP id S229680AbjBMRdM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 12:26:27 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A175E19688;
-        Mon, 13 Feb 2023 09:26:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 530BEB81637;
-        Mon, 13 Feb 2023 17:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8430C433B4;
-        Mon, 13 Feb 2023 17:25:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676309158;
-        bh=DHxm33OpmpOZeWHjtjQbXckyZTgIPj3vHeUqIStqU8k=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=pMn6odgFIlGV1xVk3g2Wxc3k9TOkWc3kZ1pD+5lwncB0o1XBnzaY8oa+ET61GF1e7
-         gm0EtF5KBC+GZ1PBMGMMl4H5h3Olbrej1UPXg7CpW7gwY9BroaWuyzcN1PkKkbSyIY
-         28U3FC+t7/NBJFVRXmM3Hns31/kRcDHMOMTox5akRPERqZ2fs09TBmL+Hr2ivfaHyY
-         3lAsMDZ7TIFItjwa3shQot64yuQb3Xjk1Gx0kb5PXcRIMTEd9kc3s4D1vcVugsb5SW
-         3OXX7YA/ABRiEYyJHJO1Nms9beFDGLR65qi+768BTFwIKFjKQNkcmt5IubY2BNdy3g
-         05dWweKbs6jRQ==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 13 Feb 2023 12:33:12 -0500
+Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271541CAC6;
+        Mon, 13 Feb 2023 09:33:00 -0800 (PST)
+Date:   Mon, 13 Feb 2023 17:32:51 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemb.ch;
+        s=protonmail; t=1676309577; x=1676568777;
+        bh=IAvPwW5JFdNEA6N93fJnWUTElrXDvQHH5qEMqEhQ+gc=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=QBE40F4hyiMCm7q4ItAr2ynOs/uLyGeUPilBgdqmgVvpFyvJadYqBDW6l15VVAY9q
+         efzj+XoG1CYMLyPRrch3p3KRpfQpxi/16315dnmNkLIUGrxDTGcCKNMahjNrFk32JR
+         FdAr0Qb8Dm0oDMKFvmmSq7A7hDo5md3mHHgAtX17FXxkfPGlT+JdpHmce5nvHiQJWv
+         c8JqBYF6G3F1ZKFsmfTEGvsJLY2sDJuxQYoVamLJtduf5+TrJLPP5zQcyK1fLVG9O6
+         zc0bsT9B0cqkC17taARQF2Ez0DJ3goEPql6Lif//DeV8gMZKj0p6BPWVkbvP+8IKn+
+         gUTunu8gf4jTw==
+To:     Johannes Berg <johannes@sipsolutions.net>
+From:   Marc Bornand <dev.mbornand@systemb.ch>
+Cc:     linux-wireless@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Yohan Prod'homme <kernel@zoddo.fr>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] Set ssid when authenticating
+Message-ID: <NTBtzDurDf0W90JuEPzaHfxCYkWzyZ5jjPwcy6LpqebS6S1NekVcfBU3sNWczfvhHEJGOSyzQrb40UfSIK8AFZpd71MExKldK7EFnMkkdUk=@systemb.ch>
+In-Reply-To: <5a1d1244c8d3e20408732858442f264d26cc2768.camel@sipsolutions.net>
+References: <20230213105436.595245-1-dev.mbornand@systemb.ch> <5a1d1244c8d3e20408732858442f264d26cc2768.camel@sipsolutions.net>
+Feedback-ID: 65519157:user:proton
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: wifi: zd1211rw: remove redundant decls
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230204200902.1709343-1-trix@redhat.com>
-References: <20230204200902.1709343-1-trix@redhat.com>
-To:     Tom Rix <trix@redhat.com>
-Cc:     kune@deine-taler.de, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tom Rix <trix@redhat.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167630915417.12830.2730153875610217688.kvalo@kernel.org>
-Date:   Mon, 13 Feb 2023 17:25:55 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tom Rix <trix@redhat.com> wrote:
+On Monday, February 13th, 2023 at 12:01, Johannes Berg <johannes@sipsolutio=
+ns.net> wrote:
+>=20
+>=20
+> On Mon, 2023-02-13 at 10:55 +0000, Marc Bornand wrote:
+>=20
+> > changes since v1:
+> > - add some informations
+> > - test it on wireless-2023-01-18 tag
+> > - no real code change
+> >=20
+> > When a connexion was established without going through
+> > NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
+> > Now we set it during when an NL80211_CMD_AUTHENTICATE is issued.
+>=20
+>=20
+> This is incorrect, doing an authentication doesn't require doing an
+> association afterwards, and doesn't necessarily imply any state change
+> in the kernel.
 
-> building with W=2 has these errors
-> redundant redeclaration of ‘zd_rf_generic_patch_6m’ [-Werror=redundant-decls]
-> redundant redeclaration of ‘zd_rf_patch_6m_band_edge’ [-Werror=redundant-decls]
-> 
-> Remove the second decls.
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
-> Reviewed-by: Simon Horman <simon.horman@corigine.com>
+So is it intended behavior that the ssid in wireless_dev is not set
+or is there a place were this state change should happen?
 
-Patch applied to wireless-next.git, thanks.
+>=20
+> > alternatives:
+> > 1. Do the same but during association and not authentication.
+>=20
+>=20
+> Which should probably be done after successful authentication, even in
+> the CONNECT command case, which currently does it in cfg80211_connect()
+> but I guess that should move to __cfg80211_connect_result().
 
-9d5dbfe0e170 wifi: zd1211rw: remove redundant decls
+Is there an existing way to get the ssid in __cfg80211_connect_result()?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230204200902.1709343-1-trix@redhat.com/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>=20
+> > 2. use ieee80211_bss_get_elem in nl80211_send_iface, this would report
+> > the right ssid to userspace, but this would not fix the root cause,
+> > this alos wa the behavior prior to 7b0a0e3c3a882 when the bug was
+> > introduced.
+>=20
+>=20
+> That would be OK too but the reason I changed it there (missing the fact
+> that it wasn't set) is that we have multiple BSSes with MLO. So it's
+> hard to get one to do this with.
+>=20
+> johannes
 
+Just a side question do the BSSes all have the same SSID?
+
+Marc
