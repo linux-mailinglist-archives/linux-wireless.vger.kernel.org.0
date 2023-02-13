@@ -2,99 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2515D69506C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 20:10:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 350DC695206
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 21:38:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230059AbjBMTKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 14:10:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46924 "EHLO
+        id S229713AbjBMUiY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 15:38:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjBMTKY (ORCPT
+        with ESMTP id S229485AbjBMUiX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 14:10:24 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661BE15CA0;
-        Mon, 13 Feb 2023 11:10:22 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 13 Feb 2023 15:38:23 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E939BDDF;
+        Mon, 13 Feb 2023 12:38:22 -0800 (PST)
+Received: from [192.168.10.12] (unknown [39.45.179.179])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1C5A9B818D1;
-        Mon, 13 Feb 2023 19:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43438C4339C;
-        Mon, 13 Feb 2023 19:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676315419;
-        bh=QZT4nkw5tiU/kSW6DeOu7c5zVljrfMg5dq4AfXBk5G4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jZmzlsct3LQGj6WqJFGDr3W4TBUk/M7QqONs9Dhdq+7wwR1zGn2Jj8l0WwnWQXj87
-         GEZ8giN6DfKDA7gIov5YbUYT3Ise8JZQAGhcRIuG32/AhDSe7c78JF9rOBGhbj/nrp
-         Gj9dzQvpml0B3OnrwLIZoAR3DrS2wKXvkfTvlN3cAzqQnfKt9toPNoNa0tUQrYD2nP
-         CgydvBLj86ijP8nR/g0BNUkpWkLWJna0TojVppucLwjL2i1FbTlDXkZlvn2VtbGass
-         EU9fjSB1Fk8hrmCiDhj1Wn4HMFkcw43pF+iQ+ECCy3v2kwBD8nuR1tSY4DbAsPfBJm
-         d1U2A7dnqZX+w==
-Date:   Mon, 13 Feb 2023 19:10:14 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Marc Bornand <dev.mbornand@systemb.ch>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
+        (Authenticated sender: usama.anjum)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id DF25A6600013;
+        Mon, 13 Feb 2023 20:38:17 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1676320701;
+        bh=fq69WVgNbrGinAN68EgUpT0UsJ02u0P+bko0XQCpqXw=;
+        h=Date:Cc:To:From:Subject:From;
+        b=mzNju+SCqbBSDZoGwXMVr08omuvvlAMsFNbYistdArfwoslteAGSQjmlFrpEOpy9o
+         u8nCWRvT/v4nCJctTzmIfcB+cklN4oBPiKOukFxAJwe+D7Q6MagOCABJeRwhq8tVxE
+         Uq+XPJCfWYt2rmmHINgqswtFup2WLKwV7PUYf+SgtLGoAoq8wFUDrHAIGOPn/ha5Ro
+         9q4NyqJLK6PbAAPuk5AIWh8sgKITzZKWPq7emFmZfG+KINMVlvvZMxdgwOvphuigoB
+         +qseBp7vYpn94Ynfuw6a2cPFhlxhtPZ2Fp9z+6fiOCkwXIYrlaFqbKje2EYoT/nSFm
+         Uv7hZwa/HpMJg==
+Message-ID: <2dcc7926-4d80-0d70-edf3-d05ea3dc542e@collabora.com>
+Date:   Tue, 14 Feb 2023 01:38:13 +0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Yohan Prod'homme <kernel@zoddo.fr>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] Set ssid when authenticating
-Message-ID: <Y+qLFmZS4W6SvE9c@spud>
-References: <20230213105436.595245-1-dev.mbornand@systemb.ch>
- <5a1d1244c8d3e20408732858442f264d26cc2768.camel@sipsolutions.net>
- <NTBtzDurDf0W90JuEPzaHfxCYkWzyZ5jjPwcy6LpqebS6S1NekVcfBU3sNWczfvhHEJGOSyzQrb40UfSIK8AFZpd71MExKldK7EFnMkkdUk=@systemb.ch>
- <3a9e70f9fe5ac0724730cb445b593fdb7eeeaae9.camel@sipsolutions.net>
- <IpEe-tq4Ss3KPNzL__A-DUEgn0MKIil7Hf02MWSUxV_mYXALCfMWfoZLQCiV6Rr5JGawMTI0FnKfNuQihm9WzLf-eGfeDOfU8sV9fzmBz8w=@systemb.ch>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="q0hWsXs2KtDgx7dR"
-Content-Disposition: inline
-In-Reply-To: <IpEe-tq4Ss3KPNzL__A-DUEgn0MKIil7Hf02MWSUxV_mYXALCfMWfoZLQCiV6Rr5JGawMTI0FnKfNuQihm9WzLf-eGfeDOfU8sV9fzmBz8w=@systemb.ch>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Paolo Abeni <pabeni@redhat.com>
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: [Issue Report] Realtek 8852AE Bluetooth audio issues while using WiFi
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
---q0hWsXs2KtDgx7dR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I'm running 6.1.0-3 kernel and getting Bluetooth audio glitches constantly
+on a pair of buds and all the time when WiFi is connecting and working on
+RTL 8852AE card. Some Bluetooth audio devices work fine without issue. But
+some devices get glitchy audio all the time when Wifi is being used. The
+audio becomes more and more glitchy as the WiFi use increases. [1] mentions
+that the problem for Realtek 8723BE gets solved by switching to 5GHz wifi
+or upgrading drives. Is this issue present on other operating systems for
+this chip as well? Can it be solved for Linux if Wifi is used at 2.4 GHz?
 
-On Mon, Feb 13, 2023 at 07:04:22PM +0000, Marc Bornand wrote:
-> On Monday, February 13th, 2023 at 18:37, Johannes Berg <johannes@sipsolutions.net> wrote:
-> > As an aside - there's little point in encrypting the mail sent to me
-> > when you send it also to a public list :) Just makes it more annoying to
-> > use.
+Any pointers on this problem would be much appreciated.
 
-> Really Sorry, The mail service I am using is currently not letting me deactivate
-> encryption for recipients with a wkd, I think I will try to contact support
-> and ask there.
+04:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8852AE
+802.11ax PCIe Wireless Network Adapter
+        Subsystem: Lenovo RTL8852AE 802.11ax PCIe Wireless Network Adapter
+        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr-
+Stepping- SERR- FastB2B- DisINTx+
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 64 bytes
+        Interrupt: pin A routed to IRQ 100
+        IOMMU group: 15
+        Region 0: I/O ports at 1000 [size=256]
+        Region 2: Memory at d1700000 (64-bit, non-prefetchable) [size=1M]
+        Capabilities: <access denied>
+        Kernel driver in use: rtw89_8852ae
+        Kernel modules: rtw89_8852ae
 
-It's proton isn't it?
+[1] https://wiki.archlinux.org/title/bluetooth_headset
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/process/email-clients.rst#n354
-
-Good luck with their support, I'm curious how you get on!
-
-
---q0hWsXs2KtDgx7dR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY+qLFgAKCRB4tDGHoIJi
-0uiZAQCoC9GFuzxwZHOpzHF/OJ1oDqG6plMl6vsh9YSHhz4a3AD/fcQawYmivS/4
-Tzu6JpzqH16gZg6BnPf+XyOpiPca4AY=
-=OQ4k
------END PGP SIGNATURE-----
-
---q0hWsXs2KtDgx7dR--
+-- 
+BR,
+Muhammad Usama Anjum
