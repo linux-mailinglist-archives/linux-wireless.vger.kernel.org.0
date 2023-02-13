@@ -2,63 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC5B5694D13
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 17:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC97E694D1E
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 17:44:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231157AbjBMQkY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 11:40:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34692 "EHLO
+        id S229985AbjBMQo5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 11:44:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230165AbjBMQkS (ORCPT
+        with ESMTP id S229489AbjBMQo4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 11:40:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF383AB1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 08:39:30 -0800 (PST)
+        Mon, 13 Feb 2023 11:44:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6EA2DBD5
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 08:44:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676306370;
+        s=mimecast20190719; t=1676306646;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=+qAAmSC/RdZV41RXB0GFMswk+G+3tU5R49dqo8QmqQA=;
-        b=CLyX0IGVefQ02eRfrcpcu/Fxx3NeAfJ6rP2+jktJY5fbhs8jJMWYnixXUkR8yz7Xb+M+p7
-        QF3bHNOTzrAdl2YOWUJsYSI/UwTvc5+ypjEq0UtKDAgwDJ6pHC7M8wqP06KDUC9CmiQWxE
-        Uo7tQ9/FWbM0eI54XfcqBqU1wQ0+Os8=
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
- [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=p2uiqF8o9JdkRigcIZc+ZpBFYKuDDGtLRLHIO1Ia0Y4=;
+        b=YM+938TkwOJ8klLF9BbUEGi8Xp5V41OFkG/4vnhqau1iaLSft1pc5jkYRlWrCt/MxxDVlF
+        b98QvdJcyc6LvAr6tPnahoQSdc8XQ8rOCIt5I228wzcoBzfc7A1+iQJ+aKFyFanoF49az8
+        UevO/oKJI0RK/QQfdccKtFwivIGI+Vo=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-217-QGEqOtqdMiqd9ysUpmBxvA-1; Mon, 13 Feb 2023 11:39:29 -0500
-X-MC-Unique: QGEqOtqdMiqd9ysUpmBxvA-1
-Received: by mail-vk1-f200.google.com with SMTP id n69-20020a1fbd48000000b004015f66acfdso1731591vkf.15
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 08:39:28 -0800 (PST)
+ us-mta-590-GwNjZTQlN3qN8oiHMg6TqA-1; Mon, 13 Feb 2023 11:44:05 -0500
+X-MC-Unique: GwNjZTQlN3qN8oiHMg6TqA-1
+Received: by mail-ua1-f70.google.com with SMTP id f6-20020ab03d06000000b0068a65937391so1726275uax.6
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 08:44:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1676306368;
+        d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+qAAmSC/RdZV41RXB0GFMswk+G+3tU5R49dqo8QmqQA=;
-        b=42Z0HZNANfC6hai516zJXBfydq9KRq7F9+GxzxPNOOs+pvTA9txljSn1PvYV1NLsHe
-         8kiuI22gMuZZwnR2+FNnj3Tqd1OmIjIw2DSCTa/3g6NzHhMR7OL3wbLycQbIXeMxcI/X
-         hV4JfHKiUbOGOTdKiIXF5mgSalbXmNRv/mXv7ZGq5p2PYkGI/A8iCwZp6kDKrDr35k1t
-         /cNkBRvJmZ8MtQ0FFxHa32B+P875LCuvNK5yc7q4k8vRpnW1x6+Kq70Qvo5tJWDjzxph
-         Zbv+iawTq02tVxn/ncujXj76vRX2CAxuIe1JEpBnv6ZxslrlJNrzFuH5YL2jG1zHLw88
-         WH0Q==
-X-Gm-Message-State: AO0yUKUoq6OEf3mhFCOkS9oSndLnry4ce8WSMeeyC9UtWzTt3qxRl5Ta
-        eUtdjWSJUnacTAnOhVH+JsCEMDVRS/TlKzo6gj84ghcsO77No2Rco1DtqPMALliXhYmwj57Oj7A
-        ALfIKNgbebH7pTdNPT+TBVbwbGkt16403cfHt+h4H7Xo=
-X-Received: by 2002:a67:e087:0:b0:412:45d2:b3db with SMTP id f7-20020a67e087000000b0041245d2b3dbmr210451vsl.40.1676306368374;
-        Mon, 13 Feb 2023 08:39:28 -0800 (PST)
-X-Google-Smtp-Source: AK7set+qZ97j8GyNwGUqw/4y0w/veR+TgM//1Z1Z/a+q/FO9QSBVpNZsFnr0pldGW1SMqDW9TIaw5LwH9euZUMlrNlw=
-X-Received: by 2002:a67:e087:0:b0:412:45d2:b3db with SMTP id
- f7-20020a67e087000000b0041245d2b3dbmr210426vsl.40.1676306368108; Mon, 13 Feb
- 2023 08:39:28 -0800 (PST)
+        bh=p2uiqF8o9JdkRigcIZc+ZpBFYKuDDGtLRLHIO1Ia0Y4=;
+        b=PkgKgw3Vify+ukXkmvg3ZpBwRmhjmbmUFDFT2AufetgrYcv4JkL9cGkekpgy+8Vpbv
+         YpJHN3A0Ac8x9iom41MpgHyQDFxeX3rUhzLytzPbjybdy9lvUWRtTPhWPeEI8Vur9XaX
+         LVAsfKChGs+G1qD8Y5r/nXRXhnE+ZhK0OSwUZX9Bpo+ND7QpDum35mkpaalqruRjieKh
+         Yd/g76uAtDIOqmJ5UITVEPgiDTn1Kam6/UC80S8mlvy4zMLI9envHbC5VioMGmuh44uw
+         NoH8BdXHbuAVwtJBCISnB27DhKZIPmdVWoe3U885jv1fqexNOPRzoaR5XyR4N4AjRcPR
+         IzUw==
+X-Gm-Message-State: AO0yUKV9TpjEqbSFFnwSUcG3fakLYI+lYNxBVUD94N9yd/7gb7lYIEN3
+        8dauSUljaMDt0MDMRPbYsyTabFl8VYpcMLnfOVpNA1VBTydI0/FwV/5o26Z+1yuOStGrmYIxUi1
+        f73RuZLCD/JmRnPyWaJgbiZ2wSofCA1IBjAfF2Jw7c5g=
+X-Received: by 2002:ab0:7702:0:b0:68a:c03f:8bcf with SMTP id z2-20020ab07702000000b0068ac03f8bcfmr39158uaq.15.1676306642682;
+        Mon, 13 Feb 2023 08:44:02 -0800 (PST)
+X-Google-Smtp-Source: AK7set/2c7YX+hhz2VLCQjUBSZHXtNzsjxLvz6cXa3Ns67kjAfZIDy8YGKX0capXm6mvrk9bs5TUZ2nXBNYO6+cBCdk=
+X-Received: by 2002:ab0:7702:0:b0:68a:c03f:8bcf with SMTP id
+ z2-20020ab07702000000b0068ac03f8bcfmr39135uaq.15.1676306642375; Mon, 13 Feb
+ 2023 08:44:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20230210025009.21873-1-marcan@marcan.st> <20230210025009.21873-2-marcan@marcan.st>
-In-Reply-To: <20230210025009.21873-2-marcan@marcan.st>
+References: <20230212063813.27622-1-marcan@marcan.st> <20230212063813.27622-2-marcan@marcan.st>
+In-Reply-To: <20230212063813.27622-2-marcan@marcan.st>
 From:   Eric Curtin <ecurtin@redhat.com>
-Date:   Mon, 13 Feb 2023 16:39:12 +0000
-Message-ID: <CAOgh=FyHs+kG-hVamwyHDefE9TLOO-R=ZKs3VciaBhvW+nBsKw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] wifi: brcmfmac: Rename Cypress 89459 to BCM4355
+Date:   Mon, 13 Feb 2023 16:43:46 +0000
+Message-ID: <CAOgh=Fz_ma1t6H_p2XQRpq81=4q7MjZuht_f2gA6V=-LmRhufg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] wifi: brcmfmac: Rename Cypress 89459 to BCM4355
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -69,10 +69,7 @@ Cc:     Arend van Spriel <aspriel@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Alexander Prutskov <alep@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
         Ian Lin <ian.lin@infineon.com>,
-        Soontak Lee <soontak.lee@cypress.com>,
         Joseph chuang <jiac@cypress.com>,
         Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
@@ -86,7 +83,7 @@ Cc:     Arend van Spriel <aspriel@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,7 +91,7 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 10 Feb 2023 at 02:59, Hector Martin <marcan@marcan.st> wrote:
+On Sun, 12 Feb 2023 at 06:46, Hector Martin <marcan@marcan.st> wrote:
 >
 > The commit that introduced support for this chip incorrectly claimed it
 > is a Cypress-specific part, while in actuality it is just a variant of
@@ -110,10 +107,10 @@ On Fri, 10 Feb 2023 at 02:59, Hector Martin <marcan@marcan.st> wrote:
 > subvariant name for this PCI ID (as defined in the out-of-tree bcmdhd
 > driver).
 >
-> v2: Since Cypress added this part and will presumably be providing
-> its supported firmware, we keep the CYW designation for this device.
+> Since Cypress added this part and will presumably be providing its
+> supported firmware, we keep the CYW designation for this device.
 >
-> v3: Drop the RAW device ID in this commit. We don't do this for the
+> We also drop the RAW device ID in this commit. We don't do this for the
 > other chips since apparently some devices with them exist in the wild,
 > but there is already a 4355 entry with the Broadcom subvendor and WCC
 > firmware vendor, so adding a generic fallback to Cypress seems
@@ -123,8 +120,6 @@ On Fri, 10 Feb 2023 at 02:59, Hector Martin <marcan@marcan.st> wrote:
 > Fixes: dce45ded7619 ("brcmfmac: Support 89459 pcie")
 > Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
-
-LGTM
 
 Reviewed-by: Eric Curtin <ecurtin@redhat.com>
 
