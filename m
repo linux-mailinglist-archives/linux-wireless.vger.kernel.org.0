@@ -2,62 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2128694A0E
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 16:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85037694A73
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 16:10:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231390AbjBMPEV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 10:04:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38230 "EHLO
+        id S231501AbjBMPKu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 10:10:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231367AbjBMPET (ORCPT
+        with ESMTP id S229869AbjBMPKt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 10:04:19 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB7E1C7E4;
-        Mon, 13 Feb 2023 07:04:01 -0800 (PST)
+        Mon, 13 Feb 2023 10:10:49 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8788C558D;
+        Mon, 13 Feb 2023 07:10:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6E12BB81257;
-        Mon, 13 Feb 2023 15:03:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2BDC4339B;
-        Mon, 13 Feb 2023 15:03:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25C426111D;
+        Mon, 13 Feb 2023 15:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74299C433D2;
+        Mon, 13 Feb 2023 15:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676300631;
-        bh=+wEwi3uP6m+OmiYJZXywwSEgwz7I5NuC9HzyYKFbRm4=;
+        s=k20201202; t=1676301042;
+        bh=DbelEs3Yzk8KGr6CqAiw2wK2ac7px2sdZn6CkCl4wWw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=QoWMvey/OJC7lIr4yZ9tWaFKtgh6fLbY6hn+ORxeTB0NUkCSFz9y1KVxEG8klG1SV
-         hpq8BbH7DxBkfQO4p1/KVcoFoo5nOloFAcFUag611jvwZsMJSGN7280gCWtOjuVSpZ
-         USPRd951JzYLDrhNrE7zaZU4cwr4VnSoPfeNpLVutlG0fIrqJu1+qBYJFUWo55zd6M
-         e/4uo6KATDUFyO8qZQwVPQutYdtQRvYsXcn9Ww6aSwPHRdnI1DhPjd1opBJrAkkFO5
-         fYEHvlqNQFyJ6wNxzzbahbYDa8AMQGN2/EHXii0ZxWcNL8m53/NCLzKXc7KCFhwTRU
-         uVPbrH8UFs58w==
+        b=WR7Gid7OqxMxE9IYk2V1QpOsAXnPM6mXfIuF6UWwuOZ3RZkjM6gkkXBlOEX8pzk84
+         8HzMSUbvtCVpjTJOm1kKPLXiwTMQkp7aRdCGDEz+CjA5fhGG1JEIRnk6RBYII0sIuU
+         /WF/V3gTi1X8xS7R1769BjAHyAY16OzzgBkutOBz6hitZmBhKPWZq7Ap0x4BlPfaY9
+         /qYr28EYYCPvDpuTZWRIcD/gFxsZsS65zUz0tD1Izs7ot/9jEFGYOxXOiSKv3LWdbC
+         4mlRhHvi5S/pBeA2SP2IKgzYchU5Rd8hM/SvEUWMIURk2sGUZ8ujnI9uBpVZtWWKVa
+         0Mh9Mh+dObUFQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] brcmfmac: support CQM RSSI notification with older
- firmware
+Subject: Re: [PATCH 1/2 v2] iwl4965: Add missing check for
+ create_singlethread_workqueue
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230124104248.2917465-1-john@metanate.com>
-References: <20230124104248.2917465-1-john@metanate.com>
-To:     John Keeping <john@metanate.com>
-Cc:     netdev@vger.kernel.org, John Keeping <john@metanate.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        =?utf-8?q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org
+In-Reply-To: <20230209010748.45454-1-jiasheng@iscas.ac.cn>
+References: <20230209010748.45454-1-jiasheng@iscas.ac.cn>
+To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Cc:     stf_xl@wp.pl, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167630062469.12830.3942976448765702685.kvalo@kernel.org>
-Date:   Mon, 13 Feb 2023 15:03:47 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <167630103649.12830.14676459865773332025.kvalo@kernel.org>
+Date:   Mon, 13 Feb 2023 15:10:40 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,24 +57,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-John Keeping <john@metanate.com> wrote:
+Jiasheng Jiang <jiasheng@iscas.ac.cn> wrote:
 
-> Using the BCM4339 firmware from linux-firmware (version "BCM4339/2 wl0:
-> Sep  5 2019 11:05:52 version 6.37.39.113 (r722271 CY)" from
-> cypress/cyfmac4339-sdio.bin) the RSSI respose is only 4 bytes, which
-> results in an error being logged.
+> Add the check for the return value of the create_singlethread_workqueue
+> in order to avoid NULL pointer dereference.
 > 
-> It seems that older devices send only the RSSI field and neither SNR nor
-> noise is included.  Handle this by accepting a 4 byte message and
-> reading only the RSSI from it.
-> 
-> Fixes: 7dd56ea45a66 ("brcmfmac: add support for CQM RSSI notifications")
-> Signed-off-by: John Keeping <john@metanate.com>
+> Fixes: b481de9ca074 ("[IWLWIFI]: add iwlwifi wireless drivers")
+> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
-Arend, could you take a look?
+A tip for future submissions, when you submit a new version please submit all
+patches from the patchset as v2. It's difficult to pick patches with different
+versions.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230124104248.2917465-1-john@metanate.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230209010748.45454-1-jiasheng@iscas.ac.cn/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
