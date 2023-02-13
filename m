@@ -2,50 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B4D6952DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 22:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C3569534C
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 22:42:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjBMVQk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 16:16:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        id S230300AbjBMVmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 16:42:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjBMVQj (ORCPT
+        with ESMTP id S229891AbjBMVmQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 16:16:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0768219F31;
-        Mon, 13 Feb 2023 13:16:37 -0800 (PST)
+        Mon, 13 Feb 2023 16:42:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6064E468F;
+        Mon, 13 Feb 2023 13:42:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8C538B81910;
-        Mon, 13 Feb 2023 21:16:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8487C433EF;
-        Mon, 13 Feb 2023 21:16:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBE1E612CF;
+        Mon, 13 Feb 2023 21:42:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F44C433EF;
+        Mon, 13 Feb 2023 21:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676322995;
-        bh=J/mGmXb0y317qnmiYd6Y9Gqf2IMMx2ljXhRztgwYXk4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=btGLzvIIxF85HtUnkx72Y8Y0hIaAvS3vM111XNlvj7X3n/IKYW2vmKFRhRYBUY4Qj
-         Jw6sggDShIpRDqWLzPMt8okA6QZJMxxHRuuSwq4rpiJPTMQAnfKd66JdnYpqhXjheX
-         kOkKH/yOmkHkJtoHfCI4O9v9/MPHc4uGmtVi9l3ll7IC9sP7Znn+Iiv7PwyNu4APIZ
-         uKOLFLLN1rL/fJ43Jn3anDR3xG7M46zhjCsM1EUcP6VPOukvAcHdrr2XkDOjwUdROB
-         VcdYPJy31Uajwh/3UU2rlAWjimvbfnKQT2pr2Fivj6/3BcXOi55U0GpuQnp+PJzvNO
-         YSNoUPKCgp4gA==
-Date:   Mon, 13 Feb 2023 15:16:33 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, "Leo.Li" <leo.li@realtek.com>,
-        Timlee <timlee@realtek.com>, Bernie Huang <phhuang@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v2 4/5] wifi: rtw89: pci: enable CLK_REQ, ASPM, L1 and
- L1ss for 8852c
-Message-ID: <20230213211633.GA2931225@bhelgaas>
+        s=k20201202; t=1676324533;
+        bh=rOYvHJNGXd8NF4EsktaSRa4f4jOwg6EFR8VVJBsgOnY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gZAFwyR0kPgpL78DYHN7WwQkqLUVCFmMCHQxD58hm3QOE6g5EVhMvUGA1uAh51DRz
+         Qmt5SvdI8kAfyWAkrBYFd/9mijv5DE7ibxs+wvI8e/DzHHNEZnsmijf7Nc2GaoMlIn
+         Vs7coBIa6L7JfVFY96ysmtOctoy9hm1HSmSXKeUhEuuFRPmLBg5nU50Vyv16/1KL/Q
+         fSQiNJEw2s+GK8QUWwkMs2sweurepH6mnYE3YH9/5miDYCAQqiarZuIKapZOGt3yF3
+         xBlnInJVfre/aX54H4v5HquYoHT8KUnQbb8OicAyIczGdq8xXIiK4GWk76YKc/N6fL
+         t4HKK2/Z1ziKg==
+Date:   Mon, 13 Feb 2023 13:44:17 -0800
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Elliot Berman <quic_eberman@quicinc.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH] firmware: qcom_scm: Use fixed width src vm bitmap
+Message-ID: <20230213214417.mtcpeultvynyls6s@ripper>
+References: <20230213181832.3489174-1-quic_eberman@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0c5a56d67a64491eb0bac952da1d60b5@realtek.com>
+In-Reply-To: <20230213181832.3489174-1-quic_eberman@quicinc.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,130 +66,180 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 01:46:51AM +0000, Ping-Ke Shih wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: Thursday, February 9, 2023 6:04 AM
-> > To: Ping-Ke Shih <pkshih@realtek.com>
-> > Cc: Kalle Valo <kvalo@kernel.org>; Leo.Li <leo.li@realtek.com>; Timlee <timlee@realtek.com>; Bernie Huang
-> > <phhuang@realtek.com>; linux-wireless@vger.kernel.org; linux-pci@vger.kernel.org
-> > Subject: Re: [PATCH v2 4/5] wifi: rtw89: pci: enable CLK_REQ, ASPM, L1 and L1ss for 8852c
-
-It would be better if your email client allows you to respond without
-the unnecessary repetition of the From/To/Cc/Subject lines above.  For
-example, this would be sufficient:
-
-  > On Thursday, February 9, 2023 6:04 AM, Bjorn Helgaas wrote:
-  > > On Wed, Feb 08, 2023 at 09:15:50AM +0000, Ping-Ke Shih wrote:
-  > > > On Fri, Aug 19, 2022 at 02:48:10PM, Ping-Ke Shih wrote:
-
-Then it's shorter and easier to figure out who wrote what.
-
-> > On Wed, Feb 08, 2023 at 09:15:50AM +0000, Ping-Ke Shih wrote:
-> > > > -----Original Message-----
-> > > > From: Bjorn Helgaas <helgaas@kernel.org>
-
-> > > The chunk of code is to configure L1SS of chip specific setting
-> > > along with standard PCI capability, and normally the setting and
-> > > capability are consistent.  An exception is that PCI capability is
-> > > enabled but chip specific setting is disabled, when we want to use
-> > > module parameter to disable chip specific setting experimentally to
-> > > resolve interoperability problem on some platforms.
-> > 
-> > This is a significant usability problem.  An interoperability problem
-> > means the device doesn't work correctly for some users, and there's no
-> > obvious reason *why* it doesn't work, so they don't know how to fix
-> > it.
-> > 
-> > Module parameters are not a solution because users don't know when
-> > they are needed or how to use them.  This leads to situations like
-> > [1,2,3], where users waste a lot of time flailing around to get the
-> > device to work, and the eventual "solution" is to replace it with
-> > something else:
-> > 
-> >   After replacing the Realtek card with Intel AX200 I do not have the
-> >   described problem anymore.
+On Mon, Feb 13, 2023 at 10:18:29AM -0800, Elliot Berman wrote:
+> The maximum VMID for assign_mem is 63. Use a u64 to represent this
+> bitmap instead of architecture-dependent "unsigned int" which varies in
+> size on 32-bit and 64-bit platforms.
 > 
-> A cause of interoperability problem could be due to PCI bridge side
-> configured by BIOS. We have fixed this kind of problem many times before.
-> Maybe, this device has less tolerance to handle PCI signals. The module
-> parameter is an alternative way to help users to resolve the problem in
-> their platforms. If people buy a computer with this device built-in, he
-> will meet this problem in low probability because ODM will verify this
-> ahead. If people buy this device themselves to install to their platforms,
-> it is hard to guarantee it can work well, because cause of interoperability
-> could be bride side as mentioned in beginning. 
+> Acked-by: Kalle Valo <kvalo@kernel.org> (ath10k)
+> Tested-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
 
-The BIOS or PCI core should configure both the bridge and the endpoint
-so they are consistent.  If the driver needs to do something, e.g.,
-via a module parameter, that means there's a BIOS or PCI core defect
-that should be fixed.  It should be fixed in the PCI core, not in the
-individual driver.
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 
-> > > We don't suggest the use case that L1SS of PCI capability is
-> > > disabled but chip specific setting is enabled, because hardware
-> > > could get abnormal occasionally. Also, it could also get unexpected
-> > > behavior suddenly if we change L1SS dynamically.
-> > >
-> > > Summary:
-> > >
-> > >    PCI capability      chip specific setting       comment
-> > >    --------------      ---------------------       -------
-> > >    enabled             enabled                     ok, currently support
-> > >    disabled            disabled                    ok, currently support
-> > >    enabled             disabled                    experimental case via module parameter
-> > >    disabled            enabled                     don't suggest
-> > 
-> > I think the fact that you need chip-specific code here is a hardware
-> > defect in the rtw89 device.  The whole point of L1SS being in the PCIe
-> > spec is so generic software can configure it without having to know
-> > chip-specific details.
-> > 
-> > > With above reasons, if users meet problem or unexpected result after
-> > > changing L1SS, we may tell them this hardware can't dynamically
-> > > configure L1SS via sysfs interfaces.
-> > 
-> > How can we make this better, so the device works and users never have
-> > to specify those module parameters?
-> 
-> Normally, users don't need to specify this module parameter. If it's
-> really needed, we can add a quirk along with DMI vendor and product
-> name to configure automatically. But, indeed we still need a user to
-> try that module parameter can work on a certain platform.
+@Greg, would you mind taking this through your tree for v6.3, you
+already have a related change in fastrpc.c in your tree...
 
-The fact that the parameter exists means *some* users do need it.  And
-that is a huge problem because those users don't *know* they need it;
-they just see a device that doesn't work, and they don't know why.
-All they can do is try random combinations of parameters to see what
-seems to work.  This just doesn't scale for users that deal with a
-dozen different devices in their system.  We can't expect them to
-fiddle with module parameters for each.
-
-> > Would it help if we had a way to make a quirk that meant "never enable
-> > L1SS for this device"?  Obviously that's not ideal because we want the
-> > power savings of L1SS, but the power saving is only worthwhile if the
-> > device always *works*.
-> > 
-> > Or maybe we could have a quirk that means "the PCI core will never
-> > change the L1SS configuration for this device"?  Would that help?
-> 
-> In fact, we only don't suggest to change L1SS "dynamically". Initially,
-> enable or disable L1SS is usable, and driver will set chip-specific 
-> setting along with standard PCI configuration.
-
-If your device is implemented correctly per the PCIe spec, there
-should be no problem with changing L1SS configuration dynamically.  Of
-course if there are PCI core defects that mean it doesn't work, those
-can and should be fixed.
-
-> So, I think it would be okay to have a quirk that "never change L1SS
-> dynamically".  But, I'm not sure if switching L1SS is a common
-> option for average users?  I mean L1SS normally is configured by
-> developers only, so restrictions aren't always good to them, because
-> they should know what they are doing. 
-
-There are sysfs options for changing L1SS configuration, and it's
-reasonable for users to change that based on changing workload.  I
-expect tools like powertop to take advantage of that eventually.
-
+Regards,
 Bjorn
+
+> ---
+>  drivers/firmware/qcom_scm.c            | 12 +++++++-----
+>  drivers/misc/fastrpc.c                 |  2 +-
+>  drivers/net/wireless/ath/ath10k/qmi.c  |  4 ++--
+>  drivers/remoteproc/qcom_q6v5_mss.c     |  8 ++++----
+>  drivers/remoteproc/qcom_q6v5_pas.c     |  2 +-
+>  drivers/soc/qcom/rmtfs_mem.c           |  2 +-
+>  include/linux/firmware/qcom/qcom_scm.h |  2 +-
+>  7 files changed, 17 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+> index 468d4d5ab550..b95616b35bff 100644
+> --- a/drivers/firmware/qcom_scm.c
+> +++ b/drivers/firmware/qcom_scm.c
+> @@ -905,7 +905,7 @@ static int __qcom_scm_assign_mem(struct device *dev, phys_addr_t mem_region,
+>   * Return negative errno on failure or 0 on success with @srcvm updated.
+>   */
+>  int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
+> -			unsigned int *srcvm,
+> +			u64 *srcvm,
+>  			const struct qcom_scm_vmperm *newvm,
+>  			unsigned int dest_cnt)
+>  {
+> @@ -922,9 +922,9 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
+>  	__le32 *src;
+>  	void *ptr;
+>  	int ret, i, b;
+> -	unsigned long srcvm_bits = *srcvm;
+> +	u64 srcvm_bits = *srcvm;
+>  
+> -	src_sz = hweight_long(srcvm_bits) * sizeof(*src);
+> +	src_sz = hweight64(srcvm_bits) * sizeof(*src);
+>  	mem_to_map_sz = sizeof(*mem_to_map);
+>  	dest_sz = dest_cnt * sizeof(*destvm);
+>  	ptr_sz = ALIGN(src_sz, SZ_64) + ALIGN(mem_to_map_sz, SZ_64) +
+> @@ -937,8 +937,10 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
+>  	/* Fill source vmid detail */
+>  	src = ptr;
+>  	i = 0;
+> -	for_each_set_bit(b, &srcvm_bits, BITS_PER_LONG)
+> -		src[i++] = cpu_to_le32(b);
+> +	for (b = 0; b < BITS_PER_TYPE(u64); b++) {
+> +		if (srcvm_bits & BIT(b))
+> +			src[i++] = cpu_to_le32(b);
+> +	}
+>  
+>  	/* Fill details of mem buff to map */
+>  	mem_to_map = ptr + ALIGN(src_sz, SZ_64);
+> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> index a701132638cf..f48466960f1b 100644
+> --- a/drivers/misc/fastrpc.c
+> +++ b/drivers/misc/fastrpc.c
+> @@ -262,7 +262,7 @@ struct fastrpc_channel_ctx {
+>  	int domain_id;
+>  	int sesscount;
+>  	int vmcount;
+> -	u32 perms;
+> +	u64 perms;
+>  	struct qcom_scm_vmperm vmperms[FASTRPC_MAX_VMIDS];
+>  	struct rpmsg_device *rpdev;
+>  	struct fastrpc_session_ctx session[FASTRPC_MAX_SESSIONS];
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index 90f457b8e1fe..038c5903c0dc 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -33,7 +33,7 @@ static int ath10k_qmi_map_msa_permission(struct ath10k_qmi *qmi,
+>  {
+>  	struct qcom_scm_vmperm dst_perms[3];
+>  	struct ath10k *ar = qmi->ar;
+> -	unsigned int src_perms;
+> +	u64 src_perms;
+>  	u32 perm_count;
+>  	int ret;
+>  
+> @@ -65,7 +65,7 @@ static int ath10k_qmi_unmap_msa_permission(struct ath10k_qmi *qmi,
+>  {
+>  	struct qcom_scm_vmperm dst_perms;
+>  	struct ath10k *ar = qmi->ar;
+> -	unsigned int src_perms;
+> +	u64 src_perms;
+>  	int ret;
+>  
+>  	src_perms = BIT(QCOM_SCM_VMID_MSS_MSA) | BIT(QCOM_SCM_VMID_WLAN);
+> diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+> index ab053084f7a2..1ba711bc0100 100644
+> --- a/drivers/remoteproc/qcom_q6v5_mss.c
+> +++ b/drivers/remoteproc/qcom_q6v5_mss.c
+> @@ -235,8 +235,8 @@ struct q6v5 {
+>  	bool has_qaccept_regs;
+>  	bool has_ext_cntl_regs;
+>  	bool has_vq6;
+> -	int mpss_perm;
+> -	int mba_perm;
+> +	u64 mpss_perm;
+> +	u64 mba_perm;
+>  	const char *hexagon_mdt_image;
+>  	int version;
+>  };
+> @@ -414,7 +414,7 @@ static void q6v5_pds_disable(struct q6v5 *qproc, struct device **pds,
+>  	}
+>  }
+>  
+> -static int q6v5_xfer_mem_ownership(struct q6v5 *qproc, int *current_perm,
+> +static int q6v5_xfer_mem_ownership(struct q6v5 *qproc, u64 *current_perm,
+>  				   bool local, bool remote, phys_addr_t addr,
+>  				   size_t size)
+>  {
+> @@ -967,7 +967,7 @@ static int q6v5_mpss_init_image(struct q6v5 *qproc, const struct firmware *fw,
+>  	unsigned long dma_attrs = DMA_ATTR_FORCE_CONTIGUOUS;
+>  	dma_addr_t phys;
+>  	void *metadata;
+> -	int mdata_perm;
+> +	u64 mdata_perm;
+>  	int xferop_ret;
+>  	size_t size;
+>  	void *ptr;
+> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+> index 1e14ae4d233a..a0fa7176fde7 100644
+> --- a/drivers/remoteproc/qcom_q6v5_pas.c
+> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
+> @@ -94,7 +94,7 @@ struct qcom_adsp {
+>  	size_t region_assign_size;
+>  
+>  	int region_assign_idx;
+> -	int region_assign_perms;
+> +	u64 region_assign_perms;
+>  
+>  	struct qcom_rproc_glink glink_subdev;
+>  	struct qcom_rproc_subdev smd_subdev;
+> diff --git a/drivers/soc/qcom/rmtfs_mem.c b/drivers/soc/qcom/rmtfs_mem.c
+> index 2d3ee22b9249..2657c6105bb7 100644
+> --- a/drivers/soc/qcom/rmtfs_mem.c
+> +++ b/drivers/soc/qcom/rmtfs_mem.c
+> @@ -31,7 +31,7 @@ struct qcom_rmtfs_mem {
+>  
+>  	unsigned int client_id;
+>  
+> -	unsigned int perms;
+> +	u64 perms;
+>  };
+>  
+>  static ssize_t qcom_rmtfs_mem_show(struct device *dev,
+> diff --git a/include/linux/firmware/qcom/qcom_scm.h b/include/linux/firmware/qcom/qcom_scm.h
+> index 1e449a5d7f5c..250ea4efb7cb 100644
+> --- a/include/linux/firmware/qcom/qcom_scm.h
+> +++ b/include/linux/firmware/qcom/qcom_scm.h
+> @@ -94,7 +94,7 @@ extern int qcom_scm_mem_protect_video_var(u32 cp_start, u32 cp_size,
+>  					  u32 cp_nonpixel_start,
+>  					  u32 cp_nonpixel_size);
+>  extern int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
+> -			       unsigned int *src,
+> +			       u64 *src,
+>  			       const struct qcom_scm_vmperm *newvm,
+>  			       unsigned int dest_cnt);
+>  
+> 
+> base-commit: 09e41676e35ab06e4bce8870ea3bf1f191c3cb90
+> -- 
+> 2.39.1
+> 
