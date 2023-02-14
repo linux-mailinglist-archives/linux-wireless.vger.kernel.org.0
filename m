@@ -2,90 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DA3695C9B
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 09:14:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0805C695DC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 09:58:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231976AbjBNIOc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 03:14:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51104 "EHLO
+        id S231959AbjBNI6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Feb 2023 03:58:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231998AbjBNIN7 (ORCPT
+        with ESMTP id S231768AbjBNI6t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 03:13:59 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A998C234FE
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 00:13:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=tdl8Afzo/5nj1GUDEcur43kVytqMgV+uo3iYN5r7wWQ=;
-        t=1676362429; x=1677572029; b=l3QI3ptP8o9umlYSAZmGZ48AY0d2k+1jegN/jSMUx5H9gZa
-        QWd8XLLrafvuYkoEDZnarSjD/JJl1XfxWFt/2qAhm/QtypgJyTyihVZkHQFPe2DAr/Al6oHHLiT7J
-        0Ny+4PbFo5t5NgvCgDNQd+CgAcDp24GtmpEa9tHRwzQdCe3V+Fme5ACVhJ7/03mZZ9PsTHbQfZWfg
-        o1OlOfcb2z77f9V3tLULooccSzf7mRvnyg4BtJ0N+2uCDj3f0MUeXtMYWZ800vxE6vvG0Yf2PGdsz
-        jQiLJIWaga2YUC/HEVVRW1w1eM1HrKwX1tTY9cU+LCbbobFWu1NmJXsjzlnRRhWQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pRqRf-00C2MK-1X;
-        Tue, 14 Feb 2023 09:13:47 +0100
-Message-ID: <734b2b563c7cb52604aa1c2e5080bfe438f9015c.camel@sipsolutions.net>
-Subject: Re: [PATCH 04/15] mac80211: make channel context code MLO-aware
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Date:   Tue, 14 Feb 2023 09:13:46 +0100
-In-Reply-To: <0c15bfd6-819e-3e76-391b-f2ab70eb7eba@quicinc.com>
-References: <20220601073958.8345-1-johannes@sipsolutions.net>
-         <20220601093922.fb3f0f434c72.Icea7e695b0626177e27ab73bc8799202d623cebf@changeid>
-         <34121f87-4aa6-7f20-fb1e-4d5b02d06f28@quicinc.com>
-         <0e889e3be774aced1813152b18d505c0616fc110.camel@sipsolutions.net>
-         <0c15bfd6-819e-3e76-391b-f2ab70eb7eba@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Tue, 14 Feb 2023 03:58:49 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7AB7126D8;
+        Tue, 14 Feb 2023 00:58:47 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A987614B5;
+        Tue, 14 Feb 2023 08:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52427C433EF;
+        Tue, 14 Feb 2023 08:58:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1676365126;
+        bh=2Mx33+vREW0hBWChvR3fhbCd1ACURr0Cnsk5gvIAps8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MFW/w0XIdOIS1xNdLpuQS1+t4sw4dF5SJ4dUA1yOgIw+87cFeBAm1ycOmkgBbrkqD
+         Va2135tatjWfeTK3GAmD3M2I+BFrG7cYzuB4bWjAdMCC+WLDe0ElhDbboV0iaXjB+K
+         USC5sF/TgKzw5dYvLQ+vQoVpKl9fWJInENMtDnEY=
+Date:   Tue, 14 Feb 2023 09:58:44 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Bjorn Andersson <andersson@kernel.org>
+Cc:     Elliot Berman <quic_eberman@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH] firmware: qcom_scm: Use fixed width src vm bitmap
+Message-ID: <Y+tNRPf0PGdShf5l@kroah.com>
+References: <20230213181832.3489174-1-quic_eberman@quicinc.com>
+ <20230213214417.mtcpeultvynyls6s@ripper>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230213214417.mtcpeultvynyls6s@ripper>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-02-14 at 16:09 +0800, Wen Gong wrote:
-> On 2/14/2023 4:04 PM, Johannes Berg wrote:
-> > On Tue, 2023-02-14 at 15:57 +0800, Wen Gong wrote:
-> > > >    void rate_control_rate_update(struct ieee80211_local *local,
-> > > > -				    struct ieee80211_supported_band *sband,
-> > > > -				    struct sta_info *sta, u32 changed)
-> > > > +			      struct ieee80211_supported_band *sband,
-> > > > +			      struct sta_info *sta, unsigned int link_id,
-> > > > +			      u32 changed)
-> > > >    {
-> > > >    	struct rate_control_ref *ref =3D local->rate_ctrl;
-> > > >    	struct ieee80211_sta *ista =3D &sta->sta;
-> > > >    	void *priv_sta =3D sta->rate_ctrl_priv;
-> > > >    	struct ieee80211_chanctx_conf *chanctx_conf;
-> > > >   =20
-> > > > +	WARN_ON(link_id !=3D 0);
-> > > > +
-> > > >    	if (ref && ref->ops->rate_update) {
-> > > >    		rcu_read_lock();
-> > > >   =20
-> > > Why link_id must =3D 0 here?
-> > >=20
-> > The whole software rate scaling hasn't been adjusted for MLO yet.
->=20
-> Got it. Thanks.
->=20
-> So I guess this WARN_ON will be change later.
->=20
+On Mon, Feb 13, 2023 at 01:44:17PM -0800, Bjorn Andersson wrote:
+> On Mon, Feb 13, 2023 at 10:18:29AM -0800, Elliot Berman wrote:
+> > The maximum VMID for assign_mem is 63. Use a u64 to represent this
+> > bitmap instead of architecture-dependent "unsigned int" which varies in
+> > size on 32-bit and 64-bit platforms.
+> > 
+> > Acked-by: Kalle Valo <kvalo@kernel.org> (ath10k)
+> > Tested-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+> > Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+> 
+> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+> 
+> @Greg, would you mind taking this through your tree for v6.3, you
+> already have a related change in fastrpc.c in your tree...
 
-Since you're running into it, you should probably think about addressing
-this ... I'm not going to, our hardware doesn't use this code.
+I tried, but it doesn't apply to my char-misc tree at all:
 
-johannes
+checking file drivers/firmware/qcom_scm.c
+Hunk #1 succeeded at 898 (offset -7 lines).
+Hunk #2 succeeded at 915 (offset -7 lines).
+Hunk #3 succeeded at 930 (offset -7 lines).
+checking file drivers/misc/fastrpc.c
+checking file drivers/net/wireless/ath/ath10k/qmi.c
+checking file drivers/remoteproc/qcom_q6v5_mss.c
+Hunk #1 succeeded at 227 (offset -8 lines).
+Hunk #2 succeeded at 404 (offset -10 lines).
+Hunk #3 succeeded at 939 with fuzz 1 (offset -28 lines).
+checking file drivers/remoteproc/qcom_q6v5_pas.c
+Hunk #1 FAILED at 94.
+1 out of 1 hunk FAILED
+checking file drivers/soc/qcom/rmtfs_mem.c
+Hunk #1 succeeded at 30 (offset -1 lines).
+can't find file to patch at input line 167
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|diff --git a/include/linux/firmware/qcom/qcom_scm.h
+b/include/linux/firmware/qcom/qcom_scm.h
+|index 1e449a5d7f5c..250ea4efb7cb 100644
+|--- a/include/linux/firmware/qcom/qcom_scm.h
+|+++ b/include/linux/firmware/qcom/qcom_scm.h
+--------------------------
+
+What tree is this patch made against?
+
+thanks,
+
+greg k-h
