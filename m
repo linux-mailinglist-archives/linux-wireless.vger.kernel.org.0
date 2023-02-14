@@ -2,169 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1B4695940
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 07:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A725A695AAB
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 08:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbjBNGgd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 01:36:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58268 "EHLO
+        id S229880AbjBNHbH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Feb 2023 02:31:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231263AbjBNGgc (ORCPT
+        with ESMTP id S229554AbjBNHbG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 01:36:32 -0500
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97725A27A;
-        Mon, 13 Feb 2023 22:36:31 -0800 (PST)
-Received: by mail-pl1-x641.google.com with SMTP id z1so16032986plg.6;
-        Mon, 13 Feb 2023 22:36:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+UX8OV2gJDE8KCJEfKycMcF35075c7iSsmVUHRHLZAw=;
-        b=erHJrXMkSNlo5naB7lviZr2DzmVOA64s0lreC4BQCGcU4QWmC8YNC/82siVx33aBea
-         7jRT8AtH8aLGXifSN5iBgZ00F1H4dYpRmoXTCiqdEdGhK9m96XuIH3zziwXJBYOg7XUp
-         ZrKMFESlaG0EPwl0rQejBWkjtTT3azLgO55pXLILzDjT0XjaXKF74jw7nA3O8qXDycQ1
-         o0mxDsNrT+bzPtHgRzrjUWNEjJfXGWwRV3Vq5QqOuuX5JA8f6h71hUfm86fWv8gZiP6G
-         YKCW4onOvaFKIxd23ksRkYhL02u0Qm+vCiRCxJyaRozA3mgdD1Qa02wiNbYoTHhxaqPZ
-         i2Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+UX8OV2gJDE8KCJEfKycMcF35075c7iSsmVUHRHLZAw=;
-        b=uyz+IhH1hajf/CnypsR9efUPM1fWi6RYJNd/rQujaKBJfiCNE1gj8bkge9ba+SlKCB
-         NVnyueqQ/DRDczkV9MgTZOC3nosPGQUu6kzremXMC05bB8K4NmAvtW+F891802H1Ev5F
-         6y1qm/fZwX5UDTePKYWx34hX+n1kebb48z9Ivcm+6FwVjT+596ZZvUGxNlLMpxTqiMRq
-         gVjhVlpoIUIkrcZhHAB4kCwZiNIJ0lcSE6rC4T7d/2Y1blPjWTrH4iOrR9EA4ix0zt/a
-         c+G8J5hnsMuRM44DBebX1ZdJVct6kPCKprT4OQlIfSLLezgBuD0tvUl+vIT7yFR/BDjy
-         uH5g==
-X-Gm-Message-State: AO0yUKX3qmM11eeCYUOoBzid0oRzrJHPRUPRKb/lIHOxGSimz/OkDFse
-        yHzAIxxZo2FU8VMEBPnnkg==
-X-Google-Smtp-Source: AK7set+dQX/tk5OaPBsXrdSWRG1mIvBWSJydUHu8XcSREWMO9l+8A3VCFJPgrdOS5QAtt56zWTRPXg==
-X-Received: by 2002:a05:6a20:8413:b0:bc:8c5e:ed0d with SMTP id c19-20020a056a20841300b000bc8c5eed0dmr1465702pzd.40.1676356591084;
-        Mon, 13 Feb 2023 22:36:31 -0800 (PST)
-Received: from 8888.icu ([165.154.226.86])
-        by smtp.googlemail.com with ESMTPSA id q2-20020a637502000000b004fb681ea0e1sm6087443pgc.84.2023.02.13.22.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 22:36:30 -0800 (PST)
-From:   Lu jicong <jiconglu58@gmail.com>
-To:     pkshih@realtek.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lu jicong <jiconglu58@gmail.com>
-Subject: [PATCH V2] wifi: rtlwifi: rtl8192ce: fix dealing empty EEPROM values
-Date:   Tue, 14 Feb 2023 06:36:02 +0000
-Message-Id: <20230214063602.2257263-1-jiconglu58@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 14 Feb 2023 02:31:06 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 867822D71
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 23:31:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676359862; x=1707895862;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oX89Cpi8EKs7m42VJx9opTEDOYEkvo8vhN8NQxpVQI0=;
+  b=KE8ZqxoB2VPWT23Rp8kVGFjl+Fc0cADBKqLWyXJvXvdjhvzj+s97H1Aa
+   JHNaW8zQ2q5a96DzZxKEYCfGkn5yAdTtuOd5ANUukC+7r68k29Q08wLQ8
+   1YSlgOqJJFW+W5fAo5NYfDd5eI+LLt8Iz+jPHyzdOIBUVUpmuAP5fs67/
+   TOhADqtGPWXgf9zoHOio7J7wAiaoE6q30JZ0PKhHbMEUfh9ORtWUrYk7s
+   +pg8INwrZ42Peb7Qwr9wKJ9P6vQ0wKQHegArBgsBK9JSqsGHHHJtc3mdE
+   fHCTETVMJC7K0Fplc7k0raLRDVY1Rcp3j7mcQK1I6cKYYkgN5+h8Nhg2X
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="332413030"
+X-IronPort-AV: E=Sophos;i="5.97,296,1669104000"; 
+   d="scan'208";a="332413030"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2023 23:31:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10620"; a="843065613"
+X-IronPort-AV: E=Sophos;i="5.97,296,1669104000"; 
+   d="scan'208";a="843065613"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 13 Feb 2023 23:30:59 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pRpmE-0008Ij-30;
+        Tue, 14 Feb 2023 07:30:58 +0000
+Date:   Tue, 14 Feb 2023 15:30:46 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 3eea2c615e25f7a3a7b40912358ed54b5d2f0ff2
+Message-ID: <63eb38a6.e7XtdTt5Ym2nnZn5%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On OpenWRT platform, RTL8192CE could be soldered on board, but not standard PCI
-module. In this case, some EEPROM values aren't programmed and left 0xff.
-Load default values when the EEPROM values are empty to avoid problems.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 3eea2c615e25f7a3a7b40912358ed54b5d2f0ff2  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-Signed-off-by: Lu jicong <jiconglu58@gmail.com>
----
-v2: add more detailed commit message
----
- .../wireless/realtek/rtlwifi/rtl8192ce/hw.c   | 31 +++++++++++++------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+elapsed time: 763m
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c
-index b9c62640d2cb..8ddf0017af4c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/hw.c
-@@ -1428,7 +1428,9 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 
- 	for (rf_path = 0; rf_path < 2; rf_path++) {
- 		for (i = 0; i < 3; i++) {
--			if (!autoload_fail) {
-+			if (!autoload_fail &&
-+			    hwinfo[EEPROM_TXPOWERCCK + rf_path * 3 + i] != 0xff &&
-+			    hwinfo[EEPROM_TXPOWERHT40_1S + rf_path * 3 + i] != 0xff) {
- 				rtlefuse->
- 				    eeprom_chnlarea_txpwr_cck[rf_path][i] =
- 				    hwinfo[EEPROM_TXPOWERCCK + rf_path * 3 + i];
-@@ -1448,7 +1450,8 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 	}
- 
- 	for (i = 0; i < 3; i++) {
--		if (!autoload_fail)
-+		if (!autoload_fail &&
-+		    hwinfo[EEPROM_TXPOWERHT40_2SDIFF + i] != 0xff)
- 			tempval = hwinfo[EEPROM_TXPOWERHT40_2SDIFF + i];
- 		else
- 			tempval = EEPROM_DEFAULT_HT40_2SDIFF;
-@@ -1518,7 +1521,9 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 	}
- 
- 	for (i = 0; i < 3; i++) {
--		if (!autoload_fail) {
-+		if (!autoload_fail &&
-+		    hwinfo[EEPROM_TXPWR_GROUP + i] != 0xff &&
-+		    hwinfo[EEPROM_TXPWR_GROUP + 3 + i] != 0xff) {
- 			rtlefuse->eeprom_pwrlimit_ht40[i] =
- 			    hwinfo[EEPROM_TXPWR_GROUP + i];
- 			rtlefuse->eeprom_pwrlimit_ht20[i] =
-@@ -1563,7 +1568,8 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 	for (i = 0; i < 14; i++) {
- 		index = rtl92c_get_chnl_group((u8)i);
- 
--		if (!autoload_fail)
-+		if (!autoload_fail &&
-+		    hwinfo[EEPROM_TXPOWERHT20DIFF + index] != 0xff)
- 			tempval = hwinfo[EEPROM_TXPOWERHT20DIFF + index];
- 		else
- 			tempval = EEPROM_DEFAULT_HT20_DIFF;
-@@ -1580,7 +1586,8 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 
- 		index = rtl92c_get_chnl_group((u8)i);
- 
--		if (!autoload_fail)
-+		if (!autoload_fail &&
-+		    hwinfo[EEPROM_TXPOWER_OFDMDIFF + index] != 0xff)
- 			tempval = hwinfo[EEPROM_TXPOWER_OFDMDIFF + index];
- 		else
- 			tempval = EEPROM_DEFAULT_LEGACYHTTXPOWERDIFF;
-@@ -1610,14 +1617,16 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 			"RF-B Legacy to HT40 Diff[%d] = 0x%x\n",
- 			i, rtlefuse->txpwr_legacyhtdiff[RF90_PATH_B][i]);
- 
--	if (!autoload_fail)
-+	if (!autoload_fail && hwinfo[RF_OPTION1] != 0xff)
- 		rtlefuse->eeprom_regulatory = (hwinfo[RF_OPTION1] & 0x7);
- 	else
- 		rtlefuse->eeprom_regulatory = 0;
- 	RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
- 		"eeprom_regulatory = 0x%x\n", rtlefuse->eeprom_regulatory);
- 
--	if (!autoload_fail) {
-+	if (!autoload_fail &&
-+	    hwinfo[EEPROM_TSSI_A] != 0xff &&
-+	    hwinfo[EEPROM_TSSI_B] != 0xff) {
- 		rtlefuse->eeprom_tssi[RF90_PATH_A] = hwinfo[EEPROM_TSSI_A];
- 		rtlefuse->eeprom_tssi[RF90_PATH_B] = hwinfo[EEPROM_TSSI_B];
- 	} else {
-@@ -1628,7 +1637,7 @@ static void _rtl92ce_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
- 		rtlefuse->eeprom_tssi[RF90_PATH_A],
- 		rtlefuse->eeprom_tssi[RF90_PATH_B]);
- 
--	if (!autoload_fail)
-+	if (!autoload_fail && hwinfo[EEPROM_THERMAL_METER] != 0xff)
- 		tempval = hwinfo[EEPROM_THERMAL_METER];
- 	else
- 		tempval = EEPROM_DEFAULT_THERMALMETER;
+configs tested: 43
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+alpha                            allyesconfig
+alpha                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+sh                               allmodconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+
 -- 
-2.30.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
