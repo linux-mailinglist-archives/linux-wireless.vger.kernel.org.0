@@ -2,119 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E33696008
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 10:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E18F0696049
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 11:06:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232631AbjBNJ7r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 04:59:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
+        id S232183AbjBNKGs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Feb 2023 05:06:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232323AbjBNJ7N (ORCPT
+        with ESMTP id S232222AbjBNKGj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 04:59:13 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9611925E3E;
-        Tue, 14 Feb 2023 01:58:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=NOqWUbd3hBCUbl8Br4PcUyGjf4CP6a5A0AVj4nvrMiI=;
-        t=1676368700; x=1677578300; b=gwCZlqDV9/ZN29gjT9M07F5Lmil4UmX0nRJQ5P9qI8/2ITX
-        5Xf2xkZ3+AU4TeZgex/y1yngbMrTUFemJjH0O5CNdHNaakdzWM7G3imgnnIT2m9H8AQ/HffK6gJeA
-        3SPJsqwmPEi+22aAiO95Hn+qRlLDF9+o+YGUp9URS5EVnDvGH6a4YdquTbc5wtgzgZw/R0OFUQP9b
-        0oz0TghkR6qSHfOTBGnSjZwxLjtQa3iLxWqfxgrDIcRl3ayw2sUz3Wl1jt7HO+Vt7a7ptQreR154L
-        zzGVOkqi5KMM/00u5JTTfzaUnW6lgmYEi7+hhaHL2FJ/x3tjFoD9i5XIZzot7wcg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pRs4i-00C4oX-1N;
-        Tue, 14 Feb 2023 10:58:12 +0100
-Message-ID: <abd207fc649aa92bcac49f0d207ff2289e8d73ff.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mac80211: fix memory leak in
- ieee80211_register_hw()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     shaozhengchao <shaozhengchao@huawei.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Cc:     sara.sharon@intel.com, luciano.coelho@intel.com,
-        weiyongjun1@huawei.com, yuehaibing@huawei.com
-Date:   Tue, 14 Feb 2023 10:58:11 +0100
-In-Reply-To: <bcb33716-5c14-38d4-8721-1585e9fb8461@huawei.com>
-References: <20221202043838.2324539-1-shaozhengchao@huawei.com>
-         <e33356c3b654db03030d371e38f02c6019e9c1a7.camel@sipsolutions.net>
-         <bcb33716-5c14-38d4-8721-1585e9fb8461@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Tue, 14 Feb 2023 05:06:39 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A8BE3B3
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 02:06:12 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 6B793660216A;
+        Tue, 14 Feb 2023 10:06:10 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1676369171;
+        bh=s5SZVvdZQxR5mDQIx9uUkDGglHwSbD6+4806r+qB464=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=J4EQ4j/amiH3pmf/FxzX9tJcPvLnxMW72yTOmIwKMLsYpqZ/sxQWTvbwZoJfKxVql
+         dJeD1tXuDXJObc3SKSxxO4Hjb+Gfv8ls/Zh0dOMWG7ElB0iiWboM2TG9N+ExsawBJR
+         utatCMP1wzxrXwNC7vAs0E3itCqJd3qG5Ygy9SNkSWC0WyVZbl/F1KA9CID786pMb1
+         HAuD2k3YheYLPedZ/hKCO3KJ375cuNovHeKVMcosGRu1ioqUCMu9Ahx2R0UGTNJR1Z
+         AOeJ5vtNU2DFk0pRoxeLDUTsKy9fMPb00ApXsRUMUUBUfgSnHBxCnX6PYlxuutQ1S0
+         x34uLGq7mR7jQ==
+Message-ID: <ba391995-014d-3308-53ad-81bbf0fee350@collabora.com>
+Date:   Tue, 14 Feb 2023 11:06:07 +0100
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH v2] wifi: mt76: mt7921: fix PCI DMA hang after reboot
+Content-Language: en-US
+To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>
+References: <9f4a25c54dc68c941fbbd864e56e1b78868a5a9a.1676342819.git.deren.wu@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <9f4a25c54dc68c941fbbd864e56e1b78868a5a9a.1676342819.git.deren.wu@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2023-01-29 at 14:28 +0800, shaozhengchao wrote:
->=20
-> On 2023/1/18 17:45, Johannes Berg wrote:
-> > On Fri, 2022-12-02 at 12:38 +0800, Zhengchao Shao wrote:
-> > >=20
-> > > --- a/net/mac80211/main.c
-> > > +++ b/net/mac80211/main.c
-> > > @@ -1326,6 +1326,7 @@ int ieee80211_register_hw(struct ieee80211_hw *=
-hw)
-> > >   					      hw->rate_control_algorithm);
-> > >   	rtnl_unlock();
-> > >   	if (result < 0) {
-> > > +		ieee80211_txq_teardown_flows(local);
-> > >   		wiphy_debug(local->hw.wiphy,
-> > >   			    "Failed to initialize rate control algorithm\n");
-> > >   		goto fail_rate;
-> > > @@ -1364,6 +1365,7 @@ int ieee80211_register_hw(struct ieee80211_hw *=
-hw)
-> > >  =20
-> > >   		sband =3D kmemdup(sband, sizeof(*sband), GFP_KERNEL);
-> > >   		if (!sband) {
-> > > +			ieee80211_txq_teardown_flows(local);
-> > >   			result =3D -ENOMEM;
-> > >   			goto fail_rate;
-> > >   		}
-> >=20
-> > I don't understand - we have a fail_rate label here where we free
-> > everything.
-> >=20
-> > What if we get to fail_wiphy_register, don't we leak it in the same way=
-?
-> >=20
-> > johannes
+Il 14/02/23 03:49, Deren Wu ha scritto:
+> mt7921 just stop some workers and clean up chip status before reboot.
+> In stress test, there are working activities still running at the period
+> of .shutdown callback and that would cause some hosts cannot recover
+> DMA after reboot. To avoid the floating state in reboot, we use
+> mt7921_pci_remove() to fully deinit all resources.
+> 
+> Fixes: f23a0cea8bd6 ("wifi: mt76: mt7921e: add pci .shutdown() support")
+> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
 
-> 	Thank you for your review. Sorry it took so long to reply. The
-> fail_rate label does not release the resources applied for in the
-> ieee80211_txq_setup_flows().  Or maybe I missed something?
 
-That's my point though - if we "goto fail_ifa" or "goto
-fail_wiphy_register", we have the same bug, no?
-
-So shouldn't the patch simply be this:
-
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 846528850612..a42d1f0ef7a5 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1442,6 +1442,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	ieee80211_remove_interfaces(local);
- 	rtnl_unlock();
-  fail_rate:
-+	ieee80211_txq_teardown_flows(local);
-  fail_flows:
- 	ieee80211_led_exit(local);
- 	destroy_workqueue(local->workqueue);
-
-
-johannes
