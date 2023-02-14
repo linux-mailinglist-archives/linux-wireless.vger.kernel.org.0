@@ -2,60 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C197695DD4
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 10:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E169695E07
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 10:05:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231830AbjBNJBL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 04:01:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33968 "EHLO
+        id S232251AbjBNJFi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Feb 2023 04:05:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231753AbjBNJBA (ORCPT
+        with ESMTP id S232222AbjBNJFS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 04:01:00 -0500
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7720B1284B;
-        Tue, 14 Feb 2023 01:00:59 -0800 (PST)
-Received: by mail-qt1-x82e.google.com with SMTP id h24so16809232qtr.0;
-        Tue, 14 Feb 2023 01:00:59 -0800 (PST)
+        Tue, 14 Feb 2023 04:05:18 -0500
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B658241E1;
+        Tue, 14 Feb 2023 01:04:38 -0800 (PST)
+Received: by mail-qt1-x82b.google.com with SMTP id h24so16816382qtr.0;
+        Tue, 14 Feb 2023 01:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sotg6g4Bh/A8PVyKxmYXGABNEX1eJU5WjsjoyOoCPXM=;
-        b=nYm5hMXfNfniL4C7SsUcbr0NG/2bqbQphI2J2mYuEDYsJq7PkY6lIc24t8x9TrBMoM
-         LYiRT7O85Vz+1ZbDcjXZw2EuxdLL+gpmCsyx2zYv38z5eYbem9lv/0w4kLHPeE0//PhW
-         78iY2AfZL7gtOqxAkjhuuqru9vTNOheliaThYT4VSp0Tabx2xLUJmVYHgwkrToArEzbT
-         flACIUXw8tjKFCO6euF0cXAyLNlgwwjSvVPb0JRHBghZt8mtW1E21GrjkBPHRvbLGWpy
-         JR9Q1eJWO0ocFOEqqJ3OrFhH38yn8B2f/+UZIkxJ3IR7L8hi7GEUMeswRujc9BqX9xQg
-         EilQ==
+        bh=vi73fGmWmjTNDASDZdnfJSIYN1ahtOW91dirgxR/MuM=;
+        b=WrLk7G8ph4exG2WAnUJJd502XIFYTAHK7kRqeS6TTzAVT9cfD4U0gfdU8FLsbcuaA3
+         Iiihd2FqvDAuV0LdFQ4mEo2kZsgHudz4E/JhhI+QILjYhwJolPIGnqdfwRXXvERLpgNi
+         1ZfaXs/fwsxm4KReDYRnzLbgcIh7GsOkB2eX7UHseZaubN6dm4xn0IC0tL9fisRk35Se
+         TpDrW+6vhutfA7JSSxs9CVS+rcynwS34RlyFp4/XdxPzLhHTC7wjoYaWt6BbXaaIXaLv
+         jAAow5jaylKC8E6GaVNsFv+70R1n/HK7UJSb7LSQLYU14vTpm0VY4WPmBh/7YsG3D+nK
+         aG9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Sotg6g4Bh/A8PVyKxmYXGABNEX1eJU5WjsjoyOoCPXM=;
-        b=ByCTZ6jDe+pZBbP8+gwJ8tQmYos1lsjR8T0Mvb+cHUQErwFNMgwEfXcFjCRfHGCNew
-         rhCK7nbIG3l9a/4gXjR8v/nl7a8OsFR3sfDgKRCOqerQoyw9kVjiZsIZ8/P/Sz+jX66x
-         24Asmd6KrAr++LB2gdH4Et8Ak5q5iPlxsIW0wZdU3TL/GXD/lQdTaLR1OUVWuz45KQQV
-         1wk07OK5LCIKfmu9VMWLbbHdS8ZHnb8UsoeqmXzgWX0KL69b0Yz4hKlUuPWS76WAPgv4
-         HbK60WGbOGfHgx/36C29SjHen/jb1AEVDg7Mhz/rli3FWRZC1MIvP09DioChe20y1x4D
-         RsEQ==
-X-Gm-Message-State: AO0yUKXpwiUGbdOS6P2KDjZl4vysSpt7yl57e9htFfXieCBHCOBjLptU
-        hegUP+7E2vCuLgHvnpX4itC9qHeT9pqJ2Y5hQZg=
-X-Google-Smtp-Source: AK7set8BrQ3EZL7oYNrSDTXecmNQ+MEqyA40JVLuuUbf8otkPYKFo01zkl8m26ZDac6afBBX0vqQBt2ouoflSVuLxmg=
-X-Received: by 2002:ac8:5c0d:0:b0:3b8:6b25:88be with SMTP id
- i13-20020ac85c0d000000b003b86b2588bemr232093qti.14.1676365258564; Tue, 14 Feb
- 2023 01:00:58 -0800 (PST)
+        bh=vi73fGmWmjTNDASDZdnfJSIYN1ahtOW91dirgxR/MuM=;
+        b=xXUBqs/0h8rhJmmS3MPIk/fur7DdAZLeYVItGkNmVLj9+vsImaJ4wz8cRllXPIBIt2
+         KVHhdlbYU6Z0aQvJbE0Aox6c5WeUAl0KJ3eG09R3VwAJuEDX4+lq6/QV5FStGU2V3YKo
+         HnZQD5wgwhSr4HMIDuQGL3mGh64lxb2cc1+j96Tsj/rAiQ7CM9tVhaeOmEtrQHNle2yd
+         63AtnHwgLBdvazdL6SuFD/+6mLjk3mEQm1xKcQDECC/5ZWEZB5eV02EcjLXfzlgFw4ZC
+         r05uKtdtG9eG4JFMYA9FrLS1QUc5NJhJYfVPkE+HQ6N8W4Wud2DFDNzHyMukigNh3Gck
+         pcng==
+X-Gm-Message-State: AO0yUKW/gpzyhGjsuJpwX2SpnpZv01B28df5SBLcyRqbcpSwYAKZEUNW
+        ZC1daUlWCw1mjrIGRy2cNFgV1F63HbFL8d51Rw8=
+X-Google-Smtp-Source: AK7set/BhpTV/KRldVCK+qjZOJbG2cPSpTKVxLlvt7BPL8FEbisiGeB0cyIcDqr2AdNCos9yQyawt9wXz9U+Dy7tdeY=
+X-Received: by 2002:a05:622a:289:b0:3b8:6b33:d92b with SMTP id
+ z9-20020a05622a028900b003b86b33d92bmr169724qtw.325.1676365475057; Tue, 14 Feb
+ 2023 01:04:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20230214080034.3828-1-marcan@marcan.st> <20230214080034.3828-3-marcan@marcan.st>
-In-Reply-To: <20230214080034.3828-3-marcan@marcan.st>
+References: <20230214080034.3828-1-marcan@marcan.st> <20230214080034.3828-2-marcan@marcan.st>
+In-Reply-To: <20230214080034.3828-2-marcan@marcan.st>
 From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Tue, 14 Feb 2023 20:00:45 +1100
-Message-ID: <CAGRGNgV6YMhBa1bdkf_EQ0Z+nwbfhJkKcTxtc=ukWVMWtvQ2PA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] brcmfmac: pcie: Provide a buffer of random bytes to
- the device
-To:     Arend van Spriel <aspriel@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>,
+Date:   Tue, 14 Feb 2023 20:04:22 +1100
+Message-ID: <CAGRGNgWrRvJezq7svHF7iVohxTdkutEkvLHC=QYUVpic5k=DFA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] brcmfmac: acpi: Add support for fetching Apple ACPI properties
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -81,34 +80,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
+Hi Hector,
 
 On Tue, Feb 14, 2023 at 7:04 PM Hector Martin <marcan@marcan.st> wrote:
 >
-> Newer Apple firmwares on chipsets without a hardware RNG require the
-> host to provide a buffer of 256 random bytes to the device on
-> initialization. This buffer is present immediately before NVRAM,
-> suffixed by a footer containing a magic number and the buffer length.
+> On DT platforms, the module-instance and antenna-sku-info properties
+> are passed in the DT. On ACPI platforms, module-instance is passed via
+> the analogous Apple device property mechanism, while the antenna SKU
+> info is instead obtained via an ACPI method that grabs it from
+> non-volatile storage.
 >
-> This won't affect chips/firmwares that do not use this feature, so do it
-> unconditionally for all Apple platforms (those with an Apple OTP).
-
-Following on from the conversation a year ago, is there a way to
-detect chipsets that need these random bytes? While I'm sure Apple is
-doing their own special thing for special Apple reasons, it seems
-relatively sensible to omit a RNG on lower-cost chipsets, so would
-other chipsets need it?
-
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Add support for this, to allow proper firmware selection on Apple
+> platforms.
+>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
-Beyond that, it all seems pretty sensible.
+Makes sense to me.
 
 Reviewed-by: Julian Calaby <julian.calaby@gmail.com>
 
 > ---
->  .../broadcom/brcm80211/brcmfmac/pcie.c        | 32 +++++++++++++++++++
->  1 file changed, 32 insertions(+)
+>  .../broadcom/brcm80211/brcmfmac/Makefile      |  2 +
+>  .../broadcom/brcm80211/brcmfmac/acpi.c        | 51 +++++++++++++++++++
+>  .../broadcom/brcm80211/brcmfmac/common.c      |  1 +
+>  .../broadcom/brcm80211/brcmfmac/common.h      |  9 ++++
+>  4 files changed, 63 insertions(+)
+>  create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
 
 Thanks,
 
