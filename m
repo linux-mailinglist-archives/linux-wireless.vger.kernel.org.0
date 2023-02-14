@@ -2,44 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E91B06963E3
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 13:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C82426963F5
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 13:55:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbjBNMuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 07:50:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36962 "EHLO
+        id S232270AbjBNMzH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Feb 2023 07:55:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbjBNMuV (ORCPT
+        with ESMTP id S230162AbjBNMzG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 07:50:21 -0500
+        Tue, 14 Feb 2023 07:55:06 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612A110FC
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 04:50:20 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BF516AEE;
+        Tue, 14 Feb 2023 04:55:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=xT7ZT0M7pj7pucvZRxfm/Cpa0bD44LbZ0IlMHvmWze0=;
-        t=1676379020; x=1677588620; b=yCle/LH9uzqBsGIw5XEv2lmvKdrD0aJDc5sToTvHT7Om87q
-        slSyf9N0u/KjpnuigEzRLyDLSkOwhvEZtXR/USIZwh0VbOsqFm876JQXNUk3ZDJwMzyr73+el9O5A
-        eQlI2EbFR3eqHIQIn8MFTDYPqnPLawFqwy5THMJBFLlEDcllz6QNtIqcT/vGp3iP6Gv2WUlSoL1rg
-        Ooy8r8Qq6Rvt0aAHKRR6+lf7dMMz451GBci8Qr8SDfFRy+uKGgnM36/ZgZ4Vwmw8+H0V6nBo2Qmpg
-        33685cEDo0s1pzLHrSA8U0BW7wbXO6xxwuITudpZz6Balphfsi1Knz6KSlVPumJw==;
+        Resent-Cc:Resent-Message-ID; bh=kd8Tkpw2geIhdESAwykD0ZVGRSJYIx/HqjzlFVd0yxI=;
+        t=1676379305; x=1677588905; b=AvZLEPFS1HaXLki/BsL9rF9Bz0YqwL+nEpxGjXtF10kXiAb
+        P6l/D203CuK1wazu06supRkAEtGAJGIAIHjVLEhZcBf57gA2lf3Vpd5uGO8d6UFp6hrftdX1VRmxm
+        bih2FB+6D2NWKe4JW1r+Y2i061jukE5IXEzbzYdPCRhqujQacLqJ81YGB/LXi28pdrz1JBbHSIqxA
+        0GmDfQ3+Y2pzMjSeNchBdlGzIbOCOpq+YwTXtEq6O7RLEyhLa+6wa1rGGwEZooJAqgU/AMcHbl0+1
+        ASBCzDOpQhND7NWt1XOXIX7sJqpSNzk6ZsJpCOJjGWYDo54L4har86AhyXlJaFeA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pRulG-00C8v1-0c;
-        Tue, 14 Feb 2023 13:50:18 +0100
-Message-ID: <92344e56e895b18a33ff6d9eed2a2b58e6d92180.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] wifi: cfg80211/mac80211: add support for channel
- switch with MLO
+        id 1pRupY-00C91H-3B;
+        Tue, 14 Feb 2023 13:54:45 +0100
+Message-ID: <aef83367258771b3e71c6043f4cc0661473fd58b.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] Set ssid when authenticating
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 14 Feb 2023 13:50:17 +0100
-In-Reply-To: <20230118151604.1278-2-quic_adisi@quicinc.com>
-References: <20230118151604.1278-1-quic_adisi@quicinc.com>
-         <20230118151604.1278-2-quic_adisi@quicinc.com>
+To:     Marc Bornand <dev.mbornand@systemb.ch>,
+        linux-wireless@vger.kernel.org
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Yohan Prod'homme <kernel@zoddo.fr>, stable@vger.kernel.org
+Date:   Tue, 14 Feb 2023 13:54:43 +0100
+In-Reply-To: <20230213210521.1672392-1-dev.mbornand@systemb.ch>
+References: <20230213210521.1672392-1-dev.mbornand@systemb.ch>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
@@ -54,24 +58,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-01-18 at 20:46 +0530, Aditya Kumar Singh wrote:
-> +++ b/net/mac80211/cfg.c
-> @@ -1488,6 +1488,13 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, =
-struct net_device *dev,
-> =20
->  	mutex_unlock(&local->mtx);
-> =20
-> +	/* The below work requires sdata lock which we have already acquired
-> +	 * here. But before that, it will check whether link_conf->csa_active
-> +	 * is true, which we have made false above. Hence, it will not proceed
-> +	 * to acquire the sdata lock and deadlock will be avoided.
-> +	 */
+Hi,
 
-This is obviously wrong.
+Please provide a proper subject/commit message for this. The
+"authenticating" is no longer true anyway.
 
-I know the locking here is hard and that we may need to make some bigger
-changes to support cancelling these work items properly, but this
-doesn't address it at all.
+See
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes#commit_messages
+
+On Mon, 2023-02-13 at 21:05 +0000, Marc Bornand wrote:
+> changes since v2:
+> - The code was tottaly rewritten based on the disscution of the
+>   v2 patch.
+> - the ssid is set in __cfg80211_connect_result() and only if the ssid is
+>   not already set.
+> - Do not add an other ssid reset path since it is already done in
+>   __cfg80211_disconnected()
+>=20
+> When a connexion was established without going through
+
+connection
+
+> NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
+> Now we set it in __cfg80211_connect_result() when it is not already set.
+>=20
+> Reported-by: Yohan Prod'homme <kernel@zoddo.fr>
+> Fixes: 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
+> Cc: linux-wireless@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216711
+> Signed-off-by: Marc Bornand <dev.mbornand@systemb.ch>
+> ---
+>  net/wireless/sme.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>=20
+> diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+> index 4b5b6ee0fe01..629d7b5f65c1 100644
+> --- a/net/wireless/sme.c
+> +++ b/net/wireless/sme.c
+>=20
+> @@ -723,6 +723,7 @@ void __cfg80211_connect_result(struct net_device *dev=
+,
+>  			       bool wextev)
+>  {
+>  	struct wireless_dev *wdev =3D dev->ieee80211_ptr;
+> +	const struct element *ssid;
+>  	const struct element *country_elem =3D NULL;
+>  	const u8 *country_data;
+>  	u8 country_datalen;
+> @@ -883,6 +884,21 @@ void __cfg80211_connect_result(struct net_device *de=
+v,
+>  				   country_data, country_datalen);
+>  	kfree(country_data);
+>=20
+> +	if (wdev->u.client.ssid_len =3D=3D 0) {
+> +		rcu_read_lock();
+> +		for_each_valid_link(cr, link) {
+> +			ssid =3D ieee80211_bss_get_elem(cr->links[link].bss,
+> +						      WLAN_EID_SSID);
+> +
+> +			if (ssid->datalen =3D=3D 0)
+
+need to check also that it exists
+
+> +				continue;
+> +
+> +			memcpy(wdev->u.client.ssid, ssid->data, ssid->datalen);
+> +			wdev->u.client.ssid_len =3D ssid->datalen;
+
+you can break here.
 
 johannes
-
