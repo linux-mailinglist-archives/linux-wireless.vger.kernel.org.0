@@ -2,115 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB3D4695580
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 01:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD7FD6956D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 03:51:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbjBNApR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 19:45:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51082 "EHLO
+        id S229593AbjBNCul (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 21:50:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjBNApQ (ORCPT
+        with ESMTP id S229485AbjBNCul (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 19:45:16 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0610D527;
-        Mon, 13 Feb 2023 16:45:12 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31E0iaInB002345, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31E0iaInB002345
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 14 Feb 2023 08:44:36 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 14 Feb 2023 08:44:38 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 14 Feb 2023 08:44:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Tue, 14 Feb 2023 08:44:38 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [Issue Report] Realtek 8852AE Bluetooth audio issues while using WiFi
-Thread-Topic: [Issue Report] Realtek 8852AE Bluetooth audio issues while using
- WiFi
-Thread-Index: AQHZP++iRX35EKlpEk+ewenwK0sPRa7Nla3g
-Date:   Tue, 14 Feb 2023 00:44:38 +0000
-Message-ID: <0ab9319d40cc4ee7885441cbc7f39b74@realtek.com>
-References: <2dcc7926-4d80-0d70-edf3-d05ea3dc542e@collabora.com>
-In-Reply-To: <2dcc7926-4d80-0d70-edf3-d05ea3dc542e@collabora.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzIvMTMg5LiL5Y2IIDA2OjU5OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Mon, 13 Feb 2023 21:50:41 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9BE17162
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Feb 2023 18:50:39 -0800 (PST)
+X-UUID: 5aafd040ac1211ed945fc101203acc17-20230214
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Ovp4/zOIbtS53WT1CDsM1YZZ1uV3etCD/jrV5/I33Ks=;
+        b=MQVNEPYX0BXPQ6LtS0dNdn/U28dsZmevHqejJbK7AtWoia3dgcfdWmvMY4gppYtGPdkT6hXaFSEjst7hgrg9ac0SW+on1Z5Q7z6fpiyMJI7CDrc5IvRS+pE/ejq1o6vY0enJCMck3ntfaO8trx5P/V3Lc6neWtMRTwEkJCQ/pO4=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.19,REQID:a4cb986b-b5df-4e5f-bf49-57aedc9ed18e,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.19,REQID:a4cb986b-b5df-4e5f-bf49-57aedc9ed18e,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:885ddb2,CLOUDID:45423157-dd49-462e-a4be-2143a3ddc739,B
+        ulkID:230214105035GCB5ZSWE,BulkQuantity:0,Recheck:0,SF:38|29|28|17|19|48,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+        ,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0
+X-UUID: 5aafd040ac1211ed945fc101203acc17-20230214
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+        (envelope-from <deren.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1216531654; Tue, 14 Feb 2023 10:50:34 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Tue, 14 Feb 2023 10:50:33 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Tue, 14 Feb 2023 10:50:33 +0800
+From:   Deren Wu <deren.wu@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
+        Deren Wu <Deren.Wu@mediatek.com>, KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt7921: fix PCI DMA hang after reboot
+Date:   Tue, 14 Feb 2023 10:49:57 +0800
+Message-ID: <9f4a25c54dc68c941fbbd864e56e1b78868a5a9a.1676342819.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTXVoYW1tYWQgVXNhbWEg
-QW5qdW0gPHVzYW1hLmFuanVtQGNvbGxhYm9yYS5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEZlYnJ1
-YXJ5IDE0LCAyMDIzIDQ6MzggQU0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsu
-Y29tPjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IERhdmlkIFMuIE1pbGxlciA8ZGF2
-ZW1AZGF2ZW1sb2Z0Lm5ldD47DQo+IEVyaWMgRHVtYXpldCA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT47
-IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+OyBQYW9sbyBBYmVuaSA8cGFiZW5pQHJl
-ZGhhdC5jb20+DQo+IENjOiBNdWhhbW1hZCBVc2FtYSBBbmp1bSA8dXNhbWEuYW5qdW1AY29sbGFi
-b3JhLmNvbT47IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
-cm5lbC5vcmc7IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbSXNz
-dWUgUmVwb3J0XSBSZWFsdGVrIDg4NTJBRSBCbHVldG9vdGggYXVkaW8gaXNzdWVzIHdoaWxlIHVz
-aW5nIFdpRmkNCj4gDQo+IEhpLA0KPiANCj4gSSdtIHJ1bm5pbmcgNi4xLjAtMyBrZXJuZWwgYW5k
-IGdldHRpbmcgQmx1ZXRvb3RoIGF1ZGlvIGdsaXRjaGVzIGNvbnN0YW50bHkNCj4gb24gYSBwYWly
-IG9mIGJ1ZHMgYW5kIGFsbCB0aGUgdGltZSB3aGVuIFdpRmkgaXMgY29ubmVjdGluZyBhbmQgd29y
-a2luZyBvbg0KPiBSVEwgODg1MkFFIGNhcmQuIFNvbWUgQmx1ZXRvb3RoIGF1ZGlvIGRldmljZXMg
-d29yayBmaW5lIHdpdGhvdXQgaXNzdWUuIEJ1dA0KPiBzb21lIGRldmljZXMgZ2V0IGdsaXRjaHkg
-YXVkaW8gYWxsIHRoZSB0aW1lIHdoZW4gV2lmaSBpcyBiZWluZyB1c2VkLiBUaGUNCj4gYXVkaW8g
-YmVjb21lcyBtb3JlIGFuZCBtb3JlIGdsaXRjaHkgYXMgdGhlIFdpRmkgdXNlIGluY3JlYXNlcy4g
-WzFdIG1lbnRpb25zDQo+IHRoYXQgdGhlIHByb2JsZW0gZm9yIFJlYWx0ZWsgODcyM0JFIGdldHMg
-c29sdmVkIGJ5IHN3aXRjaGluZyB0byA1R0h6IHdpZmkNCj4gb3IgdXBncmFkaW5nIGRyaXZlcy4g
-SXMgdGhpcyBpc3N1ZSBwcmVzZW50IG9uIG90aGVyIG9wZXJhdGluZyBzeXN0ZW1zIGZvcg0KPiB0
-aGlzIGNoaXAgYXMgd2VsbD8gQ2FuIGl0IGJlIHNvbHZlZCBmb3IgTGludXggaWYgV2lmaSBpcyB1
-c2VkIGF0IDIuNCBHSHo/DQoNCkJsdWV0b290aCBkZXZpY2VzIHdvcmsgb24gMi40IEdIeiwgc28g
-dGhlIGNvZXhpc3RlbmNlIG1lY2hhbmlzbSBvbiB0aGlzIGJhbmQNCmlzIG1vcmUgZGlmZmljdWx0
-IHRoYW4gNSBHSHouIFRoYXQgaXMgd2h5IFsxXSBzdWdnZXN0IHRvIHN3aXRjaCB0byA1R0h6Lg0K
-DQpUbyBkZWJ1ZyB0aGlzIHByb2JsZW0sIHBsZWFzZSBmb2xsb3cgYmVsb3cgc3RlcHMgdG8gY2Fw
-dHVyZSBsb2cgYW5kIHNlbmQgdGhlbQ0KdG8gbWUgcHJpdmF0ZWx5LiBJIHdpbGwgZm9yd2FyZCB0
-aGVtIHRvIHRoZSBwZXJzb24gd2hvIGlzIGZhbWlsaWFyIHdpdGggDQpXaUZpIGFuZCBCVCBjb2V4
-aXN0ZW5jZS4NCg0KVGhlIGRpcmVjdG9yeSBvZiBkZWJ1ZyBlbnRyeSBpcyBsaWtlIC9zeXMva2Vy
-bmVsL2RlYnVnL2llZWU4MDIxMS9waHkwL3J0dzg5DQpVc2UgYmVsb3cgc2hlbGwgY29tbWFuZCB0
-byBjYXB0dXJlIGxvZyBwZXJpb2RpY2FsbHkgZHVyaW5nIEJUIGdldHMgZ2xpdGNoLA0KJCB3aGls
-ZSBbIDEgXTsgZG8gZGF0ZSAtUjsgY2F0IC9zeXMva2VybmVsL2RlYnVnL2llZWU4MDIxMS9waHkw
-L3J0dzg5L2J0Y19pbmZvOyBzbGVlcCAyOyBkb25lIHwgdGVlIHh4eC5sb2cgDQoNClBsZWFzZSBw
-cm92aWRlIHNlcGFyYXRlIGxvZ3MgZm9yIGVhY2ggQmx1ZXRvb3RoIGRldmljZSB3aXRoL3dpdGhv
-dXQgZ2xpdGNoLA0KYW5kIGdpdmUgdXMgc2ltcGxlIGRlc2NyaXB0aW9ucyBhYm91dCB0aW1lc3Rh
-bXAgYW5kIHN5bXB0b20sIGxpa2UNCiJhdCB0aW1lIDA5OjEwIEJsdWV0b290aCBkZXZpY2UgZ2V0
-cyBnbGl0Y2ggd2hlbiBXaUZpIGlzIGRvd25sb2FkaW5nIGZpbGUiDQpUaGF0IGNhbiBoZWxwIHVz
-IHRvIGFkZHJlc3MgcHJvYmxlbSBxdWlja2x5LiBQbGVhc2Ugb25seSBwYWlyIG9ubHkgb25lDQpC
-bHVldG9vdGggZGV2aWNlIHdoZW4gY2FwdHVyaW5nIGxvZy4NCg0KUGluZy1LZQ0KDQo=
+mt7921 just stop some workers and clean up chip status before reboot.
+In stress test, there are working activities still running at the period
+of .shutdown callback and that would cause some hosts cannot recover
+DMA after reboot. To avoid the floating state in reboot, we use
+mt7921_pci_remove() to fully deinit all resources.
+
+Fixes: f23a0cea8bd6 ("wifi: mt76: mt7921e: add pci .shutdown() support")
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+
+---
+v2: add Fixes tag
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index cb72ded37256..1a8a54a46dcc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -509,17 +509,7 @@ static int mt7921_pci_resume(struct device *device)
+ 
+ static void mt7921_pci_shutdown(struct pci_dev *pdev)
+ {
+-	struct mt76_dev *mdev = pci_get_drvdata(pdev);
+-	struct mt7921_dev *dev = container_of(mdev, struct mt7921_dev, mt76);
+-	struct mt76_connac_pm *pm = &dev->pm;
+-
+-	cancel_delayed_work_sync(&pm->ps_work);
+-	cancel_work_sync(&pm->wake_work);
+-
+-	/* chip cleanup before reboot */
+-	mt7921_mcu_drv_pmctrl(dev);
+-	mt7921_dma_cleanup(dev);
+-	mt7921_wfsys_reset(dev);
++	mt7921_pci_remove(pdev);
+ }
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(mt7921_pm_ops, mt7921_pci_suspend, mt7921_pci_resume);
+-- 
+2.18.0
+
