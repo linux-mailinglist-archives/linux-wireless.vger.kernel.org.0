@@ -2,102 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F76169629D
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 12:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 289AD6963C6
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 13:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjBNLn6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 06:43:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47004 "EHLO
+        id S230290AbjBNMqS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Feb 2023 07:46:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjBNLn5 (ORCPT
+        with ESMTP id S232179AbjBNMqH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 06:43:57 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23AA56E84
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 03:43:55 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31EBhkLhB020936, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (mapi.realtek.com[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31EBhkLhB020936
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 14 Feb 2023 19:43:46 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 14 Feb 2023 19:43:48 +0800
-Received: from localhost (172.16.16.240) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 14 Feb
- 2023 19:43:47 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: move H2C of del_pkt_offload before polling FW status ready
-Date:   Tue, 14 Feb 2023 19:43:14 +0800
-Message-ID: <20230214114314.5268-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 14 Feb 2023 07:46:07 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8639E24489
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 04:45:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=2e8GL0ei8StvHaCh7RBbwmDmdYpFbNkOkUXaRi+KdFI=;
+        t=1676378757; x=1677588357; b=Qxg9TpVNV34wop9zUQBEP8lYjqLbWqMWPirhSk92bgSXDfu
+        t66FsfUm/fikAdBjsqJoi6xfsliOWr7IzIclJINLjnAHj7HDhzDUos1gHZ+SmYaH6jy4gSRvj+D9r
+        IhmhwOEmYrsiy+lz8bNB+S9Uv1h44V4REax22cG6eOBBHdXMS2Rn8SQoSXsAqe4CdCiEa5UAfJ+vK
+        2EMAFSzh50LVO59rX34JbEJyJebHhYCOTGHIJrP22RKVtnG5ocFDVY7LauzRQJgXyDKnar/C3jObr
+        gagncrRbPbqZBO5QwcZyc1rckib9CKqlfduRTzBFbhW2ePzjc4mz9AvILHYtSyyg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pRuh0-00C8ow-2S;
+        Tue, 14 Feb 2023 13:45:54 +0100
+Message-ID: <5fe1e6eea00f33be59ae0aaf0429be08595dfc03.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: mac80211: validate link status before deciding
+ on mgmt tx
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Sriram R <quic_srirrama@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 14 Feb 2023 13:45:53 +0100
+In-Reply-To: <20230119221306.24526-1-quic_srirrama@quicinc.com>
+References: <20230119221306.24526-1-quic_srirrama@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.240]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+On Fri, 2023-01-20 at 03:43 +0530, Sriram R wrote:
+> Currently we check the status of bss active flag to see if the
+> AP is active.
+>=20
 
-The H2C of del_pkt_offload must be called before polling FW status
-ready, otherwise the following downloading normal FW will fail.
+Following so far :)
 
-Fixes: 5c12bb66b79d ("wifi: rtw89: refine packet offload flow")
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-Hi Kalle,
+> But in case of a MLD AP, when some of the links
+> are getting teardown=C2=A0
 
-We found a bug existing in commit 5c12bb66b79d that was merged yesterday.
-Since merge window is next week, is it possible to merge this patch for
-kernel 6.3?
+"getting torn down"?
 
-Thank you 
-Ping-Ke
+> and some are active, mgmt Tx(like deauth)
+> can be sent on some links before they are brought down as well.
 
----
- drivers/net/wireless/realtek/rtw89/wow.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Makes sense.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 92fa366ccfcf7..c78ee2ab732c9 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -710,6 +710,8 @@ static int rtw89_wow_fw_stop(struct rtw89_dev *rtwdev)
- 		goto out;
- 	}
- 
-+	rtw89_fw_release_general_pkt_list(rtwdev, true);
-+
- 	ret = rtw89_wow_check_fw_status(rtwdev, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "wow: failed to check disable fw ready\n");
-@@ -779,8 +781,6 @@ static int rtw89_wow_disable(struct rtw89_dev *rtwdev)
- 		goto out;
- 	}
- 
--	rtw89_fw_release_general_pkt_list(rtwdev, true);
--
- 	ret = rtw89_wow_swap_fw(rtwdev, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "wow: failed to disable trx_post\n");
--- 
-2.25.1
+> In such cases, the bss active flag might not provide the exact
+> status of the MLD links, which becomes false on first link deleted.
 
+Wait, isn't that already a bug?
+
+> Hence check if any of the links can be used for mgmt tx
+> before returning error status.
+>=20
+> Also, use the link id passed from userspace when the link bss
+> address matches the mgmt SA and the chan params match the request.
+> This will avoid scenario where the link id from userspace
+> gets reset.
+
+"gets reset"??
+
+> =20
+> +static bool ieee80211_is_link_bss_active(struct ieee80211_sub_if_data *s=
+data,
+> +					 int link_id)
+> +{
+[...]
+> +	sdata_lock(sdata);
+> +	link =3D sdata_dereference(sdata->link[link_id], sdata);
+> +	if (!link) {
+> +		sdata_unlock(sdata);
+> +		return false;
+> +	}
+> +
+> +	if (sdata_dereference(link->u.ap.beacon, sdata)) {
+> +		sdata_unlock(sdata);
+> +		return true;
+> +	}
+> +
+> +	sdata_unlock(sdata);
+
+The locking here is ... decidedly odd. It feels like with all the
+wdev_lock()ing going on in cfg80211_mlme_mgmt_tx() we should probably
+just lock around the *entire* thing in cfg80211, including the
+driver/mac80211 call?
+
+> @@ -883,8 +920,17 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wi=
+reless_dev *wdev,
+>  				break;
+>  			}
+> =20
+> -			if (ether_addr_equal(conf->addr, mgmt->sa))
+> +			if (ether_addr_equal(conf->addr, mgmt->sa)) {
+> +				/* If userspace requested Tx on a specific link
+> +				 * use the same link id if the link bss is matching
+> +				 * the requested chan.
+> +				 */
+> +				if (sdata->vif.valid_links &&
+> +				    params->link_id >=3D 0 && params->link_id =3D=3D i &&
+> +				    params->chan =3D=3D chanctx_conf->def.chan)
+> +					link_id =3D i;
+>  				break;
+> +			}
+
+
+Not sure I get it, if it's bad (link ID doesn't match BSS) then
+shouldn't we just reject it?
+
+johannes
