@@ -2,244 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3C3569534C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Feb 2023 22:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB3D4695580
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Feb 2023 01:45:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230300AbjBMVmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Feb 2023 16:42:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35238 "EHLO
+        id S229652AbjBNApR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Feb 2023 19:45:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229891AbjBMVmQ (ORCPT
+        with ESMTP id S229462AbjBNApQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Feb 2023 16:42:16 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6064E468F;
-        Mon, 13 Feb 2023 13:42:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBE1E612CF;
-        Mon, 13 Feb 2023 21:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F44C433EF;
-        Mon, 13 Feb 2023 21:42:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676324533;
-        bh=rOYvHJNGXd8NF4EsktaSRa4f4jOwg6EFR8VVJBsgOnY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gZAFwyR0kPgpL78DYHN7WwQkqLUVCFmMCHQxD58hm3QOE6g5EVhMvUGA1uAh51DRz
-         Qmt5SvdI8kAfyWAkrBYFd/9mijv5DE7ibxs+wvI8e/DzHHNEZnsmijf7Nc2GaoMlIn
-         Vs7coBIa6L7JfVFY96ysmtOctoy9hm1HSmSXKeUhEuuFRPmLBg5nU50Vyv16/1KL/Q
-         fSQiNJEw2s+GK8QUWwkMs2sweurepH6mnYE3YH9/5miDYCAQqiarZuIKapZOGt3yF3
-         xBlnInJVfre/aX54H4v5HquYoHT8KUnQbb8OicAyIczGdq8xXIiK4GWk76YKc/N6fL
-         t4HKK2/Z1ziKg==
-Date:   Mon, 13 Feb 2023 13:44:17 -0800
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Elliot Berman <quic_eberman@quicinc.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Amol Maheshwari <amahesh@qti.qualcomm.com>,
-        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
+        Mon, 13 Feb 2023 19:45:16 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0610D527;
+        Mon, 13 Feb 2023 16:45:12 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31E0iaInB002345, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31E0iaInB002345
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Tue, 14 Feb 2023 08:44:36 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 14 Feb 2023 08:44:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 14 Feb 2023 08:44:38 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Tue, 14 Feb 2023 08:44:38 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org
-Subject: Re: [PATCH] firmware: qcom_scm: Use fixed width src vm bitmap
-Message-ID: <20230213214417.mtcpeultvynyls6s@ripper>
-References: <20230213181832.3489174-1-quic_eberman@quicinc.com>
+        Paolo Abeni <pabeni@redhat.com>
+CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [Issue Report] Realtek 8852AE Bluetooth audio issues while using WiFi
+Thread-Topic: [Issue Report] Realtek 8852AE Bluetooth audio issues while using
+ WiFi
+Thread-Index: AQHZP++iRX35EKlpEk+ewenwK0sPRa7Nla3g
+Date:   Tue, 14 Feb 2023 00:44:38 +0000
+Message-ID: <0ab9319d40cc4ee7885441cbc7f39b74@realtek.com>
+References: <2dcc7926-4d80-0d70-edf3-d05ea3dc542e@collabora.com>
+In-Reply-To: <2dcc7926-4d80-0d70-edf3-d05ea3dc542e@collabora.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzIvMTMg5LiL5Y2IIDA2OjU5OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230213181832.3489174-1-quic_eberman@quicinc.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 10:18:29AM -0800, Elliot Berman wrote:
-> The maximum VMID for assign_mem is 63. Use a u64 to represent this
-> bitmap instead of architecture-dependent "unsigned int" which varies in
-> size on 32-bit and 64-bit platforms.
-> 
-> Acked-by: Kalle Valo <kvalo@kernel.org> (ath10k)
-> Tested-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
-> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-
-@Greg, would you mind taking this through your tree for v6.3, you
-already have a related change in fastrpc.c in your tree...
-
-Regards,
-Bjorn
-
-> ---
->  drivers/firmware/qcom_scm.c            | 12 +++++++-----
->  drivers/misc/fastrpc.c                 |  2 +-
->  drivers/net/wireless/ath/ath10k/qmi.c  |  4 ++--
->  drivers/remoteproc/qcom_q6v5_mss.c     |  8 ++++----
->  drivers/remoteproc/qcom_q6v5_pas.c     |  2 +-
->  drivers/soc/qcom/rmtfs_mem.c           |  2 +-
->  include/linux/firmware/qcom/qcom_scm.h |  2 +-
->  7 files changed, 17 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-> index 468d4d5ab550..b95616b35bff 100644
-> --- a/drivers/firmware/qcom_scm.c
-> +++ b/drivers/firmware/qcom_scm.c
-> @@ -905,7 +905,7 @@ static int __qcom_scm_assign_mem(struct device *dev, phys_addr_t mem_region,
->   * Return negative errno on failure or 0 on success with @srcvm updated.
->   */
->  int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
-> -			unsigned int *srcvm,
-> +			u64 *srcvm,
->  			const struct qcom_scm_vmperm *newvm,
->  			unsigned int dest_cnt)
->  {
-> @@ -922,9 +922,9 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
->  	__le32 *src;
->  	void *ptr;
->  	int ret, i, b;
-> -	unsigned long srcvm_bits = *srcvm;
-> +	u64 srcvm_bits = *srcvm;
->  
-> -	src_sz = hweight_long(srcvm_bits) * sizeof(*src);
-> +	src_sz = hweight64(srcvm_bits) * sizeof(*src);
->  	mem_to_map_sz = sizeof(*mem_to_map);
->  	dest_sz = dest_cnt * sizeof(*destvm);
->  	ptr_sz = ALIGN(src_sz, SZ_64) + ALIGN(mem_to_map_sz, SZ_64) +
-> @@ -937,8 +937,10 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
->  	/* Fill source vmid detail */
->  	src = ptr;
->  	i = 0;
-> -	for_each_set_bit(b, &srcvm_bits, BITS_PER_LONG)
-> -		src[i++] = cpu_to_le32(b);
-> +	for (b = 0; b < BITS_PER_TYPE(u64); b++) {
-> +		if (srcvm_bits & BIT(b))
-> +			src[i++] = cpu_to_le32(b);
-> +	}
->  
->  	/* Fill details of mem buff to map */
->  	mem_to_map = ptr + ALIGN(src_sz, SZ_64);
-> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-> index a701132638cf..f48466960f1b 100644
-> --- a/drivers/misc/fastrpc.c
-> +++ b/drivers/misc/fastrpc.c
-> @@ -262,7 +262,7 @@ struct fastrpc_channel_ctx {
->  	int domain_id;
->  	int sesscount;
->  	int vmcount;
-> -	u32 perms;
-> +	u64 perms;
->  	struct qcom_scm_vmperm vmperms[FASTRPC_MAX_VMIDS];
->  	struct rpmsg_device *rpdev;
->  	struct fastrpc_session_ctx session[FASTRPC_MAX_SESSIONS];
-> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-> index 90f457b8e1fe..038c5903c0dc 100644
-> --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> @@ -33,7 +33,7 @@ static int ath10k_qmi_map_msa_permission(struct ath10k_qmi *qmi,
->  {
->  	struct qcom_scm_vmperm dst_perms[3];
->  	struct ath10k *ar = qmi->ar;
-> -	unsigned int src_perms;
-> +	u64 src_perms;
->  	u32 perm_count;
->  	int ret;
->  
-> @@ -65,7 +65,7 @@ static int ath10k_qmi_unmap_msa_permission(struct ath10k_qmi *qmi,
->  {
->  	struct qcom_scm_vmperm dst_perms;
->  	struct ath10k *ar = qmi->ar;
-> -	unsigned int src_perms;
-> +	u64 src_perms;
->  	int ret;
->  
->  	src_perms = BIT(QCOM_SCM_VMID_MSS_MSA) | BIT(QCOM_SCM_VMID_WLAN);
-> diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-> index ab053084f7a2..1ba711bc0100 100644
-> --- a/drivers/remoteproc/qcom_q6v5_mss.c
-> +++ b/drivers/remoteproc/qcom_q6v5_mss.c
-> @@ -235,8 +235,8 @@ struct q6v5 {
->  	bool has_qaccept_regs;
->  	bool has_ext_cntl_regs;
->  	bool has_vq6;
-> -	int mpss_perm;
-> -	int mba_perm;
-> +	u64 mpss_perm;
-> +	u64 mba_perm;
->  	const char *hexagon_mdt_image;
->  	int version;
->  };
-> @@ -414,7 +414,7 @@ static void q6v5_pds_disable(struct q6v5 *qproc, struct device **pds,
->  	}
->  }
->  
-> -static int q6v5_xfer_mem_ownership(struct q6v5 *qproc, int *current_perm,
-> +static int q6v5_xfer_mem_ownership(struct q6v5 *qproc, u64 *current_perm,
->  				   bool local, bool remote, phys_addr_t addr,
->  				   size_t size)
->  {
-> @@ -967,7 +967,7 @@ static int q6v5_mpss_init_image(struct q6v5 *qproc, const struct firmware *fw,
->  	unsigned long dma_attrs = DMA_ATTR_FORCE_CONTIGUOUS;
->  	dma_addr_t phys;
->  	void *metadata;
-> -	int mdata_perm;
-> +	u64 mdata_perm;
->  	int xferop_ret;
->  	size_t size;
->  	void *ptr;
-> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-> index 1e14ae4d233a..a0fa7176fde7 100644
-> --- a/drivers/remoteproc/qcom_q6v5_pas.c
-> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
-> @@ -94,7 +94,7 @@ struct qcom_adsp {
->  	size_t region_assign_size;
->  
->  	int region_assign_idx;
-> -	int region_assign_perms;
-> +	u64 region_assign_perms;
->  
->  	struct qcom_rproc_glink glink_subdev;
->  	struct qcom_rproc_subdev smd_subdev;
-> diff --git a/drivers/soc/qcom/rmtfs_mem.c b/drivers/soc/qcom/rmtfs_mem.c
-> index 2d3ee22b9249..2657c6105bb7 100644
-> --- a/drivers/soc/qcom/rmtfs_mem.c
-> +++ b/drivers/soc/qcom/rmtfs_mem.c
-> @@ -31,7 +31,7 @@ struct qcom_rmtfs_mem {
->  
->  	unsigned int client_id;
->  
-> -	unsigned int perms;
-> +	u64 perms;
->  };
->  
->  static ssize_t qcom_rmtfs_mem_show(struct device *dev,
-> diff --git a/include/linux/firmware/qcom/qcom_scm.h b/include/linux/firmware/qcom/qcom_scm.h
-> index 1e449a5d7f5c..250ea4efb7cb 100644
-> --- a/include/linux/firmware/qcom/qcom_scm.h
-> +++ b/include/linux/firmware/qcom/qcom_scm.h
-> @@ -94,7 +94,7 @@ extern int qcom_scm_mem_protect_video_var(u32 cp_start, u32 cp_size,
->  					  u32 cp_nonpixel_start,
->  					  u32 cp_nonpixel_size);
->  extern int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
-> -			       unsigned int *src,
-> +			       u64 *src,
->  			       const struct qcom_scm_vmperm *newvm,
->  			       unsigned int dest_cnt);
->  
-> 
-> base-commit: 09e41676e35ab06e4bce8870ea3bf1f191c3cb90
-> -- 
-> 2.39.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTXVoYW1tYWQgVXNhbWEg
+QW5qdW0gPHVzYW1hLmFuanVtQGNvbGxhYm9yYS5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEZlYnJ1
+YXJ5IDE0LCAyMDIzIDQ6MzggQU0NCj4gVG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsu
+Y29tPjsgS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz47IERhdmlkIFMuIE1pbGxlciA8ZGF2
+ZW1AZGF2ZW1sb2Z0Lm5ldD47DQo+IEVyaWMgRHVtYXpldCA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT47
+IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+OyBQYW9sbyBBYmVuaSA8cGFiZW5pQHJl
+ZGhhdC5jb20+DQo+IENjOiBNdWhhbW1hZCBVc2FtYSBBbmp1bSA8dXNhbWEuYW5qdW1AY29sbGFi
+b3JhLmNvbT47IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
+cm5lbC5vcmc7IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbSXNz
+dWUgUmVwb3J0XSBSZWFsdGVrIDg4NTJBRSBCbHVldG9vdGggYXVkaW8gaXNzdWVzIHdoaWxlIHVz
+aW5nIFdpRmkNCj4gDQo+IEhpLA0KPiANCj4gSSdtIHJ1bm5pbmcgNi4xLjAtMyBrZXJuZWwgYW5k
+IGdldHRpbmcgQmx1ZXRvb3RoIGF1ZGlvIGdsaXRjaGVzIGNvbnN0YW50bHkNCj4gb24gYSBwYWly
+IG9mIGJ1ZHMgYW5kIGFsbCB0aGUgdGltZSB3aGVuIFdpRmkgaXMgY29ubmVjdGluZyBhbmQgd29y
+a2luZyBvbg0KPiBSVEwgODg1MkFFIGNhcmQuIFNvbWUgQmx1ZXRvb3RoIGF1ZGlvIGRldmljZXMg
+d29yayBmaW5lIHdpdGhvdXQgaXNzdWUuIEJ1dA0KPiBzb21lIGRldmljZXMgZ2V0IGdsaXRjaHkg
+YXVkaW8gYWxsIHRoZSB0aW1lIHdoZW4gV2lmaSBpcyBiZWluZyB1c2VkLiBUaGUNCj4gYXVkaW8g
+YmVjb21lcyBtb3JlIGFuZCBtb3JlIGdsaXRjaHkgYXMgdGhlIFdpRmkgdXNlIGluY3JlYXNlcy4g
+WzFdIG1lbnRpb25zDQo+IHRoYXQgdGhlIHByb2JsZW0gZm9yIFJlYWx0ZWsgODcyM0JFIGdldHMg
+c29sdmVkIGJ5IHN3aXRjaGluZyB0byA1R0h6IHdpZmkNCj4gb3IgdXBncmFkaW5nIGRyaXZlcy4g
+SXMgdGhpcyBpc3N1ZSBwcmVzZW50IG9uIG90aGVyIG9wZXJhdGluZyBzeXN0ZW1zIGZvcg0KPiB0
+aGlzIGNoaXAgYXMgd2VsbD8gQ2FuIGl0IGJlIHNvbHZlZCBmb3IgTGludXggaWYgV2lmaSBpcyB1
+c2VkIGF0IDIuNCBHSHo/DQoNCkJsdWV0b290aCBkZXZpY2VzIHdvcmsgb24gMi40IEdIeiwgc28g
+dGhlIGNvZXhpc3RlbmNlIG1lY2hhbmlzbSBvbiB0aGlzIGJhbmQNCmlzIG1vcmUgZGlmZmljdWx0
+IHRoYW4gNSBHSHouIFRoYXQgaXMgd2h5IFsxXSBzdWdnZXN0IHRvIHN3aXRjaCB0byA1R0h6Lg0K
+DQpUbyBkZWJ1ZyB0aGlzIHByb2JsZW0sIHBsZWFzZSBmb2xsb3cgYmVsb3cgc3RlcHMgdG8gY2Fw
+dHVyZSBsb2cgYW5kIHNlbmQgdGhlbQ0KdG8gbWUgcHJpdmF0ZWx5LiBJIHdpbGwgZm9yd2FyZCB0
+aGVtIHRvIHRoZSBwZXJzb24gd2hvIGlzIGZhbWlsaWFyIHdpdGggDQpXaUZpIGFuZCBCVCBjb2V4
+aXN0ZW5jZS4NCg0KVGhlIGRpcmVjdG9yeSBvZiBkZWJ1ZyBlbnRyeSBpcyBsaWtlIC9zeXMva2Vy
+bmVsL2RlYnVnL2llZWU4MDIxMS9waHkwL3J0dzg5DQpVc2UgYmVsb3cgc2hlbGwgY29tbWFuZCB0
+byBjYXB0dXJlIGxvZyBwZXJpb2RpY2FsbHkgZHVyaW5nIEJUIGdldHMgZ2xpdGNoLA0KJCB3aGls
+ZSBbIDEgXTsgZG8gZGF0ZSAtUjsgY2F0IC9zeXMva2VybmVsL2RlYnVnL2llZWU4MDIxMS9waHkw
+L3J0dzg5L2J0Y19pbmZvOyBzbGVlcCAyOyBkb25lIHwgdGVlIHh4eC5sb2cgDQoNClBsZWFzZSBw
+cm92aWRlIHNlcGFyYXRlIGxvZ3MgZm9yIGVhY2ggQmx1ZXRvb3RoIGRldmljZSB3aXRoL3dpdGhv
+dXQgZ2xpdGNoLA0KYW5kIGdpdmUgdXMgc2ltcGxlIGRlc2NyaXB0aW9ucyBhYm91dCB0aW1lc3Rh
+bXAgYW5kIHN5bXB0b20sIGxpa2UNCiJhdCB0aW1lIDA5OjEwIEJsdWV0b290aCBkZXZpY2UgZ2V0
+cyBnbGl0Y2ggd2hlbiBXaUZpIGlzIGRvd25sb2FkaW5nIGZpbGUiDQpUaGF0IGNhbiBoZWxwIHVz
+IHRvIGFkZHJlc3MgcHJvYmxlbSBxdWlja2x5LiBQbGVhc2Ugb25seSBwYWlyIG9ubHkgb25lDQpC
+bHVldG9vdGggZGV2aWNlIHdoZW4gY2FwdHVyaW5nIGxvZy4NCg0KUGluZy1LZQ0KDQo=
