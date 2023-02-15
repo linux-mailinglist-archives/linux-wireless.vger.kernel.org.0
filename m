@@ -2,157 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA59698019
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 17:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 796C869823A
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 18:35:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230009AbjBOQAI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 11:00:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
+        id S230104AbjBORfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 12:35:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbjBOQAD (ORCPT
+        with ESMTP id S229805AbjBORfH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 11:00:03 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594FA3A86E;
-        Wed, 15 Feb 2023 07:59:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676476790; x=1708012790;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rFzlPJjklUrRYXlztiXxbWF4vZTLJe24dy5KZSKBFTU=;
-  b=a2QbX3wd6aUC0XQJ2qfsU00tzCVvCSv9F3xqk4Z83a8t6xUnXvoVdf4i
-   NBxzdPdWCGWw2G0+a2FRuc48aS6+5zJjMUsAUU4x7VaRvR1kt0dzcZeE4
-   jHo1zYFgV07HaGAbi4BPBks+qZO9fn82e64Aa8yl7lKBMwgcsv+zV9IxW
-   OiuiwgzZBscUVew/h/YbZuv2dJSiEXos8iy5r5aT66TiKYAAe654m+i11
-   7/wVHEjSAu+ZufvrTjIJdAAaHjX6IYCkPCwqy3u3/8UDxpT3SMTZUn4cD
-   5pGtrG081KVPyAUVsBJtZcBo/nzky/lMvsHKB6yLBlnvLINeQJm0/k0wE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="331461160"
-X-IronPort-AV: E=Sophos;i="5.97,300,1669104000"; 
-   d="scan'208";a="331461160"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2023 07:59:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10622"; a="700017813"
-X-IronPort-AV: E=Sophos;i="5.97,300,1669104000"; 
-   d="scan'208";a="700017813"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 15 Feb 2023 07:59:31 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pSKBp-007KF7-0b;
-        Wed, 15 Feb 2023 17:59:25 +0200
-Date:   Wed, 15 Feb 2023 17:59:24 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Devarsh Thakkar <devarsht@ti.com>,
-        Michael Walle <michael@walle.cc>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-doc-tw-discuss@lists.sourceforge.net,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
-        devicetree@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Alex Shi <alexs@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Hu Haowen <src.res@email.cn>,
-        Russell King <linux@armlinux.org.uk>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alexander Aring <alex.aring@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v4 00/18] gpiolib cleanups
-Message-ID: <Y+0BXGLf2n+dAi4v@smile.fi.intel.com>
-References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
- <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+        Wed, 15 Feb 2023 12:35:07 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD7B7DB5
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 09:35:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=9AXJuCaXJEyUZLD5x7msrVhjTKmunuVp3q/Olzo3bto=;
+        t=1676482505; x=1677692105; b=jOqLbpSBE/h0/R0K71gTlgAZ+abeSC0T88EmEqWMKAAUJw2
+        kkLdViPkq+X+F9oaSWRTP8N7APg+bB7Xio/CfMbb+EnYWQ8OeCKSfuA65d15TGuauKT1RVbaWblsJ
+        QEQiHR9R3bjUj07NGc7rZTJvdR5NoxD6EJZ7Iq9B8bXJs2XHZZ3r3/gE0mG2rAX55eDew+ztfcnbL
+        IFAyWGy/BJByKLF4XSw9mbLL2aY25T7N4fcyxEy+g7oV4i77PzNFdcPQF0n5gzdVzn4/NSqlc+Cwb
+        KqaygsJsyvXn9VRSkZGnyUKPX2HXZFFXGhRG4oDLgN/UYj2NptPOwBrE+bS73fAA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pSLgJ-00D9Id-0K;
+        Wed, 15 Feb 2023 18:34:59 +0100
+Message-ID: <65670cf42abc593502e9f7bafc56c1d0360d5631.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 1/3] wifi: cfg80211: add support to enable/disable
+ bss color collision detection
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Jouni Malinen <j@w1.fi>
+Date:   Wed, 15 Feb 2023 18:34:58 +0100
+In-Reply-To: <20230201065638.25990-2-quic_ramess@quicinc.com>
+References: <20230201065638.25990-1-quic_ramess@quicinc.com>
+         <20230201065638.25990-2-quic_ramess@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Feb 15, 2023 at 04:52:29PM +0100, Bartosz Golaszewski wrote:
-> On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > These are some older patches Arnd did last year, rebased to
-> > linux-next-20230208. On top there are Andy's patches regarding
-> > similar topic. The series starts with Linus Walleij's patches.
-> >
-> > The main goal is to remove some of the legacy bits of the gpiolib
-> > interfaces, where the corner cases are easily avoided or replaced
-> > with gpio descriptor based interfaces.
-> >
-> > The idea is to get an immutable branch and route the whole series
-> > via GPIO tree.
-> 
-> Andy,
-> 
-> looks like this series has all the acks it needs but I decided to not
-> send it in the upcoming merge window, I'd prefer it gets some time in
-> next so I'll let it sit until the next release cycle.
+On Wed, 2023-02-01 at 12:26 +0530, Rameshkumar Sundaram wrote:
+> As per 802.11ax-2021, STAs shall process BSS Color Change Announcement
+> (BCCA) from AP and switch to new color, but some STAs aren't processing
+> BCCA from AP and not doing color switch, causing them to drop data
+> frames from AP post color change.
 
-Ah, I forgot to mention that this is for the next cycle (v6.4).
-Hence it's fine. (Moreover it's based on Linux Next, so it will
-fail compilation in any certain tree except that one.)
+Hmm. We had this bug in EHT. Should we really allow this? It's a station
+bug, why bother?
 
-I will create an immutable branch after v6.3-rc1 is out.
+> Provide an option to disable color collision detection and therefore
+> not to do BCCA to mitigate the same from AP. If it's required in case
+> where STA supports BCCA handling, then it can enabled in AP using this
+> option.
 
--- 
-With Best Regards,
-Andy Shevchenko
+This could be rewritten a bit, not entirely clear to me. "enabled" is
+more like "disabled"? Or no? Confusing.
 
+> + * @NL80211_HE_BSS_COLOR_ATTR_COLLISION_DETECTION_DISABLED: is BSS
+> + * color collision detection disabled.
 
+please use a tab to indent the second line like elsewhere
+
+> +	he_bss_color->collision_detection_enabled =3D
+> +		!nla_get_flag(tb[NL80211_HE_BSS_COLOR_ATTR_COLLISION_DETECTION_DISABLE=
+D]);
+
+Is it really worth to have one side say "enabled" and the other
+"disabled"?
+
+johannes
