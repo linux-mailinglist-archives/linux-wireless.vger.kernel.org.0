@@ -2,97 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C136975E0
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 06:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D443869760D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 06:57:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231976AbjBOFfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 00:35:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48684 "EHLO
+        id S229648AbjBOF47 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 00:56:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbjBOFfV (ORCPT
+        with ESMTP id S229526AbjBOF46 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 00:35:21 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5CD2A9A5;
-        Tue, 14 Feb 2023 21:35:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EA4ACB82046;
-        Wed, 15 Feb 2023 05:35:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93631C433D2;
-        Wed, 15 Feb 2023 05:35:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676439317;
-        bh=LANnG+PtQLcN/12XLL7GZBXeaLs0zbH80bLxomIclLs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=lR7QtoVO/ZyJ+Fj8sNHOAqdSggan9Qw8vQ8dKctyFX80q7Qxs/hT6Or1B25oELbeN
-         AcMufULJhQ2z6CS1pZeb1dvzqquwBfr/Hrhq8ZiSxY0jSFYRHxhe6QXQMuoAonftHT
-         eCfxLFlA4HO2KNu89u1gVj2zdScsJPO0qZ74KE5FPeVDdgJc+gnrN9FdlGQSBhyfyr
-         1HRgl5eAhNKVa45mM9HtoGmaeIoD9Rf/g0tVDLKws780QmMmWvGyppv4te5nMKtlxb
-         HMMUl0xR7O2HhKCDQl/RmkjK7n/lRNQjHrN4fFijzfG3thKbSsYipy8JEf0Db9syn0
-         tSrrhQ43HM0Fw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Marc Bornand <dev.mbornand@systemb.ch>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yohan Prod'homme <kernel@zoddo.fr>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4] Set ssid when authenticating
-References: <20230214132009.1011452-1-dev.mbornand@systemb.ch>
-Date:   Wed, 15 Feb 2023 07:35:09 +0200
-In-Reply-To: <20230214132009.1011452-1-dev.mbornand@systemb.ch> (Marc
-        Bornand's message of "Tue, 14 Feb 2023 13:20:25 +0000")
-Message-ID: <87ttzn4hki.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 15 Feb 2023 00:56:58 -0500
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 615F82B0A1;
+        Tue, 14 Feb 2023 21:56:56 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R661e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0VbizXb8_1676440611;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0VbizXb8_1676440611)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Feb 2023 13:56:52 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     kuba@kernel.org
+Cc:     pabeni@redhat.com, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, ryder.lee@mediatek.com,
+        lorenzo@kernel.org, nbd@nbd.name, shayne.chen@mediatek.com,
+        sean.wang@mediatek.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH -next v2] wifi: mt76: mt7996: Remove unneeded semicolon
+Date:   Wed, 15 Feb 2023 13:56:50 +0800
+Message-Id: <20230215055650.88538-1-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Marc Bornand <dev.mbornand@systemb.ch> writes:
+./drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3136:3-4: Unneeded semicolon
 
-> changes since v3:
-> - add missing NULL check
-> - add missing break
->
-> changes since v2:
-> - The code was tottaly rewritten based on the disscution of the
->   v2 patch.
-> - the ssid is set in __cfg80211_connect_result() and only if the ssid is
->   not already set.
-> - Do not add an other ssid reset path since it is already done in
->   __cfg80211_disconnected()
->
-> When a connexion was established without going through
-> NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
-> Now we set it in __cfg80211_connect_result() when it is not already set.
->
-> Reported-by: Yohan Prod'homme <kernel@zoddo.fr>
-> Fixes: 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
-> Cc: linux-wireless@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216711
-> Signed-off-by: Marc Bornand <dev.mbornand@systemb.ch>
-> ---
->  net/wireless/sme.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4059
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
 
-The change log ("changes since v3" etc) should be after "---" line and
-the title should start with "wifi: cfg80211:". Please read the wiki link
-below.
+change in v2:
+Add the linux-wireless to cc list.
 
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index dbe30832fd88..8ad51cbfdbe8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3133,7 +3133,7 @@ int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap)
+ 			break;
+ 		default:
+ 			break;
+-		};
++		}
+ 
+ 		buf += le16_to_cpu(tlv->len);
+ 	}
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.20.1.7.g153144c
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
