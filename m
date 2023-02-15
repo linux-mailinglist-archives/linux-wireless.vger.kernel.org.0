@@ -2,92 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98921697552
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 05:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C136975E0
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 06:35:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232990AbjBOEVC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Feb 2023 23:21:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
+        id S231976AbjBOFfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 00:35:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233100AbjBOEUm (ORCPT
+        with ESMTP id S229686AbjBOFfV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Feb 2023 23:20:42 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB423433A;
-        Tue, 14 Feb 2023 20:20:30 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Wed, 15 Feb 2023 00:35:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5CD2A9A5;
+        Tue, 14 Feb 2023 21:35:20 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PGlHH4m0mz4x5V;
-        Wed, 15 Feb 2023 15:20:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1676434828;
-        bh=GfiPsfvThIDr+PFMX0Ky8iugsK3oSFmPz2QVPNqMyJ8=;
-        h=Date:From:To:Cc:Subject:From;
-        b=WUFh66ZYdBeUVOUXmwnA0kVbNoaVZZ5zrs4Uu265MwgS6BplrMuI5kfIPrtnTz9ol
-         BaFHuUWS1qHV6Vc2gHCE3db5u9HtUOrMAlhS3YEOAGTyo48rrHjOlBq+MlKb6+ZPps
-         PgOBCiD64VOhwm5o7ytttYCKVBx/XZY4UejJpyN4Iiesqomy8O70XKcxpAjE5iogMG
-         WZYYElgt0tGEknbs6ZhU3DqaCpVZo7/XNKFEXg38nuxtgNshZ1sg3Pm0sdTBkuXnyu
-         fqZ4YKsIhwN1RdwOKZUSrVrvhC/GOW2KAAhePBEEY5u39OHU7lfNhd0x6qqY/LM1zA
-         OacCDGYYQjdgg==
-Date:   Wed, 15 Feb 2023 15:20:26 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: build warning after merge of the wireless-next tree
-Message-ID: <20230215152026.7fcd88e3@canb.auug.org.au>
+        by ams.source.kernel.org (Postfix) with ESMTPS id EA4ACB82046;
+        Wed, 15 Feb 2023 05:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93631C433D2;
+        Wed, 15 Feb 2023 05:35:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676439317;
+        bh=LANnG+PtQLcN/12XLL7GZBXeaLs0zbH80bLxomIclLs=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=lR7QtoVO/ZyJ+Fj8sNHOAqdSggan9Qw8vQ8dKctyFX80q7Qxs/hT6Or1B25oELbeN
+         AcMufULJhQ2z6CS1pZeb1dvzqquwBfr/Hrhq8ZiSxY0jSFYRHxhe6QXQMuoAonftHT
+         eCfxLFlA4HO2KNu89u1gVj2zdScsJPO0qZ74KE5FPeVDdgJc+gnrN9FdlGQSBhyfyr
+         1HRgl5eAhNKVa45mM9HtoGmaeIoD9Rf/g0tVDLKws780QmMmWvGyppv4te5nMKtlxb
+         HMMUl0xR7O2HhKCDQl/RmkjK7n/lRNQjHrN4fFijzfG3thKbSsYipy8JEf0Db9syn0
+         tSrrhQ43HM0Fw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Marc Bornand <dev.mbornand@systemb.ch>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yohan Prod'homme <kernel@zoddo.fr>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v4] Set ssid when authenticating
+References: <20230214132009.1011452-1-dev.mbornand@systemb.ch>
+Date:   Wed, 15 Feb 2023 07:35:09 +0200
+In-Reply-To: <20230214132009.1011452-1-dev.mbornand@systemb.ch> (Marc
+        Bornand's message of "Tue, 14 Feb 2023 13:20:25 +0000")
+Message-ID: <87ttzn4hki.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/AFC3lzUnigufcAib.+eoaX6";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/AFC3lzUnigufcAib.+eoaX6
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Marc Bornand <dev.mbornand@systemb.ch> writes:
 
-Hi all,
+> changes since v3:
+> - add missing NULL check
+> - add missing break
+>
+> changes since v2:
+> - The code was tottaly rewritten based on the disscution of the
+>   v2 patch.
+> - the ssid is set in __cfg80211_connect_result() and only if the ssid is
+>   not already set.
+> - Do not add an other ssid reset path since it is already done in
+>   __cfg80211_disconnected()
+>
+> When a connexion was established without going through
+> NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
+> Now we set it in __cfg80211_connect_result() when it is not already set.
+>
+> Reported-by: Yohan Prod'homme <kernel@zoddo.fr>
+> Fixes: 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
+> Cc: linux-wireless@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216711
+> Signed-off-by: Marc Bornand <dev.mbornand@systemb.ch>
+> ---
+>  net/wireless/sme.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 
-After merging the wireless-next tree, today's linux-next build (htmldocs)
-produced this warning:
+The change log ("changes since v3" etc) should be after "---" line and
+the title should start with "wifi: cfg80211:". Please read the wiki link
+below.
 
-net/mac80211/sta_info.h:722: warning: Function parameter or member 'amsdu_m=
-esh_control' not described in 'sta_info'
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Introduced by commit
-
-  6e4c0d0460bd ("wifi: mac80211: add a workaround for receiving non-standar=
-d mesh A-MSDU")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/AFC3lzUnigufcAib.+eoaX6
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmPsXYoACgkQAVBC80lX
-0Gxbogf/d6ZjXeSNPvtZ/8PFU5ujTjkNOJcqWeYtVAQ2X3MHqdKJsDETsxe0bBKE
-n1cMGF6eOPmldtkLajTMxAfNZSHjE3iY3YNefFVSSg5LLHCRCQBipwmwCIZ61YNT
-mh7GSUB/5wwJAFtteFr741OlqJy4zihCvgZXWGRb17/lN4Dmd562/6dH9ejokojt
-zX1Iwttdx0KGzBL1s910WtLDHToChja5HNnekmG1oUHEd4YKgY0pDxLBGd6JGWqI
-npbej9yf9xNkuiuscaLQt5x3EyMSyYCzT6rFhcv0ZXpepo1oSqM4O8jcpUtH9LwE
-8nPCl4uo16TZD0UQ7Vy7H6dH7UFaTw==
-=Qmzd
------END PGP SIGNATURE-----
-
---Sig_/AFC3lzUnigufcAib.+eoaX6--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
