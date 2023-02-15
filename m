@@ -2,127 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E6086976DF
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 08:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE951697763
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 08:31:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233576AbjBOHBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 02:01:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
+        id S233544AbjBOHb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 02:31:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233491AbjBOHBK (ORCPT
+        with ESMTP id S230212AbjBOHb1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 02:01:10 -0500
-Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 805772D67
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 23:00:48 -0800 (PST)
-Received: by mail-il1-f206.google.com with SMTP id i7-20020a056e021b0700b003033a763270so12760074ilv.19
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 23:00:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gkVHurq1Tzdby26mZNsHbKo1ABM0N0+6mPqsATRuffg=;
-        b=0ZRLHBu6DXriycGbIHW1Ip73lzRDF38RayN9VaTIGjojwHwO4ZMfMAtsjX1ET78q67
-         VcN1oC7zEQe3z8YAJgFxapdvyE4ndIfrA85vx8Bk92fKTcEOADyMjTzmRXg2KTxzfTUc
-         65DpohqXJNME9E/+sYvi/8ML5o6GrGJ1rw5MTPqzIdwtHRtopNsM+b28ueB7HBNDDeKG
-         n8d1v5mzUnptSSswWk+2E2g7HVFkECc1NUzvuFGbzS2afKQSTyMqjqm9y+NnARnCBVun
-         VmnENrLikD/MVdE1SXqrOJROm2DbK5qMM0r4+zAU43Dy/44DnqdPMdyY/kH7Ip9gzhEg
-         WcDg==
-X-Gm-Message-State: AO0yUKVSN/QICV/oBd1Y4xys6e/Aezw0TrI2jmTY3bPNWzsupmM6a07E
-        vsASrBuBvNk2LVVzLuD6zWBKJBpWxKloOQvv7xi1F0fag3OF
-X-Google-Smtp-Source: AK7set/YbAqV35eJ0s0AwHJYpdfXhNJUM6wxJa28B5vW4JZa69HMknumDLuvr9kTy8lrWiwY4BD0vaschqtgNTo3CfnKnIFYsFcj
-MIME-Version: 1.0
-X-Received: by 2002:a92:9413:0:b0:310:fb90:b618 with SMTP id
- c19-20020a929413000000b00310fb90b618mr442977ili.0.1676444447808; Tue, 14 Feb
- 2023 23:00:47 -0800 (PST)
-Date:   Tue, 14 Feb 2023 23:00:47 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000cc25bd05f4b7a3d2@google.com>
-Subject: [syzbot] WARNING in usb_tx_block/usb_submit_urb
-From:   syzbot <syzbot+355c68b459d1d96c4d06@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        kvalo@kernel.org, libertas-dev@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+        Wed, 15 Feb 2023 02:31:27 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB5728D1A
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 23:31:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=mkqE2r3m51/LiSQIdo/az6Tf1nHb/Z9frMWJQw/+3Bg=;
+        t=1676446286; x=1677655886; b=Z3+f28gZfooptJ9HF+T4YiySU5FAHa3iqvBZmAnv4mnCDZ3
+        01zqrBvQBUbG+WhtDDWB0YX0/7Sc4ZW6n2iEH8tWZg37oKF5UaWYlFzxjzp9iI8P7i7gJXmLDUy7k
+        MiG3P4sRaxPNSMOuaIxcKw7pVUWYdm5Rx9vKZvhB4G72r5XWks4Iegq0Aux468rCRoL9wrOrEG0o9
+        G6RVJ9J17skr0im/pE0S7O7fO957Fsb7JjAufxOPl8ZJ4vuGMblT+S/mBxSg5eO3ake7nwmy5WTaE
+        muJkJ9l5ZFNCcLIVzhEVIbdUzZ6bsOkY75UNMBsRngtFwXjBth9tKMk5MTodlQmg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pSCFu-00Cy6v-1F;
+        Wed, 15 Feb 2023 08:31:08 +0100
+Message-ID: <4ab31b2407d9b2d930a2637730c4f3c0b2555c6a.camel@sipsolutions.net>
+Subject: Re: [PATCH v3] wifi: cfg80211: call reg_notifier for self managed
+ wiphy from driver hint
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 15 Feb 2023 08:31:05 +0100
+In-Reply-To: <bcaf5a88-76f3-c4ed-0fca-2c131d392f82@quicinc.com>
+References: <20230201070327.27578-1-quic_wgong@quicinc.com>
+         <bcaf5a88-76f3-c4ed-0fca-2c131d392f82@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SORTED_RECIPS,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hi Wen,
 
-syzbot found the following issue on:
+> I see you have merged v2 to wireless-next.git and this v3's state is reje=
+ct.
 
-HEAD commit:    f87b564686ee dt-bindings: usb: amlogic,meson-g12a-usb-ctrl..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=119f3aaf480000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6d59dd45f9349215
-dashboard link: https://syzkaller.appspot.com/bug?extid=355c68b459d1d96c4d06
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17db7007480000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1670f2b3480000
+Yeah. Actually, I saw v3 only after I merged v2, but then I saw what the
+change was and figured that was unnecessary anyway.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/162f005fbb8d/disk-f87b5646.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/868c38dbb85a/vmlinux-f87b5646.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e560670dfb35/bzImage-f87b5646.xz
+> So do you mean we should not keep hole BIT 24 in enum wiphy_flags from=
+=20
+> now as well as hole 11/12 in commit 8e8b41f9d8c8/ca986ad9bcd3?
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+355c68b459d1d96c4d06@syzkaller.appspotmail.com
+Indeed. The point of the comment saying "use" was to actually, well,
+_use_ the hole next time. I haven't really enforced that since I keep
+forgetting (and we're nowhere near running out of bits), but yes, the
+point is that you could even have used bit 11 or 12.
 
-usb 1-1: Product: syz
-usb 1-1: Manufacturer: syz
-usb 1-1: SerialNumber: syz
-usb 1-1: config 0 descriptor??
-------------[ cut here ]------------
-URB ffff888112baaf00 submitted while active
-WARNING: CPU: 0 PID: 12 at drivers/usb/core/urb.c:379 usb_submit_urb+0x14ec/0x1880 drivers/usb/core/urb.c:379
-Modules linked in:
-CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 6.2.0-rc7-syzkaller-00232-gf87b564686ee #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/21/2023
-Workqueue: events request_firmware_work_func
-RIP: 0010:usb_submit_urb+0x14ec/0x1880 drivers/usb/core/urb.c:379
-Code: 89 de e8 87 86 88 fd 84 db 0f 85 a3 f3 ff ff e8 0a 8a 88 fd 4c 89 fe 48 c7 c7 00 2d a8 86 c6 05 14 8a 14 05 01 e8 18 06 19 02 <0f> 0b e9 81 f3 ff ff 48 89 7c 24 40 e8 e3 89 88 fd 48 8b 7c 24 40
-RSP: 0018:ffffc900000cfa00 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff8881002dd400 RSI: ffffffff812db84c RDI: fffff52000019f32
-RBP: ffff888112baaf00 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000000 R12: 00000000c0028200
-R13: 0000000000000010 R14: 00000000fffffff0 R15: ffff888112baaf00
-FS:  0000000000000000(0000) GS:ffff8881f6800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f165ac57130 CR3: 000000011215a000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- usb_tx_block+0x241/0x2e0 drivers/net/wireless/marvell/libertas/if_usb.c:436
- if_usb_issue_boot_command drivers/net/wireless/marvell/libertas/if_usb.c:766 [inline]
- if_usb_prog_firmware+0x531/0xe30 drivers/net/wireless/marvell/libertas/if_usb.c:859
- lbs_fw_loaded drivers/net/wireless/marvell/libertas/firmware.c:23 [inline]
- helper_firmware_cb drivers/net/wireless/marvell/libertas/firmware.c:80 [inline]
- helper_firmware_cb+0x1e9/0x2c0 drivers/net/wireless/marvell/libertas/firmware.c:64
- request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
- process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
- worker_thread+0x669/0x1090 kernel/workqueue.c:2436
- kthread+0x2ee/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
+> If that, then backport this patch will be more complex, because the=20
+> backport kernel already have
+> WIPHY_FLAG_HAS_STATIC_WEP=3D BIT(24), then firstly the backport kernel=
+=20
+> need backport other
+> patch(585b6e1304dc ("wifi: cfg80211: remove support for static WEP"))=20
+> which is not really needed.
 
+I guess it could use another bit number (such as 11) in a backport, but
+I don't see that this really _needs_ to be backported? And if you're
+using backports to backport the whole wifi stack then this isn't even a
+question since it all comes in backports.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+johannes
