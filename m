@@ -2,113 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EEBF6977CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 09:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A59ED69781C
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 09:26:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233833AbjBOIMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 03:12:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48038 "EHLO
+        id S233906AbjBOI0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 03:26:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233794AbjBOIMd (ORCPT
+        with ESMTP id S233907AbjBOI0q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 03:12:33 -0500
-Received: from mail-4018.proton.ch (mail-4018.proton.ch [185.70.40.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23EE3A94;
-        Wed, 15 Feb 2023 00:12:31 -0800 (PST)
-Date:   Wed, 15 Feb 2023 08:12:17 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemb.ch;
-        s=protonmail; t=1676448748; x=1676707948;
-        bh=s9JzE6b6DEfckH/ZqQDZxssRt/o9LAwbB3i41yJi7+4=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=fva+HL8dsv3tACxLbMbg9jlu6/1+Zx2YrA6/vdm7SZEtuYYigjN0yxwB5HMeLH0EE
-         a+dNE8DU6teGbczfDlI1u5t+nHRU4611angKVhKSn1ZsbOxnn+wCGR6bE2DVAHJoxR
-         GFwJHVnCovTqmb5tQrQbLJ09M11k56qN3x+Y2AvMa3JL3b6QpvhwTp155aUucarhmv
-         NbuLt++S+UEQLO7sWVTNT7I2ecxB0igDRYfTgNcbc2IOYCzgAoYjFx280cKLnujCg/
-         FDR7fdlcwadje1Joqh1cMVDckXnlB4d59KzgSfT6YJ2qD/JJ7FxAtEogFExHIVaIDj
-         J+hiZbVgKV5Hw==
-To:     Kalle Valo <kvalo@kernel.org>
-From:   Marc Bornand <dev.mbornand@systemb.ch>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yohan Prod'homme <kernel@zoddo.fr>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4] Set ssid when authenticating
-Message-ID: <Y+yT2YUORRHY4bei@opmb2>
-In-Reply-To: <87ttzn4hki.fsf@kernel.org>
-References: <20230214132009.1011452-1-dev.mbornand@systemb.ch> <87ttzn4hki.fsf@kernel.org>
-Feedback-ID: 65519157:user:proton
+        Wed, 15 Feb 2023 03:26:46 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D71367CE
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 00:26:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 97BC2CE206A
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 08:26:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E3DC433A0;
+        Wed, 15 Feb 2023 08:26:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676449591;
+        bh=zQtGlDG1xVHfxVULJ3poQHX7O/rMIjMzR3+yzqktZ5o=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=FZTnt2lRasjFXMBj5DkWa1Kl00FlFl+WVMK8W3vvV5X4qs/2RUoGzhs0QrvMmzLn1
+         EM0HjmojIaPni/Z1Xb+LqBpLs8WQVxggIf3C6D+etthl+uaDzbh8YX24fkZeLGg+gd
+         /5qfPyadi9g2PHE2f2YNc/TlfDrIsrfCUxi05lHUUaHUoztxSck4Q9FpKGPyYUQjXX
+         F/QHVJsSrk1MyKwVP1XIxlIHHIw+ffHI2tDv6mUmn6FMZMugD7jaSxBjcoUmpFZbTR
+         sIw07p+VtxKWnht/TjvQE/DV0w7O5RLcUXn0PcVvmhzjL94IoUUnabwTXHaWsmttd6
+         2vTe+qOJyc6/A==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        MeiChia Chiu <meichia.chiu@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] wifi: mt76: mt7996: fix radiotap bitfield
+References: <79c72b8b101f561bae2350b7945cb41bef86aa83.1676095591.git.ryder.lee@mediatek.com>
+Date:   Wed, 15 Feb 2023 10:26:28 +0200
+In-Reply-To: <79c72b8b101f561bae2350b7945cb41bef86aa83.1676095591.git.ryder.lee@mediatek.com>
+        (Ryder Lee's message of "Sat, 11 Feb 2023 14:13:58 +0800")
+Message-ID: <87pmab49mz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Feb 15, 2023 at 07:35:09AM +0200, Kalle Valo wrote:
-> Marc Bornand <dev.mbornand@systemb.ch> writes:
->
-> > changes since v3:
-> > - add missing NULL check
-> > - add missing break
-> >
-> > changes since v2:
-> > - The code was tottaly rewritten based on the disscution of the
-> >   v2 patch.
-> > - the ssid is set in __cfg80211_connect_result() and only if the ssid i=
-s
-> >   not already set.
-> > - Do not add an other ssid reset path since it is already done in
-> >   __cfg80211_disconnected()
-> >
-> > When a connexion was established without going through
-> > NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
-> > Now we set it in __cfg80211_connect_result() when it is not already set=
-.
-> >
-> > Reported-by: Yohan Prod'homme <kernel@zoddo.fr>
-> > Fixes: 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
-> > Cc: linux-wireless@vger.kernel.org
-> > Cc: stable@vger.kernel.org
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216711
-> > Signed-off-by: Marc Bornand <dev.mbornand@systemb.ch>
-> > ---
-> >  net/wireless/sme.c | 17 +++++++++++++++++
-> >  1 file changed, 17 insertions(+)
->
-> The change log ("changes since v3" etc) should be after "---" line and
+Ryder Lee <ryder.lee@mediatek.com> writes:
 
-Does it need another "---" after the change log?
-something like:
+> Update radiotap bitfield.
 
-"---"
-"changes since v3:"
-"(CHANGES)"
-"---"
+The title says "fix radiotap bitfield" and the commit log "fix radiotap
+bitfield", neither really explain anything. Please but more effort when
+writing commit logs and make sure all Mediatek engineers understand the
+importance of this. This is not the first time I'm mentioning about this
+to patches from Mediatek. More info in the wiki link below.
 
-> the title should start with "wifi: cfg80211:". Please read the wiki link
-> below.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Should i start with the version 1 with the new title?
-and since i am already changing the title, the following might better
-discribe the patch, or should i keep the old title after the ":" ?
-
-[PATCH wireless] wifi: cfg80211: Set SSID if it is not already set
-
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
