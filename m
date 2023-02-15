@@ -2,153 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C7C697621
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 07:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E6086976DF
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 08:01:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232679AbjBOGKf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 01:10:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33560 "EHLO
+        id S233576AbjBOHBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 02:01:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjBOGKe (ORCPT
+        with ESMTP id S233491AbjBOHBK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 01:10:34 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED502B09C
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 22:10:33 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31F5TfOI001083;
-        Wed, 15 Feb 2023 06:10:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Ph674t8Thsb1W2q6VcgUiJFfR3InJ5WSRNKHIqMC3UA=;
- b=BTBdQL7wPs9ALxxAvOqDLHreG7Y48bTISQowUYz9YUV4sQCHFLKw2WdbDO1VIrRADh5h
- KGk5pRaL+RepZ7G/NAVd9rC+ymqf3Nq7jK1Me8MUDhdvz+NTsK1XI8S8jv7UPr/c/jPb
- kpIacseRVKmsJGABEnPKF48wTv+Q2jSALyabZ9+yqZfxZGCB+k37DPaEF9PVqgJ1WU/0
- RvHb85eD+dmh0bnkaKbLhpqGgQ10Qf1cB/u0gavIFEogd3JrvUG+GhtO7CHelFTphZy3
- /nmWm+QFknjs0yFF3qYwbvpYbjBSGpmhoye6D2+YXPgTefg/NSrm0NLUFKSmz2ZOeDzD eQ== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nrprs0du2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Feb 2023 06:10:19 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31F6AICx005294
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Feb 2023 06:10:18 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 14 Feb
- 2023 22:10:17 -0800
-Message-ID: <bcaf5a88-76f3-c4ed-0fca-2c131d392f82@quicinc.com>
-Date:   Wed, 15 Feb 2023 14:10:13 +0800
+        Wed, 15 Feb 2023 02:01:10 -0500
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 805772D67
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 23:00:48 -0800 (PST)
+Received: by mail-il1-f206.google.com with SMTP id i7-20020a056e021b0700b003033a763270so12760074ilv.19
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Feb 2023 23:00:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gkVHurq1Tzdby26mZNsHbKo1ABM0N0+6mPqsATRuffg=;
+        b=0ZRLHBu6DXriycGbIHW1Ip73lzRDF38RayN9VaTIGjojwHwO4ZMfMAtsjX1ET78q67
+         VcN1oC7zEQe3z8YAJgFxapdvyE4ndIfrA85vx8Bk92fKTcEOADyMjTzmRXg2KTxzfTUc
+         65DpohqXJNME9E/+sYvi/8ML5o6GrGJ1rw5MTPqzIdwtHRtopNsM+b28ueB7HBNDDeKG
+         n8d1v5mzUnptSSswWk+2E2g7HVFkECc1NUzvuFGbzS2afKQSTyMqjqm9y+NnARnCBVun
+         VmnENrLikD/MVdE1SXqrOJROm2DbK5qMM0r4+zAU43Dy/44DnqdPMdyY/kH7Ip9gzhEg
+         WcDg==
+X-Gm-Message-State: AO0yUKVSN/QICV/oBd1Y4xys6e/Aezw0TrI2jmTY3bPNWzsupmM6a07E
+        vsASrBuBvNk2LVVzLuD6zWBKJBpWxKloOQvv7xi1F0fag3OF
+X-Google-Smtp-Source: AK7set/YbAqV35eJ0s0AwHJYpdfXhNJUM6wxJa28B5vW4JZa69HMknumDLuvr9kTy8lrWiwY4BD0vaschqtgNTo3CfnKnIFYsFcj
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH v3] wifi: cfg80211: call reg_notifier for self managed
- wiphy from driver hint
-Content-Language: en-US
-To:     <johannes@sipsolutions.net>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230201070327.27578-1-quic_wgong@quicinc.com>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <20230201070327.27578-1-quic_wgong@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: dUEOYKataLanhLkIcm-BFRMJqSmy7jS1
-X-Proofpoint-ORIG-GUID: dUEOYKataLanhLkIcm-BFRMJqSmy7jS1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-15_02,2023-02-14_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
- clxscore=1015 priorityscore=1501 bulkscore=0 malwarescore=0 mlxscore=0
- suspectscore=0 impostorscore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302150055
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a92:9413:0:b0:310:fb90:b618 with SMTP id
+ c19-20020a929413000000b00310fb90b618mr442977ili.0.1676444447808; Tue, 14 Feb
+ 2023 23:00:47 -0800 (PST)
+Date:   Tue, 14 Feb 2023 23:00:47 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000cc25bd05f4b7a3d2@google.com>
+Subject: [syzbot] WARNING in usb_tx_block/usb_submit_urb
+From:   syzbot <syzbot+355c68b459d1d96c4d06@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        kvalo@kernel.org, libertas-dev@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SORTED_RECIPS,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/1/2023 3:03 PM, Wen Gong wrote:
-> Currently the regulatory driver does not call the regulatory callback
-> reg_notifier for self managed wiphys. Sometimes driver needs cfg80211
-> to calculate the info of ieee80211_channel such as flags and power,
-> and driver needs to get the info of ieee80211_channel after hint of
-> driver, but driver does not know when calculation of the info of
-> ieee80211_channel become finished, so add notify to driver in
-> reg_process_self_managed_hint() from cfg80211 is a good way, then
-> driver could get the correct info in callback of reg_notifier.
->
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> ---
-> v3: use hole for BIT(24) which delete by commit 585b6e1304dc ("wifi: cfg80211: remove support for static WEP")
-Hi Johannes,
+Hello,
 
-I see you have merged v2 to wireless-next.git and this v3's state is reject.
-So do you mean we should not keep hole BIT 24 in enum wiphy_flags from 
-now as well as
-hole 11/12 in commit 8e8b41f9d8c8/ca986ad9bcd3?
+syzbot found the following issue on:
 
-If that, then backport this patch will be more complex, because the 
-backport kernel already have
-WIPHY_FLAG_HAS_STATIC_WEP= BIT(24), then firstly the backport kernel 
-need backport other
-patch(585b6e1304dc ("wifi: cfg80211: remove support for static WEP")) 
-which is not really needed.
->
-> v2:
->     1. add flag WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER
->     2. change to use reg_call_notifier()
->
->   include/net/cfg80211.h | 4 ++++
->   net/wireless/reg.c     | 3 +++
->   2 files changed, 7 insertions(+)
->
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 1f8f827290a2..ef96fc5b060d 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -4682,6 +4682,8 @@ struct cfg80211_ops {
->    *	in order to not have them reachable in normal drivers, until we have
->    *	complete feature/interface combinations/etc. advertisement. No driver
->    *	should set this flag for now.
-> + * @WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER: The device could handle reg notify for
-> + *	NL80211_REGDOM_SET_BY_DRIVER.
->    */
->   enum wiphy_flags {
->   	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
-> @@ -4707,6 +4709,8 @@ enum wiphy_flags {
->   	WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL	= BIT(21),
->   	WIPHY_FLAG_SUPPORTS_5_10_MHZ		= BIT(22),
->   	WIPHY_FLAG_HAS_CHANNEL_SWITCH		= BIT(23),
-> +	/* use hole at 24 */
-> +	WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER	= BIT(25),
->   };
->   
->   /**
-> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-> index 4f3f31244e8b..cb35c8e9ced7 100644
-> --- a/net/wireless/reg.c
-> +++ b/net/wireless/reg.c
-> @@ -3198,6 +3198,9 @@ static void reg_process_self_managed_hint(struct wiphy *wiphy)
->   	request.alpha2[1] = regd->alpha2[1];
->   	request.initiator = NL80211_REGDOM_SET_BY_DRIVER;
->   
-> +	if (wiphy->flags & WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER)
-> +		reg_call_notifier(wiphy, &request);
-> +
->   	nl80211_send_wiphy_reg_change_event(&request);
->   }
->   
->
-> base-commit: 922932ca02191a390f7f52fb6e21c44b50e14025
-> prerequisite-patch-id: e365a8f3f2dda71872409315b416797c771a6c51
+HEAD commit:    f87b564686ee dt-bindings: usb: amlogic,meson-g12a-usb-ctrl..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=119f3aaf480000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6d59dd45f9349215
+dashboard link: https://syzkaller.appspot.com/bug?extid=355c68b459d1d96c4d06
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17db7007480000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1670f2b3480000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/162f005fbb8d/disk-f87b5646.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/868c38dbb85a/vmlinux-f87b5646.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e560670dfb35/bzImage-f87b5646.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+355c68b459d1d96c4d06@syzkaller.appspotmail.com
+
+usb 1-1: Product: syz
+usb 1-1: Manufacturer: syz
+usb 1-1: SerialNumber: syz
+usb 1-1: config 0 descriptor??
+------------[ cut here ]------------
+URB ffff888112baaf00 submitted while active
+WARNING: CPU: 0 PID: 12 at drivers/usb/core/urb.c:379 usb_submit_urb+0x14ec/0x1880 drivers/usb/core/urb.c:379
+Modules linked in:
+CPU: 0 PID: 12 Comm: kworker/0:1 Not tainted 6.2.0-rc7-syzkaller-00232-gf87b564686ee #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/21/2023
+Workqueue: events request_firmware_work_func
+RIP: 0010:usb_submit_urb+0x14ec/0x1880 drivers/usb/core/urb.c:379
+Code: 89 de e8 87 86 88 fd 84 db 0f 85 a3 f3 ff ff e8 0a 8a 88 fd 4c 89 fe 48 c7 c7 00 2d a8 86 c6 05 14 8a 14 05 01 e8 18 06 19 02 <0f> 0b e9 81 f3 ff ff 48 89 7c 24 40 e8 e3 89 88 fd 48 8b 7c 24 40
+RSP: 0018:ffffc900000cfa00 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff8881002dd400 RSI: ffffffff812db84c RDI: fffff52000019f32
+RBP: ffff888112baaf00 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000000 R12: 00000000c0028200
+R13: 0000000000000010 R14: 00000000fffffff0 R15: ffff888112baaf00
+FS:  0000000000000000(0000) GS:ffff8881f6800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f165ac57130 CR3: 000000011215a000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ usb_tx_block+0x241/0x2e0 drivers/net/wireless/marvell/libertas/if_usb.c:436
+ if_usb_issue_boot_command drivers/net/wireless/marvell/libertas/if_usb.c:766 [inline]
+ if_usb_prog_firmware+0x531/0xe30 drivers/net/wireless/marvell/libertas/if_usb.c:859
+ lbs_fw_loaded drivers/net/wireless/marvell/libertas/firmware.c:23 [inline]
+ helper_firmware_cb drivers/net/wireless/marvell/libertas/firmware.c:80 [inline]
+ helper_firmware_cb+0x1e9/0x2c0 drivers/net/wireless/marvell/libertas/firmware.c:64
+ request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
+ process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
+ worker_thread+0x669/0x1090 kernel/workqueue.c:2436
+ kthread+0x2ee/0x3a0 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
