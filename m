@@ -2,28 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2399697E92
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 15:43:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 905E4697E6C
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 15:34:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbjBOOnA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 09:43:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39974 "EHLO
+        id S229715AbjBOOeE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 09:34:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbjBOOm7 (ORCPT
+        with ESMTP id S229706AbjBOOeC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 09:42:59 -0500
-X-Greylist: delayed 587 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Feb 2023 06:42:56 PST
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC8D14EAC
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 06:42:56 -0800 (PST)
+        Wed, 15 Feb 2023 09:34:02 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AD438B7A
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 06:33:48 -0800 (PST)
 Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4F99A3FAF5;
-        Wed, 15 Feb 2023 15:33:05 +0100 (CET)
-Message-ID: <b12bf08c-f8b8-d561-f85a-475ec5677710@somainline.org>
-Date:   Wed, 15 Feb 2023 15:33:04 +0100
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 9EDFB6602193;
+        Wed, 15 Feb 2023 14:33:46 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1676471627;
+        bh=MAUAP9Z+ubwKhLvoWcUFpD46AsMhuehnGPYnsopRURA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=VIpZD1hIOXiKELwyig7jOOWzYaJ9DEPCkZmRICqxZJRmy6v7k8dFPDBhFNzBgqfo3
+         M/ihsAYO0fZw/l9BngO/gS1Wkspez7RXaRug0snJ7YQLt3+ySD52CZaEdGZtP3f4Bq
+         gVJYUFaOhjDMpyni04oe2HkT46N0/OXNAmu/jEGSdrhkdDkHzaR0EuwVjhdan6mHH6
+         w9o0DAcXS85kSAaFaVOlMTSR6NLroE1QWYKaf9QTsp+9mO1SoFAUo+nqeFBzDI7aKS
+         YlZ7L7bjGqUzAJSh9gNuHtGSjyzxfMZuLPtNGTZqmFpt9DBpUSfjjOhaBQdab8tHw5
+         JmSPDZSddPyaA==
+Message-ID: <ee62f808-51fc-3fe3-22f6-60cbd144ae07@collabora.com>
+Date:   Wed, 15 Feb 2023 15:33:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.2
@@ -39,12 +49,13 @@ Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-mediatek <linux-mediatek@lists.infradead.org>
 References: <20230209110659.25447-1-shayne.chen@mediatek.com>
 From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
+        <angelogioacchino.delregno@collabora.com>
 In-Reply-To: <20230209110659.25447-1-shayne.chen@mediatek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -62,6 +73,8 @@ In struct ieee80211_sta_rx_stats, `last_rate` is u32, hence this local `rate`
 must be u32, or information loss may happen. Agreed.
 
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
+P.S.: Sorry for sending twice, the first one got out of the wrong mailbox.
 
 > ---
 >   net/mac80211/sta_info.c | 2 +-
