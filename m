@@ -2,115 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 395D36977C3
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 09:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEBF6977CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 09:12:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233590AbjBOIEw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 03:04:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45232 "EHLO
+        id S233833AbjBOIMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 03:12:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbjBOIEq (ORCPT
+        with ESMTP id S233794AbjBOIMd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 03:04:46 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2823234C10
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 00:04:45 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31F3NEIG001092;
-        Wed, 15 Feb 2023 08:04:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=dLz/ICb878vnaf5vikMXiiEq38nlRo75UIkcNcafyAQ=;
- b=KnqHmBnXIfwdN5LHNk8GGDey64dx+/SJPa4W4WWsMJd6mBKDT1L+XeeghknVAQlszV+Z
- w/oJASKTFu0yfqmK7Op3p1FXktYbRaS4fShC5VljbjE0bOTySMdHmyvdSyKc0ciuWsXU
- tMPSR0zPpPf3QeVnqe5YGWMdWzzWyYaGA9+v7w3Y4hQervbYZU1IYDi6KJZJb+5ZUiwQ
- A4rTR6r9ivZ+8WS1GRimbjh+tC5L7QEvsILgm8Ksfje/Xb7zX9gnG3JhnRrCE+cmncbx
- dRTfalkHE1EOyECtSzAN2O7qjYjFS5dwzYKtDyVLsDXpcD3I2j+32sHZ4iR8JEas8ib4 aQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nr26u3u1w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Feb 2023 08:04:37 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31F84amQ007977
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Feb 2023 08:04:36 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Wed, 15 Feb
- 2023 00:04:35 -0800
-Message-ID: <30e87756-ddfc-4581-4ff9-98b2068a3808@quicinc.com>
-Date:   Wed, 15 Feb 2023 16:04:32 +0800
+        Wed, 15 Feb 2023 03:12:33 -0500
+Received: from mail-4018.proton.ch (mail-4018.proton.ch [185.70.40.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23EE3A94;
+        Wed, 15 Feb 2023 00:12:31 -0800 (PST)
+Date:   Wed, 15 Feb 2023 08:12:17 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=systemb.ch;
+        s=protonmail; t=1676448748; x=1676707948;
+        bh=s9JzE6b6DEfckH/ZqQDZxssRt/o9LAwbB3i41yJi7+4=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=fva+HL8dsv3tACxLbMbg9jlu6/1+Zx2YrA6/vdm7SZEtuYYigjN0yxwB5HMeLH0EE
+         a+dNE8DU6teGbczfDlI1u5t+nHRU4611angKVhKSn1ZsbOxnn+wCGR6bE2DVAHJoxR
+         GFwJHVnCovTqmb5tQrQbLJ09M11k56qN3x+Y2AvMa3JL3b6QpvhwTp155aUucarhmv
+         NbuLt++S+UEQLO7sWVTNT7I2ecxB0igDRYfTgNcbc2IOYCzgAoYjFx280cKLnujCg/
+         FDR7fdlcwadje1Joqh1cMVDckXnlB4d59KzgSfT6YJ2qD/JJ7FxAtEogFExHIVaIDj
+         J+hiZbVgKV5Hw==
+To:     Kalle Valo <kvalo@kernel.org>
+From:   Marc Bornand <dev.mbornand@systemb.ch>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yohan Prod'homme <kernel@zoddo.fr>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v4] Set ssid when authenticating
+Message-ID: <Y+yT2YUORRHY4bei@opmb2>
+In-Reply-To: <87ttzn4hki.fsf@kernel.org>
+References: <20230214132009.1011452-1-dev.mbornand@systemb.ch> <87ttzn4hki.fsf@kernel.org>
+Feedback-ID: 65519157:user:proton
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH v3] wifi: cfg80211: call reg_notifier for self managed
- wiphy from driver hint
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-References: <20230201070327.27578-1-quic_wgong@quicinc.com>
- <bcaf5a88-76f3-c4ed-0fca-2c131d392f82@quicinc.com>
- <4ab31b2407d9b2d930a2637730c4f3c0b2555c6a.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <4ab31b2407d9b2d930a2637730c4f3c0b2555c6a.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: soi53ihFx03LLmCu7xw1IDVtbyx97xev
-X-Proofpoint-ORIG-GUID: soi53ihFx03LLmCu7xw1IDVtbyx97xev
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-15_03,2023-02-14_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 mlxscore=0 spamscore=0 impostorscore=0 malwarescore=0
- mlxlogscore=717 clxscore=1015 lowpriorityscore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302150073
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/15/2023 3:31 PM, Johannes Berg wrote:
-> Hi Wen,
+On Wed, Feb 15, 2023 at 07:35:09AM +0200, Kalle Valo wrote:
+> Marc Bornand <dev.mbornand@systemb.ch> writes:
 >
->> I see you have merged v2 to wireless-next.git and this v3's state is reject.
-> Yeah. Actually, I saw v3 only after I merged v2, but then I saw what the
-> change was and figured that was unnecessary anyway.
+> > changes since v3:
+> > - add missing NULL check
+> > - add missing break
+> >
+> > changes since v2:
+> > - The code was tottaly rewritten based on the disscution of the
+> >   v2 patch.
+> > - the ssid is set in __cfg80211_connect_result() and only if the ssid i=
+s
+> >   not already set.
+> > - Do not add an other ssid reset path since it is already done in
+> >   __cfg80211_disconnected()
+> >
+> > When a connexion was established without going through
+> > NL80211_CMD_CONNECT, the ssid was never set in the wireless_dev struct.
+> > Now we set it in __cfg80211_connect_result() when it is not already set=
+.
+> >
+> > Reported-by: Yohan Prod'homme <kernel@zoddo.fr>
+> > Fixes: 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
+> > Cc: linux-wireless@vger.kernel.org
+> > Cc: stable@vger.kernel.org
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216711
+> > Signed-off-by: Marc Bornand <dev.mbornand@systemb.ch>
+> > ---
+> >  net/wireless/sme.c | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
 >
->> So do you mean we should not keep hole BIT 24 in enum wiphy_flags from
->> now as well as hole 11/12 in commit 8e8b41f9d8c8/ca986ad9bcd3?
-> Indeed. The point of the comment saying "use" was to actually, well,
-> _use_ the hole next time. I haven't really enforced that since I keep
-> forgetting (and we're nowhere near running out of bits), but yes, the
-> point is that you could even have used bit 11 or 12.
+> The change log ("changes since v3" etc) should be after "---" line and
+
+Does it need another "---" after the change log?
+something like:
+
+"---"
+"changes since v3:"
+"(CHANGES)"
+"---"
+
+> the title should start with "wifi: cfg80211:". Please read the wiki link
+> below.
+
+Should i start with the version 1 with the new title?
+and since i am already changing the title, the following might better
+discribe the patch, or should i keep the old title after the ":" ?
+
+[PATCH wireless] wifi: cfg80211: Set SSID if it is not already set
+
 >
->> If that, then backport this patch will be more complex, because the
->> backport kernel already have
->> WIPHY_FLAG_HAS_STATIC_WEP= BIT(24), then firstly the backport kernel
->> need backport other
->> patch(585b6e1304dc ("wifi: cfg80211: remove support for static WEP"))
->> which is not really needed.
-> I guess it could use another bit number (such as 11) in a backport, but
-> I don't see that this really _needs_ to be backported? And if you're
-> using backports to backport the whole wifi stack then this isn't even a
-> question since it all comes in backports.
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
-If use another bit such as 11 while backport this patch, then it will 
-easily lead mismatch/error
-
-and increase difficulty of maintain code.
-
-I need backport this patch soon.
-
-> johannes
