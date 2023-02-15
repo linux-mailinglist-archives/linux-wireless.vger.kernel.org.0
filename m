@@ -2,123 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98CCC697AA9
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 12:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95BDD697BE6
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 13:35:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233314AbjBOL0z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 06:26:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
+        id S233747AbjBOMfH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 07:35:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233217AbjBOL0y (ORCPT
+        with ESMTP id S234045AbjBOMe4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 06:26:54 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE4B28D05;
-        Wed, 15 Feb 2023 03:26:52 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31F9mHmf008282;
-        Wed, 15 Feb 2023 11:26:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=yZwXSKB70ZCMG1kqAHoH0/rLY/jRKvpp9gZFYBjBVIg=;
- b=iMIrbtMiHFtFFag+z0vxzXz/VSfUh/3+Gl7uYZ0pWW6hB+hPhbsQF0RZcG8XB5XICvjZ
- klZmYwMIyFjHXETosW8a3CUQD8g7dMNUDKTE2yWtZA39DIBv0q+u56ZW5T8seqFOFPY0
- 41mUH6f5FB75N2iIQBgLlkzdA4FjZvLWyEXWIfrbwDmhm/WmpyYaJ5dpvMxCKQYZklhP
- w5bqbfls+TlfvGgnJ/HmDBpfJ8NExN4R28uuidp+Nt8zosW+1TBJVtPXi8hELUWkAhv2
- ZICLwDVv8KTFAvHXb8nmY6aZKHCSk9FXVhwyz0LLUCsMt/t2JqagX4E1Wjz1PLfAVM4V Nw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nr6ps3sgh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Feb 2023 11:26:23 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31FBQMo6028355
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Feb 2023 11:26:22 GMT
-Received: from [10.206.71.180] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Wed, 15 Feb
- 2023 03:26:20 -0800
-Message-ID: <96cab5d9-9090-4cb2-ff17-eadc9da12f50@quicinc.com>
-Date:   Wed, 15 Feb 2023 16:56:17 +0530
+        Wed, 15 Feb 2023 07:34:56 -0500
+Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7B23803E
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 04:34:42 -0800 (PST)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id SGzfp3ZUhl3gSSGzfpDd5X; Wed, 15 Feb 2023 13:34:41 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 15 Feb 2023 13:34:41 +0100
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH] wifi: wfx: Remove some dead code
+Date:   Wed, 15 Feb 2023 13:34:37 +0100
+Message-Id: <809c4a645c8d1306c0d256345515865c40ec731c.1676464422.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH 1/2] wifi: cfg80211: Add beacon hint notifier support
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <ath10k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_mpubbise@quicinc.com>
-References: <20221222124221.30894-1-quic_youghand@quicinc.com>
- <20221222124221.30894-2-quic_youghand@quicinc.com>
- <1df59863e78e8ddbe7eb3a74e6dd4c8f0bd7f098.camel@sipsolutions.net>
-Content-Language: en-US
-From:   "Youghandhar Chintala (Temp)" <quic_youghand@quicinc.com>
-In-Reply-To: <1df59863e78e8ddbe7eb3a74e6dd4c8f0bd7f098.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: YupBIji6VphxvCJ0xbXQ4JYtLRQYL1z7
-X-Proofpoint-GUID: YupBIji6VphxvCJ0xbXQ4JYtLRQYL1z7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-15_06,2023-02-15_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- impostorscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 lowpriorityscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302150103
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+wait_for_completion_timeout() can not return a <0 value.
+So simplify the logic and remove dead code.
 
-On 1/18/2023 10:00 PM, Johannes Berg wrote:
->> +++ b/include/net/cfg80211.h
->> @@ -5386,6 +5386,8 @@ struct wiphy {
->>   	void (*reg_notifier)(struct wiphy *wiphy,
->>   			     struct regulatory_request *request);
->>   
->> +	void (*beacon_hint_notifier)(struct wiphy *wiphy);
->
-> missing documentation, for sure
-I will add the missed documentation in next version of patch.
-> Also this should probably be in the ops, rather than here? Not sure why
-> reg_notifier is here.
-I followed reg_notifier implementation.
->> -	if (channel_changed)
->> +	if (channel_changed) {
->>   		nl80211_send_beacon_hint_event(wiphy, &chan_before, chan);
->> +		if (wiphy->beacon_hint_notifier)
->> +			wiphy->beacon_hint_notifier(wiphy);
->> +	}
-> This also seems excessive if you're not even passing the channel - you
-> call it for every (affected) channel, but you don't tell it anything
-> about the channel? Seems strange.
-I will address this in next version of patch.
->
->
-> However ...
->
-> Why is this even needed? You should always get reg_notifier after this
-> anyway?
->
-> johannes
+-ERESTARTSYS can not be returned by do_wait_for_common() for tasks with
+TASK_UNINTERRUPTIBLE, which is the case for wait_for_completion_timeout()
 
-Currently when channel flag changed through the beacon hints are not 
-informed to driver.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/wireless/silabs/wfx/main.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-reg_notifier will be triggered for regdomain changes but not for channel flag changes due to beacon hints.
-
-Regards,
-Youghandhar
+diff --git a/drivers/net/wireless/silabs/wfx/main.c b/drivers/net/wireless/silabs/wfx/main.c
+index 6b9864e478ac..0b50f7058bbb 100644
+--- a/drivers/net/wireless/silabs/wfx/main.c
++++ b/drivers/net/wireless/silabs/wfx/main.c
+@@ -358,13 +358,9 @@ int wfx_probe(struct wfx_dev *wdev)
+ 
+ 	wfx_bh_poll_irq(wdev);
+ 	err = wait_for_completion_timeout(&wdev->firmware_ready, 1 * HZ);
+-	if (err <= 0) {
+-		if (err == 0) {
+-			dev_err(wdev->dev, "timeout while waiting for startup indication\n");
+-			err = -ETIMEDOUT;
+-		} else if (err == -ERESTARTSYS) {
+-			dev_info(wdev->dev, "probe interrupted by user\n");
+-		}
++	if (err == 0) {
++		dev_err(wdev->dev, "timeout while waiting for startup indication\n");
++		err = -ETIMEDOUT;
+ 		goto bh_unregister;
+ 	}
+ 
+-- 
+2.34.1
 
