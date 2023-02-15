@@ -2,73 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA150697F27
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 16:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90467697FEB
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Feb 2023 16:52:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbjBOPKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 10:10:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38480 "EHLO
+        id S229646AbjBOPwt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Feb 2023 10:52:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjBOPKQ (ORCPT
+        with ESMTP id S229658AbjBOPwq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 10:10:16 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72F1E25976;
-        Wed, 15 Feb 2023 07:10:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+IhXvip6E0zB3m+HmAxx505GyG5cx1vo0UJZ0GujIH0=;
-        t=1676473815; x=1677683415; b=PGR/oPAmC1dCpGoSUF2uLvszQ5SfjrJGDfq+Nj6HJr+yBKM
-        M9ucmRIaSTb7zvYNcMNhfASMmBgPS0r3mVupPair1PF0TObX9q5ulOiYK+zmOxPk3v2rIsTZcUihM
-        rZXx7oerBqfpgnabnOvCdLu2R0qypqpV9mCwbH2PZrVJ8l2XaJ8+ULyapO8qQ44U+YcghgxAvJoQb
-        dcpqlN8s2Iam3KHoa42of8R1mh2zrnEk5CkC+xRNL+tX1eNTXhfuPg9ffZ+thRStRwGBC/nAILcGB
-        1ZGcdBSwa8Wf9nLTI7FQguUmUSd5XIcvK/cKKbpp9vYFOey2WE5kcO9VM/IaT3DQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pSJQC-00D6at-0S;
-        Wed, 15 Feb 2023 16:10:12 +0100
-Message-ID: <0d4b99ab0a5bedc82f35bc1e548a611564b010e5.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] wifi: cfg80211: Add beacon hint notifier support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     "Youghandhar Chintala (Temp)" <quic_youghand@quicinc.com>,
-        ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_mpubbise@quicinc.com
-Date:   Wed, 15 Feb 2023 16:10:11 +0100
-In-Reply-To: <96cab5d9-9090-4cb2-ff17-eadc9da12f50@quicinc.com>
-References: <20221222124221.30894-1-quic_youghand@quicinc.com>
-         <20221222124221.30894-2-quic_youghand@quicinc.com>
-         <1df59863e78e8ddbe7eb3a74e6dd4c8f0bd7f098.camel@sipsolutions.net>
-         <96cab5d9-9090-4cb2-ff17-eadc9da12f50@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Wed, 15 Feb 2023 10:52:46 -0500
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F20837B54
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 07:52:41 -0800 (PST)
+Received: by mail-ua1-x92c.google.com with SMTP id s21so1613679uac.13
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 07:52:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QHEckESBmtanHoXNoCvk3gYsaCb3mmNnsjrBL0CHXHo=;
+        b=uFE2tcYXYvgsB0sRGahu4i6/jR0i1fWRumRbB6+LOj6E4ZTQeoJQKY+uir8dwyQAPf
+         0tFSiyKW/Fnvdx7G9YqrFDzJ5rpovQR98oqoI9mDNOHpQoG6qkudJ1v0/vpv9DTZyvHu
+         2FZ5pBhMrW+AwLQ0UHgvstufkVnkWswfeG6NT/qsFhsMW+RqE4zXszDTo9BrlFUTp25+
+         B7HTBOKfeZtBkRm441r7YFaJc0rXVKo3xjPJcpiXV6JNc9DsILiJLKJHBFrcxHls+m2Y
+         ZP+U/dMUytGegPXffNuxumCFe0jCae7w9HsecNZLfJZoIChNvNanAquRYPfNiHANjZr/
+         6auA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QHEckESBmtanHoXNoCvk3gYsaCb3mmNnsjrBL0CHXHo=;
+        b=3d2PHu8XKgyHSXWzoDu+cxuQEWVQ/eg9teNgoawbxHFVKVdWDBwyyPrQOOuuCP8efg
+         qDPTwmAXiNavF8eWp3ULd20WPI6TIjwoNtK3+oGU37Nx7i/i6cFr1FmUA4KX9i4VKds1
+         tHH3ojWxmxx1gnAgFbMcR+AMi7Hcs3wXVoFSckoqkLIMAnXya9btFjVproXKWC019tOL
+         2oj0nWdgmgN3NnPLS6RAexiBn/XbqXS+sB7VXe+X5jl5LybTKkkOshOfa29W/DJVYg64
+         iu80moLIed6lbJ2uMfEu/yuhul2pd8Cp//QPsSvh3460GNo12QaWo62Wtvy+MLz1Iw2e
+         vccg==
+X-Gm-Message-State: AO0yUKV9m59xX7V+i9SQteKArsaE32CDLCEv4Tt6Mfdnz4H4JjwaNmvW
+        fFo0Kt3/SNb/DmWw6cxviiDHm6HnVm2AMT01hXC9OQ==
+X-Google-Smtp-Source: AK7set+vnGRn5VJvyu0QxjkbABjPQvrEocRoV7wexNKYGw75YkBBJD0qPPmjAkmta0f6ajtUkrNDoiyJSIKAB5KOn4A=
+X-Received: by 2002:ab0:654d:0:b0:68a:7054:58a6 with SMTP id
+ x13-20020ab0654d000000b0068a705458a6mr367631uap.22.1676476360679; Wed, 15 Feb
+ 2023 07:52:40 -0800 (PST)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20230208173343.37582-1-andriy.shevchenko@linux.intel.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 15 Feb 2023 16:52:29 +0100
+Message-ID: <CAMRc=MdsCZKh12QcqdWk+Zht5UDpA_G1+rx6+_3dzwjDYe6L+Q@mail.gmail.com>
+Subject: Re: [PATCH v4 00/18] gpiolib cleanups
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Devarsh Thakkar <devarsht@ti.com>,
+        Michael Walle <michael@walle.cc>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dipen Patel <dipenp@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-doc-tw-discuss@lists.sourceforge.net,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-arch@vger.kernel.org,
+        devicetree@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Alex Shi <alexs@kernel.org>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Hu Haowen <src.res@email.cn>,
+        Russell King <linux@armlinux.org.uk>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alexander Aring <alex.aring@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> >=20
-> > Why is this even needed? You should always get reg_notifier after this
-> > anyway?
->=20
-> Currently when channel flag changed through the beacon hints are not=20
-> informed to driver.
->=20
-> reg_notifier will be triggered for regdomain changes but not for channel =
-flag changes due to beacon hints.
->=20
+On Wed, Feb 8, 2023 at 6:34 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> These are some older patches Arnd did last year, rebased to
+> linux-next-20230208. On top there are Andy's patches regarding
+> similar topic. The series starts with Linus Walleij's patches.
+>
+> The main goal is to remove some of the legacy bits of the gpiolib
+> interfaces, where the corner cases are easily avoided or replaced
+> with gpio descriptor based interfaces.
+>
+> The idea is to get an immutable branch and route the whole series
+> via GPIO tree.
+>
 
-So maybe triggering reg notifier once would be sufficient, a la Wen's
-patch that I recently merged?
+Andy,
 
-johannes
+looks like this series has all the acks it needs but I decided to not
+send it in the upcoming merge window, I'd prefer it gets some time in
+next so I'll let it sit until the next release cycle.
+
+Bart
