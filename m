@@ -2,131 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AEB56996D4
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 15:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C21699704
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 15:19:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjBPONy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 09:13:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49916 "EHLO
+        id S229976AbjBPOTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 09:19:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229799AbjBPONw (ORCPT
+        with ESMTP id S229998AbjBPOS6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 09:13:52 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D443B56ED4
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 06:13:28 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id a10so3247716edu.9
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 06:13:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ThaKf7TQo3GCwN8t6OxTBk+UopUNvRjwNT7xyzNLkiw=;
-        b=Gzv+gCaRZHErdCtFDF6ricjCxLtaoIqHnslXw5rk3gNSXyg0tjmNn/TQ8Mew2UPAZr
-         Y7j9r6l9ad6RNTTzljGVcr+5TEM00NnQpc8HOyeEa4OHLjs6JC4PIb0Kzlvr0fWQW4ZA
-         G89NM7lUGPnrZAwOF0Q1+3VRh/57SssEDw8IEn/MFujv6/CwOiAywc1H4f9iqHxnJC4z
-         orCFCF8wm75cLB7tkA37NNSUV+H69atfZ9FYBUzxVF44WOPu+049OahADGmQ1H6WPI2n
-         ap9kLIqE8DBr+7iS6nNEKgG/7kZ4l+OSavmDVceHE6j+NRGR+ucJVGxYQzSnYGtUIz6V
-         fnLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ThaKf7TQo3GCwN8t6OxTBk+UopUNvRjwNT7xyzNLkiw=;
-        b=YSMbT8EHDAiR61h5TTWzxJjMH4dntmA165ncTtLcGwMVRskbbDD6gvrU1Qisyvb+mP
-         INU9Pkmg9EU1BonAVWNkhcFPZHSPqChtbj8uV1oBoSYPHqC7MmGJIOcpcsrDxb0YrFGN
-         bdEqLBN3gBWrQhPV2PoBb/gRFjKbu/OjaN1p2tvQ7oWbcSv7v4Mgj7LRdZB18LfhVUbO
-         1LDIK9yfzbg+KwhIem3v2c+wmoF82yIpZpy/wAjBebkZOvk4o3eYUsQUZQCfz+8UBgoT
-         O7+q6RssnW4gpyRryS6bKWyTCdUxvRUMfzW9ur1HbAscMxJZq8WJ2tpkRh4MIkDvKSDH
-         dI4A==
-X-Gm-Message-State: AO0yUKVgn3kGj9yuXv5VJNjK4sI8rqxhPsLpOXyY8EmBp2TRYDgUMUuK
-        s5jGHWfwULoDRj8BkW4Gx7Y=
-X-Google-Smtp-Source: AK7set8iO/coa+lH39q+uSdqOstP/F2n6ANr+0TJClQLiOQW93PNQZYtG1LdTEb4l2t4+8u+k+1CWQ==
-X-Received: by 2002:a17:906:8046:b0:879:ec1a:4ac with SMTP id x6-20020a170906804600b00879ec1a04acmr5166736ejw.76.1676556807329;
-        Thu, 16 Feb 2023 06:13:27 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.25])
-        by smtp.gmail.com with ESMTPSA id f25-20020a1709067f9900b008b14720ac80sm854799ejr.100.2023.02.16.06.13.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Feb 2023 06:13:26 -0800 (PST)
-Message-ID: <615fc28f-5997-4a85-8fcf-ffccdfa4cc3f@gmail.com>
-Date:   Thu, 16 Feb 2023 16:12:51 +0200
+        Thu, 16 Feb 2023 09:18:58 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E707193C3;
+        Thu, 16 Feb 2023 06:18:55 -0800 (PST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pSf65-0003oe-KA; Thu, 16 Feb 2023 15:18:53 +0100
+Message-ID: <7e02467e-84d7-55d9-9edb-bb8107434a29@leemhuis.info>
+Date:   Thu, 16 Feb 2023 15:18:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.2
-Subject: Re: [PATCH] wifi: rtl8xxxu: 8188e: parse single one element of RA
- report for station mode
-Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>, Jes.Sorensen@gmail.com,
-        kvalo@kernel.org
-Cc:     error27@gmail.com, linux-wireless@vger.kernel.org
-References: <20230216004654.4642-1-pkshih@realtek.com>
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20230216004654.4642-1-pkshih@realtek.com>
+Subject: Re: Resume after suspend broken, reboots instead on kernel 6.1
+ onwards x86_64 RTW88
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+To:     gary.chang@realtek.com, Yan-Hsuan Chuang <tony0620emma@gmail.com>
+Cc:     regressions@lists.linux.dev, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Paul Gover <pmw.gover@yahoo.co.uk>, stable@vger.kernel.org
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+          Linux regressions mailing list 
+          <regressions@lists.linux.dev>
+References: <3739412.kQq0lBPeGt.ref@ryzen> <3739412.kQq0lBPeGt@ryzen>
+ <10a47408-3019-403d-97b1-c9f36e52e130@leemhuis.info>
+In-Reply-To: <10a47408-3019-403d-97b1-c9f36e52e130@leemhuis.info>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1676557136;318d2d74;
+X-HE-SMSGID: 1pSf65-0003oe-KA
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16/02/2023 02:46, Ping-Ke Shih wrote:
-> Intentionally parsing single one element of RA report by breaking loop
-> causes a smatch warning:
->   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c:1678 rtl8188e_handle_ra_tx_report2() warn:
->   ignoring unreachable code.
-> 
-> With existing comments, it intends to process single one element for
-> station mode, but it will parse more elements in AP mode if it's
-> implemented. Implement program logic according to existing comment to avoid
-> smatch warning, and also be usable for both AP and stations modes.
-> 
-> Compile test only.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Link: https://lore.kernel.org/r/202302142135.LCqUTVGY-lkp@intel.com/
-> Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c   | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
-> index a99ddb41cd244..f15b099899e5c 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
-> @@ -1699,6 +1699,12 @@ void rtl8188e_handle_ra_tx_report2(struct rtl8xxxu_priv *priv, struct sk_buff *s
->  
->  	dev_dbg(dev, "%s: len: %d items: %d\n", __func__, tx_rpt_len, items);
->  
-> +	/* We only use macid 0, so only the first item is relevant.
-> +	 * AP mode will use more of them if it's ever implemented.
-> +	 */
-> +	if (!priv->vif || priv->vif->type == NL80211_IFTYPE_STATION)
-> +		items = 1;
-> +
->  	for (macid = 0; macid < items; macid++) {
->  		valid = false;
->  
-> @@ -1741,12 +1747,6 @@ void rtl8188e_handle_ra_tx_report2(struct rtl8xxxu_priv *priv, struct sk_buff *s
->  			min_rpt_time = ra->rpt_time;
->  
->  		rpt += TX_RPT2_ITEM_SIZE;
-> -
-> -		/*
-> -		 * We only use macid 0, so only the first item is relevant.
-> -		 * AP mode will use more of them if it's ever implemented.
-> -		 */
-> -		break;
->  	}
->  
->  	if (min_rpt_time != ra->pre_min_rpt_time) {
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+On 10.02.23 13:24, Linux kernel regression tracking (Thorsten Leemhuis)
+wrote:
+> On 09.02.23 20:59, Paul Gover wrote:
+>> Suspend/Resume was working OK on kernel 6.0.13, broken since 6.1.1
+>> (I've not tried kernels between those, except in the bisect below.)
+>> All subsequent 6,1 kernels exhibit the same behaviour.
+>>
+>> Suspend works OK, but on Resume, there's a flicker, and then it reboots.
+>> Sometimes the screen gets restored to its contents at the time of suspend. but 
+>> less than a second later, it starts rebooting.
+>> To reproduce, simply boot, suspend, and resume.
+>>
+>> Git bisect blames RTW88
+>> commit 6bf3a083407b5d404d70efc3a5ac75b472e5efa9
+> 
+> TWIMC, that's "wifi: rtw88: add flag check before enter or leave IPS"
+> 
+>> I'll attach bisect log, dmesg and configs to the bug I've opened 
+>> 	https://bugzilla.kernel.org/show_bug.cgi?id=217016
+
+#regzbot monitor:
+https://lore.kernel.org/linux-wireless/20230216053633.20366-1-pkshih@realtek.com/T/#u
+#regzbot fix: wifi: rtw88: use RTW_FLAG_POWERON flag to prevent to power
+on/off twice
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
