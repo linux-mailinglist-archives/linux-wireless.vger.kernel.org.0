@@ -2,39 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE6D5699C93
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 19:44:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B69699CF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 20:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbjBPSov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 13:44:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49268 "EHLO
+        id S229719AbjBPTXP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 14:23:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjBPSop (ORCPT
+        with ESMTP id S229492AbjBPTXO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 13:44:45 -0500
+        Thu, 16 Feb 2023 14:23:14 -0500
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3632054D;
-        Thu, 16 Feb 2023 10:44:44 -0800 (PST)
-Received: from [192.168.0.114] (unknown [46.242.14.200])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 4C231419E9E6;
-        Thu, 16 Feb 2023 18:44:42 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 4C231419E9E6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E009147411;
+        Thu, 16 Feb 2023 11:23:13 -0800 (PST)
+Received: from fpc.. (unknown [46.242.14.200])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 0AB5941C612E;
+        Thu, 16 Feb 2023 19:23:12 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 0AB5941C612E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1676573082;
-        bh=EqOQx83BdAzg6o/suuDu9950m4TfKh84CKhroiqDSbU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=gGw4XYyKx4goSLSPfdiNg0By5V0rh5fLI1+NxBntSDeVGdTG0wTDu5pqFRMK43QYB
-         K8yTN/rB/B7+cNKj9qDegisZxHu21G9Ky6ZeVxULL71PBnzBHd6ZXlJ3+ZZO3GEdEm
-         Qr2lIslyM3rxs0b5y3ef1TAskBBZ1m6YN/dqtTmg=
-Message-ID: <b867a165-3ca2-6ce7-4373-2a69d0a1341b@ispras.ru>
-Date:   Thu, 16 Feb 2023 21:44:42 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 1/1] wifi: ath9k: hif_usb: fix memory leak of remain_skbs
-Content-Language: en-US
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>
-Cc:     Kalle Valo <kvalo@kernel.org>,
+        s=default; t=1676575392;
+        bh=fZZ2iOgIhJ3ucWh4NWw0K/zocy8Eivp28hABNY/JFHA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NkGLrrQoVCLyMpuxUXO+dUSu4yqDhS9zYhUT+BXF1uhKTe0gRsoB2WrjDywY3Q68P
+         STxma9qDiGSuVP4k/2uiHvmMJEApdh0wUhyHyrqvzJzKnpJwXAEf9cPxjuEzR0EQ91
+         r/E8FTqilUY8g7g7XjN3SAXVXqBlpwpCs+x7zBfI=
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -47,41 +41,94 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         linux-kernel@vger.kernel.org,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
         lvc-project@linuxtesting.org
-References: <20230212145238.123055-1-pchelkin@ispras.ru>
- <20230212145238.123055-2-pchelkin@ispras.ru> <87a61dsi1n.fsf@toke.dk>
- <5d67552f-88dd-7bbe-ebeb-888d1efad985@ispras.ru> <87ttzlqyd4.fsf@toke.dk>
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
+Subject: [PATCH v2] wifi: ath9k: hif_usb: fix memory leak of remain_skbs
+Date:   Thu, 16 Feb 2023 22:23:01 +0300
+Message-Id: <20230216192301.171225-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.34.1
 In-Reply-To: <87ttzlqyd4.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16.02.2023 21:05, Toke Høiland-Jørgensen wrote:
-> Fedor Pchelkin <pchelkin@ispras.ru> writes:
->
->> On 16.02.2023 19:15, Toke Høiland-Jørgensen wrote:
->>   > Erm, does this actually fix the leak? AFAICT, ath9k_hif_usb_dev_deinit()
->>   > is only called on the error path of ath9k_hif_usb_firmware_cb(), not
->>   > when the device is subsequently torn down in
->>   > ath9k_htc_disconnect_device()?
->>
->> ath9k_hif_usb_dev_deinit() is also called inside
->> ath9k_hif_usb_disconnect().
-> No it's not, as of:
->
-> f099c5c9e2ba ("wifi: ath9k: Fix use-after-free in ath9k_hif_usb_disconnect()")
->
-> I guess you're looking at an older tree? Please base your patches on an
-> up-to-date ath-next tree.
->
-Oops, that's my fault, I indeed patched the wrong tree.
+hif_dev->remain_skb is allocated and used exclusively in
+ath9k_hif_usb_rx_stream(). It is implied that an allocated remain_skb is
+processed and subsequently freed (in error paths) only during the next
+call of ath9k_hif_usb_rx_stream().
 
-Thanks for clarifying!
+So, if the urbs are deallocated between those two calls due to the device
+deinitialization or suspend, it is possible that ath9k_hif_usb_rx_stream()
+is not called next time and the allocated remain_skb is leaked. Our local
+Syzkaller instance was able to trigger that.
+
+remain_skb makes sense when receiving two consecutive urbs which are
+logically linked together, i.e. a specific data field from the first skb
+indicates a cached skb to be allocated, memcpy'd with some data and
+subsequently processed in the next call to ath9k_hif_usb_rx_stream(). Urbs
+deallocation supposedly makes that link irrelevant so we need to free the
+cached skb in those cases.
+
+Fix the leak by introducing a function to explicitly free remain_skb (if
+it is not NULL) when the rx urbs have been deallocated. remain_skb is NULL
+when it has not been allocated at all (hif_dev struct is kzalloced) or
+when it has been processed in next call to ath9k_hif_usb_rx_stream().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+---
+v1->v2: move ath9k_hif_usb_free_rx_remain_skb call into urbs dealloc
+function as advised by Toke; add a stat macro
+
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index f521dfa2f194..e0130beb304d 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -534,6 +534,24 @@ static struct ath9k_htc_hif hif_usb = {
+ 	.send = hif_usb_send,
+ };
+ 
++/* Need to free remain_skb allocated in ath9k_hif_usb_rx_stream
++ * in case ath9k_hif_usb_rx_stream wasn't called next time to
++ * process the buffer and subsequently free it.
++ */
++static void ath9k_hif_usb_free_rx_remain_skb(struct hif_device_usb *hif_dev)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&hif_dev->rx_lock, flags);
++	if (hif_dev->remain_skb) {
++		dev_kfree_skb_any(hif_dev->remain_skb);
++		hif_dev->remain_skb = NULL;
++		hif_dev->rx_remain_len = 0;
++		RX_STAT_INC(hif_dev, skb_dropped);
++	}
++	spin_unlock_irqrestore(&hif_dev->rx_lock, flags);
++}
++
+ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
+ 				    struct sk_buff *skb)
+ {
+@@ -868,6 +886,7 @@ static int ath9k_hif_usb_alloc_tx_urbs(struct hif_device_usb *hif_dev)
+ static void ath9k_hif_usb_dealloc_rx_urbs(struct hif_device_usb *hif_dev)
+ {
+ 	usb_kill_anchored_urbs(&hif_dev->rx_submitted);
++	ath9k_hif_usb_free_rx_remain_skb(hif_dev);
+ }
+ 
+ static int ath9k_hif_usb_alloc_rx_urbs(struct hif_device_usb *hif_dev)
+-- 
+2.34.1
 
