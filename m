@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE665699EA1
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 22:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4184699EAA
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 22:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbjBPVGd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 16:06:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        id S230107AbjBPVID (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 16:08:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230078AbjBPVGc (ORCPT
+        with ESMTP id S230106AbjBPVIC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 16:06:32 -0500
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E74505D3
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 13:06:31 -0800 (PST)
-Received: by mail-pf1-x42c.google.com with SMTP id s20so2293383pfe.2
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 13:06:31 -0800 (PST)
+        Thu, 16 Feb 2023 16:08:02 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C89C2BF28
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 13:08:01 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id k13so3500342plg.0
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 13:08:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z+dJ8t2gBa9L1R+LAQs9EyaIo7YKVsYcDwELTn6KK5Q=;
-        b=FilrPJZqB0r7ThyPmocoNurUexs8Exde+BrUCaWeXP+aFxVUre+effd9mArt5HLP1G
-         8jFsydBAXp602d8gkevx7w9dazLIFVVO7H4cT4otcsT6CbI+cUwEF7wYj2HQsWwy4tqt
-         wGk9G/JLamgV7vmUKGLQdzYYBTqQLwHgSfto0fiDtLJo4pZn40FFmU5eTiZo1r777k7b
-         6hTx1k7c8MSt4bFrnyR0Bn18XcVqIekT2raLDv6p4QUMR+iNTcQwSwh9pPF1fIVHG1v9
-         vZI9VrT9bJXL8ni5RjcRCDpiFrw9RWDT3vkGoCpeqcsjz5vTVICwC7nMVU2fRIzSZUZk
-         Aaag==
+        bh=MdEuNBGf/q2On5Lj7U9zc5dVzdIg0cai+qv7AGjRVaY=;
+        b=hEK4alHo7ja6WL821P0Pd1YApzxmXk0XuarrxL8kkBKi2Vh3ry4vrdPJfTUhTuFtQ5
+         D5EUDm/EfmXo2r09kv2B2QCE30LzSmAbd3bEK63anPpKtaFZJGl1qZ/m8Fy/SC4ctti+
+         Oz70RLRORNTeJIo5MFr/lpAWtaJUXbcmWPJzvsv7tHfPs4mQT4NREort8zcGWfCUOHkC
+         EsvUMhY+HUfigVjatjYlNKx+avxUn6BwTFarVCaCDvX5p5rAktFPQv4/QCczuHzxyGqb
+         PWj+nVHc6XHLFLykFXHGuwFaqT0cYWi5nNPMnFPFGJ0qIWpTrKbEYSs4ZdG1g6QQkFei
+         qKWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Z+dJ8t2gBa9L1R+LAQs9EyaIo7YKVsYcDwELTn6KK5Q=;
-        b=BhpohoC5JuYwzlv8xs/OYMLh/GviQ5lqExQnrcpS11UylwRVxlj0pQzVZSM6fydSPM
-         ToyzZiplWWR/hXziSpPYssNQkw1OVb5JBeVSda/+/g7wki3lHSGyuk8+FgxpmbWwCPeJ
-         5RKXQ7Vk8/NAdGSgfQCdO4v24XNXJ7JcGV2JB2sXBGWZ15u3bdth9v8fTHfUpHyT+/2X
-         OFw9ppPN7BJaDGtXB01lONmakbzK9boKx6sKC/i4QA6z5LgHMAeXNAH5kI9YnMCvVzg4
-         A0g4j+k98Sr6+LbV7pWbRtWSqhazy1eFuXYpnFBAPElRSZMKg0cqQ9lGJK7SDLCFtEXF
-         K9Pg==
-X-Gm-Message-State: AO0yUKXOH9JVW6vqubKcxIJkcpaVnpC1/zlgLJ29qY3Bzk0+ziJJ5LlT
-        iFtw5G30gPYS2nR1VlRy1I6ek1WnOaHKNA==
-X-Google-Smtp-Source: AK7set/qXreUwqGYBtmPklk0nkulMjtMqlIQyLFUwEIJPQAyJw9RsJ4REb7Q5ISCBDXRxYw+tpN0uQ==
-X-Received: by 2002:a62:1a56:0:b0:5a8:d407:60f9 with SMTP id a83-20020a621a56000000b005a8d40760f9mr5717512pfa.29.1676581591130;
-        Thu, 16 Feb 2023 13:06:31 -0800 (PST)
+        bh=MdEuNBGf/q2On5Lj7U9zc5dVzdIg0cai+qv7AGjRVaY=;
+        b=Oop8/czAYzZ+cfIzYl6e0eywxTBVF1D/Z8xgdOwu9jNwGayWo7X7JaCsCSdra51oYx
+         NWxLsmCH057ORUTIc312EqxyqdYBN3asr51QfjuR30SZpcI+UeZ8wTyFAirmrB+rbOJu
+         asLHjyAmkfKC4PN+PoQj6/+jy4CDObxcLiboKybATBFZPwe9p7jQUH9x/JetLRvmQwBD
+         WYm76wnmRIaGOr0CiR0jWqeOKRQDRKcS2w+yJT4efhfb5wT2u/3oWzJ6tov5DK7ISJad
+         xpQZwZPqBMwZDrnK6SYEmIMTHY2IqdtC+8qFvvCcheKrCzYeGPfLAjYvz7IZU5PyRpoY
+         9e1A==
+X-Gm-Message-State: AO0yUKXQjv/oLN3hsjTCn5kcH7YT1J7UCErdGs5u/bwbKIkgfrc+48hS
+        AdSA91YbnzRYobrQ9dlAhgs=
+X-Google-Smtp-Source: AK7set+Ry8Wk4yBl/JAlCdfHeCcAh/kraFVtolSLU6CFG8LzJM6j7CmrOufqMQLQ22aVygB+sSN/bA==
+X-Received: by 2002:a05:6a20:938f:b0:c0:1faa:9b69 with SMTP id x15-20020a056a20938f00b000c01faa9b69mr8959256pzh.58.1676581680934;
+        Thu, 16 Feb 2023 13:08:00 -0800 (PST)
 Received: from localhost.localdomain (2603-8000-0b00-9100-f4e1-a6f1-652b-cfd4.res6.spectrum.com. [2603:8000:b00:9100:f4e1:a6f1:652b:cfd4])
-        by smtp.gmail.com with ESMTPSA id j9-20020a62e909000000b005a87d636c66sm1701526pfh.136.2023.02.16.13.06.30
+        by smtp.gmail.com with ESMTPSA id w24-20020aa78598000000b005a91adff67asm1752411pfn.175.2023.02.16.13.08.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Feb 2023 13:06:30 -0800 (PST)
+        Thu, 16 Feb 2023 13:08:00 -0800 (PST)
 From:   Anthony Refuerzo <anthony96922@gmail.com>
 To:     anthony96922@gmail.com
 Cc:     linux-wireless@vger.kernel.org
 Subject: [PATCH] iw: Add more VHT capabilities reporting
-Date:   Thu, 16 Feb 2023 13:06:24 -0800
-Message-Id: <20230216210624.10271-1-anthony96922@gmail.com>
+Date:   Thu, 16 Feb 2023 13:07:44 -0800
+Message-Id: <20230216210744.10388-1-anthony96922@gmail.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -69,6 +69,8 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Add extra reporting for VHT capabilities. These were not previously shown.
+
+Signed-off-by: Anthony Refuerzo <anthony96922@gmail.com>
 ---
  scan.c | 12 ++++++++++++
  util.c | 26 ++++++++++++++++++++++++++
