@@ -2,163 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB7DE698EAB
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 09:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5878698FD9
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 10:33:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbjBPI3R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 03:29:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53080 "EHLO
+        id S229924AbjBPJdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 04:33:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjBPI3Q (ORCPT
+        with ESMTP id S229667AbjBPJdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 03:29:16 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C622CC45
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 00:29:12 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31G8T2SD0022574, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31G8T2SD0022574
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 16 Feb 2023 16:29:02 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 16 Feb 2023 16:28:42 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 16 Feb
- 2023 16:28:42 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: fix AP mode authentication transmission failed
-Date:   Thu, 16 Feb 2023 16:28:07 +0800
-Message-ID: <20230216082807.22285-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 16 Feb 2023 04:33:13 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871AD24CA5
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 01:33:12 -0800 (PST)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31G8bglb005365;
+        Thu, 16 Feb 2023 09:33:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=tatITD6pR5mHo3kNoTIVtjuIS7iLVCPFJaD9VwR/fe4=;
+ b=XwqGN3c6O38d7QDOncYS9sL4k58pQ/BKzJD99holp2yYtnKD6fM5723K4vxoWYQAw4qk
+ SVaXIN84qXWQlyycfUOOuWrlAFrhfeUKI3KJArfw77r+mJ7c+U704k0Fp5ffeeZY8Zr7
+ DZnYUOUAD+N4Urqh9jWd/AV6adlu73U2Ze1+pO8TiAnyufBZvcwQU0Nm1qt8W5EEdNnG
+ hvUMHtFBkRzTuzk3dA7TGIGalgWfNtq/TyZWO/bP5yNFok8cyJpHAAEK6Pls2CiEos3B
+ bk3b9elfCd2iADH++eKzeLT3Bgcc2UjfqiMUc66V0N1mut1HYp4jP9lrvHgv5kD7YJdx 3g== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nse3d0k9u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 16 Feb 2023 09:33:09 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31G9X8to020202
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 16 Feb 2023 09:33:08 GMT
+Received: from [10.242.242.27] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 16 Feb
+ 2023 01:33:07 -0800
+Message-ID: <b895583b-7637-9025-d028-efbbc663e139@quicinc.com>
+Date:   Thu, 16 Feb 2023 15:03:03 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH 6/7] cfg80211: rework nl80211_parse_chandef for 6 GHz
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20220704102341.5692-1-quic_adisi@quicinc.com>
+ <20220704102341.5692-7-quic_adisi@quicinc.com>
+ <0ed850ac7d13fc5d40545aff1d59d710374bfcf4.camel@sipsolutions.net>
+From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <0ed850ac7d13fc5d40545aff1d59d710374bfcf4.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: HoYg9LxaGnm5GOxeIgiueAL1mgSZE0w3
+X-Proofpoint-ORIG-GUID: HoYg9LxaGnm5GOxeIgiueAL1mgSZE0w3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-16_07,2023-02-15_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
+ mlxscore=0 impostorscore=0 priorityscore=1501 adultscore=0 phishscore=0
+ malwarescore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302160079
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+On 1/18/2023 16:33, Johannes Berg wrote:
+> On Mon, 2022-07-04 at 15:53 +0530, Aditya Kumar Singh wrote:
+>>
+>> +	/* For APs, 6 GHz power mode is taken from the user configured
+>> +	 * value. However, for clients, power mode is also dependent
+>> +	 * upon the APs power mode to which this client has associated.
+>> +	 * Hence for client, need to take power mode of asscoiated AP,
+> 
+> 
+> typo - associated
+Sure will rectify. Thanks for pointing it out.
 
-For some ICs, packets can't be sent correctly without initializing
-CMAC table first. Previous flow do this initialization after
-associated, results in authentication response fails to transmit.
-Move the initialization up front to a proper place to solve this.
+> 
+> But anyway, were you going to resubmit this with comments from the first
+> patches addressed?
+Yes! Working on addressing the review comments. Will send next version.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 47 +++++++++++++----------
- 1 file changed, 26 insertions(+), 21 deletions(-)
+> Honestly I'd also like to see a bit more discussion (in the cover letter
+> I guess) about the solution with "multiple channel spaces" and all that.
+> And ideally about alternatives considered - why not for example keep a
+> single space with flags indicating support for the power mode, etc.
+Sure will include these in the cover letter.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 3ed2f3a966353..f09361bc4a4d1 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2435,6 +2435,7 @@ int rtw89_core_sta_add(struct rtw89_dev *rtwdev,
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
- 	int i;
-+	int ret;
- 
- 	rtwsta->rtwdev = rtwdev;
- 	rtwsta->rtwvif = rtwvif;
-@@ -2459,6 +2460,21 @@ int rtw89_core_sta_add(struct rtw89_dev *rtwdev,
- 							    RTW89_MAX_MAC_ID_NUM);
- 		if (rtwsta->mac_id == RTW89_MAX_MAC_ID_NUM)
- 			return -ENOSPC;
-+
-+		ret = rtw89_mac_set_macid_pause(rtwdev, rtwsta->mac_id, false);
-+		if (ret) {
-+			rtw89_core_release_bit_map(rtwdev->mac_id_map, rtwsta->mac_id);
-+			rtw89_warn(rtwdev, "failed to send h2c macid pause\n");
-+			return ret;
-+		}
-+
-+		ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta,
-+						 RTW89_ROLE_CREATE);
-+		if (ret) {
-+			rtw89_core_release_bit_map(rtwdev->mac_id_map, rtwsta->mac_id);
-+			rtw89_warn(rtwdev, "failed to send h2c role info\n");
-+			return ret;
-+		}
- 	}
- 
- 	return 0;
-@@ -2513,14 +2529,6 @@ int rtw89_core_sta_disconnect(struct rtw89_dev *rtwdev,
- 		return ret;
- 	}
- 
--	if (vif->type == NL80211_IFTYPE_AP || sta->tdls) {
--		ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta, RTW89_ROLE_REMOVE);
--		if (ret) {
--			rtw89_warn(rtwdev, "failed to send h2c role info\n");
--			return ret;
--		}
--	}
--
- 	/* update cam aid mac_id net_type */
- 	ret = rtw89_fw_h2c_cam(rtwdev, rtwvif, rtwsta, NULL);
- 	if (ret) {
-@@ -2541,18 +2549,6 @@ int rtw89_core_sta_assoc(struct rtw89_dev *rtwdev,
- 	int ret;
- 
- 	if (vif->type == NL80211_IFTYPE_AP || sta->tdls) {
--		ret = rtw89_mac_set_macid_pause(rtwdev, rtwsta->mac_id, false);
--		if (ret) {
--			rtw89_warn(rtwdev, "failed to send h2c macid pause\n");
--			return ret;
--		}
--
--		ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta, RTW89_ROLE_CREATE);
--		if (ret) {
--			rtw89_warn(rtwdev, "failed to send h2c role info\n");
--			return ret;
--		}
--
- 		if (sta->tdls) {
- 			ret = rtw89_cam_init_bssid_cam(rtwdev, rtwvif, bssid_cam, sta->addr);
- 			if (ret) {
-@@ -2622,13 +2618,22 @@ int rtw89_core_sta_remove(struct rtw89_dev *rtwdev,
- {
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-+	int ret;
- 
- 	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
- 		rtw89_btc_ntfy_role_info(rtwdev, rtwvif, rtwsta,
- 					 BTC_ROLE_MSTS_STA_DIS_CONN);
--	else if (vif->type == NL80211_IFTYPE_AP || sta->tdls)
-+	else if (vif->type == NL80211_IFTYPE_AP || sta->tdls) {
- 		rtw89_core_release_bit_map(rtwdev->mac_id_map, rtwsta->mac_id);
- 
-+		ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta,
-+						 RTW89_ROLE_REMOVE);
-+		if (ret) {
-+			rtw89_warn(rtwdev, "failed to send h2c role info\n");
-+			return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.25.1
+> 
+> johannes
 
