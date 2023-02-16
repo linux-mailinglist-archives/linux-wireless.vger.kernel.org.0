@@ -2,81 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 514A1699D12
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 20:40:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A32699D2A
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 20:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjBPTkg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 14:40:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47818 "EHLO
+        id S229841AbjBPTtK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 14:49:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjBPTkf (ORCPT
+        with ESMTP id S229668AbjBPTtJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 14:40:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D081442FB;
-        Thu, 16 Feb 2023 11:40:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB7D060ACE;
-        Thu, 16 Feb 2023 19:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 478D4C433EF;
-        Thu, 16 Feb 2023 19:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676576434;
-        bh=YA0JHCkJPpiXEN11iVgBB68ZXgZqOuH0KMVewkmZlpk=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=JayUMNFlBaHKR6x/jF7O+dpm0F2uiXCH1skFMRc8afhT3zfQmU15sas6LjIohOD4m
-         fyqG/hr1tgrVvP592ec3GC/WDoWBX01mOwE7Tus5RWcxreYmnFFv+iRTR9PSYSLrWs
-         rq42xuM5WI2PO9haSB7H0VgK1Wy5+5zhpHJ2K8tdbpa0vl0z2nYER0LpxSFyb/5jKv
-         9f+oIp9f/bktWD5xjFwYRsDPOH8+VrXaFAWj5jQvk7QGPgx2WDpZXjbFhr27z0vpja
-         B8GwzvjfdqVuxOoxV2bi1dv9f6hw+dKgigvxTEqKt90dbKs5diI6aem0n050//zu7z
-         VYUJhK6L8IEcw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 29901E68D2E;
-        Thu, 16 Feb 2023 19:40:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Thu, 16 Feb 2023 14:49:09 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1982A3B0FF;
+        Thu, 16 Feb 2023 11:49:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=WNdiQ0yBLM1h4tRsy9XJpXwPANeEXou8utTvULJaBs8=;
+        t=1676576948; x=1677786548; b=JuutzsYnl+A5g6WQD8zt0x/yhByw8cMrKCV1BMwPCJ7Ga5h
+        lObOMU+1dVdMerXe28rMMMkvmineUsULTOrnCFKGAzxwYoF4HZbsvP15Qv4FEnnHD2srAla6AJiK3
+        vvEH/VjEIVwZHLJnhZd+E5gBq3aZn6g5qgrN7BVqfrQOZt2ds8i660gosYzA4yLAZPkpWgQTWa1hM
+        T2W0eL3+NlwX9rNYMhCD97s6VRiRL529qV6KW8ZoHDRHF59mhbDVsJEiGjcGHrFLagHd6KhqTRJ8+
+        2ZfDS+jOCZaiyWd6qnqaQ6kvUdfu6I88fRsnf0//o7p99nZqCFPjEH2IPXeSnsBg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pSkFd-00EB5g-28;
+        Thu, 16 Feb 2023 20:49:05 +0100
+Message-ID: <fbae8518cdb529e175ee771bdd288bd64858f67c.camel@sipsolutions.net>
 Subject: Re: pull-request: wireless-next-2023-03-16
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <167657643416.21159.16492102838822649238.git-patchwork-notify@kernel.org>
-Date:   Thu, 16 Feb 2023 19:40:34 +0000
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>
+Date:   Thu, 16 Feb 2023 20:49:04 +0100
+In-Reply-To: <20230216113253.2cbb360e@kernel.org>
 References: <20230216105406.208416-1-johannes@sipsolutions.net>
-In-Reply-To: <20230216105406.208416-1-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+         <20230216113253.2cbb360e@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+On Thu, 2023-02-16 at 11:32 -0800, Jakub Kicinski wrote:
+> On Thu, 16 Feb 2023 11:54:05 +0100 Johannes Berg wrote:
+> > Here's a last (obviously) set of new work for -next. The
+> > major changes are summarized in the tag below.
+> >=20
+> > Please pull and let me know if there's any problem.
+>=20
+> Could you follow up soon with fixes for the compilation warnings?
 
-This pull request was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+Huh, yes, sorry about that.
 
-On Thu, 16 Feb 2023 11:54:05 +0100 you wrote:
-> Hi,
-> 
-> Here's a last (obviously) set of new work for -next. The
-> major changes are summarized in the tag below.
-> 
-> Please pull and let me know if there's any problem.
-> 
-> [...]
+> drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c:441:21: warning: unu=
+sed function 'iwl_dbgfs_is_match' [-Wunused-function]
+> static inline char *iwl_dbgfs_is_match(char *name, char *buf)
+>                     ^
+>=20
 
-Here is the summary with links:
-  - pull-request: wireless-next-2023-03-16
-    https://git.kernel.org/netdev/net-next/c/ca0df43d2110
+That's particularly odd, feels like that was already unused since (my)
+commit 3a894a9f319f ("iwlwifi: remove TOF implementation")? But that's
+_ancient_.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+So I think probably the new ones are different than that one, how did
+you find this one?
 
+Anyway there are far too many left ...
 
+johannes
