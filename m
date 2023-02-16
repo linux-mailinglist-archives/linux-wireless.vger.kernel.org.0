@@ -2,39 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52105698A64
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 03:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4E2698C29
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 06:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbjBPCNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Feb 2023 21:13:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35338 "EHLO
+        id S229493AbjBPFh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 00:37:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjBPCN3 (ORCPT
+        with ESMTP id S229843AbjBPFh0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Feb 2023 21:13:29 -0500
+        Thu, 16 Feb 2023 00:37:26 -0500
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A73722007D
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Feb 2023 18:13:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02E4416AF1;
+        Wed, 15 Feb 2023 21:37:24 -0800 (PST)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31G2DCKh8005335, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31G5bCcL5026853, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31G2DCKh8005335
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31G5bCcL5026853
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 16 Feb 2023 10:13:12 +0800
+        Thu, 16 Feb 2023 13:37:12 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 16 Feb 2023 10:13:14 +0800
+ 15.1.2507.17; Thu, 16 Feb 2023 13:37:09 +0800
 Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 16 Feb
- 2023 10:13:14 +0800
+ 2023 13:37:09 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: add RNR support for 6 GHz scan
-Date:   Thu, 16 Feb 2023 10:12:39 +0800
-Message-ID: <20230216021239.9133-1-pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <Stable@vger.kernel.org>, <pmw.gover@yahoo.co.uk>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH for-6.3] wifi: rtw88: use RTW_FLAG_POWERON flag to prevent to power on/off twice
+Date:   Thu, 16 Feb 2023 13:36:33 +0800
+Message-ID: <20230216053633.20366-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -46,320 +47,146 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+Use power state to decide whether we can enter or leave IPS accurately,
+and then prevent to power on/off twice.
 
-Since 6 GHz band has around 60 channels and more strict rules for
-active probing. Reduced neighbor report can be used to reduce the
-channels we scan and get specific target BSS info to probe for.
+The commit 6bf3a083407b ("wifi: rtw88: add flag check before enter or leave IPS")
+would like to prevent this as well, but it still can't entirely handle all
+cases. The exception is that WiFi gets connected and does suspend/resume,
+it will power on twice and cause it failed to power on after resuming,
+like:
 
-Declare flag WIPHY_FLAG_SPLIT_SCAN_6GHZ so the scan request could be
-divided into two portions: legacy bands and 6 GHz bands. So RNR
-information from legacy bands could later be used when 6 GHz scan.
+  rtw_8723de 0000:03:00.0: failed to poll offset=0x6 mask=0x2 value=0x2
+  rtw_8723de 0000:03:00.0: mac power on failed
+  rtw_8723de 0000:03:00.0: failed to power on mac
+  rtw_8723de 0000:03:00.0: leave idle state failed
+  rtw_8723de 0000:03:00.0: failed to leave ips state
+  rtw_8723de 0000:03:00.0: failed to leave idle state
+  rtw_8723de 0000:03:00.0: failed to send h2c command
 
-When the scan flag NL80211_SCAN_FLAG_COLOCATED_6GHZ is set, cfg80211
-will pass down a reduced channel set which contains PSCs and non-PSC
-with RNR info received in the 2 GHz/5 GHz band. This reduces the
-scan duration by allowing us to only scan for channels in which APs
-are currently operating.
+To fix this, introduce new flag RTW_FLAG_POWERON to reflect power state,
+and call rtw_mac_pre_system_cfg() to configure registers properly between
+power-off/-on.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Reported-by: Paul Gover <pmw.gover@yahoo.co.uk>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217016
+Fixes: 6bf3a083407b ("wifi: rtw88: add flag check before enter or leave IPS")
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.c |  35 +++++-
- drivers/net/wireless/realtek/rtw89/fw.c   | 136 +++++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/fw.h   |   7 ++
- 3 files changed, 162 insertions(+), 16 deletions(-)
+Hi Kalle,
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 3ed2f3a966353..d950972a704f9 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -1400,6 +1400,34 @@ static void rtw89_stats_trigger_frame(struct rtw89_dev *rtwdev,
- 	}
- }
+This patch is to fix 8723DE failed to power on after system resume. Please
+queue this to 6.3
+
+Thank you
+Ping-Ke
+
+---
+ drivers/net/wireless/realtek/rtw88/coex.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/mac.c  | 10 ++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h |  2 +-
+ drivers/net/wireless/realtek/rtw88/ps.c   |  4 ++--
+ drivers/net/wireless/realtek/rtw88/wow.c  |  2 +-
+ 5 files changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 38697237ee5f0..86467d2f8888c 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -4056,7 +4056,7 @@ void rtw_coex_display_coex_info(struct rtw_dev *rtwdev, struct seq_file *m)
+ 		   rtwdev->stats.tx_throughput, rtwdev->stats.rx_throughput);
+ 	seq_printf(m, "%-40s = %u/ %u/ %u\n",
+ 		   "IPS/ Low Power/ PS mode",
+-		   test_bit(RTW_FLAG_INACTIVE_PS, rtwdev->flags),
++		   !test_bit(RTW_FLAG_POWERON, rtwdev->flags),
+ 		   test_bit(RTW_FLAG_LEISURE_PS_DEEP, rtwdev->flags),
+ 		   rtwdev->lps_conf.mode);
  
-+static void rtw89_core_cancel_6ghz_probe_tx(struct rtw89_dev *rtwdev,
-+					    struct sk_buff *skb)
-+{
-+	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
-+	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
-+	struct list_head *pkt_list = rtwdev->scan_info.pkt_list;
-+	struct rtw89_pktofld_info *info;
-+	const u8 *ies = mgmt->u.beacon.variable, *ssid_ie;
-+
-+	if (rx_status->band != NL80211_BAND_6GHZ)
-+		return;
-+
-+	ssid_ie = cfg80211_find_ie(WLAN_EID_SSID, ies, skb->len);
-+
-+	list_for_each_entry(info, &pkt_list[NL80211_BAND_6GHZ], list) {
-+		if (ether_addr_equal(info->bssid, mgmt->bssid)) {
-+			rtw89_fw_h2c_del_pkt_offload(rtwdev, info->id);
-+			continue;
-+		}
-+
-+		if (!ssid_ie || ssid_ie[1] != info->ssid_len || info->ssid_len == 0)
-+			continue;
-+
-+		if (memcmp(&ssid_ie[2], info->ssid, info->ssid_len) == 0)
-+			rtw89_fw_h2c_del_pkt_offload(rtwdev, info->id);
-+	}
-+}
-+
- static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 				    struct ieee80211_vif *vif)
- {
-@@ -1412,6 +1440,11 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	const u8 *bssid = iter_data->bssid;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index 4e5c194aac299..dae64901bac5a 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -273,6 +273,11 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 	if (rtw_pwr_seq_parser(rtwdev, pwr_seq))
+ 		return -EINVAL;
  
-+	if (rtwdev->scanning &&
-+	    (ieee80211_is_beacon(hdr->frame_control) ||
-+	     ieee80211_is_probe_resp(hdr->frame_control)))
-+		rtw89_core_cancel_6ghz_probe_tx(rtwdev, skb);
++	if (pwr_on)
++		set_bit(RTW_FLAG_POWERON, rtwdev->flags);
++	else
++		clear_bit(RTW_FLAG_POWERON, rtwdev->flags);
 +
- 	if (!vif->bss_conf.bssid)
- 		return;
- 
-@@ -3367,7 +3400,7 @@ static int rtw89_core_register_hw(struct rtw89_dev *rtwdev)
- 
- 	hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS |
- 			    WIPHY_FLAG_TDLS_EXTERNAL_SETUP |
--			    WIPHY_FLAG_AP_UAPSD;
-+			    WIPHY_FLAG_AP_UAPSD | WIPHY_FLAG_SPLIT_SCAN_6GHZ;
- 	hw->wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
- 
- 	hw->wiphy->max_scan_ssids = RTW89_SCANOFLD_MAX_SSID;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 0b73dc2e9ad77..8f54731b1a85a 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2702,9 +2702,29 @@ static void rtw89_release_pkt_list(struct rtw89_dev *rtwdev)
- 	}
- }
- 
-+static bool rtw89_is_6ghz_wildcard_probe_req(struct rtw89_dev *rtwdev,
-+					     struct rtw89_vif *rtwvif,
-+					     struct rtw89_pktofld_info *info,
-+					     enum nl80211_band band, u8 ssid_idx)
-+{
-+	struct cfg80211_scan_request *req = rtwvif->scan_req;
-+
-+	if (band != NL80211_BAND_6GHZ)
-+		return false;
-+
-+	if (req->ssids[ssid_idx].ssid_len) {
-+		memcpy(info->ssid, req->ssids[ssid_idx].ssid,
-+		       req->ssids[ssid_idx].ssid_len);
-+		info->ssid_len = req->ssids[ssid_idx].ssid_len;
-+		return false;
-+	} else {
-+		return true;
-+	}
-+}
-+
- static int rtw89_append_probe_req_ie(struct rtw89_dev *rtwdev,
- 				     struct rtw89_vif *rtwvif,
--				     struct sk_buff *skb)
-+				     struct sk_buff *skb, u8 ssid_idx)
- {
- 	struct rtw89_hw_scan_info *scan_info = &rtwdev->scan_info;
- 	struct ieee80211_scan_ies *ies = rtwvif->scan_ies;
-@@ -2732,6 +2752,13 @@ static int rtw89_append_probe_req_ie(struct rtw89_dev *rtwdev,
- 			goto out;
- 		}
- 
-+		if (rtw89_is_6ghz_wildcard_probe_req(rtwdev, rtwvif, info, band,
-+						     ssid_idx)) {
-+			kfree_skb(new);
-+			kfree(info);
-+			goto out;
-+		}
-+
- 		ret = rtw89_fw_h2c_add_pkt_offload(rtwdev, &info->id, new);
- 		if (ret) {
- 			kfree_skb(new);
-@@ -2762,7 +2789,7 @@ static int rtw89_hw_scan_update_probe_req(struct rtw89_dev *rtwdev,
- 		if (!skb)
- 			return -ENOMEM;
- 
--		ret = rtw89_append_probe_req_ie(rtwdev, rtwvif, skb);
-+		ret = rtw89_append_probe_req_ie(rtwdev, rtwvif, skb, i);
- 		kfree_skb(skb);
- 
- 		if (ret)
-@@ -2772,6 +2799,77 @@ static int rtw89_hw_scan_update_probe_req(struct rtw89_dev *rtwdev,
  	return 0;
  }
  
-+static int rtw89_update_6ghz_rnr_chan(struct rtw89_dev *rtwdev,
-+				      struct cfg80211_scan_request *req,
-+				      struct rtw89_mac_chinfo *ch_info)
-+{
-+	struct ieee80211_vif *vif = rtwdev->scan_info.scanning_vif;
-+	struct list_head *pkt_list = rtwdev->scan_info.pkt_list;
-+	struct rtw89_vif *rtwvif = vif_to_rtwvif_safe(vif);
-+	struct ieee80211_scan_ies *ies = rtwvif->scan_ies;
-+	struct cfg80211_scan_6ghz_params *params;
-+	struct rtw89_pktofld_info *info, *tmp;
-+	struct ieee80211_hdr *hdr;
-+	struct sk_buff *skb;
-+	bool found;
-+	int ret;
-+	u8 i;
+@@ -335,6 +340,11 @@ int rtw_mac_power_on(struct rtw_dev *rtwdev)
+ 	ret = rtw_mac_power_switch(rtwdev, true);
+ 	if (ret == -EALREADY) {
+ 		rtw_mac_power_switch(rtwdev, false);
 +
-+	if (!req->n_6ghz_params)
-+		return 0;
++		ret = rtw_mac_pre_system_cfg(rtwdev);
++		if (ret)
++			goto err;
 +
-+	for (i = 0; i < req->n_6ghz_params; i++) {
-+		params = &req->scan_6ghz_params[i];
-+
-+		if (req->channels[params->channel_idx]->hw_value !=
-+		    ch_info->pri_ch)
-+			continue;
-+
-+		found = false;
-+		list_for_each_entry(tmp, &pkt_list[NL80211_BAND_6GHZ], list) {
-+			if (ether_addr_equal(tmp->bssid, params->bssid)) {
-+				found = true;
-+				break;
-+			}
-+		}
-+		if (found)
-+			continue;
-+
-+		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif->mac_addr,
-+					     NULL, 0, req->ie_len);
-+		skb_put_data(skb, ies->ies[NL80211_BAND_6GHZ], ies->len[NL80211_BAND_6GHZ]);
-+		skb_put_data(skb, ies->common_ies, ies->common_ie_len);
-+		hdr = (struct ieee80211_hdr *)skb->data;
-+		ether_addr_copy(hdr->addr3, params->bssid);
-+
-+		info = kzalloc(sizeof(*info), GFP_KERNEL);
-+		if (!info) {
-+			ret = -ENOMEM;
-+			kfree_skb(skb);
-+			goto out;
-+		}
-+
-+		ret = rtw89_fw_h2c_add_pkt_offload(rtwdev, &info->id, skb);
-+		if (ret) {
-+			kfree_skb(skb);
-+			kfree(info);
-+			goto out;
-+		}
-+
-+		ether_addr_copy(info->bssid, params->bssid);
-+		info->channel_6ghz = req->channels[params->channel_idx]->hw_value;
-+		list_add_tail(&info->list, &rtwdev->scan_info.pkt_list[NL80211_BAND_6GHZ]);
-+
-+		ch_info->tx_pkt = true;
-+		ch_info->period = RTW89_CHANNEL_TIME_6G + RTW89_DWELL_TIME_6G;
-+
-+		kfree_skb(skb);
-+	}
-+
-+out:
-+	return ret;
-+}
-+
- static void rtw89_hw_scan_add_chan(struct rtw89_dev *rtwdev, int chan_type,
- 				   int ssid_num,
- 				   struct rtw89_mac_chinfo *ch_info)
-@@ -2782,6 +2880,7 @@ static void rtw89_hw_scan_add_chan(struct rtw89_dev *rtwdev, int chan_type,
- 	struct cfg80211_scan_request *req = rtwvif->scan_req;
- 	struct rtw89_pktofld_info *info;
- 	u8 band, probe_count = 0;
-+	int ret;
+ 		ret = rtw_mac_power_switch(rtwdev, true);
+ 		if (ret)
+ 			goto err;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 165f299e8e1f9..d4a53d5567451 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -356,7 +356,7 @@ enum rtw_flags {
+ 	RTW_FLAG_RUNNING,
+ 	RTW_FLAG_FW_RUNNING,
+ 	RTW_FLAG_SCANNING,
+-	RTW_FLAG_INACTIVE_PS,
++	RTW_FLAG_POWERON,
+ 	RTW_FLAG_LEISURE_PS,
+ 	RTW_FLAG_LEISURE_PS_DEEP,
+ 	RTW_FLAG_DIG_DISABLE,
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
+index 11594940d6b00..996365575f44f 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.c
++++ b/drivers/net/wireless/realtek/rtw88/ps.c
+@@ -25,7 +25,7 @@ static int rtw_ips_pwr_up(struct rtw_dev *rtwdev)
  
- 	ch_info->notify_action = RTW89_SCANOFLD_DEBUG_MASK;
- 	ch_info->dfs_ch = chan_type == RTW89_CHAN_DFS;
-@@ -2793,25 +2892,31 @@ static void rtw89_hw_scan_add_chan(struct rtw89_dev *rtwdev, int chan_type,
- 	ch_info->pause_data = false;
- 	ch_info->probe_id = RTW89_SCANOFLD_PKT_NONE;
+ int rtw_enter_ips(struct rtw_dev *rtwdev)
+ {
+-	if (test_and_set_bit(RTW_FLAG_INACTIVE_PS, rtwdev->flags))
++	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags))
+ 		return 0;
  
-+	if (ch_info->ch_band == RTW89_BAND_6G) {
-+		if ((ssid_num == 1 && req->ssids[0].ssid_len == 0) ||
-+		    !ch_info->is_psc) {
-+			ch_info->tx_pkt = false;
-+			if (!req->duration_mandatory)
-+				ch_info->period -= RTW89_DWELL_TIME_6G;
-+		}
-+	}
-+
-+	ret = rtw89_update_6ghz_rnr_chan(rtwdev, req, ch_info);
-+	if (ret)
-+		rtw89_warn(rtwdev, "RNR fails: %d\n", ret);
-+
- 	if (ssid_num) {
--		ch_info->num_pkt = ssid_num;
- 		band = rtw89_hw_to_nl80211_band(ch_info->ch_band);
+ 	rtw_coex_ips_notify(rtwdev, COEX_IPS_ENTER);
+@@ -50,7 +50,7 @@ int rtw_leave_ips(struct rtw_dev *rtwdev)
+ {
+ 	int ret;
  
- 		list_for_each_entry(info, &scan_info->pkt_list[band], list) {
--			ch_info->pkt_id[probe_count] = info->id;
--			if (++probe_count >= ssid_num)
-+			if (info->channel_6ghz &&
-+			    ch_info->pri_ch != info->channel_6ghz)
-+				continue;
-+			ch_info->pkt_id[probe_count++] = info->id;
-+			if (probe_count >= RTW89_SCANOFLD_MAX_SSID)
- 				break;
- 		}
--		if (probe_count != ssid_num)
--			rtw89_err(rtwdev, "SSID num differs from list len\n");
--	}
--
--	if (ch_info->ch_band == RTW89_BAND_6G) {
--		if (ssid_num == 1 && req->ssids[0].ssid_len == 0) {
--			ch_info->tx_pkt = false;
--			if (!req->duration_mandatory)
--				ch_info->period -= RTW89_DWELL_TIME_6G;
--		}
-+		ch_info->num_pkt = probe_count;
- 	}
+-	if (!test_and_clear_bit(RTW_FLAG_INACTIVE_PS, rtwdev->flags))
++	if (test_bit(RTW_FLAG_POWERON, rtwdev->flags))
+ 		return 0;
  
- 	switch (chan_type) {
-@@ -2872,6 +2977,7 @@ static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
- 		ch_info->central_ch = channel->hw_value;
- 		ch_info->pri_ch = channel->hw_value;
- 		ch_info->rand_seq_num = random_seq;
-+		ch_info->is_psc = cfg80211_channel_is_psc(channel);
- 
- 		if (channel->flags &
- 		    (IEEE80211_CHAN_RADAR | IEEE80211_CHAN_NO_IR))
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index cae07e325326d..3f6e0871381df 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -237,6 +237,7 @@ struct rtw89_mac_chinfo {
- 	u16 tx_pwr_idx;
- 	u8 rsvd1;
- 	struct list_head list;
-+	bool is_psc;
- };
- 
- struct rtw89_scan_option {
-@@ -247,6 +248,12 @@ struct rtw89_scan_option {
- struct rtw89_pktofld_info {
- 	struct list_head list;
- 	u8 id;
-+
-+	/* Below fields are for 6 GHz RNR use only */
-+	u8 ssid[IEEE80211_MAX_SSID_LEN];
-+	u8 ssid_len;
-+	u8 bssid[ETH_ALEN];
-+	u16 channel_6ghz;
- };
- 
- static inline void RTW89_SET_FWCMD_RA_IS_DIS(void *cmd, u32 val)
+ 	rtw_hci_link_ps(rtwdev, false);
+diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
+index 89dc595094d5c..16ddee577efec 100644
+--- a/drivers/net/wireless/realtek/rtw88/wow.c
++++ b/drivers/net/wireless/realtek/rtw88/wow.c
+@@ -592,7 +592,7 @@ static int rtw_wow_leave_no_link_ps(struct rtw_dev *rtwdev)
+ 		if (rtw_get_lps_deep_mode(rtwdev) != LPS_DEEP_MODE_NONE)
+ 			rtw_leave_lps_deep(rtwdev);
+ 	} else {
+-		if (test_bit(RTW_FLAG_INACTIVE_PS, rtwdev->flags)) {
++		if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags)) {
+ 			rtw_wow->ips_enabled = true;
+ 			ret = rtw_leave_ips(rtwdev);
+ 			if (ret)
 -- 
 2.25.1
 
