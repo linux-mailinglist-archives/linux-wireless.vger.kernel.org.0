@@ -2,106 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5878698FD9
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 10:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6386990FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 11:20:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjBPJdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 04:33:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46754 "EHLO
+        id S229924AbjBPKUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 05:20:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbjBPJdN (ORCPT
+        with ESMTP id S229906AbjBPKUq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 04:33:13 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871AD24CA5
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 01:33:12 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31G8bglb005365;
-        Thu, 16 Feb 2023 09:33:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=tatITD6pR5mHo3kNoTIVtjuIS7iLVCPFJaD9VwR/fe4=;
- b=XwqGN3c6O38d7QDOncYS9sL4k58pQ/BKzJD99holp2yYtnKD6fM5723K4vxoWYQAw4qk
- SVaXIN84qXWQlyycfUOOuWrlAFrhfeUKI3KJArfw77r+mJ7c+U704k0Fp5ffeeZY8Zr7
- DZnYUOUAD+N4Urqh9jWd/AV6adlu73U2Ze1+pO8TiAnyufBZvcwQU0Nm1qt8W5EEdNnG
- hvUMHtFBkRzTuzk3dA7TGIGalgWfNtq/TyZWO/bP5yNFok8cyJpHAAEK6Pls2CiEos3B
- bk3b9elfCd2iADH++eKzeLT3Bgcc2UjfqiMUc66V0N1mut1HYp4jP9lrvHgv5kD7YJdx 3g== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nse3d0k9u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Feb 2023 09:33:09 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31G9X8to020202
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 16 Feb 2023 09:33:08 GMT
-Received: from [10.242.242.27] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 16 Feb
- 2023 01:33:07 -0800
-Message-ID: <b895583b-7637-9025-d028-efbbc663e139@quicinc.com>
-Date:   Thu, 16 Feb 2023 15:03:03 +0530
+        Thu, 16 Feb 2023 05:20:46 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 555714DE31
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 02:20:45 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id g2so1584115ybk.8
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 02:20:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1LFVu/Jq97eDG/VSiKN+fBOIP5O948QZ2+duJcCNi2c=;
+        b=mUvNMAhzJSIC2qlZfOXMYaE22ATnOUg72eef+Egey3YKMDV0/XessAYBj5n5RGf+5l
+         SYNTbHKUxsxq+O0ZPlI6rhixwTHw7nrAfA1gk7aLMpL39Tvlpg2IxZ0x+00VrOofqCOl
+         e/YCqgXyKwgM/xUDD3xEiXj3x5I+iV3fiARGWCKjhu4sx097rkFrWiMfb97ZifRAM4uN
+         BEne1EGi+S7ru8qepX3q5Dqn9jz+kUvYXKs/0aq9fwnCLMF+ADv+g9nQ7/YLJRaJp9a8
+         +/pksIEeHbbGZIwc+TsEl4jn3pHvY5x0f8DQx8iubsiS69PkzZZzdu/jw4PzXcO4wuRP
+         nkrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1LFVu/Jq97eDG/VSiKN+fBOIP5O948QZ2+duJcCNi2c=;
+        b=vqXSMX/Bw3OFrGbpRWFufoJwQEpGdRelE8/TyWvH79pF03k4JO+Qvmu0lC1OCE47Ko
+         IFSdS51lY3Q0JFJ3maKWR/RJaInG7SSSVc1wtV4lPVXAHOS082y9Pr+ygnXo4lmx2DLv
+         lBaW1H6OiHFo1bFuRUXfODgQRsnQdq0VFeUo/+8wHs4PNoOieoHr7KSKllXg9pxTTcsZ
+         pDQONJkdfvXAzhDeGGra8SpnIWDQTa+VKzvvtTIZ9IJXT0f20aGNTLR9CgkipvgrMtbi
+         MgN5DeNHch63fBDOEN9DhvpCWppkNIZ/pmU4nweQk/js2k4ggr4whmOSPrl501dIZRR6
+         eDDQ==
+X-Gm-Message-State: AO0yUKXW2GuapOBvAovB95Q0DcechAMbxh0pRQ9bUiNdwHv28w/KJyIA
+        rWUAwj9t/PBVXUlCDFcpRch6sD1tXx0ggrhOGWBlRw==
+X-Google-Smtp-Source: AK7set//9GiliBNMnBKujZOrjDQmGKeILf6av9Y6BwR/JtQulMPc4CNAMTP+cbMcZpIUz+eN5ebyNDWNoUuf+XrObHM=
+X-Received: by 2002:a25:9983:0:b0:883:cf5:1553 with SMTP id
+ p3-20020a259983000000b008830cf51553mr544086ybo.28.1676542843273; Thu, 16 Feb
+ 2023 02:20:43 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH 6/7] cfg80211: rework nl80211_parse_chandef for 6 GHz
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-References: <20220704102341.5692-1-quic_adisi@quicinc.com>
- <20220704102341.5692-7-quic_adisi@quicinc.com>
- <0ed850ac7d13fc5d40545aff1d59d710374bfcf4.camel@sipsolutions.net>
-From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <0ed850ac7d13fc5d40545aff1d59d710374bfcf4.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HoYg9LxaGnm5GOxeIgiueAL1mgSZE0w3
-X-Proofpoint-ORIG-GUID: HoYg9LxaGnm5GOxeIgiueAL1mgSZE0w3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-16_07,2023-02-15_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
- mlxscore=0 impostorscore=0 priorityscore=1501 adultscore=0 phishscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302160079
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230215224110.never.022-kees@kernel.org>
+In-Reply-To: <20230215224110.never.022-kees@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 16 Feb 2023 11:20:31 +0100
+Message-ID: <CACRpkdbqoiCpj=-stVm0fG6xfLvuK+1BCm6PVnROqyKD9UNn_Q@mail.gmail.com>
+Subject: Re: [PATCH] wifi: brcmfmac: p2p: Introduce generic flexible array
+ frame member
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Brian Henriquez <brian.henriquez@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/18/2023 16:33, Johannes Berg wrote:
-> On Mon, 2022-07-04 at 15:53 +0530, Aditya Kumar Singh wrote:
->>
->> +	/* For APs, 6 GHz power mode is taken from the user configured
->> +	 * value. However, for clients, power mode is also dependent
->> +	 * upon the APs power mode to which this client has associated.
->> +	 * Hence for client, need to take power mode of asscoiated AP,
-> 
-> 
-> typo - associated
-Sure will rectify. Thanks for pointing it out.
+On Wed, Feb 15, 2023 at 11:41 PM Kees Cook <keescook@chromium.org> wrote:
 
-> 
-> But anyway, were you going to resubmit this with comments from the first
-> patches addressed?
-Yes! Working on addressing the review comments. Will send next version.
+> Silence run-time memcpy() false positive warning when processing
+> management frames:
+>
+>   memcpy: detected field-spanning write (size 27) of single field "&mgmt_frame->u" at drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1469 (size 26)
+>
+> Due to this (soon to be fixed) GCC bug[1], FORTIFY_SOURCE (via
+> __builtin_dynamic_object_size) doesn't recognize that the union may end
+> with a flexible array, and returns "26" (the fixed size of the union),
+> rather than the remaining size of the allocation. Add an explicit
+> flexible array member and set it as the destination here, so that we
+> get the correct coverage for the memcpy().
+>
+> [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101832
+>
+> Reported-by: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Arend van Spriel <aspriel@gmail.com>
+> Cc: Franky Lin <franky.lin@broadcom.com>
+> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Johannes Berg <johannes@sipsolutions.net>
+> Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Darrick J. Wong" <djwong@kernel.org>
+> Cc: Colin Ian King <colin.i.king@gmail.com>
+> Cc: Brian Henriquez <brian.henriquez@cypress.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: brcm80211-dev-list.pdl@broadcom.com
+> Cc: SHA-cyfmac-dev-list@infineon.com
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-> Honestly I'd also like to see a bit more discussion (in the cover letter
-> I guess) about the solution with "multiple channel spaces" and all that.
-> And ideally about alternatives considered - why not for example keep a
-> single space with flags indicating support for the power mode, etc.
-Sure will include these in the cover letter.
+Us having to deal with this kind of stuff is why we need Rust.
 
-> 
-> johannes
+Thanks for doing this Kees,
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+Yours,
+Linus Walleij
