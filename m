@@ -2,117 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6346D69994A
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 16:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D080699A0E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 17:32:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229961AbjBPPyK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 10:54:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54050 "EHLO
+        id S229513AbjBPQcN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 11:32:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbjBPPyJ (ORCPT
+        with ESMTP id S229506AbjBPQcM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 10:54:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2A14DE08;
-        Thu, 16 Feb 2023 07:54:08 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EEFAEB828B5;
-        Thu, 16 Feb 2023 15:54:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE8BC433D2;
-        Thu, 16 Feb 2023 15:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676562845;
-        bh=zpw4rUtbOctUQatpRCHmdOEHG4xfpTTWwocYPyMJoQs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Yo3T9rTzjPHT5JNP0yXY3jvF6d8pbQURi+Fzdtt6JbCxr7HdvE4gz9/jsPxrLjDYS
-         qq2zaZRin40p9UQtlwPtezXCNJ8noVIqLtNS8PsvjNkwZqWBfxMnZLuaYhePyhCJpP
-         cyfpHD2jqVW3ftNVpCSfmlsdPVez/RJkghqYgz867v7CoYog1xZSJ81tPWQnLrr3Nn
-         IqjmuPjtz9P2KflZL45O8UwqlWoQAcgszzfaOhpsv0YPaWP+EhFJ9UF2a6OjI/mpqk
-         NN+NUwngX/uErWDCoQbUlokIoAT9rpseEvHnI/yc+smKP3w0XVeiWURdgU2VxJXG1+
-         EoOmjcn84mMuA==
-Message-ID: <c4ca87f9-6603-444c-f95d-deff8c8b36b0@kernel.org>
-Date:   Thu, 16 Feb 2023 09:54:02 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2 4/4] nios2: dts: Fix tse_mac "max-frame-size" property
-Content-Language: en-US
-To:     Janne Grunau <j@jannau.net>,
+        Thu, 16 Feb 2023 11:32:12 -0500
+X-Greylist: delayed 598 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Feb 2023 08:32:11 PST
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22AC43BD88
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 08:32:11 -0800 (PST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1676564133; bh=LtOqw6Liu2Qd487IpRFryDo1qNR5M58ZhCvzkyOx7kY=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=qPEdJaoOfTKEpYVFEf0ioaeyxbQbv6jO+H5nKcaBkqLJi6OoNzgTEhhaKfQILGnDi
+         SZQ/0We5NmKist916zor1GoYemRbA1Kc4QuAx34cXA7agu9yo6cNr4Wm9UnaXhbx1b
+         +Lvhe4StNEfcj4WQNiGPv2xuvnOcgXkagkfCXZGKIOLJp53kzg/ujuQJNp+TZWGHSf
+         /eEAKE5B7BRjOlA4X5e3jB0Gz9X99GfYrF+O5tFYxDgt23FikVWh5FhF1qWPSTbdVo
+         IijtvvLcquXI+X0Ho/l847EuVoeAyo6X0kUJqDkYn/yg1baqlawR0YwPk4Agvq8VCq
+         X/PNk3WdydnTw==
+To:     Fedor Pchelkin <pchelkin@ispras.ru>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Mailing List <devicetree-spec@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, van Spriel <arend@broadcom.com>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        Chee Nouk Phoon <cnphoon@altera.com>
-Cc:     netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20230203-dt-bindings-network-class-v2-0-499686795073@jannau.net>
- <20230203-dt-bindings-network-class-v2-4-499686795073@jannau.net>
-From:   Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20230203-dt-bindings-network-class-v2-4-499686795073@jannau.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        "John W. Linville" <linville@tuxdriver.com>,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Senthil Balasubramanian <senthilkumar@atheros.com>,
+        Sujith <Sujith.Manoharan@atheros.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH 1/1] wifi: ath9k: hif_usb: fix memory leak of remain_skbs
+In-Reply-To: <20230212145238.123055-2-pchelkin@ispras.ru>
+References: <20230212145238.123055-1-pchelkin@ispras.ru>
+ <20230212145238.123055-2-pchelkin@ispras.ru>
+Date:   Thu, 16 Feb 2023 17:15:32 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87a61dsi1n.fsf@toke.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fedor Pchelkin <pchelkin@ispras.ru> writes:
 
-
-On 2/12/23 06:16, Janne Grunau wrote:
-> The given value of 1518 seems to refer to the layer 2 ethernet frame
-> size without 802.1Q tag. Actual use of the "max-frame-size" including in
-> the consumer of the "altr,tse-1.0" compatible is the MTU.
-> 
-> Fixes: 95acd4c7b69c ("nios2: Device tree support")
-> Fixes: 61c610ec61bb ("nios2: Add Max10 device tree")
-> Signed-off-by: Janne Grunau <j@jannau.net>
+> hif_dev->remain_skb is allocated and used exclusively in
+> ath9k_hif_usb_rx_stream(). It is implied that an allocated remain_skb is
+> processed and subsequently freed (in error paths) only during the next
+> call of ath9k_hif_usb_rx_stream().
+>
+> So, if the device is deinitialized between those two calls or if the skb
+> contents are incorrect, it is possible that ath9k_hif_usb_rx_stream() is
+> not called next time and the allocated remain_skb is leaked. Our local
+> Syzkaller instance was able to trigger that.
+>
+> Fix the leak by introducing a function to explicitly free remain_skb (if
+> it is not NULL) when the device is being deinitialized. remain_skb is NULL
+> when it has not been allocated at all (hif_dev struct is kzalloced) or
+> when it has been proccesed in next call to ath9k_hif_usb_rx_stream().
+>
+> Proper spinlocks are held to prevent possible concurrent access to
+> remain_skb from the interrupt context ath9k_hif_usb_rx_stream(). These
+> accesses should not happen as rx_urbs have been deallocated before but
+> it prevents a dangerous race condition in these cases.
+>
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+>
+> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
 > ---
->   arch/nios2/boot/dts/10m50_devboard.dts | 2 +-
->   arch/nios2/boot/dts/3c120_devboard.dts | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/nios2/boot/dts/10m50_devboard.dts b/arch/nios2/boot/dts/10m50_devboard.dts
-> index 56339bef3247..0e7e5b0dd685 100644
-> --- a/arch/nios2/boot/dts/10m50_devboard.dts
-> +++ b/arch/nios2/boot/dts/10m50_devboard.dts
-> @@ -97,7 +97,7 @@ rgmii_0_eth_tse_0: ethernet@400 {
->   			rx-fifo-depth = <8192>;
->   			tx-fifo-depth = <8192>;
->   			address-bits = <48>;
-> -			max-frame-size = <1518>;
-> +			max-frame-size = <1500>;
->   			local-mac-address = [00 00 00 00 00 00];
->   			altr,has-supplementary-unicast;
->   			altr,enable-sup-addr = <1>;
-> diff --git a/arch/nios2/boot/dts/3c120_devboard.dts b/arch/nios2/boot/dts/3c120_devboard.dts
-> index d10fb81686c7..3ee316906379 100644
-> --- a/arch/nios2/boot/dts/3c120_devboard.dts
-> +++ b/arch/nios2/boot/dts/3c120_devboard.dts
-> @@ -106,7 +106,7 @@ tse_mac: ethernet@4000 {
->   				interrupt-names = "rx_irq", "tx_irq";
->   				rx-fifo-depth = <8192>;
->   				tx-fifo-depth = <8192>;
-> -				max-frame-size = <1518>;
-> +				max-frame-size = <1500>;
->   				local-mac-address = [ 00 00 00 00 00 00 ];
->   				phy-mode = "rgmii-id";
->   				phy-handle = <&phy0>;
-> 
+>  drivers/net/wireless/ath/ath9k/hif_usb.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+> index f521dfa2f194..e03ab972edf7 100644
+> --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
+> +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+> @@ -534,6 +534,23 @@ static struct ath9k_htc_hif hif_usb = {
+>  	.send = hif_usb_send,
+>  };
+>  
+> +/* Need to free remain_skb allocated in ath9k_hif_usb_rx_stream
+> + * in case ath9k_hif_usb_rx_stream wasn't called next time to
+> + * process the buffer and subsequently free it.
+> + */
+> +static void ath9k_hif_usb_free_rx_remain_skb(struct hif_device_usb *hif_dev)
+> +{
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&hif_dev->rx_lock, flags);
+> +	if (hif_dev->remain_skb) {
+> +		dev_kfree_skb_any(hif_dev->remain_skb);
+> +		hif_dev->remain_skb = NULL;
+> +		hif_dev->rx_remain_len = 0;
+> +	}
+> +	spin_unlock_irqrestore(&hif_dev->rx_lock, flags);
+> +}
+> +
+>  static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
+>  				    struct sk_buff *skb)
+>  {
+> @@ -1129,6 +1146,7 @@ static int ath9k_hif_usb_dev_init(struct hif_device_usb *hif_dev)
+>  static void ath9k_hif_usb_dev_deinit(struct hif_device_usb *hif_dev)
+>  {
+>  	ath9k_hif_usb_dealloc_urbs(hif_dev);
+> +	ath9k_hif_usb_free_rx_remain_skb(hif_dev);
+>  }
 
-Applied!
+Erm, does this actually fix the leak? AFAICT, ath9k_hif_usb_dev_deinit()
+is only called on the error path of ath9k_hif_usb_firmware_cb(), not
+when the device is subsequently torn down in
+ath9k_htc_disconnect_device()?
 
-Thanks,
-Dinh
+I think the right place to put this is probably inside
+ath9k_hif_usb_dealloc_urbs()? That gets called on USB suspend as well,
+but it seems to me that if we're suspending the device to an extent that
+we're deallocating the urbs, we should be clearing out the cached skb in
+remain_skb anyway?
+
+-Toke
