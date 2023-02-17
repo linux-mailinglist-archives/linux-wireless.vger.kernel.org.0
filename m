@@ -2,157 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBA3699EB3
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Feb 2023 22:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE9269A34F
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 02:14:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbjBPVIs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Feb 2023 16:08:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42368 "EHLO
+        id S229512AbjBQBN6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Feb 2023 20:13:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230138AbjBPVIp (ORCPT
+        with ESMTP id S229670AbjBQBN5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Feb 2023 16:08:45 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EF33B850
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 13:08:41 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id r8so3476500pls.2
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 13:08:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MdEuNBGf/q2On5Lj7U9zc5dVzdIg0cai+qv7AGjRVaY=;
-        b=kOxAq0vzvYkQmTuSLRakbNDtWmx2X3BEYRjOTevOa+BkECAmK6UEbJIToa9sYnShxH
-         pGBcSHOzAibeufkbsO7JBZ22H12kodtbVtfZXFkKe6ytv6CbIj1rg5wXyskimYcfD+7v
-         LAgJ8Vy6Im1iagBytk1PatAOE8ktJngDQZmYX8u/c1jYfYlbZ+DJjntkmFReF2BQuBTv
-         pS9u3Kzvw/4kd3A8Z2irtjZVKrGDQYtB6vsY1nRZmzUWLU/uMJc1y4GkBv3Slrp97cB1
-         TxetVS2e8MZTTICkDkusv8h20X9rEMQdcDQZw413Bvt+WjGQtV//2r4g4DFKjaEZVtvn
-         jzaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MdEuNBGf/q2On5Lj7U9zc5dVzdIg0cai+qv7AGjRVaY=;
-        b=L17hEJdY7XczChxKdFOlkKcUqOpv0gpKySesZaa4kKBO35hba7Ww9+WOFZ6WULbA5e
-         JQw8bexZZS/yDIEBkHoknp2R28hgu1PDeOzSPNGMNFFN7yjhDIE93IEIXiPaaAYRsm7s
-         5Yjs7d5Fw0ibZGiWv2I0rqlwy1z2whRSAUbHJX44dq3QsUMd7/VTK5gQTKu+ctOVYkyZ
-         BiVTjHZmC69pHYkM5Jtznw1xlu5KIntK5lb172yBOC65whgWqaWPYsII2+3IdhE6bWTC
-         FOIA5+PDcQigxefMwJ3VuRsiWP6lGTEGQx7A/SUzVfsAAaaSbBV7XAYyJeawMsUolkUN
-         HTEw==
-X-Gm-Message-State: AO0yUKWoSbPF4WHh0fAvsLsU7fNNpfkDFHDJgQeFrKsw0KrjZ9M9fCZw
-        7OyP1XP14kLpVr9vY1OL8j9xkH3+etOZlw==
-X-Google-Smtp-Source: AK7set+WtaBkkZaY9/SrZpVvijVm7KCV7G88h4DhF/AFcVxaL9KPytL9xaYZ9JSDF8fN6/pNu6SWww==
-X-Received: by 2002:a17:903:1249:b0:196:8445:56be with SMTP id u9-20020a170903124900b00196844556bemr7953791plh.42.1676581720553;
-        Thu, 16 Feb 2023 13:08:40 -0800 (PST)
-Received: from localhost.localdomain (2603-8000-0b00-9100-f4e1-a6f1-652b-cfd4.res6.spectrum.com. [2603:8000:b00:9100:f4e1:a6f1:652b:cfd4])
-        by smtp.gmail.com with ESMTPSA id v10-20020a1709029a0a00b00188c9c11559sm1760910plp.1.2023.02.16.13.08.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Feb 2023 13:08:40 -0800 (PST)
-From:   Anthony Refuerzo <anthony96922@gmail.com>
-To:     anthony96922@gmail.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] iw: Add more VHT capabilities reporting
-Date:   Thu, 16 Feb 2023 13:08:32 -0800
-Message-Id: <20230216210832.10502-1-anthony96922@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Thu, 16 Feb 2023 20:13:57 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC7B4B536
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 17:13:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676596436; x=1708132436;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hbX9xTxndu3xuerChKJ+1+d5W5iTIIx02UIhu1JucSQ=;
+  b=j9+oriUy315NipHEUeWWK8bfzLYm9G+pJoGAmLggQBU1dVTjZ28jf8Fz
+   KF8rZ5qjRpNaI7Udm//kaHxiHHH6TNTI84r7MKGWEg8y8/mcUFk4MTC+a
+   LOhBw5+ZPdEIKQA3ZJBp/uD27C/UAc7FtIjvSdszgiS49y/iXgdn2o36U
+   Gas+YlF/Q44iULZyiCyOJKXVlzjtZ4KAATu6Ecd4DiTO4eemR6DNUTEzW
+   WmlF/j0V8lkHCUarABDKSBkwL6exmot5N3uUmHYkQLZpZ2ta0cy2+PmTK
+   hCj5c+rHAFL5aTSQ3IqdJJxJAGQxIYuhsrJlToGZiqg3yuWylT8ZMx55P
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="359327285"
+X-IronPort-AV: E=Sophos;i="5.97,304,1669104000"; 
+   d="scan'208";a="359327285"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2023 17:13:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10623"; a="915908162"
+X-IronPort-AV: E=Sophos;i="5.97,304,1669104000"; 
+   d="scan'208";a="915908162"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 16 Feb 2023 17:13:54 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pSpJy-000B0X-0A;
+        Fri, 17 Feb 2023 01:13:54 +0000
+Date:   Fri, 17 Feb 2023 09:13:01 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless-next:main] BUILD SUCCESS
+ 1a30a6b25f263686dbf2028d56041ac012b10dcb
+Message-ID: <63eed49d.9atsKTCtsJqIIl42%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add extra reporting for VHT capabilities. These were not previously shown.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 1a30a6b25f263686dbf2028d56041ac012b10dcb  wifi: brcmfmac: p2p: Introduce generic flexible array frame member
 
-Signed-off-by: Anthony Refuerzo <anthony96922@gmail.com>
----
- scan.c | 12 ++++++++++++
- util.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+elapsed time: 929m
 
-diff --git a/scan.c b/scan.c
-index dfc136a..9bfa014 100644
---- a/scan.c
-+++ b/scan.c
-@@ -1508,6 +1508,8 @@ static void print_vht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
- static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
- 			   const struct print_ies_data *ie_buffer)
- {
-+	__u16 tmp;
-+	int i;
- 	const char *chandwidths[] = {
- 		[0] = "20 or 40 MHz",
- 		[1] = "80 MHz",
-@@ -1521,6 +1523,16 @@ static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
- 	printf("\t\t * center freq segment 1: %d\n", data[1]);
- 	printf("\t\t * center freq segment 2: %d\n", data[2]);
- 	printf("\t\t * VHT basic MCS set: 0x%.2x%.2x\n", data[4], data[3]);
-+	tmp = data[3] | (data[4] << 8);
-+	for (i = 1; i <= 8; i++) {
-+		printf("\t\t\t%d streams: ", i);
-+		switch ((tmp >> ((i-1)*2) ) & 3) {
-+		case 0: printf("MCS 0-7\n"); break;
-+		case 1: printf("MCS 0-8\n"); break;
-+		case 2: printf("MCS 0-9\n"); break;
-+		case 3: printf("not supported\n"); break;
-+		}
-+	}
- }
- 
- static void print_supp_op_classes(const uint8_t type, uint8_t len,
-diff --git a/util.c b/util.c
-index 8a2ba10..c026f8b 100644
---- a/util.c
-+++ b/util.c
-@@ -1125,16 +1125,42 @@ void print_vht_info(__u32 capa, const __u8 *mcs)
- 	PRINT_VHT_CAPA(6, "short GI (160/80+80 MHz)");
- 	PRINT_VHT_CAPA(7, "TX STBC");
- 	/* RX STBC */
-+	switch ((capa & 0x700) >> 8) {
-+	case 1: printf("\t\t\tRX STBC 1-stream\n"); break;
-+	case 2: printf("\t\t\tRX STBC 2-streams\n"); break;
-+	case 3: printf("\t\t\tRX STBC 3-streams\n"); break;
-+	case 4: printf("\t\t\tRX STBC 4-streams\n"); break;
-+	case 5: printf("\t\t\tRX STBC 5-streams\n"); break;
-+	case 6: printf("\t\t\tRX STBC 6-streams\n"); break;
-+	case 7: printf("\t\t\tRX STBC 7-streams\n"); break;
-+	default: printf("\t\t\tNo RX STBC\n");
-+	}
- 	PRINT_VHT_CAPA(11, "SU Beamformer");
- 	PRINT_VHT_CAPA(12, "SU Beamformee");
- 	/* compressed steering */
-+	printf("\t\t\tCompressed Steering Number of Beamformer Antennas: %d\n",
-+		((capa & 0xe000) >> 13) + 1);
- 	/* # of sounding dimensions */
-+	printf("\t\t\tNumber of Sounding Dimensions: %d\n",
-+		((capa & 0x70000) >> 16) + 1);
- 	PRINT_VHT_CAPA(19, "MU Beamformer");
- 	PRINT_VHT_CAPA(20, "MU Beamformee");
- 	PRINT_VHT_CAPA(21, "VHT TXOP PS");
- 	PRINT_VHT_CAPA(22, "+HTC-VHT");
- 	/* max A-MPDU */
-+	printf("\t\t\tMax A-MPDU Length: %d (exponent: %d)\n",
-+		(1 << (((capa & 0x3800000) >> 23) + 13)) - 1,
-+		((capa & 0x3800000) >> 23));
- 	/* VHT link adaptation */
-+	if (capa & 0xc000000) {
-+		printf("\t\t\tVHT Link Adaptation: ");
-+		switch ((capa & 0xc000000) >> 26) {
-+		case 1: printf("(reserved)\n"); break;
-+		case 2: printf("Unsolicited\n"); break;
-+		case 3: printf("Both Solicited and Unsolicited\n"); break;
-+		default: printf("No Feedback\n"); break;
-+		}
-+	}
- 	PRINT_VHT_CAPA(28, "RX antenna pattern consistency");
- 	PRINT_VHT_CAPA(29, "TX antenna pattern consistency");
- 
+configs tested: 91
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+alpha                            allyesconfig
+alpha                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+arc                  randconfig-r043-20230212
+arc                  randconfig-r043-20230213
+arc                  randconfig-r043-20230214
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm                  randconfig-r046-20230212
+arm                  randconfig-r046-20230214
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+i386                 randconfig-a011-20230213
+i386                 randconfig-a012-20230213
+i386                 randconfig-a013-20230213
+i386                 randconfig-a014-20230213
+i386                 randconfig-a015-20230213
+i386                 randconfig-a016-20230213
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                randconfig-r042-20230213
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+s390                 randconfig-r044-20230213
+sh                               allmodconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64               randconfig-a011-20230213
+x86_64               randconfig-a012-20230213
+x86_64               randconfig-a013-20230213
+x86_64               randconfig-a014-20230213
+x86_64               randconfig-a015-20230213
+x86_64               randconfig-a016-20230213
+x86_64                               rhel-8.3
+
+clang tested configs:
+arm                  randconfig-r046-20230213
+hexagon              randconfig-r041-20230212
+hexagon              randconfig-r041-20230213
+hexagon              randconfig-r041-20230214
+hexagon              randconfig-r045-20230212
+hexagon              randconfig-r045-20230213
+hexagon              randconfig-r045-20230214
+i386                 randconfig-a001-20230213
+i386                          randconfig-a002
+i386                 randconfig-a002-20230213
+i386                 randconfig-a003-20230213
+i386                          randconfig-a004
+i386                 randconfig-a004-20230213
+i386                 randconfig-a005-20230213
+i386                          randconfig-a006
+i386                 randconfig-a006-20230213
+riscv                randconfig-r042-20230212
+riscv                randconfig-r042-20230214
+s390                 randconfig-r044-20230212
+s390                 randconfig-r044-20230214
+x86_64               randconfig-a001-20230213
+x86_64               randconfig-a002-20230213
+x86_64               randconfig-a003-20230213
+x86_64               randconfig-a004-20230213
+x86_64               randconfig-a005-20230213
+x86_64               randconfig-a006-20230213
+
 -- 
-2.30.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
