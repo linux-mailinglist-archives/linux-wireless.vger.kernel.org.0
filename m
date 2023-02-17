@@ -2,53 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73C8D69A82B
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 10:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BF4F69A82D
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 10:34:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjBQJds (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Feb 2023 04:33:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58966 "EHLO
+        id S229901AbjBQJeV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Feb 2023 04:34:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbjBQJdr (ORCPT
+        with ESMTP id S229568AbjBQJeT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Feb 2023 04:33:47 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729124B507;
-        Fri, 17 Feb 2023 01:33:45 -0800 (PST)
+        Fri, 17 Feb 2023 04:34:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 844074B507
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 01:34:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A41C6177E;
-        Fri, 17 Feb 2023 09:33:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9DAC433D2;
-        Fri, 17 Feb 2023 09:33:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EE2561746
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 09:34:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07BBC4339B;
+        Fri, 17 Feb 2023 09:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676626424;
-        bh=uPVlv+pHe64pBsOjLmDQ2Aw4nP8vMhW/wtzTGYyF3ow=;
+        s=k20201202; t=1676626457;
+        bh=WiupnMj/VRShKJfX+eZ5coBxiHKZAEotlYGj2d8c33w=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=b0HOwVh3Bo8OI+wFQGQB34SSwmsSN79Bd2cf9SsFmcF1rIU4rkeV9U4J1CqQa/Ghl
-         ahug2WXx4sBvCmXYiaaHLvv+FLt+1PJ4mq0OdzSGOcSuaTTTTvp8JeFOW7bCi3t8TM
-         N0y6Y273NVdCtjcBc704UC/GqMoGk3v7O9yq5MJhct8l8Q8cy/UAU7m337xEhWWcDf
-         wfU8DjDw1X185N5c488bwuJlz8aBLfEIgWOs0s1JUG+ZOvOq+8tSWqggAOljNVZReF
-         jzDx+8JCjr5PXiQLWHZcd5B0JBOAUO1gkey31uhjFuG/t/HjTyFDdrRaNXItM+zS4Y
-         1CoSMmAi4MI6g==
+        b=OsBecHhiJxO8XMgL/q8qs/p2jFVgj3cSN1dg+etD5xpOzz1HzOK5H3As9v3VvB7A3
+         EekdjUVrwq6/itfMz68SbxKlL9pkxSjfaDKjwPMGru+5Qlzq4GTWweP8yKTxXW55ob
+         ALRnL8SWg91UjAVFZhPsG5j4wp1bAx8LZe6p4VyAbxxNZEY05tBTbTGL4aSCE6Vw+d
+         rdFgZhqgaDvvlAfwaKF/pxi1Ouz/S8wxEXbHATmha3N+M4gOZ0o2ILpR++tNg07aFf
+         siQSBwkaA7M8N7WJs5BK8tUGyYyZsfQriXSUtS7Vqw121ACRCTVSR7fkPKK/S4bFHR
+         KlKq60Ft31Djw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH for-6.3] wifi: rtw88: use RTW_FLAG_POWERON flag to prevent
- to
- power on/off twice
+Subject: Re: [PATCH] wifi: rtw89: fix AP mode authentication transmission
+ failed
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230216053633.20366-1-pkshih@realtek.com>
-References: <20230216053633.20366-1-pkshih@realtek.com>
+In-Reply-To: <20230216082807.22285-1-pkshih@realtek.com>
+References: <20230216082807.22285-1-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <Stable@vger.kernel.org>,
-        <pmw.gover@yahoo.co.uk>, <linux-wireless@vger.kernel.org>
+Cc:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167662641796.23451.10955002465358149127.kvalo@kernel.org>
-Date:   Fri, 17 Feb 2023 09:33:43 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <167662645468.23451.13872151055729900939.kvalo@kernel.org>
+Date:   Fri, 17 Feb 2023 09:34:16 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,39 +56,22 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> Use power state to decide whether we can enter or leave IPS accurately,
-> and then prevent to power on/off twice.
+> From: Po-Hao Huang <phhuang@realtek.com>
 > 
-> The commit 6bf3a083407b ("wifi: rtw88: add flag check before enter or leave IPS")
-> would like to prevent this as well, but it still can't entirely handle all
-> cases. The exception is that WiFi gets connected and does suspend/resume,
-> it will power on twice and cause it failed to power on after resuming,
-> like:
+> For some ICs, packets can't be sent correctly without initializing
+> CMAC table first. Previous flow do this initialization after
+> associated, results in authentication response fails to transmit.
+> Move the initialization up front to a proper place to solve this.
 > 
->   rtw_8723de 0000:03:00.0: failed to poll offset=0x6 mask=0x2 value=0x2
->   rtw_8723de 0000:03:00.0: mac power on failed
->   rtw_8723de 0000:03:00.0: failed to power on mac
->   rtw_8723de 0000:03:00.0: leave idle state failed
->   rtw_8723de 0000:03:00.0: failed to leave ips state
->   rtw_8723de 0000:03:00.0: failed to leave idle state
->   rtw_8723de 0000:03:00.0: failed to send h2c command
-> 
-> To fix this, introduce new flag RTW_FLAG_POWERON to reflect power state,
-> and call rtw_mac_pre_system_cfg() to configure registers properly between
-> power-off/-on.
-> 
-> Reported-by: Paul Gover <pmw.gover@yahoo.co.uk>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217016
-> Fixes: 6bf3a083407b ("wifi: rtw88: add flag check before enter or leave IPS")
-> Cc: <Stable@vger.kernel.org>
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-next.git, thanks.
 
-4a267bc5ea8f wifi: rtw88: use RTW_FLAG_POWERON flag to prevent to power on/off twice
+0731d0b664f2 wifi: rtw89: fix AP mode authentication transmission failed
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230216053633.20366-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230216082807.22285-1-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
