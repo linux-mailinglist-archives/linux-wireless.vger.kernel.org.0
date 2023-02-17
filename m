@@ -2,45 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5DBE69A617
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 08:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2014B69A636
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 08:43:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjBQH3C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Feb 2023 02:29:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46768 "EHLO
+        id S229688AbjBQHnd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Feb 2023 02:43:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjBQH3B (ORCPT
+        with ESMTP id S229491AbjBQHnc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Feb 2023 02:29:01 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDB355DE38
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Feb 2023 23:28:36 -0800 (PST)
-Received: from dggpemm100007.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4PJ3JQ4pfqzRsCN;
-        Fri, 17 Feb 2023 15:25:58 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by dggpemm100007.china.huawei.com
- (7.185.36.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Fri, 17 Feb
- 2023 15:28:34 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     <kvalo@kernel.org>, <quic_kvalo@quicinc.com>,
-        <quic_jjohnson@quicinc.com>, <quic_bselvara@quicinc.com>,
-        <quic_srirrama@quicinc.com>, <quic_pradeepc@quicinc.com>,
-        <quic_bqiang@quicinc.com>, <yangyingliang@huawei.com>,
-        <liwei391@huawei.com>
-Subject: [PATCH -next] wifi: ath12k: use kfree_skb() instead of kfree()
-Date:   Fri, 17 Feb 2023 15:27:39 +0800
-Message-ID: <20230217072739.181304-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 17 Feb 2023 02:43:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B295A3BF;
+        Thu, 16 Feb 2023 23:43:31 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 89A2BB82AF0;
+        Fri, 17 Feb 2023 07:43:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53FEC433D2;
+        Fri, 17 Feb 2023 07:43:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1676619809;
+        bh=KrmesaHuI/4v3qEojFrOZL/yVjcLPffyUcOw0vBj9xI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cDRFD4jMDcBxTrsbHgKTRJWQdNioO50Ft/QVIWZG+nipuSmPryC3bpwjv9/H6ZVPB
+         02Niav3WYqK2oeGjlzv8xSRV+/nZiSyLwdTokXY+PBN0G5AT7ETRd/6SuTN5yaYLxn
+         3J7hDtGPPBHasbPBpcG39LoooFm4GHvTcoUptL+0=
+Date:   Fri, 17 Feb 2023 08:43:26 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jaewan Kim <jaewan@google.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-team@android.com, adelva@google.com
+Subject: Re: [PATCH v7 1/4] mac80211_hwsim: add PMSR capability support
+Message-ID: <Y+8wHsznYorBS95n@kroah.com>
+References: <20230207085400.2232544-1-jaewan@google.com>
+ <20230207085400.2232544-2-jaewan@google.com>
+ <6ad6708b124b50ff9ea64771b31d09e9168bfa17.camel@sipsolutions.net>
+ <CABZjns42zm8Xi-BU0pvT3edNHuJZoh-xshgUk3Oc=nMbxbiY8w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm100007.china.huawei.com (7.185.36.116)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABZjns42zm8Xi-BU0pvT3edNHuJZoh-xshgUk3Oc=nMbxbiY8w@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,28 +54,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The sk_buff should be freed with kfree_skb(), replace
-the kfree() with kfree_skb().
+On Fri, Feb 17, 2023 at 02:11:38PM +0900, Jaewan Kim wrote:
+> BTW,  can I expect you to review my changes for further patchsets?
+> I sometimes get conflicting opinions (e.g. line limits)
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/net/wireless/ath/ath12k/dp_tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry, I was the one that said "you can use 100 columns", if that's not
+ok in the networking subsystem yet, that was my fault as it's been that
+way in other parts of the kernel tree for a while.
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index 95294f35155c..fd8d850f9818 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -270,7 +270,7 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 					  skb_ext_desc->len, DMA_TO_DEVICE);
- 		ret = dma_mapping_error(ab->dev, ti.paddr);
- 		if (ret) {
--			kfree(skb_ext_desc);
-+			kfree_skb(skb_ext_desc);
- 			goto fail_unmap_dma;
- 		}
- 
--- 
-2.25.1
+> so it would be a great help if you take a look at my changes.
 
+Why not help out and start reviewing other people's changes?  To only
+ask for others to do work for you isn't the easiest way to get that work
+done :)
+
+thanks,
+
+greg k-h
