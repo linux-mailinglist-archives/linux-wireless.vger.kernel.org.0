@@ -2,47 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C55669B204
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 18:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A12E469B20A
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 18:49:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjBQRta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Feb 2023 12:49:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49530 "EHLO
+        id S229660AbjBQRtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Feb 2023 12:49:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbjBQRt3 (ORCPT
+        with ESMTP id S229659AbjBQRtk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Feb 2023 12:49:29 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A2C67445
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 09:49:10 -0800 (PST)
-X-UUID: 5e07203caeeb11ed945fc101203acc17-20230218
+        Fri, 17 Feb 2023 12:49:40 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D8554D0C
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 09:49:34 -0800 (PST)
+X-UUID: 6cfa7aeeaeeb11eda06fc9ecc4dadd91-20230218
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=WzCqWjdpu+FKpFM+RxVf4hcJaHMxYVVsPz2EEvBFdCU=;
-        b=YdRuy/0T9J+VM7/zfhTfxY5lEc6Uzvdh6Jasi7zct0ZwJ3ccOSASN3NuvmBFZkzsrnR4FAQT2kVRpxDOkPsjVHgPDtGoaZIsES/vUx7vN//9OhEjTXAyXq+N9ijsfW9B+5bDSLZqeV//sUnZquzmqhmLFvGkknY/2FfvcJKdlsA=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=mVnTocHQiiTL5C+NkFkIOH4zRxnyLpTv9jQKgqKpk3o=;
+        b=kAw9q07yDGPVv4COhEy2IVKegpVkZy2VJv8iMCetENANGG1UZYyUhBp3gx6lrS7yz/3RSXxrkL9AjF4Jf68QAipb3U4UWa6JLEzuO28y7VVboe7GJ+j0pAhELGxA6R53Ac2iGJRPSH/SknXhqJNPNIUAmSSsgerQ5tcMLcoO7wE=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.19,REQID:eb233616-3271-498a-b537-69235a13a4c0,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.19,REQID:eb233616-3271-498a-b537-69235a13a4c0,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:885ddb2,CLOUDID:7736cbb0-beed-4dfc-bd9c-e1b22fa6ccc4,B
-        ulkID:23021801490518DFM278,BulkQuantity:0,Recheck:0,SF:29|28|17|19|48,TC:n
-        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
-        I:0,OSA:0,AV:0
+X-CID-O-INFO: VERSION:1.1.19,REQID:c5eb8ea0-8ed5-4c4f-850e-932390641f26,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:885ddb2,CLOUDID:5591ea25-564d-42d9-9875-7c868ee415ec,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
 X-CID-BVR: 0
-X-UUID: 5e07203caeeb11ed945fc101203acc17-20230218
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+X-UUID: 6cfa7aeeaeeb11eda06fc9ecc4dadd91-20230218
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1211963295; Sat, 18 Feb 2023 01:49:03 +0800
+        with ESMTP id 572548056; Sat, 18 Feb 2023 01:49:28 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.194) by
  mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Sat, 18 Feb 2023 01:49:02 +0800
+ Sat, 18 Feb 2023 01:49:27 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Sat, 18 Feb 2023 01:49:02 +0800
+ 15.2.792.15 via Frontend Transport; Sat, 18 Feb 2023 01:49:27 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 CC:     Shayne Chen <shayne.chen@mediatek.com>,
@@ -50,10 +46,12 @@ CC:     Shayne Chen <shayne.chen@mediatek.com>,
         <linux-wireless@vger.kernel.org>,
         <linux-mediatek@lists.infradead.org>,
         Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 1/2] wifi: mac80211: add EHT MU-MIMO related flags in ieee80211_bss_conf
-Date:   Sat, 18 Feb 2023 01:48:59 +0800
-Message-ID: <8d9966c4c1e77cb1ade77d42bdc49905609192e9.1676628065.git.ryder.lee@mediatek.com>
+Subject: [PATCH v2 2/2] wifi: mac80211: add LDPC related flags in ieee80211_bss_conf
+Date:   Sat, 18 Feb 2023 01:49:25 +0800
+Message-ID: <1de696aaa34efd77a926eb657b8c0fda05aaa177.1676628065.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
+In-Reply-To: <8d9966c4c1e77cb1ade77d42bdc49905609192e9.1676628065.git.ryder.lee@mediatek.com>
+References: <8d9966c4c1e77cb1ade77d42bdc49905609192e9.1676628065.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
@@ -67,72 +65,73 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to VHT/HE. This is utilized to pass MU-MIMO configurations
-from user space (i.e. hostapd) to driver.
+This is utilized to pass LDPC configurations from user space
+(i.e. hostapd) to driver.
 
 Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-changes since v2 
+changes since v2
 - fix typo of commit logs.
-- revise statement of newly added members in ieee80211_bss_conf
-- remove unneeded braces.
+- revise statement of newly added members in ieee80211_bss_conf.
 ---
- include/net/mac80211.h |  9 +++++++++
- net/mac80211/cfg.c     | 14 ++++++++++++++
- 2 files changed, 23 insertions(+)
+ include/net/mac80211.h |  6 ++++++
+ net/mac80211/cfg.c     | 11 +++++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 0cc76eea2014..879fc14ebd2a 100644
+index 879fc14ebd2a..5f0902b4f8ea 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -670,6 +670,12 @@ struct ieee80211_fils_discovery {
-  * @he_full_ul_mumimo: does this BSS support the reception (AP) or transmission
-  *	(non-AP STA) of an HE TB PPDU on an RU that spans the entire PPDU
-  *	bandwidth
-+ * @eht_su_beamformer: in AP-mode, does this BSS enable operation as an EHT SU
-+ *	beamformer
-+ * @eht_su_beamformee: in AP-mode, does this BSS enable operation as an EHT SU
-+ *	beamformee
-+ * @eht_mu_beamformer: in AP-mode, does this BSS enable operation as an EHT MU
-+ *	beamformer
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
-@@ -752,6 +758,9 @@ struct ieee80211_bss_conf {
- 	bool he_su_beamformee;
- 	bool he_mu_beamformer;
- 	bool he_full_ul_mumimo;
-+	bool eht_su_beamformer;
-+	bool eht_su_beamformee;
-+	bool eht_mu_beamformer;
- };
+@@ -653,6 +653,9 @@ struct ieee80211_fils_discovery {
+  *	write-protected by sdata_lock and local->mtx so holding either is fine
+  *	for read access.
+  * @color_change_color: the bss color that will be used after the change.
++ * @ht_ldpc: in AP mode, indicates interface has HT LDPC capability.
++ * @vht_ldpc: in AP mode, indicates interface has VHT LDPC capability.
++ * @he_ldpc: in AP mode, indicates interface has HE LDPC capability.
+  * @vht_su_beamformer: in AP mode, does this BSS support operation as an VHT SU
+  *	beamformer
+  * @vht_su_beamformee: in AP mode, does this BSS support operation as an VHT SU
+@@ -750,6 +753,9 @@ struct ieee80211_bss_conf {
+ 	bool color_change_active;
+ 	u8 color_change_color;
  
- /**
++	bool ht_ldpc;
++	bool vht_ldpc;
++	bool he_ldpc;
+ 	bool vht_su_beamformer;
+ 	bool vht_su_beamformee;
+ 	bool vht_mu_beamformer;
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index f5d43f42f6d8..6bf1cdf254f6 100644
+index 6bf1cdf254f6..b02cd0acc4e3 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -1296,6 +1296,20 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 				IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO;
+@@ -1252,7 +1252,15 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	prev_beacon_int = link_conf->beacon_int;
+ 	link_conf->beacon_int = params->beacon_interval;
+ 
++	if (params->ht_cap)
++		link_conf->ht_ldpc =
++			params->ht_cap->cap_info &
++				cpu_to_le16(IEEE80211_HT_CAP_LDPC_CODING);
++
+ 	if (params->vht_cap) {
++		link_conf->vht_ldpc =
++			params->vht_cap->vht_cap_info &
++				cpu_to_le32(IEEE80211_VHT_CAP_RXLDPC);
+ 		link_conf->vht_su_beamformer =
+ 			params->vht_cap->vht_cap_info &
+ 				cpu_to_le32(IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE);
+@@ -1282,6 +1290,9 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
  	}
  
-+	if (params->eht_cap) {
-+		link_conf->eht_su_beamformer =
-+			params->eht_cap->fixed.phy_cap_info[0] &
-+				IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER;
-+		link_conf->eht_su_beamformee =
-+			params->eht_cap->fixed.phy_cap_info[0] &
-+				IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE;
-+		link_conf->eht_mu_beamformer =
-+			params->eht_cap->fixed.phy_cap_info[7] &
-+				(IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ |
-+				 IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ |
-+				 IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ);
-+	}
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    params->mbssid_config.tx_wdev) {
- 		err = ieee80211_set_ap_mbssid_options(sdata,
+ 	if (params->he_cap) {
++		link_conf->he_ldpc =
++			params->he_cap->phy_cap_info[1] &
++				IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD;
+ 		link_conf->he_su_beamformer =
+ 			params->he_cap->phy_cap_info[3] &
+ 				IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER;
 -- 
 2.18.0
 
