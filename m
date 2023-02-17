@@ -2,54 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F10669A873
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 10:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE0EE69A8BF
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 10:59:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjBQJmq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Feb 2023 04:42:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
+        id S229572AbjBQJ7f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Feb 2023 04:59:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjBQJmo (ORCPT
+        with ESMTP id S229706AbjBQJ7Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Feb 2023 04:42:44 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E37D6187A;
-        Fri, 17 Feb 2023 01:42:20 -0800 (PST)
+        Fri, 17 Feb 2023 04:59:24 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E6FF766;
+        Fri, 17 Feb 2023 01:59:15 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9389C61792;
-        Fri, 17 Feb 2023 09:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B952C433D2;
-        Fri, 17 Feb 2023 09:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1676626883;
-        bh=Fg7yNw9tw7CL2YS/0ZpEA4R/i78Bd8ZCO2gZipGsvCM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kVLfQTr6TCt+flQpWFgVtQTrSQpKlIHGd31+/zKhdu2sV+EP/PoyQu31pBnbJQwiM
-         MFzNCT/WHqQUN38K3FSx1xBkeyOv75DUQEV/sU4KXZCCkZBMkjXgQjb3CzklyLZqkI
-         ubErffxNDhYT+XKv2SDY48PAJNrsJJQH/G/M6e8c=
-Date:   Fri, 17 Feb 2023 10:41:20 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Jaewan Kim <jaewan@google.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-team@android.com, adelva@google.com
-Subject: Re: [PATCH v7 1/4] mac80211_hwsim: add PMSR capability support
-Message-ID: <Y+9LwLgA+Gm+3EHC@kroah.com>
-References: <20230207085400.2232544-1-jaewan@google.com>
- <20230207085400.2232544-2-jaewan@google.com>
- <6ad6708b124b50ff9ea64771b31d09e9168bfa17.camel@sipsolutions.net>
- <CABZjns42zm8Xi-BU0pvT3edNHuJZoh-xshgUk3Oc=nMbxbiY8w@mail.gmail.com>
- <Y+8wHsznYorBS95n@kroah.com>
- <e98a38890bb680c21a6d51c8a03589d1481b4e29.camel@sipsolutions.net>
- <Y+9JXU+5QEU1TMdi@kroah.com>
- <a117074810ef2c15ba3fa5fb60db2f5927e736eb.camel@sipsolutions.net>
+        by ams.source.kernel.org (Postfix) with ESMTPS id A928DB82B5C;
+        Fri, 17 Feb 2023 09:59:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79B0C433D2;
+        Fri, 17 Feb 2023 09:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676627953;
+        bh=gC8fzzrUSCg6UTwoBVpBiyclU6InTgw8Xj/2u293vJw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oMNOFSe2pTsipWtyloa74226iH3ACac154G9g2N0S4dnIrndUg8YuXwQ8v55gIBAQ
+         Yv9eEm5Y9lb7dZVlQ+XKlu75rbTSekfMU0wCdClNrUIvNN3QMLbhtmmJXFyA2J2dw6
+         xbwdd7lTCleT9URT+tuPGOmLm2bTlhq4gacjdDq2PaJUkFhVLmDlTDw/pB1kwCt3Pi
+         hylju8/CQpr/8ZniEN30W+uHlPue4xHMPYuFhRsdG0K9ycWFdjXHA6HDJMov3LTtXH
+         2zhpuAklhlSlLSfuu+iOddHeB+24nRN1qIJkuMmGk1R9FVGii7Xq6mVl1K1yCh+euh
+         wJF4LjTDS05kw==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: rtl8xxxu: add LEDS_CLASS dependency
+Date:   Fri, 17 Feb 2023 10:59:04 +0100
+Message-Id: <20230217095910.2480356-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a117074810ef2c15ba3fa5fb60db2f5927e736eb.camel@sipsolutions.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,50 +58,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 17, 2023 at 10:34:32AM +0100, Johannes Berg wrote:
-> On Fri, 2023-02-17 at 10:31 +0100, Greg KH wrote:
-> > On Fri, Feb 17, 2023 at 10:13:08AM +0100, Johannes Berg wrote:
-> > > On Fri, 2023-02-17 at 08:43 +0100, Greg KH wrote:
-> > > > On Fri, Feb 17, 2023 at 02:11:38PM +0900, Jaewan Kim wrote:
-> > > > > BTW,  can I expect you to review my changes for further patchsets?
-> > > > > I sometimes get conflicting opinions (e.g. line limits)
-> > > > 
-> > > > Sorry, I was the one that said "you can use 100 columns", if that's not
-> > > > ok in the networking subsystem yet, that was my fault as it's been that
-> > > > way in other parts of the kernel tree for a while.
-> > > > 
-> > > 
-> > > Hah. Maybe that's my mistake then, I was still at "use 80 columns where
-> > > it's simple, and more if it would look worse" ...
-> > 
-> > It was changed back in 2020:
-> >  bdc48fa11e46 ("checkpatch/coding-style: deprecate 80-column warning")
-> > 
-> > seems to take a while to propagate out to all the subsystems :)
-> 
-> Ah no, I was aware of that, but I guess we interpret this bit
-> differently:
-> 
-> +Statements longer than 80 columns should be broken into sensible chunks,
-> +unless exceeding 80 columns significantly increases readability and does
-> +not hide information.
-> 
-> 
-> Here, I would've said something like:
-> 
-> +	if (request->request_lci && nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI))
-> +		return -ENOBUFS;
-> 
-> can indeed "be broken into sensible chunks, unless ..."
-> 
-> Just like this one already did:
-> 
-> +	if (request->request_civicloc &&
-> +	    nla_put_flag(msg, NL80211_PMSR_FTM_REQ_ATTR_REQUEST_CIVICLOC))
-> +		return -ENOBUFS;
-> 
-> 
-> Personally I think the latter is easier to read because scanning the
-> long line for the logical break at "&&" is harder for me, but YMMV.
+From: Arnd Bergmann <arnd@arndb.de>
 
-I think the latter is also better, so all is good :)
+rtl8xxxu now unconditionally uses LEDS_CLASS, so a Kconfig dependency
+is required to avoid link errors:
+
+aarch64-linux-ld: drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.o: in function `rtl8xxxu_disconnect':
+rtl8xxxu_core.c:(.text+0x730): undefined reference to `led_classdev_unregister'
+
+ERROR: modpost: "led_classdev_unregister" [drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.ko] undefined!
+ERROR: modpost: "led_classdev_register_ext" [drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.ko] undefined!
+
+Fixes: 3be01622995b ("wifi: rtl8xxxu: Register the LED and make it blink")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/Kconfig b/drivers/net/wireless/realtek/rtl8xxxu/Kconfig
+index 091d3ad98093..2eed20b0988c 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/Kconfig
++++ b/drivers/net/wireless/realtek/rtl8xxxu/Kconfig
+@@ -5,6 +5,7 @@
+ config RTL8XXXU
+ 	tristate "Realtek 802.11n USB wireless chips support"
+ 	depends on MAC80211 && USB
++	depends on LEDS_CLASS
+ 	help
+ 	  This is an alternative driver for various Realtek RTL8XXX
+ 	  parts written to utilize the Linux mac80211 stack.
+-- 
+2.39.1
+
