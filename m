@@ -2,87 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C753369A967
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 11:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92EC669AA7C
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Feb 2023 12:35:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbjBQKww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Feb 2023 05:52:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60776 "EHLO
+        id S230005AbjBQLe6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Feb 2023 06:34:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjBQKwv (ORCPT
+        with ESMTP id S229924AbjBQLe6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Feb 2023 05:52:51 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7151D213D
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 02:52:48 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 31HAqW5j9020769, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 31HAqW5j9020769
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 17 Feb 2023 18:52:32 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 17 Feb 2023 18:52:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 17 Feb 2023 18:52:34 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Fri, 17 Feb 2023 18:52:34 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Bernie Huang" <phhuang@realtek.com>
-Subject: Re: [PATCH] wifi: rtw89: add RNR support for 6 GHz scan
-Thread-Topic: [PATCH] wifi: rtw89: add RNR support for 6 GHz scan
-Thread-Index: AQHZQaxGkR2qtrBt2EKQWwKbTNW+3a7SckQA
-Date:   Fri, 17 Feb 2023 10:52:34 +0000
-Message-ID: <c3602dc76325b0842679d3707a5aa6239dd6ea1b.camel@realtek.com>
-References: <20230216021239.9133-1-pkshih@realtek.com>
-In-Reply-To: <20230216021239.9133-1-pkshih@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.75.62]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzIvMTcg5LiK5Y2IIDA4OjI4OjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5E174BD91A144F44B3F0FB0A33A5365C@realtek.com>
-Content-Transfer-Encoding: base64
+        Fri, 17 Feb 2023 06:34:58 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C4603D0BB
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 03:34:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=L5g2wcDDN2s5YT4ykIYdX3Voog1NBJkmYu4FwHQv3b0=; t=1676633696; x=1677843296; 
+        b=qyKNLbzjFtrX6UH0e4unMp5XmqfiwmlEirrOJ/cYaQ4NnLm3R59mK5PhmbJbaG+plKJI966Xo+U
+        rJJeCpF88HbI043JZIc3Kr/hoeXgHrdDR64WGN3p1u3S3EcyUdJCsld3QBevLNPwHrADIfNo5r32g
+        G9+vdu76UZjhO768c6Yoew8A37eMgkwiChbDA2666AK8bzqrgZ/iOKGgGjuw6PxRH6ApnR+340zKM
+        MmxoAKDRQW8/0NV3BSjGoGQx80DubYcIsyZpvmr6EfNP5zQLPatwJarS2NP3O6T4BayXaVCBN/bSW
+        aD6Rhs/abUfwQ3g0tXg9pvBAmburIaEEh6UQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pSz0u-00F0Kq-1O;
+        Fri, 17 Feb 2023 12:34:52 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] cfg80211/mac80211: report link ID on control port RX
+Date:   Fri, 17 Feb 2023 12:34:50 +0100
+Message-Id: <20230217123449.e2b9b1433808.Iddcab94789cafe336417be406072ce8a6312fc2d@changeid>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVGh1LCAyMDIzLTAyLTE2IGF0IDEwOjEyICswODAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+
-IEZyb206IFBvLUhhbyBIdWFuZyA8cGhodWFuZ0ByZWFsdGVrLmNvbT4NCj4gDQo+IFNpbmNlIDYg
-R0h6IGJhbmQgaGFzIGFyb3VuZCA2MCBjaGFubmVscyBhbmQgbW9yZSBzdHJpY3QgcnVsZXMgZm9y
-DQo+IGFjdGl2ZSBwcm9iaW5nLiBSZWR1Y2VkIG5laWdoYm9yIHJlcG9ydCBjYW4gYmUgdXNlZCB0
-byByZWR1Y2UgdGhlDQo+IGNoYW5uZWxzIHdlIHNjYW4gYW5kIGdldCBzcGVjaWZpYyB0YXJnZXQg
-QlNTIGluZm8gdG8gcHJvYmUgZm9yLg0KPiANCj4gRGVjbGFyZSBmbGFnIFdJUEhZX0ZMQUdfU1BM
-SVRfU0NBTl82R0haIHNvIHRoZSBzY2FuIHJlcXVlc3QgY291bGQgYmUNCj4gZGl2aWRlZCBpbnRv
-IHR3byBwb3J0aW9uczogbGVnYWN5IGJhbmRzIGFuZCA2IEdIeiBiYW5kcy4gU28gUk5SDQo+IGlu
-Zm9ybWF0aW9uIGZyb20gbGVnYWN5IGJhbmRzIGNvdWxkIGxhdGVyIGJlIHVzZWQgd2hlbiA2IEdI
-eiBzY2FuLg0KPiANCj4gV2hlbiB0aGUgc2NhbiBmbGFnIE5MODAyMTFfU0NBTl9GTEFHX0NPTE9D
-QVRFRF82R0haIGlzIHNldCwgY2ZnODAyMTENCj4gd2lsbCBwYXNzIGRvd24gYSByZWR1Y2VkIGNo
-YW5uZWwgc2V0IHdoaWNoIGNvbnRhaW5zIFBTQ3MgYW5kIG5vbi1QU0MNCj4gd2l0aCBSTlIgaW5m
-byByZWNlaXZlZCBpbiB0aGUgMiBHSHovNSBHSHogYmFuZC4gVGhpcyByZWR1Y2VzIHRoZQ0KPiBz
-Y2FuIGR1cmF0aW9uIGJ5IGFsbG93aW5nIHVzIHRvIG9ubHkgc2NhbiBmb3IgY2hhbm5lbHMgaW4g
-d2hpY2ggQVBzDQo+IGFyZSBjdXJyZW50bHkgb3BlcmF0aW5nLg0KPiANCj4gU2lnbmVkLW9mZi1i
-eTogUG8tSGFvIEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBQ
-aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gDQoNCnNtYXRjaCByZXBvcnRzIHRo
-aXMgdmVyc2lvbiBjb250YWlucyBhIGJ1Zywgc28gcGxlYXNlIGRyb3AgdGhpcy4NCkknbGwgZml4
-IGl0IGFuZCBzZW5kIHYyIHNvb24uDQoNClBpbmctS2UNCg0KDQo=
+From: Johannes Berg <johannes.berg@intel.com>
+
+For control port RX, report the link ID for MLO.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ include/net/cfg80211.h |  5 +++--
+ net/mac80211/rx.c      |  2 +-
+ net/wireless/nl80211.c | 15 ++++++++++-----
+ net/wireless/trace.h   | 11 +++++++----
+ 4 files changed, 21 insertions(+), 12 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index f115b2550309..2808caac5887 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -8101,6 +8101,7 @@ void cfg80211_control_port_tx_status(struct wireless_dev *wdev, u64 cookie,
+  *	responsible for any cleanup.  The caller must also ensure that
+  *	skb->protocol is set appropriately.
+  * @unencrypted: Whether the frame was received unencrypted
++ * @link_id: the link the frame was received on, -1 if not applicable or unknown
+  *
+  * This function is used to inform userspace about a received control port
+  * frame.  It should only be used if userspace indicated it wants to receive
+@@ -8111,8 +8112,8 @@ void cfg80211_control_port_tx_status(struct wireless_dev *wdev, u64 cookie,
+  *
+  * Return: %true if the frame was passed to userspace
+  */
+-bool cfg80211_rx_control_port(struct net_device *dev,
+-			      struct sk_buff *skb, bool unencrypted);
++bool cfg80211_rx_control_port(struct net_device *dev, struct sk_buff *skb,
++			      bool unencrypted, int link_id);
+ 
+ /**
+  * cfg80211_cqm_rssi_notify - connection quality monitoring rssi event
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index f7fdfe710951..fd7fc6a037f1 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2582,7 +2582,7 @@ static void ieee80211_deliver_skb_to_local_stack(struct sk_buff *skb,
+ 		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 		bool noencrypt = !(status->flag & RX_FLAG_DECRYPTED);
+ 
+-		cfg80211_rx_control_port(dev, skb, noencrypt);
++		cfg80211_rx_control_port(dev, skb, noencrypt, rx->link_id);
+ 		dev_kfree_skb(skb);
+ 	} else {
+ 		struct ethhdr *ehdr = (void *)skb_mac_header(skb);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 112b4bb009c8..5a949a84567d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -18717,7 +18717,9 @@ EXPORT_SYMBOL(cfg80211_mgmt_tx_status_ext);
+ 
+ static int __nl80211_rx_control_port(struct net_device *dev,
+ 				     struct sk_buff *skb,
+-				     bool unencrypted, gfp_t gfp)
++				     bool unencrypted,
++				     int link_id,
++				     gfp_t gfp)
+ {
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
+@@ -18749,6 +18751,8 @@ static int __nl80211_rx_control_port(struct net_device *dev,
+ 			      NL80211_ATTR_PAD) ||
+ 	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, addr) ||
+ 	    nla_put_u16(msg, NL80211_ATTR_CONTROL_PORT_ETHERTYPE, proto) ||
++	    (link_id >= 0 &&
++	     nla_put_u8(msg, NL80211_ATTR_MLO_LINK_ID, link_id)) ||
+ 	    (unencrypted && nla_put_flag(msg,
+ 					 NL80211_ATTR_CONTROL_PORT_NO_ENCRYPT)))
+ 		goto nla_put_failure;
+@@ -18767,13 +18771,14 @@ static int __nl80211_rx_control_port(struct net_device *dev,
+ 	return -ENOBUFS;
+ }
+ 
+-bool cfg80211_rx_control_port(struct net_device *dev,
+-			      struct sk_buff *skb, bool unencrypted)
++bool cfg80211_rx_control_port(struct net_device *dev, struct sk_buff *skb,
++			      bool unencrypted, int link_id)
+ {
+ 	int ret;
+ 
+-	trace_cfg80211_rx_control_port(dev, skb, unencrypted);
+-	ret = __nl80211_rx_control_port(dev, skb, unencrypted, GFP_ATOMIC);
++	trace_cfg80211_rx_control_port(dev, skb, unencrypted, link_id);
++	ret = __nl80211_rx_control_port(dev, skb, unencrypted, link_id,
++					GFP_ATOMIC);
+ 	trace_cfg80211_return_bool(ret == 0);
+ 	return ret == 0;
+ }
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index ca7474eec723..c6e63140d9a2 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -3165,14 +3165,15 @@ TRACE_EVENT(cfg80211_control_port_tx_status,
+ 
+ TRACE_EVENT(cfg80211_rx_control_port,
+ 	TP_PROTO(struct net_device *netdev, struct sk_buff *skb,
+-		 bool unencrypted),
+-	TP_ARGS(netdev, skb, unencrypted),
++		 bool unencrypted, int link_id),
++	TP_ARGS(netdev, skb, unencrypted, link_id),
+ 	TP_STRUCT__entry(
+ 		NETDEV_ENTRY
+ 		__field(int, len)
+ 		MAC_ENTRY(from)
+ 		__field(u16, proto)
+ 		__field(bool, unencrypted)
++		__field(int, link_id)
+ 	),
+ 	TP_fast_assign(
+ 		NETDEV_ASSIGN;
+@@ -3180,10 +3181,12 @@ TRACE_EVENT(cfg80211_rx_control_port,
+ 		MAC_ASSIGN(from, eth_hdr(skb)->h_source);
+ 		__entry->proto = be16_to_cpu(skb->protocol);
+ 		__entry->unencrypted = unencrypted;
++		__entry->link_id = link_id;
+ 	),
+-	TP_printk(NETDEV_PR_FMT ", len=%d, %pM, proto: 0x%x, unencrypted: %s",
++	TP_printk(NETDEV_PR_FMT ", len=%d, %pM, proto: 0x%x, unencrypted: %s, link: %d",
+ 		  NETDEV_PR_ARG, __entry->len, __entry->from,
+-		  __entry->proto, BOOL_TO_STR(__entry->unencrypted))
++		  __entry->proto, BOOL_TO_STR(__entry->unencrypted),
++		  __entry->link_id)
+ );
+ 
+ TRACE_EVENT(cfg80211_cqm_rssi_notify,
+-- 
+2.39.2
+
