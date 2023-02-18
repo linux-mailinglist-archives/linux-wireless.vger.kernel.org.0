@@ -2,160 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 387A369B826
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Feb 2023 06:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE4DA69B895
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Feb 2023 09:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbjBRFay (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Feb 2023 00:30:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45724 "EHLO
+        id S229801AbjBRIAl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Feb 2023 03:00:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjBRFax (ORCPT
+        with ESMTP id S229541AbjBRIAk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Feb 2023 00:30:53 -0500
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0875382F
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Feb 2023 21:30:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676698251; x=1708234251;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CxA9M4+9aN6zkmA9ZpdrCtjIADCZyPmEfd6nN0u8dqw=;
-  b=ZDGN4oxUQ2x250ku6/Fe0zOjDbDMqbkgjHIkOBnQYEWFInwiuA+0L9FU
-   L1TAFCZ/K1/I6U8A0ZViNNpU4sVdlInW4bAuhmMz6ZvHKE1LXhsEGL4Nn
-   Q4izjbaU755lcpfIFpI8G3xt7chKs17zjZY/iLvtRoK2u/vUmgsEnaL9X
-   XMLFc+OjMtXW2RTbQDSWP4K9A5DMAfKypw2L8K9BxgM/SmjiOZysHzby7
-   XJDEMRyZKDyAq8e+SD/Vpu8dqgWjRC8PVu9HD7gjQ3nNse54igxlpDCfg
-   5cwp7Wo3oeNDCaV42otVU40UeuxzcrEQoDSgkxVbg9feCFp6SFoQvPL64
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10624"; a="359601981"
-X-IronPort-AV: E=Sophos;i="5.97,306,1669104000"; 
-   d="scan'208";a="359601981"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2023 21:30:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10624"; a="844794624"
-X-IronPort-AV: E=Sophos;i="5.97,306,1669104000"; 
-   d="scan'208";a="844794624"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 17 Feb 2023 21:30:49 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pTFo8-000C8t-1F;
-        Sat, 18 Feb 2023 05:30:48 +0000
-Date:   Sat, 18 Feb 2023 13:30:25 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- 38ae3192296924181537544e7cfc43ca78eadcda
-Message-ID: <63f06271.IJMFlC7rXK5tnrcy%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sat, 18 Feb 2023 03:00:40 -0500
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.214])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9AB224DE2C;
+        Sat, 18 Feb 2023 00:00:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=mSlY7
+        9GAIPqWM6x0QcLyyzMg/OV9+44uQhIVEfrs9mk=; b=Bnb2TMzOvDXgckSvXKh83
+        CbSRZ2OVRYKEiVux4Lw0HdUcarmHuEGjVZJYoNBBBdrfFp7w3BkWL4FlXyR4V3xB
+        OXDwhZCVQatzckOqZ3Agj4O6+i4KfJ0XRZEQ4CC9bmQSR0KqdX4Nl++QCGkxRb/B
+        gBGm+3cKliG938gAGorafk=
+Received: from leanderwang-LC2.localdomain (unknown [111.206.145.21])
+        by zwqz-smtp-mta-g0-4 (Coremail) with SMTP id _____wCnGEx9hfBjeoLtAA--.39355S2;
+        Sat, 18 Feb 2023 15:59:57 +0800 (CST)
+From:   Zheng Wang <zyytlz.wz@163.com>
+To:     ganapathi017@gmail.com
+Cc:     alex000young@gmail.com, amitkarwar@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zheng Wang <zyytlz.wz@163.com>
+Subject: [PATCH] mwifiex: Fix use-after-free bug due to race condition between main thread thread and timer thread
+Date:   Sat, 18 Feb 2023 15:59:56 +0800
+Message-Id: <20230218075956.1563118-1-zyytlz.wz@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wCnGEx9hfBjeoLtAA--.39355S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF4UuryrtFy5CF18Xr45GFg_yoW5Gr47pa
+        nxA3s7uw4Iqr4qkw4kJFy0yFWjg3WrKrWjkrWkAwn5Gr4rJas3ZrW5KFy0gr15XF4vga43
+        Ar1qq343Z3WkXFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziIJPiUUUUU=
+X-Originating-IP: [111.206.145.21]
+X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBzgAaU2I0XXgkYAAAsw
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 38ae3192296924181537544e7cfc43ca78eadcda  wifi: rtl8xxxu: add LEDS_CLASS dependency
+This is a potential race condition by executing the following order.
 
-elapsed time: 728m
+In summary, the adapter could be freed in timer function and be used after
+that. The race condition needs 10s window which could be extended by the
+paper : https://www.usenix.org/system/files/sec21-lee-yoochan.pdf
 
-configs tested: 76
-configs skipped: 3
+And the function in wakeup_timer_fn may have the same problem.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I dont't really know how to fix that, so I just removed the reset call,
+which is totally wrong. If you know anything abouth the fix,
+plz free to let me know.
 
-gcc tested configs:
-alpha                            allyesconfig
-alpha                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-arc                  randconfig-r043-20230217
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-csky                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-ia64                             allmodconfig
-ia64                                defconfig
-loongarch                        allmodconfig
-loongarch                         allnoconfig
-loongarch                           defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-mips                           ip32_defconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv             nommu_k210_sdcard_defconfig
-riscv                randconfig-r042-20230217
-riscv                          rv32_defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-s390                 randconfig-r044-20230217
-sh                               allmodconfig
-sparc                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                            allnoconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64                               rhel-8.3
+Note that, this bug is found by static analysis, it could be wrong. We
+could discuss that before writing the fix.
 
-clang tested configs:
-arm                  randconfig-r046-20230217
-hexagon              randconfig-r041-20230217
-hexagon              randconfig-r045-20230217
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-mips                malta_qemu_32r6_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
+        CPU0                                                        CPU1
+mwifiex_sdio_probe
+mwifiex_add_card
+mwifiex_init_hw_fw
+request_firmware_nowait
+  mwifiex_fw_dpc
+    _mwifiex_fw_dpc
+      mwifiex_init_fw
+        mwifiex_main_process
+          mwifiex_exec_next_cmd
+            mwifiex_dnld_cmd_to_fw
+              mod_timer(&adapter->cmd_timer,..)
+                                                mwifiex_cmd_timeout_func
+                                                  if_ops.card_reset(adapter)
+                                                    mwifiex_sdio_card_reset
+                                                      schedule_work(&card->work)
+                                                        mwifiex_sdio_work
+                                                          mwifiex_sdio_card_reset_work
+                                                            mwifiex_reinit_sw
+                                                              _mwifiex_fw_dpc
+                                                                mwifiex_free_adapter
+                                                                  mwifiex_unregister
+                                                                    kfree(adapter)  //free adapter
+                mwifiex_get_priv
+                  // Use adapter
 
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+---
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c | 2 --
+ drivers/net/wireless/marvell/mwifiex/init.c   | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/cmdevt.c b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+index d3339d67e7a0..688dd451aba9 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cmdevt.c
++++ b/drivers/net/wireless/marvell/mwifiex/cmdevt.c
+@@ -1016,8 +1016,6 @@ mwifiex_cmd_timeout_func(struct timer_list *t)
+ 	if (adapter->if_ops.device_dump)
+ 		adapter->if_ops.device_dump(adapter);
+ 
+-	if (adapter->if_ops.card_reset)
+-		adapter->if_ops.card_reset(adapter);
+ }
+ 
+ void
+diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+index 7dddb4b5dea1..ff2d447c1de3 100644
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -47,8 +47,6 @@ static void wakeup_timer_fn(struct timer_list *t)
+ 	adapter->hw_status = MWIFIEX_HW_STATUS_RESET;
+ 	mwifiex_cancel_all_pending_cmd(adapter);
+ 
+-	if (adapter->if_ops.card_reset)
+-		adapter->if_ops.card_reset(adapter);
+ }
+ 
+ static void fw_dump_work(struct work_struct *work)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.25.1
+
