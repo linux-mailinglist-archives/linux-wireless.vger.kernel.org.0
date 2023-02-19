@@ -2,150 +2,350 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E62569C064
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Feb 2023 14:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 227C069C0B5
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Feb 2023 15:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229922AbjBSNlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Feb 2023 08:41:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39282 "EHLO
+        id S230138AbjBSOhc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Feb 2023 09:37:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjBSNl2 (ORCPT
+        with ESMTP id S230124AbjBSOhb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Feb 2023 08:41:28 -0500
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2130.outbound.protection.outlook.com [40.107.93.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F2CEFBD;
-        Sun, 19 Feb 2023 05:41:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=izkKK/bv45ug7yDctdCeORr7iwBsBdRJGhId6G7HHZu7ELKolpCUfZqatgY+565MUBkXH1klimCFcoJbM4yEfDKWRpQAcc7Kg0nL+ZQKI4koCq7XRgdFmA6XJNTLlQrdmSvUqFv+pcD8drWVQtIJkQYQuJAzdY+YFGtaRK2bgK8U1Qq3pVJA1Avd95wPDcTESBHP/GXvRr9vgI8qDgS2J6yIzlz/vtILB3xj7hBB4REcGTogDY6qD9M1vq+EKGo4md+esqPFlkL5A8d9Nf5wV5ukscpE1EFCIC7kw0rhmE4Dmgt/Dv3T5wCG3RP9b2UAL2rUJVXrDG1AvzV78iw44g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W0qvP3x6sgmffgkfBnG21t4wtrKO+EzDD5IBTKMuV1g=;
- b=AxCeDPFQPjQd2TbaSBEn0Nl2czmdhQfGf4o19da24ejvVf3qqGrRBSdngMwiGI5xdPVS8qWzV8nZGcwylj7Aq4otWcjhMe5w75foQo0TL1FX4kqgbKFrjBskQ5lNxBpf3Om8+s9bt0C8ayfD2ggid/x8QQaa/VHe+kA8rJKCO/e0oAIyHyPCA2MsJyidSVxb71iwLfzZFZecxWJdFlOD4ODDpAnEMF1qxbydlxBeBqmfPF5koM/nfAJeFurJ09y73mHk6regRbT78jKqAfP9qyLqYiVFyEoAScB1aeYENIVtddiQo2dxTjKXYXikKKoUDNyo38RSkADgRD5idbdPtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Sun, 19 Feb 2023 09:37:31 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD2210AAD
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Feb 2023 06:37:26 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id b10so386832wrx.11
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Feb 2023 06:37:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W0qvP3x6sgmffgkfBnG21t4wtrKO+EzDD5IBTKMuV1g=;
- b=WM1xE4EMWGMmD6SkrkfT7Aw9I2YrbSSt4RJqkSlVY++V+Gjn1BRe4Roz2VkzpzJUQEQVzpnZrECmiCp7r29s7hyMZ7d3+zmGUNDrCuJz1kGEDQeFf+WjbeUzTeM6f4ES85pOxK3nXDKCby80TAND28T8WTZ/Nsu5ww5DDNgW+sg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by SJ0PR13MB5304.namprd13.prod.outlook.com (2603:10b6:a03:3d5::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.18; Sun, 19 Feb
- 2023 13:41:24 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c%9]) with mapi id 15.20.6111.018; Sun, 19 Feb 2023
- 13:41:24 +0000
-Date:   Sun, 19 Feb 2023 14:41:16 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pnsqbAY13Isy9Q4vAmb7bu7Jt4464vvs/IoNIYDr6xU=;
+        b=hSKy+u5AgwaR/pjI3BVInARul9SXO0sQyw0n7yjY6yRDSg8BEuFLd5I5qrTlEpimNM
+         Xjpl9UAbCCo9nok1y4IpVJ9MLE2XeHXG98wOfKu2d3NCxoPBH32UMAye1vooyYx1ErnD
+         ricWKv9mPs3ba1qo4onNdonbsz4f+fGKOjQzVkGBoYVRHfTNp0sTV4wutDcxSYtnm8CH
+         pxpYUDxS0coiNJcCa7tzwePTrwb9jeloVabBqo+ddLL3pZ7VUpIfX0IhEiKOfXtx1d/8
+         1rUFK2J6S7yGqO9Iwiv++xzaS+2n7XjMuTbyAivc3fVQKvuBI/RXADB6caPXI29TjPRh
+         O0eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pnsqbAY13Isy9Q4vAmb7bu7Jt4464vvs/IoNIYDr6xU=;
+        b=Ea1hPH+PhAc4001WuKZqCQe22va565qlHQE2xg7tKBTUiYoWQSq0Ucgn5rj1YwpDLk
+         bhHipIaJLgGdSIA2eJaRM1i22EoM79f9uhICj3gtDhPUhAxFM1IjEx+cv9F/kGwQtVec
+         vp0iNebrYb3ewPdfEBHThRSi4a+9zRgvd4tNgGYcMEMza4XkfCYzRG+BKPZLi917I5Gd
+         WBs98zgNplhVn1KokVWpafcLw/RM6Pj3xqnO+l2uevEmwUgP3kDJzyYUN6kmicbrqoee
+         cH6E8EBVjBvoiKEcj+ogptFkwV1F9zOh3DykqLHm/Ob/oxAZH9CRf4vL6I5LG1XmTIx7
+         D/6g==
+X-Gm-Message-State: AO0yUKXEE/L8YsbeXjb3x7jzhed0agrdOGVn1XK96hYDcTvO4VpNCakZ
+        1y6KXcgMhbxFDf7kPbHYPTVxeQ==
+X-Google-Smtp-Source: AK7set9gXafURZgOj1Yem7EqSUruiomk29jrLU507lTzAdGLNHnFcqKBP+ki22tLjJJTUzMVG5WPYw==
+X-Received: by 2002:adf:f84e:0:b0:2c5:5048:8a6a with SMTP id d14-20020adff84e000000b002c550488a6amr1432164wrq.60.1676817444373;
+        Sun, 19 Feb 2023 06:37:24 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6f43:b92:7670:463])
+        by smtp.gmail.com with ESMTPSA id a18-20020adfe5d2000000b002be505ab59asm86176wrn.97.2023.02.19.06.37.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Feb 2023 06:37:23 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     rafael@kernel.org, daniel.lezcano@linaro.org
+Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Raju Rangoju <rajur@chelsio.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        Sriram R <quic_srirrama@quicinc.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] wifi: iwlwifi: dvm: Add struct_group for struct
- iwl_keyinfo keys
-Message-ID: <Y/Im/G6/Ij26oRhF@corigine.com>
-References: <20230218191056.never.374-kees@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230218191056.never.374-kees@kernel.org>
-X-ClientProxiedBy: AM8P251CA0004.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:21b::9) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH v1 00/17] Self-encapsulate the thermal zone device structure
+Date:   Sun, 19 Feb 2023 15:36:40 +0100
+Message-Id: <20230219143657.241542-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SJ0PR13MB5304:EE_
-X-MS-Office365-Filtering-Correlation-Id: b01f7f49-f58f-48c1-36e2-08db127efdf9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JaYIYWKkESli669CT0e+0isHUaYdXE4ahNU2+pteWeSlf7qp2pBnXQrO8HC3ZBmkwP50rXCYJURyKV57mPdaG1SuVA1NkxMQQv2lJWJa+1vVNeMScoEWoMlSWKK6zS9o4P61rTD6x79wg2RfdMsRmBAO0m25hCdpiRgkzXhXZGrOq0uVaonKjyzQG6JbUHxBWW53P0Brg2RazDpqqutHzoiO70Z2NAi4nyrRFLW+HG9FjVFGSgAz3/2vfUL8hWYqXvZrGxOIiZbCeudHKZ38YzhhuzDddImSI/tG4vSXQj7gebsg06RTYvoVFXjMvjJnMJKuHFzIaxfe96c5yBoEaH4wprS4MQZHsDcvHCkDFm62Qk7uYz0DV2tYKnK3O5+ASI5SwEp2iW0Zp5v5iSP0nDn0g5W2qMVReiPwsyrp1VsuqkPb0h0GQ4bQwsaze3nowPPvuR0ITL96IL4L/+0HzyYI64xD2wPa8Qx7yrCduXVoMJH+sRKQvphXXG7TzozkHNMYnGp2Jhs6GfZQX1pb1OxW+oNg3Wq/KJUlPn4UXXjhOuXJyXvi93x0qmpqviaug1y+NXr0C2Bl55WtfFfxfw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(396003)(366004)(39830400003)(136003)(376002)(451199018)(2906002)(7416002)(6506007)(44832011)(8936002)(36756003)(5660300002)(16799955002)(4326008)(41300700001)(316002)(86362001)(54906003)(6916009)(66556008)(478600001)(6486002)(966005)(66476007)(66946007)(8676002)(6666004)(38100700002)(186003)(6512007)(2616005)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xIPpThP6+s4dfNY0Y2BgI2Hx/jK3jBKMsnxFHVPbbQVme8OcRp9dEOk9RYtz?=
- =?us-ascii?Q?vtSRDPVz4OwQIgFHonjVhiP3ZqOGS0EUSsP58oSopznVTLrnGuqYCzyVhS2k?=
- =?us-ascii?Q?F3SylcM8zqv43psNv7CPhKDEnnRmKI9cuHeMCLSWHvW7NVvCKHllUb9inHhi?=
- =?us-ascii?Q?yujuWRQ0FBfee3nwtdbzeTUPc6YJm4oNPFzbY/GtQYriaa3y0aZuHtdp73mD?=
- =?us-ascii?Q?Tk8kT5dxpMj9gtdLSnZ57eRbU7h7vHbQTpw+Wk/NvxEAgpMaRYMb5zZrKeqn?=
- =?us-ascii?Q?ITgs6uSMSK3m5auAVEK8xkT6GjtT5D1vXDl+oKiLtY0t3nkClJIEG8kawqRN?=
- =?us-ascii?Q?/YEYD35wK4nX0rSX6VfBIoDrwskl0E80NvBDiXIIEBPBApVK9QzcAQLQLRmt?=
- =?us-ascii?Q?TgxoAOiiUSYEPaCEEY1TRby1tE/8G5hOx8XkGLnJc1qO+44E3XejBJWWJjGH?=
- =?us-ascii?Q?6O/Violmj2IpoUyfLlpy9z9Ih9xhmcty7sFeONhp1KF98CSim50aIocS8+7r?=
- =?us-ascii?Q?3wCPU/zyZHc9NGpsg0ZT+/KNR7/RZwk42brmn8yYP2e7gQiKC7gRRORm+8iF?=
- =?us-ascii?Q?9ym8V8k5+0jDSC0wrgtQb83yUhYKtGggm5CUjak1J72UO8b0cvdJoQY/IhXc?=
- =?us-ascii?Q?KrXLjMPNX3R58F7dTkUgBLGQ7B/ZzFjiof2K17zGysF4wYTqvhl9OCkW6Yub?=
- =?us-ascii?Q?f8Fvn1hpp+jYWuRtcKIqnUP7v6yyuICVifIK5ETzzTeR8JHVQZG8wL8xgGVV?=
- =?us-ascii?Q?k3VWK50Hqu1SbUxBrMwVpJ/76sLWWj+ry8YJg3ZFqS3w81fmbUZEnfntP5Pc?=
- =?us-ascii?Q?VFlBrXat+9GHNKPKhePyst/MkHWEiEKeJ72jAxVpdyd6x/QR1nSz2MkHUoxY?=
- =?us-ascii?Q?seHJ3tmdwUvRuz01eyJCoyrnQQTNbcuyjDfc9n5uxSAmTD81gsAykIgcn26N?=
- =?us-ascii?Q?ibfSq2EqzpQnnmoP5vibAwbHawWed7plx70ZVyKS+m9bPrnQgG6jgrWA7/e2?=
- =?us-ascii?Q?FHSkkUn1rpDqAq0zmp+89ULd/8rNQWMVh8/gDAm8DzI+klWyHXLDwLyLcOaN?=
- =?us-ascii?Q?uVMiOE0CdcB5LVLgF/WzQNboQaPNUYqN9AqjVT7Nx5VO4M+pGyzYZoVmRJDm?=
- =?us-ascii?Q?LwO2K/Z+smwocFegiq2GjQw2B833lt8Hw9q9HNmT+z4CoBEWH5LNSfMOuddW?=
- =?us-ascii?Q?LtGgAH6E+0dRaoUEAXDPSu6b178WY/7sS4daRzTGjIwJ/KDktt4pAurfhQTp?=
- =?us-ascii?Q?EyWxEOUeERZ2NL7i2QyBZZEXCtu2BfmK7ICzbUP1sMOo/fFF6MGAcHj2cWVV?=
- =?us-ascii?Q?pn8QmbqLBoJ3TxJH8Ocnc7zF3Muyf+0PzdPTaoM+aEYVm+mWpRA32Sk6KIKc?=
- =?us-ascii?Q?l3At4ZxtycEUn7sI1zPa+8zmoFuoWMhq2lQw2d01CE24qcLaNl181j0WPI2+?=
- =?us-ascii?Q?CgFgf+4prryWxM+DVLF7mvVwsNqtRx/ATit3cK1/kguwoBVB1/76taP4m9fM?=
- =?us-ascii?Q?88rTYPPdhWwGtknLpkLzPzgzp+/3Zv+VzwTIi6zMfslWT2t/g/aZ66YPM1pU?=
- =?us-ascii?Q?A5E49zVn+ZKNfLDz3EQHkgYFNOZ6OP0K+WSWIRPqBKoKfrwDvHe1CHk2QDVQ?=
- =?us-ascii?Q?LLkvW324iZjCze+AAKznTWuwPEmxQhxNLJcdlJed8jtTznkANVX2Vd/o8kNy?=
- =?us-ascii?Q?SNaTRA=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b01f7f49-f58f-48c1-36e2-08db127efdf9
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2023 13:41:24.1496
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FvNUbFA6G4ep4aNwsAB39Y55hUgwUp0ptk2LnRXdlOK86tcz3r/XC8q00jlLB2ZIRI3TnTbOjjEHyoKeYklz/PWH/YAt5sfBAxT4XhkBuHI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR13MB5304
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Feb 18, 2023 at 11:11:00AM -0800, Kees Cook wrote:
-> Function iwlagn_send_sta_key() was trying to write across multiple
-> structure members in a single memcpy(). Add a struct group "keys" to
-> let the compiler see the intended bounds of the memcpy, which includes
-> the tkip keys as well. Silences false positive memcpy() run-time
-> warning:
-> 
->   memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
-> 
-> Link: https://www.alionet.org/index.php?topic=1469.0
-> Cc: Gregory Greenman <gregory.greenman@intel.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: Benjamin Berg <benjamin.berg@intel.com>
-> Cc: Sriram R <quic_srirrama@quicinc.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+The exported thermal headers expose the thermal core structure while those
+should be private to the framework. The initial idea was the thermal sensor
+drivers use the thermal zone device structure pointer to pass it around from
+the ops to the thermal framework API like a handler.
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Unfortunately, different drivers are using and abusing the internals of this
+structure to hook the associated struct device, read the internals values, take
+the lock, etc ...
+
+rn order to fix this situation, let's encapsulate the structure leaking the
+more in the different drivers: the thermal_zone_device structure.
+
+This series revisit the existing drivers using the thermal zone private
+structure internals to change the access to something else. For instance, the
+get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
+is not helpful, we can check the return value for the get_temp() ops in the
+call site and show the message in this place.
+
+With this set of changes, the thermal_zone_device is almost self-encapsulated.
+As usual, the acpi driver needs a more complex changes, so that will come in a
+separate series along with the structure moved the private core headers.
+
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Raju Rangoju <rajur@chelsio.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Amit Kucheria <amitk@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Markus Mayer <mmayer@broadcom.com>
+Cc: Support Opensource <support.opensource@diasemi.com>
+Cc: Andy Gross <agross@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>
+Cc: "Niklas Söderlund" <niklas.soderlund@ragnatech.se>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Vasily Khoruzhick <anarsoul@gmail.com>
+Cc: Yangtao Li <tiny.windzz@gmail.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Talel Shenhar <talel@amazon.com>
+Cc: Eduardo Valentin <edubezval@gmail.com>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc: Yang Li <yang.lee@linux.alibaba.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Daniel Golle <daniel@makrotopia.org>
+Cc: Balsam CHIHI <bchihi@baylibre.com>
+Cc: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-hwmon@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-input@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org
+
+
+Daniel Lezcano (17):
+  thermal/core: Add a thermal zone 'devdata' accessor
+  thermal/core: Show a debug message when get_temp() fails
+  thermal: Remove debug or error messages in get_temp() ops
+  thermal/hwmon: Do not set no_hwmon before calling
+    thermal_add_hwmon_sysfs()
+  thermal/hwmon: Use the right device for devm_thermal_add_hwmon_sysfs()
+  thermal: Don't use 'device' internal thermal zone structure field
+  thermal/hwmon: Use the thermal API instead tampering the internals
+  thermal/drivers/spear: Don't use tz->device but pdev->dev
+  thermal: Add a thermal zone id accessor
+  thermal: Do not access 'type' field, use the tz id instead
+  thermal/drivers/da9062: Don't access the thermal zone device fields
+  thermal/hwmon: Use the thermal_core.h header
+  thermal/drivers/tegra: Remove unneeded lock when setting a trip point
+  thermal/tegra: Do not enable the thermal zone, it is already enabled
+  thermal/drivers/acerhdf: Make interval setting only at module load
+    time
+  thermal/drivers/acerhdf: Remove pointless governor test
+  thermal/traces: Replace the thermal zone structure parameter with the
+    field value
+
+ drivers/acpi/thermal.c                        | 18 +++----
+ drivers/ata/ahci_imx.c                        |  2 +-
+ drivers/hwmon/hwmon.c                         |  4 +-
+ drivers/hwmon/pmbus/pmbus_core.c              |  2 +-
+ drivers/hwmon/scmi-hwmon.c                    |  4 +-
+ drivers/hwmon/scpi-hwmon.c                    |  2 +-
+ drivers/iio/adc/sun4i-gpadc-iio.c             |  2 +-
+ drivers/input/touchscreen/sun4i-ts.c          |  2 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  2 +-
+ .../ethernet/mellanox/mlxsw/core_thermal.c    | 18 +++----
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c   |  4 +-
+ drivers/platform/x86/acerhdf.c                | 19 ++------
+ drivers/power/supply/power_supply_core.c      |  2 +-
+ drivers/regulator/max8973-regulator.c         |  2 +-
+ drivers/thermal/amlogic_thermal.c             |  2 +-
+ drivers/thermal/armada_thermal.c              | 14 ++----
+ drivers/thermal/broadcom/bcm2711_thermal.c    |  3 +-
+ drivers/thermal/broadcom/bcm2835_thermal.c    |  3 +-
+ drivers/thermal/broadcom/brcmstb_thermal.c    |  8 ++--
+ drivers/thermal/broadcom/ns-thermal.c         |  2 +-
+ drivers/thermal/broadcom/sr-thermal.c         |  2 +-
+ drivers/thermal/da9062-thermal.c              | 13 +++--
+ drivers/thermal/dove_thermal.c                |  7 +--
+ drivers/thermal/gov_fair_share.c              |  2 +-
+ drivers/thermal/gov_power_allocator.c         |  4 +-
+ drivers/thermal/gov_step_wise.c               |  2 +-
+ drivers/thermal/hisi_thermal.c                |  5 +-
+ drivers/thermal/imx8mm_thermal.c              |  4 +-
+ drivers/thermal/imx_sc_thermal.c              |  9 ++--
+ drivers/thermal/imx_thermal.c                 | 47 +++++--------------
+ drivers/thermal/intel/intel_pch_thermal.c     |  2 +-
+ drivers/thermal/intel/intel_soc_dts_iosf.c    | 13 ++---
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  |  4 +-
+ drivers/thermal/k3_bandgap.c                  |  4 +-
+ drivers/thermal/k3_j72xx_bandgap.c            |  2 +-
+ drivers/thermal/kirkwood_thermal.c            |  7 +--
+ drivers/thermal/max77620_thermal.c            |  6 +--
+ drivers/thermal/mediatek/auxadc_thermal.c     |  4 +-
+ drivers/thermal/mediatek/lvts_thermal.c       |  9 ++--
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c      |  6 +--
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c   |  6 +--
+ drivers/thermal/qcom/tsens.c                  |  4 +-
+ drivers/thermal/qoriq_thermal.c               |  4 +-
+ drivers/thermal/rcar_gen3_thermal.c           |  5 +-
+ drivers/thermal/rcar_thermal.c                |  8 +---
+ drivers/thermal/rockchip_thermal.c            |  8 +---
+ drivers/thermal/rzg2l_thermal.c               |  3 +-
+ drivers/thermal/samsung/exynos_tmu.c          |  4 +-
+ drivers/thermal/spear_thermal.c               | 10 ++--
+ drivers/thermal/sprd_thermal.c                |  2 +-
+ drivers/thermal/st/st_thermal.c               |  2 -
+ drivers/thermal/sun8i_thermal.c               |  4 +-
+ drivers/thermal/tegra/tegra-bpmp-thermal.c    |  6 ++-
+ drivers/thermal/tegra/tegra30-tsensor.c       | 31 ++++++------
+ drivers/thermal/thermal-generic-adc.c         |  7 ++-
+ drivers/thermal/thermal_core.c                | 17 ++++++-
+ drivers/thermal/thermal_helpers.c             |  3 ++
+ drivers/thermal/thermal_hwmon.c               | 19 +++-----
+ drivers/thermal/thermal_hwmon.h               |  4 +-
+ drivers/thermal/thermal_mmio.c                |  2 +-
+ .../ti-soc-thermal/ti-thermal-common.c        | 10 ++--
+ drivers/thermal/uniphier_thermal.c            |  2 +-
+ include/linux/thermal.h                       |  4 ++
+ include/trace/events/thermal.h                | 24 +++++-----
+ .../trace/events/thermal_power_allocator.h    | 12 ++---
+ 65 files changed, 203 insertions(+), 265 deletions(-)
+
+-- 
+2.34.1
 
