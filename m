@@ -2,53 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 226E769BB86
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Feb 2023 20:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E62569C064
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Feb 2023 14:41:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbjBRTLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Feb 2023 14:11:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51554 "EHLO
+        id S229922AbjBSNlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Feb 2023 08:41:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbjBRTLK (ORCPT
+        with ESMTP id S229567AbjBSNl2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Feb 2023 14:11:10 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F9815558
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Feb 2023 11:11:03 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id y63so549978pgy.13
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Feb 2023 11:11:03 -0800 (PST)
+        Sun, 19 Feb 2023 08:41:28 -0500
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2130.outbound.protection.outlook.com [40.107.93.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F2CEFBD;
+        Sun, 19 Feb 2023 05:41:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=izkKK/bv45ug7yDctdCeORr7iwBsBdRJGhId6G7HHZu7ELKolpCUfZqatgY+565MUBkXH1klimCFcoJbM4yEfDKWRpQAcc7Kg0nL+ZQKI4koCq7XRgdFmA6XJNTLlQrdmSvUqFv+pcD8drWVQtIJkQYQuJAzdY+YFGtaRK2bgK8U1Qq3pVJA1Avd95wPDcTESBHP/GXvRr9vgI8qDgS2J6yIzlz/vtILB3xj7hBB4REcGTogDY6qD9M1vq+EKGo4md+esqPFlkL5A8d9Nf5wV5ukscpE1EFCIC7kw0rhmE4Dmgt/Dv3T5wCG3RP9b2UAL2rUJVXrDG1AvzV78iw44g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W0qvP3x6sgmffgkfBnG21t4wtrKO+EzDD5IBTKMuV1g=;
+ b=AxCeDPFQPjQd2TbaSBEn0Nl2czmdhQfGf4o19da24ejvVf3qqGrRBSdngMwiGI5xdPVS8qWzV8nZGcwylj7Aq4otWcjhMe5w75foQo0TL1FX4kqgbKFrjBskQ5lNxBpf3Om8+s9bt0C8ayfD2ggid/x8QQaa/VHe+kA8rJKCO/e0oAIyHyPCA2MsJyidSVxb71iwLfzZFZecxWJdFlOD4ODDpAnEMF1qxbydlxBeBqmfPF5koM/nfAJeFurJ09y73mHk6regRbT78jKqAfP9qyLqYiVFyEoAScB1aeYENIVtddiQo2dxTjKXYXikKKoUDNyo38RSkADgRD5idbdPtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zf7rG+fsrika4LatxPpr29R818vMyi25upFsjiFQJTc=;
-        b=ctH6tO0PO9+X0z8t2xtsfOvZcQXeTlzJ7NRXDmELZRHe+Ec46ycsz+chjFuq2v13kG
-         7Cm8TeygFCjPFMXhvPZ7IxPBDuhdFuD6OFb7Yzmn9lTKNPT3j0hm/ima2fpt7euvm1MY
-         lSQM+5DnQ9g4jgXCllSbpa7usFJ0vlwGRTHDU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zf7rG+fsrika4LatxPpr29R818vMyi25upFsjiFQJTc=;
-        b=gfiVQtVPuT6B37nSpOmo9Bfs04rfjgh8E18jTkqLiUvP/JJGOk9J8848Pk8d0XBzoT
-         slAjSl39ZS5KV7xXEY6EblapR38CZdwWppor5v2TNTQ8+uDKtZT10pmJXlqzZnNDl/Il
-         /uo/aPzNtTfk9Fm/STqaAiCA/vkDSmcmEZPVO0W9uqSFOR8H7Tr4Gr84vgTKqSCkxrJG
-         fzvCPMcgBI1GN/OMRKuYx43uFIpI0ksHJZg6RBHoJGcFniF6KO1Us7gd/d4jjpNnXPj3
-         X18BbGsiTb9i3RwJyObIKt9NiqNSQNS88xnqt8e6fKfvgh0IJ6Itj9TMZ2xw8Ld1O1c+
-         cp7A==
-X-Gm-Message-State: AO0yUKW6U7Qs8aNwKisgNU0OPRzaWPO3O9PCq101JwE7jifI9+nmLlBH
-        guqxhygFwJhFi0NThTDSt+iON0pAArn0AQw5
-X-Google-Smtp-Source: AK7set8K28w3uKPotk+c9h8F2CTsRMf6Mt14uP3+vjktHG27okpeTcXywcuKRUrZToP+0eRq9oHiNg==
-X-Received: by 2002:aa7:9506:0:b0:5a8:aa77:1835 with SMTP id b6-20020aa79506000000b005a8aa771835mr4963220pfp.33.1676747462224;
-        Sat, 18 Feb 2023 11:11:02 -0800 (PST)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id k18-20020aa792d2000000b005a8b28c644esm4925819pfa.4.2023.02.18.11.11.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Feb 2023 11:11:01 -0800 (PST)
-From:   Kees Cook <keescook@chromium.org>
-To:     Gregory Greenman <gregory.greenman@intel.com>
-Cc:     Kees Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W0qvP3x6sgmffgkfBnG21t4wtrKO+EzDD5IBTKMuV1g=;
+ b=WM1xE4EMWGMmD6SkrkfT7Aw9I2YrbSSt4RJqkSlVY++V+Gjn1BRe4Roz2VkzpzJUQEQVzpnZrECmiCp7r29s7hyMZ7d3+zmGUNDrCuJz1kGEDQeFf+WjbeUzTeM6f4ES85pOxK3nXDKCby80TAND28T8WTZ/Nsu5ww5DDNgW+sg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by SJ0PR13MB5304.namprd13.prod.outlook.com (2603:10b6:a03:3d5::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.18; Sun, 19 Feb
+ 2023 13:41:24 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c%9]) with mapi id 15.20.6111.018; Sun, 19 Feb 2023
+ 13:41:24 +0000
+Date:   Sun, 19 Feb 2023 14:41:16 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -58,92 +55,97 @@ Cc:     Kees Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>,
         Sriram R <quic_srirrama@quicinc.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH] wifi: iwlwifi: dvm: Add struct_group for struct iwl_keyinfo keys
-Date:   Sat, 18 Feb 2023 11:11:00 -0800
-Message-Id: <20230218191056.never.374-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] wifi: iwlwifi: dvm: Add struct_group for struct
+ iwl_keyinfo keys
+Message-ID: <Y/Im/G6/Ij26oRhF@corigine.com>
+References: <20230218191056.never.374-kees@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230218191056.never.374-kees@kernel.org>
+X-ClientProxiedBy: AM8P251CA0004.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::9) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2903; h=from:subject:message-id; bh=6ocLfuLUjbHMLL3EssbDtFFXg555hqCuVMArd3yFm64=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBj8SLD0yPX6FR7+Ky4Sm+eLKdlJc0JVCY7rZy1tsxd CLQhp2WJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCY/EiwwAKCRCJcvTf3G3AJiymD/ 9g1362ck2iM1XQp/7+Yumk1DkPuUGDlhNkg07IPRr/Kp88Q7ZdiOrZLW4SrMunolnRZhKstjflj+GW z3rEomGJjTeZ0aTviKU8bPHectrVXlnbYG87hAeV5hneIcB+GgMzUecLsRBQc5rTZQ6u+qTQeEJcdk L2AEaxSeglKM+ADCDtBwYLzpNivNBOPKeiugRsLDCDEOTHI6khqu6z2+7XV5aEe+lqtMMMlhNq+iyG H79XSkCx/6rfeIgzEjNCUluknMczJ6XicYCEKf5mBI+nnKDe+eTqx/HtQKgrJaEeYoIa6wz/h6v7gN 3BpCsgJbP/HJCMD622gBgzNYJ6w1lpwH93K4HEmTGbkWAigbbcpaGOQSuEoa0tKaUGAymi+ClNK4g8 Mc/I3OhcP42LiR8Wxk01c7FgXCwtHQxJVEcSKdI1aPsieYXzE8HWy5GeNvVCdKYWosB9G/tFKR5MdU SK8x9l1EyyYPX54Wxn6+87HeTxf6UdddjKRcVVtAUuaJPhBDb31jyV9JnpCoX1yfNPzhUpMt3a6UOI B8boiLn5Eu/e0+Qxuj3nN4SG+Af16pN7RIXu0RIvVUR2mLlO7enI0b8GIy+lBPGmFzOhgBw2lK9Q6g Cj2FJzTbsq1AivdRNhSK4OcnTL87RcezT3i5MQD7N8nUeesuvUK6DdynRkoA==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SJ0PR13MB5304:EE_
+X-MS-Office365-Filtering-Correlation-Id: b01f7f49-f58f-48c1-36e2-08db127efdf9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: JaYIYWKkESli669CT0e+0isHUaYdXE4ahNU2+pteWeSlf7qp2pBnXQrO8HC3ZBmkwP50rXCYJURyKV57mPdaG1SuVA1NkxMQQv2lJWJa+1vVNeMScoEWoMlSWKK6zS9o4P61rTD6x79wg2RfdMsRmBAO0m25hCdpiRgkzXhXZGrOq0uVaonKjyzQG6JbUHxBWW53P0Brg2RazDpqqutHzoiO70Z2NAi4nyrRFLW+HG9FjVFGSgAz3/2vfUL8hWYqXvZrGxOIiZbCeudHKZ38YzhhuzDddImSI/tG4vSXQj7gebsg06RTYvoVFXjMvjJnMJKuHFzIaxfe96c5yBoEaH4wprS4MQZHsDcvHCkDFm62Qk7uYz0DV2tYKnK3O5+ASI5SwEp2iW0Zp5v5iSP0nDn0g5W2qMVReiPwsyrp1VsuqkPb0h0GQ4bQwsaze3nowPPvuR0ITL96IL4L/+0HzyYI64xD2wPa8Qx7yrCduXVoMJH+sRKQvphXXG7TzozkHNMYnGp2Jhs6GfZQX1pb1OxW+oNg3Wq/KJUlPn4UXXjhOuXJyXvi93x0qmpqviaug1y+NXr0C2Bl55WtfFfxfw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(396003)(366004)(39830400003)(136003)(376002)(451199018)(2906002)(7416002)(6506007)(44832011)(8936002)(36756003)(5660300002)(16799955002)(4326008)(41300700001)(316002)(86362001)(54906003)(6916009)(66556008)(478600001)(6486002)(966005)(66476007)(66946007)(8676002)(6666004)(38100700002)(186003)(6512007)(2616005)(83380400001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xIPpThP6+s4dfNY0Y2BgI2Hx/jK3jBKMsnxFHVPbbQVme8OcRp9dEOk9RYtz?=
+ =?us-ascii?Q?vtSRDPVz4OwQIgFHonjVhiP3ZqOGS0EUSsP58oSopznVTLrnGuqYCzyVhS2k?=
+ =?us-ascii?Q?F3SylcM8zqv43psNv7CPhKDEnnRmKI9cuHeMCLSWHvW7NVvCKHllUb9inHhi?=
+ =?us-ascii?Q?yujuWRQ0FBfee3nwtdbzeTUPc6YJm4oNPFzbY/GtQYriaa3y0aZuHtdp73mD?=
+ =?us-ascii?Q?Tk8kT5dxpMj9gtdLSnZ57eRbU7h7vHbQTpw+Wk/NvxEAgpMaRYMb5zZrKeqn?=
+ =?us-ascii?Q?ITgs6uSMSK3m5auAVEK8xkT6GjtT5D1vXDl+oKiLtY0t3nkClJIEG8kawqRN?=
+ =?us-ascii?Q?/YEYD35wK4nX0rSX6VfBIoDrwskl0E80NvBDiXIIEBPBApVK9QzcAQLQLRmt?=
+ =?us-ascii?Q?TgxoAOiiUSYEPaCEEY1TRby1tE/8G5hOx8XkGLnJc1qO+44E3XejBJWWJjGH?=
+ =?us-ascii?Q?6O/Violmj2IpoUyfLlpy9z9Ih9xhmcty7sFeONhp1KF98CSim50aIocS8+7r?=
+ =?us-ascii?Q?3wCPU/zyZHc9NGpsg0ZT+/KNR7/RZwk42brmn8yYP2e7gQiKC7gRRORm+8iF?=
+ =?us-ascii?Q?9ym8V8k5+0jDSC0wrgtQb83yUhYKtGggm5CUjak1J72UO8b0cvdJoQY/IhXc?=
+ =?us-ascii?Q?KrXLjMPNX3R58F7dTkUgBLGQ7B/ZzFjiof2K17zGysF4wYTqvhl9OCkW6Yub?=
+ =?us-ascii?Q?f8Fvn1hpp+jYWuRtcKIqnUP7v6yyuICVifIK5ETzzTeR8JHVQZG8wL8xgGVV?=
+ =?us-ascii?Q?k3VWK50Hqu1SbUxBrMwVpJ/76sLWWj+ry8YJg3ZFqS3w81fmbUZEnfntP5Pc?=
+ =?us-ascii?Q?VFlBrXat+9GHNKPKhePyst/MkHWEiEKeJ72jAxVpdyd6x/QR1nSz2MkHUoxY?=
+ =?us-ascii?Q?seHJ3tmdwUvRuz01eyJCoyrnQQTNbcuyjDfc9n5uxSAmTD81gsAykIgcn26N?=
+ =?us-ascii?Q?ibfSq2EqzpQnnmoP5vibAwbHawWed7plx70ZVyKS+m9bPrnQgG6jgrWA7/e2?=
+ =?us-ascii?Q?FHSkkUn1rpDqAq0zmp+89ULd/8rNQWMVh8/gDAm8DzI+klWyHXLDwLyLcOaN?=
+ =?us-ascii?Q?uVMiOE0CdcB5LVLgF/WzQNboQaPNUYqN9AqjVT7Nx5VO4M+pGyzYZoVmRJDm?=
+ =?us-ascii?Q?LwO2K/Z+smwocFegiq2GjQw2B833lt8Hw9q9HNmT+z4CoBEWH5LNSfMOuddW?=
+ =?us-ascii?Q?LtGgAH6E+0dRaoUEAXDPSu6b178WY/7sS4daRzTGjIwJ/KDktt4pAurfhQTp?=
+ =?us-ascii?Q?EyWxEOUeERZ2NL7i2QyBZZEXCtu2BfmK7ICzbUP1sMOo/fFF6MGAcHj2cWVV?=
+ =?us-ascii?Q?pn8QmbqLBoJ3TxJH8Ocnc7zF3Muyf+0PzdPTaoM+aEYVm+mWpRA32Sk6KIKc?=
+ =?us-ascii?Q?l3At4ZxtycEUn7sI1zPa+8zmoFuoWMhq2lQw2d01CE24qcLaNl181j0WPI2+?=
+ =?us-ascii?Q?CgFgf+4prryWxM+DVLF7mvVwsNqtRx/ATit3cK1/kguwoBVB1/76taP4m9fM?=
+ =?us-ascii?Q?88rTYPPdhWwGtknLpkLzPzgzp+/3Zv+VzwTIi6zMfslWT2t/g/aZ66YPM1pU?=
+ =?us-ascii?Q?A5E49zVn+ZKNfLDz3EQHkgYFNOZ6OP0K+WSWIRPqBKoKfrwDvHe1CHk2QDVQ?=
+ =?us-ascii?Q?LLkvW324iZjCze+AAKznTWuwPEmxQhxNLJcdlJed8jtTznkANVX2Vd/o8kNy?=
+ =?us-ascii?Q?SNaTRA=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b01f7f49-f58f-48c1-36e2-08db127efdf9
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2023 13:41:24.1496
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FvNUbFA6G4ep4aNwsAB39Y55hUgwUp0ptk2LnRXdlOK86tcz3r/XC8q00jlLB2ZIRI3TnTbOjjEHyoKeYklz/PWH/YAt5sfBAxT4XhkBuHI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR13MB5304
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Function iwlagn_send_sta_key() was trying to write across multiple
-structure members in a single memcpy(). Add a struct group "keys" to
-let the compiler see the intended bounds of the memcpy, which includes
-the tkip keys as well. Silences false positive memcpy() run-time
-warning:
+On Sat, Feb 18, 2023 at 11:11:00AM -0800, Kees Cook wrote:
+> Function iwlagn_send_sta_key() was trying to write across multiple
+> structure members in a single memcpy(). Add a struct group "keys" to
+> let the compiler see the intended bounds of the memcpy, which includes
+> the tkip keys as well. Silences false positive memcpy() run-time
+> warning:
+> 
+>   memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
+> 
+> Link: https://www.alionet.org/index.php?topic=1469.0
+> Cc: Gregory Greenman <gregory.greenman@intel.com>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: Benjamin Berg <benjamin.berg@intel.com>
+> Cc: Sriram R <quic_srirrama@quicinc.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Kees Cook <keescook@chromium.org>
 
-  memcpy: detected field-spanning write (size 32) of single field "sta_cmd.key.key" at drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103 (size 16)
-
-Link: https://www.alionet.org/index.php?topic=1469.0
-Cc: Gregory Greenman <gregory.greenman@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Cc: Sriram R <quic_srirrama@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- drivers/net/wireless/intel/iwlwifi/dvm/commands.h | 10 ++++++----
- drivers/net/wireless/intel/iwlwifi/dvm/sta.c      |  4 ++--
- 2 files changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
-index 75a4b8e26232..0eceac4b9131 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
-@@ -783,10 +783,12 @@ struct iwl_keyinfo {
- 	__le16 tkip_rx_ttak[5];	/* 10-byte unicast TKIP TTAK */
- 	u8 key_offset;
- 	u8 reserved2;
--	u8 key[16];		/* 16-byte unicast decryption key */
--	__le64 tx_secur_seq_cnt;
--	__le64 hw_tkip_mic_rx_key;
--	__le64 hw_tkip_mic_tx_key;
-+	struct_group(keys,
-+		u8 key[16];	/* 16-byte unicast decryption key */
-+		__le64 tx_secur_seq_cnt;
-+		__le64 hw_tkip_mic_rx_key;
-+		__le64 hw_tkip_mic_tx_key;
-+	);
- } __packed;
- 
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-index cef43cf80620..a1c9e201b058 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/sta.c
-@@ -1093,14 +1093,14 @@ static int iwlagn_send_sta_key(struct iwl_priv *priv,
- 	switch (keyconf->cipher) {
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		key_flags |= STA_KEY_FLG_CCMP;
--		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
-+		memcpy(&sta_cmd.key.keys, keyconf->key, keyconf->keylen);
- 		break;
- 	case WLAN_CIPHER_SUITE_TKIP:
- 		key_flags |= STA_KEY_FLG_TKIP;
- 		sta_cmd.key.tkip_rx_tsc_byte2 = tkip_iv32;
- 		for (i = 0; i < 5; i++)
- 			sta_cmd.key.tkip_rx_ttak[i] = cpu_to_le16(tkip_p1k[i]);
--		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
-+		memcpy(&sta_cmd.key.keys, keyconf->key, keyconf->keylen);
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
- 		key_flags |= STA_KEY_FLG_KEY_SIZE_MSK;
--- 
-2.34.1
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
