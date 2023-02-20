@@ -2,58 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4900269D61A
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Feb 2023 23:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C44CF69D71C
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 00:33:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232546AbjBTWC0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Feb 2023 17:02:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
+        id S232643AbjBTXdA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Feb 2023 18:33:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232342AbjBTWCZ (ORCPT
+        with ESMTP id S232039AbjBTXc7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Feb 2023 17:02:25 -0500
+        Mon, 20 Feb 2023 18:32:59 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5AE222F5;
-        Mon, 20 Feb 2023 14:02:06 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECED974A;
+        Mon, 20 Feb 2023 15:32:58 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AB83DB80DCB;
-        Mon, 20 Feb 2023 22:02:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C2AC433D2;
-        Mon, 20 Feb 2023 22:02:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 847A1B80E11;
+        Mon, 20 Feb 2023 23:32:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BC0C433EF;
+        Mon, 20 Feb 2023 23:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676930523;
-        bh=fQRoiH/vfT+YhxHdQBo3IjRJtBv45VLnzgTpqQ2GMnY=;
+        s=k20201202; t=1676935976;
+        bh=GIPPVcB5VTYG52Qdb/wdYlg07yDLOtfdY2YyWMk1J+I=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ktZMNexkwbQT7SSP4qmLKo8Uvlirzq4lFcth9KK5SGKvDKCcvZDxPyAWicz0jb+qp
-         2Xs1MYD2YHUHUvHDDxuYSrbKfvvz0baUTb/A51kevnKuvdUw/HMTT8UspZVONCOAEK
-         M1vEVzt/sJ7RZ5/w/SEKo02Z9sdhqRT3C7TmNhWX6ScUwa/8+bPuva1AXSLLtb9YDl
-         Zezp7qA6+jG2r2Ml1zOA6ENCb1Qe+T1yM80YYHmjnEVhdhypUJd+SzJkJThC8+qaBr
-         KMxMrLjO51IH3JsJUtWJ2FKSTY0nglSR9vbNaVvvgjvk+lXVSBHFooFxgFrjEpQp4P
-         qrI242eJkucqA==
-Date:   Mon, 20 Feb 2023 14:02:01 -0800
+        b=USFI+Hboak76sxlrry2vlxsTwopBLyP+AJFriQaBxL0Z/ST5JC5A0refvuUsu9jpV
+         r8EsCOJzbO+OLwNu8iCcY/48Bm1X6yOAMTTL0aNWREzjaZiR0XfuQWUDo++UcWaUVN
+         NE5jOIqd36KILB9dN0GOEj4ugUCuKApYDilTVnrE+nf9qBbpq+VPH6FzlGKS5nZ3W+
+         4zjWD/Da22hFDTKJJilz3w4QVhR3hO/e907FrCVEkXg33BjsVZqNAx4LFK6Ega4YFN
+         uIiZAK/1Iaf6Wn4u0gRC4x3PrFX4hNPQU8EQk4f63LASjNX0MzTWsSPle28o9m0mOZ
+         5++W8JQmhJ8qg==
+Date:   Mon, 20 Feb 2023 15:32:54 -0800
 From:   Jakub Kicinski <kuba@kernel.org>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Janne Grunau <j@jannau.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Mailing List <devicetree-spec@vger.kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, van Spriel <arend@broadcom.com>,
-        =?UTF-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Chee Nouk Phoon <cnphoon@altera.com>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] dt-bindings: net: Add network-class.yaml schema
-Message-ID: <20230220140201.20450889@kernel.org>
-In-Reply-To: <CAL_Jsq+2_gQzAjAZQVux1GOff5ocdSz5qQMhjRzvtyD+9C-TQQ@mail.gmail.com>
-References: <20230203-dt-bindings-network-class-v2-0-499686795073@jannau.net>
-        <20230220114016.71628270@kernel.org>
-        <CAL_Jsq+2_gQzAjAZQVux1GOff5ocdSz5qQMhjRzvtyD+9C-TQQ@mail.gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-next-2023-02-17
+Message-ID: <20230220153254.66166403@kernel.org>
+In-Reply-To: <20230217171430.0691DC433D2@smtp.kernel.org>
+References: <20230217171430.0691DC433D2@smtp.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -66,10 +52,10 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 20 Feb 2023 15:49:44 -0600 Rob Herring wrote:
-> > Rob, Krzysztof - is this one on your todo list? It's been hanging
-> > around in my queue, I'm worried I missed some related conversation.  
+On Fri, 17 Feb 2023 17:14:29 +0000 (UTC) Kalle Valo wrote:
+> wireless-next patches for v6.3
 > 
-> Andrew suggested changes on 1 and 2 which seem reasonable to me.
+> Third set of patches for v6.3. This time only a set of small fixes
+> submitted during the last day or two.
 
-Ah, thank you! I see them in lore but not in my MUA.
+Appears to have been pulled, thanks a lot!
