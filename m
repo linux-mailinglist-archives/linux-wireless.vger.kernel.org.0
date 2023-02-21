@@ -2,185 +2,1248 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1C9B69E7FE
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 20:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5051D69E95C
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 22:20:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjBUTFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Feb 2023 14:05:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58596 "EHLO
+        id S229641AbjBUVUl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Feb 2023 16:20:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjBUTFA (ORCPT
+        with ESMTP id S229591AbjBUVUk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Feb 2023 14:05:00 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4DE4ED6
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 11:04:55 -0800 (PST)
-X-UUID: 9ebd3742b21a11eda06fc9ecc4dadd91-20230222
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=1CtrMh2h/UfrmZTw6zukhHuDFfWN+D+h/yOnbmcv7Y4=;
-        b=G6r4upxgTaxpTU8hpio2L9+my326/WJWVrVlMMV7xBT/CaAGOzZ9XpF7ANzmDwB2dBnUTWZiWFPvKY34+BEm2llZVtrxGvHvWAcmaMyB/vi9kvdanRZYFkzr/9C/OhLAfxXV8sIbUC+IKKknmswgH3Xp/v02oiPL8c90+JHtddE=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.20,REQID:5968c809-8941-4285-8b9b-1603818ff77d,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-INFO: VERSION:1.1.20,REQID:5968c809-8941-4285-8b9b-1603818ff77d,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-        elease,TS:-5
-X-CID-META: VersionHash:25b5999,CLOUDID:aba04426-564d-42d9-9875-7c868ee415ec,B
-        ulkID:230221175746DQHC8AQG,BulkQuantity:5,Recheck:0,SF:17|19|102,TC:nil,Co
-        ntent:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OS
-        A:0,AV:0
-X-CID-BVR: 0,NGT
-X-UUID: 9ebd3742b21a11eda06fc9ecc4dadd91-20230222
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1934867068; Wed, 22 Feb 2023 03:04:52 +0800
-Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Wed, 22 Feb 2023 03:04:50 +0800
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.239)
- by mtkmbs10n1.mediatek.com (172.21.101.34) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 22 Feb 2023 03:04:50 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TF5cMNUKfsaiLrHGZbMDCDSZnYQVTQdPCvjsPEZPADj10qw6G6yo78as7Mt5PTYsafVeOLKbW0B+Q3F5QSrfbSo6pmAMiKBlFHob7OZUVTX0bU1Dm4aOb9dmDbp05OPjgXTWqIQ3s4Im1f3st/R4JhjmbbQuDtdKV62LkuWiemr99lpcH6Mod/P13tOtq2ERMnyK65Opp/WkxycU3FHTGB9/WzxkxqG8HFB/gODFKO7iVSP51p6lZyC8fbOxW0UNIBT7swavbhVkppvzMad7jAebX+CCJoVX45AeoxaByTKJi6zd0NjVBzzD+qykXx6zuKR5mOAaCJd64sfJ0OK6Ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1CtrMh2h/UfrmZTw6zukhHuDFfWN+D+h/yOnbmcv7Y4=;
- b=MYXa0jWXL21SqA62E9DToMT70JNdjf/+xOXIQ3XCrH3rQRsCCMZGxSybd7GYj85CJjSJ5WeoRTJXG2cY5dX8Ite8dLV702l8uwkC4tUIqy04NUNyseEH1It7JHzEanpnhVWfeQfbR1oWjd/CQ30CDLM2GYM/U7KASLNc/bkSzd6PU548+J9CCdC1CNYB5jj7kU9LGmoJveivY2Hug95U9lsHDcen7KWQWU2bXW2ifwjbG1He4Qzzo6HBqZ8gC2nOkRTpOdaFXHH+j2J4cX8pXJzBxGp4fR/daA8MlpoMQ3cwWVUxsjSBt9mCajNIrQWqgF/vXHKtlZ61E/HydcgZ7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1CtrMh2h/UfrmZTw6zukhHuDFfWN+D+h/yOnbmcv7Y4=;
- b=MxwvXshheyTuraitMAmG4y62tbtRuwG1xcPRcrqogqRL8cEHOPJxrDrDrn1v4IwmpFm0HIHhZCqNpmKs0+/NDIn0hJtZz9U5WcGwkhmSMz0UhykV2OLxb7N38HVGC3dwO6gZ/dsZfPTOF2kEfir0yQWAl2jng06yfHyh02dGmao=
-Received: from TY0PR03MB6354.apcprd03.prod.outlook.com (2603:1096:400:14a::9)
- by TYZPR03MB6819.apcprd03.prod.outlook.com (2603:1096:400:201::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.21; Tue, 21 Feb
- 2023 19:04:49 +0000
-Received: from TY0PR03MB6354.apcprd03.prod.outlook.com
- ([fe80::cdcc:fb2c:cc34:8360]) by TY0PR03MB6354.apcprd03.prod.outlook.com
- ([fe80::cdcc:fb2c:cc34:8360%8]) with mapi id 15.20.6111.021; Tue, 21 Feb 2023
- 19:04:49 +0000
-From:   Ryder Lee <Ryder.Lee@mediatek.com>
-To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>
-CC:     =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= 
-        <Shayne.Chen@mediatek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
-        <Evelyn.Tsai@mediatek.com>
-Subject: Re: [PATCH 1/2] wifi: mac80211: introduce
- ieee80211_refresh_tx_agg_session_timer()
-Thread-Topic: [PATCH 1/2] wifi: mac80211: introduce
- ieee80211_refresh_tx_agg_session_timer()
-Thread-Index: AQHZQvhNg/XMHPbh9UaJA+rO7kUbpq7TbbAAgAALzICAAALQgIAAAn+AgAOo34CAAAswgIAB/Q4AgACY4QA=
-Date:   Tue, 21 Feb 2023 19:04:48 +0000
-Message-ID: <3519e733bb3ba72b307a9fe6f92086f9fbd6fb63.camel@mediatek.com>
-References: <7c3f72eac1c34921cd84a462e60d71e125862152.1676616450.git.ryder.lee@mediatek.com>
-         <44f956b493e33bf394b2947b77e7c86f394b28ed.camel@sipsolutions.net>
-         <fea6defb05d0f39d99bce96ea22e8c92d1a939ab.camel@mediatek.com>
-         <fb3ab2d925fdeae2e7cc778419c1476102b9f85f.camel@sipsolutions.net>
-         <56190740441a6740e9edf761ab2167edc51f20c3.camel@mediatek.com>
-         <c05a8b20b5d4429b1c42ef2398ff2bf760bd7eae.camel@mediatek.com>
-         <ed37dd9cfba8d0ec7b50f932742156aaa57843e9.camel@mediatek.com>
-         <a3f50c4b4e75ff53a5611c3ef2d6345d4324cedb.camel@sipsolutions.net>
-In-Reply-To: <a3f50c4b4e75ff53a5611c3ef2d6345d4324cedb.camel@sipsolutions.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY0PR03MB6354:EE_|TYZPR03MB6819:EE_
-x-ms-office365-filtering-correlation-id: f69714d1-fe13-4e60-d903-08db143e80ff
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9mihOORFJzW+nPx7S7BeUsApypYP6av4xh7KRyfZakuJSi3Jr2Y8n3sg2AEB1PaRbvuJBIQaYQ3geGqYPK1YtQcmD2Ze6NfhzA7eFNx7WHbuvu1TeF3yK8rS6HPWEW/K135skKT8rTo/3vc7u0J4iHLeVqdX37KTpqiDg93PouiC6zBvKJHTkZsn1ok+bPmVkunfeDE0QrUsCcz1JdQ3gxdMOJ/oHsjG+tDHodxNEQhuSIignk2uOtyuz3Gp65xEEibRzfQLGfG8poELYjVyKlj1O0QHQwx7/jduwJoEmIIQxa/e5BMU+XuNug1EilRitqebOv59EL7kRyVmrGi0LdNO65ooOu4pvQwQi7pmZigQFjSM1P5He3HSxgk4SSe9avnG3pz5dVqYISbDLvYnRtnvxW1Pp42Y0Axqmf24WdzzSwzdAPbSXLQMXYRRX2v+M+mAtfqLZRAl+YKzfqxsYX3b99pqrJYYwNacdNHOTVD7EVgKyhDmVgE+fMTdyT7fO6Gy+7L16gm6jBCyNbfRDdtNy/IVIqJ2r7RcCE7XVpdG/7bjetHOO+qi/faoq6k4p7FBXi+AKTzd0mJTuLUH83If+lCRmm1LScZGrs9HE5nwGH4aQJ9d6vwXtk+lnZ8b96KklIEQ3px2Zj9eWDdPEwVVo15q/CO6h1w36jPDIhNEJ+4O/haZb1x2ccteeWRAwGDuBc8mQeOmWHz5ekitTw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY0PR03MB6354.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(136003)(366004)(346002)(39860400002)(451199018)(2906002)(41300700001)(316002)(83380400001)(5660300002)(4744005)(36756003)(8936002)(86362001)(91956017)(66476007)(66446008)(6916009)(4326008)(8676002)(64756008)(38070700005)(76116006)(66946007)(66556008)(122000001)(38100700002)(54906003)(107886003)(71200400001)(2616005)(6512007)(6506007)(186003)(26005)(6486002)(478600001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MHJwZ2hkc2ZINEtUN0NPMnVaWW12eER0UWxsRUJoY0NNb2dnZjB3N015KzVB?=
- =?utf-8?B?Qnkzc202SGVhN092RE95VVZUVTlhc2Q3Y01hMlNCY2pFL0FVSUlrZnF3MG41?=
- =?utf-8?B?YXJEbWRjeENLN0hsMEFES1pwd0RQN25hUGZMMmEzakFpaVlJK1ozR0ZNWmc1?=
- =?utf-8?B?ekN4eUxXbnZJRmk3bENwMVgxbi9sWFh6Y3JmeW5KV2JMVm9yS2dqaG1VcWNT?=
- =?utf-8?B?WDhLeEVCaWlUcU1SY1E1VDJnTm9tUmlRa1R3Sm42aGtveG9NU3dhWUJTZUx4?=
- =?utf-8?B?Z2ljZzFVdEZuTGd4ZkR4K1hqNElISjlRYjYrdTlrTFB2VFFXT1RMbDVaMFRn?=
- =?utf-8?B?UkRzOXFCbTRIR2N5SnRBZEZRajJrU21EcjdOYXk3OWhOZjluL2xpNWl0a20v?=
- =?utf-8?B?TUdUY2lWZjNFOWJhNFd2dW9XSEhPeGRIZHFkMnNubTB1d2dtWDYwZjZhdzQ2?=
- =?utf-8?B?NU5BR3BhVXJwbXltd0ZKY3lqUk5VbjMyV2c2MjBEUVBZUHA2SGdmNWhyOHBi?=
- =?utf-8?B?NWE2VGhqNlJxNTBIUEx6YWJTK1I4QU1HNVc2RVljTzRuMGc4Z0tLSEhHdHlm?=
- =?utf-8?B?Q2YxWk40aEEvS2xLRkVJTENVQ2ZKcnhOWldFazQveVAzUzhpekdHbFdkTEhr?=
- =?utf-8?B?b0d5Qm10RmhNeGt0cTg0Z2NGdVcxOE41K2tDT2FUV1NrTUFWeGV5eVhTUVpX?=
- =?utf-8?B?bWFTWS9BcktBMFZZd25kU3QrSUoxRi9uU3FPMmNXMWNQRGlodUtDaU5zaXZi?=
- =?utf-8?B?em9JQTZMRWh6eENzR1E1d1ZLa1FITEkyaWc4TzNpU1dsemxDVTJsZXVDRXUz?=
- =?utf-8?B?RFJSdnYydHBIU1BpcE9XU2FDNkdoNnljb1llcUIySGdPUVNTU2pVZUNqR1Nx?=
- =?utf-8?B?b0l1SFlkM0g4UUNWU093bUpQMlRERkFSN1dIMVhYQkliUTRRWFAwVlhjdVAz?=
- =?utf-8?B?L2w3ODNXN1J0dnlkZW5LaVlEa1YzeFFzTFFIZUhYK2dwampla0t3QWZsZUtP?=
- =?utf-8?B?bGpKR1E1TFBGUUt6YmxUZVdJNnN4dWQ4Wm82UmZNcitVZTkvM2UxQ3pNbC96?=
- =?utf-8?B?QlpsTGg2RzMvU2FsRUR2SzV1aFdHbkFxRC9nV21TU1hyNWVkMUxMdGhYc2Ni?=
- =?utf-8?B?ZGRBYkVNVkVsRVQ0YWR2eHFHU2RXZ0Y4Y0VjeDNTdzZjdkdIRjZLb09jVUls?=
- =?utf-8?B?UCsvZXZLMmRTQllQM293cnpqUXJTNnU3UCtpSjJ6dElINU9OOE10blNKTXd5?=
- =?utf-8?B?ZnhBNWR6cCsva2FZU0h2Rm1Bc2p5SWZqS2tkMjF6eFlqVm1CYkVmb3lVQVJq?=
- =?utf-8?B?K0pBMVNlUjdCNjJwYlpZdU5iQ0sxa1dGYVgzSkVhZFQvUzdyYSttVW1lbTFC?=
- =?utf-8?B?NWJ4L3R5eDd4dUdIR0IybjVwL1lDV0pBcGtFR1JGVzJqWnFPczZtQ1A1MWhG?=
- =?utf-8?B?Q2tlOTZjRUpYREpmWWQ5QXBsVlZ6L3FkdjRmOTZnSVdkWnVpSHFYL3RaSVha?=
- =?utf-8?B?MlJKbjVDdUtTeG5YSFUwVzA2czZldW9mV05LQ0pzOWlGVkZrNXlMczZwNGNm?=
- =?utf-8?B?Wk50QUkycTRsY0s0MitJVU5mQ2MrSytkeWlURGZvWGFNSE5LWUFtVVpiRVQr?=
- =?utf-8?B?b0ozNllWSEgrYzg0dHdvK09XbzJKQ3JRQlo2UWJMck1mK3RDbEJYTTQ0Yjly?=
- =?utf-8?B?b3BOeFFLOUplb05YcmREd0RYVVVJbUtYZGUrYVFTZVhRRndaNHZBbUhZdTdq?=
- =?utf-8?B?UVY5dlQrRHFURnFIRzJkQVBzd0tlc2grUnNCckhJZExmbERvUE5vaU8xdEVj?=
- =?utf-8?B?RU9WRGJJeDN3dDNYbmF3ZzhZUlY0YUhvQ0JlVG5jb2VlRDA1MWF2OGs2UzJq?=
- =?utf-8?B?TnJkQ2s1ZmdCT0RnVEJZdVIwcjBNdU84SEZvU2FCNmF2a25qTExUMTNUdEY0?=
- =?utf-8?B?bUlFb2swUWNTbDVTNUlFM0Y0VmkrZWM2YmF4NEUxUGxGRHN3YXV2ZVBsay9o?=
- =?utf-8?B?OXRHNkpybnNpc0IxK0ZYRnpnc04yYmExc2JxSXNGQWc5UmdhTm9BL0VLeXlE?=
- =?utf-8?B?VXE3dnB0Z1YxWHFveldJV3l0RElIZ29VNDRXS0d4Mm9PeEtBYXZ2bkpoOXF5?=
- =?utf-8?B?UmxiV0hUN2V1Y0tzNTM2bm1QZjhXT2RZVlNEdE9mNElQK2EvNkIyaHNuUzU3?=
- =?utf-8?B?UFE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <65A9D67F78E72845BA71ABFCA408F72E@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Tue, 21 Feb 2023 16:20:40 -0500
+Received: from sonata.ens-lyon.org (domu-toccata.ens-lyon.fr [140.77.166.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732F12DE79
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 13:20:33 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by sonata.ens-lyon.org (Postfix) with ESMTP id C642F2019B
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 22:20:31 +0100 (CET)
+Received: from sonata.ens-lyon.org ([127.0.0.1])
+        by localhost (sonata.ens-lyon.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 39aBLtjjHOQd for <linux-wireless@vger.kernel.org>;
+        Tue, 21 Feb 2023 22:20:31 +0100 (CET)
+Received: from eyak.inrialpe.fr (82-64-217-88.subs.proxad.net [82.64.217.88])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by sonata.ens-lyon.org (Postfix) with ESMTPSA id 9AC2020101
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 22:20:31 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        by eyak.inrialpe.fr (Postfix) with ESMTP id 36C0C1A0565
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 22:20:31 +0100 (CET)
+Message-ID: <ad820d2e-c984-8603-9821-e6c1d426c4f8@debian.org>
+Date:   Tue, 21 Feb 2023 22:20:30 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY0PR03MB6354.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f69714d1-fe13-4e60-d903-08db143e80ff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2023 19:04:48.7210
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: B6s/ykQlHT6IndvgeczEDtIBdg/Px9I53VIocL5DY0vInGcYAVQxycK8P2wabFbQt1Mg+g5PF2AcCyLLV4ruaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB6819
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.8.1.22)
+ Gecko/20091109 Lightning/0.8 Thunderbird/2.0.0.22 Mnenhy/0.7.5.0
+From:   Vincent Danjean <vdanjean@debian.org>
+To:     linux-wireless@vger.kernel.org
+Content-Language: en-US
+Subject: Bug report about ath9k
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIzLTAyLTIxIGF0IDEwOjU3ICswMTAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
-PiBIaSwNCj4gDQo+ID4gPiA+IFNpbmNlIHRoZXJlJ3Mgbm8gYW55IGtlZXAgYWxpdmUgcGFja2V0
-IGJlaW5nIHJlY2VpdmVkIGJ5IGhvc3QNCj4gPiA+ID4gc3RhY2ssIGxlYWRzIHRvIG1hYzgwMjEx
-IGRlc3Ryb3J5IEJBIHNlc2lvbi4NCj4gPiA+ID4gDQo+ID4gPiANCj4gPiA+IE1vcmUgc3BlY2lm
-aWNhbGx5LCB0aGUgQkEgc2Vzc2lvbiByZWxpZXMgb24gY2xpZW50IHNpZGUncyBUeCBkYXRhDQo+
-ID4gPiB0bw0KPiA+IA0KPiA+IFR5cG8uLi4gSSBtZWFuICpvdXIgc2lkZSouIFNvbWV0aGluZyBs
-aWtlIHRoaXMNCj4gDQo+IFNvcnJ5LiBJJ20ganVzdCB0b3RhbGx5IGNvbmZ1c2VkIC0gSSB0aG91
-Z2h0IHRoZSBpbml0aWF0b3Igb25seSBzZXQNCj4gdGhlDQo+IHRpbWVvdXQsIGJ1dCBJIHNlZSBu
-b3cgdGhhdCBpdCdzIG5lZ290aWF0ZWQgYW5kIHRoZSBhY3R1YWwgdmFsdWUgdXNlZA0KPiBpcw0K
-PiBmcm9tIHRoZSBjbGllbnQuDQo+IA0KPiBXaGljaCBleHBsYWlucyBiYXNpY2FsbHkgZXZlcnl0
-aGluZy4NCj4gDQo+IA0KDQpZdXAgLi4uIGFmdGVyIGFjY2VwdGluZyB0aGUgQWRkQkEgUmVzcG9u
-c2Ugd2UgYWN0aXZhdGVkIGEgdGltZXIsDQoqcmVzZXR0aW5nIGl0IGFmdGVyIGVhY2ggZnJhbWUg
-dGhhdCB3ZSBzZW5kKiAtDQpzdGFfdHhfYWdnX3Nlc3Npb25fdGltZXJfZXhwaXJlZCgpLg0KDQpU
-aGUgLm5ldF9maWxsX2ZvcndhcmRfcGF0aCgpIG9mZmxvYWRzIHR4IHBhdGggdG8gSFcsIHNvIGl0
-IGNhbiBvbmx5DQpyZWx5IG9uIG90aGVyIHdheSB0byByZXNldCBhcyBtYWM4MDIxMSBpc24ndCBh
-d2FyZSBvZiB0aGF0Lg0KDQpSeWRlcg0KDQoNCg==
+   Hi,
+
+I'm reporting here a bug in the ath9k driver.
+
+
+I've spurious problems with my atheros PCIE card.
+It is used with hostapd to provide wifi AP.
+Sometimes, the client do not succeed to connect to internet.
+In the log, I can observe the following lines. It seems that
+most (all?) of the time, they are preceeded by:
+
+[...]
+Jan 29 17:08:33 aya kernel: [573587.069575] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+Jan 29 17:08:33 aya kernel: [573587.470696] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+Jan 29 17:21:29 aya kernel: [574363.908459] DMAR: DRHD: handling fault status reg 2
+Jan 29 17:21:29 aya kernel: [574363.908465] DMAR: [DMA Read NO_PASID] Request device [72:00.0] fault addr 0xfe721000 [fault reason 0x06] PTE Read access is not set
+Jan 29 17:21:30 aya kernel: [574364.294048] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x000062c0
+Jan 29 17:21:30 aya kernel: [574364.681674] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+Jan 29 17:21:31 aya kernel: [574365.099751] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[...]
+=> see how a bunch of "ath: phy1: DMA failed to stop in 10 ms" are
+just following two "DMAR: ..." lines (and this pattern is recurent).
+
+   I was using this PCIE card without any problems for several years.
+The errors occured when I changed my tower for a more recent processor
+and motherboard. The disk (software and system config) have been
+kept.
+   I suspect interraction between the atheros driver and the iommu
+(DMAR), the latter was not available on my previous processor.
+
+   Do you have some ideas about which kernel options I can try ?
+Note that iommu is not used on this machine for now, but I plan
+to use it now that the processor support it (several kvm virtual
+machines are running, I would like to manage some hardware
+directly in some VM)
+
+   Regards,
+     Vincent
+
+PS: the BIOS is up-to-date (with already two upgrades for one month)
+PPS: this message is mainly a copy of my Debian bug report
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1029990
+
+-- Package-specific info:
+** Version:
+Linux version 6.0.0-0.deb11.6-amd64 (debian-kernel@lists.debian.org) (gcc-10 (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 SMP PREEMPT_DYNAMIC Debian 6.0.12-1~bpo11+1 (2022-12-19)
+
+** Command line:
+BOOT_IMAGE=/vmlinuz-6.0.0-0.deb11.6-amd64 root=/dev/mapper/aya+raid1-root ro apparmor=0 md-degraded=no quiet security=
+
+** Not tainted
+
+** Kernel log:
+[574483.465710] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574483.875469] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574484.285468] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574484.694685] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574485.104566] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574485.522817] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574485.923393] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574486.333154] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574486.742990] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574487.161219] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574487.562174] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574487.971704] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574488.381286] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574488.790844] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574489.200428] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574489.618794] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574490.019559] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574490.429334] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574490.840061] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574491.257437] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574491.657950] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574492.068770] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574492.477163] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574492.887130] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574493.297183] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574493.716053] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574494.115516] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574494.525232] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574494.934904] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574495.353391] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574495.753934] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574496.163622] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574496.573284] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574496.982681] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574497.392407] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574497.811844] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574498.211348] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574498.621129] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574499.029039] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574499.449288] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574499.850136] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574500.259461] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574500.669140] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574501.087352] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574501.488271] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574501.897974] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574502.307528] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574502.717098] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574503.126806] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574503.545287] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574503.946011] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574504.356089] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574504.765461] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574505.183703] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574505.584509] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574505.994197] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574506.403488] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574506.812918] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574507.222701] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574507.641312] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574508.041906] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574508.451683] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574508.861189] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574509.280626] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574509.680484] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574510.089885] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574510.499692] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574510.909464] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574511.318855] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574511.738266] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574512.137537] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574512.547572] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574512.957314] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574513.375597] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574513.776686] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574514.186017] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574514.595695] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574515.014088] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574515.415076] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574515.824966] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574516.234291] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574516.643743] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574517.053308] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574517.471734] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574517.873196] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574518.282005] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574518.691636] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574519.110226] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574519.511192] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574519.920438] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574520.329938] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574520.739653] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574521.149286] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574521.567510] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574521.968443] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00006040
+[574522.379254] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574522.787812] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[574523.206163] ath: phy1: DMA failed to stop in 10 ms AR_CR=0x00000024 AR_DIAG_SW=0x02000020 DMADBG_7=0x00008040
+[588351.137660] EXT4-fs (dm-34): re-mounted. Quota mode: none.
+[588375.229470] EXT4-fs (dm-34): re-mounted. Quota mode: none.
+
+** Model information
+sys_vendor: ASUS
+product_name: System Product Name
+product_version: System Version
+chassis_vendor: Default string
+chassis_version: Default string
+bios_vendor: American Megatrends Inc.
+bios_version: 0814
+board_vendor: ASUSTeK COMPUTER INC.
+board_name: ProArt Z790-CREATOR WIFI
+board_version: Rev 1.xx
+
+** Loaded modules:
+uvcvideo
+videobuf2_vmalloc
+videobuf2_memops
+videobuf2_v4l2
+videobuf2_common
+videodev
+ccm
+vhost_net
+vhost
+vhost_iotlb
+tap
+tun
+rfcomm
+cpufreq_powersave
+cpufreq_ondemand
+cpufreq_userspace
+cpufreq_conservative
+bridge
+stp
+llc
+nfnetlink_cttimeout
+nfnetlink
+dummy
+openvswitch
+nsh
+nf_conncount
+nf_nat
+cmac
+nf_conntrack
+algif_hash
+algif_skcipher
+af_alg
+nf_defrag_ipv6
+bnep
+nf_defrag_ipv4
+binfmt_misc
+intel_rapl_msr
+ftdi_sio
+pl2303
+usbserial
+mei_hdcp
+tps6598x
+intel_rapl_common
+x86_pkg_temp_thermal
+intel_powerclamp
+kvm_intel
+kvm
+irqbypass
+ghash_clmulni_intel
+aesni_intel
+crypto_simd
+cryptd
+intel_cstate
+intel_uncore
+pcspkr
+efi_pstore
+asus_nb_wmi
+asus_wmi
+platform_profile
+battery
+sparse_keymap
+wmi_bmof
+snd_usb_audio
+snd_usbmidi_lib
+snd_rawmidi
+snd_seq_device
+mc
+nls_ascii
+nls_cp437
+vfat
+fat
+cdc_mbim
+cdc_wdm
+snd_hda_codec_hdmi
+snd_sof_pci_intel_tgl
+snd_sof_intel_hda_common
+soundwire_intel
+soundwire_generic_allocation
+soundwire_cadence
+snd_sof_intel_hda
+snd_sof_pci
+snd_sof_xtensa_dsp
+snd_sof
+snd_sof_utils
+snd_soc_hdac_hda
+ath9k
+snd_hda_codec_realtek
+snd_hda_ext_core
+snd_soc_acpi_intel_match
+snd_hda_codec_generic
+ath9k_common
+snd_soc_acpi
+ledtrig_audio
+btusb
+snd_soc_core
+ath9k_hw
+iwlmvm
+btrtl
+btbcm
+btintel
+btmtk
+ath
+snd_compress
+bluetooth
+soundwire_bus
+snd_hda_intel
+mac80211
+snd_intel_dspcfg
+snd_intel_sdw_acpi
+snd_hda_codec
+snd_hda_core
+iwlwifi
+snd_hwdep
+snd_pcm_oss
+snd_mixer_oss
+snd_pcm
+libarc4
+jitterentropy_rng
+cdc_ncm
+snd_timer
+cdc_ether
+iTCO_wdt
+cfg80211
+snd
+intel_pmc_bxt
+sha512_ssse3
+usbnet
+iTCO_vendor_support
+watchdog
+sha512_generic
+mii
+soundcore
+ctr
+drbg
+joydev
+ansi_cprng
+ecdh_generic
+ecc
+ucsi_acpi
+rfkill
+typec_ucsi
+mei_me
+roles
+coretemp
+sg
+mei
+typec
+serial_multi_instantiate
+intel_pmc_core
+acpi_pad
+acpi_tad
+evdev
+nfsd
+auth_rpcgss
+hwmon_vid
+nfs_acl
+firewire_sbp2
+lockd
+firewire_core
+crc_itu_t
+grace
+loop
+sunrpc
+msr
+fuse
+configfs
+efivarfs
+ip_tables
+x_tables
+autofs4
+ext4
+crc16
+mbcache
+jbd2
+raid10
+raid0
+multipath
+linear
+dm_thin_pool
+dm_persistent_data
+dm_bio_prison
+dm_bufio
+dm_mod
+raid456
+async_raid6_recov
+async_memcpy
+async_pq
+async_xor
+async_tx
+xor
+raid6_pq
+libcrc32c
+crc32c_generic
+hid_generic
+usbhid
+hid
+sr_mod
+cdrom
+sd_mod
+i915
+raid1
+md_mod
+drm_buddy
+i2c_algo_bit
+drm_display_helper
+cec
+rc_core
+ttm
+drm_kms_helper
+ahci
+xhci_pci
+libahci
+xhci_hcd
+drm
+libata
+nvme
+atlantic
+usbcore
+thunderbolt
+nvme_core
+igc
+t10_pi
+scsi_mod
+crc32_pclmul
+crc32c_intel
+macsec
+i2c_i801
+crc64_rocksoft
+ptp
+i2c_smbus
+crc64
+intel_lpss_pci
+crc_t10dif
+pps_core
+crct10dif_generic
+intel_lpss
+crct10dif_pclmul
+crct10dif_common
+idma64
+usb_common
+scsi_common
+wmi
+fan
+video
+pinctrl_alderlake
+button
+
+** Network interface configuration:
+*** /etc/network/interfaces:
+
+auto lo
+iface lo inet loopback
+	up ifup dummy0
+
+auto br-ovs-ext
+allow-ovs br-ovs-ext
+iface br-ovs-ext inet manual
+	ovs_type OVSBridge
+	ovs_ports en-mb
+
+allow-br-ovs-ext en-mb
+iface en-mb inet manual
+	ovs_bridge br-ovs-ext
+	ovs_type OVSPort
+	ovs_extra set port ${IFACE} trunks=10,11,50,51,100,200,201,202,1,2,3,16,17
+
+auto br-wifi
+iface br-wifi inet manual
+	bridge_ports none
+	bridge_maxwait 2
+	bridge_fd 5
+	bridge_stp on
+	up echo 1 > /proc/sys/net/ipv6/conf/$IFACE/disable_ipv6
+
+
+allow-wifi wifi1
+iface wifi1 inet manual
+	pre-up env -i PATH=$PATH ifup br-ovs-ext
+	hostapd /etc/hostapd/hostapd-wifi1.conf
+	post-up for i in `seq 1 10`; do if ip link ls ${IFACE}_1 ; then exit 0 ; else sleep 1 ; fi ; done ; echo "Failed to find ${IFACE}_1"; false
+	post-up echo ${IFACE}_1 present
+	post-up for i in `seq 1 10`; do if ip link ls ${IFACE}_2 ; then exit 0 ; else sleep 1 ; fi ; done ; echo "Failed to find ${IFACE}_2" ; false
+	post-up echo ${IFACE}_2 present
+	post-up ovs-vsctl set port ${IFACE}_1 tag=12
+	post-up ovs-vsctl set port ${IFACE}_2 tag=13
+
+
+** Network status:
+*** IP interfaces and addresses:
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+     inet 127.0.0.1/8 scope host lo
+        valid_lft forever preferred_lft forever
+     inet6 ::1/128 scope host        valid_lft forever preferred_lft forever
+2: en-mb: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ovs-system state UP group default qlen 1000
+     link/ether 58:11:22:c1:cd:b9 brd ff:ff:ff:ff:ff:ff
+     altname enp5s0
+     altname eno1
+     inet6 fe80::5a11:22ff:fec1:cdb9/64 scope link        valid_lft forever preferred_lft forever
+6: wifi1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-wifi state UP group default qlen 1000
+     link/ether f4:ec:38:c5:fd:94 brd ff:ff:ff:ff:ff:ff
+     altname wlp114s0
+8: ovs-system: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
+     link/ether 8e:07:b8:f5:81:8f brd ff:ff:ff:ff:ff:ff
+9: br-ovs-ext: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+     link/ether 58:11:22:c1:cd:b9 brd ff:ff:ff:ff:ff:ff
+10: br-wifi: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+     link/ether da:51:ce:92:ce:72 brd ff:ff:ff:ff:ff:ff
+51: wifi1_1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master ovs-system state UP group default qlen 1000
+     link/ether f4:ec:38:c5:fd:95 brd ff:ff:ff:ff:ff:ff permaddr f4:ec:38:c5:fd:94
+52: wifi1_2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master ovs-system state UP group default qlen 1000
+     link/ether f4:ec:38:c5:fd:96 brd ff:ff:ff:ff:ff:ff permaddr f4:ec:38:c5:fd:94
+
+*** Device statistics:
+Inter-|   Receive                                                |  Transmit
+  face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+     lo: 1039080882224 332941597    0    0    0     0          0         0 1039080882224 332941597    0    0    0     0       0          0
+  en-mb: 75095428826 522892242    0    0    0     0          0   1122207 3080133227567 2078044544    0    0    0     0       0          0
+  wifi1: 442705345 1828921    0    0    0     0          0         0 3068581829 2938822    0    0    0     0       0          0
+ovs-system:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+br-ovs-ext: 640513872 8370895    0   17    0     0          0         0        0       0    0    0    0     0       0          0
+br-wifi: 3130180   28174    0    0    0     0          0     21064        0       0    0    0    0     0       0          0
+wifi1_1: 17755871  307608    0    0    0     0          0         0 22114965  290885    0    0    0     0       0          0
+wifi1_2:  579446    3987    0    0    0     0          0         0  2032088    4964    0    0    0     0       0          0
+
+*** Protocol statistics:
+Ip:
+     Forwarding: 2
+     593835204 total packets received
+     30 with invalid headers
+     169 with invalid addresses
+     0 forwarded
+     0 incoming packets discarded
+     593312396 incoming packets delivered
+     465098979 requests sent out
+     26 outgoing packets dropped
+     1 dropped because of missing route
+     5 fragments received ok
+     10 fragments created
+Icmp:
+     5605 ICMP messages received
+     9 input ICMP message failed
+     ICMP input histogram:
+         destination unreachable: 173
+         echo requests: 5009
+         echo replies: 423
+     5734 ICMP messages sent
+     0 ICMP messages failed
+     ICMP output histogram:
+         destination unreachable: 302
+         echo requests: 423
+         echo replies: 5009
+IcmpMsg:
+         InType0: 423
+         InType3: 173
+         InType8: 5009
+         OutType0: 5009
+         OutType3: 302
+         OutType8: 423
+Tcp:
+     1997805 active connection openings
+     40149 passive connection openings
+     83 failed connection attempts
+     127009 connection resets received
+     37 connections established
+     810867421 segments received
+     2371944734 segments sent out
+     9617056 segments retransmitted
+     304 bad segments received
+     3111592 resets sent
+Udp:
+     4072670 packets received
+     233 packets to unknown port received
+     0 packet receive errors
+     4037857 packets sent
+     0 receive buffer errors
+     0 send buffer errors
+     IgnoredMulti: 10264
+UdpLite:
+TcpExt:
+     70 ICMP packets dropped because they were out-of-window
+     44962 TCP sockets finished time wait in fast timer
+     1 time wait sockets recycled by time stamp
+     1487 packetes rejected in established connections because of timestamp
+     171256 delayed acks sent
+     5306 delayed acks further delayed because of locked socket
+     Quick ack mode was activated 760 times
+     86213280 packet headers predicted
+     365651310 acknowledgments not containing data payload received
+     259738680 predicted acknowledgments
+     TCPSackRecovery: 641203
+     Detected reordering 548568 times using SACK
+     Detected reordering 19570 times using time stamp
+     94 congestion windows fully recovered without slow start
+     19004 congestion windows partially recovered using Hoe heuristic
+     TCPDSACKUndo: 80
+     145 congestion windows recovered without slow start after partial ack
+     TCPLostRetransmit: 127962
+     TCPSackFailures: 42
+     9607265 fast retransmits
+     4123 retransmits in slow start
+     TCPTimeouts: 2349
+     TCPLossProbes: 3665
+     TCPLossProbeRecovery: 834
+     TCPSackRecoveryFail: 423
+     TCPBacklogCoalesce: 478790
+     TCPDSACKOldSent: 773
+     TCPDSACKOfoSent: 1
+     TCPDSACKRecv: 46626
+     TCPDSACKOfoRecv: 53
+     1499389 connections reset due to unexpected data
+     126463 connections reset due to early user close
+     17 connections aborted due to timeout
+     TCPSACKDiscard: 8
+     TCPDSACKIgnoredOld: 4362
+     TCPDSACKIgnoredNoUndo: 16242
+     TCPSpuriousRTOs: 6
+     TCPSackShifted: 8927280
+     TCPSackMerged: 18836846
+     TCPSackShiftFallback: 7056498
+     TCPDeferAcceptDrop: 17404
+     TCPRcvCoalesce: 1429476
+     TCPOFOQueue: 36142
+     TCPOFOMerge: 1
+     TCPChallengeACK: 341
+     TCPSYNChallenge: 304
+     TCPSpuriousRtxHostQueues: 2
+     TCPAutoCorking: 6172
+     TCPFromZeroWindowAdv: 1
+     TCPToZeroWindowAdv: 1
+     TCPWantZeroWindowAdv: 485
+     TCPSynRetrans: 1595
+     TCPOrigDataSent: 2274768878
+     TCPHystartTrainDetect: 13076
+     TCPHystartTrainCwnd: 13212334
+     TCPHystartDelayDetect: 10799
+     TCPHystartDelayCwnd: 8721838
+     TCPACKSkippedPAWS: 939
+     TCPACKSkippedTimeWait: 17
+     TCPWinProbe: 669
+     TCPKeepAlive: 6588
+     TCPDelivered: 2273042102
+     TCPAckCompressed: 2282
+     TcpTimeoutRehash: 1
+     TCPDSACKRecvSegs: 93109
+     TCPDSACKIgnoredDubious: 9
+IpExt:
+     InMcastPkts: 10403
+     OutMcastPkts: 2869
+     InBcastPkts: 12221
+     OutBcastPkts: 216
+     InOctets: 390810766165
+     OutOctets: 3289360697258
+     InMcastOctets: 3158835
+     OutMcastOctets: 1868452
+     InBcastOctets: 1163686
+     OutBcastOctets: 26288
+     InNoECTPkts: 597198569
+MPTcpExt:
+
+
+** PCI devices:
+00:00.0 Host bridge [0600]: Intel Corporation Device [8086:a700] (rev 01)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ >SERR- <PERR- INTx-
+	Latency: 0
+	IOMMU group: 0
+	Region 3: Memory at <ignored> (32-bit, non-prefetchable)
+
+00:02.0 VGA compatible controller [0300]: Intel Corporation Device [8086:a780] (rev 04) (prog-if 00 [VGA controller])
+	DeviceName: Onboard IGD
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 212
+	IOMMU group: 1
+	Region 0: Memory at 604b000000 (64-bit, non-prefetchable) [size=16M]
+	Region 2: Memory at 4000000000 (64-bit, prefetchable) [size=256M]
+	Region 4: I/O ports at 4000 [size=64]
+	Expansion ROM at 000c0000 [virtual] [disabled] [size=128K]
+	Capabilities: <access denied>
+	Kernel driver in use: i915
+	Kernel modules: i915
+
+00:06.0 PCI bridge [0604]: Intel Corporation Device [8086:a74d] (rev 01) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin D routed to IRQ 122
+	IOMMU group: 2
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 93800000-938fffff [size=1M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:0a.0 Signal processing controller [1180]: Intel Corporation Device [8086:a77d] (rev 01)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	IOMMU group: 3
+	Region 0: Memory at 604c110000 (64-bit, non-prefetchable) [size=32K]
+	Capabilities: <access denied>
+
+00:14.0 USB controller [0c03]: Intel Corporation Device [8086:7a60] (rev 11) (prog-if 30 [XHCI])
+	DeviceName: USB Controller
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	Interrupt: pin A routed to IRQ 210
+	IOMMU group: 4
+	Region 0: Memory at 604c100000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: xhci_hcd
+	Kernel modules: mei_me, xhci_pci
+
+00:14.2 RAM memory [0500]: Intel Corporation Device [8086:7a27] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem- BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	IOMMU group: 4
+	Region 0: Memory at 604c124000 (64-bit, non-prefetchable) [disabled] [size=16K]
+	Region 2: Memory at 604c12d000 (64-bit, non-prefetchable) [disabled] [size=4K]
+	Capabilities: <access denied>
+
+00:15.0 Serial bus controller [0c80]: Intel Corporation Device [8086:7a4c] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 27
+	IOMMU group: 5
+	Region 0: Memory at 4017200000 (64-bit, non-prefetchable) [virtual] [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+
+00:15.1 Serial bus controller [0c80]: Intel Corporation Device [8086:7a4d] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin B routed to IRQ 40
+	IOMMU group: 5
+	Region 0: Memory at 4017201000 (64-bit, non-prefetchable) [virtual] [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+
+00:15.2 Serial bus controller [0c80]: Intel Corporation Device [8086:7a4e] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin C routed to IRQ 29
+	IOMMU group: 5
+	Region 0: Memory at 4017202000 (64-bit, non-prefetchable) [virtual] [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+
+00:16.0 Communication controller [0780]: Intel Corporation Device [8086:7a68] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	Interrupt: pin A routed to IRQ 213
+	IOMMU group: 6
+	Region 0: Memory at 604c129000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:17.0 SATA controller [0106]: Intel Corporation Device [8086:7a62] (rev 11) (prog-if 01 [AHCI 1.0])
+	DeviceName: SATA Controller
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz+ UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	Interrupt: pin A routed to IRQ 209
+	IOMMU group: 7
+	Region 0: Memory at 93900000 (32-bit, non-prefetchable) [size=8K]
+	Region 1: Memory at 93903000 (32-bit, non-prefetchable) [size=256]
+	Region 2: I/O ports at 4090 [size=8]
+	Region 3: I/O ports at 4080 [size=4]
+	Region 4: I/O ports at 4060 [size=32]
+	Region 5: Memory at 93902000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1a.0 PCI bridge [0604]: Intel Corporation Device [8086:7a48] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin ? routed to IRQ 123
+	IOMMU group: 8
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	I/O behind bridge: 00003000-00003fff [size=4K]
+	Memory behind bridge: 92900000-932fffff [size=10M]
+	Prefetchable memory behind bridge: 0000004017000000-00000040171fffff [size=2M]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1b.0 PCI bridge [0604]: Intel Corporation Device [8086:7a40] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin ? routed to IRQ 124
+	IOMMU group: 9
+	Bus: primary=00, secondary=03, subordinate=03, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: [disabled]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1b.4 PCI bridge [0604]: Intel Corporation Device [8086:7a44] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 125
+	IOMMU group: 10
+	Bus: primary=00, secondary=04, subordinate=04, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 93700000-937fffff [size=1M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.0 PCI bridge [0604]: Intel Corporation Device [8086:7a38] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 126
+	IOMMU group: 11
+	Bus: primary=00, secondary=05, subordinate=05, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 92400000-928fffff [size=5M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.2 PCI bridge [0604]: Intel Corporation Device [8086:7a3a] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin C routed to IRQ 127
+	IOMMU group: 12
+	Bus: primary=00, secondary=06, subordinate=06, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 93600000-936fffff [size=1M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.3 PCI bridge [0604]: Intel Corporation Device [8086:7a3b] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin D routed to IRQ 128
+	IOMMU group: 13
+	Bus: primary=00, secondary=07, subordinate=07, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 93300000-934fffff [size=2M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.4 PCI bridge [0604]: Intel Corporation Device [8086:7a3c] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 129
+	IOMMU group: 14
+	Bus: primary=00, secondary=08, subordinate=71, sec-latency=0
+	I/O behind bridge: 00005000-00007fff [size=12K]
+	Memory behind bridge: 64000000-920fffff [size=737M]
+	Prefetchable memory behind bridge: 0000006000000000-000000604a0fffff [size=1185M]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1d.0 PCI bridge [0604]: Intel Corporation Device [8086:7a30] (rev 11) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 130
+	IOMMU group: 15
+	Bus: primary=00, secondary=72, subordinate=72, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 93500000-935fffff [size=1M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1f.0 ISA bridge [0601]: Intel Corporation Device [8086:7a04] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	IOMMU group: 16
+
+00:1f.3 Audio device [0403]: Intel Corporation Device [8086:7a50] (rev 11)
+	DeviceName: Intel HD Audio
+	Subsystem: ASUSTeK Computer Inc. Device [1043:882a]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 32, Cache Line Size: 64 bytes
+	Interrupt: pin B routed to IRQ 231
+	IOMMU group: 16
+	Region 0: Memory at 604c120000 (64-bit, non-prefetchable) [size=16K]
+	Region 4: Memory at 604c000000 (64-bit, non-prefetchable) [size=1M]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel, snd_sof_pci_intel_tgl
+
+00:1f.4 SMBus [0c05]: Intel Corporation Device [8086:7a23] (rev 11)
+	DeviceName: SMBus Controller
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Interrupt: pin C routed to IRQ 18
+	IOMMU group: 16
+	Region 0: Memory at 604c128000 (64-bit, non-prefetchable) [size=256]
+	Region 4: I/O ports at efa0 [size=32]
+	Kernel driver in use: i801_smbus
+	Kernel modules: i2c_i801
+
+00:1f.5 Serial bus controller [0c80]: Intel Corporation Device [8086:7a24] (rev 11)
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8882]
+	Control: I/O- Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	IOMMU group: 16
+	Region 0: Memory at 60800000 (32-bit, non-prefetchable) [size=4K]
+
+01:00.0 Non-Volatile memory controller [0108]: SK hynix PC300 NVMe Solid State Drive 1TB [1c5c:1285] (prog-if 02 [NVM Express])
+	Subsystem: SK hynix PC300 NVMe Solid State Drive 1TB [1c5c:0000]
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 16
+	NUMA node: 0
+	IOMMU group: 17
+	Region 0: Memory at 93800000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: nvme
+	Kernel modules: nvme
+
+04:00.0 Non-Volatile memory controller [0108]: Toshiba Corporation Device [1179:0116] (prog-if 02 [NVM Express])
+	Subsystem: Toshiba Corporation Device [1179:0001]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 16
+	NUMA node: 0
+	IOMMU group: 18
+	Region 0: Memory at 93700000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: nvme
+	Kernel modules: nvme
+
+05:00.0 Ethernet controller [0200]: Aquantia Corp. Device [1d6a:94c0] (rev 03)
+	DeviceName: Intel WiFi 6E AX210
+	Subsystem: ASUSTeK Computer Inc. Device [1043:87f5]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 16
+	IOMMU group: 19
+	Region 0: Memory at 92800000 (64-bit, non-prefetchable) [size=512K]
+	Region 2: Memory at 928a0000 (64-bit, non-prefetchable) [size=4K]
+	Region 4: Memory at 92400000 (64-bit, non-prefetchable) [size=4M]
+	Expansion ROM at 92880000 [disabled] [size=128K]
+	Capabilities: <access denied>
+	Kernel driver in use: atlantic
+	Kernel modules: atlantic
+
+06:00.0 Network controller [0280]: Intel Corporation Device [8086:2725] (rev 1a)
+	Subsystem: Intel Corporation Device [8086:0024]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 18
+	IOMMU group: 20
+	Region 0: Memory at 93600000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: iwlwifi
+	Kernel modules: iwlwifi
+
+07:00.0 Ethernet controller [0200]: Intel Corporation Device [8086:125c] (rev 06)
+	DeviceName: Intel I226-V LAN
+	Subsystem: ASUSTeK Computer Inc. Device [1043:8867]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 19
+	IOMMU group: 21
+	Region 0: Memory at 93300000 (32-bit, non-prefetchable) [size=1M]
+	Region 3: Memory at 93400000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: igc
+	Kernel modules: igc
+
+08:00.0 PCI bridge [0604]: Intel Corporation Thunderbolt 4 Bridge [Maple Ridge 4C 2020] [8086:1136] (rev 02) (prog-if 00 [Normal decode])
+	Physical Slot: 8
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 131
+	IOMMU group: 22
+	Bus: primary=08, secondary=09, subordinate=71, sec-latency=0
+	I/O behind bridge: 00005000-00006fff [size=8K]
+	Memory behind bridge: 64000000-91efffff [size=735M]
+	Prefetchable memory behind bridge: 0000006000000000-000000604a0fffff [size=1185M]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+09:00.0 PCI bridge [0604]: Intel Corporation Thunderbolt 4 Bridge [Maple Ridge 4C 2020] [8086:1136] (rev 02) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 132
+	IOMMU group: 23
+	Bus: primary=09, secondary=0a, subordinate=0a, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: [disabled]
+	Prefetchable memory behind bridge: 000000604a000000-000000604a0fffff [size=1M]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+09:01.0 PCI bridge [0604]: Intel Corporation Thunderbolt 4 Bridge [Maple Ridge 4C 2020] [8086:1136] (rev 02) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 133
+	IOMMU group: 24
+	Bus: primary=09, secondary=0b, subordinate=3d, sec-latency=0
+	I/O behind bridge: 00005000-00005fff [size=4K]
+	Memory behind bridge: 7af00000-91dfffff [size=367M]
+	Prefetchable memory behind bridge: 0000006025000000-0000006049ffffff [size=592M]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+09:02.0 PCI bridge [0604]: Intel Corporation Thunderbolt 4 Bridge [Maple Ridge 4C 2020] [8086:1136] (rev 02) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 134
+	IOMMU group: 25
+	Bus: primary=09, secondary=3e, subordinate=3e, sec-latency=0
+	I/O behind bridge: [disabled]
+	Memory behind bridge: 91e00000-91efffff [size=1M]
+	Prefetchable memory behind bridge: [disabled]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+09:03.0 PCI bridge [0604]: Intel Corporation Thunderbolt 4 Bridge [Maple Ridge 4C 2020] [8086:1136] (rev 02) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 135
+	IOMMU group: 26
+	Bus: primary=09, secondary=3f, subordinate=71, sec-latency=0
+	I/O behind bridge: 00006000-00006fff [size=4K]
+	Memory behind bridge: 64000000-7aefffff [size=367M]
+	Prefetchable memory behind bridge: 0000006000000000-0000006024ffffff [size=592M]
+	Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- <SERR- <PERR-
+	BridgeCtl: Parity- SERR+ NoISA- VGA- VGA16+ MAbort- >Reset- FastB2B-
+		PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+0a:00.0 USB controller [0c03]: Intel Corporation Thunderbolt 4 NHI [Maple Ridge 4C 2020] [8086:1137] (prog-if 40 [USB4 Host Interface])
+	Subsystem: ASUSTeK Computer Inc. Device [1043:87f6]
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 16
+	IOMMU group: 27
+	Region 0: Memory at 604a000000 (64-bit, prefetchable) [size=256K]
+	Region 2: Memory at 604a040000 (64-bit, prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: thunderbolt
+	Kernel modules: thunderbolt
+
+3e:00.0 USB controller [0c03]: Intel Corporation Thunderbolt 4 USB Controller [Maple Ridge 4C 2020] [8086:1138] (prog-if 30 [XHCI])
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin ? routed to IRQ 211
+	IOMMU group: 28
+	Region 0: Memory at 91e00000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+
+72:00.0 Network controller [0280]: Qualcomm Atheros AR9285 Wireless Network Adapter (PCI-Express) [168c:002b] (rev 01)
+	Subsystem: Qualcomm Atheros AR9285 Wireless Network Adapter (PCI-Express) [168c:30a1]
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+	Interrupt: pin A routed to IRQ 16
+	IOMMU group: 29
+	Region 0: Memory at 93500000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: ath9k
+	Kernel modules: ath9k
+
+
+** USB devices:
+Bus 004 Device 007: ID 0b95:1790 ASIX Electronics Corp. AX88179 Gigabit Ethernet
+Bus 004 Device 006: ID 0bda:0411 Realtek Semiconductor Corp. Hub
+Bus 004 Device 005: ID 2109:0824 VIA Labs, Inc. USB3.1 Hub             Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 019: ID 8087:0032 Intel Corp. Bus 001 Device 038: ID 2109:8824 VIA Labs, Inc. USB Billboard Device   Bus 001 Device 032: ID 0bda:1100 Realtek Semiconductor Corp. HID Device
+Bus 001 Device 029: ID 08bb:29c3 Texas Instruments PCM2903C Audio CODEC
+Bus 001 Device 037: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port / Mobile Action MA-8910P
+Bus 001 Device 036: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port / Mobile Action MA-8910P
+Bus 001 Device 034: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port / Mobile Action MA-8910P
+Bus 001 Device 031: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port / Mobile Action MA-8910P
+Bus 001 Device 028: ID 0409:005a NEC Corp. HighSpeed Hub
+Bus 001 Device 035: ID 0403:6015 Future Technology Devices International, Ltd Bridge(I2C/SPI/UART/FIFO)
+Bus 001 Device 033: ID 0403:6001 Future Technology Devices International, Ltd FT232 Serial (UART) IC
+Bus 001 Device 039: ID 051d:0002 American Power Conversion Uninterruptible Power Supply
+Bus 001 Device 027: ID 1a40:0101 Terminus Technology Inc. Hub
+Bus 001 Device 026: ID 0bda:5411 Realtek Semiconductor Corp. RTS5411 Hub
+Bus 001 Device 025: ID 2109:2824 VIA Labs, Inc. USB2.0 Hub             Bus 001 Device 005: ID 0b05:19af ASUSTek Computer, Inc. AURA LED Controller
+Bus 001 Device 003: ID 05e3:0608 Genesys Logic, Inc. Hub
+Bus 001 Device 006: ID 0461:4d51 Primax Electronics, Ltd 0Y357C PMX-MMOCZUL (B) [Dell Laser Mouse]
+Bus 001 Device 004: ID 413c:2011 Dell Computer Corp. Multimedia Pro Keyboard
+Bus 001 Device 002: ID 413c:1005 Dell Computer Corp. Multimedia Pro Keyboard Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+
+-- System Information:
+Debian Release: 11.6
+   APT prefers stable-security
+   APT policy: (990, 'stable-security'), (990, 'stable'), (500, 'stable-updates'), (500, 'oldstable-updates'), (500, 'oldstable'), (200, 'unstable')
+Architecture: amd64 (x86_64)
+Foreign Architectures: i386
+
+Kernel: Linux 6.0.0-0.deb11.6-amd64 (SMP w/32 CPU threads; PREEMPT)
+Locale: LANG=C.UTF-8, LC_CTYPE=C.UTF-8 (charmap=UTF-8), LANGUAGE not set
+Shell: /bin/sh linked to /bin/bash
+Init: systemd (via /run/systemd/system)
+
+Versions of packages linux-image-6.0.0-0.deb11.6-amd64 depends on:
+ii  initramfs-tools [linux-initramfs-tool]  0.140
+ii  kmod                                    28-1
+ii  linux-base                              4.6
+
+Versions of packages linux-image-6.0.0-0.deb11.6-amd64 recommends:
+ii  apparmor             2.13.6-10
+ii  firmware-linux-free  20200122-1
+
+Versions of packages linux-image-6.0.0-0.deb11.6-amd64 suggests:
+pn  debian-kernel-handbook  <none>
+ii  grub-efi-amd64          2.06-3~deb11u5
+pn  linux-doc-6.0           <none>
+
+Versions of packages linux-image-6.0.0-0.deb11.6-amd64 is related to:
+ii  firmware-amd-graphics     20221214-3
+pn  firmware-atheros          <none>
+pn  firmware-bnx2             <none>
+pn  firmware-bnx2x            <none>
+pn  firmware-brcm80211        <none>
+pn  firmware-cavium           <none>
+pn  firmware-intel-sound      <none>
+pn  firmware-intelwimax       <none>
+pn  firmware-ipw2x00          <none>
+pn  firmware-ivtv             <none>
+ii  firmware-iwlwifi          20221214-3
+pn  firmware-libertas         <none>
+ii  firmware-linux-nonfree    20221214-3
+ii  firmware-misc-nonfree     20221214-3
+pn  firmware-myricom          <none>
+pn  firmware-netxen           <none>
+pn  firmware-qlogic           <none>
+ii  firmware-realtek          20210818-1~bpo11+1
+pn  firmware-samsung          <none>
+pn  firmware-siano            <none>
+pn  firmware-ti-connectivity  <none>
+pn  xen-hypervisor            <none>
+
+-- no debconf information
