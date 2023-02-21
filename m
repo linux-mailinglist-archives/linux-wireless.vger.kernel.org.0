@@ -2,76 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57AAE69DAA3
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 07:30:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0115169DC28
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 09:37:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232528AbjBUGaQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Feb 2023 01:30:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44200 "EHLO
+        id S233744AbjBUIhQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Feb 2023 03:37:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbjBUGaP (ORCPT
+        with ESMTP id S233772AbjBUIhJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Feb 2023 01:30:15 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2076241F4
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Feb 2023 22:30:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD8BB60F06
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 06:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9138EC433D2;
-        Tue, 21 Feb 2023 06:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676961013;
-        bh=3/5RD5Q4QPKkxlWdnuEfpgaax2HZxVoeKycfaYgHhbE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bLa9LLY7T+Q8Fz8r2NMtHd8hAJd2QOmNDtresOYqQftZ/jAKMJgV9RQB1c+uWqCQf
-         E1P/9ITuKJ87i9e/pY1/LYyxtTIoA6AujwkO/8kVomsj/wU20/pNAzMWSMWe6ZVu7W
-         ZYbrOSOMfn75M8GlhZv/vcQfhHtzfScXlnjuRsvvj99gQ4RbMV9VzcOx6w4/6gJkzg
-         Ib3cUj6/tT2lD+AcdieRtDUseKR8cUV1wXAZZ9bHAxSYTNdPvq5xysvsT62JcQbMsv
-         gF/Op/u92praN8hm74FRMN+XKE1QDQW1Tab3+EkggX96ZbdDpqD5nd/ADxpEFrlZGx
-         wstt9tPISkIoA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Howard Hsu <howard-yh.hsu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Ryder Lee <ryder.Lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] wifi: mt76: mt7915: rework init flow in mt7915_thermal_init()
-References: <20230221024317.3218-1-howard-yh.hsu@mediatek.com>
-Date:   Tue, 21 Feb 2023 08:30:08 +0200
-In-Reply-To: <20230221024317.3218-1-howard-yh.hsu@mediatek.com> (Howard Hsu's
-        message of "Tue, 21 Feb 2023 10:43:17 +0800")
-Message-ID: <87wn4b34zz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 21 Feb 2023 03:37:09 -0500
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592AA241F3
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 00:36:47 -0800 (PST)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id AD68683280; Tue, 21 Feb 2023 08:35:43 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1676968546; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=J/MPg26d6iXAwPOA+O+UnqRHA4NOgDJ4EAiOEvNVQpltrKHqw97bzsddlTxhCz3WE
+         hCDX+1wVPHVx3xWG3AwS/eY6DROelrS7QZIiowZSzqV8i1Q042GE0DTXZTIXh8arfp
+         ZPJr5O0812MR6wTa7X+YlG4DdbylyG6UUX9ZVde2+YwwNEPKh9p/fb2VHQqsqsueDu
+         2r6WGLi5KSPdSxe1uNEyPonepv1/H5qRCKlWi7rIo21hxE6QuUUYSOasVAs8WFfwXg
+         FSr6XalPTsi2cb5hK0yVDh39v1sANavAx/38jss4u8iYrh6PQCKxBh6dmNw0O3T9+F
+         5IP83/VZOZu8Q==
+Received: by mail.lokoho.com for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 08:35:41 GMT
+Message-ID: <20230221074501-0.1.45.15t8w.0.psnpjx96yj@lokoho.com>
+Date:   Tue, 21 Feb 2023 08:35:41 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Howard Hsu <howard-yh.hsu@mediatek.com> writes:
+Dzie=C5=84 dobry,
 
-> If kernel do not enable CONFIG_HWMON, it may cause thermal
-> initialization to be done with temperature value 0 and then can not
-> transmit. This commit fixes it by setting trigger/restore temperature
-> before checking CONFIG_HWMON.
->
-> Fixes: 7d12b38 ("wifi: mt76: mt7915: call mt7915_mcu_set_thermal_throttling() only after init_work")
-> Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Should this go to v6.3?
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+Pozdrawiam
+Adam Charachuta
