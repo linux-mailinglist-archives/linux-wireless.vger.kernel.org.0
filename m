@@ -2,408 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C993869E7E2
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 19:50:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C9B69E7FE
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 20:05:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjBUSuS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Feb 2023 13:50:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48268 "EHLO
+        id S229593AbjBUTFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Feb 2023 14:05:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjBUSuQ (ORCPT
+        with ESMTP id S229529AbjBUTFA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Feb 2023 13:50:16 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E152A17D
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 10:50:14 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id b12so21160627edd.4
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 10:50:14 -0800 (PST)
+        Tue, 21 Feb 2023 14:05:00 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4DE4ED6
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 11:04:55 -0800 (PST)
+X-UUID: 9ebd3742b21a11eda06fc9ecc4dadd91-20230222
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=1CtrMh2h/UfrmZTw6zukhHuDFfWN+D+h/yOnbmcv7Y4=;
+        b=G6r4upxgTaxpTU8hpio2L9+my326/WJWVrVlMMV7xBT/CaAGOzZ9XpF7ANzmDwB2dBnUTWZiWFPvKY34+BEm2llZVtrxGvHvWAcmaMyB/vi9kvdanRZYFkzr/9C/OhLAfxXV8sIbUC+IKKknmswgH3Xp/v02oiPL8c90+JHtddE=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.20,REQID:5968c809-8941-4285-8b9b-1603818ff77d,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:-5
+X-CID-INFO: VERSION:1.1.20,REQID:5968c809-8941-4285-8b9b-1603818ff77d,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+        elease,TS:-5
+X-CID-META: VersionHash:25b5999,CLOUDID:aba04426-564d-42d9-9875-7c868ee415ec,B
+        ulkID:230221175746DQHC8AQG,BulkQuantity:5,Recheck:0,SF:17|19|102,TC:nil,Co
+        ntent:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OS
+        A:0,AV:0
+X-CID-BVR: 0,NGT
+X-UUID: 9ebd3742b21a11eda06fc9ecc4dadd91-20230222
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1934867068; Wed, 22 Feb 2023 03:04:52 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Wed, 22 Feb 2023 03:04:50 +0800
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.239)
+ by mtkmbs10n1.mediatek.com (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.792.15 via Frontend Transport; Wed, 22 Feb 2023 03:04:50 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TF5cMNUKfsaiLrHGZbMDCDSZnYQVTQdPCvjsPEZPADj10qw6G6yo78as7Mt5PTYsafVeOLKbW0B+Q3F5QSrfbSo6pmAMiKBlFHob7OZUVTX0bU1Dm4aOb9dmDbp05OPjgXTWqIQ3s4Im1f3st/R4JhjmbbQuDtdKV62LkuWiemr99lpcH6Mod/P13tOtq2ERMnyK65Opp/WkxycU3FHTGB9/WzxkxqG8HFB/gODFKO7iVSP51p6lZyC8fbOxW0UNIBT7swavbhVkppvzMad7jAebX+CCJoVX45AeoxaByTKJi6zd0NjVBzzD+qykXx6zuKR5mOAaCJd64sfJ0OK6Ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1CtrMh2h/UfrmZTw6zukhHuDFfWN+D+h/yOnbmcv7Y4=;
+ b=MYXa0jWXL21SqA62E9DToMT70JNdjf/+xOXIQ3XCrH3rQRsCCMZGxSybd7GYj85CJjSJ5WeoRTJXG2cY5dX8Ite8dLV702l8uwkC4tUIqy04NUNyseEH1It7JHzEanpnhVWfeQfbR1oWjd/CQ30CDLM2GYM/U7KASLNc/bkSzd6PU548+J9CCdC1CNYB5jj7kU9LGmoJveivY2Hug95U9lsHDcen7KWQWU2bXW2ifwjbG1He4Qzzo6HBqZ8gC2nOkRTpOdaFXHH+j2J4cX8pXJzBxGp4fR/daA8MlpoMQ3cwWVUxsjSBt9mCajNIrQWqgF/vXHKtlZ61E/HydcgZ7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TLC/9kF1DqQ9l4xXuzoPfCO4YTCv5xfprbmyBxIcLc8=;
-        b=pnJfvegNq5MtILzCF72/51jR1U0LR71XF668QqzkMr2KzbkLBwiOwcGZv0it8266vG
-         5nbgfmyonI2RCaO2xEaTqMcmFPLxszpufPuFrjpWHMC+OEXn7PHwGZcxqdylW6ZqZGmP
-         lhfyneXrUdKjnbn1RBzocdq/tlp0NAbRTwk/XGNS6CrGNxeDpIu/FmgazL7GQBIWM8dE
-         XpHnUfX1Wwok3MEZIPWkjMo/gZh5UZ72O9b99bnpLIov6bEgcv1A957cbCwiDVH403Ys
-         ccilWdrjaEApTP/Yyc+E4q7KhLARvtnsI8nDdRKcx92IAmbjU2XXcE3ueylW4T6m4ev9
-         ddeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TLC/9kF1DqQ9l4xXuzoPfCO4YTCv5xfprbmyBxIcLc8=;
-        b=wPwPnm6JYt0XrYysXa5hAFd+wmLWm5l3TD8AU5uJDPaC3P3MJwBcAO13NJqZn8H02W
-         iEQQVq1lTxqfpd+QyV5u3bgu6/ULYNNI6LRzDbakeynCZx1O2PaM/6Yyr+5ApB6gPDJL
-         sWF2u7tw5SqJAhCxG0lFbfiY+jcCnDNTjuG19nTBumSfakJ+vAtKXPfERFtVy1MW5AaA
-         1ayGSliRylHq6So19+ITq1ThcPaKzIHBKP8iy6PV4AHMVLff4EAgH2F8IutRWtYBR8u6
-         +7olQJ4FOGNkmgB2Jqeuj6TWR6PaxXh3+llsgA9ISvQTljwC9kJpQ7WVcBKWtkbSG3th
-         EgZA==
-X-Gm-Message-State: AO0yUKUFgn9o63p/m1EVRhlLBvR+23nd5OorjIorCXWOHd4iOuAr/ttT
-        KPcqyQFFAlwQLeK/6n4Mi7o=
-X-Google-Smtp-Source: AK7set+UxyR5WeYX+2uiEJrGGGl7+XiZY+PIcAMn24Cch+kJIhz290t6u66L2c8tAt2WpRaZjSDVGg==
-X-Received: by 2002:aa7:c6d7:0:b0:4ab:4676:f92f with SMTP id b23-20020aa7c6d7000000b004ab4676f92fmr4329949eds.37.1677005413189;
-        Tue, 21 Feb 2023 10:50:13 -0800 (PST)
-Received: from [192.168.1.50] ([79.119.240.25])
-        by smtp.gmail.com with ESMTPSA id u13-20020aa7d88d000000b004ab4c28a967sm2276411edq.44.2023.02.21.10.50.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Feb 2023 10:50:12 -0800 (PST)
-Message-ID: <1de98de1-1c54-b6b1-b394-cafe8fa4d5f8@gmail.com>
-Date:   Tue, 21 Feb 2023 20:49:30 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH] wifi: rtl8xxxu: Support new chip RTL8710BU aka RTL8188GU
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
-References: <5a9a264d-a59b-0d91-04f0-e5b38e6aaea0@gmail.com>
- <85c6facc8d0947e38668ed9b5f61bc48@realtek.com>
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1CtrMh2h/UfrmZTw6zukhHuDFfWN+D+h/yOnbmcv7Y4=;
+ b=MxwvXshheyTuraitMAmG4y62tbtRuwG1xcPRcrqogqRL8cEHOPJxrDrDrn1v4IwmpFm0HIHhZCqNpmKs0+/NDIn0hJtZz9U5WcGwkhmSMz0UhykV2OLxb7N38HVGC3dwO6gZ/dsZfPTOF2kEfir0yQWAl2jng06yfHyh02dGmao=
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com (2603:1096:400:14a::9)
+ by TYZPR03MB6819.apcprd03.prod.outlook.com (2603:1096:400:201::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.21; Tue, 21 Feb
+ 2023 19:04:49 +0000
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::cdcc:fb2c:cc34:8360]) by TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::cdcc:fb2c:cc34:8360%8]) with mapi id 15.20.6111.021; Tue, 21 Feb 2023
+ 19:04:49 +0000
+From:   Ryder Lee <Ryder.Lee@mediatek.com>
+To:     "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+CC:     =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= 
+        <Shayne.Chen@mediatek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        =?utf-8?B?RXZlbHluIFRzYWkgKOiUoeePiumIuik=?= 
+        <Evelyn.Tsai@mediatek.com>
+Subject: Re: [PATCH 1/2] wifi: mac80211: introduce
+ ieee80211_refresh_tx_agg_session_timer()
+Thread-Topic: [PATCH 1/2] wifi: mac80211: introduce
+ ieee80211_refresh_tx_agg_session_timer()
+Thread-Index: AQHZQvhNg/XMHPbh9UaJA+rO7kUbpq7TbbAAgAALzICAAALQgIAAAn+AgAOo34CAAAswgIAB/Q4AgACY4QA=
+Date:   Tue, 21 Feb 2023 19:04:48 +0000
+Message-ID: <3519e733bb3ba72b307a9fe6f92086f9fbd6fb63.camel@mediatek.com>
+References: <7c3f72eac1c34921cd84a462e60d71e125862152.1676616450.git.ryder.lee@mediatek.com>
+         <44f956b493e33bf394b2947b77e7c86f394b28ed.camel@sipsolutions.net>
+         <fea6defb05d0f39d99bce96ea22e8c92d1a939ab.camel@mediatek.com>
+         <fb3ab2d925fdeae2e7cc778419c1476102b9f85f.camel@sipsolutions.net>
+         <56190740441a6740e9edf761ab2167edc51f20c3.camel@mediatek.com>
+         <c05a8b20b5d4429b1c42ef2398ff2bf760bd7eae.camel@mediatek.com>
+         <ed37dd9cfba8d0ec7b50f932742156aaa57843e9.camel@mediatek.com>
+         <a3f50c4b4e75ff53a5611c3ef2d6345d4324cedb.camel@sipsolutions.net>
+In-Reply-To: <a3f50c4b4e75ff53a5611c3ef2d6345d4324cedb.camel@sipsolutions.net>
+Accept-Language: en-US
 Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <85c6facc8d0947e38668ed9b5f61bc48@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY0PR03MB6354:EE_|TYZPR03MB6819:EE_
+x-ms-office365-filtering-correlation-id: f69714d1-fe13-4e60-d903-08db143e80ff
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 9mihOORFJzW+nPx7S7BeUsApypYP6av4xh7KRyfZakuJSi3Jr2Y8n3sg2AEB1PaRbvuJBIQaYQ3geGqYPK1YtQcmD2Ze6NfhzA7eFNx7WHbuvu1TeF3yK8rS6HPWEW/K135skKT8rTo/3vc7u0J4iHLeVqdX37KTpqiDg93PouiC6zBvKJHTkZsn1ok+bPmVkunfeDE0QrUsCcz1JdQ3gxdMOJ/oHsjG+tDHodxNEQhuSIignk2uOtyuz3Gp65xEEibRzfQLGfG8poELYjVyKlj1O0QHQwx7/jduwJoEmIIQxa/e5BMU+XuNug1EilRitqebOv59EL7kRyVmrGi0LdNO65ooOu4pvQwQi7pmZigQFjSM1P5He3HSxgk4SSe9avnG3pz5dVqYISbDLvYnRtnvxW1Pp42Y0Axqmf24WdzzSwzdAPbSXLQMXYRRX2v+M+mAtfqLZRAl+YKzfqxsYX3b99pqrJYYwNacdNHOTVD7EVgKyhDmVgE+fMTdyT7fO6Gy+7L16gm6jBCyNbfRDdtNy/IVIqJ2r7RcCE7XVpdG/7bjetHOO+qi/faoq6k4p7FBXi+AKTzd0mJTuLUH83If+lCRmm1LScZGrs9HE5nwGH4aQJ9d6vwXtk+lnZ8b96KklIEQ3px2Zj9eWDdPEwVVo15q/CO6h1w36jPDIhNEJ+4O/haZb1x2ccteeWRAwGDuBc8mQeOmWHz5ekitTw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY0PR03MB6354.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(396003)(136003)(366004)(346002)(39860400002)(451199018)(2906002)(41300700001)(316002)(83380400001)(5660300002)(4744005)(36756003)(8936002)(86362001)(91956017)(66476007)(66446008)(6916009)(4326008)(8676002)(64756008)(38070700005)(76116006)(66946007)(66556008)(122000001)(38100700002)(54906003)(107886003)(71200400001)(2616005)(6512007)(6506007)(186003)(26005)(6486002)(478600001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MHJwZ2hkc2ZINEtUN0NPMnVaWW12eER0UWxsRUJoY0NNb2dnZjB3N015KzVB?=
+ =?utf-8?B?Qnkzc202SGVhN092RE95VVZUVTlhc2Q3Y01hMlNCY2pFL0FVSUlrZnF3MG41?=
+ =?utf-8?B?YXJEbWRjeENLN0hsMEFES1pwd0RQN25hUGZMMmEzakFpaVlJK1ozR0ZNWmc1?=
+ =?utf-8?B?ekN4eUxXbnZJRmk3bENwMVgxbi9sWFh6Y3JmeW5KV2JMVm9yS2dqaG1VcWNT?=
+ =?utf-8?B?WDhLeEVCaWlUcU1SY1E1VDJnTm9tUmlRa1R3Sm42aGtveG9NU3dhWUJTZUx4?=
+ =?utf-8?B?Z2ljZzFVdEZuTGd4ZkR4K1hqNElISjlRYjYrdTlrTFB2VFFXT1RMbDVaMFRn?=
+ =?utf-8?B?UkRzOXFCbTRIR2N5SnRBZEZRajJrU21EcjdOYXk3OWhOZjluL2xpNWl0a20v?=
+ =?utf-8?B?TUdUY2lWZjNFOWJhNFd2dW9XSEhPeGRIZHFkMnNubTB1d2dtWDYwZjZhdzQ2?=
+ =?utf-8?B?NU5BR3BhVXJwbXltd0ZKY3lqUk5VbjMyV2c2MjBEUVBZUHA2SGdmNWhyOHBi?=
+ =?utf-8?B?NWE2VGhqNlJxNTBIUEx6YWJTK1I4QU1HNVc2RVljTzRuMGc4Z0tLSEhHdHlm?=
+ =?utf-8?B?Q2YxWk40aEEvS2xLRkVJTENVQ2ZKcnhOWldFazQveVAzUzhpekdHbFdkTEhr?=
+ =?utf-8?B?b0d5Qm10RmhNeGt0cTg0Z2NGdVcxOE41K2tDT2FUV1NrTUFWeGV5eVhTUVpX?=
+ =?utf-8?B?bWFTWS9BcktBMFZZd25kU3QrSUoxRi9uU3FPMmNXMWNQRGlodUtDaU5zaXZi?=
+ =?utf-8?B?em9JQTZMRWh6eENzR1E1d1ZLa1FITEkyaWc4TzNpU1dsemxDVTJsZXVDRXUz?=
+ =?utf-8?B?RFJSdnYydHBIU1BpcE9XU2FDNkdoNnljb1llcUIySGdPUVNTU2pVZUNqR1Nx?=
+ =?utf-8?B?b0l1SFlkM0g4UUNWU093bUpQMlRERkFSN1dIMVhYQkliUTRRWFAwVlhjdVAz?=
+ =?utf-8?B?L2w3ODNXN1J0dnlkZW5LaVlEa1YzeFFzTFFIZUhYK2dwampla0t3QWZsZUtP?=
+ =?utf-8?B?bGpKR1E1TFBGUUt6YmxUZVdJNnN4dWQ4Wm82UmZNcitVZTkvM2UxQ3pNbC96?=
+ =?utf-8?B?QlpsTGg2RzMvU2FsRUR2SzV1aFdHbkFxRC9nV21TU1hyNWVkMUxMdGhYc2Ni?=
+ =?utf-8?B?ZGRBYkVNVkVsRVQ0YWR2eHFHU2RXZ0Y4Y0VjeDNTdzZjdkdIRjZLb09jVUls?=
+ =?utf-8?B?UCsvZXZLMmRTQllQM293cnpqUXJTNnU3UCtpSjJ6dElINU9OOE10blNKTXd5?=
+ =?utf-8?B?ZnhBNWR6cCsva2FZU0h2Rm1Bc2p5SWZqS2tkMjF6eFlqVm1CYkVmb3lVQVJq?=
+ =?utf-8?B?K0pBMVNlUjdCNjJwYlpZdU5iQ0sxa1dGYVgzSkVhZFQvUzdyYSttVW1lbTFC?=
+ =?utf-8?B?NWJ4L3R5eDd4dUdIR0IybjVwL1lDV0pBcGtFR1JGVzJqWnFPczZtQ1A1MWhG?=
+ =?utf-8?B?Q2tlOTZjRUpYREpmWWQ5QXBsVlZ6L3FkdjRmOTZnSVdkWnVpSHFYL3RaSVha?=
+ =?utf-8?B?MlJKbjVDdUtTeG5YSFUwVzA2czZldW9mV05LQ0pzOWlGVkZrNXlMczZwNGNm?=
+ =?utf-8?B?Wk50QUkycTRsY0s0MitJVU5mQ2MrSytkeWlURGZvWGFNSE5LWUFtVVpiRVQr?=
+ =?utf-8?B?b0ozNllWSEgrYzg0dHdvK09XbzJKQ3JRQlo2UWJMck1mK3RDbEJYTTQ0Yjly?=
+ =?utf-8?B?b3BOeFFLOUplb05YcmREd0RYVVVJbUtYZGUrYVFTZVhRRndaNHZBbUhZdTdq?=
+ =?utf-8?B?UVY5dlQrRHFURnFIRzJkQVBzd0tlc2grUnNCckhJZExmbERvUE5vaU8xdEVj?=
+ =?utf-8?B?RU9WRGJJeDN3dDNYbmF3ZzhZUlY0YUhvQ0JlVG5jb2VlRDA1MWF2OGs2UzJq?=
+ =?utf-8?B?TnJkQ2s1ZmdCT0RnVEJZdVIwcjBNdU84SEZvU2FCNmF2a25qTExUMTNUdEY0?=
+ =?utf-8?B?bUlFb2swUWNTbDVTNUlFM0Y0VmkrZWM2YmF4NEUxUGxGRHN3YXV2ZVBsay9o?=
+ =?utf-8?B?OXRHNkpybnNpc0IxK0ZYRnpnc04yYmExc2JxSXNGQWc5UmdhTm9BL0VLeXlE?=
+ =?utf-8?B?VXE3dnB0Z1YxWHFveldJV3l0RElIZ29VNDRXS0d4Mm9PeEtBYXZ2bkpoOXF5?=
+ =?utf-8?B?UmxiV0hUN2V1Y0tzNTM2bm1QZjhXT2RZVlNEdE9mNElQK2EvNkIyaHNuUzU3?=
+ =?utf-8?B?UFE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <65A9D67F78E72845BA71ABFCA408F72E@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY0PR03MB6354.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f69714d1-fe13-4e60-d903-08db143e80ff
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2023 19:04:48.7210
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: B6s/ykQlHT6IndvgeczEDtIBdg/Px9I53VIocL5DY0vInGcYAVQxycK8P2wabFbQt1Mg+g5PF2AcCyLLV4ruaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB6819
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 21/02/2023 04:45, Ping-Ke Shih wrote:
-> 
-> 
->> -----Original Message-----
->> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> Sent: Tuesday, February 21, 2023 12:11 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>
->> Subject: [PATCH] wifi: rtl8xxxu: Support new chip RTL8710BU aka RTL8188GU
->>
->> This chip is found in cheap "free driver" USB adapters from Aliexpress.
->> Initially they pretend to be a CD-ROM containing the driver for Windows.
->> "Ejecting" switches the device to wifi mode.
->>
->> Features: 2.4 GHz, b/g/n mode, 1T1R, 150 Mbps.
->>
->> This chip is more unique than other Realtek chips:
->>
->> * The registers at addresses 0x0-0xff, which all the other chips use,
->>   can't be used here. New registers at 0x8000-0x80ff must be used
->>   instead. And it's not a simple matter of adding 0x8000: 0x2
->>   (REG_SYS_FUNC) became 0x8004, 0x80 (REG_MCU_FW_DL) became 0x8090,
->>   etc.
->>
->> * Also there are a few new registers which must be accessed indirectly
->>   because their addresses don't fit in 16 bits. No other chips seem to
->>   have these.
->>
->> * The vendor driver compiles to 8188gu.ko, but the code calls the chip
->>   RTL8710B(U) pretty much everywhere, including messages visible to the
->>   user.
->>
->> Another difference compared to the other chips supported by rtl8xxxu is
->> that it has a new PHY status struct, or three of them actually, from
->> which we extract the RSSI, among other things. This is not unique,
->> though, just new. The chips supported by rtw88 also use it.
->>
->> This was tested with a device from vendor SMIC with romver 1. It's
->> possible devices from vendor UMC and/or with romver 2 will fail to
->> upload the firmware. The vendor driver has that problem.
-> 
-> Can I know the version of vendor driver you use? 
-> 
-I have v5.2.20.2_28373.20180619 from here:
-https://github.com/McMCCRU/rtl8188gu
-
-Most likely it's a copy of Larry Finger's repo--with some fixes,
-because the driver Larry Finger received from Realtek had some problems
-(unrelated to the firmware upload issue).
-https://github.com/lwfinger/rtl8188gu
-
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>  drivers/net/wireless/realtek/rtl8xxxu/Kconfig |    2 +-
->>  .../net/wireless/realtek/rtl8xxxu/Makefile    |    2 +-
->>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  304 ++-
->>  .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |    2 +
->>  .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |    4 +-
->>  .../realtek/rtl8xxxu/rtl8xxxu_8192c.c         |    2 +
->>  .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         |    2 +
->>  .../realtek/rtl8xxxu/rtl8xxxu_8710b.c         | 1942 +++++++++++++++++
->>  .../realtek/rtl8xxxu/rtl8xxxu_8723a.c         |    2 +
->>  .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |    2 +
->>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  181 +-
->>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   43 +
->>  12 files changed, 2435 insertions(+), 53 deletions(-)
->>  create mode 100644 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
->>
-> 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> index c8cee4a24755..2e5fa9479134 100644
->> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
->> @@ -103,7 +103,8 @@ enum rtl8xxxu_rtl_chip {
->>         RTL8822B = 0x8822b,
->>         RTL8703B = 0x8703b,
->>         RTL8195A = 0x8195a,
->> -       RTL8188F = 0x8188f
->> +       RTL8188F = 0x8188f,
->> +       RTL8710B = 0x8710b
-> 
-> Add a trailing comma, and then you don't need to stir the last line when adding
-> an new chip in the future.
-> 
-> [...]
-> 
->>  struct rtl8xxxu_reg8val {
->>         u16 reg;
->>         u8 val;
->> @@ -1486,6 +1769,7 @@ struct rtl8xxxu_priv {
->>         struct rtl8723au_idx ht20_tx_power_diff[RTL8723B_TX_COUNT];
->>         struct rtl8723au_idx ht40_tx_power_diff[RTL8723B_TX_COUNT];
->>         struct rtl8xxxu_power_base *power_base;
->> +       u8 package_type;
->>         u32 chip_cut:4;
->>         u32 rom_rev:4;
->>         u32 is_multi_func:1;
->> @@ -1505,6 +1789,7 @@ struct rtl8xxxu_priv {
->>         u32 ep_tx_low_queue:1;
->>         u32 rx_buf_aggregation:1;
->>         u32 cck_agc_report_type:1;
->> +       u32 cck_new_agc:1;
->>         u8 default_crystal_cap;
->>         unsigned int pipe_interrupt;
->>         unsigned int pipe_in;
->> @@ -1523,6 +1808,8 @@ struct rtl8xxxu_priv {
->>
->>         struct mutex h2c_mutex;
->>
->> +       struct mutex syson_indirect_access_mutex;
->> +
-> 
-> I remember checkpatch will warn if you don't add a comment for mutex/lock.
-> Though the naming is clear, just follow the rule.
-> 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
->> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
->> new file mode 100644
->> index 000000000000..d80125157514
->> --- /dev/null
->> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
-> 
-> [...]
-> 
->> +static u32 rtl8710b_indirect_read32(struct rtl8xxxu_priv *priv, u32 addr)
->> +{
->> +       struct device *dev = &priv->udev->dev;
->> +       u32 val32, value = 0xffffffff;
->> +       u8 polling_count = 0xff;
->> +
->> +       if (addr & 3) {
->> +               dev_warn(dev, "%s: Aborting because 0x%x is not a multiple of 4.\n",
->> +                        __func__, addr);
->> +               return value;
->> +       }
->> +
->> +       mutex_lock(&priv->syson_indirect_access_mutex);
->> +
->> +       rtl8xxxu_write32(priv, REG_USB_HOST_INDIRECT_ADDR_8710B, addr);
->> +       rtl8xxxu_write32(priv, REG_EFUSE_INDIRECT_CTRL_8710B, NORMAL_REG_READ_OFFSET);
->> +
->> +       do
->> +               val32 = rtl8xxxu_read32(priv, REG_EFUSE_INDIRECT_CTRL_8710B);
->> +       while ((val32 & BIT(31)) && (--polling_count > 0));
-> 
-> Without a pair of brace, that looks a little odd to me, but the result should
-> be correct.
-> 
-I think the rule is that we should not use braces when there is a single
-line inside. I assumed that applies to do...while loops too.
-
-> [...]
-> 
->> +static int rtl8710bu_identify_chip(struct rtl8xxxu_priv *priv)
->> +{
->> +       struct device *dev = &priv->udev->dev;
->> +       u32 cfg0, cfg2, vendor;
->> +       u8 package_type = 0x7; /* a nonsense value */
->> +       int ret = 0;
-> 
-> No need '=0'. Even, don't need 'ret'. 
-> Just return rtl8xxxu_config_endpoints_no_sie();
-> 
-> [...]
-> 
->> +
->> +       ret = rtl8xxxu_config_endpoints_no_sie(priv);
->> +
->> +       return ret;
->> +}
->> +
->> +static void rtl8710b_revise_cck_tx_psf(struct rtl8xxxu_priv *priv, u8 channel)
->> +{
->> +       if (channel == 13) {
->> +               /* Normal values */
->> +               rtl8xxxu_write32(priv, REG_CCK0_TX_FILTER2, 0x64B80C1C);
->> +               rtl8xxxu_write32(priv, REG_CCK0_DEBUG_PORT, 0x00008810);
->> +               rtl8xxxu_write32(priv, 0xaac, 0x01235667);
-> 
-> 0xaac is another TX filter, so
-> #define REG_CCK0_TX_FILTER3		0x0aac
-> 
->> +               /* Special value for channel 13 */
->> +               rtl8xxxu_write32(priv, REG_CCK0_TX_FILTER1, 0xd1d80001);
->> +       } else if (channel == 14) {
->> +               /* Special values for channel 14 */
->> +               rtl8xxxu_write32(priv, REG_CCK0_TX_FILTER2, 0x0000B81C);
->> +               rtl8xxxu_write32(priv, REG_CCK0_DEBUG_PORT, 0x00000000);
->> +               rtl8xxxu_write32(priv, 0xaac, 0x00003667);
->> +               /* Normal value */
->> +               rtl8xxxu_write32(priv, REG_CCK0_TX_FILTER1, 0xE82C0001);
->> +       } else {
->> +               /* Restore normal values from the phy init table */
->> +               rtl8xxxu_write32(priv, REG_CCK0_TX_FILTER2, 0x64B80C1C);
->> +               rtl8xxxu_write32(priv, REG_CCK0_DEBUG_PORT, 0x00008810);
->> +               rtl8xxxu_write32(priv, 0xaac, 0x01235667);
->> +               rtl8xxxu_write32(priv, REG_CCK0_TX_FILTER1, 0xE82C0001);
->> +       }
->> +}
->> +
-> 
-> [...]
-> 
->> +static int rtl8710b_read_efuse(struct rtl8xxxu_priv *priv)
->> +{
->> +       struct device *dev = &priv->udev->dev;
->> +       int i, ret = 0;
-> 
-> move these two downward to 'val32'. Declarations should be in reverse
-> Xmas tree order.
-> 
->> +       u8 val8, word_mask, header, extheader;
->> +       u16 efuse_addr, offset;
->> +       u32 val32;
->> +
->> +       val32 = rtl8710b_read_syson_reg(priv, REG_SYS_EEPROM_CTRL0_8710B);
->> +       priv->boot_eeprom = u32_get_bits(val32, EEPROM_BOOT);
->> +       priv->has_eeprom = u32_get_bits(val32, EEPROM_ENABLE);
->> +
-> 
-> [...]
-> 
->> +static int rtl8710bu_active_to_lps(struct rtl8xxxu_priv *priv)
->> +{
->> +       struct device *dev = &priv->udev->dev;
->> +       u8 val8;
->> +       u16 val16;
->> +       u32 val32;
->> +       int retry, retval;
->> +
->> +       /* Tx Pause */
->> +       rtl8xxxu_write8(priv, REG_TXPAUSE, 0xff);
->> +
->> +       retry = 100;
->> +       retval = -EBUSY;
->> +       /*
->> +        * Poll 32 bit wide REG_SCH_TX_CMD for 0x00000000 to ensure no TX is pending.
->> +        */
->> +       do {
->> +               val32 = rtl8xxxu_read32(priv, REG_SCH_TX_CMD);
->> +               if (!val32) {
->> +                       retval = 0;
->> +                       break;
->> +               }
->> +               udelay(10);
->> +       } while (retry--);
->> +
->> +       if (!retry) {
->> +               dev_warn(dev, "Failed to flush TX queue\n");
->> +               retval = -EBUSY;
->> +               return retval;
->> +       }
->> +
->> +       /* Disable CCK and OFDM, clock gated */
->> +       val8 = rtl8xxxu_read8(priv, 0x02);
->> +       val8 &= ~BIT(0);
->> +       rtl8xxxu_write8(priv, 0x02, val8);
-> 
-> rtl8xxxu has already defined these:
-> 
-> #define REG_SYS_FUNC			0x0002
-> #define  SYS_FUNC_BBRSTB		BIT(0)
-> #define  SYS_FUNC_BB_GLB_RSTN		BIT(1)
-> >> +
->> +       udelay(2);
->> +
->> +       /*Whole BB is reset*/
->> +       val8 = rtl8xxxu_read8(priv, 0x02);
->> +       val8 &= ~BIT(1);
->> +       rtl8xxxu_write8(priv, 0x02, val8);
->> +
->> +       /* Reset MAC TRX */
->> +       val16 = rtl8xxxu_read16(priv, REG_CR);
->> +       val16 &= 0xff00;
->> +       val16 |= CR_HCI_RXDMA_ENABLE | CR_HCI_TXDMA_ENABLE;
->> +       val16 &= ~CR_SECURITY_ENABLE;
->> +       rtl8xxxu_write16(priv, REG_CR, val16);
->> +
->> +       /*Respond TxOK to scheduler*/
->> +       val8 = rtl8xxxu_read8(priv, REG_DUAL_TSF_RST);
->> +       val8 |= DUAL_TSF_TX_OK;
->> +       rtl8xxxu_write8(priv, REG_DUAL_TSF_RST, val8);
->> +
->> +       return retval;
->> +}
-> 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->> index 620a5cc2bfdd..e223ef852899 100644
->> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> 
-> [...]
-> 
->> @@ -1904,41 +1929,54 @@ static int rtl8xxxu_download_firmware(struct rtl8xxxu_priv *priv)
->>  {
->>         int pages, remainder, i, ret;
->>         u8 val8;
->> -       u16 val16;
->> +       u16 val16, reg_mcu_fw_dl;
-> 
-> nit: define reg_mcu_fw_dl separately 
-> 
->>         u32 val32;
->>         u8 *fwptr;
->>
->> -       val8 = rtl8xxxu_read8(priv, REG_SYS_FUNC + 1);
->> -       val8 |= 4;
->> -       rtl8xxxu_write8(priv, REG_SYS_FUNC + 1, val8);
->> +       if (priv->rtl_chip == RTL8710B) {
->> +               reg_mcu_fw_dl = REG_8051FW_CTRL_V1_8710B;
->> +       } else {
->> +               reg_mcu_fw_dl = REG_MCU_FW_DL;
->>
-> 
-> [...]
-> 
-> Only some small suggestions.
-> Thanks for this nice work. 
-> 
-> Ping-Ke
-> 
-Thank you for your review. I'll make the changes.
+T24gVHVlLCAyMDIzLTAyLTIxIGF0IDEwOjU3ICswMTAwLCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0K
+PiBIaSwNCj4gDQo+ID4gPiA+IFNpbmNlIHRoZXJlJ3Mgbm8gYW55IGtlZXAgYWxpdmUgcGFja2V0
+IGJlaW5nIHJlY2VpdmVkIGJ5IGhvc3QNCj4gPiA+ID4gc3RhY2ssIGxlYWRzIHRvIG1hYzgwMjEx
+IGRlc3Ryb3J5IEJBIHNlc2lvbi4NCj4gPiA+ID4gDQo+ID4gPiANCj4gPiA+IE1vcmUgc3BlY2lm
+aWNhbGx5LCB0aGUgQkEgc2Vzc2lvbiByZWxpZXMgb24gY2xpZW50IHNpZGUncyBUeCBkYXRhDQo+
+ID4gPiB0bw0KPiA+IA0KPiA+IFR5cG8uLi4gSSBtZWFuICpvdXIgc2lkZSouIFNvbWV0aGluZyBs
+aWtlIHRoaXMNCj4gDQo+IFNvcnJ5LiBJJ20ganVzdCB0b3RhbGx5IGNvbmZ1c2VkIC0gSSB0aG91
+Z2h0IHRoZSBpbml0aWF0b3Igb25seSBzZXQNCj4gdGhlDQo+IHRpbWVvdXQsIGJ1dCBJIHNlZSBu
+b3cgdGhhdCBpdCdzIG5lZ290aWF0ZWQgYW5kIHRoZSBhY3R1YWwgdmFsdWUgdXNlZA0KPiBpcw0K
+PiBmcm9tIHRoZSBjbGllbnQuDQo+IA0KPiBXaGljaCBleHBsYWlucyBiYXNpY2FsbHkgZXZlcnl0
+aGluZy4NCj4gDQo+IA0KDQpZdXAgLi4uIGFmdGVyIGFjY2VwdGluZyB0aGUgQWRkQkEgUmVzcG9u
+c2Ugd2UgYWN0aXZhdGVkIGEgdGltZXIsDQoqcmVzZXR0aW5nIGl0IGFmdGVyIGVhY2ggZnJhbWUg
+dGhhdCB3ZSBzZW5kKiAtDQpzdGFfdHhfYWdnX3Nlc3Npb25fdGltZXJfZXhwaXJlZCgpLg0KDQpU
+aGUgLm5ldF9maWxsX2ZvcndhcmRfcGF0aCgpIG9mZmxvYWRzIHR4IHBhdGggdG8gSFcsIHNvIGl0
+IGNhbiBvbmx5DQpyZWx5IG9uIG90aGVyIHdheSB0byByZXNldCBhcyBtYWM4MDIxMSBpc24ndCBh
+d2FyZSBvZiB0aGF0Lg0KDQpSeWRlcg0KDQoNCg==
