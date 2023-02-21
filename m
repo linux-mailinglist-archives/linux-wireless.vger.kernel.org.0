@@ -2,102 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6672969DE8B
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 12:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70AB969E007
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Feb 2023 13:15:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233977AbjBULOJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Feb 2023 06:14:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41460 "EHLO
+        id S233908AbjBUMPF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Feb 2023 07:15:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233769AbjBULOF (ORCPT
+        with ESMTP id S233620AbjBUMPE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Feb 2023 06:14:05 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DE392330F
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 03:14:03 -0800 (PST)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31LBE0t0023035;
-        Tue, 21 Feb 2023 11:14:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=jSBIsB1MGHSpt+XQlcKSWmuzGa/OIRJIiDbQir1/xZE=;
- b=EYe2KILjIXP1wOxysKWHZr4M4OftVs+ZGAj8EqjkzfzZDAZugdVhFYLdYlc0Dya51xxL
- cS+h5PUtOFdorlgYpsKnVquOWxD1Lvg9UtRebMJ9+MPsHwM+TBYLfJ8jt/Hwd1qQSGPO
- O0edjuDxD90KEe2PP32u42NAf3dUyInkmiOEqPNnw+UVyhHWQeYwPUI+Dn7ieuAVupL+
- lTL3sX61DrVUabN/HmiIJ9Pb0Y8C37kqg5gjbAGpUwZ9xtYLJ7rl+RBDKIXCJmJ6K0t8
- XifhkAAVoTSfDkEDw01JimB1+PH33ITsCbbaitAEJouauQhGyLqkfdukQ6y86dcJjY1u zg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nvp4v0xcg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 21 Feb 2023 11:14:00 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31LBDmwQ016720
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 21 Feb 2023 11:13:48 GMT
-Received: from [10.110.58.30] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 21 Feb
- 2023 03:13:47 -0800
-Message-ID: <16b0fcce-01ff-3d55-14ca-f088f53c8724@quicinc.com>
-Date:   Tue, 21 Feb 2023 16:43:42 +0530
+        Tue, 21 Feb 2023 07:15:04 -0500
+X-Greylist: delayed 1247 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 21 Feb 2023 04:14:35 PST
+Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DFE265A8;
+        Tue, 21 Feb 2023 04:14:33 -0800 (PST)
+Received: from isilmar-4.linta.de (isilmar.linta [10.0.0.1])
+        by isilmar-4.linta.de (Postfix) with ESMTP id 41B8F2014EC;
+        Tue, 21 Feb 2023 11:37:28 +0000 (UTC)
+Date:   Tue, 21 Feb 2023 12:37:08 +0100
+From:   Helmut Grohne <helmut@subdivi.de>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-wireless@vger.kernel.org,
+        Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>, netdev@vger.kernel.org,
+        1029116@bugs.debian.org
+Subject: [PATCH] wifi: mt76: mt7921: correctly handle removal in the absence
+ of firmware
+Message-ID: <Y/Ss5LYSYG2M7jSq@alf.mars>
+Mail-Followup-To: Helmut Grohne <helmut@subdivi.de>,
+        Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>, linux-wireless@vger.kernel.org,
+        Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>, netdev@vger.kernel.org,
+        1029116@bugs.debian.org
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH 2/2] mac80211: support RNR for EMA AP
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-References: <20221114230416.20192-1-quic_alokad@quicinc.com>
- <20221114230416.20192-3-quic_alokad@quicinc.com>
- <d9461ebd1a17608f73ef832c60fa7489e358a84e.camel@sipsolutions.net>
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <d9461ebd1a17608f73ef832c60fa7489e358a84e.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: jFPNu4Innu2wZxidkxEuJaFcPOSqst8t
-X-Proofpoint-GUID: jFPNu4Innu2wZxidkxEuJaFcPOSqst8t
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-21_06,2023-02-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=717
- clxscore=1015 adultscore=0 spamscore=0 phishscore=0 suspectscore=0
- bulkscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302210097
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/14/2023 8:03 PM, Johannes Berg wrote:
-> On Mon, 2022-11-14 at 15:04 -0800, Aloka Dixit wrote:
->>
->>   	if (params->mbssid_ies) {
->>   		mbssid = params->mbssid_ies;
->>   		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
->> -		size += ieee80211_get_mbssid_beacon_len(mbssid, mbssid->cnt);
->> +		if (params->rnr_ies) {
->> +			rnr = params->rnr_ies;
->> +			size += struct_size(new->rnr_ies, elem, rnr->cnt);
->> +		}
-> 
-> Is this right? The struct_size() is only the size of the struct, but you
-> need the size of the elements contained in it here, i.e. the sum of the
-> .len fields?
-> 
-> johannes
-> 
+Trying to probe a mt7921e pci card without firmware results in a
+successful probe where ieee80211_register_hw hasn't been called. When
+removing the driver, ieee802111_unregister_hw is called unconditionally
+leading to a kernel NULL pointer dereference among other things.
 
-Yes, I modified ieee80211_get_mbssid_beacon_len() to include the 'len' 
-fields if rnr_ies is present. It is called right after the lines you 
-have copied here with the new input parameter.
+As with other drivers that delay registration after probe, we track the
+registration state in a flag variable and conidtionalize deregistration.
+
+Link: https://bugs.debian.org/1029116
+Link: https://bugs.kali.org/view.php?id=8140
+Reported-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Fixes: 1c71e03afe4b ("mt76: mt7921: move mt7921_init_hw in a dedicated work")
+Signed-off-by: Helmut Grohne <helmut@freexian.com>
+Cc: stable@vger.kernel.org
+Sponsored-by: Freexian and Offensive Security
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c   | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c    | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c   | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c    | 3 ++-
+ 5 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 542dfd425129..d5438212d5ff 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -315,6 +315,7 @@ static void mt7921_init_work(struct work_struct *work)
+ 		dev_err(dev->mt76.dev, "register device failed\n");
+ 		return;
+ 	}
++	dev->hw_registered = true;
+ 
+ 	ret = mt7921_init_debugfs(dev);
+ 	if (ret) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 15d6b7fe1c6c..e3b5d8ebf243 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -288,6 +288,7 @@ struct mt7921_dev {
+ 	bool hw_full_reset:1;
+ 	bool hw_init_done:1;
+ 	bool fw_assert:1;
++	bool hw_registered:1;
+ 
+ 	struct list_head sta_poll_list;
+ 	spinlock_t sta_poll_lock;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index cb72ded37256..1841eb7345dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -110,7 +110,8 @@ static void mt7921e_unregister_device(struct mt7921_dev *dev)
+ 	struct mt76_connac_pm *pm = &dev->pm;
+ 
+ 	cancel_work_sync(&dev->init_work);
+-	mt76_unregister_device(&dev->mt76);
++	if (dev->hw_registered)
++		mt76_unregister_device(&dev->mt76);
+ 	mt76_for_each_q_rx(&dev->mt76, i)
+ 		napi_disable(&dev->mt76.napi[i]);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 8ce4252b8ae7..23a9dd3c6450 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -43,7 +43,8 @@ static void mt7921s_unregister_device(struct mt7921_dev *dev)
+ 	struct mt76_connac_pm *pm = &dev->pm;
+ 
+ 	cancel_work_sync(&dev->init_work);
+-	mt76_unregister_device(&dev->mt76);
++	if (dev->hw_registered)
++		mt76_unregister_device(&dev->mt76);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 5321d20dcdcb..e55e1b50f760 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -301,7 +301,8 @@ static void mt7921u_disconnect(struct usb_interface *usb_intf)
+ 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
+ 		return;
+ 
+-	mt76_unregister_device(&dev->mt76);
++	if (dev->hw_registered)
++		mt76_unregister_device(&dev->mt76);
+ 	mt7921u_cleanup(dev);
+ 
+ 	usb_set_intfdata(usb_intf, NULL);
+-- 
+2.39.0
+
+
