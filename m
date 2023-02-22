@@ -2,135 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 415A969EEC3
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 07:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57DB669EF1D
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 08:09:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbjBVG3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Feb 2023 01:29:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44286 "EHLO
+        id S230502AbjBVHJi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Feb 2023 02:09:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjBVG3x (ORCPT
+        with ESMTP id S229660AbjBVHJh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Feb 2023 01:29:53 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693A43431A
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 22:29:51 -0800 (PST)
-X-UUID: 4d6a3bb4b27a11eda06fc9ecc4dadd91-20230222
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=SMReaCXxwMWlPjCtDmlgPy2UA7uur7WDWXn4/VwP9i0=;
-        b=GpCmRVLPrRkftEaP17p41K/zY07iPwpfdgAPMfb0jEiCPPKlmHaaGz+LpR4JNgZRzOQ/8MLRuw7XKKJv35qoeeKxFDBJF5yLVT1msyEC2OfdoQSvzAojVaeEirdEXSRmCM7cFU+IdicUiBpOdZjEIzbweYsBOjPD1vQ3P6HmzRw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.20,REQID:a675ce8f-b0ad-4146-a4ba-9a1d7b0d9f92,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:25b5999,CLOUDID:fc8d35b1-beed-4dfc-bd9c-e1b22fa6ccc4,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-UUID: 4d6a3bb4b27a11eda06fc9ecc4dadd91-20230222
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <sujuan.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1283284976; Wed, 22 Feb 2023 14:29:47 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Wed, 22 Feb 2023 14:29:45 +0800
-Received: from mcddlt001.gcn.mediatek.inc (10.19.240.15) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 22 Feb 2023 14:29:45 +0800
-From:   Sujuan Chen <sujuan.chen@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>
-CC:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Bo Jiao <bo.jiao@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Sujuan Chen <sujuan.chen@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7915: add dev->hif2 support for mt7916 WED device
-Date:   Wed, 22 Feb 2023 14:29:36 +0800
-Message-ID: <5dcd2b1b74b7c46ba4245f96eaf3a4e2f84b37e7.1677039727.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.17.0
+        Wed, 22 Feb 2023 02:09:37 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBF12B63B
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 23:09:36 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id d73so3128034iof.4
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 23:09:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mopGGJRWyF6lhmZLijInHJpk0iqSNEh7TvfY6xu4PPI=;
+        b=MV5ydonJf5couW8XWZh3Os3P5xphPi7lmCUVxsm9irpj5pGp+T0Wh/8DJOhjZGOYZh
+         Q56nUiQNIlapJCBxPC9MF6el7nh8lItNDjUWEmCxSx8hoO2SHn2kFnO1X9Ci8+1tp/6Z
+         MxHK+3CHr5aAuWZQmbGxPZliuD7LTRIqyG0uM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mopGGJRWyF6lhmZLijInHJpk0iqSNEh7TvfY6xu4PPI=;
+        b=OBemHm1B6JTn7pgsPFKFoX7YcIloxoU6c0oUB87mECP4ZoZlaoDJXUv7A1vfGX13LU
+         LkOvTgN5H46wca0O/muEL1JyOJhMrk7EtQfvYR75jpudHCSn3zOJiakvy6nPmlJeBMGZ
+         C1VMC26o/n72ea2RieagjcMxwxi26sjr4X1EDkyOJjU14cTfXHm3Wy6Dm48Q7k97JtkG
+         j0JXvmBMpd7XbDp2YazAqqW3cPvFPKk9cbD5hCd148ZJ0t2EJui0qJuJZtiFr2XPamca
+         cixmtNtBZ6GfI5RJxeGrLO5D2BkQ2oG2bML+7hB3RUn+FegtkbpAztTJbsK90m1Ghu1J
+         kvXQ==
+X-Gm-Message-State: AO0yUKVcm3WUHQEJC0WgzU/71AV3OL5W5uHbONgbAcl7lMyoLMxUpHvY
+        iZ/LEg2FPxhaREjT0NTlgCTx/RilNO/eCzsY2ZSvQg==
+X-Google-Smtp-Source: AK7set+tqFM6R9VNoRneOI95BWuxBGUxEVAwGo2e4OEi8THxSuZWMYnxR5HVyRIFUqGgpXQhecv7XYy9KnG7BYIS8FA=
+X-Received: by 2002:a5d:990e:0:b0:71e:2d29:aa48 with SMTP id
+ x14-20020a5d990e000000b0071e2d29aa48mr4437709iol.29.1677049775507; Tue, 21
+ Feb 2023 23:09:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230203000116.v2.1.I5bb9c164a2d2025655dee810b983e01ecd81c14e@changeid>
+In-Reply-To: <20230203000116.v2.1.I5bb9c164a2d2025655dee810b983e01ecd81c14e@changeid>
+From:   Abhishek Kumar <kuabhs@chromium.org>
+Date:   Tue, 21 Feb 2023 23:09:24 -0800
+Message-ID: <CACTWRws334p0qpsZrDBULgS124Zye9D7YC3F9hzJpaFzSmn1CQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ath10k: snoc: enable threaded napi on WCN3990
+To:     kvalo@kernel.org
+Cc:     davem@davemloft.net, ath10k@lists.infradead.org,
+        quic_mpubbise@quicinc.com, netdev@vger.kernel.org, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, pabeni@redhat.com,
+        linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable two PCIe interfaces (dev->hif2) support for mt7916 when WED is enabled.
+Hi Kale,
 
-Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/dma.c  | 10 ++++++++--
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  |  3 ++-
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 10 +++++-----
- 3 files changed, 15 insertions(+), 8 deletions(-)
+Gentle reminder for your comments.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-index abe17dac9996..43a5456d4b97 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
-@@ -87,8 +87,14 @@ static void mt7915_dma_config(struct mt7915_dev *dev)
- 				   MT7916_RXQ_BAND0);
- 			RXQ_CONFIG(MT_RXQ_MCU_WA, WFDMA0, MT_INT_WED_RX_DONE_WA_MT7916,
- 				   MT7916_RXQ_MCU_WA);
--			RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0, MT_INT_WED_RX_DONE_BAND1_MT7916,
--				   MT7916_RXQ_BAND1);
-+			if (dev->hif2)
-+				RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0,
-+					   MT_INT_RX_DONE_BAND1_MT7916,
-+					   MT7916_RXQ_BAND1);
-+			else
-+				RXQ_CONFIG(MT_RXQ_BAND1, WFDMA0,
-+					   MT_INT_WED_RX_DONE_BAND1_MT7916,
-+					   MT7916_RXQ_BAND1);
- 			RXQ_CONFIG(MT_RXQ_MAIN_WA, WFDMA0, MT_INT_WED_RX_DONE_WA_MAIN_MT7916,
- 				   MT7916_RXQ_MCU_WA_MAIN);
- 			TXQ_CONFIG(0, WFDMA0, MT_INT_WED_TX_DONE_BAND0,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 5545a8bdf1d0..cd440aaa969e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2370,7 +2370,8 @@ int mt7915_mcu_init_firmware(struct mt7915_dev *dev)
- 	if (ret)
- 		return ret;
- 
--	if (mtk_wed_device_active(&dev->mt76.mmio.wed) && is_mt7915(&dev->mt76))
-+	if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
-+	    is_mt7915(&dev->mt76) || !mtk_wed_get_rx_capa(&dev->mt76.mmio.wed))
- 		mt7915_mcu_wa_cmd(dev, MCU_WA_PARAM_CMD(CAPABILITY), 0, 0, 0);
- 
- 	ret = mt7915_mcu_set_mwds(dev, 1);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 225a19604d3e..6f0c0e2ae045 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -989,13 +989,13 @@ irqreturn_t mt7915_irq_handler(int irq, void *dev_instance)
- 	struct mt7915_dev *dev = dev_instance;
- 	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
- 
--	if (mtk_wed_device_active(wed)) {
-+	if (mtk_wed_device_active(wed))
- 		mtk_wed_device_irq_set_mask(wed, 0);
--	} else {
-+	else
- 		mt76_wr(dev, MT_INT_MASK_CSR, 0);
--		if (dev->hif2)
--			mt76_wr(dev, MT_INT1_MASK_CSR, 0);
--	}
-+
-+	if (dev->hif2)
-+		mt76_wr(dev, MT_INT1_MASK_CSR, 0);
- 
- 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
- 		return IRQ_NONE;
--- 
-2.18.0
+Thanks
+Abhishek
 
+On Thu, Feb 2, 2023 at 4:02 PM Abhishek Kumar <kuabhs@chromium.org> wrote:
+>
+> NAPI poll can be done in threaded context along with soft irq
+> context. Threaded context can be scheduled efficiently, thus
+> creating less of bottleneck during Rx processing. This patch is
+> to enable threaded NAPI on ath10k driver.
+>
+> Based on testing, it was observed that on WCN3990, the CPU0 reaches
+> 100% utilization when napi runs in softirq context. At the same
+> time the other CPUs are at low consumption percentage. This
+> does not allow device to reach its maximum throughput potential.
+> After enabling threaded napi, CPU load is balanced across all CPUs
+> and following improvments were observed:
+> - UDP_RX increase by ~22-25%
+> - TCP_RX increase by ~15%
+>
+> Here are some of the additional raw data with and without threaded napi:
+> ==================================================
+> udp_rx(Without threaded NAPI)
+> 435.98+-5.16 : Channel 44
+> 439.06+-0.66 : Channel 157
+>
+> udp_rx(With threaded NAPI)
+> 509.73+-41.03 : Channel 44
+> 549.97+-7.62 : Channel 157
+> ===================================================
+> udp_tx(Without threaded NAPI)
+> 461.31+-0.69  : Channel 44
+> 461.46+-0.78 : Channel 157
+>
+> udp_tx(With threaded NAPI)
+> 459.20+-0.77 : Channel 44
+> 459.78+-1.08 : Channel 157
+> ===================================================
+> tcp_rx(Without threaded NAPI)
+> 472.63+-2.35 : Channel 44
+> 469.29+-6.31 : Channel 157
+>
+> tcp_rx(With threaded NAPI)
+> 498.49+-2.44 : Channel 44
+> 541.14+-40.65 : Channel 157
+> ===================================================
+> tcp_tx(Without threaded NAPI)
+> 317.34+-2.37 : Channel 44
+> 317.01+-2.56 : Channel 157
+>
+> tcp_tx(With threaded NAPI)
+> 371.34+-2.36 : Channel 44
+> 376.95+-9.40 : Channel 157
+> ===================================================
+>
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
+> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
+> ---
+>
+> Changes in v2:
+> - Removed the hw param checks to add dev_set_threaded() to snoc.c
+> - Added some more test data in the commit message.
+>
+>  drivers/net/wireless/ath/ath10k/snoc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> index cfcb759a87de..0f6d2f67ff6b 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -927,6 +927,7 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+>
+>         bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+>
+> +       dev_set_threaded(&ar->napi_dev, true);
+>         ath10k_core_napi_enable(ar);
+>         ath10k_snoc_irq_enable(ar);
+>         ath10k_snoc_rx_post(ar);
+> --
+> 2.39.1.519.gcb327c4b5f-goog
+>
