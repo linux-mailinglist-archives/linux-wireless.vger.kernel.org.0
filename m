@@ -2,53 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B0B769F24F
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 10:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CAD69F252
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 10:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232346AbjBVJ51 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Feb 2023 04:57:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
+        id S229975AbjBVJ5z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Feb 2023 04:57:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232350AbjBVJ5N (ORCPT
+        with ESMTP id S232157AbjBVJ5q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Feb 2023 04:57:13 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959D086AA;
-        Wed, 22 Feb 2023 01:56:42 -0800 (PST)
+        Wed, 22 Feb 2023 04:57:46 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A99730E3;
+        Wed, 22 Feb 2023 01:57:44 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 385F3B8114D;
-        Wed, 22 Feb 2023 09:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B74C433EF;
-        Wed, 22 Feb 2023 09:56:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B750D612AB;
+        Wed, 22 Feb 2023 09:57:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3A9C433EF;
+        Wed, 22 Feb 2023 09:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677059800;
-        bh=IPZkAOw+o/JhWR6mJKvLyqZbTc//4Kugo2WLuBB2ejA=;
+        s=k20201202; t=1677059863;
+        bh=fazYg7qTznisnA7g2km7hrq93t29unz91OkcRJ7inDU=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=c0zFJqZfSpAp5Dmvtrgrt1D6hmXn5TvJWQunpcF5cFuQFVgBWjGF44M3ON4B8KJZF
-         rsS5EmaagZ1cQgpBTVkggu5/Nw618hCms848ao975aEg15yUuw/DqVORjXsjHult/x
-         XRaeqWRbPBYfckAtpVdwFlxmN3y6ISPHo+JkZTCc+CqrIN7lVabyBrfQh81/B4mZSC
-         6MGEX35OLUHjR0mwcru0xmbv3crzeY5L7MZuyC+c+njpH17/RlP9sWBTq7WFnLNl1j
-         ILO8BDffmS/4L3ryNBCtPKDfRzbLvUrvLVT3IdRGE6yQ5rTjkDaaHdQ95rAU43j0qE
-         fdMnxkqB/od6Q==
+        b=hW8g7JbgkrzHrLoFa52q1sPdU/6b8fmnOeVE5TBpQ2KyuDUP+zL+Pm5dlqjNoW3j1
+         BcxaZquKk6x2pgJCBVRz4/RbyEA5m3ZI3L61yLS/V9oX/wQTBY8ZGegC0gxytf6ujz
+         AYm7iwzOz7lv6j39ubMSt7obke72yxOiq1zWYZPTKgZ/lg6HI+1EOvjvG1jylKBqgr
+         t4t1Q0jOspKQjKEFK11RZ9nrMzZU44+Jif3OMrxd9zBHt9FbEyBO2S4P/IE4B1z8Kv
+         OssPClXWs5HpfYvrpJ8V/H+Zf2CPTFRQV2KDuT5N2ukPtahT+5F60rRX8jmPVM+BNq
+         pwagfsZnqVGvw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath5k: fix an off by one check in
- ath5k_eeprom_read_freq_list()
+Subject: Re: [PATCH v2] ath10k: snoc: enable threaded napi on WCN3990
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <Y+D9hPQrHfWBJhXz@kili>
-References: <Y+D9hPQrHfWBJhXz@kili>
-To:     Dan Carpenter <error27@gmail.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>, Felix Fietkau <nbd@openwrt.org>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <20230203000116.v2.1.I5bb9c164a2d2025655dee810b983e01ecd81c14e@changeid>
+References: <20230203000116.v2.1.I5bb9c164a2d2025655dee810b983e01ecd81c14e@changeid>
+To:     Abhishek Kumar <kuabhs@chromium.org>
+Cc:     kuabhs@chromium.org, davem@davemloft.net,
+        ath10k@lists.infradead.org, quic_mpubbise@quicinc.com,
+        netdev@vger.kernel.org, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, pabeni@redhat.com,
+        linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167705979601.5928.4317173646213018716.kvalo@kernel.org>
-Date:   Wed, 22 Feb 2023 09:56:38 +0000 (UTC)
+Message-ID: <167705985871.5928.5239693232532337781.kvalo@kernel.org>
+Date:   Wed, 22 Feb 2023 09:57:40 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,23 +57,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <error27@gmail.com> wrote:
+Abhishek Kumar <kuabhs@chromium.org> wrote:
 
-> This loop checks that i < max at the start of loop but then it does
-> i++ which could put it past the end of the array.  It's harmless to
-> check again and prevent a potential out of bounds.
+> NAPI poll can be done in threaded context along with soft irq
+> context. Threaded context can be scheduled efficiently, thus
+> creating less of bottleneck during Rx processing. This patch is
+> to enable threaded NAPI on ath10k driver.
 > 
-> Fixes: 1048643ea94d ("ath5k: Clean up eeprom parsing and add missing calibration data")
-> Signed-off-by: Dan Carpenter <error27@gmail.com>
-> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> Based on testing, it was observed that on WCN3990, the CPU0 reaches
+> 100% utilization when napi runs in softirq context. At the same
+> time the other CPUs are at low consumption percentage. This
+> does not allow device to reach its maximum throughput potential.
+> After enabling threaded napi, CPU load is balanced across all CPUs
+> and following improvments were observed:
+> - UDP_RX increase by ~22-25%
+> - TCP_RX increase by ~15%
+> 
+> Here are some of the additional raw data with and without threaded napi:
+> ==================================================
+> udp_rx(Without threaded NAPI)
+> 435.98+-5.16 : Channel 44
+> 439.06+-0.66 : Channel 157
+> 
+> udp_rx(With threaded NAPI)
+> 509.73+-41.03 : Channel 44
+> 549.97+-7.62 : Channel 157
+> ===================================================
+> udp_tx(Without threaded NAPI)
+> 461.31+-0.69  : Channel 44
+> 461.46+-0.78 : Channel 157
+> 
+> udp_tx(With threaded NAPI)
+> 459.20+-0.77 : Channel 44
+> 459.78+-1.08 : Channel 157
+> ===================================================
+> tcp_rx(Without threaded NAPI)
+> 472.63+-2.35 : Channel 44
+> 469.29+-6.31 : Channel 157
+> 
+> tcp_rx(With threaded NAPI)
+> 498.49+-2.44 : Channel 44
+> 541.14+-40.65 : Channel 157
+> ===================================================
+> tcp_tx(Without threaded NAPI)
+> 317.34+-2.37 : Channel 44
+> 317.01+-2.56 : Channel 157
+> 
+> tcp_tx(With threaded NAPI)
+> 371.34+-2.36 : Channel 44
+> 376.95+-9.40 : Channel 157
+> ===================================================
+> 
+> Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2-00696-QCAHLSWMTPL-1
+> Signed-off-by: Abhishek Kumar <kuabhs@chromium.org>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-4c856ee12df8 wifi: ath5k: fix an off by one check in ath5k_eeprom_read_freq_list()
+8c68fe00344c wifi: ath10k: snoc: enable threaded napi on WCN3990
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/Y+D9hPQrHfWBJhXz@kili/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230203000116.v2.1.I5bb9c164a2d2025655dee810b983e01ecd81c14e@changeid/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
