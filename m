@@ -2,79 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0125669EBE4
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 01:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29D7A69EBFB
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 01:33:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjBVAXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Feb 2023 19:23:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60914 "EHLO
+        id S229552AbjBVAdB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Feb 2023 19:33:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjBVAXD (ORCPT
+        with ESMTP id S229462AbjBVAdA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Feb 2023 19:23:03 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1732825E3D;
-        Tue, 21 Feb 2023 16:23:01 -0800 (PST)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31LNkrE9023676;
-        Wed, 22 Feb 2023 00:22:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=GSqS92vIwQB799pi53rSrb1ngxfts/lxtA22QEfZ/Rk=;
- b=JLsEKJGAh/bi28x0DMUuK19FWhmJSNgj06XHZZm1i9Vyl4BY4eHXvq3RpgkFuf0EdYhn
- sDkN3FuokqzEsvtHnXiM3bbnl5rbUhOSLkghTmeUwy3OBkZT629FZkYYqMQNyaZARDGF
- Si/yy1sQZyMMyKtFqwvNQaIdC9C6gQKiXXhYf/4nNxaaxIi0j2RwBXibMufAcq+gqN6+
- 4cvLLkGGUCKqKnflJ/yS5tmSyuL0q5gGiFFuuhm9s99H7UVKyMwLX43670SXu5VxOZGM
- wS2Aj6pb9pAflGKnj7qMjfMrx9kuyP2noxbTMVC0T9lfov8mWmkWkXguhq5qnx9VFmkG fg== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nvtbxa4we-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Feb 2023 00:22:48 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31M0Ml52023334
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Feb 2023 00:22:47 GMT
-Received: from [10.253.74.210] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 21 Feb
- 2023 16:22:45 -0800
-Message-ID: <9ae693f2-b19e-ff1f-851c-c3d09db4d9d1@quicinc.com>
-Date:   Wed, 22 Feb 2023 08:22:43 +0800
+        Tue, 21 Feb 2023 19:33:00 -0500
+Received: from titan.fastwww.net (titan10.fastwww.net [198.27.78.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D49A44BF
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Feb 2023 16:32:58 -0800 (PST)
+Comment: DomainKeys? See http://domainkeys.sourceforge.net/
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=default; d=lockie.ca;
+  b=A7Zf3xawm3I4Z8DBkeFQH4o7SlAc7fnSSs42U+qGEij1fOietgCNYL1LENojFAtYFELNR6tOW3/1CoOpgR4n6/ov/7MLqcllH1/xRRwVoxmrYvZ2YcsaoSd28JQgdtjAy2aHKH6cAK74CrLg/fvHUAtclSW/4u7m8tFBAvBEQAfd6rFyAugTHOUIYZebZqnzkj/ndvuy4EBmGa0tfnP+JOcKKnCVnYuIFKeYKftnDS1C/fTy6jBSVSalIrxpGv/kqUMAGg4IUUIrqu5D6Pmo2yr909PkjR9SY74qhOokd50SxIMBaDBzUT5Htw6P4mg04sb/XO4IrlimBTQAsCUcDA==;
+  h=Received:Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:To:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=lockie.ca; h=message-id
+        :date:mime-version:subject:to:references:from:in-reply-to
+        :content-type:content-transfer-encoding; s=default; bh=X01/S4+lF
+        +hTybq8kYVvgGCAA7s=; b=oJSvcuBbJUL6XdFV7xDNhM46M8m6s8+59/ocB4yxS
+        gwRO5fuzTU8LWQm21aqyPPcIHf/ymwhIQ/J57GVbQWC/XgP/OBr5FIwCphvQmZpA
+        U6JtGaj9wc5YZ4vbmLTAAGeGZH1YK2JzQv4nWDvJXq5wkZ1D/eQXRqbg+HdmTXGa
+        4p6B0+c8y493E7yJeN8/NhKjuUYC9A6Oa007nAg9b5DQJHc1q2UhK5sZqqe46m+J
+        0/9GzIVG1jMqJ46Y9/1iuht3XH/yNb+e9hzzUKFIxN953/9vbQVAM520XDhfkJei
+        88rJFoXNzJo4JGYoq3nZFgzK3KF0B+3kWSDZuRGkq8oYA==
+Received: (qmail 20876 invoked by uid 108); 22 Feb 2023 00:32:56 +0000
+Received: from unknown (HELO titan.fastwww.net) (127.0.0.1)
+  by titan.fastwww.net with SMTP; 22 Feb 2023 00:32:56 +0000
+Received: from [192.168.68.80] ([98.124.13.21])
+        by titan.fastwww.net with ESMTPSA
+        id i1LIGLhi9WOKUQAApSktOw
+        (envelope-from <bjlockie@lockie.ca>); Wed, 22 Feb 2023 00:32:56 +0000
+Message-ID: <f3039ab6-25f4-d003-059a-c0a75aa24127@lockie.ca>
+Date:   Tue, 21 Feb 2023 19:32:56 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH 1/2] wifi: cfg80211: Add beacon hint notifier support
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: Bug report about ath9k
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "Youghandhar Chintala (Temp)" <quic_youghand@quicinc.com>,
-        <ath10k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_mpubbise@quicinc.com>, Wen Gong <quic_wgong@quicinc.com>
-References: <20221222124221.30894-1-quic_youghand@quicinc.com>
- <20221222124221.30894-2-quic_youghand@quicinc.com>
- <1df59863e78e8ddbe7eb3a74e6dd4c8f0bd7f098.camel@sipsolutions.net>
- <96cab5d9-9090-4cb2-ff17-eadc9da12f50@quicinc.com>
- <0d4b99ab0a5bedc82f35bc1e548a611564b010e5.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <0d4b99ab0a5bedc82f35bc1e548a611564b010e5.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     Vincent Danjean <vdanjean@debian.org>,
+        linux-wireless@vger.kernel.org
+References: <ad820d2e-c984-8603-9821-e6c1d426c4f8@debian.org>
+From:   James <bjlockie@lockie.ca>
+In-Reply-To: <ad820d2e-c984-8603-9821-e6c1d426c4f8@debian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Dvi9KBhRlHTNhdqvYm6bry6T-3irrzVO
-X-Proofpoint-ORIG-GUID: Dvi9KBhRlHTNhdqvYm6bry6T-3irrzVO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-21_13,2023-02-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 clxscore=1011 mlxscore=0 spamscore=0
- phishscore=0 mlxlogscore=764 impostorscore=0 adultscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2302220000
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -84,24 +59,6 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-On 2/15/2023 11:10 PM, Johannes Berg wrote:
->>> Why is this even needed? You should always get reg_notifier after this
->>> anyway?
->> Currently when channel flag changed through the beacon hints are not
->> informed to driver.
->>
->> reg_notifier will be triggered for regdomain changes but not for channel flag changes due to beacon hints.
->>
-> So maybe triggering reg notifier once would be sufficient, a la Wen's
-> patch that I recently merged?
-
-My patch only take effect for this flag, not for all wiphy.
-
-if (wiphy->flags & WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER)
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit?id=d99975c4953eb79e389d4630e848435c700e2dfc
-
->
-> johannes
->
+Try disabling power saving.
+w dev wlanX set power_save off
+Maybe that command.
