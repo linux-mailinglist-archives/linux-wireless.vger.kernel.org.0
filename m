@@ -2,109 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B4969FD33
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 21:50:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C6B69FDA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 22:20:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232814AbjBVUuR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Feb 2023 15:50:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55400 "EHLO
+        id S232823AbjBVVUf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Feb 2023 16:20:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232813AbjBVUuQ (ORCPT
+        with ESMTP id S231984AbjBVVUe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Feb 2023 15:50:16 -0500
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18AB526CEC
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 12:50:15 -0800 (PST)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1723ab0375eso7259456fac.1
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 12:50:15 -0800 (PST)
+        Wed, 22 Feb 2023 16:20:34 -0500
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0CB32E73
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 13:20:33 -0800 (PST)
+Received: by mail-pj1-x102e.google.com with SMTP id nw10-20020a17090b254a00b00233d7314c1cso10463245pjb.5
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 13:20:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=bbkki67Asub00CoMWXZQkStJ/TI4GpjlH8uEJFsaihI=;
-        b=QqbWYbmEHUVORP5xLFx85xhTiMbxaMmFAmgyJQX1eLqrawunSGMHZlMJrOmIm85k3B
-         iLe3zN+M+5t/q8s7347lP1pqwGMXhI31bXnNU3NrpZa83GhPqwfUu6P2MUXK1TuwkEQh
-         o1E/lbdd1PgE6HaMs1JlxadYGdj+esoYuwlc77mPiA5NjiMmh9hHZrPueZHBV7KaEuhN
-         xaYQT8MAQLw/g1bCQPsDWewc8uqVwOud2m37IsLq3dmqRJ27PO+VxsO132tCIVeJ6HfP
-         DE2H2gI7LpymT94An3dsS83882236TOjut/r2K/11KfAK4ZcHup6ysnxniEZ/+5YqHnM
-         8Pew==
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmMtimqIRY6xvavxlIApvCrnBuDAnmp3N59YVySC2cY=;
+        b=N3/KkX0Ky3sBAO/NLIaAcL5EG0Oh1gTegLD17jWgCZwt2DMn1gjde72tAwEAjZljaF
+         TamhxotDzba3M94ibPjj2fgu2MiELCWhoBcA7mxXZLZ/rSfT36UEygSm+kHwH5uztFHl
+         hwdBB9SWPlhmnNwKNa1m8dHimEXKRpH/XmfSk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bbkki67Asub00CoMWXZQkStJ/TI4GpjlH8uEJFsaihI=;
-        b=lCuBdnvmTD62VhkUkTeXmAuIS1iIPDv7tM6VdZOoFCXLDq/q/oldpHyGwEUeE2wEMd
-         DyPHMUkYZMZntkc4EqlX0JN2XsIJDw9oLt+ilVWtEkZFVuW+rw2OSckxD2CANm8MHHck
-         qUzBwU5T66hR/TF6leDkgpfUdnafJpFBcvr95aKrsoi8ySm+6sIYm/YFR4W+GJPrRtA/
-         oz82cSQ7TCGY5OF6V5L4SSO3e/WHVue2htKXvGzW8RXxdMnDsfpDnjop0bIrPKLxwyii
-         A4h47pipBjth2MVvbqTyYD5AmqWaONszCDq+IZvogqPqexQFTN6mwYj7DuBtzqiZKnUA
-         Hcqg==
-X-Gm-Message-State: AO0yUKWMp28AvK4/r+vcVaHNKqC4yXXYD4FKeiEoF9qb0nXbwbnMm0pd
-        NTZBI4eiQWZCHaDoH9OdRIvjGwCdC+4=
-X-Google-Smtp-Source: AK7set++Xwd4IBFMlUyMgL29NaU26tnbOV/USXTlX39nL9hLojwh3+7TJNCN6NkhBOpATaMLVYgLtQ==
-X-Received: by 2002:a05:6870:2389:b0:16d:c23a:a11b with SMTP id e9-20020a056870238900b0016dc23aa11bmr8922160oap.3.1677099014386;
-        Wed, 22 Feb 2023 12:50:14 -0800 (PST)
-Received: from localhost.localdomain ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id o3-20020a4ae583000000b00524faf3d2d7sm1872801oov.41.2023.02.22.12.50.13
+        bh=gmMtimqIRY6xvavxlIApvCrnBuDAnmp3N59YVySC2cY=;
+        b=ZrmPDh4grFnWVgH/BKNq9b3mDZZxk/+p0FuqiaDhH31SY0w3sChHPWp8U421qZzD67
+         2h72mbCRapVT1bJY16PuPr7ZqcaH6PhWuSf3iaDPlDuJuW8ZYrpXbxHuCbYcfY4l5H93
+         Gp364o4wnKulTwu/u5Kiavs9IJWSrE7CWYa7/6Z8Dn/mHipHR05/xWIFS2s9KduICG9B
+         4tKdaltVk9C5VZCZ9kTgLiIxbL0/QiJW/cOFCTn5EjUTVZ3mQE4UkhaqjqjROOjFetDu
+         I/sAsn8HGszldVy2GlappCN52/CN2Ob2z2Os059U11MO71di+3kUTu42o37XJM/3wkW6
+         M9wg==
+X-Gm-Message-State: AO0yUKXqFarYBMCSIr3us2Nu0WDLCyX1cDMa/FXzdXctdjJ0wRxNNb6B
+        Ax3BysmStR3hrx7YICt/Nsro5A==
+X-Google-Smtp-Source: AK7set8SN3h9a6A/SPE7pi5gc6eEgnarlEnmUB72XVe7bdlAA8qx1JOlrR2JxU6BesUhXuJvyvXJoA==
+X-Received: by 2002:a17:90b:4ac3:b0:234:1d1d:6ae6 with SMTP id mh3-20020a17090b4ac300b002341d1d6ae6mr12691231pjb.1.1677100832777;
+        Wed, 22 Feb 2023 13:20:32 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:e684:e07:7790:98ee])
+        by smtp.gmail.com with ESMTPSA id ie14-20020a17090b400e00b002372107fc3dsm3208805pjb.49.2023.02.22.13.20.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Feb 2023 12:50:14 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH] wifi: wext: Eliminate log spamming in wireless_warn_cfg80211_wext()
-Date:   Wed, 22 Feb 2023 14:49:45 -0600
-Message-Id: <20230222204945.6716-1-Larry.Finger@lwfinger.net>
-X-Mailer: git-send-email 2.35.3
+        Wed, 22 Feb 2023 13:20:32 -0800 (PST)
+Date:   Wed, 22 Feb 2023 13:20:29 -0800
+From:   Brian Norris <briannorris@chromium.org>
+To:     Zheng Hacker <hackerzheng666@gmail.com>
+Cc:     Zheng Wang <zyytlz.wz@163.com>, ganapathi017@gmail.com,
+        alex000young@gmail.com, amitkarwar@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mwifiex: Fix use-after-free bug due to race condition
+ between main thread thread and timer thread
+Message-ID: <Y/aHHSkUOsOsU+Kq@google.com>
+References: <20230218075956.1563118-1-zyytlz.wz@163.com>
+ <Y/U+w7aMc+BttZwl@google.com>
+ <CAJedcCzmnZCR=XF+zKHiJ+8PNK88sXFDm5n=RnwcTnJfO0ihOw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJedcCzmnZCR=XF+zKHiJ+8PNK88sXFDm5n=RnwcTnJfO0ihOw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit dc09766c755c {"wifi: wireless: warn on most wireless extension
-usage") introduces a warning when wireless extensions are used with
-cfg80211 drivers. Although such a warning is desirable, the current
-implementation overflows the dmesg buffer with thousands of warnings,
-all of which are the same. A WARN_ONCE() call is sufficient.
+On Wed, Feb 22, 2023 at 12:17:21PM +0800, Zheng Hacker wrote:
+> Could you please provide some advice about the fix?
 
-Fixes: dc09766c755c {"wifi: wireless: warn on most wireless extension usage")
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
----
+This entire driver's locking patterns (or lack
+thereof) need rewritten. This driver was probably written by someone
+that doesn't really understand concurrent programming. It really only
+works because the bulk of normal operation is sequentialized into the
+main loop (mwifiex_main_process()). Any time you get outside that,
+you're likely to find bugs.
 
-Kalle,
+But now that I've looked a little further, I'm not confident you pointed
+out a real bug. How does mwifiex_sdio_card_reset_work() get past
+mwifiex_shutdown_sw() -> wait_for_completion(adapter->fw_done) ? That
+should ensure that _mwifiex_fw_dpc() is finished, and so we can't hit
+the race you point out.
 
-If accepted, this patch should be send to kernel 6.3.
+Note to self: ignore most "static analysis" reports of race conditions,
+unless they have thorough analysis or a runtime reproduction.
 
-Larry
----
- net/wireless/wext-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 13a72b17248e..9589ba5dafc2 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -641,8 +641,8 @@ static void wireless_warn_cfg80211_wext(void)
- {
- 	char name[sizeof(current->comm)];
- 
--	pr_warn_ratelimited("warning: `%s' uses wireless extensions that are deprecated for modern drivers; use nl80211\n",
--			    get_task_comm(name, current));
-+	WARN_ONCE(1, "warning: `%s' uses wireless extensions that are deprecated for modern drivers; use nl80211\n",
-+		  get_task_comm(name, current));
- }
- #endif
- 
--- 
-2.39.2
-
+Brian
