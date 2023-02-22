@@ -2,51 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0180269F48C
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 13:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6047F69F48F
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 13:30:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232012AbjBVM3x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Feb 2023 07:29:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
+        id S232144AbjBVMag (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Feb 2023 07:30:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231404AbjBVM3v (ORCPT
+        with ESMTP id S232067AbjBVMaa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Feb 2023 07:29:51 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B14A62B633
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 04:29:34 -0800 (PST)
+        Wed, 22 Feb 2023 07:30:30 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A552313B;
+        Wed, 22 Feb 2023 04:30:17 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41FF76137F
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 12:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AB7C4339B;
-        Wed, 22 Feb 2023 12:29:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A98E1B8125F;
+        Wed, 22 Feb 2023 12:30:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F41C433EF;
+        Wed, 22 Feb 2023 12:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677068973;
-        bh=nR5bDnKFdVZSZ4J1IbNRHscEnVPV8AiHET1I3jEmGPc=;
+        s=k20201202; t=1677069014;
+        bh=tkoEGy62ppDmmm4ymendbNyJ8TLlOAHfYLvaP+StFJc=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Pm28zewc/glFV+ZpxMKvixkZoydoyGZVC2cMPSIVEncu6U4hr7kCL9pEwlZrsMsvZ
-         afSSfHjU4saEf1Cw7P8dzTY9mDebe9PYa4Wy9pYW2dKSCq/JT3/NYsJ7EA6Vj3DWH8
-         w6O2EsRkaFsNplpe+nr9k0OReGEU4h4Ozx6X5HJquqSTcqbKdngcwdolFX6N4NGGR6
-         pOHvY+v0YqP7E4m4R4baXom+2OXJAehk1qXm5J9gKWdO80XyDzaAobFHVYXQTgGlNR
-         83ydCnAibOBAtqJ2ILdzY3IrIbWOdKO6wyqdxKj5vmX21bXGDAWjuAoGc8/J9PcYVO
-         rLCiAz4/z3MDQ==
+        b=MIG66V4ikNdcT8Me/J4Oe0yrRMrUHZES9A9Hc751Qv6eYKppkFguaa7s9xyPBWACp
+         U9OTm6Ky+pWrZ5vHRtOT09BPfneej7Fv0egCf1U+0VRwQrwQUbCZedP7RcOF/roxZc
+         Yx09CCX7UigSKOP68gGlNktMqYMClQVmwI301ZR6KnQrTsj7Enz0OgVz0fNSJJznru
+         Be1kgKc4c6Lz0aQhB3AXfvNdOB/ADaJx41q5TriT5yr+Uk+cwlVwbBv4cXf1AOHKOa
+         b1svuLgWCKGD33YUzVlB8TayyMbInWmv/nlMS8XKJuvlKJPIp2qTsj0dCqZY7aLdk9
+         QRJ9SKCxvSQ6g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtl8xxxu: 8188e: parse single one element of RA
- report
- for station mode
+Subject: Re: wifi: rtlwifi: rtl8192de: Remove the unused variable
+ bcnfunc_enable
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230216004654.4642-1-pkshih@realtek.com>
-References: <20230216004654.4642-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <Jes.Sorensen@gmail.com>, <rtl8821cerfe2@gmail.com>,
-        <error27@gmail.com>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <20230217092529.105899-1-jiapeng.chong@linux.alibaba.com>
+References: <20230217092529.105899-1-jiapeng.chong@linux.alibaba.com>
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     pkshih@realtek.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167706896785.20055.7787168018772184989.kvalo@kernel.org>
-Date:   Wed, 22 Feb 2023 12:29:32 +0000 (UTC)
+Message-ID: <167706901023.20055.833795751773606339.kvalo@kernel.org>
+Date:   Wed, 22 Feb 2023 12:30:11 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,33 +58,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
 
-> Intentionally parsing single one element of RA report by breaking loop
-> causes a smatch warning:
->   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c:1678 rtl8188e_handle_ra_tx_report2() warn:
->   ignoring unreachable code.
+> Variable bcnfunc_enable is not effectively used, so delete it.
 > 
-> With existing comments, it intends to process single one element for
-> station mode, but it will parse more elements in AP mode if it's
-> implemented. Implement program logic according to existing comment to avoid
-> smatch warning, and also be usable for both AP and stations modes.
+> drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c:1050:5: warning: variable 'bcnfunc_enable' set but not used.
 > 
-> Compile test only.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Link: https://lore.kernel.org/r/202302142135.LCqUTVGY-lkp@intel.com/
-> Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4110
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-next.git, thanks.
 
-398eb19415eb wifi: rtl8xxxu: 8188e: parse single one element of RA report for station mode
+db5e4b364553 wifi: rtlwifi: rtl8192de: Remove the unused variable bcnfunc_enable
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230216004654.4642-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230217092529.105899-1-jiapeng.chong@linux.alibaba.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
