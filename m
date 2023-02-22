@@ -2,48 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A992A69F492
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 13:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C53E669F494
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Feb 2023 13:31:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231308AbjBVMa4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Feb 2023 07:30:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57196 "EHLO
+        id S229950AbjBVMb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Feb 2023 07:31:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231494AbjBVMay (ORCPT
+        with ESMTP id S229528AbjBVMb1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Feb 2023 07:30:54 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AAB932503
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 04:30:49 -0800 (PST)
+        Wed, 22 Feb 2023 07:31:27 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E395638B74
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 04:31:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 341D8B8125F
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 12:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2876BC433D2;
-        Wed, 22 Feb 2023 12:30:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72D3361411
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 12:31:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012BCC433D2;
+        Wed, 22 Feb 2023 12:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677069046;
-        bh=thhpSMSrKDbBY1TPCR6M+wAL2+xV3T0IG+MORgO1YAw=;
+        s=k20201202; t=1677069085;
+        bh=e+rnIeUsS7JCZ4Ym1Z30Bjs7gJNIi0XDvAqccknPqpw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=VuNJsyqxL0jhGvJc/C/YJ3FErZa8BYQ3drY4ZdujzYuvVPjML9CXTJScFl76pruv1
-         NlCjR9r2Fdgwg0NLFKYP9D5Gm5P+teVyTVx5qQhiT7JmB0G6QKkWIRLIobxMWZKOo2
-         Ls8n31oFcHoPUC5AX5VREpQ9AcKIg533KE5N507Za3OBdhQpQyktROkTgoF5BB3JxE
-         SSo1gOCSi4lqgHjOFIC31Jzf7EJ47Fw0pDk+G4Ab3MW8N22SWLJovJ4vSU7uCTL5uj
-         YiROEOYPVtjNk0Ske9EP1wTrsiqEU263htXnplwgymXh7r6+nIfUYxULnsPla4AhNq
-         VUpGX/MHLkB4A==
+        b=gZyt7qn1ssZ6O8nIfXS0cnN8V7i1zg9xiXLfI8cbz8dqc4Se5LDj8nxZxBPqEQLEz
+         c04aYWxafys5CE1+MmiQKc/7uVhK6Iv+hlssSdHR94XR6jbK67ekyI5KuMD8LXPthY
+         alFNhUcwcWJHJx+tB/PsBopzNIDEXIcgCx8rOmMFpVRTVUZwwD8V5jipUnPwWzdKxu
+         e5ZyYsa1ovb38WWOZyv2B2UVA7fpDMqu0c2Ca5wDk4rvZxybftDDOJZX1JtUHzofWe
+         bPGZHYrrnMUPqSVGSgppqM0Vwfrqi7ihikAvH1yFGvd+enQTgrU2mvkrgO/u2IBrjr
+         ZarOdcxlEHEAA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: rtw89: add RNR support for 6 GHz scan
+Subject: Re: [PATCH] wifi: rtl8xxxu: Remove always true condition in
+ rtl8xxxu_print_chipinfo
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230217120007.8835-1-pkshih@realtek.com>
-References: <20230217120007.8835-1-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
+In-Reply-To: <68eff98b-a022-5a00-f330-adf623a35772@gmail.com>
+References: <68eff98b-a022-5a00-f330-adf623a35772@gmail.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167706904433.20055.10416608640157920935.kvalo@kernel.org>
-Date:   Wed, 22 Feb 2023 12:30:45 +0000 (UTC)
+Message-ID: <167706908315.20055.17316683017000986435.kvalo@kernel.org>
+Date:   Wed, 22 Feb 2023 12:31:24 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,33 +56,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+> Fix a new smatch warning:
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:1580 rtl8xxxu_print_chipinfo() warn: always true condition '(priv->chip_cut <= 15) => (0-15 <= 15)'
 > 
-> Since 6 GHz band has around 60 channels and more strict rules for
-> active probing. Reduced neighbor report can be used to reduce the
-> channels we scan and get specific target BSS info to probe for.
-> 
-> Declare flag WIPHY_FLAG_SPLIT_SCAN_6GHZ so the scan request could be
-> divided into two portions: legacy bands and 6 GHz bands. So RNR
-> information from legacy bands could later be used when 6 GHz scan.
-> 
-> When the scan flag NL80211_SCAN_FLAG_COLOCATED_6GHZ is set, cfg80211
-> will pass down a reduced channel set which contains PSCs and non-PSC
-> with RNR info received in the 2 GHz/5 GHz band. This reduces the
-> scan duration by allowing us to only scan for channels in which APs
-> are currently operating.
-> 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/oe-kbuild-all/202302140753.71IgU77A-lkp@intel.com/
+> Fixes: 7b0ac469e331 ("wifi: rtl8xxxu: Recognise all possible chip cuts")
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
 Patch applied to wireless-next.git, thanks.
 
-c6aa9a9c4725 wifi: rtw89: add RNR support for 6 GHz scan
+b9b1e4fe2957 wifi: rtl8xxxu: Remove always true condition in rtl8xxxu_print_chipinfo
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230217120007.8835-1-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/68eff98b-a022-5a00-f330-adf623a35772@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
