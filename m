@@ -2,51 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 661756A041B
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 09:46:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB8C6A0489
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 10:11:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233132AbjBWIqd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Feb 2023 03:46:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45254 "EHLO
+        id S233836AbjBWJLz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Feb 2023 04:11:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232867AbjBWIqb (ORCPT
+        with ESMTP id S232644AbjBWJLy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Feb 2023 03:46:31 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E92A2BF0C
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 00:46:30 -0800 (PST)
+        Thu, 23 Feb 2023 04:11:54 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD0F54ECEE;
+        Thu, 23 Feb 2023 01:11:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 45035B818DC
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 08:46:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5AEC433D2;
-        Thu, 23 Feb 2023 08:46:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677141988;
-        bh=0ZTG0Y3VQJoUcThP0atKRpbLQ3wYj0Q2aY9onmg5ud0=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 068A861633;
+        Thu, 23 Feb 2023 09:11:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21305C4339B;
+        Thu, 23 Feb 2023 09:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1677143512;
+        bh=FLuwj3WwRqTNxwF4ZE4nzwojL2qEu+/Jiah69XSHx10=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QLEIqc++Wz0GTRlLtvQNqiDpDOtJx6TrY2JZ8zn3Db79OuPdiLhuHllqpvXNsGtwi
-         /kTiL2Z3Bkrrot0CBhxvefI4oP8i3cFzhm1a3sbPMeWvRCnKOvLiiy+h7n9IsVoz80
-         iWsbTYTe9s2T9NclyDl7z/tcsteaUtwgYbmzvX72x167jGDsm8O/Eyqudl+D7Dshtn
-         O4eCdE1TnZG1fEexoHEAEUSJDvgJOk8EqMLoxIiF1G+z7k3S/sdIhjY2uRb7zevXq0
-         /d8ceXAEV38nw1kJ/Btaygq+a+FplpQU8Jm/mDJpzIG4nnJw6U8OTGoat6yF1VUrLS
-         RV4zkdeSHDA4w==
-Date:   Thu, 23 Feb 2023 09:46:24 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     nbd@nbd.name, helmut@subdivi.de, lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH wireless] wifi: mt76: do not run mt76_unregister_device()
- on unregistered hw
-Message-ID: <Y/cn4KVsGVuR27Zg@lore-desk>
-References: <be3457d82f4e44bb71a22b2b5db27b644a37b1e1.1677107277.git.lorenzo@kernel.org>
+        b=QCVLmQJEhrn21VIbUWi7BowrFreR2G9DLG4EaBGKnFyeVy8e8FSYXjatNe0p3+ich
+         VuXiGb4vG3evb30BOFnGFow1RIhyM6z7QFwGkG3ezBfuSA/lqumW2lSMv1yadHcZqs
+         XskTpn0JmvRivoJ/DGIHOll7aQqed+hmuFQHBLqE=
+Date:   Thu, 23 Feb 2023 10:11:39 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Fedor Pchelkin <pchelkin@ispras.ru>
+Cc:     stable@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>,
+        Pavel Skripkin <paskripkin@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bob Copeland <me@bobcopeland.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org,
+        syzbot+860268315ba86ea6b96b@syzkaller.appspotmail.com,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 5.4/5.10 1/1] mac80211: mesh: embedd mesh_paths and
+ mpp_paths into ieee80211_if_mesh
+Message-ID: <Y/ctyzCtbPwyrrDI@kroah.com>
+References: <20230222200301.254791-1-pchelkin@ispras.ru>
+ <20230222200301.254791-2-pchelkin@ispras.ru>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="u95fhuriksMPtGrm"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <be3457d82f4e44bb71a22b2b5db27b644a37b1e1.1677107277.git.lorenzo@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230222200301.254791-2-pchelkin@ispras.ru>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,111 +61,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---u95fhuriksMPtGrm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Trying to probe a mt7921e pci card without firmware results in a
-> successful probe where ieee80211_register_hw hasn't been called. When
-> removing the driver, ieee802111_unregister_hw is called unconditionally
-> leading to a kernel NULL pointer dereference.
-> Fix the issue running mt76_unregister_device routine just for registered
-> hw.
-
-Reviewing the code better, mt7921 is the only driver registering ieee80211_=
-hw in
-init work. I do not have a strong opinion if it is better this approach or =
-the
-fix posted by Helmut, I am fine both ways.
-
-@Felix: what do you think?
-
-Regards,
-Lorenzo
-
->=20
-> Link: https://bugs.debian.org/1029116
-> Link: https://bugs.kali.org/view.php?id=3D8140
-> Reported-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-> Fixes: 1c71e03afe4b ("mt76: mt7921: move mt7921_init_hw in a dedicated wo=
-rk")
-> Tested-by: Helmut Grohne <helmut@freexian.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+On Wed, Feb 22, 2023 at 11:03:01PM +0300, Fedor Pchelkin wrote:
+> From: Pavel Skripkin <paskripkin@gmail.com>
+> 
+> commit 8b5cb7e41d9d77ffca036b0239177de123394a55 upstream.
+> 
+> Syzbot hit NULL deref in rhashtable_free_and_destroy(). The problem was
+> in mesh_paths and mpp_paths being NULL.
+> 
+> mesh_pathtbl_init() could fail in case of memory allocation failure, but
+> nobody cared, since ieee80211_mesh_init_sdata() returns void. It led to
+> leaving 2 pointers as NULL. Syzbot has found null deref on exit path,
+> but it could happen anywhere else, because code assumes these pointers are
+> valid.
+> 
+> Since all ieee80211_*_setup_sdata functions are void and do not fail,
+> let's embedd mesh_paths and mpp_paths into parent struct to avoid
+> adding error handling on higher levels and follow the pattern of others
+> setup_sdata functions
+> 
+> Fixes: 60854fd94573 ("mac80211: mesh: convert path table to rhashtable")
+> Reported-and-tested-by: syzbot+860268315ba86ea6b96b@syzkaller.appspotmail.com
+> Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+> Link: https://lore.kernel.org/r/20211230195547.23977-1-paskripkin@gmail.com
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> [pchelkin@ispras.ru: adapt a comment spell fixing issue]
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 > ---
->  drivers/net/wireless/mediatek/mt76/mac80211.c | 8 ++++++++
->  drivers/net/wireless/mediatek/mt76/mt76.h     | 1 +
->  2 files changed, 9 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/=
-wireless/mediatek/mt76/mac80211.c
-> index b117e4467c87..34abf70f44af 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-> @@ -539,6 +539,7 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
->  	if (ret)
->  		return ret;
-> =20
-> +	set_bit(MT76_STATE_REGISTERED, &phy->state);
->  	phy->dev->phys[phy->band_idx] =3D phy;
-> =20
->  	return 0;
-> @@ -549,6 +550,9 @@ void mt76_unregister_phy(struct mt76_phy *phy)
->  {
->  	struct mt76_dev *dev =3D phy->dev;
-> =20
-> +	if (!test_bit(MT76_STATE_REGISTERED, &phy->state))
-> +		return;
-> +
->  	if (IS_ENABLED(CONFIG_MT76_LEDS))
->  		mt76_led_cleanup(phy);
->  	mt76_tx_status_check(dev, true);
-> @@ -719,6 +723,7 @@ int mt76_register_device(struct mt76_dev *dev, bool v=
-ht,
->  		return ret;
-> =20
->  	WARN_ON(mt76_worker_setup(hw, &dev->tx_worker, NULL, "tx"));
-> +	set_bit(MT76_STATE_REGISTERED, &phy->state);
->  	sched_set_fifo_low(dev->tx_worker.task);
-> =20
->  	return 0;
-> @@ -729,6 +734,9 @@ void mt76_unregister_device(struct mt76_dev *dev)
->  {
->  	struct ieee80211_hw *hw =3D dev->hw;
-> =20
-> +	if (!test_bit(MT76_STATE_REGISTERED, &dev->phy.state))
-> +		return;
-> +
->  	if (IS_ENABLED(CONFIG_MT76_LEDS))
->  		mt76_led_cleanup(&dev->phy);
->  	mt76_tx_status_check(dev, true);
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
-less/mediatek/mt76/mt76.h
-> index ccca0162c8f8..183b0fc5a2d4 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -402,6 +402,7 @@ struct mt76_tx_cb {
-> =20
->  enum {
->  	MT76_STATE_INITIALIZED,
-> +	MT76_STATE_REGISTERED,
->  	MT76_STATE_RUNNING,
->  	MT76_STATE_MCU_RUNNING,
->  	MT76_SCANNING,
-> --=20
-> 2.39.2
->=20
 
---u95fhuriksMPtGrm
-Content-Type: application/pgp-signature; name="signature.asc"
+This also worked for 4.19.y, but not 4.14.y, care to also fix it there?
 
------BEGIN PGP SIGNATURE-----
+thanks,
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY/cn4AAKCRA6cBh0uS2t
-rPhhAQCcxNEM+vPydjeyARW454r+p53f96SPSHAzFPTA7I2iNwEAtW3YAQZ4GP0a
-1+bSXffRjXzPYRKstbHQBAR0zrtSags=
-=AMea
------END PGP SIGNATURE-----
-
---u95fhuriksMPtGrm--
+greg k-h
