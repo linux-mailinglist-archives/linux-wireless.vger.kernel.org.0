@@ -2,62 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9080669FF65
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 00:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 000236A0184
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 04:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232476AbjBVXYL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Feb 2023 18:24:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41080 "EHLO
+        id S233004AbjBWDZW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Feb 2023 22:25:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231304AbjBVXX7 (ORCPT
+        with ESMTP id S232978AbjBWDZU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Feb 2023 18:23:59 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6505C3E61F
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 15:23:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677108237; x=1708644237;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jm7X7dcxvZ8vGNPLFX89x8uzswqvMxQeFVg6CIByjUc=;
-  b=mjdAh6m9yxCFz01kuuX8tC47C/vO7cbgcpRUSW+EjpK4Zxm3r1/7mZYN
-   iqCIpg8uo68b44i4Yt/J6avAsMPnPIerVLMaTmJSC9WRy399UPoXM/qTU
-   R5ox6aY0AEsjMWrNi7rOEXdqvxo2JIjJ73bCztbMtnSmi9BTIjhUctdkt
-   AA64u9nzbIBBTxZcu4sgm1APiyDFccIRqCv8TYHcT0wCbIf6hJvfKimHa
-   Szqb48UHfn3zQZDb3pbRLy4uojmNe7hhfch56CrPj9ThcsNtkMFHrc8a/
-   bY6DhZfPnodX9qmJMxf0a3aERgixQ5oASMnN4fr9lzDYY8V6Ou57/PUOj
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10629"; a="395543625"
-X-IronPort-AV: E=Sophos;i="5.97,319,1669104000"; 
-   d="scan'208";a="395543625"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2023 15:23:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10629"; a="741038469"
-X-IronPort-AV: E=Sophos;i="5.97,319,1669104000"; 
-   d="scan'208";a="741038469"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 22 Feb 2023 15:23:35 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pUySU-0000nP-23;
-        Wed, 22 Feb 2023 23:23:34 +0000
-Date:   Thu, 23 Feb 2023 07:23:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless:for-next] BUILD SUCCESS
- 7c15430822e71e90203d87e6d0cfe83fa058b0dc
-Message-ID: <63f6a3d7.uvrqndK876PjcfKP%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 22 Feb 2023 22:25:20 -0500
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10C52DE53
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 19:25:19 -0800 (PST)
+Received: by mail-pg1-x529.google.com with SMTP id h31so5308755pgl.6
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Feb 2023 19:25:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iBIegSs7cAcxBQr5oZ4JAv9xde4E92A9D/wWixl58gM=;
+        b=wEzvYEWAAx6L9bJ78JZsuQJCaN5HCA7CTiEyKyPlonDnrekuP6smyImpaWQQ1uyPvR
+         RtjywhrN+mgjrtnZY1bvswjpmlo51H7GKuZf2PHWKt1rU1H4D3P2suBT4CsWsOAW5kuJ
+         VXHIaCMLSL45DwdaUNaVgjxx2IRR39eF8aDLpQTofCh1D548vh4rp7L/XCwoH/Z4R2z1
+         yrUC8ycP3iEv8AxvMjD56bHlelMP6QTityPaxAS7QvWVv/Opm+W5+fghMC3/MbDydpov
+         YjD3VO772+Uzp9KpU34/FA5udXMsoxBreW6O9bPxhj/YqAzc5VEPTBTOZXsumiFgUTBL
+         XZkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iBIegSs7cAcxBQr5oZ4JAv9xde4E92A9D/wWixl58gM=;
+        b=JXtDiiUz4jSqKnS1egUN+FuNy3jYDcY0Re6tH4d/vZX7rGE0jCCemoZKXSAADReVQL
+         5hcPg/qTAGQ3HNrYlz/CQthr7MO++B6CTPprErtzAJysclR6V39qIxnZoNlSA2xUVMLV
+         l/98UJvXqkMe6VKJs/KwE5d0cNaAEY+K/gqzwDSlt1G/yROrkV6skGi2cduZ8LHvqe80
+         ltqbHRZZ9kbMCMykI+AMgndfPedh+QfMo5FLo5OmUFQcTzldfHlMZ/i2CpE2tVOO/wHJ
+         0OMdccRDMrPUGjJ8evmky8cek2WFB4mACxsGsipFU+KA5p8lxKB4rrGB44AEnzPPjQD/
+         +5aw==
+X-Gm-Message-State: AO0yUKUE5dwDpVbo/89IhwZpBnzPxvudKU/BC7BM9VrSfBFiNzFlwK/f
+        fpVAJgd28W+OEvVtcfe+qiVGlQ==
+X-Google-Smtp-Source: AK7set9TGmF4Ocz1YtPAyaY/QHCxobE8bELtSttP4XaIgB+5Qianc4XVlOm2Y90bX7UMhywpx3YNxQ==
+X-Received: by 2002:a62:7bce:0:b0:5a8:a570:4597 with SMTP id w197-20020a627bce000000b005a8a5704597mr8400847pfc.5.1677122719190;
+        Wed, 22 Feb 2023 19:25:19 -0800 (PST)
+Received: from virs-pc-014.morsemicro.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
+        by smtp.gmail.com with ESMTPSA id i13-20020aa787cd000000b005a8b882a239sm4747338pfo.109.2023.02.22.19.25.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Feb 2023 19:25:18 -0800 (PST)
+From:   Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+X-Google-Original-From: Gilad Itzkovitch <gilad.itzkovitch@virscient.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
+        Kieran Frewen <kieran.frewen@morsemicro.com>,
+        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+Subject: [PATCH] wifi: mac80211: S1G capabilities information element in probe request
+Date:   Thu, 23 Feb 2023 16:25:12 +1300
+Message-Id: <20230223032512.3848105-1-gilad.itzkovitch@virscient.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,94 +70,73 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 7c15430822e71e90203d87e6d0cfe83fa058b0dc  wifi: ath11k: allow system suspend to survive ath11k
+From: Kieran Frewen <kieran.frewen@morsemicro.com>
 
-elapsed time: 734m
+Add the missing S1G capabilities information element to probe requests.
 
-configs tested: 73
-configs skipped: 3
+Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
+Co-developed-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+---
+ net/mac80211/ieee80211_i.h |  1 +
+ net/mac80211/util.c        | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index ecc232eb1ee8..963a0001be9f 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2445,6 +2445,7 @@ void ieee80211_add_s1g_capab_ie(struct ieee80211_sub_if_data *sdata,
+ 				struct sk_buff *skb);
+ void ieee80211_add_aid_request_ie(struct ieee80211_sub_if_data *sdata,
+ 				  struct sk_buff *skb);
++u8 *ieee80211_ie_build_s1g_cap(u8 *pos, struct ieee80211_sta_s1g_cap *s1g_cap);
+ 
+ /* channel management */
+ bool ieee80211_chandef_ht_oper(const struct ieee80211_ht_operation *ht_oper,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 1a28fe5cb614..10ac9819ed91 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1959,6 +1959,14 @@ static int ieee80211_build_preq_ies_band(struct ieee80211_sub_if_data *sdata,
+ 	rate_flags = ieee80211_chandef_rate_flags(chandef);
+ 	shift = ieee80211_chandef_get_shift(chandef);
+ 
++	/* For direct scan add S1G IE and consider its override bits */
++	if (band == NL80211_BAND_S1GHZ) {
++		if (end - pos < 2 + sizeof(struct ieee80211_s1g_cap))
++			goto out_err;
++		pos = ieee80211_ie_build_s1g_cap(pos, &sband->s1g_cap);
++		goto done;
++	}
++
+ 	num_rates = 0;
+ 	for (i = 0; i < sband->n_bitrates; i++) {
+ 		if ((BIT(i) & rate_mask) == 0)
+@@ -3020,6 +3028,21 @@ size_t ieee80211_ie_split_vendor(const u8 *ies, size_t ielen, size_t offset)
+ 	return pos;
+ }
+ 
++u8 *ieee80211_ie_build_s1g_cap(u8 *pos, struct ieee80211_sta_s1g_cap *s1g_cap)
++{
++	*pos++ = WLAN_EID_S1G_CAPABILITIES;
++	*pos++ = sizeof(struct ieee80211_s1g_cap);
++	memset(pos, 0, sizeof(struct ieee80211_s1g_cap));
++
++	memcpy(pos, &s1g_cap->cap, sizeof(s1g_cap->cap));
++	pos += sizeof(s1g_cap->cap);
++
++	memcpy(pos, &s1g_cap->nss_mcs, sizeof(s1g_cap->nss_mcs));
++	pos += sizeof(s1g_cap->nss_mcs);
++
++	return pos;
++}
++
+ u8 *ieee80211_ie_build_ht_cap(u8 *pos, struct ieee80211_sta_ht_cap *ht_cap,
+ 			      u16 cap)
+ {
 
-gcc tested configs:
-alpha                            allyesconfig
-alpha                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-arc                  randconfig-r043-20230222
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm                  randconfig-r046-20230222
-arm64                            allyesconfig
-arm64                               defconfig
-csky                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-ia64                             allmodconfig
-ia64                                defconfig
-loongarch                        allmodconfig
-loongarch                         allnoconfig
-loongarch                           defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-sh                               allmodconfig
-sparc                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                            allnoconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64                               rhel-8.3
-
-clang tested configs:
-hexagon              randconfig-r041-20230222
-hexagon              randconfig-r045-20230222
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-riscv                randconfig-r042-20230222
-s390                 randconfig-r044-20230222
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-
+base-commit: bf767e3600e0b7d389c6c6a861bd3313ac956c06
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.34.1
+
