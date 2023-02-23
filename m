@@ -2,202 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01EEB6A1324
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 23:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E93C6A1376
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 00:02:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjBWW45 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Feb 2023 17:56:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54434 "EHLO
+        id S229491AbjBWXC2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Feb 2023 18:02:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjBWW4z (ORCPT
+        with ESMTP id S229445AbjBWXC1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Feb 2023 17:56:55 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A04A5DCF6
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 14:56:51 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id j3so8259695wms.2
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 14:56:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cikNiAl3CsaUVzCtk0AInA3PwE1/TMQnMlzjF1gGdG0=;
-        b=DRN7VfySjUL0rYZq24bKTqYo1a7eMqo07ygSwMFUqHzuTKP65b9sTMEH8VZt0hxwu1
-         dmHGRYaPf3ggH9KZmEyIo+flPWm4zpT9CAN4fb3bb2UwUttx3rmo4vx8zo6F2tPiEUOK
-         kQWqn6QOgf2ZhhgOZ653j1GAMDb6AMca6ljq3tiMi06NSCiMzWp0EPnd6Uvs6JK9LOIe
-         r43kHvJdLLA9VFyPJO6M+KZDTGdMEFaMKztCR+nTATohFgvC9r80+cCMQ12KHZsj+SUY
-         jwwZvlnmtS9kLRvR3sEhulVIN5kRwRQDmQ/AX297OlmgtRWEUsWG1kh7J/OLhfLYqjHy
-         599w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cikNiAl3CsaUVzCtk0AInA3PwE1/TMQnMlzjF1gGdG0=;
-        b=50cJ0fRkpDM+M9CcwKAv1228rM/k6qPEPP6IX0V9iJvK/Jm+S2gdBQqdZyVXfhbMi+
-         d8vDQUNZearG2CDaWOMm3OhxZah+BxLD/P03OpTmQ5AuxQYLgyZoRLaMdf3mNW0iRJ54
-         MG1eVi/78/NuH4RoA9XfbkHzryHj7dvKc6zV7yGWBElJ5KwP/cX8RPIlDGq9ubfeR45v
-         ljpMvblF6+JjcxFaKxiACx5E84ZQU5E79E953Eui64RXnPcKK2Ta9WuyW3jShdMbnSaU
-         s5swCkM3xMIwD1Y06cwBHlOhV8COmurjO6RDCgytKH87n7Q4eu/x6v7CryYsQIyHvmaI
-         E7+w==
-X-Gm-Message-State: AO0yUKWK40k3qIH7R1E+mXUCHCiQ0cRS7xZZtYpxW/2BZB5f/MxEbwL2
-        Ze9Zh/6a2joN6TJqGMOf/8jFGQ==
-X-Google-Smtp-Source: AK7set9Z52yxWv52zRMDow6DF+DTZQX7KbVMepo+DRQCwOeMkXAXaJBNJ2zYwaSnuLVGEj/k1hBdjw==
-X-Received: by 2002:a05:600c:a695:b0:3e2:2f9:b8e2 with SMTP id ip21-20020a05600ca69500b003e202f9b8e2mr10908094wmb.35.1677193009641;
-        Thu, 23 Feb 2023 14:56:49 -0800 (PST)
-Received: from ?IPV6:2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708? ([2a05:6e02:1041:c10:3e6f:e90a:1fc9:3708])
-        by smtp.googlemail.com with ESMTPSA id d21-20020a1c7315000000b003b47b80cec3sm662936wmb.42.2023.02.23.14.56.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Feb 2023 14:56:49 -0800 (PST)
-Message-ID: <37b3b835-e992-0090-56e5-bd4d58e547a7@linaro.org>
-Date:   Thu, 23 Feb 2023 23:56:44 +0100
+        Thu, 23 Feb 2023 18:02:27 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0925337F29
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 15:02:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C4AF617C3
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 23:02:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D3AC433EF;
+        Thu, 23 Feb 2023 23:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677193344;
+        bh=HpibVmEeJ5EwE4TLLPagIAV1d1EIXFyXsX3zP1BVSAc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=T8i2/W5kV9Rr4EhSUms35PnCPqcHjKIeW5TwEsD45gGSqXM2Nc1OwRxPEk25UAX2N
+         /yojQQQQxPJleXzTa2jvE6XNBb4QR45hx9t9C+T1pCpsMGobv40+IKc+FEnlARGWEY
+         n2BwaKU0TUD51dKYj7iSobFyDMEAy0aut7mwqBzeJMswb20i8BTwNbKIg0zsv27KAq
+         2JLh8eBY/9hDYroVvQHduY7m8tSfY+TxTz0CguV6lgUqjxUXAiWpCKFXwJhSOjf5tL
+         dFrAkHmxpXjR8BW2uAgU64aLuRq7Qdhbx3esRalqeSIZHnjI2tzzrhXluqf2J9l7Ss
+         qsozAgTFCQqUg==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        mikhail.v.gavrilov@gmail.com
+Subject: [PATCH wireless] wifi: mt76: usb: fix use-after-free in mt76u_free_rx_queue
+Date:   Fri, 24 Feb 2023 00:02:17 +0100
+Message-Id: <f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v3 00/17] Self-encapsulate the thermal zone device
- structure
-Content-Language: en-US
-To:     rafael@kernel.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20230223224844.3491251-1-daniel.lezcano@linaro.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230223224844.3491251-1-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 23/02/2023 23:48, Daniel Lezcano wrote:
-> The exported thermal headers expose the thermal core structure while those
-> should be private to the framework. The initial idea was the thermal sensor
-> drivers use the thermal zone device structure pointer to pass it around from
-> the ops to the thermal framework API like a handler.
-> 
-> Unfortunately, different drivers are using and abusing the internals of this
-> structure to hook the associated struct device, read the internals values, take
-> the lock, etc ...
-> 
-> rn order to fix this situation, let's encapsulate the structure leaking the
-> more in the different drivers: the thermal_zone_device structure.
-> 
-> This series revisit the existing drivers using the thermal zone private
-> structure internals to change the access to something else. For instance, the
-> get_temp() ops is using the tz->dev to write a debug trace. Despite the trace
-> is not helpful, we can check the return value for the get_temp() ops in the
-> call site and show the message in this place.
-> 
-> With this set of changes, the thermal_zone_device is almost self-encapsulated.
-> As usual, the acpi driver needs a more complex changes, so that will come in a
-> separate series along with the structure moved the private core headers.
-> 
-> Changelog:
-> 	- V3:
-> 	   - Collected more tags
-> 	   - Added missing changes for ->devdata in some drivers
-> 	   - Added a 'type' accessor
-> 	   - Replaced the 'type' to 'id' changes by the 'type' accessor
-> 	   - Used the 'type' accessor in the drivers
-> 	- V2:
-> 	   - Collected tags
-> 	   - Added missing changes for ->devdata for the tsens driver
-> 	   - Renamed thermal_zone_device_get_data() to thermal_zone_priv()
-> 	   - Added stubs when CONFIG_THERMAL is not set
-> 	   - Dropped hwmon change where we remove the tz->lock usage
-> 
-> Thank you all for your comments
+Fix the following use-after-free issue in mt76u_free_rx_queue routine:
 
-The series has been blocked by gsmtp because the next patch has too many 
-Cc. I'll sort out this and resend.
+usb 3-3.3.4: reset high-speed USB device number 8 using xhci_hcd
+iwlwifi 0000:05:00.0: Detected RF HR B3, rfid=0x10a100
+iwlwifi 0000:05:00.0: base HW address: 50:eb:71:79:02:57
+iwlwifi 0000:05:00.0 wlp5s0: renamed from wlan0
+mt76x2u 3-3.3.4:1.0: ASIC revision: 76320044
+usb 3-3.3.1: 1:3 : unsupported format bits 0x100000000
+mt76x2u 3-3.3.4:1.0: could not get hardware semaphore for ROM PATCH
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 13 PID: 983 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
+Modules linked in: snd_seq_midi snd_seq_midi_event mt76x2u(+)
+mt76x2_common mt76x02_usb mt76_usb iwlmvm mt76x02_lib mt76
+snd_hda_codec_realtek intel_rapl_msr snd_hda_codec_generic
+snd_hda_codec_hdmi intel_rapl_common snd_hda_intel mac80211
+snd_intel_dspcfg snd_usb_audio(+) snd_intel_sdw_acpi btusb
+edac_mce_amd snd_hda_codec btrtl btbcm snd_usbmidi_lib snd_hda_core
+btintel snd_rawmidi btmtk snd_hwdep libarc4 mc iwlwifi kvm_amd snd_seq
+vfat bluetooth eeepc_wmi asus_ec_sensors snd_seq_device fat kvm
+cfg80211 asus_wmi snd_pcm irqbypass ledtrig_audio sparse_keymap rapl
+wmi_bmof platform_profile xpad snd_timer k10temp ff_memless i2c_piix4
+rfkill snd joydev soundcore acpi_cpufreq loop zram amdgpu
+crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni
+polyval_generic drm_ttm_helper ttm video iommu_v2 ucsi_ccg drm_buddy
+gpu_sched typec_ucsi ghash_clmulni_intel drm_display_helper igb
+sha512_ssse3 typec ccp nvme cec sp5100_tco nvme_core dca nvme_common
+wmi ip6_tables ip_tables fuse
+BTRFS info (device nvme1n1): enabling ssd optimizations
+CPU: 13 PID: 983 Comm: (udev-worker) Tainted: G        W    L
+-------  ---  6.3.0-0.rc0.20230222git5b7c4cabbb65.3.fc39.x86_64+debug
+BTRFS info (device nvme1n1): auto enabling async discard
+Hardware name: System manufacturer System Product Name/ROG STRIX
+X570-I GAMING, BIOS 4601 02/02/2023
+RIP: 0010:refcount_warn_saturate+0xba/0x110
+Code: 01 01 e8 69 a6 83 ff 0f 0b e9 52 f4 85 00 80 3d 69 6f ec 01 00
+75 85 48 c7 c7 d0 25 b3 a9 c6 05 59 6f ec 01 01 e8 46 a6 83 ff <0f> 0b
+e9 2f f4 85 00 80 3d 47 6f ec 01 00 0f 85 5e ff ff ff 48 c7
+RSP: 0018:ffffb4010456fb78 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000080000000 RCX: 0000000000000000
+RDX: 0000000000000002 RSI: ffffffffa9b17e3e RDI: 00000000ffffffff
+RBP: ffff8d15877336c0 R08: 0000000000000000 R09: ffffb4010456fa00
+R10: 0000000000000003 R11: ffff8d246e2fffe8 R12: 0000000000000080
+R13: ffff8d15b42fd000 R14: 0000000000000000 R15: ffff8d1587736a58
+FS:  00007fc05ae34940(0000) GS:ffff8d2425e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055d801f1d540 CR3: 000000011df60000 CR4: 0000000000350ee0
+Call Trace:
+ <TASK>
+ mt76u_queues_deinit+0x2a0/0x370 [mt76_usb]
+ mt76x2u_probe+0xf3/0x130 [mt76x2u]
+ usb_probe_interface+0xe8/0x300
+ really_probe+0x1b6/0x410
+ __driver_probe_device+0x78/0x170
+ driver_probe_device+0x1f/0x90
+ __driver_attach+0xd2/0x1c0
+ ? __pfx___driver_attach+0x10/0x10
+ bus_for_each_dev+0x8a/0xd0
+ bus_add_driver+0x141/0x230
+ driver_register+0x77/0x120
+ usb_register_driver+0xaf/0x170
+ ? __pfx_init_module+0x10/0x10 [mt76x2u]
+ do_one_initcall+0x6e/0x350
+ do_init_module+0x4a/0x220
+ __do_sys_init_module+0x192/0x1c0
+ ? lock_is_held_type+0xce/0x120
+ do_syscall_64+0x5b/0x80
+ ? lock_is_held_type+0xce/0x120
+ ? asm_exc_page_fault+0x22/0x30
+ ? lockdep_hardirqs_on+0x7d/0x100
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+RIP: 0033:0x7fc05b1351be
+Code: 48 8b 0d 4d 0c 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f
+84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d
+01 f0 ff ff 73 01 c3 48 8b 0d 1a 0c 0c 00 f7 d8 64 89 01 48
+RSP: 002b:00007ffd947c0988 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+RAX: ffffffffffffffda RBX: 000055d801f2b090 RCX: 00007fc05b1351be
+RDX: 00007fc05b65c07d RSI: 00000000000234be RDI: 000055d802c6b170
+RBP: 00007ffd947c0a40 R08: 000055d8019b4690 R09: 0000000000022000
+R10: 000000055d8019b4 R11: 0000000000000246 R12: 00007fc05b65c07d
+R13: 0000000000020000 R14: 000055d801f39770 R15: 000055d801f47780
+ </TASK>
+irq event stamp: 186313
+hardirqs last  enabled at (186323): [<ffffffffa81c675e>]
+__up_console_sem+0x5e/0x70
+hardirqs last disabled at (186332): [<ffffffffa81c6743>]
+__up_console_sem+0x43/0x70
+softirqs last  enabled at (186022): [<ffffffffa811d2f7>]
+__irq_exit_rcu+0xd7/0x160
+softirqs last disabled at (186017): [<ffffffffa811d2f7>]
+__irq_exit_rcu+0xd7/0x160
+---[ end trace 0000000000000000 ]---
+mt76x2u: probe of 3-3.3.4:1.0 failed with error -110
+usbcore: registered new interface driver mt76x2u
+kauditd_printk_skb: 32 callbacks suppressed
 
+Fixes: 2f5c3c77fc9b ("wifi: mt76: switch to page_pool allocator")
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index b88959ef38aa..5e5c7bf51174 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -706,6 +706,7 @@ mt76u_free_rx_queue(struct mt76_dev *dev, struct mt76_queue *q)
+ 		q->entry[i].urb = NULL;
+ 	}
+ 	page_pool_destroy(q->page_pool);
++	q->page_pool = NULL;
+ }
+ 
+ static void mt76u_free_rx(struct mt76_dev *dev)
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+2.39.2
 
