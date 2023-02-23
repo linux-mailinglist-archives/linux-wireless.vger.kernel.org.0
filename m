@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99CCE6A05BD
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 11:12:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC866A05BF
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Feb 2023 11:12:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233928AbjBWKMP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Feb 2023 05:12:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46180 "EHLO
+        id S233830AbjBWKMR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Feb 2023 05:12:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233478AbjBWKMM (ORCPT
+        with ESMTP id S233904AbjBWKMO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Feb 2023 05:12:12 -0500
+        Thu, 23 Feb 2023 05:12:14 -0500
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C1514FC84
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 02:12:06 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C8A51906
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 02:12:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677147126; x=1708683126;
+  t=1677147128; x=1708683128;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=SvBC3/Rm8mNRk9jWC2gAp/TMN8i7LBgRRjk3X2Tpf0E=;
-  b=mGd3TeNI8Y6suNImS8dmzLtYbQ7KG0ra4AGFyE43sJsSXvlLeU16dZen
-   jt4lRg0sE2wDpp7s5Zb+ialrLRFM/o8DbvNbOfXzOng7Z30GJom2MZVnQ
-   +IK90FZxrL35TmMp3o1shAreqSG5mRmYM0lfGKxFE3djQUkZK+eZ6ihAz
-   J0yT9Hdrjl7aDxOsBZAKmBwAFMHfnC3wESqDB4B3k+NxuYEQqEbNx8Ile
-   9HzkXGQdr232ipRoYX2whhsYpelH0tLe2GipNLjnWY/kuwZvZlCzVjm+Q
-   KvJqX3WH1xRZAsP+27VW60hyxTW5u+NllN2GyNZfMEDm7MEwl31hSVvrE
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10629"; a="419396278"
+  bh=iOzXP8LomyHd700l2Fo775pz3JgmHbSNQy1oTDWNjUM=;
+  b=jdJcUNJQwE/jiyH0r9MF1xf0bETH/pY1rblGZ2rxqteYhkMD87/WAbz5
+   ktERbzupmTdgn+2ZStmnjjaN43nFjF0EezQ3c80ApBFaCO9Akydl8Amic
+   3Y9Hh4x41bJtwfSf1hiZZ74jKBIzpRknezmejdzPCw0PlUlFuWF8q+Vbd
+   KUga29Q+L+NLIdhUx9Lcmn19kx79YxpBCjjdfWs6iPeG+JNPoqtMtXeNv
+   Tn5x1CTAv4wggrydsGjiPmCq0sBL85BFxGWQCQFJf2/ML9WmcSQL/oreG
+   xvS9l8mgWltqkh4cWz2WdxAjJJvkZsy+wG2ZGA69pk4NUY4raMuu58K0U
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10629"; a="419396294"
 X-IronPort-AV: E=Sophos;i="5.97,320,1669104000"; 
-   d="scan'208";a="419396278"
+   d="scan'208";a="419396294"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2023 02:10:30 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10629"; a="796245169"
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2023 02:10:33 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10629"; a="796245231"
 X-IronPort-AV: E=Sophos;i="5.97,320,1669104000"; 
-   d="scan'208";a="796245169"
+   d="scan'208";a="796245231"
 Received: from bkalend-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.227.25])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2023 02:10:29 -0800
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2023 02:10:31 -0800
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 04/21] wifi: mac80211: check key taint for beacon protection
-Date:   Thu, 23 Feb 2023 12:09:25 +0200
-Message-Id: <20230223114629.a08041eab67c.I2f19b3e04e31c99bed3c9dc71935bf513b2cd177@changeid>
+Subject: [PATCH 05/21] wifi: mac80211: allow beacon protection HW offload
+Date:   Thu, 23 Feb 2023 12:09:26 +0200
+Message-Id: <20230223114629.14e4b5885273.I6c0b9c50c6a481128ba912a11cb7afc92c4b6da7@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230223100942.767589-1-gregory.greenman@intel.com>
 References: <20230223100942.767589-1-gregory.greenman@intel.com>
@@ -62,28 +62,28 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This will likely never happen, but for completeness check
-the key taint flag before using a key for beacon protection.
+In case of beacon protection, check if the key was offloaded
+to the hardware and in that case set control.hw_key so that
+the encryption function will see it and only do the needed
+steps that aren't done in hardware.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/tx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/mac80211/tx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 7699fb410670..1f9294f5baa4 100644
+index 1f9294f5baa4..628d60f3db2a 100644
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -5115,6 +5115,12 @@ static int ieee80211_beacon_protect(struct sk_buff *skb,
- 	tx.key = rcu_dereference(link->default_beacon_key);
- 	if (!tx.key)
- 		return 0;
-+
-+	if (unlikely(tx.key->flags & KEY_FLAG_TAINTED)) {
-+		tx.key = NULL;
-+		return -EINVAL;
-+	}
+@@ -5121,6 +5121,10 @@ static int ieee80211_beacon_protect(struct sk_buff *skb,
+ 		return -EINVAL;
+ 	}
+ 
++	if (!(tx.key->conf.flags & IEEE80211_KEY_FLAG_SW_MGMT_TX) &&
++	    tx.key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
++		IEEE80211_SKB_CB(skb)->control.hw_key = &tx.key->conf;
 +
  	tx.local = local;
  	tx.sdata = sdata;
