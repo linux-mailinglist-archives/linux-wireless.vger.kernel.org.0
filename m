@@ -2,106 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F280D6A191A
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 10:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB1D76A19A7
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 11:10:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229729AbjBXJw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 04:52:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32800 "EHLO
+        id S230160AbjBXKKv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 05:10:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbjBXJw1 (ORCPT
+        with ESMTP id S230166AbjBXKKc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 04:52:27 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5205D63DD9
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 01:52:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=FSnH0EFJCmr3+sjJ98W2pAbsmccvBM7VOyHP6Awi2bk=; t=1677232346; x=1678441946; 
-        b=cX/3v4YLRoEJe/wmpGngmOdWPtuJOjzHh/hJ1kVp7T+txgqM8OB+v4+w1jvue0ldjbmPKLD8C2D
-        tc7VrihAeWKc7NS3KEJzFOlBRTXyQGEX1Fo9b0ip0DhQ7x3+it8d1TFXBKk7hMD2c8d4SwihJIFfj
-        rPMhq3SlNlZUKYktd5sRgBl9cEN33CIto6PR53741rpGlE8vcPFZZ/v03W970TTCY+Ap7uhHu83pF
-        bASKZWDe+QuLL7zCU4i0xMtFIBenMGzazZw44gFZuL5L5Vg7kL255Qs0je4jInnQShZtBSRuHq4+Q
-        jdD4NuA2BdR7eBAckwLkVSTHAW8aZ4I1TjFA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pVUkY-0048WQ-0K;
-        Fri, 24 Feb 2023 10:52:22 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: check basic rates validity
-Date:   Fri, 24 Feb 2023 10:52:19 +0100
-Message-Id: <20230224105219.491db73b987d.If01a7725b22c06e1bd3ece401d04d0c003082c98@changeid>
-X-Mailer: git-send-email 2.39.2
+        Fri, 24 Feb 2023 05:10:32 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AA665B4
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 02:09:30 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31O4LbiZ016756;
+        Fri, 24 Feb 2023 10:08:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=NObgMQoBcXpCo1Ze11rufi67mVaLJfn4suB7qxRc9Hg=;
+ b=jnhNkHO0mCrN0JE3LAnLOv6MkDlosPtwteVggShyh7PGL/6HOvKEkAFqH8lRxn3MetfM
+ IGaB4MpPhRYz5DHw8xBa7PJTbsOET2HtbAvRZazC/98s25LbU5VJ24Z/iT7TZQhhr1gB
+ XnOdSN4qpXCfwpRPGCRguckEAYACuL969/GfTWAC0HihExLHPW/p8jOirgkh5+w25QCw
+ XgZ/jQDI0WlCF9DZAaA9ceZKE4bpYTHNFuFYuyDI73Kl82ZoHmzTuf93QtcmwA3MVM/V
+ RL68YqpI91aGTVBjsYUf41DDYfFPmWPHUj/nPHra8w1qwkrOdfBVfXe0V41rmUAmJQzF ng== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nwycnm5ym-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 24 Feb 2023 10:08:30 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31OA8Tux026683
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 24 Feb 2023 10:08:29 GMT
+Received: from [10.216.30.226] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 24 Feb
+ 2023 02:08:27 -0800
+Message-ID: <10e4b6bf-f375-e50f-063a-b44471359d25@quicinc.com>
+Date:   Fri, 24 Feb 2023 15:38:23 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH] wifi: ath11k: Optimize 6 GHz scan time
+To:     James Prestwood <prestwoj@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        <johannes@sipsolutions.net>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20221220043823.20382-1-quic_mpubbise@quicinc.com>
+ <5DAEA8B2-2B44-4A91-9E57-12B6C6B6C1FC@holtmann.org>
+ <2861463e-a097-7efe-bc75-f13c8faf9547@quicinc.com>
+ <378a1d63b3752ace7384c44d6f5184753fa7795d.camel@gmail.com>
+ <0b06dea9-d5be-1edc-62ca-576398d1bcd8@quicinc.com>
+ <0e7644cbfa9e4ba0d534681166ca467ea1684719.camel@gmail.com>
+Content-Language: en-US
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+In-Reply-To: <0e7644cbfa9e4ba0d534681166ca467ea1684719.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: e9-ptvrkJa4zdNpVpb5OalxbSzu1ixaY
+X-Proofpoint-GUID: e9-ptvrkJa4zdNpVpb5OalxbSzu1ixaY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-24_06,2023-02-24_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 spamscore=0
+ clxscore=1011 mlxlogscore=958 priorityscore=1501 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2302240084
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 1/10/2023 10:35 PM, James Prestwood wrote:
+> On Tue, 2023-01-10 at 10:49 +0530, Manikanta Pubbisetty wrote:
+>> On 12/29/2022 2:52 AM, James Prestwood wrote:
+>>> Hi Manikanta,
+>>>> By the way, userspace itself selects the frequencies to scan, not
+>>>> the
+>>>> driver.
+>>>>
+>>>> If we see the split scan implementation in cfg80211, this is the
+>>>> how
+>>>> it
+>>>> is implemented. If NL80211_SCAN_FLAG_COLOCATED_6GHZ is set, it
+>>>> selects
+>>>> all PSC channels and those non-PSC channels where RNR IE
+>>>> information
+>>>> is
+>>>> found in the legacy scan results. If this flag is not set, all
+>>>> channels
+>>>> in 6 GHz are included in the scan freq list. It is upto userspace
+>>>> to
+>>>> decide what it wants.
+>>>
+>>>
+>>> This isn't your problem, but it needs to be said:
+>>>
+>>> The nl80211 docs need and update to reflect this behavior (or
+>>> remove
+>>> the PSC logic). IMO this is really weird that the kernel selects
+>>> PSC's
+>>> based on the co-located flag. The docs don't describe this behavior
+>>> and
+>>> the flag's name is misleading (its not
+>>> SCAN_FLAG_COLOCATED_AND_PSC_6GHZ) :)
+>>>
+>>
+>> Sorry for the late reply, I was on vacation.
+>>
+>> What you said make sense. The existing flag should not add PSC
+>> channels
+>> according to the flag description.
+>>
+>> We can add another flag something like you pointed out
+>> SCAN_FLAG_COLOCATED_AND_PSC_6GHZ and include PSC channels if this
+>> flag
+>> is set. What do you say?
+> 
+> I'm no authority here, just wanted to point this out. This is something
+> that would need to be in mac80211 though, not just a specific driver.
+> It would be up to the maintainers and would require changing the
+> behavior of the existing flag, which then changes behavior in
+> wpa_supplicant/hostapd. So its somewhat intrusive.
+> 
+> But personally I'd be for it. And just require userspace include PSC's
+> like any other channels if they need those.
+> 
 
-When userspace sets basic rates, it might send us some rates
-list that's empty or consists of invalid values only. We're
-currently ignoring invalid values and then may end up with a
-rates bitmap that's empty, which later results in a warning.
+Hi Johannes,
 
-Reject the call if there were no valid rates.
+What is your opinion on the changes being proposed to the 6 GHz scan in 
+cfg80211 that is being discussed in this thread?
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/cfg.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 8eb342300868..d3d861911ed6 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2611,6 +2611,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
- 	if (!sband)
- 		return -EINVAL;
- 
-+	if (params->basic_rates) {
-+		if (!ieee80211_parse_bitrates(link->conf->chandef.width,
-+					      wiphy->bands[sband->band],
-+					      params->basic_rates,
-+					      params->basic_rates_len,
-+					      &link->conf->basic_rates))
-+			return -EINVAL;
-+		changed |= BSS_CHANGED_BASIC_RATES;
-+		ieee80211_check_rate_mask(link);
-+	}
-+
- 	if (params->use_cts_prot >= 0) {
- 		link->conf->use_cts_prot = params->use_cts_prot;
- 		changed |= BSS_CHANGED_ERP_CTS_PROT;
-@@ -2632,16 +2643,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
- 		changed |= BSS_CHANGED_ERP_SLOT;
- 	}
- 
--	if (params->basic_rates) {
--		ieee80211_parse_bitrates(link->conf->chandef.width,
--					 wiphy->bands[sband->band],
--					 params->basic_rates,
--					 params->basic_rates_len,
--					 &link->conf->basic_rates);
--		changed |= BSS_CHANGED_BASIC_RATES;
--		ieee80211_check_rate_mask(link);
--	}
--
- 	if (params->ap_isolate >= 0) {
- 		if (params->ap_isolate)
- 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
--- 
-2.39.2
+Thanks,
+Manikanta
 
