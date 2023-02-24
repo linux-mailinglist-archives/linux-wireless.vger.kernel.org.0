@@ -2,45 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2BD6A1DD4
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 15:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C026A1DF3
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 16:03:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjBXOyd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 09:54:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43220 "EHLO
+        id S230149AbjBXPDu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 10:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbjBXOyc (ORCPT
+        with ESMTP id S230032AbjBXPDs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:54:32 -0500
+        Fri, 24 Feb 2023 10:03:48 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22481F746
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 06:54:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035FA2E0CA;
+        Fri, 24 Feb 2023 07:03:44 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A797618EA
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 14:54:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F153C433A0;
-        Fri, 24 Feb 2023 14:54:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85C4861839;
+        Fri, 24 Feb 2023 15:03:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1CDC433EF;
+        Fri, 24 Feb 2023 15:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677250470;
-        bh=1kMgqLhHUiXtC2VnyR4OdoH2n+IV/DAzN4ozBkQZ1+I=;
+        s=k20201202; t=1677251024;
+        bh=+qwnoeHBzppoVIm/VL0kDu/p/rJPsd2tDds8xTQZ1RU=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CSk9nonCNQniRawxp0DZRNdOL4wJwqCVksw889+OP+ueoYNFjvw051TSe+8nZ9sZ3
-         UmL7XFo0y0onve6ZzbjWP2DyqjyFkmWV1o5HICIMvqKtUxXsa+GZihaCuagsUllQDq
-         cg2zos78w+rs/o3s+UL2xumlRUQIptZMObq7yQjguXs8lhPBPsNjg5ORMI0UPEHojx
-         dGAS8EkVErnv2dGi5IBgJ5D9Th8ruzbxqAOykqnG/Qg08fUZVLQWgDFKuJg00mV977
-         tHTvfuPcJzwkhYtXoPvpjgvhanDRndpEO6uzwntWir5xzVXn1ckIls4oI3MItOqNoD
-         Pab/kMBEhRMcA==
+        b=DQ19V6WxYp3pIGDxjalZ+c3UPSCq7xkKm7MDAeIXPzeJZ5W8pcPzvxloz0WmB8hBL
+         Oe1XBRc4zhNV63gopluZ4tidKH/G+4p8Tn3bfyr0nC85Xvo68Ph+CsX6yUZnzLOm3A
+         RPukFHiH2U0Ox7EfHmzhLhATJ/F9EHqvu3YPP/ei7a+mXHpMOdnNiZ7Gt4X9mK8Ybn
+         z80aA61ULiCKrLWRwhWKXozrNKLqSbkLz/qJtkENERa704VaOVbsvXpx4S8cuKW5cf
+         rjPoTaCqi5QdXRDLFH7alCSyuDPe+3pwm6343KBQ/3TgqJjsOEGzdhIPwZdqBJ3gmz
+         RWEUucqcwBXZQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 0/3] Enable low power mode when WLAN is not active
-References: <20230203060128.19625-1-quic_mpubbise@quicinc.com>
-Date:   Fri, 24 Feb 2023 16:54:26 +0200
-In-Reply-To: <20230203060128.19625-1-quic_mpubbise@quicinc.com> (Manikanta
-        Pubbisetty's message of "Fri, 3 Feb 2023 11:31:25 +0530")
-Message-ID: <878rgnru59.fsf@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        netdev@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>,
+        Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] wifi: wext: warn about usage only once
+References: <20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid>
+Date:   Fri, 24 Feb 2023 17:03:38 +0200
+In-Reply-To: <20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid>
+        (Johannes Berg's message of "Fri, 24 Feb 2023 13:59:34 +0100")
+Message-ID: <87lekn2jhx.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -53,29 +57,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-> Currently, WLAN chip is powered once during driver probe and is kept
-> ON (powered) always even when WLAN is not active; keeping the chip
-> powered ON all the time will consume extra power which is not
-> desirable for battery operated devices. Same is the case with non-WoW
-> suspend, chip will not be put into low power mode when the system is
-> suspended resulting in higher battery drain.
+> From: Johannes Berg <johannes.berg@intel.com>
 >
-> Send QMI MODE OFF command to firmware during WiFi OFF to put device
-> into low power mode.
+> Warn only once since the ratelimit parameters are still
+> allowing too many messages to happen. This will no longer
+> tell you all the different processes, but still gives a
+> heads-up of sorts.
 >
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
+> Also modify the message to note that wext stops working
+> for future Wi-Fi 7 hardware, this is already implemented
+> in commit 4ca69027691a ("wifi: wireless: deny wireless
+> extensions on MLO-capable devices") and is maybe of more
+> relevance to users than the fact that we'd like to have
+> wireless extensions deprecated.
 >
-> Manikanta Pubbisetty (3):
->   ath11k: Fix double free issue during SRNG deinit
->   ath11k: Move hardware initialization logic to start()
->   ath11k: Enable low power mode when WLAN is not active
+> The issue with Wi-Fi 7 is that you can now have multiple
+> connections to the same AP, so a whole bunch of things
+> now become per link rather than per netdev, which can't
+> really be handled in wireless extensions.
+>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Please add "wifi:" to all patches.
-
-And please add "wifi: ath11k:" to the cover letter.
+Linus, do you want to apply this directly or should we send this
+normally via the wireless tree? For the latter I would assume you would
+get it sometime next week.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
