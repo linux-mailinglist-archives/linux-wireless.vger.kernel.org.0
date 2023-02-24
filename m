@@ -2,131 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6D86A19C3
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 11:15:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC8B6A1A0E
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 11:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjBXKPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 05:15:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38162 "EHLO
+        id S230225AbjBXKXW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 05:23:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbjBXKPt (ORCPT
+        with ESMTP id S230017AbjBXKXN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 05:15:49 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11DB22689
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 02:15:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=tkM+SFdwRaFOFd0Ny9sr17OCmX6BuWzOVwVIIiMjVYo=;
-        t=1677233749; x=1678443349; b=q3qY0RmKS2NZbQOxw2fWhDArBQ6gxAXxaWKnwtgIskTv+Bq
-        7cCrQNiD5qfgyf+HUaldtMzV/WPp/2Ezss8tyONyEuFbt944knZxf5PbxhJWNhe9qQo4S2cIaOOr0
-        soTzRM00bMoqnoFj6zOoYsRy8ZOx8VfXQSQZxmHXZG9SJV43agfKGOWYZ4pvX19i9IyD3imWVDSvb
-        ThhghKOlISn+7LyUpD5wu929w8AvlovdcD6LHumQld5u2NuKGKH89FyIbvTRXqynhpjr2zgWyH7tb
-        ezrKdw8KGn3FDpzK1J+Zyyyc+SBR98UqAQQoOB/9MtGgPArpvwRnT1NemdrTmI7A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pVV76-00498c-2G;
-        Fri, 24 Feb 2023 11:15:40 +0100
-Message-ID: <56a3651e48ae621afa4c50f1ba0d9fedeefb2c31.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: ath11k: Optimize 6 GHz scan time
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        James Prestwood <prestwoj@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        ilan.peer@intel.com
-Date:   Fri, 24 Feb 2023 11:15:39 +0100
-In-Reply-To: <10e4b6bf-f375-e50f-063a-b44471359d25@quicinc.com>
-References: <20221220043823.20382-1-quic_mpubbise@quicinc.com>
-         <5DAEA8B2-2B44-4A91-9E57-12B6C6B6C1FC@holtmann.org>
-         <2861463e-a097-7efe-bc75-f13c8faf9547@quicinc.com>
-         <378a1d63b3752ace7384c44d6f5184753fa7795d.camel@gmail.com>
-         <0b06dea9-d5be-1edc-62ca-576398d1bcd8@quicinc.com>
-         <0e7644cbfa9e4ba0d534681166ca467ea1684719.camel@gmail.com>
-         <10e4b6bf-f375-e50f-063a-b44471359d25@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Fri, 24 Feb 2023 05:23:13 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6FF31E1CC;
+        Fri, 24 Feb 2023 02:23:00 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8D684B81C22;
+        Fri, 24 Feb 2023 10:22:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C512AC433EF;
+        Fri, 24 Feb 2023 10:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677234178;
+        bh=SKfrap5oDtQdvwt0M/zcUMmBC58Di/JU1xdEhqwAODw=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=dMK5dJxm7ozctkazGHWxGw8R2KHQacu5Z6NKXne2to//xIekyjy3LQIbppmmO7eEV
+         Tv9L3FULv9b2VaJiRIyDVpF/HMEQw1DD/tBGGnyqhM8GPJlE2jQhgtRwUOynq2qDpz
+         0SXmXM6iF+LDQdruzsKs9nbHzl+6y+3BTZAadHDDOZsseW8UtdRMJG8oE9n8yHpJM/
+         nY8YjTCQ6gRTcmy+WdyAHa2WiNiSLtQFRYJVrZYaE57myclZ3u4LmiothVR07hmGBc
+         /aZwCR9JAm3g05U5MMvv6VL9zbEBKvILKC3hP4DeRjegbcLMnpmORBP2dKq7V/+gKi
+         QJhICMiRaADrw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next] wifi: wcn36xx: Slightly optimize
+ PREPARE_HAL_BUF()
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <7d8ab7fee45222cdbaf80c507525f2d3941587c1.1675371372.git.christophe.jaillet@wanadoo.fr>
+References: <7d8ab7fee45222cdbaf80c507525f2d3941587c1.1675371372.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167723417226.18267.13778224357236866036.kvalo@kernel.org>
+Date:   Fri, 24 Feb 2023 10:22:55 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-02-24 at 15:38 +0530, Manikanta Pubbisetty wrote:
-> On 1/10/2023 10:35 PM, James Prestwood wrote:
-> > On Tue, 2023-01-10 at 10:49 +0530, Manikanta Pubbisetty wrote:
-> > > On 12/29/2022 2:52 AM, James Prestwood wrote:
-> > > > Hi Manikanta,
-> > > > > By the way, userspace itself selects the frequencies to scan, not
-> > > > > the
-> > > > > driver.
-> > > > >=20
-> > > > > If we see the split scan implementation in cfg80211, this is the
-> > > > > how
-> > > > > it
-> > > > > is implemented. If NL80211_SCAN_FLAG_COLOCATED_6GHZ is set, it
-> > > > > selects
-> > > > > all PSC channels and those non-PSC channels where RNR IE
-> > > > > information
-> > > > > is
-> > > > > found in the legacy scan results. If this flag is not set, all
-> > > > > channels
-> > > > > in 6 GHz are included in the scan freq list. It is upto userspace
-> > > > > to
-> > > > > decide what it wants.
-> > > >=20
-> > > >=20
-> > > > This isn't your problem, but it needs to be said:
-> > > >=20
-> > > > The nl80211 docs need and update to reflect this behavior (or
-> > > > remove
-> > > > the PSC logic). IMO this is really weird that the kernel selects
-> > > > PSC's
-> > > > based on the co-located flag. The docs don't describe this behavior
-> > > > and
-> > > > the flag's name is misleading (its not
-> > > > SCAN_FLAG_COLOCATED_AND_PSC_6GHZ) :)
-> > > >=20
-> > >=20
-> > > Sorry for the late reply, I was on vacation.
-> > >=20
-> > > What you said make sense. The existing flag should not add PSC
-> > > channels
-> > > according to the flag description.
-> > >=20
-> > > We can add another flag something like you pointed out
-> > > SCAN_FLAG_COLOCATED_AND_PSC_6GHZ and include PSC channels if this
-> > > flag
-> > > is set. What do you say?
-> >=20
-> > I'm no authority here, just wanted to point this out. This is something
-> > that would need to be in mac80211 though, not just a specific driver.
-> > It would be up to the maintainers and would require changing the
-> > behavior of the existing flag, which then changes behavior in
-> > wpa_supplicant/hostapd. So its somewhat intrusive.
-> >=20
-> > But personally I'd be for it. And just require userspace include PSC's
-> > like any other channels if they need those.
-> >=20
->=20
-> Hi Johannes,
->=20
-> What is your opinion on the changes being proposed to the 6 GHz scan in=
-=20
-> cfg80211 that is being discussed in this thread?
->=20
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-I don't think we can/should change the semantics of an existing flag
-now, but we can certainly update the documentation to match the
-implementation, and add more flags to make it more flexible.
+> In most (likely all) cases, INIT_HAL_MSG() is called before
+> PREPARE_HAL_BUF().
+> In such cases calling memset() is useless because:
+>    msg_body.header.len = sizeof(msg_body)
+> 
+> So, instead of writing twice the memory, we just have a sanity check to
+> make sure that some potential trailing memory is zeroed.
+> It even gives the opportunity to see that by itself and optimize it away.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Acked-by: Loic Poulain <loic.poulain@linaro.org>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-johannes
+Patch applied to ath-next branch of ath.git, thanks.
+
+4a51e66fe96d wifi: wcn36xx: Slightly optimize PREPARE_HAL_BUF()
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/7d8ab7fee45222cdbaf80c507525f2d3941587c1.1675371372.git.christophe.jaillet@wanadoo.fr/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
