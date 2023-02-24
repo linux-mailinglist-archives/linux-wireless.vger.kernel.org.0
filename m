@@ -2,57 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC8B6A1A0E
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 11:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC9B46A1A2A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 11:25:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbjBXKXW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 05:23:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46238 "EHLO
+        id S230240AbjBXKZG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 05:25:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjBXKXN (ORCPT
+        with ESMTP id S229944AbjBXKYh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 05:23:13 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6FF31E1CC;
-        Fri, 24 Feb 2023 02:23:00 -0800 (PST)
+        Fri, 24 Feb 2023 05:24:37 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796B939283
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 02:23:54 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8D684B81C22;
-        Fri, 24 Feb 2023 10:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C512AC433EF;
-        Fri, 24 Feb 2023 10:22:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30C226189D
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 10:23:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D684AC433EF;
+        Fri, 24 Feb 2023 10:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677234178;
-        bh=SKfrap5oDtQdvwt0M/zcUMmBC58Di/JU1xdEhqwAODw=;
+        s=k20201202; t=1677234230;
+        bh=P3K/dE6Hz+oGgt67Eu8N0sVORnlzLCrKHwFeN/XgUoM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=dMK5dJxm7ozctkazGHWxGw8R2KHQacu5Z6NKXne2to//xIekyjy3LQIbppmmO7eEV
-         Tv9L3FULv9b2VaJiRIyDVpF/HMEQw1DD/tBGGnyqhM8GPJlE2jQhgtRwUOynq2qDpz
-         0SXmXM6iF+LDQdruzsKs9nbHzl+6y+3BTZAadHDDOZsseW8UtdRMJG8oE9n8yHpJM/
-         nY8YjTCQ6gRTcmy+WdyAHa2WiNiSLtQFRYJVrZYaE57myclZ3u4LmiothVR07hmGBc
-         /aZwCR9JAm3g05U5MMvv6VL9zbEBKvILKC3hP4DeRjegbcLMnpmORBP2dKq7V/+gKi
-         QJhICMiRaADrw==
+        b=fqb5yJfyslps0zydxUXMGobn3NfBAnfb3yI9/Y0mcT0tJNJd1ZfqPx1qDKam+crVY
+         RWgxwX4G6ufmq40KHV2sqOQL8ouTUlHi2xj21L0cvtUHcjNjZQA/nCs+pcELzVQgmg
+         +gRM0ZRTljQPDEV2k5om7/B5L+ZosTmn+pkO0Z0EB1/eG/kZh7bUolc176/yaN5OMz
+         VcbXvfdTVYlXfBdgLMuo7wzEyjUVngtT8tYJ2LmNOhRQcVUdNeOG1I32DqxUSY94Xs
+         V4fLRaEJ933U7oza9OK/ES2P6EO5hP9Le4SC7Gf2iEGAPKWRqJ8szJqMMhjewwj8aR
+         GoN7IsSJ+FL5Q==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] wifi: wcn36xx: Slightly optimize
- PREPARE_HAL_BUF()
+Subject: Re: [PATCH] wifi: ath12k: remove memset with byte count of 278528
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <7d8ab7fee45222cdbaf80c507525f2d3941587c1.1675371372.git.christophe.jaillet@wanadoo.fr>
-References: <7d8ab7fee45222cdbaf80c507525f2d3941587c1.1675371372.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Loic Poulain <loic.poulain@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
+In-Reply-To: <20230222164014.860-1-kvalo@kernel.org>
+References: <20230222164014.860-1-kvalo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167723417226.18267.13778224357236866036.kvalo@kernel.org>
-Date:   Fri, 24 Feb 2023 10:22:55 +0000 (UTC)
+Message-ID: <167723422796.18267.2237295490310604820.kvalo@kernel.org>
+Date:   Fri, 24 Feb 2023 10:23:49 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,27 +53,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> In most (likely all) cases, INIT_HAL_MSG() is called before
-> PREPARE_HAL_BUF().
-> In such cases calling memset() is useless because:
->    msg_body.header.len = sizeof(msg_body)
+> Sparse warns:
 > 
-> So, instead of writing twice the memory, we just have a sanity check to
-> make sure that some potential trailing memory is zeroed.
-> It even gives the opportunity to see that by itself and optimize it away.
+> drivers/net/wireless/ath/ath12k/dp.c:1471:15: warning: memset with byte count of 278528
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Acked-by: Loic Poulain <loic.poulain@linaro.org>
+> There's no need to use memset() here, instead call dma_alloc_coherent() with __GFP_ZERO.
+> 
+> While at it, remove an extra line before the error handler.
+> 
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-4a51e66fe96d wifi: wcn36xx: Slightly optimize PREPARE_HAL_BUF()
+28013c356296 wifi: ath12k: remove memset with byte count of 278528
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/7d8ab7fee45222cdbaf80c507525f2d3941587c1.1675371372.git.christophe.jaillet@wanadoo.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230222164014.860-1-kvalo@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
