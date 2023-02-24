@@ -2,209 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B20AB6A1EFF
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 16:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 008FA6A1FC9
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 17:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjBXPzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 10:55:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51354 "EHLO
+        id S229836AbjBXQiO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 11:38:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjBXPzM (ORCPT
+        with ESMTP id S229553AbjBXQiM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 10:55:12 -0500
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A441A13516
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 07:55:11 -0800 (PST)
-Received: by mail-ot1-x333.google.com with SMTP id cc12-20020a05683061cc00b00693daa9016fso1668584otb.2
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 07:55:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=2W2Gqr5PNwSjMYUJdjGYZMDACYzsMA6ZYns91GfnXyM=;
-        b=E/HsUwgwqHvW0yvlBWR9uv4xREwKAdvv9frUV/EA3g+EvapwAGg1J+P9OZ2477DQL7
-         tsk0EO4YYrmabtckmcBz4TAIZxxtotEGV6GxVtmJnet23P5IrfI7J+DulTulgkbu4xJn
-         CFcwVaHWsOanB4NqGLN7WcuwZ6uxLlPNBMTjxltoMfkqFCCwCMaHJcBgifqi5i03tiT0
-         nbbJ9dAqcAGHASKny/2bOLb4qds5wMWLU8dUPJeEcDGH5VuqfDpl/G3/KLaV/Tu5thUj
-         QkVX9f/q3Y0juoc1P5B2wS9+QbHL4FzGNvElKbzZk/FdmTPxeEkXkPyZWn5xbD2t5OWL
-         ijUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2W2Gqr5PNwSjMYUJdjGYZMDACYzsMA6ZYns91GfnXyM=;
-        b=vz6+bPesCIK7RojFGxiPFREBldmmPKFHqafAtjJjiHWxGTenUqGPCKIsG3QUXplghv
-         rRJyFy74RoufKgQQwUCFpBEqm9folsPkO/J0A0A9sCPyTINUr9nW9Lr5W5IXqJexuu4z
-         gMGP1tMkcrlXxmr4AXH8dNxEfKPO7SAmXFYKCvL43oJ3cSKYXRYDmedTska9WZP3CaVc
-         xqoMcCAXYSJUcBp7HF+iuBCWU4PL7TvsE0f17CsUUEHmlU4a6M2osz3SxXz9Wtl5j6w2
-         lWJZgq58acaSK3PIsWW4ZuC+bCh0m/WhGlW476p+E4FLIlain9sM8nAZNIYNiOj6IXEL
-         42MA==
-X-Gm-Message-State: AO0yUKWO2U4T211kpGgq162O3bJMgnU8BLcJNa3jXNsuUbwXhKNqGzi9
-        0iE5jjA6XePD1k2wikBorW4=
-X-Google-Smtp-Source: AK7set9/IjVSmHegGjck3fP5hAskU53eci9bPzFJTcrYmdihHYcoks0+Qee9EhkTiFoFpfPmH2Xgqw==
-X-Received: by 2002:a9d:1b4d:0:b0:68d:972e:e8dd with SMTP id l71-20020a9d1b4d000000b0068d972ee8ddmr8380584otl.29.1677254110955;
-        Fri, 24 Feb 2023 07:55:10 -0800 (PST)
-Received: from [192.168.0.156] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id w6-20020a9d5386000000b00690e6d56670sm3327276otg.25.2023.02.24.07.55.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Feb 2023 07:55:10 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <1212c259-1125-45d8-30d5-6d53284ab492@lwfinger.net>
-Date:   Fri, 24 Feb 2023 09:55:09 -0600
+        Fri, 24 Feb 2023 11:38:12 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8573172A3
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 08:38:11 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 130E361938
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 16:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AE8C433D2;
+        Fri, 24 Feb 2023 16:38:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677256690;
+        bh=Q/JOrgFB6wMYYFZz34oVFDWloorF7EYdwL0aISKDOyo=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=CP9b6znimRk/TjdMZR1r1LX5RJsGcmu5VTgMwgLZLZLy+fRlkJ8RkGNogG3o4c1A+
+         pCmSryvFnDnua3gyXp17Xx+3byGgSa4Jb01EsyfknOlbEvqFikpBT5c7JUd8HjEon6
+         fS2PqraJmSEZMgAP8Z7ioZZZMPVVAffyY8V1Pc4rf0n/dGe3zDQou+nmOM1TrdC3NR
+         RN7c/sMgOaFhvlNbWPFSlL/IMIlOL5K6vaQqQCiFWzoaPdh47f4b0yCDmrFCMTRTyd
+         fIGJ8tH5eKCZ8VZfWjf+S0Q4NZ8INUXbZa0u5/Ie280bPl+IJtHP/TZF3Ok0C+A/cd
+         WkOIHfjap/apw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, mikhail.v.gavrilov@gmail.com
+Subject: Re: [PATCH wireless] wifi: mt76: usb: fix use-after-free in mt76u_free_rx_queue
+References: <f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org>
+Date:   Fri, 24 Feb 2023 18:38:07 +0200
+In-Reply-To: <f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Fri, 24 Feb 2023 00:02:17 +0100")
+Message-ID: <87h6vb2f4g.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] wifi: wext: Eliminate log spamming in
- wireless_warn_cfg80211_wext()
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20230222204945.6716-1-Larry.Finger@lwfinger.net>
- <2564165999cf5319e58aa0898a2866612f8af293.camel@sipsolutions.net>
- <93bc48d2-a692-3709-e323-929600f37646@lwfinger.net>
- <87pm9zryzu.fsf@kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <87pm9zryzu.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/24/23 07:09, Kalle Valo wrote:
-> Larry Finger <Larry.Finger@lwfinger.net> writes:
-> 
->> On 2/23/23 02:12, Johannes Berg wrote:
->>> On Wed, 2023-02-22 at 14:49 -0600, Larry Finger wrote:
->>>> Commit dc09766c755c {"wifi: wireless: warn on most wireless extension
->>>> usage") introduces a warning when wireless extensions are used with
->>>> cfg80211 drivers. Although such a warning is desirable, the current
->>>> implementation overflows the dmesg buffer with thousands of warnings,
->>>> all of which are the same.
->>>>
->>>
->>> What are you seeing them from?
->>>
->>> This is rate-limited, so not sure why you're getting so many?
->>>
->>>>    A WARN_ONCE() call is sufficient.
->>>
->>> I think a WARN is inappropriate (it's a userspace 'issue', not an in-
->>> kernel consistency problem), but I guess we could pr_once().
->>>
->>> But that's not great because it only shows a single application that was
->>> still using it, not if there are multiple.
->>>
->>> Hmm. Not sure what to do. Let's start with "why are you getting it so
->>> much". Maybe we can somehow print it less, or try to do per application
->>> once, or something.
->>
->> Johannes,
->>
->> This patch has a magic number, but it does the job:
->>
->> diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
->> index 13a72b17248e..22a67172a163 100644
->> --- a/net/wireless/wext-core.c
->> +++ b/net/wireless/wext-core.c
->> @@ -637,12 +637,27 @@ void wireless_send_event(struct net_device *      dev,
->>   EXPORT_SYMBOL(wireless_send_event);
->>
->>   #ifdef CONFIG_CFG80211_WEXT
->> +
->> +#define ARRAY_MAX  15
->> +static char name_array[ARRAY_MAX][TASK_COMM_LEN];
->> +static int array_count = 0;
->> +
->>   static void wireless_warn_cfg80211_wext(void)
->>   {
->>          char name[sizeof(current->comm)];
->> +       int i;
->>
->> -       pr_warn_ratelimited("warning: `%s' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211\n",
->> -                           get_task_comm(name, current));
->> +       get_task_comm(name, current);
->> +       for (i = 0; i < array_count; i++) {
->> +               if (!strncmp(name, name_array[i], TASK_COMM_LEN))
->> +                       return;
->> +       }
->> +       /* Found new one - print warning and add to array */
->> +       strncpy(name_array[array_count], name, TASK_COMM_LEN);
->> +       if (array_count < ARRAY_MAX)
->> +               array_count++;
->> +       pr_warn("warning: `%s' uses wireless extensions that are
->> deprecated for modern drivers; use nl80211\n",
->> +               name);
->>   }
->>   #endif
-> 
-> This looks a bit complicated. What about printing the warning once per
-> boot using pr_warn_once()? That way we would not annoy people too much
-> but hopefully still motivate the applications to switch to using
-> nl80211.
-> 
->> Looking at my log, I do get only one for each application.
->>
->> finger@localhost:~>dmesg | grep warning | grep nl80211
->> [    8.826056] warning: `nspr-2' uses wireless extensions that are
->> deprecated for modern drivers; use nl80211
->> [   17.212260] warning: `kded5' uses wireless extensions that are
->> deprecated for modern drivers; use nl80211
->> [   17.252420] warning: `Qt bearer threa' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211
->> [   22.664380] warning: `akonadi_notes_a' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211
->> [   23.058001] warning: `akonadi_maildis' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211
->> [   23.175135] warning: `akonadi_mailmer' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211
->> [   23.329265] warning: `akonadi_followu' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211
->> [   24.075119] warning: `akonadi_sendlat' uses wireless extensions
->> that are deprecated for modern drivers; use nl80211
->>
->> I have no idea why most, if not all, of those applications even care
->> about wireless. As you can see, I get 8 messages in a relatively short
->> time, thus I selected 15 as the size of the array.
-> 
-> Oh man, that's a lot of applications. Are these all KDE or QT
-> applications, maybe libqt uses Wireless Extensions for something?
-> 
-> Linus also reported that he is seeing spam from google-chrome:
-> 
-> https://lore.kernel.org/all/CAHk-=wjTMgB0=PQt8synf1MRTfetVXAWWLOibnMKvv1ETn_1uw@mail.gmail.com/
-> 
-> So there are a lot more applications using the outdated Wireless
-> Extension interface as we originally thought. It will take a long time
-> to get rid of WE usage :(
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
-Kalle,
+> Fix the following use-after-free issue in mt76u_free_rx_queue routine:
+>
+> usb 3-3.3.4: reset high-speed USB device number 8 using xhci_hcd
+> iwlwifi 0000:05:00.0: Detected RF HR B3, rfid=0x10a100
+> iwlwifi 0000:05:00.0: base HW address: 50:eb:71:79:02:57
+> iwlwifi 0000:05:00.0 wlp5s0: renamed from wlan0
+> mt76x2u 3-3.3.4:1.0: ASIC revision: 76320044
+> usb 3-3.3.1: 1:3 : unsupported format bits 0x100000000
+> mt76x2u 3-3.3.4:1.0: could not get hardware semaphore for ROM PATCH
+> ------------[ cut here ]------------
+> refcount_t: underflow; use-after-free.
+> WARNING: CPU: 13 PID: 983 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
+> Modules linked in: snd_seq_midi snd_seq_midi_event mt76x2u(+)
+> mt76x2_common mt76x02_usb mt76_usb iwlmvm mt76x02_lib mt76
+> snd_hda_codec_realtek intel_rapl_msr snd_hda_codec_generic
+> snd_hda_codec_hdmi intel_rapl_common snd_hda_intel mac80211
+> snd_intel_dspcfg snd_usb_audio(+) snd_intel_sdw_acpi btusb
+> edac_mce_amd snd_hda_codec btrtl btbcm snd_usbmidi_lib snd_hda_core
+> btintel snd_rawmidi btmtk snd_hwdep libarc4 mc iwlwifi kvm_amd snd_seq
+> vfat bluetooth eeepc_wmi asus_ec_sensors snd_seq_device fat kvm
+> cfg80211 asus_wmi snd_pcm irqbypass ledtrig_audio sparse_keymap rapl
+> wmi_bmof platform_profile xpad snd_timer k10temp ff_memless i2c_piix4
+> rfkill snd joydev soundcore acpi_cpufreq loop zram amdgpu
+> crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni
+> polyval_generic drm_ttm_helper ttm video iommu_v2 ucsi_ccg drm_buddy
+> gpu_sched typec_ucsi ghash_clmulni_intel drm_display_helper igb
+> sha512_ssse3 typec ccp nvme cec sp5100_tco nvme_core dca nvme_common
+> wmi ip6_tables ip_tables fuse
+> BTRFS info (device nvme1n1): enabling ssd optimizations
+> CPU: 13 PID: 983 Comm: (udev-worker) Tainted: G        W    L
+> -------  ---  6.3.0-0.rc0.20230222git5b7c4cabbb65.3.fc39.x86_64+debug
+> BTRFS info (device nvme1n1): auto enabling async discard
+> Hardware name: System manufacturer System Product Name/ROG STRIX
+> X570-I GAMING, BIOS 4601 02/02/2023
+> RIP: 0010:refcount_warn_saturate+0xba/0x110
+> Code: 01 01 e8 69 a6 83 ff 0f 0b e9 52 f4 85 00 80 3d 69 6f ec 01 00
+> 75 85 48 c7 c7 d0 25 b3 a9 c6 05 59 6f ec 01 01 e8 46 a6 83 ff <0f> 0b
+> e9 2f f4 85 00 80 3d 47 6f ec 01 00 0f 85 5e ff ff ff 48 c7
+> RSP: 0018:ffffb4010456fb78 EFLAGS: 00010286
+> RAX: 0000000000000000 RBX: 0000000080000000 RCX: 0000000000000000
+> RDX: 0000000000000002 RSI: ffffffffa9b17e3e RDI: 00000000ffffffff
+> RBP: ffff8d15877336c0 R08: 0000000000000000 R09: ffffb4010456fa00
+> R10: 0000000000000003 R11: ffff8d246e2fffe8 R12: 0000000000000080
+> R13: ffff8d15b42fd000 R14: 0000000000000000 R15: ffff8d1587736a58
+> FS:  00007fc05ae34940(0000) GS:ffff8d2425e00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000055d801f1d540 CR3: 000000011df60000 CR4: 0000000000350ee0
+> Call Trace:
+>  <TASK>
+>  mt76u_queues_deinit+0x2a0/0x370 [mt76_usb]
+>  mt76x2u_probe+0xf3/0x130 [mt76x2u]
+>  usb_probe_interface+0xe8/0x300
+>  really_probe+0x1b6/0x410
+>  __driver_probe_device+0x78/0x170
+>  driver_probe_device+0x1f/0x90
+>  __driver_attach+0xd2/0x1c0
+>  ? __pfx___driver_attach+0x10/0x10
+>  bus_for_each_dev+0x8a/0xd0
+>  bus_add_driver+0x141/0x230
+>  driver_register+0x77/0x120
+>  usb_register_driver+0xaf/0x170
+>  ? __pfx_init_module+0x10/0x10 [mt76x2u]
+>  do_one_initcall+0x6e/0x350
+>  do_init_module+0x4a/0x220
+>  __do_sys_init_module+0x192/0x1c0
+>  ? lock_is_held_type+0xce/0x120
+>  do_syscall_64+0x5b/0x80
+>  ? lock_is_held_type+0xce/0x120
+>  ? asm_exc_page_fault+0x22/0x30
+>  ? lockdep_hardirqs_on+0x7d/0x100
+>  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+> RIP: 0033:0x7fc05b1351be
+> Code: 48 8b 0d 4d 0c 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f
+> 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d
+> 01 f0 ff ff 73 01 c3 48 8b 0d 1a 0c 0c 00 f7 d8 64 89 01 48
+> RSP: 002b:00007ffd947c0988 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+> RAX: ffffffffffffffda RBX: 000055d801f2b090 RCX: 00007fc05b1351be
+> RDX: 00007fc05b65c07d RSI: 00000000000234be RDI: 000055d802c6b170
+> RBP: 00007ffd947c0a40 R08: 000055d8019b4690 R09: 0000000000022000
+> R10: 000000055d8019b4 R11: 0000000000000246 R12: 00007fc05b65c07d
+> R13: 0000000000020000 R14: 000055d801f39770 R15: 000055d801f47780
+>  </TASK>
+> irq event stamp: 186313
+> hardirqs last  enabled at (186323): [<ffffffffa81c675e>]
+> __up_console_sem+0x5e/0x70
+> hardirqs last disabled at (186332): [<ffffffffa81c6743>]
+> __up_console_sem+0x43/0x70
+> softirqs last  enabled at (186022): [<ffffffffa811d2f7>]
+> __irq_exit_rcu+0xd7/0x160
+> softirqs last disabled at (186017): [<ffffffffa811d2f7>]
+> __irq_exit_rcu+0xd7/0x160
+> ---[ end trace 0000000000000000 ]---
+> mt76x2u: probe of 3-3.3.4:1.0 failed with error -110
+> usbcore: registered new interface driver mt76x2u
+> kauditd_printk_skb: 32 callbacks suppressed
+>
+> Fixes: 2f5c3c77fc9b ("wifi: mt76: switch to page_pool allocator")
+> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Yes, my patch is a bit complicated, but it provides information that can be sent 
-upstream to get proper fixes for all applications - a "feature" lacking if a 
-simple pr_warn_once() is used. As I told Johannes and Linus in my previous 
-E-mail, I will keep my patch locally to accumulate usage info for more than the 
-first instance of this warning.
+I assigned this to me on patchwork and will queue to v6.3.
 
-I do not know anything about Akonadi internals, but the rest of the warnings 
-seem to come from KDE or QT. I agree that libqt is a likely culprit.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Larry
-
-
-Larry
-
-> 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
