@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 029A46A1487
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 02:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4F0B6A1628
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 06:14:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229460AbjBXBLT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Feb 2023 20:11:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
+        id S229470AbjBXFOF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 00:14:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjBXBLS (ORCPT
+        with ESMTP id S229656AbjBXFOE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Feb 2023 20:11:18 -0500
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9761738022
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 17:11:16 -0800 (PST)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A860FBC0074
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 01:11:14 +0000 (UTC)
-Received: from [192.168.1.115] (unknown [98.97.112.175])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 22C4213C2B0
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 17:11:14 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 22C4213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1677201074;
-        bh=oTQTHQamJEraN4+emqjzv1EHfLGobbhD/D9uwArRMIo=;
-        h=To:From:Subject:Date:From;
-        b=IAMm6IG13qg5vSuQOqQWpVhbMTiw1KCZ65ULXJW39dfisT+67PYF0bEY+TP/udAwr
-         YYKmCS3TLqSTc4kCza/x/AXbVcBicHGQj6nm7n4mB9Sf7g5zj+jnpIzum5YONN0CmT
-         w7tdCmWpxk40MMk6isePqUQT5o8mfx1sU/TaQjUY=
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Subject: Intel ax210 crash in 6.2.0+ kernel.
-Organization: Candela Technologies
-Message-ID: <2657a9e5-4b83-7a96-793c-c9055b9902cd@candelatech.com>
-Date:   Thu, 23 Feb 2023 17:11:13 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Fri, 24 Feb 2023 00:14:04 -0500
+Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B40F928840
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 21:14:01 -0800 (PST)
+Received: by mail-io1-f80.google.com with SMTP id v4-20020a6b5b04000000b0074cb180c5e2so315690ioh.6
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Feb 2023 21:14:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kqZ7XneuRntTCBB1DZi7ITesqdwZnc0FmX8gi2f8IgI=;
+        b=EsFojI0Ao15s1D8Awa3VqNjpAB+7BDsop725Ifw1/SUHRYoTLltIVNUtyyFIQh0dLs
+         Xt+LtTxApBVeEKuuYDgRrWBOGgqv4EA4LAkckxPFkNsc44IjTtkuVnYqgT6iIkg5uR42
+         1nU+ji9vBfa9wKiaAW8acO0J2P4pmMk+vW1I3H9jQzpu4Yri8pafeABns7WCIW4tWr/q
+         FOZzzPBfcS4PLRZF30mzDNCKoGnOHjZizIOavGbmUW9nRXX3l7q4yjsiwd9y5/aus+Vk
+         MJVahdF/VrbUUl1FMlQKOQuw0NSpxZC/F/4e88fSYGD4IODFwTcIptwaC1isEaSNXX1U
+         +lzA==
+X-Gm-Message-State: AO0yUKVN1WPFAZHWg1e45N4Rk62RcBRhBrYcfVtsDcmi1Ut0xYZKbAVX
+        bb8Hh9r+NzX4LnyfO89OEl2NRyKzjDkW+GEpzELPlKiyZbMU
+X-Google-Smtp-Source: AK7set+rWLsS+TAbBoMMXe2k+M/IiKXhTtVcO1gk5OOQLBp1vCNKZVNA+/uatAbgYnSCZvRDeHyQ+MNo9ypzYhjjVTROj1dMwJdK
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-MDID: 1677201075-mhYVBOyqzq26
-X-MDID-O: us5;ut7;1677201075;mhYVBOyqzq26;<greearb@candelatech.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Received: by 2002:a6b:c8ce:0:b0:745:451b:1280 with SMTP id
+ y197-20020a6bc8ce000000b00745451b1280mr1575714iof.4.1677215640961; Thu, 23
+ Feb 2023 21:14:00 -0800 (PST)
+Date:   Thu, 23 Feb 2023 21:14:00 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007dceb405f56b32dc@google.com>
+Subject: [syzbot] [wireless?] memory leak in htc_connect_service
+From:   syzbot <syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        kvalo@kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,59 +58,123 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello,
 
-We just started testing on 6.2, and hit the crash below.  We have some modest changes to ax210 radio,
-so could be us...  Curious if anyone has seen similar?
+syzbot found the following issue on:
 
-I guess 'pkt' is corrupted?
+HEAD commit:    c9c3395d5e3d Linux 6.2
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16d3dd78c80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=eeb87d4dfcdb4cc0
+dashboard link: https://syzkaller.appspot.com/bug?extid=b68fbebe56d8362907e8
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16523630c80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13a3de27480000
 
-And for what its worth, I am pretty sure we have seen something similar on older kernels,
-though rarely.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/54c384e0e6b1/disk-c9c3395d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c963b4b4fee5/vmlinux-c9c3395d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/fc3ecf1163b5/bzImage-c9c3395d.xz
 
-general protection fault, probably for non-canonical address 0x5088000000000: 0P
-CPU: 2 PID: 25 Comm: ksoftirqd/2 Tainted: G        W          6.2.0+ #3
-Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
-RIP: 0010:iwl_pcie_rx_handle+0x2a4/0x8f0 [iwlwifi]
-Code: 01 da 48 b8 00 00 00 00 80 88 ff ff 49 c1 fa 06 89 54 24 58 48 63 d2 49 c3
-RSP: 0018:ffffc90000167d30 EFLAGS: 00010207
-RAX: ffff888000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000001000 RDI: 0000160000000000
-RBP: ffff88812b080168 R08: 0000000000000000 R09: 000000000000000a
-R10: 0005088000000000 R11: ffffffff82fcf040 R12: ffffc90000167d80
-R13: ffff88810f50c028 R14: ffff888124159420 R15: 0005088000000000
-FS:  0000000000000000(0000) GS:ffff88845dc80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000031e3208 CR3: 000000000260f002 CR4: 00000000003706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  <TASK>
-  iwl_pcie_napi_poll_msix+0x24/0xc0 [iwlwifi]
-  __napi_poll+0x21/0x150
-  net_rx_action+0x28e/0x2e0
-  __do_softirq+0xbc/0x28e
-  ? sort_range+0x20/0x20
-  run_ksoftirqd+0x1f/0x30
-  smpboot_thread_fn+0xc2/0x1a0
-Loading Candela Technologies 6.2.0+ COM1 115200 8n1 ...
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
+
+BUG: memory leak
+unreferenced object 0xffff88810a980800 (size 240):
+  comm "kworker/1:1", pid 24, jiffies 4294947427 (age 16.220s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff83b971c6>] __alloc_skb+0x206/0x270 net/core/skbuff.c:552
+    [<ffffffff82eb3731>] alloc_skb include/linux/skbuff.h:1270 [inline]
+    [<ffffffff82eb3731>] htc_connect_service+0x121/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:259
+    [<ffffffff82ec03a5>] ath9k_htc_connect_svc drivers/net/wireless/ath/ath9k/htc_drv_init.c:137 [inline]
+    [<ffffffff82ec03a5>] ath9k_init_htc_services.constprop.0+0xe5/0x390 drivers/net/wireless/ath/ath9k/htc_drv_init.c:157
+    [<ffffffff82ec0747>] ath9k_htc_probe_device+0xf7/0x8a0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
+    [<ffffffff82eb3ef5>] ath9k_htc_hw_init+0x35/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:521
+    [<ffffffff82eb68dd>] ath9k_hif_usb_firmware_cb+0xcd/0x1f0 drivers/net/wireless/ath/ath9k/hif_usb.c:1243
+    [<ffffffff82aa835b>] request_firmware_work_func+0x4b/0x90 drivers/base/firmware_loader/main.c:1107
+    [<ffffffff8129a35a>] process_one_work+0x2ba/0x5f0 kernel/workqueue.c:2289
+    [<ffffffff8129ac7d>] worker_thread+0x5d/0x5b0 kernel/workqueue.c:2436
+    [<ffffffff812a4fa9>] kthread+0x129/0x170 kernel/kthread.c:376
+    [<ffffffff81002dcf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+
+BUG: memory leak
+unreferenced object 0xffff888100b81a00 (size 512):
+  comm "kworker/1:1", pid 24, jiffies 4294947427 (age 16.220s)
+  hex dump (first 32 bytes):
+    00 00 00 0a 00 00 00 00 00 02 01 02 00 00 02 01  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81514fab>] __do_kmalloc_node mm/slab_common.c:967 [inline]
+    [<ffffffff81514fab>] __kmalloc_node_track_caller+0x4b/0x120 mm/slab_common.c:988
+    [<ffffffff83b970a5>] kmalloc_reserve net/core/skbuff.c:492 [inline]
+    [<ffffffff83b970a5>] __alloc_skb+0xe5/0x270 net/core/skbuff.c:565
+    [<ffffffff82eb3731>] alloc_skb include/linux/skbuff.h:1270 [inline]
+    [<ffffffff82eb3731>] htc_connect_service+0x121/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:259
+    [<ffffffff82ec03a5>] ath9k_htc_connect_svc drivers/net/wireless/ath/ath9k/htc_drv_init.c:137 [inline]
+    [<ffffffff82ec03a5>] ath9k_init_htc_services.constprop.0+0xe5/0x390 drivers/net/wireless/ath/ath9k/htc_drv_init.c:157
+    [<ffffffff82ec0747>] ath9k_htc_probe_device+0xf7/0x8a0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
+    [<ffffffff82eb3ef5>] ath9k_htc_hw_init+0x35/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:521
+    [<ffffffff82eb68dd>] ath9k_hif_usb_firmware_cb+0xcd/0x1f0 drivers/net/wireless/ath/ath9k/hif_usb.c:1243
+    [<ffffffff82aa835b>] request_firmware_work_func+0x4b/0x90 drivers/base/firmware_loader/main.c:1107
+    [<ffffffff8129a35a>] process_one_work+0x2ba/0x5f0 kernel/workqueue.c:2289
+    [<ffffffff8129ac7d>] worker_thread+0x5d/0x5b0 kernel/workqueue.c:2436
+    [<ffffffff812a4fa9>] kthread+0x129/0x170 kernel/kthread.c:376
+    [<ffffffff81002dcf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+
+BUG: memory leak
+unreferenced object 0xffff88810a88d100 (size 240):
+  comm "kworker/0:2", pid 2491, jiffies 4294948230 (age 8.190s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff83b971c6>] __alloc_skb+0x206/0x270 net/core/skbuff.c:552
+    [<ffffffff82eb3731>] alloc_skb include/linux/skbuff.h:1270 [inline]
+    [<ffffffff82eb3731>] htc_connect_service+0x121/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:259
+    [<ffffffff82ec03a5>] ath9k_htc_connect_svc drivers/net/wireless/ath/ath9k/htc_drv_init.c:137 [inline]
+    [<ffffffff82ec03a5>] ath9k_init_htc_services.constprop.0+0xe5/0x390 drivers/net/wireless/ath/ath9k/htc_drv_init.c:157
+    [<ffffffff82ec0747>] ath9k_htc_probe_device+0xf7/0x8a0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
+    [<ffffffff82eb3ef5>] ath9k_htc_hw_init+0x35/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:521
+    [<ffffffff82eb68dd>] ath9k_hif_usb_firmware_cb+0xcd/0x1f0 drivers/net/wireless/ath/ath9k/hif_usb.c:1243
+    [<ffffffff82aa835b>] request_firmware_work_func+0x4b/0x90 drivers/base/firmware_loader/main.c:1107
+    [<ffffffff8129a35a>] process_one_work+0x2ba/0x5f0 kernel/workqueue.c:2289
+    [<ffffffff8129ac7d>] worker_thread+0x5d/0x5b0 kernel/workqueue.c:2436
+    [<ffffffff812a4fa9>] kthread+0x129/0x170 kernel/kthread.c:376
+    [<ffffffff81002dcf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+
+BUG: memory leak
+unreferenced object 0xffff88810646b200 (size 512):
+  comm "kworker/0:2", pid 2491, jiffies 4294948230 (age 8.190s)
+  hex dump (first 32 bytes):
+    00 00 00 0a 00 00 00 00 00 02 01 02 00 00 02 01  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81514fab>] __do_kmalloc_node mm/slab_common.c:967 [inline]
+    [<ffffffff81514fab>] __kmalloc_node_track_caller+0x4b/0x120 mm/slab_common.c:988
+    [<ffffffff83b970a5>] kmalloc_reserve net/core/skbuff.c:492 [inline]
+    [<ffffffff83b970a5>] __alloc_skb+0xe5/0x270 net/core/skbuff.c:565
+    [<ffffffff82eb3731>] alloc_skb include/linux/skbuff.h:1270 [inline]
+    [<ffffffff82eb3731>] htc_connect_service+0x121/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:259
+    [<ffffffff82ec03a5>] ath9k_htc_connect_svc drivers/net/wireless/ath/ath9k/htc_drv_init.c:137 [inline]
+    [<ffffffff82ec03a5>] ath9k_init_htc_services.constprop.0+0xe5/0x390 drivers/net/wireless/ath/ath9k/htc_drv_init.c:157
+    [<ffffffff82ec0747>] ath9k_htc_probe_device+0xf7/0x8a0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
+    [<ffffffff82eb3ef5>] ath9k_htc_hw_init+0x35/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:521
+    [<ffffffff82eb68dd>] ath9k_hif_usb_firmware_cb+0xcd/0x1f0 drivers/net/wireless/ath/ath9k/hif_usb.c:1243
+    [<ffffffff82aa835b>] request_firmware_work_func+0x4b/0x90 drivers/base/firmware_loader/main.c:1107
+    [<ffffffff8129a35a>] process_one_work+0x2ba/0x5f0 kernel/workqueue.c:2289
+    [<ffffffff8129ac7d>] worker_thread+0x5d/0x5b0 kernel/workqueue.c:2436
+    [<ffffffff812a4fa9>] kthread+0x129/0x170 kernel/kthread.c:376
+    [<ffffffff81002dcf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
 
-(gdb) l *(iwl_pcie_rx_handle+0x2a4)
-0x9294 is in iwl_pcie_rx_handle (/home/greearb/git/linux-6.2.dev.y/drivers/net/wireless/intel/iwlwifi/pcie/rx.c:1303).
-1298				.truesize = max_len,
-1299			};
-1300	
-1301			pkt = rxb_addr(&rxcb);
-1302	
-1303			if (pkt->len_n_flags == cpu_to_le32(FH_RSCSR_FRAME_INVALID)) {
-1304				IWL_DEBUG_RX(trans,
-1305					     "Q %d: RB end marker at offset %d\n",
-1306					     rxq->id, offset);
-1307				break;
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
