@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14B9E6A1DB4
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 15:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 152266A1DCC
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 15:50:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjBXOqn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 09:46:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36872 "EHLO
+        id S229980AbjBXOuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 09:50:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjBXOql (ORCPT
+        with ESMTP id S229543AbjBXOuY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:46:41 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461921689A
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 06:46:40 -0800 (PST)
+        Fri, 24 Feb 2023 09:50:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE9B83E4
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 06:50:22 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E2911B81C98
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 14:46:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC29C4339B;
-        Fri, 24 Feb 2023 14:46:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CBC9618EA
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 14:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2255BC4339E;
+        Fri, 24 Feb 2023 14:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677249997;
-        bh=peavsqg3yenBn7QYS5SDS1x3WO3lozC0ZMCB4rY0fq0=;
+        s=k20201202; t=1677250221;
+        bh=3KYModGEa1fFUiOUb3e6wEc1y8k/P7sxe/QwXRZ0OKc=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=qzDxEPZESXm4rZnZ7XMi7/exNMnHAFbUNiurGfGjGAzPmtL5aVBweXUICr0/Gdi29
-         ewrxnCt4zOLBwPJy1LpKRJUaaxUYAu7fHGIX9YA80FItxsoGz/wjSJdu/shF9TYDw5
-         llJoI8JElrKGB1LqZ2XgXRGvMNKz2vlHAVm8L+bBxHZm8RAnxRpL72X3Snm0KSursJ
-         DPsMYQwmriIQq8igBts6UKYHIPPEKNgdFwNpcfgD58faQ7m50yFjWvANJqRdekMMUE
-         LiBf0ZgcvvGCFJNt9+j20M01oZlRSBI4y79jvwKhgXG+noUwVP7c5lDS67AxAh5OwT
-         C8f01EOr1PjaQ==
+        b=qGHibDBPCsXXluVYelKbKM01+ZB6GWzXSZLPFqoFEn96mLloJ0DDUvEagcn2loaNO
+         fXKo/MPLbexwy+d/kInrZ58pU9ZMKMoEbBNNJynMhu32iFpy5t7bZyOn9C9ylGXWPP
+         IhUmembG7wbhL7QVhyBD1GRlsei1nVSm/JIKjlWcZQ01r0VyhWNuRk8XFn5HvhAGbN
+         5kHayr1gWZKPwUtIWTdrSrYsUgs4L5CSdNGsphj4Ka0VVm1L1hOKBHgWP2zN+OVvj6
+         0a+Vbs/om6JCWsDvpNUHMuzYtCjwaz3zavUnaWCH4MnrVyBKv5M9tvsbgXgPk32u1Q
+         /fWcr2cvXyHrQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 Subject: Re: [PATCH v4 3/3] ath11k: Enable low power mode when WLAN is not active
 References: <20230203060128.19625-1-quic_mpubbise@quicinc.com>
         <20230203060128.19625-4-quic_mpubbise@quicinc.com>
-Date:   Fri, 24 Feb 2023 16:46:31 +0200
+Date:   Fri, 24 Feb 2023 16:50:17 +0200
 In-Reply-To: <20230203060128.19625-4-quic_mpubbise@quicinc.com> (Manikanta
         Pubbisetty's message of "Fri, 3 Feb 2023 11:31:28 +0530")
-Message-ID: <87h6vbruig.fsf@kernel.org>
+Message-ID: <87cz5zruc6.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -81,50 +81,39 @@ Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
 >
 > Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
 
-This is still crashing for me every time with WCN6855 on a NUC x86
-device when I rmmod ath11k. Interestingly enough QCA6390 on a Dell XPS
-13 9310 does not crash.
+[...]
 
-I investigated the crash more, the crash happens in
-ath11k_dp_process_rxdma_err() on this line:
+> +static int ath11k_ahb_core_start_ipq8074(struct ath11k_base *ab)
+> +{
+> +	/* TODO: Currently initializing the hardware/firmware only
+> +	 * during hardware recovery. Support to shutdown/turn-on
+> +	 * the hardware during Wi-Fi OFF/ON will be added later.
+> +	 */
+> +	if (!test_bit(ATH11K_FLAG_RECOVERY, &ab->dev_flags))
+> +		return 0;
+> +
+> +	return ath11k_core_start_device(ab);
+> +}
+> +
+> +static void ath11k_ahb_core_stop_ipq8074(struct ath11k_base *ab)
+> +{
+> +	/* TODO: Currently stopping the hardware/firmware only
+> +	 * during driver unload. Support to shutdown/turn-on
+> +	 * the hardware during Wi-Fi OFF/ON will be added later.
+> +	 */
+> +	if (!test_bit(ATH11K_FLAG_UNREGISTERING, &ab->dev_flags))
+> +		return;
+> +
+> +	return ath11k_core_stop_device(ab);
+> +}
 
-	srng = &ab->hal.srng_list[err_ring->ring_id];
+Please clarify what Wi-Fi OFF/ON exactly means on these two comments,
+it's not clear for me.
 
-Here are the debug messages before the crash (first and last are my
-own messages):
+Also I want to mention that I suspect eventually we have to always power
+off the firmware during suspend to get hibernation working:
 
-[  226.766111] rmmod ath11k_pci
-[  227.003678] ath11k_pci 0000:06:00.0: txpower from firmware NaN, reported -2147483648 dBm
-[  227.082283] ath11k_pci 0000:06:00.0: qmi wifi fw del server
-[  227.195760] ath11k_pci 0000:06:00.0: cookie:0x0
-[  227.195843] ath11k_pci 0000:06:00.0: WLAON_WARM_SW_ENTRY 0x15b894d
-[  227.216022] ath11k_pci 0000:06:00.0: WLAON_WARM_SW_ENTRY 0x0
-[  227.216086] ath11k_pci 0000:06:00.0: soc reset cause:0
-[  227.236170] ath11k_pci 0000:06:00.0: MHISTATUS 0xff04
-[  227.270816] ath11k_pci 0000:06:00.0: ext irq:167
-[  227.271231] ath11k_dp_process_rxdma_err() 4187 ab ffff888145520000 err_ring 00000000000001d0
-
-So we get irq 167 which is:
-
- 167:          0          0          0          0          0          0          0          0  IR-PCI-MSI-0000:06:00.0   14-edge      DP_EXT_IRQ
-
-But in ath11k_pcic_ext_interrupt_handler() ATH11K_FLAG_EXT_IRQ_ENABLED
-is still enabled so the irq is processed:
-
-	if (!test_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
-		return IRQ_HANDLED;
-
-It looks like that, after applying this patch 3, whenever
-ath11k_pci_remove() is called we are not calling
-ath11k_hif_irq_disable() anymore. I checked that without patch 3
-ath11k_hif_irq_disable() is always called. So this patch is definitely
-breaking something fundamental, but I ran out of time to invetigate
-further. I hope this still helps.
-
-Do note I have concerns about this patchset, it just changes quite a lot
-of the driver logic and I'm worried what else this breaks. Also we
-should definitely test with another AHB device like IPQ8074, this
-patchset needs extensive testing.
+https://bugzilla.kernel.org/show_bug.cgi?id=214649
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
