@@ -2,99 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D87F6A23E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Feb 2023 22:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B02D36A274B
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Feb 2023 05:54:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbjBXVjy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Feb 2023 16:39:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60354 "EHLO
+        id S229578AbjBYEyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Feb 2023 23:54:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbjBXVjx (ORCPT
+        with ESMTP id S229468AbjBYEyY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Feb 2023 16:39:53 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3953859E4A
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 13:39:52 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id l15so899575pls.1
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Feb 2023 13:39:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/0U15SCPfIqC0m6RYPP1r/3VMkd/wkwS9VeVBVrqXrU=;
-        b=lVbsh+JAQm9KLX22cboY+0x5+SxBfp+DmxmNW3BfdqOSRuS2TIEvatRUELvE4EL4bP
-         LY7t8B+z/ivHwgQsshtk9bzikpNyM/CujqYRsPbTMekP9q1HKWSMBI4W0xkZnYVceEmT
-         mWK6KqjqO6rb1tvHumq1YRMawzyPayHjp9YMs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/0U15SCPfIqC0m6RYPP1r/3VMkd/wkwS9VeVBVrqXrU=;
-        b=KmFsLAm7X39lD/SW9IYNFE9NFyt+c/b4KPkkg6th0ThYdh8ljAOqfTjLrEU6XF0rmR
-         NfZZipcQhwpdnQcMp8l5mAkOmOlBRecjbmtochqVcK2ToKKfuG+mX40NaZaQLPEvv6Uj
-         4euC0UTbcg5qWE3CfslUCo7Fz0Ft7IkAgNsH+GWMvvYNlq14NC7hC8FQCa2u3/3oqAJY
-         rbFiQDiSEq2Xf1tKqB3PpGANfX0nwBkzx3UyTyQTK1uf56hPLF3x3nkZ2gOXjWm7EfzJ
-         oLsGVQEsl+o1LVKl5WP100L3eASb9Th1Ym2IfBbj4naX0kEqby0+T+fbgbDLsnyYfoeg
-         /QBg==
-X-Gm-Message-State: AO0yUKUiyRpj7oLg0GwXV/jCuq28n7D67/EZtwUuogoQlE2I2HgNQOEK
-        iBzvcQE+BR51svB8W+OYr9db6w==
-X-Google-Smtp-Source: AK7set9BbuYHHXnFHfMPPUgDVlsItcAL3sZ8dyfXgjAcXKnlZht64MAY/RK1Wp7HeHbkHd7PGJS6fA==
-X-Received: by 2002:a05:6a21:6da2:b0:c7:8779:4167 with SMTP id wl34-20020a056a216da200b000c787794167mr19752281pzb.30.1677274791410;
-        Fri, 24 Feb 2023 13:39:51 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:b4b7:a941:f40c:bd01])
-        by smtp.gmail.com with ESMTPSA id p18-20020a62ab12000000b005ae02dc6285sm5825pff.203.2023.02.24.13.39.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 13:39:50 -0800 (PST)
-Date:   Fri, 24 Feb 2023 13:39:48 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     Zheng Hacker <hackerzheng666@gmail.com>
-Cc:     Zheng Wang <zyytlz.wz@163.com>, ganapathi017@gmail.com,
-        alex000young@gmail.com, amitkarwar@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mwifiex: Fix use-after-free bug due to race condition
- between main thread thread and timer thread
-Message-ID: <Y/kupIIGBHQ2rQIZ@google.com>
-References: <20230218075956.1563118-1-zyytlz.wz@163.com>
- <Y/U+w7aMc+BttZwl@google.com>
- <CAJedcCzmnZCR=XF+zKHiJ+8PNK88sXFDm5n=RnwcTnJfO0ihOw@mail.gmail.com>
- <Y/aHHSkUOsOsU+Kq@google.com>
- <CAJedcCykky7E_uyeU=Pj1HR0rcpUTF1tKJ-2UmmM33bweDg=yw@mail.gmail.com>
- <CAJedcCztEkE=EB2GmH=BpTvD=r_bwGXk3RYDM2FU=f_SvEaJHA@mail.gmail.com>
+        Fri, 24 Feb 2023 23:54:24 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3F5126C0;
+        Fri, 24 Feb 2023 20:54:23 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5B19DB81CF7;
+        Sat, 25 Feb 2023 04:54:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12895C433D2;
+        Sat, 25 Feb 2023 04:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677300860;
+        bh=rOEc26RCcLfUjD9Zty2t2zc49it4UokaAcduKqPAXcM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=n+qyRAGPb0GljWF1eoKJab1z3bKsk21DI2WxNs3XpzB3ExwWOSLJDVhlXbTJH2/6Z
+         GGpLxi8O7FLiD10AGHukiom5FZdA6MjYp/ElpAxytB2S6DjML7p4BzUuWajHnue8C5
+         IRMmsP6wWRbnib4lnlEnsP13s/H0VJe1o+uIPVbUO1xNIs0T/G4p6N3vOEdniZBWWe
+         EWQvL/fpHPLjgG6+arvXaj1Zhtxdy7HhVFcBDm/nIe649185Idq44lWe5zAkodZRAZ
+         2QaRsBikLPMcvoHpBBosBm8mcc6kKd4cy01NYrQVLek6xn0lMJVvWFPDM9pz//hPr+
+         g0pwDL7Qxmo0g==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        netdev@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>,
+        Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: Re: [PATCH] wifi: wext: warn about usage only once
+References: <20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid>
+        <87lekn2jhx.fsf@kernel.org> <20230224114747.1b676862@kernel.org>
+Date:   Sat, 25 Feb 2023 06:54:16 +0200
+In-Reply-To: <20230224114747.1b676862@kernel.org> (Jakub Kicinski's message of
+        "Fri, 24 Feb 2023 11:47:47 -0800")
+Message-ID: <874jra2vlz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJedcCztEkE=EB2GmH=BpTvD=r_bwGXk3RYDM2FU=f_SvEaJHA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 02:17:59PM +0800, Zheng Hacker wrote:
-> This email is broken for the statement is too long, Here is the newest email.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-It still wraps a bit weird, but it's good enough I suppose.
+> On Fri, 24 Feb 2023 17:03:38 +0200 Kalle Valo wrote:
+>> Linus, do you want to apply this directly or should we send this
+>> normally via the wireless tree? For the latter I would assume you would
+>> get it sometime next week.
+>
+> FWIW the net PR will likely be on Monday afternoon, pending this fix
+> and the Kconfig fix from Intel.
 
->               retn -EINPROGRESS in mwifiex_init_fw
->               mwifiex_free_adapter when in error
+Ok, I'll try to send a pull request before that. I also have other
+pending fixes in the queue.
 
-These two statements don't connect. _mwifiex_fw_dpc() only treats -1 as
-a true error; -EINPROGRESS is treated as success, such that we continue
-to wait for the command response. Now, we might hang here if that
-response doesn't come, but that's a different problem...
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I'm sure there are true bugs in here somewhere, but I've spent enough
-time reading your incorrect reports and don't plan to spend more. (If
-you're lucky, maybe you can pique my curiosity again, but don't count on
-it.)
-
-Regards,
-Brian
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
