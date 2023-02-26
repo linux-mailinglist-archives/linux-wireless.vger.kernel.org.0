@@ -2,48 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D90E6A30D3
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 15:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55F5A6A30F1
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 15:55:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbjBZOxx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Feb 2023 09:53:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
+        id S230342AbjBZOz4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Feb 2023 09:55:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230331AbjBZOxR (ORCPT
+        with ESMTP id S230390AbjBZOxw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Feb 2023 09:53:17 -0500
+        Sun, 26 Feb 2023 09:53:52 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA73F7293;
-        Sun, 26 Feb 2023 06:49:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0281ACEB;
+        Sun, 26 Feb 2023 06:50:11 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA53E60C48;
-        Sun, 26 Feb 2023 14:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2BCC4339C;
-        Sun, 26 Feb 2023 14:46:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE0F60C49;
+        Sun, 26 Feb 2023 14:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5291C433EF;
+        Sun, 26 Feb 2023 14:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677422771;
-        bh=++Dve21aH/Fdi7PtK/V++Z7RPLfB4XMp3I03VOVGCmo=;
+        s=k20201202; t=1677422795;
+        bh=+14XCMTWc3gY7mt1/8x0nU+oBB/YTuN02xrNh9fKVpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IkllopnbcKZxtMF4I7HAQ4XQeyx/3rKbeQyaYq0Fdo71jrFIYLbkCX12StkV3+7mD
-         hLZShoFb96nAFRkLFjqSnoqCh8WZhrmTgoOalZyeVhgoCBAgf/HOpNa8dqZK3bj8hk
-         OoBmX95ARRuqVKQzJ7DoKJieJifIFi0j5WR1VQn8Kyou+n9e3TnKHCgZHo0amW7MhV
-         DWJDYvavPJU3/5nYYcykTny6rOpwc7vp/7hW5Bb8Fpt5q2RSmzAM9AopAhWKmJ3Jwh
-         cAT3orKYKltOGxOUofGmqcEX/DasL8r2Ypnj+xehem5aaKDqLMRC/mSFvDt5MusN1L
-         nUaqErmoZAO9A==
+        b=kdqg9RVCWDgmFbPckE6rkFwIw5ZhWjg/eSMJC5GuKeUw63oYNGYC6IoAUuRup+gje
+         +ETbU2D4vpO5v4AH//nQlV87iRiE3IM0cpfPdLjzzdOi7lVfnbXvC7mrO5CbtdSa5K
+         b58YVHARvopPROF+Oml4IPYAS67QAY0GVch6czOogGPrri5/7FjqTa5YRCFnVA1rz1
+         Ie/d/aNkrVyPx/vz7yFJ+eeYNAgCv+Mq1y2gh5TMri+pUDm+H7ZIsBKfDQIo6CNmvx
+         r3EBVma1LRPpc0LB89oIUA4/q3vus2ktTbm5r0yqRQp04+n3XeJaqbj/1Y7jBFUMOf
+         s4wyS/GgyeUMw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        ryder.lee@mediatek.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        matthias.bgg@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.2 36/53] wifi: mt76: dma: free rx_head in mt76_dma_rx_cleanup
-Date:   Sun, 26 Feb 2023 09:44:28 -0500
-Message-Id: <20230226144446.824580-36-sashal@kernel.org>
+Cc:     Zong-Zhe Yang <kevin_yang@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.2 48/53] wifi: rtw89: debug: avoid invalid access on RTW89_DBG_SEL_MAC_30
+Date:   Sun, 26 Feb 2023 09:44:40 -0500
+Message-Id: <20230226144446.824580-48-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230226144446.824580-1-sashal@kernel.org>
 References: <20230226144446.824580-1-sashal@kernel.org>
@@ -60,58 +59,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 1b88b47e898edef0e56e3a2f4e49f052a136153d ]
+[ Upstream commit c074da21dd346e0cfef5d08b0715078d7aea7f8d ]
 
-Free rx_head skb in mt76_dma_rx_cleanup routine in order to avoid
-possible memory leak at module unload.
+Only 8852C chip has valid pages on RTW89_DBG_SEL_MAC_30. To other chips,
+this section is an address hole. It will lead to crash if trying to access
+this section on chips except for 8852C. So, we avoid that.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230119063529.61563-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/debug.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 06161815c180e..03b484b0473e4 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -737,6 +737,7 @@ mt76_dma_rx_cleanup(struct mt76_dev *dev, struct mt76_queue *q)
- 		return;
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index 8297e35bfa52b..6730eea930ece 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -615,6 +615,7 @@ rtw89_debug_priv_mac_reg_dump_select(struct file *filp,
+ 	struct seq_file *m = (struct seq_file *)filp->private_data;
+ 	struct rtw89_debugfs_priv *debugfs_priv = m->private;
+ 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
++	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	char buf[32];
+ 	size_t buf_size;
+ 	int sel;
+@@ -634,6 +635,12 @@ rtw89_debug_priv_mac_reg_dump_select(struct file *filp,
+ 		return -EINVAL;
+ 	}
  
- 	spin_lock_bh(&q->lock);
-+
- 	do {
- 		buf = mt76_dma_dequeue(dev, q, true, NULL, NULL, &more, NULL);
- 		if (!buf)
-@@ -744,6 +745,12 @@ mt76_dma_rx_cleanup(struct mt76_dev *dev, struct mt76_queue *q)
- 
- 		skb_free_frag(buf);
- 	} while (1);
-+
-+	if (q->rx_head) {
-+		dev_kfree_skb(q->rx_head);
-+		q->rx_head = NULL;
++	if (sel == RTW89_DBG_SEL_MAC_30 && chip->chip_id != RTL8852C) {
++		rtw89_info(rtwdev, "sel %d is address hole on chip %d\n", sel,
++			   chip->chip_id);
++		return -EINVAL;
 +	}
 +
- 	spin_unlock_bh(&q->lock);
+ 	debugfs_priv->cb_data = sel;
+ 	rtw89_info(rtwdev, "select mac page dump %d\n", debugfs_priv->cb_data);
  
- 	if (!q->rx_page.va)
-@@ -769,12 +776,6 @@ mt76_dma_rx_reset(struct mt76_dev *dev, enum mt76_rxq_id qid)
- 	mt76_dma_rx_cleanup(dev, q);
- 	mt76_dma_sync_idx(dev, q);
- 	mt76_dma_rx_fill(dev, q);
--
--	if (!q->rx_head)
--		return;
--
--	dev_kfree_skb(q->rx_head);
--	q->rx_head = NULL;
- }
- 
- static void
 -- 
 2.39.0
 
