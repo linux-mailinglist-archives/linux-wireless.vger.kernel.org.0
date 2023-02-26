@@ -2,134 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28FBC6A2D1D
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 03:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAAB16A2FFF
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 15:45:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjBZCJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Feb 2023 21:09:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38028 "EHLO
+        id S229662AbjBZOo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Feb 2023 09:44:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjBZCJ6 (ORCPT
+        with ESMTP id S229684AbjBZOoz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Feb 2023 21:09:58 -0500
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9707A12843;
-        Sat, 25 Feb 2023 18:09:53 -0800 (PST)
-Received: by mail-ot1-x329.google.com with SMTP id t7-20020a9d7487000000b00693d565b852so1787478otk.5;
-        Sat, 25 Feb 2023 18:09:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cdf17NqA+jaB/gdMQ7hVa+nSi8Np813wqLCsDdd+xBI=;
-        b=bBIXigGsPjnbg0/Hkz7XTzap2YhNYqp/+XLQ2h6BOoJpPBW3tOMrQ6BM5uYC2VZIuo
-         WA/S/p0svOnrTGAJaMNW+VYWU2wPOJmbZVuKsk4ErDqLa4fsEiBhzWGiJTVVgLoaysO1
-         vpzEGig7wkmDeAcE/zdCZef5rtyLfnoFYp8wyPFWEFoMss9EroLQxKAkp8/aRwuktHFa
-         FjOl6jDn8ZXCmPx40eV/P15AvYQws0IZMByjzMMiLGDEuN2iBSfOpUnHKmK0hXmlfjuN
-         twd+oGyRt31PsL1JB/dYNONn3xvJ7GoEvuSY2PPOZwMjAhBDv/URO+HswV8ksBW+qLAs
-         wwGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cdf17NqA+jaB/gdMQ7hVa+nSi8Np813wqLCsDdd+xBI=;
-        b=Wz7DfQWedqxUJCaUe9dAq02A0ZbTeAQFLH4cqa//ZVZBb0FKsr71lYpPCztU0M6W2s
-         ziiWc2SiKTLDm+LXZqnBfn7HsufZKC1RVf+ib/WtzQeHU/675si+FtF5Zv5V/jNsoVBZ
-         eNjKy8PPBeIz0GGtRbMgwOpFsxUV7qagqj5PeQdg0mR+j9ILXEb7dI42DZdEoPZQVV31
-         ONf/+YYoO8NF20IoITPePh/iRN5SekRExEfSrf4kgmrvUGYUrzXaReXQow+Udqjsx8Pd
-         t+UvzVCLt3sHZbLAA33iNcbc/YXOgoJ4woX+nfReUREsI90SysevHSF1VAneKNHaYu6E
-         kghg==
-X-Gm-Message-State: AO0yUKXwuROPE+9ToW7SCUoZKN/XbgJ4R53cOTAamQeRGNxL11ynnGJr
-        uOl3osfsgTeqyN/n3bCtD4J+4Erx4/Q=
-X-Google-Smtp-Source: AK7set9jZpMy/AxCG66VWPMCmP69hZH8yNHOuZFm63M6zUNpqNnpBoL+pr4Fpe4t+aQGmhw9edTeUA==
-X-Received: by 2002:a9d:383:0:b0:68b:d3b7:cb72 with SMTP id f3-20020a9d0383000000b0068bd3b7cb72mr7474568otf.5.1677377392877;
-        Sat, 25 Feb 2023 18:09:52 -0800 (PST)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id z14-20020a9d468e000000b00686a19ffef1sm1153256ote.80.2023.02.25.18.09.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Feb 2023 18:09:52 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <121c0039-5f0c-7c4e-5b07-9193ed547079@lwfinger.net>
-Date:   Sat, 25 Feb 2023 20:09:51 -0600
+        Sun, 26 Feb 2023 09:44:55 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2DEB113D9;
+        Sun, 26 Feb 2023 06:44:52 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 3AAAFCE0AEF;
+        Sun, 26 Feb 2023 14:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4BDC433EF;
+        Sun, 26 Feb 2023 14:44:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677422689;
+        bh=Q3vF9Ai2gvQnymAbxhhD7PWJAfPQldv0RJ8iD8V7PSQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=S7dZ04oPYnlhcgvg39fz7ELEoyKFSpeg8HC/FOSSemwPwqT7zCZA6mwGa8E4xSPRd
+         1Q/chVg1Fvo7JQRkJHH5fBZw9mgWZr8Fjcm1gJBmVzDX6d9Q+S45uR+AY8a04UrH8v
+         9CGVjL3PunWHKQTh9rM3bFtU1vUqKsSW/qsBKIlMQeIU33WEaZV/cpxI+NI+fcGtUv
+         gF4xbfOUICagSMRDVkujWD8t6bVlV9SC3SS+O3iKoK8Zj31kvS9h1p6XTpQtPLgGf7
+         onQUlPkqgIkv2oFQOBo7cV75XwzEEubkIT0DJNPuAhGVZzzu8PUPwC9RafqmgLO7Dy
+         8oMcH9zmdP0+g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+        Dokyung Song <dokyungs@yonsei.ac.kr>,
+        Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.2 01/53] wifi: ath9k: Fix use-after-free in ath9k_hif_usb_disconnect()
+Date:   Sun, 26 Feb 2023 09:43:53 -0500
+Message-Id: <20230226144446.824580-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: [PATCH] wifi: wext: warn about usage only once
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "Berg, Johannes" <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Jan Engelhardt <jengelh@inai.de>
-References: <20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid>
- <dff29d82-9c4b-1933-c1c1-a3becf2a0f1f@lwfinger.net>
- <CAHk-=whwDRefJJq0K8bXXSNY3-Zy8=Z3ZiKYh2mOOvfT-MqNhA@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAHk-=whwDRefJJq0K8bXXSNY3-Zy8=Z3ZiKYh2mOOvfT-MqNhA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/24/23 13:44, Linus Torvalds wrote:
-> You *could* improve on it further by having some kind of timed
-> rate-limiting, where every 24 hours you'd clear the warning mask, so
-> that you'd warn about these things once a day. That *can* be useful
-> for when people just don't notice the warning the first time around,
-> and "once a day" is not a horribly problem that fills up the logs like
-> the current situation does.
-> 
-> But again - I personally think even just a pr_warn_once() is likely
-> good enough. Because all I want is to not have that horrible
-> log-flushing behavior.
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-To all,
+[ Upstream commit f099c5c9e2ba08a379bd354a82e05ef839ae29ac ]
 
-I posted my list of 8 different tasks that generated this warning to the 
-openSUSE developers mailing list, and got back a reply from Jan Engelhardt 
-pointed me toward the libqt5-qtbase project, which contains the following snippet:
+This patch fixes a use-after-free in ath9k that occurs in
+ath9k_hif_usb_disconnect() when ath9k_destroy_wmi() is trying to access
+'drv_priv' that has already been freed by ieee80211_free_hw(), called by
+ath9k_htc_hw_deinit(). The patch moves ath9k_destroy_wmi() before
+ieee80211_free_hw(). Note that urbs from the driver should be killed
+before freeing 'wmi' with ath9k_destroy_wmi() as their callbacks will
+access 'wmi'.
 
-     case ARPHRD_ETHER:
-         // check if it's a WiFi interface
-         if (qt_safe_ioctl(socket, SIOCGIWMODE, req) >= 0)
-             return QNetworkInterface::Wifi;
-         return QNetworkInterface::Ethernet;
+Found by a modified version of syzkaller.
 
-I am not entirely sure why Qt needs to know what type of device the network is 
-using. I tested by replacing this with
+==================================================================
+BUG: KASAN: use-after-free in ath9k_destroy_wmi+0x38/0x40
+Read of size 8 at addr ffff8881069132a0 by task kworker/0:1/7
 
-     case ARPHRD_ETHER:
-         return QNetworkInterface::Ethernet;
+CPU: 0 PID: 7 Comm: kworker/0:1 Tainted: G O 5.14.0+ #131
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ dump_stack_lvl+0x8e/0xd1
+ print_address_description.constprop.0.cold+0x93/0x334
+ ? ath9k_destroy_wmi+0x38/0x40
+ ? ath9k_destroy_wmi+0x38/0x40
+ kasan_report.cold+0x83/0xdf
+ ? ath9k_destroy_wmi+0x38/0x40
+ ath9k_destroy_wmi+0x38/0x40
+ ath9k_hif_usb_disconnect+0x329/0x3f0
+ ? ath9k_hif_usb_suspend+0x120/0x120
+ ? usb_disable_interface+0xfc/0x180
+ usb_unbind_interface+0x19b/0x7e0
+ ? usb_autoresume_device+0x50/0x50
+ device_release_driver_internal+0x44d/0x520
+ bus_remove_device+0x2e5/0x5a0
+ device_del+0x5b2/0xe30
+ ? __device_link_del+0x370/0x370
+ ? usb_remove_ep_devs+0x43/0x80
+ ? remove_intf_ep_devs+0x112/0x1a0
+ usb_disable_device+0x1e3/0x5a0
+ usb_disconnect+0x267/0x870
+ hub_event+0x168d/0x3950
+ ? rcu_read_lock_sched_held+0xa1/0xd0
+ ? hub_port_debounce+0x2e0/0x2e0
+ ? check_irq_usage+0x860/0xf20
+ ? drain_workqueue+0x281/0x360
+ ? lock_release+0x640/0x640
+ ? rcu_read_lock_sched_held+0xa1/0xd0
+ ? rcu_read_lock_bh_held+0xb0/0xb0
+ ? lockdep_hardirqs_on_prepare+0x273/0x3e0
+ process_one_work+0x92b/0x1460
+ ? pwq_dec_nr_in_flight+0x330/0x330
+ ? rwlock_bug.part.0+0x90/0x90
+ worker_thread+0x95/0xe00
+ ? __kthread_parkme+0x115/0x1e0
+ ? process_one_work+0x1460/0x1460
+ kthread+0x3a1/0x480
+ ? set_kthread_struct+0x120/0x120
+ ret_from_fork+0x1f/0x30
 
+The buggy address belongs to the page:
+page:ffffea00041a44c0 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x106913
+flags: 0x200000000000000(node=0|zone=2)
+raw: 0200000000000000 0000000000000000 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO), pid 7, ts 38347963444, free_ts 41399957635
+ prep_new_page+0x1aa/0x240
+ get_page_from_freelist+0x159a/0x27c0
+ __alloc_pages+0x2da/0x6a0
+ alloc_pages+0xec/0x1e0
+ kmalloc_order+0x39/0xf0
+ kmalloc_order_trace+0x19/0x120
+ __kmalloc+0x308/0x390
+ wiphy_new_nm+0x6f5/0x1dd0
+ ieee80211_alloc_hw_nm+0x36d/0x2230
+ ath9k_htc_probe_device+0x9d/0x1e10
+ ath9k_htc_hw_init+0x34/0x50
+ ath9k_hif_usb_firmware_cb+0x25f/0x4e0
+ request_firmware_work_func+0x131/0x240
+ process_one_work+0x92b/0x1460
+ worker_thread+0x95/0xe00
+ kthread+0x3a1/0x480
+page last free stack trace:
+ free_pcp_prepare+0x3d3/0x7f0
+ free_unref_page+0x1e/0x3d0
+ device_release+0xa4/0x240
+ kobject_put+0x186/0x4c0
+ put_device+0x20/0x30
+ ath9k_htc_disconnect_device+0x1cf/0x2c0
+ ath9k_htc_hw_deinit+0x26/0x30
+ ath9k_hif_usb_disconnect+0x2d9/0x3f0
+ usb_unbind_interface+0x19b/0x7e0
+ device_release_driver_internal+0x44d/0x520
+ bus_remove_device+0x2e5/0x5a0
+ device_del+0x5b2/0xe30
+ usb_disable_device+0x1e3/0x5a0
+ usb_disconnect+0x267/0x870
+ hub_event+0x168d/0x3950
+ process_one_work+0x92b/0x1460
 
-After rebuilding the entire project, and reinstalling all 31 packages generated 
-in a new build, my system now displays only 3 remaining warnings, namely
+Memory state around the buggy address:
+ ffff888106913180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff888106913200: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff888106913280: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                               ^
+ ffff888106913300: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff888106913380: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
 
-warning: `nspr-2' uses wireless extensions that are deprecated for modern 
-drivers; use nl80211
-warning: `ThreadPoolForeg' uses wireless extensions that are deprecated for 
-modern drivers; use nl80211
-warning: `nspr-8' uses wireless extensions that are deprecated for modern 
-drivers; use nl80211
+Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
+Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20221205014308.1617597-1-linuxlovemin@yonsei.ac.kr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c      | 2 --
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-To answer Kalle's question, libQt is responsible for most of the warnings that 
-were reported here.
-
-In case Qt really needs to know what network it is on, what is a better way to 
-detect if the network is on a Wifi device?
-
-Larry
-
-
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 1a2e0c7eeb023..86ede591dafaf 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1411,8 +1411,6 @@ static void ath9k_hif_usb_disconnect(struct usb_interface *interface)
+ 
+ 	if (hif_dev->flags & HIF_USB_READY) {
+ 		ath9k_htc_hw_deinit(hif_dev->htc_handle, unplugged);
+-		ath9k_hif_usb_dev_deinit(hif_dev);
+-		ath9k_destroy_wmi(hif_dev->htc_handle->drv_priv);
+ 		ath9k_htc_hw_free(hif_dev->htc_handle);
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_init.c b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+index 07ac88fb1c577..96a3185a96d75 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_init.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_init.c
+@@ -988,6 +988,8 @@ void ath9k_htc_disconnect_device(struct htc_target *htc_handle, bool hotunplug)
+ 
+ 		ath9k_deinit_device(htc_handle->drv_priv);
+ 		ath9k_stop_wmi(htc_handle->drv_priv);
++		ath9k_hif_usb_dealloc_urbs((struct hif_device_usb *)htc_handle->hif_dev);
++		ath9k_destroy_wmi(htc_handle->drv_priv);
+ 		ieee80211_free_hw(htc_handle->drv_priv->hw);
+ 	}
+ }
+-- 
+2.39.0
 
