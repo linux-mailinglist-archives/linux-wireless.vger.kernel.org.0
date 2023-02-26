@@ -2,54 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC84C6A3338
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 18:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84BDA6A333E
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 18:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjBZRhG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Feb 2023 12:37:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33302 "EHLO
+        id S229540AbjBZRjc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Feb 2023 12:39:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbjBZRhF (ORCPT
+        with ESMTP id S229515AbjBZRjb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Feb 2023 12:37:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5907318B02;
-        Sun, 26 Feb 2023 09:37:01 -0800 (PST)
+        Sun, 26 Feb 2023 12:39:31 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C441A65F
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Feb 2023 09:39:29 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8E6A60B46;
-        Sun, 26 Feb 2023 17:37:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D133EC433EF;
-        Sun, 26 Feb 2023 17:36:58 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id ACFD8B80B86
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Feb 2023 17:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E59C433EF;
+        Sun, 26 Feb 2023 17:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677433020;
-        bh=rYPnofxC2fS1NbIr0LLF9MRr+J8gcD33KZgjOgGwxos=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=fztnZjxN9iDRu2GHSbygtGLT/kORkxgl2HyX2TxfHQRM3IXgEqp0FYLvUgkUEnyvq
-         B3jRC3LwAHWt33TWUZK2w0Zn6c8PxUTqrJZInIeQmQA2+X03GomZxjtlFesa3VlKtl
-         xG/VB0BtgZMuTYSCEOCv3hZtm8TtRUjUzR3oFckhlo/KsFi2rHyxWxh+Sn/E2PKksS
-         DelJg4z0VolpSpCManTRnt/bmN+yKi+Zn7prwLD5JKvw+qniRQbnRZ2lhejgmJWmZ+
-         zTzGxjrCdwK97UtN2JPisGvt3FUp+ciWyHBweb9iOQCn8bMv9uLmfqgh0xXkhTb9Gy
-         v7wGZfiEiV3uQ==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: wext: warn about usage only once
+        s=k20201202; t=1677433167;
+        bh=GoOt8Jtdvt91IgmT5O3gMlmT8fXNukKAqOoNXnk8bKk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=pIFUux93O/p0fCbAQID9X9pc8LA9wDLVCdY5ewVG+XiZZKxpg6WjF0CCJXrLYVS1C
+         3XSyDO81uaPaUh7oIjiFqydHgDooNXr+ZwdnlLnLDKg7zaRhtVsfYRfLjFL9/NPrEg
+         TGrISix9DzQXtjJXbz8wnjwM9+q9nUHjqsUwuJWOWVCuqRM0gjvrCtpOJ9LajKNQsK
+         gxkGN/apOb5gaGZISjEGYuANhZoCNf8OxkaA9veQ5rmhZE0f+VQzySoKqKZcO7T2M/
+         KFqvfuaLM7Kj90aj5daEpWroSmjoz0MbJJo6NCI3mrD6v4WrB4tnQ4f+kfjjMJTnad
+         2UpUIRYPTw6XA==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid>
-References: <20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        netdev@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>,
-        Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>,
-        Johannes Berg <johannes.berg@intel.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167743301673.28904.15521250684332419538.kvalo@kernel.org>
-Date:   Sun, 26 Feb 2023 17:36:58 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, mikhail.v.gavrilov@gmail.com
+Subject: Re: [PATCH wireless] wifi: mt76: usb: fix use-after-free in mt76u_free_rx_queue
+References: <f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org>
+        <167743291067.28904.5980757013212614535.kvalo@kernel.org>
+Date:   Sun, 26 Feb 2023 19:39:23 +0200
+In-Reply-To: <167743291067.28904.5980757013212614535.kvalo@kernel.org> (Kalle
+        Valo's message of "Sun, 26 Feb 2023 17:35:30 +0000 (UTC)")
+Message-ID: <87y1ok1g38.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,35 +55,117 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> wrote:
+Kalle Valo <kvalo@kernel.org> writes:
 
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Warn only once since the ratelimit parameters are still
-> allowing too many messages to happen. This will no longer
-> tell you all the different processes, but still gives a
-> heads-up of sorts.
-> 
-> Also modify the message to note that wext stops working
-> for future Wi-Fi 7 hardware, this is already implemented
-> in commit 4ca69027691a ("wifi: wireless: deny wireless
-> extensions on MLO-capable devices") and is maybe of more
-> relevance to users than the fact that we'd like to have
-> wireless extensions deprecated.
-> 
-> The issue with Wi-Fi 7 is that you can now have multiple
-> connections to the same AP, so a whole bunch of things
-> now become per link rather than per netdev, which can't
-> really be handled in wireless extensions.
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+>> Fix the following use-after-free issue in mt76u_free_rx_queue routine:
+>> 
+>> usb 3-3.3.4: reset high-speed USB device number 8 using xhci_hcd
+>> iwlwifi 0000:05:00.0: Detected RF HR B3, rfid=0x10a100
+>> iwlwifi 0000:05:00.0: base HW address: 50:eb:71:79:02:57
+>> iwlwifi 0000:05:00.0 wlp5s0: renamed from wlan0
+>> mt76x2u 3-3.3.4:1.0: ASIC revision: 76320044
+>> usb 3-3.3.1: 1:3 : unsupported format bits 0x100000000
+>> mt76x2u 3-3.3.4:1.0: could not get hardware semaphore for ROM PATCH
+>> ------------[ cut here ]------------
+>> refcount_t: underflow; use-after-free.
+>> WARNING: CPU: 13 PID: 983 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
+>> Modules linked in: snd_seq_midi snd_seq_midi_event mt76x2u(+)
+>> mt76x2_common mt76x02_usb mt76_usb iwlmvm mt76x02_lib mt76
+>> snd_hda_codec_realtek intel_rapl_msr snd_hda_codec_generic
+>> snd_hda_codec_hdmi intel_rapl_common snd_hda_intel mac80211
+>> snd_intel_dspcfg snd_usb_audio(+) snd_intel_sdw_acpi btusb
+>> edac_mce_amd snd_hda_codec btrtl btbcm snd_usbmidi_lib snd_hda_core
+>> btintel snd_rawmidi btmtk snd_hwdep libarc4 mc iwlwifi kvm_amd snd_seq
+>> vfat bluetooth eeepc_wmi asus_ec_sensors snd_seq_device fat kvm
+>> cfg80211 asus_wmi snd_pcm irqbypass ledtrig_audio sparse_keymap rapl
+>> wmi_bmof platform_profile xpad snd_timer k10temp ff_memless i2c_piix4
+>> rfkill snd joydev soundcore acpi_cpufreq loop zram amdgpu
+>> crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni
+>> polyval_generic drm_ttm_helper ttm video iommu_v2 ucsi_ccg drm_buddy
+>> gpu_sched typec_ucsi ghash_clmulni_intel drm_display_helper igb
+>> sha512_ssse3 typec ccp nvme cec sp5100_tco nvme_core dca nvme_common
+>> wmi ip6_tables ip_tables fuse
+>> BTRFS info (device nvme1n1): enabling ssd optimizations
+>> CPU: 13 PID: 983 Comm: (udev-worker) Tainted: G        W    L
+>> -------  ---  6.3.0-0.rc0.20230222git5b7c4cabbb65.3.fc39.x86_64+debug
+>> BTRFS info (device nvme1n1): auto enabling async discard
+>> Hardware name: System manufacturer System Product Name/ROG STRIX
+>> X570-I GAMING, BIOS 4601 02/02/2023
+>> RIP: 0010:refcount_warn_saturate+0xba/0x110
+>> Code: 01 01 e8 69 a6 83 ff 0f 0b e9 52 f4 85 00 80 3d 69 6f ec 01 00
+>> 75 85 48 c7 c7 d0 25 b3 a9 c6 05 59 6f ec 01 01 e8 46 a6 83 ff <0f> 0b
+>> e9 2f f4 85 00 80 3d 47 6f ec 01 00 0f 85 5e ff ff ff 48 c7
+>> RSP: 0018:ffffb4010456fb78 EFLAGS: 00010286
+>> RAX: 0000000000000000 RBX: 0000000080000000 RCX: 0000000000000000
+>> RDX: 0000000000000002 RSI: ffffffffa9b17e3e RDI: 00000000ffffffff
+>> RBP: ffff8d15877336c0 R08: 0000000000000000 R09: ffffb4010456fa00
+>> R10: 0000000000000003 R11: ffff8d246e2fffe8 R12: 0000000000000080
+>> R13: ffff8d15b42fd000 R14: 0000000000000000 R15: ffff8d1587736a58
+>> FS:  00007fc05ae34940(0000) GS:ffff8d2425e00000(0000) knlGS:0000000000000000
+>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> CR2: 000055d801f1d540 CR3: 000000011df60000 CR4: 0000000000350ee0
+>> Call Trace:
+>>  <TASK>
+>>  mt76u_queues_deinit+0x2a0/0x370 [mt76_usb]
+>>  mt76x2u_probe+0xf3/0x130 [mt76x2u]
+>>  usb_probe_interface+0xe8/0x300
+>>  really_probe+0x1b6/0x410
+>>  __driver_probe_device+0x78/0x170
+>>  driver_probe_device+0x1f/0x90
+>>  __driver_attach+0xd2/0x1c0
+>>  ? __pfx___driver_attach+0x10/0x10
+>>  bus_for_each_dev+0x8a/0xd0
+>>  bus_add_driver+0x141/0x230
+>>  driver_register+0x77/0x120
+>>  usb_register_driver+0xaf/0x170
+>>  ? __pfx_init_module+0x10/0x10 [mt76x2u]
+>>  do_one_initcall+0x6e/0x350
+>>  do_init_module+0x4a/0x220
+>>  __do_sys_init_module+0x192/0x1c0
+>>  ? lock_is_held_type+0xce/0x120
+>>  do_syscall_64+0x5b/0x80
+>>  ? lock_is_held_type+0xce/0x120
+>>  ? asm_exc_page_fault+0x22/0x30
+>>  ? lockdep_hardirqs_on+0x7d/0x100
+>>  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+>> RIP: 0033:0x7fc05b1351be
+>> Code: 48 8b 0d 4d 0c 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f
+>> 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d
+>> 01 f0 ff ff 73 01 c3 48 8b 0d 1a 0c 0c 00 f7 d8 64 89 01 48
+>> RSP: 002b:00007ffd947c0988 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+>> RAX: ffffffffffffffda RBX: 000055d801f2b090 RCX: 00007fc05b1351be
+>> RDX: 00007fc05b65c07d RSI: 00000000000234be RDI: 000055d802c6b170
+>> RBP: 00007ffd947c0a40 R08: 000055d8019b4690 R09: 0000000000022000
+>> R10: 000000055d8019b4 R11: 0000000000000246 R12: 00007fc05b65c07d
+>> R13: 0000000000020000 R14: 000055d801f39770 R15: 000055d801f47780
+>>  </TASK>
+>> irq event stamp: 186313
+>> hardirqs last  enabled at (186323): [<ffffffffa81c675e>]
+>> __up_console_sem+0x5e/0x70
+>> hardirqs last disabled at (186332): [<ffffffffa81c6743>]
+>> __up_console_sem+0x43/0x70
+>> softirqs last  enabled at (186022): [<ffffffffa811d2f7>]
+>> __irq_exit_rcu+0xd7/0x160
+>> softirqs last disabled at (186017): [<ffffffffa811d2f7>]
+>> __irq_exit_rcu+0xd7/0x160
+>> ---[ end trace 0000000000000000 ]---
+>> mt76x2u: probe of 3-3.3.4:1.0 failed with error -110
+>> usbcore: registered new interface driver mt76x2u
+>> kauditd_printk_skb: 32 callbacks suppressed
+>> 
+>> Fixes: 2f5c3c77fc9b ("wifi: mt76: switch to page_pool allocator")
+>> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>
+> Patch applied to wireless-next.git, thanks.
+>
+> 92d79b1b7c33 wifi: mt76: usb: fix use-after-free in mt76u_free_rx_queue
 
-Patch applied to wireless-next.git, thanks.
-
-35c2dcbb64d4 wifi: wext: warn about usage only once
+I was supposed to take this to wireless tree, please ignore this email.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230224135933.94104aeda1a0.Ie771c6a66d7d6c3cf67da5f3b0c66cea66fd514c@changeid/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
