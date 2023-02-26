@@ -2,219 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B04816A3216
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 16:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 376BD6A3335
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Feb 2023 18:35:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231877AbjBZPPu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Feb 2023 10:15:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
+        id S229584AbjBZRfk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Feb 2023 12:35:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232193AbjBZPPB (ORCPT
+        with ESMTP id S229684AbjBZRfj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Feb 2023 10:15:01 -0500
+        Sun, 26 Feb 2023 12:35:39 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83C121295;
-        Sun, 26 Feb 2023 07:05:45 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 690E8199E4
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Feb 2023 09:35:33 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 160D460C4F;
-        Sun, 26 Feb 2023 14:52:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFEDC433EF;
-        Sun, 26 Feb 2023 14:52:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB08E60C3D
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Feb 2023 17:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30342C433EF;
+        Sun, 26 Feb 2023 17:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677423179;
-        bh=VmoIHrr+mNyw64ERdqNUNTwZFv34ATyY20xAM7lpFdw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LjZnrhyEsZEpam0YgWsu9RU8eNLvksGFs5q+SJbioiyWcmFJPlEheeLtzDea2vS4s
-         9bQSL2+dmF90p0V1gxHNjXVoGNnL9jLORWS4PchASrmPXZPwqBaMLK941zNhCF8Qyh
-         9im31PjN2gnBXy42eKkNx7pGqVD5n80QOz9wSm1JzT1t8wuX/0Jwbt/HpbEYEueJnE
-         3IqPtvnGzrrLnsjbjMOZSdVVAXzj1VgOZvs4MtcIXjZ7OWarVbBwP2Allj6unqOdeb
-         iGIpG57g41Omd/8PmbLjkSgfj/Hizu7FH9/NE5RNb5FtXmBR37Jkvg0coTIwqBORWb
-         m4GdfTklCCJzQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jisoo Jang <jisoo.jang@yonsei.ac.kr>,
-        Dokyung Song <dokyungs@yonsei.ac.kr>,
-        Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        hdegoede@redhat.com, gustavoars@kernel.org, pavel@loebl.cz,
-        wsa+renesas@sang-engineering.com, marcan@marcan.st,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 01/11] wifi: brcmfmac: Fix potential stack-out-of-bounds in brcmf_c_preinit_dcmds()
-Date:   Sun, 26 Feb 2023 09:52:43 -0500
-Message-Id: <20230226145255.829660-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.0
+        s=k20201202; t=1677432932;
+        bh=Cu3jI5i8S01EhmxXsy8zqJw4Ws3OsuTatzQyWlR/37I=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=kOQvsgtrW0R5x2L1iMGBFKVAMGmIeN0HZ+bdj2zOeDIWDlHFLsF33QFAE7C9IKH1/
+         /Y5fAGBP82J+5Wic7ZkexFOKp/hvKio1TdNOYEojRhE9NRJFUzewbPS/1j6THNmrOr
+         TCKnY4UdB0Z8DYUnPG77ROOMV8NaqkKMWtdMdvfJXzhxqkXCdVRvvG0diTdFUZoEoj
+         wk7HyIeD0nxbfygXNUniDjyEUaNo5nyTtrC5xVXm/WNkMP0IfAiXQnKInmXYu1xp7c
+         xRaEjtTtk/G14/fFRrPNLLe3I8jcJSsysyriTbcNg74LwyLcfU6Y1tff/Gr/+eHRqq
+         EdLZ7mTAGvO8w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH wireless] wifi: mt76: usb: fix use-after-free in
+ mt76u_free_rx_queue
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org>
+References: <f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com, mikhail.v.gavrilov@gmail.com
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167743291067.28904.5980757013212614535.kvalo@kernel.org>
+Date:   Sun, 26 Feb 2023 17:35:30 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-[ Upstream commit 0a06cadcc2a0044e4a117cc0e61436fc3a0dad69 ]
+> Fix the following use-after-free issue in mt76u_free_rx_queue routine:
+> 
+> usb 3-3.3.4: reset high-speed USB device number 8 using xhci_hcd
+> iwlwifi 0000:05:00.0: Detected RF HR B3, rfid=0x10a100
+> iwlwifi 0000:05:00.0: base HW address: 50:eb:71:79:02:57
+> iwlwifi 0000:05:00.0 wlp5s0: renamed from wlan0
+> mt76x2u 3-3.3.4:1.0: ASIC revision: 76320044
+> usb 3-3.3.1: 1:3 : unsupported format bits 0x100000000
+> mt76x2u 3-3.3.4:1.0: could not get hardware semaphore for ROM PATCH
+> ------------[ cut here ]------------
+> refcount_t: underflow; use-after-free.
+> WARNING: CPU: 13 PID: 983 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
+> Modules linked in: snd_seq_midi snd_seq_midi_event mt76x2u(+)
+> mt76x2_common mt76x02_usb mt76_usb iwlmvm mt76x02_lib mt76
+> snd_hda_codec_realtek intel_rapl_msr snd_hda_codec_generic
+> snd_hda_codec_hdmi intel_rapl_common snd_hda_intel mac80211
+> snd_intel_dspcfg snd_usb_audio(+) snd_intel_sdw_acpi btusb
+> edac_mce_amd snd_hda_codec btrtl btbcm snd_usbmidi_lib snd_hda_core
+> btintel snd_rawmidi btmtk snd_hwdep libarc4 mc iwlwifi kvm_amd snd_seq
+> vfat bluetooth eeepc_wmi asus_ec_sensors snd_seq_device fat kvm
+> cfg80211 asus_wmi snd_pcm irqbypass ledtrig_audio sparse_keymap rapl
+> wmi_bmof platform_profile xpad snd_timer k10temp ff_memless i2c_piix4
+> rfkill snd joydev soundcore acpi_cpufreq loop zram amdgpu
+> crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni
+> polyval_generic drm_ttm_helper ttm video iommu_v2 ucsi_ccg drm_buddy
+> gpu_sched typec_ucsi ghash_clmulni_intel drm_display_helper igb
+> sha512_ssse3 typec ccp nvme cec sp5100_tco nvme_core dca nvme_common
+> wmi ip6_tables ip_tables fuse
+> BTRFS info (device nvme1n1): enabling ssd optimizations
+> CPU: 13 PID: 983 Comm: (udev-worker) Tainted: G        W    L
+> -------  ---  6.3.0-0.rc0.20230222git5b7c4cabbb65.3.fc39.x86_64+debug
+> BTRFS info (device nvme1n1): auto enabling async discard
+> Hardware name: System manufacturer System Product Name/ROG STRIX
+> X570-I GAMING, BIOS 4601 02/02/2023
+> RIP: 0010:refcount_warn_saturate+0xba/0x110
+> Code: 01 01 e8 69 a6 83 ff 0f 0b e9 52 f4 85 00 80 3d 69 6f ec 01 00
+> 75 85 48 c7 c7 d0 25 b3 a9 c6 05 59 6f ec 01 01 e8 46 a6 83 ff <0f> 0b
+> e9 2f f4 85 00 80 3d 47 6f ec 01 00 0f 85 5e ff ff ff 48 c7
+> RSP: 0018:ffffb4010456fb78 EFLAGS: 00010286
+> RAX: 0000000000000000 RBX: 0000000080000000 RCX: 0000000000000000
+> RDX: 0000000000000002 RSI: ffffffffa9b17e3e RDI: 00000000ffffffff
+> RBP: ffff8d15877336c0 R08: 0000000000000000 R09: ffffb4010456fa00
+> R10: 0000000000000003 R11: ffff8d246e2fffe8 R12: 0000000000000080
+> R13: ffff8d15b42fd000 R14: 0000000000000000 R15: ffff8d1587736a58
+> FS:  00007fc05ae34940(0000) GS:ffff8d2425e00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000055d801f1d540 CR3: 000000011df60000 CR4: 0000000000350ee0
+> Call Trace:
+>  <TASK>
+>  mt76u_queues_deinit+0x2a0/0x370 [mt76_usb]
+>  mt76x2u_probe+0xf3/0x130 [mt76x2u]
+>  usb_probe_interface+0xe8/0x300
+>  really_probe+0x1b6/0x410
+>  __driver_probe_device+0x78/0x170
+>  driver_probe_device+0x1f/0x90
+>  __driver_attach+0xd2/0x1c0
+>  ? __pfx___driver_attach+0x10/0x10
+>  bus_for_each_dev+0x8a/0xd0
+>  bus_add_driver+0x141/0x230
+>  driver_register+0x77/0x120
+>  usb_register_driver+0xaf/0x170
+>  ? __pfx_init_module+0x10/0x10 [mt76x2u]
+>  do_one_initcall+0x6e/0x350
+>  do_init_module+0x4a/0x220
+>  __do_sys_init_module+0x192/0x1c0
+>  ? lock_is_held_type+0xce/0x120
+>  do_syscall_64+0x5b/0x80
+>  ? lock_is_held_type+0xce/0x120
+>  ? asm_exc_page_fault+0x22/0x30
+>  ? lockdep_hardirqs_on+0x7d/0x100
+>  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+> RIP: 0033:0x7fc05b1351be
+> Code: 48 8b 0d 4d 0c 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f
+> 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 af 00 00 00 0f 05 <48> 3d
+> 01 f0 ff ff 73 01 c3 48 8b 0d 1a 0c 0c 00 f7 d8 64 89 01 48
+> RSP: 002b:00007ffd947c0988 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
+> RAX: ffffffffffffffda RBX: 000055d801f2b090 RCX: 00007fc05b1351be
+> RDX: 00007fc05b65c07d RSI: 00000000000234be RDI: 000055d802c6b170
+> RBP: 00007ffd947c0a40 R08: 000055d8019b4690 R09: 0000000000022000
+> R10: 000000055d8019b4 R11: 0000000000000246 R12: 00007fc05b65c07d
+> R13: 0000000000020000 R14: 000055d801f39770 R15: 000055d801f47780
+>  </TASK>
+> irq event stamp: 186313
+> hardirqs last  enabled at (186323): [<ffffffffa81c675e>]
+> __up_console_sem+0x5e/0x70
+> hardirqs last disabled at (186332): [<ffffffffa81c6743>]
+> __up_console_sem+0x43/0x70
+> softirqs last  enabled at (186022): [<ffffffffa811d2f7>]
+> __irq_exit_rcu+0xd7/0x160
+> softirqs last disabled at (186017): [<ffffffffa811d2f7>]
+> __irq_exit_rcu+0xd7/0x160
+> ---[ end trace 0000000000000000 ]---
+> mt76x2u: probe of 3-3.3.4:1.0 failed with error -110
+> usbcore: registered new interface driver mt76x2u
+> kauditd_printk_skb: 32 callbacks suppressed
+> 
+> Fixes: 2f5c3c77fc9b ("wifi: mt76: switch to page_pool allocator")
+> Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-This patch fixes a stack-out-of-bounds read in brcmfmac that occurs
-when 'buf' that is not null-terminated is passed as an argument of
-strsep() in brcmf_c_preinit_dcmds(). This buffer is filled with a firmware
-version string by memcpy() in brcmf_fil_iovar_data_get().
-The patch ensures buf is null-terminated.
+Patch applied to wireless-next.git, thanks.
 
-Found by a modified version of syzkaller.
+92d79b1b7c33 wifi: mt76: usb: fix use-after-free in mt76u_free_rx_queue
 
-[   47.569679][ T1897] brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43236b for chip BCM43236/3
-[   47.582839][ T1897] brcmfmac: brcmf_c_process_clm_blob: no clm_blob available (err=-2), device may have limited channels available
-[   47.601565][ T1897] ==================================================================
-[   47.602574][ T1897] BUG: KASAN: stack-out-of-bounds in strsep+0x1b2/0x1f0
-[   47.603447][ T1897] Read of size 1 at addr ffffc90001f6f000 by task kworker/0:2/1897
-[   47.604336][ T1897]
-[   47.604621][ T1897] CPU: 0 PID: 1897 Comm: kworker/0:2 Tainted: G           O      5.14.0+ #131
-[   47.605617][ T1897] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-[   47.606907][ T1897] Workqueue: usb_hub_wq hub_event
-[   47.607453][ T1897] Call Trace:
-[   47.607801][ T1897]  dump_stack_lvl+0x8e/0xd1
-[   47.608295][ T1897]  print_address_description.constprop.0.cold+0xf/0x334
-[   47.609009][ T1897]  ? strsep+0x1b2/0x1f0
-[   47.609434][ T1897]  ? strsep+0x1b2/0x1f0
-[   47.609863][ T1897]  kasan_report.cold+0x83/0xdf
-[   47.610366][ T1897]  ? strsep+0x1b2/0x1f0
-[   47.610882][ T1897]  strsep+0x1b2/0x1f0
-[   47.611300][ T1897]  ? brcmf_fil_iovar_data_get+0x3a/0xf0
-[   47.611883][ T1897]  brcmf_c_preinit_dcmds+0x995/0xc40
-[   47.612434][ T1897]  ? brcmf_c_set_joinpref_default+0x100/0x100
-[   47.613078][ T1897]  ? rcu_read_lock_sched_held+0xa1/0xd0
-[   47.613662][ T1897]  ? rcu_read_lock_bh_held+0xb0/0xb0
-[   47.614208][ T1897]  ? lock_acquire+0x19d/0x4e0
-[   47.614704][ T1897]  ? find_held_lock+0x2d/0x110
-[   47.615236][ T1897]  ? brcmf_usb_deq+0x1a7/0x260
-[   47.615741][ T1897]  ? brcmf_usb_rx_fill_all+0x5a/0xf0
-[   47.616288][ T1897]  brcmf_attach+0x246/0xd40
-[   47.616758][ T1897]  ? wiphy_new_nm+0x1703/0x1dd0
-[   47.617280][ T1897]  ? kmemdup+0x43/0x50
-[   47.617720][ T1897]  brcmf_usb_probe+0x12de/0x1690
-[   47.618244][ T1897]  ? brcmf_usbdev_qinit.constprop.0+0x470/0x470
-[   47.618901][ T1897]  usb_probe_interface+0x2aa/0x760
-[   47.619429][ T1897]  ? usb_probe_device+0x250/0x250
-[   47.619950][ T1897]  really_probe+0x205/0xb70
-[   47.620435][ T1897]  ? driver_allows_async_probing+0x130/0x130
-[   47.621048][ T1897]  __driver_probe_device+0x311/0x4b0
-[   47.621595][ T1897]  ? driver_allows_async_probing+0x130/0x130
-[   47.622209][ T1897]  driver_probe_device+0x4e/0x150
-[   47.622739][ T1897]  __device_attach_driver+0x1cc/0x2a0
-[   47.623287][ T1897]  bus_for_each_drv+0x156/0x1d0
-[   47.623796][ T1897]  ? bus_rescan_devices+0x30/0x30
-[   47.624309][ T1897]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-[   47.624907][ T1897]  ? trace_hardirqs_on+0x46/0x160
-[   47.625437][ T1897]  __device_attach+0x23f/0x3a0
-[   47.625924][ T1897]  ? device_bind_driver+0xd0/0xd0
-[   47.626433][ T1897]  ? kobject_uevent_env+0x287/0x14b0
-[   47.627057][ T1897]  bus_probe_device+0x1da/0x290
-[   47.627557][ T1897]  device_add+0xb7b/0x1eb0
-[   47.628027][ T1897]  ? wait_for_completion+0x290/0x290
-[   47.628593][ T1897]  ? __fw_devlink_link_to_suppliers+0x5a0/0x5a0
-[   47.629249][ T1897]  usb_set_configuration+0xf59/0x16f0
-[   47.629829][ T1897]  usb_generic_driver_probe+0x82/0xa0
-[   47.630385][ T1897]  usb_probe_device+0xbb/0x250
-[   47.630927][ T1897]  ? usb_suspend+0x590/0x590
-[   47.631397][ T1897]  really_probe+0x205/0xb70
-[   47.631855][ T1897]  ? driver_allows_async_probing+0x130/0x130
-[   47.632469][ T1897]  __driver_probe_device+0x311/0x4b0
-[   47.633002][ T1897]  ? usb_generic_driver_match+0x75/0x90
-[   47.633573][ T1897]  ? driver_allows_async_probing+0x130/0x130
-[   47.634170][ T1897]  driver_probe_device+0x4e/0x150
-[   47.634703][ T1897]  __device_attach_driver+0x1cc/0x2a0
-[   47.635248][ T1897]  bus_for_each_drv+0x156/0x1d0
-[   47.635748][ T1897]  ? bus_rescan_devices+0x30/0x30
-[   47.636271][ T1897]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-[   47.636881][ T1897]  ? trace_hardirqs_on+0x46/0x160
-[   47.637396][ T1897]  __device_attach+0x23f/0x3a0
-[   47.637904][ T1897]  ? device_bind_driver+0xd0/0xd0
-[   47.638426][ T1897]  ? kobject_uevent_env+0x287/0x14b0
-[   47.638985][ T1897]  bus_probe_device+0x1da/0x290
-[   47.639512][ T1897]  device_add+0xb7b/0x1eb0
-[   47.639977][ T1897]  ? __fw_devlink_link_to_suppliers+0x5a0/0x5a0
-[   47.640612][ T1897]  ? kfree+0x14a/0x6b0
-[   47.641055][ T1897]  ? __usb_get_extra_descriptor+0x116/0x160
-[   47.641679][ T1897]  usb_new_device.cold+0x49c/0x1029
-[   47.642245][ T1897]  ? hub_disconnect+0x450/0x450
-[   47.642756][ T1897]  ? rwlock_bug.part.0+0x90/0x90
-[   47.643273][ T1897]  ? _raw_spin_unlock_irq+0x24/0x30
-[   47.643822][ T1897]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-[   47.644445][ T1897]  hub_event+0x1c98/0x3950
-[   47.644939][ T1897]  ? hub_port_debounce+0x2e0/0x2e0
-[   47.645467][ T1897]  ? check_irq_usage+0x861/0xf20
-[   47.645975][ T1897]  ? drain_workqueue+0x280/0x360
-[   47.646506][ T1897]  ? lock_release+0x640/0x640
-[   47.646994][ T1897]  ? rcu_read_lock_sched_held+0xa1/0xd0
-[   47.647572][ T1897]  ? rcu_read_lock_bh_held+0xb0/0xb0
-[   47.648111][ T1897]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-[   47.648735][ T1897]  process_one_work+0x92b/0x1460
-[   47.649262][ T1897]  ? pwq_dec_nr_in_flight+0x330/0x330
-[   47.649816][ T1897]  ? rwlock_bug.part.0+0x90/0x90
-[   47.650336][ T1897]  worker_thread+0x95/0xe00
-[   47.650830][ T1897]  ? __kthread_parkme+0x115/0x1e0
-[   47.651361][ T1897]  ? process_one_work+0x1460/0x1460
-[   47.651904][ T1897]  kthread+0x3a1/0x480
-[   47.652329][ T1897]  ? set_kthread_struct+0x120/0x120
-[   47.652878][ T1897]  ret_from_fork+0x1f/0x30
-[   47.653370][ T1897]
-[   47.653608][ T1897]
-[   47.653848][ T1897] addr ffffc90001f6f000 is located in stack of task kworker/0:2/1897 at offset 512 in frame:
-[   47.654891][ T1897]  brcmf_c_preinit_dcmds+0x0/0xc40
-[   47.655442][ T1897]
-[   47.655690][ T1897] this frame has 4 objects:
-[   47.656151][ T1897]  [48, 56) 'ptr'
-[   47.656159][ T1897]  [80, 148) 'revinfo'
-[   47.656534][ T1897]  [192, 210) 'eventmask'
-[   47.656953][ T1897]  [256, 512) 'buf'
-[   47.657410][ T1897]
-[   47.658035][ T1897] Memory state around the buggy address:
-[   47.658743][ T1897]  ffffc90001f6ef00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   47.659577][ T1897]  ffffc90001f6ef80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   47.660394][ T1897] >ffffc90001f6f000: f3 f3 f3 f3 f3 f3 f3 f3 00 00 00 00 00 00 00 00
-[   47.661199][ T1897]                    ^
-[   47.661625][ T1897]  ffffc90001f6f080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   47.662455][ T1897]  ffffc90001f6f100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
-[   47.663318][ T1897] ==================================================================
-[   47.664147][ T1897] Disabling lock debugging due to kernel taint
-
-Reported-by: Dokyung Song <dokyungs@yonsei.ac.kr>
-Reported-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Reported-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20221115043458.37562-1-jisoo.jang@yonsei.ac.kr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-index 7a2b49587b4d3..b2f46685391c2 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-@@ -157,6 +157,7 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
- 			  err);
- 		goto done;
- 	}
-+	buf[sizeof(buf) - 1] = '\0';
- 	ptr = (char *)buf;
- 	strsep(&ptr, "\n");
- 
 -- 
-2.39.0
+https://patchwork.kernel.org/project/linux-wireless/patch/f2398f68011c976510c81e1964975b677e65860e.1677193208.git.lorenzo@kernel.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
