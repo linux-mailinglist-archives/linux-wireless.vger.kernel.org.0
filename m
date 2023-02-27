@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE9266A4E02
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 23:30:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B123D6A4F5E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 00:01:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbjB0WaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 17:30:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36662 "EHLO
+        id S229562AbjB0XBk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 18:01:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbjB0WaJ (ORCPT
+        with ESMTP id S229486AbjB0XBj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 17:30:09 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32AED33F
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 14:30:06 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id fd25so4560797pfb.1
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 14:30:06 -0800 (PST)
+        Mon, 27 Feb 2023 18:01:39 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FD52594E
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 15:01:36 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id m3-20020a17090ade0300b00229eec90a7fso301987pjv.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 15:01:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=morsemicro-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5jLfclX+QEmCp2kB+6qhQ5hve4fnUKu1f7vY7rnI5Kw=;
-        b=M7opGIWSGqwEpbdDsQheSZzu2E3Yo3LRxBN1zXqG6RBgUQ56N4vAgF9F1K39HDKxoV
-         +cInYzL+LdNE1oQGqBw0LrsU/R1Qfw0TdFPaJohUUm9K3OF3z8LBpfg4TVzRpjZ30D5m
-         NiGtRHdXCodWNXjnO3HwjdQp97vDki0l45JFHtbe5eA25z26M72k90Crj7kwZyKfQ+jM
-         yIRJoloBHdoQhZguKRNN46aSKDsG8YNnd4tPEiuCpmvkdi8eqSvrFjidX75yZ95TdKBA
-         8Qk8OEd+84YBpweFXzNUWotax45ZlUTDL0Q5W2RNkQRH9NF3dy4+SJgAj8qDtTP1JhJ4
-         9mhg==
+        bh=HkIHJq3xE5S5peTHYfsS0nBk51ToEU9dr9IqKppwkWs=;
+        b=W6R9pHySbDR3QVXnWe9HYnXDgfi3Nty99S1gayi/48MDLJNfJI/8OwtzMWpO+i8lbH
+         TUs8IRM66dzA2SwytfWK4dOD6+vThSPQfcuRoLzdJOG+CizMPKZtNGnF24Q7FG2yiOO2
+         mGBL6w7pb2Ks88At73e1FtFM0LVIIEtUbWIAn833rR9CrMtJSr2H32GwUuNN4IvUEsmv
+         nJD7Is2TEwAaZmNkrCtLwTWblugPCAmXCfHtkCCF0DMpkQBuSe1AnI5Q1SbDTIdkfDnf
+         jpmZ1wrG9kNk5oWCAO8t+N3lNL8MdwR3EQB9unajRnNIJ3dnRiBTufqfzdLlvwVF1mIA
+         ICNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5jLfclX+QEmCp2kB+6qhQ5hve4fnUKu1f7vY7rnI5Kw=;
-        b=vo110RWnvL7w6gP8DxE1szPCwSRRA4cIf2wPZkMsDTJvGVRGaeCzirnfjUlO2defHy
-         4dl3YDz8AHjj25jt2MyYkTInEF32oT43O+XQR5+fbKrIOs5XlpuLZzN64Z319WjfN2Uo
-         uhFh/WOAblSx9qk/MtdcY0J+XfTMtUNLcRV0D6Z6+IADrJnftyieGm3XLiR6MbhCDIAt
-         0mOViYT89Ns97YMpmUYDFtsBJzuYw2bEcSPb6RTmCCnJpksJ/m+5+POyVw4rR8Wm92Do
-         da6GG4lyzbyBn9u+10+oTWPVH0w5q1a2rH1W2cNaIodhSaaeJ+VMnU6Iz/W3OVK3ln8m
-         lB4Q==
-X-Gm-Message-State: AO0yUKX9fSeQYSamVOYAeWpXzntVJHdPuIcSpuosd15YuH0b8ls2cjYw
-        C7ib5wZP/ofxMdisXx4TWhzLhQ==
-X-Google-Smtp-Source: AK7set9r3CMg6pB2cJFJ2kPxxrdWEpwm+77OTuAhfjL4HllmWuj08cPCr2abaBuOaV8TSeQORod2tw==
-X-Received: by 2002:a62:1d8f:0:b0:5a8:52d5:3bca with SMTP id d137-20020a621d8f000000b005a852d53bcamr488416pfd.6.1677537006135;
-        Mon, 27 Feb 2023 14:30:06 -0800 (PST)
+        bh=HkIHJq3xE5S5peTHYfsS0nBk51ToEU9dr9IqKppwkWs=;
+        b=EtvV2xKOgW9qw0gg5OHF5FQYEqzaRtEGN5yjoLwSvONkFXVZSyHuE2xKUDlb3bmN5f
+         ZFt2+icygZPBr+DzfSICTjafKw2ylvOYHZQZ3TtkwMXc96YxgeR9lASpCEIat1blBHLz
+         ldX73oeRlHBo1YBSK0CvU3T8f+Rwbrtm4zrPIa6/ciJd6+HzrGX1QPc/yK5N45cS1gmC
+         ge8m3+aQ3L7FUkP474tGnpsQlF/sEzDGk8LU1b+yigYfe2eQe+px6WHZOvuNgyBOIAmz
+         xx+OWSlL51ELd76vrg9HLJyGBiruLQFLIYx4bezAsWjFnObhbKq9dmgkX1a6wzzHX3k4
+         puKA==
+X-Gm-Message-State: AO0yUKXtgX2paHCs5r5BldkXIGD8T5Hi9xRc40dUIgVLSc+QZY6TfscG
+        Qm7RUKr6ORUYORfc8rAguh81cXsLn2fzvEVj
+X-Google-Smtp-Source: AK7set+9SLeDpTMqxxi/kL62J+zo5iJlGT2rOfv0AijLYpW46msBXwmWUUfemQ8mydOFvhaE4+vDig==
+X-Received: by 2002:a17:902:ba83:b0:199:1b8a:42a8 with SMTP id k3-20020a170902ba8300b001991b8a42a8mr510239pls.6.1677538895743;
+        Mon, 27 Feb 2023 15:01:35 -0800 (PST)
 Received: from virs-pc-014.morsemicro.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id g11-20020aa7874b000000b005a9bf65b591sm4705974pfo.135.2023.02.27.14.30.03
+        by smtp.gmail.com with ESMTPSA id iz18-20020a170902ef9200b00192fe452e17sm5118298plb.162.2023.02.27.15.01.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Feb 2023 14:30:05 -0800 (PST)
+        Mon, 27 Feb 2023 15:01:35 -0800 (PST)
 From:   Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
 X-Google-Original-From: Gilad Itzkovitch <gilad.itzkovitch@virscient.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Subject: [PATCH] iw: S1G: add parsing for 802.11ah scan IE's
-Date:   Tue, 28 Feb 2023 11:29:59 +1300
-Message-Id: <20230227222959.704485-1-gilad.itzkovitch@virscient.com>
+Subject: [PATCH v2] iw: S1G: add parsing for 802.11ah scan IE's
+Date:   Tue, 28 Feb 2023 12:01:27 +1300
+Message-Id: <20230227230127.709496-1-gilad.itzkovitch@virscient.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -79,11 +79,11 @@ Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
 ---
  iw.h   |   5 ++
  scan.c | 109 ++++++++++++++++++++++++++++-
- util.c | 216 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 328 insertions(+), 2 deletions(-)
+ util.c | 218 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 330 insertions(+), 2 deletions(-)
 
 diff --git a/iw.h b/iw.h
-index e712c59..75efaba 100644
+index e712c59..b15e6ca 100644
 --- a/iw.h
 +++ b/iw.h
 @@ -221,6 +221,7 @@ void print_vht_info(__u32 capa, const __u8 *mcs);
@@ -98,8 +98,8 @@ index e712c59..75efaba 100644
  
  int parse_random_mac_addr(struct nl_msg *msg, char *addrs);
  
-+char * s1g_ss_max_support(__u8 maxss);
-+char * s1g_ss_min_support(__u8 minss);
++char *s1g_ss_max_support(__u8 maxss);
++char *s1g_ss_min_support(__u8 minss);
 +
  #define SCHED_SCAN_OPTIONS "[interval <in_msecs> | scan_plans [<interval_secs:iterations>*] <interval_secs>] "	\
  	"[delay <in_secs>] [freqs <freq>+] [matches [ssid <ssid>]+]] [active [ssid <ssid>]+|passive] "	\
@@ -261,15 +261,15 @@ index dfc136a..a3280bc 100644
  			is_dmg = true;
  	}
 diff --git a/util.c b/util.c
-index 8a2ba10..6395a8c 100644
+index 8a2ba10..b3cbe28 100644
 --- a/util.c
 +++ b/util.c
-@@ -1765,3 +1765,219 @@ int parse_random_mac_addr(struct nl_msg *msg, char *addrs)
+@@ -1765,3 +1765,221 @@ int parse_random_mac_addr(struct nl_msg *msg, char *addrs)
   nla_put_failure:
  	return -ENOBUFS;
  }
 +
-+char * s1g_ss_max_support(__u8 maxss)
++char *s1g_ss_max_support(__u8 maxss)
 +{
 +	switch (maxss) {
 +	case 0: return "Max S1G-MCS 2";
@@ -280,7 +280,7 @@ index 8a2ba10..6395a8c 100644
 +	}
 +}
 +
-+char * s1g_ss_min_support(__u8 minss)
++char *s1g_ss_min_support(__u8 minss)
 +{
 +	switch (minss) {
 +	case 0: return "no minimum restriction";
@@ -290,7 +290,6 @@ index 8a2ba10..6395a8c 100644
 +	default: return "";
 +	}
 +}
-+
 +
 +void print_s1g_capability(const uint8_t *caps)
 +{
@@ -363,8 +362,8 @@ index 8a2ba10..6395a8c 100644
 +		printf("\t\t\tMaximum AMPDU length: %d bytes (exponent: 0x0%02x)\n",
 +		       compute_ampdu_length((cap >> 2) & 0x3), (cap >> 2) & 0x3);
 +	} else {
-+		printf("\t\t\tMaximum AMPDU length: unrecognized bytes "
-+		       "(exponent: %d)\n", (cap >> 2) & 0x3);
++		printf("\t\t\tMaximum AMPDU length: unrecognized bytes (exponent: %d)\n",
++		       (cap >> 2) & 0x3);
 +	}
 +
 +	printf("\t\t\tMinimum MPDU time spacing: %s (0x%02x)\n",
@@ -392,7 +391,7 @@ index 8a2ba10..6395a8c 100644
 +	PRINT_S1G_CAP((cap & BIT(5)), "Flow control supported");
 +	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x0, "Sectorization operation not supported");
 +	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x1, "TXOP-based sectorization operation");
-+	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x2, "only group sectorization operation ");
++	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x2, "only group sectorization operation");
 +	PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x3, "Group and TXOP-based sectorization operations");
 +
 +	cap = caps[6];
@@ -410,7 +409,8 @@ index 8a2ba10..6395a8c 100644
 +	if (caps[2] & BIT(5)) {
 +		PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x0, "Not provide VHT MFB (No Feedback)");
 +		PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x2, "Provides only unsolicited VHT MFB");
-+		PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x3, "Provides both feedback and unsolicited VHT MFB ");
++		PRINT_S1G_CAP(((cap >> 6) & 0x3) == 0x3,
++				      "Provides both feedback and unsolicited VHT MFB");
 +	}
 +
 +	cap = caps[7];
@@ -454,7 +454,8 @@ index 8a2ba10..6395a8c 100644
 +	/* Rx Long GI data rate field comprises of 9 bits */
 +	cap = caps[11];
 +	if (cap || caps[12] & 0x1)
-+		printf("\t\t\tRx Highest Long GI Data Rate: %u Mbps\n", cap + ((caps[12] & 0x1) << 8));
++		printf("\t\t\tRx Highest Long GI Data Rate: %u Mbps\n",
++		       cap + ((caps[12] & 0x1) << 8));
 +
 +	/* Tx S1G-MCS Map */
 +	cap = caps[12];
@@ -462,7 +463,8 @@ index 8a2ba10..6395a8c 100644
 +	printf("\t\t\tFor 1 SS: %s\n", s1g_ss_max_support((cap >> 1) & 0x3));
 +	printf("\t\t\tFor 2 SS: %s\n", s1g_ss_max_support((cap >> 3) & 0x3));
 +	printf("\t\t\tFor 3 SS: %s\n", s1g_ss_max_support((cap >> 5) & 0x3));
-+	printf("\t\t\tFor 4 SS: %s\n", s1g_ss_max_support(((cap >> 7) & 0x1) + ((caps[13] << 1) & 0x2)));
++	printf("\t\t\tFor 4 SS: %s\n", s1g_ss_max_support(((cap >> 7) & 0x1) +
++	       ((caps[13] << 1) & 0x2)));
 +
 +	/* Tx Long GI data rate field comprises of 9 bits */
 +	cap = caps[13];
