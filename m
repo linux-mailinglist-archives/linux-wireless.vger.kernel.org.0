@@ -2,121 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4556A451D
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 15:48:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F1206A4539
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 15:53:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjB0Osq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 09:48:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57534 "EHLO
+        id S229871AbjB0Oxd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 09:53:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbjB0Osn (ORCPT
+        with ESMTP id S229809AbjB0Oxc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 09:48:43 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A9FA12040;
-        Mon, 27 Feb 2023 06:48:31 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id gi3-20020a17090b110300b0023762f642dcso6360052pjb.4;
-        Mon, 27 Feb 2023 06:48:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SlgqotCFpMlYYZrIocsEAB0uv8GgACUTLIGeGd3Q3nk=;
-        b=W2W0YyP4y0NIJfPvaCtZBWeQk8GAwmXaRT+2ZfOOLiZMs+olZ8CqkFui/R7U2PquAP
-         3xQHqbtYwMpNrKNdZLhwgnyjIWgIx3BILe5ZIOrK6c6ZPB5gE8bQj8BiUF49XmkRgDCp
-         BgKnCXYSTZuEtiLEeOfUNu5C8/ahsUiBnOATSRuY858sOpQ7su9mVlxGIYoXiOEJBEl5
-         ANOCeovDzD66ND/3ozkLzS0PlESqKxagpkvFlug2/Kk+RIzp88bCgQjLGeN4aXfrBnNg
-         Mree5WsvfetKz0CoXg3DtjUTtGc4xrwm0mu1wGOMXMA1XgbOYMAeVagEXV3E5aZMPKAB
-         oFEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SlgqotCFpMlYYZrIocsEAB0uv8GgACUTLIGeGd3Q3nk=;
-        b=J2ETYEiT9AyaPN/ONNj88E5wnkIHuuxNsNw9MCaMEsrSX7UDC5a++A7g3REaQTPbyD
-         xCLlMAs4MsmOGfIPKyIe1Hkx5ejQC1xpTGaQQWbxGMkf1Xi5Lon1xXXPsRgrouLWw0Lf
-         JKkSZPmHmsfmxJG8v4wwu6vHwolyHBf3Y5N3mYjEPeaCIOh46uRzGTpGQyNghJoI5jru
-         gLc9P+SulInNO2okm+tiIocMkcgfEjwj0dbk+HnERMWuLRfuTy0kIfFm6eixAOlvZ+gh
-         BcNHY4yILu+ReU5x3dcbqgby+FMQAHzI4fHlGAqou1JUCwQeb8PSk7Q1jdx7feWaysPg
-         AlEg==
-X-Gm-Message-State: AO0yUKXYeFkDgK+qvRMGaOu6yNOjVWbN0xTVuFgyj8B6M/qI3/x4OjMu
-        d8MoCPgFiPXLbWKNUS7tIk8=
-X-Google-Smtp-Source: AK7set9LjQIxiR8aWUSis2bKS9zBzibf4kvNlf9fsVaes9MFIMHBjmh+r3AxWIbfww8saVxOIsNLvw==
-X-Received: by 2002:a17:90b:1c10:b0:230:fac8:d7e7 with SMTP id oc16-20020a17090b1c1000b00230fac8d7e7mr25520356pjb.2.1677509310988;
-        Mon, 27 Feb 2023 06:48:30 -0800 (PST)
-Received: from localhost.localdomain ([103.116.245.58])
-        by smtp.gmail.com with ESMTPSA id v23-20020a17090ae99700b00234ba1cfacbsm4561131pjy.17.2023.02.27.06.48.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Feb 2023 06:48:30 -0800 (PST)
-From:   void0red <void0red@gmail.com>
-To:     lorenzo.bianconi@redhat.com
-Cc:     angelogioacchino.delregno@collabora.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, kvalo@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-        lorenzo@kernel.org, matthias.bgg@gmail.com, nbd@nbd.name,
-        netdev@vger.kernel.org, pabeni@redhat.com, ryder.lee@mediatek.com,
-        sean.wang@mediatek.com, shayne.chen@mediatek.com,
-        void0red@gmail.com
-Subject: [PATCH v3] wifi: mt76: handle failure of vzalloc in mt7615_coredump_work
-Date:   Mon, 27 Feb 2023 22:48:23 +0800
-Message-Id: <20230227144823.947648-1-void0red@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <Y/y5Asxw3T3m4jCw@lore-desk>
-References: <Y/y5Asxw3T3m4jCw@lore-desk>
+        Mon, 27 Feb 2023 09:53:32 -0500
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9B91700
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 06:53:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:Subject:From
+        :References:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=eB83paBqD06C1BScIlGydnS358iqjr8wNv2pDhUVZKI=; b=ET+GXY3IIDp+knBKHZCRRecx5m
+        Uhc3G74eCegp8RrvSUfJoCAmkmcv0os+750/qg8tq0uf5d3HOaG6GmBM1Y6QJJaVtxOMvipYsoPkw
+        nMCly8cBuu1iAPrBAv5GmccV/O0AMc5lcBn2kwZABODQk95M7kieCoom7sgxaCSa4Q48=;
+Received: from [2a01:598:b1b4:3fa:18e7:7065:7b44:d8a2] (helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1pWesU-00CXNS-4Z; Mon, 27 Feb 2023 15:53:22 +0100
+Message-ID: <0dd4e459-613e-5ec2-1437-ae98683c4b26@nbd.name>
+Date:   Mon, 27 Feb 2023 15:53:21 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.8.0
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Sriram R <quic_srirrama@quicinc.com>
+References: <20230227110738.54241-1-nbd@nbd.name>
+ <20230227110738.54241-4-nbd@nbd.name>
+ <7cc08b19d3ac643ed21c5c4325a4a8a64c4233f6.camel@sipsolutions.net>
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: Re: [RFC 4/5] wifi: mac80211: mesh fast xmit support
+In-Reply-To: <7cc08b19d3ac643ed21c5c4325a4a8a64c4233f6.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kang Chen <void0red@gmail.com>
+On 27.02.23 14:14, Johannes Berg wrote:
+> On Mon, 2023-02-27 at 12:07 +0100, Felix Fietkau wrote:
+>> 
+>> +	/* If the skb is shared we need to obtain our own copy */
+>> +	if (skb_shared(skb)) {
+>> +		struct sk_buff *oskb = skb;
+>> +
+>> +		skb = skb_clone(skb, GFP_ATOMIC);
+>> +		if (!skb)
+>> +			return false;
+>> +
+>> +		kfree_skb(oskb);
+>> +	}
+> 
+> Use skb_share_check()?
+Will do.
 
-vzalloc may fails, dump might be null and will cause
-illegal address access later.
+>>  	next_hop = rcu_dereference(mpath->next_hop);
+>>  	if (next_hop) {
+>>  		memcpy(hdr->addr1, next_hop->sta.addr, ETH_ALEN);
+>>  		memcpy(hdr->addr2, sdata->vif.addr, ETH_ALEN);
+>>  		ieee80211_mps_set_frame_flags(sdata, next_hop, hdr);
+>> +		if (ieee80211_hw_check(&sdata->local->hw, SUPPORT_FAST_XMIT))
+>> +			mesh_fast_tx_cache(sdata, skb, mpath);
+> 
+> 
+> I wondered briefly if it's worth moving that check into the function,
+> but not sure.
+I put it there to avoid an extra function call for the non-fast-xmit case.
 
-Link: https://lore.kernel.org/all/Y%2Fy5Asxw3T3m4jCw@lore-desk
-Fixes: d2bf7959d9c0 ("mt76: mt7663: introduce coredump support")
-Signed-off-by: Kang Chen <void0red@gmail.com>
----
-v3 -> v2: fix bugs
-v2 -> v1: add Fixes tag
+>> +	/* rate limit, in case fast xmit can't be enabled */
+>> +	if (mppath->fast_tx_check == jiffies)
+>> +		return;
+>> +
+>> +	mppath->fast_tx_check = jiffies;
+> 
+> once every jiffies seems pretty frequent though?
+It should never happen under normal conditions anyway. It's just a bit 
+of extra safety to avoid doing this per packet under high load if a 
+corner case hits.
 
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+>> +	spin_lock_bh(&cache->walk_lock);
+> 
+> you could just spin_lock() the inner lock, _bh already taken care of by
+> the outer?
+Will do.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index a95602473..796768011 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2380,7 +2380,7 @@ void mt7615_coredump_work(struct work_struct *work)
- 			break;
- 
- 		skb_pull(skb, sizeof(struct mt7615_mcu_rxd));
--		if (data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
-+		if (!dump || data + skb->len - dump > MT76_CONNAC_COREDUMP_SZ) {
- 			dev_kfree_skb(skb);
- 			continue;
- 		}
-@@ -2390,6 +2390,8 @@ void mt7615_coredump_work(struct work_struct *work)
- 
- 		dev_kfree_skb(skb);
- 	}
--	dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
--		      GFP_KERNEL);
-+
-+	if (dump)
-+		dev_coredumpv(dev->mt76.dev, dump, MT76_CONNAC_COREDUMP_SZ,
-+			      GFP_KERNEL);
- }
--- 
-2.34.1
+>> @@ -3686,7 +3690,7 @@ static void __ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+>>  #endif
+>>  
+>>  	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
+>> -		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+>> +		u8 tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+>>  		*ieee80211_get_qos_ctl(hdr) = tid;
+> 
+> That's ... interesting, why wss there an argument in the first place?
+I think last time I changed the code, I intended to use the tid value, 
+but forgot to drop this line that assigns it.
 
+> but maybe add a blank line now :)
+Sure.
+
+Thanks,
+
+- Felix
