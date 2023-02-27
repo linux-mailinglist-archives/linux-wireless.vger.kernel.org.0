@@ -2,113 +2,361 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C488D6A4899
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 18:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E16E86A494A
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 19:10:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjB0RwW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 12:52:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41782 "EHLO
+        id S230425AbjB0SKN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 13:10:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjB0RwU (ORCPT
+        with ESMTP id S229814AbjB0SKL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 12:52:20 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B7E23121;
-        Mon, 27 Feb 2023 09:52:18 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Mon, 27 Feb 2023 13:10:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E2622DF8
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 10:09:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1677521350;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=N1MGFP6503Z109f88tuGoqHCcLznU5WJ5kjZwW8STZM=;
+        b=WgTEk7uH3NSoSTuSsj3xHecubCkaTRVKIqGCq4sETaufAScSddRoi+36uPN0FSqXACJnNN
+        lhDt3WRqZER1hBBRgI4CuDDTsJktGtY401TpS9XgOaopwb4RFVJgap9Khh2V6Xi4exgj8d
+        GEFeiZFZQmeGWHs3PP78KrXXFL4voIg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-372-SNAF_nxRMEKbsBcoYwYP8w-1; Mon, 27 Feb 2023 13:09:08 -0500
+X-MC-Unique: SNAF_nxRMEKbsBcoYwYP8w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 991C741A42;
-        Mon, 27 Feb 2023 17:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-        t=1677520336; bh=TyiSSdv8IGxdjz2utLKhWhCBuUwQHg47VZsc94zgZcw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=lFwzbz1lMl2mgUL8NMvLooNx9YligRkut+5/Iq991BfswLpk+aSlCgQpBFpw8Gvji
-         H8bPnmw1MtNyS3y7CaA7I36J7x+aq8MzP3fWYUtHoWtj62wHZHtmiMOeaj76Vlti9x
-         NfOO3VVKzhSDC7dzz8s9EI6vM1a8nspxntvC9LH0lidWpGCp6IUAozrvy3TLH1bC+f
-         yXhP7uC0uRNbduoZwmYWCAkP3siUwz3sKcKysv5Uxjfb9xpgtxCoU0FNgpxERHxv1K
-         m21qp+J3UiZxkteZvpdZxsY65jiwwDOQz7lBWRfxsyb66FdcUFiD8UCJChpHEGM7dN
-         a+R8t5Ub+C7QA==
-Message-ID: <181af6e9-799d-b730-dc14-ee2de2541f35@marcan.st>
-Date:   Tue, 28 Feb 2023 02:52:08 +0900
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A70D185A794;
+        Mon, 27 Feb 2023 18:09:08 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.22.48.19])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id B35751121315;
+        Mon, 27 Feb 2023 18:09:07 +0000 (UTC)
+Message-ID: <cc905b745580b0300d10f1f88d714305c7544f67.camel@redhat.com>
+Subject: Re: [PATCH 2/2] wifi: move raycs, wl3501 and rndis_wlan to legacy
+ directory
+From:   Dan Williams <dcbw@redhat.com>
+To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Date:   Mon, 27 Feb 2023 12:09:06 -0600
+In-Reply-To: <20230227121732.8967-3-kvalo@kernel.org>
+References: <20230227121732.8967-1-kvalo@kernel.org>
+         <20230227121732.8967-3-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] brcmfmac: cfg80211: Use WSEC to set SAE password
-Content-Language: en-US
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Double Lo <double.lo@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        asahi@lists.linux.dev, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230214093319.21077-1-marcan@marcan.st>
- <edcabef3-f440-9c15-e69f-845eb6a4de1b@broadcom.com>
- <65548ce6-d2d8-c913-a494-5ac044af2e35@marcan.st>
- <b4489e24-e226-4f99-1322-cab6c1269f09@broadcom.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <b4489e24-e226-4f99-1322-cab6c1269f09@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14/02/2023 19.38, Arend van Spriel wrote:
-> 
-> 
-> On 2/14/2023 11:30 AM, Hector Martin wrote:
->> On 14/02/2023 19.07, Arend van Spriel wrote:
->>> + Double Lo
->>>
->>> On 2/14/2023 10:33 AM, Hector Martin wrote:
->>>> Using the WSEC command instead of sae_password seems to be the supported
->>>> mechanism on newer firmware, and also how the brcmdhd driver does it.
->>>
->>> The SAE code in brcmfmac was added by Cypress/Infineon. For my BCA
->>> devices that did not work, but this change should be verified on Cypress
->>> hardware.
->>
->> Do you mean the existing SAE code does not work on BCA, or this version
->> doesn't?
-> 
-> I meant the existing SAE code. I will give your patches a spin on the 
-> devices I have.
-> 
->> I assume/hope this version works for WCC in general, since that is what
->> the Apple-relevant chips are tagged as. If so it sounds like we need a
->> firmware type conditional on this, if CYW needs the existing behavior.
-> 
-> Right. Let's hope we get some feedback from them.
+On Mon, 2023-02-27 at 14:17 +0200, Kalle Valo wrote:
+> To clean up drivers/net/wireless move the old drivers drivers left in
+> the
+> directory to a new "legacy" directory. I did consider adding
+> CONFIG_WLAN_VENDOR_LEGACY like other vendors have but then dropped
+> the idea as
+> these are really old drivers and hopefully we get to remove them
+> soon.
 
-Any news on this? Nothing from the Cypress guys (nor to any of my
-previous emails about other stuff, for that matter), so if you can
-confirm this works on your chips I'd rather just blindly add the CYW/not
-firmware variant check and call it a day.
+Why is rndis_wlan legacy? It supports devices that are way newer than
+ray_cs or wl3501... like this Linksys WUSB54GSC from late 2007:
 
-We can't wait forever for them to show up. If they expect their chips to
-continue work with mainline they need to actually interact on the MLs,
-otherwise they should expect us to possibly accidentally break things
-even if we try not to. As far as I can tell they seem completely
-disinterested in talking about anything, and we can't let that block
-progress for everyone else.
+[1086339.589565] rndis_wlan 1-3:1.0 wlan0: register 'rndis_wlan' at
+usb-0000:00:14.0-3, Wireless RNDIS device, BCM4320b based,
+00:1d:7e:9e:2f:bb
+[1086339.589961] usbcore: registered new interface driver rndis_wlan
 
-- Hector
+Dunno, just seems a completely different class of devices than old
+802.11b-only PCMCIA ones...
+
+Dan
+
+>=20
+> There should be no changes in compilation or in Kconfig options,
+> merely moving files.
+>=20
+> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> ---
+> =C2=A0drivers/net/wireless/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 55 +-----=
+-----------
+> --
+> =C2=A0drivers/net/wireless/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +--
+> =C2=A0drivers/net/wireless/legacy/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 55
+> +++++++++++++++++++
+> =C2=A0drivers/net/wireless/legacy/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 ++
+> =C2=A0drivers/net/wireless/{ =3D> legacy}/ray_cs.c=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 0
+> =C2=A0drivers/net/wireless/{ =3D> legacy}/ray_cs.h=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 0
+> =C2=A0drivers/net/wireless/{ =3D> legacy}/rayctl.h=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 0
+> =C2=A0.../net/wireless/{ =3D> legacy}/rndis_wlan.c=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 0
+> =C2=A0drivers/net/wireless/{ =3D> legacy}/wl3501.h=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 0
+> =C2=A0drivers/net/wireless/{ =3D> legacy}/wl3501_cs.c |=C2=A0 0
+> =C2=A010 files changed, 63 insertions(+), 60 deletions(-)
+> =C2=A0create mode 100644 drivers/net/wireless/legacy/Kconfig
+> =C2=A0create mode 100644 drivers/net/wireless/legacy/Makefile
+> =C2=A0rename drivers/net/wireless/{ =3D> legacy}/ray_cs.c (100%)
+> =C2=A0rename drivers/net/wireless/{ =3D> legacy}/ray_cs.h (100%)
+> =C2=A0rename drivers/net/wireless/{ =3D> legacy}/rayctl.h (100%)
+> =C2=A0rename drivers/net/wireless/{ =3D> legacy}/rndis_wlan.c (100%)
+> =C2=A0rename drivers/net/wireless/{ =3D> legacy}/wl3501.h (100%)
+> =C2=A0rename drivers/net/wireless/{ =3D> legacy}/wl3501_cs.c (100%)
+>=20
+> diff --git a/drivers/net/wireless/Kconfig
+> b/drivers/net/wireless/Kconfig
+> index 42b40cc96b21..7555af5195ec 100644
+> --- a/drivers/net/wireless/Kconfig
+> +++ b/drivers/net/wireless/Kconfig
+> @@ -38,60 +38,7 @@ source "drivers/net/wireless/ti/Kconfig"
+> =C2=A0source "drivers/net/wireless/zydas/Kconfig"
+> =C2=A0source "drivers/net/wireless/quantenna/Kconfig"
+> =C2=A0
+> -config PCMCIA_RAYCS
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Aviator/Raytheon 2.4=
+GHz wireless support"
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on PCMCIA
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WIRELESS_EXT
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WEXT_SPY
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WEXT_PRIV
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Say Y here if you inten=
+d to attach an Aviator/Raytheon
+> PCMCIA
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (PC-card) wireless Ethe=
+rnet networking card to your
+> computer.
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Please read the file
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> <file:Documentation/networking/device_drivers/wifi/ray_cs.rst> for
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 details.
+> -
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver =
+as a module, choose M here: the
+> module will be
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 called ray_cs.=C2=A0 If=
+ unsure, say N.
+> -
+> -config PCMCIA_WL3501
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Planet WL3501 PCMCIA=
+ cards"
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on CFG80211 && PCMCIA
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WIRELESS_EXT
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WEXT_SPY
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 A driver for WL3501 PCM=
+CIA 802.11 wireless cards made by
+> Planet.
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 It has basic support fo=
+r Linux wireless extensions and
+> initial
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 micro support for ethto=
+ol.
+> -
+> -config USB_NET_RNDIS_WLAN
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Wireless RNDIS USB s=
+upport"
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on USB
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on CFG80211
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_NET_DRIVERS
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_USBNET
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_NET_CDCETHER
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_NET_RNDIS_HOST
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This is a driver for wi=
+reless RNDIS devices.
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 These are USB based ada=
+pters found in devices such as:
+> -
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Buffalo WLI-U2-KG125S
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 U.S. Robotics USR5421
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Belkin F5D7051
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linksys WUSB54GSv2
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linksys WUSB54GSC
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Asus WL169gE
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Eminent EM4045
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BT Voyager 1055
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linksys WUSB54GSv1
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 U.S. Robotics USR5420
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BUFFALO WLI-USB-G54
+> -
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 All of these devices ar=
+e based on Broadcom 4320 chip which
+> is the
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 only wireless RNDIS chi=
+p known to date.
+> -
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If you choose to build =
+a module, it'll be called
+> rndis_wlan.
+> +source "drivers/net/wireless/legacy/Kconfig"
+> =C2=A0
+> =C2=A0source "drivers/net/wireless/virtual/Kconfig"
+> =C2=A0
+> diff --git a/drivers/net/wireless/Makefile
+> b/drivers/net/wireless/Makefile
+> index 1b697cfe0a13..4d7374d567d1 100644
+> --- a/drivers/net/wireless/Makefile
+> +++ b/drivers/net/wireless/Makefile
+> @@ -23,10 +23,5 @@ obj-$(CONFIG_WLAN_VENDOR_ST) +=3D st/
+> =C2=A0obj-$(CONFIG_WLAN_VENDOR_TI) +=3D ti/
+> =C2=A0obj-$(CONFIG_WLAN_VENDOR_ZYDAS) +=3D zydas/
+> =C2=A0
+> -# 16-bit wireless PCMCIA client drivers
+> -obj-$(CONFIG_PCMCIA_RAYCS)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0+=3D ray_cs.o
+> -obj-$(CONFIG_PCMCIA_WL3501)=C2=A0=C2=A0=C2=A0=C2=A0+=3D wl3501_cs.o
+> -
+> -obj-$(CONFIG_USB_NET_RNDIS_WLAN)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0+=3D rndis_wlan.o
+> -
+> +obj-$(CONFIG_WLAN) +=3D legacy/
+> =C2=A0obj-$(CONFIG_WLAN) +=3D virtual/
+> diff --git a/drivers/net/wireless/legacy/Kconfig
+> b/drivers/net/wireless/legacy/Kconfig
+> new file mode 100644
+> index 000000000000..3a5275941212
+> --- /dev/null
+> +++ b/drivers/net/wireless/legacy/Kconfig
+> @@ -0,0 +1,55 @@
+> +config PCMCIA_RAYCS
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Aviator/Raytheon 2.4=
+GHz wireless support"
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on PCMCIA
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WIRELESS_EXT
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WEXT_SPY
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WEXT_PRIV
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Say Y here if you inten=
+d to attach an Aviator/Raytheon
+> PCMCIA
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (PC-card) wireless Ethe=
+rnet networking card to your
+> computer.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Please read the file
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> <file:Documentation/networking/device_drivers/wifi/ray_cs.rst> for
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 details.
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver =
+as a module, choose M here: the
+> module will be
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 called ray_cs.=C2=A0 If=
+ unsure, say N.
+> +
+> +config PCMCIA_WL3501
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Planet WL3501 PCMCIA=
+ cards"
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on CFG80211 && PCMCIA
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WIRELESS_EXT
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select WEXT_SPY
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 A driver for WL3501 PCM=
+CIA 802.11 wireless cards made by
+> Planet.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 It has basic support fo=
+r Linux wireless extensions and
+> initial
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 micro support for ethto=
+ol.
+> +
+> +config USB_NET_RNDIS_WLAN
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tristate "Wireless RNDIS USB s=
+upport"
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on USB
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0depends on CFG80211
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_NET_DRIVERS
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_USBNET
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_NET_CDCETHER
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0select USB_NET_RNDIS_HOST
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0help
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This is a driver for wi=
+reless RNDIS devices.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 These are USB based ada=
+pters found in devices such as:
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Buffalo WLI-U2-KG125S
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 U.S. Robotics USR5421
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Belkin F5D7051
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linksys WUSB54GSv2
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linksys WUSB54GSC
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Asus WL169gE
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Eminent EM4045
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BT Voyager 1055
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Linksys WUSB54GSv1
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 U.S. Robotics USR5420
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BUFFALO WLI-USB-G54
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 All of these devices ar=
+e based on Broadcom 4320 chip which
+> is the
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 only wireless RNDIS chi=
+p known to date.
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If you choose to build =
+a module, it'll be called
+> rndis_wlan.
+> +
+> diff --git a/drivers/net/wireless/legacy/Makefile
+> b/drivers/net/wireless/legacy/Makefile
+> new file mode 100644
+> index 000000000000..36878f080bfc
+> --- /dev/null
+> +++ b/drivers/net/wireless/legacy/Makefile
+> @@ -0,0 +1,6 @@
+> +# 16-bit wireless PCMCIA client drivers
+> +obj-$(CONFIG_PCMCIA_RAYCS)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0+=3D ray_cs.o
+> +obj-$(CONFIG_PCMCIA_WL3501)=C2=A0=C2=A0=C2=A0=C2=A0+=3D wl3501_cs.o
+> +
+> +obj-$(CONFIG_USB_NET_RNDIS_WLAN)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0+=3D rndis_wlan.o
+> +
+> diff --git a/drivers/net/wireless/ray_cs.c
+> b/drivers/net/wireless/legacy/ray_cs.c
+> similarity index 100%
+> rename from drivers/net/wireless/ray_cs.c
+> rename to drivers/net/wireless/legacy/ray_cs.c
+> diff --git a/drivers/net/wireless/ray_cs.h
+> b/drivers/net/wireless/legacy/ray_cs.h
+> similarity index 100%
+> rename from drivers/net/wireless/ray_cs.h
+> rename to drivers/net/wireless/legacy/ray_cs.h
+> diff --git a/drivers/net/wireless/rayctl.h
+> b/drivers/net/wireless/legacy/rayctl.h
+> similarity index 100%
+> rename from drivers/net/wireless/rayctl.h
+> rename to drivers/net/wireless/legacy/rayctl.h
+> diff --git a/drivers/net/wireless/rndis_wlan.c
+> b/drivers/net/wireless/legacy/rndis_wlan.c
+> similarity index 100%
+> rename from drivers/net/wireless/rndis_wlan.c
+> rename to drivers/net/wireless/legacy/rndis_wlan.c
+> diff --git a/drivers/net/wireless/wl3501.h
+> b/drivers/net/wireless/legacy/wl3501.h
+> similarity index 100%
+> rename from drivers/net/wireless/wl3501.h
+> rename to drivers/net/wireless/legacy/wl3501.h
+> diff --git a/drivers/net/wireless/wl3501_cs.c
+> b/drivers/net/wireless/legacy/wl3501_cs.c
+> similarity index 100%
+> rename from drivers/net/wireless/wl3501_cs.c
+> rename to drivers/net/wireless/legacy/wl3501_cs.c
+
