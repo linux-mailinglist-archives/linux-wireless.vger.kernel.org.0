@@ -2,171 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E41946A4895
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 18:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C488D6A4899
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 18:52:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbjB0Ru5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 12:50:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41068 "EHLO
+        id S229947AbjB0RwW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 12:52:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjB0Ru4 (ORCPT
+        with ESMTP id S229542AbjB0RwU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 12:50:56 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DB223121
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 09:50:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677520254; x=1709056254;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rCP1moy5NiRdRpheFbYxh1JqhXqdAQE2d+Zm/3UFYCo=;
-  b=WTbBrOTqw8HNe7H3erMSdeDSGuwlgp0T29FSHMZsGvXMBetIs8Sm3K7Z
-   5Og5t1CkJWYv9K1hmv1+qO8Ds1aCZT827ga3M7++gJA4UoGdyJ/OZKd5e
-   bRDGcPSMOlq4KCVd0TEn5RC7OC2CgbDB7UPRZxqXnjowEKZ6upGdtE7Lu
-   sctQjEZNE7mn6zdvzYaxkKly6ZhRAQnVzQk6t6PksgRYckRl9jrKb06Gd
-   zY6p/Z7JHomQUO6fLQFfuA2LjaiYuwtfG6vV97wWNxmJxLhl4Q8iRu2Vl
-   2h6wxb/sdxRgkFxLJq/DAF/FlxkXZoT5uP7ipV5yf5ItdKHTAkptQHbCr
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="333967137"
-X-IronPort-AV: E=Sophos;i="5.98,219,1673942400"; 
-   d="scan'208";a="333967137"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2023 09:50:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="762815884"
-X-IronPort-AV: E=Sophos;i="5.98,219,1673942400"; 
-   d="scan'208";a="762815884"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Feb 2023 09:50:53 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pWheG-0004eL-25;
-        Mon, 27 Feb 2023 17:50:52 +0000
-Date:   Tue, 28 Feb 2023 01:50:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] wifi: move raycs, wl3501 and rndis_wlan to legacy
- directory
-Message-ID: <202302280135.b1uG3bwe-lkp@intel.com>
-References: <20230227121732.8967-3-kvalo@kernel.org>
+        Mon, 27 Feb 2023 12:52:20 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B7E23121;
+        Mon, 27 Feb 2023 09:52:18 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 991C741A42;
+        Mon, 27 Feb 2023 17:52:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1677520336; bh=TyiSSdv8IGxdjz2utLKhWhCBuUwQHg47VZsc94zgZcw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=lFwzbz1lMl2mgUL8NMvLooNx9YligRkut+5/Iq991BfswLpk+aSlCgQpBFpw8Gvji
+         H8bPnmw1MtNyS3y7CaA7I36J7x+aq8MzP3fWYUtHoWtj62wHZHtmiMOeaj76Vlti9x
+         NfOO3VVKzhSDC7dzz8s9EI6vM1a8nspxntvC9LH0lidWpGCp6IUAozrvy3TLH1bC+f
+         yXhP7uC0uRNbduoZwmYWCAkP3siUwz3sKcKysv5Uxjfb9xpgtxCoU0FNgpxERHxv1K
+         m21qp+J3UiZxkteZvpdZxsY65jiwwDOQz7lBWRfxsyb66FdcUFiD8UCJChpHEGM7dN
+         a+R8t5Ub+C7QA==
+Message-ID: <181af6e9-799d-b730-dc14-ee2de2541f35@marcan.st>
+Date:   Tue, 28 Feb 2023 02:52:08 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230227121732.8967-3-kvalo@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] brcmfmac: cfg80211: Use WSEC to set SAE password
+Content-Language: en-US
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Double Lo <double.lo@infineon.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        asahi@lists.linux.dev, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230214093319.21077-1-marcan@marcan.st>
+ <edcabef3-f440-9c15-e69f-845eb6a4de1b@broadcom.com>
+ <65548ce6-d2d8-c913-a494-5ac044af2e35@marcan.st>
+ <b4489e24-e226-4f99-1322-cab6c1269f09@broadcom.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <b4489e24-e226-4f99-1322-cab6c1269f09@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+On 14/02/2023 19.38, Arend van Spriel wrote:
+> 
+> 
+> On 2/14/2023 11:30 AM, Hector Martin wrote:
+>> On 14/02/2023 19.07, Arend van Spriel wrote:
+>>> + Double Lo
+>>>
+>>> On 2/14/2023 10:33 AM, Hector Martin wrote:
+>>>> Using the WSEC command instead of sae_password seems to be the supported
+>>>> mechanism on newer firmware, and also how the brcmdhd driver does it.
+>>>
+>>> The SAE code in brcmfmac was added by Cypress/Infineon. For my BCA
+>>> devices that did not work, but this change should be verified on Cypress
+>>> hardware.
+>>
+>> Do you mean the existing SAE code does not work on BCA, or this version
+>> doesn't?
+> 
+> I meant the existing SAE code. I will give your patches a spin on the 
+> devices I have.
+> 
+>> I assume/hope this version works for WCC in general, since that is what
+>> the Apple-relevant chips are tagged as. If so it sounds like we need a
+>> firmware type conditional on this, if CYW needs the existing behavior.
+> 
+> Right. Let's hope we get some feedback from them.
 
-I love your patch! Perhaps something to improve:
+Any news on this? Nothing from the Cypress guys (nor to any of my
+previous emails about other stuff, for that matter), so if you can
+confirm this works on your chips I'd rather just blindly add the CYW/not
+firmware variant check and call it a day.
 
-[auto build test WARNING on ec52d77d077529f198fd874c550a26b9cc86a331]
+We can't wait forever for them to show up. If they expect their chips to
+continue work with mainline they need to actually interact on the MLs,
+otherwise they should expect us to possibly accidentally break things
+even if we try not to. As far as I can tell they seem completely
+disinterested in talking about anything, and we can't let that block
+progress for everyone else.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kalle-Valo/wifi-move-mac80211_hwsim-and-virt_wifi-to-virtual-directory/20230227-201848
-base:   ec52d77d077529f198fd874c550a26b9cc86a331
-patch link:    https://lore.kernel.org/r/20230227121732.8967-3-kvalo%40kernel.org
-patch subject: [PATCH 2/2] wifi: move raycs, wl3501 and rndis_wlan to legacy directory
-config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20230228/202302280135.b1uG3bwe-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/b3643ed46f437156c43b21bfc61dd622a6d53191
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Kalle-Valo/wifi-move-mac80211_hwsim-and-virt_wifi-to-virtual-directory/20230227-201848
-        git checkout b3643ed46f437156c43b21bfc61dd622a6d53191
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sparc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sparc SHELL=/bin/bash drivers/net/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202302280135.b1uG3bwe-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In function 'init_startup_params',
-       inlined from 'ray_init' at drivers/net/wireless/legacy/ray_cs.c:506:2:
->> drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
-     628 |                 strncpy(local->sparm.b4.a_current_ess_id, essid, ESSID_SIZE);
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/strncpy +628 drivers/net/wireless/legacy/ray_cs.c
-
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  568  
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  569  /*===========================================================================*/
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  570  static void init_startup_params(ray_dev_t *local)
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  571  {
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  572  	int i;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  573  
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  574  	if (country > JAPAN_TEST)
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  575  		country = USA;
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  576  	else if (country < USA)
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  577  		country = USA;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  578  	/* structure for hop time and beacon period is defined here using
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  579  	 * New 802.11D6.1 format.  Card firmware is still using old format
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  580  	 * until version 6.
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  581  	 *    Before                    After
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  582  	 *    a_hop_time ms byte        a_hop_time ms byte
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  583  	 *    a_hop_time 2s byte        a_hop_time ls byte
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  584  	 *    a_hop_time ls byte        a_beacon_period ms byte
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  585  	 *    a_beacon_period           a_beacon_period ls byte
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  586  	 *
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  587  	 *    a_hop_time = uS           a_hop_time = KuS
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  588  	 *    a_beacon_period = hops    a_beacon_period = KuS
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  589  	 *//* 64ms = 010000 */
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  590  	if (local->fw_ver == 0x55) {
-e48d661eb13f2f8 drivers/net/wireless/ray_cs.c Kees Cook      2017-05-05  591  		memcpy(&local->sparm.b4, b4_default_startup_parms,
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  592  		       sizeof(struct b4_startup_params));
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  593  		/* Translate sane kus input values to old build 4/5 format */
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  594  		/* i = hop time in uS truncated to 3 bytes */
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  595  		i = (hop_dwell * 1024) & 0xffffff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  596  		local->sparm.b4.a_hop_time[0] = (i >> 16) & 0xff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  597  		local->sparm.b4.a_hop_time[1] = (i >> 8) & 0xff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  598  		local->sparm.b4.a_beacon_period[0] = 0;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  599  		local->sparm.b4.a_beacon_period[1] =
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  600  		    ((beacon_period / hop_dwell) - 1) & 0xff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  601  		local->sparm.b4.a_curr_country_code = country;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  602  		local->sparm.b4.a_hop_pattern_length =
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  603  		    hop_pattern_length[(int)country] - 1;
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  604  		if (bc) {
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  605  			local->sparm.b4.a_ack_timeout = 0x50;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  606  			local->sparm.b4.a_sifs = 0x3f;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  607  		}
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  608  	} else { /* Version 5 uses real kus values */
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  609  		memcpy((UCHAR *) &local->sparm.b5, b5_default_startup_parms,
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  610  		       sizeof(struct b5_startup_params));
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  611  
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  612  		local->sparm.b5.a_hop_time[0] = (hop_dwell >> 8) & 0xff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  613  		local->sparm.b5.a_hop_time[1] = hop_dwell & 0xff;
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  614  		local->sparm.b5.a_beacon_period[0] =
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  615  		    (beacon_period >> 8) & 0xff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  616  		local->sparm.b5.a_beacon_period[1] = beacon_period & 0xff;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  617  		if (psm)
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  618  			local->sparm.b5.a_power_mgt_state = 1;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  619  		local->sparm.b5.a_curr_country_code = country;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  620  		local->sparm.b5.a_hop_pattern_length =
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  621  		    hop_pattern_length[(int)country];
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  622  	}
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  623  
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  624  	local->sparm.b4.a_network_type = net_type & 0x01;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  625  	local->sparm.b4.a_acting_as_ap_status = TYPE_STA;
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  626  
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  627  	if (essid != NULL)
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16 @628  		strncpy(local->sparm.b4.a_current_ess_id, essid, ESSID_SIZE);
-^1da177e4c3f415 drivers/net/wireless/ray_cs.c Linus Torvalds 2005-04-16  629  } /* init_startup_params */
-141fa61f10c419c drivers/net/wireless/ray_cs.c John Daiker    2009-03-10  630  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+- Hector
