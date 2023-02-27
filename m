@@ -2,108 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C15E6A425D
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 14:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7296A425E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Feb 2023 14:15:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjB0NOM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 08:14:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53700 "EHLO
+        id S229948AbjB0NPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 08:15:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjB0NOM (ORCPT
+        with ESMTP id S229933AbjB0NPH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 08:14:12 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9336EC50
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 05:14:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=yr8muG0u4KYhYndiGJKXQkvBTto5mNVGZbnFdI/YQig=;
-        t=1677503650; x=1678713250; b=xl803es/fmMm5Kowr2WY899S5tkDyeD/KUqcmPSfXOekivj
-        AUFSz+pjNAWQIUVjUu8jpwNpVAJrgFmPT0jDOtImN8GYwfwyTX4gx7gMXMtzZRSsAYr6/1DiS0jag
-        CxFYlHD5jNEXi0PySJiGqyQSP7d8AxJEVzWfEKnCb7s3IqPYqZyy4cMnA3BOUX7XT1j3gHRcJBzr3
-        WdccBqD4qMafj0vGqUo0IsVvdgldEXuiaeT/PFnMdqRyiCwk94jm43nRfdf339nz0mDIp8n3YqMFt
-        ZlvefLblLjneiW8fSI4s+kWrUPEqky4b94XVCZ/JrewsUf/3+oBrGD0JiyHgdhLg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pWdKR-0073mp-1F;
-        Mon, 27 Feb 2023 14:14:07 +0100
-Message-ID: <7cc08b19d3ac643ed21c5c4325a4a8a64c4233f6.camel@sipsolutions.net>
-Subject: Re: [RFC 4/5] wifi: mac80211: mesh fast xmit support
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     Sriram R <quic_srirrama@quicinc.com>
-Date:   Mon, 27 Feb 2023 14:14:06 +0100
-In-Reply-To: <20230227110738.54241-4-nbd@nbd.name>
-References: <20230227110738.54241-1-nbd@nbd.name>
-         <20230227110738.54241-4-nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+        Mon, 27 Feb 2023 08:15:07 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAC1AF753;
+        Mon, 27 Feb 2023 05:15:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7B24EB80C94;
+        Mon, 27 Feb 2023 13:15:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB44C4339C;
+        Mon, 27 Feb 2023 13:15:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677503703;
+        bh=zJRZGvJSsndRbdRqpKpyfMIAZ4V2sTYXfUa93Tykhj4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bSi2lpcJ71zaE9649OxRBNTnQaX1CzXQDWmUHZDMgwdnp9C1GvX4qAq7BFW0ZpPlj
+         USAuOQOPfmroixGBl7nN1jRTTuSRr/bZxLKkDYVWL3veybabZj4jVBcyvMFxd02pm9
+         jf2Sxz+KX9dxIAlG0TW1aFg0ysW/sCHQW6VlkOR3E2ZHaBZtw3saYuSaSs7ybqubQu
+         MCdA1HcD0vBqdCWfLi8zurMhV7g0jC5PQ0g3smMLkCXjb8rhtn34X9LA7igGV8Wphy
+         AIZHAEu4nQC3ZBYTGhBmQlpbmVK+BEvmJZQNMNHfU+lqa5ynStrQ8dDTCnSX1CqVvb
+         rczQBMr5mUiZA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath11k: Add a warning for wcn6855 spurious wakeup events
+References: <20230220213807.28523-1-mario.limonciello@amd.com>
+        <87r0ubqo81.fsf@kernel.org>
+        <980959ea-b72f-4cc0-7662-4dd64932d005@amd.com>
+Date:   Mon, 27 Feb 2023 15:14:54 +0200
+In-Reply-To: <980959ea-b72f-4cc0-7662-4dd64932d005@amd.com> (Mario
+        Limonciello's message of "Mon, 27 Feb 2023 07:07:21 -0600")
+Message-ID: <87mt4zqmgh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-02-27 at 12:07 +0100, Felix Fietkau wrote:
->=20
-> +	/* If the skb is shared we need to obtain our own copy */
-> +	if (skb_shared(skb)) {
-> +		struct sk_buff *oskb =3D skb;
-> +
-> +		skb =3D skb_clone(skb, GFP_ATOMIC);
-> +		if (!skb)
-> +			return false;
-> +
-> +		kfree_skb(oskb);
-> +	}
+Mario Limonciello <mario.limonciello@amd.com> writes:
 
-Use skb_share_check()?
+> On 2/27/23 06:36, Kalle Valo wrote:
+>
+>> Mario Limonciello <mario.limonciello@amd.com> writes:
+>>
+>>> When WCN6855 firmware versions less than 0x110B196E are used with
+>>> an AMD APU and the user puts the system into s2idle spurious wakeup
+>>> events can occur. These are difficult to attribute to the WLAN F/W
+>>> so add a warning to the kernel driver to give users a hint where
+>>> to look.
+>>>
+>>> This was tested on WCN6855 and a Lenovo Z13 with the following
+>>> firmware versions:
+>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
+>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+>>>
+>>> Link: http://lists.infradead.org/pipermail/ath11k/2023-February/004024.html
+>>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2377
+>>> Link: https://bugs.launchpad.net/ubuntu/+source/linux-firmware/+bug/2006458
+>>> Link:
+>>> https://lore.kernel.org/linux-gpio/20221012221028.4817-1-mario.limonciello@amd.com/
+>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> [...]
+>>
+>>> +static void ath11k_check_s2idle_bug(struct ath11k_base *ab)
+>>> +{
+>>> +	struct pci_dev *rdev;
+>>> +
+>>> +	if (pm_suspend_target_state != PM_SUSPEND_TO_IDLE)
+>>> +		return;
+>>> +
+>>> +	if (ab->id.device != WCN6855_DEVICE_ID)
+>>> +		return;
+>>> +
+>>> +	if (ab->qmi.target.fw_version >= WCN6855_S2IDLE_VER)
+>>> +		return;
+>>> +
+>>> +	rdev = pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(0, 0));
+>>> +	if (rdev->vendor == PCI_VENDOR_ID_AMD)
+>>> + ath11k_warn(ab, "fw_version 0x%x may cause spurious wakeups.
+>>> Upgrade to 0x%x or later.",
+>>> +			    ab->qmi.target.fw_version, WCN6855_S2IDLE_VER);
+>>
+>> I understand the reasons for this warning but I don't really trust the
+>> check 'ab->qmi.target.fw_version >= WCN6855_S2IDLE_VER'. I don't know
+>> how the firmware team populates the fw_version so I'm worried that if we
+>> ever switch to a different firmware branch (or similar) this warning
+>> might all of sudden start triggering for the users.
+>>
+>
+> In that case, maybe would it be better to just have a list of the
+> public firmware with issue and ensure it doesn't match one of those?
 
->  	next_hop =3D rcu_dereference(mpath->next_hop);
->  	if (next_hop) {
->  		memcpy(hdr->addr1, next_hop->sta.addr, ETH_ALEN);
->  		memcpy(hdr->addr2, sdata->vif.addr, ETH_ALEN);
->  		ieee80211_mps_set_frame_flags(sdata, next_hop, hdr);
-> +		if (ieee80211_hw_check(&sdata->local->hw, SUPPORT_FAST_XMIT))
-> +			mesh_fast_tx_cache(sdata, skb, mpath);
+You mean ath11k checking for known broken versions and reporting that?
+We have so many different firmwares to support in ath11k, I'm not really
+keen on adding tests for a specific version.
 
+We have a list of known important bugs in the wiki:
 
-I wondered briefly if it's worth moving that check into the function,
-but not sure.
+https://wireless.wiki.kernel.org/en/users/drivers/ath11k#known_bugslimitations
 
-> +	/* rate limit, in case fast xmit can't be enabled */
-> +	if (mppath->fast_tx_check =3D=3D jiffies)
-> +		return;
-> +
-> +	mppath->fast_tx_check =3D jiffies;
+What about adding the issue there, would that get more exposure to the
+bug and hopefully the users would upgrade the firmware?
 
-once every jiffies seems pretty frequent though?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> +	spin_lock_bh(&cache->walk_lock);
-
-you could just spin_lock() the inner lock, _bh already taken care of by
-the outer?
-
-> @@ -3686,7 +3690,7 @@ static void __ieee80211_xmit_fast(struct ieee80211_=
-sub_if_data *sdata,
->  #endif
-> =20
->  	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
-> -		tid =3D skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
-> +		u8 tid =3D skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
->  		*ieee80211_get_qos_ctl(hdr) =3D tid;
-
-That's ... interesting, why wss there an argument in the first place?
-
-but maybe add a blank line now :)
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
