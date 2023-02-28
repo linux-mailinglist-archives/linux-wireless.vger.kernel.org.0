@@ -2,81 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 064316A5040
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 01:46:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54B8A6A50C4
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 02:38:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjB1Aqm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 19:46:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37732 "EHLO
+        id S229677AbjB1Bi3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 20:38:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbjB1Aqj (ORCPT
+        with ESMTP id S229590AbjB1Bi2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 19:46:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0439B1E9DD;
-        Mon, 27 Feb 2023 16:46:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C0AADB80DDA;
-        Tue, 28 Feb 2023 00:46:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 51879C4339B;
-        Tue, 28 Feb 2023 00:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677545196;
-        bh=8mHk19AjQuJa9XYTgMsCu7A9O/jXCgpG4Oguslh76kw=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Hni33q/1aFAIPcbsi/tjl44ZjiK0nLYkepyno62CMbLfhxGTA0nBDT+23BzNhYhcd
-         bF1C6CgB7OSFVKfW0C1NSnD2K8elZKZ/WbNHcH94xDK4c/Y5b/Jc3jeGzJD6tUeHV9
-         8k5XbIkhTmpx9ml0XjuNVrrb0zsWCbGiJkqDdFQIIQMix42N/Jf+BiS05577mZ8ryh
-         7dL4U9D8JoaX74pFtghZiCXL8RiDY1L4mnck2tFAoTS5lH0Um/Em3sBmrGkvKO8580
-         HAnVbn7SQ9BKOOmHKgzEEqjLPJ7ubcHbqKXFso0QGI5Fw2un/NYASNpGVnteVQScWG
-         6Tvyp0kaQhi7g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 30F03C41676;
-        Tue, 28 Feb 2023 00:46:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 27 Feb 2023 20:38:28 -0500
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3979745
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 17:38:26 -0800 (PST)
+Received: (Authenticated sender: c@jia.je)
+        by mail.gandi.net (Postfix) with ESMTPSA id C93E0FF802;
+        Tue, 28 Feb 2023 01:38:22 +0000 (UTC)
+Message-ID: <29f3b49d-25dd-fc17-a09c-31c277666cdc@jia.je>
+Date:   Tue, 28 Feb 2023 09:38:19 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2023-02-27
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <167754519619.16363.3451389364009193293.git-patchwork-notify@kernel.org>
-Date:   Tue, 28 Feb 2023 00:46:36 +0000
-References: <20230227131053.BD779C433D2@smtp.kernel.org>
-In-Reply-To: <20230227131053.BD779C433D2@smtp.kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.8.0
+Subject: Re: [PATCH] wifi: rtl8xxxu: Support new chip RTL8710BU aka RTL8188GU
+Content-Language: en-US
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+References: <5a9a264d-a59b-0d91-04f0-e5b38e6aaea0@gmail.com>
+ <39b1a27a-9514-a0ed-6bca-3ccd620c8b33@jia.je>
+ <b8e6be05-b70c-a8a2-291f-c148145b9643@gmail.com>
+From:   Jiajie Chen <c@jia.je>
+In-Reply-To: <b8e6be05-b70c-a8a2-291f-c148145b9643@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+On 2023/2/27 20:30, Bitterblue Smith wrote:
+> On 27/02/2023 11:18, Jiajie Chen wrote:
+>> Nice job, tested with three USB dongles with RTL8188GU chipset. Comments below.
+>>
+> Cool! Are the chips made by UMC or SMIC? See this line in dmesg:
+> usb 1-2: RTL8710BU rev A (SMIC) romver 1, 1T1R, TX queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
+>
+They are all made by SMIC:
 
-On Mon, 27 Feb 2023 13:10:53 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-> 
-> Kalle
-> 
-> [...]
+EDUP EP-N8566
 
-Here is the summary with links:
-  - pull-request: wireless-2023-02-27
-    https://git.kernel.org/netdev/net-next/c/4db692d68256
+[39672.643323] usb 3-1.4: new high-speed USB device number 15 using xhci_hcd
+[39672.744277] usb 3-1.4: New USB device found, idVendor=0bda, 
+idProduct=b711, bcdDevice= 2.00
+[39672.744288] usb 3-1.4: New USB device strings: Mfr=1, Product=2, 
+SerialNumber=3
+[39672.744292] usb 3-1.4: Product: 802.11n WLAN Adapter
+[39672.744294] usb 3-1.4: Manufacturer: Realtek
+[39672.744297] usb 3-1.4: SerialNumber: 00E04CB82101
+[39672.763531] usb 3-1.4: RTL8710BU rev A (SMIC) romver 1, 1T1R, TX 
+queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
+[39672.763534] usb 3-1.4: RTL8710BU MAC: xx:xx:xx:xx:xx:xx
+[39672.763535] usb 3-1.4: rtl8xxxu: Loading firmware rtlwifi/rtl8710bufw.bin
+[39672.763559] usb 3-1.4: Firmware revision 16.0 (signature 0x10b1)
+[39672.765248] usb 3-1.4: Firmware is already running, resetting the MCU.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Mercury MW150US v2
+
+[39688.892911] usb 3-1.3: RTL8710BU rev A (SMIC) romver 1, 1T1R, TX 
+queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
+
+Tenda W311MI
+
+[39702.424956] usb 3-1.2: RTL8710BU rev A (SMIC) romver 1, 1T1R, TX 
+queues 3, WiFi=1, BT=0, GPS=0, HI PA=0
 
 
