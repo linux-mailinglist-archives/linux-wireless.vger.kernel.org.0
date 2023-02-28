@@ -2,387 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09D776A57C9
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 12:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 677516A5B4C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 16:06:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbjB1LXk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Feb 2023 06:23:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43480 "EHLO
+        id S229595AbjB1PGd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Feb 2023 10:06:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231527AbjB1LXd (ORCPT
+        with ESMTP id S229492AbjB1PGc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Feb 2023 06:23:33 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDE78227AF
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 03:23:14 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id g3so453780wri.6
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 03:23:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1677583393;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=msTNvGByW6wnSBM4h7Lzte8/9XtB6qDrvbyiJrlnYaU=;
-        b=YKQQ0B6H86bZgv8j3DgnF2AtQJCvA145VIxwFfUEK7+OFSrQFhWn6Z+FO1FbzDXmc7
-         tezTe8SjarJXiAh5GSoO/UHL3lIQQiy8OJG6+CawvM4xwhUNtx2JfY3j+BXjgpXKNgUq
-         J1R7rvUcw6nh5bFI7jvRn7uQ+jg1picGCFM9kKYmjU6lc9FhNrrZnbgNQ1WOJm4NLADv
-         8YXWAfgIq6fMhgj5pk91qyPgW+syl8emZPa8F+gi3vOP6+q/6m9Hxv9CREQlCwDq12KI
-         je/vwDctD1L/a2PrLPlXQetXzCEMnbq7uyZMI390Yw7YRX6AUPulCVDwW0YaQrMCPz0V
-         PjfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677583393;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=msTNvGByW6wnSBM4h7Lzte8/9XtB6qDrvbyiJrlnYaU=;
-        b=YYcM/+8O3zz/D3y0aPvd1lgaspIZuNBFAdjf7ZDFk4/tcFIBMj/qJzCTvyS+e/xfOX
-         PjBagM/MeoxNxr8YNWncz4T8o2NzDqgEl4f2yY2j7R3p+S2c8yeRtg56ysidOgjJBucc
-         cy9ha8qtPYbQqmdPw06acGQ6UFHEiz23YHgU76T4tbu/3i6YlJnVJItI64N7dU0TJAe5
-         HGfxHsAVZq/Kw0REoGZz724NvNoTEiVAiQjZn0UwMTZxNJtlWnnrn9zI7WynTH9UaaKo
-         EG0e7vG84CycJNDgiW9SN/cwHZcQFv4X0+/gwTXudRD6L6keDtRXG6ayHL7dvY7dvRNb
-         f2Aw==
-X-Gm-Message-State: AO0yUKVnruUwht/JkV4vKmtIr4SeHzvB2bauMKpOx8N2mMPyOyxBDzj9
-        ommb3Dd19CJkFc+32AfNn22UQA==
-X-Google-Smtp-Source: AK7set/quQ4rSyRAWBNWHoRXbLJjh2dHPq5POGlwp84dvXvVg6gzdt7cUZwnJ86M3Kgacy5F2OUPAw==
-X-Received: by 2002:a5d:6d45:0:b0:2c7:851:c0bf with SMTP id k5-20020a5d6d45000000b002c70851c0bfmr1899592wri.0.1677583392984;
-        Tue, 28 Feb 2023 03:23:12 -0800 (PST)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:6830:6390:2815:b6a5])
-        by smtp.gmail.com with ESMTPSA id z5-20020a5d6545000000b002c5501a5803sm9598130wrv.65.2023.02.28.03.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Feb 2023 03:23:12 -0800 (PST)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     rafael@kernel.org, daniel.lezcano@linaro.org
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Petr Machata <petrm@nvidia.com>, Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-acpi@vger.kernel.org (open list:ACPI THERMAL DRIVER),
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)),
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX
-        / MXC ARM ARCHITECTURE),
-        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
-        linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support),
-        linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK
-        , TOUCHSCREEN)...),
-        netdev@vger.kernel.org (open list:CXGB4 ETHERNET DRIVER (CXGB4)),
-        linux-wireless@vger.kernel.org (open list:INTEL WIRELESS WIFI LINK
-        (iwlwifi))
-Subject: [PATCH v4 04/19] thermal/core: Use the thermal zone 'devdata' accessor in remaining drivers
-Date:   Tue, 28 Feb 2023 12:22:23 +0100
-Message-Id: <20230228112238.2312273-5-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230228112238.2312273-1-daniel.lezcano@linaro.org>
-References: <20230228112238.2312273-1-daniel.lezcano@linaro.org>
+        Tue, 28 Feb 2023 10:06:32 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8509211F6;
+        Tue, 28 Feb 2023 07:06:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=OMOnOOvIDjn09cwF+3ZHnzsvQQ5bm1l+ehYbyj5+8x4=;
+        t=1677596788; x=1678806388; b=WX0aktYfIPlIBdozqUYFMcNt8c7BwDUvCFGDXYuiB2mcdQn
+        G3Vhk11GVU5Rf+sZrpTSNMs1o+Dy+Ap+/7GkgfT1a6soTtElENJVEfdD7jObmIxGkiYDkOiZf/bR5
+        u6cHRDuPQi9M2CbVclYbBfOQH6rLCveUzzhAxXw5rr5o5sehZ7nCzqkBCBan51tI4GXk6sueDMGtP
+        Tien78JSXlBwu4oeiz/OPNvY1hmiIOIiSg4dYPD1uIL+OHUqYQ1slRU1MDzTl4cvv12KqrlWEeTQf
+        9WwT865CX+/hdo0QlHa4vDwrLfpq26JZHM37Ehc7pYCV7AbVuQrhaQBfuiJrMgFw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pX1Ye-0081LS-2U;
+        Tue, 28 Feb 2023 16:06:24 +0100
+Message-ID: <801c31cf13c209c97ef56c36efd7b16b37347580.camel@sipsolutions.net>
+Subject: Re: [PATCH v7 2/4] mac80211_hwsim: add PMSR request support via
+ virtio
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jaewan Kim <jaewan@google.com>
+Cc:     gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-team@android.com, adelva@google.com
+Date:   Tue, 28 Feb 2023 16:06:23 +0100
+In-Reply-To: <CABZjns4r_CJ-paj1FQ-SMFJMQW7rkXnvx5w98zYRgf6UQSnfkw@mail.gmail.com>
+References: <20230207085400.2232544-1-jaewan@google.com>
+         <20230207085400.2232544-3-jaewan@google.com>
+         <fbe6f8eb820b29f0cc932a63ad84253d0cef93c3.camel@sipsolutions.net>
+         <CABZjns4r_CJ-paj1FQ-SMFJMQW7rkXnvx5w98zYRgf6UQSnfkw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The thermal zone device structure is exposed to the different drivers
-and obviously they access the internals while that should be
-restricted to the core thermal code.
+On Fri, 2023-02-24 at 00:38 +0900, Jaewan Kim wrote:
+>=20
+> >=20
+> > > +int cfg80211_send_chandef(struct sk_buff *msg, const struct cfg80211=
+_chan_def *chandef);
+> >=20
+> > I think it'd be better if you exported it as nl80211_..., since it
+> > really is just a netlink thing, not cfg80211 functionality.
+>=20
+> Sorry about the late response but could you elaborate to me in more
+> detail on this?
+> Where header file would be the good place if it's exporting it as nl80211=
+_...?
 
-In order to self-encapsulate the thermal core code, we need to prevent
-the drivers accessing directly the thermal zone structure and provide
-accessor functions to deal with.
+Oh, same header file, just with a different function name prefix.
+nl80211 is part of cfg80211 anyway, but having it nl80211_ will make it
+clearer (IMHO) that it does stuff related to netlink.
 
-Use the devdata accessor introduced in the previous patch.
+> net/wireless/nl80211.h seems like your suggestion, but I can't find
+> how to include this from mac80211_hwsim.c.
 
-No functional changes intended.
+That's just an internal header.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com> #mlxsw
-Acked-by: Gregory Greenman <gregory.greenman@intel.com> #iwlwifi
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com> #power_supply
-Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com> #ahci
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/thermal.c                           | 16 ++++++++--------
- drivers/ata/ahci_imx.c                           |  2 +-
- drivers/iio/adc/sun4i-gpadc-iio.c                |  2 +-
- drivers/input/touchscreen/sun4i-ts.c             |  2 +-
- .../net/ethernet/chelsio/cxgb4/cxgb4_thermal.c   |  2 +-
- .../net/ethernet/mellanox/mlxsw/core_thermal.c   | 14 +++++++-------
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c      |  4 ++--
- drivers/power/supply/power_supply_core.c         |  2 +-
- drivers/regulator/max8973-regulator.c            |  2 +-
- 9 files changed, 23 insertions(+), 23 deletions(-)
+Leave it here, but I think we could rename it.
 
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 0b4b844f9d4c..392b73b3e269 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -498,7 +498,7 @@ static int acpi_thermal_get_trip_points(struct acpi_thermal *tz)
- 
- static int thermal_get_temp(struct thermal_zone_device *thermal, int *temp)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 	int result;
- 
- 	if (!tz)
-@@ -516,7 +516,7 @@ static int thermal_get_temp(struct thermal_zone_device *thermal, int *temp)
- static int thermal_get_trip_type(struct thermal_zone_device *thermal,
- 				 int trip, enum thermal_trip_type *type)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 	int i;
- 
- 	if (!tz || trip < 0)
-@@ -560,7 +560,7 @@ static int thermal_get_trip_type(struct thermal_zone_device *thermal,
- static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
- 				 int trip, int *temp)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 	int i;
- 
- 	if (!tz || trip < 0)
-@@ -613,7 +613,7 @@ static int thermal_get_trip_temp(struct thermal_zone_device *thermal,
- static int thermal_get_crit_temp(struct thermal_zone_device *thermal,
- 				int *temperature)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 
- 	if (tz->trips.critical.flags.valid) {
- 		*temperature = deci_kelvin_to_millicelsius_with_offset(
-@@ -628,7 +628,7 @@ static int thermal_get_crit_temp(struct thermal_zone_device *thermal,
- static int thermal_get_trend(struct thermal_zone_device *thermal,
- 			     int trip, enum thermal_trend *trend)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 	enum thermal_trip_type type;
- 	int i;
- 
-@@ -670,7 +670,7 @@ static int thermal_get_trend(struct thermal_zone_device *thermal,
- 
- static void acpi_thermal_zone_device_hot(struct thermal_zone_device *thermal)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 
- 	acpi_bus_generate_netlink_event(tz->device->pnp.device_class,
- 					dev_name(&tz->device->dev),
-@@ -679,7 +679,7 @@ static void acpi_thermal_zone_device_hot(struct thermal_zone_device *thermal)
- 
- static void acpi_thermal_zone_device_critical(struct thermal_zone_device *thermal)
- {
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 
- 	acpi_bus_generate_netlink_event(tz->device->pnp.device_class,
- 					dev_name(&tz->device->dev),
-@@ -693,7 +693,7 @@ static int acpi_thermal_cooling_device_cb(struct thermal_zone_device *thermal,
- 					  bool bind)
- {
- 	struct acpi_device *device = cdev->devdata;
--	struct acpi_thermal *tz = thermal->devdata;
-+	struct acpi_thermal *tz = thermal_zone_device_priv(thermal);
- 	struct acpi_device *dev;
- 	acpi_handle handle;
- 	int i;
-diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
-index a950767f7948..e45e91f5e703 100644
---- a/drivers/ata/ahci_imx.c
-+++ b/drivers/ata/ahci_imx.c
-@@ -418,7 +418,7 @@ static int __sata_ahci_read_temperature(void *dev, int *temp)
- 
- static int sata_ahci_read_temperature(struct thermal_zone_device *tz, int *temp)
- {
--	return __sata_ahci_read_temperature(tz->devdata, temp);
-+	return __sata_ahci_read_temperature(thermal_zone_device_priv(tz), temp);
- }
- 
- static ssize_t sata_ahci_show_temp(struct device *dev,
-diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-index a6ade70dedf8..a5322550c422 100644
---- a/drivers/iio/adc/sun4i-gpadc-iio.c
-+++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-@@ -414,7 +414,7 @@ static int sun4i_gpadc_runtime_resume(struct device *dev)
- 
- static int sun4i_gpadc_get_temp(struct thermal_zone_device *tz, int *temp)
- {
--	struct sun4i_gpadc_iio *info = tz->devdata;
-+	struct sun4i_gpadc_iio *info = thermal_zone_device_priv(tz);
- 	int val, scale, offset;
- 
- 	if (sun4i_gpadc_temp_read(info->indio_dev, &val))
-diff --git a/drivers/input/touchscreen/sun4i-ts.c b/drivers/input/touchscreen/sun4i-ts.c
-index 73eb8f80be6e..1117fba30020 100644
---- a/drivers/input/touchscreen/sun4i-ts.c
-+++ b/drivers/input/touchscreen/sun4i-ts.c
-@@ -194,7 +194,7 @@ static int sun4i_get_temp(const struct sun4i_ts_data *ts, int *temp)
- 
- static int sun4i_get_tz_temp(struct thermal_zone_device *tz, int *temp)
- {
--	return sun4i_get_temp(tz->devdata, temp);
-+	return sun4i_get_temp(thermal_zone_device_priv(tz), temp);
- }
- 
- static const struct thermal_zone_device_ops sun4i_ts_tz_ops = {
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c
-index 95e1b415ba13..dea9d2907666 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_thermal.c
-@@ -12,7 +12,7 @@
- static int cxgb4_thermal_get_temp(struct thermal_zone_device *tzdev,
- 				  int *temp)
- {
--	struct adapter *adap = tzdev->devdata;
-+	struct adapter *adap = thermal_zone_device_priv(tzdev);
- 	u32 param, val;
- 	int ret;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c b/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
-index c5240d38c9db..722e4a40afef 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_thermal.c
-@@ -201,7 +201,7 @@ mlxsw_thermal_module_trips_update(struct device *dev, struct mlxsw_core *core,
- static int mlxsw_thermal_bind(struct thermal_zone_device *tzdev,
- 			      struct thermal_cooling_device *cdev)
- {
--	struct mlxsw_thermal *thermal = tzdev->devdata;
-+	struct mlxsw_thermal *thermal = thermal_zone_device_priv(tzdev);
- 	struct device *dev = thermal->bus_info->dev;
- 	int i, err;
- 
-@@ -227,7 +227,7 @@ static int mlxsw_thermal_bind(struct thermal_zone_device *tzdev,
- static int mlxsw_thermal_unbind(struct thermal_zone_device *tzdev,
- 				struct thermal_cooling_device *cdev)
- {
--	struct mlxsw_thermal *thermal = tzdev->devdata;
-+	struct mlxsw_thermal *thermal = thermal_zone_device_priv(tzdev);
- 	struct device *dev = thermal->bus_info->dev;
- 	int i;
- 	int err;
-@@ -249,7 +249,7 @@ static int mlxsw_thermal_unbind(struct thermal_zone_device *tzdev,
- static int mlxsw_thermal_get_temp(struct thermal_zone_device *tzdev,
- 				  int *p_temp)
- {
--	struct mlxsw_thermal *thermal = tzdev->devdata;
-+	struct mlxsw_thermal *thermal = thermal_zone_device_priv(tzdev);
- 	struct device *dev = thermal->bus_info->dev;
- 	char mtmp_pl[MLXSW_REG_MTMP_LEN];
- 	int temp;
-@@ -281,7 +281,7 @@ static struct thermal_zone_device_ops mlxsw_thermal_ops = {
- static int mlxsw_thermal_module_bind(struct thermal_zone_device *tzdev,
- 				     struct thermal_cooling_device *cdev)
- {
--	struct mlxsw_thermal_module *tz = tzdev->devdata;
-+	struct mlxsw_thermal_module *tz = thermal_zone_device_priv(tzdev);
- 	struct mlxsw_thermal *thermal = tz->parent;
- 	int i, j, err;
- 
-@@ -310,7 +310,7 @@ static int mlxsw_thermal_module_bind(struct thermal_zone_device *tzdev,
- static int mlxsw_thermal_module_unbind(struct thermal_zone_device *tzdev,
- 				       struct thermal_cooling_device *cdev)
- {
--	struct mlxsw_thermal_module *tz = tzdev->devdata;
-+	struct mlxsw_thermal_module *tz = thermal_zone_device_priv(tzdev);
- 	struct mlxsw_thermal *thermal = tz->parent;
- 	int i;
- 	int err;
-@@ -356,7 +356,7 @@ mlxsw_thermal_module_temp_and_thresholds_get(struct mlxsw_core *core,
- static int mlxsw_thermal_module_temp_get(struct thermal_zone_device *tzdev,
- 					 int *p_temp)
- {
--	struct mlxsw_thermal_module *tz = tzdev->devdata;
-+	struct mlxsw_thermal_module *tz = thermal_zone_device_priv(tzdev);
- 	struct mlxsw_thermal *thermal = tz->parent;
- 	int temp, crit_temp, emerg_temp;
- 	struct device *dev;
-@@ -391,7 +391,7 @@ static struct thermal_zone_device_ops mlxsw_thermal_module_ops = {
- static int mlxsw_thermal_gearbox_temp_get(struct thermal_zone_device *tzdev,
- 					  int *p_temp)
- {
--	struct mlxsw_thermal_module *tz = tzdev->devdata;
-+	struct mlxsw_thermal_module *tz = thermal_zone_device_priv(tzdev);
- 	struct mlxsw_thermal *thermal = tz->parent;
- 	char mtmp_pl[MLXSW_REG_MTMP_LEN];
- 	u16 index;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-index 232c200af38f..354d95222b1b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-@@ -615,7 +615,7 @@ int iwl_mvm_send_temp_report_ths_cmd(struct iwl_mvm *mvm)
- static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
- 				  int *temperature)
- {
--	struct iwl_mvm *mvm = (struct iwl_mvm *)device->devdata;
-+	struct iwl_mvm *mvm = thermal_zone_device_priv(device);
- 	int ret;
- 	int temp;
- 
-@@ -641,7 +641,7 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
- static int iwl_mvm_tzone_set_trip_temp(struct thermal_zone_device *device,
- 				       int trip, int temp)
- {
--	struct iwl_mvm *mvm = (struct iwl_mvm *)device->devdata;
-+	struct iwl_mvm *mvm = thermal_zone_device_priv(device);
- 	struct iwl_mvm_thermal_device *tzone;
- 	int ret;
- 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index 7c790c41e2fe..83fd19079d8b 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -1142,7 +1142,7 @@ static int power_supply_read_temp(struct thermal_zone_device *tzd,
- 	int ret;
- 
- 	WARN_ON(tzd == NULL);
--	psy = tzd->devdata;
-+	psy = thermal_zone_device_priv(tzd);
- 	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TEMP, &val);
- 	if (ret)
- 		return ret;
-diff --git a/drivers/regulator/max8973-regulator.c b/drivers/regulator/max8973-regulator.c
-index 7e00a45db26a..303426135276 100644
---- a/drivers/regulator/max8973-regulator.c
-+++ b/drivers/regulator/max8973-regulator.c
-@@ -436,7 +436,7 @@ static int max8973_init_dcdc(struct max8973_chip *max,
- 
- static int max8973_thermal_read_temp(struct thermal_zone_device *tz, int *temp)
- {
--	struct max8973_chip *mchip = tz->devdata;
-+	struct max8973_chip *mchip = thermal_zone_device_priv(tz);
- 	unsigned int val;
- 	int ret;
- 
--- 
-2.34.1
-
+johannes
