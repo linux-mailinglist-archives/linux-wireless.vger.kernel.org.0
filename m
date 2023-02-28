@@ -2,150 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 580D36A5E53
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 18:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 176116A5E5E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 18:44:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbjB1RiO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Feb 2023 12:38:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56282 "EHLO
+        id S229509AbjB1RoI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Feb 2023 12:44:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjB1RiK (ORCPT
+        with ESMTP id S229445AbjB1RoH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Feb 2023 12:38:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549792CC7F
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 09:37:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1677605845;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ulMeVydqLzS1oiwrkOwMzk3aK2LwAQx69lUXeptgqmo=;
-        b=Q0CdsssAjmXX6gwHznxo8OdIBdGt+xIvOIF62bDMrlursDkygbuD+piRLe8qA6LFcLHNJz
-        xX2WAGS6eKmnCByXj3cvBQ/1t3LYEs7CqBYkX4Z55k6/GOKjqI+sUK6TSfMOUSqyNo1TEp
-        4UZn5DDm7WD8RAH4To26nbSqTxKJyN8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-L7fsnHnCNvibq3jQgr2gkA-1; Tue, 28 Feb 2023 12:37:24 -0500
-X-MC-Unique: L7fsnHnCNvibq3jQgr2gkA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2D1E3C02183;
-        Tue, 28 Feb 2023 17:37:23 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.22.48.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 41F81C15BAD;
-        Tue, 28 Feb 2023 17:37:23 +0000 (UTC)
-Message-ID: <acc996e0b5ef1813e1073200ed50ca57b0b12934.camel@redhat.com>
-Subject: Re: [PATCH 2/2] wifi: move raycs, wl3501 and rndis_wlan to legacy
- directory
-From:   Dan Williams <dcbw@redhat.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 28 Feb 2023 11:37:22 -0600
-In-Reply-To: <87cz5u1ewt.fsf@kernel.org>
-References: <20230227121732.8967-1-kvalo@kernel.org>
-         <20230227121732.8967-3-kvalo@kernel.org>
-         <cc905b745580b0300d10f1f88d714305c7544f67.camel@redhat.com>
-         <87ilfmrkil.fsf@kernel.org>
-         <c3f831e111e056c32f1822dde602e48eb764ea4f.camel@redhat.com>
-         <87cz5u1ewt.fsf@kernel.org>
+        Tue, 28 Feb 2023 12:44:07 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FF82B62E
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 09:44:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=9RXcqq4iumQYbVvukje9rz+agvouujARFpVx+cH6LNY=;
+        t=1677606246; x=1678815846; b=iiEJ5Yq1KC2Pq9+b0lbGLzz9OMpjH3h+xqXSBa/qJ3MPXO7
+        eJ4hjD4X5T19zIWeXqfFwvi7a0yEpFm22fs4oGqH5oce+wXhl/JESMFKNux7B8C7zQU0jspr9RQmn
+        8XXNs55+JKV10Y2uQM9wY9FktI/TBMk/sMTNplSmlMVF4IrP2Chf0AaoE3Qo0lFEvJrZmb8J+3nLX
+        opk0yZe46GJ7pAINuwUNBVGJi2lC9NMhTF/Odhp0GclYlsh75xqAF9CY4cyut6mJoLuRwXnMtl3cq
+        20oUQ5cOplex9JIsbZo6wPVNJRcTAkKkG3UaK9MioEWyZ1TbHe9pUYYDxKycKv0A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pX41E-0084Et-1r;
+        Tue, 28 Feb 2023 18:44:04 +0100
+Message-ID: <12fce295c582793e662ca322b0d3ae3b461ddb24.camel@sipsolutions.net>
+Subject: Re: [RFC v2 5/6] mac80211_hwsim: add TPC per packet support
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+Date:   Tue, 28 Feb 2023 18:44:03 +0100
+In-Reply-To: <03B7A24C-D6E2-4DBB-B52D-6174539BB781@gmail.com>
+References: <20220920104032.496697-1-jelonek.jonas@gmail.com>
+         <20220920104032.496697-6-jelonek.jonas@gmail.com>
+         <5d15d193c76dcc2cbd59b26912973e3bce34c776.camel@sipsolutions.net>
+         <03B7A24C-D6E2-4DBB-B52D-6174539BB781@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-02-28 at 08:29 +0200, Kalle Valo wrote:
-> Dan Williams <dcbw@redhat.com> writes:
->=20
-> > On Mon, 2023-02-27 at 21:11 +0200, Kalle Valo wrote:
-> > > Dan Williams <dcbw@redhat.com> writes:
-> > >=20
-> > > > On Mon, 2023-02-27 at 14:17 +0200, Kalle Valo wrote:
-> > > > > To clean up drivers/net/wireless move the old drivers drivers
-> > > > > left in
-> > > > > the
-> > > > > directory to a new "legacy" directory. I did consider adding
-> > > > > CONFIG_WLAN_VENDOR_LEGACY like other vendors have but then
-> > > > > dropped
-> > > > > the idea as
-> > > > > these are really old drivers and hopefully we get to remove
-> > > > > them
-> > > > > soon.
-> > > >=20
-> > > > Why is rndis_wlan legacy? It supports devices that are way
-> > > > newer
-> > > > than
-> > > > ray_cs or wl3501... like this Linksys WUSB54GSC from late 2007:
-> > > >=20
-> > > > [1086339.589565] rndis_wlan 1-3:1.0 wlan0: register
-> > > > 'rndis_wlan' at
-> > > > usb-0000:00:14.0-3, Wireless RNDIS device, BCM4320b based,
-> > > > 00:1d:7e:9e:2f:bb
-> > > > [1086339.589961] usbcore: registered new interface driver
-> > > > rndis_wlan
-> > >=20
-> > > So you have this device? Does it work? I think I should make a
-> > > table
-> > > somewhere for these old drivers with last success reports :)
+On Thu, 2023-01-26 at 17:53 +0100, Jonas Jelonek wrote:
 > >=20
-> > Yep, I have it, it works. Needless to say, I don't *use* it.
->=20
-> Yeah, I guessed that part :) But thanks for testing, good to know it
-> works.
->=20
-> > > > Dunno, just seems a completely different class of devices than
-> > > > old
-> > > > 802.11b-only PCMCIA ones...
+> > On Tue, 2022-09-20 at 12:40 +0200, Jonas Jelonek wrote:
+> > > @@ -4846,16 +4989,32 @@ static int
+> > > hwsim_tx_info_frame_received_nl(struct sk_buff *skb_2,
 > > >=20
-> > > I was about to say that all drivers using Wireless Extensions are
-> > > legacy, but to my surprise rndis_wlan actually uses cfg80211 :)
-> > >=20
-> > > I put this to "legacy" as I didn't find any better location and
-> > > adding a
-> > > new vendor driver just for rndis_wlan felt like overkill. The
-> > > directory
-> > > name "legacy" is just a name, it has no real meaning and users
-> > > won't
-> > > see
-> > > it either. It could be "misc", "old" or something else as well.
+> > > tx_attempts =3D (struct hwsim_tx_rate *)nla_data(
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0info->attrs[HWSIM_ATTR_TX_INFO]);
+> > > + tx_attempts_flags =3D (struct hwsim_tx_rate_flag *)nla_data(
+> > > +     info->attrs[HWSIM_ATTR_TX_INFO_FLAGS]);
+> > > + sta =3D (struct ieee80211_sta *)txi->rate_driver_data[1];
 > >=20
-> > Is the goal just to get all the .c individual drivers out of
-> > net/wireless?=20
+> > That seems dangerous - what if the STA was freed already? You don't
+> > walk
+> > the pending list or something if the STA goes away.
 >=20
-> Yes, exactly. The extra files in drivers/net/wireless annoy me
-> everytime
-> when I'm checking something in the tree.
+> Yes, I see. Is it in general a bad idea to take the sta reference from
+> ieee80211_control, put
+> it in rate_driver_data and use it for tx-status? I guess I should pass
+> sta to tx_status_ext whenever
+> possible because it is used for several statistics.
 
-ray_cs and wl3501_cs are also PCMCIA drivers (not CardBus) and isn't
-Arnd trying to get rid of PCMCIA via "[RFC 0/6] pcmcia: separate 16-bit
-support from cardbus"?
+Well you have to think about the lifetime. In most cases you do a lookup
+of the STA (under RCU) etc. but=20
 
-Maybe those two drivers get solved for you :)
+> I could think of two ways:
+> - add NULL checks for the case that the sta pointer might be freed as
+> you said
 
-> > Also isn't Greg KH out to kill RNDIS too? I don't recall that being
-> > a
-> > settled question yet, but I lost track.
->=20
-> I haven't heard anything about that recently, I hope we don't have to
-> remove rndis_wlan from the tree. But wext drivers are another thing,
-> we
-> really should get rid of them (or convert to cfg80211).
+How would that pointer even go NULL though? The pointer would remain,
+but the STA can be freed, no?
 
-I have vague, morbid interest in converting atmel and prism54 to
-cfg80211 but timeline on that would be "this year".
+> - get sta by using, e.g., sta_info_get_by_addrs to get the sta if it
+> is available. However, this always
+> loops through the sta list. Might be a performance issue?
 
-Dan
+It should use the hashtable?
 
+> Or do you suggest something different?
+
+Well you could keep it here and walk the list of queued skbs (?) when a
+STA is removed, and kill them all at that point, or something. Not sure
+it's worth it vs. the hash table lookup, this is just hwsim after all.
+
+johannes
