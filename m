@@ -2,204 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD536A5211
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 04:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A78D36A521D
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 04:58:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjB1DwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Feb 2023 22:52:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
+        id S229549AbjB1D5o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Feb 2023 22:57:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjB1DwS (ORCPT
+        with ESMTP id S229491AbjB1D52 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Feb 2023 22:52:18 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24DD57AB4
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Feb 2023 19:52:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677556338; x=1709092338;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=w4ewEW98kf3e8mrtIlhc8Rb4PDhhOURXk5vsGI6hd9o=;
-  b=I8AZEd/PQxE9uDp+G/Oky/t8UxPJgWR+6KdkYZFS/KvYvdAmvjhWWJ4G
-   766wzP5vmMnJjJbLVT6Rel8V/QKMaPwb5NMQQ6YcB36tvKanF5XctTAI9
-   FyW7ueA5AW9Er44eVgTqP9nMmk8boFSJlI4arwMK3c64MuhQabF1A85UZ
-   DvG+ssIfG1UjwgucTuIcuzdOuxjHhAUW18oHi57+kYo/vo5BcHlLJzEBJ
-   nldDyK/gWWRNEyorvGXl6Sbog2e02Uryzv5lO8iigGoRBl2Ly8eN2X9WJ
-   c/FzV+HOcdPsBhOSI6NqfxdJImmrcHcYm+u4BdHsbnforLY1yVICD1L2u
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="317839984"
-X-IronPort-AV: E=Sophos;i="5.98,220,1673942400"; 
-   d="scan'208";a="317839984"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2023 19:52:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10634"; a="848110441"
-X-IronPort-AV: E=Sophos;i="5.98,220,1673942400"; 
-   d="scan'208";a="848110441"
-Received: from lkp-server01.sh.intel.com (HELO 3895f5c55ead) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 27 Feb 2023 19:52:16 -0800
-Received: from kbuild by 3895f5c55ead with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pWr2F-00053y-1i;
-        Tue, 28 Feb 2023 03:52:15 +0000
-Date:   Tue, 28 Feb 2023 11:51:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- 1d5003d05f983eee28756896328e4949d9a97b7f
-Message-ID: <63fd7a5a.fmN+Q27eUAFj88R2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Mon, 27 Feb 2023 22:57:28 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427401CAED;
+        Mon, 27 Feb 2023 19:57:27 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id e21so7020786oie.1;
+        Mon, 27 Feb 2023 19:57:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=qrumH5Ao4xVcDRTd2ZHmScpJv6CtYRnD+0yT87X8kEQ=;
+        b=f4ORTjYtilwzEELPppmmj2DpGaJhVpb2piovOSUi9kKFAJz+dONh6bqhw8iLIkKqE3
+         4qptXBUqTDmBsp6t8CR8OueWP9+bPJnDdZisFdxTxqcYjRFet5ZRqsRvdTimY99Pwc3R
+         FboAVxte+wdDftU1ryLgVKCpBGKNMrx4A7BdoIS6bgYqfkf9iun2Nn2KGeatN6BKgzcE
+         DcOfxqDCKs2Ec8uEm0J53T5322TCKgvyQbh8s8VYPGcf/49PXy30TY2MfF13fl4a5DwE
+         ZeuFPFzcnOlamu3uX7pO9XuXuPt40bBtEcZFbIbdvL/HQHmGtrFaGpyNwmp9W4v5r3uj
+         LByA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qrumH5Ao4xVcDRTd2ZHmScpJv6CtYRnD+0yT87X8kEQ=;
+        b=O1W/5uGHHpmzCInoME36bSTSbeJNO6qXLnZkdQyn0D5WdNtODTiITfnNrHPeqO7wQx
+         BO/cIolvxBR+IjIYoFuqPyFI+3VckJfHQx36mQbFr1tXbZd+nC7VoSzUlrJwsg+Wgu4D
+         EcYzrK0fWoMKepnVUNEirGExbAMrboJ/vuLqSKSQThNuB0C9olGLRnohvDPPS7Qcrk52
+         NUsOdEctjvoK8PZ8omqIKiwalC8OPwiNzPI+KxM4/zT+u6giEmKDlInyaOloVV4Kwwyv
+         R8Z+Xe3YgsnKpwLAd/FVVs/XvQbxo3guGaJytsCQE2ypY6349jl4dVbB824XvBBiGNvT
+         y0CQ==
+X-Gm-Message-State: AO0yUKUbgcOuklWh2tFyjnpiF/CKFTC3vD8TzoAZQjjsfB1PX9N441gm
+        sW9bYhCbFMjEcr2kMkAWAxg=
+X-Google-Smtp-Source: AK7set/11eyxHQE0eBLuw1HiwyGjlRH59ZkVLRef9UZwR+QQg3p4zc2WibVjGs2j5bC4qOe5e3V2mA==
+X-Received: by 2002:a05:6808:3a96:b0:378:8516:5c80 with SMTP id fb22-20020a0568083a9600b0037885165c80mr746415oib.43.1677556646511;
+        Mon, 27 Feb 2023 19:57:26 -0800 (PST)
+Received: from [192.168.1.135] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id w129-20020aca6287000000b00383bfd8a184sm3934963oib.25.2023.02.27.19.57.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Feb 2023 19:57:26 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <18be9b45-e7c1-9f81-afeb-3e0d4cfe5f73@lwfinger.net>
+Date:   Mon, 27 Feb 2023 21:57:24 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC 0/6] pcmcia: separate 16-bit support from cardbus
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Olof Johansson <olof@lixom.net>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
+References: <20230227133457.431729-1-arnd@kernel.org>
+ <3d8f28d7-78df-5276-612c-85b5262a987a@lwfinger.net>
+ <c17bff4e-031e-4101-8564-51f6298b1c68@app.fastmail.com>
+ <e9f8501f-ede0-4d38-6585-d3dc2469d3fe@lwfinger.net>
+ <7085019b-4fad-4d8d-89c0-1dd33fb27bb7@app.fastmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <7085019b-4fad-4d8d-89c0-1dd33fb27bb7@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 1d5003d05f983eee28756896328e4949d9a97b7f  wifi: brcmfmac: pcie: Add BCM4378B3 support
+On 2/27/23 15:30, Arnd Bergmann wrote:
+> On Mon, Feb 27, 2023, at 22:09, Larry Finger wrote:
+>> On 2/27/23 14:38, Arnd Bergmann wrote:
+>>> Is this the Cardbus or the PCMCIA version of the BCM4306 device? As far
+>>> as I understand this particular chip can be wired up either way inside
+>>> of the card, and the PowerBook G4 supports both types of devices.
+>>>
+>>> If it's the PCMCIA version, then dropping support for it was the idea
+>>> of the patch series that we can debate, but if it was the Cardbus version
+>>> that broke, then this was likely a bug I introduced by accident.
+>>
+>> The BCM4306 is internal, and wired directly to the PCI bus. My understanding is
+>> that the BCM4318 is a cardbus device. It definitely shows up in an lspci scan.
+> 
+> Ah right, I got confused because I had googled for BCM4306 for too long
+> trying to find out whether that might be used in combination with the
+> BCM63xx SoC support that patch 1 removed.
+> 
+> BCM4318 should definitely keep working after my series. My best guess
+> is that the problem is that I introduced an unnecessary dependency
+> between CONFIG_CARDBUS and CONFIG_PCI_HOTPLUG, so you'd need to
+> either undo the dependency or enable both in the local config.
+> 
+> If it's not that, then it's a bug in my changes that needs to be
+> fixed before they can be considered for integration. As long as
+> we are still debating whether the series makes sense at all,
+> I'm not worried about this.
 
-elapsed time: 722m
+Arnd,
 
-configs tested: 123
-configs skipped: 7
+It was a configuration problem. In the .config obtained by installing your 
+patches, and doing a make, CONFIG_CARDBUS was not mentioned, and 
+CONFIG_PCI_HOTPLUG was not selected. When I deleted the reference to the latter, 
+did a make, and set ..._HOTPLUG, I got CONFIG+CARDBUS set to "m", and the yenta 
+modules were built. This version sees the BCM4318 in the lspci scan, and the 
+interface works. Your patches are OK.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I am not sure how to warn people about the configuration change possible 
+breaking things.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r001-20230227   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230227   gcc  
-alpha                randconfig-r006-20230227   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230226   gcc  
-arc                  randconfig-r043-20230227   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm          buildonly-randconfig-r002-20230226   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r022-20230227   clang
-arm                  randconfig-r046-20230226   gcc  
-arm                  randconfig-r046-20230227   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r023-20230227   gcc  
-csky         buildonly-randconfig-r001-20230226   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r011-20230227   gcc  
-csky                 randconfig-r016-20230227   gcc  
-hexagon              randconfig-r041-20230226   clang
-hexagon              randconfig-r041-20230227   clang
-hexagon              randconfig-r045-20230226   clang
-hexagon              randconfig-r045-20230227   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r005-20230227   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230227   clang
-i386                 randconfig-a002-20230227   clang
-i386                 randconfig-a003-20230227   clang
-i386                 randconfig-a004-20230227   clang
-i386                 randconfig-a005-20230227   clang
-i386                 randconfig-a006-20230227   clang
-i386                 randconfig-a011-20230227   gcc  
-i386                 randconfig-a012-20230227   gcc  
-i386                 randconfig-a013-20230227   gcc  
-i386                 randconfig-a014-20230227   gcc  
-i386                 randconfig-a015-20230227   gcc  
-i386                 randconfig-a016-20230227   gcc  
-i386                 randconfig-r025-20230227   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r002-20230227   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r001-20230226   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r003-20230226   gcc  
-loongarch            randconfig-r014-20230226   gcc  
-loongarch            randconfig-r035-20230228   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r012-20230226   gcc  
-m68k                 randconfig-r014-20230227   gcc  
-microblaze   buildonly-randconfig-r003-20230226   gcc  
-microblaze   buildonly-randconfig-r006-20230226   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r033-20230228   clang
-nios2        buildonly-randconfig-r003-20230227   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r002-20230226   gcc  
-nios2                randconfig-r024-20230227   gcc  
-nios2                randconfig-r026-20230227   gcc  
-openrisc             randconfig-r004-20230226   gcc  
-openrisc             randconfig-r011-20230226   gcc  
-parisc       buildonly-randconfig-r004-20230227   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r005-20230227   gcc  
-parisc               randconfig-r015-20230226   gcc  
-parisc               randconfig-r034-20230228   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r001-20230227   clang
-powerpc              randconfig-r006-20230226   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r031-20230228   gcc  
-riscv                randconfig-r036-20230228   gcc  
-riscv                randconfig-r042-20230226   clang
-riscv                randconfig-r042-20230227   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r032-20230228   gcc  
-s390                 randconfig-r044-20230226   clang
-s390                 randconfig-r044-20230227   gcc  
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r006-20230227   gcc  
-sh                   randconfig-r004-20230227   gcc  
-sh                   randconfig-r012-20230227   gcc  
-sh                   randconfig-r013-20230227   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r021-20230227   gcc  
-sparc64      buildonly-randconfig-r004-20230226   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230227   clang
-x86_64               randconfig-a002-20230227   clang
-x86_64               randconfig-a003-20230227   clang
-x86_64               randconfig-a004-20230227   clang
-x86_64               randconfig-a005-20230227   clang
-x86_64               randconfig-a006-20230227   clang
-x86_64               randconfig-a011-20230227   gcc  
-x86_64               randconfig-a012-20230227   gcc  
-x86_64               randconfig-a013-20230227   gcc  
-x86_64               randconfig-a014-20230227   gcc  
-x86_64               randconfig-a015-20230227   gcc  
-x86_64               randconfig-a016-20230227   gcc  
-x86_64               randconfig-r015-20230227   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r016-20230226   gcc  
+Larry
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+
