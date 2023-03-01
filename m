@@ -2,84 +2,293 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 693D86A6906
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 09:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E3776A6907
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 09:44:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjCAIoT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 03:44:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39124 "EHLO
+        id S229696AbjCAIoX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 03:44:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229677AbjCAIoR (ORCPT
+        with ESMTP id S229511AbjCAIoW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 03:44:17 -0500
+        Wed, 1 Mar 2023 03:44:22 -0500
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2443EC72
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 00:44:00 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589BA17156
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 00:44:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677660241; x=1709196241;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0tNTkLVIc7ndGPfsPYZiK68okoSBQiHczxKndGTxKdg=;
-  b=dnA1baIIlfqqc+fyMSIG4Er7JToxZphNX6oNLu/MP25z6PWIwg6yF3n9
-   mR4GAm9V9KY+tkjR8IkZpeRfYrWeINfe6h7y8bD58fJmEXzX8qQWPDbOZ
-   9362DKy7uunh3WU2O7QFy5dWiTWJ5B734rdyhzcabVd/M0JGnBEmPAcDO
-   ngWdbYM2S19fToe7/W7zk2ERYavvO8YYhP+V6ZVPMLemRij4QKgaG65Iy
-   17rewSN/fZOSDL/NUDkRJ8rhlN5rAz0LmL10cEL3oq5AZ6OJfSUGsAxWy
-   22g9fEjbxp3EhBDbrFeWmd+zIwFtl6fGpyvsI3ZxXGGJtovjfXJ3vpzKb
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="336647531"
+  t=1677660244; x=1709196244;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4c6PU9PebTxNHo9PCuhfDjLG4xAgdG66HC1r7cj5lSI=;
+  b=nqHjw/gTT0mXDA2Non3379Dzg81eT77kx6yZiOwJCTf026brw/iN9XJL
+   P1BPD7Vet2hxzVRsk3FJwW7w27cKrAQLH48zx+j5+ev8B0JDdIQRMDGwi
+   zvRNXJxUM8scEcRcXx/N65lzj4Ef2NuNk0L1+FAPuYn860eWJPXL+6WX7
+   caXoGlP3Qj0mi9j2jzGX2dtm1gfXjLbFJT43uqsVNG2Ej6b9kOhjBgPSv
+   G82RWBCCt+jX1cbpDggbnwDoy9zCRZQMO5GxAJsAzluFPrJiVsgIGh1W6
+   eyIdtExGqGlCTPLoDEK0xNugEoBBtEFGsKTddSPF+I4QWOc/VenrmdfFd
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="336647538"
 X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="336647531"
+   d="scan'208";a="336647538"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 00:44:00 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="798353470"
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 00:44:04 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="798353506"
 X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="798353470"
+   d="scan'208";a="798353506"
 Received: from omimran-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.94.171])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 00:43:59 -0800
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 00:44:02 -0800
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 0/2] mac80211/radiotap patches from our internal tree 2023-02-28 
-Date:   Wed,  1 Mar 2023 10:43:45 +0200
-Message-Id: <20230301084347.44102-1-gregory.greenman@intel.com>
+Subject: [PATCH 1/2] wifi: ieee80211_radiotap: Add EHT radiotap definitions
+Date:   Wed,  1 Mar 2023 10:43:46 +0200
+Message-Id: <20230301103916.81af314d8234.I4ce78e2c558da6e5a708a8d68d61b5d7b3eb3746@changeid>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230301084347.44102-1-gregory.greenman@intel.com>
+References: <20230301084347.44102-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75 autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Hi,
+This is based on https://www.radiotap.org/fields/EHT.html and
+https://www.radiotap.org/fields/U-SIG.html new EHT TLV
+definition for 11be standard.
 
-Two more patches from our internal tree with preparations for adding EHT
-and new radiotap TLV format.
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ include/net/ieee80211_radiotap.h | 188 ++++++++++++++++++++++++++++++-
+ 1 file changed, 186 insertions(+), 2 deletions(-)
 
-The changes were tested by kbuild bot in the pending branch.
-
-Thanks
-Gregory
-
-Mordechay Goodstein (2):
-  wifi: ieee80211_radiotap: Add EHT radiotap definitions
-  wifi: mac80211: add support for driver adding radiotap TLVs
-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  27 +--
- drivers/net/wireless/mac80211_hwsim.c         |  45 ++--
- include/net/ieee80211_radiotap.h              | 208 +++++++++++++++++-
- include/net/mac80211.h                        |  44 +---
- net/mac80211/rx.c                             |  82 +++----
- 5 files changed, 277 insertions(+), 129 deletions(-)
-
+diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
+index 598f53d2a3a0..6eb77f20decd 100644
+--- a/include/net/ieee80211_radiotap.h
++++ b/include/net/ieee80211_radiotap.h
+@@ -1,6 +1,6 @@
+ /*
+  * Copyright (c) 2017		Intel Deutschland GmbH
+- * Copyright (c) 2018-2019, 2021 Intel Corporation
++ * Copyright (c) 2018-2019, 2021-2022 Intel Corporation
+  *
+  * Permission to use, copy, modify, and/or distribute this software for any
+  * purpose with or without fee is hereby granted, provided that the above
+@@ -82,11 +82,14 @@ enum ieee80211_radiotap_presence {
+ 	IEEE80211_RADIOTAP_HE_MU = 24,
+ 	IEEE80211_RADIOTAP_ZERO_LEN_PSDU = 26,
+ 	IEEE80211_RADIOTAP_LSIG = 27,
++	IEEE80211_RADIOTAP_TLV = 28,
+ 
+ 	/* valid in every it_present bitmap, even vendor namespaces */
+ 	IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE = 29,
+ 	IEEE80211_RADIOTAP_VENDOR_NAMESPACE = 30,
+-	IEEE80211_RADIOTAP_EXT = 31
++	IEEE80211_RADIOTAP_EXT = 31,
++	IEEE80211_RADIOTAP_EHT_USIG = 33,
++	IEEE80211_RADIOTAP_EHT = 34,
+ };
+ 
+ /* for IEEE80211_RADIOTAP_FLAGS */
+@@ -360,6 +363,187 @@ enum ieee80211_radiotap_zero_len_psdu_type {
+ 	IEEE80211_RADIOTAP_ZERO_LEN_PSDU_VENDOR			= 0xff,
+ };
+ 
++struct ieee80211_radiotap_tlv {
++	__le16 type;
++	__le16 len;
++	u8 data[];
++} __packed;
++
++/* ieee80211_radiotap_eht_usig - content of U-SIG tlv (type 33)
++ * see www.radiotap.org/fields/U-SIG.html for details
++ */
++struct ieee80211_radiotap_eht_usig {
++	__le32 common;
++	__le32 value;
++	__le32 mask;
++} __packed;
++
++/* ieee80211_radiotap_eht - content of EHT tlv (type 34)
++ * see www.radiotap.org/fields/EHT.html for details
++ */
++struct ieee80211_radiotap_eht {
++	__le32 known;
++	__le32 data[9];
++	__le32 user_info[];
++} __packed;
++
++/* Known field for EHT TLV
++ * The ending defines for what the field applies as following
++ * O - OFDMA (including TB), M - MU-MIMO, S - EHT sounding.
++ */
++enum ieee80211_radiotap_eht_known {
++	IEEE80211_RADIOTAP_EHT_KNOWN_SPATIAL_REUSE		= 0x00000002,
++	IEEE80211_RADIOTAP_EHT_KNOWN_GI				= 0x00000004,
++	IEEE80211_RADIOTAP_EHT_KNOWN_LTF			= 0x00000008,
++	IEEE80211_RADIOTAP_EHT_KNOWN_EHT_LTF			= 0x00000010,
++	IEEE80211_RADIOTAP_EHT_KNOWN_LDPC_EXTRA_SYM_OM		= 0x00000020,
++	IEEE80211_RADIOTAP_EHT_KNOWN_PRE_PADD_FACOR_OM		= 0x00000040,
++	IEEE80211_RADIOTAP_EHT_KNOWN_PE_DISAMBIGUITY_OM		= 0x00000080,
++	IEEE80211_RADIOTAP_EHT_KNOWN_DISREGARD_O		= 0x00000100,
++	IEEE80211_RADIOTAP_EHT_KNOWN_DISREGARD_S		= 0x00000200,
++	IEEE80211_RADIOTAP_EHT_KNOWN_CRC1			= 0x00002000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_TAIL1			= 0x00004000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_CRC2_O			= 0x00008000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_TAIL2_O			= 0x00010000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_NSS_S			= 0x00020000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_BEAMFORMED_S		= 0x00040000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_NR_NON_OFDMA_USERS_M	= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_ENCODING_BLOCK_CRC_M	= 0x00100000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_ENCODING_BLOCK_TAIL_M	= 0x00200000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_RU_MRU_SIZE_OM		= 0x00400000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_RU_MRU_INDEX_OM		= 0x00800000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_RU_ALLOC_TB_FMT		= 0x01000000,
++	IEEE80211_RADIOTAP_EHT_KNOWN_PRIMARY_80			= 0x02000000,
++};
++
++enum ieee80211_radiotap_eht_data {
++	/* Data 0 */
++	IEEE80211_RADIOTAP_EHT_DATA0_SPATIAL_REUSE		= 0x00000078,
++	IEEE80211_RADIOTAP_EHT_DATA0_GI				= 0x00000180,
++	IEEE80211_RADIOTAP_EHT_DATA0_LTF			= 0x00000600,
++	IEEE80211_RADIOTAP_EHT_DATA0_EHT_LTF			= 0x00003800,
++	IEEE80211_RADIOTAP_EHT_DATA0_LDPC_EXTRA_SYM_OM		= 0x00004000,
++	IEEE80211_RADIOTAP_EHT_DATA0_PRE_PADD_FACOR_OM		= 0x00018000,
++	IEEE80211_RADIOTAP_EHT_DATA0_PE_DISAMBIGUITY_OM		= 0x00020000,
++	IEEE80211_RADIOTAP_EHT_DATA0_DISREGARD_S		= 0x000c0000,
++	IEEE80211_RADIOTAP_EHT_DATA0_DISREGARD_O		= 0x003c0000,
++	IEEE80211_RADIOTAP_EHT_DATA0_CRC1_O			= 0x03c00000,
++	IEEE80211_RADIOTAP_EHT_DATA0_TAIL1_O			= 0xfc000000,
++	/* Data 1 */
++	IEEE80211_RADIOTAP_EHT_DATA1_RU_SIZE			= 0x0000001f,
++	IEEE80211_RADIOTAP_EHT_DATA1_RU_INDEX			= 0x00001fe0,
++	IEEE80211_RADIOTAP_EHT_DATA1_RU_ALLOC_CC_1_1_1		= 0x003fe000,
++	IEEE80211_RADIOTAP_EHT_DATA1_RU_ALLOC_CC_1_1_1_KNOWN	= 0x00400000,
++	IEEE80211_RADIOTAP_EHT_DATA1_PRIMARY_80			= 0xc0000000,
++	/* Data 2 */
++	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_2_1_1		= 0x000001ff,
++	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_2_1_1_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_1_1_2		= 0x0007fc00,
++	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_1_1_2_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_2_1_2		= 0x1ff00000,
++	IEEE80211_RADIOTAP_EHT_DATA2_RU_ALLOC_CC_2_1_2_KNOWN	= 0x20000000,
++	/* Data 3 */
++	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_1		= 0x000001ff,
++	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_1_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_2_2_1		= 0x0007fc00,
++	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_2_2_1_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_2		= 0x1ff00000,
++	IEEE80211_RADIOTAP_EHT_DATA3_RU_ALLOC_CC_1_2_2_KNOWN	= 0x20000000,
++	/* Data 4 */
++	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_2_2_2		= 0x000001ff,
++	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_2_2_2_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_1_2_3		= 0x0007fc00,
++	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_1_2_3_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_2_2_3		= 0x1ff00000,
++	IEEE80211_RADIOTAP_EHT_DATA4_RU_ALLOC_CC_2_2_3_KNOWN	= 0x20000000,
++	/* Data 5 */
++	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_4		= 0x000001ff,
++	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_4_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_2_2_4		= 0x0007fc00,
++	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_2_2_4_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_5		= 0x1ff00000,
++	IEEE80211_RADIOTAP_EHT_DATA5_RU_ALLOC_CC_1_2_5_KNOWN	= 0x20000000,
++	/* Data 6 */
++	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_2_2_5		= 0x000001ff,
++	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_2_2_5_KNOWN	= 0x00000200,
++	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_1_2_6		= 0x0007fc00,
++	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_1_2_6_KNOWN	= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_2_2_6		= 0x1ff00000,
++	IEEE80211_RADIOTAP_EHT_DATA6_RU_ALLOC_CC_2_2_6_KNOWN	= 0x20000000,
++	/* Data 7 */
++	IEEE80211_RADIOTAP_EHT_DATA7_CRC2_O			= 0x0000000f,
++	IEEE80211_RADIOTAP_EHT_DATA7_TAIL_2_O			= 0x000003f0,
++	IEEE80211_RADIOTAP_EHT_DATA7_NSS_S			= 0x0000f000,
++	IEEE80211_RADIOTAP_EHT_DATA7_BEAMFORMED_S		= 0x00010000,
++	IEEE80211_RADIOTAP_EHT_DATA7_NUM_OF_NON_OFDMA_USERS	= 0x000e0000,
++	IEEE80211_RADIOTAP_EHT_DATA7_USER_ENCODING_BLOCK_CRC	= 0x00f00000,
++	IEEE80211_RADIOTAP_EHT_DATA7_USER_ENCODING_BLOCK_TAIL	= 0x3f000000,
++	/* Data 8 */
++	IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_PS_160	= 0x00000001,
++	IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_B0		= 0x00000002,
++	IEEE80211_RADIOTAP_EHT_DATA8_RU_ALLOC_TB_FMT_B7_B1	= 0x000001fc,
++};
++
++enum ieee80211_radiotap_eht_user_info {
++	IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID_KNOWN		= 0x00000001,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_MCS_KNOWN		= 0x00000002,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_CODING_KNOWN		= 0x00000004,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_KNOWN_O		= 0x00000010,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_BEAMFORMING_KNOWN_O	= 0x00000020,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_SPATIAL_CONFIG_KNOWN_M	= 0x00000040,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_DATA_FOR_USER		= 0x00000080,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_STA_ID			= 0x0007ff00,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_CODING			= 0x00080000,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_MCS			= 0x00f00000,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O			= 0x0f000000,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_BEAMFORMING_O		= 0x20000000,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_SPATIAL_CONFIG_M	= 0x3f000000,
++	IEEE80211_RADIOTAP_EHT_USER_INFO_RESEVED_c0000000	= 0xc0000000,
++};
++
++enum ieee80211_radiotap_eht_usig_common {
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER_KNOWN	= 0x00000001,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW_KNOWN		= 0x00000002,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL_KNOWN		= 0x00000004,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR_KNOWN	= 0x00000008,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP_KNOWN		= 0x00000010,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_BAD_USIG_CRC		= 0x00000020,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER		= 0x00007000,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW			= 0x00038000,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_UL_DL		= 0x00040000,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_BSS_COLOR		= 0x01f80000,
++	IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP			= 0xfe000000,
++};
++
++enum ieee80211_radiotap_eht_usig_mu {
++	/* MU-USIG-1 */
++	IEEE80211_RADIOTAP_EHT_USIG1_MU_B0_B24_DISREGARD	= 0x0000001f,
++	IEEE80211_RADIOTAP_EHT_USIG1_MU_B25_VALIDATE		= 0x00000020,
++	/* MU-USIG-2 */
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B0_B1_PPDU_TYPE		= 0x000000c0,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B2_VALIDATE		= 0x00000100,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B3_B7_PUNCTURED_INFO	= 0x00003e00,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B8_VALIDATE		= 0x00004000,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B9_B10_SIG_MCS		= 0x00018000,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B11_B15_EHT_SIG_SYMBOLS = 0x003e0000,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B16_B19_CRC		= 0x03c00000,
++	IEEE80211_RADIOTAP_EHT_USIG2_MU_B20_B25_TAIL		= 0xfc000000,
++};
++
++enum ieee80211_radiotap_eht_usig_tb {
++	/* TB-USIG-1 */
++	IEEE80211_RADIOTAP_EHT_USIG1_TB_B20_B25_DISREGARD	= 0x0000001f,
++
++	/* TB-USIG-2 */
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B0_B1_PPDU_TYPE		= 0x000000c0,
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B2_VALIDATE		= 0x00000100,
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B3_B6_SPATIAL_REUSE_1	= 0x00001e00,
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B7_B10_SPATIAL_REUSE_2	= 0x0001e000,
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B11_B15_DISREGARD	= 0x003e0000,
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B16_B19_CRC		= 0x03c00000,
++	IEEE80211_RADIOTAP_EHT_USIG2_TB_B20_B25_TAIL		= 0xfc000000,
++};
++
+ /**
+  * ieee80211_get_radiotap_len - get radiotap header length
+  */
 -- 
 2.38.1
 
