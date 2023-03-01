@@ -2,95 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D06C56A62E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Feb 2023 23:55:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FE96A6443
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 01:33:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjB1Wzo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Feb 2023 17:55:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49138 "EHLO
+        id S229700AbjCAAd3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Feb 2023 19:33:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbjB1Wzn (ORCPT
+        with ESMTP id S229523AbjCAAd2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Feb 2023 17:55:43 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A5C3754D
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 14:55:38 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-260-VraOLvLhMQKDyz9L5f4zYg-1; Tue, 28 Feb 2023 22:55:35 +0000
-X-MC-Unique: VraOLvLhMQKDyz9L5f4zYg-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.47; Tue, 28 Feb
- 2023 22:55:27 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.047; Tue, 28 Feb 2023 22:55:26 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     David Laight <David.Laight@ACULAB.COM>,
-        'Russell King' <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@kernel.org>
-CC:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        "Ian Abbott" <abbotti@mev.co.uk>, Jakub Kicinski <kuba@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        "Olof Johansson" <olof@lixom.net>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        "YOKOTA Hiroshi" <yokota@netlab.is.tsukuba.ac.jp>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Tue, 28 Feb 2023 19:33:28 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEFF13537;
+        Tue, 28 Feb 2023 16:33:25 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3210WVblC030574, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3210WVblC030574
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 1 Mar 2023 08:32:32 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 1 Mar 2023 08:32:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 1 Mar 2023 08:32:38 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Wed, 1 Mar 2023 08:32:38 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Simon Horman <simon.horman@corigine.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [RFC 0/6] pcmcia: separate 16-bit support from cardbus
-Thread-Topic: [RFC 0/6] pcmcia: separate 16-bit support from cardbus
-Thread-Index: AQHZSuhWwIxyEez/qUesuC2XWPglYq7k9JKQgAAEaJA=
-Date:   Tue, 28 Feb 2023 22:55:26 +0000
-Message-ID: <e03e2ef805b94ee2a81a6ecb3adab6c3@AcuMS.aculab.com>
-References: <20230227133457.431729-1-arnd@kernel.org>
- <Y/0PbJzvrzpvLbcW@shell.armlinux.org.uk>
- <b75b24146c114e948bb2d325a8d27fda@AcuMS.aculab.com>
-In-Reply-To: <b75b24146c114e948bb2d325a8d27fda@AcuMS.aculab.com>
-Accept-Language: en-GB, en-US
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: RE: [PATCH] rtlwifi: rtl8192se: Remove the unused variable bcntime_cfg
+Thread-Topic: [PATCH] rtlwifi: rtl8192se: Remove the unused variable
+ bcntime_cfg
+Thread-Index: AQHZSxoGZWivytKAKkyUIoUlgPpoua7jrTwAgAFmn/A=
+Date:   Wed, 1 Mar 2023 00:32:38 +0000
+Message-ID: <1d262829764d40a086e93f0c7d0541bc@realtek.com>
+References: <20230228021132.88910-1-jiapeng.chong@linux.alibaba.com>
+ <Y/3gUquaPNlaLaKt@corigine.com>
+In-Reply-To: <Y/3gUquaPNlaLaKt@corigine.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2023/2/28_=3F=3F_10:36:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogRGF2aWQgTGFpZ2h0DQo+IFNlbnQ6IDI4IEZlYnJ1YXJ5IDIwMjMgMjI6NDUNCi4uLg0K
-PiBPciwgbW9yZSBzcGVjaWZpY2FsbHksIGFyZSBhbnkgcGVvcGxlIHVzaW5nIDE2LWJpdCBQQ01D
-SUEgY2FyZHMNCj4gaW4gY2FyZGJ1cy1jYXBhYmxlIHNvY2tldHMgd2l0aCBhIGN1cnJlbnQga2Vy
-bmVsLg0KPiBUaGV5IG1pZ2h0IGJlIHVzaW5nIHVudXN1YWwgY2FyZHMgdGhhdCBhcmVuJ3QgYXZh
-aWxhYmxlIGFzDQo+IGNhcmRidXMgLSBwZXJoYXBzIDU2ayBtb2RlbXMgKGRvZXMgYW55b25lIHN0
-aWxsIHVzZSB0aG9zZT8pLg0KDQpPciwgd2hhdCBJIG5vdyByZW1lbWJlciB3ZSB3ZXJlIGRvaW5n
-Og0KQ29weWluZyBpbWFnZXMgdG8gbGluZWFyIHBjbWNpYSBzcmFtIGNhcmRzIHRvIGFjY2VzcyBm
-cm9tDQphbiBlbWJlZGRlZCBzeXN0ZW0gdGhhdCBvbmx5IHN1cHBvcnRlZCBwY21jaWEuDQooV2hp
-Y2ggbWVhbnMgdGhlIHNwYXJjIHN5c3RlbXMgc3VwcG9ydGVkIGJvdGggY2FyZGJ1cyBhbmQgcGNt
-Y2lhLikNCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxl
-eSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0
-aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+
+
+> -----Original Message-----
+> From: Simon Horman <simon.horman@corigine.com>
+> Sent: Tuesday, February 28, 2023 7:07 PM
+> To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> Cc: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; Abaci Robot <abaci@linux.alibaba.com>
+> Subject: Re: [PATCH] rtlwifi: rtl8192se: Remove the unused variable bcntime_cfg
+> 
+> On Tue, Feb 28, 2023 at 10:11:32AM +0800, Jiapeng Chong wrote:
+> > Variable bcntime_cfg is not effectively used, so delete it.
+> >
+> > drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:6: warning: variable 'bcntime_cfg' set but not
+> used.
+> >
+> > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> > Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4240
+> > Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> 
+> Hi Jiapeng Chong,
+> 
+> this looks good to me.
+> 
+> Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> 
+> While reviewing this gcc 12.2.0 told me:
+> 
+> drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:25: error: unused variable 'bcn_ifs'
+> [-Werror=unused-variable]
+>  1555 |         u16 bcn_cw = 6, bcn_ifs = 0xf;
+>       |                         ^~~~~~~
+> drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:13: error: unused variable 'bcn_cw'
+> [-Werror=unused-variable]
+>  1555 |         u16 bcn_cw = 6, bcn_ifs = 0xf;
+>       |             ^~~~~~
+> 
+> So perhaps you could consider sending another patch to remove them too.
+> 
+
+These errors are introduced by this patch, so please fix them together by this
+patch.
+
+Ping-Ke
+
 
