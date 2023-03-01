@@ -2,89 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C37856A6635
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 04:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 269616A679D
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 07:26:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbjCADGZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Feb 2023 22:06:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48450 "EHLO
+        id S229520AbjCAG0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 01:26:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbjCADGY (ORCPT
+        with ESMTP id S229437AbjCAG0H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Feb 2023 22:06:24 -0500
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE3B32CEC;
-        Tue, 28 Feb 2023 19:06:22 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0VclyQEq_1677639937;
-Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VclyQEq_1677639937)
-          by smtp.aliyun-inc.com;
-          Wed, 01 Mar 2023 11:06:20 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     pkshih@realtek.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH v2] rtlwifi: rtl8192se: Remove some unused variables
-Date:   Wed,  1 Mar 2023 11:05:34 +0800
-Message-Id: <20230301030534.2102-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        Wed, 1 Mar 2023 01:26:07 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74B3166CB
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 22:26:05 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id f13so49590242edz.6
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 22:26:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1677651964;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VKnahKYvDkOq1G3kybxm9V8jbp0DrWyaFO9RjoxtDLQ=;
+        b=OZgrReNxsVqcb+FXsKNKY0upRcB1Hb0j/BwI02Ypa0L95yBSxfaJu73oSUqbG6re0J
+         lcI4zdc18OvVgLw6hrPP9vFa/yi0ba1QhQzfsIbg5HJ4a+HP1BCwSJHFqLOVZinJrkuV
+         OUcFdlPYg1nQh45s1Y7STtRLNH5UwwkIGDZ20JBtsHE4OKnHQuD08gs7olFuDjt/ecc+
+         zVueY4QZCl90TBRlquND7dhA+3e2HAjnO4Zi7y8q1kNRnCdydiQ6Kmy3cw6rNKrX4mmc
+         hW8LSCX0qm1d9saXJ9Hco9VXqrVa26lrV6N/enjNp9JnfPSNTbvjJglsuKh1ONGFjpsg
+         JjJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677651964;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VKnahKYvDkOq1G3kybxm9V8jbp0DrWyaFO9RjoxtDLQ=;
+        b=j2gprig1Unk8nbGnM6Kt37Vu9QIfgielbnDLyV+sdCvDSUJ6UWZg3hKQiC2fKERsaX
+         IN5RULj3OYqL4sEDIDOBu4Pj6OI3HQl9rUSrh/8jnDN2K+GyfUgacUntFr8RDWSdLPXR
+         a0K68LlaqiOCz9ZIO0zicpAba1kgGlOSZiXzV1A1AS7HudSX2RBuVYTRi/kVFXZvlapS
+         stusTo4PS4IUtc9KdByOABqwgPuv+wM7UnoZfF2iJ0EtnQqkZWRXlijpL+r1Ni+p28wh
+         v4qm2MSctyrhy6tRLWhbkVlPvw1pbfe/iWeow243aMg8y9LKr/LGrPQ4BkGKflODD1EC
+         gqTg==
+X-Gm-Message-State: AO0yUKX+f2HXWo1UmFpQ+GbebZGe02jGpOL9S2JtnAK/m+4yrS0OesDL
+        Zr+9wBzdonQRg63e7EMGNwyNKd/3T8n3TMDs
+X-Google-Smtp-Source: AK7set/tX1BeN7BKcFDPP58kS7oHLyMLCeEPCsfBGegGeuZYReYtbCIHsFzjei8XpZcpkY7g4aqHOA==
+X-Received: by 2002:a05:6402:40ca:b0:4ad:6f56:a362 with SMTP id z10-20020a05640240ca00b004ad6f56a362mr8100641edb.4.1677651963906;
+        Tue, 28 Feb 2023 22:26:03 -0800 (PST)
+Received: from ?IPV6:2a02:2788:415:e0f7:b40d:6926:17d9:5800? ([2a02:2788:415:e0f7:b40d:6926:17d9:5800])
+        by smtp.gmail.com with ESMTPSA id c21-20020a17090620d500b008e267d7ec18sm5379117ejc.50.2023.02.28.22.26.03
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Feb 2023 22:26:03 -0800 (PST)
+Message-ID: <b8fa3770-7164-e6bf-4d8d-8ba8fd78057c@gmail.com>
+Date:   Wed, 1 Mar 2023 07:26:02 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: fr-FR
+To:     linux-wireless@vger.kernel.org
+From:   =?UTF-8?Q?Fran=c3=a7ois_Valenduc?= <francoisvalenduc@gmail.com>
+Subject: Hangs with NetworkManager and rtw8723_de with kernel 6.1
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Variable bcntime_cfg, bcn_cw and bcn_ifs are not effectively used, so
-delete it.
+Good morning,
 
-drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:6: warning:
-variable 'bcntime_cfg' set but not used.
+systemrescue recently switched from kernel 5.15 to kernel 6.1 and 
+NetworkManager started to hangs at startup. This seems to be linked to 
+my wifi card (RTL8723DE). I am also able to reproduce the problem under 
+gentoo with the same versions for NetworkManager and linux-firmware than 
+those used in systemrescue (1.42.2 and 20230210). Under gentoo, the 
+problem appears with kernel 6.1.14 and 6.2.1. I am able to use 
+NetworkManager and systemrescue without problem on another computer 
+which has another wifi card.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4240
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
-Changes in v2:
-  -Remove bcn_cw and bcn_ifs.
+Does anybody have a solution to this problem ?
 
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 9 ---------
- 1 file changed, 9 deletions(-)
+Thanks in advance for your help,
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-index bd0b7e365edb..a8b5bf45b1bb 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
-@@ -1552,8 +1552,6 @@ void rtl92se_set_beacon_related_registers(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
--	u16 bcntime_cfg = 0;
--	u16 bcn_cw = 6, bcn_ifs = 0xf;
- 	u16 atim_window = 2;
- 
- 	/* ATIM Window (in unit of TU). */
-@@ -1576,13 +1574,6 @@ void rtl92se_set_beacon_related_registers(struct ieee80211_hw *hw)
- 	 * other ad hoc STA */
- 	rtl_write_byte(rtlpriv, BCN_ERR_THRESH, 100);
- 
--	/* Beacon Time Configuration */
--	if (mac->opmode == NL80211_IFTYPE_ADHOC)
--		bcntime_cfg |= (bcn_cw << BCN_TCFG_CW_SHIFT);
--
--	/* TODO: bcn_ifs may required to be changed on ASIC */
--	bcntime_cfg |= bcn_ifs << BCN_TCFG_IFS;
--
- 	/*for beacon changed */
- 	rtl92s_phy_set_beacon_hwreg(hw, mac->beacon_interval);
- }
--- 
-2.20.1.7.g153144c
+Best regards,
+
+François Valenduc
 
