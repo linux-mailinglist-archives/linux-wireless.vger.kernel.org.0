@@ -2,163 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ECD16A7151
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 17:35:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A03A76A715D
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 17:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230217AbjCAQf5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 11:35:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
+        id S229463AbjCAQia (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 11:38:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230214AbjCAQfi (ORCPT
+        with ESMTP id S229515AbjCAQi3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 11:35:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C2522794
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 08:34:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1677688392;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mBvJUqzz0B1IR3okz9xKdGxW4Xa3WX575vqp41+ynxk=;
-        b=Pk50P+Wmk3ypmngs6KSgQbS6bJVeQ6BGUF9TWFaV0SOP9xneXUnk/2mcHrl4cBNivKIBG7
-        c6l5kTU3o6JJkm4Vex2fpYcKbyugBKV1BBLfv8vhovOKDzULfka7n3Eya4SR6ZBoDmIcKh
-        cM+cMFisAKvP4XKeX1ynrR3zWWweGnU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-64-fIkx4UotPWyMFy8-HMt4Jg-1; Wed, 01 Mar 2023 11:33:11 -0500
-X-MC-Unique: fIkx4UotPWyMFy8-HMt4Jg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C45C486C168;
-        Wed,  1 Mar 2023 16:33:10 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.22.48.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 485A5492C3E;
-        Wed,  1 Mar 2023 16:33:10 +0000 (UTC)
-Message-ID: <55672530d98e4ffb427da8253a8d52f5a6703d93.camel@redhat.com>
-Subject: Re: [PATCH 2/2] wifi: move raycs, wl3501 and rndis_wlan to legacy
- directory
-From:   Dan Williams <dcbw@redhat.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 01 Mar 2023 10:33:09 -0600
-In-Reply-To: <877cw1q76q.fsf@kernel.org>
-References: <20230227121732.8967-1-kvalo@kernel.org>
-         <20230227121732.8967-3-kvalo@kernel.org>
-         <cc905b745580b0300d10f1f88d714305c7544f67.camel@redhat.com>
-         <87ilfmrkil.fsf@kernel.org>
-         <c3f831e111e056c32f1822dde602e48eb764ea4f.camel@redhat.com>
-         <87cz5u1ewt.fsf@kernel.org>
-         <acc996e0b5ef1813e1073200ed50ca57b0b12934.camel@redhat.com>
-         <877cw1q76q.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Wed, 1 Mar 2023 11:38:29 -0500
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82033D937
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 08:38:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=FTwWFaIixScYA6gzXMUcvREL3x2gjXj76TsQM9Jwqps=; b=hnwGC3FOabdPSuV/UeC6WjPbV0
+        9j/O7id4Mhsvw2lcfXRN/ocDA/bTrxEVxpe8HilwrtMaRWZQnz2eHLwB1gvQyfjPTr4LkK2ownMCv
+        I9I7em+zc1KkivXoYUhu+vcFhjYBcGLGXfvoEotZkBV4MG9bE0LetJkdHqPWLHCQXXvU=;
+Received: from p54ae9730.dip0.t-ipconnect.de ([84.174.151.48] helo=Maecks.lan)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1pXPSY-00DG77-CX; Wed, 01 Mar 2023 17:37:42 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org
+Subject: [PATCH 6.3] wifi: mt76: mt7915: add back 160MHz channel width support for MT7915
+Date:   Wed,  1 Mar 2023 17:37:39 +0100
+Message-Id: <20230301163739.52314-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-03-01 at 09:09 +0200, Kalle Valo wrote:
-> Dan Williams <dcbw@redhat.com> writes:
->=20
-> > > > Is the goal just to get all the .c individual drivers out of
-> > > > net/wireless?=20
-> > >=20
-> > > Yes, exactly. The extra files in drivers/net/wireless annoy me
-> > > everytime
-> > > when I'm checking something in the tree.
-> >=20
-> > ray_cs and wl3501_cs are also PCMCIA drivers (not CardBus) and isn't
-> > Arnd trying to get rid of PCMCIA via "[RFC 0/6] pcmcia: separate 16-bit
-> > support from cardbus"?
-> >=20
-> > Maybe those two drivers get solved for you :)
->=20
-> That would be great :)
->=20
-> > > > Also isn't Greg KH out to kill RNDIS too? I don't recall that being
-> > > > a
-> > > > settled question yet, but I lost track.
-> > >=20
-> > > I haven't heard anything about that recently, I hope we don't have to
-> > > remove rndis_wlan from the tree. But wext drivers are another thing,
-> > > we
-> > > really should get rid of them (or convert to cfg80211).
-> >=20
-> > I have vague, morbid interest in converting atmel and prism54 to
-> > cfg80211 but timeline on that would be "this year".
->=20
-> As you already noticed, prism54 is already gone. But I'm keeping fingers
-> crossed that who you would have time to convert atmel :)
->=20
-> We really should get rid of wext, at least from drivers/net/wireless.
-> Staging drivers are of course of another thing. Just for fun I decided
-> to grep how many wext drivers and the first match was an ethernet
-> driver, weird:
->=20
-> drivers/net/ethernet/toshiba/ps3_gelic_wireless.c:2570: netdev->wireless_=
-handlers =3D &gelic_wl_wext_handler_def;
+A number of users reported that this support was working fine before
+it got removed. Add it back, but leave out the unsupported 80+80 mode.
 
-Not super odd; that's the PlayStation 3. HW is an odd combo of ethernet
-and WiFi and the FW interface is bizarre as you can see. At least it
-supports 802.11g and WPA which is more than we can say for ipw2100.
+Fixes: ac922bd60ace ("wifi: mt76: mt7915: remove BW160 and BW80+80 support")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 40 ++++++++++++++-----
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
->=20
-> These are the mainline drivers using wext:
->=20
-> drivers/net/wireless/atmel/atmel.c:1574:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0dev->wireless_handlers =3D &atmel_handler_def;
-> drivers/net/wireless/cisco/airo.c:2674:=C2=A0dev->wireless_handlers =3D &=
-airo_handler_def;
-> drivers/net/wireless/cisco/airo.c:2828:=C2=A0dev->wireless_handlers =3D &=
-airo_handler_def;
-> drivers/net/wireless/intel/ipw2x00/ipw2100.c:6032:=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0dev->wireless_handlers =3D &ipw2100_wx_handler_def;
-> drivers/net/wireless/intel/ipw2x00/ipw2200.c:11675:=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0net_dev->wireless_handlers =3D &ipw_wx_handler_def;
-> drivers/net/wireless/intersil/hostap/hostap_main.c:851:=C2=A0dev->wireles=
-s_handlers =3D &hostap_iw_handler_def;
-> drivers/net/wireless/intersil/orinoco/main.c:2251:=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0dev->wireless_handlers =3D &orinoco_handler_def;
-> drivers/net/wireless/ray_cs.c:303:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev=
-->wireless_handlers =3D &ray_handler_def;
-> drivers/net/wireless/wl3501_cs.c:1886:=C2=A0=C2=A0dev->wireless_handlers=
-=C2=A0=C2=A0=3D &wl3501_handler_def;
-> drivers/net/wireless/zydas/zd1201.c:1782:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0dev->wireless_handlers =3D &zd1201_iw_handlers;
-
-FWIW orinoco and ipw2x00 have some minimal cfg80211 code but IIRC it's
-pretty limited.
-
-Honestly we probably should start deprecation/removal for 802.11b-only
-hardware which is everything on this list *except* ps3_gelic and
-ipw2200.
-
-Dan
-
->=20
-> And these are the staging drivers:
->=20
-> drivers/staging/ks7010/ks_wlan_net.c:2636:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0dev->wireless_handlers =3D &ks_wlan_handler_def;
-> drivers/staging/r8188eu/os_dep/os_intfs.c:358:=C2=A0=C2=A0pnetdev->wirele=
-ss_handlers =3D (struct iw_handler_def *)&rtw_handlers_def;
-> drivers/staging/rtl8192e/rtl8192e/rtl_core.c:2334:=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0dev->wireless_handlers =3D &r8192_wx_handlers_def;
-> drivers/staging/rtl8192u/r8192U_core.c:4532:=C2=A0=C2=A0=C2=A0=C2=A0dev->=
-wireless_handlers =3D &r8192_wx_handlers_def;
-> drivers/staging/rtl8712/os_intfs.c:214:=C2=A0pnetdev->wireless_handlers =
-=3D (struct iw_handler_def *)
->=20
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index a7ff78b8697c..71ccefd39cb2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -384,7 +384,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
+-	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 
+ 	hw->max_tx_fragments = 4;
+ 
+@@ -397,6 +396,9 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 	}
+ 
+ 	if (phy->mt76->cap.has_5ghz) {
++		struct ieee80211_sta_vht_cap *vht_cap;
++
++		vht_cap = &phy->mt76->sband_5g.sband.vht_cap;
+ 		phy->mt76->sband_5g.sband.ht_cap.cap |=
+ 			IEEE80211_HT_CAP_LDPC_CODING |
+ 			IEEE80211_HT_CAP_MAX_AMSDU;
+@@ -404,19 +406,28 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 			IEEE80211_HT_MPDU_DENSITY_4;
+ 
+ 		if (is_mt7915(&dev->mt76)) {
+-			phy->mt76->sband_5g.sband.vht_cap.cap |=
++			vht_cap->cap |=
+ 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991 |
+ 				IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
++
++			if (!dev->dbdc_support)
++				vht_cap->cap |=
++					IEEE80211_VHT_CAP_SHORT_GI_160 |
++					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
++					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
+ 		} else {
+-			phy->mt76->sband_5g.sband.vht_cap.cap |=
++			vht_cap->cap |=
+ 				IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
+ 				IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
+ 
+ 			/* mt7916 dbdc with 2g 2x2 bw40 and 5g 2x2 bw160c */
+-			phy->mt76->sband_5g.sband.vht_cap.cap |=
++			vht_cap->cap |=
+ 				IEEE80211_VHT_CAP_SHORT_GI_160 |
+ 				IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ;
+ 		}
++
++		if (!is_mt7915(&dev->mt76) || !dev->dbdc_support)
++			ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	}
+ 
+ 	mt76_set_stream_caps(phy->mt76, true);
+@@ -842,9 +853,13 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
+ 	int sts = hweight8(phy->mt76->chainmask);
+ 	u8 c, sts_160 = sts;
+ 
+-	/* mt7915 doesn't support bw160 */
+-	if (is_mt7915(&dev->mt76))
+-		sts_160 = 0;
++	/* Can do 1/2 of STS in 160Mhz mode for mt7915 */
++	if (is_mt7915(&dev->mt76)) {
++		if (!dev->dbdc_support)
++			sts_160 /= 2;
++		else
++			sts_160 = 0;
++	}
+ 
+ #ifdef CONFIG_MAC80211_MESH
+ 	if (vif == NL80211_IFTYPE_MESH_POINT)
+@@ -945,10 +960,15 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
+ 	int i, idx = 0, nss = hweight8(phy->mt76->antenna_mask);
+ 	u16 mcs_map = 0;
+ 	u16 mcs_map_160 = 0;
+-	u8 nss_160 = nss;
++	u8 nss_160;
+ 
+-	/* Can't do 160MHz with mt7915 */
+-	if (is_mt7915(&dev->mt76))
++	if (!is_mt7915(&dev->mt76))
++		nss_160 = nss;
++	else if (!dev->dbdc_support)
++		/* Can do 1/2 of NSS streams in 160Mhz mode for mt7915 */
++		nss_160 = nss / 2;
++	else
++		/* Can't do 160MHz with mt7915 dbdc */
+ 		nss_160 = 0;
+ 
+ 	for (i = 0; i < 8; i++) {
+-- 
+2.39.0
 
