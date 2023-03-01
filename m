@@ -2,92 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 269616A679D
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 07:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C40A6A67C5
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 07:51:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbjCAG0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 01:26:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54672 "EHLO
+        id S229760AbjCAGvM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 01:51:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjCAG0H (ORCPT
+        with ESMTP id S229451AbjCAGvK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 01:26:07 -0500
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74B3166CB
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 22:26:05 -0800 (PST)
-Received: by mail-ed1-x52b.google.com with SMTP id f13so49590242edz.6
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Feb 2023 22:26:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677651964;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VKnahKYvDkOq1G3kybxm9V8jbp0DrWyaFO9RjoxtDLQ=;
-        b=OZgrReNxsVqcb+FXsKNKY0upRcB1Hb0j/BwI02Ypa0L95yBSxfaJu73oSUqbG6re0J
-         lcI4zdc18OvVgLw6hrPP9vFa/yi0ba1QhQzfsIbg5HJ4a+HP1BCwSJHFqLOVZinJrkuV
-         OUcFdlPYg1nQh45s1Y7STtRLNH5UwwkIGDZ20JBtsHE4OKnHQuD08gs7olFuDjt/ecc+
-         zVueY4QZCl90TBRlquND7dhA+3e2HAjnO4Zi7y8q1kNRnCdydiQ6Kmy3cw6rNKrX4mmc
-         hW8LSCX0qm1d9saXJ9Hco9VXqrVa26lrV6N/enjNp9JnfPSNTbvjJglsuKh1ONGFjpsg
-         JjJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677651964;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VKnahKYvDkOq1G3kybxm9V8jbp0DrWyaFO9RjoxtDLQ=;
-        b=j2gprig1Unk8nbGnM6Kt37Vu9QIfgielbnDLyV+sdCvDSUJ6UWZg3hKQiC2fKERsaX
-         IN5RULj3OYqL4sEDIDOBu4Pj6OI3HQl9rUSrh/8jnDN2K+GyfUgacUntFr8RDWSdLPXR
-         a0K68LlaqiOCz9ZIO0zicpAba1kgGlOSZiXzV1A1AS7HudSX2RBuVYTRi/kVFXZvlapS
-         stusTo4PS4IUtc9KdByOABqwgPuv+wM7UnoZfF2iJ0EtnQqkZWRXlijpL+r1Ni+p28wh
-         v4qm2MSctyrhy6tRLWhbkVlPvw1pbfe/iWeow243aMg8y9LKr/LGrPQ4BkGKflODD1EC
-         gqTg==
-X-Gm-Message-State: AO0yUKX+f2HXWo1UmFpQ+GbebZGe02jGpOL9S2JtnAK/m+4yrS0OesDL
-        Zr+9wBzdonQRg63e7EMGNwyNKd/3T8n3TMDs
-X-Google-Smtp-Source: AK7set/tX1BeN7BKcFDPP58kS7oHLyMLCeEPCsfBGegGeuZYReYtbCIHsFzjei8XpZcpkY7g4aqHOA==
-X-Received: by 2002:a05:6402:40ca:b0:4ad:6f56:a362 with SMTP id z10-20020a05640240ca00b004ad6f56a362mr8100641edb.4.1677651963906;
-        Tue, 28 Feb 2023 22:26:03 -0800 (PST)
-Received: from ?IPV6:2a02:2788:415:e0f7:b40d:6926:17d9:5800? ([2a02:2788:415:e0f7:b40d:6926:17d9:5800])
-        by smtp.gmail.com with ESMTPSA id c21-20020a17090620d500b008e267d7ec18sm5379117ejc.50.2023.02.28.22.26.03
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Feb 2023 22:26:03 -0800 (PST)
-Message-ID: <b8fa3770-7164-e6bf-4d8d-8ba8fd78057c@gmail.com>
-Date:   Wed, 1 Mar 2023 07:26:02 +0100
+        Wed, 1 Mar 2023 01:51:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A38232BF0B;
+        Tue, 28 Feb 2023 22:51:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4181E6122A;
+        Wed,  1 Mar 2023 06:51:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A05C4339C;
+        Wed,  1 Mar 2023 06:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677653466;
+        bh=wLkMLeYVg39jdoFtmeKF2FCB/B7Xc+Wq5sqDU7iNotE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K6zPgqPXp0Y/xc6BNFauRluIJdCwb/LyhjQGczc8UAQjdfDrVq7TDLD8Z+JUpE8eZ
+         JauC8OTwrKIDBxyRnr+oJu5MBMqa3IE8Kv4Tnolf8trZ5HYoy5brjp4M0gUsz8EWpd
+         IB5MZ8KKWdzy9qaDY8/a4eknGirTNYqM5RBlLtHe0dLJ2oEskAoTXT2nGEkKQqLsmk
+         JBQaH3j5kWnD/uxWHykDuz3l41G1SHdOiFRZiY8CMJYwXotYYaDjYiIRPCfmGNj49C
+         PhTtdM0hG6W0TyYq75VzkwaRurIgKjI4kB0B9nqZq6LNgWLqEWQu7jkibtk8u7Nu41
+         XhgJmkSju5LVA==
+Date:   Wed, 1 Mar 2023 07:51:03 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        netdev@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Fix SPI and I2C bus node names in examples
+Message-ID: <Y/7112o60iSJKBmd@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Kalle Valo <kvalo@kernel.org>, Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        netdev@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-usb@vger.kernel.org
+References: <20230228215433.3944508-1-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: fr-FR
-To:     linux-wireless@vger.kernel.org
-From:   =?UTF-8?Q?Fran=c3=a7ois_Valenduc?= <francoisvalenduc@gmail.com>
-Subject: Hangs with NetworkManager and rtw8723_de with kernel 6.1
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="YR5VkbtgaV6fwHXL"
+Content-Disposition: inline
+In-Reply-To: <20230228215433.3944508-1-robh@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good morning,
 
-systemrescue recently switched from kernel 5.15 to kernel 6.1 and 
-NetworkManager started to hangs at startup. This seems to be linked to 
-my wifi card (RTL8723DE). I am also able to reproduce the problem under 
-gentoo with the same versions for NetworkManager and linux-firmware than 
-those used in systemrescue (1.42.2 and 20230210). Under gentoo, the 
-problem appears with kernel 6.1.14 and 6.2.1. I am able to use 
-NetworkManager and systemrescue without problem on another computer 
-which has another wifi card.
+--YR5VkbtgaV6fwHXL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Does anybody have a solution to this problem ?
+4:33PM -0600, Rob Herring wrote:
+> SPI and I2C bus node names are expected to be "spi" or "i2c",
+> respectively, with nothing else, a unit-address, or a '-N' index. A
+> pattern of 'spi0' or 'i2c0' or similar has crept in. Fix all these
+> cases. Mostly scripted with the following commands:
+>=20
+> git grep -l '\si2c[0-9] {' Documentation/devicetree/ | xargs sed -i -e 's=
+/i2c[0-9] {/i2c {/'
+> git grep -l '\sspi[0-9] {' Documentation/devicetree/ | xargs sed -i -e 's=
+/spi[0-9] {/spi {/'
+>=20
+> With this, a few errors in examples were exposed and fixed.
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Thanks in advance for your help,
+Acked-by: Wolfram Sang <wsa@kernel.org>
 
-Best regards,
 
-François Valenduc
+--YR5VkbtgaV6fwHXL
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmP+9dcACgkQFA3kzBSg
+KbarOQ//WCC+R6Fe2lHHwZbZ4vmS2d/Rlz7qLlnduMr+4h9rcgknAchlVnbv0OUy
+Fu8SgebyBTX19WTXbUTyILzN7IsxLxzvTesJDhfIB5n9o7uIe3V0ZiX1R1SWsyV8
+GVbUGpJFSmhar2duHPida9xvf98Cww8v3KSoWNPHSaea5+w2oXluLm6jhQPrA1pR
+1I5WdUeWduWgwX/xDPJ0eeCEW4UxRawpGgCeMo/Ip/JZRwixnNDX1BJZsNIqJBDU
+gcZq4glZHY/Gwlo9gHGZwG8Nn+pWo8dsv+zcytJfhGjqb/k3NqsZ9YUvkbGb/pQ1
+RvEGvrA/KichSvbyfcBv02QcG5e6Fo4wk4879wTK8EGIN7RCnZyQCPRNzDogCcG4
+nYyGcj22Fvv2lWoon/Gg2MGIBhGvYyZXttD185ZkCYWpRKKGFGIa6jdwuMexfNwx
+VyuM7+HONLuKvO4+l1plMFAqBLy1Ex6kQDN4iDuZVVYA4Vcy2NyaQndehGUVTfrn
+OXu+lKVm9gNAKSlXTGXVQE04Bb2nMfp0B9PSYxvGxX3P2IJ6f68m/1LYH+kG4vaM
+kuFXDcSwYXIp++xhlMhHdyTKm5VTE0MX6wm9PEKjJ+fri1lohTa3mdUvaMzcosho
+MT0d2HrmQMXy+rAJoc7GlgEV5vd4O2sx9hACz8tahPmILpAkHGg=
+=TVnc
+-----END PGP SIGNATURE-----
+
+--YR5VkbtgaV6fwHXL--
