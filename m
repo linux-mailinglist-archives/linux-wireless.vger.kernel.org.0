@@ -2,45 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A9256A69DD
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 10:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA086A69DE
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 10:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbjCAJfw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 04:35:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52772 "EHLO
+        id S229703AbjCAJg1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 04:36:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjCAJfv (ORCPT
+        with ESMTP id S229511AbjCAJgY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 04:35:51 -0500
+        Wed, 1 Mar 2023 04:36:24 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C9F36FD6
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 01:35:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7D536FE3
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 01:36:23 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 197DE6128E
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 09:35:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5297C433D2;
-        Wed,  1 Mar 2023 09:35:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2755461284
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 09:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED20C433EF;
+        Wed,  1 Mar 2023 09:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677663349;
-        bh=curww6jvJ4LYWD0y9N+dweLPvbbreXG5vfct2CRGpRg=;
+        s=k20201202; t=1677663382;
+        bh=Ob1sgIo2WEsYui26uhBFf4kfhpK0M5p479GyQPcI43I=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=JQOzdSyRmcb/CpH6ZncG9256PuXVylMXVBW9xGZqpy8ifQmPRkTbrqzAndqnfZgwC
-         pUEMbjq/S3xlHqH5Q0KeVvUrgfjUECeOvhF9S/UzfS3qXMaZYRv019ziE3V5nGJxpU
-         oK30TCZc00lcCFiJQvlnbypnU1SGp8RvE1M4i47GPQqhwA7RdBkPi2It8/nMBUUjrW
-         NvGifMdj/780Cm3QLDGUP73FAwq4VNNFnTr+mmTxrZUWX5IuHThzy4HEDPimYYHlkh
-         eUqXp8g0KzZiGALSkLQLlIr/mvESV2FCOXcE7hiivM7Uk5MW8lVJkOS8mveXp9z7rz
-         kPpOaZWR5rcSg==
+        b=Qu+iuCmCYY87FPCZ5hpZ/MQvogTyzTzuhd3NxhNX6lu4hNQL4giYU7CMkEpmWedDZ
+         EK+uEhec5DJUsKTJT5POlCBbPpzUrmiZ/XfzTx794VfR7E3RBivL8HdP39hKgeJmjP
+         pgQwm8uxwPOpyF4xm7iijT/+20JEU9oVykbEWBP26ePIePd5o1mBaAWYCplnceNtrA
+         BK5G7QHrudJy+33Ijk1Yg6009PJseQbeebAO6bssgEYXU6uB2eA4CV6iMW15dxtu0H
+         iD8Tz82UKEv7wpy+U5GgIOAhQRnDnk1r0/vDf+C0QcwWsB2LKR+0bwAzUMGzU2OAkT
+         DHkj7b5MHyQ5w==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     gregory.greenman@intel.com
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 00/21] cfg80211/mac80211 patches from our internal tree 2023-02-21
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        Ilan Peer <ilan.peer@intel.com>
+Subject: Re: [PATCH 01/21] wifi: nl80211: Update the documentation of NL80211_SCAN_FLAG_COLOCATED_6GHZ
 References: <20230223100942.767589-1-gregory.greenman@intel.com>
-Date:   Wed, 01 Mar 2023 11:35:46 +0200
-In-Reply-To: <20230223100942.767589-1-gregory.greenman@intel.com> (gregory
-        greenman's message of "Thu, 23 Feb 2023 12:09:21 +0200")
-Message-ID: <877cw024r1.fsf@kernel.org>
+        <20230223114629.92bcd37b0ba6.I5129fd61841332474693046241586f057b134c3c@changeid>
+Date:   Wed, 01 Mar 2023 11:36:19 +0200
+In-Reply-To: <20230223114629.92bcd37b0ba6.I5129fd61841332474693046241586f057b134c3c@changeid>
+        (gregory greenman's message of "Thu, 23 Feb 2023 12:09:22 +0200")
+Message-ID: <87356o24q4.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -55,27 +57,12 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 gregory.greenman@intel.com writes:
 
-> From: Gregory Greenman <gregory.greenman@intel.com>
+> From: Ilan Peer <ilan.peer@intel.com>
 >
-> Hi,
->
-> A bunch of patches from our internal tree with mac80211 and cfg80211
-> changes. It's the usual developement, cleanups and bugfixes.
->
-> The changes are:
-> * HW timestamping updates
-> * A few MLO adjustments
-> * Bug fixes and cleanups
->
-> The changes were tested by kbuild bot in the pending branch.
+> Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+> Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 
-[...]
-
->   wifi: net: wireless: return primary channel regardless of DUP
->   wifi: net: wireless: correct validation 6G Band for primary channel
->   wifi: net: wireless: cleanup unused function parameters
-
-Should these be "wifi: cfg80211:"?
+Empty commmit logs are not nice.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
