@@ -2,113 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D632A6A75ED
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 22:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 727EF6A7681
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 22:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjCAVJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 16:09:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43518 "EHLO
+        id S229520AbjCAV5N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 16:57:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229861AbjCAVJv (ORCPT
+        with ESMTP id S229484AbjCAV5M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 16:09:51 -0500
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D7951FA0
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 13:09:49 -0800 (PST)
-Received: by mail-oi1-x234.google.com with SMTP id c11so11948506oiw.2
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Mar 2023 13:09:49 -0800 (PST)
+        Wed, 1 Mar 2023 16:57:12 -0500
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6DC2F7B0
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 13:57:06 -0800 (PST)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-172a623ad9aso16022993fac.13
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Mar 2023 13:57:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=L2gHLgGpsJRHcEeke/8tuR+sT34km4XZ/OVsaYoJqbk=;
-        b=QD34THeowjW4Ja9DLltfuJQuY+4XQq7WuHobusp05rcJJizL2n5uUkEItG4ktX3Ro5
-         uOimsj3jsEJ/h1PuurGA+YtnF1kb6WnAGIGlKN5O9e9xhgm4hg7ChKuhkD79433uJazq
-         FEq3ZRYsFRRbGnyckP3ZYLvke8lfwI8RlTV4bNQ13k0q3+3JdYVO5+Z9Y8xXSNZjLMW2
-         nO1QLyreIx1+ROjQj32FbfGG4M1SuQQ7z6LFMII2XV9pBN8vjVXc3okzve0ZEecFNLGg
-         tQQnb9kHK72qWEK/70p+pvWGNhikQsRAUhpXUJLk2O66qAUhke0a+kQHzsDVEgoAvkmR
-         2ioA==
+        d=gmail.com; s=20210112; t=1677707825;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZksZDm4c8Z9A4r9O+UEC2Yx1wXH1S521LD/PG4iUTYo=;
+        b=hzJelyTeTyOyJjhEdCJ7a2w3NvlROO46KfHyrPtPIeCIKwH/A2UkwP1bM4niAw0ctK
+         cGbI+QzNnMIseCe8qyuL62wWAANJKGTteq9m4w434tii4M4z0FrdNlJhGE5gBFMWKxr4
+         /pRmrGd3s//i5ZwpUq2deyl2ee1GlVaZoziOLE8Ers3boUL4zHQKyiRc3g02ah+5erpI
+         z4UDoqoHKMQ9rXq0wuAJdf/28qIbQ+GuVE3ePGOX1ItmdZ6HX8ihIxlU0SXbIw7O+Bv5
+         22fq3vnuosVIlRuZU6zJxDDaBkD/62RBLoxyz2PvKHOwDAqR0Lh3SJJ0ab8vrA6LrWUn
+         4Nrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L2gHLgGpsJRHcEeke/8tuR+sT34km4XZ/OVsaYoJqbk=;
-        b=uvo7nEvvuS8QDE/sqq6DE4UaeU48UFHUUsJqUylHp7siDnRU037Fbdodvh1YnsFfuL
-         6xuzWAYNB9d22yPafVH+CA8BSUjyocs/eIGECeOYqJ1WK6L6lr2o+1I5GP1axNEq70i5
-         Y8XbUoh1DFNHZdwUq6th1E97onWJoHWeQRSBfTftCXoTUWEvVN3iQzUDcQv2FaCJCGpO
-         0X4ZNQo2pPGME2gvgtGsGAzjy4SmfNyN4jhDb77wHVqr/8XUwdj/cEeo2oEtE/c8oJp8
-         iGxeCrYcbkCTtXtwr3iDnPwh6BJAio+I7chGceOaXOGsMCLaUnjTxdxV0OSSqv9Mn/tF
-         FVyg==
-X-Gm-Message-State: AO0yUKVkIkRNi5epLZcznWZgRT53lSMmqqnqWqix7KnDThp/P/sJBkPe
-        xGJiJJ/iTj8MAYBFGqm8NwPgfgG5cjQ=
-X-Google-Smtp-Source: AK7set/OC4BbuZM1ExsYICFsyubZEs6TXWZOT/SuccOWQY5z8+k1wCazUECzXRzSYqL39/yqlihJSg==
-X-Received: by 2002:aca:1016:0:b0:383:e383:f265 with SMTP id 22-20020aca1016000000b00383e383f265mr3730672oiq.19.1677704988198;
-        Wed, 01 Mar 2023 13:09:48 -0800 (PST)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id a20-20020a544e14000000b00383eaea5e88sm6380599oiy.38.2023.03.01.13.09.47
+        d=1e100.net; s=20210112; t=1677707825;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZksZDm4c8Z9A4r9O+UEC2Yx1wXH1S521LD/PG4iUTYo=;
+        b=xukGU4WZwIdPBA/Ruun8krLRgFO3ke9GHKTlhqkqDLDQjEijg9A9lCJenN7FvAthbp
+         beeG3R4/7LiMU/AeDY33f7r8Y7h95aCM7hIWvn7+ppXZ8KajWEqwMaqhwn7+ccTc3QM5
+         sWsGGaXXx7hIZQi7INznpxqepjf9YBPQ7F449QsOEPeDDL8nGuAHRODMLBcqa6vpoaTh
+         UU5ibXp7w8GoeWxfgrSFcLTGZYaQShSMChszS/XHrC8W/K1XKxV3M6I+yv7NfvJSBGGN
+         VkUfXDDKotjQDUxfwgDPvkpxqJZFNkI1SvmRUwuk99KAova1H4gyujUMJmBOpFXbZ62o
+         KSWA==
+X-Gm-Message-State: AO0yUKVgk0dqIIoJnOQ6a39Yny1liphgvufFEIZ9N4V5VSkVGIgwyQoE
+        G0NpMnSczwYLyQVL9z/I2s0St9f+tR8=
+X-Google-Smtp-Source: AK7set+/2uWevTOISSZJElQOzSRx477sl1Gj9QK1trDr3urTopJ35pp6NOSRu74Yq8zhoNCFCf0sgQ==
+X-Received: by 2002:a05:6871:b13:b0:172:bab0:ee30 with SMTP id fq19-20020a0568710b1300b00172bab0ee30mr4857614oab.32.1677707825357;
+        Wed, 01 Mar 2023 13:57:05 -0800 (PST)
+Received: from [192.168.7.168] (c-98-197-58-203.hsd1.tx.comcast.net. [98.197.58.203])
+        by smtp.gmail.com with ESMTPSA id b3-20020a056870918300b0017281100b75sm4768005oaf.42.2023.03.01.13.57.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Mar 2023 13:09:47 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <75f9b50e-f140-ef7e-4a3e-c92b6f9bf867@lwfinger.net>
-Date:   Wed, 1 Mar 2023 15:09:46 -0600
+        Wed, 01 Mar 2023 13:57:05 -0800 (PST)
+Message-ID: <ee614c10-cfd7-de88-3f85-6448aaa17c5a@gmail.com>
+Date:   Wed, 1 Mar 2023 15:57:04 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: Hangs with NetworkManager and rtw8723_de with kernel 6.1
+ Thunderbird/102.7.2
 Content-Language: en-US
-To:     =?UTF-8?Q?Fran=c3=a7ois_Valenduc?= <francoisvalenduc@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <b8fa3770-7164-e6bf-4d8d-8ba8fd78057c@gmail.com>
- <8f436927-7587-028d-fc1e-4a3103e0e866@lwfinger.net>
- <7f59d087-9c17-d16f-fa50-e16aba563385@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <7f59d087-9c17-d16f-fa50-e16aba563385@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     pkshih@realtek.com, neojou@gmail.com, s.hauer@pengutronix.de
+From:   "Alex G." <mr.nuke.me@gmail.com>
+Subject: Issues with rtw88_8821cu
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/1/23 13:15, François Valenduc wrote:
-> Good evening,
-> 
-> For sure, I am using the kernel driver in gentoo or in systemrescue. Can you 
-> explain how I could obtains the logs when the crash occurs ?
+Hi,
 
-François,
+I'm seeing some issues with a BrosTrend AC650 adapter (rtw88_8821cu). I 
+have all the recent fixes, up to and including commit 4a267bc5ea8f 
+("wifi: rtw88: use RTW_FLAG_POWERON flag to prevent to power on/off twice").
 
-The best way is to use netconsole, which requires another Linux computer 
-(target) connected to your network, and a wired connection on the computer under 
-test. The documentation is at 
-https://www.kernel.org/doc/html/latest/networking/netconsole.html.
+1)   rtw_8821cu 1-3:1.0: Firmware version 24.11.0, H2C version 12
+     rtw_8821cu 1-3:1.0: failed to download firmware
+     rtw_8821cu 1-3:1.0: failed to setup chip efuse info
+     rtw_8821cu 1-3:1.0: failed to setup chip information
 
-That writeup is not easy to follow, but you need to do the following:
-1. Install netconsole or nc depending on your distro on your target computer.
-2. Run the command 'nc -u -l -p 6665' or 'netconsole -u -l -p 6665' depending on 
-your distro.
-3. Learn the IP address of the target computer using 'ip address'.
-4. Know the network name of your wired connection on the test computer.
-5. Create an options file in /usr/lib/modprobe.d/50-netconsole.conf. This line 
-should contain the following line:
-options netconsole netconsole="@/<name from step4>,@<address from step 3>/"
-My computer contains options netconsole netconsole="@/enp0s25,@192.168.1.51/"
-6. Force module netconsole to be loaded at boot. How to do that is distro 
-dependent. You will need to explore that on your own.
+This first issue is related to USB errors. Generally, it starts with the 
+"failed to download firmware" followed by an assortment of other "failed 
+to" messages. At this point the adapter may show up in iw, but is 
+unusable until unplugged and replugged.
 
-Reboot the test computer in the configuration that fails. If setup correctly, 
-the console dump will appear on the target computer.
+2) The second issue is unusably low Rx signal levels on the 2.4 GHz 
+bands. The scan results report about 30dB to 50dB lower than adjacent 
+adapters. That's if the 8821cu can even detect the beacons.
 
-Good luck.
-
-Larry
+3) The third issue is that, in IBSS mode, the adapter cannot receive any 
+packets or see adjacent IBSS nodes.
+	iw <wlanx> station dump
+shows no results, unless also running a scan. Even so, ifconfig shows 0 
+Rx packets, and the adapter is not able to receive. This happens in 
+either noHT, HT20, or HT40 modes.
 
 
+Where do I begin getting these running?
+
+Alex
