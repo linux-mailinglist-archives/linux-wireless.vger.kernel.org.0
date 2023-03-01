@@ -2,115 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E3E6A7165
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 17:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C8E16A7294
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 19:06:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjCAQkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 11:40:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
+        id S229747AbjCASGK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 13:06:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjCAQkL (ORCPT
+        with ESMTP id S229445AbjCASGI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 11:40:11 -0500
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506164207
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 08:40:10 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id e21so11264868oie.1
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Mar 2023 08:40:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=V43RfGWNvfYtyRL+xfD6ynmwoFzxk99Ylmrno9tc4a4=;
-        b=SjNdvPboKtJSZjRrxGVGvlTBcn1m5D+K7yVqkgP16w8/+85+td9x9Hi1uRhFQ7ggKw
-         207SxUa43LYMejmkPQxklCB9JHOMI/uR1CGUG0dibj0N8HL87vHgiyO7oNoA1DH7T8Xm
-         ZFcXbN7C6dE5xpp+vz1J5B22RKi9gnP1PJv3UGSVvPOSGVYp8/xx810ZBdR1hhd/AgJp
-         Z5MhY9IUYeHikUct4z/RB1OLBHcMMklKLtsCqTOyxvrQO57sKSO8OPWupdmGDcxEjXek
-         bGlwyXj/21bZQDK6/Y+p+ZaPNMGGC9H1xVhMZuj1B+F60ks2I1vUj1dzYmoD+NP9igDV
-         9XTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V43RfGWNvfYtyRL+xfD6ynmwoFzxk99Ylmrno9tc4a4=;
-        b=UZkOUnv4hi5UVl0RIOs+RBC1uLVQHYen5rnoKVPIW53ENCR3Mx4SA5zxDI/2YYXJGE
-         0kf0AtO9tnZsTvie4SnZc1I1DkI8/3Tv8cKrjF/Ze8XrakrUe+LU/5UAqSmI4EvBJ4tf
-         0oCtBeRNP2LS3lobvMBWusXOunM11mvNFOt3THN9qjNORvYoB+lcK/5v1/JtEch8bRU1
-         RFH9sLh7cdv8O7s5mAQrdukgXk3RNgJPXfvn6INfqG3+FwFwyF+fZolyqY/hu7Hdddms
-         9jibcqDk9kBa19Hlujc+441WOtE0sq1hiC4hYiE3UGG92tEKmOzhTQbAkFIsWZllxWw9
-         dodw==
-X-Gm-Message-State: AO0yUKW6IQthwoEMO9ltkPHskShqiSEe/tuedoTETlIoR57wi2WDEQuz
-        2/nvm+oxcDhKL0FiSbzP/wckE3UzB6k=
-X-Google-Smtp-Source: AK7set/REaUTG0UmQWDXoAgbmDJ8pAr5z5K1YHX7SIObXw4hE50n6PzuGrXkXqHHESfiTH39Ya6XRQ==
-X-Received: by 2002:a05:6808:115:b0:37f:cc3d:a342 with SMTP id b21-20020a056808011500b0037fcc3da342mr3535336oie.1.1677688809381;
-        Wed, 01 Mar 2023 08:40:09 -0800 (PST)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id r7-20020acaf307000000b00383ef567cfdsm5864652oih.21.2023.03.01.08.40.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Mar 2023 08:40:09 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <8f436927-7587-028d-fc1e-4a3103e0e866@lwfinger.net>
-Date:   Wed, 1 Mar 2023 10:40:08 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: Hangs with NetworkManager and rtw8723_de with kernel 6.1
-Content-Language: en-US
-To:     =?UTF-8?Q?Fran=c3=a7ois_Valenduc?= <francoisvalenduc@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <b8fa3770-7164-e6bf-4d8d-8ba8fd78057c@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <b8fa3770-7164-e6bf-4d8d-8ba8fd78057c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Wed, 1 Mar 2023 13:06:08 -0500
+Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6259E3C7BB
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 10:06:03 -0800 (PST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 04E48582018
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 13:06:00 -0500 (EST)
+Received: from imap47 ([10.202.2.97])
+  by compute3.internal (MEProxy); Wed, 01 Mar 2023 13:06:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sklein.xyz; h=cc
+        :content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1677693960; x=1677697560; bh=wlfWRVMKfy
+        2D4TIvJmrONXSljYcME30cBXzk7k6dvmI=; b=GHHnh2uY/GlHOKqThasMy2Nog2
+        C/g4If4arwgqrca9diBnp2Fyh/uI5BWu+zKVI5fUyGdEX+zp0YY790ROAx9cNdgK
+        uaaVVb4ZOHeohRInWYC7FcYxPS5RxLZlZQ4yKdnTtw5KPdSiNSF7STp1jY3x5Jg4
+        CrDANTiOlb+KlGKF8yF1/+bBdBZ5z81Ks7s89L+YSfJ3CpsCF9InAPlz4lMA7Ny+
+        hyr4gWM2UZp49cuHjKWqRSXPM6VfmNfzW521WTYe5my8v29rlh4TLNTkvypQhPrV
+        mxZ5sIyJh0BFXwcOdHcj0u0CEP3WOQEpSmHggDE0lCGOC44ajag89Kyt2LNA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:date:feedback-id:feedback-id:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; t=1677693960; x=1677697560; bh=wlfWRVMKfy2D4TIvJmrONXSljYcM
+        E30cBXzk7k6dvmI=; b=eFiuKx9gI2DECkP7+gPsXhtPdYjitI+zUPxzdTQUrZay
+        BHgZbA1knG7fL/B/FZIY/s4dL8C3LdFEH2NSd8p2IXP2vkeRjRptOldibdJvDFPq
+        787lOjhBmK9mSIEYGtmVYwVy2cjJV7wPGXiYypm2l7EMyc7Tigphx07TYd1FyY5s
+        EhFolnDZATpNiWL0QlAbhL8Huv4GaVEyNkLYfhl+uE2SRCJqLtjGoRkQVtJmw8TN
+        AhQxk1OLKIcvJAdNx0tWk4bWYUEBsf74fQB+tTThIwcCsYFig7svCb9ZE+rRMRt8
+        M78mZGMKyzmGiYqeUXVTG3kCsSNQonOsAg+zLve6xA==
+X-ME-Sender: <xms:B5T_Y2uK-u1EHPRA_TPa_jaGLYwr4FRKDOGUU1az3P541Qd90ESo0Q>
+    <xme:B5T_Y7ctoxgHyH3Huot7dLp0y5WaEGiOWbPjXlsN3eNU4rb2oGf9ixXbn7_bDox71
+    0KQxvRvhiVv_Tu6dPY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudelhedguddtudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdefhedmnecujfgurhepof
+    gfggfkfffhvffutgfgsehtqhertderreejnecuhfhrohhmpefuthorphhhrghnvgcumfhl
+    vghinhcuoehhvghllhhosehskhhlvghinhdrgiihiieqnecuggftrfgrthhtvghrnhepie
+    ejheelveegieekjefhudfgieejtedvveehfeelvdejtdfgveekueehieeviedvnecuffho
+    mhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehhvghllhhosehskhhlvghinhdrgiihii
+X-ME-Proxy: <xmx:B5T_Yxw5oebaahwJ8NfILWk3D1CRLidV-YOjFEE5pgkr8-p5KdcEfQ>
+    <xmx:B5T_YxPlpz5GqXSYrvzPpeOnClFW5A1THS7vJVeusXctB_JgTQ7Xtg>
+    <xmx:B5T_Y29fE2kquc639cBMbeYjEC2B9VvZdGYyyRLwcZUcV6aSGjBpmA>
+    <xmx:B5T_Y5K3C0zNhDx_vkIbU0RlYRtfRB8jwTqZ1rm5k3HuZ4melk4sPg>
+Feedback-ID: ic6c94672:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id B7C22A60082; Wed,  1 Mar 2023 13:05:59 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-183-gbf7d00f500-fm-20230220.001-gbf7d00f5
+Mime-Version: 1.0
+Message-Id: <3ae33154-126c-42b8-a3cb-eeaa63c7a6f7@app.fastmail.com>
+Date:   Wed, 01 Mar 2023 19:05:39 +0100
+From:   =?UTF-8?Q?St=C3=A9phane_Klein?= <hello@sklein.xyz>
+To:     linux-wireless@vger.kernel.org
+Subject: ath11k_pci 0000:01:00.0: failed to resume hif during resume: -5 after
+ hibernaton resume on Thinkpad T14s Gen 3 AMD
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/1/23 00:26, François Valenduc wrote:
-> systemrescue recently switched from kernel 5.15 to kernel 6.1 and NetworkManager 
-> started to hangs at startup. This seems to be linked to my wifi card 
-> (RTL8723DE). I am also able to reproduce the problem under gentoo with the same 
-> versions for NetworkManager and linux-firmware than those used in systemrescue 
-> (1.42.2 and 20230210). Under gentoo, the problem appears with kernel 6.1.14 and 
-> 6.2.1. I am able to use NetworkManager and systemrescue without problem on 
-> another computer which has another wifi card.
-> 
-> Does anybody have a solution to this problem ?
+Hello,
 
-François,
+I try to configure hibernation on Thinkpad T14s Gen 3 AMD. See full cont=
+ext here: https://gist.github.com/eloylp/b0d64d3c947dbfb23d13864e0c051c6=
+7?permalink_comment_id=3D4474569#gistcomment-4474569
 
-Without any log information regarding the specific hang, it will be difficult to 
-debug this issue.
+I see this error in my dmesg:
 
-Have you installed the drivers from the rtw88 repo at GitHub.com? If so, they 
-may be interfering with the drivers in the kernel. You can test to see if this 
-is the problem by doing an edit of the command line while booting. When GRUB is 
-showing the kernel you wish to boot, press "e". This should bring up a minimal 
-editor. Scroll down until you find the stanza pertaining to the kernel you are 
-booting. It will start with "menuentry 'xxxxx'", where the x's are replaced with 
-the description of the kernel you want.
+[  210.043130] ath11k_pci 0000:01:00.0: failed to resume mhi: -5
+[  210.043134] ath11k_pci 0000:01:00.0: failed to resume hif during resu=
+me: -5
+[  210.043136] ath11k_pci 0000:01:00.0: failed to resume core: -5
+[  210.043138] ath11k_pci 0000:01:00.0: PM: dpm_run_callback(): pci_pm_r=
+estore+0x0/0xe0 returns -5
+[  210.043158] ath11k_pci 0000:01:00.0: PM: failed to restore async: err=
+or -5
+[  213.050611] ath11k_pci 0000:01:00.0: wmi command 16387 timeout
+[  213.050624] ath11k_pci 0000:01:00.0: failed to send WMI_PDEV_SET_PARA=
+M cmd
+[  213.050632] ath11k_pci 0000:01:00.0: failed to enable dynamic bw: -11
 
-Once you find that entry, scroll down to the line that starts with "linuxefi" or 
-"linux", then move to the end of that line, and add 
-"rd.driver.blacklist=rtw_8723de" to blacklist the driver from GitHub, or
-"rd.driver.blacklist=rtw88_8723de" to blacklist the kernel version. Once you 
-have added the new info, press the F10 key yo continue the boot.
+More information on these comments:
 
-If one of those lets the computer boot, add that driver to a blacklist file in 
-/usr/lib/modprobe.d/, or wherever your distro keeps the modprobe.d directory.
+- https://gist.github.com/eloylp/b0d64d3c947dbfb23d13864e0c051c67?permal=
+ink_comment_id=3D4488325#gistcomment-4488325
+https://gist.github.com/eloylp/b0d64d3c947dbfb23d13864e0c051c67?permalin=
+k_comment_id=3D4488341#gistcomment-4488341
 
-If neither work, then report back, and we will try to get a dump of the logs 
-when the hand happens.
+Do you think it is a hardware bug, a bios bug or a driver bug?
+Or did I configure something wrong?
 
-Larry
-
+Best regards,
+St=C3=A9phane
