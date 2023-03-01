@@ -2,124 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95FE96A6443
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 01:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F4396A6498
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 02:14:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbjCAAd3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Feb 2023 19:33:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37110 "EHLO
+        id S229697AbjCABN4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Feb 2023 20:13:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjCAAd2 (ORCPT
+        with ESMTP id S229587AbjCABNy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Feb 2023 19:33:28 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEFF13537;
-        Tue, 28 Feb 2023 16:33:25 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3210WVblC030574, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3210WVblC030574
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 1 Mar 2023 08:32:32 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 1 Mar 2023 08:32:38 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 1 Mar 2023 08:32:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Wed, 1 Mar 2023 08:32:38 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Simon Horman <simon.horman@corigine.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: RE: [PATCH] rtlwifi: rtl8192se: Remove the unused variable bcntime_cfg
-Thread-Topic: [PATCH] rtlwifi: rtl8192se: Remove the unused variable
- bcntime_cfg
-Thread-Index: AQHZSxoGZWivytKAKkyUIoUlgPpoua7jrTwAgAFmn/A=
-Date:   Wed, 1 Mar 2023 00:32:38 +0000
-Message-ID: <1d262829764d40a086e93f0c7d0541bc@realtek.com>
-References: <20230228021132.88910-1-jiapeng.chong@linux.alibaba.com>
- <Y/3gUquaPNlaLaKt@corigine.com>
-In-Reply-To: <Y/3gUquaPNlaLaKt@corigine.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2023/2/28_=3F=3F_10:36:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 28 Feb 2023 20:13:54 -0500
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DFA915891;
+        Tue, 28 Feb 2023 17:13:51 -0800 (PST)
+Received: by mail-ot1-x330.google.com with SMTP id l13-20020a0568301d6d00b0068f24f576c5so6692179oti.11;
+        Tue, 28 Feb 2023 17:13:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=oEBx/PZMBNyHmgNExVPbEAPmWmNsn6Qj9xnMQGkJNno=;
+        b=Gkm2+ehKSgvZvheKoRDMw5PoCdLIZu5A+3rnf1+N7KTvzei/nU6PzzO0wVTgHMOFUP
+         YaeWiw2kTj5dkJSAa6gh/vdJHQY4O0cq3QfNdmIkenq6DDHJvK8SrIHS+JaclLZxXxhc
+         2omCLS5UldgkTAecp4m5Dvsl/pFAWxtVraBB3wiR7BWy3v42qr4eRXelWC8/XIGfRwxI
+         TiAsFg4m2uDN5ApBgTsWKo7V3rByleBGK78hVaUGUukIjfmN7IFrmq79VICrGzEWioIW
+         6LaObCp8NCeW3DjKhi9J3ZAtqfY7ADHgzVRyMpih++0VMvYmq25AN0w0RpHEc1wxmZOf
+         Mmuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oEBx/PZMBNyHmgNExVPbEAPmWmNsn6Qj9xnMQGkJNno=;
+        b=LJTEhKvaocPnN6o5mptQsVtorwYGoWdwXo1Hj0DJATAQ4qad94Kfv0aEoFIaGreC4O
+         LGWneX3pqjCUgeXk3hdVMoEUJWxmGFKkclR9QcBRlVKn+lT2b+6GV+mm7QvgkTt/eanz
+         y/HWU28w5IwyYO2yfKx0Jzn/ZnGQfEZgjhg4dY6vmaUpz06vNZ0zST70nmSLOgK5Y65G
+         Hq9OoRwlRISYCcS+LqOc8nVlAZMsqaUTR9hs5eP1aVzgO05Apw8OlNNykUCkmZfH6f/C
+         eEnu566SrGMvGjInx7erZlJq7OsTmzSOmbH6Qzf8oYc4dEbagQNaa3TV2MAweVxy15Qt
+         5jUw==
+X-Gm-Message-State: AO0yUKVZVI1EWzNEjzGAvB/VgLJxDdidC+imqfjoBXmQxnjSFOmmvnUC
+        HGd7LCMq2aTNYTx5YxWY6fw=
+X-Google-Smtp-Source: AK7set9pAeCLIHmdY+B1zAQ/NF+5q3+1fPreB3j3JGWux5VMEZCbi/9KewRlamj7fIOsnXrdybD37g==
+X-Received: by 2002:a9d:19eb:0:b0:694:11c1:29f7 with SMTP id k98-20020a9d19eb000000b0069411c129f7mr2759141otk.19.1677633230469;
+        Tue, 28 Feb 2023 17:13:50 -0800 (PST)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id z10-20020a0568301daa00b00693c4348e8asm4524817oti.42.2023.02.28.17.13.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Feb 2023 17:13:49 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <866973b7-1f54-21a3-79aa-992ed0594c1a@lwfinger.net>
+Date:   Tue, 28 Feb 2023 19:13:48 -0600
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC 0/6] pcmcia: separate 16-bit support from cardbus
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Olof Johansson <olof@lixom.net>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
+References: <20230227133457.431729-1-arnd@kernel.org>
+ <3d8f28d7-78df-5276-612c-85b5262a987a@lwfinger.net>
+ <c17bff4e-031e-4101-8564-51f6298b1c68@app.fastmail.com>
+ <e9f8501f-ede0-4d38-6585-d3dc2469d3fe@lwfinger.net>
+ <7085019b-4fad-4d8d-89c0-1dd33fb27bb7@app.fastmail.com>
+ <18be9b45-e7c1-9f81-afeb-3e0d4cfe5f73@lwfinger.net>
+ <31fee002-db3b-43d9-b8bc-5a869516c2d7@app.fastmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <31fee002-db3b-43d9-b8bc-5a869516c2d7@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2/28/23 02:37, Arnd Bergmann wrote:
+> My intention was to keep Cardbus support working with old defconfig files,
+> and I've not moved CONFIG_CARDBUS into a separate submenu between
+> CONFIG_PCI_HOTPLUG and CONFIG_PCI_CONTROLLER but left the driver in
+> drivers/pci/hotplug. I think that's the best compromise here, but maybe
+> the PCI maintainers have a better idea.
 
+Arnd,
 
-> -----Original Message-----
-> From: Simon Horman <simon.horman@corigine.com>
-> Sent: Tuesday, February 28, 2023 7:07 PM
-> To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-> Cc: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
-> kuba@kernel.org; pabeni@redhat.com; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org; Abaci Robot <abaci@linux.alibaba.com>
-> Subject: Re: [PATCH] rtlwifi: rtl8192se: Remove the unused variable bcntime_cfg
-> 
-> On Tue, Feb 28, 2023 at 10:11:32AM +0800, Jiapeng Chong wrote:
-> > Variable bcntime_cfg is not effectively used, so delete it.
-> >
-> > drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:6: warning: variable 'bcntime_cfg' set but not
-> used.
-> >
-> > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> > Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4240
-> > Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-> 
-> Hi Jiapeng Chong,
-> 
-> this looks good to me.
-> 
-> Reviewed-by: Simon Horman <simon.horman@corigine.com>
-> 
-> While reviewing this gcc 12.2.0 told me:
-> 
-> drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:25: error: unused variable 'bcn_ifs'
-> [-Werror=unused-variable]
->  1555 |         u16 bcn_cw = 6, bcn_ifs = 0xf;
->       |                         ^~~~~~~
-> drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:13: error: unused variable 'bcn_cw'
-> [-Werror=unused-variable]
->  1555 |         u16 bcn_cw = 6, bcn_ifs = 0xf;
->       |             ^~~~~~
-> 
-> So perhaps you could consider sending another patch to remove them too.
-> 
+I did a bit more investigation. My original .config had CONFIG_PCI_HOTPLUG not 
+defined, but did have CONFIG_CARDBUS and the various yenta modules turned on. 
+With your changes, the CONFIG_PCI_HOTPLUG overrode CARDBUS.
 
-These errors are introduced by this patch, so please fix them together by this
-patch.
+I thought mine was a corner case, but now I am not sure. As stated above, the 
+Debian 12 factory configuration for ppc32 does not turn on PCI hotplug, but the 
+x86_64 configuration for openSUSE Tumbleweed does. The x86_64 configuration in 
+Fedora 37 does not contain CONFIG_PCI_HOTPLUG, but does have CARDBUS set.
 
-Ping-Ke
+It seems that several distros may get the wrong result with this change,
 
+Larry
 
