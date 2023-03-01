@@ -2,82 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C23E6A759E
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 21:53:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9A96A75C7
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 22:01:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbjCAUxZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 15:53:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59530 "EHLO
+        id S229751AbjCAVBF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 16:01:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjCAUxY (ORCPT
+        with ESMTP id S229563AbjCAVBC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 15:53:24 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADFD265B1
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 12:53:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=/5PgG2WfJAHtjeLMEd0uVyIojNMFn+zqK+12wnOulC8=;
-        t=1677704003; x=1678913603; b=Noi3hgecUtvPmzoCJsi2ovKuOxJZ1lhKJ5XcJO5t+rvolEa
-        P1zoFp8bxK80KWbGAuEQIPKf8FzISnWp3WZnZv7VA7XqXfPXK4pz0akkt3f3Q4PhKRO64dEdTEDid
-        HAmyUlOgT8hZy77yWW9etxhZMQX1vC2il22TFX1iTKielQhb23oltxJhxEn7iaB2r08mTTj4D69lT
-        YKZTzDAepu2F9XYcp5LkaAmTWHd5m1T/AofsnDoY0BxvybbfTyRlQyZID8XU7rgfPgrc4lsXKWH5I
-        rdF+OOXEHARwlMdczJ7FDkrS3MzjWIeVzZqZG107fJEm6GZwHJ4A8KOZHqtSnKNg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pXTRs-00968O-0y;
-        Wed, 01 Mar 2023 21:53:16 +0100
-Message-ID: <80ddafb7c3d04b145817bb4c909ab736d06f1e1e.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/3] wifi: ipw2x00: convert ipw_fw_error->elem to
- flexible array[]
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jacob Keller <jacob.e.keller@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>
-Date:   Wed, 01 Mar 2023 21:53:15 +0100
-In-Reply-To: <99bc0165-814b-918f-1d62-4256836ab9a8@intel.com>
-References: <20230228162827.3876606-1-jacob.e.keller@intel.com>
-         <a8798dce4ae87aee64dfd56721b1668f8c969951.camel@sipsolutions.net>
-         <d393ba90-ecdd-ffea-540b-d6db15571d5b@intel.com>
-         <7f996d2efd23cefd17074edaeed0a6bbbd9f1a99.camel@sipsolutions.net>
-         <99bc0165-814b-918f-1d62-4256836ab9a8@intel.com>
+        Wed, 1 Mar 2023 16:01:02 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EDD521CD;
+        Wed,  1 Mar 2023 13:01:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BD885B80EE1;
+        Wed,  1 Mar 2023 21:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742DBC4339E;
+        Wed,  1 Mar 2023 21:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677704458;
+        bh=Ijy28NfIAolHq1kijXKPv1A9Prn6Z4PgPnz0SF2ZvmE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=qwnNOgDopWNiUb4dKzA0Y6sT0gASegFoNl0l1oHhxaeFwidRVACqKvo9Zw4Lq2uLa
+         DkRPAf51+Vr8EEyQ7IwC/Bj5H1tJVAjANsJyJLagfb6dQBIR+9OsGjhNPWRat2SOtH
+         5jiteysKnyeBDdmsXExcQfoBUuLwKJRarM2/PpsDCzlFSlDaYiuiIN6Yn50f7C1yat
+         Kl5hMVdu4kXvgesUhxebkvb/oOudYsbAKXyirkpGD3xB/LvTXAtTlhB/h40wU7a9WI
+         X+6tPt1WSw58XL3OkDSeUjRPC3OEETL51n26pr7wfG3C7UJmYklBJjZHN6oNtzMzrG
+         H1pgP6Xi9fu0w==
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-53852143afcso389451967b3.3;
+        Wed, 01 Mar 2023 13:00:58 -0800 (PST)
+X-Gm-Message-State: AO0yUKUkNco2rq4K5o5XxG7Qrs1MolodYnCt0+yadl9+JyNaMT4qDo7m
+        2DczIbGS4CB2Hvw33a1Rv2MKLhdYuXOfAeUKqg==
+X-Google-Smtp-Source: AK7set/B7w4SIUVUY+fuTrfn39/aDxu+LSL+nDi5aDHHQnm81UFIS2ScAXvxaj+SUvgnwt845OQ2PIVb1st0BjISJs0=
+X-Received: by 2002:a05:6102:3ca9:b0:41e:bccf:5669 with SMTP id
+ c41-20020a0561023ca900b0041ebccf5669mr6637793vsv.2.1677704437053; Wed, 01 Mar
+ 2023 13:00:37 -0800 (PST)
+MIME-Version: 1.0
+References: <20230301185209.274134-1-jjhiblot@traphandler.com> <20230301185209.274134-4-jjhiblot@traphandler.com>
+In-Reply-To: <20230301185209.274134-4-jjhiblot@traphandler.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 1 Mar 2023 15:00:25 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJvYnBtaOwaRbNo5Eqp51yxhJpnSYQWEGfKjtZKjm7R4g@mail.gmail.com>
+Message-ID: <CAL_JsqJvYnBtaOwaRbNo5Eqp51yxhJpnSYQWEGfKjtZKjm7R4g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] of: irq: release the node after looking up for "interrupts-extended"
+To:     Jean-Jacques Hiblot <jjhiblot@traphandler.com>
+Cc:     saravanak@google.com, clement.leger@bootlin.com,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        zajec5@gmail.com, Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Marc Zyngier <maz@kernel.org>, afaerber@suse.de,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Nishanth Menon <nm@ti.com>, ssantosh@kernel.org,
+        mathias.nyman@intel.com, gregkh@linuxfoundation.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        linux-renesas-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+        linux-actions@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-tegra@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-03-01 at 12:49 -0800, Jacob Keller wrote:
->=20
-> I can drop this one out of the series if you don't have an intention of
-> taking it, or I can refactor to just use size_add and array_size without
-> converting it to flexible array, which would prevent that coccinelle
-> patch from complaining and at least ensure that we can't overflow size
-> and under-allocate.
->=20
-> Do you have a preference?
->=20
+On Wed, Mar 1, 2023 at 12:53=E2=80=AFPM Jean-Jacques Hiblot
+<jjhiblot@traphandler.com> wrote:
+>
+> When of_parse_phandle_with_args() succeeds, a get() is performed on
+> out_irq->np. And another get() is performed in of_irq_parse_raw(),
+> resulting in the refcount being incremented twice.
+> Fixing this by calling put() after of_irq_parse_raw().
 
-Ah, it's up to Kalle, not me :-)
+This looks like a band-aid to me. It only makes sense that the caller
+of of_irq_parse_raw() already holds a ref to out_irq->np. So the first
+of_node_get() in it looks wrong. It looks like the refcounting was
+originally balanced, but commit 2f53a713c4b6 ("of/irq: Fix device_node
+refcount in of_irq_parse_raw()") dropped the put on exit after 'got
+it!'. I'm not sure if just adding it back would be correct or not
+though.
 
-I think it's OK to do, and if it gets rid of drive-by submissions from
-the coccinelle patch later, I guess it's better to take it now. And you
-already have it anyway.
+All this needs some test cases to be sure we get things right...
 
-I might prefer though if you sent the drivers and cfg80211 patches
-separately, since that's usually Kalle vs. me applying it, and if it's
-in a same series we tend to end up wondering if there's a dependency or
-something, which is clearly not the case here.
-
-johannes
+Rob
