@@ -2,122 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4396A6498
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 02:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0821F6A64FB
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 02:51:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbjCABN4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Feb 2023 20:13:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34678 "EHLO
+        id S229512AbjCABvt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Feb 2023 20:51:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbjCABNy (ORCPT
+        with ESMTP id S229471AbjCABvs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Feb 2023 20:13:54 -0500
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DFA915891;
-        Tue, 28 Feb 2023 17:13:51 -0800 (PST)
-Received: by mail-ot1-x330.google.com with SMTP id l13-20020a0568301d6d00b0068f24f576c5so6692179oti.11;
-        Tue, 28 Feb 2023 17:13:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=oEBx/PZMBNyHmgNExVPbEAPmWmNsn6Qj9xnMQGkJNno=;
-        b=Gkm2+ehKSgvZvheKoRDMw5PoCdLIZu5A+3rnf1+N7KTvzei/nU6PzzO0wVTgHMOFUP
-         YaeWiw2kTj5dkJSAa6gh/vdJHQY4O0cq3QfNdmIkenq6DDHJvK8SrIHS+JaclLZxXxhc
-         2omCLS5UldgkTAecp4m5Dvsl/pFAWxtVraBB3wiR7BWy3v42qr4eRXelWC8/XIGfRwxI
-         TiAsFg4m2uDN5ApBgTsWKo7V3rByleBGK78hVaUGUukIjfmN7IFrmq79VICrGzEWioIW
-         6LaObCp8NCeW3DjKhi9J3ZAtqfY7ADHgzVRyMpih++0VMvYmq25AN0w0RpHEc1wxmZOf
-         Mmuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oEBx/PZMBNyHmgNExVPbEAPmWmNsn6Qj9xnMQGkJNno=;
-        b=LJTEhKvaocPnN6o5mptQsVtorwYGoWdwXo1Hj0DJATAQ4qad94Kfv0aEoFIaGreC4O
-         LGWneX3pqjCUgeXk3hdVMoEUJWxmGFKkclR9QcBRlVKn+lT2b+6GV+mm7QvgkTt/eanz
-         y/HWU28w5IwyYO2yfKx0Jzn/ZnGQfEZgjhg4dY6vmaUpz06vNZ0zST70nmSLOgK5Y65G
-         Hq9OoRwlRISYCcS+LqOc8nVlAZMsqaUTR9hs5eP1aVzgO05Apw8OlNNykUCkmZfH6f/C
-         eEnu566SrGMvGjInx7erZlJq7OsTmzSOmbH6Qzf8oYc4dEbagQNaa3TV2MAweVxy15Qt
-         5jUw==
-X-Gm-Message-State: AO0yUKVZVI1EWzNEjzGAvB/VgLJxDdidC+imqfjoBXmQxnjSFOmmvnUC
-        HGd7LCMq2aTNYTx5YxWY6fw=
-X-Google-Smtp-Source: AK7set9pAeCLIHmdY+B1zAQ/NF+5q3+1fPreB3j3JGWux5VMEZCbi/9KewRlamj7fIOsnXrdybD37g==
-X-Received: by 2002:a9d:19eb:0:b0:694:11c1:29f7 with SMTP id k98-20020a9d19eb000000b0069411c129f7mr2759141otk.19.1677633230469;
-        Tue, 28 Feb 2023 17:13:50 -0800 (PST)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id z10-20020a0568301daa00b00693c4348e8asm4524817oti.42.2023.02.28.17.13.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Feb 2023 17:13:49 -0800 (PST)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <866973b7-1f54-21a3-79aa-992ed0594c1a@lwfinger.net>
-Date:   Tue, 28 Feb 2023 19:13:48 -0600
+        Tue, 28 Feb 2023 20:51:48 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F062914F;
+        Tue, 28 Feb 2023 17:51:45 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3211pPTJ1012296, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3211pPTJ1012296
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 1 Mar 2023 09:51:25 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 1 Mar 2023 09:51:31 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 1 Mar 2023 09:51:31 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Wed, 1 Mar 2023 09:51:31 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        Neo Jou <neojou@gmail.com>
+Subject: RE: [PATCH v1 wireless-next 2/2] wifi: rtw88: mac: Return the original error from rtw_mac_power_switch()
+Thread-Topic: [PATCH v1 wireless-next 2/2] wifi: rtw88: mac: Return the
+ original error from rtw_mac_power_switch()
+Thread-Index: AQHZSi85yR313XHw3kWdywFCHY8SEq7lKekg
+Date:   Wed, 1 Mar 2023 01:51:31 +0000
+Message-ID: <79fd583078414f2f8c137c85bcdebef7@realtek.com>
+References: <20230226221004.138331-1-martin.blumenstingl@googlemail.com>
+ <20230226221004.138331-3-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20230226221004.138331-3-martin.blumenstingl@googlemail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [RFC 0/6] pcmcia: separate 16-bit support from cardbus
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Olof Johansson <olof@lixom.net>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org, linux-can@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-References: <20230227133457.431729-1-arnd@kernel.org>
- <3d8f28d7-78df-5276-612c-85b5262a987a@lwfinger.net>
- <c17bff4e-031e-4101-8564-51f6298b1c68@app.fastmail.com>
- <e9f8501f-ede0-4d38-6585-d3dc2469d3fe@lwfinger.net>
- <7085019b-4fad-4d8d-89c0-1dd33fb27bb7@app.fastmail.com>
- <18be9b45-e7c1-9f81-afeb-3e0d4cfe5f73@lwfinger.net>
- <31fee002-db3b-43d9-b8bc-5a869516c2d7@app.fastmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <31fee002-db3b-43d9-b8bc-5a869516c2d7@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/28/23 02:37, Arnd Bergmann wrote:
-> My intention was to keep Cardbus support working with old defconfig files,
-> and I've not moved CONFIG_CARDBUS into a separate submenu between
-> CONFIG_PCI_HOTPLUG and CONFIG_PCI_CONTROLLER but left the driver in
-> drivers/pci/hotplug. I think that's the best compromise here, but maybe
-> the PCI maintainers have a better idea.
 
-Arnd,
 
-I did a bit more investigation. My original .config had CONFIG_PCI_HOTPLUG not 
-defined, but did have CONFIG_CARDBUS and the various yenta modules turned on. 
-With your changes, the CONFIG_PCI_HOTPLUG overrode CARDBUS.
+> -----Original Message-----
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Monday, February 27, 2023 6:10 AM
+> To: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; kvalo@kernel.org; tony0620emma@gmail.com;
+> Ping-Ke Shih <pkshih@realtek.com>; Neo Jou <neojou@gmail.com>; Martin Blumenstingl
+> <martin.blumenstingl@googlemail.com>
+> Subject: [PATCH v1 wireless-next 2/2] wifi: rtw88: mac: Return the original error from
+> rtw_mac_power_switch()
+> 
+> rtw_mac_power_switch() calls rtw_pwr_seq_parser() which can return
+> -EINVAL, -EBUSY or 0. Propagate the original error code instead of
+> unconditionally returning -EINVAL in case of an error.
+> 
+> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-I thought mine was a corner case, but now I am not sure. As stated above, the 
-Debian 12 factory configuration for ppc32 does not turn on PCI hotplug, but the 
-x86_64 configuration for openSUSE Tumbleweed does. The x86_64 configuration in 
-Fedora 37 does not contain CONFIG_PCI_HOTPLUG, but does have CARDBUS set.
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-It seems that several distros may get the wrong result with this change,
+> ---
+>  drivers/net/wireless/realtek/rtw88/mac.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+> index 4749d75fefee..f3a566cf979b 100644
+> --- a/drivers/net/wireless/realtek/rtw88/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw88/mac.c
+> @@ -250,6 +250,7 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+>         const struct rtw_pwr_seq_cmd **pwr_seq;
+>         u8 rpwm;
+>         bool cur_pwr;
+> +       int ret;
+> 
+>         if (rtw_chip_wcpu_11ac(rtwdev)) {
+>                 rpwm = rtw_read8(rtwdev, rtwdev->hci.rpwm_addr);
+> @@ -273,8 +274,9 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+>                 return -EALREADY;
 
-Larry
+I think a reason why we don't propagate return value is special deal of EALREADY
+by caller. Since this driver becomes stable and no others use EALREADY as error code,
+this patchset will be okay.
+
+> 
+>         pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
+> -       if (rtw_pwr_seq_parser(rtwdev, pwr_seq))
+> -               return -EINVAL;
+> +       ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
+> +       if (ret)
+> +               return ret;
+> 
+>         if (pwr_on)
+>                 set_bit(RTW_FLAG_POWERON, rtwdev->flags);
+> --
+> 2.39.2
 
