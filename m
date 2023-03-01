@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 531026A6A87
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 11:10:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C76A6A6A90
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 11:10:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbjCAKKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 05:10:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59642 "EHLO
+        id S229881AbjCAKKc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 05:10:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229956AbjCAKKO (ORCPT
+        with ESMTP id S229958AbjCAKKO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 1 Mar 2023 05:10:14 -0500
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157E13647D
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1848F36FE3
         for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 02:10:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1677665414; x=1709201414;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=iOzXP8LomyHd700l2Fo775pz3JgmHbSNQy1oTDWNjUM=;
-  b=QYIX03tvSJ4HrWZygos6Hbd5BRC2zPd/gHGOdON1m5DuCprIeHri7jc2
-   F9k7dPmaqVJms/ueGpSKxbXON26zr5wa1+vEMujrMTKEkFiIOjyQsM8ZG
-   YNa/sQ67gU29JmctDY1TojAmCiJBm+pyK4QYuFIBLAk0OuReA4MR+fmzG
-   o1kH4QRNclquZFwUg6n4XJnXCntvAzUs4ZvtOj7PV1husvvur+22aca6q
-   ju+zx+ztihqNs+TkCtf4nd6p/mY6OwuUnRkXlhgMuQC9Lm7C3CXjtSzhz
-   eRXAKk35MSIVlozbMzSenbBiyS2pLxw154mrVyD4BCN2n7u6GajMQXWRs
+  bh=My9Fqvg66rpR/nMzOmPdqh1Vi9L15vgnhhoKkkfZhYI=;
+  b=aVEai99P9uJn3UMd7VOnMfcPtvAPEN0lwKW1MkPJ/L1sOgFj60sE6+/+
+   Ki1lq7aNaRqGujWFfa2P9/KUa9lcjZplrnCZLfx1qr3JKGHsrceeFsTyW
+   04cvio38S1kWWNcEZT8sD4oPR6w7HfhCmm4psclR/33UUDb7gaavuhQf3
+   Jns0SydGQEh6/ZCOtZwzIW3xH8cg1J48DiZYI2eiuP04e/caPX4Hh599i
+   wE7hFct0oV1C20pHabc5AW5SgxujdllJl7Npqy3IHEPE15v8FLifinwm0
+   RHCS7+h6h2+Cfeluh/+nte/arkDwcAGN81X4dQpaoK+myYIdfijyMsl9g
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="336662805"
+X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="336662813"
 X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="336662805"
+   d="scan'208";a="336662813"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:10:06 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="738589032"
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:10:09 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="738589036"
 X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="738589032"
+   d="scan'208";a="738589036"
 Received: from omimran-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.94.171])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:10:05 -0800
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:10:07 -0800
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH v2 05/23] wifi: mac80211: allow beacon protection HW offload
-Date:   Wed,  1 Mar 2023 12:09:17 +0200
-Message-Id: <20230301115906.b2becd9a22fb.I6c0b9c50c6a481128ba912a11cb7afc92c4b6da7@changeid>
+Subject: [PATCH v2 06/23] wifi: wireless: return primary channel regardless of DUP
+Date:   Wed,  1 Mar 2023 12:09:18 +0200
+Message-Id: <20230301115906.66d7f05f7d11.I5e0add054f72ede95611391b99804c61c40cc959@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230301100935.170922-1-gregory.greenman@intel.com>
 References: <20230301100935.170922-1-gregory.greenman@intel.com>
@@ -60,34 +60,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-In case of beacon protection, check if the key was offloaded
-to the hardware and in that case set control.hw_key so that
-the encryption function will see it and only do the needed
-steps that aren't done in hardware.
+Currently in case DUP bit is not set we don't return the primary
+channel for 6Ghz Band (UHB), but from spec seems that
+DUP has no affect on primary channel for UHB,
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+9.4.2.249 HE Operation element:
+The Duplicate Beacon subfield is set to 1 if the AP transmits
+Beacon frames in non-HT duplicate PPDU with a TXVECTOR parameter
+CH_BANDWIDTH value that is up to the BSS bandwidth and is set to
+0 otherwise.
+
+So remove the condition for returning primary channel based on DUP.
+
+About RSSI for DUP beacon no need to mark it as invalid, due to the
+code calling the function check marks signal invalid in case beacon
+freq is not the freq we received it on, which is the case for DUP beacon
+on non primary channels.
+
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/tx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/wireless/scan.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 1f9294f5baa4..628d60f3db2a 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5121,6 +5121,10 @@ static int ieee80211_beacon_protect(struct sk_buff *skb,
- 		return -EINVAL;
- 	}
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 790bc31cf82e..72e9af6158ef 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1830,9 +1830,7 @@ int cfg80211_get_ies_channel_number(const u8 *ie, size_t ielen,
+ 			if (!he_6ghz_oper)
+ 				return -1;
  
-+	if (!(tx.key->conf.flags & IEEE80211_KEY_FLAG_SW_MGMT_TX) &&
-+	    tx.key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
-+		IEEE80211_SKB_CB(skb)->control.hw_key = &tx.key->conf;
-+
- 	tx.local = local;
- 	tx.sdata = sdata;
- 	__skb_queue_head_init(&tx.skbs);
+-			if (ftype != CFG80211_BSS_FTYPE_BEACON ||
+-			    he_6ghz_oper->control & IEEE80211_HE_6GHZ_OPER_CTRL_DUP_BEACON)
+-				return he_6ghz_oper->primary;
++			return he_6ghz_oper->primary;
+ 		}
+ 	} else if (band == NL80211_BAND_S1GHZ) {
+ 		tmp = cfg80211_find_elem(WLAN_EID_S1G_OPERATION, ie, ielen);
 -- 
 2.38.1
 
