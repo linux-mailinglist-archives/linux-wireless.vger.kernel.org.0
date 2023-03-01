@@ -2,469 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 860D66A6A9F
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 11:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06926A6AEB
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Mar 2023 11:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjCAKLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Mar 2023 05:11:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60790 "EHLO
+        id S229825AbjCAKj1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Mar 2023 05:39:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbjCAKLA (ORCPT
+        with ESMTP id S229759AbjCAKjY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Mar 2023 05:11:00 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A6803B872
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 02:10:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1677665458; x=1709201458;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=co+rVrOFCKc3kxBy40bN3jUQjfcwyBOsRNDN0fBumQk=;
-  b=TPwdAIDGCK6mhH8A3Y0yXFw1jo8VJxp11pAnZDoHU2yV8FnMQBzBk4fQ
-   /SyS0730BkyRHgKUyeqPgRCi26JYG/N1aPiZ3ysF0NjwIctt4SeavxHgR
-   iieAtMsJ0lys7wFWbf2vpTYJZR5xu2qFPRsGFsnALhdFwfdXBmpnnmP2Y
-   JcKOHpER0mnl2vYATMPTYmIpq0XJe+9IFXmozYO3Jyw3LHcejTsR/z9h0
-   WjJNft2m+Il9rnSUdIYnW13XD25Gzu//cY8pC5RxCkIkpXiRDKIdKy272
-   zrstwVtzMV8q/W2humzDTOo8xMPLMbIpFY+Wd0kkJj52CMInMNqLfq5Ik
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="336662988"
-X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="336662988"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:10:57 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10635"; a="738589262"
-X-IronPort-AV: E=Sophos;i="5.98,224,1673942400"; 
-   d="scan'208";a="738589262"
-Received: from omimran-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.94.171])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2023 02:10:55 -0800
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH v2 23/23] wifi: mac80211: add support for driver adding radiotap TLVs
-Date:   Wed,  1 Mar 2023 12:09:35 +0200
-Message-Id: <20230301115906.b18fd5da8477.I576400ec40a7b35ef97a3b09a99b3a49e9174786@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230301100935.170922-1-gregory.greenman@intel.com>
-References: <20230301100935.170922-1-gregory.greenman@intel.com>
+        Wed, 1 Mar 2023 05:39:24 -0500
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC0D30B3C;
+        Wed,  1 Mar 2023 02:39:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OfZ5jVIhhEem6Tj533RgW7EFchbkC4o+c80aYOZLvKEllMja2Txw5xcwBXnXbcrOLTTBy2jmK6thoS4iOh3F3oH6muiwqrELLyctKf8LLooES4kaWEOTd9SLJKCh6FLQU02c0NdE0Z+l+wLuhngCxJdkGa029xE71PjZiCDnaYLaaQqhgJ69M6GekUph9ESp10/KgKUJfEA47bC96lwpLA6zChlKMgpOzBmVnVQtcL2oO7MKGfIiCSVLkDCoE4JmmRtoT02uQxb/IKYWJLtaYdj9Q22fta819yzST69tHZ7FsjNKBQbCvOTTLmki4/a/vPKnnBaNQIPieqilx0Rt0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8rkphRyxkscrYIkL2XD/CIXDS1iPkQBl5ljszcWoB38=;
+ b=lt8JzbyB0/OHNQnsVvCg/EGio5MV7nSMK8lW4UhDM8Oxh5HA/Pw2mNn9lsmK2ujegT5W3jCJf4RiJEhCZKzEGfvtxAjZg7t7LpMOHciH8Z/nfXOMpD6dlt3jmlmZPoz4Ci1kA66ysfQR73XF1Sn52S9GQ3Ffo7Z8eRPy6/Rh0E1KG1zWaxuhO3Hp7HKdpjs+WMzWZFBjo2N+eI08DY7HWjGvhxZmAaq9rbUlxJw3tnaGaZgH63glvKmr3yLFG3B/NAxr4tgzCeaTaCyIdVuJKc6OFDyUQE+KUld2C4R5xyXDQPS6k+PsbPS6qWnOa+/CC9xq9ZW0Lc6/qnxKYpQi8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8rkphRyxkscrYIkL2XD/CIXDS1iPkQBl5ljszcWoB38=;
+ b=ivNVlvGDNmNw5PpxJbxKfsclJoNns2ypuod9AOK4Wdur85hCDebesrPMl9F51yobJ04AlWf2IrOxAdwMi0JDc16Xr2lDN4gPCQ3aohFzkq6KyC5xalkqhkxOPYdLZ+sz0EXOTbhZqibrAJ59Q2jmlSb16NsniqlR3ysF80/cqsw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by PH0PR13MB5517.namprd13.prod.outlook.com (2603:10b6:510:142::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.24; Wed, 1 Mar
+ 2023 10:39:21 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c%3]) with mapi id 15.20.6156.018; Wed, 1 Mar 2023
+ 10:39:21 +0000
+Date:   Wed, 1 Mar 2023 11:39:13 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH] rtlwifi: rtl8192se: Remove the unused variable
+ bcntime_cfg
+Message-ID: <Y/8rUTtuzcgp34KQ@corigine.com>
+References: <20230228021132.88910-1-jiapeng.chong@linux.alibaba.com>
+ <Y/3gUquaPNlaLaKt@corigine.com>
+ <1d262829764d40a086e93f0c7d0541bc@realtek.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1d262829764d40a086e93f0c7d0541bc@realtek.com>
+X-ClientProxiedBy: AM3PR05CA0156.eurprd05.prod.outlook.com
+ (2603:10a6:207:3::34) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH0PR13MB5517:EE_
+X-MS-Office365-Filtering-Correlation-Id: a406bd20-7fe5-4916-51b0-08db1a41374f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZmVX5sqxXDVN4LupXNZEl+sKodzK1sBzap/YyxvJmS82KmCYCROve/JoaVqQjn05fS/Mx/ttNoqtt9PNFOxeUgLRnxlhcQF+U5B2Eaq8NmVkiiecoSRrQG3JrWtL9SHLd71Tckk0sf3a6464sQOcwjtGUxFWNzHEmEAwcyeR9mtoAxVUeqOQA4IxLPFEf+eZ8UjVxDo1Pkq4vLuCNB+P5oECgitOH/dQPhC/K1BZLiU2SNpTHKK2LCAyJ/orhinyTCYTocE9yMbsXKb1Oy7QIIYQkdMcMdORqUhxeNvZpQHPo+l6DwtLIeoTo2Vi5A4PAiTK3XGMN3LMmOhJM/XWs0Zyx3CzYcChDcM4fMxQvKdlcwOxu3LVt3h/CHmJeC7MdeXZAs/YIdRB4ghqHoYbgq0jn/r1XA857abDxBGOVIrTau2tpxhpPdCdre2+ccPhwlVyeJ0vwmwleyPaPZ5CLDjowhtf0MUiSXoOw3wxm/BK43OIThKYZB9edmd/7BVvKBUEske1e0y00dJqPVxdp0+J97AzikndUZqYlJgix0UdMVIIa1puYtIAIuqHnlYPHhVDMsHBzzxeoWg3FJAsxXCEJhtvBRBQewXD84XxplyL4Ps6bNFrc3oXGPJnlJB6cHK7m8a+aeVCDAkyKZ4eWYg7CxjMebPscnWJDX1Uxp89yq8SMqICeACPU4K4YLf+
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(376002)(136003)(39830400003)(346002)(366004)(451199018)(36756003)(86362001)(66556008)(41300700001)(66476007)(66946007)(7416002)(5660300002)(8676002)(6916009)(8936002)(44832011)(2906002)(38100700002)(4326008)(6666004)(54906003)(6486002)(966005)(478600001)(316002)(83380400001)(186003)(2616005)(53546011)(6512007)(6506007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yE5KkApZWfEaSLI5JnokKoY6dPAFX9y7l4YjerBAK546pyJz2JDXGwiVeTj8?=
+ =?us-ascii?Q?7S6wo8NvzuB92sQPud+WycKHA+UTmEMUNmb3WK69TB5Xmct8gy5QiEVM6goJ?=
+ =?us-ascii?Q?nEOhN4OrmwDkORE5sMuuDeP+FBTwlVGnrz7liBSfryq2JA7X8YBuftKXo/TC?=
+ =?us-ascii?Q?lLHFzMoexL17qOdd/P/OXmcoxsxKECG8qXS4SpsR/c4CPvRQ1EWqytm6NgZH?=
+ =?us-ascii?Q?qSXd6MucNXZiGMH3X3PqOPV4OMTm5by5FuJAJt9eHIZr5VmOabvhYn1rmrcC?=
+ =?us-ascii?Q?DvqMt6qMhMdYCIDYhol67OqCz11xr6bTLTOIKOEN4JsjL31priEzZJ9r7XrI?=
+ =?us-ascii?Q?9F0ukMCyD/4OXuAQLs9vbHTack7sPoTbyfQmnqyoR+jZs2p6C0qjjG0/dxbS?=
+ =?us-ascii?Q?YKfOlUi6wmHZQNBz3jixr/4jn2nP5cG59TzymAFwDDsUczlGM+r1+TqAv7s2?=
+ =?us-ascii?Q?ors3kIBic+LFOpZtTOWsVx54XvI3SagU6HHuNV8q29iZ+Uw2+1VC/MQs4tea?=
+ =?us-ascii?Q?kofj9uS13v340jIJdDLoMJNDaOVhgoBUUFlQUWgltGHTmGm8zPbTuNRKGwsO?=
+ =?us-ascii?Q?i4EazSRfGDjB9zwIkxWZmyaM4DIlLyAsIkvmzN58I7R4RxstEGvz3Ycm2LBr?=
+ =?us-ascii?Q?1dBTPWCKtvdnO9Svfm54G/qU/74Lhtyt6VrQlxqThw4mDIhUZciqGUI961BX?=
+ =?us-ascii?Q?88R4ITOIvshnRLOWB4PRDi/r1pQ4/JaEZTOQCQniB23MA2KV5A01xicq5PNu?=
+ =?us-ascii?Q?my8Ry3m42vL08ifx3sv9tBfod63GpMWh/OgS4tFd1wvJND7SdxyyB6JNOyTP?=
+ =?us-ascii?Q?fAnDx8g8yH6UMB6f7z+ktC62D24+feXgbcrn4qXPontRDICqhMSePrzTUoSh?=
+ =?us-ascii?Q?g1fpLcJc9IjzCA2pBH0PBLKXFypNgs53J1e8ye9r3ucn3aeDnkxLlrd7E2LY?=
+ =?us-ascii?Q?xObV3+20HMdImCdK9WCqMflg4b+4nWT5vW9SaiHESvq+WUoiKos6JVSxU98m?=
+ =?us-ascii?Q?PuOkvcpiqFbZAJOEVe6TRqmSf8Zv+QpQje5xs0F1RcAvK4a4H2hCQcfYm/y1?=
+ =?us-ascii?Q?H7djWrdoJOCzfRVNYh4joT0u3A7GFz+sCWC1k/cBn1+iTXVu1+SIfJllX+t7?=
+ =?us-ascii?Q?RQRr3dyR4SBJuGNEQynDIOUgxoNvoG5yPm1Mf8ys6/pxIEzZWUFbGzKAglsQ?=
+ =?us-ascii?Q?YcxVbE8zZjzqKOhflPFbfe7IxtctHKi/eUG0gR00e2yI0hpcfEO3QPlz0vnj?=
+ =?us-ascii?Q?wTMyKTTLYdIaj8rqNU6vylvPnrZmurO69Yzs5HJq1Eu6rrWBzZxejgv3oGkb?=
+ =?us-ascii?Q?0cneQKcNs/08R1Ua8Q+FG5rxgcoktYz+dW9/8YWo0NSu/GjEFifxQIPj0oi0?=
+ =?us-ascii?Q?pNeC1p6JAh9C7qC26AEv+w04zcvnQG6DOmmq+kBITASfSibYJVKh2MrEZl5e?=
+ =?us-ascii?Q?GNO0kKr+nJfcfevsFfAAJlHZudkPyKEEYB5XkmdP3xDS19SWOu10ygcpS3HM?=
+ =?us-ascii?Q?uEe2N/vg78rBSW8ngxCvEzTfNruJRnQb5HbgwugH+DZQ3imp7hEN0vnY3x0p?=
+ =?us-ascii?Q?AqgRiz6ocZl8+w8Otl0bV0gT13QpBy855YBjo1+QRrIoMVX/hMyd67s+zidd?=
+ =?us-ascii?Q?+b606Ia0RGIsUpy4JHlhW5rEtkc1p9aUUFyew485BO8tGEBkuOyDpboHrcke?=
+ =?us-ascii?Q?Wwmeyg=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a406bd20-7fe5-4916-51b0-08db1a41374f
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2023 10:39:20.9804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 40OKCuZyQH6Takw8XdnILFyY98ZhFZwn81lPBw+74J7nGoo6DhBltG9MyA55qHZthKkkkUJ8PptrpkmQEl6kchYs/Tc9mzJKShHlIlMwi8Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB5517
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+On Wed, Mar 01, 2023 at 12:32:38AM +0000, Ping-Ke Shih wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Simon Horman <simon.horman@corigine.com>
+> > Sent: Tuesday, February 28, 2023 7:07 PM
+> > To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> > Cc: Ping-Ke Shih <pkshih@realtek.com>; kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
+> > kuba@kernel.org; pabeni@redhat.com; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; Abaci Robot <abaci@linux.alibaba.com>
+> > Subject: Re: [PATCH] rtlwifi: rtl8192se: Remove the unused variable bcntime_cfg
+> > 
+> > On Tue, Feb 28, 2023 at 10:11:32AM +0800, Jiapeng Chong wrote:
+> > > Variable bcntime_cfg is not effectively used, so delete it.
+> > >
+> > > drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:6: warning: variable 'bcntime_cfg' set but not
+> > used.
+> > >
+> > > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> > > Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4240
+> > > Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> > 
+> > Hi Jiapeng Chong,
+> > 
+> > this looks good to me.
+> > 
+> > Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> > 
+> > While reviewing this gcc 12.2.0 told me:
+> > 
+> > drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:25: error: unused variable 'bcn_ifs'
+> > [-Werror=unused-variable]
+> >  1555 |         u16 bcn_cw = 6, bcn_ifs = 0xf;
+> >       |                         ^~~~~~~
+> > drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c:1555:13: error: unused variable 'bcn_cw'
+> > [-Werror=unused-variable]
+> >  1555 |         u16 bcn_cw = 6, bcn_ifs = 0xf;
+> >       |             ^~~~~~
+> > 
+> > So perhaps you could consider sending another patch to remove them too.
+> > 
+> 
+> These errors are introduced by this patch, so please fix them together by this
+> patch.
 
-The new TLV format enables adding TLVs after the fixed
-fields in radiotap, as part of the radiotap header.
-Support this and move vendor data to the TLV format,
-allowing a reuse of the RX_FLAG_RADIOTAP_VENDOR_DATA as
-the new RX_FLAG_RADIOTAP_TLV_AT_END flag.
-
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 27 +++---
- drivers/net/wireless/mac80211_hwsim.c         | 45 +++++-----
- include/net/ieee80211_radiotap.h              | 20 +++++
- include/net/mac80211.h                        | 44 ++--------
- net/mac80211/rx.c                             | 82 ++++++-------------
- 5 files changed, 91 insertions(+), 127 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 549dbe0be223..d1769464d75b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -209,33 +209,34 @@ static void iwl_mvm_add_rtap_sniffer_config(struct iwl_mvm *mvm,
- 					    struct sk_buff *skb)
- {
- 	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
--	struct ieee80211_vendor_radiotap *radiotap;
--	const int size = sizeof(*radiotap) + sizeof(__le16);
-+	struct ieee80211_radiotap_vendor_tlv *radiotap;
-+	const u16 vendor_data_len = sizeof(mvm->cur_aid);
-+	const u16 padding = ALIGN(vendor_data_len, 4) - vendor_data_len;
- 
- 	if (!mvm->cur_aid)
- 		return;
- 
--	/* ensure alignment */
--	BUILD_BUG_ON((size + 2) % 4);
-+	radiotap = skb_put(skb, sizeof(*radiotap) + vendor_data_len + padding);
-+	radiotap->type = cpu_to_le16(IEEE80211_RADIOTAP_VENDOR_NAMESPACE);
-+	radiotap->len = cpu_to_le16(sizeof(*radiotap) -
-+				    sizeof(struct ieee80211_radiotap_tlv) +
-+				    vendor_data_len);
- 
--	radiotap = skb_put(skb, size + 2);
--	radiotap->align = 1;
- 	/* Intel OUI */
- 	radiotap->oui[0] = 0xf6;
- 	radiotap->oui[1] = 0x54;
- 	radiotap->oui[2] = 0x25;
- 	/* radiotap sniffer config sub-namespace */
--	radiotap->subns = 1;
--	radiotap->present = 0x1;
--	radiotap->len = size - sizeof(*radiotap);
--	radiotap->pad = 2;
--
-+	radiotap->oui_subtype = 1;
-+	radiotap->vendor_type = 0;
-+	/* clear reserved field */
-+	radiotap->reserved = 0;
- 	/* fill the data now */
- 	memcpy(radiotap->data, &mvm->cur_aid, sizeof(mvm->cur_aid));
- 	/* and clear the padding */
--	memset(radiotap->data + sizeof(__le16), 0, radiotap->pad);
-+	memset(radiotap->data + vendor_data_len, 0, padding);
- 
--	rx_status->flag |= RX_FLAG_RADIOTAP_VENDOR_DATA;
-+	rx_status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
- }
- 
- /* iwl_mvm_pass_packet_to_mac80211 - passes the packet for mac80211 */
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index e9b9340a97dc..152617034d19 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1534,37 +1534,38 @@ static void mac80211_hwsim_add_vendor_rtap(struct sk_buff *skb)
- 	 * the values accordingly.
- 	 */
- #ifdef HWSIM_RADIOTAP_OUI
--	struct ieee80211_vendor_radiotap *rtap;
-+	struct ieee80211_radiotap_vendor_tlv *rtap;
-+	static const char vendor_data[8] = "ABCDEFGH";
-+
-+	// Make sure no padding is needed
-+	BUILD_BUG_ON(sizeof(vendor_data) % 4);
-+	/* this is last radiotap info before the mac header, so
-+	 * skb_reset_mac_header for mac8022 to know the end of
-+	 * the radiotap TLV/beginning of the 802.11 header
-+	 */
-+	skb_reset_mac_header(skb);
- 
- 	/*
- 	 * Note that this code requires the headroom in the SKB
- 	 * that was allocated earlier.
- 	 */
--	rtap = skb_push(skb, sizeof(*rtap) + 8 + 4);
-+	rtap = skb_push(skb, sizeof(*rtap) + sizeof(vendor_data));
-+
-+	rtap->len = cpu_to_le16(sizeof(*rtap) -
-+				sizeof(struct ieee80211_radiotap_tlv) +
-+				sizeof(vendor_data));
-+	rtap->type = cpu_to_le16(IEEE80211_RADIOTAP_VENDOR_NAMESPACE);
-+
- 	rtap->oui[0] = HWSIM_RADIOTAP_OUI[0];
- 	rtap->oui[1] = HWSIM_RADIOTAP_OUI[1];
- 	rtap->oui[2] = HWSIM_RADIOTAP_OUI[2];
--	rtap->subns = 127;
-+	rtap->oui_subtype = 127;
-+	/* clear reserved field */
-+	rtap->reserved = 0;
-+	rtap->vendor_type = 0;
-+	memcpy(rtap->data, vendor_data, sizeof(vendor_data));
- 
--	/*
--	 * Radiotap vendor namespaces can (and should) also be
--	 * split into fields by using the standard radiotap
--	 * presence bitmap mechanism. Use just BIT(0) here for
--	 * the presence bitmap.
--	 */
--	rtap->present = BIT(0);
--	/* We have 8 bytes of (dummy) data */
--	rtap->len = 8;
--	/* For testing, also require it to be aligned */
--	rtap->align = 8;
--	/* And also test that padding works, 4 bytes */
--	rtap->pad = 4;
--	/* push the data */
--	memcpy(rtap->data, "ABCDEFGH", 8);
--	/* make sure to clear padding, mac80211 doesn't */
--	memset(rtap->data + 8, 0, 4);
--
--	IEEE80211_SKB_RXCB(skb)->flag |= RX_FLAG_RADIOTAP_VENDOR_DATA;
-+	IEEE80211_SKB_RXCB(skb)->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
- #endif
- }
- 
-diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index 0fc2667a9a5d..95436686d3fe 100644
---- a/include/net/ieee80211_radiotap.h
-+++ b/include/net/ieee80211_radiotap.h
-@@ -369,6 +369,26 @@ struct ieee80211_radiotap_tlv {
- 	u8 data[];
- } __packed;
- 
-+/**
-+ * struct ieee80211_radiotap_vendor_tlv - vendor radiotap data information
-+ * @type: should always be set to IEEE80211_RADIOTAP_VENDOR_NAMESPACE
-+ * @len: length of data
-+ * @oui: radiotap vendor namespace OUI
-+ * @oui_subtype: radiotap vendor sub namespace
-+ * @vendor_type: radiotap vendor type
-+ * @reserved: should always be set to zero (to avoid leaking memory)
-+ * @data: the actual vendor namespace data
-+ */
-+struct ieee80211_radiotap_vendor_tlv {
-+	__le16 type; /* IEEE80211_RADIOTAP_VENDOR_NAMESPACE */
-+	__le16 len;
-+	u8 oui[3];
-+	u8 oui_subtype;
-+	__le16 vendor_type;
-+	__le16 reserved;
-+	u8 data[];
-+} __packed;
-+
- /* ieee80211_radiotap_eht_usig - content of U-SIG tlv (type 33)
-  * see www.radiotap.org/fields/U-SIG.html for details
-  */
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 5df9eb828a58..3a43ce5fd4ec 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1375,9 +1375,12 @@ ieee80211_tx_info_clear_status(struct ieee80211_tx_info *info)
-  *	subframes share the same sequence number. Reported subframes can be
-  *	either regular MSDU or singly A-MSDUs. Subframes must not be
-  *	interleaved with other frames.
-- * @RX_FLAG_RADIOTAP_VENDOR_DATA: This frame contains vendor-specific
-- *	radiotap data in the skb->data (before the frame) as described by
-- *	the &struct ieee80211_vendor_radiotap.
-+ * @RX_FLAG_RADIOTAP_TLV_AT_END: This frame contains radiotap TLVs in the
-+ *	skb->data (before the 802.11 header).
-+ *	If used, the SKB's mac_header pointer must be set to point
-+ *	to the 802.11 header after the TLVs, and any padding added after TLV
-+ *	data to align to 4 must be cleared by the driver putting the TLVs
-+ *	in the skb.
-  * @RX_FLAG_ALLOW_SAME_PN: Allow the same PN as same packet before.
-  *	This is used for AMSDU subframes which can have the same PN as
-  *	the first subframe.
-@@ -1429,7 +1432,7 @@ enum mac80211_rx_flags {
- 	RX_FLAG_ONLY_MONITOR		= BIT(17),
- 	RX_FLAG_SKIP_MONITOR		= BIT(18),
- 	RX_FLAG_AMSDU_MORE		= BIT(19),
--	RX_FLAG_RADIOTAP_VENDOR_DATA	= BIT(20),
-+	RX_FLAG_RADIOTAP_TLV_AT_END	= BIT(20),
- 	RX_FLAG_MIC_STRIPPED		= BIT(21),
- 	RX_FLAG_ALLOW_SAME_PN		= BIT(22),
- 	RX_FLAG_ICV_STRIPPED		= BIT(23),
-@@ -1569,39 +1572,6 @@ ieee80211_rx_status_to_khz(struct ieee80211_rx_status *rx_status)
- 	       (rx_status->freq_offset ? 500 : 0);
- }
- 
--/**
-- * struct ieee80211_vendor_radiotap - vendor radiotap data information
-- * @present: presence bitmap for this vendor namespace
-- *	(this could be extended in the future if any vendor needs more
-- *	 bits, the radiotap spec does allow for that)
-- * @align: radiotap vendor namespace alignment. This defines the needed
-- *	alignment for the @data field below, not for the vendor namespace
-- *	description itself (which has a fixed 2-byte alignment)
-- *	Must be a power of two, and be set to at least 1!
-- * @oui: radiotap vendor namespace OUI
-- * @subns: radiotap vendor sub namespace
-- * @len: radiotap vendor sub namespace skip length, if alignment is done
-- *	then that's added to this, i.e. this is only the length of the
-- *	@data field.
-- * @pad: number of bytes of padding after the @data, this exists so that
-- *	the skb data alignment can be preserved even if the data has odd
-- *	length
-- * @data: the actual vendor namespace data
-- *
-- * This struct, including the vendor data, goes into the skb->data before
-- * the 802.11 header. It's split up in mac80211 using the align/oui/subns
-- * data.
-- */
--struct ieee80211_vendor_radiotap {
--	u32 present;
--	u8 align;
--	u8 oui[3];
--	u8 subns;
--	u8 pad;
--	u16 len;
--	u8 data[];
--} __packed;
--
- /**
-  * enum ieee80211_conf_flags - configuration flags
-  *
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index c7e44bc8ed5a..0abb88baab57 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -55,7 +55,7 @@ static struct sk_buff *ieee80211_clean_skb(struct sk_buff *skb,
- 	/* After pulling radiotap header, clear all flags that indicate
- 	 * info on skb->data.
- 	 */
--	status->flag &= ~(RX_FLAG_RADIOTAP_VENDOR_DATA |
-+	status->flag &= ~(RX_FLAG_RADIOTAP_TLV_AT_END |
- 			  RX_FLAG_RADIOTAP_LSIG |
- 			  RX_FLAG_RADIOTAP_HE_MU |
- 			  RX_FLAG_RADIOTAP_HE);
-@@ -126,9 +126,6 @@ ieee80211_rx_radiotap_hdrlen(struct ieee80211_local *local,
- 	/* allocate extra bitmaps */
- 	if (status->chains)
- 		len += 4 * hweight8(status->chains);
--	/* vendor presence bitmap */
--	if (status->flag & RX_FLAG_RADIOTAP_VENDOR_DATA)
--		len += 4;
- 
- 	if (ieee80211_have_rx_timestamp(status)) {
- 		len = ALIGN(len, 8);
-@@ -190,34 +187,28 @@ ieee80211_rx_radiotap_hdrlen(struct ieee80211_local *local,
- 		len += 2 * hweight8(status->chains);
- 	}
- 
--	if (status->flag & RX_FLAG_RADIOTAP_VENDOR_DATA) {
--		struct ieee80211_vendor_radiotap *rtap;
--		int vendor_data_offset = 0;
-+	if (status->flag & RX_FLAG_RADIOTAP_TLV_AT_END) {
-+		int tlv_offset = 0;
- 
- 		/*
- 		 * The position to look at depends on the existence (or non-
- 		 * existence) of other elements, so take that into account...
- 		 */
- 		if (status->flag & RX_FLAG_RADIOTAP_HE)
--			vendor_data_offset +=
-+			tlv_offset +=
- 				sizeof(struct ieee80211_radiotap_he);
- 		if (status->flag & RX_FLAG_RADIOTAP_HE_MU)
--			vendor_data_offset +=
-+			tlv_offset +=
- 				sizeof(struct ieee80211_radiotap_he_mu);
- 		if (status->flag & RX_FLAG_RADIOTAP_LSIG)
--			vendor_data_offset +=
-+			tlv_offset +=
- 				sizeof(struct ieee80211_radiotap_lsig);
- 
--		rtap = (void *)&skb->data[vendor_data_offset];
-+		/* ensure 4 byte alignment for TLV */
-+		len = ALIGN(len, 4);
- 
--		/* alignment for fixed 6-byte vendor data header */
--		len = ALIGN(len, 2);
--		/* vendor data header */
--		len += 6;
--		if (WARN_ON(rtap->align == 0))
--			rtap->align = 1;
--		len = ALIGN(len, rtap->align);
--		len += rtap->len + rtap->pad;
-+		/* TLVs until the mac header */
-+		len += skb_mac_header(skb) - &skb->data[tlv_offset];
- 	}
- 
- 	return len;
-@@ -313,9 +304,9 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 	u32 it_present_val;
- 	u16 rx_flags = 0;
- 	u16 channel_flags = 0;
-+	u32 tlvs_len = 0;
- 	int mpdulen, chain;
- 	unsigned long chains = status->chains;
--	struct ieee80211_vendor_radiotap rtap = {};
- 	struct ieee80211_radiotap_he he = {};
- 	struct ieee80211_radiotap_he_mu he_mu = {};
- 	struct ieee80211_radiotap_lsig lsig = {};
-@@ -336,18 +327,17 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		skb_pull(skb, sizeof(lsig));
- 	}
- 
--	if (status->flag & RX_FLAG_RADIOTAP_VENDOR_DATA) {
--		rtap = *(struct ieee80211_vendor_radiotap *)skb->data;
--		/* rtap.len and rtap.pad are undone immediately */
--		skb_pull(skb, sizeof(rtap) + rtap.len + rtap.pad);
-+	if (status->flag & RX_FLAG_RADIOTAP_TLV_AT_END) {
-+		/* data is pointer at tlv all other info was pulled off */
-+		tlvs_len = skb_mac_header(skb) - skb->data;
- 	}
- 
- 	mpdulen = skb->len;
- 	if (!(has_fcs && ieee80211_hw_check(&local->hw, RX_INCLUDES_FCS)))
- 		mpdulen += FCS_LEN;
- 
--	rthdr = skb_push(skb, rtap_len);
--	memset(rthdr, 0, rtap_len - rtap.len - rtap.pad);
-+	rthdr = skb_push(skb, rtap_len - tlvs_len);
-+	memset(rthdr, 0, rtap_len - tlvs_len);
- 	it_present = &rthdr->it_present;
- 
- 	/* radiotap header, set always present flags */
-@@ -369,13 +359,8 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 				 BIT(IEEE80211_RADIOTAP_DBM_ANTSIGNAL);
- 	}
- 
--	if (status->flag & RX_FLAG_RADIOTAP_VENDOR_DATA) {
--		it_present_val |= BIT(IEEE80211_RADIOTAP_VENDOR_NAMESPACE) |
--				  BIT(IEEE80211_RADIOTAP_EXT);
--		put_unaligned_le32(it_present_val, it_present);
--		it_present++;
--		it_present_val = rtap.present;
--	}
-+	if (status->flag & RX_FLAG_RADIOTAP_TLV_AT_END)
-+		it_present_val |= BIT(IEEE80211_RADIOTAP_TLV);
- 
- 	put_unaligned_le32(it_present_val, it_present);
- 
-@@ -706,22 +691,6 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
- 		*pos++ = status->chain_signal[chain];
- 		*pos++ = chain;
- 	}
--
--	if (status->flag & RX_FLAG_RADIOTAP_VENDOR_DATA) {
--		/* ensure 2 byte alignment for the vendor field as required */
--		if ((pos - (u8 *)rthdr) & 1)
--			*pos++ = 0;
--		*pos++ = rtap.oui[0];
--		*pos++ = rtap.oui[1];
--		*pos++ = rtap.oui[2];
--		*pos++ = rtap.subns;
--		put_unaligned_le16(rtap.len, pos);
--		pos += 2;
--		/* align the actual payload as requested */
--		while ((pos - (u8 *)rthdr) & (rtap.align - 1))
--			*pos++ = 0;
--		/* data (and possible padding) already follows */
--	}
- }
- 
- static struct sk_buff *
-@@ -797,6 +766,13 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
- 	bool only_monitor = false;
- 	unsigned int min_head_len;
- 
-+	if (WARN_ON_ONCE(status->flag & RX_FLAG_RADIOTAP_TLV_AT_END &&
-+			 !skb_mac_header_was_set(origskb))) {
-+		/* with this skb no way to know where frame payload starts */
-+		dev_kfree_skb(origskb);
-+		return NULL;
-+	}
-+
- 	if (status->flag & RX_FLAG_RADIOTAP_HE)
- 		rtap_space += sizeof(struct ieee80211_radiotap_he);
- 
-@@ -806,12 +782,8 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
- 	if (status->flag & RX_FLAG_RADIOTAP_LSIG)
- 		rtap_space += sizeof(struct ieee80211_radiotap_lsig);
- 
--	if (unlikely(status->flag & RX_FLAG_RADIOTAP_VENDOR_DATA)) {
--		struct ieee80211_vendor_radiotap *rtap =
--			(void *)(origskb->data + rtap_space);
--
--		rtap_space += sizeof(*rtap) + rtap->len + rtap->pad;
--	}
-+	if (status->flag & RX_FLAG_RADIOTAP_TLV_AT_END)
-+		rtap_space += skb_mac_header(origskb) - &origskb->data[rtap_space];
- 
- 	min_head_len = rtap_space;
- 
--- 
-2.38.1
-
+Yes, indeed. Sorry for missing that important point.
+Had I noticed it my advice would have been the same as yours.
