@@ -2,114 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA2AC6A7B5E
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Mar 2023 07:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 482266A7C16
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Mar 2023 08:50:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbjCBGYd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Mar 2023 01:24:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
+        id S229620AbjCBHue convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Mar 2023 02:50:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230112AbjCBGYa (ORCPT
+        with ESMTP id S229591AbjCBHuc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Mar 2023 01:24:30 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9189D18149
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Mar 2023 22:24:25 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id a25so911694edb.0
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Mar 2023 22:24:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677738264;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=96tnRVy67gbVcAhZJrtqxH4ZHmeLLXWlWG3PhZjbqSE=;
-        b=EolPIXzNzP1VdfLOwxU3Hu0+6yeSy7H72rMB5VUo/O1ReP4SZgLhbPFCPSu/auYVLd
-         p3+M+HPIQepYvc/CxpDMdA5v01GndMxyNUwusVlOhnGYq/zxprB+yRXXN1+NN+M/xU0b
-         sXdxxd+t+fpGhbJ3e8Hmstz1vfIVgFJv0IGEsZ1CpYG1mBYIPdtWZzz5aqNUtfzTjfbo
-         N+E7QUQjIe9WhTpJXHzbXRlf9uHqjbDVLWeHM3xKOxvNFck8+WMPXnYF1KhR9zq6Zso+
-         GqOsDHr8q7JYCGyzohJ0bL4VwA16WdF8BAK8oZbjB+bGYjuneql0Nf2jMfqVHG91YlwR
-         IOZw==
+        Thu, 2 Mar 2023 02:50:32 -0500
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE95303DD;
+        Wed,  1 Mar 2023 23:50:18 -0800 (PST)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-172afa7bee2so17227289fac.6;
+        Wed, 01 Mar 2023 23:50:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677738264;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=96tnRVy67gbVcAhZJrtqxH4ZHmeLLXWlWG3PhZjbqSE=;
-        b=I0Q0xzUIjjNDfZsAn6ib8/iVDKeBErBLw2EI7Xf8B8QFpR1jMqSbvdYtM2timCyjEI
-         ThpICBhRlb/7QoHlpD30reJU/U1ovG41dQo8pe6TyFXEZ5+WDy3wMkJodukrn71ieQLh
-         9qLbRxJ1KtZXCQJvSzna0P5psTFMR+cCuSE/LUgdbreCyHb8tPf8UOSSDi2/qkSX5IKq
-         GMwWltWawtH1yc//3ppz1AnyvQnNusz/taWLJeCE47rqGiTViKz1UgwTS56ZDGU5IzXO
-         Wkha00C2HVA5irZ1RfMv5F//5f4L5YsPUSl6mT3QcQ/hFKCnBBACJSPjRMOXXuFhCASo
-         mbqg==
-X-Gm-Message-State: AO0yUKW4/LPdKXub/Z1MWlF3//AOb/uzjAmXm4p8QoctcEk58bk820Ay
-        rj8gokYSJNvzhTbei21b1SN0v2Mdt9tAPcAPz8w=
-X-Google-Smtp-Source: AK7set8Qb8of4zEXD5zxatMMG/kzKV7dbDr66CVSaQTK+Mh/12Jv0PQ3K2GpNH7OL03G+54gTeb2BA==
-X-Received: by 2002:a17:906:74d6:b0:8a9:e5c2:e3b8 with SMTP id z22-20020a17090674d600b008a9e5c2e3b8mr8120680ejl.2.1677738263890;
-        Wed, 01 Mar 2023 22:24:23 -0800 (PST)
-Received: from ?IPV6:2a02:2788:415:e0f7:ab10:10c9:842a:7cc? ([2a02:2788:415:e0f7:ab10:10c9:842a:7cc])
-        by smtp.gmail.com with ESMTPSA id r7-20020a170906350700b008b2e4f88ed7sm6687723eja.111.2023.03.01.22.24.23
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m9NdTpfDEMV32UTE9lZbQp6kQQhUJVdsU2kqbFsl+ZA=;
+        b=tsmDfvCtJ9Aqml+rjvoBdolA55BW0s8ZxrfanyNdpKTbzx1b/2Gsc8g4BBBxCwTmMS
+         88/CyZgPpGniroEjeZ1nCocMcTRvhWbvuWWh1vEsYYJyn+I4htZfeJ8+l6ak7IPwnrMN
+         OUzUoTrAj0Rzu9/0c9ZS+SbZ00patwiEPYFtlMNoPdK4VsyKmtxnPvo7FJhuGn9sLVat
+         y5udvpN/0cLELUluNjR8NoyxRdGchGRGSDg0Tbx3VDViXK3/qOBD/zHmbsWYtdqeuuN2
+         o4/GSVWrZy+/khK7H7Ui+NZd5fZqkVLkDkvbRCuo1egOZhmGpGi+4l5MeRkXLOHBQ8X+
+         vbFQ==
+X-Gm-Message-State: AO0yUKWYxhaabFvVMNGMkZvySXZPceWN1bCFyoRhm/wNQlwNP5eh/nGp
+        DPR1VKuKS2qDF61WvVyW440ORCh+1zV3kQ==
+X-Google-Smtp-Source: AK7set8c9joX8ey0qbKnqu7pgCE8rSUDqWoyXNHH1uUotJKnAAQXnNfkwOhnn6pSu88jbBpjT8w8EA==
+X-Received: by 2002:a05:6870:d202:b0:176:4a5b:10a6 with SMTP id g2-20020a056870d20200b001764a5b10a6mr655719oac.24.1677743418034;
+        Wed, 01 Mar 2023 23:50:18 -0800 (PST)
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com. [209.85.167.173])
+        by smtp.gmail.com with ESMTPSA id eg41-20020a05687098a900b001724742cfcesm5170181oab.38.2023.03.01.23.50.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Mar 2023 22:24:23 -0800 (PST)
-Message-ID: <c92df9a9-bff0-6dff-6416-5ee761334c2a@gmail.com>
-Date:   Thu, 2 Mar 2023 07:24:22 +0100
+        Wed, 01 Mar 2023 23:50:17 -0800 (PST)
+Received: by mail-oi1-f173.google.com with SMTP id q15so12854064oiw.11;
+        Wed, 01 Mar 2023 23:50:17 -0800 (PST)
+X-Received: by 2002:a81:ad1b:0:b0:52f:1c23:ef1 with SMTP id
+ l27-20020a81ad1b000000b0052f1c230ef1mr5784211ywh.5.1677743396691; Wed, 01 Mar
+ 2023 23:49:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: Hangs with NetworkManager and rtw8723_de with kernel 6.1
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <b8fa3770-7164-e6bf-4d8d-8ba8fd78057c@gmail.com>
- <ad187d12189d45a68bc8bdc229ab5d4e@realtek.com>
-Content-Language: fr-FR
-From:   =?UTF-8?Q?Fran=c3=a7ois_Valenduc?= <francoisvalenduc@gmail.com>
-In-Reply-To: <ad187d12189d45a68bc8bdc229ab5d4e@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230301185209.274134-1-jjhiblot@traphandler.com> <20230301185209.274134-3-jjhiblot@traphandler.com>
+In-Reply-To: <20230301185209.274134-3-jjhiblot@traphandler.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 2 Mar 2023 08:49:44 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVF337k+zyjpbzoDtWWDnYhM6eM3+As6UuZ7FCgASsMQg@mail.gmail.com>
+Message-ID: <CAMuHMdVF337k+zyjpbzoDtWWDnYhM6eM3+As6UuZ7FCgASsMQg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] of: irq: make callers of of_irq_parse_one() release
+ the device node
+To:     Jean-Jacques Hiblot <jjhiblot@traphandler.com>
+Cc:     saravanak@google.com, clement.leger@bootlin.com,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        zajec5@gmail.com, Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Marc Zyngier <maz@kernel.org>, afaerber@suse.de,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Nishanth Menon <nm@ti.com>, ssantosh@kernel.org,
+        mathias.nyman@intel.com, gregkh@linuxfoundation.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        linux-renesas-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+        linux-actions@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Jean-Jacques,
 
-Le 2/03/23 à 02:27, Ping-Ke Shih a écrit :
->
->> -----Original Message-----
->> From: François Valenduc <francoisvalenduc@gmail.com>
->> Sent: Wednesday, March 1, 2023 2:26 PM
->> To: linux-wireless@vger.kernel.org
->> Subject: Hangs with NetworkManager and rtw8723_de with kernel 6.1
->>
->> Good morning,
->>
->> systemrescue recently switched from kernel 5.15 to kernel 6.1 and
->> NetworkManager started to hangs at startup. This seems to be linked to
->> my wifi card (RTL8723DE). I am also able to reproduce the problem under
->> gentoo with the same versions for NetworkManager and linux-firmware than
->> those used in systemrescue (1.42.2 and 20230210). Under gentoo, the
->> problem appears with kernel 6.1.14 and 6.2.1. I am able to use
->> NetworkManager and systemrescue without problem on another computer
->> which has another wifi card.
->>
->> Does anybody have a solution to this problem ?
->>
-> I think this problem is the same as
-> https://bugzilla.kernel.org/show_bug.cgi?id=217016
->
-> Ping-Ke
->
->
-This is indeed the same bug. I applied this patch on top of kernel 
-6.1.14 and the hang doesn't occur anymore, neither in Gentoo or in 
-SystemRescue. I see this patch has been merged in mainline and marked 
-for stable. However, it is not included in the current review for 
-6.1.15. I hope it will make it to stable kernels soon.
+Thanks for your patch!
 
-Thanks for your help,
+On Wed, Mar 1, 2023 at 7:53 PM Jean-Jacques Hiblot
+<jjhiblot@traphandler.com> wrote:
+> of_irq_parse_one() does a get() on the device node returned in out_irq->np.
+> Callers of of_irq_parse_one() must do a put() when they are done with it.
 
-François Valenduc
+What does "be done with it" really mean here?
 
+> Signed-off-by: Jean-Jacques Hiblot <jjhiblot@traphandler.com>
+
+> --- a/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
+> +++ b/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
+> @@ -184,6 +184,7 @@ static int __init rcar_gen2_regulator_quirk(void)
+>                         kfree(quirk);
+>                         continue;
+>                 }
+> +               of_node_put(argsa->np);
+
+The quirk object, which is a container of argsa, is still used below,
+and stored in a linked list.  I agree argsa->np is not dereferenced,
+but the pointer itself is still compared to other pointers.
+IIUIC, calling of_node_put() might cause the reference count to drop to
+zero, and the underlying struct node object to be deallocated.
+So when a future reference to the same DT node will be taken, a new
+struct node object will be allocated, and the pointer comparison below
+will fail?
+
+Or am I missing something?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
