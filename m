@@ -2,130 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B09F06A7F2F
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Mar 2023 10:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 204D46A85C0
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Mar 2023 17:03:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230399AbjCBJ5M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Mar 2023 04:57:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40072 "EHLO
+        id S229557AbjCBQDU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Mar 2023 11:03:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjCBJ4f (ORCPT
+        with ESMTP id S229457AbjCBQDT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Mar 2023 04:56:35 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD323D087;
-        Thu,  2 Mar 2023 01:56:35 -0800 (PST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3229YABT007962;
-        Thu, 2 Mar 2023 09:56:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=n4u0QORlDQIiNmr9PqyeFNaeaGjlinS5DG6hnZGlICQ=;
- b=I9vp27UfFLSfM1MTuK6ylnKDQT1Jnjtyy2DWEwFZK6psuuB2+1idlFtpUunGbE6e+kzz
- zQAUdzXNZV0pJOvAAfh1XaetQsjaNT5NCddrta4CoeStkCdFsy1M9GSrJK4fp9c3mTRH
- sEqsuDqP9BqAQJWkdgsU/WXzkm32+VQBlu+JGTfqDorOWokWuM5CpBlHJlv3/LMQKdvm
- BYZt+bfEBU/kdYSRzGk1lb8BHciDeEdQ0VdpLXhSycMBmGDmWaXsaicVZ5lJ5kOXMawU
- hkpYHmawP2PVfIaGrUUrpfWuGUZR632hobievzde2vgSqaKRagnDeSyy+/Xrr6P3nLAO 1Q== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3p2rbg86uv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 02 Mar 2023 09:56:33 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3229uWda006777
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 2 Mar 2023 09:56:32 GMT
-Received: from youghand-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Thu, 2 Mar 2023 01:56:30 -0800
-From:   Youghandhar Chintala <quic_youghand@quicinc.com>
-To:     <ath10k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <mpubbise@qti.qualcomm.com>,
-        Youghandhar Chintala <quic_youghand@quicinc.com>
-Subject: [PATCH v2 2/2] wifi: ath10k: update the channel list if change in channel flags.
-Date:   Thu, 2 Mar 2023 15:25:51 +0530
-Message-ID: <20230302095551.5510-3-quic_youghand@quicinc.com>
-X-Mailer: git-send-email 2.38.0
-In-Reply-To: <20230302095551.5510-1-quic_youghand@quicinc.com>
-References: <20230302095551.5510-1-quic_youghand@quicinc.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ikjBkfh0fAhWeuvsbqtUXPLbCL1FMQoG
-X-Proofpoint-ORIG-GUID: ikjBkfh0fAhWeuvsbqtUXPLbCL1FMQoG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-02_04,2023-03-02_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- mlxscore=0 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303020086
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 2 Mar 2023 11:03:19 -0500
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427DA1514E
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Mar 2023 08:03:18 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-536be78056eso315679787b3.1
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Mar 2023 08:03:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1677772997;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OCOfjy9wgPSJAfIMwhSliKQPfrgPuk24lq60Zc+oJ3w=;
+        b=poLVNQzg/V7jkO67c4aASSzpvoGIK0gxkS2bCETcVWgmsT1SoOu1KyXcmTe/jJ9Apv
+         4v3pWgK+1h9/PSOj9MYztO9Wy5RNZETDBo85HyMxBg593Oh8Zze4FVv44iALm8ReNcY4
+         Kb2/cegSrGCJINxZL5I3MNuSrEi/RTK7+T4GAo7Y+F0V+psZg9lsNxwcTIUY7jqtl6tW
+         eCQma7ysc55iZrBKsVKQZIn+Bkvi5zGGfSW8bp5QtMYys31wYT3cvEk4IctWNmgulTI2
+         oqatWSDxGEVCpcSXuNqSj+hSX3Mx8Rja9VKfy4wgFjJvW2S+pd093IdPr1K5FKdXl4Rm
+         9dsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677772997;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OCOfjy9wgPSJAfIMwhSliKQPfrgPuk24lq60Zc+oJ3w=;
+        b=7nkmQbCDbn0lfl6hcf+TI8GHtp12fInKV320R5WAaT5h5xhlbkkgkluJnsBivc1E9d
+         MErsbjMhtCpfoQfql0Prbwg7RUDGgE/OsWySgFvV3vqcXGp23kYL+/V3LIx+qIK65GMY
+         AzYXF2wJH5oCKpf0gqcj9WuKTNKh1UtIcPYbbU+rHCdwGXlEj0WEiDfJEGijKdiPEqke
+         ccNWgBn+RQvd69wH5kOBd14axugPEQtg2GSRFPml1/iuc6j6s5d+qiwHrUXBARktm0e5
+         h7WgGdyFWzAau+nTRB6yO73jXfDXDkNtk0dsnUjp4J7XdFQCLM+R91VxYfyGAqg6aDUq
+         8IBg==
+X-Gm-Message-State: AO0yUKWNvGnfGrL616VgEjCQvh9E6NP34rIjLXnnZ58u4e8Oo3FtM5Ey
+        yBOUVN8FzdeHKg4Gh6Fi10SeubsM9aA=
+X-Google-Smtp-Source: AK7set8XZeCs3Ju2LfDDbQxdv8YUdLKNoKygQ79DzdYX7f/D+n66RB6DxvZr7mGXaMUbKUr/OImEvfuwGCo=
+X-Received: from jaewan1.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:e59])
+ (user=jaewan job=sendgmr) by 2002:a81:a783:0:b0:533:cf4e:9a80 with SMTP id
+ e125-20020a81a783000000b00533cf4e9a80mr4044211ywh.6.1677772997559; Thu, 02
+ Mar 2023 08:03:17 -0800 (PST)
+Date:   Thu,  2 Mar 2023 16:03:05 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.2.722.g9855ee24e9-goog
+Message-ID: <20230302160310.923349-1-jaewan@google.com>
+Subject: [PATCH v8 0/5] mac80211_hwsim: Add PMSR support
+From:   Jaewan Kim <jaewan@google.com>
+To:     gregkh@linuxfoundation.org, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-team@android.com, adelva@google.com,
+        Jaewan Kim <jaewan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There are connection failures in hidden SSID case when the device is
-with default reg domain WW.
-For WW reg domain most of the 5 GHz channels are passive. When device
-listens to the beacon on that channel, the driver is updating its
-channel flag but firmware is not aware of it and firmware is not
-sending probes on that channels.
-Due to this, we are seeing connection failures when a device is trying
-to connect with hidden SSID AP.
-Register beacon hint notifier to the regulatory core so that driver get
-notified when there is a change in channel flags. Driver's notifier
-callback will send the updated flags to the firmware.
+Dear Kernel maintainers,
 
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00174
+First of all, thank you for spending your precious time for reviewing
+my changes, and also sorry for my mistakes in previous patchsets.
 
-Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
----
- drivers/net/wireless/ath/ath10k/mac.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Let me propose series of CLs for adding PMSR support in the mac80211_hwsim.
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index ec8d5b29bc72..91a957295456 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -3534,6 +3534,15 @@ static void ath10k_mac_update_channel_list(struct ath10k *ar,
- 	}
- }
- 
-+static void ath10k_mac_beacon_notifier(struct wiphy *wiphy)
-+{
-+	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+	struct ath10k *ar = hw->priv;
-+
-+	if (ath10k_update_channel_list(ar))
-+		ath10k_warn(ar, "failed to update channel list\n");
-+}
-+
- static void ath10k_reg_notifier(struct wiphy *wiphy,
- 				struct regulatory_request *request)
- {
-@@ -10286,6 +10295,8 @@ int ath10k_mac_register(struct ath10k *ar)
- 			goto err_unregister;
- 	}
- 
-+	ar->hw->wiphy->beacon_hint_notifier = ath10k_mac_beacon_notifier;
-+
- 	return 0;
- 
- err_unregister:
+PMSR (peer measurement) is generalized measurement between STAs,
+and currently FTM (fine time measurement or flight time measurement)
+is the one and only measurement.
+
+FTM measures the RTT (round trip time) and FTM can be used to measure
+distances between two STAs. RTT is often referred as 'measuring distance'
+as well.
+
+Kernel had already defined protocols for PMSR in the
+include/uapi/linux/nl80211.h and relevant parsing/sending code are in the
+net/wireless/pmsr.c, but they are only used in intel's iwlwifi driver.
+
+CLs are tested with iw tool on Virtual Android device (a.k.a. Cuttlefish).
+Hope this explains my CLs.
+
+Many Thanks,
+
+--
+V7 -> V8: Separated CL for exporting nl80211_send_chandef
+V6 -> V7: Split 'mac80211_hwsim: handle FTM requests with virtio'
+          with three pieces
+V5 -> V6: Added per CL change history.
+V4 -> V5: Fixed style
+V3 -> V4: Added detailed explanation to cover letter and per CL commit
+          messages, includes explanation of PMSR and FTM.
+          Also fixed memory leak.
+V1 -> V3: Initial commits (include resends)
+
+Jaewan Kim (5):
+  mac80211_hwsim: add PMSR capability support
+  wifi: nl80211: make nl80211_send_chandef non-static
+  mac80211_hwsim: add PMSR request support via virtio
+  mac80211_hwsim: add PMSR abort support via virtio
+  mac80211_hwsim: add PMSR report support via virtio
+
+ drivers/net/wireless/mac80211_hwsim.c | 775 +++++++++++++++++++++++++-
+ drivers/net/wireless/mac80211_hwsim.h |  58 ++
+ include/net/cfg80211.h                |   9 +
+ net/wireless/nl80211.c                |   4 +-
+ 4 files changed, 834 insertions(+), 12 deletions(-)
+
 -- 
-2.38.0
+2.39.2.722.g9855ee24e9-goog
 
