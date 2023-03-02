@@ -2,103 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F30796A7DAC
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Mar 2023 10:31:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EE4E6A7E9F
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Mar 2023 10:49:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229632AbjCBJbr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Mar 2023 04:31:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35464 "EHLO
+        id S230284AbjCBJti (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Mar 2023 04:49:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbjCBJbq (ORCPT
+        with ESMTP id S230287AbjCBJtO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Mar 2023 04:31:46 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1922367F7
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Mar 2023 01:31:44 -0800 (PST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3222rvKA008281;
-        Thu, 2 Mar 2023 09:31:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=rZwsUcLQ0iuC3aTvvO2VV6fN1wSyF5bOEpHMLExyP6E=;
- b=CVAh/QuGlqiPImpg6BCThJdmlLn1e2Qa93+xENGhQMwxH7O42avxVtAhvFZdlyzEfQUJ
- asbdviHRKn5kcrW730bcRmsdBU9luHA9WfL6KmY7flxdfPUbW219empnIFj35+4T+ABu
- tNxLvOk/XCCSVyT78rh/fvv1bOUqwc9oeDvC2kgd63xrITPTID+rD2Ieb90Ll5Q50tFn
- yh25e0QAQDuCOT/1a2hjfsnnC0QML/1D/JBR1PTDmwCvDhwFVh+464TDPy9v05JIOZso
- lzH+QGnRwqZ6X+XU1aJUzuw8LEeOB1OAI7c7D6rGGE7uCWXaehi5cnbDlG25QPodNDuU +w== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3p24uwb24f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 02 Mar 2023 09:31:33 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3229VWMl015828
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 2 Mar 2023 09:31:32 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 2 Mar 2023
- 01:31:30 -0800
-Message-ID: <e74f9d95-acfe-5150-6648-eb165f620042@quicinc.com>
-Date:   Thu, 2 Mar 2023 17:31:27 +0800
+        Thu, 2 Mar 2023 04:49:14 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D60C3B67D;
+        Thu,  2 Mar 2023 01:49:02 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id cp12so8959841pfb.5;
+        Thu, 02 Mar 2023 01:49:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1677750542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8k7xdMTs98SUbySINVMkdahCZ8tdQstE20TVY0Lg2SE=;
+        b=Psw6N5ZoYgD6r3SZ2FHg2jRXnwle5uBbnLe72PF5nbFrpa8cy6650zBdr7+7zCF/nK
+         gi3Ok1sZbWUHa0U4YYc5L+dzU+F3mba1ig/duuAyu3TdY4kFxb61lQV02p9SRWADVWHs
+         veaeM+0bfnWfjV6enVE2qIwMfyAdMcA1OtvYsrNcpcRQKyLu839Fdb8w9vUaS5IVkzvr
+         9oDLl6HZnASNsefCv/gLnHMq/4t0mTWSifa/GFzPyc2zQYuTYeJfTmlJ/Yt4CeWZY7+K
+         J9zBcT4xVey6U8b9heDyP4RS6xqT/dZZu3toW6atJBZudEJAMMDMb6M8NbCbhZENUQSG
+         pSvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677750542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8k7xdMTs98SUbySINVMkdahCZ8tdQstE20TVY0Lg2SE=;
+        b=wEPNzuDQ34+57MS91uXjF2XSm32/V8B73MHW9Mb1p41SuDx9RA/2PqY7n+NpMIz/5v
+         PXt1CDUwTdl2WHqcxWY07C+1o0dCVG6cHc/jP2EVU1mYlCCf7AZM4/DUNM/NJmRzUcAS
+         q+7X5IV7jMdOpzUVoaQVSYMqM4OtxF93Vrct9DylPp+NM/AzgHlpsEO6gMRl5fC4ag1i
+         JTMlUEfyMf7qbF0GMBhJWA/kiCMTIOB7NfqNLJuhY14lJbPuobP2fs1PvQR9Lb2d1bqs
+         SUeGBjrxPgycpmyPUQ06rLhZIPn4HTigc4EaG+h8xSw1v99xSr5usnW6pZHLTvrbDdTc
+         vl3Q==
+X-Gm-Message-State: AO0yUKUsg+Yu1AQw2fp34BWJ3wYBtJoZMb8GEyWRF5apuSGTEO030LY4
+        MRBx5xOxoRZzJ7o/axr6a9Zyi+eB7J6XS8rF16Y=
+X-Google-Smtp-Source: AK7set91zvVgRNAOv1HOpXZ+ZgjU+mx/hJ2YE5tSxQR7zMThZ7eKqc1J2+TabA4i4a6fNFbjtrcEgHucXb81gt5mhvE=
+X-Received: by 2002:a63:3388:0:b0:4f2:8281:8afb with SMTP id
+ z130-20020a633388000000b004f282818afbmr3266580pgz.4.1677750541823; Thu, 02
+ Mar 2023 01:49:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2 07/23] wifi: wireless: correct validation 6G Band for
- primary channel
-To:     <gregory.greenman@intel.com>, <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        <ath11k@lists.infradead.org>
-References: <20230301100935.170922-1-gregory.greenman@intel.com>
- <20230301115906.314faf725255.I5e27251ac558297553b590d3917a7b6d1aae0e74@changeid>
-Content-Language: en-US
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <20230301115906.314faf725255.I5e27251ac558297553b590d3917a7b6d1aae0e74@changeid>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: oyigKNH8X5-5uV96XCG6uJwH-hAF3EB1
-X-Proofpoint-ORIG-GUID: oyigKNH8X5-5uV96XCG6uJwH-hAF3EB1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-02_04,2023-03-02_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- malwarescore=0 clxscore=1011 suspectscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2212070000 definitions=main-2303020081
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230218075956.1563118-1-zyytlz.wz@163.com> <Y/U+w7aMc+BttZwl@google.com>
+ <CAJedcCzmnZCR=XF+zKHiJ+8PNK88sXFDm5n=RnwcTnJfO0ihOw@mail.gmail.com>
+ <Y/aHHSkUOsOsU+Kq@google.com> <CAJedcCykky7E_uyeU=Pj1HR0rcpUTF1tKJ-2UmmM33bweDg=yw@mail.gmail.com>
+ <CAJedcCztEkE=EB2GmH=BpTvD=r_bwGXk3RYDM2FU=f_SvEaJHA@mail.gmail.com> <Y/kupIIGBHQ2rQIZ@google.com>
+In-Reply-To: <Y/kupIIGBHQ2rQIZ@google.com>
+From:   Zheng Hacker <hackerzheng666@gmail.com>
+Date:   Thu, 2 Mar 2023 17:48:49 +0800
+Message-ID: <CAJedcCzKi89D+CEwrwgwT_=eXYjt3dh-m10Q8bxE9ZRB04PK+Q@mail.gmail.com>
+Subject: Re: [PATCH] mwifiex: Fix use-after-free bug due to race condition
+ between main thread thread and timer thread
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Zheng Wang <zyytlz.wz@163.com>, ganapathi017@gmail.com,
+        alex000young@gmail.com, amitkarwar@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/1/2023 6:09 PM, gregory.greenman@intel.com wrote:
-...
->   	 */
-> -	if (channel->band == NL80211_BAND_6GHZ &&
-> -	    (freq == channel->center_freq ||
-> -	     abs(freq - channel->center_freq) > 80))
-> +	if (freq == channel->center_freq)
->   		return channel;
->   
-freq is KHz, channel->center_freq is MHz, so should change to if (freq / 
-1000 == channel->center_freq)?
->   	alt_channel = ieee80211_get_channel_khz(wiphy, freq);
->   	if (!alt_channel) {
-> -		if (channel->band == NL80211_BAND_2GHZ) {
-> +		if (channel->band == NL80211_BAND_2GHZ ||
-> +		    channel->band == NL80211_BAND_60GHZ) {
+Brian Norris <briannorris@chromium.org> =E4=BA=8E2023=E5=B9=B42=E6=9C=8825=
+=E6=97=A5=E5=91=A8=E5=85=AD 05:39=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Feb 24, 2023 at 02:17:59PM +0800, Zheng Hacker wrote:
+> > This email is broken for the statement is too long, Here is the newest =
+email.
+>
+> It still wraps a bit weird, but it's good enough I suppose.
+>
+> >               retn -EINPROGRESS in mwifiex_init_fw
+> >               mwifiex_free_adapter when in error
+>
+> These two statements don't connect. _mwifiex_fw_dpc() only treats -1 as
+> a true error; -EINPROGRESS is treated as success, such that we continue
+> to wait for the command response. Now, we might hang here if that
+> response doesn't come, but that's a different problem...
+>
 
-it should be NL80211_BAND_6GHZ, NOT 60GHZ?
+Hi Brain,
 
-...
+Sorry for my unclear description. As you say, they don't have any connectio=
+n.
+What I really want to express is after mwifiex_init_fw return -EINPROGRESS
+to its invoker, which is _mwifiex_fw_dpc. It will pass the check of
+return value,
+as the following code.
+```cpp
+ret =3D mwifiex_init_fw(adapter);
+  if (ret =3D=3D -1) {
+    goto err_init_fw;
+  } else if (!ret) {
+    adapter->hw_status =3D MWIFIEX_HW_STATUS_READY;
+    goto done;
+  }
+```
 
+ it continues executing in _mwifiex_fw_dpc. Then in some unexpected situati=
+on,,
+it'll get into error path like mwifiex_init_channel_scan_gap return non-zer=
+o
+code if there is no more memory to use. It'll then get into err_init_chan_s=
+can
+label and call mwifiex_free_adapte finally.  The other thread may USE it
+afterwards.
+
+```cpp
+if (mwifiex_init_channel_scan_gap(adapter)) {
+    mwifiex_dbg(adapter, ERROR,
+          "could not init channel stats table\n");
+    goto err_init_chan_scan;
+  }
+```
+> I'm sure there are true bugs in here somewhere, but I've spent enough
+> time reading your incorrect reports and don't plan to spend more. (If
+> you're lucky, maybe you can pique my curiosity again, but don't count on
+> it.)
+>
+
+BUT after reviewing the code carefully, I found this might not happen
+due to some  exclusive condition. So yes, I also think there is still some
+problem here but I'm kind of busy nowadays. I promise to attach a clearer
+report next time.
+
+So sorry to bother you so many times. And appreciate for your precious
+time spending on this report.
+
+Best regards,
+Zheng
