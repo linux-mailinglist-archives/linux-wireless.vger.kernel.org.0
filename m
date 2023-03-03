@@ -2,43 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECDCF6A9311
+	by mail.lfdr.de (Postfix) with ESMTP id 09C9A6A930F
 	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 09:51:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbjCCIvt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Mar 2023 03:51:49 -0500
+        id S230242AbjCCIvr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Mar 2023 03:51:47 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230243AbjCCIvr (ORCPT
+        with ESMTP id S229694AbjCCIvq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Mar 2023 03:51:47 -0500
+        Fri, 3 Mar 2023 03:51:46 -0500
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC864ECD0
-        for <linux-wireless@vger.kernel.org>; Fri,  3 Mar 2023 00:51:46 -0800 (PST)
-X-UUID: 7ff87dc2b99e11eda06fc9ecc4dadd91-20230303
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1AD64E5CC
+        for <linux-wireless@vger.kernel.org>; Fri,  3 Mar 2023 00:51:44 -0800 (PST)
+X-UUID: 7fa5e9feb99e11eda06fc9ecc4dadd91-20230303
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=IzhBciOktC5LlWot3JMQpeY3vmPHGHWKpnQktZnqMsk=;
-        b=na4dtwGFh8lXXFL9BKFFmgISXsOpU++vAPyw40iRLPKz+VQZftbLSPUqoZxzm6o3/sBCoKPAF7B7TApP6TSWngxmPdvK5Jh3gyYgyEpkI+ETpzgPDPNvQ0AmaYvKTsy3CjGx2hZsS8XtFESwps2svQ1GN72p0D14eR2hVHwCBZI=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Oca0RaExTuCZD7ua585iW2kol2woNjATQIOqheZzsXU=;
+        b=gUUHAaPK5tqY9GqELwbvGGUa3ChFlMKSsPPgPNcUmD2yKuF7IQkY2SyauW3mhcH6ZmUAKjj0MMKEiAI6u3XthFcEmtX0cLYrSMUGlAvshaXSHsBjl8bnXOirVGTQZNl4WvN7F3/D0wyUGbqBNV/8mQb/aZM9cqNOkI9s/NauyQw=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.20,REQID:ce8820f7-4bf7-4beb-be82-17cd2bbb8202,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:25b5999,CLOUDID:ef4c3b27-564d-42d9-9875-7c868ee415ec,B
+X-CID-O-INFO: VERSION:1.1.20,REQID:e58f7684-86e7-4cd1-af8a-2e1c903688a9,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:25b5999,CLOUDID:ae95a9f4-ddba-41c3-91d9-10eeade8eac7,B
         ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
         RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
 X-CID-BVR: 0
-X-UUID: 7ff87dc2b99e11eda06fc9ecc4dadd91-20230303
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+X-UUID: 7fa5e9feb99e11eda06fc9ecc4dadd91-20230303
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
         (envelope-from <shayne.chen@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 105531331; Fri, 03 Mar 2023 16:36:32 +0800
+        with ESMTP id 1341652032; Fri, 03 Mar 2023 16:36:31 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Fri, 3 Mar 2023 16:36:30 +0800
+ 15.2.1118.25; Fri, 3 Mar 2023 16:36:31 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
  mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Fri, 3 Mar 2023 16:36:30 +0800
+ 15.2.1118.25 via Frontend Transport; Fri, 3 Mar 2023 16:36:31 +0800
 From:   Shayne Chen <shayne.chen@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>
 CC:     linux-wireless <linux-wireless@vger.kernel.org>,
@@ -49,9 +49,9 @@ CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Peter Chiu <chui-hao.chiu@mediatek.com>,
         Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 5/7] wifi: mt76: mt7996: init mpdu density cap
-Date:   Fri, 3 Mar 2023 16:35:56 +0800
-Message-ID: <20230303083558.3586-5-shayne.chen@mediatek.com>
+Subject: [PATCH 6/7] wifi: mt76: mt7996: remove mt7996_mcu_set_pm()
+Date:   Fri, 3 Mar 2023 16:35:57 +0800
+Message-ID: <20230303083558.3586-6-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20230303083558.3586-1-shayne.chen@mediatek.com>
 References: <20230303083558.3586-1-shayne.chen@mediatek.com>
@@ -70,51 +70,93 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-Init mpdu density based on the hardware capability to prevent rx drop.
+Currently using BSS_INFO_PS command will sometimes cause packet drop in
+hw rx queue.
+Temporarily remove this function until finding the cause.
 
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  8 ------
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 26 -------------------
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 -
+ 3 files changed, 35 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 946da93eed32..de94e151c47b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -196,10 +196,13 @@ mt7996_init_wiphy(struct ieee80211_hw *hw)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 3e4da0350d96..f13f67b21d3e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -52,10 +52,6 @@ static int mt7996_start(struct ieee80211_hw *hw)
  
- 	hw->max_tx_fragments = 4;
+ 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
  
--	if (phy->mt76->cap.has_2ghz)
-+	if (phy->mt76->cap.has_2ghz) {
- 		phy->mt76->sband_2g.sband.ht_cap.cap |=
- 			IEEE80211_HT_CAP_LDPC_CODING |
- 			IEEE80211_HT_CAP_MAX_AMSDU;
-+		phy->mt76->sband_2g.sband.ht_cap.ampdu_density =
-+			IEEE80211_HT_MPDU_DENSITY_2;
-+	}
+-	ieee80211_iterate_interfaces(dev->mt76.hw,
+-				     IEEE80211_IFACE_ITER_RESUME_ALL,
+-				     mt7996_mcu_set_pm, dev->mt76.hw);
+-
+ 	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
+ 				     MT7996_WATCHDOG_TIME);
  
- 	if (phy->mt76->cap.has_5ghz) {
- 		phy->mt76->sband_5g.sband.ht_cap.cap |=
-@@ -211,6 +214,8 @@ mt7996_init_wiphy(struct ieee80211_hw *hw)
- 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
- 			IEEE80211_VHT_CAP_SHORT_GI_160 |
- 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ;
-+		phy->mt76->sband_5g.sband.ht_cap.ampdu_density =
-+			IEEE80211_HT_MPDU_DENSITY_1;
- 	}
+@@ -79,10 +75,6 @@ static void mt7996_stop(struct ieee80211_hw *hw)
  
- 	mt76_set_stream_caps(phy->mt76, true);
-@@ -689,7 +694,7 @@ mt7996_init_he_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 		u16 cap = IEEE80211_HE_6GHZ_CAP_TX_ANTPAT_CONS |
- 			  IEEE80211_HE_6GHZ_CAP_RX_ANTPAT_CONS;
+ 	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
  
--		cap |= u16_encode_bits(IEEE80211_HT_MPDU_DENSITY_2,
-+		cap |= u16_encode_bits(IEEE80211_HT_MPDU_DENSITY_0_5,
- 				       IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START) |
- 		       u16_encode_bits(IEEE80211_VHT_MAX_AMPDU_1024K,
- 				       IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP) |
+-	ieee80211_iterate_interfaces(dev->mt76.hw,
+-				     IEEE80211_IFACE_ITER_RESUME_ALL,
+-				     mt7996_mcu_set_pm, dev->mt76.hw);
+-
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index c11e92db5f07..1389d140a8c2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3577,32 +3577,6 @@ int mt7996_mcu_twt_agrt_update(struct mt7996_dev *dev,
+ 				 &req, sizeof(req), true);
+ }
+ 
+-void mt7996_mcu_set_pm(void *priv, u8 *mac, struct ieee80211_vif *vif)
+-{
+-#define EXIT_PM_STATE	0
+-#define ENTER_PM_STATE	1
+-	struct ieee80211_hw *hw = priv;
+-	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+-	struct mt7996_phy *phy = mt7996_hw_phy(hw);
+-	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
+-	struct bss_power_save *ps;
+-	struct sk_buff *skb;
+-	struct tlv *tlv;
+-	bool running = test_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+-
+-	skb = __mt7996_mcu_alloc_bss_req(&dev->mt76, &mvif->mt76,
+-					 MT7996_BSS_UPDATE_MAX_SIZE);
+-	if (IS_ERR(skb))
+-		return;
+-
+-	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_PS, sizeof(*ps));
+-	ps = (struct bss_power_save *)tlv;
+-	ps->profile = running ? EXIT_PM_STATE : ENTER_PM_STATE;
+-
+-	mt76_mcu_skb_send_msg(&dev->mt76, skb,
+-			      MCU_WMWA_UNI_CMD(BSS_INFO_UPDATE), true);
+-}
+-
+ int mt7996_mcu_set_rts_thresh(struct mt7996_phy *phy, u32 val)
+ {
+ 	struct {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index ae1210b0a82c..f27f519bec0a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -432,7 +432,6 @@ int mt7996_mcu_set_pulse_th(struct mt7996_dev *dev,
+ int mt7996_mcu_set_radar_th(struct mt7996_dev *dev, int index,
+ 			    const struct mt7996_dfs_pattern *pattern);
+ int mt7996_mcu_set_radio_en(struct mt7996_phy *phy, bool enable);
+-void mt7996_mcu_set_pm(void *priv, u8 *mac, struct ieee80211_vif *vif);
+ int mt7996_mcu_set_rts_thresh(struct mt7996_phy *phy, u32 val);
+ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch);
+ int mt7996_mcu_rdd_cmd(struct mt7996_dev *dev, int cmd, u8 index,
 -- 
 2.39.2
 
