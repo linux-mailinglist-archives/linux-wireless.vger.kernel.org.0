@@ -2,60 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9D926A8F5F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 03:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 548026A9179
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 08:12:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjCCCm6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Mar 2023 21:42:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
+        id S229789AbjCCHMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Mar 2023 02:12:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjCCCmz (ORCPT
+        with ESMTP id S229684AbjCCHMQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Mar 2023 21:42:55 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2815726B5
-        for <linux-wireless@vger.kernel.org>; Thu,  2 Mar 2023 18:42:53 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id f18so1874392lfa.3
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Mar 2023 18:42:53 -0800 (PST)
+        Fri, 3 Mar 2023 02:12:16 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6694634039
+        for <linux-wireless@vger.kernel.org>; Thu,  2 Mar 2023 23:12:15 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id d30so6639905eda.4
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Mar 2023 23:12:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1677811371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U5WGNHoHvFrqEzbIMWPaETRGh642NbHa8AZbtFWCIaY=;
-        b=a1Th93dRZhNLFhiK7IaDAOwo6+U7mQU2G9IxkKcOhsXbtvHHwqOJBbyqnZq9OWlJbe
-         PRy2m3odeC/uu+rdRtGZFHE4CyA+ZQyW570JMMZLN4ZkJTbwPvvrklO6MtzsN/isn4BZ
-         d6+Vw3elF8Thke2Olw45Gfy2cHVxP7Mn/m34a+orjQ73+ZKOSd2QIvCAH5Xjl2PGcOSe
-         Kt+nHfF3mpKhQlnRl82T+Ihx/9ydlw6UJibClFQKxIyBYPPaSJ8YYC0mAaBnuZk5yqdu
-         wUD+TIYQLfmen1g5gsYWk2+PTx84nUjPbl82gCmqpBZeOrpdzxTaESrrrRSVSUuAlubS
-         glEw==
+        d=linaro.org; s=google; t=1677827534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xi3e3zf8Klpq1iRcEdmcSTKwBOu4pz/Ei0EPeIx1fZY=;
+        b=EZLxu7Y+iizjsoeGeUbmzPxbTlnTsVxbNP5WplEQkHBNoOsLzB62obZ9C7HjJdud77
+         56/49ai23BGpoS36DG6EcSbmf63qfNq5oJWGrjeCcUiiqcP5s7T2Mro0aZ/J/j8ksgeI
+         +bg2Y9ZjHQdv3oumc/D705agQ/kTIHtIJYSd3isGNZ021cdwZsiNraxSgOkprbG1/VSs
+         Jy/A3i7jQicgkpkM9EZeoKOzBEgUtXQp/lpjyn7AuUuLTBZDpT2aSxgAtP6jsOAfs7BX
+         anizbYYk4ixsFk47zhnqdrNzqaha1yJxtgSvDN8tkCbRbvXSD9EdiLHjOJXucHQh16pa
+         x2XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677811371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U5WGNHoHvFrqEzbIMWPaETRGh642NbHa8AZbtFWCIaY=;
-        b=T6ZR6R1Fv3zH41JOoa9VFJnbBGeZRDWzgGW8Pm/BwL4XHq3r9+5SHCoMDIEb13+7zp
-         nKVndoyxwSiARyB+K/bI0AMxuizKcaobwf76pheZEBbm+9Afkp6Z7c78sfSaQM+JetJf
-         7u4Aieck2nWO586tQ9Uy8kkzvpUgVseYRTt1hfhCDW3oGmah4MAKX2rCfey+UYqmbblN
-         mCNzJrZK/6dKENbN6og6ANZdREWf5cCw9ZRWzIC8cy/vdy7ppIWoinjABKNd3Diu09AW
-         7DV19SrCV7HBSCzrC7fJ8x6iu5klYXF3yGSV8TiikWa9CCG3ExfK25TsJx/QKDZGERc0
-         i4eQ==
-X-Gm-Message-State: AO0yUKVJjot3NWohRIE9WgyiGYIQjj2dfuzTZ+DkXB9L1/A9Cxyir9hc
-        UkKxQNdnDVKr1DPiQquIVGz2WXRTlgs/hcI9
-X-Google-Smtp-Source: AK7set9F3ef7m9KaxrogAYM4oalKAF6WRYPXP6o4DQr3SoBD77rCGtH28CpKaBUu35HPmnfJ/K7pCw==
-X-Received: by 2002:a19:7611:0:b0:4b5:b705:9bf7 with SMTP id c17-20020a197611000000b004b5b7059bf7mr99636lff.11.1677811371416;
-        Thu, 02 Mar 2023 18:42:51 -0800 (PST)
-Received: from localhost.localdomain (abym99.neoplus.adsl.tpnet.pl. [83.9.32.99])
-        by smtp.gmail.com with ESMTPSA id x19-20020a19f613000000b004db1cd5efcesm181379lfe.241.2023.03.02.18.42.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 18:42:51 -0800 (PST)
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-To:     linux-arm-msm@vger.kernel.org, andersson@kernel.org,
+        d=1e100.net; s=20210112; t=1677827534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xi3e3zf8Klpq1iRcEdmcSTKwBOu4pz/Ei0EPeIx1fZY=;
+        b=yMlmOOQ7q2395/9aF1EutDNGxS3mRBNJDafbOFKQ+0ajEJSRG+LWdGGBK3b/q7ex6l
+         n74/zOUH7+dcm2PZOep/wu60PHWKbyjL+w8WWNsO7HCZawvVzGjWzwAhiNevObNPDzzH
+         KoQCr7HpPXXGja65x2mC6tpCTq5sy7pLR1nsdWhBS9dMnXld1CCJD9QmH8/jUMIegt0S
+         0DWvNkmepVjWIEH48uXr4vT5Jk64oAAj2O70lG7RG+uFF2tPNd70z33mNYOxjHguF8xP
+         5E/GhKnYEDXAZuUvEUe+wieLcamxl2y2+AUIAr6cjn4RlcP+clUCCHZeO4/x6qLdUaF9
+         8IsQ==
+X-Gm-Message-State: AO0yUKUEhPGNjpvvR6YfFHsMKlQWaGt15FgU6F4agxXWHxNzGGTx/s9U
+        g9bKi7oVXikLedLlK7ZhPVNGFQ==
+X-Google-Smtp-Source: AK7set+r+vvJNdv0SgAgspPvo26Cw4Qq2bYappwi6VBNmRDuHd2TtvD3UYnxUh2P0DnOzbQxgvzdAA==
+X-Received: by 2002:a17:907:7289:b0:8e3:74ad:94ce with SMTP id dt9-20020a170907728900b008e374ad94cemr866444ejc.8.1677827533823;
+        Thu, 02 Mar 2023 23:12:13 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id t26-20020a1709060c5a00b008ec793ac3f4sm614812ejf.192.2023.03.02.23.12.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Mar 2023 23:12:13 -0800 (PST)
+Message-ID: <8e695c64-6abd-3c1e-8d80-de636d950442@linaro.org>
+Date:   Fri, 3 Mar 2023 08:12:11 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 1/2] dt-bindings: ath10k: Add vdd-smps supply
+Content-Language: en-US
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, andersson@kernel.org,
         agross@kernel.org
-Cc:     marijn.suijten@somainline.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
+Cc:     marijn.suijten@somainline.org, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -65,49 +70,27 @@ Cc:     marijn.suijten@somainline.org,
         ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] wifi: ath10k: snoc: Add VDD_SMPS regulator
-Date:   Fri,  3 Mar 2023 03:42:46 +0100
-Message-Id: <20230303024246.2175382-2-konrad.dybcio@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230303024246.2175382-1-konrad.dybcio@linaro.org>
 References: <20230303024246.2175382-1-konrad.dybcio@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230303024246.2175382-1-konrad.dybcio@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-At least SM6375 (bundled with soc_id 0x400e0000) and SM4350 (bundled
-with unknown, probably the same) expect one more supply, called vdd-smps
-downstream. It's set to 0.984V and connected to a - you guessed it - SMPS
-regulator on PM6125. Add support for it.
+On 03/03/2023 03:42, Konrad Dybcio wrote:
+> Mention the newly added vdd-smps supply.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
----
-The smps name sounds like a quick downstream hack and is probably
-something more exquisite in reality.. Not something I know, though.
+There is no explanation here, but looking at your driver change it
+suggests name is not correct. You named it based on regulator (so the
+provider), not the consumer.
 
- drivers/net/wireless/ath/ath10k/snoc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 9a82f0336d95..6443523131db 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -48,6 +48,7 @@ static const char * const ath10k_regulators[] = {
- 	"vdd-1.3-rfa",
- 	"vdd-3.3-ch0",
- 	"vdd-3.3-ch1",
-+	"vdd-smps",
- };
- 
- static const char * const ath10k_clocks[] = {
--- 
-2.39.2
+Best regards,
+Krzysztof
 
