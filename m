@@ -2,149 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE0D6AA04D
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 20:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB41B6AA0DC
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 22:09:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231445AbjCCTsj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Mar 2023 14:48:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
+        id S231808AbjCCVJj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Mar 2023 16:09:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231377AbjCCTse (ORCPT
+        with ESMTP id S231799AbjCCVJi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Mar 2023 14:48:34 -0500
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA6B136DD;
-        Fri,  3 Mar 2023 11:48:29 -0800 (PST)
-Received: by mail-ed1-f50.google.com with SMTP id d30so14743202eda.4;
-        Fri, 03 Mar 2023 11:48:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677872908;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qr3wWyppk2JO5cvuGc7OJNqcMG2NC5hwXnkMjN+yuLE=;
-        b=mXnS1hzVlXCx/SEZZDeRfFq3BbGUQ+FjBtAfGFxEc85b/SDiGvfpUX5JGXb2Z9tljK
-         rOiGhppg1i6z9oMLxW9thrYeiO19ASWqZ2fscBNdgDaVbRpvwU2kwtYDrC6vmS4ODpst
-         +94sWKfQlegHXJGKnUd9gtUYoKXXAozsoxfrJ/I3LlSe5MNcgeLDUr/IejCmigtQ+v6a
-         aE3C/A91wSwmjfJSKSCXIYoP+gLDxRUD30cluv2duVOIxollBv24c0jL7g6HcgIKN/lU
-         I2NKB480pc2+1Sm8d+irHvwfGtMYgmUPvT3mhMHdnmRF2+yAst3bcCgQaV/1hRwlWBHT
-         a0tw==
-X-Gm-Message-State: AO0yUKUPkSB+bPBxfzvK+deUOKRvGuaCQHQ3KJTrVnZjqpQ/33IEcdjy
-        lQk3i8K6WdCn2pEMgIDr2SCbV4U9+BGn131FnjeSFLkp
-X-Google-Smtp-Source: AK7set8pOENE3qQdov6OdbnX8NZeqRAuHLeW/9RDr9g861DgXcdaR15YJISLt3N0xGeu3omTus0Ig7L1FfyytK0BbOU=
-X-Received: by 2002:a50:ce19:0:b0:4bc:2776:5b61 with SMTP id
- y25-20020a50ce19000000b004bc27765b61mr1748709edi.6.1677872907622; Fri, 03 Mar
- 2023 11:48:27 -0800 (PST)
+        Fri, 3 Mar 2023 16:09:38 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685996150D;
+        Fri,  3 Mar 2023 13:09:35 -0800 (PST)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 323Hw71Q027393;
+        Fri, 3 Mar 2023 21:09:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : from : subject : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=0GV0GIblVbFArHNpmZ1Srz0Rk2Sez5YtbO96Shw/C94=;
+ b=K3GuB/c67HB+9X5scaPeKggDaitwzAl87gNnC3C2vueKKu5ykHfKheQhr1xKU/22aTAG
+ 2+qjLzzrcdUMfHDrMM8J2lxHIyVHw3312cEHlYqeO4nzKWp0jVnGkb3wsqgDTsz83U2S
+ nuBYJpzVB0bP0JlKacrywW+IItuotYBNMh/5qrIlH2w3bzY3RVFj2YEo71ZnLw2D5cs0
+ kiHUZjliGhYkEWITN3YHvZZeHW/E9PUMeEH2Yv/bx3TZjK2WeuMe2bZZma6hvZxrc/Ta
+ tyt1/AmHVAK43H2/wqZIiWRyYD0i8xWBH4KecTVsak0SRfxB0QClW+YoH0gbO2hx0Rh5 zQ== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3p3dpxj579-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 03 Mar 2023 21:09:11 +0000
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 323L9ALS015416
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 3 Mar 2023 21:09:10 GMT
+Received: from [10.110.20.90] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Fri, 3 Mar 2023
+ 13:09:09 -0800
+Message-ID: <2ae96b75-82f1-165a-e56d-7446c90bb7af@quicinc.com>
+Date:   Fri, 3 Mar 2023 13:09:08 -0800
 MIME-Version: 1.0
-References: <20230301201446.3713334-1-daniel.lezcano@linaro.org> <1d3da42e-2499-7ff6-50fa-048a720e855f@linaro.org>
-In-Reply-To: <1d3da42e-2499-7ff6-50fa-048a720e855f@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 3 Mar 2023 20:48:16 +0100
-Message-ID: <CAJZ5v0i9fbEpedS-CCM5qvfaG095jUDzOFd-H83G3mpwDaxoAA@mail.gmail.com>
-Subject: Re: [PATCH v5 00/18] Self-encapsulate the thermal zone device structure
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+From:   Elliot Berman <quic_eberman@quicinc.com>
+Subject: Re: [PATCH] firmware: qcom_scm: Use fixed width src vm bitmap
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Talel Shenhar <talel@amazon.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Zheng Yongjun <zhengyongjun3@huawei.com>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Balsam CHIHI <bchihi@baylibre.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        linux-input@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "Gokul krishna Krishnakumar" <quic_gokukris@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>
+References: <20230213181832.3489174-1-quic_eberman@quicinc.com>
+ <20230213214417.mtcpeultvynyls6s@ripper> <Y+tNRPf0PGdShf5l@kroah.com>
+ <20230214172325.lplxgbprhj3bzvr3@ripper>
+ <bdda82f7-933d-443b-614a-6befad2899b5@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <bdda82f7-933d-443b-614a-6befad2899b5@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: fFgsdjU-gZTIeIOv6LUxDDseAdoa3PuQ
+X-Proofpoint-GUID: fFgsdjU-gZTIeIOv6LUxDDseAdoa3PuQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-03_05,2023-03-03_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
+ mlxlogscore=999 clxscore=1011 priorityscore=1501 mlxscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2303030177
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Daniel,
 
-On Fri, Mar 3, 2023 at 10:24 AM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
->
-> Hi Rafael,
->
-> Do we have enough ack to apply this series, is it for you ?
 
-I've just queued it up for 6.4.
+On 2/14/2023 10:52 AM, Elliot Berman wrote:
+> 
+> 
+> On 2/14/2023 9:23 AM, Bjorn Andersson wrote:
+>> On Tue, Feb 14, 2023 at 09:58:44AM +0100, Greg Kroah-Hartman wrote:
+>>> On Mon, Feb 13, 2023 at 01:44:17PM -0800, Bjorn Andersson wrote:
+>>>> On Mon, Feb 13, 2023 at 10:18:29AM -0800, Elliot Berman wrote:
+>>>>> The maximum VMID for assign_mem is 63. Use a u64 to represent this
+>>>>> bitmap instead of architecture-dependent "unsigned int" which 
+>>>>> varies in
+>>>>> size on 32-bit and 64-bit platforms.
+>>>>>
+>>>>> Acked-by: Kalle Valo <kvalo@kernel.org> (ath10k)
+>>>>> Tested-by: Gokul krishna Krishnakumar <quic_gokukris@quicinc.com>
+>>>>> Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+>>>>
+>>>> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+>>>>
+>>>> @Greg, would you mind taking this through your tree for v6.3, you
+>>>> already have a related change in fastrpc.c in your tree...
+>>>
+>>> I tried, but it doesn't apply to my char-misc tree at all:
+>>>
+>>> checking file drivers/firmware/qcom_scm.c
+>>> Hunk #1 succeeded at 898 (offset -7 lines).
+>>> Hunk #2 succeeded at 915 (offset -7 lines).
+>>> Hunk #3 succeeded at 930 (offset -7 lines).
+>>> checking file drivers/misc/fastrpc.c
+>>> checking file drivers/net/wireless/ath/ath10k/qmi.c
+>>> checking file drivers/remoteproc/qcom_q6v5_mss.c
+>>> Hunk #1 succeeded at 227 (offset -8 lines).
+>>> Hunk #2 succeeded at 404 (offset -10 lines).
+>>> Hunk #3 succeeded at 939 with fuzz 1 (offset -28 lines).
+>>> checking file drivers/remoteproc/qcom_q6v5_pas.c
+>>> Hunk #1 FAILED at 94.
+>>> 1 out of 1 hunk FAILED
+>>> checking file drivers/soc/qcom/rmtfs_mem.c
+>>> Hunk #1 succeeded at 30 (offset -1 lines).
+>>> can't find file to patch at input line 167
+>>> Perhaps you used the wrong -p or --strip option?
+>>> The text leading up to this was:
+>>> --------------------------
+>>> |diff --git a/include/linux/firmware/qcom/qcom_scm.h
+>>> b/include/linux/firmware/qcom/qcom_scm.h
+>>> |index 1e449a5d7f5c..250ea4efb7cb 100644
+>>> |--- a/include/linux/firmware/qcom/qcom_scm.h
+>>> |+++ b/include/linux/firmware/qcom/qcom_scm.h
+>>> --------------------------
+>>>
+>>> What tree is this patch made against?
+>>>
+>>
+>> Sorry about that, I missed the previous changes in qcom_q6v5_pas in the
+>> remoteproc tree. Elliot said he based it on linux-next, so I expect that
+>> it will merge fine on top of -rc1, once that arrives.
+>>
+> 
+> Yes, this patch applies on next-20230213. I guess there are enough 
+> changes were coming from QCOM side (via Bjorn's qcom tree) as well as 
+> the fastrpc change (via Greg's char-misc tree).
+> 
+> Let me know if I should do anything once -rc1 arrives. Happy to post 
+> version on the -rc1 if it helps.
+> 
 
-It will reach linux-next and the thermal branch some time next week,
-but I will be traveling, so there may be delays.
-
-Thanks!
+The patch now applies on tip of Linus's tree and on char-misc.
