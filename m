@@ -2,191 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5416A9E55
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 19:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EE0D6AA04D
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Mar 2023 20:48:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231208AbjCCST0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Mar 2023 13:19:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38454 "EHLO
+        id S231445AbjCCTsj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Mar 2023 14:48:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230523AbjCCSTZ (ORCPT
+        with ESMTP id S231377AbjCCTse (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Mar 2023 13:19:25 -0500
-Received: from smtp5-g21.free.fr (smtp5-g21.free.fr [IPv6:2a01:e0c:1:1599::14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630762688;
-        Fri,  3 Mar 2023 10:19:24 -0800 (PST)
-Received: from [IPV6:2a02:8428:2a4:1a01:f88c:752c:48de:2928] (unknown [IPv6:2a02:8428:2a4:1a01:f88c:752c:48de:2928])
-        (Authenticated sender: marc.w.gonzalez@free.fr)
-        by smtp5-g21.free.fr (Postfix) with ESMTPSA id E91E55FFAF;
-        Fri,  3 Mar 2023 19:19:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-        s=smtp-20201208; t=1677867562;
-        bh=VIibiph2IAZw8YCCnsAN51osihVhUJ2GrEU2ysg22B8=;
-        h=Date:From:Subject:To:Cc:From;
-        b=YCkYwiro4W8pFN7Mj4VjeohMZ7StZ6xLgPf9K54LZ6SV0v53trSAbWHffLuazXfhU
-         nprlcBb0eLvFQhcysD1ouRiIWPLyj25h7X4IRpPNaev9MJtw6U4BygK8qbNpNbi9DH
-         xC9Myay8bBR3Ua4uZAvMSe0zkuRF4s979tA4stfAE1e/RMhdO9EXuzTMkWdegoWgiL
-         BxIM1mfrA8As8WRmdKMFNU7VY7S0S0YVppk29SW+2YYI8d55Whuta2YpLRXKs9NEaE
-         MUDOhFrGmpOl+TImT4kRpUktW5NwRjWJkxQuOPeQOeOSSHzoZgF0EGQNcxshwqesCW
-         20I0TehqRrJPA==
-Message-ID: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr>
-Date:   Fri, 3 Mar 2023 19:19:00 +0100
+        Fri, 3 Mar 2023 14:48:34 -0500
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA6B136DD;
+        Fri,  3 Mar 2023 11:48:29 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id d30so14743202eda.4;
+        Fri, 03 Mar 2023 11:48:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677872908;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qr3wWyppk2JO5cvuGc7OJNqcMG2NC5hwXnkMjN+yuLE=;
+        b=mXnS1hzVlXCx/SEZZDeRfFq3BbGUQ+FjBtAfGFxEc85b/SDiGvfpUX5JGXb2Z9tljK
+         rOiGhppg1i6z9oMLxW9thrYeiO19ASWqZ2fscBNdgDaVbRpvwU2kwtYDrC6vmS4ODpst
+         +94sWKfQlegHXJGKnUd9gtUYoKXXAozsoxfrJ/I3LlSe5MNcgeLDUr/IejCmigtQ+v6a
+         aE3C/A91wSwmjfJSKSCXIYoP+gLDxRUD30cluv2duVOIxollBv24c0jL7g6HcgIKN/lU
+         I2NKB480pc2+1Sm8d+irHvwfGtMYgmUPvT3mhMHdnmRF2+yAst3bcCgQaV/1hRwlWBHT
+         a0tw==
+X-Gm-Message-State: AO0yUKUPkSB+bPBxfzvK+deUOKRvGuaCQHQ3KJTrVnZjqpQ/33IEcdjy
+        lQk3i8K6WdCn2pEMgIDr2SCbV4U9+BGn131FnjeSFLkp
+X-Google-Smtp-Source: AK7set8pOENE3qQdov6OdbnX8NZeqRAuHLeW/9RDr9g861DgXcdaR15YJISLt3N0xGeu3omTus0Ig7L1FfyytK0BbOU=
+X-Received: by 2002:a50:ce19:0:b0:4bc:2776:5b61 with SMTP id
+ y25-20020a50ce19000000b004bc27765b61mr1748709edi.6.1677872907622; Fri, 03 Mar
+ 2023 11:48:27 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
-Subject: Unsupported WiFi adapter on S905X2 board
-To:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
+References: <20230301201446.3713334-1-daniel.lezcano@linaro.org> <1d3da42e-2499-7ff6-50fa-048a720e855f@linaro.org>
+In-Reply-To: <1d3da42e-2499-7ff6-50fa-048a720e855f@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 3 Mar 2023 20:48:16 +0100
+Message-ID: <CAJZ5v0i9fbEpedS-CCM5qvfaG095jUDzOFd-H83G3mpwDaxoAA@mail.gmail.com>
+Subject: Re: [PATCH v5 00/18] Self-encapsulate the thermal zone device structure
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rafael@kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Alexander Prutskov <alep@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Angus Ainslie <angus@akkea.ca>
-Cc:     linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vasily Khoruzhick <anarsoul@gmail.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Talel Shenhar <talel@amazon.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Zheng Yongjun <zhengyongjun3@huawei.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Balsam CHIHI <bchihi@baylibre.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-input@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hi Daniel,
 
-I think there's an unsupported device in this system:
+On Fri, Mar 3, 2023 at 10:24 AM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+>
+> Hi Rafael,
+>
+> Do we have enough ack to apply this series, is it for you ?
 
-# cat /sys/bus/sdio/devices/mmc2:0001:1/uevent
-OF_NAME=wifi
-OF_FULLNAME=/soc/sd@ffe03000/wifi@1
-OF_COMPATIBLE_0=brcm,bcm4329-fmac
-OF_COMPATIBLE_N=1
-SDIO_CLASS=00
-SDIO_ID=02D0:AAE7
-SDIO_REVISION=0.0
-MODALIAS=sdio:c00v02D0dAAE7
+I've just queued it up for 6.4.
 
-0xaae7 = 43751
+It will reach linux-next and the thermal branch some time next week,
+but I will be traveling, so there may be delays.
 
-Isn't there some overlap between
-include/linux/mmc/sdio_ids.h
-and
-drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-?
-
-(Relevant commit: d2587c57ffd8dc)
-
-Looking at all the occurrences of 43752 to insert a 43751,
-could someone comment whether this looks reasonable?
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 1967160f211eb..89bbad598782e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -987,6 +987,7 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
-  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373, CYW),
-  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012, CYW),
-  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439, CYW),
-+	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43751, CYW),
-  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752, CYW),
-  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359, CYW),
-  	{ /* end: all zeroes */ }
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 121893bbaa1d7..cab9257272dd4 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -731,6 +731,7 @@ static u32 brcmf_chip_tcm_rambase(struct brcmf_chip_priv *ci)
-  	case BRCM_CC_4364_CHIP_ID:
-  	case CY_CC_4373_CHIP_ID:
-  		return 0x160000;
-+	case CY_CC_43751_CHIP_ID:
-  	case CY_CC_43752_CHIP_ID:
-  		return 0x170000;
-  	case BRCM_CC_4378_CHIP_ID:
-@@ -1433,6 +1434,7 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
-  		reg = chip->ops->read32(chip->ctx, addr);
-  		return (reg & CC_SR_CTL0_ENABLE_MASK) != 0;
-  	case BRCM_CC_4359_CHIP_ID:
-+	case CY_CC_43751_CHIP_ID:
-  	case CY_CC_43752_CHIP_ID:
-  	case CY_CC_43012_CHIP_ID:
-  		addr = CORE_CC_REG(pmu->base, retention_ctl);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 6b38d9de71af6..55cc7b65081fd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -624,6 +624,7 @@ BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-sdio");
-  BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
-  BRCMF_FW_CLM_DEF(4373, "brcmfmac4373-sdio");
-  BRCMF_FW_CLM_DEF(43012, "brcmfmac43012-sdio");
-+BRCMF_FW_CLM_DEF(43751, "brcmfmac43751-sdio");
-  BRCMF_FW_CLM_DEF(43752, "brcmfmac43752-sdio");
-  
-  /* firmware config files */
-@@ -657,6 +658,7 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
-  	BRCMF_FW_ENTRY(CY_CC_4373_CHIP_ID, 0xFFFFFFFF, 4373),
-  	BRCMF_FW_ENTRY(CY_CC_43012_CHIP_ID, 0xFFFFFFFF, 43012),
-  	BRCMF_FW_ENTRY(CY_CC_43439_CHIP_ID, 0xFFFFFFFF, 43439),
-+	BRCMF_FW_ENTRY(CY_CC_43751_CHIP_ID, 0xFFFFFFFF, 43751),
-  	BRCMF_FW_ENTRY(CY_CC_43752_CHIP_ID, 0xFFFFFFFF, 43752)
-  };
-  
-@@ -3425,6 +3427,7 @@ static int brcmf_sdio_download_firmware(struct brcmf_sdio *bus,
-  static bool brcmf_sdio_aos_no_decode(struct brcmf_sdio *bus)
-  {
-  	if (bus->ci->chip == CY_CC_43012_CHIP_ID ||
-+	    bus->ci->chip == CY_CC_43751_CHIP_ID ||
-  	    bus->ci->chip == CY_CC_43752_CHIP_ID)
-  		return true;
-  	else
-@@ -4274,6 +4277,7 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
-  
-  		switch (sdiod->func1->device) {
-  		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373:
-+		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_43751:
-  		case SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752:
-  			brcmf_dbg(INFO, "set F2 watermark to 0x%x*4 bytes\n",
-  				  CY_4373_F2_WATERMARK);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index f4939cf627672..8b21da3e66291 100644
---- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -55,6 +55,7 @@
-  #define CY_CC_4373_CHIP_ID		0x4373
-  #define CY_CC_43012_CHIP_ID		43012
-  #define CY_CC_43439_CHIP_ID		43439
-+#define CY_CC_43751_CHIP_ID		43751
-  #define CY_CC_43752_CHIP_ID		43752
-  #define CY_CC_89459_CHIP_ID		0x4355
-  
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index 74f9d9a6d3307..80e84958e570f 100644
---- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -76,6 +76,7 @@
-  #define SDIO_DEVICE_ID_BROADCOM_43430		0xa9a6
-  #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439	0xa9af
-  #define SDIO_DEVICE_ID_BROADCOM_43455		0xa9bf
-+#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43751	0xaae7
-  #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752	0xaae8
-  
-  #define SDIO_VENDOR_ID_MARVELL			0x02df
-
-
-Regards.
-
+Thanks!
