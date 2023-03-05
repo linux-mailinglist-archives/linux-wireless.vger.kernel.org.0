@@ -2,59 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4568C6AAF71
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 13:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A3436AB194
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 18:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjCEMR6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Mar 2023 07:17:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34040 "EHLO
+        id S229509AbjCER0H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Mar 2023 12:26:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229652AbjCEMR4 (ORCPT
+        with ESMTP id S229457AbjCER0G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Mar 2023 07:17:56 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B9B5126EE
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Mar 2023 04:17:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678018668; x=1709554668;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DJpAClW1RlsXuMVOHVwcj2HITo+bygw3GURPt38jX88=;
-  b=G0SDfPFHLfkjI1qPP2rDL66f6TCmisnYcilwID0sBWOL2QB7Y277X0dU
-   LYu/hdPmw9ZhbgRuob2qNv1pOCVRRMk/Y7Ket6TTK6wz+2nMhbHliW34o
-   CE0Ees4rLDPGrJSQLaW6M/BQCT0o0oX5y4IdcIMuyYzgHTXb4mPw4rYKz
-   0/zDw8erQKqBI9mDxWKNvC9LOrP10yP0AX89+K591URvf2S0SvCf85a3v
-   ByAgA4RuEBcPV3rm8XtzXMinabYaP0SmTnipyOjLuR5lM3Dyx8uGoFXjM
-   MfAXn2KPGrznhbE5aILFZcej0T85QfLKRBfWY4zLLJnIY/9rEXm4ql1aJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="400193304"
-X-IronPort-AV: E=Sophos;i="5.98,235,1673942400"; 
-   d="scan'208";a="400193304"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="708355246"
-X-IronPort-AV: E=Sophos;i="5.98,235,1673942400"; 
-   d="scan'208";a="708355246"
-Received: from hsaid-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.80.12])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:45 -0800
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Greenman@vger.kernel.org, Gregory <gregory.greenman@intel.com>
-Subject: [PATCH 21/21] wifi: iwlwifi: mvm: fix EOF bit reporting
-Date:   Sun,  5 Mar 2023 14:16:35 +0200
-Message-Id: <20230305124407.e273aa0d3fdc.I77db4cc247898eae8a98b80659386d6737052b95@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230305121635.301451-1-gregory.greenman@intel.com>
-References: <20230305121635.301451-1-gregory.greenman@intel.com>
+        Sun, 5 Mar 2023 12:26:06 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6361114B;
+        Sun,  5 Mar 2023 09:26:02 -0800 (PST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pYs7S-0001Uk-Mt; Sun, 05 Mar 2023 18:25:58 +0100
+Message-ID: <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
+Date:   Sun, 5 Mar 2023 18:25:58 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
+ drops
+Content-Language: en-US, de-DE
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Thomas Mann <rauchwolke@gmx.net>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
+To:     Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1678037162;dfdfbc9f;
+X-HE-SMSGID: 1pYs7S-0001Uk-Mt
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,87 +51,102 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 04.03.23 17:24, Linux regression tracking (Thorsten Leemhuis) wrote:
+> Hi, this is your Linux kernel regression tracker.
+> 
+> I noticed a regression report in bugzilla.kernel.org. As many (most?)
+> kernel developer don't keep an eye on it, I decided to forward it by
+> mail. Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217119 :
+> 
+>>  Thomas Mann 2023-03-03 15:12:03 UTC
+>>
+>> After the update of linux to 6.2.x, i get connection drops and bandwidth problems.
+>>
+>> 6.2.1 was completely unusable and 6.2.2 still has bandwidth problems but works a bit better
+>>
+>> The device in use is:
+>>
+>> 13d3:3273 IMC Networks 802.11 n/g/b Wireless LAN USB Mini-Card
+>>
+>> Downgrading the kernel to 6.1.[14,15] fixes the problem and the wifi gets stable again and the available bandwidth increases.
 
-In monitor mode, we try to report the EOF bit on the
-first MPDU of an A-MPDU (hardware duplicates this bit
-over all MPDUs, so it's only trustable on the first).
+Quick update from bugzilla:
 
-However, due to reshuffling in an ealier commit, the
-toggle_bit != mvm->ampdu_toggle logic can no longer
-work since mvm->ampdu_toggle is now set before this
-code runs.
+```
+--- Comment #4 from Thomas Mann (rauchwolke@gmx.net) ---
+i bisected and found the commit that introduced the regression:
 
-Fix this by tracking the first_subframe status in the
-phy data struct and using that instead of checking.
+# first bad commit: [4444bc2116aecdcde87dce80373540adc8bd478b] wifi:
+mac80211: Proper mark iTXQs for resumption
+```
 
-Fixes: d7cb2d8f4683 ("iwlwifi: mvm: rxmq: refactor mac80211 rx_status setting")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greenman, Gregory <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 28 +++++++------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
+That's a commit from Alexander, applied by Johannes.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index d8dda72a5a5d..d54e3bed44b3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -1179,6 +1179,7 @@ struct iwl_mvm_rx_phy_data {
- 	__le32 d0, d1, d2, d3, eht_d4, d5;
- 	__le16 d4;
- 	bool with_data;
-+	bool first_subframe;
- 	__le32 rx_vec[4];
- 
- 	u32 rate_n_flags;
-@@ -1878,15 +1879,10 @@ static void iwl_mvm_rx_eht(struct iwl_mvm *mvm, struct sk_buff *skb,
- 
- 	/* update aggregation data for monitor sake on default queue */
- 	if (!queue && (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD) &&
--	    (phy_info & IWL_RX_MPDU_PHY_AMPDU)) {
--		bool toggle_bit = phy_info & IWL_RX_MPDU_PHY_AMPDU_TOGGLE;
--
--		/* toggle is switched whenever new aggregation starts */
--		if (toggle_bit != mvm->ampdu_toggle) {
--			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
--			if (phy_data->d0 & cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
--				rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
--		}
-+	    (phy_info & IWL_RX_MPDU_PHY_AMPDU) && phy_data->first_subframe) {
-+		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
-+		if (phy_data->d0 & cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
-+			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
- 	}
- 
- 	if (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD)
-@@ -2028,15 +2024,10 @@ static void iwl_mvm_rx_he(struct iwl_mvm *mvm, struct sk_buff *skb,
- 
- 	/* update aggregation data for monitor sake on default queue */
- 	if (!queue && (phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD) &&
--	    (phy_info & IWL_RX_MPDU_PHY_AMPDU)) {
--		bool toggle_bit = phy_info & IWL_RX_MPDU_PHY_AMPDU_TOGGLE;
--
--		/* toggle is switched whenever new aggregation starts */
--		if (toggle_bit != mvm->ampdu_toggle) {
--			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
--			if (phy_data->d0 & cpu_to_le32(IWL_RX_PHY_DATA0_HE_DELIM_EOF))
--				rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
--		}
-+	    (phy_info & IWL_RX_MPDU_PHY_AMPDU) && phy_data->first_subframe) {
-+		rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT_KNOWN;
-+		if (phy_data->d0 & cpu_to_le32(IWL_RX_PHY_DATA0_EHT_DELIM_EOF))
-+			rx_status->flag |= RX_FLAG_AMPDU_EOF_BIT;
- 	}
- 
- 	if (he_type == RATE_MCS_HE_TYPE_EXT_SU &&
-@@ -2439,6 +2430,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 			if (mvm->ampdu_ref == 0)
- 				mvm->ampdu_ref++;
- 			mvm->ampdu_toggle = toggle_bit;
-+			phy_data.first_subframe = true;
- 		}
- 		rx_status->ampdu_reference = mvm->ampdu_ref;
- 	}
--- 
-2.38.1
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
+>> demsg shows no errors
+>>
+>> [tag] [reply] [−]
+>> Private
+>> Comment 1 The Linux kernel's regression tracker (Thorsten Leemhuis) 2023-03-04 05:45:33 UTC
+>>
+>> Please attach dmesg [without it most people won't even know which driver is in use for your card]
+>>
+>> [tag] [reply] [−]
+>> Private
+>> Comment 2 Thomas Mann 2023-03-04 12:36:45 UTC
+>>
+>> drive in use is rt2800usb
+>>
+>> [tag] [reply] [−]
+>> Private
+>> Comment 3 Thomas Mann 2023-03-04 12:38:01 UTC
+>>
+>> Created attachment 303840 [details]
+>> dmesg output
+>>
+> 
+> 
+> See the ticket for more details.
+> 
+> 
+> [TLDR for the rest of this mail: I'm adding this report to the list of
+> tracked Linux kernel regressions; the text you find below is based on a
+> few templates paragraphs you might have encountered already in similar
+> form.]
+> 
+> BTW, let me use this mail to also add the report to the list of tracked
+> regressions to ensure it's doesn't fall through the cracks:
+> 
+> #regzbot introduced: v6.1..v6.2
+> https://bugzilla.kernel.org/show_bug.cgi?id=217119
+
+P.S.:
+
+#regzbot introduced: 4444bc2116aecdcde8
+#regzbot ignore-activity
+
+> #regzbot title: net: wireless: rt2800usb: wifi performance issues and
+> connection drops
+> #regzbot ignore-activity
+> 
+> This isn't a regression? This issue or a fix for it are already
+> discussed somewhere else? It was fixed already? You want to clarify when
+> the regression started to happen? Or point out I got the title or
+> something else totally wrong? Then just reply and tell me -- ideally
+> while also telling regzbot about it, as explained by the page listed in
+> the footer of this mail.
+> 
+> Developers: When fixing the issue, remember to add 'Link:' tags pointing
+> to the report (e.g. the buzgzilla ticket and maybe this mail as well, if
+> this thread sees some discussion). See page linked in footer for details.
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
