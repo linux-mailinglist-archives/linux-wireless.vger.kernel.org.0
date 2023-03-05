@@ -2,63 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C84C26AB260
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 22:03:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D566AB2F8
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 23:28:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjCEVDD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Mar 2023 16:03:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
+        id S229665AbjCEW2s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Mar 2023 17:28:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjCEVDB (ORCPT
+        with ESMTP id S229484AbjCEW2r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Mar 2023 16:03:01 -0500
-Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7195FE6;
-        Sun,  5 Mar 2023 13:03:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-        s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:MIME-Version
-        :Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=NYUNbeipY1ll3kDdL3XkOMucDZXwJo2Uc/kulc79M2s=; b=hPWs5lc/IYKSKeLLNBx+N8/oOj
-        xRdjnPpvD8kJySTWAFkkygVJKy9csvy8clK86YZAyMeO/98U57nlQ72nhcyPbbB0iqU24t2rb1shO
-        054ik3/A60Ad8aqwq6h5SCwghk+THIUY1bPvr5V6zD4jk+5fGtYNRyfBh7xsqwpDt2DBa4qRT31Dh
-        s4ok9kH8Xe+JDfyaPfAl/DtK8gODsbk/2I878vA2wXuoyN9XJjNPR37XE0LqDt+5cD0860QxQdaK0
-        wRP2ZPkzYmvC5MDsff1QjetjV5TU2p07I32JbXV0Kr7RV3z+qfRaHA/hKMG3fJ+ARzDtYYvs1jwkx
-        6/FsTrhA==;
-Received: from authenticated user
-        by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <bage@debian.org>)
-        id 1pYvVN-001E7L-DK; Sun, 05 Mar 2023 21:02:53 +0000
-From:   Bastian Germann <bage@debian.org>
-To:     toke@toke.dk, Kalle Valo <kvalo@kernel.org>
-Cc:     Bastian Germann <bage@debian.org>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/1] wifi: ath9k: Remove Qwest/Actiontec 802AIN ID
-Date:   Sun,  5 Mar 2023 22:02:43 +0100
-Message-Id: <20230305210245.9831-1-bage@debian.org>
-X-Mailer: git-send-email 2.39.2
+        Sun, 5 Mar 2023 17:28:47 -0500
+X-Greylist: delayed 821 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Mar 2023 14:28:44 PST
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C35193E2;
+        Sun,  5 Mar 2023 14:28:44 -0800 (PST)
+Message-ID: <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1678053950;
+        bh=abs0MlA44AoyhsNUl+R1/yY5c31L/YIRs431E1VKA2s=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=oNgp3H0b1i1axouXFKpeFlfKkHiWCbs8cPe9dceUFt77Jz6DHos5OToswLcC0W84d
+         HdJVQmoWsXzyhj3vKqANDyzFrBxr6a8IzIMmt2rIrwmvsH9dLdFZsPlEV9rqosBYxi
+         nTyxwiWemyZoqgkI0Fpg14aSF1BgU9QoytsBWPVU=
+Date:   Sun, 5 Mar 2023 23:05:47 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Debian-User: bage
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
+ drops
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Thomas Mann <rauchwolke@gmx.net>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
+ <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
+Content-Language: en-US
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Drop a wrongly claimed USB ID.
+> Quick update from bugzilla:
+> 
+> ```
+> --- Comment #4 from Thomas Mann (rauchwolke@gmx.net) ---
+> i bisected and found the commit that introduced the regression:
+> 
+> # first bad commit: [4444bc2116aecdcde87dce80373540adc8bd478b] wifi:
+> mac80211: Proper mark iTXQs for resumption
+> ```
+> 
+> That's a commit from Alexander, applied by Johannes.
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+> 
 
-Bastian Germann (1):
-  wifi: ath9k: Remove Qwest/Actiontec 802AIN ID
+I just uploaded a test patch to bugzilla.
+Please have a look if that fixes the issue.
 
- drivers/net/wireless/ath/ath9k/hif_usb.c | 2 --
- 1 file changed, 2 deletions(-)
+If not I would be interested in the output of your iTXQ status.
+Enable CONFIG_MAC80211_DEBUGFS and run this command when the connection 
+is bad and send/share/upload to bugzilla the resulting debug.out:
 
--- 
-2.39.2
+k=1; while [ $k -lt 10 ]; do \
+cat /sys/kernel/debug/ieee80211/phy?/netdev:*/stations/*/aqm; \
+k=$(($k+1)); done >> debug.out
 
+Alexander
