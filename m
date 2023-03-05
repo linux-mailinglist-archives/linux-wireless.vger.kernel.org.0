@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E436AAF68
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 13:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 554C06AAF69
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 13:17:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbjCEMR2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Mar 2023 07:17:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
+        id S229570AbjCEMRa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Mar 2023 07:17:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjCEMR1 (ORCPT
+        with ESMTP id S229565AbjCEMR2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Mar 2023 07:17:27 -0500
+        Sun, 5 Mar 2023 07:17:28 -0500
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEEBE125BD
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Mar 2023 04:17:22 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C15F1258A
+        for <linux-wireless@vger.kernel.org>; Sun,  5 Mar 2023 04:17:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678018642; x=1709554642;
+  t=1678018645; x=1709554645;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dJk+LadQrjouq9PXJNYbYVl4pTFLPDuLr5SHZAfmmqI=;
-  b=Ixp3X5OlwA5wmrP7JnRw7jr8T1w+6O/ScvcM4Pn53aESQjmgWS5MhZL8
-   qTB9mCahS14UAPzPA+RWM5fm7WfIHmgdmfAnf9fbs6/re7ukZ6d77fNsC
-   ZlYH7lC9z4jscmjuHA48/hSeDAdW2nNAFXQyP3GvToZw4stj99aZvQKyp
-   wJ0pA8ZQSl4qSu6/dLtJf4yaI6ySimAG5oAMl6GqHY5qhI2NLHUYTrvkD
-   PoqyjevP9KTigx+TSBcMXO53YMb6CWehuW7f1dOp96cFenmteDNIa+CyN
-   Idwfk7ekP2ixT7h1tq6oHH3o9Rk8xeXoHrxEHXWvagCrxyXfOGoERufS9
+  bh=viagR4b3/lpV4dgTqkGjp0s048quuQJ9fIcyntoLuDI=;
+  b=nZgVVpBq+PX4Gbe6BnTgMqh9LWnOWL7BfQLxKglHMD8Yd9iLmwks9Pe7
+   CWNa2FMuOk3N2iMiQQfsBrw6J39no8N+otMJaiG0Zeq75BBgMQ4VuZQ3i
+   iVAZnfAjw/A7bBBe8Nbn3jfvQk/ObXoxiIQF6Vdkwt/aTe2KyS69ChXBw
+   mFvTx+NMuPxzICxUA2vQWdHxsyMczIf44IWZ11XXoDJEll3i3Cn6GuYmq
+   Af/qwEQSQVQfMosRQzt9ZVeNINqqGZta385IoDFIlKnRacag1MGReReFp
+   4H6BkQ95bpejyQNqzeiIxNAQijUX7ee3MXJge0NB2c6yoSKXSoGf0KVIi
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="400193237"
+X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="400193244"
 X-IronPort-AV: E=Sophos;i="5.98,235,1673942400"; 
-   d="scan'208";a="400193237"
+   d="scan'208";a="400193244"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:22 -0800
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:25 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="708355126"
+X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="708355148"
 X-IronPort-AV: E=Sophos;i="5.98,235,1673942400"; 
-   d="scan'208";a="708355126"
+   d="scan'208";a="708355148"
 Received: from hsaid-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.80.12])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:20 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:23 -0800
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/21] wifi: iwlwifi: mvm: add primary 80 known for EHT TLV
-Date:   Sun,  5 Mar 2023 14:16:26 +0200
-Message-Id: <20230305124407.fe9a5b58e241.I291ee480252d098f62d9ec39040284d3e521d88e@changeid>
+Subject: [PATCH 13/21] wifi: iwlwifi: mvm: avoid UB shift of snif_queue
+Date:   Sun,  5 Mar 2023 14:16:27 +0200
+Message-Id: <20230305124407.b8da0b7eb194.I53744fd7cfb6e146a9393272a2a61852841238d9@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230305121635.301451-1-gregory.greenman@intel.com>
 References: <20230305121635.301451-1-gregory.greenman@intel.com>
@@ -62,98 +62,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-We calculate based on chandef the place of the control channel inside
-the wide band, this is used for understanding the N value in 11be D.5
-table 9-53a for column PHY MU/MRU index.
+For the old TX API we need the tfd_queue_msk, but for the
+new TX API we don't need it here because we add it to the
+station later. However, for the new API mvm->snif_queue is
+set to IWL_MVM_INVALID_QUEUE == 0xffff, so the BIT() here
+is undefined behaviour.
 
-To avoid the need to calculate every frame the value, do it once
-monitor vif is added.
+Since we don't need the tfd_queue_msk value for the new TX
+API at all, simply fill it in only for the old API.
 
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 26 ++++++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  6 +++++
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 565522466eba..c9911750d8af 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1362,6 +1362,28 @@ static void iwl_mvm_channel_switch_disconnect_wk(struct work_struct *wk)
- 	ieee80211_chswitch_done(vif, false);
- }
- 
-+static u8
-+iwl_mvm_chandef_get_primary_80(struct cfg80211_chan_def *chandef)
-+{
-+	int data_start;
-+	int control_start;
-+	int bw;
-+
-+	if (chandef->width == NL80211_CHAN_WIDTH_320)
-+		bw = 320;
-+	else if (chandef->width == NL80211_CHAN_WIDTH_160)
-+		bw = 160;
-+	else
-+		return 0;
-+
-+	/* data is bw wide so the start is half the width */
-+	data_start = chandef->center_freq1 - bw / 2;
-+	/* control is 20Mhz width */
-+	control_start = chandef->chan->center_freq - 10;
-+
-+	return (control_start - data_start) / 80;
-+}
-+
- static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
- 				     struct ieee80211_vif *vif)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index aa791dbc3066..114c96ba39ee 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -654,7 +654,7 @@ static int iwl_mvm_mac_ctxt_cmd_listener(struct iwl_mvm *mvm,
+ 					 u32 action)
  {
-@@ -1478,8 +1500,10 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
- 	INIT_DELAYED_WORK(&mvmvif->csa_work,
- 			  iwl_mvm_channel_switch_disconnect_wk);
+ 	struct iwl_mac_ctx_cmd cmd = {};
+-	u32 tfd_queue_msk = BIT(mvm->snif_queue);
++	u32 tfd_queue_msk = 0;
+ 	int ret;
  
--	if (vif->type == NL80211_IFTYPE_MONITOR)
-+	if (vif->type == NL80211_IFTYPE_MONITOR) {
- 		mvm->monitor_on = true;
-+		mvm->monitor_p80 = iwl_mvm_chandef_get_primary_80(&vif->bss_conf.chandef);
-+	}
+ 	WARN_ON(vif->type != NL80211_IFTYPE_MONITOR);
+@@ -669,6 +669,14 @@ static int iwl_mvm_mac_ctxt_cmd_listener(struct iwl_mvm *mvm,
+ 				       MAC_FILTER_ACCEPT_GRP);
+ 	ieee80211_hw_set(mvm->hw, RX_INCLUDES_FCS);
  
- 	iwl_mvm_vif_dbgfs_register(mvm, vif);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index ce6b701f3f4c..6862896c561e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1096,6 +1096,8 @@ struct iwl_mvm {
- 
- 	/* does a monitor vif exist (only one can exist hence bool) */
- 	bool monitor_on;
-+	/* primary channel place relative the whole bandwidth in gaps of 80Mhz */
-+	u8 monitor_p80;
- 
- 	/* sniffer data to include in radiotap */
- 	__le16 cur_aid;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index c8b4d751f5f0..d866fa534be5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -1694,6 +1694,12 @@ static void iwl_mvm_decode_eht_phy_data(struct iwl_mvm *mvm,
- 
- 	iwl_mvm_decode_eht_ru(mvm, rx_status, eht);
- 
-+	/* We only get here in case of IWL_RX_MPDU_PHY_TSF_OVERLOAD is set
-+	 * which is on only in case of monitor mode so no need to check monitor mode */
-+	eht->known |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_KNOWN_PRIMARY_80);
-+	eht->data[1] |= le32_encode_bits(mvm->monitor_p80,
-+					 IEEE80211_RADIOTAP_EHT_DATA1_PRIMARY_80);
++	/*
++	 * the queue mask is only relevant for old TX API, and
++	 * mvm->snif_queue isn't set here (it's still set to
++	 * IWL_MVM_INVALID_QUEUE so the BIT() of it is UB)
++	 */
++	if (!iwl_mvm_has_new_tx_api(mvm))
++		tfd_queue_msk = BIT(mvm->snif_queue);
 +
- 	usig->common |= cpu_to_le32(IEEE80211_RADIOTAP_EHT_USIG_COMMON_TXOP_KNOWN);
- 	if (phy_data->with_data)
- 		usig->common |= LE32_DEC_ENC(data0, IWL_RX_PHY_DATA0_EHT_TXOP_DUR_MASK,
+ 	/* Allocate sniffer station */
+ 	ret = iwl_mvm_allocate_int_sta(mvm, &mvm->snif_sta, tfd_queue_msk,
+ 				       vif->type, IWL_STA_GENERAL_PURPOSE);
 -- 
 2.38.1
 
