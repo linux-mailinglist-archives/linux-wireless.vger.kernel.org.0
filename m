@@ -2,70 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A616AB1B7
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 19:33:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C84C26AB260
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 22:03:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbjCES3m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Mar 2023 13:29:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32792 "EHLO
+        id S229670AbjCEVDD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Mar 2023 16:03:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjCES3l (ORCPT
+        with ESMTP id S229563AbjCEVDB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Mar 2023 13:29:41 -0500
-X-Greylist: delayed 1721 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Mar 2023 10:29:40 PST
-Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D86CC11;
-        Sun,  5 Mar 2023 10:29:39 -0800 (PST)
-Received: from dslb-188-097-214-098.188.097.pools.vodafone-ip.de ([188.97.214.98] helo=martin-debian-2.paytec.ch)
-        by viti.kaiser.cx with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <martin@kaiser.cx>)
-        id 1pYsf6-0003fc-Uv; Sun, 05 Mar 2023 19:00:45 +0100
-From:   Martin Kaiser <martin@kaiser.cx>
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Martin Kaiser <martin@kaiser.cx>, linux-wireless@vger.kernel.org,
+        Sun, 5 Mar 2023 16:03:01 -0500
+Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7195FE6;
+        Sun,  5 Mar 2023 13:03:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+        s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:MIME-Version
+        :Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=NYUNbeipY1ll3kDdL3XkOMucDZXwJo2Uc/kulc79M2s=; b=hPWs5lc/IYKSKeLLNBx+N8/oOj
+        xRdjnPpvD8kJySTWAFkkygVJKy9csvy8clK86YZAyMeO/98U57nlQ72nhcyPbbB0iqU24t2rb1shO
+        054ik3/A60Ad8aqwq6h5SCwghk+THIUY1bPvr5V6zD4jk+5fGtYNRyfBh7xsqwpDt2DBa4qRT31Dh
+        s4ok9kH8Xe+JDfyaPfAl/DtK8gODsbk/2I878vA2wXuoyN9XJjNPR37XE0LqDt+5cD0860QxQdaK0
+        wRP2ZPkzYmvC5MDsff1QjetjV5TU2p07I32JbXV0Kr7RV3z+qfRaHA/hKMG3fJ+ARzDtYYvs1jwkx
+        6/FsTrhA==;
+Received: from authenticated user
+        by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <bage@debian.org>)
+        id 1pYvVN-001E7L-DK; Sun, 05 Mar 2023 21:02:53 +0000
+From:   Bastian Germann <bage@debian.org>
+To:     toke@toke.dk, Kalle Valo <kvalo@kernel.org>
+Cc:     Bastian Germann <bage@debian.org>, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtl8xxxu: mark Edimax EW-7811Un V2 as tested
-Date:   Sun,  5 Mar 2023 18:59:32 +0100
-Message-Id: <20230305175932.719103-1-martin@kaiser.cx>
-X-Mailer: git-send-email 2.30.2
+Subject: [PATCH 0/1] wifi: ath9k: Remove Qwest/Actiontec 802AIN ID
+Date:   Sun,  5 Mar 2023 22:02:43 +0100
+Message-Id: <20230305210245.9831-1-bage@debian.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+X-Debian-User: bage
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The Edimax V2 (vid 0x7392, pid 0xb811) works well with the rtl8xxxu driver
-since rtl8188eu support has been added. Remove the untested flag for this
-device.
+Drop a wrongly claimed USB ID.
 
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Bastian Germann (1):
+  wifi: ath9k: Remove Qwest/Actiontec 802AIN ID
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 620a5cc2bfdd..e619ed21fbfe 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -7016,7 +7016,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 		}
- 		break;
- 	case 0x7392:
--		if (id->idProduct == 0x7811 || id->idProduct == 0xa611)
-+		if (id->idProduct == 0x7811 || id->idProduct == 0xa611 || id->idProduct == 0xb811)
- 			untested = 0;
- 		break;
- 	case 0x050d:
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 2 --
+ 1 file changed, 2 deletions(-)
+
 -- 
-2.30.2
+2.39.2
 
