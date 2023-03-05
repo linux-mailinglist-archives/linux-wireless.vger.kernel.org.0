@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC54D6AAF64
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 13:17:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B70F16AAF65
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Mar 2023 13:17:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbjCEMRR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Mar 2023 07:17:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
+        id S229558AbjCEMRT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Mar 2023 07:17:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjCEMRQ (ORCPT
+        with ESMTP id S229551AbjCEMRS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Mar 2023 07:17:16 -0500
+        Sun, 5 Mar 2023 07:17:18 -0500
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C804412F39
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Mar 2023 04:17:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 512A9126E8
+        for <linux-wireless@vger.kernel.org>; Sun,  5 Mar 2023 04:17:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678018632; x=1709554632;
+  t=1678018635; x=1709554635;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=K6E1Y8rewjFarfPFubGAhdkbtet7J6rn4xcm2D+JsGw=;
-  b=Z8U0QTCzlvJtBdeLdJi2qYE7nSBRac1DeZw65S9ZSaqzBb+98o7iuzLj
-   0GePmDQmj2ckqcgxdaZ8Dqzv+825ZMdeQZHUKC1jvzv+adkx8bjGvNpwq
-   rB3ldrZOL/0zE/nBjU3eNMA+81MWbg/TaJ1T9YVhKJ/SRE9bJsfk9FnWp
-   oALOjWmgesb7PmR/LO2vDjEg6iFrc1NWfeOi9F6Ec2KZR6yT5bFRglNjQ
-   zWpkMRMUfj25MvKe4Q2+TDIn92IVdQrN9VH7VIMZN+hPCjo6u3wWfQ31T
-   1ggiYrcqXGphueCqyavRJqtOo50KCElVI+8Tz3LJ/kM6EflRUg0m/AVM8
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="400193196"
+  bh=jLSxa1Bih4PTyC2OtAp1u7maErNS7W1iqbmEhCfmA+c=;
+  b=kR/1OjZMX+Qkd+TB6b0XrPdLnVJq0UdppmvmXxhKezQkHWFlm6qenfjK
+   utiqzCPwoAvy3P4YvPeIG+NWWaNcHLyxf8kY4PRmwC6nUvxTAo20uP2bL
+   +8/keV+yqBxJzRqvOcwLMP2UTF+OD9oehY1SYGUg86DxvoPJS6WCmK2rb
+   xoqHIuOaxnJl4SV9CLIH9SZn+2z2ZloACbsEJBQZ2xv1FVP5qjljOfie7
+   kZLh64QTAaOXxMhA2clfZMaukKkqv03fwtyyBCaXQM0oiV97CzRoLWrKY
+   c2QGwmrTJZ6yIaIhRZgPk+fd8OElSvZXIfkYi6Ih8491gT7oDJUVl/5NG
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="400193201"
 X-IronPort-AV: E=Sophos;i="5.98,235,1673942400"; 
-   d="scan'208";a="400193196"
+   d="scan'208";a="400193201"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:12 -0800
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:15 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="708355084"
+X-IronPort-AV: E=McAfee;i="6500,9779,10639"; a="708355089"
 X-IronPort-AV: E=Sophos;i="5.98,235,1673942400"; 
-   d="scan'208";a="708355084"
+   d="scan'208";a="708355089"
 Received: from hsaid-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.80.12])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:10 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2023 04:17:13 -0800
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Alon Giladi <alon.giladi@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 08/21] wifi: iwlwifi: mvm: allow new vendor to use TAS
-Date:   Sun,  5 Mar 2023 14:16:22 +0200
-Message-Id: <20230305124407.662967fec1cc.Icb30cddc049cb5402fd5ab2ce7f95033e478b1b9@changeid>
+Subject: [PATCH 09/21] wifi: iwlwifi: mvm: rename define to generic name
+Date:   Sun,  5 Mar 2023 14:16:23 +0200
+Message-Id: <20230305124407.e4f51f347e48.I2d6ecb6eadc95666d2ef9794662ee779488ceac1@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230305121635.301451-1-gregory.greenman@intel.com>
 References: <20230305121635.301451-1-gregory.greenman@intel.com>
@@ -62,32 +62,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Alon Giladi <alon.giladi@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Add Microsoft to the list of OEMs which allowed to use TAS.
+The type RX_NO_DATA_INFO_TYPE_HE_TB_UNMATCHED is applied to all TB
+frames including EHT mode, so rename accordingly.
 
-Signed-off-by: Alon Giladi <alon.giladi@intel.com>
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/api/rx.h | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 0c6b49fcb00d..45981e22b2db 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1084,6 +1084,11 @@ static const struct dmi_system_id dmi_tas_approved_list[] = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 		},
- 	},
-+	{ .ident = "MSFT",
-+	  .matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
-+		},
-+	},
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+index 544d22472a6f..0f190266fffd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+@@ -726,7 +726,7 @@ struct iwl_rx_mpdu_desc {
+ #define RX_NO_DATA_INFO_TYPE_RX_ERR	1
+ #define RX_NO_DATA_INFO_TYPE_NDP	2
+ #define RX_NO_DATA_INFO_TYPE_MU_UNMATCHED	3
+-#define RX_NO_DATA_INFO_TYPE_HE_TB_UNMATCHED	4
++#define RX_NO_DATA_INFO_TYPE_TB_UNMATCHED	4
  
- 	/* keep last */
- 	{}
+ #define RX_NO_DATA_INFO_ERR_POS		8
+ #define RX_NO_DATA_INFO_ERR_MSK		(0xff << RX_NO_DATA_INFO_ERR_POS)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index f6297a05e014..30f2830d66ba 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -2338,7 +2338,7 @@ void iwl_mvm_rx_monitor_no_data(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 			IEEE80211_RADIOTAP_ZERO_LEN_PSDU_SOUNDING;
+ 		break;
+ 	case RX_NO_DATA_INFO_TYPE_MU_UNMATCHED:
+-	case RX_NO_DATA_INFO_TYPE_HE_TB_UNMATCHED:
++	case RX_NO_DATA_INFO_TYPE_TB_UNMATCHED:
+ 		rx_status->zero_length_psdu_type =
+ 			IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED;
+ 		break;
 -- 
 2.38.1
 
