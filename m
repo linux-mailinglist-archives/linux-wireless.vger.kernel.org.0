@@ -2,175 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57FC66AB9C8
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 10:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8EFF6ABA2B
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 10:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229990AbjCFJ1M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Mar 2023 04:27:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36848 "EHLO
+        id S229621AbjCFJmw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Mar 2023 04:42:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbjCFJ1J (ORCPT
+        with ESMTP id S229486AbjCFJmv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Mar 2023 04:27:09 -0500
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717CE23115
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Mar 2023 01:27:07 -0800 (PST)
-Received: by mail-ua1-x934.google.com with SMTP id p2so5971680uap.1
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Mar 2023 01:27:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112; t=1678094826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zhS37jgP1oSKDQocHToehtxxyITsXcT+owYbmJ0INPU=;
-        b=4t56tDC/G+oovfdiW5rxFZCyYsIfw/WmqyS1QgC9FKLy44l3wGWvPNPrKaEI6mAvIe
-         ELD4XcqhLxDYPapof54et2VAMu4KrZDT7kUwAj9Hrs6wS7u5XxJjEWAUEaYcKiG/Zn39
-         LbYGMfhwfIZ4JLhat+2hMudxk6CM3YJdkOXGSLSfaulwOvc6XpKpqL1F+6VUjzq55xQy
-         y2JSmDTTT0sTDy7JHDzT8MfLrGyiRKAqCmO15rXFhnzLrphpS2zddGj0+LqedgxxL0hV
-         0N2PQS1jMZSutIFgUay8tQ8K/XSrnWtb4nxvfgnG2GPyXj9/IYPjvJKK9fj6DB19DqZ2
-         l4GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678094826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zhS37jgP1oSKDQocHToehtxxyITsXcT+owYbmJ0INPU=;
-        b=0WBtEjizN0ZRcsruiFZQwI1sTI9ykaZ3x7hzNR51lDGRlZXwiKU+lVRN/ndq1insrq
-         5FJPTLD0IfaHoKvUvWUqlYxUM9oHtXEBzvgRjoStV+iiJNTXpZd+pe19IWqHl0zIvuRo
-         bnw3jZCspWcyQCANwBRzlNgbggCbaHvx0Uj+aJ1Juff+wXi15bCUbeAxmuNWWEfiBVVc
-         fvqfxYsc9qgNkMCC+ffXA083CrsJpmQNy6cXKsx64gsxbnBw8+GZvI48/gMYeMM3bJVP
-         QYbyFpVkLty09c50ZqBJC6LRs9toJ5Sf33CtukCY7pKSuIAqcXwtad2L54ZT81fm2DaP
-         0oHQ==
-X-Gm-Message-State: AO0yUKWJZMz0eiLeiLbp+8tg0wIQxMfSMio4FrJmJNZITyic+jZQqaX6
-        UNHpRqGXTR7fBYyIUM3Ot84d0gUTOlWg2oSYZ4xo5Q==
-X-Google-Smtp-Source: AK7set+CHskqiSsm+6Cmi6WHgSSwP4myqJ1YcVc2LU1gm2fnO90Xr69irT8NxRARr/yjxDC8cjTLGID26SceOFHbVxE=
-X-Received: by 2002:a9f:3104:0:b0:687:afc8:ffb9 with SMTP id
- m4-20020a9f3104000000b00687afc8ffb9mr6636458uab.2.1678094826467; Mon, 06 Mar
- 2023 01:27:06 -0800 (PST)
+        Mon, 6 Mar 2023 04:42:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE53358B;
+        Mon,  6 Mar 2023 01:42:49 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A8916B80D5D;
+        Mon,  6 Mar 2023 09:42:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BDAC433EF;
+        Mon,  6 Mar 2023 09:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678095767;
+        bh=fd4XiTFlUTlqP7rrzWivZQ2RqFXOTHM2L3uSmisj0XM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=n72SQFWC+Az2Hb/vmbgRiQO3PpcU2wmZ1IwVswEXej7bHXHkNFZevrfyxvLDb2lQZ
+         M6krReakwWzTSwDFCusyypzcfMrViGTmX8l4cqer3yFumX8rfYBVt66fZ3GnL0mOEf
+         YIIZrmV6OECRw2xUoVq2g1a0ENDOpYANMEtn2mNlE9zX0wpOq7Jwe0GI97BsZRwl3f
+         c7N4VqPot6CI5aFFFj1Hi3LuxLRBlqzjbWti/Ol2Q2Pr5SBAJGhfvr+MdKLeSD9lZs
+         4v0MU4RN1fa1oS8TzRRD3QsKe28cu7IzmEEkCKZwH7ZDbDawdmm8JcnI9Kthk3QDx7
+         t3VRKDj/HyUXQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Jaewan Kim <jaewan@google.com>, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-team@android.com, adelva@google.com
+Subject: Re: [PATCH v8 0/5] mac80211_hwsim: Add PMSR support
+References: <20230302160310.923349-1-jaewan@google.com>
+        <ZADgBqP57XcW3/tH@kroah.com>
+Date:   Mon, 06 Mar 2023 11:42:42 +0200
+In-Reply-To: <ZADgBqP57XcW3/tH@kroah.com> (Greg KH's message of "Thu, 2 Mar
+        2023 18:42:30 +0100")
+Message-ID: <87cz5mz04t.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20230228215433.3944508-1-robh@kernel.org>
-In-Reply-To: <20230228215433.3944508-1-robh@kernel.org>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 6 Mar 2023 10:26:55 +0100
-Message-ID: <CAMRc=Mfouay5Z6M6VYnBX7Pe+ahTVfvfQsJ+kToWAwZJxZWJZg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Fix SPI and I2C bus node names in examples
-To:     Rob Herring <robh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        netdev@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Feb 28, 2023 at 10:54=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
-e:
->
-> SPI and I2C bus node names are expected to be "spi" or "i2c",
-> respectively, with nothing else, a unit-address, or a '-N' index. A
-> pattern of 'spi0' or 'i2c0' or similar has crept in. Fix all these
-> cases. Mostly scripted with the following commands:
->
-> git grep -l '\si2c[0-9] {' Documentation/devicetree/ | xargs sed -i -e 's=
-/i2c[0-9] {/i2c {/'
-> git grep -l '\sspi[0-9] {' Documentation/devicetree/ | xargs sed -i -e 's=
-/spi[0-9] {/spi {/'
->
-> With this, a few errors in examples were exposed and fixed.
->
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Benson Leung <bleung@chromium.org>
-> Cc: Guenter Roeck <groeck@chromium.org>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Robert Foss <rfoss@kernel.org>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-> Cc: Chanwoo Choi <cw00.choi@samsung.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Wolfgang Grandegger <wg@grandegger.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-i2c@vger.kernel.org
-> Cc: linux-leds@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-can@vger.kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-usb@vger.kernel.org
-> ---
->  .../bindings/auxdisplay/holtek,ht16k33.yaml       |  2 +-
->  .../bindings/chrome/google,cros-ec-typec.yaml     |  2 +-
->  .../chrome/google,cros-kbd-led-backlight.yaml     |  2 +-
->  .../devicetree/bindings/clock/ti,lmk04832.yaml    |  2 +-
->  .../bindings/display/bridge/analogix,anx7625.yaml |  2 +-
->  .../bindings/display/bridge/anx6345.yaml          |  2 +-
->  .../bindings/display/bridge/lontium,lt8912b.yaml  |  2 +-
->  .../bindings/display/bridge/nxp,ptn3460.yaml      |  2 +-
->  .../bindings/display/bridge/ps8640.yaml           |  2 +-
->  .../bindings/display/bridge/sil,sii9234.yaml      |  2 +-
->  .../bindings/display/bridge/ti,dlpc3433.yaml      |  2 +-
->  .../bindings/display/bridge/toshiba,tc358762.yaml |  2 +-
->  .../bindings/display/bridge/toshiba,tc358768.yaml |  2 +-
->  .../bindings/display/panel/nec,nl8048hl11.yaml    |  2 +-
->  .../bindings/display/solomon,ssd1307fb.yaml       |  4 ++--
->  .../devicetree/bindings/eeprom/at25.yaml          |  2 +-
->  .../bindings/extcon/extcon-usbc-cros-ec.yaml      |  2 +-
->  .../bindings/extcon/extcon-usbc-tusb320.yaml      |  2 +-
->  .../devicetree/bindings/gpio/gpio-pca9570.yaml    |  2 +-
->  .../devicetree/bindings/gpio/gpio-pca95xx.yaml    |  8 ++++----
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> On Thu, Mar 02, 2023 at 04:03:05PM +0000, Jaewan Kim wrote:
+>> Dear Kernel maintainers,
+>> 
+>> First of all, thank you for spending your precious time for reviewing
+>> my changes, and also sorry for my mistakes in previous patchsets.
+>> 
+>> Let me propose series of CLs for adding PMSR support in the mac80211_hwsim.
+>
+> What is a "CL"?
+
+Hehe, we are not the only ones asking for this:
+
+https://stackoverflow.com/questions/25716920/what-does-cl-mean-in-a-commit-message-what-does-it-stand-for
+
+Apparently this is Google terminology but in upstream we use "patch" and
+"patchset". But the recommendation is to not say "in this patchset" or
+"in this patch" in commit logs, everyone know they are patches anyway.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
