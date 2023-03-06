@@ -2,139 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 141D56ACAD4
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 18:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDBE46ACAFB
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 18:45:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjCFRkr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Mar 2023 12:40:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52290 "EHLO
+        id S230236AbjCFRo7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Mar 2023 12:44:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230079AbjCFRkp (ORCPT
+        with ESMTP id S230422AbjCFRow (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Mar 2023 12:40:45 -0500
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20701.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe59::701])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C219C43461;
-        Mon,  6 Mar 2023 09:40:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OxwZtkBOOyvx2cBsLSpbYKKHkGJ7V+pnbFoQ9vhF1mePaHRkMymmyW902J1duQmSNQAUjpfjZVMTWrggSrhjVDK2KKc674n+U4tpk6HRh+T7MlyM+DeaBGl+TlFd2e/Q1wAe1d03u/UKhKwZoKZjapzH6Cv3UAYw8qGcIXx+D1bC4+sxgKJQt6ICwmV3LHI8lwCvKCxsAXD1pp76+6hcA6pabg0/AlUda97GJwvFEI3RAhhgq5uJr02pFIDniC09C3ANFfb/tk4gtQ1aYKX+EJnYbLFm/90XCGZE/tMxO7brrS09J5ZZ7HrH+CtsxVF4TN4FIAjO5aRTN69+RVU/mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O9/lk82stSAiD42uyRf6mzdzsNSxmeA8ku5yPRIZdgE=;
- b=YUkp54UZot3SiEmXSg5CE5veDCx4nouGfgnWCsfIwWXMVGWywXOkQ9ZkQRv1KB+41k0afRkd5Kn9dWiMFrYbDMPrJ/UvPWXYMYhhf4EuW9VTnOw3830Ph2xcdRDREwkuAHPb3SqhNFYmrDBjWqppcdpG6TFGTFbexLZqxP09LI6nUV0DOQDUBhXzfCMdIV35rXKNEH/zTVzC8btvFw6vHE9/gPQMrm7oMczeHL6a4Rt0N+hYsOWtlkl62OJR5sn78LgfHoyUOxFCX6JuPG5k6uyHIoVxMzbD48Z5enT+F1vLb/0sZQGBT8rLHqognUrXaR13ocF43bwMDfhXLLqykg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O9/lk82stSAiD42uyRf6mzdzsNSxmeA8ku5yPRIZdgE=;
- b=dg7I1x/5NzSenWFeqJmP+165pGbqBYqr1mAw3nNFNWZSS+f7vCciyG+KIPS2mkBF754fA+n+EXwc+SyvN33ki84uhel/71TOm4W79T/HgaR5Lb48UBb6y7UmXuqChZgsmDdsIIXamrYOla5yHZH6odYJ1M081U3fZjvmjYDljeg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BY5PR13MB3699.namprd13.prod.outlook.com (2603:10b6:a03:219::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.28; Mon, 6 Mar
- 2023 17:38:14 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c%3]) with mapi id 15.20.6156.028; Mon, 6 Mar 2023
- 17:38:14 +0000
-Date:   Mon, 6 Mar 2023 18:38:07 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Jaewan Kim <jaewan@google.com>, gregkh@linuxfoundation.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-team@android.com, adelva@google.com
-Subject: Re: [PATCH v8 1/5] mac80211_hwsim: add PMSR capability support
-Message-ID: <ZAYk/1g3Hz/UX7Ir@corigine.com>
-References: <20230302160310.923349-1-jaewan@google.com>
- <20230302160310.923349-2-jaewan@google.com>
- <ZAYa4oteaDVPGOLp@corigine.com>
- <addaa95e4c2e840ac041efcedc99a235af90c6c1.camel@sipsolutions.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <addaa95e4c2e840ac041efcedc99a235af90c6c1.camel@sipsolutions.net>
-X-ClientProxiedBy: AM9P192CA0017.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:21d::22) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Mon, 6 Mar 2023 12:44:52 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 634D146B9
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Mar 2023 09:44:20 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 326A1B80FED
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Mar 2023 17:43:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62976C433D2;
+        Mon,  6 Mar 2023 17:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678124592;
+        bh=qGZq9KaFblwv7okekUcHaXtnlnKg/acPQ5dPopmbNHw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LtOz22ifrfOG9GuXlhCjZjn31VQXepKAAcx1dfcVc2zWoBwajz7+7aec6YMP/lA8B
+         CH2lot9THmbRlhmPgRbull3J2xqD/tshU96w96I2e913IsdEHcS5tIvW3xtNRQ+Ub3
+         IHxD0rXpCxAzW1H6P5y38c2LP6KNy1TPlIZqVSRg9FBM6fWiMzTRkzC1Ps68cRofk5
+         4wt7/ZBYcCTigItj0HO/MG4AiqlZGL8tLjRz9/Lw9+IQrQtNTatcFR3QvuJNO7KgL/
+         Dr8PsGMdB8D1/ACKyoSjpwELfQoe9Y2qJkDkxgXUNFR7Azsb4tltf2O+CJDzK0+sxr
+         0krAGVyEzun+A==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name,
+        lorenzo.bianconi@redhat.com
+Subject: [PATCH wireless] wifi: mt76: connac: do not check WED status for non-mmio devices
+Date:   Mon,  6 Mar 2023 18:42:51 +0100
+Message-Id: <c42168429453474213fa8244bf4b069de4531f40.1678124335.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY5PR13MB3699:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d7557e9-29df-4b28-9150-08db1e69902f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lVuXU6JoPtmOqV0evRdyYvmgLzyXLWxU+OQHrBRpmpfK/8b31MYawybSlVKSrjpc2tGFTgGkYfSv/jNf00n6Z2YBItYg9BlvmulR9Sjx4YbO27ZKdBlWu/TdCIBC2oqPC69vpODGIf4XnxkSMU4NcjGjeambWQYHhkJz/wWdjIqFInqtiESJjboJigC9Ffh2fabITYIdFK2+l0WaIzShiWCEMng2RTLAwW+s4l1OrdOqt4ZR/kJFOj4qLy2YpfUeB0qT4MVq3POzQuG1oJVDyhrDImwtBCrs3u7NaJRnNomZgAUOshGEygjJxrQHh9rMfx0+loT2zXZJwk2aftXgoyclStiPaBn1RjGF0AIFxU9crkcetaF5M1yHbWXtzt9Bru+RpTJHWe2z1qzc50bbQ0GjSppQjZXHOaxX4vWAeT8lk0aP786ZUC033y1l6FuxGP3hKtiPROo+QPiLY6oWwFyb7mPPoGjoLDyzFKcv3HbLYgJQGWuvg61ct1uM/6ZGm75e5V2+hfZ7fxUllPbXexbuKLx1A8gl2u9DsjGDYLRHGIuHvoQachlkKAkBi4UK+ZPul5BlWqmrYA6xA7DaaWVqYA5RICxxpyCE/MlciihPgvQwOMmaoItn1yv0UuvAYCaIJxiGIH3irGJ61fNi4w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(366004)(376002)(136003)(346002)(39830400003)(396003)(451199018)(186003)(38100700002)(8936002)(66556008)(6916009)(66476007)(4326008)(8676002)(41300700001)(66946007)(44832011)(4744005)(5660300002)(2906002)(478600001)(2616005)(6512007)(6506007)(6666004)(6486002)(316002)(36756003)(86362001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0KaAUcua5vcI1VJ2B9EIi9rxGYDyBvJAq7e2lLys3eQdeirYW4WimKGAlXwU?=
- =?us-ascii?Q?6HeO5i4jWnbDTr6PYBa/KGjET8ioBIElKJ5CdP42aD0YLTpT4sauwvY5mhvC?=
- =?us-ascii?Q?wH0Bb9aF9RcXC631SiYBlxFupjAZ09LZXeHf3fiomE2236zI7KWxA42lUgoT?=
- =?us-ascii?Q?RVUqh7MzNjl3m/ooRwmYwgBJOly8ehx8hLK04MtlmFJFUDO0VLXoQXfoWPG8?=
- =?us-ascii?Q?Xv0qt95caLHQfYTsdNewpu6+AyVtCbq5m0nrEfQ0crBuLFYfvQDtIIKiyl2e?=
- =?us-ascii?Q?ZRYlHb9E426OgyX2x4q9jsRycL182sJpLH8iO6kmK95zcoiDYwDt9kGp0R5t?=
- =?us-ascii?Q?XjP08MuBI3satFpT0P+EB2ceKReVsLmb3TY5ZVuVLpJha7vXJpYeY1Pd35TO?=
- =?us-ascii?Q?hIE/cuA8nGBjurjyfa2jDcWChEWQM3bsq4jYlCAvnx9CwCA0GwXKLDUxMgR6?=
- =?us-ascii?Q?MV8oqk9mogC2Rj3tfvHkH13O/PPFiYSRdNTHc7yIR3vd3juJXXqudinnwLVP?=
- =?us-ascii?Q?LV+dn1QIkV53eGpQJ2D6bdFU8T1AVJsRvhVY+fGmmC8DbQ5bqWmVHKZdSp5j?=
- =?us-ascii?Q?RDXjqTAa2nK13sDoAkQBWA0W0wS3Fvyy/M/cq9yL+uNcZyLAPLeP7k2g0V8w?=
- =?us-ascii?Q?pcVkNJeUY0gT+SgU7BBsdFb6jAd5W490yLgkyhs/0SeJytWD7hGpYpP5ejFx?=
- =?us-ascii?Q?VRQf/AiUW6YlkKZDB6+joehNdR18ICYM2MPa1Wkj/s+Knw0GMaNUkofcELWC?=
- =?us-ascii?Q?ToYeJft8FoKijBwJfH7s6Dii5/by5wTWXeCU8ov53tDXlq6ejEyLsTW89PsS?=
- =?us-ascii?Q?6TOzlwyDIQTEZid5+Xyq9FK3Caejf+JdWiiDWIrabNcgNfGSnFj0dZtFlbwJ?=
- =?us-ascii?Q?Zd1gT1uo5q6P3pUSbCWjO4LUHy3mJ1fxTtHeEBXNn8fWpaj+/LyZHFeSAYkO?=
- =?us-ascii?Q?TfszwNWPPkc9tJ36xlGYBsgOhQC7MPEDJwcJGgcugjw5C6TkscBQdaRXQ32p?=
- =?us-ascii?Q?l/Pfka8L3ygCODT5Zk3trgA4moauQLyGTmB+de0owc0hQSpy7SmvQ0KFrNDj?=
- =?us-ascii?Q?eETQaKVbLxDM5If+++fSFmi+R+84nloCmRWZoZml1B86JNrvmNX4K2uC2tk5?=
- =?us-ascii?Q?UWAyUHUFvom31jOEbV+LQsNwqtUdqwNE6ydthRcOlOOVHOHRadZOSge/fSrV?=
- =?us-ascii?Q?J2kB0xbAt8T7i0XEQTsJp0qzbS15Hf/RA8WIDv/NVk0G9EwfE7OfvQ61bS03?=
- =?us-ascii?Q?1WtUbolU9u2Uu3r78bW59ps6KJAZicJxinC/L0JHm8Tc2tP4bximXZb0OuFX?=
- =?us-ascii?Q?vCu1emMDuT9ksXbBOnp4KswM9mekOWXL5GVyVdwCfE+CDf0WCHgHGeDGfZSH?=
- =?us-ascii?Q?s7TVnp2tXjs2fYP0ealM8PGN38SiAJ4DstHy41H5d3N+LArCLdxNkIk/DROE?=
- =?us-ascii?Q?kTEO3/WgNPDaExvj6rgfv46SVcN2u26t9Ep0mKfVTRpiuriHAztplrqCSOwU?=
- =?us-ascii?Q?9A5TfVVB864q+iCC2kFFrGwUtEUf3WZaKR1LNrml3EyX8JCXOkOdIhiXBMyL?=
- =?us-ascii?Q?sASeuyJnwIk5AwnEbdFQlW68Hy2zM4STEk0qsSlJ+G4L4OsANxZsvV64Vedi?=
- =?us-ascii?Q?QivKctnlHfBnnuMn+z54OyJh2EX8+J1qwxS0DYYEWkcq3mD8x47UU9z0K1ov?=
- =?us-ascii?Q?xD3IiA=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d7557e9-29df-4b28-9150-08db1e69902f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2023 17:38:14.4671
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B35EFPici1t4jeKKNBT4kdatjvxa42Cey6g5l29Py3H6R/IFhhE7vLS53rLJvhhyn+YyvzLxCDs7mcq6T8pbYuuAAfpNsEyv2V8zidxHYeY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR13MB3699
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 06, 2023 at 05:58:37PM +0100, Johannes Berg wrote:
-> > 
-> > > @@ -3186,6 +3218,7 @@ struct hwsim_new_radio_params {
-> > >  	u32 *ciphers;
-> > >  	u8 n_ciphers;
-> > >  	bool mlo;
-> > > +	const struct cfg80211_pmsr_capabilities *pmsr_capa;
-> > 
-> > nit: not related to this patch,
-> >      but there are lots of holes in hwsim_new_radio_params.
-> >      And, I think that all fields, other than the new pmsr_capa field,
-> >      could fit into one cacheline on x86_64.
-> > 
-> >      I'm unsure if it is worth cleaning up or not.
-> > 
-> 
-> Probably not. It's just a temporary thing there, I don't think we even
-> have it for longer than temporarily on the stack.
+WED is supported just for mmio devices, so do not check it for usb or
+sdio devices. This patch fixes the crash reported below:
 
-Thanks, got it.
+[   21.946627] wlp0s3u1i3: authenticate with c4:41:1e:f5:2b:1d
+[   22.525298] wlp0s3u1i3: send auth to c4:41:1e:f5:2b:1d (try 1/3)
+[   22.548274] wlp0s3u1i3: authenticate with c4:41:1e:f5:2b:1d
+[   22.557694] wlp0s3u1i3: send auth to c4:41:1e:f5:2b:1d (try 1/3)
+[   22.565885] wlp0s3u1i3: authenticated
+[   22.569502] wlp0s3u1i3: associate with c4:41:1e:f5:2b:1d (try 1/3)
+[   22.578966] wlp0s3u1i3: RX AssocResp from c4:41:1e:f5:2b:1d (capab=0x11 status=30 aid=3)
+[   22.579113] wlp0s3u1i3: c4:41:1e:f5:2b:1d rejected association temporarily; comeback duration 1000 TU (1024 ms)
+[   23.649518] wlp0s3u1i3: associate with c4:41:1e:f5:2b:1d (try 2/3)
+[   23.752528] wlp0s3u1i3: RX AssocResp from c4:41:1e:f5:2b:1d (capab=0x11 status=0 aid=3)
+[   23.797450] wlp0s3u1i3: associated
+[   24.959527] kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+[   24.959640] BUG: unable to handle page fault for address: ffff88800c223200
+[   24.959706] #PF: supervisor instruction fetch in kernel mode
+[   24.959788] #PF: error_code(0x0011) - permissions violation
+[   24.959846] PGD 2c01067 P4D 2c01067 PUD 2c02067 PMD c2a8063 PTE 800000000c223163
+[   24.959957] Oops: 0011 [#1] PREEMPT SMP
+[   24.960009] CPU: 0 PID: 391 Comm: wpa_supplicant Not tainted 6.2.0-kvm #18
+[   24.960089] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.1-2.fc37 04/01/2014
+[   24.960191] RIP: 0010:0xffff88800c223200
+[   24.960446] RSP: 0018:ffffc90000ff7698 EFLAGS: 00010282
+[   24.960513] RAX: ffff888028397010 RBX: ffff88800c26e630 RCX: 0000000000000058
+[   24.960598] RDX: ffff88800c26f844 RSI: 0000000000000006 RDI: ffff888028397010
+[   24.960682] RBP: ffff88800ea72f00 R08: 18b873fbab2b964c R09: be06b38235f3c63c
+[   24.960766] R10: 18b873fbab2b964c R11: be06b38235f3c63c R12: 0000000000000001
+[   24.960853] R13: ffff88800c26f84c R14: ffff8880063f0ff8 R15: ffff88800c26e644
+[   24.960950] FS:  00007effcea327c0(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+[   24.961036] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   24.961106] CR2: ffff88800c223200 CR3: 000000000eaa2000 CR4: 00000000000006b0
+[   24.961190] Call Trace:
+[   24.961219]  <TASK>
+[   24.961245]  ? mt76_connac_mcu_add_key+0x2cf/0x310
+[   24.961313]  ? mt7921_set_key+0x150/0x200
+[   24.961365]  ? drv_set_key+0xa9/0x1b0
+[   24.961418]  ? ieee80211_key_enable_hw_accel+0xd9/0x240
+[   24.961485]  ? ieee80211_key_replace+0x3f3/0x730
+[   24.961541]  ? crypto_shash_setkey+0x89/0xd0
+[   24.961597]  ? ieee80211_key_link+0x2d7/0x3a0
+[   24.961664]  ? crypto_aead_setauthsize+0x31/0x50
+[   24.961730]  ? sta_info_hash_lookup+0xa6/0xf0
+[   24.961785]  ? ieee80211_add_key+0x1fc/0x250
+[   24.961842]  ? rdev_add_key+0x41/0x140
+[   24.961882]  ? nl80211_parse_key+0x6c/0x2f0
+[   24.961940]  ? nl80211_new_key+0x24a/0x290
+[   24.961984]  ? genl_rcv_msg+0x36c/0x3a0
+[   24.962036]  ? rdev_mod_link_station+0xe0/0xe0
+[   24.962102]  ? nl80211_set_key+0x410/0x410
+[   24.962143]  ? nl80211_pre_doit+0x200/0x200
+[   24.962187]  ? genl_bind+0xc0/0xc0
+[   24.962217]  ? netlink_rcv_skb+0xaa/0xd0
+[   24.962259]  ? genl_rcv+0x24/0x40
+[   24.962300]  ? netlink_unicast+0x224/0x2f0
+[   24.962345]  ? netlink_sendmsg+0x30b/0x3d0
+[   24.962388]  ? ____sys_sendmsg+0x109/0x1b0
+[   24.962388]  ? ____sys_sendmsg+0x109/0x1b0
+[   24.962440]  ? __import_iovec+0x2e/0x110
+[   24.962482]  ? ___sys_sendmsg+0xbe/0xe0
+[   24.962525]  ? mod_objcg_state+0x25c/0x330
+[   24.962576]  ? __dentry_kill+0x19e/0x1d0
+[   24.962618]  ? call_rcu+0x18f/0x270
+[   24.962660]  ? __dentry_kill+0x19e/0x1d0
+[   24.962702]  ? __x64_sys_sendmsg+0x70/0x90
+[   24.962744]  ? do_syscall_64+0x3d/0x80
+[   24.962796]  ? exit_to_user_mode_prepare+0x1b/0x70
+[   24.962852]  ? entry_SYSCALL_64_after_hwframe+0x46/0xb0
+[   24.962913]  </TASK>
+[   24.962939] Modules linked in:
+[   24.962981] CR2: ffff88800c223200
+[   24.963022] ---[ end trace 0000000000000000 ]---
+[   24.963087] RIP: 0010:0xffff88800c223200
+[   24.963323] RSP: 0018:ffffc90000ff7698 EFLAGS: 00010282
+[   24.963376] RAX: ffff888028397010 RBX: ffff88800c26e630 RCX: 0000000000000058
+[   24.963458] RDX: ffff88800c26f844 RSI: 0000000000000006 RDI: ffff888028397010
+[   24.963538] RBP: ffff88800ea72f00 R08: 18b873fbab2b964c R09: be06b38235f3c63c
+[   24.963622] R10: 18b873fbab2b964c R11: be06b38235f3c63c R12: 0000000000000001
+[   24.963705] R13: ffff88800c26f84c R14: ffff8880063f0ff8 R15: ffff88800c26e644
+[   24.963788] FS:  00007effcea327c0(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+[   24.963871] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   24.963941] CR2: ffff88800c223200 CR3: 000000000eaa2000 CR4: 00000000000006b0
+[   24.964018] note: wpa_supplicant[391] exited with irqs disabled
+
+Fixes: d1369e515efe ("wifi: mt76: connac: introduce mt76_connac_mcu_sta_wed_update utility routine")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index efb9bfaa187f..008ece1b16f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1221,6 +1221,9 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_sta_ba_tlv);
+ 
+ int mt76_connac_mcu_sta_wed_update(struct mt76_dev *dev, struct sk_buff *skb)
+ {
++	if (!mt76_is_mmio(dev))
++		return 0;
++
+ 	if (!mtk_wed_device_active(&dev->mmio.wed))
+ 		return 0;
+ 
+-- 
+2.39.2
+
