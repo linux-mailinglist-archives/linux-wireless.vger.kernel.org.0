@@ -2,107 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3476E6AD03A
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 22:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FC876AD14D
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 23:17:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjCFV2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Mar 2023 16:28:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52112 "EHLO
+        id S229692AbjCFWRE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Mar 2023 17:17:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjCFV2G (ORCPT
+        with ESMTP id S230039AbjCFWRA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Mar 2023 16:28:06 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137A22057B;
-        Mon,  6 Mar 2023 13:28:02 -0800 (PST)
+        Mon, 6 Mar 2023 17:17:00 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9C755D8AC
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Mar 2023 14:16:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A8056B81135;
-        Mon,  6 Mar 2023 21:28:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA102C433A1;
-        Mon,  6 Mar 2023 21:27:35 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0C669CE13C7
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Mar 2023 22:16:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1CDC4339B;
+        Mon,  6 Mar 2023 22:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678138079;
-        bh=OPscq8j4gixbBXyx4rYRiqcOtug0pajWX+t3LwK0uPE=;
+        s=k20201202; t=1678141012;
+        bh=1h+NLDwIZodm4D3p81fZ9b+ZhwzivnzHLyY92qQK6VE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PsQMxWTNyqmjmOyLA6f4aBxEbqjXLjGnQvTHUoE4f6zTvuB0TEbKKoow7O0Bl6lqg
-         gYnqSQeBrO1rJ29HWmn+yvMly1eyD9pru67Ei5XhYPhftQR6cu4eDx5Y2uE63s5KIt
-         s3zsZ4FOYFUkiy7gTDlGyR2DhiXrF2ddTXSUbWfDk94k+YWjCuHsJXdkT6LOyMmw3/
-         OBMkdU9AXHfmpJlFP0bcKZdHq+IuioXEaW+oivplUHjLiBGkJeMjuBmdvu2rgkgh5Q
-         WG7SALFgV1PPXh9MrSvGscl5OUXQrlqRl1aL8dYkfSYDeEvI72A6J1sMyBNHxpS7Fw
-         LxAw7Z0FF0jTA==
-Date:   Mon, 6 Mar 2023 21:27:32 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Cc:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        jic23@kernel.org, tudor.ambarus@microchip.com, pratyush@kernel.org,
-        Sanju.Mehta@amd.com, chin-ting_kuo@aspeedtech.com, clg@kaod.org,
-        kdasu.kdev@gmail.com, f.fainelli@gmail.com, rjui@broadcom.com,
-        sbranden@broadcom.com, eajames@linux.ibm.com, olteanv@gmail.com,
-        han.xu@nxp.com, john.garry@huawei.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, narmstrong@baylibre.com,
-        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
-        linus.walleij@linaro.org, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        agross@kernel.org, bjorn.andersson@linaro.org, heiko@sntech.de,
-        krzysztof.kozlowski@linaro.org, andi@etezian.org,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-        wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org,
-        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
-        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
-        kvalo@kernel.org, james.schulman@cirrus.com,
-        david.rhodes@cirrus.com, tanureal@opensource.cirrus.com,
-        rf@opensource.cirrus.com, perex@perex.cz, tiwai@suse.com,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
-        oss@buserror.net, windhl@126.com, yangyingliang@huawei.com,
-        william.zhang@broadcom.com, kursad.oney@broadcom.com,
-        jonas.gorski@gmail.com, anand.gore@broadcom.com, rafal@milecki.pl,
-        git@amd.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
-        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
-        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
-        alim.akhtar@samsung.com, ldewangan@nvidia.com,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-mtd@lists.infradead.org, lars@metafoo.de,
-        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
-        michael@walle.cc, palmer@dabbelt.com,
-        linux-riscv@lists.infradead.org, alsa-devel@alsa-project.org,
-        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
-        amitrkcian2002@gmail.com, Dhruva Gole <d-gole@ti.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>
-Subject: Re: [PATCH V5 01/15] spi: Replace all spi->chip_select and
- spi->cs_gpiod references with function call
-Message-ID: <00684da3-520f-459d-b6bd-55e728e93ebf@sirena.org.uk>
-References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
- <20230306172109.595464-2-amit.kumar-mahapatra@amd.com>
+        b=e3Q277OWdSDbJGi2qMB3bXsvrt8aVwpfpH/YMyqzPBGEQXzwqBtkrlpieWmj8yCL6
+         eG0A5SPTxB0/scMSecCPi9MNDtkU9eZUfekHaZzjjL/wpXbuDvxDNLqgohyrJx8fut
+         70FCNwb9+8YIsekv3OnUPv2YHXgSlJWZ5a0Wxl1hmjda51LyyOniJ1zvPwon9O0Z1t
+         N77sm9qvM1Nfl06yITNa7uhjp8Y+kJExmBOOwNi4X9rR7iO3sUz+BrBX6Yp1Dt1Tkf
+         xVrC2nikoNv93w4mu/quX9pXT2vkCRe5FdHqhvADqpE3Lq29j24e6HaLBrQQyx490A
+         ejxS6EXmhIaXA==
+Date:   Mon, 6 Mar 2023 23:16:48 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH] wifi: mt76: mt7921: introduce mt7921_get_mac80211_ops
+ utility routine
+Message-ID: <ZAZmUCBl+8LaoiAq@lore-desk>
+References: <e52206331b479cc3089ec5c314a3327e67eb27b8.1678124807.git.lorenzo@kernel.org>
+ <41b51fcc9e1ba560fbdad76d818d31167d73c265.camel@sipsolutions.net>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="RfYQ7lwbbyjtjTUN"
+        protocol="application/pgp-signature"; boundary="/n0DZKRNy329VbDq"
 Content-Disposition: inline
-In-Reply-To: <20230306172109.595464-2-amit.kumar-mahapatra@amd.com>
-X-Cookie: teamwork, n.:
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <41b51fcc9e1ba560fbdad76d818d31167d73c265.camel@sipsolutions.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -111,30 +57,51 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---RfYQ7lwbbyjtjTUN
+--/n0DZKRNy329VbDq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 06, 2023 at 10:50:55PM +0530, Amit Kumar Mahapatra wrote:
+> On Mon, 2023-03-06 at 18:50 +0100, Lorenzo Bianconi wrote:
+> >=20
+> > +struct ieee80211_ops *
+> > +mt7921_get_mac80211_ops(struct device *dev, void *drv_data, u8 *fw_fea=
+tures)
+> > +{
+> > +	struct ieee80211_ops *ops;
+> > +
+> > +	ops =3D devm_kmemdup(dev, &mt7921_ops, sizeof(mt7921_ops), GFP_KERNEL=
+);
+>=20
+> It's kind of nice to have static const ops so they can't be a target for
+> overwriting and function pointer injection, maybe just declare two
+> copies with a macro or so, with and without chanctx, and return the
+> appropriate one? It won't even use more memory unless you never run a
+> device w/o chanctx ops.
 
->  drivers/spi/spi-omap-100k.c       |  2 +-
+In the current status quo I think it is fine but it does not scale if in the
+future we want to add some new fw features that require changing ieee80211_=
+ops
+pointer. Honestly I do not know if it is something we should consider nowad=
+ays.
+What do you think?
 
-This is also not against -rc1, this file was removed in bcace9c4c9270292
-("spi: remove omap 100K driver").
+Regards,
+Lorenzo
 
---RfYQ7lwbbyjtjTUN
+>=20
+> johannes
+>=20
+
+--/n0DZKRNy329VbDq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQGWsMACgkQJNaLcl1U
-h9C7Fwf+MqZVyi3PlI6YIKPDaaFyWnmjZtweIjxd+4E2eEmTZq9MbcCHS/W56cUk
-TPWusPOjIa33XHC376rZpTYGqNTRjvOo8UwttJFAFQFbtMNui8BfC1bnrROwoyUE
-AxcOxhCAi3r1P0nRIkS126TepySOo1qXD1gf6YUQydf6/iDxzq7VddVjfqtt3dPF
-6rnt0G5xA5O0Z75Kc76h4ePCX7kXMqJhJSaJf7HFcGwD2P5HIeRcRyucD2q4Ddnr
-KzkdziV90/s6X7Q9cfiA620jfm8jVdqqN3yC+JX/L2Iu8kpeefFFgD49yG2aMtxv
-zgXP6uMpvQm5g7F9e/wo/JMWhjfh8g==
-=uJRe
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZAZmUAAKCRA6cBh0uS2t
+rNYgAQCN1CX6Mh9DdDWqvoThbJVYLFmrIdfAXtZy06+YKNFCcAEA2orq+k+vL5h0
+jCHjutlZmPDB4QfqroA5K9k1odEr5gU=
+=bIPJ
 -----END PGP SIGNATURE-----
 
---RfYQ7lwbbyjtjTUN--
+--/n0DZKRNy329VbDq--
