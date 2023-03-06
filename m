@@ -2,89 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8E76AB44C
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 02:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E056AB647
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Mar 2023 07:20:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjCFBXa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Mar 2023 20:23:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53170 "EHLO
+        id S229707AbjCFGUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Mar 2023 01:20:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjCFBX3 (ORCPT
+        with ESMTP id S229554AbjCFGUG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Mar 2023 20:23:29 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F9BA264
-        for <linux-wireless@vger.kernel.org>; Sun,  5 Mar 2023 17:23:27 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3261N34h8022088, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3261N34h8022088
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 6 Mar 2023 09:23:03 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 6 Mar 2023 09:22:26 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 6 Mar 2023 09:22:25 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Mon, 6 Mar 2023 09:22:25 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-Subject: pull request: rtlwifi: Add firmware v16.0 for RTL8710BU aka RTL8188GU
-Thread-Topic: pull request: rtlwifi: Add firmware v16.0 for RTL8710BU aka
- RTL8188GU
-Thread-Index: AQHZT8ob3WvWEi+5y0G+Qry/CArSug==
-Date:   Mon, 6 Mar 2023 01:22:25 +0000
-Message-ID: <ab0289ec80471df43308c550e9fe4e0ac8b9cdc5.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzMvNSDkuIvljYggMDc6MzY6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A4D915ACAFD45E40A9CCB11365BF3A6B@realtek.com>
-Content-Transfer-Encoding: base64
+        Mon, 6 Mar 2023 01:20:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EF6DBDD;
+        Sun,  5 Mar 2023 22:20:04 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4DA57B80A2B;
+        Mon,  6 Mar 2023 06:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EA1C433EF;
+        Mon,  6 Mar 2023 06:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678083602;
+        bh=KZtogKGKkj1H/GgguglrfFEy5HX9+7oy1EFbF+t9yFE=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=t0NiP42VdQYMcMVy19UK0rw1/Z/wXBq06hBm1c99wFdiIPfRnGjrvNqRMBUwFNdNM
+         KGJtEM0gIhd4k71PhQuEz2oL5JtuBzpbOOcit5ilUQ25N2oI+85S6o6zdngwTgQbMo
+         7jlF7L6e9ySKNPVXk/yZGtlwlXnpYZaMmdwGJj5fD2wCAKIlQJq8Gef0gsmvyFCRqO
+         4kSsuXHf1qi2vDj9oILbtQVKza1ssj1zZUTrJkrWWtWs7EOfK4Ng3zTBdBDgAJ3yeX
+         jf4udkFqXkmRaeDfElKfpSK9Zg7RRhgGgQrkmlOW7R5jBzR5WxcrVI3xRtKyFFXNzD
+         ecoasoZPaiv5w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Bastian Germann <bage@debian.org>
+Cc:     toke@toke.dk, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/1] wifi: ath9k: Remove Qwest/Actiontec 802AIN ID
+In-Reply-To: <20230305210245.9831-1-bage@debian.org> (Bastian Germann's
+        message of "Sun, 5 Mar 2023 22:02:43 +0100")
+References: <20230305210245.9831-1-bage@debian.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Date:   Mon, 06 Mar 2023 08:19:55 +0200
+Message-ID: <871qm2qu44.fsf@kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGksDQoNCnJ0bDh4eHh1IGlzIGdvaW5nIHRvIHN1cHBvcnQgODcxMEJVLCBzbyBhZGQgZmlybXdh
-cmUgZm9yIHRoaXMgZGV2aWNlLg0KDQpUaGFuayB5b3UNClBpbmctS2UNCg0KLS0tDQpUaGUgZm9s
-bG93aW5nIGNoYW5nZXMgc2luY2UgY29tbWl0IDYwOTcxYTY0ODVlZTYwNGM0N2NjOTA1ZmY3N2M1
-ODNhZTAwMWY5ZGY6DQoNCiAgTWVyZ2UgYnJhbmNoICdsaXF1aWRpby0yMDIzMDIyMicgb2YgaHR0
-cHM6Ly9naXRodWIuY29tL2RjaGlja2xlcy9saW51eC1maXJtd2FyZSAoMjAyMy0wMi0yNw0KMTI6
-MzM6MDcgLTA1MDApDQoNCmFyZSBhdmFpbGFibGUgaW4gdGhlIEdpdCByZXBvc2l0b3J5IGF0Og0K
-DQogIGh0dHBzOi8vZ2l0aHViLmNvbS9wa3NoaWgvbGludXgtZmlybXdhcmUuZ2l0IEhFQUQNCg0K
-Zm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIDRjYzNlZGE2MzYwZjBkYWEzMTY0N2RlMTI5
-YTAwMWU0MDg2MDJlOTc6DQoNCiAgcnRsd2lmaTogQWRkIGZpcm13YXJlIHYxNi4wIGZvciBSVEw4
-NzEwQlUgYWthIFJUTDgxODhHVSAoMjAyMy0wMy0wNiAwOToxNjo1OCArMDgwMCkNCg0KLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQ0KQml0dGVyYmx1ZSBTbWl0aCAoMSk6DQogICAgICBydGx3aWZpOiBBZGQgZmlybXdhcmUgdjE2
-LjAgZm9yIFJUTDg3MTBCVSBha2EgUlRMODE4OEdVDQoNCiBXSEVOQ0UgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICA1ICsrKysrDQogcnRsd2lmaS9ydGw4NzEwYnVmd19TTUlDLmJpbiB8IEJpbiAw
-IC0+IDIzNzUwIGJ5dGVzDQogcnRsd2lmaS9ydGw4NzEwYnVmd19VTUMuYmluICB8IEJpbiAwIC0+
-IDIyNjU0IGJ5dGVzDQogMyBmaWxlcyBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKykNCiBjcmVhdGUg
-bW9kZSAxMDA2NDQgcnRsd2lmaS9ydGw4NzEwYnVmd19TTUlDLmJpbg0KIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBydGx3aWZpL3J0bDg3MTBidWZ3X1VNQy5iaW4NCg0KDQo=
+Bastian Germann <bage@debian.org> writes:
+
+> Drop a wrongly claimed USB ID.
+>
+> Bastian Germann (1):
+>   wifi: ath9k: Remove Qwest/Actiontec 802AIN ID
+>
+>  drivers/net/wireless/ath/ath9k/hif_usb.c | 2 --
+>  1 file changed, 2 deletions(-)
+
+I can't find the actual patch anywhere, I only see the cover letter:
+
+https://lore.kernel.org/all/20230305210245.9831-1-bage@debian.org/
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
