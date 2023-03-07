@@ -2,222 +2,279 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D01C06AF807
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 22:51:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BCE36AF87D
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 23:22:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231526AbjCGVv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Mar 2023 16:51:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34954 "EHLO
+        id S230448AbjCGWWV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Mar 2023 17:22:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231589AbjCGVv2 (ORCPT
+        with ESMTP id S230347AbjCGWWT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Mar 2023 16:51:28 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D42DA80F7
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 13:51:05 -0800 (PST)
-X-UUID: 270566b6bd3211ed945fc101203acc17-20230308
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=X3tu9DRcqh2D0cLK4oVHDUYxyUjFp+xzMsztOpi7iOA=;
-        b=UxMTx1J+9on9VgSoz2vq2n0IVN1PR/qp8inaKrBFmiN6ML5VxNrXWX0qDDRJgAVHex/BiRoehIPXoxm5PXi9TAlwG/KSyJ6MBDLcWv1hbqb8tNNp9kmv8nmEhWW8hx8uKGkqNTkQFSAW7mhgXuMRvJkzrMdsXndY64yZl1iZM80=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.20,REQID:334b980e-8ec1-490b-b700-9b2d2d054516,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:25b5999,CLOUDID:b4b7a227-564d-42d9-9875-7c868ee415ec,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0,NGT
-X-UUID: 270566b6bd3211ed945fc101203acc17-20230308
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 328251606; Wed, 08 Mar 2023 05:51:01 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Wed, 8 Mar 2023 05:51:00 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Wed, 8 Mar 2023 05:51:00 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
-        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
-        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
-        <druth@google.com>, <abhishekpandit@google.com>,
-        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v2] wifi: mt76: mt7921: enable p2p support
-Date:   Wed, 8 Mar 2023 05:50:59 +0800
-Message-ID: <acf73d3e8cb5ad91c9144d63959e84f007f9e336.1678222117.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Tue, 7 Mar 2023 17:22:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12FECF96D;
+        Tue,  7 Mar 2023 14:22:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8B11EB81A40;
+        Tue,  7 Mar 2023 22:22:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF9EC433EF;
+        Tue,  7 Mar 2023 22:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678227732;
+        bh=hep12z65/htc8VobV1reqBOHqul0NinommIACH39giU=;
+        h=Date:From:To:Cc:Subject:From;
+        b=ldLwEkbOPvId1SGhV49JymfWZJ4wtC1cB1ISU8VtHRd6mgfBM4VJqByD8C6rSfEl+
+         oVMB5vsm8ffgDNJ8ydcbfH7o+aK9pRJ87QDnxtGspc3bcNUImPb403UxwDmtZ9gxI0
+         xWZ02PpOSKMaL1k5I71nBxuM6Fi6+loXhYHI/KSULt3RYJXHfJjHFqGToS6IVgyr3/
+         u+35JFk1nXXWx3QzmGK3dWZtldE9q5qfHMkzG7jHVGPYNEj762Pj/0A+cl50FISavT
+         fQLC1i3yqJGcn2DQIbv2XpJ56P7irz1XT9i9pGTQA2xFOAIALi05rhVUGuxD7eENhY
+         +8pUG/+qSzZUg==
+Date:   Tue, 7 Mar 2023 16:22:39 -0600
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH][next] wifi: ath11k: Replace fake flex-array with
+ flexible-array member
+Message-ID: <ZAe5L5DtmsQxzqRH@work>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+Zero-length arrays as fake flexible arrays are deprecated and we are
+moving towards adopting C99 flexible-array members instead.
 
-Introduce p2p-go/p2p-client support to mt7921 driver
+Address 25 of the following warnings found with GCC-13 and
+-fstrict-flex-arrays=3 enabled:
+drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c:30:51: warning: array subscript <unknown> is outside array bounds of ‘const u32[0]’ {aka ‘const unsigned int[]’} [-Warray-bounds=]
 
-CONNECTION_P2P_GC/GO is not supported with the current firmware
-so we added mt76_dev to mt76_connac_mcu_sta_basic_tlv signature to
-use CONNECTION_INFRA_STA/AP instead for p2p-client and p2p-go
-respectively to make it work.
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -fstrict-flex-arrays=3 [1].
 
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://github.com/KSPP/linux/issues/21
+Link: https://github.com/KSPP/linux/issues/266
+Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
-v2: fix the build error with mt7996
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      |  3 ++-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  8 ++++----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  4 ++--
- drivers/net/wireless/mediatek/mt76/mt7921/init.c     | 10 +++++++---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      |  4 ++--
- 6 files changed, 18 insertions(+), 13 deletions(-)
+ .../wireless/ath/ath11k/debugfs_htt_stats.h   | 50 +++++++++----------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index eea398c79a98..195fe1094d9b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -861,7 +861,8 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		else
- 			mvif->sta_added = true;
- 	}
--	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, new_entry);
-+	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, sskb, vif, sta, enable,
-+				      new_entry);
- 	if (enable && sta)
- 		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
- 					MT76_STA_INFO_STATE_ASSOC);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index efb9bfaa187f..25b61cc469bd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -363,7 +363,7 @@ void mt76_connac_mcu_bss_omac_tlv(struct sk_buff *skb,
- }
- EXPORT_SYMBOL_GPL(mt76_connac_mcu_bss_omac_tlv);
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h
+index 2b97cbbd28cb..db5c176e2e5b 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.h
+@@ -143,7 +143,7 @@ enum htt_tx_pdev_underrun_enum {
+ /* Bytes stored in little endian order */
+ /* Length should be multiple of DWORD */
+ struct htt_stats_string_tlv {
+-	u32 data[0]; /* Can be variable length */
++	DECLARE_FLEX_ARRAY(u32, data); /* Can be variable length */
+ } __packed;
  
--void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
-+void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
- 				   bool enable, bool newly)
-@@ -394,7 +394,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_AP:
--		if (vif->p2p)
-+		if (vif->p2p && !is_mt7921(dev))
- 			conn_type = CONNECTION_P2P_GC;
- 		else
- 			conn_type = CONNECTION_INFRA_STA;
-@@ -402,7 +402,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
- 		basic->aid = cpu_to_le16(sta->aid);
- 		break;
- 	case NL80211_IFTYPE_STATION:
--		if (vif->p2p)
-+		if (vif->p2p && !is_mt7921(dev))
- 			conn_type = CONNECTION_P2P_GO;
- 		else
- 			conn_type = CONNECTION_INFRA_AP;
-@@ -1029,7 +1029,7 @@ int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
- 		return PTR_ERR(skb);
+ #define HTT_STATS_MAC_ID	GENMASK(7, 0)
+@@ -205,27 +205,27 @@ struct htt_tx_pdev_stats_cmn_tlv {
  
- 	if (info->sta || !info->offload_fw)
--		mt76_connac_mcu_sta_basic_tlv(skb, info->vif, info->sta,
-+		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->vif, info->sta,
- 					      info->enable, info->newly);
- 	if (info->sta && info->enable)
- 		mt76_connac_mcu_sta_tlv(phy, skb, info->sta,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 40a99e0caded..345e34cdeff3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1776,7 +1776,7 @@ mt76_connac_mcu_add_tlv(struct sk_buff *skb, int tag, int len)
- 
- int mt76_connac_mcu_set_channel_domain(struct mt76_phy *phy);
- int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif);
--void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
-+void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta, bool enable,
- 				   bool newly);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 16f09ead307d..f9c34eb268f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1657,8 +1657,8 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 		return PTR_ERR(skb);
- 
- 	/* starec basic */
--	mt76_connac_mcu_sta_basic_tlv(skb, vif, sta, enable,
--			!rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
-+	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, sta, enable,
-+				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
- 	if (!enable)
- 		goto out;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 80c71acfe159..124405cc50a5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -32,11 +32,13 @@ static const struct ieee80211_iface_combination if_comb[] = {
- static const struct ieee80211_iface_limit if_limits_chanctx[] = {
- 	{
- 		.max = 2,
--		.types = BIT(NL80211_IFTYPE_STATION),
-+		.types = BIT(NL80211_IFTYPE_STATION) |
-+			 BIT(NL80211_IFTYPE_P2P_CLIENT)
- 	},
- 	{
- 		.max = 1,
--		.types = BIT(NL80211_IFTYPE_AP),
-+		.types = BIT(NL80211_IFTYPE_AP) |
-+			 BIT(NL80211_IFTYPE_P2P_GO)
- 	}
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_pdev_stats_urrn_tlv_v {
+-	u32 urrn_stats[0]; /* HTT_TX_PDEV_MAX_URRN_STATS */
++	DECLARE_FLEX_ARRAY(u32, urrn_stats); /* HTT_TX_PDEV_MAX_URRN_STATS */
  };
  
-@@ -100,7 +102,9 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->flags &= ~(WIPHY_FLAG_IBSS_RSN | WIPHY_FLAG_4ADDR_AP |
- 			  WIPHY_FLAG_4ADDR_STATION);
- 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
--				 BIT(NL80211_IFTYPE_AP);
-+				 BIT(NL80211_IFTYPE_AP) |
-+				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
-+				 BIT(NL80211_IFTYPE_P2P_GO);
- 	wiphy->max_remain_on_channel_duration = 5000;
- 	wiphy->max_scan_ie_len = MT76_CONNAC_SCAN_IE_LEN;
- 	wiphy->max_scan_ssids = 4;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 8ad51cbfdbe8..eb29231f844d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1694,8 +1694,8 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		return PTR_ERR(skb);
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_pdev_stats_flush_tlv_v {
+-	u32 flush_errs[0]; /* HTT_TX_PDEV_MAX_FLUSH_REASON_STATS */
++	DECLARE_FLEX_ARRAY(u32, flush_errs); /* HTT_TX_PDEV_MAX_FLUSH_REASON_STATS */
+ };
  
- 	/* starec basic */
--	mt76_connac_mcu_sta_basic_tlv(skb, vif, sta, enable,
--			!rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
-+	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, sta, enable,
-+				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
- 	if (!enable)
- 		goto out;
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_pdev_stats_sifs_tlv_v {
+-	u32 sifs_status[0]; /* HTT_TX_PDEV_MAX_SIFS_BURST_STATS */
++	DECLARE_FLEX_ARRAY(u32, sifs_status); /* HTT_TX_PDEV_MAX_SIFS_BURST_STATS */
+ };
  
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_pdev_stats_phy_err_tlv_v {
+-	u32  phy_errs[0]; /* HTT_TX_PDEV_MAX_PHY_ERR_STATS */
++	DECLARE_FLEX_ARRAY(u32, phy_errs); /* HTT_TX_PDEV_MAX_PHY_ERR_STATS */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_pdev_stats_sifs_hist_tlv_v {
+-	u32 sifs_hist_status[0]; /* HTT_TX_PDEV_SIFS_BURST_HIST_STATS */
++	DECLARE_FLEX_ARRAY(u32, sifs_hist_status); /* HTT_TX_PDEV_SIFS_BURST_HIST_STATS */
+ };
+ 
+ struct htt_tx_pdev_stats_tx_ppdu_stats_tlv_v {
+@@ -591,19 +591,19 @@ struct htt_tx_hwq_difs_latency_stats_tlv_v {
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_hwq_cmd_result_stats_tlv_v {
+ 	/* Histogram of sched cmd result */
+-	u32 cmd_result[0]; /* HTT_TX_HWQ_MAX_CMD_RESULT_STATS */
++	DECLARE_FLEX_ARRAY(u32, cmd_result); /* HTT_TX_HWQ_MAX_CMD_RESULT_STATS */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_hwq_cmd_stall_stats_tlv_v {
+ 	/* Histogram of various pause conitions */
+-	u32 cmd_stall_status[0]; /* HTT_TX_HWQ_MAX_CMD_STALL_STATS */
++	DECLARE_FLEX_ARRAY(u32, cmd_stall_status); /* HTT_TX_HWQ_MAX_CMD_STALL_STATS */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_hwq_fes_result_stats_tlv_v {
+ 	/* Histogram of number of user fes result */
+-	u32 fes_result[0]; /* HTT_TX_HWQ_MAX_FES_RESULT_STATS */
++	DECLARE_FLEX_ARRAY(u32, fes_result); /* HTT_TX_HWQ_MAX_FES_RESULT_STATS */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size
+@@ -636,7 +636,7 @@ struct htt_tx_hwq_tried_mpdu_cnt_hist_tlv_v {
+  */
+ struct htt_tx_hwq_txop_used_cnt_hist_tlv_v {
+ 	/* Histogram of txop used cnt */
+-	u32 txop_used_cnt_hist[0]; /* HTT_TX_HWQ_TXOP_USED_CNT_HIST */
++	DECLARE_FLEX_ARRAY(u32, txop_used_cnt_hist); /* HTT_TX_HWQ_TXOP_USED_CNT_HIST */
+ };
+ 
+ /* == TX SELFGEN STATS == */
+@@ -804,17 +804,17 @@ struct htt_tx_pdev_mpdu_stats_tlv {
+ /* == TX SCHED STATS == */
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_sched_txq_cmd_posted_tlv_v {
+-	u32 sched_cmd_posted[0]; /* HTT_TX_PDEV_SCHED_TX_MODE_MAX */
++	DECLARE_FLEX_ARRAY(u32, sched_cmd_posted); /* HTT_TX_PDEV_SCHED_TX_MODE_MAX */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_sched_txq_cmd_reaped_tlv_v {
+-	u32 sched_cmd_reaped[0]; /* HTT_TX_PDEV_SCHED_TX_MODE_MAX */
++	DECLARE_FLEX_ARRAY(u32, sched_cmd_reaped); /* HTT_TX_PDEV_SCHED_TX_MODE_MAX */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_sched_txq_sched_order_su_tlv_v {
+-	u32 sched_order_su[0]; /* HTT_TX_PDEV_NUM_SCHED_ORDER_LOG */
++	DECLARE_FLEX_ARRAY(u32, sched_order_su); /* HTT_TX_PDEV_NUM_SCHED_ORDER_LOG */
+ };
+ 
+ enum htt_sched_txq_sched_ineligibility_tlv_enum {
+@@ -842,7 +842,7 @@ enum htt_sched_txq_sched_ineligibility_tlv_enum {
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_sched_txq_sched_ineligibility_tlv_v {
+ 	/* indexed by htt_sched_txq_sched_ineligibility_tlv_enum */
+-	u32 sched_ineligibility[0];
++	DECLARE_FLEX_ARRAY(u32, sched_ineligibility);
+ };
+ 
+ #define	HTT_TX_PDEV_STATS_SCHED_PER_TXQ_MAC_ID	GENMASK(7, 0)
+@@ -888,17 +888,17 @@ struct htt_stats_tx_sched_cmn_tlv {
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_tqm_gen_mpdu_stats_tlv_v {
+-	u32 gen_mpdu_end_reason[0]; /* HTT_TX_TQM_MAX_GEN_MPDU_END_REASON */
++	DECLARE_FLEX_ARRAY(u32, gen_mpdu_end_reason); /* HTT_TX_TQM_MAX_GEN_MPDU_END_REASON */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_tqm_list_mpdu_stats_tlv_v {
+-	u32 list_mpdu_end_reason[0]; /* HTT_TX_TQM_MAX_LIST_MPDU_END_REASON */
++	DECLARE_FLEX_ARRAY(u32, list_mpdu_end_reason); /* HTT_TX_TQM_MAX_LIST_MPDU_END_REASON */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_tx_tqm_list_mpdu_cnt_tlv_v {
+-	u32 list_mpdu_cnt_hist[0];
++	DECLARE_FLEX_ARRAY(u32, list_mpdu_cnt_hist);
+ 			/* HTT_TX_TQM_MAX_LIST_MPDU_CNT_HISTOGRAM_BINS */
+ };
+ 
+@@ -1098,7 +1098,7 @@ struct htt_tx_de_compl_stats_tlv {
+  *                               ENTRIES_PER_BIN_COUNT)
+  */
+ struct htt_tx_de_fw2wbm_ring_full_hist_tlv {
+-	u32 fw2wbm_ring_full_hist[0];
++	DECLARE_FLEX_ARRAY(u32, fw2wbm_ring_full_hist);
+ };
+ 
+ struct htt_tx_de_cmn_stats_tlv {
+@@ -1151,7 +1151,7 @@ struct htt_ring_if_cmn_tlv {
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_sfm_client_user_tlv_v {
+ 	/* Number of DWORDS used per user and per client */
+-	u32 dwords_used_by_user_n[0];
++	DECLARE_FLEX_ARRAY(u32, dwords_used_by_user_n);
+ };
+ 
+ struct htt_sfm_client_tlv {
+@@ -1436,12 +1436,12 @@ struct htt_rx_soc_fw_stats_tlv {
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_rx_soc_fw_refill_ring_empty_tlv_v {
+-	u32 refill_ring_empty_cnt[0]; /* HTT_RX_STATS_REFILL_MAX_RING */
++	DECLARE_FLEX_ARRAY(u32, refill_ring_empty_cnt); /* HTT_RX_STATS_REFILL_MAX_RING */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_rx_soc_fw_refill_ring_num_refill_tlv_v {
+-	u32 refill_ring_num_refill[0]; /* HTT_RX_STATS_REFILL_MAX_RING */
++	DECLARE_FLEX_ARRAY(u32, refill_ring_num_refill); /* HTT_RX_STATS_REFILL_MAX_RING */
+ };
+ 
+ /* RXDMA error code from WBM released packets */
+@@ -1473,7 +1473,7 @@ enum htt_rx_rxdma_error_code_enum {
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_rx_soc_fw_refill_ring_num_rxdma_err_tlv_v {
+-	u32 rxdma_err[0]; /* HTT_RX_RXDMA_MAX_ERR_CODE */
++	DECLARE_FLEX_ARRAY(u32, rxdma_err); /* HTT_RX_RXDMA_MAX_ERR_CODE */
+ };
+ 
+ /* REO error code from WBM released packets */
+@@ -1505,7 +1505,7 @@ enum htt_rx_reo_error_code_enum {
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_rx_soc_fw_refill_ring_num_reo_err_tlv_v {
+-	u32 reo_err[0]; /* HTT_RX_REO_MAX_ERR_CODE */
++	DECLARE_FLEX_ARRAY(u32, reo_err); /* HTT_RX_REO_MAX_ERR_CODE */
+ };
+ 
+ /* == RX PDEV STATS == */
+@@ -1622,13 +1622,13 @@ struct htt_rx_pdev_fw_stats_phy_err_tlv {
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_rx_pdev_fw_ring_mpdu_err_tlv_v {
+ 	/* Num error MPDU for each RxDMA error type  */
+-	u32 fw_ring_mpdu_err[0]; /* HTT_RX_STATS_RXDMA_MAX_ERR */
++	DECLARE_FLEX_ARRAY(u32, fw_ring_mpdu_err); /* HTT_RX_STATS_RXDMA_MAX_ERR */
+ };
+ 
+ /* NOTE: Variable length TLV, use length spec to infer array size */
+ struct htt_rx_pdev_fw_mpdu_drop_tlv_v {
+ 	/* Num MPDU dropped  */
+-	u32 fw_mpdu_drop[0]; /* HTT_RX_STATS_FW_DROP_REASON_MAX */
++	DECLARE_FLEX_ARRAY(u32, fw_mpdu_drop); /* HTT_RX_STATS_FW_DROP_REASON_MAX */
+ };
+ 
+ #define HTT_PDEV_CCA_STATS_TX_FRAME_INFO_PRESENT               (0x1)
 -- 
-2.25.1
+2.34.1
 
