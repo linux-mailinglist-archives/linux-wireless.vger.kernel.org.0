@@ -2,154 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDABF6AD7E1
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 07:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39EBA6ADA24
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 10:20:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbjCGG6z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Mar 2023 01:58:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58908 "EHLO
+        id S230365AbjCGJUo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Mar 2023 04:20:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231245AbjCGG6W (ORCPT
+        with ESMTP id S230346AbjCGJUW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Mar 2023 01:58:22 -0500
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20726.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe59::726])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1319D8615D;
-        Mon,  6 Mar 2023 22:57:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UBZjfuU8PW6rrd8m/9SM0LcCrbIlZKAjUynHwIeZuanHfeCrK5yjRd31tcHVrnm4//n5jU2vMO94kJGuJNcH5pT/f0lZtpWGLKEdzuaVKzaUFyzinjyWui9/KecsJS+bl0CdgLv+oyEvM5l6Qw2KKPlCyAx3tVskCx8Bj8XNn91dJiASjB2Ix6/W1LJCWol1ycxmrqlf2lFPI/lHCdhwuiHH81GwRYqtaHjxmsLkNTRayoXP93HuPSfd2/R4vLIWo8MA+/BBQIPNSf7K/hEmcYdd+b+Ns2rQLRBEANOvPzS8IQocooke/Uibn87t2+/q9ivacm50iFwLq/6wZZOGKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=609lC1rn4x1JNwtUqhqFClHEMTPqC7PvSArdGZyVXu0=;
- b=T10kygKoN+WLVsM08p+mUsZwzkj/TnMHtBQ9Npvfkndisk+8gutaATOcyHWwS4ZgZ6OgpFr6PKeOT82rdJZ0v1P0g1wG0kEo5W2E6SNkyvpG4bySP5y0eV31GKRlSIQdjpACqK45oCbJNyef5U9r6zctu9kzFlPfQ39+vEgAZqZ/rl/PN6jkFO4ClIck8H58JSIzaRA3PjL0X0K++/8WxcEpUacs/HvPyabgFijOX7nGG+DIR+PISV4LYYWeKaghmHnAzGM2LxSyDbQ5vDjyRnJm1FcHqaGAXe7HF70x8bt9VAatL8dsG5/GSx/qyWHVsgzwz2/PgwXaqJYwRpBtSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=609lC1rn4x1JNwtUqhqFClHEMTPqC7PvSArdGZyVXu0=;
- b=UcZ4gMxX2RajnTFFyhmlSx0Lkk1Bmvh0MqZ/hqXpCyGn+VQi8RxHjS+5kkYKNj5Q2R2OXOfUEoZE3rbHm5BaY805FsNf6i5gKYn+jDbnsfsV0HdztqBQyJhaxTNR/NbEP6dtajkTbSbJox1XkwM4NqVKGUcQEKwdLfXT6xdnoWM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by SJ0PR13MB5428.namprd13.prod.outlook.com (2603:10b6:a03:421::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.28; Tue, 7 Mar
- 2023 06:56:42 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::85f5:bdb:fb9e:294c%2]) with mapi id 15.20.6156.029; Tue, 7 Mar 2023
- 06:56:42 +0000
-Date:   Tue, 7 Mar 2023 07:56:36 +0100
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Jaewan Kim <jaewan@google.com>
-Cc:     gregkh@linuxfoundation.org, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-team@android.com, adelva@google.com
-Subject: Re: [PATCH v8 4/5] mac80211_hwsim: add PMSR abort support via virtio
-Message-ID: <ZAbgJD52AMpxlH+u@corigine.com>
-References: <20230302160310.923349-1-jaewan@google.com>
- <20230302160310.923349-5-jaewan@google.com>
- <ZAYkypRT+mIdQr/v@corigine.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZAYkypRT+mIdQr/v@corigine.com>
-X-ClientProxiedBy: AM8P189CA0001.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:218::6) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Tue, 7 Mar 2023 04:20:22 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31F387A14
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 01:20:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=FWJek77JJraltJOA9S/rKvd/LLYSvQYCbgD8IJtq7lY=;
+        t=1678180815; x=1679390415; b=grKghAVAMWho4b+wkjVn9QGdS2Xa3Yb+AtRk49cGvDHzLNg
+        z2RsmoJZl8R80upp+GoJO6u+O50k4SUMAo3ejqMawjKTPsnnaOSvQmZJf/+RCBRLll+fuwBdefphN
+        hbwQaoMLmaWHwEO3BEnJ8Nwm7vh42lADo8BMwt+xwDt/XZmKgo0+QxjrP/apwj6nLXvM9hm9Ly2Wu
+        F6sZYpvaRw/mVIXC70049OF1sNSjxnamCvl4giNjZwSb7OEMZuI+l7Tq8pMGi1+TC1fM2lM7iycx+
+        kgSetK9nQ8RdVQxQnAGBuIA04ZyeR4n3SpPTa5auVONaQ6/E8xrBs4M4xTiFyACw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pZTUS-00EHH9-0n;
+        Tue, 07 Mar 2023 10:20:12 +0100
+Message-ID: <6796c3c209a071983d330ca145d7ab8b929d53c6.camel@sipsolutions.net>
+Subject: Re: [PATCH 0/4] wifi: nl80211: Add support to specify channel width
+ for scan
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Xinyue Ling <quic_xinyling@quicinc.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 07 Mar 2023 10:20:10 +0100
+In-Reply-To: <20230301090242.1613672-1-quic_xinyling@quicinc.com>
+References: <20230301090242.1613672-1-quic_xinyling@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SJ0PR13MB5428:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51791778-a73a-4ccc-5518-08db1ed91b4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZkaTydiWgfojgSvtg2lNXuuB9L1+uj3YOmCv+o3UyRsDNYMrcnBk9Af2Vi8vqYaZBmgwKp8ey132USay9u6jm7t/N5njQcriMunySMUae89ZI9c6XgQZaEfI5d2gpG8HACATO6seEhXpgLhzyFtMgq9Ytm0G1h9ThXiqw/ilULBLs4eOWlrjGo7oJjvSLIxh3lfcoyBNDS0US75eC5E2HwcvZnqra4wCr9Dn7/mpxSEBmx8MCvQ88tWZaTWoAY68HjDh38F13FPjeNPxvfTWPs7QW+WHokefZ1rRWhbpWYvLB6bQUBuKtymgHuv6VKb6m/5R/F2A/JvmaAwFs2YLw9kaxKpkUK2QCkUqVOJxjnxE0EPczlyqIBEbNkeJkiGh+9PKK2mjNXp+k3J/BAr9kM3uNaU+ZiwRn5z6xTSmg5uWP1l9knwhUTuXMrfDTDXuGRjyAcjAh89WepQMwA/CkXzGFX/krf80x96V2P1pVl+wkQesl+5cZ/Hw6EvEpveciHu+aBtV2J8K2JRsC4txyuzhI4oUElH9JymK/IkhydXMbldu5lyeqgnBhpe9dV0CV54eI4KACDMJ5/uGJNhlb31nJbJNIAqYS5xbcjLBO/4fMAJ/gfbaQk0BELztpCpIu8yjZw7BUAr8Egn33JmT4A8SrJH90onUvWAtlrBcH0pWazlErrcf7CYt2iSgpAsMpgr0ayoQMlRgPzeu5EwbXyQYPTT5relD0HohETM2BIc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(366004)(136003)(396003)(376002)(39840400004)(451199018)(83380400001)(36756003)(6512007)(38100700002)(5660300002)(2906002)(478600001)(8936002)(86362001)(186003)(2616005)(6666004)(6486002)(44832011)(6506007)(4326008)(66476007)(6916009)(66946007)(8676002)(66556008)(316002)(41300700001)(67856001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?anbifP/9ADG0OhMyU+ww4mwtmBmI+8QTGvaj7X++302l3ZwUlQfBeP1Qphjl?=
- =?us-ascii?Q?cdimFyE305qn3/ZSl9neymHEye0CDrNlI3IREnb24UQzyxbB1K6ACCcncro+?=
- =?us-ascii?Q?sZLLRUsFa1zOnt653uQJrTyoG+tgnDY1MH/ebn8NgWQXVD2yh41Jj+KPBEt6?=
- =?us-ascii?Q?RWl5edLZylxBG+4wnZ6B+CmlrzYJBxZLSVPN7fPxLLOCcp6zMxjKaFfnmTZD?=
- =?us-ascii?Q?EEXkqicEpnyVTDYkVkCLxH9iqM5D6vWXETwbhTKE7d0Y9g1NAJsqRX3Rc+4U?=
- =?us-ascii?Q?oDYIVbOLNNjgfB9/3t8qK3l94xfMD5SM9ZaylWqzMUkpqPkS8UoqGD9BN4nk?=
- =?us-ascii?Q?tOL4CMLThpaqyx1dG0eZSPVUacRKYHB9ugkVRjY/4s2EhjnTlNFb2mqdog0n?=
- =?us-ascii?Q?y9R6R/plqvJTrEXLobfdTPZTGLLON2dTIUl5nm/ntKwZ9H5j4clD/K5EwZIa?=
- =?us-ascii?Q?4S9SyvgkBQdFY+hp6o/lf6/g+mZ3s9KNFBF3YvjNiXgxaKMeL1hz+icUQXGN?=
- =?us-ascii?Q?vOgAQEICM4MaqMeMoXACWaZ/ANggaIFT+GEAT/R08S3GabAj2Ji6EQyxKIYZ?=
- =?us-ascii?Q?/JIOpMu+ddjJScN90+JwZs4Z21l6dm3+22ZnCr73PiBanDgja0M9xZlFIoG+?=
- =?us-ascii?Q?oDdtdN0au+Y7Qr7luHQJ9JkyA3a02c9aOd9rxYeYPMgYITfLtHyB08gRiY/h?=
- =?us-ascii?Q?F0ar0A2WsNd7+F26nnl/e5+9OtB4NYRBUGf4OQ7NMO6vcdCnmTvieiyHSSxA?=
- =?us-ascii?Q?PmY5DBmU9zNmb6/e6TRRW+FdCJYj3ELua/B+XxTm19DxhS5Rd7SICKIX71Ok?=
- =?us-ascii?Q?j5tvOwQmBXX8PyhxBdDjSs+e25wj+s7Ycyb9sPLBbuCv47EU4F4duV3byIrg?=
- =?us-ascii?Q?+aOiKV6rZsxL1o9EV2eh/YF3J/e8KN7ehENcYPY58/enCNSfDAIAkRRMk+al?=
- =?us-ascii?Q?0xP01QGYeUpBi42eL/6mls1bsuJN3bO7l2cRE1Jp9NZD7I5dEWaE9SWTkO/U?=
- =?us-ascii?Q?ZvyQ/EhN3lHF++VxyJePTOYAuxvUO4j3Yfb9XuRGoECWnKO2r4A8yagZQm1N?=
- =?us-ascii?Q?ObG7hxcKuD0h2nTP5Fdgri2um1OZexOigsA9sCnWLXoWGUsscJEh37axePL2?=
- =?us-ascii?Q?lvO/9INp8nLtkD4LMpJ0GT+zoI0+JvRxZrLMw1Yka8SK81EbhFS3+2nbUvaA?=
- =?us-ascii?Q?jsASFvODA2aYvXE36qsQmgASB17/An7V/mIx5LKiP9swcbAbyohVNSN4PnBj?=
- =?us-ascii?Q?E7zXYG7S+XkxwCwR7zqMvXhnMefe2epl7qhn/k20LYU/LutKeqvhVTJmBXrz?=
- =?us-ascii?Q?ZhU7ToSVsRcOXVr1VcnBTW1n0tw0MSmkLUxtBiI8SBTpX4qM/Q0iq4kvQLHH?=
- =?us-ascii?Q?cRL4+dHwjU9sdNNTCgXJrgbIE6QzWEUvwoyvf3HhhrIe5x2ToitPDycbFKgU?=
- =?us-ascii?Q?PspmdrTvl8gdbQn/pXy12P+gEoF6aC6MSKNR4d+5TEcHJy9/PEbvL8BCvrcY?=
- =?us-ascii?Q?Oh/8WFhp6Ds5EPPzAeTucRwX2ubPj3Ail5hwZm9KuvSEaMjXJBLs38gMRGPw?=
- =?us-ascii?Q?7fMIbwQmzIypE4cfAgJND1qGf1xNBzshOKN3D/NIXiBH74XwXxbx/BU7JCBl?=
- =?us-ascii?Q?UuQQnNLznLWBFFDJfOBBebplQFm9xrjjGGpj3lKTY/z6JeZ7gmmEbHuVoLhF?=
- =?us-ascii?Q?WUJHgg=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51791778-a73a-4ccc-5518-08db1ed91b4e
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2023 06:56:41.9943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a8Y4AjH46lHoroIWoiv1TVBy570lcoz5dwuPLJXSeQoW0XACN2ncYj2PsBh38h6wMco6YkxAEt3I+xhZfd1mYQ5fmypwUXJpl1B2UX5ewI0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR13MB5428
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no
-        version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 06, 2023 at 06:37:14PM +0100, Simon Horman wrote:
-> On Thu, Mar 02, 2023 at 04:03:09PM +0000, Jaewan Kim wrote:
-> > PMSR (a.k.a. peer measurement) is generalized measurement between two
-> > devices with Wi-Fi support. And currently FTM (a.k.a. fine time
-> > measurement or flight time measurement) is the one and only measurement.
-> > 
-> > Add necessary functionalities for mac80211_hwsim to abort previous PMSR
-> > request. The abortion request is sent to the wmedium where the PMSR request
-> > is actually handled.
-> > 
-> > In detail, add new mac80211_hwsim command HWSIM_CMD_ABORT_PMSR. When
-> > mac80211_hwsim receives the PMSR abortion request via
-> > ieee80211_ops.abort_pmsr, the received cfg80211_pmsr_request is resent to
-> > the wmediumd with command HWSIM_CMD_ABORT_PMSR and attribute
-> > HWSIM_ATTR_PMSR_REQUEST. The attribute is formatted as the same way as
-> > nl80211_pmsr_start() expects.
+On Wed, 2023-03-01 at 17:02 +0800, Xinyue Ling wrote:
+> nl80211_trigger_scan() processes scan request netlink attributes,
+> defined in enum nl80211_attrs, and fills struct
+> cfg80211_scan_request *request.
+>=20
+> Currently there is no logic to fill this member:
+> 	enum nl80211_bss_scan_width scan_width;
 
-...
+Right, noticed that too some time ago while working on MLO.
 
-> > +		goto out_err;
-> > +
-> > +	pmsr = nla_nest_start(skb, HWSIM_ATTR_PMSR_REQUEST);
-> > +	if (!pmsr) {
-> > +		err = -ENOMEM;
-> > +		goto out_err;
-> > +	}
-> > +
-> > +	err = mac80211_hwsim_send_pmsr_request(skb, request);
-> > +	if (err)
-> 
-> I think this error path needs to call nla_nest_cancel().
+> We have a requirement to fill this member for drone use cases, in
+> which drone controller needs to scan and connect to drone in 5 MHz
+> or 10 MHz channel width (may support other channel widths lower
+> than 20 MHz later).
 
-As per Johannes's comment elsewhere,
-I now realise this is not necessary as the skb is destroyed.
+:-(
 
-...
+> The following series of patches is the implementations of above two
+> options. In order to make them a series, a revert patch is included,
+> which can be ignored. Please review and decide which option is more
+> reasonable and acceptable.
+
+I'm not sure this matters so much right now ... either works. I suspect
+a new attribute might be nicer (fsvo "nicer").
+
+However, all this stuff is currently completely broken in mac80211. Are
+you wanting to use it with mac80211? ieee80211_vif_get_shift() is fairly
+much broken (deflink), and even if we don't expect to use MLO with
+narrow channels, it's still a huge mess.
+
+In fact, had I had enough time, I'd have removed all that code entirely
+from mac80211 already, since it's clearly unreachable. There's nothing
+that can ever select a narrow-band BSS since you can't actually scan
+that way as you noticed too.
+
+
+So ... for your use case:
+ 1) are you going to use mac80211?
+ 2) if not, which (upstream!) driver are you going to use?
+ 3) if yes, are you willing to dig through mac80211 and clean up all
+    that narrow-band code:
+     - to make sure it interacts well with MLO
+       (even if it doesn't _support_ MLO),
+     - to define it correctly wrt. what's supported such as
+       HT/VHT/HE/EHT with narrow channels? How would that even work? I
+       guess none of those - unless we're dealing with vendor
+       extensions?
+     - if we're dealing with vendor extensions here, anyone actually
+       willing to commit to those and document them properly outside of
+       just having a half-baked implementation?
+
+
+So honestly, I'm not even going to look at these patches before I can
+get some answers on this, because while it may work for your use case
+right now, it's clearly a mess. For example, nothing prevents you even
+from trying to create MLO out of a narrow-band and regular BSS, other
+than that no AP would likely beacon that way ... Hopefully!! But I don't
+think we should just hope that no AP does this and that wpa_s is smart
+enough.
+
+johannes
