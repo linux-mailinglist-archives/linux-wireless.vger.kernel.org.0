@@ -2,152 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E79CD6AD2B3
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 00:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F846AD3B9
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 02:12:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229490AbjCFXPI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Mar 2023 18:15:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59412 "EHLO
+        id S229684AbjCGBMC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Mar 2023 20:12:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjCFXPH (ORCPT
+        with ESMTP id S229628AbjCGBMA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Mar 2023 18:15:07 -0500
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CB2EC75;
-        Mon,  6 Mar 2023 15:14:38 -0800 (PST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1678144472; bh=bXYuXw1nXD9PxOc5tauF440JDT46qSdZD2UV4o2Whcw=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=aU5viVmUd36Sn8KAdQhPK2BiZRrPYvWO1eF573qzuT+VtpFaLvpyPMPSmW/jGwPte
-         1h63keH7tJxfTjOo46DtimcaRXEb12nDYR5MJ2yXu9WCs0W4OUfusAfV5Okj/sx2ov
-         sNY9IHcdRUmtO3vsqv4C6MWThIVTBR3mKJA9eg7dY+wReIYt6tnJhORH6xY3O7SC/j
-         l5WQATcCMXtPLmtNC/MyRbcmzFfbyJIJ6E1lqDJFforv4SJ9BlBGcBopmiXsp1x8Qy
-         iDZOa2i8138FDPmBwm+N3tuS4J02c0rA0qm4FM0R5FQSXE7gp5gPwJmFktai/PMtvC
-         C6L/4m83QciKw==
-To:     Aleksander Bajkowski <olek2@wp.pl>, linux-wireless@vger.kernel.org,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     netdev@vger.kernel.org
-Subject: Re: ath9k: HE capabilities are incorrectly parsed on big endian
- platforms
-In-Reply-To: <1188c4fb-a621-e5ff-3c4b-a8d16903f7ed@wp.pl>
-References: <1188c4fb-a621-e5ff-3c4b-a8d16903f7ed@wp.pl>
-Date:   Tue, 07 Mar 2023 00:14:30 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87zg8pa2w9.fsf@toke.dk>
+        Mon, 6 Mar 2023 20:12:00 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9663D34F46
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Mar 2023 17:11:57 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3271B0sL4030882, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3271B0sL4030882
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Tue, 7 Mar 2023 09:11:00 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Tue, 7 Mar 2023 09:11:09 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Tue, 7 Mar 2023 09:11:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Tue, 7 Mar 2023 09:11:08 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
+        "Lorenzo Bianconi" <lorenzo@kernel.org>
+CC:     Sean Wang <sean.wang@mediatek.com>,
+        Soul Huang <Soul.Huang@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        "Eric-SY Chang" <Eric-SY.Chang@mediatek.com>,
+        KM Lin <km.lin@mediatek.com>,
+        Robin Chiu <robin.chiu@mediatek.com>,
+        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
+        Stella Chang <Stella.Chang@mediatek.com>,
+        "Evelyn Tsai" <evelyn.tsai@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        "Shayne Chen" <shayne.chen@mediatek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-mediatek <linux-mediatek@lists.infradead.org>,
+        Neil Chen <yn.chen@mediatek.com>
+Subject: RE: [PATCH] wifi: mt76: mt7921: use driver flags rather than mac80211 flags to mcu
+Thread-Topic: [PATCH] wifi: mt76: mt7921: use driver flags rather than
+ mac80211 flags to mcu
+Thread-Index: AQHZTnDDuORaGrc0ok+pzt4yBeuUlK7uhgxg
+Date:   Tue, 7 Mar 2023 01:11:08 +0000
+Message-ID: <4df66aae6e6046d1ba207de47247a21b@realtek.com>
+References: <fce2160648ed8a83248e8998cf76bbe05de0e8a0.1677912476.git.deren.wu@mediatek.com>
+In-Reply-To: <fce2160648ed8a83248e8998cf76bbe05de0e8a0.1677912476.git.deren.wu@mediatek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aleksander Bajkowski <olek2@wp.pl> writes:
-> Hi,
->
-> During a scan of the WiFi network, I discovered that HE capabilities=20
-> (WiFi 6)
-> are incorrectly displayed. This problem exists on OpenWRT running stable
-> versions of the kernel (5.10 and 5.15). I verified later that the problem
-> is present on other devices. I found that it only affects devices with
-> Atheros radio (ath9k and ath10k-ct) running on the big endian platforms.
-> On little endian platforms, everything looks OK.
->
-> I suspect that the problem is in the ath9k driver because the mt76 driver
-> on the big endian platform shows the correct capabilities.
->
-> Most interesting is the comparison of raw data. The order of bytes in the
-> words is reversed:
->
-> |HE MAC Capabilities (0x010008120010): ||HE MAC Capabilities (0x000112081=
-000):|
->
-> Below you can see a summary of the tested routers, and the good and bad
-> logs. The WiFI networks were scanned using the 'iw dev wlanX scan' comman=
-d.
->
-> Device=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 =C2=A0=C2=A0 Driver Endianess=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HE Capab=
-ilities
->
-> TL-WDR4300=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ath9k big=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 Bad
-> BT Home Hub 5A=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ath10k-ct=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 big=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 Bad
-> Xiaomi AX3200=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 mt76=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 little=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Good
-> AVM 7530=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 ath10k-ct=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 little=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Good
-> Netgear R6220=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mt76=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 big=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Good
->
->
-> Bad:
->
-> |HE capabilities: HE MAC Capabilities (0x010008120010): Minimum Payload=20
-> size of 128 bytes: 1 All Ack Broadcast TWT Maximum A-MPDU Length=20
-> Exponent: 1 NDP Feedback Report HE PHY Capabilities:=20
-> (0x4c2002c06f5b951800cc00): HE160/HE80+80/5GHz Punctured Preamble RX: 2=20
-> Doppler Rx DCM Max Constellation: 3 DCM Max NSS Tx: 1 DCM Max=20
-> Constellation Rx: 1 DCM Max NSS Rx: 1 Rx HE MU PPDU from Non-AP STA=20
-> Beamformee STS > 80Mhz: 6 Sounding Dimensions <=3D 80Mhz: 5 Sounding=20
-> Dimensions > 80Mhz: 2 Ng =3D 16 MU Feedback Codebook Size SU Feedback=20
-> Codebook Size MU Feedback Triggered MU Beamforming Feedback Triggered=20
-> CQI Feedback Partial Bandwidth DL MU-MIMO 80MHz in 160/80+80MHz HE PPDU=20
-> HE ER SU PPDU 1x HE-LTF 0.8us GI HE RX MCS and NSS set 80+80 MHz 1=20
-> streams: MCS 0-7 2 streams: not supported 3 streams: MCS 0-9 4 streams:=20
-> MCS 0-7 5 streams: not supported 6 streams: MCS 0-11 7 streams: not=20
-> supported 8 streams: MCS 0-9 HE TX MCS and NSS set 80+80 MHz 1 streams:=20
-> MCS 0-9 2 streams: MCS 0-7 3 streams: not supported 4 streams: MCS 0-9 5=
-=20
-> streams: not supported 6 streams: MCS 0-9 7 streams: MCS 0-7 8 streams:=20
-> not supported|
->
->
-> Good:
->
-> |HE capabilities: HE MAC Capabilities (0x000112081000): +HTC HE=20
-> Supported BSR OM Control Maximum A-MPDU Length Exponent: 2 OM Control UL=
-=20
-> MU Data Disable RX HE PHY Capabilities: (0x4c2002c06f5b951800cc00):=20
-> HE40/HE80/5GHz HE160/5GHz 242 tone RUs/5GHz LDPC Coding in Payload NDP=20
-> with 4x HE-LTF and 3.2us GI Rx HE MU PPDU from Non-AP STA SU Beamformer=20
-> SU Beamformee MU Beamformer Beamformee STS <=3D 80Mhz: 3 Beamformee STS >=
-=20
-> 80Mhz: 3 Sounding Dimensions <=3D 80Mhz: 3 Sounding Dimensions > 80Mhz: 3=
-=20
-> Ng =3D 16 SU Feedback Codebook Size SU Feedback Triggered SU Beamforming=
-=20
-> Feedback Triggered CQI Feedback PPE Threshold Present Max NC: 3 TX=20
-> 1024-QAM RX 1024-QAM HE RX MCS and NSS set <=3D 80 MHz 1 streams: MCS 0-1=
-1=20
-> 2 streams: MCS 0-11 3 streams: MCS 0-11 4 streams: MCS 0-11 5 streams:=20
-> not supported 6 streams: not supported 7 streams: not supported 8=20
-> streams: not supported HE TX MCS and NSS set <=3D 80 MHz 1 streams: MCS=20
-> 0-11 2 streams: MCS 0-11 3 streams: MCS 0-11 4 streams: MCS 0-11 5=20
-> streams: not supported 6 streams: not supported 7 streams: not supported=
-=20
-> 8 streams: not supported HE RX MCS and NSS set 160 MHz 1 streams: MCS=20
-> 0-11 2 streams: MCS 0-11 3 streams: MCS 0-11 4 streams: MCS 0-11 5=20
-> streams: not supported 6 streams: not supported 7 streams: not supported=
-=20
-> 8 streams: not supported HE TX MCS and NSS set 160 MHz 1 streams: MCS=20
-> 0-11 2 streams: MCS 0-11 3 streams: MCS 0-11 4 streams: MCS 0-11 5=20
-> streams: not supported 6 streams: not supported 7 streams: not supported=
-=20
-> 8 streams: not supported PPE Threshold 0x7b 0x1c 0xc7 0x71 0x1c 0xc7=20
-> 0x71 0x1c 0xc7 0x71 0x1c 0xc7 0x71|
 
-+Felix, in the hope he has an idea of where to go looking for the cause
-of this...
 
--Toke
+> -----Original Message-----
+> From: Deren Wu <deren.wu@mediatek.com>
+> Sent: Saturday, March 4, 2023 4:10 PM
+> To: Felix Fietkau <nbd@nbd.name>; Lorenzo Bianconi <lorenzo@kernel.org>
+> Cc: Sean Wang <sean.wang@mediatek.com>; Soul Huang <Soul.Huang@mediatek.com>; YN Chen
+> <YN.Chen@mediatek.com>; Leon Yen <Leon.Yen@mediatek.com>; Eric-SY Chang <Eric-SY.Chang@mediatek.com>;
+> Deren Wu <Deren.Wu@mediatek.com>; KM Lin <km.lin@mediatek.com>; Robin Chiu <robin.chiu@mediatek.com>; CH
+> Yeh <ch.yeh@mediatek.com>; Posh Sun <posh.sun@mediatek.com>; Stella Chang <Stella.Chang@mediatek.com>;
+> Evelyn Tsai <evelyn.tsai@mediatek.com>; Ryder Lee <ryder.lee@mediatek.com>; Shayne Chen
+> <shayne.chen@mediatek.com>; linux-wireless <linux-wireless@vger.kernel.org>; linux-mediatek
+> <linux-mediatek@lists.infradead.org>; Neil Chen <yn.chen@mediatek.com>
+> Subject: [PATCH] wifi: mt76: mt7921: use driver flags rather than mac80211 flags to mcu
+> 
+> From: Neil Chen <yn.chen@mediatek.com>
+> 
+> FIF_* flags from mac80211 is not ABI. mt7921 should not pass it into mcu
+> directly. Remap FIF_* to driver defined flags as mcu command input.
+> 
+> Fixes: c222f77fd421 ("wifi: mt76: mt7921: fix rx filter incorrect by drv/fw inconsistent")
+> Signed-off-by: Neil Chen <yn.chen@mediatek.com>
+
+Miss your s-o-b, Deren?
+
+> ---
+>  .../net/wireless/mediatek/mt76/mt7921/main.c    | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> index 75eaf86c6a78..f67b37d38dbc 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -703,10 +703,25 @@ static void mt7921_configure_filter(struct ieee80211_hw *hw,
+>                                     unsigned int *total_flags,
+>                                     u64 multicast)
+>  {
+> +#define MT7921_FILTER_FCSFAIL    BIT(2)
+> +#define MT7921_FILTER_CONTROL    BIT(5)
+> +#define MT7921_FILTER_OTHER_BSS  BIT(6)
+> +#define MT7921_FILTER_ENABLE     BIT(31)
+> +
+>         struct mt7921_dev *dev = mt7921_hw_dev(hw);
+> +       u32 flags = MT7921_FILTER_ENABLE;
+> +
+> +#define MT7921_FILTER(_fif, _type) do {                        \
+> +               if (*total_flags & (_fif))              \
+> +                       flags |= MT7921_FILTER_##_type; \
+> +       } while (0)
+> +
+> +       MT7921_FILTER(FIF_FCSFAIL, FCSFAIL);
+> +       MT7921_FILTER(FIF_CONTROL, CONTROL);
+> +       MT7921_FILTER(FIF_OTHER_BSS, OTHER_BSS);
+> 
+>         mt7921_mutex_acquire(dev);
+> -       mt7921_mcu_set_rxfilter(dev, *total_flags, 0, 0);
+> +       mt7921_mcu_set_rxfilter(dev, flags, 0, 0);
+>         mt7921_mutex_release(dev);
+> 
+>         *total_flags &= (FIF_OTHER_BSS | FIF_FCSFAIL | FIF_CONTROL);
+> --
+> 2.18.0
+> 
+> 
+> ------Please consider the environment before printing this e-mail.
