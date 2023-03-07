@@ -2,43 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39EBA6ADA24
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 10:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C476ADB6A
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 11:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbjCGJUo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Mar 2023 04:20:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36324 "EHLO
+        id S229809AbjCGKI2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Mar 2023 05:08:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230346AbjCGJUW (ORCPT
+        with ESMTP id S229627AbjCGKIY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Mar 2023 04:20:22 -0500
+        Tue, 7 Mar 2023 05:08:24 -0500
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31F387A14
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 01:20:15 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDA93CE34
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 02:08:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=FWJek77JJraltJOA9S/rKvd/LLYSvQYCbgD8IJtq7lY=;
-        t=1678180815; x=1679390415; b=grKghAVAMWho4b+wkjVn9QGdS2Xa3Yb+AtRk49cGvDHzLNg
-        z2RsmoJZl8R80upp+GoJO6u+O50k4SUMAo3ejqMawjKTPsnnaOSvQmZJf/+RCBRLll+fuwBdefphN
-        hbwQaoMLmaWHwEO3BEnJ8Nwm7vh42lADo8BMwt+xwDt/XZmKgo0+QxjrP/apwj6nLXvM9hm9Ly2Wu
-        F6sZYpvaRw/mVIXC70049OF1sNSjxnamCvl4giNjZwSb7OEMZuI+l7Tq8pMGi1+TC1fM2lM7iycx+
-        kgSetK9nQ8RdVQxQnAGBuIA04ZyeR4n3SpPTa5auVONaQ6/E8xrBs4M4xTiFyACw==;
+        Resent-Cc:Resent-Message-ID; bh=RlWB/D9k1qwKsQ+RK0fIddhmn+ijgdb9pn4HbzaBGP4=;
+        t=1678183704; x=1679393304; b=d7myOeJzTau5ZQgk5+V+Ko8YEsKA7cWiRoPkSr04PqILe3D
+        BWDcO67NmFu02nrjaeRHkzdhCPo5QjKWL7WgrPqmTXtKnu0N65ZyQDiZOUWoVyIrgLq6iXM8fNLo8
+        2wmFx60fd4uQU5RIzxFfUfKo8A/qtj+190iCyDNDEty1/X8yQqm6F53ErDfROG1Z3MwRsdqU6fhrG
+        owr+ValI6IWx1lbUGk429axawElipDlaoumPgYNi3GbY1oGqk+VaxoNrPSTooLBOyNV9dZy51V5eC
+        Pe+k9Q/p1uRWN/fRDUOVWo0khJJWZw3riTC2h2hIo8ePTGkd7ZWSn6EmHD6mVj+w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pZTUS-00EHH9-0n;
-        Tue, 07 Mar 2023 10:20:12 +0100
-Message-ID: <6796c3c209a071983d330ca145d7ab8b929d53c6.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/4] wifi: nl80211: Add support to specify channel width
- for scan
+        id 1pZUF2-00EI4T-38;
+        Tue, 07 Mar 2023 11:08:21 +0100
+Message-ID: <3e20bade92b97c7b441f18c7e12e12eaee519481.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 2/2] wifi: mac80211: add LDPC related flags in
+ ieee80211_bss_conf
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Xinyue Ling <quic_xinyling@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 07 Mar 2023 10:20:10 +0100
-In-Reply-To: <20230301090242.1613672-1-quic_xinyling@quicinc.com>
-References: <20230301090242.1613672-1-quic_xinyling@quicinc.com>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Date:   Tue, 07 Mar 2023 11:08:20 +0100
+In-Reply-To: <1de696aaa34efd77a926eb657b8c0fda05aaa177.1676628065.git.ryder.lee@mediatek.com>
+References: <8d9966c4c1e77cb1ade77d42bdc49905609192e9.1676628065.git.ryder.lee@mediatek.com>
+         <1de696aaa34efd77a926eb657b8c0fda05aaa177.1676628065.git.ryder.lee@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
@@ -53,64 +56,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-03-01 at 17:02 +0800, Xinyue Ling wrote:
-> nl80211_trigger_scan() processes scan request netlink attributes,
-> defined in enum nl80211_attrs, and fills struct
-> cfg80211_scan_request *request.
+On Sat, 2023-02-18 at 01:49 +0800, Ryder Lee wrote:
+> This is utilized to pass LDPC configurations from user space
+> (i.e. hostapd) to driver.
 >=20
-> Currently there is no logic to fill this member:
-> 	enum nl80211_bss_scan_width scan_width;
 
-Right, noticed that too some time ago while working on MLO.
+I'm applying this, but could you do me a favour and check that we really
+don't need to reset this? What if we added a previous BSS with e.g. VHT
+and then reconfigure the interface to w/o VHT and then the settings
+might stick?
 
-> We have a requirement to fill this member for drone use cases, in
-> which drone controller needs to scan and connect to drone in 5 MHz
-> or 10 MHz channel width (may support other channel widths lower
-> than 20 MHz later).
-
-:-(
-
-> The following series of patches is the implementations of above two
-> options. In order to make them a series, a revert patch is included,
-> which can be ignored. Please review and decide which option is more
-> reasonable and acceptable.
-
-I'm not sure this matters so much right now ... either works. I suspect
-a new attribute might be nicer (fsvo "nicer").
-
-However, all this stuff is currently completely broken in mac80211. Are
-you wanting to use it with mac80211? ieee80211_vif_get_shift() is fairly
-much broken (deflink), and even if we don't expect to use MLO with
-narrow channels, it's still a huge mess.
-
-In fact, had I had enough time, I'd have removed all that code entirely
-from mac80211 already, since it's clearly unreachable. There's nothing
-that can ever select a narrow-band BSS since you can't actually scan
-that way as you noticed too.
-
-
-So ... for your use case:
- 1) are you going to use mac80211?
- 2) if not, which (upstream!) driver are you going to use?
- 3) if yes, are you willing to dig through mac80211 and clean up all
-    that narrow-band code:
-     - to make sure it interacts well with MLO
-       (even if it doesn't _support_ MLO),
-     - to define it correctly wrt. what's supported such as
-       HT/VHT/HE/EHT with narrow channels? How would that even work? I
-       guess none of those - unless we're dealing with vendor
-       extensions?
-     - if we're dealing with vendor extensions here, anyone actually
-       willing to commit to those and document them properly outside of
-       just having a half-baked implementation?
-
-
-So honestly, I'm not even going to look at these patches before I can
-get some answers on this, because while it may work for your use case
-right now, it's clearly a mess. For example, nothing prevents you even
-from trying to create MLO out of a narrow-band and regular BSS, other
-than that no AP would likely beacon that way ... Hopefully!! But I don't
-think we should just hope that no AP does this and that wpa_s is smart
-enough.
+More generally, it might be worth checking if we can just memset the
+entire bss_conf to 0? We already do this for link conf today (always
+reallocate it) so it should be OK? Same actually goes for client mode so
+maybe we can generally clean that up?
 
 johannes
