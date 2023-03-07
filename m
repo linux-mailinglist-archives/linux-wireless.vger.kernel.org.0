@@ -2,193 +2,222 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 654FC6AF6FB
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 21:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D01C06AF807
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Mar 2023 22:51:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230459AbjCGUy4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Mar 2023 15:54:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50058 "EHLO
+        id S231526AbjCGVv3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Mar 2023 16:51:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231153AbjCGUym (ORCPT
+        with ESMTP id S231589AbjCGVv2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Mar 2023 15:54:42 -0500
-X-Greylist: delayed 168021 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Mar 2023 12:54:36 PST
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 245C3A72BF;
-        Tue,  7 Mar 2023 12:54:36 -0800 (PST)
-Message-ID: <debc7fe9-204d-63a7-aa61-91b20a46f385@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1678222473;
-        bh=gVULR4YUbSKl0259vw/9Yr2iJf2/4S6O/2d2pKa3l4Q=;
-        h=Date:From:Subject:To:Cc:References:In-Reply-To;
-        b=ozwFpPHmovVcG0ko+0n17rnI4Y79AXv07fyPPwHZLZtJwOtbX9+ZdehneBd3SU0xA
-         /HcpwC76txJt2U4ASZUJjd639Nd0/Y3lOTb1gUW57Hhk7WXQ53MR8eP6w3iAFokEfy
-         fZXtzWjBvQ+ddWDUKf2Jgmdzi3EW1z6qq6ti36Dg=
-Date:   Tue, 7 Mar 2023 21:54:31 +0100
+        Tue, 7 Mar 2023 16:51:28 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D42DA80F7
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 13:51:05 -0800 (PST)
+X-UUID: 270566b6bd3211ed945fc101203acc17-20230308
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=X3tu9DRcqh2D0cLK4oVHDUYxyUjFp+xzMsztOpi7iOA=;
+        b=UxMTx1J+9on9VgSoz2vq2n0IVN1PR/qp8inaKrBFmiN6ML5VxNrXWX0qDDRJgAVHex/BiRoehIPXoxm5PXi9TAlwG/KSyJ6MBDLcWv1hbqb8tNNp9kmv8nmEhWW8hx8uKGkqNTkQFSAW7mhgXuMRvJkzrMdsXndY64yZl1iZM80=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.20,REQID:334b980e-8ec1-490b-b700-9b2d2d054516,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:25b5999,CLOUDID:b4b7a227-564d-42d9-9875-7c868ee415ec,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-UUID: 270566b6bd3211ed945fc101203acc17-20230308
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 328251606; Wed, 08 Mar 2023 05:51:01 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.25; Wed, 8 Mar 2023 05:51:00 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Wed, 8 Mar 2023 05:51:00 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <YN.Chen@mediatek.com>, <Leon.Yen@mediatek.com>,
+        <Eric-SY.Chang@mediatek.com>, <Deren.Wu@mediatek.com>,
+        <km.lin@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <frankgor@google.com>, <kuabhs@google.com>,
+        <druth@google.com>, <abhishekpandit@google.com>,
+        <shawnku@google.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2] wifi: mt76: mt7921: enable p2p support
+Date:   Wed, 8 Mar 2023 05:50:59 +0800
+Message-ID: <acf73d3e8cb5ad91c9144d63959e84f007f9e336.1678222117.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
- drops
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Mann <rauchwolke@gmx.net>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Johannes Berg <johannes.berg@intel.com>
-References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
- <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
- <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
-Content-Language: en-US
-In-Reply-To: <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-MTK:  N
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->>
-> 
-> I just uploaded a test patch to bugzilla.
-> Please have a look if that fixes the issue.
-> 
-> If not I would be interested in the output of your iTXQ status.
-> Enable CONFIG_MAC80211_DEBUGFS and run this command when the connection 
-> is bad and send/share/upload to bugzilla the resulting debug.out:
-> 
-> k=1; while [ $k -lt 10 ]; do \
-> cat /sys/kernel/debug/ieee80211/phy?/netdev:*/stations/*/aqm; \
-> k=$(($k+1)); done >> debug.out
+From: Sean Wang <sean.wang@mediatek.com>
 
-Thomas and I continued with some debugging in
-https://bugzilla.kernel.org/show_bug.cgi?id=217119
+Introduce p2p-go/p2p-client support to mt7921 driver
 
-But the results so far are unexpected and we decided to continue the 
-debugging with the round here. Hoping someone sees something I miss.
+CONNECTION_P2P_GC/GO is not supported with the current firmware
+so we added mt76_dev to mt76_connac_mcu_sta_basic_tlv signature to
+use CONNECTION_INFRA_STA/AP instead for p2p-client and p2p-go
+respectively to make it work.
 
-A very summary where we are:
-I can't reproduce the bug with a very similar card and kernel config so 
-far. Thomas card stops the iTXQs for intervalls >30s. Mine operates 
-normally.
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: fix the build error with mt7996
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      |  3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |  8 ++++----
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c      |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c     | 10 +++++++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c      |  4 ++--
+ 6 files changed, 18 insertions(+), 13 deletions(-)
 
-A more useful but longer summary:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index eea398c79a98..195fe1094d9b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -861,7 +861,8 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 		else
+ 			mvif->sta_added = true;
+ 	}
+-	mt76_connac_mcu_sta_basic_tlv(sskb, vif, sta, enable, new_entry);
++	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, sskb, vif, sta, enable,
++				      new_entry);
+ 	if (enable && sta)
+ 		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
+ 					MT76_STA_INFO_STATE_ASSOC);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index efb9bfaa187f..25b61cc469bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -363,7 +363,7 @@ void mt76_connac_mcu_bss_omac_tlv(struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL_GPL(mt76_connac_mcu_bss_omac_tlv);
+ 
+-void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
++void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_sta *sta,
+ 				   bool enable, bool newly)
+@@ -394,7 +394,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_MESH_POINT:
+ 	case NL80211_IFTYPE_AP:
+-		if (vif->p2p)
++		if (vif->p2p && !is_mt7921(dev))
+ 			conn_type = CONNECTION_P2P_GC;
+ 		else
+ 			conn_type = CONNECTION_INFRA_STA;
+@@ -402,7 +402,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
+ 		basic->aid = cpu_to_le16(sta->aid);
+ 		break;
+ 	case NL80211_IFTYPE_STATION:
+-		if (vif->p2p)
++		if (vif->p2p && !is_mt7921(dev))
+ 			conn_type = CONNECTION_P2P_GO;
+ 		else
+ 			conn_type = CONNECTION_INFRA_AP;
+@@ -1029,7 +1029,7 @@ int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
+ 		return PTR_ERR(skb);
+ 
+ 	if (info->sta || !info->offload_fw)
+-		mt76_connac_mcu_sta_basic_tlv(skb, info->vif, info->sta,
++		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->vif, info->sta,
+ 					      info->enable, info->newly);
+ 	if (info->sta && info->enable)
+ 		mt76_connac_mcu_sta_tlv(phy, skb, info->sta,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 40a99e0caded..345e34cdeff3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1776,7 +1776,7 @@ mt76_connac_mcu_add_tlv(struct sk_buff *skb, int tag, int len)
+ 
+ int mt76_connac_mcu_set_channel_domain(struct mt76_phy *phy);
+ int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif);
+-void mt76_connac_mcu_sta_basic_tlv(struct sk_buff *skb,
++void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_sta *sta, bool enable,
+ 				   bool newly);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 16f09ead307d..f9c34eb268f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1657,8 +1657,8 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ 		return PTR_ERR(skb);
+ 
+ 	/* starec basic */
+-	mt76_connac_mcu_sta_basic_tlv(skb, vif, sta, enable,
+-			!rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
++	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, sta, enable,
++				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
+ 	if (!enable)
+ 		goto out;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 80c71acfe159..124405cc50a5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -32,11 +32,13 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ static const struct ieee80211_iface_limit if_limits_chanctx[] = {
+ 	{
+ 		.max = 2,
+-		.types = BIT(NL80211_IFTYPE_STATION),
++		.types = BIT(NL80211_IFTYPE_STATION) |
++			 BIT(NL80211_IFTYPE_P2P_CLIENT)
+ 	},
+ 	{
+ 		.max = 1,
+-		.types = BIT(NL80211_IFTYPE_AP),
++		.types = BIT(NL80211_IFTYPE_AP) |
++			 BIT(NL80211_IFTYPE_P2P_GO)
+ 	}
+ };
+ 
+@@ -100,7 +102,9 @@ mt7921_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->flags &= ~(WIPHY_FLAG_IBSS_RSN | WIPHY_FLAG_4ADDR_AP |
+ 			  WIPHY_FLAG_4ADDR_STATION);
+ 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+-				 BIT(NL80211_IFTYPE_AP);
++				 BIT(NL80211_IFTYPE_AP) |
++				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
++				 BIT(NL80211_IFTYPE_P2P_GO);
+ 	wiphy->max_remain_on_channel_duration = 5000;
+ 	wiphy->max_scan_ie_len = MT76_CONNAC_SCAN_IE_LEN;
+ 	wiphy->max_scan_ssids = 4;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 8ad51cbfdbe8..eb29231f844d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1694,8 +1694,8 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 		return PTR_ERR(skb);
+ 
+ 	/* starec basic */
+-	mt76_connac_mcu_sta_basic_tlv(skb, vif, sta, enable,
+-			!rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
++	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, sta, enable,
++				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
+ 	if (!enable)
+ 		goto out;
+ 
+-- 
+2.25.1
 
-Thomas updated to a 6.2 kernel and reported "connection drops and 
-bandwidth problems" with his rt2800usb wlan card. (6.1 is ok.) Asked for 
-some more details he reported:
-"...slow bandwidth stuff works better, but the main problem/test case is 
-to start a 8-16 mbit video stream, which sometimes runs for a few 
-seconds and then stops or it doesn't start at all"
-
-He bisected the issue and identified my commit 4444bc2116ae ("wifi: 
-mac80211: Proper mark iTXQs for resumption") as culprit.
-
-Checking the internal iTXQ status when the issue is ongoing shows, that 
-TID zero is flagged as dirty and thus is not transmitting queued 
-packets. Interesting line from 
-/sys/kernel/debug/ieee80211/phy?/netdev:*/stations/*/aqm:
-tid ac backlog-bytes backlog-packets new-flows drops marks overlimit 
-collisions tx-bytes tx-packets flags
-0 2 619736 404 1681 0 0 0 1 4513965 3019 0xe(RUN AMPDU NO-AMSDU DIRTY)
-
---> The "normal" iTXQ handling IEEE80211_AC_BE has queued packets and is 
-flagged as DIRTY. There even is a potential race setting the DIRTY flag, 
-but the fix for that is not helping.
-
-Thus Thomas applied two debug patches, to better understand why the 
-DIRTY flag is not cleared.
-
-And looking at the output from those we see that the driver stops Tx by 
-calling ieee80211_stop_queue(). When ieee80211_wake_queue() mac80211 
-correctly resumes TX but is getting stopped by the driver after a single 
-packet again. (The start of the relevant log is missing, so that may be 
-initially more).
-I assume TX is still ok at that stage. But after some singe Tx 
-operations the driver stops the queues again. Here the relevant part of 
-the log:
-[  179.584997] XXXX __ieee80211_wake_txqs: waking TID 0
-[  179.585022] XXXX drv_tx: TX
-[  179.585027] XXXX ieee80211_stop_queue: called
-[  179.585028] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.585030] XXXX __ieee80211_wake_txqs: TID 3 NOT dirty
-[  179.585031] XXXX __ieee80211_wake_txqs: TID 8 NOT dirty
-[  179.585033] XXXX __ieee80211_wake_txqs: TID 11 NOT dirty
-[  179.585034] XXXX __ieee80211_wake_txqs: EXIT
-[  179.585035] XXXX __ieee80211_wake_txqs: ENTRY
-[  179.585036] XXXX __ieee80211_wake_txqs: TID 1 NOT dirty
-[  179.585037] XXXX __ieee80211_wake_txqs: TID 2 NOT dirty
-[  179.585038] XXXX __ieee80211_wake_txqs: TID 9 NOT dirty
-[  179.585040] XXXX __ieee80211_wake_txqs: TID 10 NOT dirty
-[  179.585041] XXXX __ieee80211_wake_txqs: EXIT
-[  179.585047] XXXX drv_tx: TX
-[  179.585056] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.585271] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.585868] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.586120] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.586544] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.586792] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.587317] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.587591] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-[  179.588569] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
-....
-[  214.307617] XXXX ieee80211_wake_queue: called
-
-
---> So the driver blocked TX for more than 30s. Which is a good 
-explanation of what Thomas observes.
-
-But there is nothing mac80211 can do differently here. Whatever is the 
-real reason for the issue, it's nothing obvious I see.
-
-Luckily I found a card using the same driver and nearly the same card:
-Thomas systems:Linux version 6.2.2-gentoo (root@foo) (gcc (Gentoo 
-Hardened 12.2.1_p20230121-r1 p10) 12.2.1 20230121, GNU ld (Gentoo 2.39 
-p5) 2.39.0) #2 SMP Fri Mar  3 16:59:02 CET 2023ieee80211 phy0: 
-rt2x00_set_rt: Info - RT chipset 3070, rev 0201 detected
-ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005 detected
-ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-
-My system, using the kernel config from Thomas with only minor 
-modifications (different filesystems and initramfs settings and enabled 
-mac80211 debug and developer options):
-Linux version 6.2.2-gentoo (root@Perry.mordor) (gcc (Gentoo 
-12.2.1_p20230121-r1 p10) 12.2.1 20230121, GNU ld (Gentoo 2.40 p2) 
-2.40.0) #2 SMP Tue Mar  7 18:18:47 CET 2023ieee80211 phy0: 
-rt2x00_set_rt: Info - RT chipset 3070, rev 0200 detected
-ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005 detected
-ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
-ieee80211 phy0: rt2x00lib_request_firmware: Info - Loading firmware file 
-'rt2870.bin'
-ieee80211 phy0: rt2x00lib_request_firmware: Info - Firmware detected - 
-version: 0.36
-
-But there is one big difference on my system: I can't reproduce the bug 
-so far. It's working as it should... (I did not apply the debug patches 
-myself so far)
-
-I'm now planning to look a bit more into the rt2800usb driver and 
-provide another debug patch for interesting looking code pieces in it.
-
-@Thomas:
-I've also uploaded you my binary kernel I'm running at the moment here:
-https://www.awhome.eu/s/5FjqMS73rtCtSBM
-
-That kernel should also be able to boot and operate your system. Can you 
-try that and tell me, if that makes any difference?
-
-I'm also planning to provide some more debug patches, to figuring out 
-which part of commit 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs 
-for resumption") fixes the issue for you. Assuming my understanding 
-above is correct the patch should not really fix/break anything for 
-you...With the findings above I would have expected your git bisec to 
-identify commit a790cc3a4fad ("wifi: mac80211: add wake_tx_queue 
-callback to drivers") as the first broken commit...
-
-Alexander
