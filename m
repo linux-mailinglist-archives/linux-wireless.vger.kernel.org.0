@@ -2,107 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0B476B04E6
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Mar 2023 11:46:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B70246B062C
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Mar 2023 12:41:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230021AbjCHKq3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Mar 2023 05:46:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
+        id S229913AbjCHLlh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Mar 2023 06:41:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230328AbjCHKq0 (ORCPT
+        with ESMTP id S229482AbjCHLlf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Mar 2023 05:46:26 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04355126E4
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 02:46:21 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 328372Y2006687;
-        Wed, 8 Mar 2023 10:46:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=xZM1HY6qJQ3fvyf5jAI8AtKirb9pND5Dfaue6X6uQeQ=;
- b=D4NtN7ypSfyop/AI2awzNgojwMFx8hmkmhzk4ribfC1UBKYLfOSGqO7b1KsfPoVM34r6
- EBFvtctkEdP5Atyb4CHZW41hzRHLL8FS6N5Co7THSW7omdsoUa6ezofIT0pmGeBd1xOj
- R7Wd8hKmGgZZ9u1IPBgB84ck5h8MoHT0lfP1c12T9rTFX9hSpMcRBOI72/ym0C7KOArO
- GNmbn/U4hZCskt8c9QpE2zzZl7AxOBvTLmKKfgqpyvKrh9OdOWry7f3aO76J5rfcGQL/
- BJrTUr5qKM9O613kveh5r77iZ/5/+sZSKFXOEK6U6VXBJvV4+ByLcwKt5dGE2vaPBlar VQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3p6fga1aep-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 08 Mar 2023 10:46:17 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 328AkG8C024712
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 8 Mar 2023 10:46:16 GMT
-Received: from hu-mpubbise-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Wed, 8 Mar 2023 02:46:14 -0800
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-To:     <johannes@sipsolutions.net>
-CC:     <linux-wireless@vger.kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Subject: [PATCH] wifi: nl80211: Update the documentation of NL80211_SCAN_FLAG_COLOCATED_6GHZ
-Date:   Wed, 8 Mar 2023 16:15:56 +0530
-Message-ID: <20230308104556.9399-1-quic_mpubbise@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 8 Mar 2023 06:41:35 -0500
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 02AD6B9CBC;
+        Wed,  8 Mar 2023 03:41:30 -0800 (PST)
+Message-ID: <cfa5cc30-bf5a-bffd-4c2f-eec8a6522dd5@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1678275688;
+        bh=fBPyXjC2sm40FIorgDXaQx2GZRyrNRK6b9kMkcrZTjk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=eB5cKKkYq+81R/hQcdGmlRcnIjcgFAYDkjclS/5zsam76068g3KHQWbPXipkiGdae
+         cOdXGWcU48zsNFH1NK17P0qhUCnGnuWgJr2O5c7p3M0mDG5QNjX8S0tOMXseh2z7D/
+         FCeV+8oJgJehSy51KlENKcgjsGJ3b+dMZF9xF2mU=
+Date:   Wed, 8 Mar 2023 12:41:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: XFjwLZ5nE496i1C3o8JEXsr4Zm5k0Uuq
-X-Proofpoint-ORIG-GUID: XFjwLZ5nE496i1C3o8JEXsr4Zm5k0Uuq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-08_05,2023-03-08_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- spamscore=0 mlxscore=0 clxscore=1015 mlxlogscore=794 impostorscore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303080094
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
+ drops
+Content-Language: en-US
+To:     Felix Fietkau <nbd@nbd.name>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Thomas Mann <rauchwolke@gmx.net>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
+ <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
+ <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
+ <debc7fe9-204d-63a7-aa61-91b20a46f385@wetzel-home.de>
+ <4a02173f-3a60-0a7e-8962-3778e6c55bf3@nbd.name>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <4a02173f-3a60-0a7e-8962-3778e6c55bf3@nbd.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently when NL80211_SCAN_FLAG_COLOCATED_6GHZ is set in the scan flags,
-in addition to the co-located APs, PSC channels in the 6 GHz band would
-also be scanned if the user space has asked for it. In other words, the
-scan would happen on PSC channels & co-located 6 GHz channels that were
-reported in the RNR IE.
+On 08.03.23 08:52, Felix Fietkau wrote:
 
-Update the documentation of NL80211_SCAN_FLAG_COLOCATED_6GHZ flag to
-reflect the above said behavior.
+>> I'm also planning to provide some more debug patches, to figuring out
+>> which part of commit 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs
+>> for resumption") fixes the issue for you. Assuming my understanding
+>> above is correct the patch should not really fix/break anything for
+>> you...With the findings above I would have expected your git bisec to
+>> identify commit a790cc3a4fad ("wifi: mac80211: add wake_tx_queue
+>> callback to drivers") as the first broken commit...
+> I can't point to any specific series of events where it would go wrong, 
+> but I suspect that the problem might be the fact that you're doing tx 
+> scheduling from within ieee80211_handle_wake_tx_queue. I don't see how 
+> it's properly protected from potentially being called on different CPUs 
+> concurrently.
+> 
+> Back when I was debugging some iTXQ issues in mt76, I also had problems 
+> when tx scheduling could happen from multiple places. My solution was to 
+> have a single worker thread that handles tx, which is scheduled from the 
+> wake_tx_queue op.
+> Maybe you could do something similar in mac80211 for non-iTXQ drivers.
+> 
 
-Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
----
- include/uapi/linux/nl80211.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I think it's already doing all of that:
+ieee80211_handle_wake_tx_queue() is the mac80211 implementation for the 
+wake_tx_queue op. The drivers without native iTXQ support simply link it 
+to this handler.
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 9a0ac0363f1f..14e958a32b84 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -6544,7 +6544,9 @@ enum nl80211_timeout_reason {
-  *	channels on which APs are expected to be found. Note that when not set,
-  *	the scan logic would scan all 6GHz channels, but since transmission of
-  *	probe requests on non PSC channels is limited, it is highly likely that
-- *	these channels would passively be scanned.
-+ *	these channels would passively be scanned. Also note that when the flag
-+ *	is set, in addition to the colocated APs, PSC channels would also be
-+ *	scanned if the user space has asked for it.
-  */
- enum nl80211_scan_flags {
- 	NL80211_SCAN_FLAG_LOW_PRIORITY				= 1<<0,
+Alexander
 
-base-commit: da1185449c669076276027c600666286124eef9f
--- 
-2.17.1
 
