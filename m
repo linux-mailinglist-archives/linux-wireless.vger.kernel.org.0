@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 022DF6B167D
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 00:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2286B1681
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 00:28:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbjCHX0O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Mar 2023 18:26:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49986 "EHLO
+        id S229886AbjCHX2B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Mar 2023 18:28:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230248AbjCHX0M (ORCPT
+        with ESMTP id S229484AbjCHX17 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Mar 2023 18:26:12 -0500
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43C3955518
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 15:26:11 -0800 (PST)
+        Wed, 8 Mar 2023 18:27:59 -0500
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81FD35FF1
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 15:27:56 -0800 (PST)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8871BB80067
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 23:26:09 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id CE37C440077
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 23:27:54 +0000 (UTC)
 Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 09A5E13C2B0;
-        Wed,  8 Mar 2023 15:26:09 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 09A5E13C2B0
+        by mail3.candelatech.com (Postfix) with ESMTP id EE08713C2B0;
+        Wed,  8 Mar 2023 15:27:53 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com EE08713C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1678317969;
-        bh=W92O/HCLG/YQJ2xNJsJQgMOAQsfHeY4ozR920rE2008=;
+        s=default; t=1678318074;
+        bh=CXNAole54JQW2Hi/lgajUThvE0RsiSiMh4TQZG8uDpU=;
         h=From:To:Cc:Subject:Date:From;
-        b=TjEXMBoaXuycEJS+Wyxy/FDLCfa2Tb1Mwgw1t4VvO0n0ta0v82QeBjZ3E/bgPyz++
-         ILEneauxweGYYGGLM1JBI1OV0VyT+lmAowqiEr1NPljO1rzMq8DdsPJReISVFg+jjT
-         mKgC54a6fns4kA1h3+uks4TCBxQTBj/e5K/TTcw4=
+        b=OWo8gIvepYHvA/Dr+XDGVCbZsSeriPc+S1ECcIlmeEQj+k4fqdo1BkNRDQF+sbu8+
+         2oSBSCnTytAXblcVy1cLD/f15qVwunJ+IRnO3LqhoyhEaxtaU5d540tSbpx0f/s+9B
+         knDxmJNHnd3CbUyyHtiul3WFJofBLFy+jVTgylXc=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wifi: mac80211: Allow some cleanup even if sdata-not-in-driver
-Date:   Wed,  8 Mar 2023 15:26:06 -0800
-Message-Id: <20230308232606.2672652-1-greearb@candelatech.com>
+Subject: [PATCH] wifi: mac80211: fix EHT issue in ieee80211_determine_chantype
+Date:   Wed,  8 Mar 2023 15:27:51 -0800
+Message-Id: <20230308232751.2672982-1-greearb@candelatech.com>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1678317970-n-dLGOg_9hPD
-X-MDID-O: us5;ut7;1678317970;n-dLGOg_9hPD;<greearb@candelatech.com>
+X-MDID: 1678318075-PN7GnT3QZAS3
+X-MDID-O: us5;at1;1678318075;PN7GnT3QZAS3;<greearb@candelatech.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
@@ -53,82 +53,193 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-When ax210 firmware crashes and radio cannot recover, sometimes
-use-after-free errors are seen due to txqs not being properly cleanedup
-(I think).
+The IEEE80211_STA_DISABLE_EHT flag was not enabled when it should
+be, so the bandwidth change failed, and STA disconnected.
 
-Logging shows that the sdata-not-in-driver checks are stopping cleanup
-actions from happening.
-
-So, instead warn but allow calls to the driver to clean up objects
-even if sdata-not-in-driver is true.
-
-This appears to help this problem, but system is still crashing (perhaps
-due to not directly related problems), so this patch needs review before
-going upstream.
+Use an OR approach instead of just assinging the flags, to
+allow easier setting of certain flags such as the EHT
+one.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- net/mac80211/driver-ops.c |  5 +++--
- net/mac80211/driver-ops.h | 14 +++++++++-----
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ net/mac80211/mlme.c | 64 ++++++++++++++++++++++-----------------------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
-index a94e281bbb8e..6685c89e87f6 100644
---- a/net/mac80211/driver-ops.c
-+++ b/net/mac80211/driver-ops.c
-@@ -105,8 +105,9 @@ void drv_remove_interface(struct ieee80211_local *local,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d5a0416d9c67..0da950732949 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -168,7 +168,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
  {
- 	might_sleep();
+ 	struct cfg80211_chan_def vht_chandef;
+ 	struct ieee80211_sta_ht_cap sta_ht_cap;
+-	ieee80211_conn_flags_t ret;
++	ieee80211_conn_flags_t ret = 0;
+ 	u32 ht_cfreq;
  
--	if (!check_sdata_in_driver(sdata))
--		return;
-+	if (!check_sdata_in_driver(sdata)) {
-+		pr_err("drv-remove-interface, sdata-not-in-driver, but will continue in hopes it cleans something up.\n");
-+	}
+ 	memset(chandef, 0, sizeof(struct cfg80211_chan_def));
+@@ -177,17 +177,18 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 	chandef->center_freq1 = channel->center_freq;
+ 	chandef->freq1_offset = channel->freq_offset;
  
- 	trace_drv_remove_interface(local, sdata);
- 	local->ops->remove_interface(&local->hw, &sdata->vif);
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index a8924a6de1ee..81b8886db972 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -513,8 +513,9 @@ static inline void drv_sta_pre_rcu_remove(struct ieee80211_local *local,
- 	might_sleep();
++	if (!eht_oper)
++		ret |= IEEE80211_CONN_DISABLE_EHT;
++
+ 	if (channel->band == NL80211_BAND_6GHZ) {
+ 		if (!ieee80211_chandef_he_6ghz_oper(sdata, he_oper, eht_oper,
+ 						    chandef)) {
+ 			mlme_dbg(sdata,
+ 				 "bad 6 GHz operation, disabling HT/VHT/HE/EHT\n");
+-			ret = IEEE80211_CONN_DISABLE_HT |
+-			      IEEE80211_CONN_DISABLE_VHT |
+-			      IEEE80211_CONN_DISABLE_HE |
+-			      IEEE80211_CONN_DISABLE_EHT;
+-		} else {
+-			ret = 0;
++			ret |= IEEE80211_CONN_DISABLE_HT |
++			       IEEE80211_CONN_DISABLE_VHT |
++			       IEEE80211_CONN_DISABLE_HE |
++			       IEEE80211_CONN_DISABLE_EHT;
+ 		}
+ 		vht_chandef = *chandef;
+ 		goto out;
+@@ -198,10 +199,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			chandef->width = ieee80211_s1g_channel_width(channel);
+ 		}
  
- 	sdata = get_bss_sdata(sdata);
--	if (!check_sdata_in_driver(sdata))
--		return;
-+	if (!check_sdata_in_driver(sdata)) {
-+		pr_err("drv-sta-pre-rcu-remove, sdata-not-in-driver, but will continue in hopes it cleans something up.\n");
-+	}
+-		ret = IEEE80211_CONN_DISABLE_HT | IEEE80211_CONN_DISABLE_40MHZ |
+-		      IEEE80211_CONN_DISABLE_VHT |
+-		      IEEE80211_CONN_DISABLE_80P80MHZ |
+-		      IEEE80211_CONN_DISABLE_160MHZ;
++		ret |= IEEE80211_CONN_DISABLE_HT | IEEE80211_CONN_DISABLE_40MHZ |
++		       IEEE80211_CONN_DISABLE_VHT |
++		       IEEE80211_CONN_DISABLE_80P80MHZ |
++		       IEEE80211_CONN_DISABLE_160MHZ;
+ 		goto out;
+ 	}
  
- 	trace_drv_sta_pre_rcu_remove(local, sdata, &sta->sta);
- 	if (local->ops->sta_pre_rcu_remove)
-@@ -632,8 +633,9 @@ static inline void drv_flush(struct ieee80211_local *local,
+@@ -210,10 +211,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
  
- 	might_sleep();
+ 	if (!ht_oper || !sta_ht_cap.ht_supported) {
+ 		mlme_dbg(sdata, "HT operation missing / HT not supported\n");
+-		ret = IEEE80211_CONN_DISABLE_HT |
+-		      IEEE80211_CONN_DISABLE_VHT |
+-		      IEEE80211_CONN_DISABLE_HE |
+-		      IEEE80211_CONN_DISABLE_EHT;
++		ret |= IEEE80211_CONN_DISABLE_HT |
++		       IEEE80211_CONN_DISABLE_VHT |
++		       IEEE80211_CONN_DISABLE_HE |
++		       IEEE80211_CONN_DISABLE_EHT;
+ 		goto out;
+ 	}
  
--	if (sdata && !check_sdata_in_driver(sdata))
--		return;
-+	if (sdata && !check_sdata_in_driver(sdata)) {
-+		pr_err("drv_flush, sdata-not-in-driver, but will continue in hopes it cleans something up.\n");
-+	}
+@@ -234,10 +235,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			   "Wrong control channel: center-freq: %d ht-cfreq: %d ht->primary_chan: %d band: %d - Disabling HT\n",
+ 			   channel->center_freq, ht_cfreq,
+ 			   ht_oper->primary_chan, channel->band);
+-		ret = IEEE80211_CONN_DISABLE_HT |
+-		      IEEE80211_CONN_DISABLE_VHT |
+-		      IEEE80211_CONN_DISABLE_HE |
+-		      IEEE80211_CONN_DISABLE_EHT;
++		ret |= IEEE80211_CONN_DISABLE_HT |
++		       IEEE80211_CONN_DISABLE_VHT |
++		       IEEE80211_CONN_DISABLE_HE |
++		       IEEE80211_CONN_DISABLE_EHT;
+ 		goto out;
+ 	}
  
- 	trace_drv_flush(local, queues[0], drop);
- 	/* NOTE:  Only ath10k might want more queues than fits in 32-bits,
-@@ -870,8 +872,10 @@ drv_mgd_protect_tdls_discover(struct ieee80211_local *local,
- {
- 	might_sleep();
+@@ -247,7 +248,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 	} else {
+ 		mlme_dbg(sdata, "40 MHz not supported\n");
+ 		/* 40 MHz (and 80 MHz) must be supported for VHT */
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		/* also mark 40 MHz disabled */
+ 		ret |= IEEE80211_CONN_DISABLE_40MHZ;
+ 		goto out;
+@@ -255,7 +256,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
  
--	if (!check_sdata_in_driver(sdata))
-+	if (!check_sdata_in_driver(sdata)) {
-+		pr_err("drv-unassing-vif-chantx, sdata-not-in-driver, but will continue in hopes it cleans something up.\n");
- 		return;
-+	}
- 	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION);
+ 	if (!vht_oper || !sband->vht_cap.vht_supported) {
+ 		mlme_dbg(sdata, "VHT operation missing / VHT not supported\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
  
- 	trace_drv_mgd_protect_tdls_discover(local, sdata);
+@@ -279,7 +280,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			if (!(conn_flags & IEEE80211_CONN_DISABLE_HE))
+ 				sdata_info(sdata,
+ 					   "HE AP VHT information is invalid, disabling HE\n");
+-			ret = IEEE80211_CONN_DISABLE_HE | IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_HE | IEEE80211_CONN_DISABLE_EHT;
+ 			goto out;
+ 		}
+ 	} else if (!ieee80211_chandef_vht_oper(&sdata->local->hw,
+@@ -289,7 +290,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 		if (!(conn_flags & IEEE80211_CONN_DISABLE_VHT))
+ 			sdata_info(sdata,
+ 				   "AP VHT information is invalid, disabling VHT\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+@@ -297,12 +298,11 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 		if (!(conn_flags & IEEE80211_CONN_DISABLE_VHT))
+ 			sdata_info(sdata,
+ 				   "AP VHT information is invalid, disabling VHT\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+ 	if (cfg80211_chandef_identical(chandef, &vht_chandef)) {
+-		ret = 0;
+ 		goto out;
+ 	}
+ 
+@@ -310,7 +310,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 		if (!(conn_flags & IEEE80211_CONN_DISABLE_VHT))
+ 			sdata_info(sdata,
+ 				   "AP VHT information doesn't match HT, disabling VHT\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+@@ -333,7 +333,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			if (!(conn_flags & IEEE80211_CONN_DISABLE_EHT))
+ 				sdata_info(sdata,
+ 					   "AP EHT information is invalid, disabling EHT\n");
+-			ret = IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_EHT;
+ 			goto out;
+ 		}
+ 
+@@ -341,7 +341,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			if (!(conn_flags & IEEE80211_CONN_DISABLE_EHT))
+ 				sdata_info(sdata,
+ 					   "AP EHT information is incompatible, disabling EHT\n");
+-			ret = IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_EHT;
+ 			goto out;
+ 		}
+ 
+@@ -389,10 +389,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 					tracking ? 0 :
+ 						   IEEE80211_CHAN_DISABLED)) {
+ 		if (WARN_ON(chandef->width == NL80211_CHAN_WIDTH_20_NOHT)) {
+-			ret = IEEE80211_CONN_DISABLE_HT |
+-			      IEEE80211_CONN_DISABLE_VHT |
+-			      IEEE80211_CONN_DISABLE_HE |
+-			      IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_HT |
++				IEEE80211_CONN_DISABLE_VHT |
++				IEEE80211_CONN_DISABLE_HE |
++				IEEE80211_CONN_DISABLE_EHT;
+ 			break;
+ 		}
+ 
 -- 
 2.39.1
 
