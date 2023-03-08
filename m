@@ -2,45 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EFFF6AFBA8
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Mar 2023 02:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BC6C6AFC75
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Mar 2023 02:37:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbjCHBAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Mar 2023 20:00:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36882 "EHLO
+        id S229793AbjCHBhY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Mar 2023 20:37:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbjCHBAg (ORCPT
+        with ESMTP id S229456AbjCHBhX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Mar 2023 20:00:36 -0500
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B997A2F08
-        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 17:00:31 -0800 (PST)
+        Tue, 7 Mar 2023 20:37:23 -0500
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC8F41B4B
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 17:37:22 -0800 (PST)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1ADE460002E
-        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 01:00:29 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id A8E7213C2B0;
-        Tue,  7 Mar 2023 17:00:28 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A8E7213C2B0
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 96F58700082
+        for <linux-wireless@vger.kernel.org>; Wed,  8 Mar 2023 01:37:20 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.39.34])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 0999813C2B0
+        for <linux-wireless@vger.kernel.org>; Tue,  7 Mar 2023 17:37:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0999813C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1678237228;
-        bh=HK2QwKbQXkjwzYUf0LqE6j1NO0vlWVMVhugUReuk5i0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Qv+1GTmAKsFJbVHRi+BeBpgyMhC/McWK/+Rxyf52FJEdTyMCC35jZGQIgfFmcJo3b
-         xefFzU1daigXch26dWYw7BotiwBm6InxpKMdIPysiwi297GGcHv7angOZhCEYEvSbC
-         rTIj0q7xJeVhTQBKbs1U6hXlhZhwBpBQaOUMGSBo=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wireless: mt76: mt7921: Fix use-after-free in fw features query.
-Date:   Tue,  7 Mar 2023 17:00:26 -0800
-Message-Id: <20230308010026.2206775-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.39.1
+        s=default; t=1678239440;
+        bh=r8kdAJrJdP3L2afYhN0iFmWocOJyu9b8FESzw+qQ3AA=;
+        h=To:From:Subject:Date:From;
+        b=dimP4Nhx8tq1RsapPedHEFlQUbyOXJEM7tVAkqJIqXY7uRVBjkPEXjBuflU+5dOpn
+         F5Z4EfDbqB3+krrHEI0SNrOFmfWuoORDjqgBpQ3iDsjUpRJuCqDrBHfQnclzm6J8Ec
+         l5OHrTrGmJ/GeXECvVFhcfZwqkLbhnMO4Nfc0Ul8=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: 6.2.2+ ksoftirqd kasan splat
+Organization: Candela Technologies
+Message-ID: <2077f1dc-e4a4-1de0-ce8a-7c5dbe5837ed@candelatech.com>
+Date:   Tue, 7 Mar 2023 17:37:19 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1678237229-ah6v5HmoJvZH
-X-MDID-O: us5;ut7;1678237229;ah6v5HmoJvZH;<greearb@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-MDID: 1678239441-5T6E9bXdvzyC
+X-MDID-O: us5;ut7;1678239441;5T6E9bXdvzyC;<greearb@candelatech.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
@@ -51,60 +56,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+I have seen this a few times during reboot/shutdown.  This is on a system
+with 24 mtk7922 radios in it, so probably related to that piece of hardware
+somehow.  The splat doesn't tell me much though, so not sure how to make
+progress.
 
-Stop referencing 'features' memory after release_firmware is called.
+==================================================================
+BUG: KASAN: use-after-free in tasklet_action_common.constprop.0+0xa4/0x200
+Read of size 4 at addr ffff888147d1a670 by task ksoftirqd/5/40
 
-Fixes this crash:
+CPU: 5 PID: 40 Comm: ksoftirqd/5 Not tainted 6.2.2+ #28
+Hardware name: Default string Default string/SKYBAY, BIOS 5.12 08/04/2020
+Call Trace:
+  <TASK>
+  dump_stack_lvl+0x44/0x58
+  print_report+0x17c/0x481
+  ? __virt_addr_valid+0xab/0x130
+  ? tasklet_action_common.constprop.0+0xa4/0x200
+  ? tasklet_action_common.constprop.0+0xa4/0x200
+  kasan_report+0xad/0x130
+  ? tasklet_action_common.constprop.0+0xa4/0x200
+  tasklet_action_common.constprop.0+0xa4/0x200
+  __do_softirq+0xee/0x38a
+  ? trace_event_raw_event_irq_handler_entry+0x180/0x180
+  run_ksoftirqd+0x1f/0x30
+  smpboot_thread_fn+0x156/0x2c0
+  ? sort_range+0x20/0x20
+  kthread+0x14c/0x180
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork+0x1f/0x30
+  </TASK>
 
-RIP: 0010:mt7921_check_offload_capability+0x17d
-mt7921_pci_probe+0xca/0x4b0
-...
+The buggy address belongs to the physical page:
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Memory state around the buggy address:
+  ffff888147d1a500: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ffff888147d1a580: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ >ffff888147d1a600: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                              ^
+  ffff888147d1a680: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ffff888147d1a700: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
+reboot: Power down
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 38d6563cb12f..3b6fb1a6b351 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -171,6 +171,7 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
- 	const struct firmware *fw;
- 	int ret, i, offset = 0;
- 	const u8 *data, *end;
-+	u8 rv = 0;
- 
- 	ret = request_firmware(&fw, fw_wm, dev);
- 	if (ret)
-@@ -197,12 +198,17 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
- 	data += sizeof(*rel_info);
- 	end = data + le16_to_cpu(rel_info->len);
- 
-+	/* TODO:  This needs better sanity checking I think.
-+	 * Likely a corrupted firmware with bad rel_info->len, for instance,
-+	 * would blow this up.
-+	 */
- 	while (data < end) {
- 		rel_info = (struct mt7921_realease_info *)data;
- 		data += sizeof(*rel_info);
- 
- 		if (rel_info->tag == MT7921_FW_TAG_FEATURE) {
- 			features = (struct mt7921_fw_features *)data;
-+			rv = features->data;
- 			break;
- 		}
- 
-@@ -211,7 +217,7 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
- 
- 	release_firmware(fw);
- 
--	return features ? features->data : 0;
-+	return rv;
- }
- EXPORT_SYMBOL_GPL(mt7921_check_offload_capability);
- 
+Thanks,
+Ben
+
 -- 
-2.39.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
