@@ -2,136 +2,220 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 476236AFED5
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Mar 2023 07:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4426AFF84
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Mar 2023 08:13:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229845AbjCHGV4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Mar 2023 01:21:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
+        id S229725AbjCHHNn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Mar 2023 02:13:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjCHGVy (ORCPT
+        with ESMTP id S229686AbjCHHNl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Mar 2023 01:21:54 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9937A6144;
-        Tue,  7 Mar 2023 22:21:52 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3286LBG40015930, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3286LBG40015930
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 8 Mar 2023 14:21:11 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 8 Mar 2023 14:21:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 8 Mar 2023 14:21:20 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Wed, 8 Mar 2023 14:21:20 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Kaiser <martin@kaiser.cx>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtl8xxxu: use module_usb_driver
-Thread-Topic: [PATCH] wifi: rtl8xxxu: use module_usb_driver
-Thread-Index: AQHZUS+P3Ysqvr7iGU21QASDQjl8qq7wafOA
-Date:   Wed, 8 Mar 2023 06:21:20 +0000
-Message-ID: <2126bfe772234696956fe6a94c43eebb@realtek.com>
-References: <20230307195718.168021-1-martin@kaiser.cx>
-In-Reply-To: <20230307195718.168021-1-martin@kaiser.cx>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2023/3/8_=3F=3F_02:31:00?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Wed, 8 Mar 2023 02:13:41 -0500
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CF95057D28;
+        Tue,  7 Mar 2023 23:13:37 -0800 (PST)
+Message-ID: <4171c994-6b02-95d1-30c7-8f6f72af7893@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1678259614;
+        bh=29Jr78eaN2Bj1R4CabSc7hP3uCfcbMgRF4ahe/p26AY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=ZXNL6QbZUTp6NWcPfDfaFd88ULUE0WmmLinKd61qEAhiCrKVn/1zUUz6MoHdO1nuW
+         o3bOHn9bp6kLwdH354K0jCXB6qwzD2Cio07BsLiQyrVYcJoBo+rcUNoB+6G4sfiQVJ
+         /nq0jQr+neu/NCoccouMcOb3RpJM9F2mq7MeC0LE=
+Date:   Wed, 8 Mar 2023 08:13:32 +0100
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
+ drops
+Content-Language: en-US
+To:     Thomas Mann <rauchwolke@gmx.net>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
+ <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
+ <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
+ <debc7fe9-204d-63a7-aa61-91b20a46f385@wetzel-home.de>
+ <20230307233123.14a411ee@polar.lan>
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <20230307233123.14a411ee@polar.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 07.03.23 23:31, Thomas Mann wrote:
+> Hi Alexander,
 
-> -----Original Message-----
-> From: Martin Kaiser <martin@kaiser.cx>
-> Sent: Wednesday, March 8, 2023 3:57 AM
-> To: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller
-> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>
-> Cc: Martin Kaiser <martin@kaiser.cx>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org
-> Subject: [PATCH] wifi: rtl8xxxu: use module_usb_driver
-> 
-> We can use the module_usb_driver macro instead of open-coding the driver's
-> init and exit functions. This is simpler and saves some lines of code.
-> Other realtek wireless drivers use module_usb_driver as well.
-> 
-> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Since I suspect we'll exchange quite some mails here:
+Top posting is being frowned on the mailing lists on copy.
+Details here: https://www.infradead.org/~dwmw2/email.html
 
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+I've moved your post to the correct position and replied there.
+
+> 
+>>>>
+>>>
+>>> I just uploaded a test patch to bugzilla.
+>>> Please have a look if that fixes the issue.
+>>>
+>>> If not I would be interested in the output of your iTXQ status.
+>>> Enable CONFIG_MAC80211_DEBUGFS and run this command when the
+>>> connection is bad and send/share/upload to bugzilla the resulting
+>>> debug.out:
+>>>
+>>> k=1; while [ $k -lt 10 ]; do \
+>>> cat /sys/kernel/debug/ieee80211/phy?/netdev:*/stations/*/aqm; \
+>>> k=$(($k+1)); done >> debug.out
+>>
+>> Thomas and I continued with some debugging in
+>> https://bugzilla.kernel.org/show_bug.cgi?id=217119
+>>
+>> But the results so far are unexpected and we decided to continue the
+>> debugging with the round here. Hoping someone sees something I miss.
+>>
+>> A very summary where we are:
+>> I can't reproduce the bug with a very similar card and kernel config
+>> so far. Thomas card stops the iTXQs for intervalls >30s. Mine
+>> operates normally.
+>>
+>> A more useful but longer summary:
+>>
+>> Thomas updated to a 6.2 kernel and reported "connection drops and
+>> bandwidth problems" with his rt2800usb wlan card. (6.1 is ok.) Asked
+>> for some more details he reported:
+>> "...slow bandwidth stuff works better, but the main problem/test case
+>> is to start a 8-16 mbit video stream, which sometimes runs for a few
+>> seconds and then stops or it doesn't start at all"
+>>
+>> He bisected the issue and identified my commit 4444bc2116ae ("wifi:
+>> mac80211: Proper mark iTXQs for resumption") as culprit.
+>>
+>> Checking the internal iTXQ status when the issue is ongoing shows,
+>> that TID zero is flagged as dirty and thus is not transmitting queued
+>> packets. Interesting line from
+>> /sys/kernel/debug/ieee80211/phy?/netdev:*/stations/*/aqm:
+>> tid ac backlog-bytes backlog-packets new-flows drops marks overlimit
+>> collisions tx-bytes tx-packets flags
+>> 0 2 619736 404 1681 0 0 0 1 4513965 3019 0xe(RUN AMPDU NO-AMSDU DIRTY)
+>>
+>> --> The "normal" iTXQ handling IEEE80211_AC_BE has queued packets and
+>> is flagged as DIRTY. There even is a potential race setting the DIRTY
+>> flag, but the fix for that is not helping.
+>>
+>> Thus Thomas applied two debug patches, to better understand why the
+>> DIRTY flag is not cleared.
+>>
+>> And looking at the output from those we see that the driver stops Tx
+>> by calling ieee80211_stop_queue(). When ieee80211_wake_queue()
+>> mac80211 correctly resumes TX but is getting stopped by the driver
+>> after a single packet again. (The start of the relevant log is
+>> missing, so that may be initially more).
+>> I assume TX is still ok at that stage. But after some singe Tx
+>> operations the driver stops the queues again. Here the relevant part
+>> of the log:
+>> [  179.584997] XXXX __ieee80211_wake_txqs: waking TID 0
+>> [  179.585022] XXXX drv_tx: TX
+>> [  179.585027] XXXX ieee80211_stop_queue: called
+>> [  179.585028] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.585030] XXXX __ieee80211_wake_txqs: TID 3 NOT dirty
+>> [  179.585031] XXXX __ieee80211_wake_txqs: TID 8 NOT dirty
+>> [  179.585033] XXXX __ieee80211_wake_txqs: TID 11 NOT dirty
+>> [  179.585034] XXXX __ieee80211_wake_txqs: EXIT
+>> [  179.585035] XXXX __ieee80211_wake_txqs: ENTRY
+>> [  179.585036] XXXX __ieee80211_wake_txqs: TID 1 NOT dirty
+>> [  179.585037] XXXX __ieee80211_wake_txqs: TID 2 NOT dirty
+>> [  179.585038] XXXX __ieee80211_wake_txqs: TID 9 NOT dirty
+>> [  179.585040] XXXX __ieee80211_wake_txqs: TID 10 NOT dirty
+>> [  179.585041] XXXX __ieee80211_wake_txqs: EXIT
+>> [  179.585047] XXXX drv_tx: TX
+>> [  179.585056] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.585271] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.585868] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.586120] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.586544] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.586792] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.587317] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.587591] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> [  179.588569] XXXX ieee80211_tx_dequeue: mark TID 0 dirty. Reason: 1
+>> ....
+>> [  214.307617] XXXX ieee80211_wake_queue: called
+>>
+>>
+>> --> So the driver blocked TX for more than 30s. Which is a good
+>> explanation of what Thomas observes.
+>>
+>> But there is nothing mac80211 can do differently here. Whatever is
+>> the real reason for the issue, it's nothing obvious I see.
+>>
+>> Luckily I found a card using the same driver and nearly the same card:
+>> Thomas systems:Linux version 6.2.2-gentoo (root@foo) (gcc (Gentoo
+>> Hardened 12.2.1_p20230121-r1 p10) 12.2.1 20230121, GNU ld (Gentoo
+>> 2.39 p5) 2.39.0) #2 SMP Fri Mar  3 16:59:02 CET 2023ieee80211 phy0:
+>> rt2x00_set_rt: Info - RT chipset 3070, rev 0201 detected
+>> ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005 detected
+>> ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
+>>
+>> My system, using the kernel config from Thomas with only minor
+>> modifications (different filesystems and initramfs settings and
+>> enabled mac80211 debug and developer options):
+>> Linux version 6.2.2-gentoo (root@Perry.mordor) (gcc (Gentoo
+>> 12.2.1_p20230121-r1 p10) 12.2.1 20230121, GNU ld (Gentoo 2.40 p2)
+>> 2.40.0) #2 SMP Tue Mar  7 18:18:47 CET 2023ieee80211 phy0:
+>> rt2x00_set_rt: Info - RT chipset 3070, rev 0200 detected
+>> ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005 detected
+>> ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
+>> ieee80211 phy0: rt2x00lib_request_firmware: Info - Loading firmware
+>> file 'rt2870.bin'
+>> ieee80211 phy0: rt2x00lib_request_firmware: Info - Firmware detected
+>> - version: 0.36
+>>
+>> But there is one big difference on my system: I can't reproduce the
+>> bug so far. It's working as it should... (I did not apply the debug
+>> patches myself so far)
+>>
+>> I'm now planning to look a bit more into the rt2800usb driver and
+>> provide another debug patch for interesting looking code pieces in it.
+>>
+>> @Thomas:
+>> I've also uploaded you my binary kernel I'm running at the moment
+>> here: https://www.awhome.eu/s/5FjqMS73rtCtSBM
+>>
+>> That kernel should also be able to boot and operate your system. Can
+>> you try that and tell me, if that makes any difference?
+
+ >
+ > i can't boot the binary kernel here, as the initramfs is included in
+ > my kernel, if you send me a patch, i can apply it and test it.
+
+That was an unpatched kernel. Idea was to verify that it's not a 
+compiler issue. (You seem to be using a hardened Gentoo profile.)
+
+Can you share your initrd, so I can include it? (Mail it to me directly, 
+upload it to bug in buguilla or send a link to some cloud storage.)
 
 
-> ---
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 20 +------------------
->  1 file changed, 1 insertion(+), 19 deletions(-)
+
+>>
+>> I'm also planning to provide some more debug patches, to figuring out
+>> which part of commit 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs
+>> for resumption") fixes the issue for you. Assuming my understanding
+>> above is correct the patch should not really fix/break anything for
+>> you...With the findings above I would have expected your git bisec to
+>> identify commit a790cc3a4fad ("wifi: mac80211: add wake_tx_queue
+>> callback to drivers") as the first broken commit...
+>>
+>> Alexander
 > 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index e619ed21fbfe..58dbad9a14c2 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -7455,24 +7455,6 @@ static struct usb_driver rtl8xxxu_driver = {
->         .disable_hub_initiated_lpm = 1,
->  };
-> 
-> -static int __init rtl8xxxu_module_init(void)
-> -{
-> -       int res;
-> -
-> -       res = usb_register(&rtl8xxxu_driver);
-> -       if (res < 0)
-> -               pr_err(DRIVER_NAME ": usb_register() failed (%i)\n", res);
-> -
-> -       return res;
-> -}
-> -
-> -static void __exit rtl8xxxu_module_exit(void)
-> -{
-> -       usb_deregister(&rtl8xxxu_driver);
-> -}
-> -
-> -
->  MODULE_DEVICE_TABLE(usb, dev_table);
-> 
-> -module_init(rtl8xxxu_module_init);
-> -module_exit(rtl8xxxu_module_exit);
-> +module_usb_driver(rtl8xxxu_driver);
-> --
-> 2.30.2
 
