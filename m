@@ -2,231 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C46106B21C7
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 11:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA89B6B2398
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 13:01:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbjCIKp5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Mar 2023 05:45:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47298 "EHLO
+        id S229737AbjCIMBh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Mar 2023 07:01:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231516AbjCIKpT (ORCPT
+        with ESMTP id S229629AbjCIMBJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Mar 2023 05:45:19 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E63A920A1F
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 02:45:01 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id q31-20020a17090a17a200b0023750b69614so1657479pja.5
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Mar 2023 02:45:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=yonsei-ac-kr.20210112.gappssmtp.com; s=20210112; t=1678358701;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AFpUJD0HKtCya+XmYxzJS+pgel8DWBJD7mpAc2TjXqU=;
-        b=mcgzmHICRCxz5aSTjq6VBNG3SeN9RwOiVSmHHUrQCpxX2qSh1tJs68R1ciivyr/zi9
-         pyhBlA+Xtw+GDqZvX6q92+dYIWpndguqK5f8sVWEwjfQa97OLhI5EFhjtAaex98YIKQH
-         vQq3twYxPQy0s5weorAViLPBGbprCvDfCTUiJTmV3nOQnMXhmlbJICXqrxfd2JZ0lHOq
-         6FqlterM0llP5O60CWlgndYBFTUBoHzRi3k2QvpLePkaZ3iEcA96mGANzlQVxlglojDI
-         NIuzcuES0xTCDFKBkUWC+gowwDmtoyX1aAZc8LwOeA7sEG86Q6QIjUXwTCtJ8ZlKmqav
-         dKJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678358701;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AFpUJD0HKtCya+XmYxzJS+pgel8DWBJD7mpAc2TjXqU=;
-        b=KRULO+VEcOqn4hJoLEVr1FjIg92u3x+RtMZoFOndm3DdeT2TIfW3qYUAEgOWgYrldM
-         20hdzfDONNB1W+vja3ih2GimQiSIhIhLYYWlqImaRTT1/X6zq/JagQQSbDWFo4ZJIkY8
-         Vgw0BuBgeoT46iJl/AJ7Xzs+L2RAHaRYOl1o5vNEIF0hmT65osQScV6gSBm49gtoa6qk
-         KX0aeCNwpVNhw5SfA7JAep4Owd1dSAi3ZNVGdhHyh6RhwBe8uzP+txhX1jfXWihRBKkp
-         HHpczkKPS6Y4pu4bpriDBEWKwCgsdXXkZykmpfm+49+hAb2WsUMmg7OhI1g5Xt7Uu1u0
-         9ogQ==
-X-Gm-Message-State: AO0yUKWXS+glQuYRsNs+wnSIdYysxDFubYLBqKSyyJ6J+OJLXYI43H2u
-        6Tzk5OQ4tO0ugavU/ijyq6CXmSniaeBDVqD+5w==
-X-Google-Smtp-Source: AK7set9r0K4zzqLljxsUTkxb6+VTyQt4rNQk72NT28AS8u8w6PaBZsGYaItgAn0P1rjSYdaOLgnl2g==
-X-Received: by 2002:a17:902:d2cd:b0:19c:f005:92de with SMTP id n13-20020a170902d2cd00b0019cf00592demr24312674plc.4.1678358701113;
-        Thu, 09 Mar 2023 02:45:01 -0800 (PST)
-Received: from localhost.localdomain ([165.132.118.55])
-        by smtp.gmail.com with ESMTPSA id kx11-20020a170902f94b00b0019edc1b421asm4507198plb.163.2023.03.09.02.44.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Mar 2023 02:45:00 -0800 (PST)
-From:   Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-To:     linux-wireless@vger.kernel.org, arend.vanspriel@broadcom.com
-Cc:     dokyungs@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr
-Subject: [PATCH v2] wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
-Date:   Thu,  9 Mar 2023 19:44:57 +0900
-Message-Id: <20230309104457.22628-1-jisoo.jang@yonsei.ac.kr>
-X-Mailer: git-send-email 2.25.1
+        Thu, 9 Mar 2023 07:01:09 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D157FDC0A6
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 04:01:04 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1paExA-0000Fl-K8; Thu, 09 Mar 2023 13:01:00 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1paEx8-0008OS-Tk; Thu, 09 Mar 2023 13:00:58 +0100
+Date:   Thu, 9 Mar 2023 13:00:58 +0100
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: Performance of rtw88_8822bu
+Message-ID: <20230309120058.GF5784@pengutronix.de>
+References: <93d565e1-3a23-69f3-bedd-b71eb601bceb@lwfinger.net>
+ <20230306091845.GC27249@pengutronix.de>
+ <20230306125944.GD27249@pengutronix.de>
+ <6ed1239f8c404dcb9d571771c230b69b@realtek.com>
+ <2064a549-ef7a-98bf-cc24-a25b8571877f@lwfinger.net>
+ <1f01b1ff59d7412aa7eafdce022d7635@realtek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f01b1ff59d7412aa7eafdce022d7635@realtek.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix a slab-out-of-bounds read that occurs in kmemdup() called from
-brcmf_get_assoc_ies().
-The bug could occur when assoc_info->req_len, data from a URB provided
-by a USB device, is bigger than the size of buffer which is defined as
-WL_EXTRA_BUF_MAX.
+On Wed, Mar 08, 2023 at 12:36:15AM +0000, Ping-Ke Shih wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Larry Finger <larry.finger@gmail.com> On Behalf Of Larry Finger
+> > Sent: Tuesday, March 7, 2023 10:44 PM
+> > To: Ping-Ke Shih <pkshih@realtek.com>; Sascha Hauer <s.hauer@pengutronix.de>
+> > Cc: linux-wireless <linux-wireless@vger.kernel.org>
+> > Subject: Re: Performance of rtw88_8822bu
+> > 
+> > On 3/6/23 19:39, Ping-Ke Shih wrote:
+> > >
+> > >
+> > >> -----Original Message-----
+> > >> From: Sascha Hauer <s.hauer@pengutronix.de>
+> > >> Sent: Monday, March 6, 2023 9:00 PM
+> > >> To: Larry Finger <Larry.Finger@lwfinger.net>
+> > >> Cc: Ping-Ke Shih <pkshih@realtek.com>; linux-wireless <linux-wireless@vger.kernel.org>
+> > >> Subject: Re: Performance of rtw88_8822bu
+> > >>
+> > >> On Mon, Mar 06, 2023 at 10:18:45AM +0100, Sascha Hauer wrote:
+> > >>> Hi Larry,
+> > >>>
+> > >>> On Sat, Mar 04, 2023 at 08:52:26PM -0600, Larry Finger wrote:
+> > >>>> Sascha an Ping-Ke,
+> > >>>>
+> > >>>> I have been testing the RTW8822BU driver found in my rtw88 GitHub repo. This
+> > >>>> code matches the code found in wireless-next. I created 9 files of 5.8 GiB
+> > >>>> each and used a for loop to copy them from the test computer to/from my
+> > >>>> server. The wireless connection is on the 5 GHz band (channel 153) connected
+> > >>>> to an ax1500 Wifi 6 router, which in turn is connected to the server via a
+> > >>>> 1G ethernet cable. The connection has not crashed, but I see strange
+> > >>>> behavior.
+> > >>>
+> > >>> What chipset are you using? Is it a RTL8822bu or some other chipset
+> > >>> reported by the driver?
+> > >>>
+> > >>>>
+> > >>>> With both TX and RX, the rate is high at 13.5 MiB/s for RX and 11.1 MiB/s
+> > >>>> for TX for about 1/3 of the time, but then the driver reports "timed out to
+> > >>>> flush queue 3" and the rate drops to 3-5 MiB/s for RX and 2-3 MiB/s for TX.
+> > >>>> These low rates are in effect for 2/3 of the time. The 5G bands are
+> > >>>> relatively unused in my house, thus I do not suspect interference.
+> > >>>
+> > >>> I've received a very similar report this weekend. About 3-4 messages per
+> > >>> second, "timed out to flush queue 3", but driver continues to work.
+> > >>> I've also seen it this morning by accident and once again while writing
+> > >>> this mail. This was on a RTL8821CU.
+> > >>>
+> > >>> So far I have no idea what the problem might be.
+> > >>
+> > >> The "timed out to flush queue %d\n" message comes from
+> > >> __rtw_mac_flush_prio_queue(). Here some registers are read which show
+> > >> the number of reserved pages for a queue and the number of available
+> > >> pages of a queue. I used the debugfs interface to observe these
+> > >> registers from time to time:
+> > >>
+> > >> f=$(echo /sys/kernel/debug/ieee80211/phy*/rtw88/read_reg); for i in 0x230 0x234 0x238 0x23c; do echo
+> > "$i
+> > >> 4" > $f; cat $f; done
+> > >>
+> > >> This is what they show:
+> > >>
+> > >> reg 0x230: 0x00230040
+> > >> reg 0x234: 0x00400040
+> > >> reg 0x238: 0x00400040
+> > >> reg 0x23c: 0x00000000
+> > >>
+> > >> The upper 16bit contain the number of available pages and the lower
+> > >> 16bit contain the number of reserved pages (Note these are the registers
+> > >> on a RTL8822CU, on other chipsets the number of available pages is
+> > >> lower, like 0x10 on RTL8821CU). Register 0x230 is the interesting one
+> > >> for us, it has the values for queue 3.
+> > >>
+> > >> What I can see is that for the other queues the number of reserved pages
+> > >> usually matches the number of available pages. It happens sometimes that
+> > >> the number of available pages goes down to 0x3f, but with the next
+> > >> register read it goes back to 0x40. For 0x230 this is different though.
+> > >> Here the number of available pages continuously decreases over time and
+> > >> never goes back up.
+> > >>
+> > >> I don't know what this is trying to tell me. It seems that things queued
+> > >> to queue RTW_DMA_MAPPING_HIGH are sometimes (always?) stuck.
+> > >> Unfortunately I also don't know how the different priority queues relate
+> > >> to the different USB endpoints and how these in turn go together with
+> > >> the qsel settings. Maybe Ping-Ke can shed some light on this.
+> > >>
+> > >
+> > > To quickly check if RTW_DMA_MAPPING_HIGH get stuck, changing qsel_to_ep[]
+> > > to different priority queue would be helpful to identify the problem.
+> > > If only this queue works not well, we may dig MAC settings. Otherwise,
+> > > it may be a RF performance problem.
+> > >
+> > > 0x240 is another queue called public queue. If 0x230/0x234/0x238/0x23c
+> > > become full, packets are queued into this queue. From view of MAC circuit,
+> > > it fetches these queues in specific order (from high to low conceptually;
+> > > I'm 100% sure.), and apply EDCA contention parameters for internal and
+> > > external contention.
+> > >
+> > > I don't have much useful ideas to this problem for now.
+> > 
+> > Ping-Ke and Sasha,
+> > 
+> > I made a discovery this morning. I set up a transfer from my NFS server to the
+> > computer over an rtw8822bu link using rsync with the --progress option. In a
+> > second window, I ran Sasha's register dump in a loop using a 5 second delay
+> > between readouts. A third window showed was running 'dmesg -w'.
+> > 
+> > The transfer ran to completion on a 5.8 GiB file with all incremental speeds
+> > reported as 11-12 MB/s. No timeouts on flushing the queue were logged, until I
+> > opened the NetworkManager applet! At that point, I got many queue timeouts
+> > logged, and the instantaneous throughput dropped to 2-3 MB/s as I reported
+> > earlier. Surprisingly, there were no changes in the registers when the errors
+> > happened.
+> > 
+> > The NM applet is going to be reading the transfer rate from the device, which
+> > apparently messes up the data flow to/from the device.
+> > 
+> > As long as I do not cause the NM applet to display the connections, I get
+> > nothing logged.
+> > 
+> 
+> I think NM triggers scan operation when turning it on. Then, driver switches channels
+> between AP and scan channels with flushing queue that causes timeout. The cause is
+> still hard to transmit packets out, so TX buffer gets jammed.
+> 
+> If you enlarge the retry count or timeout value of __rtw_mac_flush_prio_queue(), 
+> the timeout flushing could be disappear. Also, if we can implement
+> rtwdev->hci.ops->flush_queues for USB, the flushing log can be reduced.
 
-Add the size check for req_len/resp_len of assoc_info.
+I don't have nm-applet available on my box, but with a 'nmcli dev wifi
+list --rescan yes' I run into problems quite fast. That also happens on
+an otherwise idle wifi link.
 
-Found by a modified version of syzkaller.
+Sascha
 
-[   46.592467][    T7] ==================================================================
-[   46.594687][    T7] BUG: KASAN: slab-out-of-bounds in kmemdup+0x3e/0x50
-[   46.596572][    T7] Read of size 3014656 at addr ffff888019442000 by task kworker/0:1/7
-[   46.598575][    T7]
-[   46.599157][    T7] CPU: 0 PID: 7 Comm: kworker/0:1 Tainted: G           O      5.14.0+ #145
-[   46.601333][    T7] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-[   46.604360][    T7] Workqueue: events brcmf_fweh_event_worker
-[   46.605943][    T7] Call Trace:
-[   46.606584][    T7]  dump_stack_lvl+0x8e/0xd1
-[   46.607446][    T7]  print_address_description.constprop.0.cold+0x93/0x334
-[   46.608610][    T7]  ? kmemdup+0x3e/0x50
-[   46.609341][    T7]  kasan_report.cold+0x79/0xd5
-[   46.610151][    T7]  ? kmemdup+0x3e/0x50
-[   46.610796][    T7]  kasan_check_range+0x14e/0x1b0
-[   46.611691][    T7]  memcpy+0x20/0x60
-[   46.612323][    T7]  kmemdup+0x3e/0x50
-[   46.612987][    T7]  brcmf_get_assoc_ies+0x967/0xf60
-[   46.613904][    T7]  ? brcmf_notify_vif_event+0x3d0/0x3d0
-[   46.614831][    T7]  ? lock_chain_count+0x20/0x20
-[   46.615683][    T7]  ? mark_lock.part.0+0xfc/0x2770
-[   46.616552][    T7]  ? lock_chain_count+0x20/0x20
-[   46.617409][    T7]  ? mark_lock.part.0+0xfc/0x2770
-[   46.618244][    T7]  ? lock_chain_count+0x20/0x20
-[   46.619024][    T7]  brcmf_bss_connect_done.constprop.0+0x241/0x2e0
-[   46.620019][    T7]  ? brcmf_parse_configure_security.isra.0+0x2a0/0x2a0
-[   46.620818][    T7]  ? __lock_acquire+0x181f/0x5790
-[   46.621462][    T7]  brcmf_notify_connect_status+0x448/0x1950
-[   46.622134][    T7]  ? rcu_read_lock_bh_held+0xb0/0xb0
-[   46.622736][    T7]  ? brcmf_cfg80211_join_ibss+0x7b0/0x7b0
-[   46.623390][    T7]  ? find_held_lock+0x2d/0x110
-[   46.623962][    T7]  ? brcmf_fweh_event_worker+0x19f/0xc60
-[   46.624603][    T7]  ? mark_held_locks+0x9f/0xe0
-[   46.625145][    T7]  ? lockdep_hardirqs_on_prepare+0x3e0/0x3e0
-[   46.625871][    T7]  ? brcmf_cfg80211_join_ibss+0x7b0/0x7b0
-[   46.626545][    T7]  brcmf_fweh_call_event_handler.isra.0+0x90/0x100
-[   46.627338][    T7]  brcmf_fweh_event_worker+0x557/0xc60
-[   46.627962][    T7]  ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
-[   46.628736][    T7]  ? rcu_read_lock_sched_held+0xa1/0xd0
-[   46.629396][    T7]  ? rcu_read_lock_bh_held+0xb0/0xb0
-[   46.629970][    T7]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-[   46.630649][    T7]  process_one_work+0x92b/0x1460
-[   46.631205][    T7]  ? pwq_dec_nr_in_flight+0x330/0x330
-[   46.631821][    T7]  ? rwlock_bug.part.0+0x90/0x90
-[   46.632347][    T7]  worker_thread+0x95/0xe00
-[   46.632832][    T7]  ? __kthread_parkme+0x115/0x1e0
-[   46.633393][    T7]  ? process_one_work+0x1460/0x1460
-[   46.633957][    T7]  kthread+0x3a1/0x480
-[   46.634369][    T7]  ? set_kthread_struct+0x120/0x120
-[   46.634933][    T7]  ret_from_fork+0x1f/0x30
-[   46.635431][    T7]
-[   46.635687][    T7] Allocated by task 7:
-[   46.636151][    T7]  kasan_save_stack+0x1b/0x40
-[   46.636628][    T7]  __kasan_kmalloc+0x7c/0x90
-[   46.637108][    T7]  kmem_cache_alloc_trace+0x19e/0x330
-[   46.637696][    T7]  brcmf_cfg80211_attach+0x4a0/0x4040
-[   46.638275][    T7]  brcmf_attach+0x389/0xd40
-[   46.638739][    T7]  brcmf_usb_probe+0x12de/0x1690
-[   46.639279][    T7]  usb_probe_interface+0x2aa/0x760
-[   46.639820][    T7]  really_probe+0x205/0xb70
-[   46.640342][    T7]  __driver_probe_device+0x311/0x4b0
-[   46.640876][    T7]  driver_probe_device+0x4e/0x150
-[   46.641445][    T7]  __device_attach_driver+0x1cc/0x2a0
-[   46.642000][    T7]  bus_for_each_drv+0x156/0x1d0
-[   46.642543][    T7]  __device_attach+0x23f/0x3a0
-[   46.643065][    T7]  bus_probe_device+0x1da/0x290
-[   46.643644][    T7]  device_add+0xb7b/0x1eb0
-[   46.644130][    T7]  usb_set_configuration+0xf59/0x16f0
-[   46.644720][    T7]  usb_generic_driver_probe+0x82/0xa0
-[   46.645295][    T7]  usb_probe_device+0xbb/0x250
-[   46.645786][    T7]  really_probe+0x205/0xb70
-[   46.646258][    T7]  __driver_probe_device+0x311/0x4b0
-[   46.646804][    T7]  driver_probe_device+0x4e/0x150
-[   46.647387][    T7]  __device_attach_driver+0x1cc/0x2a0
-[   46.647926][    T7]  bus_for_each_drv+0x156/0x1d0
-[   46.648454][    T7]  __device_attach+0x23f/0x3a0
-[   46.648939][    T7]  bus_probe_device+0x1da/0x290
-[   46.649478][    T7]  device_add+0xb7b/0x1eb0
-[   46.649936][    T7]  usb_new_device.cold+0x49c/0x1029
-[   46.650526][    T7]  hub_event+0x1c98/0x3950
-[   46.650975][    T7]  process_one_work+0x92b/0x1460
-[   46.651535][    T7]  worker_thread+0x95/0xe00
-[   46.651991][    T7]  kthread+0x3a1/0x480
-[   46.652413][    T7]  ret_from_fork+0x1f/0x30
-[   46.652885][    T7]
-[   46.653131][    T7] The buggy address belongs to the object at ffff888019442000
-[   46.653131][    T7]  which belongs to the cache kmalloc-2k of size 2048
-[   46.654669][    T7] The buggy address is located 0 bytes inside of
-[   46.654669][    T7]  2048-byte region [ffff888019442000, ffff888019442800)
-[   46.656137][    T7] The buggy address belongs to the page:
-[   46.656720][    T7] page:ffffea0000651000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x19440
-[   46.657792][    T7] head:ffffea0000651000 order:3 compound_mapcount:0 compound_pincount:0
-[   46.658673][    T7] flags: 0x100000000010200(slab|head|node=0|zone=1)
-[   46.659422][    T7] raw: 0100000000010200 0000000000000000 dead000000000122 ffff888100042000
-[   46.660363][    T7] raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
-[   46.661236][    T7] page dumped because: kasan: bad access detected
-[   46.661956][    T7] page_owner tracks the page as allocated
-[   46.662588][    T7] page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52a20(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 7, ts 31136961085, free_ts 0
-[   46.664271][    T7]  prep_new_page+0x1aa/0x240
-[   46.664763][    T7]  get_page_from_freelist+0x159a/0x27c0
-[   46.665340][    T7]  __alloc_pages+0x2da/0x6a0
-[   46.665847][    T7]  alloc_pages+0xec/0x1e0
-[   46.666308][    T7]  allocate_slab+0x380/0x4e0
-[   46.666770][    T7]  ___slab_alloc+0x5bc/0x940
-[   46.667264][    T7]  __slab_alloc+0x6d/0x80
-[   46.667712][    T7]  kmem_cache_alloc_trace+0x30a/0x330
-[   46.668299][    T7]  brcmf_usbdev_qinit.constprop.0+0x50/0x470
-[   46.668885][    T7]  brcmf_usb_probe+0xc97/0x1690
-[   46.669438][    T7]  usb_probe_interface+0x2aa/0x760
-[   46.669988][    T7]  really_probe+0x205/0xb70
-[   46.670487][    T7]  __driver_probe_device+0x311/0x4b0
-[   46.671031][    T7]  driver_probe_device+0x4e/0x150
-[   46.671604][    T7]  __device_attach_driver+0x1cc/0x2a0
-[   46.672192][    T7]  bus_for_each_drv+0x156/0x1d0
-[   46.672739][    T7] page_owner free stack trace missing
-[   46.673335][    T7]
-[   46.673620][    T7] Memory state around the buggy address:
-[   46.674213][    T7]  ffff888019442700: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   46.675083][    T7]  ffff888019442780: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   46.675994][    T7] >ffff888019442800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   46.676875][    T7]                    ^
-[   46.677323][    T7]  ffff888019442880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   46.678190][    T7]  ffff888019442900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   46.679052][    T7] ==================================================================
-[   46.679945][    T7] Disabling lock debugging due to kernel taint
-[   46.680725][    T7] Kernel panic - not syncing:
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
----
-v1->v2: Integrate two size checks
-
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index a9690ec4c850..5a9f713ea703 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -6164,6 +6164,11 @@ static s32 brcmf_get_assoc_ies(struct brcmf_cfg80211_info *cfg,
- 		(struct brcmf_cfg80211_assoc_ielen_le *)cfg->extra_buf;
- 	req_len = le32_to_cpu(assoc_info->req_len);
- 	resp_len = le32_to_cpu(assoc_info->resp_len);
-+	if (req_len > WL_EXTRA_BUF_MAX || resp_len > WL_EXTRA_BUF_MAX) {
-+		bphy_err(drvr, "invalid lengths in assoc info: req %u resp %u\n",
-+			 req_len, resp_len);
-+		return -EINVAL;
-+	}
- 	if (req_len) {
- 		err = brcmf_fil_iovar_data_get(ifp, "assoc_req_ies",
- 					       cfg->extra_buf,
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
