@@ -2,248 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F076B26E6
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 15:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC436B2826
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 16:04:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231494AbjCIO34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Mar 2023 09:29:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54520 "EHLO
+        id S230290AbjCIPEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Mar 2023 10:04:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231792AbjCIO3v (ORCPT
+        with ESMTP id S231473AbjCIPEZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Mar 2023 09:29:51 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CAC04BEA4
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 06:29:50 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id u3-20020a17090a450300b00239db6d7d47so2178089pjg.4
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Mar 2023 06:29:50 -0800 (PST)
+        Thu, 9 Mar 2023 10:04:25 -0500
+Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360C85A6D6
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 07:02:11 -0800 (PST)
+Received: by mail-oo1-xc2d.google.com with SMTP id x19-20020a4a3953000000b00525191358b6so314108oog.12
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Mar 2023 07:02:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678372189;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bl8Ig/SoPa8kDLYKK3prG31XNLf3b2Jf0y8Fe1Nszhg=;
-        b=KXzftEo97Ncd8U2Nct5HSClvktPm38x7Z0DV+cVzUHNw73Oj/0EOiNr76CnEirvHAg
-         imhztQaPQu2bRpkHVVaHEfkORonqTJNfWRgkRrynJ4zy5RImnqcQ5y/UmUrGvMb9lTWP
-         smiHrjGyyIxXJrWJbhDdJkOMi0CULLVvBvyrObU+Fw10W8HzBZWyhqQfvUAk2EXtLsH3
-         P0LxupICPgo+Neqj0aKO1cG1+hMKptFBMR3EpkTsVlyMzxe1JPlqrsyQsZeD8OZ15K/9
-         g2Aap7dLX1/eVBP8YAR6kAn9NygmzGrV4aeSJXS4UQIgjf2plFmO5wYoHDX8SHwjdfdQ
-         Leww==
+        d=gmail.com; s=20210112; t=1678374130;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0suVm0gGQkpNA6EcQHFIjUZD/y9CdJOWV19GEB0++yA=;
+        b=GZodWyN85pfRb+20J+xw4Qu3tRRSXYpDkJjfkzuZp3I7FbkBxz2WUIuWWdNLopkOUc
+         8zuC3s1jGpLWKOdXQbN5SfOarFDziB+rflmQT4uUnOlXJnDZtmB2oa/g5lqdPXxjjwWq
+         ICtC/fDSm5+06iKVb+tr6M6t2PWf/FUsZ8xraGxtb5I3p9IrkX2gEH6g9nl9UyqsXlAr
+         4wMaK+2fMbItS7UI9eDul5L1BpBKLb6jBBEirWxclPm1P7+zFWQEyOHTX9js3ykMY7In
+         Xd2Wb19qJY8Sd6AlIvMyIuvU0oQ7KmhNO+nSW5Oh+F2vTHbaePsC3tqLLKXs5CbA2bqA
+         aQ3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678372189;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20210112; t=1678374130;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Bl8Ig/SoPa8kDLYKK3prG31XNLf3b2Jf0y8Fe1Nszhg=;
-        b=V1PMwOBTmbt5gpRNvMZyD19SKoput1ckjkAHhQ7Sep+BAWvLjdhlUYbYFJ6QrfWjXY
-         Vg6hQkfG6uk+1r/RaU4YYjlx08n5KCTBTfxcxmkkmhFJwunwuDnx2WIebVIfwugHYaYz
-         wGSZq1YWk4AkN97fqmhCVsJ5ZSl7MsEbZq2j21XZLEKbjFVvMdX27uefLKAXOOmcjCXE
-         UvVEYDSNxVZ/L7IlOSd83FRBrqNjubZ0naXNxSyDckWQx+6VpHxnGdtvrm5LGXGEJDO1
-         vaDxyLhkaptOjUbIxuBOQYpXvhXZwlpOl/8kLQlK/MnNa0ysZP2dkZsc9s72TsUTxfIV
-         T4Tw==
-X-Gm-Message-State: AO0yUKXRJkCbZrzXULvVGfBiK1UElnEUwaSdgRFO4DlDJe8gzxFD6g2t
-        A4qjzTmqWSfyznxTP//fOAUPvrou4NJSTgiqXsoiIw==
-X-Google-Smtp-Source: AK7set+glvYNvDZxTUBfPhpgrApdWUfFFkXJTzZ2wmNX+EGwaR3PkxDslYM/tT+6TY505jyjk6efgubWdeulOyxI/k0=
-X-Received: by 2002:a17:90a:ab06:b0:230:80d7:2158 with SMTP id
- m6-20020a17090aab0600b0023080d72158mr8365554pjq.4.1678372189413; Thu, 09 Mar
- 2023 06:29:49 -0800 (PST)
+        bh=0suVm0gGQkpNA6EcQHFIjUZD/y9CdJOWV19GEB0++yA=;
+        b=gI5pCDYq/TPn+DpFXuG6oOoPB2UOrPlXCX81FJoI1KPbv0y7oQvW9Fl7tQVthjx8o6
+         bIw/PVj88MQyRwUwNMaXaRrDyQ5HUb6IXjiisIgtMoG8OC69EEz1Dj27A4+luxnkUJok
+         uhcjRySsSkFDbXyfeoIkD9CM10AC9q3nDnLMKghI9EDOzbKZ+U41ufqvu/1EeIzY0yII
+         aOrLlzAiqG1eIclS64E3f6CJQ4xg2j03tyGkYjII6tebyuJKOVw0+/HVXj79FSBahplD
+         jn+iagbbUbkye18jfqtt4cgr0pudZm4ZyWMcy5EaRa5wi2p2NrC+1VtdEUWf08v68ofP
+         wiOg==
+X-Gm-Message-State: AO0yUKVKEVGZFtdmNU6wISJGx3GpWopJetKy/0sAeOoIoqkfo1+UBWKn
+        PVbUBd7UBYejosZJN1qmD8k=
+X-Google-Smtp-Source: AK7set+rz3V64H5AiUaIuolBXbkb4hYLbFAAqNI5jlUFVHfpwWkotNDfyJ4CCry2RknfNig0t6n+VA==
+X-Received: by 2002:a4a:88ac:0:b0:51a:48f4:75de with SMTP id j41-20020a4a88ac000000b0051a48f475demr1126735ooa.0.1678374129737;
+        Thu, 09 Mar 2023 07:02:09 -0800 (PST)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id n15-20020a4a848f000000b004f9cd1e42d3sm7249648oog.26.2023.03.09.07.02.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Mar 2023 07:02:09 -0800 (PST)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <eb4e2847-a0a3-5edc-dc3e-63e6d4d8bf28@lwfinger.net>
+Date:   Thu, 9 Mar 2023 09:02:08 -0600
 MIME-Version: 1.0
-References: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr> <895a3812-e490-cc40-0f8e-a88e166e8f24@linaro.org>
- <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr> <13676dcc-944f-cf3d-8adf-ee3d4e8fa699@free.fr>
- <e5baf73b-3b9d-1011-2ed9-4b6fc7ee644f@free.fr>
-In-Reply-To: <e5baf73b-3b9d-1011-2ed9-4b6fc7ee644f@free.fr>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 9 Mar 2023 15:29:12 +0100
-Message-ID: <CAPDyKFoAT-jMkYb7=m--q_eEb2xxH-VPQy5vaHNvw4s=WiAeCg@mail.gmail.com>
-Subject: Re: [RFC PATCH] brcmfmac: add 43751 SDIO ids and initialization
-To:     Marc Gonzalez <marc.w.gonzalez@free.fr>
-Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Alexander Prutskov <alep@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Angus Ainslie <angus@akkea.ca>, linux-wireless@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-amlogic@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: Performance of rtw88_8822bu
+Content-Language: en-US
+To:     Dan Williams <dcbw@redhat.com>, Ping-Ke Shih <pkshih@realtek.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <93d565e1-3a23-69f3-bedd-b71eb601bceb@lwfinger.net>
+ <20230306091845.GC27249@pengutronix.de>
+ <20230306125944.GD27249@pengutronix.de>
+ <6ed1239f8c404dcb9d571771c230b69b@realtek.com>
+ <2064a549-ef7a-98bf-cc24-a25b8571877f@lwfinger.net>
+ <1f01b1ff59d7412aa7eafdce022d7635@realtek.com>
+ <6e14212a414067c970b8d2d0bf6eb8df5319a972.camel@redhat.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <6e14212a414067c970b8d2d0bf6eb8df5319a972.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 9 Mar 2023 at 13:13, Marc Gonzalez <marc.w.gonzalez@free.fr> wrote:
->
-> On 09/03/2023 11:16, Marc Gonzalez wrote:
->
-> > On 06/03/2023 11:24, Marc Gonzalez wrote:
-> >
-> >> # cat /sys/bus/sdio/devices/mmc2:0001:1/uevent
-> >> OF_NAME=wifi
-> >> OF_FULLNAME=/soc/sd@ffe03000/wifi@1
-> >> OF_COMPATIBLE_0=brcm,bcm4329-fmac
-> >> OF_COMPATIBLE_N=1
-> >> SDIO_CLASS=00
-> >> SDIO_ID=02D0:AAE7
-> >> SDIO_REVISION=0.0
-> >> MODALIAS=sdio:c00v02D0dAAE7
-> >>
-> >> NB: 0xaae7 = 43751
-> >
-> > I have run into another issue.
-> >
-> > The WiFi device (and the mmc2 bus it sits on) don't show up at all
-> > in the kernel log *unless* I add lots of debug output, such as with
-> > #define DEBUG in drivers/base/dd.c
-> >
-> > I think this points to some kind of race condition?
-> >
-> > Neil suggested that maybe the host probes the mmc2 bus "too soon",
-> > when the WiFi device is still powering up, which makes the entire
-> > probe fail.
+On 3/8/23 10:43, Dan Williams wrote:
+> On Wed, 2023-03-08 at 00:36 +0000, Ping-Ke Shih wrote:
+>>
+>> I think NM triggers scan operation when turning it on. Then, driver
+>> switches channels
+>> between AP and scan channels with flushing queue that causes timeout.
+>> The cause is
+>> still hard to transmit packets out, so TX buffer gets jammed.
+> 
+> Yes, (at least historically) nm-applet requests that NM perform a scan
+> when you interact with it, on the theory that when you open the WiFi
+> network menu you probably want to see recent scan results. Similar to
+> MacOS's AirPort menu.
+> 
+> Most drivers handle that OK with intermittent traffic, but it will
+> cause disruption if for high throughput and/or latency-sensitive
+> traffic.
+> 
+> Dan
+> 
+>>
+>> If you enlarge the retry count or timeout value of
+>> __rtw_mac_flush_prio_queue(),
+>> the timeout flushing could be disappear. Also, if we can implement
+>> rtwdev->hci.ops->flush_queues for USB, the flushing log can be
+>> reduced.
 
-Ideally, the WiFi device/driver should not need to be initialized to
-allow the SDIO card to be detected properly. Looks like there is
-something fishy going on.
+Dan: Thanks for confirming that a scan trigger was the likely cause of the 
+problem. I verified that by adding a WARN_ONCE() after the warning was printed. 
+The first part of the traceback was:
+rtw_ops_flush
+__ieee89211_flush_queues
+ieee80211_offchannel_stop_vifs
+__ieee80211_start_scan
+__ieee80211_request_scan
+rdev_scan
+nl80211_trigger_scan
 
-> >
-> > This patch appears to solve the symptom:
-> >
-> > diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-> > index 6e5ea0213b477..999b3843c0d0b 100644
-> > --- a/drivers/mmc/host/meson-gx-mmc.c
-> > +++ b/drivers/mmc/host/meson-gx-mmc.c
-> > @@ -1400,7 +1400,7 @@ static struct platform_driver meson_mmc_driver = {
-> >       .remove         = meson_mmc_remove,
-> >       .driver         = {
-> >               .name = DRIVER_NAME,
-> > -             .probe_type = PROBE_PREFER_ASYNCHRONOUS,
-> > +             .probe_type = PROBE_FORCE_SYNCHRONOUS,
-> >               .of_match_table = meson_mmc_of_match,
-> >       },
-> >  };
-> >
-> > But this might just be delaying the probe enough for the device
-> > to become ready?
->
-> FWIW, the relevant device tree nodes are:
->
-> /* decompiled DTS */
->
->                 sd@ffe03000 {
->                         compatible = "amlogic,meson-axg-mmc";
->                         reg = <0x0 0xffe03000 0x0 0x800>;
->                         interrupts = <0x0 0xbd 0x4>;
->                         status = "okay";
->                         clocks = <0x2 0x21 0x2 0x3c 0x2 0x2>;
->                         clock-names = "core", "clkin0", "clkin1";
->                         resets = <0x5 0x2c>;
->                         amlogic,dram-access-quirk;
->                         pinctrl-0 = <0x2c>;
->                         pinctrl-1 = <0x2d>;
->                         pinctrl-names = "default", "clk-gate";
->                         #address-cells = <0x1>;
->                         #size-cells = <0x0>;
->                         bus-width = <0x4>;
->                         cap-sd-highspeed;
->                         sd-uhs-sdr50;
->                         max-frequency = <0x5f5e100>;
->                         non-removable;
->                         disable-wp;
->                         keep-power-in-suspend;
->                         mmc-pwrseq = <0x2e>;
->                         vmmc-supply = <0x2b>;
->                         vqmmc-supply = <0x21>;
->
->                         wifi@1 {
->                                 reg = <0x1>;
->                                 compatible = "brcm,bcm4329-fmac";
->                         };
->                 };
->
->
-> /* original DTS */
->
->                 sd_emmc_a: sd@ffe03000 {
->                         compatible = "amlogic,meson-axg-mmc";
->                         reg = <0x0 0xffe03000 0x0 0x800>;
->                         interrupts = <GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>;
->                         status = "disabled";
->                         clocks = <&clkc CLKID_SD_EMMC_A>,
->                                  <&clkc CLKID_SD_EMMC_A_CLK0>,
->                                  <&clkc CLKID_FCLK_DIV2>;
->                         clock-names = "core", "clkin0", "clkin1";
->                         resets = <&reset RESET_SD_EMMC_A>;
->                 };
->
-> &sd_emmc_a {
->         status = "okay";
->         pinctrl-0 = <&sdio_pins>;
->         pinctrl-1 = <&sdio_clk_gate_pins>;
->         pinctrl-names = "default", "clk-gate";
->         #address-cells = <1>;
->         #size-cells = <0>;
->
->         bus-width = <4>;
->         cap-sd-highspeed;
->         sd-uhs-sdr50;
->         max-frequency = <100000000>;
->
->         non-removable;
->         disable-wp;
->
->         /* WiFi firmware requires power to be kept while in suspend */
->         keep-power-in-suspend;
->
->         mmc-pwrseq = <&sdio_pwrseq>;
+Ping-Ke: Increasing the time waiting for the queue to flush did not help. I 
+increased the loop count from 5 to 50, and the sleep time from 20 to 200 msec. I 
+also tested exiting as soon as "avail" was greater than zero. I also tested 
+unlocking the mutex before the msleep() and relocking it afterward. Nothing 
+changed the behavior. It appears that something else is locking the queue 
+clearing, and that no amount of delay will help.
 
-This one is particularly interesting. Can you share the content of the
-sdio_pwrseq node too?
+I will be trying to write a USB version of the flush queues routine based on the 
+PCI code.
 
->
->         vmmc-supply = <&vddao_3v3>;
->         vqmmc-supply = <&vddio_ao1v8>;
->
->         brcmf: wifi@1 {
->                 reg = <1>;
->                 compatible = "brcm,bcm4329-fmac";
->         };
-> };
->
-> With an asynchronous probe, meson_mmc_probe() always succeeds,
-> yet the WiFi card is not detected later on, even if I sleep
-> 1-2 seconds in meson_mmc_probe().
->
-> [    0.879756] YO: meson_mmc_probe: ffe03000.sd
-> [    0.914320] YO: meson_mmc_probe: ffe03000.sd ALL OK
-> [    1.199170] YO: meson_mmc_probe: ffe07000.mmc
-> [    1.232734] YO: meson_mmc_probe: ffe07000.mmc ALL OK
+Sasha: I agree that no load is required to trigger the problem.
 
-To narrow down the problem, I would start by preventing the WiFi
-driver from being insmoded. To make sure it doesn't affect the SDIO
-card detection process.
+There are no simple problems!
 
-The point is, the SDIO card should be detected properly, no matter
-whether there is a corresponding SDIO func driver (WiFi driver)
-available for it. For a detected SDIO/eMMC/SD card, mmc_add_card()
-prints a message about the card in the log during initialization. It
-could look like the below print, for example:
+Larry
 
-"mmc2: new ultra high speed SDR104 SDIO card at address 0001".
-
->
-> Confused again...
->
-> Regards
->
-
-Kind regards
-Uffe
