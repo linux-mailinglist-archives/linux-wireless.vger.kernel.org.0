@@ -2,175 +2,250 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93CAF6B51F1
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 21:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 415F06B5608
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Mar 2023 00:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231267AbjCJUaL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Mar 2023 15:30:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39418 "EHLO
+        id S231277AbjCJXwl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Mar 2023 18:52:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231535AbjCJU3z (ORCPT
+        with ESMTP id S231513AbjCJXwj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Mar 2023 15:29:55 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1378B118815;
-        Fri, 10 Mar 2023 12:29:54 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id ec29so25432014edb.6;
-        Fri, 10 Mar 2023 12:29:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112; t=1678480193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a8pZKlejve1428qStCG0RMeVmZ4upKoJrMvi5IlICBI=;
-        b=GqtyCN7r9RM6GkJazWR3HFollxvPGavLzejWII2UZyzcFzJwMjMGHZXwEgMhq0a4Lc
-         UiExCA8fiiGFczNheebxETAymcsajbRiR82bZ9qkehwUK3IThUTpKnipArWWryo6G/QD
-         DR0uFwBHX2ZwfQ0/yeTHpuBP5GiFIcSSAENdcF4b5NG4eF9gjUQTp6mZK01gbvZPU0mQ
-         eacQzCPTtb8tDjMkHxA0iAUPPAhEmuePvWnwNSu+JzWKCzjIT5PBxlOSrTaGK35njfNu
-         U4PaIwxvloNxCIjTWsvthKxcDVphovp/iSJelFwh4Bt490YcbsUmIJH4nQ6RcEZtRvJ4
-         odVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678480193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a8pZKlejve1428qStCG0RMeVmZ4upKoJrMvi5IlICBI=;
-        b=UORemEf0bO5rH6qxpZw97e05kw3QVG4ozp/ei83QjwZJrf4nix5G7zejBD7WJahf93
-         8SFfNmfJWsu/sXs0jnxbwcmPYZmZtb8V7xOTTL6L8hi5mCHXSJUyvjtyDYiadX5sDBxX
-         XuTouAbt9YJcuqE/W6H3L1nv+rFi7eRb2+INXzPepZRy5dTLwOcqD3ODOIoHRSRAdWdI
-         ALhWHH0C3behkHvQVAspjWbqiP8BtdHwIAh2KC8gnmCrFJL+Gb7DBsBMdEVyPoz1EnRO
-         PMbvieTJK+dUcgMiWtNNkliUoZTAk0Fgtfb7Ppetk5pPmEWp1LXvXDLE3PH5XBeQoSIy
-         L/iQ==
-X-Gm-Message-State: AO0yUKWqQV5/79y455XCYAlCFfST30+Ig0w+CQ7oek+agLWxTX4sTJIC
-        NPT7FFFzy0erzVIJ6hcIgIHW91IzVeg=
-X-Google-Smtp-Source: AK7set9RM0579bjaZEGE6QvGIe2oGLhDMRT3CqhFy8M6d7U/msI1IK0JBp9KWYZLW80huko1gwPSjg==
-X-Received: by 2002:a17:906:4f94:b0:8ed:e8d6:42c4 with SMTP id o20-20020a1709064f9400b008ede8d642c4mr26149521eju.12.1678480193480;
-        Fri, 10 Mar 2023 12:29:53 -0800 (PST)
-Received: from localhost.localdomain (dynamic-2a01-0c23-b84f-c400-0000-0000-0000-079c.c23.pool.telefonica.de. [2a01:c23:b84f:c400::79c])
-        by smtp.googlemail.com with ESMTPSA id md10-20020a170906ae8a00b008e34bcd7940sm259047ejb.132.2023.03.10.12.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 12:29:53 -0800 (PST)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
-        Nitin Gupta <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH v2 RFC 9/9] wifi: rtw88: Add support for the SDIO based RTL8821CS chipset
-Date:   Fri, 10 Mar 2023 21:29:22 +0100
-Message-Id: <20230310202922.2459680-10-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230310202922.2459680-1-martin.blumenstingl@googlemail.com>
-References: <20230310202922.2459680-1-martin.blumenstingl@googlemail.com>
+        Fri, 10 Mar 2023 18:52:39 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0688B12CB86
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Mar 2023 15:52:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678492357; x=1710028357;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cPWCeZTDBiBZi9jwPSenmDlKPuggKtP6gDZr1NSxYG0=;
+  b=gk7x90wtI4CSla/oM0AUKmIpKoyDZIslCZBO3iL03faj+Qp84jhL1sUi
+   vWk8LZd5MFmcMzHlyjvOPmsBTsEJcNVIQPjGvkL0g8bVtCljWpLo4TIVY
+   vvkoa5zWcnUt2Ua5zkUnznEf0Vr1Jla/6JQo56AjZAqp0UZMgsu3W35sm
+   e0GARu8IQB//mCYHWYoLeqyHiiUsqReJX4BJGCpGsxlsqST/WQ/WEydgt
+   xdOii0LWzouELbJ+zjObvKfpWF7tIDmFxbLwsP/PeIqpM4B8nelGB0X3i
+   wJeF9uPO0x65lzhZ5jPF01wM+vHaDjcCc1Li8LN/wGNgJCxrwyT3FzyD2
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="339217424"
+X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
+   d="scan'208";a="339217424"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 15:52:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="746922386"
+X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
+   d="scan'208";a="746922386"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 10 Mar 2023 15:52:34 -0800
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pamXK-0004BL-0Y;
+        Fri, 10 Mar 2023 23:52:34 +0000
+Date:   Sat, 11 Mar 2023 07:52:15 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: [wireless:for-next] BUILD SUCCESS
+ 96c069508377547f913e7265a80fffe9355de592
+Message-ID: <640bc2af.zhxzlWoGxZ3NetqH%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wire up RTL8821CS chipset support using the new rtw88 SDIO HCI code as
-well as the existing RTL8821C chipset code.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 96c069508377547f913e7265a80fffe9355de592  wifi: cfg80211: fix MLO connection ownership
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
-Changes since v1:
-- use /* ... */ style for copyright comments
+elapsed time: 731m
 
+configs tested: 169
+configs skipped: 16
 
- drivers/net/wireless/realtek/rtw88/Kconfig    | 11 ++++++
- drivers/net/wireless/realtek/rtw88/Makefile   |  3 ++
- .../net/wireless/realtek/rtw88/rtw8821cs.c    | 35 +++++++++++++++++++
- 3 files changed, 49 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cs.c
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
-index 6b65da81127f..29eb2f8e0eb7 100644
---- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -133,6 +133,17 @@ config RTW88_8821CE
- 
- 	  802.11ac PCIe wireless network adapter
- 
-+config RTW88_8821CS
-+	tristate "Realtek 8821CS SDIO wireless network adapter"
-+	depends on MMC
-+	select RTW88_CORE
-+	select RTW88_SDIO
-+	select RTW88_8821C
-+	help
-+	  Select this option will enable support for 8821CS chipset
-+
-+	  802.11ac SDIO wireless network adapter
-+
- config RTW88_8821CU
- 	tristate "Realtek 8821CU USB wireless network adapter"
- 	depends on USB
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index 6105c2745bda..82979b30ae8d 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -59,6 +59,9 @@ rtw88_8821c-objs		:= rtw8821c.o rtw8821c_table.o
- obj-$(CONFIG_RTW88_8821CE)	+= rtw88_8821ce.o
- rtw88_8821ce-objs		:= rtw8821ce.o
- 
-+obj-$(CONFIG_RTW88_8821CS)	+= rtw88_8821cs.o
-+rtw88_8821cs-objs		:= rtw8821cs.o
-+
- obj-$(CONFIG_RTW88_8821CU)	+= rtw88_8821cu.o
- rtw88_8821cu-objs		:= rtw8821cu.o
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cs.c b/drivers/net/wireless/realtek/rtw88/rtw8821cs.c
-new file mode 100644
-index 000000000000..7ad7c13ac9e6
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821cs.c
-@@ -0,0 +1,35 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+ */
-+
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/module.h>
-+#include "sdio.h"
-+#include "rtw8821c.h"
-+
-+static const struct sdio_device_id rtw_8821cs_id_table[] =  {
-+	{
-+		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
-+			    SDIO_DEVICE_ID_REALTEK_RTW8821CS),
-+		.driver_data = (kernel_ulong_t)&rtw8821c_hw_spec,
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(sdio, rtw_8821cs_id_table);
-+
-+static struct sdio_driver rtw_8821cs_driver = {
-+	.name = "rtw_8821cs",
-+	.probe = rtw_sdio_probe,
-+	.remove = rtw_sdio_remove,
-+	.id_table = rtw_8821cs_id_table,
-+	.drv = {
-+		.pm = &rtw_sdio_pm_ops,
-+		.shutdown = rtw_sdio_shutdown,
-+	}
-+};
-+module_sdio_driver(rtw_8821cs_driver);
-+
-+MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-+MODULE_DESCRIPTION("Realtek 802.11ac wireless 8821cs driver");
-+MODULE_LICENSE("Dual BSD/GPL");
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r005-20230310   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r001-20230310   gcc  
+arc                  randconfig-r011-20230310   gcc  
+arc                  randconfig-r015-20230310   gcc  
+arc                  randconfig-r026-20230310   gcc  
+arc                  randconfig-r043-20230310   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm          buildonly-randconfig-r003-20230310   clang
+arm          buildonly-randconfig-r004-20230310   clang
+arm                                 defconfig   gcc  
+arm                  randconfig-r024-20230310   clang
+arm                  randconfig-r032-20230310   gcc  
+arm                  randconfig-r046-20230310   clang
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r003-20230310   clang
+arm64                               defconfig   gcc  
+arm64                randconfig-r014-20230310   gcc  
+arm64                randconfig-r033-20230310   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r001-20230310   gcc  
+csky                 randconfig-r022-20230310   gcc  
+csky                 randconfig-r023-20230310   gcc  
+hexagon              randconfig-r003-20230310   clang
+hexagon              randconfig-r004-20230310   clang
+hexagon              randconfig-r012-20230310   clang
+hexagon              randconfig-r016-20230310   clang
+hexagon              randconfig-r023-20230310   clang
+hexagon              randconfig-r024-20230310   clang
+hexagon              randconfig-r031-20230310   clang
+hexagon              randconfig-r034-20230310   clang
+hexagon              randconfig-r041-20230310   clang
+hexagon              randconfig-r045-20230310   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r001-20230310   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r005-20230310   gcc  
+ia64                 randconfig-r021-20230310   gcc  
+ia64                 randconfig-r022-20230310   gcc  
+ia64                 randconfig-r031-20230310   gcc  
+ia64                 randconfig-r034-20230310   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r002-20230310   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r002-20230310   gcc  
+loongarch            randconfig-r006-20230310   gcc  
+loongarch            randconfig-r015-20230310   gcc  
+loongarch            randconfig-r016-20230310   gcc  
+loongarch            randconfig-r025-20230310   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r004-20230310   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r001-20230310   gcc  
+m68k                 randconfig-r012-20230310   gcc  
+m68k                 randconfig-r016-20230310   gcc  
+m68k                 randconfig-r035-20230310   gcc  
+microblaze           randconfig-r006-20230310   gcc  
+microblaze           randconfig-r013-20230310   gcc  
+microblaze           randconfig-r015-20230310   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips         buildonly-randconfig-r005-20230310   gcc  
+mips                 randconfig-r006-20230310   gcc  
+mips                 randconfig-r021-20230310   clang
+mips                 randconfig-r036-20230310   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r003-20230310   gcc  
+nios2                randconfig-r005-20230310   gcc  
+nios2                randconfig-r011-20230310   gcc  
+nios2                randconfig-r021-20230310   gcc  
+nios2                randconfig-r025-20230310   gcc  
+nios2                randconfig-r031-20230310   gcc  
+nios2                randconfig-r033-20230310   gcc  
+openrisc     buildonly-randconfig-r001-20230310   gcc  
+openrisc     buildonly-randconfig-r004-20230310   gcc  
+openrisc     buildonly-randconfig-r006-20230310   gcc  
+openrisc             randconfig-r003-20230310   gcc  
+openrisc             randconfig-r004-20230310   gcc  
+openrisc             randconfig-r005-20230310   gcc  
+openrisc             randconfig-r022-20230310   gcc  
+openrisc             randconfig-r036-20230310   gcc  
+parisc       buildonly-randconfig-r001-20230310   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r003-20230310   gcc  
+parisc               randconfig-r004-20230310   gcc  
+parisc               randconfig-r011-20230310   gcc  
+parisc               randconfig-r016-20230310   gcc  
+parisc               randconfig-r023-20230310   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r003-20230310   gcc  
+powerpc              randconfig-r002-20230310   clang
+powerpc              randconfig-r005-20230310   clang
+powerpc              randconfig-r006-20230310   clang
+powerpc              randconfig-r012-20230310   gcc  
+powerpc              randconfig-r015-20230310   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r005-20230310   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r021-20230310   gcc  
+riscv                randconfig-r026-20230310   gcc  
+riscv                randconfig-r042-20230310   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390         buildonly-randconfig-r006-20230310   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r014-20230310   gcc  
+s390                 randconfig-r022-20230310   gcc  
+s390                 randconfig-r044-20230310   gcc  
+sh                               allmodconfig   gcc  
+sh           buildonly-randconfig-r003-20230310   gcc  
+sh                   randconfig-r002-20230310   gcc  
+sh                   randconfig-r011-20230310   gcc  
+sh                   randconfig-r013-20230310   gcc  
+sh                   randconfig-r024-20230310   gcc  
+sh                   randconfig-r032-20230310   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r013-20230310   gcc  
+sparc                randconfig-r034-20230310   gcc  
+sparc64      buildonly-randconfig-r002-20230310   gcc  
+sparc64      buildonly-randconfig-r004-20230310   gcc  
+sparc64              randconfig-r001-20230310   gcc  
+sparc64              randconfig-r012-20230310   gcc  
+sparc64              randconfig-r032-20230310   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r002-20230310   gcc  
+xtensa               randconfig-r026-20230310   gcc  
+xtensa               randconfig-r033-20230310   gcc  
+
 -- 
-2.39.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
