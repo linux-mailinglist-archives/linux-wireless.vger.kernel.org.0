@@ -2,216 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE666B351A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 05:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 835AD6B3602
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 06:14:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229977AbjCJECE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Mar 2023 23:02:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48824 "EHLO
+        id S229800AbjCJFOM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Mar 2023 00:14:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjCJEBh (ORCPT
+        with ESMTP id S229804AbjCJFOK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Mar 2023 23:01:37 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F73103EC3
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 20:01:17 -0800 (PST)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32A410Tn8025712, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32A410Tn8025712
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 10 Mar 2023 12:01:00 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 10 Mar 2023 12:00:36 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 10 Mar
- 2023 12:00:35 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: add counters of register-based H2C/C2H
-Date:   Fri, 10 Mar 2023 11:59:43 +0800
-Message-ID: <20230310035943.49020-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 10 Mar 2023 00:14:10 -0500
+Received: from out28-41.mail.aliyun.com (out28-41.mail.aliyun.com [115.124.28.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFCADE9F2C
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 21:14:07 -0800 (PST)
+X-Alimail-AntiSpam: AC=CONTINUE;BC=0.07446568|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.106-0.00820318-0.885797;FP=0|0|0|0|0|0|0|0;HT=ay29a033018047206;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.RjAWW6O_1678425243;
+Received: from eq59.localnet(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.RjAWW6O_1678425243)
+          by smtp.aliyun-inc.com;
+          Fri, 10 Mar 2023 13:14:04 +0800
+From:   Aiden Leong <aiden.leong@aibsd.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>, kvalo@kernel.org
+Subject: Re: [PATCH v3] wifi: iwlwifi: pcie: fix the order of scanning
+ iwl_dev_info_table
+Date:   Fri, 10 Mar 2023 13:14:03 +0800
+Message-ID: <4811051.31r3eYUQgx@eq59>
+In-Reply-To: <5815091.MhkbZ0Pkbq@eq59>
+References: <20230119175657.9205-1-aiden.leong@aibsd.com>
+ <51e9eeb2cd84f0f8ff92981b47a8e77e11047847.camel@intel.com>
+ <5815091.MhkbZ0Pkbq@eq59>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: multipart/signed; boundary="nextPart4465706.LvFx2qVVIh";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The register-based H2C/C2H are used to exchange information between driver
-and firmware, but only apply to narrow area because its data size is
-smaller than regular packet-based H2C/C2H.
+--nextPart4465706.LvFx2qVVIh
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Aiden Leong <aiden.leong@aibsd.com>
+Date: Fri, 10 Mar 2023 13:14:03 +0800
+Message-ID: <4811051.31r3eYUQgx@eq59>
+In-Reply-To: <5815091.MhkbZ0Pkbq@eq59>
+MIME-Version: 1.0
 
-This kind of H2C/C2H must be paired. To identify if any H2C/C2H is missing,
-update counters to help diagnose this kind of problems.
+On Wednesday, February 8, 2023 5:14:50 AM CST Aiden Leong wrote:
+> On Wednesday, February 8, 2023 1:44:39 AM CST Greenman, Gregory wrote:
+> > On Fri, 2023-01-20 at 01:56 +0800, Aiden Leong wrote:
+> > > Fix a bug introduced by:
+> > > commit 32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new
+> > > 
+> > >  config table"), so now we pick the FIRST matching config.
+> > > 
+> > > Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
+> > > ---
+> > > 
+> > >  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > > b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> 
+>  index
+> 
+> > > 99768d6a6032..05764eef15a7 100644
+> > > --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > > +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+> > > @@ -1456,7 +1456,7 @@ iwl_pci_find_dev_info(u16 device, u16
+> > > subsystem_device,
+> 
+>  if (!num_devices)
+> 
+> > >                 return NULL;
+> > > 
+> > > -       for (i = num_devices - 1; i >= 0; i--) {
+> > > +       for (i = 0; i < num_devices; i++) {
+> > > 
+> > >                 const struct iwl_dev_info *dev_info =
+> > > 
+> > > &iwl_dev_info_table[i];
+> > > 
+> > >                 if (dev_info->device != (u16)IWL_CFG_ANY &&
+> > 
+> > It failed or internal testing, so it's more complicated. To traverse this
+> > table
+> 
+>  from the beginning to the end requires some changes to the table
+> 
+> > itself and the "goto" wasn't omitted by a mistake, but for a reason...
+> > For the device that you have (device id 0x4DF0, sub-device id 0x0244,
+> > right?)
+> 
+>  is it enough to have the first fix (disable
+> 
+> > tx_with_siso_diversity)?
+> 
+> Hi Gregory,
+> That's exactly why I put a warning in previous emails.
+> My opinion will be a little different than yours in this situation.
+> 1. We SHOULD traverse this table from top to bottom to keep our source tree
+> as clean as possible.
+> 2. One simple option is to reverse every config items in this table so the
+> logic keep the same.
+> 3. Your team(I assume Luca Coelho is your colleague) may need to provide
+> further explaination about the `goto` line, since each change in kernel
+> should have a reason.
+> 4. 0x4DF0, 0x0244 is correct. The question is: Will Intel release products
+> with same pid+subID but differenct STEP/RF_TYPE/RF_ID etc? If so, pid+subID
+> won't be enough.
+> 
+> To sum up, there will be three patches:
+> 1. This patch still fixes the BUG introduced by the `goto` change.
+> 2. Patch 2 should be [PATCH 1/2] in previous email.
+> 3. Patch 3 reverses every items in this table. Your team can fine-tune the
+> order of each items. I won't submit this patch.
+> 
+> If you like my ideas, please merge patch1&2 along with another ident fix
+> patch.
+> 
+> BTW, it has been a month since the first email. I'd appreciate if you reply
+> soon.
+> 
+> Cheers,
+> Aiden
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h     | 18 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.c       |  5 +++++
- drivers/net/wireless/realtek/rtw89/mac.c      |  2 ++
- drivers/net/wireless/realtek/rtw89/reg.h      |  5 +++++
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  2 ++
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  2 ++
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  2 ++
- 7 files changed, 36 insertions(+)
+Hi Gregory,
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b1a886898c5a0..804dd356c30e1 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2938,8 +2938,10 @@ struct rtw89_chip_info {
- 	u32 txwd_body_size;
- 	u32 h2c_ctrl_reg;
- 	const u32 *h2c_regs;
-+	struct rtw89_reg_def h2c_counter_reg;
- 	u32 c2h_ctrl_reg;
- 	const u32 *c2h_regs;
-+	struct rtw89_reg_def c2h_counter_reg;
- 	const struct rtw89_page_regs *page_regs;
- 	bool cfo_src_fd;
- 	const struct rtw89_reg_def *dcfo_comp;
-@@ -4133,6 +4135,22 @@ rtw89_write8_mask(struct rtw89_dev *rtwdev, u32 addr, u32 mask, u8 data)
- 	rtw89_write8(rtwdev, addr, set);
- }
- 
-+static inline void
-+rtw89_write8_mask_add(struct rtw89_dev *rtwdev, u32 addr, u32 mask, u8 add)
-+{
-+	u32 shift;
-+	u8 orig, set;
-+	u8 data;
-+
-+	mask &= 0xff;
-+	shift = __ffs(mask);
-+
-+	orig = rtw89_read8(rtwdev, addr);
-+	data = ((orig & mask) >> shift) + add;
-+	set = (orig & ~mask) | ((data << shift) & mask);
-+	rtw89_write8(rtwdev, addr, set);
-+}
-+
- static inline u32
- rtw89_read_rf(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path,
- 	      u32 addr, u32 mask)
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 1a4ff24078fb9..4892c81b45f06 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2601,6 +2601,8 @@ static int rtw89_fw_write_h2c_reg(struct rtw89_dev *rtwdev,
- 	for (i = 0; i < RTW89_H2CREG_MAX; i++)
- 		rtw89_write32(rtwdev, h2c_reg[i], info->h2creg[i]);
- 
-+	rtw89_write8_mask_add(rtwdev, chip->h2c_counter_reg.addr,
-+			      chip->h2c_counter_reg.mask, 1);
- 	rtw89_write8(rtwdev, chip->h2c_ctrl_reg, B_AX_H2CREG_TRIGGER);
- 
- 	return 0;
-@@ -2633,6 +2635,9 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
- 	info->content_len = (RTW89_GET_C2H_HDR_LEN(*info->c2hreg) << 2) -
- 				RTW89_C2HREG_HDR_LEN;
- 
-+	rtw89_write8_mask_add(rtwdev, chip->c2h_counter_reg.addr,
-+			      chip->c2h_counter_reg.mask, 1);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 3d1e4ffef1b16..e060b0f9804c2 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3398,6 +3398,8 @@ int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw)
- 	if (rtw89_read32(rtwdev, R_AX_PLATFORM_ENABLE) & B_AX_WCPU_EN)
- 		return -EFAULT;
- 
-+	rtw89_write32(rtwdev, R_AX_UDM1, 0);
-+	rtw89_write32(rtwdev, R_AX_UDM2, 0);
- 	rtw89_write32(rtwdev, R_AX_HALT_H2C_CTRL, 0);
- 	rtw89_write32(rtwdev, R_AX_HALT_C2H_CTRL, 0);
- 	rtw89_write32(rtwdev, R_AX_HALT_H2C, 0);
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 600257909df27..69170912cb846 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -207,6 +207,11 @@
- 
- #define R_AX_UDM0 0x01F0
- #define R_AX_UDM1 0x01F4
-+#define B_AX_UDM1_MASK GENMASK(31, 16)
-+#define B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK GENMASK(15, 12)
-+#define B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK GENMASK(11, 8)
-+#define B_AX_UDM1_WCPU_C2H_ENQ_CNT_MASK GENMASK(7, 4)
-+#define B_AX_UDM1_WCPU_H2C_DEQ_CNT_MASK GENMASK(3, 0)
- #define R_AX_UDM2 0x01F8
- #define R_AX_UDM3 0x01FC
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 9c42b6abd2232..5f7e948507f8a 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2131,9 +2131,11 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.h2c_desc_size		= sizeof(struct rtw89_txwd_body),
- 	.txwd_body_size		= sizeof(struct rtw89_txwd_body),
- 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL,
-+	.h2c_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK >> 8},
- 	.h2c_regs		= rtw8852a_h2c_regs,
- 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL,
- 	.c2h_regs		= rtw8852a_c2h_regs,
-+	.c2h_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK >> 8},
- 	.page_regs		= &rtw8852a_page_regs,
- 	.cfo_src_fd		= false,
- 	.dcfo_comp		= &rtw8852a_dcfo_comp,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 499ae0389c715..895d216cfa27b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -2508,8 +2508,10 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.h2c_desc_size		= sizeof(struct rtw89_txwd_body),
- 	.txwd_body_size		= sizeof(struct rtw89_txwd_body),
- 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL,
-+	.h2c_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK >> 8},
- 	.h2c_regs		= rtw8852b_h2c_regs,
- 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL,
-+	.c2h_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK >> 8},
- 	.c2h_regs		= rtw8852b_c2h_regs,
- 	.page_regs		= &rtw8852b_page_regs,
- 	.cfo_src_fd		= true,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 8af813132f71d..e8e577a1b9fc4 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2867,8 +2867,10 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.h2c_desc_size		= sizeof(struct rtw89_rxdesc_short),
- 	.txwd_body_size		= sizeof(struct rtw89_txwd_body_v1),
- 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL_V1,
-+	.h2c_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK >> 8},
- 	.h2c_regs		= rtw8852c_h2c_regs,
- 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL_V1,
-+	.c2h_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK >> 8},
- 	.c2h_regs		= rtw8852c_c2h_regs,
- 	.page_regs		= &rtw8852c_page_regs,
- 	.cfo_src_fd		= false,
--- 
-2.25.1
+PING
+
+You should let us know if you are not actively maintaining the community part 
+of the driver. If you are only working on the close source firmware, we should 
+have someone else do the open source job.
+We should not waste our life for months on such a small patch.
+
+Have a nice day,
+Aiden
+
+--nextPart4465706.LvFx2qVVIh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEENSNFoSpoTSrmxF9vGvlck5mKYvIFAmQKvJsACgkQGvlck5mK
+YvJldwf/bSXgDTEvj3JaIKg6pquvZIVrvW1EnCtZwTyAuamj3VeuZh8+VPV6wmmU
+CIcilafmPRrAJJCmgmaNygy+jE3ROHY0YBVbE/oaVyOC2SQYPrvArF2zNisEigz+
+tg/ZB1jMNLwdhc2pMXZqo3WwRcQgtDgaW9xU/LsgcYfZz03+x4NQHTjtvQB+eK2U
+MsO67eyA20giaQhPNp8lbV5u7hHHPHRJkUSUBEKAkk/3yrvEha0zvnUwkfGyogSq
+dZzvDItK2Gq1FYxscME4Q/LFobBo2IvuocOf5ZasqOkur4ccNU4Dzz2dL85wQ0vP
+oWl6/uxUrWUqZ8GjcTF+87x6NHNB5w==
+=t1PK
+-----END PGP SIGNATURE-----
+
+--nextPart4465706.LvFx2qVVIh--
+
+
 
