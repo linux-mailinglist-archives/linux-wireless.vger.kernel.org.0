@@ -2,170 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 835AD6B3602
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 06:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D306A6B37E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 08:57:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229800AbjCJFOM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Mar 2023 00:14:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38942 "EHLO
+        id S230089AbjCJH47 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Mar 2023 02:56:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbjCJFOK (ORCPT
+        with ESMTP id S230037AbjCJH45 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Mar 2023 00:14:10 -0500
-Received: from out28-41.mail.aliyun.com (out28-41.mail.aliyun.com [115.124.28.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFCADE9F2C
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 21:14:07 -0800 (PST)
-X-Alimail-AntiSpam: AC=CONTINUE;BC=0.07446568|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.106-0.00820318-0.885797;FP=0|0|0|0|0|0|0|0;HT=ay29a033018047206;MF=aiden.leong@aibsd.com;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.RjAWW6O_1678425243;
-Received: from eq59.localnet(mailfrom:aiden.leong@aibsd.com fp:SMTPD_---.RjAWW6O_1678425243)
-          by smtp.aliyun-inc.com;
-          Fri, 10 Mar 2023 13:14:04 +0800
-From:   Aiden Leong <aiden.leong@aibsd.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Greenman, Gregory" <gregory.greenman@intel.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>, kvalo@kernel.org
-Subject: Re: [PATCH v3] wifi: iwlwifi: pcie: fix the order of scanning
- iwl_dev_info_table
-Date:   Fri, 10 Mar 2023 13:14:03 +0800
-Message-ID: <4811051.31r3eYUQgx@eq59>
-In-Reply-To: <5815091.MhkbZ0Pkbq@eq59>
-References: <20230119175657.9205-1-aiden.leong@aibsd.com>
- <51e9eeb2cd84f0f8ff92981b47a8e77e11047847.camel@intel.com>
- <5815091.MhkbZ0Pkbq@eq59>
+        Fri, 10 Mar 2023 02:56:57 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499A1DF70D
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 23:56:53 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id o12so16984296edb.9
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Mar 2023 23:56:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678435011;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Na4vhlLIT8h87R1c4saJtnoc0rpStTN6SAaJv5Ui0DU=;
+        b=f/cdum7O6TN5gJ9ROGgx6QjE0oljMSgdfelOxJDv/A44aZ7Mm1unTj43LMrAl8qXD3
+         sHI50PXnWoUWOCaGf+Lw7NcDVU4NiPijijYupEKrMb/i7yVzAFSIs2Sdxro3W9NWDoHv
+         l0FZKC3iXGb6IU9h1xEP+L1xj0TStwEsdmZgH7BeJN1yxjzdFSB6oJFobXTUS45dVs0M
+         ULQH07khMas1d0aBIt/OjZLOHVTDe9lhbsnUreYNdh+WszcP/mDLVMMeWmaL4KFGK0LG
+         +5HnCCB4hC8JohJPmZdM8SSKIi+lKSrrSUXogyHzjsDGs1U97Mara0hXF/7LevUFdWY9
+         OvCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678435011;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Na4vhlLIT8h87R1c4saJtnoc0rpStTN6SAaJv5Ui0DU=;
+        b=wFZSIWn3vxIg1RdTxykL0fST5rQSlDlwEEYlMkLEn9loClQm1XywreK5TP6IRSzOMB
+         fWLv+UnliwdW+pEe+6D5fE3WbztP6fCjCQDcwGF/A9ORpGhh0/IN+Ool2c/yEYjDlMST
+         OnSK8ebyX+vrXr6GL6bRlWLUU6k0gDnyn9mdedv9hKwk0MiU9huBqS+nxfWXiuyRB9YI
+         c0yIDkHakvnJ800pfeV85sq7bKtdduhyS8LEdi4VrLgMobkrV/TWk26NET+EjZLcYBs7
+         ckXFEHebwaO6KaEYKSxugQTWPQfSdtomeZDk5gkwGNdQe47+cFn2vrApuN7VN4CAYjTT
+         6fuA==
+X-Gm-Message-State: AO0yUKVGNffDovXI//WrWQybU+jHu1cv3YOwX1fAsQJg3P0NQJPbIDDZ
+        d2DIm/6MoPFD55WevIqaqlAAVg==
+X-Google-Smtp-Source: AK7set83ouw7MBm0jqo5iH57IkMFwoOVUzIry7zQggJ4hxcJBeN03UC69xrHLWNGpiqGw+nvqtrohA==
+X-Received: by 2002:a17:906:eecc:b0:90b:167e:3050 with SMTP id wu12-20020a170906eecc00b0090b167e3050mr30865633ejb.36.1678435011591;
+        Thu, 09 Mar 2023 23:56:51 -0800 (PST)
+Received: from [192.168.1.195] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id ox11-20020a170907100b00b008cf6f8798e1sm641097ejb.54.2023.03.09.23.56.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Mar 2023 23:56:50 -0800 (PST)
+Message-ID: <6108c68b-e38b-3060-f6fa-53be79a795d7@linaro.org>
+Date:   Fri, 10 Mar 2023 07:56:49 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4465706.LvFx2qVVIh";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v1 01/15] dt-bindings: add pwrseq device tree bindings
+Content-Language: en-US
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Herring <robh@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        ath10k@lists.infradead.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, Abel Vesa <abel.vesa@linaro.org>
+References: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
+ <20211006035407.1147909-2-dmitry.baryshkov@linaro.org>
+ <YXf6TbV2IpPbB/0Y@robh.at.kernel.org>
+ <37b26090-945f-1e17-f6ab-52552a4b6d89@linaro.org>
+ <CAL_JsqLAnJqZ95_bf6_fFmPJFMjuy43UfP2UxzEmFMNnG_t-Ug@mail.gmail.com>
+ <31792ef1-20b0-b801-23b7-29f303b91def@linaro.org>
+From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+In-Reply-To: <31792ef1-20b0-b801-23b7-29f303b91def@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart4465706.LvFx2qVVIh
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Aiden Leong <aiden.leong@aibsd.com>
-Date: Fri, 10 Mar 2023 13:14:03 +0800
-Message-ID: <4811051.31r3eYUQgx@eq59>
-In-Reply-To: <5815091.MhkbZ0Pkbq@eq59>
-MIME-Version: 1.0
-
-On Wednesday, February 8, 2023 5:14:50 AM CST Aiden Leong wrote:
-> On Wednesday, February 8, 2023 1:44:39 AM CST Greenman, Gregory wrote:
-> > On Fri, 2023-01-20 at 01:56 +0800, Aiden Leong wrote:
-> > > Fix a bug introduced by:
-> > > commit 32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new
-> > > 
-> > >  config table"), so now we pick the FIRST matching config.
-> > > 
-> > > Signed-off-by: Aiden Leong <aiden.leong@aibsd.com>
-> > > ---
-> > > 
-> > >  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-> > > b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-> 
->  index
-> 
-> > > 99768d6a6032..05764eef15a7 100644
-> > > --- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-> > > +++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-> > > @@ -1456,7 +1456,7 @@ iwl_pci_find_dev_info(u16 device, u16
-> > > subsystem_device,
-> 
->  if (!num_devices)
-> 
-> > >                 return NULL;
-> > > 
-> > > -       for (i = num_devices - 1; i >= 0; i--) {
-> > > +       for (i = 0; i < num_devices; i++) {
-> > > 
-> > >                 const struct iwl_dev_info *dev_info =
-> > > 
-> > > &iwl_dev_info_table[i];
-> > > 
-> > >                 if (dev_info->device != (u16)IWL_CFG_ANY &&
-> > 
-> > It failed or internal testing, so it's more complicated. To traverse this
-> > table
-> 
->  from the beginning to the end requires some changes to the table
-> 
-> > itself and the "goto" wasn't omitted by a mistake, but for a reason...
-> > For the device that you have (device id 0x4DF0, sub-device id 0x0244,
-> > right?)
-> 
->  is it enough to have the first fix (disable
-> 
-> > tx_with_siso_diversity)?
-> 
-> Hi Gregory,
-> That's exactly why I put a warning in previous emails.
-> My opinion will be a little different than yours in this situation.
-> 1. We SHOULD traverse this table from top to bottom to keep our source tree
-> as clean as possible.
-> 2. One simple option is to reverse every config items in this table so the
-> logic keep the same.
-> 3. Your team(I assume Luca Coelho is your colleague) may need to provide
-> further explaination about the `goto` line, since each change in kernel
-> should have a reason.
-> 4. 0x4DF0, 0x0244 is correct. The question is: Will Intel release products
-> with same pid+subID but differenct STEP/RF_TYPE/RF_ID etc? If so, pid+subID
-> won't be enough.
-> 
-> To sum up, there will be three patches:
-> 1. This patch still fixes the BUG introduced by the `goto` change.
-> 2. Patch 2 should be [PATCH 1/2] in previous email.
-> 3. Patch 3 reverses every items in this table. Your team can fine-tune the
-> order of each items. I won't submit this patch.
-> 
-> If you like my ideas, please merge patch1&2 along with another ident fix
-> patch.
-> 
-> BTW, it has been a month since the first email. I'd appreciate if you reply
-> soon.
-> 
-> Cheers,
-> Aiden
-
-Hi Gregory,
-
-PING
-
-You should let us know if you are not actively maintaining the community part 
-of the driver. If you are only working on the close source firmware, we should 
-have someone else do the open source job.
-We should not waste our life for months on such a small patch.
-
-Have a nice day,
-Aiden
-
---nextPart4465706.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEENSNFoSpoTSrmxF9vGvlck5mKYvIFAmQKvJsACgkQGvlck5mK
-YvJldwf/bSXgDTEvj3JaIKg6pquvZIVrvW1EnCtZwTyAuamj3VeuZh8+VPV6wmmU
-CIcilafmPRrAJJCmgmaNygy+jE3ROHY0YBVbE/oaVyOC2SQYPrvArF2zNisEigz+
-tg/ZB1jMNLwdhc2pMXZqo3WwRcQgtDgaW9xU/LsgcYfZz03+x4NQHTjtvQB+eK2U
-MsO67eyA20giaQhPNp8lbV5u7hHHPHRJkUSUBEKAkk/3yrvEha0zvnUwkfGyogSq
-dZzvDItK2Gq1FYxscME4Q/LFobBo2IvuocOf5ZasqOkur4ccNU4Dzz2dL85wQ0vP
-oWl6/uxUrWUqZ8GjcTF+87x6NHNB5w==
-=t1PK
------END PGP SIGNATURE-----
-
---nextPart4465706.LvFx2qVVIh--
 
 
+On 02/11/2021 15:26, Dmitry Baryshkov wrote:
+> On 28/10/2021 00:53, Rob Herring wrote:
+>> On Tue, Oct 26, 2021 at 9:42 AM Dmitry Baryshkov
+>> <dmitry.baryshkov@linaro.org> wrote:
+>>>
+>>> On 26/10/2021 15:53, Rob Herring wrote:
+>>>> On Wed, Oct 06, 2021 at 06:53:53AM +0300, Dmitry Baryshkov wrote:
+>>>>> Add device tree bindings for the new power sequencer subsystem.
+>>>>> Consumers would reference pwrseq nodes using "foo-pwrseq" properties.
+>>>>> Providers would use '#pwrseq-cells' property to declare the amount of
+>>>>> cells in the pwrseq specifier.
+>>>>
+>>>> Please use get_maintainers.pl.
+>>>>
+>>>> This is not a pattern I want to encourage, so NAK on a common binding.
+>>>
+>>>
+>>> Could you please spend a few more words, describing what is not
+>>> encouraged? The whole foo-subsys/#subsys-cells structure?
+>>
+>> No, that's generally how common provider/consumer style bindings work.
+>>
+>>> Or just specifying the common binding?
+>>
+>> If we could do it again, I would not have mmc pwrseq binding. The
+>> properties belong in the device's node. So don't generalize the mmc
+>> pwrseq binding.
+>>
+>> It's a kernel problem if the firmware says there's a device on a
+>> 'discoverable' bus and the kernel can't discover it. I know you have
+>> the added complication of a device with 2 interfaces, but please,
+>> let's solve one problem at a time.
 
+Just to keep this topic updated with some pointers [1] to changes done 
+to solve same problem in USB Hub. These patches 
+(drivers/usb/misc/onboard_usb_hub*) have been merged since last year July.
+
+It looks like we can take some inspiration from this to address PCIE Bus 
+issue aswell.
+
+Thanks to Neil to point this.
+
+[1] 
+https://lore.kernel.org/lkml/20220630193530.2608178-1-mka@chromium.org/T/
+
+
+--srini
+> 
+> The PCI bus handling is a separate topic for now (as you have seen from 
+> the clearly WIP patches targeting just testing of qca6390's wifi part).
+> 
+> For me there are three parts of the device:
+> - power regulator / device embedded power domain.
+> - WiFi
+> - Bluetooth
+> 
+> With the power regulator being a complex and a bit nasty beast. It has 
+> several regulators beneath, which have to be powered up in a proper way.
+> Next platforms might bring additional requirements common to both WiFi 
+> and BT parts (like having additional clocks, etc). It is externally 
+> controlled (after providing power to it you have to tell, which part of 
+> the chip is required by pulling up the WiFi and/or BT enable GPIOs.
+> 
+> Having to duplicate this information in BT and WiFi cases results in 
+> non-aligned bindings (with WiFi and BT parts using different set of 
+> properties and different property names) and non-algined drivers (so the 
+> result of the powerup would depend on the order of drivers probing).
+> 
+> So far I still suppose that having a single separate entity controlling 
+> the powerup of such chips is the right thing to do.
+> 
+> I'd prefer to use the power-domain bindings (as the idea seems to be 
+> aligned here), but as the power-domain is used for the in-chip power 
+> domains, we had to invent the pwrseq name.
+> 
