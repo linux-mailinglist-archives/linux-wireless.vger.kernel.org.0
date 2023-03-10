@@ -2,55 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F1486B303E
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Mar 2023 23:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 826266B32E7
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 01:49:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230383AbjCIWNb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Mar 2023 17:13:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47970 "EHLO
+        id S229577AbjCJAtT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Mar 2023 19:49:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbjCIWNa (ORCPT
+        with ESMTP id S229521AbjCJAtS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Mar 2023 17:13:30 -0500
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2351999C2F;
-        Thu,  9 Mar 2023 14:13:27 -0800 (PST)
-Message-ID: <b4427052-9e94-bce7-b745-2473be5686fa@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1678400003;
-        bh=jek5obCUz0PG/txARSS67XWDgInyk7/o7PGoSvmWT+g=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=YUx5bulNZ3tgiJCaK11hT9J4fERH379GAxhPy+Mi1YY2bDwSQo/5vFWkVOOox1PyC
-         2HI1B3e8TJi12q0lqz1NasGzcD2tq5FM9z1GHpyaxEFCtHs4k04E97L8vPFX/vDW7Y
-         BsjO6P5wXqWq2JxSK31gGZK0a7PfcYl2rSMlup9o=
-Date:   Thu, 9 Mar 2023 23:13:21 +0100
+        Thu, 9 Mar 2023 19:49:18 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36500125B5
+        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 16:49:14 -0800 (PST)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32A0mrO03008317, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32A0mrO03008317
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 10 Mar 2023 08:48:53 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 10 Mar 2023 08:49:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Fri, 10 Mar 2023 08:49:03 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Fri, 10 Mar 2023 08:49:03 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Jes Sorensen <Jes.Sorensen@gmail.com>, Jiajie Chen <c@jia.je>
+Subject: RE: [PATCH v2] wifi: rtl8xxxu: Support new chip RTL8710BU aka RTL8188GU
+Thread-Topic: [PATCH v2] wifi: rtl8xxxu: Support new chip RTL8710BU aka
+ RTL8188GU
+Thread-Index: AQHZUgTb1JQ6CjZInkaofWl5rHFKQa7zJnyw
+Date:   Fri, 10 Mar 2023 00:49:02 +0000
+Message-ID: <8c3edda0b6944d4fafe08cea89b94142@realtek.com>
+References: <d4c5073a-4831-7353-6ea7-06dfd3cca7f2@gmail.com>
+In-Reply-To: <d4c5073a-4831-7353-6ea7-06dfd3cca7f2@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
- drops
-Content-Language: en-US
-To:     Felix Fietkau <nbd@nbd.name>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Mann <rauchwolke@gmx.net>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Johannes Berg <johannes.berg@intel.com>
-References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
- <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
- <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
- <debc7fe9-204d-63a7-aa61-91b20a46f385@wetzel-home.de>
- <4a02173f-3a60-0a7e-8962-3778e6c55bf3@nbd.name>
- <cfa5cc30-bf5a-bffd-4c2f-eec8a6522dd5@wetzel-home.de>
- <42185fa2-4191-fcf5-9c0f-fd7098bb856b@nbd.name>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <42185fa2-4191-fcf5-9c0f-fd7098bb856b@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,52 +64,132 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08.03.23 12:57, Felix Fietkau wrote:
-> On 08.03.23 12:41, Alexander Wetzel wrote:
->> On 08.03.23 08:52, Felix Fietkau wrote:
->>
->>>> I'm also planning to provide some more debug patches, to figuring out
->>>> which part of commit 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs
->>>> for resumption") fixes the issue for you. Assuming my understanding
->>>> above is correct the patch should not really fix/break anything for
->>>> you...With the findings above I would have expected your git bisec to
->>>> identify commit a790cc3a4fad ("wifi: mac80211: add wake_tx_queue
->>>> callback to drivers") as the first broken commit...
->>> I can't point to any specific series of events where it would go 
->>> wrong, but I suspect that the problem might be the fact that you're 
->>> doing tx scheduling from within ieee80211_handle_wake_tx_queue. I 
->>> don't see how it's properly protected from potentially being called 
->>> on different CPUs concurrently.
->>>
->>> Back when I was debugging some iTXQ issues in mt76, I also had 
->>> problems when tx scheduling could happen from multiple places. My 
->>> solution was to have a single worker thread that handles tx, which is 
->>> scheduled from the wake_tx_queue op.
->>> Maybe you could do something similar in mac80211 for non-iTXQ drivers.
->>>
->>
->> I think it's already doing all of that:
->> ieee80211_handle_wake_tx_queue() is the mac80211 implementation for the
->> wake_tx_queue op. The drivers without native iTXQ support simply link it
->> to this handler.
-> I know. The problem I see is that I can't find anything that guarantees 
-> that .wake_tx_queue_op is not being called concurrently from multiple 
-> different places. ieee80211_handle_wake_tx_queue is doing the scheduling 
-> directly, instead of deferring it to a single workqueue/tasklet/thread, 
-> and multiple concurrent calls to it could potentially cause issues.
-
-Good hint, thanks.
-According to the latest debug log exactly that seems to be happening:
-
-ieee80211_wake_queue() is called by the driver and wake_txqs_tasklet 
-tasklet is started. But during execution of the drv_wake_tx_queue() from 
-the tasklet userspace queues a new skb and also calls into 
-drv_wake_tx_queue(), which is then run overlapping...
-
-Not sure yet how that could cause the problem. But this breaks the 
-assumption that drv_wake_tx_queue() are not overlapping. And TX fails 
-directly after such an overlapping TX...
-
-I'll probably just serialize the calls and then we verify if that helps...
-
-Alexander
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBNYXJjaCA5LCAy
+MDIzIDU6MjggQU0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzog
+SmVzIFNvcmVuc2VuIDxKZXMuU29yZW5zZW5AZ21haWwuY29tPjsgUGluZy1LZSBTaGloIDxwa3No
+aWhAcmVhbHRlay5jb20+OyBKaWFqaWUgQ2hlbiA8Y0BqaWEuamU+DQo+IFN1YmplY3Q6IFtQQVRD
+SCB2Ml0gd2lmaTogcnRsOHh4eHU6IFN1cHBvcnQgbmV3IGNoaXAgUlRMODcxMEJVIGFrYSBSVEw4
+MTg4R1UNCj4gDQo+IFRoaXMgY2hpcCBpcyBmb3VuZCBpbiBjaGVhcCAiZnJlZSBkcml2ZXIiIFVT
+QiBhZGFwdGVycyBmcm9tIEFsaWV4cHJlc3MuDQo+IEluaXRpYWxseSB0aGV5IHByZXRlbmQgdG8g
+YmUgYSBDRC1ST00gY29udGFpbmluZyB0aGUgZHJpdmVyIGZvciBXaW5kb3dzLg0KPiAiRWplY3Rp
+bmciIHN3aXRjaGVzIHRoZSBkZXZpY2UgdG8gd2lmaSBtb2RlLg0KPiANCj4gRmVhdHVyZXM6IDIu
+NCBHSHosIGIvZy9uIG1vZGUsIDFUMVIsIDE1MCBNYnBzLg0KPiANCj4gVGhpcyBjaGlwIGlzIG1v
+cmUgdW5pcXVlIHRoYW4gb3RoZXIgUmVhbHRlayBjaGlwczoNCj4gDQo+ICogVGhlIHJlZ2lzdGVy
+cyBhdCBhZGRyZXNzZXMgMHgwLTB4ZmYsIHdoaWNoIGFsbCB0aGUgb3RoZXIgY2hpcHMgdXNlLA0K
+PiAgIGNhbid0IGJlIHVzZWQgaGVyZS4gTmV3IHJlZ2lzdGVycyBhdCAweDgwMDAtMHg4MGZmIG11
+c3QgYmUgdXNlZA0KPiAgIGluc3RlYWQuIEFuZCBpdCdzIG5vdCBhIHNpbXBsZSBtYXR0ZXIgb2Yg
+YWRkaW5nIDB4ODAwMDogMHgyDQo+ICAgKFJFR19TWVNfRlVOQykgYmVjYW1lIDB4ODAwNCwgMHg4
+MCAoUkVHX01DVV9GV19ETCkgYmVjYW1lIDB4ODA5MCwNCj4gICBldGMuDQo+IA0KPiAqIEFsc28g
+dGhlcmUgYXJlIGEgZmV3IG5ldyByZWdpc3RlcnMgd2hpY2ggbXVzdCBiZSBhY2Nlc3NlZCBpbmRp
+cmVjdGx5DQo+ICAgYmVjYXVzZSB0aGVpciBhZGRyZXNzZXMgZG9uJ3QgZml0IGluIDE2IGJpdHMu
+IE5vIG90aGVyIGNoaXBzIHNlZW0gdG8NCj4gICBoYXZlIHRoZXNlLg0KPiANCj4gKiBUaGUgdmVu
+ZG9yIGRyaXZlciBjb21waWxlcyB0byA4MTg4Z3Uua28sIGJ1dCB0aGUgY29kZSBjYWxscyB0aGUg
+Y2hpcA0KPiAgIFJUTDg3MTBCKFUpIHByZXR0eSBtdWNoIGV2ZXJ5d2hlcmUsIGluY2x1ZGluZyBt
+ZXNzYWdlcyB2aXNpYmxlIHRvIHRoZQ0KPiAgIHVzZXIuDQo+IA0KPiBBbm90aGVyIGRpZmZlcmVu
+Y2UgY29tcGFyZWQgdG8gdGhlIG90aGVyIGNoaXBzIHN1cHBvcnRlZCBieSBydGw4eHh4dSBpcw0K
+PiB0aGF0IGl0IGhhcyBhIG5ldyBQSFkgc3RhdHVzIHN0cnVjdCwgb3IgdGhyZWUgb2YgdGhlbSBh
+Y3R1YWxseSwgZnJvbQ0KPiB3aGljaCB3ZSBleHRyYWN0IHRoZSBSU1NJLCBhbW9uZyBvdGhlciB0
+aGluZ3MuIFRoaXMgaXMgbm90IHVuaXF1ZSwNCj4gdGhvdWdoLCBqdXN0IG5ldy4gVGhlIGNoaXBz
+IHN1cHBvcnRlZCBieSBydHc4OCBhbHNvIHVzZSBpdC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEJp
+dHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiAtLS0NCj4gdjI6DQo+
+ICAtIFN1Z2dlc3Rpb25zIGZyb20gUGluZy1LZSBTaGloOg0KPiAgICAtIEFkZCBjb21tYSBhZnRl
+ciB0aGUgbGFzdCBtZW1iZXIgb2YgZW51bSBydGw4eHh4dV9ydGxfY2hpcC4NCj4gICAgLSBBZGQg
+Y29tbWVudCBhYm91dCBzdHJ1Y3QgbXV0ZXggc3lzb25faW5kaXJlY3RfYWNjZXNzX211dGV4Lg0K
+PiAgICAtIERlY2xhcmUgdmFyaWFibGVzIGluIHJldmVyc2UgQ2hyaXN0bWFzIHRyZWUgb3JkZXIg
+aW4NCj4gICAgICBydGw4NzEwYl9yZWFkX2VmdXNlKCkuDQo+ICAgIC0gUmVtb3ZlIHVubmVjZXNz
+YXJ5IHZhcmlhYmxlIHJldCBmcm9tIHJ0bDg3MTBidV9pZGVudGlmeV9jaGlwKCkuDQo+ICAgIC0g
+QWRkIGRlZmluaXRpb24gZm9yIHJlZ2lzdGVyIDB4YWFjLg0KPiAgICAtIFVzZSB0aGUgZXhpc3Rp
+bmcgbWFjcm9zIFJFR19TWVNfRlVOQywgU1lTX0ZVTkNfQkJSU1RCLCBhbmQNCj4gICAgICBTWVNf
+RlVOQ19CQl9HTEJfUlNUTiBpbnN0ZWFkIG9mIG1hZ2ljIG51bWJlcnMgaW4NCj4gICAgICBydGw4
+NzEwYnVfYWN0aXZlX3RvX2xwcygpLg0KPiAgICAtIERlY2xhcmUgcmVnX21jdV9md19kbCBzZXBh
+cmF0ZWx5IGluIHJ0bDh4eHh1X2Rvd25sb2FkX2Zpcm13YXJlKCkuDQo+ICAtIEFkZCBzcGFjZXMg
+YWZ0ZXIgLyogYW5kIGJlZm9yZSAqLyBpbiBzb21lIGNvbW1lbnRzLg0KPiAgLSBSZWFycmFuZ2Ug
+dGhlIGRlY2xhcmF0aW9ucyBpbiBydGw4NzEwYl9yZWFkX2VmdXNlOCgpIGFzIHdlbGwuDQo+ICAt
+IExvYWQgdGhlIHJpZ2h0IGZpcm13YXJlIGJhc2VkIG9uIHRoZSBjaGlwIG1hbnVmYWN0dXJlciAo
+VU1DL1NNSUMpLg0KPiAgLSBVc2UgdGhlIG1hc2sgMHhjMCBpbnN0ZWFkIG9mIDB4ZjAgdG8gZGV0
+ZWN0IHRoZSBjaGlwIG1hbnVmYWN0dXJlciBpbg0KPiAgICBydGw4NzEwYnVfaWRlbnRpZnlfY2hp
+cCgpLiBUaGVyZSB3YXMgYW4gZXh0cmEgc2hpZnQgaW4gdGhlIHZlbmRvcg0KPiAgICBkcml2ZXIg
+d2hpY2ggSSBtaXNzZWQuDQo+ICAtIE1ha2UgdGhlIHZpZCBhbmQgcGlkIGZpZWxkcyBvZiBzdHJ1
+Y3QgcnRsODcxMGJ1X2VmdXNlIHR3byBieXRlcw0KPiAgICBlYWNoLCBhbmQgdGhlIGZpbGxlciBm
+aWVsZCByZXM3IG9uZSBieXRlIHNob3J0ZXIuDQo+IA0KPiAgLSBJIHdhcyBsYXp5IGFuZCBkaWRu
+J3QgZG8gc29tZSB0aGluZ3MgdGhlIHJpZ2h0IHdheSBpbiB2MS4gSSB0aG91Z2h0DQo+ICAgIHN1
+cmVseSB0aGVyZSBhcmUgbm8gbW9yZSBjaGlwcyB0byBzdXBwb3J0LiBCdXQgc2luY2UgdGhlbiBJ
+DQo+ICAgIGRpc2NvdmVyZWQgdGhhdCB0aGUgUlRMODE5MkZVIGNhbiBiZSBib3VnaHQgZnJvbSBB
+bGlleHByZXNzIGZvcg0KPiAgICA2LjY2ICQuIDopIEl0IHdpbGwgbmVlZCB0aGUgc2FtZSBQSFkg
+c3RhdHVzIHBhcnNpbmcgYXMgdGhlIFJUTDg3MTBCVSwNCj4gICAgd2hpY2ggaXMgd2h5IHRoZXJl
+IGFyZSB0aGVzZSBleHRyYSBjaGFuZ2VzOg0KPiAgICAtIEluaXRpYWxpc2UgcHJpdi0+Y2NrX25l
+d19hZ2MgaW4gcnRsOHh4eHVfaW5pdF9kZXZpY2UoKSBhbHdheXMsDQo+ICAgICAgcmVnYXJkbGVz
+cyBvZiB0aGUgY2hpcCBmYW1pbHkuDQo+ICAgIC0gUGFzcyB0aGUgUEhZIHN0YXR1cyBzdHJ1Y3Rz
+IHRvIHRoZSBDQ0sgUlNTSSBmdW5jdGlvbnMuDQo+ICAgIC0gTW92ZSB0aGUgIm9sZCBBR0MiIEND
+SyBSU1NJIGNhbGN1bGF0aW9uIGZyb20NCj4gICAgICBydGw4NzEwYnVfcnhfcGFyc2VfcGh5c3Rh
+dHNfdHlwZTAoKSB0byBhIG5ldyBmdW5jdGlvbg0KPiAgICAgIHJ0bDg3MTBiX2Nja19yc3NpKCku
+DQo+ICAgIC0gUmVuYW1lIHRoZSBmdW5jdGlvbnMgcnRsODcxMGJ1X3J4X3BhcnNlX3BoeXN0YXRz
+KiB0bw0KPiAgICAgIGphZ3VhcjJfcnhfcGFyc2VfcGh5c3RhdHMqIGFuZCBtb3ZlIHRoZW0gdG8g
+cnRsOHh4eHVfY29yZS5jLg0KPiAgICAtIE1vZGlmeSB0aGUgZnVuY3Rpb25zIGphZ3VhcjJfcnhf
+cGFyc2VfcGh5c3RhdHNfdHlwZXsxLDJ9IHRvIGhhbmRsZQ0KPiAgICAgIDJUMlIgY2hpcHMgYXMg
+d2VsbC4NCj4gLS0tDQoNClsuLi5dDQoNCj4gK3N0YXRpYyB1MzIgcnRsODcxMGJfaW5kaXJlY3Rf
+cmVhZDMyKHN0cnVjdCBydGw4eHh4dV9wcml2ICpwcml2LCB1MzIgYWRkcikNCj4gK3sNCj4gKyAg
+ICAgICBzdHJ1Y3QgZGV2aWNlICpkZXYgPSAmcHJpdi0+dWRldi0+ZGV2Ow0KPiArICAgICAgIHUz
+MiB2YWwzMiwgdmFsdWUgPSAweGZmZmZmZmZmOw0KPiArICAgICAgIHU4IHBvbGxpbmdfY291bnQg
+PSAweGZmOw0KPiArDQo+ICsgICAgICAgaWYgKGFkZHIgJiAzKSB7DQoNCmlmICghSVNfQUxJR05F
+RChhZGRyLCA0KSkNCg0KPiArICAgICAgICAgICAgICAgZGV2X3dhcm4oZGV2LCAiJXM6IEFib3J0
+aW5nIGJlY2F1c2UgMHgleCBpcyBub3QgYSBtdWx0aXBsZSBvZiA0LlxuIiwNCj4gKyAgICAgICAg
+ICAgICAgICAgICAgICAgIF9fZnVuY19fLCBhZGRyKTsNCj4gKyAgICAgICAgICAgICAgIHJldHVy
+biB2YWx1ZTsNCj4gKyAgICAgICB9DQo+ICsNCj4gKyAgICAgICBtdXRleF9sb2NrKCZwcml2LT5z
+eXNvbl9pbmRpcmVjdF9hY2Nlc3NfbXV0ZXgpOw0KPiArDQo+ICsgICAgICAgcnRsOHh4eHVfd3Jp
+dGUzMihwcml2LCBSRUdfVVNCX0hPU1RfSU5ESVJFQ1RfQUREUl84NzEwQiwgYWRkcik7DQo+ICsg
+ICAgICAgcnRsOHh4eHVfd3JpdGUzMihwcml2LCBSRUdfRUZVU0VfSU5ESVJFQ1RfQ1RSTF84NzEw
+QiwgTk9STUFMX1JFR19SRUFEX09GRlNFVCk7DQo+ICsNCj4gKyAgICAgICBkbw0KPiArICAgICAg
+ICAgICAgICAgdmFsMzIgPSBydGw4eHh4dV9yZWFkMzIocHJpdiwgUkVHX0VGVVNFX0lORElSRUNU
+X0NUUkxfODcxMEIpOw0KPiArICAgICAgIHdoaWxlICgodmFsMzIgJiBCSVQoMzEpKSAmJiAoLS1w
+b2xsaW5nX2NvdW50ID4gMCkpOw0KDQpBZGQgYnJhY2UgaXMgYWxsb3dlZCBmb3IgdGhpcyBjYXNl
+LiBOb3Qgc3VyZSBpZiB5b3UgcHJlZmVyIHRoaXMsIG9yIG1pc3MgDQpjb21tZW50IGJlZm9yZS4N
+Cg0KPiArDQo+ICsgICAgICAgaWYgKHBvbGxpbmdfY291bnQgPT0gMCkNCj4gKyAgICAgICAgICAg
+ICAgIGRldl93YXJuKGRldiwgIiVzOiBGYWlsZWQgdG8gcmVhZCBmcm9tIDB4JXgsIDB4ODA2YyA9
+IDB4JXhcbiIsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICBfX2Z1bmNfXywgYWRkciwgdmFs
+MzIpOw0KPiArICAgICAgIGVsc2UNCj4gKyAgICAgICAgICAgICAgIHZhbHVlID0gcnRsOHh4eHVf
+cmVhZDMyKHByaXYsIFJFR19VU0JfSE9TVF9JTkRJUkVDVF9EQVRBXzg3MTBCKTsNCj4gKw0KPiAr
+ICAgICAgIG11dGV4X3VubG9jaygmcHJpdi0+c3lzb25faW5kaXJlY3RfYWNjZXNzX211dGV4KTsN
+Cj4gKw0KPiArICAgICAgIGlmIChydGw4eHh4dV9kZWJ1ZyAmIFJUTDhYWFhVX0RFQlVHX1JFR19S
+RUFEKQ0KPiArICAgICAgICAgICAgICAgZGV2X2luZm8oZGV2LCAiJXMoJTA0eCkgPSAweCUwOHhc
+biIsIF9fZnVuY19fLCBhZGRyLCB2YWx1ZSk7DQo+ICsNCj4gKyAgICAgICByZXR1cm4gdmFsdWU7
+DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHJ0bDg3MTBiX2luZGlyZWN0X3dyaXRlMzIoc3Ry
+dWN0IHJ0bDh4eHh1X3ByaXYgKnByaXYsIHUzMiBhZGRyLCB1MzIgdmFsKQ0KPiArew0KPiArICAg
+ICAgIHN0cnVjdCBkZXZpY2UgKmRldiA9ICZwcml2LT51ZGV2LT5kZXY7DQo+ICsgICAgICAgdTgg
+cG9sbGluZ19jb3VudCA9IDB4ZmY7DQo+ICsgICAgICAgdTMyIHZhbDMyOw0KPiArDQo+ICsgICAg
+ICAgaWYgKGFkZHIgJiAzKSB7DQoNCmlmICghSVNfQUxJR05FRChhZGRyLCA0KSkNCg0KPiArICAg
+ICAgICAgICAgICAgZGV2X3dhcm4oZGV2LCAiJXM6IEFib3J0aW5nIGJlY2F1c2UgMHgleCBpcyBu
+b3QgYSBtdWx0aXBsZSBvZiA0LlxuIiwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgIF9fZnVu
+Y19fLCBhZGRyKTsNCj4gKyAgICAgICAgICAgICAgIHJldHVybjsNCj4gKyAgICAgICB9DQo+ICsN
+Cj4gKyAgICAgICBtdXRleF9sb2NrKCZwcml2LT5zeXNvbl9pbmRpcmVjdF9hY2Nlc3NfbXV0ZXgp
+Ow0KPiArDQo+ICsgICAgICAgcnRsOHh4eHVfd3JpdGUzMihwcml2LCBSRUdfVVNCX0hPU1RfSU5E
+SVJFQ1RfQUREUl84NzEwQiwgYWRkcik7DQo+ICsgICAgICAgcnRsOHh4eHVfd3JpdGUzMihwcml2
+LCBSRUdfVVNCX0hPU1RfSU5ESVJFQ1RfREFUQV84NzEwQiwgdmFsKTsNCj4gKyAgICAgICBydGw4
+eHh4dV93cml0ZTMyKHByaXYsIFJFR19FRlVTRV9JTkRJUkVDVF9DVFJMXzg3MTBCLCBOT1JNQUxf
+UkVHX1dSSVRFX09GRlNFVCk7DQo+ICsNCj4gKyAgICAgICBkbw0KPiArICAgICAgICAgICAgICAg
+dmFsMzIgPSBydGw4eHh4dV9yZWFkMzIocHJpdiwgUkVHX0VGVVNFX0lORElSRUNUX0NUUkxfODcx
+MEIpOw0KPiArICAgICAgIHdoaWxlICgodmFsMzIgJiBCSVQoMzEpKSAmJiAoLS1wb2xsaW5nX2Nv
+dW50ID4gMCkpOw0KPiArDQo+ICsgICAgICAgaWYgKHBvbGxpbmdfY291bnQgPT0gMCkNCj4gKyAg
+ICAgICAgICAgICAgIGRldl93YXJuKGRldiwgIiVzOiBGYWlsZWQgdG8gd3JpdGUgMHgleCB0byAw
+eCV4LCAweDgwNmMgPSAweCV4XG4iLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgX19mdW5j
+X18sIHZhbCwgYWRkciwgdmFsMzIpOw0KPiArDQo+ICsgICAgICAgbXV0ZXhfdW5sb2NrKCZwcml2
+LT5zeXNvbl9pbmRpcmVjdF9hY2Nlc3NfbXV0ZXgpOw0KPiArDQo+ICsgICAgICAgaWYgKHJ0bDh4
+eHh1X2RlYnVnICYgUlRMOFhYWFVfREVCVUdfUkVHX1dSSVRFKQ0KPiArICAgICAgICAgICAgICAg
+ZGV2X2luZm8oZGV2LCAiJXMoJTA0eCkgPSAweCUwOHhcbiIsIF9fZnVuY19fLCBhZGRyLCB2YWwp
+Ow0KPiArfQ0KDQpbLi4uXQ0KDQpPbmx5IHR3byBtaW5vciBjb21tZW50cywgYW5kIHYyIGxvb2tz
+IGdvb2QgdG8gbWUuIFNvLCBJIHJ1biBzcGFyc2UgYW5kIHNtYXRjaA0KdG8gY2hlY2sgdGhpcyBw
+YXRjaCwgYW5kIGl0IHJlcG9ydHMgdHdvIHdhcm5pbmdzOg0KDQoxLiBkcml2ZXJzL25ldC93aXJl
+bGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1Xzg3MTBiLmM6NzQyIHJ0bDg3MTBidV9jb25m
+aWdfY2hhbm5lbCgpIGVycm9yOiB1bmluaXRpYWxpemVkIHN5bWJvbCAnc2VjX2NoX2Fib3ZlJy4N
+Cg0KVGhpcyBsb29rcyBsaWtlIGEgZmFsc2UtYWxhcm0sIGJlY2F1c2UgJ3NlY19jaF9hYm92ZScg
+bXVzdCBiZSBzZXQgaWYgJ2h0NDAnIGlzIHRydWUuDQpCdXQsIHRoaXMgc2hvdWxkIHJlZmVyZW5j
+ZSBiYWNrIG11Y2ggdG8ga25vdyB0aGlzLiANCk1heWJlLCB3ZSBjYW4gc2V0ICdzZWNfY2hfYWJv
+dmUgPSAwJyBpbml0aWFsbHkuIA0KDQoNCjIuIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnRsOHh4eHUvcnRsOHh4eHVfODcxMGIuYzoxNDg3IHJ0bDg3MTBidV9waHlfaXFfY2FsaWJyYXRl
+KCkgZXJyb3I6IHVuaW5pdGlhbGl6ZWQgc3ltYm9sICdyZWdfZTk0Jy4NCg0KVGhpcyBjb3VsZCBi
+ZSBhIGZhbHNlLWFsYXJtIHRvby4gJ3JlZ19lOTQnIG11c3QgYmUgc2V0IGlmICdjYW5kaWRhdGUg
+Pj0gMCcsIGJ1dA0Kb3JpZ2luYWwgc3RhdGVtZW50IGNhdXNlcyBzbWF0Y2ggaGFyZCB0byBkZXRl
+cm1pbmU6DQoNCiAgIGlmIChyZWdfZTk0ICYmIGNhbmRpZGF0ZSA+PSAwKQ0KDQpzd2FwIHRoZSBl
+eHByZXNzaW9ucyB0byBmaXggdGhlIHdhcm5pbmc6DQoNCiAgaWYgKGNhbmRpZGF0ZSA+PSAwICYm
+IHJlZ19lOTQpDQoNCg0KUGluZy1LZQ0KDQoNCg==
