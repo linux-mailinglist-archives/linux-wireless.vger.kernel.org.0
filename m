@@ -2,264 +2,292 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 377CC6B4F2F
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 18:42:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA546B4F89
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 18:53:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbjCJRmJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Mar 2023 12:42:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
+        id S231635AbjCJRx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Mar 2023 12:53:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231567AbjCJRlp (ORCPT
+        with ESMTP id S231638AbjCJRxY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Mar 2023 12:41:45 -0500
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2054.outbound.protection.outlook.com [40.107.243.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55EB512D411;
-        Fri, 10 Mar 2023 09:40:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VvOCvcU1esDFNcdTp9fMTiP9YrJ27WtckgNuuQ/M0J4iK2Q4ijcgzDqYIYSSe165HTS2tNZ2tjYj4aM7kQ0UzA1irErWBB9Dnho707qv5nrGxysvCTC/AQW+yjED8xHWA4JUFunWqNwzFEtfN7znPjemgJAA7dyRJAvUzn550ciyaJZj3O74w+N+xP9EqFlKBcq6Mh+PqpBB8ftWDodVwZiUF+kM43dqXB7sXlV4iDvq8p9djZta/QikpwSomc98+TN61iSeuh3ifW1GmR5Obe7EpjnLlKbetSp9x1H2DNWv+qxf29ljOnl2RtnTRjTA+tQ02uxJozFCjbkujhAIcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KaUhyoeEK1tG4Jq20ydCTjifKBTSA159AvAfZW0MjkQ=;
- b=HTuF/IcpRCGVLCnYF04aGY9I6AvwqUop50bUv2x44FWfCPyqI9NjEIJpuKXJb0RHG8LQCGV1Qi59cW/FnWqj0bXnK6W6kAYA4+WJQMB/WYJC32MlfHc7/BbR5hPdYSMM/NwqkRFTeNtZUDNrJhCwjM0phRE3FWhiDaFwbu2gZCYA0JCjoB/Z7Bx0b7JO8xNeRJ7+aP6bVNN00OOS+ZZOY/Ixb6sB3ZsRp4FNxE/G1KJn9uRbJHhDsP775z49wJTk6rGHg9JNJq7CHCOAkPhNrKiaKrhULHQzFh36IkBH6XK6PQLWS5HVeQWseg/eXEJSkO9vtusEAsi9TQXJRoX5lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KaUhyoeEK1tG4Jq20ydCTjifKBTSA159AvAfZW0MjkQ=;
- b=OdrPcG0RPVLwrF5qKa+S3KNhS0bIJuUtmwjwgs6V1QBAN6Z+xN8kTmhfGO1HGcKpOUTkXCT6rdQGvj/lnh9GUEJcPwzVtwps0DAkHLR7KoLy/K7wVgughFMbxCS9QdM/ZvcljsOGRgmwUNTXysNVbkfzFAe8pgof1SCzoiXE6sQ=
-Received: from MW4PR04CA0200.namprd04.prod.outlook.com (2603:10b6:303:86::25)
- by BN9PR12MB5338.namprd12.prod.outlook.com (2603:10b6:408:103::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.20; Fri, 10 Mar
- 2023 17:40:10 +0000
-Received: from CO1NAM11FT074.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:86:cafe::52) by MW4PR04CA0200.outlook.office365.com
- (2603:10b6:303:86::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.29 via Frontend
- Transport; Fri, 10 Mar 2023 17:40:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT074.mail.protection.outlook.com (10.13.174.254) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6178.19 via Frontend Transport; Fri, 10 Mar 2023 17:40:10 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 10 Mar
- 2023 11:40:03 -0600
-Received: from xhdsneeli40.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
- Transport; Fri, 10 Mar 2023 11:39:36 -0600
-From:   Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-To:     <broonie@kernel.org>, <miquel.raynal@bootlin.com>,
-        <richard@nod.at>, <vigneshr@ti.com>, <jic23@kernel.org>,
-        <tudor.ambarus@microchip.com>, <pratyush@kernel.org>,
-        <Sanju.Mehta@amd.com>, <chin-ting_kuo@aspeedtech.com>,
-        <clg@kaod.org>, <kdasu.kdev@gmail.com>, <f.fainelli@gmail.com>,
-        <rjui@broadcom.com>, <sbranden@broadcom.com>,
-        <eajames@linux.ibm.com>, <olteanv@gmail.com>, <han.xu@nxp.com>,
-        <john.garry@huawei.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <narmstrong@baylibre.com>,
-        <khilman@baylibre.com>, <matthias.bgg@gmail.com>,
-        <haibo.chen@nxp.com>, <linus.walleij@linaro.org>,
-        <daniel@zonque.org>, <haojian.zhuang@gmail.com>,
-        <robert.jarzmik@free.fr>, <agross@kernel.org>,
-        <bjorn.andersson@linaro.org>, <heiko@sntech.de>,
-        <krzysztof.kozlowski@linaro.org>, <andi@etezian.org>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-        <wens@csie.org>, <jernej.skrabec@gmail.com>, <samuel@sholland.org>,
-        <masahisa.kojima@linaro.org>, <jaswinder.singh@linaro.org>,
-        <rostedt@goodmis.org>, <mingo@redhat.com>,
-        <l.stelmach@samsung.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <alex.aring@gmail.com>, <stefan@datenfreihafen.org>,
-        <kvalo@kernel.org>, <james.schulman@cirrus.com>,
-        <david.rhodes@cirrus.com>, <tanureal@opensource.cirrus.com>,
-        <rf@opensource.cirrus.com>, <perex@perex.cz>, <tiwai@suse.com>,
-        <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
-        <mpe@ellerman.id.au>, <oss@buserror.net>, <windhl@126.com>,
-        <yangyingliang@huawei.com>, <william.zhang@broadcom.com>,
-        <kursad.oney@broadcom.com>, <jonas.gorski@gmail.com>,
-        <anand.gore@broadcom.com>, <rafal@milecki.pl>
-CC:     <git@amd.com>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <radu_nicolae.pirea@upb.ro>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <claudiu.beznea@microchip.com>,
-        <bcm-kernel-feedback-list@broadcom.com>, <fancer.lancer@gmail.com>,
-        <kernel@pengutronix.de>, <festevam@gmail.com>, <linux-imx@nxp.com>,
-        <jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>,
-        <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
-        <tali.perry1@gmail.com>, <venture@google.com>, <yuenn@google.com>,
-        <benjaminfair@google.com>, <yogeshgaur.83@gmail.com>,
-        <konrad.dybcio@somainline.org>, <alim.akhtar@samsung.com>,
-        <ldewangan@nvidia.com>, <thierry.reding@gmail.com>,
-        <jonathanh@nvidia.com>, <michal.simek@amd.com>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-wpan@vger.kernel.org>,
-        <libertas-dev@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <linux-iio@vger.kernel.org>, <michael@walle.cc>,
-        <palmer@dabbelt.com>, <linux-riscv@lists.infradead.org>,
-        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
-        <linuxppc-dev@lists.ozlabs.org>, <amitrkcian2002@gmail.com>,
-        <amit.kumar-mahapatra@amd.com>
-Subject: [PATCH V6 15/15] spi: spi-zynqmp-gqspi: Add parallel memories support in GQSPI driver
-Date:   Fri, 10 Mar 2023 23:02:17 +0530
-Message-ID: <20230310173217.3429788-16-amit.kumar-mahapatra@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230310173217.3429788-1-amit.kumar-mahapatra@amd.com>
-References: <20230310173217.3429788-1-amit.kumar-mahapatra@amd.com>
+        Fri, 10 Mar 2023 12:53:24 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C092CC5B
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Mar 2023 09:53:08 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id fm20-20020a05600c0c1400b003ead37e6588so6632105wmb.5
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Mar 2023 09:53:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678470787;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ez+sE7/jASOrygZFOhBUqJtDHmOJ2uin/l0vrglVUd8=;
+        b=CqaOuI4WwYosLGlzKgy0jNO8muan0NgrQEe1t8z/m9HOIkyO+V77RhwLTtTpsSBjTG
+         F9cL9rQsYOKABTdR39OKq1dT3xGGxcKRMQA3agrjHmtfHwHYptY3ZTPas74m3akdopcJ
+         UkDkttIlZwuDW6zFwg6CB7+k16femlYlZh3u1wcE47fgK5tfIuO718YsDs+FcjIKez4n
+         i3m98Phr8YgGwl2NIQzm2I/FB87GHInDaCmObTHiLgWHwzMUEivr1/5pDmuxVkDlnQXV
+         5ThxhhzTf0nh0PbsujN/s4AcZBDiK7dG+ae/QPuzxvUkTKaIBpdgPfTJih8Gg6hv8tDI
+         Uibg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678470787;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ez+sE7/jASOrygZFOhBUqJtDHmOJ2uin/l0vrglVUd8=;
+        b=qGWyhjW/FeqJqmghKQMZnsDMfva6nP3CCCutA+kwTtEIterP+OdS8R+xW6OX1+oOgx
+         ClCRDIMU2JAwItaxusyprO/5hpB+sdPIAimNGnD9En7KIP5wpTgxkEQ3eTL6JyYSnwej
+         wskvuNXP5/nGXNpL822Ua/KVx2n1xCpH0RUAB9k1FXwzkaD0VQY/YDCKurBdJ5emkLiF
+         NNyezJZ0qJPwkrriPFZbgaxj4nH9gsHXh4+Fthh4f6ZJgSTySbU77tXFkFc91RUZDV33
+         4YGQyNlgyfSD5CffyMFhd9skjg/UWdC7GGRgSQorBkp/1Is430A9BZ3cT8HW/jmJnIlE
+         kscQ==
+X-Gm-Message-State: AO0yUKUSL9OToqDapaMXo5ntu3LTmDaJUTZBtHuHerp9oSW3GsFMwdYj
+        zU09bDtOIzKPqeW/nFbg7p8=
+X-Google-Smtp-Source: AK7set8dRTzInRdorJSr9WInQAZgZO0r3mPKRhlFFZjYRhRGzcYkRb/WIg/SSjOrtlzSBAZLVio3VQ==
+X-Received: by 2002:a05:600c:3514:b0:3e2:6c6:31a6 with SMTP id h20-20020a05600c351400b003e206c631a6mr3446753wmq.9.1678470787098;
+        Fri, 10 Mar 2023 09:53:07 -0800 (PST)
+Received: from [192.168.1.50] ([79.119.240.25])
+        by smtp.gmail.com with ESMTPSA id l26-20020a1c791a000000b003eb68bb61c8sm558412wme.3.2023.03.10.09.53.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Mar 2023 09:53:06 -0800 (PST)
+Message-ID: <07f780e8-7b9e-c3cf-02dd-48325bd1f3b7@gmail.com>
+Date:   Fri, 10 Mar 2023 19:53:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT074:EE_|BN9PR12MB5338:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82a898d3-01dc-46cf-1621-08db218e7f22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Xt7TUEmhxJkG3uhUkGG89AnqA6rHXB2b1oBhbxumHhtWcnd2jUGpN0Q0HWHBfycuejtZ6LXt1TqMJvuYAsrKGP1+WuWryVzQtzdfFYCpEMfAcC0MV5BwoBUD6h4KSv/BDw2UeH/1mb5K2zfHk81eqUKAnb0+ZESBftRz7hxRZNVrze+8TgKYBj16bkdtEPgnf5CuakBOWoScoxkhtWbbEQb3I67slwNJLGIBFzmkdq/lxolX8/CHR3lbR+C32LP6ET5jxOB7c73GCv7YUoERmKCQCx6EUgnLm9ar7tTpfPDQak1vlkLYqPNJT/L9DSaJVnjCpLZUB1joIVtelqkV3FyOjSz+8+ZL+nj/QvH5mbzzWIEzKPC78N43lcgWLogk5OnKPd81ZllRwfOEkmpjsUSo/TU6ZK4zwbC22jfOdPKxmfsfjZMSMzl5BwbqyEkzfkHoG/okqPORgpb/p82BswKWG9hjg/rx87+0mhuVUxUOC7p+iWG8p5T7zXhqD+AoNqQJymlvwK6qONtCbFxqVLrFMGEmP5F0ElvEBvVvYl17GvgekYXP7edQ/+OUXiLug0ZN92dvILCd+OJjq5xWBeALWCHLQBdboneaQj6UzMwJvyjeR70tP1rSOAgb9dRrb/62Rz7hnB5bExgMeQJhvrfj6hCHcF1MBkDm6U08A9j9nVRxw6RRT9Zdbrb6f5hsDcplt4WFgtXxNTa3puNv2gkMhNn4G/f7o7eRv6MFOg6onDbuRNSlKnLucDWdeXca5fpwtyKOE6meHTurpmIGWDHEcSZbYnLIhRoPkXXiQFj/0fCmkRhAsKgxz3TPNsDO1/Yq3idIzNTxcbtQbrZieRm2cQwXMjIsBk0QM6qZkMs=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230025)(4636009)(136003)(376002)(346002)(396003)(39860400002)(451199018)(46966006)(40470700004)(36840700001)(6666004)(83380400001)(82740400003)(1191002)(81166007)(478600001)(54906003)(110136005)(82310400005)(36860700001)(8936002)(40480700001)(186003)(5660300002)(40460700003)(316002)(1076003)(26005)(36756003)(7336002)(7416002)(7276002)(7366002)(7406005)(426003)(8676002)(921005)(356005)(47076005)(336012)(70206006)(70586007)(41300700001)(86362001)(2616005)(4326008)(2906002)(41080700001)(84006005)(83996005)(36900700001)(2101003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2023 17:40:10.3038
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82a898d3-01dc-46cf-1621-08db218e7f22
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT074.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5338
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v2] wifi: rtl8xxxu: Support new chip RTL8710BU aka
+ RTL8188GU
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>, Jiajie Chen <c@jia.je>
+References: <d4c5073a-4831-7353-6ea7-06dfd3cca7f2@gmail.com>
+ <8c3edda0b6944d4fafe08cea89b94142@realtek.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <8c3edda0b6944d4fafe08cea89b94142@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-During GQSPI driver probe set ctlr->multi-cs-cap for enabling multi CS
-capability of the controller. In parallel mode the controller can either
-split the data between both the flash or can send the same data to both the
-flashes, this is determined by the STRIPE bit. While sending commands to
-the flashes the GQSPI driver send the same command to both the flashes by
-resetting the STRIPE bit, but while writing/reading data to & from the
-flash the GQSPI driver splits the data evenly between both the flashes by
-setting the STRIPE bit.
+On 10/03/2023 02:49, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Sent: Thursday, March 9, 2023 5:28 AM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>; Jiajie Chen <c@jia.je>
+>> Subject: [PATCH v2] wifi: rtl8xxxu: Support new chip RTL8710BU aka RTL8188GU
+>>
+>> This chip is found in cheap "free driver" USB adapters from Aliexpress.
+>> Initially they pretend to be a CD-ROM containing the driver for Windows.
+>> "Ejecting" switches the device to wifi mode.
+>>
+>> Features: 2.4 GHz, b/g/n mode, 1T1R, 150 Mbps.
+>>
+>> This chip is more unique than other Realtek chips:
+>>
+>> * The registers at addresses 0x0-0xff, which all the other chips use,
+>>   can't be used here. New registers at 0x8000-0x80ff must be used
+>>   instead. And it's not a simple matter of adding 0x8000: 0x2
+>>   (REG_SYS_FUNC) became 0x8004, 0x80 (REG_MCU_FW_DL) became 0x8090,
+>>   etc.
+>>
+>> * Also there are a few new registers which must be accessed indirectly
+>>   because their addresses don't fit in 16 bits. No other chips seem to
+>>   have these.
+>>
+>> * The vendor driver compiles to 8188gu.ko, but the code calls the chip
+>>   RTL8710B(U) pretty much everywhere, including messages visible to the
+>>   user.
+>>
+>> Another difference compared to the other chips supported by rtl8xxxu is
+>> that it has a new PHY status struct, or three of them actually, from
+>> which we extract the RSSI, among other things. This is not unique,
+>> though, just new. The chips supported by rtw88 also use it.
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>> v2:
+>>  - Suggestions from Ping-Ke Shih:
+>>    - Add comma after the last member of enum rtl8xxxu_rtl_chip.
+>>    - Add comment about struct mutex syson_indirect_access_mutex.
+>>    - Declare variables in reverse Christmas tree order in
+>>      rtl8710b_read_efuse().
+>>    - Remove unnecessary variable ret from rtl8710bu_identify_chip().
+>>    - Add definition for register 0xaac.
+>>    - Use the existing macros REG_SYS_FUNC, SYS_FUNC_BBRSTB, and
+>>      SYS_FUNC_BB_GLB_RSTN instead of magic numbers in
+>>      rtl8710bu_active_to_lps().
+>>    - Declare reg_mcu_fw_dl separately in rtl8xxxu_download_firmware().
+>>  - Add spaces after /* and before */ in some comments.
+>>  - Rearrange the declarations in rtl8710b_read_efuse8() as well.
+>>  - Load the right firmware based on the chip manufacturer (UMC/SMIC).
+>>  - Use the mask 0xc0 instead of 0xf0 to detect the chip manufacturer in
+>>    rtl8710bu_identify_chip(). There was an extra shift in the vendor
+>>    driver which I missed.
+>>  - Make the vid and pid fields of struct rtl8710bu_efuse two bytes
+>>    each, and the filler field res7 one byte shorter.
+>>
+>>  - I was lazy and didn't do some things the right way in v1. I thought
+>>    surely there are no more chips to support. But since then I
+>>    discovered that the RTL8192FU can be bought from Aliexpress for
+>>    6.66 $. :) It will need the same PHY status parsing as the RTL8710BU,
+>>    which is why there are these extra changes:
+>>    - Initialise priv->cck_new_agc in rtl8xxxu_init_device() always,
+>>      regardless of the chip family.
+>>    - Pass the PHY status structs to the CCK RSSI functions.
+>>    - Move the "old AGC" CCK RSSI calculation from
+>>      rtl8710bu_rx_parse_phystats_type0() to a new function
+>>      rtl8710b_cck_rssi().
+>>    - Rename the functions rtl8710bu_rx_parse_phystats* to
+>>      jaguar2_rx_parse_phystats* and move them to rtl8xxxu_core.c.
+>>    - Modify the functions jaguar2_rx_parse_phystats_type{1,2} to handle
+>>      2T2R chips as well.
+>> ---
+> 
+> [...]
+> 
+>> +static u32 rtl8710b_indirect_read32(struct rtl8xxxu_priv *priv, u32 addr)
+>> +{
+>> +       struct device *dev = &priv->udev->dev;
+>> +       u32 val32, value = 0xffffffff;
+>> +       u8 polling_count = 0xff;
+>> +
+>> +       if (addr & 3) {
+> 
+> if (!IS_ALIGNED(addr, 4))
+> 
 
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
----
- drivers/spi/spi-zynqmp-gqspi.c | 39 +++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+Nice, that's more readable.
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 3d2b92a88e8a..d795d17d2541 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -23,6 +23,7 @@
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
- #include <linux/spi/spi-mem.h>
-+#include <linux/mtd/spi-nor.h>
- 
- /* Generic QSPI register offsets */
- #define GQSPI_CONFIG_OFST		0x00000100
-@@ -192,6 +193,7 @@ struct qspi_platform_data {
-  * @op_lock:		Operational lock
-  * @speed_hz:          Current SPI bus clock speed in hz
-  * @has_tapdelay:	Used for tapdelay register available in qspi
-+ * @is_parallel:		Used for multi CS support
-  */
- struct zynqmp_qspi {
- 	struct spi_controller *ctlr;
-@@ -214,8 +216,33 @@ struct zynqmp_qspi {
- 	struct mutex op_lock;
- 	u32 speed_hz;
- 	bool has_tapdelay;
-+	bool is_parallel;
- };
- 
-+/**
-+ * zynqmp_gqspi_update_stripe - For GQSPI controller data stripe capabilities
-+ * @op:	Pointer to mem ops
-+ * Return:      Status of the data stripe
-+ *
-+ * Returns true if data stripe need to be enabled, else returns false
-+ */
-+bool zynqmp_gqspi_update_stripe(const struct spi_mem_op *op)
-+{
-+	if (op->cmd.opcode ==  SPINOR_OP_BE_4K ||
-+	    op->cmd.opcode ==  SPINOR_OP_BE_32K ||
-+	    op->cmd.opcode ==  SPINOR_OP_CHIP_ERASE ||
-+	    op->cmd.opcode ==  SPINOR_OP_SE ||
-+	    op->cmd.opcode ==  SPINOR_OP_BE_32K_4B ||
-+	    op->cmd.opcode ==  SPINOR_OP_SE_4B ||
-+	    op->cmd.opcode == SPINOR_OP_BE_4K_4B ||
-+	    op->cmd.opcode ==  SPINOR_OP_WRSR ||
-+	    op->cmd.opcode ==  SPINOR_OP_BRWR ||
-+	    (op->cmd.opcode ==  SPINOR_OP_WRSR2 && !op->addr.nbytes))
-+		return false;
-+
-+	return true;
-+}
-+
- /**
-  * zynqmp_gqspi_read - For GQSPI controller read operation
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-@@ -470,7 +497,14 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
- 
- 	genfifoentry |= GQSPI_GENFIFO_MODE_SPI;
- 
--	if (qspi->cs_index_mask & GQSPI_SELECT_UPPER_CS) {
-+	if ((qspi->cs_index_mask & GQSPI_SELECT_LOWER_CS) &&
-+	    (qspi->cs_index_mask & GQSPI_SELECT_UPPER_CS)) {
-+		zynqmp_gqspi_selectslave(xqspi,
-+					 GQSPI_SELECT_FLASH_CS_BOTH,
-+					 GQSPI_SELECT_FLASH_BUS_BOTH);
-+		if (!xqspi->is_parallel)
-+			xqspi->is_parallel = true;
-+	} else if (qspi->cs_index_mask & GQSPI_SELECT_UPPER_CS) {
- 		zynqmp_gqspi_selectslave(xqspi,
- 					 GQSPI_SELECT_FLASH_CS_UPPER,
- 					 GQSPI_SELECT_FLASH_BUS_LOWER);
-@@ -1139,6 +1173,8 @@ static int zynqmp_qspi_exec_op(struct spi_mem *mem,
- 	}
- 
- 	if (op->data.nbytes) {
-+		if (xqspi->is_parallel && zynqmp_gqspi_update_stripe(op))
-+			genfifoentry |= GQSPI_GENFIFO_STRIPE;
- 		reinit_completion(&xqspi->data_completion);
- 		if (op->data.dir == SPI_MEM_DATA_OUT) {
- 			xqspi->txbuf = (u8 *)op->data.buf.out;
-@@ -1334,6 +1370,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctlr->dev.of_node = np;
- 	ctlr->auto_runtime_pm = true;
-+	ctlr->multi_cs_cap = true;
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
--- 
-2.25.1
+>> +               dev_warn(dev, "%s: Aborting because 0x%x is not a multiple of 4.\n",
+>> +                        __func__, addr);
+>> +               return value;
+>> +       }
+>> +
+>> +       mutex_lock(&priv->syson_indirect_access_mutex);
+>> +
+>> +       rtl8xxxu_write32(priv, REG_USB_HOST_INDIRECT_ADDR_8710B, addr);
+>> +       rtl8xxxu_write32(priv, REG_EFUSE_INDIRECT_CTRL_8710B, NORMAL_REG_READ_OFFSET);
+>> +
+>> +       do
+>> +               val32 = rtl8xxxu_read32(priv, REG_EFUSE_INDIRECT_CTRL_8710B);
+>> +       while ((val32 & BIT(31)) && (--polling_count > 0));
+> 
+> Add brace is allowed for this case. Not sure if you prefer this, or miss 
+> comment before.
+> 
+
+Yes, I prefer it without the braces.
+
+>> +
+>> +       if (polling_count == 0)
+>> +               dev_warn(dev, "%s: Failed to read from 0x%x, 0x806c = 0x%x\n",
+>> +                        __func__, addr, val32);
+>> +       else
+>> +               value = rtl8xxxu_read32(priv, REG_USB_HOST_INDIRECT_DATA_8710B);
+>> +
+>> +       mutex_unlock(&priv->syson_indirect_access_mutex);
+>> +
+>> +       if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_READ)
+>> +               dev_info(dev, "%s(%04x) = 0x%08x\n", __func__, addr, value);
+>> +
+>> +       return value;
+>> +}
+>> +
+>> +static void rtl8710b_indirect_write32(struct rtl8xxxu_priv *priv, u32 addr, u32 val)
+>> +{
+>> +       struct device *dev = &priv->udev->dev;
+>> +       u8 polling_count = 0xff;
+>> +       u32 val32;
+>> +
+>> +       if (addr & 3) {
+> 
+> if (!IS_ALIGNED(addr, 4))
+> 
+>> +               dev_warn(dev, "%s: Aborting because 0x%x is not a multiple of 4.\n",
+>> +                        __func__, addr);
+>> +               return;
+>> +       }
+>> +
+>> +       mutex_lock(&priv->syson_indirect_access_mutex);
+>> +
+>> +       rtl8xxxu_write32(priv, REG_USB_HOST_INDIRECT_ADDR_8710B, addr);
+>> +       rtl8xxxu_write32(priv, REG_USB_HOST_INDIRECT_DATA_8710B, val);
+>> +       rtl8xxxu_write32(priv, REG_EFUSE_INDIRECT_CTRL_8710B, NORMAL_REG_WRITE_OFFSET);
+>> +
+>> +       do
+>> +               val32 = rtl8xxxu_read32(priv, REG_EFUSE_INDIRECT_CTRL_8710B);
+>> +       while ((val32 & BIT(31)) && (--polling_count > 0));
+>> +
+>> +       if (polling_count == 0)
+>> +               dev_warn(dev, "%s: Failed to write 0x%x to 0x%x, 0x806c = 0x%x\n",
+>> +                        __func__, val, addr, val32);
+>> +
+>> +       mutex_unlock(&priv->syson_indirect_access_mutex);
+>> +
+>> +       if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
+>> +               dev_info(dev, "%s(%04x) = 0x%08x\n", __func__, addr, val);
+>> +}
+> 
+> [...]
+> 
+> Only two minor comments, and v2 looks good to me. So, I run sparse and smatch
+> to check this patch, and it reports two warnings:
+> 
+> 1. drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c:742 rtl8710bu_config_channel() error: uninitialized symbol 'sec_ch_above'.
+> 
+> This looks like a false-alarm, because 'sec_ch_above' must be set if 'ht40' is true.
+> But, this should reference back much to know this. 
+> Maybe, we can set 'sec_ch_above = 0' initially. 
+> 
+
+I will initialise it.
+
+> 
+> 2. drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c:1487 rtl8710bu_phy_iq_calibrate() error: uninitialized symbol 'reg_e94'.
+> 
+> This could be a false-alarm too. 'reg_e94' must be set if 'candidate >= 0', but
+> original statement causes smatch hard to determine:
+> 
+>    if (reg_e94 && candidate >= 0)
+> 
+> swap the expressions to fix the warning:
+> 
+>   if (candidate >= 0 && reg_e94)
+> 
+
+Moving "if (reg_e94)" inside the previous "if (candidate >= 0)" should also
+fix it, I think.
+
+	if (candidate >= 0) {
+		reg_e94 = result[candidate][0];
+		reg_e9c = result[candidate][1];
+		reg_ea4 = result[candidate][2];
+		reg_eac = result[candidate][3];
+
+		dev_dbg(dev, "%s: candidate is %x\n", __func__, candidate);
+		dev_dbg(dev, "%s: e94=%x e9c=%x ea4=%x eac=%x\n",
+			__func__, reg_e94, reg_e9c, reg_ea4, reg_eac);
+
+		path_a_ok = true;
+
+		if (reg_e94)
+			rtl8xxxu_fill_iqk_matrix_a(priv, path_a_ok, result,
+						   candidate, (reg_ea4 == 0));
+	}
+
+> 
+> Ping-Ke
+> 
+> 
 
