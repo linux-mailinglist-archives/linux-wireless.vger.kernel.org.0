@@ -2,174 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D306A6B37E6
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 08:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FFCD6B3E53
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Mar 2023 12:47:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbjCJH47 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Mar 2023 02:56:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36638 "EHLO
+        id S229806AbjCJLrG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Mar 2023 06:47:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbjCJH45 (ORCPT
+        with ESMTP id S229522AbjCJLrC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Mar 2023 02:56:57 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499A1DF70D
-        for <linux-wireless@vger.kernel.org>; Thu,  9 Mar 2023 23:56:53 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id o12so16984296edb.9
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Mar 2023 23:56:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678435011;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Na4vhlLIT8h87R1c4saJtnoc0rpStTN6SAaJv5Ui0DU=;
-        b=f/cdum7O6TN5gJ9ROGgx6QjE0oljMSgdfelOxJDv/A44aZ7Mm1unTj43LMrAl8qXD3
-         sHI50PXnWoUWOCaGf+Lw7NcDVU4NiPijijYupEKrMb/i7yVzAFSIs2Sdxro3W9NWDoHv
-         l0FZKC3iXGb6IU9h1xEP+L1xj0TStwEsdmZgH7BeJN1yxjzdFSB6oJFobXTUS45dVs0M
-         ULQH07khMas1d0aBIt/OjZLOHVTDe9lhbsnUreYNdh+WszcP/mDLVMMeWmaL4KFGK0LG
-         +5HnCCB4hC8JohJPmZdM8SSKIi+lKSrrSUXogyHzjsDGs1U97Mara0hXF/7LevUFdWY9
-         OvCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678435011;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Na4vhlLIT8h87R1c4saJtnoc0rpStTN6SAaJv5Ui0DU=;
-        b=wFZSIWn3vxIg1RdTxykL0fST5rQSlDlwEEYlMkLEn9loClQm1XywreK5TP6IRSzOMB
-         fWLv+UnliwdW+pEe+6D5fE3WbztP6fCjCQDcwGF/A9ORpGhh0/IN+Ool2c/yEYjDlMST
-         OnSK8ebyX+vrXr6GL6bRlWLUU6k0gDnyn9mdedv9hKwk0MiU9huBqS+nxfWXiuyRB9YI
-         c0yIDkHakvnJ800pfeV85sq7bKtdduhyS8LEdi4VrLgMobkrV/TWk26NET+EjZLcYBs7
-         ckXFEHebwaO6KaEYKSxugQTWPQfSdtomeZDk5gkwGNdQe47+cFn2vrApuN7VN4CAYjTT
-         6fuA==
-X-Gm-Message-State: AO0yUKVGNffDovXI//WrWQybU+jHu1cv3YOwX1fAsQJg3P0NQJPbIDDZ
-        d2DIm/6MoPFD55WevIqaqlAAVg==
-X-Google-Smtp-Source: AK7set83ouw7MBm0jqo5iH57IkMFwoOVUzIry7zQggJ4hxcJBeN03UC69xrHLWNGpiqGw+nvqtrohA==
-X-Received: by 2002:a17:906:eecc:b0:90b:167e:3050 with SMTP id wu12-20020a170906eecc00b0090b167e3050mr30865633ejb.36.1678435011591;
-        Thu, 09 Mar 2023 23:56:51 -0800 (PST)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id ox11-20020a170907100b00b008cf6f8798e1sm641097ejb.54.2023.03.09.23.56.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Mar 2023 23:56:50 -0800 (PST)
-Message-ID: <6108c68b-e38b-3060-f6fa-53be79a795d7@linaro.org>
-Date:   Fri, 10 Mar 2023 07:56:49 +0000
+        Fri, 10 Mar 2023 06:47:02 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E09F41111C7;
+        Fri, 10 Mar 2023 03:46:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=bM1vAhEohfFFddiiiteQvy/S8eWo9E5W38sP+oPtxxw=; t=1678448814; x=1679658414; 
+        b=tfOWdXbr834gApfdcgJpZjJvb8/Ro3ncobU0mqxWrJfPuX1dvJS4vDLpHAYGyWWRFElBpCwO3Mv
+        mYWafe99LH0cRb1Nj3YxqrBmeXuntWeAbBoaZBrXHxY6h0bXkttBBm4vPaQN7V8qu9XrujDKK/kk8
+        RCEGqyP1fDeeYj4JQAzCXcHfipVCtGKQhFWmEW4ELi/b1/gVudwQ5JlajAnXivfirDp2kz/jOxMwj
+        P7L2LtDaRJ3eLi9H5YgR+IFTjZxEOO/gsdeGInGuH1TkRkqnQMq8GUtajqRtAJHvoB18KSUms1QPf
+        5bLE9u0bcbQnTZcUKXsLUSX8BgeDJBb5nWPA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pabD1-00H0ZJ-0C;
+        Fri, 10 Mar 2023 12:46:51 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2023-03-10
+Date:   Fri, 10 Mar 2023 12:46:46 +0100
+Message-Id: <20230310114647.35422-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v1 01/15] dt-bindings: add pwrseq device tree bindings
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Herring <robh@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
-        ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>, Abel Vesa <abel.vesa@linaro.org>
-References: <20211006035407.1147909-1-dmitry.baryshkov@linaro.org>
- <20211006035407.1147909-2-dmitry.baryshkov@linaro.org>
- <YXf6TbV2IpPbB/0Y@robh.at.kernel.org>
- <37b26090-945f-1e17-f6ab-52552a4b6d89@linaro.org>
- <CAL_JsqLAnJqZ95_bf6_fFmPJFMjuy43UfP2UxzEmFMNnG_t-Ug@mail.gmail.com>
- <31792ef1-20b0-b801-23b7-29f303b91def@linaro.org>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <31792ef1-20b0-b801-23b7-29f303b91def@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
+
+For now in wireless we only have a few fixes for some
+recently reported (and mostly recently introduced)
+problems.
+
+Please pull and let me know if there's any problem.
+
+Thanks,
+johannes
 
 
-On 02/11/2021 15:26, Dmitry Baryshkov wrote:
-> On 28/10/2021 00:53, Rob Herring wrote:
->> On Tue, Oct 26, 2021 at 9:42 AM Dmitry Baryshkov
->> <dmitry.baryshkov@linaro.org> wrote:
->>>
->>> On 26/10/2021 15:53, Rob Herring wrote:
->>>> On Wed, Oct 06, 2021 at 06:53:53AM +0300, Dmitry Baryshkov wrote:
->>>>> Add device tree bindings for the new power sequencer subsystem.
->>>>> Consumers would reference pwrseq nodes using "foo-pwrseq" properties.
->>>>> Providers would use '#pwrseq-cells' property to declare the amount of
->>>>> cells in the pwrseq specifier.
->>>>
->>>> Please use get_maintainers.pl.
->>>>
->>>> This is not a pattern I want to encourage, so NAK on a common binding.
->>>
->>>
->>> Could you please spend a few more words, describing what is not
->>> encouraged? The whole foo-subsys/#subsys-cells structure?
->>
->> No, that's generally how common provider/consumer style bindings work.
->>
->>> Or just specifying the common binding?
->>
->> If we could do it again, I would not have mmc pwrseq binding. The
->> properties belong in the device's node. So don't generalize the mmc
->> pwrseq binding.
->>
->> It's a kernel problem if the firmware says there's a device on a
->> 'discoverable' bus and the kernel can't discover it. I know you have
->> the added complication of a device with 2 interfaces, but please,
->> let's solve one problem at a time.
 
-Just to keep this topic updated with some pointers [1] to changes done 
-to solve same problem in USB Hub. These patches 
-(drivers/usb/misc/onboard_usb_hub*) have been merged since last year July.
+The following changes since commit 44889ba56cbb3d51154660ccd15818bc77276696:
 
-It looks like we can take some inspiration from this to address PCIE Bus 
-issue aswell.
+  Merge tag 'net-6.3-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2023-03-09 10:56:58 -0800)
 
-Thanks to Neil to point this.
+are available in the Git repository at:
 
-[1] 
-https://lore.kernel.org/lkml/20220630193530.2608178-1-mka@chromium.org/T/
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2023-03-10
 
+for you to fetch changes up to 96c069508377547f913e7265a80fffe9355de592:
 
---srini
-> 
-> The PCI bus handling is a separate topic for now (as you have seen from 
-> the clearly WIP patches targeting just testing of qca6390's wifi part).
-> 
-> For me there are three parts of the device:
-> - power regulator / device embedded power domain.
-> - WiFi
-> - Bluetooth
-> 
-> With the power regulator being a complex and a bit nasty beast. It has 
-> several regulators beneath, which have to be powered up in a proper way.
-> Next platforms might bring additional requirements common to both WiFi 
-> and BT parts (like having additional clocks, etc). It is externally 
-> controlled (after providing power to it you have to tell, which part of 
-> the chip is required by pulling up the WiFi and/or BT enable GPIOs.
-> 
-> Having to duplicate this information in BT and WiFi cases results in 
-> non-aligned bindings (with WiFi and BT parts using different set of 
-> properties and different property names) and non-algined drivers (so the 
-> result of the powerup would depend on the order of drivers probing).
-> 
-> So far I still suppose that having a single separate entity controlling 
-> the powerup of such chips is the right thing to do.
-> 
-> I'd prefer to use the power-domain bindings (as the idea seems to be 
-> aligned here), but as the power-domain is used for the in-chip power 
-> domains, we had to invent the pwrseq name.
-> 
+  wifi: cfg80211: fix MLO connection ownership (2023-03-10 11:47:25 +0100)
+
+----------------------------------------------------------------
+Just a few fixes:
+ * MLO connection socket ownership didn't work
+ * basic rates validation was missing (reported by
+   by a private syzbot instances)
+ * puncturing bitmap netlink policy was completely broken
+ * properly check chandef for NULL channel, it can be
+   pointing to a chandef that's still uninitialized
+
+----------------------------------------------------------------
+Johannes Berg (4):
+      wifi: nl80211: fix NULL-ptr deref in offchan check
+      wifi: nl80211: fix puncturing bitmap policy
+      wifi: mac80211: check basic rates validity
+      wifi: cfg80211: fix MLO connection ownership
+
+ net/mac80211/cfg.c     | 21 +++++++++++----------
+ net/wireless/nl80211.c | 26 +++++++++++++++-----------
+ 2 files changed, 26 insertions(+), 21 deletions(-)
+
