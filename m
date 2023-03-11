@@ -2,81 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 165156B57DB
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Mar 2023 03:40:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5527C6B5A3C
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Mar 2023 10:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbjCKCk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Mar 2023 21:40:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40510 "EHLO
+        id S230204AbjCKJ4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Mar 2023 04:56:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjCKCk1 (ORCPT
+        with ESMTP id S230033AbjCKJ4L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Mar 2023 21:40:27 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1DA812C715;
-        Fri, 10 Mar 2023 18:40:25 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Sat, 11 Mar 2023 04:56:11 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C626108C31;
+        Sat, 11 Mar 2023 01:56:07 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ADDD61D4C;
-        Sat, 11 Mar 2023 02:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A5C12C433D2;
-        Sat, 11 Mar 2023 02:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678502424;
-        bh=4QhYvq0T+q5oOUPSI4P29yr6E0P3aejG4x6a8OR9m1U=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=vJ6o2cPOrZ+KKH5rhavfhKJY7aMMwUw3uFpwcAOQRFbhXJXFpGfzCnYTzok2X4coA
-         JlrfgOFlfcEEhdT5cYsvDKYMwIPYACHNGJgKwCd6a7yC58w1IfzGBQNOyOSslWXIhB
-         a2i6LWydMzY5cBdsTBf3qM8udCbvGSzsL69aAGfCRDXCbhAc5ClT4XJ6/NUP/zYvMr
-         26FJDZ3y/uiF1QrKlXq6YfAG2bfYYSxYkPGFgjw4TyySYS5mDPO0cqW3SMa3tXtX6Q
-         SO+k8GOGnJa1lRGDLKg0c+SyDpUvCmLB86M22vrCkvGhTeqjItGr43fBaqzArM0WrE
-         dyoFRShdMUH8w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 85777E61B66;
-        Sat, 11 Mar 2023 02:40:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 4F13C4248B;
+        Sat, 11 Mar 2023 09:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1678528565; bh=WQv2RM/H+Nf4R69KWM6AeKDOyfaE/rl12gYu1zrMuhA=;
+        h=Date:To:Cc:References:From:Subject:In-Reply-To;
+        b=SqOErT1KAlhIuLV+rx0mU8z3+CrRCo+bXoJByLk2tPaYXbO4YzMF6dbNfLIlBuzhJ
+         jwd/PRoU8bInf86qPwfzw0yCJnHjsU67+zaowvR4duC1m0q8CQx+sGipA5QvaXH9cr
+         DpaL4Y9jLgNvw5btVCKH/B47vOwvNk81pmzz0NK1i45pGtbavijv5lV2mcJlsNknQA
+         cKw2T9MsA9X8qYLOS8sseGXcjHj9yK24iwJEPfcRkVlg0S7+YVnSgJpuaZjDTj0+mt
+         RsKpzUwTiY23AcYKiu4+4nIOcxa/J7h3X/vRdqFz20KBJ7IRJcPzAoZCqdIAoaBsuv
+         iHOBBjvLFPCWw==
+Message-ID: <d6851c2b-7966-6cb4-a51c-7268c60e0a86@marcan.st>
+Date:   Sat, 11 Mar 2023 18:55:59 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-next-2023-03-10
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <167850242454.6286.7992806628827421905.git-patchwork-notify@kernel.org>
-Date:   Sat, 11 Mar 2023 02:40:24 +0000
-References: <20230310120159.36518-1-johannes@sipsolutions.net>
-In-Reply-To: <20230310120159.36518-1-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Content-Language: en-US
+To:     Alexander Wetzel <alexander@wetzel-home.de>,
+        linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     johannes@sipsolutions.net, stable@vger.kernel.org,
+        Asahi Linux <asahi@lists.linux.dev>, Ilya <me@0upti.me>,
+        Janne Grunau <j@jannau.net>,
+        LKML <linux-kernel@vger.kernel.org>, regressions@lists.linux.dev
+References: <20230124141856.356646-1-alexander@wetzel-home.de>
+From:   Hector Martin <marcan@marcan.st>
+Subject: [REGRESSION] Patch broke WPA auth: Re: [PATCH v2] wifi: cfg80211: Fix
+ use after free for wext
+In-Reply-To: <20230124141856.356646-1-alexander@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Hi,
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This broke WPA auth entirely on brcmfmac (in offload mode) and probably
+others, including on stable 6.2.3 and 6.3-rc1 (tested with iwd). Please
+revert or fix. Notes below.
 
-On Fri, 10 Mar 2023 13:01:58 +0100 you wrote:
-> Hi,
+Reported-by: Ilya <me@0upti.me>
+Reported-by: Janne Grunau <j@jannau.net>
+
+#regzbot introduced: 015b8cc5e7c4d7
+#regzbot monitor:
+https://lore.kernel.org/linux-wireless/20230124141856.356646-1-alexander@wetzel-home.de/
+
+On 24/01/2023 23.18, Alexander Wetzel wrote:
+> Key information in wext.connect is not reset on (re)connect and can hold
+> data from a previous connection.
 > 
-> And for wireless-next, here's a bigger pull request, though
-> I expect much more iwlwifi work in the near future.
+> Reset key data to avoid that drivers or mac80211 incorrectly detect a
+> WEP connection request and access the freed or already reused memory.
 > 
-> Please pull and let me know if there's any problem.
+> Additionally optimize cfg80211_sme_connect() and avoid an useless
+> schedule of conn_work.
 > 
-> [...]
+> Fixes: fffd0934b939 ("cfg80211: rework key operation")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/r/c80f04d2-8159-a02a-9287-26e5ec838826@wetzel-home.de
+> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+> 
+> ---
+> V2 changes:
+> - updated comment
+> - reset more key data
+> 
+> ---
+>  net/wireless/sme.c | 31 ++++++++++++++++++++++++++-----
+>  1 file changed, 26 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+> index 123248b2c0be..0cc841c0c59b 100644
+> --- a/net/wireless/sme.c
+> +++ b/net/wireless/sme.c
+[snip]
+> @@ -1464,6 +1476,15 @@ int cfg80211_connect(struct cfg80211_registered_device *rdev,
 
-Here is the summary with links:
-  - pull-request: wireless-next-2023-03-10
-    https://git.kernel.org/netdev/net-next/c/2af560e5a5d1
+This if branch only fires if the connection is WEP.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+>  	} else {
+>  		if (WARN_ON(connkeys))
+>  			return -EINVAL;
+> +
+> +		/* connect can point to wdev->wext.connect which
+> +		 * can hold key data from a previous connection
+> +		 */
+> +		connect->key = NULL;
+> +		connect->key_len = 0;
+> +		connect->key_idx = 0;
 
+And these are indeed only used by WEP.
 
+> +		connect->crypto.cipher_group = 0;
+> +		connect->crypto.n_ciphers_pairwise = 0;
+
+But here you're killing the info that is used for *other* auth modes too
+if !WEP, breaking WPA and everything else.
+
+>  	}
+>  
+>  	wdev->connect_keys = connkeys;
+
+- Hector
