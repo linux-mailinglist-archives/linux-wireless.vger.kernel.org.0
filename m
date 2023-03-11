@@ -2,162 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928186B60F1
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Mar 2023 22:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 215286B6102
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Mar 2023 22:26:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjCKVRW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Mar 2023 16:17:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
+        id S229502AbjCKV0o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Mar 2023 16:26:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjCKVRT (ORCPT
+        with ESMTP id S229457AbjCKV0n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Mar 2023 16:17:19 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7BBD72B23;
-        Sat, 11 Mar 2023 13:17:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9FF83B80735;
-        Sat, 11 Mar 2023 21:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B025C433A8;
-        Sat, 11 Mar 2023 21:16:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678569432;
-        bh=nxjIZb2lDBuKK2G4lNzbnKP45y5UoeG95pRVo5INiRE=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=bvzKGPqJVg2bAaBl8LvuSNq4FE4F8OHaj0dxY1RmvBRvrUteeh49EnCBFgpLpsimi
-         X9QjmQX5ru5ARgvQanZf4uxwTdtbSXJBvWNRv/d86I7owOd9TPANApjMIEt8UOom/V
-         rlpKM3DSWdmGVC5sTOOGKI7C35EJY3xqnU9SQBlbwRy+sPkyfeO2xcIoXPdhr3KG5S
-         maSO5XBX1iOLzTj27xMUWw1Z5Arz1xysQ8bAZkDXGqorBZ3q1BRVnKovYh/ImB0NqZ
-         5jPOxe6cAx/K/KlowItsOB1tQgOaqn0wX00B/jAga6Qsnzqoh25kwlapaLa6EQAQNP
-         eT/NzyqjKOROw==
-From:   Mark Brown <broonie@kernel.org>
-To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        jic23@kernel.org, pratyush@kernel.org, Sanju.Mehta@amd.com,
-        chin-ting_kuo@aspeedtech.com, clg@kaod.org, kdasu.kdev@gmail.com,
-        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
-        eajames@linux.ibm.com, olteanv@gmail.com, han.xu@nxp.com,
-        john.garry@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
-        linus.walleij@linaro.org, daniel@zonque.org,
-        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
-        agross@kernel.org, heiko@sntech.de, krzysztof.kozlowski@linaro.org,
-        andi@etezian.org, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, wens@csie.org,
-        jernej.skrabec@gmail.com, samuel@sholland.org,
-        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
-        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
-        kvalo@kernel.org, james.schulman@cirrus.com,
-        david.rhodes@cirrus.com, tanureal@opensource.cirrus.com,
-        rf@opensource.cirrus.com, perex@perex.cz, tiwai@suse.com,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
-        oss@buserror.net, windhl@126.com, yangyingliang@huawei.com,
-        william.zhang@broadcom.com, kursad.oney@broadcom.com,
-        jonas.gorski@gmail.com, anand.gore@broadcom.com, rafal@milecki.pl,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Cc:     git@amd.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
-        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
-        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
-        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
-        venture@google.com, yuenn@google.com, benjaminfair@google.com,
-        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
-        alim.akhtar@samsung.com, ldewangan@nvidia.com,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-mtd@lists.infradead.org, lars@metafoo.de,
-        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
-        michael@walle.cc, palmer@dabbelt.com,
-        linux-riscv@lists.infradead.org, alsa-devel@alsa-project.org,
-        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
-        amitrkcian2002@gmail.com
-In-Reply-To: <20230310173217.3429788-1-amit.kumar-mahapatra@amd.com>
-References: <20230310173217.3429788-1-amit.kumar-mahapatra@amd.com>
-Subject: Re: (subset) [PATCH V6 00/15] Add support for stacked/parallel
- memories
-Message-Id: <167856940280.964268.10660159170818600511.b4-ty@kernel.org>
-Date:   Sat, 11 Mar 2023 21:16:42 +0000
+        Sat, 11 Mar 2023 16:26:43 -0500
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F36935ADFB;
+        Sat, 11 Mar 2023 13:26:41 -0800 (PST)
+Message-ID: <f00171a1-7f6f-d708-9587-4f176457fdfd@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1678569998;
+        bh=U6lC5gOtxUA3/Ri+0eXIzfgp0Rj6K35nvwwsmlhPHcM=;
+        h=Date:From:Subject:To:Cc:References:In-Reply-To;
+        b=qg30G2AVU2BxKEQaxUM871A4uwJJwHUXz6dyq5830uEx/YLVFOQ1EXsV3hH4Eur/J
+         46blQWl7f/YJt/fUXpV35MDSLQkM2gZhSnyMfXCVfsrHV4BqbErf9SpMK+gzVD1n95
+         a9pydU5tpDIDhVDKv0FFj/Ye4veoaYVwOZxr75tw=
+Date:   Sat, 11 Mar 2023 22:26:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
+ drops
+To:     Felix Fietkau <nbd@nbd.name>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Thomas Mann <rauchwolke@gmx.net>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
+ <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
+ <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
+ <debc7fe9-204d-63a7-aa61-91b20a46f385@wetzel-home.de>
+ <4a02173f-3a60-0a7e-8962-3778e6c55bf3@nbd.name>
+ <cfa5cc30-bf5a-bffd-4c2f-eec8a6522dd5@wetzel-home.de>
+ <42185fa2-4191-fcf5-9c0f-fd7098bb856b@nbd.name>
+ <b4427052-9e94-bce7-b745-2473be5686fa@wetzel-home.de>
+Content-Language: en-US
+In-Reply-To: <b4427052-9e94-bce7-b745-2473be5686fa@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-2eb1a
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 10 Mar 2023 23:02:02 +0530, Amit Kumar Mahapatra wrote:
-> This patch is in the continuation to the discussions which happened on
-> 'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
-> adding dt-binding support for stacked/parallel memories.
+On 09.03.23 23:13, Alexander Wetzel wrote:
+> On 08.03.23 12:57, Felix Fietkau wrote:
+>> On 08.03.23 12:41, Alexander Wetzel wrote:
+>>> On 08.03.23 08:52, Felix Fietkau wrote:
+>>>
+>>>>> I'm also planning to provide some more debug patches, to figuring out
+>>>>> which part of commit 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs
+>>>>> for resumption") fixes the issue for you. Assuming my understanding
+>>>>> above is correct the patch should not really fix/break anything for
+>>>>> you...With the findings above I would have expected your git bisec to
+>>>>> identify commit a790cc3a4fad ("wifi: mac80211: add wake_tx_queue
+>>>>> callback to drivers") as the first broken commit...
+>>>> I can't point to any specific series of events where it would go 
+>>>> wrong, but I suspect that the problem might be the fact that you're 
+>>>> doing tx scheduling from within ieee80211_handle_wake_tx_queue. I 
+>>>> don't see how it's properly protected from potentially being called 
+>>>> on different CPUs concurrently.
+>>>>
+>>>> Back when I was debugging some iTXQ issues in mt76, I also had 
+>>>> problems when tx scheduling could happen from multiple places. My 
+>>>> solution was to have a single worker thread that handles tx, which 
+>>>> is scheduled from the wake_tx_queue op.
+>>>> Maybe you could do something similar in mac80211 for non-iTXQ drivers.
+>>>>
+>>>
+>>> I think it's already doing all of that:
+>>> ieee80211_handle_wake_tx_queue() is the mac80211 implementation for the
+>>> wake_tx_queue op. The drivers without native iTXQ support simply link it
+>>> to this handler.
+>> I know. The problem I see is that I can't find anything that 
+>> guarantees that .wake_tx_queue_op is not being called concurrently 
+>> from multiple different places. ieee80211_handle_wake_tx_queue is 
+>> doing the scheduling directly, instead of deferring it to a single 
+>> workqueue/tasklet/thread, and multiple concurrent calls to it could 
+>> potentially cause issues.
 > 
-> This patch series updated the spi-nor, spi core and the spi drivers
-> to add stacked and parallel memories support.
+> Good hint, thanks.
+> According to the latest debug log exactly that seems to be happening:
 > 
-> [...]
+> ieee80211_wake_queue() is called by the driver and wake_txqs_tasklet 
+> tasklet is started. But during execution of the drv_wake_tx_queue() from 
+> the tasklet userspace queues a new skb and also calls into 
+> drv_wake_tx_queue(), which is then run overlapping...
+> 
+> Not sure yet how that could cause the problem. But this breaks the 
+> assumption that drv_wake_tx_queue() are not overlapping. And TX fails 
+> directly after such an overlapping TX...
+> 
+> I'll probably just serialize the calls and then we verify if that helps...
 
-Applied to
+Serialization helps. A (crude and in multiple ways incorrect) patch 
+preventing two drv_wake_tx_queue() running for the same ac fixed the 
+issue for Thomas:
+https://bugzilla.kernel.org/show_bug.cgi?id=217119#c20
 
-   broonie/spi.git for-next
+So it looks like we'll now have soon a fix for the issue.
 
-Thanks!
+The driver wakes the queue for IEEE80211_AC_BE often for only a single 
+skb and then stops it again.
+The short run time is insufficient for wake_txqs_tasklet to proper wake 
+all queues itself and from time to time a new TX operation squeezes in 
+after IEEE80211_AC_BE has been unblocked but prior of drv_wake_tx_queue 
+being called from the wake_txqs_tasklet. When this happens 
+drv_wake_tx_queue is called two times: Once from the tasklet, once from 
+the userspace.
 
-[01/15] spi: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: 9e264f3f85a56cc109cc2d6010a48aa89d5c1ff1
-[02/15] net: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: 25fd0550d9b9c92288a17fb7d605cdcdb4a65a64
-[03/15] iio: imu: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: 0183f81fce154ae1d4df2bb28d22ad6612317148
-[04/15] mtd: devices: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: 0817bcef53e4e3df23c023eddaa2b35b7288400e
-[05/15] staging: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: caa9d3475b1c5566f0272273c147cc9b72f2be28
-[06/15] platform/x86: serial-multi-instantiate: Replace all spi->chip_select and spi->cs_gpiod references with function call
-        commit: e20451f44ca33ec40422e9868775e117ef2da935
-[07/15] powerpc/83xx/mpc832x_rdb: Replace all spi->chip_select references with function call
-        commit: 3aba06a9fee04f6fefa9df71d3ee27dd4c464ad5
-[08/15] ALSA: hda: cs35l41: Replace all spi->chip_select references with function call
-        commit: 06b5e53c8b2b016e06a53ab6f01006ca7bbfa5df
+ieee80211_handle_wake_tx_queue is using ieee80211_txq_schedule_start, 
+which has this documented requirement:
+"The driver must not call multiple TXQ scheduling rounds concurrently."
+Now I don't think that is causing the reported regression. Nevertheless 
+we should prevent concurrent calls of ieee80211_handle_wake_tx_queue for 
+that reason alone.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+The real reason of the hangs is probably in the rt2800usb driver or 
+hardware. I don't see anything in the driver code, so probably the HW 
+itself has a problem with the two near-concurrent TX operations.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+The real culprit of the regression should be commit a790cc3a4fad ("wifi: 
+mac80211: add wake_tx_queue callback to drivers"), which switched 
+rt2800usb over to iTXQs. But without the fix from commit 4444bc2116ae 
+("wifi: mac80211: Proper mark iTXQs for resumption") mac80211 omitted to 
+schedule the required run of the wake_txqs_tasklet. Thus thus instead of 
+two concurrent drv_wake_tx_queue we only got one and the driver 
+continued to work.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+I asked Thomas on bugzilla to test the "best" solution I came up with.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+There seems to be multiple ways. But I can't find a simple, low risk and 
+complete fix. So I compromised...
 
-Thanks,
-Mark
+When Thomas can confirm the fix we can soon discuss the fix on 
+linux-wireless.
+
+
+Alexander
 
