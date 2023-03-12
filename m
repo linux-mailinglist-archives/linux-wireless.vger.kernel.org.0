@@ -2,156 +2,205 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 215286B6102
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Mar 2023 22:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B986B6373
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Mar 2023 07:14:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjCKV0o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Mar 2023 16:26:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
+        id S229650AbjCLGLn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 12 Mar 2023 01:11:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjCKV0n (ORCPT
+        with ESMTP id S229534AbjCLGLm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Mar 2023 16:26:43 -0500
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F36935ADFB;
-        Sat, 11 Mar 2023 13:26:41 -0800 (PST)
-Message-ID: <f00171a1-7f6f-d708-9587-4f176457fdfd@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1678569998;
-        bh=U6lC5gOtxUA3/Ri+0eXIzfgp0Rj6K35nvwwsmlhPHcM=;
-        h=Date:From:Subject:To:Cc:References:In-Reply-To;
-        b=qg30G2AVU2BxKEQaxUM871A4uwJJwHUXz6dyq5830uEx/YLVFOQ1EXsV3hH4Eur/J
-         46blQWl7f/YJt/fUXpV35MDSLQkM2gZhSnyMfXCVfsrHV4BqbErf9SpMK+gzVD1n95
-         a9pydU5tpDIDhVDKv0FFj/Ye4veoaYVwOZxr75tw=
-Date:   Sat, 11 Mar 2023 22:26:35 +0100
+        Sun, 12 Mar 2023 01:11:42 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2832B580CF
+        for <linux-wireless@vger.kernel.org>; Sat, 11 Mar 2023 22:11:36 -0800 (PST)
+X-UUID: bab5b722c09c11ed945fc101203acc17-20230312
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=UpWrqzJtjnV3b9TA3AdJJfz5fDe0IeOdNHGAdv239Hw=;
+        b=g1f4a1+A+V2dTlbIDdMx2YygAcjkyu29fYCMXsqYGF2Bc5T91KLuuNzMCRNpSYiLAz8EC9mHplsiqQMkdfK28LrtD7EikyuIS/Usi0zzKmNOVN/18lGlAkscyBWoa08XEb4XEEN1bJWdj3A/hG+dXDSud3pv9OeVUhtXd5Nagk4=;
+X-CID-P-RULE: Spam_GS6885AD
+X-CID-O-INFO: VERSION:1.1.20,REQID:d4e06922-6c7e-4857-8808-b10992f5c190,IP:0,U
+        RL:0,TC:0,Content:0,EDM:25,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS6885AD,ACT
+        ION:quarantine,TS:120
+X-CID-INFO: VERSION:1.1.20,REQID:d4e06922-6c7e-4857-8808-b10992f5c190,IP:0,URL
+        :0,TC:0,Content:0,EDM:25,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:120
+X-CID-META: VersionHash:25b5999,CLOUDID:5fc81528-564d-42d9-9875-7c868ee415ec,B
+        ulkID:230312141130PET8BG1G,BulkQuantity:0,Recheck:0,SF:38|29|28|17|19|48,T
+        C:nil,Content:0,EDM:5,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
+        OSI:0,OSA:0,AV:0
+X-CID-BVR: 0
+X-UUID: bab5b722c09c11ed945fc101203acc17-20230312
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1850403614; Sun, 12 Mar 2023 14:11:29 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.25; Sun, 12 Mar 2023 14:11:28 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Sun, 12 Mar 2023 14:11:28 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Bo Jiao <bo.jiao@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7996: enable mesh HW amsdu/de-amsdu support
+Date:   Sun, 12 Mar 2023 14:11:25 +0800
+Message-ID: <e2c0fadf54ce06cb37df53f765e6fe168e0ec311.1678601023.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-Subject: Re: [Regression] rt2800usb - Wifi performance issues and connection
- drops
-To:     Felix Fietkau <nbd@nbd.name>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Mann <rauchwolke@gmx.net>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Johannes Berg <johannes.berg@intel.com>
-References: <b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info>
- <5a7cd098-1d83-6297-e802-ce998c8ec116@leemhuis.info>
- <6025e17e-4c29-6d36-6b9c-2fec543b21c4@wetzel-home.de>
- <debc7fe9-204d-63a7-aa61-91b20a46f385@wetzel-home.de>
- <4a02173f-3a60-0a7e-8962-3778e6c55bf3@nbd.name>
- <cfa5cc30-bf5a-bffd-4c2f-eec8a6522dd5@wetzel-home.de>
- <42185fa2-4191-fcf5-9c0f-fd7098bb856b@nbd.name>
- <b4427052-9e94-bce7-b745-2473be5686fa@wetzel-home.de>
-Content-Language: en-US
-In-Reply-To: <b4427052-9e94-bce7-b745-2473be5686fa@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
+        SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 09.03.23 23:13, Alexander Wetzel wrote:
-> On 08.03.23 12:57, Felix Fietkau wrote:
->> On 08.03.23 12:41, Alexander Wetzel wrote:
->>> On 08.03.23 08:52, Felix Fietkau wrote:
->>>
->>>>> I'm also planning to provide some more debug patches, to figuring out
->>>>> which part of commit 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs
->>>>> for resumption") fixes the issue for you. Assuming my understanding
->>>>> above is correct the patch should not really fix/break anything for
->>>>> you...With the findings above I would have expected your git bisec to
->>>>> identify commit a790cc3a4fad ("wifi: mac80211: add wake_tx_queue
->>>>> callback to drivers") as the first broken commit...
->>>> I can't point to any specific series of events where it would go 
->>>> wrong, but I suspect that the problem might be the fact that you're 
->>>> doing tx scheduling from within ieee80211_handle_wake_tx_queue. I 
->>>> don't see how it's properly protected from potentially being called 
->>>> on different CPUs concurrently.
->>>>
->>>> Back when I was debugging some iTXQ issues in mt76, I also had 
->>>> problems when tx scheduling could happen from multiple places. My 
->>>> solution was to have a single worker thread that handles tx, which 
->>>> is scheduled from the wake_tx_queue op.
->>>> Maybe you could do something similar in mac80211 for non-iTXQ drivers.
->>>>
->>>
->>> I think it's already doing all of that:
->>> ieee80211_handle_wake_tx_queue() is the mac80211 implementation for the
->>> wake_tx_queue op. The drivers without native iTXQ support simply link it
->>> to this handler.
->> I know. The problem I see is that I can't find anything that 
->> guarantees that .wake_tx_queue_op is not being called concurrently 
->> from multiple different places. ieee80211_handle_wake_tx_queue is 
->> doing the scheduling directly, instead of deferring it to a single 
->> workqueue/tasklet/thread, and multiple concurrent calls to it could 
->> potentially cause issues.
-> 
-> Good hint, thanks.
-> According to the latest debug log exactly that seems to be happening:
-> 
-> ieee80211_wake_queue() is called by the driver and wake_txqs_tasklet 
-> tasklet is started. But during execution of the drv_wake_tx_queue() from 
-> the tasklet userspace queues a new skb and also calls into 
-> drv_wake_tx_queue(), which is then run overlapping...
-> 
-> Not sure yet how that could cause the problem. But this breaks the 
-> assumption that drv_wake_tx_queue() are not overlapping. And TX fails 
-> directly after such an overlapping TX...
-> 
-> I'll probably just serialize the calls and then we verify if that helps...
+This enables HW offloading amsdu/de-amsdu support for 802.11s mesh
+interface.
 
-Serialization helps. A (crude and in multiple ways incorrect) patch 
-preventing two drv_wake_tx_queue() running for the same ac fixed the 
-issue for Thomas:
-https://bugzilla.kernel.org/show_bug.cgi?id=217119#c20
+Co-developed-by: Bo Jiao <bo.jiao@mediatek.com>
+Signed-off-by: Bo Jiao <bo.jiao@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 24 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7996/mac.h   |  2 ++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  7 ++++++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.h   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7996/mmio.c  |  1 +
+ 5 files changed, 27 insertions(+), 9 deletions(-)
 
-So it looks like we'll now have soon a fix for the issue.
-
-The driver wakes the queue for IEEE80211_AC_BE often for only a single 
-skb and then stops it again.
-The short run time is insufficient for wake_txqs_tasklet to proper wake 
-all queues itself and from time to time a new TX operation squeezes in 
-after IEEE80211_AC_BE has been unblocked but prior of drv_wake_tx_queue 
-being called from the wake_txqs_tasklet. When this happens 
-drv_wake_tx_queue is called two times: Once from the tasklet, once from 
-the userspace.
-
-ieee80211_handle_wake_tx_queue is using ieee80211_txq_schedule_start, 
-which has this documented requirement:
-"The driver must not call multiple TXQ scheduling rounds concurrently."
-Now I don't think that is causing the reported regression. Nevertheless 
-we should prevent concurrent calls of ieee80211_handle_wake_tx_queue for 
-that reason alone.
-
-The real reason of the hangs is probably in the rt2800usb driver or 
-hardware. I don't see anything in the driver code, so probably the HW 
-itself has a problem with the two near-concurrent TX operations.
-
-The real culprit of the regression should be commit a790cc3a4fad ("wifi: 
-mac80211: add wake_tx_queue callback to drivers"), which switched 
-rt2800usb over to iTXQs. But without the fix from commit 4444bc2116ae 
-("wifi: mac80211: Proper mark iTXQs for resumption") mac80211 omitted to 
-schedule the required run of the wake_txqs_tasklet. Thus thus instead of 
-two concurrent drv_wake_tx_queue we only got one and the driver 
-continued to work.
-
-I asked Thomas on bugzilla to test the "best" solution I came up with.
-
-There seems to be multiple ways. But I can't find a simple, low risk and 
-complete fix. So I compromised...
-
-When Thomas can confirm the fix we can soon discuss the fix on 
-linux-wireless.
-
-
-Alexander
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 3c3506c7c87a..3d8332d502b3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -632,6 +632,8 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	u32 rxd4 = le32_to_cpu(rxd[4]);
+ 	u32 csum_mask = MT_RXD0_NORMAL_IP_SUM | MT_RXD0_NORMAL_UDP_TCP_SUM;
+ 	u32 csum_status = *(u32 *)skb->cb;
++	u32 mesh_mask = MT_RXD0_MESH | MT_RXD0_MHCP;
++	bool is_mesh = (rxd0 & mesh_mask) == mesh_mask;
+ 	bool unicast, insert_ccmp_hdr = false;
+ 	u8 remove_pad, amsdu_info, band_idx;
+ 	u8 mode = 0, qos_ctl = 0;
+@@ -823,19 +825,16 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, struct sk_buff *skb)
+ 		int pad_start = 0;
+ 
+ 		skb_pull(skb, hdr_gap);
+-		if (!hdr_trans && status->amsdu) {
++		if (!hdr_trans && status->amsdu && !(ieee80211_has_a4(fc) && is_mesh)) {
+ 			pad_start = ieee80211_get_hdrlen_from_skb(skb);
+-		} else if (hdr_trans && (rxd2 & MT_RXD2_NORMAL_HDR_TRANS_ERROR)) {
++		} else if (hdr_trans && (rxd2 & MT_RXD2_NORMAL_HDR_TRANS_ERROR) &&
++			   get_unaligned_be16(skb->data + pad_start) == ETH_P_8021Q) {
+ 			/* When header translation failure is indicated,
+ 			 * the hardware will insert an extra 2-byte field
+ 			 * containing the data length after the protocol
+ 			 * type field.
+ 			 */
+-			pad_start = 12;
+-			if (get_unaligned_be16(skb->data + pad_start) == ETH_P_8021Q)
+-				pad_start += 4;
+-			else
+-				pad_start = 0;
++			pad_start = 16;
+ 		}
+ 
+ 		if (pad_start) {
+@@ -856,8 +855,17 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, struct sk_buff *skb)
+ 		hdr = mt76_skb_get_hdr(skb);
+ 		fc = hdr->frame_control;
+ 		if (ieee80211_is_data_qos(fc)) {
++			u8 *qos = ieee80211_get_qos_ctl(hdr);
++
+ 			seq_ctrl = le16_to_cpu(hdr->seq_ctrl);
+-			qos_ctl = *ieee80211_get_qos_ctl(hdr);
++			qos_ctl = *qos;
++
++			/* Mesh DA/SA/Length will be stripped after hardware
++			 * de-amsdu, so here needs to clear amsdu present bit
++			 * to mark it as a normal mesh frame.
++			 */
++			if (ieee80211_has_a4(fc) && is_mesh && status->amsdu)
++				*qos &= ~IEEE80211_QOS_CTL_A_MSDU_PRESENT;
+ 		}
+ 	} else {
+ 		status->flag |= RX_FLAG_8023;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+index 2cc218f735d8..d6b1ee994b54 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+@@ -12,6 +12,8 @@
+ #define MT_RXD0_LENGTH			GENMASK(15, 0)
+ #define MT_RXD0_PKT_TYPE		GENMASK(31, 27)
+ 
++#define MT_RXD0_MESH			BIT(18)
++#define MT_RXD0_MHCP			BIT(19)
+ #define MT_RXD0_NORMAL_ETH_TYPE_OFS	GENMASK(22, 16)
+ #define MT_RXD0_NORMAL_IP_SUM		BIT(23)
+ #define MT_RXD0_NORMAL_UDP_TCP_SUM	BIT(24)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 8ad51cbfdbe8..b5ce335056e8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1022,6 +1022,7 @@ mt7996_mcu_sta_amsdu_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+ 	struct tlv *tlv;
+ 
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
++	    vif->type != NL80211_IFTYPE_MESH_POINT &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+ 		return;
+ 
+@@ -1471,6 +1472,12 @@ mt7996_mcu_sta_hdr_trans_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+ 		hdr_trans->to_ds = true;
+ 		hdr_trans->from_ds = true;
+ 	}
++
++	if (vif->type == NL80211_IFTYPE_MESH_POINT) {
++		hdr_trans->to_ds = true;
++		hdr_trans->from_ds = true;
++		hdr_trans->mesh = true;
++	}
+ }
+ 
+ static enum mcu_mmps_mode
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index dd0c5ac52703..009f5f06042e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -396,7 +396,7 @@ struct sta_rec_hdr_trans {
+ 	u8 from_ds;
+ 	u8 to_ds;
+ 	u8 dis_rx_hdr_tran;
+-	u8 rsv;
++	u8 mesh;
+ } __packed;
+ 
+ struct hdr_trans_en {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 902370a2a639..61e42d71810d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -320,6 +320,7 @@ struct mt7996_dev *mt7996_mmio_probe(struct device *pdev,
+ 		/* txwi_size = txd size + txp size */
+ 		.txwi_size = MT_TXD_SIZE + sizeof(struct mt76_connac_fw_txp),
+ 		.drv_flags = MT_DRV_TXWI_NO_FREE |
++			     MT_DRV_AMSDU_OFFLOAD |
+ 			     MT_DRV_HW_MGMT_TXQ,
+ 		.survey_flags = SURVEY_INFO_TIME_TX |
+ 				SURVEY_INFO_TIME_RX |
+-- 
+2.18.0
 
