@@ -2,147 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C216B7A53
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 15:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD9A6B7AA6
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 15:42:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231382AbjCMO3q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 10:29:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41290 "EHLO
+        id S231349AbjCMOmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 10:42:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231343AbjCMO3p (ORCPT
+        with ESMTP id S231459AbjCMOmY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 10:29:45 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3375C193EF
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 07:29:44 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id p6so13199379plf.0
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 07:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678717783;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qOO7BPo0sWWqK0nxPGx3fTC/uh2KWntI/uzgtz6cSGo=;
-        b=CdDEMALk63pvTrxE0pm8HaVYzbwOLDPjrgBgHIaAzjp2cfeRHlj1jQDubozBDQ8FAa
-         t1KRozDwoP2ShraSqEma7fMQNNTuRshmct0/VWFuJ+Rp7kvrzWx8HEzR26eESrICm1ku
-         NmFrJZoMTbXrlUgXz1R48OJ/XHkj/fg0lzEGf6AMVtBpKFxcNQPQ6JcKhsTmcwQM8LGU
-         X9TFjH/eXWWRJ4eHYSQXYtOyelRhRTjoHnBa8kAWARNTV4Q4TiQwa3cK7ugpR0rM7eIu
-         HCfV8uFw4Etav/i3OTwG2MfFHUqLezGmOU+NNbkIuROwUrYW/Zahq8JAhiZugbIqehXs
-         VvfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678717783;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qOO7BPo0sWWqK0nxPGx3fTC/uh2KWntI/uzgtz6cSGo=;
-        b=5SkzsBTVB0HrSbVFaTvvTABHcsMRgUXctgi+GdmQXD0t6xvgNtkdI5jIKaq2kZuAf9
-         JWo2tvNkTn67B+eMwPcdscjSjOK6e5SWFI+SVSAhgww7HmVZO+nRrrnGvCdqdqPI+MLv
-         5KA7Dn6JNQlM76kIWG+LXPThrAH/w2wB+xhCHd2Y8JQzud1qJWIEBBjZcgNlL51S359f
-         90Ize1p5tnN193Ep2TJWohVJd2Me3XDhKfuR7tEmWw0NtspK+lE4Wor7FNhtOY6TkoJu
-         1pcI944B7ajMrLg2dObgJrFKnFIfXSj4Lc3tkYqM+zFYphVGWvi3zJgzIHXIUcTW/C7a
-         Qh9A==
-X-Gm-Message-State: AO0yUKX4z8NS1k7zPj8R/AwMnquuQp2BVnsf9lKJbgkWef/0vsDfJu8f
-        +auY1TATV82RLtLn6R8vxESqhj32XXxQoMuqSlo=
-X-Google-Smtp-Source: AK7set/2jOsEjfwviQYQsIbQFbc83PEhCXHCUwGD+m0jsnAqXRQCGenTIcjY+zaZzqbP/1lbmPizhpjbB+Rg4a5/V78=
-X-Received: by 2002:a17:903:1388:b0:1a0:4be5:ccea with SMTP id
- jx8-20020a170903138800b001a04be5cceamr1223604plb.9.1678717783577; Mon, 13 Mar
- 2023 07:29:43 -0700 (PDT)
+        Mon, 13 Mar 2023 10:42:24 -0400
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6083A7389E;
+        Mon, 13 Mar 2023 07:41:38 -0700 (PDT)
+Received: from [192.168.108.81] (unknown [213.36.7.13])
+        (Authenticated sender: marc.w.gonzalez@free.fr)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 7C99720040F;
+        Mon, 13 Mar 2023 15:41:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+        s=smtp-20201208; t=1678718496;
+        bh=jHWvZ9GrC/ieXg7Cg0vUPFioY8hbPYWnhYGRHJxj67U=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=aAWvVKFgvIG3Y8nOAfipbX9cZT83eQAVcg7wBKUsOZXbaVMTc7RbyVHbt9TXwHYwG
+         47nxIQHR/I3X6kv3UUYduQne6KpWSfmfkeoQ8NjTID9V2u3AfILGR3LOtH/ASXlZyW
+         qyEQqbAJyuBGEw0RsW76Pyp+ZjpfuAYRASLvOAqUHYM6vmEKwdWMI0za6Q/+QZ9M+Z
+         PfKT779FDJt0Q4qDG0A1hq9pUy5p/xi+uQZgsTprhMp010cXZy8IR9I04YUqi1xkJk
+         051ypzqaO1+OK/x+b5CYY4UfK+mdQEeMO1abAm6+Z3xU3zNXfm5rNIt13fsRrvPl/2
+         61zeiQrMaBfrg==
+Message-ID: <da979443-7a99-b0c8-911b-c5a0d21d595f@free.fr>
+Date:   Mon, 13 Mar 2023 15:41:13 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:7300:148e:b0:9d:d186:759c with HTTP; Mon, 13 Mar 2023
- 07:29:43 -0700 (PDT)
-Reply-To: janepayne700@gmail.com
-From:   payne jane <modouwade8250@gmail.com>
-Date:   Mon, 13 Mar 2023 07:29:43 -0700
-Message-ID: <CA+u9KrCr146nJ63j9h4_=oECfTVQnwJtuaMChmwQ--22Xwsb1A@mail.gmail.com>
-Subject: =?UTF-8?B?5oiR6ZyA6KaB5L2g55qE5biu5Yqp?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=7.9 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:62a listed in]
-        [list.dnswl.org]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [modouwade8250[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [modouwade8250[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [janepayne700[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [RFC PATCH] brcmfmac: add 43751 SDIO ids and initialization
+Content-Language: en-US
+From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Alexander Prutskov <alep@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        Pierre-Hugues Husson <phh@phh.me>,
+        linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org
+References: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr>
+ <895a3812-e490-cc40-0f8e-a88e166e8f24@linaro.org>
+ <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr>
+ <13676dcc-944f-cf3d-8adf-ee3d4e8fa699@free.fr>
+ <e5baf73b-3b9d-1011-2ed9-4b6fc7ee644f@free.fr>
+ <CAPDyKFoAT-jMkYb7=m--q_eEb2xxH-VPQy5vaHNvw4s=WiAeCg@mail.gmail.com>
+ <0450e34e-7190-104c-832a-150f15f7c825@free.fr>
+ <3d91a067-c9c3-6d71-11a7-1289ea67f109@free.fr>
+In-Reply-To: <3d91a067-c9c3-6d71-11a7-1289ea67f109@free.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-5oiR5biM5pyb5L2g6IO955CG6Kej6L+Z5Liq5raI5oGv77yM5Zug5Li65oiR5q2j5Zyo5L2/55So
-57+76K+R5Zmo57uZ5L2g5YaZ5L+h44CCDQoNCuaIkeaYr+eugMK35L2p5oGp5Lit5aOr5aSr5Lq6
-44CCDQoNCuWcqOe+juWbvemZhuWGm+eahOWGm+S6i+mDqOmXqOOAgiDnvo7lm73vvIzkuIDlkI3k
-uK3lo6vvvIwzMiDlsoHvvIzljZXouqvvvIzmnaXoh6rnvo7lm73kv4TkuqXkv4Tlt57lhYvliKnl
-pKvlhbDluILvvIznm67liY3kuI7lkIzkuovkuIDotbflnKjliKnmr5Tkuprnj63liqDopb/miafo
-oYzkuIDpobnnibnmrorku7vliqHjgIINCg0K5oiR5piv5LiA5Liq5pyJ54ix5b+D44CB6K+a5a6e
-5ZKM5rex5oOF55qE5Lq677yM5pyJ5b6I5aW955qE5bm96buY5oSf77yM5oiR5Zac5qyi57uT6K+G
-5paw5pyL5Y+L5bm25LqG6Kej5LuW5Lus55qE55Sf5rS75pa55byP77yM5oiR5Zac5qyi55yL5aSn
-5rW355qE5rOi5rWq5ZKM576k5bGx55qE576O5pmv5Lul5Y+K5aSn6Ieq54S255qE5LiA5YiHIOaP
-kOS+m+OAgg0K5b6I6auY5YW06IO95pu05aSa5Zyw5LqG6Kej5L2g77yM5oiR6K6k5Li65oiR5Lus
-5Y+v5Lul5bu656uL6Imv5aW955qE5ZWG5Lia5Y+L6LCK44CCDQoNCuaIkeS4gOebtOW+iOS4jeW8
-gOW/g++8jOWboOS4uuWkmuW5tOadpeeUn+a0u+WvueaIkeS4jeWFrOW5s++8myDmiJHlnKggMjEg
-5bKB6YKj5bm05aSx5Y675LqG54i25q+N44CCIOaIkeeItuS6sueahOWQjeWtl+aYr+W4leeJuemH
-jOWFi+S9qeaBqeWSjOaIkeeahOavjeS6sueOm+S4veS9qeaBqeOAgg0K5rKh5pyJ5Lq65biu5Yqp
-5oiR77yM5L2G5oiR5b6I6auY5YW05oiR57uI5LqO5Zyo576O5Yab5Lit5om+5Yiw5LqG6Ieq5bex
-44CCDQoNCuaIkee7k+S6huWpmu+8jOacieS6huWtqeWtkO+8jOS9huS7luWOu+S4luS6hu+8jOS4
-jeS5heWQjuaIkeS4iOWkq+W8gOWni+WHuui9qO+8jOaJgOS7peaIkeS4jeW+l+S4jeaUvuW8g+Wp
-muWnu+OAgg0KDQrlnKjmiJHnmoTlm73lrrbnvo7lm73lkozliKnmr5Tkuprnj63liqDopb/ov5np
-h4zvvIzmiJHkuZ/lvojlubjov5DvvIzmi6XmnInnlJ/mtLvmiYDpnIDnmoTkuIDliIfvvIzkvYbm
-sqHmnInkurrnu5nmiJHlu7rorq7jgIIg5oiR6ZyA6KaB5LiA5Liq6K+a5a6e55qE5Lq65p2l5L+h
-5Lu75LuW77yM5LuW5Lmf5Lya57uZ5oiR5bu66K6u5aaC5L2V5oqV6LWE44CCDQrlm6DkuLrmiJHm
-mK/miJHniLbmr43nlJ/liY3llK/kuIDnlJ/kuIvnmoTlpbPlranjgIINCg0K5oiR5LiN6K6k6K+G
-5L2g5pys5Lq677yM5L2G5oiR6K6k5Li65pyJ5LiA5Liq5YC85b6X5L+h6LWW55qE5aW95Lq677yM
-5LuW5Y+v5Lul5bu656uL55yf5q2j55qE5L+h5Lu75ZKM6Imv5aW955qE5ZWG5Lia5Y+L6LCK77yM
-5aaC5p6c5L2g55yf55qE5pyJ6K+a5a6e5ZKM6K+a5a6e55qE5ZCN5aOw77yM5oiR5Lmf5pyJ5LiA
-5Lqb5Lic6KW/6KaB5ZKM5L2g5YiG5LqrDQrnm7jkv6HjgIIg5Zyo5L2g6Lqr5LiK77yM5Zug5Li6
-5oiR6ZyA6KaB5L2g55qE5biu5Yqp44CCIOaIkeaLpeacieaIkeWcqOaRqea0m+WTpeaJp+ihjOS7
-u+WKoeaXtuWcqOaRqea0m+WTpei1muWIsOeahOaAu+WSjO+8iDU3MA0K5LiH576O5YWD77yJ77yM
-5oiR5Lya5Zyo5LiL5LiA5bCB55S15a2Q6YKu5Lu25Lit5ZGK6K+J5L2g5oiR5piv5aaC5L2V5YGa
-5Yiw55qE77yM5LiN6KaB5oOK5oWM77yM5a6D5Lus5rKh5pyJ6aOO6Zmp6ICM5LiU5oiRDQrlnKjk
-uIDkvY3kuI7nuqLljYHlrZfkvJrmnInogZTns7vnmoTkurrpgZPkuLvkuYnljLvnlJ/nmoTluK7l
-iqnkuIvvvIzlpbnov5jlnKjmkanmtJvlk6XnmoTkuIDlrrbpk7booYzlrZjkuobpkrHjgIINCuaI
-keW4jOacm+S9oOS9nOS4uuaIkeeahOWPl+ebiuS6uuadpeaOpeaUtuWfuumHke+8jOW5tuWcqOaI
-keWujOaIkOi/memHjOeahOW3peS9nOWQjuWmpeWWhOS/neeuoeWug++8jOW5tuiOt+W+l+aIkeea
-hOWGm+S6i+mAmuihjOivge+8jOS7peS+v+WcqOS9oOeahOWbveWutuS4juS9oOS8mumdou+8mw0K
-5LiN6KaB5ouF5b+D6ZO26KGM5Lya6YCa6L+H6ZO26KGM5Yiw6ZO26KGM6L2s6LSm55qE5pa55byP
-5bCG6LWE6YeR6L2s57uZ5oKo77yM6L+Z5a+55oiR5Lus5p2l6K+05pei5a6J5YWo5Y+I5b+r5o23
-44CCDQoNCueslOiusDsg5oiR546w5Zyo5Zyo5Yip5q+U5Lqa77yM5oiR5LiN55+l6YGT5oiR5Lus
-6KaB5Zyo6L+Z6YeM5b6F5aSa5LmF77yM5oiR5Zyo6L+Z6YeM5Lik5qyh54K45by56KKt5Ye75Lit
-5bm45a2Y5LiL5p2l77yM6L+Z6K6p5oiR5oOz5om+5LiA5Liq5YC85b6X5L+h6LWW55qE5Lq65p2l
-5biu5Yqp5oiR5o6l5pS25ZKM5oqV6LWE6K+l5Z+66YeR77yM5Zug5Li6DQrmiJHlsIbmnaXliLDk
-vaDnmoTnpZblm73mipXotYTlubblvIDlp4vmlrDnmoTnlJ/mtLvvvIzkuI3lho3mmK/kuIDlkI3l
-hpvkurrjgIINCg0K5aaC5p6c5oKo5oS/5oSP6LCo5oWO5aSE55CG77yM6K+35Zue5aSN5oiR44CC
-IOaIkeS8muWRiuivieS9oOaOpeS4i+adpeeahOa1geeoi++8jOW5tuWQkeS9oOWPkemAgeabtOWk
-muacieWFs+WtmOWFpei1hOmHkeeahOmTtuihjOeahOS/oeaBr+OAgg0K5Lul5Y+K6ZO26KGM5bCG
-5aaC5L2V5biu5Yqp5oiR5Lus6YCa6L+H6ZO26KGM5Yiw6ZO26KGM6L2s5biQ5bCG6LWE6YeR6L2s
-56e75Yiw5oKo5omA5Zyo55qE5Zu95a62L+WcsOWMuuOAgiDlpoLmnpzkvaDmnInlhbTotqPvvIzo
-r7fkuI7miJHogZTns7vjgIINCg==
+On 13/03/2023 14:55, Marc Gonzalez wrote:
+
+> On 09/03/2023 18:51, Marc Gonzalez wrote:
+> 
+>> On 09/03/2023 15:29, Ulf Hansson wrote:
+>>
+>>> To narrow down the problem, I would start by preventing the WiFi
+>>> driver from being insmoded. To make sure it doesn't affect the SDIO
+>>> card detection process.
+>>>
+>>> The point is, the SDIO card should be detected properly, no matter
+>>> whether there is a corresponding SDIO func driver (WiFi driver)
+>>> available for it. For a detected SDIO/eMMC/SD card, mmc_add_card()
+>>> prints a message about the card in the log during initialization. It
+>>> could look like the below print, for example:
+>>>
+>>> "mmc2: new ultra high speed SDR104 SDIO card at address 0001".
+>>
+>> OK, I built the WiFi driver as a module which is NOT loaded at boot time.
+> 
+> Still trying to bisect this heisenbug into submission... :(
+> 
+> So far, I've pared it down to mmc_attach_sdio()
+> 
+> When probe WORKS, mmc_attach_sdio() returns 0.
+> When probe FAILS, mmc_attach_sdio() returns ETIMEDOUT
+> via mmc_send_io_op_cond(host, 0, &ocr);
+> 
+> Wrapping mmc_send_io_op_cond() in a loop
+> makes it work on the second try.
+> 
+> Would appreciate additional guidance. Am mostly stabbing in the dark :)
+
+Caught the race "in the act" (in flagrante delicto)
+
+Using this patch:
+
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index f64b9ac76a5cd..eb2c95721e32c 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -1204,11 +1204,24 @@ int mmc_attach_sdio(struct mmc_host *host)
+ 	struct mmc_card *card;
+ 
+ 	WARN_ON(!host->claimed);
+-
++	//printk("YO %s: %s", __func__, mmc_hostname(host));
++	//msleep(500);
++
++#if 1
++	for (i = 0; i < 10; ++i) {
++		err = mmc_send_io_op_cond(host, 0, &ocr);
++		printk("YO %s", mmc_hostname(host));
++		if (!err) goto all_good;
++	}
++	printk("%s failed with %d", __func__, err);
++	return err;
++#else
+ 	err = mmc_send_io_op_cond(host, 0, &ocr);
+ 	if (err)
+ 		return err;
++#endif
+ 
++all_good:
+ 	mmc_attach_bus(host, &mmc_sdio_ops);
+ 	if (host->ocr_avail_sdio)
+ 		host->ocr_avail = host->ocr_avail_sdio;
+
+
+
+Two boots of the same kernel:
+
+
+/* THIS RUN PROBES ONCE */
+
+[    0.846591] loop: module loaded
+[    0.848079] g12a-mdio_mux ff64c000.mdio-multiplexer: Driver g12a-mdio_mux requests probe deferral
+[    0.853901] usbcore: registered new interface driver usb-storage
+[    0.859421] input: gpio-keys-polled as /devices/platform/gpio-keys-polled/input/input0
+[    0.867880] meson-vrtc ff8000a8.rtc: registered as rtc0
+[    0.872148] meson-vrtc ff8000a8.rtc: setting system clock to 1970-01-01T00:00:00 UTC (0)
+[    0.880251] i2c_dev: i2c /dev entries driver
+[    0.886780] psci-cpuidle: probe of psci-cpuidle rejects match -19
+[    0.891279] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.891505] meson-gx-mmc ffe03000.sd: allocated mmc-pwrseq
+[    0.896644] meson-sm: secure-monitor enabled
+[    0.906242] hid: raw HID events driver (C) Jiri Kosina
+[    0.911506] usbcore: registered new interface driver usbhid
+[    0.916638] usbhid: USB HID core driver
+[    0.922897] optee: probing for conduit method.
+[    0.924837] optee: revision 2.4
+[    0.925770] optee: initialized driver
+[    0.932832] NET: Registered PF_PACKET protocol family
+[    0.936627] Key type dns_resolver registered
+[    0.941251] YO mmc2
+[    0.945287] registered taskstats version 1
+[    0.946989] Loading compiled-in X.509 certificates
+[    1.074273] sdio_read_cis: vendor=2d0 dev=aae7
+[    1.074824] sdio_read_cis: vendor=2d0 dev=aae7
+[    1.074862] mmc2: new ultra high speed SDR50 SDIO card at address 0001
+
+
+/* THIS RUN REQUIRES TWO PROBES */
+
+[    0.855536] loop: module loaded
+[    0.857064] g12a-mdio_mux ff64c000.mdio-multiplexer: Driver g12a-mdio_mux requests probe deferral
+[    0.862952] usbcore: registered new interface driver usb-storage
+[    0.868480] input: gpio-keys-polled as /devices/platform/gpio-keys-polled/input/input0
+[    0.877000] meson-vrtc ff8000a8.rtc: registered as rtc0
+[    0.881206] meson-vrtc ff8000a8.rtc: setting system clock to 1970-01-01T00:00:00 UTC (0)
+[    0.889310] i2c_dev: i2c /dev entries driver
+[    0.895850] psci-cpuidle: probe of psci-cpuidle rejects match -19
+[    0.900536] meson-gx-mmc ffe03000.sd: allocated mmc-pwrseq
+[    0.905438] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.911212] meson-sm: secure-monitor enabled
+[    0.915235] hid: raw HID events driver (C) Jiri Kosina
+[    0.920576] usbcore: registered new interface driver usbhid
+[    0.925700] usbhid: USB HID core driver
+[    0.931999] optee: probing for conduit method.
+[    0.933912] optee: revision 2.4
+[    0.934875] optee: initialized driver
+[    0.941567] YO mmc2
+[    0.941764] NET: Registered PF_PACKET protocol family
+[    0.942884] YO mmc2
+[    0.947738] Key type dns_resolver registered
+[    0.958079] registered taskstats version 1
+[    0.958190] Loading compiled-in X.509 certificates
+[    1.068023] g12a-mdio_mux ff64c000.mdio-multiplexer: Driver g12a-mdio_mux requests probe deferral
+[    1.072434] g12a-mdio_mux ff64c000.mdio-multiplexer: Driver g12a-mdio_mux requests probe deferral
+[    1.072766] meson-gx-mmc ffe07000.mmc: allocated mmc-pwrseq
+[    1.081297] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    1.101201] sdio_read_cis: vendor=2d0 dev=aae7
+[    1.101755] sdio_read_cis: vendor=2d0 dev=aae7
+[    1.101794] mmc2: new ultra high speed SDR50 SDIO card at address 0001
+
+
+
+NOTA BENE: for mmc1, in both runs, kernel probes 10 times and fails with:
+
+[    1.265231] mmc_attach_sdio failed with -110
+[    1.373006] mmc1: new HS200 MMC card at address 0001
+[    1.377242] mmcblk1: mmc1:0001 SCA16G 14.7 GiB 
+[    1.383718] mmcblk1boot0: mmc1:0001 SCA16G 4.00 MiB 
+[    1.387257] mmcblk1boot1: mmc1:0001 SCA16G 4.00 MiB 
+[    1.391912] mmcblk1rpmb: mmc1:0001 SCA16G 4.00 MiB, chardev (246:0)
+
+mmc_attach_sdio() fails but mmc_add_card() succeeds anyway...?
+Confused.
+mmc_attach_sdio() doesn't call mmc_add_card() if it exits prematurely.
+
+Regards
+
