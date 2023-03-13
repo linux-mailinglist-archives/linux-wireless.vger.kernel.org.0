@@ -2,139 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D69956B7E2B
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 17:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD47E6B7E61
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 17:59:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbjCMQw6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 12:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43268 "EHLO
+        id S229849AbjCMQ7Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 12:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbjCMQws (ORCPT
+        with ESMTP id S230348AbjCMQ7U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 12:52:48 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1097C1C58B;
-        Mon, 13 Mar 2023 09:52:34 -0700 (PDT)
+        Mon, 13 Mar 2023 12:59:20 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3B023305;
+        Mon, 13 Mar 2023 09:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678726354; x=1710262354;
+  t=1678726729; x=1710262729;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=JPVToeD0QWPYOZyFEHp6imOeqwVHG1N2r0d+U7SRbAw=;
-  b=cj1QFU/bgKKI44kMJXi+waYutHds3OOGlIY04buu+MG7h8H2PGwOzKjB
-   0AmaaUxU29O6A+jSYQNpKnK4bJR+hkyqphVJDzgUVyBXIBVKf1o6MsWzj
-   isJt7IkPKUJMtWNGVdNwlclBrDZ1msG18BbjmpdLhUeF8bGBubYsLIVPy
-   5yuJ9FQBVsxkGId+O9WXofUsNsX8Q5ODsGGg6wxtOpjF+4THrrI9Pgh7g
-   lGGg4BVw8VyZvfExooWCIgMmfrEhUuALTM3mruVyGGtz8SBQ0ey05JTDz
-   pXm8ybradK8OnYp4dC16WDVtf4z4GsBjePqqUmzc14tltUXyUqzRyY4Es
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="339567748"
+  bh=eYIk+GLGDcvFe9KtQLyLcxCJOJYomTnMp9KgKAibZ24=;
+  b=Y4Ai47WwdMgkXM4w0qd9rWxH/53Lsdr7K7xEwLyBSek6W//cAfso/Avv
+   /sdpCpzFl6QgA8ngQDPlHId2NOh/tpplu3lgTGkWrtyKPXo8sYbj0Pcbw
+   npFbY002XiqWyM3Kpb9s4ulu7R9xunVfDsLa5NW1xWM3CX5VGtNoTNP1v
+   QLGy59lrMsiCSdg7d9351Ew5HE6Gju7E1mbmGo0S+s0GC3ZS7mKp92UdL
+   QJAnZxoL1/ixVbKC3zeIRk1sTaBGwRx5SjH4sJ70PtBjgKgiR2yeq6j7k
+   dQPdDIGxO0YV5FUxKLj15WohcCPYNxn+a5964YAZ1krnvLjoWLlJxTawQ
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="334677046"
 X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
-   d="scan'208";a="339567748"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 09:52:17 -0700
+   d="scan'208";a="334677046"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2023 09:58:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="711203610"
+X-IronPort-AV: E=McAfee;i="6500,9779,10648"; a="628705488"
 X-IronPort-AV: E=Sophos;i="5.98,257,1673942400"; 
-   d="scan'208";a="711203610"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga001.jf.intel.com with ESMTP; 13 Mar 2023 09:52:16 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+   d="scan'208";a="628705488"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga003.jf.intel.com with ESMTP; 13 Mar 2023 09:58:09 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 13 Mar 2023 09:52:15 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ 15.1.2507.21; Mon, 13 Mar 2023 09:58:09 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21 via Frontend Transport; Mon, 13 Mar 2023 09:52:15 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.21 via Frontend Transport; Mon, 13 Mar 2023 09:58:09 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.173)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.21; Mon, 13 Mar 2023 09:52:15 -0700
+ 15.1.2507.21; Mon, 13 Mar 2023 09:58:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k4+hHKbktJLhf+HbxcJDOmYpghM2ysZgapRV3D6XtujCnw6xWCSVHVa/TxxgHx+vq2YItC3f2cdoprlULqEv5duyp8ACM8+d7XCHNIm+6T4/mh8fQ1pzcrAEBi6VsztVpMbUUpcSkgSGGubIsINpGb4Kn0f63pMiZ30I2UHbCcZBNi/PSp0YFuLkPbu9R9ci/dHJQRsSjY336mCpNd5NgRy+YbIwoBHwk8XdPtjT3TPArbIB8tZ2IzQ7IKwlGA0ocoj5kpGxngjWlXgrxrxN2rEkgIt+C/o2RXyLYJeJyDb/JKGvrP6z221UYAvNy38kCZH/FxXPhlRpRjUV1Uq4Tg==
+ b=GtSWjZZVMNAAS8KUNqtaKaPX/CxSL4wxHtq36FTaFa2xyS9uJnn5sXfoGIetSufFrczyqViEHPhsPRDnvHkSc/vfwFePe4lKlUdbhbVu9qwreS5CK73N+McisMfcrtyQn/QkAqf6u6Au/XJ1/zKUR2VkGG/MTf18CJh2W3hxnN3LBj6PJVhxOqGUBgnpsAwUlq4fj1m0/nvpWbOdMUSbiZCx7hdMpJKqcPFpFQIUrRihu/oxsEn5M6r7OgFs/UZcTaLx/mFWoFw0WjqRaIaNbyKO77e0Qb2KwwL8mn0uLXaWh2i2r8cXkl23SZsr8rm2gn7uKVokRZ9XfXoCHn4yzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3LvY3GOo8REH1EG+HeOGL4zWFC1tKuB5QPIfyozGD3Y=;
- b=JLXeToUR5HlxKt7Hh1y9GUaF9TlORv52c7OzXgG5R8BCVr80c1MtAl6ttSzzcUICRlTzJOc0sAEQ2+fB4OdawQIqAHMUxbrqC4EKOGtng8zHlhikWvo0sPBDv/1xenkuQRIL5Lqw5UVnpgyYByZ+jWPRC0okRAJ21df4HzbUKS62MRj4Cwh3d1ALUBO5WmTMxT1Vi1J3boVgtcjXKj9FUYJ0hlj1UVvtiguixj+zO4BOyDZxi+zw9DwTXmKFeDG3oWMYof1pL5UTaWrOF1bmsnwftwYMMKwhjpAquN+CxzUPSrkUo6g2MbMccqpkKhxRU3lkU6z6mjbmur+oqAs1fA==
+ bh=XELMW7Xbcw9vkyq5sMOaUj6GYc85iYW2Hxcrid3mU34=;
+ b=hqts8gdEOkSIFgzPUvnkGcu7uPdeqNNQgpLsZLWapcN5yuACHAwmlskGNZFO7PZE+FAat6bvAVgGvyopTgSPuZyjbQJxJiTwWuVzsqPUKBJly01NVIlM5ZYqYrZx4NTMpBIb9NLsEnBogLAScnAlKjCj6W83NfcNdD6J3S9JngiAZyEZgQLadzMOyNnaW3fZSDOxjQYjaGpufpsCS/d2EHNPxHnPnr2PyhFv5m46fd8SiTB2C9Xcwi2pJrhgyttJkxOmqKdTKxWBzSmBxLazdHfrkWiVCAsDxgMubNuv0I67V5FimrlZGp4VuIHGobSp3v+oKqrdIiQGCvrEXBEddQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DM6PR11MB2937.namprd11.prod.outlook.com (2603:10b6:5:62::13) by
- DM6PR11MB4657.namprd11.prod.outlook.com (2603:10b6:5:2a6::7) with Microsoft
+ SJ2PR11MB7504.namprd11.prod.outlook.com (2603:10b6:a03:4c5::7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6178.24; Mon, 13 Mar 2023 16:52:10 +0000
+ 15.20.6178.24; Mon, 13 Mar 2023 16:58:07 +0000
 Received: from DM6PR11MB2937.namprd11.prod.outlook.com
  ([fe80::cece:5e80:b74f:9448]) by DM6PR11MB2937.namprd11.prod.outlook.com
  ([fe80::cece:5e80:b74f:9448%7]) with mapi id 15.20.6178.024; Mon, 13 Mar 2023
- 16:52:10 +0000
-Date:   Mon, 13 Mar 2023 17:51:57 +0100
+ 16:58:07 +0000
+Date:   Mon, 13 Mar 2023 17:58:02 +0100
 From:   Michal Kubiak <michal.kubiak@intel.com>
 To:     Jaewan Kim <jaewan@google.com>
 CC:     <gregkh@linuxfoundation.org>, <johannes@sipsolutions.net>,
         <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
         <kernel-team@android.com>, <adelva@google.com>
-Subject: Re: [PATCH v9 1/5] mac80211_hwsim: add PMSR capability support
-Message-ID: <ZA9UrX1I6XXOfnYV@localhost.localdomain>
+Subject: Re: [PATCH v9 2/5] wifi: nl80211: make nl80211_send_chandef
+ non-static
+Message-ID: <ZA9WGhHRqdZKBI7U@localhost.localdomain>
 References: <20230313075326.3594869-1-jaewan@google.com>
- <20230313075326.3594869-2-jaewan@google.com>
+ <20230313075326.3594869-3-jaewan@google.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20230313075326.3594869-2-jaewan@google.com>
-X-ClientProxiedBy: DU2P251CA0005.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:10:230::34) To DM6PR11MB2937.namprd11.prod.outlook.com
+In-Reply-To: <20230313075326.3594869-3-jaewan@google.com>
+X-ClientProxiedBy: FR3P281CA0082.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1f::8) To DM6PR11MB2937.namprd11.prod.outlook.com
  (2603:10b6:5:62::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR11MB2937:EE_|DM6PR11MB4657:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12dc1891-5793-46ce-fe99-08db23e3494e
+X-MS-TrafficTypeDiagnostic: DM6PR11MB2937:EE_|SJ2PR11MB7504:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5ac6b0e-475d-42d8-7269-08db23e41e87
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ECwJWbwU0o5DfSUlx8BtCwi7xujg2ucC45anjf9Af4oM0Z4WQh86X4jvRNJsRq7zri3YcdImVW4VigUQuXpZqGH8ZDADKlro9/28dhzoaOKkchKNtdmSo4HklgB/I7cYmgib25SMOn/37RU6qNGgZOHOtL6jqcpKBBBYJze9S4ECnAFQ0/I8/CmaT0kRa6u3TiY7OpCsiGCsy2ndDXO06mfJ+cF5+ysPXWbnGzq3LqcKFFR5NtYGbcvwOXT3QCToajtRz0U1REdpWLJJh1PI2+EjVOeu3KAxseo2oe5xs+zkAH5n+uc1JpR8gNBqk60Ny+plY9KkuOxb68jXVll+zB8dGePS+5XbfX5jcTmpXyXntcyMn1IzqPUWqXrW4RmBqisf/mO7LvDTDuwj8dCqhnxPXGgWdrCOfRX5g2nuVjGY+KhDBUkvbZNHMPxZ7taL9y3N3NiE/lsxhcEXGTxGMsHuAmxhSNKzVPNsyIf0x9DuQA0l7YO/EDkEyRZvVEYZ0DJErwx43wWzd16y/sxCFmwapeJdbImWxMezPU3HNouXtqkEXu2S9XnFBGalJt0yzIQxG+NCPsyHc9OlPxa5VnkALuQzochLcJwH/9vQXWbk6OxaU7ZUSn6o3XrzGbe55aNmc2vdaq2YKoWC1Dx9ZIoA+bDJWumYVKtAj3hLtpKcFMqMQWyO5K5OOFBxrjgE
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2937.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(136003)(396003)(376002)(39860400002)(366004)(346002)(451199018)(86362001)(186003)(41300700001)(26005)(6512007)(6506007)(5660300002)(4326008)(8936002)(6916009)(316002)(478600001)(8676002)(66946007)(6666004)(66556008)(30864003)(66476007)(6486002)(38100700002)(82960400001)(2906002)(44832011)(83380400001)(9686003)(309714004);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: YIvn+lyhdOKDCxRxSdZy3NpZf07FSI3CLRqP6ksZuiG1uTJsgSwX7phiDC/Bey6WgZZ8SttwvG5vXwhmaJkAPrKNV5sCi+WbNNq0LSp7MzPxAIm1sHC/82qKkk1sU6ZGHhcCa6Bog4BK8jdYFXy4kZ0w3IQZgRv8oQItZSUPB/Bsi7MxxqDHmC4+92ICdmbEdQ+AH6fnEKYTQeQIRzK5lh+Oi8lKvvvIsYw4ADViYcw5lrsm1nLfAbyKwGRDfDEEA3W3LW7OnGIiwgikvYfd8WPQyOEYupl2uVsOIAVCxp/w7raKvTpQ0UwGyjXExPDhIsZiupiLbWTPY7VjC0avAit1CCHk3uLUmmr9NhcHx4i3hNtXjJXqs6T7fuBZ2QmfYefMwEuVGj9CpL8f6XAEmRq6EBzs/v1BnKC0IadZ8Jw9FbdFxzkQT4b4uXFozXRx3fWn4pFvjK09t0fEY4JLyL5tSbS9zptzohYvnmFgGiuOpJFuo8hU9pJ7VwlrY+ZbHHHCZHAKMiuzu2LTgFsMhr0sm1YT5+z4FSTDcO29wz/r5K8Kisa3a3ZB6+NeO9S0xJaoImlJ9cdVqcFd11HlVtPv1yURrGN7uxpTmK66zBYNZsymeN2vwSMCXYSU2RPd97xwcvT866TwDW3omWsWrw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2937.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(396003)(136003)(39860400002)(346002)(366004)(376002)(451199018)(41300700001)(8676002)(66476007)(66556008)(66946007)(6916009)(4326008)(5660300002)(44832011)(83380400001)(9686003)(8936002)(186003)(6486002)(6512007)(6506007)(26005)(6666004)(316002)(478600001)(86362001)(2906002)(38100700002)(82960400001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pr7rcOuuI8+fru7oS3zDS1vbjxU/gGCYGp3N8kMhLae8DVNMiwv48gvK4j1A?=
- =?us-ascii?Q?fdb2WKLdfkcAdoAGbklzxUy3h+qURIaAXOnq/V4lMOmtFDDqTYrNUK4qrbrh?=
- =?us-ascii?Q?xDGJKca9G2rd+KlJxX8KlPMlmwfTuOx6KLV8kUbAG7rB/bVw5ZT/Xw7Z/0w5?=
- =?us-ascii?Q?yMWXOF/iN23tBZn8w7oXvCp+fcNaSsBBTYpVnMC7W7o2tB4gC4TdPG/ZLq8J?=
- =?us-ascii?Q?GmrCzsGYtlIw4HvrqO8QHWQpX9RzgWm+eXzHa3CIUsv2JLbEVd5xZSYDFrNB?=
- =?us-ascii?Q?nojhrxX9z8ZZoT0z4WgCkPm/Q/w/enOGSSmQE4QOKKUCnmbzreHMPUoCuYeV?=
- =?us-ascii?Q?lcEXnez905zc949d7FLoWN8RWhWHxnD6KecYJd3QvbguZOco8mQI7sV2wdgI?=
- =?us-ascii?Q?55b+gpIM/0FHQ++QLqZUcsvPQaIFZZX0TzRSseXrZswUuGCOYcyeJUyhRtTr?=
- =?us-ascii?Q?Ks477Obhedn20osyivom7vbpbIJ2/QdWebTlxn2qVMGTetCZPqFOLuxUPTRm?=
- =?us-ascii?Q?iGP+DTdQnZjaKjXwDGGQ8dmYu/Qf7QUi8ju03r+b0ZaEBzCPm3y/PGYjYgBD?=
- =?us-ascii?Q?K3sFB9swFOKTi2qFfyI+HW15A4wQ/68kplR/m8jh16uEJEozZqMPZj/v24qG?=
- =?us-ascii?Q?LG0pfEj88YziJOX3UoT4IQhQFAe6UGMtlucODXzXiv8gofcbWKGCeIRmZmyQ?=
- =?us-ascii?Q?yod2zxn35q9KEpr7MJu/QmHm56WWn4+MpxEzRaSZUEmX5yfLS3fR7PcnOvbZ?=
- =?us-ascii?Q?iDEV0BLPfVoFhzc8MxfihxqKTfVmOB1urExl5hkwz691o2k4Uy0OAL7FtQFS?=
- =?us-ascii?Q?2Up8wTszEtGyalNq/mU1GnYQm+OTvCy186z40IlDYj7dzxhZiTpCZJAbw/gq?=
- =?us-ascii?Q?XWs9+T5Lb/yC0QREL84ActwlQQFvDOoOtnvPy/vSBD1ju7Vq+WUr2SJAJQdk?=
- =?us-ascii?Q?BwdQCWByyECFmynfVTAXCZmHtuboSrZBe36mVbSHq6NrRPdiTdcCOrfCBr8h?=
- =?us-ascii?Q?09z+tjziPNedVpA6/FFYhB7VCOKKc5CNgyIyGwvwySovepJvWaKf0l9rdsMM?=
- =?us-ascii?Q?p3F654XEzogldXwB+h8ByA5niDGNOj9JrTcAsIl1vnXulwtmFKSy82rJlSmY?=
- =?us-ascii?Q?mMbU2Jh4GVJMden+kk1qO/0Ovp9fIILYhnCM5eBZokV4oekTh1+Fb1WWmIPU?=
- =?us-ascii?Q?9P8wxw2SXq8PH4hK3Hs9h82GIoyRyH2KwDWPSE03+QECzlcFN5TdIc5Bm+Ec?=
- =?us-ascii?Q?G5GGhN9xQEbzGnVDvovjIwa0lP18s4/GN0VYD1mD7Qmhucv9BryC/5BUVI3U?=
- =?us-ascii?Q?jVFJn7O0aCozfS90H7LkQ7WNJ8Oi1ooofyWtzdbPHa3DpSoT4lfrdrksDrDQ?=
- =?us-ascii?Q?HoyU+twoxYee/USwcMUZEUkZTz60gU0RWBZ+sylhJROqyYIUNN8j33AOpBbf?=
- =?us-ascii?Q?s32NTMxqThPOP3O9IcERW+KNcCyKzJ5qU3pdx9EaRdYVwh8XHtFDSDyzv+V3?=
- =?us-ascii?Q?V9J+3b0vmiyhESLqnXfvoCmcYDVrI9NKII51/Izy+4rEb3NAMLNmKEB5no/U?=
- =?us-ascii?Q?HL7sYZtpwkXdF6/wGnG3CNnY8ZGaaa65mTLPGgOzwkoUHaGFHZRF4NJf3xOL?=
- =?us-ascii?Q?og=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12dc1891-5793-46ce-fe99-08db23e3494e
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UmqvOmZFdCafFOeUInQiZkWdTza+DE0NxJdMndx6sbFskps0xFErH7wUshfc?=
+ =?us-ascii?Q?NoJGaRnO20NkHrxItX3FXiosKy/8ky2mK/EvDJmpWARnTFKhyI6mQn90qlGo?=
+ =?us-ascii?Q?D25zQn14bEgKRIXZ0UlTVM2Gga9oB0lLIZJ3JQzZHBJFxgQJBtaBss49tEZq?=
+ =?us-ascii?Q?YK+O1gb/HTjgZoPLmaMqJ/54rJlDEzqWtmeQYWnLXsju3FNj6hrcYEjJPffI?=
+ =?us-ascii?Q?7Lv2SUL+IszfniuuJ1x8jXfYMzuT+ZbAXWsJtLqcnImrz4XXpcHRug5VsWKO?=
+ =?us-ascii?Q?ITjdXa2pnKaYxPpmLSTw3v3fmFZCwxl1iJgn+U9WECnLsj3SnlEutP9C0LNX?=
+ =?us-ascii?Q?hoH6Om755FF06zhnZahbWfGHY2JnPVgBSrFbWDaYLxm/HPGDQX7/kiQ0rijJ?=
+ =?us-ascii?Q?cignax0lG9rs/ktLF8D4/oGeEvpuK3NGg4ubg2UMQXZstuNC0nvjMooZXLV4?=
+ =?us-ascii?Q?FemK74rX0o+fwJskkMebVkwDAWzfFkyCyUwS2O11P8iKe4qCeUohNl+zo4Fc?=
+ =?us-ascii?Q?XyRdR8BQhqxYuZiXI4ucsT9xy25BqFMEd1ruy1d6ksadL6jPlwcffwXDe83D?=
+ =?us-ascii?Q?Hu2vMxePqH9sDu8dE7kS4bAp/BVdLKj3fkCvEt0BapPScxbB4PlWpe/qPtJH?=
+ =?us-ascii?Q?00kNaHCwK8IA1Si/VS6FnCtvqjLdldlMLjXzpKh/93mY6ZNeoGWiIEeULb76?=
+ =?us-ascii?Q?GC+t6ak/mVy4AJHV7ZOUYb1oiB0z3+NFi8ovyHY2+JGZmNPkmAY59/eDBR59?=
+ =?us-ascii?Q?M+p+zrBT2TWZPn1Gbpc5HojHTxAxdq5v4KCA5+B2uAsvmXTMuw2+gkG/gB0g?=
+ =?us-ascii?Q?yA1j1ZKo0Mnyxmfdt9bQ9gpYANmWbGPoAZC+2V9dNphqwTzU6IYj7WrCaqvs?=
+ =?us-ascii?Q?l5NRd8pos5CgQcGU+TlIxEdnrq8E/vdGeuszJFGNosRdwSpZxlWle6nsQRDy?=
+ =?us-ascii?Q?vsM80z8wD+sb2OJpRGCZLEO6tfI+Irtc2hbjYXpVFRbdBCOc3paIREHo4vV0?=
+ =?us-ascii?Q?Ry0nPGv4zL2MKtSipRTYYBjW+zQHXtuITz/hwUvBjK32omCrnfmQyxSX5HGO?=
+ =?us-ascii?Q?6zO3NY+5TWBP4w8FamdZnxxeWkERmixBQUm2n6J2lBGSVnKLcAy+eDTrTjr+?=
+ =?us-ascii?Q?jtsZYosDMOXWyOQGJSyVEnHyGtRAVLCSB8XvIc9xutvmv8I9ckCBEkNaQ1mF?=
+ =?us-ascii?Q?k7RtWoRUsPQkcJ2SMhyekX+kGq2bC7ie9nYzluDlgDvdoN3rnRATpWYiv95+?=
+ =?us-ascii?Q?nq88Z/bD2XCCuGmaHPUL6N8GMmlEtzHSrhQj2BiKPd2MP2jKKKScCdYvB1Ga?=
+ =?us-ascii?Q?zmUoWm+HTWcbEc+0NficF2rZXsoOHRhNoZO5zRf3kEuuuHCzGE8mxeNCy8qa?=
+ =?us-ascii?Q?7pouatXYBA55dYE86ORON5ECbms6GOH2cuutTZO9p5ZfKqSZ93ttyAie9KTb?=
+ =?us-ascii?Q?CpdqloDJ2zISVN6U6Sc0jtHZCqppipqqBc3KHlfsLg3UG1+KcKOKDdTzQIei?=
+ =?us-ascii?Q?HgWYpPQJ95cfjhv+Ax4M0JRljMUVlqfOBs1Ou7srXhBXI+ehAJrHYAGchU/d?=
+ =?us-ascii?Q?taEJcweucc05gCAZYOC3aPzM4QJ+ZcT5K08nBrJRE9Nr+fUIGlu1Sq5XeNVG?=
+ =?us-ascii?Q?gw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5ac6b0e-475d-42d8-7269-08db23e41e87
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2937.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2023 16:52:10.0487
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2023 16:58:07.6172
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kYPC6R8hElmQqQlmW9dR0Iw0AvgWjJs5WNNlgsYLqnjUKVXGvLRCwXsD31rNiPCs0xYb33Rmg3aIzGvW6nrPtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4657
+X-MS-Exchange-CrossTenant-UserPrincipalName: k353RCso8qyCbXI0YfS83yfVVPhH5f9XBwDIq35vQfvwbN+eCt/2IE9Eh3Yd+1Rmvzald+SQAPL40DuB8BbN9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7504
 X-OriginatorOrg: intel.com
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -145,298 +146,63 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 07:53:22AM +0000, Jaewan Kim wrote:
-> PMSR (a.k.a. peer measurement) is generalized measurement between two
-> Wi-Fi devices. And currently FTM (a.k.a. fine time measurement or flight
-> time measurement) is the one and only measurement. FTM is measured by
-> RTT (a.k.a. round trip time) of packets between two Wi-Fi devices.
-> 
-> Add necessary functionality to allow mac80211_hwsim to be configured with
-> PMSR capability. The capability is mandatory to accept incoming PMSR
-> request because nl80211_pmsr_start() ignores incoming the request without
-> the PMSR capability.
-> 
-> In detail, add new mac80211_hwsim attribute HWSIM_ATTR_PMSR_SUPPORT.
-> HWSIM_ATTR_PMSR_SUPPORT is used to set PMSR capability when creating a new
-> radio. To send extra capability details, HWSIM_ATTR_PMSR_SUPPORT can have
-> nested PMSR capability attributes defined in the nl80211.h. Data format is
-> the same as cfg80211_pmsr_capabilities.
-> 
-> If HWSIM_ATTR_PMSR_SUPPORT is specified, mac80211_hwsim builds
-> cfg80211_pmsr_capabilities and sets wiphy.pmsr_capa.
+On Mon, Mar 13, 2023 at 07:53:23AM +0000, Jaewan Kim wrote:
+> Expose nl80211_send_chandef functionality for mac80211_hwsim or vendor
+> netlink can use it where needed.
 > 
 > Signed-off-by: Jaewan Kim <jaewan@google.com>
-
-Hi,
-
-Just a few style comments and suggestions.
-
-Thanks,
-Michal
-
 > ---
-> V8 -> V9: Changed to consider unknown PMSR type as error.
-> V7 -> V8: Changed not to send pmsr_capa when adding new radio to limit
->           exporting cfg80211 function to driver.
-> V6 -> V7: Added terms definitions. Removed pr_*() uses.
-> V5 -> V6: Added per change patch history.
-> V4 -> V5: Fixed style for commit messages.
-> V3 -> V4: Added change details for new attribute, and fixed memory leak.
-> V1 -> V3: Initial commit (includes resends).
+> V8: Initial commit (split from other change)
 > ---
->  drivers/net/wireless/mac80211_hwsim.c | 129 +++++++++++++++++++++++++-
->  drivers/net/wireless/mac80211_hwsim.h |   3 +
->  2 files changed, 131 insertions(+), 1 deletion(-)
+>  include/net/cfg80211.h | 9 +++++++++
+>  net/wireless/nl80211.c | 4 ++--
+>  2 files changed, 11 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-> index 4cc4eaf80b14..65868f28a00f 100644
-> --- a/drivers/net/wireless/mac80211_hwsim.c
-> +++ b/drivers/net/wireless/mac80211_hwsim.c
-> @@ -719,6 +719,9 @@ struct mac80211_hwsim_data {
->  	/* RSSI in rx status of the receiver */
->  	int rx_rssi;
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index f115b2550309..bcce8e9e2aba 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+
+> @@ -938,6 +938,15 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy,
+>  				  const struct cfg80211_chan_def *chandef,
+>  				  enum nl80211_iftype iftype);
 >  
-> +	/* only used when pmsr capability is supplied */
-> +	struct cfg80211_pmsr_capabilities pmsr_capa;
+> +/**
+> + * nl80211_send_chandef - sends the channel definition.
+> + * @msg: the msg to send channel definition
+> + * @chandef: the channel definition to check
+> + *
+> + * Returns: 0 if sent the channel definition to msg, < 0 on error
+> + **/
+> +int nl80211_send_chandef(struct sk_buff *msg, const struct cfg80211_chan_def *chandef);
 > +
->  	struct mac80211_hwsim_link_data link_data[IEEE80211_MLD_MAX_NUM_LINKS];
->  };
->  
-> @@ -760,6 +763,34 @@ static const struct genl_multicast_group hwsim_mcgrps[] = {
->  
->  /* MAC80211_HWSIM netlink policy */
->  
-> +static const struct nla_policy
-> +hwsim_ftm_capa_policy[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1] = {
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_ASAP] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_NON_ASAP] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_REQ_LCI] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_REQ_CIVICLOC] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES] = { .type = NLA_U32 },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS] = { .type = NLA_U32 },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT] = NLA_POLICY_MAX(NLA_U8, 15),
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST] = NLA_POLICY_MAX(NLA_U8, 31),
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_FTM_CAPA_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
-> +};
-> +
-> +static const struct nla_policy
-> +hwsim_pmsr_capa_type_policy[NL80211_PMSR_TYPE_MAX + 1] = {
-> +	[NL80211_PMSR_TYPE_FTM] = NLA_POLICY_NESTED(hwsim_ftm_capa_policy),
-> +};
-> +
-> +static const struct nla_policy
-> +hwsim_pmsr_capa_policy[NL80211_PMSR_ATTR_MAX + 1] = {
-> +	[NL80211_PMSR_ATTR_MAX_PEERS] = { .type = NLA_U32 },
-> +	[NL80211_PMSR_ATTR_REPORT_AP_TSF] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR] = { .type = NLA_FLAG },
-> +	[NL80211_PMSR_ATTR_TYPE_CAPA] = NLA_POLICY_NESTED(hwsim_pmsr_capa_type_policy),
-> +	[NL80211_PMSR_ATTR_PEERS] = { .type = NLA_REJECT }, // only for request.
-> +};
-> +
->  static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
->  	[HWSIM_ATTR_ADDR_RECEIVER] = NLA_POLICY_ETH_ADDR_COMPAT,
->  	[HWSIM_ATTR_ADDR_TRANSMITTER] = NLA_POLICY_ETH_ADDR_COMPAT,
-> @@ -788,6 +819,7 @@ static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
->  	[HWSIM_ATTR_IFTYPE_SUPPORT] = { .type = NLA_U32 },
->  	[HWSIM_ATTR_CIPHER_SUPPORT] = { .type = NLA_BINARY },
->  	[HWSIM_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
-> +	[HWSIM_ATTR_PMSR_SUPPORT] = NLA_POLICY_NESTED(hwsim_pmsr_capa_policy),
->  };
->  
->  #if IS_REACHABLE(CONFIG_VIRTIO)
-> @@ -3186,6 +3218,7 @@ struct hwsim_new_radio_params {
->  	u32 *ciphers;
->  	u8 n_ciphers;
->  	bool mlo;
-> +	const struct cfg80211_pmsr_capabilities *pmsr_capa;
->  };
->  
->  static void hwsim_mcast_config_msg(struct sk_buff *mcast_skb,
-> @@ -3260,7 +3293,7 @@ static int append_radio_msg(struct sk_buff *skb, int id,
->  			return ret;
->  	}
->  
-> -	return 0;
-> +	return ret;
+>  /**
+>   * ieee80211_chanwidth_rate_flags - return rate flags for channel width
+>   * @width: the channel width of the channel
+> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+> index 112b4bb009c8..1fd9e6545225 100644
+> --- a/net/wireless/nl80211.c
+> +++ b/net/wireless/nl80211.c
+> @@ -3756,8 +3756,7 @@ static int nl80211_set_wiphy(struct sk_buff *skb, struct genl_info *info)
+>  	return result;
 >  }
 >  
->  static void hwsim_mcast_new_radio(int id, struct genl_info *info,
-> @@ -4445,6 +4478,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
->  			      NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS);
->  	wiphy_ext_feature_set(hw->wiphy,
->  			      NL80211_EXT_FEATURE_BEACON_RATE_LEGACY);
-> +	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_ENABLE_FTM_RESPONDER);
->  
->  	hw->wiphy->interface_modes = param->iftypes;
->  
-> @@ -4606,6 +4640,11 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
->  				    data->debugfs,
->  				    data, &hwsim_simulate_radar);
->  
-> +	if (param->pmsr_capa) {
-> +		data->pmsr_capa = *param->pmsr_capa;
-> +		hw->wiphy->pmsr_capa = &data->pmsr_capa;
-> +	}
-> +
->  	spin_lock_bh(&hwsim_radio_lock);
->  	err = rhashtable_insert_fast(&hwsim_radios_rht, &data->rht,
->  				     hwsim_rht_params);
-> @@ -4715,6 +4754,7 @@ static int mac80211_hwsim_get_radio(struct sk_buff *skb,
->  	param.regd = data->regd;
->  	param.channels = data->channels;
->  	param.hwname = wiphy_name(data->hw->wiphy);
-> +	param.pmsr_capa = &data->pmsr_capa;
->  
->  	res = append_radio_msg(skb, data->idx, &param);
->  	if (res < 0)
-> @@ -5053,6 +5093,77 @@ static bool hwsim_known_ciphers(const u32 *ciphers, int n_ciphers)
->  	return true;
->  }
->  
-> +static int parse_ftm_capa(const struct nlattr *ftm_capa, struct cfg80211_pmsr_capabilities *out,
-> +			  struct genl_info *info)
-> +{
-> +	struct nlattr *tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX + 1];
-> +	int ret = nla_parse_nested(tb, NL80211_PMSR_FTM_CAPA_ATTR_MAX,
-> +				   ftm_capa, hwsim_ftm_capa_policy, NULL);
-
-I would suggest to split declaration and assignment here. It breaks the
-RCT principle and it is more likely to overlook "nla_parse_nested" call.
-I think it would improve the readability when we know that the parsing
-function can return an error.
-
-> +
-> +	if (ret) {
-> +		NL_SET_ERR_MSG_ATTR(info->extack, ftm_capa, "malformed FTM capability");
-> +		return -EINVAL;
-> +	}
-> +
-> +	out->ftm.supported = 1;
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES])
-> +		out->ftm.preambles = nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_PREAMBLES]);
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS])
-> +		out->ftm.bandwidths = nla_get_u32(tb[NL80211_PMSR_FTM_CAPA_ATTR_BANDWIDTHS]);
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT])
-> +		out->ftm.max_bursts_exponent =
-> +			nla_get_u8(tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_BURSTS_EXPONENT]);
-> +	if (tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST])
-> +		out->ftm.max_ftms_per_burst =
-> +			nla_get_u8(tb[NL80211_PMSR_FTM_CAPA_ATTR_MAX_FTMS_PER_BURST]);
-> +	out->ftm.asap = !!tb[NL80211_PMSR_FTM_CAPA_ATTR_ASAP];
-> +	out->ftm.non_asap = !!tb[NL80211_PMSR_FTM_CAPA_ATTR_NON_ASAP];
-> +	out->ftm.request_lci = !!tb[NL80211_PMSR_FTM_CAPA_ATTR_REQ_LCI];
-> +	out->ftm.request_civicloc = !!tb[NL80211_PMSR_FTM_CAPA_ATTR_REQ_CIVICLOC];
-> +	out->ftm.trigger_based = !!tb[NL80211_PMSR_FTM_CAPA_ATTR_TRIGGER_BASED];
-> +	out->ftm.non_trigger_based = !!tb[NL80211_PMSR_FTM_CAPA_ATTR_NON_TRIGGER_BASED];
-> +
-> +	return 0;
-> +}
-> +
-> +static int parse_pmsr_capa(const struct nlattr *pmsr_capa, struct cfg80211_pmsr_capabilities *out,
-> +			   struct genl_info *info)
-> +{
-> +	struct nlattr *tb[NL80211_PMSR_ATTR_MAX + 1];
-> +	struct nlattr *nla;
-> +	int size;
-> +	int ret = nla_parse_nested(tb, NL80211_PMSR_ATTR_MAX, pmsr_capa,
-> +				   hwsim_pmsr_capa_policy, NULL);
-
-Ditto.
-
-> +
-> +	if (ret) {
-> +		NL_SET_ERR_MSG_ATTR(info->extack, pmsr_capa, "malformed PMSR capability");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (tb[NL80211_PMSR_ATTR_MAX_PEERS])
-> +		out->max_peers = nla_get_u32(tb[NL80211_PMSR_ATTR_MAX_PEERS]);
-> +	out->report_ap_tsf = !!tb[NL80211_PMSR_ATTR_REPORT_AP_TSF];
-> +	out->randomize_mac_addr = !!tb[NL80211_PMSR_ATTR_RANDOMIZE_MAC_ADDR];
-> +
-> +	if (!tb[NL80211_PMSR_ATTR_TYPE_CAPA]) {
-> +		NL_SET_ERR_MSG_ATTR(info->extack, tb[NL80211_PMSR_ATTR_TYPE_CAPA],
-> +				    "malformed PMSR type");
-> +		return -EINVAL;
-> +	}
-> +
-> +	nla_for_each_nested(nla, tb[NL80211_PMSR_ATTR_TYPE_CAPA], size) {
-> +		switch (nla_type(nla)) {
-> +		case NL80211_PMSR_TYPE_FTM:
-> +			parse_ftm_capa(nla, out, info);
-> +			break;
-> +		default:
-> +			NL_SET_ERR_MSG_ATTR(info->extack, nla, "unsupported measurement type");
-> +			return -EINVAL;
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
->  static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
+> -static int nl80211_send_chandef(struct sk_buff *msg,
+> -				const struct cfg80211_chan_def *chandef)
+> +int nl80211_send_chandef(struct sk_buff *msg, const struct cfg80211_chan_def *chandef)
 >  {
->  	struct hwsim_new_radio_params param = { 0 };
-> @@ -5173,8 +5284,24 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
->  		param.hwname = hwname;
->  	}
->  
-> +	if (info->attrs[HWSIM_ATTR_PMSR_SUPPORT]) {
-> +		struct cfg80211_pmsr_capabilities *pmsr_capa =
-> +			kmalloc(sizeof(*pmsr_capa), GFP_KERNEL);
-
-Missing empty line after variable definition.
-BTW, would it not be better to split "pmsr_capa" declaration and
-"kmalloc"? For example:
-
-		struct cfg80211_pmsr_capabilities *pmsr_capa;
-
-		pmsr_capa = kmalloc(sizeof(*pmsr_capa), GFP_KERNEL);
-		if (!pmsr_capa) {
-
-I think it would be more readable and you would not have to break the
-line. Also, in the current version it seems more likely that the memory
-allocation will be overlooked.
-
-> +		if (!pmsr_capa) {
-> +			ret = -ENOMEM;
-> +			goto out_free;
-> +		}
-> +		ret = parse_pmsr_capa(info->attrs[HWSIM_ATTR_PMSR_SUPPORT], pmsr_capa, info);
-> +		if (ret)
-> +			goto out_free;
-> +		param.pmsr_capa = pmsr_capa;
-> +	}
-> +
->  	ret = mac80211_hwsim_new_radio(info, &param);
-> +
-> +out_free:
->  	kfree(hwname);
-> +	kfree(param.pmsr_capa);
->  	return ret;
+>  	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
+>  		return -EINVAL;
+> @@ -3788,6 +3787,7 @@ static int nl80211_send_chandef(struct sk_buff *msg,
+>  		return -ENOBUFS;
+>  	return 0;
 >  }
+> +EXPORT_SYMBOL(nl80211_send_chandef);
 >  
-> diff --git a/drivers/net/wireless/mac80211_hwsim.h b/drivers/net/wireless/mac80211_hwsim.h
-> index 527799b2de0f..d10fa7f4853b 100644
-> --- a/drivers/net/wireless/mac80211_hwsim.h
-> +++ b/drivers/net/wireless/mac80211_hwsim.h
-> @@ -142,6 +142,8 @@ enum {
->   * @HWSIM_ATTR_CIPHER_SUPPORT: u32 array of supported cipher types
->   * @HWSIM_ATTR_MLO_SUPPORT: claim MLO support (exact parameters TBD) for
->   *	the new radio
-> + * @HWSIM_ATTR_PMSR_SUPPORT: nested attribute used with %HWSIM_CMD_CREATE_RADIO
-> + *	to provide peer measurement capabilities. (nl80211_peer_measurement_attrs)
->   * @__HWSIM_ATTR_MAX: enum limit
->   */
->  
-> @@ -173,6 +175,7 @@ enum {
->  	HWSIM_ATTR_IFTYPE_SUPPORT,
->  	HWSIM_ATTR_CIPHER_SUPPORT,
->  	HWSIM_ATTR_MLO_SUPPORT,
-> +	HWSIM_ATTR_PMSR_SUPPORT,
->  	__HWSIM_ATTR_MAX,
->  };
->  #define HWSIM_ATTR_MAX (__HWSIM_ATTR_MAX - 1)
+>  static int nl80211_send_iface(struct sk_buff *msg, u32 portid, u32 seq, int flags,
+>  			      struct cfg80211_registered_device *rdev,
 > -- 
 > 2.40.0.rc1.284.g88254d51c5-goog
 > 
