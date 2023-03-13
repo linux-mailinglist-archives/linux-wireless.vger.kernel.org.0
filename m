@@ -2,195 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 137106B700A
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 08:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B9A6B707A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 08:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjCMHT5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 03:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36928 "EHLO
+        id S230251AbjCMHzY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 03:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjCMHTt (ORCPT
+        with ESMTP id S229929AbjCMHyx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 03:19:49 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B7442210C
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 00:19:48 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32D2lNgT027230;
-        Mon, 13 Mar 2023 07:19:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=uo0TYIVHwvkxJheXCnQ2pQ3vo9L0zIr3Z28HG5mr+U0=;
- b=GZIP3sD4iImLj5OwAX93i9IA+6CXQGH6hLx8RMRbRmXDYo0tvaIIjbbtdhfq/xKGEfx+
- CzUgmnyE24FRc4pDApfI6eywLrpo4V3E9YSmOKCP8QahMRudFoJa/9+llsamRamap1sr
- TyJYNgY4o35BalWNlVJKU+vMcNnqrtmmDuELaEohnORHq9oMK23MbAiqBfL7EuAoDBjU
- wvQnc6QtLe7bDU9JGUnGIwOJJhxVKhZgBramcvQqWxtlUPRf/PBfqOVBznJu+4A+6sFI
- lwBWMQFqiKtl1idXwwf+zacovsK550UkkiXsW4O3qGFEQXK1v2canjLhKePzTHeDnCVJ QQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3p8jtwv2a2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Mar 2023 07:19:38 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32D7JbOv001865
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Mar 2023 07:19:37 GMT
-Received: from [10.206.66.236] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 13 Mar
- 2023 00:19:36 -0700
-Message-ID: <2777d841-21e3-8223-5f1c-e62319cd57ce@quicinc.com>
-Date:   Mon, 13 Mar 2023 12:49:33 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v4 3/3] ath11k: Enable low power mode when WLAN is not
- active
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230203060128.19625-1-quic_mpubbise@quicinc.com>
- <20230203060128.19625-4-quic_mpubbise@quicinc.com>
- <87h6vbruig.fsf@kernel.org>
-From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-In-Reply-To: <87h6vbruig.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: _LWyzgm5ahE8tjvfULORjshkhtMqEZ95
-X-Proofpoint-GUID: _LWyzgm5ahE8tjvfULORjshkhtMqEZ95
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-12_10,2023-03-10_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- phishscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- malwarescore=0 mlxscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303130059
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 13 Mar 2023 03:54:53 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9555A28E99
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 00:53:35 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id ch1-20020a0569020b0100b00b3cc5b4fa9dso2328123ybb.12
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 00:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1678694014;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=z24uQpiavHAngW50bCNl8uTNwZ8fleLlAkzaTnRscxM=;
+        b=OQgkqx6X5V6rKpLh9Xsn9DoKoy3YdupoYxQjYwUzt8/rchFTZ0uRVR6TN4N/BEbmC+
+         EVvCc0MHcStVh7WaOaMdFbdq2QIxlistUOiGDAayeAVaE8sV/WECjwI6epdz0nzmpJWc
+         Y35whQyJIwewum8GJkoHAPBQiN4QlJqcocAjXCdv2rNA5lJcMR6gy38YeUOo9uDelUPI
+         FQt1a9zTGCKejfG0Bq5xP23oI3ja54W2TmKQ7BYyVrSYdF0+na6apX1nQFlbWpl9n5hC
+         AxT0O9i6ltGnVmfALuwHFhy7t2ekRVJNW9I4WTZj6i420aBLUDUX6RTLi5ZrpqxZA0fH
+         MQEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678694014;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z24uQpiavHAngW50bCNl8uTNwZ8fleLlAkzaTnRscxM=;
+        b=vvA8mpC/6z3KQkfDDkEkzeAKJu4gOtPpkqZoqetXGqs7JlesFGvqWdGVgCk2ASX1mG
+         0xzXIVG7fb4Oc2D8vXKam0t8sQlLpS69y7R3ZWFBS6NwHiED36oEiSCeFsnhyq/pCm5k
+         Gii2i7OH88jndSkc5wfAqT9E5WoZ7pDFVvsWdWTA23G285jYWHIHvCbH44lHa/EEuBl9
+         /vHjxAPPlkffjlwIbgUUoqGwN5hu20ZdhCQ6K6hHyLjKYOQpDh5rLe6lDa+REAx1gTtR
+         JqkEbUaEgGlcK9cU+Y6XncX+/SXf1NJUKDL+SkR2IBpxQbkYR2a8e5xeF+BlL1ViFpPh
+         bPzA==
+X-Gm-Message-State: AO0yUKVXn7HCwYy7noGjT+dQBeZJS5ZI3N0nsbdoJzpGNHAqAC1/oY9W
+        OKF9W30gC3vdiARpnU8Rxa4QMd6fWhg=
+X-Google-Smtp-Source: AK7set/E2prpWdYGCw6fFLpCJdo1zsAkbWFEB/WiRTPvMTHE1CeErQCVUCKsRcZ5ECuTKwfp2AjpxwjCalc=
+X-Received: from jaewan1.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:e59])
+ (user=jaewan job=sendgmr) by 2002:a5b:1cb:0:b0:a6b:bc64:a0af with SMTP id
+ f11-20020a5b01cb000000b00a6bbc64a0afmr20648253ybp.4.1678694013992; Mon, 13
+ Mar 2023 00:53:33 -0700 (PDT)
+Date:   Mon, 13 Mar 2023 07:53:21 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.0.rc1.284.g88254d51c5-goog
+Message-ID: <20230313075326.3594869-1-jaewan@google.com>
+Subject: [PATCH v9 0/5] mac80211_hwsim: Add PMSR support
+From:   Jaewan Kim <jaewan@google.com>
+To:     gregkh@linuxfoundation.org, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-team@android.com, adelva@google.com,
+        Jaewan Kim <jaewan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/24/2023 8:16 PM, Kalle Valo wrote:
-> Manikanta Pubbisetty <quic_mpubbise@quicinc.com> writes:
-> 
->> Currently, WLAN chip is powered once during driver probe and is kept
->> ON (powered) always even when WLAN is not active; keeping the chip
->> powered ON all the time will consume extra power which is not
->> desirable for a battery operated device. Same is the case with non-WoW
->> suspend, chip will never be put into low power mode when the system is
->> suspended resulting in higher battery drain.
->>
->> As per the recommendation, sending a PDEV suspend WMI command followed
->> by a QMI MODE OFF command will cease all WLAN activity and put the device
->> in low power mode. When WLAN interfaces are brought up, sending a QMI
->> MISSION MODE command would be sufficient to bring the chip out of low
->> power. This is a better approach than doing hif_power_down()/hif_power_up()
->> for every WiFi ON/OFF sequence since the turnaround time for entry/exit of
->> low power mode is much less. Overhead is just the time taken for sending
->> QMI MODE OFF & QMI MISSION MODE commands instead of going through the
->> entire chip boot & QMI init sequence.
->>
->> Currently the changes are applicable only for WCN6750. This can be
->> extended to other targets with a future patch.
->>
->> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.16
->>
->> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-> 
-> This is still crashing for me every time with WCN6855 on a NUC x86
-> device when I rmmod ath11k. Interestingly enough QCA6390 on a Dell XPS
-> 13 9310 does not crash.
-> 
-> I investigated the crash more, the crash happens in
-> ath11k_dp_process_rxdma_err() on this line:
-> 
-> 	srng = &ab->hal.srng_list[err_ring->ring_id];
-> 
-> Here are the debug messages before the crash (first and last are my
-> own messages):
-> 
-> [  226.766111] rmmod ath11k_pci
-> [  227.003678] ath11k_pci 0000:06:00.0: txpower from firmware NaN, reported -2147483648 dBm
-> [  227.082283] ath11k_pci 0000:06:00.0: qmi wifi fw del server
-> [  227.195760] ath11k_pci 0000:06:00.0: cookie:0x0
-> [  227.195843] ath11k_pci 0000:06:00.0: WLAON_WARM_SW_ENTRY 0x15b894d
-> [  227.216022] ath11k_pci 0000:06:00.0: WLAON_WARM_SW_ENTRY 0x0
-> [  227.216086] ath11k_pci 0000:06:00.0: soc reset cause:0
-> [  227.236170] ath11k_pci 0000:06:00.0: MHISTATUS 0xff04
-> [  227.270816] ath11k_pci 0000:06:00.0: ext irq:167
-> [  227.271231] ath11k_dp_process_rxdma_err() 4187 ab ffff888145520000 err_ring 00000000000001d0
-> 
-> So we get irq 167 which is:
-> 
->   167:          0          0          0          0          0          0          0          0  IR-PCI-MSI-0000:06:00.0   14-edge      DP_EXT_IRQ
-> 
-> But in ath11k_pcic_ext_interrupt_handler() ATH11K_FLAG_EXT_IRQ_ENABLED
-> is still enabled so the irq is processed:
-> 
-> 	if (!test_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
-> 		return IRQ_HANDLED;
-> 
-> It looks like that, after applying this patch 3, whenever
-> ath11k_pci_remove() is called we are not calling
-> ath11k_hif_irq_disable() anymore. I checked that without patch 3
-> ath11k_hif_irq_disable() is always called. So this patch is definitely
-> breaking something fundamental, but I ran out of time to invetigate
-> further. I hope this still helps.
-> 
+Dear Kernel maintainers,
 
-Hi Kalle,
+First of all, thank you for spending your precious time for reviewing
+my changes.
 
-I was checking the logic around this and have added some debug logs to 
-check if all the de-init APIs are getting called in the rmmod path.
+Let me propose series of patches for adding PMSR support in the
+mac80211_hwsim.
 
-This is the function call flow with WCN6855 on my machine,
+PMSR (peer measurement) is generalized measurement between STAs,
+and currently FTM (fine time measurement or flight time measurement)
+is the one and only measurement.
 
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_core_pdev_destroy
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_thermal_unregister
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_mac_unregister
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_pcic_ext_irq_disable
-ath11k_pci 0000:06:00.0: Manikanta: __ath11k_pcic_ext_irq_disable
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_dp_pdev_free
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_dp_rx_pdev_free
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_dp_rx_pdev_mon_detach
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_pcic_stop
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_dp_pdev_reo_cleanup
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_dp_free
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_pci_power_down
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_mac_destroy
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_reg_free
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_pcic_free_irq
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_pci_free_msi
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_hal_srng_deinit
-ath11k_pci 0000:06:00.0: Manikanta: ath11k_core_free
+FTM measures the RTT (round trip time) and FTM can be used to measure
+distances between two STAs. RTT is often referred as 'measuring distance'
+as well.
 
-In stark contrast to your observations, from the above call flow, I see 
-that ath11k_hif_irq_disable() is getting called and the IRQs are getting 
-disabled. ath11k_pcic_ext_irq_disable() is registered for hif_irq_disable().
+Kernel had already defined protocols for PMSR in the
+include/uapi/linux/nl80211.h and relevant parsing/sending code are in the
+net/wireless/pmsr.c, but they are only used in intel's iwlwifi driver.
 
-I even tried the single MSI vector configuration suspecting that could 
-be the difference. Even in single MSI case, I don't see any crashes 
-during rmmod.
+Patchset is tested with iw tool on Virtual Android device (a.k.a.
+Cuttlefish). Hope this explains my changes.
 
-I'm completely clueless as to why the same code is behaving differently 
-with the same hardware.
+Many Thanks,
+--
+V8 -> V9: Removed any wrong words for patch. Changed to reject unknown
+          PMSR types.
+V7 -> V8: Separated patch for exporting nl80211_send_chandef
+V6 -> V7: Split 'mac80211_hwsim: handle FTM requests with virtio'
+          with three pieces
+V5 -> V6: Added per patch change history.
+V4 -> V5: Fixed style
+V3 -> V4: Added detailed explanation to cover letter and per patch commit
+          messages, includes explanation of PMSR and FTM.
+          Also fixed memory leak.
+V1 -> V3: Initial commits (include resends)
 
-How can we take this forward, could you please suggest?
+Jaewan Kim (5):
+  mac80211_hwsim: add PMSR capability support
+  wifi: nl80211: make nl80211_send_chandef non-static
+  mac80211_hwsim: add PMSR request support via virtio
+  mac80211_hwsim: add PMSR abort support via virtio
+  mac80211_hwsim: add PMSR report support via virtio
 
-I'm thinking to keep these changes specific to WCN6750 for now.
+ drivers/net/wireless/mac80211_hwsim.c | 776 +++++++++++++++++++++++++-
+ drivers/net/wireless/mac80211_hwsim.h |  58 ++
+ include/net/cfg80211.h                |   9 +
+ net/wireless/nl80211.c                |   4 +-
+ 4 files changed, 835 insertions(+), 12 deletions(-)
 
-Thanks,
-Manikanta
-
+-- 
+2.40.0.rc1.284.g88254d51c5-goog
 
