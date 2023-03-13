@@ -2,79 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A84966B822F
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 21:04:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D6A6B8238
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 21:08:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230033AbjCMUEc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 16:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56558 "EHLO
+        id S230038AbjCMUH5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 16:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229889AbjCMUE2 (ORCPT
+        with ESMTP id S229743AbjCMUHz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 16:04:28 -0400
+        Mon, 13 Mar 2023 16:07:55 -0400
 Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247125D466;
-        Mon, 13 Mar 2023 13:04:26 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id cn21so23306645edb.0;
-        Mon, 13 Mar 2023 13:04:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D44087377;
+        Mon, 13 Mar 2023 13:07:46 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id k10so53395541edk.13;
+        Mon, 13 Mar 2023 13:07:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112; t=1678737865;
+        d=googlemail.com; s=20210112; t=1678738065;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MlsJMKW6fTnSyJwAJ4cqmlm3nWjmDE6jeDNees0hYCg=;
-        b=n9+PUEiEa5PYrJ1/BoBZUrn8uJ9PX4FHL1ZcarM/14nWpoDvRkiHFPoCI7GYf11d/k
-         XMKEWzewKzarPdpkk6l803LIGdy6l9fifXm4mhMfBYaRG36g1qUyg6fqa+kS8fxnhLLM
-         3FV+2tbxvJwh0qY/BhfNaw0aL/+c0KYw4kzbQbzJEqOX7Tw7A8iQtWdOmL6a9lqE2oCY
-         LL2hszEQ5X27jJVE9gqI8EiHzNQurEoiynjojgSUNd2VXO6wCANAVXnykRzzRLgob+M9
-         32rMPxuPP9zqKh+LjmwiKhQxxdM48rHJIGJxD7tSx5Hkxd2NRAysKo2rmRm/R0lrq/hC
-         xxlw==
+        bh=GiBmsXv0ePWzwqyMcIjHrkWJHCEm3Erfo/N/cMfRs98=;
+        b=JbOChwnBmnyovZLjPqQNJBf2FzE26m9XBea2+vx42DAnQmPUIVq974tbH+3tDBR3Rl
+         ppWlyq9WHW4HDlg9phiT/4QnJUTQcB3Yl3QXTkrSgkZ6hTKzDrx9Z+QcWFbAKWVwtIbr
+         U12wKHwDxE5yxE337J7LG53q3c6sSuf3Knf1xmxiOZVkQUOIZxUrH1fWT6bjDnWBVK7j
+         hzcUU9zfyXu9NigaS3Wfz1o6CCUqgcFFATBpiwiIgSfcOYN97W0+zWFEqx+ZFdZjgUo5
+         uovLBx/8AFMJupN92HJl7f3ANKTO+3OZE8rHNFKaLYpbFPI1YyoTes8Vb3xk4ZFFmgtu
+         Y0cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678737865;
+        d=1e100.net; s=20210112; t=1678738065;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MlsJMKW6fTnSyJwAJ4cqmlm3nWjmDE6jeDNees0hYCg=;
-        b=EpbtQbBSlsx50/QRHrXjcyrHGBgybBDos6u9gsInTW8xCa3niqvk7wwUpH0Hcd5CWE
-         XwRhsKf0JslWdS2jzOYijGhHWC9kLsIbY2Gty2BoiwTRpYJFAXzjAvcGJjeRCD9xW41A
-         EnHiYYKx7kvcB1kBUQuhkbXerG+lUVySPuPYE7FGIFXCg9b6MEOALqyYdwkzZZHfduOM
-         3XGW39ddk8ldRQNFQJz3yNQrsPofv2ruuBAJt2tgU8+lCWVKjrit9Sew9CH5YYhGzCz4
-         ofZU0DozWm3mkJSueSfEjOdmibK2oretPgG0wAu6xBHDsI3mK+uS+UJIB62BC/j/8KlY
-         zF4g==
-X-Gm-Message-State: AO0yUKXTqLTkzhZT5oJ6QRl1j7VHXmHPj16W9n4iwa2uglNYgFdix67x
-        GCc++J7Gzj60MACyl7Htq4Ymvp4ZsMYQcx81S5c=
-X-Google-Smtp-Source: AK7set/oCOy3yOookh9Pv+mYKU9tKB4xqe73VFecMHnsR39xC93Ftkqk+U7IUkmAnouQMWc1/qsU77Gsu/G15zFYjJA=
-X-Received: by 2002:a17:906:6083:b0:919:2e39:95e5 with SMTP id
- t3-20020a170906608300b009192e3995e5mr9803205ejj.6.1678737865203; Mon, 13 Mar
- 2023 13:04:25 -0700 (PDT)
+        bh=GiBmsXv0ePWzwqyMcIjHrkWJHCEm3Erfo/N/cMfRs98=;
+        b=l5THbEe2XqK19RIu0CZoRGd7xnDz2D43c/yWPoAHWuKpgexkBepBiF/sUMHvKHXL8M
+         zJtxQVtzSJoAY3HXW9Fn04sqfh8pTt+SFTJwyBTfTv5EyMGbnbnjY7bTdnIYmntUppeH
+         F3KuoOuK4O7zwgvrVMh0dilAvRRLTSSPFq+36/T35uyx4HAhPbWHKhhycxCcutkvS9TP
+         77GyXKX7PCOiYELfOcddKNlA73TQAG1uC+P8rGdWxwTLn+qcfNJbzLUDyZ9PCErjmKTI
+         wpLZ1yqKG3x/nEpXKN7aSqGrU5vQ/fVY44NbEOVm+Xffzwxq3L/BbX3WOJ0GDutI+sFy
+         /dTg==
+X-Gm-Message-State: AO0yUKWjWRnGugwCGRNYZoLw5J6if/pDs6wZRiRophDTA73qzraQxUAm
+        4LmmliV/xTe/uMUwE6IEXOAeTPYplsCfzqBeWJiJe0nPmOw=
+X-Google-Smtp-Source: AK7set8jeKafsOelcj8LqLf4chBnnzqFG3jevgBC418WgFcnc7dLfrVFu6YBx6SDoeTt9JSf7zj+8fKZiTdLusmFmBs=
+X-Received: by 2002:a17:906:27ce:b0:91f:a4b8:9a4a with SMTP id
+ k14-20020a17090627ce00b0091fa4b89a4amr4792596ejc.6.1678738064856; Mon, 13 Mar
+ 2023 13:07:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr> <895a3812-e490-cc40-0f8e-a88e166e8f24@linaro.org>
- <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr> <13676dcc-944f-cf3d-8adf-ee3d4e8fa699@free.fr>
- <e5baf73b-3b9d-1011-2ed9-4b6fc7ee644f@free.fr> <CAPDyKFoAT-jMkYb7=m--q_eEb2xxH-VPQy5vaHNvw4s=WiAeCg@mail.gmail.com>
- <0450e34e-7190-104c-832a-150f15f7c825@free.fr> <3d91a067-c9c3-6d71-11a7-1289ea67f109@free.fr>
- <eecb86be-81e3-09cd-8ec7-4e77c42f2795@free.fr>
-In-Reply-To: <eecb86be-81e3-09cd-8ec7-4e77c42f2795@free.fr>
+References: <20230310202922.2459680-1-martin.blumenstingl@googlemail.com>
+ <20230310202922.2459680-2-martin.blumenstingl@googlemail.com> <14619a051589472292f8270c2c291204@realtek.com>
+In-Reply-To: <14619a051589472292f8270c2c291204@realtek.com>
 From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Mon, 13 Mar 2023 21:04:14 +0100
-Message-ID: <CAFBinCDHRhLSyFsEv7cdhSgZorj-TdR3HhqSBnAQcUtEsecV=Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] brcmfmac: add 43751 SDIO ids and initialization
-To:     Marc Gonzalez <marc.w.gonzalez@free.fr>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
+Date:   Mon, 13 Mar 2023 21:07:33 +0100
+Message-ID: <CAFBinCBpeOH4tzrqHxPQ475=HLOWDKfJYLEEigfTmTJwQbGAAw@mail.gmail.com>
+Subject: Re: [PATCH v2 RFC 1/9] wifi: rtw88: Clear RTW_FLAG_POWERON early in rtw_mac_power_switch()
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
         Kalle Valo <kvalo@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Alexander Prutskov <alep@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Pierre-Hugues Husson <phh@phh.me>,
-        linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Chris Morgan <macroalpha82@gmail.com>,
+        Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -87,58 +79,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Marc,
+Hello Ping-Ke,
 
-On Mon, Mar 13, 2023 at 6:09=E2=80=AFPM Marc Gonzalez <marc.w.gonzalez@free=
-.fr> wrote:
+On Mon, Mar 13, 2023 at 3:29=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
 [...]
-> > Wrapping mmc_send_io_op_cond() in a loop
-> > makes it work on the second try.
+> > +       if (!pwr_on)
+> > +               clear_bit(RTW_FLAG_POWERON, rtwdev->flags);
+> > +
+> >         pwr_seq =3D pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
+> >         ret =3D rtw_pwr_seq_parser(rtwdev, pwr_seq);
+> >         if (ret)
 >
-> Almost there, I think, I hope :)
->
-> DT prop "post-power-on-delay-ms" looks like what I needed all along.
-> It exists both for host (default 10 ms) and for pwrseq_simple (default 0 =
-apparently).
-I think you're on the right track here!
-
-[...]
-> QUESTION:
-> It's not clear to me why we sleep twice for host->ios.power_delay_ms?
-I'm not sure but I think host->ios.power_delay_ms is independent from
-the post-power-on-delay-ms property of "mmc-pwrseq-simple".
-
-> Looks like all I need is to add post-power-on-delay-ms =3D <100>; to
->
->         sdio_pwrseq: sdio-pwrseq {
->                 compatible =3D "mmc-pwrseq-simple";
->                 reset-gpios =3D <&gpio GPIOX_6 GPIO_ACTIVE_LOW>;
->                 clocks =3D <&wifi32k>;
->                 clock-names =3D "ext_clock";
->         };
-I found the following code in the vendor RTL8822CS driver [0].
-Simplified version:
-    for (i =3D 0; i <=3D 50; i++) {
-       msleep(10);
-        if (sdhci_device_attached())
-           break;
-   }
-(so a delay of up to 500ms)
-
-Also I found this code [1] in the same repo:
-    mmc_pm_gpio_ctrl("rtl8189es_vdd_en", 1);
-    udelay(100);
-    mmc_pm_gpio_ctrl("rtl8189es_vcc_en", 1);
-    udelay(50);
-
-So like I said above: I think you're going in the right direction!
+> This patch changes the behavior if rtw_pwr_seq_parser() returns error whi=
+le
+> doing power-off, but I dig and think further about this case hardware sta=
+ys in
+> abnormal state. I think it would be fine to see this state as POWER_OFF.
+> Do you agree this as well?
+I agree with you. Also I think I should have made it clearer in the
+description of the patch that I'm potentially changing the behavior
+(and that this is not an issue in my opinion).
+If there's any problem during the power on/off sequence then we can't
+be fully sure about the power state.
+If you have any suggestions how to improve this then please let me know.
 
 
 Best regards,
 Martin
-
-
-[0] https://github.com/chewitt/RTL8822CS/blob/main/platform/platform_sprd_s=
-dio.c#L55-L62
-[1] https://github.com/chewitt/RTL8822CS/blob/main/platform/platform_ARM_SU=
-NxI_sdio.c#L35-L43
