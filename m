@@ -2,108 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F1BB6B8422
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 22:42:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B076B8661
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 00:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjCMVmf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 17:42:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
+        id S230180AbjCMXye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 19:54:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjCMVme (ORCPT
+        with ESMTP id S230061AbjCMXy3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 17:42:34 -0400
-Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5813C8ABF4;
-        Mon, 13 Mar 2023 14:42:32 -0700 (PDT)
-Received: from [IPV6:2a02:8428:2a4:1a01:c8ce:acb0:d46a:bb07] (unknown [IPv6:2a02:8428:2a4:1a01:c8ce:acb0:d46a:bb07])
-        (Authenticated sender: marc.w.gonzalez@free.fr)
-        by smtp1-g21.free.fr (Postfix) with ESMTPSA id 94AD1B0051E;
-        Mon, 13 Mar 2023 22:42:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-        s=smtp-20201208; t=1678743750;
-        bh=VEU8HwgWPW9ROwRnS41wvdPNcD7KmargOkeucWFLS4U=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=ibV+m8YZmaQxJ2zXcwxwmRV5EzUD98UltT/YLQ2Smu+/welo9rIawRdQ+7jrx68ZQ
-         E/smTuaMFRSOX9X5JNao+IiVwFbi2cuPl+Uuhw5qCTjXXeOqMgJPZj7BHWLqVZ0bwG
-         /oI6MeCSsRBYy/Olkw0W3jtvHFLg4ld5RwGbY1I8x1WSbAkkPFzyjieM/tBss1p9To
-         0OmWMSY3/KUyVqt0WZV7+H+GZc9wfZlBWuB4sOnAJxKZY7i7VXYYUc2BpmRKmt2N1L
-         YNfP42xtwdhZ3aEHU2P8BlQ2j7bS8WcU0rCLRv+FMbdlLPQ4iUzJOP+I6FBkPtDhrI
-         AAMECuMBLMmPg==
-Message-ID: <6ac1ecb1-eba4-b0a3-579c-afcbe532a474@free.fr>
-Date:   Mon, 13 Mar 2023 22:42:08 +0100
+        Mon, 13 Mar 2023 19:54:29 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183D619F1E;
+        Mon, 13 Mar 2023 16:54:26 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PbD5q6gSmz4whr;
+        Tue, 14 Mar 2023 10:54:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1678751665;
+        bh=T0N+rXIbClzSIFFsBqWugRWo9U1U5OtD1gue76ktyYo=;
+        h=Date:From:To:Cc:Subject:From;
+        b=IodiPqO7SvTvCuvWRiCg3vHnSD9pqmlmnKqxXYjtntkJmSuX9gf5XRDMJafIYV1M8
+         G5EOBBisIhXhTt/6S+vqgy9UkawFueBq1Jb7ouj9HjRrS7qM66sR2sowJlQIYVTYt6
+         WzzO4VsBNgoIdQZ9xxLKip1UUFZZOekNf11jANuUqxelBUQc+N7jZ1/WXcnC88BZa7
+         FYbIso6E5pIuwwJ1vVKj951EeaSPQEuG4MpDIWLgkKtryuYuQJ+CXScP4MW+iwgmGz
+         ZOKF9cG7rQMytn3pxWG5TzcqUO7faqN9jqphb3fHhHeJH1rzNCl/TfebqrFsYpdnyM
+         L6Z5cQeSnPLbg==
+Date:   Tue, 14 Mar 2023 10:54:21 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     David Miller <davem@davemloft.net>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        Avraham Stern <avraham.stern@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the net-next tree with the net tree
+Message-ID: <20230314105421.3608efae@canb.auug.org.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [RFC PATCH] brcmfmac: add 43751 SDIO ids and initialization
-Content-Language: fr, en-US
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Alexander Prutskov <alep@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Pierre-Hugues Husson <phh@phh.me>,
-        linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org
-References: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr>
- <895a3812-e490-cc40-0f8e-a88e166e8f24@linaro.org>
- <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr>
- <13676dcc-944f-cf3d-8adf-ee3d4e8fa699@free.fr>
- <e5baf73b-3b9d-1011-2ed9-4b6fc7ee644f@free.fr>
- <CAPDyKFoAT-jMkYb7=m--q_eEb2xxH-VPQy5vaHNvw4s=WiAeCg@mail.gmail.com>
- <0450e34e-7190-104c-832a-150f15f7c825@free.fr>
- <3d91a067-c9c3-6d71-11a7-1289ea67f109@free.fr>
- <eecb86be-81e3-09cd-8ec7-4e77c42f2795@free.fr>
- <CAFBinCDHRhLSyFsEv7cdhSgZorj-TdR3HhqSBnAQcUtEsecV=Q@mail.gmail.com>
-From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
-In-Reply-To: <CAFBinCDHRhLSyFsEv7cdhSgZorj-TdR3HhqSBnAQcUtEsecV=Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/MEZkc5nIJ4_ySymOX4LxTp.";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 13/03/2023 21:04, Martin Blumenstingl wrote:
+--Sig_/MEZkc5nIJ4_ySymOX4LxTp.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> On Mon, Mar 13, 2023 at 6:09 PM Marc Gonzalez wrote:
-> [...]
->> QUESTION:
->> It's not clear to me why we sleep twice for host->ios.power_delay_ms?
->
-> I'm not sure but I think host->ios.power_delay_ms is independent from
-> the post-power-on-delay-ms property of "mmc-pwrseq-simple".
+Hi all,
 
-They are distinct indeed (the props have the same name & similar purpose though).
+Today's linux-next merge of the net-next tree got a conflict in:
 
-host->ios.power_delay_ms is set via:
+  net/wireless/nl80211.c
 
-drivers/mmc/core/host.c:        device_property_read_u32(dev, "post-power-on-delay-ms",
-drivers/mmc/core/host.c-                                 &host->ios.power_delay_ms);
+between commit:
 
+  b27f07c50a73 ("wifi: nl80211: fix puncturing bitmap policy")
 
-pwrseq->post_power_on_delay_ms is set via:
+from the net tree and commit:
 
-drivers/mmc/core/pwrseq_simple.c:       device_property_read_u32(dev, "post-power-on-delay-ms",
-drivers/mmc/core/pwrseq_simple.c-                                &pwrseq->post_power_on_delay_ms);
+  cbbaf2bb829b ("wifi: nl80211: add a command to enable/disable HW timestam=
+ping")
 
+from the net-next tree.
 
-However, they are both used to delay mmc_power_up(),
-and the host delay is used to sleep twice, which I
-found confusing ;)
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
-Regards
+Thanks for the heads up.
 
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc net/wireless/nl80211.c
+index 4f63059efd81,0a31b1d2845d..000000000000
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@@ -810,8 -805,10 +810,11 @@@ static const struct nla_policy nl80211_
+  	[NL80211_ATTR_MLD_ADDR] =3D NLA_POLICY_EXACT_LEN(ETH_ALEN),
+  	[NL80211_ATTR_MLO_SUPPORT] =3D { .type =3D NLA_FLAG },
+  	[NL80211_ATTR_MAX_NUM_AKM_SUITES] =3D { .type =3D NLA_REJECT },
+ -	[NL80211_ATTR_PUNCT_BITMAP] =3D NLA_POLICY_RANGE(NLA_U8, 0, 0xffff),
+ +	[NL80211_ATTR_PUNCT_BITMAP] =3D
+ +		NLA_POLICY_FULL_RANGE(NLA_U32, &nl80211_punct_bitmap_range),
++=20
++ 	[NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS] =3D { .type =3D NLA_U16 },
++ 	[NL80211_ATTR_HW_TIMESTAMP_ENABLED] =3D { .type =3D NLA_FLAG },
+  };
+ =20
+  /* policy for the key attributes */
+
+--Sig_/MEZkc5nIJ4_ySymOX4LxTp.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmQPt60ACgkQAVBC80lX
+0GzG0Qf/S/+TJT8EYGeMTSio88Y3eGykDwxmvZpm1MTYQ4MoYkNVQJvq8fulq7Ee
+1srl8kfjYJQ6/usDxPNXuzY6rbLvD/aKQ6A4uxF3Oj+G4tJ5w09l42KX6rl2U6zs
+sW02ofFCrbhOTM4HVMWtlg4YADo8djPPK9cltHF56i8bZttY1gfHi1Ga9Jp+N8A5
+c5dLgPtEInnlN0AKhd3YxnhmldL9IoqEQLjPzBrORj2YlN2a6f78eIBawgeYbW9d
+v7EE5fnbGSSFOjCm140Pa/vXZws/sMAWyTo0/fftOfBjI0WmVd9socANHKS9ABWw
+FM7I4tRzkkPLewTlTjivu1fv5Zj/0Q==
+=PA4D
+-----END PGP SIGNATURE-----
+
+--Sig_/MEZkc5nIJ4_ySymOX4LxTp.--
