@@ -2,113 +2,216 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3E36B79D2
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 15:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E32466B79D9
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 15:05:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbjCMOCh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 10:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49830 "EHLO
+        id S229735AbjCMOFB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 10:05:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230146AbjCMOCW (ORCPT
+        with ESMTP id S230250AbjCMOEz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 10:02:22 -0400
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 000FA6F63D
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 07:01:52 -0700 (PDT)
-Received: by mail-qv1-xf2c.google.com with SMTP id ks17so8239172qvb.6
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 07:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678716108;
-        h=content-transfer-encoding:in-reply-to:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5OMdyyS2k8KTXKiBlEWQ5ebVeIHAL4Kj+R7i/qhKLOY=;
-        b=J1ATotfaGVvMggmgMO4L+4OyRGHcrWlfXmxm6nwn9uk/k3PurK/O251btBXYZfvT6n
-         5oxyPDVFOyJ8AWO01AHhQwum1jP4h/Cb0Nj3j6q+3QG2Eh3fc2tBqwogMnoImvOcsGQJ
-         b+0qCHhpbBnX1CcP97DfyU1zwleWXjVU1KDFByW3u8HIgDiJcNmm/z9Sc3056zfDgPCG
-         24uqD9dqQx04Rou7i9XWrSjhOs8tu1DiQ/fLUZ9hfV8owSY60RQTDO3ZM38iN0xgDyte
-         D2q+OrL4tnuRAD449RQ/9DEDqPrwmMwv9lOwkF29gHASI5K7Wud/MowiWvG4S63rLmhX
-         iMCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678716108;
-        h=content-transfer-encoding:in-reply-to:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5OMdyyS2k8KTXKiBlEWQ5ebVeIHAL4Kj+R7i/qhKLOY=;
-        b=5C3LA7g80GuMQG4KjPuWktRuE/YgM4KGycwWWCUlEcWTY3Xl8Rgpz4i+XvNSQ4iFGA
-         vSxl2pOahx2jqRuzxwyIXHyqQ3hG/pmXIhQz4T75qPd9JuELOLhpJppIx3scHX4EoL5V
-         T7RknsTcIy2NIbsY4enq9uVcgbLcQwTn+XttjZPdIY9QKWULnRNy/cbF6jN9WP7b/W6X
-         cnjrTp4NiIubVdN/p0zZZ9utNKT+C/dvUFT5ZKAbQBAlrFxtsFf67ZcNvp+5QPB6HJNB
-         M0Hqb36BKQtfDrzOS9FMMAk7vlXDUhJ+qwXGHaq59eJPalkjemfp8gMiHyoszVj3Db7K
-         Sn1g==
-X-Gm-Message-State: AO0yUKUz+J6veBPNruy/ahwDExh/1s76cY76sbIK75qbYvA3r03n4XR4
-        hTtOyb9BGUCOkVSjbk+atUUiOP173pM=
-X-Google-Smtp-Source: AK7set9zMKtLtJrJfyzmBruen8jZ1pULCeRyCFMoyzY47j9Ut+cqGgSH+5l7onlhmYOIlW+Aqk62Zw==
-X-Received: by 2002:a05:6214:e81:b0:5aa:f39c:36b6 with SMTP id hf1-20020a0562140e8100b005aaf39c36b6mr754783qvb.3.1678716107222;
-        Mon, 13 Mar 2023 07:01:47 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c0a8:1102::1004? ([2620:10d:c091:400::5:377])
-        by smtp.gmail.com with ESMTPSA id x20-20020ac87014000000b003c03ae61af9sm5641731qtm.3.2023.03.13.07.01.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Mar 2023 07:01:46 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-Message-ID: <9a0dbabf-6ec2-a211-3c31-5d5bdacd9e62@gmail.com>
-Date:   Mon, 13 Mar 2023 10:01:45 -0400
+        Mon, 13 Mar 2023 10:04:55 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF4B34009
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 07:04:53 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32DCm5pC008079;
+        Mon, 13 Mar 2023 14:04:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=mcKRsI6pbjp8EN5nqL+p9o0tf6nZAK32B/3a5SquJHM=;
+ b=CjRPjuYYehS7T4tevupF5Ha8SHA2sFSO/CL8jKL6PFNebf1pQrj+BSkD5OXovliNT+2C
+ 1iOMO8SFecfDKTYkyVN/CKM7rq0Dx+iALQAuB2ReQonPKzWpj07gCNYCxwbKgGHoKlo0
+ K5Hsib4smOO2Dm0w9qocz+OHjUZLtKoykIvNlPiropZwiFZAOJVJuiCW44mGtLsd4aRN
+ UND+FRV6dbEhrolg5Q3njGwkr5WK0ukkaqQ372HV6E5/Xsjrj98USNppxIU8NTgTntp+
+ 1BhfhpWg8/A2ExvMxLf6Wu0QV3Jg2x95RwKdbp9UUlYtjdsWc8E+n4yu7G95+nG7fhCf 6Q== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pa44br7fg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Mar 2023 14:04:40 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32DE4eIM015358
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Mar 2023 14:04:40 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 13 Mar
+ 2023 07:04:39 -0700
+Message-ID: <e1b72b60-cefb-a4b1-2784-9e72df71060e@quicinc.com>
+Date:   Mon, 13 Mar 2023 08:04:38 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: RTL8192EU always needs full init
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH 1/3] mhi: allow MHI client drivers to provide the firmware
+ via a pointer
 Content-Language: en-US
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>
-References: <4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com>
-In-Reply-To: <4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <mhi@lists.linux.dev>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <20230111092547.21425-1-kvalo@kernel.org>
+ <20230111092547.21425-2-kvalo@kernel.org>
+ <7d692402-3fc1-3b4c-9697-25e722e94539@quicinc.com>
+ <87bkn4ds9y.fsf@kernel.org> <87bkl3peg7.fsf@kernel.org>
+From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <87bkl3peg7.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: a_3wuEyIaYc9hjpsGdffOfyeWhb4vUhE
+X-Proofpoint-ORIG-GUID: a_3wuEyIaYc9hjpsGdffOfyeWhb4vUhE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-13_07,2023-03-13_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 suspectscore=0
+ malwarescore=0 adultscore=0 phishscore=0 mlxlogscore=816 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303130112
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/13/23 09:42, Bitterblue Smith wrote:
-> Always run the entire init sequence (rtl8xxxu_init_device()) for
-> RTL8192EU. It's what the vendor driver does too.
+On 3/8/2023 6:20 AM, Kalle Valo wrote:
+> Kalle Valo <kvalo@kernel.org> writes:
 > 
-> This fixes a bug where the device is unable to connect after
-> rebooting:
+>> Jeffrey Hugo <quic_jhugo@quicinc.com> writes:
+>>
+>>> On 1/11/2023 2:25 AM, Kalle Valo wrote:
+>>>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>>>>
+>>>> Currently MHI loads the firmware image from the path provided by client
+>>>> devices. ath11k needs to support firmware image embedded along with meta data
+>>>> (named as firmware-2.bin). So allow the client driver to request the firmware
+>>>> file from user space on it's own and provide the firmware image data and size
+>>>> to MHI via a pointer struct mhi_controller::fw_data.
+>>>>
+>>>> This is an optional feature, if fw_data is NULL MHI load the firmware using the
+>>>> name from struct mhi_controller::fw_image string as before.
+>>>>
+>>>> Tested with ath11k and WCN6855 hw2.0.
+>>>>
+>>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 > 
-> wlp3s0f3u2: send auth to ... (try 1/3)
-> wlp3s0f3u2: send auth to ... (try 2/3)
-> wlp3s0f3u2: send auth to ... (try 3/3)
-> wlp3s0f3u2: authentication with ... timed out
+> [...]
 > 
-> Rebooting leaves the device powered on (partially? at least the
-> firmware is still running), but not really in a working state.
+>>> Did you run pahole?  I remember this struct being well packed, and I
+>>> think this will add a compiler hole but I have not actually verified.
+>>
+>> I actually haven't used pahole for ages. I will run it and check how
+>> this structure is packed.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 1 +
->  1 file changed, 1 insertion(+)
+> Below is what pahole shows with GCC 8.3 on x86_64. Look pretty well
+> packed, right?
 
-Acked-by: Jes Sorensen <jes@trained-monkey.org>
+Yes, looks almost perfect.
 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-> index 0bd1b527b420..4498748164af 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-> @@ -1820,6 +1820,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops = {
->  	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
->  	.has_s0s1 = 0,
->  	.gen2_thermal_meter = 1,
-> +	.needs_full_init = 1,
->  	.adda_1t_init = 0x0fc01616,
->  	.adda_1t_path_on = 0x0fc01616,
->  	.adda_2t_path_on_a = 0x0fc01616,
+> 
+> struct mhi_controller {
+> 	struct device *            cntrl_dev;            /*     0     8 */
+> 	struct mhi_device *        mhi_dev;              /*     8     8 */
+> 	struct dentry *            debugfs_dentry;       /*    16     8 */
+> 	void *                     regs;                 /*    24     8 */
+> 	void *                     bhi;                  /*    32     8 */
+> 	void *                     bhie;                 /*    40     8 */
+> 	void *                     wake_db;              /*    48     8 */
+> 	dma_addr_t                 iova_start;           /*    56     8 */
+> 	/* --- cacheline 1 boundary (64 bytes) --- */
+> 	dma_addr_t                 iova_stop;            /*    64     8 */
+> 	const char  *              fw_image;             /*    72     8 */
+> 	const u8  *                fw_data;              /*    80     8 */
+> 	size_t                     fw_sz;                /*    88     8 */
+> 	const char  *              edl_image;            /*    96     8 */
+> 	size_t                     rddm_size;            /*   104     8 */
+> 	size_t                     sbl_size;             /*   112     8 */
+> 	size_t                     seg_len;              /*   120     8 */
+> 	/* --- cacheline 2 boundary (128 bytes) --- */
+> 	size_t                     reg_len;              /*   128     8 */
+> 	struct image_info *        fbc_image;            /*   136     8 */
+> 	struct image_info *        rddm_image;           /*   144     8 */
+> 	struct mhi_chan *          mhi_chan;             /*   152     8 */
+> 	struct list_head           lpm_chans;            /*   160    16 */
+> 	int *                      irq;                  /*   176     8 */
+> 	u32                        max_chan;             /*   184     4 */
+> 	u32                        total_ev_rings;       /*   188     4 */
+> 	/* --- cacheline 3 boundary (192 bytes) --- */
+> 	u32                        hw_ev_rings;          /*   192     4 */
+> 	u32                        sw_ev_rings;          /*   196     4 */
+> 	u32                        nr_irqs;              /*   200     4 */
+> 	u32                        family_number;        /*   204     4 */
+> 	u32                        device_number;        /*   208     4 */
+> 	u32                        major_version;        /*   212     4 */
+> 	u32                        minor_version;        /*   216     4 */
+> 	u32                        serial_number;        /*   220     4 */
+> 	u32                        oem_pk_hash[16];      /*   224    64 */
+> 	/* --- cacheline 4 boundary (256 bytes) was 32 bytes ago --- */
+> 	struct mhi_event *         mhi_event;            /*   288     8 */
+> 	struct mhi_cmd *           mhi_cmd;              /*   296     8 */
+> 	struct mhi_ctxt *          mhi_ctxt;             /*   304     8 */
+> 	struct mutex               pm_mutex;             /*   312   160 */
+> 	/* --- cacheline 7 boundary (448 bytes) was 24 bytes ago --- */
+> 	rwlock_t                   pm_lock;              /*   472    72 */
+> 	/* --- cacheline 8 boundary (512 bytes) was 32 bytes ago --- */
+> 	u32                        timeout_ms;           /*   544     4 */
+> 	u32                        pm_state;             /*   548     4 */
+> 	u32                        db_access;            /*   552     4 */
+> 	enum mhi_ee_type           ee;                   /*   556     4 */
+> 	enum mhi_state             dev_state;            /*   560     4 */
+> 	atomic_t                   dev_wake;             /*   564     4 */
+> 	atomic_t                   pending_pkts;         /*   568     4 */
+> 	u32                        M0;                   /*   572     4 */
+> 	/* --- cacheline 9 boundary (576 bytes) --- */
+> 	u32                        M2;                   /*   576     4 */
+> 	u32                        M3;                   /*   580     4 */
+> 	struct list_head           transition_list;      /*   584    16 */
+> 	spinlock_t                 transition_lock;      /*   600    72 */
+> 	/* --- cacheline 10 boundary (640 bytes) was 32 bytes ago --- */
+> 	spinlock_t                 wlock;                /*   672    72 */
+> 	/* --- cacheline 11 boundary (704 bytes) was 40 bytes ago --- */
+> 	struct mhi_link_info       mhi_link_info;        /*   744     8 */
+> 	struct work_struct         st_worker;            /*   752    80 */
+> 	/* --- cacheline 13 boundary (832 bytes) --- */
+> 	struct workqueue_struct *  hiprio_wq;            /*   832     8 */
+> 	wait_queue_head_t          state_event;          /*   840    88 */
+> 	/* --- cacheline 14 boundary (896 bytes) was 32 bytes ago --- */
+> 	void                       (*status_cb)(struct mhi_controller *, enum mhi_callback); /*   928     8 */
+> 	void                       (*wake_get)(struct mhi_controller *, bool); /*   936     8 */
+> 	void                       (*wake_put)(struct mhi_controller *, bool); /*   944     8 */
+> 	void                       (*wake_toggle)(struct mhi_controller *); /*   952     8 */
+> 	/* --- cacheline 15 boundary (960 bytes) --- */
+> 	int                        (*runtime_get)(struct mhi_controller *); /*   960     8 */
+> 	void                       (*runtime_put)(struct mhi_controller *); /*   968     8 */
+> 	int                        (*map_single)(struct mhi_controller *, struct mhi_buf_info *); /*   976     8 */
+> 	void                       (*unmap_single)(struct mhi_controller *, struct mhi_buf_info *); /*   984     8 */
+> 	int                        (*read_reg)(struct mhi_controller *, void *, u32 *); /*   992     8 */
+> 	void                       (*write_reg)(struct mhi_controller *, void *, u32); /*  1000     8 */
+> 	void                       (*reset)(struct mhi_controller *); /*  1008     8 */
+> 	size_t                     buffer_len;           /*  1016     8 */
+> 	/* --- cacheline 16 boundary (1024 bytes) --- */
+> 	int                        index;                /*  1024     4 */
+> 	bool                       bounce_buf;           /*  1028     1 */
+> 	bool                       fbc_download;         /*  1029     1 */
+> 	bool                       wake_set;             /*  1030     1 */
+> 
+> 	/* XXX 1 byte hole, try to pack */
+> 
+> 	long unsigned int          irq_flags;            /*  1032     8 */
+> 	u32                        mru;                  /*  1040     4 */
+> 
+> 	/* size: 1048, cachelines: 17, members: 73 */
+> 	/* sum members: 1043, holes: 1, sum holes: 1 */
+> 	/* padding: 4 */
+> 	/* last cacheline: 24 bytes */
+> };
+> 
 
