@@ -2,49 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3947E6B7DCE
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 17:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA756B7E19
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 17:50:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231470AbjCMQjK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 12:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44694 "EHLO
+        id S229978AbjCMQuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 12:50:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231477AbjCMQin (ORCPT
+        with ESMTP id S229622AbjCMQuX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 12:38:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C7F15CA1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 09:38:37 -0700 (PDT)
+        Mon, 13 Mar 2023 12:50:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A271D915;
+        Mon, 13 Mar 2023 09:50:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6D511B81196
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 16:38:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35DAC433D2;
-        Mon, 13 Mar 2023 16:38:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3214161382;
+        Mon, 13 Mar 2023 16:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD418C433EF;
+        Mon, 13 Mar 2023 16:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678725515;
-        bh=S+Zuod+aYRKVw0CySkrGpsd8YzEXpHKYCBbg7a+t4gE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Kp70ZQ3cnk1Gg+Ox3q5Jj7v6caYVSq4L3MpYKpQme6SyMXNWVLHq2tRMNjg+wGnhN
-         IDuU7hz1lYZo1F5r4b9+QnHZvz10MdIcZ6jEvjDEeY4NbMoHd76TQt5dnHt+/vVaeb
-         D8pHJALraa7Ez+Ju0d531pmNE7Iz8zhTiTzh2XsPSyKegV/neWMdSUDlsc0gi7JMXC
-         mPWfO0ccVovJK98rbsHqBQCLU7BC36GNNjNtf6b2Drd3t4i+ZhWnsUk5yNfd30+34+
-         oceu3BIqEteoB7Hgw0WStAsEdmJL87owFy9h1M7bFvuj5TKnHyNLnuij4smvRncthd
-         6lhYdth6uADJA==
-Date:   Mon, 13 Mar 2023 17:38:31 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     greearb@candelatech.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] wireless: mt76: mt7921: Fix use-after-free in fw
- features query.
-Message-ID: <ZA9Rh1je1gLmAXLp@lore-desk>
-References: <20230308175832.2394061-1-greearb@candelatech.com>
+        s=k20201202; t=1678726182;
+        bh=8KYXMoHAD5Z4NBIseAq6bsT/0yPZHnSTiR9g+F3H6mQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=a2JoV3Ky1b2rAYHvjxOxSJk1TNI3heElPwvSF5YrOvneNeV0VdzwNhQXiUrffvmto
+         JA7P0WeiStnDt/6J8n1J9O5jnVgObXfH8lS4KXLMLBqO4DJUKBDJIvP6ivTa/Y09Sn
+         HR1pOKRuwrPDI/baAtt5wUZ6Gocqmmqr2buMgjA/aCshs3yaJSkT/BdMx60/VeJQN4
+         dkvphu6x3RN4fI6sEcajBAho9BdeW92stv1wsZ7bHVNaqIqINFZydvDFvpdEiWiF0m
+         eG/X/a/XjC1FXr2cscVZU8Cm2pQpTkDOWTAiQQum9/Cqx4Qc/c+wOmHVG5htVbTJPc
+         eI6rbG1xa4RhQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        jic23@kernel.org, pratyush@kernel.org, Sanju.Mehta@amd.com,
+        chin-ting_kuo@aspeedtech.com, clg@kaod.org, kdasu.kdev@gmail.com,
+        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
+        eajames@linux.ibm.com, olteanv@gmail.com, han.xu@nxp.com,
+        john.garry@huawei.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        khilman@baylibre.com, matthias.bgg@gmail.com, haibo.chen@nxp.com,
+        linus.walleij@linaro.org, daniel@zonque.org,
+        haojian.zhuang@gmail.com, robert.jarzmik@free.fr,
+        agross@kernel.org, heiko@sntech.de, krzysztof.kozlowski@linaro.org,
+        andi@etezian.org, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, wens@csie.org,
+        jernej.skrabec@gmail.com, samuel@sholland.org,
+        masahisa.kojima@linaro.org, jaswinder.singh@linaro.org,
+        rostedt@goodmis.org, mingo@redhat.com, l.stelmach@samsung.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alex.aring@gmail.com, stefan@datenfreihafen.org,
+        kvalo@kernel.org, james.schulman@cirrus.com,
+        david.rhodes@cirrus.com, tanureal@opensource.cirrus.com,
+        rf@opensource.cirrus.com, perex@perex.cz, tiwai@suse.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
+        oss@buserror.net, windhl@126.com, yangyingliang@huawei.com,
+        william.zhang@broadcom.com, kursad.oney@broadcom.com,
+        jonas.gorski@gmail.com, anand.gore@broadcom.com, rafal@milecki.pl,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Cc:     git@amd.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@jms.id.au, andrew@aj.id.au,
+        radu_nicolae.pirea@upb.ro, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, claudiu.beznea@microchip.com,
+        bcm-kernel-feedback-list@broadcom.com, fancer.lancer@gmail.com,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        yogeshgaur.83@gmail.com, konrad.dybcio@somainline.org,
+        alim.akhtar@samsung.com, ldewangan@nvidia.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        michal.simek@amd.com, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-mtd@lists.infradead.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+        michael@walle.cc, palmer@dabbelt.com,
+        linux-riscv@lists.infradead.org, alsa-devel@alsa-project.org,
+        patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org,
+        amitrkcian2002@gmail.com
+In-Reply-To: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
+References: <20230306172109.595464-1-amit.kumar-mahapatra@amd.com>
+Subject: Re: (subset) [PATCH V5 00/15] spi: Add support for
+ stacked/parallel memories
+Message-Id: <167872615942.75015.12960472969249845825.b4-ty@kernel.org>
+Date:   Mon, 13 Mar 2023 16:49:19 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="I5v+iUVw3MUvn8PU"
-Content-Disposition: inline
-In-Reply-To: <20230308175832.2394061-1-greearb@candelatech.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-bd1bf
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,99 +109,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, 06 Mar 2023 22:50:54 +0530, Amit Kumar Mahapatra wrote:
+> This patch is in the continuation to the discussions which happened on
+> 'commit f89504300e94 ("spi: Stacked/parallel memories bindings")' for
+> adding dt-binding support for stacked/parallel memories.
+> 
+> This patch series updated the spi-nor, spi core and the spi drivers
+> to add stacked and parallel memories support.
+> 
+> [...]
 
---I5v+iUVw3MUvn8PU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-> From: Ben Greear <greearb@candelatech.com>
->=20
-> Stop referencing 'features' memory after release_firmware is called.
->=20
-> Fixes this crash:
->=20
-> RIP: 0010:mt7921_check_offload_capability+0x17d
-> mt7921_pci_probe+0xca/0x4b0
-> ...
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-I would say even this patch can go trough wireless tree.
+Thanks!
 
-@Felix: agree?
+[01/15] spi: Replace all spi->chip_select and spi->cs_gpiod references with function call
+        commit: 9e264f3f85a56cc109cc2d6010a48aa89d5c1ff1
 
-Regards,
-Lorenzo
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->=20
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/init.c
-> index 38d6563cb12f..d2bb8d02ce0a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -165,12 +165,12 @@ mt7921_mac_init_band(struct mt7921_dev *dev, u8 ban=
-d)
-> =20
->  u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
->  {
-> -	struct mt7921_fw_features *features =3D NULL;
->  	const struct mt76_connac2_fw_trailer *hdr;
->  	struct mt7921_realease_info *rel_info;
->  	const struct firmware *fw;
->  	int ret, i, offset =3D 0;
->  	const u8 *data, *end;
-> +	u8 offload_caps =3D 0;
-> =20
->  	ret =3D request_firmware(&fw, fw_wm, dev);
->  	if (ret)
-> @@ -197,12 +197,19 @@ u8 mt7921_check_offload_capability(struct device *d=
-ev, const char *fw_wm)
->  	data +=3D sizeof(*rel_info);
->  	end =3D data + le16_to_cpu(rel_info->len);
-> =20
-> +	/* TODO:  This needs better sanity checking I think.
-> +	 * Likely a corrupted firmware with bad rel_info->len, for instance,
-> +	 * would blow this up.
-> +	 */
->  	while (data < end) {
->  		rel_info =3D (struct mt7921_realease_info *)data;
->  		data +=3D sizeof(*rel_info);
-> =20
->  		if (rel_info->tag =3D=3D MT7921_FW_TAG_FEATURE) {
-> +			struct mt7921_fw_features *features;
-> +
->  			features =3D (struct mt7921_fw_features *)data;
-> +			offload_caps =3D features->data;
->  			break;
->  		}
-> =20
-> @@ -211,7 +218,7 @@ u8 mt7921_check_offload_capability(struct device *dev=
-, const char *fw_wm)
-> =20
->  	release_firmware(fw);
-> =20
-> -	return features ? features->data : 0;
-> +	return offload_caps;
->  }
->  EXPORT_SYMBOL_GPL(mt7921_check_offload_capability);
-> =20
-> --=20
-> 2.39.1
->=20
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---I5v+iUVw3MUvn8PU
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZA9RhwAKCRA6cBh0uS2t
-rI1gAQCAH9D1pkjaCZtMUrpSCRSBrRBrqhJhRNczexj/+iNRuAEAuzPmQK4/JQul
-lpi0Ooe6lySGG2cbQ0k2u9U1+yJVPQA=
-=tfwd
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---I5v+iUVw3MUvn8PU--
