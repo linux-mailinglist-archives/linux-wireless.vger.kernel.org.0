@@ -2,52 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF456B7952
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 14:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B77916B7991
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Mar 2023 14:56:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231162AbjCMNqP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Mar 2023 09:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46038 "EHLO
+        id S230193AbjCMN4F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Mar 2023 09:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbjCMNqN (ORCPT
+        with ESMTP id S230035AbjCMN4D (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Mar 2023 09:46:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBD164213
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 06:46:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB6AE612BE
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Mar 2023 13:46:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43284C4339C;
-        Mon, 13 Mar 2023 13:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678715166;
-        bh=tL8E50zCzevrkkYLOJFjRESDzPTCyAAdyZd8q1rsNV0=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=l5xJAztCKi6oXGSJG2U8jjCb50NRA/9pmqcy8VHXsRrQEC7AZODhWKLEtgaTPzBKA
-         +rryN3flYgkS4g8T6RfVBdlW8lrOuMMyWxRtWf8B60Nf4Zycdqkb9dGQRudgpRprFV
-         jY8bbQ72ve0PToQ4Hp84oBBmREMRk49/m76o4tpqptG3zg7ryUcfwrvn6CYMa0SbcY
-         0x7aBeTRoPK+U8SucogrMK8Bhow1DSOSWTwZYANOlMyhYn9P4XL4jBSKUAtxfONGyI
-         w4IbMTl0Dz8aizXdv7EnJDrVA0HQiZtiRfc1ct3lC9oD1Gy2YFtnKv2Nrb5CRRe7JV
-         VFBQi6D909Hlw==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 13 Mar 2023 09:56:03 -0400
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [IPv6:2a01:e0c:1:1599::11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD70767814;
+        Mon, 13 Mar 2023 06:55:51 -0700 (PDT)
+Received: from [192.168.108.81] (unknown [213.36.7.13])
+        (Authenticated sender: marc.w.gonzalez@free.fr)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 0F5F92003EF;
+        Mon, 13 Mar 2023 14:55:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+        s=smtp-20201208; t=1678715749;
+        bh=4rdaoH3eEZKr87H7nHx4rrtPi6j7OD3G/xQau6YSaVs=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=Pogyvdw/s2rfbw/fF9jZk39okfiK2+55oA3No+mL60Fgc1xV/Ba/4PlS5PHCeVysR
+         4d8dAL4oVp0Qe3sy7KHvEV+LFlPZ/hUY5ueyEnuTL6T0gRsCIL5vaBrvcBvemgd3kQ
+         Ma82cSGimEd3fugLZFQtIDIIxtRz4M3R5vDL+ZM6NQFvUyfOV3dUWYkbPpeks45k2N
+         CUBEq/ux/YeAqLIhtm1OKqeQfCWORe6s/sMJQ2epRj0qknEXdAB2fT306UHNqMUSpJ
+         3On7/kUd8laG1uGO/1zVQTg/Q69XTr//0PNklutkMG3FNutU8Vmy4eYdr1tV/y1at7
+         DUKDdlhrtG1Fw==
+Message-ID: <3d91a067-c9c3-6d71-11a7-1289ea67f109@free.fr>
+Date:   Mon, 13 Mar 2023 14:55:29 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [RFC PATCH] brcmfmac: add 43751 SDIO ids and initialization
+Content-Language: en-US
+From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Alexander Prutskov <alep@cypress.com>,
+        Joseph chuang <jiac@cypress.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        Pierre-Hugues Husson <phh@phh.me>,
+        linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org
+References: <05977cbb-8a8f-0a67-b4bd-b265dbb83280@free.fr>
+ <895a3812-e490-cc40-0f8e-a88e166e8f24@linaro.org>
+ <c1a215cf-94be-871b-2a8a-3cc381588f83@free.fr>
+ <13676dcc-944f-cf3d-8adf-ee3d4e8fa699@free.fr>
+ <e5baf73b-3b9d-1011-2ed9-4b6fc7ee644f@free.fr>
+ <CAPDyKFoAT-jMkYb7=m--q_eEb2xxH-VPQy5vaHNvw4s=WiAeCg@mail.gmail.com>
+ <0450e34e-7190-104c-832a-150f15f7c825@free.fr>
+In-Reply-To: <0450e34e-7190-104c-832a-150f15f7c825@free.fr>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: brcmfmac: slab-out-of-bounds read in
- brcmf_get_assoc_ies()
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230309104457.22628-1-jisoo.jang@yonsei.ac.kr>
-References: <20230309104457.22628-1-jisoo.jang@yonsei.ac.kr>
-To:     Jisoo Jang <jisoo.jang@yonsei.ac.kr>
-Cc:     linux-wireless@vger.kernel.org, arend.vanspriel@broadcom.com,
-        dokyungs@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167871516326.31347.17285042432060522938.kvalo@kernel.org>
-Date:   Mon, 13 Mar 2023 13:46:05 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,153 +73,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jisoo Jang <jisoo.jang@yonsei.ac.kr> wrote:
+On 09/03/2023 18:51, Marc Gonzalez wrote:
 
-> Fix a slab-out-of-bounds read that occurs in kmemdup() called from
-> brcmf_get_assoc_ies().
-> The bug could occur when assoc_info->req_len, data from a URB provided
-> by a USB device, is bigger than the size of buffer which is defined as
-> WL_EXTRA_BUF_MAX.
+> On 09/03/2023 15:29, Ulf Hansson wrote:
 > 
-> Add the size check for req_len/resp_len of assoc_info.
+>> To narrow down the problem, I would start by preventing the WiFi
+>> driver from being insmoded. To make sure it doesn't affect the SDIO
+>> card detection process.
+>>
+>> The point is, the SDIO card should be detected properly, no matter
+>> whether there is a corresponding SDIO func driver (WiFi driver)
+>> available for it. For a detected SDIO/eMMC/SD card, mmc_add_card()
+>> prints a message about the card in the log during initialization. It
+>> could look like the below print, for example:
+>>
+>> "mmc2: new ultra high speed SDR104 SDIO card at address 0001".
 > 
-> Found by a modified version of syzkaller.
-> 
-> [   46.592467][    T7] ==================================================================
-> [   46.594687][    T7] BUG: KASAN: slab-out-of-bounds in kmemdup+0x3e/0x50
-> [   46.596572][    T7] Read of size 3014656 at addr ffff888019442000 by task kworker/0:1/7
-> [   46.598575][    T7]
-> [   46.599157][    T7] CPU: 0 PID: 7 Comm: kworker/0:1 Tainted: G           O      5.14.0+ #145
-> [   46.601333][    T7] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-> [   46.604360][    T7] Workqueue: events brcmf_fweh_event_worker
-> [   46.605943][    T7] Call Trace:
-> [   46.606584][    T7]  dump_stack_lvl+0x8e/0xd1
-> [   46.607446][    T7]  print_address_description.constprop.0.cold+0x93/0x334
-> [   46.608610][    T7]  ? kmemdup+0x3e/0x50
-> [   46.609341][    T7]  kasan_report.cold+0x79/0xd5
-> [   46.610151][    T7]  ? kmemdup+0x3e/0x50
-> [   46.610796][    T7]  kasan_check_range+0x14e/0x1b0
-> [   46.611691][    T7]  memcpy+0x20/0x60
-> [   46.612323][    T7]  kmemdup+0x3e/0x50
-> [   46.612987][    T7]  brcmf_get_assoc_ies+0x967/0xf60
-> [   46.613904][    T7]  ? brcmf_notify_vif_event+0x3d0/0x3d0
-> [   46.614831][    T7]  ? lock_chain_count+0x20/0x20
-> [   46.615683][    T7]  ? mark_lock.part.0+0xfc/0x2770
-> [   46.616552][    T7]  ? lock_chain_count+0x20/0x20
-> [   46.617409][    T7]  ? mark_lock.part.0+0xfc/0x2770
-> [   46.618244][    T7]  ? lock_chain_count+0x20/0x20
-> [   46.619024][    T7]  brcmf_bss_connect_done.constprop.0+0x241/0x2e0
-> [   46.620019][    T7]  ? brcmf_parse_configure_security.isra.0+0x2a0/0x2a0
-> [   46.620818][    T7]  ? __lock_acquire+0x181f/0x5790
-> [   46.621462][    T7]  brcmf_notify_connect_status+0x448/0x1950
-> [   46.622134][    T7]  ? rcu_read_lock_bh_held+0xb0/0xb0
-> [   46.622736][    T7]  ? brcmf_cfg80211_join_ibss+0x7b0/0x7b0
-> [   46.623390][    T7]  ? find_held_lock+0x2d/0x110
-> [   46.623962][    T7]  ? brcmf_fweh_event_worker+0x19f/0xc60
-> [   46.624603][    T7]  ? mark_held_locks+0x9f/0xe0
-> [   46.625145][    T7]  ? lockdep_hardirqs_on_prepare+0x3e0/0x3e0
-> [   46.625871][    T7]  ? brcmf_cfg80211_join_ibss+0x7b0/0x7b0
-> [   46.626545][    T7]  brcmf_fweh_call_event_handler.isra.0+0x90/0x100
-> [   46.627338][    T7]  brcmf_fweh_event_worker+0x557/0xc60
-> [   46.627962][    T7]  ? brcmf_fweh_call_event_handler.isra.0+0x100/0x100
-> [   46.628736][    T7]  ? rcu_read_lock_sched_held+0xa1/0xd0
-> [   46.629396][    T7]  ? rcu_read_lock_bh_held+0xb0/0xb0
-> [   46.629970][    T7]  ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-> [   46.630649][    T7]  process_one_work+0x92b/0x1460
-> [   46.631205][    T7]  ? pwq_dec_nr_in_flight+0x330/0x330
-> [   46.631821][    T7]  ? rwlock_bug.part.0+0x90/0x90
-> [   46.632347][    T7]  worker_thread+0x95/0xe00
-> [   46.632832][    T7]  ? __kthread_parkme+0x115/0x1e0
-> [   46.633393][    T7]  ? process_one_work+0x1460/0x1460
-> [   46.633957][    T7]  kthread+0x3a1/0x480
-> [   46.634369][    T7]  ? set_kthread_struct+0x120/0x120
-> [   46.634933][    T7]  ret_from_fork+0x1f/0x30
-> [   46.635431][    T7]
-> [   46.635687][    T7] Allocated by task 7:
-> [   46.636151][    T7]  kasan_save_stack+0x1b/0x40
-> [   46.636628][    T7]  __kasan_kmalloc+0x7c/0x90
-> [   46.637108][    T7]  kmem_cache_alloc_trace+0x19e/0x330
-> [   46.637696][    T7]  brcmf_cfg80211_attach+0x4a0/0x4040
-> [   46.638275][    T7]  brcmf_attach+0x389/0xd40
-> [   46.638739][    T7]  brcmf_usb_probe+0x12de/0x1690
-> [   46.639279][    T7]  usb_probe_interface+0x2aa/0x760
-> [   46.639820][    T7]  really_probe+0x205/0xb70
-> [   46.640342][    T7]  __driver_probe_device+0x311/0x4b0
-> [   46.640876][    T7]  driver_probe_device+0x4e/0x150
-> [   46.641445][    T7]  __device_attach_driver+0x1cc/0x2a0
-> [   46.642000][    T7]  bus_for_each_drv+0x156/0x1d0
-> [   46.642543][    T7]  __device_attach+0x23f/0x3a0
-> [   46.643065][    T7]  bus_probe_device+0x1da/0x290
-> [   46.643644][    T7]  device_add+0xb7b/0x1eb0
-> [   46.644130][    T7]  usb_set_configuration+0xf59/0x16f0
-> [   46.644720][    T7]  usb_generic_driver_probe+0x82/0xa0
-> [   46.645295][    T7]  usb_probe_device+0xbb/0x250
-> [   46.645786][    T7]  really_probe+0x205/0xb70
-> [   46.646258][    T7]  __driver_probe_device+0x311/0x4b0
-> [   46.646804][    T7]  driver_probe_device+0x4e/0x150
-> [   46.647387][    T7]  __device_attach_driver+0x1cc/0x2a0
-> [   46.647926][    T7]  bus_for_each_drv+0x156/0x1d0
-> [   46.648454][    T7]  __device_attach+0x23f/0x3a0
-> [   46.648939][    T7]  bus_probe_device+0x1da/0x290
-> [   46.649478][    T7]  device_add+0xb7b/0x1eb0
-> [   46.649936][    T7]  usb_new_device.cold+0x49c/0x1029
-> [   46.650526][    T7]  hub_event+0x1c98/0x3950
-> [   46.650975][    T7]  process_one_work+0x92b/0x1460
-> [   46.651535][    T7]  worker_thread+0x95/0xe00
-> [   46.651991][    T7]  kthread+0x3a1/0x480
-> [   46.652413][    T7]  ret_from_fork+0x1f/0x30
-> [   46.652885][    T7]
-> [   46.653131][    T7] The buggy address belongs to the object at ffff888019442000
-> [   46.653131][    T7]  which belongs to the cache kmalloc-2k of size 2048
-> [   46.654669][    T7] The buggy address is located 0 bytes inside of
-> [   46.654669][    T7]  2048-byte region [ffff888019442000, ffff888019442800)
-> [   46.656137][    T7] The buggy address belongs to the page:
-> [   46.656720][    T7] page:ffffea0000651000 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x19440
-> [   46.657792][    T7] head:ffffea0000651000 order:3 compound_mapcount:0 compound_pincount:0
-> [   46.658673][    T7] flags: 0x100000000010200(slab|head|node=0|zone=1)
-> [   46.659422][    T7] raw: 0100000000010200 0000000000000000 dead000000000122 ffff888100042000
-> [   46.660363][    T7] raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
-> [   46.661236][    T7] page dumped because: kasan: bad access detected
-> [   46.661956][    T7] page_owner tracks the page as allocated
-> [   46.662588][    T7] page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52a20(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 7, ts 31136961085, free_ts 0
-> [   46.664271][    T7]  prep_new_page+0x1aa/0x240
-> [   46.664763][    T7]  get_page_from_freelist+0x159a/0x27c0
-> [   46.665340][    T7]  __alloc_pages+0x2da/0x6a0
-> [   46.665847][    T7]  alloc_pages+0xec/0x1e0
-> [   46.666308][    T7]  allocate_slab+0x380/0x4e0
-> [   46.666770][    T7]  ___slab_alloc+0x5bc/0x940
-> [   46.667264][    T7]  __slab_alloc+0x6d/0x80
-> [   46.667712][    T7]  kmem_cache_alloc_trace+0x30a/0x330
-> [   46.668299][    T7]  brcmf_usbdev_qinit.constprop.0+0x50/0x470
-> [   46.668885][    T7]  brcmf_usb_probe+0xc97/0x1690
-> [   46.669438][    T7]  usb_probe_interface+0x2aa/0x760
-> [   46.669988][    T7]  really_probe+0x205/0xb70
-> [   46.670487][    T7]  __driver_probe_device+0x311/0x4b0
-> [   46.671031][    T7]  driver_probe_device+0x4e/0x150
-> [   46.671604][    T7]  __device_attach_driver+0x1cc/0x2a0
-> [   46.672192][    T7]  bus_for_each_drv+0x156/0x1d0
-> [   46.672739][    T7] page_owner free stack trace missing
-> [   46.673335][    T7]
-> [   46.673620][    T7] Memory state around the buggy address:
-> [   46.674213][    T7]  ffff888019442700: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [   46.675083][    T7]  ffff888019442780: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [   46.675994][    T7] >ffff888019442800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> [   46.676875][    T7]                    ^
-> [   46.677323][    T7]  ffff888019442880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> [   46.678190][    T7]  ffff888019442900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> [   46.679052][    T7] ==================================================================
-> [   46.679945][    T7] Disabling lock debugging due to kernel taint
-> [   46.680725][    T7] Kernel panic - not syncing:
-> 
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Jisoo Jang <jisoo.jang@yonsei.ac.kr>
+> OK, I built the WiFi driver as a module which is NOT loaded at boot time.
 
-Patch applied to wireless-next.git, thanks.
+Still trying to bisect this heisenbug into submission... :(
 
-0da40e018fd0 wifi: brcmfmac: slab-out-of-bounds read in brcmf_get_assoc_ies()
+So far, I've pared it down to mmc_attach_sdio()
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230309104457.22628-1-jisoo.jang@yonsei.ac.kr/
+When probe WORKS, mmc_attach_sdio() returns 0.
+When probe FAILS, mmc_attach_sdio() returns ETIMEDOUT
+via mmc_send_io_op_cond(host, 0, &ocr);
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Wrapping mmc_send_io_op_cond() in a loop
+makes it work on the second try.
+
+Would appreciate additional guidance. Am mostly stabbing in the dark :)
+
+Regards
 
