@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74D516B9D88
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6A436B9D89
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:52:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjCNRwN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 13:52:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53498 "EHLO
+        id S229780AbjCNRwY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 13:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjCNRwM (ORCPT
+        with ESMTP id S229834AbjCNRwV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 13:52:12 -0400
+        Tue, 14 Mar 2023 13:52:21 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85008B4831
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:51:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB80B4F62
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:51:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678816302; x=1710352302;
+  t=1678816307; x=1710352307;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rKAtKvdIoEMnSkO1Jcr0alrSohi48Q4nD4uc7EfAblE=;
-  b=JujEf88/xX9G4XbZ2wv8DyJPlUFyFbFap/vyPDF10cShxskMOvAwfXU3
-   NZKhoGBSHhhLMTtd37aD6AX0KDs6Oy05fv64g0wGBpDSsjL1dZZ46MLo6
-   Ij1l1CXGFG1K+UQDAl3hn7HeTNbHa+rYgokApomc6brc4Khc+mb1Q/qf4
-   sobjW0I6QZmEh2adop2GkM9LB5K/snPym3Ymy2rHo6bvGdTXTCK8cCAab
-   C/s+zaKI72yn6nS6+675Tf1mKxJe7VJFiSW/Gmlwlila9eRSDpN8mmIk3
-   mcqGCq9LvRT9vtJRf9HfbuJt5VpbGeh41bhxJHpwN30xYczj5LRFYpp+t
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149555"
+  bh=GlQmDDn2v+WbGQx79HjeBmSZKOMrklqu9YhAo3g9png=;
+  b=BcJ40NpqjZVhaTwLXLllRjDzH/flWQK0loHWtSLMldNbHp3OvfHVJ5WE
+   yOLGEIEetg7MeDsPnxUgXODAqs0J39nuqksqIAdcPI7xGCeO3viuOkLce
+   g9PwTgc+lfIUgKD/VF+FZXrHYaGVCqwmMgMCsnaBfKZH3siEmWFoN/isF
+   F6AEVMy41ELeFM5HUxLgamlZV+ZNmYbkbRaxhg7BXQIW2FufthCNIbfS7
+   eeRoh2nfiKxAWYqoxc8H6eoxECFdZgUdvSdCEMJ8Wqe9atTE6GjItBylG
+   x32l0XICUx9LM5GhAfMha+LVTnH0mw7gv+d2C7A4A9NNF3bWi8TfpAtei
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149563"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="317149555"
+   d="scan'208";a="317149563"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
   by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200521"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200528"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="768200521"
+   d="scan'208";a="768200528"
 Received: from litalcoh-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.192.4])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:08 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:10 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 08/22] wifi: iwlwifi: mvm: add support for the new STA related commands
-Date:   Tue, 14 Mar 2023 19:49:20 +0200
-Message-Id: <20230314194113.132873ce015c.I7b12a77e5be066730762e6ceeeaa7190293c3df1@changeid>
+Subject: [PATCH 09/22] wifi: iwlwifi: mvm: Add an add_interface() callback for mld mode
+Date:   Tue, 14 Mar 2023 19:49:21 +0200
+Message-Id: <20230314194113.6adc29bff39b.I97ed469028009be9392dcc6f7b5ffbe45f4b2c43@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230314174934.893149-1-gregory.greenman@intel.com>
 References: <20230314174934.893149-1-gregory.greenman@intel.com>
@@ -64,554 +64,341 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-As a part of the new MLD FW API changes, we have new commands for STA
-related operations (add/remove/aux/disable tx).
-Add structures and enum definitions, along with part of the functions
-that sends this commands.
-This functions will be in used and more will be added in the next patches.
+As the MLD mode and its new APIs are introduced,
+we've decided to add a new ieee80211_ops dedicated for
+MLD callbacks. Add the MLD add_interface() callback
+which uses the new MLD APIs added the previous patches.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 128 ++++++++
  .../net/wireless/intel/iwlwifi/mvm/Makefile   |   2 +-
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 281 ++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   4 +
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  16 +-
- 6 files changed, 431 insertions(+), 8 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  85 ++++++++-----
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 118 ++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   8 ++
+ 4 files changed, 184 insertions(+), 29 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index 301f34f13523..a111e7366d49 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -41,6 +41,22 @@ enum iwl_mac_conf_subcmd_ids {
- 	 * @LINK_CONFIG_CMD: &struct iwl_link_config_cmd
- 	 */
- 	LINK_CONFIG_CMD = 0x9,
-+	/**
-+	 * @STA_CONFIG_CMD: &struct iwl_mvm_sta_cfg_cmd
-+	 */
-+	STA_CONFIG_CMD = 0xA,
-+	/**
-+	 * @AUX_STA_CMD: &struct iwl_mvm_aux_sta_cmd
-+	 */
-+	AUX_STA_CMD = 0xB,
-+	/**
-+	 * @STA_REMOVE_CMD: &struct iwl_mvm_remove_sta_cmd
-+	 */
-+	STA_REMOVE_CMD = 0xC,
-+	/**
-+	 * @STA_DISABLE_TX_CMD: &struct iwl_mvm_sta_disable_tx_cmd
-+	 */
-+	STA_DISABLE_TX_CMD = 0xD,
- 	/**
- 	 * @SESSION_PROTECTION_NOTIF: &struct iwl_mvm_session_prot_notif
- 	 */
-@@ -466,4 +482,116 @@ struct iwl_link_config_cmd {
- 	u8 reserved[2];
- } __packed; /* LINK_CONTEXT_CONFIG_CMD_API_S_VER_1 */
- 
-+/**
-+ * enum iwl_fw_sta_type - FW station types
-+ * @STATION_TYPE_PEER: represents a peer - AP in BSS, a TDLS sta, a client in
-+ *	P2P.
-+ * @STATION_TYPE_BCAST_MGMT: The station used to send beacons and
-+ *	probe responses. Also used for traffic injection in sniffer mode
-+ * @STATION_TYPE_MCAST: the station used for BCAST / MCAST in GO. Will be
-+ *	suspended / resumed at the right timing depending on the clients'
-+ *	power save state and the DTIM timing
-+ */
-+enum iwl_fw_sta_type {
-+	STATION_TYPE_PEER,
-+	STATION_TYPE_BCAST_MGMT,
-+	STATION_TYPE_MCAST,
-+}; /* STATION_TYPE_E_VER_1 */
-+
-+/**
-+ * struct iwl_mvm_sta_cfg_cmd - cmd structure to add a peer sta to the uCode's
-+ *	station table
-+ * ( STA_CONFIG_CMD = 0xA )
-+ *
-+ * @sta_id: index of station in uCode's station table
-+ * @link_id: the id of the link that is used to communicate with this sta
-+ * @peer_mld_address: the peers mld address
-+ * @reserved_for_peer_mld_address: reserved
-+ * @peer_link_address: the address of the link that is used to communicate
-+ *	with this sta
-+ * @reserved_for_peer_link_address: reserved
-+ * @station_type: type of this station. See &enum iwl_fw_sta_type
-+ * @assoc_id: for GO only
-+ * @beamform_flags: beam forming controls
-+ * @mfp: indicates whether the STA uses management frame protection or not.
-+ * @mimo: indicates whether the sta uses mimo or not
-+ * @mimo_protection: indicates whether the sta uses mimo protection or not
-+ * @ack_enabled: indicates that the AP supports receiving ACK-
-+ *	enabled AGG, i.e. both BACK and non-BACK frames in a single AGG
-+ * @trig_rnd_alloc: indicates that trigger based random allocation
-+ *	is enabled according to UORA element existence
-+ * @tx_ampdu_spacing: minimum A-MPDU spacing:
-+ *	4 - 2us density, 5 - 4us density, 6 - 8us density, 7 - 16us density
-+ * @tx_ampdu_max_size: maximum A-MPDU length: 0 - 8K, 1 - 16K, 2 - 32K,
-+ *	3 - 64K, 4 - 128K, 5 - 256K, 6 - 512K, 7 - 1024K.
-+ * @sp_length: the size of the SP in actual number of frames
-+ * @uapsd_acs:  4 LS bits are trigger enabled ACs, 4 MS bits are the deliver
-+ *	enabled ACs.
-+ * @pkt_ext: optional, exists according to PPE-present bit in the HE/EHT-PHY
-+ *	capa
-+ * @htc_flags: which features are supported in HTC
-+ */
-+struct iwl_mvm_sta_cfg_cmd {
-+	__le32 sta_id;
-+	__le32 link_id;
-+	u8 peer_mld_address[ETH_ALEN];
-+	__le16 reserved_for_peer_mld_address;
-+	u8 peer_link_address[ETH_ALEN];
-+	__le16 reserved_for_peer_link_address;
-+	__le32 station_type;
-+	__le32 assoc_id;
-+	__le32 beamform_flags;
-+	__le32 mfp;
-+	__le32 mimo;
-+	__le32 mimo_protection;
-+	__le32 ack_enabled;
-+	__le32 trig_rnd_alloc;
-+	__le32 tx_ampdu_spacing;
-+	__le32 tx_ampdu_max_size;
-+	__le32 sp_length;
-+	__le32 uapsd_acs;
-+	struct iwl_he_pkt_ext_v2 pkt_ext;
-+	__le32 htc_flags;
-+} __packed; /* STA_CMD_API_S_VER_1 */
-+
-+/**
-+ * struct iwl_mvm_aux_sta_cmd - command for AUX STA configuration
-+ * ( AUX_STA_CMD = 0xB )
-+ *
-+ * @sta_id: index of aux sta to configure
-+ * @lmac_id: ?
-+ * @mac_addr: mac addr of the auxilary sta
-+ * @reserved_for_mac_addr: reserved
-+ */
-+struct iwl_mvm_aux_sta_cmd {
-+	__le32 sta_id;
-+	__le32 lmac_id;
-+	u8 mac_addr[ETH_ALEN];
-+	__le16 reserved_for_mac_addr;
-+
-+} __packed; /* AUX_STA_CMD_API_S_VER_1 */
-+
-+/**
-+ * struct iwl_mvm_remove_sta_cmd - a cmd structure to remove a sta added by
-+ *	STA_CONFIG_CMD or AUX_STA_CONFIG_CMD
-+ * ( STA_REMOVE_CMD = 0xC )
-+ *
-+ * @sta_id: index of station to remove
-+ */
-+struct iwl_mvm_remove_sta_cmd {
-+	__le32 sta_id;
-+} __packed; /* REMOVE_STA_API_S_VER_1 */
-+
-+/**
-+ * struct iwl_mvm_sta_disable_tx_cmd - disable / re-enable tx to a sta
-+ * ( STA_DISABLE_TX_CMD = 0xD )
-+ *
-+ * @sta_id: index of the station to disable tx to
-+ * @disable: indicates if to disable or re-enable tx
-+ */
-+struct iwl_mvm_sta_disable_tx_cmd {
-+	__le32 sta_id;
-+	__le32 disable;
-+} __packed; /* STA_DISABLE_TX_API_S_VER_1 */
-+
- #endif /* __iwl_fw_api_mac_cfg_h__ */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/Makefile b/drivers/net/wireless/intel/iwlwifi/mvm/Makefile
-index ec6346c6c8e4..0e9b5381e265 100644
+index 0e9b5381e265..b82f79ac5378 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/Makefile
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/Makefile
 @@ -7,7 +7,7 @@ iwlmvm-y += power.o coex.o
  iwlmvm-y += tt.o offloading.o tdls.o
  iwlmvm-y += ftm-responder.o ftm-initiator.o
  iwlmvm-y += rfi.o
--iwlmvm-y += mld-key.o mld-mac.o link.o
-+iwlmvm-y += mld-key.o mld-mac.o link.o mld-sta.o
+-iwlmvm-y += mld-key.o mld-mac.o link.o mld-sta.o
++iwlmvm-y += mld-key.o mld-mac.o link.o mld-sta.o mld-mac80211.o
  iwlmvm-$(CONFIG_IWLWIFI_DEBUGFS) += debugfs.o debugfs-vif.o
  iwlmvm-$(CONFIG_IWLWIFI_LEDS) += led.o
  iwlmvm-$(CONFIG_PM) += d3.o
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index cf08cb834cc4..73b164aad86d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1216,7 +1216,7 @@ static void iwl_mvm_mac_stop(struct ieee80211_hw *hw)
+ 	cancel_work_sync(&mvm->async_handlers_wk);
+ }
+ 
+-static struct iwl_mvm_phy_ctxt *iwl_mvm_get_free_phy_ctxt(struct iwl_mvm *mvm)
++struct iwl_mvm_phy_ctxt *iwl_mvm_get_free_phy_ctxt(struct iwl_mvm *mvm)
+ {
+ 	u16 i;
+ 
+@@ -1350,7 +1350,7 @@ static void iwl_mvm_abort_channel_switch(struct ieee80211_hw *hw,
+ 	iwl_mvm_post_channel_switch(hw, vif);
+ }
+ 
+-static void iwl_mvm_channel_switch_disconnect_wk(struct work_struct *wk)
++void iwl_mvm_channel_switch_disconnect_wk(struct work_struct *wk)
+ {
+ 	struct iwl_mvm_vif *mvmvif;
+ 	struct ieee80211_vif *vif;
+@@ -1384,12 +1384,17 @@ iwl_mvm_chandef_get_primary_80(struct cfg80211_chan_def *chandef)
+ 	return (control_start - data_start) / 80;
+ }
+ 
+-static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
+-				     struct ieee80211_vif *vif)
++/*
++ * Returns true if addding the interface is done
++ * (either with success or failure)
++ */
++bool iwl_mvm_mac_add_interface_common(struct iwl_mvm *mvm,
++				      struct ieee80211_hw *hw,
++				      struct ieee80211_vif *vif, int *ret)
+ {
+-	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	int ret;
++
++	lockdep_assert_held(&mvm->mutex);
+ 
+ 	mvmvif->mvm = mvm;
+ 	RCU_INIT_POINTER(mvmvif->probe_resp_data, NULL);
+@@ -1400,17 +1405,15 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
+ 	 * don't really have to check the types.
+ 	 */
+ 
+-	mutex_lock(&mvm->mutex);
+-
+ 	/* make sure that beacon statistics don't go backwards with FW reset */
+ 	if (test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
+ 		mvmvif->beacon_stats.accu_num_beacons +=
+ 			mvmvif->beacon_stats.num_beacons;
+ 
+ 	/* Allocate resources for the MAC context, and add it to the fw  */
+-	ret = iwl_mvm_mac_ctxt_init(mvm, vif);
+-	if (ret)
+-		goto out_unlock;
++	*ret = iwl_mvm_mac_ctxt_init(mvm, vif);
++	if (*ret)
++		return true;
+ 
+ 	rcu_assign_pointer(mvm->vif_id_to_mac[mvmvif->id], vif);
+ 
+@@ -1427,27 +1430,48 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
+ 	 */
+ 	if (vif->type == NL80211_IFTYPE_AP ||
+ 	    vif->type == NL80211_IFTYPE_ADHOC) {
+-		ret = iwl_mvm_alloc_bcast_sta(mvm, vif);
+-		if (ret) {
+-			IWL_ERR(mvm, "Failed to allocate bcast sta\n");
+-			goto out_unlock;
+-		}
+-
+-		/*
+-		 * Only queue for this station is the mcast queue,
+-		 * which shouldn't be in TFD mask anyway
+-		 */
+-		ret = iwl_mvm_allocate_int_sta(mvm, &mvmvif->mcast_sta,
+-					       0, vif->type,
+-					       IWL_STA_MULTICAST);
+-		if (ret)
+-			goto out_unlock;
+-
+ 		iwl_mvm_vif_dbgfs_register(mvm, vif);
+-		goto out_unlock;
++		return true;
+ 	}
+ 
+ 	mvmvif->features |= hw->netdev_features;
++	return false;
++}
++
++static int iwl_mvm_alloc_bcast_mcast_sta(struct iwl_mvm *mvm,
++					 struct ieee80211_vif *vif)
++{
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	int ret;
++
++	lockdep_assert_held(&mvm->mutex);
++
++	ret = iwl_mvm_alloc_bcast_sta(mvm, vif);
++	if (ret) {
++		IWL_ERR(mvm, "Failed to allocate bcast sta\n");
++		return ret;
++	}
++
++	/*
++	 * Only queue for this station is the mcast queue,
++	 * which shouldn't be in TFD mask anyway
++	 */
++	return iwl_mvm_allocate_int_sta(mvm, &mvmvif->mcast_sta, 0, vif->type,
++					IWL_STA_MULTICAST);
++}
++
++static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
++				     struct ieee80211_vif *vif)
++{
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	int ret;
++
++	mutex_lock(&mvm->mutex);
++
++	/* Common for MLD and non-MLD API */
++	if (iwl_mvm_mac_add_interface_common(mvm, hw, vif, &ret))
++		goto out;
+ 
+ 	ret = iwl_mvm_mac_ctxt_add(mvm, vif);
+ 	if (ret)
+@@ -1516,6 +1540,11 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
+ 		mvm->csme_vif = vif;
+ 	}
+ 
++out:
++	if (!ret && (vif->type == NL80211_IFTYPE_AP ||
++		     vif->type == NL80211_IFTYPE_ADHOC))
++		ret = iwl_mvm_alloc_bcast_mcast_sta(mvm, vif);
++
+ 	goto out_unlock;
+ 
+  out_unbind:
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
 new file mode 100644
-index 000000000000..cef4fc441afe
+index 000000000000..b233bdd68b37
 --- /dev/null
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -0,0 +1,281 @@
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -0,0 +1,118 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/*
 + * Copyright (C) 2022 Intel Corporation
 + */
 +#include "mvm.h"
 +
-+static int iwl_mvm_mld_send_sta_cmd(struct iwl_mvm *mvm,
-+				    struct iwl_mvm_sta_cfg_cmd *cmd)
++static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
++					 struct ieee80211_vif *vif)
 +{
-+	int ret = iwl_mvm_send_cmd_pdu(mvm,
-+				       WIDE_ID(MAC_CONF_GROUP, STA_CONFIG_CMD),
-+				       0, sizeof(*cmd), cmd);
-+	if (ret)
-+		IWL_ERR(mvm, "STA_CONFIG_CMD send failed, ret=0x%x\n", ret);
-+	return ret;
-+}
-+
-+/*
-+ * Add an internal station to the FW table
-+ */
-+static int iwl_mvm_mld_add_int_sta_to_fw(struct iwl_mvm *mvm,
-+					 struct iwl_mvm_int_sta *sta,
-+					 const u8 *addr,
-+					 u16 phy_id)
-+{
-+	struct iwl_mvm_sta_cfg_cmd cmd;
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	memset(&cmd, 0, sizeof(cmd));
-+	cmd.sta_id = cpu_to_le32((u8)sta->sta_id);
-+
-+	cmd.link_id = cpu_to_le32(phy_id);
-+
-+	cmd.station_type = cpu_to_le32(sta->type);
-+
-+	if (addr) {
-+		memcpy(cmd.peer_mld_address, addr, ETH_ALEN);
-+		memcpy(cmd.peer_link_address, addr, ETH_ALEN);
-+	}
-+
-+	return iwl_mvm_mld_send_sta_cmd(mvm, &cmd);
-+}
-+
-+/*
-+ * Remove a station from the FW table. Before sending the command to remove
-+ * the station validate that the station is indeed known to the driver (sanity
-+ * only).
-+ */
-+static int iwl_mvm_mld_rm_sta_from_fw(struct iwl_mvm *mvm, u32 sta_id)
-+{
-+	struct ieee80211_sta *sta;
-+	struct iwl_mvm_remove_sta_cmd rm_sta_cmd = {
-+		.sta_id = cpu_to_le32(sta_id),
-+	};
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
 +	int ret;
 +
-+	sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[sta_id],
-+					lockdep_is_held(&mvm->mutex));
++	mutex_lock(&mvm->mutex);
 +
-+	/* Note: internal stations are marked as error values */
-+	if (!sta) {
-+		IWL_ERR(mvm, "Invalid station id\n");
-+		return -EINVAL;
-+	}
++	/* Common for MLD and non-MLD API */
++	if (iwl_mvm_mac_add_interface_common(mvm, hw, vif, &ret))
++		goto out_unlock;
 +
-+	ret = iwl_mvm_send_cmd_pdu(mvm, WIDE_ID(MAC_CONF_GROUP, STA_REMOVE_CMD),
-+				   0, sizeof(rm_sta_cmd), &rm_sta_cmd);
-+	if (ret) {
-+		IWL_ERR(mvm, "Failed to remove station. Id=%d\n", sta_id);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Adds an internal sta to the FW table with its queues
-+ */
-+static int iwl_mvm_mld_add_int_sta_with_queue(struct iwl_mvm *mvm,
-+					      struct iwl_mvm_int_sta *sta,
-+					      const u8 *addr, int phy_id,
-+					      u16 *queue, u8 tid,
-+					      unsigned int *_wdg_timeout)
-+{
-+	int ret, txq;
-+	unsigned int wdg_timeout = _wdg_timeout ? *_wdg_timeout :
-+		mvm->trans->trans_cfg->base_params->wd_timeout;
-+
-+	if (WARN_ON_ONCE(sta->sta_id == IWL_MVM_INVALID_STA))
-+		return -ENOSPC;
-+
-+	ret = iwl_mvm_mld_add_int_sta_to_fw(mvm, sta, addr, phy_id);
++	ret = iwl_mvm_mld_mac_ctxt_add(mvm, vif);
 +	if (ret)
-+		return ret;
++		goto out_unlock;
++
++	ret = iwl_mvm_power_update_mac(mvm);
++	if (ret)
++		goto out_remove_mac;
++
++	/* beacon filtering */
++	ret = iwl_mvm_disable_beacon_filter(mvm, vif, 0);
++	if (ret)
++		goto out_remove_mac;
++
++	if (!mvm->bf_allowed_vif &&
++	    vif->type == NL80211_IFTYPE_STATION && !vif->p2p) {
++		mvm->bf_allowed_vif = mvmvif;
++		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER |
++				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
++	}
 +
 +	/*
-+	 * For 22000 firmware and on we cannot add queue to a station unknown
-+	 * to firmware so enable queue here - after the station was added
++	 * P2P_DEVICE interface does not have a channel context assigned to it,
++	 * so a dedicated PHY context is allocated to it and the corresponding
++	 * MAC context is bound to it at this stage.
 +	 */
-+	txq = iwl_mvm_tvqm_enable_txq(mvm, NULL, sta->sta_id, tid,
-+				      wdg_timeout);
-+	if (txq < 0) {
-+		iwl_mvm_mld_rm_sta_from_fw(mvm, sta->sta_id);
-+		return txq;
-+	}
-+	*queue = txq;
++	if (vif->type == NL80211_IFTYPE_P2P_DEVICE) {
++		mvmvif->phy_ctxt = iwl_mvm_get_free_phy_ctxt(mvm);
++		if (!mvmvif->phy_ctxt) {
++			ret = -ENOSPC;
++			goto out_free_bf;
++		}
 +
-+	return 0;
-+}
++		iwl_mvm_phy_ctxt_ref(mvm, mvmvif->phy_ctxt);
++		ret = iwl_mvm_add_link(mvm, vif);
++		if (ret)
++			goto out_unref_phy;
 +
-+/*
-+ * Adds a new int sta: allocate it in the driver, add it to the FW table,
-+ * and add its queues.
-+ */
-+static int iwl_mvm_mld_add_int_sta(struct iwl_mvm *mvm,
-+				   struct iwl_mvm_int_sta *int_sta, u16 *queue,
-+				   enum nl80211_iftype iftype,
-+				   enum iwl_fw_sta_type sta_type,
-+				   int phy_id, const u8 *addr, u8 tid,
-+				   unsigned int *wdg_timeout)
-+{
-+	int ret;
++		ret = iwl_mvm_link_changed(mvm, vif,
++					   LINK_CONTEXT_MODIFY_ACTIVE |
++					   LINK_CONTEXT_MODIFY_RATES_INFO,
++					   true);
++		if (ret)
++			goto out_remove_link;
 +
-+	lockdep_assert_held(&mvm->mutex);
++		ret = iwl_mvm_mld_add_bcast_sta(mvm, vif);
++		if (ret)
++			goto out_remove_link;
 +
-+	/* qmask argument is not used in the new tx api, send a don't care */
-+	ret = iwl_mvm_allocate_int_sta(mvm, int_sta, 0, iftype,
-+				       sta_type);
-+	if (ret)
-+		return ret;
-+
-+	ret = iwl_mvm_mld_add_int_sta_with_queue(mvm, int_sta, addr, phy_id,
-+						 queue, tid, wdg_timeout);
-+	if (ret) {
-+		iwl_mvm_dealloc_int_sta(mvm, int_sta);
-+		return ret;
++		/* Save a pointer to p2p device vif, so it can later be used to
++		 * update the p2p device MAC when a GO is started/stopped
++		 */
++		mvm->p2p_device_vif = vif;
 +	}
 +
-+	return 0;
-+}
++	iwl_mvm_tcm_add_vif(mvm, vif);
++	INIT_DELAYED_WORK(&mvmvif->csa_work,
++			  iwl_mvm_channel_switch_disconnect_wk);
 +
-+/* Allocate a new station entry for the broadcast station to the given vif,
-+ * and send it to the FW.
-+ * Note that each P2P mac should have its own broadcast station.
-+ */
-+int iwl_mvm_mld_add_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
-+{
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	struct iwl_mvm_int_sta *bsta = &mvmvif->bcast_sta;
-+	static const u8 _baddr[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-+	const u8 *baddr = _baddr;
-+	unsigned int wdg_timeout =
-+		iwl_mvm_get_wd_timeout(mvm, vif, false, false);
-+	u16 *queue;
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	if (vif->type == NL80211_IFTYPE_ADHOC)
-+		baddr = vif->bss_conf.bssid;
-+
-+	if (vif->type == NL80211_IFTYPE_AP ||
-+	    vif->type == NL80211_IFTYPE_ADHOC) {
-+		queue = &mvm->probe_queue;
-+	} else if (vif->type == NL80211_IFTYPE_P2P_DEVICE) {
-+		queue = &mvm->p2p_dev_queue;
-+	} else {
-+		WARN(1, "Missing required TXQ for adding bcast STA\n");
-+		return -EINVAL;
++	if (vif->type == NL80211_IFTYPE_MONITOR) {
++		mvm->monitor_on = true;
++		ieee80211_hw_set(mvm->hw, RX_INCLUDES_FCS);
 +	}
 +
-+	return iwl_mvm_mld_add_int_sta(mvm, bsta, queue,
-+				       ieee80211_vif_type_p2p(vif),
-+				       STATION_TYPE_BCAST_MGMT,
-+				       mvmvif->phy_ctxt->id, baddr,
-+				       IWL_MAX_TID_COUNT, &wdg_timeout);
-+}
++	iwl_mvm_vif_dbgfs_register(mvm, vif);
 +
-+/* Allocate a new station entry for the sniffer station to the given vif,
-+ * and send it to the FW.
-+ */
-+int iwl_mvm_mld_add_snif_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
-+{
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	return iwl_mvm_mld_add_int_sta(mvm, &mvm->snif_sta, &mvm->snif_queue,
-+				       vif->type, STATION_TYPE_BCAST_MGMT,
-+				       mvmvif->phy_ctxt->id, NULL,
-+				       IWL_MAX_TID_COUNT, NULL);
-+}
-+
-+static int iwl_mvm_mld_disable_txq(struct iwl_mvm *mvm,
-+				   struct ieee80211_sta *sta,
-+				   u16 *queueptr, u8 tid)
-+{
-+	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+	int queue = *queueptr;
-+	int ret = 0;
-+
-+	if (mvm->sta_remove_requires_queue_remove) {
-+		u32 cmd_id = WIDE_ID(DATA_PATH_GROUP,
-+				     SCD_QUEUE_CONFIG_CMD);
-+		struct iwl_scd_queue_cfg_cmd remove_cmd = {
-+			.operation = cpu_to_le32(IWL_SCD_QUEUE_REMOVE),
-+			.u.remove.tid = cpu_to_le32(tid),
-+			.u.remove.sta_mask =
-+				cpu_to_le32(BIT(mvmsta->sta_id)),
-+		};
-+
-+		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0,
-+					   sizeof(remove_cmd),
-+					   &remove_cmd);
++	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) &&
++	    vif->type == NL80211_IFTYPE_STATION && !vif->p2p &&
++	    !mvm->csme_vif && mvm->mei_registered) {
++		iwl_mei_set_nic_info(vif->addr, mvm->nvm_data->hw_addr);
++		iwl_mei_set_netdev(ieee80211_vif_to_wdev(vif)->netdev);
++		mvm->csme_vif = vif;
 +	}
 +
-+	iwl_trans_txq_free(mvm->trans, queue);
-+	*queueptr = IWL_MVM_INVALID_QUEUE;
++	goto out_unlock;
++
++ out_remove_link:
++	/* Link needs to be deactivated before removal */
++	iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE, false);
++	iwl_mvm_remove_link(mvm, vif);
++ out_unref_phy:
++	iwl_mvm_phy_ctxt_unref(mvm, mvmvif->phy_ctxt);
++ out_free_bf:
++	if (mvm->bf_allowed_vif == mvmvif) {
++		mvm->bf_allowed_vif = NULL;
++		vif->driver_flags &= ~(IEEE80211_VIF_BEACON_FILTER |
++				       IEEE80211_VIF_SUPPORTS_CQM_RSSI);
++	}
++ out_remove_mac:
++	mvmvif->phy_ctxt = NULL;
++	iwl_mvm_mld_mac_ctxt_remove(mvm, vif);
++ out_unlock:
++	mutex_unlock(&mvm->mutex);
 +
 +	return ret;
 +}
 +
-+/* Removes a sta from the FW table, disable its queues, and dealloc it
-+ */
-+static int iwl_mvm_mld_rm_int_sta(struct iwl_mvm *mvm,
-+				  struct iwl_mvm_int_sta *int_sta,
-+				  bool flush, u8 tid, u16 *queuptr)
-+{
-+	int ret;
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	if (WARN_ON_ONCE(int_sta->sta_id == IWL_MVM_INVALID_STA))
-+		return -EINVAL;
-+
-+	if (flush)
-+		iwl_mvm_flush_sta(mvm, int_sta, true);
-+
-+	iwl_mvm_mld_disable_txq(mvm, NULL, queuptr, tid);
-+
-+	ret = iwl_mvm_mld_rm_sta_from_fw(mvm, int_sta->sta_id);
-+	if (ret)
-+		IWL_WARN(mvm, "Failed sending remove station\n");
-+
-+	iwl_mvm_dealloc_int_sta(mvm, int_sta);
-+
-+	return ret;
-+}
-+
-+int iwl_mvm_mld_rm_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
-+{
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	u16 *queueptr;
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	switch (vif->type) {
-+	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_ADHOC:
-+		queueptr = &mvm->probe_queue;
-+		break;
-+	case NL80211_IFTYPE_P2P_DEVICE:
-+		queueptr = &mvm->p2p_dev_queue;
-+		break;
-+	default:
-+		WARN(1, "Can't free bcast queue on vif type %d\n",
-+		     vif->type);
-+		return -EINVAL;
-+	}
-+
-+	return iwl_mvm_mld_rm_int_sta(mvm, &mvmvif->bcast_sta, true,
-+				      IWL_MAX_TID_COUNT, queueptr);
-+}
-+
-+int iwl_mvm_mld_rm_snif_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
-+{
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	return iwl_mvm_mld_rm_int_sta(mvm, &mvm->snif_sta, false,
-+				      IWL_MAX_TID_COUNT, &mvm->snif_queue);
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index c3767f62026a..03da4e53de67 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -523,6 +523,10 @@ static const struct iwl_hcmd_names iwl_mvm_mac_conf_names[] = {
- 	HCMD_NAME(SESSION_PROTECTION_CMD),
- 	HCMD_NAME(MAC_CONFIG_CMD),
- 	HCMD_NAME(LINK_CONFIG_CMD),
-+	HCMD_NAME(STA_CONFIG_CMD),
-+	HCMD_NAME(AUX_STA_CMD),
-+	HCMD_NAME(STA_REMOVE_CMD),
-+	HCMD_NAME(STA_DISABLE_TX_CMD),
- 	HCMD_NAME(SESSION_PROTECTION_NOTIF),
- 	HCMD_NAME(CHANNEL_SWITCH_START_NOTIF),
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 46af2b422849..313c5416ae5e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -783,9 +783,9 @@ static int iwl_mvm_get_queue_size(struct ieee80211_sta *sta)
- 	return IWL_DEFAULT_QUEUE_SIZE;
++const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
++	.add_interface = iwl_mvm_mld_mac_add_interface,
++};
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index fd32eea9459b..63b9cc1923c5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -72,6 +72,7 @@
+ #define IWL_MVM_OFFCHANNEL_QUEUE 0
+ 
+ extern const struct ieee80211_ops iwl_mvm_hw_ops;
++extern const struct ieee80211_ops iwl_mvm_mld_hw_ops;
+ 
+ /**
+  * struct iwl_mvm_mod_params - module parameters for iwlmvm
+@@ -1624,6 +1625,7 @@ void iwl_mvm_rx_shared_mem_cfg_notif(struct iwl_mvm *mvm,
+ 				     struct iwl_rx_cmd_buffer *rxb);
+ 
+ /* MVM PHY */
++struct iwl_mvm_phy_ctxt *iwl_mvm_get_free_phy_ctxt(struct iwl_mvm *mvm);
+ int iwl_mvm_phy_ctxt_add(struct iwl_mvm *mvm, struct iwl_mvm_phy_ctxt *ctxt,
+ 			 struct cfg80211_chan_def *chandef,
+ 			 u8 chains_static, u8 chains_dynamic);
+@@ -1640,6 +1642,9 @@ u8 iwl_mvm_get_ctrl_pos(struct cfg80211_chan_def *chandef);
+ 
+ /* MAC (virtual interface) programming */
+ 
++bool iwl_mvm_mac_add_interface_common(struct iwl_mvm *mvm,
++				      struct ieee80211_hw *hw,
++				      struct ieee80211_vif *vif, int *ret);
+ void iwl_mvm_set_fw_basic_rates(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 				__le32 *cck_rates, __le32 *ofdm_rates);
+ void iwl_mvm_set_fw_protection_flags(struct iwl_mvm *mvm,
+@@ -2158,6 +2163,9 @@ static inline u8 iwl_mvm_phy_band_from_nl80211(enum nl80211_band band)
+ 	}
  }
  
--static int iwl_mvm_tvqm_enable_txq(struct iwl_mvm *mvm,
--				   struct ieee80211_sta *sta,
--				   u8 sta_id, u8 tid, unsigned int timeout)
-+int iwl_mvm_tvqm_enable_txq(struct iwl_mvm *mvm,
-+			    struct ieee80211_sta *sta,
-+			    u8 sta_id, u8 tid, unsigned int timeout)
- {
- 	int queue, size;
- 
-@@ -2005,7 +2005,7 @@ int iwl_mvm_rm_sta_id(struct iwl_mvm *mvm,
- int iwl_mvm_allocate_int_sta(struct iwl_mvm *mvm,
- 			     struct iwl_mvm_int_sta *sta,
- 			     u32 qmask, enum nl80211_iftype iftype,
--			     enum iwl_sta_type type)
-+			     u8 type)
- {
- 	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) ||
- 	    sta->sta_id == IWL_MVM_INVALID_STA) {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index f1a4fc3e4038..d11851b47684 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2016 Intel Deutschland GmbH
-  */
-@@ -436,7 +436,7 @@ iwl_mvm_sta_from_mac80211(struct ieee80211_sta *sta)
-  */
- struct iwl_mvm_int_sta {
- 	u32 sta_id;
--	enum iwl_sta_type type;
-+	u8 type;
- 	u32 tfd_queue_msk;
- };
- 
-@@ -519,7 +519,7 @@ int iwl_mvm_rm_mcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
- int iwl_mvm_allocate_int_sta(struct iwl_mvm *mvm,
- 			     struct iwl_mvm_int_sta *sta,
- 				    u32 qmask, enum nl80211_iftype iftype,
--				    enum iwl_sta_type type);
-+				    u8 type);
- void iwl_mvm_dealloc_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
- void iwl_mvm_dealloc_int_sta(struct iwl_mvm *mvm, struct iwl_mvm_int_sta *sta);
- int iwl_mvm_add_snif_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-@@ -551,4 +551,14 @@ int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- void iwl_mvm_cancel_channel_switch(struct iwl_mvm *mvm,
- 				   struct ieee80211_vif *vif,
- 				   u32 mac_id);
-+/* Queues */
-+int iwl_mvm_tvqm_enable_txq(struct iwl_mvm *mvm,
-+			    struct ieee80211_sta *sta,
-+			    u8 sta_id, u8 tid, unsigned int timeout);
++/* Channel Switch */
++void iwl_mvm_channel_switch_disconnect_wk(struct work_struct *wk);
 +
-+/* New MLD STA related APIs */
-+int iwl_mvm_mld_add_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-+int iwl_mvm_mld_add_snif_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-+int iwl_mvm_mld_rm_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-+int iwl_mvm_mld_rm_snif_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
- #endif /* __sta_h__ */
+ /* Channel info utils */
+ static inline bool iwl_mvm_has_ultra_hb_channel(struct iwl_mvm *mvm)
+ {
 -- 
 2.38.1
 
