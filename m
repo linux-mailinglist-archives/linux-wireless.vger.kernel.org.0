@@ -2,120 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDC96B8949
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 05:08:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0406E6B8975
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 05:19:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbjCNEI2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 00:08:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43766 "EHLO
+        id S229808AbjCNETC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 00:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjCNEIU (ORCPT
+        with ESMTP id S229496AbjCNETA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 00:08:20 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A977A12860;
-        Mon, 13 Mar 2023 21:08:15 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 181C55C0158;
-        Tue, 14 Mar 2023 00:08:13 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 14 Mar 2023 00:08:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
-         h=cc:cc:content-transfer-encoding:content-type:content-type
-        :date:date:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to;
-         s=fm3; t=1678766893; x=1678853293; bh=wEn3F9g21ZKG0PT50olnWF7OZ
-        L5E/VI358hZAFZ/7fM=; b=qvbCh3qdEJbbCzLY83We0Z5gUbMeJOxDR38OeMFUP
-        zHZtTslqV3qrPKpyXVOKuk33qSRy8MxnMxlcwx4m0zRqwG0jPWG3jtPRidF0+ekI
-        KncUW6ot/ugPklzcTo6H/FoaTdT3SY+85oj03L8bT8LBLJJ5gZomlBCmWQcUYHEP
-        ZwQ3EP+pm4ffV3sZXd+c/HsX72v+dRiuvKlU9DRre0/3T4ILbbZ/lG1rKX2ys4vL
-        rFdp0btVvckTgvhXxLt6GZY4o+Ma5Py8qclQOr4BvEJWpsMLuSwFCX06JzyyDG+P
-        RCv1q2kWf+AxNMga59SvA/rKLgrKv2a0qzMTRTjEulEAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1678766893; x=1678853293; bh=wEn3F9g21ZKG0PT50olnWF7OZL5E/VI358h
-        ZAFZ/7fM=; b=ZQdl0rDJuMCOCG78QzrS8UHdZ4KVbak3xNY40pkjAM3IANnayDU
-        LgFsxc9ED6d0PMNrb231ZJ5Lks7ySdMD1Pad0Zj/B7QXafNqmYY/wTfa4ZMqHZoa
-        pLujXMy6TDgFkX4Lu2kEpLGLIVLZgSFCOBGI0xh8yMv/kGLVL0eyuZcmXRi4TqpD
-        EzYLsFgXzcjPm+qRYZ4xsmn/I7MHe7BTG9YNuVk0Q28XsngL1TrwMfVy4Q/hw7z+
-        uN2hOoPQt10+yFHVMApOvw70TGdtqJnovNas6E8lQIQtnLEOQNWQ2dQ08kzV2pQF
-        K/EcdpOWAHQYjNm9fXzfPeTBLasH1rPg0Eg==
-X-ME-Sender: <xms:LPMPZMQGRaCTWVegDujr5exI48bwFVO3JLwAJCq5IaYHtTwq8t1QEA>
-    <xme:LPMPZJwVHr4lD8kb2SVytf76QH7jYyZm0GyhI2jtPbRcleR9nWYyh8PX9jrJSY9OW
-    9g3ntg8NitW7uWNnw>
-X-ME-Received: <xmr:LPMPZJ2zaSUMNqagcvYkxuaH0rDAfwMczw1ow0PjY0xlSM4YLe-72r-4RhCbcEU07EUEi4LBS5a4h5rk4FaZOMcxndiI1fgKWR5q_ZfREQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvhedgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    gfrhhlucfvnfffucdliedmnecujfgurhepfffhvfevuffkfhggtggugfgjohesthekredt
-    tddtjeenucfhrhhomhepofgrrhhkucfirhgvvghruceomhhgrhgvvghrsegrnhhimhgrlh
-    gtrhgvvghkrdgtohhmqeenucggtffrrghtthgvrhhnpeetveetjeeujeefjefhueekueei
-    ffeuleevleelffeghffgleffgfefhfehhfetleenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehmghhrvggvrhesrghnihhmrghltghrvggvkhdr
-    tghomh
-X-ME-Proxy: <xmx:LPMPZAD0_-T-fDJX_C-Y1NB0_Bzyg7c64AcJdfi_IVobPO3BhpZbQw>
-    <xmx:LPMPZFiodqJuPMsQDJ0OY1eAybiIDEv_mUQQttjzDTiahziKaGk2ig>
-    <xmx:LPMPZMpZy8mV-93W2GizBX4OHvarRbGKcbjcaSuGHTQjuEKb8hnamw>
-    <xmx:LfMPZKtu1aU5yYti0-p_yYzee0W0QCQHGN1UXPvlWPn87eqzdK21Tw>
-Feedback-ID: i9cc843c7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Mar 2023 00:08:12 -0400 (EDT)
-Received: by blue.animalcreek.com (Postfix, from userid 1000)
-        id E3C02521076; Mon, 13 Mar 2023 21:08:10 -0700 (MST)
-Date:   Mon, 13 Mar 2023 21:08:10 -0700
-From:   Mark Greer <mgreer@animalcreek.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Mark Greer <mgreer@animalcreek.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] nfc: trf7970a: mark OF related data as maybe unused
-Message-ID: <ZA/zKpviZAWPoQfo@animalcreek.com>
-References: <20230311111328.251219-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230311111328.251219-1-krzysztof.kozlowski@linaro.org>
-Organization: Animal Creek Technologies, Inc.
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 14 Mar 2023 00:19:00 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3895D7B48B;
+        Mon, 13 Mar 2023 21:18:56 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id j11so56945756edq.4;
+        Mon, 13 Mar 2023 21:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678767534;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TZ7QQfw5FkuIei/cI2/povdDw4YVh92kNRopK67KOaU=;
+        b=hf9G36pJEd0q3oRNqsR0+UcJ2hf1QLXVFpTC51sPFQz7JQUXaMrdxdJ/8smJc8kM7L
+         K7AW8Rfc1KGAa6oOIkCgzaulTIJDTYP//vMFuHWJTCqK+IGiq8FT2cSTMxcg6B0etO58
+         tdX5pV/C1iZ6w7gUJ939t/5/V91u4dfQ0BGHnturmzHVSpFS1dt9xvdCt/coUYvZv4O9
+         z1/xTpTqx3jEGOe3UJG/dCyqDqGh6VUAU3KIr6nV6U8c1sJ6cMw0QvBnU8DxKseiqAMh
+         bnuNFFd4vfiBxKFwn48pmQOhqzKm1HGQrEpecfhD9v68h8WLg7npTvwpJEv18MGsa/vr
+         nsKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678767534;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TZ7QQfw5FkuIei/cI2/povdDw4YVh92kNRopK67KOaU=;
+        b=ygB4B++9TPrhoLpd1Hxxj1jrWBJiLVxfrnH43UoZw8H9MzJnThjvQJoPAUoxQ3kXa3
+         aprICCrfoxo3Zk3F3SqcL9GCragyrmFheyL3B/qw9KgwtsLOYUpLjaKZOaDKHkPfH1aD
+         ECNO3zALRP2GEAM58gwFO93Kdm5od1aK2uh1Nd3Bp11VvoznzCJe0rNyfuTrSXOy+NgF
+         L86E3JoTVfdeNXYQH4Qqw7KwIcX8nVf7jI00ZlECKnAS2nqtlckdhvTuDNEbk1bU55YE
+         6ZahguBfCDiNCE6VLPGMF567UDT3PajRF4i7o6QlMdLEgYfvyJZB8D8RmkzpcTixBtHe
+         /H1Q==
+X-Gm-Message-State: AO0yUKUZLw740zsJgBvcu43hRRn1mAPMiR3BHQty4B2NMvfgEFWgSsWW
+        A8eSLszgJgQs2NF0FM1Xu23mWtPoNC4r1w==
+X-Google-Smtp-Source: AK7set8WaRvILSlswipSW/7mqGRZgz1V+baskJ9GNgwqCyY6TUQFybXrFgF6FCsYW+ZBgzh+vud/EQ==
+X-Received: by 2002:a17:906:c244:b0:877:a9d2:e5e9 with SMTP id bl4-20020a170906c24400b00877a9d2e5e9mr894889ejb.42.1678767534526;
+        Mon, 13 Mar 2023 21:18:54 -0700 (PDT)
+Received: from felia.fritz.box ([2a02:810d:2a40:1104:e097:f710:4dc1:9ec4])
+        by smtp.gmail.com with ESMTPSA id zk6-20020a17090733c600b00927e0fb3e50sm540390ejb.100.2023.03.13.21.18.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Mar 2023 21:18:54 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: adjust file entries after wifi driver movement
+Date:   Tue, 14 Mar 2023 05:18:48 +0100
+Message-Id: <20230314041848.5120-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Mar 11, 2023 at 12:13:28PM +0100, Krzysztof Kozlowski wrote:
-> The driver can be compile tested with !CONFIG_OF making certain data
-> unused:
-> 
->   drivers/nfc/trf7970a.c:2232:34: error: ‘trf7970a_of_match’ defined but not used [-Werror=unused-const-variable=]
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  drivers/nfc/trf7970a.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-> index 21d68664fe08..7eb17f46a815 100644
-> --- a/drivers/nfc/trf7970a.c
-> +++ b/drivers/nfc/trf7970a.c
-> @@ -2229,7 +2229,7 @@ static const struct dev_pm_ops trf7970a_pm_ops = {
->  			   trf7970a_pm_runtime_resume, NULL)
->  };
->  
-> -static const struct of_device_id trf7970a_of_match[] = {
-> +static const struct of_device_id trf7970a_of_match[] __maybe_unused = {
->  	{.compatible = "ti,trf7970a",},
->  	{},
->  };
-> -- 
-> 2.34.1
+Commit f79cbc77abde ("wifi: move mac80211_hwsim and virt_wifi to virtual
+directory") and commit 298e50ad8eb8 ("wifi: move raycs, wl3501 and
+rndis_wlan to legacy directory") move remaining wireless drivers into
+subdirectories, but does not adjust the entries in MAINTAINERS.
 
-Reviewed-by: Mark Greer <mgreer@animalcreek.com>
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about
+broken references.
+
+Repair these file references in those wireless driver sections.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+ MAINTAINERS | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 25a0981c74b6..8b38772e27dc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12309,7 +12309,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+ F:	Documentation/networking/mac80211-injection.rst
+ F:	Documentation/networking/mac80211_hwsim/mac80211_hwsim.rst
+-F:	drivers/net/wireless/mac80211_hwsim.[ch]
++F:	drivers/net/wireless/virtual/mac80211_hwsim.[ch]
+ F:	include/net/mac80211.h
+ F:	net/mac80211/
+ 
+@@ -17574,7 +17574,7 @@ F:	include/ras/ras_event.h
+ RAYLINK/WEBGEAR 802.11 WIRELESS LAN DRIVER
+ L:	linux-wireless@vger.kernel.org
+ S:	Orphan
+-F:	drivers/net/wireless/ray*
++F:	drivers/net/wireless/legacy/ray*
+ 
+ RC-CORE / LIRC FRAMEWORK
+ M:	Sean Young <sean@mess.org>
+@@ -21815,7 +21815,7 @@ USB WIRELESS RNDIS DRIVER (rndis_wlan)
+ M:	Jussi Kivilinna <jussi.kivilinna@iki.fi>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+-F:	drivers/net/wireless/rndis_wlan.c
++F:	drivers/net/wireless/legacy/rndis_wlan.c
+ 
+ USB XHCI DRIVER
+ M:	Mathias Nyman <mathias.nyman@intel.com>
+@@ -22571,7 +22571,7 @@ F:	drivers/input/misc/wistron_btns.c
+ WL3501 WIRELESS PCMCIA CARD DRIVER
+ L:	linux-wireless@vger.kernel.org
+ S:	Odd fixes
+-F:	drivers/net/wireless/wl3501*
++F:	drivers/net/wireless/legacy/wl3501*
+ 
+ WOLFSON MICROELECTRONICS DRIVERS
+ L:	patches@opensource.cirrus.com
+-- 
+2.17.1
+
