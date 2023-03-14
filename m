@@ -2,64 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6FB6BA025
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 20:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49DA06BA08F
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 21:19:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbjCNT5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 15:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
+        id S231154AbjCNUTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 16:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjCNT5U (ORCPT
+        with ESMTP id S229627AbjCNUTB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 15:57:20 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA11C497C1
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 12:57:18 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id o12so66764357edb.9
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 12:57:18 -0700 (PDT)
+        Tue, 14 Mar 2023 16:19:01 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B4FB22039;
+        Tue, 14 Mar 2023 13:18:58 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id eg48so7772302edb.13;
+        Tue, 14 Mar 2023 13:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678823837;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20210112; t=1678825137;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=aORkeEWyO4el94Bv6We6yy/BW+bw5NjQvuZusdWHXhw=;
-        b=gr18aPzM5zECvOkClsBTCdIMXKpwux+V1a6gMKvaYD7cxf8xfCzZFnwTplfRbntBe+
-         pBvDyOSmdKO8kWrmxOskVrIOGRk9Pex1nzNb0goa0jkia5LwixA+rneqPQM3iQfp0C51
-         s2EefWp9yN8cUY3QUv4nuKg6X8aM+WgZwDvIhcbzshhyPV4dqqSz9fXz9w6t6M+8lHf1
-         I+biZuTX+mYJBpYz4OZ8zOAFr99syPdi6A+eboC3FsZBfm+fU3psVzJD0aePAq5n4LZU
-         CQ3lVGIYOMc+LaWysoxc+lTzEw5+z/DKx3Gw4IqFNa9O9x/b53pkMtJIPBifAyfHBcP7
-         vw8w==
+        bh=9SB+BZ9VlItZGYcgdFLvcDeLn9V7Ni7FQjQccgDvwrY=;
+        b=g2hoRZekVEYCAA8AduTtlGx8aHEyEgxe2KGWlhuvqT/NzAGwGTGmjtYrbLRKUkj/wC
+         ixN4tLnGKw0EOf6XQVFTAKUO0PSuxqrCr1IKFlTpzQnWIBBZT7Sgeis4gCQE7LHrIYdO
+         qkV5VwvwitJQnZ4FlccFrAGfsk2nVIPv+MPA1MyP5qzyVI4kYlqCujyASvQAveQ4FPeY
+         B5dlrTebAbQ9+DZTk+1PEWHk5D9a37BcqwGleAtP6gxghkvyDbkLp9UxLWqBnBE/ZZYU
+         4Jca3ivZyIdkvJCcAEVWcV0ewYECKMOey4nEsh/eLKxzvCJoQKoEKSQq6sc/5CjUgEn2
+         mU9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678823837;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1678825137;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aORkeEWyO4el94Bv6We6yy/BW+bw5NjQvuZusdWHXhw=;
-        b=d8FwDhJPs78987K+I1QqmbA4P6+d6dr+HO55CeWrCIGJWri7sIoIWRGRhzcjtKUqu5
-         y03r1toKXXfZjhClwsTXtcQfTvR9oM+sg7NWbZHoYg3ZrH9+cIHClIZUF88+RMg60DrA
-         6w01jdHOezlBTBHRT+ZTAhdXi/lJJtlMSbUvl1nY+Np632EvcVKuOVxE3MGuvknVmfH1
-         dh132YMbAEglXLcSt+4DiNyqwsT+X52w8AXjJPsX3ryBhPn6Ywwf58NXX3sdPvsSljw7
-         DynkiQjv8cQQGBnZxVh4Az3/F9BHT5yP1bQFBJx9SPoDJS4TXtNCn0oI58gYvCWjJiJo
-         68Qw==
-X-Gm-Message-State: AO0yUKX4RbwwaNZpqev4FencQNU7/RgE5bagJbdJDxE1aVN46ndBWbUN
-        2InAX+E2x3oo3LG8J2PB2aZPjw==
-X-Google-Smtp-Source: AK7set/XAW5ciHQcJno6hH/Z88UfN6YapdX8vcLUOlfdJ3yyprHp0j3qR3GzULGcqsy5r/vRByYzFQ==
-X-Received: by 2002:a17:906:a0e:b0:91e:acf4:b009 with SMTP id w14-20020a1709060a0e00b0091eacf4b009mr4068970ejf.22.1678823837351;
-        Tue, 14 Mar 2023 12:57:17 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:642b:87c2:1efc:c8af? ([2a02:810d:15c0:828:642b:87c2:1efc:c8af])
-        by smtp.gmail.com with ESMTPSA id c37-20020a509fa8000000b004fb17f10326sm1514478edf.10.2023.03.14.12.57.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Mar 2023 12:57:16 -0700 (PDT)
-Message-ID: <4ac809d2-3924-3839-479f-0b4be9f18a1f@linaro.org>
-Date:   Tue, 14 Mar 2023 20:57:15 +0100
+        bh=9SB+BZ9VlItZGYcgdFLvcDeLn9V7Ni7FQjQccgDvwrY=;
+        b=4v+/wHrLPJLvwZ8h7l38/3Fsu1ldwjosraBmnkcSzbkx4oWlnZMcxuElHndTHZL0UV
+         AT/dCLzQDBPC7jpXVfEJI/WplHpk1ozRp7mIThaDZpLTiKrL5//Opc/+RFooZSL6rUoc
+         dgIm/p+tbOoGCyWMFT+agJ++Vn6ziDffXjCZEyyvMYFRLlHeSMbHNrPnPmFD2BcrLXdR
+         y0c84AIj5XkNY59c4fELpDkTsZyeTSEBWhyIrnxIUX8H776W1Ny+AQFSeiDbGvWsLpI+
+         l6yMNed4AYZH4zQqipndDMP+LwOtK2Ghs4rfI/y3vpcf9pnvaao10I88vfAByJUT4gYw
+         na2Q==
+X-Gm-Message-State: AO0yUKUwsJkLAuG41gO75hr/CvoIEEOi2+Y08f8OF79PQj5iggCASlcJ
+        5WELFWY2QfdlM1HERrun2FU=
+X-Google-Smtp-Source: AK7set+Az0JnVlYyAujOmgXmvxHSPGWN2t4HQaFP5dCEv4IGXZVHl2FMuV5ikQn6E1nGZaa7D6LW/A==
+X-Received: by 2002:a17:906:c047:b0:926:8992:4310 with SMTP id bm7-20020a170906c04700b0092689924310mr4316468ejb.38.1678825136545;
+        Tue, 14 Mar 2023 13:18:56 -0700 (PDT)
+Received: from shift (pd9e2911a.dip0.t-ipconnect.de. [217.226.145.26])
+        by smtp.gmail.com with ESMTPSA id dt5-20020a170906b78500b008e82cb55195sm1543714ejb.203.2023.03.14.13.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Mar 2023 13:18:56 -0700 (PDT)
+Received: from localhost ([127.0.0.1])
+        by shift with esmtp (Exim 4.96)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1pcB4d-000AO6-1G;
+        Tue, 14 Mar 2023 21:18:55 +0100
+Message-ID: <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com>
+Date:   Tue, 14 Mar 2023 21:18:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
 Subject: Re: [PATCH] p54spi: convert to devicetree
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
@@ -80,23 +82,24 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
 References: <20230314163201.955689-1-arnd@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: de-DE
+From:   Christian Lamparter <chunkeey@gmail.com>
 In-Reply-To: <20230314163201.955689-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14/03/2023 17:30, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
+Hi,
+
+On 3/14/23 17:30, Arnd Bergmann wrote:
 > The Prism54 SPI driver hardcodes GPIO numbers and expects users to
 > pass them as module parameters, apparently a relic from its life as a
 > staging driver. This works because there is only one user, the Nokia
@@ -105,8 +108,21 @@ On 14/03/2023 17:30, Arnd Bergmann wrote:
 > Convert this to the gpio descriptor interface and move the gpio
 > line information into devicetree to improve this and simplify the
 > code at the same time.
-> 
+
+Yes, this is definitely the right idea/way. From what I remember, Kalle
+Valo was partially involved in p54spi/stlc45xx. The details are very fuzzy.
+So,  I could be totally wrong. From what I remember Kalle was working
+for Nokia (or as a contractor for Nokia?) at the time.
+
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+I've seen the device-tree comments. That said, this is/was overdue.
+You can definitely have this for a v2 :).
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+
+Thanks you!
+Christian
+
 > ---
 > As I don't have an N8x0, this is completely untested.
 > 
@@ -119,21 +135,15 @@ On 14/03/2023 17:30, Arnd Bergmann wrote:
 > I picked st,stlc4560 as that was cited as the version in the N800
 > on multiple websites.
 > ---
->  .../bindings/net/wireless/st,stlc45xx.yaml    | 64 +++++++++++++++++
-
-Please split bindings to separate patch.
-
->  MAINTAINERS                                   |  1 +
->  arch/arm/boot/dts/omap2.dtsi                  |  4 ++
->  arch/arm/boot/dts/omap2420-n8x0-common.dtsi   | 12 ++++
-
-DTS as well...
-
->  arch/arm/mach-omap2/board-n8x0.c              | 18 -----
->  drivers/net/wireless/intersil/p54/p54spi.c    | 69 +++++++------------
->  drivers/net/wireless/intersil/p54/p54spi.h    |  3 +
->  7 files changed, 109 insertions(+), 62 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
+>   .../bindings/net/wireless/st,stlc45xx.yaml    | 64 +++++++++++++++++
+>   MAINTAINERS                                   |  1 +
+>   arch/arm/boot/dts/omap2.dtsi                  |  4 ++
+>   arch/arm/boot/dts/omap2420-n8x0-common.dtsi   | 12 ++++
+>   arch/arm/mach-omap2/board-n8x0.c              | 18 -----
+>   drivers/net/wireless/intersil/p54/p54spi.c    | 69 +++++++------------
+>   drivers/net/wireless/intersil/p54/p54spi.h    |  3 +
+>   7 files changed, 109 insertions(+), 62 deletions(-)
+>   create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
 > 
 > diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
 > new file mode 100644
@@ -152,11 +162,11 @@ DTS as well...
 > +maintainers:
 > +  - Johannes Berg <johannes@sipsolutions.net>
 > +  - Christian Lamparter <chunkeey@web.de>
-> +
+Can you please change that to: Christian Lamparter <chunkeey@gmail.com> ?
+(the @web.de/googlemail.com address still work too, but they are now just
+forwarding)
+
 > +description: |
-
-You can drop '|'.
-
 > +  The SPI variant of the Intersil Prism54 wireless device was sold
 > +  under a variety of names, including ST Microelectronics STLC5460
 > +  and Conexant CX3110x.
@@ -172,9 +182,6 @@ You can drop '|'.
 > +      - st,stlc4560
 > +      - isil,p54spi
 > +      - cnxt,3110x
-
-Order above entries by name.
-
 > +
 > +  reg:
 > +    maxItems: 1
@@ -183,10 +190,6 @@ Order above entries by name.
 > +    maxItems: 1
 > +
 > +  power-gpios:
-
-If this is GPIO driving some power pin, then it should be
-"powerdown-gpios" (like in /bindings/gpio/gpio-consumer-common.yaml)
-
 > +    maxItems: 1
 > +
 > +required:
@@ -199,17 +202,10 @@ If this is GPIO driving some power pin, then it should be
 > +examples:
 > +  - |
 > +   gpio {
-
-Align example with above |, so four spaces. Or better indent entire
-example with four spaces.
-
 > +     gpio-controller;
 > +     #gpio-cells = <1>;
 > +     #interupt-cells = <1>;
 > +   };
-
-Drop "gpio" node. It's not needed for the example.
-
 > +   spi {
 > +      #address-cells = <1>;
 > +      #size-cells = <0>;
@@ -217,15 +213,9 @@ Drop "gpio" node. It's not needed for the example.
 > +      wifi@0 {
 > +        reg = <0>;
 > +        compatible = "st,stlc4560";
-
-compatible before reg.
-
 > +        spi-max-frequency = <48000000>;
 > +        interrupts-extended = <&gpio 23>;
 > +        power-gpios = <&gpio 1>;
 > +     };
 > +   };
-
-Best regards,
-Krzysztof
 
