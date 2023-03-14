@@ -2,81 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0DEE6B93FE
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 13:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D374E6B9545
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 14:04:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbjCNMht (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 08:37:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47718 "EHLO
+        id S231856AbjCNNEg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 09:04:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbjCNMhs (ORCPT
+        with ESMTP id S231853AbjCNNEO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 08:37:48 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C4E9CBCA;
-        Tue, 14 Mar 2023 05:37:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=c6ugp8yk90qBFBOURZEX0FVuUoJkue3VYE/5pPyUCFM=; b=FAeJDphW8DKr1sqBJZlirX+YBP
-        p0VmtHZqNSr2rUshav7wUohYDkKbeA5qFHbdAo9qsjaKEdc90GUXDIu2HbnAHrIVEIqCBUdj2yxk5
-        njxYmFHftlEvq643tNhdsOqGP96NEwKnYkwKwgwGVPbOpQMKkm0z7mWMKWO1imZFA5jA=;
-Received: from p54ae9730.dip0.t-ipconnect.de ([84.174.151.48] helo=nf.local)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1pc3sw-001s0y-Jt; Tue, 14 Mar 2023 13:36:10 +0100
-Message-ID: <4b72607d-6db1-5e53-4ee2-30a829cd12c4@nbd.name>
-Date:   Tue, 14 Mar 2023 13:36:10 +0100
+        Tue, 14 Mar 2023 09:04:14 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D46D19663C
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 06:00:21 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id o12so61655406edb.9
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 06:00:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678798789;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vOvlS9sNnIAgMeiZIPQKbYtFPVSiHJBUwPLfTIY6Uq8=;
+        b=l/GMyLsSNlEI1ncXHpAGoyfpP8t/0JsG2vUswVrn3T6jLx/ClNO00bRJuRZCHFjnRf
+         jp0cp24Y3yimd7t/ajg+yyhdSaQLd0RhmqTuzPnBFVzw/MmN1erFp58bZNVP0f2qzsX7
+         LlovXuQ4fYxUoUXbhFvY2lO73attcWOI6UORg+JIO0Xa8RwC6xi28ZFHNHvrH5IH90gg
+         9FT72cu7hIkDMv6UYNuJ2PZj2O3KBe9+Qab3XEBUTlYEToPbRmfMIftmSQ3UbLnOphjJ
+         I0B9+tjxUmHWN4wm0FtNd2Tcwn8B+aDT4PtKt2IYlSLZha5tAIqIoctoN4iXM+5pKc0/
+         kkpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678798789;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vOvlS9sNnIAgMeiZIPQKbYtFPVSiHJBUwPLfTIY6Uq8=;
+        b=BDZ3IqmVmr9by+oIiqsP7MWj7tboXgddB2SGEzm8UMcPxNxCBRSDq63G95egoUfcEZ
+         /596CjRgSfDYjZiIcqZSr9YO87xQaFWcWJfEfJwMpqCpq9UW+bh6bnivLO1bxzZNk79r
+         LHPHSHlseGr1D1Dsm6WkxoXEpyst7kXY9J4ZRmHWaGwDTBO3EKz4aV3aoroCn0rmld7f
+         ssX6nuuOYZuobsmxj1sE4bie7WG62UG6+TdqB86eP+VPzuJUS5PsVGlQPc9TBETogGnu
+         oVneE7svIpMp/S8xbzenEu3tSQZvED4001n0KChb555YQNk6CQiYV1/ss20fvLHJkVsn
+         GfMw==
+X-Gm-Message-State: AO0yUKX+Qyou0D5heUE2ViL7/51ERcaIx5I4ioK7bx3+gb0ECsSZO7zc
+        QqOMMu3Udx6E1Tj/EUt6Bzveo4XGQxc=
+X-Google-Smtp-Source: AK7set8PFmSkHtNOh7s02YAOdDNYllsLU9pj8pSCnyBE/jBVSNveBkc6BoztdE8/F9AuUBqUpsutfA==
+X-Received: by 2002:a17:906:6150:b0:8df:8381:52f7 with SMTP id p16-20020a170906615000b008df838152f7mr2368916ejl.17.1678798788783;
+        Tue, 14 Mar 2023 05:59:48 -0700 (PDT)
+Received: from shift (pd9e2911a.dip0.t-ipconnect.de. [217.226.145.26])
+        by smtp.gmail.com with ESMTPSA id y4-20020a170906558400b008bfe95c46c3sm1106256ejp.220.2023.03.14.05.59.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Mar 2023 05:59:48 -0700 (PDT)
+Received: from localhost ([127.0.0.1])
+        by shift with esmtp (Exim 4.96)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1pc4Df-0005AQ-2T;
+        Tue, 14 Mar 2023 13:59:48 +0100
+Message-ID: <97b7f35c-f7c9-1257-ff67-e5b61efe0ce0@gmail.com>
+Date:   Tue, 14 Mar 2023 13:59:47 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.8.0
-Subject: Re: [PATCH] wifi: mac80211: Serialize calls to drv_wake_tx_queue()
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Wetzel <alexander@wetzel-home.de>
-Cc:     linux-wireless@vger.kernel.org, Thomas Mann <rauchwolke@gmx.net>,
-        stable@vger.kernel.org,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>
-References: <20230313201542.72325-1-alexander@wetzel-home.de>
- <130d44bccb317cc82d57caf5b8ca1471fe0faed4.camel@sipsolutions.net>
- <55ede120-b055-e834-e617-fe3069227652@wetzel-home.de>
- <519b5bb9-8899-ae7c-4eff-f3116cdfdb56@nbd.name>
- <067780600cd56014c3c820117d139ddb1c352b28.camel@sipsolutions.net>
-From:   Felix Fietkau <nbd@nbd.name>
-In-Reply-To: <067780600cd56014c3c820117d139ddb1c352b28.camel@sipsolutions.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PULL linux-firmware] ath10k & ath11k firmware 20230215
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org
+References: <878rgzuw37.fsf@kernel.org>
+ <c9ccbfe1-9535-f46c-756e-4eb19c1afbff@gmail.com> <87a618517g.fsf@kernel.org>
+Content-Language: de-DE
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <87a618517g.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 14.03.23 13:32, Johannes Berg wrote:
-> On Tue, 2023-03-14 at 13:28 +0100, Felix Fietkau wrote:
->> If you want to address this in the least invasive way, add [...],
->> a global lock to iwlwifi
->> 
+On 2/20/23 06:56, Kalle Valo wrote:
+> Christian Lamparter <chunkeey@gmail.com> writes:
 > 
-> I'm already fixing this, see
-> https://lore.kernel.org/r/5674c40151267fea1333f0eda1701b141bbaa170.camel@sipsolutions.net
+>> On 2/15/23 10:17, Kalle Valo wrote:
+>>> Here's a new pull request for ath10k and ath11k. We have new hardware
+>>> IPQ5018 and various updates for existing hardware. Especially many have
+>>> requested the firmware update for WCN6855 which seems to fix an
+>>> important suspend problem.
+>>>
+>>> Please let me know if there are any problems.
+>>
+>> Could you also please include all the QCA9888+IPQ4019 boardfiles updates
+>> from last year too?
 > 
->> , and a 
->> per-AC lock inside ieee80211_handle_wake_tx_queue().
-> 
-> I'm not *entirely* sure per AC is sufficient given that you could
-> technically map two ACs to the same HW queue with vif->hw_queue[]?
-> 
-> But again, not really sure all that complexity is still worth it.
-Per AC should be sufficient even in that case, because scheduling 
-happens per AC regardless of vif hw queue mapping.
+> I will try to go through them later. The problem here is that I don't
+> have much time for ath10k nowadays.
 
-- Felix
+Ok, should I just post the board-2.bin updates to linux-firmware?
+I have them ready to go for IPQ4019, QCA9888 and QCA9984.
 
+Cheers,
+Christian
