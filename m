@@ -2,220 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49DA06BA08F
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 21:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B18AC6BA142
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 22:13:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbjCNUTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 16:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
+        id S230029AbjCNVNw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 17:13:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjCNUTB (ORCPT
+        with ESMTP id S229545AbjCNVNv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 16:19:01 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B4FB22039;
-        Tue, 14 Mar 2023 13:18:58 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id eg48so7772302edb.13;
-        Tue, 14 Mar 2023 13:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678825137;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9SB+BZ9VlItZGYcgdFLvcDeLn9V7Ni7FQjQccgDvwrY=;
-        b=g2hoRZekVEYCAA8AduTtlGx8aHEyEgxe2KGWlhuvqT/NzAGwGTGmjtYrbLRKUkj/wC
-         ixN4tLnGKw0EOf6XQVFTAKUO0PSuxqrCr1IKFlTpzQnWIBBZT7Sgeis4gCQE7LHrIYdO
-         qkV5VwvwitJQnZ4FlccFrAGfsk2nVIPv+MPA1MyP5qzyVI4kYlqCujyASvQAveQ4FPeY
-         B5dlrTebAbQ9+DZTk+1PEWHk5D9a37BcqwGleAtP6gxghkvyDbkLp9UxLWqBnBE/ZZYU
-         4Jca3ivZyIdkvJCcAEVWcV0ewYECKMOey4nEsh/eLKxzvCJoQKoEKSQq6sc/5CjUgEn2
-         mU9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678825137;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SB+BZ9VlItZGYcgdFLvcDeLn9V7Ni7FQjQccgDvwrY=;
-        b=4v+/wHrLPJLvwZ8h7l38/3Fsu1ldwjosraBmnkcSzbkx4oWlnZMcxuElHndTHZL0UV
-         AT/dCLzQDBPC7jpXVfEJI/WplHpk1ozRp7mIThaDZpLTiKrL5//Opc/+RFooZSL6rUoc
-         dgIm/p+tbOoGCyWMFT+agJ++Vn6ziDffXjCZEyyvMYFRLlHeSMbHNrPnPmFD2BcrLXdR
-         y0c84AIj5XkNY59c4fELpDkTsZyeTSEBWhyIrnxIUX8H776W1Ny+AQFSeiDbGvWsLpI+
-         l6yMNed4AYZH4zQqipndDMP+LwOtK2Ghs4rfI/y3vpcf9pnvaao10I88vfAByJUT4gYw
-         na2Q==
-X-Gm-Message-State: AO0yUKUwsJkLAuG41gO75hr/CvoIEEOi2+Y08f8OF79PQj5iggCASlcJ
-        5WELFWY2QfdlM1HERrun2FU=
-X-Google-Smtp-Source: AK7set+Az0JnVlYyAujOmgXmvxHSPGWN2t4HQaFP5dCEv4IGXZVHl2FMuV5ikQn6E1nGZaa7D6LW/A==
-X-Received: by 2002:a17:906:c047:b0:926:8992:4310 with SMTP id bm7-20020a170906c04700b0092689924310mr4316468ejb.38.1678825136545;
-        Tue, 14 Mar 2023 13:18:56 -0700 (PDT)
-Received: from shift (pd9e2911a.dip0.t-ipconnect.de. [217.226.145.26])
-        by smtp.gmail.com with ESMTPSA id dt5-20020a170906b78500b008e82cb55195sm1543714ejb.203.2023.03.14.13.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 13:18:56 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
-        by shift with esmtp (Exim 4.96)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1pcB4d-000AO6-1G;
-        Tue, 14 Mar 2023 21:18:55 +0100
-Message-ID: <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com>
-Date:   Tue, 14 Mar 2023 21:18:55 +0100
+        Tue, 14 Mar 2023 17:13:51 -0400
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D604144B1;
+        Tue, 14 Mar 2023 14:13:43 -0700 (PDT)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1678828420;
+        bh=G+YXrV9mEfcORBO7r3DbkkvLYIFxLUBPwTGIj4ibxx4=;
+        h=From:To:Cc:Subject:Date;
+        b=lrT67AEhyHz76OXPuj8s81Bipr7TITIOGHbQOrfDCOtQr9CQvvj5ChGjxYvCx9IJt
+         S4MVBdgiUruARiBZsa7NjXKgfkjx8uBbKIgxt3V+pW4sIt44Hzw2qyoA9v3eo41xeL
+         6PnQWe4a/pdcHlBdaoyj1uxRfIMkBB4FdMepQCx0=
+To:     johannes@sipsolutions.net
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        Alexander Wetzel <alexander@wetzel-home.de>,
+        Thomas Mann <rauchwolke@gmx.net>, stable@vger.kernel.org
+Subject: [PATCH] wifi: mac80211: Serialize ieee80211_handle_wake_tx_queue()
+Date:   Tue, 14 Mar 2023 22:11:22 +0100
+Message-Id: <20230314211122.111688-1-alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] p54spi: convert to devicetree
-To:     Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
-        Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20230314163201.955689-1-arnd@kernel.org>
-Content-Language: de-DE
-From:   Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20230314163201.955689-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+ieee80211_handle_wake_tx_queue must not run concurrent multiple times.
+It calls ieee80211_txq_schedule_start() and the drivers migrated to iTXQ
+do not expect overlapping drv_tx() calls.
 
-On 3/14/23 17:30, Arnd Bergmann wrote:
-> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
-> pass them as module parameters, apparently a relic from its life as a
-> staging driver. This works because there is only one user, the Nokia
-> N8x0 tablet.
-> 
-> Convert this to the gpio descriptor interface and move the gpio
-> line information into devicetree to improve this and simplify the
-> code at the same time.
+This fixes 'c850e31f79f0 ("wifi: mac80211: add internal handler for
+wake_tx_queue")', which introduced ieee80211_handle_wake_tx_queue.
+Drivers started to use it with 'a790cc3a4fad ("wifi: mac80211: add
+wake_tx_queue callback to drivers")'.
+But only after fixing an independent bug with
+'4444bc2116ae ("wifi: mac80211: Proper mark iTXQs for resumption")'
+problematic concurrent calls really happened and exposed the initial
+issue.
 
-Yes, this is definitely the right idea/way. From what I remember, Kalle
-Valo was partially involved in p54spi/stlc45xx. The details are very fuzzy.
-So,  I could be totally wrong. From what I remember Kalle was working
-for Nokia (or as a contractor for Nokia?) at the time.
+Fixes: c850e31f79f0 ("wifi: mac80211: add internal handler for wake_tx_queue")
+Reported-by: Thomas Mann <rauchwolke@gmx.net>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217119
+Link: https://lore.kernel.org/r/b8efebc6-4399-d0b8-b2a0-66843314616b@leemhuis.info/
+Link: https://lore.kernel.org/r/b7445607128a6b9ed7c17fcdcf3679bfaf4aaea.camel@sipsolutions.net>
+CC: <stable@vger.kernel.org>
+Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
+---
 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+@Thomas
+Would be good when you can test that patch again.
+But it would be really strange if it's not working, too...
 
-I've seen the device-tree comments. That said, this is/was overdue.
-You can definitely have this for a v2 :).
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
+@Johannes
+Based on your last mail you prefer to hard serialize it and not use a
+spin lock per AC. So I kept that part from the first patch.
 
-Thanks you!
-Christian
+Alexander
+---
+ net/mac80211/ieee80211_i.h | 3 +++
+ net/mac80211/util.c        | 3 +++
+ 2 files changed, 6 insertions(+)
 
-> ---
-> As I don't have an N8x0, this is completely untested.
-> 
-> I listed the driver authors (Johannes and Christian) as the maintainers
-> of the binding document, but I don't know if they actually have this
-> hardware. It might be better to list someone who is actually using it.
-> 
-> Among the various chip identifications, I wasn't sure which one to
-> use for the compatible string and the name of the binding document.
-> I picked st,stlc4560 as that was cited as the version in the N800
-> on multiple websites.
-> ---
->   .../bindings/net/wireless/st,stlc45xx.yaml    | 64 +++++++++++++++++
->   MAINTAINERS                                   |  1 +
->   arch/arm/boot/dts/omap2.dtsi                  |  4 ++
->   arch/arm/boot/dts/omap2420-n8x0-common.dtsi   | 12 ++++
->   arch/arm/mach-omap2/board-n8x0.c              | 18 -----
->   drivers/net/wireless/intersil/p54/p54spi.c    | 69 +++++++------------
->   drivers/net/wireless/intersil/p54/p54spi.h    |  3 +
->   7 files changed, 109 insertions(+), 62 deletions(-)
->   create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-> new file mode 100644
-> index 000000000000..45bc4fab409a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/st,stlc45xx.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/st,stlc45xx.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ST/Intersil/Conexant stlc45xx/p54spi/cx3110x SPI wireless device
-> +
-> +maintainers:
-> +  - Johannes Berg <johannes@sipsolutions.net>
-> +  - Christian Lamparter <chunkeey@web.de>
-Can you please change that to: Christian Lamparter <chunkeey@gmail.com> ?
-(the @web.de/googlemail.com address still work too, but they are now just
-forwarding)
-
-> +description: |
-> +  The SPI variant of the Intersil Prism54 wireless device was sold
-> +  under a variety of names, including ST Microelectronics STLC5460
-> +  and Conexant CX3110x.
-> +
-> +allOf:
-> +  - $ref: ieee80211.yaml#
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - st,stlc4550
-> +      - st,stlc4560
-> +      - isil,p54spi
-> +      - cnxt,3110x
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  power-gpios:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +   gpio {
-> +     gpio-controller;
-> +     #gpio-cells = <1>;
-> +     #interupt-cells = <1>;
-> +   };
-> +   spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      wifi@0 {
-> +        reg = <0>;
-> +        compatible = "st,stlc4560";
-> +        spi-max-frequency = <48000000>;
-> +        interrupts-extended = <&gpio 23>;
-> +        power-gpios = <&gpio 1>;
-> +     };
-> +   };
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index ecc232eb1ee8..e082582e0aa2 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1284,6 +1284,9 @@ struct ieee80211_local {
+ 	struct list_head active_txqs[IEEE80211_NUM_ACS];
+ 	u16 schedule_round[IEEE80211_NUM_ACS];
+ 
++	/* serializes ieee80211_handle_wake_tx_queue */
++	spinlock_t handle_wake_tx_queue_lock;
++
+ 	u16 airtime_flags;
+ 	u32 aql_txq_limit_low[IEEE80211_NUM_ACS];
+ 	u32 aql_txq_limit_high[IEEE80211_NUM_ACS];
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 1a28fe5cb614..3aceb3b731bf 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -314,6 +314,8 @@ void ieee80211_handle_wake_tx_queue(struct ieee80211_hw *hw,
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(txq->vif);
+ 	struct ieee80211_txq *queue;
+ 
++	spin_lock(&local->handle_wake_tx_queue_lock);
++
+ 	/* Use ieee80211_next_txq() for airtime fairness accounting */
+ 	ieee80211_txq_schedule_start(hw, txq->ac);
+ 	while ((queue = ieee80211_next_txq(hw, txq->ac))) {
+@@ -321,6 +323,7 @@ void ieee80211_handle_wake_tx_queue(struct ieee80211_hw *hw,
+ 		ieee80211_return_txq(hw, queue, false);
+ 	}
+ 	ieee80211_txq_schedule_end(hw, txq->ac);
++	spin_unlock(&local->handle_wake_tx_queue_lock);
+ }
+ EXPORT_SYMBOL(ieee80211_handle_wake_tx_queue);
+ 
+-- 
+2.39.2
 
