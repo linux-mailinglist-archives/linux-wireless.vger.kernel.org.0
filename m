@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B936B9D8E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 287166B9D8F
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:53:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229905AbjCNRxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 13:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54738 "EHLO
+        id S230101AbjCNRxh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 13:53:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbjCNRxF (ORCPT
+        with ESMTP id S229974AbjCNRxf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 13:53:05 -0400
+        Tue, 14 Mar 2023 13:53:35 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D467FB4811
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:52:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B6E65F51D
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:52:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678816343; x=1710352343;
+  t=1678816375; x=1710352375;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=l5hYVp3S/LnTHZbR11sBd+cGAidupWzwn2LxsCrESJQ=;
-  b=kj+srsjQ+MvDVtnJlFW9NMKaLSTWBC635ixAfEbr+UrjsnfLe6Mt3Hjr
-   HIY2HuMWgzv32G2qCxLGX5cbsymPxLFKlN9OQIXA+NhZMS6GgrNnQSa1r
-   IMM13Ccn+GWnJKdbZOJbQptO3pqPTDmSVRZKGsqzeI+EN6SixdxxBf6lb
-   eAMOiR9UexDU90udA99JQdgMnyRehkkjaK6zzOSqhNuYxIjPaF3ZAQU6p
-   QlwUUN7p7WECMHKsFn/03xc09Afl3Q0PI9TSBuHPyvYh9l02GLQcR/7Yh
-   ljea/0JeETht8nAKxFpmx+TMYB4PcCRsXLLNLRVSw/iY8B5EoDK5x6R5k
+  bh=Jyq43xP3tdqy9uh6vmEYXrsGj0TYAKrvgEtjX5q4rmQ=;
+  b=SKyykKuj/QOgaSSPTIxqfITe0ITbfIsUU+rvaYIio1KH7M0OiHp43flL
+   nS2Qape8aTUQyaU3pZGTfiTPhHuPyHmw5wkMbWRU0F/0RWi+0rj5MvkUq
+   N7YS7pGIQQE0ugZrN+aAX4lmodRtWijOgnQpnIXnbOw92hUROEuASQc4a
+   cZydmGACpM9QBbB+0Fh1b04Jq311vorRhOvZGIEo37T9qAmEK3wkeSesZ
+   bNFnH3/Ot8Mxob2eZe/qUnysbJMRa+3hmZ2Bfue5RAM/9ftyBEo4FT5F5
+   x9r7ZZzALxr18VtZtcRKxD4SVoJAgUtvaxp+HzhqArxFQJNmcv+Q/0VNT
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149608"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149638"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="317149608"
+   d="scan'208";a="317149638"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:18 -0700
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200544"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200552"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="768200544"
+   d="scan'208";a="768200552"
 Received: from litalcoh-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.192.4])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:17 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:19 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/22] wifi: iwlwifi: mvm: add an assign_vif_chanctx() callback for MLD mode
-Date:   Tue, 14 Mar 2023 19:49:24 +0200
-Message-Id: <20230314194113.d3753975e720.I45f89cc81370d2cf8d4f51748ccb3ec675eff1bd@changeid>
+Subject: [PATCH 13/22] wifi: iwlwifi: mvm: refactor __iwl_mvm_unassign_vif_chanctx()
+Date:   Tue, 14 Mar 2023 19:49:25 +0200
+Message-Id: <20230314194113.fa05929badb9.I2222dc86cf7d7a7bb58c6a2f2529c8089bfe58b4@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230314174934.893149-1-gregory.greenman@intel.com>
 References: <20230314174934.893149-1-gregory.greenman@intel.com>
@@ -64,127 +64,109 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-This is another patch in the series adding all the ops
-for the new MLD ieee80211_ops.
-The callback added here uses the new MLD FW API.
+Since parts of the functionality of this function is going to be used
+also by the MLD version of it, put in a separate function the parts
+that are common for both MLD and non-MLD modes.
+The common function will later be used in the MLD ops.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  9 ++-
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 60 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 ++
- 3 files changed, 70 insertions(+), 5 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 53 ++++++++++++-------
+ 1 file changed, 35 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 8123dad3b710..d4a3d9259150 100644
+index d4a3d9259150..c006d68a785e 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4411,11 +4411,10 @@ static void iwl_mvm_change_chanctx(struct ieee80211_hw *hw,
-  * Returns true if we're done assigning the chanctx
-  * (either on failure or success)
-  */
--static bool __iwl_mvm_assign_vif_chanctx_common(struct iwl_mvm *mvm,
--						struct ieee80211_vif *vif,
--						struct ieee80211_chanctx_conf *ctx,
--						bool switching_chanctx,
--						int *ret)
-+bool __iwl_mvm_assign_vif_chanctx_common(struct iwl_mvm *mvm,
-+					 struct ieee80211_vif *vif,
-+					 struct ieee80211_chanctx_conf *ctx,
-+					 bool switching_chanctx, int *ret)
- {
- 	u16 *phy_ctxt_id = (u16 *)ctx->drv_priv;
- 	struct iwl_mvm_phy_ctxt *phy_ctxt = &mvm->phy_ctxts[*phy_ctxt_id];
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 8dca72ec55cb..81f88d1b0feb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -146,7 +146,67 @@ static void iwl_mvm_mld_mac_remove_interface(struct ieee80211_hw *hw,
- 	mutex_unlock(&mvm->mutex);
+@@ -4545,52 +4545,69 @@ static int iwl_mvm_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	return ret;
  }
  
-+static int __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
-+					    struct ieee80211_vif *vif,
-+					    struct ieee80211_chanctx_conf *ctx,
-+					    bool switching_chanctx)
+-static void __iwl_mvm_unassign_vif_chanctx(struct iwl_mvm *mvm,
+-					   struct ieee80211_vif *vif,
+-					   struct ieee80211_chanctx_conf *ctx,
+-					   bool switching_chanctx)
++/*
++ * This function executes the common part for MLD and non-MLD modes.
++ *
++ * Returns if chanctx unassign chanctx is done
++ * (either on failure or success)
++ */
++static bool __iwl_mvm_unassign_vif_chanctx_common(struct iwl_mvm *mvm,
++						  struct ieee80211_vif *vif,
++						  bool switching_chanctx)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	struct ieee80211_vif *disabled_vif = NULL;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 	iwl_mvm_remove_time_event(mvm, mvmvif, &mvmvif->time_event_data);
+ 
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_ADHOC:
+-		goto out;
++		return true;
+ 	case NL80211_IFTYPE_MONITOR:
+ 		mvmvif->monitor_active = false;
+ 		mvmvif->ps_disabled = false;
+-		iwl_mvm_rm_snif_sta(mvm, vif);
+ 		break;
+ 	case NL80211_IFTYPE_AP:
+ 		/* This part is triggered only during CSA */
+ 		if (!switching_chanctx || !mvmvif->ap_ibss_active)
+-			goto out;
++			return true;
+ 
+ 		mvmvif->csa_countdown = false;
+ 
+-		/* Set CS bit on all the stations */
+-		iwl_mvm_modify_all_sta_disable_tx(mvm, mvmvif, true);
+-
+ 		/* Save blocked iface, the timeout is set on the next beacon */
+ 		rcu_assign_pointer(mvm->csa_tx_blocked_vif, vif);
+ 
+ 		mvmvif->ap_ibss_active = false;
+ 		break;
+-	case NL80211_IFTYPE_STATION:
+-		if (!switching_chanctx)
+-			break;
++	default:
++		break;
++	}
++	return false;
++}
+ 
+-		disabled_vif = vif;
++static void __iwl_mvm_unassign_vif_chanctx(struct iwl_mvm *mvm,
++					   struct ieee80211_vif *vif,
++					   struct ieee80211_chanctx_conf *ctx,
++					   bool switching_chanctx)
 +{
 +	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	int ret;
++	struct ieee80211_vif *disabled_vif = NULL;
 +
-+	if (__iwl_mvm_assign_vif_chanctx_common(mvm, vif, ctx,
-+						switching_chanctx, &ret))
++	if (__iwl_mvm_unassign_vif_chanctx_common(mvm, vif, switching_chanctx))
 +		goto out;
-+
-+	ret = iwl_mvm_add_link(mvm, vif);
-+	if (ret)
-+		goto out;
-+	ret = iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE,
-+				   true);
-+	if (ret)
-+		goto out_remove_link;
-+
-+	/*
-+	 * Power state must be updated before quotas,
-+	 * otherwise fw will complain.
-+	 */
-+	iwl_mvm_power_update_mac(mvm);
-+
-+	if (vif->type == NL80211_IFTYPE_MONITOR) {
-+		ret = iwl_mvm_mld_add_snif_sta(mvm, vif);
-+		if (ret)
-+			goto out_remove_link;
-+	}
-+
-+	goto out;
-+
-+out_remove_link:
-+	/* Link needs to be deactivated before removal */
-+	iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE, false);
-+	iwl_mvm_remove_link(mvm, vif);
-+	iwl_mvm_power_update_mac(mvm);
-+out:
-+	if (ret)
-+		mvmvif->phy_ctxt = NULL;
-+	return ret;
-+}
-+
-+static int iwl_mvm_mld_assign_vif_chanctx(struct ieee80211_hw *hw,
-+					  struct ieee80211_vif *vif,
-+					  struct ieee80211_bss_conf *link_conf,
-+					  struct ieee80211_chanctx_conf *ctx)
-+{
-+	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-+	int ret;
-+
-+	mutex_lock(&mvm->mutex);
-+	ret = __iwl_mvm_mld_assign_vif_chanctx(mvm, vif, ctx, false);
-+	mutex_unlock(&mvm->mutex);
-+
-+	return ret;
-+}
- const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
- 	.add_interface = iwl_mvm_mld_mac_add_interface,
- 	.remove_interface = iwl_mvm_mld_mac_remove_interface,
-+	.assign_vif_chanctx = iwl_mvm_mld_assign_vif_chanctx,
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 70c5e5d052d8..3da4b31da8d7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2168,6 +2168,12 @@ static inline u8 iwl_mvm_phy_band_from_nl80211(enum nl80211_band band)
- /* Channel Switch */
- void iwl_mvm_channel_switch_disconnect_wk(struct work_struct *wk);
  
-+/* Channel Context */
-+bool __iwl_mvm_assign_vif_chanctx_common(struct iwl_mvm *mvm,
-+					 struct ieee80211_vif *vif,
-+					 struct ieee80211_chanctx_conf *ctx,
-+					 bool switching_chanctx, int *ret);
++	if (vif->type == NL80211_IFTYPE_MONITOR)
++		iwl_mvm_rm_snif_sta(mvm, vif);
 +
- /* Channel info utils */
- static inline bool iwl_mvm_has_ultra_hb_channel(struct iwl_mvm *mvm)
- {
++	if (vif->type == NL80211_IFTYPE_AP)
++		/* Set CS bit on all the stations */
++		iwl_mvm_modify_all_sta_disable_tx(mvm, mvmvif, true);
++
++	if (vif->type == NL80211_IFTYPE_STATION && switching_chanctx) {
++		disabled_vif = vif;
+ 		if (!fw_has_capa(&mvm->fw->ucode_capa,
+ 				 IWL_UCODE_TLV_CAPA_CHANNEL_SWITCH_CMD))
+ 			iwl_mvm_mac_ctxt_changed(mvm, vif, true, NULL);
+-		break;
+-	default:
+-		break;
+ 	}
+ 
+ 	iwl_mvm_update_quotas(mvm, false, disabled_vif);
 -- 
 2.38.1
 
