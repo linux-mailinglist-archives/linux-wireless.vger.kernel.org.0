@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B21546B9D92
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:54:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 877466B9D93
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:54:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbjCNRyO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 13:54:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
+        id S229866AbjCNRyV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 13:54:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjCNRyN (ORCPT
+        with ESMTP id S229811AbjCNRyU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 13:54:13 -0400
+        Tue, 14 Mar 2023 13:54:20 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46BF16319
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:53:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1762D64A90
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678816415; x=1710352415;
+  t=1678816432; x=1710352432;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=O4We5YXMQ+IxcpChlrcLTedueAH0Kh4W4/AFCj6UAeU=;
-  b=SetE6aJpdlEE224uueLBEJ+rY/ypV8lCQSPsNzNfKtPasgG8PpON2oGp
-   a3qNVqggi5ntj/Kl0unAo9LxJ6gJpggZvQo8+Yk60Vw6pMMjiVv/2sm2C
-   DTNOEbo1+OdCjiZXv6o/Z4VeaNdezbmN7S2/owR12k/qZq6b0vGQ8e1lG
-   +oj8IANTWHg9TQ1YtSLm6MUW1vW+gZ5orXgrFQprIDM8wmRYLGi9Oocye
-   3WqXHXCiWWEqScp9ElLVeNEDwf/+DgS2b3UW1y8hCrXxkxGaPEOkqE+iD
-   OhgOeHmibDS1lf8y6IfON0vwIblEetApyXQH5UW7/ltzaBKq4EFo2lyVG
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149677"
+  bh=RqYqPbl5OUBtJE22tYViqFFtj7M3v22Fq0UHMFch6eA=;
+  b=QV50lmQAptZdD2pZLaIv4p3/QiBb6k7+BBiKjvyYMFF67A+lR1Uvpuaq
+   CvxqlhQC1+60KdRFLSae2gbR0NotTusHSD79923Gsu8Edr7DUWoZuJrbH
+   6bCtdsUDhObJUq02dCbxIxItV37+6EDCowh0hGLDLPHNvWgiWiaqmsDex
+   CBac5gIMyQZrSu1hpNTZtbO7qN66sKNfDrCsx9TYo4AHdV7nfBh8JmteN
+   diKoPa3byB+EmU+9+zL8Ub02Ohxi4RLtbN1oP0ENqM4fbg4wH8W0DM4Hm
+   hu5TQr6PoG8IGTzrtGJI9s898yoeWgPXlFf04sDYp30IvFYKmRDX7y/wo
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149690"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="317149677"
+   d="scan'208";a="317149690"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:27 -0700
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200572"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200579"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="768200572"
+   d="scan'208";a="768200579"
 Received: from litalcoh-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.192.4])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:25 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:27 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Julia Lawall <Julia.Lawall@inria.fr>,
+        Solomon Tan <solomonbstoner@protonmail.ch>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 16/22] wifi: iwlwifi: fix typos in comment
-Date:   Tue, 14 Mar 2023 19:49:28 +0200
-Message-Id: <20230314194113.fb2fc470e949.I1f3a347b533bcdb6bcd310f752ab3349800efb49@changeid>
+Subject: [PATCH 17/22] wifi: iwlwifi: Remove prohibited spaces
+Date:   Tue, 14 Mar 2023 19:49:29 +0200
+Message-Id: <20230314194113.557d6841a166.I0957923fe9ea20c1ec9140477033548ccfe93e9a@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230314174934.893149-1-gregory.greenman@intel.com>
 References: <20230314174934.893149-1-gregory.greenman@intel.com>
@@ -62,34 +62,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Julia Lawall <Julia.Lawall@inria.fr>
+From: Solomon Tan <solomonbstoner@protonmail.ch>
 
-Spelling mistakes (triple letters) in comment.
-Detected with the help of Coccinelle.
+This patch addresses the error from checkpatch.pl regarding the presence
+of prohibited spaces.
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Signed-off-by: Solomon Tan <solomonbstoner@protonmail.ch>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/img.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c   | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/img.h b/drivers/net/wireless/intel/iwlwifi/fw/img.h
-index f878ac508801..f5c4d93d1033 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/img.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/img.h
-@@ -182,10 +182,10 @@ struct iwl_dump_exclude {
-  * @enhance_sensitivity_table: device can do enhanced sensitivity.
-  * @init_evtlog_ptr: event log offset for init ucode.
-  * @init_evtlog_size: event log size for init ucode.
-- * @init_errlog_ptr: error log offfset for init ucode.
-+ * @init_errlog_ptr: error log offset for init ucode.
-  * @inst_evtlog_ptr: event log offset for runtime ucode.
-  * @inst_evtlog_size: event log size for runtime ucode.
-- * @inst_errlog_ptr: error log offfset for runtime ucode.
-+ * @inst_errlog_ptr: error log offset for runtime ucode.
-  * @type: firmware type (&enum iwl_fw_type)
-  * @human_readable: human readable version
-  *	we get the ALIVE from the uCode
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index aa8e08487b52..923bbfc151dd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -81,7 +81,7 @@ static const u16 iwl_nvm_channels[] = {
+ 	/* 2.4 GHz */
+ 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+ 	/* 5 GHz */
+-	36, 40, 44 , 48, 52, 56, 60, 64,
++	36, 40, 44, 48, 52, 56, 60, 64,
+ 	100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144,
+ 	149, 153, 157, 161, 165
+ };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 85b99316d029..5790435dc69e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -214,9 +214,9 @@ static ssize_t iwl_dbgfs_set_nic_temperature_read(struct file *file,
+ 	int pos;
+ 
+ 	if (!mvm->temperature_test)
+-		pos = scnprintf(buf , sizeof(buf), "disabled\n");
++		pos = scnprintf(buf, sizeof(buf), "disabled\n");
+ 	else
+-		pos = scnprintf(buf , sizeof(buf), "%d\n", mvm->temperature);
++		pos = scnprintf(buf, sizeof(buf), "%d\n", mvm->temperature);
+ 
+ 	return simple_read_from_buffer(user_buf, count, ppos, buf, pos);
+ }
+@@ -261,7 +261,7 @@ static ssize_t iwl_dbgfs_set_nic_temperature_write(struct iwl_mvm *mvm,
+ 		mvm->temperature = temperature;
+ 	}
+ 	IWL_DEBUG_TEMP(mvm, "%sabling debug set temperature (temp = %d)\n",
+-		       mvm->temperature_test ? "En" : "Dis" ,
++		       mvm->temperature_test ? "En" : "Dis",
+ 		       mvm->temperature);
+ 	/* handle the temperature change */
+ 	iwl_mvm_tt_handler(mvm);
+@@ -291,7 +291,7 @@ static ssize_t iwl_dbgfs_nic_temp_read(struct file *file,
+ 	if (ret)
+ 		return -EIO;
+ 
+-	pos = scnprintf(buf , sizeof(buf), "%d\n", temp);
++	pos = scnprintf(buf, sizeof(buf), "%d\n", temp);
+ 
+ 	return simple_read_from_buffer(user_buf, count, ppos, buf, pos);
+ }
 -- 
 2.38.1
 
