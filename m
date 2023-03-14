@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2606B9D7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0E06B9D7C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Mar 2023 18:51:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230394AbjCNRvX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Mar 2023 13:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51886 "EHLO
+        id S230092AbjCNRvU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Mar 2023 13:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbjCNRvK (ORCPT
+        with ESMTP id S230394AbjCNRvH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Mar 2023 13:51:10 -0400
+        Tue, 14 Mar 2023 13:51:07 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49504B0B9D
-        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:50:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D73A0299
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Mar 2023 10:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678816243; x=1710352243;
+  t=1678816238; x=1710352238;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=akgXdz8kV+bZhrHdB29VUferdFN0rblF4BViRblg1mc=;
-  b=E2GOIp4rMYHwxdBUGiUJ+zbwZY4l37ByhqaxvnIIpbYKVwTb3tyBzL2m
-   RS6g7cA4kOsb5IOGUOkP6PXlVY7fjuqq9KCx6SMtecM0WcQZeYz4id6dL
-   RCpzZEHM3RIuo4k3kbta1EhWCp6YAgYtopRRkFRJz9SYmeJyeqirNsLYw
-   SamanU8hRSE7FAH3DUQtXbKvjY4FPVwlos48V2R1Z7XbZVLRBpa+/WsHA
-   jy9fY+JZ2MioPSZHXdmoN7QlTdgVHa2ncpSKcdR9j1Kvlush4gfSMzSzs
-   8alogcu7aJvkYHlUsPaoi/+Cy5kbpp7Ks6KfZISUvQfs3hU1CM+zL/Hqv
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149531"
+  bh=Wm9BSxuVRaMQax0/baAwwlw7sAggTxQv7QvFKNK44b4=;
+  b=GKf24l92ArRD8VZSOSbORDp+EvepcnBsS1K8RBDYTd5919Ojo0FWc7la
+   RzEgZ2cxSUpqE69hdAz633slkrvt68zRHW4CdcEN3crylKcQiBf2S7eIp
+   s4ecLabd3ZEfoWwXPkJldTj5AkN/RhF8s2sidqzN+Bsgj/SFuu9x3yCgp
+   BNWvYLZium/sb7JcqrqY3UAN6vRp7wxQkq9U8sTvM6wd3jMPueEY9UYbZ
+   NRWcZOfxuu9/LW5jt6yPsaLiIAVbktp2tYTnpR87VjXP8xG4y0X2OH+Zl
+   OOmNL3/fWDyfW3Lqa70mu+KoQd1EFFvRq7pqBdjDJsbruZw69bnND22RG
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="317149534"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="317149531"
+   d="scan'208";a="317149534"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
   by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:50:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200460"
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="768200471"
 X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
-   d="scan'208";a="768200460"
+   d="scan'208";a="768200471"
 Received: from litalcoh-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.192.4])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:49:57 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 10:49:59 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 03/22] wifi: iwlwifi: yoyo: Add driver defined dump file name
-Date:   Tue, 14 Mar 2023 19:49:15 +0200
-Message-Id: <20230314194113.2a2ee92995e9.I38fff588e32276796cd757309fc811241f827c7a@changeid>
+Subject: [PATCH 04/22] wifi: iwlwifi: mvm: Refactor STA_HE_CTXT_CMD sending flow
+Date:   Tue, 14 Mar 2023 19:49:16 +0200
+Message-Id: <20230314194113.7ca960596953.Ifc3e816461abbd69c6fd87752342afcedfebc293@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230314174934.893149-1-gregory.greenman@intel.com>
 References: <20230314174934.893149-1-gregory.greenman@intel.com>
@@ -62,295 +62,160 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-Add driver defined dump file name extension for beacon loss
-and FW Assert case.
+Refactor STA_HE_CTXT_CMD sending flow:
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+1. As the new MLD API is introduced, there are some common fields in
+both the old and new APIs. The STA_HE_CTXT_CMD of the non-MLD API
+has common fields with the link and mac commands of the new MLD API.
+Put this common parts in functions so it can be used later by the
+new MLD API.
+
+2. The HE capability which indicates whether the NIC is ack-enabled or
+not is the same for all bands. No need to take it from the specific
+band which is currently in use. Take it from the low band - this
+simplifies the code and doesn't require a phy_ctxt.
+
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  2 +-
- drivers/net/wireless/intel/iwlwifi/fw/dump.c  | 58 +++++++++++++++++-
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |  4 ++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  5 +-
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 61 ++++++++++++-------
- 5 files changed, 101 insertions(+), 29 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 94 +++++++++++--------
+ 1 file changed, 57 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 05720352e49f..43fb5cf85f05 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -281,7 +281,7 @@ static const struct iwl_ht_params iwl_gl_a_ht_params = {
- 	.trans.gen2 = true,						\
- 	.nvm_type = IWL_NVM_EXT,					\
- 	.dbgc_supported = true,						\
--	.min_umac_error_event_table = 0x400000,				\
-+	.min_umac_error_event_table = 0xD0000,				\
- 	.d3_debug_data_base_addr = 0x401000,				\
- 	.d3_debug_data_length = 60 * 1024,				\
- 	.mon_smem_regs = {						\
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dump.c b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-index 792f7fee1840..59ed321bcc27 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dump.c
-@@ -14,6 +14,13 @@
- #include "iwl-csr.h"
- #include "pnvm.h"
- 
-+#define FW_ASSERT_LMAC_FATAL			0x70
-+#define FW_ASSERT_LMAC2_FATAL			0x72
-+#define FW_ASSERT_UMAC_FATAL			0x71
-+#define UMAC_RT_NMI_LMAC2_FATAL			0x72
-+#define RT_NMI_INTERRUPT_OTHER_LMAC_FATAL	0x73
-+#define FW_ASSERT_NMI_UNKNOWN			0x84
-+
- /*
-  * Note: This structure is read from the device with IO accesses,
-  * and the reading already does the endian conversion. As it is
-@@ -96,6 +103,17 @@ struct iwl_umac_error_event_table {
- #define ERROR_START_OFFSET  (1 * sizeof(u32))
- #define ERROR_ELEM_SIZE     (7 * sizeof(u32))
- 
-+static bool iwl_fwrt_if_errorid_other_cpu(u32 err_id)
-+{
-+	err_id &= 0xFF;
-+
-+	if ((err_id >= FW_ASSERT_LMAC_FATAL &&
-+	     err_id <= RT_NMI_INTERRUPT_OTHER_LMAC_FATAL) ||
-+	    err_id == FW_ASSERT_NMI_UNKNOWN)
-+		return  true;
-+	return false;
-+}
-+
- static void iwl_fwrt_dump_umac_error_log(struct iwl_fw_runtime *fwrt)
- {
- 	struct iwl_trans *trans = fwrt->trans;
-@@ -113,6 +131,13 @@ static void iwl_fwrt_dump_umac_error_log(struct iwl_fw_runtime *fwrt)
- 	if (table.valid)
- 		fwrt->dump.umac_err_id = table.error_id;
- 
-+	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.umac_err_id) &&
-+	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
-+		fwrt->trans->dbg.dump_file_name_ext_valid = true;
-+		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
-+			 "0x%x", fwrt->dump.umac_err_id);
-+	}
-+
- 	if (ERROR_START_OFFSET <= table.valid * ERROR_ELEM_SIZE) {
- 		IWL_ERR(trans, "Start IWL Error Log Dump:\n");
- 		IWL_ERR(trans, "Transport status: 0x%08lX, valid: %d\n",
-@@ -189,6 +214,13 @@ static void iwl_fwrt_dump_lmac_error_log(struct iwl_fw_runtime *fwrt, u8 lmac_nu
- 	if (table.valid)
- 		fwrt->dump.lmac_err_id[lmac_num] = table.error_id;
- 
-+	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.lmac_err_id[lmac_num]) &&
-+	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
-+		fwrt->trans->dbg.dump_file_name_ext_valid = true;
-+		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
-+			 "0x%x", fwrt->dump.lmac_err_id[lmac_num]);
-+	}
-+
- 	if (ERROR_START_OFFSET <= table.valid * ERROR_ELEM_SIZE) {
- 		IWL_ERR(trans, "Start IWL Error Log Dump:\n");
- 		IWL_ERR(trans, "Transport status: 0x%08lX, valid: %d\n",
-@@ -274,6 +306,16 @@ static void iwl_fwrt_dump_tcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
- 
- 	iwl_trans_read_mem_bytes(trans, base, &table, sizeof(table));
- 
-+	if (table.valid)
-+		fwrt->dump.tcm_err_id[idx] = table.error_id;
-+
-+	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.tcm_err_id[idx]) &&
-+	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
-+		fwrt->trans->dbg.dump_file_name_ext_valid = true;
-+		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
-+			 "0x%x", fwrt->dump.tcm_err_id[idx]);
-+	}
-+
- 	IWL_ERR(fwrt, "TCM%d status:\n", idx + 1);
- 	IWL_ERR(fwrt, "0x%08X | error ID\n", table.error_id);
- 	IWL_ERR(fwrt, "0x%08X | tcm branchlink2\n", table.blink2);
-@@ -337,6 +379,16 @@ static void iwl_fwrt_dump_rcm_error_log(struct iwl_fw_runtime *fwrt, int idx)
- 
- 	iwl_trans_read_mem_bytes(trans, base, &table, sizeof(table));
- 
-+	if (table.valid)
-+		fwrt->dump.rcm_err_id[idx] = table.error_id;
-+
-+	if (!iwl_fwrt_if_errorid_other_cpu(fwrt->dump.rcm_err_id[idx]) &&
-+	    !fwrt->trans->dbg.dump_file_name_ext_valid) {
-+		fwrt->trans->dbg.dump_file_name_ext_valid = true;
-+		snprintf(fwrt->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
-+			 "0x%x", fwrt->dump.rcm_err_id[idx]);
-+	}
-+
- 	IWL_ERR(fwrt, "RCM%d status:\n", idx + 1);
- 	IWL_ERR(fwrt, "0x%08X | error ID\n", table.error_id);
- 	IWL_ERR(fwrt, "0x%08X | rcm branchlink2\n", table.blink2);
-@@ -444,8 +496,10 @@ void iwl_fwrt_dump_error_logs(struct iwl_fw_runtime *fwrt)
- 	iwl_fwrt_dump_umac_error_log(fwrt);
- 	iwl_fwrt_dump_tcm_error_log(fwrt, 0);
- 	iwl_fwrt_dump_rcm_error_log(fwrt, 0);
--	iwl_fwrt_dump_tcm_error_log(fwrt, 1);
--	iwl_fwrt_dump_rcm_error_log(fwrt, 1);
-+	if (fwrt->trans->dbg.tcm_error_event_table[1])
-+		iwl_fwrt_dump_tcm_error_log(fwrt, 1);
-+	if (fwrt->trans->dbg.rcm_error_event_table[1])
-+		iwl_fwrt_dump_rcm_error_log(fwrt, 1);
- 	iwl_fwrt_dump_iml_error_log(fwrt);
- 	iwl_fwrt_dump_fseq_regs(fwrt);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index d3cb1ae68a96..a59cf4d9567c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -24,6 +24,8 @@ struct iwl_fw_runtime_ops {
- };
- 
- #define MAX_NUM_LMAC 2
-+#define MAX_NUM_TCM 2
-+#define MAX_NUM_RCM 2
- struct iwl_fwrt_shared_mem_cfg {
- 	int num_lmacs;
- 	int num_txfifo_entries;
-@@ -129,6 +131,8 @@ struct iwl_fw_runtime {
- 		unsigned long non_collect_ts_start[IWL_FW_INI_TIME_POINT_NUM];
- 		u32 *d3_debug_data;
- 		u32 lmac_err_id[MAX_NUM_LMAC];
-+		u32 tcm_err_id[MAX_NUM_TCM];
-+		u32 rcm_err_id[MAX_NUM_RCM];
- 		u32 umac_err_id;
- 
- 		struct iwl_txf_iter_data txf_iter_data;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 45981e22b2db..3e9e9f13506b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -122,8 +122,6 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
- 	u32 version = iwl_fw_lookup_notif_ver(mvm->fw, LEGACY_GROUP,
- 					      UCODE_ALIVE_NTFY, 0);
- 	u32 i;
--	struct iwl_trans *trans = mvm->trans;
--	enum iwl_device_family device_family = trans->trans_cfg->device_family;
- 
- 
- 	if (version == 6) {
-@@ -233,8 +231,7 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
- 
- 	if (umac_error_table) {
- 		if (umac_error_table >=
--		    mvm->trans->cfg->min_umac_error_event_table ||
--		    device_family >= IWL_DEVICE_FAMILY_BZ) {
-+		    mvm->trans->cfg->min_umac_error_event_table) {
- 			iwl_fw_umac_set_alive_err_table(mvm->trans,
- 							umac_error_table);
- 		} else {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 114c96ba39ee..422550e31bc6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -430,47 +430,55 @@ static void iwl_mvm_mac_ctxt_set_ht_flags(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index ab02c6076276..b1f638af4b2c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1996,6 +1996,59 @@ static void iwl_mvm_get_optimal_ppe_info(struct iwl_he_pkt_ext_v2 *pkt_ext,
  	}
  }
  
--static void iwl_mvm_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
--					struct ieee80211_vif *vif,
--					struct iwl_mac_ctx_cmd *cmd,
--					const u8 *bssid_override,
--					u32 action)
-+static int iwl_mvm_get_mac_type(struct ieee80211_vif *vif)
- {
--	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	struct ieee80211_chanctx_conf *chanctx;
--	bool ht_enabled = !!(vif->bss_conf.ht_operation_mode &
--			     IEEE80211_HT_OP_MODE_PROTECTION);
--	u8 cck_ack_rates, ofdm_ack_rates;
--	const u8 *bssid = bssid_override ?: vif->bss_conf.bssid;
--	int i;
--
--	cmd->id_and_color = cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
--							    mvmvif->color));
--	cmd->action = cpu_to_le32(action);
-+	u32 mac_type = FW_MAC_TYPE_BSS_STA;
- 
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_STATION:
- 		if (vif->p2p)
--			cmd->mac_type = cpu_to_le32(FW_MAC_TYPE_P2P_STA);
-+			mac_type = FW_MAC_TYPE_P2P_STA;
- 		else
--			cmd->mac_type = cpu_to_le32(FW_MAC_TYPE_BSS_STA);
-+			mac_type = FW_MAC_TYPE_BSS_STA;
- 		break;
- 	case NL80211_IFTYPE_AP:
--		cmd->mac_type = cpu_to_le32(FW_MAC_TYPE_GO);
-+		mac_type = FW_MAC_TYPE_GO;
- 		break;
- 	case NL80211_IFTYPE_MONITOR:
--		cmd->mac_type = cpu_to_le32(FW_MAC_TYPE_LISTENER);
-+		mac_type = FW_MAC_TYPE_LISTENER;
- 		break;
- 	case NL80211_IFTYPE_P2P_DEVICE:
--		cmd->mac_type = cpu_to_le32(FW_MAC_TYPE_P2P_DEVICE);
-+		mac_type = FW_MAC_TYPE_P2P_DEVICE;
- 		break;
- 	case NL80211_IFTYPE_ADHOC:
--		cmd->mac_type = cpu_to_le32(FW_MAC_TYPE_IBSS);
-+		mac_type = FW_MAC_TYPE_IBSS;
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 	}
- 
-+	return mac_type;
++/*
++ * This function sets the MU EDCA parameters ans returns whether MU EDCA
++ * is enabled or not
++ */
++static bool iwl_mvm_set_fw_mu_edca_params(struct iwl_mvm *mvm,
++					  struct iwl_mvm_vif *mvmvif,
++					  struct iwl_he_backoff_conf
++					  *trig_based_txf)
++{
++	int i;
++	/* Mark MU EDCA as enabled, unless none detected on some AC */
++	bool mu_edca_enabled = true;
++
++	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
++		struct ieee80211_he_mu_edca_param_ac_rec *mu_edca =
++			&mvmvif->queue_params[i].mu_edca_param_rec;
++		u8 ac = iwl_mvm_mac80211_ac_to_ucode_ac(i);
++
++		if (!mvmvif->queue_params[i].mu_edca) {
++			mu_edca_enabled = false;
++			break;
++		}
++
++		trig_based_txf[ac].cwmin =
++			cpu_to_le16(mu_edca->ecw_min_max & 0xf);
++		trig_based_txf[ac].cwmax =
++			cpu_to_le16((mu_edca->ecw_min_max & 0xf0) >> 4);
++		trig_based_txf[ac].aifsn =
++			cpu_to_le16(mu_edca->aifsn & 0xf);
++		trig_based_txf[ac].mu_time =
++			cpu_to_le16(mu_edca->mu_edca_timer);
++	}
++
++	return mu_edca_enabled;
 +}
 +
-+static void iwl_mvm_mac_ctxt_cmd_common(struct iwl_mvm *mvm,
-+					struct ieee80211_vif *vif,
-+					struct iwl_mac_ctx_cmd *cmd,
-+					const u8 *bssid_override,
-+					u32 action)
++static bool iwl_mvm_is_nic_ack_enabled(struct iwl_mvm *mvm,
++				       struct ieee80211_vif *vif)
 +{
-+	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	struct ieee80211_chanctx_conf *chanctx;
-+	bool ht_enabled = !!(vif->bss_conf.ht_operation_mode &
-+			     IEEE80211_HT_OP_MODE_PROTECTION);
-+	u8 cck_ack_rates, ofdm_ack_rates;
-+	const u8 *bssid = bssid_override ?: vif->bss_conf.bssid;
-+	int i;
++	const struct ieee80211_supported_band *sband;
++	const struct ieee80211_sta_he_cap *own_he_cap = NULL;
 +
-+	cmd->id_and_color = cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
-+							    mvmvif->color));
-+	cmd->action = cpu_to_le32(action);
-+	cmd->mac_type = cpu_to_le32(iwl_mvm_get_mac_type(vif));
++	/* This capability is the same for all bands,
++	 * so take it from one of them.
++	 */
++	sband = mvm->hw->wiphy->bands[NL80211_BAND_2GHZ];
++	own_he_cap = ieee80211_get_he_iftype_cap(sband,
++						 ieee80211_vif_type_p2p(vif));
 +
- 	cmd->tsf_id = cpu_to_le32(mvmvif->tsf_id);
++	return (own_he_cap && (own_he_cap->he_cap_elem.mac_cap_info[2] &
++			       IEEE80211_HE_MAC_CAP2_ACK_EN));
++}
++
+ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
+ 			       struct ieee80211_vif *vif, u8 sta_id)
+ {
+@@ -2015,9 +2068,6 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
+ 	struct ieee80211_sta *sta;
+ 	u32 flags;
+ 	int i;
+-	const struct ieee80211_sta_he_cap *own_he_cap = NULL;
+-	struct ieee80211_chanctx_conf *chanctx_conf;
+-	const struct ieee80211_supported_band *sband;
+ 	void *cmd;
+ 	u8 nominal_padding;
  
- 	memcpy(cmd->node_addr, vif->addr, ETH_ALEN);
-@@ -1428,6 +1436,7 @@ void iwl_mvm_rx_missed_beacons_notif(struct iwl_mvm *mvm,
- 	struct ieee80211_vif *vif;
- 	u32 id = le32_to_cpu(mb->mac_id);
- 	union iwl_dbg_tlv_tp_data tp_data = { .fw_pkt = pkt };
-+	u32 mac_type;
+@@ -2045,16 +2095,6 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
  
- 	IWL_DEBUG_INFO(mvm,
- 		       "missed bcn mac_id=%u, consecutive=%u (%u, %u, %u)\n",
-@@ -1443,6 +1452,14 @@ void iwl_mvm_rx_missed_beacons_notif(struct iwl_mvm *mvm,
- 	if (!vif)
- 		goto out;
+ 	rcu_read_lock();
  
-+	mac_type = iwl_mvm_get_mac_type(vif);
-+
-+	IWL_DEBUG_INFO(mvm, "missed beacon mac_type=%u,\n", mac_type);
-+
-+	mvm->trans->dbg.dump_file_name_ext_valid = true;
-+	snprintf(mvm->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
-+		 "MacId_%d_MacType_%d", id, mac_type);
-+
- 	rx_missed_bcon = le32_to_cpu(mb->consec_missed_beacons);
- 	rx_missed_bcon_since_rx =
- 		le32_to_cpu(mb->consec_missed_beacons_since_last_rx);
+-	chanctx_conf = rcu_dereference(vif->bss_conf.chanctx_conf);
+-	if (WARN_ON(!chanctx_conf)) {
+-		rcu_read_unlock();
+-		return;
+-	}
+-
+-	sband = mvm->hw->wiphy->bands[chanctx_conf->def.chan->band];
+-	own_he_cap = ieee80211_get_he_iftype_cap(sband,
+-						 ieee80211_vif_type_p2p(vif));
+-
+ 	sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_ctxt_cmd.sta_id]);
+ 	if (IS_ERR_OR_NULL(sta)) {
+ 		rcu_read_unlock();
+@@ -2211,28 +2251,9 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
+ 
+ 	rcu_read_unlock();
+ 
+-	/* Mark MU EDCA as enabled, unless none detected on some AC */
+-	flags |= STA_CTXT_HE_MU_EDCA_CW;
+-	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
+-		struct ieee80211_he_mu_edca_param_ac_rec *mu_edca =
+-			&mvmvif->queue_params[i].mu_edca_param_rec;
+-		u8 ac = iwl_mvm_mac80211_ac_to_ucode_ac(i);
+-
+-		if (!mvmvif->queue_params[i].mu_edca) {
+-			flags &= ~STA_CTXT_HE_MU_EDCA_CW;
+-			break;
+-		}
+-
+-		sta_ctxt_cmd.trig_based_txf[ac].cwmin =
+-			cpu_to_le16(mu_edca->ecw_min_max & 0xf);
+-		sta_ctxt_cmd.trig_based_txf[ac].cwmax =
+-			cpu_to_le16((mu_edca->ecw_min_max & 0xf0) >> 4);
+-		sta_ctxt_cmd.trig_based_txf[ac].aifsn =
+-			cpu_to_le16(mu_edca->aifsn);
+-		sta_ctxt_cmd.trig_based_txf[ac].mu_time =
+-			cpu_to_le16(mu_edca->mu_edca_timer);
+-	}
+-
++	if (iwl_mvm_set_fw_mu_edca_params(mvm, mvmvif,
++					  &sta_ctxt_cmd.trig_based_txf[0]))
++		flags |= STA_CTXT_HE_MU_EDCA_CW;
+ 
+ 	if (vif->bss_conf.uora_exists) {
+ 		flags |= STA_CTXT_HE_TRIG_RND_ALLOC;
+@@ -2243,8 +2264,7 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
+ 			(vif->bss_conf.uora_ocw_range >> 3) & 0x7;
+ 	}
+ 
+-	if (own_he_cap && !(own_he_cap->he_cap_elem.mac_cap_info[2] &
+-			    IEEE80211_HE_MAC_CAP2_ACK_EN))
++	if (!iwl_mvm_is_nic_ack_enabled(mvm, vif))
+ 		flags |= STA_CTXT_HE_NIC_NOT_ACK_ENABLED;
+ 
+ 	if (vif->bss_conf.nontransmitted) {
 -- 
 2.38.1
 
