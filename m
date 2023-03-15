@@ -2,97 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA3E16BAD6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 11:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58CFF6BAD78
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 11:20:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232425AbjCOKTX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 06:19:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
+        id S232160AbjCOKUZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 06:20:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232445AbjCOKTJ (ORCPT
+        with ESMTP id S232463AbjCOKTp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 06:19:09 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E5623A73;
-        Wed, 15 Mar 2023 03:18:43 -0700 (PDT)
+        Wed, 15 Mar 2023 06:19:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F8D70434;
+        Wed, 15 Mar 2023 03:19:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DAEC0B81DB7;
-        Wed, 15 Mar 2023 10:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B443C4339B;
-        Wed, 15 Mar 2023 10:18:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8A4961CB0;
+        Wed, 15 Mar 2023 10:19:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0373C433EF;
+        Wed, 15 Mar 2023 10:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678875516;
-        bh=P4PR/J1VSp93ASIxZ95h9QGDLtrqnHpwJX+AZxMNMiA=;
+        s=k20201202; t=1678875553;
+        bh=VRoiTmWaz2biO8bfxNbnjYigMHFcTYcPttbArQsA2po=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=vPDNpTZFF02nnIbA8wP8f0pmHYThgI1wYVo95qD16L+YOup+r/10ImZaBeTsuc4ZC
-         x5P/eFMQ8Hiw5LsLeWHTse0+HPiCE2fKC6uKnymsiFDLx3EDNGB4gjU+lYXPmXaSx3
-         LK2sGy/ysXCdSq2DvSfYvvs2eKEoh9a+MWz4TuhXVEPOKTsWzQwqxeJjhhP2lJrAz8
-         89XxuFPUXDi+hLRqqWjj4uORwAZFnLmjoE2+o//lwbgZCB/tvG9qhAXBs9Ld0/UZA7
-         hOFt2cbX9sxjlz8qqSoiZxG6P1+TIC/I2/5bIi9g8cMTvWzSJeVgpq4Wb+FcdW0edu
-         6ekOvkH+HUw1A==
+        b=YYPpbIq8YPV8QKLN6mqMua6A6EH/aqP9wN0P9tWrRNOob498Pv0jiL+uyYN8mN/pe
+         28PJKB3aGj0LhcIcTm70m6h3OHjAH0+cPJMwtfuqLMsg/XA/SMZizB8ZOhcwm3K1Rc
+         9XOPkk4DZDsUV5pj5GjSntFrhzehvZ5siec4dxVL83ePBlVTFnti4nBm/haPSrzSTv
+         T6MbhQDu1Enob/WSixB6+wj/R3MWmRTwF2wRTmW8bQF+jsEuCu2xaErxgiaKYU7cYg
+         a1JHiUatQk8ojc7cDwVS3UMo4qp6zBXjhYUL/E3JfFd0vVMhs4K23jPuBQXcNYQq5f
+         xVvmv9TIvEINA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: Add missing unwind goto in
- ath12k_pci_probe()
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] wifi: ath11k: Replace fake flex-array with
+ flexible-array member
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230307104706.240119-1-harshit.m.mogalapalli@oracle.com>
-References: <20230307104706.240119-1-harshit.m.mogalapalli@oracle.com>
-To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc:     unlisted-recipients:; (no To-header on input) error27@gmail.com,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
+In-Reply-To: <ZAe5L5DtmsQxzqRH@work>
+References: <ZAe5L5DtmsQxzqRH@work>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Bhagavathi Perumal S <quic_bperumal@quicinc.com>,
-        Wen Gong <quic_wgong@quicinc.com>, ath12k@lists.infradead.org,
+        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Illegal-Object: Syntax error in Cc: address found on vger.kernel.org:
-        Cc:     unlisted-recipients:; (no To-header on input)error27@gmail.com
-                                                                     ^-missing end of address
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167887550837.27926.11659991726085359589.kvalo@kernel.org>
-Date:   Wed, 15 Mar 2023 10:18:33 +0000 (UTC)
+Message-ID: <167887554899.27926.8193942719912747095.kvalo@kernel.org>
+Date:   Wed, 15 Mar 2023 10:19:10 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com> wrote:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> Smatch Warns:
->         drivers/net/wireless/ath/ath12k/pci.c:1198 ath12k_pci_probe()
->         warn: missing unwind goto?
+> Zero-length arrays as fake flexible arrays are deprecated and we are
+> moving towards adopting C99 flexible-array members instead.
 > 
-> Store the error value in ret and use correct label with a goto.
+> Address 25 of the following warnings found with GCC-13 and
+> -fstrict-flex-arrays=3 enabled:
+> drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c:30:51: warning: array subscript <unknown> is outside array bounds of ‘const u32[0]’ {aka ‘const unsigned int[]’} [-Warray-bounds=]
 > 
-> Only Compile tested, found with Smatch.
+> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+> routines on memcpy() and help us make progress towards globally
+> enabling -fstrict-flex-arrays=3 [1].
 > 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Link: https://lore.kernel.org/all/Y+426q6cfkEdb5Bv@kili/
-> Suggested-by: Dan Carpenter <error27@gmail.com>
-> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+> Link: https://github.com/KSPP/linux/issues/21
+> Link: https://github.com/KSPP/linux/issues/266
+> Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > Reviewed-by: Simon Horman <simon.horman@corigine.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-488d9a484f96 wifi: ath12k: Add missing unwind goto in ath12k_pci_probe()
+3b1088a09ec9 wifi: ath11k: Replace fake flex-array with flexible-array member
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230307104706.240119-1-harshit.m.mogalapalli@oracle.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/ZAe5L5DtmsQxzqRH@work/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
