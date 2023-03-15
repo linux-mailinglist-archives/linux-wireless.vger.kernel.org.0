@@ -2,41 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7AC56BAB64
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 10:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A596BABAD
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 10:08:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231946AbjCOJBC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 05:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43576 "EHLO
+        id S232019AbjCOJIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 05:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjCOJAt (ORCPT
+        with ESMTP id S231995AbjCOJIY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 05:00:49 -0400
-Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD1B72B33
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 02:00:38 -0700 (PDT)
-Received: by mail.corrib.pl (Postfix, from userid 1001)
-        id 7361BA3C5A; Wed, 15 Mar 2023 09:00:40 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
-        t=1678870843; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
-        h=Date:From:To:Subject:From;
-        b=RGFex42ncC8UsS7/lIOoxivGi39arkSC6sgC7C9YdnSMVUpAINHX24EDjGgOInkXy
-         M3850UU8KhQMENto2/+uIv19gFbZ4QB5pWaQZpAjDzdLCJMvJmXmP8PbDDEBUgmnr5
-         MEhehr3TRzpFgqH7StyaK/MbkCAM87VQqfQ6ouIMK+sQqdnH0AxwaeLjJJz73FE3Xn
-         j+9mAHbPvtCTh4zt16UIfvvK0BzzPyWb+6HlmFYwv+hgZh/1eoeeFZQTY70DOymh8V
-         +5ycagW9dBjd88XcjLckLZ4S55eziwduCrvBoGVFfMUIoEHBF8kFDc6UaUK1tEEmCY
-         na155o4BhJDAg==
-Received: by mail.corrib.pl for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 09:00:35 GMT
-Message-ID: <20230315074501-0.1.62.ivxi.0.8pqo9rerjp@corrib.pl>
-Date:   Wed, 15 Mar 2023 09:00:35 GMT
-From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
-        <szczepan.kielbasa@corrib.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: Faktoring
-X-Mailer: mail.corrib.pl
+        Wed, 15 Mar 2023 05:08:24 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47077B9B6
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 02:07:48 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32F6CVbi031070;
+        Wed, 15 Mar 2023 09:07:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=+HAYdprAXADx6oWeuYZM1bSTfuwFc7QgFqEhugCHaOg=;
+ b=BKzCCqx5Vj9kq6cgqjKwChmVVuTY147OSWhzZgO1t1JqboN5TKlzt6z7H8oeLdE7qGbA
+ 7d/EjluWOsAVPm2EsDCX71A77P1w6wIFV0Y0/1sniWa8tWicXA3LQvG0ieUKIuDfDgr8
+ M1G9xpPctY0g8ykjMtf9RmUo+6ESnGUEUIRd2mG+p1JnmCrTua4Kk6yWh0YmAL0Y0paj
+ Y41suB6X4QW0vq500K9VkmjJsFKcToZp0vKxyHTlsYvcjTZomQwiqVtu9dh2a4gRl1gz
+ UMZGlrOAI6ma3nHFcfkvDuSWlxpS3bhcVKuBaQQ1W/3/z2dhQr/gtrd90eWHKoqAX2wC qw== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pb2crh2q4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Mar 2023 09:07:40 +0000
+Received: from nasanex01a.na.qualcomm.com ([10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32F97dgA027477
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Mar 2023 09:07:40 GMT
+Received: from rajson-linux.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Wed, 15 Mar 2023 02:07:38 -0700
+From:   Rajat Soni <quic_rajson@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Rajat Soni <quic_rajson@quicinc.com>
+Subject: [PATCH] wifi: ath12k: fix memory leak in ath12k_qmi_driver_event_work()
+Date:   Wed, 15 Mar 2023 14:36:32 +0530
+Message-ID: <20230315090632.15065-1-quic_rajson@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MHZ1LfykRlekh_ygDfCrTfIzsy4Hj_-7
+X-Proofpoint-ORIG-GUID: MHZ1LfykRlekh_ygDfCrTfIzsy4Hj_-7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-15_04,2023-03-14_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ adultscore=0 mlxlogscore=942 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ clxscore=1011 priorityscore=1501 suspectscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2302240000 definitions=main-2303150076
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -46,19 +72,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Currently the buffer pointed by event is not freed in case
+ATH12K_FLAG_UNREGISTERING bit is set, this causes memory leak.
 
-rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
-ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
-wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
+Add a goto skip instead of return, to ensure event and all the
+list entries are freed properly.
 
-Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
-stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
-z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
- kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
-adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
-Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
+Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/qmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Pozdrawiam
-Szczepan Kie=C5=82basa
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 979a63f2e2ab..4beb9ef23d08 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -2991,7 +2991,7 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
+ 		spin_unlock(&qmi->event_lock);
+ 
+ 		if (test_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags))
+-			return;
++			goto skip;
+ 
+ 		switch (event->type) {
+ 		case ATH12K_QMI_EVENT_SERVER_ARRIVE:
+@@ -3032,6 +3032,7 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
+ 			ath12k_warn(ab, "invalid event type: %d", event->type);
+ 			break;
+ 		}
++skip:
+ 		kfree(event);
+ 		spin_lock(&qmi->event_lock);
+ 	}
+
+base-commit: 3fa9da4001890def44801dd56d5fbc134689be28
+-- 
+2.17.1
+
