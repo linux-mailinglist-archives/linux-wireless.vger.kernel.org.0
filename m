@@ -2,187 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FE26BAB39
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:54:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0515F6BAB4E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:57:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231809AbjCOIyH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 04:54:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34592 "EHLO
+        id S231416AbjCOI5y convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 04:57:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231705AbjCOIyF (ORCPT
+        with ESMTP id S230324AbjCOI5x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 04:54:05 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B88D166DA
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:54:01 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id j42-20020a05600c1c2a00b003ed363619ddso187830wms.1
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:54:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=stapelberg.ch; s=google; t=1678870439;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yc0p6Luoz31dQklXPM5EWdLDT++leXPVtqTAl7O7trg=;
-        b=bYjhSRwQLT78S+zM6UUR24zz7QOMzuoqhJexogW2Tc+ZHe4NY2V7oDNzaeAOAksy3x
-         gx3W4SBHD/Qomho1rqvhKUnDHeMWYAptDpahxcThytByhANV8tCC/m7Ocp/AEz+ukS5M
-         IyxuRqlCWLOrCE+wo089Smh84Jv8+Ldr29crDBIAkDpGoi63gpPyv/AG+KPELoh3NXfa
-         cA6wTsXn396eGexh5BnBNYjHKLmEdf4gN2BPXMSVuLB2nenQKN6YbNODn+EIIYuNavRL
-         806GNgzdeR02Jx1jpSH2V9Jq7CVxOKsdqFS31W2ua7P7d8oQosjTf087y+zYNIVDB55K
-         8KwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678870439;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yc0p6Luoz31dQklXPM5EWdLDT++leXPVtqTAl7O7trg=;
-        b=pMS5tdN6yiGASYCQg22RYg/PtwXwBkFOxpsribTTqZDj659Z0LK5bOWAsGTfZo14Es
-         rHltv7NHMJ+7qtPgmAPi+ea5oxEd4jZDPFsl8wHKi1POSh9KagPrHCFOWHUPtpgkp9+H
-         jeSyEb16ogShUbLpyUADS3xNfLnbifrHqjr53M+XbIpn07oJgRYKIqcf8jiqitnu0tOu
-         OTf854L3w0X6m7k5ywFNCF/x/O9OxhL1wfQCTFsKcqyVCDWYlNau9Wme+sHfQ1ZyJmkq
-         qrkKPCXhDx3zjkONfabH3CJfEbxqSlX59FjlAd3AwNlPS7iW8lbgLn61xFEp00NXx251
-         JPYQ==
-X-Gm-Message-State: AO0yUKUULgh9qzlinapInreDT+rZlneXR0+JoucCrRILMZr9Ed0fJ8z4
-        vShCgMUZLzkaoYLXkXXcP4oThL9TvSDLtu6P53DHR+lTTwwtGlOmoo0=
-X-Google-Smtp-Source: AK7set+fNua/yFNsNAyiMPeT6gLQbneIm8LViYV1Q+OSmzqK2WhMdDEOGiFEDmuSzGZJJfB8A3Z7QRYwSdBBZZQQIBE=
-X-Received: by 2002:a7b:c2a1:0:b0:3e1:787:d706 with SMTP id
- c1-20020a7bc2a1000000b003e10787d706mr5118651wmk.2.1678870439394; Wed, 15 Mar
- 2023 01:53:59 -0700 (PDT)
+        Wed, 15 Mar 2023 04:57:53 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51396230C
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:57:51 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32F8vQHM1008892, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32F8vQHM1008892
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 15 Mar 2023 16:57:26 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 15 Mar 2023 16:57:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 15 Mar 2023 16:57:37 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Wed, 15 Mar 2023 16:57:37 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/5] wifi: rtw89: 8852c: add beacon filter and CQM support
+Thread-Topic: [PATCH 1/5] wifi: rtw89: 8852c: add beacon filter and CQM
+ support
+Thread-Index: AQHZUwM9emcfit61BUyDIkN8d0SOjK77iydZgAAFchA=
+Date:   Wed, 15 Mar 2023 08:57:37 +0000
+Message-ID: <e3670d1075f54c69ba3971067b3d06b7@realtek.com>
+References: <20230310034631.45299-1-pkshih@realtek.com>
+        <20230310034631.45299-2-pkshih@realtek.com> <87zg8emn4i.fsf@kernel.org>
+In-Reply-To: <87zg8emn4i.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?us-ascii?Q?Clean,_bases:_2023/3/15_=3F=3F_06:36:00?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <CANnVG6=a3etRagG+RaSEH-b4_nfzxpEKffQtuMWrttrbgjunZQ@mail.gmail.com>
- <186e23b5668.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6kjWj02eEFv_OeLiRtjrJ6yn4EsELz_BtrzFHH15GNMLw@mail.gmail.com>
- <186e26dc0a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6n-eqKUQnX_6wncmjG1kyVfhxqs2L82xYQpDmGq89eVAQ@mail.gmail.com> <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From:   Michael Stapelberg <michael+lkml@stapelberg.ch>
-Date:   Wed, 15 Mar 2023 09:53:43 +0100
-Message-ID: <CANnVG6kaGj1SVCqf2y3=Xj_N2G9j+-VhLDN4_WY_ywDswNkO3g@mail.gmail.com>
-Subject: Re: wifi breakage due to commit "wifi: brcmfmac: add support for
- vendor-specific firmware api"
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hey Arend
 
-On Wed, 15 Mar 2023 at 09:33, Arend Van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On March 15, 2023 8:58:43 AM Michael Stapelberg
-> <michael+lkml@stapelberg.ch> wrote:
->
-> > Hey Arend
-> >
-> > Thanks for taking a look.
-> >
-> > The brcmfmac-wcc module is present on my installation, but I=E2=80=99m =
-not
-> > currently loading it.
-> > (I only load brcmutil, then brcmfmac.)
-> >
-> > But, even if I load it, the wlan0 interface still doesn=E2=80=99t show =
-up.
-> >
-> > In the modules.dep, I see that brcmfmac-wcc should be loaded after
-> > brcmutil and brcmfmac.
-> > Is that accurate?
->
-> Yes. Actually brcmfmac loads brcmfmac-wcc by itself.
 
-Hmm, when I run lsmod after booting, I don=E2=80=99t see it:
-
-/tmp/breakglass1452371198 # lsmod
-hci_uart 61440 0 - Live 0xffffba314a2cd000
-btbcm 24576 1 hci_uart, Live 0xffffba314a2c6000
-bluetooth 786432 3 hci_uart,btbcm, Live 0xffffba314a205000
-brcmfmac 258048 0 - Live 0xffffba314a1c5000
-brcmutil 20480 1 brcmfmac, Live 0xffffba314a1bf000
-ecdh_generic 16384 1 bluetooth, Live 0xffffba314a1ba000
-ecc 36864 1 ecdh_generic, Live 0xffffba314a1b0000
-/tmp/breakglass1452371198 #
-
-How does the =E2=80=9Cload by itself=E2=80=9D mechanism work?
-Maybe I=E2=80=99m missing a userspace component for it.
-
-Thanks
-
->
->
-> > My installation is somewhat unusual in that I use a custom userland
-> > (see https://gokrazy.org/).
->
-> Bit tricky choice of name :-p I will check it out.
->
-> Regards,
-> Arend
->
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Wednesday, March 15, 2023 4:32 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Bernie Huang <phhuang@realtek.com>; linux-wireless@vger.kernel.org
+> Subject: Re: [PATCH 1/5] wifi: rtw89: 8852c: add beacon filter and CQM support
+> 
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> > From: Po-Hao Huang <phhuang@realtek.com>
 > >
-> > Thanks
-> > Best regards
-> > Michael
+> > Adding this supports beacon filter and connection quality monitor.
+> > To make host CPU wake up less, let firmware perform signal
+> > monitoring and beacon processing, then notify driver upon signal
+> > changes or beacon loss.
 > >
+> > This feature needs firmware 0.27.56 or newer to support it.
 > >
-> > On Wed, 15 Mar 2023 at 00:21, Arend Van Spriel
-> > <arend.vanspriel@broadcom.com> wrote:
-> >>
-> >> On March 14, 2023 11:49:05 PM Michael Stapelberg
-> >> <michael+lkml@stapelberg.ch> wrote:
-> >>
-> >>> Of course, find it attached. Thanks.
-> >>
-> >> Strange. Could it be there is some build config needed to install the
-> >> additional kernel modules (brcmfmac-wcc.ko, etc.) on RPi image?
-> >>
-> >> Regards,
-> >> Arend
-> >>
-> >>>
-> >>> On Tue, 14 Mar 2023 at 23:26, Arend Van Spriel
-> >>> <arend.vanspriel@broadcom.com> wrote:
-> >>>>
-> >>>> On March 14, 2023 8:39:05 PM Michael Stapelberg
-> >>>> <michael+lkml@stapelberg.ch> wrote:
-> >>>>
-> >>>>> Hey Arend
-> >>>>>
-> >>>>> I recently bisected a user-reported WiFi breakage on the Raspberry =
-Pi
-> >>>>> 3B+ to your commit
-> >>>>> https://github.com/torvalds/linux/commit/d6a5c562214f26e442c8ec3ff1=
-e28e16675d1bcf
-> >>>>> https://lore.kernel.org/r/20221129135446.151065-4-arend.vanspriel@b=
-roadcom.com
-> >>>>>
-> >>>>> On our end, the issue was reported here:
-> >>>>> https://github.com/gokrazy/wifi/issues/3
-> >>>>>
-> >>>>> As of Linux 6.2.6, this seems to still be unfixed, so I wanted to
-> >>>>> check in and see if you could take a look please?
-> >>>>
-> >>>> I have a suspicion, but can you provide the kernel .config file so I=
- can
-> >>>> see if I am on the right track.
-> >>>>
-> >>>>> + brcmfmac: brcmf_fwvid_request_module: mod=3Dwcc: failed -2
-> >>>>> + ieee80211 phy0: brcmf_attach: brcmf_fwvid_attach failed
-> >>>>> + brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
-> >>>>
-> >>>> Regards,
-> >>>> Arend
->
->
->
+> > Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
+> [...]
+> 
+> > --- a/drivers/net/wireless/realtek/rtw89/core.c
+> > +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> > @@ -1438,6 +1438,8 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
+> >       struct rtw89_rx_desc_info *desc_info = iter_data->desc_info;
+> >       struct sk_buff *skb = iter_data->skb;
+> >       struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+> > +     struct rtw89_rx_phy_ppdu *phy_ppdu =
+> > +             (struct rtw89_rx_phy_ppdu *)iter_data->phy_ppdu;
+> 
+> Why the cast? I don't think it's needed.
+
+Will fix it by next version.
+
+> 
+> > @@ -3181,6 +3204,15 @@ static inline struct rtw89_fw_c2h_attr *RTW89_SKB_C2H_CB(struct sk_buff *skb)
+> >  #define RTW89_GET_MAC_C2H_REV_ACK_H2C_SEQ(c2h) \
+> >       le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
+> >
+> > +#define RTW89_GET_MAC_BCNFLTR_RPT_MACID(c2h) \
+> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(7, 0))
+> > +#define RTW89_GET_MAC_BCNFLTR_RPT_TYPE(c2h) \
+> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(9, 8))
+> > +#define RTW89_GET_MAC_BCNFLTR_RPT_EVENT(c2h) \
+> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(11, 10))
+> > +#define RTW89_GET_MAC_BCNFLTR_RPT_MA(c2h) \
+> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
+> 
+> I have to admit that I every time I see this code pattern it makes me
+> regret it. Something like what Arnd proposed back in the day would look
+> so much cleaner:
+> 
+> https://lore.kernel.org/all/CAK8P3a1rsKZZKMKFTDWgE3usX9gYKJqUvTMxSdEuZrp8BaKdaA@mail.gmail.com/
+> 
+> Of course this is just a generic comment about rtw89, and has nothing to
+> do with this patchset, but it would be great if someone could take a
+> look and try out Arnd's proposal. It would be good to start with just
+> one or two commands and send that as an RFC to see how it looks like.
+> 
+
+I write a draft RFC here. Please see if it's in expectation. If so, I can
+change all of them by another patch or RFC.
+
+In header file:
+
+#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID_MASK GENMASK(7, 0)
+#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_TYPE_MASK GENMASK(9, 8)
+#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_EVENT_MASK GENMASK(11, 10)
+#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_MA_MASK GENMASK(23, 16)
+
+
+Access the values via le32_get_bits() in functions somewhere:
+
+	const __le32 *c2h = skb->data;
+
+	type =   le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID_MASK);
+	sig =    le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_MA_MASK) - MAX_RSSI;
+	event =  le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_EVENT_MASK);
+	mac_id = le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID_MASK);
+
+
+Ping-Ke
+
