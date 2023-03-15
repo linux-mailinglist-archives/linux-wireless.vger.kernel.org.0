@@ -2,100 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F806BAAF1
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FE26BAB39
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbjCOIkC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 04:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
+        id S231809AbjCOIyH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 04:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231419AbjCOIkB (ORCPT
+        with ESMTP id S231705AbjCOIyF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 04:40:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B743832CFD
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:39:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6057FB81D7B
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 08:39:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6000DC433EF;
-        Wed, 15 Mar 2023 08:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678869597;
-        bh=cn105TtdVoQAtGtc4TQTQuU3MbX397vew7n9d5l60mc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=HkuSq6tsvwfPpjb9Tkx/JCFd7uq+xhEC0oaL1hwfcTgSboPzlKftUCHNiAcAWeDwB
-         v7J1+Btrx3vwTebfYQcgIB5y6YzlnUqp1CoVd689O8qNG/oFRBTY2KAB9zhlOG1bWC
-         EQvBKqyjJhBKA+FJb+3V3qrLAQP5tGAqbE9Ed7PeavTA0soo6u2ZAF6ALoZAXT80IC
-         wXjLu0tfpeyBqdTzAExCVJBgydhmwrIuHoOjHiBiHKeifRW2Wz8J61Rv/J5ZpXi2Bg
-         JPq/xg+eReztjCMYm9b2WxGy5u7Cx1VcFRTF836PvtQh/3a4izbtfNJ83Xsmy0prTO
-         /29oHgRqD+gNw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 2/5] wifi: rtw89: add function to wait for completion of TX skbs
-References: <20230310034631.45299-1-pkshih@realtek.com>
-        <20230310034631.45299-3-pkshih@realtek.com>
-Date:   Wed, 15 Mar 2023 10:39:54 +0200
-In-Reply-To: <20230310034631.45299-3-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 10 Mar 2023 11:46:28 +0800")
-Message-ID: <87v8j2mmqt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 15 Mar 2023 04:54:05 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B88D166DA
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:54:01 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id j42-20020a05600c1c2a00b003ed363619ddso187830wms.1
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:54:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=stapelberg.ch; s=google; t=1678870439;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yc0p6Luoz31dQklXPM5EWdLDT++leXPVtqTAl7O7trg=;
+        b=bYjhSRwQLT78S+zM6UUR24zz7QOMzuoqhJexogW2Tc+ZHe4NY2V7oDNzaeAOAksy3x
+         gx3W4SBHD/Qomho1rqvhKUnDHeMWYAptDpahxcThytByhANV8tCC/m7Ocp/AEz+ukS5M
+         IyxuRqlCWLOrCE+wo089Smh84Jv8+Ldr29crDBIAkDpGoi63gpPyv/AG+KPELoh3NXfa
+         cA6wTsXn396eGexh5BnBNYjHKLmEdf4gN2BPXMSVuLB2nenQKN6YbNODn+EIIYuNavRL
+         806GNgzdeR02Jx1jpSH2V9Jq7CVxOKsdqFS31W2ua7P7d8oQosjTf087y+zYNIVDB55K
+         8KwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678870439;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Yc0p6Luoz31dQklXPM5EWdLDT++leXPVtqTAl7O7trg=;
+        b=pMS5tdN6yiGASYCQg22RYg/PtwXwBkFOxpsribTTqZDj659Z0LK5bOWAsGTfZo14Es
+         rHltv7NHMJ+7qtPgmAPi+ea5oxEd4jZDPFsl8wHKi1POSh9KagPrHCFOWHUPtpgkp9+H
+         jeSyEb16ogShUbLpyUADS3xNfLnbifrHqjr53M+XbIpn07oJgRYKIqcf8jiqitnu0tOu
+         OTf854L3w0X6m7k5ywFNCF/x/O9OxhL1wfQCTFsKcqyVCDWYlNau9Wme+sHfQ1ZyJmkq
+         qrkKPCXhDx3zjkONfabH3CJfEbxqSlX59FjlAd3AwNlPS7iW8lbgLn61xFEp00NXx251
+         JPYQ==
+X-Gm-Message-State: AO0yUKUULgh9qzlinapInreDT+rZlneXR0+JoucCrRILMZr9Ed0fJ8z4
+        vShCgMUZLzkaoYLXkXXcP4oThL9TvSDLtu6P53DHR+lTTwwtGlOmoo0=
+X-Google-Smtp-Source: AK7set+fNua/yFNsNAyiMPeT6gLQbneIm8LViYV1Q+OSmzqK2WhMdDEOGiFEDmuSzGZJJfB8A3Z7QRYwSdBBZZQQIBE=
+X-Received: by 2002:a7b:c2a1:0:b0:3e1:787:d706 with SMTP id
+ c1-20020a7bc2a1000000b003e10787d706mr5118651wmk.2.1678870439394; Wed, 15 Mar
+ 2023 01:53:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CANnVG6=a3etRagG+RaSEH-b4_nfzxpEKffQtuMWrttrbgjunZQ@mail.gmail.com>
+ <186e23b5668.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CANnVG6kjWj02eEFv_OeLiRtjrJ6yn4EsELz_BtrzFHH15GNMLw@mail.gmail.com>
+ <186e26dc0a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CANnVG6n-eqKUQnX_6wncmjG1kyVfhxqs2L82xYQpDmGq89eVAQ@mail.gmail.com> <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From:   Michael Stapelberg <michael+lkml@stapelberg.ch>
+Date:   Wed, 15 Mar 2023 09:53:43 +0100
+Message-ID: <CANnVG6kaGj1SVCqf2y3=Xj_N2G9j+-VhLDN4_WY_ywDswNkO3g@mail.gmail.com>
+Subject: Re: wifi breakage due to commit "wifi: brcmfmac: add support for
+ vendor-specific firmware api"
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Hey Arend
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+On Wed, 15 Mar 2023 at 09:33, Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
 >
-> Allocate a per-skb completion to track those skbs we are interested in
-> and wait for them to complete transmission with TX status. To avoid
-> race condition between process and softirq without addtional locking,
-> we use a work to free the tx_wait struct later when waiter is finished
-> referencing it. This must be called in process context and with a
-> timeout value greater than zero since it might sleep.
+> On March 15, 2023 8:58:43 AM Michael Stapelberg
+> <michael+lkml@stapelberg.ch> wrote:
 >
-> We use another workqueue so works can be processed concurrently and
-> when the PCI device is removed unexpectedly, all pending works can be
-> flushed. This prevents some works that were scheduled but never processed
-> leads to memory leak.
+> > Hey Arend
+> >
+> > Thanks for taking a look.
+> >
+> > The brcmfmac-wcc module is present on my installation, but I=E2=80=99m =
+not
+> > currently loading it.
+> > (I only load brcmutil, then brcmfmac.)
+> >
+> > But, even if I load it, the wlan0 interface still doesn=E2=80=99t show =
+up.
+> >
+> > In the modules.dep, I see that brcmfmac-wcc should be loaded after
+> > brcmutil and brcmfmac.
+> > Is that accurate?
 >
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Yes. Actually brcmfmac loads brcmfmac-wcc by itself.
 
-[...]
+Hmm, when I run lsmod after booting, I don=E2=80=99t see it:
 
-> +static void rtw89_core_free_tx_wait_work(struct work_struct *work)
-> +{
-> +	struct rtw89_tx_wait_info *wait =
-> +			container_of(work, struct rtw89_tx_wait_info, work);
-> +	struct rtw89_dev *rtwdev = wait->rtwdev;
-> +	int done, ret;
-> +
-> +	ret = read_poll_timeout(atomic_read, done, done, 1000, 100000, false,
-> +				&wait->wait_done);
-> +
-> +	if (ret)
-> +		rtw89_err(rtwdev, "tx wait timed out, stop polling\n");
-> +	else
-> +		kfree(wait);
-> +}
+/tmp/breakglass1452371198 # lsmod
+hci_uart 61440 0 - Live 0xffffba314a2cd000
+btbcm 24576 1 hci_uart, Live 0xffffba314a2c6000
+bluetooth 786432 3 hci_uart,btbcm, Live 0xffffba314a205000
+brcmfmac 258048 0 - Live 0xffffba314a1c5000
+brcmutil 20480 1 brcmfmac, Live 0xffffba314a1bf000
+ecdh_generic 16384 1 bluetooth, Live 0xffffba314a1ba000
+ecc 36864 1 ecdh_generic, Live 0xffffba314a1b0000
+/tmp/breakglass1452371198 #
 
-I admit I didn't try to understand this patch in detail but this
-function just looks odd to me. Why there's polling able to free
-something?
+How does the =E2=80=9Cload by itself=E2=80=9D mechanism work?
+Maybe I=E2=80=99m missing a userspace component for it.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Thanks
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>
+>
+> > My installation is somewhat unusual in that I use a custom userland
+> > (see https://gokrazy.org/).
+>
+> Bit tricky choice of name :-p I will check it out.
+>
+> Regards,
+> Arend
+>
+> >
+> > Thanks
+> > Best regards
+> > Michael
+> >
+> >
+> > On Wed, 15 Mar 2023 at 00:21, Arend Van Spriel
+> > <arend.vanspriel@broadcom.com> wrote:
+> >>
+> >> On March 14, 2023 11:49:05 PM Michael Stapelberg
+> >> <michael+lkml@stapelberg.ch> wrote:
+> >>
+> >>> Of course, find it attached. Thanks.
+> >>
+> >> Strange. Could it be there is some build config needed to install the
+> >> additional kernel modules (brcmfmac-wcc.ko, etc.) on RPi image?
+> >>
+> >> Regards,
+> >> Arend
+> >>
+> >>>
+> >>> On Tue, 14 Mar 2023 at 23:26, Arend Van Spriel
+> >>> <arend.vanspriel@broadcom.com> wrote:
+> >>>>
+> >>>> On March 14, 2023 8:39:05 PM Michael Stapelberg
+> >>>> <michael+lkml@stapelberg.ch> wrote:
+> >>>>
+> >>>>> Hey Arend
+> >>>>>
+> >>>>> I recently bisected a user-reported WiFi breakage on the Raspberry =
+Pi
+> >>>>> 3B+ to your commit
+> >>>>> https://github.com/torvalds/linux/commit/d6a5c562214f26e442c8ec3ff1=
+e28e16675d1bcf
+> >>>>> https://lore.kernel.org/r/20221129135446.151065-4-arend.vanspriel@b=
+roadcom.com
+> >>>>>
+> >>>>> On our end, the issue was reported here:
+> >>>>> https://github.com/gokrazy/wifi/issues/3
+> >>>>>
+> >>>>> As of Linux 6.2.6, this seems to still be unfixed, so I wanted to
+> >>>>> check in and see if you could take a look please?
+> >>>>
+> >>>> I have a suspicion, but can you provide the kernel .config file so I=
+ can
+> >>>> see if I am on the right track.
+> >>>>
+> >>>>> + brcmfmac: brcmf_fwvid_request_module: mod=3Dwcc: failed -2
+> >>>>> + ieee80211 phy0: brcmf_attach: brcmf_fwvid_attach failed
+> >>>>> + brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
+> >>>>
+> >>>> Regards,
+> >>>> Arend
+>
+>
+>
