@@ -2,33 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F30636BBDEA
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 21:22:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 835C76BBE1B
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 21:47:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232991AbjCOUWi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 16:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
+        id S232143AbjCOUr3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 16:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232877AbjCOUWe (ORCPT
+        with ESMTP id S230036AbjCOUr2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 16:22:34 -0400
+        Wed, 15 Mar 2023 16:47:28 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0B9A21AE;
-        Wed, 15 Mar 2023 13:22:24 -0700 (PDT)
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.16])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 000B144C101F;
-        Wed, 15 Mar 2023 20:22:22 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 000B144C101F
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E61594F4A;
+        Wed, 15 Mar 2023 13:47:27 -0700 (PDT)
+Received: from fpc (unknown [10.10.165.16])
+        by mail.ispras.ru (Postfix) with ESMTPSA id A2CEB44C1026;
+        Wed, 15 Mar 2023 20:47:25 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A2CEB44C1026
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1678911743;
-        bh=KHlEKAhpUGzm2mZCMucQ8WbZWdQoP58ONPTTGbeX3MM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pF8+mLdy40gtvvg8OB9D1OQDILvPJaHvvHMnT7RNekOc6QhJSM3bhgNu+no7WBUPh
-         iEbbhudO8Dzq8G8WsxsNaChuyN0EA2dyfCCBcJVUnq7sj5jBuHY/bny1AQS0INSVZj
-         5t3iTEBkUd36YwJFAhhKN1TBuroFwJAK3VXphddo=
+        s=default; t=1678913245;
+        bh=5toqmCiIAqbNxCU08LIwPBQntN6jaGooMIATHZvsRic=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=eg/iE7rHi6lAmhDSLih8jK/C6wmD8HWtoFO1ZN57bSokCP02vPLQjSZznjmsb1aas
+         JqIXQdh+AVbz3GqDtudKXprx7I2UostO3J34gTVfIdMwsNrQYlZzMAPM1deJvF+Ij4
+         dXMWW4r0Y4i4Hp+LSSA6s4k9E0E60MO/knyvyYtA=
+Date:   Wed, 15 Mar 2023 23:47:20 +0300
 From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>,
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -41,14 +42,13 @@ Cc:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Valo <kvalo@kernel.org>,
         linux-kernel@vger.kernel.org,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
         lvc-project@linuxtesting.org
-Subject: [PATCH 3/3] wifi: ath9k: fix ath9k_wmi_cmd return value when device is unplugged
-Date:   Wed, 15 Mar 2023 23:21:12 +0300
-Message-Id: <20230315202112.163012-4-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230315202112.163012-1-pchelkin@ispras.ru>
+Subject: Re: [PATCH 0/3] wifi: ath9k: deal with uninit memory
+Message-ID: <20230315204720.xtqik56r7ddbynho@fpc>
 References: <20230315202112.163012-1-pchelkin@ispras.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230315202112.163012-1-pchelkin@ispras.ru>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -58,37 +58,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Return with an error code in case the USB device has been already
-unplugged. Otherwise the callers of ath9k_wmi_cmd() are unaware of the
-fact that cmd_buf and rsp_buf are not initialized or handled properly
-inside this function.
+On Wed, Mar 15, 2023 at 11:21:09PM +0300, Fedor Pchelkin wrote:
+> Syzkaller reports two cases ([1] and [2]) of uninitialized memory referencing in ath9k
+> wmi functions. The following patch series is intended to fix them and related issues.
+> 
+> [1] https://syzkaller.appspot.com/bug?id=51d401326d8ee41859d68997acdd6f3b1b39f186
+> [2] https://syzkaller.appspot.com/bug?id=fc54e8d79f5d5082c7867259d71b4e6618b69d25
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+During the patch development I observed that the return value of REG_READ
+(ath9k_regread), REG_READ_MULTI (ath9k_multi_regread) and similar macros
+is not checked in most places inside ath9k where they are called. That may
+also potentially lead to incorrect behaviour. I wonder if it actually
+poses a problem as the current implementation has been for a long time and
+perhaps somebody has already addressed this.
 
-Fixes: a3be14b76da1 ("ath9k_htc: Handle device unplug properly")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/net/wireless/ath/ath9k/wmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+In more details:
+-- ath9k_regread returns -1 on error, and probably this is a predefined
+   error state and doesn't need additional check. But, overall, it seems
+   strange to me that the return value is not checked in places where it
+   is used later (for example, in ath9k_reg_rmw or
+   ath9k_hw_ani_read_counters).
+-- ath9k_multi_regread fills 'val' buffer with undefined values on error
+   case, that should definitely be fixed with initializing the local
+   buffer to zero, I think.
 
-diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index 99a91bbaace9..3e0ad4f8f0a0 100644
---- a/drivers/net/wireless/ath/ath9k/wmi.c
-+++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -320,8 +320,11 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 	unsigned long time_left;
- 	int ret = 0;
- 
--	if (ah->ah_flags & AH_UNPLUGGED)
--		return 0;
-+	if (ah->ah_flags & AH_UNPLUGGED) {
-+		ath_dbg(common, WMI, "Device unplugged for WMI command: %s\n",
-+			wmi_cmd_to_name(cmd_id));
-+		return -ENODEV;
-+	}
- 
- 	skb = alloc_skb(headroom + cmd_len, GFP_ATOMIC);
- 	if (!skb)
--- 
-2.34.1
+Could you please say your opinion on this issue?
 
