@@ -2,243 +2,223 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CCF26BAAD3
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:33:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB7426BAADE
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:35:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbjCOIdp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 04:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60576 "EHLO
+        id S231646AbjCOIfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 04:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231504AbjCOIdn (ORCPT
+        with ESMTP id S231564AbjCOIfQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 04:33:43 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B392311E1
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:33:39 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id h8so28514287ede.8
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:33:39 -0700 (PDT)
+        Wed, 15 Mar 2023 04:35:16 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CE966700B;
+        Wed, 15 Mar 2023 01:35:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OQdK8PNAMnJQRn/l4AQRcZbqOf25yjQQfaEgTupt3vRP1h0eoWIqjZm3FzuIoXUUTv7SrW3PLXTzhA+YppeoDWKPtav6esEJTCObKK7HXxNxm+lPX0YBgfe7abd41PG6pLeiBwzDobbbKJ0cLXevNIL8XmZhOu6MRxzEJ1ATfosjk90gP227cjdWWj/vJUF50EG0WnFOWnO29PNDkE4BVab7PCPBM4aDVwyHKY4j+c2dHMHtoLVXB1I4qFpRb38+jcrg55nqMxwAz6JYoILl6r5PDnqTpBkgNbZtytdVrWnDB1VghPuGCVxvOyjHL86dNmPetB5Nb98+SVXAjIfTlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E+WVG9GQG16dgubbwWX9vkz5rEUgV2C7+S0x+w/w2xA=;
+ b=YqyEKYkQo+2HQx7wvYRk0/V4b2B7r2LNfEnZB9O9vbA7vtesSvcdVSFRgcjmarGY9Y6JlAROMJaH2Dx7LL2foKjz64wVOMX0D/d9FkqaJOwQUC2plZES5B3qKiPnSThPdM+MJv+hPGRC9nuUjwlt7j7xX8mHKqT1zAvJDPPfBlumRIUvhPha6hE0Ozt4CCBun2Az2yAfkXD9SvQB+2PPytGBfHJFfHb//GuOVxRUskDVyroq+ZCycGJK/8thb5EiBbiIy/eAbOqglraO38/H2PHrgLDDZ7wX8PkDLBFLr7HBujtzIKXDZFk4/3MP6ej+cEY8KOsjyDkp+TS1bCUJFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1678869218;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HgVW49H7L1SP7q+YahOO2WtVHU80WlRkmDam7qKhu8I=;
-        b=Tc7mEzu66k30B8Sq1W2FyHn2mNKBMmoJRy5kdfSmz7YvU0LlqbhoYId7mxK7fb08Ec
-         t0VWRwQQR+pAjRnoVt/5k74pIn2eDAYcI1dJnq6mpEh8MClSW1PW+T7FHoreBt0K+K15
-         GbJEHrGu8bSy1vh7N+yk6AwNq6EM7HSzONyyw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678869218;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HgVW49H7L1SP7q+YahOO2WtVHU80WlRkmDam7qKhu8I=;
-        b=Ylvuu/YleM/QpbYaUBdCBo6Gw+qBQbM8FS4VGAoA5BToaEIxz0n85o0l3xGK8Xl4c+
-         kVdkWpuaVVedjHvysAMcJ+s+Wv/3TUvOyh5CAWeWd6QoGHQ621HTCmcQovu8RvKsOlm3
-         Xezc86Wf1G9cYa5RszA+0O7EEqNXdCAI4U9lEwqrtiaymm2sksyk1zik5eNBpzny8uuM
-         o8KNGtSXiX/aDkfW6NB+NUpLglOlbOWmOqrigSEuaLtRsQfykT043zZI4XVtX9CjNe/X
-         yKUJNqHAnAoqpyxh+mANcQOxsqD9Uvv+SrU+MDMvIM44NkCBVdrwW7YsoR8Z18M7uoxY
-         2QDQ==
-X-Gm-Message-State: AO0yUKXkA1a8d6ip2hFPpDZCyjTLaD0Nujv3neCl3DOZHb9EctmTOtYo
-        kG6m3LeAMx6oDAekiqPBZSRvxQ==
-X-Google-Smtp-Source: AK7set8vgVL4XEP5WRczvUEO6lB/wb0c8EwNVZP6htuWmuwqcqUUCk1XDqUzUPTLb388eA5Wl1vPGA==
-X-Received: by 2002:a17:906:4fd0:b0:8dd:5710:a017 with SMTP id i16-20020a1709064fd000b008dd5710a017mr6897241ejw.4.1678869217875;
-        Wed, 15 Mar 2023 01:33:37 -0700 (PDT)
-Received: from [10.194.183.67] ([109.37.149.36])
-        by smtp.gmail.com with ESMTPSA id z9-20020a170906074900b008eaf99be56esm2194636ejb.170.2023.03.15.01.33.37
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 Mar 2023 01:33:37 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Michael Stapelberg <michael+lkml@stapelberg.ch>
-CC:     Kalle Valo <kvalo@kernel.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        "Pieter-Paul Giesberts" <pieter-paul.giesberts@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        <linux-wireless@vger.kernel.org>
-Date:   Wed, 15 Mar 2023 09:33:36 +0100
-Message-ID: <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CANnVG6n-eqKUQnX_6wncmjG1kyVfhxqs2L82xYQpDmGq89eVAQ@mail.gmail.com>
-References: <CANnVG6=a3etRagG+RaSEH-b4_nfzxpEKffQtuMWrttrbgjunZQ@mail.gmail.com>
- <186e23b5668.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6kjWj02eEFv_OeLiRtjrJ6yn4EsELz_BtrzFHH15GNMLw@mail.gmail.com>
- <186e26dc0a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6n-eqKUQnX_6wncmjG1kyVfhxqs2L82xYQpDmGq89eVAQ@mail.gmail.com>
-User-Agent: AquaMail/1.43.0 (build: 104300275)
-Subject: Re: wifi breakage due to commit "wifi: brcmfmac: add support for vendor-specific firmware api"
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E+WVG9GQG16dgubbwWX9vkz5rEUgV2C7+S0x+w/w2xA=;
+ b=Wo0ZFe8U+IzIz1SWngykfZhT7nVbJvYgMQdDL0P+Tkb8rEzWVwxP5w1mg7C7OIr3akaIfGYxG8uNywV0GAH/YSTkY9Xh82ukQ0eSYQYsVR4sm5/59q5Rn1Um4dOqvwrE+j8rmhH7YtNxrEyUMBB0LH5VW8jk5dmn9Z+XOEG1HX8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by SA1PR13MB6053.namprd13.prod.outlook.com (2603:10b6:806:33a::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Wed, 15 Mar
+ 2023 08:35:12 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c%2]) with mapi id 15.20.6178.026; Wed, 15 Mar 2023
+ 08:35:12 +0000
+Date:   Wed, 15 Mar 2023 09:35:02 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Francois Romieu <romieu@fr.zoreil.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
+        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        devicetree@vger.kernel.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] net: Use of_property_read_bool() for boolean properties
+Message-ID: <ZBGDNlelN0WFBaq6@corigine.com>
+References: <20230310144718.1544169-1-robh@kernel.org>
+ <ZAxrBtNdou28yPPB@corigine.com>
+ <CAL_JsqJTsgmdwZZTfcMRnqaUfCNbgjO2mshxtAQK-qwoFqwCyw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqJTsgmdwZZTfcMRnqaUfCNbgjO2mshxtAQK-qwoFqwCyw@mail.gmail.com>
+X-ClientProxiedBy: AM4PR07CA0033.eurprd07.prod.outlook.com
+ (2603:10a6:205:1::46) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000005f55b705f6ec3369"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SA1PR13MB6053:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a21e76e-9097-4f70-2db4-08db25303130
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: S1Nm8tSp+cN/CqWBydj5jewXt2IcaxgcJMI0BWk5P0qhZSxXdCzovpiZt/2wWHD90/GLEyvV19e074mZDp9mZnli7r4YGjaPVzCflx8PtoQK08vLFpYMBpKGgkGlPnugtOzi2FbCK3Wc/kVP+Z46Rhh4HrR9Tz6yHrZRz7YXUjyiseEYRWvz5ci2WsA0gLPOhqQZvcwNeGxQxFtka4G0GlaBsoCXAhOxIGwXxFu7QfhqXLyKffZBGG7E4HGzrx2krzQzPypaMsrhJOQqRfYp65PFNRxlTya7r5tAP0qmEbUIKwzcTm5qF+iZ7/nlkV4IMDcB7HeVIH5mz42qV9Zwlp7JplipL98C5RX2AG73MkElaj1lAlktBVHUL09LxSX+uQeYFbpvtdw2d88kw3OA5djkiAEyJ0SVY8yIOg0W5z9XWzMe8Kc//ktY6L6GSUmyLymoh1NSCOS1I3UIlYckpj1PXTqP8//JfLrVAEXo3Cgqm1dJp8giZj6T2QTu2+nlL0Ba6GR6H05nJNo/yiktovVGnasdQCnPxkT7fXWe+xEv/MxtHSw/zyAD4tTILB+8GzqmxnnOfcMH88FXHUfdkJVro/CsWztLcyz9v+Ca7EBYBKvNZ55emYZ4A0txVeZfWE3QgesFLFGIIXQ6QCrzEA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39840400004)(366004)(376002)(136003)(396003)(346002)(451199018)(7406005)(2906002)(316002)(53546011)(7416002)(44832011)(8936002)(478600001)(54906003)(38100700002)(86362001)(6486002)(2616005)(36756003)(41300700001)(66946007)(66556008)(6666004)(66476007)(6916009)(8676002)(6506007)(6512007)(4326008)(186003)(5660300002)(83380400001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T1FzQ2Y2ZFdYWENoWVBJaGx0aS9tKytCMXJ6aE9KT1dlZjRtQjR4eVhtWGxL?=
+ =?utf-8?B?Wm0xMS9EcW1USlozeEYxRzgrVGZUYmVOejVYajBNYzFxQWNPRWsxdnhwVWRQ?=
+ =?utf-8?B?ZlRZNVRvTTZQOXF3bUFOMURmNE9LYmVScDJpSGFYaGQ2WlpRTXZRZmNXNFdo?=
+ =?utf-8?B?NnVxYXh5TTVzWERsQTRjWnB1Q1ozRUp1M2NLc2hUYUhkZnhaZ1EwR0g2czZ1?=
+ =?utf-8?B?NGFZMWRaVEtHRHI5ZHpiU01mMVpndGdLdFV2ekZUYzMzOXR1d09zbW5YeDAx?=
+ =?utf-8?B?SnhpdmxCMWpLS3hRRm9RSko3RUtCbDJBdTJRT3p0U0F1VzloVktTRjlQWnNW?=
+ =?utf-8?B?OEV2SnloYU9MSXBEKzlDTjNnTGJ2d25RLzlEMXJhakRpem5WZUNzOVl4c1pT?=
+ =?utf-8?B?aG5jRGNsRXBkMWZUYmRmNjFFQWZZK0xUVTgvNGYyck9Sc3N4cFJ5UXIxb1dZ?=
+ =?utf-8?B?Z0J4WHVtYStJbFhiMW1wMHlibzVHWHNJWkFzNldGNUFwdWJobkJWWDVDSklX?=
+ =?utf-8?B?d0d2MVNDNllrSktjcUYvUDBLMEhwTkRsTE5ZOFRvM0hlYTJYeEpzU3QxRWxC?=
+ =?utf-8?B?NHBJVFVrYzRRdWt6Q1N1Yzc2bFd2SEdtMWZTWUFpWGQrQzFUV0hNazdCRDFn?=
+ =?utf-8?B?VXN0dU95Zmx3bmV5MU1Qb0ZVdzFGaHZWM1dtbGxFeW9MdXlwOEQ4TUs4bGZN?=
+ =?utf-8?B?V25pNXN0RG1kTHVCek1VWnNNNzljSUtBMFZNUnZ0K3FtU29vMkpEMjRNVzcz?=
+ =?utf-8?B?UjF6blJRQ3pPNjZiZ0dmdjluR3J1NEsxZmlXYkVpM2NxOS9kUklHM0hsQ1M1?=
+ =?utf-8?B?b0c4c3Fidmg2ckpMZmErUTNhOFJDQUhUUEdvOUFaSGJrUXV2dU8vbEhveitE?=
+ =?utf-8?B?K3VYb0xmT1BEdlJqSVBsRkY0VjZRdGFmSjhLTW1wd25zQytWdFlXR3VvN2k2?=
+ =?utf-8?B?ZURoYkwvMkxrUlhoWk9DRG1lMFVkRlZtWXRYaEVnOTFJQ2NhalBGSVE1QWgz?=
+ =?utf-8?B?K1J0dzIyQ2p3azFKemNTcWRBQlJseHJMMGxrcTFCd2ZFbTZISjFUS1VZWlVt?=
+ =?utf-8?B?RkNuUVJqZkM0YVNCRDFibThEWmc0djlucGRkRGdtMTVUS2FreHRScmRyNmE1?=
+ =?utf-8?B?eDVSS0dNbDVkZmJkb3Awb1g3Z0N5RXcveDJjRkV4bWkxeE52WkNXNGRqdWxO?=
+ =?utf-8?B?bnJiN1FWbFNsaU9WbTBUM29jckZwdmhSK1g1ZDQ3TUFaaFFYRTFrajBKTEdH?=
+ =?utf-8?B?ME80MGZaTFVQTTMvdEdQZzlFbFNvSmFNWjB4UGFPeUhBbFptd3hEandoZmxF?=
+ =?utf-8?B?TkZ5aHc0YXY0cFBoSWd6S08vK01MOUNlOFBkUllZWTZka1FibUE5RVBjdmhQ?=
+ =?utf-8?B?T3lkaDJQd1VVbm02aGFwK2dSRmx4ZnZUQ1U4NlZES0FkdUJWMDM2cEg5a3hm?=
+ =?utf-8?B?aEZsZVBCRzR6T2UyeVFiVmdnQUxiOS9MZjVPaXZ2TWpzQXU1RDY2L25YaVEw?=
+ =?utf-8?B?YmtjYTNtUkY1KzZFMEs1ZDMwZjJpY3FXRzR1ZzJuVDVIR2hkMHFxN3J3bldq?=
+ =?utf-8?B?Y09MaFNHN1VLbUxBQnJ6TTZDd0dCN1ZtQzcxc2FJS0c0RjI5NkZENlZVOGZQ?=
+ =?utf-8?B?Zk5kMTVUbmZ3UzFvNjh6SVlsU3FuMU9uYU5kZjJrZHliVUxQSU5uN1BlNzV5?=
+ =?utf-8?B?eFhOTHBRcjdxOXErR2tybG9sVDhHRWREQnhiWHM5RVp0R09tWU9Vdlg3bmJj?=
+ =?utf-8?B?ZjI4aUNXcmFaSkw0M2gzV05oWDdxdDh1eDREdUxGYzJjT29nczAvUkFJNUVV?=
+ =?utf-8?B?d3pzYjIyRE1kcDVsUFY4OGNmcmhNNndOcDdCL1VSVTZ0UUVwMUo1ZG90Vy84?=
+ =?utf-8?B?Nm9qbzByYU9BZXJLSXlWNGZkeU9pR01VZkk4UkRDVUx5MGFjZVBwRFBVVjhl?=
+ =?utf-8?B?RFdDemxqblZ0bzJlSzU5TGZKOUd2eFRUYStlck0zekRmaDJtbmQ4Z01qWFA0?=
+ =?utf-8?B?ZVRlcUp5azcvcGYydWdUeG01RDBnQ0FGS3lNS2FYRmFINEhxT0RLTDFCR3N1?=
+ =?utf-8?B?MmcvZEh0VnVrMG84MjVEaEZ1UkRTTnJ4NDlaNkdBTTFFVlMwck8zRkt2Q1d6?=
+ =?utf-8?B?a1dOWU1BbDAvbXdGZmR5Z2QvTE5od0hXeTBpenV3enhSNWdMcU1OK3NOOElR?=
+ =?utf-8?B?bGsxNGNoZXJ5R3VWK3Ftc2lMcGhKRk9QQVR4VjV2VmRVckliUVREN3VJYldJ?=
+ =?utf-8?B?cDY4K2hqZVR3REFJNGdxWSs5ZnVRPT0=?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a21e76e-9097-4f70-2db4-08db25303130
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2023 08:35:11.8674
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bb7YzuZoBKahmnvFKIYzQ7COHjRqbRgcIm2g5LuBmZM568jCzQm6Tqj3sDoWFQkuq40t3+NBBdTDjjTgF78WaLepAQUK8Udi7mV1A3D5niQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR13MB6053
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000005f55b705f6ec3369
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+On Tue, Mar 14, 2023 at 02:14:37PM -0500, Rob Herring wrote:
+> On Sat, Mar 11, 2023 at 5:50 AM Simon Horman <simon.horman@corigine.com> wrote:
+> >
+> > On Fri, Mar 10, 2023 at 08:47:16AM -0600, Rob Herring wrote:
+> > > It is preferred to use typed property access functions (i.e.
+> > > of_property_read_<type> functions) rather than low-level
+> > > of_get_property/of_find_property functions for reading properties.
+> > > Convert reading boolean properties to to of_property_read_bool().
+> > >
+> > > Signed-off-by: Rob Herring <robh@kernel.org>
+> >
+> > Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> >
+> > ...
+> >
+> > > diff --git a/drivers/net/ethernet/via/via-velocity.c b/drivers/net/ethernet/via/via-velocity.c
+> > > index a502812ac418..86f7843b4591 100644
+> > > --- a/drivers/net/ethernet/via/via-velocity.c
+> > > +++ b/drivers/net/ethernet/via/via-velocity.c
+> > > @@ -2709,8 +2709,7 @@ static int velocity_get_platform_info(struct velocity_info *vptr)
+> > >       struct resource res;
+> > >       int ret;
+> > >
+> > > -     if (of_get_property(vptr->dev->of_node, "no-eeprom", NULL))
+> > > -             vptr->no_eeprom = 1;
+> > > +     vptr->no_eeprom = of_property_read_bool(vptr->dev->of_node, "no-eeprom");
+> >
+> > As per my comment on "[PATCH] nfc: mrvl: Use of_property_read_bool() for
+> > boolean properties".
+> >
+> > I'm not that enthusiastic about assigning a bool value to a field
+> > with an integer type. But that is likely a topic for another patch.
+> >
+> > >       ret = of_address_to_resource(vptr->dev->of_node, 0, &res);
+> > >       if (ret) {
+> >
+> > ...
+> >
+> > > diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+> > > index 1c53b5546927..47c2ad7a3e42 100644
+> > > --- a/drivers/net/wan/fsl_ucc_hdlc.c
+> > > +++ b/drivers/net/wan/fsl_ucc_hdlc.c
+> > > @@ -1177,14 +1177,9 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
+> > >       uhdlc_priv->dev = &pdev->dev;
+> > >       uhdlc_priv->ut_info = ut_info;
+> > >
+> > > -     if (of_get_property(np, "fsl,tdm-interface", NULL))
+> > > -             uhdlc_priv->tsa = 1;
+> > > -
+> > > -     if (of_get_property(np, "fsl,ucc-internal-loopback", NULL))
+> > > -             uhdlc_priv->loopback = 1;
+> > > -
+> > > -     if (of_get_property(np, "fsl,hdlc-bus", NULL))
+> > > -             uhdlc_priv->hdlc_bus = 1;
+> > > +     uhdlc_priv->tsa = of_property_read_bool(np, "fsl,tdm-interface");
+> >
+> > Here too.
+> 
+> These are already bool.
 
-On March 15, 2023 8:58:43 AM Michael Stapelberg 
-<michael+lkml@stapelberg.ch> wrote:
+Sorry, I thought I checked. But clearly I messed it up somehow.
 
-> Hey Arend
->
-> Thanks for taking a look.
->
-> The brcmfmac-wcc module is present on my installation, but I’m not
-> currently loading it.
-> (I only load brcmutil, then brcmfmac.)
->
-> But, even if I load it, the wlan0 interface still doesn’t show up.
->
-> In the modules.dep, I see that brcmfmac-wcc should be loaded after
-> brcmutil and brcmfmac.
-> Is that accurate?
+> Turns out the only one that needs changing is
+> no_eeprom. netdev folks marked this as changes requested, so I'll add
+> that in v2.
 
-Yes. Actually brcmfmac loads brcmfmac-wcc by itself.
-
-> My installation is somewhat unusual in that I use a custom userland
-> (see https://gokrazy.org/).
-
-Bit tricky choice of name :-p I will check it out.
-
-Regards,
-Arend
-
->
-> Thanks
-> Best regards
-> Michael
->
->
-> On Wed, 15 Mar 2023 at 00:21, Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->>
->> On March 14, 2023 11:49:05 PM Michael Stapelberg
->> <michael+lkml@stapelberg.ch> wrote:
->>
->>> Of course, find it attached. Thanks.
->>
->> Strange. Could it be there is some build config needed to install the
->> additional kernel modules (brcmfmac-wcc.ko, etc.) on RPi image?
->>
->> Regards,
->> Arend
->>
->>>
->>> On Tue, 14 Mar 2023 at 23:26, Arend Van Spriel
->>> <arend.vanspriel@broadcom.com> wrote:
->>>>
->>>> On March 14, 2023 8:39:05 PM Michael Stapelberg
->>>> <michael+lkml@stapelberg.ch> wrote:
->>>>
->>>>> Hey Arend
->>>>>
->>>>> I recently bisected a user-reported WiFi breakage on the Raspberry Pi
->>>>> 3B+ to your commit
->>>>> https://github.com/torvalds/linux/commit/d6a5c562214f26e442c8ec3ff1e28e16675d1bcf
->>>>> https://lore.kernel.org/r/20221129135446.151065-4-arend.vanspriel@broadcom.com
->>>>>
->>>>> On our end, the issue was reported here:
->>>>> https://github.com/gokrazy/wifi/issues/3
->>>>>
->>>>> As of Linux 6.2.6, this seems to still be unfixed, so I wanted to
->>>>> check in and see if you could take a look please?
->>>>
->>>> I have a suspicion, but can you provide the kernel .config file so I can
->>>> see if I am on the right track.
->>>>
->>>>> + brcmfmac: brcmf_fwvid_request_module: mod=wcc: failed -2
->>>>> + ieee80211 phy0: brcmf_attach: brcmf_fwvid_attach failed
->>>>> + brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
->>>>
->>>> Regards,
->>>> Arend
-
-
-
-
---0000000000005f55b705f6ec3369
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCJpFV4yYc7wP6UbVp6
-15muEp3lcohNUb0zkOGAr9XC2jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAzMTUwODMzMzhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAJNS0OLRb3xIGXwz8mrYKn9jDBpsIwvVFgRQf
-hHH0KpbbY+Qt8ML+/VS231nC3HQdVM3acn6yFo0PDpoGsQKUwgGclR1HTwX9D4XVZnm7ZO7H5KvZ
-NRaRTcSQDY+ZHSnXgwo7E+Xk3Uu6sJ8OJrM9B2Jrt1zvptegrbs9+5WMNl3ZSZTtF1WRnnhJe7Cf
-IzxceOCPWeSYLp745jA3dv+Pm//n6dXO+Xm5Ekmu216WkZc8f+Ay57GhSdyELYAx9DlJ8BbqDLrI
-oHomw32Iz9rdIRezmVr8lP1tQwXvTu+HFfgLwiLNhKtnOkNZHl93an00OlO4mCPlFIIhscE1e9FI
-Gw==
---0000000000005f55b705f6ec3369--
+Thanks.
