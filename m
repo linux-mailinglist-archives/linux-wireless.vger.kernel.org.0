@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 977F46BB4A1
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9586BB4A0
 	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 14:30:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232111AbjCON3r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 09:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60988 "EHLO
+        id S232157AbjCON3s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 09:29:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231401AbjCON3j (ORCPT
+        with ESMTP id S232008AbjCON3m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 09:29:39 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B73249E2
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 06:29:38 -0700 (PDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32FBJflb002718;
-        Wed, 15 Mar 2023 13:29:35 GMT
+        Wed, 15 Mar 2023 09:29:42 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B2B98C81A
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 06:29:39 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32FAMS3A012014;
+        Wed, 15 Mar 2023 13:29:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=qcppdkim1;
- bh=ULgVJs53tRi1qRu/AgX/Rh48jRvgAJYldVOmCCkZAoI=;
- b=MJ55dJ8issZ1zjZ26y5/DSioA+w5KfQ1rtTNNtIdjW+S6SG6KuF7hmXAH7XUi/MGwin5
- n7Vr6nuIRt14A6yvUarjj+BsQ4ov0KtCEwH/uVpAB7kbt/8YgZEV14vmwPj4mRSXH6ln
- gHmmOarCGmYC96w/dqzJFhHfavEN/8Rh23f0ntS30B8IEtkJRxlElpYHwL2CZdgj3LUW
- 1WYMAvIBMTrXqcpigF/907keo7+KV5zjFzEIZM4kwRMiS8R8MBjDy+s+CujQPpSMngec
- CPVC+jKNLdQV7IkOt4L9ke0QNlXo6Zgt+yepyhNJJCkqj9GyNuUEMKSKlMGbhZxS6xUq Og== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pb2c89n5w-1
+ bh=p6r2L/y+sHWOHtnO5ltvrBx6yVEp1zIcqMpxiPavqCg=;
+ b=pSIoZg9WdJUQmvVYEUtAz64HXr75i/f7vmjZcqD15TV5gvaNIGLhaVtSukzXrbDm8sxi
+ ndpz8GySR/uPufqvdw1XRiQSFRhwbpid40J0j99QdmVovO/Fx1u3IvrcGudV3tFlFjuV
+ w/+FsSkmEVJHP2wCX3jytrFVqbv7mKPYwzIez8kytF8pDgC5CGyKb6wwR5viTgydO1s1
+ 9WkYiOTD6fSrv0Xd72iqz4NQhbL4uvwV5hR+Tkie8uMi7JliKxc+v72d3jgC7om8F0VX
+ RgHAgPChaQL0ZsgXrm3K5gvexVMlihIcRFIQ/XUQ7+xRcB60lA7qhz4zUJ5MLY6b9y2/ yw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pb2cshp0k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Mar 2023 13:29:35 +0000
+        Wed, 15 Mar 2023 13:29:36 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32FDTYjF023762
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32FDTZ3p000858
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Mar 2023 13:29:34 GMT
+        Wed, 15 Mar 2023 13:29:35 GMT
 Received: from adisi-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Wed, 15 Mar 2023 06:29:32 -0700
+ 15.2.986.41; Wed, 15 Mar 2023 06:29:34 -0700
 From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
 To:     <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH v3 7/9] wifi: cfg80211: save 6 GHz power mode of the regulatory rules
-Date:   Wed, 15 Mar 2023 18:59:02 +0530
-Message-ID: <20230315132904.31779-8-quic_adisi@quicinc.com>
+Subject: [PATCH v3 8/9] wifi: cfg80211: fix chandef identical logic for 6 GHz chandefs
+Date:   Wed, 15 Mar 2023 18:59:03 +0530
+Message-ID: <20230315132904.31779-9-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230315132904.31779-1-quic_adisi@quicinc.com>
 References: <20230315132904.31779-1-quic_adisi@quicinc.com>
@@ -56,110 +56,103 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: miCXgJti9kzR1Tv3GMRUN9b0jam5hsYh
-X-Proofpoint-ORIG-GUID: miCXgJti9kzR1Tv3GMRUN9b0jam5hsYh
+X-Proofpoint-GUID: D0M49tHd1OFa7vjKQ-j-TpSOkE2enAb8
+X-Proofpoint-ORIG-GUID: D0M49tHd1OFa7vjKQ-j-TpSOkE2enAb8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-03-15_06,2023-03-15_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 clxscore=1015 malwarescore=0 lowpriorityscore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=971
+ impostorscore=0 suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2302240000 definitions=main-2303150114
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently when user space demands the reg rules via NL80211_CMD_GET_REG
-command, along with Power Spectral Denity (PSD) values, power mode
-needs to be advertised since in 6 GHz AP beacon, Tx power envelope
-should have PSD info as well which can be opted based on the power
-mode. Similarly, via NL80211_CMD_SET_REG command, user space can try
-to set regulatory rules and cfg80211 needs to store the incoming power
-mode for the rule.
+Currently, two chandefs are identical if they point to the same
+ieee80211_channel as well as other members of the chandef are same.
+However, with 6 GHz regulatory power modes changes, now 6 GHz channel
+can be picked from different channel pool and hence there can be a
+scenario where chandefs are actually idenatical but the channels are
+from a different pool (for example - AP-STA concurrency case).
+In this situation, the above logic will fail.
 
-Add support for 6 GHz power mode advertisement in
-NL80211_CMD_GET_REG command and saving 6 GHz power mode for reg rules
-via NL80211_CMD_SET_REG command.
+Hence, for 6 GHz, instead of comparing the pointers, members inside
+ieee80211_channel can be compared and if they are same along with above
+condition then chandef can be assumed to be identical.
+
+Fix the same for 6 GHz channel comparison.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- include/uapi/linux/nl80211.h |  4 ++++
- net/wireless/nl80211.c       | 20 ++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ include/net/cfg80211.h | 41 ++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 5 deletions(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index bff81489fa8a..aa0fcf98aab1 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4358,6 +4358,8 @@ enum nl80211_reg_type {
-  *	If not present or 0 default CAC time will be used.
-  * @NL80211_ATTR_POWER_RULE_PSD: power spectral density (in dBm).
-  *	This could be negative.
-+ * @NL80211_ATTR_REG_POWER_MODE: the regulatory power mode for 6 GHz rules.
-+ *	Referenced from &enum nl80211_regulatory_power_modes
-  * @NL80211_REG_RULE_ATTR_MAX: highest regulatory rule attribute number
-  *	currently defined
-  * @__NL80211_REG_RULE_ATTR_AFTER_LAST: internal use
-@@ -4377,6 +4379,8 @@ enum nl80211_reg_rule_attr {
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 0120a520c58e..2f11b2451efe 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -903,6 +903,31 @@ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
+ 			     struct ieee80211_channel *channel,
+ 			     enum nl80211_channel_type chantype);
  
- 	NL80211_ATTR_POWER_RULE_PSD,
- 
-+	NL80211_ATTR_REG_POWER_MODE,
++/**
++ * cfg80211_6ghz_channel_identical - check if two 6 GHz channel definitions are
++ *				     identical
++ * @channel1: first channel definition
++ * @channel2: second channel definition
++ *
++ * Return: %true if the channels are identical except for the flags and power
++ * related settings, %false otherwise.
++ */
++static inline bool
++cfg80211_6ghz_channel_identical(struct ieee80211_channel *channel1,
++				struct ieee80211_channel *channel2)
++{
++	if (!channel1 || !channel2)
++		return false;
 +
- 	/* keep last */
- 	__NL80211_REG_RULE_ATTR_AFTER_LAST,
- 	NL80211_REG_RULE_ATTR_MAX = __NL80211_REG_RULE_ATTR_AFTER_LAST - 1
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 042035f26e9f..cdb26aac24d1 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -8481,6 +8481,13 @@ static int nl80211_put_regdom(const struct ieee80211_regdomain *regdom,
- 				reg_rule->dfs_cac_ms))
- 			goto nla_put_failure;
- 
-+		/* Put power mode as well if its a 6 GHz reg rule */
-+		if (freq_range->start_freq_khz >= MHZ_TO_KHZ(5925) &&
-+		    freq_range->end_freq_khz <= MHZ_TO_KHZ(7125) &&
-+		    nla_put_u8(msg, NL80211_ATTR_REG_POWER_MODE,
-+			       reg_rule->power_mode))
-+			goto nla_put_failure;
++	if (channel1->band == channel2->band &&
++	    channel1->band != NL80211_BAND_6GHZ)
++		return false;
 +
- 		if ((reg_rule->flags & NL80211_RRF_PSD) &&
- 		    nla_put_s8(msg, NL80211_ATTR_POWER_RULE_PSD,
- 			       reg_rule->psd))
-@@ -8660,6 +8667,10 @@ static const struct nla_policy reg_rule_policy[NL80211_REG_RULE_ATTR_MAX + 1] =
- 	[NL80211_ATTR_POWER_RULE_MAX_EIRP]	= { .type = NLA_U32 },
- 	[NL80211_ATTR_DFS_CAC_TIME]		= { .type = NLA_U32 },
- 	[NL80211_ATTR_POWER_RULE_PSD]		= { .type = NLA_S8 },
-+	[NL80211_ATTR_REG_POWER_MODE]		=
-+			  NLA_POLICY_RANGE(NLA_U8,
-+					   NL80211_REG_PWR_MODE_AP_LPI,
-+					   NL80211_REG_PWR_MODE_MAX - 1),
- };
- 
- static int parse_reg_rule(struct nlattr *tb[],
-@@ -8707,6 +8718,15 @@ static int parse_reg_rule(struct nlattr *tb[],
- 		reg_rule->dfs_cac_ms =
- 			nla_get_u32(tb[NL80211_ATTR_DFS_CAC_TIME]);
- 
-+	if (freq_range->start_freq_khz >= MHZ_TO_KHZ(5925) &&
-+	    freq_range->end_freq_khz <= MHZ_TO_KHZ(7125)) {
-+		if (!tb[NL80211_ATTR_REG_POWER_MODE])
-+			return -EINVAL;
++	return (channel1->band == channel2->band &&
++		channel1->center_freq == channel2->center_freq &&
++		channel1->freq_offset == channel2->freq_offset);
++}
 +
-+		reg_rule->power_mode =
-+			nla_get_u8(tb[NL80211_ATTR_REG_POWER_MODE]);
-+	}
+ /**
+  * cfg80211_chandef_identical - check if two channel definitions are identical
+  * @chandef1: first channel definition
+@@ -915,11 +940,17 @@ static inline bool
+ cfg80211_chandef_identical(const struct cfg80211_chan_def *chandef1,
+ 			   const struct cfg80211_chan_def *chandef2)
+ {
+-	return (chandef1->chan == chandef2->chan &&
+-		chandef1->width == chandef2->width &&
+-		chandef1->center_freq1 == chandef2->center_freq1 &&
+-		chandef1->freq1_offset == chandef2->freq1_offset &&
+-		chandef1->center_freq2 == chandef2->center_freq2);
++	bool same_chan = chandef1->chan == chandef2->chan;
++	bool same_chand_def_prop = chandef1->width == chandef2->width &&
++				   chandef1->center_freq1 == chandef2->center_freq1 &&
++				   chandef1->freq1_offset == chandef2->freq1_offset &&
++				   chandef1->center_freq2 == chandef2->center_freq2;
 +
- 	return 0;
++	if (!same_chan)
++		same_chan = cfg80211_6ghz_channel_identical(chandef1->chan,
++							    chandef2->chan);
++
++	return (same_chan && same_chand_def_prop);
  }
  
+ /**
 -- 
 2.17.1
 
