@@ -2,131 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD796BA86D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 07:52:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F47F6BA8C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 08:11:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbjCOGwJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 02:52:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45650 "EHLO
+        id S231201AbjCOHLQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 03:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230516AbjCOGwH (ORCPT
+        with ESMTP id S230421AbjCOHLP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 02:52:07 -0400
-Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9F149F9;
-        Tue, 14 Mar 2023 23:51:40 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id CD97C2B06874;
-        Wed, 15 Mar 2023 02:50:50 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 15 Mar 2023 02:50:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1678863050; x=1678870250; bh=34
-        HZu+QxANz64sdbgwEEpIKdNrBPFX/SLnskCihCx9g=; b=unXcXrb2R6W7Z/T5+H
-        tMkGplkj2HQfMVCWlZ4qdsD6UMCC8j6hbZ86GSAyx9JV1oe9yh+Xi0uTRv34ZFUF
-        yAZ1M3xXUsa48KQyWcU3jhGmuJayYagKJT1Pjjpy89OfwZ1y0ua62Zn6cgUAQYDj
-        VmEveQlSrd84prvEaadeJpixg1ckgmYiCc+L8YySuyuEhe1NC22kq4HH3xFJEhpB
-        Sp9jh16UMtCsy/yflnuj/72bHoNm0cg3SEA0F5fDPqMOjG0q0Gmsrh3KgQguS8q4
-        HuVI0nP+MO1x5XDO2J4gsoGPSDurJCucxOWtAVcBShEvLgssnJi7e8nTyT6fgGvO
-        fz+w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1678863050; x=1678870250; bh=34HZu+QxANz64
-        sdbgwEEpIKdNrBPFX/SLnskCihCx9g=; b=KkfnFcijOHmLiTuw04qroNmj+oREf
-        eVpdL51Swqq29NElAH2GOqsRliSE7KHrMchxo38l+c+htILMuPgkx/HGR04okJQl
-        qs9pPz8bWzo474r17cYW1mMpLWbp7ydjgFui3iAQQUGQ8X2g812XhXjW28LNKh8K
-        rDgoKsQM6++W5sU+h8AZua5eylDHSmM52KM7uRIUZbWE3QzHci1IYiDYXn46RA6u
-        a5zbVPhD5aw9f9QwtS6apjj6oPTALlkN9XjhfApltzEKXLxrIP6SzdFdhx6sSSIr
-        MbVcLe+ntGML5bRJHICQ+yNCcm9mEBNKwgbUIqDZhFpaDyxemFTl38sfw==
-X-ME-Sender: <xms:yWoRZEGlC2-UqnrfN9eEt2cdxX5uxwiff_5bEAVK_euuuY2RDQkoOQ>
-    <xme:yWoRZNXeT7x8qoi5aBjzyyLwpKkMmqQb-lbiA4ZoHPHUeO7OSMBhq9_3ozq0iPIif
-    8_eJAfQumVf6gak1wk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvjedgleekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:yWoRZOKW8Qn8HW1f5pi3t_kRoCkOTTg3_538hKkRmg4No2owXMQKhw>
-    <xmx:yWoRZGG2p6Jqd4xRgYewIqkYSwqQvWeDcqIWzPO5vefIUIk4lKyo1w>
-    <xmx:yWoRZKWR82osrjyHUSfRd3A4IMn8mO8Ea_2gnSayNB3hi_geFEArEg>
-    <xmx:ymoRZE3dnYOHZai1SW7l2Rw5DQMBaDYUk0sQjAa9yslbWB3Ycww7IxUSo4g>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 5987FB60086; Wed, 15 Mar 2023 02:50:49 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-221-gec32977366-fm-20230306.001-gec329773
-Mime-Version: 1.0
-Message-Id: <afee6a67-2406-4f52-99a2-ee7eb26e587b@app.fastmail.com>
-In-Reply-To: <57c42604-38b0-61ce-2fc4-2284fbb9d708@linaro.org>
+        Wed, 15 Mar 2023 03:11:15 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A4BD524
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 00:11:12 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id w9so841201edc.3
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 00:11:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678864270;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RJKjy9eK5wZQcLG5fFeMeaK9idc1WueAlGl5cn4lHVQ=;
+        b=Bsyq91aeeTKsmlxTlYJI010C+B/lkrmiPlzr++t5RiGJkiL9FWgJQAMu4ndc0dD+qt
+         bEyp1MWTUlzNQHtaC2+56g8+iWouWBuRidMKrm2RUOdt6+3iAfCmPd6IY+SP59Fp+coY
+         oZkjnHSaUlA6DtLSvwYNivKPiKWBC8j52WMFZiitR7bz62y11hQ1c2IrhCXVGnLV1NwZ
+         zQHiswP6WArtrzrbxtmHYCe5SCUCGS9tYVy6SGZMoBXzxjg62E/GdCHaqDufA0ieDEM5
+         EOKs7EC6GXQNpkpvS50aAVqarob3qGI1wwL8dt7TT5vv9io2zPkKrG01Hwg9AmHHoxb8
+         iqBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678864270;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RJKjy9eK5wZQcLG5fFeMeaK9idc1WueAlGl5cn4lHVQ=;
+        b=ovGTZwujQgwZeaPJmBTpDQ5qmNv71+74Hi6h4IkSDmqfhxESiXb8g/3CbPzZACQH9n
+         wUa7g4+jvWUBNgxcr+rsRUDABswU6PiDuogfq/47HrlE1cc9B1gjwkiGYb1CHz+lkVD6
+         QVkX5+0xEswbXOo5+1quqjw4L4YUlEHi1wZSUCIfwKyHsyChcqLK+FFoTt2ivnRPHzNr
+         MbJcuVn05WBy7pkRjTe3/iV2hN5anofg+E1MbGwHFKfaTeLcuVxN6VwVi86YiY5qx7pc
+         djZdv04m85hjx8Werr1lQNX4fCDmkQlPtNPaaL6X8q1O3yyv03bk2uZP2KyRHuGgOF5u
+         fh4Q==
+X-Gm-Message-State: AO0yUKWH+UXeta5BFogJn3XCWZ1WTj6jEbgCfU2F9bXyTpy+ka2wFeuL
+        fLiLy41R+pM835RX5tBnEJfHjA==
+X-Google-Smtp-Source: AK7set/qDWN5EGtvyO4q718AHYQ/mq+PNb2Tfe4xtM7aMrCVi4QxJZNgnoNyQ52prNArRS2/pT1mwg==
+X-Received: by 2002:a05:6402:453:b0:4ea:a9b0:a518 with SMTP id p19-20020a056402045300b004eaa9b0a518mr1200057edw.17.1678864270104;
+        Wed, 15 Mar 2023 00:11:10 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:940e:8615:37dc:c2bd? ([2a02:810d:15c0:828:940e:8615:37dc:c2bd])
+        by smtp.gmail.com with ESMTPSA id u14-20020a50a40e000000b004bbb691a334sm1960301edb.2.2023.03.15.00.11.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Mar 2023 00:11:09 -0700 (PDT)
+Message-ID: <19ca470e-8219-5ba9-3de6-f4560278f87b@linaro.org>
+Date:   Wed, 15 Mar 2023 08:11:07 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] p54spi: convert to devicetree
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Felipe Balbi <balbi@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
 References: <20230314163201.955689-1-arnd@kernel.org>
  <4ac809d2-3924-3839-479f-0b4be9f18a1f@linaro.org>
  <e19fd8bc-5944-409d-a4a1-3a3d53691634@app.fastmail.com>
  <57c42604-38b0-61ce-2fc4-2284fbb9d708@linaro.org>
-Date:   Wed, 15 Mar 2023 07:50:28 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Arnd Bergmann" <arnd@kernel.org>,
-        "Christian Lamparter" <chunkeey@googlemail.com>,
-        "Kalle Valo" <kvalo@kernel.org>
-Cc:     "Linus Walleij" <linus.walleij@linaro.org>,
-        "Bartosz Golaszewski" <brgl@bgdev.pl>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Tony Lindgren" <tony@atomide.com>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Felipe Balbi" <balbi@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] p54spi: convert to devicetree
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+ <afee6a67-2406-4f52-99a2-ee7eb26e587b@app.fastmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <afee6a67-2406-4f52-99a2-ee7eb26e587b@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 15, 2023, at 07:32, Krzysztof Kozlowski wrote:
-> On 14/03/2023 22:40, Arnd Bergmann wrote:
->
->>>> +
->>>> +  power-gpios:
+On 15/03/2023 07:50, Arnd Bergmann wrote:
+> On Wed, Mar 15, 2023, at 07:32, Krzysztof Kozlowski wrote:
+>> On 14/03/2023 22:40, Arnd Bergmann wrote:
+>>
+>>>>> +
+>>>>> +  power-gpios:
+>>>>
+>>>> If this is GPIO driving some power pin, then it should be
+>>>> "powerdown-gpios" (like in /bindings/gpio/gpio-consumer-common.yaml)
 >>>
->>> If this is GPIO driving some power pin, then it should be
->>> "powerdown-gpios" (like in /bindings/gpio/gpio-consumer-common.yaml)
->> 
->> As far as I can tell, it's the opposite: the gpio turns the power on
->> in 'high' state. I could make it GPIO_ACTIVE_LOW and call it powerdown,
->> if you think that's better, but I don't think that is how it was
->> meant.
->
-> Whether this is active low or high, I think does not matter. If this is
-> pin responsible to control the power, then we use the name
-> "powerdown-gpios". Effectively powerup GPIO is the same as powerdown,
-> just reversed.
+>>> As far as I can tell, it's the opposite: the gpio turns the power on
+>>> in 'high' state. I could make it GPIO_ACTIVE_LOW and call it powerdown,
+>>> if you think that's better, but I don't think that is how it was
+>>> meant.
+>>
+>> Whether this is active low or high, I think does not matter. If this is
+>> pin responsible to control the power, then we use the name
+>> "powerdown-gpios". Effectively powerup GPIO is the same as powerdown,
+>> just reversed.
+> 
+> Ok, so should I make this GPIO_ACTIVE_LOW and adapt the patch to
+> call it powerdown in both the code and dt for consistency?
 
-Ok, so should I make this GPIO_ACTIVE_LOW and adapt the patch to
-call it powerdown in both the code and dt for consistency?
+If you have schematics (or datasheet) then this should reflect truth. If
+not, then judging by the old code it is something like powerdown, so yes
+- ACTIVE_LOW and reverse values in the code.
 
-      Arnd
+Best regards,
+Krzysztof
+
