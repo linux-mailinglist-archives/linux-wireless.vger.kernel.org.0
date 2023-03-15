@@ -2,244 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E1F6BAA99
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4DEF6BAACE
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 09:31:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjCOISb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 04:18:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        id S231521AbjCOIbt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 04:31:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230293AbjCOIS3 (ORCPT
+        with ESMTP id S231381AbjCOIbs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 04:18:29 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18321C163
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:18:28 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id p6so19262254plf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678868307;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vLfoTlbAo5jcQ6X2/SF0xxvTQO4Wt5qY3k91cC+sQqw=;
-        b=B5a0eNeX40LWPowEKVW/CluA5to6/jpRTgi/jhL/2R0tt+l/NxJmJorqsKCvsSXjBY
-         OOZW+9YWYzU1Gs+yqeRVpblxh8+13Yfb3NkRdsBGXSS2DBvpfc0+TI0kJG0OcFWRSCFS
-         E9ohaHCOyFlNYtygRmShZWEUfO3q0SJGHhkAyelZe6nbkeda5Phlhf6PvTo9unLHv2L0
-         zdYKYhCGif0BwYj36Z9r7axxO2gyUkVy13V+8oUUQvgrNiTuOB4h/hg1dIXOCq0jAU1N
-         oEF+ueFxH9ZY4CUkEUWIVRrpVtbdbqBgFBDK+T/fDhzKcjJtKH2BwWOaP88tkYrQ8fDE
-         q+4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678868307;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vLfoTlbAo5jcQ6X2/SF0xxvTQO4Wt5qY3k91cC+sQqw=;
-        b=X+YbZ4kWyRhqjj5qEPZluZ+Ct+1S6PtgQGldHV+UdRyAVjuGqZhGXx9x41QxJ4km2+
-         5MyOstVqwoR1OIhFZYo+gzAGU1SKh5tSKB00Y/qAkMBqvyT+rj9FWVDJVnFP6fMvSQHQ
-         r/7lEq7fecvexCYm8NrNHtwavyl+y5WmxHwY/06XY8UDNkkEZVdGvnl+KSXqCFThMouW
-         d6bxTk2/YTQ7llepttnk/ZyYcLV1VBrgzYeR+LBPmrbf8HrmXxdo0+ICggLDhNjyg2u2
-         LjBva1ks3Ah1J4WhZRJiEfG3wsubZMtgpOL/XZPK+QOCXLWd2pAVnLFGyZq+BecwnCGI
-         f0Zw==
-X-Gm-Message-State: AO0yUKX7SUsRdCGIrMY5c+u3sFu6+zNjK4KczWj4O/rEBcAtgghf+8kZ
-        XRN6rTN5rRrkyUSZaVW6AGpTvv3LKSqtKN8XVA==
-X-Google-Smtp-Source: AK7set9nq0rU9SIcIZvJnGD3+aES4Bd8l19cmFTdbVWu5f5V8XZe07f2/PJcfSHIS1E+7Gn+w9O1jA==
-X-Received: by 2002:a17:90a:cb8e:b0:23d:35cf:44be with SMTP id a14-20020a17090acb8e00b0023d35cf44bemr5027663pju.6.1678868307439;
-        Wed, 15 Mar 2023 01:18:27 -0700 (PDT)
-Received: from thinkpad ([117.217.182.35])
-        by smtp.gmail.com with ESMTPSA id o10-20020a17090a678a00b00230b8402760sm759365pjj.38.2023.03.15.01.18.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Mar 2023 01:18:26 -0700 (PDT)
-Date:   Wed, 15 Mar 2023 13:48:20 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     mhi@lists.linux.dev, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mhi: allow MHI client drivers to provide the
- firmware via a pointer
-Message-ID: <20230315081820.GD25575@thinkpad>
-References: <20230308152522.6728-1-kvalo@kernel.org>
- <20230308152522.6728-2-kvalo@kernel.org>
+        Wed, 15 Mar 2023 04:31:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E75DB65476
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 01:31:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9B820B81C69
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 08:31:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 956B6C4339B;
+        Wed, 15 Mar 2023 08:31:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678869105;
+        bh=YOtQSr3wH0b1PycI4IU9Z9cc/Y20y7AOIAY/lJzq1go=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bVo/nbjlvNI8CVJ0U9z4eCZ4cNiCAdSogOWLsm4mAhecpF0MxM2DDYHZ866O3gcLZ
+         ooWOvKUen+8X4K/4rzd9fvfl4wxiRDx03NzcVwqcUI1f1uzNWn9Pyp2DZgHoolESiF
+         uDrNUhGbrHGCzYGFiIK4bqELzpYtudHb8WUSr5TgCfiiw3+ezLQOrmpc433xZpLXeF
+         qn2ivSb96WoYeT5eqX40veDFf4dixqYBEQuewwrlBhs7H5rS7QyZO8xkWLkp/9m5/A
+         85iMt7ucmy6dwI7kosZGcBkCLjtpVXQstFxSutf6mE3jr6yz5/4zfsrq0LyzdtBsYw
+         ACHfv/IH2Hfog==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 1/5] wifi: rtw89: 8852c: add beacon filter and CQM support
+References: <20230310034631.45299-1-pkshih@realtek.com>
+        <20230310034631.45299-2-pkshih@realtek.com>
+Date:   Wed, 15 Mar 2023 10:31:41 +0200
+In-Reply-To: <20230310034631.45299-2-pkshih@realtek.com> (Ping-Ke Shih's
+        message of "Fri, 10 Mar 2023 11:46:27 +0800")
+Message-ID: <87zg8emn4i.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230308152522.6728-2-kvalo@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 08, 2023 at 05:25:20PM +0200, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Subject prefix should be: "bus: mhi: host: ..."
+> From: Po-Hao Huang <phhuang@realtek.com>
+>
+> Adding this supports beacon filter and connection quality monitor.
+> To make host CPU wake up less, let firmware perform signal
+> monitoring and beacon processing, then notify driver upon signal
+> changes or beacon loss.
+>
+> This feature needs firmware 0.27.56 or newer to support it.
+>
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-> Currently MHI loads the firmware image from the path provided by client
-> devices. ath11k needs to support firmware image embedded along with meta data
-> (named as firmware-2.bin). So allow the client driver to request the firmware
-> file from user space on it's own and provide the firmware image data and size
-> to MHI via a pointer struct mhi_controller::fw_data.
-> 
-> This is an optional feature, if fw_data is NULL MHI load the firmware using the
-> name from struct mhi_controller::fw_image string as before.
-> 
-> Tested with ath11k and WCN6855 hw2.0.
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> ---
->  drivers/bus/mhi/host/boot.c | 28 +++++++++++++++++++---------
->  include/linux/mhi.h         |  6 ++++++
->  2 files changed, 25 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
-> index 1c69feee1703..5e6e1e340057 100644
-> --- a/drivers/bus/mhi/host/boot.c
-> +++ b/drivers/bus/mhi/host/boot.c
-> @@ -365,12 +365,10 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
->  }
->  
->  static void mhi_firmware_copy(struct mhi_controller *mhi_cntrl,
-> -			      const struct firmware *firmware,
-> +			      const u8 *buf, size_t remainder,
->  			      struct image_info *img_info)
->  {
-> -	size_t remainder = firmware->size;
->  	size_t to_cpy;
-> -	const u8 *buf = firmware->data;
->  	struct mhi_buf *mhi_buf = img_info->mhi_buf;
->  	struct bhi_vec_entry *bhi_vec = img_info->bhi_vec;
->  
-> @@ -392,9 +390,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	const struct firmware *firmware = NULL;
->  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
->  	const char *fw_name;
-> +	const u8 *fw_data;
->  	void *buf;
->  	dma_addr_t dma_addr;
-> -	size_t size;
-> +	size_t size, fw_sz;
->  	int i, ret;
->  
->  	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
-> @@ -424,6 +423,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	fw_name = (mhi_cntrl->ee == MHI_EE_EDL) ?
->  		mhi_cntrl->edl_image : mhi_cntrl->fw_image;
->  
+[...]
 
-Can you please add a comment here?
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -1438,6 +1438,8 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
+>  	struct rtw89_rx_desc_info *desc_info = iter_data->desc_info;
+>  	struct sk_buff *skb = iter_data->skb;
+>  	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+> +	struct rtw89_rx_phy_ppdu *phy_ppdu =
+> +		(struct rtw89_rx_phy_ppdu *)iter_data->phy_ppdu;
 
-> +	if (!fw_name && mhi_cntrl->fbc_download &&
-> +	    mhi_cntrl->fw_data && mhi_cntrl->fw_sz) {
-> +		size = mhi_cntrl->sbl_size;
+Why the cast? I don't think it's needed.
 
-Don't you need to validate sbl_size?
-
-> +		fw_data = mhi_cntrl->fw_data;
-> +		fw_sz = mhi_cntrl->fw_sz;
-> +		goto skip_req_fw;
-> +	}
-> +
->  	if (!fw_name || (mhi_cntrl->fbc_download && (!mhi_cntrl->sbl_size ||
->  						     !mhi_cntrl->seg_len))) {
->  		dev_err(dev,
-> @@ -443,6 +450,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	if (size > firmware->size)
->  		size = firmware->size;
+> @@ -3181,6 +3204,15 @@ static inline struct rtw89_fw_c2h_attr *RTW89_SKB_C2H_CB(struct sk_buff *skb)
+>  #define RTW89_GET_MAC_C2H_REV_ACK_H2C_SEQ(c2h) \
+>  	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
 >  
-> +	fw_data = firmware->data;
-> +	fw_sz = firmware->size;
-> +
-> +skip_req_fw:
->  	buf = dma_alloc_coherent(mhi_cntrl->cntrl_dev, size, &dma_addr,
->  				 GFP_KERNEL);
->  	if (!buf) {
-> @@ -451,7 +462,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	}
->  
->  	/* Download image using BHI */
-> -	memcpy(buf, firmware->data, size);
-> +	memcpy(buf, fw_data, size);
->  	ret = mhi_fw_load_bhi(mhi_cntrl, dma_addr, size);
->  	dma_free_coherent(mhi_cntrl->cntrl_dev, size, buf, dma_addr);
->  
-> @@ -463,7 +474,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	}
->  
->  	/* Wait for ready since EDL image was loaded */
-> -	if (fw_name == mhi_cntrl->edl_image) {
-> +	if (fw_name && fw_name == mhi_cntrl->edl_image) {
->  		release_firmware(firmware);
->  		goto fw_load_ready_state;
->  	}
-> @@ -477,15 +488,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	 * device transitioning into MHI READY state
->  	 */
->  	if (mhi_cntrl->fbc_download) {
-> -		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image,
-> -					   firmware->size);
-> +		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
->  		if (ret) {
->  			release_firmware(firmware);
->  			goto error_fw_load;
->  		}
->  
->  		/* Load the firmware into BHIE vec table */
-> -		mhi_firmware_copy(mhi_cntrl, firmware, mhi_cntrl->fbc_image);
-> +		mhi_firmware_copy(mhi_cntrl, fw_data, fw_sz, mhi_cntrl->fbc_image);
->  	}
->  
->  	release_firmware(firmware);
-> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-> index a5441ad33c74..72eef7309736 100644
-> --- a/include/linux/mhi.h
-> +++ b/include/linux/mhi.h
-> @@ -299,6 +299,10 @@ struct mhi_controller_config {
->   * @iova_start: IOMMU starting address for data (required)
->   * @iova_stop: IOMMU stop address for data (required)
->   * @fw_image: Firmware image name for normal booting (optional)
-> + * @fw_data: Firmware image data content for normal booting, used only
-> + *           if fw_image is NULL (optional)
-> + * @fw_sz: Firmware image data size for normal booting, used only if fw_image
-> + *         is NULL and fbc_download is true (optional)
->   * @edl_image: Firmware image name for emergency download mode (optional)
->   * @rddm_size: RAM dump size that host should allocate for debugging purpose
->   * @sbl_size: SBL image size downloaded through BHIe (optional)
-> @@ -384,6 +388,8 @@ struct mhi_controller {
->  	dma_addr_t iova_start;
->  	dma_addr_t iova_stop;
->  	const char *fw_image;
-> +	const u8 *fw_data;
-> +	size_t fw_sz;
+> +#define RTW89_GET_MAC_BCNFLTR_RPT_MACID(c2h) \
+> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(7, 0))
+> +#define RTW89_GET_MAC_BCNFLTR_RPT_TYPE(c2h) \
+> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(9, 8))
+> +#define RTW89_GET_MAC_BCNFLTR_RPT_EVENT(c2h) \
+> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(11, 10))
+> +#define RTW89_GET_MAC_BCNFLTR_RPT_MA(c2h) \
+> +	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
 
-Even though these members are not creating holes now, shuffling the datatypes
-will create holes in the future. So I always prefer to keep the struct members
-sorted in the below order:
+I have to admit that I every time I see this code pattern it makes me
+regret it. Something like what Arnd proposed back in the day would look
+so much cleaner:
 
-pointer
-struct/union
-u64
-u32
-u16
-u8
-bool
+https://lore.kernel.org/all/CAK8P3a1rsKZZKMKFTDWgE3usX9gYKJqUvTMxSdEuZrp8BaKdaA@mail.gmail.com/
 
-Thanks,
-Mani
-
->  	const char *edl_image;
->  	size_t rddm_size;
->  	size_t sbl_size;
-> -- 
-> 2.30.2
-> 
-> 
+Of course this is just a generic comment about rtw89, and has nothing to
+do with this patchset, but it would be great if someone could take a
+look and try out Arnd's proposal. It would be good to start with just
+one or two commands and send that as an RFC to see how it looks like.
 
 -- 
-மணிவண்ணன் சதாசிவம்
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
