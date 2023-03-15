@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5972E6BB49D
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 14:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E86C36BB49E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 14:29:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjCON3h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 09:29:37 -0400
+        id S232109AbjCON3l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 09:29:41 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231993AbjCON3e (ORCPT
+        with ESMTP id S232005AbjCON3h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 09:29:34 -0400
+        Wed, 15 Mar 2023 09:29:37 -0400
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD8B8A393
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 06:29:32 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32FAMMQ0011262;
-        Wed, 15 Mar 2023 13:29:30 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934AB7280
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 06:29:34 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32FCoUIe002631;
+        Wed, 15 Mar 2023 13:29:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=qcppdkim1;
- bh=I8rwVTOOSK+Lnr6Kakn0cBE0/dyTUJG/gx/+vxsbcgQ=;
- b=XZImzfhrya1tzC3I2Bz/k8rR5BjDn2bgeG5Vbn45NjcJevsvqpSinTStE05zce7f7t0K
- 4Mj5zdJOkaUUcsEHo5/J03DdmQRrrFAxy3oyP9fGTF4RV88QXQZ4lAW8Ze/GVQ6jEQNY
- FsDiMGT/ooel6hAkFo6H3hpblYKsu3yDW86+g4Wyyqx9VYHd7P7HpePUT+Y2TIGWTdeA
- K6Feu6R834nEsc9KjOoh+jPNMi89t7Bf2E5RjIykJE6LLxrK8n/Whfbre278aHCY4S9u
- orwZIEqC6bbEQ99Mvx1cPvCOPhlgRcb015/OJzjQ9IUV59CWE1hKldRaUx7wCKNl85wW jA== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pb2cr1nvr-1
+ bh=SdclsZLWQSbZgChifUPbYLVn0iNzw/yF9D3DEQ9DctE=;
+ b=gV6Upw9gvIzpj1RtWVz+uRxNYq0xouU2rVstJkB3eEilaMgGblPVkteT6cE73bo+vGkT
+ WeJdXjK+nAnOCLLDq9C6V1rVBO8bJbipz5N5gi4HC0QI4UrfqbDCPFBzVkZFucE6ocpt
+ qN3TB5HilYRiSheRw96d2FG1hl6kNYg2Z1yHd/VYp/IxmhFx+nXULLbUiYkaoGSD4jmR
+ JNp8eVL01B0MeHhrO7u4gQ6Svh1809KFCOI5KeyHBhgy8A1Q2AXHqO+ROP79MNdyEkUq
+ tp5oDP76ZoEMrZ6WZqDUH027WcFs6ablyxF8Z+ysOgmulCbWEs03Zbc4MqKSjJxYXbuZ Rw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pbeceg3t9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Mar 2023 13:29:29 +0000
+        Wed, 15 Mar 2023 13:29:31 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32FDTSq3018233
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32FDTUOD029367
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Mar 2023 13:29:28 GMT
+        Wed, 15 Mar 2023 13:29:30 GMT
 Received: from adisi-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Wed, 15 Mar 2023 06:29:27 -0700
+ 15.2.986.41; Wed, 15 Mar 2023 06:29:28 -0700
 From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
 To:     <johannes@sipsolutions.net>
 CC:     <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH v3 4/9] wifi: cfg80211: add NL command to set 6 GHz power mode
-Date:   Wed, 15 Mar 2023 18:58:59 +0530
-Message-ID: <20230315132904.31779-5-quic_adisi@quicinc.com>
+Subject: [PATCH v3 5/9] wifi: mac80211: add support for 6 GHz channels and regulatory
+Date:   Wed, 15 Mar 2023 18:59:00 +0530
+Message-ID: <20230315132904.31779-6-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230315132904.31779-1-quic_adisi@quicinc.com>
 References: <20230315132904.31779-1-quic_adisi@quicinc.com>
@@ -56,15 +56,15 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: KMsELZ4p07IlJOpowfBX7aYC3SbkCSGE
-X-Proofpoint-GUID: KMsELZ4p07IlJOpowfBX7aYC3SbkCSGE
+X-Proofpoint-ORIG-GUID: lwhgDnOx1pNStPFF_SGgpIsou5W3sYCj
+X-Proofpoint-GUID: lwhgDnOx1pNStPFF_SGgpIsou5W3sYCj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-03-15_06,2023-03-15_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 phishscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 impostorscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 malwarescore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 mlxscore=0 spamscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2302240000 definitions=main-2303150114
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
@@ -75,220 +75,320 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-6 GHz introduces various power modes for access points and for clients.
-When user configures these power modes, currently cfg80211 does not
-have support to store the configured power mode.
+6 GHz introduces various power modes of operation. Currently, based
+on the power mode, channel's Power Spectral Density (PSD)  value as
+well as channel disabled flag can change. For single interface,
+current implementation works just fine. But for multi-interfaces, for
+example AP-STA concurrency, two different channel context needs to be
+maintained. This is because, STA power mode also depends on the AP's
+power mode it is going to associate with. Hence, PSD value and channel
+disabled flag might vary. In this case, same channel context cannot be
+used for both AP and STA.
 
-Add support to store the 6 GHz configured power mode in the structure
-wireless_dev via a new NL command - NL80211_CMD_SET_6GHZ_POWER_MODE.
+Therefore, to support multiple channel space for each power mode, the
+6 GHz channels needs a separate storage space in struct
+ieee80211_supported_band. Because of this, the existing APIs to get the
+channel/freq from freq/channel will not work for 6 GHz band.
 
-The  above command uses a new NL attributes to set power mode for AP
-and client interfaces - NL80211_ATTR_6GHZ_REG_POWER_MODE.
+Add support to store all possible 6 GHz channel pools according to the
+power mode as well as add API support for getting chan/freq info from
+the new struct ieee80211_channel_6ghz.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- include/net/cfg80211.h       |  6 +++-
- include/uapi/linux/nl80211.h | 10 ++++++
- net/wireless/ap.c            |  2 ++
- net/wireless/nl80211.c       | 66 +++++++++++++++++++++++++++++++++++-
- net/wireless/sme.c           |  2 ++
- 5 files changed, 84 insertions(+), 2 deletions(-)
+ include/net/cfg80211.h   | 31 ++++++++++++++++++++++++++++
+ include/net/regulatory.h |  1 +
+ net/mac80211/util.c      | 40 +++++++++++++++++++++++++++++++++++-
+ net/wireless/reg.c       | 44 ++++++++++++++++++++++++++++++++--------
+ net/wireless/util.c      | 27 ++++++++++++++++++++++++
+ 5 files changed, 134 insertions(+), 9 deletions(-)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 7bc9ff9c3f36..d8d78141bab6 100644
+index d8d78141bab6..fa2c0551e3da 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -5805,7 +5805,8 @@ static inline void wiphy_unlock(struct wiphy *wiphy)
-  * @unprot_beacon_reported: (private) timestamp of last
-  *	unprotected beacon report
-  * @links: array of %IEEE80211_MLD_MAX_NUM_LINKS elements containing @addr
-- *	@ap and @client for each link
-+ *	@ap and @client for each link. If link is 6 GHz link then uses
-+ *	@reg_6ghz_pwr_configured as well.
-  * @valid_links: bitmap describing what elements of @links are valid
-  */
- struct wireless_dev {
-@@ -5914,11 +5915,14 @@ struct wireless_dev {
- 			struct {
- 				unsigned int beacon_interval;
- 				struct cfg80211_chan_def chandef;
-+				enum ieee80211_ap_reg_power power_mode_6ghz;
- 			} ap;
- 			struct {
- 				struct cfg80211_internal_bss *current_bss;
-+				enum ieee80211_client_reg_power power_mode_6ghz;
- 			} client;
- 		};
-+		bool reg_6ghz_pwr_configured;
- 	} links[IEEE80211_MLD_MAX_NUM_LINKS];
- 	u16 valid_links;
+@@ -512,6 +512,21 @@ struct ieee80211_sta_s1g_cap {
+ 	u8 nss_mcs[5];
  };
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index eddccd491fc9..bff81489fa8a 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1309,6 +1309,8 @@
-  *	The number of peers that HW timestamping can be enabled for concurrently
-  *	is indicated by %NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS.
-  *
-+ * @NL80211_CMD_SET_6GHZ_POWER_MODE: Set 6 GHz power mode for the interface
+ 
++/**
++ * struct ieee80211_channel_6ghz - 6 GHz channel definitions
 + *
-  * @NL80211_CMD_MAX: highest used command number
-  * @__NL80211_CMD_AFTER_LAST: internal use
-  */
-@@ -1562,6 +1564,8 @@ enum nl80211_commands {
- 
- 	NL80211_CMD_SET_HW_TIMESTAMP,
- 
-+	NL80211_CMD_SET_6GHZ_POWER_MODE,
++ * This structure defines all the channels supported by the
++ * 6 GHz band.
++ *
++ * @channels: Array of channels the hardware can operate with
++ *      in 6 GHz band.
++ * @n_channels: Number of channels in @channels
++ */
++struct ieee80211_channel_6ghz {
++	struct ieee80211_channel *channels;
++	int n_channels;
++};
 +
- 	/* add new commands above here */
- 
- 	/* used to define NL80211_CMD_MAX below */
-@@ -2786,6 +2790,10 @@ enum nl80211_commands {
-  *	bit corresponds to the lowest 20 MHz channel. Each bit set to 1
-  *	indicates that the sub-channel is punctured. Higher 16 bits are
-  *	reserved.
-+ * @NL80211_ATTR_6GHZ_REG_POWER_MODE: Regulatory power mode for 6 GHz operation.
-+ *	This can be used for both AP and clients. Values are defined in
-+ *	&enum ieee80211_ap_reg_power and &enum ieee80211_client_reg_power.
-+ *	Therefore, iftype should be taken into consideration. u8 value.
+ /**
+  * struct ieee80211_supported_band - frequency band definition
   *
-  * @NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS: Maximum number of peers that HW
-  *	timestamping can be enabled for concurrently (u16), a wiphy attribute.
-@@ -3328,6 +3336,8 @@ enum nl80211_attrs {
- 	NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS,
- 	NL80211_ATTR_HW_TIMESTAMP_ENABLED,
- 
-+	NL80211_ATTR_6GHZ_REG_POWER_MODE,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-diff --git a/net/wireless/ap.c b/net/wireless/ap.c
-index 0962770303b2..b8e2d9466434 100644
---- a/net/wireless/ap.c
-+++ b/net/wireless/ap.c
-@@ -30,6 +30,8 @@ static int ___cfg80211_stop_ap(struct cfg80211_registered_device *rdev,
- 	if (!wdev->links[link_id].ap.beacon_interval)
- 		return -ENOENT;
- 
-+	wdev->links[link_id].reg_6ghz_pwr_configured = false;
-+
- 	err = rdev_stop_ap(rdev, dev, link_id);
- 	if (!err) {
- 		wdev->conn_owner_nlportid = 0;
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1e8fe560078f..36cb4574145c 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -809,6 +809,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 
- 	[NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS] = { .type = NLA_U16 },
- 	[NL80211_ATTR_HW_TIMESTAMP_ENABLED] = { .type = NLA_FLAG },
-+	[NL80211_ATTR_6GHZ_REG_POWER_MODE] = { .type = NLA_U8 },
- };
- 
- /* policy for the key attributes */
-@@ -16213,6 +16214,61 @@ static int nl80211_set_hw_timestamp(struct sk_buff *skb,
- 	return rdev_set_hw_timestamp(rdev, dev, &hwts);
+@@ -520,6 +535,7 @@ struct ieee80211_sta_s1g_cap {
+  *
+  * @channels: Array of channels the hardware can operate with
+  *	in this band.
++ * @channels_6ghz: Array of 6 GHz channels the hardware can operate with
+  * @band: the band this structure represents
+  * @n_channels: Number of channels in @channels
+  * @bitrates: Array of bitrates the hardware can operate with
+@@ -539,6 +555,8 @@ struct ieee80211_sta_s1g_cap {
+  */
+ struct ieee80211_supported_band {
+ 	struct ieee80211_channel *channels;
++	struct ieee80211_channel_6ghz
++			    *channels_6ghz[NL80211_REG_PWR_MODE_MAX];
+ 	struct ieee80211_rate *bitrates;
+ 	enum nl80211_band band;
+ 	int n_channels;
+@@ -6101,6 +6119,19 @@ ieee80211_get_channel(struct wiphy *wiphy, int freq)
+ 	return ieee80211_get_channel_khz(wiphy, MHZ_TO_KHZ(freq));
  }
  
-+static bool nl80211_6ghz_power_mode_is_valid(enum nl80211_iftype iftype,
-+					     u8 power_mode)
-+{
-+	/* For APs, referenced from enum ieee80211_ap_reg_power, and
-+	 * For clients, referenced from enum ieee80211_client_reg_power
-+	 */
-+	switch (iftype) {
-+	case NL80211_IFTYPE_AP:
-+		return ((power_mode >= IEEE80211_REG_LPI_AP) &&
-+			(power_mode <= IEEE80211_REG_AP_POWER_MAX));
-+	case NL80211_IFTYPE_STATION:
-+		return ((power_mode >= IEEE80211_REG_DEFAULT_CLIENT) &&
-+			(power_mode <= IEEE80211_REG_CLIENT_POWER_MAX));
++/**
++ * ieee80211_get_6ghz_channel_khz - get channel struct from wiphy for specified
++ *                                  frequency in 6 GHz band
++ *
++ * @wiphy: the struct wiphy to get the channel for
++ * @freq: the center frequency (in KHz) of the channel
++ * @power_mode: the power mode in which freq is to be operated
++ * Return: The channel struct from @wiphy at @freq.
++ */
++struct ieee80211_channel *
++ieee80211_get_6ghz_channel_khz(struct wiphy *wiphy, u32 freq,
++			       enum nl80211_regulatory_power_modes power_mode);
++
+ /**
+  * cfg80211_channel_is_psc - Check if the channel is a 6 GHz PSC
+  * @chan: control channel to check
+diff --git a/include/net/regulatory.h b/include/net/regulatory.h
+index c2bf0b39fd1e..93402ccf366c 100644
+--- a/include/net/regulatory.h
++++ b/include/net/regulatory.h
+@@ -221,6 +221,7 @@ struct ieee80211_reg_rule {
+ 	struct ieee80211_freq_range freq_range;
+ 	struct ieee80211_power_rule power_rule;
+ 	struct ieee80211_wmm_rule wmm_rule;
++	enum nl80211_regulatory_power_modes power_mode;
+ 	u32 flags;
+ 	u32 dfs_cac_ms;
+ 	bool has_wmm;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 1a28fe5cb614..9ddbc02571c1 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3676,6 +3676,9 @@ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
+ 	bool support_80_80, support_160, support_320;
+ 	u8 he_phy_cap, eht_phy_cap;
+ 	u32 freq;
++	enum ieee80211_ap_reg_power reg_6ghz_power_beacon, reg_6ghz_ap_power;
++	enum ieee80211_client_reg_power reg_6ghz_client_power;
++	enum nl80211_regulatory_power_modes reg_6ghz_power_final;
+ 
+ 	if (chandef->chan->band != NL80211_BAND_6GHZ)
+ 		return true;
+@@ -3718,6 +3721,39 @@ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
+ 		return false;
+ 	}
+ 
++	/* 6 GHz Power mode present in the beacon */
++	reg_6ghz_power_beacon = u8_get_bits(he_6ghz_oper->control,
++					    IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO);
++	switch (reg_6ghz_power_beacon) {
++	case IEEE80211_REG_LPI_AP:
++	case IEEE80211_REG_SP_AP:
++	case IEEE80211_REG_VLP_AP:
++		break;
 +	default:
++		sdata_info(sdata,
++			   "Invalid Regulatory Info subfield in HE 6 GHz operation, expect issues\n");
 +		return false;
 +	}
-+}
 +
-+static int nl80211_set_6ghz_power_mode(struct sk_buff *skb,
-+				       struct genl_info *info)
-+{
-+	struct net_device *netdev = info->user_ptr[1];
-+	struct wireless_dev *wdev = netdev->ieee80211_ptr;
-+	enum nl80211_iftype iftype = wdev->iftype;
-+	unsigned int link_id = nl80211_link_id(info->attrs);
-+	u8 power_mode;
-+
-+	if (iftype != NL80211_IFTYPE_AP &&
-+	    iftype != NL80211_IFTYPE_STATION)
-+		return -EOPNOTSUPP;
-+
-+	if (!info->attrs[NL80211_ATTR_6GHZ_REG_POWER_MODE])
-+		return -EINVAL;
-+
-+	power_mode = nla_get_u8(info->attrs[NL80211_ATTR_6GHZ_REG_POWER_MODE]);
-+	if (!nl80211_6ghz_power_mode_is_valid(iftype, power_mode))
-+		return -EINVAL;
-+
-+	wdev_lock(wdev);
-+	if (wdev->links[link_id].reg_6ghz_pwr_configured) {
-+		wdev_unlock(wdev);
-+		return -EALREADY;
++	/* For AP/AP_VLAN/MESH_POINT interfaces, the 6 GHz power mode depends on the
++	 * mode configured by user (LPI/SP/VLP). For other interfaces (for ex STA)
++	 * mode depends on the power mode present in beacon as well as power mode
++	 * configured by the user for that interface
++	 */
++	if (iftype == NL80211_IFTYPE_AP || iftype == NL80211_IFTYPE_AP_VLAN ||
++	    iftype == NL80211_IFTYPE_MESH_POINT) {
++		reg_6ghz_ap_power =
++			sdata->wdev.links[bss_conf->link_id].ap.power_mode_6ghz;
++		reg_6ghz_power_final =
++			ieee80211_ap_reg_power_to_reg_power_mode(reg_6ghz_ap_power);
++	} else {
++		reg_6ghz_client_power =
++			sdata->wdev.links[bss_conf->link_id].client.power_mode_6ghz;
++		reg_6ghz_power_final =
++		     ieee80211_client_reg_power_to_reg_power_mode(reg_6ghz_client_power,
++								  reg_6ghz_power_beacon);
 +	}
 +
-+	if (iftype == NL80211_IFTYPE_AP)
-+		wdev->links[link_id].ap.power_mode_6ghz = power_mode;
-+	else
-+		wdev->links[link_id].client.power_mode_6ghz = power_mode;
-+
-+	wdev->links[link_id].reg_6ghz_pwr_configured = true;
-+
-+	wdev_unlock(wdev);
-+	return 0;
-+}
-+
- #define NL80211_FLAG_NEED_WIPHY		0x01
- #define NL80211_FLAG_NEED_NETDEV	0x02
- #define NL80211_FLAG_NEED_RTNL		0x04
-@@ -17393,6 +17449,14 @@ static const struct genl_small_ops nl80211_small_ops[] = {
- 		.flags = GENL_UNS_ADMIN_PERM,
- 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP),
- 	},
-+	{
-+		.cmd = NL80211_CMD_SET_6GHZ_POWER_MODE,
-+		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.doit = nl80211_set_6ghz_power_mode,
-+		.flags = GENL_UNS_ADMIN_PERM,
-+		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV |
-+					 NL80211_FLAG_MLO_VALID_LINK_ID),
-+	},
- };
+ 	/*
+ 	 * The EHT operation IE does not contain the primary channel so the
+ 	 * primary channel frequency should be taken from the 6 GHz operation
+@@ -3725,7 +3761,9 @@ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
+ 	 */
+ 	freq = ieee80211_channel_to_frequency(he_6ghz_oper->primary,
+ 					      NL80211_BAND_6GHZ);
+-	he_chandef.chan = ieee80211_get_channel(sdata->local->hw.wiphy, freq);
++	he_chandef.chan = ieee80211_get_6ghz_channel_khz(sdata->local->hw.wiphy,
++							 MHZ_TO_KHZ(freq),
++							 reg_6ghz_power_final);
  
- static struct genl_family nl80211_fam __ro_after_init = {
-@@ -17409,7 +17473,7 @@ static struct genl_family nl80211_fam __ro_after_init = {
- 	.n_ops = ARRAY_SIZE(nl80211_ops),
- 	.small_ops = nl80211_small_ops,
- 	.n_small_ops = ARRAY_SIZE(nl80211_small_ops),
--	.resv_start_op = NL80211_CMD_REMOVE_LINK_STA + 1,
-+	.resv_start_op = NL80211_CMD_SET_6GHZ_POWER_MODE + 1,
- 	.mcgrps = nl80211_mcgrps,
- 	.n_mcgrps = ARRAY_SIZE(nl80211_mcgrps),
- 	.parallel_ops = true,
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 28ce13840a88..5ccc371fdfaf 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -1558,6 +1558,8 @@ int cfg80211_disconnect(struct cfg80211_registered_device *rdev,
- 	if (!wdev->connected)
- 		wdev->u.client.ssid_len = 0;
+ 	switch (u8_get_bits(he_6ghz_oper->control,
+ 			    IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO)) {
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 452e0085ed2c..c5bf3c9abdb1 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -1594,7 +1594,8 @@ static u32 map_regdom_flags(u32 rd_flags)
  
-+	wdev->links[0].reg_6ghz_pwr_configured = false;
+ static const struct ieee80211_reg_rule *
+ freq_reg_info_regd(u32 center_freq,
+-		   const struct ieee80211_regdomain *regd, u32 bw)
++		   const struct ieee80211_regdomain *regd, u32 bw,
++		   enum nl80211_regulatory_power_modes power_mode)
+ {
+ 	int i;
+ 	bool band_rule_found = false;
+@@ -1608,7 +1609,12 @@ freq_reg_info_regd(u32 center_freq,
+ 		const struct ieee80211_freq_range *fr = NULL;
+ 
+ 		rr = &regd->reg_rules[i];
+-		fr = &rr->freq_range;
 +
- 	return err;
++		if (rr->power_mode == power_mode)
++			fr = &rr->freq_range;
++
++		if (!fr)
++			continue;
+ 
+ 		/*
+ 		 * We only need to know if one frequency rule was
+@@ -1640,7 +1646,8 @@ __freq_reg_info(struct wiphy *wiphy, u32 center_freq, u32 min_bw)
+ 	u32 bw;
+ 
+ 	for (bw = MHZ_TO_KHZ(bws[i]); bw >= min_bw; bw = MHZ_TO_KHZ(bws[i--])) {
+-		reg_rule = freq_reg_info_regd(center_freq, regd, bw);
++		reg_rule = freq_reg_info_regd(center_freq, regd, bw,
++					      NL80211_REG_PWR_MODE_AP_LPI);
+ 		if (!IS_ERR(reg_rule))
+ 			return reg_rule;
+ 	}
+@@ -2292,7 +2299,8 @@ static void reg_process_ht_flags_channel(struct wiphy *wiphy,
+ 	if (regd) {
+ 		const struct ieee80211_reg_rule *reg_rule =
+ 			freq_reg_info_regd(MHZ_TO_KHZ(channel->center_freq),
+-					   regd, MHZ_TO_KHZ(20));
++					   regd, MHZ_TO_KHZ(20),
++					   NL80211_REG_PWR_MODE_AP_LPI);
+ 
+ 		if (!IS_ERR(reg_rule))
+ 			flags = reg_rule->flags;
+@@ -2535,7 +2543,8 @@ static void update_all_wiphy_regulatory(enum nl80211_reg_initiator initiator)
+ static void handle_channel_custom(struct wiphy *wiphy,
+ 				  struct ieee80211_channel *chan,
+ 				  const struct ieee80211_regdomain *regd,
+-				  u32 min_bw)
++				  u32 min_bw,
++				  enum nl80211_regulatory_power_modes power_mode)
+ {
+ 	u32 bw_flags = 0;
+ 	const struct ieee80211_reg_rule *reg_rule = NULL;
+@@ -2544,7 +2553,7 @@ static void handle_channel_custom(struct wiphy *wiphy,
+ 
+ 	center_freq_khz = ieee80211_channel_to_khz(chan);
+ 	for (bw = MHZ_TO_KHZ(20); bw >= min_bw; bw = bw / 2) {
+-		reg_rule = freq_reg_info_regd(center_freq_khz, regd, bw);
++		reg_rule = freq_reg_info_regd(center_freq_khz, regd, bw, power_mode);
+ 		if (!IS_ERR(reg_rule))
+ 			break;
+ 	}
+@@ -2596,11 +2605,29 @@ static void handle_band_custom(struct wiphy *wiphy,
+ 			       struct ieee80211_supported_band *sband,
+ 			       const struct ieee80211_regdomain *regd)
+ {
+-	unsigned int i;
++	unsigned int i, j;
++	bool channels_6ghz_present = false;
+ 
+ 	if (!sband)
+ 		return;
+ 
++	if (sband->band == NL80211_BAND_6GHZ) {
++		for (i = 0; i < NL80211_REG_PWR_MODE_MAX; i++) {
++			if (!sband->channels_6ghz[i])
++				continue;
++
++			channels_6ghz_present = true;
++
++			for (j = 0; j < sband->channels_6ghz[i]->n_channels; j++)
++				handle_channel_custom(wiphy,
++						      &sband->channels_6ghz[i]->channels[j],
++						      regd, MHZ_TO_KHZ(20), i);
++		}
++
++		if (channels_6ghz_present)
++			return;
++	}
++
+ 	/*
+ 	 * We currently assume that you always want at least 20 MHz,
+ 	 * otherwise channel 12 might get enabled if this rule is
+@@ -2608,7 +2635,8 @@ static void handle_band_custom(struct wiphy *wiphy,
+ 	 */
+ 	for (i = 0; i < sband->n_channels; i++)
+ 		handle_channel_custom(wiphy, &sband->channels[i], regd,
+-				      MHZ_TO_KHZ(20));
++				      MHZ_TO_KHZ(20),
++				      NL80211_REG_PWR_MODE_AP_LPI);
  }
  
+ /* Used by drivers prior to wiphy registration */
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 56a23e5797f4..266ce51b2f7b 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -165,6 +165,33 @@ int ieee80211_freq_khz_to_channel(u32 freq)
+ }
+ EXPORT_SYMBOL(ieee80211_freq_khz_to_channel);
+ 
++struct ieee80211_channel
++*ieee80211_get_6ghz_channel_khz(struct wiphy *wiphy, u32 freq,
++				enum nl80211_regulatory_power_modes power_mode)
++{
++	struct ieee80211_supported_band *sband;
++	int i;
++	struct ieee80211_channel *chan;
++
++	sband = wiphy->bands[NL80211_BAND_6GHZ];
++
++	if (!sband || power_mode >= NL80211_REG_PWR_MODE_MAX)
++		return NULL;
++
++	if (!sband->channels_6ghz[power_mode])
++		return ieee80211_get_channel_khz(wiphy, freq);
++
++	for (i = 0; i < sband->channels_6ghz[power_mode]->n_channels; i++) {
++		chan = &sband->channels_6ghz[power_mode]->channels[i];
++
++		if (ieee80211_channel_to_khz(chan) == freq)
++			return chan;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL(ieee80211_get_6ghz_channel_khz);
++
+ struct ieee80211_channel *ieee80211_get_channel_khz(struct wiphy *wiphy,
+ 						    u32 freq)
+ {
 -- 
 2.17.1
 
