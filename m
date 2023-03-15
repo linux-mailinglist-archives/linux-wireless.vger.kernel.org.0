@@ -2,50 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 445096BACB4
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 10:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D50146BACCF
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 10:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231656AbjCOJyS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 05:54:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37432 "EHLO
+        id S232113AbjCOJ6d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 05:58:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232192AbjCOJxz (ORCPT
+        with ESMTP id S231700AbjCOJ6K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 05:53:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B796C84813
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 02:52:28 -0700 (PDT)
+        Wed, 15 Mar 2023 05:58:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C35DE56782;
+        Wed, 15 Mar 2023 02:56:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48518B81D76
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 09:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CDBC4339C;
-        Wed, 15 Mar 2023 09:52:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52C2761CB0;
+        Wed, 15 Mar 2023 09:56:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99320C433EF;
+        Wed, 15 Mar 2023 09:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678873946;
-        bh=gO+kNcJP06bGchN0aij4JahzdlMVCCLyrmTU5rQ5xUM=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=MxYg+sOyzpeSVSbQfy58BDVzz2mkbbNkRNJNakFMkShLjE6k/+LjLDDpYL+3wworI
-         HBj2wrcnVa5pzzPGJYXqXN+kUMrEKqdJ/gJOZ7Q9bztWiXf9/57O5EtQ2kiyj8fn/q
-         yEfSP4OcGuCU5eG2yeOxR3CNMRhWmgy2yNFMp9EbkLW38LzRX5WRzhPQpcMJcXRCmk
-         ZzS3HRHKkd1D2rxVRLiuxSxVGbxqZDKcr3BbkufjBPJIZYzXcJNIVb/XA3yGgk4fci
-         Kkv7jP/9D2qK9nC4spfigaJX/K1ibo18FdxkTt2GnUPs3FwPyznvGisGYF0rYWvb+T
-         +0pZQkoRi7tfw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtw89: add counters of register-based H2C/C2H
-References: <20230310035943.49020-1-pkshih@realtek.com>
-Date:   Wed, 15 Mar 2023 11:52:22 +0200
-In-Reply-To: <20230310035943.49020-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 10 Mar 2023 11:59:43 +0800")
-Message-ID: <87r0tqmje1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1678874197;
+        bh=ZsCoH6gXfPOQPU0Q8DkUoSBRwHepwaB8kOQvLfn7Otc=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=RJ7Hjfi+aaL9fNoAu7UhZf/oUnuRaiLlMuaH6h23u40hIleMJEDeYih2GJDvIFmLY
+         YtZ7kxZ0KjWBeWcFWko68fvd02SFcXSO9rzIW5gjuCJeZw+WHWfGjN8qdUFgglWdva
+         AUTwcspRHq4R7fZuCNhxQcaXG2IcuChha1ftd1SkRpvLvxBJF3BQUALhSVqSCE61Dn
+         yfkWTPoq2fTIWvkf2WbvYNtZcQHiDR7LtQ650nVA5EeBHut6IRF72a96Ffedu75GpY
+         7tjvjiYEY3etBe0IulBoSIz9f1ez7nPfTy07xXVUP+aTEJwEVTxLu4fzQNb4tkJ5dP
+         fmwl7gqYmSFhw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] MAINTAINERS: adjust file entries after wifi driver
+ movement
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230314041848.5120-1-lukas.bulwahn@gmail.com>
+References: <20230314041848.5120-1-lukas.bulwahn@gmail.com>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <167887419453.6018.12311006787807569673.kvalo@kernel.org>
+Date:   Wed, 15 Mar 2023 09:56:36 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,40 +56,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
 
-> The register-based H2C/C2H are used to exchange information between driver
-> and firmware, but only apply to narrow area because its data size is
-> smaller than regular packet-based H2C/C2H.
->
-> This kind of H2C/C2H must be paired. To identify if any H2C/C2H is missing,
-> update counters to help diagnose this kind of problems.
->
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Commit f79cbc77abde ("wifi: move mac80211_hwsim and virt_wifi to virtual
+> directory") and commit 298e50ad8eb8 ("wifi: move raycs, wl3501 and
+> rndis_wlan to legacy directory") move remaining wireless drivers into
+> subdirectories, but does not adjust the entries in MAINTAINERS.
+> 
+> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about
+> broken references.
+> 
+> Repair these file references in those wireless driver sections.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-[...]
+Patch applied to wireless-next.git, thanks.
 
-> +static inline void
-> +rtw89_write8_mask_add(struct rtw89_dev *rtwdev, u32 addr, u32 mask, u8 add)
-> +{
-> +	u32 shift;
-> +	u8 orig, set;
-> +	u8 data;
-> +
-> +	mask &= 0xff;
-> +	shift = __ffs(mask);
-> +
-> +	orig = rtw89_read8(rtwdev, addr);
-> +	data = ((orig & mask) >> shift) + add;
-> +	set = (orig & ~mask) | ((data << shift) & mask);
-> +	rtw89_write8(rtwdev, addr, set);
-> +}
-
-This function has a lot of shifting etc which feels like reinventing the
-wheel, doesn't linux/bitfield.h contain what you need? For example,
-u32_get_bits() and u32_replace_bits()?
+3b50d9a17457 MAINTAINERS: adjust file entries after wifi driver movement
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230314041848.5120-1-lukas.bulwahn@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
