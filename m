@@ -2,69 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D34256BA70F
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 06:28:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F556BA726
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Mar 2023 06:33:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230456AbjCOF2R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Mar 2023 01:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42456 "EHLO
+        id S231419AbjCOFdn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Mar 2023 01:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230006AbjCOF2Q (ORCPT
+        with ESMTP id S231220AbjCOFdm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Mar 2023 01:28:16 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24496199C2;
-        Tue, 14 Mar 2023 22:27:37 -0700 (PDT)
+        Wed, 15 Mar 2023 01:33:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8102D2411F;
+        Tue, 14 Mar 2023 22:33:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C7234B81BFA;
-        Wed, 15 Mar 2023 05:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6A2C433EF;
-        Wed, 15 Mar 2023 05:26:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 149B261AA3;
+        Wed, 15 Mar 2023 05:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21124C433D2;
+        Wed, 15 Mar 2023 05:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678857994;
-        bh=E5Dp6jeYL9pBo43fNB5EtdOzQpg0eX7PymVqFdhu9SE=;
+        s=k20201202; t=1678858385;
+        bh=JDBgkW5qQtTPm1yWAp51l+ZgG0AKs3eXBoW5HnCX/MA=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LwlKdRxCSI9M+Q8pd4JodBuk2Ew7lZAcHmxp4bA2tYWxrJRdQ+BE4KPSy4BtuWgM4
-         CA2/W4MJKCv4xgoOtPzc2XzFIcArTs5bc9iHh6R8+T/p/O+2fTT1LZGUUTWKq0uwUC
-         T3zZh70uM8fEMXcLyARIRIUW/9cYxq1K9IVVslnQ3aNlKcYENaGmxfsQRsdF2aSdm/
-         M/g8zqq8xZCCdn9mdkQhpi6KOtT64PcQeZqdWXDtNwgqcsw2s6KK5nWrwRjTM5Dmyw
-         A3AZ/jqffj54kQqS2F2k1HjLvlIStZtZIYnAcvo9lFLl8f0UAxKo9b/CClKfLcrzUT
-         +gwl7/iFV7OtQ==
+        b=kbwOpU7JF4hU5h6xcfj11Qgfvtpqh5mMi0uUMmOwi5tvKTgG5FeQrIbm3ZObMJxOi
+         Pd2OV69aatTDB3f705BKz/UIy6hUMExg9s86PkTCcSSvedmKica8rkCf5WBZ4tTbUI
+         04OSFs0GXPMawq6acf4ZOGnSk2edfAM2m2YfJPuRDfaWSn+aiWfrPmvYeFVnygwxkh
+         Fm8ASG9bTzGUiGqnDrCFHYTTyvaNl4fA/j57alcPP9QxEwPXj9p/obP3lGfpvLBmxD
+         qtwCkSPnTIIN5ZyOHbjrPmc4NdUgLmKTP9oek3xHkwWId/JdNWaPYqzbu2RvfDGsZ2
+         Dqe2eGY1KWRjQ==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jouni Malinen <j@w1.fi>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 37/38] wireless: add HAS_IOPORT dependencies
-References: <20230314121216.413434-1-schnelle@linux.ibm.com>
-        <20230314121216.413434-38-schnelle@linux.ibm.com>
-Date:   Wed, 15 Mar 2023 07:26:23 +0200
-In-Reply-To: <20230314121216.413434-38-schnelle@linux.ibm.com> (Niklas
-        Schnelle's message of "Tue, 14 Mar 2023 13:12:15 +0100")
-Message-ID: <87o7ouwpog.fsf@kernel.org>
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] p54spi: convert to devicetree
+References: <20230314163201.955689-1-arnd@kernel.org>
+        <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com>
+Date:   Wed, 15 Mar 2023 07:32:57 +0200
+In-Reply-To: <e8dc9acb-6f85-e0a9-a145-d101ca6da201@gmail.com> (Christian
+        Lamparter's message of "Tue, 14 Mar 2023 21:18:55 +0100")
+Message-ID: <87jzziwpdi.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,18 +73,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Niklas Schnelle <schnelle@linux.ibm.com> writes:
+Christian Lamparter <chunkeey@gmail.com> writes:
 
-> In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
-> not being declared. We thus need to add HAS_IOPORT as dependency for
-> those drivers using them.
+> Hi,
 >
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> On 3/14/23 17:30, Arnd Bergmann wrote:
+>> The Prism54 SPI driver hardcodes GPIO numbers and expects users to
+>> pass them as module parameters, apparently a relic from its life as a
+>> staging driver. This works because there is only one user, the Nokia
+>> N8x0 tablet.
+>>
+>> Convert this to the gpio descriptor interface and move the gpio
+>> line information into devicetree to improve this and simplify the
+>> code at the same time.
+>
+> Yes, this is definitely the right idea/way. From what I remember, Kalle
+> Valo was partially involved in p54spi/stlc45xx. The details are very fuzzy.
+> So,  I could be totally wrong. From what I remember Kalle was working
+> for Nokia (or as a contractor for Nokia?) at the time.
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
-
-Let me know if I should take this to wireless-next.
+I wrote stlc45xx driver as part of my thesis when working for Nokia and
+I think then someone wrote p54spi after that. Oh man, this was a long
+time ago so hard to remember :)
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
