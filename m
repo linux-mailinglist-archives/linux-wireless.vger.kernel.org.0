@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7197A6BCF19
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 13:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 696FA6BCF14
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 13:14:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbjCPMOL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 08:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56950 "EHLO
+        id S230136AbjCPMOB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 08:14:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjCPMOI (ORCPT
+        with ESMTP id S230205AbjCPMNz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 08:14:08 -0400
+        Thu, 16 Mar 2023 08:13:55 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92BB7975B
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 05:14:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC7F5A194
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 05:13:44 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32GCDkzoE023040, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32GCDkzoE023040
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32GCDO5o8022859, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32GCDO5o8022859
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 16 Mar 2023 20:13:47 +0800
+        Thu, 16 Mar 2023 20:13:24 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 16 Mar 2023 20:13:13 +0800
+ 15.1.2507.17; Thu, 16 Mar 2023 20:13:14 +0800
 Received: from localhost (172.16.16.31) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 16 Mar
- 2023 20:13:12 +0800
+ 2023 20:13:14 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 2/5] wifi: rtw89: add function to wait for completion of TX skbs
-Date:   Thu, 16 Mar 2023 20:12:02 +0800
-Message-ID: <20230316121206.11479-3-pkshih@realtek.com>
+Subject: [PATCH v2 2/5] wifi: rtw89: add function to wait for completion of tx skbs
+Date:   Thu, 16 Mar 2023 20:12:03 +0800
+Message-ID: <20230316121206.11479-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230316121206.11479-1-pkshih@realtek.com>
 References: <20230316121206.11479-1-pkshih@realtek.com>
@@ -45,10 +45,6 @@ X-Originating-IP: [172.16.16.31]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -63,8 +59,8 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 From: Po-Hao Huang <phhuang@realtek.com>
 
 Allocate a per-skb completion to track those skbs we are interested in
-and wait for them to complete transmission with TX status. To avoid
-race condition between process and softirq without additional locking,
+and wait for them to complete transmission with tx status. To avoid
+race condition between process and softirq without addtional locking,
 we use a work to free the tx_wait struct later when waiter is finished
 referencing it. This must be called in process context and with a
 timeout value greater than zero since it might sleep.
