@@ -2,240 +2,337 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 946B16BD23C
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 15:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F28A86BD296
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 15:43:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231597AbjCPOUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 10:20:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44624 "EHLO
+        id S231151AbjCPOno (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 10:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231201AbjCPOT2 (ORCPT
+        with ESMTP id S229659AbjCPOnk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 10:19:28 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33ED2DCF43
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 07:19:00 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id cn21so8521029edb.0
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 07:19:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678976338;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MTUJclT4jLxOzbEYx+BwzNxuPaNsfl85SrxDvoHqBJg=;
-        b=NNEdTAdBMZGYhbK7Bxl8h3+KzyLGbEB+CQl99EUL4Z4feJpbrBzKz8KzQ3Jo0UTFdQ
-         edYoBKa32z++aRrOtZGrSNLblWFEoPCKDisJ0oUVPe2qF4OBc10D03pSLXk1IJ60SReQ
-         u4i5z6wcunkBINBMaOR3namD+zQ7yJZVRow+1rtoDRjMs5j0tFtAiHOkaaYBqMS75xHp
-         yzKBRTAwbcf+kCo/9SOudLFTbAv2CUdqN3NxMMzafa+TogMyGzD4ED6umeQv4+s12Bzl
-         qvjRRi5ZtArcut3CsSw3KC4eRJ1WljXRO9m9Y40y8vqU9eymdrYaKOkF+nR17Vh6g3s0
-         i1WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678976338;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MTUJclT4jLxOzbEYx+BwzNxuPaNsfl85SrxDvoHqBJg=;
-        b=AhWliCJ1GRnbS9UURh72MeQfkG2r5Wk6shQiBU6hyq/ZGdbM1wyNKLpmswvyxpeXV6
-         d1xfbrzseTckHsUqcvL6YFcQIMYJA1G+glCLmsB6Ep1MMPwlHF9M99+UMPm5hMsJzOU0
-         Lfk9866j/LNhH7YYBtpXwmirwt2aWSFkD90hA6XDPAwNQCrJZ9wIpshceW2qPGNoFryA
-         ku0/ISBfooLwXv8zmY0SZDNFQEz2ZTmMmu+zal1dpqvLZMfERwtxHVP1nXMTwRVNAE1N
-         cdKDvE1YVrXmnTQgf/YW1ga0BE33O6Wd61rg3AVnlOejeQHGyuWfI/dt4LpTHspkrljL
-         izIg==
-X-Gm-Message-State: AO0yUKXq0Ra8uWgz+X53GUnlJwU94z7U/2G1IwpMbsxN6BtcHeJVYqPG
-        4h2C08IGFp6JxtoSbiri/pHI6GCfYbY=
-X-Google-Smtp-Source: AK7set8E3myVYP1ROmrPamsZLWpTrJltc3GAABQm6/yaNR4cgPz49mL5DZrIhnMxqpg2+ddChVcQWQ==
-X-Received: by 2002:a17:907:746:b0:92b:ae6c:23e7 with SMTP id xc6-20020a170907074600b0092bae6c23e7mr12671938ejb.56.1678976338133;
-        Thu, 16 Mar 2023 07:18:58 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.25])
-        by smtp.gmail.com with ESMTPSA id kf11-20020a17090776cb00b0093128426980sm185384ejc.48.2023.03.16.07.18.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Mar 2023 07:18:57 -0700 (PDT)
-Message-ID: <1ca8aafd-63c8-95f4-82fa-457b14a8c0d5@gmail.com>
-Date:   Thu, 16 Mar 2023 16:18:56 +0200
+        Thu, 16 Mar 2023 10:43:40 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E883211D;
+        Thu, 16 Mar 2023 07:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678977816; x=1710513816;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0v8x1C5VEZNs5wGyskU503X9ow31HPWVC3p4bfXL5/o=;
+  b=H9Zb15Y7DDv9dpVqsHrR/h3eD7VMrvvIo7Vph8lj5X+gmMR8EvgKrrKE
+   1SHvAvs5JVf2Nb1Q7OShghabORW2qrOFIPQOXPOzYe/WXzX/MTjqXBsvu
+   rMpklytlekeQKmRLdpSmKnQEmqlfCK3tjgAFbZigRmUI9yrEj7aqgShjH
+   5wwm2Mkj74t5kCjsc6xJeQsYMfbEZ6ewsSuKas9wDxYtT4UNkab4EcypZ
+   VVIf9zTHOPj36u+9GyUuRY/CwNFTr7nAiSl8MgaZkishi9ZKpZr/47qzO
+   bHydCjJ0ushpZCDKF8P2m9hIlCzbvziUH1q4xFqUGqpo6AZMlaXBtgA67
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="400596364"
+X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
+   d="scan'208";a="400596364"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 07:43:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="768980481"
+X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
+   d="scan'208";a="768980481"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 16 Mar 2023 07:43:32 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pcopI-0008Zq-0L;
+        Thu, 16 Mar 2023 14:43:32 +0000
+Date:   Thu, 16 Mar 2023 22:42:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-modules@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-crypto@vger.kernel.org, io-uring@vger.kernel.org,
+        bpf@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 6f72958a49f68553f2b6ff713e8c8e51a34c1e1e
+Message-ID: <64132af1.wtWgGZt+l6ToHgUb%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: TL-WN823N Realtek WPA3 SSID connection problem #9
-To:     Ioannis Barkas <jnyb.de@gmail.com>, linux-wireless@vger.kernel.org
-References: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25/11/2022 21:40, Ioannis Barkas wrote:
-> Hello,
-> 
-> I have tested various USB devices and all worked except the TL-WN823N.
-> This device has never worked and we have 2 of them.
-> 
-> On Ubuntu boot I get:
-> [ 1208.638541] usb 1-1: RTL8192EU rev B (SMIC) 2T2R, TX queues 3,
-> WiFi=1, BT=0, GPS=0, HI PA=0
-> [ 1208.638553] usb 1-1: RTL8192EU MAC: d4:6e:0e:**:**:**
-> [ 1208.638560] usb 1-1: rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
-> [ 1208.641483] usb 1-1: Firmware revision 19.0 (signature 0x92e1)
-> [ 1209.735452] usbcore: registered new interface driver rtl8xxxu
-> 
-> When I attempt to connect at a 2,4GHz WPA3 SSID this is what I get:
-> [ 1502.319954] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> [ 1502.332105] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> [ 1502.476159] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> [ 1502.476181] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> [ 1502.587356] wlxd46e0eeba0f4: authenticated
-> [ 1502.589113] wlxd46e0eeba0f4: associate with c6:27:28:**:**:** (try 1/3)
-> [ 1502.593773] wlxd46e0eeba0f4: RX AssocResp from c6:27:28:**:**:**
-> (capab=0x1431 status=0 aid=16)
-> [ 1502.595559] usb 1-1: rtl8xxxu_bss_info_changed: HT supported
-> [ 1502.597222] wlxd46e0eeba0f4: associated
-> [ 1502.743847] wlxd46e0eeba0f4: deauthenticating from
-> c6:27:28:**:**:** by local choice (Reason: 1=UNSPECIFIED)
-> 
-> To make things worse, I accidentally inserted it in a USB 1.1 port on
-> my AMD test PC and it could not even connect to a combo 2,4GHz WPA2,3
-> SSID:
-> [ 1001.681485] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> [ 1001.703190] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> [ 1001.904265] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
-> [ 1002.108231] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
-> [ 1002.312262] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
-> [ 1013.501401] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> [ 1013.523483] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> [ 1013.724276] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
-> [ 1013.928271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
-> [ 1014.132282] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
-> [ 1027.230375] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> [ 1027.242103] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> [ 1027.444258] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
-> [ 1027.648271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
-> [ 1027.852237] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 6f72958a49f68553f2b6ff713e8c8e51a34c1e1e  Add linux-next specific files for 20230316
 
-So this problem is fixed now since kernels 4.14.308 4.19.276 5.4.235
-5.10.173 5.15.99 6.1.16 6.2.3 6.3-rc1.
+Error/Warning reports:
 
-> On USB 2.0 port the problem with WPA2,3 SSID was resolved. Is it
-> possible to set a flag so that the driver will bail out if the device
-> is on a USB 1.1 port? The truth is that the maximum speed it reached
-> was way below the 12Mb of USB 1.1 so it should not have a problem but
-> in practise it does...
-> 
+https://lore.kernel.org/oe-kbuild-all/202303081807.lBLWKmpX-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303151409.por0SBf7-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161311.Qv4gDU9T-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161354.T2OZFUFZ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161404.OrmfCy09-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161507.ZUkKisp2-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
 
-I'm curious about the low speed. How low is it? Do you see anything
-in dmesg? Does this patch fix it?
-https://bugzilla.kernel.org/attachment.cgi?id=302960
+Error/Warning: (recently discovered and may have been fixed)
 
-The driver can be modified to support USB 1.1 at least with some of the
-chips, but I don't have USB 1.1 to test it.
+cc_driver.c:(.text+0x1232): undefined reference to `devm_platform_get_and_ioremap_resource'
+drivers/crypto/ccree/cc_driver.c:354: undefined reference to `devm_platform_get_and_ioremap_resource'
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:258:10: warning: no previous prototype for 'link_timing_bandwidth_kbps' [-Wmissing-prototypes]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_capability.c:2184: warning: expecting prototype for Check if there is a native DP or passive DP(). Prototype was for dp_is_sink_present() instead
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+kernel/bpf/../module/internal.h:212:2: error: assigning to 'struct module *' from incompatible type 'void'
+kernel/bpf/../module/internal.h:212:2: error: incomplete definition of type 'struct module'
+kernel/bpf/../module/internal.h:212:2: error: offsetof of incomplete type 'typeof (*mod)' (aka 'struct module')
+kernel/bpf/../module/internal.h:212:2: error: operand of type 'void' where arithmetic or pointer type is required
+kernel/bpf/../module/internal.h:260:56: error: expected ';', ',' or ')' before 'const'
+kernel/bpf/verifier.c:18488:48: error: implicit declaration of function 'find_kallsyms_symbol_value'; did you mean 'kallsyms_symbol_value'? [-Werror=implicit-function-declaration]
+kernel/module/internal.h:260:56: error: expected ';', ',' or ')' before 'const'
+lib/dynamic_debug.c:947:6: warning: no previous prototype for function '__dynamic_ibdev_dbg' [-Wmissing-prototypes]
 
->  This is the device:
-> Device Descriptor:
->   bLength                18
->   bDescriptorType         1
->   bcdUSB               2.10
->   bDeviceClass            0
->   bDeviceSubClass         0
->   bDeviceProtocol         0
->   bMaxPacketSize0        64
->   idVendor           0x2357 TP-Link
->   idProduct          0x0109 TL-WN823N v2/v3 [Realtek RTL8192EU]
->   bcdDevice            2.00
->   iManufacturer           1 Realtek
->   iProduct                2 802.11n NIC
->   iSerial                 3 00**********
->   bNumConfigurations      1
->   Configuration Descriptor:
->     bLength                 9
->     bDescriptorType         2
->     wTotalLength       0x0035
->     bNumInterfaces          1
->     bConfigurationValue     1
->     iConfiguration          0
->     bmAttributes         0xe0
->       Self Powered
->       Remote Wakeup
->     MaxPower              500mA
->     Interface Descriptor:
->       bLength                 9
->       bDescriptorType         4
->       bInterfaceNumber        0
->       bAlternateSetting       0
->       bNumEndpoints           5
->       bInterfaceClass       255 Vendor Specific Class
->       bInterfaceSubClass    255 Vendor Specific Subclass
->       bInterfaceProtocol    255 Vendor Specific Protocol
->       iInterface              2 802.11n NIC
->       Endpoint Descriptor:
->         bLength                 7
->         bDescriptorType         5
->         bEndpointAddress     0x84  EP 4 IN
->         bmAttributes            2
->           Transfer Type            Bulk
->           Synch Type               None
->           Usage Type               Data
->         wMaxPacketSize     0x0200  1x 512 bytes
->         bInterval               0
->       Endpoint Descriptor:
->         bLength                 7
->         bDescriptorType         5
->         bEndpointAddress     0x05  EP 5 OUT
->         bmAttributes            2
->           Transfer Type            Bulk
->           Synch Type               None
->           Usage Type               Data
->         wMaxPacketSize     0x0200  1x 512 bytes
->         bInterval               0
->       Endpoint Descriptor:
->         bLength                 7
->         bDescriptorType         5
->         bEndpointAddress     0x06  EP 6 OUT
->         bmAttributes            2
->           Transfer Type            Bulk
->           Synch Type               None
->           Usage Type               Data
->         wMaxPacketSize     0x0200  1x 512 bytes
->         bInterval               0
->       Endpoint Descriptor:
->         bLength                 7
->         bDescriptorType         5
->         bEndpointAddress     0x87  EP 7 IN
->         bmAttributes            3
->           Transfer Type            Interrupt
->           Synch Type               None
->           Usage Type               Data
->         wMaxPacketSize     0x0040  1x 64 bytes
->         bInterval               3
->       Endpoint Descriptor:
->         bLength                 7
->         bDescriptorType         5
->         bEndpointAddress     0x08  EP 8 OUT
->         bmAttributes            2
->           Transfer Type            Bulk
->           Synch Type               None
->           Usage Type               Data
->         wMaxPacketSize     0x0200  1x 512 bytes
->         bInterval               0
-> Binary Object Store Descriptor:
->   bLength                 5
->   bDescriptorType        15
->   wTotalLength       0x000c
->   bNumDeviceCaps          1
->   USB 2.0 Extension Device Capability:
->     bLength                 7
->     bDescriptorType        16
->     bDevCapabilityType      2
->     bmAttributes   0x00000002
->       HIRD Link Power Management (LPM) Supported
-> Device Status:     0x0001
->   Self Powered
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
+crypto/acompress.c:191:32: warning: Value stored to 'istat' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+crypto/ahash.c:311:26: warning: Value stored to 'alg' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+crypto/shash.c:573:28: warning: Value stored to 'istat' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+drivers/watchdog/imx2_wdt.c:442:22: sparse: sparse: symbol 'imx_wdt' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:446:22: sparse: sparse: symbol 'imx_wdt_legacy' was not declared. Should it be static?
+include/linux/gpio/consumer.h: linux/err.h is included more than once.
+include/linux/gpio/driver.h: asm/bug.h is included more than once.
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm-randconfig-r001-20230312
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- csky-buildonly-randconfig-r004-20230312
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- ia64-randconfig-s043-20230313
+|   |-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt-was-not-declared.-Should-it-be-static
+|   `-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt_legacy-was-not-declared.-Should-it-be-static
+|-- loongarch-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- loongarch-defconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- loongarch-randconfig-r001-20230313
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- m68k-randconfig-r001-20230313
+|   |-- kernel-bpf-..-module-internal.h:error:expected-or-)-before-const
+|   |-- kernel-bpf-verifier.c:error:implicit-declaration-of-function-find_kallsyms_symbol_value
+|   `-- kernel-module-internal.h:error:expected-or-)-before-const
+|-- mips-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:no-previous-prototype-for-link_timing_bandwidth_kbps
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-protocols-link_dp_capability.c:warning:expecting-prototype-for-Check-if-there-is-a-native-DP-or-passive-DP().-Prototype-was-for-dp_is_sink_present()-inste
+|-- parisc-allmodconfig
+clang_recent_errors
+|-- arm-randconfig-c002-20230312
+|   |-- crypto-acompress.c:warning:Value-stored-to-istat-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
+|   |-- crypto-ahash.c:warning:Value-stored-to-alg-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
+|   `-- crypto-shash.c:warning:Value-stored-to-istat-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
+|-- hexagon-randconfig-r031-20230313
+|   `-- lib-dynamic_debug.c:warning:no-previous-prototype-for-function-__dynamic_ibdev_dbg
+|-- i386-randconfig-a012-20230313
+|   `-- lib-dynamic_debug.c:warning:no-previous-prototype-for-function-__dynamic_ibdev_dbg
+|-- i386-randconfig-a013-20230313
+|   `-- lib-dynamic_debug.c:warning:no-previous-prototype-for-function-__dynamic_ibdev_dbg
+|-- i386-randconfig-a016-20230313
+|   `-- lib-dynamic_debug.c:warning:no-previous-prototype-for-function-__dynamic_ibdev_dbg
+`-- riscv-randconfig-r042-20230313
+    |-- kernel-bpf-..-module-internal.h:error:assigning-to-struct-module-from-incompatible-type-void
+    |-- kernel-bpf-..-module-internal.h:error:incomplete-definition-of-type-struct-module
+    |-- kernel-bpf-..-module-internal.h:error:offsetof-of-incomplete-type-typeof-(-mod)-(aka-struct-module-)
+    `-- kernel-bpf-..-module-internal.h:error:operand-of-type-void-where-arithmetic-or-pointer-type-is-required
+
+elapsed time: 728m
+
+configs tested: 146
+configs skipped: 8
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r006-20230312   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r026-20230313   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r012-20230312   gcc  
+arc                  randconfig-r024-20230313   gcc  
+arc                  randconfig-r043-20230312   gcc  
+arc                  randconfig-r043-20230313   gcc  
+arc                  randconfig-r043-20230315   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                       omap2plus_defconfig   gcc  
+arm                  randconfig-r001-20230312   gcc  
+arm                  randconfig-r006-20230313   clang
+arm                  randconfig-r024-20230312   clang
+arm                  randconfig-r046-20230312   clang
+arm                  randconfig-r046-20230313   gcc  
+arm                  randconfig-r046-20230315   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r004-20230312   clang
+arm64                randconfig-r006-20230312   clang
+csky         buildonly-randconfig-r003-20230312   gcc  
+csky         buildonly-randconfig-r004-20230312   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r025-20230312   gcc  
+csky                 randconfig-r033-20230313   gcc  
+csky                 randconfig-r036-20230312   gcc  
+hexagon              randconfig-r015-20230312   clang
+hexagon              randconfig-r031-20230313   clang
+hexagon              randconfig-r041-20230312   clang
+hexagon              randconfig-r041-20230313   clang
+hexagon              randconfig-r041-20230315   clang
+hexagon              randconfig-r045-20230312   clang
+hexagon              randconfig-r045-20230313   clang
+hexagon              randconfig-r045-20230315   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230313   gcc  
+i386                 randconfig-a002-20230313   gcc  
+i386                 randconfig-a003-20230313   gcc  
+i386                 randconfig-a004-20230313   gcc  
+i386                 randconfig-a005-20230313   gcc  
+i386                 randconfig-a006-20230313   gcc  
+i386                 randconfig-a011-20230313   clang
+i386                 randconfig-a012-20230313   clang
+i386                 randconfig-a013-20230313   clang
+i386                 randconfig-a014-20230313   clang
+i386                 randconfig-a015-20230313   clang
+i386                 randconfig-a016-20230313   clang
+i386                          randconfig-c001   gcc  
+i386                 randconfig-r004-20230313   gcc  
+i386                 randconfig-r023-20230313   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r001-20230313   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r002-20230313   gcc  
+m68k                 randconfig-r005-20230312   gcc  
+m68k                 randconfig-r031-20230312   gcc  
+m68k                 randconfig-r035-20230313   gcc  
+m68k                           virt_defconfig   gcc  
+microblaze   buildonly-randconfig-r002-20230312   gcc  
+microblaze           randconfig-r011-20230312   gcc  
+microblaze           randconfig-r012-20230313   gcc  
+microblaze           randconfig-r015-20230313   gcc  
+microblaze           randconfig-r023-20230312   gcc  
+microblaze           randconfig-r032-20230313   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                       bmips_be_defconfig   gcc  
+mips         buildonly-randconfig-r001-20230312   gcc  
+mips                      maltasmvp_defconfig   gcc  
+mips                 randconfig-r013-20230312   clang
+mips                 randconfig-r034-20230313   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r014-20230312   gcc  
+openrisc     buildonly-randconfig-r003-20230313   gcc  
+openrisc     buildonly-randconfig-r006-20230313   gcc  
+openrisc             randconfig-r003-20230312   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r011-20230313   gcc  
+parisc               randconfig-r034-20230312   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r005-20230312   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r005-20230313   clang
+riscv                               defconfig   gcc  
+riscv                randconfig-r033-20230312   clang
+riscv                randconfig-r042-20230312   gcc  
+riscv                randconfig-r042-20230313   clang
+riscv                randconfig-r042-20230315   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r005-20230313   gcc  
+s390                 randconfig-r025-20230313   clang
+s390                 randconfig-r032-20230312   clang
+s390                 randconfig-r044-20230312   gcc  
+s390                 randconfig-r044-20230313   clang
+s390                 randconfig-r044-20230315   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r022-20230312   gcc  
+sh                   randconfig-r022-20230313   gcc  
+sparc        buildonly-randconfig-r001-20230313   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r021-20230313   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230313   gcc  
+x86_64               randconfig-a002-20230313   gcc  
+x86_64               randconfig-a003-20230313   gcc  
+x86_64               randconfig-a004-20230313   gcc  
+x86_64               randconfig-a005-20230313   gcc  
+x86_64               randconfig-a006-20230313   gcc  
+x86_64               randconfig-a011-20230313   clang
+x86_64               randconfig-a012-20230313   clang
+x86_64               randconfig-a013-20230313   clang
+x86_64               randconfig-a014-20230313   clang
+x86_64               randconfig-a015-20230313   clang
+x86_64               randconfig-a016-20230313   clang
+x86_64               randconfig-r016-20230313   clang
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r002-20230313   gcc  
+xtensa               randconfig-r002-20230312   gcc  
+xtensa               randconfig-r013-20230313   gcc  
+xtensa               randconfig-r014-20230313   gcc  
+xtensa               randconfig-r016-20230312   gcc  
+xtensa               randconfig-r035-20230312   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
