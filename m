@@ -2,80 +2,240 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB6F6BD0F1
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 14:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 946B16BD23C
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 15:20:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230374AbjCPNgK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 09:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60018 "EHLO
+        id S231597AbjCPOUQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 10:20:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjCPNgH (ORCPT
+        with ESMTP id S231201AbjCPOT2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 09:36:07 -0400
-Received: from hust.edu.cn (mail.hust.edu.cn [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C127A8EA37;
-        Thu, 16 Mar 2023 06:36:01 -0700 (PDT)
-Received: from localhost.localdomain ([172.16.0.254])
-        (user=dzm91@hust.edu.cn mech=LOGIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 32GDZEVW013709-32GDZEVb013709
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Thu, 16 Mar 2023 21:35:22 +0800
-From:   Dongliang Mu <dzm91@hust.edu.cn>
-To:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Dongliang Mu <dzm91@hust.edu.cn>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: ray_cs: add sanity check on local->sram/rmem/amem
-Date:   Thu, 16 Mar 2023 21:32:36 +0800
-Message-Id: <20230316133236.556198-3-dzm91@hust.edu.cn>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230316133236.556198-1-dzm91@hust.edu.cn>
-References: <20230316133236.556198-1-dzm91@hust.edu.cn>
+        Thu, 16 Mar 2023 10:19:28 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33ED2DCF43
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 07:19:00 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id cn21so8521029edb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 07:19:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678976338;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MTUJclT4jLxOzbEYx+BwzNxuPaNsfl85SrxDvoHqBJg=;
+        b=NNEdTAdBMZGYhbK7Bxl8h3+KzyLGbEB+CQl99EUL4Z4feJpbrBzKz8KzQ3Jo0UTFdQ
+         edYoBKa32z++aRrOtZGrSNLblWFEoPCKDisJ0oUVPe2qF4OBc10D03pSLXk1IJ60SReQ
+         u4i5z6wcunkBINBMaOR3namD+zQ7yJZVRow+1rtoDRjMs5j0tFtAiHOkaaYBqMS75xHp
+         yzKBRTAwbcf+kCo/9SOudLFTbAv2CUdqN3NxMMzafa+TogMyGzD4ED6umeQv4+s12Bzl
+         qvjRRi5ZtArcut3CsSw3KC4eRJ1WljXRO9m9Y40y8vqU9eymdrYaKOkF+nR17Vh6g3s0
+         i1WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678976338;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTUJclT4jLxOzbEYx+BwzNxuPaNsfl85SrxDvoHqBJg=;
+        b=AhWliCJ1GRnbS9UURh72MeQfkG2r5Wk6shQiBU6hyq/ZGdbM1wyNKLpmswvyxpeXV6
+         d1xfbrzseTckHsUqcvL6YFcQIMYJA1G+glCLmsB6Ep1MMPwlHF9M99+UMPm5hMsJzOU0
+         Lfk9866j/LNhH7YYBtpXwmirwt2aWSFkD90hA6XDPAwNQCrJZ9wIpshceW2qPGNoFryA
+         ku0/ISBfooLwXv8zmY0SZDNFQEz2ZTmMmu+zal1dpqvLZMfERwtxHVP1nXMTwRVNAE1N
+         cdKDvE1YVrXmnTQgf/YW1ga0BE33O6Wd61rg3AVnlOejeQHGyuWfI/dt4LpTHspkrljL
+         izIg==
+X-Gm-Message-State: AO0yUKXq0Ra8uWgz+X53GUnlJwU94z7U/2G1IwpMbsxN6BtcHeJVYqPG
+        4h2C08IGFp6JxtoSbiri/pHI6GCfYbY=
+X-Google-Smtp-Source: AK7set8E3myVYP1ROmrPamsZLWpTrJltc3GAABQm6/yaNR4cgPz49mL5DZrIhnMxqpg2+ddChVcQWQ==
+X-Received: by 2002:a17:907:746:b0:92b:ae6c:23e7 with SMTP id xc6-20020a170907074600b0092bae6c23e7mr12671938ejb.56.1678976338133;
+        Thu, 16 Mar 2023 07:18:58 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.25])
+        by smtp.gmail.com with ESMTPSA id kf11-20020a17090776cb00b0093128426980sm185384ejc.48.2023.03.16.07.18.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Mar 2023 07:18:57 -0700 (PDT)
+Message-ID: <1ca8aafd-63c8-95f4-82fa-457b14a8c0d5@gmail.com>
+Date:   Thu, 16 Mar 2023 16:18:56 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-FEAS-AUTH-USER: dzm91@hust.edu.cn
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: TL-WN823N Realtek WPA3 SSID connection problem #9
+To:     Ioannis Barkas <jnyb.de@gmail.com>, linux-wireless@vger.kernel.org
+References: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ray_config uses ray_release as its unified error handling function.
-However, it does not know if local->sram/rmem/amem succeeds or not.
+On 25/11/2022 21:40, Ioannis Barkas wrote:
+> Hello,
+> 
+> I have tested various USB devices and all worked except the TL-WN823N.
+> This device has never worked and we have 2 of them.
+> 
+> On Ubuntu boot I get:
+> [ 1208.638541] usb 1-1: RTL8192EU rev B (SMIC) 2T2R, TX queues 3,
+> WiFi=1, BT=0, GPS=0, HI PA=0
+> [ 1208.638553] usb 1-1: RTL8192EU MAC: d4:6e:0e:**:**:**
+> [ 1208.638560] usb 1-1: rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
+> [ 1208.641483] usb 1-1: Firmware revision 19.0 (signature 0x92e1)
+> [ 1209.735452] usbcore: registered new interface driver rtl8xxxu
+> 
+> When I attempt to connect at a 2,4GHz WPA3 SSID this is what I get:
+> [ 1502.319954] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1502.332105] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1502.476159] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1502.476181] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1502.587356] wlxd46e0eeba0f4: authenticated
+> [ 1502.589113] wlxd46e0eeba0f4: associate with c6:27:28:**:**:** (try 1/3)
+> [ 1502.593773] wlxd46e0eeba0f4: RX AssocResp from c6:27:28:**:**:**
+> (capab=0x1431 status=0 aid=16)
+> [ 1502.595559] usb 1-1: rtl8xxxu_bss_info_changed: HT supported
+> [ 1502.597222] wlxd46e0eeba0f4: associated
+> [ 1502.743847] wlxd46e0eeba0f4: deauthenticating from
+> c6:27:28:**:**:** by local choice (Reason: 1=UNSPECIFIED)
+> 
+> To make things worse, I accidentally inserted it in a USB 1.1 port on
+> my AMD test PC and it could not even connect to a combo 2,4GHz WPA2,3
+> SSID:
+> [ 1001.681485] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1001.703190] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1001.904265] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
+> [ 1002.108231] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
+> [ 1002.312262] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
+> [ 1013.501401] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1013.523483] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1013.724276] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
+> [ 1013.928271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
+> [ 1014.132282] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
+> [ 1027.230375] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
+> [ 1027.242103] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
+> [ 1027.444258] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
+> [ 1027.648271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
+> [ 1027.852237] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
+> 
 
-Fix this by adding sanity check on local->sram/rmem/amem in the
-ray_relase.
+So this problem is fixed now since kernels 4.14.308 4.19.276 5.4.235
+5.10.173 5.15.99 6.1.16 6.2.3 6.3-rc1.
 
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
----
- drivers/net/wireless/ray_cs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+> On USB 2.0 port the problem with WPA2,3 SSID was resolved. Is it
+> possible to set a flag so that the driver will bail out if the device
+> is on a USB 1.1 port? The truth is that the maximum speed it reached
+> was way below the 12Mb of USB 1.1 so it should not have a problem but
+> in practise it does...
+> 
 
-diff --git a/drivers/net/wireless/ray_cs.c b/drivers/net/wireless/ray_cs.c
-index ce7911137014..808b37352f39 100644
---- a/drivers/net/wireless/ray_cs.c
-+++ b/drivers/net/wireless/ray_cs.c
-@@ -732,9 +732,12 @@ static void ray_release(struct pcmcia_device *link)
- 
- 	del_timer_sync(&local->timer);
- 
--	iounmap(local->sram);
--	iounmap(local->rmem);
--	iounmap(local->amem);
-+	if (local->sram)
-+		iounmap(local->sram);
-+	if (local->rmem)
-+		iounmap(local->rmem);
-+	if (local->amem)
-+		iounmap(local->amem);
- 	pcmcia_disable_device(link);
- 
- 	dev_dbg(&link->dev, "ray_release ending\n");
--- 
-2.39.2
+I'm curious about the low speed. How low is it? Do you see anything
+in dmesg? Does this patch fix it?
+https://bugzilla.kernel.org/attachment.cgi?id=302960
+
+The driver can be modified to support USB 1.1 at least with some of the
+chips, but I don't have USB 1.1 to test it.
+
+>  This is the device:
+> Device Descriptor:
+>   bLength                18
+>   bDescriptorType         1
+>   bcdUSB               2.10
+>   bDeviceClass            0
+>   bDeviceSubClass         0
+>   bDeviceProtocol         0
+>   bMaxPacketSize0        64
+>   idVendor           0x2357 TP-Link
+>   idProduct          0x0109 TL-WN823N v2/v3 [Realtek RTL8192EU]
+>   bcdDevice            2.00
+>   iManufacturer           1 Realtek
+>   iProduct                2 802.11n NIC
+>   iSerial                 3 00**********
+>   bNumConfigurations      1
+>   Configuration Descriptor:
+>     bLength                 9
+>     bDescriptorType         2
+>     wTotalLength       0x0035
+>     bNumInterfaces          1
+>     bConfigurationValue     1
+>     iConfiguration          0
+>     bmAttributes         0xe0
+>       Self Powered
+>       Remote Wakeup
+>     MaxPower              500mA
+>     Interface Descriptor:
+>       bLength                 9
+>       bDescriptorType         4
+>       bInterfaceNumber        0
+>       bAlternateSetting       0
+>       bNumEndpoints           5
+>       bInterfaceClass       255 Vendor Specific Class
+>       bInterfaceSubClass    255 Vendor Specific Subclass
+>       bInterfaceProtocol    255 Vendor Specific Protocol
+>       iInterface              2 802.11n NIC
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x84  EP 4 IN
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x05  EP 5 OUT
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x06  EP 6 OUT
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x87  EP 7 IN
+>         bmAttributes            3
+>           Transfer Type            Interrupt
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0040  1x 64 bytes
+>         bInterval               3
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x08  EP 8 OUT
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               0
+> Binary Object Store Descriptor:
+>   bLength                 5
+>   bDescriptorType        15
+>   wTotalLength       0x000c
+>   bNumDeviceCaps          1
+>   USB 2.0 Extension Device Capability:
+>     bLength                 7
+>     bDescriptorType        16
+>     bDevCapabilityType      2
+>     bmAttributes   0x00000002
+>       HIRD Link Power Management (LPM) Supported
+> Device Status:     0x0001
+>   Self Powered
 
