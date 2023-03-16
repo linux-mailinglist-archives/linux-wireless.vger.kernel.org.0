@@ -2,166 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A805A6BCF58
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 13:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EB496BD0CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 14:27:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbjCPMYr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 08:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43638 "EHLO
+        id S230290AbjCPN1I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 09:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjCPMYq (ORCPT
+        with ESMTP id S230268AbjCPN1H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 08:24:46 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E966A1FF2
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 05:24:42 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32GCONfF4018289, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32GCONfF4018289
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 16 Mar 2023 20:24:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 16 Mar 2023 20:24:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 16 Mar 2023 20:24:35 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Thu, 16 Mar 2023 20:24:35 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Bernie Huang" <phhuang@realtek.com>
-Subject: Re: [PATCH 1/5] wifi: rtw89: 8852c: add beacon filter and CQM support
-Thread-Topic: [PATCH 1/5] wifi: rtw89: 8852c: add beacon filter and CQM
- support
-Thread-Index: AQHZUwM9emcfit61BUyDIkN8d0SOjK77iydZgAAFchCAAC/jYIABF6eA
-Date:   Thu, 16 Mar 2023 12:24:35 +0000
-Message-ID: <b64f27d8a3e8dcd79356cbc905730fe0a3533db4.camel@realtek.com>
-References: <20230310034631.45299-1-pkshih@realtek.com>
-         <20230310034631.45299-2-pkshih@realtek.com> <87zg8emn4i.fsf@kernel.org>
-         <e3670d1075f54c69ba3971067b3d06b7@realtek.com>
-         <e379029310cd4737ba3dd579394fba19@realtek.com>
-In-Reply-To: <e379029310cd4737ba3dd579394fba19@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.16.31]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <30B2008F523DFB41A7BCF1FE4AF240CE@realtek.com>
-Content-Transfer-Encoding: base64
+        Thu, 16 Mar 2023 09:27:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B19A2ED51
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 06:26:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1678973177;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=G0GjSNp14sgLvsRbIO2AGErzNaT8G3GbrNu8G+re4js=;
+        b=EVqugp7ds14vfLclvX20KAs0QlvxaP923ARvWb+ciWUasbQJPAF0YAas6663yJeDSJbyLa
+        eAhEt1gRXK95mx5R6JakcmtScJru3x64lY1qec1drOPOGDlHs06pAD8YL42JF6C9YLzrj/
+        CpYBfd/mtDkfUjX0ZcfHapxN65rxRDw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-654-wQTMRmwWPAuq9cqMLyh5qw-1; Thu, 16 Mar 2023 09:26:14 -0400
+X-MC-Unique: wQTMRmwWPAuq9cqMLyh5qw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C462885A588;
+        Thu, 16 Mar 2023 13:26:13 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.224])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8995C492B00;
+        Thu, 16 Mar 2023 13:26:12 +0000 (UTC)
+From:   Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To:     johannes.berg@intel.com
+Cc:     gregory.greenman@intel.com, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org, pstourac@redhat.com,
+        jtornosm@redhat.com
+Subject: Re: [PATCH] iwlwifi: mvm: fix double list_add at iwl_mvm_mac_wake_tx_queue (roaming)
+Date:   Thu, 16 Mar 2023 14:25:43 +0100
+Message-Id: <20230316132543.37092-1-jtornosm@redhat.com>
+In-Reply-To: <18728c67cffad35f827d9a32af34044592254093.camel@sipsolutions.net>
+References: <18728c67cffad35f827d9a32af34044592254093.camel@sipsolutions.net>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIzLTAzLTE1IGF0IDE5OjQ1ICswODAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+
-ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBQaW5nLUtlIFNoaWggPHBr
-c2hpaEByZWFsdGVrLmNvbT4NCj4gPiBTZW50OiBXZWRuZXNkYXksIE1hcmNoIDE1LCAyMDIzIDQ6
-NTggUE0NCj4gPiBUbzogS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz4NCj4gPiBDYzogQmVy
-bmllIEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPjsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJu
-ZWwub3JnDQo+ID4gU3ViamVjdDogUkU6IFtQQVRDSCAxLzVdIHdpZmk6IHJ0dzg5OiA4ODUyYzog
-YWRkIGJlYWNvbiBmaWx0ZXIgYW5kIENRTSBzdXBwb3J0DQo+ID4gDQo+ID4gPiAtLS0tLU9yaWdp
-bmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gRnJvbTogS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9y
-Zz4NCj4gPiA+IFNlbnQ6IFdlZG5lc2RheSwgTWFyY2ggMTUsIDIwMjMgNDozMiBQTQ0KPiA+ID4g
-VG86IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+ID4gQ2M6IEJlcm5pZSBI
-dWFuZyA8cGhodWFuZ0ByZWFsdGVrLmNvbT47IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9y
-Zw0KPiA+ID4gU3ViamVjdDogUmU6IFtQQVRDSCAxLzVdIHdpZmk6IHJ0dzg5OiA4ODUyYzogYWRk
-IGJlYWNvbiBmaWx0ZXIgYW5kIENRTSBzdXBwb3J0DQo+ID4gPiANCj4gPiA+IFBpbmctS2UgU2hp
-aCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cml0ZXM6DQo+ID4gPiANCj4gPiA+ID4gRnJvbTogUG8t
-SGFvIEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPg0KPiA+ID4gPiANCj4gPiA+ID4gQWRkaW5n
-IHRoaXMgc3VwcG9ydHMgYmVhY29uIGZpbHRlciBhbmQgY29ubmVjdGlvbiBxdWFsaXR5IG1vbml0
-b3IuDQo+ID4gPiA+IFRvIG1ha2UgaG9zdCBDUFUgd2FrZSB1cCBsZXNzLCBsZXQgZmlybXdhcmUg
-cGVyZm9ybSBzaWduYWwNCj4gPiA+ID4gbW9uaXRvcmluZyBhbmQgYmVhY29uIHByb2Nlc3Npbmcs
-IHRoZW4gbm90aWZ5IGRyaXZlciB1cG9uIHNpZ25hbA0KPiA+ID4gPiBjaGFuZ2VzIG9yIGJlYWNv
-biBsb3NzLg0KPiA+ID4gPiANCj4gPiA+ID4gVGhpcyBmZWF0dXJlIG5lZWRzIGZpcm13YXJlIDAu
-MjcuNTYgb3IgbmV3ZXIgdG8gc3VwcG9ydCBpdC4NCj4gPiA+ID4gDQo+ID4gPiA+IFNpZ25lZC1v
-ZmYtYnk6IFBvLUhhbyBIdWFuZyA8cGhodWFuZ0ByZWFsdGVrLmNvbT4NCj4gPiA+ID4gU2lnbmVk
-LW9mZi1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+ID4gPiANCj4gPiA+
-IFsuLi5dDQo+ID4gPiANCj4gPiA+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OS9jb3JlLmMNCj4gPiA+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OS9jb3JlLmMNCj4gPiA+ID4gQEAgLTE0MzgsNiArMTQzOCw4IEBAIHN0YXRpYyB2b2lk
-IHJ0dzg5X3ZpZl9yeF9zdGF0c19pdGVyKHZvaWQgKmRhdGEsIHU4ICptYWMsDQo+ID4gPiA+ICAg
-ICAgIHN0cnVjdCBydHc4OV9yeF9kZXNjX2luZm8gKmRlc2NfaW5mbyA9IGl0ZXJfZGF0YS0+ZGVz
-Y19pbmZvOw0KPiA+ID4gPiAgICAgICBzdHJ1Y3Qgc2tfYnVmZiAqc2tiID0gaXRlcl9kYXRhLT5z
-a2I7DQo+ID4gPiA+ICAgICAgIHN0cnVjdCBpZWVlODAyMTFfaGRyICpoZHIgPSAoc3RydWN0IGll
-ZWU4MDIxMV9oZHIgKilza2ItPmRhdGE7DQo+ID4gPiA+ICsgICAgIHN0cnVjdCBydHc4OV9yeF9w
-aHlfcHBkdSAqcGh5X3BwZHUgPQ0KPiA+ID4gPiArICAgICAgICAgICAgIChzdHJ1Y3QgcnR3ODlf
-cnhfcGh5X3BwZHUgKilpdGVyX2RhdGEtPnBoeV9wcGR1Ow0KPiA+ID4gDQo+ID4gPiBXaHkgdGhl
-IGNhc3Q/IEkgZG9uJ3QgdGhpbmsgaXQncyBuZWVkZWQuDQo+ID4gDQo+ID4gV2lsbCBmaXggaXQg
-YnkgbmV4dCB2ZXJzaW9uLg0KPiA+IA0KPiA+ID4gPiBAQCAtMzE4MSw2ICszMjA0LDE1IEBAIHN0
-YXRpYyBpbmxpbmUgc3RydWN0IHJ0dzg5X2Z3X2MyaF9hdHRyICpSVFc4OV9TS0JfQzJIX0NCKHN0
-cnVjdA0KPiA+ID4gPiBza19idWZmICpza2IpDQo+ID4gPiA+ICAjZGVmaW5lIFJUVzg5X0dFVF9N
-QUNfQzJIX1JFVl9BQ0tfSDJDX1NFUShjMmgpIFwNCj4gPiA+ID4gICAgICAgbGUzMl9nZXRfYml0
-cygqKChjb25zdCBfX2xlMzIgKikoYzJoKSArIDIpLCBHRU5NQVNLKDIzLCAxNikpDQo+ID4gPiA+
-IA0KPiA+ID4gPiArI2RlZmluZSBSVFc4OV9HRVRfTUFDX0JDTkZMVFJfUlBUX01BQ0lEKGMyaCkg
-XA0KPiA+ID4gPiArICAgICBsZTMyX2dldF9iaXRzKCooKGNvbnN0IF9fbGUzMiAqKShjMmgpICsg
-MiksIEdFTk1BU0soNywgMCkpDQo+ID4gPiA+ICsjZGVmaW5lIFJUVzg5X0dFVF9NQUNfQkNORkxU
-Ul9SUFRfVFlQRShjMmgpIFwNCj4gPiA+ID4gKyAgICAgbGUzMl9nZXRfYml0cygqKChjb25zdCBf
-X2xlMzIgKikoYzJoKSArIDIpLCBHRU5NQVNLKDksIDgpKQ0KPiA+ID4gPiArI2RlZmluZSBSVFc4
-OV9HRVRfTUFDX0JDTkZMVFJfUlBUX0VWRU5UKGMyaCkgXA0KPiA+ID4gPiArICAgICBsZTMyX2dl
-dF9iaXRzKCooKGNvbnN0IF9fbGUzMiAqKShjMmgpICsgMiksIEdFTk1BU0soMTEsIDEwKSkNCj4g
-PiA+ID4gKyNkZWZpbmUgUlRXODlfR0VUX01BQ19CQ05GTFRSX1JQVF9NQShjMmgpIFwNCj4gPiA+
-ID4gKyAgICAgbGUzMl9nZXRfYml0cygqKChjb25zdCBfX2xlMzIgKikoYzJoKSArIDIpLCBHRU5N
-QVNLKDIzLCAxNikpDQo+ID4gPiANCj4gPiA+IEkgaGF2ZSB0byBhZG1pdCB0aGF0IEkgZXZlcnkg
-dGltZSBJIHNlZSB0aGlzIGNvZGUgcGF0dGVybiBpdCBtYWtlcyBtZQ0KPiA+ID4gcmVncmV0IGl0
-LiBTb21ldGhpbmcgbGlrZSB3aGF0IEFybmQgcHJvcG9zZWQgYmFjayBpbiB0aGUgZGF5IHdvdWxk
-IGxvb2sNCj4gPiA+IHNvIG11Y2ggY2xlYW5lcjoNCj4gPiA+IA0KPiA+ID4gaHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvYWxsL0NBSzhQM2ExcnNLWlpLTUtGVERXZ0UzdXNYOWdZS0pxVXZUTXhTZEV1
-WnJwOEJhS2RhQUBtYWlsLmdtYWlsLmNvbS8NCj4gPiA+IA0KPiA+ID4gT2YgY291cnNlIHRoaXMg
-aXMganVzdCBhIGdlbmVyaWMgY29tbWVudCBhYm91dCBydHc4OSwgYW5kIGhhcyBub3RoaW5nIHRv
-DQo+ID4gPiBkbyB3aXRoIHRoaXMgcGF0Y2hzZXQsIGJ1dCBpdCB3b3VsZCBiZSBncmVhdCBpZiBz
-b21lb25lIGNvdWxkIHRha2UgYQ0KPiA+ID4gbG9vayBhbmQgdHJ5IG91dCBBcm5kJ3MgcHJvcG9z
-YWwuIEl0IHdvdWxkIGJlIGdvb2QgdG8gc3RhcnQgd2l0aCBqdXN0DQo+ID4gPiBvbmUgb3IgdHdv
-IGNvbW1hbmRzIGFuZCBzZW5kIHRoYXQgYXMgYW4gUkZDIHRvIHNlZSBob3cgaXQgbG9va3MgbGlr
-ZS4NCj4gPiA+IA0KPiA+IA0KPiA+IEkgd3JpdGUgYSBkcmFmdCBSRkMgaGVyZS4gUGxlYXNlIHNl
-ZSBpZiBpdCdzIGluIGV4cGVjdGF0aW9uLiBJZiBzbywgSSBjYW4NCj4gPiBjaGFuZ2UgYWxsIG9m
-IHRoZW0gYnkgYW5vdGhlciBwYXRjaCBvciBSRkMuDQo+ID4gDQo+ID4gSW4gaGVhZGVyIGZpbGU6
-DQo+ID4gDQo+ID4gI2RlZmluZSBSVFc4OV9DMkhfTUFDX0JDTkZMVFJfUlBUX1cyX01BQ0lEX01B
-U0sgR0VOTUFTSyg3LCAwKQ0KPiA+ICNkZWZpbmUgUlRXODlfQzJIX01BQ19CQ05GTFRSX1JQVF9X
-Ml9UWVBFX01BU0sgR0VOTUFTSyg5LCA4KQ0KPiA+ICNkZWZpbmUgUlRXODlfQzJIX01BQ19CQ05G
-TFRSX1JQVF9XMl9FVkVOVF9NQVNLIEdFTk1BU0soMTEsIDEwKQ0KPiA+ICNkZWZpbmUgUlRXODlf
-QzJIX01BQ19CQ05GTFRSX1JQVF9XMl9NQV9NQVNLIEdFTk1BU0soMjMsIDE2KQ0KPiA+IA0KPiA+
-IA0KPiA+IEFjY2VzcyB0aGUgdmFsdWVzIHZpYSBsZTMyX2dldF9iaXRzKCkgaW4gZnVuY3Rpb25z
-IHNvbWV3aGVyZToNCj4gPiANCj4gPiAJY29uc3QgX19sZTMyICpjMmggPSBza2ItPmRhdGE7DQo+
-ID4gDQo+ID4gCXR5cGUgPSAgIGxlMzJfZ2V0X2JpdHMoYzJoWzJdLCBSVFc4OV9DMkhfTUFDX0JD
-TkZMVFJfUlBUX1cyX01BQ0lEX01BU0spOw0KPiA+IAlzaWcgPSAgICBsZTMyX2dldF9iaXRzKGMy
-aFsyXSwgUlRXODlfQzJIX01BQ19CQ05GTFRSX1JQVF9XMl9NQV9NQVNLKSAtIE1BWF9SU1NJOw0K
-PiA+IAlldmVudCA9ICBsZTMyX2dldF9iaXRzKGMyaFsyXSwgUlRXODlfQzJIX01BQ19CQ05GTFRS
-X1JQVF9XMl9FVkVOVF9NQVNLKTsNCj4gPiAJbWFjX2lkID0gbGUzMl9nZXRfYml0cyhjMmhbMl0s
-IFJUVzg5X0MySF9NQUNfQkNORkxUUl9SUFRfVzJfTUFDSURfTUFTSyk7DQo+ID4gDQo+IA0KPiBJ
-IGZvcmdldCB0byBwcm9wb3NlIGEgUkZDIGZvciB3cml0aW5nIChlLmcuIEgyQyBjb21tYW5kcyB0
-byBmaXJtd2FyZSksIGFuZA0KPiBoZXJlIHRoZXkgYXJlOg0KPiANCj4gCV9fbGUzMiAqaDJjID0g
-c2tiLT5kYXRhOw0KPiANCj4gI2RlZmluZSBSVFc4OV9IMkNfRElTQ09OTkVDVF9ERVRFQ1RfVzBf
-RU5BQkxFIEJJVCgwKQ0KPiAjZGVmaW5lIFJUVzg5X0gyQ19ESVNDT05ORUNUX0RFVEVDVF9XMF9U
-UllPS19CQ05GQUlMX0NPVU5UX0VOIEJJVCgxKQ0KPiAjZGVmaW5lIFJUVzg5X0gyQ19ESVNDT05O
-RUNUX0RFVEVDVF9XMF9ESVNDT05ORUNUIEJJVCgyKQ0KPiAjZGVmaW5lIFJUVzg5X0gyQ19ESVND
-T05ORUNUX0RFVEVDVF9XMF9NQUNfSUQgR0VOTUFTSygxNSwgOCkNCj4gI2RlZmluZSBSVFc4OV9I
-MkNfRElTQ09OTkVDVF9ERVRFQ1RfVzBfQ0hFQ0tfUEVSSU9EIEdFTk1BU0soMjMsIDE2KQ0KPiAj
-ZGVmaW5lIFJUVzg5X0gyQ19ESVNDT05ORUNUX0RFVEVDVF9XMF9UUllfUEtUX0NPVU5UIEdFTk1B
-U0soMzEsIDI0KQ0KPiAjZGVmaW5lIFJUVzg5X0gyQ19ESVNDT05ORUNUX0RFVEVDVF9XMV9UUllP
-S19CQ05GQUlMX0NPVU5UX0xJTUlUIEdFTk1BU0soNywgMCkNCj4gDQo+IAloMmNbMF0gPSBsZTMy
-X2VuY29kZV9iaXRzKGVuYWJsZSwgUlRXODlfSDJDX0RJU0NPTk5FQ1RfREVURUNUX1cwX0VOQUJM
-RSkgfA0KPiAJCSBsZTMyX2VuY29kZV9iaXRzKCFlbmFibGUsIFJUVzg5X0gyQ19ESVNDT05ORUNU
-X0RFVEVDVF9XMF9ESVNDT05ORUNUKSB8DQo+IAkJIGxlMzJfZW5jb2RlX2JpdHMobWFjaWQsIFJU
-Vzg5X0gyQ19ESVNDT05ORUNUX0RFVEVDVF9XMF9NQUNfSUQpIHwNCj4gCQkgbGUzMl9lbmNvZGVf
-Yml0cygxMDAsIFJUVzg5X0gyQ19ESVNDT05ORUNUX0RFVEVDVF9XMF9DSEVDS19QRVJJT0QpOw0K
-PiAJaDJjWzFdID0gbGUzMl9lbmNvZGVfYml0cyg1LCBSVFc4OV9IMkNfRElTQ09OTkVDVF9ERVRF
-Q1RfVzFfVFJZT0tfQkNORkFJTF9DT1VOVF9MSU1JVCk7DQo+IA0KDQpJIGhhdmUgc2VudCB2MyAo
-djIgaXMgbWVzc2VkIHVwKSB3aXRoIGFib3ZlIHN0eWxlIGFuZCBpdCBsb29rcyBtb3JlIGNsZWFy
-Lg0KSWYgdGhpcyBpcyBva2F5LCBJIHdpbGwgY29udmVydCBleGlzdGluZyBjb2RlIHRvIHRoaXMg
-c3R5bGUuDQoNClBpbmctS2UNCg0KDQo=
+My previous solution was working with my test during one week with no problem
+and now your more complete solution has been working during 2 days with no 
+problem as well. I was able to reproduce in less time with my test, so your
+solution is successfully verified and I can say: 
+
+Tested-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+
+Thanks
+
