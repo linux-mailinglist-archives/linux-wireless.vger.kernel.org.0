@@ -2,166 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA8E6BDA6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 21:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 412986BDBF0
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 23:48:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjCPUwx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 16:52:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34556 "EHLO
+        id S230106AbjCPWsH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 18:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230406AbjCPUww (ORCPT
+        with ESMTP id S230094AbjCPWsE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 16:52:52 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08AAA77E3D
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 13:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678999971; x=1710535971;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=smucJKz647MEBgrWqeSYpLgrISjeVBK218r9BERZPfA=;
-  b=Pg+ELpgRKPciq8dRzhX2jlAltwWR1P0eJXyP1WFtOeELhkV/OxvFKkV4
-   Tt98N0LLtawIiERF3HSx43wgByWRBNzJ6u1CRRRbcUQNytbuWTATkKNJN
-   1IokrraKf67C2JpBe+YOBV+qbHAhxtOhTxIRauGoJ1nhXCW+/wdFNlf18
-   wu6XGo5IzTPGAWcZsHta6GThs67gNZVYi1NvugLRvoVp0flDR1WzblQ3t
-   ICm+1iUP9haUui8op0bOFFN4Ud/mY2gr16i6oylOXQbOoHwNVrHHREE6F
-   0fUdAhu5wJgpYswMg20lEf7CbazfrEeuvrRrj9bm/CeJZ9SamSmp0rjmu
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="365806388"
-X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
-   d="scan'208";a="365806388"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2023 13:52:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10651"; a="1009393654"
-X-IronPort-AV: E=Sophos;i="5.98,265,1673942400"; 
-   d="scan'208";a="1009393654"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 16 Mar 2023 13:52:49 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pcuaZ-0008oo-24;
-        Thu, 16 Mar 2023 20:52:43 +0000
-Date:   Fri, 17 Mar 2023 04:52:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:main] BUILD SUCCESS
- 499183cc3b52613f06cf4ce70809546971c96ed8
-Message-ID: <64138178.9reVMOi7za7G2URv%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Thu, 16 Mar 2023 18:48:04 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380A8E6DBA
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 15:47:49 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id t9so3577913qtx.8
+        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 15:47:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679006868;
+        h=content-transfer-encoding:subject:from:content-language:to
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gKHnnkPazwpfbziiWQy+PBZhHwBmODnl2Umv22BWgNQ=;
+        b=eD6bhlCze/JO3I4itK1qOsNecEAVduB6IaCyWS5lLQdxuRewhNsSXdrPY3OeP8JRfx
+         WqQil9kGpTWNYwjbz5Sc1dE2AAGqHcbL5cT8xDAgUBYfRy7jOMcmL13bhnI7A53mdd8G
+         DuXAyLWuL3/MjX7HsEJBYS1E2TquOnhEYyaKrI7l+T2zgA91AxiPsuThKHSe/8ybHdZG
+         J1qQ8H+CBpfEsOrNurwxHn+bPKFoQCQ3xyVoSi45fUkwg1PLeZjUq3JzYm+rbdpxlS0g
+         xN+iMvK+aG7/ZZdRh6UzHxgqQqVI9ZIRaOmyTg733t7geJDOsacqGXDcWc+bl2JNPvDx
+         nViw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679006868;
+        h=content-transfer-encoding:subject:from:content-language:to
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gKHnnkPazwpfbziiWQy+PBZhHwBmODnl2Umv22BWgNQ=;
+        b=guIdcQu0SWaK2HY4SDwGKumMgL4DbUqYqjQ9jQIruQORtYTUkfJ+iMvpU+xiNE5G9Q
+         vIQ3EJcXNRuGjhXlhIKduEdxemlkyjfPKmCTJ4yF8YGSKsrNhMicMIX6g3X1+YepsCPl
+         S0TMudyrM+OcJlLfB5c8ZPR5855/j04g2GOciYzfGzRugBWl3P1QUImkyeMtnLjJaVT1
+         tXUpBRK6+F8KrfQ3hibvm6IozoMErjYtjUnu6HU/pzBHZ1EqUdx7k3HuVsNvU/XD21Rj
+         bTL8ju5YOFM4p2VqO5TEY0NLzKwCwbaoLD+qOQ3hG60nXNlHLEuE5nyTkqA/Lt4e+8KB
+         BK9Q==
+X-Gm-Message-State: AO0yUKXlGdg/sPPSKox2OSQVwDfpEXZ4S8rXAktX5/PTQ7X4AFhDRSRj
+        8clkasLoi2iGv2LxE8d+G2prNiwksG4=
+X-Google-Smtp-Source: AK7set8AXBH+spPXWY7AzFhpAp+wuU9ZMniw4e1ktkX5c0K2dvXMSUs3iaCExywREvWkuPYPz3vXUw==
+X-Received: by 2002:a05:622a:2c6:b0:3bf:d946:b04a with SMTP id a6-20020a05622a02c600b003bfd946b04amr8540035qtx.66.1679006867952;
+        Thu, 16 Mar 2023 15:47:47 -0700 (PDT)
+Received: from [10.8.2.6] ([94.140.11.247])
+        by smtp.gmail.com with ESMTPSA id x26-20020ac86b5a000000b003bfa2c512e6sm467184qts.20.2023.03.16.15.47.47
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Mar 2023 15:47:47 -0700 (PDT)
+Message-ID: <df1ce994-3368-a57e-7078-8bdcccf4a1fd@gmail.com>
+Date:   Thu, 16 Mar 2023 18:47:46 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+To:     linux-wireless@vger.kernel.org
+Content-Language: en-US
+From:   rb <rb0171610@gmail.com>
+Subject: New binary rtw8852b_fw.bin not loading firmware not recognized
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 499183cc3b52613f06cf4ce70809546971c96ed8  wifi: iwlwifi: Avoid disabling GCC specific flag with clang
+Briefly,
 
-elapsed time: 733m
+I use rtw89_8852be in kernel driver
 
-configs tested: 85
-configs skipped: 3
+HARDWARE:
+Network controller [0280]: Realtek Semiconductor Co., Ltd. Device [10ec:b852]
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Lenovo Ideapad 1i
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230312   gcc  
-arc                  randconfig-r043-20230313   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r046-20230312   clang
-arm                  randconfig-r046-20230313   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r041-20230312   clang
-hexagon              randconfig-r041-20230313   clang
-hexagon              randconfig-r045-20230312   clang
-hexagon              randconfig-r045-20230313   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230313   gcc  
-i386                 randconfig-a002-20230313   gcc  
-i386                 randconfig-a003-20230313   gcc  
-i386                 randconfig-a004-20230313   gcc  
-i386                 randconfig-a005-20230313   gcc  
-i386                 randconfig-a006-20230313   gcc  
-i386                 randconfig-a011-20230313   clang
-i386                          randconfig-a011   clang
-i386                 randconfig-a012-20230313   clang
-i386                          randconfig-a012   gcc  
-i386                 randconfig-a013-20230313   clang
-i386                          randconfig-a013   clang
-i386                 randconfig-a014-20230313   clang
-i386                          randconfig-a014   gcc  
-i386                 randconfig-a015-20230313   clang
-i386                          randconfig-a015   clang
-i386                 randconfig-a016-20230313   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230312   gcc  
-riscv                randconfig-r042-20230313   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230312   gcc  
-s390                 randconfig-r044-20230313   clang
-sh                               allmodconfig   gcc  
-sparc                               defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230313   gcc  
-x86_64               randconfig-a002-20230313   gcc  
-x86_64               randconfig-a003-20230313   gcc  
-x86_64               randconfig-a004-20230313   gcc  
-x86_64               randconfig-a005-20230313   gcc  
-x86_64               randconfig-a006-20230313   gcc  
-x86_64               randconfig-a011-20230313   clang
-x86_64               randconfig-a012-20230313   clang
-x86_64               randconfig-a013-20230313   clang
-x86_64               randconfig-a014-20230313   clang
-x86_64               randconfig-a015-20230313   clang
-x86_64               randconfig-a016-20230313   clang
-x86_64                               rhel-8.3   gcc  
+ISSUE:
+Newest version of binary firmware 2023_03_10,
+rtw89/rtw8852b_fw.bin, will not load/firmware not recognized on Linux Kernel 6.2.5 (and others):
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+[] loading firmare: rwt89/rtw8852b_fw.bin
+[] rtw89_8852be 0000:03:00.0: no suitable firmware found
+[] rtw89_8852be 0000:03:00.0: failed to recognize firmware
+
+Issue persists regardless of which 6.2 series kernel is used.
+
+All previous rwt89/rtw8852b_fw.bin firmware from linux-firmware 2023_02_10 and earlier loads and works correctly.
+
+I did file a bug report with the details:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=217207
+
+Thank you,
+Rab B.
+rb0171610@gmail.com
+
