@@ -2,281 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 514C16BC606
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 07:17:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A69476BC638
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 07:41:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjCPGRL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 02:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
+        id S229712AbjCPGl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 02:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjCPGRK (ORCPT
+        with ESMTP id S229519AbjCPGlZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 02:17:10 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005B862300
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 23:17:08 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id w9so3387630edc.3
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 23:17:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1678947427;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jJrgBFvW3DIOQ35W9TFR+Snp/hRFAqtkZHeTFQ8YFxU=;
-        b=QznOHhMN4Ol7uF2E3BKr0JWWgNA3DzSx095urOcecFCA+SWvXqBBmZqLh/MODwrjKG
-         IuiOZflUehdnzUKZkunvVZ3ZBpdwsHHWfHWsDnuf2I1NZPdLzsKtu5WtFI3HYQcNso2C
-         V81TholzFA72DhJ5v3P37MGy64oXSXA5b16Bg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678947427;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jJrgBFvW3DIOQ35W9TFR+Snp/hRFAqtkZHeTFQ8YFxU=;
-        b=yobhq2rqCQ6rcajGMl1nmPO3dodIWw0d7NlFnvh1/G4D7ZZ90VO5xAvcM5KE2oi6jr
-         jEz83ZzJouaMZBSMzpG02i6ja+rGkUgQqMD+IzgBNbAlul/voIWADkD+bmL57mmrECtt
-         r/yANP8Pos6KoUQ7qyoO+boLGc8CGUbj8g8MucumW1g8+wxxaZP+EvpnJhAcHrwXdCUE
-         D7aQ+vS3BzIiBO50DF2IGKHQl4ucnYTLIH1PtFSkiV7nWBaH4PKCTYtnzhGQ7USwuH80
-         s0ksvu0rC7IbmWz89B3RDDvCzEV8wNc7JRx0ihmjxZ0YiK8nYIMY5cdj3Ce4pF+ctbUd
-         +bUw==
-X-Gm-Message-State: AO0yUKXhAuQjOD3hmcRu9+CpCaB27GLclz9KbbNwY0SGk3j6UZqErqHk
-        CmRwl2vC0MtnQo/0Al0oSlwR9w==
-X-Google-Smtp-Source: AK7set+Fr6ugMiX54V/PNraP95blFBOdaBquz+2a/6sXC9ww/JO/dzgB+VytbOJ+IBBJUyusdNibfg==
-X-Received: by 2002:a17:906:194b:b0:8ae:e82a:3230 with SMTP id b11-20020a170906194b00b008aee82a3230mr9608200eje.70.1678947427337;
-        Wed, 15 Mar 2023 23:17:07 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id ju9-20020a17090798a900b0093099aae903sm215299ejc.115.2023.03.15.23.17.06
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 Mar 2023 23:17:06 -0700 (PDT)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Michael Stapelberg <michael+lkml@stapelberg.ch>
-CC:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        Franky Lin <franky.lin@broadcom.com>,
-        "Pieter-Paul Giesberts" <pieter-paul.giesberts@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        <linux-wireless@vger.kernel.org>
-Date:   Thu, 16 Mar 2023 07:17:05 +0100
-Message-ID: <186e9109ae8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CANnVG6neOX+Bgc3zWA8k=hwrifmXb=xBN95aMUEyJ=orz3+Wkg@mail.gmail.com>
-References: <CANnVG6=a3etRagG+RaSEH-b4_nfzxpEKffQtuMWrttrbgjunZQ@mail.gmail.com>
- <186e23b5668.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6kjWj02eEFv_OeLiRtjrJ6yn4EsELz_BtrzFHH15GNMLw@mail.gmail.com>
- <186e26dc0a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6n-eqKUQnX_6wncmjG1kyVfhxqs2L82xYQpDmGq89eVAQ@mail.gmail.com>
- <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CANnVG6kaGj1SVCqf2y3=Xj_N2G9j+-VhLDN4_WY_ywDswNkO3g@mail.gmail.com>
- <89262772-7358-77e8-8913-c459819d544a@broadcom.com>
- <a459b9adc5eb7b67a432bd947d47d1df08718762.camel@sipsolutions.net>
- <f430c376-5992-d394-ce55-5994c793c7c7@broadcom.com>
- <CANnVG6neOX+Bgc3zWA8k=hwrifmXb=xBN95aMUEyJ=orz3+Wkg@mail.gmail.com>
-User-Agent: AquaMail/1.43.0 (build: 104300275)
-Subject: Re: wifi breakage due to commit "wifi: brcmfmac: add support for vendor-specific firmware api"
+        Thu, 16 Mar 2023 02:41:25 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50BE196AC
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Mar 2023 23:41:23 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32G6f2oJ5004279, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32G6f2oJ5004279
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 16 Mar 2023 14:41:02 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 16 Mar 2023 14:40:54 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 16 Mar
+ 2023 14:40:53 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] wifi: rtw89: add counters of register-based H2C/C2H
+Date:   Thu, 16 Mar 2023 14:39:56 +0800
+Message-ID: <20230316063956.71687-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000006ad0805f6fe69d8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---00000000000006ad0805f6fe69d8
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+The register-based H2C/C2H are used to exchange information between driver
+and firmware, but only apply to narrow area because its data size is
+smaller than regular packet-based H2C/C2H.
 
-On March 15, 2023 8:53:50 PM Michael Stapelberg 
-<michael+lkml@stapelberg.ch> wrote:
+This kind of H2C/C2H must be paired. To identify if any H2C/C2H is missing,
+update counters to help diagnose this kind of problems.
 
-> Hey Arend
->
-> Thanks for looking into it.
->
-> Your suspicion was spot on: we don’t have /sbin/modprobe (we don’t
-> even have /sbin!)
->
-> I addressed this issue by loading the brcmfmac-wcc module where we
-> also load the others:
-> https://github.com/gokrazy/wifi/commit/f611656338b68faa5f42bc2c8bbf1e0231a74a50
->
-> I’m not entirely sure why I concluded in my earlier testing that
-> loading the module doesn’t help.
-> Perhaps the issue was that I was manually loading the module after the
-> wifi program
-> tried to use the interface already and had it fail its firmware load —
-> in either case,
-> loading brcmfmac-wcc from the wifi program seems to work fine.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2: driver maintains counters to avoid using rtw89_write8_mask_add(), so
+    we don't need to add it.
+---
+ drivers/net/wireless/realtek/rtw89/core.h     |  4 ++++
+ drivers/net/wireless/realtek/rtw89/fw.c       | 11 +++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.c      |  2 ++
+ drivers/net/wireless/realtek/rtw89/reg.h      |  5 +++++
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  2 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  2 ++
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  2 ++
+ 7 files changed, 28 insertions(+)
 
-I was going to say it seems racy, but I am not sure why that works at all. 
-In brcmf_fwvid_request_module it says:
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index e447bfec508b8..01e9444e221c3 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3116,8 +3116,10 @@ struct rtw89_chip_info {
+ 	u32 txwd_body_size;
+ 	u32 h2c_ctrl_reg;
+ 	const u32 *h2c_regs;
++	struct rtw89_reg_def h2c_counter_reg;
+ 	u32 c2h_ctrl_reg;
+ 	const u32 *c2h_regs;
++	struct rtw89_reg_def c2h_counter_reg;
+ 	const struct rtw89_page_regs *page_regs;
+ 	bool cfo_src_fd;
+ 	const struct rtw89_reg_def *dcfo_comp;
+@@ -3244,6 +3246,8 @@ struct rtw89_fw_info {
+ 	struct completion completion;
+ 	u8 h2c_seq;
+ 	u8 rec_seq;
++	u8 h2c_counter;
++	u8 c2h_counter;
+ 	struct rtw89_fw_suit normal;
+ 	struct rtw89_fw_suit wowlan;
+ 	bool fw_log_enable;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 713aefd0cf8dd..5fa6863d36b30 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -615,6 +615,8 @@ int rtw89_fw_download(struct rtw89_dev *rtwdev, enum rtw89_fw_type type)
+ 
+ 	fw_info->h2c_seq = 0;
+ 	fw_info->rec_seq = 0;
++	fw_info->h2c_counter = 0;
++	fw_info->c2h_counter = 0;
+ 	rtwdev->mac.rpwm_seq_num = RPWM_SEQ_NUM_MAX;
+ 	rtwdev->mac.cpwm_seq_num = CPWM_SEQ_NUM_MAX;
+ 
+@@ -2724,6 +2726,7 @@ static int rtw89_fw_write_h2c_reg(struct rtw89_dev *rtwdev,
+ 				  struct rtw89_mac_h2c_info *info)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
++	struct rtw89_fw_info *fw_info = &rtwdev->fw;
+ 	const u32 *h2c_reg = chip->h2c_regs;
+ 	u8 i, val, len;
+ 	int ret;
+@@ -2743,6 +2746,9 @@ static int rtw89_fw_write_h2c_reg(struct rtw89_dev *rtwdev,
+ 	for (i = 0; i < RTW89_H2CREG_MAX; i++)
+ 		rtw89_write32(rtwdev, h2c_reg[i], info->h2creg[i]);
+ 
++	fw_info->h2c_counter++;
++	rtw89_write8_mask(rtwdev, chip->h2c_counter_reg.addr,
++			  chip->h2c_counter_reg.mask, fw_info->h2c_counter);
+ 	rtw89_write8(rtwdev, chip->h2c_ctrl_reg, B_AX_H2CREG_TRIGGER);
+ 
+ 	return 0;
+@@ -2752,6 +2758,7 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
+ 				 struct rtw89_mac_c2h_info *info)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
++	struct rtw89_fw_info *fw_info = &rtwdev->fw;
+ 	const u32 *c2h_reg = chip->c2h_regs;
+ 	u32 ret;
+ 	u8 i, val;
+@@ -2775,6 +2782,10 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
+ 	info->content_len = (RTW89_GET_C2H_HDR_LEN(*info->c2hreg) << 2) -
+ 				RTW89_C2HREG_HDR_LEN;
+ 
++	fw_info->c2h_counter++;
++	rtw89_write8_mask(rtwdev, chip->c2h_counter_reg.addr,
++			  chip->c2h_counter_reg.mask, fw_info->c2h_counter);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 7866fe925d248..d0e138f8b880a 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3398,6 +3398,8 @@ int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw)
+ 	if (rtw89_read32(rtwdev, R_AX_PLATFORM_ENABLE) & B_AX_WCPU_EN)
+ 		return -EFAULT;
+ 
++	rtw89_write32(rtwdev, R_AX_UDM1, 0);
++	rtw89_write32(rtwdev, R_AX_UDM2, 0);
+ 	rtw89_write32(rtwdev, R_AX_HALT_H2C_CTRL, 0);
+ 	rtw89_write32(rtwdev, R_AX_HALT_C2H_CTRL, 0);
+ 	rtw89_write32(rtwdev, R_AX_HALT_H2C, 0);
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index e5c0ab43ab7a0..c75aee61f383d 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -207,6 +207,11 @@
+ 
+ #define R_AX_UDM0 0x01F0
+ #define R_AX_UDM1 0x01F4
++#define B_AX_UDM1_MASK GENMASK(31, 16)
++#define B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK GENMASK(15, 12)
++#define B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK GENMASK(11, 8)
++#define B_AX_UDM1_WCPU_C2H_ENQ_CNT_MASK GENMASK(7, 4)
++#define B_AX_UDM1_WCPU_H2C_DEQ_CNT_MASK GENMASK(3, 0)
+ #define R_AX_UDM2 0x01F8
+ #define R_AX_UDM3 0x01FC
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 9c42b6abd2232..5f7e948507f8a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2131,9 +2131,11 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 	.h2c_desc_size		= sizeof(struct rtw89_txwd_body),
+ 	.txwd_body_size		= sizeof(struct rtw89_txwd_body),
+ 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL,
++	.h2c_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK >> 8},
+ 	.h2c_regs		= rtw8852a_h2c_regs,
+ 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL,
+ 	.c2h_regs		= rtw8852a_c2h_regs,
++	.c2h_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK >> 8},
+ 	.page_regs		= &rtw8852a_page_regs,
+ 	.cfo_src_fd		= false,
+ 	.dcfo_comp		= &rtw8852a_dcfo_comp,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 499ae0389c715..895d216cfa27b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -2508,8 +2508,10 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 	.h2c_desc_size		= sizeof(struct rtw89_txwd_body),
+ 	.txwd_body_size		= sizeof(struct rtw89_txwd_body),
+ 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL,
++	.h2c_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK >> 8},
+ 	.h2c_regs		= rtw8852b_h2c_regs,
+ 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL,
++	.c2h_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK >> 8},
+ 	.c2h_regs		= rtw8852b_c2h_regs,
+ 	.page_regs		= &rtw8852b_page_regs,
+ 	.cfo_src_fd		= true,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 8af813132f71d..e8e577a1b9fc4 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2867,8 +2867,10 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 	.h2c_desc_size		= sizeof(struct rtw89_rxdesc_short),
+ 	.txwd_body_size		= sizeof(struct rtw89_txwd_body_v1),
+ 	.h2c_ctrl_reg		= R_AX_H2CREG_CTRL_V1,
++	.h2c_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_H2C_DEQ_CNT_MASK >> 8},
+ 	.h2c_regs		= rtw8852c_h2c_regs,
+ 	.c2h_ctrl_reg		= R_AX_C2HREG_CTRL_V1,
++	.c2h_counter_reg	= {R_AX_UDM1 + 1, B_AX_UDM1_HALMAC_C2H_ENQ_CNT_MASK >> 8},
+ 	.c2h_regs		= rtw8852c_c2h_regs,
+ 	.page_regs		= &rtw8852c_page_regs,
+ 	.cfo_src_fd		= false,
+-- 
+2.25.1
 
-    ret = request_module("brcmfmac-%s", fwvid_list[fwvid].name);
-        if (ret)
-            goto fail;
-
-and the missing modprobe would always cause request_module() to fail (see 
-[1]) hence the device probe would fail. What am I missing here?
-
-Regards,
-Arend
-
-[1] https://elixir.bootlin.com/linux/latest/source/kernel/kmod.c#L138
-
->
-> I also realize that the error message gives a number of pointers once
-> you know how to interpret it:
->
-> + brcmfmac: brcmf_fwvid_request_module: mod=wcc: failed -2
->
-> I now understand this was trying to tell me that
-> request_module("brcmfmac-wcc") failed
-> with error code -2 (ENOENT), which means that the kernel’s
-> request_module() function
-> could not find CONFIG_MODPROBE_PATH.
->
-> For comparison, when the user space tool exists but fails, including
-> when it can’t find
-> the requested module (ENOENT), it always returns exit code 1:
-> https://salsa.debian.org/md/kmod/-/blob/7d761268ebb68245daf47167e418823c68c3eb98/tools/modprobe.c#L1025
->
-> I think it would be nice if the Linux kernel could print a more
-> descriptive error message in this case.
-> I’m not sure what the kernel conventions are: should the caller of
-> request_module() produce a good error message?
-> Ideally, the message would translate -2 into ENOENT, and mention the
-> name “brcmfmac-wcc”.
->
-> Or maybe we could have a kconfig option to indicate there is no
-> CONFIG_MODPROBE_PATH,
-> and instead make any request_module() call fail loudly with a
-> descriptive error in dmesg?
->
-> Thanks for considering
-> Best regards
-> Michael
->
-> On Wed, 15 Mar 2023 at 11:11, Arend van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
->>
->> On 3/15/2023 10:57 AM, Johannes Berg wrote:
->>> On Wed, 2023-03-15 at 10:12 +0100, Arend van Spriel wrote:
->>>>
->>>> I think it works pretty similar to firmware loading. These days firmware
->>>> loading does not rely on a user-space helper and I assumed the same is
->>>> true for module loading. Will look into it.
->>>
->>> As far as I know you still need the modprobe helper in
->>>
->>> /proc/sys/kernel/modprobe
->>
->> Hi Michael,
->>
->> With hint from Johannes I found this Kconfig option:
->>
->> config MODPROBE_PATH
->> string "Path to modprobe binary"
->> default "/sbin/modprobe"
->> help
->> When kernel code requests a module, it does so by calling
->> the "modprobe" userspace utility. This option allows you to
->> set the path where that binary is found. This can be changed
->> at runtime via the sysctl file
->> /proc/sys/kernel/modprobe. Setting this to the empty string
->> removes the kernel's ability to request modules (but
->> userspace can still load modules explicitly).
->>
->> Now checking the .config that you sent it says:
->>
->> CONFIG_MODPROBE_PATH="/sbin/modprobe"
->>
->> So my suspicion is that modprobe is not at that given location?
->>
->> Regards,
->> Arend
-
-
-
-
---00000000000006ad0805f6fe69d8
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCrim13gVHHLxDmCzr1
-Oc6UDLBKlhhl/6nk4Id1/+jyyjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzAzMTYwNjE3MDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAqkbeR723LM2bGVaXKMJie7VoUj4zS8QuLm5Z
-oAJkIoOrY/6mqSOlec0qwUdtn4f2sKV5kH0HJ+J8MSjfEuSlEp5oyHgssPK09KNSp3bdX2ykGDwJ
-02qTat7KGdYMi+PmNehLnwlFBjgVVU9mibJQLuzOdKOyy/mGS2s8UArBySRvqTyzXnKWofSJ4BhQ
-Kf614EH/DDZT95Qn39xP8E3h1FgTS6ADtCJTb7GO/bGnAMGZX+n3N+XBL8wNeYosqkPNC1SMCvDN
-WPPWZl4rIX2rOOPP3mhNtx+i0pJfOPha7wqtGOcjp2MvxYvs+gsAeI0VTKMdKxw55Nk4AyfOGCTS
-8A==
---00000000000006ad0805f6fe69d8--
