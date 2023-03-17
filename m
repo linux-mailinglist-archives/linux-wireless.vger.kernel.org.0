@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762C56BEFB2
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 18:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B72E6BEFE7
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 18:39:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230115AbjCQRaW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Mar 2023 13:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56778 "EHLO
+        id S231184AbjCQRj3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Mar 2023 13:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbjCQRaV (ORCPT
+        with ESMTP id S230252AbjCQRjL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Mar 2023 13:30:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266CA2ED6F;
-        Fri, 17 Mar 2023 10:30:20 -0700 (PDT)
+        Fri, 17 Mar 2023 13:39:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679B733CC4;
+        Fri, 17 Mar 2023 10:39:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DFFCEB82641;
-        Fri, 17 Mar 2023 17:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C30C433EF;
-        Fri, 17 Mar 2023 17:30:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F05CF60B35;
+        Fri, 17 Mar 2023 17:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16824C4339C;
+        Fri, 17 Mar 2023 17:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679074217;
-        bh=l/oo++nd5/THbGDXNgQewvPeaT962pxyBBxTkzCqAOQ=;
+        s=k20201202; t=1679074747;
+        bh=d2dbiKmY5zdyizSPGR6FY41MGap7MSDENVLqaS/yv7A=;
         h=Date:From:To:Cc:Subject:From;
-        b=FLwyozEt5oRVYycYB4oitlmYDsjagBORL5pRLaZ+bE5FH9+YFohf9QIrr+NEL4vRW
-         fBYfzRBidm6cu/rRAVgBEpfz3NUEMy7Re+jIo8lGvZoZQmAiDnR1oE81bk3iid78GW
-         2ZWT0Gxb13uckPWDFazaxHbeOwfcbyzPuiJh9PycqmOEnc4Nqxl2BHANRUS8tMMOkw
-         Y1G9W9LTxsIcjoDGqkV2L7HNkv5NRnS6aAIhyZqmziiGjK+91im20MFRQtWT140Tc+
-         3A9gj10k7B6YBpizqgs63JdlIfXk8+BRTTaMKYTBH8vtw3UtjlMoC1MDKH7uhXfIcr
-         NZMSsbxKvgppA==
-Date:   Fri, 17 Mar 2023 11:30:47 -0600
+        b=Tnoc0wbFnYcI8PTEOW4setBX+PUqyFAClZo4S/KpN5fAdd461DOke0bIfLY0H+lwR
+         8H/6AEX3fYWWAK+91sB1j6HCKJASKKYDcuHDqdVLvUqtNPYVhFumLcp2NHNavfL0Jx
+         KlRKScg4cCHoEc/82rgagqqyssu/zEZZ3pdBrwL2jmhuVjmorl30IgeIa2KLjKFviR
+         t7p8SkMLSaX4G2tGhWwJ5+IeaMghtFZUqn3lM93+oibAaqBOkCHXKz9I1ebnnAKRgX
+         qUzJaRKSRfKqkFC7q3i7dnj6Aa7ZoPukq052Fv+wr9krAlWcDQP+M75Fnrm7dvHeYm
+         XUPM4vTcqr9Vg==
+Date:   Fri, 17 Mar 2023 11:39:36 -0600
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
 To:     Christian Lamparter <chunkeey@googlemail.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -44,14 +44,15 @@ Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-hardening@vger.kernel.org
-Subject: [PATCH][next] carl9170: Fix multiple -Warray-bounds warnings
-Message-ID: <ZBSjx236+BTiRByf@work>
+Subject: [PATCH][next] wifi: carl9170: Replace fake flex-array with
+ flexible-array member
+Message-ID: <ZBSl2M+aGIO1fnuG@work>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,43 +61,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-GCC (and Clang)[1] does not like having a partially allocated object,
-since it cannot reason about it for bounds checking. Instead, fully
-allocate struct carl9170_cmd.
+Zero-length arrays as fake flexible arrays are deprecated and we are
+moving towards adopting C99 flexible-array members instead.
 
-Fix the following warnings Seen under GCC 13:
-drivers/net/wireless/ath/carl9170/cmd.c:125:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[4]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:126:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[4]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:125:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:126:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:161:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:162:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:163:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:164:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:125:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[8]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:126:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[8]’ [-Warray-bounds=]
-drivers/net/wireless/ath/carl9170/cmd.c:220:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[8]’ [-Warray-bounds=]
+Address the following warnings found with GCC-13 and
+-fstrict-flex-arrays=3 enabled:
+drivers/net/wireless/ath/carl9170/tx.c:702:61: warning: array subscript i is outside array bounds of ‘const struct _carl9170_tx_status[0]’ [-Warray-bounds=]
+drivers/net/wireless/ath/carl9170/tx.c:701:65: warning: array subscript i is outside array bounds of ‘const struct _carl9170_tx_status[0]’ [-Warray-bounds=]
 
-Link: https://github.com/KSPP/linux/issues/268
-Link: godbolt.org/z/KP97sxh3T [1]
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -fstrict-flex-arrays=3 [1].
+
+Link: https://github.com/KSPP/linux/issues/21
+Link: https://github.com/KSPP/linux/issues/267
+Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/carl9170/fwcmd.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/cmd.c b/drivers/net/wireless/ath/carl9170/cmd.c
-index f2b4f537e4c1..b8ed193c0195 100644
---- a/drivers/net/wireless/ath/carl9170/cmd.c
-+++ b/drivers/net/wireless/ath/carl9170/cmd.c
-@@ -120,7 +120,7 @@ struct carl9170_cmd *carl9170_cmd_buf(struct ar9170 *ar,
- {
- 	struct carl9170_cmd *tmp;
- 
--	tmp = kzalloc(sizeof(struct carl9170_cmd_head) + len, GFP_ATOMIC);
-+	tmp = kzalloc(sizeof(*tmp), GFP_ATOMIC);
- 	if (tmp) {
- 		tmp->hdr.cmd = cmd;
- 		tmp->hdr.len = len;
+diff --git a/drivers/net/wireless/ath/carl9170/fwcmd.h b/drivers/net/wireless/ath/carl9170/fwcmd.h
+index ff4b3b50250c..e5bcc364f088 100644
+--- a/drivers/net/wireless/ath/carl9170/fwcmd.h
++++ b/drivers/net/wireless/ath/carl9170/fwcmd.h
+@@ -320,9 +320,9 @@ struct carl9170_rsp {
+ 		struct carl9170_u32_list	rreg_res;
+ 		struct carl9170_u32_list	echo;
+ #ifdef __CARL9170FW__
+-		struct carl9170_tx_status	tx_status[0];
++		DECLARE_FLEX_ARRAY(struct carl9170_tx_status, tx_status);
+ #endif /* __CARL9170FW__ */
+-		struct _carl9170_tx_status	_tx_status[0];
++		DECLARE_FLEX_ARRAY(struct _carl9170_tx_status, _tx_status);
+ 		struct carl9170_gpio		gpio;
+ 		struct carl9170_tsf_rsp		tsf;
+ 		struct carl9170_psm		psm;
 -- 
 2.34.1
 
