@@ -2,191 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C9D6BE1D5
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 08:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E34D76BE1E7
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 08:29:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjCQHVW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Mar 2023 03:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47154 "EHLO
+        id S230258AbjCQH30 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Mar 2023 03:29:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjCQHVV (ORCPT
+        with ESMTP id S229532AbjCQH3Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Mar 2023 03:21:21 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CE1298C5
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 00:21:19 -0700 (PDT)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32H6JXh6023349;
-        Fri, 17 Mar 2023 07:20:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=i30GOrKT72nOHAgIb0YXGYkuKAFuTLRcOsj/zhtnyIs=;
- b=GDzcs1qohk42xX+FT2eQlXLaSYbFWHTUekUJbRqu1g4WTimXw9CQZxhXkyWW+5PfoIFr
- Hn8YOy5c7UVcLjEXvrB0hDVcheefUv1grV7ruCTcYtRjpGbhqfbNO1XCYFkGhqQyP804
- AfM0ixBMRV1i2k5Nr4yDC07zsqCX4uk9WsPl0LBqVd2Mcosurk9PEf816Dy0Ctf0yP6u
- h9LKyjKNYE3r0ctbPrcGeeMQLMSozNX3t/yDi3SSaG/lLG5V6C9nILFDcrMxFhns80jA
- QCPlyYDrQBMHUJd9ZY1MLXdxG/zvcsKqnH0iAcb9e4JLzSpDLulLFCQbbYF6rxF4wUux AA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pc624j290-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 17 Mar 2023 07:20:57 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32H7KvxQ001750
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 17 Mar 2023 07:20:57 GMT
-Received: from gjothira-linux.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Fri, 17 Mar 2023 00:20:55 -0700
-From:   Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
-Subject: [PATCH] wifi: ath11k: Configure the FTM responder role using firmware capability flag
-Date:   Fri, 17 Mar 2023 12:50:34 +0530
-Message-ID: <20230317072034.8217-1-quic_gjothira@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 17 Mar 2023 03:29:25 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F6295848F
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 00:29:23 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32H7T18f8006586, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32H7T18f8006586
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 17 Mar 2023 15:29:01 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 17 Mar 2023 15:29:14 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 17 Mar 2023 15:29:13 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Fri, 17 Mar 2023 15:29:13 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rb0171610@gmail.com" <rb0171610@gmail.com>
+Subject: Re: New binary rtw8852b_fw.bin not loading firmware not recognized
+Thread-Topic: New binary rtw8852b_fw.bin not loading firmware not recognized
+Thread-Index: AQHZWFlk5g7N8N8lZkeI1EtTn3KuVa7+FaKggABX+Lz//5+sgA==
+Date:   Fri, 17 Mar 2023 07:29:13 +0000
+Message-ID: <e99f1dc26c83b24cb2bb7d6f8f92669b375d7512.camel@realtek.com>
+References: <df1ce994-3368-a57e-7078-8bdcccf4a1fd@gmail.com>
+         <386367223a2547669c60f7d1dcb42b40@realtek.com> <87a60cvu3v.fsf@kernel.org>
+In-Reply-To: <87a60cvu3v.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.81.227]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C2CA0CF025E5AC428933F7AADB3490C3@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: dTO-inn8Jy8SMf4aTXAqS4P_dK2L4w0z
-X-Proofpoint-ORIG-GUID: dTO-inn8Jy8SMf4aTXAqS4P_dK2L4w0z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-17_04,2023-03-16_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0 suspectscore=0
- impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303150002
- definitions=main-2303170048
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fine Time Measurement(FTM) is offloaded feature to firmware.
-Hence, the configuration of FTM responder role is done using
-firmware capability flag instead of hw param.
-
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.c | 8 --------
- drivers/net/wireless/ath/ath11k/hw.h   | 1 -
- drivers/net/wireless/ath/ath11k/mac.c  | 4 ++--
- 3 files changed, 2 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 75fdbe4ef83a..498310e38d44 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -116,7 +116,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tcl_ring_retry = true,
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
--		.ftm_responder = true,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
-@@ -199,7 +198,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = false,
--		.ftm_responder = true,
- 	},
- 	{
- 		.name = "qca6390 hw2.0",
-@@ -284,7 +282,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = true,
--		.ftm_responder = false,
- 	},
- 	{
- 		.name = "qcn9074 hw1.0",
-@@ -366,7 +363,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = false,
--		.ftm_responder = true,
- 	},
- 	{
- 		.name = "wcn6855 hw2.0",
-@@ -451,7 +447,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = true,
--		.ftm_responder = false,
- 	},
- 	{
- 		.name = "wcn6855 hw2.1",
-@@ -534,7 +529,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = true,
--		.ftm_responder = false,
- 	},
- 	{
- 		.name = "wcn6750 hw1.0",
-@@ -615,7 +609,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE_WCN6750,
- 		.smp2p_wow_exit = true,
- 		.support_fw_mac_sequence = true,
--		.ftm_responder = false,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ5018_HW10,
-@@ -695,7 +688,6 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = false,
--		.ftm_responder = true,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 0be4e1232384..9f45d061d826 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -224,7 +224,6 @@ struct ath11k_hw_params {
- 	u32 tx_ring_size;
- 	bool smp2p_wow_exit;
- 	bool support_fw_mac_sequence;
--	bool ftm_responder;
- };
- 
- struct ath11k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index cad832e0e6b8..732e947c6386 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3538,7 +3538,7 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (changed & BSS_CHANGED_FTM_RESPONDER &&
- 	    arvif->ftm_responder != info->ftm_responder &&
--	    ar->ab->hw_params.ftm_responder &&
-+	    (test_bit(WMI_TLV_SERVICE_RTT, ar->ab->wmi_ab.svc_map)) &&
- 	    (vif->type == NL80211_IFTYPE_AP ||
- 	     vif->type == NL80211_IFTYPE_MESH_POINT)) {
- 		arvif->ftm_responder = info->ftm_responder;
-@@ -9213,7 +9213,7 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 	wiphy_ext_feature_set(ar->hw->wiphy,
- 			      NL80211_EXT_FEATURE_SET_SCAN_DWELL);
- 
--	if (ab->hw_params.ftm_responder)
-+	if (test_bit(WMI_TLV_SERVICE_RTT, ar->ab->wmi_ab.svc_map))
- 		wiphy_ext_feature_set(ar->hw->wiphy,
- 				      NL80211_EXT_FEATURE_ENABLE_FTM_RESPONDER);
- 
--- 
-2.17.1
-
+T24gRnJpLCAyMDIzLTAzLTE3IGF0IDA3OjEyICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBQ
+aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiA+IC0tLS0t
+T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiByYiA8cmIwMTcxNjEwQGdtYWlsLmNv
+bT4NCj4gPiA+IFNlbnQ6IEZyaWRheSwgTWFyY2ggMTcsIDIwMjMgNjo0OCBBTQ0KPiA+ID4gVG86
+IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiA+ID4gU3ViamVjdDogTmV3IGJpbmFy
+eSBydHc4ODUyYl9mdy5iaW4gbm90IGxvYWRpbmcgZmlybXdhcmUgbm90IHJlY29nbml6ZWQNCj4g
+PiA+IA0KPiA+ID4gQnJpZWZseSwNCj4gPiA+IA0KPiA+ID4gSSB1c2UgcnR3ODlfODg1MmJlIGlu
+IGtlcm5lbCBkcml2ZXINCj4gPiA+IA0KPiA+ID4gSEFSRFdBUkU6DQo+ID4gPiBOZXR3b3JrIGNv
+bnRyb2xsZXIgWzAyODBdOiBSZWFsdGVrIFNlbWljb25kdWN0b3IgQ28uLCBMdGQuIERldmljZSBb
+MTBlYzpiODUyXQ0KPiA+ID4gDQo+ID4gPiBMZW5vdm8gSWRlYXBhZCAxaQ0KPiA+ID4gDQo+ID4g
+PiBJU1NVRToNCj4gPiA+IE5ld2VzdCB2ZXJzaW9uIG9mIGJpbmFyeSBmaXJtd2FyZSAyMDIzXzAz
+XzEwLA0KPiA+ID4gcnR3ODkvcnR3ODg1MmJfZncuYmluLCB3aWxsIG5vdCBsb2FkL2Zpcm13YXJl
+IG5vdCByZWNvZ25pemVkIG9uIExpbnV4IEtlcm5lbCA2LjIuNSAoYW5kDQo+ID4gPiBvdGhlcnMp
+Og0KPiA+ID4gDQo+ID4gPiBbXSBsb2FkaW5nIGZpcm1hcmU6IHJ3dDg5L3J0dzg4NTJiX2Z3LmJp
+bg0KPiA+ID4gW10gcnR3ODlfODg1MmJlIDAwMDA6MDM6MDAuMDogbm8gc3VpdGFibGUgZmlybXdh
+cmUgZm91bmQNCj4gPiA+IFtdIHJ0dzg5Xzg4NTJiZSAwMDAwOjAzOjAwLjA6IGZhaWxlZCB0byBy
+ZWNvZ25pemUgZmlybXdhcmUNCj4gPiA+IA0KPiA+ID4gSXNzdWUgcGVyc2lzdHMgcmVnYXJkbGVz
+cyBvZiB3aGljaCA2LjIgc2VyaWVzIGtlcm5lbCBpcyB1c2VkLg0KPiA+ID4gDQo+ID4gPiBBbGwg
+cHJldmlvdXMgcnd0ODkvcnR3ODg1MmJfZncuYmluIGZpcm13YXJlIGZyb20gbGludXgtZmlybXdh
+cmUgMjAyM18wMl8xMCBhbmQgZWFybGllciBsb2Fkcw0KPiA+ID4gYW5kIHdvcmtzDQo+ID4gPiBj
+b3JyZWN0bHkuDQo+ID4gPiANCj4gPiA+IEkgZGlkIGZpbGUgYSBidWcgcmVwb3J0IHdpdGggdGhl
+IGRldGFpbHM6DQo+ID4gPiANCj4gPiA+IGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93
+X2J1Zy5jZ2k/aWQ9MjE3MjA3DQo+ID4gPiANCj4gPiANCj4gPiBUaGUgZmlybXdhcmUgZm9ybWF0
+IGlzIGNoYW5nZWQsIGFuZCB3aXJlbGVzcy1uZXh0IHRyZWUgb3IgdXBjb21pbmcgNi4zIHdpbGwN
+Cj4gPiBzdXBwb3J0IGl0LiBJIHdpbGwgYWxzbyBwb3N0IHRoaXMgaW5mb3JtYXRpb24gb24gdGhl
+IGJ1Zy4NCj4gDQo+IFdlIGNhbm5vdCBicmVhayB1c2VyIHNwYWNlIGxpa2UgdGhhdCwgbGludXgt
+ZmlybXdhcmUgbmVlZHMgdG8gYmUNCj4gYmFja3dhcmRzIGNvbXBhdGlibGUuIEluIG90aGVyIHdv
+cmRzLCBhbnl0aGluZyB5b3Ugc3VibWl0IHRvDQo+IGxpbnV4LWZpcm13YXJlIG5lZWRzIHRvIHdv
+cmsgd2l0aCBvbGQga2VybmVscy4gU2hvdWxkIHRoaXMgbmV3IGZpcm13YXJlDQo+IGJlIHJldmVy
+dGVkIGZyb20gbGludXgtZmlybXdhcmU/DQoNCkkgdGhpbmsgSSBzaG91bGQgc3VwcG9ydCB0d28g
+b3IgbW9yZSBmaXJtd2FyZSB3aXRoIGRpZmZlcmVudCBuYW1lLCBsaWtlDQpyd3Q4OS9ydHc4ODUy
+Yl9mdy0yLmJpbiwgaWYgZm9ybWF0IGlzIGNoYW5nZWQuIFNvLCB0aGVyZSB3aWxsIGJlIHR3bw0K
+ZmlybXdhcmUgZXhpc3RpbmcgaW4gbGludXgtZmlybXdhcmUuDQoNClRoZW4sIGZvciBvbGQgZHJp
+dmVyLCBpdCBvbmx5IHN1cHBvcnRzIHJ3dDg5L3J0dzg4NTJiX2Z3LmJpbi4gRm9yIG5ldyBkcml2
+ZXIsDQppdCB3aWxsIGxvYWQgcnd0ODkvcnR3ODg1MmJfZnctMi5iaW4gZmlyc3QsIGJ1dCBpZiAn
+LTInIHZlcnNpb24gZG9lc24ndCBwcmVzZW50LA0KaXQgd2lsbCB0cnkgdG8gbG9hZCBvcmlnaW5h
+bCB2ZXJzaW9uLg0KDQpJIHRoaW5rIGl0IHdvdWxkIHdvcmssIGJ1dCBJIHdhbnQgdG8gY29uZmly
+bSBpZiB0aGlzIGlzIGFjY2VwdGFibGUgcnVsZXMNCmZvciBMaW51eC4NCg0KPiANCj4gV2hhdCBh
+Ym91dCBjaGFuZ2VzIGluIHRoZSBydHc4OSBkcml2ZXI/IERvIHRoZXkgc3RpbGwgd29yayB3aXRo
+IG9sZA0KPiBmaXJtd2FyZT8NCj4gDQoNCk5ldyBkcml2ZXIgY2FuIHdvcmsgd2l0aCBvbGQgb3Ig
+bmV3IGZpcm13YXJlLiBUaGUgb25seSBjYXNlIHRoYXQgZG9lc24ndA0Kd29yayBpcyBvbGQgZHJp
+dmVyICsgbmV3IGZpcm13YXJlLg0KDQoNClBpbmctS2UNCg0K
