@@ -2,82 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7636BF198
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 20:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5086BF1E7
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 20:50:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbjCQTUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Mar 2023 15:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57698 "EHLO
+        id S229599AbjCQTu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Mar 2023 15:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230064AbjCQTUr (ORCPT
+        with ESMTP id S229494AbjCQTuZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Mar 2023 15:20:47 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB2F1CBE8;
-        Fri, 17 Mar 2023 12:20:44 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id cy23so24233969edb.12;
-        Fri, 17 Mar 2023 12:20:43 -0700 (PDT)
+        Fri, 17 Mar 2023 15:50:25 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878E530B09;
+        Fri, 17 Mar 2023 12:50:23 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id e194so6973354ybf.1;
+        Fri, 17 Mar 2023 12:50:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679080842;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ipteKbyLRilvrFKtkN552HGn3csqgfJvLO2UFDLogH8=;
-        b=T85EszIagCy3FQoMmIi3feGmH9uDu+x+vQBdKaGuG6qHAKIAkdxGsrHVyQTzD4Icm3
-         3Wnq+sWC1+Z2UVFKHsbIHcQYnTJrCdc8g0qNYFD9pPduns+JpW2+cjoUZ4ZNQtOap/Qa
-         W4ba/zFjWP7nglx1+KMsHyruLGLjt3kBzZUvbmv6yD2YSbTEDd4AWi3bdCQr+W0I3iih
-         HaHfQHa+WpsBD264wdVrRJ2/cwCRSQ7O5AHOz6/ycTGvjX88VeDhGeA9kkSGkPwTT5Co
-         aVMzLaIYOaTNkhjy5nxvHUPhrZiBw9e2wdAcj1S9Qn8tXtswLvFsD8jDfGAHIf/UDmfd
-         Z9eA==
+        d=gmail.com; s=20210112; t=1679082622;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=b3CQ8WGc4w2GVbQ+AHog+uRw/SumpjFjDyqWJL60hI0=;
+        b=paYhQ9HyuGNRZhcX+W+4wkvn49Zl73wDxF4NFJxzuc1lFNhTty3Zzjl6En/7ixGVcJ
+         DRevvNT0lj+toUBebDZYr87DPb4a/y4d82jfNLOrBrl6cPnv7zfpXiJ/VvhEsCw6Pj5L
+         O0Nd0MhGXYztpw/BnZUkpdmg/DXvpyTQNNYZRuyDS9hR1kO3SNpYRTX7QUcjqhMXw2Kf
+         a6cxw9oC9shZs8YqTn3m+AU1i34IdXxRBvQv0xEsIzG1ec+7z30Nsgmd4Hl8amvp8Hae
+         xO20DAhReNI3KkuZ9kBqlSg4gdGPXcu4msryUzBC8G7nZrmdmYMt/K597LuScKXoDv+i
+         wSFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679080842;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ipteKbyLRilvrFKtkN552HGn3csqgfJvLO2UFDLogH8=;
-        b=W7jPKY1Uhbj+jovXeyqjcUzPQPoCc3wh6ydyPPBm6cUYu3aCnGIBtUgXkIi1IlSqYo
-         ljSzcAXzeQgDGry/gQzyF05WVDe951QH6HLYzWvkMkYmB6CCkWRflsZ0fUYNGXrQyjRw
-         u6r5whaEDnfjUbp67xE8XAfips6BR6jBSSbyiFR+5DeyWhqY3jSmdsuJu3tHq9LC8J/0
-         6U1J2gVEVvert52y79i3fpV1W74jWJJJ2H+5gtZaZG0xIQMlOSwgm2SSu4udw4TyC6+Y
-         v+KDCvozuAylz/4QQWZH7piDbYtNrZstc1zQ0i+ieBg+GLXJEzDrf5cXCkDUhoMFjVH9
-         cfXg==
-X-Gm-Message-State: AO0yUKWyoflVYiU01qKbW0vMAmKRFExDhVYbGG4wnrfo2xJ7pj5wOUFY
-        z6jriIWJz9SV7Q2qeO2drMI=
-X-Google-Smtp-Source: AK7set+BxqA20CFXrX4V7MY7Z9SiOFmNVC/HiodqrFYFKzxh3CwX85AfRREnrLxGdVkvjOLS35qZiQ==
-X-Received: by 2002:a17:906:3fcf:b0:92d:6078:3878 with SMTP id k15-20020a1709063fcf00b0092d60783878mr480494ejj.33.1679080842438;
-        Fri, 17 Mar 2023 12:20:42 -0700 (PDT)
-Received: from shift (p5b0d7c06.dip0.t-ipconnect.de. [91.13.124.6])
-        by smtp.gmail.com with ESMTPSA id ec21-20020a0564020d5500b004fc01b0aa55sm1451581edb.4.2023.03.17.12.20.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Mar 2023 12:20:42 -0700 (PDT)
-Received: from localhost ([127.0.0.1])
-        by shift with esmtp (Exim 4.96)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1pdFcE-0005Af-0A;
-        Fri, 17 Mar 2023 20:20:41 +0100
-Message-ID: <5dfdb3c9-59e2-0147-b29d-276511e81ec6@gmail.com>
-Date:   Fri, 17 Mar 2023 20:20:41 +0100
+        d=1e100.net; s=20210112; t=1679082622;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b3CQ8WGc4w2GVbQ+AHog+uRw/SumpjFjDyqWJL60hI0=;
+        b=27uhgJ0TyisLdxgHqjR11XwvZbGS5uGHrLBg4ara29FaxDqc3NjuSO3mS21JVJYjRu
+         9y2kDprYNplkQtwiKu/jkOy7a06MO+WmgSn0sTgSZ8IQx76em06b1FoEneMrb/TH77Co
+         ogacSi4Qj7czc3uTstZDKaEuIgYxYoQjoDvJYL31ZHTekPpYnB1yfX+JLEBLyz+pjCW9
+         lpXGwsm5BwAbnLjWRHS+XTwKtYL7UPyv4ZAjQdvFOr3IklB0Mb4yj9kv/spvLXlAgN5q
+         pGpHe07LJSw0UBpnaW6rx4nsEs1Qtr73bEPvX9tZbOoCgDNHaHAy57+4QJdfRfdEcbmq
+         IHTg==
+X-Gm-Message-State: AO0yUKU/rFYH8da+da4nf0JyhVKHx4TH6/aBaaPS6Hh2WPjBhbwEn1NU
+        Hp5KPVCtyb4+3wLXE1EhCG8WlBtHqHXhpiKa2g==
+X-Google-Smtp-Source: AK7set8TKJGwscidXv9PDMw39S7PyU+VEVKzDYJObGO75JeJd57fC94Asa1qL2/ZU+c85KzeRGGrt/90is3aHzUu/3w=
+X-Received: by 2002:a5b:611:0:b0:b67:f07:d180 with SMTP id d17-20020a5b0611000000b00b670f07d180mr235414ybq.5.1679082622364;
+ Fri, 17 Mar 2023 12:50:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH][next] carl9170: Fix multiple -Warray-bounds warnings
-Content-Language: de-DE
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+References: <20230123090555.21415-1-git@qrsnap.io>
+In-Reply-To: <20230123090555.21415-1-git@qrsnap.io>
+From:   Nick Morrow <morrownr@gmail.com>
+Date:   Fri, 17 Mar 2023 14:49:56 -0500
+Message-ID: <CAFktD2eFdaCAdE=zxVx05QYWPRcr5StompKr+ehn7piYpQHjzA@mail.gmail.com>
+Subject: Re: [PATCH] Added Netgear AXE3000 (A8000) usb_device_id to mt7921u_device_table[]
+To:     Reese Russell <git@qrsnap.io>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
         Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <ZBSjx236+BTiRByf@work>
-From:   Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <ZBSjx236+BTiRByf@work>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Ben Greear <greearb@candelatech.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,57 +81,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/17/23 18:30, Gustavo A. R. Silva wrote:
-> GCC (and Clang)[1] does not like having a partially allocated object,
-> since it cannot reason about it for bounds checking. Instead, fully
-> allocate struct carl9170_cmd.
-> 
-> Fix the following warnings Seen under GCC 13:
-> drivers/net/wireless/ath/carl9170/cmd.c:125:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[4]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:126:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[4]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:125:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:126:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:161:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:162:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:163:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:164:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[20]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:125:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[8]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:126:30: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[8]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/cmd.c:220:12: warning: array subscript ‘struct carl9170_cmd[0]’ is partly outside array bounds of ‘unsigned char[8]’ [-Warray-bounds=]
-> 
-> Link: https://github.com/KSPP/linux/issues/268
-> Link: godbolt.org/z/KP97sxh3T [1]
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-
+> Issue: Though the Netgear AXE3000 (A8000) is based on the mt7921
+> chipset because of the unique USB VID:PID combination this device
+> does not initialize/register. Thus making it not plug and play.
+>
+> Fix: Adds support for the Netgear AXE3000 (A8000) based on the Mediatek
+> mt7921au chipset. The method of action is adding the USD VID/PID
+> pair to the mt7921u_device_table[] array.
+>
+> Notes: A retail sample of the Netgear AXE3000 (A8000) yeilds the following
+> from lsusb D 0846:9060 NetGear, Inc. Wireless_Device. This pair
+> 0846:9060 VID:PID has been reported by other users on Github.
+>
+> Signed-off-by: Reese Russell <git@qrsnap.io>
 > ---
->   drivers/net/wireless/ath/carl9170/cmd.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/carl9170/cmd.c b/drivers/net/wireless/ath/carl9170/cmd.c
-> index f2b4f537e4c1..b8ed193c0195 100644
-> --- a/drivers/net/wireless/ath/carl9170/cmd.c
-> +++ b/drivers/net/wireless/ath/carl9170/cmd.c
-> @@ -120,7 +120,7 @@ struct carl9170_cmd *carl9170_cmd_buf(struct ar9170 *ar,
->   {
->   	struct carl9170_cmd *tmp;
->   
-> -	tmp = kzalloc(sizeof(struct carl9170_cmd_head) + len, GFP_ATOMIC);
-> +	tmp = kzalloc(sizeof(*tmp), GFP_ATOMIC);
+>  drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> index 5321d20dcdcb..62e9728588f8 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+> @@ -15,6 +15,8 @@
+>  static const struct usb_device_id mt7921u_device_table[] = {
+>         { USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7961, 0xff, 0xff, 0xff),
+>                 .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+> +       { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
+> +               .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+>         { },
+>  };
+>
+> --
+> 2.37.2
 
 
-This might throw-off people here. The reason this works is because carl9170_cmd struct
-looks like this:
-|
-|struct carl9170_cmd {
-|        struct carl9170_cmd_head hdr; <-- 4 bytes
-|        union {
-|                struct carl9170_set_key_cmd     setkey;
-| [...]
-|                struct carl9170_rx_filter_cmd   rx_filter;
-|                u8 data[CARL9170_MAX_CMD_PAYLOAD_LEN]; <---- that's 60 bytes
-|        } __packed __aligned(4);
-|} __packed __aligned(4);
+I can confirm this VID/PID needs to go into 6.1 LTS and the current
+testing version of the kernel as I am getting an increasing amount of
+traffic from users that have purchased the Netgear A8000.
 
-All commands have to fit into the command endpoint max size which is 64 bytes.
+My site is github.com/morrownr/USB-WiFi
+
+Helping Linux users with USB WiFi is what we do.
+
+The OP could have added a comment to the patch showing the adapter
+that is causing this patch to be submitted. Maybe he can submit a v2
+that can be expedited?
+
+Guidance?
+
+Nick
+github.com/morrownr/USB-WiFi
