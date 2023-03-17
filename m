@@ -2,109 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E34D76BE1E7
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 08:29:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40B5E6BE2A1
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 09:07:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjCQH30 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Mar 2023 03:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56266 "EHLO
+        id S231320AbjCQIHL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Mar 2023 04:07:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjCQH3Z (ORCPT
+        with ESMTP id S231251AbjCQIGe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Mar 2023 03:29:25 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F6295848F
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 00:29:23 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32H7T18f8006586, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32H7T18f8006586
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 17 Mar 2023 15:29:01 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 17 Mar 2023 15:29:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 17 Mar 2023 15:29:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Fri, 17 Mar 2023 15:29:13 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rb0171610@gmail.com" <rb0171610@gmail.com>
-Subject: Re: New binary rtw8852b_fw.bin not loading firmware not recognized
-Thread-Topic: New binary rtw8852b_fw.bin not loading firmware not recognized
-Thread-Index: AQHZWFlk5g7N8N8lZkeI1EtTn3KuVa7+FaKggABX+Lz//5+sgA==
-Date:   Fri, 17 Mar 2023 07:29:13 +0000
-Message-ID: <e99f1dc26c83b24cb2bb7d6f8f92669b375d7512.camel@realtek.com>
-References: <df1ce994-3368-a57e-7078-8bdcccf4a1fd@gmail.com>
-         <386367223a2547669c60f7d1dcb42b40@realtek.com> <87a60cvu3v.fsf@kernel.org>
-In-Reply-To: <87a60cvu3v.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.81.227]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C2CA0CF025E5AC428933F7AADB3490C3@realtek.com>
-Content-Transfer-Encoding: base64
+        Fri, 17 Mar 2023 04:06:34 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F4CBAD0D
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 01:05:12 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id v25so154685wra.12
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 01:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=stapelberg.ch; s=google; t=1679040308;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RdFAbNxeioSYumhW/hAfQVsQRlrPL05CrJULmrCvwxo=;
+        b=K7aJAR1zPKRyuSV0kUEpKQLTN1549ZTFTugUXzeTMK1yztgLTWdtsap9SfM73mtqLZ
+         UZ79xq3XmhdmLmRYYI++LFuEtsfGokSRc/pDb6xfAz9BO3mLix3VVLVPTBQtNIlVig0H
+         DbFPKCBUTVrvnnWkUJIVyBcveqxomQZ1SLJydW13pthx68X3tGjteJKdhDSuxGHXpdgb
+         gaUKDxyvAO7OUesOLcCW5GQDf52hS99jAjCLsluR/I/Mef/E2eRLUgVlFSBYN71gdsxZ
+         awckOIggVt07oBaFSZpr/rmhD9XYm3WBF7RQF1eE/2Xhk9/p9hQirxeBbgccyHOGxoS7
+         3kGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679040308;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RdFAbNxeioSYumhW/hAfQVsQRlrPL05CrJULmrCvwxo=;
+        b=j9IJsK+Q7c71anbrS6CJ2KkX+iRSyD2dWZ4d9w5KpRzJmkWHCmKWJErxBJvsp6atg0
+         6HTuxbWAUsXqntG+jbqqSCrLdZFOsSuCyapWiY3p7cQ5bwN9ALGWLa1pYfM0s7pKrCFd
+         G37xc4ZW6SZT8fVePqvpY0RCAIP/shTPQwGO//vhW/9SthXitEhYKL68yz5hfH0yFqXL
+         uhKA0+rz+baRx5KkU29nj6HmtgM4J7c8QYXrcHVA1/XfuuO777/9GvShsnpuZXKJbdxl
+         0TzGtMviqRx8Vt2XebM0a35fF1Fvjmt48L7WioPmoLSVN3PEWDT2YxNjrMGFJXFdHweX
+         8xSQ==
+X-Gm-Message-State: AO0yUKX3J8g/1e2SDB9OJjnxsGD5I2SvgjxrG9Khjaf2hjSeuTh+tB4+
+        ZSmvoB7nxQwv3yMro2rXtqlEtJVYq9CgkN34tzC65Q==
+X-Google-Smtp-Source: AK7set8+8jF6ORDQulCi7tdduGiUvxXelEWC7Wu4SyS7TL7bCjTiv8RGYElMJXsUkOQPwVKMZ0TBMhulhC1pksszhOQ=
+X-Received: by 2002:adf:e445:0:b0:2ce:92af:43eb with SMTP id
+ t5-20020adfe445000000b002ce92af43ebmr1905085wrm.0.1679040307884; Fri, 17 Mar
+ 2023 01:05:07 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CANnVG6=a3etRagG+RaSEH-b4_nfzxpEKffQtuMWrttrbgjunZQ@mail.gmail.com>
+ <186e23b5668.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CANnVG6kjWj02eEFv_OeLiRtjrJ6yn4EsELz_BtrzFHH15GNMLw@mail.gmail.com>
+ <186e26dc0a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CANnVG6n-eqKUQnX_6wncmjG1kyVfhxqs2L82xYQpDmGq89eVAQ@mail.gmail.com>
+ <186e4673718.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CANnVG6kaGj1SVCqf2y3=Xj_N2G9j+-VhLDN4_WY_ywDswNkO3g@mail.gmail.com>
+ <89262772-7358-77e8-8913-c459819d544a@broadcom.com> <a459b9adc5eb7b67a432bd947d47d1df08718762.camel@sipsolutions.net>
+ <f430c376-5992-d394-ce55-5994c793c7c7@broadcom.com> <CANnVG6neOX+Bgc3zWA8k=hwrifmXb=xBN95aMUEyJ=orz3+Wkg@mail.gmail.com>
+ <186e9109ae8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CANnVG6kvP78+WADH+Z4Yk4k9m-rjwRw0qMprHNsngNaj-jpqJQ@mail.gmail.com> <20fc4c19-6f39-d3bf-b873-ea26a26175cd@broadcom.com>
+In-Reply-To: <20fc4c19-6f39-d3bf-b873-ea26a26175cd@broadcom.com>
+From:   Michael Stapelberg <michael+lkml@stapelberg.ch>
+Date:   Fri, 17 Mar 2023 09:04:52 +0100
+Message-ID: <CANnVG6m2re0AmZB8WTbGfNyWA0dy0KEx+nvidGsQ=E2LP0wsnQ@mail.gmail.com>
+Subject: Re: wifi breakage due to commit "wifi: brcmfmac: add support for
+ vendor-specific firmware api"
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIzLTAzLTE3IGF0IDA3OjEyICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBQ
-aW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPiANCj4gPiA+IC0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiByYiA8cmIwMTcxNjEwQGdtYWlsLmNv
-bT4NCj4gPiA+IFNlbnQ6IEZyaWRheSwgTWFyY2ggMTcsIDIwMjMgNjo0OCBBTQ0KPiA+ID4gVG86
-IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiA+ID4gU3ViamVjdDogTmV3IGJpbmFy
-eSBydHc4ODUyYl9mdy5iaW4gbm90IGxvYWRpbmcgZmlybXdhcmUgbm90IHJlY29nbml6ZWQNCj4g
-PiA+IA0KPiA+ID4gQnJpZWZseSwNCj4gPiA+IA0KPiA+ID4gSSB1c2UgcnR3ODlfODg1MmJlIGlu
-IGtlcm5lbCBkcml2ZXINCj4gPiA+IA0KPiA+ID4gSEFSRFdBUkU6DQo+ID4gPiBOZXR3b3JrIGNv
-bnRyb2xsZXIgWzAyODBdOiBSZWFsdGVrIFNlbWljb25kdWN0b3IgQ28uLCBMdGQuIERldmljZSBb
-MTBlYzpiODUyXQ0KPiA+ID4gDQo+ID4gPiBMZW5vdm8gSWRlYXBhZCAxaQ0KPiA+ID4gDQo+ID4g
-PiBJU1NVRToNCj4gPiA+IE5ld2VzdCB2ZXJzaW9uIG9mIGJpbmFyeSBmaXJtd2FyZSAyMDIzXzAz
-XzEwLA0KPiA+ID4gcnR3ODkvcnR3ODg1MmJfZncuYmluLCB3aWxsIG5vdCBsb2FkL2Zpcm13YXJl
-IG5vdCByZWNvZ25pemVkIG9uIExpbnV4IEtlcm5lbCA2LjIuNSAoYW5kDQo+ID4gPiBvdGhlcnMp
-Og0KPiA+ID4gDQo+ID4gPiBbXSBsb2FkaW5nIGZpcm1hcmU6IHJ3dDg5L3J0dzg4NTJiX2Z3LmJp
-bg0KPiA+ID4gW10gcnR3ODlfODg1MmJlIDAwMDA6MDM6MDAuMDogbm8gc3VpdGFibGUgZmlybXdh
-cmUgZm91bmQNCj4gPiA+IFtdIHJ0dzg5Xzg4NTJiZSAwMDAwOjAzOjAwLjA6IGZhaWxlZCB0byBy
-ZWNvZ25pemUgZmlybXdhcmUNCj4gPiA+IA0KPiA+ID4gSXNzdWUgcGVyc2lzdHMgcmVnYXJkbGVz
-cyBvZiB3aGljaCA2LjIgc2VyaWVzIGtlcm5lbCBpcyB1c2VkLg0KPiA+ID4gDQo+ID4gPiBBbGwg
-cHJldmlvdXMgcnd0ODkvcnR3ODg1MmJfZncuYmluIGZpcm13YXJlIGZyb20gbGludXgtZmlybXdh
-cmUgMjAyM18wMl8xMCBhbmQgZWFybGllciBsb2Fkcw0KPiA+ID4gYW5kIHdvcmtzDQo+ID4gPiBj
-b3JyZWN0bHkuDQo+ID4gPiANCj4gPiA+IEkgZGlkIGZpbGUgYSBidWcgcmVwb3J0IHdpdGggdGhl
-IGRldGFpbHM6DQo+ID4gPiANCj4gPiA+IGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MjE3MjA3DQo+ID4gPiANCj4gPiANCj4gPiBUaGUgZmlybXdhcmUgZm9ybWF0
-IGlzIGNoYW5nZWQsIGFuZCB3aXJlbGVzcy1uZXh0IHRyZWUgb3IgdXBjb21pbmcgNi4zIHdpbGwN
-Cj4gPiBzdXBwb3J0IGl0LiBJIHdpbGwgYWxzbyBwb3N0IHRoaXMgaW5mb3JtYXRpb24gb24gdGhl
-IGJ1Zy4NCj4gDQo+IFdlIGNhbm5vdCBicmVhayB1c2VyIHNwYWNlIGxpa2UgdGhhdCwgbGludXgt
-ZmlybXdhcmUgbmVlZHMgdG8gYmUNCj4gYmFja3dhcmRzIGNvbXBhdGlibGUuIEluIG90aGVyIHdv
-cmRzLCBhbnl0aGluZyB5b3Ugc3VibWl0IHRvDQo+IGxpbnV4LWZpcm13YXJlIG5lZWRzIHRvIHdv
-cmsgd2l0aCBvbGQga2VybmVscy4gU2hvdWxkIHRoaXMgbmV3IGZpcm13YXJlDQo+IGJlIHJldmVy
-dGVkIGZyb20gbGludXgtZmlybXdhcmU/DQoNCkkgdGhpbmsgSSBzaG91bGQgc3VwcG9ydCB0d28g
-b3IgbW9yZSBmaXJtd2FyZSB3aXRoIGRpZmZlcmVudCBuYW1lLCBsaWtlDQpyd3Q4OS9ydHc4ODUy
-Yl9mdy0yLmJpbiwgaWYgZm9ybWF0IGlzIGNoYW5nZWQuIFNvLCB0aGVyZSB3aWxsIGJlIHR3bw0K
-ZmlybXdhcmUgZXhpc3RpbmcgaW4gbGludXgtZmlybXdhcmUuDQoNClRoZW4sIGZvciBvbGQgZHJp
-dmVyLCBpdCBvbmx5IHN1cHBvcnRzIHJ3dDg5L3J0dzg4NTJiX2Z3LmJpbi4gRm9yIG5ldyBkcml2
-ZXIsDQppdCB3aWxsIGxvYWQgcnd0ODkvcnR3ODg1MmJfZnctMi5iaW4gZmlyc3QsIGJ1dCBpZiAn
-LTInIHZlcnNpb24gZG9lc24ndCBwcmVzZW50LA0KaXQgd2lsbCB0cnkgdG8gbG9hZCBvcmlnaW5h
-bCB2ZXJzaW9uLg0KDQpJIHRoaW5rIGl0IHdvdWxkIHdvcmssIGJ1dCBJIHdhbnQgdG8gY29uZmly
-bSBpZiB0aGlzIGlzIGFjY2VwdGFibGUgcnVsZXMNCmZvciBMaW51eC4NCg0KPiANCj4gV2hhdCBh
-Ym91dCBjaGFuZ2VzIGluIHRoZSBydHc4OSBkcml2ZXI/IERvIHRoZXkgc3RpbGwgd29yayB3aXRo
-IG9sZA0KPiBmaXJtd2FyZT8NCj4gDQoNCk5ldyBkcml2ZXIgY2FuIHdvcmsgd2l0aCBvbGQgb3Ig
-bmV3IGZpcm13YXJlLiBUaGUgb25seSBjYXNlIHRoYXQgZG9lc24ndA0Kd29yayBpcyBvbGQgZHJp
-dmVyICsgbmV3IGZpcm13YXJlLg0KDQoNClBpbmctS2UNCg0K
+Can you outline under what conditions the race can happen?
+
+I=E2=80=99ll take care of implementing a userspace modprobe helper.
+
+Thanks
+
+
+On Thu, 16 Mar 2023 at 10:40, Arend van Spriel
+<arend.vanspriel@broadcom.com> wrote:
+>
+> On 3/16/2023 8:54 AM, Michael Stapelberg wrote:
+> > Hmm, I=E2=80=99m not sure either.
+>
+> Actually, the check I referred to only bails out when
+> CONFIG_MODPROBE_PATH is unset. In your case it is set but it is not
+> existing. I dived into request_module() and it ends up scheduling a work
+> to call the modprobe which will fail. However, brcmfmac will wait for
+> brcmfmac-wcc to register itself so doing the insmod of brcmfmac-wcc will
+> do the trick. However, now I am back at saying this can be racy. It
+> would be better to come up with a modprobe.go for your user-space
+> environment and put that in kernel config.
+>
+> Regards,
+> Arend
+>
