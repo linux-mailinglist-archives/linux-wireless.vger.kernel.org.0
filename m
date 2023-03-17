@@ -2,143 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 839C46BECE9
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 16:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 369BA6BEDF7
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 17:22:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjCQPaG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Mar 2023 11:30:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34152 "EHLO
+        id S229758AbjCQQV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Mar 2023 12:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbjCQPaF (ORCPT
+        with ESMTP id S229903AbjCQQVu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Mar 2023 11:30:05 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BB06E515D0
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 08:29:36 -0700 (PDT)
-Message-ID: <70b7f54d-95b7-e01a-1a49-e29dc72d41b2@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1679066973;
-        bh=pbOJG4TMXPK/lUboOXcmUNf5x0ekE9mnhvvRSt/kgNg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=OXPLAgcdx8QhvPSTzdLEkHOy8yO223VFVQCJFEyNVuAkfc7RVad68cdsvQVgOu3K/
-         Bx5627uv8t/ZPLgKi45I3GjL6jyDdBY3jNfxpiLACsNO/G7YEZ2d2gjztwaegeJ8ql
-         JHqKie6iczHAvzmvq/IbsrSyi0cniZqM1GFlzHw4=
-Date:   Fri, 17 Mar 2023 16:29:32 +0100
+        Fri, 17 Mar 2023 12:21:50 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E9DC083A
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 09:21:49 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32HAuCIG022010;
+        Fri, 17 Mar 2023 16:21:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=qUSjOGLt4G/Hb7MtC6GwUnhbXCeTZKROAoxnEE1XbaU=;
+ b=PBzEuIoZioomMZGmjDoapEXhCeKvLBheX90NZRu28QyDnPXDt5IUv/AxlDsh04IKBDOc
+ lKB9oeJn4SNCUG/oSpDgzAsWqIPaGJZE+299GhJEpUvbBYMrN9ezEtd7WbRirjp2K2VB
+ N2jXoEIE0R6mKLtHVVin1WoD4B8mYvrfbs95CzNW7m5iB53rg5j5myl4EXFogJXfOjSo
+ 2Qg4PuSv28y3PvGJ+3YS7ON/Wgt2nsT36IXwpmAvrnWnvgNvm5+FoEDXxu1BlIjJAwrw
+ IPiKvQoI8PlQV+i+7gMir42WyabZvQtUunFIcWojW/TiKnIhR8AQenv4sTaLlU4nd3qO cg== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pcpvms74x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 17 Mar 2023 16:21:43 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32HGLSma018183
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 17 Mar 2023 16:21:28 GMT
+Received: from mdharane-linux.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Fri, 17 Mar 2023 09:21:26 -0700
+From:   Manish Dharanenthiran <quic_mdharane@quicinc.com>
+To:     <ath12k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        P Praneesh <quic_ppranees@quicinc.com>,
+        Manish Dharanenthiran <quic_mdharane@quicinc.com>
+Subject: [PATCH] wifi: ath12k: fill peer meta data during reo_reinject
+Date:   Fri, 17 Mar 2023 21:50:56 +0530
+Message-ID: <20230317162056.20353-1-quic_mdharane@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: iwlwifi frequent drops between v6.2-rc3 and v6.3-rc1
-Content-Language: en-US
-To:     Vegard Nossum <vegard.nossum@oracle.com>,
-        Thomas Mann <rauchwolke@gmx.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>, regressions@leemhuis.info,
-        regressions@lists.linux.dev
-References: <9d11ed29-1114-055d-5b26-0899a5fc0d7f@oracle.com>
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-In-Reply-To: <9d11ed29-1114-055d-5b26-0899a5fc0d7f@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 3EJqJsfDx-IIH7kTvBsmfkoX-RBE0Hzx
+X-Proofpoint-GUID: 3EJqJsfDx-IIH7kTvBsmfkoX-RBE0Hzx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-17_10,2023-03-16_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 malwarescore=0 spamscore=0
+ clxscore=1011 priorityscore=1501 adultscore=0 mlxscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303170110
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 17.03.23 09:53, Vegard Nossum wrote:
-> 
-> Hi,
-> 
-> Somewhere between e8f60cd7db24 (v6.2-rc3) and 2eb29d59ddf0 (v6.3-rc1) my
-> wifi started dropping a lot. I'm using iwlwifi and I've checked the old
-> logs that the firmware hasn't changed:
-> 
-> Feb 25 16:22:33 kernel: iwlwifi 0000:04:00.0: loaded firmware version 
-> 36.e91976c0.0 8000C-36.ucode op_mode iwlmvm
-> 
-> My logs look like this:
-> 
-> 09:01:50 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
-> 09:01:50 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED 
-> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
-> 09:01:50 NetworkManager[8368]: <warn>  [1679040110.6548] 
-> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
-> 09:01:50 NetworkManager[8368]: <info>  [1679040110.6656] device 
-> (wlp4s0): supplicant interface state: completed -> disconnected
-> 09:01:50 NetworkManager[8368]: <info>  [1679040110.7609] device 
-> (wlp4s0): supplicant interface state: disconnected -> scanning
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: SME: Trying to authenticate with 
-> [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
-> 09:01:53 kernel: wlp4s0: authenticate with [REDACTED]:0b:25
-> 09:01:53 kernel: wlp4s0: send auth to [REDACTED]:0b:25 (try 1/3)
-> 09:01:53 kernel: wlp4s0: authenticated
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: Trying to associate with 
-> [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
-> 09:01:53 kernel: wlp4s0: associate with [REDACTED]:0b:25 (try 1/3)
-> 09:01:53 kernel: wlp4s0: RX AssocResp from [REDACTED]:0b:25 
-> (capab=0x1511 status=0 aid=36)
-> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4553] device 
-> (wlp4s0): supplicant interface state: scanning -> authenticating
-> 09:01:53 kernel: wlp4s0: associated
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: Associated with [REDACTED]:0b:25
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SUBNET-STATUS-UPDATE 
-> status=0
-> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4645] device 
-> (wlp4s0): supplicant interface state: authenticating -> associating
-> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4829] device 
-> (wlp4s0): supplicant interface state: associating -> associated
-> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5175] device 
-> (wlp4s0): supplicant interface state: associated -> 4-way handshake
-> 09:01:53 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED 
-> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: WPA: 4-Way Handshake failed - 
-> pre-shared key may be incorrect
-> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SSID-TEMP-DISABLED 
-> id=0 ssid="[REDACTED]" auth_failures=1 duration=10 reason=WRONG_KEY
-> 09:01:53 NetworkManager[8368]: <warn>  [1679040113.5685] 
-> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
-> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5737] device 
-> (wlp4s0): supplicant interface state: 4-way handshake -> disconnected
-> 09:01:53 NetworkManager[8368]: <info>  [1679040113.6759] device 
-> (wlp4s0): supplicant interface state: disconnected -> scanning
-> 
-> I did see that somebody else reported a similar regression, but I don't
-> know if it could be the same problem or not (I see the driver is
-> different, but the fix looks generic):
-> 
-> https://linux-regtracking.leemhuis.info/regzbot/regression/217119/
-> 
-> The buggy commit that was identified there does seem to be within the
-> range of potential culprits:
-> 
-> $ git log --oneline e8f60cd7db24..2eb29d59ddf0 | grep resumption
-> 4444bc2116ae wifi: mac80211: Proper mark iTXQs for resumption
-> 
-> If people think it's the same, I could try the proposed fix -- otherwise
-> let me know what else I can do to help track this down.
->
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-You are using a iwlwilf/mvm card. The fix we plan to merge for that 
-regression above won't help you. (mvm cards do not use the function we 
-serialized in the end. iwlwifi/dvm on the other uses it.)
+Firmware expects physical address in the reo entrance ring when MLO is
+enabled and peer meta data in the queue_addr_lo for the non MLO cases.
+Current implementation fills the physical address for the non MLO cases
+and firmware decodes it differently which leads to SOC CSR region
+access which is not related to firmware/MAC operation.
 
-But Johannes is working on a comparable issue affecting mvm cards.
-Check out
-https://lore.kernel.org/r/20230314103840.30771-1-jtornosm@redhat.com
+Fix this by sending only peer_meta data and destination indication bit
+during non MLO case. This prevents firmware from invalid decoding.
 
-That may well fix your issue.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-> I don't think bisecting this is feasible for me since there are hours
-> between the drops. But it's really noticeable over the stretch of
-> multiple days that something has changed -- looking at the logs, the
-> disconnect rate has basically tripled.
-> 
-> Thanks,
-> 
-> 
-> Vegard
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 0adcbcfa0db5..b368494071ea 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3047,10 +3047,14 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
+ 	reo_ent_ring->rx_mpdu_info.peer_meta_data =
+ 		reo_dest_ring->rx_mpdu_info.peer_meta_data;
+ 
+-	reo_ent_ring->queue_addr_lo = cpu_to_le32(lower_32_bits(rx_tid->paddr));
+-	reo_ent_ring->info0 = le32_encode_bits(upper_32_bits(rx_tid->paddr),
+-					       HAL_REO_ENTR_RING_INFO0_QUEUE_ADDR_HI) |
+-		le32_encode_bits(dst_ind, HAL_REO_ENTR_RING_INFO0_DEST_IND);
++	/* Firmware expects physical address to be filled in queue_addr_lo in
++	 * the MLO scenario and in case of non MLO peer meta data needs to be
++	 * filled.
++	 * TODO: Need to handle for MLO scenario.
++	 */
++	reo_ent_ring->queue_addr_lo = reo_dest_ring->rx_mpdu_info.peer_meta_data;
++	reo_ent_ring->info0 = le32_encode_bits(dst_ind,
++					       HAL_REO_ENTR_RING_INFO0_DEST_IND);
+ 
+ 	reo_ent_ring->info1 = le32_encode_bits(rx_tid->cur_sn,
+ 					       HAL_REO_ENTR_RING_INFO1_MPDU_SEQ_NUM);
+
+base-commit: 3df3715e556027e94246b2cb30986563362a65f4
+-- 
+2.17.1
 
