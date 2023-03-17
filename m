@@ -2,102 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 412986BDBF0
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Mar 2023 23:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C16B16BDD58
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Mar 2023 01:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbjCPWsH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Mar 2023 18:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48662 "EHLO
+        id S230051AbjCQAHb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Mar 2023 20:07:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbjCPWsE (ORCPT
+        with ESMTP id S230011AbjCQAH2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Mar 2023 18:48:04 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380A8E6DBA
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 15:47:49 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id t9so3577913qtx.8
-        for <linux-wireless@vger.kernel.org>; Thu, 16 Mar 2023 15:47:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679006868;
-        h=content-transfer-encoding:subject:from:content-language:to
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gKHnnkPazwpfbziiWQy+PBZhHwBmODnl2Umv22BWgNQ=;
-        b=eD6bhlCze/JO3I4itK1qOsNecEAVduB6IaCyWS5lLQdxuRewhNsSXdrPY3OeP8JRfx
-         WqQil9kGpTWNYwjbz5Sc1dE2AAGqHcbL5cT8xDAgUBYfRy7jOMcmL13bhnI7A53mdd8G
-         DuXAyLWuL3/MjX7HsEJBYS1E2TquOnhEYyaKrI7l+T2zgA91AxiPsuThKHSe/8ybHdZG
-         J1qQ8H+CBpfEsOrNurwxHn+bPKFoQCQ3xyVoSi45fUkwg1PLeZjUq3JzYm+rbdpxlS0g
-         xN+iMvK+aG7/ZZdRh6UzHxgqQqVI9ZIRaOmyTg733t7geJDOsacqGXDcWc+bl2JNPvDx
-         nViw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679006868;
-        h=content-transfer-encoding:subject:from:content-language:to
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gKHnnkPazwpfbziiWQy+PBZhHwBmODnl2Umv22BWgNQ=;
-        b=guIdcQu0SWaK2HY4SDwGKumMgL4DbUqYqjQ9jQIruQORtYTUkfJ+iMvpU+xiNE5G9Q
-         vIQ3EJcXNRuGjhXlhIKduEdxemlkyjfPKmCTJ4yF8YGSKsrNhMicMIX6g3X1+YepsCPl
-         S0TMudyrM+OcJlLfB5c8ZPR5855/j04g2GOciYzfGzRugBWl3P1QUImkyeMtnLjJaVT1
-         tXUpBRK6+F8KrfQ3hibvm6IozoMErjYtjUnu6HU/pzBHZ1EqUdx7k3HuVsNvU/XD21Rj
-         bTL8ju5YOFM4p2VqO5TEY0NLzKwCwbaoLD+qOQ3hG60nXNlHLEuE5nyTkqA/Lt4e+8KB
-         BK9Q==
-X-Gm-Message-State: AO0yUKXlGdg/sPPSKox2OSQVwDfpEXZ4S8rXAktX5/PTQ7X4AFhDRSRj
-        8clkasLoi2iGv2LxE8d+G2prNiwksG4=
-X-Google-Smtp-Source: AK7set8AXBH+spPXWY7AzFhpAp+wuU9ZMniw4e1ktkX5c0K2dvXMSUs3iaCExywREvWkuPYPz3vXUw==
-X-Received: by 2002:a05:622a:2c6:b0:3bf:d946:b04a with SMTP id a6-20020a05622a02c600b003bfd946b04amr8540035qtx.66.1679006867952;
-        Thu, 16 Mar 2023 15:47:47 -0700 (PDT)
-Received: from [10.8.2.6] ([94.140.11.247])
-        by smtp.gmail.com with ESMTPSA id x26-20020ac86b5a000000b003bfa2c512e6sm467184qts.20.2023.03.16.15.47.47
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Mar 2023 15:47:47 -0700 (PDT)
-Message-ID: <df1ce994-3368-a57e-7078-8bdcccf4a1fd@gmail.com>
-Date:   Thu, 16 Mar 2023 18:47:46 -0400
+        Thu, 16 Mar 2023 20:07:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B3C738B0;
+        Thu, 16 Mar 2023 17:07:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C6F36B822EC;
+        Fri, 17 Mar 2023 00:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12907C433EF;
+        Fri, 17 Mar 2023 00:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679011638;
+        bh=qfqozMAegKijY8JNbuj9EKz7MePhaVeyD54LoSNyvDA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ZhWPY3/M3Sqi+evrt88Clwt3B9SMEDaX2TLOVy+k7nLqDt057pQc0Pbxk02rspClR
+         626vz/UV35x2vMwvvCF9Qtn6hli5foqzEvZXwtxFkb91PPN2Zkq81L95WTOgddmw7H
+         iHcIfXk+406ouIkKWI9q/pfGjJg0MdTGUOD7rU9YzQfV7NaIg8MBs8iWayNU6qUX+q
+         wKc9kko5zNaRoPQAw9578Em3wT39m1Iw3qu1xGG2XRFx+UwskZWBKZQYNkS2KuJ2F+
+         EZYT/CuLzjp6JhmwRvJuhjJqMYLNomtdp66H/StV9XEWgx+3Eoz9R+1rtUQbZHOCM/
+         t1CoZWi1wh6oA==
+Date:   Thu, 16 Mar 2023 17:07:16 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Wei Fang <wei.fang@nxp.com>,
+        Shenwei Wang <shenwei.wang@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Francois Romieu <romieu@fr.zoreil.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Zhao Qiang <qiang.zhao@nxp.com>, Kalle Valo <kvalo@kernel.org>,
+        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] net: Use of_property_read_bool() for boolean
+ properties
+Message-ID: <20230316170716.7039161d@kernel.org>
+In-Reply-To: <20230314191828.914124-1-robh@kernel.org>
+References: <20230314191828.914124-1-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-To:     linux-wireless@vger.kernel.org
-Content-Language: en-US
-From:   rb <rb0171610@gmail.com>
-Subject: New binary rtw8852b_fw.bin not loading firmware not recognized
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Briefly,
+On Tue, 14 Mar 2023 14:18:27 -0500 Rob Herring wrote:
+> It is preferred to use typed property access functions (i.e.
+> of_property_read_<type> functions) rather than low-level
+> of_get_property/of_find_property functions for reading properties.
+> Convert reading boolean properties to of_property_read_bool().
+> 
+> Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
+> Acked-by: Kalle Valo <kvalo@kernel.org>
+> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Acked-by: Francois Romieu <romieu@fr.zoreil.com>
+> Reviewed-by: Wei Fang <wei.fang@nxp.com>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-I use rtw89_8852be in kernel driver
-
-HARDWARE:
-Network controller [0280]: Realtek Semiconductor Co., Ltd. Device [10ec:b852]
-
-Lenovo Ideapad 1i
-
-ISSUE:
-Newest version of binary firmware 2023_03_10,
-rtw89/rtw8852b_fw.bin, will not load/firmware not recognized on Linux Kernel 6.2.5 (and others):
-
-[] loading firmare: rwt89/rtw8852b_fw.bin
-[] rtw89_8852be 0000:03:00.0: no suitable firmware found
-[] rtw89_8852be 0000:03:00.0: failed to recognize firmware
-
-Issue persists regardless of which 6.2 series kernel is used.
-
-All previous rwt89/rtw8852b_fw.bin firmware from linux-firmware 2023_02_10 and earlier loads and works correctly.
-
-I did file a bug report with the details:
-
-https://bugzilla.kernel.org/show_bug.cgi?id=217207
-
-Thank you,
-Rab B.
-rb0171610@gmail.com
-
+Applied, to net(?), thanks!
