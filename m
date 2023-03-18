@@ -2,99 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 536976BFA98
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Mar 2023 14:59:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D54496BFCB5
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Mar 2023 21:25:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbjCRN7Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Mar 2023 09:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57296 "EHLO
+        id S229770AbjCRUZ2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Mar 2023 16:25:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjCRN7X (ORCPT
+        with ESMTP id S229587AbjCRUZ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Mar 2023 09:59:23 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DA3130185
-        for <linux-wireless@vger.kernel.org>; Sat, 18 Mar 2023 06:59:21 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32IDwa1O3006872, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32IDwa1O3006872
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Sat, 18 Mar 2023 21:58:36 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Sat, 18 Mar 2023 21:58:48 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Sat, 18 Mar 2023 21:58:47 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Sat, 18 Mar 2023 21:58:47 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "rb0171610@gmail.com" <rb0171610@gmail.com>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "tiwai@suse.de" <tiwai@suse.de>
-Subject: pull request: rtw89: 8852b: rollback firmware to v0.27.32.1 and introduce new file to new format
-Thread-Topic: pull request: rtw89: 8852b: rollback firmware to v0.27.32.1 and
- introduce new file to new format
-Thread-Index: AQHZWaHC1CjNCqm+pUmEqr8KKerHCA==
-Date:   Sat, 18 Mar 2023 13:58:47 +0000
-Message-ID: <889f3db6ca4008047595f4392388acc1f165e03c.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.16.31]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzMvMTgg5LiK5Y2IIDA5OjAxOjAw?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <56FBB7C3B85FE347A55B725CB835E590@realtek.com>
-Content-Transfer-Encoding: base64
+        Sat, 18 Mar 2023 16:25:27 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5516233CE;
+        Sat, 18 Mar 2023 13:25:25 -0700 (PDT)
+Received: from fpc (unknown [46.242.14.200])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 6B7B144C1023;
+        Sat, 18 Mar 2023 20:25:20 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6B7B144C1023
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1679171120;
+        bh=6V3Vbhrq5BYhBe6TJBntt2bA0uy7QayeFqJtV4fw6hg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=soQxhSvxWXuee3nKUyKkYgp6CetKvYpQINXItjNmJI2RZamrhgEhF1QaVlUy6i0Pd
+         9v3mCHVdeAO1vejvn0x4hflG/BgeDuB9GwhGgNlSYFa4+eIf/Uv9F/zKKbmV5amFMN
+         cmpudPAOc5UdYpN/2GbcEGlbvG8cFRHjCO+67G7o=
+Date:   Sat, 18 Mar 2023 23:25:16 +0300
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Senthil Balasubramanian <senthilkumar@atheros.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Sujith <Sujith.Manoharan@atheros.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org,
+        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com
+Subject: Re: [PATCH 1/3] wifi: ath9k: avoid referencing uninit memory in
+ ath9k_wmi_ctrl_rx
+Message-ID: <20230318202516.2dpebysmo6uxilab@fpc>
+References: <20230315202112.163012-1-pchelkin@ispras.ru>
+ <20230315202112.163012-2-pchelkin@ispras.ru>
+ <871qlovtho.fsf@kernel.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <871qlovtho.fsf@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGksDQoNCkluIGRpc2N1c3Npb24gdGhyZWFkcyBbMV0gWzJdLCB0aGUgbmV3IGZvcm1hdCBvZiA4
-ODUyYiBicmVhayB1c2VyIHNwYWNlLg0KVG8gYXZvaWQgdGhpcywgaW50cm9kdWNlIG5ldyBmaWxl
-bmFtZSBydHc4OS9ydHc4ODUyYl9mdy0xLmJpbiB0aGF0IG9sZA0KZHJpdmVycyB3aWxsIG5vdCB0
-cnkgdG8gbG9hZCBpdC4NCg0KUm9sbGJhY2sgZmlybXdhcmUgdmVyc2lvbiBvZiBydHc4OS9ydHc4
-ODUyYl9mdy5iaW4gdG8gdGhlIGxhdGVzdA0KdmVyc2lvbiBvZiBvcmlnaW5hbCBmb3JtYXQgKGku
-ZS4gdjAuMjcuMzIuMSkgc3VwcG9ydGVkIGJ5IG9sZCBkcml2ZXIuDQoNClRoZSBwYXRjaGVzIHRv
-IHN1cHBvcnQgbmV3IGZpbGVuYW1lIGluIG5ldyBkcml2ZXIgYXJlIGFsbW9zdCBkb25lLA0KYW5k
-IEkgd2lsbCBzdWJtaXQgdGhlbSBzb29uLiBUaGFua3MgZm9yIHRoZSBhZHZpY2UgaW4gbWFpbCBh
-bmQNCmJ1ZyB0aHJlYWRzLg0KDQoNClsxXSANCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4
-LXdpcmVsZXNzL2RmMWNlOTk0LTMzNjgtYTU3ZS03MDc4LThiZGNjY2Y0YTFmZEBnbWFpbC5jb20v
-VC8jbTI0Y2I0M2JlMzFhNzYyZDBlYTcwYmYwN2YyN2FlOTZjNTlmNjkzMWINClsyXSBodHRwczov
-L2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxNzIwNw0KDQoNClRoYW5rIHlv
-dQ0KUGluZy1LZQ0KDQotLS0NClRoZSBmb2xsb3dpbmcgY2hhbmdlcyBzaW5jZSBjb21taXQgYzc2
-MWRiZTgwNGY5MDNjYzJkZjgxZjI1MWQzNjdjY2EyODVlY2EwNjoNCg0KICBNZXJnZSB0YWcgJ2l3
-bHdpZmktZnctMjAyMy0wMy0xMycgb2YgDQpodHRwOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9s
-aW51eC9rZXJuZWwvZ2l0L2l3bHdpZmkvbGludXgtZmlybXdhcmUgKDIwMjMtMDMtMTMgMDk6MjA6
-NDcgLTA0MDApDQoNCmFyZSBhdmFpbGFibGUgaW4gdGhlIEdpdCByZXBvc2l0b3J5IGF0Og0KDQog
-IGh0dHBzOi8vZ2l0aHViLmNvbS9wa3NoaWgvbGludXgtZmlybXdhcmUuZ2l0IEhFQUQNCg0KZm9y
-IHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIDJjMDdmMDE3ZmY0MjM5OGUyNWI4NTUyYmM4ZTAx
-YzdjNjY3Yjg1OTI6DQoNCiAgcnR3ODk6IDg4NTJiOiB1cGRhdGUgZm9ybWF0LTEgZncgdG8gdjAu
-MjkuMjkuMCAoMjAyMy0wMy0xOCAyMTo0NDozMCArMDgwMCkNCg0KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KUGluZy1LZSBT
-aGloICgzKToNCiAgICAgIHJ0dzg5OiA4ODUyYjogcm9sbGJhY2sgZmlybXdhcmUgdG8gdjAuMjcu
-MzIuMQ0KICAgICAgcnR3ODk6IDg4NTJiOiBhZGQgZm9ybWF0LTEgZncgdjAuMjkuMjYuMA0KICAg
-ICAgcnR3ODk6IDg4NTJiOiB1cGRhdGUgZm9ybWF0LTEgZncgdG8gdjAuMjkuMjkuMA0KDQogV0hF
-TkNFICAgICAgICAgICAgICAgICAgfCAgIDEgKw0KIHJ0dzg5L3J0dzg4NTJiX2Z3LTEuYmluIHwg
-QmluIDAgLT4gMTE4ODQ4OCBieXRlcw0KIHJ0dzg5L3J0dzg4NTJiX2Z3LmJpbiAgIHwgQmluIDEx
-ODg0ODggLT4gMTAzNTIzMiBieXRlcw0KIDMgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykN
-CiBjcmVhdGUgbW9kZSAxMDA2NDQgcnR3ODkvcnR3ODg1MmJfZnctMS5iaW4NCg0K
+On Fri, Mar 17, 2023 at 07:26:11AM +0200, Kalle Valo wrote:
+> 
+> It would be also nice to know how you have tested these. Syzkaller is no
+> substitute for testing on a real hardware.
+> 
+
+Unfortunately, currently I can't test this on real hardware so probably we
+should postpone the patch discussion for some time. Roughly in a week or
+two I'll be able to do some testing and try to reproduce the problem
+there.
+
+For sure this should be tested on real hardware as some issues may arise.
+I sent the patch based on the commit b383e8abed41 ("wifi: ath9k: avoid
+uninit memory read in ath9k_htc_rx_msg()") where it is explained
+thoroughly what can lead to such behaviour. At the moment I don't see
+anything in the code which can prevent that invalid scenario to happen for
+endpoint callbacks path.
+
+Actually, sanity checks for SKB length have been added everywhere inside
+ath9k_htc_rx_msg() except where the endpoint callbacks are called. As for
+the repro, the SKB inside ath9k_hif_usb_rx_stream() is allocated with
+pkt_len=8 so it passes the 'htc_frame_hdr' check and processing in
+ath9k_htc_rx_msg() but it obviously cannot be handled correctly in the
+endpoint callbacks then.
