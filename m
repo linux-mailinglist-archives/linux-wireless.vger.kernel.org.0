@@ -2,152 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF436BF6D6
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Mar 2023 01:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C28E96BF86A
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Mar 2023 08:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229842AbjCRARE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Mar 2023 20:17:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
+        id S229708AbjCRHGY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Mar 2023 03:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjCRARD (ORCPT
+        with ESMTP id S229478AbjCRHGX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Mar 2023 20:17:03 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEE3D0E7D
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 17:17:02 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id e194so7481013ybf.1
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Mar 2023 17:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks-com.20210112.gappssmtp.com; s=20210112; t=1679098621;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uuLVqOIvOircjEHShlF7uVz70OZoTuzBg7oUs/lQOJA=;
-        b=dMFsTW19VlPVOlMWbiMVcg5HsOty9u/tecsqOcHPgoK8Q0pbvFmKuvQTKa/LCZQuZn
-         vsivywwhCANEv1FUxipP1Z2OXajIR/PElUFW9EDMsVzb9a2RC71NzCM6jgNqmvjflWBP
-         TYiQfQB/Swo2Rc/U2b0ahT41+eVWT7Bf/Q0ew4FlxFMYDLndQnVKQ8Ywhzs1X1sfhK2/
-         A878/UAbZJbxL09IwTYPDP7CmsjhKyg1ZlvWxeaWzKGSJd6osTNnCt6JTKM+mx7AHgSg
-         mY/wu0YrjXptFWl6GfhxDUkqraKXq3d5bZdesuSW+G6y7bw5oMJhgnvomunce5OYewve
-         /uvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679098621;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uuLVqOIvOircjEHShlF7uVz70OZoTuzBg7oUs/lQOJA=;
-        b=NGzBPN6cp1cWFe5fLc+FUNSX96cpQoAAhYLtX4uLBwxI49JubDeguIqSRYrURjgoPG
-         tr3T3mlI4Cler7S/BnTjFs/Fqe7j645yT5dOr3M9HI4Lu5FaIPWodOPzZYFCUGxqB8ou
-         PC0KLc5JuQALylKHqRPwhoVDI13eshoRkTpQ/K6ugR7kRkWYsDHn1BMowPAy5EJ9trQl
-         zITMYZTOLhT/lywmArJ92EXyZ58Dei4M9uiBaKUKqjagkbFnUqdoBsEqgB8v3HghSr0y
-         pW1EiffglX+quZ9wWuqSEy0j6baBBme/OV3+3mzhnco5RdJZJxMbJC/p+PjqRNRRkXlW
-         2OuA==
-X-Gm-Message-State: AO0yUKX2epc+/5iQIG+KCao5/aleE5egpVNeWjvq6flc1vfhiu33dIYl
-        YO9ulDiEidrCN8K1DUbk6wqLaWoeWyBaDXqePHI2eouwxCinbgAZ+NA=
-X-Google-Smtp-Source: AK7set/exqLo4J5LFqjFRPpDfMOa+W1lXNFz1B+Twc9nrWSn7t33CrfRTjskbpGEZCnqO5qHIiFcuKQBFEuUY81noDw=
-X-Received: by 2002:a05:6902:1896:b0:b17:294f:fb30 with SMTP id
- cj22-20020a056902189600b00b17294ffb30mr282492ybb.2.1679098621176; Fri, 17 Mar
- 2023 17:17:01 -0700 (PDT)
+        Sat, 18 Mar 2023 03:06:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D774FCDD;
+        Sat, 18 Mar 2023 00:06:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 59A5FB80E8D;
+        Sat, 18 Mar 2023 07:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52137C433EF;
+        Sat, 18 Mar 2023 07:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679123179;
+        bh=49KA3iNvSyleR2UVuJjsn11DXyb3q1V2rfZ2s1YjuCg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=PGVY03EK8gdnEB1pOuQ9qT81m5rreHG+0YJsainUKyEGrqiuh0GPB1hf7iA7qXRCP
+         4mRQavKUVsh5I04bxF70f9qjj+a/vJ1867uGlJ4zPaV2ObclItHfLCXE5GZmJxJ4s/
+         zeCtWZCg+rvMtuXLzWK6STUZwzqJH/o520nHUdjdDEXNxbYCkSmE0ELE5a9WHAxi2W
+         cgnR/vHgs6Q9NAkBXIWPrcu0Y1xbLWU3u5gXsiamDETdL69OsScc1yDl8Bqnbh/7d4
+         UsAyiUskYk7Ru7GkEv9NcvzVXzNyGC6Jm2Av6jliMEa1hXHlG43KcaL/W9U9+AwyFS
+         0d7Rw40oSnF9w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Nick Morrow <morrownr@gmail.com>
+Cc:     Reese Russell <git@qrsnap.io>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        YN Chen <YN.Chen@mediatek.com>,
+        Ben Greear <greearb@candelatech.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Added Netgear AXE3000 (A8000) usb_device_id to mt7921u_device_table[]
+References: <20230123090555.21415-1-git@qrsnap.io>
+        <CAFktD2eFdaCAdE=zxVx05QYWPRcr5StompKr+ehn7piYpQHjzA@mail.gmail.com>
+Date:   Sat, 18 Mar 2023 09:06:09 +0200
+In-Reply-To: <CAFktD2eFdaCAdE=zxVx05QYWPRcr5StompKr+ehn7piYpQHjzA@mail.gmail.com>
+        (Nick Morrow's message of "Fri, 17 Mar 2023 14:49:56 -0500")
+Message-ID: <87wn3ev8ri.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-From:   Tim Harvey <tharvey@gateworks.com>
-Date:   Fri, 17 Mar 2023 17:16:50 -0700
-Message-ID: <CAJ+vNU0TuNA26F+hFwTRGc2pVvW34-7Sc7oQ9EW8V+2cVFgcag@mail.gmail.com>
-Subject: ath9k legacy vs MSI interrupt issue on imx8mm soc
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     rhu@qti.qualcomm.com, ryanhsu@qti.qualcomm.com,
-        rwchang@qti.qualcomm.com, aeolus@qti.qualcomm.com,
-        "Valo, Kalle" <kvalo@qca.qualcomm.com>,
-        ath9k-devel <ath9k-devel@qca.qualcomm.com>, linux@endlessm.com,
-        rafael.j.wysocki@intel.com, andy@infradead.org,
-        Daniel Drake <drake@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greetings,
+Nick Morrow <morrownr@gmail.com> writes:
 
-I'm running into an issue regarding ath9k interrupts on imx8mm SoC's.
-I'm using the latest kernel source (master) but have recreated this
-all the way back to 5.15.
+>> Issue: Though the Netgear AXE3000 (A8000) is based on the mt7921
+>> chipset because of the unique USB VID:PID combination this device
+>> does not initialize/register. Thus making it not plug and play.
+>>
+>> Fix: Adds support for the Netgear AXE3000 (A8000) based on the Mediatek
+>> mt7921au chipset. The method of action is adding the USD VID/PID
+>> pair to the mt7921u_device_table[] array.
+>>
+>> Notes: A retail sample of the Netgear AXE3000 (A8000) yeilds the following
+>> from lsusb D 0846:9060 NetGear, Inc. Wireless_Device. This pair
+>> 0846:9060 VID:PID has been reported by other users on Github.
+>>
+>> Signed-off-by: Reese Russell <git@qrsnap.io>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+>> index 5321d20dcdcb..62e9728588f8 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+>> @@ -15,6 +15,8 @@
+>>  static const struct usb_device_id mt7921u_device_table[] = {
+>>         { USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7961, 0xff, 0xff, 0xff),
+>>                 .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+>> +       { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
+>> +               .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+>>         { },
+>>  };
+>>
+>> --
+>> 2.37.2
+>
+>
+> I can confirm this VID/PID needs to go into 6.1 LTS and the current
+> testing version of the kernel as I am getting an increasing amount of
+> traffic from users that have purchased the Netgear A8000.
+>
+> My site is github.com/morrownr/USB-WiFi
+>
+> Helping Linux users with USB WiFi is what we do.
+>
+> The OP could have added a comment to the patch showing the adapter
+> that is causing this patch to be submitted. Maybe he can submit a v2
+> that can be expedited?
+>
+> Guidance?
 
-I find on boards with an IMX8MM (ie imx8mm-venice-gw320x-0x
-device-tree) ath9k will not trigger any legacy interrupts.
-# dmesg | grep ath
-[    2.468657] ath9k 0000:04:00.0: enabling device (0000 -> 0002)
-[    2.474702] ath: phy0: WB335 2-ANT card detected
-[    2.479341] ath: phy0: Set BT/WLAN RX diversity capability
-[    2.493720] ath: phy0: Enable LNA combining
-[    2.499099] ath: EEPROM regdomain: 0x6a
-[    2.499106] ath: EEPROM indicates we should expect a direct regpair map
-[    2.499114] ath: Country alpha2 being used: 00
-[    2.499119] ath: Regpair used: 0x6a
-[    8.167876] ath9k 0000:04:00.0 wlp4s0: renamed from wlan0
-# wpa_supplicant -i wlp4s0 -c wpa_supplicant.conf -B
-Successfully initialized wpa_supplicant
-# [  143.368897] wlp4s0: authenticate with 04:f0:21:59:3c:f8
-[  143.374230] wlp4s0: 80 MHz not supported, disabling VHT
-[  143.391982] wlp4s0: send auth to 04:f0:21:59:3c:f8 (try 1/3)
-[  144.831653] wlp4s0: send auth to 04:f0:21:59:3c:f8 (try 2/3)
-[  145.823657] wlp4s0: send auth to 04:f0:21:59:3c:f8 (try 3/3)
-[  146.815655] wlp4s0: authentication with 04:f0:21:59:3c:f8 timed out
-[  147.896946] wlp4s0: authenticate with 04:f0:21:59:3c:f8
-[  147.902290] wlp4s0: 80 MHz not supported, disabling VHT
-....
-# grep ath /proc/interrupts
-205:          0          0          0          0     GICv3 157 Level     ath9k
-^^^ no interrupts
+I assigned this to me on patchwork, I'll queue this for v6.3 and change
+the commit log to below. Felix&Lorenzo, ack?
 
-I've read that some SoC miniPCIe controllers don't support legacy
-interrupts so I try again adding 'ath9k.use_msi=1' to bootargs:
-root@jammy-venice:~# dmesg | grep ath
-[    4.314829] systemd[1]: Reached target Path Units.
-[    7.707747] usbcore: registered new interface driver ath3k
-[    7.792173] ath9k 0000:03:00.0: enabling device (0000 -> 0002)
-[    7.792471] ath9k 0000:03:00.0: Using MSI
-[    7.796661] ath: phy0: WB335 2-ANT card detected
-[    7.796674] ath: phy0: Set BT/WLAN RX diversity capability
-[    7.804722] ath: phy0: Enable LNA combining
-[    7.805995] ath: EEPROM regdomain: 0x6a
-[    7.806008] ath: EEPROM indicates we should expect a direct regpair map
-[    7.806015] ath: Country alpha2 being used: 00
-[    7.806019] ath: Regpair used: 0x6a
-[    8.493786] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0x6A0C9C8
-[    8.501691] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0x6A0C9C8
-[    8.515139] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0x6A0C9C8
-[    8.632850] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0x6A0C9C8
-[    8.646438] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0x6A0C9C8
-[    8.716020] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0xEA0C9C8
-[    8.787447] ath: phy0: __ath9k_hw_enable_interrupts: _msi_reg = 0xEA0C9C8
-...
-root@jammy-venice:~# grep ath /proc/interrupts
-239:          0          0          0          0   PCI-MSI 1572864
-Edge      ath9k
-^^^ now the driver is having trouble with MSI interrupts and the
-device doesn't work
+wifi: mt76: mt7921: add Netgear AXE3000 (A8000)
 
-Strangely when I use the same radio and kernel on an IMX6Q board (ie
-imx6q-gw54xx) (which has the same PCI MAC but different PHY than the
-IMX8MM) I find that I 'must' use legacy interrupts and trying to use
-MSI interrupts results in the above behavior.
+Add support for the Netgear AXE3000 (A8000) based on the Mediatek
+mt7921au chipset. A retail sample of the Netgear AXE3000 (A8000) yeilds
+the following from lsusb D 0846:9060 NetGear, Inc. Wireless_Device. This
+has been reported by other users on Github.
 
-Note that the boards I'm using have a PCI switch and I'm wondering if
-that is causing the issue.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Additionally I can say that ath10k cards work fine on the same imx8mm
-board with MSI interrupts.
-
-It seems that Daniel may have been running into something similar back
-when commit 7368160f0ab0 ("ath9k: add MSI support") was merged
-[1][2][3]
-
-Does anyone have any advice here about what can be going on?
-
-Best Regards,
-
-Tim
-[1] https://patchwork.kernel.org/project/linux-wireless/patch/20171011101806.6295-1-rhu@qti.qualcomm.com/
-[2] https://marc.info/?l=linux-pci&m=150238260826803&w=2
-[3] https://marc.info/?l=linux-pci&m=150831581725596&w=2
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
