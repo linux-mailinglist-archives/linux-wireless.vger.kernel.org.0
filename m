@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 921C66C0A42
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 06:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90E796C0A46
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 06:55:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbjCTFy0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 01:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49294 "EHLO
+        id S229653AbjCTFzA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 01:55:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjCTFyY (ORCPT
+        with ESMTP id S229619AbjCTFy5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 01:54:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C521ADDD
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Mar 2023 22:54:22 -0700 (PDT)
+        Mon, 20 Mar 2023 01:54:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430DD12592
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Mar 2023 22:54:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8065461212
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 05:54:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF70BC433D2;
-        Mon, 20 Mar 2023 05:54:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A48A561212
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 05:54:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D8DC4339B;
+        Mon, 20 Mar 2023 05:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679291661;
-        bh=xOQdLP9/pB3ExDzPZPmbiomJdM2sezX2mffmVb69n3I=;
+        s=k20201202; t=1679291695;
+        bh=aEXbUrtp24zK/4Zidsa9hu135Qo1z1/vxhtCxbTCKAo=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=KImZFpBZp0jAgEFlZdHRfzeaPJDXByuUTsxPVhVwv0Vjd+UzYN7Urfy0R6+cJXtNR
-         PElYDnasu/F4FhxOV/g+hXf0ImGjunrjpaWx0z4ItRcA6K3al7t8c7+sG5LFHfdowM
-         wLx0p85LPAK2mFSjamX3W3Ev/6foQC5RILsoVEKZfkOD/tKZykLC5+v7H48WRZGepV
-         iUsdVFkTUjVGyGDgp1egyc4ufGAQjPtD3qNGUQm0BgZZyE8z1Qi0734R69ci/+X+7b
-         Q0zgSmHh2wQUp/EyrJBQWiTDsii3RfD2PGQNQNyZPQP5JAnpxY6OVMnRG6LBzf/fHQ
-         3KcDeau07mF9Q==
+        b=ZI475uMHociPI6XN76gwRDj3esvnT7nN0BXY0Jkth7o6FZoRs9RrYdJ3tstsAPG0I
+         0cSsAcRK6KCpakdNLeFKEGKl1XsnM8mKudXc0IrnKNltci8BL3DBe7q6cPDU8B50+1
+         zF5j3Fz+D4+jAr+30M3SavzZomJsumo15A3J+D9rj+JGs+wvSvA0fh/B6gcVMXjw9B
+         1fTH6sofjEjEzNkbyaaLlt0MWsUAnNhscc0fQpF5zXe2vxU1FGReEk8ZR6WpGIRvCT
+         lmso0R5uG4ZvuUz3DGOBhSbVP40xt1VzHlkDT3DGshLebzCa+t0jmLnJZb54+zI7KY
+         Jq6j7q/lMIX4w==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtl8xxxu: RTL8192EU always needs full init
+Subject: Re: [PATCH v3] wifi: rtl8xxxu: Support new chip RTL8710BU aka
+ RTL8188GU
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com>
-References: <4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com>
+In-Reply-To: <4edbe29f-00b9-8eef-9789-20bed0b141e2@gmail.com>
+References: <4edbe29f-00b9-8eef-9789-20bed0b141e2@gmail.com>
 To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
 Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
+        Ping-Ke Shih <pkshih@realtek.com>, Jiajie Chen <c@jia.je>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167929165640.28804.12432448813334695079.kvalo@kernel.org>
-Date:   Mon, 20 Mar 2023 05:54:20 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <167929169189.28804.16177211192382455088.kvalo@kernel.org>
+Date:   Mon, 20 Mar 2023 05:54:53 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,30 +58,43 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> Always run the entire init sequence (rtl8xxxu_init_device()) for
-> RTL8192EU. It's what the vendor driver does too.
+> This chip is found in cheap "free driver" USB adapters from Aliexpress.
+> Initially they pretend to be a CD-ROM containing the driver for Windows.
+> "Ejecting" switches the device to wifi mode.
 > 
-> This fixes a bug where the device is unable to connect after
-> rebooting:
+> Features: 2.4 GHz, b/g/n mode, 1T1R, 150 Mbps.
 > 
-> wlp3s0f3u2: send auth to ... (try 1/3)
-> wlp3s0f3u2: send auth to ... (try 2/3)
-> wlp3s0f3u2: send auth to ... (try 3/3)
-> wlp3s0f3u2: authentication with ... timed out
+> This chip is more unique than other Realtek chips:
 > 
-> Rebooting leaves the device powered on (partially? at least the
-> firmware is still running), but not really in a working state.
+> * The registers at addresses 0x0-0xff, which all the other chips use,
+>   can't be used here. New registers at 0x8000-0x80ff must be used
+>   instead. And it's not a simple matter of adding 0x8000: 0x2
+>   (REG_SYS_FUNC) became 0x8004, 0x80 (REG_MCU_FW_DL) became 0x8090,
+>   etc.
 > 
-> Cc: stable@vger.kernel.org
+> * Also there are a few new registers which must be accessed indirectly
+>   because their addresses don't fit in 16 bits. No other chips seem to
+>   have these.
+> 
+> * The vendor driver compiles to 8188gu.ko, but the code calls the chip
+>   RTL8710B(U) pretty much everywhere, including messages visible to the
+>   user.
+> 
+> Another difference compared to the other chips supported by rtl8xxxu is
+> that it has a new PHY status struct, or three of them actually, from
+> which we extract the RSSI, among other things. This is not unique,
+> though, just new. The chips supported by rtw88 also use it.
+> 
 > Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Acked-by: Jes Sorensen <jes@trained-monkey.org>
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+> Tested-by: Philipp Hortmann <philipp.g.hortmann@gmail.com> # Edimax N150
 
 Patch applied to wireless-next.git, thanks.
 
-d46e04ccd404 wifi: rtl8xxxu: RTL8192EU always needs full init
+70664495e3d2 wifi: rtl8xxxu: Support new chip RTL8710BU aka RTL8188GU
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/4eb111a9-d4c4-37d0-b376-4e202de7153c@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/4edbe29f-00b9-8eef-9789-20bed0b141e2@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
