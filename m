@@ -2,401 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98DD6C1CE1
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 17:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3E766C1D2A
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 18:05:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233176AbjCTQxO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 12:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55570 "EHLO
+        id S233256AbjCTRFY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 13:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232852AbjCTQwv (ORCPT
+        with ESMTP id S233410AbjCTRFF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 12:52:51 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD38DBD4
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 09:44:43 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32KCYfRZ012267;
-        Mon, 20 Mar 2023 16:44:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=0mJQqY0oGkzB9jiHI9vvpQXCd8AnpanNOaVldmBt824=;
- b=EzYLOoqjpXzCxTuH+zjc4ugOGObEcU63OLT3+zrozHTZsVir71aZyax6ceIcMa6tRG6V
- I4BZJ2b+yUv8stCwwqSVNDxHHKy+lTYkeojvp7z/P7pxGOvTWspxAlt2VTzLIV5Jgtjg
- ORn0hvVnUTDn+HfPG+n2NVwZV+175+Ni0qsvKt6YWbWFfVyshX7tzFey8IBgPAg8YVDK
- 4saC7db9ZcLHchC7b3HFze0Efgf0Z18iqhc4RmNripte520ukrP8Xm3Vtaz8Ruyxq+GA
- mXEbc8V8GVNydtSJvVJuos/uRyHWvgvOCx7XOighk+u+18/DQ9nG3oQGeKb8rYkTxYzS aA== 
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pek4fhb7t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Mar 2023 16:44:10 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32KGi9aP025236
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Mar 2023 16:44:09 GMT
-Received: from che-siroccolnx03.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Mon, 20 Mar 2023 09:44:07 -0700
-From:   Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
-        Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-Subject: [PATCH v2 4/4] wifi: ath11k: add AP power save support
-Date:   Mon, 20 Mar 2023 22:13:34 +0530
-Message-ID: <20230320164334.3325886-5-quic_mkenna@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230320164334.3325886-1-quic_mkenna@quicinc.com>
-References: <20230320164334.3325886-1-quic_mkenna@quicinc.com>
+        Mon, 20 Mar 2023 13:05:05 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20711.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::711])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBE22E80A;
+        Mon, 20 Mar 2023 09:59:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lbYH2ihsTSmIFe7WmpGemfJnEP+xGifzSU2Fimsd+FJ5U599CQuhl+OyEVhzMGkcOVy/gESyh4cYergKWT9RD2MMiiqr6AOSDt5X6VKgsC9CGV02jus8x7PXmIDqXkph8p7UcB8F2CxUtUsgEivYwl67Ze/4nMqqgRuiMasHJipf8KRI6ExQvZVY4nzexxswPoYwAEYDPDD20OGYmXGp9GRgQtespDS/wlauopbRyvf66XJTlzIHxunB1n71Myv7M4whxLMIbU0yul6vRQd9/OPfPLe4mWA2R0H4d/FA8y+faFXizSXcgUo3uw/5v0AHOIyxyI0GxH08UHJ/PIIygA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xJGKaXs5KM35c/K7WivJBL+maK8RKWUKpvckDoFP1no=;
+ b=ZmCa1+yAKXH+BUH9/3KFo59NYasdKRvYLXpUm7rgG9Y7uBjB89VxO006JXjpEY23rMyYqggSGxzTgv2/euHHwOvSdLW8QAEfp74PhH68zw9q+TgRkbW4/0xmXqMG7RxIGrl/5xEpKA3wXf/3BUO4uklL57EyBM6qcNsP7qQ0c6u+k7xq8aMr8m9Wp584v5AWLPCwD+/u4MA1lXbtrn5qaQ6C/XjKT7P2XtDblvwkcV11fJsxAS3EguRDHEmpBEkSKerBy3U8yVb0E+PYgqBsHgWcpAr0WVAwUm/xiPwMFFJacUlFShcpDDkbayJ8yEvBa4TIlllU4YFyjZ3JA13HuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xJGKaXs5KM35c/K7WivJBL+maK8RKWUKpvckDoFP1no=;
+ b=hptFlP+lIi/+nWNqfTQqi+tSTgJpIimiSpO/ipJz42OpwfCoWrTdGNeE2eQFjXL9dowd7wo/NiYjcYyLRm6E/XIVJErrbHHjvsxWBTNw2STxbWGI+nlHtOxo+k2g6P0s0USoRWTlosstaYxvewmMi6utzabgxGHGLLixfLSDUBc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by PH0PR13MB5543.namprd13.prod.outlook.com (2603:10b6:510:12a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Mon, 20 Mar
+ 2023 16:49:27 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c%2]) with mapi id 15.20.6178.037; Mon, 20 Mar 2023
+ 16:49:27 +0000
+Date:   Mon, 20 Mar 2023 17:49:08 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>,
+        Jia-Ju Bai <baijiaju@buaa.edu.cn>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: mac80211: Add NULL checks for sta->sdata
+Message-ID: <ZBiOhAJswYcAo8kv@corigine.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230320133809.2448047-1-baijiaju@buaa.edu.cn>
+ <20230320133601.2443821-1-baijiaju1990@gmail.com>
+ <20230320133644.2445321-1-baijiaju1990@gmail.com>
+ <20230320133533.2442889-1-baijiaju1990@gmail.com>
+X-ClientProxiedBy: AM4PR07CA0003.eurprd07.prod.outlook.com
+ (2603:10a6:205:1::16) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: KpyhKZLDxuv6TKsvPgH_u8RJjV2-C076
-X-Proofpoint-ORIG-GUID: KpyhKZLDxuv6TKsvPgH_u8RJjV2-C076
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-20_14,2023-03-20_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- mlxscore=0 priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303200141
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH0PR13MB5543:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10baa27f-eb4b-4cbf-eff8-08db296310fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: T8+CnEoMaIf56dczmO/d0ou0p6/cPuJwfXGiWGubUjs1yP94c1t3uOqWipeUXvP1PMP9Jslv2JVhvw3/hSD25JNGZmxaxk30HTpWgbcl6QE0YfsaQoy9+pWLN7WfyGn1ylAriFgviXQ52Os6Hkur+oHG7d9/lW0eHNeDZBTYPoLc9usJmwrIsw6bP0nPwMyPjOT4KEV41vY5IdMLRmk5hvWWGPGqrpx9y27OxZqlaWIQ9ovG8/yEAyCfIDgUIcc3ad7/fhUneffAJmIb+RVFSOeGqvWYwPJE3aIG/L8u0KgPrar+e5c0LlvKzg383JAkfPKBwJsaEOBMdDDdcGSmBkkskD96z1WXknUj06FIs8GhfvU2gZH5fRMDzxjIq59gaM8PI2WnIflL5szT5X5YmK0e0uV8qyQEY953soFIcmNQxjCHmABtsvvrdetkbCJ6HrN0xRM+L55Ef20tMvBfCtCUNtiRn0MyvfEh6FURa3pRS6BF/o0WWdX4hRZXUFvjLKl8WKxSc8zaQKfvJE6yGha8vYNpRJjbbdwWB7lmrVEXAgvu/O93yTA22WhDaqgOpMVW85leZ3yPBY7pwbxo/SZp2jZ9HUXuXa9yEar7Nmif0MLE0vyOX1ToBil3ciAtfED/zdVHwe4M4FkOXKZy3iwfcf6czsnuYAY3NyPUHqt5nIl8KkiM3xkZFN1ispXT
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39830400003)(136003)(366004)(396003)(376002)(346002)(451199018)(38100700002)(2906002)(2616005)(478600001)(316002)(110136005)(66476007)(186003)(66556008)(8676002)(66946007)(6506007)(83380400001)(36756003)(86362001)(6512007)(4326008)(7416002)(44832011)(41300700001)(6666004)(5660300002)(8936002)(966005)(6486002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ij+JXBpRgs1M/smaYRoianOK8vcMBO4GUyMH0qoHiMQISme8wrru5BnFtl8w?=
+ =?us-ascii?Q?JJtK5j0uW3x2J3DAa641QAVqtQEqFJYVg6Z0s4aPr22WwzVD1dEfcvsFPsiv?=
+ =?us-ascii?Q?M5gqz5jOLvlIDmPzN4oev5crjTym3AXTlsxQNW3zWScjvoCZdIGWs2EP526F?=
+ =?us-ascii?Q?LREyCeavy6M/XeJdq+qU6bMnK4cXZlMkz+TjkZ4H5xYKwAXGKfhbcAYT3rW2?=
+ =?us-ascii?Q?/hYlJeWeF+pLae4QstqLosl0jseR+oRKJrw7QUaq51VJ8X4bb+wMmgR1izKo?=
+ =?us-ascii?Q?M1WA+odHVaKTeTy2HDyRH9qgBOg9qB/oicQjgRg/PZGBEIr1HJxiMNP8gBj5?=
+ =?us-ascii?Q?4o1xONbTrmRFqrYv8O0fy/x2b01DPZ3ocFDjJBwTBcTwt6/54PzT4Okx3anC?=
+ =?us-ascii?Q?yTlPdFSjI+WyQgtd3SXC06w2LrOVNOsb99JAacTcgZOjh+bHH7Zbri7VcHK9?=
+ =?us-ascii?Q?6xdzaoIidjOIJl8/hXu4JMfucIxxt/uWOHNeIaiy1L1Z2ACwS/vJ64HzVpcn?=
+ =?us-ascii?Q?UHCMfjw2zQFr+4+fhIiAgkfFEQUZzW9S2ozzBG5aRdlvLd7Do1yP4pEg7rCC?=
+ =?us-ascii?Q?au/iOG4e3+W1ek6YJDFF0scv5dHnE2x+1txfFn8J1dJWzGHtZnfTxO8X6Phc?=
+ =?us-ascii?Q?EbR3+a7DoNuMOcsZ8xeCB3ILyELADPxapkYDRiedrPaUHUIpV9km/7zRuUdS?=
+ =?us-ascii?Q?IFM65gEjuRgS8C4tSeYLVrRB4Hffr2SoYc7b8Af+iQ1p5RL7Vi1zuKRZO/b6?=
+ =?us-ascii?Q?6E5U2P9YprHz13ug8GB/AIaC/isLQkX7jqnJ3lc9c6rwe+ksI8gSVVnJsWeF?=
+ =?us-ascii?Q?AJADQB2Jc9MlxBcLV8r5zj/lyjfqrzzv8D2KYMQJAZ1i2hDDL215h76a05f/?=
+ =?us-ascii?Q?vLyW4Gx0LPK4trqsz6bQ9vnOyGG/IQttTVHAZV3sJtbd6T7wlemEIH5Pqhfw?=
+ =?us-ascii?Q?hVOTV5doWclcCndZm6Bp2GKWKeRRZd9xI36hdHy5PHLHGejx51z5Sa7HzjqX?=
+ =?us-ascii?Q?BLlGJQoXMg4QXbqLjJOSMWjAplF7k5HwyeDw4VAtMiXr2PwKDdHo/csppZvw?=
+ =?us-ascii?Q?aIkSfvc+MtBLNS8DS8J4nBcqO3RhHV0uSdWJ0hQOQ5u/FkmXBs1Aq9TWwE/o?=
+ =?us-ascii?Q?oQtJPMlHUA7c1A4dYexc0Q/+mmlmSW6tWErDbLQl39ss5osEuq0sIQgDHMNc?=
+ =?us-ascii?Q?Tx+wGlUbw236XU8ymspwfAfhhFlVNcQSwKwS3TnuHqi6jW75IAkh49kp81Bf?=
+ =?us-ascii?Q?xnlIrm9mL2gugIkM/oAhqAQIRGdkElS8x81UjKL0lXzVNPzlJ0PaIMRSLXgQ?=
+ =?us-ascii?Q?Zgd77t81pMPuf+2sPA/yFS4oNfK1NOtcghfEKFJww2HQu64U8/WTBNChJbEl?=
+ =?us-ascii?Q?IId/7k2iyrdrHVDgcT+kxUQq/+fUDbWF3va8VaXQUYHg86lV3M1sFvKHbdrj?=
+ =?us-ascii?Q?ppm9wS+UubMgrnd/MXH/6Ohns5FjSpwyw9OIimQtJcwZgOho2z659gf9+rJ2?=
+ =?us-ascii?Q?5rPw39gPPpDav4gtRajsei1Fci2s9X4BKZnV0rFEaIR7eCd05UxJ3BuFkC5d?=
+ =?us-ascii?Q?yBWfQ+J4eccPn0FoZ9GCSG+6Yon1ljgg/IHvBDxZYe7oDRZp37l+5Jrh1p0p?=
+ =?us-ascii?Q?V/KKj3iFdFIEKjupinNwgKdA6Dq5GohD5qrdlIu9doVV2tly96Xz36FIsk50?=
+ =?us-ascii?Q?N0kzow=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10baa27f-eb4b-4cbf-eff8-08db296310fb
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2023 16:49:27.3066
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /taM2GhzdJp6e6ZWebV5r9cy/XrjT+SBx63gQv+Rt3XbImI1VpklU+NKH1yR4Y1V+0P+f6Pa34Sf50kICNp3jq5FjxBZakud67AqJCumESA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB5543
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+On Mon, Mar 20, 2023 at 09:35:33PM +0800, Jia-Ju Bai wrote:
+> In a previous commit 69403bad97aa, sta->sdata can be NULL, and thus it
+> should be checked before being used.
 
-AP goes into the power save mode if no stations
-are connected and it will come out of power save
-as and when any of the station associate to it.
+Please run checkpatch on this patch, and correct the commit description
+style.
 
-Driver will advertise this flag SUPPORTS_AP_PS to
-enable the AP power save in mac80211.
+./scripts/checkpatch.pl -g HEAD
+ERROR: Please use git commit description style 'commit <12+ chars of sha1> ("<title line>")' - ie: 'commit 69403bad97aa ("wifi: mac80211: sdata can be NULL during AMPDU start")'
+#6:
+In a previous commit 69403bad97aa, sta->sdata can be NULL, and thus it
 
-This AP power save capability can be used to save
-power with the drawback of reduced range or delayed
-discovery of the AP.
+> 
+> However, in the same call stack, sta->sdata is also used in the
+> following functions:
+> 
+> ieee80211_ba_session_work()
+>   ___ieee80211_stop_rx_ba_session(sta)
+>     ht_dbg(sta->sdata, ...); -> No check
+>     sdata_info(sta->sdata, ...); -> No check
+>     ieee80211_send_delba(sta->sdata, ...) -> No check
+>   ___ieee80211_start_rx_ba_session(sta)
+>     ht_dbg(sta->sdata, ...); -> No check
+>     ht_dbg_ratelimited(sta->sdata, ...); -> No check
+>   ieee80211_tx_ba_session_handle_start(sta)
+>     sdata = sta->sdata; if (!sdata) -> Add check by previous commit
+>   ___ieee80211_stop_tx_ba_session(sdata)
+>     ht_dbg(sta->sdata, ...); -> No check
+>   ieee80211_start_tx_ba_cb(sdata)
+>     sdata = sta->sdata; local = sdata->local -> No check
+>   ieee80211_stop_tx_ba_cb(sdata)
+>     ht_dbg(sta->sdata, ...); -> No check
 
-This feature is enabled in QCN9074, IPQ8074, IPQ5018, QCN6122.
+I wonder if it would be better to teach ht_* do do nothing
+if the first argument is NULL.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Also, are these theoretical bugs?
+Or something that has been observed?
+And has a reproducer?
 
-Signed-off-by: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.c |  8 ++++
- drivers/net/wireless/ath/ath11k/core.h |  8 ++++
- drivers/net/wireless/ath/ath11k/hw.h   |  1 +
- drivers/net/wireless/ath/ath11k/mac.c  | 58 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.c  | 32 ++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h  |  8 ++++
- 6 files changed, 115 insertions(+)
+> Thus, to avoid possible null-pointer dereferences, the related checks
+> should be added.
+> 
+> These results are reported by a static tool designed by myself.
+> 
+> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+> Reported-by: TOTE Robot <baijiaju@buaa.edu.cn>
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 75fdbe4ef83a..5cf9203b751e 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -117,6 +117,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
- 		.smp2p_wow_exit = false,
- 		.ftm_responder = true,
-+		.supports_ap_ps = true,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
-@@ -200,6 +201,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = false,
- 		.ftm_responder = true,
-+		.supports_ap_ps = true,
- 	},
- 	{
- 		.name = "qca6390 hw2.0",
-@@ -285,6 +287,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = true,
- 		.ftm_responder = false,
-+		.supports_ap_ps = false,
- 	},
- 	{
- 		.name = "qcn9074 hw1.0",
-@@ -367,6 +370,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = false,
- 		.ftm_responder = true,
-+		.supports_ap_ps = true,
- 	},
- 	{
- 		.name = "wcn6855 hw2.0",
-@@ -452,6 +456,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = true,
- 		.ftm_responder = false,
-+		.supports_ap_ps = false,
- 	},
- 	{
- 		.name = "wcn6855 hw2.1",
-@@ -535,6 +540,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = true,
- 		.ftm_responder = false,
-+		.supports_ap_ps = false,
- 	},
- 	{
- 		.name = "wcn6750 hw1.0",
-@@ -616,6 +622,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = true,
- 		.support_fw_mac_sequence = true,
- 		.ftm_responder = false,
-+		.supports_ap_ps = false,
- 	},
- 	{
- 		.hw_rev = ATH11K_HW_IPQ5018_HW10,
-@@ -696,6 +703,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 		.smp2p_wow_exit = false,
- 		.support_fw_mac_sequence = false,
- 		.ftm_responder = true,
-+		.supports_ap_ps = true,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 0830276e5028..fefb1fb5220d 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -363,6 +363,7 @@ struct ath11k_vif {
- 	struct ieee80211_chanctx_conf chanctx;
- 	struct ath11k_arp_ns_offload arp_ns_offload;
- 	struct ath11k_rekey_data rekey_data;
-+	bool vif_ap_ps_enabled;
- 
- #ifdef CONFIG_ATH11K_DEBUGFS
- 	struct dentry *debugfs_twt;
-@@ -589,6 +590,11 @@ struct ath11k_per_peer_tx_stats {
- #define ATH11K_FLUSH_TIMEOUT (5 * HZ)
- #define ATH11K_VDEV_DELETE_TIMEOUT_HZ (5 * HZ)
- 
-+enum ath11k_ap_ps_state {
-+	ATH11K_AP_PS_STATE_OFF,
-+	ATH11K_AP_PS_STATE_ON,
-+};
-+
- struct ath11k {
- 	struct ath11k_base *ab;
- 	struct ath11k_pdev *pdev;
-@@ -732,6 +738,8 @@ struct ath11k {
- 	/* protected by conf_mutex */
- 	bool ps_state_enable;
- 	bool ps_timekeeper_enable;
-+	bool ap_ps_enabled;
-+	enum ath11k_ap_ps_state ap_ps_state;
- };
- 
- struct ath11k_band_cap {
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 0be4e1232384..40953e117cc5 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -225,6 +225,7 @@ struct ath11k_hw_params {
- 	bool smp2p_wow_exit;
- 	bool support_fw_mac_sequence;
- 	bool ftm_responder;
-+	bool supports_ap_ps;
- };
- 
- struct ath11k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index cad832e0e6b8..db0d772ff7c7 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3215,6 +3215,43 @@ static int ath11k_mac_config_obss_pd(struct ath11k *ar,
- 	return 0;
- }
- 
-+void ath11k_mac_ap_ps_recalc(struct ath11k *ar)
-+{
-+	struct ath11k_vif *arvif;
-+	enum ath11k_ap_ps_state state = ATH11K_AP_PS_STATE_OFF;
-+	int ret;
-+	bool allow_ap_ps = true;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif->vdev_type == WMI_VDEV_TYPE_STA ||
-+		    !arvif->vif_ap_ps_enabled) {
-+			allow_ap_ps = false;
-+			break;
-+		}
-+	}
-+
-+	if (!allow_ap_ps)
-+		ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "ap ps is not allowed\n");
-+
-+	if (allow_ap_ps && !ar->num_stations && ar->ap_ps_enabled)
-+		state = ATH11K_AP_PS_STATE_ON;
-+
-+	if (ar->ap_ps_state == state)
-+		return;
-+
-+	ret = ath11k_wmi_pdev_ap_ps_cmd_send(ar, ar->pdev->pdev_id, state);
-+	if (ret) {
-+		ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+			   "failed to send ap ps command pdev_id %u state %u\n",
-+			   ar->pdev->pdev_id, state);
-+		return;
-+	}
-+
-+	ar->ap_ps_state = state;
-+}
-+
- static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 					   struct ieee80211_vif *vif,
- 					   struct ieee80211_bss_conf *info,
-@@ -3567,6 +3604,16 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 			   vif->addr, arvif->arp_ns_offload.ipv4_addr);
- 	}
- 
-+	if ((changed & BSS_CHANGED_PS) && vif->type == NL80211_IFTYPE_AP) {
-+		if (!info->ap_ps_enable)
-+			arvif->vif_ap_ps_enabled = false;
-+		else
-+			arvif->vif_ap_ps_enabled = true;
-+
-+		ar->ap_ps_enabled = info->ap_ps_enable;
-+		ath11k_mac_ap_ps_recalc(ar);
-+	}
-+
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
-@@ -4651,6 +4698,8 @@ static int ath11k_mac_station_add(struct ath11k *ar,
- 	ath11k_dbg(ab, ATH11K_DBG_MAC, "Added peer: %pM for VDEV: %d\n",
- 		   sta->addr, arvif->vdev_id);
- 
-+	ath11k_mac_ap_ps_recalc(ar);
-+
- 	if (ath11k_debugfs_is_extd_tx_stats_enabled(ar)) {
- 		arsta->tx_stats = kzalloc(sizeof(*arsta->tx_stats), GFP_KERNEL);
- 		if (!arsta->tx_stats) {
-@@ -4810,6 +4859,8 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- 
- 		kfree(arsta->rx_stats);
- 		arsta->rx_stats = NULL;
-+
-+		ath11k_mac_ap_ps_recalc(ar);
- 	} else if (old_state == IEEE80211_STA_AUTH &&
- 		   new_state == IEEE80211_STA_ASSOC &&
- 		   (vif->type == NL80211_IFTYPE_AP ||
-@@ -6599,6 +6650,8 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 				    ret);
- 	}
- 
-+	ath11k_mac_ap_ps_recalc(ar);
-+
- 	mutex_unlock(&ar->conf_mutex);
- 
- 	return 0;
-@@ -6703,6 +6756,8 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 
- 	ath11k_debugfs_remove_interface(arvif);
- 
-+	ath11k_mac_ap_ps_recalc(ar);
-+
- 	/* TODO: recal traffic pause state based on the available vdevs */
- 
- 	mutex_unlock(&ar->conf_mutex);
-@@ -9122,6 +9177,9 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 		ieee80211_hw_set(ar->hw, USES_RSS);
- 	}
- 
-+	if (ar->ab->hw_params.supports_ap_ps)
-+		ieee80211_hw_set(ar->hw, SUPPORTS_AP_PS);
-+
- 	ar->hw->wiphy->features |= NL80211_FEATURE_STATIC_SMPS;
- 	ar->hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
- 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 27f3fceb33c5..02b14ba6ad45 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1290,6 +1290,38 @@ ath11k_wmi_rx_reord_queue_remove(struct ath11k *ar,
- 	return ret;
- }
- 
-+int ath11k_wmi_pdev_ap_ps_cmd_send(struct ath11k *ar, u32 pdev_id,
-+				   u32 param_value)
-+{
-+	struct ath11k_pdev_wmi *wmi = ar->wmi;
-+	struct wmi_pdev_ap_ps_cmd *cmd;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, sizeof(*cmd));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_pdev_ap_ps_cmd *)skb->data;
-+	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG,
-+				     WMI_TAG_PDEV_GREEN_AP_PS_ENABLE_CMD) |
-+			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
-+	cmd->pdev_id = pdev_id;
-+	cmd->param_value = param_value;
-+
-+	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_GREEN_AP_PS_ENABLE_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send ap ps enable/disable cmd\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
-+		   "wmi pdev ap ps set pdev id %d value %d\n",
-+		    pdev_id, param_value);
-+
-+	return ret;
-+}
-+
- int ath11k_wmi_pdev_set_param(struct ath11k *ar, u32 param_id,
- 			      u32 param_value, u8 pdev_id)
- {
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index b23b7a22bc9a..8b37dd935a95 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3037,6 +3037,12 @@ struct wmi_fwtest_set_param_cmd_param {
- 	u32 param_value;
- };
- 
-+struct wmi_pdev_ap_ps_cmd {
-+	u32 tlv_header;
-+	u32 pdev_id;
-+	u32 param_value;
-+} __packed;
-+
- struct wmi_pdev_set_param_cmd {
- 	u32 tlv_header;
- 	u32 pdev_id;
-@@ -6445,5 +6451,7 @@ int ath11k_wmi_pdev_set_bios_sar_table_param(struct ath11k *ar, const u8 *sar_va
- int ath11k_wmi_pdev_set_bios_geo_table_param(struct ath11k *ar);
- int ath11k_wmi_sta_keepalive(struct ath11k *ar,
- 			     const struct wmi_sta_keepalive_arg *arg);
-+int ath11k_wmi_pdev_ap_ps_cmd_send(struct ath11k *ar, u32 pdev_id,
-+				   u32 value);
- 
- #endif
--- 
-2.25.1
+I see 4 copies of this patch in a few minutes.
+As per the FAQ [1], please leave at least 24h between posts of a patch.
 
+[1] https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
