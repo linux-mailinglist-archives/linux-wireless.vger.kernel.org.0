@@ -2,211 +2,283 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CFE86C136E
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 14:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69FB06C1389
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 14:36:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbjCTNbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 09:31:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
+        id S229762AbjCTNg1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 09:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231400AbjCTNbP (ORCPT
+        with ESMTP id S229657AbjCTNgX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 09:31:15 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04DD358E
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 06:31:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=uxsTcGcvNUyMW6GMNAktgjc2sxKO4rP/en99v/qfdKY=; b=lRa1MH6HFDxVsccqq3ZY6uXXJf
-        +AojMXsJ4PGDIpn5pq2yKLGtzvu+uwWiZEnmrW+2/spGpRGMaumXjndW8BGDV0TYZtHsi2souD22t
-        MM03K7wj5YCYhfALiQx6B575494J3XweeFCJFqropW5KF7N5epzJ23tDhopA11ZgoyI8=;
-Received: from p54ae9730.dip0.t-ipconnect.de ([84.174.151.48] helo=localhost.localdomain)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1peFbO-0052pB-Bq; Mon, 20 Mar 2023 14:31:06 +0100
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes@sipsolutions.net
-Subject: [PATCH] wifi: mac80211: add support for letting drivers register tc offload support
-Date:   Mon, 20 Mar 2023 14:31:03 +0100
-Message-Id: <20230320133103.40724-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.39.0
+        Mon, 20 Mar 2023 09:36:23 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6E6FF1F;
+        Mon, 20 Mar 2023 06:36:16 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id f6-20020a17090ac28600b0023b9bf9eb63so12396030pjt.5;
+        Mon, 20 Mar 2023 06:36:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679319375;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F+RBm56r7Y5OPJGGXOR2z5S/kQ8hCSnX0int7hbaQUQ=;
+        b=fA8DOloy3mhU7LxaVdax/Xc32quxK5qVmUbWu7Fm8zAjjucLPfRAMCfU+mEfmtmiIv
+         75tcdd9mtiYwLBdHtlQw5zGNOSnqtXdaGIFlFI8VM/QaM/EBTiSllcv0b4xLVD86CDbJ
+         MqChSdL8ZePSBNMIKgdhZ4GrV1sq0NP5dRfltbrXYADBt3KSijLj7CJCj51oHatMFV5Y
+         xa2xFyDZII+YeTJacHAxe53zLEUIMVlxdjMQGJcn2pUVqWGOVVnbjVUgwUop/9hyIh0F
+         rFj+eQmjITvuxnsqUKPOPuY+aZ58H3KZ4sY54lYs18vY5oL/eiIUvd8C/Lnyw7Bq7V/x
+         jkzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679319375;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F+RBm56r7Y5OPJGGXOR2z5S/kQ8hCSnX0int7hbaQUQ=;
+        b=AdRthPAMiFe2EVqD+R3ARm+K4in2geg+r5KOWz6AJvlQ1Z72Rgs+eTQy/sjAm+4FIb
+         pX2h7aYJac95jEIdJEKaeFqYPCjfQAf6qPuzW/mBExDyhkdaZsDlZAuPpdPbnV3dtYxJ
+         QyKqx1ddIagwXzpneBJGQO3aopcgNCYVVRv9HCE+6+wPJi7+lCjr3/z5LVgqGaKdU883
+         h4jffO1/b264l2zLc+lcGd0ccORVwfm1JrXeQ11XwqgDQJ97SjvQ2mQRiTSpFmAHwoeZ
+         8BklOIc3ph4iG6T0czLe2CkGOYKjIKbvC+2vK40fTQ3ijYR7jb2tz7lHDeuZd5JXwe1x
+         dgrQ==
+X-Gm-Message-State: AO0yUKX+U0Sdc+hlAzGQSEgt2Ps+kOJOx0ELZJws5UTj3jzK2eCddPvM
+        IebzPA1V5vGqDTsHTDRjZrs=
+X-Google-Smtp-Source: AK7set9bhUrCgAOAUQJPN01zuP80xYcZdGrBxbW1HfRjAEUbmraNxm+IZi6jdT8aCOFS6a6/2Zw2DA==
+X-Received: by 2002:a17:90a:3ec1:b0:23d:48a9:3400 with SMTP id k59-20020a17090a3ec100b0023d48a93400mr19050160pjc.31.1679319375495;
+        Mon, 20 Mar 2023 06:36:15 -0700 (PDT)
+Received: from oslab.. ([106.39.42.159])
+        by smtp.gmail.com with ESMTPSA id j19-20020a17090a7e9300b0023d1855e1b7sm9737485pjl.0.2023.03.20.06.35.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Mar 2023 06:35:41 -0700 (PDT)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>,
+        TOTE Robot <baijiaju@buaa.edu.cn>
+Subject: [PATCH] net: mac80211: Add NULL checks for sta->sdata
+Date:   Mon, 20 Mar 2023 21:35:33 +0800
+Message-Id: <20230320133533.2442889-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On newer MediaTek SoCs (e.g. MT7986), WLAN->WLAN or WLAN->Ethernet flows can
-be offloaded by the SoC. In order to support that, the .ndo_setup_tc op is
-needed.
+In a previous commit 69403bad97aa, sta->sdata can be NULL, and thus it
+should be checked before being used.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+However, in the same call stack, sta->sdata is also used in the
+following functions:
+
+ieee80211_ba_session_work()
+  ___ieee80211_stop_rx_ba_session(sta)
+    ht_dbg(sta->sdata, ...); -> No check
+    sdata_info(sta->sdata, ...); -> No check
+    ieee80211_send_delba(sta->sdata, ...) -> No check
+  ___ieee80211_start_rx_ba_session(sta)
+    ht_dbg(sta->sdata, ...); -> No check
+    ht_dbg_ratelimited(sta->sdata, ...); -> No check
+  ieee80211_tx_ba_session_handle_start(sta)
+    sdata = sta->sdata; if (!sdata) -> Add check by previous commit
+  ___ieee80211_stop_tx_ba_session(sdata)
+    ht_dbg(sta->sdata, ...); -> No check
+  ieee80211_start_tx_ba_cb(sdata)
+    sdata = sta->sdata; local = sdata->local -> No check
+  ieee80211_stop_tx_ba_cb(sdata)
+    ht_dbg(sta->sdata, ...); -> No check
+
+Thus, to avoid possible null-pointer dereferences, the related checks
+should be added.
+
+These results are reported by a static tool designed by myself.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+Reported-by: TOTE Robot <baijiaju@buaa.edu.cn>
 ---
- include/net/mac80211.h     |  9 +++++++++
- net/mac80211/driver-ops.h  | 17 +++++++++++++++++
- net/mac80211/ieee80211_i.h |  3 ++-
- net/mac80211/iface.c       | 17 +++++++++++++++++
- net/mac80211/trace.h       | 25 +++++++++++++++++++++++++
- 5 files changed, 70 insertions(+), 1 deletion(-)
+ net/mac80211/agg-rx.c | 68 ++++++++++++++++++++++++++-----------------
+ net/mac80211/agg-tx.c | 16 ++++++++--
+ 2 files changed, 55 insertions(+), 29 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index f12edca660ba..fcfe3e9aff3d 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4227,6 +4227,10 @@ struct ieee80211_prep_tx_info {
-  * @set_hw_timestamp: Enable/disable HW timestamping of TM/FTM frames. This is
-  *	not restored at HW reset by mac80211 so drivers need to take care of
-  *	that.
-+ * @net_setup_tc: Called from .ndo_setup_tc in order to prepare hardware
-+ *	flow offloading for flows originating from the vif.
-+ *	Note that the driver must not assume that the vif driver_data is valid
-+ *	at this point, since the callback can be called during netdev teardown.
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4593,6 +4597,11 @@ struct ieee80211_ops {
- 	int (*set_hw_timestamp)(struct ieee80211_hw *hw,
- 				struct ieee80211_vif *vif,
- 				struct cfg80211_set_hw_timestamp *hwts);
-+	int (*net_setup_tc)(struct ieee80211_hw *hw,
-+			    struct ieee80211_vif *vif,
-+			    struct net_device *dev,
-+			    enum tc_setup_type type,
-+			    void *type_data);
- };
+diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+index c6fa53230450..6616970785a2 100644
+--- a/net/mac80211/agg-rx.c
++++ b/net/mac80211/agg-rx.c
+@@ -80,19 +80,21 @@ void ___ieee80211_stop_rx_ba_session(struct sta_info *sta, u16 tid,
+ 	RCU_INIT_POINTER(sta->ampdu_mlme.tid_rx[tid], NULL);
+ 	__clear_bit(tid, sta->ampdu_mlme.agg_session_valid);
  
- /**
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index a68d606e6987..0bf208f5bbc5 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1502,6 +1502,23 @@ static inline int drv_net_fill_forward_path(struct ieee80211_local *local,
- 	return ret;
- }
+-	ht_dbg(sta->sdata,
+-	       "Rx BA session stop requested for %pM tid %u %s reason: %d\n",
+-	       sta->sta.addr, tid,
+-	       initiator == WLAN_BACK_RECIPIENT ? "recipient" : "initiator",
+-	       (int)reason);
++	if (sta->sdata) {
++		ht_dbg(sta->sdata,
++		       "Rx BA session stop requested for %pM tid %u %s reason: %d\n",
++		       sta->sta.addr, tid,
++		       initiator == WLAN_BACK_RECIPIENT ? "recipient" : "initiator",
++		       (int)reason);
++	}
  
-+static inline int drv_net_setup_tc(struct ieee80211_local *local,
-+				   struct ieee80211_sub_if_data *sdata,
-+				   struct net_device *dev,
-+				   enum tc_setup_type type, void *type_data)
-+{
-+	int ret = -EOPNOTSUPP;
-+
-+	sdata = get_bss_sdata(sdata);
-+	trace_drv_net_setup_tc(local, sdata, type);
-+	if (local->ops->net_setup_tc)
-+		ret = local->ops->net_setup_tc(&local->hw, &sdata->vif, dev,
-+					       type, type_data);
-+	trace_drv_return_int(local, ret);
-+
-+	return ret;
-+}
-+
- int drv_change_vif_links(struct ieee80211_local *local,
- 			 struct ieee80211_sub_if_data *sdata,
- 			 u16 old_links, u16 new_links,
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 3d4edc25a69e..b2535614483e 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1939,7 +1939,8 @@ void ieee80211_color_collision_detection_work(struct work_struct *work);
- /* interface handling */
- #define MAC80211_SUPPORTED_FEATURES_TX	(NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | \
- 					 NETIF_F_HW_CSUM | NETIF_F_SG | \
--					 NETIF_F_HIGHDMA | NETIF_F_GSO_SOFTWARE)
-+					 NETIF_F_HIGHDMA | NETIF_F_GSO_SOFTWARE | \
-+					 NETIF_F_HW_TC)
- #define MAC80211_SUPPORTED_FEATURES_RX	(NETIF_F_RXCSUM)
- #define MAC80211_SUPPORTED_FEATURES	(MAC80211_SUPPORTED_FEATURES_TX | \
- 					 MAC80211_SUPPORTED_FEATURES_RX)
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 23ed13f15067..19d81cc03375 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -813,6 +813,21 @@ ieee80211_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 	dev_fetch_sw_netstats(stats, dev->tstats);
- }
+-	if (drv_ampdu_action(local, sta->sdata, &params))
++	if (sta->sdata && drv_ampdu_action(local, sta->sdata, &params))
+ 		sdata_info(sta->sdata,
+ 			   "HW problem - can not stop rx aggregation for %pM tid %d\n",
+ 			   sta->sta.addr, tid);
  
-+static int ieee80211_netdev_setup_tc(struct net_device *dev,
-+				     enum tc_setup_type type, void *type_data)
-+{
-+	struct ieee80211_sub_if_data *sdata;
+ 	/* check if this is a self generated aggregation halt */
+-	if (initiator == WLAN_BACK_RECIPIENT && tx)
++	if (initiator == WLAN_BACK_RECIPIENT && tx && sta->sdata)
+ 		ieee80211_send_delba(sta->sdata, sta->sta.addr,
+ 				     tid, WLAN_BACK_RECIPIENT, reason);
+ 
+@@ -279,17 +281,21 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 
+ 	if (!sta->sta.deflink.ht_cap.ht_supported &&
+ 	    !sta->sta.deflink.he_cap.has_he) {
+-		ht_dbg(sta->sdata,
+-		       "STA %pM erroneously requests BA session on tid %d w/o HT\n",
+-		       sta->sta.addr, tid);
++		if (sta->sdata) {
++			ht_dbg(sta->sdata,
++			       "STA %pM erroneously requests BA session on tid %d w/o HT\n",
++			       sta->sta.addr, tid);
++		}
+ 		/* send a response anyway, it's an error case if we get here */
+ 		goto end;
+ 	}
+ 
+ 	if (test_sta_flag(sta, WLAN_STA_BLOCK_BA)) {
+-		ht_dbg(sta->sdata,
+-		       "Suspend in progress - Denying ADDBA request (%pM tid %d)\n",
+-		       sta->sta.addr, tid);
++		if (sta->sdata) {
++			ht_dbg(sta->sdata,
++			       "Suspend in progress - Denying ADDBA request (%pM tid %d)\n",
++			       sta->sta.addr, tid);
++		}
+ 		goto end;
+ 	}
+ 
+@@ -322,8 +328,10 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 		buf_size = sta->sta.max_rx_aggregation_subframes;
+ 	params.buf_size = buf_size;
+ 
+-	ht_dbg(sta->sdata, "AddBA Req buf_size=%d for %pM\n",
+-	       buf_size, sta->sta.addr);
++	if (sta->sdata) {
++		ht_dbg(sta->sdata, "AddBA Req buf_size=%d for %pM\n",
++		       buf_size, sta->sta.addr);
++	}
+ 
+ 	/* examine state machine */
+ 	lockdep_assert_held(&sta->ampdu_mlme.mtx);
+@@ -332,9 +340,11 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 		if (sta->ampdu_mlme.tid_rx_token[tid] == dialog_token) {
+ 			struct tid_ampdu_rx *tid_rx;
+ 
+-			ht_dbg_ratelimited(sta->sdata,
+-					   "updated AddBA Req from %pM on tid %u\n",
+-					   sta->sta.addr, tid);
++			if (sta->sdata) {
++				ht_dbg_ratelimited(sta->sdata,
++						   "updated AddBA Req from %pM on tid %u\n",
++						   sta->sta.addr, tid);
++			}
+ 			/* We have no API to update the timeout value in the
+ 			 * driver so reject the timeout update if the timeout
+ 			 * changed. If it did not change, i.e., no real update,
+@@ -350,9 +360,11 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 			goto end;
+ 		}
+ 
+-		ht_dbg_ratelimited(sta->sdata,
+-				   "unexpected AddBA Req from %pM on tid %u\n",
+-				   sta->sta.addr, tid);
++		if (sta->sdata) {
++			ht_dbg_ratelimited(sta->sdata,
++					   "unexpected AddBA Req from %pM on tid %u\n",
++					   sta->sta.addr, tid);
++		}
+ 
+ 		/* delete existing Rx BA session on the same tid */
+ 		___ieee80211_stop_rx_ba_session(sta, tid, WLAN_BACK_RECIPIENT,
+@@ -362,9 +374,11 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 
+ 	if (ieee80211_hw_check(&local->hw, SUPPORTS_REORDERING_BUFFER)) {
+ 		ret = drv_ampdu_action(local, sta->sdata, &params);
+-		ht_dbg(sta->sdata,
+-		       "Rx A-MPDU request on %pM tid %d result %d\n",
+-		       sta->sta.addr, tid, ret);
++		if (sta->sdata) {
++			ht_dbg(sta->sdata,
++			       "Rx A-MPDU request on %pM tid %d result %d\n",
++			       sta->sta.addr, tid, ret);
++		}
+ 		if (!ret)
+ 			status = WLAN_STATUS_SUCCESS;
+ 		goto end;
+@@ -401,8 +415,10 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+ 		__skb_queue_head_init(&tid_agg_rx->reorder_buf[i]);
+ 
+ 	ret = drv_ampdu_action(local, sta->sdata, &params);
+-	ht_dbg(sta->sdata, "Rx A-MPDU request on %pM tid %d result %d\n",
+-	       sta->sta.addr, tid, ret);
++	if (sta->sdata) {
++		ht_dbg(sta->sdata, "Rx A-MPDU request on %pM tid %d result %d\n",
++		       sta->sta.addr, tid, ret);
++	}
+ 	if (ret) {
+ 		kfree(tid_agg_rx->reorder_buf);
+ 		kfree(tid_agg_rx->reorder_time);
+diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
+index f9514bacbd4a..03b31b6e7ac7 100644
+--- a/net/mac80211/agg-tx.c
++++ b/net/mac80211/agg-tx.c
+@@ -368,8 +368,10 @@ int ___ieee80211_stop_tx_ba_session(struct sta_info *sta, u16 tid,
+ 
+ 	spin_unlock_bh(&sta->lock);
+ 
+-	ht_dbg(sta->sdata, "Tx BA session stop requested for %pM tid %u\n",
+-	       sta->sta.addr, tid);
++	if (sta->sdata) {
++		ht_dbg(sta->sdata, "Tx BA session stop requested for %pM tid %u\n",
++		       sta->sta.addr, tid);
++	}
+ 
+ 	del_timer_sync(&tid_tx->addba_resp_timer);
+ 	del_timer_sync(&tid_tx->session_timer);
+@@ -776,7 +778,12 @@ void ieee80211_start_tx_ba_cb(struct sta_info *sta, int tid,
+ 			      struct tid_ampdu_tx *tid_tx)
+ {
+ 	struct ieee80211_sub_if_data *sdata = sta->sdata;
+-	struct ieee80211_local *local = sdata->local;
 +	struct ieee80211_local *local;
 +
-+	sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	if (!sdata)
++		return;
++
 +	local = sdata->local;
-+
-+	if (!local->ops->net_setup_tc)
-+		return -EOPNOTSUPP;
-+
-+	return drv_net_setup_tc(local, sdata, dev, type, type_data);
-+}
-+
- static const struct net_device_ops ieee80211_dataif_ops = {
- 	.ndo_open		= ieee80211_open,
- 	.ndo_stop		= ieee80211_stop,
-@@ -821,6 +836,7 @@ static const struct net_device_ops ieee80211_dataif_ops = {
- 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
- 	.ndo_set_mac_address 	= ieee80211_change_mac,
- 	.ndo_get_stats64	= ieee80211_get_stats64,
-+	.ndo_setup_tc		= ieee80211_netdev_setup_tc,
- };
  
- static u16 ieee80211_monitor_select_queue(struct net_device *dev,
-@@ -929,6 +945,7 @@ static const struct net_device_ops ieee80211_dataif_8023_ops = {
- 	.ndo_set_mac_address	= ieee80211_change_mac,
- 	.ndo_get_stats64	= ieee80211_get_stats64,
- 	.ndo_fill_forward_path	= ieee80211_netdev_fill_forward_path,
-+	.ndo_setup_tc		= ieee80211_netdev_setup_tc,
- };
+ 	if (WARN_ON(test_and_set_bit(HT_AGG_STATE_DRV_READY, &tid_tx->state)))
+ 		return;
+@@ -902,6 +909,9 @@ void ieee80211_stop_tx_ba_cb(struct sta_info *sta, int tid,
+ 	bool send_delba = false;
+ 	bool start_txq = false;
  
- static bool ieee80211_iftype_supports_hdr_offload(enum nl80211_iftype iftype)
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 9f4377566c42..915ec1fbcaee 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -2478,6 +2478,31 @@ DEFINE_EVENT(sta_event, drv_net_fill_forward_path,
- 	TP_ARGS(local, sdata, sta)
- );
++	if (!sdata)
++		return;
++
+ 	ht_dbg(sdata, "Stopping Tx BA session for %pM tid %d\n",
+ 	       sta->sta.addr, tid);
  
-+TRACE_EVENT(drv_net_setup_tc,
-+	TP_PROTO(struct ieee80211_local *local,
-+		 struct ieee80211_sub_if_data *sdata,
-+		 u8 type),
-+
-+	TP_ARGS(local, sdata, type),
-+
-+	TP_STRUCT__entry(
-+		LOCAL_ENTRY
-+		VIF_ENTRY
-+		__field(u8, type)
-+	),
-+
-+	TP_fast_assign(
-+		LOCAL_ASSIGN;
-+		VIF_ASSIGN;
-+		__entry->type = type;
-+	),
-+
-+	TP_printk(
-+		LOCAL_PR_FMT VIF_PR_FMT " type:%d\n",
-+		LOCAL_PR_ARG, VIF_PR_ARG, __entry->type, __entry->new_links
-+	)
-+);
-+
- TRACE_EVENT(drv_change_vif_links,
- 	TP_PROTO(struct ieee80211_local *local,
- 		 struct ieee80211_sub_if_data *sdata,
 -- 
-2.39.0
+2.34.1
 
