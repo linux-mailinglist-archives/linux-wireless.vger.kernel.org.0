@@ -2,113 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4F026C0CB7
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 10:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10D796C0CD7
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 10:12:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjCTJEQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 05:04:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37264 "EHLO
+        id S231200AbjCTJM3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 05:12:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbjCTJEM (ORCPT
+        with ESMTP id S231199AbjCTJMV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 05:04:12 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726C0E3B6
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 02:04:10 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32K8Oiuk011611;
-        Mon, 20 Mar 2023 09:04:06 GMT
+        Mon, 20 Mar 2023 05:12:21 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC93132C7
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 02:12:18 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32K8OZFA008798;
+        Mon, 20 Mar 2023 09:12:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id; s=qcppdkim1;
- bh=qX1zSXC14jS26upULSeJeN1INE+4o0vg26j8+oy9NzE=;
- b=KRx7YV6NMdb1l44Q7+vUL4QfhSZp1G+AG7FRZle+Nd173Aj9c0zRetgS769vR7DW4r+Y
- meT0UM/bQPl/bOh1ltZRr9zNfFOuEvvLJ/vOs1X5OJp+Mdyyikrgbdz2CpZlNEzoYndN
- POuuOzLI6HafMWml8NsE6SX9ZKPLUmeH5vrMPvxmi/F9p+jgUuqTvU5NPCwF+uPo9GQD
- LgmFyGqIOsLilFxE6exiUFBUPtCqrk3YIp/ddEDbeCXikdjj1RnkCmkflyQGxKOtqGF0
- JdoelCXffjvzBy2BpRItVucM+h/9bUDYkbszib7SLPITT9a2fFK0+3PKYXQZwnPmE72j Jg== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pd2nv4n63-1
+ bh=eKIzTpVAmS+Uy++yOtS/LTojfn/8gh26HkFPOGaud9s=;
+ b=kd5Ch88M3N8yN8a9rsDwixfHrMcYbXv0Wphk4+m519HvnORbs8ptEX448EU2cId+yMVt
+ bQ2D68d+U+D7y2Y5iZcS3ZKKg809T3Rfn15LBS/UOz0PrU9oGbnMOYAPPrp+bxeo17Eu
+ 3s5Nlgl4t3G9sgyBGnLTN6B7YnbGDuO7Rcy5Z1bo3Wc9TIyJTwyG7ze+1qvs6EodQMyb
+ qTn7aeED33ScmY4qVNRCh0ogXLyt/vAejc/Fx/Qp1GNJNMVpriiUA/ToywPlcYrOwceq
+ RhSaQPMz/v3/TXqcQPmZ05fXCYiHD4BpJddAdFRUh2LSqqWto+xPyFHlNMkrd22c73fR WQ== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pd5ha4ar9-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Mar 2023 09:04:06 +0000
-Received: from pps.filterd (NASANPPMTA01.qualcomm.com [127.0.0.1])
-        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 32K945v1012788;
-        Mon, 20 Mar 2023 09:04:05 GMT
+        Mon, 20 Mar 2023 09:12:12 +0000
+Received: from pps.filterd (NASANPPMTA02.qualcomm.com [127.0.0.1])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 32K932jr029363;
+        Mon, 20 Mar 2023 09:12:12 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-        by NASANPPMTA01.qualcomm.com (PPS) with ESMTP id 3pe2d4j031-1;
-        Mon, 20 Mar 2023 09:04:05 +0000
-Received: from NASANPPMTA01.qualcomm.com (NASANPPMTA01.qualcomm.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32K944lA012783;
-        Mon, 20 Mar 2023 09:04:05 GMT
+        by NASANPPMTA02.qualcomm.com (PPS) with ESMTP id 3pd6cm7fa1-1;
+        Mon, 20 Mar 2023 09:12:12 +0000
+Received: from NASANPPMTA02.qualcomm.com (NASANPPMTA02.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32K9CCos010480;
+        Mon, 20 Mar 2023 09:12:12 GMT
 Received: from hprem-linux.qualcomm.com (hprem-linux.qualcomm.com [10.201.162.248])
-        by NASANPPMTA01.qualcomm.com (PPS) with ESMTP id 32K944Kn012772;
-        Mon, 20 Mar 2023 09:04:04 +0000
+        by NASANPPMTA02.qualcomm.com (PPS) with ESMTP id 32K9CB1E010473;
+        Mon, 20 Mar 2023 09:12:12 +0000
 Received: by hprem-linux.qualcomm.com (Postfix, from userid 4146166)
-        id 92EC6B003A2; Mon, 20 Mar 2023 14:34:02 +0530 (IST)
+        id 94B47B003A2; Mon, 20 Mar 2023 14:42:09 +0530 (IST)
 From:   Harshitha Prem <quic_hprem@quicinc.com>
 To:     ath12k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
         Harshitha Prem <quic_hprem@quicinc.com>
-Subject: [PATCH] wifi: ath12k: fix incorrect handling of AMSDU frames
-Date:   Mon, 20 Mar 2023 14:34:00 +0530
-Message-Id: <20230320090400.30027-1-quic_hprem@quicinc.com>
+Subject: [PATCH] wifi: ath12k: incorrect channel survey dump
+Date:   Mon, 20 Mar 2023 14:42:08 +0530
+Message-Id: <20230320091208.25535-1-quic_hprem@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: jKH19elZ_wcSU3EvKJJFqEeNfAljEiFt
-X-Proofpoint-GUID: jKH19elZ_wcSU3EvKJJFqEeNfAljEiFt
+X-Proofpoint-GUID: fR0IrmwUSDgKqMMBxce3a5Pw5U7nUa7X
+X-Proofpoint-ORIG-GUID: fR0IrmwUSDgKqMMBxce3a5Pw5U7nUa7X
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-20_04,2023-03-16_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- bulkscore=0 spamscore=0 lowpriorityscore=0 clxscore=1011
- priorityscore=1501 malwarescore=0 mlxlogscore=809 phishscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303200075
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+ definitions=2023-03-20_06,2023-03-16_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015 mlxlogscore=999
+ spamscore=0 bulkscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303150002
+ definitions=main-2303200078
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When a data traffic with size greater than 1500 is initiated,
-say size 65500, it is sent as a set of AMSDUs (3 MSDUs)
-in a MPDU.
+When underlying hardware supports more than one band, then wiphy
+is aware of all the frequency bands present. Example, say
+wiphy0 is aware of 2 GHz, 5 GHz and 6 GHz band information.
+Hence, when an virtual AP interface is brought up in auto channel
+selection on each band. Survey is initiated from the userspace application
+for all the virtual AP interfaces simultaneously.
 
-These AMSDUs are incorrectly classified as multicast
-and peer id gets changed, except for first msdu,
-because of mcast_bcast bit derived from rx_desc
-for every msdu received.
+For survey dump collection, freq_to_idx() api is used to map the index of
+particular frequency to populate its survey. When the dump was collected,
+the index fetched was incorrect. Example, in case of multi-hardware,
+the index of channel 36 was reported as 14, because wiphy0 had index 0-13
+for 2 GHz channels, instead of 0 for that ar which resulted in invalid
+survey sent to userspace application.
 
-The mcast_bcast bit in rx_desc is only valid for
-first msdu. Hence, add changes to derive mcast_bcast
-only if it is a first msdu.
+The incorrect index was because of the mapping did not consider whether
+the freq band is present in its radio structure (ar) or not.
+
+To handle this, the freq_to_idx() api should map index for the
+particular band in the ar structure.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 0adcbcfa0db5..46ba6ea1a5b3 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -196,7 +196,8 @@ static void ath12k_dp_rxdesc_set_msdu_len(struct ath12k_base *ab,
- static bool ath12k_dp_rx_h_is_mcbc(struct ath12k_base *ab,
- 				   struct hal_rx_desc *desc)
- {
--	return ab->hw_params->hal_ops->rx_desc_is_mcbc(desc);
-+	return (ath12k_dp_rx_h_first_msdu(ab, desc) &&
-+		ab->hw_params->hal_ops->rx_desc_is_mcbc(desc));
- }
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 3e6991120e53..f37b5c3a3ceb 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -4934,6 +4934,9 @@ static int freq_to_idx(struct ath12k *ar, int freq)
+ 	int band, ch, idx = 0;
  
- static bool ath12k_dp_rxdesc_mac_addr2_valid(struct ath12k_base *ab,
+ 	for (band = NL80211_BAND_2GHZ; band < NUM_NL80211_BANDS; band++) {
++		if (!ar->mac.sbands[band].channels)
++			continue;
++
+ 		sband = ar->hw->wiphy->bands[band];
+ 		if (!sband)
+ 			continue;
 -- 
 2.17.1
 
