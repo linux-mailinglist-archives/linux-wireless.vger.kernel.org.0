@@ -2,75 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 036AF6C1392
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 14:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C12D6C14B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 15:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231737AbjCTNhh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 09:37:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41860 "EHLO
+        id S231751AbjCTO3T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 10:29:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231443AbjCTNhY (ORCPT
+        with ESMTP id S231431AbjCTO3R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 09:37:24 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15DE2470B;
-        Mon, 20 Mar 2023 06:37:18 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id fy10-20020a17090b020a00b0023b4bcf0727so12445423pjb.0;
-        Mon, 20 Mar 2023 06:37:18 -0700 (PDT)
+        Mon, 20 Mar 2023 10:29:17 -0400
+X-Greylist: delayed 1200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 20 Mar 2023 07:29:11 PDT
+Received: from buaa.edu.cn (unknown [202.112.128.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4626012BCC;
+        Mon, 20 Mar 2023 07:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679319438;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MdCkHnCKj4WxKKgtdRV6cXLUY/SN5CblWEdzRCWbv3w=;
-        b=aCsQBItgL7rYZVVavtmZ8FLX0aD4pxV16VYWD7jGIUvCioofzSwPG7YiYhvMlpJTTS
-         K3LXrXhXlX3kpyPzmCkX364nCde0xwhP+awzvB4EHIqsMkURmxmf4NHx58xSq2bIxMum
-         ooEVR7pnA8jUjJbiQhf/R+7PBDgebXtzUiqLCZ99APu4Qd8jilD8FlPM5uKHOkD4azIH
-         bPIfcx+civh2qo/iEPQ9V1A88m1oyDBgCCyYv3t0c9QYC2IKYzqQSdF88ytx8fJgtfuw
-         yhppThyuBX/16hkIU/mnMlGBGPhefNklXtQTqP+YWtLU1obJsD/YmfkK/2EMMJ7lstRQ
-         a1mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679319438;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MdCkHnCKj4WxKKgtdRV6cXLUY/SN5CblWEdzRCWbv3w=;
-        b=1fVBR6fy6BeuHkWGWIa+70TLSbNdBjm2HsmZ2iUQbfBkpCWh4Xf0X9KP/JqMFLnejT
-         M+V7bwSHtu/4S0SLnBYNTD7msGPUADW9cjPq7FUTJad1WsHRhIMsVljqp1New+f3gB72
-         GPUo14XxAmP1fIG53TZDfdFU913ljViSuu1I9JWllMOfkwxsmru2ENOqJ0oB4qnSHQcQ
-         3AFbzhvsAkwQ9Zbps+YDWZ/goIxNXa2iyFXL2vmRDh1PVGOVYWa8ukWJemttRACo9vnN
-         SJF/LpUshrCoE2TlMjQhVYEdjIbVt86elAMJu5QqmTwgK19Tb5XY3TGRV9c4Tpne+Vfn
-         eMTQ==
-X-Gm-Message-State: AO0yUKVLDexgm2TpJOD/i3u8vkaGnMAUsIBToWuDA0PHSmFF5bLIXiZC
-        nAyMnGccSBcsnDctr2BfJGw=
-X-Google-Smtp-Source: AK7set+SfniZ1Jc6b7s2Hh/s9rzwZ8Mj5ijFU92/DCT+En5Dw+qToJpmpnvZW7Hkc5IP2UlA6nKN9w==
-X-Received: by 2002:a17:90a:1a49:b0:23f:10ee:feef with SMTP id 9-20020a17090a1a4900b0023f10eefeefmr19528672pjl.19.1679319438369;
-        Mon, 20 Mar 2023 06:37:18 -0700 (PDT)
-Received: from oslab.. ([106.39.42.159])
-        by smtp.gmail.com with ESMTPSA id n4-20020a17090ac68400b0023d1b9e17e2sm6118592pjt.31.2023.03.20.06.36.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 06:36:54 -0700 (PDT)
-From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+        d=buaa.edu.cn; s=buaa; h=Received:From:To:Cc:Subject:Date:
+        Message-Id:MIME-Version:Content-Transfer-Encoding; bh=VBC6BWDafS
+        HfjyzoV6cHwPAjGgkRCr3db1I2JTKKf5w=; b=orIHebXJe/iKbG1DWFmwatTmCp
+        fvuHtnukFjnY3PutrWsEVw0Fgb7oYk9VOOt4B/shPLP60ldorXvGPCarYnMOlRsK
+        jhfO4nOztyzbRdtnFpeXGExL8/Y7GQi1l26N/55rGf3IqkPyt3QPzPL124skSP+U
+        8RvqQIzJ4Emqsrjtw=
+Received: from oslab.. (unknown [10.130.159.144])
+        by coremail-app1 (Coremail) with SMTP id OCz+CgCHaZbRYRhkWn+vAg--.34204S4;
+        Mon, 20 Mar 2023 21:38:25 +0800 (CST)
+From:   Jia-Ju Bai <baijiaju@buaa.edu.cn>
 To:     johannes@sipsolutions.net, davem@davemloft.net,
         edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju@buaa.edu.cn>
 Subject: [PATCH] net: mac80211: Add NULL checks for sta->sdata
-Date:   Mon, 20 Mar 2023 21:36:44 +0800
-Message-Id: <20230320133644.2445321-1-baijiaju1990@gmail.com>
+Date:   Mon, 20 Mar 2023 21:38:09 +0800
+Message-Id: <20230320133809.2448047-1-baijiaju@buaa.edu.cn>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-CM-TRANSID: OCz+CgCHaZbRYRhkWn+vAg--.34204S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxtF4fZw4rZry7KFWrAF4UXFb_yoWxKr1Upr
+        WrGw12qF4UJa4xZrn7Jr1F93y0kr10gF48ur1fC3W8u3ZY9wnYkr1Dury8ZF9YyryxJw1Y
+        qF4Uu398Ca1DC37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkC1xkIjI8I6I8E6xAIw20EY4v20xvaj40_JrC_JFWl1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+        Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAI
+        w28IcVCjz48v1sIEY20_Aw1UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+        AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
+        c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+        AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
+        Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UU
+        UUU
+X-CM-SenderInfo: yrruji46exttoohg3hdfq/
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
-
-From: Jia-Ju Bai <baijiaju@buaa.edu.cn>
 
 In a previous commit 69403bad97aa, sta->sdata can be NULL, and thus it
 should be checked before being used.
