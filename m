@@ -2,136 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66EDC6C1212
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 13:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 672746C120C
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 13:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231386AbjCTMms (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 08:42:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
+        id S231418AbjCTMk7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 08:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229900AbjCTMmr (ORCPT
+        with ESMTP id S231407AbjCTMk5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 08:42:47 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFADCC20
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 05:42:46 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32KCgPcB5023722, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32KCgPcB5023722
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 20 Mar 2023 20:42:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 20 Mar 2023 20:42:39 +0800
-Received: from localhost (172.16.16.31) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 20 Mar
- 2023 20:42:39 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v4 5/5] wifi: rtw89: fix authentication fail during scan
-Date:   Mon, 20 Mar 2023 20:41:25 +0800
-Message-ID: <20230320124125.15873-6-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230320124125.15873-1-pkshih@realtek.com>
-References: <20230320124125.15873-1-pkshih@realtek.com>
+        Mon, 20 Mar 2023 08:40:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48887D53A;
+        Mon, 20 Mar 2023 05:40:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F1AE7B80D5B;
+        Mon, 20 Mar 2023 12:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EEBC433D2;
+        Mon, 20 Mar 2023 12:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679316050;
+        bh=ygtqlan6gmapNgIcCgqJ3TjvKfvjZ61I2WRWKTEMJxo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UwNNBTfSSGciqjoxIuA483/4GSZisGmO74L5rjgFf1VrMRKXk1DESUqtixBnJyHV4
+         vaNneXW5W9EkzqDs3If7nSW9Xe+jLtNyRz76G/leyj/EoYObEgx8cHqxqOe93imq4c
+         2sKBT3jxhceJgjrSEX8oOQqHfUQ7BTAQrgA1CDqYIpUTHdHvucyoVBnrpZ5JpPmd+D
+         6ceJUhvOKyxE5XoY+NIxKNEljshhvKP9/G+CD3i/qjZxkc+sRRkEvlltj1F+KdC9wk
+         p98AKHdOjQnRk3Sfx54YLlK6odc0yxfw+oxJDXm+aGO7YsaElDG/kFTUll++RShD6d
+         4SCdYZ2LponHA==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1peEq3-0006a9-Cj; Mon, 20 Mar 2023 13:42:11 +0100
+Date:   Mon, 20 Mar 2023 13:42:11 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: wireless: add ath11k pcie bindings
+Message-ID: <ZBhUo1C08U5mp9zP@hovoldconsulting.com>
+References: <20230320104658.22186-1-johan+linaro@kernel.org>
+ <20230320104658.22186-2-johan+linaro@kernel.org>
+ <87ttyfhatn.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.31]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ttyfhatn.fsf@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+On Mon, Mar 20, 2023 at 02:22:12PM +0200, Kalle Valo wrote:
+> Johan Hovold <johan+linaro@kernel.org> writes:
+> 
+> > Add devicetree bindings for Qualcomm ath11k PCIe devices such as WCN6856
+> > for which the calibration data variant may need to be described.
+> >
+> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> > ---
+> >  .../bindings/net/wireless/pci17cb,1103.yaml   | 56 +++++++++++++++++++
+> >  1 file changed, 56 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/net/wireless/pci17cb,1103.yaml
+> 
+> I'm confused (as usual), how does this differ from
+> bindings/net/wireless/qcom,ath11k.yaml? Why we need two .yaml files?
 
-We used to store operating channel info after associated. However, scan
-might happen before that. Without switching back to operating channel,
-authentication or association might fail. Therefore, we switch back to
-operating channel when the scanning vif's BSSID is non-zero, which
-implies connected or during attempt to connect.
+Almost none of bindings/net/wireless/qcom,ath11k.yaml applies to WCN6856
+when using PCIe (e.g. as most properties are then discoverable).
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+We could try to encode everything in one file, but that would likely
+just result in a big mess of a schema with conditionals all over.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 15323af2e6edf..02a22ca613b2f 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -3188,7 +3188,7 @@ static void rtw89_hw_scan_add_chan(struct rtw89_dev *rtwdev, int chan_type,
- }
- 
- static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
--				       struct rtw89_vif *rtwvif)
-+				       struct rtw89_vif *rtwvif, bool connected)
- {
- 	struct cfg80211_scan_request *req = rtwvif->scan_req;
- 	struct rtw89_mac_chinfo	*ch_info, *tmp;
-@@ -3232,7 +3232,7 @@ static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
- 			type = RTW89_CHAN_ACTIVE;
- 		rtw89_hw_scan_add_chan(rtwdev, type, req->n_ssids, ch_info);
- 
--		if (rtwvif->net_type != RTW89_NET_TYPE_NO_LINK &&
-+		if (connected &&
- 		    off_chan_time + ch_info->period > RTW89_OFF_CHAN_TIME) {
- 			tmp = kzalloc(sizeof(*tmp), GFP_KERNEL);
- 			if (!tmp) {
-@@ -3265,7 +3265,7 @@ static int rtw89_hw_scan_add_chan_list(struct rtw89_dev *rtwdev,
- }
- 
- static int rtw89_hw_scan_prehandle(struct rtw89_dev *rtwdev,
--				   struct rtw89_vif *rtwvif)
-+				   struct rtw89_vif *rtwvif, bool connected)
- {
- 	int ret;
- 
-@@ -3274,7 +3274,7 @@ static int rtw89_hw_scan_prehandle(struct rtw89_dev *rtwdev,
- 		rtw89_err(rtwdev, "Update probe request failed\n");
- 		goto out;
- 	}
--	ret = rtw89_hw_scan_add_chan_list(rtwdev, rtwvif);
-+	ret = rtw89_hw_scan_add_chan_list(rtwdev, rtwvif, connected);
- out:
- 	return ret;
- }
-@@ -3352,16 +3352,19 @@ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
- {
- 	struct rtw89_scan_option opt = {0};
- 	struct rtw89_vif *rtwvif;
-+	bool connected;
- 	int ret = 0;
- 
- 	rtwvif = vif ? (struct rtw89_vif *)vif->drv_priv : NULL;
- 	if (!rtwvif)
- 		return -EINVAL;
- 
-+	/* This variable implies connected or during attempt to connect */
-+	connected = !is_zero_ether_addr(rtwvif->bssid);
- 	opt.enable = enable;
--	opt.target_ch_mode = rtwvif->net_type != RTW89_NET_TYPE_NO_LINK;
-+	opt.target_ch_mode = connected;
- 	if (enable) {
--		ret = rtw89_hw_scan_prehandle(rtwdev, rtwvif);
-+		ret = rtw89_hw_scan_prehandle(rtwdev, rtwvif, connected);
- 		if (ret)
- 			goto out;
- 	}
--- 
-2.25.1
-
+Johan
