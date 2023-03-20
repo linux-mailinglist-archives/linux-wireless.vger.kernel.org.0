@@ -2,65 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD526C21DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 20:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D95B6C21E3
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 20:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbjCTTrB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 15:47:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39374 "EHLO
+        id S229904AbjCTTtJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 15:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230372AbjCTTq2 (ORCPT
+        with ESMTP id S231131AbjCTTsq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 15:46:28 -0400
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221A35FD4;
-        Mon, 20 Mar 2023 12:44:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-        t=1679341455; i=dahms.tobias@web.de;
-        bh=a/n+thNIXUcZypDfhpuLLwIvD4myGe61u3M/CvvvoPs=;
-        h=X-UI-Sender-Class:Date:From:Subject:To:Cc;
-        b=oSNMFUuvjMe1EcdJw/Ye3+GYXWdg2S/YxQE7SwIkDLC+nXaFOwLWIq2XtP3TFmZMw
-         zqYIFd9TD5CVpZCeriVYvws1i00E/qIfciM985QZo6W2ZkDSQgSoSEWY3orGqX+T3h
-         NiXpnCP7Iinq7udtjnVsn284IWUhQ/QuDLE8eKYyKw/MyugYxOqlMolGfnE+eqN3ol
-         xJqPcD1denGavuA97UP6aLnFFLPO/IU9fBs+/7G4ZWy3rilxVv10sowWFDTPE2zhD5
-         w6pZ/6CUOb4hVbRxPNqo4YwqszBMNISQQBqWEMQ3VcMer/eXL2jXkhgX8EsC8sshF/
-         s5h3w+XVyROrg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.2.2] ([92.206.138.245]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MPKFF-1pqm2d3gS5-00PJ8L; Mon, 20
- Mar 2023 20:44:14 +0100
-Message-ID: <91feceb2-0df4-19b9-5ffa-d37e3d344fdf@web.de>
-Date:   Mon, 20 Mar 2023 20:44:14 +0100
+        Mon, 20 Mar 2023 15:48:46 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2110.outbound.protection.outlook.com [40.107.92.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71DEB2D5D;
+        Mon, 20 Mar 2023 12:48:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UOJd4lrqi9bAwudglYefkzXTkCWV7JY+cwyAK7NYNnipVkNvUNLLNIYINwK5yQLG5JTAU6mTm7GOb/5k1EWLLcq+kcMuwko2XBPP3XJGg71RIUwv7Se92KKiSifT2Kl4FPPatGt9/1vuZDe+F61bTunE+vFCKYldbn2rTNR53DXmDlvLGjm5EcCBCD+gGpKBLvGXW4ny1S0KDAeDAPXROIYzestYOUcXfxkN6/+eSsibPVauMnOpCFU1nQlVofhoqLTtlEjCpGgy+6yHxuK7dulGvSnlXE1T3+zXd/32xr1awYeFOgSaUYdhO+zMuXb7FfoA1jRj1VNBej6BiqL5ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I1SI/TSBVox1neoU3J2W8VdQJnClBtb1ObX83Gg6L9w=;
+ b=eurwq7RJUYIpYTUTbSWHzBSVMpdc/NxdjsMrBq3WiaeSf+OGExKD8eMpfEjz6zb/wmTATO8hCPyRQqNmPztixbhEiIelH+pLqgzIsVaqh1v/R1lmNvNkve1cbSrvULglhSRhw0RTKbVqoiAlntwTNph1fxYlfoxgjvZWhI8hOpXCTfEOPaASiVQGBfCll5uzmnyuh5O/k0Uy5Hki4FLMecTQolb3oUDMBVocYmiqeqsviGXfB181WYuROR7JJW8PmDefo6rUQFUSuxrORaZmXn46YjgKcnDqzID7eKwaZF7CLmbnbDNE4UtBOugoPCnzPoKJZSpg21GyZrmDhMy7Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I1SI/TSBVox1neoU3J2W8VdQJnClBtb1ObX83Gg6L9w=;
+ b=XzFaawb0L1WZ9iC8QRLWzS4BzWJmm2MOy4Fwtp1h7YIkI0AVVScWJMqroZSrdNAV9rHbU7r97ua0VDB++qMN0ZGn6C6hwPS54Ocp1or2MHitvpIQrYJ/mObsQ2KdDpDKiD4xKUNAfyHF8KJNkHaJLrBBfRSGeq/vQwHUBBFygUE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by BLAPR13MB4627.namprd13.prod.outlook.com (2603:10b6:208:330::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Mon, 20 Mar
+ 2023 19:48:31 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c%2]) with mapi id 15.20.6178.037; Mon, 20 Mar 2023
+ 19:48:31 +0000
+Date:   Mon, 20 Mar 2023 20:48:22 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: mt76: mt7921: Replace fake flex-arrays with
+ flexible-array members
+Message-ID: <ZBi4hv5Q6lp2ooSV@corigine.com>
+References: <ZBTUB/kJYQxq/6Cj@work>
+ <ZBh0NhaNFnttWRz8@corigine.com>
+ <ZBizeZ5DaBT5KKXN@work>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZBizeZ5DaBT5KKXN@work>
+X-ClientProxiedBy: AS4P195CA0022.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d6::10) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Language: de-DE
-From:   Tobias Dahms <dahms.tobias@web.de>
-Subject: kernel error at led trigger "phy0tpt"
-To:     stable@vger.kernel.org, regressions@lists.linux.dev
-Cc:     linux-wireless@vger.kernel.org, linux-leds@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EKz2ncYlbrA3KTGuuGo8u1i2EB5MQCnPXXrj2jWHFUiaaKHOhHH
- 32WugPA9FRNqyD4jk37nF+KTgXb1Astb7Lm0sM+vKmgAdghkPe0zHJG8A/qCBGMN8DzKaM0
- EiYZwuL+rJBW+u+ind4fTepuPabjKBrnrM4XOTI92sjI8W3DhnsqeJrYSPbHmmV7Uv1liqs
- eajL6PHyvX3weKPktQPTw==
-UI-OutboundReport: notjunk:1;M01:P0:jwsb+qBHvNc=;ThiRc4HiGoYccLxQIfcqzhvP0LT
- +ZmovAZwFJKN4F3JKfJ3/DLaIYZLBVCwJdaWpXZIqSWBPfvXd4ck44KQF6PWTnSngIucRQyVV
- 5sBadMXUHCiEMF4jQ7OdQFLkMEJkjl2milGDSnGadRhsS7PaZw/2ljHqIH2vzXdkeF42qyu72
- mYoFyNkB9HE71/j5vCfZ4IHbUZQJJSUDf8ZEk6ahJwAK7Iu9f9lwng0CnDqXsjyUXlJiJWcpP
- hGNV0HKzlFtZOWqv+gLUOQv4/iEry8M8hNkvekNkI1R8/HQ+3ZhyOlpXssd82ke7fw6kMYlMY
- mTbWvxEBjlKt9t6W7W01vBFpo8qhWEY3E7diE4GnxpN5Dd3gCnwfwLy9TnZ746o1JqTuJrXV7
- +MlYyuoP2q8ys1Zvk8U6VZklZsXtueOuaFtLxyQJ2UNY3crPKNfEVoomBKivEE2lvh/PNzwUe
- pIwg7muWZ2NLStH+5GMkh25r+iTiEljYYAIQBB6aKuJuLxUW4WSh9deim2MYrk9NuHfVZbcPA
- tUB/8UbhfEw3fZU9R2m+aGoR/RlSFQU1oqN8W9ZSUta62yZixJJauobWr9mbLzQNE5VNCVGU7
- Dq5FQs+9q7B/1yByLDdul2DNo6XuaBqrsvnRvaXBhqPWEcpVH7wT+OuhWGdLvhZBXQ0/3Ni2M
- mv8OqY6wb+UmWpxDIGIa4Eo6klVGNcdVuSgHlEUzwzvjXPo9sK7vVd1oIz6Cbv2CLsgVHq4wO
- PcvphLBGBH7BXaoBwEkmw+Abp5ML5yyQuo0cNeYSpdosQ+xrMg5dK6RFxdg+L+qz7GcKH6J5P
- DkTVJTbIGGJmdocOFdU/Wo7U4j98Fp0HI9wgpdQrXK5oeLznNF3Zyi0LaZuaIx6dtN2W9A7c9
- amPdWOQ7BTh42an8FNMKbZbefmTIUXIDq+zqLo96NHpR8z+VGpB5OUwnK8bHojOn8THGucu8x
- bEDrmUcsF2ugS2kNN7/WPPgkasc=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BLAPR13MB4627:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3cb63400-79e4-4001-cb89-08db297c1529
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: O9Xi44CizEqlz81eqWzDKHxwCCPTQG8WFPd+lK3orFn/S7A6e8qq28KRIXrp47Yc3iXLtbUOilGXZo0ku4O0ngVfYDLBRNl1gx6FiRuQ3jUeDwB/2WAtErft06LNG9ugdpPWaFBRNHIDqT3ONE3VGMuoiE31DJVlgKzE2CAxxws9qSI5WJVGU72N1gRIBRUNBf+d/Gucf1pdl1w8zQ/kGBDgS/2G6j5hoxtbc5XChawnEcLfebEh0HHnjtsKCiIPZ3CxM5l2gTbPYI5tbqODP+pJK1DzpfCVrgcFT5mK8FVqNuuj4G8XLuHRzLpCOpCPvk4KGF3VPcX+qnUKbzJa9t9qvrvGJ0vr7B2ImTLzSk1xhbz77vaRLzc67m7ZteiB96/iSJs+NAGL/1XjHm3oYko6X/5k1iRfeOTh/+B/JMm3OXQlU42nT44JWqWeXN9sBpYQE/AbOGh9fiiT0CIVCx+CX3/J3oSAAdGKSJN8hqhpfhCX/pB59pf9JMPsidkZyrZrKUXPjzBnBa2R89Ao8dclo1iGardRUxKTNfXh+0UR7j7q2y6+94h7KissvM5EDkGHc35Us5HspMOYuvoN3UnrXPGfC8ldL/skSptoK/3gNMh+Ykb1tzI9t1cqtoo7u+7p1R6N+4c4gthaeI39lw3NkaDoHnxpgEG0S7BjtGx7qeJWe7w+DPVpOyF4h1zZ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(39840400004)(136003)(396003)(376002)(366004)(451199018)(2616005)(186003)(6486002)(4326008)(6666004)(478600001)(54906003)(316002)(66946007)(66476007)(6916009)(66556008)(6506007)(6512007)(8676002)(41300700001)(7416002)(44832011)(5660300002)(38100700002)(2906002)(86362001)(36756003)(8936002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/YAcB6ZOnkfPYruBa9aCaCPYg+QyV7MZXpPRJpRILMh+a4f+7DEmyN7pp8E3?=
+ =?us-ascii?Q?fpjnOUZgeUd6wY92z+5NIglvwqX/dEiZwPOtTkgxcPKNhlx7tnY0Xm64VlCO?=
+ =?us-ascii?Q?RH1Kz2WzYsw4WzoEHS6UUHd0al29J1yfdpKZv5T1F92YHmAIui+4FV8w0jgu?=
+ =?us-ascii?Q?8WedqaOfSleLlsvU4+H3623guQSYvyq8+7qcXFkbAaeGl0+lKMndbCtk6Q7Y?=
+ =?us-ascii?Q?LACtyFU372jRSVFDVomB/M9cG3+GatmJzpxYb6SylP6LetIdD0ODiZhIniM0?=
+ =?us-ascii?Q?LljKUiSJ/zdCXT6Rfh6Bd14/B1QSDM2Hmn3Wb+GH/+4HqCgGmNypnhH+PEzP?=
+ =?us-ascii?Q?7cxDyrH574gPN8cXjY0wCOhOx7Le2EeQna4djPvb9aY1vX/0/Gd9Rnzmu0oc?=
+ =?us-ascii?Q?CSkruVRBYWiZKf3FA4IsWGoaPcUt0Tc6qohg8BOwLSnHMkEyy1hYwP5R4he5?=
+ =?us-ascii?Q?Bcr4ArqFlf9HytyEcdfpqpqMtorEPrwPPZpkrE0hGc8T4uu0/L1r2Hn96CDO?=
+ =?us-ascii?Q?oa6iKq2f0ayp5edkKCtpmYPIGTs0eIJHXHC8UyS1bzadQ0/Vxpbcm878oM+B?=
+ =?us-ascii?Q?Ixl/W1b2oc+k+yYVUVNf3eCsQ2MhzLqVvAEeIkzixOzHz/fm1KTZnDJj0+P1?=
+ =?us-ascii?Q?hQhnyMukH/lnrZ1JMh1hq+WfcD+KY3gdL8fH17l7aQ1OdotlbhtCEaZBXd+F?=
+ =?us-ascii?Q?BAKMtJb4hBigfoyAYU1KzUL4VU58BdbGAs6nP20uNhio8wqu16KWb4AfOPZ/?=
+ =?us-ascii?Q?8zSDAB68HusESWgYRPuZPRGA0DFOSIa3Ac56RuG/25rT8Tpbnx8cc6bLePEc?=
+ =?us-ascii?Q?MQGR1BcAirGCbEBnRAX3g83lQZfD8CkMYQTx3sqimgdKgl3H23E4AOassWlV?=
+ =?us-ascii?Q?lwi+VD7Vs1LZ6y1DQZZJP2NUBg7Ib8H6gApULdmC4I6t/4zo2qjeqQPK/29U?=
+ =?us-ascii?Q?awoQ+TT6UJmgOWZ+wknvaYO8AziA+6zwrylNItl+vGgM6bd4VfK56qWwvq6K?=
+ =?us-ascii?Q?TNAs3tdkLcgyH9dScyCcouf7DU5Ab8YbSknoGsdZ4KBFAVLZqTnIrhlPlEsM?=
+ =?us-ascii?Q?nWfB89HW9gS9BtADY1it6zjcifyJGxcXDvSti9DRvScaooi5LkHjxzzL3H+G?=
+ =?us-ascii?Q?Ptuc2HjsBoE/B7Sxi7DUVKlCm4AVFw6ECpdKvTnfIU9sZ8nWw27zVrjTvZLI?=
+ =?us-ascii?Q?nA/g06X192j+kd8fT7N33CjLtxnBF3LCdMu8OfLKC7mC+5Iz1Zfg1hKGcvJU?=
+ =?us-ascii?Q?Ya3jVjS3fRegw+vnxNYGfTc/HWjmdPE6SgJZzpF4xPC8v+e57Jr0y0Fjr6ng?=
+ =?us-ascii?Q?N/ZQp3os5cOw7LnWdCEi4X4HWzhfAynn/UMF6EYB8a1lBHI8F3zQYGHG+8Rr?=
+ =?us-ascii?Q?3Wu3BSiRKzROxQUQSqsnJ6lw8TCvEsjgq0kEYCpKQVLgfWrb68otZNVhkeR6?=
+ =?us-ascii?Q?nF9HxK84U4qwMCIeSM3x6fmzdG1zN2EnFk7gz7zO5hh6Oblkgj4jrn0e7WBE?=
+ =?us-ascii?Q?XKKQpnVlCEpDeH0zQ8uEbyCYv3pu2iqBkOh4UfS3DxDqhjWNNDHo5Y6a1Svt?=
+ =?us-ascii?Q?Ka0B5ye5ErUfGW6L/iPQezhH8UmZnPLc9rgqdGN+Uqp32mior3gEnFtu8K/l?=
+ =?us-ascii?Q?SyW0hBjkTzK+UMVuWFV26vBKN0K/uhLcxF5Fxavb4j5RP3Genol+oEBW0iRY?=
+ =?us-ascii?Q?mYs/Jg=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3cb63400-79e4-4001-cb89-08db297c1529
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2023 19:48:31.3457
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xG4DCZOyCEl4zpGVduOPChKpSpevOvrhdzlzS2/D/LZgdtz1NCvRSjDPGe4QRIUsAp7SSEfLN3zgELcV6T2VKY7AV0ZopOp9G8P6QWT+rWI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR13MB4627
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,300 +131,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Mon, Mar 20, 2023 at 01:26:49PM -0600, Gustavo A. R. Silva wrote:
+> On Mon, Mar 20, 2023 at 03:56:54PM +0100, Simon Horman wrote:
+> > >  struct mt7921_asar_cl {
+> > > @@ -85,7 +85,7 @@ struct mt7921_asar_fg {
+> > >  	u8 rsvd;
+> > >  	u8 nr_flag;
+> > >  	u8 rsvd1;
+> > > -	u8 flag[0];
+> > > +	u8 flag[];
+> > 
+> > I am curious to know why DECLARE_FLEX_ARRAY isn't used here.
+> 
+> In contrast to the other structs, there is no object of type struct
+> mt7921_asar_fg declared in a union:
+> 
+>  91 struct mt7921_acpi_sar {
+>  92         u8 ver;
+>  93         union {
+>  94                 struct mt7921_asar_dyn *dyn;
+>  95                 struct mt7921_asar_dyn_v2 *dyn_v2;
+>  96         };
+>  97         union {
+>  98                 struct mt7921_asar_geo *geo;
+>  99                 struct mt7921_asar_geo_v2 *geo_v2;
+> 100         };
+> 101         struct mt7921_asar_cl *countrylist;
+> 102         struct mt7921_asar_fg *fg;
+> 103 };
+> 
+> The DECLARE_FLEX_ARRAY() helper was created to declare flex-array members
+> in unions or alone in structs[1].
 
-since some kernel versions I get a kernel errror while setting led
-trigger to phy0tpt.
+Thanks for the clarification, much appreciated.
 
-command to reproduce:
-echo phy0tpt > /sys/class/leds/bpi-r2\:isink\:blue/trigger
+FWIIW, with this information I'm happy with this patch.
 
-same trigger, other led location =3D> no error:
-echo phy0tpt > /sys/class/leds/bpi-r2\:pio\:blue/trigger
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
-other trigger, same led location =3D> no error:
-echo phy0tx > /sys/class/leds/bpi-r2\:isink\:blue/trigger
-
-last good kernel:
-bpi-r2 5.19.17-bpi-r2
-
-error at kernel versions:
-bpi-r2 6.0.19-bpi-r2
-up to
-bpi-r2 6.3.0-rc1-bpi-r2+
-
-wireless lan card:
-01:00.0 Network controller: MEDIATEK Corp. MT7612E 802.11acbgn PCI
-Express Wireless Network Adapter
-
-distribution:
-Arch-Linux-ARM (with vanilla kernel instead of original distribution kerne=
-l)
-
-board:
-BananaPi-R2
-
-log messages:
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: BUG: scheduling while atomic:
-swapper/0/0/0x00000100
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Modules linked in: aes_arm_bs crypto_s=
-imd
-cryptd nft_masq nft_ct nf_log_syslog nft_log nft_chain_nat nf_nat
-nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink mt76x2e
-mt76x2_common mt76x02_lib mt76 spi_mt65xx pwm_mediatek mt6577_auxadc
-sch_fq_codel fuse configfs ip_tables x_tables
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: CPU: 0 PID: 0 Comm: swapper/0 Not tain=
-ted
-6.3.0-rc1-bpi-r2+ #1
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Hardware name: Mediatek Cortex-A7 (Dev=
-ice
-Tree)
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Backtrace:
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dump_backtrace from show_stack+0x20/0=
-x24
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c14ab340 r6:00000000 r5:c12507fc
-r4:600f0113
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  show_stack from dump_stack_lvl+0x48/0=
-x54
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dump_stack_lvl from dump_stack+0x18/0=
-x1c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1508fc0 r4:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dump_stack from __schedule_bug+0x60/0=
-x70
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  __schedule_bug from __schedule+0x6b0/=
-0x904
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1508fc0 r4:eed9d340
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  __schedule from schedule+0x6c/0xe8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:c1501ba0 r9:00000000 r8:00001b58
-r7:c1508fc0 r6:00001b58 r5:0000004a
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c1508fc0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  schedule from
-schedule_hrtimeout_range_clock+0xec/0x14c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:0000004a r4:47ac1837
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  schedule_hrtimeout_range_clock from
-schedule_hrtimeout_range+0x28/0x30
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:c1501c50 r9:c1508fc0 r8:00000002
-r7:00000000 r6:c1501ba0 r5:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:00001b58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  schedule_hrtimeout_range from
-usleep_range_state+0x6c/0x90
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  usleep_range_state from
-pwrap_read16+0xfc/0x2a0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:0000004a r8:4844840c r7:0000004a
-r6:48447f8a r5:01980000 r4:c2703940
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  pwrap_read16 from
-pwrap_regmap_read+0x24/0x28
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:00001f00 r9:00000000 r8:00000f00
-r7:c2703940 r6:c1501c50 r5:00000330
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c196e000 r3:c06f3fbc
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  pwrap_regmap_read from
-_regmap_read+0x70/0x160
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  _regmap_read from
-_regmap_update_bits+0xc8/0x108
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:00001f00 r9:00000000 r8:00000f00
-r7:c1508fc0 r6:00000330 r5:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c196e000 r3:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  _regmap_update_bits from
-regmap_update_bits_base+0x60/0x84
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:00000000 r9:00000f00 r8:00000000
-r7:00001f00 r6:00000000 r5:00000330
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c196e000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  regmap_update_bits_base from
-mt6323_led_set_blink+0xf0/0x148
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:eed94800 r9:c16998c0 r8:c196e000
-r7:c31f0c48 r6:c2456f48 r5:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:0000014e
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  mt6323_led_set_blink from
-led_blink_setup+0x3c/0x110
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:c16998c0 r8:00000770 r7:c1501d60
-r6:c1501d5c r5:c1501d60 r4:c31f0c48
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  led_blink_setup from led_blink_set+0x=
-60/0x64
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c1501d60 r6:c1501d5c r5:c31f0c58
-r4:c31f0c48
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  led_blink_set from
-led_trigger_blink+0x44/0x58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c1501d60 r6:c1501d5c r5:c5b69740
-r4:c31f0c48
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  led_trigger_blink from
-tpt_trig_timer+0x10c/0x130
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c0df71f0 r6:c1508fc0 r5:c5b685a0
-r4:c597b628
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  tpt_trig_timer from call_timer_fn+0x4=
-8/0x168
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r6:c597b628 r5:00000100 r4:c16998c0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  call_timer_fn from
-run_timer_softirq+0x600/0x6c8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:c16998c0 r8:00000000 r7:00000770
-r6:00000000 r5:c1501de4 r4:c597b628
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  run_timer_softirq from
-__do_softirq+0x140/0x34c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:00000082 r9:00000100 r8:c1698481
-r7:c1698f60 r6:00000001 r5:00000002
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c1503084
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  __do_softirq from irq_exit+0xb8/0xe8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:10c5387d r9:c1508fc0 r8:c1698481
-r7:c1501f0c r6:00000000 r5:c1501ed8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c14aaf58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  irq_exit from
-generic_handle_arch_irq+0x48/0x4c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1501ed8 r4:c14aaf58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  generic_handle_arch_irq from
-__irq_svc+0x88/0xb0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Exception stack(0xc1501ed8 to 0xc1501f=
-20)
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ec0:
-                   000862f4 2d8f2000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ee0: c1508fc0 00000000 c1699cc0 c1504=
-f10
-c1504f70 00000001 c1698481 c123a9b4
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1f00: 10c5387d c1501f3c 00000001 c1501=
-f28
-c0e36fa0 c0e3767c 600f0013 ffffffff
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c1501f0c r6:ffffffff r5:600f0013
-r4:c0e3767c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  default_idle_call from do_idle+0xc4/0=
-x124
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1504f10 r4:00000001
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  do_idle from cpu_startup_entry+0x28/0=
-x2c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:efffcd40 r8:00000000 r7:00000045
-r6:c1326068 r5:c16fb9b8 r4:000000ec
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  cpu_startup_entry from rest_init+0xc0=
-/0xc4
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  rest_init from
-arch_post_acpi_subsys_init+0x0/0x30
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c16fb9b8 r4:c16cc038
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  arch_call_rest_init from
-start_kernel+0x6c0/0x704
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  start_kernel from 0x0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: bad: scheduling from the idle thread!
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: CPU: 0 PID: 0 Comm: swapper/0 Tainted:=
- G
-       W          6.3.0-rc1-bpi-r2+ #1
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Hardware name: Mediatek Cortex-A7 (Dev=
-ice
-Tree)
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Backtrace:
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dump_backtrace from show_stack+0x20/0=
-x24
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c14ab340 r6:00000001 r5:c12507fc
-r4:60070013
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  show_stack from dump_stack_lvl+0x48/0=
-x54
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dump_stack_lvl from dump_stack+0x18/0=
-x1c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1508fc0 r4:eed9d340
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dump_stack from dequeue_task_idle+0x3=
-0/0x44
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  dequeue_task_idle from
-__schedule+0x4bc/0x904
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1508fc0 r4:eed9d340
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  __schedule from schedule+0x6c/0xe8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:c1501ba0 r9:00000000 r8:00001b58
-r7:c1508fc0 r6:00001b58 r5:0000004a
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c1508fc0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  schedule from
-schedule_hrtimeout_range_clock+0xec/0x14c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:0000004a r4:492d8817
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  schedule_hrtimeout_range_clock from
-schedule_hrtimeout_range+0x28/0x30
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:c1501c50 r9:c1508fc0 r8:00000002
-r7:00000000 r6:c1501ba0 r5:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:00001b58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  schedule_hrtimeout_range from
-usleep_range_state+0x6c/0x90
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  usleep_range_state from
-pwrap_read16+0xfc/0x2a0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:0000004a r8:49c5f439 r7:0000004a
-r6:49c5f0eb r5:01990000 r4:c2703940
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  pwrap_read16 from
-pwrap_regmap_read+0x24/0x28
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:0000ffff r9:00000000 r8:0000014d
-r7:c2703940 r6:c1501c50 r5:00000332
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c196e000 r3:c06f3fbc
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  pwrap_regmap_read from
-_regmap_read+0x70/0x160
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  _regmap_read from
-_regmap_update_bits+0xc8/0x108
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:0000ffff r9:00000000 r8:0000014d
-r7:c1508fc0 r6:00000332 r5:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c196e000 r3:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  _regmap_update_bits from
-regmap_update_bits_base+0x60/0x84
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:00000000 r9:0000014d r8:00000000
-r7:0000ffff r6:00000000 r5:00000332
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c196e000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  regmap_update_bits_base from
-mt6323_led_set_blink+0x138/0x148
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:eed94800 r9:00000000 r8:c196e000
-r7:c31f0c48 r6:c2456f48 r5:00000000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:0000014e
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  mt6323_led_set_blink from
-led_blink_setup+0x3c/0x110
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:c16998c0 r8:00000770 r7:c1501d60
-r6:c1501d5c r5:c1501d60 r4:c31f0c48
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  led_blink_setup from led_blink_set+0x=
-60/0x64
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c1501d60 r6:c1501d5c r5:c31f0c58
-r4:c31f0c48
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  led_blink_set from
-led_trigger_blink+0x44/0x58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c1501d60 r6:c1501d5c r5:c5b69740
-r4:c31f0c48
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  led_trigger_blink from
-tpt_trig_timer+0x10c/0x130
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c0df71f0 r6:c1508fc0 r5:c5b685a0
-r4:c597b628
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  tpt_trig_timer from call_timer_fn+0x4=
-8/0x168
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r6:c597b628 r5:00000100 r4:c16998c0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  call_timer_fn from
-run_timer_softirq+0x600/0x6c8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:c16998c0 r8:00000000 r7:00000770
-r6:00000000 r5:c1501de4 r4:c597b628
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  run_timer_softirq from
-__do_softirq+0x140/0x34c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:00000082 r9:00000100 r8:c1698481
-r7:c1698f60 r6:00000001 r5:00000002
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c1503084
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  __do_softirq from irq_exit+0xb8/0xe8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r10:10c5387d r9:c1508fc0 r8:c1698481
-r7:c1501f0c r6:00000000 r5:c1501ed8
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r4:c14aaf58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  irq_exit from
-generic_handle_arch_irq+0x48/0x4c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1501ed8 r4:c14aaf58
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  generic_handle_arch_irq from
-__irq_svc+0x88/0xb0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: Exception stack(0xc1501ed8 to 0xc1501f=
-20)
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ec0:
-                   000862f4 2d8f2000
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ee0: c1508fc0 00000000 c1699cc0 c1504=
-f10
-c1504f70 00000001 c1698481 c123a9b4
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1f00: 10c5387d c1501f3c 00000001 c1501=
-f28
-c0e36fa0 c0e3767c 600f0013 ffffffff
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r7:c1501f0c r6:ffffffff r5:600f0013
-r4:c0e3767c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  default_idle_call from do_idle+0xc4/0=
-x124
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c1504f10 r4:00000001
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  do_idle from cpu_startup_entry+0x28/0=
-x2c
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r9:efffcd40 r8:00000000 r7:00000045
-r6:c1326068 r5:c16fb9b8 r4:000000ec
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  cpu_startup_entry from rest_init+0xc0=
-/0xc4
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  rest_init from
-arch_post_acpi_subsys_init+0x0/0x30
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  r5:c16fb9b8 r4:c16cc038
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  arch_call_rest_init from
-start_kernel+0x6c0/0x704
-M=C3=A4r 12 12:54:55 bpi-r2 kernel:  start_kernel from 0x0
-M=C3=A4r 12 12:54:55 bpi-r2 kernel: ------------[ cut here ]------------
-
-best regards
-Tobias Dahms
