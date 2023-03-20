@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EEAF6C0EFF
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 11:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 863BB6C0EFE
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 11:35:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbjCTKfk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 06:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51962 "EHLO
+        id S230290AbjCTKfh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 06:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbjCTKfM (ORCPT
+        with ESMTP id S231160AbjCTKfI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 06:35:12 -0400
+        Mon, 20 Mar 2023 06:35:08 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 974DE1ADC9
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007CD18AB8
         for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 03:34:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679308472; x=1710844472;
+  t=1679308473; x=1710844473;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VAanaBj88aQHhAzlxAwoHMh1ai3modwFcZAjeGyr7mU=;
-  b=gtcNucI4kUyl5C09JAOuc3PZ3c/+kaj9DpSPU6mlhxJBVocpixW1bUta
-   kTISPlFk2zFIC4drfPwvkS1uQaQ34WqQfONlmKO096OYCRKQh0zh2CVGI
-   AAa6qbXuWHg9VBanYQYyKpHZrLAxR9vwIW5KrmjTxOVbUMm0Pg5rGYEc6
-   omq0vr9WLWtLFkjGyeur1r4V6Xhd7op4Ig082ktHw68YQA/oweWnOx0FX
-   MmEwjCp4dL/UuzrWu0JjWb89LQSbZaMIz4xmgIvDapS7l1jLXv7R1/9B6
-   6fVQBcczvNZAWoE7fqacQdule7sea+TH8pEYHkP2dCRkqmo34yOqzVzfY
+  bh=z2cbW/ZDiSRg5XnbfcXBk/BIZqzfpWrHA5c1CYOLPdQ=;
+  b=napn1ANJ80cHTL3QopdxFpkl1KPTljAtBLgKUWi/kxCb1kRESFerkRnp
+   2RUvKJve3Y889+55jc1Ka7gL0tRhgLD6POKbIvbl7jeY45kroIl73ios4
+   zNvoicf+xjeDVzGBBUUFNvA8zuk60GzA5tLMj3W+6Wj3Rx2UceQxC7bDt
+   p2AXsQV5wro+vQH3MgZZfItMxQTsIXxiDKSn6WVWCpkXeZUiAKuG9ksAT
+   kNFUosviZA+VdkXyUK4wgwFLYzRgUPvDbaQic5LXhPl0P5cosBj2gpLk6
+   kYRhaZks5dg9qn9ahuNSHcVhicIp/vgV0IMH35fFJfY/TGU4eLVEgIKoS
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="326997914"
+X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="326997920"
 X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
-   d="scan'208";a="326997914"
+   d="scan'208";a="326997920"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:54 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="713523675"
+X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="713523678"
 X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
-   d="scan'208";a="713523675"
+   d="scan'208";a="713523678"
 Received: from ranikhou-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.179.26])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:52 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:55 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 09/18] wifi: iwlwifi: mvm: add stop_ap() and leave_ibss() callbacks for MLD mode
-Date:   Mon, 20 Mar 2023 12:33:10 +0200
-Message-Id: <20230320122330.42b0d4726b8d.I0755baace47c0ab1d9d70137448125d3140ef3af@changeid>
+Subject: [PATCH 10/18] wifi: iwlwifi: mvm: Don't send MAC CTXT cmd after deauthorization
+Date:   Mon, 20 Mar 2023 12:33:11 +0200
+Message-Id: <20230320122330.11b3481bc497.I9672acff9cfc00e7e1a187e7178caa3a1911a1b5@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230320103319.1309442-1-gregory.greenman@intel.com>
 References: <20230320103319.1309442-1-gregory.greenman@intel.com>
@@ -64,120 +64,57 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-This is another patch in the series adding all the ops
-for the new MLD ieee80211_ops.
-The callbacks added here use the new MLD FW API
+We used to send a MAC CTXT cmd to ask the FW to not pass MCAST frames
+if we're associated but not authorized, because we don't have the
+keys in that stage, and after authorization - we sent the cmd again
+to ask the FW to pass MCAST, as we have the keys now.
+The patch linked below was changing this strategy to always allow
+MCAST frames, and if we're not authorized - the driver will drop them.
+But we're still sending the MAC CTXT cmd after deaouthorization even
+though we don't tell the FW to not pass MCAST frames anymore.
+Basically we don't tell the FW anything new with this cmd.
+Fix this by not sending MAC CTXT command after deauthorization.
+For authorization we're sending the cmd to configure other changes too,
+so keep it.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 22 ++++++++++----
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 30 +++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 ++
- 3 files changed, 48 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 165358a4a97e..c6eb4cb44a09 100644
+index c6eb4cb44a09..d5708f9ebbe9 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -2826,16 +2826,15 @@ static int iwl_mvm_start_ibss(struct ieee80211_hw *hw,
- 	return iwl_mvm_start_ap_ibss(hw, vif, &vif->bss_conf);
- }
+@@ -3547,11 +3547,6 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
  
--static void iwl_mvm_stop_ap_ibss(struct ieee80211_hw *hw,
--				 struct ieee80211_vif *vif,
--				 struct ieee80211_bss_conf *link_conf)
-+/* Common part for MLD and non-MLD ops */
-+void iwl_mvm_stop_ap_ibss_common(struct iwl_mvm *mvm,
-+				 struct ieee80211_vif *vif)
- {
--	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 			mvmvif->authorized = 1;
  
--	iwl_mvm_prepare_mac_removal(mvm, vif);
-+	lockdep_assert_held(&mvm->mutex);
+-			/*
+-			 * Now that the station is authorized, i.e., keys were already
+-			 * installed, need to indicate to the FW that
+-			 * multicast data frames can be forwarded to the driver
+-			 */
+ 			iwl_mvm_mac_ctxt_changed(mvm, vif, false, NULL);
+ 			iwl_mvm_mei_host_associated(mvm, vif, mvm_sta);
+ 		}
+@@ -3566,12 +3561,10 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
+ 		iwl_mvm_rs_rate_init(mvm, sta, mvmvif->phy_ctxt->channel->band,
+ 				     false);
+ 		if (!sta->tdls) {
+-			/* Multicast data frames are no longer allowed */
+-			iwl_mvm_mac_ctxt_changed(mvm, vif, false, NULL);
+-
+ 			/*
+-			 * Set this after the above iwl_mvm_mac_ctxt_changed()
+-			 * to avoid sending high prio again for a little time.
++			 * Set this but don't call iwl_mvm_mac_ctxt_changed()
++			 * yet to avoid sending high prio again for a little
++			 * time.
+ 			 */
+ 			mvmvif->authorized = 0;
  
--	mutex_lock(&mvm->mutex);
-+	iwl_mvm_prepare_mac_removal(mvm, vif);
- 
- 	/* Handle AP stop while in CSA */
- 	if (rcu_access_pointer(mvm->csa_vif) == vif) {
-@@ -2860,6 +2859,17 @@ static void iwl_mvm_stop_ap_ibss(struct ieee80211_hw *hw,
- 	}
- 
- 	iwl_mvm_bt_coex_vif_change(mvm);
-+}
-+
-+static void iwl_mvm_stop_ap_ibss(struct ieee80211_hw *hw,
-+				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *link_conf)
-+{
-+	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-+
-+	mutex_lock(&mvm->mutex);
-+
-+	iwl_mvm_stop_ap_ibss_common(mvm, vif);
- 
- 	/* Need to update the P2P Device MAC (only GO, IBSS is single vif) */
- 	if (vif->p2p && mvm->p2p_device_vif)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 866415dc40bc..f800bf0b6d90 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -322,10 +322,40 @@ static int iwl_mvm_mld_start_ap_ibss(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
-+static void iwl_mvm_mld_stop_ap_ibss(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif)
-+{
-+	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-+
-+	mutex_lock(&mvm->mutex);
-+
-+	iwl_mvm_stop_ap_ibss_common(mvm, vif);
-+
-+	/* Need to update the P2P Device MAC (only GO, IBSS is single vif) */
-+	if (vif->p2p && mvm->p2p_device_vif)
-+		iwl_mvm_mld_mac_ctxt_changed(mvm, mvm->p2p_device_vif, false);
-+
-+	iwl_mvm_ftm_responder_clear(mvm, vif);
-+
-+	iwl_mvm_mld_rm_bcast_sta(mvm, vif);
-+	iwl_mvm_mld_rm_mcast_sta(mvm, vif);
-+
-+	/* Link needs to be deactivated before removal */
-+	iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE, false);
-+	iwl_mvm_remove_link(mvm, vif);
-+
-+	iwl_mvm_power_update_mac(mvm);
-+
-+	iwl_mvm_mld_mac_ctxt_remove(mvm, vif);
-+
-+	mutex_unlock(&mvm->mutex);
-+}
-+
- const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
- 	.add_interface = iwl_mvm_mld_mac_add_interface,
- 	.remove_interface = iwl_mvm_mld_mac_remove_interface,
- 	.assign_vif_chanctx = iwl_mvm_mld_assign_vif_chanctx,
- 	.unassign_vif_chanctx = iwl_mvm_mld_unassign_vif_chanctx,
- 	.join_ibss = iwl_mvm_mld_start_ap_ibss,
-+	.leave_ibss = iwl_mvm_mld_stop_ap_ibss,
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index a21ccbfd017c..a03c2e5bbc25 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1769,6 +1769,8 @@ int iwl_mvm_remove_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
- /* AP and IBSS */
- bool iwl_mvm_start_ap_ibss_common(struct ieee80211_hw *hw,
- 				  struct ieee80211_vif *vif, int *ret);
-+void iwl_mvm_stop_ap_ibss_common(struct iwl_mvm *mvm,
-+				 struct ieee80211_vif *vif);
- 
- /* Quota management */
- static inline size_t iwl_mvm_quota_cmd_size(struct iwl_mvm *mvm)
 -- 
 2.38.1
 
