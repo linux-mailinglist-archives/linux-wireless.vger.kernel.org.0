@@ -2,218 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 291496C2401
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 22:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E79276C25AC
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 00:35:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjCTVll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 17:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        id S229646AbjCTXfq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 19:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjCTVlk (ORCPT
+        with ESMTP id S229511AbjCTXfl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 17:41:40 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A6914222
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 14:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679348461; x=1710884461;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CsGhX/ih9gJmiHUYYaugrOW5J9NCgyatndEOVP/IlHg=;
-  b=VUYFy+7x+flEs2QzLsxfJI8rVnPXod5pAStgIrHp+Cia6eipdUujFHVy
-   SJF10g6M3nsh0firIJ9kJ8mBYwrfnFxN2/GT3RVcawdSxqWFNLp9Lfu5O
-   2MOW3ZpducKr8d+Dk7atSm7o5IAlL60CI1h7AXVfCwh/WKOEzv3HnIOzO
-   fYzWZkv5ny6peIKMgrJ80alOK/Do4h3eVtj0c4WT1YDGhXqXk//mRpW5z
-   qlyCsPhFBSaUa6a4WQ2hT1Y4XRanJk2bM6Gi3k0Eg4tP7g1kuav10+Hha
-   3hvxis+Gy1WnjqhTVSy0i9XzJ8NQNGsEmVGDmpxXou3RWJ2wm6Hjjm4H8
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="336288593"
-X-IronPort-AV: E=Sophos;i="5.98,276,1673942400"; 
-   d="scan'208";a="336288593"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 14:38:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="805056687"
-X-IronPort-AV: E=Sophos;i="5.98,276,1673942400"; 
-   d="scan'208";a="805056687"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 20 Mar 2023 14:37:58 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1peNCX-000BKw-2g;
-        Mon, 20 Mar 2023 21:37:57 +0000
-Date:   Tue, 21 Mar 2023 05:37:41 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        johannes@sipsolutions.net
-Subject: Re: [PATCH] wifi: mac80211: add support for letting drivers register
- tc offload support
-Message-ID: <202303210508.KIjgdELz-lkp@intel.com>
-References: <20230320133103.40724-1-nbd@nbd.name>
+        Mon, 20 Mar 2023 19:35:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C7B31E38
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 16:34:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1679355293;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=eLRNau9yfu5hUtNACbqD47eGjINw3xSx6xkN8nR2nXo=;
+        b=ftsUeORo919szKTO1NisJUIbZ98MbRl142IwhMnQRmUP7ToeRFgyRNvIruhYgRODrTwp/P
+        HFtkWD3Gd7bwct2L7i2XGuVP6Zz5KZCAsazfu4G1BlZFhP9gvrHLo/PwF3kKus9ZbtxSCY
+        OtRzp+C6v64LrLk7SM8fhCJi+V9OH3M=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-385-PUMiOc4lNuSaLjeZIFkoaQ-1; Mon, 20 Mar 2023 19:34:52 -0400
+X-MC-Unique: PUMiOc4lNuSaLjeZIFkoaQ-1
+Received: by mail-qv1-f71.google.com with SMTP id e11-20020ad4536b000000b005a9292e8c2bso6918157qvv.1
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 16:34:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679355292;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eLRNau9yfu5hUtNACbqD47eGjINw3xSx6xkN8nR2nXo=;
+        b=uOwFfSiwkuw2rWsPd9Bj3LXW4EvQb0Gxc9nLFCMr9dmAs/EhflDY8ISXtPrrkRs0Wp
+         2niYwO27p8UAhczS1qhCmSpkjERYrpvnFKsRLnUHu4UAnkyRmyDV4NeLx++SqT+MeceL
+         DXERLceinDrIC6O6N56dXjVcGYqPorpcfd1tuHq/4BQbjmuC6BaOcifxcF6ydwleuKgK
+         DNQpMtPqKoHzBTTNan6nhlUvmRE7lXGWiRf9c4K8B/tDb36QGFS+9K8cBEcNofTCbnhu
+         ZwCUwxu+i6oMo6nL4Qm6IuXC7r9uSxM9cmQTcqOMgVakYT34zkde2vC8LQOrZClF+oty
+         q5JQ==
+X-Gm-Message-State: AO0yUKXdYu4GAcmmlWYnmLdcTgtdJIRH6vwRSgUjGcIXvfex37BrR/2J
+        dYG4zuPewlQGvsaSElav0la2ij5+eRT3u5XTVPpVa7Wk+fDlL7Y1dAecw9egMc7UNi2SvPz6ejF
+        SKl2iJqRGmXFbLqa3bGULLOMsMUQ=
+X-Received: by 2002:ac8:590d:0:b0:3bf:c407:10c6 with SMTP id 13-20020ac8590d000000b003bfc40710c6mr1680915qty.13.1679355292033;
+        Mon, 20 Mar 2023 16:34:52 -0700 (PDT)
+X-Google-Smtp-Source: AK7set/MSGMYSq3HoZIhVmyS6T1eXwZz2enrFbuKq9nPI2QR/JAsY9RsSg0g8FFAWo/GPQAdeced0g==
+X-Received: by 2002:ac8:590d:0:b0:3bf:c407:10c6 with SMTP id 13-20020ac8590d000000b003bfc40710c6mr1680898qty.13.1679355291794;
+        Mon, 20 Mar 2023 16:34:51 -0700 (PDT)
+Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id 5-20020a370b05000000b0071eddd3bebbsm8312839qkl.81.2023.03.20.16.34.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Mar 2023 16:34:51 -0700 (PDT)
+From:   Tom Rix <trix@redhat.com>
+To:     tony0620emma@gmail.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        nathan@kernel.org, ndesaulniers@google.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] wifi: rtw88: remove unused rtw_pci_get_tx_desc function
+Date:   Mon, 20 Mar 2023 19:34:48 -0400
+Message-Id: <20230320233448.1729899-1-trix@redhat.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230320133103.40724-1-nbd@nbd.name>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Felix,
+clang with W=1 reports
+drivers/net/wireless/realtek/rtw88/pci.c:92:21: error:
+  unused function 'rtw_pci_get_tx_desc' [-Werror,-Wunused-function]
+static inline void *rtw_pci_get_tx_desc(struct rtw_pci_tx_ring *tx_ring, u8 idx)
+                    ^
+This function is not used, so remove it.
 
-I love your patch! Yet something to improve:
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on next-20230320]
-[cannot apply to wireless/main linus/master v6.3-rc3]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Felix-Fietkau/wifi-mac80211-add-support-for-letting-drivers-register-tc-offload-support/20230320-213243
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20230320133103.40724-1-nbd%40nbd.name
-patch subject: [PATCH] wifi: mac80211: add support for letting drivers register tc offload support
-config: hexagon-randconfig-r022-20230319 (https://download.01.org/0day-ci/archive/20230321/202303210508.KIjgdELz-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/462e7ebc43a4631d478861a9027e7940462c2e4b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Felix-Fietkau/wifi-mac80211-add-support-for-letting-drivers-register-tc-offload-support/20230320-213243
-        git checkout 462e7ebc43a4631d478861a9027e7940462c2e4b
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash net/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303210508.KIjgdELz-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from net/mac80211/trace.c:7:
-   In file included from include/net/cfg80211.h:13:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:334:
-   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __raw_readb(PCI_IOBASE + addr);
-                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-   #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-                                                     ^
-   In file included from net/mac80211/trace.c:7:
-   In file included from include/net/cfg80211.h:13:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:334:
-   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-                                                     ^
-   In file included from net/mac80211/trace.c:7:
-   In file included from include/net/cfg80211.h:13:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/hexagon/include/asm/io.h:334:
-   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writeb(value, PCI_IOBASE + addr);
-                               ~~~~~~~~~~ ^
-   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   In file included from net/mac80211/trace.c:11:
-   In file included from net/mac80211/trace.h:3060:
-   In file included from include/trace/define_trace.h:102:
-   In file included from include/trace/trace_events.h:237:
->> net/mac80211/trace.h:2502:53: error: no member named 'new_links' in 'struct trace_event_raw_drv_net_setup_tc'
-                   LOCAL_PR_ARG, VIF_PR_ARG, __entry->type, __entry->new_links
-                                                            ~~~~~~~  ^
-   include/trace/stages/stage3_trace_output.h:9:43: note: expanded from macro 'TP_printk'
-   #define TP_printk(fmt, args...) fmt "\n", args
-                                             ^~~~
-   include/trace/trace_events.h:45:16: note: expanded from macro 'TRACE_EVENT'
-                                PARAMS(print));                   \
-                                       ^~~~~
-   include/linux/tracepoint.h:107:25: note: expanded from macro 'PARAMS'
-   #define PARAMS(args...) args
-                           ^~~~
-   include/trace/trace_events.h:203:27: note: expanded from macro 'DECLARE_EVENT_CLASS'
-           trace_event_printf(iter, print);                                \
-                                    ^~~~~
-   6 warnings and 1 error generated.
-
-
-vim +2502 net/mac80211/trace.h
-
-  2480	
-  2481	TRACE_EVENT(drv_net_setup_tc,
-  2482		TP_PROTO(struct ieee80211_local *local,
-  2483			 struct ieee80211_sub_if_data *sdata,
-  2484			 u8 type),
-  2485	
-  2486		TP_ARGS(local, sdata, type),
-  2487	
-  2488		TP_STRUCT__entry(
-  2489			LOCAL_ENTRY
-  2490			VIF_ENTRY
-  2491			__field(u8, type)
-  2492		),
-  2493	
-  2494		TP_fast_assign(
-  2495			LOCAL_ASSIGN;
-  2496			VIF_ASSIGN;
-  2497			__entry->type = type;
-  2498		),
-  2499	
-  2500		TP_printk(
-  2501			LOCAL_PR_FMT VIF_PR_FMT " type:%d\n",
-> 2502			LOCAL_PR_ARG, VIF_PR_ARG, __entry->type, __entry->new_links
-  2503		)
-  2504	);
-  2505	
-
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index b4bd831c9845..6a8e6ee82069 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -89,13 +89,6 @@ static void rtw_pci_write32(struct rtw_dev *rtwdev, u32 addr, u32 val)
+ 	writel(val, rtwpci->mmap + addr);
+ }
+ 
+-static inline void *rtw_pci_get_tx_desc(struct rtw_pci_tx_ring *tx_ring, u8 idx)
+-{
+-	int offset = tx_ring->r.desc_size * idx;
+-
+-	return tx_ring->r.head + offset;
+-}
+-
+ static void rtw_pci_free_tx_ring_skbs(struct rtw_dev *rtwdev,
+ 				      struct rtw_pci_tx_ring *tx_ring)
+ {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.27.0
+
