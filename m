@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D20F56C0EF1
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 11:34:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B9266C0EF9
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 11:35:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229959AbjCTKed (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 06:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
+        id S231309AbjCTKf1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 06:35:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230325AbjCTKeF (ORCPT
+        with ESMTP id S230288AbjCTKeS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 06:34:05 -0400
+        Mon, 20 Mar 2023 06:34:18 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09B7D307
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 03:33:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD522386D
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 03:33:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679308430; x=1710844430;
+  t=1679308438; x=1710844438;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HTJLABXqc+14Br9OSI4mmyZu2vAYTaqBqfpt5/Rf1qc=;
-  b=hWpflk7vLQRrSIDcWTqexb8Lhl5FZAWIa8i7ks3kZamjo8VirmiG8ifx
-   zTkdkuxp0kJbQQv6AQg0m3SJ8M5hBz4vZG6RmbVIf+Wv/EmDGgW9BSLuX
-   o3s/bmO8G4AtYdSRp6rAH75IMEIgr7P9sY1+b0arCDDybFLRWZJTr8ioA
-   Dnr5nN24XAGgkigsYNq0OS6M6YFOO2i49+zn2tsSBnm2AUl+i1nSk7cYn
-   TkVA1EXS8+fyhNmHgIQrawI1Qw5xEohBzYrDdWiHyBEMzZJW5/MFW2hoG
-   NWy6uv42Ac0XxfUPpRVHP9xwFVnIFnBWvttijr9on2MoC/DG3oDJaKtAK
+  bh=IEn1U4/HW+NspPpKPSuiP8Eep0uBDMl+Q8mFWdBznxM=;
+  b=dMl7oT+iYEMyCXubBGoEvDoQFXdg93o07igO7Cbyv8b0HLaPbMy+eiCH
+   HrAMkERwo28xMhTzF9Cm9KJfRal+jcgWfSNIfZtfnT7ZFE3ujDznJqoZB
+   xk87zCgbDH8qQXPQmWxrghaRH3vXhoi+1q3Sqa2cA4b/6grTWAF4BVTfi
+   dA9vEygpPGHApCnAQgq8FP7IrNXETBp+S2ccqg1+4F8WsLzXdfy9E2R/+
+   2q85+/5dgnpJGdaOIZEfb/cGd/sxk86rE/VLrXmm5rD7Bil+ImovH6zEe
+   a2qRGFTmV4TjfHSBHjRTz026e2um04MdtvFvcD8q2DuhCCA19ZSHghil1
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="326997892"
+X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="326997895"
 X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
-   d="scan'208";a="326997892"
+   d="scan'208";a="326997895"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:43 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="713523655"
+X-IronPort-AV: E=McAfee;i="6600,9927,10654"; a="713523658"
 X-IronPort-AV: E=Sophos;i="5.98,274,1673942400"; 
-   d="scan'208";a="713523655"
+   d="scan'208";a="713523658"
 Received: from ranikhou-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.179.26])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:41 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 03:33:43 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Krishnanand Prabhu <krishnanand.prabhu@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 04/18] wifi: iwlwifi: mvm: add support for timing measurement
-Date:   Mon, 20 Mar 2023 12:33:05 +0200
-Message-Id: <20230320122330.001d2b459ece.I15ab8fc214edc35f1f362006a9e1a22b89e7ed8e@changeid>
+Subject: [PATCH 05/18] wifi: iwlwifi: mvm: enable TX beacon protection
+Date:   Mon, 20 Mar 2023 12:33:06 +0200
+Message-Id: <20230320122330.6a90a4f4f469.Ia028dea75f9a8eed40786d876d51f97fb3142688@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230320103319.1309442-1-gregory.greenman@intel.com>
 References: <20230320103319.1309442-1-gregory.greenman@intel.com>
@@ -62,99 +62,108 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Krishnanand Prabhu <krishnanand.prabhu@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add support for timing measurement in extended capabilities, used for
-time synchronization.
+Check hardware/firmware support and enable TX beacon protection
+as well if supported, programming the key into the firmware as
+usual.
 
-Signed-off-by: Krishnanand Prabhu <krishnanand.prabhu@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 44 +++++++++++++++++--
- 1 file changed, 41 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  1 +
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 30 ++++++++++++++-----
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+index 1c47046e8f69..f2eefca6e260 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+@@ -457,6 +457,7 @@ enum iwl_ucode_tlv_capa {
+ 	IWL_UCODE_TLV_CAPA_DUMP_COMPLETE_SUPPORT	= (__force iwl_ucode_tlv_capa_t)105,
+ 	IWL_UCODE_TLV_CAPA_SYNCED_TIME			= (__force iwl_ucode_tlv_capa_t)106,
+ 	IWL_UCODE_TLV_CAPA_TIME_SYNC_BOTH_FTM_TM        = (__force iwl_ucode_tlv_capa_t)108,
++	IWL_UCODE_TLV_CAPA_BIGTK_TX_SUPPORT		= (__force iwl_ucode_tlv_capa_t)109,
+ 
+ #ifdef __CHECKER__
+ 	/* sparse says it cannot increment the previous enum member */
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 93ca92e8eb98..7ee8d24606a2 100644
+index 7ee8d24606a2..99a51d519214 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -222,19 +222,39 @@ int iwl_mvm_init_fw_regd(struct iwl_mvm *mvm)
- 	return ret;
- }
+@@ -280,6 +280,8 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 	bool unified = fw_has_capa(&mvm->fw->ucode_capa,
+ 				   IWL_UCODE_TLV_CAPA_CNSLDTD_D3_D0_IMG);
+ #endif
++	u32 sec_key_id = WIDE_ID(DATA_PATH_GROUP, SEC_KEY_CMD);
++	u8 sec_key_ver = iwl_fw_lookup_cmd_ver(mvm->fw, sec_key_id, 0);
  
-+/* Each capability added here should also be add to tm_if_types_ext_capa_sta */
- static const u8 he_if_types_ext_capa_sta[] = {
- 	 [0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
- 	 [2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
- 	 [7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
- };
- 
--static const struct wiphy_iftype_ext_capab he_iftypes_ext_capa[] = {
-+static const u8 tm_if_types_ext_capa_sta[] = {
-+	 [0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
-+	 [2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT |
-+	       WLAN_EXT_CAPA3_TIMING_MEASUREMENT_SUPPORT,
-+	 [7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
-+	 [9] = WLAN_EXT_CAPA10_TWT_REQUESTER_SUPPORT,
-+};
-+
-+/* Additional interface types for which extended capabilities are
-+ * specified separately
-+ */
-+static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
- 	{
- 		.iftype = NL80211_IFTYPE_STATION,
- 		.extended_capabilities = he_if_types_ext_capa_sta,
- 		.extended_capabilities_mask = he_if_types_ext_capa_sta,
- 		.extended_capabilities_len = sizeof(he_if_types_ext_capa_sta),
- 	},
-+	{
-+		.iftype = NL80211_IFTYPE_STATION,
-+		.extended_capabilities = tm_if_types_ext_capa_sta,
-+		.extended_capabilities_mask = tm_if_types_ext_capa_sta,
-+		.extended_capabilities_len = sizeof(tm_if_types_ext_capa_sta),
-+		/* relevant only if EHT is supported */
-+		.eml_capabilities = IEEE80211_EML_CAP_EMLSR_SUPP,
-+	},
- };
- 
- static int
-@@ -562,16 +582,34 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 					      NL80211_EXT_FEATURE_OCE_PROBE_REQ_DEFERRAL_SUPPRESSION);
+ 	/* Tell mac80211 our characteristics */
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+@@ -404,8 +406,13 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ 		hw->wiphy->pmsr_capa = &iwl_mvm_pmsr_capa;
  	}
  
-+	hw->wiphy->iftype_ext_capab = NULL;
-+	hw->wiphy->num_iftype_ext_capab = 0;
-+
- 	if (mvm->nvm_data->sku_cap_11ax_enable &&
- 	    !iwlwifi_mod_params.disable_11ax) {
--		hw->wiphy->iftype_ext_capab = he_iftypes_ext_capa;
-+		hw->wiphy->iftype_ext_capab = add_iftypes_ext_capa;
- 		hw->wiphy->num_iftype_ext_capab =
--			ARRAY_SIZE(he_iftypes_ext_capa);
-+			ARRAY_SIZE(add_iftypes_ext_capa) - 1;
+-	if (fw_has_capa(&mvm->fw->ucode_capa,
+-			IWL_UCODE_TLV_CAPA_BIGTK_SUPPORT))
++	if (sec_key_ver &&
++	    fw_has_capa(&mvm->fw->ucode_capa,
++			IWL_UCODE_TLV_CAPA_BIGTK_TX_SUPPORT))
++		wiphy_ext_feature_set(hw->wiphy,
++				      NL80211_EXT_FEATURE_BEACON_PROTECTION);
++	else if (fw_has_capa(&mvm->fw->ucode_capa,
++			     IWL_UCODE_TLV_CAPA_BIGTK_SUPPORT))
+ 		wiphy_ext_feature_set(hw->wiphy,
+ 				      NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT);
  
- 		ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 		ieee80211_hw_set(hw, SUPPORTS_ONLY_HE_MULTI_BSSID);
- 	}
+@@ -3778,7 +3785,8 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
  
-+	if (iwl_fw_lookup_cmd_ver(mvm->fw,
-+				  WIDE_ID(DATA_PATH_GROUP,
-+					  WNM_80211V_TIMING_MEASUREMENT_CONFIG_CMD),
-+				  IWL_FW_CMD_VER_UNKNOWN) >= 1) {
-+		IWL_DEBUG_INFO(mvm->trans, "Timing measurement supported\n");
-+
-+		if (!hw->wiphy->iftype_ext_capab) {
-+			hw->wiphy->num_iftype_ext_capab = 1;
-+			hw->wiphy->iftype_ext_capab = add_iftypes_ext_capa +
-+				ARRAY_SIZE(add_iftypes_ext_capa) - 1;
-+		} else {
-+			hw->wiphy->iftype_ext_capab = add_iftypes_ext_capa + 1;
-+		}
-+	}
-+
- 	mvm->rts_threshold = IEEE80211_MAX_RTS_THRESHOLD;
+ 	switch (cmd) {
+ 	case SET_KEY:
+-		if (keyidx == 6 || keyidx == 7)
++		if (vif->type == NL80211_IFTYPE_STATION &&
++		    (keyidx == 6 || keyidx == 7))
+ 			rcu_assign_pointer(mvmvif->bcn_prot.keys[keyidx - 6],
+ 					   key);
  
- #ifdef CONFIG_PM_SLEEP
+@@ -3789,10 +3797,14 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 			 * on IBSS they're per-station and because we're lazy
+ 			 * we don't support them for RX, so do the same.
+ 			 * CMAC/GMAC in AP/IBSS modes must be done in software.
++			 *
++			 * Except, of course, beacon protection - it must be
++			 * offloaded since we just set a beacon template.
+ 			 */
+-			if (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
+-			    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
+-			    key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256) {
++			if (keyidx < 6 &&
++			    (key->cipher == WLAN_CIPHER_SUITE_AES_CMAC ||
++			     key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_128 ||
++			     key->cipher == WLAN_CIPHER_SUITE_BIP_GMAC_256)) {
+ 				ret = -EOPNOTSUPP;
+ 				break;
+ 			}
+@@ -3873,7 +3885,8 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 		if (mvmsta && key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
+ 			mvmsta->pairwise_cipher = key->cipher;
+ 
+-		IWL_DEBUG_MAC80211(mvm, "set hwcrypto key\n");
++		IWL_DEBUG_MAC80211(mvm, "set hwcrypto key (sta:%pM, id:%d)\n",
++				   sta ? sta->addr : NULL, key->keyidx);
+ 
+ 		if (sec_key_ver)
+ 			ret = iwl_mvm_sec_key_add(mvm, vif, sta, key);
+@@ -3897,7 +3910,8 @@ static int __iwl_mvm_mac_set_key(struct ieee80211_hw *hw,
+ 
+ 		break;
+ 	case DISABLE_KEY:
+-		if (keyidx == 6 || keyidx == 7)
++		if (vif->type == NL80211_IFTYPE_STATION &&
++		    (keyidx == 6 || keyidx == 7))
+ 			RCU_INIT_POINTER(mvmvif->bcn_prot.keys[keyidx - 6],
+ 					 NULL);
+ 
 -- 
 2.38.1
 
