@@ -2,135 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A20D6C21F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 20:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D9E6C22A9
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Mar 2023 21:30:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230315AbjCTTwz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Mar 2023 15:52:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52284 "EHLO
+        id S229839AbjCTUaJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Mar 2023 16:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230159AbjCTTwu (ORCPT
+        with ESMTP id S229565AbjCTUaG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Mar 2023 15:52:50 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8DA1A961
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 12:52:42 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id x15so3013793pjk.2
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Mar 2023 12:52:42 -0700 (PDT)
+        Mon, 20 Mar 2023 16:30:06 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32B9013D6C;
+        Mon, 20 Mar 2023 13:29:34 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id y4so51814604edo.2;
+        Mon, 20 Mar 2023 13:29:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1679341961;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=OANc0wddnbWObPg1WIjsngMYc5gPIbvx0gC9JppESQk=;
-        b=P3hxUHYnwFrcYrRWsgeprUnEMe8gM7vWq3kjfkBC/w3fC0+2t83Pj1mH+IGV1HzryC
-         SjdCoZSzKzPCHWi81j7IikGp5bnuDaBd/4k2V5B36Y1FCYLAt4wOcAtbzsDOuzqZsHwd
-         9QepYpaJ9TfJ8Fc0zSv+jPiwkoa0XB8oY3vN4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679341961;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=googlemail.com; s=20210112; t=1679344172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OANc0wddnbWObPg1WIjsngMYc5gPIbvx0gC9JppESQk=;
-        b=4oqGMbdiKc9Zh8Sj6UHLlcPBzWjNeYYZZCm8pFXHMNqz8fhLAgmj0wxinY9FnOVafy
-         usimg64UzuONmt9RFVgH+qRkzOcR46AyuM2OajmpvMjHuq8Zol19XR6jN53E/oRtYxHY
-         DDygfgE6923oMIXUAWVT2aWsFrYbCjSm7dtmRjEMPzM9O9XfviK4V+uKtOZz2pRFxk6g
-         sVqcO170rC6n7XkAYjK6O8CT+CFwArUDQ3KeHLM35xq8JbGntVNCqe+8JklREqnsJYCU
-         hfjBZ2GXSBSztZSqMg5oF2niJZNJz77i6DebA1Pgb/xL+j0dz4yjxeMj17Zr7ijwCm2x
-         S8bg==
-X-Gm-Message-State: AO0yUKVf+mhozaDbmrSI+HDdEmUPuvLdaV9sFkHiJ9tlkhagNCeBzOfP
-        vXQk4DlVJLjChfNjKNcwduPA2w==
-X-Google-Smtp-Source: AK7set8PpnnGVghBCtjPCNtVCtxa8xBN7JiVeZFbL8yfnBFI/Vq6y0nlBsYmDSleIsZfo26fgmhYwA==
-X-Received: by 2002:a17:902:e0d3:b0:19f:1e3e:a84d with SMTP id e19-20020a170902e0d300b0019f1e3ea84dmr13488186pla.64.1679341961143;
-        Mon, 20 Mar 2023 12:52:41 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id w3-20020a170902d70300b0019f0e766809sm7119986ply.306.2023.03.20.12.52.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Mar 2023 12:52:40 -0700 (PDT)
-Message-ID: <6418b988.170a0220.82efc.cadd@mx.google.com>
-X-Google-Original-Message-ID: <202303201245.@keescook>
-Date:   Mon, 20 Mar 2023 12:52:40 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Gregory Greenman <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        Sriram R <quic_srirrama@quicinc.com>,
-        lukasz.wojnilowicz@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] wifi: iwlwifi: dvm: Add struct_group for struct
- iwl_keyinfo keys
-References: <20230218191056.never.374-kees@kernel.org>
- <3181a89b49e571883525172a7773b12f046e8b09.camel@sipsolutions.net>
- <641897bd.630a0220.174d9.9d11@mx.google.com>
- <0ec5fe8b6945ee545b335ef2f3bee75b0af458d0.camel@sipsolutions.net>
+        bh=QYZOthRe2Sn6mPr50C2vVU4y8YGt44Tewf3C3OiSzSY=;
+        b=NLD70tJFs/akTvr/UxBT36qutDMtlFNlZuypATv3sO7Gkzv3f0ji+SVDRMrfZvnOLb
+         gov27oSU8BFANiq2LthBeLQ9DQ5jJ72TDgOiBnzS7YqeKgLQSlC6aAPzJBI3Txpj3kK7
+         eziIpjYDb+NT2B1W/JAvDIlfH3kfifwy+XJvVV1b2K3gYboZLgO+NyI6QD5OCA+/Kb61
+         1f+euHKxrD7acNnY4KMqrs8J04n8NBOGyq2g079dXS2yaRkiuBYn+rDiSXVXBzFr3sTe
+         qpSsmPAfgPGW41NjkQiYvzWO4MJBmm4+4GX21x+gbXovLZdib+nBqDtoL0G5pMcqX6AY
+         718g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679344172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QYZOthRe2Sn6mPr50C2vVU4y8YGt44Tewf3C3OiSzSY=;
+        b=5J3dNreDyYD1Hb0UxzB4caioqEeoLAhGok3tfdTB7CHH6H7PfqcafmTlvNzAI5oaxX
+         iOcpgYoWG+CeFjuC8lHdfNWAep5ZRornG4dzCqIRK3iw9GwAtfDT+EiKOVKf0xV18Vmd
+         UE1CX1rRGikjKEe7jAG6uIQrYalYNjEjm4Va4WlAThx0kN6Ov69FsyMzZLNx60OB2hYM
+         QkZlCbJ+CURYDA0MjCvI0XYnRmpxo/6ZbXwtXDDoOn7BOAcKZwOOlwh24DOaioO+Lsfm
+         l1oZq0+kgiq5t4YPl33DfX++oWIM3mQryvaTZva5EH8diMb6CYDLWi+yaZuCq5XPCWg+
+         KU3g==
+X-Gm-Message-State: AO0yUKWrQ8BbPLbSoSZryftnEUVGEKemEmIR3xnFV1LgX/DIpX4hDlPz
+        0KhgL+eJkpoV+63aiIRRgXcPVpUuTNltNFplEko=
+X-Google-Smtp-Source: AK7set8ioH4qkvyNKpdoBAB36Tt7dmLpqWianC+mMdllyZpApql/SQ2xTXx1nAQXoEO8wEpjaf3gYhqdggDksqI+wvw=
+X-Received: by 2002:a50:c389:0:b0:4fa:3c0b:74c with SMTP id
+ h9-20020a50c389000000b004fa3c0b074cmr465915edf.4.1679344171725; Mon, 20 Mar
+ 2023 13:29:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ec5fe8b6945ee545b335ef2f3bee75b0af458d0.camel@sipsolutions.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230310202922.2459680-1-martin.blumenstingl@googlemail.com>
+ <20230310202922.2459680-10-martin.blumenstingl@googlemail.com> <6413750b.4a0a0220.cfd67.2a0b@mx.google.com>
+In-Reply-To: <6413750b.4a0a0220.cfd67.2a0b@mx.google.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Mon, 20 Mar 2023 21:29:20 +0100
+Message-ID: <CAFBinCBdEuCKZqXEtcV8mVnOGRbk+DeTiZ1WNpU-HVR+eCiJjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 RFC 9/9] wifi: rtw88: Add support for the SDIO based
+ RTL8821CS chipset
+To:     Chris Morgan <macroalpha82@gmail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 20, 2023 at 07:34:59PM +0100, Johannes Berg wrote:
-> > > 
-> > > >  	case WLAN_CIPHER_SUITE_TKIP:
-> > > >  		key_flags |= STA_KEY_FLG_TKIP;
-> > > >  		sta_cmd.key.tkip_rx_tsc_byte2 = tkip_iv32;
-> > > >  		for (i = 0; i < 5; i++)
-> > > >  			sta_cmd.key.tkip_rx_ttak[i] = cpu_to_le16(tkip_p1k[i]);
-> > > > -		memcpy(sta_cmd.key.key, keyconf->key, keyconf->keylen);
-> > > > +		memcpy(&sta_cmd.key.keys, keyconf->key, keyconf->keylen);
-> > > 
-> > > And that's actually a bug, we should've copied only 16 bytes, I guess.
-> > > DVM didn't support MIC offload anyway (at least the way Linux uses the
-> > > firmware, though I thought it doesn't at all), so we don't need the MIC
-> > > RX/TX keys in there, but anyway the sequence counter values are not part
-> > > of the key material on the host.
-> > > 
-> > > I don't think I have a machine now to test this with (nor a TKIP AP, of
-> > > course, but that could be changed) - but I suspect that since we
-> > > actually calculate the TTAK above, we might not even need this memcpy()
-> > > at all?
-> > 
-> > It's the latter that is triggered in the real world, though. See the
-> > referenced URL and also now on bugzilla:
-> > https://bugzilla.kernel.org/show_bug.cgi?id=217214
-> > i.e.: drivers/net/wireless/intel/iwlwifi/dvm/sta.c:1103
-> > 
-> > So keyconf->keylen is coming in as 32. If this is a bug, I'm not sure
-> > where/how to fix it.
-> 
-> Yes, I know it's coming in as such - I believe it should be copying 16
-> bytes instead of the full keylen. TKIP keys are comprised of 16 bytes
-> encryption/decryption key and 8 bytes TX/RX MIC keys for a total of 32,
-> but since the device doesn't do MIC calculations, it only needs the
-> first 16 bytes here (if even that, since we also give it the P1K which
-> is derived from the TK...? maybe not even that)
-> 
-> But I guess we should test it ... not sure I still have a machine that
-> takes these NICs (I do have NICs).
+Hi Chris,
 
-What sort of patch would you like here? How should the other cases in
-the switch statement behave?
+On Thu, Mar 16, 2023 at 8:59=E2=80=AFPM Chris Morgan <macroalpha82@gmail.co=
+m> wrote:
+[...]
+> > +MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com=
+>");
+> > +MODULE_DESCRIPTION("Realtek 802.11ac wireless 8821cs driver");
+> > +MODULE_LICENSE("Dual BSD/GPL");
+> > --
+> > 2.39.2
+> >
+>
+> Overall it works well for me, but when I resume from suspend I get the
+> following filling up my dmesg:
+>
+> rtw_8821cs mmc3:0001:1: sdio read8 failed (0x86): -110
+>
+> So suspend/resume seems to be an issue, but otherwise it works well
+> for me.
+Thanks for reporting this issue! I have a fix in my local tree and I'm
+testing it currently. If you want to try it for yourself (before I
+send an updated series) you can just replace one function in sdio.c:
+static int __maybe_unused rtw_sdio_suspend(struct device *dev)
+{
+    struct sdio_func *func =3D dev_to_sdio_func(dev);
+    struct ieee80211_hw *hw =3D dev_get_drvdata(dev);
+    struct rtw_dev *rtwdev =3D hw->priv;
+    int ret;
 
-Are these the correct bounds?
+    ret =3D sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
+    if (ret)
+        rtw_err(rtwdev, "Failed to host PM flag MMC_PM_KEEP_POWER");
 
-	WLAN_CIPHER_SUITE_CCMP:   keylen <= 16
-	WLAN_CIPHER_SUITE_TKIP:   keylen <= 16
-	WLAN_CIPHER_SUITE_WEP104: keylen <= 13
-	WLAN_CIPHER_SUITE_WEP40:  keylen <= 13
+    return ret;
+}
 
-and should it silently ignore larger values in each case?
 
--- 
-Kees Cook
+Best regards,
+Martin
