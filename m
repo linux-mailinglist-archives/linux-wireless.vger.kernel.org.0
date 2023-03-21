@@ -2,66 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 849316C2C1D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 09:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4690B6C2C2B
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 09:20:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231166AbjCUIRV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Mar 2023 04:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
+        id S230032AbjCUIUr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Mar 2023 04:20:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231233AbjCUIQm (ORCPT
+        with ESMTP id S229640AbjCUIUq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Mar 2023 04:16:42 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 084CD28E55
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 01:16:29 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id eh3so56325109edb.11
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 01:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679386588;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tBxCksv4+AUPTCqkuOrtfjmwuvWpCvtIaxZde9QVqzY=;
-        b=pXZtkMEqXzy0+xoqJLrZHYn0grjE1FgS1loxdgHeqZeGobhsZRyzNycuDfCxznPX0g
-         LmtQbSEXhx7RRNabeE43+TLfPdnj0v/uADhnftBE8R6c9RjygcjtZ6kAr7BAAlIgWHTz
-         CpTojZqkED840eapTpL6oncMLUKBtl4cK5ioVvg4Gs9lrjW5fhOg0jc10Rt/9hEu5isa
-         t/Hu6nTuaHfPn7qNphkydJOkT6GbuwagDUn7c30s4NIlba0fzZPbWga/+bTi3p+FJwUQ
-         FPDhHj24MlwWLEzLGtghug6hs7L2FK2Ih2c3rY7pw/kz6L9J2H2syAmLA4zbRYOnVffg
-         xajg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679386588;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tBxCksv4+AUPTCqkuOrtfjmwuvWpCvtIaxZde9QVqzY=;
-        b=YCWanEGPbWKtLEwUtNPvS7794bvkbrD6bQJgY8baxehptqpRMWtdp//DMK/lPB16X1
-         tBqqnvRFHFAG3gFj80LMiUJjZRT9JbFNTRgjscSPelhLDZcdqh1DQ6zVB87hGAxmXJV+
-         GE5Np0UdpSBSsyVR0P3/0ex+AnMjirRWCdLUkSKdO5EDfuZd89ahlIpKVJBW5z/ROjVf
-         JLw9Opxe+vTZwamTJx35c2VvL5/iprdrB5aDkcLvjCSDlFfTFUdCR4SXc7RJMQ54GVE9
-         uNJZJ9Z06BPSZqhPGElQWyXxzxlPog/jtD1mO2m9yHderYJ+e9xM4jo9LOmUSo49IoHj
-         t0LQ==
-X-Gm-Message-State: AO0yUKVVUqMBD593Mru2mwCWQ8FG4xrsrbKP2H/0onIsiYaoKkQvslF9
-        Br3fYDBcLb1z8csrkeLBksX/6A==
-X-Google-Smtp-Source: AK7set9DFIlXBqYvUREvhQe/bGFPfuG9JsCCS2yRE6Ey5jvk6WdvPtAZWoSQxRPdwK+vRjhIsrAZCA==
-X-Received: by 2002:a05:6402:114d:b0:4fe:9374:30d0 with SMTP id g13-20020a056402114d00b004fe937430d0mr2038401edw.39.1679386588525;
-        Tue, 21 Mar 2023 01:16:28 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:2142:d8da:5ae4:d817? ([2a02:810d:15c0:828:2142:d8da:5ae4:d817])
-        by smtp.gmail.com with ESMTPSA id r3-20020a50d683000000b004c0239e41d8sm5847287edi.81.2023.03.21.01.16.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Mar 2023 01:16:28 -0700 (PDT)
-Message-ID: <09463d3e-0b80-f8d8-d358-cddae75484bf@linaro.org>
-Date:   Tue, 21 Mar 2023 09:16:27 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/3] dt-bindings: wireless: add ath11k pcie bindings
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Johan Hovold <johan+linaro@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        Tue, 21 Mar 2023 04:20:46 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE681C58E;
+        Tue, 21 Mar 2023 01:20:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2FE0BB80A25;
+        Tue, 21 Mar 2023 08:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E53C433EF;
+        Tue, 21 Mar 2023 08:20:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679386842;
+        bh=r/XTwJ0ZGyepgVGIYhRMA7vXO27GpJFl+4EAu53pwyQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=I5AS0EjZPdovcIfa3Rxq3mpy1YE1tj4r7DxmltKUbA9HAIs/+Z3rldPFX190yJmF0
+         sQOuPslQRdYDEVdHQO75fgvUapJNFIno4orOhWPya+T2rV2URacZhPj7Ib5K3+/AQV
+         eeP68B66netd1yDsQpOLHJ51Z5lL6MIIe0CsV+2oO+KDJvJaLxCb7kFE6ccUF2XoCm
+         5DiKhfZXfXjpDckX6zxSpHh9VXoylVZ8H2EkCu2PRRvP6yLsiciU7S0MvKNFq+2585
+         tw4b7xjjkS2E+QM6dLgAiFdp99T5V0NSNsfHa0bALQkWc5iAc+wBwNVa8lQijepYHC
+         Zeu7EAiuL+f2w==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1peXFs-00006M-Bo; Tue, 21 Mar 2023 09:22:05 +0100
+Date:   Tue, 21 Mar 2023 09:22:04 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
@@ -71,75 +50,101 @@ Cc:     "David S. Miller" <davem@davemloft.net>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: wireless: add ath11k pcie bindings
+Message-ID: <ZBlpLJfqB1Q7JfQ+@hovoldconsulting.com>
 References: <20230320104658.22186-1-johan+linaro@kernel.org>
  <20230320104658.22186-2-johan+linaro@kernel.org>
- <a8356f76-189d-928b-1a1c-f4171de1e2d0@linaro.org>
-In-Reply-To: <a8356f76-189d-928b-1a1c-f4171de1e2d0@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+ <87ttyfhatn.fsf@kernel.org>
+ <ZBhUo1C08U5mp9zP@hovoldconsulting.com>
+ <87a607fepa.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a607fepa.fsf@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 21/03/2023 09:14, Krzysztof Kozlowski wrote:
-> On 20/03/2023 11:46, Johan Hovold wrote:
->> Add devicetree bindings for Qualcomm ath11k PCIe devices such as WCN6856
->> for which the calibration data variant may need to be described.
->>
->> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
->> ---
->>  .../bindings/net/wireless/pci17cb,1103.yaml   | 56 +++++++++++++++++++
->>  1 file changed, 56 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/net/wireless/pci17cb,1103.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/pci17cb,1103.yaml b/Documentation/devicetree/bindings/net/wireless/pci17cb,1103.yaml
->> new file mode 100644
->> index 000000000000..df67013822c6
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/pci17cb,1103.yaml
+On Mon, Mar 20, 2023 at 08:41:21PM +0200, Kalle Valo wrote:
+> + ath11k list
 > 
-> PCI devices are kind of exception in the naming, so this should be
-> qcom,ath11k-pci.yaml or qcom,wcn6856.yaml (or something similar)
+> Johan Hovold <johan@kernel.org> writes:
 > 
+> > On Mon, Mar 20, 2023 at 02:22:12PM +0200, Kalle Valo wrote:
+> >> Johan Hovold <johan+linaro@kernel.org> writes:
+> >> 
+> >> > Add devicetree bindings for Qualcomm ath11k PCIe devices such as WCN6856
+> >> > for which the calibration data variant may need to be described.
+> >> >
+> >> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> >> > ---
+> >> >  .../bindings/net/wireless/pci17cb,1103.yaml   | 56 +++++++++++++++++++
+> >> >  1 file changed, 56 insertions(+)
+> >> >  create mode 100644
+> >> > Documentation/devicetree/bindings/net/wireless/pci17cb,1103.yaml
+> >> 
+> >> I'm confused (as usual), how does this differ from
+> >> bindings/net/wireless/qcom,ath11k.yaml? Why we need two .yaml files?
+> >
+> > Almost none of bindings/net/wireless/qcom,ath11k.yaml applies to WCN6856
+> > when using PCIe (e.g. as most properties are then discoverable).
+> >
+> > We could try to encode everything in one file, but that would likely
+> > just result in a big mess of a schema with conditionals all over.
 > 
->> @@ -0,0 +1,56 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +# Copyright (c) 2023 Linaro Limited
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/net/wireless/pci17cb,1103.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Qualcomm Technologies ath11k wireless devices (PCIe)
->> +
->> +maintainers:
->> +  - Kalle Valo <kvalo@kernel.org>
->> +
->> +description: |
->> +  Qualcomm Technologies IEEE 802.11ax PCIe devices.
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - pci17cb,1103  # WCN6856
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  qcom,ath11k-calibration-variant:
-> 
-> qcom,calibration-variant
+> Ah, so the current qcom,ath11k.yaml would be only for ath11k AHB devices
+> and this new file is only for ath11k PCI devices?
 
-Ah, so there is already property with ath11k, then let's go with
-existing name.
+Right, there would two separate schema files for the two device classes.
 
-Best regards,
-Krzysztof
+> But why still the odd
+> name pci17cb,1103.yaml? It's not really descriptive and I'm for sure
+> will not remember that pci17cb,1103.yaml is for ath11k :)
 
+Yeah, it's not the best name from that perspective, but it follows the
+current convention of naming the schema files after the first compatible
+added.
+
+That said, we don't have many schemas for PCI devices so perhaps we can
+establish a new convention for those. Perhaps by replacing the numerical
+ids with what we'd use if these were platform devices (e.g.
+'qcom,wcn6855.yaml').
+
+As long as the DT maintainers are OK with it, I'd also be happy with
+something like you suggest below:
+
+	qcom,ath11k-ahb.yaml
+	qcom,ath11k-pci.yaml
+
+(or simply not renaming the current file 'qcom,ath11k.yaml') but I have
+gotten push back on that in the past.
+
+> Also it doesn't look good that we have qcom,ath11k-calibration-variant
+> documented twice now. I'm no DT expert but isn't there any other way? Is
+> it possible to include other files? For example, if we would have three
+> files:
+> 
+> qcom,ath11k.yaml
+> qcom,ath11k-ahb.yaml
+> qcom,ath11k-pci.yaml
+> 
+> Then have the common properties like ath11k-calibration-variant in the
+> first file and ahb/pci files would include that.
+
+That should be possible, but it's not necessarily better as you'd then
+have to look up two files to see the bindings for either device class
+(and as far as I can tell there would not be much sharing beyond this
+single property).
+
+Note that the property could just have well have been named
+'qcom,calibration-variant' and then it would be shared also with the
+ath10k set of devices which currently holds another definition of what
+is essentially the same property ('qcom,ath10k-calibration-variant').
+
+Johan
