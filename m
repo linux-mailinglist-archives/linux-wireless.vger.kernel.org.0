@@ -2,40 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80AAB6C2F41
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 11:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11D7B6C2F8D
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 11:52:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230366AbjCUKl0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Mar 2023 06:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39204 "EHLO
+        id S229950AbjCUKwK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Mar 2023 06:52:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230301AbjCUKlY (ORCPT
+        with ESMTP id S230492AbjCUKwH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Mar 2023 06:41:24 -0400
-Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066D12706;
-        Tue, 21 Mar 2023 03:41:08 -0700 (PDT)
-Received: from [192.168.108.81] (unknown [213.36.7.13])
-        (Authenticated sender: marc.w.gonzalez@free.fr)
-        by smtp2-g21.free.fr (Postfix) with ESMTPSA id D099020041A;
-        Tue, 21 Mar 2023 11:40:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-        s=smtp-20201208; t=1679395264;
-        bh=KCCATZkTr+7Q3TiUEqunw+3zj4NwVvKmBZameTcJZZ0=;
-        h=Date:To:Cc:From:Subject:From;
-        b=uToAtzfIpIaP4K567OQRcAp3j5BLtqLpONLanYT+KGrwDJHQHB/ounDJorAs627uw
-         YalRsK6VxilPt7sYfuiwQXedPkl7qk+qRfnyxArlUViS10V/Ang1GBAVITq8FIdikC
-         z3f1v3DtmKKESeRNv3MIG+kUf1pNHLUrQ+jG3MwsDpxQZ+Lem03Rm9ur9eCwSey4hu
-         pQXH134cmjPTL/Ptm+pXqlFc3OKt19N82KriW1RmzpH4IceKu3LIMRes0Pm8EyEwjG
-         bR9/DgLsGUnUym+pHRHuffznAkullCl5ic1A2VosUA9pqjy1HLVWMuIr4TBiKXfFkN
-         S9CZlRY2+PSRQ==
-Message-ID: <b9bd16cb-f1fa-34b7-d599-8637cbe5032b@free.fr>
-Date:   Tue, 21 Mar 2023 11:40:40 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Content-Language: en-US
-To:     linux-wireless@vger.kernel.org, MMC <linux-mmc@vger.kernel.org>,
+        Tue, 21 Mar 2023 06:52:07 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CFC7D8B
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 03:52:04 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id e18so1623694wra.9
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 03:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1679395923;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=K68XFluEkJ4EyRHJihXO8/AhJVwZseuuuSGDSObQY3Q=;
+        b=fpY2Lc/LNVH4063nraiPu6JJwbMVe7kciEmg4YMy729ZFshtgzOmhChumgtEIdVQtN
+         YHHfEN4Ftgu5pSNSZuF0qvoDPopC6ThvEmU3DSUpZd5UU4rXczI/alLwGe4mfT3KulQq
+         br7dB0Gqixii/Nix6fcsD42k/bgP9SdBIRY4X2BXrqVvFKtzxXUbuX68ZXVEkpc4ace+
+         mSSXKwX3or4PVABNmH0mc5BABVq/MR+4d0pgeq+NZU3NQYq+sbCeuc+7MdxrX14GBcqm
+         6FTy/tg6an6FpCjJSB5XmtA+E4AUoYpKR6af4quxuslqXeikSEXo/XjBm//+JrcCX2ep
+         Ty0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679395923;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K68XFluEkJ4EyRHJihXO8/AhJVwZseuuuSGDSObQY3Q=;
+        b=BRp0FUbonLZGEbbJi5GDweCBDnhlYLwX7WAHGq/7XhjkNHaEH7eUCh9ayxQkVQtbBa
+         hWmokAWsP23eQkia/oW4jdunQIQwX7JgOzCnLW2o2GS0/Y9e5QaTA08JpasV+X0pGwEh
+         FMgywwaBFWMVQP9Bu1hAvpc8kf6UbFEXadwUZdVSGazB5HgUBGw6CSgh/ZS1p6gfyXRW
+         YewV8vTiNnfWnCX4e+fijZBEBSJcYvU0GzZFzosqauvIn4oVBimf3CYtE7mew48V8784
+         g15/wCeUimfbPP/D+eG/i+NqK9HGLOd8wCEI5MG+GaXFPuW2J8znBkDHzz9NEn9LdtI0
+         +9Lw==
+X-Gm-Message-State: AO0yUKUxOsZWkLPH+s4/mZi0HnaPNsgcZKCpmBFLBRFdtuKiZAHgF+b3
+        9V6xJS84R+SmdnSuDz/ktXnsbQ==
+X-Google-Smtp-Source: AK7set868qGoElUpfskvJ9bfPpYZPqFEK55esIAH/gTwGF/+V98A4OOLYzWOB74M6NG2BH6E97IH2A==
+X-Received: by 2002:adf:ec8e:0:b0:2d9:10e7:57e8 with SMTP id z14-20020adfec8e000000b002d910e757e8mr1312758wrn.16.1679395923106;
+        Tue, 21 Mar 2023 03:52:03 -0700 (PDT)
+Received: from localhost (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id b18-20020adff912000000b002c567881dbcsm10944294wrr.48.2023.03.21.03.52.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Mar 2023 03:52:02 -0700 (PDT)
+References: <b9bd16cb-f1fa-34b7-d599-8637cbe5032b@free.fr>
+User-agent: mu4e 1.8.13; emacs 28.2
+From:   Jerome Brunet <jbrunet@baylibre.com>
+To:     Marc Gonzalez <marc.w.gonzalez@free.fr>,
+        linux-wireless@vger.kernel.org, MMC <linux-mmc@vger.kernel.org>,
         AML <linux-amlogic@lists.infradead.org>
 Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
         Arend van Spriel <aspriel@gmail.com>,
@@ -48,46 +66,63 @@ Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
         Alexander Prutskov <alep@cypress.com>,
         Joseph chuang <jiac@cypress.com>,
         Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
         Martin Blumenstingl <martin.blumenstingl@gmail.com>,
         Angus Ainslie <angus@akkea.ca>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Pierre-Hugues Husson <phh@phh.me>
-From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
-Subject: [Performance regression] BCM4359/9 on S905X2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NUMERIC_HTTP_ADDR,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,WEIRD_PORT
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [Performance regression] BCM4359/9 on S905X2
+Date:   Tue, 21 Mar 2023 11:46:57 +0100
+In-reply-to: <b9bd16cb-f1fa-34b7-d599-8637cbe5032b@free.fr>
+Message-ID: <1jh6ue74x9.fsf@starbuckisacylon.baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NUMERIC_HTTP_ADDR,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        WEIRD_PORT autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello everyone,
 
-I've been benchmarking an Amlogic S905X2 board.
-It provides a BCM4359/9 WiFi chip connected through SDIO.
+On Tue 21 Mar 2023 at 11:40, Marc Gonzalez <marc.w.gonzalez@free.fr> wrote:
 
-There's a large performance gap between vendor kernel and mainline.
-(Downloading a 1GB file to /dev/null from a device inches away)
+> Hello everyone,
+>
+> I've been benchmarking an Amlogic S905X2 board.
+> It provides a BCM4359/9 WiFi chip connected through SDIO.
+>
+> There's a large performance gap between vendor kernel and mainline.
+> (Downloading a 1GB file to /dev/null from a device inches away)
 
-# curl -o /dev/null http://192.168.1.254:8095/fixed/1G
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 1024M  100 1024M    0     0  27.5M      0  0:00:37  0:00:37 --:--:-- 28.6M
-vs
-100 1024M  100 1024M    0     0  11.0M      0  0:01:32  0:01:32 --:--:-- 11.0M
+The title is misleading. You are comparing different sources. This is
+not a regression. This is merely a difference.
 
-Line 1 = vendor kernel (4.9.180 amlogic android)
-Line 2 = mainline kernel (6.2.0-rc8)
+If we are talking about mainline, then which board is it ? What is the
+corresponding DT ? What is the MMC configuration in both case ? Have
+you checked you are running with the same clock configuration to begin
+with ?
 
-Why is the vendor kernel 2.5 times faster?
+>
+> # curl -o /dev/null http://192.168.1.254:8095/fixed/1G
+>   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+>                                  Dload  Upload   Total   Spent    Left  Speed
+> 100 1024M  100 1024M    0     0  27.5M      0  0:00:37  0:00:37 --:--:-- 28.6M
+> vs
+> 100 1024M  100 1024M    0     0  11.0M      0  0:01:32  0:01:32 --:--:-- 11.0M
+>
+> Line 1 = vendor kernel (4.9.180 amlogic android)
 
-(I'm using the same firmware files, but it seems the vendor kernel reads
-an additional configuration file that the mainline vendor seems to ignore.)
+This cannot help indentify a downstream kernel, and the infinite number
+of forks and patches associated with it.
 
-Regards
+> Line 2 = mainline kernel (6.2.0-rc8)
+>
+> Why is the vendor kernel 2.5 times faster?
+>
+> (I'm using the same firmware files, but it seems the vendor kernel reads
+> an additional configuration file that the mainline vendor seems to ignore.)
+>
+> Regards
+
