@@ -2,109 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4207F6C2AFD
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 08:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DF56C2B89
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 08:41:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbjCUHDa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Mar 2023 03:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53228 "EHLO
+        id S230193AbjCUHl1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Mar 2023 03:41:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjCUHD2 (ORCPT
+        with ESMTP id S230165AbjCUHlU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Mar 2023 03:03:28 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9EF975C
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 00:03:25 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id d17so4128283wrb.11
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 00:03:25 -0700 (PDT)
+        Tue, 21 Mar 2023 03:41:20 -0400
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [20.232.28.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DAD413CE32;
+        Tue, 21 Mar 2023 00:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679382204;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mIKihiROMplwiYmZDCvTzvlFpsqPm+SfOm9J06FIASQ=;
-        b=dwVcLRW8fBUP9+IWEfwV5jsm05M5xybC0ARer2YdwTwIwgeFFqJ5AR6CUqQd8ZcQNJ
-         m7wBGOL4fb3T/BZ8UShnLwvpc5sVMcKvhHxtPa+xHPquNevSMQJNq1u0xnsGKZs55UTD
-         q34MxMIArfQXcwxZ12jzGahGZJdWr/wzbyOrfalNfIuUMywiQ0FdZy8XmbNAyGjL0QWU
-         WQxUh55nInsWoTSuqfvV/lQU1x3vMbnYXFE0M4y29xfEjcENHvaMnwH/bJ/rsji+DDaJ
-         2/cYJcwENHs2nM7415u9H/Quk0WyziXehYOan8WKIwyZqmtYMmjBqlUYZd4gzYruWAoS
-         dEcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679382204;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mIKihiROMplwiYmZDCvTzvlFpsqPm+SfOm9J06FIASQ=;
-        b=EFQajQoZez8pyEFeRK2Tnu6UOZv9KGbDdqw9YeQetYLX2UjJIxJ3qW4Gm7WbOBI/2C
-         TU8urVbBN+ddcJRSOgXXjhwD9LcJIs37pWzgloIPDvBbI4v5KYUlcjK0Ly59/ZmxV8B4
-         fFrBQeJpygulcAr40oTwkA1Yr1JJjYoiZrLOt5VvuBTy15viQw3jr3KQCOcBF7v/8Hll
-         CsbM24pAC/x8Ofo2qR94x4WKFh40U3qqGGyb8O2S60ak1VmgBH9HP25uvjJ5/Z4ARafs
-         cSXqbWmTXhIyc8AqM39ROqmvNl4yiaiERqk/55T4d5yTpezQhiXpf/nZCOxPeVH2Evzi
-         Ypow==
-X-Gm-Message-State: AO0yUKVLh/7D1T9fW33ZqSZEhApdH3MyOff85blFH49oKRoarMXmveEN
-        qHY4qx4VTK3kNBaPZuIcOOk=
-X-Google-Smtp-Source: AK7set+/FMyKCd7VndW/13BISwxGiwtpBtWrVvDMeon9FZA4Sq8ShVLiB35NuG6A3cT6D7uM5RJyIA==
-X-Received: by 2002:adf:edc7:0:b0:2d6:6d24:7636 with SMTP id v7-20020adfedc7000000b002d66d247636mr1311322wro.7.1679382204397;
-        Tue, 21 Mar 2023 00:03:24 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id h13-20020a5d430d000000b002d75ef32032sm3608081wrq.68.2023.03.21.00.03.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Mar 2023 00:03:24 -0700 (PDT)
-Date:   Tue, 21 Mar 2023 10:03:20 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     miriam.rachel.korenblit@intel.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: [bug report] wifi: iwlwifi: mvm: add support for the new STA related
- commands
-Message-ID: <ca7d3085-b6ef-489b-8601-5743e5d4bfeb@kili.mountain>
+        d=buaa.edu.cn; s=buaa; h=Received:Subject:To:Cc:References:From:
+        Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:Content-Type:
+        Content-Transfer-Encoding:Content-Language; bh=j20vTDU+hGLHvoez0
+        N0ROxd3wPjt36wTxMiLv6GIuq0=; b=zHTDva2poavGnLgNE8Wsxsl7EkkJzRxPl
+        Pq1oW58a5oPiv6LfC0Kup85WpDTuLoGHv73yWKZF2oiq6VjqEdBzs+I0H+Re7/69
+        SHeiyzHl82DPQIPAsGXOUsHjXslJMibGF6rc96fdBy0nK67nTvoEP39XZU2xv1mI
+        QzAuT2gXWY=
+Received: from [192.168.1.101] (unknown [106.39.42.159])
+        by coremail-app2 (Coremail) with SMTP id Nyz+CgDHsWB1Xxlk2EQiAA--.53854S3;
+        Tue, 21 Mar 2023 15:40:37 +0800 (CST)
+Subject: Re: [PATCH] net: mac80211: Add NULL checks for sta->sdata
+To:     Simon Horman <simon.horman@corigine.com>
+Cc:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <ZBiOhAJswYcAo8kv@corigine.com>
+From:   Jia-Ju Bai <baijiaju@buaa.edu.cn>
+Message-ID: <9b213efb-8c7a-497d-2e08-f404d174a6ae@buaa.edu.cn>
+Date:   Tue, 21 Mar 2023 15:40:40 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ZBiOhAJswYcAo8kv@corigine.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-CM-TRANSID: Nyz+CgDHsWB1Xxlk2EQiAA--.53854S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxuF4xKF47Jw18KrW3Xr45Awb_yoW5Gr48p3
+        4kCw4SqFs8J342yr4xKFn5uFWjvFWDJry8Wr9xGFy7WFn0gFnakr4I9FWrZ3ZY9Fy5J3Wa
+        vF4jvrZIqanrua7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+        cIk0rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+        AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+        6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
+        0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+        Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
+        WUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVW8CwCF
+        04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26F1DJr1UJwCFx2IqxVCFs4IE7xkEbV
+        WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+        67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+        IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+        0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
+        nxnUUI43ZEXa7IU8sYFJUUUUU==
+X-CM-SenderInfo: yrruji46exttoohg3hdfq/
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Miri Korenblit,
+Hello Simon,
 
-The patch 006c152ac9e5: "wifi: iwlwifi: mvm: add support for the new
-STA related commands" from Mar 14, 2023, leads to the following
-Smatch static checker warning:
+Thanks for the reply!
 
-	drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c:239 iwl_mvm_mld_rm_int_sta()
-	error: NULL dereference inside function
 
-drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-    225 static int iwl_mvm_mld_rm_int_sta(struct iwl_mvm *mvm,
-    226                                   struct iwl_mvm_int_sta *int_sta,
-    227                                   bool flush, u8 tid, u16 *queuptr)
-    228 {
-    229         int ret;
-    230 
-    231         lockdep_assert_held(&mvm->mutex);
-    232 
-    233         if (WARN_ON_ONCE(int_sta->sta_id == IWL_MVM_INVALID_STA))
-    234                 return -EINVAL;
-    235 
-    236         if (flush)
-    237                 iwl_mvm_flush_sta(mvm, int_sta, true);
-    238 
---> 239         iwl_mvm_mld_disable_txq(mvm, NULL, queuptr, tid);
-                                             ^^^^
-You can't pass a NULL sta pointer.  It will crash.
+On 2023/3/21 0:49, Simon Horman wrote:
+> On Mon, Mar 20, 2023 at 09:35:33PM +0800, Jia-Ju Bai wrote:
+>> In a previous commit 69403bad97aa, sta->sdata can be NULL, and thus it
+>> should be checked before being used.
+> Please run checkpatch on this patch, and correct the commit description
+> style.
+>
+> ./scripts/checkpatch.pl -g HEAD
+> ERROR: Please use git commit description style 'commit <12+ chars of sha1> ("<title line>")' - ie: 'commit 69403bad97aa ("wifi: mac80211: sdata can be NULL during AMPDU start")'
+> #6:
+> In a previous commit 69403bad97aa, sta->sdata can be NULL, and thus it
 
-    240 
-    241         ret = iwl_mvm_mld_rm_sta_from_fw(mvm, int_sta->sta_id);
-    242         if (ret)
-    243                 IWL_WARN(mvm, "Failed sending remove station\n");
-    244 
-    245         iwl_mvm_dealloc_int_sta(mvm, int_sta);
-    246 
-    247         return ret;
-    248 }
+Okay, I will revise it and run checkpatch.
 
-regards,
-dan carpenter
+>
+>> However, in the same call stack, sta->sdata is also used in the
+>> following functions:
+>>
+>> ieee80211_ba_session_work()
+>>    ___ieee80211_stop_rx_ba_session(sta)
+>>      ht_dbg(sta->sdata, ...); -> No check
+>>      sdata_info(sta->sdata, ...); -> No check
+>>      ieee80211_send_delba(sta->sdata, ...) -> No check
+>>    ___ieee80211_start_rx_ba_session(sta)
+>>      ht_dbg(sta->sdata, ...); -> No check
+>>      ht_dbg_ratelimited(sta->sdata, ...); -> No check
+>>    ieee80211_tx_ba_session_handle_start(sta)
+>>      sdata = sta->sdata; if (!sdata) -> Add check by previous commit
+>>    ___ieee80211_stop_tx_ba_session(sdata)
+>>      ht_dbg(sta->sdata, ...); -> No check
+>>    ieee80211_start_tx_ba_cb(sdata)
+>>      sdata = sta->sdata; local = sdata->local -> No check
+>>    ieee80211_stop_tx_ba_cb(sdata)
+>>      ht_dbg(sta->sdata, ...); -> No check
+> I wonder if it would be better to teach ht_* do do nothing
+> if the first argument is NULL.
+
+Okay, I will use this way in patch v2.
+
+>
+> Also, are these theoretical bugs?
+> Or something that has been observed?
+> And has a reproducer?
+
+These bugs are found by my static analysis tool, by extending a known 
+bug fixed in a previous commit 69403bad97aa.
+Thus, they could be theoretical bugs.
+
+>
+>> Thus, to avoid possible null-pointer dereferences, the related checks
+>> should be added.
+>>
+>> These results are reported by a static tool designed by myself.
+>>
+>> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+>> Reported-by: TOTE Robot <baijiaju@buaa.edu.cn>
+> I see 4 copies of this patch in a few minutes.
+> As per the FAQ [1], please leave at least 24h between posts of a patch.
+>
+> [1] https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+I am quite sorry for this, because my script of git send email was buggy.
+I noticed this problem after sending the e-mail, and now I have fixed it :)
+
+
+Best wishes,
+Jia-Ju Bai
+
