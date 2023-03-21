@@ -2,149 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39396C2E51
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 10:58:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C9C86C2E74
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 11:12:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbjCUJ6a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Mar 2023 05:58:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40444 "EHLO
+        id S229713AbjCUKMx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Mar 2023 06:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjCUJ62 (ORCPT
+        with ESMTP id S229864AbjCUKMw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Mar 2023 05:58:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA9311FF1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 02:58:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C19C60F45
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 09:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45330C433EF;
-        Tue, 21 Mar 2023 09:58:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679392705;
-        bh=Ni7yiuO6rpbL0gt4gbfUWVY312iWHLGDDEfTnPT79T0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M78zXoYDddA9/zyMEEgKOk2UZH8NWlgrDwTPmQGONSOiTKCe6NcZYm5ji3G8HuHRe
-         Wf5bipf8cWjAVpgzgtSRcvESaV8MggOyLymQM2jMxGNWMYXRPYDdTT56hRPGNIyouy
-         l4uUI0NIpRJbbuhyK5uCoroVgHF3y5HJdjRtM7/4882XuERdobljHwtZFKJlTxSjTZ
-         vjPx0nlwCVeGqVARzMSYjAFG4vNmStB+HeCfCgypxYHnOfhDfgMJLvEtnS9LeOG58w
-         0X54hQk09RcvjBNTLoJiy9vbpHW+K7BP3RBjU+HTnmgYuNxw0ySmhO/gOGdGIO5Uad
-         /S++PqUbRUVuQ==
-Date:   Tue, 21 Mar 2023 10:58:21 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     greearb@candelatech.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] wireless: mt76: mt7921: Fix use-after-free in fw
- features query.
-Message-ID: <ZBl/vVj3wiaZl+du@lore-desk>
-References: <20230308175832.2394061-1-greearb@candelatech.com>
+        Tue, 21 Mar 2023 06:12:52 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274851E2A5
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 03:12:48 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id r11so57494357edd.5
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 03:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679393566;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MBblg6ouqKODHyX877fXDi2urk7+HMZmQEWvK4N+5xA=;
+        b=cyDchbnmi/K2X12VsJrtHmzOjhrjENPwu2ileUBtV/RR8kgrZ0leVFpzOYCfij+f8s
+         +j0bZQSRs/xu91acp5PQGXNgAyIDjwcpuExswfSxzVRjnvoiryoQqjxckO02RX9RZUwE
+         Uyz4OfHVdkj2VLarrKqf4fzVEd9lh5y2GPMzm3nnByYCs7FmDLUTw/uzJPuT+m5NUSkF
+         FHrzc2YTyAYiXxW4nsBVVBpeddlVENEZ8XQvNE6RXkAZHCtOqvAQBAsyl7kw9ONLHFkT
+         3fZwrtBB3WppLix8HvgVD9jWpWM3/6BDfqmkPmssj0pcorizhIN0+KD8P5ok8DVg/GP7
+         Z8nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679393566;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MBblg6ouqKODHyX877fXDi2urk7+HMZmQEWvK4N+5xA=;
+        b=gghDTG8tRUooQIekTabRBdl/i1i4l7UvMkjGmPNchNWKMxssyXBE4avasKSUf+ZC2J
+         iG8rkY1APRaGap7Rhk/eur1ebd0bDjQ3YIujYUMuDeI26FZpMySAX9TIx6k83aFRwDsk
+         F2TSqjdtWXxIjub1BBcZY/s/oi4eHghm1guYE/TYXVLvwcVQucGsLYHyq9qVUDlBt7Kd
+         ApjbKEkhSMjdG/8LaJK6GcWSZvxmdKx1Fpiysxf5L974PNgjr/lVkGdr94zGSjNzgwf8
+         QxT/ZB996XrQQztV8kO1xAi3wHo36rBEHpdg4Z3CPElOJssHRFLrbhbY4xveHcxJzZ3D
+         kBHg==
+X-Gm-Message-State: AO0yUKUSQrjQfHwmkZuIm1nwmOuyTdL4Zx4pF7dkx5Mg9v/4SKATWsoX
+        Y564YQu9bHKood2AxNATjA+gZQ==
+X-Google-Smtp-Source: AK7set9y91HFCneDKUYOtGWZfa4sI4vIRE5C0iaFvRabDlbD7NgNvD8qB02c9rR0uphL/1AlejObbA==
+X-Received: by 2002:aa7:d317:0:b0:4fb:5795:b7e0 with SMTP id p23-20020aa7d317000000b004fb5795b7e0mr2523640edq.31.1679393566673;
+        Tue, 21 Mar 2023 03:12:46 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:2142:d8da:5ae4:d817? ([2a02:810d:15c0:828:2142:d8da:5ae4:d817])
+        by smtp.gmail.com with ESMTPSA id g9-20020a056402320900b004fd219242a5sm5983006eda.7.2023.03.21.03.12.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Mar 2023 03:12:46 -0700 (PDT)
+Message-ID: <c4d67c22-6953-0f2c-4b80-cc9ab2ab5e8b@linaro.org>
+Date:   Tue, 21 Mar 2023 11:12:45 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="P/4+7czqGEvE9wGq"
-Content-Disposition: inline
-In-Reply-To: <20230308175832.2394061-1-greearb@candelatech.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 1/2] dt-bindings: wireless: add ath11k pcie bindings
+Content-Language: en-US
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20230321094011.9759-1-johan+linaro@kernel.org>
+ <20230321094011.9759-2-johan+linaro@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230321094011.9759-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---P/4+7czqGEvE9wGq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> From: Ben Greear <greearb@candelatech.com>
->=20
-> Stop referencing 'features' memory after release_firmware is called.
->=20
-> Fixes this crash:
->=20
-> RIP: 0010:mt7921_check_offload_capability+0x17d
-> mt7921_pci_probe+0xca/0x4b0
-> ...
->=20
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
+On 21/03/2023 10:40, Johan Hovold wrote:
+> Add devicetree bindings for Qualcomm ath11k PCIe devices such as WCN6855
+> for which the calibration data variant may need to be described.
+> 
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/init.c
-> index 38d6563cb12f..d2bb8d02ce0a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -165,12 +165,12 @@ mt7921_mac_init_band(struct mt7921_dev *dev, u8 ban=
-d)
-> =20
->  u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
->  {
-> -	struct mt7921_fw_features *features =3D NULL;
->  	const struct mt76_connac2_fw_trailer *hdr;
->  	struct mt7921_realease_info *rel_info;
->  	const struct firmware *fw;
->  	int ret, i, offset =3D 0;
->  	const u8 *data, *end;
-> +	u8 offload_caps =3D 0;
-> =20
->  	ret =3D request_firmware(&fw, fw_wm, dev);
->  	if (ret)
-> @@ -197,12 +197,19 @@ u8 mt7921_check_offload_capability(struct device *d=
-ev, const char *fw_wm)
->  	data +=3D sizeof(*rel_info);
->  	end =3D data + le16_to_cpu(rel_info->len);
-> =20
-> +	/* TODO:  This needs better sanity checking I think.
-> +	 * Likely a corrupted firmware with bad rel_info->len, for instance,
-> +	 * would blow this up.
-> +	 */
+>  .../net/wireless/qcom,ath11k-pci.yaml         | 58 +++++++++++++++++++
+>  1 file changed, 58 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
+> 
 
-can you please repost dropping this comment?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Regards,
-Lorenzo
+Best regards,
+Krzysztof
 
->  	while (data < end) {
->  		rel_info =3D (struct mt7921_realease_info *)data;
->  		data +=3D sizeof(*rel_info);
-> =20
->  		if (rel_info->tag =3D=3D MT7921_FW_TAG_FEATURE) {
-> +			struct mt7921_fw_features *features;
-> +
->  			features =3D (struct mt7921_fw_features *)data;
-> +			offload_caps =3D features->data;
->  			break;
->  		}
-> =20
-> @@ -211,7 +218,7 @@ u8 mt7921_check_offload_capability(struct device *dev=
-, const char *fw_wm)
-> =20
->  	release_firmware(fw);
-> =20
-> -	return features ? features->data : 0;
-> +	return offload_caps;
->  }
->  EXPORT_SYMBOL_GPL(mt7921_check_offload_capability);
-> =20
-> --=20
-> 2.39.1
->=20
-
---P/4+7czqGEvE9wGq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZBl/vQAKCRA6cBh0uS2t
-rJrPAP9qQu0lRK8VZz504BNGvGOHyvcl/WPPCpccLqTw2M01+AEA3h/ftJt2I1Mt
-JjqAPdaLIvnqIAGjp8OVVWv5h/urzQI=
-=Yfvv
------END PGP SIGNATURE-----
-
---P/4+7czqGEvE9wGq--
