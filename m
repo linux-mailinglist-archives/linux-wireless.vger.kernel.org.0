@@ -2,112 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD0C66C3392
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 15:01:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE29B6C3390
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Mar 2023 15:01:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231255AbjCUOBt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Mar 2023 10:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37248 "EHLO
+        id S231240AbjCUOBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Mar 2023 10:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230373AbjCUOBs (ORCPT
+        with ESMTP id S229696AbjCUOBU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Mar 2023 10:01:48 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E231B2E5
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 07:01:46 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id ek18so60096566edb.6
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 07:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1679407304;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=j26tJt6NnNAzyGu4WLnvCWTv3oW1M1SUyeftfDPTWn0=;
-        b=AbSVI+I4DHx9JetIGlhjpnoJxZA1uEiOjSQ7e9QiUFYmPRnCkKFhggCMOaaKHpEg1e
-         B5ivMtyPoPROhkWW8phhjDBBgw6i7oN1Lsd/t77dtgkjgLE7CcKNls0mmbd535YlMap6
-         LOAhwYzaO0eM7oYDuVPvHuCEFOqb8FTMrUUc1SiXDRyVWzz7lX88ex5GqEFv+tXMYgqQ
-         m7rC87SBxuN9OK9EE9+m7MQVXqrrwIP1I+ausKlEj5vSKmvAZWcidxD1kdFwtKDz0xXH
-         QOr5lId57Rnb34NZPWyAk08L0eRdLZTwZYpUzFeNHsgY+juw5IJxFTeui5dtHWbhfdwE
-         INYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679407304;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j26tJt6NnNAzyGu4WLnvCWTv3oW1M1SUyeftfDPTWn0=;
-        b=ddU097Ewv5zjDiHCQditPodnQTWh1mfxnrQaFPki93SpdxSGME8rhc1zo2DDu+NMm2
-         GbewWbu2ZXqI60nupRWn/dEtcA6lg0tfXGQN9zAEVf/MLQ1VG94N8Fe4qTKThy+349Qj
-         JslpA3JmFbI5/zJXLUpVx7fdOqxrYjZYbObkR/SudPsNhLpPYq1A+CSrcbBjEb4jOzuC
-         9wQ7axhu7Mz9e8JYoMef91W0BXDf0BXwfeoA0Li7sh+J4RTZhzfMcj1IlKZVyZIWlG6/
-         ELbnSYq1rrkcDfL1L0w5S0elPjt5vJ2Uafg3OdQPqrZcihDLmDBmZkzHoRNmJivhbDlj
-         4Wqg==
-X-Gm-Message-State: AO0yUKVFITXc0i69Ip8Qar/sXJJowOrRmwff2UK5ipzVNN0aIOmCWI2c
-        eVYRNB/aFRhN4mr7usElpPGgwg==
-X-Google-Smtp-Source: AK7set8ucDLG9fAEqf9uy4PxfqGzqLuGzyH3LRu5tCGF8OOY6SlApdT9f6NHyGcmg6+WtRQjZlRzag==
-X-Received: by 2002:a05:6402:b35:b0:4fa:ee01:a0cb with SMTP id bo21-20020a0564020b3500b004faee01a0cbmr3386046edb.32.1679407304662;
-        Tue, 21 Mar 2023 07:01:44 -0700 (PDT)
-Received: from localhost ([2a04:cec0:11b9:8a49:3d4e:8d15:74df:30e7])
-        by smtp.gmail.com with ESMTPSA id z23-20020a50cd17000000b004bd1fe2cc02sm6412163edi.16.2023.03.21.07.01.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Mar 2023 07:01:44 -0700 (PDT)
-References: <b9bd16cb-f1fa-34b7-d599-8637cbe5032b@free.fr>
- <1jh6ue74x9.fsf@starbuckisacylon.baylibre.com>
- <ce0bd9a5-e44d-b30b-3434-9d5fd36e251a@free.fr>
-User-agent: mu4e 1.8.13; emacs 28.2
-From:   Jerome Brunet <jbrunet@baylibre.com>
-To:     Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        linux-wireless@vger.kernel.org, MMC <linux-mmc@vger.kernel.org>,
-        AML <linux-amlogic@lists.infradead.org>
-Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Alexander Prutskov <alep@cypress.com>,
-        Joseph chuang <jiac@cypress.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@gmail.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Pierre-Hugues Husson <phh@phh.me>
-Subject: Re: Performance lower than expected with BCM4359/9 on S905X2
-Date:   Tue, 21 Mar 2023 14:54:39 +0100
-In-reply-to: <ce0bd9a5-e44d-b30b-3434-9d5fd36e251a@free.fr>
-Message-ID: <1jcz526w53.fsf@starbuckisacylon.baylibre.com>
+        Tue, 21 Mar 2023 10:01:20 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D078A6C
+        for <linux-wireless@vger.kernel.org>; Tue, 21 Mar 2023 07:01:19 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 3C301100082;
+        Tue, 21 Mar 2023 14:01:16 +0000 (UTC)
+Received: from [172.20.5.3] (unknown [67.201.77.10])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 99B7413C2B0;
+        Tue, 21 Mar 2023 07:01:14 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 99B7413C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1679407274;
+        bh=kzvvXBoMtJjJ3IrixOpeBB4CdNA3EnYZ/1s7KV/C+aw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=SMknb7i8FOm6wLt0K/RRokPhoo6bB0QlTVEqeU0VpapXyLQui2oeJAw+PfUeMPMJC
+         PDdD8qN2yQx53j9dHgOC7rTEywtotd/zDTo5gClSKEYzu5R82cHguY3IVPNiBXdd7N
+         UtovtFQrN5Xe5VKt0ESGs2Wjajw3QsWuOpRIlcsM=
+Message-ID: <98c35dc6-580b-d877-4124-93d98f2a163c@candelatech.com>
+Date:   Tue, 21 Mar 2023 07:01:13 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2] wireless: mt76: mt7921: Fix use-after-free in fw
+ features query.
+Content-Language: en-MW
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+References: <20230308175832.2394061-1-greearb@candelatech.com>
+ <ZBl/vVj3wiaZl+du@lore-desk>
+ <8f3fce81-dae7-9850-87ac-ed2b869c9dfd@candelatech.com>
+ <ZBmw+uTa+CiV/KKJ@lore-desk>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <ZBmw+uTa+CiV/KKJ@lore-desk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1679407277-fkupqb7K8Mnt
+X-MDID-O: us5;ut7;1679407277;fkupqb7K8Mnt;<greearb@candelatech.com>;0161bc757c83381a5b931166ef547186
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 3/21/23 06:28, Lorenzo Bianconi wrote:
+>> On 3/21/23 02:58, Lorenzo Bianconi wrote:
+>>>> From: Ben Greear <greearb@candelatech.com>
+>>>>
+>>>> Stop referencing 'features' memory after release_firmware is called.
+>>>>
+>>>> Fixes this crash:
+>>>>
+>>>> RIP: 0010:mt7921_check_offload_capability+0x17d
+>>>> mt7921_pci_probe+0xca/0x4b0
+>>>> ...
+>>>>
+>>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>>>> ---
+>>>>    drivers/net/wireless/mediatek/mt76/mt7921/init.c | 11 +++++++++--
+>>>>    1 file changed, 9 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+>>>> index 38d6563cb12f..d2bb8d02ce0a 100644
+>>>> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+>>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+>>>> @@ -165,12 +165,12 @@ mt7921_mac_init_band(struct mt7921_dev *dev, u8 band)
+>>>>    u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+>>>>    {
+>>>> -	struct mt7921_fw_features *features = NULL;
+>>>>    	const struct mt76_connac2_fw_trailer *hdr;
+>>>>    	struct mt7921_realease_info *rel_info;
+>>>>    	const struct firmware *fw;
+>>>>    	int ret, i, offset = 0;
+>>>>    	const u8 *data, *end;
+>>>> +	u8 offload_caps = 0;
+>>>>    	ret = request_firmware(&fw, fw_wm, dev);
+>>>>    	if (ret)
+>>>> @@ -197,12 +197,19 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+>>>>    	data += sizeof(*rel_info);
+>>>>    	end = data + le16_to_cpu(rel_info->len);
+>>>> +	/* TODO:  This needs better sanity checking I think.
+>>>> +	 * Likely a corrupted firmware with bad rel_info->len, for instance,
+>>>> +	 * would blow this up.
+>>>> +	 */
+>>>
+>>> can you please repost dropping this comment?
+>>
+>> Why?  Looks to me like this portion of mtk driver logic assumes firmware is
+>> never corrupted on accident or on purpose.  It should be fixed at some point.
+> 
+> even if this is a theoretical issue, this does not seem the right way to track
+> it and it is not related to this patch.
 
->
-> I was not asking anyone to reproduce my exact setup.
->
-> I find it confusing that some assume there is something different
-> about the board I'm using. The more likely hypothesis is that all
-> S905X2 boards have the same behavior.
+There is no better way I know to track such problems, it is not like random OSS developers will
+read kernel bugzilla for this sort of thing, and email bug report about it will be buried in days
+and never seen again.
 
-High-speed MMC modes are usually defined/limited per boards.
-Check the different  DTs in arch/arm64/boot/dts/amlogic, you'll see
-that not all have the same configs.
+And it is related to crazy memory corruption bugs since a corrupted firmware could cause similar
+memory corruption.  So next time someone is working on this code, maybe they will see the
+comment and code it more defensively.
 
-Yes the S905X2 has the bounce buffer work-around which plays a role on
-the overall performance. MMC high-speed modes is critical just has well.
+Anyway, if you insist, I can re-spin the patch against 6.2 and repost.  I also hear that it will not
+apply to 6.3, but I'm not yet working on 6.3.
 
-The Amlogic 4.9 downstream does all kinds of fancy (and unsafe) things
-to enable higher modes.
+Thanks,
+Ben
 
-So there is no assumption here, merely a tentative to get a clearer
-picture.
-
->
-> Regards
-
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
