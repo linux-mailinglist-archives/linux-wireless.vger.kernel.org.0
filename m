@@ -2,116 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2BEE6C582B
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Mar 2023 21:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 353BF6C5847
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Mar 2023 21:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjCVUxU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Mar 2023 16:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
+        id S231229AbjCVU6k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Mar 2023 16:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231736AbjCVUxC (ORCPT
+        with ESMTP id S230478AbjCVU6j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Mar 2023 16:53:02 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E8B435B4;
-        Wed, 22 Mar 2023 13:52:39 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id c18so20401027ple.11;
-        Wed, 22 Mar 2023 13:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679518358;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CWlpBm7vrzYxnF70yu+Dqd4NQ9SDIdN+19JogqnAdig=;
-        b=DO60S/FF7O+sG/Ce44mbbn0TqBH1Y/ojc2R0nKjGG0QyTLfUsQ9tuij8rLNUWYngs/
-         LWmcsTrgRIstcg9LEpEnevlD6PMPttTao2qNYZZS8lutOwMGbhCpqXm9iyksyPERWoqE
-         6cW+vsW4ObbBUkvwwxpy6Wr5qxznTs5zs6uA8WWi6NG5NZa0Bm4eHqXo0J6NtWM2LjpP
-         7//xubxam2Wox9wjZRUXNeZl5hLXPC3SbmB/kXVvYWV1ctUCCOkp1ZVkFW9390jIyTDc
-         PgobKK4aQbmcsCscRuON8Ls6Zumng6GP/q1dDmRLnoQfFqLxtZeclv963qacw3hCAVUb
-         adnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679518358;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CWlpBm7vrzYxnF70yu+Dqd4NQ9SDIdN+19JogqnAdig=;
-        b=ZCWJkGbR2nS67j2RgUDzmyDGXjB7Che/A9+q5nokM72NEfdUTJ1b4a7sQW9vumyOWf
-         Uf+lYE1BguFbLVwS7s5mjNMbevJ076/MSbL0mz3HIWqsJubrn77P3/VWxhi2qVHVYhGN
-         9ycyfGI8+uyHr27QfOMwAot40K6bPJxJ/9MJUQPtVB2xiJy0krRdkU7dmr/JhBvgHM75
-         0AcrJ+MI08EwAJq7WvYiGrFWGmP4H/mQeKPYlbt6P+4yHzr76+O79jvHQj06EvzRpX2n
-         fjs/nZXMuajl/f+Tt/ZrJKPjcNcqe16YEi/cQaIVVgWpntYqdrxzpS18J0pyH/7ZGz+t
-         NKSA==
-X-Gm-Message-State: AO0yUKV6gfycpNxrh/0i0kn3//bmSm59MjIrgIARQShl7abmvWBJunhA
-        NvQQiAkSObx/FfG5YGkaTJChiqkjmFFGEYyr0+M=
-X-Google-Smtp-Source: AK7set9HXCo9Zi3blVgad1JSkWd/MuPeOF8vMBc5PjJt4UmJi2GLT3Iy+EpN5dB3VIuMF9CIHvf8QGOAfygOf9zT6BI=
-X-Received: by 2002:a17:903:2347:b0:1a0:5402:b17b with SMTP id
- c7-20020a170903234700b001a05402b17bmr1655554plh.0.1679518358570; Wed, 22 Mar
- 2023 13:52:38 -0700 (PDT)
+        Wed, 22 Mar 2023 16:58:39 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B25131
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Mar 2023 13:58:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=tnVlQbQ+Osf80GEtD2/XmWosAEX59luwGzbhDTMc2sg=; b=ZC4hYHr5ViNYDmSF4u/gSOnnYk
+        b0MS6sUS0hS4NJ74MKwTS59XCv9q+eUQVc9nkmpOvJoYGDJo2hgFXgigCVSoQIfFs5t7p1GtVUUpo
+        DOycUVikLSGgx+7f8iBDB17GdeEWfPlhxDUwtxZw0ng3ilxzAGF8rqg5n1gpQegdSjBI=;
+Received: from p54ae9730.dip0.t-ipconnect.de ([84.174.151.48] helo=nf.local)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1pf5XY-005lzv-H1; Wed, 22 Mar 2023 21:58:36 +0100
+Message-ID: <ff4c3a89-f3dc-2ae6-1b11-f2c46944e376@nbd.name>
+Date:   Wed, 22 Mar 2023 21:58:36 +0100
 MIME-Version: 1.0
-References: <ZBskz06HJdLzhFl5@hyeyoo> <55057734-9913-8288-ad88-85c189cbe045@lwfinger.net>
-In-Reply-To: <55057734-9913-8288-ad88-85c189cbe045@lwfinger.net>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 22 Mar 2023 21:52:27 +0100
-Message-ID: <CAOiHx=n7EwK2B9CnBR07FVA=sEzFagb8TkS4XC_qBNq8OwcYUg@mail.gmail.com>
-Subject: Re: [BUG v6.2.7] Hitting BUG_ON() on rtw89 wireless driver startup
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Hyeonggon Yoo <42.hyeyoo@gmail.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH v3] wireless: mt76: mt7921: Fix use-after-free in fw
+ features query.
+Content-Language: en-US
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Ben Greear <greearb@candelatech.com>,
+        Kalle Valo <kvalo@kernel.org>
+References: <51fd8f76494348aa9ecbf0abc471ebe47a983dfd.1679502607.git.lorenzo@kernel.org>
+From:   Felix Fietkau <nbd@nbd.name>
+In-Reply-To: <51fd8f76494348aa9ecbf0abc471ebe47a983dfd.1679502607.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 22 Mar 2023 at 18:03, Larry Finger <Larry.Finger@lwfinger.net> wrote:
->
-> On 3/22/23 10:54, Hyeonggon Yoo wrote:
-> >
-> > Hello folks,
-> > I've just encountered weird bug when booting Linux v6.2.7
-> >
-> > config: attached
-> > dmesg: attached
-> >
-> > I'm not sure exactly how to trigger this issue yet because it's not
-> > stably reproducible. (just have encountered randomly when logging in)
-> >
-> > At quick look it seems to be related to rtw89 wireless driver or network subsystem.
->
-> Your bug is weird indeed, and it does come from rtw89_8852be. My distro has not
-> yet released kernel 6.2.7, but I have not seen this problem with mainline
-> kernels throughout the 6.2 or 6.3 development series.
+On 22.03.23 17:37, Lorenzo Bianconi wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> Stop referencing 'features' memory after release_firmware is called.
+> 
+> Fixes this crash:
+> 
+> RIP: 0010:mt7921_check_offload_capability+0x17d
+> mt7921_pci_probe+0xca/0x4b0
+> ...
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
-Looking at the rtw89 driver's probe function, the bug is probably a
-simple race condition:
-
-int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-{
-    ...
-    ret = rtw89_core_register(rtwdev); <- calls ieee80211_register_hw();
-    ...
-    rtw89_core_napi_init(rtwdev);
-    ...
-}
-
-so it registers the wifi device first, making it visible to userspace,
-and then initializes napi.
-
-So there is a window where a fast userspace may already try to
-interact with the device before the driver got around to initializing
-the napi parts, and then it explodes. At least that is my theory for
-the issue.
-
-Switching the order of these two functions should avoid it in theory,
-as long as rtw89_core_napi_init() doesn't depend on anything
-rtw89_core_register() does.
-
-FWIW, registering the irq handler only after registering the device
-also seems suspect, and should probably also happen before that.
-
-Regards
-Jonas
+- Felix
