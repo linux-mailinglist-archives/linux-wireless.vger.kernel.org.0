@@ -2,109 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94FD86C515B
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Mar 2023 17:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D956C5238
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Mar 2023 18:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbjCVQ51 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Mar 2023 12:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42196 "EHLO
+        id S230343AbjCVRTn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Mar 2023 13:19:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbjCVQ50 (ORCPT
+        with ESMTP id S230350AbjCVRT2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Mar 2023 12:57:26 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CAF64C30;
-        Wed, 22 Mar 2023 09:57:23 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id w133so14193718oib.1;
-        Wed, 22 Mar 2023 09:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679504243;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=x/LJCDUUS8dZkIDhRYPerCJh3arSRw693tQiddUd1Gc=;
-        b=lhOgE0WLpLCyeW2JRuHpeM0ES4VPFrguHRervL89zb2YhFiWtLu5LDmNN+owybtoY6
-         e+SkAx6T9str8YnN3WTFmLJpiHlejSiBGrVucbVnmQz1e5Y+hTWakGT2B5IWenBZKLld
-         3RcSTUNOhDUDeA4uhY8+abqCvCuLPe1qiKgCTS9MegLAegsEnECmUGVY/nIo2Mtez38r
-         j3sKiFmvmYYPgUbqlXe7G0RsL6GS4Fb1wch6gYt8FbIFuQfaVo6CK04uz/jLG/odHXJv
-         WnpGYBp/rcKyyzUxfHrBE+u5EfCULP5/pjhvlpQ7rNSEO07UD9slqdNVcBttimIQfmSf
-         Z9hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679504243;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x/LJCDUUS8dZkIDhRYPerCJh3arSRw693tQiddUd1Gc=;
-        b=8PIFlRuo9cY+n8DAC6DHMa4i7hqp4R9ZubDZMeDmYmgY6d5itfGwp5BnmRfeaNMPS8
-         krhQZPEeJ/EdBMyB4XQOOetWLaVeURxAtHiIse6FSPdoXZa8Ut0sxHqUrs9Les8DOHi2
-         Abo36+0CI2sMWFaWInEOJWdW9HwrfHlU34BSwwPpWUwcWgfPoPQ6X3BZwC2NGM7tUif9
-         R/i/+ONvCsV2YL9FlVViA2UWO3H/8MxPD4dkkjJiU75CeRmAQrRtUGEksIL8PoEUceEa
-         0/rAgrAeIUFOP8Zgkgs3P/6ylonE8xfj5fn+4GT+zsm7lrdXpTTuNHcOWIxN/c32eMph
-         hKXw==
-X-Gm-Message-State: AO0yUKUO+IFzBx62cFimhHM1LmaZwaPD9kbZblnfd/CAx9qNYRz8wT94
-        /iHLWZvUVL+mBivBGsmcpB0=
-X-Google-Smtp-Source: AK7set/v5X61vo/FnOG/xCUP7LSwyMpXQZ0uRP+g37npUXiO/gOwIPDgls8z1zVTWV6HmZomu8TuKw==
-X-Received: by 2002:a54:4105:0:b0:386:9bfc:d04f with SMTP id l5-20020a544105000000b003869bfcd04fmr1421847oic.45.1679504242916;
-        Wed, 22 Mar 2023 09:57:22 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id o187-20020acaf0c4000000b0038476262f65sm6153526oih.33.2023.03.22.09.57.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Mar 2023 09:57:22 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <55057734-9913-8288-ad88-85c189cbe045@lwfinger.net>
-Date:   Wed, 22 Mar 2023 11:57:21 -0500
+        Wed, 22 Mar 2023 13:19:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2675566D04
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Mar 2023 10:19:14 -0700 (PDT)
+From:   Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1679505550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=VnAwkvQsv+iR2BpWJEGJXvX03ziFlRmpzSGqQQ3X2bU=;
+        b=ALbDzjZM6aaiZt9QTnaL/pZYox4LlCnYed1jqTZ+Nnp6RwJEdODrzDBRR31qPW6PtF0jR/
+        vpRkKpwcZQZY2hMBPRCofV20vjUuREM1QRZnmAEJA6Wn+NJYaa0dtTrmOCI54OD9nS7lGL
+        YWjoDIhdUt8NJOeP2eruigGVoEHyq6/2l+nfM3WNlDhFSVKMFl2JqU5hIfo5785J1/ryr1
+        P7QViKdw9Div+J1QG3ijZPCJvKbV/RJTUllivX1mEYG1TKlb+XGnFkIPjcoxyxKqHTpIzm
+        gLOlqZP2O4EhwZsbxPos0Q3nlgyajDqq+I1u28dmkkOgT+FtGoaSsP19iYpVbg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1679505550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=VnAwkvQsv+iR2BpWJEGJXvX03ziFlRmpzSGqQQ3X2bU=;
+        b=Km/5gTg/Q79DED3f4KvUEgh5tTLHCDYh10zOGiWLaPrCYtSHJUoKkliccIOfyfgoeBqs10
+        nA4VisaoLHGPBdBA==
+To:     linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+Date:   Wed, 22 Mar 2023 18:18:51 +0100
+Message-Id: <20230322171905.492855-1-martin.kaistra@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [BUG v6.2.7] Hitting BUG_ON() on rtw89 wireless driver startup
-To:     Hyeonggon Yoo <42.hyeyoo@gmail.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-References: <ZBskz06HJdLzhFl5@hyeyoo>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <ZBskz06HJdLzhFl5@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/22/23 10:54, Hyeonggon Yoo wrote:
-> 
-> Hello folks,
-> I've just encountered weird bug when booting Linux v6.2.7
-> 
-> config: attached
-> dmesg: attached
-> 
-> I'm not sure exactly how to trigger this issue yet because it's not
-> stably reproducible. (just have encountered randomly when logging in)
-> 
-> At quick look it seems to be related to rtw89 wireless driver or network subsystem.
+This series intends to bring AP mode support to the rtl8xxxu driver,
+more specifically for the 8188f, because this is the HW I have.
+The work is based on the vendor driver as I do not have access to
+datasheets.
 
-Your bug is weird indeed, and it does come from rtw89_8852be. My distro has not 
-yet released kernel 6.2.7, but I have not seen this problem with mainline 
-kernels throughout the 6.2 or 6.3 development series.
+This is an RFC, so that there can be a discussion first before
+potentially implementing support for the other chips in this driver, if
+required.
 
-One thing that would have been helpful is to include any rtw89 entries in the 
-dmesg log that appeared BEFORE the BUG. For instance, I have no idea what 
-firmware level you are running, etc.
+Also while doing some measurements with iperf3 to compare with the
+vendor driver, I saw, that TCP traffic from AP to STA is slower than in
+the vendor driver. For UDP it looks fine. I hope I can get some help to
+fix this.
 
-If you are willing, I would like you to 'git clone 
-https://github.com/lwfinger/rtw89.git'. You would likely need to install the 
-packages needed to build an out-of-kernel driver as shown in README.md in the 
-repo. You would also need to blacklist rtw89_8852be, which would interfere with 
-rtw_8852be coming from the new repo. The code in the repo matches what will be 
-in kernel 6.3+, and it would be instructive if there is something in your system 
-that triggers this problem. I have never seen anything like this.
+* vendor driver:
 
-Larry
+  without 802.11n:
+    UDP (AP -> STA): 27 Mbits/sec
+    UDP (STA -> AP): 33 Mbits/sec
+    TCP (AP -> STA): 24 Mbits/sec
+    TCP (STA -> AP): 26 Mbits/sec
+
+  with 802.11n:
+    UDP (AP -> STA): 51 Mbits/sec
+    UDP (STA -> AP): 35 Mbits/sec
+    TCP (AP -> STA): 40 Mbits/sec
+    TCP (STA -> AP): 36 Mbits/sec
+
+* rtl8xxxu:
+
+  without 802.11n:
+    UDP (AP -> STA): 25 Mbits/sec
+    UDP (STA -> AP): 31 Mbits/sec
+    TCP (AP -> STA):  3 Mbits/sec !
+    TCP (STA -> AP): 25 Mbits/sec
+
+  with 802.11n:
+    UDP (AP -> STA): 41 Mbits/sec
+    UDP (STA -> AP): 36 Mbits/sec
+    TCP (AP -> STA):  3 Mbits/sec !
+    TCP (STA -> AP): 32 Mbits/sec
+
+Thanks,
+  Martin
+
+Martin Kaistra (14):
+  wifi: rtl8xxxu: Add start_ap() callback
+  wifi: rtl8xxxu: Select correct queue for beacon frames
+  wifi: rtl8xxxu: Add beacon functions
+  wifi: rtl8xxxu: Add set_tim() callback
+  wifi: rtl8xxxu: Allow setting rts threshold to -1
+  wifi: rtl8xxxu: Allow creating interface in AP mode
+  wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+  wifi: rtl8xxxu: Actually use macid in rtl8xxxu_gen2_report_connect
+  wifi: rtl8xxxu: Add parameter role to report_connect
+  wifi: rtl8xxxu: Add sta_add() callback
+  wifi: rtl8xxxu: Put the macid in txdesc
+  wifi: rtl8xxxu: Enable hw seq for all non-qos frames
+  wifi: rtl8xxxu: Clean up filter configuration
+  wifi: rtl8xxxu: Declare AP mode support for 8188f
+
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  28 ++-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |   3 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |   1 +
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 226 +++++++++++++++---
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   2 +
+ 5 files changed, 222 insertions(+), 38 deletions(-)
+
+-- 
+2.30.2
 
