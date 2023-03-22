@@ -2,52 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37ABD6C4735
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Mar 2023 11:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBDA16C4736
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Mar 2023 11:06:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjCVKGD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Mar 2023 06:06:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60990 "EHLO
+        id S229464AbjCVKG2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Mar 2023 06:06:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbjCVKGA (ORCPT
+        with ESMTP id S229764AbjCVKGU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Mar 2023 06:06:00 -0400
+        Wed, 22 Mar 2023 06:06:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E2E2E826
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Mar 2023 03:05:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB028532B8
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Mar 2023 03:06:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99D3C62000
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Mar 2023 10:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDD7C433D2;
-        Wed, 22 Mar 2023 10:05:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8ACC761FEC
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Mar 2023 10:06:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40265C433D2;
+        Wed, 22 Mar 2023 10:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679479557;
-        bh=Twu27M3OjVEot50ANfuewirgwxiZlSiBne6ZVJl4WcU=;
+        s=k20201202; t=1679479579;
+        bh=CsjaIYS2qGvXc8fSVyo4ENm6K5YOcQPAEp8BXkXVdM0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=FF7czHaLiNYmTiSglIMQNVZ6fY2sw8sBtFfiYVbZ9SrYYXbKAcFfGSRyRW5NjIs2t
-         Z22HXvt4egc8v6TsOb9toWkudXingtth44eKIdzi/r+itYxfBOIVZC9bnSIJLunQT0
-         c0i+UNrxhbkwc+/IIuXJfCYkUutHbcj4GaKzCzVyvUDRPYaNEdnoe/1unm5fnd0srq
-         qcXa8Qmfxdo1kCSU+7ojpgvT7FK7plpbPGyMRxMceydGWhKlTHKNap7LJAx1JA8NAj
-         bqTTsQiw1A/vV3hxV0ALl4egK3Qa/8Q+dMInKuMGnyochqvm3InLaIiZbc3HyrOznq
-         gOuL6biYq6VJg==
+        b=A0utQ/9PBLEOFiAptg6qkqdK3uZraY0rWphgly/ewcl+wL//YoZ97+MNsMcz+OYbX
+         jeR5iRCYDil1WCvMhUSCEwvRxTq8IoO9tlOgA5Qt45T/DDowolVZ2zJ5LSyDKd4nPh
+         qIhQJaWGbPw11BQN+Q/glqhmjjLz6p6vWdCkKTuMHUujJJ7agR1/on+dmteedR4jnr
+         GhHQD5PdG+Ycb4gOFbGxOv/AvRiWIVgClMrtG6dWXN3r6dbIbtjJV4ckuLOcBPBhhv
+         UDphR+uhwm5t7y0kgZ/0zs8dgzsZFdinol8l7GYfxX5ms5e2K61383tVYKqmkTkTg+
+         CS8baoRcAGyow==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: fix firmware assert during channel switch
- for
- peer sta
+Subject: Re: [PATCH] wifi: ath12k: Identify DFS channel when sending scan
+ channel
+ list command
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230315113202.8774-1-quic_aarasahu@quicinc.com>
-References: <20230315113202.8774-1-quic_aarasahu@quicinc.com>
-To:     Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Aaradhana Sahu <quic_aarasahu@quicinc.com>
+In-Reply-To: <20230316041144.7770-1-quic_bqiang@quicinc.com>
+References: <20230316041144.7770-1-quic_bqiang@quicinc.com>
+To:     Baochen Qiang <quic_bqiang@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167947955370.29931.1748538574703666695.kvalo@kernel.org>
-Date:   Wed, 22 Mar 2023 10:05:55 +0000 (UTC)
+Message-ID: <167947957332.29931.14263672557733620301.kvalo@kernel.org>
+Date:   Wed, 22 Mar 2023 10:06:18 +0000 (UTC)
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -57,51 +55,26 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aaradhana Sahu <quic_aarasahu@quicinc.com> wrote:
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> Currently, during change in bandwidth for peer sta, host sends the
-> new value of channel width via WMI_PEER_CHWIDTH set peer param command
-> alone. This can lead to firmware assert in some scenario since before
-> the command, firmware was having value of channel width and its
-> corresponding phymode. After the command, host tries to set the new
-> value of channel width alone which can become incompatible when compared
-> with its phymode.
+> WMI_CHAN_INFO_DFS flag should be set when configuring a DFS channel
+> included in scan channel list. Without it, firmware will not send a
+> probe request frame which is needed in connection to an AP configured
+> with hidden SSID/network_id. So fix this to allow probe request frames
+> to be sent in cases where a beacon frame has been seen on the channel
+> first.
 > 
-> For example:
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 > 
-> Bandwidth Upgrade
-> ~~~~~~~~~~~~~~~~~~
-> After association, sta is in 40 MHz bandwidth in 11ax-HE40 phymode.
-> After bandwidth upgrades, sta moves to 80 MHz but as per phymode,
-> max bandwidth is still 40 MHz. Hence, firmware assert is seen.
-> So in this case first phymode should be moved to 11ax-HE80
-> followed by bandwidth change.
-> 
-> Bandwidth Downgrade
-> ~~~~~~~~~~~~~~~~~~
-> Similarly, reverse of above is also possible when sta is in 40 MHz
-> bandwidth in 11ax-HE40 phymode. Bandwidth should be changed to 20 MHz
-> and if host sends phymode first then, phymode will become 11ax-HE20
-> and will be incompatible with bandwidth value and hence firmware
-> assert will be seen. Hence, in this case first channel width
-> should be set followed by phymode.
-> 
-> Fix this issue by sending WMI set peer param command for phymode as
-> well as bandwidth based on the type of bandwidth change i.e upgrade
-> or downgrade.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-cbc0008c9b39 wifi: ath12k: fix firmware assert during channel switch for peer sta
+4c26033d75e4 wifi: ath12k: Identify DFS channel when sending scan channel list command
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230315113202.8774-1-quic_aarasahu@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230316041144.7770-1-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
