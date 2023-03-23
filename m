@@ -2,40 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 588536C6E3A
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 17:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387E36C6E79
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 18:13:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232416AbjCWQ6D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Mar 2023 12:58:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52230 "EHLO
+        id S231665AbjCWRNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Mar 2023 13:13:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232457AbjCWQ55 (ORCPT
+        with ESMTP id S231538AbjCWRNI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Mar 2023 12:57:57 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 87BDF1EBFF;
-        Thu, 23 Mar 2023 09:57:50 -0700 (PDT)
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1679590667;
-        bh=b65rg+Ns9zniat0wIt6g2YkntDD1KWVkHkHtk40xSCk=;
-        h=From:To:Cc:Subject:Date;
-        b=FT7RrLICxvsBUjsNmMBwIsnO/PJxVYmQ+LBDrZnNPm0cDwDl3r1tVJVs0A72twOmq
-         lFE6ZkABxP0hzpDC/3H7CRQftfCSiqvY0ZCxtUyFsjpdvlG88k/bWQM3dWS1e4ik5M
-         3xpGqCmLVtCGGq3UK7tgOAAx4v9ZrXicTYtYC0pg=
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Alexander Wetzel <alexander@wetzel-home.de>,
-        Felix Fietkau <nbd@nbd.name>, stable@vger.kernel.org
-Subject: [PATCH] wifi: ath10k: Serialize wake_tx_queue ops
-Date:   Thu, 23 Mar 2023 17:55:27 +0100
-Message-Id: <20230323165527.156414-1-alexander@wetzel-home.de>
-X-Mailer: git-send-email 2.40.0
+        Thu, 23 Mar 2023 13:13:08 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FD2113E0
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 10:12:59 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id w9so89902953edc.3
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 10:12:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679591578;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4/W/awWX4W+zcuM+R3yDEDWYh82OlCjaf/hYhhVRfbo=;
+        b=giKoCEmKF7byyJX8t98yerTiXDPDJFNEBrOexfrAyiDONEvmrPC1jeUi6/F0DULmlj
+         aR+yHePTI+xfXyF6wOCrLj65ES0VX82gFwZWjk18rC/9KiNMnmJLKuS3Vp+perqI2IXN
+         WpXU8sNvOxVqfcbA1riOIDNccpOnVk3ayot1dCmqJGkVjXLZ5ivbwEdgl5PC7JW5SOV6
+         b0PRwsVTXLe849Bm6mFTfRHIMYka4zO/MNg2h8OTKbEPA1lurX1bAMka5C6VDNgblKf5
+         fUvxCCUjlsq4hr6X13LyiGFOvvIsvmlG8e/1XxQsPPOHIJ3lnyzGk1E/yzaU7XA3e5EZ
+         CGVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679591578;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4/W/awWX4W+zcuM+R3yDEDWYh82OlCjaf/hYhhVRfbo=;
+        b=Z74LUDGLrrZqTP0sxy1oFRWzjIlR0roNFImujq9bjBXXVf1jRaZD4APWV+7vwbGRV2
+         9jWTbD3wj2c9usur9YHz61evt/qFE5srNbyKS40/hps9QE9d+AsuugzGbBXy+inyRllo
+         WpgQzf/peFNqR/xDC6Tr18mgBsNRlQrcQ6p2vSPfuGdTPbs4hzoYuJdMv23VFAbTrlJR
+         uHQhcT5+iC861TxKBq+r6Ew8VVLv8z+rCpKqejNlK2Iv3HDiLMIYkgst/gREp7CQkasq
+         l6N0FjY1B1Z2xjehEqQXOs1RvQxpkZpRgJwswAG0uDB9FjD6WzQRMglxDBtzDrVTEOY7
+         htQg==
+X-Gm-Message-State: AO0yUKUq8JqLPl1VNY/+HH6FEFdUIw16CBqm5DksCnauosBFimYR2Fnp
+        Ei6oPepeJV6K7RpQ1LT4Xiw=
+X-Google-Smtp-Source: AK7set84P+dSjKr22IQLbamFi+TVaJpRVwynVkalskSxKdgUyrVcaBAauQAsapuErmuC5XZGnX5OQA==
+X-Received: by 2002:a17:906:f6da:b0:8de:e66a:ece9 with SMTP id jo26-20020a170906f6da00b008dee66aece9mr10956574ejb.24.1679591578249;
+        Thu, 23 Mar 2023 10:12:58 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id z26-20020a17090674da00b009310d4dece9sm8904244ejl.62.2023.03.23.10.12.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Mar 2023 10:12:57 -0700 (PDT)
+Message-ID: <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
+Date:   Thu, 23 Mar 2023 19:12:56 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+To:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+Content-Language: en-US
+In-Reply-To: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,90 +78,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Serialize the ath10k implementation of the wake_tx_queue ops.
-ath10k_mac_op_wake_tx_queue() must not run concurrent since it's using
-ieee80211_txq_schedule_start().
+On 22/03/2023 19:18, Martin Kaistra wrote:
+> This series intends to bring AP mode support to the rtl8xxxu driver,
+> more specifically for the 8188f, because this is the HW I have.
+> The work is based on the vendor driver as I do not have access to
+> datasheets.
+> 
+> This is an RFC, so that there can be a discussion first before
+> potentially implementing support for the other chips in this driver, if
+> required.
+> 
 
-Fixes: bb2edb733586 ("ath10k: migrate to mac80211 txq scheduling")
-Reported-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/519b5bb9-8899-ae7c-4eff-f3116cdfdb56@nbd.name
-CC: <stable@vger.kernel.org>
-Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
----
+Hi!
 
-The intend of this patch is to sort out an issue discovered in the discussion
-referred to by the Link tag.
+I ran into some problems while testing this.
 
-I can't test it with real HW and thus just implemented the per-ac queue lock
-Felix suggested. One obvious alternative to the per-ac lock would be to
-bring back the txqs_lock commit bb2edb733586 ("ath10k: migrate to mac80211 txq
-scheduling") dropped.
+First, a null pointer dereference in rtl8xxxu_config_filter() when
+turning on the AP. priv->vif was NULL:
 
-Alexander
+	if (priv->vif->type != NL80211_IFTYPE_AP) {
 
----
- drivers/net/wireless/ath/ath10k/core.c | 3 +++
- drivers/net/wireless/ath/ath10k/core.h | 3 +++
- drivers/net/wireless/ath/ath10k/mac.c  | 6 ++++--
- 3 files changed, 10 insertions(+), 2 deletions(-)
+I changed it like this:
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 5eb131ab916f..533ed7169e11 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -3643,6 +3643,9 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 	mutex_init(&ar->dump_mutex);
- 	spin_lock_init(&ar->data_lock);
- 
-+	for (int ac = 0; ac < IEEE80211_NUM_ACS; ac++)
-+		spin_lock_init(&ar->queue_lock[ac]);
-+
- 	INIT_LIST_HEAD(&ar->peers);
- 	init_waitqueue_head(&ar->peer_mapping_wq);
- 	init_waitqueue_head(&ar->htt.empty_tx_wq);
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index f5de8ce8fb45..4b5239de4018 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -1170,6 +1170,9 @@ struct ath10k {
- 	/* protects shared structure data */
- 	spinlock_t data_lock;
- 
-+	/* serialize wake_tx_queue calls per ac */
-+	spinlock_t queue_lock[IEEE80211_NUM_ACS];
-+
- 	struct list_head arvifs;
- 	struct list_head peers;
- 	struct ath10k_peer *peer_map[ATH10K_MAX_NUM_PEER_IDS];
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 7675858f069b..9c4bf2fdbc0f 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -4732,13 +4732,14 @@ static void ath10k_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
- {
- 	struct ath10k *ar = hw->priv;
- 	int ret;
--	u8 ac;
-+	u8 ac = txq->ac;
- 
- 	ath10k_htt_tx_txq_update(hw, txq);
- 	if (ar->htt.tx_q_state.mode != HTT_TX_MODE_SWITCH_PUSH)
- 		return;
- 
--	ac = txq->ac;
-+	spin_lock_bh(&ar->queue_lock[ac]);
-+
- 	ieee80211_txq_schedule_start(hw, ac);
- 	txq = ieee80211_next_txq(hw, ac);
- 	if (!txq)
-@@ -4753,6 +4754,7 @@ static void ath10k_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
- 	ath10k_htt_tx_txq_update(hw, txq);
- out:
- 	ieee80211_txq_schedule_end(hw, ac);
-+	spin_unlock_bh(&ar->queue_lock[ac]);
- }
- 
- /* Must not be called with conf_mutex held as workers can use that also. */
--- 
-2.40.0
+	if (priv->vif && priv->vif->type != NL80211_IFTYPE_AP) {
 
+Then I was able to turn on the AP and connect my phone to it. However,
+the system froze after a few seconds. I had `journalctl --follow`
+running. The last thing printed before the system froze was the DHCP
+stuff (discover, offer, request, ack). The phone said it was connected,
+but speedtest.net didn't have time to load before the freeze.
+
+My system is a laptop with RTL8822CE internal wifi card connected to my
+ISP's router. The connections are managed by NetworkManager 1.42.4-1,
+which uses wpa_supplicant 2:2.10-8 and dnsmasq 2.89-1. The operating
+system is Arch Linux running kernel 6.2.5-arch1-1.
+
+I used Plasma's NetworkManager applet to create a new "Wi-Fi (shared)"
+connection with mode "Access Point", band 2.4 GHz, channel 1, no
+encryption, and "IPv4 is required for this connection".
+
+
+Unrelated to anything, just out of curiosity, what brand/model is your
+RTL8188FU?
