@@ -2,93 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B449F6C61F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 09:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D96B6C6390
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 10:28:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjCWIiV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Mar 2023 04:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44462 "EHLO
+        id S229932AbjCWJ2s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Mar 2023 05:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231148AbjCWIiB (ORCPT
+        with ESMTP id S229996AbjCWJ2K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Mar 2023 04:38:01 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FFA412F01;
-        Thu, 23 Mar 2023 01:36:47 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32N8aMOr9013097, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32N8aMOr9013097
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 23 Mar 2023 16:36:22 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 23 Mar 2023 16:36:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 23 Mar 2023 16:36:37 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Thu, 23 Mar 2023 16:36:37 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Jonas Gorski <jonas.gorski@gmail.com>
-CC:     Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [BUG v6.2.7] Hitting BUG_ON() on rtw89 wireless driver startup
-Thread-Topic: [BUG v6.2.7] Hitting BUG_ON() on rtw89 wireless driver startup
-Thread-Index: AQHZXNa3MLbDic+okUWUZsB7esnCtq8GfvKAgABBsICAAMlp0P//h0sAgAD4fxA=
-Date:   Thu, 23 Mar 2023 08:36:37 +0000
-Message-ID: <6d6c51a6e29448eeb5985a59d1875c3a@realtek.com>
-References: <ZBskz06HJdLzhFl5@hyeyoo>
- <55057734-9913-8288-ad88-85c189cbe045@lwfinger.net>
- <CAOiHx=n7EwK2B9CnBR07FVA=sEzFagb8TkS4XC_qBNq8OwcYUg@mail.gmail.com>
- <e4f8e55f843041978098f57ecb7e558b@realtek.com>
- <4c841575-1e02-32f2-b63d-52bc0c063c82@lwfinger.net>
-In-Reply-To: <4c841575-1e02-32f2-b63d-52bc0c063c82@lwfinger.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Thu, 23 Mar 2023 05:28:10 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1647A1B542;
+        Thu, 23 Mar 2023 02:25:01 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id y2so8303210pfw.9;
+        Thu, 23 Mar 2023 02:25:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679563501;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oedrkQTKeKhk5jpPMXJExckMWKmDYsOLUWEd03oO1jc=;
+        b=Xsnwqe0u+OhenA0uQnCmo5f7oZse/SWWrlZMDr1wmNtIez+HCNRnydnG7mIWS5H7cc
+         jQErK+9VQDBe9Ybt86Bh8s5xzW660Zs4Wlc0qYNxJGvE/KrYckpFYE3c7BjNeAxxnJR/
+         +CPRu1DhGodVbU5q9R8xszUXPwfvJkbd7GyiLnGnDiXIV3IR5RVubAFqy5uedx5/rpBU
+         desOUjczT857xaWluqFGj5kMfTiiRQenWqjXBO5QNuVfO4Gi8uqxPFGwGVw/1ZC7L+es
+         Z8aTaPy+16fxwcuRztySG+OgRmQNXcBgKwcbE3lZjj3V5uNpIhoOU8QZQ6Y5BYdcVnH/
+         Gf0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679563501;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oedrkQTKeKhk5jpPMXJExckMWKmDYsOLUWEd03oO1jc=;
+        b=tvlErEZ0rFvo2rd0SAz1xjl83bgOYTRUYE349+DTpxU7bfZFchRvmzE43qAqNgsHPC
+         Au89A2n6rTRKqJPVIMgaoLxuv7M/hbPShImRgmCkK9av5gzeRRYCCRasVz1ksEFrQJzE
+         W3SVXa4YHkE/qbLJxiY1okJjGJuJcj8W/2llWK+q5aHNvko5HmvO/23O85cpM6dhUMFO
+         RZX97efjbDidbGILgMA+5OQmFFESg+dalnbx64vtptZkQsdm4GQd/FsBbnedbbEbVW3c
+         DjQjwNbH8IArypKdGanu0fwZMF1ulmZ3MIN2HsZmi7OWRAYNMCpRteQNNPHeaWUUWRoX
+         2n/w==
+X-Gm-Message-State: AO0yUKXrC/NCGenecwyltk2Le67X5yq9qFi0mS6z7w8z1/n6Gk8ibSgG
+        ZOnQTWUctlKcaaSr5aHLdyg=
+X-Google-Smtp-Source: AK7set90RsGF6plNEmkD3dIggH5nrDX5jcX7Ql9g4f9DKWsEsiMQK33OuujoCaxeaDME4YoPIa1akg==
+X-Received: by 2002:aa7:9dc1:0:b0:627:e69c:847c with SMTP id g1-20020aa79dc1000000b00627e69c847cmr6401408pfq.16.1679563501129;
+        Thu, 23 Mar 2023 02:25:01 -0700 (PDT)
+Received: from debian.me (subs02-180-214-232-11.three.co.id. [180.214.232.11])
+        by smtp.gmail.com with ESMTPSA id u16-20020aa78490000000b00627df85cd72sm9547769pfn.199.2023.03.23.02.25.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Mar 2023 02:25:00 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 2DEB21066D3; Thu, 23 Mar 2023 16:24:56 +0700 (WIB)
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Linux Wireless Development <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Documentation <linux-doc@vger.kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: [PATCH] wifi: mac80211: use bullet list for amsdu_mesh_control formats list
+Date:   Thu, 23 Mar 2023 16:24:54 +0700
+Message-Id: <20230323092454.391815-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1928; i=bagasdotme@gmail.com; h=from:subject; bh=sghnb6cYp6gN1i8QCZqutc4mpo/Cxsdj7NRwu8vq+VU=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDCkyUo8eHzmYfPRswKMlnzI3W72vkvracW57yWE9v+lG2 2ZOzFO90FHKwiDGxSArpsgyKZGv6fQuI5EL7WsdYeawMoEMYeDiFICJnJNnZHjVwetxtMOwVtgi rJhzkpP32kmTmkqdrnE/f7p3cZ2YRgrD/4zzMT8rpB82877SmnmCad+uu3V7agueN1zTVtB1Yi8 15QAA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycnkgRmluZ2VyIDxs
-YXJyeS5maW5nZXJAZ21haWwuY29tPiBPbiBCZWhhbGYgT2YgTGFycnkgRmluZ2VyDQo+IFNlbnQ6
-IFRodXJzZGF5LCBNYXJjaCAyMywgMjAyMyA5OjQxIEFNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBr
-c2hpaEByZWFsdGVrLmNvbT47IEpvbmFzIEdvcnNraSA8am9uYXMuZ29yc2tpQGdtYWlsLmNvbT4N
-Cj4gQ2M6IEh5ZW9uZ2dvbiBZb28gPDQyLmh5ZXlvb0BnbWFpbC5jb20+OyBuZXRkZXZAdmdlci5r
-ZXJuZWwub3JnOyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6
-IFtCVUcgdjYuMi43XSBIaXR0aW5nIEJVR19PTigpIG9uIHJ0dzg5IHdpcmVsZXNzIGRyaXZlciBz
-dGFydHVwDQo+IA0KPiBQaW5nLUtlLA0KPiANCj4gVGhlIHBhdGNoIHdvcmtzIGZpbmUgaGVyZSwg
-YnV0IEkgZGlkIG5vdCBoYXZlIHRoZSBwcm9ibGVtLg0KPiANCj4gV2hlbiB5b3Ugc3VibWl0IGl0
-LCBhZGQgYSBUZXN0ZWQtYnk6IExhcnJ5IEZpbmdlcjxMYXJyeS5GaW5nZXJAbHdmaW5nZXIubmV0
-PiBhbmQNCj4gYSBSZXZpZXdlZC1ieSBmb3IgdGhlIHNhbWUgYWRkcmVzcy4NCj4gDQoNCkhpIExh
-cnJ5LA0KDQpUaGFua3MgZm9yIHlvdXIgdGVzdC4gSSBoYXZlIHN1Ym1pdHRlZCBwYXRjaCBbMV0g
-d2l0aCB5b3VyIFRlc3RlZC1ieSBhbmQgUmV2aWV3ZWQtYnkuDQpCdXQsIHRoZSBwYXRjaCBpbmNs
-dWRlcyBhZGRpdGlvbmFsIGVycm9yIGhhbmRsaW5nIGFkZHJlc3NlZCBkdXJpbmcgaW50ZXJuYWwN
-CnJldmlldywgc28gdGhlcmUgaXMgYSBsaXR0bGUgZGlmZmVyZW50IGZyb20gdGhlIHBhdGNoIEkg
-cG9zdGVkIGhlcmUuIElmIHlvdQ0KZG9uJ3QgYWdyZWUgY3VycmVudCB2ZXJzaW9uLCBwbGVhc2Ug
-TkFDSyB0aGUgcGF0Y2ggWzFdLiANCg0KVGhhbmsgeW91Lg0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbGludXgtd2lyZWxlc3MvMjAyMzAzMjMwODI4MzkuMjA0NzQtMS1wa3NoaWhAcmVh
-bHRlay5jb20vVC8jdQ0KDQpQaW5nLUtlDQoNCg==
+Commit fe4a6d2db3bad4 ("wifi: mac80211: implement support for yet
+another mesh A-MSDU format") expands amsdu_mesh_control list to
+multi-line list. However, the expansion triggers Sphinx warning:
+
+Documentation/driver-api/80211/mac80211-advanced:214: ./net/mac80211/sta_info.h:628: WARNING: Unexpected indentation.
+
+Use bullet list instead to fix the warning.
+
+Link: https://lore.kernel.org/linux-next/20230323141548.659479ef@canb.auug.org.au/
+Fixes: fe4a6d2db3bad4 ("wifi: mac80211: implement support for yet another mesh A-MSDU format")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ net/mac80211/sta_info.h | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index f354d470e1740c..195b563132d6c5 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -622,11 +622,13 @@ struct link_sta_info {
+  *	taken from HT/VHT capabilities or VHT operating mode notification
+  * @cparams: CoDel parameters for this station.
+  * @reserved_tid: reserved TID (if any, otherwise IEEE80211_TID_UNRESERVED)
+- * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer
+- *	(-1: not yet known,
+- *	  0: non-mesh A-MSDU length field
+- *	  1: big-endian mesh A-MSDU length field
+- *	  2: little-endian mesh A-MSDU length field)
++ * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer:
++ *
++ *	  * -1: not yet known
++ *	  * 0: non-mesh A-MSDU length field
++ *	  * 1: big-endian mesh A-MSDU length field
++ *	  * 2: little-endian mesh A-MSDU length field
++ *
+  * @fast_tx: TX fastpath information
+  * @fast_rx: RX fastpath information
+  * @tdls_chandef: a TDLS peer can have a wider chandef that is compatible to
+
+base-commit: 0dd45ebc08de2449efe1a0908147796856a5f824
+-- 
+An old man doll... just what I always wanted! - Clara
+
