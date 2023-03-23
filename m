@@ -2,108 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC3B6C668D
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 12:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2054C6C66CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 12:38:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjCWL3L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Mar 2023 07:29:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47156 "EHLO
+        id S231501AbjCWLiZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Mar 2023 07:38:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbjCWL3K (ORCPT
+        with ESMTP id S231237AbjCWLiX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Mar 2023 07:29:10 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322111B325
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 04:29:07 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id cn12so39307323edb.4
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 04:29:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679570945;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xRoBzr3Ian/N+F11piGyE0HzKv89Ema2vwaYG2HlEqk=;
-        b=XQfpi4YkQUQFqksp1Xret8mnJbjtIg+q1tzCpHhfsAqzBq4fxGiTBqjDJVTG7SVVSi
-         tcyHdpeKPtluHUNQTkL+d9AlQZ2MZZDNfnMmd8RT0ISkMOG69ObiLk7f3+U+d6qcLmLn
-         xN09UwJ/6ECccIb22145Opk35NdXFcSTkAxUFFkUOQQC5lZNVMTCiYkZSIeZfUqDEfde
-         t1/pggBXvs5bpQd4uMiAe5UvhV64UySrsd28M8tbsCgvV7ZaNtLqxjtLaRNcXJU6KFfr
-         ZDRhb7JgTPHTZQpAMSGXvL9bmzA3rIxI95vuh0jvPFCJMNi/BPfeFTWqRn1+DmsMP+ik
-         rGkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679570945;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xRoBzr3Ian/N+F11piGyE0HzKv89Ema2vwaYG2HlEqk=;
-        b=cThO+zWggpLdoX2j4G5gQnQiXlM3wPoq3M7UslM1JfiznJuBS4Em1BU3RDFqpKg+qL
-         asbSPau1kKfdTVIeNeOmWo7AbsLoFZxmItuxpm4n7NxOAzLeqG/qRxS04M7tgnZOYESV
-         coRfMWKjafJrpNZG7xt1eDfrE7Mk1vrYGmYIuqqSu6DRQQiPa0rbe4oA/Ds8r19eIgw/
-         Ctq3NTMbBOXNb1WdcMu9aathd0I9MxT5dFYRa1NidBzsiTMevwNKtqTiMJYGgBQlsW/M
-         xVpHvsDqeGRtlHb3RBckIwWjZnHj54QdczOBPK2B9malY/dKj43D6M1LqyMLvzopaNap
-         0g4Q==
-X-Gm-Message-State: AO0yUKXS26/uXixE2oMESazlGwgGZWV3cZgQrxUrVUxDNf5SflU8zzQq
-        Ys1vSVnFsJVgKy0GvCF7jq9UoJ8LlVnSksqGC+0=
-X-Google-Smtp-Source: AK7set/t8cSplE6nQRaGMMGWIPq8vKdeJEohyihPsgBRKJQcvjXxNrDXGRMU/9Kr6G/pziM40aRaNw==
-X-Received: by 2002:aa7:de82:0:b0:4fa:e187:64d1 with SMTP id j2-20020aa7de82000000b004fae18764d1mr8502409edv.38.1679570945736;
-        Thu, 23 Mar 2023 04:29:05 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:a665:ed1e:3966:c991? ([2a02:810d:15c0:828:a665:ed1e:3966:c991])
-        by smtp.gmail.com with ESMTPSA id u17-20020a170906409100b009338ad391b9sm6103635ejj.213.2023.03.23.04.29.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 04:29:05 -0700 (PDT)
-Message-ID: <1b105e1a-580c-6f75-731e-4823eba4073d@linaro.org>
-Date:   Thu, 23 Mar 2023 12:29:04 +0100
+        Thu, 23 Mar 2023 07:38:23 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE66305D6
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 04:38:16 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32N8wxcW010913;
+        Thu, 23 Mar 2023 11:38:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=AxmzIU7zUKoMT0Wbd99EUpKr2TiQ4BZq6sCDCRBpQR0=;
+ b=LiIcCprODcoPfaG27Q/GibgInaDmwk8S8oRXCrjFs0nBLhTcj4pmJrQo6XSpfnUNJZBY
+ CA/Y2P0Oc6oe8RgB1gn+6CTAAkVcoyk3qrdmuggsZk88HS3jPU+8p0Hy3dmSsjkVWIPg
+ APwB6/L1SbUW/h9kYMpDvsw2UqKmfn0VnE/su3KOD2UG41Eeb8d3kEQ32MvJlmqtxbFa
+ W2Vmd8JV4QAEX8joFGu5adUOhuXWGHec12gmDFnqEN4XA7i/P2gU/pjLm/XTzqctsm0S
+ 9qM/oO/h09Z7neGPlsBf1JTwwqmS5tIjXQTdJre5WJaYh6j4W1xV/6ZXPHit+5lugkde EA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pg64k251y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Mar 2023 11:38:13 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32NBcCGb025943
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Mar 2023 11:38:12 GMT
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Thu, 23 Mar 2023 04:38:11 -0700
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+To:     <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+CC:     Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH v2 0/2] RNR for EMA AP
+Date:   Thu, 23 Mar 2023 04:37:59 -0700
+Message-ID: <20230323113801.6903-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: Status of linux-nfc@lists.01.org mailing list
-Content-Language: en-US
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Bongsu Jeon <bongsu.jeon@samsung.com>,
-        Mark Greer <mgreer@animalcreek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-References: <CAKXUXMzggxQ43DUZZRkPMGdo5WkzgA=i14ySJUFw4kZfE5ZaZA@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CAKXUXMzggxQ43DUZZRkPMGdo5WkzgA=i14ySJUFw4kZfE5ZaZA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: HHCOhMe7TIENtG-qX_7OfzLPVZvN7jMe
+X-Proofpoint-ORIG-GUID: HHCOhMe7TIENtG-qX_7OfzLPVZvN7jMe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-22_21,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ clxscore=1011 priorityscore=1501 adultscore=0 mlxlogscore=677 phishscore=0
+ malwarescore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303230088
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 23/03/2023 12:18, Lukas Bulwahn wrote:
-> Dear Krzysztof, dear Bongsu, dear Mark,
-> 
-> According to MAINTAINERS, you are all maintainers of some section that
-> asks to send patches to the linux-nfc@lists.01.org mailing list.
-> Recently I sent a patch mail to the linux-nfc@lists.01.org and I am
-> getting the response that the mail is not delivered to that list.
-> 
-> A quick ping from my local machine seems also to suggest the server is
-> not available anymore:
-> 
-> PING lists.01.org(ml01.01.org (2001:19d0:306:5::1)) 56 data bytes
-> From 2001:19d0:300:1::14 icmp_seq=1 Destination unreachable: Address unreachable
-> 
-> Are you aware of some temporary transition of the email server? Is
-> there a plan to set up a new mailing list at another domain? Is this
-> mailing list obsolete and should we just delete the references in
-> MAINTAINERS to that mailing list?
+As per IEEE Std 802.11ax-2021, 11.1.3.8.3 Discovery of a nontransmitted
+BSSID profile, an EMA AP that transmits a Beacon frame carrying
+a partial list of nontransmitted BSSID profiles should include in
+the frame a Reduced Neighbor Report element carrying information for
+at least the nontransmitted BSSIDs that are not present in
+the Multiple BSSID element carried in that frame.
 
-I am not a maintainer of this mailing list. I did not get any
-notifications from 01.org that they are shutting down their lists. Maybe
-we should just drop it.
+Add new attribute NL80211_ATTR_EMA_RNR_ELEMS to support the above.
+Number of RNR elements must be more than or equal to the number of
+MBSSID elements. This attribute can be used only when EMA is enabled.
+Userspace is responsible for splitting the RNR into multiple elements
+such that each element excludes the non-transmitting profiles already
+included in the MBSSID element (%NL80211_ATTR_MBSSID_ELEMS) at
+the same index.
 
-+Cc net folks
+MAC80211 will generate EMA beacons by adding MBSSID and RNR elements
+at the same index. If the userspace provides more RNR elements than the
+number of MBSSID elements then these will be added in every EMA beacon.
 
-Best regards,
-Krzysztof
+Aloka Dixit (2):
+  cfg80211: support RNR for EMA AP
+  mac80211: support RNR for EMA AP
+
+ include/net/cfg80211.h       | 19 +++++++++++
+ include/uapi/linux/nl80211.h | 13 ++++++++
+ net/mac80211/cfg.c           | 63 +++++++++++++++++++++++++++++++++---
+ net/mac80211/ieee80211_i.h   | 21 ++++++++++--
+ net/mac80211/tx.c            | 10 ++++++
+ net/wireless/nl80211.c       | 50 ++++++++++++++++++++++++++++
+ 6 files changed, 168 insertions(+), 8 deletions(-)
+
+
+base-commit: 0dd45ebc08de2449efe1a0908147796856a5f824
+-- 
+2.39.0
 
