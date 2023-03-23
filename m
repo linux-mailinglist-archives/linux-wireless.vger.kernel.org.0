@@ -2,80 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 219036C64C7
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 11:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2441A6C6610
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 12:03:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231181AbjCWKZc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Mar 2023 06:25:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41840 "EHLO
+        id S231168AbjCWLDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Mar 2023 07:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjCWKZa (ORCPT
+        with ESMTP id S230238AbjCWLDf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Mar 2023 06:25:30 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0097D272D
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 03:25:25 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pfI8H-0005jx-B8; Thu, 23 Mar 2023 11:25:21 +0100
-Message-ID: <7cc69aa5-e003-6ac7-9b2f-a95b67eb98e8@leemhuis.info>
-Date:   Thu, 23 Mar 2023 11:25:20 +0100
+        Thu, 23 Mar 2023 07:03:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DF055B3;
+        Thu, 23 Mar 2023 04:03:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E06B1625E5;
+        Thu, 23 Mar 2023 11:03:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FE4C433D2;
+        Thu, 23 Mar 2023 11:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679569413;
+        bh=5hU0844Ex279g6MC1KUigvUXwDiig/3Y4l1pp8xjSRs=;
+        h=From:Subject:To:Cc:Date:From;
+        b=Nogj8t++cafZUAqT7+BmzcR3Jp0vHMpBRe2WNpaTU0Sb2xeAisktLbX4FWpTZQ27O
+         GbVMi+0ljX8rK93UKqc6KE/zHh59V6kaFU3jFdPKN4JB+FKmTvjOBOUnY/1I9wxASO
+         jeO1SKQuQ3urqTMNRBBlloJHprTNhZYskDBoiwtEx+3Oh2BK/txj1xDRkX83YWqk/j
+         jFAcTdtwok90hyc9PGXOS71C3z/eojOkavx4UvsQ3nbqI/KhK+xffHjWD72CXzYerh
+         lC36eBu/JP9EMg1CDpDUtY0V9FgOi7ajAhbui2kgOxqoV/gECL0J6z36OqiMZKbW9r
+         aK8bFKr7P+jYQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: pull request: rtw89: 8852b: rollback firmware to v0.27.32.1 and
- introduce new file to new format
-Content-Language: en-US, de-DE
-To:     Josh Boyer <jwboyer@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "rb0171610@gmail.com" <rb0171610@gmail.com>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "tiwai@suse.de" <tiwai@suse.de>,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <889f3db6ca4008047595f4392388acc1f165e03c.camel@realtek.com>
- <CA+5PVA4H9Quu1954ubbcZfH-e1cOy2K27r0GfLemQcMBG-6AQA@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CA+5PVA4H9Quu1954ubbcZfH-e1cOy2K27r0GfLemQcMBG-6AQA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1679567126;7982c706;
-X-HE-SMSGID: 1pfI8H-0005jx-B8
-X-Spam-Status: No, score=-0.0 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2023-03-23
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20230323110332.C4FE4C433D2@smtp.kernel.org>
+Date:   Thu, 23 Mar 2023 11:03:32 +0000 (UTC)
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 20.03.23 12:43, Josh Boyer wrote:
-> On Sat, Mar 18, 2023 at 9:59 AM Ping-Ke Shih <pkshih@realtek.com> wrote:
->>
->> In discussion threads [1] [2], the new format of 8852b break user space.
->> To avoid this, introduce new filename rtw89/rtw8852b_fw-1.bin that old
->> drivers will not try to load it.
->>
->> Rollback firmware version of rtw89/rtw8852b_fw.bin to the latest
->> version of original format (i.e. v0.27.32.1) supported by old driver.
->>
->> The patches to support new filename in new driver are almost done,
->> and I will submit them soon. Thanks for the advice in mail and
->> bug threads.
->> [...]
-> Pulled and pushed out.
+Hi,
 
-Thx to both of you for submitting the revert and applying it.
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-Josh, do you plan to do another release soon? I fear that otherwise more
-distros and users will run into this regression.
+Kalle
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+The following changes since commit 96c069508377547f913e7265a80fffe9355de592:
+
+  wifi: cfg80211: fix MLO connection ownership (2023-03-10 11:47:25 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2023-03-23
+
+for you to fetch changes up to f355f70145744518ca1d9799b42f4a8da9aa0d36:
+
+  wifi: mac80211: fix mesh path discovery based on unicast packets (2023-03-22 13:46:46 +0100)
+
+----------------------------------------------------------------
+wireless fixes for v6.3
+
+Third set of fixes for v6.3. mt76 has two kernel crash fixes and
+adding back 160 MHz channel support for mt7915. mac80211 has fixes for
+a race in transmit path and two mesh related fixes. iwlwifi also has
+fixes for races.
+
+----------------------------------------------------------------
+Alexander Wetzel (1):
+      wifi: mac80211: Serialize ieee80211_handle_wake_tx_queue()
+
+Felix Fietkau (3):
+      wifi: mt76: mt7915: add back 160MHz channel width support for MT7915
+      wifi: mac80211: fix qos on mesh interfaces
+      wifi: mac80211: fix mesh path discovery based on unicast packets
+
+Johannes Berg (2):
+      wifi: iwlwifi: mvm: fix mvmtxq->stopped handling
+      wifi: iwlwifi: mvm: protect TXQ list manipulation
+
+Krzysztof Kozlowski (1):
+      wifi: mwifiex: mark OF related data as maybe unused
+
+Lorenzo Bianconi (2):
+      wifi: mt76: do not run mt76_unregister_device() on unregistered hw
+      wifi: mt76: connac: do not check WED status for non-mmio devices
+
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  | 50 ++++++++--------------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |  6 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       |  6 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c       | 29 ++++++++++---
+ drivers/net/wireless/marvell/mwifiex/pcie.c        |  2 +-
+ drivers/net/wireless/marvell/mwifiex/sdio.c        |  2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c      |  8 ++++
+ drivers/net/wireless/mediatek/mt76/mt76.h          |  1 +
+ .../net/wireless/mediatek/mt76/mt76_connac_mcu.c   |  3 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c   | 40 ++++++++++++-----
+ net/mac80211/ieee80211_i.h                         |  3 ++
+ net/mac80211/main.c                                |  2 +
+ net/mac80211/rx.c                                  | 22 +++++-----
+ net/mac80211/util.c                                |  3 ++
+ net/mac80211/wme.c                                 |  6 ++-
+ 15 files changed, 119 insertions(+), 64 deletions(-)
