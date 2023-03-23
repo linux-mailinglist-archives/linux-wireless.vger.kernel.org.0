@@ -2,75 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 387E36C6E79
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 18:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7ACF6C702C
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Mar 2023 19:26:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231665AbjCWRNN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Mar 2023 13:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44418 "EHLO
+        id S231224AbjCWS0S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Mar 2023 14:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231538AbjCWRNI (ORCPT
+        with ESMTP id S230486AbjCWS0Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Mar 2023 13:13:08 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FD2113E0
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 10:12:59 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id w9so89902953edc.3
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Mar 2023 10:12:59 -0700 (PDT)
+        Thu, 23 Mar 2023 14:26:16 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2125.outbound.protection.outlook.com [40.107.220.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AEC522CB3;
+        Thu, 23 Mar 2023 11:26:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HN2lUBpy1JtaGCzsM4Rq+K32iJn3PHlTA3Jcw+ZgkFwySqXvBU3FSlQwPnft409fshETbM8XGUUAKuM2mhEBeHWWwh+FNZbgOgDlpufUzmy4DzdgNvT9pHuV3bJgEMxqd0hHhv5SSBb+inlU+0SScVlhme67uyvDSlLUVC3b771T9zxsZvuMW5lJDa699y67GaR83ihjbjC5YkHUSSQBlkkK6y9ne9M8r0NzisbSbeHLgHLkF9qWDtu18FQoxVSqmaLNmYMc7REiNfQzpACVcl4tjKpgDyT5nSiUlMsCON9oo89H1IjRasohtwLE9axsK5bo4VxzjJjnXaXbie3sHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ocy/jIFl3SFKKRqQebCkSmnPTbOdlmdfqjCtPj5ctF0=;
+ b=Q48Kubpb56P+EMNp20+P/nn+8AqoQ+vk2GnSWqAjDC7F9bVmJ1ddTIHrzta4/hoOQBHFQoxtf3xhZbF4911Xd84lBiq6AF4wdp6svwQqUwfP1os5OpxMEM+HD93hx8/JrisQTf85nqtMpR6VI5QPWT6SGwAS3HfpW0EqtEcNP1jyTBTFEWy1MlJnEgdYQClG0tkg3jLKvpJjsJalcgSDWH6VuYvzRMMh/oTrwV3JRGm78qzcPjPpDHpJjvNnU0b0byNjJ3pQvCTM5oGL5RQv+etROk9FrAK/hTrpgABz3wLi9hKlgryz9E4pXQCZeYq9EZnZz+BbBlmyQGWUdnzAEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679591578;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4/W/awWX4W+zcuM+R3yDEDWYh82OlCjaf/hYhhVRfbo=;
-        b=giKoCEmKF7byyJX8t98yerTiXDPDJFNEBrOexfrAyiDONEvmrPC1jeUi6/F0DULmlj
-         aR+yHePTI+xfXyF6wOCrLj65ES0VX82gFwZWjk18rC/9KiNMnmJLKuS3Vp+perqI2IXN
-         WpXU8sNvOxVqfcbA1riOIDNccpOnVk3ayot1dCmqJGkVjXLZ5ivbwEdgl5PC7JW5SOV6
-         b0PRwsVTXLe849Bm6mFTfRHIMYka4zO/MNg2h8OTKbEPA1lurX1bAMka5C6VDNgblKf5
-         fUvxCCUjlsq4hr6X13LyiGFOvvIsvmlG8e/1XxQsPPOHIJ3lnyzGk1E/yzaU7XA3e5EZ
-         CGVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679591578;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/W/awWX4W+zcuM+R3yDEDWYh82OlCjaf/hYhhVRfbo=;
-        b=Z74LUDGLrrZqTP0sxy1oFRWzjIlR0roNFImujq9bjBXXVf1jRaZD4APWV+7vwbGRV2
-         9jWTbD3wj2c9usur9YHz61evt/qFE5srNbyKS40/hps9QE9d+AsuugzGbBXy+inyRllo
-         WpgQzf/peFNqR/xDC6Tr18mgBsNRlQrcQ6p2vSPfuGdTPbs4hzoYuJdMv23VFAbTrlJR
-         uHQhcT5+iC861TxKBq+r6Ew8VVLv8z+rCpKqejNlK2Iv3HDiLMIYkgst/gREp7CQkasq
-         l6N0FjY1B1Z2xjehEqQXOs1RvQxpkZpRgJwswAG0uDB9FjD6WzQRMglxDBtzDrVTEOY7
-         htQg==
-X-Gm-Message-State: AO0yUKUq8JqLPl1VNY/+HH6FEFdUIw16CBqm5DksCnauosBFimYR2Fnp
-        Ei6oPepeJV6K7RpQ1LT4Xiw=
-X-Google-Smtp-Source: AK7set84P+dSjKr22IQLbamFi+TVaJpRVwynVkalskSxKdgUyrVcaBAauQAsapuErmuC5XZGnX5OQA==
-X-Received: by 2002:a17:906:f6da:b0:8de:e66a:ece9 with SMTP id jo26-20020a170906f6da00b008dee66aece9mr10956574ejb.24.1679591578249;
-        Thu, 23 Mar 2023 10:12:58 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id z26-20020a17090674da00b009310d4dece9sm8904244ejl.62.2023.03.23.10.12.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Mar 2023 10:12:57 -0700 (PDT)
-Message-ID: <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
-Date:   Thu, 23 Mar 2023 19:12:56 +0200
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ocy/jIFl3SFKKRqQebCkSmnPTbOdlmdfqjCtPj5ctF0=;
+ b=VGQqGn9JBwmEtS8q4dKyxrFbrn8jcx0xs0C9aMWFK8ET+DiVxr6y9VHyJZtLRNxQgK6+lpNLwelT4odhmb1UeW/Jju7pRQi1RqhfpN9CzHecCZYq77IDaoRLm5qgOGt2KggSEc/0Xe0CklOhtrIXMnOVGgnge7vt24GBekAeIXA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by PH7PR13MB5477.namprd13.prod.outlook.com (2603:10b6:510:138::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Thu, 23 Mar
+ 2023 18:26:08 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::85f5:bdb:fb9e:294c%2]) with mapi id 15.20.6178.038; Thu, 23 Mar 2023
+ 18:26:04 +0000
+Date:   Thu, 23 Mar 2023 19:25:56 +0100
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Linux Wireless Development <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Documentation <linux-doc@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] wifi: mac80211: use bullet list for amsdu_mesh_control
+ formats list
+Message-ID: <ZByZtOsg8Brvhvnw@corigine.com>
+References: <20230323092454.391815-1-bagasdotme@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230323092454.391815-1-bagasdotme@gmail.com>
+X-ClientProxiedBy: AM3PR07CA0102.eurprd07.prod.outlook.com
+ (2603:10a6:207:7::12) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
-To:     Martin Kaistra <martin.kaistra@linutronix.de>,
-        linux-wireless@vger.kernel.org
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
-Content-Language: en-US
-In-Reply-To: <20230322171905.492855-1-martin.kaistra@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH7PR13MB5477:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3056134d-886a-46fb-43bc-08db2bcc0fcf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: q0u0vfHBMuA/bf/OEY9kCBmyjXdd40l6zl0tYC7ChJAVYZW+kK+Xj7sfKl5D0Bzgvgvda2sJRJ8PglbpRyeInf8o6N5VW4a1X5UgYB7p/mYKTWVuxsF/QZBT8BatZ12JmwrvlnR9jB9egbU8EFeuTtfiMQVslnSw/2nc3Hiic0rvsmo3xIZRdIFtcI9UY4qh/sVKZ/5jfn0FVQnOfxnwvFlUPb4Lho7yQ7A+KGF4CVSkuaJ7677VwydYTSw9I1j0HWkvOgbT7cUzwGvp+Z6X2dFta56FJq8e+VRg/WjYvWUolA46lTxVkcTCmrdAENBxCre8ohsExKaQz0TeddAl+CohaJBwD1zvDv9ONmVcj8Z0y1LgfrcQmd5AkT8tOmL5rOM4FGmJdyJNC7eZwFPURuO9t/iHSJrctduzFYc/ETCvVILJYwoXT8E/QzyWdWeYof4LIYbwUcPVJJzDjJ+BVI253lBcFsnu2GC2g+UAtUDxsCsyTA34xiCR2hZLG7jFW9GdZ2MKstkWYcQJwvbrwojnRg7OXNJQLnDwGCXtZA0ToIZN4mhY+wyxUggcH5vS6adR+vTIwUCDFn1eefcOZiZAfYcJE0BjNqIsyVikIUKNZnWQ4m0ScTzIIygfeojm
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(376002)(366004)(39840400004)(346002)(136003)(451199018)(38100700002)(2906002)(36756003)(83380400001)(966005)(2616005)(6486002)(186003)(478600001)(86362001)(66556008)(8676002)(6916009)(66476007)(66946007)(4326008)(54906003)(8936002)(316002)(6512007)(6506007)(6666004)(7416002)(5660300002)(44832011)(41300700001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+S92eoGoXiKuTI18cXLgzMfx+vqjRAmnxMbdjqJ5/tq2mfp4jH+FN7TyVLvj?=
+ =?us-ascii?Q?NOhD8GBeCVDnH/NMKxguO2A3DWpGNeq0KgxrMBGU5Odctfp8hROymbJ4OrJK?=
+ =?us-ascii?Q?xtVZxq1bDT2biXi6kjpLDpQ5EHA39pq2necOJtZ8I/LRDpT+qIRCDNEyuV9x?=
+ =?us-ascii?Q?RCCLTplbPdQuxHhxufnvPuZ2E/TFsYgp9uyyPXG6arlkCNffJx1B1AQYzJKt?=
+ =?us-ascii?Q?BfgPCKqN5UncuM8n5tMBC8+vVPA28KuBQj2WkVOCBqzaB1ZawmdHmXhd7kUo?=
+ =?us-ascii?Q?uMk226l7dOGf5XznrdhfWXOKuDqwHRVVb82TliivTT7pGMCCoWSQUBejz5Nl?=
+ =?us-ascii?Q?+HBMEZBzhcxDO3Z9W0Isg8TkLuAjB/f2Pf8HoARBnvSFfLYEhj+/DRP+Puzo?=
+ =?us-ascii?Q?uKe0YkLCnYwVrrTeS9BTwWtZNVe1mYG8FXoSloDpT0JXuGGbWcTDvFtxNjua?=
+ =?us-ascii?Q?zVs7P4uDexqCPWuZu+qDKsK5B9KpbxxD2br++CSR43E3hL8h1U33kottVH03?=
+ =?us-ascii?Q?ZOqno/VcL/e9sqLe6OJnoUBue+om8he8Wyvmu8+VTVerYbebNDFN1UWw8Kbq?=
+ =?us-ascii?Q?FOl9fZgUBqmTWIW9L5/rv/M6bxutL7EWijuFVTRdogbrqmsHuy6oLVe5I+yg?=
+ =?us-ascii?Q?04pKLt4cLjw73ZlxDjXoclAlNwRCHcF9OFt550K7hUWxNl82gYKzZsZmBObC?=
+ =?us-ascii?Q?92qNYpskEiqx/SvCwdv8XXBC+MlYB+6z4pVIzo0+o6ywByGELbyQAAmVbH5n?=
+ =?us-ascii?Q?MKLOTX8LQyicFyKDsNyb5mfdEc4rA4b1Qhth1c1PPMkqved2Yj1X/TxDscEU?=
+ =?us-ascii?Q?k20yp/NUDmso8EmMk7j6PvqDkDGi78EhXWCI7m16hZSdBv5Zzb/udMd65dRD?=
+ =?us-ascii?Q?NLR8kPhid8VKPMFIH5jrYi/YnTWbZxK/bkzFaKDogH9EgUJs0x3p9vj/Xh+/?=
+ =?us-ascii?Q?H3khJehnw9WO3CJHDUbzC0Ur3+wtawAWFPrN9/1EOU3EnzsCIbLUqxgninAJ?=
+ =?us-ascii?Q?SNDPokmFGR9TeSlYogW6UyZ1l7XOTnYW9Efb9PKqJJf8doFENrb/1U3HLwii?=
+ =?us-ascii?Q?/Aenu3YNxg+e+7VG845phacrqnHlOo3usmr7MlpyWuyGDIhXISkvzXK0M1vH?=
+ =?us-ascii?Q?A+1bbFJDsDKj5rttZhpAwA8pdAuOu+FZwFloEAE5cl8foBbZ98li+tY2u7B1?=
+ =?us-ascii?Q?enhoMK4FXgZCaArAWvgh4SXdANtyW1zl0vVI63+iZufcS5UdydD2IJrznKF8?=
+ =?us-ascii?Q?sMR3W3qKRHG2J7Z574TimklLisiMIkG+XhG+7y6cMJd7QVNhqxgu6MlqPbyd?=
+ =?us-ascii?Q?FstR8n35gKOzEG0+J7VDpFask6HAIa029eQ00mj+ZvQRcw1pZQFz+CKmO16i?=
+ =?us-ascii?Q?Wu7JUwkVlfyTLQUm+hibrLC6oJJR2vos02ydk8kSlip0D6zkIEIiArADs1tC?=
+ =?us-ascii?Q?uupB/5t6Ey6Ud+7QR1tf8MfomocsUvG0O8s+3ZnjA+xpL1KyN3CBWVYoU1Pd?=
+ =?us-ascii?Q?/65qd7TOw9dn/yxDWOCIcyPFWpTvI3DzYjX0t+uX8+FmHKQqONiwC82bhN5A?=
+ =?us-ascii?Q?ffbrQqS5QIWJUE0+3TbGdLcFsIlnDIflWGGV9WBYCYXrWHSnIPmqohMIot5J?=
+ =?us-ascii?Q?J6E/6M1/VRpa/vkdDeJqL2v8CyGxsuQdCieDZi5pfsydhZYNxQX7ulgSy2VK?=
+ =?us-ascii?Q?9FPZEg=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3056134d-886a-46fb-43bc-08db2bcc0fcf
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2023 18:26:04.5058
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EoIz6ajiFlqepxIgfQHSZL0eQFRnJMHl2Ly6W/83N93715uj8ml0W1GSq+L0+sdRg6E/8GRqmrtO3nHRWyiDQ8SEmKQIBMlTs+F8ePeBiVU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR13MB5477
+X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,45 +124,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 22/03/2023 19:18, Martin Kaistra wrote:
-> This series intends to bring AP mode support to the rtl8xxxu driver,
-> more specifically for the 8188f, because this is the HW I have.
-> The work is based on the vendor driver as I do not have access to
-> datasheets.
+On Thu, Mar 23, 2023 at 04:24:54PM +0700, Bagas Sanjaya wrote:
+> Commit fe4a6d2db3bad4 ("wifi: mac80211: implement support for yet
+> another mesh A-MSDU format") expands amsdu_mesh_control list to
+> multi-line list. However, the expansion triggers Sphinx warning:
+
+FWIIW, checkpatch complains about the way that the commit is referenced
+above. It's probably not worth respinning for this. But a way
+to address this would be.
+
+The referenced commit expands amsdu_mesh_control list to multi-line list.
+However, the expansion triggers Sphinx warning:
+
 > 
-> This is an RFC, so that there can be a discussion first before
-> potentially implementing support for the other chips in this driver, if
-> required.
+> Documentation/driver-api/80211/mac80211-advanced:214: ./net/mac80211/sta_info.h:628: WARNING: Unexpected indentation.
 > 
+> Use bullet list instead to fix the warning.
+> 
+> Link: https://lore.kernel.org/linux-next/20230323141548.659479ef@canb.auug.org.au/
+> Fixes: fe4a6d2db3bad4 ("wifi: mac80211: implement support for yet another mesh A-MSDU format")
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
 
-Hi!
+Checkpatch also says that the Link: tag should go here.
+TBH, I'm not sure if that is important.
 
-I ran into some problems while testing this.
+> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-First, a null pointer dereference in rtl8xxxu_config_filter() when
-turning on the AP. priv->vif was NULL:
+Patch itself looks good :)
 
-	if (priv->vif->type != NL80211_IFTYPE_AP) {
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
-I changed it like this:
-
-	if (priv->vif && priv->vif->type != NL80211_IFTYPE_AP) {
-
-Then I was able to turn on the AP and connect my phone to it. However,
-the system froze after a few seconds. I had `journalctl --follow`
-running. The last thing printed before the system froze was the DHCP
-stuff (discover, offer, request, ack). The phone said it was connected,
-but speedtest.net didn't have time to load before the freeze.
-
-My system is a laptop with RTL8822CE internal wifi card connected to my
-ISP's router. The connections are managed by NetworkManager 1.42.4-1,
-which uses wpa_supplicant 2:2.10-8 and dnsmasq 2.89-1. The operating
-system is Arch Linux running kernel 6.2.5-arch1-1.
-
-I used Plasma's NetworkManager applet to create a new "Wi-Fi (shared)"
-connection with mode "Access Point", band 2.4 GHz, channel 1, no
-encryption, and "IPv4 is required for this connection".
-
-
-Unrelated to anything, just out of curiosity, what brand/model is your
-RTL8188FU?
+> ---
+>  net/mac80211/sta_info.h | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+> index f354d470e1740c..195b563132d6c5 100644
+> --- a/net/mac80211/sta_info.h
+> +++ b/net/mac80211/sta_info.h
+> @@ -622,11 +622,13 @@ struct link_sta_info {
+>   *	taken from HT/VHT capabilities or VHT operating mode notification
+>   * @cparams: CoDel parameters for this station.
+>   * @reserved_tid: reserved TID (if any, otherwise IEEE80211_TID_UNRESERVED)
+> - * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer
+> - *	(-1: not yet known,
+> - *	  0: non-mesh A-MSDU length field
+> - *	  1: big-endian mesh A-MSDU length field
+> - *	  2: little-endian mesh A-MSDU length field)
+> + * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer:
+> + *
+> + *	  * -1: not yet known
+> + *	  * 0: non-mesh A-MSDU length field
+> + *	  * 1: big-endian mesh A-MSDU length field
+> + *	  * 2: little-endian mesh A-MSDU length field
+> + *
+>   * @fast_tx: TX fastpath information
+>   * @fast_rx: RX fastpath information
+>   * @tdls_chandef: a TDLS peer can have a wider chandef that is compatible to
+> 
+> base-commit: 0dd45ebc08de2449efe1a0908147796856a5f824
+> -- 
+> An old man doll... just what I always wanted! - Clara
+> 
