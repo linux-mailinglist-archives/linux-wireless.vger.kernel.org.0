@@ -2,53 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8346C7C6E
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Mar 2023 11:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B53566C7D3B
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Mar 2023 12:32:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231161AbjCXKTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Mar 2023 06:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35246 "EHLO
+        id S231754AbjCXLcB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Mar 2023 07:32:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbjCXKTn (ORCPT
+        with ESMTP id S231802AbjCXLb6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Mar 2023 06:19:43 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F635132E4
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Mar 2023 03:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TGpbCRl1WSOCJVs+79IUG4QHP2Bbm6sFU1OBtSjF7Eg=; b=Bo8yYusM30LhhdqhFWvRr5ge8G
-        rhwEzh7yCr5tUJUN38YJjoozCclIP1s1cKlrhk4FuIeSm9oP3hUK2tH1rZq3BmDOsKVejNIIvsvpX
-        i89Z3Ip3JScc6AfnRx8dhOT4mc/3EeIOb+YEzlq/xK8YiJzlNgKSeu9nzM5DC2E31zFs=;
-Received: from p54ae9730.dip0.t-ipconnect.de ([84.174.151.48] helo=nf.local)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1pfeWA-006JKI-WB; Fri, 24 Mar 2023 11:19:31 +0100
-Message-ID: <829a59bc-dc57-9cda-7da9-8033ca419fd2@nbd.name>
-Date:   Fri, 24 Mar 2023 11:19:30 +0100
+        Fri, 24 Mar 2023 07:31:58 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4286E1B55B
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Mar 2023 04:31:31 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32OBUssV6010541, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32OBUssV6010541
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 24 Mar 2023 19:30:54 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 24 Mar 2023 19:31:09 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Fri, 24 Mar 2023 19:31:09 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Fri, 24 Mar 2023 19:31:09 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Bernie Huang" <phhuang@realtek.com>
+Subject: pull request: rtw88: 8822c: Update normal firmware to v9.9.15
+Thread-Topic: pull request: rtw88: 8822c: Update normal firmware to v9.9.15
+Thread-Index: AQHZXkQg4BVPI2F8DkqQ1aXRQNZG/w==
+Date:   Fri, 24 Mar 2023 11:31:08 +0000
+Message-ID: <b02dace035e2b58686f8c7f449be6be3f32a6485.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.18.182]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzMvMjQg5LiK5Y2IIDA5OjM1OjAw?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EB6B81FB31EDBA4DA6327ECBFA79BCBE@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.9.0
-Subject: Re: [PATCH v3] wireless: mt76: mt7921: Fix use-after-free in fw
- features query.
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        Ben Greear <greearb@candelatech.com>
-References: <51fd8f76494348aa9ecbf0abc471ebe47a983dfd.1679502607.git.lorenzo@kernel.org>
- <ff4c3a89-f3dc-2ae6-1b11-f2c46944e376@nbd.name> <87zg82ty8b.fsf@kernel.org>
-From:   Felix Fietkau <nbd@nbd.name>
-In-Reply-To: <87zg82ty8b.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,29 +69,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 24.03.23 08:17, Kalle Valo wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
-> 
->> On 22.03.23 17:37, Lorenzo Bianconi wrote:
->>> From: Ben Greear <greearb@candelatech.com>
->>>
->>> Stop referencing 'features' memory after release_firmware is called.
->>>
->>> Fixes this crash:
->>>
->>> RIP: 0010:mt7921_check_offload_capability+0x17d
->>> mt7921_pci_probe+0xca/0x4b0
->>> ...
->>>
->>> Signed-off-by: Ben Greear <greearb@candelatech.com>
->>> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> 
-> The title should have "wifi:", not "wireless:".
-> 
->> Acked-by: Felix Fietkau <nbd@nbd.name>
-> 
-> Felix, do you mean I should take this to wireless tree?
-Sure
-
-- Felix
-
+SGksDQoNClVwZGF0ZSA4ODIyYyBmaXJtd2FyZSBvZiBydHc4OCBkcml2ZXIgdG8gdjkuOS4xNQ0K
+DQpUaGFuayB5b3UNClBpbmctS2UNCg0KLS0tDQpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2luY2Ug
+Y29tbWl0IGJjZGNmYmNmMGE4ZjI0YTkxNGI4YzE2MzkwNmU2Y2U5M2Q3Zjg4OTc6DQoNCiAgbGlu
+dXgtZmlybXdhcmU6IFVwZGF0ZSBmaXJtd2FyZSBmaWxlIGZvciBJbnRlbCBCbHVldG9vdGggQVgx
+MDEgKDIwMjMtMDMtMjAgMDg6MzQ6MjcgLTA0MDApDQoNCmFyZSBhdmFpbGFibGUgaW4gdGhlIEdp
+dCByZXBvc2l0b3J5IGF0Og0KDQogIGh0dHBzOi8vZ2l0aHViLmNvbS9wa3NoaWgvbGludXgtZmly
+bXdhcmUuZ2l0IEhFQUQNCg0KZm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIGU0MGE1YjYz
+MjQzZGJjMGE3NzU0M2QzOTc1NjU4ZmQ2NjhlZjI1ODY6DQoNCiAgcnR3ODg6IDg4MjJjOiBVcGRh
+dGUgbm9ybWFsIGZpcm13YXJlIHRvIHY5LjkuMTUgKDIwMjMtMDMtMjQgMTk6MjY6NTcgKzA4MDAp
+DQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0NClBvLUhhbyBIdWFuZyAoMSk6DQogICAgICBydHc4ODogODgyMmM6IFVwZGF0
+ZSBub3JtYWwgZmlybXdhcmUgdG8gdjkuOS4xNQ0KDQogcnR3ODgvcnR3ODgyMmNfZncuYmluIHwg
+QmluIDIwMjU1MiAtPiAyMDI2MDAgYnl0ZXMNCiAxIGZpbGUgY2hhbmdlZCwgMCBpbnNlcnRpb25z
+KCspLCAwIGRlbGV0aW9ucygtKQ0KDQo=
