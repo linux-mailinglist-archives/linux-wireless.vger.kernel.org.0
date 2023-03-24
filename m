@@ -2,59 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 846356C8065
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Mar 2023 15:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7CE6C80AD
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Mar 2023 16:04:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232252AbjCXOyV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Mar 2023 10:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
+        id S230471AbjCXPEE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Mar 2023 11:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232225AbjCXOyT (ORCPT
+        with ESMTP id S232330AbjCXPEC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Mar 2023 10:54:19 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EFD526A5;
-        Fri, 24 Mar 2023 07:54:13 -0700 (PDT)
+        Fri, 24 Mar 2023 11:04:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A620E187
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Mar 2023 08:04:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 8A2A5CE2632;
-        Fri, 24 Mar 2023 14:54:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C17CC4339B;
-        Fri, 24 Mar 2023 14:54:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1963762B5B
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Mar 2023 15:04:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FB3C433D2;
+        Fri, 24 Mar 2023 15:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679669649;
-        bh=TPWqYWYcjZZiJhFHCb/PWgdZwhaa3NIwJxumP8Ne4AE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=u0lCNBJ0KX1SUavcnQTvYjIgcPFdY5tzCGohmUnp7XSarvGJUJR+X3N0ED+b1Z+gl
-         sH7TmoEMF7VmFZs1cq+LiAi9G/Y/VbcjZ0+oqscjkssSUtSizmAtfYz6/IP6c/urIf
-         uKaWeMaUBcb0+nTO0xMYuB7KU64vNFeWRQ/DUSoKnfsQMJudRgQMgiXqk2Ud/fZ2Qc
-         EJtkj0abWuJ5gluxBusHVCp/P7CetWsnWhhKLB+XPuHm/TdBdjWyVWKw9zYKONJlVb
-         NNZuVXha92AzZ60/apd6l5K3dOXbJSDTgJ9U5gmy40r5ccFzWh6URv5GjgdvZyygoW
-         waJ4xrwIJrA7A==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH][next] wifi: carl9170: Replace fake flex-array with
- flexible-array member
+        s=k20201202; t=1679670240;
+        bh=/I23K0OXPPkwe4qTbG0o7pOV7z8FIYzoQPT2ceT+BVc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=SzSJk5z4YzYZ3CE0dj+u5AejCQH0qD1LveYTn7RAmBheVRsZMgo02BK+RG1iqr9Ci
+         SYJwRpEe7HSk3ld0IJJGN0z2YsBrWZXGz2Yt4ipUF4LIdCs07A5JuH8MM7TegsEtka
+         GLYKvVYkS2GwE/FMHlJl2wUVelicV0Ok/AQSvzgRx8PzujvUyFqAsMYaIpLevuafjn
+         HDeX5++1tzlVsqqNtCScYc1ypslorhEAu/LkHc/fsvVBOPfiHmX0IdiPDnSMg9qHhK
+         76p/XZxmgO+oaOec1wCQOl3ttsn+4b/EPFX62FbGTb3p5pHAKdXKqeOZlmS2RAc7+p
+         l6FPX+r5S7NHw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <ZBSl2M+aGIO1fnuG@work>
-References: <ZBSl2M+aGIO1fnuG@work>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Christian Lamparter <chunkeey@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <167966964574.27260.4294180985386180512.kvalo@kernel.org>
-Date:   Fri, 24 Mar 2023 14:54:07 +0000 (UTC)
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+To:     Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: Configure the FTM responder role using firmware capability flag
+References: <20230317072034.8217-1-quic_gjothira@quicinc.com>
+Date:   Fri, 24 Mar 2023 17:03:56 +0200
+In-Reply-To: <20230317072034.8217-1-quic_gjothira@quicinc.com> (Ganesh Babu
+        Jothiram's message of "Fri, 17 Mar 2023 12:50:34 +0530")
+Message-ID: <87sfduchsz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,34 +53,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Ganesh Babu Jothiram <quic_gjothira@quicinc.com> writes:
 
-> Zero-length arrays as fake flexible arrays are deprecated and we are
-> moving towards adopting C99 flexible-array members instead.
-> 
-> Address the following warnings found with GCC-13 and
-> -fstrict-flex-arrays=3 enabled:
-> drivers/net/wireless/ath/carl9170/tx.c:702:61: warning: array subscript i is outside array bounds of ‘const struct _carl9170_tx_status[0]’ [-Warray-bounds=]
-> drivers/net/wireless/ath/carl9170/tx.c:701:65: warning: array subscript i is outside array bounds of ‘const struct _carl9170_tx_status[0]’ [-Warray-bounds=]
-> 
-> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-> routines on memcpy() and help us make progress towards globally
-> enabling -fstrict-flex-arrays=3 [1].
-> 
-> Link: https://github.com/KSPP/linux/issues/21
-> Link: https://github.com/KSPP/linux/issues/267
-> Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Acked-by: Christian Lamparter <chunkeey@gmail.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Fine Time Measurement(FTM) is offloaded feature to firmware.
+> Hence, the configuration of FTM responder role is done using
+> firmware capability flag instead of hw param.
+>
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Ganesh Babu Jothiram <quic_gjothira@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+[...]
 
-1be3640cbb4a wifi: carl9170: Replace fake flex-array with flexible-array member
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -3538,7 +3538,7 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+>  
+>  	if (changed & BSS_CHANGED_FTM_RESPONDER &&
+>  	    arvif->ftm_responder != info->ftm_responder &&
+> -	    ar->ab->hw_params.ftm_responder &&
+> +	    (test_bit(WMI_TLV_SERVICE_RTT, ar->ab->wmi_ab.svc_map)) &&
+
+Unnecessary parenthesis, I fixed that in the pending branch.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/ZBSl2M+aGIO1fnuG@work/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
