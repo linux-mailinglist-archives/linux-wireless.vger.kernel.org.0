@@ -2,79 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FDF36C89CD
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 02:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 490E66C8C27
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 08:22:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbjCYBKB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Mar 2023 21:10:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53974 "EHLO
+        id S231917AbjCYHW1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Mar 2023 03:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjCYBKA (ORCPT
+        with ESMTP id S229926AbjCYHW0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Mar 2023 21:10:00 -0400
-X-Greylist: delayed 313 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Mar 2023 18:09:58 PDT
-Received: from forward103o.mail.yandex.net (forward103o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::606])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A77271F
-        for <linux-wireless@vger.kernel.org>; Fri, 24 Mar 2023 18:09:57 -0700 (PDT)
-Received: from forward204a.mail.yandex.net (forward204a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d204])
-        by forward103o.mail.yandex.net (Yandex) with ESMTP id C2B3210A8982
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 04:04:42 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:170e:0:640:d60c:0])
-        by forward204a.mail.yandex.net (Yandex) with ESMTP id E270C42322;
-        Sat, 25 Mar 2023 04:04:38 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id b429bIKDdGk0-UgqGVDXw;
-        Sat, 25 Mar 2023 04:04:38 +0300
-X-Yandex-Fwd: 1
-Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass
-Message-ID: <411a77cb-47f1-2f97-76c6-939c024654b4@16depo.xyz>
-Date:   Sat, 25 Mar 2023 04:04:37 +0300
+        Sat, 25 Mar 2023 03:22:26 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4D5F196AF
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 00:22:25 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id ek18so16145575edb.6
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 00:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679728944;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=saNBroOvM1I22v58z+1jlGQi08thNGmZ6cK60YX0TO0=;
+        b=IuOAgocF9RzRECslaS1GFtenH6BLVeKoyK1+RPytfkjQaT5phQJrOJCPSFtlYbRXwf
+         5UZ4mPY3fuC/g1CFfjb2eJyynhLsfrLDQgeD0848igaIoWyhIKqfpDxyyx4rxAPu/abJ
+         qQukCJghFbqrjSGC44DQj2sLRQ45zWovXyHB5xxDfde9ro7Os2Lk9cN04+OCR7PSlbTU
+         d5JJqRYwQ2gkBfBlDn2boK+2sr450oruRPWxhnIydPLmEJIZ2jrdHqTt9Q3G7KAZDpCS
+         nmbe1dRp55G47ggPrVOdpkm5v5IS7vjeM+1iQPxK5jBmMhfq/F8SFuvdnnHnay8jkgJj
+         lTRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679728944;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=saNBroOvM1I22v58z+1jlGQi08thNGmZ6cK60YX0TO0=;
+        b=RVAI8QdGzmkV3UdcoNpmdJgNsnTaIFomgbm6AmGtz6vdo7ovPmhcuVb4JXXLTBZEI3
+         eWKvvpRxzvwo65Mg81iZDcUIGcKWhJH5qbu31A9qshNhvt6l6R7TiMK/j4grlSfVF+TU
+         0wBW6TksIFeAKUuft+SqMbP+HaVgv1F6FFF6VeLd/3tkxk++mGifed++wL3Lkt8f+1JK
+         J4lCYHuUZKTySebYJ362SpCwbQf1i6hiKKOY3gw/vXh5keKKZrd05GQg6Q9Z20N2AyU4
+         mTEu02aucoe3DaVxGFGgmahU1tfCCgqa/LcjTHWbyTV82IC8jzl3V/QSCRZM9fWS7mvo
+         2rww==
+X-Gm-Message-State: AAQBX9c5nIlsYgM4+LRBZQ08qmsPuiBgqIplfR0t27znenV7lI39M4Fu
+        bHeU7Dgqv2PFRQY2ZYZhjezh9F9XfxVces2kx+A=
+X-Google-Smtp-Source: AKy350a7YiY6F5g4GUQwV6NWXEJSInnzJf9PS0n+V+N4U/hVup2OrlAffRnZUSSZT9Z57unbN1x8A8nyd/GKdJvqA44=
+X-Received: by 2002:a17:907:a49:b0:931:6f5b:d27d with SMTP id
+ be9-20020a1709070a4900b009316f5bd27dmr2788601ejc.0.1679728944343; Sat, 25 Mar
+ 2023 00:22:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Content-Language: en-US
-From:   Kirill <me@16depo.xyz>
-Subject: [wireless-regdb] [PATCH] Update regulatory info for Russia (RU) on
- 6GHz
-To:     sforshee@kernel.org
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:7412:ed41:b0:c6:cc67:5f5f with HTTP; Sat, 25 Mar 2023
+ 00:22:22 -0700 (PDT)
+Reply-To: carteralex166@gmail.com
+From:   Alex Ben <alexbigben200@gmail.com>
+Date:   Sat, 25 Mar 2023 00:22:22 -0700
+Message-ID: <CADqKhr4ScWF1cAvWZj+Os7H2L6vhaZZa6EXz=5U++Cz+KJ=oBw@mail.gmail.com>
+Subject: Business Proposal.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Update regulatory info for Russia on 6GHz in
-  accordance with current regulatory rules.
-
-Source: https://docs.cntd.ru/document/1300597464?section=text
-
-Signed-off-by: Kirill Matvienko <me@16depo.xyz>
----
-  db.txt | 3 ++-
-  1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/db.txt b/db.txt
-index 915a3b9..7f338b2 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1500,11 +1500,12 @@ country RS: DFS-ETSI
-  	# 60 GHz band channels 1-4, ref: Etsi En 302 567
-  	(57000 - 66000 @ 2160), (40)
-
--# Source: https://docs.cntd.ru/document/902048009?section=text
-+# Source: https://docs.cntd.ru/document/1300597464?section=text
-  country RU: DFS-ETSI
-  	(2400 - 2483.5 @ 40), (20)
-  	(5150 - 5350 @ 160), (100 mW), NO-OUTDOOR, DFS
-  	(5650 - 5850 @ 160), (100 mW), NO-OUTDOOR, DFS
-+	(5925 - 6425 @ 160), (100 mW), NO-OUTDOOR
-  	# 60 GHz band channels 1-4, ref: Changes to NLA 124_Order 
-№129_22042015.pdf
-  	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
-
 -- 
-2.34.1
+
+I have a business proposal for you reply for more info.
