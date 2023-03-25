@@ -2,73 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0945B6C9067
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 20:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0724D6C90B9
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 21:33:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229711AbjCYTUg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Mar 2023 15:20:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
+        id S229882AbjCYUdv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Mar 2023 16:33:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjCYTUf (ORCPT
+        with ESMTP id S229460AbjCYUdu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Mar 2023 15:20:35 -0400
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA70137;
-        Sat, 25 Mar 2023 12:20:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-        t=1679772011; i=dahms.tobias@web.de;
-        bh=9GnQ0agAqq9zJaehh+qzvMWqTQpSNUMWmsXNMvvwwKs=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=sci8Ye01wQdLnia+8FJpj26pp4z3HbdooH2QakBf9RL3Bt3vNLSLysvegQI7l2UYt
-         Mgw1yi4cEJF6YpW2kFyDax1dnh9h6skcw9x6TVsM2RvEqG1xtKWjmqX7NB9ipwg/f0
-         G0isY0cj4jFdHWN5sxh7pZTnNt9xWk6Xkej/aDS8AUwtzdXo7RAS2c49PdGSNlSJXT
-         uWdoErj0TzMb5zj4H18NUNzKDQItznbVrdmTJwr3hn+84yG2N6mA7DGUIg2xYIkErY
-         JgbcmyUvXFF8ycslcDCVrAx6BeGH6BdVWIH7kt5uKFjgdb84zm7HapGkGfsbQNXsC9
-         1qW04BqmuUK7Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.2.2] ([92.206.224.50]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MbTH3-1qD0D42Bcv-00boE0; Sat, 25
- Mar 2023 20:20:11 +0100
-Message-ID: <fcecf6fc-bf18-73a0-9fc1-6850e183323a@web.de>
-Date:   Sat, 25 Mar 2023 20:20:09 +0100
+        Sat, 25 Mar 2023 16:33:50 -0400
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7EE501FFC
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 13:33:48 -0700 (PDT)
+Message-ID: <c7fdd08a-5ca2-6b86-d45d-97ab442438e5@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1679776425;
+        bh=uZ/agqinbJAZau7QZPVOv+hry1fnu0HPfbw+bMez23Q=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To;
+        b=ym321KLm5X2Xyo/RTK/mQtcQy5rHaw1fT8EVauMubhzv8Grc48XgXQwyP7JKsnWa0
+         CpxQWiBZzIsD/0Gkk9GWBaTHu8lDk8N6Kn0nfVAi+k4XBVclfjrPsIjRKbqQdmSVDj
+         /c+AbydsoVpAnsCpUSWU/1+ZVG5J+sIX59Wto/N4=
+Date:   Sat, 25 Mar 2023 21:33:42 +0100
 MIME-Version: 1.0
-Subject: Re: kernel error at led trigger "phy0tpt"
-To:     Sean Wang <sean.wang@mediatek.com>,
-        angelogioacchino.delregno@collabora.com
-Cc:     stable@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, linux-leds@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-References: <91feceb2-0df4-19b9-5ffa-d37e3d344fdf@web.de>
- <3fcc707b-f757-e74b-2800-3b6314217868@leemhuis.info>
-Content-Language: de-DE
-From:   Tobias Dahms <dahms.tobias@web.de>
-In-Reply-To: <3fcc707b-f757-e74b-2800-3b6314217868@leemhuis.info>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: iwlwifi frequent drops between v6.2-rc3 and v6.3-rc1
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+To:     Vegard Nossum <vegard.nossum@oracle.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>, regressions@leemhuis.info,
+        regressions@lists.linux.dev, Thomas Mann <rauchwolke@gmx.net>,
+        linux-wireless@vger.kernel.org
+References: <9d11ed29-1114-055d-5b26-0899a5fc0d7f@oracle.com>
+ <70b7f54d-95b7-e01a-1a49-e29dc72d41b2@wetzel-home.de>
+Content-Language: en-US
+In-Reply-To: <70b7f54d-95b7-e01a-1a49-e29dc72d41b2@wetzel-home.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dXDzvdYSMjaMg+OQd9MfaUmMIxA6oS7PhLqDCeDUsnMBZ2ay5Ly
- ENrJem/EupGajYOCRi26axSJItqLp2nhsPsjQNvQUp4Xto9iaokZExDti2y/iIfpkOMCS3n
- bX08efXYcIupb0tkkBQe0L9tRIyZBLRjoitCLGwMLvL1qJTU3+lkpL7lUdAfk/W2N1j1GWW
- 4rAnQ07R6SIskz8SmWt+w==
-UI-OutboundReport: notjunk:1;M01:P0:+b2d7amIkS8=;6HIhXk6pRPLfhy0JQJX455kIRJG
- MTzqVnM0v8klF2egTnh5y8PKcErAFYq1yW/w8wAou1qA00LtGRilPJBIzcXP9BnyMfStBny89
- 63Q+5pSPpMmYjtXedYVnn79uRtgYtarutoGVcdjWy4PuOrKlACzVQPjl7ERnIBX62DQyDJC35
- fPh6AAepEur3oBYJVsa0Tp03jdQCIK7cu/MUVqqrg4MnTIKbLRZ3LclB/Aj4V2g0QfI//rV0i
- DzfpksQOOf1OFstT+gtIfnT1Lz30SHVEgf+4SK3arPq9fY29OzbyE8vvPi2QV+uWyHuZ4Je0P
- u1A+HdXiV18y7a91jSBdIQ/FIJFaRu+tCspxIFUOWCLmuGG6pX0EwK44+FeVP4KkpypXH6aGF
- epX8h8rsALb6ehokljR2Nx98kb4JXxfY+VPG70ulggsLTyAtvHsKOBvUEFLcyGEoXluwgHten
- kkr9hL1xQijV3mGtDNmKlP7FnGm7J8Y7gZwqAMBPKy5fwIv0KJIBt+LKiNlz3eZ0Ygnm8CrdY
- ywYoLGfoBqZ+MSO5hLbiOSYs5493LDJjvDjMfQj4t0RqpIItVAdbSVBrFCuRNH25REQfrakzp
- vW2ATgXEJmQgnJs5ORAHtC+l1y57QUvcgoRKoRUs+mIx+wITSO9z84fzNyFEN7VFSxPEN1cYD
- a9JuJ3xr5igFxvxkVoUHtTmqpQlrOqpjBi7/1E2VpnxHKNkbAzRiuew1t9xr4to5jn6S3uwSX
- dHE2e6rimh6ls7hHrXP6s4e6KDDE8eM2TvNLAHtUUTdKzQfz8cCuIE01l8efrwPFNVPnEAALh
- vlvf7ON0Hmh0lpkCP4vfRPxHIrwxbWvsfhcsFflstk3kQNv/uYTnK7TLoMZnZZQDmOCIpAclq
- hLvG9RFKkRHpMc9lW/B5D+2/kxVt26E7aDS+3xrcK/DjenL9OEMZ5JA6ajlQXul1Bz5mXzt4m
- 6drdctrf1McRTMw/D/kuKJmcahA=
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,421 +48,103 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 17.03.23 16:29, Alexander Wetzel wrote:
+> On 17.03.23 09:53, Vegard Nossum wrote:
+>>
+>> Hi,
+>>
+>> Somewhere between e8f60cd7db24 (v6.2-rc3) and 2eb29d59ddf0 (v6.3-rc1) my
+>> wifi started dropping a lot. I'm using iwlwifi and I've checked the old
+>> logs that the firmware hasn't changed:
+>>
+>> Feb 25 16:22:33 kernel: iwlwifi 0000:04:00.0: loaded firmware version 
+>> 36.e91976c0.0 8000C-36.ucode op_mode iwlmvm
+>>
+>> My logs look like this:
+>>
+>> 09:01:50 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
+>> 09:01:50 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED 
+>> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
+>> 09:01:50 NetworkManager[8368]: <warn>  [1679040110.6548] 
+>> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
+>> 09:01:50 NetworkManager[8368]: <info>  [1679040110.6656] device 
+>> (wlp4s0): supplicant interface state: completed -> disconnected
+>> 09:01:50 NetworkManager[8368]: <info>  [1679040110.7609] device 
+>> (wlp4s0): supplicant interface state: disconnected -> scanning
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: SME: Trying to authenticate 
+>> with [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
+>> 09:01:53 kernel: wlp4s0: authenticate with [REDACTED]:0b:25
+>> 09:01:53 kernel: wlp4s0: send auth to [REDACTED]:0b:25 (try 1/3)
+>> 09:01:53 kernel: wlp4s0: authenticated
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: Trying to associate with 
+>> [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
+>> 09:01:53 kernel: wlp4s0: associate with [REDACTED]:0b:25 (try 1/3)
+>> 09:01:53 kernel: wlp4s0: RX AssocResp from [REDACTED]:0b:25 
+>> (capab=0x1511 status=0 aid=36)
+>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4553] device 
+>> (wlp4s0): supplicant interface state: scanning -> authenticating
+>> 09:01:53 kernel: wlp4s0: associated
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: Associated with [REDACTED]:0b:25
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SUBNET-STATUS-UPDATE 
+>> status=0
+>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4645] device 
+>> (wlp4s0): supplicant interface state: authenticating -> associating
+>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4829] device 
+>> (wlp4s0): supplicant interface state: associating -> associated
+>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5175] device 
+>> (wlp4s0): supplicant interface state: associated -> 4-way handshake
+>> 09:01:53 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED 
+>> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: WPA: 4-Way Handshake failed - 
+>> pre-shared key may be incorrect
+>> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SSID-TEMP-DISABLED 
+>> id=0 ssid="[REDACTED]" auth_failures=1 duration=10 reason=WRONG_KEY
+>> 09:01:53 NetworkManager[8368]: <warn>  [1679040113.5685] 
+>> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
+>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5737] device 
+>> (wlp4s0): supplicant interface state: 4-way handshake -> disconnected
+>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.6759] device 
+>> (wlp4s0): supplicant interface state: disconnected -> scanning
+>>
+>> I did see that somebody else reported a similar regression, but I don't
+>> know if it could be the same problem or not (I see the driver is
+>> different, but the fix looks generic):
+>>
+>> https://linux-regtracking.leemhuis.info/regzbot/regression/217119/
+>>
+>> The buggy commit that was identified there does seem to be within the
+>> range of potential culprits:
+>>
+>> $ git log --oneline e8f60cd7db24..2eb29d59ddf0 | grep resumption
+>> 4444bc2116ae wifi: mac80211: Proper mark iTXQs for resumption
+>>
+>> If people think it's the same, I could try the proposed fix -- otherwise
+>> let me know what else I can do to help track this down.
+>>
+> 
+> You are using a iwlwilf/mvm card. The fix we plan to merge for that 
+> regression above won't help you. (mvm cards do not use the function we 
+> serialized in the end. iwlwifi/dvm on the other uses it.)
+> 
+> But Johannes is working on a comparable issue affecting mvm cards.
+> Check out
+> https://lore.kernel.org/r/20230314103840.30771-1-jtornosm@redhat.com
+> 
+> That may well fix your issue.
 
-the bisection gives following result:
-=2D-------------------------------------------------------------------
-18c7deca2b812537aa4d928900e208710f1300aa is the first bad commit
-commit 18c7deca2b812537aa4d928900e208710f1300aa
-Author: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.co=
-m>
-Date:   Tue May 17 12:47:08 2022 +0200
+It's surprisingly quiet here...
+Are these fixes helping? Honestly I'm not very optimistic.
+I expect that this is something else...
 
-     soc: mediatek: pwrap: Use readx_poll_timeout() instead of custom
-function
+If so, we can debug that here together.
 
-     Function pwrap_wait_for_state() is a function that polls an address
-     through a helper function, but this is the very same operation that
-     the readx_poll_timeout macro means to do.
-     Convert all instances of calling pwrap_wait_for_state() to instead
-     use the read_poll_timeout macro.
+For start, I would like to see the full logs, starting from the initial 
+(working) connect.
 
-     Signed-off-by: AngeloGioacchino Del Regno
-<angelogioacchino.delregno@collabora.com>
-     Reviewed-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
-     Tested-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
-     Link:
-https://lore.kernel.org/r/20220517104712.24579-2-angelogioacchino.delregno=
-@collabora.com
-     Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+I also would like to get a confirmation, that by booting an older kernel 
+(v6.2-rc3 or older) the system gets stable again. (Not that 
+wpa_supplicant or the router got an update, too.)
 
-  drivers/soc/mediatek/mtk-pmic-wrap.c | 60
-++++++++++++++++++++----------------
-  1 file changed, 33 insertions(+), 27 deletions(-)
-=2D-------------------------------------------------------------------
+Alexander
 
-regards
-Tobias
-
-
-Am 22.03.23 um 17:59 schrieb Linux regression tracking (Thorsten Leemhuis)=
-:
-> [adding the maintainer for drivers/leds/leds-mt6323.c as well as the LED
-> subsystem maintainers to the list of recipients]
->
-> Note, I first thought this might have been a vendor kernel, but it's
-> not, as Tobias clarified (thx!):
-> https://lore.kernel.org/all/f8f7d7ae-7e4b-e0fb-6a21-1d4fdcc22035@web.de/
->
-> [TLDR for the rest of this mail: I'm adding below report to the list of
-> tracked Linux kernel regressions; the text you find below is based on a
-> few templates paragraphs you might have encountered already in similar
-> form. See link in footer if these mails annoy you.]
->
-> On 20.03.23 20:44, Tobias Dahms wrote:
->> Hello,
->>
->> since some kernel versions I get a kernel errror while setting led
->> trigger to phy0tpt.
->>
->> command to reproduce:
->> echo phy0tpt > /sys/class/leds/bpi-r2\:isink\:blue/trigger
->>
->> same trigger, other led location =3D> no error:
->> echo phy0tpt > /sys/class/leds/bpi-r2\:pio\:blue/trigger
->>
->> other trigger, same led location =3D> no error:
->> echo phy0tx > /sys/class/leds/bpi-r2\:isink\:blue/trigger
->>
->> last good kernel:
->> bpi-r2 5.19.17-bpi-r2
->>
->> error at kernel versions:
->> bpi-r2 6.0.19-bpi-r2
->> up to
->> bpi-r2 6.3.0-rc1-bpi-r2+
->>
->> wireless lan card:
->> 01:00.0 Network controller: MEDIATEK Corp. MT7612E 802.11acbgn PCI
->> Express Wireless Network Adapter
->>
->> distribution:
->> Arch-Linux-ARM (with vanilla kernel instead of original distribution
->> kernel)
->>
->> board:
->> BananaPi-R2
->>
->> log messages:
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: BUG: scheduling while atomic:
->> swapper/0/0/0x00000100
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Modules linked in: aes_arm_bs crypt=
-o_simd
->> cryptd nft_masq nft_ct nf_log_syslog nft_log nft_chain_nat nf_nat
->> nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink mt76x2e
->> mt76x2_common mt76x02_lib mt76 spi_mt65xx pwm_mediatek mt6577_auxadc
->> sch_fq_codel fuse configfs ip_tables x_tables
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: CPU: 0 PID: 0 Comm: swapper/0 Not t=
-ainted
->> 6.3.0-rc1-bpi-r2+ #1
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Hardware name: Mediatek Cortex-A7 (=
-Device
->> Tree)
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Backtrace:
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dump_backtrace from show_stac=
-k+0x20/0x24
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c14ab340 r6:00000000 r5:c1=
-2507fc
->> r4:600f0113
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 show_stack from dump_stack_lv=
-l+0x48/0x54
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dump_stack_lvl from dump_stac=
-k+0x18/0x1c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1508fc0 r4:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dump_stack from __schedule_bu=
-g+0x60/0x70
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 __schedule_bug from __schedul=
-e+0x6b0/0x904
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1508fc0 r4:eed9d340
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 __schedule from schedule+0x6c=
-/0xe8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:c1501ba0 r9:00000000 r8:0=
-0001b58
->> r7:c1508fc0 r6:00001b58 r5:0000004a
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c1508fc0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 schedule from
->> schedule_hrtimeout_range_clock+0xec/0x14c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:0000004a r4:47ac1837
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 schedule_hrtimeout_range_cloc=
-k from
->> schedule_hrtimeout_range+0x28/0x30
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:c1501c50 r9:c1508fc0 r8:0=
-0000002
->> r7:00000000 r6:c1501ba0 r5:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:00001b58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 schedule_hrtimeout_range from
->> usleep_range_state+0x6c/0x90
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 usleep_range_state from
->> pwrap_read16+0xfc/0x2a0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:0000004a r8:4844840c r7:00=
-00004a
->> r6:48447f8a r5:01980000 r4:c2703940
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 pwrap_read16 from
->> pwrap_regmap_read+0x24/0x28
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:00001f00 r9:00000000 r8:0=
-0000f00
->> r7:c2703940 r6:c1501c50 r5:00000330
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c196e000 r3:c06f3fbc
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 pwrap_regmap_read from
->> _regmap_read+0x70/0x160
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 _regmap_read from
->> _regmap_update_bits+0xc8/0x108
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:00001f00 r9:00000000 r8:0=
-0000f00
->> r7:c1508fc0 r6:00000330 r5:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c196e000 r3:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 _regmap_update_bits from
->> regmap_update_bits_base+0x60/0x84
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:00000000 r9:00000f00 r8:0=
-0000000
->> r7:00001f00 r6:00000000 r5:00000330
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c196e000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 regmap_update_bits_base from
->> mt6323_led_set_blink+0xf0/0x148
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:eed94800 r9:c16998c0 r8:c=
-196e000
->> r7:c31f0c48 r6:c2456f48 r5:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:0000014e
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 mt6323_led_set_blink from
->> led_blink_setup+0x3c/0x110
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:c16998c0 r8:00000770 r7:c1=
-501d60
->> r6:c1501d5c r5:c1501d60 r4:c31f0c48
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 led_blink_setup from
->> led_blink_set+0x60/0x64
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c1501d60 r6:c1501d5c r5:c3=
-1f0c58
->> r4:c31f0c48
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 led_blink_set from
->> led_trigger_blink+0x44/0x58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c1501d60 r6:c1501d5c r5:c5=
-b69740
->> r4:c31f0c48
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 led_trigger_blink from
->> tpt_trig_timer+0x10c/0x130
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c0df71f0 r6:c1508fc0 r5:c5=
-b685a0
->> r4:c597b628
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 tpt_trig_timer from
->> call_timer_fn+0x48/0x168
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r6:c597b628 r5:00000100 r4:c1=
-6998c0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 call_timer_fn from
->> run_timer_softirq+0x600/0x6c8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:c16998c0 r8:00000000 r7:00=
-000770
->> r6:00000000 r5:c1501de4 r4:c597b628
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 run_timer_softirq from
->> __do_softirq+0x140/0x34c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:00000082 r9:00000100 r8:c=
-1698481
->> r7:c1698f60 r6:00000001 r5:00000002
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c1503084
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 __do_softirq from irq_exit+0x=
-b8/0xe8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:10c5387d r9:c1508fc0 r8:c=
-1698481
->> r7:c1501f0c r6:00000000 r5:c1501ed8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c14aaf58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 irq_exit from
->> generic_handle_arch_irq+0x48/0x4c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1501ed8 r4:c14aaf58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 generic_handle_arch_irq from
->> __irq_svc+0x88/0xb0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Exception stack(0xc1501ed8 to 0xc15=
-01f20)
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ec0:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 000862f4 2d8f2000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ee0: c1508fc0 00000000 c1699cc0 c1=
-504f10
->> c1504f70 00000001 c1698481 c123a9b4
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1f00: 10c5387d c1501f3c 00000001 c1=
-501f28
->> c0e36fa0 c0e3767c 600f0013 ffffffff
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c1501f0c r6:ffffffff r5:60=
-0f0013
->> r4:c0e3767c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 default_idle_call from do_idl=
-e+0xc4/0x124
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1504f10 r4:00000001
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 do_idle from cpu_startup_entr=
-y+0x28/0x2c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:efffcd40 r8:00000000 r7:00=
-000045
->> r6:c1326068 r5:c16fb9b8 r4:000000ec
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 cpu_startup_entry from rest_i=
-nit+0xc0/0xc4
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 rest_init from
->> arch_post_acpi_subsys_init+0x0/0x30
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c16fb9b8 r4:c16cc038
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 arch_call_rest_init from
->> start_kernel+0x6c0/0x704
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 start_kernel from 0x0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: bad: scheduling from the idle threa=
-d!
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: CPU: 0 PID: 0 Comm: swapper/0 Taint=
-ed: G
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 W=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 6.3.0-rc1-bpi-r2+ #1
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Hardware name: Mediatek Cortex-A7 (=
-Device
->> Tree)
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Backtrace:
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dump_backtrace from show_stac=
-k+0x20/0x24
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c14ab340 r6:00000001 r5:c1=
-2507fc
->> r4:60070013
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 show_stack from dump_stack_lv=
-l+0x48/0x54
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dump_stack_lvl from dump_stac=
-k+0x18/0x1c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1508fc0 r4:eed9d340
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dump_stack from dequeue_task_=
-idle+0x30/0x44
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 dequeue_task_idle from
->> __schedule+0x4bc/0x904
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1508fc0 r4:eed9d340
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 __schedule from schedule+0x6c=
-/0xe8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:c1501ba0 r9:00000000 r8:0=
-0001b58
->> r7:c1508fc0 r6:00001b58 r5:0000004a
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c1508fc0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 schedule from
->> schedule_hrtimeout_range_clock+0xec/0x14c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:0000004a r4:492d8817
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 schedule_hrtimeout_range_cloc=
-k from
->> schedule_hrtimeout_range+0x28/0x30
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:c1501c50 r9:c1508fc0 r8:0=
-0000002
->> r7:00000000 r6:c1501ba0 r5:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:00001b58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 schedule_hrtimeout_range from
->> usleep_range_state+0x6c/0x90
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 usleep_range_state from
->> pwrap_read16+0xfc/0x2a0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:0000004a r8:49c5f439 r7:00=
-00004a
->> r6:49c5f0eb r5:01990000 r4:c2703940
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 pwrap_read16 from
->> pwrap_regmap_read+0x24/0x28
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:0000ffff r9:00000000 r8:0=
-000014d
->> r7:c2703940 r6:c1501c50 r5:00000332
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c196e000 r3:c06f3fbc
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 pwrap_regmap_read from
->> _regmap_read+0x70/0x160
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 _regmap_read from
->> _regmap_update_bits+0xc8/0x108
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:0000ffff r9:00000000 r8:0=
-000014d
->> r7:c1508fc0 r6:00000332 r5:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c196e000 r3:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 _regmap_update_bits from
->> regmap_update_bits_base+0x60/0x84
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:00000000 r9:0000014d r8:0=
-0000000
->> r7:0000ffff r6:00000000 r5:00000332
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c196e000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 regmap_update_bits_base from
->> mt6323_led_set_blink+0x138/0x148
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:eed94800 r9:00000000 r8:c=
-196e000
->> r7:c31f0c48 r6:c2456f48 r5:00000000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:0000014e
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 mt6323_led_set_blink from
->> led_blink_setup+0x3c/0x110
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:c16998c0 r8:00000770 r7:c1=
-501d60
->> r6:c1501d5c r5:c1501d60 r4:c31f0c48
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 led_blink_setup from
->> led_blink_set+0x60/0x64
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c1501d60 r6:c1501d5c r5:c3=
-1f0c58
->> r4:c31f0c48
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 led_blink_set from
->> led_trigger_blink+0x44/0x58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c1501d60 r6:c1501d5c r5:c5=
-b69740
->> r4:c31f0c48
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 led_trigger_blink from
->> tpt_trig_timer+0x10c/0x130
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c0df71f0 r6:c1508fc0 r5:c5=
-b685a0
->> r4:c597b628
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 tpt_trig_timer from
->> call_timer_fn+0x48/0x168
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r6:c597b628 r5:00000100 r4:c1=
-6998c0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 call_timer_fn from
->> run_timer_softirq+0x600/0x6c8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:c16998c0 r8:00000000 r7:00=
-000770
->> r6:00000000 r5:c1501de4 r4:c597b628
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 run_timer_softirq from
->> __do_softirq+0x140/0x34c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:00000082 r9:00000100 r8:c=
-1698481
->> r7:c1698f60 r6:00000001 r5:00000002
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c1503084
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 __do_softirq from irq_exit+0x=
-b8/0xe8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r10:10c5387d r9:c1508fc0 r8:c=
-1698481
->> r7:c1501f0c r6:00000000 r5:c1501ed8
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r4:c14aaf58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 irq_exit from
->> generic_handle_arch_irq+0x48/0x4c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1501ed8 r4:c14aaf58
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 generic_handle_arch_irq from
->> __irq_svc+0x88/0xb0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: Exception stack(0xc1501ed8 to 0xc15=
-01f20)
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ec0:
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 000862f4 2d8f2000
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1ee0: c1508fc0 00000000 c1699cc0 c1=
-504f10
->> c1504f70 00000001 c1698481 c123a9b4
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: 1f00: 10c5387d c1501f3c 00000001 c1=
-501f28
->> c0e36fa0 c0e3767c 600f0013 ffffffff
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r7:c1501f0c r6:ffffffff r5:60=
-0f0013
->> r4:c0e3767c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 default_idle_call from do_idl=
-e+0xc4/0x124
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c1504f10 r4:00000001
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 do_idle from cpu_startup_entr=
-y+0x28/0x2c
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r9:efffcd40 r8:00000000 r7:00=
-000045
->> r6:c1326068 r5:c16fb9b8 r4:000000ec
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 cpu_startup_entry from rest_i=
-nit+0xc0/0xc4
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 rest_init from
->> arch_post_acpi_subsys_init+0x0/0x30
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 r5:c16fb9b8 r4:c16cc038
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 arch_call_rest_init from
->> start_kernel+0x6c0/0x704
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel:=C2=A0 start_kernel from 0x0
->> M=C3=A4r 12 12:54:55 bpi-r2 kernel: ------------[ cut here ]-----------=
--
->
-> Thanks for the report. To be sure the issue doesn't fall through the
-> cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-> tracking bot:
->
-> #regzbot ^introduced v5.19..v6.0
-> #regzbot title led: kernel bug when setting trigger to "phy0tpt"
-> #regzbot ignore-activity
->
-> This isn't a regression? This issue or a fix for it are already
-> discussed somewhere else? It was fixed already? You want to clarify when
-> the regression started to happen? Or point out I got the title or
-> something else totally wrong? Then just reply and tell me -- ideally
-> while also telling regzbot about it, as explained by the page listed in
-> the footer of this mail.
->
-> Developers: When fixing the issue, remember to add 'Link:' tags pointing
-> to the report (the parent of this mail). See page linked in footer for
-> details.
->
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> That page also explains what to do if mails like this annoy you.
