@@ -2,146 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C9D6C8D63
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 12:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D696C8E5A
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 14:05:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231890AbjCYLUE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Mar 2023 07:20:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42278 "EHLO
+        id S231156AbjCYNFI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Mar 2023 09:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbjCYLUD (ORCPT
+        with ESMTP id S229446AbjCYNFG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Mar 2023 07:20:03 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED751E1A6
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 04:20:01 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id t17-20020a05600c451100b003edc906aeeaso3570903wmo.1
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 04:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679743200;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :reply-to:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZRXrrCyhC/asJwSLOsOxy0dUDn7uJ0nZ8VEzBDUmgw=;
-        b=RvqlL4vXdmLZ3+GPCy8kCL42diInnqg9AUUQP6do0nrsiCPWaPmT0fMChz++P5h4cN
-         IINxvVj+mJcJdhAyRvExqfoEyaiozCKDjVHywj28w2lnCO3OYJ3WJ9/DbEuX4f7RgdMM
-         OZzckvtOpzyDgeErFfEgGeXqCBPiLVkckWugNsuxwnZyuZWkejiZ/cijSymExLqiBo/4
-         NxLJOiqBQ6LEOOpIqo80ugAyiDoqJqgqlHsYLsv2jn1njWdc8/f7m2a9rfdiZpLE6aQa
-         0TpMYMz0ajt1ulzLCxb0CsXjRZZh8k1hLSdFEYbSiTC4+wrorzMMV8AugBxHGiL4Hxll
-         R2eQ==
+        Sat, 25 Mar 2023 09:05:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D174C1B
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 06:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1679749453;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=p5AnT4EajAj/sfPOwrH8wVcxH+vP8RQ1S3cIG2Qtejc=;
+        b=ZYxCo8oH1J6mI2mAUtKyD++HePo6XWMvD+0s4Soz4NqSiDiIYBUuTBPs6yCUEOk714kUUr
+        fcTAAtRVxbEIQ3OQOvAsU2kT3TmgB17gMTg7rcvmcEgz24ZGs9HcRdiWwOdi4oS6tUeQ9B
+        h4U1Cc9EYCjlhUeX5GbqJrS2xllzMKA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617--ueJyGA3MN2QOvkKbCUNUA-1; Sat, 25 Mar 2023 09:04:09 -0400
+X-MC-Unique: -ueJyGA3MN2QOvkKbCUNUA-1
+Received: by mail-qk1-f200.google.com with SMTP id t21-20020a37aa15000000b00746b7fae197so2113335qke.12
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 06:04:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679743200;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FZRXrrCyhC/asJwSLOsOxy0dUDn7uJ0nZ8VEzBDUmgw=;
-        b=zWVrB0yuorLFKkyz8dJR5NXHMrw6yWvkHcng4vCzB3wDCs4mNouOKkvvtR6Rbna9CK
-         Tz0zCflBktSo136A9BECGUm+DrmH13ys1HWaYp0YTTC98dMYhqAi5GSeGFfyWLnxpz4M
-         73GOuBvP22LqPbISUllxueyWrbb1/ilUED0deJsIOiEBTcJF8MJebhH0cZnQfq4eSwDE
-         1ptIyrvJIsA1yUa7wesQEpm40KWat1btkPsrb6ijLKJNg45eRW132No1NEyZ0dZVQeXV
-         qZiVzgXU27XJYYuvyteLcG0X1XvXTeImo0MjPWYB/dqyTMMAy5mrD7bN9oxXVxFHE7uj
-         mAwg==
-X-Gm-Message-State: AO0yUKVcVWCT3wpSZ0NShaC2i/Mg0sKulqzDzwHdPYoSP7Fz31VhRbpp
-        9em3m6UHMTQs3//WskrQZLDXACE4PLgcP8SN9Pw=
-X-Google-Smtp-Source: AK7set8eWZRwYp+qmYJp8B02G2WuY74f3KR4uf3Of/INTmx5nhiWsfQjD+bD28PcSpUvCkvSp8WFEJRaqEoU4PH8QEg=
-X-Received: by 2002:a7b:ca4a:0:b0:3ed:c669:8a15 with SMTP id
- m10-20020a7bca4a000000b003edc6698a15mr1392897wml.1.1679743200148; Sat, 25 Mar
- 2023 04:20:00 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1679749448;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p5AnT4EajAj/sfPOwrH8wVcxH+vP8RQ1S3cIG2Qtejc=;
+        b=Xml+oMFel3e7WjwD5ad1jLq0jfv55zFENOx5oE6RyvC72kaFczygp2doxrgwTffmF9
+         pT89Z+d+Ltf6ow/Vy1Jn/ck1DeUOmWj3MHLdwKlL2sUt8j2ZUB2bZHnt1xKeDimjVL9Q
+         sXE7DBUYCkmIBVWCN4EJh4JNNGhOIpsrSEkS5qH30w1UgTvJxMhdbu5tjMFrH2VmHPwJ
+         fbFR7Hk4UZty5/kxJjS5h2clXvSXtJ3k2E/gxQeGwgXJm4eZ9D5Qv4j/d3V8EFKOFZUv
+         OtWiH7RJjUeE4v68Vt4TTvW6Kkduylql7A7DKJu0+/cO7ltQFXeYmNfvjwaSkVuTwhIW
+         EK9w==
+X-Gm-Message-State: AO0yUKXg8DRHF4e5HOEm/973H8XkrfKW/474+BLdEQI5zBiWt2T+Kv8m
+        FBoJcd5FioLyamBhFqwDEmiIiD6wVTnVF1wQJ9RgD5nIVhet88RM8MRhkJrDLkZ3PY57FrTzDBq
+        xQjBAPOFYuL3JEYCDeEbhnbBKtCY=
+X-Received: by 2002:ac8:5905:0:b0:3e3:9958:5fe8 with SMTP id 5-20020ac85905000000b003e399585fe8mr10189615qty.42.1679749448580;
+        Sat, 25 Mar 2023 06:04:08 -0700 (PDT)
+X-Google-Smtp-Source: AK7set+2OrXAM6yLwAO51Ihw4Bnlq4mAxCyDb+OhQvXEXhrgJx/Z2aC+vH71MlObmyR5Qq6wWwaDFA==
+X-Received: by 2002:ac8:5905:0:b0:3e3:9958:5fe8 with SMTP id 5-20020ac85905000000b003e399585fe8mr10189565qty.42.1679749448292;
+        Sat, 25 Mar 2023 06:04:08 -0700 (PDT)
+Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id u23-20020a37ab17000000b0071f0d0aaef7sm11776469qke.80.2023.03.25.06.04.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Mar 2023 06:04:08 -0700 (PDT)
+From:   Tom Rix <trix@redhat.com>
+To:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        nathan@kernel.org, ndesaulniers@google.com,
+        johannes.berg@intel.com, quic_srirrama@quicinc.com,
+        alexander@wetzel-home.de, shaul.triebitz@intel.com
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] wifi: mac80211: remove unused has_5g variable
+Date:   Sat, 25 Mar 2023 09:03:43 -0400
+Message-Id: <20230325130343.1334209-1-trix@redhat.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Reply-To: mkwesogo@gmail.com
-Sender: simtondji@gmail.com
-Received: by 2002:a5d:4a4c:0:b0:2d8:6f46:a535 with HTTP; Sat, 25 Mar 2023
- 04:19:59 -0700 (PDT)
-From:   "Mr. Muskwe Sanogo" <sanogokwe@gmail.com>
-Date:   Sat, 25 Mar 2023 11:19:59 +0000
-X-Google-Sender-Auth: ycbpY1NZYejUWu4cIxovoRDxGao
-Message-ID: <CAGg0eJxqqdi-mBH8JMwpVMLX9ErzkZF6LCCM-=CH3nm2n4va5g@mail.gmail.com>
-Subject: Greetings and articulate salutations.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=ADVANCE_FEE_5_NEW,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTTO_DEPT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,UNDISC_FREEM,UNDISC_MONEY autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:334 listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [sanogokwe[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 LOTTO_DEPT Claims Department
-        *  0.8 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I bestow upon you a serendipitous and euphoric afternoon, With due
-respect to your personality and much sincerity of this purpose, I make
-this contact with you believing that you can be of great assistance to
-me. I'm Mr. Muskwe Sanogo,  I'm the Chairman of FOREIGN PAYMENTS
-CONTRACT AWARD COMMITTEE and also I currently hold the post of
-Internal Audit Manager of our bank, Please see this as a confidential
-message and do not reveal it to another person because it=E2=80=99s a top
-secret.
+clang with W=1 reports
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c:1051:6: error:
+  variable 'has_5g' set but not used [-Werror,-Wunused-but-set-variable]
+        int has_5g = 0;
+            ^
+This variable is not used so remove it.
 
-It may surprise you to receive this letter from me, since there has
-been no previous correspondence between us.  I will also like to make
-it clear here that l know that the internet has been grossly abused by
-criminal minded people making it difficult for people with genuine
-intention to correspond and exchange views without skepticism.
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-We are imposition to reclaim and inherit the sum of US $(28,850,000
-Million ) without any trouble, from a dormant account which remains
-unclaimed since 10 years the owner died. This is a U.S Dollars account
-and the beneficiary died without trace of his family to claim the
-fund.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index a8333e6adbda..0bd4e679a359 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -1048,7 +1048,6 @@ static int ieee_hw_rate_init(struct ieee80211_hw *hw)
+ 	struct brcms_info *wl = hw->priv;
+ 	struct brcms_c_info *wlc = wl->wlc;
+ 	struct ieee80211_supported_band *band;
+-	int has_5g = 0;
+ 	u16 phy_type;
+ 
+ 	hw->wiphy->bands[NL80211_BAND_2GHZ] = NULL;
+@@ -1070,7 +1069,6 @@ static int ieee_hw_rate_init(struct ieee80211_hw *hw)
+ 
+ 	/* Assume all bands use the same phy.  True for 11n devices. */
+ 	if (wl->pub->_nbands > 1) {
+-		has_5g++;
+ 		if (phy_type == PHY_TYPE_N || phy_type == PHY_TYPE_LCN) {
+ 			band = &wlc->bandstate[BAND_5G_INDEX]->band;
+ 			*band = brcms_band_5GHz_nphy_template;
+-- 
+2.27.0
 
-Upon my personal audit investigation into the details of the account,
-I find out that the deceased is a foreigner, which makes it possible
-for you as a foreigner no matter your country to lay claim on the
-balance as the Foreign Business Partner or Extended Relative to the
-deceased, provided you are not from here.
-
-Your integrity and trustworthiness will make us succeed without any
-risk. Please if you think that the amount is too much to be
-transferred into your account, you have the right to ask our bank to
-transfer the fund into your account bit by bit after approval or you
-double the account. Once this fund is transferred into your account,
-we will share the fund accordingly. 45%, for you, 45%, for me, 5%, had
-been mapped out for the expense made in this transaction, 5% as a free
-will donation to charity and motherless babies homes in both our
-countries as sign of breakthrough and more blessings.
-
-
-If you are interested to help without disappointment or breach of
-trust, reply me, so that I will guide you on the proper banking
-guidelines to follow for the claim. After the transfer, I will fly to
-your country for sharing of funds according to our agreement.
-
-Assurance: Note that this transaction will never in any way harm or
-foiled your good post or reputation in your country, because
-everything will follow legal process.
-
-I am looking forward to hear from you soonest.
-Yours faithfully,
-Mr. Muskwe Sanogo
