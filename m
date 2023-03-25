@@ -2,149 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0724D6C90B9
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 21:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5730E6C90E1
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 22:05:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbjCYUdv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Mar 2023 16:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56368 "EHLO
+        id S229805AbjCYVFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Mar 2023 17:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjCYUdu (ORCPT
+        with ESMTP id S229446AbjCYVFi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Mar 2023 16:33:50 -0400
-Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7EE501FFC
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 13:33:48 -0700 (PDT)
-Message-ID: <c7fdd08a-5ca2-6b86-d45d-97ab442438e5@wetzel-home.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
-        s=wetzel-home; t=1679776425;
-        bh=uZ/agqinbJAZau7QZPVOv+hry1fnu0HPfbw+bMez23Q=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To;
-        b=ym321KLm5X2Xyo/RTK/mQtcQy5rHaw1fT8EVauMubhzv8Grc48XgXQwyP7JKsnWa0
-         CpxQWiBZzIsD/0Gkk9GWBaTHu8lDk8N6Kn0nfVAi+k4XBVclfjrPsIjRKbqQdmSVDj
-         /c+AbydsoVpAnsCpUSWU/1+ZVG5J+sIX59Wto/N4=
-Date:   Sat, 25 Mar 2023 21:33:42 +0100
+        Sat, 25 Mar 2023 17:05:38 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11olkn2010.outbound.protection.outlook.com [40.92.20.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45924D50B
+        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 14:05:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=joSDJizAxqOexzqGWDjN0JtnjHNOBupOuuzSPx1FoSWOc0orovbZbko+X6/LiXCwsUjy/34Kpr6OcsyR2zwk26a44R1Aljq+Hy3FlSrDUX6MzhuEIiopRxOu6n1LsByahRLYQaKlo6gVOfj16ndo4Rk1UUrP24IfLuAF7RONsH46QOA0cAMu4lVnnxAO5urE7j+8AwTIeSfiuN9ctHnnS/McBwXfp0VFa322tovPlZwR3exrYEg2+hrshT9wRSssFd29olF0Ywsqukv9YwVudtQzhZ3CRy0gbDQdksGq3JPUb00SsIKaYZ624aj67/JteDpSDHAws1yLOYgetaiP0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qi8GrOKbJAeEwCWaKkZYXqXStVMdIGHwe+CwCCq+eRQ=;
+ b=mE+o3X+aejc0HvBQ3lk9yyDertEEDBMJAkl5sss8d4064JC//SPijqvOTilAghub71KmkltGslMwB6TW+IL+Fd23U3oIG7gM/Z2dvCtaKcvFp8+0nYr9ZwaX3yL5uaMkhduSUqDLl5gYfIrVarEjK2UUd9CIfzUO6rutj6izljuShm5AGpBAwitSpECdFDcgxvVO5FNWMFf28jJ6EARTbGbvGfa71NFW/LC7wNnICXVpJvk5Yz5zQuP6GqMUtdXvBMImQkfOVe9+x/Zes3zRA7uloMZw5aqMBLsXEaCUaCHF/lihSy3VRWrq0U+FOummLVKgdeOZLgfygCUNlqwXoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qi8GrOKbJAeEwCWaKkZYXqXStVMdIGHwe+CwCCq+eRQ=;
+ b=tw6Hlep+DHLOWz3TWliOeUQZXRfShBn8yjDRV0aQZOnpocOPQ1VXYfgbj7a+PKGwreNadGVutSyYee+r1SV18EMpjV69fHR8939U0lF/zSLzbWVfn7CNHDzlH03xJ7n1gbtz/WITS+HjD2mbxq4S+8QTqqaRtVMyx2bS1ycKfR/VF1UBVkItf1rXmvc7fiwsebmqP7U1u3rTMb7Ojs+4pMCAFVxrCzjfY3pYcvXmV2qMEGSPnuR+DDcP3WgvId48If00ZomZfX5tZMAr/2TwwOq7b0poL2Es9zeE0twDr9Q8qhjMt6B0KV89asOnRrBFh0pmit4deOO0vMN9ZCW2Jg==
+Received: from BYAPR17MB2597.namprd17.prod.outlook.com (2603:10b6:a03:90::32)
+ by SJ0PR17MB5037.namprd17.prod.outlook.com (2603:10b6:a03:3b8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.41; Sat, 25 Mar
+ 2023 21:05:34 +0000
+Received: from BYAPR17MB2597.namprd17.prod.outlook.com
+ ([fe80::8128:fb8:c7a8:57a5]) by BYAPR17MB2597.namprd17.prod.outlook.com
+ ([fe80::8128:fb8:c7a8:57a5%7]) with mapi id 15.20.6178.041; Sat, 25 Mar 2023
+ 21:05:34 +0000
+From:   Any One <mohammed_kalanawi@hotmail.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: TP-Link 
+Thread-Topic: TP-Link 
+Thread-Index: AQHZX12KT0sc+gR1rE6INcf07ma/Fw==
+Date:   Sat, 25 Mar 2023 21:05:34 +0000
+Message-ID: <BYAPR17MB2597C578BC6938CD18239EAE8C859@BYAPR17MB2597.namprd17.prod.outlook.com>
+Accept-Language: nl-NL, en-US
+Content-Language: nl-NL
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-tmn:  [KNAm1RhNsYBrkD7zc2eIJxE56mSrBDfb]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BYAPR17MB2597:EE_|SJ0PR17MB5037:EE_
+x-ms-office365-filtering-correlation-id: e3de0915-8fb4-4430-86fc-08db2d74ad17
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: rv/GZmDomfOSRX3dNREJDYnKPBOUffDcLvpPTdKs5lLSueOu+jMN5KSsSknGVLNTDVpyayGhuf8BnCixkPWaL/dBPNtPzzzMMZXAkemt5dDEKGSjybtwZ8OIDa8hYYnvCJVQLGRCxfswOS4Ger5/gSr0CoH65Y8/vZ9yBf8T1LJfn/5FzGkmMg76uYAtAN+KJxLky2s9oHSe7PwYHHsuj7NlA0jdo9VnVO7z/tFqkwXzMOehfRzQo0sSQfaEMQ6QppO/E4rnv9WnPLTDtmwnq1tMgrBf1FeasvBHeEaz6UAga88q3vk9obJODEcaWN7VDUl37nVR2RAE2bPc9BLPt7dCwypmCJnt8S36P0pXO8ZgTKaAILA2dTZzPBFifs80vfpRtPnLCTWWsEM7zMVqq6S4MOPxuhri/cLG3u8latz6A6h//NldgE7tF3Bf8xSlkCqRhzEOydWZW/p+q0gDn4VzLwWvf8+jDcHKr85IW3rVUtWE1E8Yg4tzwIiXnQLZpNURLvJfzbgUiNUEkUeVxAhNKpCclT/ZDvfwTRdBlncDDIDSbmdmETx+VkEAyzqA
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?nRjmtXnIo5feeZ6YH2f28V4BrPinMe8922eLx64BuOYDkD08Tu6mQuRwOdrt?=
+ =?us-ascii?Q?NupY+qfuu3jpV5Dpy3nLRmapZKdaQkZGwC2aA8lwSK44nQPfr8/af7n5R1Sn?=
+ =?us-ascii?Q?D2PA/JZGShb4Gwkquek+Fxip/k6EYJJcYsweih6PKv3kvV0hL954dyY6aNsJ?=
+ =?us-ascii?Q?vqqV6lQu600HAFMyKICXWZWZtfx1Ilcxp5wOhNn7eBLTpCGyPC7RfPxEdqzx?=
+ =?us-ascii?Q?4zd5L7/f+y0KTmCJ+WDRAqQjxjYAql4E1eg3/bx5J1McnR8q3iVB6DkNs+VF?=
+ =?us-ascii?Q?X8iXpe9bSZQ/+zFUporNSXRL1beqlsFdn5oHMM4NXB/P1lJYKr9i4s0AxRfu?=
+ =?us-ascii?Q?ZQCJZ8zwUOuXOFLqz4nZ122szq9V1anqL5VmDR3ISOTpRPeIQNE/r8XqMI3v?=
+ =?us-ascii?Q?wsIBpY5arYDwQCPQS/CTv2pE5L+p8BBlpsNwsa0v35lCqKnP+7jQiTIbFcty?=
+ =?us-ascii?Q?lHvS/8lQaZ3RFDbfe6ANrKz45fmzz6+4tEnyeQhTTiPKoVnQ23enRY8+4eqf?=
+ =?us-ascii?Q?+5iCHBZXZoPW1QhPda5yWpohHJV0T0LLnwcsXlZFVy0v8j/4XUzcrta1z3dT?=
+ =?us-ascii?Q?1Qkx99KIRVmbdywQ48WxnYIBnEAm11sg5ZBPNDuxxkpCE6Wx7lq56EdQIq/N?=
+ =?us-ascii?Q?C7+9vzwM8bUP/N4VC9Vjt209CLj4I4RStbQ7LW4ca4R3lUhQfw8Xb5m8sI+w?=
+ =?us-ascii?Q?1F7pXbMfeAi8qnx//kiQcfmNa+X59/8MZclA5koeEkRbv6FRY3lzhgyiB5Fm?=
+ =?us-ascii?Q?DM2lHNVv9PiTy2I0dfGE5b9DIYB3hHd61jL7EwaQ6QNThW/Zh9sf2tRuQlP+?=
+ =?us-ascii?Q?J5+4ssFnLsnXxj9JM6+cROnuUhzY7/Do/n03TcPraSUmikeP0LQjaQJlqNeR?=
+ =?us-ascii?Q?0qWEBh07m3dxBLH8KFxrcPdsSe+BwxF0WD9L4vg0ul6uCrRFDdUQ3yDeHxNh?=
+ =?us-ascii?Q?GgisH+2F0KLI1xlFB70J6DqB6Z5AH6xSk3IJ4+wSmSpzUpiHKfc59y5RPSp8?=
+ =?us-ascii?Q?bPuvPsklRbkiCcrbT34Orn9UOPEOfUdUH1Wne8sn06ifd4fcPoam3Z37Cm5R?=
+ =?us-ascii?Q?L6iYXHX+kwM8Uk4qIZrNGbcdca4CiRTkXuDFgp8Eq3HPB5Ow+861UcHSZ5eo?=
+ =?us-ascii?Q?i5kSlIwGUTomf/PR72/4bN7rkQgJCU2fL22+ibUfUQ3aMtP/KrPKvkvWns+V?=
+ =?us-ascii?Q?lPRaz7QHfla9iOOrBYz8OOD75yzzJ97L/T9QLHvW3Tf1mu5qf2ig5/mPgYY?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <7A78AAA2ECD78C4798404515C2D1FEA9@sct-15-20-4755-11-msonline-outlook-cc4c0.templateTenant>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: iwlwifi frequent drops between v6.2-rc3 and v6.3-rc1
-From:   Alexander Wetzel <alexander@wetzel-home.de>
-To:     Vegard Nossum <vegard.nossum@oracle.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>, regressions@leemhuis.info,
-        regressions@lists.linux.dev, Thomas Mann <rauchwolke@gmx.net>,
-        linux-wireless@vger.kernel.org
-References: <9d11ed29-1114-055d-5b26-0899a5fc0d7f@oracle.com>
- <70b7f54d-95b7-e01a-1a49-e29dc72d41b2@wetzel-home.de>
-Content-Language: en-US
-In-Reply-To: <70b7f54d-95b7-e01a-1a49-e29dc72d41b2@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-c704e.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR17MB2597.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3de0915-8fb4-4430-86fc-08db2d74ad17
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2023 21:05:34.6044
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR17MB5037
+X-Spam-Status: No, score=2.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_BL_SPAMCOP_NET,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 17.03.23 16:29, Alexander Wetzel wrote:
-> On 17.03.23 09:53, Vegard Nossum wrote:
->>
->> Hi,
->>
->> Somewhere between e8f60cd7db24 (v6.2-rc3) and 2eb29d59ddf0 (v6.3-rc1) my
->> wifi started dropping a lot. I'm using iwlwifi and I've checked the old
->> logs that the firmware hasn't changed:
->>
->> Feb 25 16:22:33 kernel: iwlwifi 0000:04:00.0: loaded firmware version 
->> 36.e91976c0.0 8000C-36.ucode op_mode iwlmvm
->>
->> My logs look like this:
->>
->> 09:01:50 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
->> 09:01:50 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED 
->> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
->> 09:01:50 NetworkManager[8368]: <warn>  [1679040110.6548] 
->> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
->> 09:01:50 NetworkManager[8368]: <info>  [1679040110.6656] device 
->> (wlp4s0): supplicant interface state: completed -> disconnected
->> 09:01:50 NetworkManager[8368]: <info>  [1679040110.7609] device 
->> (wlp4s0): supplicant interface state: disconnected -> scanning
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: SME: Trying to authenticate 
->> with [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
->> 09:01:53 kernel: wlp4s0: authenticate with [REDACTED]:0b:25
->> 09:01:53 kernel: wlp4s0: send auth to [REDACTED]:0b:25 (try 1/3)
->> 09:01:53 kernel: wlp4s0: authenticated
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: Trying to associate with 
->> [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
->> 09:01:53 kernel: wlp4s0: associate with [REDACTED]:0b:25 (try 1/3)
->> 09:01:53 kernel: wlp4s0: RX AssocResp from [REDACTED]:0b:25 
->> (capab=0x1511 status=0 aid=36)
->> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4553] device 
->> (wlp4s0): supplicant interface state: scanning -> authenticating
->> 09:01:53 kernel: wlp4s0: associated
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: Associated with [REDACTED]:0b:25
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SUBNET-STATUS-UPDATE 
->> status=0
->> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4645] device 
->> (wlp4s0): supplicant interface state: authenticating -> associating
->> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4829] device 
->> (wlp4s0): supplicant interface state: associating -> associated
->> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5175] device 
->> (wlp4s0): supplicant interface state: associated -> 4-way handshake
->> 09:01:53 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED 
->> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: WPA: 4-Way Handshake failed - 
->> pre-shared key may be incorrect
->> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SSID-TEMP-DISABLED 
->> id=0 ssid="[REDACTED]" auth_failures=1 duration=10 reason=WRONG_KEY
->> 09:01:53 NetworkManager[8368]: <warn>  [1679040113.5685] 
->> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
->> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5737] device 
->> (wlp4s0): supplicant interface state: 4-way handshake -> disconnected
->> 09:01:53 NetworkManager[8368]: <info>  [1679040113.6759] device 
->> (wlp4s0): supplicant interface state: disconnected -> scanning
->>
->> I did see that somebody else reported a similar regression, but I don't
->> know if it could be the same problem or not (I see the driver is
->> different, but the fix looks generic):
->>
->> https://linux-regtracking.leemhuis.info/regzbot/regression/217119/
->>
->> The buggy commit that was identified there does seem to be within the
->> range of potential culprits:
->>
->> $ git log --oneline e8f60cd7db24..2eb29d59ddf0 | grep resumption
->> 4444bc2116ae wifi: mac80211: Proper mark iTXQs for resumption
->>
->> If people think it's the same, I could try the proposed fix -- otherwise
->> let me know what else I can do to help track this down.
->>
-> 
-> You are using a iwlwilf/mvm card. The fix we plan to merge for that 
-> regression above won't help you. (mvm cards do not use the function we 
-> serialized in the end. iwlwifi/dvm on the other uses it.)
-> 
-> But Johannes is working on a comparable issue affecting mvm cards.
-> Check out
-> https://lore.kernel.org/r/20230314103840.30771-1-jtornosm@redhat.com
-> 
-> That may well fix your issue.
+Hi, support-team=20
 
-It's surprisingly quiet here...
-Are these fixes helping? Honestly I'm not very optimistic.
-I expect that this is something else...
+I have a question about the TP-Link=20
+Its about that I have runned all the commands=20
+I see the wlan0 and wlan1mon on my screen=20
+When I type ifconfig=20
+But when I run the airodump-ng (Blackscreen) ???
 
-If so, we can debug that here together.
+Is it about the WiFi-Adapter=20
+Because I know that I installed the wireless adapter=20
+But still see (Blackscreen !) ???=20
 
-For start, I would like to see the full logs, starting from the initial 
-(working) connect.
+I hope to solve this issue Fast!=20
 
-I also would like to get a confirmation, that by booting an older kernel 
-(v6.2-rc3 or older) the system gets stable again. (Not that 
-wpa_supplicant or the router got an update, too.)
+Kind Regards,
+Mohammed Kalanawi=20
 
-Alexander
-
+Verstuurd vanaf mijn iPhone
