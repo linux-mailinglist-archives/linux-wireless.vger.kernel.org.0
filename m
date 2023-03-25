@@ -2,71 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 490E66C8C27
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 08:22:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE156C8C7D
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Mar 2023 09:16:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231917AbjCYHW1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Mar 2023 03:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
+        id S232098AbjCYIQQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Mar 2023 04:16:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229926AbjCYHW0 (ORCPT
+        with ESMTP id S231961AbjCYIPz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Mar 2023 03:22:26 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4D5F196AF
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 00:22:25 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id ek18so16145575edb.6
-        for <linux-wireless@vger.kernel.org>; Sat, 25 Mar 2023 00:22:25 -0700 (PDT)
+        Sat, 25 Mar 2023 04:15:55 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 462EF19F07;
+        Sat, 25 Mar 2023 01:14:51 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id f17so2910078oiw.10;
+        Sat, 25 Mar 2023 01:14:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679728944;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=saNBroOvM1I22v58z+1jlGQi08thNGmZ6cK60YX0TO0=;
-        b=IuOAgocF9RzRECslaS1GFtenH6BLVeKoyK1+RPytfkjQaT5phQJrOJCPSFtlYbRXwf
-         5UZ4mPY3fuC/g1CFfjb2eJyynhLsfrLDQgeD0848igaIoWyhIKqfpDxyyx4rxAPu/abJ
-         qQukCJghFbqrjSGC44DQj2sLRQ45zWovXyHB5xxDfde9ro7Os2Lk9cN04+OCR7PSlbTU
-         d5JJqRYwQ2gkBfBlDn2boK+2sr450oruRPWxhnIydPLmEJIZ2jrdHqTt9Q3G7KAZDpCS
-         nmbe1dRp55G47ggPrVOdpkm5v5IS7vjeM+1iQPxK5jBmMhfq/F8SFuvdnnHnay8jkgJj
-         lTRw==
+        d=gmail.com; s=20210112; t=1679732089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UNEJO+btUHDVv8kAHfbox96db3jjTTQ4tn8tm1TepCE=;
+        b=l3/Bc6LbfBxhPAE6W9T1hqH74mCbAYSIPSk+g4PM+ZC5xxtxwhuPzMctI1TOFnSncJ
+         gfV3iaeMHghACeP3fPbu35I5/rRznJbEGDA7LAVy4KbYak3nBlPrczln18PhiOJc6lwi
+         v4iM7KXLz5AH3tpHtS+ZVe87UO5J/8F3vVM+l2HzoRlx73R+YTofdcqow6MEBLNNl+nG
+         Jzv+/c8YT74szh5uXFMKSPmuwdD6Gfh1mGBv5CVuKqatpGIvvEJRLBWR5qX7GU00W3Gc
+         hDbH6SwTXQ5orTVX+vQZzZ908FmxYZpq80AcSBPUHd7enfkKujSNgruIys8CHUGvIau4
+         heKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679728944;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=saNBroOvM1I22v58z+1jlGQi08thNGmZ6cK60YX0TO0=;
-        b=RVAI8QdGzmkV3UdcoNpmdJgNsnTaIFomgbm6AmGtz6vdo7ovPmhcuVb4JXXLTBZEI3
-         eWKvvpRxzvwo65Mg81iZDcUIGcKWhJH5qbu31A9qshNhvt6l6R7TiMK/j4grlSfVF+TU
-         0wBW6TksIFeAKUuft+SqMbP+HaVgv1F6FFF6VeLd/3tkxk++mGifed++wL3Lkt8f+1JK
-         J4lCYHuUZKTySebYJ362SpCwbQf1i6hiKKOY3gw/vXh5keKKZrd05GQg6Q9Z20N2AyU4
-         mTEu02aucoe3DaVxGFGgmahU1tfCCgqa/LcjTHWbyTV82IC8jzl3V/QSCRZM9fWS7mvo
-         2rww==
-X-Gm-Message-State: AAQBX9c5nIlsYgM4+LRBZQ08qmsPuiBgqIplfR0t27znenV7lI39M4Fu
-        bHeU7Dgqv2PFRQY2ZYZhjezh9F9XfxVces2kx+A=
-X-Google-Smtp-Source: AKy350a7YiY6F5g4GUQwV6NWXEJSInnzJf9PS0n+V+N4U/hVup2OrlAffRnZUSSZT9Z57unbN1x8A8nyd/GKdJvqA44=
-X-Received: by 2002:a17:907:a49:b0:931:6f5b:d27d with SMTP id
- be9-20020a1709070a4900b009316f5bd27dmr2788601ejc.0.1679728944343; Sat, 25 Mar
- 2023 00:22:24 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1679732089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UNEJO+btUHDVv8kAHfbox96db3jjTTQ4tn8tm1TepCE=;
+        b=gW7PLi7mH58wgolGaWnFCazBI0SdzEMxkST7d0wztIzAcZ+g+IrySI968vqE1NkOS0
+         6YoF+W4j9ia8s2LZlAkoL02NRCDhpoU7UVSI8QEAEyoVEeOKZKUPMSu4aNl38dgbb5nA
+         rmbPv+k3f5jWS6BMM1LYlBcJfooEY/wn0XKr/o3eSPKPe0xw8CQQS07gMByEYd9uBpJA
+         +OiHJMmoZtvQurr5LGvAixzbE7EC88zn1c3WkYrH9DEc+xxTu39PSE0jqqOMpM0pPAcf
+         rF+dIYBRSGCvsDtKLr60EOiZNvpdbP13cUMymP87JtpzD/jk1bA/E0C63brhiVjyPNbi
+         n5Gg==
+X-Gm-Message-State: AO0yUKXCyvg//R+f/Q5/zcBT/S6syrFXxH+D5rpvOF78qYNgE9jPHdlR
+        GxG3eLmVxwtni2gUSJGTYJY=
+X-Google-Smtp-Source: AK7set8Nm1tQ9MdjKOZ7l1fhSklIp1/yLsjpfGTiaNvbBY5NzHhhKdDwS3+cfJOC/YO87bB6sWlhVA==
+X-Received: by 2002:a05:6808:118c:b0:386:fb78:a4cb with SMTP id j12-20020a056808118c00b00386fb78a4cbmr3099127oil.43.1679732089398;
+        Sat, 25 Mar 2023 01:14:49 -0700 (PDT)
+Received: from chcpu13.cse.ust.hk (191host119.mobilenet.cse.ust.hk. [143.89.191.119])
+        by smtp.gmail.com with ESMTPSA id x81-20020acae054000000b0038779c9e6a1sm1935469oig.41.2023.03.25.01.14.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Mar 2023 01:14:49 -0700 (PDT)
+From:   Wei Chen <harperchen1110@gmail.com>
+To:     pkshih@realtek.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Wei Chen <harperchen1110@gmail.com>
+Subject: [PATCH] wireless: rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_reg()
+Date:   Sat, 25 Mar 2023 08:14:29 +0000
+Message-Id: <20230325081429.3567671-1-harperchen1110@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:7412:ed41:b0:c6:cc67:5f5f with HTTP; Sat, 25 Mar 2023
- 00:22:22 -0700 (PDT)
-Reply-To: carteralex166@gmail.com
-From:   Alex Ben <alexbigben200@gmail.com>
-Date:   Sat, 25 Mar 2023 00:22:22 -0700
-Message-ID: <CADqKhr4ScWF1cAvWZj+Os7H2L6vhaZZa6EXz=5U++Cz+KJ=oBw@mail.gmail.com>
-Subject: Business Proposal.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
+If there is a failure during copy_from_user or user-provided data buffer 
+is invalid, rtl_debugfs_set_write_reg should return negative error code 
+instead of a positive value count.
 
-I have a business proposal for you reply for more info.
+Fix this bug by returning correct error code. Moreover, the check of buffer
+against null is removed since it will be handled by copy_from_user.
+
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/debug.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/debug.c b/drivers/net/wireless/realtek/rtlwifi/debug.c
+index 0b1bc04cb6ad..3e7f9b4f1f19 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/debug.c
++++ b/drivers/net/wireless/realtek/rtlwifi/debug.c
+@@ -278,8 +278,8 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
+ 
+ 	tmp_len = (count > sizeof(tmp) - 1 ? sizeof(tmp) - 1 : count);
+ 
+-	if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+-		return count;
++	if (copy_from_user(tmp, buffer, tmp_len))
++		return -EFAULT;
+ 
+ 	tmp[tmp_len] = '\0';
+ 
+@@ -287,7 +287,7 @@ static ssize_t rtl_debugfs_set_write_reg(struct file *filp,
+ 	num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
+ 
+ 	if (num !=  3)
+-		return count;
++		return -EINVAL;
+ 
+ 	switch (len) {
+ 	case 1:
+-- 
+2.25.1
+
