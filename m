@@ -2,78 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 437726CA54A
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 15:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 985E36CA559
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 15:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232282AbjC0NMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 09:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52038 "EHLO
+        id S232156AbjC0NPP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 09:15:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbjC0NMb (ORCPT
+        with ESMTP id S229456AbjC0NPO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 09:12:31 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D11171D
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:12:29 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id m6-20020a05600c3b0600b003ee6e324b19so5272147wms.1
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:12:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679922748;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=478A+bT4URn1+P2mr5nDXfmuV9rKOJHIHLabsxsmktg=;
-        b=q5lgr2QCloeG5FgUW54nhvwaLnuSQfZSL+KcS28YAgjMCz0KM046tA5uWXMzVBgqIy
-         BY2ys90MT3or8y9FQfUsFqu+6Tb1oBAqB9MTyrWCd/XNf5JAGPVGEWIMj8qJNuaw8OzK
-         v0ILU/sB5PWZ0nc0Owogeh/XTt5+RkwuEvPgVx/0gxW2Hmdzp/tuLvPxe3SyBYaPThsH
-         DRJYBQGdt/rY8we0pIw5Ok7HxCPdAmPj5piV0S1TtHDLbmH12tMvJETJUgcN9Fqma45b
-         kylRnqpjyPUygWqU70EFm+h2zaBsKmzqRH7ZIuazJUvKlL1tl2iExV6OKE5NBdMeqIb5
-         KS1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679922748;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=478A+bT4URn1+P2mr5nDXfmuV9rKOJHIHLabsxsmktg=;
-        b=G+Iw/tuA5xbtNBB8BpY1OxeFMsO4BjLUWp2i6ZZWaossGRu1OvjfUZsTNlIxmRBxDn
-         7FpC17lXz/SVg3abOfNxRJtALEsuz5GoXTsA5cPuNWglXU4DCFXyZcwkz2icxSdbXlmT
-         YZvsG9ju1FRGyb44nxWxcvsbw77yfg96T97zPKnekkpxV6NWcJsX/QCNBjBFiwIP+e2N
-         ZyB6TAjW0j8Gjt+oBBsQ9yFNgY29dYlcdZ1waZjtM6kbsFsJxLXhx+vTki4fXDNzdbuw
-         mFTibt/GiFwKL/VxVjJLHX1Rp7+XZqaU1xri98997XgDaJef1oqe0MxrX+YivOx5g1Jf
-         ryng==
-X-Gm-Message-State: AO0yUKV3hJUOr7Nf4+ZhwisWteflOc1l62Qt+OzeoR/Hjfl0vjR7fAxI
-        QoH/GUkO281kP2gbBOJrL+8pa+RAPps=
-X-Google-Smtp-Source: AK7set+lpVgiaMlC68VAVElhi4SFoWdcuHM63eRA9Be6e+Uu5E2xdcwPsfPlYOLgwhRLXr8h+3qtaw==
-X-Received: by 2002:a7b:ca4a:0:b0:3ea:e582:48dd with SMTP id m10-20020a7bca4a000000b003eae58248ddmr9461426wml.34.1679922748286;
-        Mon, 27 Mar 2023 06:12:28 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id k22-20020a05600c1c9600b003eda46d6792sm8780933wms.32.2023.03.27.06.12.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 06:12:27 -0700 (PDT)
-Message-ID: <27e83382-4c84-1841-c428-d1e5143ea20c@gmail.com>
-Date:   Mon, 27 Mar 2023 16:12:26 +0300
+        Mon, 27 Mar 2023 09:15:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4171FCA
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:15:12 -0700 (PDT)
+Message-ID: <68eddf63-cd44-881b-bfbe-004fe13b5e71@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1679922910;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=MPpEOYR1bpWc5WtUSMqguSRu3LVgkgDlYvRwHmL+Ktc=;
+        b=estDlRLNBDdFZT/nMqgU/+LgFEgoQiRkG9RYK9POFqwSWddSqiNLL577o57qJy+YVJ9NNy
+        6Vy/iUN7xow3mat6nYlrC6sErHUr/3zNkZ1cXUQrKPNHurNATSQsgmJtRR1UPZS2Q16Hy3
+        dyUzYo91J2sPdlZhYHBTlahvocxP6jJn29Lwa114llWQjDrxX/ZLGM8nnAZRpvfE8ORNrr
+        /0UJ+C+YzLMJGLvpIeUqGQlH+a8yGldGpxaCvlNqOIFyKoOWPpGyEwchKEIZgOFZrPwlkf
+        cI5FZkiJL6KpHNoSEIlFwWl1R4kijVLtsl2DbwHblfP7Ht5+eUFcbMJF2X5Qdg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1679922910;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=MPpEOYR1bpWc5WtUSMqguSRu3LVgkgDlYvRwHmL+Ktc=;
+        b=iRj/OmjHbIZsDrnIOCugV449/XzCN+SfcL3fNbLeV905hcH2zXPZSf7kKp41Xmlr/IfNnn
+        JsItDxODHmYoP/DA==
+Date:   Mon, 27 Mar 2023 15:15:10 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [RFC PATCH 07/14] wifi: rtl8xxxu: Add parameter macid to
- update_rate_mask
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
-Cc:     Martin Kaistra <martin.kaistra@linutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
+Subject: Re: [RFC PATCH 06/14] wifi: rtl8xxxu: Allow creating interface in AP
+ mode
+Content-Language: de-DE
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
- <20230322171905.492855-8-martin.kaistra@linutronix.de>
- <b48af4c2e9ef4555997b4a6388fdd270@realtek.com> <87lejitwlf.fsf@kernel.org>
- <b6e5ee31095549268987185d276e3e7c@realtek.com>
-Content-Language: en-US
-In-Reply-To: <b6e5ee31095549268987185d276e3e7c@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+ <20230322171905.492855-7-martin.kaistra@linutronix.de>
+ <f7ee22097962476da7f8e8cdbf040712@realtek.com>
+From:   Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <f7ee22097962476da7f8e8cdbf040712@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,60 +64,104 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 27/03/2023 12:19, Ping-Ke Shih wrote:
+Am 27.03.23 um 03:39 schrieb Ping-Ke Shih:
 > 
 > 
 >> -----Original Message-----
->> From: Kalle Valo <kvalo@kernel.org>
->> Sent: Monday, March 27, 2023 4:42 PM
->> To: Ping-Ke Shih <pkshih@realtek.com>
->> Cc: Martin Kaistra <martin.kaistra@linutronix.de>; linux-wireless@vger.kernel.org; Jes Sorensen
->> <Jes.Sorensen@gmail.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
+>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>> Sent: Thursday, March 23, 2023 1:19 AM
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
 >> <bigeasy@linutronix.de>
->> Subject: Re: [RFC PATCH 07/14] wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+>> Subject: [RFC PATCH 06/14] wifi: rtl8xxxu: Allow creating interface in AP mode
 >>
->> Ping-Ke Shih <pkshih@realtek.com> writes:
+>> Use the sequence from the vendor driver for setting up the beacon
+>> related registers.
+>> Also set the MAC address register.
 >>
->>>> -----Original Message-----
->>>> From: Martin Kaistra <martin.kaistra@linutronix.de>
->>>> Sent: Thursday, March 23, 2023 1:19 AM
->>>> To: linux-wireless@vger.kernel.org
->>>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
->>>> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
->>>> <bigeasy@linutronix.de>
->>>> Subject: [RFC PATCH 07/14] wifi: rtl8xxxu: Add parameter macid to update_rate_mask
->>>>
->>>> The HW maintains a rate_mask for each connection, referenced by the
->>>> macid. Add a parameter to update_rate_mask and add the macid to the
->>>> h2c call in the gen2 implementation.
->>>>
->>>> Also extend refresh_rate_mask to generate the macid in AP mode from
->>>> sta->aid.
->>>
->>> Firmware can support 32 mac_id (station instance) at most, so it will be a
->>> problem if hostapd assigns aid more than 32. Though I'm not clear how
->>> hostpad assigns the aid, it would be always safe that rtl8xxxu maintains
->>> mac_id by a bitmap in driver.
+>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>> ---
+>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 31 ++++++++++++++++---
+>>   .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |  2 ++
+>>   2 files changed, 29 insertions(+), 4 deletions(-)
 >>
->> Does rtlw8xxxu set struct wiphy::max_ap_assoc_sta? It would be good to
->> advertise the user space the maximum number of stations.
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> index b233c66a7a5a8..b20ff8bc40870 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> @@ -6408,18 +6408,39 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
+>>          int ret;
+>>          u8 val8;
 >>
+>> +       if (!priv->vif)
+>> +               priv->vif = vif;
+>> +       else
+>> +               return -EOPNOTSUPP;
+>> +
+>>          switch (vif->type) {
+>>          case NL80211_IFTYPE_STATION:
+>> -               if (!priv->vif)
+>> -                       priv->vif = vif;
+>> -               else
+>> -                       return -EOPNOTSUPP;
+>>                  rtl8xxxu_stop_tx_beacon(priv);
+>>
+>>                  val8 = rtl8xxxu_read8(priv, REG_BEACON_CTRL);
+>>                  val8 |= BEACON_ATIM | BEACON_FUNCTION_ENABLE |
+>>                          BEACON_DISABLE_TSF_UPDATE;
+>>                  rtl8xxxu_write8(priv, REG_BEACON_CTRL, val8);
+>> +               ret = 0;
+>> +               break;
+>> +       case NL80211_IFTYPE_AP:
+>> +               rtl8xxxu_write8(priv, REG_BEACON_CTRL,
+>> +                               BEACON_DISABLE_TSF_UPDATE | BEACON_CTRL_MBSSID);
+>> +               rtl8xxxu_write8(priv, REG_ATIMWND, 0x0c); /* 12ms */
+>> +               rtl8xxxu_write16(priv, REG_TSFTR_SYN_OFFSET, 0x7fff); /* ~32ms */
+>> +               rtl8xxxu_write8(priv, REG_DUAL_TSF_RST, DUAL_TSF_RESET_TSF0);
+>> +
+>> +               /* enable BCN0 function */
+>> +               rtl8xxxu_write8(priv, REG_BEACON_CTRL,
+>> +                               BEACON_DISABLE_TSF_UPDATE |
+>> +                               BEACON_FUNCTION_ENABLE | BEACON_CTRL_MBSSID |
+>> +                               BEACON_CTRL_TX_BEACON_RPT);
+>> +
+>> +               /* select BCN on port 0 */
+>> +               val8 = rtl8xxxu_read8(priv, REG_CCK_CHECK);
+>> +               val8 &= ~BIT_BCN_PORT_SEL;
+>> +               rtl8xxxu_write8(priv, REG_CCK_CHECK, val8);
+>> +
+>>                  ret = 0;
+>>                  break;
+>>          default:
+>> @@ -6427,6 +6448,8 @@ static int rtl8xxxu_add_interface(struct ieee80211_hw *hw,
+>>          }
+>>
+>>          rtl8xxxu_set_linktype(priv, vif->type);
+>> +       ether_addr_copy(priv->mac_addr, vif->addr);
+>> +       rtl8xxxu_set_mac(priv);
 > 
-> Thanks for this information, Kalle.
-> 
-> Martin, please add this. I think we can preserve at least one mac_id for
-> broadcast/multicast frames. In fact, I'm not absolutely sure we can
-> support up to 32 mac_id, so set wiphy::max_ap_assoc_sta = 16 -1 or -2
-> would be safer.
-> 
-> Ping-Ke
-> 
-> 
-Indeed, the RTL8188FU driver has hal_spec->macid_num = 16. I think that's
-the maximum for this chip.
+> rtl8xxxu_set_mac() is already called by rtl8xxxu_init_device(). Is there
+> anything unexpected?
 
-RTL8710BU: 16
-RTL8188EU: 64
-RTL8192EU: 128
-RTL8723BU: 128
+If the hostapd config has the option "bssid" set, this will be set as 
+the MAC address for the interface in AP mode. If the MAC address 
+registers are not updated, then I don't see any ack frames being send.
 
+The same could probably happen if the MAC address is set via
+ip link set dev <wlan_name> address <MAC address>
+
+Maybe the call to rtl8xxxu_set_mac() in rtl8xxxu_init_device() can be 
+removed, if it is also called here.
+
+> 
+> While I reviewed first patch, I would like to suggest to call calibration:
+>    fops->phy_lc_calibrate(priv);
+>    fops->phy_iq_calibrate(priv);
+> I traced rtl8xxxu and saw they present in rtl8xxxu_init_device() and rtl8xxxu
+> doesn't implement idle power saving to turn off power of wifi card. Then, I
+> think the calibration will be fine if rtl8xxxu only does it once.
+> 
+> So, I would like to know if something I miss.
+> 
