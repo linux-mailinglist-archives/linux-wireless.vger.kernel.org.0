@@ -2,80 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7756A6C9F04
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 11:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 539AE6C9F12
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 11:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232529AbjC0JKY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 05:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52194 "EHLO
+        id S233028AbjC0JMX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 05:12:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232901AbjC0JKN (ORCPT
+        with ESMTP id S233036AbjC0JMS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 05:10:13 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA89E9
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 02:10:12 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32R40nFJ015017;
-        Mon, 27 Mar 2023 09:10:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=C+FboeoZ/bFE8+DOViTg+lZYffF8U9jm8mht5SIImDc=;
- b=CcOG537NYudKIFQWwoVsWD+HNMi9N4raZoLnoH3x92RXY8O2blb9dKOEUiunUHVK6YuJ
- pAE7ZIkZVutu3+gXYRHwPM35YPLLxeyShcONXaNUaMUYNfp5FwSh4SsAWdm/C2AMRUTm
- 5V6Y9akXxMGEx0ACCBIlLekeGRcGXGgezhFfRAmAbVlUxATEMl0Rs1P2oqM3y8NoPdIM
- EefVXq0LihV6gwPVd3ZdmbguDvqHvme9mv4e1/mKgas4qqyQyA+uz7iZ/GQQF9LjSrTr
- +30az5BTWU16tTcf1enlhjLDlBm51F3jc17QI2a5STF7grI+Le4A7h4i2lPdpZ6u2Ak+ Gw== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3phte8btww-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 27 Mar 2023 09:10:07 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32R9A6u1023501
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 27 Mar 2023 09:10:06 GMT
-Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 27 Mar
- 2023 02:10:04 -0700
-Message-ID: <baf27fe2-4702-fb8b-49f5-f5b1541c0d0e@quicinc.com>
-Date:   Mon, 27 Mar 2023 17:10:02 +0800
+        Mon, 27 Mar 2023 05:12:18 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6DBC49E8;
+        Mon, 27 Mar 2023 02:12:15 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32R9BfaN6021750, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32R9BfaN6021750
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 27 Mar 2023 17:11:41 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 27 Mar 2023 17:11:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 27 Mar 2023 17:11:57 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Mon, 27 Mar 2023 17:11:57 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Chris Morgan <macroalpha82@gmail.com>,
+        "Nitin Gupta" <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: RE: [PATCH v3 2/9] wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
+Thread-Topic: [PATCH v3 2/9] wifi: rtw88: sdio: Add HCI implementation for
+ SDIO based chipsets
+Thread-Index: AQHZW3PmZA7gPA0kmU6G6BuQjRUl4q8HoQbggAAT5QCAAIJ4AIAGJ0Tw
+Date:   Mon, 27 Mar 2023 09:11:56 +0000
+Message-ID: <33e7ca4c7ba947d68d451e919837f6b7@realtek.com>
+References: <20230320213508.2358213-1-martin.blumenstingl@googlemail.com>
+ <20230320213508.2358213-3-martin.blumenstingl@googlemail.com>
+ <f7b9dda9d852456caffc3c0572f88947@realtek.com>
+ <CAFBinCCspK=GaCMEiHsXi=0H4Sbp2vg_4EK=8bqQLWR8+qg7Sw@mail.gmail.com>
+ <CAFBinCAxuEyNkUxsqJ9wVxXupErcp33JCFsJ2hDupWj9MRMYGA@mail.gmail.com>
+In-Reply-To: <CAFBinCAxuEyNkUxsqJ9wVxXupErcp33JCFsJ2hDupWj9MRMYGA@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 24/27] wifi: mac80211: implement link switching
-Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <20220902161143.d99dfbe65c90.I92385ba882ec984a9a2ad18293173436657e82aa@changeid>
- <ca5177fe-3b9f-2309-9afd-1d5e827540f7@quicinc.com>
- <50719d34bc48d816d00b56d3d9efdb59e3e51a16.camel@sipsolutions.net>
- <31b91fad-bd14-b6e1-8abe-fceb66085ecb@quicinc.com>
- <a20e39027ca0b89cae2259d35ff19d03c3c6951a.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <a20e39027ca0b89cae2259d35ff19d03c3c6951a.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 9t0_hyFabZfktjVANHhH0jKQxVwHIkMq
-X-Proofpoint-ORIG-GUID: 9t0_hyFabZfktjVANHhH0jKQxVwHIkMq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-24_11,2023-03-24_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 mlxscore=0
- bulkscore=0 spamscore=0 phishscore=0 mlxlogscore=400 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2303270074
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,30 +78,69 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/27/2023 5:04 PM, Johannes Berg wrote:
-> On Mon, 2023-03-27 at 16:40 +0800, Wen Gong wrote:
->>>>> +	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
->>>>> +		struct ieee80211_link_data *link;
->>>>> +
->>>>> +		link = sdata_dereference(sdata->link[link_id], sdata);
->>>>> +
->>>>> +		ret = ieee80211_link_use_channel(link, &link->conf->chandef,
->>>>> +						 IEEE80211_CHANCTX_SHARED);
->>>> For the 1st link of MLO connection/NON-MLO connetion, ieee80211_link_use_channel() is called before drv_change_sta_link(),
->>>> And now it is after drv_change_sta_link(), May I know is it also has some design here?
->>> Hmm, probably not really, at least I don't remember anything about that.
->>>
->>> Not sure it makes a huge difference? But I suppose we could change it, I
->>> don't really see why not either.
->> Not huge difference, I have made little change in lower-driver to match
->> that. So it is OK now.
-> OK. Still maybe we should change it for consistency? I can try that
-> later with our driver.
->
-> johannes
-
-I think it is not urgent for that:)
-
-And lower-drvier should also handler different case.
-
->
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEJsdW1lbnN0
+aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4NCj4gU2VudDogRnJpZGF5
+LCBNYXJjaCAyNCwgMjAyMyAzOjA0IEFNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFs
+dGVrLmNvbT4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsgWWFuLUhzdWFu
+IENodWFuZyA8dG9ueTA2MjBlbW1hQGdtYWlsLmNvbT47IEthbGxlIFZhbG8NCj4gPGt2YWxvQGtl
+cm5lbC5vcmc+OyBVbGYgSGFuc3NvbiA8dWxmLmhhbnNzb25AbGluYXJvLm9yZz47IGxpbnV4LWtl
+cm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LW1t
+Y0B2Z2VyLmtlcm5lbC5vcmc7IENocmlzIE1vcmdhbiA8bWFjcm9hbHBoYTgyQGdtYWlsLmNvbT47
+IE5pdGluIEd1cHRhDQo+IDxuaXRpbi5ndXB0YTk4MUBnbWFpbC5jb20+OyBOZW8gSm91IDxuZW9q
+b3VAZ21haWwuY29tPjsgSmVybmVqIFNrcmFiZWMgPGplcm5lai5za3JhYmVjQGdtYWlsLmNvbT47
+IExhcnJ5DQo+IEZpbmdlciA8TGFycnkuRmluZ2VyQGx3ZmluZ2VyLm5ldD4NCj4gU3ViamVjdDog
+UmU6IFtQQVRDSCB2MyAyLzldIHdpZmk6IHJ0dzg4OiBzZGlvOiBBZGQgSENJIGltcGxlbWVudGF0
+aW9uIGZvciBTRElPIGJhc2VkIGNoaXBzZXRzDQo+IA0KPiBIZWxsbyBQaW5nLUtlLA0KPiANCj4g
+T24gVGh1LCBNYXIgMjMsIDIwMjMgYXQgMTI6MTbigK9QTSBNYXJ0aW4gQmx1bWVuc3RpbmdsDQo+
+IDxtYXJ0aW4uYmx1bWVuc3RpbmdsQGdvb2dsZW1haWwuY29tPiB3cm90ZToNCj4gWy4uLl0NCj4g
+PiA+ID4gKyAgICAgICBpZiAoZGlyZWN0KSB7DQo+ID4gPiA+ICsgICAgICAgICAgICAgICBhZGRy
+ID0gcnR3X3NkaW9fdG9fYnVzX29mZnNldChydHdkZXYsIGFkZHIpOw0KPiA+ID4gPiArICAgICAg
+ICAgICAgICAgdmFsID0gcnR3X3NkaW9fcmVhZGwocnR3ZGV2LCBhZGRyLCAmcmV0KTsNCj4gPiA+
+ID4gKyAgICAgICB9IGVsc2UgaWYgKGFkZHIgJiAzKSB7DQo+ID4gPg0KPiA+ID4gZWxzZSBpZiAo
+SVNfQUxJR05FRChhZGRyLCA0KSB7DQo+ID4gSSdsbCBhZGQgdGhlc2UgSVNfQUxJR05FRCBpbiB2
+NA0KPiA+IEFsc28gSSBmb3VuZCBhbiBpc3N1ZSB3aXRoIFJUV19XQ1BVXzExTiBkZXZpY2VzIHdo
+ZXJlIGluZGlyZWN0IHJlYWQNCj4gPiB3b3JrcyBkaWZmZXJlbnRseSAodGhvc2UgY2FuJ3QgdXNl
+DQo+ID4gUkVHX1NESU9fSU5ESVJFQ1RfUkVHX0NGRy9SRUdfU0RJT19JTkRJUkVDVF9SRUdfREFU
+QSBidXQgbmVlZCB0byBnbw0KPiA+IHRocm91Z2ggdGhlIG5vcm1hbCBwYXRoIHdpdGggV0xBTl9J
+T1JFR19PRkZTRVQgaW5zdGVhZCkuIEknbGwgYWxzbw0KPiA+IGluY2x1ZGUgdGhhdCBmaXggaW4g
+djQNCj4gSSBoYXZlIGEgcXVlc3Rpb24gYWJvdXQgdGhlICJpbmRpcmVjdCIgaGFuZGxpbmcuDQo+
+IExldCBtZSBzdGFydCB3aXRoIHdoYXQgSSBrbm93Og0KPiAtIFJFR19TRElPX0lORElSRUNUX1JF
+R19DRkcgYW5kIFJFR19TRElPX0lORElSRUNUX1JFR19EQVRBIGFyZSBvbmx5DQo+IHByZXNlbnQg
+b24gUlRXX1dDUFVfMTFBQyBiYXNlZCBjaGlwcyAob2xkZXIgUlRXX1dDUFVfMTFOIGNoaXBzIGRv
+bid0DQo+IGhhdmUgdGhlc2UgcmVnaXN0ZXJzKQ0KPiAtIHRoZSBuYW1lIG9mIFJFR19TRElPX0lO
+RElSRUNUX1JFR19DRkdbMjBdIGlzIG5vdCBrbm93biBidXQgd2UncmUNCj4gcG9sbGluZyB0aGF0
+IGJpdCB0byBjaGVjayBpZiBSRUdfU0RJT19JTkRJUkVDVF9SRUdfREFUQSBpcyByZWFkeSB0byBi
+ZQ0KPiByZWFkIG9yIGhhcyBkYXRhIGZyb20gUkVHX1NESU9fSU5ESVJFQ1RfUkVHX0RBVEEgaGFz
+IGJlZW4gd3JpdHRlbg0KPiAtIFJFR19TRElPX0lORElSRUNUX1JFR19DRkdbMTldIGNvbmZpZ3Vy
+ZXMgYSByZWFkIG9wZXJhdGlvbg0KPiAtIFJFR19TRElPX0lORElSRUNUX1JFR19DRkdbMThdIGNv
+bmZpZ3VyZXMgYSB3cml0ZSBvcGVyYXRpb24NCj4gLSBSRUdfU0RJT19JTkRJUkVDVF9SRUdfQ0ZH
+WzE3XSBpbmRpY2F0ZXMgdGhhdCBhIERXT1JEICgzMi1iaXQpIGFyZQ0KPiB3cml0dGVuIHRvIFJF
+R19TRElPX0lORElSRUNUX1JFR19EQVRBICgrIHRoZSBmb2xsb3dpbmcgMyksIHRoaXMgYml0DQo+
+IHNlZW1zIGlycmVsZXZhbnQgZm9yIHJlYWQgbW9kZQ0KPiAtIFJFR19TRElPX0lORElSRUNUX1JF
+R19DRkdbMTZdIGluZGljYXRlcyB0aGF0IGEgRFdPUkQgKDE2LWJpdCkgYXJlDQo+IHdyaXR0ZW4g
+dG8gUkVHX1NESU9fSU5ESVJFQ1RfUkVHX0RBVEEgKCsgdGhlIGZvbGxvd2luZyAzKSwgdGhpcyBi
+aXQNCj4gc2VlbXMgaXJyZWxldmFudCBmb3IgcmVhZCBtb2RlDQo+IC0gUlRXX1dDUFVfMTFOIGNo
+aXBzIGFyZSBzaW1wbHkgdXNpbmcgImFkZHIgfCBXTEFOX0lPUkVHX09GRlNFVCIgZm9yDQo+IGFj
+Y2Vzc2VzIHRoYXQgd291bGQgdXN1YWxseSBiZSAiaW5kaXJlY3QiIHJlYWRzL3dyaXRlcyBvbg0K
+PiBSVFdfV0NQVV8xMUFDIGNoaXBzDQo+IA0KPiBXaGlsZSBmaXhpbmcgdGhlIGlzc3VlIGZvciB0
+aGUgUlRXX1dDUFVfMTFOIGNoaXBzIEkgZGlzY292ZXJlZCB0aGF0DQo+IHRoZSAib2xkIiBhcHBy
+b2FjaCBmb3IgaW5kaXJlY3QgcmVnaXN0ZXIgYWNjZXNzICh3aXRob3V0DQo+IFJFR19TRElPX0lO
+RElSRUNUX1JFR19DRkcgYW5kIFJFR19TRElPX0lORElSRUNUX1JFR19EQVRBKSBhbHNvIHdvcmtz
+DQo+IG9uIFJUV19XQ1BVXzExQUMgY2hpcHMuDQo+IChJJ20gY2FsbGluZyBpdCB0aGUgIm9sZCIg
+YXBwcm9hY2ggYmVjYXVzZSBpdCdzIHdoYXQgdGhlIFJUTDg3MjNEUyBhbg0KPiBSVEw4NzIzQlMg
+dmVuZG9yIGRyaXZlcnMgdXNlKQ0KPiBJbiBmYWN0LCB0aGlzIHNlcmllcyBpcyB1c2luZyB0aGUg
+Im9sZCIgYXBwcm9hY2ggZm9yIHdyaXRlcywgYnV0IHRoZQ0KPiBuZXcgKFJFR19TRElPX0lORElS
+RUNUX1JFR19DRkcgYW5kIFJFR19TRElPX0lORElSRUNUX1JFR19EQVRBIGJhc2VkKQ0KPiBhcHBy
+b2FjaCBmb3IgcmVhZHMuDQo+IE5hdHVyYWxseSBJJ20gY3VyaW91cyBhcyB0byB3aHkgdHdvIGRp
+ZmZlcmVudCBhcHByb2FjaGVzIGFjaGlldmUgdGhlDQo+IHNhbWUgZ29hbC4gVXNpbmcgdGhlICJv
+bGQiIGFwcHJvYWNoIChhZGRyIHwgV0xBTl9JT1JFR19PRkZTRVQpIG1lYW5zIGENCj4gbG90IG9m
+IGNvZGUgY291bGQgYmUgZGVsZXRlZC9zaW1wbGlmaWVkLg0KPiANCj4gTm93IG15IHF1ZXN0aW9u
+Og0KPiBEbyB5b3UgaGF2ZSBhbnkgZXhwbGFuYXRpb24gKGVpdGhlciBmcm9tIGludGVybmFsIGRv
+Y3VtZW50YXRpb24gb3INCj4gZnJvbSB0aGUgaGFyZHdhcmUvZmlybXdhcmUgdGVhbXMpIGlmIGFu
+ZCB3aGVuIHRoZQ0KPiBSRUdfU0RJT19JTkRJUkVDVF9SRUdfQ0ZHIGFuZCBSRUdfU0RJT19JTkRJ
+UkVDVF9SRUdfREFUQSByZWdpc3RlcnMNCj4gc2hvdWxkIGJlIHVzZWQgb24gUlRXX1dDUFVfMTFB
+QyBjaGlwcz8NCj4gDQoNClVzaW5nIFJFR19TRElPX0lORElSRUNUX1JFR19DRkcgYW5kIFJFR19T
+RElPX0lORElSRUNUX1JFR19EQVRBIGlmIHlvdSBhcmUNCnVzaW5nIFNESU8gMy4wOyBvdGhlcndp
+c2UsIGl0IGNvdWxkIGNhdXNlcyBJTyBhYm5vcm1hbC4gT3Bwb3NpdGVseSwgdXNpbmcNCiJvbGQi
+IGFwcHJvYWNoIChhZGRyIHwgV0xBTl9JT1JFR19PRkZTRVQpIGZvciBTRElPIDIuMC4gDQoNClBp
+bmctS2UNCg0K
