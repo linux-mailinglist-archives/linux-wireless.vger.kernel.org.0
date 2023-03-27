@@ -2,376 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 107536CAB8D
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 19:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C2A06CAD05
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 20:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231740AbjC0RKR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 13:10:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
+        id S229970AbjC0S3K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 14:29:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231244AbjC0RKB (ORCPT
+        with ESMTP id S229606AbjC0S3J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 13:10:01 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1B3D26A5
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 10:09:19 -0700 (PDT)
-X-UUID: 190fcd90ccc211eda9a90f0bb45854f4-20230328
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=YAv0Wi3X954pmJJBqclo21Wb/tgaAhifxnVKR9tPy8g=;
-        b=Me9BmoUaBIaZvVuKZCY/bnLdQQOyhRCqSHzOvLveTwspgRPJFNf9ezA8F+EVjJfAxbJkKMg/819eFrT+1sRXQnHX+tLa599lKop4ux4ZXxXAppGErJk8soDn2xfMtE4Sq6jrCYh1jDB+9IMPTXH8yfRXEIWR2g7UPyv9hbdJd4E=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:376d1847-df53-404a-adde-46940680f2dd,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-META: VersionHash:120426c,CLOUDID:d08112f7-ddba-41c3-91d9-10eeade8eac7,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-UUID: 190fcd90ccc211eda9a90f0bb45854f4-20230328
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2095619849; Tue, 28 Mar 2023 01:09:13 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Tue, 28 Mar 2023 01:09:12 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Tue, 28 Mar 2023 01:09:12 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 2/2] wifi: mac80211: enable EHT mesh support
-Date:   Tue, 28 Mar 2023 01:07:42 +0800
-Message-ID: <1e0ddb9001312451c3e99c4eed2072caf8075f61.1679935259.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <06c13635fc03bcff58a647b8e03e9f01a74294bd.1679935259.git.ryder.lee@mediatek.com>
-References: <06c13635fc03bcff58a647b8e03e9f01a74294bd.1679935259.git.ryder.lee@mediatek.com>
+        Mon, 27 Mar 2023 14:29:09 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27DC6271D
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 11:29:08 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id y14so9765576wrq.4
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 11:29:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679941746;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IiWU1/AOuH7DwBGjMNZ5nXBxw1kknxuLOf5kZT+jX4Y=;
+        b=i/Y/ZE1hC07i8EyFuaxdGyrvGR0ODQPw/zwg4V1Zecdkod+M6aifuSm+RxTFJtlWNM
+         jpOFjPhSPrsbhkRcMZzDJQ59VKnh/jF7HmcVnPhqxx6TQIXmRxZIr7Utta+vjBaFzmdl
+         bPTrbZrS9alTYrADEdMjKzL41qqXwVOqHVFAbbXUyNGt5odXXrhhhiubb6adePs7yrHr
+         8WlS03rAetXYEZkzDmzv4lDjterR+7VE0jZaIgSahkYPKC6P0a9lUkfVHfL8rDB1in2E
+         K97hnSk9/qAGjHbcx136IL/fVUBKn1RGqxOTey5F15UG80zBHD81/9SXlSRxEgBJIRm8
+         dcqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679941746;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IiWU1/AOuH7DwBGjMNZ5nXBxw1kknxuLOf5kZT+jX4Y=;
+        b=1smexS3FWAtYzTFhsKAgJdDekUnmoU8ijuFa5mp5tZvhKcaCltxsZ7hxtuLVHACZpk
+         uXTgRVGRZAigJxyIN6LAUXkMPuSDDXIIG7tISHI2zLEu148T+yEaKV2TxItldqLHCkde
+         apT6GNoahBMmbnMTIaagE4nnHfdxJ+dMoIMRco8mLIgYTslygjuL5Z5pI5hPHZLSouQe
+         fmem+diozfwv54Qi0aFwT1Ckd7zDNT4AvSgIkehBbDhhglt3zbb7xVWbXS9yC8f1vwS3
+         PkC8kjKUFH97SMwQhHPJILVrcWsHnW6y4vva5FcUI3c1TdR64Y7EC3VVZBHqiN275uZ1
+         46pw==
+X-Gm-Message-State: AAQBX9eNxdKMxuKTc+xH8DB5KjCJGmHAS2hiFSiNfTEWXE/5aarm/4AL
+        eCtnSy9+Ikl84IoBEdGFndw=
+X-Google-Smtp-Source: AKy350YhZmwkyyvuyVLbdpOL8TblSonO042zv7ID5fwV750zvXWWFu0OnP0B59rRAuBSrBbje17Ypg==
+X-Received: by 2002:adf:e9c9:0:b0:2ce:ae4c:c420 with SMTP id l9-20020adfe9c9000000b002ceae4cc420mr10285773wrn.3.1679941746579;
+        Mon, 27 Mar 2023 11:29:06 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id m9-20020adffa09000000b002c70d97af78sm25811421wrr.85.2023.03.27.11.29.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Mar 2023 11:29:06 -0700 (PDT)
+Message-ID: <c8d45f50-28b4-6f5c-9754-43d8eb0bb084@gmail.com>
+Date:   Mon, 27 Mar 2023 21:29:03 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC PATCH 01/14] wifi: rtl8xxxu: Add start_ap() callback
+To:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+ <20230322171905.492855-2-martin.kaistra@linutronix.de>
+ <62bf7fa9-e041-c8d8-c63e-42b3674fc9d8@gmail.com>
+ <7efd83bd-f6f9-eb2c-3b6a-1795307d4e2f@linutronix.de>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <7efd83bd-f6f9-eb2c-3b6a-1795307d4e2f@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Similar to AP beacon, this enables the basic mesh EHT mode, including
-EHT operation IE and the fixed field of EHT operation information IE.
-As for the optional part (i.e. preamble puncturing bitmap) will be
-added in future patch.
+On 27/03/2023 19:08, Martin Kaistra wrote:
+> Am 27.03.23 um 15:10 schrieb Bitterblue Smith:
+>> On 22/03/2023 19:18, Martin Kaistra wrote:
+>>> This gets called at the start of AP mode operation. Set bssid, beacon
+>>> interval and send a connect report to the HW.
+>>>
+>>
+>> Hmm, but why send a connect report when you don't have anything
+>> connected yet?
+> 
+> I tried following the vendor driver here, I don't know what exactly happens in the firmware.
+> I can test, though, if there is any difference, if I remove it.
+> 
+Ah, okay. I was just wondering.
 
-Tested-by: Lian Chen <lian.chen@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-change since v2 - move ieee80211_ie_len_eht_cap fix to a separate patch.
----
- net/mac80211/ieee80211_i.h |  2 ++
- net/mac80211/mesh.c        | 73 ++++++++++++++++++++++++++++++++++++--
- net/mac80211/mesh.h        |  4 +++
- net/mac80211/mesh_plink.c  | 16 +++++++--
- net/mac80211/util.c        | 71 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 162 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index ecc232eb1ee8..d2070613a5bb 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2430,6 +2430,8 @@ void ieee80211_ie_build_he_6ghz_cap(struct ieee80211_sub_if_data *sdata,
- 				    enum ieee80211_smps_mode smps_mode,
- 				    struct sk_buff *skb);
- u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef);
-+u8 *ieee80211_ie_build_eht_oper(u8 *pos, struct cfg80211_chan_def *chandef,
-+				const struct ieee80211_sta_eht_cap *eht_cap);
- int ieee80211_parse_bitrates(enum nl80211_chan_width width,
- 			     const struct ieee80211_supported_band *sband,
- 			     const u8 *srates, int srates_len, u32 *rates);
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 5a99b8f6e465..57dc7b009ce4 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -104,7 +104,7 @@ bool mesh_matches_local(struct ieee80211_sub_if_data *sdata,
- 	ieee80211_chandef_vht_oper(&sdata->local->hw, vht_cap_info,
- 				   ie->vht_operation, ie->ht_operation,
- 				   &sta_chan_def);
--	ieee80211_chandef_he_6ghz_oper(sdata, ie->he_operation, NULL,
-+	ieee80211_chandef_he_6ghz_oper(sdata, ie->he_operation, ie->eht_operation,
- 				       &sta_chan_def);
- 
- 	if (!cfg80211_chandef_compatible(&sdata->vif.bss_conf.chandef,
-@@ -638,6 +638,65 @@ int mesh_add_he_6ghz_cap_ie(struct ieee80211_sub_if_data *sdata,
- 	return 0;
- }
- 
-+int mesh_add_eht_cap_ie(struct ieee80211_sub_if_data *sdata,
-+			struct sk_buff *skb, u8 ie_len)
-+{
-+	const struct ieee80211_sta_he_cap *he_cap;
-+	const struct ieee80211_sta_eht_cap *eht_cap;
-+	struct ieee80211_supported_band *sband;
-+	u8 *pos;
-+
-+	sband = ieee80211_get_sband(sdata);
-+	if (!sband)
-+		return -EINVAL;
-+
-+	he_cap = ieee80211_get_he_iftype_cap(sband, NL80211_IFTYPE_MESH_POINT);
-+	eht_cap = ieee80211_get_eht_iftype_cap(sband, NL80211_IFTYPE_MESH_POINT);
-+	if (!he_cap || !eht_cap ||
-+	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_20_NOHT ||
-+	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_5 ||
-+	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_10)
-+		return 0;
-+
-+	if (skb_tailroom(skb) < ie_len)
-+		return -ENOMEM;
-+
-+	pos = skb_put(skb, ie_len);
-+	ieee80211_ie_build_eht_cap(pos, he_cap, eht_cap, pos + ie_len, false);
-+
-+	return 0;
-+}
-+
-+int mesh_add_eht_oper_ie(struct ieee80211_sub_if_data *sdata, struct sk_buff *skb)
-+{
-+	const struct ieee80211_sta_eht_cap *eht_cap;
-+	struct ieee80211_supported_band *sband;
-+	u32 len;
-+	u8 *pos;
-+
-+	sband = ieee80211_get_sband(sdata);
-+	if (!sband)
-+		return -EINVAL;
-+
-+	eht_cap = ieee80211_get_eht_iftype_cap(sband, NL80211_IFTYPE_MESH_POINT);
-+	if (!eht_cap ||
-+	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_20_NOHT ||
-+	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_5 ||
-+	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_10)
-+		return 0;
-+
-+	len = 2 + 1 + offsetof(struct ieee80211_eht_operation, optional) +
-+		      offsetof(struct ieee80211_eht_operation_info, optional);
-+
-+	if (skb_tailroom(skb) < len)
-+		return -ENOMEM;
-+
-+	pos = skb_put(skb, len);
-+	ieee80211_ie_build_eht_oper(pos, &sdata->vif.bss_conf.chandef, eht_cap);
-+
-+	return 0;
-+}
-+
- static void ieee80211_mesh_path_timer(struct timer_list *t)
- {
- 	struct ieee80211_sub_if_data *sdata =
-@@ -696,6 +755,9 @@ ieee80211_mesh_update_bss_params(struct ieee80211_sub_if_data *sdata,
- 	if (he_oper)
- 		sdata->vif.bss_conf.he_oper.params =
- 			__le32_to_cpu(he_oper->he_oper_params);
-+
-+	sdata->vif.bss_conf.eht_support =
-+		!!ieee80211_get_eht_iftype_cap(sband, NL80211_IFTYPE_MESH_POINT);
- }
- 
- /**
-@@ -813,7 +875,7 @@ ieee80211_mesh_build_beacon(struct ieee80211_if_mesh *ifmsh)
- 	struct ieee80211_chanctx_conf *chanctx_conf;
- 	struct mesh_csa_settings *csa;
- 	enum nl80211_band band;
--	u8 ie_len_he_cap;
-+	u8 ie_len_he_cap, ie_len_eht_cap;
- 	u8 *pos;
- 	struct ieee80211_sub_if_data *sdata;
- 	int hdr_len = offsetofend(struct ieee80211_mgmt, u.beacon);
-@@ -826,6 +888,8 @@ ieee80211_mesh_build_beacon(struct ieee80211_if_mesh *ifmsh)
- 
- 	ie_len_he_cap = ieee80211_ie_len_he_cap(sdata,
- 						NL80211_IFTYPE_MESH_POINT);
-+	ie_len_eht_cap = ieee80211_ie_len_eht_cap(sdata,
-+						  NL80211_IFTYPE_MESH_POINT);
- 	head_len = hdr_len +
- 		   2 + /* NULL SSID */
- 		   /* Channel Switch Announcement */
-@@ -849,6 +913,9 @@ ieee80211_mesh_build_beacon(struct ieee80211_if_mesh *ifmsh)
- 		   2 + 1 + sizeof(struct ieee80211_he_operation) +
- 			   sizeof(struct ieee80211_he_6ghz_oper) +
- 		   2 + 1 + sizeof(struct ieee80211_he_6ghz_capa) +
-+		   ie_len_eht_cap +
-+		   2 + 1 + offsetof(struct ieee80211_eht_operation, optional) +
-+			   offsetof(struct ieee80211_eht_operation_info, optional) +
- 		   ifmsh->ie_len;
- 
- 	bcn = kzalloc(sizeof(*bcn) + head_len + tail_len, GFP_KERNEL);
-@@ -969,6 +1036,8 @@ ieee80211_mesh_build_beacon(struct ieee80211_if_mesh *ifmsh)
- 	    mesh_add_he_cap_ie(sdata, skb, ie_len_he_cap) ||
- 	    mesh_add_he_oper_ie(sdata, skb) ||
- 	    mesh_add_he_6ghz_cap_ie(sdata, skb) ||
-+	    mesh_add_eht_cap_ie(sdata, skb, ie_len_eht_cap) ||
-+	    mesh_add_eht_oper_ie(sdata, skb) ||
- 	    mesh_add_vendor_ies(sdata, skb))
- 		goto out_free;
- 
-diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
-index b2b717a78114..3c2d57df2747 100644
---- a/net/mac80211/mesh.h
-+++ b/net/mac80211/mesh.h
-@@ -204,6 +204,10 @@ int mesh_add_he_oper_ie(struct ieee80211_sub_if_data *sdata,
- 			struct sk_buff *skb);
- int mesh_add_he_6ghz_cap_ie(struct ieee80211_sub_if_data *sdata,
- 			    struct sk_buff *skb);
-+int mesh_add_eht_cap_ie(struct ieee80211_sub_if_data *sdata,
-+			struct sk_buff *skb, u8 ie_len);
-+int mesh_add_eht_oper_ie(struct ieee80211_sub_if_data *sdata,
-+			 struct sk_buff *skb);
- void mesh_rmc_free(struct ieee80211_sub_if_data *sdata);
- int mesh_rmc_init(struct ieee80211_sub_if_data *sdata);
- void ieee80211s_init(void);
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index ddfe5102b9a4..8f168bc4e4b8 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -219,12 +219,14 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
- 	bool include_plid = false;
- 	u16 peering_proto = 0;
- 	u8 *pos, ie_len = 4;
--	u8 ie_len_he_cap;
-+	u8 ie_len_he_cap, ie_len_eht_cap;
- 	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.self_prot);
- 	int err = -ENOMEM;
- 
- 	ie_len_he_cap = ieee80211_ie_len_he_cap(sdata,
- 						NL80211_IFTYPE_MESH_POINT);
-+	ie_len_eht_cap = ieee80211_ie_len_eht_cap(sdata,
-+						  NL80211_IFTYPE_MESH_POINT);
- 	skb = dev_alloc_skb(local->tx_headroom +
- 			    hdr_len +
- 			    2 + /* capability info */
-@@ -241,6 +243,9 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
- 			    2 + 1 + sizeof(struct ieee80211_he_operation) +
- 				    sizeof(struct ieee80211_he_6ghz_oper) +
- 			    2 + 1 + sizeof(struct ieee80211_he_6ghz_capa) +
-+			    ie_len_eht_cap +
-+			    2 + 1 + offsetof(struct ieee80211_eht_operation, optional) +
-+				    offsetof(struct ieee80211_eht_operation_info, optional) +
- 			    2 + 8 + /* peering IE */
- 			    sdata->u.mesh.ie_len);
- 	if (!skb)
-@@ -332,7 +337,9 @@ static int mesh_plink_frame_tx(struct ieee80211_sub_if_data *sdata,
- 		    mesh_add_vht_oper_ie(sdata, skb) ||
- 		    mesh_add_he_cap_ie(sdata, skb, ie_len_he_cap) ||
- 		    mesh_add_he_oper_ie(sdata, skb) ||
--		    mesh_add_he_6ghz_cap_ie(sdata, skb))
-+		    mesh_add_he_6ghz_cap_ie(sdata, skb) ||
-+		    mesh_add_eht_cap_ie(sdata, skb, ie_len_eht_cap) ||
-+		    mesh_add_eht_oper_ie(sdata, skb))
- 			goto free;
- 	}
- 
-@@ -451,6 +458,11 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
- 					  elems->he_6ghz_capa,
- 					  &sta->deflink);
- 
-+	ieee80211_eht_cap_ie_to_sta_eht_cap(sdata, sband, elems->he_cap,
-+					    elems->he_cap_len,
-+					    elems->eht_cap, elems->eht_cap_len,
-+					    &sta->deflink);
-+
- 	if (bw != sta->sta.deflink.bandwidth)
- 		changed |= IEEE80211_RC_BW_CHANGED;
- 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 210fdca7ff48..8d0a15086870 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3459,6 +3459,77 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef)
- 	return pos;
- }
- 
-+u8 *ieee80211_ie_build_eht_oper(u8 *pos, struct cfg80211_chan_def *chandef,
-+				const struct ieee80211_sta_eht_cap *eht_cap)
-+
-+{
-+	const struct ieee80211_eht_mcs_nss_supp_20mhz_only *eht_mcs_nss =
-+					&eht_cap->eht_mcs_nss_supp.only_20mhz;
-+	struct ieee80211_eht_operation *eht_oper;
-+	struct ieee80211_eht_operation_info *eht_oper_info;
-+	u8 eht_oper_len = offsetof(struct ieee80211_eht_operation, optional);
-+	u8 eht_oper_info_len =
-+		offsetof(struct ieee80211_eht_operation_info, optional);
-+	u8 chan_width = 0;
-+
-+	*pos++ = WLAN_EID_EXTENSION;
-+	*pos++ = 1 + eht_oper_len + eht_oper_info_len;
-+	*pos++ = WLAN_EID_EXT_EHT_OPERATION;
-+
-+	eht_oper = (struct ieee80211_eht_operation *)pos;
-+
-+	memcpy(&eht_oper->basic_mcs_nss, eht_mcs_nss, sizeof(*eht_mcs_nss));
-+	eht_oper->params |= IEEE80211_EHT_OPER_INFO_PRESENT;
-+	pos += eht_oper_len;
-+
-+	eht_oper_info =
-+		(struct ieee80211_eht_operation_info *)eht_oper->optional;
-+
-+	eht_oper_info->ccfs0 =
-+		ieee80211_frequency_to_channel(chandef->center_freq1);
-+	if (chandef->center_freq2)
-+		eht_oper_info->ccfs1 =
-+			ieee80211_frequency_to_channel(chandef->center_freq2);
-+	else
-+		eht_oper_info->ccfs1 = 0;
-+
-+	switch (chandef->width) {
-+	case NL80211_CHAN_WIDTH_320:
-+		chan_width = IEEE80211_EHT_OPER_CHAN_WIDTH_320MHZ;
-+		eht_oper_info->ccfs1 = eht_oper_info->ccfs0;
-+		if (chandef->chan->center_freq < chandef->center_freq1)
-+			eht_oper_info->ccfs0 -= 16;
-+		else
-+			eht_oper_info->ccfs0 += 16;
-+		break;
-+	case NL80211_CHAN_WIDTH_160:
-+		eht_oper_info->ccfs1 = eht_oper_info->ccfs0;
-+		if (chandef->chan->center_freq < chandef->center_freq1)
-+			eht_oper_info->ccfs0 -= 8;
-+		else
-+			eht_oper_info->ccfs0 += 8;
-+		fallthrough;
-+	case NL80211_CHAN_WIDTH_80P80:
-+		chan_width = IEEE80211_EHT_OPER_CHAN_WIDTH_160MHZ;
-+		break;
-+	case NL80211_CHAN_WIDTH_80:
-+		chan_width = IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ;
-+		break;
-+	case NL80211_CHAN_WIDTH_40:
-+		chan_width = IEEE80211_EHT_OPER_CHAN_WIDTH_40MHZ;
-+		break;
-+	default:
-+		chan_width = IEEE80211_EHT_OPER_CHAN_WIDTH_20MHZ;
-+		break;
-+	}
-+	eht_oper_info->control = chan_width;
-+	pos += eht_oper_info_len;
-+
-+	/* TODO: eht_oper_info->optional */
-+
-+	return pos;
-+}
-+
- bool ieee80211_chandef_ht_oper(const struct ieee80211_ht_operation *ht_oper,
- 			       struct cfg80211_chan_def *chandef)
- {
--- 
-2.18.0
+>>
+>>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>>> ---
+>>>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 15 +++++++++++++++
+>>>   1 file changed, 15 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> index c152b228606f1..90b98b9dcbd9d 100644
+>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>>> @@ -4899,6 +4899,20 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>>>       return;
+>>>   }
+>>>   +static int rtl8xxxu_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>>> +                 struct ieee80211_bss_conf *link_conf)
+>>> +{
+>>> +    struct rtl8xxxu_priv *priv = hw->priv;
+>>> +    struct device *dev = &priv->udev->dev;
+>>> +
+>>> +    dev_dbg(dev, "Start AP mode\n");
+>>> +    rtl8xxxu_set_bssid(priv, vif->bss_conf.bssid);
+>>> +    rtl8xxxu_write16(priv, REG_BCN_INTERVAL, vif->bss_conf.beacon_int);
+>>> +    priv->fops->report_connect(priv, 0, true);
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>>>   static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
+>>>   {
+>>>       u32 rtlqueue;
+>>> @@ -7026,6 +7040,7 @@ static const struct ieee80211_ops rtl8xxxu_ops = {
+>>>       .config = rtl8xxxu_config,
+>>>       .conf_tx = rtl8xxxu_conf_tx,
+>>>       .bss_info_changed = rtl8xxxu_bss_info_changed,
+>>> +    .start_ap = rtl8xxxu_start_ap,
+>>>       .configure_filter = rtl8xxxu_configure_filter,
+>>>       .set_rts_threshold = rtl8xxxu_set_rts_threshold,
+>>>       .start = rtl8xxxu_start,
+>>
 
