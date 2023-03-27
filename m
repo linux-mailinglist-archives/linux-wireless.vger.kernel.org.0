@@ -2,101 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAD336C9730
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Mar 2023 19:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3B566C98F9
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 02:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230206AbjCZRc6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Mar 2023 13:32:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35726 "EHLO
+        id S229765AbjC0A2W convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Mar 2023 20:28:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbjCZRc5 (ORCPT
+        with ESMTP id S229565AbjC0A2V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Mar 2023 13:32:57 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3076E49D2;
-        Sun, 26 Mar 2023 10:32:55 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id bf30so4713352oib.12;
-        Sun, 26 Mar 2023 10:32:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679851974;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=kMIdTPrzs9W2bcOisGTJ32C4tZONe5VcnIYDts13aIw=;
-        b=nqNPvS2vEQB9efoFo76JN7ONcu10HLvy2l6zDGCpZmhWoP3oDJITiKYFyR2UA6ylZX
-         awrzoBNXSNjmAOOgckqCsw0ZF2HdzXbWe8jpW8/tJzbX6HVqLQnEU6u5J7FBZDLjksTv
-         BSGEGgpIJQG7+N3d3OrQnCJVSBRFko45xnzAtvWoxcgJWPK1mqFUtl7lmknTkOeCxsAB
-         LzpNO6MVG2bjmWGmYpC6Dx1iUbxzFZgzczeJvoy6K+V1tDUSQWBJP6nj1H9JzhgbRUDa
-         EPGh7KEUD+CouiOeFE/Xh4H+RQ2sJKFk39vU8oUzS0MC6ZEk8KJSU+ewb7N802+fSqt0
-         8uyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679851974;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kMIdTPrzs9W2bcOisGTJ32C4tZONe5VcnIYDts13aIw=;
-        b=toRsyzO4eFcPJmz70an2qLAnzIB2dPo3tIjY7DU9YtckfZkQyiLAMF48sWpHaMaMFd
-         aA0shaR6xsj1XiQ91kXcUkWFtiP1OWhrbvPtvng2JyZn7j6782lH2UT1qvH4XKCphcan
-         z5d3OttLyPEd+Pw0fV6aiED9UGmFFM1ZOJxc6brPzfdpAPhQaB6CTqMzY7ifkjO6Rf2n
-         fKZJAKjc6Ror4GNG+AqrPVLQfbz/nsQHketWNr9xZMrxBDLQGDU0a3XJns2K6OkwfAD1
-         MZszRGzl/ikIed+cziTob1ceM+tcPfx2wt3JR8Y/M19HbSUrHZYwmifEGEWZ7TBeYg43
-         H0nQ==
-X-Gm-Message-State: AO0yUKVNSOffS6XUnvd5E1cEmuCJ6S83Ulf687DaAR7x1XbReBsfHrWF
-        ZgcxUoGhaIEDjWmO4mxGYS8=
-X-Google-Smtp-Source: AK7set/49UtlldFI6p/rQrGSVBcq35E2L5hx8hQveh7EcQGyM0FugN5APVKlOsGtnXSC2SkRcy1vAA==
-X-Received: by 2002:a05:6808:15a7:b0:386:e073:6996 with SMTP id t39-20020a05680815a700b00386e0736996mr5472851oiw.26.1679851974518;
-        Sun, 26 Mar 2023 10:32:54 -0700 (PDT)
-Received: from [192.168.1.204] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id i206-20020acaead7000000b003874e6dfeefsm4607368oih.37.2023.03.26.10.32.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Mar 2023 10:32:54 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <307ebdbb-1b0f-43df-04b1-a2275adcee72@lwfinger.net>
-Date:   Sun, 26 Mar 2023 12:32:52 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] wireless: rtlwifi: fix incorrect error codes in
+        Sun, 26 Mar 2023 20:28:21 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E35527C;
+        Sun, 26 Mar 2023 17:28:18 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32R0RXBc8021896, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32R0RXBc8021896
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 27 Mar 2023 08:27:33 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 27 Mar 2023 08:27:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 27 Mar 2023 08:27:49 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
+ RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
+ 15.01.2375.007; Mon, 27 Mar 2023 08:27:49 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Wei Chen <harperchen1110@gmail.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
+Thread-Topic: [PATCH v2] rtlwifi: fix incorrect error codes in
  rtl_debugfs_set_write_rfreg()
-Content-Language: en-US
-To:     Simon Horman <simon.horman@corigine.com>,
-        Wei Chen <harperchen1110@gmail.com>
-Cc:     pkshih@realtek.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230325083429.3571917-1-harperchen1110@gmail.com>
- <ZB7DSn3wfjU9OVgJ@corigine.com>
- <CAO4mrfduRPKLruShN76VDOMAeZF=A7f84=vcamnHPCtMLGuRvA@mail.gmail.com>
- <ZB/8YDQwc6uzHbZo@corigine.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <ZB/8YDQwc6uzHbZo@corigine.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Thread-Index: AQHZX6RFnQxa2kACIk+SZ2DblukJZK8Nxj1Q
+Date:   Mon, 27 Mar 2023 00:27:49 +0000
+Message-ID: <293ecc07e4f0427f8ebcb44028a7570d@realtek.com>
+References: <20230326053138.91338-1-harperchen1110@gmail.com>
+In-Reply-To: <20230326053138.91338-1-harperchen1110@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/26/23 03:03, Simon Horman wrote:
-> On Sun, Mar 26, 2023 at 01:47:51PM +0800, Wei Chen wrote:
->> Dear Simon,
->>
->> Thanks for the advice and review. I have sent the second version of the patch.
->>
->> Besides, rtl_debugfs_set_write_reg also suffers from the incorrect
->> error code problem. I also sent v2 of the corresponding patch. Hope
->> there is no confusion between these two patches.
+
+
+> -----Original Message-----
+> From: Wei Chen <harperchen1110@gmail.com>
+> Sent: Sunday, March 26, 2023 1:32 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: kvalo@kernel.org; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
+> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Wei Chen
+> <harperchen1110@gmail.com>
+> Subject: [PATCH v2] rtlwifi: fix incorrect error codes in rtl_debugfs_set_write_rfreg()
 > 
-> Thanks. I now see there are two similar but different patches. My bad.
 
-Avoid all such misunderstandings by making a patch set.
+Subject prefix should be "wifi: rtlwifi: ...".
 
-Larry
+[...]
 
