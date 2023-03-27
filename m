@@ -2,71 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB4856CA549
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 15:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 437726CA54A
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 15:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232422AbjC0NLz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 09:11:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51480 "EHLO
+        id S232282AbjC0NMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 09:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232417AbjC0NLu (ORCPT
+        with ESMTP id S229950AbjC0NMb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 09:11:50 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0BE435B3
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:11:45 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id e18so8735621wra.9
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:11:45 -0700 (PDT)
+        Mon, 27 Mar 2023 09:12:31 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D11171D
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:12:29 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id m6-20020a05600c3b0600b003ee6e324b19so5272147wms.1
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679922704;
+        d=gmail.com; s=20210112; t=1679922748;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=DEMLPOO9Dg7g+Bzi1Lpjria5ofUxYGDTz1KcXKTGHeI=;
-        b=eX+t7TcNbWVPQuiPZ00V107CvMILaiTiJlFMeLH55widPE32Z0Ih7u19r5xDMy9sxr
-         t3MvQCVRVIvRno+CUdPK6V9HcGZJoSdxRXD3OGfvKYdFG7jW4m/+84hLv1/5J7c1gB2S
-         gCyd9PZwWED8BPn3OSb/kSPETEc+I5aEZ66UHm9wnjqUt7gu3VInGiKHcRUiDfD/eHYe
-         AJO4OrUKd2ll5ZWpVHcTt1nSE/xYraIKrJHIDT6WL4K3qsrxmDuEx0AxZcCbcibFXquy
-         0bvsf5L7ATAZOohKg+KDlcfNTp+LuCriD1jtdZqVfnGWjPkymJiDAfHxdkVcnTWVYIdz
-         jx5Q==
+        bh=478A+bT4URn1+P2mr5nDXfmuV9rKOJHIHLabsxsmktg=;
+        b=q5lgr2QCloeG5FgUW54nhvwaLnuSQfZSL+KcS28YAgjMCz0KM046tA5uWXMzVBgqIy
+         BY2ys90MT3or8y9FQfUsFqu+6Tb1oBAqB9MTyrWCd/XNf5JAGPVGEWIMj8qJNuaw8OzK
+         v0ILU/sB5PWZ0nc0Owogeh/XTt5+RkwuEvPgVx/0gxW2Hmdzp/tuLvPxe3SyBYaPThsH
+         DRJYBQGdt/rY8we0pIw5Ok7HxCPdAmPj5piV0S1TtHDLbmH12tMvJETJUgcN9Fqma45b
+         kylRnqpjyPUygWqU70EFm+h2zaBsKmzqRH7ZIuazJUvKlL1tl2iExV6OKE5NBdMeqIb5
+         KS1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679922704;
+        d=1e100.net; s=20210112; t=1679922748;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DEMLPOO9Dg7g+Bzi1Lpjria5ofUxYGDTz1KcXKTGHeI=;
-        b=vdkjUSNUEK8KE41fsu3QZCtd9xVjL04zFY0VQgS0/fduwLzF5e02mBlLHTRPfIxBL6
-         u3rnLY65XI38Tz9rel0EQcnPBgus1Awm18eiX8hNksinkKKzJE0iHqv9LSNpN/stKwGc
-         RhEzI4uteydrUd3myiB2dAh6ajrWYkUn6I9GjuvHEGdMneggUFsCJZvZvOa5dDziCZ3Q
-         bE62auxaYCVI2udkEZNXgUaaGy5NnQwp1Qyddcs/YUHnVOO5UQVKPM6PsyZuzuVGeQtz
-         bFmQoR8lZSWvg8a/D4uaWjhvhM9Dgkzr1depRcMU28uHWurGPZLB0/BSREu6tSr3CR2F
-         7ICg==
-X-Gm-Message-State: AAQBX9eGB8EoYjMS5GFFBOPHIJJq7o4AOhm5l8TCtMoPDmnU2xNFfR1h
-        gLFvLbwXggqfRx/GaAI3BpOVcT0jUfU=
-X-Google-Smtp-Source: AKy350aBY3zDSybk2JlfXcqkyISBz0TGmgrnDpoh2ExCy6e8+lk2bHaM9o1oX5xmhcy2RpxJPOxWNQ==
-X-Received: by 2002:a05:6000:1a47:b0:2d8:4f02:66b6 with SMTP id t7-20020a0560001a4700b002d84f0266b6mr9985915wry.9.1679922703854;
-        Mon, 27 Mar 2023 06:11:43 -0700 (PDT)
+        bh=478A+bT4URn1+P2mr5nDXfmuV9rKOJHIHLabsxsmktg=;
+        b=G+Iw/tuA5xbtNBB8BpY1OxeFMsO4BjLUWp2i6ZZWaossGRu1OvjfUZsTNlIxmRBxDn
+         7FpC17lXz/SVg3abOfNxRJtALEsuz5GoXTsA5cPuNWglXU4DCFXyZcwkz2icxSdbXlmT
+         YZvsG9ju1FRGyb44nxWxcvsbw77yfg96T97zPKnekkpxV6NWcJsX/QCNBjBFiwIP+e2N
+         ZyB6TAjW0j8Gjt+oBBsQ9yFNgY29dYlcdZ1waZjtM6kbsFsJxLXhx+vTki4fXDNzdbuw
+         mFTibt/GiFwKL/VxVjJLHX1Rp7+XZqaU1xri98997XgDaJef1oqe0MxrX+YivOx5g1Jf
+         ryng==
+X-Gm-Message-State: AO0yUKV3hJUOr7Nf4+ZhwisWteflOc1l62Qt+OzeoR/Hjfl0vjR7fAxI
+        QoH/GUkO281kP2gbBOJrL+8pa+RAPps=
+X-Google-Smtp-Source: AK7set+lpVgiaMlC68VAVElhi4SFoWdcuHM63eRA9Be6e+Uu5E2xdcwPsfPlYOLgwhRLXr8h+3qtaw==
+X-Received: by 2002:a7b:ca4a:0:b0:3ea:e582:48dd with SMTP id m10-20020a7bca4a000000b003eae58248ddmr9461426wml.34.1679922748286;
+        Mon, 27 Mar 2023 06:12:28 -0700 (PDT)
 Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id e13-20020a5d4e8d000000b002ceacff44c7sm25198399wru.83.2023.03.27.06.11.42
+        by smtp.gmail.com with ESMTPSA id k22-20020a05600c1c9600b003eda46d6792sm8780933wms.32.2023.03.27.06.12.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 06:11:43 -0700 (PDT)
-Message-ID: <7b0c0ecf-a14f-54eb-5a1b-e1a61c643807@gmail.com>
-Date:   Mon, 27 Mar 2023 16:11:42 +0300
+        Mon, 27 Mar 2023 06:12:27 -0700 (PDT)
+Message-ID: <27e83382-4c84-1841-c428-d1e5143ea20c@gmail.com>
+Date:   Mon, 27 Mar 2023 16:12:26 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
 From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [RFC PATCH 11/14] wifi: rtl8xxxu: Put the macid in txdesc
-To:     Martin Kaistra <martin.kaistra@linutronix.de>,
-        linux-wireless@vger.kernel.org
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
+Subject: Re: [RFC PATCH 07/14] wifi: rtl8xxxu: Add parameter macid to
+ update_rate_mask
+To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+Cc:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
- <20230322171905.492855-12-martin.kaistra@linutronix.de>
+ <20230322171905.492855-8-martin.kaistra@linutronix.de>
+ <b48af4c2e9ef4555997b4a6388fdd270@realtek.com> <87lejitwlf.fsf@kernel.org>
+ <b6e5ee31095549268987185d276e3e7c@realtek.com>
 Content-Language: en-US
-In-Reply-To: <20230322171905.492855-12-martin.kaistra@linutronix.de>
+In-Reply-To: <b6e5ee31095549268987185d276e3e7c@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -79,117 +81,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 22/03/2023 19:19, Martin Kaistra wrote:
-> Add a parameter macid to fill_txdesc(), implement setting it for the
-> gen2 version.
-> This is used to tell the HW who the recipient of the packet is, so that
-> the appropriate data rate can be selected.
+On 27/03/2023 12:19, Ping-Ke Shih wrote:
 > 
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h |  8 ++++----
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 16 ++++++++++++----
->  2 files changed, 16 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> index e78e0bbd23354..20304b0bd68a3 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> @@ -1917,7 +1917,7 @@ struct rtl8xxxu_fileops {
->  			     struct ieee80211_tx_info *tx_info,
->  			     struct rtl8xxxu_txdesc32 *tx_desc, bool sgi,
->  			     bool short_preamble, bool ampdu_enable,
-> -			     u32 rts_rate);
-> +			     u32 rts_rate, u8 macid);
->  	void (*set_crystal_cap) (struct rtl8xxxu_priv *priv, u8 crystal_cap);
->  	s8 (*cck_rssi) (struct rtl8xxxu_priv *priv, struct rtl8723au_phy_stats *phy_stats);
->  	int (*led_classdev_brightness_set) (struct led_classdev *led_cdev,
-> @@ -2046,17 +2046,17 @@ void rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  			     struct ieee80211_tx_info *tx_info,
->  			     struct rtl8xxxu_txdesc32 *tx_desc, bool sgi,
->  			     bool short_preamble, bool ampdu_enable,
-> -			     u32 rts_rate);
-> +			     u32 rts_rate, u8 macid);
->  void rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  			     struct ieee80211_tx_info *tx_info,
->  			     struct rtl8xxxu_txdesc32 *tx_desc32, bool sgi,
->  			     bool short_preamble, bool ampdu_enable,
-> -			     u32 rts_rate);
-> +			     u32 rts_rate, u8 macid);
->  void rtl8xxxu_fill_txdesc_v3(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  			     struct ieee80211_tx_info *tx_info,
->  			     struct rtl8xxxu_txdesc32 *tx_desc32, bool sgi,
->  			     bool short_preamble, bool ampdu_enable,
-> -			     u32 rts_rate);
-> +			     u32 rts_rate, u8 macid);
->  void rtl8723bu_set_ps_tdma(struct rtl8xxxu_priv *priv,
->  			   u8 arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5);
->  void rtl8723bu_phy_init_antenna_selection(struct rtl8xxxu_priv *priv);
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index d74a3c6452507..c232de1d47173 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -5152,7 +5152,8 @@ void
->  rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  			struct ieee80211_tx_info *tx_info,
->  			struct rtl8xxxu_txdesc32 *tx_desc, bool sgi,
-> -			bool short_preamble, bool ampdu_enable, u32 rts_rate)
-> +			bool short_preamble, bool ampdu_enable, u32 rts_rate,
-> +			u8 macid)
->  {
->  	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
->  	struct rtl8xxxu_priv *priv = hw->priv;
-> @@ -5224,7 +5225,8 @@ void
->  rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  			struct ieee80211_tx_info *tx_info,
->  			struct rtl8xxxu_txdesc32 *tx_desc32, bool sgi,
-> -			bool short_preamble, bool ampdu_enable, u32 rts_rate)
-> +			bool short_preamble, bool ampdu_enable, u32 rts_rate,
-> +			u8 macid)
->  {
->  	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
->  	struct rtl8xxxu_priv *priv = hw->priv;
-> @@ -5248,6 +5250,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  		dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
->  			 __func__, rate, le16_to_cpu(tx_desc40->pkt_size));
->  
-> +	tx_desc40->txdw1 |= cpu_to_le32(macid << TXDESC40_MACID_SHIFT);
-> +
->  	seq_number = IEEE80211_SEQ_TO_SN(le16_to_cpu(hdr->seq_ctrl));
->  
->  	tx_desc40->txdw4 = cpu_to_le32(rate);
-> @@ -5299,7 +5303,8 @@ void
->  rtl8xxxu_fill_txdesc_v3(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
->  			struct ieee80211_tx_info *tx_info,
->  			struct rtl8xxxu_txdesc32 *tx_desc, bool sgi,
-> -			bool short_preamble, bool ampdu_enable, u32 rts_rate)
-> +			bool short_preamble, bool ampdu_enable, u32 rts_rate,
-> +			u8 macid)
->  {
->  	struct ieee80211_rate *tx_rate = ieee80211_get_tx_rate(hw, tx_info);
->  	struct rtl8xxxu_priv *priv = hw->priv;
-> @@ -5398,6 +5403,7 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	u16 pktlen = skb->len;
->  	u16 rate_flag = tx_info->control.rates[0].flags;
->  	int tx_desc_size = priv->fops->tx_desc_size;
-> +	u8 macid = 0;
->  	int ret;
->  	bool ampdu_enable, sgi = false, short_preamble = false;
->  
-> @@ -5497,9 +5503,11 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	else
->  		rts_rate = 0;
->  
-> +	if (vif->type == NL80211_IFTYPE_AP && sta)
-> +		macid = sta->aid + 1;
->  
-You should have a function which calculates the macid instead of copying
-the calculation everywhere.
+>> -----Original Message-----
+>> From: Kalle Valo <kvalo@kernel.org>
+>> Sent: Monday, March 27, 2023 4:42 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: Martin Kaistra <martin.kaistra@linutronix.de>; linux-wireless@vger.kernel.org; Jes Sorensen
+>> <Jes.Sorensen@gmail.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
+>> <bigeasy@linutronix.de>
+>> Subject: Re: [RFC PATCH 07/14] wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+>>
+>> Ping-Ke Shih <pkshih@realtek.com> writes:
+>>
+>>>> -----Original Message-----
+>>>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>>>> Sent: Thursday, March 23, 2023 1:19 AM
+>>>> To: linux-wireless@vger.kernel.org
+>>>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>>>> <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
+>>>> <bigeasy@linutronix.de>
+>>>> Subject: [RFC PATCH 07/14] wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+>>>>
+>>>> The HW maintains a rate_mask for each connection, referenced by the
+>>>> macid. Add a parameter to update_rate_mask and add the macid to the
+>>>> h2c call in the gen2 implementation.
+>>>>
+>>>> Also extend refresh_rate_mask to generate the macid in AP mode from
+>>>> sta->aid.
+>>>
+>>> Firmware can support 32 mac_id (station instance) at most, so it will be a
+>>> problem if hostapd assigns aid more than 32. Though I'm not clear how
+>>> hostpad assigns the aid, it would be always safe that rtl8xxxu maintains
+>>> mac_id by a bitmap in driver.
+>>
+>> Does rtlw8xxxu set struct wiphy::max_ap_assoc_sta? It would be good to
+>> advertise the user space the maximum number of stations.
+>>
+> 
+> Thanks for this information, Kalle.
+> 
+> Martin, please add this. I think we can preserve at least one mac_id for
+> broadcast/multicast frames. In fact, I'm not absolutely sure we can
+> support up to 32 mac_id, so set wiphy::max_ap_assoc_sta = 16 -1 or -2
+> would be safer.
+> 
+> Ping-Ke
+> 
+> 
+Indeed, the RTL8188FU driver has hal_spec->macid_num = 16. I think that's
+the maximum for this chip.
 
->  	priv->fops->fill_txdesc(hw, hdr, tx_info, tx_desc, sgi, short_preamble,
-> -				ampdu_enable, rts_rate);
-> +				ampdu_enable, rts_rate, macid);
->  
->  	rtl8xxxu_calc_tx_desc_csum(tx_desc);
->  
+RTL8710BU: 16
+RTL8188EU: 64
+RTL8192EU: 128
+RTL8723BU: 128
 
