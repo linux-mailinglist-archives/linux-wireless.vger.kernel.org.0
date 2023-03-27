@@ -2,118 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA346CA8B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 17:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 203A56CAA00
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 18:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232739AbjC0PMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 11:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
+        id S232787AbjC0QI6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 12:08:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjC0PMn (ORCPT
+        with ESMTP id S232697AbjC0QI5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 11:12:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1A402D60
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 08:11:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1679929918;
+        Mon, 27 Mar 2023 12:08:57 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAA6BF
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 09:08:56 -0700 (PDT)
+Message-ID: <7efd83bd-f6f9-eb2c-3b6a-1795307d4e2f@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1679933334;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=DYh+IUQKnsNavgY4j1iAAQrUA1J5asaTGD0FKGxhaXM=;
-        b=I02Ey8IdVwsc7xO7IKnify4r9LP+rGt29FfDY4r8BalcNG9dnCjcO7lTMs+vA/9enCOgEL
-        v+cxglkxdAEPRmlfigt+MoVl3V5sjWQb8Edylc6p0C45+G/GUw4TLr1F36XNIcuRJmmR2s
-        Igt3/3Gwz5jNfWOMAcJ9/w4HbelBpy4=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-d6QDj_ZeOnW0OFPR5103yA-1; Mon, 27 Mar 2023 11:11:56 -0400
-X-MC-Unique: d6QDj_ZeOnW0OFPR5103yA-1
-Received: by mail-qt1-f200.google.com with SMTP id e4-20020a05622a110400b003e4e915a164so1964860qty.4
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 08:11:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679929915;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DYh+IUQKnsNavgY4j1iAAQrUA1J5asaTGD0FKGxhaXM=;
-        b=TYgcNc3HpKzCzy8yQKs1/aqPU495iUP0hnR/t9UiWwdHexVBcXu58egSjpCfpo9qPL
-         OonJjbB/l/4HY7B2UIE9AqhxyRPB4kIZ2FOm5A/ruv4SsMMWcnP7T6ZGp8QvEQFmLEfi
-         rGpgNP714jsSRvKQT3DGjzw/G8lVUDKDcqgJE41Yis/E4yriJgMrrKrp4Kcmrqou9k3K
-         3Y+B2AaotBmj78JOyaRRUZlgW7hRDqlZSjcuOshcOwuWjZTppC9Q13tehQRP+Fs6DzoS
-         jlf0ij92WKJ0Ss6soL4G2Vu8OU0HtLX6UXCuMgluvjE13Jo7zJXai7CHq3ZFUegPw7vi
-         ctEQ==
-X-Gm-Message-State: AO0yUKUJ2vV7DgOc/af0SjaM3D7rxhCMWG1AepgZPxvvUx7RkSaYDZ+o
-        y7qkexOwNj73q383bnU6ewqR0y6AIuid7rswAj2X7wg5RVAeOC+gK/vxEjGoRuehf8qW+lIqyDL
-        fsZAhf5dxpnkhMfryrzZUk/rbYGg=
-X-Received: by 2002:ac8:57c2:0:b0:3e1:6c7e:2ee0 with SMTP id w2-20020ac857c2000000b003e16c7e2ee0mr22110180qta.11.1679929915685;
-        Mon, 27 Mar 2023 08:11:55 -0700 (PDT)
-X-Google-Smtp-Source: AK7set9BAzNnvmMx3UPAztYRtfcEZS/JC0Zbgk59lkyKNRW1O3h/77E7anPa59QcSLU+bg9VrGKy2w==
-X-Received: by 2002:ac8:57c2:0:b0:3e1:6c7e:2ee0 with SMTP id w2-20020ac857c2000000b003e16c7e2ee0mr22110133qta.11.1679929915395;
-        Mon, 27 Mar 2023 08:11:55 -0700 (PDT)
-Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id l6-20020ac848c6000000b003bfb0ea8094sm8328255qtr.83.2023.03.27.08.11.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Mar 2023 08:11:55 -0700 (PDT)
-From:   Tom Rix <trix@redhat.com>
-To:     aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        nathan@kernel.org, ndesaulniers@google.com
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] brcmsmac: ampdu: remove unused suc_mpdu variable
-Date:   Mon, 27 Mar 2023 11:11:51 -0400
-Message-Id: <20230327151151.1771350-1-trix@redhat.com>
-X-Mailer: git-send-email 2.27.0
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=O6LssaJPekRSjRe1Wm9EJ7qCY9kPNlTgyHfcIvtOJg8=;
+        b=nWq+B4DH3VSY80pR1DSzlSyXXzK4GB4m+oshX8u1j1kWxmbFLb43k8uwvlRQj9r3Oat9KD
+        VIWedi4A5azsrL9tEgqFd5tMCfsgsa6J4lh9k3pMB5mFPd57YzPPzM8hOSkAZZhDRTpUTw
+        tjCRsCvcEbR5xQwzaUYn+eAAcHykkwNEeN+eoht/xAthEIIUIKNfYh0qYFCWybshz2F5ZK
+        kZyf7U3klartzghJuN8eFHipssIQ/sXiU4ksYWoo3Wa2X1EQFRX2iebBZqXiTDcPUkH1fR
+        NNxMZMvVlLm2meWRkSbF5kUVdGLd3RVd/COfIfJkD9Fz7rzNmzexbHRswIsviA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1679933334;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=O6LssaJPekRSjRe1Wm9EJ7qCY9kPNlTgyHfcIvtOJg8=;
+        b=4QUPBkRevMKnskfsiEyLD2/pjWX1YpBxLXwQ5taP93fR9V1hy3NLHV05ufnEI0QUvekbpG
+        zslC52VBty8/zaBw==
+Date:   Mon, 27 Mar 2023 18:08:53 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [RFC PATCH 01/14] wifi: rtl8xxxu: Add start_ap() callback
+Content-Language: de-DE, en-US
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+ <20230322171905.492855-2-martin.kaistra@linutronix.de>
+ <62bf7fa9-e041-c8d8-c63e-42b3674fc9d8@gmail.com>
+From:   Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <62bf7fa9-e041-c8d8-c63e-42b3674fc9d8@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-clang with W=1 reports
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:848:5: error: variable
-  'suc_mpdu' set but not used [-Werror,-Wunused-but-set-variable]
-        u8 suc_mpdu = 0, tot_mpdu = 0;
-           ^
-This variable is not used so remove it.
+Am 27.03.23 um 15:10 schrieb Bitterblue Smith:
+> On 22/03/2023 19:18, Martin Kaistra wrote:
+>> This gets called at the start of AP mode operation. Set bssid, beacon
+>> interval and send a connect report to the HW.
+>>
+> 
+> Hmm, but why send a connect report when you don't have anything
+> connected yet?
 
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I tried following the vendor driver here, I don't know what exactly 
+happens in the firmware.
+I can test, though, if there is any difference, if I remove it.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-index 2631eb7569eb..e24228e60027 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-@@ -845,7 +845,7 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
- 	u16 seq, start_seq = 0, bindex, index, mcl;
- 	u8 mcs = 0;
- 	bool ba_recd = false, ack_recd = false;
--	u8 suc_mpdu = 0, tot_mpdu = 0;
-+	u8 tot_mpdu = 0;
- 	uint supr_status;
- 	bool retry = true;
- 	u16 mimoantsel = 0;
-@@ -975,7 +975,6 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
- 				ieee80211_tx_status_irqsafe(wlc->pub->ieee_hw,
- 							    p);
- 				ack_recd = true;
--				suc_mpdu++;
- 			}
- 		}
- 		/* either retransmit or send bar if ack not recd */
--- 
-2.27.0
-
+> 
+>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+>> ---
+>>   .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 15 +++++++++++++++
+>>   1 file changed, 15 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> index c152b228606f1..90b98b9dcbd9d 100644
+>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+>> @@ -4899,6 +4899,20 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>>   	return;
+>>   }
+>>   
+>> +static int rtl8xxxu_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>> +			     struct ieee80211_bss_conf *link_conf)
+>> +{
+>> +	struct rtl8xxxu_priv *priv = hw->priv;
+>> +	struct device *dev = &priv->udev->dev;
+>> +
+>> +	dev_dbg(dev, "Start AP mode\n");
+>> +	rtl8xxxu_set_bssid(priv, vif->bss_conf.bssid);
+>> +	rtl8xxxu_write16(priv, REG_BCN_INTERVAL, vif->bss_conf.beacon_int);
+>> +	priv->fops->report_connect(priv, 0, true);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static u32 rtl8xxxu_80211_to_rtl_queue(u32 queue)
+>>   {
+>>   	u32 rtlqueue;
+>> @@ -7026,6 +7040,7 @@ static const struct ieee80211_ops rtl8xxxu_ops = {
+>>   	.config = rtl8xxxu_config,
+>>   	.conf_tx = rtl8xxxu_conf_tx,
+>>   	.bss_info_changed = rtl8xxxu_bss_info_changed,
+>> +	.start_ap = rtl8xxxu_start_ap,
+>>   	.configure_filter = rtl8xxxu_configure_filter,
+>>   	.set_rts_threshold = rtl8xxxu_set_rts_threshold,
+>>   	.start = rtl8xxxu_start,
+> 
