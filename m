@@ -2,72 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF116CA7B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 16:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA346CA8B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 17:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232697AbjC0OcD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 10:32:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59346 "EHLO
+        id S232739AbjC0PMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 11:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232717AbjC0Oby (ORCPT
+        with ESMTP id S229577AbjC0PMn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 10:31:54 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C022D7D;
-        Mon, 27 Mar 2023 07:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=NKTe9qRZHR1ull2EIJjDc+GJKF2gKHfkxgDvwszZVD4=;
-        t=1679927513; x=1681137113; b=GBiLnv2hl7XwL5ZDqNi8claXLqhYhkokDV2KeFlOEe2ngtg
-        zcBuHYMl4KyJjPbFDA8W2a1Lmz1YWZG70CK8O3d2Bfur7ygktItquj2O5nWRwIdh16n8/3Yrj0RHX
-        7TTGu0qQws5GmY583mELLQmdtC26Nmllns12lLz3B2Fbj9RlQ43J+djXII2oiyaD6H/aarsU87tr+
-        lk36zK6DxudpIbHTCpcDk29bnO+6toaQVU+i/I01c0ow7ZtMw87dnKAGjMnuUv0q+hKIEtVhGqiXM
-        cTo3vR0rQX7cji2K0VwMeD8NTtnNyVtUfbztOnld1AyBcNkIDYYpmOntOkUs/xAg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pgnt2-00FjLI-07;
-        Mon, 27 Mar 2023 16:31:52 +0200
-Message-ID: <e3ca82aaf29f92303d5dec239d2177029e91c134.camel@sipsolutions.net>
-Subject: Re: traceability of wifi packet drops
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 27 Mar 2023 16:31:51 +0200
-In-Reply-To: <00659771ed54353f92027702c5bbb84702da62ce.camel@sipsolutions.net>
-References: <00659771ed54353f92027702c5bbb84702da62ce.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Mon, 27 Mar 2023 11:12:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1A402D60
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 08:11:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1679929918;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=DYh+IUQKnsNavgY4j1iAAQrUA1J5asaTGD0FKGxhaXM=;
+        b=I02Ey8IdVwsc7xO7IKnify4r9LP+rGt29FfDY4r8BalcNG9dnCjcO7lTMs+vA/9enCOgEL
+        v+cxglkxdAEPRmlfigt+MoVl3V5sjWQb8Edylc6p0C45+G/GUw4TLr1F36XNIcuRJmmR2s
+        Igt3/3Gwz5jNfWOMAcJ9/w4HbelBpy4=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-240-d6QDj_ZeOnW0OFPR5103yA-1; Mon, 27 Mar 2023 11:11:56 -0400
+X-MC-Unique: d6QDj_ZeOnW0OFPR5103yA-1
+Received: by mail-qt1-f200.google.com with SMTP id e4-20020a05622a110400b003e4e915a164so1964860qty.4
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 08:11:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679929915;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DYh+IUQKnsNavgY4j1iAAQrUA1J5asaTGD0FKGxhaXM=;
+        b=TYgcNc3HpKzCzy8yQKs1/aqPU495iUP0hnR/t9UiWwdHexVBcXu58egSjpCfpo9qPL
+         OonJjbB/l/4HY7B2UIE9AqhxyRPB4kIZ2FOm5A/ruv4SsMMWcnP7T6ZGp8QvEQFmLEfi
+         rGpgNP714jsSRvKQT3DGjzw/G8lVUDKDcqgJE41Yis/E4yriJgMrrKrp4Kcmrqou9k3K
+         3Y+B2AaotBmj78JOyaRRUZlgW7hRDqlZSjcuOshcOwuWjZTppC9Q13tehQRP+Fs6DzoS
+         jlf0ij92WKJ0Ss6soL4G2Vu8OU0HtLX6UXCuMgluvjE13Jo7zJXai7CHq3ZFUegPw7vi
+         ctEQ==
+X-Gm-Message-State: AO0yUKUJ2vV7DgOc/af0SjaM3D7rxhCMWG1AepgZPxvvUx7RkSaYDZ+o
+        y7qkexOwNj73q383bnU6ewqR0y6AIuid7rswAj2X7wg5RVAeOC+gK/vxEjGoRuehf8qW+lIqyDL
+        fsZAhf5dxpnkhMfryrzZUk/rbYGg=
+X-Received: by 2002:ac8:57c2:0:b0:3e1:6c7e:2ee0 with SMTP id w2-20020ac857c2000000b003e16c7e2ee0mr22110180qta.11.1679929915685;
+        Mon, 27 Mar 2023 08:11:55 -0700 (PDT)
+X-Google-Smtp-Source: AK7set9BAzNnvmMx3UPAztYRtfcEZS/JC0Zbgk59lkyKNRW1O3h/77E7anPa59QcSLU+bg9VrGKy2w==
+X-Received: by 2002:ac8:57c2:0:b0:3e1:6c7e:2ee0 with SMTP id w2-20020ac857c2000000b003e16c7e2ee0mr22110133qta.11.1679929915395;
+        Mon, 27 Mar 2023 08:11:55 -0700 (PDT)
+Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id l6-20020ac848c6000000b003bfb0ea8094sm8328255qtr.83.2023.03.27.08.11.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Mar 2023 08:11:55 -0700 (PDT)
+From:   Tom Rix <trix@redhat.com>
+To:     aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        nathan@kernel.org, ndesaulniers@google.com
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] brcmsmac: ampdu: remove unused suc_mpdu variable
+Date:   Mon, 27 Mar 2023 11:11:51 -0400
+Message-Id: <20230327151151.1771350-1-trix@redhat.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-03-27 at 16:19 +0200, Johannes Berg wrote:
->=20
-> 	SKB_DROP_REASON_MAC80211_DUP		(SKB_DROP_REASON_MAC80211_TYPE_UNUSABLE | =
-1)
-> 	SKB_DROP_REASON_MAC80211_BAD_BIP_KEYIDX	(SKB_DROP_REASON_MAC80211_TYPE_M=
-ONITOR | 1)
->=20
+clang with W=1 reports
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c:848:5: error: variable
+  'suc_mpdu' set but not used [-Werror,-Wunused-but-set-variable]
+        u8 suc_mpdu = 0, tot_mpdu = 0;
+           ^
+This variable is not used so remove it.
 
-Ah, this would lose the ability to immediately see monitor/unusable, so
-we'd have to make the names even longer :(
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Maybe some creative macro such as
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
+index 2631eb7569eb..e24228e60027 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
+@@ -845,7 +845,7 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 	u16 seq, start_seq = 0, bindex, index, mcl;
+ 	u8 mcs = 0;
+ 	bool ba_recd = false, ack_recd = false;
+-	u8 suc_mpdu = 0, tot_mpdu = 0;
++	u8 tot_mpdu = 0;
+ 	uint supr_status;
+ 	bool retry = true;
+ 	u16 mimoantsel = 0;
+@@ -975,7 +975,6 @@ brcms_c_ampdu_dotxstatus_complete(struct ampdu_info *ampdu, struct scb *scb,
+ 				ieee80211_tx_status_irqsafe(wlc->pub->ieee_hw,
+ 							    p);
+ 				ack_recd = true;
+-				suc_mpdu++;
+ 			}
+ 		}
+ 		/* either retransmit or send bar if ack not recd */
+-- 
+2.27.0
 
-DROP_UNUSABLE(DUP)
-DROP_MONITOR(BAD_BIP_KEYIDX)
-
-could be done, but that hurts ctags/elixir and the likes ...
-
-johannes
