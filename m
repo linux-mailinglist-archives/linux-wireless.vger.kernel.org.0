@@ -2,61 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 105D46CA53A
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 15:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 281A66CA545
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Mar 2023 15:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232225AbjC0NKx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 09:10:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49804 "EHLO
+        id S232385AbjC0NLZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Mar 2023 09:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjC0NKw (ORCPT
+        with ESMTP id S232345AbjC0NLX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 09:10:52 -0400
+        Mon, 27 Mar 2023 09:11:23 -0400
 Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E37C12135
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:10:46 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id q7-20020a05600c46c700b003ef6e809574so1970831wmo.4
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:10:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A080268C
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:11:20 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id l8-20020a05600c1d0800b003ef6708bbf6so3199422wms.5
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 06:11:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679922645;
+        d=gmail.com; s=20210112; t=1679922678;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ymrtjeRJGV7kUuYwwDOKKK97uOKCz9Rcv/Mcfqs8P2A=;
-        b=EwOLqFZMUNhGOTl5387v3D8Xuag48kc2lvMje+PInK0swsGPiAeobeesoP4p4MPWlT
-         NEVmQNLSpTguLUZcFLfz6DLdvOdroBWm8WdqoIJftvwGi+4tZ+U+Q8vlCcEdQNo5SeZZ
-         KPNL0dfVyHwLbEMz6KVPWilretInbXtBsky9j+VYaa3RvDgm+jVgxbcGfVVion7Xisuk
-         bqq1aQ9z+SGTtxhoarYgLgG/CyqRDCPDiBlipIpSzAEjavp0VoJsNsnAe78gxGdD0oYz
-         1bWSZGx4R0FtOORYKC0oCYdtS/81wNA3N+GVxi7q9LA4C6CAqprRgcpssJjAaFBapYY0
-         tPHg==
+        bh=VG0BH3+DJzDKB+gqlAH1BqTlHfM3+d+PPT/Nr6aqgQc=;
+        b=bZ3o9D+l1FX50K/h34y5b9XZUYOxEQoXB01wag9A9AZZgtPjFOYx0hv9kzPnsjYcCV
+         qXuGRyXRNzJBiaMYOsNZkebQLX19p5Ge4IrzrHgH0TnBhYPJgVRJqVDMfeJN01OhjfPp
+         vyllh8KtSTs8zfAWM6FU+2qF/haoit4ywrjzI6eDCqcjjX2FWv41tCVtLBQ+XYku2y65
+         HnBSiwCcFYf1vuzQcoGt33Eqkq6ETWffBEFuMDnd2kENvaoBR+BgOw8UZJ15ySfEmE5t
+         7UvfP/HvG6j3e+V0aJ6eqj0Ay3FzC3QW15+YT0ZRg1pe9hJH53aaUvTKFxUtiyhnWa6J
+         pOiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679922645;
+        d=1e100.net; s=20210112; t=1679922678;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymrtjeRJGV7kUuYwwDOKKK97uOKCz9Rcv/Mcfqs8P2A=;
-        b=GTv8XSsDX3h8uzbZgtE7W0xR7BCLDRxGjWkVrmJXGp607IMW2trVghxCIN6CCASf0T
-         pNLpQ4hYpzQCtrJh638h+2PeWNsRelOQu4xPrSAW0FzbSwrxLBRVwitRm/kIMFgbMKp9
-         mDPTyHBgIwt/DdgJp5k+IDPIj2m4MbkicJT0PouHXU+nC3tPpH5asXacECxeC5N+16+p
-         m9wNK/TRMo4DupVGhRKsNhi1uml/3harDa40RPlXHHUboji1BUP1Qb8TNVF7uL91Z/HN
-         LNgpi5wGxTtQKJHcmqYRYdGnA0h9w2mvdAV/ZLyo6b+gqVU2z0ztigYYE8OGm4CrCXKI
-         FJHw==
-X-Gm-Message-State: AO0yUKVzDG68QuK/6w1KnvhY2A1cp4r5iur7zD/cdw3e09ou3NcCvbc3
-        TOOLc8QqNWiRDkTwMevmhNM=
-X-Google-Smtp-Source: AK7set+zDcVppyiMSTJ6dHxIPrpQ4gfXv60m+hwB0c/9iM+sU68wCFlFPLKkw+SkPDi/IkqAWkxQBQ==
-X-Received: by 2002:a7b:c4c6:0:b0:3ee:1afc:c15 with SMTP id g6-20020a7bc4c6000000b003ee1afc0c15mr9352527wmk.33.1679922645301;
-        Mon, 27 Mar 2023 06:10:45 -0700 (PDT)
+        bh=VG0BH3+DJzDKB+gqlAH1BqTlHfM3+d+PPT/Nr6aqgQc=;
+        b=6H5fo+kQ2iVItpTfoKsutHoqvHFZj6LURsbC2MLFgH1A8ocxdwWJPxAVkDwPuKoGSk
+         Ger0DwzaH/h0A9UKqbRhHITErWMdNVXaE1TZH6L2TiLFrU0eWMnp5itBIZp8BJcrtncw
+         2IVNa1IMA9psRfxTYl0oDNNk1e0i6HWRopJW2tEHD3Ya9MW0bWgXHFFs2KV42m5nWkDA
+         aLClZD6UqBrAReC2ZQ9AhHC+1u2xQMM7QMrHWY1gsay7TPMY3ieN9XWhpxUPAX0CeGtL
+         OQwjvrhPzFHJo29zn6iOO+Pdp3pRECvYGWw/W4x4xVNliCaWfVSuDTGtJ1JbWOgHwdaG
+         gsZA==
+X-Gm-Message-State: AO0yUKUkP50RdhauL7SURpX4IkCXQDhrRq97xWkoD0GeOtwQDbclfDgg
+        HJQokkn1rexVkbbDdHPAUyA=
+X-Google-Smtp-Source: AK7set8w8nuahycP51mY2MpB15SW//UgRcCvzofS9uU5nrgVDsHXABsrTBzkoC82C1tgRLmiGZGY3g==
+X-Received: by 2002:a05:600c:474c:b0:3ed:bfb4:ad9f with SMTP id w12-20020a05600c474c00b003edbfb4ad9fmr12160178wmo.2.1679922678644;
+        Mon, 27 Mar 2023 06:11:18 -0700 (PDT)
 Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id t20-20020a05600c451400b003ee443bf0c7sm8941463wmo.16.2023.03.27.06.10.44
+        by smtp.gmail.com with ESMTPSA id c18-20020a7bc852000000b003ed2c0a0f37sm13605738wml.35.2023.03.27.06.11.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 06:10:45 -0700 (PDT)
-Message-ID: <ee916498-f7b4-275d-831b-d97a7c6fa90f@gmail.com>
-Date:   Mon, 27 Mar 2023 16:10:44 +0300
+        Mon, 27 Mar 2023 06:11:18 -0700 (PDT)
+Message-ID: <7aaa94a0-543e-3097-ea63-71fc82191817@gmail.com>
+Date:   Mon, 27 Mar 2023 16:11:17 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
 From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [RFC PATCH 03/14] wifi: rtl8xxxu: Add beacon functions
+Subject: Re: [RFC PATCH 09/14] wifi: rtl8xxxu: Add parameter role to
+ report_connect
 To:     Martin Kaistra <martin.kaistra@linutronix.de>,
         linux-wireless@vger.kernel.org
 Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
@@ -64,9 +65,9 @@ Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
         Ping-Ke Shih <pkshih@realtek.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
- <20230322171905.492855-4-martin.kaistra@linutronix.de>
+ <20230322171905.492855-10-martin.kaistra@linutronix.de>
 Content-Language: en-US
-In-Reply-To: <20230322171905.492855-4-martin.kaistra@linutronix.de>
+In-Reply-To: <20230322171905.492855-10-martin.kaistra@linutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -79,152 +80,107 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 22/03/2023 19:18, Martin Kaistra wrote:
-> Add a workqueue to update the beacon contents asynchronously and
-> implement downloading the beacon to the HW and starting beacon tx like
-> the vendor driver.
+On 22/03/2023 19:19, Martin Kaistra wrote:
+> This allows to tell the HW if a connection is made to a STA or an AP.
+> Add the implementation for the gen2 version.
 > 
 > Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
 > ---
->  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  3 +
->  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 81 +++++++++++++++++++
->  2 files changed, 84 insertions(+)
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      |  9 ++++++---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 11 ++++++-----
+>  2 files changed, 12 insertions(+), 8 deletions(-)
 > 
 > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> index 9d48c69ffece1..cac985271628c 100644
+> index c06ad33645974..e78e0bbd23354 100644
 > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
 > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> @@ -1744,6 +1744,8 @@ struct rtl8xxxu_priv {
->  	bool shutdown;
->  	struct work_struct rx_urb_wq;
+> @@ -1280,6 +1280,9 @@ struct rtl8xxxu_rfregs {
+>  #define  H2C_JOIN_BSS_DISCONNECT	0
+>  #define  H2C_JOIN_BSS_CONNECT		1
 >  
-> +	bool beacon_enabled;
+> +#define H2C_ROLE_STA			1
+> +#define H2C_ROLE_AP			2
 > +
->  	u8 mac_addr[ETH_ALEN];
->  	char chip_name[8];
->  	char chip_vendor[8];
-> @@ -1850,6 +1852,7 @@ struct rtl8xxxu_priv {
->  	struct delayed_work ra_watchdog;
->  	struct work_struct c2hcmd_work;
->  	struct sk_buff_head c2hcmd_queue;
-> +	struct work_struct update_beacon_work;
->  	struct rtl8xxxu_btcoex bt_coex;
->  	struct rtl8xxxu_ra_report ra_report;
->  	struct rtl8xxxu_cfo_tracking cfo_tracking;
+
+They describe the role of a macid, so maybe call them H2C_MACID_ROLE_*.
+
+>  /*
+>   * H2C (firmware) commands differ between the older generation chips
+>   * 8188[cr]u, 819[12]cu, and 8723au, and the more recent chips 8723bu,
+> @@ -1908,7 +1911,7 @@ struct rtl8xxxu_fileops {
+>  				  u32 ramask, u8 rateid, int sgi, int txbw_40mhz,
+>  				  u8 macid);
+>  	void (*report_connect) (struct rtl8xxxu_priv *priv,
+> -				u8 macid, bool connect);
+> +				u8 macid, u8 role, bool connect);
+>  	void (*report_rssi) (struct rtl8xxxu_priv *priv, u8 macid, u8 rssi);
+>  	void (*fill_txdesc) (struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+>  			     struct ieee80211_tx_info *tx_info,
+> @@ -2012,9 +2015,9 @@ void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
+>  void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
+>  				    u32 ramask, u8 rateid, int sgi, int txbw_40mhz, u8 macid);
+>  void rtl8xxxu_gen1_report_connect(struct rtl8xxxu_priv *priv,
+> -				  u8 macid, bool connect);
+> +				  u8 macid, u8 role, bool connect);
+>  void rtl8xxxu_gen2_report_connect(struct rtl8xxxu_priv *priv,
+> -				  u8 macid, bool connect);
+> +				  u8 macid, u8 role, bool connect);
+>  void rtl8xxxu_gen1_report_rssi(struct rtl8xxxu_priv *priv, u8 macid, u8 rssi);
+>  void rtl8xxxu_gen2_report_rssi(struct rtl8xxxu_priv *priv, u8 macid, u8 rssi);
+>  void rtl8xxxu_gen1_init_aggregation(struct rtl8xxxu_priv *priv);
 > diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index daeaa7d6864f9..404fa6e322f58 100644
+> index 4209880d724be..5e36fddbbb488 100644
 > --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
 > +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -1104,6 +1104,24 @@ static void rtl8xxxu_stop_tx_beacon(struct rtl8xxxu_priv *priv)
->  	val8 = rtl8xxxu_read8(priv, REG_TBTT_PROHIBIT + 2);
->  	val8 &= ~BIT(0);
->  	rtl8xxxu_write8(priv, REG_TBTT_PROHIBIT + 2, val8);
-> +
-> +	priv->beacon_enabled = false;
-> +}
-> +
-> +static void rtl8xxxu_start_tx_beacon(struct rtl8xxxu_priv *priv)
-> +{
-> +	u8 val8;
-> +
-> +	val8 = rtl8xxxu_read8(priv, REG_FWHW_TXQ_CTRL + 2);
-> +	val8 |= BIT(6);
-> +	rtl8xxxu_write8(priv, REG_FWHW_TXQ_CTRL + 2, val8);
-> +
-> +	rtl8xxxu_write8(priv, REG_TBTT_PROHIBIT + 1, 0x80);
-> +	val8 = rtl8xxxu_read8(priv, REG_TBTT_PROHIBIT + 2);
-> +	val8 &= 0xF0;
-> +	rtl8xxxu_write8(priv, REG_TBTT_PROHIBIT + 2, val8);
-> +
-> +	priv->beacon_enabled = true;
+> @@ -4524,7 +4524,7 @@ void rtl8xxxu_gen2_update_rate_mask(struct rtl8xxxu_priv *priv,
 >  }
 >  
+>  void rtl8xxxu_gen1_report_connect(struct rtl8xxxu_priv *priv,
+> -				  u8 macid, bool connect)
+> +				  u8 macid, u8 role, bool connect)
+>  {
+>  	struct h2c_cmd h2c;
 >  
-> @@ -4895,6 +4913,17 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->  		dev_dbg(dev, "Changed BASIC_RATES!\n");
->  		rtl8xxxu_set_basic_rates(priv, bss_conf->basic_rates);
+> @@ -4541,7 +4541,7 @@ void rtl8xxxu_gen1_report_connect(struct rtl8xxxu_priv *priv,
+>  }
+>  
+>  void rtl8xxxu_gen2_report_connect(struct rtl8xxxu_priv *priv,
+> -				  u8 macid, bool connect)
+> +				  u8 macid, u8 role, bool connect)
+>  {
+>  	/*
+>  	 * The firmware turns on the rate control when it knows it's
+> @@ -4557,6 +4557,7 @@ void rtl8xxxu_gen2_report_connect(struct rtl8xxxu_priv *priv,
+>  	else
+>  		h2c.media_status_rpt.parm &= ~BIT(0);
+>  
+> +	h2c.media_status_rpt.parm |= ((role << 4) & 0xf0);
+>  	h2c.media_status_rpt.macid = macid;
+>  
+>  	rtl8xxxu_gen2_h2c_cmd(priv, &h2c, sizeof(h2c.media_status_rpt));
+> @@ -4886,13 +4887,13 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  			rtl8xxxu_write16(priv, REG_BCN_PSR_RPT,
+>  					 0xc000 | vif->cfg.aid);
+>  
+> -			priv->fops->report_connect(priv, 0, true);
+> +			priv->fops->report_connect(priv, 0, H2C_ROLE_AP, true);
+>  		} else {
+>  			val8 = rtl8xxxu_read8(priv, REG_BEACON_CTRL);
+>  			val8 |= BEACON_DISABLE_TSF_UPDATE;
+>  			rtl8xxxu_write8(priv, REG_BEACON_CTRL, val8);
+>  
+> -			priv->fops->report_connect(priv, 0, false);
+> +			priv->fops->report_connect(priv, 0, H2C_ROLE_AP, false);
+>  		}
 >  	}
-> +
-> +	if (changed & BSS_CHANGED_BEACON ||
-> +	    (changed & BSS_CHANGED_BEACON_ENABLED &&
-> +	     bss_conf->enable_beacon)) {
-> +		if (!priv->beacon_enabled) {
-> +			dev_dbg(dev, "BSS_CHANGED_BEACON_ENABLED\n");
-> +			rtl8xxxu_start_tx_beacon(priv);
-> +			schedule_work(&priv->update_beacon_work);
-> +		}
-
-Is it not necessary to stop transmitting the beacons when
-bss_conf->enable_beacon is false?
-
-> +	}
-> +
->  error:
->  	return;
->  }
-> @@ -5476,6 +5505,57 @@ static void rtl8xxxu_tx(struct ieee80211_hw *hw,
->  	dev_kfree_skb(skb);
->  }
 >  
-> +static void rtl8xxxu_send_beacon_frame(struct ieee80211_hw *hw,
-> +				       struct ieee80211_vif *vif)
-> +{
-> +	struct rtl8xxxu_priv *priv = hw->priv;
-> +	struct sk_buff *skb = ieee80211_beacon_get(hw, vif, 0);> +	struct device *dev = &priv->udev->dev;
-> +	int retry;
-> +	u8 val8;
-> +
-> +	/* BCN_VALID, BIT16 of REG_TDECTRL = BIT0 of REG_TDECTRL+2,
-> +	 * write 1 to clear, cleared by SW.
-> +	 */
-> +	val8 = rtl8xxxu_read8(priv, REG_TDECTRL + 2);
-> +	val8 |= BIT(0);
-> +	rtl8xxxu_write8(priv, REG_TDECTRL + 2, val8);
-> +
-> +	/* SW_BCN_SEL - Port0 */
-> +	val8 = rtl8xxxu_read8(priv, REG_DWBCN1_CTRL_8723B + 2);
-> +	val8 &= ~BIT(4);
-> +	rtl8xxxu_write8(priv, REG_DWBCN1_CTRL_8723B + 2, val8);
-> +
-> +	if (skb)
-> +		rtl8xxxu_tx(hw, NULL, skb);
-> +
-> +	retry = 100;
-> +	do {
-> +		val8 = rtl8xxxu_read8(priv, REG_TDECTRL + 2);
-> +		if (val8 & BIT(0))
-> +			break;
-> +		usleep_range(10, 20);
-> +	} while (retry--);
-> +
-> +	if (!retry)
-> +		dev_err(dev, "%s: Failed to read beacon valid bit\n", __func__);
-> +}
-> +
-> +static void rtl8xxxu_update_beacon_work_callback(struct work_struct *work)
-> +{
-> +	struct rtl8xxxu_priv *priv =
-> +		container_of(work, struct rtl8xxxu_priv, update_beacon_work);
-> +	struct ieee80211_hw *hw = priv->hw;
-> +	struct ieee80211_vif *vif = priv->vif;
-> +
-> +	if (!vif) {
-> +		WARN_ONCE(true, "no vif to update beacon\n");
-> +		return;
-> +	}
-> +
-> +	rtl8xxxu_send_beacon_frame(hw, vif);
-> +}
-> +
->  void rtl8723au_rx_parse_phystats(struct rtl8xxxu_priv *priv,
->  				 struct ieee80211_rx_status *rx_status,
->  				 struct rtl8723au_phy_stats *phy_stats,
-> @@ -7244,6 +7324,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
->  	spin_lock_init(&priv->rx_urb_lock);
->  	INIT_WORK(&priv->rx_urb_wq, rtl8xxxu_rx_urb_work);
->  	INIT_DELAYED_WORK(&priv->ra_watchdog, rtl8xxxu_watchdog_callback);
-> +	INIT_WORK(&priv->update_beacon_work, rtl8xxxu_update_beacon_work_callback);
->  	skb_queue_head_init(&priv->c2hcmd_queue);
+> @@ -4953,7 +4954,7 @@ static int rtl8xxxu_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  	dev_dbg(dev, "Start AP mode\n");
+>  	rtl8xxxu_set_bssid(priv, vif->bss_conf.bssid);
+>  	rtl8xxxu_write16(priv, REG_BCN_INTERVAL, vif->bss_conf.beacon_int);
+> -	priv->fops->report_connect(priv, 0, true);
+> +	priv->fops->report_connect(priv, 0, 0, true);
 >  
->  	usb_set_intfdata(interface, hw);
+>  	return 0;
+>  }
 
