@@ -2,66 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 698CF6CB3FD
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Mar 2023 04:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D516CB57E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Mar 2023 06:47:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231820AbjC1C1i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Mar 2023 22:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55082 "EHLO
+        id S229632AbjC1Erh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Mar 2023 00:47:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbjC1C1h (ORCPT
+        with ESMTP id S229452AbjC1Erg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Mar 2023 22:27:37 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3A5E1;
-        Mon, 27 Mar 2023 19:27:35 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id i9so10636497wrp.3;
-        Mon, 27 Mar 2023 19:27:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679970454;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dTFOlKsQkV752J0aCjyJ5GGCe6/bEDnLRu/pGjCsgdY=;
-        b=GkZsiXQNOje8PndT2x/vNmh1LFcgWFEhYMp8YOHl0gERpk22+hG+brJC+XNkLC0ad2
-         Wr1Kb/xvoa0oZX5mzAWHtwYSX6POm4amy9/ZKTOmwaO7tvUjeBCJGNkqMJNCyKbsn+vV
-         oxWbZYvt00Lr6klQZR6v/3OXSnf3Hqx3uk+FefFMGH/UaUGbjgNqy4t7RWSgd+VhOcXK
-         3PvHKQvCalZRH8BAvshq3n4XyMWpKvQRxJSXx6p4JH41euEK2uWXc6tF+h+2WXXOMG6o
-         VJJxA6QTP7ALRsbmF+wdw37BTFs3nEygznIR/smYlOy4CLC5VczXC0bAvyfqX+rRuucN
-         V0Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679970454;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dTFOlKsQkV752J0aCjyJ5GGCe6/bEDnLRu/pGjCsgdY=;
-        b=b/c1R1Tp69T31Wha39EHtBs+CBt0meMPBw9B7QM1kk4rYDhIUyk5PsHd379d5EfumI
-         /BL2dgfTwSc0z5JP1p2+Q4XFv59CDo/gYW7OujHH7MXQBkToTalE/CdJCAoe/hwRFdQr
-         FITVJ5w0QzCeBVGnwugwCiXbe32pCoZ82MsDHJAnH9OYuedekalfI7hk51bwMgCJTuY8
-         EnvtJ8oV+3Cfu9TpD+x7CmvMvKVaiQ+03W8t4J1bKNXZQTgwLYKtHFrTTqQ9oZI3xiQs
-         b3txpbdDjNxMWeWe7Il7ycoVyUi8Utjmqx8YEKXk0+RBjk5HpnjwpcMdmCXeRkGCG9hf
-         7h9w==
-X-Gm-Message-State: AAQBX9dPd/i+JqETcDUVgZbi0HkcJYB1/NXlJ3jO8xwki7K993c1TxzD
-        RL2lXemYDN+yxa4oWYX/Urm6Dtt0Zm65+7j9GKw=
-X-Google-Smtp-Source: AKy350besLakIHgcW0IYQLohN28RsC9vf2hUcRjOp3oSAF8VNehNNMv2OpO+356z+SgYbjyLNAzAxSepU68pszownHs=
-X-Received: by 2002:a5d:6606:0:b0:2de:9905:a46e with SMTP id
- n6-20020a5d6606000000b002de9905a46emr1865550wru.13.1679970453689; Mon, 27 Mar
- 2023 19:27:33 -0700 (PDT)
+        Tue, 28 Mar 2023 00:47:36 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7CB1FEE
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Mar 2023 21:47:35 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32S3kNNj026463;
+        Tue, 28 Mar 2023 04:47:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=m1ETkqQDyH5uYhMWfsgLcfrA3+Nvwy4QgGaXwtS8DEQ=;
+ b=PhbapCYuhEwi19BVnEA4FiS30Y92k7/NL85f3cMKTTgDvYRPr4Oc3TVv7UGPU69qgXBA
+ BLPiagBq2H44oo/t/tytgqnI6980kF0NSZa1Y9dhALNJFd0sUFK0RG6e43Gcot7ZIpiu
+ BQ9P5iBmvCvPVl9hOo4N5c6Gm3ZsRJzvmSqDnmArndibIPUdko2hQ1pBRMuAwAeXChYk
+ H5tXn4VfgoJ3/yRS17wj6q8KXd7s+XsCma6URpkdUxmzRZ/4daeVzNSECoSVAWBZe2kf
+ ROk8puCW1sJKMwkJXWza3/AAeYerbKJ3g2iigDorf/QySDjWBMLJiMlOQ26Snzv+Goua Xw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pk8pvjdsd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 28 Mar 2023 04:47:20 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32S4lJoI030166
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 28 Mar 2023 04:47:19 GMT
+Received: from [10.242.242.48] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 27 Mar
+ 2023 21:47:17 -0700
+Message-ID: <0289c7f1-e729-e924-5ae8-a6156266e675@quicinc.com>
+Date:   Tue, 28 Mar 2023 10:16:58 +0530
 MIME-Version: 1.0
-References: <00659771ed54353f92027702c5bbb84702da62ce.camel@sipsolutions.net> <20230327180950.79e064da@kernel.org>
-In-Reply-To: <20230327180950.79e064da@kernel.org>
-From:   Dave Taht <dave.taht@gmail.com>
-Date:   Mon, 27 Mar 2023 19:27:22 -0700
-Message-ID: <CAA93jw5vFdySU-AMGYPpj0fDOHNe9O0aL_3N1kDk7UPTAs63Tw@mail.gmail.com>
-Subject: Re: traceability of wifi packet drops
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 0/2] ath11k: factory test mode support
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230213130854.2473-1-quic_rajkbhag@quicinc.com>
+ <87edpson9o.fsf@kernel.org>
+Content-Language: en-US
+From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <87edpson9o.fsf@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yV2G2Ec1YiJSJX-wiyyzPG4WUVrR3xdS
+X-Proofpoint-ORIG-GUID: yV2G2Ec1YiJSJX-wiyyzPG4WUVrR3xdS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-24_11,2023-03-27_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ clxscore=1011 lowpriorityscore=0 suspectscore=0 mlxlogscore=818
+ spamscore=0 phishscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303280037
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,86 +79,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 27, 2023 at 6:32=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon, 27 Mar 2023 16:19:34 +0200 Johannes Berg wrote:
-> > So I just ran into this problem with a colleague again; we don't have
-> > good visibility into why in the wifi stack a packet is dropped.
-> >
-> > In the network stack we have skb drop reasons for (part of?) this, but
-> > we don't really use this in wifi/mac80211 yet.
-> >
-> > Unfortunately we have probably >100 distinct drop reasons in the wifi
-> > stack, so annotating those is not only tedious, it would also double th=
-e
-> > list of SKB drop reasons from currently ~75.
-> >
-> > Any good ideas? I even thought about just encoding the line number
-> > wherever we use RX_DROP_UNUSABLE / RX_DROP_MONITOR, but that's kind of
-> > awkward too. Obviously we could change the internal API to completely
-> > get rid of enum ieee80211_rx_result and use enum skb_drop_reason
-> > instead, but then we'd probably need to carve out some space to also
-> > differentiate DROP_MONITOR and DROP_UNUSABLE, perhaps something like
-> >
-> >
-> >       SKB_DROP_REASON_MAC80211_MASK           0x03ff0000
-> >       SKB_DROP_REASON_MAC80211_TYPE_MASK      0x03000000
-> >       SKB_DROP_REASON_MAC80211_TYPE_UNUSABLE  0x01000000
-> >       SKB_DROP_REASON_MAC80211_TYPE_MONITOR   0x02000000
-> >
-> >       SKB_DROP_REASON_MAC80211_DUP            (SKB_DROP_REASON_MAC80211=
-_TYPE_UNUSABLE | 1)
-> >       SKB_DROP_REASON_MAC80211_BAD_BIP_KEYIDX (SKB_DROP_REASON_MAC80211=
-_TYPE_MONITOR | 1)
-> >
-> >
-> > etc.
-> >
-> >
-> > That'd be a LOT of annotations (and thus work) though, and a lot of new
-> > IDs/names, for something that's not really used all that much, i.e. a
-> > file number / line number within mac80211 would be completely
-> > sufficient, so the alternative could be to just have a separate
-> > tracepoint inside mac80211 with a line number or so?
-> >
-> > Anyone have any great ideas?
->
-> We need something that'd scale to more subsystems, so I don't think
-> having all the definitions in enum skb_drop_reason directly is an
-> option.
+On 3/13/2023 5:51 PM, Kalle Valo wrote:
+> Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
+> 
+>> Device is booted in factory test mode to calibrate the board.
+>> The commands are sent from a userspace application, which is
+>> sent to firmware using wmi commands. Firmware will send the
+>> response back to the application which stores the calibration
+>> data in caldata.bin file. This file will be loaded when the
+>> device boots up normally next time.
+>>
+>> Govindaraj Saminathan (1):
+>>   wifi: ath11k: factory test mode support
+>>
+>> Sowmiya Sree Elavalagan (1):
+>>   wifi: ath11k: Allow ath11k to boot without caldata in ftm mode
+> 
+> While reviewing the patches I made quite a few style cleanup to patches
+> (too many to list):
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=master-pending&id=4a5ca29c396ace5c46b208a8c15a3ba53eabaddd
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=master-pending&id=ba74c7478f5d15ce38e609b9ad4810db7511a3dd
+> 
+> I only compile tested them. Please use these as the baseline for v2.
+> 
+Hi Kalle,
 
-I am not going to comment on this idea directly, but I did want to
-note that long on my round-to-it list was adding something like this
-to the qdiscs generally:
-
-QDISC_DROP_REASON_CONGESTIVE
-QDISC_DROP_REASON_OVERFLOW
-QDISC_DROP_REASON_GSO_SPLIT
-
-since the wifi stack also has both of the former and for all I know,
-the latter, whatever you come up with I applaud, with a better name
-(QUEUE?)
-
->
-> My knee jerk idea would be to either use the top 8 bits of the
-> skb reason enum to denote the space. And then we'd say 0 is core
-> 1 is wifi (enum ieee80211_rx_result) etc. Within the WiFi space
-> you can use whatever encoding you like.
->
-> On a quick look nothing is indexed by the reason directly, so no
-> problems with using the high bits.
->
-> Option #2 is to add one main drop reason called SKB_DROP_REASON_MAC80211
-> and have a separate tracepoint which exposes the detailed wifi
-> reason and any necessary context. mac80211 would then have its own
-> wrapper around kfree_skb_reason() which triggers the tracepoint.
->
-> Those are perhaps fairly obvious and unimaginative. Adding Eric,
-> since he has been filling in a lot of the drop reasons lately.
-
-
-
---=20
-AMA March 31: https://www.broadband.io/c/broadband-grant-events/dave-taht
-Dave T=C3=A4ht CEO, TekLibre, LLC
+Unable to get the baseline patch for v2 from the above link. Getting the
+below error with the link:
+Bad commit reference: 4a5ca29c396ace5c46b208a8c15a3ba53eabaddd
