@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 575E76CB8EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Mar 2023 10:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9431F6CB8E7
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Mar 2023 10:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232663AbjC1IAP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Mar 2023 04:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52092 "EHLO
+        id S232694AbjC1IAS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Mar 2023 04:00:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230209AbjC1IAN (ORCPT
+        with ESMTP id S232673AbjC1IAQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Mar 2023 04:00:13 -0400
+        Tue, 28 Mar 2023 04:00:16 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463E7420A
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Mar 2023 01:00:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C16EA44B6
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Mar 2023 01:00:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679990412; x=1711526412;
+  t=1679990413; x=1711526413;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5Dz1JlyF8uBPoyRKq5x2mnVKdAEcD3KlKtT4HxawejQ=;
-  b=ds+4rkMvi5BWvURd7OTbuepRMnQpV6p0+yY/PXRIITaCd2u5qUl6dC5u
-   d3KDnejMbcTyhYWH0CnTgHd9un/zWnjmVw6f8AZC5lkHQuoYOzphV+h4N
-   WHlQvy0fSXqP55EI2idgD0wV7k7bBupYOFpye9lr797OYQL+GQ8rkdOKZ
-   6QQc+lMKT3W2hG+/JQXYF8fB1sESxHpxeJCcdLgYbW/1/71pdcRg3B7fA
-   LHP4MP7JRJkHPFCTGRyCCnGCA6kQS9/VCIvJ6p7qcaHUzoqkpVHpVmYQQ
-   osh6rIO8mdm4MPilu7smE6/5ftYBYTAU2W0MhV7fvDST6ORuebxIsMbZ1
+  bh=mByYTZhGUzFoQ5jzxpu3fW40cxtEYZkJhGWAL40OMqY=;
+  b=QU02akhVss0jWgRL6FnDvqiE7hgEt07mgWcWG+FNFtpeWIjCPCF8HRbz
+   XZsSjoTOGiK+GV3TwMQGrj9B/he0sTef8PXQ7k8GzAiCAwjv9ZdkD8zsc
+   CHq21n5DQOvZhGG6rRLW5MRm0f81gX5tGESp8CaDhGo0qvCAZ/D0PMh21
+   E/kp+qrUI8K3VXcwCh30/3WiOeHbiCFup4sX2Qz1dA6QLiF/VPgoqqbKx
+   JKXZ/v9nloHhAFP4UWF2EixkcOWO+rMhwRITMb/xUM2t9LqOzkix2Plbb
+   8CrZVe+KQsCY+uT6A0ftQT7DFaraM9bxACExROb6d47LEN7ymnF0L0vIX
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="328958130"
+X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="328958136"
 X-IronPort-AV: E=Sophos;i="5.98,296,1673942400"; 
-   d="scan'208";a="328958130"
+   d="scan'208";a="328958136"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 00:59:48 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 00:59:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="773045144"
+X-IronPort-AV: E=McAfee;i="6600,9927,10662"; a="773045148"
 X-IronPort-AV: E=Sophos;i="5.98,296,1673942400"; 
-   d="scan'208";a="773045144"
+   d="scan'208";a="773045148"
 Received: from gershonr-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.194.136])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 00:59:46 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2023 00:59:48 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 11/31] wifi: iwlwifi: mvm: fix "modify_mask" value in the link cmd.
-Date:   Tue, 28 Mar 2023 10:58:51 +0300
-Message-Id: <20230328104948.19ddbee0c98d.I595abb79d0419c9a21e5234303c2c3fd5290a52a@changeid>
+Subject: [PATCH 12/31] wifi: iwlwifi: mvm: fix crash on queue removal for MLD API too
+Date:   Tue, 28 Mar 2023 10:58:52 +0300
+Message-Id: <20230328104948.527dace26147.Ia215df5833634f95688a979f39fae70c1ac4e027@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230328075911.2370108-1-gregory.greenman@intel.com>
 References: <20230328075911.2370108-1-gregory.greenman@intel.com>
@@ -64,53 +64,70 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-This bitmap indicates what fields of the cmd got changed.
-A field will be ignored by the FW if the corresponding flag wasn't set.
-There are a few cases in which we currently set the wrong bits when
-sending this cmd, which caused FW asserts. Fix this by setting the
-correct bits in each case.
+The patch linked below fixes the crash on queue removal bug only
+for the non-MLD API. Do the same for the MLD API.
 
-Fixes: 1ab26632332e ("wifi: iwlwifi: mvm: Add an add_interface() callback for mld mode")
+Fixes: c5a976cf6a75 ("wifi: iwlwifi: modify new queue allocation command")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c   | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 5f54e57de8e6..33368e5945f4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -54,9 +54,7 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
- 		if (ret)
- 			goto out_unref_phy;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index a6eb18830cd9..fc380e59c740 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -258,27 +258,19 @@ int iwl_mvm_mld_add_aux_sta(struct iwl_mvm *mvm, u32 lmac_id)
+ 				       IWL_MAX_TID_COUNT, NULL);
+ }
  
--		ret = iwl_mvm_link_changed(mvm, vif,
--					   LINK_CONTEXT_MODIFY_ACTIVE |
--					   LINK_CONTEXT_MODIFY_RATES_INFO,
-+		ret = iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE,
- 					   true);
- 		if (ret)
- 			goto out_remove_link;
-@@ -162,7 +160,8 @@ static int __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
- 	ret = iwl_mvm_add_link(mvm, vif);
- 	if (ret)
- 		goto out;
--	ret = iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE,
-+	ret = iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE |
-+				   LINK_CONTEXT_MODIFY_RATES_INFO,
- 				   true);
- 	if (ret)
- 		goto out_remove_link;
-@@ -270,7 +269,7 @@ static int iwl_mvm_mld_start_ap_ibss(struct ieee80211_hw *hw,
- 	if (ret)
- 		goto out_remove_mac;
+-static int iwl_mvm_mld_disable_txq(struct iwl_mvm *mvm,
+-				   struct ieee80211_sta *sta,
++static int iwl_mvm_mld_disable_txq(struct iwl_mvm *mvm, int sta_id,
+ 				   u16 *queueptr, u8 tid)
+ {
+-	struct iwl_mvm_sta *mvmsta;
+ 	int queue = *queueptr;
+ 	int ret = 0;
  
--	ret = iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ACTIVE,
-+	ret = iwl_mvm_link_changed(mvm, vif, LINK_CONTEXT_MODIFY_ALL,
- 				   true);
+-	if (!sta)
+-		return -EINVAL;
+-
+-	mvmsta = iwl_mvm_sta_from_mac80211(sta);
+-
+ 	if (mvm->sta_remove_requires_queue_remove) {
+ 		u32 cmd_id = WIDE_ID(DATA_PATH_GROUP,
+ 				     SCD_QUEUE_CONFIG_CMD);
+ 		struct iwl_scd_queue_cfg_cmd remove_cmd = {
+ 			.operation = cpu_to_le32(IWL_SCD_QUEUE_REMOVE),
+ 			.u.remove.tid = cpu_to_le32(tid),
+-			.u.remove.sta_mask =
+-				cpu_to_le32(BIT(mvmsta->deflink.sta_id)),
++			.u.remove.sta_mask = cpu_to_le32(BIT(sta_id)),
+ 		};
+ 
+ 		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0,
+@@ -308,7 +300,7 @@ static int iwl_mvm_mld_rm_int_sta(struct iwl_mvm *mvm,
+ 	if (flush)
+ 		iwl_mvm_flush_sta(mvm, int_sta, true);
+ 
+-	iwl_mvm_mld_disable_txq(mvm, NULL, queuptr, tid);
++	iwl_mvm_mld_disable_txq(mvm, int_sta->sta_id, queuptr, tid);
+ 
+ 	ret = iwl_mvm_mld_rm_sta_from_fw(mvm, int_sta->sta_id);
  	if (ret)
- 		goto out_remove_link;
+@@ -536,8 +528,8 @@ static void iwl_mvm_mld_disable_sta_queues(struct iwl_mvm *mvm,
+ 		if (mvm_sta->tid_data[i].txq_id == IWL_MVM_INVALID_QUEUE)
+ 			continue;
+ 
+-		iwl_mvm_mld_disable_txq(mvm, sta, &mvm_sta->tid_data[i].txq_id,
+-					i);
++		iwl_mvm_mld_disable_txq(mvm, mvm_sta->deflink.sta_id,
++					&mvm_sta->tid_data[i].txq_id, i);
+ 		mvm_sta->tid_data[i].txq_id = IWL_MVM_INVALID_QUEUE;
+ 	}
+ 
 -- 
 2.38.1
 
