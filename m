@@ -2,69 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92ED6CBB4F
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Mar 2023 11:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A73D6CBBAD
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Mar 2023 12:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232345AbjC1JmX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Mar 2023 05:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57694 "EHLO
+        id S229670AbjC1KCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Mar 2023 06:02:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232132AbjC1JmW (ORCPT
+        with ESMTP id S232801AbjC1KBp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Mar 2023 05:42:22 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D12C410CA
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Mar 2023 02:42:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=OJ5I1LR/G7hHb2M4yvcbY3R03aKx0MiJnenV9b6xbhA=;
-        t=1679996540; x=1681206140; b=EEw6cEofbL+JIh6JTAhro//yxRGfng92Zh2ug4+J6GxWrOF
-        qHP0qAtefAEoPiGu3Oz9l79GrqCfr+sz0LDWnGsU5RHr4VFZE0mELI/Ekhhgb0NXD6e9L2U+CWFLP
-        cE7eDgnhfPhRMlefnWxOH23SbI89o3qO/SF/H88aUoNkUGAiJltk0oL3v0oM6xC51uETB9HwZfad6
-        tL7dQ7RFnfWmy+P1kjJ7kFsVPrAYiCYD1UmPTdZEnoXKn6usWLDgbZl4Aa9cD95QF+0x0eMf4WdoH
-        Ixcf22X1norL/AchNGxhuJ9eItL1PZr4lMJXpUp06UliljovDSC2X9zkEu9jqBIg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ph5qL-00Gemg-2w;
-        Tue, 28 Mar 2023 11:42:18 +0200
-Message-ID: <421e93d78deda5ac9e62c58ee275758a3355a503.camel@sipsolutions.net>
-Subject: Re: [PATCH] nl80211: Add support to configure allowed frequency
- list for AP operation
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 28 Mar 2023 11:42:17 +0200
-In-Reply-To: <20230328093105.3640436-1-quic_vjakkam@quicinc.com>
-References: <20230328093105.3640436-1-quic_vjakkam@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Tue, 28 Mar 2023 06:01:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D17E61A9
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Mar 2023 03:01:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B26B61632
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Mar 2023 10:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE43C433D2;
+        Tue, 28 Mar 2023 10:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679997697;
+        bh=nlT8V0kYXcLVH5zDb1O6aDkcSFyReeczDxXJJQ5/5w8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nQg9jg5vIepkxVgsoKc/krC+soveIBf1Wp+odThUNZ1sb8fyXZw3RbS7xvkxso3KK
+         VyLnDyog5XtTb2owbi+92V5MpiO9W/++0fY2JqE+d3AqAeeNwS29VzpDnyJDZgtCow
+         Sd+cvwtY1KjmI6I3DXVUG0gtXPKWxms1q1ULJs8Kn1rDydMTF6463yWQIrvZzAT3/i
+         GKjjVQYOdjSNe0MYArXcjmQC+cAav535qLO6IFE9fgcRVVSpKioBfBV1sCEql+8656
+         czejWOKZHvld9kGZGo6f4mf4AsUUW+CVfHqrbTlBeDsks6isage6BAbdhzrtcUbL7M
+         7AigcM2Km6VKA==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     kvalo@kernel.org
+Cc:     lorenzo.bianconi@redhat.com, nbd@nbd.name,
+        linux-wireless@vger.kernel.org, sean.wang@mediatek.com,
+        deren.wu@mediatek.com
+Subject: [PATCH wireless] wifi: mt76: mt7921: fix fw used for offload check for mt7922
+Date:   Tue, 28 Mar 2023 12:01:17 +0200
+Message-Id: <632d8f0c9781c9902d7160e2c080aa7e9232d50d.1679997487.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-03-28 at 15:01 +0530, Veerendranath Jakkam wrote:
-> Add support to configure the list of allowed 20 MHz channels for AP
-> operation using an array of channel center frequencies in MHz, this
-> configuration is valid until the AP is stopped. Driver shall filter out
-> channels on top of this list of channels based on regulatory or other
-> constraints during channel switch etc. Driver shall stop the AP
-> operation if all the channels are filtered out during such operation.
->=20
+Fix the firmware version used for offload capability check used by 0x0616
+devices. This path enables offload capabilities for 0x0616 devices.
 
-Normally hostapd is doing anything related to the channel picking, so
-you need to explain why this is needed.
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217245
+Fixes: 034ae28b56f1 ("wifi: mt76: mt7921: introduce remain_on_channel support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Really that's true for _any_ patch, please.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index cb72ded37256..5c23c827abe4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -20,7 +20,7 @@ static const struct pci_device_id mt7921_pci_device_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0608),
+ 		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0616),
+-		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++		.driver_data = (kernel_ulong_t)MT7922_FIRMWARE_WM },
+ 	{ },
+ };
+ 
+-- 
+2.39.2
 
-johannes
