@@ -2,48 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ABE36CF290
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 20:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 499086CF29E
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 21:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbjC2S5c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 14:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
+        id S229974AbjC2TA5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 15:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjC2S5b (ORCPT
+        with ESMTP id S229800AbjC2TA4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 14:57:31 -0400
+        Wed, 29 Mar 2023 15:00:56 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA31D5251;
-        Wed, 29 Mar 2023 11:57:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 504082D55;
+        Wed, 29 Mar 2023 12:00:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=pM8ulVGVCx+HFUHyjXmlEYig7gRCScbLpQSmmvC68OE=;
-        t=1680116250; x=1681325850; b=PNw3S6f8ByRabHV3al6YN41hitZvJt2utF+nsLvW55Dcga3
-        6zpzke5bUD+5tOG97d3WLaszWhFv0BrZcuDESsmdDRdE/dqhznSnszH2WvEkdUA0eduG3ReKUMoyb
-        hS25FVf8G0+YGU+nRMJ1oVu7bkpjGl3uhM4X74h1TgA6OzdKeWACzMXwLjYIRJuE8RyjVjuEAWCU1
-        FYQm4XFASgYfqzeJASV7/+9YuO2u5glqzpoF7T+VMpC3lUBFvWt8WoGNhdE+rpegTHvJKFtM4resk
-        /SWuYI4PqU/GtQuEnt0FfqTkCEoRjEMVQSD7W9uy0cRYVLjprctE6zcl7pOENk3g==;
+        Resent-Cc:Resent-Message-ID; bh=V3nhz2pvP7h7Cz23MObcCMnl1WaF8f98/d7AXl1BRts=;
+        t=1680116455; x=1681326055; b=ALQfJZG/1sZhH4NBN/nX2YOZUb8Zjalnndhc5NhMUuSMSkZ
+        U9ycLOm/tY7abL9VmjMEzS+M77hJN/MziGjX1VR134c2bNiMdAbB0yWuvOJ5qrfs86OUgRCDYS+PN
+        AxImBDwcn/WAfx7UN3sAKnjjK+mctuRttGRIF7F0DOnHuOwmFmqqDm57534GRoxUEqdCI2ALe7l5U
+        ldG+7aZuJPjYY0gYk2g5RJCqxx2hizP8xSfrN9+uz5AvEw8In4VBaLcCzhZ19oJF2qnB8XZgSFfhi
+        Cs4nflVaTCuDjV8BgZTa8uq+p4h2JJGI3I49T77BfAoO39oxE3RTtqil6UZv0bwg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1phaz9-000CVe-1i;
-        Wed, 29 Mar 2023 20:57:27 +0200
-Message-ID: <37311ab0f31d719a65858de31cec7a840cf8fe40.camel@sipsolutions.net>
-Subject: Re: traceability of wifi packet drops
+        id 1phb2O-000CaR-0l;
+        Wed, 29 Mar 2023 21:00:48 +0200
+Message-ID: <465e2312486da2c68f26811884474d080e906d87.camel@sipsolutions.net>
+Subject: Re: [PATCH wireless-next] wifi: iwlwifi: mvm: Avoid 64-bit division
+ in iwl_mvm_get_crosstimestamp_fw()
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 29 Mar 2023 20:57:26 +0200
-In-Reply-To: <20230329110205.1202eb60@kernel.org>
-References: <00659771ed54353f92027702c5bbb84702da62ce.camel@sipsolutions.net>
-         <20230327180950.79e064da@kernel.org>
-         <abcf4b9aed8adad05841234dad103ced15f9bfb2.camel@sipsolutions.net>
-         <20230328155826.38e9e077@kernel.org>
-         <8304ec7e430815edf3b79141c90272e36683e085.camel@sipsolutions.net>
-         <20230329110205.1202eb60@kernel.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Nathan Chancellor <nathan@kernel.org>, gregory.greenman@intel.com,
+        kvalo@kernel.org, trix@redhat.com, avraham.stern@intel.com,
+        krishnanand.prabhu@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, patches@lists.linux.dev,
+        Arnd Bergmann <arnd@arndb.de>,
+        "kernelci.org bot" <bot@kernelci.org>,
+        Craig Topper <craig.topper@sifive.com>
+Date:   Wed, 29 Mar 2023 21:00:47 +0200
+In-Reply-To: <CAKwvOdnQ9feXGYV2CUyVwg-FNAOmb4HBmDxMg243v28DzSfLuA@mail.gmail.com>
+References: <20230329-iwlwifi-ptp-avoid-64-bit-div-v1-1-ad8db8d66bc2@kernel.org>
+         <9058a032c177e9b04adbf944ad34c5ed8090d9d6.camel@sipsolutions.net>
+         <CAKwvOdnQ9feXGYV2CUyVwg-FNAOmb4HBmDxMg243v28DzSfLuA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
@@ -58,50 +62,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-03-29 at 11:02 -0700, Jakub Kicinski wrote:
+On Wed, 2023-03-29 at 10:30 -0700, Nick Desaulniers wrote:
+> >=20
+> > > Nick pointed out that the result of this division is being
+> > > stored to a 32-bit type anyways, so truncate gp2_10ns first then do t=
+he
+> > > division, which elides the need for libcalls.
+> >=20
+> > That loses ~7 top bits though, no? I'd be more worried about that, than
+> > the time div_u64() takes.
 >=20
-> No, no what I was trying to say is that instead of using the upper bits
-> to identify the space (with 0 being the current enum skb_drop_reason)
-> we could use entries in enum skb_drop_reason. In hope that it'd make
-> the fine grained subsystem reason seem more like additional information
-> than a completely parallel system.
-
-Ah! Looking at your code example ... right, so you'd see "mac80211 drop
-unusable" or "mac80211 drop to monitor", and fine-grained in the higher
-bits.
-
-> But it's just a thought, all of the approaches seem acceptable.
-
-I _think_ I like the one I prototyped this morning better, I'm not sure
-I like the subsystem =3D=3D existing reason part _that_ much. It ultimately
-doesn't matter much, it just feels odd that you'd be allowed to have a,
-I don't know picking a random example, SKB_DROP_REASON_DUP_FRAG with a
-fine-grained higher bits value?
-
-Not that we'll ever be starved for space ...
-
-> Quick code change perhaps illustrates it best:
+> The result is still stored in a u32; there is a loss of precision
+> regardless of use of div_u64 or open coded binary operator /. =C2=A0
 >=20
 
-Yeah, that ends up really looking very similar :-)
+Right, obviously.
 
-Then again thinking about the implementation, we'd not be able to use a
-simple array for the sub-reasons, or at least that'd waste a bunch of
-space, since there are already quite a few 'main' reasons and we'd
-want/need to add the mac80211 ones (with sub-reason) at the end. So that
-makes a big array for the sub-reasons that's very sparsely populated (*)
-Extending with a high 'subsystem' like I did this morning is more
-compact here.
+> So is
+> the loss of precision before the division as tolerable as after the
+> division?
 
-(*) or put the sub-reasons pointer/num with the 'main' reasons into the
-drop_reasons[] array but that would take the same additional space
+For all I can tell this is meant to be 'gp2' with an additional lower
+bits to reach a unit/granularity of 10ns, basically in FW something like
 
+  gp2_10ns =3D gp2 * 100 + subsampling_10ns_unit
 
-So ... which one do _you_ like better? I think I somewhat prefer the one
-with adding a high bits subsystem, but I can relatively easily rejigger
-my changes from this morning to implement the semantics you had here
-too.
+(and gp2 in FW is a 32-bit value, so it rolls over eventually).
 
-Anyone else have an opinion? :)
+But I _think_ we want to make a proper division by 100 to obtain back
+the original 'gp2' value here.
 
 johannes
