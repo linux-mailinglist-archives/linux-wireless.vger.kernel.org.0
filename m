@@ -2,65 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A030E6CF12D
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 19:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EBB36CF19E
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 20:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbjC2RdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 13:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
+        id S229846AbjC2SCO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 14:02:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbjC2RdG (ORCPT
+        with ESMTP id S229836AbjC2SCL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 13:33:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BEB40CF;
-        Wed, 29 Mar 2023 10:33:04 -0700 (PDT)
+        Wed, 29 Mar 2023 14:02:11 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAD9F3C20;
+        Wed, 29 Mar 2023 11:02:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6537161DD4;
-        Wed, 29 Mar 2023 17:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF137C433EF;
-        Wed, 29 Mar 2023 17:33:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 972F0B81E4A;
+        Wed, 29 Mar 2023 18:02:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1991CC433D2;
+        Wed, 29 Mar 2023 18:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680111183;
-        bh=dGO1QsqKzA7RrfDy8jeeAVnzJLU5EFbv7b204Ar3GqQ=;
-        h=From:Date:Subject:To:Cc:From;
-        b=pwLCQO0LH3nNYFshACHhDINzKxitxH5vlG6RvwUHdzq2tNpXnYTkipD4D/mRtrRla
-         Ow+ckyKq5D8uxk4xVYGhJqVOyoX0pOH8TKm6KLgdfHKU8Zf+F+J9UhmDSqzAVt39Nh
-         wXMxsRI9hzn7V2J5a2xaA5d0Q3z2O7DVL+e6XISex9vP4xZMOK6WT5Et8iatpFwbV/
-         nHsLK+8lf4/dmC3iJldI57HTMHyVysdnBNX/MtYorPTKpvEzTrMrz3I8Owqv4QGbz1
-         +vK6QTnNPRNLu+yQenO7P7K5nwFp1vMHGKuoUgzWU+SM+OXMD+YoNi0Y2KfFI3v3RI
-         ZKACZa75WDHiw==
-From:   Nathan Chancellor <nathan@kernel.org>
-Date:   Wed, 29 Mar 2023 10:32:46 -0700
-Subject: [PATCH wireless-next v2] wifi: iwlwifi: mvm: Use 64-bit division
- helper in iwl_mvm_get_crosstimestamp_fw()
+        s=k20201202; t=1680112927;
+        bh=g7M1ijeWkoCPcTbPENp03zQ52fyu6Nb8Ng/EsfHXvOI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qYG6/NwFiso/cYVPGEQONfOkFwJ5aQ7B5ozM57fU1Tcy2cE7JXvIQr8Y4qVBVmytE
+         BpejHQQrVwWUOBfzm/ThEOrMHr2pBtrITAF/TmdkoXufF53qZRwWqn1of3FKr7WmrN
+         5AUt23Z9RCMEkDi5jxPCFktQntHclkvgjpK7KGFqRIjXA82UBteGXdkjVcL2JAECC8
+         AsiudOH0prrDDbAxKVjOMYg9jZDqVLQj7jY2tXDHNGEZBEXqQKuV1nl0cwtbcVksP2
+         KU1Yy1HiXnBSsKvKwrQaWA3osPL33Tfnl0yKdcpLsooHonUEGQbIzlr5U1vDXZvnhG
+         2fl8IHz1HvoHg==
+Date:   Wed, 29 Mar 2023 11:02:05 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: traceability of wifi packet drops
+Message-ID: <20230329110205.1202eb60@kernel.org>
+In-Reply-To: <8304ec7e430815edf3b79141c90272e36683e085.camel@sipsolutions.net>
+References: <00659771ed54353f92027702c5bbb84702da62ce.camel@sipsolutions.net>
+        <20230327180950.79e064da@kernel.org>
+        <abcf4b9aed8adad05841234dad103ced15f9bfb2.camel@sipsolutions.net>
+        <20230328155826.38e9e077@kernel.org>
+        <8304ec7e430815edf3b79141c90272e36683e085.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-iwlwifi-ptp-avoid-64-bit-div-v2-1-22b988eb009b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAD12JGQC/42OQQ6CMBBFr2Jm7RhbCKAr72FYtHSQidiSaVM0h
- rsLnMDly/v5/38hkjBFuB6+IJQ5cvAr6OMBusH4ByG7lUGfdXEu9AV5HmfuGac0ocmBHVYlWk7
- oOKPqylrVfV30jYG1wppIaMX4bthKXiYmkk1MQj2/9907zCw0Uozo6Z2gXfXAMQX57K+y2kP/H
- cgKFRrXONu4qrKdvj1JPI2nIA9ol2X5AechHhrxAAAA
-To:     gregory.greenman@intel.com, kvalo@kernel.org
-Cc:     nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
-        johannes.berg@intel.com, avraham.stern@intel.com,
-        krishnanand.prabhu@intel.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, patches@lists.linux.dev,
-        Arnd Bergmann <arnd@arndb.de>,
-        "kernelci.org bot" <bot@kernelci.org>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2181; i=nathan@kernel.org;
- h=from:subject:message-id; bh=dGO1QsqKzA7RrfDy8jeeAVnzJLU5EFbv7b204Ar3GqQ=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDCkqZX6GWvNryxRsv37yCpW033bgF/ON20wbTN6YnOvZ9
- +/etSdGHaUsDGIcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAi0esY/ofca3FqLzue47pj
- dtf+nncl540/TJ1qrL2KnTV3k7Wzkisjw7rHPCdOGcvlnCvj+KF6+DOD43Fp45WSOrH2ZXtZVfy
- 8eAE=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -70,54 +57,108 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a 64-bit division in iwl_mvm_get_crosstimestamp_fw(), which
-results in a link failure when building 32-bit architectures with clang:
+On Wed, 29 Mar 2023 10:35:08 +0200 Johannes Berg wrote:
+> > Thinking about it again, maybe yours is actually cleaner.
+> > Having the subsystem reason on the top bits, I mean.
+> > That way after masking the specific bits out the lower bits
+> > can still provide a valid "global" drop reason.  
+> 
+> Ah, that's not even what I was thinking, but that would work.
+> 
+> What I was thinking was basically the same as you had, just hadn't
+> thought about more subsystems yet and was trying to carve out some bits
+> for wifi specifically :-)
+> 
+> I don't think we'll really end up with a case where we really want to
+> use the low bits for a global reason and a wifi specific reason in
+> higher bits together - there are basically no applicable reasons that we
+> have today ...
+> 
+> I mean, it basically doesn't make sense to have any of the current
+> reasons (such as _IP_CSUM or _IP_INHDR) with a wifi specific reason
+> since we wouldn't even go look at the IP header when wifi drops
+> something.
+> 
+> The only one that _might_ be relevant would be possibly _PKT_TOO_SMALL
+> where wifi has various "reasons" for it to be too small (depending on
+> the packet format), but I'm not sure that it would even be helpful to
+> have drop monitor report "packet too small" from different layers; today
+> it's used from L3/L4, not L2.
 
-  ld.lld: error: undefined symbol: __udivdi3
-  >>> referenced by ptp.c
-  >>>               drivers/net/wireless/intel/iwlwifi/mvm/ptp.o:(iwl_mvm_phc_get_crosstimestamp) in archive vmlinux.a
+No, no what I was trying to say is that instead of using the upper bits
+to identify the space (with 0 being the current enum skb_drop_reason)
+we could use entries in enum skb_drop_reason. In hope that it'd make
+the fine grained subsystem reason seem more like additional information
+than a completely parallel system.
 
-GCC has optimizations for division by a constant that clang does not
-implement, so this issue is not visible when building with GCC.
+But it's just a thought, all of the approaches seem acceptable.
 
-Use the 64-bit division helper div_u64(), which takes a u64 dividend and
-u32 divisor, which matches this situation and prevents the emission of a
-libcall for the division.
+Quick code change perhaps illustrates it best:
 
-Fixes: 21fb8da6ebe4 ("wifi: iwlwifi: mvm: read synced time from firmware if supported")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://github.com/ClangBuiltLinux/linux/issues/1826
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Link: https://lore.kernel.org/6423173a.620a0220.3d5cc.6358@mx.google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-Changes in v2:
-- Use division helper div_u64() instead of truncating dividend before
-  division (Johannes).
-- Link to v1: https://lore.kernel.org/r/20230329-iwlwifi-ptp-avoid-64-bit-div-v1-1-ad8db8d66bc2@kernel.org
----
- drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-index 5c2bfc8ed88d..e89259de6f4c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
-@@ -116,7 +116,7 @@ iwl_mvm_get_crosstimestamp_fw(struct iwl_mvm *mvm, u32 *gp2, u64 *sys_time)
+diff --git a/include/net/dropreason.h b/include/net/dropreason.h
+index c0a3ea806cd5..048402ffa6ad 100644
+--- a/include/net/dropreason.h
++++ b/include/net/dropreason.h
+@@ -338,11 +338,21 @@ enum skb_drop_reason {
+ 	 * for another host.
+ 	 */
+ 	SKB_DROP_REASON_IPV6_NDISC_NS_OTHERHOST,
++	/* packet was unusable? IDK */
++	SKB_DROP_REASON_MAC80211_UNUSABLE,
++	/* also no idea :) */
++	SKB_DROP_REASON_MAC80211_MONITOR,
+ 	/**
+ 	 * @SKB_DROP_REASON_MAX: the maximum of drop reason, which shouldn't be
+ 	 * used as a real 'reason'
+ 	 */
+ 	SKB_DROP_REASON_MAX,
++
++	/**
++	 * @SKB_DROP_SUBSYS_REASON_MASK: fine grained reason from a particular
++	 * subsystem
++	 */
++	SKB_DROP_SUBSYS_REASON_MASK = 0xffff0000,
+ };
  
- 	gp2_10ns = (u64)le32_to_cpu(resp->gp2_timestamp_hi) << 32 |
- 		le32_to_cpu(resp->gp2_timestamp_lo);
--	*gp2 = gp2_10ns / 100;
-+	*gp2 = div_u64(gp2_10ns, 100);
+ #define SKB_DR_INIT(name, reason)				\
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index 5a782d1d8fd3..a06ba912c793 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -504,6 +504,7 @@ static void net_dm_packet_trace_kfree_skb_hit(void *ignore,
+ 	if (!nskb)
+ 		return;
  
- 	*sys_time = (u64)le32_to_cpu(resp->platform_timestamp_hi) << 32 |
- 		le32_to_cpu(resp->platform_timestamp_lo);
-
----
-base-commit: 2af3b2a631b194a43551ce119cb71559d8f6b54b
-change-id: 20230329-iwlwifi-ptp-avoid-64-bit-div-1c4717f73f8a
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
++	reason &= ~SKB_DROP_SUBSYS_REASON_MASK;
+ 	if (unlikely(reason >= SKB_DROP_REASON_MAX || reason <= 0))
+ 		reason = SKB_DROP_REASON_NOT_SPECIFIED;
+ 	cb = NET_DM_SKB_CB(nskb);
+@@ -611,6 +612,7 @@ static int net_dm_packet_report_fill(struct sk_buff *msg, struct sk_buff *skb,
+ {
+ 	struct net_dm_skb_cb *cb = NET_DM_SKB_CB(skb);
+ 	char buf[NET_DM_MAX_SYMBOL_LEN];
++	unsigned int reason, subreason;
+ 	struct nlattr *attr;
+ 	void *hdr;
+ 	int rc;
+@@ -627,10 +629,19 @@ static int net_dm_packet_report_fill(struct sk_buff *msg, struct sk_buff *skb,
+ 			      NET_DM_ATTR_PAD))
+ 		goto nla_put_failure;
+ 
++	subreason = FIELD_GET(SKB_DROP_SUBSYS_REASON_MASK, cb->reason);
++	reason = cb->reason & ~SKB_DROP_SUBSYS_REASON_MASK;
+ 	if (nla_put_string(msg, NET_DM_ATTR_REASON,
+-			   drop_reasons[cb->reason]))
++			   drop_reasons[reason]))
+ 		goto nla_put_failure;
+ 
++	if (subreason) {
++		/* additionally search the per-subsys table,
++		 * table is found based on @reason
++		 * and indexed with @subreason
++		 */
++	}
++
+ 	snprintf(buf, sizeof(buf), "%pS", cb->pc);
+ 	if (nla_put_string(msg, NET_DM_ATTR_SYMBOL, buf))
+ 		goto nla_put_failure;
