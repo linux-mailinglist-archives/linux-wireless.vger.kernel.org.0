@@ -2,249 +2,232 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B23296CF6BD
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 01:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB44D6CF6F7
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 01:23:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjC2XMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 19:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48832 "EHLO
+        id S231154AbjC2XXr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 19:23:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230481AbjC2XMM (ORCPT
+        with ESMTP id S230091AbjC2XXp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 19:12:12 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA1A6190
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 16:12:10 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32THBYOa001605;
-        Wed, 29 Mar 2023 23:12:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=8GRWMNGZh6jIz4e8+gpdb3SO+CWYF3uaH55tFP1dMMk=;
- b=XD5p4D+EjzLLwQVwGyoIrPtNQEZYS1oTMdkvV9tPfed/p79nmQvnLhjdv+w7U8jxG1mH
- 9VmYoewxb4uHmmAnxSKGhlhsUqwUz0KVL1zPM93rdrkdluRAOl8fWtV7lzeRw5RFuTll
- 1WpXTMYX+x84FLxHSv1f2PJrTyCVFXeOkxDCo1C0tNCYSGWL/iCi6vG3UqhfIdxp5TaN
- 50wEiSRAIwOhuLVngmzYvEoHP9qvlUf+UFX0H3NBTxEiF0xqoBR1aFyrBgOazTuBNgS8
- MxySn5k9XhP4nm+QnRaaFadmUvSHnD2WkHtsAAq5e5OMKnqK1yd2TSpJs6+qs/EqwMlg fw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pmgpm2bn8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 29 Mar 2023 23:12:06 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32TNC3x6028077
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 29 Mar 2023 23:12:03 GMT
-Received: from alokad-linux.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+        Wed, 29 Mar 2023 19:23:45 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D18B335B6;
+        Wed, 29 Mar 2023 16:23:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680132204; x=1711668204;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=4EafHpwZJ07cRRVjKdnM9mw9iawxEjekbPGw4y0jcXY=;
+  b=PgK/hDjeRC1Tm/pL06qaYXDzGLL15gey1SXJrZeNNTrQtKHxISgdQU5e
+   K9umHpKzOe5pu48EWWzvl/nWJzmWnHJ9P9n1J0Tp5irkX7bF50BgpWeWH
+   SITxVp5riENQQnl/BcOknGqJLn5h6J+aHiE5QlgE+ZIXNUBsgKJb03Y3P
+   1w3tT7Wi2J86nO+NCft0cAVcVd7oJD8edSH0sf+ZCrTXSs3ybyBqLEUto
+   4s4Fr+A8Jay+8UIGpUPNi9j09lYLTD4ebmpIoKV5VdJJeDS+l8MVW/9Tk
+   zDQVJhOYIJNg4Gmbw14GMpskUD9XkPUk6SYYQE70DjEdjTIil4PgnZO0x
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="341041052"
+X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
+   d="scan'208";a="341041052"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2023 16:23:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="930514062"
+X-IronPort-AV: E=Sophos;i="5.98,301,1673942400"; 
+   d="scan'208";a="930514062"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmsmga006.fm.intel.com with ESMTP; 29 Mar 2023 16:23:24 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Wed, 29 Mar 2023 16:23:23 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Wed, 29 Mar 2023 16:23:23 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21 via Frontend Transport; Wed, 29 Mar 2023 16:23:23 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 29 Mar 2023 16:12:01 -0700
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-To:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>,
-        Muna Sinada <quic_msinada@quicinc.com>
-Subject: [PATCH 11/11] wifi: ath12k: configure puncturing bitmap
-Date:   Wed, 29 Mar 2023 16:11:45 -0700
-Message-ID: <20230329231145.20171-12-quic_alokad@quicinc.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230329231145.20171-1-quic_alokad@quicinc.com>
-References: <20230329231145.20171-1-quic_alokad@quicinc.com>
+ 15.1.2507.21; Wed, 29 Mar 2023 16:23:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nLlg/v2DdmsaUBnGAgHo8/peOBB8I2cZinIObskyAXcCnhUeSGhNjyPEQZ89vCWEnVQGSDNA8ZEMyntRbQqEscFqxLyLUdyBb+mZ/npSYNhhGu/0adCiRWrj8a7jGrA5MLnaJguI488HFPH9DAl+/F88jCLBxPlniBj11oCHPiR47yxSRAVB5x8FGE+ggV5ozqZDMs3B3956cApLAHL4c4LuFJDiVE1+y2C+yP3EalWYhzH77XOwx08ad6R3JUzy+NFEtoWaPfHDGKPL/7E11EBBQwfGSDJLUE1C2/pUM/AO99oqeDz+YTouaIdh46Ooy+LUPYo0r+R+FP7YupSBqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4EafHpwZJ07cRRVjKdnM9mw9iawxEjekbPGw4y0jcXY=;
+ b=IuGaI7RjHK/aiQ2MzoSYvSj1WBiLI2zepB0akljO3njt8Cp7s2lhRnUGohBI5nR0b6K08IOgM1bvU3ob4G+12/kMtsFqhSU79jDluQ/R5Sl9Rp/agov0gu6mC62Y22sABJ6qlb9nNV6Y4fA6RPgQAXrjtsETC4quo9JKZrjAYaZ4UuLmF7O2Mintybf2QpAVORPDNfhoGU1Em3QwlTF1Oj94fw2SaexeKbTfOUIxZal9mWenXtNE3FpT/voO8pMahLpordkVEiztcpWLwapAQHjwq/6qmLWMsSYZE2vnKDJxGG6GD++nEBOroAYpws8L92lGH4UJBodgetc+3/FLWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
+ by IA1PR11MB8247.namprd11.prod.outlook.com (2603:10b6:208:449::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.32; Wed, 29 Mar
+ 2023 23:23:21 +0000
+Received: from CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::ea5c:3d05:5d92:bc04]) by CO1PR11MB5089.namprd11.prod.outlook.com
+ ([fe80::ea5c:3d05:5d92:bc04%8]) with mapi id 15.20.6222.035; Wed, 29 Mar 2023
+ 23:23:20 +0000
+From:   "Keller, Jacob E" <jacob.e.keller@intel.com>
+To:     Rob Herring <robh@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        "Marc Zyngier" <maz@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: RE: [PATCH 0/5] Remove acpi.h implicit include of of.h
+Thread-Topic: [PATCH 0/5] Remove acpi.h implicit include of of.h
+Thread-Index: AQHZYoSCF122w+cVw0Skw6T+0Rx/SK8SZUsg
+Date:   Wed, 29 Mar 2023 23:23:20 +0000
+Message-ID: <CO1PR11MB508970B2F338C9176CE32DD3D6899@CO1PR11MB5089.namprd11.prod.outlook.com>
+References: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
+In-Reply-To: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB5089:EE_|IA1PR11MB8247:EE_
+x-ms-office365-filtering-correlation-id: 32aa7b70-246b-40b3-7cc4-08db30ac95c6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: rakcu5VYvPmrNTT1IWayzZAOAHE3SMcJlwsHISLtPzqpTlaQhsl8mW6L5JopYe50UZS+l0ljbeZsL7d2wA5ArX+e0UCDGmIsEIVV4yhWWf2JNfkswBbr5JN5wX8a5lA4sx4IcYCHamKSL68vDZiUsalaaxsuSpf5zJ1d4I/b/hAlaa/TeVr4AUY32THnEOGw8wBbNQkWEVuKbtL7wNkoADdTtDJuizjBX7VGnXnAvH9sSV8lOoYoKrH51O48g5QjL9KGQeQc8lq4eSyxHjc5w8FhwNz+esr59KEi/yy1ryvc0I8mvoiSdqlptHDHwni853bn+Dw2MGNukQijyXogCz7kT9H0WO2K/f0cGCTdaEPKjMKQnZx+MeBKQXM/XjmjTxjfyhou74GYP2BaK/lPp6jv9SatuMOxE8rl1PMEqMetvtgwENJ7nl6PrqYn7loEVJTunZf8xrBdvOV22TK4Z7UP5dIFGUwW2Kr5YIVGfdT9GvZXot1sbKsk72qpE15DsWoui4tSVC/uOyR2YZP9ACPDQErmfUuUB3If4wzhi5Hp1XwKf301BADaBL0b/ekW/RSwAvTcM2abE1MQd3YwYHYKNVV8sgpNZPpcTRkSfEaYaBdT0Tx0Dnu3poD0y5M8PWJYJNPveWnCbpmLP65mtw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(376002)(366004)(346002)(39860400002)(451199021)(86362001)(2906002)(38070700005)(33656002)(55016003)(76116006)(53546011)(83380400001)(478600001)(71200400001)(66946007)(54906003)(38100700002)(7696005)(9686003)(5660300002)(8676002)(66446008)(66556008)(66476007)(64756008)(316002)(4326008)(122000001)(6506007)(26005)(110136005)(186003)(8936002)(52536014)(82960400001)(921005)(7416002)(41300700001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eldMRU03dFRDd3VpN25VSlE0dTY3Z2hJMjhZT3BIWVpyZmdNVDZySFp0RWYr?=
+ =?utf-8?B?b2Yvamxvb3VtdmV6bnc0TVBxcWFvUU5XS09tQ3ZpQmp5SVZWbDVwNnUxYlQ0?=
+ =?utf-8?B?OEJIWnpHTWUzVmhlajF0UWhWRXplbzBSVk0rSzJqd0twWmY1TEE4KzVlODlS?=
+ =?utf-8?B?T1ZhK3BpenJwOUdrbFdZYmJaZUR3SENWSm4yUmtvMCt3WVVjRGlnemxpZ1FN?=
+ =?utf-8?B?aGduaFdWMlR6WUZaQTZrNGltRE9GamtGUmNOdTJWc0tFWWtGQ2t2Um5lSG9m?=
+ =?utf-8?B?UmpOY1NHNVRFNXdubzVtcm51dC9VMVdDR2hpVXViMjVhWWFkem1XOHVJaGhr?=
+ =?utf-8?B?NkVxZnBaSlVOSk1PanJtdVl0eVB3ME1NQ2sxbS9DZVdnWXBlaTRSczhxNFJs?=
+ =?utf-8?B?bWpZZDNub0tGSTNUUzdmT2Y0MXUwVklBSHlQTnZWWlQ3M3ZGRDlWU01DZnJ6?=
+ =?utf-8?B?eklrejZ3Z0huV3BUZ29yUC80UHhyVDJvTENWV1E0U1ZYcXpIY1pRd2kwYzNr?=
+ =?utf-8?B?c1R0czN4TktTbWhUd0JQeEw5bndIVnZucndUejBISk0zbGtMY09qTkF1Q3gr?=
+ =?utf-8?B?WWMxRk9lMEUzalBhV0lRMlRDT3ZUOGNDOFpKck9CWU9BSy8rcGVBcHpHZGY4?=
+ =?utf-8?B?Mmx6U2czaXh2ckFSUEVFOEFZNlR1djloUERaYWk0TTY3T0M2aG5jU0EwaVBx?=
+ =?utf-8?B?UXEwN1pneVUvS0g1a0FrSk9YMzZnSFMxT05EYXNhSTFWRVp5cUlyWkdrRlVF?=
+ =?utf-8?B?RnZndVJzVUpSLytsKzUySTJRRStTVFdLbHUrSHZ6MTJEYTk2TzVIZjZMSGdD?=
+ =?utf-8?B?a3ZJa2dvaGVnb1hmUzFJYm9wWDRoQlYrdTJBLzJIRU1WVHdvNGhVQ0dQTGhz?=
+ =?utf-8?B?VUlCSnlVTldRMlVYeFpQZkJUSllEc0VGNmd6S1NTbFlLT0dYRnpaNW5hZHov?=
+ =?utf-8?B?TmJWSHUwb1I5L3JEK1hsRXBucWp5NDBTVThwTitGSlRtOW9DYUppUzlCNGhh?=
+ =?utf-8?B?dzByWis2dkVtamlEVDBtV3p1MlcwcGZ6b0Y1bXNEQjY5VHdzYUFYT1lNZ1NL?=
+ =?utf-8?B?SUhLTjd0dW11SmxqYUxQK01mQTczT0g1dVZjby83bVBBcGJrV2x4b0x4NHI5?=
+ =?utf-8?B?M3BSVWlFSUxndUp1amwzbHgvT0Q3a2EzYklTUm1FU0FTaEN6eVRXQS9MRGJZ?=
+ =?utf-8?B?em0rVko5bFY1OElJVmd2a0hpZWRadDB3RVk0aEVQVWNOaFhSWVRUNUZtZ0tP?=
+ =?utf-8?B?Tk5ySmxHU3gwVlZ3SXNYUndPODFHME0zNWJsNFBTSGQ0YlNEakdqT1cxMEs3?=
+ =?utf-8?B?K1F2MTRKVnBma3l2bWZOeWZ4cUNpK3RZUnI4QlRiYlVnR3NsekJUMGJqd3pX?=
+ =?utf-8?B?V1orSHFGUnMvcENyNTBzckFRM2NIQXpzWVBDM3lJaGJXWS93b01BZEF5SjMz?=
+ =?utf-8?B?bWt4dDZjenAxMEdMZ3ArbW13YU5LUUExS0ErY0ZFOHBCRFZXdzR2ZGtHNUVv?=
+ =?utf-8?B?aE45UkpMcWFtY2cwTGYyajB4WURJandQdE5BRndsVTVYbGRlc0FqQnI5dXVu?=
+ =?utf-8?B?b3BXazFRT0FTcnZ0WHJiTVByLzVhZ3pRQWxUVW9VenRxeEhsQVVuRWljNnJN?=
+ =?utf-8?B?Y3ljL1ArZTRqTXVUNE5URWFuV3V3SkVrOFZxV1lWWmFGWHlEU0YvWHg3cjQ5?=
+ =?utf-8?B?eVRqYVVuS2psTjkyNjJIWkpIRmRMeUQyS0RDNnl2VkY1SHdPbWhsalByZEFy?=
+ =?utf-8?B?L2JkbzBrUmZKK1hzT05BaUxUejJKeXhwNnFOR2JCay9yTlk1VDB5dFVaaUc0?=
+ =?utf-8?B?bXA4dnVoaGtJSElCWUNyblh3VndDZGJldGVQbGU1ZUM3L3M1TDIvYTZkZ2ho?=
+ =?utf-8?B?enBXL2d0djNxYlJZSVFrUUhPdDMxcDQ5bGt3VjVQOGMzeVJuWHFJeXNMOU96?=
+ =?utf-8?B?UnR3a0pYdnViMHRHRmtBQlJXeEZqVWY2bHVGYVI4UXkzNWp4M0EyQlMrUlNG?=
+ =?utf-8?B?cGhNWlYrdXFHZGorbXcxTjdTdUZQcndsYmZubkhmT3hWT0pMd0R2c1QwNzdY?=
+ =?utf-8?B?RERhaExVRUwweGVkRzFYN3ovMFlVdThQM2Vqem9xbFVGOVEvZEJzVVpEYlZx?=
+ =?utf-8?Q?Xyo216EKqqFeb7uZzgR+91xt8?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 9B2X4ansItAJvyv4qmmv2ELFWMgkMStl
-X-Proofpoint-ORIG-GUID: 9B2X4ansItAJvyv4qmmv2ELFWMgkMStl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-29_14,2023-03-28_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
- adultscore=0 clxscore=1015 malwarescore=0 spamscore=0 lowpriorityscore=0
- bulkscore=0 suspectscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2303290173
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32aa7b70-246b-40b3-7cc4-08db30ac95c6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Mar 2023 23:23:20.8343
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xvQ0H2nRC/6pcyh4kT+QV8UpZSeRhMpI3mrSfxV+maxoZ8rmZpv0Ur3/UtVnGuqBZ2BWgRNI4f1PKq/OlPcXqM6xVnWN0IF8m9lLe8FEZVc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8247
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable the feature flag to indicate the driver support for
-preamble puncturing. Firmware will support this feature
-by default from IEEE 802.11be onwards.
-Configure the bitmap as part of VDEV start/restart and
-peer association commands.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 16 ++++++++++++++--
- drivers/net/wireless/ath/ath12k/wmi.c  |  2 ++
- drivers/net/wireless/ath/ath12k/wmi.h  | 12 +++++++++++-
- 4 files changed, 28 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index ed21dd78a2b9..e4287add2bcd 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -238,6 +238,7 @@ struct ath12k_vif {
- 	u32 key_cipher;
- 	u8 tx_encap_type;
- 	u8 vdev_stats_id;
-+	u32 punct_bitmap;
- };
- 
- struct ath12k_vif_iter {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 06abd7786eb8..865de31f2813 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -839,6 +839,7 @@ static int ath12k_mac_monitor_vdev_start(struct ath12k *ar, int vdev_id,
- 
- 	arg.pref_tx_streams = ar->num_tx_chains;
- 	arg.pref_rx_streams = ar->num_rx_chains;
-+	arg.punct_bitmap = 0xFFFFFFFF;
- 
- 	arg.passive |= !!(chandef->chan->flags & IEEE80211_CHAN_NO_IR);
- 
-@@ -2138,6 +2139,7 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- {
- 	const struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
- 	const struct ieee80211_eht_mcs_nss_supp_bw *bw;
-+	struct ath12k_vif *arvif = (struct ath12k_vif *)vif->drv_priv;
- 	u32 *rx_mcs, *tx_mcs;
- 
- 	if (!sta->deflink.he_cap.has_he || !eht_cap->has_eht)
-@@ -2202,6 +2204,8 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 		arg->peer_eht_mcs_count++;
- 		break;
- 	}
-+
-+	arg->punct_bitmap = ~arvif->punct_bitmap;
- }
- 
- static void ath12k_peer_assoc_prepare(struct ath12k *ar,
-@@ -2755,6 +2759,9 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 	    changed & BSS_CHANGED_UNSOL_BCAST_PROBE_RESP)
- 		ath12k_mac_fils_discovery(arvif, info);
- 
-+	if (changed & BSS_CHANGED_EHT_PUNCTURING)
-+		arvif->punct_bitmap = info->eht_puncturing;
-+
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
-@@ -5783,6 +5790,7 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
- 	arg.vdev_id = arvif->vdev_id;
- 	arg.dtim_period = arvif->dtim_period;
- 	arg.bcn_intval = arvif->beacon_interval;
-+	arg.punct_bitmap = ~arvif->punct_bitmap;
- 
- 	arg.freq = chandef->chan->center_freq;
- 	arg.band_center_freq1 = chandef->center_freq1;
-@@ -5825,9 +5833,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
- 	arg.passive |= !!(chandef->chan->flags & IEEE80211_CHAN_NO_IR);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac vdev %d start center_freq %d phymode %s\n",
-+		   "mac vdev %d start center_freq %d phymode %s punct_bitmap 0x%x\n",
- 		   arg.vdev_id, arg.freq,
--		   ath12k_mac_phymode_str(arg.mode));
-+		   ath12k_mac_phymode_str(arg.mode), arg.punct_bitmap);
- 
- 	ret = ath12k_wmi_vdev_start(ar, &arg, restart);
- 	if (ret) {
-@@ -6154,6 +6162,8 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 		   "mac chanctx assign ptr %pK vdev_id %i\n",
- 		   ctx, arvif->vdev_id);
- 
-+	arvif->punct_bitmap = link_conf->eht_puncturing;
-+
- 	/* for some targets bss peer must be created before vdev_start */
- 	if (ab->hw_params->vdev_start_delay &&
- 	    arvif->vdev_type != WMI_VDEV_TYPE_AP &&
-@@ -7254,6 +7264,8 @@ static int __ath12k_mac_register(struct ath12k *ar)
- 				      NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP);
- 	}
- 
-+	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_PUNCT);
-+
- 	ath12k_reg_init(ar);
- 
- 	if (!test_bit(ATH12K_FLAG_RAW_MODE, &ab->dev_flags)) {
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 9634d90c559b..38c5f3984a0b 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1013,6 +1013,7 @@ int ath12k_wmi_vdev_start(struct ath12k *ar, struct wmi_vdev_start_req_arg *arg,
- 	cmd->cac_duration_ms = cpu_to_le32(arg->cac_duration_ms);
- 	cmd->regdomain = cpu_to_le32(arg->regdomain);
- 	cmd->he_ops = cpu_to_le32(arg->he_ops);
-+	cmd->punct_bitmap = cpu_to_le32(arg->punct_bitmap);
- 
- 	if (!restart) {
- 		if (arg->ssid) {
-@@ -1934,6 +1935,7 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
- 
- 	cmd->peer_new_assoc = cpu_to_le32(arg->peer_new_assoc);
- 	cmd->peer_associd = cpu_to_le32(arg->peer_associd);
-+	cmd->punct_bitmap = cpu_to_le32(arg->punct_bitmap);
- 
- 	ath12k_wmi_copy_peer_flags(cmd, arg,
- 				   test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED,
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index d457a087dc39..f791534f1f6f 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2771,6 +2771,11 @@ struct wmi_vdev_start_request_cmd {
- 	__le32 he_ops;
- 	__le32 cac_duration_ms;
- 	__le32 regdomain;
-+	__le32 min_data_rate;
-+	__le32 mbssid_flags;
-+	__le32 mbssid_tx_vdev_id;
-+	__le32 eht_ops;
-+	__le32 punct_bitmap;
- } __packed;
- 
- #define MGMT_TX_DL_FRM_LEN		     64
-@@ -2870,6 +2875,10 @@ struct wmi_vdev_start_req_arg {
- 	u32 pref_rx_streams;
- 	u32 pref_tx_streams;
- 	u32 num_noa_descriptors;
-+	u32 min_data_rate;
-+	u32 mbssid_flags;
-+	u32 mbssid_tx_vdev_id;
-+	u32 punct_bitmap;
- };
- 
- struct ath12k_wmi_peer_create_arg {
-@@ -3601,6 +3610,7 @@ struct ath12k_wmi_peer_assoc_arg {
- 	u32 peer_eht_rx_mcs_set[WMI_MAX_EHTCAP_RATE_SET];
- 	u32 peer_eht_tx_mcs_set[WMI_MAX_EHTCAP_RATE_SET];
- 	struct ath12k_wmi_ppe_threshold_arg peer_eht_ppet;
-+	u32 punct_bitmap;
- };
- 
- struct wmi_peer_assoc_complete_cmd {
-@@ -3636,7 +3646,7 @@ struct wmi_peer_assoc_complete_cmd {
- 	__le32 bss_max_idle_option;
- 	__le32 auth_mode;
- 	__le32 peer_flags_ext;
--	__le32 puncture_20mhz_bitmap;
-+	__le32 punct_bitmap;
- 	__le32 peer_eht_cap_mac[WMI_MAX_EHTCAP_MAC_SIZE];
- 	__le32 peer_eht_cap_phy[WMI_MAX_EHTCAP_PHY_SIZE];
- 	__le32 peer_eht_ops;
--- 
-2.39.0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUm9iIEhlcnJpbmcgPHJv
+YmhAa2VybmVsLm9yZz4NCj4gU2VudDogV2VkbmVzZGF5LCBNYXJjaCAyOSwgMjAyMyAyOjIxIFBN
+DQo+IFRvOiBSYWZhZWwgSi4gV3lzb2NraSA8cmFmYWVsQGtlcm5lbC5vcmc+OyBMZW4gQnJvd24g
+PGxlbmJAa2VybmVsLm9yZz47DQo+IE1hcmNlbG8gU2NobWl0dCA8bWFyY2Vsby5zY2htaXR0MUBn
+bWFpbC5jb20+OyBMYXJzLVBldGVyIENsYXVzZW4NCj4gPGxhcnNAbWV0YWZvby5kZT47IE1pY2hh
+ZWwgSGVubmVyaWNoIDxNaWNoYWVsLkhlbm5lcmljaEBhbmFsb2cuY29tPjsNCj4gSm9uYXRoYW4g
+Q2FtZXJvbiA8amljMjNAa2VybmVsLm9yZz47IEdyZWcgS3JvYWgtSGFydG1hbg0KPiA8Z3JlZ2to
+QGxpbnV4Zm91bmRhdGlvbi5vcmc+OyBKb2hhbm5lcyBCZXJnIDxqb2hhbm5lc0BzaXBzb2x1dGlv
+bnMubmV0PjsNCj4gRGF2aWQgUy4gTWlsbGVyIDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgRXJpYyBE
+dW1hemV0DQo+IDxlZHVtYXpldEBnb29nbGUuY29tPjsgSmFrdWIgS2ljaW5za2kgPGt1YmFAa2Vy
+bmVsLm9yZz47IFBhb2xvIEFiZW5pDQo+IDxwYWJlbmlAcmVkaGF0LmNvbT47IEppcmkgU2xhYnkg
+PGppcmlzbGFieUBrZXJuZWwub3JnPjsgVGhpZXJyeSBSZWRpbmcNCj4gPHRoaWVycnkucmVkaW5n
+QGdtYWlsLmNvbT47IEpvbmF0aGFuIEh1bnRlciA8am9uYXRoYW5oQG52aWRpYS5jb20+OyBNYXJj
+DQo+IFp5bmdpZXIgPG1hekBrZXJuZWwub3JnPg0KPiBDYzogbGludXgtaWlvQHZnZXIua2VybmVs
+Lm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+IHN0YWdpbmdAbGlz
+dHMubGludXguZGV2OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7DQo+IG5ldGRldkB2
+Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LXNlcmlhbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPiB0
+ZWdyYUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOyBkZXZpY2V0
+cmVlQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0ggMC81XSBSZW1vdmUgYWNwaS5o
+IGltcGxpY2l0IGluY2x1ZGUgb2Ygb2YuaA0KPiANCj4gSW4gdGhlIHByb2Nlc3Mgb2YgY2xlYW5p
+bmcgdXAgRFQgaW5jbHVkZXMsIEkgZm91bmQgdGhhdCBzb21lIGRyaXZlcnMNCj4gdXNpbmcgRFQg
+ZnVuY3Rpb25zIGNvdWxkIGJ1aWxkIHdpdGhvdXQgYW55IGV4cGxpY2l0IERUIGluY2x1ZGUuIEkg
+dHJhY2VkDQo+IHRoZSBpbmNsdWRlIHRvIGJlIGNvbWluZyBmcm9tIGFjcGkuaCB2aWEgaXJxZG9t
+YWluLmguDQo+IA0KPiBJIHdhcyBwbGVhc2FudGx5IHN1cnByaXNlZCB0aGF0IHRoZXJlIHdlcmUg
+bm90IDEwMHMgb3IgZXZlbiAxMHMgb2YNCj4gd2FybmluZ3Mgd2hlbiBicmVha2luZyB0aGUgaW5j
+bHVkZSBjaGFpbi4gU28gaGVyZSdzIHRoZSByZXN1bHRpbmcNCj4gc2VyaWVzLg0KPiANCj4gSSdk
+IHN1Z2dlc3QgUmFmYWVsIHRha2UgdGhlIHdob2xlIHNlcmllcy4gQWx0ZXJuYXRpdmVseSx0aGUg
+Zml4ZXMgY2FuIGJlDQo+IGFwcGxpZWQgaW4gNi40IGFuZCB0aGVuIHRoZSBsYXN0IHBhdGNoIGVp
+dGhlciBhZnRlciByYzEgb3IgdGhlDQo+IGZvbGxvd2luZyBjeWNsZS4NCj4gDQoNCk5pY2UgdGhh
+dCB0aGVyZSBhcmVuJ3QgdG9vIG1hbnkgZXJyb3JzLiBVc2Ugb2YgdGhlIGZvcndhcmQgZGVjbGFy
+YXRpb25zIG1ha2VzIHNlbnNlIHJhdGhlciB0aGFuIGluY2x1ZGluZyBhIGJ1bmNoIG9mIHVucmVs
+YXRlZCBkZWZpbml0aW9ucy4gTmljZS4NCg0KUmV2aWV3ZWQtYnk6IEphY29iIEtlbGxlciA8amFj
+b2IuZS5rZWxsZXJAaW50ZWwuY29tPg0KDQpUaGFua3MsDQpKYWtlDQoNCj4gU2lnbmVkLW9mZi1i
+eTogUm9iIEhlcnJpbmcgPHJvYmhAa2VybmVsLm9yZz4NCj4gLS0tDQo+IFJvYiBIZXJyaW5nICg1
+KToNCj4gICAgICAgaWlvOiBhZGM6IGFkNzI5MjogQWRkIGV4cGxpY2l0IGluY2x1ZGUgZm9yIG9m
+LmgNCj4gICAgICAgc3RhZ2luZzogaWlvOiByZXNvbHZlcjogYWQyczEyMTA6IEFkZCBleHBsaWNp
+dCBpbmNsdWRlIGZvciBvZi5oDQo+ICAgICAgIG5ldDogcmZraWxsLWdwaW86IEFkZCBleHBsaWNp
+dCBpbmNsdWRlIGZvciBvZi5oDQo+ICAgICAgIHNlcmlhbDogODI1MF90ZWdyYTogQWRkIGV4cGxp
+Y2l0IGluY2x1ZGUgZm9yIG9mLmgNCj4gICAgICAgQUNQSTogUmVwbGFjZSBpcnFkb21haW4uaCBp
+bmNsdWRlIHdpdGggc3RydWN0IGRlY2xhcmF0aW9ucw0KPiANCj4gIGRyaXZlcnMvaWlvL2FkYy9h
+ZDcyOTIuYyAgICAgICAgICAgICAgICB8IDEgKw0KPiAgZHJpdmVycy9zdGFnaW5nL2lpby9yZXNv
+bHZlci9hZDJzMTIxMC5jIHwgMSArDQo+ICBkcml2ZXJzL3R0eS9zZXJpYWwvODI1MC84MjUwX3Rl
+Z3JhLmMgICAgfCAxICsNCj4gIGluY2x1ZGUvbGludXgvYWNwaS5oICAgICAgICAgICAgICAgICAg
+ICB8IDQgKysrLQ0KPiAgbmV0L3Jma2lsbC9yZmtpbGwtZ3Bpby5jICAgICAgICAgICAgICAgIHwg
+MSArDQo+ICA1IGZpbGVzIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0K
+PiAtLS0NCj4gYmFzZS1jb21taXQ6IGZlMTVjMjZlZTI2ZWZhMTE3NDFhN2I2MzJlOWYyM2IwMWFj
+YTRjYzYNCj4gY2hhbmdlLWlkOiAyMDIzMDMyOS1hY3BpLWhlYWRlci1jbGVhbnVwLTY2NTMzMTgy
+ODQzNg0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiAtLQ0KPiBSb2IgSGVycmluZyA8cm9iaEBrZXJu
+ZWwub3JnPg0KDQo=
