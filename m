@@ -2,70 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDAC6CF497
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 22:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06BB16CF527
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 23:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjC2Uig (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 16:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47244 "EHLO
+        id S229783AbjC2VVo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 17:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjC2Uif (ORCPT
+        with ESMTP id S229436AbjC2VVn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 16:38:35 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0315BAB
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 13:38:34 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id eg48so68239580edb.13
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 13:38:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680122312;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xi9uq08Lc7qgSHIkc+cRozRgpnVzBfheYQcmgwPVIi4=;
-        b=MAXUZpc4pTAU6ekLmeLFfWzvhqwVz1lA7iyUqLl4W0/6UeJ5tGmhabGo/oCfC6oWoz
-         pf/qNII8gFahJUZV51weRxDoZn53KfBE71NtGwyA2LOraFZr0J3qIyJ8QO6BV2QDyE/k
-         wZJoo4/wNCW7q9TNQNGR2f7MGEY91MGS08hR0k+YoI4r6W8bBrttK/2pOx46JW6drUpG
-         rxz2sK1vKNWoSH9JPQm623L7qXhkyZsKIleCfVsKQlXZuCSBETxZiTY56i6lsJ5OhRmI
-         LKofFwedLz383fRG/WCBRzJN9dGguvod8/SV6wjUS7yCeVSSRjXJ1+gzD4uIcNQg0m1o
-         VyfQ==
+        Wed, 29 Mar 2023 17:21:43 -0400
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2343F1711;
+        Wed, 29 Mar 2023 14:21:42 -0700 (PDT)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-17683b570b8so17659270fac.13;
+        Wed, 29 Mar 2023 14:21:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680122312;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xi9uq08Lc7qgSHIkc+cRozRgpnVzBfheYQcmgwPVIi4=;
-        b=aV4+vZY8Qhqn0HbrZuhDVsaKvx5q7qkZktL2kj6L2FzaHNlAxF6ke6HJ9UwbRE5FPg
-         tiP3Dc3Ai758uKLYq82EBNIwjteKPO6NkLgVlGVf8rZbtEg/Rlhc2pciLMHcb7qYzzl0
-         uFOFRq3r67ImKZyFHjk6bygYutse+MOOttCB6ATjnvUMUExA2x11MsLTKbXkN7RHnS/h
-         ZpSszYtvnEQzJUAvG5ZTolhiJi4Q8oL6NWqgZ3id9Bm2meSNnaVTrrj1fbmCx3C3cygx
-         9+0aTWyat3W5B+8GBEyXFN7j0ooT9lObKsNp6Xn/WYPyX3xrC67wLVPKGiwOBwva7Ini
-         BWqQ==
-X-Gm-Message-State: AAQBX9exBTpPkRIhG665QSfkWaKf0lejsgJbo1fu3Dgmd3uj56qyxaPI
-        H7VTvGZIXJuove0ch8+MxAVacG8hYSa59F1QQZc=
-X-Google-Smtp-Source: AK7set8IKhOXQjZTLlpGMSgAqb4L8ovVn11yqkMxB+U8JWOKyW056qeGOtdaG2x7WtAPsrsm9cEw3gzRIrgEfSWyB0I=
-X-Received: by 2002:a17:907:869f:b0:8b8:aef3:f2a9 with SMTP id
- qa31-20020a170907869f00b008b8aef3f2a9mr9904079ejc.0.1680122312595; Wed, 29
- Mar 2023 13:38:32 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680124901;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c5JObOnJhn7Qa3BJtOdllaC7YuPWVzUh4uR8zZIj5qw=;
+        b=UIMWJFisKjBZbJG8KhqaOmyLuuUtyjz8jPVeNiOlU57ccMw+ibuLsl2TBGsRh/kLPC
+         g1AjoF1BpfCRBQgo3LNO8y83kB3vh9uyEqjrIWrRKcA+2WC1HQhFkjH9Phy7cHKq2OJ9
+         pCb+5JIOiBi80T4pzxR4mkoia+J1WjZGzGnfyvq09Zd4uMk4DkFe1d19K1C/h/QUulpt
+         lYaEKARCs5UVUhTGhCK7fUdcXlXSeRMjUDuEiphQUXumoUn9RGgR7CnoBSKWZBirpDJz
+         V0IXorir+CWkm7uJaXM2e3rwEVyev4d4G39KaeaokfCRfII6PSmjnI/W16weU7slwvcf
+         RoYQ==
+X-Gm-Message-State: AAQBX9dnl+6X/WcZxAmL5mxG8hyBcG5PA1TO9LNR//DRtp7XA4P4bwVB
+        Jd165V53Ft3MrxCwOfSfUFR45FrRWA==
+X-Google-Smtp-Source: AK7set/kayRJ98J+4lkqmTCrvYqUbSg+NPKMc5ZxUa6OI9imoPRJExO5faQF3fCKQ5rShmnmkvcw7Q==
+X-Received: by 2002:a05:6870:899c:b0:17b:1a4f:adfe with SMTP id f28-20020a056870899c00b0017b1a4fadfemr11592033oaq.10.1680124901366;
+        Wed, 29 Mar 2023 14:21:41 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id tk6-20020a05687189c600b0017703cd8ff6sm12167748oab.7.2023.03.29.14.21.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Mar 2023 14:21:40 -0700 (PDT)
+Received: (nullmailer pid 86888 invoked by uid 1000);
+        Wed, 29 Mar 2023 21:21:39 -0000
+From:   Rob Herring <robh@kernel.org>
+Subject: [PATCH 0/5] Remove acpi.h implicit include of of.h
+Date:   Wed, 29 Mar 2023 16:20:41 -0500
+Message-Id: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a05:7412:31e:b0:c2:ecd2:ceca with HTTP; Wed, 29 Mar 2023
- 13:38:32 -0700 (PDT)
-Reply-To: nepk08544@gmail.com
-From:   Leihservice <poje048@gmail.com>
-Date:   Wed, 29 Mar 2023 13:38:32 -0700
-Message-ID: <CAE0BjDNWRpu7EkL5k7pohNHouJRoQSdsW=xUAtHKgHYZoD_MRA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKmrJGQC/x2N0QrCMAwAf2Xk2cDWaJn+iviQddEGSi0pE2Hs3
+ w0+3sFxO3QxlQ63YQeTj3Z9V4fpNEDKXF+CujpDGAONFK7IqSlm4VUMUxGuW8MYL0TTHOYzRfB
+ y4S64GNeUva1bKS6byVO//9X9cRw/n6ivRnoAAAA=
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devicetree@vger.kernel.org
+X-Mailer: b4 0.13-dev
+X-Spam-Status: No, score=0.7 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+In the process of cleaning up DT includes, I found that some drivers 
+using DT functions could build without any explicit DT include. I traced 
+the include to be coming from acpi.h via irqdomain.h.
+
+I was pleasantly surprised that there were not 100s or even 10s of 
+warnings when breaking the include chain. So here's the resulting 
+series.
+
+I'd suggest Rafael take the whole series. Alternatively,the fixes can be 
+applied in 6.4 and then the last patch either after rc1 or the 
+following cycle.
+
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Rob Herring (5):
+      iio: adc: ad7292: Add explicit include for of.h
+      staging: iio: resolver: ad2s1210: Add explicit include for of.h
+      net: rfkill-gpio: Add explicit include for of.h
+      serial: 8250_tegra: Add explicit include for of.h
+      ACPI: Replace irqdomain.h include with struct declarations
+
+ drivers/iio/adc/ad7292.c                | 1 +
+ drivers/staging/iio/resolver/ad2s1210.c | 1 +
+ drivers/tty/serial/8250/8250_tegra.c    | 1 +
+ include/linux/acpi.h                    | 4 +++-
+ net/rfkill/rfkill-gpio.c                | 1 +
+ 5 files changed, 7 insertions(+), 1 deletion(-)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230329-acpi-header-cleanup-665331828436
+
+Best regards,
 -- 
-Holen Sie sich ein einfaches Darlehen mit einem Zinssatz von 2 %.
+Rob Herring <robh@kernel.org>
+
