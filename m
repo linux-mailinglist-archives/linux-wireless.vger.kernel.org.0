@@ -2,99 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106356CD870
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 13:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8726CDA3A
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 15:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbjC2L2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 07:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58652 "EHLO
+        id S230119AbjC2NPo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 09:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbjC2L2N (ORCPT
+        with ESMTP id S229661AbjC2NPn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 07:28:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76918211C
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 04:28:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 14D13B822A3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 11:28:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB3AC433D2;
-        Wed, 29 Mar 2023 11:28:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680089289;
-        bh=yrgPi3SJJBPVXBW7rWGkJfGUbY/VNnd5tktymM1MeZs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=kWV9uS5hgUnTsZBPqINA4C+59hTtUcZRpn0DFJgiG//eEXgAnxRcu1tYbbjrnq/ER
-         WApLpesh5QGHKFdpPVaVtp02uzmqnOpFwlirh6VoFYPXKweDiycX/fR+NlxhW3w+GQ
-         7NLkOQr9cokjxLEeli+f0VcpllV9PCH1xDEAXc8D+jhjuEh5QmUIC3AtylvWA4jEaD
-         re/zaJWtzLT76Koo1EJK+SpTRfNaSiHXN0fN3E+EXp1rW+83wQyWeGXt1e18wlftm1
-         g+OF6zZd2yuRJvrO+hvifToTxyTXYPMslC4LbGawRRSnAegpbn2ryegRsBg2kp5W3h
-         61GioFF0AXl4A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Robert Marko <robert.marko@sartura.hr>
-Cc:     Muna Sinada <quic_msinada@quicinc.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Anilkumar Kolli <quic_akolli@quicinc.com>
-Subject: Re: [PATCH v2 2/4] wifi: ath11k: push MU-MIMO params from hostapd to hardware
-References: <1666128501-12364-1-git-send-email-quic_msinada@quicinc.com>
-        <1666128501-12364-3-git-send-email-quic_msinada@quicinc.com>
-        <CA+HBbNHw-0+Ty_-masxGKwT6ju_EBxT3n5B0Ygcn3XzQi_CzWg@mail.gmail.com>
-        <87fs9ndh6s.fsf@kernel.org>
-        <CA+HBbNEaNTkUv_UPgQievxaLya0XC6=AVj0=GWiH+qB9=vRZHg@mail.gmail.com>
-Date:   Wed, 29 Mar 2023 14:28:05 +0300
-In-Reply-To: <CA+HBbNEaNTkUv_UPgQievxaLya0XC6=AVj0=GWiH+qB9=vRZHg@mail.gmail.com>
-        (Robert Marko's message of "Wed, 29 Mar 2023 12:42:34 +0200")
-Message-ID: <87bkkbdcfu.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 29 Mar 2023 09:15:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F26163AB3
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 06:14:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1680095691;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=WPdjBuNFJA01CaowYyCwadzYirboBSCd7QNKpN6vC7Y=;
+        b=Dfbbs+ief9aEMFY3GVOm+gZ877dLRHrEnd42T1HG3NyT5TgU9exw90egfkmLdmTc9ds0/n
+        csTKeToOWD3nVMtIs+VLQIdvTEQ5BsJfOoZURDR2xUAIUk10LitaKxzrYn3WrlP9biWTO5
+        m43MWGRLzq4XqLFj/t91eCbW4gV5F0s=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-XyyPtpjfM1mkpat7o87TUw-1; Wed, 29 Mar 2023 09:14:49 -0400
+X-MC-Unique: XyyPtpjfM1mkpat7o87TUw-1
+Received: by mail-qk1-f200.google.com with SMTP id b34-20020a05620a272200b007460c05a463so7274498qkp.1
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 06:14:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680095689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WPdjBuNFJA01CaowYyCwadzYirboBSCd7QNKpN6vC7Y=;
+        b=wtw9zvNeLciGiH/vPn6XzXucC+Oa0qDzJnydjT8uVgeNdarsYJBOchZcmEhGDarQrh
+         PHkHyz4I6eZ9PLHh51kszhoaB3ZvzpMn9/op9eVfQPV2UQjHsAjM603CXqniH95zXkZp
+         gCGMjp/v0Qh/ZCXYHYCGEv7eKjS3XaCNLBJVTdDGmrV/KovIkRfkzVW9TRo+bM/PhJet
+         lJxXeSmvRFkm5MCwCvl+AslCCCNv0FDzMh8lf9hmvwenmA6R/qdBIcbIwiVrValiVJL/
+         XCuKZz4jySy95M3JI1OZqD850APAZNnPH3zWnhAdLZTWJcx2HGKv280zwgUz2G8iUH5R
+         JOyA==
+X-Gm-Message-State: AAQBX9cYADYqtibMo5/G33qtD7Mpt7O1DVAitEUGz7fMWdO7YwZg7uS8
+        uPBGcnGAzCl6L71gotNmZpv1Fy9A0uto5rBeENRC+pEz51SBEGThuGPnoDCVpVvY1U+8gCkz35f
+        JTwsBFKve01xZWvuRhBi9+kS1R9c=
+X-Received: by 2002:a05:622a:1aaa:b0:3e0:b1cc:40e1 with SMTP id s42-20020a05622a1aaa00b003e0b1cc40e1mr3420400qtc.34.1680095689090;
+        Wed, 29 Mar 2023 06:14:49 -0700 (PDT)
+X-Google-Smtp-Source: AKy350aFSwrLO0P2h8zzqcnjlp0S/1t1QpJlUafJta+Wduz8ax0ZCRHmpsFg7r/2A3p9mPdMpRZMcw==
+X-Received: by 2002:a05:622a:1aaa:b0:3e0:b1cc:40e1 with SMTP id s42-20020a05622a1aaa00b003e0b1cc40e1mr3420351qtc.34.1680095688803;
+        Wed, 29 Mar 2023 06:14:48 -0700 (PDT)
+Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id f66-20020a37d245000000b00745f3200f54sm18486229qkj.112.2023.03.29.06.14.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Mar 2023 06:14:48 -0700 (PDT)
+From:   Tom Rix <trix@redhat.com>
+To:     amitkarwar@gmail.com, ganapathi017@gmail.com,
+        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, nathan@kernel.org,
+        ndesaulniers@google.com
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] mwifiex: remove unused evt_buf variable
+Date:   Wed, 29 Mar 2023 09:14:44 -0400
+Message-Id: <20230329131444.1809018-1-trix@redhat.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Robert Marko <robert.marko@sartura.hr> writes:
+clang with W=1 reports
+drivers/net/wireless/marvell/mwifiex/11h.c:198:6: error: variable
+  'evt_buf' set but not used [-Werror,-Wunused-but-set-variable]
+        u8 *evt_buf;
+            ^
+This variable is not used so remove it.
 
-> On Wed, Mar 29, 2023 at 11:45=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wr=
-ote:
->
->> >> @@ -5369,6 +5491,10 @@ static int ath11k_mac_copy_he_cap(struct ath11=
-k *ar,
->> >>
->> >>                 he_cap_elem->mac_cap_info[1] &=3D
->> >>                         IEEE80211_HE_MAC_CAP1_TF_MAC_PAD_DUR_MASK;
->> >> +               he_cap_elem->phy_cap_info[0] &=3D
->> >> +                       ~IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160M=
-HZ_IN_5G;
->> >> +               he_cap_elem->phy_cap_info[0] &=3D
->> >> +                       ~IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PL=
-US80_MHZ_IN_5G;
->> >
->> > This is causing a regression for us in OpenWrt at least on IPQ8074 but
->> > probably on all ath11k-supported HW. Cause 80+80 and 160MHz support
->> > bits are being cleared here so 160MHz is not being advertised after
->> > this patch.
->>
->> Oh man, not good. Robert, should we revert this patchset entirely? Of
->> course it would be better if Muna can submit quickly a fix, but I'm not
->> going to wait for long.
->
-> I would prefer to see it get fixed, cause just removing the flag
-> removal gets 160MHz working, but I am not sure about other flags as
-> well.
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/net/wireless/marvell/mwifiex/11h.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Ok, let's try to get it fixed then. Muna, can you comment and send a fix
-ASAP?
+diff --git a/drivers/net/wireless/marvell/mwifiex/11h.c b/drivers/net/wireless/marvell/mwifiex/11h.c
+index b0c40a776a2e..2ea03725f188 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11h.c
++++ b/drivers/net/wireless/marvell/mwifiex/11h.c
+@@ -195,7 +195,6 @@ int mwifiex_11h_handle_chanrpt_ready(struct mwifiex_private *priv,
+ {
+ 	struct host_cmd_ds_chan_rpt_event *rpt_event;
+ 	struct mwifiex_ie_types_chan_rpt_data *rpt;
+-	u8 *evt_buf;
+ 	u16 event_len, tlv_len;
+ 
+ 	rpt_event = (void *)(skb->data + sizeof(u32));
+@@ -208,8 +207,6 @@ int mwifiex_11h_handle_chanrpt_ready(struct mwifiex_private *priv,
+ 		return -1;
+ 	}
+ 
+-	evt_buf = (void *)&rpt_event->tlvbuf;
+-
+ 	while (event_len >= sizeof(struct mwifiex_ie_types_header)) {
+ 		rpt = (void *)&rpt_event->tlvbuf;
+ 		tlv_len = le16_to_cpu(rpt->header.len);
+@@ -231,7 +228,6 @@ int mwifiex_11h_handle_chanrpt_ready(struct mwifiex_private *priv,
+ 			break;
+ 		}
+ 
+-		evt_buf += (tlv_len + sizeof(rpt->header));
+ 		event_len -= (tlv_len + sizeof(rpt->header));
+ 	}
+ 
+-- 
+2.27.0
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
