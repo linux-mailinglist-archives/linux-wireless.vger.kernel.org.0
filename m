@@ -2,55 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6AD36CEF0F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 18:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A423D6CEF28
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 18:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjC2QR1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 12:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35962 "EHLO
+        id S229718AbjC2QUq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 12:20:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbjC2QR0 (ORCPT
+        with ESMTP id S229700AbjC2QUp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 12:17:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DFB6199;
-        Wed, 29 Mar 2023 09:17:01 -0700 (PDT)
+        Wed, 29 Mar 2023 12:20:45 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F615BA
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 09:20:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9C525B82389;
-        Wed, 29 Mar 2023 16:16:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A58EC433EF;
-        Wed, 29 Mar 2023 16:16:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2EDC3B8237A
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 16:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A45BC433EF;
+        Wed, 29 Mar 2023 16:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680106617;
-        bh=TWpPK393k95haP5OmkFSJZSaIGBXcPtCisO7udVorLE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=mCKVLvP3ZRlmOkHI70rR6kIipm/a/7dK5KUbDGYxs9Gqqhd5gyex8NDtc419bpeT7
-         3BMU/CHjXAGLydvu8fMhwsvKeynWbYt6PRVO/FbZitHvfMdlHhvf7RL4ka4SfSMzC2
-         enA+1FU1D7yDaNRDWfWVK3kvdaNbJoKJs3ATVDQzBDMmz7ao4FevWcxlfa5hJ98kiL
-         Jirn3Loz2fJsBlZ8N4xQzyrbVzkC5xE2UrdAY1MNy4VWs1BmMpNUyCZMfvRkoSNAEt
-         3PKYjqRl0QEwJuZJI8HQ6QkY3iigioy/9XLX3grIgBDe9zlN40aIfiIOxccoo//YZi
-         Ok+ClCczVnc1g==
+        s=k20201202; t=1680106841;
+        bh=vOk0cgYmlWsKP5u7OjDTcUC1HKBh/95816/u0sOAjso=;
+        h=From:To:Cc:Subject:Date:From;
+        b=clQU8xF6DNIhk2+760jsgMfW0RwLmNu5Jc3S/Yw2EYYrVzlIcM7mpbWr1tCV4ptmB
+         +u4as1hB49NzaTQCj6uHu9956/KYzzkvJidMCwsIf6Jr0zYyS1CZxEC1PgTerwmBLt
+         i9i2/pT6nzMeml4Nd+9feTGoVc+coW7cpoNVXeCjGCwqBjVKSAeRixIBz+zP7qRu/1
+         /0z1wuVy7SC/O+Q5WZIapvycFhP3KfPZLgCpp4xR+Md/0RSnKWw1LKT9nDAiOdji+c
+         57gwnOiVE+80Cq4wjluEFgyAlFjyNWanQhXpAIrWOSBNHzvkFHzLwhJC+HVRwJMFy5
+         04et300/Pq8AA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Tom Rix <trix@redhat.com>
-Cc:     amitkarwar@gmail.com, ganapathi017@gmail.com,
-        sharvari.harisangam@nxp.com, huxinming820@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, nathan@kernel.org, ndesaulniers@google.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] mwifiex: remove unused evt_buf variable
-References: <20230329131444.1809018-1-trix@redhat.com>
-Date:   Wed, 29 Mar 2023 19:16:49 +0300
-In-Reply-To: <20230329131444.1809018-1-trix@redhat.com> (Tom Rix's message of
-        "Wed, 29 Mar 2023 09:14:44 -0400")
-Message-ID: <877cuzcz2m.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: ath11k: reduce the MHI timeout to 20s
+Date:   Wed, 29 Mar 2023 19:20:38 +0300
+Message-Id: <20230329162038.8637-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,20 +50,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tom Rix <trix@redhat.com> writes:
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-> clang with W=1 reports
-> drivers/net/wireless/marvell/mwifiex/11h.c:198:6: error: variable
->   'evt_buf' set but not used [-Werror,-Wunused-but-set-variable]
->         u8 *evt_buf;
->             ^
-> This variable is not used so remove it.
->
-> Signed-off-by: Tom Rix <trix@redhat.com>
+Currently ath11k breaks after hibernation, the reason being that ath11k expects
+that the wireless device will have power during suspend and the firmware will
+continue running. But of course during hibernation the power from the device is
+cut off and firmware is not running when resuming, so ath11k will fail.
 
-There should be "wifi:" in title, but I can add that during commit.
+(The reason why ath11k needs the firmware running is the interaction between
+mac80211 and MHI stack, it's a long story and more info in the bugzilla report.)
 
+In SUSE kernels the watchdog timeout is reduced from the default 120 to 60 seconds:
+
+CONFIG_DPM_WATCHDOG_TIMEOUT=60
+
+But as the ath11k MHI timeout is 90 seconds the kernel will crash before will
+ath11k will recover in resume callback. To avoid the crash reduce the MHI
+timeout to just 20 seconds.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=214649
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/mhi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
+index 86995e8dc913..a62ee05c5409 100644
+--- a/drivers/net/wireless/ath/ath11k/mhi.c
++++ b/drivers/net/wireless/ath/ath11k/mhi.c
+@@ -16,7 +16,7 @@
+ #include "pci.h"
+ #include "pcic.h"
+ 
+-#define MHI_TIMEOUT_DEFAULT_MS	90000
++#define MHI_TIMEOUT_DEFAULT_MS	20000
+ #define RDDM_DUMP_SIZE	0x420000
+ 
+ static struct mhi_channel_config ath11k_mhi_channels_qca6390[] = {
+
+base-commit: bea046575a2e6d7d1cf63cc7ab032647a3585de5
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.30.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
