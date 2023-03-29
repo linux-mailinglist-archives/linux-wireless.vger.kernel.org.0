@@ -2,45 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A423D6CEF28
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 18:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95B8B6CF01C
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 19:06:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229718AbjC2QUq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 12:20:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
+        id S230509AbjC2RF7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 13:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229700AbjC2QUp (ORCPT
+        with ESMTP id S229638AbjC2RF6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 12:20:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F615BA
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 09:20:44 -0700 (PDT)
+        Wed, 29 Mar 2023 13:05:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33701449A;
+        Wed, 29 Mar 2023 10:05:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2EDC3B8237A
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 16:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A45BC433EF;
-        Wed, 29 Mar 2023 16:20:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE28E61DC6;
+        Wed, 29 Mar 2023 17:05:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF38C433D2;
+        Wed, 29 Mar 2023 17:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680106841;
-        bh=vOk0cgYmlWsKP5u7OjDTcUC1HKBh/95816/u0sOAjso=;
-        h=From:To:Cc:Subject:Date:From;
-        b=clQU8xF6DNIhk2+760jsgMfW0RwLmNu5Jc3S/Yw2EYYrVzlIcM7mpbWr1tCV4ptmB
-         +u4as1hB49NzaTQCj6uHu9956/KYzzkvJidMCwsIf6Jr0zYyS1CZxEC1PgTerwmBLt
-         i9i2/pT6nzMeml4Nd+9feTGoVc+coW7cpoNVXeCjGCwqBjVKSAeRixIBz+zP7qRu/1
-         /0z1wuVy7SC/O+Q5WZIapvycFhP3KfPZLgCpp4xR+Md/0RSnKWw1LKT9nDAiOdji+c
-         57gwnOiVE+80Cq4wjluEFgyAlFjyNWanQhXpAIrWOSBNHzvkFHzLwhJC+HVRwJMFy5
-         04et300/Pq8AA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: ath11k: reduce the MHI timeout to 20s
-Date:   Wed, 29 Mar 2023 19:20:38 +0300
-Message-Id: <20230329162038.8637-1-kvalo@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        s=k20201202; t=1680109556;
+        bh=T8fWhplWPwZ4OAqvqYb8gn/VvxXqZQz97l6qax8Uj7g=;
+        h=From:Date:Subject:To:Cc:From;
+        b=hmanBQH2TMYgNyzPakCCdf9Vpmc2yZbH/90wWZQ+yRhqDxy8ni75gnIbnheY+EJef
+         Q7TV1K1uGDRUKacpZMlbtIZ3XCMgZYAKJ+wvBTIz9irP1HXsG3w32RxqlucQy7/t+l
+         lin6oHBx62zHTxjoOC7F1MyAW/AJP7Fdddf6vbUYD4X3SonPCKR/HXCMuAk+n6KXF4
+         KrozPxbuiiKMa6YngzOO0Qyc1jnxjpVjoaOZ4AGp/0Ut7Paca3EZpvwZFxInuW7SRk
+         xKWE3QvW+Dw/7+a+ldHPVNLUQAnAfeVUEdGsZzox2BJKR+h+0sQOnLO+k1pjk5chRY
+         TKN66xj6UQj6g==
+From:   Nathan Chancellor <nathan@kernel.org>
+Date:   Wed, 29 Mar 2023 10:05:44 -0700
+Subject: [PATCH wireless-next] wifi: iwlwifi: mvm: Avoid 64-bit division in
+ iwl_mvm_get_crosstimestamp_fw()
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230329-iwlwifi-ptp-avoid-64-bit-div-v1-1-ad8db8d66bc2@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOdvJGQC/x2NQQqDMBAAvyJ77oIaadp+pXiIcVMXbAzZkAji3
+ xt7HAZmDhCKTAKv5oBImYU3X6G7NWAX4z+EPFeGvu1Vq/onclkLO8aQApq88Yz3ASdOOHPGzg6
+ 6004r9zBQE5MRwikab5cr8jWSKF4iRHK8/79vKBxpJRH0tCcYz/MHJo1DDpYAAAA=
+To:     gregory.greenman@intel.com, kvalo@kernel.org
+Cc:     nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
+        johannes.berg@intel.com, avraham.stern@intel.com,
+        krishnanand.prabhu@intel.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, patches@lists.linux.dev,
+        Arnd Bergmann <arnd@arndb.de>,
+        "kernelci.org bot" <bot@kernelci.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2173; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=T8fWhplWPwZ4OAqvqYb8gn/VvxXqZQz97l6qax8Uj7g=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDCkq+Z8LY5R4Zhl+kzx7097ULsrCx6khcu6LA/Vai7dn2
+ LgXrZ7VUcrCIMbBICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACbyaS/D/6S05Gc5R7PWHD4n
+ /c76AfsNz7VqB5O8q4vO5k2Z0HT42HFGhp5iLfktC3dI9rBknItMn/AzbZOpCmOLzyKG7zWyfcV
+ yvAA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -50,47 +69,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+There is a 64-bit division in iwl_mvm_get_crosstimestamp_fw(), which
+results in a link failure when building 32-bit architectures with clang:
 
-Currently ath11k breaks after hibernation, the reason being that ath11k expects
-that the wireless device will have power during suspend and the firmware will
-continue running. But of course during hibernation the power from the device is
-cut off and firmware is not running when resuming, so ath11k will fail.
+  ld.lld: error: undefined symbol: __udivdi3
+  >>> referenced by ptp.c
+  >>>               drivers/net/wireless/intel/iwlwifi/mvm/ptp.o:(iwl_mvm_phc_get_crosstimestamp) in archive vmlinux.a
 
-(The reason why ath11k needs the firmware running is the interaction between
-mac80211 and MHI stack, it's a long story and more info in the bugzilla report.)
+GCC has optimizations for division by a constant that clang does not
+implement, so this issue is not visible when building with GCC.
 
-In SUSE kernels the watchdog timeout is reduced from the default 120 to 60 seconds:
+Using div_u64() would resolve this issue, but Arnd points out that this
+can be quite expensive and the timestamp is being read at nanosecond
+granularity. Nick pointed out that the result of this division is being
+stored to a 32-bit type anyways, so truncate gp2_10ns first then do the
+division, which elides the need for libcalls.
 
-CONFIG_DPM_WATCHDOG_TIMEOUT=60
-
-But as the ath11k MHI timeout is 90 seconds the kernel will crash before will
-ath11k will recover in resume callback. To avoid the crash reduce the MHI
-timeout to just 20 seconds.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.9
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=214649
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Fixes: 21fb8da6ebe4 ("wifi: iwlwifi: mvm: read synced time from firmware if supported")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1826
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Link: https://lore.kernel.org/6423173a.620a0220.3d5cc.6358@mx.google.com/
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mhi.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mhi.c b/drivers/net/wireless/ath/ath11k/mhi.c
-index 86995e8dc913..a62ee05c5409 100644
---- a/drivers/net/wireless/ath/ath11k/mhi.c
-+++ b/drivers/net/wireless/ath/ath11k/mhi.c
-@@ -16,7 +16,7 @@
- #include "pci.h"
- #include "pcic.h"
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+index 5c2bfc8ed88d..cdd6d69c5b68 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+@@ -116,7 +116,7 @@ iwl_mvm_get_crosstimestamp_fw(struct iwl_mvm *mvm, u32 *gp2, u64 *sys_time)
  
--#define MHI_TIMEOUT_DEFAULT_MS	90000
-+#define MHI_TIMEOUT_DEFAULT_MS	20000
- #define RDDM_DUMP_SIZE	0x420000
+ 	gp2_10ns = (u64)le32_to_cpu(resp->gp2_timestamp_hi) << 32 |
+ 		le32_to_cpu(resp->gp2_timestamp_lo);
+-	*gp2 = gp2_10ns / 100;
++	*gp2 = (u32)gp2_10ns / 100;
  
- static struct mhi_channel_config ath11k_mhi_channels_qca6390[] = {
+ 	*sys_time = (u64)le32_to_cpu(resp->platform_timestamp_hi) << 32 |
+ 		le32_to_cpu(resp->platform_timestamp_lo);
 
-base-commit: bea046575a2e6d7d1cf63cc7ab032647a3585de5
+---
+base-commit: 2af3b2a631b194a43551ce119cb71559d8f6b54b
+change-id: 20230329-iwlwifi-ptp-avoid-64-bit-div-1c4717f73f8a
+
+Best regards,
 -- 
-2.30.2
+Nathan Chancellor <nathan@kernel.org>
 
