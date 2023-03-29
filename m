@@ -2,122 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DA5B6CF117
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 19:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A030E6CF12D
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Mar 2023 19:33:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbjC2RbK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 13:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54328 "EHLO
+        id S229748AbjC2RdH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 13:33:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbjC2RbJ (ORCPT
+        with ESMTP id S229615AbjC2RdG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 13:31:09 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF05D55BF
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 10:31:03 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id iw3so15637004plb.6
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Mar 2023 10:31:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1680111063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Iqe69HFaNOq0YEfaCMdU5RQwjzTAJ7NCS+lXWX7C0Ow=;
-        b=fgV5bK6G/cChCqRL0ySpa7zJJ9FDHzXIRpZxhAWLeRt4oe1LyI3mjsxmTi9MbBzNUK
-         /5o76XCn10r/hVBTAH6KOa8fTo+MnBY/825H+39jeY2lfCAWCSWvyQuYL2NIh2ptHEgv
-         +TSHyGN53kx2k0sUyyuwlgTlFMtpNKzu4GMULdZ39A9R+MzVGtRQIr5JtEgQ9vAdMHGm
-         YihrokQyrIniFCP5M+DY0k2ttjnEFLDkx51rwB/tbykEdBvhalpjYIvGy8rIpADFU5AP
-         DqPgp5dXbQxhEaGO7DYB7O6Utzfpr9Rp7f+3F4g7VaHJn19wYvEOR9lNxGNVSJxOZVrQ
-         sSNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680111063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Iqe69HFaNOq0YEfaCMdU5RQwjzTAJ7NCS+lXWX7C0Ow=;
-        b=UwQl1UfgHkHAWpsSZiMp9s/nX4eTs3lJ/wjLdeCw+9cE3rmnXrF2jXTlheMHtAbNSP
-         N9Kyor/uCMzmS0TFwAnOhWZhUN7n6pTW0T9+v3zP0AQbyG3hjxAv62mLTK5CmOKfPOsz
-         klvu267by/r7xyPtaMwktpMnZ1pKDvXyBMl4WzZqpycoV/LL7v2pKdEoQSSq0uHc0wVh
-         DNyf/ureKJDHr21TUyPjDFvx1wZsVhCe04uTc7gZcU4Q7zmaYvZoLpotOt6BU+kIuJAE
-         5hgMNIprZ19zA6DZCNVhL4DeVS2G4SJPYVLmzu1ArugwqsNoc8WTgK5bzqHA8hVYIHj+
-         4CdQ==
-X-Gm-Message-State: AAQBX9cB0uPFiQ/zwlloogSWCVYyYvXf6CA//ZpohCASkD5JJF7zP+Z8
-        AEBX4YIs27knLepDmBGcMTXUqge8IdjOlMtZyV9oEg==
-X-Google-Smtp-Source: AKy350atJjB3NfefAlEQAjsESXx1pyD/dLXWZpEQb2TSowSlCN33+CyqApNwgBkzAUaCdf674rfh4BihgkQ7p8EOYJ0=
-X-Received: by 2002:a17:902:c3c3:b0:1a0:7630:8ef4 with SMTP id
- j3-20020a170902c3c300b001a076308ef4mr7299419plj.2.1680111063096; Wed, 29 Mar
- 2023 10:31:03 -0700 (PDT)
+        Wed, 29 Mar 2023 13:33:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BEB40CF;
+        Wed, 29 Mar 2023 10:33:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6537161DD4;
+        Wed, 29 Mar 2023 17:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF137C433EF;
+        Wed, 29 Mar 2023 17:33:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680111183;
+        bh=dGO1QsqKzA7RrfDy8jeeAVnzJLU5EFbv7b204Ar3GqQ=;
+        h=From:Date:Subject:To:Cc:From;
+        b=pwLCQO0LH3nNYFshACHhDINzKxitxH5vlG6RvwUHdzq2tNpXnYTkipD4D/mRtrRla
+         Ow+ckyKq5D8uxk4xVYGhJqVOyoX0pOH8TKm6KLgdfHKU8Zf+F+J9UhmDSqzAVt39Nh
+         wXMxsRI9hzn7V2J5a2xaA5d0Q3z2O7DVL+e6XISex9vP4xZMOK6WT5Et8iatpFwbV/
+         nHsLK+8lf4/dmC3iJldI57HTMHyVysdnBNX/MtYorPTKpvEzTrMrz3I8Owqv4QGbz1
+         +vK6QTnNPRNLu+yQenO7P7K5nwFp1vMHGKuoUgzWU+SM+OXMD+YoNi0Y2KfFI3v3RI
+         ZKACZa75WDHiw==
+From:   Nathan Chancellor <nathan@kernel.org>
+Date:   Wed, 29 Mar 2023 10:32:46 -0700
+Subject: [PATCH wireless-next v2] wifi: iwlwifi: mvm: Use 64-bit division
+ helper in iwl_mvm_get_crosstimestamp_fw()
 MIME-Version: 1.0
-References: <20230329-iwlwifi-ptp-avoid-64-bit-div-v1-1-ad8db8d66bc2@kernel.org>
- <9058a032c177e9b04adbf944ad34c5ed8090d9d6.camel@sipsolutions.net>
-In-Reply-To: <9058a032c177e9b04adbf944ad34c5ed8090d9d6.camel@sipsolutions.net>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 29 Mar 2023 10:30:51 -0700
-Message-ID: <CAKwvOdnQ9feXGYV2CUyVwg-FNAOmb4HBmDxMg243v28DzSfLuA@mail.gmail.com>
-Subject: Re: [PATCH wireless-next] wifi: iwlwifi: mvm: Avoid 64-bit division
- in iwl_mvm_get_crosstimestamp_fw()
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Nathan Chancellor <nathan@kernel.org>, gregory.greenman@intel.com,
-        kvalo@kernel.org, trix@redhat.com, avraham.stern@intel.com,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230329-iwlwifi-ptp-avoid-64-bit-div-v2-1-22b988eb009b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAD12JGQC/42OQQ6CMBBFr2Jm7RhbCKAr72FYtHSQidiSaVM0h
+ rsLnMDly/v5/38hkjBFuB6+IJQ5cvAr6OMBusH4ByG7lUGfdXEu9AV5HmfuGac0ocmBHVYlWk7
+ oOKPqylrVfV30jYG1wppIaMX4bthKXiYmkk1MQj2/9907zCw0Uozo6Z2gXfXAMQX57K+y2kP/H
+ cgKFRrXONu4qrKdvj1JPI2nIA9ol2X5AechHhrxAAAA
+To:     gregory.greenman@intel.com, kvalo@kernel.org
+Cc:     nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
+        johannes.berg@intel.com, avraham.stern@intel.com,
         krishnanand.prabhu@intel.com, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev, patches@lists.linux.dev,
         Arnd Bergmann <arnd@arndb.de>,
-        "kernelci.org bot" <bot@kernelci.org>,
-        Craig Topper <craig.topper@sifive.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        "kernelci.org bot" <bot@kernelci.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2181; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=dGO1QsqKzA7RrfDy8jeeAVnzJLU5EFbv7b204Ar3GqQ=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDCkqZX6GWvNryxRsv37yCpW033bgF/ON20wbTN6YnOvZ9
+ +/etSdGHaUsDGIcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAi0esY/ofca3FqLzue47pj
+ dtf+nncl540/TJ1qrL2KnTV3k7Wzkisjw7rHPCdOGcvlnCvj+KF6+DOD43Fp45WSOrH2ZXtZVfy
+ 8eAE=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 10:20=E2=80=AFAM Johannes Berg
-<johannes@sipsolutions.net> wrote:
->
-> On Wed, 2023-03-29 at 10:05 -0700, Nathan Chancellor wrote:
-> >
-> > GCC has optimizations for division by a constant that clang does not
-> > implement, so this issue is not visible when building with GCC.
->
-> Huh yeah, we did 32-bit builds with gcc ...
+There is a 64-bit division in iwl_mvm_get_crosstimestamp_fw(), which
+results in a link failure when building 32-bit architectures with clang:
 
-Right, GCC is better about turning division by double-word constant
-into multiplication by reciprocal. Craig has been improving LLVM, but
-it seems that some divisors still aren't supported (in this case 100).
+  ld.lld: error: undefined symbol: __udivdi3
+  >>> referenced by ptp.c
+  >>>               drivers/net/wireless/intel/iwlwifi/mvm/ptp.o:(iwl_mvm_phc_get_crosstimestamp) in archive vmlinux.a
 
->
-> > Using div_u64() would resolve this issue, but Arnd points out that this
-> > can be quite expensive and the timestamp is being read at nanosecond
-> > granularity.
->
-> Doesn't matter though, all the calculations are based on just the
-> command response from the firmware, which (tries to) take it in a
-> synchronised fashion.
->
-> So taking more time here would be fine, as far as I can tell.
+GCC has optimizations for division by a constant that clang does not
+implement, so this issue is not visible when building with GCC.
 
-div_u64() it is then.
+Use the 64-bit division helper div_u64(), which takes a u64 dividend and
+u32 divisor, which matches this situation and prevents the emission of a
+libcall for the division.
 
->
-> > Nick pointed out that the result of this division is being
-> > stored to a 32-bit type anyways, so truncate gp2_10ns first then do the
-> > division, which elides the need for libcalls.
->
-> That loses ~7 top bits though, no? I'd be more worried about that, than
-> the time div_u64() takes.
+Fixes: 21fb8da6ebe4 ("wifi: iwlwifi: mvm: read synced time from firmware if supported")
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1826
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Link: https://lore.kernel.org/6423173a.620a0220.3d5cc.6358@mx.google.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+Changes in v2:
+- Use division helper div_u64() instead of truncating dividend before
+  division (Johannes).
+- Link to v1: https://lore.kernel.org/r/20230329-iwlwifi-ptp-avoid-64-bit-div-v1-1-ad8db8d66bc2@kernel.org
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The result is still stored in a u32; there is a loss of precision
-regardless of use of div_u64 or open coded binary operator /.  So is
-the loss of precision before the division as tolerable as after the
-division?
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+index 5c2bfc8ed88d..e89259de6f4c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ptp.c
+@@ -116,7 +116,7 @@ iwl_mvm_get_crosstimestamp_fw(struct iwl_mvm *mvm, u32 *gp2, u64 *sys_time)
+ 
+ 	gp2_10ns = (u64)le32_to_cpu(resp->gp2_timestamp_hi) << 32 |
+ 		le32_to_cpu(resp->gp2_timestamp_lo);
+-	*gp2 = gp2_10ns / 100;
++	*gp2 = div_u64(gp2_10ns, 100);
+ 
+ 	*sys_time = (u64)le32_to_cpu(resp->platform_timestamp_hi) << 32 |
+ 		le32_to_cpu(resp->platform_timestamp_lo);
 
---=20
-Thanks,
-~Nick Desaulniers
+---
+base-commit: 2af3b2a631b194a43551ce119cb71559d8f6b54b
+change-id: 20230329-iwlwifi-ptp-avoid-64-bit-div-1c4717f73f8a
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
