@@ -2,73 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 405516D0CF8
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 19:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 013766D0FAD
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 22:05:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232195AbjC3Rha (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 13:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45196 "EHLO
+        id S229602AbjC3UFv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 16:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232084AbjC3Rh3 (ORCPT
+        with ESMTP id S229612AbjC3UFq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 13:37:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1387E3B9;
-        Thu, 30 Mar 2023 10:37:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C41D62154;
-        Thu, 30 Mar 2023 17:37:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782D8C433D2;
-        Thu, 30 Mar 2023 17:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680197847;
-        bh=g+E3SjC29YFjgBkp7oVl7fZKaN1Uj7OI7xkghrzJQwg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=clByE355uQmEDi5/74MGD8pohdV5nlqeFi8P/jRjvKWELEPNJJQM5ePB6rAix+HwW
-         zeykNjcYq6G3uwWXoFONSktYIPvtvSxBuNe3msOeWHanhBaeA4j8xaf9vC5G4ROiqJ
-         +3LvULJHypsiuXfZCBuYhnWwBSSggXySzMj3IXdPo1UN2OAjWfp2gudLHH5YFIpWQs
-         /78OkdKXgIighdYr2ZbFQ/vDftyF49BJCROEulEX23bXCPHq/CbWtKFSEXsrUrg3j1
-         ckhsa810yj7BulK2sVW4I/H8QIPhuJHynVAmlhfVBjzseYfOd/pfzuzZiOlsY+uUUe
-         3lrneRuxiX0hA==
-Date:   Thu, 30 Mar 2023 10:37:26 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] net: extend drop reasons for multiple
- subsystems
-Message-ID: <20230330103726.02aa8ae0@kernel.org>
-In-Reply-To: <cb8ca010692920d909d0155aac9d66761bbf250c.camel@sipsolutions.net>
-References: <20230329214620.131636-1-johannes@sipsolutions.net>
-        <20230329210524.651810e4@kernel.org>
-        <cb8ca010692920d909d0155aac9d66761bbf250c.camel@sipsolutions.net>
+        Thu, 30 Mar 2023 16:05:46 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Mar 2023 13:05:41 PDT
+Received: from omta33.uswest2.a.cloudfilter.net (omta33.uswest2.a.cloudfilter.net [35.89.44.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9796A1116E
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 13:05:41 -0700 (PDT)
+Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
+        by cmsmtp with ESMTP
+        id hr9ep4KV4II8dhyVGpV6Fh; Thu, 30 Mar 2023 20:04:11 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTP
+        id hyVFpFOOHUOlnhyVFphGvE; Thu, 30 Mar 2023 20:04:09 +0000
+X-Authority-Analysis: v=2.4 cv=TcaFCDch c=1 sm=1 tr=0 ts=6425eb3a
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=wTog8WU66it3cfrESHnF4A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=k__wU0fu6RkA:10
+ a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8 a=mDV3o1hIAAAA:8 a=VwQbUJbxAAAA:8
+ a=rQwXfPfrytjjklgZoK0A:9 a=QEXdDO2ut3YA:10 a=3IOs8h2EC4YA:10
+ a=_FVE-zBwftR9WsbkzFJk:22 a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=R1JjS+FsYaTvV0nY+Z+WOn3lLR0ZAanzw97ARsUZzOM=; b=OP5kZR/+CMEL3dXIpct5Z4Attb
+        GEr/mWagrnRfOpXxxsgS9C0wZlw+maYWFm7GdzUFevvSjPhsOqrKEi6G/Yibp8IK4WMm7h9fXEOOw
+        aJZaaYDqCty+3Vya8idObSla+jZ8Q5fgzzAOIhYtw9PKhz4wTxhwUUlW5Z2B4uOW+XVnovPmGxaMc
+        XAeJZdyKGWPQiaRpCRB9bbR6xRfVHIVnMWt+sWbJU4zlSZBEz1dcslNv8tHChRzdp7oHMUnVj+2ju
+        ycPBKurectZLBZnj5lX0kCHQjSvJUsmC6H0EJTwF5lMS5t03oc82OMVmG1qChdWxos7LryBflwf6X
+        kJkqWHMA==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:38692 helo=[192.168.15.7])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1phyVE-002aFZ-IV;
+        Thu, 30 Mar 2023 15:04:08 -0500
+Message-ID: <a3bfa2dd-cb4c-876e-b16a-e9cec230108f@embeddedor.com>
+Date:   Thu, 30 Mar 2023 14:04:42 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH][next] rtlwifi: Replace fake flex-array with flex-array
+ member
+Content-Language: en-US
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <ZBz4x+MWoI/f65o1@work>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <ZBz4x+MWoI/f65o1@work>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1phyVE-002aFZ-IV
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.7]) [187.162.31.110]:38692
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBkO3eAkQrNAVRSqzMP0hsmVv2VXScO434RwYP82fGGzGpAsNuCaGnSvGOe1Ln/CGuin80pu/U8oqk2+qfMCC1/QhvEzMP5Smn8FaXIqWMsZPb73QcxA
+ wQ9MPfv4jChEaqj0C8tVZVyD6l+myFgCnh40qvl4dH6/6uKXebuSw73nx1gJORzprmexYc4O/t3B5d93+sOLN6TSGWReY5pYwk82gt3jvOSiVJIIgf9VgJNA
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 30 Mar 2023 10:11:12 +0200 Johannes Berg wrote:
-> Yeah, I was being a bit sneaky here ;)
-> 
-> We could, for sure. Given that the users should probably be defensively
-> coded anyway (as I did in drop_monitor), I wasn't sure if we _should_.
-> 
-> It seemed to me that for experimentation, especially if your driver is a
-> module, it might be easier to allow this?
-> 
-> That said, I don't have any strong feelings about it, and I have some
-> bugs here anyway so I can just add that.
-> 
-> We _could_ also keep a check for the core subsystem, but not sure that's
-> worth it?
+Hi all,
 
-Checking the top bits should be good enough to catch uninitialized
-values, and discourage out-of-tree shenanigans, I'd hope.
+Friendly ping: who can take this, please? :)
+
+Thanks
+--
+Gustavo
+
+On 3/23/23 19:11, Gustavo A. R. Silva wrote:
+> Zero-length arrays as fake flexible arrays are deprecated and we are
+> moving towards adopting C99 flexible-array members instead.
+> 
+> Address the following warning found with GCC-13 and
+> -fstrict-flex-arrays=3 enabled:
+> In function ‘fortify_memset_chk’,
+>      inlined from ‘rtl_usb_probe’ at drivers/net/wireless/realtek/rtlwifi/usb.c:1044:2:
+> ./include/linux/fortify-string.h:430:25: warning: call to ‘__write_overflow_field’ declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribute-warning]
+>    430 |                         __write_overflow_field(p_size_field, size);
+>        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+> routines on memcpy() and help us make progress towards globally
+> enabling -fstrict-flex-arrays=3 [1].
+> 
+> Link: https://github.com/KSPP/linux/issues/21
+> Link: https://github.com/KSPP/linux/issues/277
+> Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>   drivers/net/wireless/realtek/rtlwifi/wifi.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+> index 31f9e9e5c680..082af216760f 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
+> +++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+> @@ -2831,7 +2831,7 @@ struct rtl_priv {
+>   	 * beyond  this structure like:
+>   	 * rtl_pci_priv or rtl_usb_priv
+>   	 */
+> -	u8 priv[0] __aligned(sizeof(void *));
+> +	u8 priv[] __aligned(sizeof(void *));
+>   };
+>   
+>   #define rtl_priv(hw)		(((struct rtl_priv *)(hw)->priv))
