@@ -2,72 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A1D76D066D
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 15:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 055BF6D0670
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 15:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230234AbjC3NVz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 09:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
+        id S230424AbjC3NWZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 09:22:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbjC3NVy (ORCPT
+        with ESMTP id S231545AbjC3NWX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 09:21:54 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7891721
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 06:21:53 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id t10so76245448edd.12
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 06:21:53 -0700 (PDT)
+        Thu, 30 Mar 2023 09:22:23 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AE808A6B
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 06:22:22 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id u11-20020a05600c19cb00b003edcc414997so11756890wmq.3
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 06:22:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680182511;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LCKE3lhBB97bjhXyotal3XJaRJddzpiDpnWFyJWJufQ=;
-        b=O2jX3Pu7gCyD73GhH9IZfIhqqvvhBeT1S5dGDDph2ABEDOO8mZzPvKfm7F7fkzIpX3
-         zvnTF/pWgpvRGNPuiHFkDQFSiZhJUa+ZfIKURZ60DjWUrMwF3OgBcOFV914QS0BB4aK0
-         YMr+oYoeXQgfd2anS+MDAj+F+CQwHXSZUUxMWczPffuPbh3D0x0SXDYPPuu5aRzr3Kb/
-         MlibwlOYbBap3VpeQqlxNKA98HsoXdN5qIVPNrD2+bJPInhyOtziw0S+cs5Llqs5UVCN
-         VD0JJPzMHjWQ5c5e/mShVt2QwC2/1iB70p8wuLcNYwUvN3HIjYpAsa0I7tm75jffbIcP
-         JaGg==
+        d=gmail.com; s=20210112; t=1680182540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T3P1ZpZd3x35MeFhuY9cybIx3X0a2qBFzfkxMS+hc0k=;
+        b=a8o0sxzwgrTgmXAEF/z9KizW133pua2OkY5MbwMVXchxnH4vCPy7u+kYuhqktdgNk3
+         DuOItQxVAgB0j0akZmQIkHeyN82c7ZeAkUHjxLbuWIkQc229ztlIlHkfC418iwXc6TEX
+         zAqnRaL5AEYZJCpA/gzZG+hC5BjsmI6rrXmfArFgM3AGuOmDZTVKUFzWspRy6HHHp6zn
+         B68+LqtG4uKeypM647tTobCoN1gdbo0ff2lbazgmEg1KMB4Iv3Db4QG1/0IXf8etvtmt
+         krkDaIfZvwM5X+i3w/91kUoRmkqtwRgu5yh2wNDEf1E/gESaiNtugbCFKQpo/0YsWup3
+         TeLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680182511;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LCKE3lhBB97bjhXyotal3XJaRJddzpiDpnWFyJWJufQ=;
-        b=KAUsaKgegX4hqmOepx90zkH9LnOVZ/yM3RlTFUoFoBwdeJDclUZisOrCIOYUizxYVe
-         gcDlkmn7sC0tFRMy42o+ZLpJJE+ZJ/OMRNb3Gc47PrTUPyM+NX43BievkAoFb3wxVlqs
-         SqKcYSmoaw8LUavpdRP/kOe20vAC/Mx2Qt7DS6vi9zT3s6Z9orlZOVFXjLOXS9BqsCAZ
-         RPNiMsrkbTAnpe0S72kdZNPHI6JRYRCltTp0DTKIFSQkWG1Zzq/pFGg9pJmLCWkfkeTj
-         N473yEe+h4S6BEHB6an473RDvo+7hTbprCAgPpJmet91RSUeuDohX8+v5qrXcKRdohKr
-         h1WA==
-X-Gm-Message-State: AAQBX9dmT1rza24dZ2y+bCR1IZEKlI3DUsqHxCjIOW5RtfLUwVq8QvQM
-        DPaZBgTpaQFMiXc1iTz9kXs=
-X-Google-Smtp-Source: AKy350Y4xDVrBqpwpOwEgu+oZLx2aVzaxTSYQXp2MBe3SZpxAZbGd48xYiSZdU/0gvsZzxSj3jnegA==
-X-Received: by 2002:a17:906:6a10:b0:947:3bfc:4c84 with SMTP id qw16-20020a1709066a1000b009473bfc4c84mr4263416ejc.23.1680182511420;
-        Thu, 30 Mar 2023 06:21:51 -0700 (PDT)
-Received: from smtpclient.apple ([2001:9e8:f129:3400:b9e7:c0a7:b96:6fe9])
-        by smtp.gmail.com with ESMTPSA id o2-20020a170906774200b009273859a9bdsm17573526ejn.122.2023.03.30.06.21.50
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 Mar 2023 06:21:51 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
-Subject: Re: [PATCH] ath9k: fix per-packet TX-power cap for TPC
+        d=1e100.net; s=20210112; t=1680182540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T3P1ZpZd3x35MeFhuY9cybIx3X0a2qBFzfkxMS+hc0k=;
+        b=zomMI6qA6U0XAe/tGYIiapK1mR9Rw+yV2zRJ5KEeDAa/lhteOREfGKSq0Uy+wTRjwX
+         +Mc9jA+gemZO2TcTvXkPYftD/dHI0Eh3k8uJalCkyF2bVBzSkLJBNqa0DLr8IyK7sQZa
+         W+y4RGRP6ZTmf3oNh9+uIWhsBqcik2TalhAvz1vLFBPC2Ko1UJCDo7WlMeY+rCOspoaw
+         5D3jzPCJm8kWAt7SsE6kjJ+YFNS6g8gMVtbPWKA+Ye7eaon2QbEBvIYe9nq8qggbRjRO
+         DrVR3g8TjdW0UvGC1unLGpjYrL5bgb9DDcfBkA93Lsn1CWweLM3kHW+GghVz2gScbfn6
+         /AbA==
+X-Gm-Message-State: AO0yUKWjisKesmGvNk3MDbBo0JXvajur5VvvnD7HgukNVOklTrWf2JXK
+        J5l/1EG9jaHnypjqah1vR5N803CLKsU=
+X-Google-Smtp-Source: AK7set881+1+e+H7oD4NwU2e8nlcnvzVbgIdH8VSwsHC7b0zAOsMIhpHVYSJl8iRqQJG7IUDMJ8NHQ==
+X-Received: by 2002:a7b:c8c4:0:b0:3ed:ce6f:e86e with SMTP id f4-20020a7bc8c4000000b003edce6fe86emr17805917wml.23.1680182540576;
+        Thu, 30 Mar 2023 06:22:20 -0700 (PDT)
+Received: from localhost.localdomain (vdsl-91-137-30-127.net.encoline.de. [91.137.30.127])
+        by smtp.gmail.com with ESMTPSA id n17-20020a5d4c51000000b002c54c9bd71fsm32788906wrt.93.2023.03.30.06.22.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Mar 2023 06:22:20 -0700 (PDT)
 From:   Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <87tty2mn83.fsf@toke.dk>
-Date:   Thu, 30 Mar 2023 15:21:20 +0200
-Cc:     linux-wireless@vger.kernel.org,
-        =?utf-8?Q?Thomas_H=C3=BChn?= <thomas.huehn@hs-nordhausen.de>,
-        Felix Fietkau <nbd@nbd.name>, kvalo@kernel.org,
-        johannes.berg@intel.com, lorenzo@kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2C4031B3-5DBB-48A9-8799-BE58FC0148A3@gmail.com>
-References: <20230330071854.757154-1-jelonek.jonas@gmail.com>
- <87wn2ymvph.fsf@toke.dk> <86B6FAF2-49B4-4993-A22D-FE102756AFD1@gmail.com>
- <87tty2mn83.fsf@toke.dk>
-To:     =?utf-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-X-Mailer: Apple Mail (2.3731.400.51.1.1)
+To:     linux-wireless@vger.kernel.org
+Cc:     thomas.huehn@hs-nordhausen.de, nbd@nbd.name, kvalo@kernel.org,
+        johannes.berg@intel.com, lorenzo@kernel.org,
+        Jonas Jelonek <jelonek.jonas@gmail.com>
+Subject: [PATCH v2] ath9k: fix per-packet TX-power cap for TPC
+Date:   Thu, 30 Mar 2023 15:21:59 +0200
+Message-Id: <20230330132159.758088-1-jelonek.jonas@gmail.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -78,94 +70,132 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix incorrect usage of plain rate_idx as index into the max (power) per
+rate lookup table.
 
-> On 30. Mar 2023, at 14:34, Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@kernel.org> wrote:
->=20
-> Jonas Jelonek <jelonek.jonas@gmail.com> writes:
->=20
->>> On 30. Mar 2023, at 11:31, Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@kernel.org> wrote:
->>>=20
->>> Jonas Jelonek <jelonek.jonas@gmail.com> writes:
->>>=20
->>>> Fix incorrect usage of plain rate_idx as index into the max (power) =
-per
->>>> rate lookup table.
->>>>=20
->>>> For transmit power control (TPC), the ath9k driver maintains =
-internal
->>>> tables (in struct ath_hw) to store the max allowed power level per =
-rate.
->>>> They are used to limit a given TX-power according to regulatory and =
-user
->>>> limits in the TX-path per packet. The tables are filled in a =
-predefined
->>>> order, starting with values for CCK + OFDM rates and followed by =
-the
->>>> values for MCS rates. Thus, the maximum power levels for MCS do not
->>>> start at index 0 in the table but are shifted by a fixed value.
->>>>=20
->>>> The TX-power limiting in ath_get_rate_txpower did not apply this =
-shift,
->>>> thus retrieved the incorrect maximum power level. For example, the
->>>> maximum power for OFDM rate 0 was used for MCS rate 0. If STBC was =
-used,
->>>> the power was mostly limited to 0 because the STBC table is zeroed =
-for
->>>> legacy CCK/OFDM rates. This patch fixes this table lookup.
->>>>=20
->>>> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
->>>=20
->>> So what effect does this bug have in practice? Also, how did you =
-test
->>> the patch? :)
->>>=20
->>=20
->> It actually may not have an effect in most of current practical =
-applications. The
->> member =E2=80=98tpc_enabled' in struct ath_hw is by default set to =
-false and thus, TPC
->> in ath9k is usually disabled. The code path will be skipped in that =
-case.=20
->> But it has an effect as I am still working on TPC per packet in ath9k =
-as part of
->> research. Looking at my traces I saw that the TX-power is capped at 0 =
-for
->> MCS rates 0-7 in case the STBC flag is set in struct =
-ieee80211_tx_info. Thus,
->> transmission was significantly worse as usual, and I also was not =
-able to=20
->> manually set a proper TX-power via my testing API. With other rates =
-it is working
->> fine. I also double-checked that it isn=E2=80=99t a problem of how =
-TX-power is set and
->> reported with our upcoming API.
->>=20
->> I tested this with my OpenWrt-based AP-STA desk setup using two =
-different
->> ath9k wifi chips (AR9280, AR9580), Kernel 5.15.98. I guess that =
-should be
->> sufficient as ath9k hasn=E2=80=99t changed that significantly since =
-that and several
->> changes are already backported. I compile-tested it with latest 6.3 =
-kernel
->> (+allyesconfig), the patch applied flawlessly and encountered no =
-problems.=20
->> After applying my patch, I could see that everything was working as =
-expected.
->> Transmission performs equally as if TPC was disabled, and setting + =
-reporting
->> TX-power was working again. Also verified this with some verbose =
-debugging
->> in ath_get_rate_txpower to see which index + max power is used.
->=20
-> Alright, cool! Could you please add all this to the commit message and
-> resubmit?
->=20
-> -Toke
+For transmit power control (TPC), the ath9k driver maintains internal
+tables (in struct ath_hw) to store the max allowed power level per rate.
+They are used to limit a given TX-power according to regulatory and user
+limits in the TX-path per packet. The tables are filled in a predefined
+order, starting with values for CCK + OFDM rates and followed by the
+values for MCS rates. Thus, the maximum power levels for MCS do not
+start at index 0 in the table but are shifted by a fixed value.
 
-Sure, please have a look at it again if I missed something :)
+The TX-power limiting in ath_get_rate_txpower currently does not apply
+this shift, thus retrieves the incorrect maximum power level for a given
+rate. In particular for MCS rates, the maximum power levels for CCK/OFDM
+rates were used, e.g. maximum power for OFDM 0 was used for MCS 0. If
+STBC is used, the power is mostly limited to 0 because the STBC table
+is zeroed for legacy CCK/OFDM rates. Encountered this during testing of
+our work-in-progress TPC per packet for ath9k.
+This only has an effect when TPC is enabled in ath9k (tpc_enabled in
+struct ath_hw) which defaults to false. In this case it has a
+significant impact on the used TX-power, throughput + RSSI. Otherwise
+the affected code is just skipped and TX-power is limited with the
+hardware registers only. This patch fixes this table lookup.
 
-Jonas
+Tested on OpenWrt (kernel 5.15.98, but backported ath9k driver) with
+small desk setup using ath9k chips AR9280 and AR9580. Cap of TX-power is
+working properly for all rates now, throughput and RSSI as expected,
+equal to as if TPC was disabled.
+Compile-tested with latest 6.3 kernel + allyesconfig.
+
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/xmit.c | 30 +++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index ef9a8e0b75e6..f6f2ab7a63ff 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -34,6 +34,12 @@
+ #define NUM_SYMBOLS_PER_USEC(_usec) (_usec >> 2)
+ #define NUM_SYMBOLS_PER_USEC_HALFGI(_usec) (((_usec*5)-4)/18)
+ 
++/* Shifts in ar5008_phy.c and ar9003_phy.c are equal for all revisions */
++#define ATH9K_PWRTBL_11NA_OFDM_SHIFT    0
++#define ATH9K_PWRTBL_11NG_OFDM_SHIFT    4
++#define ATH9K_PWRTBL_11NA_HT_SHIFT      8
++#define ATH9K_PWRTBL_11NG_HT_SHIFT      12
++
+ 
+ static u16 bits_per_symbol[][2] = {
+ 	/* 20MHz 40MHz */
+@@ -1169,13 +1175,14 @@ void ath_update_max_aggr_framelen(struct ath_softc *sc, int queue, int txop)
+ }
+ 
+ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
+-			       u8 rateidx, bool is_40, bool is_cck)
++			       u8 rateidx, bool is_40, bool is_cck, bool is_mcs)
+ {
+ 	u8 max_power;
+ 	struct sk_buff *skb;
+ 	struct ath_frame_info *fi;
+ 	struct ieee80211_tx_info *info;
+ 	struct ath_hw *ah = sc->sc_ah;
++	bool is_2ghz, is_5ghz, use_stbc;
+ 
+ 	if (sc->tx99_state || !ah->tpc_enabled)
+ 		return MAX_RATE_POWER;
+@@ -1184,6 +1191,19 @@ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
+ 	fi = get_frame_info(skb);
+ 	info = IEEE80211_SKB_CB(skb);
+ 
++	is_2ghz = info->band == NL80211_BAND_2GHZ;
++	is_5ghz = info->band == NL80211_BAND_5GHZ;
++	use_stbc = is_mcs && rateidx < 8 && (info->flags &
++					     IEEE80211_TX_CTL_STBC);
++
++	if (is_mcs)
++		rateidx += is_5ghz ? ATH9K_PWRTBL_11NA_HT_SHIFT
++				   : ATH9K_PWRTBL_11NG_HT_SHIFT;
++	else if (is_2ghz && !is_cck)
++		rateidx += ATH9K_PWRTBL_11NG_OFDM_SHIFT;
++	else
++		rateidx += ATH9K_PWRTBL_11NA_OFDM_SHIFT;
++
+ 	if (!AR_SREV_9300_20_OR_LATER(ah)) {
+ 		int txpower = fi->tx_power;
+ 
+@@ -1193,10 +1213,8 @@ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
+ 			u16 eeprom_rev = ah->eep_ops->get_eeprom_rev(ah);
+ 
+ 			if (eeprom_rev >= AR5416_EEP_MINOR_VER_2) {
+-				bool is_2ghz;
+ 				struct modal_eep_header *pmodal;
+ 
+-				is_2ghz = info->band == NL80211_BAND_2GHZ;
+ 				pmodal = &eep->modalHeader[is_2ghz];
+ 				power_ht40delta = pmodal->ht40PowerIncForPdadc;
+ 			} else {
+@@ -1229,7 +1247,7 @@ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
+ 		if (!max_power && !AR_SREV_9280_20_OR_LATER(ah))
+ 			max_power = 1;
+ 	} else if (!bf->bf_state.bfs_paprd) {
+-		if (rateidx < 8 && (info->flags & IEEE80211_TX_CTL_STBC))
++		if (use_stbc)
+ 			max_power = min_t(u8, ah->tx_power_stbc[rateidx],
+ 					  fi->tx_power);
+ 		else
+@@ -1319,7 +1337,7 @@ static void ath_buf_set_rate(struct ath_softc *sc, struct ath_buf *bf,
+ 			}
+ 
+ 			info->txpower[i] = ath_get_rate_txpower(sc, bf, rix,
+-								is_40, false);
++								is_40, false, true);
+ 			continue;
+ 		}
+ 
+@@ -1350,7 +1368,7 @@ static void ath_buf_set_rate(struct ath_softc *sc, struct ath_buf *bf,
+ 
+ 		is_cck = IS_CCK_RATE(info->rates[i].Rate);
+ 		info->txpower[i] = ath_get_rate_txpower(sc, bf, rix, false,
+-							is_cck);
++							is_cck, false);
+ 	}
+ 
+ 	/* For AR5416 - RTS cannot be followed by a frame larger than 8K */
+-- 
+2.30.2
 
