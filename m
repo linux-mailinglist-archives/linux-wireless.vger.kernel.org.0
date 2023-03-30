@@ -2,130 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A136CF6FA
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 01:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2116CF889
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 03:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbjC2XYm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 19:24:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33324 "EHLO
+        id S229868AbjC3BLM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Mar 2023 21:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230498AbjC2XYk (ORCPT
+        with ESMTP id S229529AbjC3BLK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 19:24:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCEC91BCD;
-        Wed, 29 Mar 2023 16:24:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 319E5B81F86;
-        Wed, 29 Mar 2023 23:24:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACC4C433D2;
-        Wed, 29 Mar 2023 23:24:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680132265;
-        bh=Rp1Tc/zBg/eGy+DYh8BKIyM5vVkV/sZOYZqqAi2orag=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=lzePg4GAAmd7rnfVIQsJ71F1Oo+OPfUCQCfdN1QPRAFnLEBKIwXR6P2ydv9GV7L+V
-         pVkV3IY3bkpztEbsEdtuK3S7a1D6Q0gL3yuMw2DlhkVRHQKhmzTXWVHFkgFikDS87Y
-         6Vcf1unmdqS84ZBZrC8iG/HOA94Y3REubTxmufyMmm/ADEv0KP7S9mgQWnyzX/2HkE
-         6JO87bo96CVv4xwGqMu7y0UAVJIdI147N3CmsXfNrVuCzeEKwQpR314KOFXyWq2gWP
-         Hebt20GLDewDRvXHmKaA2+kObwsvTVu6KrKFVxZWtAh6PVdKr8gaWsFjGJ0R4ybHu3
-         6fGlbubmp+v8Q==
-Received: by mail-lf1-f49.google.com with SMTP id br6so22256061lfb.11;
-        Wed, 29 Mar 2023 16:24:24 -0700 (PDT)
-X-Gm-Message-State: AAQBX9dDpfeYWChFfsz5DJoegAmR+vlfrt0h64oOM8Um0w/IrSZGtDe8
-        TdIKoln7TrinfoZqzjtQIVeu2GQUkFa0IFCQyZY=
-X-Google-Smtp-Source: AKy350aYdH7tROyF3XOm8uuzzLzjWbjSOZORccxAOMS4pMfzH65Plbch5/pQVVJN8qlG/l83JvOJ+ZYT6rGiJDSn0Yo=
-X-Received: by 2002:ac2:5448:0:b0:4e9:bcf5:a0b6 with SMTP id
- d8-20020ac25448000000b004e9bcf5a0b6mr6002093lfn.11.1680132262943; Wed, 29 Mar
- 2023 16:24:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230329195758.7384-1-mario.limonciello@amd.com>
-In-Reply-To: <20230329195758.7384-1-mario.limonciello@amd.com>
-From:   Sean Wang <sean.wang@kernel.org>
-Date:   Wed, 29 Mar 2023 16:24:10 -0700
-X-Gmail-Original-Message-ID: <CAGp9LzrkX4uFAtLwvjH+uUuRgT_YDg3eE8SqgWEXOFmw5r=aMQ@mail.gmail.com>
-Message-ID: <CAGp9LzrkX4uFAtLwvjH+uUuRgT_YDg3eE8SqgWEXOFmw5r=aMQ@mail.gmail.com>
-Subject: Re: [PATCH RESEND] wifi: mt76: mt7921e: Set memory space enable in
- PCI_COMMAND if unset
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com, sean.wang@mediatek.com,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Anson Tsao <anson.tsao@amd.com>, Kalle Valo <kvalo@kernel.org>,
+        Wed, 29 Mar 2023 21:11:10 -0400
+Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7444F55BF;
+        Wed, 29 Mar 2023 18:10:58 -0700 (PDT)
+Received: by mail-oo1-xc2b.google.com with SMTP id h22-20020a4ad756000000b0053e4ab58fb5so1701495oot.4;
+        Wed, 29 Mar 2023 18:10:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680138657;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U+tJVafNWqOuQPEBzM6fBHEcL9TFwibZa5a2SuWE/Mw=;
+        b=V+tUe7XXMFg4HA9Oko7HdLAlWQOelRQY0PBqFWWzmh+5KOtThPI/G2Jy60G0f1X9m2
+         a0otZN4N9j9ZQMQAF6UBd4x7N+eIuTsWhxWzqdWlkjWL4+EQMfdx24hnpK9D+O+ywZbk
+         gTWIDAP8N/4oHk6GeuPdr+0YqMdgHaFdODb3mWVerfqrR5sxN90+ZukGGKgkSTwT19+g
+         uItG+h1D8aaX0TishHleeXzoEo937TqaHFDccG4PmI333dPPLavyvAW2AC4VLPzZ0TJY
+         GMXqoCAgMLeIThwlfsbe9D71GtqJKhtC+HV+aymwmv5DPqfOPU1wuBvsxScyPkR+Ltpt
+         Oqfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680138657;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U+tJVafNWqOuQPEBzM6fBHEcL9TFwibZa5a2SuWE/Mw=;
+        b=A+7qDArmCLnhgDg2gCZGSSh7Llg6Vg7Foot4TIOJ8LVbbMOvfyl45DH8ChyIXFoCZA
+         TVOZagqRzKJTE1+AFeRxfqmnobFJIqMNm2rwGR5/NtDJLSJCCA61gFbgUg4Jl+6mTL2h
+         ATfiAv9ZIcAxePGGBO54KO5iXe4mDiugqVYnZPTcM5I1W6ZJDzNq1+teRF8nDgBVyibw
+         7rRafGAUde2RWSulnrj13P+uk7G2EDczF2lfV5KHGgnF2Mde35/eV4frEscQ7Ujtz3Vf
+         aJcPJu29vjPBX0EDXJ66M0yVVoZCAErOXsnJPddIVNZNTyBzGeBHFviHu9sI/4iaL4VR
+         HU9A==
+X-Gm-Message-State: AO0yUKXLZeQ3XipnMDbVut+19X0fnoAiLDpCjLGoHvqMwkxJ2bHwFvSD
+        wvEbkdTYRmnRhTUXGYFPjIc=
+X-Google-Smtp-Source: AK7set9QoADutjDVRDgteYOyjw4F3Isfx6K9mtlsnhbTf75K3gN9oJxta4a+1hufvOhSlJw5yjAAiA==
+X-Received: by 2002:a4a:d64a:0:b0:53b:62ee:8bf5 with SMTP id y10-20020a4ad64a000000b0053b62ee8bf5mr9840866oos.3.1680138657397;
+        Wed, 29 Mar 2023 18:10:57 -0700 (PDT)
+Received: from localhost ([2804:30c:900:c000:e02a:5b57:da1d:f7cf])
+        by smtp.gmail.com with ESMTPSA id b7-20020a056830104700b0069d4e5284fdsm8656763otp.7.2023.03.29.18.10.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Mar 2023 18:10:56 -0700 (PDT)
+Date:   Wed, 29 Mar 2023 22:10:55 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        linux-serial@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: adc: ad7292: Add explicit include for of.h
+Message-ID: <ZCThn87xFr3wGtzP@marsc.168.1.7>
+References: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
+ <20230329-acpi-header-cleanup-v1-1-8dc5cd3c610e@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230329-acpi-header-cleanup-v1-1-8dc5cd3c610e@kernel.org>
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 03/29, Rob Herring wrote:
+> With linux/acpi.h no longer implicitly including of.h, add an explicit
+> include of of.h to fix the following error:
+> 
+> drivers/iio/adc/ad7292.c:307:9: error: implicit declaration of function 'for_each_available_child_of_node'; did you mean 'fwnode_for_each_available_child_node'? [-Werror=implicit-function-declaration]
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-On Wed, Mar 29, 2023 at 1:18=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> When the BIOS has been configured for Fast Boot, systems with mt7921e
-> have non-functional wifi.  Turning on Fast boot caused both bus master
-> enable and memory space enable bits in PCI_COMMAND not to get configured.
->
-> The mt7921 driver already sets bus master enable, but explicitly check
-> and set memory access enable as well to fix this problem.
->
-> Tested-by: Anson Tsao <anson.tsao@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+
+Thanks,
+Marcelo
+
 > ---
-> Original patch was submitted ~3 weeks ago with no comments.
-> Link: https://lore.kernel.org/all/20230310170002.200-1-mario.limonciello@=
-amd.com/
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/pci.c
-> index cb72ded37256..aa1a427b16c2 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> @@ -263,6 +263,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->         struct mt76_dev *mdev;
->         u8 features;
->         int ret;
-> +       u16 cmd;
->
->         ret =3D pcim_enable_device(pdev);
->         if (ret)
-> @@ -272,6 +273,11 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->         if (ret)
->                 return ret;
->
-> +       pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-> +       if (!(cmd & PCI_COMMAND_MEMORY)) {
-> +               cmd |=3D PCI_COMMAND_MEMORY;
-> +               pci_write_config_word(pdev, PCI_COMMAND, cmd);
-> +       }
-
-If PCI_COMMAND_MEMORY is required in any circumstance, then we don't
-need to add a conditional check and OR it with PCI_COMMAND_MEMORY.
-Also, I will try the patch on another Intel machine to see if it worked.
-
-     Sean
-
->         pci_set_master(pdev);
->
->         ret =3D pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-> --
-> 2.34.1
->
+>  drivers/iio/adc/ad7292.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
+> index a2f9fda25ff3..cccacec5db6d 100644
+> --- a/drivers/iio/adc/ad7292.c
+> +++ b/drivers/iio/adc/ad7292.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/device.h>
+>  #include <linux/module.h>
+> +#include <linux/of.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/spi/spi.h>
+>  
+> 
+> -- 
+> 2.39.2
+> 
