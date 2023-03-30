@@ -2,175 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1656D13B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 01:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E446D13C6
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 01:55:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231747AbjC3Xuk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 19:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
+        id S231773AbjC3Xzc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 19:55:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231752AbjC3XuV (ORCPT
+        with ESMTP id S231772AbjC3Xzb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 19:50:21 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332CA12CFD;
-        Thu, 30 Mar 2023 16:50:08 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Thu, 30 Mar 2023 19:55:31 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F302CA2E
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 16:55:25 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id AF01D34005E;
+        Thu, 30 Mar 2023 23:55:23 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PngBx54V5z4x1R;
-        Fri, 31 Mar 2023 10:50:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-        s=201702; t=1680220204;
-        bh=rCPjUHBP/pV9Uau0ptAEaLCUF3D9Ml3/OGmrv28mF4g=;
-        h=Date:From:To:Cc:Subject:From;
-        b=S0ABsE+rmZ0++GhOZmrtmLwI8G76LtysR3QpaeEi92LTIh4SUJh1rwpwvJMCKOI7q
-         lDQQe7YbEXwImSz6IZpwH1ma9/Au4G4Z2BypT6ujcFzuOEX2G/9NHz6/DCfGrEbi+Q
-         A64GlyIb1Gzwwgw6aL5JnwOiN68JhmaJMvufvGaFAgUA8VBgRg+j+9a/PDIy3+OLKh
-         Y8kqUNyMSVTPIWCaJ62uwHb+CMmKme6MdTPVw3wNEH385RX6/V9bHe6GkWPhfTHyff
-         AWut5xijCh7NTYmR/hEK31y5k5zCAv5xIcqWhnwvs/V21STxBS5QWF+M2/CnFFZKeh
-         w5NAcv7nfHOSQ==
-Date:   Fri, 31 Mar 2023 10:49:59 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     Wireless <linux-wireless@vger.kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: linux-next: manual merge of the wireless-next tree with the
- wireless tree
-Message-ID: <20230331104959.0b30604d@canb.auug.org.au>
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 1A40013C2B0;
+        Thu, 30 Mar 2023 16:55:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1A40013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1680220523;
+        bh=ywHUaUbuwgP4wrE9pYhMTZA+mviSzcybWECklGAgqnQ=;
+        h=Date:To:From:Subject:From;
+        b=d9K8v2WKAwJ7zsPtklGp4dhfL0j86GJ5Wvf7NKq/qk8+I4O4km4MbrKDWiOxvH6WL
+         n/4BFuTx9kxlnwmodLgWCknqocufacX8iWkvJ4cOBb+FViG3YLmLV2Xh+b+4zbUzu6
+         4VpNkEDy4BoZ3ksho6Ug5nGZ7cMRN1mzXexZjnO4=
+Message-ID: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
+Date:   Thu, 30 Mar 2023 16:55:22 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Z75pzBwRDy.ne14p3qRShtd";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Content-Language: en-US
+To:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: Question on why ieee80211_prep_channel clears the
+ IEEE80211_CONN_DISABLE_160MHZ flag.
+Organization: Candela Technologies
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1680220524-0TGbN52qV2Tg
+X-MDID-O: us5;ut7;1680220524;0TGbN52qV2Tg;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/Z75pzBwRDy.ne14p3qRShtd
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-Hi all,
+I'm trying to have supplicant tell the STA to not allow 160Mhz.
 
-Today's linux-next merge of the wireless-next tree got a conflict in:
+In the method below, in my setup, *conn_flags has IEEE80211_CONN_DISABLE_160MHZ
+set when entering the method, but this method clears that and some related flags.
+The clear logic dates back to 2012, effectively, but I guess in 5.19 kernel era somehow my hacks worked.
 
-  net/mac80211/rx.c
+So question is, should it still be clearing the flags here?  I can add more
+hack-around logic, but possibly those lines should just be removed for everyone?
 
-between commit:
+static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+				  struct ieee80211_link_data *link,
+				  struct cfg80211_bss *cbss,
+				  ieee80211_conn_flags_t *conn_flags)
+{
+	struct ieee80211_local *local = sdata->local;
+	const struct ieee80211_ht_cap *ht_cap = NULL;
+	const struct ieee80211_ht_operation *ht_oper = NULL;
+	const struct ieee80211_vht_operation *vht_oper = NULL;
+	const struct ieee80211_he_operation *he_oper = NULL;
+	const struct ieee80211_eht_operation *eht_oper = NULL;
+	const struct ieee80211_s1g_oper_ie *s1g_oper = NULL;
+	struct ieee80211_supported_band *sband;
+	struct cfg80211_chan_def chandef;
+	bool is_6ghz = cbss->channel->band == NL80211_BAND_6GHZ;
+	bool is_5ghz = cbss->channel->band == NL80211_BAND_5GHZ;
+	struct ieee80211_bss *bss = (void *)cbss->priv;
+	struct ieee80211_elems_parse_params parse_params = {
+		.bss = cbss,
+		.link_id = -1,
+		.from_ap = true,
+	};
+	struct ieee802_11_elems *elems;
+	const struct cfg80211_bss_ies *ies;
+	int ret;
+	u32 i;
 
-  a16fc38315f2 ("wifi: mac80211: fix potential null pointer dereference")
+	pr_info("prep-channel-0, CONN_DISABLE_160MHZ: %d\n",
+		!!(*conn_flags & IEEE80211_CONN_DISABLE_160MHZ));
 
-from the wireless tree and commit:
+	rcu_read_lock();
 
-  fe4a6d2db3ba ("wifi: mac80211: implement support for yet another mesh A-M=
-SDU format")
+	ies = rcu_dereference(cbss->ies);
+	parse_params.start = ies->data;
+	parse_params.len = ies->len;
+	elems = ieee802_11_parse_elems_full(&parse_params);
+	if (!elems) {
+		rcu_read_unlock();
+		return -ENOMEM;
+	}
 
-from the wireless-next tree.
+	sband = local->hw.wiphy->bands[cbss->channel->band];
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+	*conn_flags &= ~(IEEE80211_CONN_DISABLE_40MHZ |
+			 IEEE80211_CONN_DISABLE_80P80MHZ |
+			 IEEE80211_CONN_DISABLE_160MHZ);
 
---=20
-Cheers,
-Stephen Rothwell
+Thanks,
+Ben
 
-diff --cc net/mac80211/rx.c
-index 3e2176a730e6,1c957194554b..000000000000
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@@ -2776,27 -2862,12 +2843,31 @@@ ieee80211_rx_mesh_data(struct ieee80211
-  		rcu_read_unlock();
-  	}
- =20
- +	/* Frame has reached destination.  Don't forward */
- +	if (ether_addr_equal(sdata->vif.addr, eth->h_dest))
- +		goto rx_accept;
- +
- +	if (!--mesh_hdr->ttl) {
- +		if (multicast)
- +			goto rx_accept;
- +
- +		IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, dropped_frames_ttl);
- +		return RX_DROP_MONITOR;
- +	}
- +
- +	if (!ifmsh->mshcfg.dot11MeshForwarding) {
- +		if (is_multicast_ether_addr(eth->h_dest))
- +			goto rx_accept;
- +
- +		return RX_DROP_MONITOR;
- +	}
- +
-  	skb_set_queue_mapping(skb, ieee802_1d_to_ac[skb->priority]);
- =20
-+ 	if (!multicast &&
-+ 	    ieee80211_rx_mesh_fast_forward(sdata, skb, mesh_hdrlen))
-+ 		return RX_QUEUED;
-+=20
-  	ieee80211_fill_mesh_addresses(&hdr, &hdr.frame_control,
-  				      eth->h_dest, eth->h_source);
-  	hdrlen =3D ieee80211_hdrlen(hdr.frame_control);
-@@@ -2914,14 -2982,24 +2985,24 @@@ __ieee80211_rx_h_amsdu(struct ieee80211
-  					  data_offset, true))
-  		return RX_DROP_UNUSABLE;
- =20
- -	if (rx->sta && rx->sta->amsdu_mesh_control < 0) {
- +	if (rx->sta->amsdu_mesh_control < 0) {
-- 		bool valid_std =3D ieee80211_is_valid_amsdu(skb, true);
-- 		bool valid_nonstd =3D ieee80211_is_valid_amsdu(skb, false);
-+ 		s8 valid =3D -1;
-+ 		int i;
-+=20
-+ 		for (i =3D 0; i <=3D 2; i++) {
-+ 			if (!ieee80211_is_valid_amsdu(skb, i))
-+ 				continue;
-+=20
-+ 			if (valid >=3D 0) {
-+ 				/* ambiguous */
-+ 				valid =3D -1;
-+ 				break;
-+ 			}
- =20
-- 		if (valid_std && !valid_nonstd)
-- 			rx->sta->amsdu_mesh_control =3D 1;
-- 		else if (valid_nonstd && !valid_std)
-- 			rx->sta->amsdu_mesh_control =3D 0;
-+ 			valid =3D i;
-+ 		}
-+=20
-+ 		rx->sta->amsdu_mesh_control =3D valid;
-  	}
- =20
-  	ieee80211_amsdu_to_8023s(skb, &frame_list, dev->dev_addr,
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
---Sig_/Z75pzBwRDy.ne14p3qRShtd
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmQmICcACgkQAVBC80lX
-0Gyc7Qf8CT58uZK2qOJyG/1i1sV+AZ51ZNKUlxXH4cQ/OcLOAlk6X/LuI0DTFfpE
-sG8KHR2fWI9oVQqhXStFTI3yPAUB9Y5NKJR8WCVN5sqVE2zdWbKax2dYo9wAZ9wa
-Sd7n7+QhdI8aJwBmM7cnOtRnYngpunTwGdRKDfaJZmftxKsPvmuM+jyBpBovIiZi
-3bmfvoSU61TRZ3pqIL363RsoWT7MiQ+XaEpx7gc9U7Wnuc0hKLbC+sMkAsEnks1E
-eVxukHXZhowsT+IhorkLBROpLDkD+75DoU6AFbNGAgS0+65T+OFkCymNmDYPZOGO
-sgnMs9gbQiAfHinB4riWu2MSIAdszw==
-=8hDd
------END PGP SIGNATURE-----
-
---Sig_/Z75pzBwRDy.ne14p3qRShtd--
