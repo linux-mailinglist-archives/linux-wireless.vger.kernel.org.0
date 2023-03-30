@@ -2,113 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 875FE6D124B
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 00:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E1656D13B8
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 01:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230405AbjC3Wkt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 18:40:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60614 "EHLO
+        id S231747AbjC3Xuk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 19:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbjC3Wkq (ORCPT
+        with ESMTP id S231752AbjC3XuV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 18:40:46 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7AAE04A
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 15:40:42 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32UKf4cv017105;
-        Thu, 30 Mar 2023 22:40:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=ursZ6cIpxv/PhupnppCiMkE7G+9RFjrMp73sjQnoYYM=;
- b=TzD7gVcTqj+O2hYiqTBNnG4cR71SozX6CjBHzH4J8nvaziwdZrd7BlY/L2Z5apKVZMlS
- 5jjftrGgoyFm9f76ncVpnzwJ8kKGsyHjM7zDTCTyWH7sEjof+g1jtaJOW56qqWcGXhgx
- j41oA7fGdkdr8v91LtF5uvwGHTwF9niVGBeucOCUtrP97T9+weI7UBD4FoTj0UCSEJJL
- HxdaHdI+kyOO5+TUZDAVzdeb9FQR+6VqmVFtxLYfya225rdV7iTRs8QW4ZkSOfDDlmFG
- IJCGJyrNdfcLOwF7Wxji+fTXdzodSvGDicgKnr3XmsZA3SYkhg1KM/gTfhJEFEZa+sz2 Ow== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3png55gcx0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 30 Mar 2023 22:40:20 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32UMeJID017064
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 30 Mar 2023 22:40:19 GMT
-Received: from [10.110.89.180] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 30 Mar
- 2023 15:40:19 -0700
-Message-ID: <312f1476-b78b-b7f0-26f9-512a7dc2b6b7@quicinc.com>
-Date:   Thu, 30 Mar 2023 15:40:18 -0700
+        Thu, 30 Mar 2023 19:50:21 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332CA12CFD;
+        Thu, 30 Mar 2023 16:50:08 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PngBx54V5z4x1R;
+        Fri, 31 Mar 2023 10:50:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1680220204;
+        bh=rCPjUHBP/pV9Uau0ptAEaLCUF3D9Ml3/OGmrv28mF4g=;
+        h=Date:From:To:Cc:Subject:From;
+        b=S0ABsE+rmZ0++GhOZmrtmLwI8G76LtysR3QpaeEi92LTIh4SUJh1rwpwvJMCKOI7q
+         lDQQe7YbEXwImSz6IZpwH1ma9/Au4G4Z2BypT6ujcFzuOEX2G/9NHz6/DCfGrEbi+Q
+         A64GlyIb1Gzwwgw6aL5JnwOiN68JhmaJMvufvGaFAgUA8VBgRg+j+9a/PDIy3+OLKh
+         Y8kqUNyMSVTPIWCaJ62uwHb+CMmKme6MdTPVw3wNEH385RX6/V9bHe6GkWPhfTHyff
+         AWut5xijCh7NTYmR/hEK31y5k5zCAv5xIcqWhnwvs/V21STxBS5QWF+M2/CnFFZKeh
+         w5NAcv7nfHOSQ==
+Date:   Fri, 31 Mar 2023 10:49:59 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     Wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+Message-ID: <20230331104959.0b30604d@canb.auug.org.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] wifi: cfg80211: beacon EHT rate support
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-References: <20230329000902.17992-1-quic_alokad@quicinc.com>
- <d54800ae88be1eb232df7794e741dfc304c3ee9a.camel@sipsolutions.net>
-Content-Language: en-US
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <d54800ae88be1eb232df7794e741dfc304c3ee9a.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: E3o11il3aPtMz5Eye_nYs2Fa_7Ee4FxQ
-X-Proofpoint-ORIG-GUID: E3o11il3aPtMz5Eye_nYs2Fa_7Ee4FxQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-30_13,2023-03-30_04,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 adultscore=0 clxscore=1015 phishscore=0 malwarescore=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2303300178
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/Z75pzBwRDy.ne14p3qRShtd";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/30/2023 3:44 AM, Johannes Berg wrote:
-> On Tue, 2023-03-28 at 17:09 -0700, Aloka Dixit wrote:
-> 
->> +		switch (wdev->iftype) {
->> +		case NL80211_IFTYPE_AP:
->> +			width = wdev->u.ap.preset_chandef.width;
-> 
-> This seems a bit awkward and annoying, it means that we have to keep
-> using the API that sets the preset_chandef first, and it also means it
-> won't work for multi-link.
-> 
+--Sig_/Z75pzBwRDy.ne14p3qRShtd
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Okay, I can do it the same with it is done in he_get_txmcsmap():
-	chandef = wdev_chandef(wdev, link_id);
+Hi all,
 
-> Couldn't you link it with the config in start_ap/join_mesh? And per-link
-> config in set_tx_bitrate_mask()?
-> 
+Today's linux-next merge of the wireless-next tree got a conflict in:
 
-Please correct me if I'm wrong but ieee80211_set_bitrate_mask() need not 
-be changed for setting the beacon rate in non-MLO case, right?
-Because it does not have anything related to he_mcs currently too.
+  net/mac80211/rx.c
 
-> Also not sure about this at all in parse_tid_conf()?
-> 
+between commit:
 
-Can you please explain this point.
+  a16fc38315f2 ("wifi: mac80211: fix potential null pointer dereference")
 
-I didn't find existing HWSIM support for this feature so I mainly tested 
-manually - setting the beacon rate in hostapd and checking that the mask 
-generated in nl80211.c is valid.
+from the wireless tree and commit:
 
-Thanks.
+  fe4a6d2db3ba ("wifi: mac80211: implement support for yet another mesh A-M=
+SDU format")
+
+from the wireless-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc net/mac80211/rx.c
+index 3e2176a730e6,1c957194554b..000000000000
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@@ -2776,27 -2862,12 +2843,31 @@@ ieee80211_rx_mesh_data(struct ieee80211
+  		rcu_read_unlock();
+  	}
+ =20
+ +	/* Frame has reached destination.  Don't forward */
+ +	if (ether_addr_equal(sdata->vif.addr, eth->h_dest))
+ +		goto rx_accept;
+ +
+ +	if (!--mesh_hdr->ttl) {
+ +		if (multicast)
+ +			goto rx_accept;
+ +
+ +		IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, dropped_frames_ttl);
+ +		return RX_DROP_MONITOR;
+ +	}
+ +
+ +	if (!ifmsh->mshcfg.dot11MeshForwarding) {
+ +		if (is_multicast_ether_addr(eth->h_dest))
+ +			goto rx_accept;
+ +
+ +		return RX_DROP_MONITOR;
+ +	}
+ +
+  	skb_set_queue_mapping(skb, ieee802_1d_to_ac[skb->priority]);
+ =20
++ 	if (!multicast &&
++ 	    ieee80211_rx_mesh_fast_forward(sdata, skb, mesh_hdrlen))
++ 		return RX_QUEUED;
++=20
+  	ieee80211_fill_mesh_addresses(&hdr, &hdr.frame_control,
+  				      eth->h_dest, eth->h_source);
+  	hdrlen =3D ieee80211_hdrlen(hdr.frame_control);
+@@@ -2914,14 -2982,24 +2985,24 @@@ __ieee80211_rx_h_amsdu(struct ieee80211
+  					  data_offset, true))
+  		return RX_DROP_UNUSABLE;
+ =20
+ -	if (rx->sta && rx->sta->amsdu_mesh_control < 0) {
+ +	if (rx->sta->amsdu_mesh_control < 0) {
+- 		bool valid_std =3D ieee80211_is_valid_amsdu(skb, true);
+- 		bool valid_nonstd =3D ieee80211_is_valid_amsdu(skb, false);
++ 		s8 valid =3D -1;
++ 		int i;
++=20
++ 		for (i =3D 0; i <=3D 2; i++) {
++ 			if (!ieee80211_is_valid_amsdu(skb, i))
++ 				continue;
++=20
++ 			if (valid >=3D 0) {
++ 				/* ambiguous */
++ 				valid =3D -1;
++ 				break;
++ 			}
+ =20
+- 		if (valid_std && !valid_nonstd)
+- 			rx->sta->amsdu_mesh_control =3D 1;
+- 		else if (valid_nonstd && !valid_std)
+- 			rx->sta->amsdu_mesh_control =3D 0;
++ 			valid =3D i;
++ 		}
++=20
++ 		rx->sta->amsdu_mesh_control =3D valid;
+  	}
+ =20
+  	ieee80211_amsdu_to_8023s(skb, &frame_list, dev->dev_addr,
+
+--Sig_/Z75pzBwRDy.ne14p3qRShtd
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmQmICcACgkQAVBC80lX
+0Gyc7Qf8CT58uZK2qOJyG/1i1sV+AZ51ZNKUlxXH4cQ/OcLOAlk6X/LuI0DTFfpE
+sG8KHR2fWI9oVQqhXStFTI3yPAUB9Y5NKJR8WCVN5sqVE2zdWbKax2dYo9wAZ9wa
+Sd7n7+QhdI8aJwBmM7cnOtRnYngpunTwGdRKDfaJZmftxKsPvmuM+jyBpBovIiZi
+3bmfvoSU61TRZ3pqIL363RsoWT7MiQ+XaEpx7gc9U7Wnuc0hKLbC+sMkAsEnks1E
+eVxukHXZhowsT+IhorkLBROpLDkD+75DoU6AFbNGAgS0+65T+OFkCymNmDYPZOGO
+sgnMs9gbQiAfHinB4riWu2MSIAdszw==
+=8hDd
+-----END PGP SIGNATURE-----
+
+--Sig_/Z75pzBwRDy.ne14p3qRShtd--
