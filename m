@@ -2,78 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A39A06CF916
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 04:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB63C6CF9F4
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 06:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjC3CSz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Mar 2023 22:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
+        id S229573AbjC3EFa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 00:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjC3CSy (ORCPT
+        with ESMTP id S229481AbjC3EF3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Mar 2023 22:18:54 -0400
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3832349ED;
-        Wed, 29 Mar 2023 19:18:53 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R411e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0VeyhhZG_1680142724;
-Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VeyhhZG_1680142724)
-          by smtp.aliyun-inc.com;
-          Thu, 30 Mar 2023 10:18:50 +0800
-From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To:     Larry.Finger@lwfinger.net
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH] b43legacy: Remove the unused function prev_slot()
-Date:   Thu, 30 Mar 2023 10:18:41 +0800
-Message-Id: <20230330021841.67724-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        Thu, 30 Mar 2023 00:05:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B0D6171F;
+        Wed, 29 Mar 2023 21:05:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 032D1B81D65;
+        Thu, 30 Mar 2023 04:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821EAC433EF;
+        Thu, 30 Mar 2023 04:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680149125;
+        bh=tRV8jVvDqF4V/b3NkYBwa3c+3cbEYiqju8zCp48FnLs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jDIa5eOaTjL7lbEkzYOXSGS8CJuooUzooHCnZDiW4E97zRkNUl2y7RnbWCdRQJtJI
+         UhRWwJ9MOo4EJBmltI0IxOEq67Eq2DB5IASEPYSEx+t/mHPL+cdZQSuRRutYdONnvb
+         6l3QlSu+DmA9jlja8WA8Z8pnLVmAPLYAGcdKAeM3FT1BxH0nEZUQCm+oSmUw3AjOxK
+         QnS+eHuFtkpzoPjxw3gPnqmL2a2rtFoNbGVDAPpzRDvdnjlTHVcwcVovuEnURGQfCU
+         4BXMb20nKFf5vHSYMBCEgGKF5sn20OU54VqVoqC86A0PwakxGsgjuaABv0mlSsK2BP
+         72Zbsqsmw215Q==
+Date:   Wed, 29 Mar 2023 21:05:24 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [RFC PATCH 1/2] net: extend drop reasons for multiple
+ subsystems
+Message-ID: <20230329210524.651810e4@kernel.org>
+In-Reply-To: <20230329214620.131636-1-johannes@sipsolutions.net>
+References: <20230329214620.131636-1-johannes@sipsolutions.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.0 required=5.0 tests=ENV_AND_HDR_SPF_MATCH,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The function prev_slot is defined in the dma.c file, but not called
-elsewhere, so remove this unused function.
+On Wed, 29 Mar 2023 23:46:19 +0200 Johannes Berg wrote:
+> -	DEBUG_NET_WARN_ON_ONCE(reason <= 0 || reason >= SKB_DROP_REASON_MAX);
+> +	DEBUG_NET_WARN_ON_ONCE(reason == SKB_NOT_DROPPED_YET);
 
-drivers/net/wireless/broadcom/b43legacy/dma.c:130:19: warning: unused function 'prev_slot'.
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=4642
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- drivers/net/wireless/broadcom/b43legacy/dma.c | 8 --------
- 1 file changed, 8 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/b43legacy/dma.c b/drivers/net/wireless/broadcom/b43legacy/dma.c
-index 6869f2bf1bae..60e41de72f29 100644
---- a/drivers/net/wireless/broadcom/b43legacy/dma.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/dma.c
-@@ -127,14 +127,6 @@ static inline int next_slot(struct b43legacy_dmaring *ring, int slot)
- 	return slot + 1;
- }
- 
--static inline int prev_slot(struct b43legacy_dmaring *ring, int slot)
--{
--	B43legacy_WARN_ON(!(slot >= 0 && slot <= ring->nr_slots - 1));
--	if (slot == 0)
--		return ring->nr_slots - 1;
--	return slot - 1;
--}
--
- #ifdef CONFIG_B43LEGACY_DEBUG
- static void update_max_used_slots(struct b43legacy_dmaring *ring,
- 				  int current_used_slots)
--- 
-2.20.1.7.g153144c
-
+We can still validate that the top bits are within known range 
+of subsystems?
