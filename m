@@ -2,203 +2,266 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EFD76D0AC8
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 18:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5C66D0AD4
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 18:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230079AbjC3QMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 12:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
+        id S231265AbjC3QOx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 12:14:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230224AbjC3QMq (ORCPT
+        with ESMTP id S231565AbjC3QOk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 12:12:46 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609B3D53F
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 09:12:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
-        t=1680192699; i=ps.report@gmx.net;
-        bh=R1MKpNLk57oHIJUk4XQaSwCwGBdciofprJffbKefGxE=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=BeWTn04rqVc3+7RWHBM7zvk5zh+pNGzl7OQcPeYbzcMpXJbxMuMtcR58/NjAqitxH
-         s5jOMtRnQost9GhfknbCxNnUMaaFOLOHvTwmtt/uIo009MtjktszkVZX1gkVDdxAmD
-         6FAxOF3EVj3esMYIl6J7H3SfA8rxThOE2axXeeXx9l4hPklZGQ9sN00PRJ2HZ2hPCY
-         nsK2YrzjgbGgJ2n3Xw+o1epKqyyDpAhXJSgwE/tC2yhh6x1IjvA84PO0rPnKFtVcul
-         8Kt9FTZ+xoYy1UhiaLwAiV0mccEo1logGAKCIBRkKrJ2/LGtGeYV0Hi/I85edKmh+8
-         yI+AAe0YVmxeg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost ([62.216.208.135]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MvK0X-1qYN0E11Np-00rHUY; Thu, 30
- Mar 2023 18:11:39 +0200
-Date:   Thu, 30 Mar 2023 18:11:38 +0200
-From:   Peter Seiderer <ps.report@gmx.net>
-To:     Gregg Wonderly <greggwonderly@seqtechllc.com>
-Cc:     Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@kernel.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: shift exponent 35 is too large @ ath/ath9k/ar9003_hw.c:1147
-Message-ID: <20230330181138.5a881d19@gmx.net>
-In-Reply-To: <27B86217-CA79-4E4A-842B-9B2341B48B13@seqtechllc.com>
-References: <E3A9C354-0CB7-420C-ADEF-F0177FB722F4@seqtechllc.com>
-        <87cz5079p1.fsf@toke.dk>
-        <27B86217-CA79-4E4A-842B-9B2341B48B13@seqtechllc.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-suse-linux-gnu)
+        Thu, 30 Mar 2023 12:14:40 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA94693DD;
+        Thu, 30 Mar 2023 09:14:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680192864; x=1711728864;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7ElYsMNT+HJxJYO4GGzC6zAdpQ1oT6NK5jOdZEm5or4=;
+  b=S/9hDV7XWHadTo9n4LVeHRADhjnpUO60hKXS10B1nW4biEKJF3xqcX4N
+   f435TuQSXDko6idG2vuMSc6+Ba2cltjqxLo8sX5I+Wust3NewLZwVrfJx
+   mbQJ318Lfl7okPu9VpJClyN9ZOburkSUYlXdOPBE9XxofFfMmOlB2iWKg
+   q1a0UdMWjLw9K1rcPBHYtwZglNCac54hhCbS+xgGHGfYE4QbgEhHURyUu
+   0x5xAi300E9hI+aS7i3qYuhTOmIkVZVevKJQijRZrkJjRLS0+ROlgYuef
+   BcaD19IMeRVaf1pChl5UTv78clqltaXeSm6pRkGPUPhD+0/qK3O97STm2
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="427491643"
+X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
+   d="scan'208";a="427491643"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 09:14:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10665"; a="795715444"
+X-IronPort-AV: E=Sophos;i="5.98,305,1673942400"; 
+   d="scan'208";a="795715444"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 30 Mar 2023 09:14:00 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1phuuV-000KzO-3D;
+        Thu, 30 Mar 2023 16:13:59 +0000
+Date:   Fri, 31 Mar 2023 00:13:51 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-wireless@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        io-uring@vger.kernel.org, bpf@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ a6d9e3034536ba4b68ac34490c02267e6eec9c05
+Message-ID: <6425b53f.mjvjApBCFlusUbza%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:pWmrVvjzkodlL1ngB5/Pf97FJpD0QMY3+K/1Zf66AMoyWPRFgnJ
- KjI4mVrX5P/HVi9kF31T9D3me/zIOdmuhfLZjoM92cKj3UvzCTjz4Hfw1o6blN+HFwvucg3
- VoZrcZq6tta4y6wrb3X3wtWvt+jdGLmu1TNPC71/pNKFC8q6XIkFhS7rh0sVK1XIWEY350B
- sQmpF4a0KkwnP4dSc8ZnQ==
-UI-OutboundReport: notjunk:1;M01:P0:cjy3GItbiC8=;n6MdKIsnpxpk/f7XoSBPqo87tjO
- V4FnCx0okAxY4CTZm1WQgvwdtbtwzvC/ibBepA8ZgCyHW/1AEp3k1YuNtUIlI/tMHJXhz7qvM
- bwhXFX700sn8HX5aWeX0ZoqyX27NOADQWc/HjUbj+W9KTASIwt0Z6LoKKcekYCiZYm5oiatWr
- cU/Qk9quShVgUnAoVCVMkbYgKdTTN/Hrvl+Q8rL5LquuBSt6PnxPzUOyMLMxe9TXGgm7Ycuak
- XTESsLDA81KVn0DLhGwm93SwM2RbkiGALHDB3G24thLDrBZeo9eQsPPKnPTjKtriVlGqdC1hu
- i02ZyZt4EqN5t4b6V8+Xkw29gBqIqk2Hc8V+ZucyF1roT+7Hg5FZr3/95tKUMPIECPPNXSAwU
- g05hRF2HbUHM9aG3E3/wnffBZD6cxyEb3v/9cVG0o46jVV9DcWhuZlJN1jVEEO9i9nKJpvZt3
- jRINjXuufaDB0IaWpSW75xDb2/5A8XarNybkAbr4vQUaXjaXfgplO+MXVqShYj5pX4fqAKWBC
- BngEn5/DJSOoQAvr7NE8zEyMN066RvXBt4YnwNjwZ03j7tagAL7VsXkZ6KVWzaYnUOtvft/+Z
- 2DxwbrP2fTs6yTBZkIH/gaEqmg20P4hrGJ9EgJ+zROpc3wA0r0z7iZJ3iiYL4zrBIywIbMhF3
- tpnPBVvOOs+gwDN01v5MsO6RHwIXBZm/JxfwTvX1Zl0ufKYE9nsnmEuGART9G5MzyuyHn0P2/
- SAUVfk+LxN9QHNqN16KmcJEs2EmZ4KKVIqckPZIPDDQG/9KYSo198Iv6kKcs1mD2zGjS9AkXy
- bfx3hppo/QxpuEPJM5Fr8HIOt46B1JSRpxXfIf0ziwKLVYamd/a00BMB4mG+yZ4ZHHDa+B0z2
- YnqlVU43h5VVuL7j1aX+1w3qjvEkfLP1ueqe3TcRxFwfE9VPFFuj/fg+UPAIsnucNzYG3yBvn
- UG/ViUTZ0BGfHVqfhSH9FC+Fbf4=
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Gregg, Toke,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: a6d9e3034536ba4b68ac34490c02267e6eec9c05  Add linux-next specific files for 20230330
 
-On Thu, 30 Mar 2023 08:44:25 -0500, Gregg Wonderly <greggwonderly@seqtechll=
-c.com> wrote:
+Error/Warning reports:
 
-> I have not tested this.  I am in the middle of testing on this machine of=
- many other things and building a kernel right now is not on my timeline.  =
-Note that I have a magic 6 constant in there.  I derived this from dividing=
- 32 by the bit mask 0x1f width of 5.  But looking further at this, it seems=
- like chk_dbg should actually be a u64, and dma_dbg_4 and dma_dbg_5 placed =
-into that value as a continuous 64bit value.  But again, I don=E2=80=99t kn=
-ow if there are 2 bits at the top of dma_dbg_4 and 3 bits at the bottom of =
-dma_dbg_5 that go together. This needs to be fixed by someone with the time=
- and the knowledge of what=E2=80=99s going on in the hardware.
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303301712.i4ddVa9j-lkp@intel.com
 
-The comment from drivers/net/wireless/ath/ath9k/ar9003_hw.c only some
-lines above seems to support your reasoning (for the '6' constant, not
-for the packaging into an u64 - bit 30-31 unused):
+Error/Warning: (recently discovered and may have been fixed)
 
-1073 /*             =20
-1074  * MAC HW hang check
-1075  * =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-1076  *
-1077  * Signature: dcu_chain_state is 0x6 and dcu_complete_state is 0x1.
-1078  *
-1079  * The state of each DCU chain (mapped to TX queues) is available from=
- these
-1080  * DMA debug registers:
-1081  *     =20
-1082  * Chain 0 state : Bits 4:0   of AR_DMADBG_4
-1083  * Chain 1 state : Bits 9:5   of AR_DMADBG_4
-1084  * Chain 2 state : Bits 14:10 of AR_DMADBG_4
-1085  * Chain 3 state : Bits 19:15 of AR_DMADBG_4
-1086  * Chain 4 state : Bits 24:20 of AR_DMADBG_4
-1087  * Chain 5 state : Bits 29:25 of AR_DMADBG_4
-1088  * Chain 6 state : Bits 4:0   of AR_DMADBG_5
-1089  * Chain 7 state : Bits 9:5   of AR_DMADBG_5
-1090  * Chain 8 state : Bits 14:10 of AR_DMADBG_5
-1091  * Chain 9 state : Bits 19:15 of AR_DMADBG_5
-1092  *             =20
-1093  * The DCU chain state "0x6" means "WAIT_FRDONE" - wait for TX frame t=
-o be done.
-1094  */    =20
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+kernel/bpf/verifier.c:18485: undefined reference to `find_kallsyms_symbol_value'
+sound/pci/ymfpci/ymfpci_main.c:2259:9: error: implicit declaration of function 'snd_ac97_suspend'; did you mean 'snd_ac97_reset'? [-Werror=implicit-function-declaration]
+sound/pci/ymfpci/ymfpci_main.c:2288:9: error: implicit declaration of function 'snd_ac97_resume'; did you mean 'snd_ac97_reset'? [-Werror=implicit-function-declaration]
 
-But with the same/similar bug some lines below (dma_dbg_chain is AR_DMADBG_4
-for queue < 6 and AR_DMADBG_5 above):
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-1112                 dcu_chain_state =3D (dma_dbg_chain >> (5 * queue)) & 0=
-x1f;
+drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
+drivers/pinctrl/pinctrl-mlxbf3.c:162:20: sparse: sparse: symbol 'mlxbf3_pmx_funcs' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:442:22: sparse: sparse: symbol 'imx_wdt' was not declared. Should it be static?
+drivers/watchdog/imx2_wdt.c:446:22: sparse: sparse: symbol 'imx_wdt_legacy' was not declared. Should it be static?
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+net/mac80211/mesh_pathtbl.c:616:24: warning: Value stored to 'cache' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
 
-Regards,
-Peter
+Error/Warning ids grouped by kconfigs:
 
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-randconfig-r024-20230329
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-randconfig-s031-20230329
+|   `-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- loongarch-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-defconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- microblaze-buildonly-randconfig-r001-20230329
+|   |-- sound-pci-ymfpci-ymfpci_main.c:error:implicit-declaration-of-function-snd_ac97_resume
+|   `-- sound-pci-ymfpci-ymfpci_main.c:error:implicit-declaration-of-function-snd_ac97_suspend
+|-- mips-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- mips-randconfig-s032-20230329
+|   |-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt-was-not-declared.-Should-it-be-static
+|   `-- drivers-watchdog-imx2_wdt.c:sparse:sparse:symbol-imx_wdt_legacy-was-not-declared.-Should-it-be-static
+|-- nios2-buildonly-randconfig-r005-20230329
+clang_recent_errors
+`-- riscv-randconfig-c006-20230326
+    `-- net-mac80211-mesh_pathtbl.c:warning:Value-stored-to-cache-during-its-initialization-is-never-read-clang-analyzer-deadcode.DeadStores
 
->=20
-> Gregg Wonderly
->=20
-> > On Mar 22, 2023, at 4:33 PM, Toke H=C3=B8iland-J=C3=B8rgensen <toke@ker=
-nel.org> wrote:
-> >=20
-> > Gregg Wonderly <greggwonderly@seqtechllc.com> writes:
-> >  =20
-> >> I am receiving a console error message from this driver that appears t=
-o be in the following function.  In this function, the chk_dbg variable is =
-32bits and there is logic that seems to attempt to select from 1 of 2 diffe=
-rent 32bit values to get a 64bit wide mask value into chk_dbg from dma_dbg_=
-4 or dmc_dbg_5.
-> >>=20
-> >> The problem is that the (5*i) shift count should be have i adjusted by=
- the 6 limit used to make the check for which dma_dbg_[45] value selected.
-> >>=20
-> >>=20
-> >> static bool ar9003_hw_detect_mac_hang(struct ath_hw *ah)
-> >> {
-> >> 	u32 dma_dbg_4, dma_dbg_5, dma_dbg_6, chk_dbg;
-> >> 	u8 dcu_chain_state, dcu_complete_state;
-> >> 	bool dcu_wait_frdone =3D false;
-> >> 	unsigned long chk_dcu =3D 0;
-> >> 	unsigned int i =3D 0;
-> >> 	dma_dbg_4 =3D REG_READ(ah, AR_DMADBG_4);
-> >> 	dma_dbg_5 =3D REG_READ(ah, AR_DMADBG_5);
-> >> 	dma_dbg_6 =3D REG_READ(ah, AR_DMADBG_6);
-> >> 	dcu_complete_state =3D dma_dbg_6 & 0x3;
-> >> 	if (dcu_complete_state !=3D 0x1)
-> >> 		goto exit;
-> >> 	for (i =3D 0; i < ATH9K_NUM_TX_QUEUES; i++) {
-> >> 		if (i < 6)
-> >> 			chk_dbg =3D dma_dbg_4;
-> >> 		else
-> >> 			chk_dbg =3D dma_dbg_5;
-> >> 		dcu_chain_state =3D (chk_dbg >> (5 * i)) & 0x1f;
-> >> 		if (dcu_chain_state =3D=3D 0x6) {
-> >> 			dcu_wait_frdone =3D true;
-> >> 			chk_dcu |=3D BIT(i);
-> >> 		}
-> >> 	}
-> >> 	if ((dcu_complete_state =3D=3D 0x1) && dcu_wait_frdone) {
-> >> 		for_each_set_bit(i, &chk_dcu, ATH9K_NUM_TX_QUEUES) {
-> >> 			if (ath9k_hw_verify_hang(ah, i))
-> >> 				return true;
-> >> 		}
-> >> 	}
-> >> exit:
-> >> 	return false;
-> >> }
-> >>=20
-> >> The for loop seems to need to look like the following:
-> >>=20
-> >> 	for (i =3D 0; i < ATH9K_NUM_TX_QUEUES; i++) {
-> >>               int off=3Di;
-> >> 		if (i < 6) {
-> >> 			chk_dbg =3D dma_dbg_4;
-> >> 		} else {
-> >> 			chk_dbg =3D dma_dbg_5;
-> >>                       off =3D i - 6;
-> >>               }
-> >> 		dcu_chain_state =3D (chk_dbg >> (5 * off)) & 0x1f;
-> >> 		if (dcu_chain_state =3D=3D 0x6) {
-> >> 			dcu_wait_frdone =3D true;
-> >> 			chk_dcu |=3D BIT(i);
-> >> 		}
-> >> 	}
-> >>  =20
-> >=20
-> > Did you test this? Please send a proper patch :)
-> >=20
-> > -Toke =20
->=20
+elapsed time: 722m
 
+configs tested: 104
+configs skipped: 7
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc          buildonly-randconfig-r002-20230329   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r013-20230329   gcc  
+arc                  randconfig-r043-20230329   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         axm55xx_defconfig   gcc  
+arm                                 defconfig   gcc  
+arm                         lpc18xx_defconfig   gcc  
+arm                  randconfig-r003-20230329   clang
+arm                  randconfig-r024-20230329   gcc  
+arm                  randconfig-r046-20230329   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r026-20230329   gcc  
+hexagon              randconfig-r033-20230329   clang
+hexagon              randconfig-r041-20230329   clang
+hexagon              randconfig-r045-20230329   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r005-20230329   gcc  
+ia64                 randconfig-r016-20230329   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r003-20230329   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r006-20230329   gcc  
+loongarch            randconfig-r011-20230329   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r004-20230329   gcc  
+microblaze   buildonly-randconfig-r004-20230329   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r012-20230329   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r015-20230329   gcc  
+openrisc             randconfig-r032-20230329   gcc  
+parisc       buildonly-randconfig-r005-20230329   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r021-20230329   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                       holly_defconfig   gcc  
+powerpc              randconfig-r031-20230329   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r022-20230329   clang
+riscv                randconfig-r036-20230329   gcc  
+riscv                randconfig-r042-20230329   clang
+riscv                          rv32_defconfig   gcc  
+s390                             alldefconfig   clang
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r014-20230329   clang
+s390                 randconfig-r023-20230329   clang
+s390                 randconfig-r034-20230329   gcc  
+s390                 randconfig-r044-20230329   clang
+sh                               allmodconfig   gcc  
+sh                         microdev_defconfig   gcc  
+sparc        buildonly-randconfig-r006-20230329   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r025-20230329   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
