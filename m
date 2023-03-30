@@ -2,50 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E176A6CF9F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 06:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C9FC6CFB55
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 08:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjC3EGi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 00:06:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45722 "EHLO
+        id S230171AbjC3GN5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 02:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjC3EGh (ORCPT
+        with ESMTP id S229484AbjC3GNz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 00:06:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92F25272;
-        Wed, 29 Mar 2023 21:06:36 -0700 (PDT)
+        Thu, 30 Mar 2023 02:13:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B79DF2720;
+        Wed, 29 Mar 2023 23:13:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 64202B82338;
-        Thu, 30 Mar 2023 04:06:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B891C433EF;
-        Thu, 30 Mar 2023 04:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680149194;
-        bh=cWovLLY/QzBK8HVyLhNR1l5TL9fvrIqFqju9NMQW51k=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZDFPyj0kZOcN70YJukiaht+4R96ciHWp36kuDhyTZvQCNg6OkBfHzzFA9NTUHpmG0
-         CE2qnk8K3dTtVHJ5UYF2C/NjxT3CiHTjv3ssN9KemoD+gZVlRJYU9CW2HC4tB09Rzt
-         bSqgh6nNpI4IvofBMPJ7x0Mn7my04GU6UhQaOusi7lfs/yuRPTwLxZJkMbGhsjudfB
-         84c088nj4doJ0i5QyNHAmMXa06sNStK2VB5m2MArER2xOIZcUtMWt9+XXrgS3Dxl+2
-         wiDAgKKCMFIgMPROz+5hwBdDi/1/Ru+rlX7C+7JuPuMiq7nfWtfKDC6vI8BOvzapQr
-         ahSZ46B9Sjevw==
-Date:   Wed, 29 Mar 2023 21:06:33 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] mac80211: use the new drop reasons
- infrastructure
-Message-ID: <20230329210633.39cca656@kernel.org>
-In-Reply-To: <34e43da3694e2d627555af0149ebe438e1ed2938.camel@sipsolutions.net>
-References: <20230329214620.131636-1-johannes@sipsolutions.net>
-        <20230329234613.5bcb4d8dcade.Iea29d70af97ce2ed590a00dbebee2ab4d013dfd5@changeid>
-        <34e43da3694e2d627555af0149ebe438e1ed2938.camel@sipsolutions.net>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C44F61EEA;
+        Thu, 30 Mar 2023 06:13:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6AFC433D2;
+        Thu, 30 Mar 2023 06:13:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1680156833;
+        bh=vL4aej4R/opKJsSnkgLmnAtiRe7vvW4uMcH3bXPgIHg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mruZ8XTWbbNQBowGEATXDy8Ao+wu8u1wLE5XURkW6bBHhcyzOc264kyur9029DiFq
+         +Wpr01quwEjlAJ+o+hOh1XWD9YxZLoygaUmSrnrdIcYiAKD0BTsHHfqJra0w3s6Xnp
+         NGNWySh5f9zz+b6Ij2mGThiIdzMJNM7t5HMM7oQM=
+Date:   Thu, 30 Mar 2023 08:13:51 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Marc Zyngier <maz@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-acpi@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/5] Remove acpi.h implicit include of of.h
+Message-ID: <ZCUon17pXpgBr0eQ@kroah.com>
+References: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230329-acpi-header-cleanup-v1-0-8dc5cd3c610e@kernel.org>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -55,15 +67,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 29 Mar 2023 23:56:31 +0200 Johannes Berg wrote:
-> > +	drop_reasons_unregister_subsys(SKB_DROP_REASON_SUBSYS_MAC80211_MONITOR);
-> > +	drop_reasons_unregister_subsys(SKB_DROP_REASON_SUBSYS_MAC80211_UNUSABLE);
-> > +
-> >  	rcu_barrier();  
+On Wed, Mar 29, 2023 at 04:20:41PM -0500, Rob Herring wrote:
+> In the process of cleaning up DT includes, I found that some drivers 
+> using DT functions could build without any explicit DT include. I traced 
+> the include to be coming from acpi.h via irqdomain.h.
 > 
-> This is making me think that perhaps we don't want synchronize_rcu()
-> inside drop_reasons_unregister_subsys(), since I have two now and also
-> already have an rcu_barrier() ... so maybe just document that it's
-> needed?
+> I was pleasantly surprised that there were not 100s or even 10s of 
+> warnings when breaking the include chain. So here's the resulting 
+> series.
+> 
+> I'd suggest Rafael take the whole series. Alternatively,the fixes can be 
+> applied in 6.4 and then the last patch either after rc1 or the 
+> following cycle.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-premature optimization? some workload is reloading mac80211 in a loop?
+Nice cleanup, all are:
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
