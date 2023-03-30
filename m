@@ -2,187 +2,609 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C7D6CFC91
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 09:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 023B66CFDB2
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Mar 2023 10:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbjC3HTO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Mar 2023 03:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
+        id S230008AbjC3IFK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Mar 2023 04:05:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjC3HTN (ORCPT
+        with ESMTP id S229995AbjC3IFG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Mar 2023 03:19:13 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42983EC
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 00:19:12 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id t4so12779275wra.7
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 00:19:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680160750;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8ur2bD4Hn8aSQvv82tzOokqjIow6KIhRlSQadkV1qCA=;
-        b=pcTekv7Gx/epCeMGTDWHqtRBdUJv8FZQqxRu0ypYVftTE95k7CrucgXQxZuuiPJchz
-         d2hRGUbY5CmxHjHk6hVMBpmf9Srl3hJSNWwgPfXculKLXi24E+mbVS2CIcvvYjPfgGF/
-         v73npG8PrRLU4VOwuizsKM+xWeIjdfaSJNhOqRFIHc2WOhtayZHiR3FkZ2LbCkQUeeTS
-         9CFg947zrWf0GUh9r41qGCO1PG0SqkpvKB4WVB0r7D7Q0I7PEEI4RipeotWKPRpms2I2
-         elsv1iS+ZaOuBFDVD8r3iEoD6ROBEAjBju6bnJn92JQ6UZwEgXDfNaETzG74NqEy6Ovl
-         Be+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680160750;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8ur2bD4Hn8aSQvv82tzOokqjIow6KIhRlSQadkV1qCA=;
-        b=2PQqh4v4koLoprJMRh2bw0VaSyV8dcKcseaJs8yikEmXJ4uCJksGh7FtyhBiIc2ImU
-         2UzmYI8eyTOiREwR7eG80+gJbjW5AKOb/NrhYLbsFFK0sHCFZDW7N2h3szQjY2GT0FNg
-         8uKZng7mJYqLlFqHRtos5ZLYZH81GUYzeJsSHQjYiFQ2+aQyXyykyNYxNWYq4E5Js0o+
-         2UHkQr0/uzMEdekJaHqKSHnpXb4T5V8Ts8slTUlJfHUdZ1KvBmN+QlrZKeC39HwGcBj0
-         AFoGYXWMo1hCdm6YMfBEE5ZHFumzIak4llI9yz3bEyN6IPsGCOocoSqlxqrx4UN6TG+B
-         bmnQ==
-X-Gm-Message-State: AAQBX9d6/EVbceCvMpGW7VoJQ290KwwFvKH6DgLGecc6m3rysYsi+m3d
-        FzNTWrgbWUj5Y2dOOUW61cABJiXx0uvQLQ==
-X-Google-Smtp-Source: AKy350aNyzf178wMYee1By6juNKwqYSCbQ6N5X+/NzISd86CAda2eINZoYwlWGgaTWQVWw+LX/c6Qg==
-X-Received: by 2002:a5d:684a:0:b0:2ce:fd37:938c with SMTP id o10-20020a5d684a000000b002cefd37938cmr17541701wrw.50.1680160750479;
-        Thu, 30 Mar 2023 00:19:10 -0700 (PDT)
-Received: from localhost.localdomain (vdsl-91-137-30-127.net.encoline.de. [91.137.30.127])
-        by smtp.gmail.com with ESMTPSA id l7-20020a05600012c700b002e45f6ffe63sm2030531wrx.26.2023.03.30.00.19.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Mar 2023 00:19:10 -0700 (PDT)
-From:   Jonas Jelonek <jelonek.jonas@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     thomas.huehn@hs-nordhausen.de, nbd@nbd.name, kvalo@kernel.org,
-        johannes.berg@intel.com, lorenzo@kernel.org,
-        Jonas Jelonek <jelonek.jonas@gmail.com>
-Subject: [PATCH] ath9k: fix per-packet TX-power cap for TPC
-Date:   Thu, 30 Mar 2023 09:18:54 +0200
-Message-Id: <20230330071854.757154-1-jelonek.jonas@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        Thu, 30 Mar 2023 04:05:06 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 807C065B4
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Mar 2023 01:04:55 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 32U84NYW0001248, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 32U84NYW0001248
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 30 Mar 2023 16:04:23 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 30 Mar 2023 16:04:40 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 30 Mar
+ 2023 16:04:40 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: support parameter tables by RFE type
+Date:   Thu, 30 Mar 2023 16:03:31 +0800
+Message-ID: <20230330080331.37155-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix incorrect usage of plain rate_idx as index into the max (power) per
-rate lookup table.
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-For transmit power control (TPC), the ath9k driver maintains internal
-tables (in struct ath_hw) to store the max allowed power level per rate.
-They are used to limit a given TX-power according to regulatory and user
-limits in the TX-path per packet. The tables are filled in a predefined
-order, starting with values for CCK + OFDM rates and followed by the
-values for MCS rates. Thus, the maximum power levels for MCS do not
-start at index 0 in the table but are shifted by a fixed value.
+One chip can have different RFE (RF front end) types which we will judge
+at runtime. And, different RFE types may use different RF parameter tables.
+Though we didn't really meet this case previously, we are going to meet it
+on upcoming chip RTL8851B. So, this commit handles parameter tables for
+runtime RFE type.
 
-The TX-power limiting in ath_get_rate_txpower did not apply this shift,
-thus retrieved the incorrect maximum power level. For example, the
-maximum power for OFDM rate 0 was used for MCS rate 0. If STBC was used,
-the power was mostly limited to 0 because the STBC table is zeroed for
-legacy CCK/OFDM rates. This patch fixes this table lookup.
+We now encapsulate rtw89_txpwr_rule_<2/5/6>ghz tables into rtw89_rfe_parms.
+Then, each chip defines its default parameter tables, and if needed, it can
+configure extra parameter tables by RFE type. Finally we determine runtime
+parameter tables by RFE type if one is configured. Otherwise, we use the
+default parameter tables.
 
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+For now, we just move all settings under default parameter tables. We will
+configure parameter tables by RFE types in separate commits afterwards.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/ath/ath9k/xmit.c | 30 +++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c     | 23 +++++++
+ drivers/net/wireless/realtek/rtw89/core.h     | 55 +++++++++++-----
+ drivers/net/wireless/realtek/rtw89/phy.c      | 64 +++++++++++--------
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  6 +-
+ .../wireless/realtek/rtw89/rtw8852a_table.c   | 15 +++++
+ .../wireless/realtek/rtw89/rtw8852a_table.h   | 11 +---
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  6 +-
+ .../wireless/realtek/rtw89/rtw8852b_table.c   | 15 +++++
+ .../wireless/realtek/rtw89/rtw8852b_table.h   | 11 +---
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  8 +--
+ .../wireless/realtek/rtw89/rtw8852c_table.c   | 21 ++++++
+ .../wireless/realtek/rtw89/rtw8852c_table.h   | 16 +----
+ 12 files changed, 161 insertions(+), 90 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index ef9a8e0b75e6..f6f2ab7a63ff 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -34,6 +34,12 @@
- #define NUM_SYMBOLS_PER_USEC(_usec) (_usec >> 2)
- #define NUM_SYMBOLS_PER_USEC_HALFGI(_usec) (((_usec*5)-4)/18)
- 
-+/* Shifts in ar5008_phy.c and ar9003_phy.c are equal for all revisions */
-+#define ATH9K_PWRTBL_11NA_OFDM_SHIFT    0
-+#define ATH9K_PWRTBL_11NG_OFDM_SHIFT    4
-+#define ATH9K_PWRTBL_11NA_HT_SHIFT      8
-+#define ATH9K_PWRTBL_11NG_HT_SHIFT      12
-+
- 
- static u16 bits_per_symbol[][2] = {
- 	/* 20MHz 40MHz */
-@@ -1169,13 +1175,14 @@ void ath_update_max_aggr_framelen(struct ath_softc *sc, int queue, int txop)
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 489fa7a86160d..cfeb2c1a5821d 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -3294,6 +3294,28 @@ static void rtw89_core_setup_phycap(struct rtw89_dev *rtwdev)
+ 		rtwdev->chip->chip_id == RTL8852A && rtwdev->hal.cv <= CHIP_CBV;
  }
  
- static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
--			       u8 rateidx, bool is_40, bool is_cck)
-+			       u8 rateidx, bool is_40, bool is_cck, bool is_mcs)
++static void rtw89_core_setup_rfe_parms(struct rtw89_dev *rtwdev)
++{
++	const struct rtw89_chip_info *chip = rtwdev->chip;
++	const struct rtw89_rfe_parms_conf *conf = chip->rfe_parms_conf;
++	struct rtw89_efuse *efuse = &rtwdev->efuse;
++	u8 rfe_type = efuse->rfe_type;
++
++	if (!conf)
++		goto out;
++
++	while (conf->rfe_parms) {
++		if (rfe_type == conf->rfe_type) {
++			rtwdev->rfe_parms = conf->rfe_parms;
++			return;
++		}
++		conf++;
++	}
++
++out:
++	rtwdev->rfe_parms = chip->dflt_parms;
++}
++
+ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
  {
- 	u8 max_power;
- 	struct sk_buff *skb;
- 	struct ath_frame_info *fi;
- 	struct ieee80211_tx_info *info;
- 	struct ath_hw *ah = sc->sc_ah;
-+	bool is_2ghz, is_5ghz, use_stbc;
+ 	int ret;
+@@ -3315,6 +3337,7 @@ static int rtw89_chip_efuse_info_setup(struct rtw89_dev *rtwdev)
+ 		return ret;
  
- 	if (sc->tx99_state || !ah->tpc_enabled)
- 		return MAX_RATE_POWER;
-@@ -1184,6 +1191,19 @@ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
- 	fi = get_frame_info(skb);
- 	info = IEEE80211_SKB_CB(skb);
+ 	rtw89_core_setup_phycap(rtwdev);
++	rtw89_core_setup_rfe_parms(rtwdev);
  
-+	is_2ghz = info->band == NL80211_BAND_2GHZ;
-+	is_5ghz = info->band == NL80211_BAND_5GHZ;
-+	use_stbc = is_mcs && rateidx < 8 && (info->flags &
-+					     IEEE80211_TX_CTL_STBC);
+ 	rtw89_mac_pwr_off(rtwdev);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index e447bfec508b8..7581c7b9411a9 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2935,6 +2935,41 @@ struct rtw89_txpwr_table {
+ 		     const struct rtw89_txpwr_table *tbl);
+ };
+ 
++struct rtw89_txpwr_rule_2ghz {
++	const s8 (*lmt)[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
++		       [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
++		       [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
++	const s8 (*lmt_ru)[RTW89_RU_NUM][RTW89_NTX_NUM]
++			  [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
++};
 +
-+	if (is_mcs)
-+		rateidx += is_5ghz ? ATH9K_PWRTBL_11NA_HT_SHIFT
-+				   : ATH9K_PWRTBL_11NG_HT_SHIFT;
-+	else if (is_2ghz && !is_cck)
-+		rateidx += ATH9K_PWRTBL_11NG_OFDM_SHIFT;
-+	else
-+		rateidx += ATH9K_PWRTBL_11NA_OFDM_SHIFT;
++struct rtw89_txpwr_rule_5ghz {
++	const s8 (*lmt)[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
++		       [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
++		       [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
++	const s8 (*lmt_ru)[RTW89_RU_NUM][RTW89_NTX_NUM]
++			  [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
++};
 +
- 	if (!AR_SREV_9300_20_OR_LATER(ah)) {
- 		int txpower = fi->tx_power;
++struct rtw89_txpwr_rule_6ghz {
++	const s8 (*lmt)[RTW89_6G_BW_NUM][RTW89_NTX_NUM]
++		       [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
++		       [RTW89_REGD_NUM][RTW89_6G_CH_NUM];
++	const s8 (*lmt_ru)[RTW89_RU_NUM][RTW89_NTX_NUM]
++			  [RTW89_REGD_NUM][RTW89_6G_CH_NUM];
++};
++
++struct rtw89_rfe_parms {
++	struct rtw89_txpwr_rule_2ghz rule_2ghz;
++	struct rtw89_txpwr_rule_5ghz rule_5ghz;
++	struct rtw89_txpwr_rule_6ghz rule_6ghz;
++};
++
++struct rtw89_rfe_parms_conf {
++	const struct rtw89_rfe_parms *rfe_parms;
++	u8 rfe_type;
++};
++
+ struct rtw89_page_regs {
+ 	u32 hci_fc_ctrl;
+ 	u32 ch_page_ctrl;
+@@ -3071,21 +3106,10 @@ struct rtw89_chip_info {
+ 	const struct rtw89_phy_dig_gain_table *dig_table;
+ 	const struct rtw89_dig_regs *dig_regs;
+ 	const struct rtw89_phy_tssi_dbw_table *tssi_dbw_table;
+-	const s8 (*txpwr_lmt_2g)[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+-				[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-				[RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-	const s8 (*txpwr_lmt_5g)[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+-				[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-				[RTW89_REGD_NUM][RTW89_5G_CH_NUM];
+-	const s8 (*txpwr_lmt_6g)[RTW89_6G_BW_NUM][RTW89_NTX_NUM]
+-				[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-				[RTW89_REGD_NUM][RTW89_6G_CH_NUM];
+-	const s8 (*txpwr_lmt_ru_2g)[RTW89_RU_NUM][RTW89_NTX_NUM]
+-				   [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-	const s8 (*txpwr_lmt_ru_5g)[RTW89_RU_NUM][RTW89_NTX_NUM]
+-				   [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
+-	const s8 (*txpwr_lmt_ru_6g)[RTW89_RU_NUM][RTW89_NTX_NUM]
+-				   [RTW89_REGD_NUM][RTW89_6G_CH_NUM];
++
++	/* NULL if no rfe-specific, or a null-terminated array by rfe_parms */
++	const struct rtw89_rfe_parms_conf *rfe_parms_conf;
++	const struct rtw89_rfe_parms *dflt_parms;
  
-@@ -1193,10 +1213,8 @@ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
- 			u16 eeprom_rev = ah->eep_ops->get_eeprom_rev(ah);
+ 	u8 txpwr_factor_rf;
+ 	u8 txpwr_factor_mac;
+@@ -3922,6 +3946,7 @@ struct rtw89_dev {
+ 	struct rtw89_hw_scan_info scan_info;
+ 	const struct rtw89_chip_info *chip;
+ 	const struct rtw89_pci_info *pci_info;
++	const struct rtw89_rfe_parms *rfe_parms;
+ 	struct rtw89_hal hal;
+ 	struct rtw89_mcc_info mcc;
+ 	struct rtw89_mac_info mac;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index d8b035972dd48..8cc4e22f0bbff 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1617,29 +1617,35 @@ static u8 rtw89_channel_to_idx(struct rtw89_dev *rtwdev, u8 band, u8 channel)
+ s8 rtw89_phy_read_txpwr_limit(struct rtw89_dev *rtwdev, u8 band,
+ 			      u8 bw, u8 ntx, u8 rs, u8 bf, u8 ch)
+ {
+-	const struct rtw89_chip_info *chip = rtwdev->chip;
++	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
++	const struct rtw89_txpwr_rule_2ghz *rule_2ghz = &rfe_parms->rule_2ghz;
++	const struct rtw89_txpwr_rule_5ghz *rule_5ghz = &rfe_parms->rule_5ghz;
++	const struct rtw89_txpwr_rule_6ghz *rule_6ghz = &rfe_parms->rule_6ghz;
+ 	u8 ch_idx = rtw89_channel_to_idx(rtwdev, band, ch);
+ 	u8 regd = rtw89_regd_get(rtwdev, band);
+ 	s8 lmt = 0, sar;
  
- 			if (eeprom_rev >= AR5416_EEP_MINOR_VER_2) {
--				bool is_2ghz;
- 				struct modal_eep_header *pmodal;
+ 	switch (band) {
+ 	case RTW89_BAND_2G:
+-		lmt = (*chip->txpwr_lmt_2g)[bw][ntx][rs][bf][regd][ch_idx];
+-		if (!lmt)
+-			lmt = (*chip->txpwr_lmt_2g)[bw][ntx][rs][bf]
+-						   [RTW89_WW][ch_idx];
++		lmt = (*rule_2ghz->lmt)[bw][ntx][rs][bf][regd][ch_idx];
++		if (lmt)
++			break;
++
++		lmt = (*rule_2ghz->lmt)[bw][ntx][rs][bf][RTW89_WW][ch_idx];
+ 		break;
+ 	case RTW89_BAND_5G:
+-		lmt = (*chip->txpwr_lmt_5g)[bw][ntx][rs][bf][regd][ch_idx];
+-		if (!lmt)
+-			lmt = (*chip->txpwr_lmt_5g)[bw][ntx][rs][bf]
+-						   [RTW89_WW][ch_idx];
++		lmt = (*rule_5ghz->lmt)[bw][ntx][rs][bf][regd][ch_idx];
++		if (lmt)
++			break;
++
++		lmt = (*rule_5ghz->lmt)[bw][ntx][rs][bf][RTW89_WW][ch_idx];
+ 		break;
+ 	case RTW89_BAND_6G:
+-		lmt = (*chip->txpwr_lmt_6g)[bw][ntx][rs][bf][regd][ch_idx];
+-		if (!lmt)
+-			lmt = (*chip->txpwr_lmt_6g)[bw][ntx][rs][bf]
+-						   [RTW89_WW][ch_idx];
++		lmt = (*rule_6ghz->lmt)[bw][ntx][rs][bf][regd][ch_idx];
++		if (lmt)
++			break;
++
++		lmt = (*rule_6ghz->lmt)[bw][ntx][rs][bf][RTW89_WW][ch_idx];
+ 		break;
+ 	default:
+ 		rtw89_warn(rtwdev, "unknown band type: %d\n", band);
+@@ -1862,29 +1868,35 @@ void rtw89_phy_fill_txpwr_limit(struct rtw89_dev *rtwdev,
+ static s8 rtw89_phy_read_txpwr_limit_ru(struct rtw89_dev *rtwdev, u8 band,
+ 					u8 ru, u8 ntx, u8 ch)
+ {
+-	const struct rtw89_chip_info *chip = rtwdev->chip;
++	const struct rtw89_rfe_parms *rfe_parms = rtwdev->rfe_parms;
++	const struct rtw89_txpwr_rule_2ghz *rule_2ghz = &rfe_parms->rule_2ghz;
++	const struct rtw89_txpwr_rule_5ghz *rule_5ghz = &rfe_parms->rule_5ghz;
++	const struct rtw89_txpwr_rule_6ghz *rule_6ghz = &rfe_parms->rule_6ghz;
+ 	u8 ch_idx = rtw89_channel_to_idx(rtwdev, band, ch);
+ 	u8 regd = rtw89_regd_get(rtwdev, band);
+ 	s8 lmt_ru = 0, sar;
  
--				is_2ghz = info->band == NL80211_BAND_2GHZ;
- 				pmodal = &eep->modalHeader[is_2ghz];
- 				power_ht40delta = pmodal->ht40PowerIncForPdadc;
- 			} else {
-@@ -1229,7 +1247,7 @@ static u8 ath_get_rate_txpower(struct ath_softc *sc, struct ath_buf *bf,
- 		if (!max_power && !AR_SREV_9280_20_OR_LATER(ah))
- 			max_power = 1;
- 	} else if (!bf->bf_state.bfs_paprd) {
--		if (rateidx < 8 && (info->flags & IEEE80211_TX_CTL_STBC))
-+		if (use_stbc)
- 			max_power = min_t(u8, ah->tx_power_stbc[rateidx],
- 					  fi->tx_power);
- 		else
-@@ -1319,7 +1337,7 @@ static void ath_buf_set_rate(struct ath_softc *sc, struct ath_buf *bf,
- 			}
+ 	switch (band) {
+ 	case RTW89_BAND_2G:
+-		lmt_ru = (*chip->txpwr_lmt_ru_2g)[ru][ntx][regd][ch_idx];
+-		if (!lmt_ru)
+-			lmt_ru = (*chip->txpwr_lmt_ru_2g)[ru][ntx]
+-							 [RTW89_WW][ch_idx];
++		lmt_ru = (*rule_2ghz->lmt_ru)[ru][ntx][regd][ch_idx];
++		if (lmt_ru)
++			break;
++
++		lmt_ru = (*rule_2ghz->lmt_ru)[ru][ntx][RTW89_WW][ch_idx];
+ 		break;
+ 	case RTW89_BAND_5G:
+-		lmt_ru = (*chip->txpwr_lmt_ru_5g)[ru][ntx][regd][ch_idx];
+-		if (!lmt_ru)
+-			lmt_ru = (*chip->txpwr_lmt_ru_5g)[ru][ntx]
+-							 [RTW89_WW][ch_idx];
++		lmt_ru = (*rule_5ghz->lmt_ru)[ru][ntx][regd][ch_idx];
++		if (lmt_ru)
++			break;
++
++		lmt_ru = (*rule_5ghz->lmt_ru)[ru][ntx][RTW89_WW][ch_idx];
+ 		break;
+ 	case RTW89_BAND_6G:
+-		lmt_ru = (*chip->txpwr_lmt_ru_6g)[ru][ntx][regd][ch_idx];
+-		if (!lmt_ru)
+-			lmt_ru = (*chip->txpwr_lmt_ru_6g)[ru][ntx]
+-							 [RTW89_WW][ch_idx];
++		lmt_ru = (*rule_6ghz->lmt_ru)[ru][ntx][regd][ch_idx];
++		if (lmt_ru)
++			break;
++
++		lmt_ru = (*rule_6ghz->lmt_ru)[ru][ntx][RTW89_WW][ch_idx];
+ 		break;
+ 	default:
+ 		rtw89_warn(rtwdev, "unknown band type: %d\n", band);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index 9c42b6abd2232..4a08cc9a63b1e 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -2074,10 +2074,8 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
+ 				   &rtw89_8852a_phy_radiob_table,},
+ 	.nctl_table		= &rtw89_8852a_phy_nctl_table,
+ 	.byr_table		= &rtw89_8852a_byr_table,
+-	.txpwr_lmt_2g		= &rtw89_8852a_txpwr_lmt_2g,
+-	.txpwr_lmt_5g		= &rtw89_8852a_txpwr_lmt_5g,
+-	.txpwr_lmt_ru_2g	= &rtw89_8852a_txpwr_lmt_ru_2g,
+-	.txpwr_lmt_ru_5g	= &rtw89_8852a_txpwr_lmt_ru_5g,
++	.dflt_parms		= &rtw89_8852a_dflt_parms,
++	.rfe_parms_conf		= NULL,
+ 	.txpwr_factor_rf	= 2,
+ 	.txpwr_factor_mac	= 1,
+ 	.dig_table		= &rtw89_8852a_phy_dig_table,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+index 320bcd4852c67..be54194558ffd 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.c
+@@ -43377,6 +43377,7 @@ static const s8 _txpwr_track_delta_swingidx_2g_cck_a_p[] = {
+ 	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5,
+ 	 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10};
  
- 			info->txpower[i] = ath_get_rate_txpower(sc, bf, rix,
--								is_40, false);
-+								is_40, false, true);
- 			continue;
- 		}
++static
+ const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_2G_CH_NUM] = {
+@@ -45566,6 +45567,7 @@ const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+ 	[1][1][2][1][RTW89_UK][13] = 127,
+ };
  
-@@ -1350,7 +1368,7 @@ static void ath_buf_set_rate(struct ath_softc *sc, struct ath_buf *bf,
++static
+ const s8 rtw89_8852a_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_5G_CH_NUM] = {
+@@ -47898,6 +47900,7 @@ const s8 rtw89_8852a_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+ 	[2][1][2][1][RTW89_UK][41] = 40,
+ };
  
- 		is_cck = IS_CCK_RATE(info->rates[i].Rate);
- 		info->txpower[i] = ath_get_rate_txpower(sc, bf, rix, false,
--							is_cck);
-+							is_cck, false);
- 	}
++static
+ const s8 rtw89_8852a_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_2G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = 32,
+@@ -48994,6 +48997,7 @@ const s8 rtw89_8852a_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 	[2][1][RTW89_UK][13] = 127,
+ };
  
- 	/* For AR5416 - RTS cannot be followed by a frame larger than 8K */
++static
+ const s8 rtw89_8852a_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_5G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = 22,
+@@ -51043,3 +51047,14 @@ const struct rtw89_phy_dig_gain_table rtw89_8852a_phy_dig_table = {
+ 	.cfg_lna_a = &rtw89_8852a_lna_gain_a_table,
+ 	.cfg_tia_a = &rtw89_8852a_tia_gain_a_table
+ };
++
++const struct rtw89_rfe_parms rtw89_8852a_dflt_parms = {
++	.rule_2ghz = {
++		.lmt = &rtw89_8852a_txpwr_lmt_2g,
++		.lmt_ru = &rtw89_8852a_txpwr_lmt_ru_2g,
++	},
++	.rule_5ghz = {
++		.lmt = &rtw89_8852a_txpwr_lmt_5g,
++		.lmt_ru = &rtw89_8852a_txpwr_lmt_ru_5g,
++	},
++};
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.h b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.h
+index 9137965062864..41c379b1044d7 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_table.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_table.h
+@@ -14,15 +14,6 @@ extern const struct rtw89_phy_table rtw89_8852a_phy_nctl_table;
+ extern const struct rtw89_txpwr_table rtw89_8852a_byr_table;
+ extern const struct rtw89_phy_dig_gain_table rtw89_8852a_phy_dig_table;
+ extern const struct rtw89_txpwr_track_cfg rtw89_8852a_trk_cfg;
+-extern const s8 rtw89_8852a_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-extern const s8 rtw89_8852a_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_5G_CH_NUM];
+-extern const s8 rtw89_8852a_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-extern const s8 rtw89_8852a_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
++extern const struct rtw89_rfe_parms rtw89_8852a_dflt_parms;
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index 499ae0389c715..5e2aad9497366 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -2451,10 +2451,8 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
+ 				   &rtw89_8852b_phy_radiob_table,},
+ 	.nctl_table		= &rtw89_8852b_phy_nctl_table,
+ 	.byr_table		= &rtw89_8852b_byr_table,
+-	.txpwr_lmt_2g		= &rtw89_8852b_txpwr_lmt_2g,
+-	.txpwr_lmt_5g		= &rtw89_8852b_txpwr_lmt_5g,
+-	.txpwr_lmt_ru_2g	= &rtw89_8852b_txpwr_lmt_ru_2g,
+-	.txpwr_lmt_ru_5g	= &rtw89_8852b_txpwr_lmt_ru_5g,
++	.dflt_parms		= &rtw89_8852b_dflt_parms,
++	.rfe_parms_conf		= NULL,
+ 	.txpwr_factor_rf	= 2,
+ 	.txpwr_factor_mac	= 1,
+ 	.dig_table		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c
+index a6734965361f7..904cdb9e56fa7 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c
+@@ -14706,6 +14706,7 @@ const u8 rtw89_8852b_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
+ 	[1][1][RTW89_UKRAINE] = 0,
+ };
+ 
++static
+ const s8 rtw89_8852b_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_2G_CH_NUM] = {
+@@ -16895,6 +16896,7 @@ const s8 rtw89_8852b_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+ 	[1][1][2][1][RTW89_UK][13] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852b_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_5G_CH_NUM] = {
+@@ -19539,6 +19541,7 @@ const s8 rtw89_8852b_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+ 	[2][1][2][1][RTW89_UK][49] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852b_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_2G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = 32,
+@@ -20635,6 +20638,7 @@ const s8 rtw89_8852b_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 	[2][1][RTW89_UK][13] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852b_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_5G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = 24,
+@@ -22875,3 +22879,14 @@ const struct rtw89_txpwr_track_cfg rtw89_8852b_trk_cfg = {
+ 	.delta_swingidx_2g_cck_a_n = _txpwr_track_delta_swingidx_2g_cck_a_n,
+ 	.delta_swingidx_2g_cck_a_p = _txpwr_track_delta_swingidx_2g_cck_a_p,
+ };
++
++const struct rtw89_rfe_parms rtw89_8852b_dflt_parms = {
++	.rule_2ghz = {
++		.lmt = &rtw89_8852b_txpwr_lmt_2g,
++		.lmt_ru = &rtw89_8852b_txpwr_lmt_ru_2g,
++	},
++	.rule_5ghz = {
++		.lmt = &rtw89_8852b_txpwr_lmt_5g,
++		.lmt_ru = &rtw89_8852b_txpwr_lmt_ru_5g,
++	},
++};
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h
+index 114337ac9fb00..5f4161496a589 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h
+@@ -16,15 +16,6 @@ extern const struct rtw89_txpwr_table rtw89_8852b_byr_table;
+ extern const struct rtw89_txpwr_track_cfg rtw89_8852b_trk_cfg;
+ extern const u8 rtw89_8852b_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
+ 				    [RTW89_REGD_NUM];
+-extern const s8 rtw89_8852b_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-extern const s8 rtw89_8852b_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_5G_CH_NUM];
+-extern const s8 rtw89_8852b_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-extern const s8 rtw89_8852b_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
++extern const struct rtw89_rfe_parms rtw89_8852b_dflt_parms;
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 8af813132f71d..4b9db52be1726 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -2806,12 +2806,8 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
+ 				   &rtw89_8852c_phy_radioa_table,},
+ 	.nctl_table		= &rtw89_8852c_phy_nctl_table,
+ 	.byr_table		= &rtw89_8852c_byr_table,
+-	.txpwr_lmt_2g		= &rtw89_8852c_txpwr_lmt_2g,
+-	.txpwr_lmt_5g		= &rtw89_8852c_txpwr_lmt_5g,
+-	.txpwr_lmt_6g		= &rtw89_8852c_txpwr_lmt_6g,
+-	.txpwr_lmt_ru_2g	= &rtw89_8852c_txpwr_lmt_ru_2g,
+-	.txpwr_lmt_ru_5g	= &rtw89_8852c_txpwr_lmt_ru_5g,
+-	.txpwr_lmt_ru_6g	= &rtw89_8852c_txpwr_lmt_ru_6g,
++	.dflt_parms		= &rtw89_8852c_dflt_parms,
++	.rfe_parms_conf		= NULL,
+ 	.txpwr_factor_rf	= 2,
+ 	.txpwr_factor_mac	= 1,
+ 	.dig_table		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
+index 96c264a057ff4..7011e5a6f8fda 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
+@@ -28590,6 +28590,7 @@ const u8 rtw89_8852c_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
+ 	[2][1][RTW89_KCC] = 0,
+ };
+ 
++static
+ const s8 rtw89_8852c_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_2G_CH_NUM] = {
+@@ -30107,6 +30108,7 @@ const s8 rtw89_8852c_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+ 	[1][1][2][1][RTW89_UK][13] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_5G_CH_NUM] = {
+@@ -32020,6 +32022,7 @@ const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+ 	[3][1][2][1][RTW89_UK][45] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852c_txpwr_lmt_6g[RTW89_6G_BW_NUM][RTW89_NTX_NUM]
+ 				 [RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+ 				 [RTW89_REGD_NUM][RTW89_6G_CH_NUM] = {
+@@ -33977,6 +33980,7 @@ const s8 rtw89_8852c_txpwr_lmt_6g[RTW89_6G_BW_NUM][RTW89_NTX_NUM]
+ 	[3][1][2][1][RTW89_KCC][112] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852c_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_2G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = 32,
+@@ -34737,6 +34741,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 	[2][1][RTW89_UK][13] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_5G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = 16,
+@@ -36253,6 +36258,7 @@ const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 	[2][1][RTW89_UK][52] = 127,
+ };
+ 
++static
+ const s8 rtw89_8852c_txpwr_lmt_ru_6g[RTW89_RU_NUM][RTW89_NTX_NUM]
+ 				    [RTW89_REGD_NUM][RTW89_6G_CH_NUM] = {
+ 	[0][0][RTW89_WW][0] = -16,
+@@ -37472,3 +37478,18 @@ const struct rtw89_phy_tssi_dbw_table rtw89_8852c_tssi_dbw_table = {
+ 	.data[RTW89_TSSI_BANDEDGE_MID] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+ 	.data[RTW89_TSSI_BANDEDGE_HIGH] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+ };
++
++const struct rtw89_rfe_parms rtw89_8852c_dflt_parms = {
++	.rule_2ghz = {
++		.lmt = &rtw89_8852c_txpwr_lmt_2g,
++		.lmt_ru = &rtw89_8852c_txpwr_lmt_ru_2g,
++	},
++	.rule_5ghz = {
++		.lmt = &rtw89_8852c_txpwr_lmt_5g,
++		.lmt_ru = &rtw89_8852c_txpwr_lmt_ru_5g,
++	},
++	.rule_6ghz = {
++		.lmt = &rtw89_8852c_txpwr_lmt_6g,
++		.lmt_ru = &rtw89_8852c_txpwr_lmt_ru_6g,
++	},
++};
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
+index 7d71a92e2d27c..6da1849fb1fac 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
+@@ -17,20 +17,6 @@ extern const struct rtw89_phy_tssi_dbw_table rtw89_8852c_tssi_dbw_table;
+ extern const struct rtw89_txpwr_track_cfg rtw89_8852c_trk_cfg;
+ extern const u8 rtw89_8852c_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
+ 				    [RTW89_REGD_NUM];
+-extern const s8 rtw89_8852c_txpwr_lmt_2g[RTW89_2G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-extern const s8 rtw89_8852c_txpwr_lmt_5g[RTW89_5G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_5G_CH_NUM];
+-extern const s8 rtw89_8852c_txpwr_lmt_6g[RTW89_6G_BW_NUM][RTW89_NTX_NUM]
+-					[RTW89_RS_LMT_NUM][RTW89_BF_NUM]
+-					[RTW89_REGD_NUM][RTW89_6G_CH_NUM];
+-extern const s8 rtw89_8852c_txpwr_lmt_ru_2g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_2G_CH_NUM];
+-extern const s8 rtw89_8852c_txpwr_lmt_ru_5g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_5G_CH_NUM];
+-extern const s8 rtw89_8852c_txpwr_lmt_ru_6g[RTW89_RU_NUM][RTW89_NTX_NUM]
+-					   [RTW89_REGD_NUM][RTW89_6G_CH_NUM];
++extern const struct rtw89_rfe_parms rtw89_8852c_dflt_parms;
+ 
+ #endif
 -- 
-2.30.2
+2.25.1
 
