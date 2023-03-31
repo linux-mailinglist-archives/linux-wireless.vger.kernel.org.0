@@ -2,153 +2,256 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 675296D23D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 17:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1B096D26A5
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 19:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233181AbjCaPSQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Mar 2023 11:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42690 "EHLO
+        id S231126AbjCaR1v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Mar 2023 13:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233149AbjCaPSO (ORCPT
+        with ESMTP id S230496AbjCaR1u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Mar 2023 11:18:14 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2115.outbound.protection.outlook.com [40.107.243.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC282127;
-        Fri, 31 Mar 2023 08:18:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CL7wMuKABN2Y/OrwtFJKLBqKeUZZ74y9Ob51yppbypvY3LHTHvQO1TJVMSPNCZAlBgrvk4yHppiz5MLGqE91bD2Ws/0OdQEGtJZxRwcwXs2wR5IfR4hZvgiXznzawl/LINqUsYhqPAMO7WRkEZ9wKay6p0/ngAf94xnBCNPCkXC9qCE0TFEPAig/l7sZJZ/GFPOxfh99SeCANH5O3SoRdmu/NnyWkIbL5kn3/v+haMSRAxLdrl7UUYZQc5L9kqvOW00A9nFwTX2IJi9PilEDhKGLoA1Ot2Aq1ACgvuFAhdEp6RtijwAwbLC+j8+ClprDHerNzGkxF+gXb3JzB8fsnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nrVS0Yw0zvqGCZarcu/ZxZMuIyCFHdwss9NE1GCFSl4=;
- b=eSyoBdp0ogrg6PEiHzZ5FVOQV8nIfA819h9bfnW0b2WkummwCdbGhz2kjPBYg9TpzEg8CpzB9n6i9FYUsrzFinPOkALjnP/qIQLmV0Y8ee/SRdCXcaar2YkjtPkLLyr+A6npXqzjLJMWV5l7FthIcyI3+tF89pcPniO4ZtSiIBWeEOzwAvl0r6c3bUfZpfyxYn2b5R0pl+G3LpQiQVdIu7VcpC0NNmqMJKuEBRvzzFPW6TJ18W4VHMq+bls7jFGbiOqa1uJC3768WXYBLwskJ5EJg9B/i1Y5Q/tYh/+X7hiYUr8ye4tkaAu8uHiU5AiOiZidEgJ8lpwdnlYTMGM7jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nrVS0Yw0zvqGCZarcu/ZxZMuIyCFHdwss9NE1GCFSl4=;
- b=q07kqh5hkqfdNe6baPjHI8Mn2DI6f/aJjosSf7uygWPrK7WkEa4/V9eSlcyLloL+QObgFNPEHroUWoPI0v56ZcAepySZ2vCK5SuCYXTVgM0shRKaevEeLYQEhXzXh5kG6XxhUpe7AAwtV7E5/fTFLdqAyCMDdePUHhy2mEihKrA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BL3PR13MB5162.namprd13.prod.outlook.com (2603:10b6:208:339::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.24; Fri, 31 Mar
- 2023 15:18:10 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::c506:5243:557e:82cb]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::c506:5243:557e:82cb%5]) with mapi id 15.20.6254.021; Fri, 31 Mar 2023
- 15:18:09 +0000
-Date:   Fri, 31 Mar 2023 17:17:45 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Armin Wolf <W_Armin@gmx.de>
-Cc:     stf_xl@wp.pl, helmut.schaa@googlemail.com, kvalo@kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: rt2x00: Fix memory leak when handling surveys
-Message-ID: <ZCb5meIuw+dsJrP7@corigine.com>
-References: <20230330215637.4332-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230330215637.4332-1-W_Armin@gmx.de>
-X-ClientProxiedBy: AS4P192CA0028.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e1::13) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Fri, 31 Mar 2023 13:27:50 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0ED1CBA5
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 10:27:38 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 84D0F1C007D
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 17:27:36 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id F079113C2B0;
+        Fri, 31 Mar 2023 10:27:35 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F079113C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1680283656;
+        bh=WVRsz6G0bqS6eUElgNoxFu1EB42KumM3WPEXuBGYbVw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NtseZXBOPRTAn+SSBNF6HdeyymCd4mSDJmUvYDCg83VOYk2XDPfwIGLjF9Q6OIyTk
+         xksre5Eq/jullv7NU/gpvRINjwOsEKSLkoawkQtaknZmRPorypxxSWp/xMsdQ3ROEw
+         Q1HK9wfgrZRFxI3zDOeiEc8LO3NSGaiMyjw8fK9g=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH v2] wifi: mac80211: fix EHT issue in ieee80211_determine_chantype
+Date:   Fri, 31 Mar 2023 10:27:31 -0700
+Message-Id: <20230331172731.3580369-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BL3PR13MB5162:EE_
-X-MS-Office365-Filtering-Correlation-Id: 361b7c5a-3956-46ab-94d8-08db31fb223b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KGcvnEsHf65/jWgW7+jW/tWUl/uXgnRnj7hUrEWc6UNYnXXiyLxiTonuuhjTaZeRcNio+Ucv+hqnOk/8Etosrs5u8u/33QN+JuHf53Ydhz3wBjYgCsQ8ZlUULevHHam/9qZpJU8niG69uWt2DgllPMHZ+p8WSnwhmFTNrTajv2IJsZKaUpu+0k/hJNjU5aTKBwA5eJNjCFmI9JlvRXfK+wewo67GiGehoUhOd0Kxfo4fCnwY2e5bLBwoe+XELBmg1p6KwKY1cNqb01TIM/vkFPp0oyt1ExVnImm+s/wWTFN9lKFFvuHTszG3Oe4jJ1icHewSRkEygxQAbEsDF8Uc2jHIoG5oioJl1f8/CjA2J7L72l9eiBcF4SP2DwTzuDf5i1klt21AHNxc2o/QFx6VKrU/7Jx9o10b2q0PIMossmKZO8AVUYu0HhRiG5Kn/5XnZTQXg08gIGYqQ4WSB693Y6zoH0tqcPuQhZbmzt30cS9R6un5HZ2t3W3egfWB6LarosFzQkdPZbhGlUFubkMSqWI0AcTx0P0/PqZpN0lRAHM2wYg4mApiVkvG5T9NGLi05tjA3Jxc2VWfAQqxv0ydxCB+SA0Un8YQeOXpdMBAGK4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(39840400004)(346002)(376002)(136003)(451199021)(36756003)(44832011)(5660300002)(7416002)(8936002)(38100700002)(66946007)(41300700001)(86362001)(8676002)(66556008)(4326008)(6916009)(66476007)(2616005)(2906002)(6512007)(6506007)(6486002)(478600001)(6666004)(186003)(316002)(67856001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LLIXs2cRAcSrEl4SLThDbFlBDxTtjcSdnZz/p975yuiZk+jru/nY5wdDZy+p?=
- =?us-ascii?Q?+MkHZSpYiFWtPeQJ8hMdv50n6Vxw8gqIPuVW+gW+atA2NCErqguVoFdJQBcj?=
- =?us-ascii?Q?bfxPgBxiFrouTAgcosBJEt17ytSwm+CvZy/kXUBmuqJrwjml2dG0LV0eVQXZ?=
- =?us-ascii?Q?N4yB3qMG5kaULLXGl+AUdCHlx7qcYJGl+TJrocRM6BZeGofbUE2gw0ZQ/ByH?=
- =?us-ascii?Q?LiETl6cheu1LA7/M3HE0m2ssgoWH0gT4o0+0Bxeov145x7vXk50BLBjFCPEf?=
- =?us-ascii?Q?0B4HL3tAs3+8OQV9ra7W15rQ+tAS3feSMMNapLw4gUpsuvAsd2sw5nR46avj?=
- =?us-ascii?Q?H6yOXghEpKwPwBNIOTwwsYwYj/vTXwZUqPIPuF+TeoSP4FTrBsWdgUj0D410?=
- =?us-ascii?Q?4VA7bG8/l8ZmYdJB3NSkElMuFkTCGqZ0z99PdToSWoGbvYl3pihTL0igInx4?=
- =?us-ascii?Q?u/4ZPia3O+FWLBD5gFKnqTtaXLRMdbuuz6HyVmFE/Nilb+cJ7zelYVJj3qbs?=
- =?us-ascii?Q?oObMdUUJuiKhYncFEfIp1wB1re+SRFoqSQn2/DSM6eVmaSkXpjLxYfS1yrvN?=
- =?us-ascii?Q?yRvMo2J5JiOAdZZ8czsEWC4vKX8FjcC3vOcPfrZBJXqPwYc7byt8u9KUU12I?=
- =?us-ascii?Q?7IRr/RwYGIlpSa3Plyns9LOSRY0Wy3+XdsMLYABq73CupdPeC8H/bbtErHJD?=
- =?us-ascii?Q?MhYXbNULDC3VSSicOGDZDqm0VxFzFprkFxa00dhn9+LCtme/Ms6gRMQaOHug?=
- =?us-ascii?Q?DSNTBkq2tlimnfXteM0QH0t4zOaA5oE2XTGv8y8AeWSvtz7ov9GK3koAzENU?=
- =?us-ascii?Q?r59IEGFL9UdEZlpg35ixZ8j75ryrwahXG5Ou4MVvUhVDMLu9WfLjcaaX0tAr?=
- =?us-ascii?Q?tTWtbutVbu8n7C94b/hoRjMhOm4jQ/hgEwdx5Q86Hn6Fm9q29dUrktY6x9+a?=
- =?us-ascii?Q?nyPM+lxBXO/dIwVDNSyIKDgFZK96+3Oe6ZQ0o7nBhlwcDeAwFMvqSfC8f3ZT?=
- =?us-ascii?Q?O7I79x18EvRzUMeTWePD7KbIUMtdJ7eM32eKwuf+iUB58+CS8mrUrYtw3Z7I?=
- =?us-ascii?Q?olDYHrI0fMSkHWFudjRYWG1FwR/Lpt+sbwsA7UBRN4z/+aoJgOv+335nZ0fj?=
- =?us-ascii?Q?JcPhGhnNxy9hMBCnij/Dzbr44o5U+kUoYxUGfVc4fRruv1vQRSS9KiHsX+BZ?=
- =?us-ascii?Q?MhNH8BffW+InXzVMpyX++DxjZpU3vm0ICI4RKsiOzQJFpnlhYgICHtXlPfxz?=
- =?us-ascii?Q?L/7pZ+0oB89WG2GnIGY9luTCgcV2Fgd6FPNpCkGqcDYwNier6lxJYSG1JuS1?=
- =?us-ascii?Q?cHfJfplayzW4Qt0Pr8RR1G1uSqoyHJCpbaU0XdTLxr3uT96ZXtsUGjI7tsMJ?=
- =?us-ascii?Q?wJW8lWZltbvkSx89Ty0ez8kM1hFP13X3Cq0Cz2emCT9PiJgZTmyEme63uWvp?=
- =?us-ascii?Q?dwQgsbIIk2pnMncwwah3cymylOY4snNw3ql3ZsKLZMPk1hDsd8YZB2wkktoC?=
- =?us-ascii?Q?B9Hy1cdkqBFuEZ7u+3Hzsb1QQxaih+YEzoNBksx+kaL86oo6gOVJ2XQ75UAk?=
- =?us-ascii?Q?XgM2/eWbDKFKn2LfSSz3tS+EuFFy7sTbM3E4gXy7UeaxcIdMQeZ97pppw70N?=
- =?us-ascii?Q?hig9ZndMGadme0IJ5moUv8Pmr9YkvY1wvduyxLYd1y9CXDW2CZbVpk0Y9skl?=
- =?us-ascii?Q?qwWfAA=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 361b7c5a-3956-46ab-94d8-08db31fb223b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2023 15:18:08.7399
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uo3u27HM/AmQ8pYKYPaEeioe07Fazwq+CMjDdDBc7MBzHWKHWMEE/dCUfjHMl0rBfh6tUc6z8SqONqhgTCbCpZSWVWw5qVuOvLCbAwVn1Cs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR13MB5162
-X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1680283657-c0Oi0GZsiA7x
+X-MDID-O: us5;ut7;1680283657;c0Oi0GZsiA7x;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Mar 30, 2023 at 11:56:37PM +0200, Armin Wolf wrote:
-> When removing a rt2x00 device, its associated channel surveys
-> are not freed, causing a memory leak observable with kmemleak:
-> 
-> unreferenced object 0xffff9620f0881a00 (size 512):
->   comm "systemd-udevd", pid 2290, jiffies 4294906974 (age 33.768s)
->   hex dump (first 32 bytes):
->     70 44 12 00 00 00 00 00 92 8a 00 00 00 00 00 00  pD..............
->     00 00 00 00 00 00 00 00 ab 87 01 00 00 00 00 00  ................
->   backtrace:
->     [<ffffffffb0ed858b>] __kmalloc+0x4b/0x130
->     [<ffffffffc1b0f29b>] rt2800_probe_hw+0xc2b/0x1380 [rt2800lib]
->     [<ffffffffc1a9496e>] rt2800usb_probe_hw+0xe/0x60 [rt2800usb]
->     [<ffffffffc1ae491a>] rt2x00lib_probe_dev+0x21a/0x7d0 [rt2x00lib]
->     [<ffffffffc1b3b83e>] rt2x00usb_probe+0x1be/0x980 [rt2x00usb]
->     [<ffffffffc05981e2>] usb_probe_interface+0xe2/0x310 [usbcore]
->     [<ffffffffb13be2d5>] really_probe+0x1a5/0x410
->     [<ffffffffb13be5c8>] __driver_probe_device+0x78/0x180
->     [<ffffffffb13be6fe>] driver_probe_device+0x1e/0x90
->     [<ffffffffb13be972>] __driver_attach+0xd2/0x1c0
->     [<ffffffffb13bbc57>] bus_for_each_dev+0x77/0xd0
->     [<ffffffffb13bd2a2>] bus_add_driver+0x112/0x210
->     [<ffffffffb13bfc6c>] driver_register+0x5c/0x120
->     [<ffffffffc0596ae8>] usb_register_driver+0x88/0x150 [usbcore]
->     [<ffffffffb0c011c4>] do_one_initcall+0x44/0x220
->     [<ffffffffb0d6134c>] do_init_module+0x4c/0x220
-> 
-> Fix this by freeing the channel surveys on device removal.
-> 
-> Tested with a RT3070 based USB wireless adapter.
-> 
-> Fixes: 5447626910f5 ("rt2x00: save survey for every channel visited")
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+From: Ben Greear <greearb@candelatech.com>
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+The IEEE80211_STA_DISABLE_EHT flag was not enabled when it should
+be, so the bandwidth change failed, and STA disconnected.
+
+Use an OR approach instead of just assinging the flags, to
+allow easier setting of certain flags such as the EHT
+one.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+
+v2:  Remove the 'ret = 0' before goto, I missed that when porting this
+forward orriginally.
+
+ net/mac80211/mlme.c | 66 ++++++++++++++++++++++-----------------------
+ 1 file changed, 32 insertions(+), 34 deletions(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d5a0416d9c67..ede5862b8cb2 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -168,7 +168,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ {
+ 	struct cfg80211_chan_def vht_chandef;
+ 	struct ieee80211_sta_ht_cap sta_ht_cap;
+-	ieee80211_conn_flags_t ret;
++	ieee80211_conn_flags_t ret = 0;
+ 	u32 ht_cfreq;
+ 
+ 	memset(chandef, 0, sizeof(struct cfg80211_chan_def));
+@@ -177,17 +177,18 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 	chandef->center_freq1 = channel->center_freq;
+ 	chandef->freq1_offset = channel->freq_offset;
+ 
++	if (!eht_oper)
++		ret |= IEEE80211_CONN_DISABLE_EHT;
++
+ 	if (channel->band == NL80211_BAND_6GHZ) {
+ 		if (!ieee80211_chandef_he_6ghz_oper(sdata, he_oper, eht_oper,
+ 						    chandef)) {
+ 			mlme_dbg(sdata,
+ 				 "bad 6 GHz operation, disabling HT/VHT/HE/EHT\n");
+-			ret = IEEE80211_CONN_DISABLE_HT |
+-			      IEEE80211_CONN_DISABLE_VHT |
+-			      IEEE80211_CONN_DISABLE_HE |
+-			      IEEE80211_CONN_DISABLE_EHT;
+-		} else {
+-			ret = 0;
++			ret |= IEEE80211_CONN_DISABLE_HT |
++			       IEEE80211_CONN_DISABLE_VHT |
++			       IEEE80211_CONN_DISABLE_HE |
++			       IEEE80211_CONN_DISABLE_EHT;
+ 		}
+ 		vht_chandef = *chandef;
+ 		goto out;
+@@ -198,10 +199,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			chandef->width = ieee80211_s1g_channel_width(channel);
+ 		}
+ 
+-		ret = IEEE80211_CONN_DISABLE_HT | IEEE80211_CONN_DISABLE_40MHZ |
+-		      IEEE80211_CONN_DISABLE_VHT |
+-		      IEEE80211_CONN_DISABLE_80P80MHZ |
+-		      IEEE80211_CONN_DISABLE_160MHZ;
++		ret |= IEEE80211_CONN_DISABLE_HT | IEEE80211_CONN_DISABLE_40MHZ |
++		       IEEE80211_CONN_DISABLE_VHT |
++		       IEEE80211_CONN_DISABLE_80P80MHZ |
++		       IEEE80211_CONN_DISABLE_160MHZ;
+ 		goto out;
+ 	}
+ 
+@@ -210,10 +211,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (!ht_oper || !sta_ht_cap.ht_supported) {
+ 		mlme_dbg(sdata, "HT operation missing / HT not supported\n");
+-		ret = IEEE80211_CONN_DISABLE_HT |
+-		      IEEE80211_CONN_DISABLE_VHT |
+-		      IEEE80211_CONN_DISABLE_HE |
+-		      IEEE80211_CONN_DISABLE_EHT;
++		ret |= IEEE80211_CONN_DISABLE_HT |
++		       IEEE80211_CONN_DISABLE_VHT |
++		       IEEE80211_CONN_DISABLE_HE |
++		       IEEE80211_CONN_DISABLE_EHT;
+ 		goto out;
+ 	}
+ 
+@@ -234,10 +235,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			   "Wrong control channel: center-freq: %d ht-cfreq: %d ht->primary_chan: %d band: %d - Disabling HT\n",
+ 			   channel->center_freq, ht_cfreq,
+ 			   ht_oper->primary_chan, channel->band);
+-		ret = IEEE80211_CONN_DISABLE_HT |
+-		      IEEE80211_CONN_DISABLE_VHT |
+-		      IEEE80211_CONN_DISABLE_HE |
+-		      IEEE80211_CONN_DISABLE_EHT;
++		ret |= IEEE80211_CONN_DISABLE_HT |
++		       IEEE80211_CONN_DISABLE_VHT |
++		       IEEE80211_CONN_DISABLE_HE |
++		       IEEE80211_CONN_DISABLE_EHT;
+ 		goto out;
+ 	}
+ 
+@@ -247,7 +248,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 	} else {
+ 		mlme_dbg(sdata, "40 MHz not supported\n");
+ 		/* 40 MHz (and 80 MHz) must be supported for VHT */
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		/* also mark 40 MHz disabled */
+ 		ret |= IEEE80211_CONN_DISABLE_40MHZ;
+ 		goto out;
+@@ -255,7 +256,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 
+ 	if (!vht_oper || !sband->vht_cap.vht_supported) {
+ 		mlme_dbg(sdata, "VHT operation missing / VHT not supported\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+@@ -279,7 +280,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			if (!(conn_flags & IEEE80211_CONN_DISABLE_HE))
+ 				sdata_info(sdata,
+ 					   "HE AP VHT information is invalid, disabling HE\n");
+-			ret = IEEE80211_CONN_DISABLE_HE | IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_HE | IEEE80211_CONN_DISABLE_EHT;
+ 			goto out;
+ 		}
+ 	} else if (!ieee80211_chandef_vht_oper(&sdata->local->hw,
+@@ -289,7 +290,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 		if (!(conn_flags & IEEE80211_CONN_DISABLE_VHT))
+ 			sdata_info(sdata,
+ 				   "AP VHT information is invalid, disabling VHT\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+@@ -297,12 +298,11 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 		if (!(conn_flags & IEEE80211_CONN_DISABLE_VHT))
+ 			sdata_info(sdata,
+ 				   "AP VHT information is invalid, disabling VHT\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+ 	if (cfg80211_chandef_identical(chandef, &vht_chandef)) {
+-		ret = 0;
+ 		goto out;
+ 	}
+ 
+@@ -310,7 +310,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 		if (!(conn_flags & IEEE80211_CONN_DISABLE_VHT))
+ 			sdata_info(sdata,
+ 				   "AP VHT information doesn't match HT, disabling VHT\n");
+-		ret = IEEE80211_CONN_DISABLE_VHT;
++		ret |= IEEE80211_CONN_DISABLE_VHT;
+ 		goto out;
+ 	}
+ 
+@@ -333,7 +333,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			if (!(conn_flags & IEEE80211_CONN_DISABLE_EHT))
+ 				sdata_info(sdata,
+ 					   "AP EHT information is invalid, disabling EHT\n");
+-			ret = IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_EHT;
+ 			goto out;
+ 		}
+ 
+@@ -341,15 +341,13 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 			if (!(conn_flags & IEEE80211_CONN_DISABLE_EHT))
+ 				sdata_info(sdata,
+ 					   "AP EHT information is incompatible, disabling EHT\n");
+-			ret = IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_EHT;
+ 			goto out;
+ 		}
+ 
+ 		*chandef = eht_chandef;
+ 	}
+ 
+-	ret = 0;
+-
+ out:
+ 	/*
+ 	 * When tracking the current AP, don't do any further checks if the
+@@ -389,10 +387,10 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
+ 					tracking ? 0 :
+ 						   IEEE80211_CHAN_DISABLED)) {
+ 		if (WARN_ON(chandef->width == NL80211_CHAN_WIDTH_20_NOHT)) {
+-			ret = IEEE80211_CONN_DISABLE_HT |
+-			      IEEE80211_CONN_DISABLE_VHT |
+-			      IEEE80211_CONN_DISABLE_HE |
+-			      IEEE80211_CONN_DISABLE_EHT;
++			ret |= IEEE80211_CONN_DISABLE_HT |
++				IEEE80211_CONN_DISABLE_VHT |
++				IEEE80211_CONN_DISABLE_HE |
++				IEEE80211_CONN_DISABLE_EHT;
+ 			break;
+ 		}
+ 
+-- 
+2.39.1
 
