@@ -2,155 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1876D2357
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 16:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BE06D2365
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 17:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233057AbjCaO7k (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Mar 2023 10:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47124 "EHLO
+        id S233048AbjCaPBI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Mar 2023 11:01:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232823AbjCaO7b (ORCPT
+        with ESMTP id S233088AbjCaPAz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Mar 2023 10:59:31 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F6BDCA38
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 07:59:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Qk7jwjYHM66+nt95L8c9tVyf/KkzddOGygQjTZZXIfc=;
-        t=1680274762; x=1681484362; b=t94TuzClDemJAXk6jEqEQKBMboplpcDd3EKs/mD9FPT+qXr
-        /p2p67EsZC6oPNRbOaNACYhNlhkgxcog6A3VqFJd2DvM1QlqIv0hG90KoBjzLHUdtwBfeUx/nT2qC
-        i8KVATivUddZjJphK1S8TlzUh5CeH9mDxMTUQ2ZSFkK9kj8X5M/idVK0AKu4F63tNjAhp97IUKLGu
-        kcf25sVXVuK4nnw1gRadax9zjr5PLymlDKNHPEDYJj05cub/+FaSkm7ZPgSVPsZ2eVYn3WbkYkMtY
-        t1+FYMzLCEm3aC91D0FneukdZKcfwL9Y0N90e0YntdPr0n8zLwgtB+/1t/+au+uQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1piGDo-002ID5-0d;
-        Fri, 31 Mar 2023 16:59:20 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/2] wifi: mac80211: add flush_sta method
-Date:   Fri, 31 Mar 2023 16:59:17 +0200
-Message-Id: <20230331165915.7f6f27a79852.I4edd6fca41b04c43d5dcb7c00732525f84e48836@changeid>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230331165915.2480c0c04b69.Ia95b7dbddeba0cfe619ccebfe3acafedd372c70f@changeid>
-References: <20230331165915.2480c0c04b69.Ia95b7dbddeba0cfe619ccebfe3acafedd372c70f@changeid>
+        Fri, 31 Mar 2023 11:00:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1031D502
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 08:00:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AAE66293D
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 15:00:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81E8C433D2;
+        Fri, 31 Mar 2023 15:00:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680274846;
+        bh=8LY7eo1n32jgo/0yb5uco8QesIkrj++TNg1Ht7mcvWM=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=n4pvQ3HEEuN5XDFUFeqLbZ9C9Wn2WKBbDI1JZFu2LlcHTZeYPnvX6LCSYsB/VvfWT
+         N1BlzsRl3FuXy1wZY0YX3ZrqwSRjlNjxl+mABLp7K2k9z9MPknEwx1rizwFxyDPYgN
+         PM3YULuITFPkHyWr5/fYbRXaB7QxxcsVC/LaEYUTU4QzBXmgETohGk116fYAZVlO1C
+         vmBtoWGHyqQWzTUl0QJvSBs5s7nTteOE9R+v4aBS35tR5zxUMQCneRsCE3kY9mXDr1
+         C+tZ/Anf+/cMo357E8ay9JwTgyRczzQfh9DJn4Lo79YsNfXFhPSsAUhFSghf0cvotr
+         3TXZun8TpC7cw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: brcmfmac: Fix SDIO suspend/resume regression
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230320122252.240070-1-hdegoede@redhat.com>
+References: <20230320122252.240070-1-hdegoede@redhat.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com,
+        Ulf Hansson <ulf.hansson@linaro.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <168027484302.3675.6718945488204958465.kvalo@kernel.org>
+Date:   Fri, 31 Mar 2023 15:00:44 +0000 (UTC)
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-Some drivers like iwlwifi might have per-STA queues, so we
-may want to flush/drop just those queues rather than all
-when removing a station. Add a separate method for that.
+> After commit 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card
+> unless WOWL is used"), the wifi adapter by default is turned off on suspend
+> and then re-probed on resume.
+> 
+> In at least 2 model x86/acpi tablets with brcmfmac43430a1 wifi adapters,
+> the newly added re-probe on resume fails like this:
+> 
+>  brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
+>  ieee80211 phy1: brcmf_bus_started: failed: -110
+>  ieee80211 phy1: brcmf_attach: dongle is not responding: err=-110
+>  brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
+> 
+> It seems this specific brcmfmac model does not like being reprobed without
+> it actually being turned off first.
+> 
+> And the adapter is not being turned off during suspend because of
+> commit f0992ace680c ("brcmfmac: prohibit ACPI power management for brcmfmac
+> driver").
+> 
+> Now that the driver is being reprobed on resume, the disabling of ACPI
+> pm is no longer necessary, except when WOWL is used (in which case there
+> is no-reprobe).
+> 
+> Move the dis-/en-abling of ACPI pm to brcmf_sdio_wowl_config(), this fixes
+> the brcmfmac43430a1 suspend/resume regression and should help save some
+> power when suspended.
+> 
+> This change means that the code now also may re-enable ACPI pm when WOWL
+> gets disabled. ACPI pm should only be re-enabled if it was enabled by
+> the ACPI core originally. Add a brcmf_sdiod_acpi_save_power_manageable()
+> to save the original state for this.
+> 
+> This has been tested on the following devices:
+> 
+> Asus T100TA                brcmfmac43241b4-sdio
+> Acer Iconia One 7 B1-750   brcmfmac43340-sdio
+> Chuwi Hi8                  brcmfmac43430a0-sdio
+> Chuwi Hi8                  brcmfmac43430a1-sdio
+> 
+> (the Asus T100TA is the device for which the prohibiting of ACPI pm
+>  was originally added)
+> 
+> Fixes: 92cadedd9d5f ("brcmfmac: Avoid keeping power to SDIO card unless WOWL is used")
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/mac80211.h    |  6 ++++++
- net/mac80211/driver-ops.h | 15 +++++++++++++++
- net/mac80211/sta_info.c   |  8 ++++++--
- net/mac80211/trace.h      |  7 +++++++
- 4 files changed, 34 insertions(+), 2 deletions(-)
+Patch applied to wireless.git, thanks.
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 679421d37a42..a8dadbd83d95 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -3950,6 +3950,10 @@ struct ieee80211_prep_tx_info {
-  *	Note that vif can be NULL.
-  *	The callback can sleep.
-  *
-+ * @flush_sta: Flush or drop all pending frames from the hardware queue(s) for
-+ *	the given station, as it's about to be removed.
-+ *	The callback can sleep.
-+ *
-  * @channel_switch: Drivers that need (or want) to offload the channel
-  *	switch operation for CSAs received from the AP may implement this
-  *	callback. They must then call ieee80211_chswitch_done() to indicate
-@@ -4415,6 +4419,8 @@ struct ieee80211_ops {
- #endif
- 	void (*flush)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		      u32 queues, bool drop);
-+	void (*flush_sta)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			  struct ieee80211_sta *sta);
- 	void (*channel_switch)(struct ieee80211_hw *hw,
- 			       struct ieee80211_vif *vif,
- 			       struct ieee80211_channel_switch *ch_switch);
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 0bf208f5bbc5..45d3e53c7383 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -649,6 +649,21 @@ static inline void drv_flush(struct ieee80211_local *local,
- 	trace_drv_return_void(local);
- }
- 
-+static inline void drv_flush_sta(struct ieee80211_local *local,
-+				 struct ieee80211_sub_if_data *sdata,
-+				 struct sta_info *sta)
-+{
-+	might_sleep();
-+
-+	if (sdata && !check_sdata_in_driver(sdata))
-+		return;
-+
-+	trace_drv_flush_sta(local, sdata, &sta->sta);
-+	if (local->ops->flush_sta)
-+		local->ops->flush_sta(&local->hw, &sdata->vif, &sta->sta);
-+	trace_drv_return_void(local);
-+}
-+
- static inline void drv_channel_switch(struct ieee80211_local *local,
- 				      struct ieee80211_sub_if_data *sdata,
- 				      struct ieee80211_channel_switch *ch_switch)
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index ce7c3b997269..1400512e0dde 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1299,8 +1299,12 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 	 * frames sitting on hardware queues might be sent out without
- 	 * any encryption at all.
- 	 */
--	if (local->ops->set_key)
--		ieee80211_flush_queues(local, sta->sdata, false);
-+	if (local->ops->set_key) {
-+		if (local->ops->flush_sta)
-+			drv_flush_sta(local, sta->sdata, sta);
-+		else
-+			ieee80211_flush_queues(local, sta->sdata, false);
-+	}
- 
- 	/* now keys can no longer be reached */
- 	ieee80211_free_sta_keys(local, sta);
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index e0ccf5fe708a..de5d69f21306 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -1177,6 +1177,13 @@ TRACE_EVENT(drv_flush,
- 	)
- );
- 
-+DEFINE_EVENT(sta_event, drv_flush_sta,
-+	TP_PROTO(struct ieee80211_local *local,
-+		 struct ieee80211_sub_if_data *sdata,
-+		 struct ieee80211_sta *sta),
-+	TP_ARGS(local, sdata, sta)
-+);
-+
- TRACE_EVENT(drv_channel_switch,
- 	TP_PROTO(struct ieee80211_local *local,
- 		 struct ieee80211_sub_if_data *sdata,
+e4efa515d58f wifi: brcmfmac: Fix SDIO suspend/resume regression
+
 -- 
-2.39.2
+https://patchwork.kernel.org/project/linux-wireless/patch/20230320122252.240070-1-hdegoede@redhat.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
