@@ -2,180 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBFD86D2104
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 14:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8226D2154
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 15:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230488AbjCaM7T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Mar 2023 08:59:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
+        id S230343AbjCaNQw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Mar 2023 09:16:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232648AbjCaM7Q (ORCPT
+        with ESMTP id S230226AbjCaNQv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Mar 2023 08:59:16 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10ED81C1C1
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 05:59:15 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1piELT-0007HC-29; Fri, 31 Mar 2023 14:59:07 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1piELS-0002LD-Oy; Fri, 31 Mar 2023 14:59:06 +0200
-Date:   Fri, 31 Mar 2023 14:59:06 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
-        kvalo@kernel.org, pkshih@realtek.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] wifi: rtw88: Move register access from
- rtw_bf_assoc() outside the RCU
-Message-ID: <20230331125906.GF15436@pengutronix.de>
-References: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
- <20230108211324.442823-2-martin.blumenstingl@googlemail.com>
+        Fri, 31 Mar 2023 09:16:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECB81A46E;
+        Fri, 31 Mar 2023 06:16:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DE9062709;
+        Fri, 31 Mar 2023 13:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF3AC433EF;
+        Fri, 31 Mar 2023 13:16:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1680268609;
+        bh=2MPdnUHGU0aIs3VfxSa6Dd5lcSVZ7IsUdIpMm+VnV4Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZJDDcYnep4pq7w27lu75r8wKD/9Ku5cpain6oQhP58hf2yok49Gumqo2E0Da9GJjh
+         jfuGYk34KrKbJZ249S9JYgSxpMqyqo/d1wBI7teQRH8kAG9Iree2Ncuft9VwcF3xwS
+         qCelkEOSavL7K9bRZ8n81Etf1tAlVesSxk/Vkd+Q=
+Date:   Fri, 31 Mar 2023 15:16:47 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Pkshih <pkshih@realtek.com>, Tim K <tpkuester@gmail.com>,
+        "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>, kernel@pengutronix.de,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] wifi: rtw88: rtw8821c: Fix rfe_option field width
+Message-ID: <ZCbdP11nqQinOQNe@kroah.com>
+References: <20230331121054.112758-1-s.hauer@pengutronix.de>
+ <20230331121054.112758-3-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230108211324.442823-2-martin.blumenstingl@googlemail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230331121054.112758-3-s.hauer@pengutronix.de>
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 08, 2023 at 10:13:22PM +0100, Martin Blumenstingl wrote:
-> USB and (upcoming) SDIO support may sleep in the read/write handlers.
-> Shrink the RCU critical section so it only cover the call to
-> ieee80211_find_sta() and finding the ic_vht_cap/vht_cap based on the
-> found station. This moves the chip's BFEE configuration outside the
-> rcu_read_lock section and thus prevent "scheduling while atomic" or
-> "Voluntary context switch within RCU read-side critical section!"
-> warnings when accessing the registers using an SDIO card (which is
-> where this issue has been spotted in the real world - but it also
-> affects USB cards).
-
-Unfortunately this introduces a regression on my RTW8821CU chip. With
-this it constantly looses connection to the AP and reconnects shortly
-after:
-
-[  199.771143] wlan0: authenticate with b0:be:76:5e:7b:34
-[  201.447301] wlan0: send auth to b0:be:76:5e:7b:34 (try 1/3)
-[  201.456789] wlan0: authenticated
-[  201.462356] wlan0: associate with b0:be:76:5e:7b:34 (try 1/3)
-[  201.477263] wlan0: RX AssocResp from b0:be:76:5e:7b:34 (capab=0x431 status=0 aid=2)
-[  201.512995] wlan0: associated
-[  213.790399] wlan0: authenticate with b0:be:76:5e:7b:34
-[  215.467302] wlan0: send auth to b0:be:76:5e:7b:34 (try 1/3)
-[  215.470532] wlan0: authenticated
-[  215.490355] wlan0: associate with b0:be:76:5e:7b:34 (try 1/3)
-[  215.503777] wlan0: RX AssocResp from b0:be:76:5e:7b:34 (capab=0x431 status=0 aid=2)
-[  215.539608] wlan0: associated
-[  227.770596] wlan0: authenticate with b0:be:76:5e:7b:34
-[  229.443302] wlan0: send auth to b0:be:76:5e:7b:34 (try 1/3)
-[  229.451209] wlan0: authenticated
-[  229.462487] wlan0: associate with b0:be:76:5e:7b:34 (try 1/3)
-[  229.476077] wlan0: RX AssocResp from b0:be:76:5e:7b:34 (capab=0x431 status=0 aid=2)
-[  229.513499] wlan0: associated
-[  241.738494] wlan0: authenticate with b0:be:76:5e:7b:34
-[  243.407301] wlan0: send auth to b0:be:76:5e:7b:34 (try 1/3)
-[  243.411207] wlan0: authenticated
-[  243.423213] wlan0: associate with b0:be:76:5e:7b:34 (try 1/3)
-[  243.439822] wlan0: RX AssocResp from b0:be:76:5e:7b:34 (capab=0x431 status=0 aid=2)
-[  243.476731] wlan0: associated
-
-I haven't got any further information yet, I just realized this when I
-rebased my own RTW88 bugfix series from v6.2.2 to v6.3-rc4 before
-sending it.
-
-RTW8723D and RTW8822CU seem unaffected though.
-
-Sascha
-
+On Fri, Mar 31, 2023 at 02:10:54PM +0200, Sascha Hauer wrote:
+> On my RTW8821CU chipset rfe_option reads as 0x22. Looking at the
+> downstream driver suggests that the field width of rfe_option is 5 bit,
+> so rfe_option should be masked with 0x1f.
 > 
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Without this the rfe_option comparisons with 2 further down the
+> driver evaluate as false when they should really evaluate as true.
+> The effect is that 2G channels do not work.
+> 
+> rfe_option is also used as an array index into rtw8821c_rfe_defs[].
+> rtw8821c_rfe_defs[34] (0x22) was added as part of adding USB support,
+> likely because rfe_option reads as 0x22. As this now becomes 0x2,
+> rtw8821c_rfe_defs[34] is no longer used and can be removed.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
-> v1 -> v2:
-> - Added Ping-Ke's Reviewed-by (thank you!)
-> 
-> v2 -> v3:
-> - Added Sascha's Tested-by (thank you!)
-> - added "wifi" prefix to the subject and reworded the title accordingly
-> 
-> 
->  drivers/net/wireless/realtek/rtw88/bf.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
-> index 038a30b170ef..c827c4a2814b 100644
-> --- a/drivers/net/wireless/realtek/rtw88/bf.c
-> +++ b/drivers/net/wireless/realtek/rtw88/bf.c
-> @@ -49,19 +49,23 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
->  
->  	sta = ieee80211_find_sta(vif, bssid);
->  	if (!sta) {
-> +		rcu_read_unlock();
-> +
->  		rtw_warn(rtwdev, "failed to find station entry for bss %pM\n",
->  			 bssid);
-> -		goto out_unlock;
-> +		return;
->  	}
->  
->  	ic_vht_cap = &hw->wiphy->bands[NL80211_BAND_5GHZ]->vht_cap;
->  	vht_cap = &sta->deflink.vht_cap;
->  
-> +	rcu_read_unlock();
-> +
->  	if ((ic_vht_cap->cap & IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE) &&
->  	    (vht_cap->cap & IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE)) {
->  		if (bfinfo->bfer_mu_cnt >= chip->bfer_mu_max_num) {
->  			rtw_dbg(rtwdev, RTW_DBG_BF, "mu bfer number over limit\n");
-> -			goto out_unlock;
-> +			return;
->  		}
->  
->  		ether_addr_copy(bfee->mac_addr, bssid);
-> @@ -75,7 +79,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
->  		   (vht_cap->cap & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE)) {
->  		if (bfinfo->bfer_su_cnt >= chip->bfer_su_max_num) {
->  			rtw_dbg(rtwdev, RTW_DBG_BF, "su bfer number over limit\n");
-> -			goto out_unlock;
-> +			return;
->  		}
->  
->  		sound_dim = vht_cap->cap &
-> @@ -98,9 +102,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
->  
->  		rtw_chip_config_bfee(rtwdev, rtwvif, bfee, true);
->  	}
-> -
-> -out_unlock:
-> -	rcu_read_unlock();
->  }
->  
->  void rtw_bf_init_bfer_entry_mu(struct rtw_dev *rtwdev,
-> -- 
-> 2.39.0
-> 
-> 
+>  drivers/net/wireless/realtek/rtw88/rtw8821c.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+<formletter>
+
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
