@@ -2,141 +2,245 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56A9C6D2720
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 19:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A14086D2945
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Mar 2023 22:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231251AbjCaRzV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Mar 2023 13:55:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54228 "EHLO
+        id S232818AbjCaURe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Mar 2023 16:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230098AbjCaRzU (ORCPT
+        with ESMTP id S232273AbjCaURd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Mar 2023 13:55:20 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CA43C26
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 10:55:19 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32VAnkLc020472;
-        Fri, 31 Mar 2023 17:55:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=BEoL9kcI4V15N/3VbedlLfI4kWnbT2lK/5MwOFZ9LWM=;
- b=m3gtLKyX8e0E6myY7/kfZ3PYUXCiIf9o/pPNpmLx62Uqn0mB3xaOoKqw0JX0AxPYG1xh
- vkciSjGWjKiZisru2oce5++fhVKPckCOSiGWoxfTKsCz6aozDPxfMUbuN17aKJ/5V+76
- kDclygp4OrotzJecD8MxhzWHVDlzmjhfzeiRddBP84kItKqpsOggvbCTE9k5+vUVJrd+
- tghmPflC0G9xk1nnlEnWd7lBpNZ/5UCPFWTRaTEmcuJcIXwE/oegl3UzbMc6PLXjgtAr
- FrzopEgybZjr//C+zbPnQbBnm0LJ7SEt6jkG5EzCjgSyeHsF5KNDHifb+u/DxuNP5nbp Dg== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pntxfa4bj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 31 Mar 2023 17:55:16 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 32VHtF2b000515
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 31 Mar 2023 17:55:15 GMT
-Received: from [10.110.89.180] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Fri, 31 Mar
- 2023 10:55:15 -0700
-Message-ID: <1aa6178f-2041-797e-fcb8-78fe2c08de24@quicinc.com>
-Date:   Fri, 31 Mar 2023 10:55:14 -0700
+        Fri, 31 Mar 2023 16:17:33 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8B822201
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 13:17:31 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id b20so94280476edd.1
+        for <linux-wireless@vger.kernel.org>; Fri, 31 Mar 2023 13:17:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680293850;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jc+MpMN4QyhiBw4GMfChuNWtrNwgqbyIkxcdyYVtsVQ=;
+        b=EoBrID0PBeVe5iPDr/Q594BrKCc1BoOl1ctIJKpsxuUkelcAz6QyQCfFheN34kOF5m
+         W/e8cTgepoQJ3WczNV3Vnzw+sTsReIKKrpmSAuUPMwK0L1G+9ELC1ZTWyf21GadVYjyR
+         i0btlYA4BVtBZlMuCbi4zKDIuemNMOKrF27Y0aJTz5DFrSiFCgxI6pz52bjEJHOafAfC
+         s9YiV2mhtLIxdQgqYh9EH0b2ypAIp6yygVKm6XnM7fCEY4PkGo/Bi8BTjDNB9hTD/B6r
+         h90BRjcNA4mMBO0vjPLfdMX5Ok9nIAJf1fd6sXh7ES7WKJ4h22TA+gALdqoEJ3kb0qHN
+         VgUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680293850;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Jc+MpMN4QyhiBw4GMfChuNWtrNwgqbyIkxcdyYVtsVQ=;
+        b=4xOZlsWSYJwkTVsjDSISsFuvQyJ4sgesc98tpnaDtDiuGkB6GMJ6UzunafMjdRvoXJ
+         1s4tsYmGmX9UHXcQKujXl9tqxpUhfsmbrf5gXFBLuRQW4aJ33iq5Pl4hDJWz9D/dUNS9
+         gFkAeRlR9FzSVBhLNzmzyVHT4c2MEfNYex+qDIA7oO3IZXWHaLZkJ/uu6F2013/tniOh
+         EU+A6coUnIjR1tg/A9tF3243h0g/Mgj0FTF78S8zjXB2F/50C+x32C8hp23WnKnvaD5M
+         cd8p1k+o7131mt05l9/pvoCmvAngZ5vEkTf4xKyEDyA7v5mX6sIthJVMKLRD3TxWyG1i
+         OmTQ==
+X-Gm-Message-State: AAQBX9dVoL6Gcm9i/RZyEvU4n/psTz8kWFg2OOYUHg/FQxEgaOgBJ4Lg
+        nRNO/hadKnIuQflaW4jgTwr3YhrVpPo=
+X-Google-Smtp-Source: AKy350bsFMVukAyIy+ogZwhGXCspPnrPAgJsokDYup0bKOhJaxU9ZyzGHFR6nac2+7F+9i/B37DOCw==
+X-Received: by 2002:a17:906:380a:b0:93b:943f:6261 with SMTP id v10-20020a170906380a00b0093b943f6261mr27703093ejc.74.1680293849967;
+        Fri, 31 Mar 2023 13:17:29 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id s23-20020a170906285700b0093229e527cdsm1301164ejc.42.2023.03.31.13.17.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Mar 2023 13:17:29 -0700 (PDT)
+Message-ID: <eb152b5b-fe65-3783-a3d9-71c9cb7ef9d3@gmail.com>
+Date:   Fri, 31 Mar 2023 23:17:28 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] wifi: cfg80211: beacon EHT rate support
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-References: <20230329000902.17992-1-quic_alokad@quicinc.com>
- <d54800ae88be1eb232df7794e741dfc304c3ee9a.camel@sipsolutions.net>
- <312f1476-b78b-b7f0-26f9-512a7dc2b6b7@quicinc.com>
- <3abb2d127eaa3b76a8f4f34c795ddd6d502ce470.camel@sipsolutions.net>
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-In-Reply-To: <3abb2d127eaa3b76a8f4f34c795ddd6d502ce470.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH 1/2] wifi: rtl8xxxu: Clean up some messy ifs
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: g5vkhrriEykR56zrIuL9Lt8f9TK-9YXr
-X-Proofpoint-ORIG-GUID: g5vkhrriEykR56zrIuL9Lt8f9TK-9YXr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-31_07,2023-03-31_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0
- mlxlogscore=999 adultscore=0 clxscore=1015 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2303310143
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/31/2023 2:23 AM, Johannes Berg wrote:
-> On Thu, 2023-03-30 at 15:40 -0700, Aloka Dixit wrote:
->> On 3/30/2023 3:44 AM, Johannes Berg wrote:
->>> On Tue, 2023-03-28 at 17:09 -0700, Aloka Dixit wrote:
->>>
->>>> +		switch (wdev->iftype) {
->>>> +		case NL80211_IFTYPE_AP:
->>>> +			width = wdev->u.ap.preset_chandef.width;
->>>
->>> This seems a bit awkward and annoying, it means that we have to keep
->>> using the API that sets the preset_chandef first, and it also means it
->>> won't work for multi-link.
->>>
->>
->> Okay, I can do it the same with it is done in he_get_txmcsmap():
->> 	chandef = wdev_chandef(wdev, link_id);
-> 
-> Right, that should be better.
-> 
-> Though not sure that works already when you're doing START_AP, I'd think
-> we don't set the chandef before parsing the rate attribute?
-> 
-> Which would mean userspace would have to separately set the beacon rate,
-> which means even having the whole thing inside start_ap() is pointless?
-> 
-> 
->>> Couldn't you link it with the config in start_ap/join_mesh? And per-link
->>> config in set_tx_bitrate_mask()?
->>>
->>
->> Please correct me if I'm wrong but ieee80211_set_bitrate_mask() need not
->> be changed for setting the beacon rate in non-MLO case, right?
->> Because it does not have anything related to he_mcs currently too.
-> 
-> How is ieee80211_set_bitrate_mask() related, it's in mac80211?
-> 
-> Oh you mean it doesn't need to be changed to support EHT? Looks like to
-> me that it would have to be changed, and even HE today only works in
-> non-mac80211 drivers that implement it correctly?
-> 
-> But again set_bitrate_mask() isn't even related to beacon rate?
-> 
-> 
-> Regarding beacon rate, it looks like mac80211 _only_ accepts legacy
-> rates, and then also _only_ in start_ap(), so I'm not sure how the whole
-> thing even works ...??
-> 
+Add some new members to rtl8xxxu_fileops and use them instead of
+checking priv->rtl_chip.
 
-I agree with all of your points and as said above, I mainly tested by 
-checking the final mask generated in nl80211.c.
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  5 ++++
+ .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |  1 +
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |  5 ++++
+ .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         |  1 +
+ .../realtek/rtl8xxxu/rtl8xxxu_8710b.c         |  9 +++++++
+ .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |  3 +++
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 26 +++++--------------
+ 7 files changed, 31 insertions(+), 19 deletions(-)
 
-Do you remember a similar discussion when HE code was added (I wasn't 
-the submitter). May be that will have some pointers regarding how it was 
-tested.
-
-Do you think we can continue with this EHT support for non-mac80211 
-drivers similar to HE for now?
-Or should we just skip this patch?
-
-Thanks.
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index 9d48c69ffece..39fee07917e7 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1923,6 +1923,11 @@ struct rtl8xxxu_fileops {
+ 	u8 has_tx_report:1;
+ 	u8 gen2_thermal_meter:1;
+ 	u8 needs_full_init:1;
++	u8 init_reg_rxfltmap:1;
++	u8 init_reg_pkt_life_time:1;
++	u8 init_reg_hmtfr:1;
++	u8 ampdu_max_time;
++	u8 ustime_tsf_edca;
+ 	u32 adda_1t_init;
+ 	u32 adda_1t_path_on;
+ 	u32 adda_2t_path_on_a;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
+index 6a82ec47568e..af8436070ba7 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
+@@ -1883,6 +1883,7 @@ struct rtl8xxxu_fileops rtl8188eu_fops = {
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc16),
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc32),
+ 	.has_tx_report = 1,
++	.init_reg_pkt_life_time = 1,
+ 	.gen2_thermal_meter = 1,
+ 	.adda_1t_init = 0x0b1b25a0,
+ 	.adda_1t_path_on = 0x0bdb25a0,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index 82dee1fed477..dfb250adb168 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -1746,6 +1746,11 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+ 	.has_tx_report = 1,
+ 	.gen2_thermal_meter = 1,
+ 	.needs_full_init = 1,
++	.init_reg_rxfltmap = 1,
++	.init_reg_pkt_life_time = 1,
++	.init_reg_hmtfr = 1,
++	.ampdu_max_time = 0x70,
++	.ustime_tsf_edca = 0x28,
+ 	.adda_1t_init = 0x03c00014,
+ 	.adda_1t_path_on = 0x03c00014,
+ 	.trxff_boundary = 0x3f7f,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index 4498748164af..9581e858a9c5 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -1821,6 +1821,7 @@ struct rtl8xxxu_fileops rtl8192eu_fops = {
+ 	.has_s0s1 = 0,
+ 	.gen2_thermal_meter = 1,
+ 	.needs_full_init = 1,
++	.init_reg_pkt_life_time = 1,
+ 	.adda_1t_init = 0x0fc01616,
+ 	.adda_1t_path_on = 0x0fc01616,
+ 	.adda_2t_path_on_a = 0x0fc01616,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
+index 920466e39604..22d4704dd31e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
+@@ -1865,6 +1865,15 @@ struct rtl8xxxu_fileops rtl8710bu_fops = {
+ 	.has_tx_report = 1,
+ 	.gen2_thermal_meter = 1,
+ 	.needs_full_init = 1,
++	.init_reg_rxfltmap = 1,
++	.init_reg_pkt_life_time = 1,
++	.init_reg_hmtfr = 1,
++	.ampdu_max_time = 0x5e,
++	/*
++	 * The RTL8710BU vendor driver uses 0x50 here and it works fine,
++	 * but in rtl8xxxu 0x50 causes slow upload and random packet loss. Why?
++	 */
++	.ustime_tsf_edca = 0x28,
+ 	.adda_1t_init = 0x03c00016,
+ 	.adda_1t_path_on = 0x03c00016,
+ 	.trxff_boundary = 0x3f7f,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+index d99538eb8398..c31c2b52ac77 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+@@ -1741,6 +1741,9 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+ 	.has_tx_report = 1,
+ 	.gen2_thermal_meter = 1,
+ 	.needs_full_init = 1,
++	.init_reg_hmtfr = 1,
++	.ampdu_max_time = 0x5e,
++	.ustime_tsf_edca = 0x50,
+ 	.adda_1t_init = 0x01c00014,
+ 	.adda_1t_path_on = 0x01c00014,
+ 	.adda_2t_path_on_a = 0x01c00014,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index c152b228606f..62dd53a57659 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -1916,7 +1916,7 @@ static int rtl8xxxu_start_firmware(struct rtl8xxxu_priv *priv)
+ 	/*
+ 	 * Init H2C command
+ 	 */
+-	if (priv->rtl_chip == RTL8723B || priv->rtl_chip == RTL8188F || priv->rtl_chip == RTL8710B)
++	if (priv->fops->init_reg_hmtfr)
+ 		rtl8xxxu_write8(priv, REG_HMTFR, 0x0f);
+ exit:
+ 	return ret;
+@@ -3864,11 +3864,8 @@ void rtl8xxxu_init_burst(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_write8(priv, REG_HT_SINGLE_AMPDU_8723B, val8);
+ 
+ 	rtl8xxxu_write16(priv, REG_MAX_AGGR_NUM, 0x0c14);
+-	if (priv->rtl_chip == RTL8723B || priv->rtl_chip == RTL8710B)
+-		val8 = 0x5e;
+-	else if (priv->rtl_chip == RTL8188F)
+-		val8 = 0x70; /* 0x5e would make it very slow */
+-	rtl8xxxu_write8(priv, REG_AMPDU_MAX_TIME_8723B, val8);
++	rtl8xxxu_write8(priv, REG_AMPDU_MAX_TIME_8723B,
++			priv->fops->ampdu_max_time);
+ 	rtl8xxxu_write32(priv, REG_AGGLEN_LMT, 0xffffffff);
+ 	rtl8xxxu_write8(priv, REG_RX_PKT_LIMIT, 0x18);
+ 	rtl8xxxu_write8(priv, REG_PIFS, 0x00);
+@@ -3876,16 +3873,8 @@ void rtl8xxxu_init_burst(struct rtl8xxxu_priv *priv)
+ 		rtl8xxxu_write8(priv, REG_FWHW_TXQ_CTRL, FWHW_TXQ_CTRL_AMPDU_RETRY);
+ 		rtl8xxxu_write32(priv, REG_FAST_EDCA_CTRL, 0x03086666);
+ 	}
+-	/*
+-	 * The RTL8710BU vendor driver uses 0x50 here and it works fine,
+-	 * but in rtl8xxxu 0x50 causes slow upload and random packet loss. Why?
+-	 */
+-	if (priv->rtl_chip == RTL8723B)
+-		val8 = 0x50;
+-	else if (priv->rtl_chip == RTL8188F || priv->rtl_chip == RTL8710B)
+-		val8 = 0x28; /* 0x50 would make the upload slow */
+-	rtl8xxxu_write8(priv, REG_USTIME_TSF_8723B, val8);
+-	rtl8xxxu_write8(priv, REG_USTIME_EDCA, val8);
++	rtl8xxxu_write8(priv, REG_USTIME_TSF_8723B, priv->fops->ustime_tsf_edca);
++	rtl8xxxu_write8(priv, REG_USTIME_EDCA, priv->fops->ustime_tsf_edca);
+ 
+ 	/* to prevent mac is reseted by bus. */
+ 	val8 = rtl8xxxu_read8(priv, REG_RSV_CTRL);
+@@ -4102,7 +4091,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
+ 	rtl8xxxu_write32(priv, REG_RCR, val32);
+ 
+-	if (priv->rtl_chip == RTL8188F || priv->rtl_chip == RTL8710B) {
++	if (fops->init_reg_rxfltmap) {
+ 		/* Accept all data frames */
+ 		rtl8xxxu_write16(priv, REG_RXFLTMAP2, 0xffff);
+ 
+@@ -4187,8 +4176,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 	if (fops->init_aggregation)
+ 		fops->init_aggregation(priv);
+ 
+-	if (priv->rtl_chip == RTL8188F || priv->rtl_chip == RTL8188E ||
+-	    priv->rtl_chip == RTL8710B) {
++	if (fops->init_reg_pkt_life_time) {
+ 		rtl8xxxu_write16(priv, REG_PKT_VO_VI_LIFE_TIME, 0x0400); /* unit: 256us. 256ms */
+ 		rtl8xxxu_write16(priv, REG_PKT_BE_BK_LIFE_TIME, 0x0400); /* unit: 256us. 256ms */
+ 	}
+-- 
+2.39.2
