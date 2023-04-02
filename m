@@ -2,94 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E256E6D3609
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Apr 2023 10:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2867C6D37AA
+	for <lists+linux-wireless@lfdr.de>; Sun,  2 Apr 2023 13:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230201AbjDBIBO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Apr 2023 04:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41542 "EHLO
+        id S230332AbjDBLae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Apr 2023 07:30:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjDBIBN (ORCPT
+        with ESMTP id S229591AbjDBLac (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Apr 2023 04:01:13 -0400
+        Sun, 2 Apr 2023 07:30:32 -0400
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC516FF0D;
-        Sun,  2 Apr 2023 01:01:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C5ECA26;
+        Sun,  2 Apr 2023 04:30:31 -0700 (PDT)
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
         by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pise4-0005MC-Ve; Sun, 02 Apr 2023 10:01:02 +0200
-Message-ID: <83966474-658d-7e2f-3e7f-eb66100660e9@leemhuis.info>
-Date:   Sun, 2 Apr 2023 10:00:59 +0200
+        id 1pivum-0005xd-ER; Sun, 02 Apr 2023 13:30:28 +0200
+Message-ID: <8ab36d80-8417-628f-9f51-e75eaf6b1a51@leemhuis.info>
+Date:   Sun, 2 Apr 2023 13:30:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
+Subject: Re: [PATCH v3 1/3] wifi: rtw88: Move register access from
+ rtw_bf_assoc() outside the RCU
 Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
+        kvalo@kernel.org, pkshih@realtek.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
+ <20230108211324.442823-2-martin.blumenstingl@googlemail.com>
+ <20230331125906.GF15436@pengutronix.de>
+From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
         <regressions@leemhuis.info>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath11k <ath11k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
 Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: [regression] Bug 217282 - Regression: ath11k hang on boot since
- updating from 6.1.21 to 6.1.22
+In-Reply-To: <20230331125906.GF15436@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1680422469;6d53c10d;
-X-HE-SMSGID: 1pise4-0005MC-Ve
-X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1680435031;642136e3;
+X-HE-SMSGID: 1pivum-0005xd-ER
+X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-I noticed a regression report in bugzilla.kernel.org. As many (most?)
-kernel developers don't keep an eye on it, I decided to forward it by mail.
-
-Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-not CCed them in mails like this.
-
-Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217282 :
-
->  Carsten Hatger 2023-03-31 14:49:06 UTC
+On 31.03.23 14:59, Sascha Hauer wrote:
+> On Sun, Jan 08, 2023 at 10:13:22PM +0100, Martin Blumenstingl wrote:
+>> USB and (upcoming) SDIO support may sleep in the read/write handlers.
+>> Shrink the RCU critical section so it only cover the call to
+>> ieee80211_find_sta() and finding the ic_vht_cap/vht_cap based on the
+>> found station. This moves the chip's BFEE configuration outside the
+>> rcu_read_lock section and thus prevent "scheduling while atomic" or
+>> "Voluntary context switch within RCU read-side critical section!"
+>> warnings when accessing the registers using an SDIO card (which is
+>> where this issue has been spotted in the real world - but it also
+>> affects USB cards).
 > 
-> Created attachment 304068 [details]
-> dmesg of 6.1.22 vanilla boot
-> 
-> Dear all,
-> 
-> ath11k hangs when booting v6.1.22 on a HP Pro x360 G9 w/ Qualcomm FastConnect 6900 using firmware WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23.
-> 
-> However, v.6.1.21 works fine.
-> 
-> Please let me know if I can further assist in resolving this issue - testing would be fine.
-> 
-> Yours,
-> Carsten
+> Unfortunately this introduces a regression on my RTW8821CU chip. With
+> this it constantly looses connection to the AP and reconnects shortly
+> after:
 
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
-See the ticket for more details.
-
-
-[TLDR for the rest of this mail: I'm adding this report to the list of
-tracked Linux kernel regressions; the text you find below is based on a
-few templates paragraphs you might have encountered already in similar
-form.]
-
-BTW, let me use this mail to also add the report to the list of tracked
-regressions to ensure it's doesn't fall through the cracks:
-
-#regzbot introduced: v6.1.21..v6.1.22
-https://bugzilla.kernel.org/show_bug.cgi?id=217282
-#regzbot title: net: wireless: ath11k: hang on boot
+#regzbot ^introduced c7eca79def44
+#regzbot title net: wifi: rtw88: RTW8821CU constantly looses connection
+to the AP and reconnects shortly after
 #regzbot ignore-activity
 
 This isn't a regression? This issue or a fix for it are already
@@ -100,14 +88,12 @@ while also telling regzbot about it, as explained by the page listed in
 the footer of this mail.
 
 Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (e.g. the buzgzilla ticket and maybe this mail as well, if
-this thread sees some discussion). See page linked in footer for details.
+to the report (the parent of this mail). See page linked in footer for
+details.
 
 Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 --
 Everything you wanna know about Linux kernel regression tracking:
 https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+That page also explains what to do if mails like this annoy you.
 
-[1] because bugzilla.kernel.org tells users upon registration their
-"email address will never be displayed to logged out users"
