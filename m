@@ -2,49 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2867C6D37AA
-	for <lists+linux-wireless@lfdr.de>; Sun,  2 Apr 2023 13:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80FC56D3BCD
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 04:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjDBLae (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 2 Apr 2023 07:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40696 "EHLO
+        id S231261AbjDCCXX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 2 Apr 2023 22:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbjDBLac (ORCPT
+        with ESMTP id S229606AbjDCCXX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 2 Apr 2023 07:30:32 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C5ECA26;
-        Sun,  2 Apr 2023 04:30:31 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pivum-0005xd-ER; Sun, 02 Apr 2023 13:30:28 +0200
-Message-ID: <8ab36d80-8417-628f-9f51-e75eaf6b1a51@leemhuis.info>
-Date:   Sun, 2 Apr 2023 13:30:27 +0200
+        Sun, 2 Apr 2023 22:23:23 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81DD59F7;
+        Sun,  2 Apr 2023 19:23:21 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4PqZSN1tFQz4x1N;
+        Mon,  3 Apr 2023 12:23:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+        s=201702; t=1680488600;
+        bh=I4VCQQfTYYuPM7QdVmDDuL639PPq1rvfSSDNSg3HDNE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=m3IUFhDsNPsUxwGeesWUGTLGAezURvEkkuoTutMDflrabhD0M9qrIl6l7HwRKoCyf
+         1cQJbpXdatvJ/YuwIT/bNAY1eZze2/7pwut9U25tfgsgEJKcRDZzQG06/9x0Juhd9T
+         MGZuPhjJISIPoK35wwao3z4RlKPSyMzFwyUCqclJxvy6TCenDyjNIbmqaW5xu9Pg3x
+         DTxLr0AtyYD3lzrNqMJcHAxbk1v10Ggku0en+RfZ3m+hUFLW2ZpM7t/eqPBg5EUYUh
+         jWPH33TOdhnuuQp0Cb6CR7pmuMT0o11mnP9VHn9FUcWvXBh8z0BibxxyHagkc14MAS
+         ond/FhzcVCidw==
+Date:   Mon, 3 Apr 2023 12:23:13 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     David Miller <davem@davemloft.net>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Networking <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+Message-ID: <20230403122313.6006576b@canb.auug.org.au>
+In-Reply-To: <20230331104959.0b30604d@canb.auug.org.au>
+References: <20230331104959.0b30604d@canb.auug.org.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v3 1/3] wifi: rtw88: Move register access from
- rtw_bf_assoc() outside the RCU
-Content-Language: en-US, de-DE
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
-        kvalo@kernel.org, pkshih@realtek.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
- <20230108211324.442823-2-martin.blumenstingl@googlemail.com>
- <20230331125906.GF15436@pengutronix.de>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230331125906.GF15436@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1680435031;642136e3;
-X-HE-SMSGID: 1pivum-0005xd-ER
-X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+Content-Type: multipart/signed; boundary="Sig_/pxlJb5yfrRaqeCfuZZkYAsv";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,48 +61,130 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing the regression list, as it should be in the loop for regressions:
-https://docs.kernel.org/admin-guide/reporting-regressions.html]
+--Sig_/pxlJb5yfrRaqeCfuZZkYAsv
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On 31.03.23 14:59, Sascha Hauer wrote:
-> On Sun, Jan 08, 2023 at 10:13:22PM +0100, Martin Blumenstingl wrote:
->> USB and (upcoming) SDIO support may sleep in the read/write handlers.
->> Shrink the RCU critical section so it only cover the call to
->> ieee80211_find_sta() and finding the ic_vht_cap/vht_cap based on the
->> found station. This moves the chip's BFEE configuration outside the
->> rcu_read_lock section and thus prevent "scheduling while atomic" or
->> "Voluntary context switch within RCU read-side critical section!"
->> warnings when accessing the registers using an SDIO card (which is
->> where this issue has been spotted in the real world - but it also
->> affects USB cards).
-> 
-> Unfortunately this introduces a regression on my RTW8821CU chip. With
-> this it constantly looses connection to the AP and reconnects shortly
-> after:
+Hi all,
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+On Fri, 31 Mar 2023 10:49:59 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> Today's linux-next merge of the wireless-next tree got a conflict in:
+>=20
+>   net/mac80211/rx.c
+>=20
+> between commit:
+>=20
+>   a16fc38315f2 ("wifi: mac80211: fix potential null pointer dereference")
+>=20
+> from the wireless tree and commit:
+>=20
+>   fe4a6d2db3ba ("wifi: mac80211: implement support for yet another mesh A=
+-MSDU format")
+>=20
+> from the wireless-next tree.
+>=20
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+>=20
+> --=20
+> Cheers,
+> Stephen Rothwell
+>=20
+> diff --cc net/mac80211/rx.c
+> index 3e2176a730e6,1c957194554b..000000000000
+> --- a/net/mac80211/rx.c
+> +++ b/net/mac80211/rx.c
+> @@@ -2776,27 -2862,12 +2843,31 @@@ ieee80211_rx_mesh_data(struct ieee80211
+>   		rcu_read_unlock();
+>   	}
+>  =20
+>  +	/* Frame has reached destination.  Don't forward */
+>  +	if (ether_addr_equal(sdata->vif.addr, eth->h_dest))
+>  +		goto rx_accept;
+>  +
+>  +	if (!--mesh_hdr->ttl) {
+>  +		if (multicast)
+>  +			goto rx_accept;
+>  +
+>  +		IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, dropped_frames_ttl);
+>  +		return RX_DROP_MONITOR;
+>  +	}
+>  +
+>  +	if (!ifmsh->mshcfg.dot11MeshForwarding) {
+>  +		if (is_multicast_ether_addr(eth->h_dest))
+>  +			goto rx_accept;
+>  +
+>  +		return RX_DROP_MONITOR;
+>  +	}
+>  +
+>   	skb_set_queue_mapping(skb, ieee802_1d_to_ac[skb->priority]);
+>  =20
+> + 	if (!multicast &&
+> + 	    ieee80211_rx_mesh_fast_forward(sdata, skb, mesh_hdrlen))
+> + 		return RX_QUEUED;
+> +=20
+>   	ieee80211_fill_mesh_addresses(&hdr, &hdr.frame_control,
+>   				      eth->h_dest, eth->h_source);
+>   	hdrlen =3D ieee80211_hdrlen(hdr.frame_control);
+> @@@ -2914,14 -2982,24 +2985,24 @@@ __ieee80211_rx_h_amsdu(struct ieee80211
+>   					  data_offset, true))
+>   		return RX_DROP_UNUSABLE;
+>  =20
+>  -	if (rx->sta && rx->sta->amsdu_mesh_control < 0) {
+>  +	if (rx->sta->amsdu_mesh_control < 0) {
+> - 		bool valid_std =3D ieee80211_is_valid_amsdu(skb, true);
+> - 		bool valid_nonstd =3D ieee80211_is_valid_amsdu(skb, false);
+> + 		s8 valid =3D -1;
+> + 		int i;
+> +=20
+> + 		for (i =3D 0; i <=3D 2; i++) {
+> + 			if (!ieee80211_is_valid_amsdu(skb, i))
+> + 				continue;
+> +=20
+> + 			if (valid >=3D 0) {
+> + 				/* ambiguous */
+> + 				valid =3D -1;
+> + 				break;
+> + 			}
+>  =20
+> - 		if (valid_std && !valid_nonstd)
+> - 			rx->sta->amsdu_mesh_control =3D 1;
+> - 		else if (valid_nonstd && !valid_std)
+> - 			rx->sta->amsdu_mesh_control =3D 0;
+> + 			valid =3D i;
+> + 		}
+> +=20
+> + 		rx->sta->amsdu_mesh_control =3D valid;
+>   	}
+>  =20
+>   	ieee80211_amsdu_to_8023s(skb, &frame_list, dev->dev_addr,
 
-#regzbot ^introduced c7eca79def44
-#regzbot title net: wifi: rtw88: RTW8821CU constantly looses connection
-to the AP and reconnects shortly after
-#regzbot ignore-activity
+This is now a conflict between the net-next and net trees.
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+--=20
+Cheers,
+Stephen Rothwell
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
+--Sig_/pxlJb5yfrRaqeCfuZZkYAsv
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmQqOJEACgkQAVBC80lX
+0GzLUQf/Vekw0s3Sf5zcEYFTTxODgF3dtaKW6OfXDMO+9o5jENK4pkZH+PsZnHwu
+46hzwu8Jo5rvcVvyPAMOJmzyucgtv0BMazIdcJbx+QNkW1CT1Br8LBoHWeXYwU1b
+dL5jUtGgdJtvv2wharEL0LplvmE/B3A2MlWeJo+IwesL2sLnCCI9AeZZ9JB2rFWn
+VvgF4ZJOgLR6dht9dMHyV31DnqiFENBsG/n1sCizcQ55ZihcXcvLAwssovILW8V5
+yTtJ3/JLgnfRNelcPgmI5qsRj4Jd2/7OryxgLyqWRWpuDZL+erUW15o+4vqB44Cp
+psLtzk+4KkGtmD8UOivpmGoRTmX/uA==
+=RqQD
+-----END PGP SIGNATURE-----
+
+--Sig_/pxlJb5yfrRaqeCfuZZkYAsv--
