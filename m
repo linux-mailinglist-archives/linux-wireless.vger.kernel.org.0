@@ -2,125 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30B1D6D4D66
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 18:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 920D26D4EC5
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 19:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbjDCQTV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 12:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48962 "EHLO
+        id S232537AbjDCRSW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 13:18:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbjDCQTU (ORCPT
+        with ESMTP id S229473AbjDCRSV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 12:19:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C6D7171C
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 09:19:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDC9262110
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 16:19:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BE3C433D2;
-        Mon,  3 Apr 2023 16:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680538757;
-        bh=qWTCnLpgEni9/pyyMoun3r0gjRpTuUfI9r1kM+yuz2w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PfnIh2LZR1T78+uAdScowJY5wJMz/NfMjcHxEysNUZL9YzjhnVGOGKCh5P9iSRzIi
-         5IJyzHBASaoKQ3vC4daYit+G8ReMoptjBYaU4wTKubrJjC1x99FylVcurplCWLJ4Xn
-         ZlpycnRrZsmn9+n+Djhmrnd/LeCiM7tsamb3ds/sc5FtQL364oO9c+/rDrUcoDxugT
-         a1xwIUJ6V7n4pBLvswZEtLIFEQ7mi+D7uW/5F8ithY21kHCT8Q0jWnHoZX3wz+dANo
-         KKwaHokq9guefgaqSqJFucoyuxiQefTsrlJjVTPnB824We2cn3tjuMxoShFpcQ0f2F
-         80QJsbLy1AK2A==
-Date:   Mon, 3 Apr 2023 11:19:16 -0500
-From:   "sforshee@kernel.org" <sforshee@kernel.org>
-To:     Eric Sellman <gak_action@live.com>
-Cc:     "wireless-regdb@lists.infradead.org" 
-        <wireless-regdb@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: wireless-regdb: Update regulatory rules for USA on 5GHz
-Message-ID: <ZCr8hM7gJpAVHSLQ@do-x1extreme>
-References: <SJ0PR22MB249552E61991E3B2FAC911978F8F9@SJ0PR22MB2495.namprd22.prod.outlook.com>
- <ZCdSShqbJQ43gZZR@do-x1extreme>
- <SJ0PR22MB24959C931D27BDB56488B1DF8F8F9@SJ0PR22MB2495.namprd22.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ0PR22MB24959C931D27BDB56488B1DF8F8F9@SJ0PR22MB2495.namprd22.prod.outlook.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+        Mon, 3 Apr 2023 13:18:21 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD003F9
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 10:18:20 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 333GrwjJ031148;
+        Mon, 3 Apr 2023 17:18:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id; s=qcppdkim1;
+ bh=2IKGJSGRDgCTFOID39/BQnrOwlJxEKuvnOW895Mwc6o=;
+ b=V5HrSkEZttrgo5qim/cWEOdVLdlsEH6bvvEto5eHBvx+QTRjovom7QIuQr7jwZO/OoAg
+ foRhlr/lg2uv2MBLuesnyzu5oK1tYUZ/BNUlNmvF0uM9pYa6RCTlKb6a4XKXE7/5JzlE
+ 4W6PIO83b94ZMm7DmtGvzrtvnI/64xQQpdieRh+TKr/A8oDqm8n6y282xmYSKBxWXGHa
+ k5tZUOYiJvaGD3Y1DP0Ltxsry+gskk7DCs8YkkEr+1qMg+gdJAvb+yP9ITWkxCNSndMg
+ BVh61WpR8bvn3HXwf/kLfm4w3Xh6ZV2oyL64BhTSiA61Dh0zmgCaiax6m3lM7qmL/M6x pA== 
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pquxth69k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 03 Apr 2023 17:18:16 +0000
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+        by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 333HIBpO030158;
+        Mon, 3 Apr 2023 17:18:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTP id 3ppdpkepnh-1;
+        Mon, 03 Apr 2023 17:18:11 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 333HIBr6030153;
+        Mon, 3 Apr 2023 17:18:11 GMT
+Received: from rgnanase-linux.qualcomm.com (rgnanase-linux.qualcomm.com [10.201.162.135])
+        by APBLRPPMTA01.qualcomm.com (PPS) with ESMTP id 333HIBPE030152;
+        Mon, 03 Apr 2023 17:18:11 +0000
+Received: by rgnanase-linux.qualcomm.com (Postfix, from userid 2378837)
+        id 355871100076; Mon,  3 Apr 2023 22:48:10 +0530 (IST)
+From:   Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+To:     ath12k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Karthik M <quic_karm@quicinc.com>,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Subject: [PATCH] wifi: ath12k: fix potential wmi_mgmt_tx_queue race condition
+Date:   Mon,  3 Apr 2023 22:48:06 +0530
+Message-Id: <20230403171806.12805-1-quic_rgnanase@quicinc.com>
+X-Mailer: git-send-email 2.17.1
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -WCGk4UhNoM6I7k5SnsvjfDeATYi9HEE
+X-Proofpoint-ORIG-GUID: -WCGk4UhNoM6I7k5SnsvjfDeATYi9HEE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-03_14,2023-04-03_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=718 priorityscore=1501
+ impostorscore=0 mlxscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304030130
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 31, 2023 at 09:38:24PM +0000, Eric Sellman wrote:
-> So who do I need to go to next to get this fixed?
+From: Karthik M <quic_karm@quicinc.com>
 
-It could be potentially be changed in the kernel, and
-linux-wireless@vger.kernel.org is the right group of people. But there
-are a lot of systems around running older kernels where the
-wireless-regdb might still be getting updated. So we'd want to at least
-make an effor to see that the change makes it to all the supported
-stable and distro kernels, open AP firmware projects, etc before we
-updated the database. That's likely to take a while.
+During stress test with maximum VAPs and peer connected, below warning
+is seen:
 
-I was about to propose an alternate idea, but then I went to check the
-kernel source and I think that it already does what I was going to
-propose. AUTO-BW means that a range can be combined with adjacent ranges
-for what you called "band straddling," and it also allows the kernel to
-automatically determine what bandwidth is supported. So all it should
-need to do is not just consider the bandwiths for the individual ranges
-but for the entire range which can be created by combining AUTO-BW
-rules.
+[ 1079.110967] ath12k_pci 0004:01:00.0: mgmt tx queue is full
+[ 1079.117708] ath12k_pci 0004:01:00.0: failed to queue management frame -28
+[ 1079.123191] ath12k_pci 0004:01:00.0: mgmt tx queue is full
+[ 1079.129960] ath12k_pci 0004:01:00.0: failed to queue management frame -28
+[ 1079.135641] ath12k_pci 0004:01:00.0: mgmt tx queue is full
 
-And I think it's already doing this. reg_get_max_bandwidth_from_range()
-is called to determine the max bandwidth for a channel when the matching
-rule has AUTO-BW set. This looks at the rules before and after the
-matching rule, and the rules before and after those, etc, until it
-reaches rules which are no longer adjacent. Then it returns a maximum
-bandwidth which is the span of all the adjacent rules it found.
+This is caused by potential race condition while accessing skb_queue_len().
+When ath12k_mgmt_over_wmi_tx_work() and ath12k_mac_mgmt_tx() is called concurrently,
+then skb_queue_len() might fetch list length which is modified by skb_queue_tail()
+or skb_dequeue().
 
-You haven't said if you're seeing an actual problem using 160 MHz
-channels or if you just noticed the bandwidth is not 160 MHz in the
-database. If you are having trouble, please provide details about what
-you observe versus what you expect. Also note that a lot of wireless
-hardware now comes with it's own in-firmware regulatory database which
-will override the one loaded from userspace; you can run 'iw reg get'
-and see if your hardware reports a "self-managed" set of rules.
+Replace skb_queue_len() with skb_queue_len_lockless() which will
+prevent concurrent modified access using READ_ONCE(). And also use '>=',
+in case we queue a few SKBs simultaneously.
 
-Thanks,
-Seth
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-> 
-> Get Outlook for Android<https://aka.ms/AAb9ysg>
-> ________________________________
-> From: sforshee@kernel.org <sforshee@kernel.org>
-> Sent: Friday, March 31, 2023 2:36:10 PM
-> To: Eric Sellman <GAK_ACTION@live.com>
-> Cc: wireless-regdb@lists.infradead.org <wireless-regdb@lists.infradead.org>; linux-wireless@vger.kernel.org <linux-wireless@vger.kernel.org>
-> Subject: Re: wireless-regdb: Update regulatory rules for USA on 5GHz
-> 
-> On Fri, Mar 31, 2023 at 08:30:09PM +0000, Eric Sellman wrote:
-> > First, I would like to state that I live in the USA And that this is my first time submitting a correction to the wireless-regdb.
-> >
-> > According to this list here >> https://git.kernel.org/pub/scm/linux/kernel/git/sforshee/wireless-regdb.git/tree/db.txt#n1727
-> >
-> > I only see VHT160 allowed to be utilized for 5500mhz to 5640mhz but there is no mention of VH160 being allowed for use with 5180 to 5320mhz.
-> >
-> > And according to this presentation here > https://transition.fcc.gov/oet/ea/presentations/files/may17/31-Part-15-Panel-UNII-UpdatesDT.pdf
-> >
-> > And this paragraph from this FCC document here > https://www.federalregister.gov/d/2014-09279/p-65
-> >
-> > "Band Straddling" is allowed with U-NII-1 and U-NII-2A. 5150mhz to 5330mhz
-> >
-> > Therefore, I would like you to add to the db that 5180 to 5320 can be used with vht160.
-> 
-> You are correct, however the kernel rejects the database if the max
-> bandwidth for a range exceeds the size of the range for a given rule. So
-> unfortunately we can't set the max bandwidth to 160 MHz.
-> 
-> Thanks,
-> Seth
+Signed-off-by: Karthik M <quic_karm@quicinc.com>
+Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 0e5cc477ba56..cc458fed5e78 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4489,7 +4489,7 @@ static int ath12k_mac_mgmt_tx(struct ath12k *ar, struct sk_buff *skb,
+ 		return -ENOSPC;
+ 	}
+ 
+-	if (skb_queue_len(q) == ATH12K_TX_MGMT_NUM_PENDING_MAX) {
++	if (skb_queue_len_lockless(q) >= ATH12K_TX_MGMT_NUM_PENDING_MAX) {
+ 		ath12k_warn(ar->ab, "mgmt tx queue is full\n");
+ 		return -ENOSPC;
+ 	}
+-- 
+2.17.1
+
