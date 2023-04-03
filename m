@@ -2,117 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24BDC6D52F5
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 22:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 995BC6D5300
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 23:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233540AbjDCU7M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 16:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42416 "EHLO
+        id S232666AbjDCVEu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 17:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229689AbjDCU7L (ORCPT
+        with ESMTP id S233037AbjDCVEs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 16:59:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC506272C;
-        Mon,  3 Apr 2023 13:59:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 572BB62B2C;
-        Mon,  3 Apr 2023 20:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCD5C433D2;
-        Mon,  3 Apr 2023 20:59:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680555549;
-        bh=Jko3afct/TAK0go9CJRFcu7GPZ8tu9HyhdEM/5yobtk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VmoPMGZz3nSoe/PAomr+63FMBfmlo8Z/0v0lm7Z1JmGqlFBoyFgIHjXH3azgsRsLm
-         JRppQxER3A+seTUBt3Jd33GnfElM4RdTpI142nBmxIN1yOEAhwIN3JZQo7XfCmWgzQ
-         1REpZYBMsWttJk1ktVYY29hcW2O7LIO3AiW2FDRKjVpJO8TFR4O1iCIHyAQ088EQDe
-         V3hCzg8s7YJvEJroVeKGrffML/EBS5Eyaz2sUqpo62EsQOYrl5RNgBfraxvDVK5GCD
-         6fdetDB/BARvngNt7N87pZtYoQRVtcMmuYiTSz61mzIdtqsuZLE2xdF7O/q0+wEJcS
-         Rr0jxnVw5V0yA==
-Received: by pali.im (Postfix)
-        id 3BBC3772; Mon,  3 Apr 2023 22:59:06 +0200 (CEST)
-Date:   Mon, 3 Apr 2023 22:59:06 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
-        Nitin Gupta <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: [PATCH v4 6/9] mmc: sdio: add Realtek SDIO vendor ID and various
- wifi device IDs
-Message-ID: <20230403205906.qtxefyx5k3nntozk@pali>
-References: <20230403202440.276757-1-martin.blumenstingl@googlemail.com>
- <20230403202440.276757-7-martin.blumenstingl@googlemail.com>
+        Mon, 3 Apr 2023 17:04:48 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D91101990
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 14:04:40 -0700 (PDT)
+X-UUID: 23e887bad26311edb6b9f13eb10bd0fe-20230404
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Tr5PKTZkytsHces4K8xckZrMRgweSHoafCTFPOREkbc=;
+        b=n9sIBALoq+Wva5x2CWAmkIlgvhsvw/uvHm0gWOZOuT/PYwPk8NDyviMSOE1c5mFUliJ8sPE4E9UyX7gwP9us3YbWYS7JhSaSzoeH3a9YgZVxT0rBXl0EuwdtDwcNFVdQGInZqXST1sZ3PK17ITeo7tt0SRfNh7YLzxjpEYVBAww=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:1aa6a687-1465-480f-a6a4-8b199ec393d6,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:120426c,CLOUDID:a1fd4a2a-564d-42d9-9875-7c868ee415ec,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-UUID: 23e887bad26311edb6b9f13eb10bd0fe-20230404
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+        (envelope-from <yi-chia.hsieh@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1847009266; Tue, 04 Apr 2023 05:04:36 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.25; Tue, 4 Apr 2023 05:04:35 +0800
+Received: from mussdccf250.mussds.eus.mediatek.inc (10.73.250.250) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Tue, 4 Apr 2023 05:04:33 +0800
+From:   Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Money Wang <money.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+Subject: [PATCH 1/2] wifi: mac80211: track obss color bitmap
+Date:   Mon, 3 Apr 2023 14:04:29 -0700
+Message-ID: <774ab129159408a3f3e04b7e662cb559cf087c48.1680553706.git.yi-chia.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230403202440.276757-7-martin.blumenstingl@googlemail.com>
-User-Agent: NeoMutt/20180716
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
+        MAY_BE_FORGED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Monday 03 April 2023 22:24:37 Martin Blumenstingl wrote:
-> Add the SDIO vendor ID for Realtek and some device IDs extracted from
-> their GPL vendor driver. This will be useful in the future when the
-> rtw88 driver gains support for these chips.
-> 
-> Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Track OBSS BSS colors on checking OBSS Beacons and report used color bitmap to
+hostapd when collide.
 
-Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Yi-Chia Hsieh <yi-chia.hsieh@mediatek.com>
+---
+ include/net/mac80211.h | 1 +
+ net/mac80211/rx.c      | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-> ---
-> Changes since v3:
-> - sort entries by their value for consistency as suggested by Pali
-> - add Ping-Ke's reviewed-by
-> 
-> Changes since v2:
-> - none
-> 
-> Changes since v1:
-> - none
-> 
-> 
->  include/linux/mmc/sdio_ids.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 0e4ef9c5127a..66f503ed2448 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -112,6 +112,15 @@
->  #define SDIO_VENDOR_ID_MICROCHIP_WILC		0x0296
->  #define SDIO_DEVICE_ID_MICROCHIP_WILC1000	0x5347
->  
-> +#define SDIO_VENDOR_ID_REALTEK			0x024c
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8723BS	0xb723
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8821BS	0xb821
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8822BS	0xb822
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8821CS	0xc821
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8822CS	0xc822
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8723DS	0xd723
-> +#define SDIO_DEVICE_ID_REALTEK_RTW8821DS	0xd821
-> +
->  #define SDIO_VENDOR_ID_SIANO			0x039a
->  #define SDIO_DEVICE_ID_SIANO_NOVA_B0		0x0201
->  #define SDIO_DEVICE_ID_SIANO_NICE		0x0202
-> -- 
-> 2.40.0
-> 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 219fd15893b0..f003e0dbc7c4 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -749,6 +749,7 @@ struct ieee80211_bss_conf {
+ 
+ 	bool color_change_active;
+ 	u8 color_change_color;
++	u64 used_color_bitmap;
+ 
+ 	bool vht_su_beamformer;
+ 	bool vht_su_beamformee;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index f7fdfe710951..e4a60992e4eb 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3264,9 +3264,11 @@ ieee80211_rx_check_bss_color_collision(struct ieee80211_rx_data *rx)
+ 
+ 		color = le32_get_bits(he_oper->he_oper_params,
+ 				      IEEE80211_HE_OPERATION_BSS_COLOR_MASK);
++		bss_conf->used_color_bitmap |= BIT_ULL(color);
++
+ 		if (color == bss_conf->he_bss_color.color)
+ 			ieee80211_obss_color_collision_notify(&rx->sdata->vif,
+-							      BIT_ULL(color),
++							      bss_conf->used_color_bitmap,
+ 							      GFP_ATOMIC);
+ 	}
+ }
+-- 
+2.39.0
+
