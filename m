@@ -2,78 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E59FB6D47A1
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 16:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 701926D47EB
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 16:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233088AbjDCOV5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 10:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
+        id S233249AbjDCOYi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 10:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233146AbjDCOVv (ORCPT
+        with ESMTP id S233256AbjDCOYa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 10:21:51 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E3E2D7E7
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 07:21:37 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 333Ailk9008610;
-        Mon, 3 Apr 2023 14:21:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=TvJL6iO21505iTIUgNDYxI7ABKfy17PjIQZA4KoMYyE=;
- b=Qmo3Yp6oQZkZBQRCLyMc5dLzGHdbwfMXKs+9geaEbuzJoJcDOc1Wu+q67RsIMCdaT3iO
- t1+KDfn4RjIv+IKUdW3SmeKEXsJmUVMcFIsFZEohW0zTZw3GpnzpW26wVLFlbGYrOmI6
- ACBr6obLMMdrGJ8F1cpee0aRNEfkw4pffklWBPL3P/h0GA3GqzgBVE19gMZhokbe03OD
- MVVO+A5PlSJZQqGH0E4qHCDJAJSdgY5dOX3OlOy1OH44NbAMrYJhGtuJk1oZ/r54C/eh
- eNmUs5OoMGJN+6IuSGxWSepUe7Zh5Em9AaUnTPOux9+o/s/N8X1BswSiMBOBhN1bfFYX AQ== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pqus58qv0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 03 Apr 2023 14:21:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 333ELGN1007229
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 3 Apr 2023 14:21:17 GMT
-Received: from [10.253.35.21] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 3 Apr 2023
- 07:21:15 -0700
-Message-ID: <955cf0b5-8973-86b5-109e-268917d70904@quicinc.com>
-Date:   Mon, 3 Apr 2023 22:21:13 +0800
+        Mon, 3 Apr 2023 10:24:30 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1FB10419
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 07:24:14 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id eh3so118004045edb.11
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Apr 2023 07:24:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680531853;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=29oRmA9CZPFaDOffDvmyGltkFrJO8PgAbbZcb5IVqWU=;
+        b=WrP2yqTD21i611cjbsCwsUQqOSRcsWOaDeCFvrhBBbv1nzGRbtI07g59oE0cPhwH/F
+         e+jVNzgquAr2mzMVvD0Cyx+VHj27QG5KKb6sw2/5F3LbGkbFqR3XoiBsrmrGbH1maVc8
+         YvdnDKcJoZqUFZK0pwynD3maW7HQ1Hs7z1o4s1cd8/CutoPfkOuqZVGnx3xjnZDNriq1
+         wmF7PX4PxbWvyysQaED4h5rKb32oFwddhRVA31KbSLe6xQvZ2gmdBW4QqA2Wq/OxzvBL
+         WUVoldL3JdbKOh2mZ2uYjmmu+a4OuJMp+UKFMjKtjhcNZHkb1mV0Qv9uRnLdxEpl8v/y
+         7rJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680531853;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=29oRmA9CZPFaDOffDvmyGltkFrJO8PgAbbZcb5IVqWU=;
+        b=X7jQzWsrvUqm3/HgwOnDUujGvtzHQSx4nJHC1PGdPFU4fP/2DRP5PVpmFupZX1gzcg
+         UKbzXCfvhNgfR1A6XtuP7z+lcZrSvtT8z/Spl9T/cc2BcBN5ztjCKhHpINXmv8B38EJ0
+         IET7K7Prmf8lntq/Y++A5/tihOXA0sB8S+OGengZVIpdoFeCWtLa9ekh8+C2sfbdJtKK
+         TZV2FKeqPxcLRtWp7nF8L7VfP1Yrd6tumxTcd5tPw1z9t+DyIwqPY0HcCkOcMwtno+h3
+         aIepHTVZ3jr4Tp7kZ4JvTwZg69r7r2SRfqn7xaI1fA1//Vnlw+wb5m3LMrvSxLln6mfT
+         YmkQ==
+X-Gm-Message-State: AAQBX9elWT0haDIx/Q624xu83Bej+x4Qp2Skbc2MXRF5IR5F/AEL1yew
+        JHPdbswKikJSzS8lNPZiAUw=
+X-Google-Smtp-Source: AKy350al+VX3isdUGCN4hPrHVf3CTMcN9f/wP3lfy3d20mg4ekGtNXrd84ejmae7WkkbVxOxfOW90g==
+X-Received: by 2002:aa7:da4e:0:b0:4fa:a1a1:9e14 with SMTP id w14-20020aa7da4e000000b004faa1a19e14mr31016104eds.30.1680531853082;
+        Mon, 03 Apr 2023 07:24:13 -0700 (PDT)
+Received: from [192.168.1.15] (cable-24-135-222-102.dynamic.sbb.rs. [24.135.222.102])
+        by smtp.gmail.com with ESMTPSA id q20-20020a50cc94000000b004bd6e3ed196sm4701934edi.86.2023.04.03.07.24.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Apr 2023 07:24:12 -0700 (PDT)
+Message-ID: <8d6316ef-fd66-0b18-ca5b-bb945ebc5370@gmail.com>
+Date:   Mon, 3 Apr 2023 16:24:11 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH 24/27] wifi: mac80211: implement link switching
+Subject: Re: wilc1000 kernel crash
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <20220902161143.d99dfbe65c90.I92385ba882ec984a9a2ad18293173436657e82aa@changeid>
- <ca5177fe-3b9f-2309-9afd-1d5e827540f7@quicinc.com>
- <50719d34bc48d816d00b56d3d9efdb59e3e51a16.camel@sipsolutions.net>
-From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <50719d34bc48d816d00b56d3d9efdb59e3e51a16.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     Michael Walle <mwalle@kernel.org>, Ajay.Kathat@microchip.com
+Cc:     Claudiu.Beznea@microchip.com, linux-wireless@vger.kernel.org,
+        kvalo@kernel.org
+References: <20221024135407.7udo3dwl3mqyv2yj@0002.3ffe.de>
+ <6d022f41-85bb-cde2-0b3d-feef0a0711f2@microchip.com>
+ <20221026085415.6jgwrhq4sunqaypm@0002.3ffe.de>
+ <20221209120343.wvagbfprsgdj74af@0002.3ffe.de>
+ <4f279aa2-b5df-0b76-2cdf-ddb339a19cf7@microchip.com>
+ <20221216101842.jjz3glyotqbbqlk4@0002.3ffe.de>
+From:   Kirill Buksha <kirbuk200@gmail.com>
+In-Reply-To: <20221216101842.jjz3glyotqbbqlk4@0002.3ffe.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 5uPBzRF3q1L1YZnYW10xnH9_gQex2MYP
-X-Proofpoint-GUID: 5uPBzRF3q1L1YZnYW10xnH9_gQex2MYP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-03_11,2023-04-03_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 spamscore=0 mlxlogscore=539
- adultscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304030104
-X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-1.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,38 +80,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/27/2023 4:31 PM, Johannes Berg wrote:
+On 16.12.22. 11:18, Michael Walle wrote:
 > Hi,
 >
->>> +	list_for_each_entry(sta, &local->sta_list, list) {
->>> +		if (sdata != sta->sdata)
->>> +			continue;
->>> +		ret = drv_change_sta_links(local, sdata, &sta->sta,
->>> +					   old_active,
->>> +					   old_active | active_links);
->>> +		WARN_ON_ONCE(ret);
->>> +	}
->>> +
->>> +	ret = ieee80211_key_switch_links(sdata, rem, add);
->> I see ieee80211_key_switch_link() only handler the per-link(link_id >=
->> 0) keys,
->>
->> So I think lower driver also install the pairwise keys(link_id = -1) for
->> the added links at this moment?
-> Well from mac80211 POV they're already installed, so we can't really
-> install them again. We'd have to remove them but that's racy, obviously.
-> So I think the low-level driver just has to handle that, e.g. when the
-> station links are updated (and the key belongs to the station.)
+> On 22/12/09 02:14, Ajay.Kathat@microchip.com wrote:
+>> No progress yet. I tried to simulate the condition a few times but was 
+>> unable to see the exact failure in my setup so I need to try more.
+> Shouldn't it also be possible to see the issue by code reading? I've
+> provided the call tree in my previous mail and my concerns regarding
+> the locking. Either I'm missing something there or there is no
+> locking between these threads which could cause this issue.
+>
+>> For the other "FW not responding" continuous logs, I got some clue. 
+>> Probably, will try to send that patch first.
+> Ok, let me know if you have some patches, I'm happy to test them.
+>
+> -michael
 >
 >
-Thanks Johannes,
 
-Also it does not have BSS_CHANGED_ASSOC(exists in 
-ieee80211_set_associated()) for
+Hello,
 
-ieee80211_link_info_change_notify()/ieee80211_vif_cfg_change_notify().
+I faced the same kernel oops issue. After analyzing my logs and brief
+debugging, I agree with Mikhail: the problem seems to be accessing the
+scan_result pointer after it has been nulled.
 
-So I think low-level driver also need to auto add BSS_CHANGED_ASSOC 
-logic for the added link as well as the pairwise key you said, right?
+Regarding the solution: if there is a race between two threads (as
+Michael described earlier), then I think that the locking mechanism will
+be the most reliable solution. We ran into problems during
+deinitialization, but driver contains two more places
+(handle_scan_done() and wilc_disconnect() functions in wilc1000/hif.c),
+where scan_result is set to NULL.
 
+I use NetworkManager to manage networks and I have experienced the same
+failure multiple times when switching from one WiFi network to another.
+Keep in mind that switching between networks calls wilc_disconnect() and
+wilc_deinit() functions and it is not yet clear which one is causing a
+core dump. I think it's worth at least taking a look at these areas of
+the code. What do you think?
 
+Best regards,
+Kirill Buksha.
