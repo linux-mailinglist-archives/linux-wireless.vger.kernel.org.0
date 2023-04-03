@@ -2,73 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D9C6D3ECE
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 10:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 435D56D3F45
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 10:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231555AbjDCIVL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 04:21:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41878 "EHLO
+        id S231778AbjDCInn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 04:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231523AbjDCIVJ (ORCPT
+        with ESMTP id S231753AbjDCInj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 04:21:09 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDEA5B8D;
-        Mon,  3 Apr 2023 01:21:04 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pjFR0-00042P-HF; Mon, 03 Apr 2023 10:21:02 +0200
-Message-ID: <1a8aaa86-0b63-f779-0604-ba6653efce6d@leemhuis.info>
-Date:   Mon, 3 Apr 2023 10:21:01 +0200
+        Mon, 3 Apr 2023 04:43:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 821257EE6;
+        Mon,  3 Apr 2023 01:43:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2067261150;
+        Mon,  3 Apr 2023 08:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23EE8C4339B;
+        Mon,  3 Apr 2023 08:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680511417;
+        bh=za2PYURTwJ1KDJ92WhwP6ERqBjgmVTFChbJRUTKlZwc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=OeZRvvLJX5dQ487Wh97mIMEJ9FzYb0XADQFQCn47zIj14QWEAjCRvyhr4W8p+nWuL
+         sZMQcTh6yf9+EJx4IzgR0ExjhAA3rM4EV9BwUM7aqoKDzWpFdyKP1Om4NQLyYiAhib
+         pH87Hj6q2UGCqFoOwFCsiP6c++1vYgP2D2F+PEspihyXKPtspOhNUjBTTrOXXG1zZ7
+         eCLxIjUGoJhS1m6kadkh6Gkid823BxsGRe1jb+2Xr7F7guZVNPsVmkevEO0fulwM4l
+         VglD13lRvYfi6ZEnK/xPYT+Sm5sWQX6lXSfMiu+E0satOB+BzGRojohhN77fTk0kWq
+         dIMhtI5VvEmlQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     David Miller <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Networking <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: linux-next: manual merge of the wireless-next tree with the wireless tree
+References: <20230331104959.0b30604d@canb.auug.org.au>
+        <20230403122313.6006576b@canb.auug.org.au>
+Date:   Mon, 03 Apr 2023 11:43:31 +0300
+In-Reply-To: <20230403122313.6006576b@canb.auug.org.au> (Stephen Rothwell's
+        message of "Mon, 3 Apr 2023 12:23:13 +1000")
+Message-ID: <87iledbbkc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [regression] Bug 217282 - Regression: ath11k hang on boot since
- updating from 6.1.21 to 6.1.22
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     ath11k <ath11k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <83966474-658d-7e2f-3e7f-eb66100660e9@leemhuis.info>
-In-Reply-To: <83966474-658d-7e2f-3e7f-eb66100660e9@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1680510064;cacfd811;
-X-HE-SMSGID: 1pjFR0-00042P-HF
-X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02.04.23 10:00, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Hi, Thorsten here, the Linux kernel's regression tracker.
-> 
-> I noticed a regression report in bugzilla.kernel.org. As many (most?)
-> kernel developers don't keep an eye on it, I decided to forward it by mail.
-> 
-> Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-> not CCed them in mails like this.
-> 
-> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217282 :
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
 
-FYI: reporter rebuild the kernel and the problem vanished, for details
-see comment 2 of https://bugzilla.kernel.org/show_bug.cgi?id=217282
+> Hi all,
+>
+> On Fri, 31 Mar 2023 10:49:59 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>>
+>> Today's linux-next merge of the wireless-next tree got a conflict in:
+>> 
+>>   net/mac80211/rx.c
+>> 
+>> between commit:
+>> 
+>>   a16fc38315f2 ("wifi: mac80211: fix potential null pointer dereference")
+>> 
+>> from the wireless tree and commit:
+>> 
+>>   fe4a6d2db3ba ("wifi: mac80211: implement support for yet another mesh A-MSDU format")
+>> 
+>> from the wireless-next tree.
+>> 
+>> I fixed it up (see below) and can carry the fix as necessary. This
+>> is now fixed as far as linux-next is concerned, but any non trivial
+>> conflicts should be mentioned to your upstream maintainer when your tree
+>> is submitted for merging.  You may also want to consider cooperating
+>> with the maintainer of the conflicting tree to minimise any particularly
+>> complex conflicts.
 
-#regzbot resolve: Problem vanished on recompilation
-#regzbot ignore-activity
+[...]
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+> This is now a conflict between the net-next and net trees.
+
+My plan is to submit wireless-next pull request to net-next by
+Wednesday, that should fix the conflict.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
