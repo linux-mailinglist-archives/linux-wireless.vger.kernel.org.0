@@ -2,52 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99EB46D420C
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 12:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B67A56D421D
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 12:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231925AbjDCKdV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 06:33:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50780 "EHLO
+        id S232257AbjDCKeO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 06:34:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbjDCKdC (ORCPT
+        with ESMTP id S232167AbjDCKeK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 06:33:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492313589
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 03:33:00 -0700 (PDT)
+        Mon, 3 Apr 2023 06:34:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B07F83C34
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 03:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A1D66189B
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 10:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C018C4339B;
-        Mon,  3 Apr 2023 10:32:58 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 39656B81106
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 10:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A2CC433EF;
+        Mon,  3 Apr 2023 10:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680517979;
-        bh=Co7LhimcNM0pw8bd0/4VQmCps4FvAiU4Y2M6iZQ38X8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=BKb/I2B94R+LYFepsLrZxfdJWdGX7E+cQNFU7RvmRYfaS8ZLkrAHaiOpJr3FZ7AaP
-         P2N7eob8+XWxk4XqsUOmxHJRIUm9+EpWW09YJOx4bYuqGSpDoE8bqiW+gEbcZaymcG
-         s6UKt7EM/PX3iRzAwDCxiP8T7ra0bQ7cymjyjpMcwnEOWIScUDbQBurpsApHK5vRVq
-         sKgSEdMulj0gbdHGXHNbKCIChYwovwWOj/k/3HZ+FHaM/sORzV8Xe7YxeRUto4whIA
-         Y+fFuWs6OoXLNtCJkqQfKpODPJP3a/Spwo9qUoaBgLGV0pgTyg+r39T7hyAdpR/WyL
-         bqJB5qGL7zYpw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Bernie Huang <phhuang@realtek.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 2/5] wifi: rtw89: add function to wait for completion of TX skbs
-References: <20230310034631.45299-1-pkshih@realtek.com>
-        <20230310034631.45299-3-pkshih@realtek.com>
-        <87v8j2mmqt.fsf@kernel.org>
-        <360e6dd64e3645c68742fc4c603b3c2b@realtek.com>
-Date:   Mon, 03 Apr 2023 13:32:54 +0300
-In-Reply-To: <360e6dd64e3645c68742fc4c603b3c2b@realtek.com> (Ping-Ke Shih's
-        message of "Wed, 15 Mar 2023 12:09:26 +0000")
-Message-ID: <875yadb6i1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1680518045;
+        bh=Uh1Rj6GBCAC9YMQp6uFUteoeHyWQSEOLJwLoHSpqhwE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=X505lx7KXuJUwyJZS1Z92KQBHl+mqid5IDHZ8YMIkLVznWVKeOjFN8G1y7hv9kXF/
+         IeAaBkReI0EJCtxRuieoX1TsoqE4AwHbGxOhTLsDbKqUkTw3tYZcabddAGCLf4Rs0M
+         POIC3ei9wDcKudZGrlbVlLOq3cHzcKXmom9As3SfDc62RWpwUp2tjnUcIACFwXI2kT
+         Uhp5chpx2q1YUBuSCiKqWz19zjvjka8H4wiFul9yBQti47eR58oMV5Vl9jIHA9jvac
+         hJHg5IFmrqQEeLQsoLPUycaOvudQQ7TgP9l3GcoCqgvzfWEEI56NgNASdpHQAw+cqd
+         fv370FkBEkVcQ==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH 0/6] mt76: remove some duplicated code
+Date:   Mon,  3 Apr 2023 12:33:54 +0200
+Message-Id: <cover.1680517676.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
@@ -57,74 +50,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Get rid of some unused code and move shared one in mt76_connac module.
 
->> > +static void rtw89_core_free_tx_wait_work(struct work_struct *work)
->> > +{
->> > +     struct rtw89_tx_wait_info *wait =
->> > +                     container_of(work, struct rtw89_tx_wait_info, work);
->> > +     struct rtw89_dev *rtwdev = wait->rtwdev;
->> > +     int done, ret;
->> > +
->> > +     ret = read_poll_timeout(atomic_read, done, done, 1000, 100000, false,
->> > +                             &wait->wait_done);
->> > +
->> > +     if (ret)
->> > +             rtw89_err(rtwdev, "tx wait timed out, stop polling\n");
->> > +     else
->> > +             kfree(wait);
->> > +}
->> 
->> I admit I didn't try to understand this patch in detail but this
->> function just looks odd to me. Why there's polling able to free
->> something?
->> 
->
-> Three works are involved in the "wait/completion".
->
-> work 1. remain-on-channel work
->    It trigger TX null data and wait (kmalloc 'wait' object, and wait for completion)
->
-> work 2. TX completion by napi_poll
->    It returns TX status (failed or succeed to TX), and complete the 'wait' object,
->    and queue rtw89_core_free_tx_wait_work() to free 'wait' object.
->
->    We queue this by work 2, because time of work 1 is predictable, but
->    it is hard to estimate time of work 2. The read_poll_timeout() is for
->    the work 1 predictable time.
->
-> work 3. This work is to do garbage collection of 'wait' object
->    It polls if work 1 is done before doing free 'wait' object.
->
->
-> Things are complex because work 1 and 2 are done asynchronously, so one
-> of them can't free 'wait' object, or it will causes use-after-free in other
-> side.
->
-> Use case 1: (work 1 could free 'wait' object)
->     work 1         work 2          work 3
->     wait
->                    completion
->     wait ok
->                                    free 'wait'
->
-> Use case 2: (work 2 could free 'wait' object)
->     work 1         work 2          work 3
->     wait
->     wait timeout
->                    completion
->                                    free 'wait'
->
->
-> I can add a comment as a hint why we can use a read_poll_timeout() to assist
-> in freeing something. 
+Lorenzo Bianconi (6):
+  wifi: mt76: move irq_tasklet in mt76_dev struct
+  wifi: mt76: add mt76_connac_irq_enable utility routine
+  wifi: mt76: get rid of unused sta_ps callbacks
+  wifi: mt76: add mt76_connac_gen_ppe_thresh utility routine
+  wifi: mt76: mt7921: get rid of eeprom.h
+  wifi: mt76: move shared mac definitions in mt76_connac2_mac.h
 
-I would expect that there's polling if you are waiting something from
-hardware, or maybe when implementing a spin lock, but not when waiting
-for another kernel thread. This just doesn't feel right but I don't have
-time to propose a good alternative either, sorry.
+ drivers/net/wireless/mediatek/mt76/mac80211.c |  3 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ .../net/wireless/mediatek/mt76/mt7615/dma.c   |  5 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |  5 --
+ .../net/wireless/mediatek/mt76/mt7615/mac.h   | 12 -----
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  | 11 ++--
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    | 10 ----
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |  2 +-
+ .../wireless/mediatek/mt76/mt7615/pci_init.c  |  2 +-
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |  1 -
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |  1 -
+ .../net/wireless/mediatek/mt76/mt76_connac.h  | 21 ++++++++
+ .../wireless/mediatek/mt76/mt76_connac2_mac.h | 22 ++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  | 21 ++++++++
+ .../net/wireless/mediatek/mt76/mt7915/init.c  | 25 +--------
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   | 33 +-----------
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  7 ++-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +-
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  1 -
+ .../net/wireless/mediatek/mt76/mt7921/dma.c   | 10 ++--
+ .../wireless/mediatek/mt76/mt7921/eeprom.h    | 30 -----------
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 18 ++++---
+ .../net/wireless/mediatek/mt76/mt7921/mac.h   | 53 -------------------
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 23 +-------
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  3 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    | 20 +++----
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   | 24 ++++-----
+ .../wireless/mediatek/mt76/mt7921/pci_mac.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  3 +-
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c  |  2 +-
+ .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   |  3 +-
+ .../wireless/mediatek/mt76/mt7921/usb_mac.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7996/init.c  | 25 +--------
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7996/mac.h   | 12 -----
+ .../net/wireless/mediatek/mt76/mt7996/mmio.c  |  7 ++-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  4 +-
+ 40 files changed, 139 insertions(+), 306 deletions(-)
+ delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+ delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.39.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
