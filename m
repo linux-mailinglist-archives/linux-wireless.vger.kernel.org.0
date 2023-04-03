@@ -2,49 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7D956D4223
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 12:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 166406D459E
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 15:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231444AbjDCKeh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 06:34:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52502 "EHLO
+        id S232138AbjDCNYs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 09:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232151AbjDCKec (ORCPT
+        with ESMTP id S232547AbjDCNY1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 06:34:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5882B778
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 03:34:30 -0700 (PDT)
+        Mon, 3 Apr 2023 09:24:27 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FD47D9D
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 06:23:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63537618A9
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 10:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74003C4339B;
-        Mon,  3 Apr 2023 10:34:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 40D45B81A46
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 13:23:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BF1C433D2;
+        Mon,  3 Apr 2023 13:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680518069;
-        bh=Zlb53Z7XXnTLbU0ztzJQfTcfYFLwAnDPYCuP0+QSJXM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N+qw+O/Ov4+pg2Py4J62kQG4FT4RBZblLkpBXFrgTfWnAYrU3f50BaeZFoLFH1+z5
-         5yPDwkWEjuj6qUB3ltcW6v6LQ8+mDGjMerih6lg5bOPDbEqixAaBzjuwyyddPOffE7
-         SId24w4Yf2Ofz8Jtbn9yOccAFp5M3Hw91WDYOPsAyMB26CyKkaMSFG0M6xKBPb4gkO
-         KhnwO5oJQtwQaRbz+KIzSdroMtVYF1GnmdRH4dP1TX6+461jiUdpmiTiBUBMV5LZe/
-         VhENM6s0CbKfHH7NPiBkEGovGudR+npIVgtVhG//vzYDWWUBvVAg+5kCyCp1THeY6l
-         BDls7DOxEvR0w==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 6/6] wifi: mt76: move shared mac definitions in mt76_connac2_mac.h
-Date:   Mon,  3 Apr 2023 12:34:00 +0200
-Message-Id: <a637981066d5d7b2fe597cdaec57c8cf032eac49.1680517676.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1680517676.git.lorenzo@kernel.org>
-References: <cover.1680517676.git.lorenzo@kernel.org>
+        s=k20201202; t=1680528196;
+        bh=BXjjgksoS+TAK9unU8KtY1qmXiWnaO415zndcRwmo/w=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=gkY9iYXeRVptgieOel0HgQfylpf1A+Y+S35sYQS/BSo5QJjsFeqhotmvQet//vhs3
+         B0qG97uwcsRdWZ+SGHZOLsQEl3gS/HcsWptSiOPHfRJiuBR/q6Qvdih+1iuEHDsnvX
+         Y7kXxHVFyfquru4eYhhezfd42s6J1HEA65+J+Sr9CzFhJXyDuFSvtQdXdkC1htluSk
+         D8doEdeIkVZxIHl1NG1vQU+y7sIvT2eIlRgsqlQ63GHbfl7SeLxXQAyoSzf8hZvqsY
+         0xOv4bqM/YfFJM4cUDEkH8C06ArAyh25rx+1cO66v5beJH2KyUnBSKBa8nxGAU64Xm
+         znSJB3PBaAhHw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: rtw88/rtw89: command/event structure handling
+References: <20230310034631.45299-1-pkshih@realtek.com>
+        <20230310034631.45299-2-pkshih@realtek.com>
+        <87zg8emn4i.fsf@kernel.org>
+        <e3670d1075f54c69ba3971067b3d06b7@realtek.com>
+        <87a5zpb71j.fsf_-_@kernel.org>
+Date:   Mon, 03 Apr 2023 16:23:10 +0300
+In-Reply-To: <87a5zpb71j.fsf_-_@kernel.org> (Kalle Valo's message of "Mon, 03
+        Apr 2023 13:21:12 +0300")
+Message-ID: <871ql1aym9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Type: text/plain
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,413 +59,135 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move some mac shared definitions between mt7996, mt7921 and mt7915 in
-mt76_connac2_mac.h.
+Kalle Valo <kvalo@kernel.org> writes:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/mac.h   | 12 -----
- .../net/wireless/mediatek/mt76/mt76_connac.h  | 14 +++++
- .../wireless/mediatek/mt76/mt76_connac2_mac.h | 22 ++++++++
- .../net/wireless/mediatek/mt76/mt7915/mac.h   | 33 +-----------
- .../net/wireless/mediatek/mt76/mt7921/dma.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/mac.c   | 13 ++++-
- .../net/wireless/mediatek/mt76/mt7921/mac.h   | 53 -------------------
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/pci.c   |  2 +-
- .../wireless/mediatek/mt76/mt7921/pci_mac.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  2 +-
- .../wireless/mediatek/mt76/mt7921/sdio_mac.c  |  2 +-
- .../wireless/mediatek/mt76/mt7921/sdio_mcu.c  |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/usb.c   |  2 +-
- .../wireless/mediatek/mt76/mt7921/usb_mac.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7996/mac.h   | 12 -----
- 17 files changed, 59 insertions(+), 120 deletions(-)
- delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
+> (changing the subject and adding Arnd)
+>
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+>
+>>> > @@ -3181,6 +3204,15 @@ static inline struct rtw89_fw_c2h_attr *RTW89_SKB_C2H_CB(struct sk_buff *skb)
+>>> >  #define RTW89_GET_MAC_C2H_REV_ACK_H2C_SEQ(c2h) \
+>>> >       le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
+>>> >
+>>> > +#define RTW89_GET_MAC_BCNFLTR_RPT_MACID(c2h) \
+>>> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(7, 0))
+>>> > +#define RTW89_GET_MAC_BCNFLTR_RPT_TYPE(c2h) \
+>>> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(9, 8))
+>>> > +#define RTW89_GET_MAC_BCNFLTR_RPT_EVENT(c2h) \
+>>> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(11, 10))
+>>> > +#define RTW89_GET_MAC_BCNFLTR_RPT_MA(c2h) \
+>>> > +     le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
+>>> 
+>>> I have to admit that I every time I see this code pattern it makes me
+>>> regret it. Something like what Arnd proposed back in the day would look
+>>> so much cleaner:
+>>> 
+>>> https://lore.kernel.org/all/CAK8P3a1rsKZZKMKFTDWgE3usX9gYKJqUvTMxSdEuZrp8BaKdaA@mail.gmail.com/
+>>> 
+>>> Of course this is just a generic comment about rtw89, and has nothing to
+>>> do with this patchset, but it would be great if someone could take a
+>>> look and try out Arnd's proposal. It would be good to start with just
+>>> one or two commands and send that as an RFC to see how it looks like.
+>>> 
+>>
+>> I write a draft RFC here. Please see if it's in expectation. If so, I can
+>> change all of them by another patch or RFC.
+>>
+>> In header file:
+>>
+>> #define RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID_MASK GENMASK(7, 0)
+>> #define RTW89_C2H_MAC_BCNFLTR_RPT_W2_TYPE_MASK GENMASK(9, 8)
+>> #define RTW89_C2H_MAC_BCNFLTR_RPT_W2_EVENT_MASK GENMASK(11, 10)
+>> #define RTW89_C2H_MAC_BCNFLTR_RPT_W2_MA_MASK GENMASK(23, 16)
+>>
+>>
+>> Access the values via le32_get_bits() in functions somewhere:
+>>
+>> 	const __le32 *c2h = skb->data;
+>>
+>> 	type =   le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID_MASK);
+>> 	sig = le32_get_bits(c2h[2],
+>> RTW89_C2H_MAC_BCNFLTR_RPT_W2_MA_MASK) - MAX_RSSI;
+>> 	event =  le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_EVENT_MASK);
+>> 	mac_id = le32_get_bits(c2h[2], RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID_MASK);
+>
+> I was thinking more something towards Arnd's idea he suggests in [1].
+> Here's my proposal for the beacon filter command as pseudo code (so not
+> compiled and very much buggy!) from the patch[2] which started this
+> recent discussion.
+>
+> So in the header file we would have something like this:
+>
+> #define RTW89_C2H_BEACON_FILTER_WORD0_MACID_MASK GENMASK(7, 0)
+> #define RTW89_C2H_BEACON_FILTER_WORD0_TYPE_MASK GENMASK(9, 8)
+> #define RTW89_C2H_BEACON_FILTER_WORD0_EVENT_MASK GENMASK(11, 10)
+> #define RTW89_C2H_BEACON_FILTER_WORD0_MA_MASK GENMASK(23, 16)
+>
+> struct rtw89_h2c_cfg_beacon_filter {
+>      __le32 word0;
+> }
+>
+> static inline void rtw89_h2c_cfg_beacon_filter_set_word0(struct rtw89_h2c_cfg_beacon_filter *cmd,
+>         u32 macid, u32 type, u32 event_mask, u32 ma)
+>
+> {
+>         le32_replace_bits(cmd->word0, macid, RTW89_C2H_BEACON_FILTER_WORD0_MACID_MASK);
+>         le32_replace_bits(cmd->word0, type, RTW89_C2H_BEACON_FILTER_WORD0_TYPE_MASK);
+>         le32_replace_bits(cmd->word0, event, RTW89_C2H_BEACON_FILTER_WORD0_EVENT_MASK);
+>         le32_replace_bits(cmd->word0, ma, RTW89_C2H_BEACON_FILTER_WORD0_MA_MASK);
+> }
+>
+> static inline u32 rtw89_h2c_cfg_beacon_filter_get_mac_id(const struct rtw89_h2c_cfg_beacon_filter *cmd)
+> {
+>         return le32_get_bits(cmd->word0, RTW89_C2H_BEACON_FILTER_WORD0_MACID_MASK);
+> }
+>
+> And an example how to use these:
+>
+> struct rtw89_h2c_cfg_beacon_filter *cmd;
+>
+> skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, sizeof(*cmd));
+> cmd = (struct rtw89_h2c_cfg_beacon_filter *)skb->data;
+> rtw89_h2c_cfg_beacon_filter_set_word0(cmd, 1, 2, 0, 0);
+>
+> I'm sure this is very buggy and I'm missing a lot but I hope you get the
+> idea anyway. My keypoints here are:
+>
+> * there's a clear struct for the command (an "object" from OOP point of
+>   view), something like "__le32 *c2h" is very confusing
+> * no casting
+> * no pointer arithmetic
+> * you get length with a simple "sizeof(*cmd)"
+>
+> Downside of course is that there's quite a lot of boilerplate code but I
+> still consider that positives outweight the negatives. Thoughts?
+>
+> And I'll emphasise that this is not a blocker for anything but it would
+> be nice to clean this up both in rtw88 and rtw89 at some point, if we
+> can.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-index 880c9f74a7f1..d08fbe64c262 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-@@ -19,18 +19,6 @@
- #define MT_RXD0_NORMAL_GROUP_3		BIT(27)
- #define MT_RXD0_NORMAL_GROUP_4		BIT(28)
- 
--enum rx_pkt_type {
--	PKT_TYPE_TXS,
--	PKT_TYPE_TXRXV,
--	PKT_TYPE_NORMAL,
--	PKT_TYPE_RX_DUP_RFB,
--	PKT_TYPE_RX_TMR,
--	PKT_TYPE_RETRIEVE,
--	PKT_TYPE_TXRX_NOTIFY,
--	PKT_TYPE_RX_EVENT,
--	PKT_TYPE_NORMAL_MCU,
--};
--
- #define MT_RXD1_NORMAL_BSSID		GENMASK(31, 26)
- #define MT_RXD1_NORMAL_PAYLOAD_FORMAT	GENMASK(25, 24)
- #define MT_RXD1_FIRST_AMSDU_FRAME	GENMASK(1, 0)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index fc8e999a431a..15653b274f83 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -6,6 +6,20 @@
- 
- #include "mt76.h"
- 
-+enum rx_pkt_type {
-+	PKT_TYPE_TXS,
-+	PKT_TYPE_TXRXV,
-+	PKT_TYPE_NORMAL,
-+	PKT_TYPE_RX_DUP_RFB,
-+	PKT_TYPE_RX_TMR,
-+	PKT_TYPE_RETRIEVE,
-+	PKT_TYPE_TXRX_NOTIFY,
-+	PKT_TYPE_RX_EVENT,
-+	PKT_TYPE_NORMAL_MCU,
-+	PKT_TYPE_RX_FW_MONITOR	= 0x0c,
-+	PKT_TYPE_TXRX_NOTIFY_V0	= 0x18,
-+};
-+
- #define MT76_CONNAC_SCAN_IE_LEN			600
- #define MT76_CONNAC_MAX_NUM_SCHED_SCAN_INTERVAL	 10
- #define MT76_CONNAC_MAX_TIME_SCHED_SCAN_INTERVAL U16_MAX
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-index f33171bcd343..a5ec0f631385 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-@@ -32,6 +32,16 @@ enum {
- 	MT_LMAC_PSMP0,
- };
- 
-+#define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
-+#define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
-+#define MT_TX_FREE_LATENCY		GENMASK(12, 0)
-+/* 0: success, others: dropped */
-+#define MT_TX_FREE_STATUS		GENMASK(14, 13)
-+#define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
-+#define MT_TX_FREE_PAIR			BIT(31)
-+/* will support this field in further revision */
-+#define MT_TX_FREE_RATE			GENMASK(13, 0)
-+
- #define MT_TXD0_Q_IDX			GENMASK(31, 25)
- #define MT_TXD0_PKT_FMT			GENMASK(24, 23)
- #define MT_TXD0_ETH_TYPE_OFFSET		GENMASK(22, 16)
-@@ -166,6 +176,15 @@ enum {
- 
- #define MT_TXS7_MPDU_RETRY_CNT		GENMASK(31, 23)
- 
-+/* RXD DW0 */
-+#define MT_RXD0_LENGTH			GENMASK(15, 0)
-+#define MT_RXD0_PKT_FLAG                GENMASK(19, 16)
-+#define MT_RXD0_PKT_TYPE		GENMASK(31, 27)
-+
-+#define MT_RXD0_NORMAL_ETH_TYPE_OFS	GENMASK(22, 16)
-+#define MT_RXD0_NORMAL_IP_SUM		BIT(23)
-+#define MT_RXD0_NORMAL_UDP_TCP_SUM	BIT(24)
-+
- /* RXD DW1 */
- #define MT_RXD1_NORMAL_WLAN_IDX		GENMASK(9, 0)
- #define MT_RXD1_NORMAL_GROUP_1		BIT(11)
-@@ -308,6 +327,9 @@ enum {
- #define MT_CRXV_FOE_HI		GENMASK(6, 0)
- #define MT_CRXV_FOE_SHIFT	13
- 
-+#define MT_CT_PARSE_LEN			72
-+#define MT_CT_DMA_BUF_NUM		2
-+
- #define MT_CT_INFO_APPLY_TXD		BIT(0)
- #define MT_CT_INFO_COPY_HOST_TXD_ALL	BIT(1)
- #define MT_CT_INFO_MGMT_FRAME		BIT(2)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-index 6fa9c79f3e5f..ce94f87e2042 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-@@ -6,43 +6,12 @@
- 
- #include "../mt76_connac2_mac.h"
- 
--#define MT_CT_PARSE_LEN			72
--#define MT_CT_DMA_BUF_NUM		2
--
--#define MT_RXD0_LENGTH			GENMASK(15, 0)
--#define MT_RXD0_PKT_TYPE		GENMASK(31, 27)
--
--#define MT_RXD0_NORMAL_ETH_TYPE_OFS	GENMASK(22, 16)
--#define MT_RXD0_NORMAL_IP_SUM		BIT(23)
--#define MT_RXD0_NORMAL_UDP_TCP_SUM	BIT(24)
--
--enum rx_pkt_type {
--	PKT_TYPE_TXS,
--	PKT_TYPE_TXRXV,
--	PKT_TYPE_NORMAL,
--	PKT_TYPE_RX_DUP_RFB,
--	PKT_TYPE_RX_TMR,
--	PKT_TYPE_RETRIEVE,
--	PKT_TYPE_TXRX_NOTIFY,
--	PKT_TYPE_RX_EVENT,
--	PKT_TYPE_RX_FW_MONITOR = 0x0c,
--	PKT_TYPE_TXRX_NOTIFY_V0 = 0x18,
--};
--
- #define MT_TX_FREE_VER			GENMASK(18, 16)
--#define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
--#define MT_TX_FREE_MSDU_CNT_V0	GENMASK(6, 0)
--#define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
--#define MT_TX_FREE_LATENCY		GENMASK(12, 0)
-+#define MT_TX_FREE_MSDU_CNT_V0		GENMASK(6, 0)
- /* 0: success, others: dropped */
--#define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
--#define MT_TX_FREE_PAIR			BIT(31)
- #define MT_TX_FREE_MPDU_HEADER		BIT(30)
- #define MT_TX_FREE_MSDU_ID_V3		GENMASK(14, 0)
- 
--/* will support this field in further revision */
--#define MT_TX_FREE_RATE			GENMASK(13, 0)
--
- #define MT_TXS5_F0_FINAL_MPDU		BIT(31)
- #define MT_TXS5_F0_QOS			BIT(30)
- #define MT_TXS5_F0_TX_COUNT		GENMASK(29, 25)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-index 7b33881a4b54..1d85c0c10049 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/dma.c
-@@ -3,7 +3,7 @@
- 
- #include "mt7921.h"
- #include "../dma.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- 
- static int mt7921_poll_tx(struct napi_struct *napi, int budget)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index 2b1147761724..8c1cc372cf87 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -4,7 +4,7 @@
- #include <linux/etherdevice.h>
- #include <linux/firmware.h>
- #include "mt7921.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- #include "mcu.h"
- 
- static const struct ieee80211_iface_limit if_limits[] = {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 2eeea43f6bf6..1675bf520481 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -6,9 +6,20 @@
- #include <linux/timekeeping.h>
- #include "mt7921.h"
- #include "../dma.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- #include "mcu.h"
- 
-+#define MT_WTBL_TXRX_CAP_RATE_OFFSET	7
-+#define MT_WTBL_TXRX_RATE_G2_HE		24
-+#define MT_WTBL_TXRX_RATE_G2		12
-+
-+#define MT_WTBL_AC0_CTT_OFFSET		20
-+
-+static u32 mt7921_mac_wtbl_lmac_addr(int idx, u8 offset)
-+{
-+	return MT_WTBL_LMAC_OFFS(idx, 0) + offset * 4;
-+}
-+
- static struct mt76_wcid *mt7921_rx_get_wcid(struct mt7921_dev *dev,
- 					    u16 idx, bool unicast)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h b/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-deleted file mode 100644
-index 8afec600364f..000000000000
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.h
-+++ /dev/null
-@@ -1,53 +0,0 @@
--/* SPDX-License-Identifier: ISC */
--/* Copyright (C) 2020 MediaTek Inc. */
--
--#ifndef __MT7921_MAC_H
--#define __MT7921_MAC_H
--
--#include "../mt76_connac2_mac.h"
--
--#define MT_CT_PARSE_LEN			72
--#define MT_CT_DMA_BUF_NUM		2
--
--#define MT_RXD0_LENGTH			GENMASK(15, 0)
--#define MT_RXD0_PKT_FLAG                GENMASK(19, 16)
--#define MT_RXD0_PKT_TYPE		GENMASK(31, 27)
--
--#define MT_RXD0_NORMAL_ETH_TYPE_OFS	GENMASK(22, 16)
--#define MT_RXD0_NORMAL_IP_SUM		BIT(23)
--#define MT_RXD0_NORMAL_UDP_TCP_SUM	BIT(24)
--
--enum rx_pkt_type {
--	PKT_TYPE_TXS,
--	PKT_TYPE_TXRXV,
--	PKT_TYPE_NORMAL,
--	PKT_TYPE_RX_DUP_RFB,
--	PKT_TYPE_RX_TMR,
--	PKT_TYPE_RETRIEVE,
--	PKT_TYPE_TXRX_NOTIFY,
--	PKT_TYPE_RX_EVENT,
--	PKT_TYPE_NORMAL_MCU,
--};
--
--#define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
--#define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
--#define MT_TX_FREE_LATENCY		GENMASK(12, 0)
--/* 0: success, others: dropped */
--#define MT_TX_FREE_STATUS		GENMASK(14, 13)
--#define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
--#define MT_TX_FREE_PAIR			BIT(31)
--/* will support this field in further revision */
--#define MT_TX_FREE_RATE			GENMASK(13, 0)
--
--#define MT_WTBL_TXRX_CAP_RATE_OFFSET	7
--#define MT_WTBL_TXRX_RATE_G2_HE		24
--#define MT_WTBL_TXRX_RATE_G2		12
--
--#define MT_WTBL_AC0_CTT_OFFSET		20
--
--static inline u32 mt7921_mac_wtbl_lmac_addr(int idx, u8 offset)
--{
--	return MT_WTBL_LMAC_OFFS(idx, 0) + offset * 4;
--}
--
--#endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 601d5aadb4f4..04925e66f15b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -6,7 +6,7 @@
- #include "mt7921.h"
- #include "mt7921_trace.h"
- #include "mcu.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- 
- #define MT_STA_BFER			BIT(0)
- #define MT_STA_BFEE			BIT(1)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index ab3ddf4e2f4d..8471bb8279e4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -8,7 +8,7 @@
- #include <linux/pci.h>
- 
- #include "mt7921.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- #include "mcu.h"
- #include "../trace.h"
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index 8dd60408b117..6053a2556c20 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -3,7 +3,7 @@
- 
- #include "mt7921.h"
- #include "../dma.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- 
- int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 			   enum mt76_txq_id qid, struct mt76_wcid *wcid,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-index 77001a0602c1..ff3c21801e48 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-@@ -13,7 +13,7 @@
- 
- #include "mt7921.h"
- #include "../sdio.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- #include "mcu.h"
- 
- static const struct sdio_device_id mt7921s_table[] = {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 1b3adb3d91e8..cff9925c41ea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -4,7 +4,7 @@
- #include <linux/iopoll.h>
- #include <linux/mmc/sdio_func.h>
- #include "mt7921.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- #include "../sdio.h"
- 
- static void mt7921s_enable_irq(struct mt76_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-index 5c1489766d9f..177679ce1c80 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
-@@ -8,7 +8,7 @@
- 
- #include "mt7921.h"
- #include "../sdio.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- #include "mcu.h"
- #include "regs.h"
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-index d8218ed7980a..3f555b3ceed7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -10,7 +10,7 @@
- 
- #include "mt7921.h"
- #include "mcu.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- 
- static const struct usb_device_id mt7921u_device_table[] = {
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7961, 0xff, 0xff, 0xff),
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
-index efbd3954c883..50eb6e7fd6b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c
-@@ -10,7 +10,7 @@
- 
- #include "mt7921.h"
- #include "mcu.h"
--#include "mac.h"
-+#include "../mt76_connac2_mac.h"
- 
- static u32 mt7921u_uhw_rr(struct mt76_dev *dev, u32 addr)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-index 2cc218f735d8..0318e16fcfab 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
-@@ -20,18 +20,6 @@
- #define MT_RXD0_SW_PKT_TYPE_MAP		0x380F
- #define MT_RXD0_SW_PKT_TYPE_FRAME	0x3801
- 
--enum rx_pkt_type {
--	PKT_TYPE_TXS,
--	PKT_TYPE_TXRXV,
--	PKT_TYPE_NORMAL,
--	PKT_TYPE_RX_DUP_RFB,
--	PKT_TYPE_RX_TMR,
--	PKT_TYPE_RETRIEVE,
--	PKT_TYPE_TXRX_NOTIFY,
--	PKT_TYPE_RX_EVENT,
--	PKT_TYPE_RX_FW_MONITOR = 0x0c,
--};
--
- /* RXD DW1 */
- #define MT_RXD1_NORMAL_WLAN_IDX		GENMASK(11, 0)
- #define MT_RXD1_NORMAL_GROUP_1		BIT(16)
+Heh, I didn't notice that Ping had done almost the same in v4:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20230320124125.15873-2-pkshih@realtek.com/
+
+The only difference I notice that you didn't use special functions for
+setting or getting the fields:
+
+	h2c->w0 = le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_RSSI) |
+		  le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_BCN) |
+		  le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_EN) |
+		  le32_encode_bits(RTW89_BCN_FLTR_OFFLOAD_MODE_DEFAULT,
+				   RTW89_H2C_BCNFLTR_W0_MODE) |
+		  le32_encode_bits(RTW89_BCN_LOSS_CNT, RTW89_H2C_BCNFLTR_W0_BCN_LOSS_CNT) |
+		  le32_encode_bits(bss_conf->cqm_rssi_hyst, RTW89_H2C_BCNFLTR_W0_RSSI_HYST) |
+		  le32_encode_bits(bss_conf->cqm_rssi_thold + MAX_RSSI,
+				   RTW89_H2C_BCNFLTR_W0_RSSI_THRESHOLD) |
+		  le32_encode_bits(rtwvif->mac_id, RTW89_H2C_BCNFLTR_W0_MAC_ID);
+
+And I understand why you did it like this, less boilerplate code. So
+looks good to me, thanks!
+
 -- 
-2.39.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
