@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1311A6D4221
+	by mail.lfdr.de (Postfix) with ESMTP id F228C6D4222
 	for <lists+linux-wireless@lfdr.de>; Mon,  3 Apr 2023 12:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232254AbjDCKed (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 06:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52588 "EHLO
+        id S231664AbjDCKee (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 06:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231921AbjDCKe1 (ORCPT
+        with ESMTP id S232262AbjDCKea (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 06:34:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E699683C1
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 03:34:23 -0700 (PDT)
+        Mon, 3 Apr 2023 06:34:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA963A92
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 03:34:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8F329B81106
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 10:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15E6C433D2;
-        Mon,  3 Apr 2023 10:34:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B0EC618B9
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 10:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99157C433D2;
+        Mon,  3 Apr 2023 10:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680518061;
-        bh=F5rfzGUyGVLrsyXECLJ4liKHzkbIaxbyn7XiKYgHvbw=;
+        s=k20201202; t=1680518065;
+        bh=kWpo2EvNDB8xd4QQ8cU5YRLk8hn43gPv1G0tFrJQSkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rrK7kEmX4xTLsKkzqElSl9LvU13K3lZnr8EdN8c8/vfcCKTnv9LqUuHxipHInAbcn
-         SNuv4vpGE516Ebnv0vaYIPUOopr2zALYkr/2FSPRWli7sRHykJZFKCX++jDKOLnj79
-         IM6btPMS9Atoq+04Z0Kya93MYZtQfQpHH19xRjNrmTJXHuhrXC+w0H61KMh8SS5WQO
-         +d9/qff+CMqC5gxZyP7mJ/W4v+mSTUpoz3MKK0j/Kwfh7epQecMmv+4uwRHNUeH2gZ
-         d8Sv/OwB8BVXNnT2PuTmpQrNvsn8/r9NBeW2OV/TpaOIF277/wnAkxKzKipCzvRosG
-         JxLxC8EIYh0yw==
+        b=gPTlpD8la/xFbMEgEJLtgEfwIY3T8QiYhFQ7lYk2HnBzL3FacrAKO7TNhbP793xUQ
+         o446iOAXN/w9FzksWPUvMm3kabXTQ3vCBhdRdX4D6WONR2OBWI2eAKh/xiTUilzCUc
+         EWGGr1BlEQb/tnEbTQH168SpfsU2GBlwQtmuWFkuKeDb9a5pn6uYLawWMiqOWk5R9C
+         eIhcUv1wVQ0r9sjpsumUMjHwRo9w7pfTzKWU3clBpbNIklua5vvR8dAEF+7Z5naybJ
+         Pooa1FpbvUvZxU4+7YzsQCU0a0oy+K4ktjOI4PBQk8Dy85HfROopRNJ7YzlmjoLtS+
+         9cf8aX3Of8ZFA==
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 4/6] wifi: mt76: add mt76_connac_gen_ppe_thresh utility routine
-Date:   Mon,  3 Apr 2023 12:33:58 +0200
-Message-Id: <87d2ad9cd8cc6b349a2ad983f07a0fb1c9dbe507.1680517676.git.lorenzo@kernel.org>
+Subject: [PATCH 5/6] wifi: mt76: mt7921: get rid of eeprom.h
+Date:   Mon,  3 Apr 2023 12:33:59 +0200
+Message-Id: <da1006542fa437479c633a172552bedf15680ab6.1680517676.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1680517676.git.lorenzo@kernel.org>
 References: <cover.1680517676.git.lorenzo@kernel.org>
@@ -52,185 +52,112 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-gen_ppe_thresh routine is shared between mt7615, mt7915, mt7921 and
-mt7996 so move it in mt76_connac module.
+eeprom.h is mostly empty for mt7921, so get rid of it.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt76_connac.h  |  1 +
- .../wireless/mediatek/mt76/mt76_connac_mac.c  | 21 +++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/init.c  | 23 +------------------
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 23 +------------------
- .../net/wireless/mediatek/mt76/mt7996/init.c  | 23 +------------------
- 5 files changed, 25 insertions(+), 66 deletions(-)
+ .../wireless/mediatek/mt76/mt7921/debugfs.c   |  1 -
+ .../wireless/mediatek/mt76/mt7921/eeprom.h    | 30 -------------------
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |  1 -
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  1 -
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    | 11 +++++++
+ 5 files changed, 11 insertions(+), 33 deletions(-)
+ delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 84974dfe1953..fc8e999a431a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -359,6 +359,7 @@ mt76_connac_mutex_release(struct mt76_dev *dev, struct mt76_connac_pm *pm)
- 	mutex_unlock(&dev->mutex);
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index 29d8883268f6..d6b6edba2fec 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -2,7 +2,6 @@
+ /* Copyright (C) 2020 MediaTek Inc. */
  
-+void mt76_connac_gen_ppe_thresh(u8 *he_ppet, int nss);
- int mt76_connac_init_tx_queues(struct mt76_phy *phy, int idx, int n_desc,
- 			       int ring_base, u32 flags);
- void mt76_connac_write_hw_txp(struct mt76_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index aed4ee95fb2e..ef55fd06c889 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -9,6 +9,27 @@
- #define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
- 						 IEEE80211_RADIOTAP_HE_##f)
- 
-+void mt76_connac_gen_ppe_thresh(u8 *he_ppet, int nss)
-+{
-+	static const u8 ppet16_ppet8_ru3_ru0[] = { 0x1c, 0xc7, 0x71 };
-+	u8 i, ppet_bits, ppet_size, ru_bit_mask = 0x7; /* HE80 */
-+
-+	he_ppet[0] = FIELD_PREP(IEEE80211_PPE_THRES_NSS_MASK, nss - 1) |
-+		     FIELD_PREP(IEEE80211_PPE_THRES_RU_INDEX_BITMASK_MASK,
-+				ru_bit_mask);
-+
-+	ppet_bits = IEEE80211_PPE_THRES_INFO_PPET_SIZE *
-+		    nss * hweight8(ru_bit_mask) * 2;
-+	ppet_size = DIV_ROUND_UP(ppet_bits, 8);
-+
-+	for (i = 0; i < ppet_size - 1; i++)
-+		he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3];
-+
-+	he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3] &
-+			 (0xff >> (8 - (ppet_bits - 1) % 8));
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac_gen_ppe_thresh);
-+
- int mt76_connac_pm_wake(struct mt76_phy *phy, struct mt76_connac_pm *pm)
- {
- 	struct mt76_dev *dev = phy->dev;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 0d52c30ff8fd..538ec0f8e630 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -931,27 +931,6 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
- 	}
- }
- 
--static void
--mt7915_gen_ppe_thresh(u8 *he_ppet, int nss)
--{
--	u8 i, ppet_bits, ppet_size, ru_bit_mask = 0x7; /* HE80 */
--	static const u8 ppet16_ppet8_ru3_ru0[] = {0x1c, 0xc7, 0x71};
--
--	he_ppet[0] = FIELD_PREP(IEEE80211_PPE_THRES_NSS_MASK, nss - 1) |
--		     FIELD_PREP(IEEE80211_PPE_THRES_RU_INDEX_BITMASK_MASK,
--				ru_bit_mask);
--
--	ppet_bits = IEEE80211_PPE_THRES_INFO_PPET_SIZE *
--		    nss * hweight8(ru_bit_mask) * 2;
--	ppet_size = DIV_ROUND_UP(ppet_bits, 8);
--
--	for (i = 0; i < ppet_size - 1; i++)
--		he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3];
--
--	he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3] &
--			 (0xff >> (8 - (ppet_bits - 1) % 8));
--}
--
- static int
- mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 		    struct ieee80211_sband_iftype_data *data)
-@@ -1101,7 +1080,7 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
- 		memset(he_cap->ppe_thres, 0, sizeof(he_cap->ppe_thres));
- 		if (he_cap_elem->phy_cap_info[6] &
- 		    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT) {
--			mt7915_gen_ppe_thresh(he_cap->ppe_thres, nss);
-+			mt76_connac_gen_ppe_thresh(he_cap->ppe_thres, nss);
- 		} else {
- 			he_cap_elem->phy_cap_info[9] |=
- 				u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index a72964e7a807..e419458e54f5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -9,27 +9,6 @@
  #include "mt7921.h"
- #include "mcu.h"
+-#include "eeprom.h"
  
--static void
--mt7921_gen_ppe_thresh(u8 *he_ppet, int nss)
--{
--	u8 i, ppet_bits, ppet_size, ru_bit_mask = 0x7; /* HE80 */
--	static const u8 ppet16_ppet8_ru3_ru0[] = {0x1c, 0xc7, 0x71};
--
--	he_ppet[0] = FIELD_PREP(IEEE80211_PPE_THRES_NSS_MASK, nss - 1) |
--		     FIELD_PREP(IEEE80211_PPE_THRES_RU_INDEX_BITMASK_MASK,
--				ru_bit_mask);
--
--	ppet_bits = IEEE80211_PPE_THRES_INFO_PPET_SIZE *
--		    nss * hweight8(ru_bit_mask) * 2;
--	ppet_size = DIV_ROUND_UP(ppet_bits, 8);
--
--	for (i = 0; i < ppet_size - 1; i++)
--		he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3];
--
--	he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3] &
--			 (0xff >> (8 - (ppet_bits - 1) % 8));
--}
--
  static int
- mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
- 		    struct ieee80211_sband_iftype_data *data)
-@@ -168,7 +147,7 @@ mt7921_init_he_caps(struct mt7921_phy *phy, enum nl80211_band band,
- 		memset(he_cap->ppe_thres, 0, sizeof(he_cap->ppe_thres));
- 		if (he_cap_elem->phy_cap_info[6] &
- 		    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT) {
--			mt7921_gen_ppe_thresh(he_cap->ppe_thres, nss);
-+			mt76_connac_gen_ppe_thresh(he_cap->ppe_thres, nss);
- 		} else {
- 			he_cap_elem->phy_cap_info[9] |=
- 				u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 98bfd94bb632..bb5cf2f5b9df 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -552,27 +552,6 @@ mt7996_set_stream_he_txbf_caps(struct mt7996_phy *phy,
- 	elem->phy_cap_info[7] |= c;
- }
+ mt7921_reg_set(void *data, u64 val)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
+deleted file mode 100644
+index 4b647278eb30..000000000000
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/* SPDX-License-Identifier: ISC */
+-/* Copyright (C) 2020 MediaTek Inc. */
+-
+-#ifndef __MT7921_EEPROM_H
+-#define __MT7921_EEPROM_H
+-
+-#include "mt7921.h"
+-
+-enum mt7921_eeprom_field {
+-	MT_EE_CHIP_ID =		0x000,
+-	MT_EE_VERSION =		0x002,
+-	MT_EE_MAC_ADDR =	0x004,
+-	MT_EE_WIFI_CONF =	0x07c,
+-	MT_EE_HW_TYPE =		0x55b,
+-	__MT_EE_MAX =		0x9ff
+-};
+-
+-#define MT_EE_WIFI_CONF_TX_MASK			BIT(0)
+-#define MT_EE_WIFI_CONF_BAND_SEL		GENMASK(3, 2)
+-
+-#define MT_EE_HW_TYPE_ENCAP			BIT(0)
+-
+-enum mt7921_eeprom_band {
+-	MT_EE_NA,
+-	MT_EE_5GHZ,
+-	MT_EE_2GHZ,
+-	MT_EE_DUAL_BAND,
+-};
+-
+-#endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index 80c71acfe159..2b1147761724 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -6,7 +6,6 @@
+ #include "mt7921.h"
+ #include "mac.h"
+ #include "mcu.h"
+-#include "eeprom.h"
  
--static void
--mt7996_gen_ppe_thresh(u8 *he_ppet, int nss)
--{
--	u8 i, ppet_bits, ppet_size, ru_bit_mask = 0x7; /* HE80 */
--	static const u8 ppet16_ppet8_ru3_ru0[] = {0x1c, 0xc7, 0x71};
--
--	he_ppet[0] = FIELD_PREP(IEEE80211_PPE_THRES_NSS_MASK, nss - 1) |
--		     FIELD_PREP(IEEE80211_PPE_THRES_RU_INDEX_BITMASK_MASK,
--				ru_bit_mask);
--
--	ppet_bits = IEEE80211_PPE_THRES_INFO_PPET_SIZE *
--		    nss * hweight8(ru_bit_mask) * 2;
--	ppet_size = DIV_ROUND_UP(ppet_bits, 8);
--
--	for (i = 0; i < ppet_size - 1; i++)
--		he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3];
--
--	he_ppet[i + 1] = ppet16_ppet8_ru3_ru0[i % 3] &
--			 (0xff >> (8 - (ppet_bits - 1) % 8));
--}
--
- static void
- mt7996_init_he_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 		    struct ieee80211_sband_iftype_data *data,
-@@ -678,7 +657,7 @@ mt7996_init_he_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 	memset(he_cap->ppe_thres, 0, sizeof(he_cap->ppe_thres));
- 	if (he_cap_elem->phy_cap_info[6] &
- 	    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT) {
--		mt7996_gen_ppe_thresh(he_cap->ppe_thres, nss);
-+		mt76_connac_gen_ppe_thresh(he_cap->ppe_thres, nss);
- 	} else {
- 		he_cap_elem->phy_cap_info[9] |=
- 			u8_encode_bits(IEEE80211_HE_PHY_CAP9_NOMINAL_PKT_PADDING_16US,
+ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index c5e7ad06f877..601d5aadb4f4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -5,7 +5,6 @@
+ #include <linux/firmware.h>
+ #include "mt7921.h"
+ #include "mt7921_trace.h"
+-#include "eeprom.h"
+ #include "mcu.h"
+ #include "mac.h"
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 53d12c4b94e2..813d5b039ac8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -266,6 +266,17 @@ struct mt7921_phy {
+ 	bool roc_grant;
+ };
+ 
++enum mt7921_eeprom_field {
++	MT_EE_CHIP_ID =		0x000,
++	MT_EE_VERSION =		0x002,
++	MT_EE_MAC_ADDR =	0x004,
++	MT_EE_WIFI_CONF =	0x07c,
++	MT_EE_HW_TYPE =		0x55b,
++	__MT_EE_MAX =		0x9ff
++};
++
++#define MT_EE_HW_TYPE_ENCAP			BIT(0)
++
+ #define mt7921_init_reset(dev)		((dev)->hif_ops->init_reset(dev))
+ #define mt7921_dev_reset(dev)		((dev)->hif_ops->reset(dev))
+ #define mt7921_mcu_init(dev)		((dev)->hif_ops->mcu_init(dev))
 -- 
 2.39.2
 
