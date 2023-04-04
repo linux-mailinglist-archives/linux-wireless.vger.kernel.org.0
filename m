@@ -2,78 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16DA66D6924
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 18:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C7A6D69B6
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 19:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235463AbjDDQom (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 12:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50588 "EHLO
+        id S235003AbjDDRBb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 13:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229911AbjDDQoi (ORCPT
+        with ESMTP id S233000AbjDDRBa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 12:44:38 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4339E6C
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 09:44:37 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-17683b570b8so35234100fac.13
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Apr 2023 09:44:37 -0700 (PDT)
+        Tue, 4 Apr 2023 13:01:30 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A579B8
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 10:01:29 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id r11so33525794wrr.12
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Apr 2023 10:01:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680626677;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=ofVcYIhCC/Eq9oHy7qJDRdf8r9zfv+gOplIFnQDjyBg=;
-        b=gHzQQ781HnBMHDp3vb6zJS9RUIrkZ97+8AGK1AujDE5cVqpihOhhs1XtQSstBiBPEA
-         0aXUCko/YqBRa1rkOwETQ7Q6xC+ccupvEuD2r6pHgNhK3SD38d+a+SVcpmmojWfP1g81
-         gn/foQvtyh3wq6fIPLziRWwOr/E02z/SeFI+YPi9jROsHGihlWr67e2AsHxEmTsUCQ4F
-         xPd3qRxpG2ZQIX9eG9mjpKctbCJOMSns2UnqrevaAzAj4Y7WER9fHF9eAN/NmSPjSPAR
-         c+s1iSuJZet8ilP3H/zQlOoq51FaUj6qemJRspw85TR0NlaYr4//GmH2XdWm5NgaI2K2
-         64AA==
+        d=google.com; s=20210112; t=1680627687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EDGnXoGwEChAFRAWjhCsHFaWRtmtPVds+R+V0cWphoI=;
+        b=tGysa/ySr+aMNbz9i+r+Gzvuh4e9lfJXOuj+yFaOtNFtUxsD3HY0DJYSiv8BFkC6IT
+         XCjdnKCGorzQP1R2a7uORzhp7x8GZARFCEmeVKgPEaLy57UxMZQlBdQL3ymkIX+zsfQb
+         yVazofjpZXNFp+bLzXLbnEl/zVKfIh3+6tbFAcoJJyZscIHQU/kisj5J82z/u0W3esRs
+         riQ1ks6FOD7JmhRsJ9XUtDYGAZ9W831E7C2HHnlZlvPoc/Whno7Jt3VGMQuEOOxMY3pT
+         DqrLs0cKaUFoD1eNjR+fcy46Z3gY5YbWtujQ1DzpKNFGk5trjSTG9lMcbzIodyLmFYfl
+         JlGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680626677;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ofVcYIhCC/Eq9oHy7qJDRdf8r9zfv+gOplIFnQDjyBg=;
-        b=hbEcoxQmwEY6k7YLMlwkDu3XUNYSQQ2zqk64gQGSd8Ciy2Cs9UcsH1SrEwgWYWT08b
-         3m0rCP7Kl45FfsO54vFKLgmeutVlC4vHT9olyS9Bgbd6J5qFj3uZW2dMQmxOopP4p0ei
-         Fg46Q1Mx9ieeYwMBhyvv2UR4pXiYxEN8QD3iDVxMlwzwI+dYhMa440w351G3TKejlSE8
-         9pLeu/SR2XFElwZNuVeSelskTVnDp9sBA2E5e9GA4evMmHH6mKOqoPr6pkycYL5g5W/B
-         lWq8zvh8v9Tff/y19fvb1DZRI0q3kpQvUNiI6hEQbDf9IRmgWRSHOBAjX5OCs/p8jeE2
-         exvA==
-X-Gm-Message-State: AAQBX9etobtwyMB5bGpPh0AAkdNIWlpGjEXkJQVVhbe9TcN3lGMKsSBe
-        AyTAAASxscvycrKbw6ZQeAlbiLMSJ4o=
-X-Google-Smtp-Source: AKy350bXiltCislB7E4Jy/ED/iCav0BxOqAuRUWW7TIhrGuM+km4VCuv3m9suHt05GQT9K/u0VoKeA==
-X-Received: by 2002:a05:6870:82aa:b0:177:b1bf:9368 with SMTP id q42-20020a05687082aa00b00177b1bf9368mr1894281oae.24.1680626676966;
-        Tue, 04 Apr 2023 09:44:36 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id bd27-20020a056871b31b00b00177be9585desm2544356oac.1.2023.04.04.09.44.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Apr 2023 09:44:36 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <6e18fe31-ee8f-3286-5f4c-53a01e20e4b3@lwfinger.net>
-Date:   Tue, 4 Apr 2023 11:44:35 -0500
+        d=1e100.net; s=20210112; t=1680627687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EDGnXoGwEChAFRAWjhCsHFaWRtmtPVds+R+V0cWphoI=;
+        b=Q/WZt8/isBTmGqKJlejERJ1uexmU57DN5TDaRCGMuMqpSwwCqncCMZcISRSyOFqbi7
+         BvawKrE/hceuSkNK/aJmHL7f5BjwqIxxneT6IuUUqRxPfuZREenAkCQO+WmSWcpEscs0
+         qYlNauUAK6GZrbyKw4ouhk/mJ93k1GqX8MDGXDKW57wDUwkVpkhAy5cJQvJ/xNbKoFfe
+         gz5JuBTxO7FislonoDXX40qWQ2zvHnc8yC6WH48L/g7h8FwkvEF5PzMEsyA2b8vE3Hmm
+         3mpLfrnY6impoA7gk15++t6NbtUwcVeAnznxfX9CK/Ca9gFmSM3OnraT1BY2XJUOrSxQ
+         vhEQ==
+X-Gm-Message-State: AAQBX9eWFGhvmhxBU7urWZSFWItB8NoPL3f9Oh0QTt0PAp+QBgoEavJ5
+        SbKSi+lqmO+gRZmcLFNl8mB2p6gPuWneaDUWCi1bvw==
+X-Google-Smtp-Source: AKy350a81lpxOoVmAEyrppLxUzCnlLNA7TRbMsc14EnlAtwy6sUo9+gDFg4YXp/hscBfZpS80TFszjhVQft+UvEJvT0=
+X-Received: by 2002:a5d:4601:0:b0:2cf:e70f:970c with SMTP id
+ t1-20020a5d4601000000b002cfe70f970cmr597147wrq.12.1680627687530; Tue, 04 Apr
+ 2023 10:01:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: rtw88: kernel NULL pointer dereference
-To:     Tim K <tpkuester@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <CA+shoWQ7P49jhQasofDcTdQhiuarPTjYEDa--NiVVx494WcuQw@mail.gmail.com>
- <26b9ce8e-a100-399d-58d0-0a649380f8cb@lwfinger.net>
- <CA+shoWRY+wqj=5rFpM5obNB0t0=vKCJHzR0hAkf2Wz1D0ap0bw@mail.gmail.com>
- <9640df2b-1241-8ddd-8a59-a0578ff08ebf@lwfinger.net>
- <CA+shoWQ_bKF9bAeL_XWu+=B2BRGBeb+5W3uMVXQe=p5qntCkZQ@mail.gmail.com>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CA+shoWQ_bKF9bAeL_XWu+=B2BRGBeb+5W3uMVXQe=p5qntCkZQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+References: <20230404134803.889673-1-edumazet@google.com> <ZCxN1l3rXnmt+2wL@corigine.com>
+In-Reply-To: <ZCxN1l3rXnmt+2wL@corigine.com>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Tue, 4 Apr 2023 19:01:15 +0200
+Message-ID: <CANn89i+5R2B00zkjocOOSWRLB0ZNBgjdMLSBbUFpcTOH=9obAw@mail.gmail.com>
+Subject: Re: [PATCH net] mac80211_hwsim: fix potential NULL deref in hwsim_pmsr_report_nl()
+To:     Simon Horman <simon.horman@corigine.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        eric.dumazet@gmail.com, syzbot <syzkaller@googlegroups.com>,
+        Jaewan Kim <jaewan@google.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,37 +76,57 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/4/23 10:07, Tim K wrote:
->> As rx_status is local to the routine, the error has to be in the right-hand side
->> of the statement. As hw->conf.....->center_freq is apparently OK most of the
->> time, I think you are getting a spurious RX interrupt. I have pushed a patch
->> that will show if hw is NULL, and quit the routine. Do a 'git pull', make... and
->> let me know what you see in the log.
-> 
-> Updated the drivers to e6d63e1 on your github repo, and ran for about
-> 16 hours happily. Came back this morning to an error. I've attached
-> the stack trace, and the line of code that caused the error.
-> 
->>>> l *rtw_rx_fill_rx_status+0x48
-> 0x8cd8 is in rtw_rx_fill_rx_status (/home/tkuester/code/rtw88/rx.c:163).
-> 163        rx_status->freq = hw->conf.chandef.chan->center_freq;
-> 
-> Much to my chagrin, it seems I have an intermittent USB cable causing
-> spurious disconnects. However, while this does appear to be associated
-> with the issue, I also discovered this issue 20-some odd seconds into
-> boot on one boot cycle with no mention of USB disconnects.
+On Tue, Apr 4, 2023 at 6:18=E2=80=AFPM Simon Horman <simon.horman@corigine.=
+com> wrote:
+>
+> On Tue, Apr 04, 2023 at 01:48:03PM +0000, Eric Dumazet wrote:
+> > syzbot reported a NULL deref caused by a missing check
+> > in hwsim_pmsr_report_nl(), and bisected the issue to cited commit.
+> >
+>
+> Hi Eric,
+>
+> I think this is for net-next / wireless-next as
+> the above mentioned patch does not seem to be in Linus's tree.
 
-Tim,
+Oh right, script error on my side. This was generated from -next tree.
 
-I suspect that your intermittent USB cable could also produce spurious 
-interrupts, which I thought might be the cause of the problem.
+>
+> > ---
+> >  drivers/net/wireless/virtual/mac80211_hwsim.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/ne=
+t/wireless/virtual/mac80211_hwsim.c
+> > index f446d8f6e1f6e1df108db00e898fa02970162585..701e14b8e6fe0cae7ee2478=
+c8dff0f2327b54a70 100644
+> > --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
+> > +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+> > @@ -3761,6 +3761,8 @@ static int hwsim_pmsr_report_nl(struct sk_buff *m=
+sg, struct genl_info *info)
+> >       int rem;
+> >
+> >       src =3D nla_data(info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER]);
+> > +     if (!src)
+> > +             return -EINVAL;
+> >       data =3D get_hwsim_data_ref_from_addr(src);
+> >       if (!data)
+> >               return -EINVAL;
+>
+> I could well be wrong, but this looks a little odd given that nla_data is=
+:
+>
+> static inline void *nla_data(const struct nlattr *nla)
+> {
+>         return (char *) nla + NLA_HDRLEN;
+> }
+>
+> Perhaps we want something like this (*compile tested only!*) ?
+>
+>         if (!info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER])
+>                 return -EINVAL;
+>         src =3D nla_data(info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER]);
 
-I had done some updates against wireless-next yesterday. To them, I added an 
-additional check in this routine. The driver should survive things like bad 
-cables without crashing the kernel. Do a pull, and let me know what you learn. I 
-would appreciate learning what happens with the faulty cable.
+Oh right, thanks for reviewing this :)
 
-Larry
-
-
-
+I will send a V2 soon.
