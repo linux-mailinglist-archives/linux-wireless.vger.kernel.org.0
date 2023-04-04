@@ -2,171 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FAC6D61B4
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 14:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC786D63C3
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 15:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233852AbjDDMzJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 08:55:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59872 "EHLO
+        id S235387AbjDDNsb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 09:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbjDDMzG (ORCPT
+        with ESMTP id S235386AbjDDNsQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 08:55:06 -0400
-Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A53F3AA4
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 05:54:56 -0700 (PDT)
-Received: from [192.168.108.81] (unknown [213.36.7.13])
-        (Authenticated sender: marc.w.gonzalez@free.fr)
-        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 777CA2003DE;
-        Tue,  4 Apr 2023 14:54:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-        s=smtp-20201208; t=1680612894;
-        bh=S+/zNTMxl4YfEZerK9buqZZCEV+VNnXIqXHpKvSSZd0=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=sOR0MeTDGejKoVMBzlmAIJBzcQ/J59USt8gyT1MunDeacW6XUewYwYSgmQDwEcNrS
-         tCJBgEBSbVZXK3tgMIG8L2i3zdKAaX2RR9UwYxaqzN6M2F5WjEifmrXbQnJFsT4MHW
-         CsRBz86/Szk3gFwymP4QuxI+w26d8P6fTOYAEiqnsCyUJWJ9DCLbuNYwjVHutSJHti
-         JYvEGo17NJYWFXSDdDmMMMnfz27E3mPkRus9QWT1wH2/Y1S6uFwNa0fZC8BjR1ST/f
-         TrZToUOHv71kbXLyxnpKn0C8QsshDxZXVw6wds3RK70PYr0U0hNYHHB65/w1lwWguY
-         Ql2TUDFnldnqg==
-Message-ID: <f2344e2e-2b53-9f57-d15a-25e5b03b3029@free.fr>
-Date:   Tue, 4 Apr 2023 14:54:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: [RESEND] Throughput & CPU usage of WiFi download
-Content-Language: en-US
-From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
-To:     linux-amlogic@lists.infradead.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Pierre-Hugues Husson <phh@phh.me>,
-        Arnaud Vrac <avrac@freebox.fr>
-References: <cbbd4a70-850d-cd1e-9809-1d115378fe09@free.fr>
-In-Reply-To: <cbbd4a70-850d-cd1e-9809-1d115378fe09@free.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NUMERIC_HTTP_ADDR,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,WEIRD_PORT
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Tue, 4 Apr 2023 09:48:16 -0400
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701654C27
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 06:48:08 -0700 (PDT)
+Received: by mail-qt1-x849.google.com with SMTP id c14-20020ac87d8e000000b003e38726ec8bso22142766qtd.23
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Apr 2023 06:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1680616087;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Cai39CQoW75/9psdxErWYiv2dgQOsoRMqIABinZedq8=;
+        b=AsdoMFRWrcsccMVVboAU49FbZ09i4GHJVs9fBhEA8UqAXUlP6n1x9s9oQr1drPvDBa
+         AoeBwxCpURL5/5qren0f/ZcK/JvoCdMRC1F6IewCxU36RrZofogvnR3bdfEDkqVCh+nu
+         7bXwDFv2o9TrYM4mCMAzKvXQBkLB93A45EJoGovjvJuI37D/BF2TLXJ9FCdrCzHwQWH0
+         ujUV9Jm4UeS+XVmfp7WBz1UyuJ8eBfMVaSLXM/T+SxUv1vaRmenn9Q3bHrjbnMfy4Lrt
+         GfW0YxGhfMAvvNQ7GN75KLAMVhOF2D7wAaK3+yt5mJqMXAxnb55KGNyMZ03GCh1njr3x
+         2Gjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680616087;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Cai39CQoW75/9psdxErWYiv2dgQOsoRMqIABinZedq8=;
+        b=Lt0PTiirWdcQtGP9pyb1w79o1KVakxPtyR7+LOYMd+anbJby6lLOWWgQwvgb3Xpzqa
+         Dapk9n9s36G2Gj6zyBqoxTQiz+FnalSsfHVkmzVQQS3YgfLP6Qn+DM/GW+zc2ISiZezj
+         hFIn1WOm+A9+UnhedtlD+5Du2WzHIFR4LLtiIRJorMNBskkvEMDtBi/mswRu8st4yvhY
+         Izuc/+7N1IHKGwECApvQgczPijvtmUKLy1aHMKFOGCnl0R6IUYtT0d8iLWzBUAFRkZhP
+         BCG8oNhaxCswnoYqEudBcRSXYM3OgSY4QUeI6jSg7XuL9Ko3pY6Ou5Lb3LZSZsmhNb+N
+         qNbA==
+X-Gm-Message-State: AAQBX9c2dEtpmfVNtk8fq1h+zJMRGrJfRVWuZPRFfVQEnnJh/4DTtFNn
+        B4RV5m0NAQf5XNxROopMsFZn+kpAuwqWYA==
+X-Google-Smtp-Source: AKy350ZMZngXV8aDPdmoeQ9Tb/VI/fqz3mGD56GCZTpWYTxR1dZS+soIifu/48TDzHydv5CgjF9uH0FGsDZyJA==
+X-Received: from edumazet1.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:395a])
+ (user=edumazet job=sendgmr) by 2002:a05:6214:17c8:b0:56c:224c:f64b with SMTP
+ id cu8-20020a05621417c800b0056c224cf64bmr471883qvb.6.1680616087568; Tue, 04
+ Apr 2023 06:48:07 -0700 (PDT)
+Date:   Tue,  4 Apr 2023 13:48:03 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.0.348.gf938b09366-goog
+Message-ID: <20230404134803.889673-1-edumazet@google.com>
+Subject: [PATCH net] mac80211_hwsim: fix potential NULL deref in hwsim_pmsr_report_nl()
+From:   Eric Dumazet <edumazet@google.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        Jaewan Kim <jaewan@google.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[ Re-sending, because gmail blocks messages with img extension, even within archives
-  Great job Microsoft for inferring file type based on file extension... ]
+syzbot reported a NULL deref caused by a missing check
+in hwsim_pmsr_report_nl(), and bisected the issue to cited commit.
 
-Hello everyone,
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 PID: 5084 Comm: syz-executor104 Not tainted 6.3.0-rc4-next-20230331-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
+RIP: 0010:jhash+0x339/0x610 include/linux/jhash.h:95
+Code: 83 fd 01 0f 84 5f ff ff ff eb de 83 fd 05 74 3a e8 ac f5 71 fd 48 8d 7b 05 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 96 02 00 00
+RSP: 0018:ffffc90003abf298 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000004 RCX: 0000000000000000
+RDX: 0000000000000001 RSI: ffffffff84111ba4 RDI: 0000000000000009
+RBP: 0000000000000006 R08: 0000000000000005 R09: 000000000000000c
+R10: 0000000000000006 R11: 0000000000000000 R12: 000000004d2c27cd
+R13: 000000002bd9e6c2 R14: 000000002bd9e6c2 R15: 000000002bd9e6c2
+FS: 0000555556847300(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000045ad50 CR3: 0000000078aa6000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+rht_key_hashfn include/linux/rhashtable.h:159 [inline]
+__rhashtable_lookup include/linux/rhashtable.h:604 [inline]
+rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+get_hwsim_data_ref_from_addr+0xb9/0x600 drivers/net/wireless/virtual/mac80211_hwsim.c:757
+hwsim_pmsr_report_nl+0xe7/0xd50 drivers/net/wireless/virtual/mac80211_hwsim.c:3764
+genl_family_rcv_msg_doit.isra.0+0x1e6/0x2d0 net/netlink/genetlink.c:968
+genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+genl_rcv_msg+0x4ff/0x7e0 net/netlink/genetlink.c:1065
+netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2572
+genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1365
+netlink_sendmsg+0x925/0xe30 net/netlink/af_netlink.c:1942
+sock_sendmsg_nosec net/socket.c:724 [inline]
+sock_sendmsg+0xde/0x190 net/socket.c:747
+____sys_sendmsg+0x71c/0x900 net/socket.c:2501
+___sys_sendmsg+0x110/0x1b0 net/socket.c:2555
+__sys_sendmsg+0xf7/0x1c0 net/socket.c:2584
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-I've been benchmarking various aspects of an SEI530 board,
-and wanted to share some of the results with the list.
+Fixes: 2af3b2a631b1 ("mac80211_hwsim: add PMSR report support via virtio")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jaewan Kim <jaewan@google.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The main objective was to compare WiFi download performance
-on mainline/BR2 and vendor/android systems.
-
-(Mainline system was generated using pop-br2-ext-tree.zip.
-brcmfmac4359-sdio.* left out for size.)
-
-https://pixeldrain.com/u/qH3YotXP
-
-
-HW spec
-Board: SEI530 (SEI510 variant)
-SoC: S905X2
-WiFi: AP6398SR3-J (SDIO BCM4359/9)
-
-Test setup
-WiFi AP using 5Ghz channels 120 (primary) + 116 (secondary)
-BENCHMARK = "curl --silent -o /dev/null http://192.168.1.254:8095/fixed/10G"
-Kernel booted with
-1) performance governor (no DVFS)
-2) nohlt (keep counting cycles in idle)
-
-
-(Full results at the end)
-
-Observations:
-- vendor system manages 245 Mbps, using 40% CPU
-- mainline system manages 60 Mbps, using 10% CPU
-- vendor system limited to 62 Mbps, uses 9% CPU
-
-1) Neil Armstrong mentioned that vendor kernel reaches
-higher throughput by playing tricks with some pads?
-(Not sure I understood that well, haven't looked at the code)
-
-2) SDIO is clocked higher on vendor system, but could
-lead to instabilities on some boards?
-
-Interesting possible followups
-- try clocking SDIO higher on mainline system
-- measure CPU usage at 120 Mbps, does it scale linearly to 20%?
-- android curl seems to use smaller buffers?
-
-
-TEST RESULTS
-
--- mainline/BR2 (v6.2)
-
-time perf record -a -F 1009 $BENCHMARK
-perf report -s pid -n --header
-
-10_GB in 1338.127552_s = 59.8_Mbps
-
-# Overhead       Samples      Pid:Command
-  90.0445%       4863024        0:swapper = IDLE
-   7.2362%        390807       56:irq/17-ffe03000
-   1.9282%        104136       59:kworker/u9:0-br
-   0.6965%         37616      142:curl
-   0.0722%          3897      114:ksdioirqd/mmc2
-   0.0168%           908      141:perf
-
-
--- vendor/android (4.9.180 + vendor patches)
-
-time simpleperf record -a -f 1009 $BENCHMARK
-simpleperf report --sort pid,comm
-
-10_GB in 326.54_s = 245_Mbps
-
-Overhead  Sample  Pid    Command
-59.43%    680339  0      swapper = IDLE
-12.59%    156593  15378  curl
-11.42%    136024  4392   dhd_rxf
-7.57%     88047   4391   dhd_dpc
-2.52%     29977   2094   irq/51-meson-am
-1.38%     16467   10541  system_server
-0.75%     10394   17     ksoftirqd/1
-0.73%     9282    15377  simpleperf
-0.60%     9226    6      ksoftirqd/0
-0.38%     4701    14865  kworker/0:0
-0.14%     2055    29     ksoftirqd/3
-0.13%     1636    3411   HwBinder:3411_1
-0.13%     1760    23     ksoftirqd/2
-0.12%     1484    10782  dmx_data_thread
-0.12%     1469    3381   composer@2.3-se
-0.10%     1329    15425  Jit thread pool
-
-
-Same benchmark, rate limited to 8 MB/s
-time simpleperf record -a -f 1009 $BENCHMARK --limit-rate 8M
-simpleperf report --sort pid,comm
-
-10_GB in 1290.22_s = 62 Mbps
-
-Overhead  Sample   Pid    Command
-91.68%    3687632  0      swapper = IDLE
-2.67%     107057   4392   dhd_rxf
-1.90%     74721    4391   dhd_dpc
-1.00%     41650    22975  curl
-0.70%     29239    10541  system_server
-0.68%     27406    2094   irq/51-meson-am
-0.58%     24781    22974  simpleperf
-0.10%     4222     17     ksoftirqd/1
-0.10%     4070     10782  dmx_data_thread
-
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index f446d8f6e1f6e1df108db00e898fa02970162585..701e14b8e6fe0cae7ee2478c8dff0f2327b54a70 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -3761,6 +3761,8 @@ static int hwsim_pmsr_report_nl(struct sk_buff *msg, struct genl_info *info)
+ 	int rem;
+ 
+ 	src = nla_data(info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER]);
++	if (!src)
++		return -EINVAL;
+ 	data = get_hwsim_data_ref_from_addr(src);
+ 	if (!data)
+ 		return -EINVAL;
+-- 
+2.40.0.348.gf938b09366-goog
 
