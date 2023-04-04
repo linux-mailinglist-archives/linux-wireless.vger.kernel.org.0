@@ -2,100 +2,202 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD42A6D56D4
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 04:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B6C6D56E8
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 04:53:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231245AbjDDCjF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Apr 2023 22:39:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
+        id S232634AbjDDCw7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Apr 2023 22:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjDDCjE (ORCPT
+        with ESMTP id S229446AbjDDCw6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Apr 2023 22:39:04 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E9010DA
-        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 19:39:01 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3342cWtuD027973, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3342cWtuD027973
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 4 Apr 2023 10:38:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 4 Apr 2023 10:38:51 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 4 Apr 2023 10:38:51 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Tue, 4 Apr 2023 10:38:51 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Bernie Huang" <phhuang@realtek.com>
-Subject: Re: [PATCH 2/5] wifi: rtw89: add function to wait for completion of TX skbs
-Thread-Topic: [PATCH 2/5] wifi: rtw89: add function to wait for completion of
- TX skbs
-Thread-Index: AQHZUwMd+NR5pgHPjU6+dSB+fp1fy677jXH9gAAE8zCAHfbw3oAAh2SA
-Date:   Tue, 4 Apr 2023 02:38:51 +0000
-Message-ID: <761e605b96d734881dc51be4679f3a04c75abb89.camel@realtek.com>
-References: <20230310034631.45299-1-pkshih@realtek.com>
-         <20230310034631.45299-3-pkshih@realtek.com>    <87v8j2mmqt.fsf@kernel.org>
-         <360e6dd64e3645c68742fc4c603b3c2b@realtek.com> <875yadb6i1.fsf@kernel.org>
-In-Reply-To: <875yadb6i1.fsf@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [111.252.133.93]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F6749800CABA364EB58398F5D7CE4396@realtek.com>
-Content-Transfer-Encoding: base64
+        Mon, 3 Apr 2023 22:52:58 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAD8A0
+        for <linux-wireless@vger.kernel.org>; Mon,  3 Apr 2023 19:52:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680576777; x=1712112777;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=b/AgdTfsL+AUzpuEzwdtyLBKp+ADq1wjl2rQ9Q9NV+I=;
+  b=LGDCnC6W0rUaa0vcNR7/i7F+QKW11O5uEBm0VnNbRFG/utgfPTVwMC7L
+   DdBaDTB6h4m+/eIegWvTQ0GF3exFuOma2UWoQ50l323YQ9y5po2tW1lcJ
+   qFGeFWoYtOADXUknZsCh9Qlk7GPtrLnKh/KlIYSEDtqZC/grqHYR0I4v5
+   uAGxiJIH8g8a0ZIfMBQ8v8VYrAE84tVUB+lYdQLuws8wNsXmmDDXaSYTU
+   au2q3euYAiDB2Krgqnxtg5Y5vByR0Teribx13Bm7Dsmf1bEMslWxDK4vG
+   EKRssoN/ADmhZIzpyLXUrGSV/81ANkCYE1pez6RX/67TRz5QEqdJaIWAg
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10669"; a="404835683"
+X-IronPort-AV: E=Sophos;i="5.98,316,1673942400"; 
+   d="scan'208";a="404835683"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2023 19:52:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10669"; a="716493030"
+X-IronPort-AV: E=Sophos;i="5.98,316,1673942400"; 
+   d="scan'208";a="716493030"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 03 Apr 2023 19:52:54 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pjWn0-000P4B-0b;
+        Tue, 04 Apr 2023 02:52:54 +0000
+Date:   Tue, 04 Apr 2023 10:52:08 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:main] BUILD SUCCESS
+ cbef9a83c51dfcb07f77cfa6ac26f53a1ea86f49
+Message-ID: <642b90d8.yN4cqWn/B1/g1xMe%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDIzLTA0LTAzIGF0IDEzOjMyICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiAN
-Cj4gSSB3b3VsZCBleHBlY3QgdGhhdCB0aGVyZSdzIHBvbGxpbmcgaWYgeW91IGFyZSB3YWl0aW5n
-IHNvbWV0aGluZyBmcm9tDQo+IGhhcmR3YXJlLCBvciBtYXliZSB3aGVuIGltcGxlbWVudGluZyBh
-IHNwaW4gbG9jaywgYnV0IG5vdCB3aGVuIHdhaXRpbmcNCj4gZm9yIGFub3RoZXIga2VybmVsIHRo
-cmVhZC4gVGhpcyBqdXN0IGRvZXNuJ3QgZmVlbCByaWdodCBidXQgSSBkb24ndCBoYXZlDQo+IHRp
-bWUgdG8gcHJvcG9zZSBhIGdvb2QgYWx0ZXJuYXRpdmUgZWl0aGVyLCBzb3JyeS4NCj4gDQoNCkkg
-aGF2ZSBmb3VuZCBhIHNvbHV0aW9uIHRoYXQgdXNlcyBhbiBvd25lciB2YXJpYWJsZSB3aXRoIGEg
-c3BpbiBsb2NrDQp0byBkZXRlcm1pbmUgd2hpY2ggc2lkZSB0byBmcmVlIGNvbXBsZXRpb24gb2Jq
-ZWN0LiBTaW1wbHkgc2hvdyB0d28gdXNlDQpjYXNlcyBiZWxvdzoNCg0KVXNlIGNhc2UgMTogKG5v
-cm1hbCBjYXNlOyBmcmVlIGNvbXBsZXRpb24gb2JqZWN0IGJ5IHdvcmsgMSkNCiAgICB3b3JrIDEg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHdvcmsgMg0KICAgIHdhaXQNCiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIChzcGluX2xvY2spDQogICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb21wbGV0ZQ0KICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgY2hlY2sgJiBzZXQgb3duZXIgLS0+IG93bmVyID0g
-d29yazENCgkJICAgICAgICAgICAgICAgICAgICAgICAgICAoc3Bpbl91bmxvY2spDQogICAgd2Fp
-dCBvaw0KICAgIChzcGluX2xvY2spDQogICAgY2hlY2sgJiBjaGVjayBvd25lciAtLT4gZnJlZSBi
-eSB3b3JrIDENCiAgICAoc3Bpbl91bmxvY2spDQogICAgZnJlZSBjb21wbGV0aW9uDQoNCg0KVXNl
-IGNhc2UgMjogKHRpbWVvdXQgY2FzZTsgZnJlZSBjb21wbGV0aW9uIG9iamVjdCBieSB3b3JrIDIp
-DQogICAgd29yayAxICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB3b3JrIDINCiAgICB3
-YWl0DQogICAgd2FpdCB0aW1lb3V0DQogICAgKHNwaW5fbG9jaykNCiAgICBjaGVjayAmIHNldCBv
-d25lciAtLT4gb3duZXIgPSB3b3JrIDINCiAgICAoc3Bpbl91bmxvY2spDQogICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIChzcGluX2xvY2spDQogICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIGNvbXBsZXRpb24NCiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgY2hlY2sgJiBzZXQgb3duZXIgLS0+IGZyZWUgYnkgd29yayAy
-DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIChzcGluX3VubG9jaykN
-CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZnJlZSBjb21wbGV0aW9u
-DQoNCkkgd2lsbCBhcHBseSB0aGlzIGJ5IHY1Lg0KDQpQaW5nLUtlDQoNCg==
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: cbef9a83c51dfcb07f77cfa6ac26f53a1ea86f49  wifi: rt2x00: Fix memory leak when handling surveys
+
+elapsed time: 726m
+
+configs tested: 121
+configs skipped: 11
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r023-20230403   gcc  
+alpha                randconfig-r034-20230403   gcc  
+alpha                randconfig-r036-20230403   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r022-20230403   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r025-20230403   clang
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r003-20230403   clang
+arm64                               defconfig   gcc  
+arm64                randconfig-r002-20230403   clang
+arm64                randconfig-r004-20230403   clang
+arm64                randconfig-r013-20230403   gcc  
+arm64                randconfig-r032-20230403   clang
+csky         buildonly-randconfig-r002-20230403   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r012-20230403   gcc  
+hexagon      buildonly-randconfig-r004-20230403   clang
+hexagon              randconfig-r001-20230403   clang
+hexagon              randconfig-r041-20230403   clang
+hexagon              randconfig-r045-20230403   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230403   clang
+i386                 randconfig-a002-20230403   clang
+i386                 randconfig-a003-20230403   clang
+i386                 randconfig-a004-20230403   clang
+i386                 randconfig-a005-20230403   clang
+i386                 randconfig-a006-20230403   clang
+i386                 randconfig-a011-20230403   gcc  
+i386                 randconfig-a012-20230403   gcc  
+i386                 randconfig-a013-20230403   gcc  
+i386                 randconfig-a014-20230403   gcc  
+i386                 randconfig-a015-20230403   gcc  
+i386                 randconfig-a016-20230403   gcc  
+i386                 randconfig-r015-20230403   gcc  
+i386                 randconfig-r016-20230403   gcc  
+i386                 randconfig-r021-20230403   gcc  
+i386                 randconfig-r023-20230403   gcc  
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r006-20230403   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r006-20230403   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r001-20230403   gcc  
+m68k         buildonly-randconfig-r002-20230403   gcc  
+m68k         buildonly-randconfig-r005-20230403   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r024-20230403   gcc  
+microblaze           randconfig-r005-20230403   gcc  
+microblaze           randconfig-r015-20230403   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r034-20230403   gcc  
+openrisc             randconfig-r011-20230403   gcc  
+openrisc             randconfig-r035-20230403   gcc  
+parisc       buildonly-randconfig-r004-20230403   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r003-20230403   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r012-20230403   gcc  
+powerpc              randconfig-r014-20230403   gcc  
+powerpc              randconfig-r033-20230403   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r003-20230403   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r032-20230403   clang
+riscv                randconfig-r042-20230403   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230403   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r002-20230403   gcc  
+sh                   randconfig-r006-20230403   gcc  
+sh                   randconfig-r036-20230403   gcc  
+sparc        buildonly-randconfig-r001-20230403   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r004-20230403   gcc  
+sparc64              randconfig-r005-20230403   gcc  
+sparc64              randconfig-r024-20230403   gcc  
+sparc64              randconfig-r026-20230403   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r005-20230403   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230403   clang
+x86_64               randconfig-a002-20230403   clang
+x86_64               randconfig-a003-20230403   clang
+x86_64               randconfig-a004-20230403   clang
+x86_64               randconfig-a005-20230403   clang
+x86_64               randconfig-a006-20230403   clang
+x86_64               randconfig-a011-20230403   gcc  
+x86_64               randconfig-a012-20230403   gcc  
+x86_64               randconfig-a013-20230403   gcc  
+x86_64               randconfig-a014-20230403   gcc  
+x86_64               randconfig-a015-20230403   gcc  
+x86_64               randconfig-a016-20230403   gcc  
+x86_64               randconfig-r001-20230403   clang
+x86_64               randconfig-r016-20230403   gcc  
+x86_64               randconfig-r031-20230403   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r021-20230403   gcc  
+xtensa               randconfig-r026-20230403   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
