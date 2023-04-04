@@ -2,62 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B3DD6D6EC5
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 23:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8846D6EF7
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 23:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236203AbjDDVR5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 17:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        id S236405AbjDDV2F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 17:28:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234844AbjDDVRt (ORCPT
+        with ESMTP id S236422AbjDDV2E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 17:17:49 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C9D5599;
-        Tue,  4 Apr 2023 14:17:13 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id r11so136091038edd.5;
-        Tue, 04 Apr 2023 14:17:13 -0700 (PDT)
+        Tue, 4 Apr 2023 17:28:04 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 395551BD9;
+        Tue,  4 Apr 2023 14:28:02 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id eg48so136026612edb.13;
+        Tue, 04 Apr 2023 14:28:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680643031;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vB8C/rkfKSiKVTM11U1zRHBbWNH+nLc5httEWsxhlqs=;
-        b=c+svavxJzJiDnanNxas0i37W0Wi3ItSv75f77BColKvnVsaij56RGWuarKjybsdY90
-         c54uFR0fCl+BgN7t8hK7AMaBcwP9BWoOaRexZ69XxqUL9SMonxIGVpoEU96iYw785yK/
-         JosttHftu7m+AgCTVNeH48tS54HhWxGIONtep8kkmbDYMsraR2ICNZLmApYislh3PUll
-         gKLhX3drqADr3+sEv1WQ6dI67x/wZI8N6kCr4F107zOrMzlkfezL8xwMD9WVqzcv/Oki
-         BwHCzkYFsaa5hQdJtVzxKeWFTCUuJhmZ7rD+OqO8ZEdFtaxIi3i4DHHDHczcxuLjEvOv
-         KBOw==
+        d=googlemail.com; s=20210112; t=1680643681;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F3Vq2XM6fughuFDtm5c57GN5MrdDCrraoSvfrWiblQU=;
+        b=Aguc2+EVruaoWDmeWTp/rvZXkJ7uOVa1KmiiPwiNegAiDA4WZWeOUGDz8seHfMwUY1
+         1O1rDFP8XJjK1tcN9X2bIIQcg/jVtlzbTGMseEBWMRfnRKkZBBWM1cDR0dbB/ISqGNNP
+         d4tdXDCfl4lZ8toTldRZAsSYXn/+r5H1CBkDdna1nnabXPfqho3Ta7lC2FILdYqMEmgU
+         tTUfV6iEpFxnNUDEyxtTyAMwcf5t5SisFTpXvumkoqhAAM1y0hXKr9Mdeun4tYt1A4b1
+         /QOaBFb9PF02DVewDATyzTI1jd+Fdw17v4aeV/fMvNL6dHc96Z78m1YKzpENPNfQsYDz
+         C8Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680643031;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vB8C/rkfKSiKVTM11U1zRHBbWNH+nLc5httEWsxhlqs=;
-        b=d/ImaHeH0XT02VegHvjsN9LDxsyo5BGNk2JEZ+I7Io59kupWdMT1zdC5vVDv3ljepr
-         7NknqE2QlkidFNwLotqYkYJTJYi7UfMV16r7WdeGpF+Nbx4ICzx3o+8K1VdMLD/WYOdQ
-         M0n5TsAtiLRo+ugoZPnrQTRKF9Lt6uDQfurngqFJvB/AsxrEoe6fVdmn7K9sS7emb8Dt
-         Hb+BXF1cm1IN2Ta6NmyFRW+EoPVz1PvZjqwSgC0cROJLeuStJBkuFvJ8O38CSaXj3+aT
-         jnC1GuUEnOHKJLWVH3PPi0jO6jQeQyN9dBqgru9n6j+gfUIcfZ6Ov44qb6LE6fQcuwwE
-         0lEw==
-X-Gm-Message-State: AAQBX9f3KtFQ9vfdZ0r9FJVw1x+lxmOEjYh++1/F9OYvhIp7yQXFkYya
-        HEjSvyA6A6fmkWbJVYkkyGloTZs/YXORMaWNIjSn0WJ4yIA=
-X-Google-Smtp-Source: AKy350aIqmZisXJIuv3J8wKQg2znly2zjp4bcIZKIIKVGI7jtw6pB/aDQVQxVQWyQt5jRB+KnOnc6Z0ic3xeASo5O8k=
-X-Received: by 2002:a50:9e2b:0:b0:4fc:fc86:5f76 with SMTP id
- z40-20020a509e2b000000b004fcfc865f76mr450020ede.6.1680643031003; Tue, 04 Apr
- 2023 14:17:11 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680643681;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F3Vq2XM6fughuFDtm5c57GN5MrdDCrraoSvfrWiblQU=;
+        b=jJZ/O2YLYwTvKVTruXg88TjrgsH8bXZF9ut3Qom+fAojALWkHV5vjWPjghmpr++MMU
+         5JYCQG5gfGLisN7RWH8htThpnVTsJvjLXqhrh6F7sGrhjuRMZWjwS4xlXGlct2tSWBt+
+         LQTCwOD4T8sETmukLSjOMFN852KP16tK6WBmklRpVgbrx2BAszK9IaysjjlaM0jnaIBY
+         MxwlCusxMKl+smnaMdeu5PPUHqWHAuh8n2ALcV9P6cBWFOy18zCl8hT5/0zpD19XTBmp
+         SBiiib4/v9SIa8PoxHCy29c8UkOuF6rIer48EPAkDY4wGriNGoCtN5Pi8jfiuUYy/SRt
+         cgGQ==
+X-Gm-Message-State: AAQBX9fVbRPu9kQVisPO6IlR3T72eCC6bN76EHpuCpVWK0gCqCeAO0cw
+        Xio62iuUrlyahACOciV4D5xC+srJjz4WymQZDqPBKs83SOc=
+X-Google-Smtp-Source: AKy350b9THEdFpt47q44R8kiLay24lRQn+dpAYK09CzKuT0xT0W0dwuzwx4PYA6d/G5OSNmH5bBzzgihj/lFtVstHYU=
+X-Received: by 2002:a17:906:3e0d:b0:92f:cbfe:1635 with SMTP id
+ k13-20020a1709063e0d00b0092fcbfe1635mr535348eji.6.1680643680653; Tue, 04 Apr
+ 2023 14:28:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAHk-=whcaHLNpb7Mu_QX7ABwPgyRyfW-V8=v4Mv0S22fpjY4JQ@mail.gmail.com>
- <20230327072641.3591802-1-geert@linux-m68k.org> <eb55ca34-ca71-ed19-dae2-6e5e87c170@linux-m68k.org>
-In-Reply-To: <eb55ca34-ca71-ed19-dae2-6e5e87c170@linux-m68k.org>
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Tue, 4 Apr 2023 22:16:35 +0100
-Message-ID: <CADVatmNHYar6tR3r9q42vZR5fsqZeeDb8LEmmBcrrOwhA7HpmQ@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v6.3-rc4
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        sparclinux@vger.kernel.org
+References: <20230403202440.276757-1-martin.blumenstingl@googlemail.com>
+ <20230403202440.276757-10-martin.blumenstingl@googlemail.com>
+ <642c609d.050a0220.46d72.9a10@mx.google.com> <CADcbR4LMY3BF_aNZ-gAWsvYHnRjV=qgWW_qmJhH339L_NgmqUQ@mail.gmail.com>
+In-Reply-To: <CADcbR4LMY3BF_aNZ-gAWsvYHnRjV=qgWW_qmJhH339L_NgmqUQ@mail.gmail.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 4 Apr 2023 23:27:49 +0200
+Message-ID: <CAFBinCC2fr42FiC_LqqMf2ASDA_vY1d-NJJLHOF6pW1MjFRAzw@mail.gmail.com>
+Subject: Re: [PATCH v4 9/9] wifi: rtw88: Add support for the SDIO based
+ RTL8821CS chipset
+To:     Chris Morgan <macroalpha82@gmail.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Nitin Gupta <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>, Pkshih <pkshih@realtek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
         DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -68,34 +80,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 27 Mar 2023 at 08:29, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> On Mon, 27 Mar 2023, Geert Uytterhoeven wrote:
-> > JFYI, when comparing v6.3-rc4[1] to v6.3-rc3[3], the summaries are:
-> >  - build errors: +9/-1
->
->    + /kisskb/src/drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]:  => 6163:45
->
-> sh4-gcc11/sh-allmodconfig
-> seen before
->
->    + error: modpost: "ebus_dma_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ebus_dma_irq_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ebus_dma_prepare" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ebus_dma_register" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ebus_dma_request" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ebus_dma_residue" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ebus_dma_unregister" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->    + error: modpost: "ns87303_lock" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->
-> sparc64-gcc11/sparc-allmodconfig
-> seen before
+Hello Chris,
 
-Tried sparc64 allmodconfig with gcc-11 and did not see the parport
-errors with 6ab608fe852b ("Merge tag 'for-6.3-rc4-tag' of
-git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux").
-Is it still being seen?
+On Tue, Apr 4, 2023 at 8:16=E2=80=AFPM Chris Morgan <macroalpha82@gmail.com=
+> wrote:
+>
+> Please disregard. I was building against linux main not wireless-next.
+> I have tested and it appears to be working well, even suspend works now.
+Thanks for this update - this is great news!
+It's good to hear that suspend is now also working fine for you.
 
--- 
-Regards
-Sudip
+It would be awesome if I could get a Tested-by for this patch. This
+works by replying to the patch with a line that consists of
+"Tested-by: your name <your email address>". See [0] for an example.
+
+
+Best regards,
+Martin
+
+
+[0] https://lore.kernel.org/linux-wireless/4a76b5fe-c3d6-de44-c627-3f48fafd=
+d905@lwfinger.net/
