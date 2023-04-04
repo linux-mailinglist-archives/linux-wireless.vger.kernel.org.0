@@ -2,32 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABAB16D5936
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 09:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D1B46D5962
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 09:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233659AbjDDHLt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 03:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
+        id S233862AbjDDHWj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 03:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233570AbjDDHLs (ORCPT
+        with ESMTP id S233873AbjDDHW3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 03:11:48 -0400
+        Tue, 4 Apr 2023 03:22:29 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C31C7198E
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 00:11:44 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CF510CA
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 00:22:25 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <sha@pengutronix.de>)
-        id 1pjapJ-0005XZ-3k; Tue, 04 Apr 2023 09:11:33 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        id 1pjazn-0006g1-LV; Tue, 04 Apr 2023 09:22:23 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <sha@pengutronix.de>)
-        id 1pjapF-0000B6-Nv; Tue, 04 Apr 2023 09:11:29 +0200
-Date:   Tue, 4 Apr 2023 09:11:29 +0200
+        id 1pjazm-008rc9-Fy; Tue, 04 Apr 2023 09:22:22 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1pjazl-002EcV-G6; Tue, 04 Apr 2023 09:22:21 +0200
 From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Jonathan Bither <jonbither@gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Hans Ulli Kroll <linux@ulli-kroll.de>,
         Larry Finger <Larry.Finger@lwfinger.net>,
         Pkshih <pkshih@realtek.com>, Tim K <tpkuester@gmail.com>,
         "Alex G ." <mr.nuke.me@gmail.com>,
@@ -35,23 +37,14 @@ Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
         Viktor Petrenko <g0000ga@gmail.com>,
         Andreas Henriksson <andreas@fatal.se>,
         ValdikSS <iam@valdikss.org.ru>, kernel@pengutronix.de,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] wifi: rtw88: usb: fix priority queue to endpoint
- mapping
-Message-ID: <20230404071129.GW19113@pengutronix.de>
-References: <20230331121054.112758-1-s.hauer@pengutronix.de>
- <20230331121054.112758-2-s.hauer@pengutronix.de>
- <cb5980b4-1e0e-57f8-e680-44e14fa0b02c@gmail.com>
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v2 0/2] RTW88 USB bug fixes
+Date:   Tue,  4 Apr 2023 09:22:12 +0200
+Message-Id: <20230404072214.462777-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb5980b4-1e0e-57f8-e680-44e14fa0b02c@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: sha@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
@@ -64,59 +57,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 31, 2023 at 10:31:25AM -0400, Jonathan Bither wrote:
-> 
-> On 3/31/23 08:10, Sascha Hauer wrote:
-> > The RTW88 chipsets have four different priority queues in hardware. For
-> > the USB type chipsets the packets destined for a specific priority queue
-> > must be sent through the endpoint corresponding to the queue. This was
-> > not fully understood when porting from the RTW88 USB out of tree driver
-> > and thus violated.
-> > 
-> > This patch implements the qsel to endpoint mapping as in
-> > get_usb_bulkout_id_88xx() in the downstream driver.
-> > 
-> > Without this the driver often issues "timed out to flush queue 3"
-> > warnings and often TX stalls completely.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >   drivers/net/wireless/realtek/rtw88/usb.c | 70 ++++++++++++++++--------
-> >   1 file changed, 47 insertions(+), 23 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> > index 2a8336b1847a5..a10d6fef4ffaf 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> > @@ -118,6 +118,22 @@ static void rtw_usb_write32(struct rtw_dev *rtwdev, u32 addr, u32 val)
-> >   	rtw_usb_write(rtwdev, addr, val, 4);
-> >   }
-> > +static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
-> > +{
-> > +	switch (dma_mapping) {
-> > +	case RTW_DMA_MAPPING_HIGH:
-> > +		return 0;
-> > +	case RTW_DMA_MAPPING_NORMAL:
-> > +		return 1;
-> > +	case RTW_DMA_MAPPING_LOW:
-> > +		return 2;
-> > +	case RTW_DMA_MAPPING_EXTRA:
-> > +		return 3;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> Would it be beneficial to use defines for the returns? Would the
-> USB_ENDPOINT_XFER_ defines be applicable?
+This series fixes two bugs in the RTW88 USB driver I was reported from
+several people and that I also encountered myself.
 
-The USB_ENDPOINT_XFER_* macros encode the type of the transfer, like
-bulk, control, isochronous and interrupt. What I need here really is
-the endpoint number. I don't see a benefit in adding a define here.
+The first one resulted in "timed out to flush queue 3" messages from the
+driver and sometimes a complete stall of the TX queues.
 
-Sascha
+The second one is specific to the RTW8821CU chipset. Here 2GHz networks
+were hardly seen and impossible to connect to. This goes down to
+misinterpreting the rfe_option field in the efuse.
+
+Changes since v1:
+- Add Cc: stable@vger.kernel.org tag to the patches rather than Cc'ing
+  stable@ directly
+- Add Tested-by: tags
+
+Sascha Hauer (2):
+  wifi: rtw88: usb: fix priority queue to endpoint mapping
+  wifi: rtw88: rtw8821c: Fix rfe_option field width
+
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  3 +-
+ drivers/net/wireless/realtek/rtw88/usb.c      | 70 +++++++++++++------
+ 2 files changed, 48 insertions(+), 25 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
