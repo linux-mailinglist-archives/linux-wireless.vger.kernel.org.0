@@ -2,55 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F5196D7037
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 00:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3537E6D7058
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 01:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236653AbjDDWkl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 18:40:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32970 "EHLO
+        id S236461AbjDDXCa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 19:02:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236379AbjDDWkk (ORCPT
+        with ESMTP id S236361AbjDDXC1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 18:40:40 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6A612709;
-        Tue,  4 Apr 2023 15:40:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=0i5Bbc0w1weKrsu/nCnfi4mk4ZRljnGWA85xKD9hlPA=; b=lsZG54/x6E1Vjm+EI4lpfbSaJz
-        8qBe2Ju/q4siAqopbhW4VcR/AZyS+LkNNiy6t1TlLtd2iF3cMlfRJ0dOYIkYqsJsowaX4bDXe8/ta
-        7NVzIaZLue9ohS7XE681YuluVUsWZ+tPorFNe/3aLA41bCUYiaOGmNf76Vig1iCCIqbLts08sEaVV
-        dzrVEtGp/7YUv/dZw2kfpJqcfNvFSJFrFcheuveqVYul3aM1Ib2X3Gpd4GbSw1RxzI3Oi4OhPdmdB
-        mDSqs02IdQqVXWGSi06cT9gERet0/fJ1w6zu5deGsInC60v/lvQDMpO4SorbA0/q/hm8X3BV4aZeT
-        f8ptMkNw==;
-Received: from [2601:1c2:980:9ec0::2764]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1pjpKK-002yQQ-2n;
-        Tue, 04 Apr 2023 22:40:32 +0000
-Message-ID: <c3718ac3-3dd1-2273-68ef-3d2923778ab7@infradead.org>
-Date:   Tue, 4 Apr 2023 15:40:31 -0700
+        Tue, 4 Apr 2023 19:02:27 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3BF1999
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 16:02:25 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-3e392e10cc4so193581cf.0
+        for <linux-wireless@vger.kernel.org>; Tue, 04 Apr 2023 16:02:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1680649344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PEW//PlRGNKSI9zp0ojfTvCTcs2PPiaNdCkAhCNsk78=;
+        b=hu00fpm7vkpMNsHts8+iDRuxhBsuO5NuO/bwGB35mOvoGRXsbz/3psEs+H+4Z/JxyN
+         yPaEuy9LMTnSYl8McjdtZjfGBtvifHJ00nlHsH7Occ/QmhAa/e6kn7JtSVB639fI1d3B
+         vP6ZZfvLU2NFuoAEugPvaeWLZy6vC6FrmW31v/FMnHO+CnTnSmfl+1um/2aclYNm2Vg2
+         gwKIHCPQDDOVIF9Oo+4J58tuMIcz05R23kVJf2a88zzV8gxOwtTdki70iJqrss2qyUGe
+         YaopXetEHSf/Stvxfqme+ZFJs4tPZFMThGbaY3pP+JOGeLLlSupujTfMU6Ex14P5Cbnb
+         Hl/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680649344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PEW//PlRGNKSI9zp0ojfTvCTcs2PPiaNdCkAhCNsk78=;
+        b=2/9PxQMD906/iLmBQ/xiurxqN4RMixZk1YS+HnMrN8/Yk+kMkFHujvYp7kmf5DnF3m
+         e0diakW0QAIKf5BfaqHgPohZj6AswDLYuK4RglEDOezYF7rjMHWImj8C9phJbA2ANrHT
+         DrrZIDJdpFtH/kfgDin4t71sXZal1UDDMcenJkujFrReUUmIw6Exo7Ex/eyfAt9IFVNJ
+         YxjA/4ccukaqRjWKMrEJMbaj+ZSoZRqHcMY2i1IElDbGAc5mElIx+iESEtiajdU/eclX
+         zbm6HGrs3lsqsNITIxW4eKWaqe0CtYvoQ9FdqbmfFEQRVC+dcbkbdKPrh+jadUhxAOt5
+         WgAQ==
+X-Gm-Message-State: AAQBX9dkBAbVFg4QjwKkMA8PwJuRSa4YoPzkgVy9JFerCJgsroKG45Qu
+        v38blXQfEIX4clDdBcFVfmUukHHhuTZaPHW7GqvEhQ==
+X-Google-Smtp-Source: AKy350booJ2nGLKa/KDLNjI3NbBCIh2vuBZGllPM/lH/+h2YITTVMxftvzaPJazfcojDXXk/yZKrj2rNQF49CWVHqlc=
+X-Received: by 2002:a05:622a:1994:b0:3d6:b755:31 with SMTP id
+ u20-20020a05622a199400b003d6b7550031mr40307qtc.17.1680649344090; Tue, 04 Apr
+ 2023 16:02:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: Build regressions/improvements in v6.3-rc4
-Content-Language: en-US
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        sparclinux@vger.kernel.org
-References: <CAHk-=whcaHLNpb7Mu_QX7ABwPgyRyfW-V8=v4Mv0S22fpjY4JQ@mail.gmail.com>
- <20230327072641.3591802-1-geert@linux-m68k.org>
- <eb55ca34-ca71-ed19-dae2-6e5e87c170@linux-m68k.org>
- <CADVatmNHYar6tR3r9q42vZR5fsqZeeDb8LEmmBcrrOwhA7HpmQ@mail.gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <CADVatmNHYar6tR3r9q42vZR5fsqZeeDb8LEmmBcrrOwhA7HpmQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+References: <20230404171658.917361-1-edumazet@google.com> <ZCxgqWkicKWYDySr@corigine.com>
+In-Reply-To: <ZCxgqWkicKWYDySr@corigine.com>
+From:   Jaewan Kim <jaewan@google.com>
+Date:   Wed, 5 Apr 2023 08:02:11 +0900
+Message-ID: <CABZjns4E6C8iB1+h58bZ_kV=x_3Uh_-KCYRxV2Es-GwseWijLQ@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next] mac80211_hwsim: fix potential NULL deref in hwsim_pmsr_report_nl()
+To:     Simon Horman <simon.horman@corigine.com>
+Cc:     Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        eric.dumazet@gmail.com, syzbot <syzkaller@googlegroups.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,50 +76,79 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed, Apr 5, 2023 at 2:39=E2=80=AFAM Simon Horman <simon.horman@corigine.=
+com> wrote:
+>
+> On Tue, Apr 04, 2023 at 05:16:58PM +0000, Eric Dumazet wrote:
+> > syzbot reported a NULL dereference caused by a missing check
+> > in hwsim_pmsr_report_nl(), and bisected the issue to cited commit.
+> >
+> > v2: test the nlattr before using nla_data() on it (Simon Horman)
+> >
+> > general protection fault, probably for non-canonical address 0xdffffc00=
+00000001: 0000 [#1] PREEMPT SMP KASAN
+> > KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+> > CPU: 0 PID: 5084 Comm: syz-executor104 Not tainted 6.3.0-rc4-next-20230=
+331-syzkaller #0
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS=
+ Google 03/02/2023
+> > RIP: 0010:jhash+0x339/0x610 include/linux/jhash.h:95
+> > Code: 83 fd 01 0f 84 5f ff ff ff eb de 83 fd 05 74 3a e8 ac f5 71 fd 48=
+ 8d 7b 05 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 =
+48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 96 02 00 00
+> > RSP: 0018:ffffc90003abf298 EFLAGS: 00010202
+> > RAX: dffffc0000000000 RBX: 0000000000000004 RCX: 0000000000000000
+> > RDX: 0000000000000001 RSI: ffffffff84111ba4 RDI: 0000000000000009
+> > RBP: 0000000000000006 R08: 0000000000000005 R09: 000000000000000c
+> > R10: 0000000000000006 R11: 0000000000000000 R12: 000000004d2c27cd
+> > R13: 000000002bd9e6c2 R14: 000000002bd9e6c2 R15: 000000002bd9e6c2
+> > FS: 0000555556847300(0000) GS:ffff8880b9800000(0000) knlGS:000000000000=
+0000
+> > CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: 000000000045ad50 CR3: 0000000078aa6000 CR4: 00000000003506f0
+> > DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> > DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> > Call Trace:
+> > <TASK>
+> > rht_key_hashfn include/linux/rhashtable.h:159 [inline]
+> > __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
+> > rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+> > rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+> > get_hwsim_data_ref_from_addr+0xb9/0x600 drivers/net/wireless/virtual/ma=
+c80211_hwsim.c:757
+> > hwsim_pmsr_report_nl+0xe7/0xd50 drivers/net/wireless/virtual/mac80211_h=
+wsim.c:3764
+> > genl_family_rcv_msg_doit.isra.0+0x1e6/0x2d0 net/netlink/genetlink.c:968
+> > genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+> > genl_rcv_msg+0x4ff/0x7e0 net/netlink/genetlink.c:1065
+> > netlink_rcv_skb+0x165/0x440 net/netlink/af_netlink.c:2572
+> > genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+> > netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+> > netlink_unicast+0x547/0x7f0 net/netlink/af_netlink.c:1365
+> > netlink_sendmsg+0x925/0xe30 net/netlink/af_netlink.c:1942
+> > sock_sendmsg_nosec net/socket.c:724 [inline]
+> > sock_sendmsg+0xde/0x190 net/socket.c:747
+> > ____sys_sendmsg+0x71c/0x900 net/socket.c:2501
+> > ___sys_sendmsg+0x110/0x1b0 net/socket.c:2555
+> > __sys_sendmsg+0xf7/0x1c0 net/socket.c:2584
+> > do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+> > do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+> > entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> >
+> > Fixes: 2af3b2a631b1 ("mac80211_hwsim: add PMSR report support via virti=
+o")
+> > Reported-by: syzbot <syzkaller@googlegroups.com>
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > Cc: Jaewan Kim <jaewan@google.com>
+> > Cc: Johannes Berg <johannes.berg@intel.com>
+>
+> Thanks Eric,
+>
+> Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
+Reviewed-by: Jaewan Kim <jaewan@google.com>
 
-On 4/4/23 14:16, Sudip Mukherjee wrote:
-> On Mon, 27 Mar 2023 at 08:29, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->>
->> On Mon, 27 Mar 2023, Geert Uytterhoeven wrote:
->>> JFYI, when comparing v6.3-rc4[1] to v6.3-rc3[3], the summaries are:
->>>  - build errors: +9/-1
->>
->>    + /kisskb/src/drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]:  => 6163:45
->>
->> sh4-gcc11/sh-allmodconfig
->> seen before
->>
->>    + error: modpost: "ebus_dma_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ebus_dma_irq_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ebus_dma_prepare" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ebus_dma_register" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ebus_dma_request" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ebus_dma_residue" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ebus_dma_unregister" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>    + error: modpost: "ns87303_lock" [drivers/parport/parport_pc.ko] undefined!:  => N/A
->>
->> sparc64-gcc11/sparc-allmodconfig
->> seen before
-> 
-> Tried sparc64 allmodconfig with gcc-11 and did not see the parport
-> errors with 6ab608fe852b ("Merge tag 'for-6.3-rc4-tag' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux").
-> Is it still being seen?
-> 
-
-This is reported at  http://kisskb.ellerman.id.au/kisskb/buildresult/14905002/
-
-I still see it on sparc32 using gcc-12.2.0.
-
-The compiler info vs. the sparc-allmodconfig is confusing IMO.
-I am compiling with sparc-linux, not sparc64-linux.
-
-The .config file says:
-# CONFIG_64BIT is not set
-CONFIG_SPARC=y
-CONFIG_SPARC32=y
-
-
--- 
-~Randy
+--=20
+Jaewan Kim (=EA=B9=80=EC=9E=AC=EC=99=84) | Software Engineer in Google Kore=
+a |
+jaewan@google.com | +82-10-2781-5078
