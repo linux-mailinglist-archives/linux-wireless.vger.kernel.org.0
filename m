@@ -2,246 +2,742 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD4276D6D69
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 21:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E2F26D6D85
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 22:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235739AbjDDTs6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 15:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
+        id S232313AbjDDUDu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 16:03:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbjDDTs5 (ORCPT
+        with ESMTP id S229507AbjDDUDt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 15:48:57 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15BD4A8
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 12:48:56 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id ce4so9178128pfb.1
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Apr 2023 12:48:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680637735;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9f4rYpvhS+Wesh3THbm1d/IXk5TjD3L5lWgHwExEUas=;
-        b=F+XGY4GlMY/0LvOlY1uJxMn3ve2sCYhO5SAmAGCNUQHE9Z55ADpAiyN5iPl8bcvRq0
-         uemn4DygqjydpqPlLzM6e7S2KrwgNWoOvGYSio3HyWzid9e748c7opJl39LRefQ7BH5q
-         fCl+ADqtxEUY2Ahw57Xi1o88t8OIKfr9o2FFF589wIEmR3WtOgGdqlu5548eIiWLJBUU
-         shFdNTsjl7JJ5YWbBzjkt6orWJeMtE2qIEvtMpe/3CxSgAhv+umzGGF1bcodAxm6aVn+
-         o3Gv1MTHOmfDY7LHQhPoC7BG5jpSuo9Tvdxl7iiTHgtZ7TDfLBjlUAZLpBOPPzqEkeME
-         nt3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680637735;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9f4rYpvhS+Wesh3THbm1d/IXk5TjD3L5lWgHwExEUas=;
-        b=XesfzSVnUhTpXSVh27oBnw5mgoqPLSPqrGJ2qYMpaEltNecfgYXfGw3QM2Yf8kuY/S
-         nuEJWVdorDuoeLUJ7d04LUHlO3HeXNifbTg6KD3EBkot+MW2gxHSDYxgySfwBh2mVTzb
-         MuXVdgxp3xyrFos/Xn8cdd1DGStFBlbUxoOVHq1LQVnFKuwWnvcdVFZB1fRfPsT+O0Q2
-         sVx6qWwWwfHvUjEVjfCNeLkeRUZPvan+cjXVNS6PMi7y54OHcOP3JBXkTJTAoLuWPYpW
-         i44cNuNhOrrUWDCV70IaPqZGTLAbgacDoMuIJf5WXQn34tw+xwX9T1PCHygxz8J2Gr1c
-         ddQQ==
-X-Gm-Message-State: AAQBX9fbWSNYdF6VGTNOaVfpMAcREDB4BTe+tjU6A0QtnHQbuS0iWdX2
-        A24wpK4rnokRAAsLbDZ1FKEhgzP60SXnTVrpTgokut69
-X-Google-Smtp-Source: AKy350bKMgmkkrTXzgJu1P21mj+lZdpggkQEMQwYoHYb06+GOjccybyBJTXt3HEsUDVmCYNL91bxrpivGghWyygzj4Y=
-X-Received: by 2002:a05:6a00:2e8a:b0:625:73a7:326f with SMTP id
- fd10-20020a056a002e8a00b0062573a7326fmr1853122pfb.3.1680637735463; Tue, 04
- Apr 2023 12:48:55 -0700 (PDT)
+        Tue, 4 Apr 2023 16:03:49 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB34E52
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 13:03:43 -0700 (PDT)
+X-UUID: c84849f6d32311eda9a90f0bb45854f4-20230405
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=n9XMvy51OEqtdAE/QuBmwe2k1vj/GmgHQkocayT1rVs=;
+        b=nG89DXsX/NVVzJrwxFLBmfwODjq3Esq/3Fqvbcsd6uSMhtrm2Q6xI3PgeYuSCxPB+Qr5bdrmv4ljaFRTZ5NMOqEv6cyXLyiia0dOSm3H3Z2FSzRGRwvkGnV2XChWpTGvmOUrJDNuFOQZ/uGEu1CeCQh820qOur5yp3xSs86ZZL0=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:8f2b427b-6aa9-4117-9f73-d4ef832c3abb,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:120426c,CLOUDID:99e1ccf7-ddba-41c3-91d9-10eeade8eac7,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-UUID: c84849f6d32311eda9a90f0bb45854f4-20230405
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 585037126; Wed, 05 Apr 2023 04:03:35 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.25; Wed, 5 Apr 2023 04:03:34 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Wed, 5 Apr 2023 04:03:34 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Bo Jiao <Bo.Jiao@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/3] wifi: mt76: mt7996: enable full system reset support
+Date:   Wed, 5 Apr 2023 04:03:30 +0800
+Message-ID: <6756ddde5aaaf29db4f62264bab7f28bb539b26f.1680638324.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <CADUzMVYz8zJ13cunSKbtKrArsiSCr2m5k7QuwsP0nvyuVLrK6Q@mail.gmail.com>
- <1ca8aafd-63c8-95f4-82fa-457b14a8c0d5@gmail.com>
-In-Reply-To: <1ca8aafd-63c8-95f4-82fa-457b14a8c0d5@gmail.com>
-From:   Ioannis Barkas <jnyb.de@gmail.com>
-Date:   Tue, 4 Apr 2023 22:48:44 +0300
-Message-ID: <CADUzMVYFAv+9=6vSOHjmuoKzqy1UBJ8m4q0h_c==-pXmouYi=w@mail.gmail.com>
-Subject: Re: TL-WN823N Realtek WPA3 SSID connection problem #9
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Bo Jiao <Bo.Jiao@mediatek.com>
 
-As low as it goes. This is a port for keyboard/mouse usage.
+Add mt7996_reset() and refactor mt7996_mac_reset_work() to support
+full system recovery.
 
-Nothing useful was seen in dmesg. Will make a kernel with your patch,
-test it at the weekend and tell you how it goes. I have a PCI USB 1.1
-only controller to test it as well!
+Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7996/dma.c   |  64 ++++
+ .../net/wireless/mediatek/mt76/mt7996/init.c  |  11 +-
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 284 +++++++++++++++---
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  18 +-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  22 +-
+ .../net/wireless/mediatek/mt76/mt7996/mmio.c  |   7 +-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  17 +-
+ .../net/wireless/mediatek/mt76/mt7996/regs.h  |  13 +-
+ 8 files changed, 365 insertions(+), 71 deletions(-)
 
-Thanks
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+index c09fe4274935..534143465d9b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+@@ -352,6 +352,70 @@ int mt7996_dma_init(struct mt7996_dev *dev)
+ 	return 0;
+ }
+ 
++void mt7996_dma_reset(struct mt7996_dev *dev, bool force)
++{
++	struct mt76_phy *phy2 = dev->mt76.phys[MT_BAND1];
++	struct mt76_phy *phy3 = dev->mt76.phys[MT_BAND2];
++	u32 hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
++	int i;
++
++	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
++		   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
++		   MT_WFDMA0_GLO_CFG_RX_DMA_EN);
++
++	if (dev->hif2)
++		mt76_clear(dev, MT_WFDMA0_GLO_CFG + hif1_ofs,
++			   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
++			   MT_WFDMA0_GLO_CFG_RX_DMA_EN);
++
++	usleep_range(1000, 2000);
++
++	for (i = 0; i < __MT_TXQ_MAX; i++) {
++		mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[i], true);
++		if (phy2)
++			mt76_queue_tx_cleanup(dev, phy2->q_tx[i], true);
++		if (phy3)
++			mt76_queue_tx_cleanup(dev, phy3->q_tx[i], true);
++	}
++
++	for (i = 0; i < __MT_MCUQ_MAX; i++)
++		mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[i], true);
++
++	mt76_for_each_q_rx(&dev->mt76, i)
++		mt76_queue_rx_cleanup(dev, &dev->mt76.q_rx[i]);
++
++	mt76_tx_status_check(&dev->mt76, true);
++
++	/* reset wfsys */
++	if (force)
++		mt7996_wfsys_reset(dev);
++
++	mt7996_dma_disable(dev, force);
++
++	/* reset hw queues */
++	for (i = 0; i < __MT_TXQ_MAX; i++) {
++		mt76_queue_reset(dev, dev->mphy.q_tx[i]);
++		if (phy2)
++			mt76_queue_reset(dev, phy2->q_tx[i]);
++		if (phy3)
++			mt76_queue_reset(dev, phy3->q_tx[i]);
++	}
++
++	for (i = 0; i < __MT_MCUQ_MAX; i++)
++		mt76_queue_reset(dev, dev->mt76.q_mcu[i]);
++
++	mt76_for_each_q_rx(&dev->mt76, i) {
++		mt76_queue_reset(dev, &dev->mt76.q_rx[i]);
++	}
++
++	mt76_tx_status_check(&dev->mt76, true);
++
++	mt76_for_each_q_rx(&dev->mt76, i)
++		mt76_queue_rx_reset(dev, i);
++
++	mt7996_dma_enable(dev);
++}
++
+ void mt7996_dma_cleanup(struct mt7996_dev *dev)
+ {
+ 	mt7996_dma_disable(dev, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 946da93eed32..76501e42cd8a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -99,9 +99,8 @@ static void mt7996_led_set_brightness(struct led_classdev *led_cdev,
+ 		mt7996_led_set_config(led_cdev, 0xff, 0);
+ }
+ 
+-static void
+-mt7996_init_txpower(struct mt7996_dev *dev,
+-		    struct ieee80211_supported_band *sband)
++void mt7996_init_txpower(struct mt7996_dev *dev,
++			 struct ieee80211_supported_band *sband)
+ {
+ 	int i, nss = hweight8(dev->mphy.antenna_mask);
+ 	int nss_delta = mt76_tx_power_nss_delta(nss);
+@@ -250,7 +249,7 @@ mt7996_mac_init_band(struct mt7996_dev *dev, u8 band)
+ 	mt76_rmw(dev, MT_WTBLOFF_RSCR(band), mask, set);
+ }
+ 
+-static void mt7996_mac_init(struct mt7996_dev *dev)
++void mt7996_mac_init(struct mt7996_dev *dev)
+ {
+ #define HIF_TXD_V2_1	4
+ 	int i;
+@@ -284,7 +283,7 @@ static void mt7996_mac_init(struct mt7996_dev *dev)
+ 		mt7996_mac_init_band(dev, i);
+ }
+ 
+-static int mt7996_txbf_init(struct mt7996_dev *dev)
++int mt7996_txbf_init(struct mt7996_dev *dev)
+ {
+ 	int ret;
+ 
+@@ -886,6 +885,8 @@ int mt7996_register_device(struct mt7996_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	dev->recovery.hw_init_done = true;
++
+ 	return mt7996_init_debugfs(&dev->phy);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 3c3506c7c87a..f5c24985b905 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1706,7 +1706,7 @@ mt7996_wait_reset_state(struct mt7996_dev *dev, u32 state)
+ 	bool ret;
+ 
+ 	ret = wait_event_timeout(dev->reset_wait,
+-				 (READ_ONCE(dev->reset_state) & state),
++				 (READ_ONCE(dev->recovery.state) & state),
+ 				 MT7996_RESET_TIMEOUT);
+ 
+ 	WARN(!ret, "Timeout waiting for MCU reset state %x\n", state);
+@@ -1755,68 +1755,207 @@ mt7996_update_beacons(struct mt7996_dev *dev)
+ 					    mt7996_update_vif_beacon, phy3->hw);
+ }
+ 
+-static void
+-mt7996_dma_reset(struct mt7996_dev *dev)
++void mt7996_tx_token_put(struct mt7996_dev *dev)
+ {
+-	struct mt76_phy *phy2 = dev->mt76.phys[MT_BAND1];
+-	struct mt76_phy *phy3 = dev->mt76.phys[MT_BAND2];
+-	u32 hif1_ofs = MT_WFDMA0_PCIE1(0) - MT_WFDMA0(0);
+-	int i;
++	struct mt76_txwi_cache *txwi;
++	int id;
++
++	spin_lock_bh(&dev->mt76.token_lock);
++	idr_for_each_entry(&dev->mt76.token, txwi, id) {
++		mt7996_txwi_free(dev, txwi, NULL, NULL);
++		dev->mt76.token_count--;
++	}
++	spin_unlock_bh(&dev->mt76.token_lock);
++	idr_destroy(&dev->mt76.token);
++}
++
++static int
++mt7996_mac_restart(struct mt7996_dev *dev)
++{
++	struct mt7996_phy *phy2, *phy3;
++	struct mt76_dev *mdev = &dev->mt76;
++	int i, ret;
+ 
+-	mt76_clear(dev, MT_WFDMA0_GLO_CFG,
+-		   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
+-		   MT_WFDMA0_GLO_CFG_RX_DMA_EN);
++	phy2 = mt7996_phy2(dev);
++	phy3 = mt7996_phy3(dev);
+ 
+-	if (dev->hif2)
+-		mt76_clear(dev, MT_WFDMA0_GLO_CFG + hif1_ofs,
+-			   MT_WFDMA0_GLO_CFG_TX_DMA_EN |
+-			   MT_WFDMA0_GLO_CFG_RX_DMA_EN);
++	if (dev->hif2) {
++		mt76_wr(dev, MT_INT1_MASK_CSR, 0x0);
++		mt76_wr(dev, MT_INT1_SOURCE_CSR, ~0);
++	}
+ 
+-	usleep_range(1000, 2000);
++	if (dev_is_pci(mdev->dev)) {
++		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
++		if (dev->hif2)
++			mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0x0);
++	}
+ 
+-	for (i = 0; i < __MT_TXQ_MAX; i++) {
+-		mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[i], true);
+-		if (phy2)
+-			mt76_queue_tx_cleanup(dev, phy2->q_tx[i], true);
+-		if (phy3)
+-			mt76_queue_tx_cleanup(dev, phy3->q_tx[i], true);
++	set_bit(MT76_RESET, &dev->mphy.state);
++	set_bit(MT76_MCU_RESET, &dev->mphy.state);
++	wake_up(&dev->mt76.mcu.wait);
++	if (phy2) {
++		set_bit(MT76_RESET, &phy2->mt76->state);
++		set_bit(MT76_MCU_RESET, &phy2->mt76->state);
++	}
++	if (phy3) {
++		set_bit(MT76_RESET, &phy3->mt76->state);
++		set_bit(MT76_MCU_RESET, &phy3->mt76->state);
+ 	}
+ 
+-	for (i = 0; i < __MT_MCUQ_MAX; i++)
+-		mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[i], true);
++	/* lock/unlock all queues to ensure that no tx is pending */
++	mt76_txq_schedule_all(&dev->mphy);
++	if (phy2)
++		mt76_txq_schedule_all(phy2->mt76);
++	if (phy3)
++		mt76_txq_schedule_all(phy3->mt76);
+ 
+-	mt76_for_each_q_rx(&dev->mt76, i)
+-		mt76_queue_rx_reset(dev, i);
++	/* disable all tx/rx napi */
++	mt76_worker_disable(&dev->mt76.tx_worker);
++	mt76_for_each_q_rx(mdev, i) {
++		if (mdev->q_rx[i].ndesc)
++			napi_disable(&dev->mt76.napi[i]);
++	}
++	napi_disable(&dev->mt76.tx_napi);
++
++	/* token reinit */
++	mt7996_tx_token_put(dev);
++	idr_init(&dev->mt76.token);
++
++	mt7996_dma_reset(dev, true);
++
++	local_bh_disable();
++	mt76_for_each_q_rx(mdev, i) {
++		if (mdev->q_rx[i].ndesc) {
++			napi_enable(&dev->mt76.napi[i]);
++			napi_schedule(&dev->mt76.napi[i]);
++		}
++	}
++	local_bh_enable();
++	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
++	clear_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
++
++	mt76_wr(dev, MT_INT_MASK_CSR, dev->mt76.mmio.irqmask);
++	mt76_wr(dev, MT_INT_SOURCE_CSR, ~0);
++	if (dev->hif2) {
++		mt76_wr(dev, MT_INT1_MASK_CSR, dev->mt76.mmio.irqmask);
++		mt76_wr(dev, MT_INT1_SOURCE_CSR, ~0);
++	}
++	if (dev_is_pci(mdev->dev)) {
++		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
++		if (dev->hif2)
++			mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0xff);
++	}
++
++	/* load firmware */
++	ret = mt7996_mcu_init_firmware(dev);
++	if (ret)
++		goto out;
++
++	/* set the necessary init items */
++	ret = mt7996_mcu_set_eeprom(dev);
++	if (ret)
++		goto out;
++
++	mt7996_mac_init(dev);
++	mt7996_init_txpower(dev, &dev->mphy.sband_2g.sband);
++	mt7996_init_txpower(dev, &dev->mphy.sband_5g.sband);
++	mt7996_init_txpower(dev, &dev->mphy.sband_6g.sband);
++	ret = mt7996_txbf_init(dev);
++
++	if (test_bit(MT76_STATE_RUNNING, &dev->mphy.state)) {
++		ret = mt7996_run(dev->mphy.hw);
++		if (ret)
++			goto out;
++	}
+ 
+-	mt76_tx_status_check(&dev->mt76, true);
++	if (phy2 && test_bit(MT76_STATE_RUNNING, &phy2->mt76->state)) {
++		ret = mt7996_run(phy2->mt76->hw);
++		if (ret)
++			goto out;
++	}
+ 
+-	/* re-init prefetch settings after reset */
+-	mt7996_dma_prefetch(dev);
++	if (phy3 && test_bit(MT76_STATE_RUNNING, &phy3->mt76->state)) {
++		ret = mt7996_run(phy3->mt76->hw);
++		if (ret)
++			goto out;
++	}
++
++out:
++	/* reset done */
++	clear_bit(MT76_RESET, &dev->mphy.state);
++	if (phy2)
++		clear_bit(MT76_RESET, &phy2->mt76->state);
++	if (phy3)
++		clear_bit(MT76_RESET, &phy3->mt76->state);
+ 
+-	mt76_set(dev, MT_WFDMA0_GLO_CFG,
+-		 MT_WFDMA0_GLO_CFG_TX_DMA_EN | MT_WFDMA0_GLO_CFG_RX_DMA_EN);
++	local_bh_disable();
++	napi_enable(&dev->mt76.tx_napi);
++	napi_schedule(&dev->mt76.tx_napi);
++	local_bh_enable();
+ 
+-	if (dev->hif2)
+-		mt76_set(dev, MT_WFDMA0_GLO_CFG + hif1_ofs,
+-			 MT_WFDMA0_GLO_CFG_TX_DMA_EN |
+-			 MT_WFDMA0_GLO_CFG_RX_DMA_EN);
++	mt76_worker_enable(&dev->mt76.tx_worker);
++	return ret;
+ }
+ 
+-void mt7996_tx_token_put(struct mt7996_dev *dev)
++static void
++mt7996_mac_full_reset(struct mt7996_dev *dev)
+ {
+-	struct mt76_txwi_cache *txwi;
+-	int id;
++	struct mt7996_phy *phy2, *phy3;
++	int i;
+ 
+-	spin_lock_bh(&dev->mt76.token_lock);
+-	idr_for_each_entry(&dev->mt76.token, txwi, id) {
+-		mt7996_txwi_free(dev, txwi, NULL, NULL);
+-		dev->mt76.token_count--;
++	phy2 = mt7996_phy2(dev);
++	phy3 = mt7996_phy3(dev);
++	dev->recovery.hw_full_reset = true;
++
++	wake_up(&dev->mt76.mcu.wait);
++	ieee80211_stop_queues(mt76_hw(dev));
++	if (phy2)
++		ieee80211_stop_queues(phy2->mt76->hw);
++	if (phy3)
++		ieee80211_stop_queues(phy3->mt76->hw);
++
++	cancel_delayed_work_sync(&dev->mphy.mac_work);
++	if (phy2)
++		cancel_delayed_work_sync(&phy2->mt76->mac_work);
++	if (phy3)
++		cancel_delayed_work_sync(&phy3->mt76->mac_work);
++
++	mutex_lock(&dev->mt76.mutex);
++	for (i = 0; i < 10; i++) {
++		if (!mt7996_mac_restart(dev))
++			break;
+ 	}
+-	spin_unlock_bh(&dev->mt76.token_lock);
+-	idr_destroy(&dev->mt76.token);
++	mutex_unlock(&dev->mt76.mutex);
++
++	if (i == 10)
++		dev_err(dev->mt76.dev, "chip full reset failed\n");
++
++	ieee80211_restart_hw(mt76_hw(dev));
++	if (phy2)
++		ieee80211_restart_hw(phy2->mt76->hw);
++	if (phy3)
++		ieee80211_restart_hw(phy3->mt76->hw);
++
++	ieee80211_wake_queues(mt76_hw(dev));
++	if (phy2)
++		ieee80211_wake_queues(phy2->mt76->hw);
++	if (phy3)
++		ieee80211_wake_queues(phy3->mt76->hw);
++
++	dev->recovery.hw_full_reset = false;
++	ieee80211_queue_delayed_work(mt76_hw(dev),
++				     &dev->mphy.mac_work,
++				     MT7996_WATCHDOG_TIME);
++	if (phy2)
++		ieee80211_queue_delayed_work(phy2->mt76->hw,
++					     &phy2->mt76->mac_work,
++					     MT7996_WATCHDOG_TIME);
++	if (phy3)
++		ieee80211_queue_delayed_work(phy3->mt76->hw,
++					     &phy3->mt76->mac_work,
++					     MT7996_WATCHDOG_TIME);
+ }
+ 
+-/* system error recovery */
+ void mt7996_mac_reset_work(struct work_struct *work)
+ {
+ 	struct mt7996_phy *phy2, *phy3;
+@@ -1827,9 +1966,36 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	phy2 = mt7996_phy2(dev);
+ 	phy3 = mt7996_phy3(dev);
+ 
+-	if (!(READ_ONCE(dev->reset_state) & MT_MCU_CMD_STOP_DMA))
++	/* chip full reset */
++	if (dev->recovery.restart) {
++		/* disable WA/WM WDT */
++		mt76_clear(dev, MT_WFDMA0_MCU_HOST_INT_ENA,
++			   MT_MCU_CMD_WDT_MASK);
++
++		if (READ_ONCE(dev->recovery.state) & MT_MCU_CMD_WA_WDT)
++			dev->recovery.wa_reset_count++;
++		else
++			dev->recovery.wm_reset_count++;
++
++		mt7996_mac_full_reset(dev);
++
++		/* enable mcu irq */
++		mt7996_irq_enable(dev, MT_INT_MCU_CMD);
++		mt7996_irq_disable(dev, 0);
++
++		/* enable WA/WM WDT */
++		mt76_set(dev, MT_WFDMA0_MCU_HOST_INT_ENA, MT_MCU_CMD_WDT_MASK);
++
++		dev->recovery.state = MT_MCU_CMD_NORMAL_STATE;
++		dev->recovery.restart = false;
+ 		return;
++	}
+ 
++	if (!(READ_ONCE(dev->recovery.state) & MT_MCU_CMD_STOP_DMA))
++		return;
++
++	dev_info(dev->mt76.dev,"\n%s L1 SER recovery start.",
++		 wiphy_name(dev->mt76.hw->wiphy));
+ 	ieee80211_stop_queues(mt76_hw(dev));
+ 	if (phy2)
+ 		ieee80211_stop_queues(phy2->mt76->hw);
+@@ -1858,7 +2024,7 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_DMA_STOPPED);
+ 
+ 	if (mt7996_wait_reset_state(dev, MT_MCU_CMD_RESET_DONE)) {
+-		mt7996_dma_reset(dev);
++		mt7996_dma_reset(dev, false);
+ 
+ 		mt7996_tx_token_put(dev);
+ 		idr_init(&dev->mt76.token);
+@@ -1913,6 +2079,32 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 		ieee80211_queue_delayed_work(phy3->mt76->hw,
+ 					     &phy3->mt76->mac_work,
+ 					     MT7996_WATCHDOG_TIME);
++	dev_info(dev->mt76.dev,"\n%s L1 SER recovery completed.",
++		 wiphy_name(dev->mt76.hw->wiphy));
++}
++
++void mt7996_reset(struct mt7996_dev *dev)
++{
++	if (!dev->recovery.hw_init_done)
++		return;
++
++	if (dev->recovery.hw_full_reset)
++		return;
++
++	/* wm/wa exception: do full recovery */
++	if (READ_ONCE(dev->recovery.state) & MT_MCU_CMD_WDT_MASK) {
++		dev->recovery.restart = true;
++		dev_info(dev->mt76.dev,
++			 "%s indicated firmware crash, attempting recovery\n",
++			 wiphy_name(dev->mt76.hw->wiphy));
++
++		mt7996_irq_disable(dev, MT_INT_MCU_CMD);
++		queue_work(dev->mt76.wq, &dev->reset_work);
++		return;
++	}
++
++	queue_work(dev->mt76.wq, &dev->reset_work);
++	wake_up(&dev->reset_wait);
+ }
+ 
+ void mt7996_mac_update_stats(struct mt7996_phy *phy)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 3e4da0350d96..67d02d30456e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -22,17 +22,13 @@ static bool mt7996_dev_running(struct mt7996_dev *dev)
+ 	return phy && test_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+ }
+ 
+-static int mt7996_start(struct ieee80211_hw *hw)
++int mt7996_run(struct ieee80211_hw *hw)
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+ 	struct mt7996_phy *phy = mt7996_hw_phy(hw);
+ 	bool running;
+ 	int ret;
+ 
+-	flush_work(&dev->init_work);
+-
+-	mutex_lock(&dev->mt76.mutex);
+-
+ 	running = mt7996_dev_running(dev);
+ 	if (!running) {
+ 		ret = mt7996_mcu_set_hdr_trans(dev, true);
+@@ -63,6 +59,18 @@ static int mt7996_start(struct ieee80211_hw *hw)
+ 		mt7996_mac_reset_counters(phy);
+ 
+ out:
++	return ret;
++}
++
++static int mt7996_start(struct ieee80211_hw *hw)
++{
++	struct mt7996_dev *dev = mt7996_hw_dev(hw);
++	int ret;
++
++	flush_work(&dev->init_work);
++
++	mutex_lock(&dev->mt76.mutex);
++	ret = mt7996_run(hw);
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+ 	return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 8ad51cbfdbe8..a48522025867 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2523,17 +2523,10 @@ mt7996_mcu_init_rx_airtime(struct mt7996_dev *dev)
+ 				     MCU_WM_UNI_CMD(VOW), true);
+ }
+ 
+-int mt7996_mcu_init(struct mt7996_dev *dev)
++int mt7996_mcu_init_firmware(struct mt7996_dev *dev)
+ {
+-	static const struct mt76_mcu_ops mt7996_mcu_ops = {
+-		.headroom = sizeof(struct mt76_connac2_mcu_txd), /* reuse */
+-		.mcu_skb_send_msg = mt7996_mcu_send_message,
+-		.mcu_parse_response = mt7996_mcu_parse_response,
+-	};
+ 	int ret;
+ 
+-	dev->mt76.mcu_ops = &mt7996_mcu_ops;
+-
+ 	/* force firmware operation mode into normal state,
+ 	 * which should be set before firmware download stage.
+ 	 */
+@@ -2574,6 +2567,19 @@ int mt7996_mcu_init(struct mt7996_dev *dev)
+ 				 MCU_WA_PARAM_RED, 0, 0);
+ }
+ 
++int mt7996_mcu_init(struct mt7996_dev *dev)
++{
++	static const struct mt76_mcu_ops mt7996_mcu_ops = {
++		.headroom = sizeof(struct mt76_connac2_mcu_txd), /* reuse */
++		.mcu_skb_send_msg = mt7996_mcu_send_message,
++		.mcu_parse_response = mt7996_mcu_parse_response,
++	};
++
++	dev->mt76.mcu_ops = &mt7996_mcu_ops;
++
++	return mt7996_mcu_init_firmware(dev);
++}
++
+ void mt7996_mcu_exit(struct mt7996_dev *dev)
+ {
+ 	mt7996_mcu_restart(&dev->mt76);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 902370a2a639..536e8dd0edca 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -289,10 +289,9 @@ static void mt7996_irq_tasklet(struct tasklet_struct *t)
+ 		u32 val = mt76_rr(dev, MT_MCU_CMD);
+ 
+ 		mt76_wr(dev, MT_MCU_CMD, val);
+-		if (val & MT_MCU_CMD_ERROR_MASK) {
+-			dev->reset_state = val;
+-			ieee80211_queue_work(mt76_hw(dev), &dev->reset_work);
+-			wake_up(&dev->reset_wait);
++		if (val & (MT_MCU_CMD_ERROR_MASK | MT_MCU_CMD_WDT_MASK)) {
++			dev->recovery.state = val;
++			mt7996_reset(dev);
+ 		}
+ 	}
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 018dfd2b36b0..45071f0dc2fe 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -253,7 +253,14 @@ struct mt7996_dev {
+ 	struct work_struct rc_work;
+ 	struct work_struct reset_work;
+ 	wait_queue_head_t reset_wait;
+-	u32 reset_state;
++	struct {
++		u32 state;
++		u32 wa_reset_count;
++		u32 wm_reset_count;
++		bool hw_full_reset:1;
++		bool hw_init_done:1;
++		bool restart:1;
++	} recovery;
+ 
+ 	struct list_head sta_rc_list;
+ 	struct list_head sta_poll_list;
+@@ -386,9 +393,16 @@ int mt7996_eeprom_get_target_power(struct mt7996_dev *dev,
+ 				   struct ieee80211_channel *chan);
+ s8 mt7996_eeprom_get_power_delta(struct mt7996_dev *dev, int band);
+ int mt7996_dma_init(struct mt7996_dev *dev);
++void mt7996_dma_reset(struct mt7996_dev *dev, bool force);
+ void mt7996_dma_prefetch(struct mt7996_dev *dev);
+ void mt7996_dma_cleanup(struct mt7996_dev *dev);
++void mt7996_init_txpower(struct mt7996_dev *dev,
++			 struct ieee80211_supported_band *sband);
++int mt7996_txbf_init(struct mt7996_dev *dev);
++void mt7996_reset(struct mt7996_dev *dev);
++int mt7996_run(struct ieee80211_hw *hw);
+ int mt7996_mcu_init(struct mt7996_dev *dev);
++int mt7996_mcu_init_firmware(struct mt7996_dev *dev);
+ int mt7996_mcu_twt_agrt_update(struct mt7996_dev *dev,
+ 			       struct mt7996_vif *mvif,
+ 			       struct mt7996_twt_flow *flow,
+@@ -479,6 +493,7 @@ static inline void mt7996_irq_disable(struct mt7996_dev *dev, u32 mask)
+ 		mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, mask, 0);
+ }
+ 
++void mt7996_mac_init(struct mt7996_dev *dev);
+ u32 mt7996_mac_wtbl_lmac_addr(struct mt7996_dev *dev, u16 wcid, u8 dw);
+ bool mt7996_mac_wtbl_update(struct mt7996_dev *dev, int idx, u32 mask);
+ void mt7996_mac_reset_counters(struct mt7996_phy *phy);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
+index 7a28cae34e34..5ba74b49d65d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
+@@ -317,6 +317,8 @@ enum base_rev {
+ #define MT_WFDMA0_RX_INT_PCIE_SEL		MT_WFDMA0(0x154)
+ #define MT_WFDMA0_RX_INT_SEL_RING3		BIT(3)
+ 
++#define MT_WFDMA0_MCU_HOST_INT_ENA		MT_WFDMA0(0x1f4)
++
+ #define MT_WFDMA0_GLO_CFG			MT_WFDMA0(0x208)
+ #define MT_WFDMA0_GLO_CFG_TX_DMA_EN		BIT(0)
+ #define MT_WFDMA0_GLO_CFG_RX_DMA_EN		BIT(2)
+@@ -444,6 +446,10 @@ enum base_rev {
+ #define MT_MCU_CMD_NORMAL_STATE			BIT(5)
+ #define MT_MCU_CMD_ERROR_MASK			GENMASK(5, 1)
+ 
++#define MT_MCU_CMD_WA_WDT			BIT(31)
++#define MT_MCU_CMD_WM_WDT			BIT(30)
++#define MT_MCU_CMD_WDT_MASK			GENMASK(31, 30)
++
+ /* l1/l2 remap */
+ #define MT_HIF_REMAP_L1				0x155024
+ #define MT_HIF_REMAP_L1_MASK			GENMASK(31, 16)
+@@ -468,7 +474,10 @@ enum base_rev {
+ #define MT_INFRA_MCU_END			0x7c3fffff
+ 
+ /* FW MODE SYNC */
+-#define MT_SWDEF_MODE				0x9143c
++#define MT_SWDEF_BASE				0x00401400
++
++#define MT_SWDEF(ofs)				(MT_SWDEF_BASE + (ofs))
++#define MT_SWDEF_MODE				MT_SWDEF(0x3c)
+ #define MT_SWDEF_NORMAL_MODE			0
+ 
+ /* LED */
+@@ -506,7 +515,7 @@ enum base_rev {
+ #define MT_TOP_MISC_FW_STATE			GENMASK(2, 0)
+ 
+ #define MT_HW_REV				0x70010204
+-#define MT_WF_SUBSYS_RST			0x70002600
++#define MT_WF_SUBSYS_RST			0x70028600
+ 
+ /* PCIE MAC */
+ #define MT_PCIE_MAC_BASE			0x74030000
+-- 
+2.18.0
 
-On Thu, 16 Mar 2023 at 16:18, Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->
-> On 25/11/2022 21:40, Ioannis Barkas wrote:
-> > Hello,
-> >
-> > I have tested various USB devices and all worked except the TL-WN823N.
-> > This device has never worked and we have 2 of them.
-> >
-> > On Ubuntu boot I get:
-> > [ 1208.638541] usb 1-1: RTL8192EU rev B (SMIC) 2T2R, TX queues 3,
-> > WiFi=1, BT=0, GPS=0, HI PA=0
-> > [ 1208.638553] usb 1-1: RTL8192EU MAC: d4:6e:0e:**:**:**
-> > [ 1208.638560] usb 1-1: rtl8xxxu: Loading firmware rtlwifi/rtl8192eu_nic.bin
-> > [ 1208.641483] usb 1-1: Firmware revision 19.0 (signature 0x92e1)
-> > [ 1209.735452] usbcore: registered new interface driver rtl8xxxu
-> >
-> > When I attempt to connect at a 2,4GHz WPA3 SSID this is what I get:
-> > [ 1502.319954] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> > [ 1502.332105] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> > [ 1502.476159] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> > [ 1502.476181] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> > [ 1502.587356] wlxd46e0eeba0f4: authenticated
-> > [ 1502.589113] wlxd46e0eeba0f4: associate with c6:27:28:**:**:** (try 1/3)
-> > [ 1502.593773] wlxd46e0eeba0f4: RX AssocResp from c6:27:28:**:**:**
-> > (capab=0x1431 status=0 aid=16)
-> > [ 1502.595559] usb 1-1: rtl8xxxu_bss_info_changed: HT supported
-> > [ 1502.597222] wlxd46e0eeba0f4: associated
-> > [ 1502.743847] wlxd46e0eeba0f4: deauthenticating from
-> > c6:27:28:**:**:** by local choice (Reason: 1=UNSPECIFIED)
-> >
-> > To make things worse, I accidentally inserted it in a USB 1.1 port on
-> > my AMD test PC and it could not even connect to a combo 2,4GHz WPA2,3
-> > SSID:
-> > [ 1001.681485] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> > [ 1001.703190] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> > [ 1001.904265] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
-> > [ 1002.108231] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
-> > [ 1002.312262] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
-> > [ 1013.501401] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> > [ 1013.523483] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> > [ 1013.724276] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
-> > [ 1013.928271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
-> > [ 1014.132282] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
-> > [ 1027.230375] wlxd46e0eeba0f4: authenticate with c6:27:28:**:**:**
-> > [ 1027.242103] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 1/3)
-> > [ 1027.444258] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 2/3)
-> > [ 1027.648271] wlxd46e0eeba0f4: send auth to c6:27:28:**:**:** (try 3/3)
-> > [ 1027.852237] wlxd46e0eeba0f4: authentication with c6:27:28:**:**:** timed out
-> >
->
-> So this problem is fixed now since kernels 4.14.308 4.19.276 5.4.235
-> 5.10.173 5.15.99 6.1.16 6.2.3 6.3-rc1.
->
-> > On USB 2.0 port the problem with WPA2,3 SSID was resolved. Is it
-> > possible to set a flag so that the driver will bail out if the device
-> > is on a USB 1.1 port? The truth is that the maximum speed it reached
-> > was way below the 12Mb of USB 1.1 so it should not have a problem but
-> > in practise it does...
-> >
->
-> I'm curious about the low speed. How low is it? Do you see anything
-> in dmesg? Does this patch fix it?
-> https://bugzilla.kernel.org/attachment.cgi?id=302960
->
-> The driver can be modified to support USB 1.1 at least with some of the
-> chips, but I don't have USB 1.1 to test it.
->
-> >  This is the device:
-> > Device Descriptor:
-> >   bLength                18
-> >   bDescriptorType         1
-> >   bcdUSB               2.10
-> >   bDeviceClass            0
-> >   bDeviceSubClass         0
-> >   bDeviceProtocol         0
-> >   bMaxPacketSize0        64
-> >   idVendor           0x2357 TP-Link
-> >   idProduct          0x0109 TL-WN823N v2/v3 [Realtek RTL8192EU]
-> >   bcdDevice            2.00
-> >   iManufacturer           1 Realtek
-> >   iProduct                2 802.11n NIC
-> >   iSerial                 3 00**********
-> >   bNumConfigurations      1
-> >   Configuration Descriptor:
-> >     bLength                 9
-> >     bDescriptorType         2
-> >     wTotalLength       0x0035
-> >     bNumInterfaces          1
-> >     bConfigurationValue     1
-> >     iConfiguration          0
-> >     bmAttributes         0xe0
-> >       Self Powered
-> >       Remote Wakeup
-> >     MaxPower              500mA
-> >     Interface Descriptor:
-> >       bLength                 9
-> >       bDescriptorType         4
-> >       bInterfaceNumber        0
-> >       bAlternateSetting       0
-> >       bNumEndpoints           5
-> >       bInterfaceClass       255 Vendor Specific Class
-> >       bInterfaceSubClass    255 Vendor Specific Subclass
-> >       bInterfaceProtocol    255 Vendor Specific Protocol
-> >       iInterface              2 802.11n NIC
-> >       Endpoint Descriptor:
-> >         bLength                 7
-> >         bDescriptorType         5
-> >         bEndpointAddress     0x84  EP 4 IN
-> >         bmAttributes            2
-> >           Transfer Type            Bulk
-> >           Synch Type               None
-> >           Usage Type               Data
-> >         wMaxPacketSize     0x0200  1x 512 bytes
-> >         bInterval               0
-> >       Endpoint Descriptor:
-> >         bLength                 7
-> >         bDescriptorType         5
-> >         bEndpointAddress     0x05  EP 5 OUT
-> >         bmAttributes            2
-> >           Transfer Type            Bulk
-> >           Synch Type               None
-> >           Usage Type               Data
-> >         wMaxPacketSize     0x0200  1x 512 bytes
-> >         bInterval               0
-> >       Endpoint Descriptor:
-> >         bLength                 7
-> >         bDescriptorType         5
-> >         bEndpointAddress     0x06  EP 6 OUT
-> >         bmAttributes            2
-> >           Transfer Type            Bulk
-> >           Synch Type               None
-> >           Usage Type               Data
-> >         wMaxPacketSize     0x0200  1x 512 bytes
-> >         bInterval               0
-> >       Endpoint Descriptor:
-> >         bLength                 7
-> >         bDescriptorType         5
-> >         bEndpointAddress     0x87  EP 7 IN
-> >         bmAttributes            3
-> >           Transfer Type            Interrupt
-> >           Synch Type               None
-> >           Usage Type               Data
-> >         wMaxPacketSize     0x0040  1x 64 bytes
-> >         bInterval               3
-> >       Endpoint Descriptor:
-> >         bLength                 7
-> >         bDescriptorType         5
-> >         bEndpointAddress     0x08  EP 8 OUT
-> >         bmAttributes            2
-> >           Transfer Type            Bulk
-> >           Synch Type               None
-> >           Usage Type               Data
-> >         wMaxPacketSize     0x0200  1x 512 bytes
-> >         bInterval               0
-> > Binary Object Store Descriptor:
-> >   bLength                 5
-> >   bDescriptorType        15
-> >   wTotalLength       0x000c
-> >   bNumDeviceCaps          1
-> >   USB 2.0 Extension Device Capability:
-> >     bLength                 7
-> >     bDescriptorType        16
-> >     bDevCapabilityType      2
-> >     bmAttributes   0x00000002
-> >       HIRD Link Power Management (LPM) Supported
-> > Device Status:     0x0001
-> >   Self Powered
->
