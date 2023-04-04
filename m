@@ -2,108 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 912326D591C
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 09:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABAB16D5936
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 09:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233735AbjDDHD4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 03:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40294 "EHLO
+        id S233659AbjDDHLt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 03:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233736AbjDDHDx (ORCPT
+        with ESMTP id S233570AbjDDHLs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 03:03:53 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8D72111
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 00:03:47 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3343f5KD003701;
-        Tue, 4 Apr 2023 07:03:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=CBBZh09oTGHfVb8tpDv1GwxJVAWNiumsiH5/PfbSkME=;
- b=hTnJTe6tCOpUZLHolujecp4UyIItX3WJCVwS+nnM+K409e7WLk2qaSbJxfvePbdEFYJ1
- A45vzSt9mtgVKDzSxADVVX+2GVc3wq94yJ5f6RtzVx6/dvHU7MV+ZsMM1nmWlltkGYZY
- sTsDU8vDE67CagJoR6s9SODPfNTOeheibLfeQc5YwT+ANzOf5YCDvziHCKIugY6xvJeJ
- TN0adUEo1ASOGYYS6sIBicqebsGVT43Qqyiq9DXWAWazK/O28DkVHdmAOcGnhhgCEyHM
- cBnwaHAr62x3qlzEchdLWRrVe/3CpQ8xOdC0/AWUXFzyfjal3KwKDELvnE0FCrJ3jvK9 jw== 
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3pqus5as0e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 04 Apr 2023 07:03:41 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33473eve029274
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 4 Apr 2023 07:03:40 GMT
-Received: from cjhuang2-gv.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Tue, 4 Apr 2023 00:03:32 -0700
-From:   Carl Huang <quic_cjhuang@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>, <quic_cjhuang@quicinc.com>
-Subject: [PATCH] wifi: ath12k: send WMI_PEER_REORDER_QUEUE_SETUP_CMDID when ADDBA session starts
-Date:   Tue, 4 Apr 2023 15:01:58 +0800
-Message-ID: <20230404070158.3368530-1-quic_cjhuang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 4 Apr 2023 03:11:48 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C31C7198E
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 00:11:44 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1pjapJ-0005XZ-3k; Tue, 04 Apr 2023 09:11:33 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1pjapF-0000B6-Nv; Tue, 04 Apr 2023 09:11:29 +0200
+Date:   Tue, 4 Apr 2023 09:11:29 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Jonathan Bither <jonbither@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Pkshih <pkshih@realtek.com>, Tim K <tpkuester@gmail.com>,
+        "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>, kernel@pengutronix.de,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] wifi: rtw88: usb: fix priority queue to endpoint
+ mapping
+Message-ID: <20230404071129.GW19113@pengutronix.de>
+References: <20230331121054.112758-1-s.hauer@pengutronix.de>
+ <20230331121054.112758-2-s.hauer@pengutronix.de>
+ <cb5980b4-1e0e-57f8-e680-44e14fa0b02c@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: ypQx7rDNufousbgwl2RU1vPbxRC1PC-c
-X-Proofpoint-GUID: ypQx7rDNufousbgwl2RU1vPbxRC1PC-c
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-03_19,2023-04-03_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 spamscore=0 mlxlogscore=963
- adultscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304040064
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb5980b4-1e0e-57f8-e680-44e14fa0b02c@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Low receive throughput is seen on WCN7850 because ADDBA related
-parameters are not updated to firmware when receive ADDBA session starts.
+On Fri, Mar 31, 2023 at 10:31:25AM -0400, Jonathan Bither wrote:
+> 
+> On 3/31/23 08:10, Sascha Hauer wrote:
+> > The RTW88 chipsets have four different priority queues in hardware. For
+> > the USB type chipsets the packets destined for a specific priority queue
+> > must be sent through the endpoint corresponding to the queue. This was
+> > not fully understood when porting from the RTW88 USB out of tree driver
+> > and thus violated.
+> > 
+> > This patch implements the qsel to endpoint mapping as in
+> > get_usb_bulkout_id_88xx() in the downstream driver.
+> > 
+> > Without this the driver often issues "timed out to flush queue 3"
+> > warnings and often TX stalls completely.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >   drivers/net/wireless/realtek/rtw88/usb.c | 70 ++++++++++++++++--------
+> >   1 file changed, 47 insertions(+), 23 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> > index 2a8336b1847a5..a10d6fef4ffaf 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/usb.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+> > @@ -118,6 +118,22 @@ static void rtw_usb_write32(struct rtw_dev *rtwdev, u32 addr, u32 val)
+> >   	rtw_usb_write(rtwdev, addr, val, 4);
+> >   }
+> > +static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
+> > +{
+> > +	switch (dma_mapping) {
+> > +	case RTW_DMA_MAPPING_HIGH:
+> > +		return 0;
+> > +	case RTW_DMA_MAPPING_NORMAL:
+> > +		return 1;
+> > +	case RTW_DMA_MAPPING_LOW:
+> > +		return 2;
+> > +	case RTW_DMA_MAPPING_EXTRA:
+> > +		return 3;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> Would it be beneficial to use defines for the returns? Would the
+> USB_ENDPOINT_XFER_ defines be applicable?
 
-Fix it by sending WMI_PEER_REORDER_QUEUE_SETUP_CMDID again to firmware
-to update the ADDBA related parameters for chips which have false
-reoq_lut_support in hw_params. For chips which have true reoq_lut_support
-in hw_params don't need this command to send to firmware.
+The USB_ENDPOINT_XFER_* macros encode the type of the transfer, like
+bulk, control, isochronous and interrupt. What I need here really is
+the endpoint number. I don't see a benefit in adding a define here.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+Sascha
 
-Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp_rx.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index e78478a5b978..256e4cbfae54 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -977,6 +977,9 @@ int ath12k_dp_rx_peer_tid_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_
- 			ath12k_warn(ab, "failed to update reo for rx tid %d\n", tid);
- 			return ret;
- 		}
-+		if (!ab->hw_params->reoq_lut_support)
-+			ret = ath12k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_mac,
-+								     paddr, tid, 1, ba_win_sz);
- 
- 		return ret;
- 	}
-
-base-commit: bea046575a2e6d7d1cf63cc7ab032647a3585de5
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
