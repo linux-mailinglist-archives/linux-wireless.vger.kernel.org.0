@@ -2,131 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C7A6D69B6
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 19:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB3EE6D69EA
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 19:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235003AbjDDRBb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 13:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49044 "EHLO
+        id S235705AbjDDRJ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 13:09:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233000AbjDDRBa (ORCPT
+        with ESMTP id S235609AbjDDRJ5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 13:01:30 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A579B8
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 10:01:29 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id r11so33525794wrr.12
-        for <linux-wireless@vger.kernel.org>; Tue, 04 Apr 2023 10:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1680627687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EDGnXoGwEChAFRAWjhCsHFaWRtmtPVds+R+V0cWphoI=;
-        b=tGysa/ySr+aMNbz9i+r+Gzvuh4e9lfJXOuj+yFaOtNFtUxsD3HY0DJYSiv8BFkC6IT
-         XCjdnKCGorzQP1R2a7uORzhp7x8GZARFCEmeVKgPEaLy57UxMZQlBdQL3ymkIX+zsfQb
-         yVazofjpZXNFp+bLzXLbnEl/zVKfIh3+6tbFAcoJJyZscIHQU/kisj5J82z/u0W3esRs
-         riQ1ks6FOD7JmhRsJ9XUtDYGAZ9W831E7C2HHnlZlvPoc/Whno7Jt3VGMQuEOOxMY3pT
-         DqrLs0cKaUFoD1eNjR+fcy46Z3gY5YbWtujQ1DzpKNFGk5trjSTG9lMcbzIodyLmFYfl
-         JlGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680627687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EDGnXoGwEChAFRAWjhCsHFaWRtmtPVds+R+V0cWphoI=;
-        b=Q/WZt8/isBTmGqKJlejERJ1uexmU57DN5TDaRCGMuMqpSwwCqncCMZcISRSyOFqbi7
-         BvawKrE/hceuSkNK/aJmHL7f5BjwqIxxneT6IuUUqRxPfuZREenAkCQO+WmSWcpEscs0
-         qYlNauUAK6GZrbyKw4ouhk/mJ93k1GqX8MDGXDKW57wDUwkVpkhAy5cJQvJ/xNbKoFfe
-         gz5JuBTxO7FislonoDXX40qWQ2zvHnc8yC6WH48L/g7h8FwkvEF5PzMEsyA2b8vE3Hmm
-         3mpLfrnY6impoA7gk15++t6NbtUwcVeAnznxfX9CK/Ca9gFmSM3OnraT1BY2XJUOrSxQ
-         vhEQ==
-X-Gm-Message-State: AAQBX9eWFGhvmhxBU7urWZSFWItB8NoPL3f9Oh0QTt0PAp+QBgoEavJ5
-        SbKSi+lqmO+gRZmcLFNl8mB2p6gPuWneaDUWCi1bvw==
-X-Google-Smtp-Source: AKy350a81lpxOoVmAEyrppLxUzCnlLNA7TRbMsc14EnlAtwy6sUo9+gDFg4YXp/hscBfZpS80TFszjhVQft+UvEJvT0=
-X-Received: by 2002:a5d:4601:0:b0:2cf:e70f:970c with SMTP id
- t1-20020a5d4601000000b002cfe70f970cmr597147wrq.12.1680627687530; Tue, 04 Apr
- 2023 10:01:27 -0700 (PDT)
+        Tue, 4 Apr 2023 13:09:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAEC4C7;
+        Tue,  4 Apr 2023 10:09:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16B3B63773;
+        Tue,  4 Apr 2023 17:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF4AC433EF;
+        Tue,  4 Apr 2023 17:09:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680628194;
+        bh=IK2aCtlyClHSVX99J78ji0/3Kc8IkYOR0+e5e+EQq78=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=mjj5gN61RWvx3kW5BWospMkZcjO4aXYE6MfG53S9AmWfQyUuUSxSUIv4JTuZQPVC6
+         EIHzT14n1+NADzeeF1IpjZoYiX69W9D9R/mJDsBeuw7C5mo108RL/VfOh0CyNf4p6v
+         5xqAGutCYR6U6D64ChpMiTbg36lDwMCHWuOG7tohRURPS/KpwaXDfoD0B2nKGgUu07
+         iME1EHpbAriJV0fbYU9lnEfWg3wTpaOIz/fU6xOqsvOyXC4tnkrSJT/chG3Wwf/9ll
+         anmzBdavCLnQNeq8zJOTBtNNOtp8ElVHpt0DojmIGL9GRJOsNeozAk/R0bhRtExqZ9
+         PhkiUtuRXoXEQ==
+Date:   Tue, 4 Apr 2023 12:09:52 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        bjorn@helgaas.com, LKML <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Stefan Roese <sr@denx.de>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Bharat Kumar Gogada <bharat.kumar.gogada@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Yao Hongbo <yaohongbo@linux.alibaba.com>,
+        Naveen Naidu <naveennaidu479@gmail.com>,
+        Sasha Levin <sashal@kernel.org>, linux-pci@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 5.4 182/389] PCI/portdrv: Dont disable AER reporting in
+ get_port_device_capability()
+Message-ID: <20230404170952.GA3559293@bhelgaas>
 MIME-Version: 1.0
-References: <20230404134803.889673-1-edumazet@google.com> <ZCxN1l3rXnmt+2wL@corigine.com>
-In-Reply-To: <ZCxN1l3rXnmt+2wL@corigine.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Tue, 4 Apr 2023 19:01:15 +0200
-Message-ID: <CANn89i+5R2B00zkjocOOSWRLB0ZNBgjdMLSBbUFpcTOH=9obAw@mail.gmail.com>
-Subject: Re: [PATCH net] mac80211_hwsim: fix potential NULL deref in hwsim_pmsr_report_nl()
-To:     Simon Horman <simon.horman@corigine.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        eric.dumazet@gmail.com, syzbot <syzkaller@googlegroups.com>,
-        Jaewan Kim <jaewan@google.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ff1397e-1d78-bc59-f577-e69024c4c4f3@candelatech.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 4, 2023 at 6:18=E2=80=AFPM Simon Horman <simon.horman@corigine.=
-com> wrote:
->
-> On Tue, Apr 04, 2023 at 01:48:03PM +0000, Eric Dumazet wrote:
-> > syzbot reported a NULL deref caused by a missing check
-> > in hwsim_pmsr_report_nl(), and bisected the issue to cited commit.
-> >
->
-> Hi Eric,
->
-> I think this is for net-next / wireless-next as
-> the above mentioned patch does not seem to be in Linus's tree.
+On Fri, Mar 31, 2023 at 03:31:40PM -0700, Ben Greear wrote:
+> On 3/31/23 15:06, Bjorn Helgaas wrote:
+> > [+cc iwlwifi folks]
+> > 
+> > Re: 8795e182b02d ("PCI/portdrv: Don't disable AER reporting in
+> > get_port_device_capability()")
+> > 
+> > On Wed, Mar 29, 2023 at 04:17:29PM -0700, Ben Greear wrote:
+> > > On 8/30/22 3:16 PM, Ben Greear wrote:
+> > > ...
+> > 
+> > > I notice this patch appears to be in 6.2.6 kernel, and my kernel logs are
+> > > full of spam and system is unstable.  Possibly the unstable part is related
+> > > to something else, but the log spam is definitely extreme.
+> > > 
+> > > These systems are fairly stable on 5.19-ish kernels without the patch in
+> > > question.
+> > 
+> > Hmmm, I was going to thank you for the report, but looking closer, I
+> > see that you reported this last August [1] and we *should* have
+> > pursued it with the iwlwifi folks or figured out what the PCI core is
+> > doing wrong, but I totally dropped the ball.  Sorry about that.
+> > 
+> > To make sure we're all on the same page, we're talking about
+> > 8795e182b02d ("PCI/portdrv: Don't disable AER reporting in
+> > get_port_device_capability()") [2],
+> > which is present in v6.0 and later [3] but not v5.19.16 [4].
+> 
+> Yes, though I manually tried reverting that patch, and problem
+> persisted, so maybe some secondary patch still enables whatever
+> causes the issue.
+> 
+> Booting with pci=noaer 'fixes' the problem for me, that is what I am
+> running currently.
+> 
+> > > Here is sample of the spam:
+> > > 
+> > > [ 1675.547023] pcieport 0000:03:02.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
+> > > [ 1675.556851] pcieport 0000:03:02.0:   device [10b5:8619] error status/mask=00100000/00000000
+> > > [ 1675.563904] pcieport 0000:03:02.0:    [20] UnsupReq               (First)
+> > > [ 1675.569398] pcieport 0000:03:02.0: AER:   TLP Header: 34000000 05001f10 00000000 88c888c8
+> > > [ 1675.576296] iwlwifi 0000:05:00.0: AER: can't recover (no error_detected callback)
+> > 
+> > The TLP header says this is an LTR message from 05:00.0.  Apparently
+> > the bridge above 05:00.0 is 03:02.0, which logged an Unsupported
+> > Request error for the message, probably because 03:02.0 doesn't have
+> > LTR enabled.
 
-Oh right, script error on my side. This was generated from -next tree.
+> Here is lspci, and please note that I am using a pcie -> 12x m.2
+> adapter board, which is not common in the world.  Possibly it is
+> causing some of the problems with the AER logic (though, it is
+> stable in 5.19 and lower.  And a similar system with 2 of these
+> adapter boards filled with 24 mtk7922 radios does not show the AER
+> warnings or instability problems so far.)
+> 
+> The lspci below is from a system with 12 ax210 radios, I have
+> another with 24, it shows similar problems.
 
->
-> > ---
-> >  drivers/net/wireless/virtual/mac80211_hwsim.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/ne=
-t/wireless/virtual/mac80211_hwsim.c
-> > index f446d8f6e1f6e1df108db00e898fa02970162585..701e14b8e6fe0cae7ee2478=
-c8dff0f2327b54a70 100644
-> > --- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-> > +++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-> > @@ -3761,6 +3761,8 @@ static int hwsim_pmsr_report_nl(struct sk_buff *m=
-sg, struct genl_info *info)
-> >       int rem;
-> >
-> >       src =3D nla_data(info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER]);
-> > +     if (!src)
-> > +             return -EINVAL;
-> >       data =3D get_hwsim_data_ref_from_addr(src);
-> >       if (!data)
-> >               return -EINVAL;
->
-> I could well be wrong, but this looks a little odd given that nla_data is=
-:
->
-> static inline void *nla_data(const struct nlattr *nla)
-> {
->         return (char *) nla + NLA_HDRLEN;
-> }
->
-> Perhaps we want something like this (*compile tested only!*) ?
->
->         if (!info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER])
->                 return -EINVAL;
->         src =3D nla_data(info->attrs[HWSIM_ATTR_ADDR_TRANSMITTER]);
+Interesting config.  Somebody is definitely doing something wrong.
+LTR is enabled at 00:1c.0 (which is fine), not supported and disabled
+at 02:00.0 and 03:02.0 (also fine), but *enabled* at 05:00.0, which is
+absolutely not fine because 03:02.0 won't know what to do with the LTR
+messages and would log the AER errors you're seeing.
 
-Oh right, thanks for reviewing this :)
+> 00:1c.0 PCI bridge: Intel Corporation 100 Series/C230 Series Chipset Family PCI Express Root Port #1 (rev f1) (prog-if 00 [Normal decode])
+> 	Bus: primary=00, secondary=02, subordinate=0f, sec-latency=0
+> 		DevCap2: Completion Timeout: Range ABC, TimeoutDis+, LTR+, OBFF Not Supported ARIFwd+
+> 			 AtomicOpsCap: Routing- 32bit- 64bit- 128bitCAS-
+> 		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR+, OBFF Disabled ARIFwd-
 
-I will send a V2 soon.
+> 02:00.0 PCI bridge: PLX Technology, Inc. PEX 8619 16-lane, 16-Port PCI Express Gen 2 (5.0 GT/s) Switch with DMA (rev ba) (prog-if 00 [Normal decode])
+> 	Bus: primary=02, secondary=03, subordinate=0f, sec-latency=0
+
+> 		DevCap2: Completion Timeout: Not Supported, TimeoutDis-, LTR-, OBFF Not Supported
+> 			 AtomicOpsCap: Routing- 32bit- 64bit- 128bitCAS-
+> 		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR-, OBFF Disabled
+
+> 03:02.0 PCI bridge: PLX Technology, Inc. PEX 8619 16-lane, 16-Port PCI Express Gen 2 (5.0 GT/s) Switch with DMA (rev ba) (prog-if 00 [Normal decode])
+> 	Bus: primary=03, secondary=05, subordinate=05, sec-latency=0
+
+> 		DevCap2: Completion Timeout: Not Supported, TimeoutDis-, LTR-, OBFF Not Supported ARIFwd+
+> 			 AtomicOpsCap: Routing-
+> 		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR-, OBFF Disabled ARIFwd-
+
+> 05:00.0 Network controller: Intel Corporation Device 2725 (rev 1a)
+> 		DevCap2: Completion Timeout: Range B, TimeoutDis+, LTR+, OBFF Via WAKE#
+> 			 AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+> 		DevCtl2: Completion Timeout: 16ms to 55ms, TimeoutDis-, LTR+, OBFF Disabled
+> 			 AtomicOpsCtl: ReqEn-
+
+For 02:00.0 and 03:02.0, pci_configure_ltr() should bail out as soon
+as it sees they don't support PCI_EXP_DEVCAP2_LTR, so they should
+never have dev->ltr_path set.  And pci_configure_ltr() should not set
+PCI_EXP_DEVCTL2_LTR_EN for 05:00.0 since bridge->ltr_path is not set
+for 03:02.0.
+
+Can you collect the dmesg log when booted with "pci=earlydump"?  I
+wonder if BIOS could be enabling LTR on 05:00.0.
+
+Bjorn
