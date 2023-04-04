@@ -2,64 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6526C6D6E43
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 22:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 669296D6E57
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Apr 2023 22:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236145AbjDDUqD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 16:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52728 "EHLO
+        id S236296AbjDDUry (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Apr 2023 16:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236087AbjDDUqC (ORCPT
+        with ESMTP id S232313AbjDDUrw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 16:46:02 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62F24C25
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 13:45:51 -0700 (PDT)
-X-UUID: ad501ef2d32911eda9a90f0bb45854f4-20230405
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LCM1e4qZf5qY7M8fopnoi/OUhBK3VGpPfKIWZpfL12k=;
-        b=ex2Bxf4KmuV76YxaWhltfiHW/vZZTDhYa+Rr2ysygWNbfO8ACTHfXPu45kds7MhR4G+P3froazwIl+GZG6/R/Beqvx5AYUOEm+FQMANtJPTPEndRFK+nfGeiE1TLtp4AroEdbK5ZB8dOxxKyUFBZ4boGSjjMEy6zoindwExYeRQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:8774992a-c817-48b0-b6c3-8ee73774de19,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:120426c,CLOUDID:464e5e2a-564d-42d9-9875-7c868ee415ec,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-UUID: ad501ef2d32911eda9a90f0bb45854f4-20230405
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1970824162; Wed, 05 Apr 2023 04:45:47 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Wed, 5 Apr 2023 04:45:46 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Wed, 5 Apr 2023 04:45:46 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 3/3] wifi: mt76: mt7996: enable coredump support
-Date:   Wed, 5 Apr 2023 04:45:45 +0800
-Message-ID: <68a756796d10589836ecc1e7a09229030fa72224.1680640205.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <6756ddde5aaaf29db4f62264bab7f28bb539b26f.1680640205.git.ryder.lee@mediatek.com>
-References: <6756ddde5aaaf29db4f62264bab7f28bb539b26f.1680640205.git.ryder.lee@mediatek.com>
+        Tue, 4 Apr 2023 16:47:52 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8223544A1;
+        Tue,  4 Apr 2023 13:47:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680641270; x=1712177270;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Z6j/cGpZOXVTreuxHNHRJUI608KQQ2b8yubZngfX3x4=;
+  b=Oz20NsPIGA7KO+bXHtV/nYmi77S2rCwpGHBC7+ES7sCpht+6wpx3FW05
+   oRMAz3We1k19S0TEqDup0S5PLca+d5LNf0tqEmaNt3b66sUqZmjMGo76/
+   D7sJIBZSC3FS0jOxve/enE1OaSD4pi0xfEJDbqN7L1D1AWn6Bjedz3NXS
+   1/Cr0tPa4rR4y8l6VhzcfvPaiZR8AkzN6u0MAURC1A9pty+U6FnA4gT7K
+   jqdme8+1mwdVM40OAUnXNoJYNKjJx3eGIWALfjaF6tVaiJquKHXQldcQj
+   K/d5ZmYG0rUFBRx+/LCbpZ8HozPHowUVDag4fDhj/bnIIoqmdMkZE8c7Y
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="407378520"
+X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
+   d="scan'208";a="407378520"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2023 13:47:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="636658836"
+X-IronPort-AV: E=Sophos;i="5.98,318,1673942400"; 
+   d="scan'208";a="636658836"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 04 Apr 2023 13:47:46 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pjnZB-000Q1q-17;
+        Tue, 04 Apr 2023 20:47:45 +0000
+Date:   Wed, 05 Apr 2023 04:47:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, kvm@vger.kernel.org,
+        io-uring@vger.kernel.org, bpf@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 6a53bda3aaf3de5edeea27d0b1d8781d067640b6
+Message-ID: <642c8ceb.LBEdj8abbmwftu9h%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-MTK:  N
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,683 +70,232 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Host triggered and catastrophic event triggered firmware core dumping
-for basic firmware issues triage, including state reporting, function
-calltrace and MCU memory dump.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 6a53bda3aaf3de5edeea27d0b1d8781d067640b6  Add linux-next specific files for 20230404
 
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt7996/Kconfig |   1 +
- .../wireless/mediatek/mt76/mt7996/Makefile    |   2 +
- .../wireless/mediatek/mt76/mt7996/coredump.c  | 268 ++++++++++++++++++
- .../wireless/mediatek/mt76/mt7996/coredump.h  |  97 +++++++
- .../net/wireless/mediatek/mt76/mt7996/init.c  |  10 +-
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |  72 ++++-
- .../net/wireless/mediatek/mt76/mt7996/mmio.c  |   8 +
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  22 ++
- .../net/wireless/mediatek/mt76/mt7996/regs.h  |  18 ++
- 9 files changed, 496 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
+Error/Warning reports:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
-index 79fb47a73c91..1afa2f662e47 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
-@@ -2,6 +2,7 @@
- config MT7996E
- 	tristate "MediaTek MT7996 (PCIe) support"
- 	select MT76_CONNAC_LIB
-+	select WANT_DEV_COREDUMP
- 	select RELAY
- 	depends on MAC80211
- 	depends on PCI
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Makefile b/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
-index bcb9a3c53149..07c8b555c1ac 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
-@@ -4,3 +4,5 @@ obj-$(CONFIG_MT7996E) += mt7996e.o
- 
- mt7996e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o \
- 	     debugfs.o mmio.o
-+
-+mt7996e-$(CONFIG_DEV_COREDUMP) += coredump.o
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
-new file mode 100644
-index 000000000000..ccab0d7b9be4
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
-@@ -0,0 +1,268 @@
-+// SPDX-License-Identifier: ISC
-+/* Copyright (C) 2023 MediaTek Inc. */
-+
-+#include <linux/devcoredump.h>
-+#include <linux/kernel.h>
-+#include <linux/types.h>
-+#include <linux/utsname.h>
-+#include "coredump.h"
-+
-+static bool coredump_memdump;
-+module_param(coredump_memdump, bool, 0644);
-+MODULE_PARM_DESC(coredump_memdump, "Optional ability to dump firmware memory");
-+
-+static const struct mt7996_mem_region mt7996_mem_regions[] = {
-+	{
-+		.start = 0x00800000,
-+		.len = 0x0004ffff,
-+		.name = "ULM0",
-+	},
-+	{
-+		.start = 0x00900000,
-+		.len = 0x00037fff,
-+		.name = "ULM1",
-+	},
-+	{
-+		.start = 0x02200000,
-+		.len = 0x0003ffff,
-+		.name = "ULM2",
-+	},
-+	{
-+		.start = 0x00400000,
-+		.len = 0x00067fff,
-+		.name = "SRAM",
-+	},
-+	{
-+		.start = 0xe0000000,
-+		.len = 0x0015ffff,
-+		.name = "CRAM0",
-+	},
-+	{
-+		.start = 0xe0160000,
-+		.len = 0x0011bfff,
-+		.name = "CRAM1",
-+	},
-+};
-+
-+const struct mt7996_mem_region*
-+mt7996_coredump_get_mem_layout(struct mt7996_dev *dev, u32 *num)
-+{
-+	switch (mt76_chip(&dev->mt76)) {
-+	case 0x7990:
-+	case 0x7991:
-+		*num = ARRAY_SIZE(mt7996_mem_regions);
-+		return &mt7996_mem_regions[0];
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+static int mt7996_coredump_get_mem_size(struct mt7996_dev *dev)
-+{
-+	const struct mt7996_mem_region *mem_region;
-+	size_t size = 0;
-+	u32 num;
-+	int i;
-+
-+	mem_region = mt7996_coredump_get_mem_layout(dev, &num);
-+	if (!mem_region)
-+		return 0;
-+
-+	for (i = 0; i < num; i++) {
-+		size += mem_region->len;
-+		mem_region++;
-+	}
-+
-+	/* reserve space for the headers */
-+	size += num * sizeof(struct mt7996_mem_hdr);
-+	/* make sure it is aligned 4 bytes for debug message print out */
-+	size = ALIGN(size, 4);
-+
-+	return size;
-+}
-+
-+struct mt7996_crash_data *mt7996_coredump_new(struct mt7996_dev *dev)
-+{
-+	struct mt7996_crash_data *crash_data = dev->coredump.crash_data;
-+
-+	lockdep_assert_held(&dev->dump_mutex);
-+
-+	if (coredump_memdump &&
-+	    !mt76_poll_msec(dev, MT_FW_DUMP_STATE, 0x3, 0x2, 500))
-+		return NULL;
-+
-+	guid_gen(&crash_data->guid);
-+	ktime_get_real_ts64(&crash_data->timestamp);
-+
-+	return crash_data;
-+}
-+
-+static void
-+mt7996_coredump_fw_state(struct mt7996_dev *dev, struct mt7996_coredump *dump,
-+			 bool *exception)
-+{
-+	u32 count;
-+
-+	count = mt76_rr(dev, MT_FW_ASSERT_CNT);
-+
-+	/* normal mode: driver can manually trigger assert for detail info */
-+	if (!count)
-+		strscpy(dump->fw_state, "normal", sizeof(dump->fw_state));
-+	else
-+		strscpy(dump->fw_state, "exception", sizeof(dump->fw_state));
-+
-+	*exception = !!count;
-+}
-+
-+static void
-+mt7996_coredump_fw_stack(struct mt7996_dev *dev, struct mt7996_coredump *dump,
-+			 bool exception)
-+{
-+	u32 oldest, i, idx;
-+
-+	strscpy(dump->pc_current, "program counter", sizeof(dump->pc_current));
-+
-+	/* 0: WM PC log output */
-+	mt76_wr(dev, MT_CONN_DBG_CTL_OUT_SEL, 0);
-+	/* choose 33th PC log buffer to read current PC index */
-+	mt76_wr(dev, MT_CONN_DBG_CTL_PC_LOG_SEL, 0x3f);
-+
-+	/* read current PC */
-+	dump->pc_stack[0] = mt76_rr(dev, MT_CONN_DBG_CTL_PC_LOG);
-+
-+	/* stop call stack record */
-+	if (!exception) {
-+		mt76_clear(dev, MT_MCU_WM_EXCP_PC_CTRL, BIT(0));
-+		mt76_clear(dev, MT_MCU_WM_EXCP_LR_CTRL, BIT(0));
-+	}
-+
-+	oldest = (u32)mt76_get_field(dev, MT_MCU_WM_EXCP_PC_CTRL,
-+				     GENMASK(20, 16)) + 2;
-+	for (i = 0; i < 16; i++) {
-+		idx = ((oldest + 2 * i + 1) % 32);
-+		dump->pc_stack[i + 1] =
-+			mt76_rr(dev, MT_MCU_WM_EXCP_PC_LOG + idx * 4);
-+	}
-+
-+	oldest = (u32)mt76_get_field(dev, MT_MCU_WM_EXCP_LR_CTRL,
-+				     GENMASK(20, 16)) + 2;
-+	for (i = 0; i < 16; i++) {
-+		idx = ((oldest + 2 * i + 1) % 32);
-+		dump->lr_stack[i] =
-+			mt76_rr(dev, MT_MCU_WM_EXCP_LR_LOG + idx * 4);
-+	}
-+
-+	/* start call stack record */
-+	if (!exception) {
-+		mt76_set(dev, MT_MCU_WM_EXCP_PC_CTRL, BIT(0));
-+		mt76_set(dev, MT_MCU_WM_EXCP_LR_CTRL, BIT(0));
-+	}
-+}
-+
-+static struct mt7996_coredump *mt7996_coredump_build(struct mt7996_dev *dev)
-+{
-+	struct mt7996_crash_data *crash_data = dev->coredump.crash_data;
-+	struct mt7996_coredump *dump;
-+	struct mt7996_coredump_mem *dump_mem;
-+	size_t len, sofar = 0, hdr_len = sizeof(*dump);
-+	unsigned char *buf;
-+	bool exception;
-+
-+	len = hdr_len;
-+
-+	if (coredump_memdump && crash_data->memdump_buf_len)
-+		len += sizeof(*dump_mem) + crash_data->memdump_buf_len;
-+
-+	sofar += hdr_len;
-+
-+	/* this is going to get big when we start dumping memory and such,
-+	 * so go ahead and use vmalloc.
-+	 */
-+	buf = vzalloc(len);
-+	if (!buf)
-+		return NULL;
-+
-+	mutex_lock(&dev->dump_mutex);
-+
-+	dump = (struct mt7996_coredump *)(buf);
-+	dump->len = len;
-+
-+	/* plain text */
-+	strscpy(dump->magic, "mt76-crash-dump", sizeof(dump->magic));
-+	strscpy(dump->kernel, init_utsname()->release, sizeof(dump->kernel));
-+	strscpy(dump->fw_ver, dev->mt76.hw->wiphy->fw_version,
-+		sizeof(dump->fw_ver));
-+
-+	guid_copy(&dump->guid, &crash_data->guid);
-+	dump->tv_sec = crash_data->timestamp.tv_sec;
-+	dump->tv_nsec = crash_data->timestamp.tv_nsec;
-+	dump->device_id = mt76_chip(&dev->mt76);
-+
-+	mt7996_coredump_fw_state(dev, dump, &exception);
-+	mt7996_coredump_fw_stack(dev, dump, exception);
-+
-+	/* gather memory content */
-+	dump_mem = (struct mt7996_coredump_mem *)(buf + sofar);
-+	dump_mem->len = crash_data->memdump_buf_len;
-+	if (coredump_memdump && crash_data->memdump_buf_len)
-+		memcpy(dump_mem->data, crash_data->memdump_buf,
-+		       crash_data->memdump_buf_len);
-+
-+	mutex_unlock(&dev->dump_mutex);
-+
-+	return dump;
-+}
-+
-+int mt7996_coredump_submit(struct mt7996_dev *dev)
-+{
-+	struct mt7996_coredump *dump;
-+
-+	dump = mt7996_coredump_build(dev);
-+	if (!dump) {
-+		dev_warn(dev->mt76.dev, "no crash dump data found\n");
-+		return -ENODATA;
-+	}
-+
-+	dev_coredumpv(dev->mt76.dev, dump, dump->len, GFP_KERNEL);
-+
-+	return 0;
-+}
-+
-+int mt7996_coredump_register(struct mt7996_dev *dev)
-+{
-+	struct mt7996_crash_data *crash_data;
-+
-+	crash_data = vzalloc(sizeof(*dev->coredump.crash_data));
-+	if (!crash_data)
-+		return -ENOMEM;
-+
-+	dev->coredump.crash_data = crash_data;
-+
-+	if (coredump_memdump) {
-+		crash_data->memdump_buf_len = mt7996_coredump_get_mem_size(dev);
-+		if (!crash_data->memdump_buf_len)
-+			/* no memory content */
-+			return 0;
-+
-+		crash_data->memdump_buf = vzalloc(crash_data->memdump_buf_len);
-+		if (!crash_data->memdump_buf) {
-+			vfree(crash_data);
-+			return -ENOMEM;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+void mt7996_coredump_unregister(struct mt7996_dev *dev)
-+{
-+	if (dev->coredump.crash_data->memdump_buf) {
-+		vfree(dev->coredump.crash_data->memdump_buf);
-+		dev->coredump.crash_data->memdump_buf = NULL;
-+		dev->coredump.crash_data->memdump_buf_len = 0;
-+	}
-+
-+	vfree(dev->coredump.crash_data);
-+	dev->coredump.crash_data = NULL;
-+}
-+
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
-new file mode 100644
-index 000000000000..af2ba219b1b5
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
-@@ -0,0 +1,97 @@
-+/* SPDX-License-Identifier: ISC */
-+/* Copyright (C) 2023 MediaTek Inc. */
-+
-+#ifndef _COREDUMP_H_
-+#define _COREDUMP_H_
-+
-+#include "mt7996.h"
-+
-+struct mt7996_coredump {
-+	char magic[16];
-+
-+	u32 len;
-+
-+	guid_t guid;
-+
-+	/* time-of-day stamp */
-+	u64 tv_sec;
-+	/* time-of-day stamp, nano-seconds */
-+	u64 tv_nsec;
-+	/* kernel version */
-+	char kernel[64];
-+	/* firmware version */
-+	char fw_ver[ETHTOOL_FWVERS_LEN];
-+
-+	u32 device_id;
-+
-+	/* exception state */
-+	char fw_state[12];
-+
-+	/* program counters */
-+	char pc_current[16];
-+	u32 pc_stack[17];
-+	/* link registers */
-+	u32 lr_stack[16];
-+
-+	/* memory content */
-+	u8 data[];
-+} __packed;
-+
-+struct mt7996_coredump_mem {
-+	u32 len;
-+	u8 data[];
-+} __packed;
-+
-+struct mt7996_mem_hdr {
-+	u32 start;
-+	u32 len;
-+	u8 data[];
-+};
-+
-+struct mt7996_mem_region {
-+	u32 start;
-+	size_t len;
-+
-+	const char *name;
-+};
-+
-+#ifdef CONFIG_DEV_COREDUMP
-+
-+const struct mt7996_mem_region *
-+mt7996_coredump_get_mem_layout(struct mt7996_dev *dev, u32 *num);
-+struct mt7996_crash_data *mt7996_coredump_new(struct mt7996_dev *dev);
-+int mt7996_coredump_submit(struct mt7996_dev *dev);
-+int mt7996_coredump_register(struct mt7996_dev *dev);
-+void mt7996_coredump_unregister(struct mt7996_dev *dev);
-+
-+#else /* CONFIG_DEV_COREDUMP */
-+
-+static inline const struct mt7996_mem_region *
-+mt7996_coredump_get_mem_layout(struct mt7996_dev *dev, u32 *num)
-+{
-+	return NULL;
-+}
-+
-+static inline int mt7996_coredump_submit(struct mt7996_dev *dev)
-+{
-+	return 0;
-+}
-+
-+static inline struct
-+mt7996_crash_data *mt7996_coredump_new(struct mt7996_dev *dev)
-+{
-+	return NULL;
-+}
-+
-+static inline int mt7996_coredump_register(struct mt7996_dev *dev)
-+{
-+	return 0;
-+}
-+
-+static inline void mt7996_coredump_unregister(struct mt7996_dev *dev)
-+{
-+}
-+
-+#endif /* CONFIG_DEV_COREDUMP */
-+
-+#endif /* _COREDUMP_H_ */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 76501e42cd8a..503a7ff24f95 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -8,6 +8,7 @@
- #include "mt7996.h"
- #include "mac.h"
- #include "mcu.h"
-+#include "coredump.h"
- #include "eeprom.h"
- 
- static const struct ieee80211_iface_limit if_limits[] = {
-@@ -857,6 +858,8 @@ int mt7996_register_device(struct mt7996_dev *dev)
- 
- 	init_waitqueue_head(&dev->reset_wait);
- 	INIT_WORK(&dev->reset_work, mt7996_mac_reset_work);
-+	INIT_WORK(&dev->dump_work, mt7996_mac_dump_work);
-+	mutex_init(&dev->dump_mutex);
- 
- 	ret = mt7996_init_hardware(dev);
- 	if (ret)
-@@ -887,13 +890,18 @@ int mt7996_register_device(struct mt7996_dev *dev)
- 
- 	dev->recovery.hw_init_done = true;
- 
--	return mt7996_init_debugfs(&dev->phy);
-+	ret = mt7996_init_debugfs(&dev->phy);
-+	if (ret)
-+		return ret;
-+
-+	return mt7996_coredump_register(dev);
- }
- 
- void mt7996_unregister_device(struct mt7996_dev *dev)
- {
- 	mt7996_unregister_phy(mt7996_phy3(dev), MT_BAND2);
- 	mt7996_unregister_phy(mt7996_phy2(dev), MT_BAND1);
-+	mt7996_coredump_unregister(dev);
- 	mt76_unregister_device(&dev->mt76);
- 	mt7996_mcu_exit(dev);
- 	mt7996_tx_token_put(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index f5c24985b905..52244b95831c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -5,6 +5,7 @@
- 
- #include <linux/etherdevice.h>
- #include <linux/timekeeping.h>
-+#include "coredump.h"
- #include "mt7996.h"
- #include "../dma.h"
- #include "mac.h"
-@@ -2083,6 +2084,75 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 		 wiphy_name(dev->mt76.hw->wiphy));
- }
- 
-+/* firmware coredump */
-+void mt7996_mac_dump_work(struct work_struct *work)
-+{
-+	const struct mt7996_mem_region *mem_region;
-+	struct mt7996_crash_data *crash_data;
-+	struct mt7996_dev *dev;
-+	struct mt7996_mem_hdr *hdr;
-+	size_t buf_len;
-+	int i;
-+	u32 num;
-+	u8 *buf;
-+
-+	dev = container_of(work, struct mt7996_dev, dump_work);
-+
-+	mutex_lock(&dev->dump_mutex);
-+
-+	crash_data = mt7996_coredump_new(dev);
-+	if (!crash_data) {
-+		mutex_unlock(&dev->dump_mutex);
-+		goto skip_coredump;
-+	}
-+
-+	mem_region = mt7996_coredump_get_mem_layout(dev, &num);
-+	if (!mem_region || !crash_data->memdump_buf_len) {
-+		mutex_unlock(&dev->dump_mutex);
-+		goto skip_memdump;
-+	}
-+
-+	buf = crash_data->memdump_buf;
-+	buf_len = crash_data->memdump_buf_len;
-+
-+	/* dumping memory content... */
-+	memset(buf, 0, buf_len);
-+	for (i = 0; i < num; i++) {
-+		if (mem_region->len > buf_len) {
-+			dev_warn(dev->mt76.dev, "%s len %zu is too large\n",
-+				 mem_region->name, mem_region->len);
-+			break;
-+		}
-+
-+		/* reserve space for the header */
-+		hdr = (void *)buf;
-+		buf += sizeof(*hdr);
-+		buf_len -= sizeof(*hdr);
-+
-+		mt7996_memcpy_fromio(dev, buf, mem_region->start,
-+				     mem_region->len);
-+
-+		hdr->start = mem_region->start;
-+		hdr->len = mem_region->len;
-+
-+		if (!mem_region->len)
-+			/* note: the header remains, just with zero length */
-+			break;
-+
-+		buf += mem_region->len;
-+		buf_len -= mem_region->len;
-+
-+		mem_region++;
-+	}
-+
-+	mutex_unlock(&dev->dump_mutex);
-+
-+skip_memdump:
-+	mt7996_coredump_submit(dev);
-+skip_coredump:
-+	queue_work(dev->mt76.wq, &dev->reset_work);
-+}
-+
- void mt7996_reset(struct mt7996_dev *dev)
- {
- 	if (!dev->recovery.hw_init_done)
-@@ -2099,7 +2169,7 @@ void mt7996_reset(struct mt7996_dev *dev)
- 			 wiphy_name(dev->mt76.hw->wiphy));
- 
- 		mt7996_irq_disable(dev, MT_INT_MCU_CMD);
--		queue_work(dev->mt76.wq, &dev->reset_work);
-+		queue_work(dev->mt76.wq, &dev->dump_work);
- 		return;
- 	}
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index 536e8dd0edca..510c5facdae8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -162,6 +162,14 @@ static u32 __mt7996_reg_addr(struct mt7996_dev *dev, u32 addr)
- 	return mt7996_reg_map_l2(dev, addr);
- }
- 
-+void mt7996_memcpy_fromio(struct mt7996_dev *dev, void *buf, u32 offset,
-+			  size_t len)
-+{
-+	u32 addr = __mt7996_reg_addr(dev, offset);
-+
-+	memcpy_fromio(buf, dev->mt76.mmio.regs + addr, len);
-+}
-+
- static u32 mt7996_rr(struct mt76_dev *mdev, u32 offset)
- {
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 45071f0dc2fe..0f668bff1542 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -192,6 +192,15 @@ struct mib_stats {
- 	u32 tx_amsdu_cnt;
- };
- 
-+/* crash-dump */
-+struct mt7996_crash_data {
-+	guid_t guid;
-+	struct timespec64 timestamp;
-+
-+	u8 *memdump_buf;
-+	size_t memdump_buf_len;
-+};
-+
- struct mt7996_hif {
- 	struct list_head list;
- 
-@@ -251,6 +260,7 @@ struct mt7996_dev {
- 
- 	struct work_struct init_work;
- 	struct work_struct rc_work;
-+	struct work_struct dump_work;
- 	struct work_struct reset_work;
- 	wait_queue_head_t reset_wait;
- 	struct {
-@@ -262,6 +272,14 @@ struct mt7996_dev {
- 		bool restart:1;
- 	} recovery;
- 
-+	/* protects coredump data */
-+	struct mutex dump_mutex;
-+#ifdef CONFIG_DEV_COREDUMP
-+	struct {
-+		struct mt7996_crash_data *crash_data;
-+	} coredump;
-+#endif
-+
- 	struct list_head sta_rc_list;
- 	struct list_head sta_poll_list;
- 	struct list_head twt_list;
-@@ -493,6 +511,9 @@ static inline void mt7996_irq_disable(struct mt7996_dev *dev, u32 mask)
- 		mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, mask, 0);
- }
- 
-+void mt7996_memcpy_fromio(struct mt7996_dev *dev, void *buf, u32 offset,
-+			  size_t len);
-+
- void mt7996_mac_init(struct mt7996_dev *dev);
- u32 mt7996_mac_wtbl_lmac_addr(struct mt7996_dev *dev, u16 wcid, u8 dw);
- bool mt7996_mac_wtbl_update(struct mt7996_dev *dev, int idx, u32 mask);
-@@ -511,6 +532,7 @@ void mt7996_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta);
- void mt7996_mac_work(struct work_struct *work);
- void mt7996_mac_reset_work(struct work_struct *work);
-+void mt7996_mac_dump_work(struct work_struct *work);
- void mt7996_mac_sta_rc_work(struct work_struct *work);
- void mt7996_mac_update_stats(struct mt7996_phy *phy);
- void mt7996_mac_twt_teardown_flow(struct mt7996_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-index fb9b8dec9189..75f856205559 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
-@@ -474,6 +474,9 @@ enum base_rev {
- #define MT_INFRA_MCU_END			0x7c3fffff
- 
- /* FW MODE SYNC */
-+#define MT_FW_ASSERT_CNT			0x02208274
-+#define MT_FW_DUMP_STATE			0x02209e90
-+
- #define MT_SWDEF_BASE				0x00401400
- 
- #define MT_SWDEF(ofs)				(MT_SWDEF_BASE + (ofs))
-@@ -508,6 +511,13 @@ enum base_rev {
- 
- #define MT_LED_EN(_n)				MT_LED_PHYS(0x40 + ((_n) * 4))
- 
-+/* CONN DBG */
-+#define MT_CONN_DBG_CTL_BASE			0x18023000
-+#define MT_CONN_DBG_CTL(ofs)			(MT_CONN_DBG_CTL_BASE + (ofs))
-+#define MT_CONN_DBG_CTL_OUT_SEL			MT_CONN_DBG_CTL(0x604)
-+#define MT_CONN_DBG_CTL_PC_LOG_SEL		MT_CONN_DBG_CTL(0x60c)
-+#define MT_CONN_DBG_CTL_PC_LOG			MT_CONN_DBG_CTL(0x610)
-+
- #define MT_LED_GPIO_MUX2			0x70005058 /* GPIO 18 */
- #define MT_LED_GPIO_MUX3			0x7000505C /* GPIO 26 */
- #define MT_LED_GPIO_SEL_MASK			GENMASK(11, 8)
-@@ -561,4 +571,12 @@ enum base_rev {
- #define MT_WF_PHYRX_CSD_BAND_RXTD12_IRPI_SW_CLR_ONLY	BIT(18)
- #define MT_WF_PHYRX_CSD_BAND_RXTD12_IRPI_SW_CLR		BIT(29)
- 
-+/* CONN MCU EXCP CON */
-+#define MT_MCU_WM_EXCP_BASE			0x89050000
-+#define MT_MCU_WM_EXCP(ofs)			(MT_MCU_WM_EXCP_BASE + (ofs))
-+#define MT_MCU_WM_EXCP_PC_CTRL			MT_MCU_WM_EXCP(0x100)
-+#define MT_MCU_WM_EXCP_PC_LOG			MT_MCU_WM_EXCP(0x104)
-+#define MT_MCU_WM_EXCP_LR_CTRL			MT_MCU_WM_EXCP(0x200)
-+#define MT_MCU_WM_EXCP_LR_LOG			MT_MCU_WM_EXCP(0x204)
-+
- #endif
+https://lore.kernel.org/oe-kbuild-all/202303082135.NjdX1Bij-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304041708.siWlxmyD-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304041748.0sQc4K4l-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304042104.UFIuevBp-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304050029.38NdbQPf-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+Documentation/virt/kvm/api.rst:8303: WARNING: Field list ends without a blank line; unexpected unindent.
+ERROR: modpost: "bpf_fentry_test1" [tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.ko] undefined!
+Error: failed to load BTF from vmlinux: No data available
+Makefile:77: *** Cannot find a vmlinux for VMLINUX_BTF at any of "vmlinux vmlinux ../../../../vmlinux /sys/kernel/btf/vmlinux /boot/vmlinux-5.9.0-0.bpo.2-amd64".  Stop.
+arch/m68k/include/asm/irq.h:78:11: error: expected ';' before 'void'
+arch/m68k/include/asm/irq.h:78:40: warning: 'struct pt_regs' declared inside parameter list will not be visible outside of this definition or declaration
+diff: tools/arch/s390/include/uapi/asm/ptrace.h: No such file or directory
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    int
+drivers/gpu/drm/amd/amdgpu/../pm/swsmu/smu13/smu_v13_0_6_ppt.c:309:17: sparse:    void
+drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:148:31: error: implicit declaration of function 'pci_msix_can_alloc_dyn' [-Werror=implicit-function-declaration]
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+kernel/bpf/verifier.c:18503: undefined reference to `find_kallsyms_symbol_value'
+ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+ld.lld: error: undefined symbol: find_kallsyms_symbol_value
+tcp_mmap.c:211:61: warning: 'lu' may be used uninitialized in this function [-Wmaybe-uninitialized]
+thermal_nl.h:6:10: fatal error: netlink/netlink.h: No such file or directory
+thermometer.c:21:10: fatal error: libconfig.h: No such file or directory
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
+drivers/pinctrl/pinctrl-mlxbf3.c:162:20: sparse: sparse: symbol 'mlxbf3_pmx_funcs' was not declared. Should it be static?
+drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:189:26: sparse: sparse: dereference of noderef expression
+drivers/soc/fsl/qe/tsa.c:663:22: sparse: sparse: incorrect type in assignment (different address spaces)
+drivers/soc/fsl/qe/tsa.c:673:21: sparse: sparse: incorrect type in assignment (different address spaces)
+include/linux/gpio/consumer.h: linux/err.h is included more than once.
+include/linux/gpio/driver.h: asm/bug.h is included more than once.
+io_uring/io_uring.c:432 io_prep_async_work() error: we previously assumed 'req->file' could be null (see line 425)
+io_uring/kbuf.c:221 __io_remove_buffers() warn: variable dereferenced before check 'bl->buf_ring' (see line 219)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- alpha-buildonly-randconfig-r005-20230403
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- alpha-randconfig-s051-20230403
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:int
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:sparse:incompatible-types-in-conditional-expression-(different-base-types):
+|   |-- drivers-gpu-drm-amd-amdgpu-..-pm-swsmu-smu13-smu_v13_0_6_ppt.c:sparse:void
+|   `-- drivers-pinctrl-pinctrl-mlxbf3.c:sparse:sparse:symbol-mlxbf3_pmx_funcs-was-not-declared.-Should-it-be-static
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-randconfig-m021-20230403
+|   |-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
+|   |-- io_uring-io_uring.c-io_prep_async_work()-error:we-previously-assumed-req-file-could-be-null-(see-line-)
+|   `-- io_uring-kbuf.c-__io_remove_buffers()-warn:variable-dereferenced-before-check-bl-buf_ring-(see-line-)
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- loongarch-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-defconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- m68k-randconfig-s041-20230403
+|   |-- arch-m68k-include-asm-irq.h:error:expected-before-void
+|   `-- arch-m68k-include-asm-irq.h:warning:struct-pt_regs-declared-inside-parameter-list-will-not-be-visible-outside-of-this-definition-or-declaration
+|-- microblaze-buildonly-randconfig-r006-20230403
+|   `-- drivers-net-ethernet-mellanox-mlx5-core-pci_irq.c:error:implicit-declaration-of-function-pci_msix_can_alloc_dyn
+|-- mips-allmodconfig
+clang_recent_errors
+`-- arm-randconfig-r046-20230403
+    |-- ld.lld:error:.btf.vmlinux.bin.o:unknown-file-type
+    `-- ld.lld:error:undefined-symbol:find_kallsyms_symbol_value
+
+elapsed time: 840m
+
+configs tested: 113
+configs skipped: 4
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha        buildonly-randconfig-r005-20230403   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r023-20230403   gcc  
+alpha                randconfig-r036-20230404   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r034-20230403   gcc  
+arc                  randconfig-r043-20230403   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm          buildonly-randconfig-r001-20230403   clang
+arm                                 defconfig   gcc  
+arm                          exynos_defconfig   gcc  
+arm                  randconfig-r046-20230403   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r021-20230403   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r033-20230403   gcc  
+hexagon              randconfig-r016-20230403   clang
+hexagon              randconfig-r035-20230403   clang
+hexagon              randconfig-r041-20230403   clang
+hexagon              randconfig-r045-20230403   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230403   clang
+i386                 randconfig-a002-20230403   clang
+i386                 randconfig-a003-20230403   clang
+i386                 randconfig-a004-20230403   clang
+i386                 randconfig-a005-20230403   clang
+i386                 randconfig-a006-20230403   clang
+i386                 randconfig-a011-20230403   gcc  
+i386                 randconfig-a012-20230403   gcc  
+i386                 randconfig-a013-20230403   gcc  
+i386                 randconfig-a014-20230403   gcc  
+i386                 randconfig-a015-20230403   gcc  
+i386                 randconfig-a016-20230403   gcc  
+i386                 randconfig-r015-20230403   gcc  
+i386                 randconfig-r022-20230403   gcc  
+i386                 randconfig-r036-20230403   clang
+ia64                             alldefconfig   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r002-20230403   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k         buildonly-randconfig-r002-20230403   gcc  
+m68k         buildonly-randconfig-r006-20230403   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r024-20230403   gcc  
+m68k                 randconfig-r034-20230404   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r005-20230403   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r033-20230404   gcc  
+openrisc             randconfig-r013-20230403   gcc  
+openrisc             randconfig-r026-20230403   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r001-20230403   gcc  
+parisc               randconfig-r014-20230403   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                     ep8248e_defconfig   gcc  
+powerpc                     kmeter1_defconfig   clang
+powerpc              randconfig-r025-20230403   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                randconfig-r042-20230403   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r004-20230403   clang
+s390                 randconfig-r012-20230403   gcc  
+s390                 randconfig-r031-20230404   gcc  
+s390                 randconfig-r044-20230403   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r011-20230403   gcc  
+sh                   randconfig-r031-20230403   gcc  
+sparc        buildonly-randconfig-r004-20230403   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r003-20230403   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230403   clang
+x86_64               randconfig-a002-20230403   clang
+x86_64               randconfig-a003-20230403   clang
+x86_64               randconfig-a004-20230403   clang
+x86_64               randconfig-a005-20230403   clang
+x86_64               randconfig-a006-20230403   clang
+x86_64               randconfig-a011-20230403   gcc  
+x86_64               randconfig-a012-20230403   gcc  
+x86_64               randconfig-a013-20230403   gcc  
+x86_64               randconfig-a014-20230403   gcc  
+x86_64               randconfig-a015-20230403   gcc  
+x86_64               randconfig-a016-20230403   gcc  
+x86_64               randconfig-r032-20230403   clang
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r003-20230403   gcc  
+xtensa               randconfig-r006-20230403   gcc  
+xtensa               randconfig-r035-20230404   gcc  
+
 -- 
-2.18.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
