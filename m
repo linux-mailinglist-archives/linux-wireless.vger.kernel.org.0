@@ -2,105 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0926D7473
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 08:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5A2A6D7608
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 09:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237072AbjDEGfw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Apr 2023 02:35:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43948 "EHLO
+        id S237263AbjDEH5R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Apr 2023 03:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236860AbjDEGfv (ORCPT
+        with ESMTP id S237180AbjDEH5K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Apr 2023 02:35:51 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5537A30FF;
-        Tue,  4 Apr 2023 23:35:50 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 11C5521FD6;
-        Wed,  5 Apr 2023 06:35:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1680676549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=/n2GEZAzpXyAoutRpcOwMS4F5u8r4LfoSAsc7aqPWJA=;
-        b=M5Pkl+CCUW+bxpqgnim/dMWnCIiQpc2e/yC7phOtS5BZHLA/dt5sKPMiAHulL89CnN2GSD
-        DNWHsTep+UbpnIpPQZHCpct6reYLN56o1jbavDaoP7hXffmT34B4nPbSMmdTT/QVZHcT9K
-        F/4Gt2CVt+1+uFkA/uaDbE9zo/3qt20=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1680676549;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=/n2GEZAzpXyAoutRpcOwMS4F5u8r4LfoSAsc7aqPWJA=;
-        b=GR9l6t6S5u/RF0rULHo7faOJMvxW6nKSZDbVPa3b+EYiHwrZ+zEdLDJYUCv0rBZdUBP36X
-        Ky5Mg2/p/wb1YzDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DDCCE13A10;
-        Wed,  5 Apr 2023 06:35:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 54OEM8QWLWRlBQAAMHmgww
-        (envelope-from <tiwai@suse.de>); Wed, 05 Apr 2023 06:35:48 +0000
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Gregory Greenman <gregory.greenman@intel.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: cfg: Add missing MODULE_FIRMWARE() for *.pnvm
-Date:   Wed,  5 Apr 2023 08:35:46 +0200
-Message-Id: <20230405063546.12439-1-tiwai@suse.de>
-X-Mailer: git-send-email 2.35.3
+        Wed, 5 Apr 2023 03:57:10 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE194ED3
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Apr 2023 00:57:04 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-4faef469610so236035a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Apr 2023 00:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680681423;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q2eIUIgQam+Znm92t75ub3SSql/5kD/CSnGjaZOIeRE=;
+        b=ZFAmFQTn20XXB58Hm1LdXdWSQ5ZKxD4voHxxAhS1cKrInxf7DLRcTSbw0glAYuheNd
+         QsgC19PfAnkNACoih4X9yWq8Ua2f3Z5aqpAwmyG7K5XHuwPNdYpOLvr+4dizYlmkwqvh
+         8ippA6GSg6vwbKsguRd+gNlt6Q3d6qdPQH52wPe4yUNm7drYy8w79XnI6OkaMCxGYxXe
+         MDkio/NlgHAyk3tGfHbZ8+FvtwIbKJyHeY9Hl3c4m/UBMxdY642/4m0lMYD1+lZcL9DU
+         GTGlzj7aK8t/dfhFV0ZGCnZD6XTAnjOEHb+Mkw5/16dwcMVpicpYd4/+ImRJVe79/Ozv
+         w6jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680681423;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2eIUIgQam+Znm92t75ub3SSql/5kD/CSnGjaZOIeRE=;
+        b=SGXbCC8Wgk6CevKpvGUS7R/n+HZGO9ebagnVxb2BDdKs5Ub1LrRQBIpStqUZopMFif
+         iKkpo7W8WSj+4EeleGWBgKrAhCI6CqWfsnn9IP/aFSonsNWkGsYkv2Qe94bMpdu92qeP
+         D0IQ5ZuaSjOTKFucOOiInMTP7ocB5yJks0LLq+XxVThCMN4WUp2LZyo1TCgdIofEjED4
+         jZZubQ/sb7c0xr3ajAGNQjrPdLyUgVvZJ90NMNQax/xPW20gAglrUY5Wd+duc/IaP1/X
+         3ISp/6EM4tDLoNfnMjvBKuRM3ZzmUh45tu2bqDKHC/ltLKtJGijnJesYHoEO/DJZ/qOg
+         wLJg==
+X-Gm-Message-State: AAQBX9fJI8SlXqc1g/oOl89RK+TI3naq9lksE/59WuA3hPgEXlR44KQS
+        7LSvfEGivYig6jdZDp5Ty5vQnDzxfXfLrp9lRlQ=
+X-Google-Smtp-Source: AKy350b+6mlAYsE5jCYer29QJ01MP1yshNVCPV/yu1iTNStkeOVxzQSr9n/dP8VlK7PnohYB4ysIDujVG47xryzVK58=
+X-Received: by 2002:a50:d781:0:b0:500:547b:4e1b with SMTP id
+ w1-20020a50d781000000b00500547b4e1bmr691870edi.6.1680681423244; Wed, 05 Apr
+ 2023 00:57:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:7208:2202:b0:65:e547:3943 with HTTP; Wed, 5 Apr 2023
+ 00:57:02 -0700 (PDT)
+Reply-To: tamimbinhamadalthani00@gmail.com
+From:   Tamim Mohammed Taher <cisskhadidiatou890@gmail.com>
+Date:   Wed, 5 Apr 2023 00:57:02 -0700
+Message-ID: <CAAYY=dZe5ZjJ2b2KEkYbGOEnyScbFaaGqjvb6EmPHE7Lypp0cg@mail.gmail.com>
+Subject: RE:Saudi Arabia-Inquiry about your products.!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=DEAR_SOMETHING,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:52f listed in]
+        [list.dnswl.org]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [tamimbinhamadalthani00[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [cisskhadidiatou890[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [cisskhadidiatou890[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.7 DEAR_SOMETHING BODY: Contains 'Dear (something)'
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A few models require *.pnvm files while we don't declare them via
-MODULE_FIRMWARE().  This resulted in the breakage of WiFi on the
-system that relies on the information from modinfo (e.g. openSUSE
-installer image).
+Dear Sir/Madam,
 
-This patch adds those missing MODULE_FIRMWARE() entries for *.pnvm
-files.
 
-Link: https://bugzilla.opensuse.org/show_bug.cgi?id=1207553
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
----
 
-The fix is obviously ad hoc.
+Can you supply your products to  the government of (Saudi Arabia). We
+buy in larger quantity if your company can supply please reply with
+your products detail for more information.
 
-Here I added the lines with the explicit string since *_PRE definition
-contains the tailing dash and can't be used for *.pnvm file.
+Looking forward to hearing from you.
 
-Alternatively, we may put a single line
- MODULE_FIRMWARE("iwlwifi-*.pnvm");
-to catch all, too.
+Thanks and Regards
 
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Mr.Tamim Mohammed Taher
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 3bdd6774716d..3c6dc3601784 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -1065,3 +1065,7 @@ MODULE_FIRMWARE(IWL_BNJ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_FM4_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_GL_B_FM_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BNJ_B_FM_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+
-+MODULE_FIRMWARE("iwlwifi-so-a0-gf4-a0.pnvm");
-+MODULE_FIRMWARE("iwlwifi-so-a0-gf-a0.pnvm");
-+MODULE_FIRMWARE("iwlwifi-ty-a0-gf-a0.pnvm");
--- 
-2.35.3
-
+Email:tamimbinhamadalthani00@gmail.com
