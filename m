@@ -2,108 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E34F66D7B63
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 13:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F876D7B8D
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 13:40:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237708AbjDELcP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Apr 2023 07:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45518 "EHLO
+        id S237316AbjDELkm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Apr 2023 07:40:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237538AbjDELcO (ORCPT
+        with ESMTP id S237148AbjDELkl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Apr 2023 07:32:14 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5831701;
-        Wed,  5 Apr 2023 04:32:14 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id f22so30002265plr.0;
-        Wed, 05 Apr 2023 04:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680694333;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6/+oE/1qzPWFssmdy91t8fdNIxgaCXNVyfJtxrkUuno=;
-        b=LPHPvzA1J020CPcW/uXB9oEmBOAdH98SO1O3QaxLCtkZbyzAsTMAGr5YaZSCMl1Sv4
-         29XUgCecwJNKxDtrwRBYhdfwHJOEfxT16gkK0EL72JKOtssRTOG9PsnXoQyR5g5VpnxY
-         BQxL1gNPKPevpom9JX1dDoWI+Dip2Tvus3WjQ1Ia2r1mhQkT0lUMXxOJK/qTMPHD1YrX
-         7s56G8hzf1IrDjRAdGDC0Pu4dAu8B5SwBAmNIKLAW7q3yvbwMUKkItFKBZIpiBib7xg0
-         cWL8YtGKQdj0zI0SvCfoy2oakEcJEis4Ujz7xm8R7Cq7F7xO/l0JqWW8N0NkayjMhJkl
-         Wdaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680694333;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6/+oE/1qzPWFssmdy91t8fdNIxgaCXNVyfJtxrkUuno=;
-        b=EMCPxpAm6PqyrmYfF3R++O6Qt8BL1kjJYtBn3Jkqhi+3SYJHpJ46tv0ZekSDyucKOL
-         dpLlTw/pG1JgtnawzXojsUiNb5Itd4ZC609b07NrzI5FI5msy53qaTUiE0bOlPK4DGqK
-         u3S1xzpqliVnvU4IZ+TdxoW+TtSTvhxA7c8o7jOhMqeo6laL87G8asQadKU/r+G5TcrT
-         wUF0Tu+Y+yNKXZO4Ao9gGpuGmwEqdUrwTl6wY5TUGgpJngq1UqVl/p/STf70QzJWS9di
-         5t/xu+m5qaqzt8htauccBBOk13hMLDDO2TCYQJy5CnnXczMl4JrmUC+ffDOza7i0YwA+
-         IN8Q==
-X-Gm-Message-State: AAQBX9eyQGI5Rd4MZJBu26XEBolcPjV+ntmxT7B1VJOCNKPUDYnAS+p/
-        3h1jYvIUD18OvOCm5hfMRY0=
-X-Google-Smtp-Source: AKy350aldD4O1UlZUF1oXulUPVTcaLV0KErUUZU6C2EUVJw/WIPcboaC0O4LT9MoT0yu7DNNfS59WQ==
-X-Received: by 2002:a17:902:c94e:b0:1a2:79f0:f059 with SMTP id i14-20020a170902c94e00b001a279f0f059mr6989062pla.28.1680694333386;
-        Wed, 05 Apr 2023 04:32:13 -0700 (PDT)
-Received: from dragonet (dragonet.kaist.ac.kr. [143.248.133.220])
-        by smtp.gmail.com with ESMTPSA id p10-20020a170902a40a00b0019aa8149cb9sm9964285plq.79.2023.04.05.04.32.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 04:32:12 -0700 (PDT)
-Date:   Wed, 5 Apr 2023 20:32:09 +0900
-From:   "Dae R. Jeong" <threeearcat@gmail.com>
-To:     Hillf Danton <hdanton@sina.com>
-Cc:     edumazet@google.com, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: INFO: task hung in rfkill_unregister
-Message-ID: <ZC1cObb9bAUKxdwu@dragonet>
-References: <ZC1P_MSpORnZZfL_@dragonet>
- <20230405111921.853-1-hdanton@sina.com>
+        Wed, 5 Apr 2023 07:40:41 -0400
+Received: from mail.3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5E43A9C
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Apr 2023 04:40:37 -0700 (PDT)
+Received: from 3ffe.de (0001.3ffe.de [IPv6:2a01:4f8:c0c:9d57::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.3ffe.de (Postfix) with ESMTPSA id 1BBA5254;
+        Wed,  5 Apr 2023 13:40:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+        t=1680694835;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=t7dHIfryfDdUOPU48fgzzLGXZqCinqEvLNkxgYOperI=;
+        b=hTBwwdWsPr1kfonXxlQgLHkqfX5zWRCFU/hsFXQbjRbhG25kuW2prGNuLwut0fQixvudpO
+        C5uTqC83kP6j4sRckSDWhcM82UkViOl24aUzCdHk0D1NzgNVMPygyau/PMl/0D53GQv+c5
+        e/jsZuriM67u2tImI/6ZK/KWAIOGzEK9/LiiVAU+T8K7wnGmoWJKzAqMpV8wtgxsB2a+IW
+        gNbV1gXhDd/NE2Lqszs/aYS9ECX+lcdhz3rPI0GCnZCg5v/pAgOjDne8R4vX36IKV70fkg
+        Vwt7lc4lyA9yDQazDwBAAbkgYTvpQpitWrbC7fq37fHD756T+bqPGYlOe/Bukg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230405111921.853-1-hdanton@sina.com>
+Date:   Wed, 05 Apr 2023 13:40:34 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Ajay.Kathat@microchip.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Claudiu.Beznea@microchip.com,
+        Sripad.Balwadgi@microchip.com, mwalle@kernel.org
+Subject: Re: [PATCH] wifi: wilc1000: fix kernel oops during interface down
+ during background scan
+In-Reply-To: <20230404012010.15261-1-ajay.kathat@microchip.com>
+References: <20230404012010.15261-1-ajay.kathat@microchip.com>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <f10d69fb17e03eb093d846d005d7496a@walle.cc>
+X-Sender: michael@walle.cc
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 05, 2023 at 07:19:21PM +0800, Hillf Danton wrote:
-> On 5 Apr 2023 19:39:56 +0900 "Dae R. Jeong" <threeearcat@gmail.com>
-> > Hi,
-> > 
-> > We observed an issue "INFO: task hung in rfkill_unregister" during fuzzing.
+Hi,
+
+[+ wireless and cfg80211 maintainers because I'm not familiar with
+cfg80211 ]
+
+> Fix for kernel crash observed with following test procedure [1]:
+>   while true;
+>     do ifconfig wlan0 up;
+>     iw dev wlan0 scan &
+>     ifconfig wlan0 down;
+>   done
 > 
-> Known issue [1].
+> During the above test procedure, the scan results are received from 
+> firmware
+> for 'iw scan' command gets queued even when the interface is going 
+> down. It
+> was causing the kernel oops when dereferencing the freed pointers.
 > 
-> [1] https://lore.kernel.org/lkml/000000000000788a6905f0c06160@google.com/
+> For synchronization, 'mac_close()' calls flush_workqueue() to block its
+> execution till all pending work is completed. Afterwards 'wilc->close' 
+> flag
+> which is set before the flush_workqueue() should avoid adding new work.
+> Added 'wilc->close' check in wilc_handle_isr() which is common for
+> SPI/SDIO bus to ignore the interrupts from firmware that inturns adds 
+> the
+> work since the interface is getting closed.
 
-Ah, I couldn't find it in the syzbot dashboard. Thank you for letting
-me know it.
+With this patch I'm now getting
+    wilc1000_sdio mmc0:0001:1 wlan0: Failed to send setup multicast
 
-> > Unfortunately, we have not found a reproducer for the crash yet. We
-> > will inform you if we have any update on this crash.  Detailed crash
-> > information is attached below.
-> > 
-> > Best regards,
-> > Dae R. Jeong
-> > 
-> > -----
-> > - Kernel version:
-> > 6.2
+when you close the interface.
+
 > 
-> Curious why 6.2 is preferred over upstream given waste of time looking at 6.2
-> today.
+> 1.
+> https://lore.kernel.org/linux-wireless/20221024135407.7udo3dwl3mqyv2yj@0002.3ffe.de/
 
-I'm sorry for wasting your time. I observed the issue before, but I
-had my jobs to do (kernel development is not my main job) so I
-reported it now with a small hope of being helpful. I will use the
-upstream kernel when I try to find bugs later.
+should be Link:
 
-Best regards,
-Dae R. Jeong
+> Reported-by: Michael Walle <mwalle@kernel.org>
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+
+Missing Fixes: tag. In this regard, most of the previous wilc fixes 
+patches
+miss a proper Fixes tag which makes the wilc1000 pretty unusable on 
+stable
+kernels IMHO :/
+
+> ---
+>  drivers/net/wireless/microchip/wilc1000/netdev.c | 9 +++------
+>  drivers/net/wireless/microchip/wilc1000/wlan.c   | 3 +++
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c
+> b/drivers/net/wireless/microchip/wilc1000/netdev.c
+> index e9f59de31b0b..40edee10a81f 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/netdev.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+> @@ -38,11 +38,6 @@ static irqreturn_t isr_bh_routine(int irq, void 
+> *userdata)
+>  {
+>  	struct wilc *wilc = userdata;
+> 
+> -	if (wilc->close) {
+> -		pr_err("Can't handle BH interrupt\n");
+> -		return IRQ_HANDLED;
+> -	}
+> -
+
+This check is still in the top half of the interrupt processing.
+Shouldn't it be removed there, too? That way you can get rid of
+the top half entirely and just let the irq subsys use the default
+top half implementation.
+
+>  	wilc_handle_isr(wilc);
+> 
+>  	return IRQ_HANDLED;
+> @@ -781,13 +776,15 @@ static int wilc_mac_close(struct net_device 
+> *ndev)
+>  	if (vif->ndev) {
+>  		netif_stop_queue(vif->ndev);
+> 
+> +		if (wl->open_ifcs == 0)
+> +			wl->close = 1;
+
+Ignoring the fact that this isn't protected somehow and that
+there is no write barrier (maybe I'm overthinking this and
+it isn't really needed for an 'int' field), this and your
+reasoning with the flush_workqueue() sounds legit.
+
+But I'm still not convinced a lock is not required.
+wilc_user_scan_req::scan_result is at least updated in
+wilc_disconnect() and wilc_deinit().
+
+wilc_disconnect() is called from the cfg80211_ops::disconnect
+callback. wilc_deinit() is called from net_device_ops::ndo_stop.
+Is there any lock which prevents both functions be called in
+parallel? wl->close is checked in the .disconnect op, but as
+mentioned above, it is not protected by any lock.
+
+-michael
+
+> +
+>  		wilc_handle_disconnect(vif);
+>  		wilc_deinit_host_int(vif->ndev);
+>  	}
+> 
+>  	if (wl->open_ifcs == 0) {
+>  		netdev_dbg(ndev, "Deinitializing wilc1000\n");
+> -		wl->close = 1;
+>  		wilc_wlan_deinitialize(ndev);
+>  	}
+> 
+> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c
+> b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> index 58bbf50081e4..700cb657be00 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> @@ -1066,6 +1066,9 @@ void wilc_handle_isr(struct wilc *wilc)
+>  {
+>  	u32 int_status;
+> 
+> +	if (wilc->close)
+> +		return;
+> +
+>  	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
+>  	wilc->hif_func->hif_read_int(wilc, &int_status);
+> 
+> --
+> 2.34.1
