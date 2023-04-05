@@ -2,207 +2,334 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BCE6D71BC
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 02:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD3E46D73A4
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Apr 2023 07:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235443AbjDEA7E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Apr 2023 20:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37666 "EHLO
+        id S236897AbjDEFL6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Apr 2023 01:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjDEA7D (ORCPT
+        with ESMTP id S236628AbjDEFLx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Apr 2023 20:59:03 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DADD1BDB
-        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 17:59:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680656342; x=1712192342;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=x1L7LOkF2wLKWWv1RDFx3tipAAKEUKAHWT2Y0z2x5x8=;
-  b=Vb0z7AKNOU+CCuZ38uGNaNSiagXsJ2SlmiGtjys5lv1YnU+eh2zfhY9Y
-   VqUDJXmAVYV0TS1bCrEXCN+ro+7BatvdCd2jDBZgSydXRcmU3IhmF7Wvk
-   koCGl1sgwxMIx7Ehc/9zSgjhFmmcQNqptvct6YEhSDH1BR8egZbUNIqwe
-   cylAKcmWoeS1pXzkkPSf2D+INH/i9JXSDrynnJ7SysuREBvBCYc+5Qz/v
-   aKZxRh6aGtowhVuO1z8c6ZRz6+bCyH2I5onD9JMNcowqSXv6lyaGN6UlO
-   mgu7Sg8cz3COPaWIccmOZHVF8mhiVV9/DvIpkOmlSzQI1YEdaZ1L7/gyH
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="339835059"
-X-IronPort-AV: E=Sophos;i="5.98,319,1673942400"; 
-   d="scan'208";a="339835059"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2023 17:58:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10670"; a="755838896"
-X-IronPort-AV: E=Sophos;i="5.98,319,1673942400"; 
-   d="scan'208";a="755838896"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 04 Apr 2023 17:58:51 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pjrUB-000Q9U-0B;
-        Wed, 05 Apr 2023 00:58:51 +0000
-Date:   Wed, 5 Apr 2023 08:58:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ryder Lee <ryder.lee@mediatek.com>, Felix Fietkau <nbd@nbd.name>,
-        linux-wireless@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        linux-mediatek@lists.infradead.org,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: Re: [PATCH 2/3] wifi: mt76: mt7996: add full system reset knobs into
- debugfs
-Message-ID: <202304050840.BZZpVG7z-lkp@intel.com>
-References: <cb71efc424029e909866e1c86cce712dbf2cc9ef.1680638324.git.ryder.lee@mediatek.com>
+        Wed, 5 Apr 2023 01:11:53 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 776EC3A9C
+        for <linux-wireless@vger.kernel.org>; Tue,  4 Apr 2023 22:11:52 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3352wEKw007289;
+        Wed, 5 Apr 2023 05:11:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=AB+z0URD0riXHcS0QP5ubnKR1ADzFmz/s+D+yKQShME=;
+ b=LZa6z/w/fkkk7QdA1YO35wC2e0LfU5QAoT/IMBi4gz8i+pzFaXrAW4BQK4zpbjkLSWxz
+ V07+HoPcaYBq8mhkQl/SiwmZTC1VkCYa/yoXbOL+eMfsH+XTQrgXR/nmq84g37dWIPfA
+ 3SvHqN4g2aWeTm1cSpx50i2GXfzhYux5ZeVYqRDJ6Hgo7Nvh+uBy3rzIZcW8SLZsMYpk
+ 3b8d2KpE7mmirgDSvsyTJTLk4t3csMSIci9j67phFLXHH48Cv/nq5Jwn9sE356C/1E7h
+ PgKTK6aAUoPUUObTpTp/w7I12+qtveKKecW8Ll8syaWcP2xnvixJwDeQu6Kj7L9jRAF6 rQ== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3prppuhn9a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Apr 2023 05:11:45 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3355Bjcp021063
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 5 Apr 2023 05:11:45 GMT
+Received: from hu-mpubbise-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Tue, 4 Apr 2023 22:11:43 -0700
+From:   Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Subject: [PATCH] wifi: ath11k: Do not use WBM2SW4 as tx completion ring on WCN6750
+Date:   Wed, 5 Apr 2023 10:41:27 +0530
+Message-ID: <20230405051127.14651-1-quic_mpubbise@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb71efc424029e909866e1c86cce712dbf2cc9ef.1680638324.git.ryder.lee@mediatek.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: dhytGw7gX7CoZ3AddldDC8zRQCdi7nu-
+X-Proofpoint-ORIG-GUID: dhytGw7gX7CoZ3AddldDC8zRQCdi7nu-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-05_02,2023-04-04_05,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 priorityscore=1501
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304050047
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ryder,
+On WCN6750, ageout flush on WBM2SW4 SRNG does not happen if there is only
+one TX completion pending in the FIFO and all other WBM2SW release SRNGs
+are idle. Due to this limitation, TX completion for the lone packet in
+WBM2SW4 SRNG will never reach the driver. This is a case where the TX
+packet has been acked in the air but the completion status has not been
+reported to the driver. In turn, the pending TX completions will prevent
+the device from entering suspend. The following error logs gets printed
+during suspend and the suspend fails.
 
-kernel test robot noticed the following build errors:
+Failure log:
+ath11k 17a10040.wifi: failed to flush transmit queue, data pkts pending 1
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.3-rc5 next-20230404]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Fix this by not using WBM2SW4 SRNG for TX completions on WCN6750 and
+instead reuse WBM2SW0.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ryder-Lee/wifi-mt76-mt7996-add-full-system-reset-knobs-into-debugfs/20230405-040602
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/cb71efc424029e909866e1c86cce712dbf2cc9ef.1680638324.git.ryder.lee%40mediatek.com
-patch subject: [PATCH 2/3] wifi: mt76: mt7996: add full system reset knobs into debugfs
-config: x86_64-randconfig-a002-20230403 (https://download.01.org/0day-ci/archive/20230405/202304050840.BZZpVG7z-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/8764f35bb4f80294bf2164552514cfd312c5feb3
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Ryder-Lee/wifi-mt76-mt7996-add-full-system-reset-knobs-into-debugfs/20230405-040602
-        git checkout 8764f35bb4f80294bf2164552514cfd312c5feb3
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/net/wireless/mediatek/mt76/mt7996/
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-00887-QCAMSLSWPLZ-1
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304050840.BZZpVG7z-lkp@intel.com/
+Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/dp.c    | 59 +++++++++++++++++++------
+ drivers/net/wireless/ath/ath11k/dp.h    |  3 ++
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 36 ++++++++-------
+ drivers/net/wireless/ath/ath11k/hw.c    |  6 +--
+ drivers/net/wireless/ath/ath11k/hw.h    |  2 +
+ 5 files changed, 73 insertions(+), 33 deletions(-)
 
-All error/warnings (new ones prefixed by >>):
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
+index f5156a7fbdd7..3eadbadefb75 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -408,13 +408,17 @@ static int ath11k_dp_srng_common_setup(struct ath11k_base *ab)
+ 			goto err;
+ 		}
+ 
+-		ret = ath11k_dp_srng_setup(ab, &dp->tx_ring[i].tcl_comp_ring,
+-					   HAL_WBM2SW_RELEASE, wbm_num, 0,
+-					   DP_TX_COMP_RING_SIZE);
+-		if (ret) {
+-			ath11k_warn(ab, "failed to set up tcl_comp ring (%d) :%d\n",
+-				    i, ret);
+-			goto err;
++		if (wbm_num != ATH11K_HW_INVALID_WBM_RING_NUM) {
++			ret = ath11k_dp_srng_setup(ab, &dp->tx_ring[i].tcl_comp_ring,
++						   HAL_WBM2SW_RELEASE, wbm_num, 0,
++						   DP_TX_COMP_RING_SIZE);
++			if (ret) {
++				ath11k_warn(ab, "failed to set up tcl_comp ring (%d) :%d\n",
++					    i, ret);
++				goto err;
++			}
++		} else {
++			dp->wbm2sw_txring_reuse = true;
+ 		}
+ 
+ 		srng = &ab->hal.srng_list[dp->tx_ring[i].tcl_data_ring.ring_id];
+@@ -1018,6 +1022,38 @@ static int ath11k_dp_tx_pending_cleanup(int buf_id, void *skb, void *ctx)
+ 	return 0;
+ }
+ 
++static void ath11k_dp_tx_idr_resources_deinit(struct ath11k_base *ab, int ring_id)
++{
++	struct dp_tx_ring *tx_ring = &ab->dp.tx_ring[ring_id];
++
++	spin_lock_bh(&tx_ring->tx_idr_lock);
++	idr_for_each(&tx_ring->txbuf_idr,
++		     ath11k_dp_tx_pending_cleanup, ab);
++	idr_destroy(&tx_ring->txbuf_idr);
++	spin_unlock_bh(&tx_ring->tx_idr_lock);
++}
++
++static void ath11k_dp_tx_idr_resources_init(struct ath11k_base *ab, int ring_id)
++{
++	struct dp_tx_ring *tx_ring = &ab->dp.tx_ring[ring_id];
++	int idr_start;
++	int idr_end;
++
++	if (ab->dp.wbm2sw_txring_reuse) {
++		idr_start = ring_id * DP_TX_IDR_SIZE;
++		idr_end = idr_start + DP_TX_IDR_SIZE - 1;
++	} else {
++		idr_start = 0;
++		idr_end = DP_TX_IDR_SIZE - 1;
++	}
++
++	tx_ring->idr_start = idr_start;
++	tx_ring->idr_end = idr_end;
++
++	idr_init_base(&tx_ring->txbuf_idr, idr_start);
++	spin_lock_init(&tx_ring->tx_idr_lock);
++}
++
+ void ath11k_dp_free(struct ath11k_base *ab)
+ {
+ 	struct ath11k_dp *dp = &ab->dp;
+@@ -1031,11 +1067,7 @@ void ath11k_dp_free(struct ath11k_base *ab)
+ 	ath11k_dp_reo_cmd_list_cleanup(ab);
+ 
+ 	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
+-		spin_lock_bh(&dp->tx_ring[i].tx_idr_lock);
+-		idr_for_each(&dp->tx_ring[i].txbuf_idr,
+-			     ath11k_dp_tx_pending_cleanup, ab);
+-		idr_destroy(&dp->tx_ring[i].txbuf_idr);
+-		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
++		ath11k_dp_tx_idr_resources_deinit(ab, i);
+ 		kfree(dp->tx_ring[i].tx_status);
+ 	}
+ 
+@@ -1082,8 +1114,7 @@ int ath11k_dp_alloc(struct ath11k_base *ab)
+ 	size = sizeof(struct hal_wbm_release_ring) * DP_TX_COMP_RING_SIZE;
+ 
+ 	for (i = 0; i < ab->hw_params.max_tx_ring; i++) {
+-		idr_init(&dp->tx_ring[i].txbuf_idr);
+-		spin_lock_init(&dp->tx_ring[i].tx_idr_lock);
++		ath11k_dp_tx_idr_resources_init(ab, i);
+ 		dp->tx_ring[i].tcl_data_ring_id = i;
+ 
+ 		dp->tx_ring[i].tx_status_head = 0;
+diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+index be9eafc872b3..dd13e88a49ef 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -88,6 +88,8 @@ struct dp_tx_ring {
+ 	struct hal_wbm_release_ring *tx_status;
+ 	int tx_status_head;
+ 	int tx_status_tail;
++	int idr_start;
++	int idr_end;
+ };
+ 
+ enum dp_mon_status_buf_state {
+@@ -286,6 +288,7 @@ struct ath11k_dp {
+ 	spinlock_t reo_cmd_lock;
+ 	struct ath11k_hp_update_timer reo_cmd_timer;
+ 	struct ath11k_hp_update_timer tx_ring_timer[DP_TCL_NUM_RING_MAX];
++	bool wbm2sw_txring_reuse;
+ };
+ 
+ /* HTT definitions */
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+index 8afbba236935..3e18ff213e3e 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -120,8 +120,8 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	tx_ring = &dp->tx_ring[ti.ring_id];
+ 
+ 	spin_lock_bh(&tx_ring->tx_idr_lock);
+-	ret = idr_alloc(&tx_ring->txbuf_idr, skb, 0,
+-			DP_TX_IDR_SIZE - 1, GFP_ATOMIC);
++	ret = idr_alloc(&tx_ring->txbuf_idr, skb, tx_ring->idr_start,
++			tx_ring->idr_end, GFP_ATOMIC);
+ 	spin_unlock_bh(&tx_ring->tx_idr_lock);
+ 
+ 	if (unlikely(ret < 0)) {
+@@ -283,6 +283,22 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	return ret;
+ }
+ 
++static inline struct sk_buff*
++ath11k_dp_tx_fetch_msdu(struct ath11k_base *ab, struct dp_tx_ring *tx_ring,
++			int msdu_id)
++{
++	struct sk_buff *msdu;
++
++	if (ab->dp.wbm2sw_txring_reuse)
++		tx_ring = &ab->dp.tx_ring[msdu_id / DP_TX_IDR_SIZE];
++
++	spin_lock(&tx_ring->tx_idr_lock);
++	msdu = idr_remove(&tx_ring->txbuf_idr, msdu_id);
++	spin_unlock(&tx_ring->tx_idr_lock);
++
++	return msdu;
++}
++
+ static void ath11k_dp_tx_free_txbuf(struct ath11k_base *ab, u8 mac_id,
+ 				    int msdu_id,
+ 				    struct dp_tx_ring *tx_ring)
+@@ -291,10 +307,7 @@ static void ath11k_dp_tx_free_txbuf(struct ath11k_base *ab, u8 mac_id,
+ 	struct sk_buff *msdu;
+ 	struct ath11k_skb_cb *skb_cb;
+ 
+-	spin_lock(&tx_ring->tx_idr_lock);
+-	msdu = idr_remove(&tx_ring->txbuf_idr, msdu_id);
+-	spin_unlock(&tx_ring->tx_idr_lock);
+-
++	msdu = ath11k_dp_tx_fetch_msdu(ab, tx_ring, msdu_id);
+ 	if (unlikely(!msdu)) {
+ 		ath11k_warn(ab, "tx completion for unknown msdu_id %d\n",
+ 			    msdu_id);
+@@ -321,10 +334,7 @@ ath11k_dp_tx_htt_tx_complete_buf(struct ath11k_base *ab,
+ 	struct ath11k_skb_cb *skb_cb;
+ 	struct ath11k *ar;
+ 
+-	spin_lock(&tx_ring->tx_idr_lock);
+-	msdu = idr_remove(&tx_ring->txbuf_idr, ts->msdu_id);
+-	spin_unlock(&tx_ring->tx_idr_lock);
+-
++	msdu = ath11k_dp_tx_fetch_msdu(ab, tx_ring, ts->msdu_id);
+ 	if (unlikely(!msdu)) {
+ 		ath11k_warn(ab, "htt tx completion for unknown msdu_id %d\n",
+ 			    ts->msdu_id);
+@@ -703,17 +713,13 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
+ 			continue;
+ 		}
+ 
+-		spin_lock(&tx_ring->tx_idr_lock);
+-		msdu = idr_remove(&tx_ring->txbuf_idr, msdu_id);
++		msdu = ath11k_dp_tx_fetch_msdu(ab, tx_ring, msdu_id);
+ 		if (unlikely(!msdu)) {
+ 			ath11k_warn(ab, "tx completion for unknown msdu_id %d\n",
+ 				    msdu_id);
+-			spin_unlock(&tx_ring->tx_idr_lock);
+ 			continue;
+ 		}
+ 
+-		spin_unlock(&tx_ring->tx_idr_lock);
+-
+ 		ar = ab->pdevs[mac_id].ar;
+ 
+ 		if (atomic_dec_and_test(&ar->dp.num_tx_pending))
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index 60ac215e0678..fd3854293bb5 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -2025,8 +2025,6 @@ const struct ath11k_hw_ring_mask ath11k_hw_ring_mask_wcn6750 = {
+ 		ATH11K_TX_RING_MASK_0,
+ 		0,
+ 		ATH11K_TX_RING_MASK_2,
+-		0,
+-		ATH11K_TX_RING_MASK_4,
+ 	},
+ 	.rx_mon_status = {
+ 		0, 0, 0, 0, 0, 0,
+@@ -2720,8 +2718,8 @@ static const struct ath11k_hw_tcl2wbm_rbm_map ath11k_hw_tcl2wbm_rbm_map_wcn6750[
+ 	},
+ 	{
+ 		.tcl_ring_num = 1,
+-		.wbm_ring_num = 4,
+-		.rbm_id = HAL_RX_BUF_RBM_SW4_BM,
++		.wbm_ring_num = ATH11K_HW_INVALID_WBM_RING_NUM,
++		.rbm_id = HAL_RX_BUF_RBM_SW0_BM,
+ 	},
+ 	{
+ 		.tcl_ring_num = 2,
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 0be4e1232384..270a3b952ac6 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -80,6 +80,8 @@
+ #define ATH11K_M3_FILE			"m3.bin"
+ #define ATH11K_REGDB_FILE_NAME		"regdb.bin"
+ 
++#define ATH11K_HW_INVALID_WBM_RING_NUM	0xF
++
+ #define ATH11K_CE_OFFSET(ab)	(ab->mem_ce - ab->mem)
+ 
+ enum ath11k_hw_rate_cck {
 
->> drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3742:5: warning: no previous prototype for function 'mt7996_mcu_trigger_assert' [-Wmissing-prototypes]
-   int mt7996_mcu_trigger_assert(struct mt7996_dev *dev)
-       ^
-   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3742:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int mt7996_mcu_trigger_assert(struct mt7996_dev *dev)
-   ^
-   static 
-   1 warning generated.
---
->> drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c:114:9: error: implicit declaration of function 'mt7996_mcu_trigger_assert' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                   ret = mt7996_mcu_trigger_assert(dev);
-                         ^
-   1 error generated.
-
-
-vim +/mt7996_mcu_trigger_assert +114 drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
-
-    45	
-    46	DEFINE_DEBUGFS_ATTRIBUTE(fops_implicit_txbf, mt7996_implicit_txbf_get,
-    47				 mt7996_implicit_txbf_set, "%lld\n");
-    48	
-    49	/* test knob of system error recovery */
-    50	static ssize_t
-    51	mt7996_sys_recovery_set(struct file *file, const char __user *user_buf,
-    52				size_t count, loff_t *ppos)
-    53	{
-    54		struct mt7996_phy *phy = file->private_data;
-    55		struct mt7996_dev *dev = phy->dev;
-    56		bool band = phy->mt76->band_idx;
-    57		char buf[16];
-    58		int ret = 0;
-    59		u16 val;
-    60	
-    61		if (count >= sizeof(buf))
-    62			return -EINVAL;
-    63	
-    64		if (copy_from_user(buf, user_buf, count))
-    65			return -EFAULT;
-    66	
-    67		if (count && buf[count - 1] == '\n')
-    68			buf[count - 1] = '\0';
-    69		else
-    70			buf[count] = '\0';
-    71	
-    72		if (kstrtou16(buf, 0, &val))
-    73			return -EINVAL;
-    74	
-    75		switch (val) {
-    76		/*
-    77		 * 0: grab firmware current SER state.
-    78		 * 1: trigger & enable system error L1 recovery.
-    79		 * 2: trigger & enable system error L2 recovery.
-    80		 * 3: trigger & enable system error L3 rx abort.
-    81		 * 4: trigger & enable system error L3 tx abort
-    82		 * 5: trigger & enable system error L3 tx disable.
-    83		 * 6: trigger & enable system error L3 bf recovery.
-    84		 * 7: trigger & enable system error L4 mdp recovery.
-    85		 * 8: trigger & enable system error full recovery.
-    86		 * 9: trigger firmware crash.
-    87		 */
-    88		case UNI_CMD_SER_QUERY:
-    89			ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_QUERY, 0, band);
-    90			break;
-    91		case UNI_CMD_SER_SET_RECOVER_L1:
-    92		case UNI_CMD_SER_SET_RECOVER_L2:
-    93		case UNI_CMD_SER_SET_RECOVER_L3_RX_ABORT:
-    94		case UNI_CMD_SER_SET_RECOVER_L3_TX_ABORT:
-    95		case UNI_CMD_SER_SET_RECOVER_L3_TX_DISABLE:
-    96		case UNI_CMD_SER_SET_RECOVER_L3_BF:
-    97		case UNI_CMD_SER_SET_RECOVER_L4_MDP:
-    98			ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_SET, BIT(val), band);
-    99			if (ret)
-   100				return ret;
-   101	
-   102			ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, val, band);
-   103			break;
-   104	
-   105		/* enable full chip reset */
-   106		case UNI_CMD_SER_SET_RECOVER_FULL:
-   107			mt76_set(dev, MT_WFDMA0_MCU_HOST_INT_ENA, MT_MCU_CMD_WDT_MASK);
-   108			dev->recovery.state |= MT_MCU_CMD_WDT_MASK;
-   109			mt7996_reset(dev);
-   110			break;
-   111	
-   112		/* WARNING: trigger firmware crash */
-   113		case UNI_CMD_SER_SET_SYSTEM_ASSERT:
- > 114			ret = mt7996_mcu_trigger_assert(dev);
-   115			if (ret)
-   116				return ret;
-   117			break;
-   118		default:
-   119			break;
-   120		}
-   121	
-   122		return ret ? ret : count;
-   123	}
-   124	
-
+base-commit: bea046575a2e6d7d1cf63cc7ab032647a3585de5
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.17.1
+
