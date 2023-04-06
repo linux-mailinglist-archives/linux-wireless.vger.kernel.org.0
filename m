@@ -2,73 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD556D8D79
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 04:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 399836D9073
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 09:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234843AbjDFCcN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Apr 2023 22:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
+        id S234950AbjDFHaU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Apr 2023 03:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231889AbjDFCcK (ORCPT
+        with ESMTP id S233235AbjDFHaT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Apr 2023 22:32:10 -0400
+        Thu, 6 Apr 2023 03:30:19 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863238A53;
-        Wed,  5 Apr 2023 19:32:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEEEBEE
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Apr 2023 00:30:17 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3362VKyiC027848, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3362VKyiC027848
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3367TluP6007725, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3367TluP6007725
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 6 Apr 2023 10:31:20 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 6 Apr 2023 10:31:39 +0800
+        Thu, 6 Apr 2023 15:29:47 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 6 Apr 2023 10:31:39 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Thu, 6 Apr 2023 10:31:39 +0800
+ 15.1.2375.32; Thu, 6 Apr 2023 15:29:55 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 6 Apr 2023
+ 15:29:54 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        "Nitin Gupta" <nitin.gupta981@gmail.com>,
-        Neo Jou <neojou@gmail.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        =?iso-8859-1?Q?Pali_Roh=E1r?= <pali@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>
-Subject: RE: [PATCH v5 2/9] wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
-Thread-Topic: [PATCH v5 2/9] wifi: rtw88: sdio: Add HCI implementation for
- SDIO based chipsets
-Thread-Index: AQHZZ/pJyJYNwZ4fx0+w0E4CUS/4Nq8dj67A
-Date:   Thu, 6 Apr 2023 02:31:39 +0000
-Message-ID: <0c9e1c2b3bc04abcb79de87610382d6a@realtek.com>
-References: <20230405200729.632435-1-martin.blumenstingl@googlemail.com>
- <20230405200729.632435-3-martin.blumenstingl@googlemail.com>
-In-Reply-To: <20230405200729.632435-3-martin.blumenstingl@googlemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+To:     <kvalo@kernel.org>
+CC:     <echuang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: correct 5 MHz mask setting
+Date:   Thu, 6 Apr 2023 15:28:41 +0800
+Message-ID: <20230406072841.8308-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
@@ -78,46 +58,80 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Eric Huang <echuang@realtek.com>
 
+Use primary channel index to determine which 5 MHz mask should be enable.
+This mask is used to prevent noise from channel edge to effect CCA
+threshold in wide bandwidth (>= 40 MHZ).
 
-> -----Original Message-----
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Sent: Thursday, April 6, 2023 4:07 AM
-> To: linux-wireless@vger.kernel.org
-> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ulf Hansson
-> <ulf.hansson@linaro.org>; linux-kernel@vger.kernel.org; netdev@vger.kernel.org;
-> linux-mmc@vger.kernel.org; Chris Morgan <macromorgan@hotmail.com>; Nitin Gupta <nitin.gupta981@gmail.com>;
-> Neo Jou <neojou@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
-> Larry Finger <Larry.Finger@lwfinger.net>; Pali Rohár <pali@kernel.org>; Simon Horman
-> <simon.horman@corigine.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Subject: [PATCH v5 2/9] wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
-> 
-> Add a sub-driver for SDIO based chipsets which implements the following
-> functionality:
-> - register accessors for 8, 16 and 32 bits for all states of the card
->   (including usage of 4x 8 bit access for one 32 bit buffer if the card
->   is not fully powered on yet - or if it's fully powered on then 1x 32
->   bit access is used)
-> - checking whether there's space in the TX FIFO queue to transmit data
-> - transfers from the host to the device for actual network traffic,
->   reserved pages (for firmware download) and H2C (host-to-card)
->   transfers
-> - receiving data from the device
-> - deep power saving state
-> 
-> The transmit path is optimized so DMA-capable SDIO host controllers can
-> directly use the buffers provided because the buffer's physical
-> addresses are 8 byte aligned.
-> 
-> The receive path is prepared to support RX aggregation where the
-> chipset combines multiple MAC frames into one bigger buffer to reduce
-> SDIO transfer overhead.
-> 
-> Co-developed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixes: 1b00e9236a71 ("rtw89: 8852c: add set channel of BB part")
+Fixes: 6b0698984eb0 ("wifi: rtw89: 8852b: add chip_ops::set_channel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Huang <echuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c | 9 +++++----
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 9 +++++----
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+index bae80984cfd51..5a46afc97a025 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+@@ -1284,7 +1284,7 @@ static void rtw8852b_ctrl_cck_en(struct rtw89_dev *rtwdev, bool cck_en)
+ static void rtw8852b_5m_mask(struct rtw89_dev *rtwdev, const struct rtw89_chan *chan,
+ 			     enum rtw89_phy_idx phy_idx)
+ {
+-	u8 pri_ch = chan->primary_channel;
++	u8 pri_ch = chan->pri_ch_idx;
+ 	bool mask_5m_low;
+ 	bool mask_5m_en;
+ 
+@@ -1292,12 +1292,13 @@ static void rtw8852b_5m_mask(struct rtw89_dev *rtwdev, const struct rtw89_chan *
+ 	case RTW89_CHANNEL_WIDTH_40:
+ 		/* Prich=1: Mask 5M High, Prich=2: Mask 5M Low */
+ 		mask_5m_en = true;
+-		mask_5m_low = pri_ch == 2;
++		mask_5m_low = pri_ch == RTW89_SC_20_LOWER;
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_80:
+ 		/* Prich=3: Mask 5M High, Prich=4: Mask 5M Low, Else: Disable */
+-		mask_5m_en = pri_ch == 3 || pri_ch == 4;
+-		mask_5m_low = pri_ch == 4;
++		mask_5m_en = pri_ch == RTW89_SC_20_UPMOST ||
++			     pri_ch == RTW89_SC_20_LOWEST;
++		mask_5m_low = pri_ch == RTW89_SC_20_LOWEST;
+ 		break;
+ 	default:
+ 		mask_5m_en = false;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index ba728fca91881..6cd60864eca05 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -1375,18 +1375,19 @@ static void rtw8852c_5m_mask(struct rtw89_dev *rtwdev,
+ 			     const struct rtw89_chan *chan,
+ 			     enum rtw89_phy_idx phy_idx)
+ {
+-	u8 pri_ch = chan->primary_channel;
++	u8 pri_ch = chan->pri_ch_idx;
+ 	bool mask_5m_low;
+ 	bool mask_5m_en;
+ 
+ 	switch (chan->band_width) {
+ 	case RTW89_CHANNEL_WIDTH_40:
+ 		mask_5m_en = true;
+-		mask_5m_low = pri_ch == 2;
++		mask_5m_low = pri_ch == RTW89_SC_20_LOWER;
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_80:
+-		mask_5m_en = ((pri_ch == 3) || (pri_ch == 4));
+-		mask_5m_low = pri_ch == 4;
++		mask_5m_en = pri_ch == RTW89_SC_20_UPMOST ||
++			     pri_ch == RTW89_SC_20_LOWEST;
++		mask_5m_low = pri_ch == RTW89_SC_20_LOWEST;
+ 		break;
+ 	default:
+ 		mask_5m_en = false;
+-- 
+2.25.1
 
