@@ -2,509 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E3B6D9129
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 10:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEB766D92C5
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 11:32:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235869AbjDFIG2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Apr 2023 04:06:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50302 "EHLO
+        id S236030AbjDFJb6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Apr 2023 05:31:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235736AbjDFIG1 (ORCPT
+        with ESMTP id S233568AbjDFJb4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Apr 2023 04:06:27 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AED010CA
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Apr 2023 01:06:23 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-947cd8b2de3so124313866b.0
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Apr 2023 01:06:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680768381;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=69TVopjhQVPLVwi8OVVS1vg/daLfOb7O6QqF2s6OeBA=;
-        b=maT5n92ia/kYld3rI4DXOOT9mlrg9CePT06TnIDnt/uTXl1FCNjmP/7vqFkspE73Nt
-         LWuTCJjFHWRWZkqZQ7I3ehrqe3W9zW/8w9+3q2w89JWtCOtpkMCxgZNeTq0pIUtTcenu
-         bsYj+GOg2hE8gRk6Z02FZlgWL6yk/JcZetRWVrXZXv42lxljPDsNPEJNIbE876SD2R9j
-         AaOiINYXBS12SmWKzaZ66uzlcPd7QybicIte3mKTsUAevH/SLiFrjQRHFbOCGKMeaF+l
-         wrY+tHh0hO2YZi1zVBR49wNQ0ojU7OLtndxA4vyhQdbd3uJgNlaEGw0mIPcw5FQul0ZZ
-         McRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680768381;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=69TVopjhQVPLVwi8OVVS1vg/daLfOb7O6QqF2s6OeBA=;
-        b=daOIsKD8B+DtEh4VfAaX+PaCsGVknETqtKUo1UI9CAk9kosQSt78hz4vvqsC6Zsx0b
-         MokDKY+L/FQbEctdxB5Ej33AFp0X0WDRivVyCnaHxpiDKMJeHL9NMX9S/LK53nqYB8PB
-         tXDJfV+gcQfa0HR5kIWAG+KojvDLT1AzyYWgNpGA5shi9FWy8qF2BffkADpdmrFePKwx
-         X+G68t5XqusVb0ncdmJ+kXS1AvtMYkc7nkNaIySW4LxBRwoEn+NhvPaNdPAXv1dfu8HM
-         txTtiND0nqtfon8tJE9ryr+paR8MLO5M5fnDu3Bd8qXeTBNJQe47W3l5fe0jdI+AIXGF
-         OnDg==
-X-Gm-Message-State: AAQBX9dfALgKpZSn3y5Z5JJm0HYAXPfKHoVLhC9yTa0rO+Bci/KVav4E
-        Df88nGu9A3lyksQfdo0GlpE2rQ==
-X-Google-Smtp-Source: AKy350aZ99MMAGXZWWO2a9UE7E+zhyRuyYzUbhUHck4NB5s8/jusNuU5FK1x0afe0JsEIzuG6JALBw==
-X-Received: by 2002:aa7:da06:0:b0:502:8f49:2552 with SMTP id r6-20020aa7da06000000b005028f492552mr4264273eds.27.1680768381382;
-        Thu, 06 Apr 2023 01:06:21 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed? ([2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed])
-        by smtp.gmail.com with ESMTPSA id d20-20020a50cd54000000b005027dd7c403sm386901edj.66.2023.04.06.01.06.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Apr 2023 01:06:20 -0700 (PDT)
-Message-ID: <48a6b0a3-b441-a84d-e321-b9a773743878@linaro.org>
-Date:   Thu, 6 Apr 2023 10:06:19 +0200
+        Thu, 6 Apr 2023 05:31:56 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED2F8A6C
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Apr 2023 02:31:33 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3369V3n84000582, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3369V3n84000582
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 6 Apr 2023 17:31:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 6 Apr 2023 17:31:23 +0800
+Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 6 Apr 2023
+ 17:31:23 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: fix crash due to null pointer of sta in AP mode
+Date:   Thu, 6 Apr 2023 17:30:09 +0800
+Message-ID: <20230406093009.5869-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/2] dt-bindings: net: Convert ATH10K to YAML
-Content-Language: en-US
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230406-topic-ath10k_bindings-v1-0-1ef181c50236@linaro.org>
- <20230406-topic-ath10k_bindings-v1-1-1ef181c50236@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230406-topic-ath10k_bindings-v1-1-1ef181c50236@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 06/04/2023 02:59, Konrad Dybcio wrote:
-> Convert the ATH10K bindings to YAML.
-> 
-> Dropped properties that are absent at the current state of mainline:
-> - qcom,msi_addr
-> - qcom,msi_base
-> 
-> qcom,coexist-support and qcom,coexist-gpio-pin do very little and should
-> be reconsidered on the driver side, especially the latter one.
-> 
-> Somewhat based on the ath11k bindings.
-> 
+In AP mode, 'sta' could be NULL if sending broadcast/multicast packets,
+so we should check before accessing, or it causes crash:
 
-Thank you for your patch. There is something to discuss/improve.
+  BUG: kernel NULL pointer dereference, address: 0000000000000004
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP PTI
+  CPU: 2 PID: 92 Comm: kworker/u33:0 Tainted: G           OE
+  Workqueue: rtw89_tx_wq rtw89_core_txq_work [rtw89_core]
+  RIP: 0010:rtw89_core_tx_update_desc_info+0x2cc/0x7d0 [rtw89_core]
+  Code: e2 01 41 be 04 00 00 00 41 8b 84 c4 0c 01 00 00 75 0d 45 31 f6 ...
+  RSP: 0018:ffffb4cf807afce0 EFLAGS: 00010297
+  RAX: 0000000000000001 RBX: ffffb4cf807afd48 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
+  RBP: ffffb4cf807afd30 R08: ffff9b28c1e59808 R09: ffff9b28c0297100
+  R10: 00000000052cf7c4 R11: 00000000052cf7c4 R12: ffff9b28c1602040
+  R13: ffff9b28c07b3000 R14: 0000000000000004 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff9b2a73280000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000004 CR3: 00000001ca410003 CR4: 00000000000606e0
+  Call Trace:
+   <TASK>
+   rtw89_core_tx_write+0x7c/0x100 [rtw89_core]
+   rtw89_core_txq_work+0x1b4/0x530 [rtw89_core]
+   process_one_work+0x222/0x3f0
+   worker_thread+0x50/0x3f0
+   kthread+0x16b/0x190
+   ? rescuer_thread+0x3a0/0x3a0
+   ? set_kthread_struct+0x50/0x50
+   ret_from_fork+0x22/0x30
+   </TASK>
 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
-> new file mode 100644
-> index 000000000000..2ff004e404d9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
-> @@ -0,0 +1,357 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm Technologies ATH10K wireless devices
-> +
-> +maintainers:
-> +  - Kalle Valo <kvalo@kernel.org>
-> +
-> +description: |
+Fixes: e5307c9cd7ee ("wifi: rtw89: set data lowest rate according to AP supported rate")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Do not need '|'.
-
-> +  Qualcomm Technologies, Inc. IEEE 802.11ac devices.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - qcom,ath10k # SDIO-based devices
-> +      - qcom,ipq4019-wifi
-> +      - qcom,wcn3990-wifi # SNoC-based devices
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reg-names:
-> +    items:
-> +      - const: membase
-> +
-> +  interrupts:
-> +    minItems: 12
-> +    maxItems: 17
-> +
-> +  interrupt-names:
-> +    minItems: 12
-> +    maxItems: 17
-> +
-> +  memory-region:
-> +    maxItems: 1
-> +    description:
-> +      Reference to the MSA memory region used by the Wi-Fi firmware
-> +      running on the Q6 core.
-> +
-> +  iommus:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  clocks:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  clock-names:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  resets:
-> +    minItems: 6
-
-Drop minItems here.
-
-> +    maxItems: 6
-> +
-> +  reset-names:
-> +    items:
-> +      - const: wifi_cpu_init
-> +      - const: wifi_radio_srif
-> +      - const: wifi_radio_warm
-> +      - const: wifi_radio_cold
-> +      - const: wifi_core_warm
-> +      - const: wifi_core_cold
-> +
-> +  ext-fem-name:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: Name of external front end module used.
-> +    items:
-
-Drop items (it's just enum)
-
-> +      enum:
-> +        - microsemi-lx5586
-> +        - sky85703-11
-> +        - sky85803
-> +
-> +  wifi-firmware:
-> +    type: object
-
-additionalProperties: false
-
-> +    description: |
-> +      The ATH10K Wi-Fi node can contain one optional firmware subnode.
-> +      Firmware subnode is needed when the platform does not have Trustzone.
-
-properties:
-  iommus:
-    maxItems: 1
-
-> +    required:
-> +      - iommus
-> +
-> +  qcom,ath10k-calibration-data:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description:
-> +      Calibration data + board-specific data as a byte array. The length
-> +      can vary between hardware versions.
-> +
-> +  qcom,ath10k-calibration-variant:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description:
-> +      Unique variant identifier of the calibration data in board-2.bin
-> +      for designs with colliding bus and device specific ids
-> +
-> +  qcom,ath10k-pre-calibration-data:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description:
-> +      Pre-calibration data as a byte array. The length can vary between
-> +      hardware versions.
-> +
-> +  qcom,coexist-support:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-
-enum: [0, 1]
-
-> +    description:
-> +      0 or 1 to indicate coex support by the hardware.
-> +
-> +  qcom,coexist-gpio-pin:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      COEX GPIO number provided to the Wi-Fi firmware.
-> +
-> +  qcom,msa-fixed-perm:
-> +    type: boolean
-> +    description:
-> +      Whether to skip executing an SCM call that reassigns the memory
-> +      region ownership.
-> +
-> +  qcom,smem-states:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description: State bits used by the AP to signal the WLAN Q6.
-> +    items:
-> +      - description: Signal bits used to enable/disable low power mode
-> +                     on WCN in the case of WoW (Wake on Wireless).
-> +
-> +  qcom,smem-state-names:
-> +    description: The names of the state bits used for SMP2P output.
-> +    items:
-> +      - const: wlan-smp2p-out
-> +
-> +  qcom,snoc-host-cap-8bit-quirk:
-> +    type: boolean
-> +    description:
-> +      Quirk specifying that the firmware expects the 8bit version
-> +      of the host capability QMI request
-> +
-> +  qcom,xo-cal-data:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      XO cal offset to be configured in XO trim register.
-> +
-> +  vdd-0.8-cx-mx-supply:
-> +    description: Main logic power rail
-> +
-> +  vdd-1.8-xo-supply:
-> +    description: Crystal oscillator supply
-> +
-> +  vdd-1.3-rfa-supply:
-> +    description: RFA supply
-> +
-> +  vdd-3.3-ch0-supply:
-> +    description: Primary Wi-Fi antenna supply
-> +
-> +  vdd-3.3-ch1-supply:
-> +    description: Secondary Wi-Fi antenna supply
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,ipq4019-wifi
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          minItems: 17
-> +          maxItems: 17
-> +
-> +        interrupt-names:
-> +          minItems: 17
-> +          items:
-> +            - const: msi0
-> +            - const: msi1
-> +            - const: msi2
-> +            - const: msi3
-> +            - const: msi4
-> +            - const: msi5
-> +            - const: msi6
-> +            - const: msi7
-> +            - const: msi8
-> +            - const: msi9
-> +            - const: msi10
-> +            - const: msi11
-> +            - const: msi12
-> +            - const: msi13
-> +            - const: msi14
-> +            - const: msi15
-> +            - const: legacy
-> +
-> +        clocks:
-> +          items:
-> +            - description: Wi-Fi command clock
-> +            - description: Wi-Fi reference clock
-> +            - description: Wi-Fi RTC clock
-> +
-> +        clock-names:
-> +          items:
-> +            - const: wifi_wcss_cmd
-> +            - const: wifi_wcss_ref
-> +            - const: wifi_wcss_rtc
-> +
-> +      required:
-> +        - clocks
-> +        - clock-names
-> +        - interrupts
-> +        - interrupt-names
-> +        - resets
-> +        - reset-names
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,wcn3990-wifi
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 1
-> +          items:
-> +            - description: XO reference clock
-> +            - description: Qualcomm Debug Subsystem clock
-> +
-> +        clock-names:
-> +          minItems: 1
-> +          items:
-> +            - const: cxo_ref_clk_pin
-> +            - const: qdss
-> +
-> +        interrupts:
-> +          items:
-> +            - description: CE0
-> +            - description: CE1
-> +            - description: CE2
-> +            - description: CE3
-> +            - description: CE4
-> +            - description: CE5
-> +            - description: CE6
-> +            - description: CE7
-> +            - description: CE8
-> +            - description: CE9
-> +            - description: CE10
-> +            - description: CE11
-> +
-> +      required:
-> +        - interrupts
-> +
-> +examples:
-> +  # SNoC
-> +  - |
-> +    #include <dt-bindings/clock/qcom,rpmcc.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    reserved-memory {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        wlan_msa_mem: memory@4cd000 {
-> +            no-map;
-> +            reg = <0x0 0x004cd000 0x0 0x1000>;
-> +        };
-> +    };
-
-Drop the reserved memory node, it's more-or-less obvious (same everywhere).
-
-> +
-> +    wifi: wifi@18800000 {
-
-Drop label.
-
-> +      compatible = "qcom,wcn3990-wifi";
-> +      reg = <0x18800000 0x800000>;
-> +      reg-names = "membase";
-> +      memory-region = <&wlan_msa_mem>;
-> +      clocks = <&rpmcc RPM_SMD_RF_CLK2_PIN>;
-> +      clock-names = "cxo_ref_clk_pin";
-> +      interrupts = <GIC_SPI 413 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 414 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 415 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 417 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 418 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 420 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 421 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 422 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>;
-> +      iommus = <&anoc2_smmu 0x1900>,
-> +               <&anoc2_smmu 0x1901>;
-> +      qcom,snoc-host-cap-8bit-quirk;
-> +      status = "disabled";
-
-Drop status from examples.
-
-The example looks a bit incomplete. Please add supplies and
-wifi-firmware node.
-
-> +    };
-> +
-> +  # AHB
-> +  - |
-> +    #include <dt-bindings/clock/qcom,gcc-ipq4019.h>
-> +
-> +    wifi0: wifi@a000000 {
-
-Drop label.
-
-> +        compatible = "qcom,ipq4019-wifi";
-> +        reg = <0xa000000 0x200000>;
-> +        resets = <&gcc WIFI0_CPU_INIT_RESET>,
-> +                 <&gcc WIFI0_RADIO_SRIF_RESET>,
-> +                 <&gcc WIFI0_RADIO_WARM_RESET>,
-> +                 <&gcc WIFI0_RADIO_COLD_RESET>,
-> +                 <&gcc WIFI0_CORE_WARM_RESET>,
-> +                 <&gcc WIFI0_CORE_COLD_RESET>;
-> +        reset-names = "wifi_cpu_init",
-> +                      "wifi_radio_srif",
-> +                      "wifi_radio_warm",
-> +                      "wifi_radio_cold",
-> +                      "wifi_core_warm",
-> +                      "wifi_core_cold";
-> +        clocks = <&gcc GCC_WCSS2G_CLK>,
-> +                 <&gcc GCC_WCSS2G_REF_CLK>,
-> +                 <&gcc GCC_WCSS2G_RTC_CLK>;
-> +        clock-names = "wifi_wcss_cmd",
-> +                      "wifi_wcss_ref",
-> +                      "wifi_wcss_rtc";
-> +        interrupts = <GIC_SPI 32 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 33 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 34 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 35 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 36 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 37 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 38 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 39 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 40 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 41 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 42 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 43 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 44 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 45 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 46 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 47 IRQ_TYPE_EDGE_RISING>,
-> +                     <GIC_SPI 168 IRQ_TYPE_LEVEL_HIGH>;
-> +        interrupt-names =  "msi0",
-> +                           "msi1",
-> +                           "msi2",
-> +                           "msi3",
-> +                           "msi4",
-> +                           "msi5",
-> +                           "msi6",
-> +                           "msi7",
-> +                           "msi8",
-> +                           "msi9",
-> +                           "msi10",
-> +                           "msi11",
-> +                           "msi12",
-> +                           "msi13",
-> +                           "msi14",
-> +                           "msi15",
-> +                           "legacy";
-> +        status = "disabled";
-
-Ditto
-
-> +      };
-> 
-
-Best regards,
-Krzysztof
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 56a13be2e2833..194f64e8a8468 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -707,7 +707,7 @@ static u16 rtw89_core_get_data_rate(struct rtw89_dev *rtwdev,
+ 	else
+ 		lowest_rate = RTW89_HW_RATE_OFDM6;
+ 
+-	if (!sta->deflink.supp_rates[chan->band_type])
++	if (!sta || !sta->deflink.supp_rates[chan->band_type])
+ 		return lowest_rate;
+ 
+ 	return __ffs(sta->deflink.supp_rates[chan->band_type]) + lowest_rate;
+-- 
+2.25.1
 
