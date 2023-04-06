@@ -2,66 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F06876D8D19
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 03:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABD556D8D79
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 04:32:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234149AbjDFBzz convert rfc822-to-8bit (ORCPT
+        id S234843AbjDFCcN convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Apr 2023 21:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57066 "EHLO
+        Wed, 5 Apr 2023 22:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbjDFBzy (ORCPT
+        with ESMTP id S231889AbjDFCcK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Apr 2023 21:55:54 -0400
+        Wed, 5 Apr 2023 22:32:10 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2133383D2;
-        Wed,  5 Apr 2023 18:55:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863238A53;
+        Wed,  5 Apr 2023 19:32:07 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3361saDlB028391, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3362VKyiC027848, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3361saDlB028391
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3362VKyiC027848
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 6 Apr 2023 09:54:36 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+        Thu, 6 Apr 2023 10:31:20 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 6 Apr 2023 09:54:56 +0800
+ 15.1.2507.17; Thu, 6 Apr 2023 10:31:39 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 6 Apr 2023 09:54:55 +0800
+ 15.1.2375.7; Thu, 6 Apr 2023 10:31:39 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
  RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Thu, 6 Apr 2023 09:54:55 +0800
+ 15.01.2375.007; Thu, 6 Apr 2023 10:31:39 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-CC:     Hans Ulli Kroll <linux@ulli-kroll.de>,
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        "Nitin Gupta" <nitin.gupta981@gmail.com>,
+        Neo Jou <neojou@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
         Larry Finger <Larry.Finger@lwfinger.net>,
-        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
-        Nick Morrow <morrownr@gmail.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        ValdikSS <iam@valdikss.org.ru>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v2 2/2] wifi: rtw88: rtw8821c: Fix rfe_option field width
-Thread-Topic: [PATCH v2 2/2] wifi: rtw88: rtw8821c: Fix rfe_option field width
-Thread-Index: AQHZZsamg/4VwhlxlEqb+Fqs2PgqWa8dhrAA
-Date:   Thu, 6 Apr 2023 01:54:55 +0000
-Message-ID: <e9c9b7d470904d9f8c8d6892cb8efd7d@realtek.com>
-References: <20230404072508.578056-1-s.hauer@pengutronix.de>
- <20230404072508.578056-3-s.hauer@pengutronix.de>
-In-Reply-To: <20230404072508.578056-3-s.hauer@pengutronix.de>
+        =?iso-8859-1?Q?Pali_Roh=E1r?= <pali@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>
+Subject: RE: [PATCH v5 2/9] wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
+Thread-Topic: [PATCH v5 2/9] wifi: rtw88: sdio: Add HCI implementation for
+ SDIO based chipsets
+Thread-Index: AQHZZ/pJyJYNwZ4fx0+w0E4CUS/4Nq8dj67A
+Date:   Thu, 6 Apr 2023 02:31:39 +0000
+Message-ID: <0c9e1c2b3bc04abcb79de87610382d6a@realtek.com>
+References: <20230405200729.632435-1-martin.blumenstingl@googlemail.com>
+ <20230405200729.632435-3-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20230405200729.632435-3-martin.blumenstingl@googlemail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
 x-kse-antispam-interceptor-info: fallback
 x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -76,69 +81,43 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 
 > -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Tuesday, April 4, 2023 3:25 PM
-> To: linux-wireless <linux-wireless@vger.kernel.org>
-> Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
-> <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
-> <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
-> ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; Sascha Hauer <s.hauer@pengutronix.de>;
-> stable@vger.kernel.org
-> Subject: [PATCH v2 2/2] wifi: rtw88: rtw8821c: Fix rfe_option field width
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Thursday, April 6, 2023 4:07 AM
+> To: linux-wireless@vger.kernel.org
+> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ulf Hansson
+> <ulf.hansson@linaro.org>; linux-kernel@vger.kernel.org; netdev@vger.kernel.org;
+> linux-mmc@vger.kernel.org; Chris Morgan <macromorgan@hotmail.com>; Nitin Gupta <nitin.gupta981@gmail.com>;
+> Neo Jou <neojou@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>; Jernej Skrabec <jernej.skrabec@gmail.com>;
+> Larry Finger <Larry.Finger@lwfinger.net>; Pali Rohár <pali@kernel.org>; Simon Horman
+> <simon.horman@corigine.com>; Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Subject: [PATCH v5 2/9] wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
 > 
-> On my RTW8821CU chipset rfe_option reads as 0x22. Looking at the
-> downstream driver suggests that the field width of rfe_option is 5 bit,
-> so rfe_option should be masked with 0x1f.
+> Add a sub-driver for SDIO based chipsets which implements the following
+> functionality:
+> - register accessors for 8, 16 and 32 bits for all states of the card
+>   (including usage of 4x 8 bit access for one 32 bit buffer if the card
+>   is not fully powered on yet - or if it's fully powered on then 1x 32
+>   bit access is used)
+> - checking whether there's space in the TX FIFO queue to transmit data
+> - transfers from the host to the device for actual network traffic,
+>   reserved pages (for firmware download) and H2C (host-to-card)
+>   transfers
+> - receiving data from the device
+> - deep power saving state
+> 
+> The transmit path is optimized so DMA-capable SDIO host controllers can
+> directly use the buffers provided because the buffer's physical
+> addresses are 8 byte aligned.
+> 
+> The receive path is prepared to support RX aggregation where the
+> chipset combines multiple MAC frames into one bigger buffer to reduce
+> SDIO transfer overhead.
+> 
+> Co-developed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+> Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-I don't aware of this. Could you point where you get it?
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-As I check it internally, 0x22 is expected, so I suggest to have 0x22 entry
-as below
-
--       [34] = RTW_DEF_RFE(8821c, 0, 0),
-+       [34] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),  // copy from type 2
-
-> 
-> Without this the rfe_option comparisons with 2 further down the
-> driver evaluate as false when they should really evaluate as true.
-> The effect is that 2G channels do not work.
-> 
-> rfe_option is also used as an array index into rtw8821c_rfe_defs[].
-> rtw8821c_rfe_defs[34] (0x22) was added as part of adding USB support,
-> likely because rfe_option reads as 0x22. As this now becomes 0x2,
-> rtw8821c_rfe_defs[34] is no longer used and can be removed.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Tested-by: ValdikSS <iam@valdikss.org.ru>
-> Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
-> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8821c.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-> b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-> index 17f800f6efbd0..67efa58dd78ee 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-> @@ -47,7 +47,7 @@ static int rtw8821c_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
-> 
->         map = (struct rtw8821c_efuse *)log_map;
-> 
-> -       efuse->rfe_option = map->rfe_option;
-> +       efuse->rfe_option = map->rfe_option & 0x1f;
->         efuse->rf_board_option = map->rf_board_option;
->         efuse->crystal_cap = map->xtal_k;
->         efuse->pa_type_2g = map->pa_type;
-> @@ -1537,7 +1537,6 @@ static const struct rtw_rfe_def rtw8821c_rfe_defs[] = {
->         [2] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
->         [4] = RTW_DEF_RFE_EXT(8821c, 0, 0, 2),
->         [6] = RTW_DEF_RFE(8821c, 0, 0),
-> -       [34] = RTW_DEF_RFE(8821c, 0, 0),
->  };
-> 
->  static struct rtw_hw_reg rtw8821c_dig[] = {
-> --
-> 2.39.2
 
