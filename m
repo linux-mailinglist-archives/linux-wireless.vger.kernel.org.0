@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF4F96D9BDE
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 17:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23E2A6D9D9D
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 18:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239671AbjDFPKo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Apr 2023 11:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
+        id S239336AbjDFQf0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Apr 2023 12:35:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239699AbjDFPKJ (ORCPT
+        with ESMTP id S238461AbjDFQfZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Apr 2023 11:10:09 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389AD9ECD
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Apr 2023 08:10:00 -0700 (PDT)
-Message-ID: <e37633e5-5eec-5dc6-31fd-d91480b604c2@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1680793797;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=taoE3YV12z4keWkzaBb9BXJPAf8iIKmU2a+QjtCQIZI=;
-        b=Zlu9ogO9KpqfMmDE1IKuNJ9vyTlLV8x5y4x3xlZxTCxkQHwKgiW8Svu+y2JZE6OaHkWf3C
-        tBul/HQ0Pywiq+HlxO4/XW812m6p/AiN41gsJko4gK1SPsGxZ7Zsj3GAPPsHyBVAL6uzQd
-        1OzEE0M8YXF/E0P05Uo/Ge3AvepbtfLt7wn4YdPpyt8y3C2k5IqG45cAFg5PlU6f4B6+hq
-        gctObMqemDbTC1cBuYEzLVaJDcvB74goTLt/IponKx1FpxT0P4/qhLWaCC5FFQDjC+LYmM
-        1vXAdBBrWsfTnPh7PQPOfSTrPOa4dhzNe1vJ2XevFN6mVsZ7x9dUFe5EUIQ3rw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1680793797;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=taoE3YV12z4keWkzaBb9BXJPAf8iIKmU2a+QjtCQIZI=;
-        b=DRj/UaWnUxRTi9e6GzLkTpvJSMtAjV7DM07cbvGN6QBaRdQ2O21yIJIhERXUTzDd3Nnc/1
-        jve11k8IXUJJq7BA==
-Date:   Thu, 6 Apr 2023 17:09:57 +0200
+        Thu, 6 Apr 2023 12:35:25 -0400
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [IPv6:2a01:e0c:1:1599::11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C5EF7ED3;
+        Thu,  6 Apr 2023 09:35:23 -0700 (PDT)
+Received: from [192.168.108.81] (unknown [213.36.7.13])
+        (Authenticated sender: marc.w.gonzalez@free.fr)
+        by smtp2-g21.free.fr (Postfix) with ESMTPSA id 8AD87200408;
+        Thu,  6 Apr 2023 18:35:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+        s=smtp-20201208; t=1680798920;
+        bh=zBxiSB2IBkUy4DKT8B5HowGQraBfYeLmY7S9GfYwHmg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=jAZ5tp9gJ/Lflt4NS2KaHWucCKq1UwIHSv1DQItHA9jelsSHCm6WbH8lAXY/OPWJ8
+         aSvZ2OZmhlJ913Xq4HZal8U219kYLpg9spbjav3cM1lAXjjBCJ3PuMemszICl88g0G
+         LLQksqcC/iE6ZNCoBOraF07H3JROzwddezPNnMnMFh4ps12z/Pz8Y708g6UQJcUeUr
+         xbyBiaI8E6nGV/nWXRJ7dNyH5ZBpLhAtKUz57iX1Lj6r4goTbSffwLBHWqhvNpe3RW
+         BJT9TN+uL1+sHuK+AJwKwRiE0bhq759B/kJKICJMBo3cpGgCY/IU+Id2rNBV9XN7Z5
+         rH12ek10IpOIA==
+Message-ID: <74feca6f-4177-5645-6614-bc5f3dbf0be1@free.fr>
+Date:   Thu, 6 Apr 2023 18:35:09 +0200
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
- <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
- <26840cf1-9403-3d09-a4d2-352bc198efff@linutronix.de>
- <a25acad730c94845a16552f321eb2660@realtek.com>
-Content-Language: de-DE
-From:   Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <a25acad730c94845a16552f321eb2660@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [Performance regression] BCM4359/9 on S905X2
+Content-Language: en-US
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Christian Hewitt <christian@hewittfamily.org.uk>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        MMC <linux-mmc@vger.kernel.org>,
+        AML <linux-amlogic@lists.infradead.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Pierre-Hugues Husson <phh@phh.me>
+References: <b9bd16cb-f1fa-34b7-d599-8637cbe5032b@free.fr>
+ <1jh6ue74x9.fsf@starbuckisacylon.baylibre.com>
+ <EEE9FD80-C106-4A9B-AA8D-5C151E540CFD@hewittfamily.org.uk>
+ <0bb1e3b3-6823-ddb5-001b-72ee1b63779c@free.fr>
+ <CAFBinCA+JOxCGzML-Mohryawrn6Vghd8Ns22=2ZfvWov43aeEg@mail.gmail.com>
+From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
+In-Reply-To: <CAFBinCA+JOxCGzML-Mohryawrn6Vghd8Ns22=2ZfvWov43aeEg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        NUMERIC_HTTP_ADDR,SPF_HELO_NONE,SPF_PASS,WEIRD_PORT
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,49 +63,194 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 06.04.23 um 02:42 schrieb Ping-Ke Shih:
+On 04/04/2023 23:06, Martin Blumenstingl wrote:
+
+> Hi Marc,
+
+Hello Martin :)
+
+> On Tue, Apr 4, 2023 at 6:09 PM Marc Gonzalez wrote:
 > 
+>>                 bus-width = <4>;
+>>                 cap-sd-highspeed;
+>>                 cap-mmc-highspeed;
+>>                 max-frequency = <100000000>;
+>
+> I would start by comparing the bus mode. You can get it from
+> /sys/kernel/debug/mmc2/ios
+> On the vendor kernel it should be in /sys/kernel/debug/sdio/ios (or
+> similar, I'm typing this from the top of my head).
+> It will give you insights on the clock and timing that has been
+> negotiated between the host and card.
 > 
->> -----Original Message-----
->> From: Martin Kaistra <martin.kaistra@linutronix.de>
->> Sent: Wednesday, April 5, 2023 11:31 PM
->> To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
->> <pkshih@realtek.com>; Sebastian Andrzej Siewior <bigeasy@linutronix.de>; linux-wireless@vger.kernel.org
->> Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+> From this information you can get the maximum bus speed, e.g. from [0]
+> Please note that any card will add overhead for communication, so bus
+> speed will not be equal to wifi throughput.
+
+For the vendor kernel:
+
+/sys/kernel/debug/sdio/sdio:0001/state:0x00000001
+/sys/kernel/debug/sdio/clock:200000000
+/sys/kernel/debug/sdio/ios:clock:               200000000 Hz
+/sys/kernel/debug/sdio/ios:actual clock:        199999997 Hz
+/sys/kernel/debug/sdio/ios:vdd:         21 (3.3 ~ 3.4 V)
+/sys/kernel/debug/sdio/ios:bus mode:    2 (push-pull)
+/sys/kernel/debug/sdio/ios:chip select: 0 (don't care)
+/sys/kernel/debug/sdio/ios:power mode:  1 (up)
+/sys/kernel/debug/sdio/ios:bus width:   2 (4 bits)
+/sys/kernel/debug/sdio/ios:timing spec: 6 (sd uhs SDR104)
+/sys/kernel/debug/sdio/ios:signal voltage:      1 (1.80 V)
+/sys/kernel/debug/sdio/ios:driver type: 0 (driver type B)
+
+
+For mainline:
+
+/sys/kernel/debug/mmc2/mmc2:0001/state:0x00000001
+/sys/kernel/debug/mmc2/err_stats:# Command Timeout Occurred:     0
+/sys/kernel/debug/mmc2/err_stats:# Command CRC Errors Occurred:  0
+/sys/kernel/debug/mmc2/err_stats:# Data Timeout Occurred:        0
+/sys/kernel/debug/mmc2/err_stats:# Data CRC Errors Occurred:     0
+/sys/kernel/debug/mmc2/err_stats:# Auto-Cmd Error Occurred:      0
+/sys/kernel/debug/mmc2/err_stats:# ADMA Error Occurred:  0
+/sys/kernel/debug/mmc2/err_stats:# Tuning Error Occurred:        0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ RED Errors:      0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ GCE Errors:      0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ ICCE Errors:     0
+/sys/kernel/debug/mmc2/err_stats:# Request Timedout:     0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ Request Timedout:        0
+/sys/kernel/debug/mmc2/err_stats:# ICE Config Errors:    0
+/sys/kernel/debug/mmc2/err_stats:# Controller Timedout errors:   0
+/sys/kernel/debug/mmc2/err_stats:# Unexpected IRQ errors:        0
+/sys/kernel/debug/mmc2/err_state:0
+/sys/kernel/debug/mmc2/clock:100000000
+/sys/kernel/debug/mmc2/caps2:0x00040000
+/sys/kernel/debug/mmc2/caps:0x40040105
+/sys/kernel/debug/mmc2/ios:clock:               100000000 Hz
+/sys/kernel/debug/mmc2/ios:actual clock:        99999999 Hz
+/sys/kernel/debug/mmc2/ios:vdd:         21 (3.3 ~ 3.4 V)
+/sys/kernel/debug/mmc2/ios:bus mode:    2 (push-pull)
+/sys/kernel/debug/mmc2/ios:chip select: 0 (don't care)
+/sys/kernel/debug/mmc2/ios:power mode:  2 (on)
+/sys/kernel/debug/mmc2/ios:bus width:   2 (4 bits)
+/sys/kernel/debug/mmc2/ios:timing spec: 5 (sd uhs SDR50)
+/sys/kernel/debug/mmc2/ios:signal voltage:      1 (1.80 V)
+/sys/kernel/debug/mmc2/ios:driver type: 0 (driver type B)
+
+
+The clock is indeed running twice as fast on the vendor system.
+And in SDR104 vs SDR50 mode.
+
+Adjusting mainline device tree...
+
+
+/sys/kernel/debug/mmc2/mmc2:0001/state:0x00000001
+/sys/kernel/debug/mmc2/err_stats:# Command Timeout Occurred:     0
+/sys/kernel/debug/mmc2/err_stats:# Command CRC Errors Occurred:  0
+/sys/kernel/debug/mmc2/err_stats:# Data Timeout Occurred:        0
+/sys/kernel/debug/mmc2/err_stats:# Data CRC Errors Occurred:     0
+/sys/kernel/debug/mmc2/err_stats:# Auto-Cmd Error Occurred:      0
+/sys/kernel/debug/mmc2/err_stats:# ADMA Error Occurred:  0
+/sys/kernel/debug/mmc2/err_stats:# Tuning Error Occurred:        0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ RED Errors:      0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ GCE Errors:      0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ ICCE Errors:     0
+/sys/kernel/debug/mmc2/err_stats:# Request Timedout:     0
+/sys/kernel/debug/mmc2/err_stats:# CMDQ Request Timedout:        0
+/sys/kernel/debug/mmc2/err_stats:# ICE Config Errors:    0
+/sys/kernel/debug/mmc2/err_stats:# Controller Timedout errors:   0
+/sys/kernel/debug/mmc2/err_stats:# Unexpected IRQ errors:        0
+/sys/kernel/debug/mmc2/err_state:0
+/sys/kernel/debug/mmc2/clock:200000000
+/sys/kernel/debug/mmc2/caps2:0x00040000
+/sys/kernel/debug/mmc2/caps:0x40080105
+/sys/kernel/debug/mmc2/ios:clock:               200000000 Hz
+/sys/kernel/debug/mmc2/ios:actual clock:        199999997 Hz
+/sys/kernel/debug/mmc2/ios:vdd:         21 (3.3 ~ 3.4 V)
+/sys/kernel/debug/mmc2/ios:bus mode:    2 (push-pull)
+/sys/kernel/debug/mmc2/ios:chip select: 0 (don't care)
+/sys/kernel/debug/mmc2/ios:power mode:  2 (on)
+/sys/kernel/debug/mmc2/ios:bus width:   2 (4 bits)
+/sys/kernel/debug/mmc2/ios:timing spec: 6 (sd uhs SDR104)
+/sys/kernel/debug/mmc2/ios:signal voltage:      1 (1.80 V)
+/sys/kernel/debug/mmc2/ios:driver type: 0 (driver type B)
+
+
+# curl -o /dev/null http://192.168.1.254:8095/fixed/1G
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1024M  100 1024M    0     0  9747k      0  0:01:47  0:01:47 --:--:-- 9544k
+
+With this new setting, WiFi throughput increases 20%
+(from 60 Mbps to 75 Mbps).
+
+(Uggg, I've been using 10^9 for the amount transferred,
+but it looks to be 2^30 actually. Absolute speeds are
+actually 7% higher, but doesn't change the conclusion)
+
+I also noticed that I reported 11 MB/s (88 Mbps) at the beginning
+of this thread. This would point to a performance regression caused
+by my defconfig & device tree changes :(
+
+
+>> vendor DTS has the following child node:
 >>
->> Am 23.03.23 um 18:12 schrieb Bitterblue Smith:
->>> On 22/03/2023 19:18, Martin Kaistra wrote:
->>> Then I was able to turn on the AP and connect my phone to it. However,
->>> the system froze after a few seconds. I had `journalctl --follow`
->>> running. The last thing printed before the system froze was the DHCP
->>> stuff (discover, offer, request, ack). The phone said it was connected,
->>> but speedtest.net didn't have time to load before the freeze.
+>>                 sdio {
+>>                         pinname = "sdio";
+>>                         ocr_avail = <0x200080>; /**VDD voltage 3.3 ~ 3.4 */
+>>                         /* max_req_size = <0x20000>; */ /**128KB*/
+>>                         max_req_size = <0x400>;
+>>                         card_type = <3>;
+>>                         /* 3:sdio device(ie:sdio-wifi),
+>>                          * 4:SD combo (IO+mem) card
+>>                          */
+>>                         dmode = "pio";
+>>                 };
 >>
->> Hi
->>
->> I could reproduce a frozen system with my hostapd setup, though it
->> doesn't happen reliably and I don't have an error message when it happens.
->>
+>> Maybe the vendor kernel uses the above information to "boost"
+>> the performance of the SDIO-based WiFi adapter?
+>
+> PIO is also what we support upstream with the
+> amlogic,dram-access-quirk; (which is enabled for &sd_emmc_a).
+> This suggests that the pinctrl trick that Neil mentioned is not used here.
 > 
-> Using netcat would help to capture useful messages when system gets frozen.
-> 
-> Ping-Ke
-> 
+> I assume that the wifi driver on the vendor kernel is the brcmdhd (out
+> of tree) driver, while mainline uses brcmfmac.
 
-Thanks. I got a trace by using netconsole and netcat. It is a NULL 
-pointer dereference in rtl8xxxu_fill_txdesc_v2():
+Correct.
+hardware/wifi/broadcom/drivers/ap6xxx/bcmdhd.100.10.545.x
+vs
+drivers/net/wireless/broadcom/brcm80211/brcmfmac
 
+> One idea that comes to my mind is to enable the
+> amlogic,dram-access-quirk; (and use pio mode on the vendor kernel) for
+> eMMC or SD card and then compare read/write speeds. If they are
+> similar-ish then the wifi performance difference is likely caused by
+> the wifi driver (or in the opposite case: if read/write speeds on
+> mainline with amlogic,dram-access-quirk; perform worse than the vendor
+> kernel with pio mode then it's likely that it's a meson-gx-mmc driver
+> limitation).
 
-         if (rate_flags & IEEE80211_TX_RC_MCS &&
-             !ieee80211_is_mgmt(hdr->frame_control))
-                 rate = tx_info->control.rates[0].idx + DESC_RATE_MCS0;
-         else
-                 rate = tx_rate->hw_value;    <-- error happens here
+Thanks for the suggestion.
 
-         if (rtl8xxxu_debug & RTL8XXXU_DEBUG_TX)
-                 dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
+Are you aware whether someone has tried running the bcmdhd driver
+on mainline?
 
-This happens when ieee80211_get_tx_rate() hits the WARN_ON_ONCE and 
-maybe also when c->control.rates[0].idx has another invalid value.
-See my previous comments about HAS_RATE_CONTROL.
+Thanks for the test suggestion.
+
+> From my work on the rtw88 SDIO wifi driver I can say that the
+> meson-gx-mmc driver can push (TX direction) at least 120Mbit/s.
+> I understand that this is half of what you get with the vendor kernel
+> - and that this is the wrong direction (you're testing RX while I'm
+> testing TX).
+> The point that I want to get across is: I think nobody has the one
+> answer why wifi performance is lower (personally I'm happy with having
+> it work at all, performance is second).
+> So it'll be a process to find the reason, and I think it requires
+> being creative due to the large amounts of different code (MMC driver,
+> wifi driver, additional patches...) between mainline and the vendor
+> kernel.
+
+I really appreciate you sharing this insight.
+
+Regards.
+
