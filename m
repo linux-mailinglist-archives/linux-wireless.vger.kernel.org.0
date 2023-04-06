@@ -2,85 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 610A26D90AF
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 09:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1749D6D90EB
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 09:59:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235705AbjDFHnP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Apr 2023 03:43:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53294 "EHLO
+        id S234703AbjDFH7P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Apr 2023 03:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236044AbjDFHmn (ORCPT
+        with ESMTP id S235327AbjDFH7L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Apr 2023 03:42:43 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E5C7A8D
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Apr 2023 00:42:16 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3367fn7tB005656, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3367fn7tB005656
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 6 Apr 2023 15:41:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 6 Apr 2023 15:42:09 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 6 Apr 2023 15:42:09 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Thu, 6 Apr 2023 15:42:08 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     Timlee <timlee@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: pull request: rtw89: update firmware of 8852b and 8852c
-Thread-Topic: pull request: rtw89: update firmware of 8852b and 8852c
-Thread-Index: AQHZaFtKYkxwST97a0G0PKpVUG5xpg==
-Date:   Thu, 6 Apr 2023 07:42:08 +0000
-Message-ID: <72e35b08661be39a97b12896c26496874418950d.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5C0928E1CF4E8F4385B9E49374950CDB@realtek.com>
-Content-Transfer-Encoding: base64
+        Thu, 6 Apr 2023 03:59:11 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836186A4B
+        for <linux-wireless@vger.kernel.org>; Thu,  6 Apr 2023 00:59:08 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9338d479a21so108241466b.1
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Apr 2023 00:59:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680767947;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eGOZy8VGjSJ+0BmelGLbUSEWfzbtc8+M0JiKbqs9pJA=;
+        b=N9G4spykgdCCFRTeP0t+ub9hYU31XZs52jbiORIrT3M6P+ym5e2uaHZOmZBw1/WDWu
+         baZy/UEPhDGMkehJveh1Mu+Khce4DDvvmc8U1i8hX4zLqaerboboiX6irXSsQN1JFYxn
+         M5GLLDYqMs+2h2sSBlyRzhv6fUMyFSqtzs24z+sKVsRRHn26eykSjuJgIkNVMzxG+RXZ
+         hyDVy5cjnG3vtksjzGRfq8xyNQNDG+Wd2sD0hLdkMq5qIrw4c/0sznC7yO/5AlVL2pcM
+         F3SHCfiL2ubj8BWW7ckDNW1GL02kQhlbbc9xrSbAHBs7Hc/9AdgFqcM8uDzJGUSPO+/u
+         gVtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680767947;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eGOZy8VGjSJ+0BmelGLbUSEWfzbtc8+M0JiKbqs9pJA=;
+        b=QwN9S4KXe7DS63PU3avPIxVZ5bmTNl9kX8GkI561pZE9hGM1uDbORJnJ0KUIb/piw0
+         AZdIfcGk0wnmFf9RNVz/oMH9cnk3PhZ6HMgH14dJJJToCTxRjVxBztwGG3BnJmpfXiAv
+         qJc6/gtW4B16WQ5bRPrXpxkOTyTwXijP9LJsCTtLc2piQ+SrM/3e2sVWS3xXTvSDIlwZ
+         r4NI56bT1PyBiLVGet8IPlK7V+2zHDDlZxHZLMAs75uyWa4SUdR1Xg8veZRcbEaSPVya
+         phxLeuDZR83TNEnsmlCiXj4Q5Z7kM8UR8kZzb3MAshN3o4I9PnMCdfqM6GpIYNVXuSp8
+         4gLA==
+X-Gm-Message-State: AAQBX9cU5FBEDoaJz+tFzrutljrT8BDOfntD7SEb2atn/hTXD41UQFek
+        pMDbMvjzoISVRYGVQfxUZLv0Cg==
+X-Google-Smtp-Source: AKy350b1OxLYhmKxwlBHwx2zmsP1VmE6Ad6u8dVfEaQOoIeCNILRVP5Ym8zF9rUNNAkIPBP8KInS4A==
+X-Received: by 2002:aa7:d3d5:0:b0:4fb:7ad6:907a with SMTP id o21-20020aa7d3d5000000b004fb7ad6907amr3913451edr.13.1680767946915;
+        Thu, 06 Apr 2023 00:59:06 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed? ([2a02:810d:15c0:828:49e6:bb8c:a05b:c4ed])
+        by smtp.gmail.com with ESMTPSA id t10-20020a50c24a000000b004aef147add6sm374853edf.47.2023.04.06.00.59.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Apr 2023 00:59:06 -0700 (PDT)
+Message-ID: <7e1b0a58-55f4-8425-5d76-a5a3ace1edc1@linaro.org>
+Date:   Thu, 6 Apr 2023 09:59:05 +0200
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: sdm845-polaris: Drop inexistent
+ properties
+Content-Language: en-US
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20230406-topic-ath10k_bindings-v1-0-1ef181c50236@linaro.org>
+ <20230406-topic-ath10k_bindings-v1-2-1ef181c50236@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230406-topic-ath10k_bindings-v1-2-1ef181c50236@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGksDQoNClVwZGF0ZSB0d28gZmlybXdhcmUgb2YgcnR3ODkgZHJpdmVyIC0tIDg4NTJiIHYwLjI5
-LjI5LjEgYW5kIDg4NTJjIHYwLjI3LjU2LjEzLg0KDQpUaGFuayB5b3UNClBpbmctS2UNCg0KLS0t
-DQpUaGUgZm9sbG93aW5nIGNoYW5nZXMgc2luY2UgY29tbWl0IDJlOTJhNDlmOTBmNzNjOGVkYzQ0
-YjI1YzZlNjY5ZDVlNzA4OTNjOTA6DQoNCiAgbnZpZGlhOiB1cGRhdGUgVHUxMHggYW5kIFR1MTF4
-IHNpZ25lZCBmaXJtd2FyZSB0byBzdXBwb3J0IG5ld2VyIFR1cmluZyBIVyAoMjAyMy0wNC0wNCAw
-ODowMzo1Mw0KLTA0MDApDQoNCmFyZSBhdmFpbGFibGUgaW4gdGhlIEdpdCByZXBvc2l0b3J5IGF0
-Og0KDQogIGh0dHBzOi8vZ2l0aHViLmNvbS9wa3NoaWgvbGludXgtZmlybXdhcmUuZ2l0IEhFQUQN
-Cg0KZm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIDlmNzUwMmYxZGJiMTZhZWEyMTIyMDA0
-ZGQ2MDdlMDNjYTZhNjJjMGI6DQoNCiAgcnR3ODk6IDg4NTJiOiB1cGRhdGUgZm9ybWF0LTEgZncg
-dG8gdjAuMjkuMjkuMSAoMjAyMy0wNC0wNiAxNTozMjoxMiArMDgwMCkNCg0KLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KQ2hp
-bi1ZZW4gTGVlICgxKToNCiAgICAgIHJ0dzg5OiA4ODUyYzogdXBkYXRlIGZ3IHRvIHYwLjI3LjU2
-LjEzDQoNClBpbmctS2UgU2hpaCAoMSk6DQogICAgICBydHc4OTogODg1MmI6IHVwZGF0ZSBmb3Jt
-YXQtMSBmdyB0byB2MC4yOS4yOS4xDQoNCiBydHc4OS9ydHc4ODUyYl9mdy0xLmJpbiB8IEJpbiAx
-MTg4NDg4IC0+IDExODQ5OTIgYnl0ZXMNCiBydHc4OS9ydHc4ODUyY19mdy5iaW4gICB8IEJpbiAx
-NTMyNjU2IC0+IDE1MzI3MzYgYnl0ZXMNCiAyIGZpbGVzIGNoYW5nZWQsIDAgaW5zZXJ0aW9ucygr
-KSwgMCBkZWxldGlvbnMoLSkNCg0K
+On 06/04/2023 02:59, Konrad Dybcio wrote:
+> Drop the qcom,snoc-host-cap-skip-quirk that was never introduced to
+> solve schema warnings.
+> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
