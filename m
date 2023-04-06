@@ -2,65 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 842A36D8C15
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 02:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641136D8C33
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Apr 2023 02:59:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232656AbjDFAmp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Apr 2023 20:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57506 "EHLO
+        id S233939AbjDFA7m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Apr 2023 20:59:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231530AbjDFAmo (ORCPT
+        with ESMTP id S232719AbjDFA7l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Apr 2023 20:42:44 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE1B5BBD
-        for <linux-wireless@vger.kernel.org>; Wed,  5 Apr 2023 17:42:42 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3360fpqlF025488, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3360fpqlF025488
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 6 Apr 2023 08:41:51 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Thu, 6 Apr 2023 08:42:11 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 6 Apr 2023 08:42:11 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Thu, 6 Apr 2023 08:42:11 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Kaistra <martin.kaistra@linutronix.de>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
-Thread-Topic: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
-Thread-Index: AQHZXOKJ+70+DZ6OK0SBvz9wvU5TVK8IFYoAgBRR6QCAAR8HMA==
-Date:   Thu, 6 Apr 2023 00:42:11 +0000
-Message-ID: <a25acad730c94845a16552f321eb2660@realtek.com>
-References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
- <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
- <26840cf1-9403-3d09-a4d2-352bc198efff@linutronix.de>
-In-Reply-To: <26840cf1-9403-3d09-a4d2-352bc198efff@linutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 5 Apr 2023 20:59:41 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53C656EAF
+        for <linux-wireless@vger.kernel.org>; Wed,  5 Apr 2023 17:59:39 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id d7so3909180lfj.3
+        for <linux-wireless@vger.kernel.org>; Wed, 05 Apr 2023 17:59:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680742777;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yt4Raa0OR7WXYxLqnylowbsWrZ6nM/R8HDW7bruIHEw=;
+        b=D10ncPGBOgRnIMiXNNqC8g6FcuG5XW1ETHr/ppA3OvELqpITLd8QQao3FNum1hsuOJ
+         jxhsB9+keRcDSwONGSWAD02jPi+cGbNkg+wIRadu09gXsB2RRXgxfBsUUUbT6Uh+oi/q
+         zwyS8E5Oy7or+DuUOMyplI+DNxdLWF3XUckfZmYDdMTaRkOG8JIRXXzC6faJQjcoUNVk
+         +Zjz5ak+OEnMRIehFKlGrCnSmWCcSqS/XWdrXL7lhxczgQiOm73CHgU8XAv6cvXUeg/O
+         r6uXSnbDGp9w3rNFArKA4QX5suA1+Y7F7MKGrLQqBMVuQq4K2Ets3Ocfb0hlvgVjRPeP
+         682g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680742777;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yt4Raa0OR7WXYxLqnylowbsWrZ6nM/R8HDW7bruIHEw=;
+        b=0ug7VZnDBE0dizz6qoGAeb0za+k2RBB/d05mOOPUjhJRMdRyQOo/yzCpCkDmbGu2qM
+         TIv/wCHBdgsHIsssg9Wzj+h6LaSZV2s/QrsUTbKj9dNgE8zWM5S8vQsQ72/AN1d1J3vk
+         OWuS4v24Uy99Q/O0pKPZ6OBHlTf6ufLHunudM01yNnvnZICXMTme1NZY3t4tDIyMyIUX
+         GrLFvjJ4SRFMp7ttOenbB8VbDeN2gDRu5O7IBPDwluVRUY3csTS7sq4aNtmxTH0K+679
+         2SblOjTtUtZ9AHNWn5bBBMJR0sjePdvn1HRRsTU5F+rnXfbIa+5bLouel30jmpqC3xN9
+         G1SA==
+X-Gm-Message-State: AAQBX9dsAhdXccO+Y7UPve5/DhK0ea+ImBqBmTsWHGn5wH3P1whJmqem
+        wV9wSKHwicgH7s9bCRZI713CXg==
+X-Google-Smtp-Source: AKy350bvRQ4xglcKBLR2B3LO2fNEinE6KMqWCgUjt28/qklI1ZlXN0Al/TofHrb2Le93U72r2Do0jw==
+X-Received: by 2002:ac2:5a45:0:b0:4e9:9e31:5f70 with SMTP id r5-20020ac25a45000000b004e99e315f70mr1995840lfn.56.1680742777587;
+        Wed, 05 Apr 2023 17:59:37 -0700 (PDT)
+Received: from [192.168.1.101] (abxh37.neoplus.adsl.tpnet.pl. [83.9.1.37])
+        by smtp.gmail.com with ESMTPSA id v7-20020a197407000000b004b550c26949sm48280lfe.290.2023.04.05.17.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 17:59:37 -0700 (PDT)
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: [PATCH 0/2] ATH10K YAML conversion
+Date:   Thu, 06 Apr 2023 02:59:34 +0200
+Message-Id: <20230406-topic-ath10k_bindings-v1-0-1ef181c50236@linaro.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHYZLmQC/x2N0QqDMAwAf0XyvEJtdWz7lTFGWlMbJlEaNwTx3
+ y17vIPjdlAqTAqPZodCP1aepUJ7aSBmlJEMD5XBWedtZ69mnReOBtfc2s87sAwso5o7pj7hzXf
+ O91DbgEomFJSYay3faapyKZR4+8+er+M4ATBWI0V8AAAA
+To:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680742775; l=762;
+ i=konrad.dybcio@linaro.org; s=20230215; h=from:subject:message-id;
+ bh=6wHUgDnIplyPhsLs7QHChoA/jlMqdzmIksoJsfliPu4=;
+ b=Mg0AbrS53coeHuAmukl/B1WS0JpN+XpwrJVH/ak0bj7Ga6cjjpYcC3NaSYxTe9qwhDt8mFDD2Y5d
+ Oe//HZGCBF26Of1Q4PodIBSJd+kb16DmZP5K1lqWFPaGlMN8gVl4
+X-Developer-Key: i=konrad.dybcio@linaro.org; a=ed25519;
+ pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,24 +90,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEthaXN0cmEg
-PG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+DQo+IFNlbnQ6IFdlZG5lc2RheSwgQXByaWwg
-NSwgMjAyMyAxMTozMSBQTQ0KPiBUbzogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBn
-bWFpbC5jb20+DQo+IENjOiBKZXMgU29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+OyBL
-YWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3JnPjsgUGluZy1LZSBTaGloDQo+IDxwa3NoaWhAcmVh
-bHRlay5jb20+OyBTZWJhc3RpYW4gQW5kcnplaiBTaWV3aW9yIDxiaWdlYXN5QGxpbnV0cm9uaXgu
-ZGU+OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtSRkMg
-UEFUQ0ggMDAvMTRdIHdpZmk6IHJ0bDh4eHh1OiBBZGQgQVAgbW9kZSBzdXBwb3J0IGZvciA4MTg4
-Zg0KPiANCj4gQW0gMjMuMDMuMjMgdW0gMTg6MTIgc2NocmllYiBCaXR0ZXJibHVlIFNtaXRoOg0K
-PiA+IE9uIDIyLzAzLzIwMjMgMTk6MTgsIE1hcnRpbiBLYWlzdHJhIHdyb3RlOg0KPiA+IFRoZW4g
-SSB3YXMgYWJsZSB0byB0dXJuIG9uIHRoZSBBUCBhbmQgY29ubmVjdCBteSBwaG9uZSB0byBpdC4g
-SG93ZXZlciwNCj4gPiB0aGUgc3lzdGVtIGZyb3plIGFmdGVyIGEgZmV3IHNlY29uZHMuIEkgaGFk
-IGBqb3VybmFsY3RsIC0tZm9sbG93YA0KPiA+IHJ1bm5pbmcuIFRoZSBsYXN0IHRoaW5nIHByaW50
-ZWQgYmVmb3JlIHRoZSBzeXN0ZW0gZnJvemUgd2FzIHRoZSBESENQDQo+ID4gc3R1ZmYgKGRpc2Nv
-dmVyLCBvZmZlciwgcmVxdWVzdCwgYWNrKS4gVGhlIHBob25lIHNhaWQgaXQgd2FzIGNvbm5lY3Rl
-ZCwNCj4gPiBidXQgc3BlZWR0ZXN0Lm5ldCBkaWRuJ3QgaGF2ZSB0aW1lIHRvIGxvYWQgYmVmb3Jl
-IHRoZSBmcmVlemUuDQo+IA0KPiBIaQ0KPiANCj4gSSBjb3VsZCByZXByb2R1Y2UgYSBmcm96ZW4g
-c3lzdGVtIHdpdGggbXkgaG9zdGFwZCBzZXR1cCwgdGhvdWdoIGl0DQo+IGRvZXNuJ3QgaGFwcGVu
-IHJlbGlhYmx5IGFuZCBJIGRvbid0IGhhdmUgYW4gZXJyb3IgbWVzc2FnZSB3aGVuIGl0IGhhcHBl
-bnMuDQo+IA0KDQpVc2luZyBuZXRjYXQgd291bGQgaGVscCB0byBjYXB0dXJlIHVzZWZ1bCBtZXNz
-YWdlcyB3aGVuIHN5c3RlbSBnZXRzIGZyb3plbi4NCg0KUGluZy1LZQ0KDQo=
+This is my attempt at (finally) moving ATH10K to YAML.
+One inexistent dt property came out as part of that.
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+---
+Konrad Dybcio (2):
+      dt-bindings: net: Convert ATH10K to YAML
+      arm64: dts: qcom: sdm845-polaris: Drop inexistent properties
+
+ .../bindings/net/wireless/qcom,ath10k.txt          | 215 -------------
+ .../bindings/net/wireless/qcom,ath10k.yaml         | 357 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts |   2 -
+ 3 files changed, 357 insertions(+), 217 deletions(-)
+---
+base-commit: 8417c8f5007bf4567ccffda850a3157c7d905f67
+change-id: 20230406-topic-ath10k_bindings-9af5fa834235
+
+Best regards,
+-- 
+Konrad Dybcio <konrad.dybcio@linaro.org>
+
