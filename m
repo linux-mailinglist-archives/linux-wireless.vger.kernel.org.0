@@ -2,203 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C14EE6DAD60
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Apr 2023 15:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3096DADA5
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Apr 2023 15:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240632AbjDGNQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Apr 2023 09:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59536 "EHLO
+        id S230363AbjDGNfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Apr 2023 09:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240590AbjDGNQ2 (ORCPT
+        with ESMTP id S229704AbjDGNfL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Apr 2023 09:16:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21907C7
-        for <linux-wireless@vger.kernel.org>; Fri,  7 Apr 2023 06:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1680873343;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+805T1P5BMIH072MzaqMZBoBVUUDfrH7JxP+UHnP/BM=;
-        b=QfJg04g5Lx0kc5gkXEjtqwIK3KGOEThMfP84sbepthmuHwfMddo79hrGxBH2434SK2B0Sc
-        Vz9IbIzCmLEDUIlLbzki87rOY+LU6kGzOS/EGBXuYUfKLtpNgEBeFnXa9tyEfu//JPF+3g
-        Kkifpi6Q/n0Pzc84GO0lWqQuw+O7Vx4=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-YSVG0ItgNraDUaTQlRdxNw-1; Fri, 07 Apr 2023 09:15:42 -0400
-X-MC-Unique: YSVG0ItgNraDUaTQlRdxNw-1
-Received: by mail-ej1-f69.google.com with SMTP id hy11-20020a1709068a6b00b0093994122eddso1524580ejc.17
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Apr 2023 06:15:41 -0700 (PDT)
+        Fri, 7 Apr 2023 09:35:11 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CDE944B9
+        for <linux-wireless@vger.kernel.org>; Fri,  7 Apr 2023 06:35:10 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id q16so54510214lfe.10
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Apr 2023 06:35:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680874509;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DtaBXHMta717GpCuZ3wh1MM3SKnnue8iRo2CuX4LyJA=;
+        b=C0uULR956DWUq4yyn2ojN4NMe/JEa/qkhBvz1mLHZE6E+4OeYapJs8wBgvf5rYVHtk
+         UVurRhKyEk/mgh9qfmZ6QceyEzX0j28/3OxWegln1vq21BCdqGmGpUFXRIRX9hwx9ON6
+         AwoQND2MnjFVeaCtDTwz4U/1c/mHlwdKeQ2a3tV6UTtB8N6dOJsEPcPTJGeXmcBYY1d0
+         OjRqYk4EabZgIb01qL/Hw29ccVkBaFEwx/tkRsSLAAHEiFkAM/8warC7bd3w64WLwB8w
+         sep9+WlkXlS/dVBOHk2RBGfNW6fIvCE1ZoHCbrYJ2z81b7T1XKhwBuk2NxB1phNK5f52
+         cScQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680873341; x=1683465341;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1680874509;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+805T1P5BMIH072MzaqMZBoBVUUDfrH7JxP+UHnP/BM=;
-        b=SK+PjvJ+O73VF0jt4z/Jqm7mN/8ioI3Hx0MtR3mvB6cpBNXu9majHuFlOmOKNwq+g8
-         2TfBgZMeZGSWA/yfLYqDbLNUY4mDaQh7+WwFg0QUMw08BSdSgnkpc+FNO6z7tIlYnCNn
-         SlgjliWAUHsxlDwa+bMff1B8uA92E5jmmHqR/oG+dMvoGApE4CMz2Sxay7IA6Sir8Arx
-         VX5ANcCC+godDzOAxftbndNLmCSP5K0LzesXmS/nD7aslLTM+8TYIh5fbL0sc2mfK3h2
-         Nbw7MNrVQU6J2YNHkrMgRWH28RnM4jGRLrEQ7/r7UarU6LWHJetpTO/r0F1fp8k5Ub/I
-         EOqg==
-X-Gm-Message-State: AAQBX9deAn1SU4fVKtIp/PMNYLMX4k8m7aTZdXl6g+1NSj1QqMlYLvZo
-        YnCetEqwZKPVD4hDjS9MI5FBsBxBLft8UjVz4wirKVgtvLbgQvs7kaK6hDFo8RkVFwLJweZOoMD
-        7cTGPzsEsr3fG7OIP1h5mBYFEruQ=
-X-Received: by 2002:a17:906:7397:b0:93f:50c7:2f5f with SMTP id f23-20020a170906739700b0093f50c72f5fmr2395028ejl.63.1680873341119;
-        Fri, 07 Apr 2023 06:15:41 -0700 (PDT)
-X-Google-Smtp-Source: AKy350biu2Io3Qi9fG2dyv4L+VPfvLmCaZLNoZgiCS1qJ4mCSK5lTpJDrxSPnOP0SqjSnsz+SVY1Ww==
-X-Received: by 2002:a17:906:7397:b0:93f:50c7:2f5f with SMTP id f23-20020a170906739700b0093f50c72f5fmr2395009ejl.63.1680873340869;
-        Fri, 07 Apr 2023 06:15:40 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id jx17-20020a170907761100b009332bb8b1f7sm2047300ejc.66.2023.04.07.06.15.39
+        bh=DtaBXHMta717GpCuZ3wh1MM3SKnnue8iRo2CuX4LyJA=;
+        b=nrmQTJU51d0e21S8lgNgp4c9w6k9Ky+6sSt/SeQ73THCBWBUw5DAp4HGlvTUjT1xw0
+         /lVFaIJfiOJWzqisKrN4D+eqwOrwZ+YNBLJqB+Pf3mEpHL05AA7hOMTKcoEMr6uJHUZn
+         oVhiEZg6ZiwE+B/1c7qbrX0gYSIOQa7xW4h8TGbSN13oSPIbzF+xXglxpS6YCIiEa3fD
+         x68IAviuLZ7QqaJcsv7PzEg+4dzrbWbviQwRRz7zRFPtOgAbzl0X7SBeuVrRo3sQ0n3f
+         aWrbEc98lqsesJhXjIB8SnPAgMRBsK7gTTi864efSta5tfj0NYCV6mU2L1COXix65bhw
+         ficQ==
+X-Gm-Message-State: AAQBX9dxWhzYSTylL9p4fmIMm4srk/sentkVP7s4I6z2mKYYIdhgRYwA
+        9MMS5jmE8s6vFKaXhMU04XMFEw==
+X-Google-Smtp-Source: AKy350aT0DmwbnnqzrraNugNo0+iMi/Li4QQ8L+y+1QlEdcYad0HE/PkOOlJ6OW+ED8Ingr9/fcD8Q==
+X-Received: by 2002:a19:f817:0:b0:4a4:68b8:f4bd with SMTP id a23-20020a19f817000000b004a468b8f4bdmr706625lff.3.1680874508840;
+        Fri, 07 Apr 2023 06:35:08 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id f14-20020a2ea0ce000000b00298a81f3184sm790704ljm.100.2023.04.07.06.35.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Apr 2023 06:15:39 -0700 (PDT)
-Message-ID: <845521b4-0451-f0c0-7606-0144475e98f7@redhat.com>
-Date:   Fri, 7 Apr 2023 15:15:38 +0200
+        Fri, 07 Apr 2023 06:35:08 -0700 (PDT)
+Message-ID: <8ceeee1e-8828-69a9-facb-20c3787207bd@linaro.org>
+Date:   Fri, 7 Apr 2023 16:35:08 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH] wifi: brcmfmac: add Cypress 43439 SDIO ids
-To:     Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Danny van Heumen <danny@dannyvanheumen.nl>,
-        Eric Dumazet <edumazet@google.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        brcm80211-dev-list.pdl@broadcom.com, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20230407013118.466441-1-marex@denx.de>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230407013118.466441-1-marex@denx.de>
-Content-Type: text/plain; charset=UTF-8
+ Thunderbird/102.9.0
+Subject: Re: [PULL linux-firmware] ath10k & ath11k firmware 20230405
+Content-Language: en-GB
+To:     Kalle Valo <kvalo@kernel.org>, linux-firmware@kernel.org
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        ath11k@lists.infradead.org
+References: <87cz4ia35m.fsf@kernel.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <87cz4ia35m.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Kalle,
 
-On 4/7/23 03:31, Marek Vasut wrote:
-> Add SDIO ids for use with the muRata 1YN (Cypress CYW43439).
-> The odd thing about this is that the previous 1YN populated
-> on M.2 card for evaluation purposes had BRCM SDIO vendor ID,
-> while the chip populated on real hardware has a Cypress one.
-> The device ID also differs between the two devices. But they
-> are both 43439 otherwise, so add the IDs for both.
+On 05/04/2023 16:07, Kalle Valo wrote:
+> Hi,
 > 
-> ```
-> /sys/.../mmc_host/mmc2/mmc2:0001 # cat vendor device
-> 0x04b4
-> 0xbd3d
-> ```
+> Here's a pull request for ath10k and ath11k. For ath10k we have lots of
+> board file updates in multiple hardware families. For ath11k we have new
+> firmware branches for QCN9074, IPQ6018 and IPQ8074. WCN6750 also got a
+> firmware update and WCN6855 has board file updates.
 > 
-> Fixes: be376df724aa3 ("wifi: brcmfmac: add 43439 SDIO ids and initialization")
-> Signed-off-by: Marek Vasut <marex@denx.de>
-
-Thanks, patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-
-> ---
-> NOTE: Please drop the Fixes tag if this is considered unjustified
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Arend van Spriel <aspriel@gmail.com>
-> Cc: Danny van Heumen <danny@dannyvanheumen.nl>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Paul Cercueil <paul@crapouillou.net>
-> Cc: SHA-cyfmac-dev-list@infineon.com
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> ---
->  .../net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c    | 9 ++++++++-
->  include/linux/mmc/sdio_ids.h                             | 5 ++++-
->  2 files changed, 12 insertions(+), 2 deletions(-)
+> Please let me know if there are any problems.
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index 65d4799a56584..ff710b0b5071a 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -965,6 +965,12 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
->  		.driver_data = BRCMF_FWVENDOR_ ## fw_vend \
->  	}
->  
-> +#define CYW_SDIO_DEVICE(dev_id, fw_vend) \
-> +	{ \
-> +		SDIO_DEVICE(SDIO_VENDOR_ID_CYPRESS, dev_id), \
-> +		.driver_data = BRCMF_FWVENDOR_ ## fw_vend \
-> +	}
-> +
->  /* devices we support, null terminated */
->  static const struct sdio_device_id brcmf_sdmmc_ids[] = {
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43143, WCC),
-> @@ -979,6 +985,7 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4335_4339, WCC),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4339, WCC),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43430, WCC),
-> +	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43439, WCC),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4345, WCC),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43455, WCC),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4354, WCC),
-> @@ -986,9 +993,9 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4359, WCC),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373, CYW),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012, CYW),
-> -	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439, CYW),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752, CYW),
->  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359, CYW),
-> +	CYW_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439, CYW),
->  	{ /* end: all zeroes */ }
->  };
->  MODULE_DEVICE_TABLE(sdio, brcmf_sdmmc_ids);
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 0e4ef9c5127ad..bf3c95d8eb8af 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -74,10 +74,13 @@
->  #define SDIO_DEVICE_ID_BROADCOM_43362		0xa962
->  #define SDIO_DEVICE_ID_BROADCOM_43364		0xa9a4
->  #define SDIO_DEVICE_ID_BROADCOM_43430		0xa9a6
-> -#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439	0xa9af
-> +#define SDIO_DEVICE_ID_BROADCOM_43439		0xa9af
->  #define SDIO_DEVICE_ID_BROADCOM_43455		0xa9bf
->  #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752	0xaae8
->  
-> +#define SDIO_VENDOR_ID_CYPRESS			0x04b4
-> +#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439	0xbd3d
-> +
->  #define SDIO_VENDOR_ID_MARVELL			0x02df
->  #define SDIO_DEVICE_ID_MARVELL_LIBERTAS		0x9103
->  #define SDIO_DEVICE_ID_MARVELL_8688_WLAN	0x9104
+> Kalle
+
+Excuse me, a gentle reminder regarding WCN3990 board-2.bin. It was not 
+included into this pull request.
+
+> ----------------------------------------------------------------
+> Kalle Valo (12):
+>        ath10k: QCA4019 hw1.0: update board-2.bin
+>        ath10k: QCA6174 hw3.0: update board-2.bin
+>        ath10k: QCA9888 hw2.0: update board-2.bin
+>        ath10k: QCA9984 hw1.0: update board-2.bin
+>        ath10k: QCA99X0 hw2.0: update board-2.bin
+>        ath11k: IPQ6018 hw1.0: update board-2.bin
+>        ath11k: IPQ6018 hw1.0: update to WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>        ath11k: IPQ8074 hw2.0: update board-2.bin
+>        ath11k: IPQ8074 hw2.0: update to WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>        ath11k: QCN9074 hw1.0: update to WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>        ath11k: WCN6750 hw1.0: update to WLAN.MSL.1.0.1-01160-QCAMSLSWPLZ-1
+>        ath11k: WCN6855 hw2.0: update board-2.bin
+
+-- 
+With best wishes
+Dmitry
 
