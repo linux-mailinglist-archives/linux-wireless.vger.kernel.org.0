@@ -2,126 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB37A6DBCCF
-	for <lists+linux-wireless@lfdr.de>; Sat,  8 Apr 2023 21:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41AE6DBFE0
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Apr 2023 14:42:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbjDHTot (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 8 Apr 2023 15:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
+        id S229484AbjDIMmA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Apr 2023 08:42:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbjDHTos (ORCPT
+        with ESMTP id S229516AbjDIMl7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 8 Apr 2023 15:44:48 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FBC119B7;
-        Sat,  8 Apr 2023 12:44:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G2YNN52ugDBSxxtQ/YMb9/o0CurPYDiH8bZ38IvFXNU4pLEETKkfcPLlGJpAF9mYxuSJHRpVkuvpkYB1yuYBITwYh7lPAmPNlfHzXr7Y0G3iqzOy9O96me95vdpTvXs/TEjnWikIxEM2Nz6mH75F4pP2ua5FHdK9srWlCvUUntzIE7Gvxud1/WZlC3BjBkza7TGW9FZLYO+jbQOX1UrZnfqO0P57wjPoMM6PZkEoUfWioz1PWfNR5ExgmgLfCj6yw3LqdWLcfESQVXN2aiYEHkgvZCef3lNMb6AkhChISX9iT1TByVblJMor5kWSVNgWEcJCWl1DMzLsSh9kI4FS5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zZnhgcgF2ERBkhaDpCIYODe3xZDPI5fqFEqWjTrbXyk=;
- b=RhD1vapnUSiO275oc5jGQ6mWHi77hCo1PLSgbLc6eh+jwtQNUIsNjg/m4QADh70nJkstUtWyAsps1pGZLV46zwG5SO4mSfRpGSPu2SPsDOO6TNbRwmTeWdnEfj5TFfGLxWqKKsI4gB+5q9VZXy7LqMgjfdZAtFUhGtfq+ymlvvVYtKtXnFrK3e/hfSXy5V2LHlkR+hDmGoxkDEZgGcum9dz46ngESu8Xa+gSypSCDl6IPW73FzhNEH5+v1ck9pb9Y7mSo+I0hU6zIOXxOagGFGdlaOAZzZOJA4iyFhiXPdLzEpkaCRNy9C5J2pm5T4V8brUelMKlX7bHQHgfNVIGoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Sun, 9 Apr 2023 08:41:59 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9F144B7
+        for <linux-wireless@vger.kernel.org>; Sun,  9 Apr 2023 05:41:49 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id jw24so18190928ejc.3
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Apr 2023 05:41:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zZnhgcgF2ERBkhaDpCIYODe3xZDPI5fqFEqWjTrbXyk=;
- b=VWdAFMwAefWwl8XAMpbgur9nLZnd7LQFYzQmWNzlBycsGGWZnJGNmQbpVQNR9XCSxTiGnLJNf3pjsWDaUW99i/ir/5qteB6P54nXZ6pvdS4rh9hUdZFNJ57Rk6vCwlq5hO/v/rcS/AFgTo8o3WudSE72MXQhD7k8zWeHQTXdSNc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by SA1PR13MB5492.namprd13.prod.outlook.com (2603:10b6:806:233::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.35; Sat, 8 Apr
- 2023 19:44:43 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::89d1:63f2:2ed4:9169]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::89d1:63f2:2ed4:9169%5]) with mapi id 15.20.6277.036; Sat, 8 Apr 2023
- 19:44:43 +0000
-Date:   Sat, 8 Apr 2023 21:44:35 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-wireless@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Danny van Heumen <danny@dannyvanheumen.nl>,
-        Eric Dumazet <edumazet@google.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        brcm80211-dev-list.pdl@broadcom.com, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: brcmfmac: add Cypress 43439 SDIO ids
-Message-ID: <ZDHEI7tbjLJiRcBr@corigine.com>
-References: <20230407203752.128539-1-marex@denx.de>
- <ZDGHF0dKwIjB1Mrj@corigine.com>
- <509e4308-9164-4131-4b93-75c42568d1e4@denx.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <509e4308-9164-4131-4b93-75c42568d1e4@denx.de>
-X-ClientProxiedBy: AM0PR02CA0195.eurprd02.prod.outlook.com
- (2603:10a6:20b:28e::32) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=gmail.com; s=20210112; t=1681044108;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e+DDRK2sZcwj3lFDBSe9XMQVLnnS6EDbTcDvoDsgglY=;
+        b=G9THau9+lKX5FkBC+M6W4rQQHUuRbgffs5vcqoGyY6q/53osVR44ABVXPyzYC2cn7n
+         yYzTpDATQYyTlBt/3lgLgAtdwK4vYjhMsMQy97rRsYOKyvAhKA8LfzSMoauONcVgLdcZ
+         t1k9qzUk8Hv9sk9fCuHklxWhlvV1BQklCP12jLy2X7+rShTMUkWh5Y7CE19r+rOh7Afe
+         lzUnG3brZz1Y5hUdPAnzoVANie9jTmQZVwBzk9HWaV1WBLMlc2Ic8mOTFn5K/DcI12iY
+         eQE6RZYhUAI92GJBpusGYNTVinZC8+fx+RDARayq8ljFAm/PwXxwa96ZMSmwowWx9C6J
+         eO3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681044108;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e+DDRK2sZcwj3lFDBSe9XMQVLnnS6EDbTcDvoDsgglY=;
+        b=xK9pVt9RX+NtucwDKKNGYYlh71OxDGECD9tWRkaULFMK56/9SUKGH4sHNd4oJiym9i
+         2DkXvzbYXAcbYcl/VZTiwUCrWIxpst5+ZfppaNSL3Uu/AbdPc/VbfjAmyXAEhwHf95vr
+         SVFRbN2Xx1wD8nOog4ksYwTGXzIQrzt0OI4BdJmoDAivnDy5NxtAba0u3jRyck4r1ago
+         Bin4unqX8DUaUTxyqrM5gDplNDabvQL1d32vNj571JJenifZz4n5TwZt4NqEDOLaMgGF
+         An+Gw6FlYf2QBh1cEzgPDlU1TOKabS+1V03dsEdLzC1Qxcp3sUgcWowN/n124w8vhYgH
+         QCrA==
+X-Gm-Message-State: AAQBX9fCtRwKTWYFZsfrY+xROUT4GIujXZDct/lvqwrTDfbiqDnBTZLn
+        mTtUrMTzyzo1yHjNzAL8D7A=
+X-Google-Smtp-Source: AKy350YgM2YKfJPJpgH39QrBJBkoFvAfNLBA++VICa9UBAzW6P/yzAKn4lWiF8EGO7D/YHgRO9nfUg==
+X-Received: by 2002:a17:906:6c93:b0:94a:5503:e919 with SMTP id s19-20020a1709066c9300b0094a5503e919mr2798562ejr.35.1681044108249;
+        Sun, 09 Apr 2023 05:41:48 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id lc22-20020a170906dff600b00933c52c2a0esm4125116ejc.173.2023.04.09.05.41.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Apr 2023 05:41:47 -0700 (PDT)
+Message-ID: <98be492e-71f3-f525-1d9e-fd6f0bb0200f@gmail.com>
+Date:   Sun, 9 Apr 2023 15:41:46 +0300
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SA1PR13MB5492:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94a9dd1c-4b30-4845-3541-08db3869b2fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rgvOIPaUoPfHHg89Q4JWbhoVI/9KYM9h3EBONDGrDU0YUCRpD+xCMJ4dbLIMNTSSb9ch+/F4ssbqz2CyAilXC1HI2egg7TeQtCPzyIq/NMTriaKMMQl4oco8etKNSR29r8mCeLe3Tcx/2QPFG9cMQO6Vy9K2I4gqHtW9laNsgePHRJpNnkhCLDiq1KvdrVf+YOM26Iu8Gte07rM9CUoJ+M6rozRPTV0DaJtbyYOMWPgMC0rh2iWmgoIHi0uRavfw6q0GRZu7tit4Zbi07PBtvJ9Pp8akjb8wRtaXVjN4FUoJLb5gPcTZKdbyW0CpxCv/u9TipMeoQZ1ZSiqGXtXDXHQVaLIrcLvsG4g1tJqI5j5LsXOICx7rJok6sPNQ0C0Dx41jm3iBMAKy1QA7Dnc+kfHJRztn/Iy0ORiLycNICht5H/HUrk4Iug2wS+4HL38XbXmGKZTrAXBuUco1yGeESPf0W5u5cOdPUepqqYnV+Y26W9aQShdo9DBHGC6BK1KvhQqwJrRiX8HH9p0dKawleZBR/aRkHD5jEI1R1+CRilyrn4yhwN1ls1d9IMcj71yh03UlJurBGB8GWhpdYzfeuXe/YFfgyof/BFVWLDQVA/o=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(136003)(39840400004)(396003)(366004)(451199021)(316002)(6512007)(2616005)(186003)(478600001)(53546011)(6666004)(6486002)(54906003)(6506007)(6916009)(44832011)(5660300002)(2906002)(36756003)(38100700002)(4326008)(41300700001)(66946007)(8936002)(86362001)(66556008)(7416002)(66476007)(8676002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?J454SePRibrKNgw5zATXZTUPA5kloO2ypyBaesqd6+EBPZkE5bykSj30ZwdR?=
- =?us-ascii?Q?JKc2dJBmNPfwFNzXG858SlAry1m7S1rjyTzAmHueCUfSryY6BJHR1d88nRtt?=
- =?us-ascii?Q?PZYGwXbkZzrPYEJdwaffjJ4xoZkWowHJ1pjzzi1LalRtUJkdQvIOeI99TLIQ?=
- =?us-ascii?Q?2t8Ycdb+ET4nCUckIYNtZ23CA4TdZZBUJV1+v6CRula6PDkdGvoO7HKFxU2t?=
- =?us-ascii?Q?cdWkrWsPQaLLyZsyHDXdSAn5wNawt3Qa+4AVGySGyI8noDvuinkqGF41+UxL?=
- =?us-ascii?Q?dKMmDDJuKvivpB8hoeJ5hxQya30IcTeNpRQ7P83iJ6cCv6nuqK2+CSoH4pVr?=
- =?us-ascii?Q?AV6RX8ef7VM5nhoXXzg24LvUiQktV+HNAcHjOxZ8dvZ7t5jaFs2QSiXxOdYy?=
- =?us-ascii?Q?2SScYfHQdSsXvVED+Fz9DcudItXA0VMenSl5dKFZnAbUznUCtvmLVR5uiU1m?=
- =?us-ascii?Q?u+SetLlcs4ctX1Ix8/WNN4bI5I/RtsgjUN/uUrb0QXnt1J1qbHIG4Rpi91G5?=
- =?us-ascii?Q?Yg6ikpK4PKaxBfkMgaL0mzhT7M7VFBJY/6fcAh35m27RUV6XhiBZvJcDUPSA?=
- =?us-ascii?Q?vYDv9VvDQjNak9YcsqGzjMJJOVb+AavEv4vdQGVzi1gAIWwLsU0G/eN5CEad?=
- =?us-ascii?Q?nCcJS+WwwdJvR4SA7tJ7iHjbYm1zeSSC5tQN1cgFlVN+AkedF+dC/HHjEdZS?=
- =?us-ascii?Q?NCoKj/Y1WgB8VcvJMuxYBpbHAzsw1O2QENteIpph6tJ0reoQ26kKv12dd6E2?=
- =?us-ascii?Q?T0W1CxUdNV6EeOKEL2YQ4ZvJttqJoZML5jxOBowqRx8YJmfJpEeMvDNujmcV?=
- =?us-ascii?Q?xJquNo8YxsKxfmaroJLTY7uk4xF5mCdIBbZkH41RT8xVE63GByPpzGW9XfKd?=
- =?us-ascii?Q?1kEREuZOpXB1c6fJfE6PHjnUgH4CE4SOv17O3CQbznV5IN3vMg1WQ2qdXaJs?=
- =?us-ascii?Q?oDtHhlRyFkZvI8OVcGxD2Pl3lIKvUq2CSy4UDsvn4YiTuRht/ifwi9W53pfg?=
- =?us-ascii?Q?9/tyy0GA7S8qIjZbKeu0Mo32jFZImpmUHGwI/uja4ICG36lfnbPfMfykwArs?=
- =?us-ascii?Q?oKuBRkpehLtQLhK/GpNAF7rXG08v6rrzKkCJdlmRGN0JT2LUI111GpID+37o?=
- =?us-ascii?Q?YY6XcaWkw8K5zQiIpY1CSrwMHE+Z4bmErPP8AkVy13mqRiC+9MBBU1fjqLCh?=
- =?us-ascii?Q?81eV7c+HH6aNVNIXLs/H23zeKGrLBj+MKSyqu7375C0TH/2hPmzLuG8vgiDo?=
- =?us-ascii?Q?0imZY0MCxNgBf4B1lqFn7qPwritXl/5b5eL/9JFrqtmnIl1nUTPGsm4nDH8F?=
- =?us-ascii?Q?VXOCV3lw3ctk+oUfzVTO9SmFtqH9++Fbixprk9hRFqZOA0xSGcHDh5NOZcoa?=
- =?us-ascii?Q?ZCango4Cz0VaLNLj8KQ4A2pd1qW8VCo6BaW5uH0EGaZ1N6hJkVM0HKguX53y?=
- =?us-ascii?Q?eskZKL3c/YLbRilcidA2qxixwgEjq/M5/ngB7JlA38kIiamFn5jVtfSN14ue?=
- =?us-ascii?Q?fKqGBa1Jk8iZ08YhaXkcAsepCrCfeopmhUJi4veZd/Hag0H0nxcXSF5vDvtH?=
- =?us-ascii?Q?m3OXXo8zG8cs2Ivwl4iVm+iAVi5CBWtTK7bl9Vs7ihVoeb5z/IZIPSJ3ziUD?=
- =?us-ascii?Q?GM6MxbVaiboTpHT8X9mUKpKx/afM+ZKUS77rhmibb1tBtzwU/mZkoACXrH7P?=
- =?us-ascii?Q?hbLqbg=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94a9dd1c-4b30-4845-3541-08db3869b2fc
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2023 19:44:43.5793
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qdA5gnX7pwwqsoCEEYJGUrwQlK8qnUXCZxOnTO6QZCWnIBVTKa1XT9XF054rcNUaAf/6fm8MRZCKM0QZHxmGiglt6aRcyb6Uxo2TEWkWJ4Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR13MB5492
-X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+To:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+ <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
+ <26840cf1-9403-3d09-a4d2-352bc198efff@linutronix.de>
+ <a25acad730c94845a16552f321eb2660@realtek.com>
+ <e37633e5-5eec-5dc6-31fd-d91480b604c2@linutronix.de>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <e37633e5-5eec-5dc6-31fd-d91480b604c2@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -129,53 +82,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Apr 08, 2023 at 06:44:40PM +0200, Marek Vasut wrote:
-> On 4/8/23 17:24, Simon Horman wrote:
-> > On Fri, Apr 07, 2023 at 10:37:52PM +0200, Marek Vasut wrote:
-> > > Add SDIO ids for use with the muRata 1YN (Cypress CYW43439).
-> > > The odd thing about this is that the previous 1YN populated
-> > > on M.2 card for evaluation purposes had BRCM SDIO vendor ID,
-> > > while the chip populated on real hardware has a Cypress one.
-> > > The device ID also differs between the two devices. But they
-> > > are both 43439 otherwise, so add the IDs for both.
-> > > 
-> > > On-device 1YN (43439), the new one, chip label reads "1YN":
-> > > ```
-> > > /sys/.../mmc_host/mmc2/mmc2:0001 # cat vendor device
-> > > 0x04b4
-> > > 0xbd3d
-> > > ```
-> > > 
-> > > EA M.2 evaluation board 1YN (43439), the old one, chip label reads "1YN ES1.4":
-> > > ```
-> > > /sys/.../mmc_host/mmc0/mmc0:0001/# cat vendor device
-> > > 0x02d0
-> > > 0xa9a6
-> > > ```
-> > > 
-> > > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> > > Fixes: be376df724aa3 ("wifi: brcmfmac: add 43439 SDIO ids and initialization")
-> > > Signed-off-by: Marek Vasut <marex@denx.de>
-> > 
-> > Reviewed-by: Simon Horman <simon.horman@corigine.com>
-> > 
-> > 
-> > > ---
-> > > NOTE: Please drop the Fixes tag if this is considered unjustified
-> > 
-> > <2c>
-> > Feels more like enablement than a fix to me.
-> > </2c>
+On 06/04/2023 18:09, Martin Kaistra wrote:
+> Am 06.04.23 um 02:42 schrieb Ping-Ke Shih:
+>>
+>>
+>>> -----Original Message-----
+>>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>>> Sent: Wednesday, April 5, 2023 11:31 PM
+>>> To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>>> <pkshih@realtek.com>; Sebastian Andrzej Siewior <bigeasy@linutronix.de>; linux-wireless@vger.kernel.org
+>>> Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+>>>
+>>> Am 23.03.23 um 18:12 schrieb Bitterblue Smith:
+>>>> On 22/03/2023 19:18, Martin Kaistra wrote:
+>>>> Then I was able to turn on the AP and connect my phone to it. However,
+>>>> the system froze after a few seconds. I had `journalctl --follow`
+>>>> running. The last thing printed before the system froze was the DHCP
+>>>> stuff (discover, offer, request, ack). The phone said it was connected,
+>>>> but speedtest.net didn't have time to load before the freeze.
+>>>
+>>> Hi
+>>>
+>>> I could reproduce a frozen system with my hostapd setup, though it
+>>> doesn't happen reliably and I don't have an error message when it happens.
+>>>
+>>
+>> Using netcat would help to capture useful messages when system gets frozen.
+>>
+>> Ping-Ke
+>>
 > 
-> I added it because
+> Thanks. I got a trace by using netconsole and netcat. It is a NULL pointer dereference in rtl8xxxu_fill_txdesc_v2():
 > 
-> Documentation/process/stable-kernel-rules.rst
 > 
-> L24  - New device IDs and quirks are also accepted.
+>         if (rate_flags & IEEE80211_TX_RC_MCS &&
+>             !ieee80211_is_mgmt(hdr->frame_control))
+>                 rate = tx_info->control.rates[0].idx + DESC_RATE_MCS0;
+>         else
+>                 rate = tx_rate->hw_value;    <-- error happens here
+> 
+>         if (rtl8xxxu_debug & RTL8XXXU_DEBUG_TX)
+>                 dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
+> 
+> This happens when ieee80211_get_tx_rate() hits the WARN_ON_ONCE and maybe also when c->control.rates[0].idx has another invalid value.
+> See my previous comments about HAS_RATE_CONTROL.
 
-Thanks. If I was aware of that, I had forgotten.
+Good job finding the problem!
 
-> So, really, up to the maintainer whether they are fine with it being
-> backported to stable releases or not. I don't really mind either way.
+ieee80211_get_tx_rate() is used since the initial commit, so only Jes
+may know why. I assume we only ever need to use the rate from mac80211
+for frame injection (IEEE80211_TX_CTRL_RATE_INJECT, currently ignored).
 
-Yes, I completely agree.
+If c->control.rates[0].idx is negative, is c->control.rates[0].flags
+also unusable?
+
+ieee80211_get_rts_cts_rate() probably causes the same problem.
