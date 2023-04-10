@@ -2,136 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B886DCC35
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Apr 2023 22:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C30A6DCCE4
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Apr 2023 23:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjDJUgS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Apr 2023 16:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
+        id S229862AbjDJVpj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Apr 2023 17:45:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjDJUgR (ORCPT
+        with ESMTP id S229644AbjDJVpi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Apr 2023 16:36:17 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52EAE19A0
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Apr 2023 13:36:08 -0700 (PDT)
-X-UUID: 4dbd35dcd7df11edb6b9f13eb10bd0fe-20230411
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zWUdyMpU+iGkYFiLEAInzUtt7sxCmqq/KzLX2XFpftE=;
-        b=Z42C/AbS1SXV3giMAUvlvHwKyLPzGz0eUjHay+QUfEDTY4JwUUeLqw0dvbxU/uVK0sUewgrkHtY8e14gtVrt8RmujATKbac3N7NeX0ayx/Kzq445bCUpzYg8tJ7v2uCGslQOGkmHcPWdKr6mjcGhVOW01Z8itEzDGxNib2FV7us=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:0b10d754-ddfa-4948-843d-9669dbfc6bff,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:120426c,CLOUDID:87f17eea-db6f-41fe-8b83-13fe7ed1ef52,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-UUID: 4dbd35dcd7df11edb6b9f13eb10bd0fe-20230411
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 95306223; Tue, 11 Apr 2023 04:36:00 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Tue, 11 Apr 2023 04:35:59 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Tue, 11 Apr 2023 04:35:59 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
-        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
-        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
-        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
-        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
-        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
-        <jsiuda@google.com>, <arowa@google.org>, <frankgor@google.com>,
-        <kuabhs@google.com>, <druth@google.com>,
-        <abhishekpandit@google.com>, <shawnku@google.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
-Date:   Tue, 11 Apr 2023 04:35:57 +0800
-Message-ID: <c9e2a44da4daa00166c802a8c10527359358219d.1681158440.git.objelf@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
+        Mon, 10 Apr 2023 17:45:38 -0400
+Received: from stone.woods.net (stone.woods.net [74.50.54.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D729D173E
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Apr 2023 14:45:36 -0700 (PDT)
+Received: from sneaky (66.29.179.130.static.utbb.net [66.29.179.130])
+        by stone.woods.net (Postfix) with ESMTPSA id C849B80F8
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Apr 2023 21:45:35 +0000 (UTC)
+Date:   Mon, 10 Apr 2023 15:45:33 -0600
+From:   Aaron Dewell <acd@woods.net>
+To:     "=?utf-8?Q?linux-wireless=40vger.kernel.org?=" 
+        <linux-wireless@vger.kernel.org>
+Message-ID: <6B4C1859-60D3-449E-8617-D20B9B06F5A0@getmailspring.com>
+In-Reply-To: <9AEF6A8A-44F0-4863-9467-44C137D7430A@getmailspring.com>
+References: <9AEF6A8A-44F0-4863-9467-44C137D7430A@getmailspring.com>
+Subject: Re: ax204/Intel NUC13 i9
+X-Mailer: Mailspring
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
-        MAY_BE_FORGED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,
-        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sean Wang <sean.wang@mediatek.com>
+To summarize up to now and reboot the discussion:
 
-The MT7921 driver no longer uses eeprom.data, but the relevant code has not
-been removed completely since
-commit 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability").
-This could result in potential invalid memory access.
+I have installed firmware-git. This is the file that was extracted into /lib/firmware:
+-rw-r--r--  1 root  root 429469981 Apr  2 10:47 linux-firmware-iwlwifi-fw-2023-03-30.tar.gz
 
-To fix the kernel panic issue in mt7921, it is necessary to avoid accessing
-unallocated eeprom.data which can lead to invalid memory access.
+The card is not successfully initialized by the stock (6.1.20) kernel:
+[    2.284183] Intel(R) Wireless WiFi driver for Linux
+[    2.284221] cryptd: max_cpu_qlen set to 1000
+[    2.284223] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
+[    2.286133] iwlwifi: No config found for PCI dev 7af0/1692,
+rev=0x430, rfid=0x3010d000
+[    2.286155] iwlwifi: probe of 0000:00:14.3 failed with error -22
 
-[2.702735] BUG: kernel NULL pointer dereference, address: 0000000000000550
-[2.702740] #PF: supervisor write access in kernel mode
-[2.702741] #PF: error_code(0x0002) - not-present page
-[2.702743] PGD 0 P4D 0
-[2.702747] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[2.702755] RIP: 0010:mt7921_mcu_parse_response+0x147/0x170 [mt7921_common]
-[2.702758] RSP: 0018:ffffae7c00fef828 EFLAGS: 00010286
-[2.702760] RAX: ffffa367f57be024 RBX: ffffa367cc7bf500 RCX: 0000000000000000
-[2.702762] RDX: 0000000000000550 RSI: 0000000000000000 RDI: ffffa367cc7bf500
-[2.702763] RBP: ffffae7c00fef840 R08: ffffa367cb167000 R09: 0000000000000005
-[2.702764] R10: 0000000000000000 R11: ffffffffc04702e4 R12: ffffa367e8329f40
-[2.702766] R13: 0000000000000000 R14: 0000000000000001 R15: ffffa367e8329f40
-[2.702768] FS:  000079ee6cf20c40(0000) GS:ffffa36b2f940000(0000) knlGS:0000000000000000
-[2.702769] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[2.702775] CR2: 0000000000000550 CR3: 00000001233c6004 CR4: 0000000000770ee0
-[2.702776] PKRU: 55555554
-[2.702777] Call Trace:
-[2.702782]  mt76_mcu_skb_send_and_get_msg+0xc3/0x11e [mt76 <HASH:1bc4 5>]
-[2.702785]  mt7921_run_firmware+0x241/0x853 [mt7921_common <HASH:6a2f 6>]
-[2.702789]  mt7921e_mcu_init+0x2b/0x56 [mt7921e <HASH:d290 7>]
-[2.702792]  mt7921_register_device+0x2eb/0x5a5 [mt7921_common <HASH:6a2f 6>]
-[2.702795]  ? mt7921_irq_tasklet+0x1d4/0x1d4 [mt7921e <HASH:d290 7>]
-[2.702797]  mt7921_pci_probe+0x2d6/0x319 [mt7921e <HASH:d290 7>]
-[2.702799]  pci_device_probe+0x9f/0x12a
+The distribution is Debian Bookworm (testing), which has kernel:
+Linux shrub 6.1.0-7-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.20-1
+(2023-03-19) x86_64 GNU/Linux
 
-Fixes: 16d98b548365 ("mt76: mt7921: rely on mcu_get_nic_capability")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 3 ---
- 1 file changed, 3 deletions(-)
+The card identifies as 0x7AF0, 0x1692:
+00:14.3 Network controller [0280]: Intel Corporation Alder Lake-S PCH
+CNVi WiFi [8086:7af0] (rev 11)
+        Subsystem: Rivet Networks Alder Lake-S PCH CNVi WiFi [1a56:1692]
+        Flags: fast devsel, IRQ 18, IOMMU group 6
+        Memory at 604c124000 (64-bit, non-prefetchable) [size=16K]
+        Capabilities: [c8] Power Management version 3
+        Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+        Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00
+        Capabilities: [80] MSI-X: Enable- Count=16 Masked-
+        Capabilities: [100] Latency Tolerance Reporting
+        Capabilities: [164] Vendor Specific Information: ID=0010 Rev=0
+Len=014 <?>
+        Kernel modules: iwlwifi
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index c5e7ad06f877..00c84680c723 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -20,7 +20,6 @@ static int
- mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
- {
- 	struct mt7921_mcu_eeprom_info *res;
--	u8 *buf;
- 
- 	if (!skb)
- 		return -EINVAL;
-@@ -28,8 +27,6 @@ mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
- 	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
- 
- 	res = (struct mt7921_mcu_eeprom_info *)skb->data;
--	buf = dev->eeprom.data + le32_to_cpu(res->addr);
--	memcpy(buf, res->data, 16);
- 
- 	return 0;
- }
--- 
-2.25.1
+Granted that I am no expert on this, but I know enough to get myself
+into trouble, which is what I proceeded to do.  I believe (but could
+well be mistaken) that what is needed is a configuration line for that
+PCI ID in iwlwifi/pcie/drv.c, something like this one:
+
+IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+
+My attempt was to duplicate then change the new line from 7F70 to 7AF0,
+but that was also not successful, with such errors as (clipping because
+it's rather long):
+
+[...]
+[    3.960164] iwlwifi 0000:00:14.3: Microcode SW error detected.
+Restarting 0x0.
+[...]
+[    3.960551] iwlwifi 0000:00:14.3: Starting mac, retry will be
+triggered anyway
+[    3.960594] iwlwifi 0000:00:14.3: FW error in SYNC CMD ADD_STA
+[    3.960600] Call Trace:
+[    3.960602]  <TASK>
+[    3.960602]  dump_stack_lvl+0x36/0x50
+[    3.960606]  iwl_trans_txq_send_hcmd+0x338/0x450 [iwlwifi]
+[...]
+
+It does produce an interface but it is unusable.
+
+I assume (but I am definitely out of my depth at this point) that it is
+due to the wrong firmware being referenced by that line of code (i.e.
+it's a different firmware for 7F70 vs. 7AF0) but I also don't know what
+the correct one is, thus I'm asking here.  If I'm totally on the wrong
+track, I'm fine with that too, I just want to get it working.
+
+Thanks!
+
 
