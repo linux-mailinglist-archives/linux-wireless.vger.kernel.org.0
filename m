@@ -2,36 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C30A6DCCE4
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Apr 2023 23:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2396DCD3E
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 00:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjDJVpj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Apr 2023 17:45:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41502 "EHLO
+        id S229836AbjDJWDt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Apr 2023 18:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjDJVpi (ORCPT
+        with ESMTP id S229656AbjDJWDr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Apr 2023 17:45:38 -0400
-Received: from stone.woods.net (stone.woods.net [74.50.54.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D729D173E
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Apr 2023 14:45:36 -0700 (PDT)
-Received: from sneaky (66.29.179.130.static.utbb.net [66.29.179.130])
-        by stone.woods.net (Postfix) with ESMTPSA id C849B80F8
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Apr 2023 21:45:35 +0000 (UTC)
-Date:   Mon, 10 Apr 2023 15:45:33 -0600
-From:   Aaron Dewell <acd@woods.net>
-To:     "=?utf-8?Q?linux-wireless=40vger.kernel.org?=" 
-        <linux-wireless@vger.kernel.org>
-Message-ID: <6B4C1859-60D3-449E-8617-D20B9B06F5A0@getmailspring.com>
-In-Reply-To: <9AEF6A8A-44F0-4863-9467-44C137D7430A@getmailspring.com>
-References: <9AEF6A8A-44F0-4863-9467-44C137D7430A@getmailspring.com>
-Subject: Re: ax204/Intel NUC13 i9
-X-Mailer: Mailspring
+        Mon, 10 Apr 2023 18:03:47 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C22501BCA
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Apr 2023 15:03:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681164226; x=1712700226;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4W4Pk2ES5/ySuHySu5gOKD4o31qkgpk+oubIxxD38hs=;
+  b=f8mJOZ29MqKYIBtZ87zVSoHayXJcCSBMWOs5tPqE5eejG2Vxw0LrFFmE
+   b+RrPXBaezxyJKCodG2ZM3bIR4p7EBTzYztNyzDtBuTECoFF+Qgxh8wFd
+   +fjGxwX5EFpEAYog5tFW5ZZjVT+BQWe3yDjlWaxi24geBkw8KUOqvO9Ue
+   JQf9QoSgh+JLOx8larCSa7SWEkyFKAcnXdGYGrLn3Glx6f5xppJq8mmm5
+   S8X1IK3SlQPde9+KdDgh3TyLJopBNiE+xejbLndpcS2dhEKQGGePCsMTW
+   4/K6wcO+MWEHaHtSjGxSxtpDvyYMl2cHa1TDt4uEWCrjKMV7bvKl50kM1
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10676"; a="371307978"
+X-IronPort-AV: E=Sophos;i="5.98,333,1673942400"; 
+   d="scan'208";a="371307978"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2023 15:03:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10676"; a="681854260"
+X-IronPort-AV: E=Sophos;i="5.98,333,1673942400"; 
+   d="scan'208";a="681854260"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 10 Apr 2023 15:03:40 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1plzbv-000Vgj-1i;
+        Mon, 10 Apr 2023 22:03:39 +0000
+Date:   Tue, 11 Apr 2023 06:03:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     sean.wang@mediatek.com, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc:     oe-kbuild-all@lists.linux.dev, sean.wang@mediatek.com,
+        Soul.Huang@mediatek.com, Leon.Yen@mediatek.com,
+        Eric-SY.Chang@mediatek.com, Deren.Wu@mediatek.com,
+        km.lin@mediatek.com, jenhao.yang@mediatek.com,
+        robin.chiu@mediatek.com, Eddie.Chen@mediatek.com,
+        ch.yeh@mediatek.com, ted.huang@mediatek.com,
+        Stella.Chang@mediatek.com, Tom.Chou@mediatek.com,
+        steve.lee@mediatek.com, jsiuda@google.com, arowa@google.org,
+        frankgor@google.com, kuabhs@google.com, druth@google.com,
+        abhishekpandit@google.com, shawnku@google.com,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] mt76: mt7921: fix kernel panic by accessing unallocated
+ eeprom.data
+Message-ID: <202304110556.xbu5H3ka-lkp@intel.com>
+References: <c9e2a44da4daa00166c802a8c10527359358219d.1681158440.git.objelf@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <c9e2a44da4daa00166c802a8c10527359358219d.1681158440.git.objelf@gmail.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -39,70 +75,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To summarize up to now and reboot the discussion:
+Hi,
 
-I have installed firmware-git. This is the file that was extracted into /lib/firmware:
--rw-r--r--  1 root  root 429469981 Apr  2 10:47 linux-firmware-iwlwifi-fw-2023-03-30.tar.gz
+kernel test robot noticed the following build warnings:
 
-The card is not successfully initialized by the stock (6.1.20) kernel:
-[    2.284183] Intel(R) Wireless WiFi driver for Linux
-[    2.284221] cryptd: max_cpu_qlen set to 1000
-[    2.284223] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
-[    2.286133] iwlwifi: No config found for PCI dev 7af0/1692,
-rev=0x430, rfid=0x3010d000
-[    2.286155] iwlwifi: probe of 0000:00:14.3 failed with error -22
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.3-rc6 next-20230406]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The distribution is Debian Bookworm (testing), which has kernel:
-Linux shrub 6.1.0-7-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.20-1
-(2023-03-19) x86_64 GNU/Linux
+url:    https://github.com/intel-lab-lkp/linux/commits/sean-wang-mediatek-com/mt76-mt7921-fix-kernel-panic-by-accessing-unallocated-eeprom-data/20230411-043801
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/c9e2a44da4daa00166c802a8c10527359358219d.1681158440.git.objelf%40gmail.com
+patch subject: [PATCH] mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20230411/202304110556.xbu5H3ka-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/9825ad75cf770d2a15f7008eca476121b9b3d794
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review sean-wang-mediatek-com/mt76-mt7921-fix-kernel-panic-by-accessing-unallocated-eeprom-data/20230411-043801
+        git checkout 9825ad75cf770d2a15f7008eca476121b9b3d794
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/net/wireless/
 
-The card identifies as 0x7AF0, 0x1692:
-00:14.3 Network controller [0280]: Intel Corporation Alder Lake-S PCH
-CNVi WiFi [8086:7af0] (rev 11)
-        Subsystem: Rivet Networks Alder Lake-S PCH CNVi WiFi [1a56:1692]
-        Flags: fast devsel, IRQ 18, IOMMU group 6
-        Memory at 604c124000 (64-bit, non-prefetchable) [size=16K]
-        Capabilities: [c8] Power Management version 3
-        Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
-        Capabilities: [40] Express Root Complex Integrated Endpoint, MSI 00
-        Capabilities: [80] MSI-X: Enable- Count=16 Masked-
-        Capabilities: [100] Latency Tolerance Reporting
-        Capabilities: [164] Vendor Specific Information: ID=0010 Rev=0
-Len=014 <?>
-        Kernel modules: iwlwifi
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202304110556.xbu5H3ka-lkp@intel.com/
 
-Granted that I am no expert on this, but I know enough to get myself
-into trouble, which is what I proceeded to do.  I believe (but could
-well be mistaken) that what is needed is a configuration line for that
-PCI ID in iwlwifi/pcie/drv.c, something like this one:
+All warnings (new ones prefixed by >>):
 
-IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
-
-My attempt was to duplicate then change the new line from 7F70 to 7AF0,
-but that was also not successful, with such errors as (clipping because
-it's rather long):
-
-[...]
-[    3.960164] iwlwifi 0000:00:14.3: Microcode SW error detected.
-Restarting 0x0.
-[...]
-[    3.960551] iwlwifi 0000:00:14.3: Starting mac, retry will be
-triggered anyway
-[    3.960594] iwlwifi 0000:00:14.3: FW error in SYNC CMD ADD_STA
-[    3.960600] Call Trace:
-[    3.960602]  <TASK>
-[    3.960602]  dump_stack_lvl+0x36/0x50
-[    3.960606]  iwl_trans_txq_send_hcmd+0x338/0x450 [iwlwifi]
-[...]
-
-It does produce an interface but it is unusable.
-
-I assume (but I am definitely out of my depth at this point) that it is
-due to the wrong firmware being referenced by that line of code (i.e.
-it's a different firmware for 7F70 vs. 7AF0) but I also don't know what
-the correct one is, thus I'm asking here.  If I'm totally on the wrong
-track, I'm fine with that too, I just want to get it working.
-
-Thanks!
+   drivers/net/wireless/mediatek/mt76/mt7921/mcu.c: In function 'mt7921_mcu_parse_eeprom':
+>> drivers/net/wireless/mediatek/mt76/mt7921/mcu.c:22:40: warning: variable 'res' set but not used [-Wunused-but-set-variable]
+      22 |         struct mt7921_mcu_eeprom_info *res;
+         |                                        ^~~
 
 
+vim +/res +22 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+
+23bdc5d8cadfc9 Ming Yen Hsieh   2022-09-07  18  
+1c099ab44727c8 Sean Wang        2021-01-28  19  static int
+1c099ab44727c8 Sean Wang        2021-01-28  20  mt7921_mcu_parse_eeprom(struct mt76_dev *dev, struct sk_buff *skb)
+1c099ab44727c8 Sean Wang        2021-01-28  21  {
+1c099ab44727c8 Sean Wang        2021-01-28 @22  	struct mt7921_mcu_eeprom_info *res;
+1c099ab44727c8 Sean Wang        2021-01-28  23  
+1c099ab44727c8 Sean Wang        2021-01-28  24  	if (!skb)
+1c099ab44727c8 Sean Wang        2021-01-28  25  		return -EINVAL;
+1c099ab44727c8 Sean Wang        2021-01-28  26  
+fc6ee71a2a8f2d Lorenzo Bianconi 2022-06-20  27  	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
+1c099ab44727c8 Sean Wang        2021-01-28  28  
+1c099ab44727c8 Sean Wang        2021-01-28  29  	res = (struct mt7921_mcu_eeprom_info *)skb->data;
+1c099ab44727c8 Sean Wang        2021-01-28  30  
+1c099ab44727c8 Sean Wang        2021-01-28  31  	return 0;
+1c099ab44727c8 Sean Wang        2021-01-28  32  }
+1c099ab44727c8 Sean Wang        2021-01-28  33  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
