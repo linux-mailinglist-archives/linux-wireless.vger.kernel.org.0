@@ -2,126 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EFB6DC228
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Apr 2023 02:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C9F6DC23A
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Apr 2023 02:58:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjDJAUo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Apr 2023 20:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59548 "EHLO
+        id S229603AbjDJA54 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Apr 2023 20:57:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjDJAUm (ORCPT
+        with ESMTP id S229485AbjDJA5z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Apr 2023 20:20:42 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0451330F9
-        for <linux-wireless@vger.kernel.org>; Sun,  9 Apr 2023 17:20:40 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33A0KGuyC007162, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33A0KGuyC007162
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 10 Apr 2023 08:20:16 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 10 Apr 2023 08:20:37 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 10 Apr 2023 08:20:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Mon, 10 Apr 2023 08:20:36 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH 1/2] wifi: rtl8xxxu: Clean up some messy ifs
-Thread-Topic: [PATCH 1/2] wifi: rtl8xxxu: Clean up some messy ifs
-Thread-Index: AQHZZA3VOb/3C7mk9kGPYLUdN/MokK8df2cQgAUMeYCAAS/x4A==
-Date:   Mon, 10 Apr 2023 00:20:36 +0000
-Message-ID: <e97ea73d95ef4a7eb56cebd433746d86@realtek.com>
-References: <eb152b5b-fe65-3783-a3d9-71c9cb7ef9d3@gmail.com>
- <04d4ca3e27924ea6b2ad6e5b00ddb424@realtek.com>
- <541f26bb-5022-2c2d-200a-68dc2c6fb5fe@gmail.com>
-In-Reply-To: <541f26bb-5022-2c2d-200a-68dc2c6fb5fe@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
- rules found
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIzLzQvOSDkuIvljYggMTA6MDA6MDA=?=
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Sun, 9 Apr 2023 20:57:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F20D3599;
+        Sun,  9 Apr 2023 17:57:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CFE560C56;
+        Mon, 10 Apr 2023 00:57:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D74CC433A4;
+        Mon, 10 Apr 2023 00:57:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681088273;
+        bh=x1wkYPtNmo6RtB5ZfBrhqXue4vXZpCgJBIU2FPBOGYY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YXcgx0ToKlhlQjO2KjWGr0ePjqgA0S+IpJjENVF3RtI8T5uQbzGCHJlbi6jSIhiNJ
+         7Fsk3TSENFAVOFKUQoQeOo5CKa2nEoBeZ//YYgXnLkrYcAT/0J2cXxdX9KGmDZtcfS
+         Hb5It45U+w0qXjK4sH7QCO2Q5PamKIrdcI+h4j+k6rtfnui3M1g+bbDsmJIUXOMicb
+         oAT2fVexHb+dbT7Qa5c+HloXV6SrINa+LT7FrOfZVlU9NnRbSCWfAobU0igERkOys0
+         brl+QSByO3zmp7m8VnMI4PMkMzX7JYSZ55NPC1BQGsOsLnt0XdIKZ1fvhqES0iHyxR
+         wXFJZCs6+JAVQ==
+Received: by mail-lf1-f43.google.com with SMTP id z8so6542555lfb.12;
+        Sun, 09 Apr 2023 17:57:53 -0700 (PDT)
+X-Gm-Message-State: AAQBX9cao9KzXcnVbpZF5Hf2AaD8BObMa0ds256erFHePSR0yeB2tX/c
+        6dDq/lOBWAynUDcCTcYdRGbnvsuuWrGFcSAkr7I=
+X-Google-Smtp-Source: AKy350bGuMItwf91ELSkpTyF9NTc1nsh5zMn14Rcfih66uAv/CLQBUeJc/PXY4C+URSH0CRWRT6ujIgC3V9ghu6/E/I=
+X-Received: by 2002:a05:6512:25e:b0:4eb:540f:2bf6 with SMTP id
+ b30-20020a056512025e00b004eb540f2bf6mr2517888lfo.11.1681088271396; Sun, 09
+ Apr 2023 17:57:51 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230329195758.7384-1-mario.limonciello@amd.com>
+ <CAGp9LzrkX4uFAtLwvjH+uUuRgT_YDg3eE8SqgWEXOFmw5r=aMQ@mail.gmail.com>
+ <cdf612bf-96f6-9b4e-a32c-50007892083c@amd.com> <MN0PR12MB61012EEFC07D4FAE534C1323E2929@MN0PR12MB6101.namprd12.prod.outlook.com>
+In-Reply-To: <MN0PR12MB61012EEFC07D4FAE534C1323E2929@MN0PR12MB6101.namprd12.prod.outlook.com>
+From:   Sean Wang <sean.wang@kernel.org>
+Date:   Sun, 9 Apr 2023 17:57:38 -0700
+X-Gmail-Original-Message-ID: <CAGp9LzqWna+BU_F-=zxCmo62616Jjn2pXQG-Zk43Ax13zRjF0Q@mail.gmail.com>
+Message-ID: <CAGp9LzqWna+BU_F-=zxCmo62616Jjn2pXQG-Zk43Ax13zRjF0Q@mail.gmail.com>
+Subject: Re: [PATCH RESEND] wifi: mt76: mt7921e: Set memory space enable in
+ PCI_COMMAND if unset
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>,
+        "ryder.lee@mediatek.com" <ryder.lee@mediatek.com>,
+        "shayne.chen@mediatek.com" <shayne.chen@mediatek.com>,
+        "sean.wang@mediatek.com" <sean.wang@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Tsao, Anson" <anson.tsao@amd.com>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFN1bmRheSwgQXByaWwgOSwgMjAy
-MyAxMDoxMSBQTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBsaW51
-eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IEplcyBTb3JlbnNlbiA8SmVzLlNvcmVu
-c2VuQGdtYWlsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCAxLzJdIHdpZmk6IHJ0bDh4eHh1
-OiBDbGVhbiB1cCBzb21lIG1lc3N5IGlmcw0KPiANCj4gT24gMDYvMDQvMjAyMyAwNDoxNiwgUGlu
-Zy1LZSBTaGloIHdyb3RlOg0KPiA+DQo+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
-LS0NCj4gPj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+
-DQo+ID4+IFNlbnQ6IFNhdHVyZGF5LCBBcHJpbCAxLCAyMDIzIDQ6MTcgQU0NCj4gPj4gVG86IGxp
-bnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiA+PiBDYzogSmVzIFNvcmVuc2VuIDxKZXMu
-U29yZW5zZW5AZ21haWwuY29tPjsgUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+
-ID4+IFN1YmplY3Q6IFtQQVRDSCAxLzJdIHdpZmk6IHJ0bDh4eHh1OiBDbGVhbiB1cCBzb21lIG1l
-c3N5IGlmcw0KPiA+Pg0KPiA+PiBBZGQgc29tZSBuZXcgbWVtYmVycyB0byBydGw4eHh4dV9maWxl
-b3BzIGFuZCB1c2UgdGhlbSBpbnN0ZWFkIG9mDQo+ID4+IGNoZWNraW5nIHByaXYtPnJ0bF9jaGlw
-Lg0KPiA+Pg0KPiA+PiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2Vy
-ZmUyQGdtYWlsLmNvbT4NCj4gPj4gLS0tDQo+ID4NCj4gPiBbLi4uXQ0KPiA+DQo+ID4+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2Nv
-cmUuYw0KPiA+PiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4
-eHVfY29yZS5jDQo+ID4+IGluZGV4IGMxNTJiMjI4NjA2Zi4uNjJkZDUzYTU3NjU5IDEwMDY0NA0K
-PiA+PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1
-X2NvcmUuYw0KPiA+PiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1
-L3J0bDh4eHh1X2NvcmUuYw0KPiA+PiBAQCAtMTkxNiw3ICsxOTE2LDcgQEAgc3RhdGljIGludCBy
-dGw4eHh4dV9zdGFydF9maXJtd2FyZShzdHJ1Y3QgcnRsOHh4eHVfcHJpdiAqcHJpdikNCj4gPj4g
-ICAgICAgICAvKg0KPiA+PiAgICAgICAgICAqIEluaXQgSDJDIGNvbW1hbmQNCj4gPj4gICAgICAg
-ICAgKi8NCj4gPj4gLSAgICAgICBpZiAocHJpdi0+cnRsX2NoaXAgPT0gUlRMODcyM0IgfHwgcHJp
-di0+cnRsX2NoaXAgPT0gUlRMODE4OEYgfHwgcHJpdi0+cnRsX2NoaXAgPT0gUlRMODcxMEIpDQo+
-ID4+ICsgICAgICAgaWYgKHByaXYtPmZvcHMtPmluaXRfcmVnX2htdGZyKQ0KPiA+PiAgICAgICAg
-ICAgICAgICAgcnRsOHh4eHVfd3JpdGU4KHByaXYsIFJFR19ITVRGUiwgMHgwZik7DQo+ID4+ICBl
-eGl0Og0KPiA+PiAgICAgICAgIHJldHVybiByZXQ7DQo+ID4+IEBAIC0zODY0LDExICszODY0LDgg
-QEAgdm9pZCBydGw4eHh4dV9pbml0X2J1cnN0KHN0cnVjdCBydGw4eHh4dV9wcml2ICpwcml2KQ0K
-PiA+PiAgICAgICAgIHJ0bDh4eHh1X3dyaXRlOChwcml2LCBSRUdfSFRfU0lOR0xFX0FNUERVXzg3
-MjNCLCB2YWw4KTsNCj4gPj4NCj4gPj4gICAgICAgICBydGw4eHh4dV93cml0ZTE2KHByaXYsIFJF
-R19NQVhfQUdHUl9OVU0sIDB4MGMxNCk7DQo+ID4+IC0gICAgICAgaWYgKHByaXYtPnJ0bF9jaGlw
-ID09IFJUTDg3MjNCIHx8IHByaXYtPnJ0bF9jaGlwID09IFJUTDg3MTBCKQ0KPiA+PiAtICAgICAg
-ICAgICAgICAgdmFsOCA9IDB4NWU7DQo+ID4+IC0gICAgICAgZWxzZSBpZiAocHJpdi0+cnRsX2No
-aXAgPT0gUlRMODE4OEYpDQo+ID4+IC0gICAgICAgICAgICAgICB2YWw4ID0gMHg3MDsgLyogMHg1
-ZSB3b3VsZCBtYWtlIGl0IHZlcnkgc2xvdyAqLw0KPiA+PiAtICAgICAgIHJ0bDh4eHh1X3dyaXRl
-OChwcml2LCBSRUdfQU1QRFVfTUFYX1RJTUVfODcyM0IsIHZhbDgpOw0KPiA+PiArICAgICAgIHJ0
-bDh4eHh1X3dyaXRlOChwcml2LCBSRUdfQU1QRFVfTUFYX1RJTUVfODcyM0IsDQo+ID4+ICsgICAg
-ICAgICAgICAgICAgICAgICAgIHByaXYtPmZvcHMtPmFtcGR1X21heF90aW1lKTsNCj4gPg0KPiA+
-IFNob3VsZCBpdCBiZQ0KPiA+DQo+ID4gaWYgKHByaXYtPmZvcHMtPmFtcGR1X21heF90aW1lKQ0K
-PiA+ICAgICB2YWw4ID0gcHJpdi0+Zm9wcy0+YW1wZHVfbWF4X3RpbWU7Pg0KPiA+IHJ0bDh4eHh1
-X3dyaXRlOChwcml2LCBSRUdfQU1QRFVfTUFYX1RJTUVfODcyM0IsIHZhbDgpOyAvLyB0aGlzIGxp
-bmUgZG9lc24ndCBjaGFuZ2U/DQo+ID4NCj4gPiBCZWNhdXNlIG9yaWdpbmFsbHkgdmFsOCBpcyBy
-ZWFkIGZyb20gUkVHX0hUX1NJTkdMRV9BTVBEVV84NzIzQiBhbmQgYWRkDQo+ID4gSFRfU0lOR0xF
-X0FNUERVX0VOQUJMRSBiaXQuDQo+IA0KPiBObywgdGhlIHZhbHVlIHJlYWQgZnJvbSBSRUdfSFRf
-U0lOR0xFX0FNUERVXzg3MjNCIGlzIG5vdCBzdXBwb3NlZCB0byBiZQ0KPiB3cml0dGVuIHRvIFJF
-R19BTVBEVV9NQVhfVElNRV84NzIzQi4gQW5kIGl0IG5ldmVyIHdhcywgYmVjYXVzZSBvbmx5DQo+
-IFJUTDg3MjNCLCBSVEw4NzEwQiwgYW5kIFJUTDgxODhGIHVzZSB0aGlzIGZ1bmN0aW9uLiBUaGlz
-IHdhcyBjbGVhcmVyIGluDQo+IHRoZSBvcmlnaW5hbCB2ZXJzaW9uIG9mIHRoZSBjb2RlLCB3aGVu
-IGl0IHdhcyB1c2VkIG9ubHkgYnkgUlRMODcyM0I6DQo+IA0KPiAgICAgICAgICAgICAgICAgdmFs
-OCA9IHJ0bDh4eHh1X3JlYWQ4KHByaXYsIFJFR19IVF9TSU5HTEVfQU1QRFVfODcyM0IpOw0KPiAg
-ICAgICAgICAgICAgICAgdmFsOCB8PSBCSVQoNyk7DQo+ICAgICAgICAgICAgICAgICBydGw4eHh4
-dV93cml0ZTgocHJpdiwgUkVHX0hUX1NJTkdMRV9BTVBEVV84NzIzQiwgdmFsOCk7DQo+IA0KPiAg
-ICAgICAgICAgICAgICAgcnRsOHh4eHVfd3JpdGUxNihwcml2LCBSRUdfTUFYX0FHR1JfTlVNLCAw
-eDBjMTQpOw0KPiAgICAgICAgICAgICAgICAgcnRsOHh4eHVfd3JpdGU4KHByaXYsIFJFR19BTVBE
-VV9NQVhfVElNRV84NzIzQiwgMHg1ZSk7DQo+IA0KDQpPb3BzLiBTb21laG93IEkgbWlzdW5kZXJz
-dG9vZCB0aGUgY29kZS4gU29ycnkgZm9yIHRoZSBub2lzZS4NCg0KDQoNCg==
+On Mon, Apr 3, 2023 at 6:42=E2=80=AFAM Limonciello, Mario
+<Mario.Limonciello@amd.com> wrote:
+>
+> [Public]
+>
+> > On 3/29/2023 18:24, Sean Wang wrote:
+> > > Hi,
+> > >
+> > > On Wed, Mar 29, 2023 at 1:18=E2=80=AFPM Mario Limonciello
+> > > <mario.limonciello@amd.com> wrote:
+> > >>
+> > >> When the BIOS has been configured for Fast Boot, systems with mt7921=
+e
+> > >> have non-functional wifi.  Turning on Fast boot caused both bus mast=
+er
+> > >> enable and memory space enable bits in PCI_COMMAND not to get
+> > configured.
+> > >>
+> > >> The mt7921 driver already sets bus master enable, but explicitly che=
+ck
+> > >> and set memory access enable as well to fix this problem.
+> > >>
+> > >> Tested-by: Anson Tsao <anson.tsao@amd.com>
+> > >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > >> ---
+> > >> Original patch was submitted ~3 weeks ago with no comments.
+> > >> Link: https://lore.kernel.org/all/20230310170002.200-1-
+> > mario.limonciello@amd.com/
+> > >> ---
+> > >>   drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 6 ++++++
+> > >>   1 file changed, 6 insertions(+)
+> > >>
+> > >> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > >> index cb72ded37256..aa1a427b16c2 100644
+> > >> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > >> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > >> @@ -263,6 +263,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev=
+,
+> > >>          struct mt76_dev *mdev;
+> > >>          u8 features;
+> > >>          int ret;
+> > >> +       u16 cmd;
+> > >>
+> > >>          ret =3D pcim_enable_device(pdev);
+> > >>          if (ret)
+> > >> @@ -272,6 +273,11 @@ static int mt7921_pci_probe(struct pci_dev
+> > *pdev,
+> > >>          if (ret)
+> > >>                  return ret;
+> > >>
+> > >> +       pci_read_config_word(pdev, PCI_COMMAND, &cmd);
+> > >> +       if (!(cmd & PCI_COMMAND_MEMORY)) {
+> > >> +               cmd |=3D PCI_COMMAND_MEMORY;
+> > >> +               pci_write_config_word(pdev, PCI_COMMAND, cmd);
+> > >> +       }
+> > >
+> > > If PCI_COMMAND_MEMORY is required in any circumstance, then we
+> > don't
+> > > need to add a conditional check and OR it with PCI_COMMAND_MEMORY.
+> >
+> > Generally it seemed advantageous to avoid an extra PCI write if it's no=
+t
+> > needed.  For example that's how bus mastering works too (see
+> > __pci_set_master).
+> >
+> >
+> > > Also, I will try the patch on another Intel machine to see if it work=
+ed.
+> >
+> > Thanks.
+>
+> Did you get a chance to try this on an Intel system?
+
+Hi,
+
+Sorry for the late response. We have tested the related Intel platform
+and it worked fine. You can add the tag from me like
+Acked-by: Sean Wang <sean.wang@mediatek.com>
+
+
+>
+> >
+> > >
+> > >       Sean
+> > >
+> > >>          pci_set_master(pdev);
+> > >>
+> > >>          ret =3D pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES=
+);
+> > >> --
+> > >> 2.34.1
+> > >>
