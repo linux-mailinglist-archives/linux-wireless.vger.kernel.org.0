@@ -2,45 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83DDD6DD7AB
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 12:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E7BE6DD7B0
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 12:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjDKKPo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 06:15:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42076 "EHLO
+        id S229737AbjDKKQf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Apr 2023 06:16:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbjDKKPn (ORCPT
+        with ESMTP id S229744AbjDKKQc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 06:15:43 -0400
+        Tue, 11 Apr 2023 06:16:32 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0158392
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 03:15:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B4B30FF
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 03:16:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=oW1jk8i0Jy2kglxnjc/4bhznUy5RshboGFIWf/WyeI8=;
-        t=1681208142; x=1682417742; b=nBpjhj0b3bT0T7No1DKi1v2P1Hyo3jlU8/dkIOZKnRzIGNi
-        4xk/JZMx8hqzQZpQN/tgTrKr2YhuiJ35GtTsS2EkHS0P/6N0FRgE+zcwj3vZmox7edXgmTvTvvXy3
-        8DFgdfZAcr8BZq+05afVTI0OWb0dYdLyXgCZ5PHqUf5MAbCUTVwP/qWNHeMPAcCUw+eIFpu2RfZrv
-        27/wN/OcqUFkKrc+eXyyWVgbMSowdHGfK6fRQXnEs5Nymwv0oPFK+Vb59fTk33JFd2qrnv7Y8H6gS
-        rZdwD7XzsOarYhJcxxkdFkjtOgDgLNECLKBpl8B55LuDW8kPlXIuHrroakGrBmYg==;
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=VBbUCXUzj+FqoSlTXXwTAPkQoNkpCBgeaQh7XK4E1V8=;
+        t=1681208191; x=1682417791; b=Fzwb/Ju9obboRxBwn2JpMBlTYuuurGSx5TX2NhlyJRwIBNU
+        HL4GISCs1IYPL93X5H4CjMpszNWUYTffKalw52WEwE+j3ClOhT78ZOjMrwxjBbN4aLSexGRR6+xZD
+        olIgd3HyDbXFzFgKBeTc9ClUX9jZuXUMpYAosvyXfCftTWtCKbEl9IbR5a6Fd0/YlHzE88Z5ecLRw
+        Cbw3Y1J+2AsvjrWZj6m6brbqloeKyAEDXQ/q+fyVDkSKyzmpQHnMdIltIXMp3WmV4y0YlZ6hMp15t
+        qWYseQ26vmTYvESoDfq623ChKw5e0YqwnRZbqc/p/dUR68Z2wZLcnzjHs8j7qKEw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pmB2J-00CgEk-0T;
-        Tue, 11 Apr 2023 12:15:39 +0200
-Message-ID: <67d681751d9af226fc84c533649d620ea1bb7664.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: Add support to randomize TA of auth and
- deauth frames
+        id 1pmB36-00CgG2-2k;
+        Tue, 11 Apr 2023 12:16:28 +0200
+Message-ID: <90618520913ba1e6795403b0ab1aabdb1e374f9d.camel@sipsolutions.net>
+Subject: Re: [PATCH 24/27] wifi: mac80211: implement link switching
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Veerendranath Jakkam <quic_vjakkam@quicinc.com>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 11 Apr 2023 12:15:38 +0200
-In-Reply-To: <bd40816c-9759-a0af-9075-cc684f81fd70@quicinc.com>
-References: <20230112012415.167556-3-quic_vjakkam@quicinc.com>
-         <20230307102225.74883-1-johannes@sipsolutions.net>
-         <bd40816c-9759-a0af-9075-cc684f81fd70@quicinc.com>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org, ath12k@lists.infradead.org
+Date:   Tue, 11 Apr 2023 12:16:28 +0200
+In-Reply-To: <e315d6bf-67d7-31b3-991d-e6cb78701990@quicinc.com>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+         <20220902161143.d99dfbe65c90.I92385ba882ec984a9a2ad18293173436657e82aa@changeid>
+         <ca5177fe-3b9f-2309-9afd-1d5e827540f7@quicinc.com>
+         <50719d34bc48d816d00b56d3d9efdb59e3e51a16.camel@sipsolutions.net>
+         <7872a08d-fe37-a876-713d-c5ec40c1893f@quicinc.com>
+         <106ad2b4934efd2f81d51b2e66336954bee7c185.camel@sipsolutions.net>
+         <e315d6bf-67d7-31b3-991d-e6cb78701990@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
@@ -55,48 +58,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-04-06 at 18:47 +0530, Veerendranath Jakkam wrote:
-> On 3/7/2023 3:52 PM, Johannes Berg wrote:
-> > ---
-> > So this is the patch I ended up with after some cleanups, but
-> > then at the end I noticed you didn't unset the temp address
-> > when the remain-on-channel expires, and wasn't sure exactly
-> > how that should be handled, and you probably have the better
-> > test setup right now too ...
-
-> Apologies for the delayed response. Thanks for the cleaning up the patch.
->=20
-> Regarding the comment on clearing temp address, I think the temp address=
-=20
-> should get cleared with below changes added in=20
-> ieee80211_roc_notify_destroy() when remain-on-channel expires. Please=20
-> let me know if I am missing something.
->=20
->=20
-> > diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-> > index d78c82d6b696..74d2b826916a 100644
-> > --- a/net/mac80211/offchannel.c
-> > +++ b/net/mac80211/offchannel.c
-> > @@ -187,6 +187,12 @@ static void ieee80211_roc_notify_destroy(struct ie=
-ee80211_roc_work *roc)
-> >   					 roc->mgmt_tx_cookie,
-> >   					 roc->chan, GFP_KERNEL);
-> >  =20
-> > +	if (!is_zero_ether_addr(roc->sdata->vif.cfg.temp_addr)) {
-> > +		eth_zero_addr(roc->sdata->vif.cfg.temp_addr);
-> > +		ieee80211_vif_cfg_change_notify(roc->sdata,
-> > +						BSS_CHANGED_TEMP_ADDR);
-> > +	}
-> > +
-> >   	list_del(&roc->list);
-> >   	kfree(roc);
-> >   }
+On Mon, 2023-04-03 at 22:15 +0800, Wen Gong wrote:
+> On 3/28/2023 3:39 PM, Johannes Berg wrote:
+> > On Tue, 2023-03-28 at 15:37 +0800, Wen Gong wrote:
+> > > On 3/27/2023 4:31 PM, Johannes Berg wrote:
+> > > ...
+> > > > > Also I see commit(8fb7e2ef4bab mac80211_hwsim: always activate al=
+l links) and ieee80211_if_parse_active_links()
+> > > > > will use ieee80211_set_active_links(), so I think ieee80211_set_a=
+ctive_links() has passed test case with some type lower driver/chip?
+> > > > Yes, we have this working on iwlwifi/mvm.
+> > > >=20
+> > > > johannes
+> > > May I know how did you test it?
+> > Just writing to the debugfs file. We have various tests using that now.
+> >=20
+> Do you mean the various tests using debugfs or using=20
+> ieee80211_set_active_links() directly?
 >=20
 
-Huh, yeah, looks like I just missed that? Sorry about that.
-
-Seeing that though, I remembered another thing - don't we have to adjust
-the merging logic in ieee80211_start_roc_work() and maybe also
-ieee80211_coalesce_hw_started_roc()?
+Yeah the tests write to debugfs.
 
 johannes
