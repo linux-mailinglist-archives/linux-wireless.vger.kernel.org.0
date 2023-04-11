@@ -2,70 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D466DDB8D
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 15:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB986DDE61
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 16:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230271AbjDKNCx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 09:02:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60820 "EHLO
+        id S229985AbjDKOqx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Apr 2023 10:46:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjDKNCr (ORCPT
+        with ESMTP id S229565AbjDKOqw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 09:02:47 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FDB04EEB
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 06:02:33 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33BD1F150028891, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33BD1F150028891
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 11 Apr 2023 21:01:15 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 11 Apr 2023 21:01:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 11 Apr 2023 21:01:36 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02]) by
- RTEXMBS04.realtek.com.tw ([fe80::b4a2:2bcc:48d1:8b02%5]) with mapi id
- 15.01.2375.007; Tue, 11 Apr 2023 21:01:36 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "kvalo@kernel.org" <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Bernie Huang" <phhuang@realtek.com>
-Subject: Re: [PATCH 2/5] wifi: rtw89: add function to wait for completion of TX skbs
-Thread-Topic: [PATCH 2/5] wifi: rtw89: add function to wait for completion of
- TX skbs
-Thread-Index: AQHZUwMd+NR5pgHPjU6+dSB+fp1fy677jXH9gAAE8zCAHfbw3oAAh2SAgAuuoIA=
-Date:   Tue, 11 Apr 2023 13:01:36 +0000
-Message-ID: <56831ba4f216daee09b3d9c9a7deaf5810cade34.camel@realtek.com>
-References: <20230310034631.45299-1-pkshih@realtek.com>
-         <20230310034631.45299-3-pkshih@realtek.com>    <87v8j2mmqt.fsf@kernel.org>
-         <360e6dd64e3645c68742fc4c603b3c2b@realtek.com> <875yadb6i1.fsf@kernel.org>
-         <761e605b96d734881dc51be4679f3a04c75abb89.camel@realtek.com>
-In-Reply-To: <761e605b96d734881dc51be4679f3a04c75abb89.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.20.144]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <480CB474A7D17744BEC278A44D08C34F@realtek.com>
-Content-Transfer-Encoding: base64
+        Tue, 11 Apr 2023 10:46:52 -0400
+Received: from stone.woods.net (stone.woods.net [74.50.54.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5DE7170E
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 07:46:49 -0700 (PDT)
+Received: from sneaky (66.29.179.130.static.utbb.net [66.29.179.130])
+        by stone.woods.net (Postfix) with ESMTPSA id D97978929;
+        Tue, 11 Apr 2023 14:46:48 +0000 (UTC)
+Date:   Tue, 11 Apr 2023 08:46:48 -0600
+From:   Aaron Dewell <acd@woods.net>
+To:     =?utf-8?Q?Greenman=2C_Gregory?= <gregory.greenman@intel.com>
+Cc:     "=?utf-8?Q?linux-wireless=40vger.kernel.org?=" 
+        <linux-wireless@vger.kernel.org>
+Message-ID: <987BA80F-0F17-4AB7-82E6-9822B47FEAB1@getmailspring.com>
+In-Reply-To: <f2850fbe3264ff4a0bc5eef367c515975f15da54.camel@intel.com>
+References: <f2850fbe3264ff4a0bc5eef367c515975f15da54.camel@intel.com>
+Subject: Re: ax204/Intel NUC13 i9
+X-Mailer: Mailspring
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,54 +41,94 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIzLTA0LTA0IGF0IDEwOjM3ICswODAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+
-IE9uIE1vbiwgMjAyMy0wNC0wMyBhdCAxMzozMiArMDMwMCwgS2FsbGUgVmFsbyB3cm90ZToNCj4g
-PiBJIHdvdWxkIGV4cGVjdCB0aGF0IHRoZXJlJ3MgcG9sbGluZyBpZiB5b3UgYXJlIHdhaXRpbmcg
-c29tZXRoaW5nIGZyb20NCj4gPiBoYXJkd2FyZSwgb3IgbWF5YmUgd2hlbiBpbXBsZW1lbnRpbmcg
-YSBzcGluIGxvY2ssIGJ1dCBub3Qgd2hlbiB3YWl0aW5nDQo+ID4gZm9yIGFub3RoZXIga2VybmVs
-IHRocmVhZC4gVGhpcyBqdXN0IGRvZXNuJ3QgZmVlbCByaWdodCBidXQgSSBkb24ndCBoYXZlDQo+
-ID4gdGltZSB0byBwcm9wb3NlIGEgZ29vZCBhbHRlcm5hdGl2ZSBlaXRoZXIsIHNvcnJ5Lg0KPiA+
-IA0KPiANCj4gSSBoYXZlIGZvdW5kIGEgc29sdXRpb24gdGhhdCB1c2VzIGFuIG93bmVyIHZhcmlh
-YmxlIHdpdGggYSBzcGluIGxvY2sNCj4gdG8gZGV0ZXJtaW5lIHdoaWNoIHNpZGUgdG8gZnJlZSBj
-b21wbGV0aW9uIG9iamVjdC4gU2ltcGx5IHNob3cgdHdvIHVzZQ0KPiBjYXNlcyBiZWxvdzoNCj4g
-DQo+IFVzZSBjYXNlIDE6IChub3JtYWwgY2FzZTsgZnJlZSBjb21wbGV0aW9uIG9iamVjdCBieSB3
-b3JrIDEpDQo+ICAgICB3b3JrIDEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHdvcmsg
-Mg0KPiAgICAgd2FpdA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAoc3Bpbl9sb2NrKQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBjb21wbGV0ZQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBj
-aGVjayAmIHNldCBvd25lciAtLT4gb3duZXIgPSB3b3JrMQ0KPiAJCSAgICAgICAgICAgICAgICAg
-ICAgICAgICAgKHNwaW5fdW5sb2NrKQ0KPiAgICAgd2FpdCBvaw0KPiAgICAgKHNwaW5fbG9jaykN
-Cj4gICAgIGNoZWNrICYgY2hlY2sgb3duZXIgLS0+IGZyZWUgYnkgd29yayAxDQo+ICAgICAoc3Bp
-bl91bmxvY2spDQo+ICAgICBmcmVlIGNvbXBsZXRpb24NCj4gDQo+IA0KPiBVc2UgY2FzZSAyOiAo
-dGltZW91dCBjYXNlOyBmcmVlIGNvbXBsZXRpb24gb2JqZWN0IGJ5IHdvcmsgMikNCj4gICAgIHdv
-cmsgMSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgd29yayAyDQo+ICAgICB3YWl0DQo+
-ICAgICB3YWl0IHRpbWVvdXQNCj4gICAgIChzcGluX2xvY2spDQo+ICAgICBjaGVjayAmIHNldCBv
-d25lciAtLT4gb3duZXIgPSB3b3JrIDINCj4gICAgIChzcGluX3VubG9jaykNCj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoc3Bpbl9sb2NrKQ0KPiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbXBsZXRpb24NCj4gICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjaGVjayAmIHNldCBvd25lciAtLT4gZnJlZSBi
-eSB3b3JrIDINCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoc3Bp
-bl91bmxvY2spDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZnJl
-ZSBjb21wbGV0aW9uDQo+IA0KPiBJIHdpbGwgYXBwbHkgdGhpcyBieSB2NS4NCj4gDQoNCldlIGhh
-dmUgYSBiZXR0ZXIgaWRlYSB0aGF0IHVzZSBrZnJlZV9yY3UoKSB0byBmcmVlIGNvbXBsZXRpb24s
-IHNvIG5vDQpuZWVkIHNwaW5fbG9jaygpLiBUaGVuLCB0aGUgdXNlIGNhc2VzIGJlY29tZSBiZWxv
-dywgYW5kIEkgaGF2ZSBzZW50DQp0aGlzIGNoYW5nZSBieSB2Ni4NCg0KVXNlIGNhc2UgMTogKG5v
-cm1hbCBjYXNlKQ0KICAgIHdvcmsgMSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgd29y
-ayAyDQogICAgKHJjdV9hc3NpZ25fcG9pbnRlcih3YWl0KSkNCiAgICB3YWl0DQogICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAocmN1X3JlYWRfbG9jaykNCiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHdhaXQgPSByY3VfZGVyZWZlcmVuY2Uo
-KTsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmICh3YWl0KSAg
-ICAtLT4gd2FpdCAhPSBOVUxMDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgY29tcGxldGUNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIChyY3VfcmVhZF91bmxvY2spDQogICAgd2FpdCBvaw0KICAgIChyY3VfYXNzaWduX3BvaW50
-ZXIoTlVMTCkpDQogICAga2ZyZWVfcmN1KGNvbXBsZXRpb24pDQoNCg0KVXNlIGNhc2UgMjogKHRp
-bWVvdXQgY2FzZSkNCiAgICB3b3JrIDEgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHdv
-cmsgMg0KICAgIChyY3VfYXNzaWduX3BvaW50ZXIod2FpdCkpDQogICAgd2FpdA0KICAgIHdhaXQg
-dGltZW91dA0KICAgIChyY3VfYXNzaWduX3BvaW50ZXIoTlVMTCkpDQogICAga2ZyZWVfcmN1KGNv
-bXBsZXRpb24pDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAocmN1
-X3JlYWRfbG9jaykNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHdh
-aXQgPSByY3VfZGVyZWZlcmVuY2UoKTsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIGlmICh3YWl0KSAgICAtLT4gd2FpdCA9PSBOVUxMDQogICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29tcGxldGUNCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIChyY3VfcmVhZF91bmxvY2spDQoNCg0KUGluZy1LZQ0K
-DQo=
+
+On Apr 11 2023, at 3:07 am, Greenman, Gregory
+<gregory.greenman@intel.com> wrote:
+
+> On Mon, 2023-04-10 at 15:45 -0600, Aaron Dewell wrote:
+>> To summarize up to now and reboot the discussion:
+>>  
+>> I have installed firmware-git. This is the file that was extracted
+>> into /lib/firmware:
+>> -rw-r--r--  1 root  root 429469981 Apr  2 10:47 linux-firmware-iwlwifi-fw-2023-03-30.tar.gz
+>>  
+>> The card is not successfully initialized by the stock (6.1.20) kernel:
+>> [    2.284183] Intel(R) Wireless WiFi driver for Linux
+>> [    2.284221] cryptd: max_cpu_qlen set to 1000
+>> [    2.284223] iwlwifi 0000:00:14.3: enabling device (0000 -> 0002)
+>> [    2.286133] iwlwifi: No config found for PCI dev 7af0/1692,
+>> rev=0x430, rfid=0x3010d000
+>> [    2.286155] iwlwifi: probe of 0000:00:14.3 failed with error -22
+>>  
+>> The distribution is Debian Bookworm (testing), which has kernel:
+>> Linux shrub 6.1.0-7-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.20-1
+>> (2023-03-19) x86_64 GNU/Linux
+>>  
+>> The card identifies as 0x7AF0, 0x1692:
+>> 00:14.3 Network controller [0280]: Intel Corporation Alder Lake-S PCH
+>> CNVi WiFi [8086:7af0] (rev 11)
+>>         Subsystem: Rivet Networks Alder Lake-S PCH CNVi WiFi [1a56:1692]
+>>         Flags: fast devsel, IRQ 18, IOMMU group 6
+>>         Memory at 604c124000 (64-bit, non-prefetchable) [size=16K]
+>>         Capabilities: [c8] Power Management version 3
+>>         Capabilities: [d0] MSI: Enable- Count=1/1 Maskable- 64bit+
+>>         Capabilities: [40] Express Root Complex Integrated Endpoint,
+>> MSI 00
+>>         Capabilities: [80] MSI-X: Enable- Count=16 Masked-
+>>         Capabilities: [100] Latency Tolerance Reporting
+>>         Capabilities: [164] Vendor Specific Information: ID=0010 Rev=0
+>> Len=014 <?>
+>>         Kernel modules: iwlwifi
+>>  
+>> Granted that I am no expert on this, but I know enough to get myself
+>> into trouble, which is what I proceeded to do.  I believe (but could
+>> well be mistaken) that what is needed is a configuration line for that
+>> PCI ID in iwlwifi/pcie/drv.c, something like this one:
+>>  
+>> IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+>>  
+>> My attempt was to duplicate then change the new line from 7F70 to 7AF0,
+>> but that was also not successful, with such errors as (clipping because
+>> it's rather long):
+>>  
+>> [...]
+>> [    3.960164] iwlwifi 0000:00:14.3: Microcode SW error detected.
+>> Restarting 0x0.
+>> [...]
+>> [    3.960551] iwlwifi 0000:00:14.3: Starting mac, retry will be
+>> triggered anyway
+>> [    3.960594] iwlwifi 0000:00:14.3: FW error in SYNC CMD ADD_STA
+>> [    3.960600] Call Trace:
+>> [    3.960602]  <TASK>
+>> [    3.960602]  dump_stack_lvl+0x36/0x50
+>> [    3.960606]  iwl_trans_txq_send_hcmd+0x338/0x450 [iwlwifi]
+>> [...]
+>>  
+>> It does produce an interface but it is unusable.
+>>  
+>> I assume (but I am definitely out of my depth at this point) that it is
+>> due to the wrong firmware being referenced by that line of code (i.e.
+>> it's a different firmware for 7F70 vs. 7AF0) but I also don't know what
+>> the correct one is, thus I'm asking here.  If I'm totally on the wrong
+>> track, I'm fine with that too, I just want to get it working.
+>>  
+>> Thanks!
+>>  
+>>  
+> Hi Aaron,
+>  
+> Could you please provide the whole dmesg log? Actually, the best is to open
+> a bugzilla ticket (as described in [1]) and attach the log there. It's strange
+> that the card identifies as CNVi (meaning it's SoC - integrated), but killer
+> NICs should be discrete. Maybe you could also attach to the bugzilla ticket
+> a photo of the NIC itself with all the IDs etc that it has on it?
+>  
+> [1] https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/debugging
+
+Hi Gregory,
+
+I'll open the ticket.  Thanks!
+
+It is definitely not discrete, it's integrated onto the board.
+
+Aaron
