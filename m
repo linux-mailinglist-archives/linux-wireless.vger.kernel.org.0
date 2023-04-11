@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D64806DDB28
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 14:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 768F26DDB2A
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 14:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjDKMtE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 08:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40934 "EHLO
+        id S230040AbjDKMtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Apr 2023 08:49:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230040AbjDKMs7 (ORCPT
+        with ESMTP id S230047AbjDKMtB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 08:48:59 -0400
+        Tue, 11 Apr 2023 08:49:01 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520E344A4
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 05:48:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A92A359E
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 05:48:58 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33BCmM9D1030599, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33BCmM9D1030599
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33BCmO9s9030603, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33BCmO9s9030603
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 11 Apr 2023 20:48:22 +0800
+        Tue, 11 Apr 2023 20:48:24 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 11 Apr 2023 20:48:43 +0800
+ 15.1.2375.32; Tue, 11 Apr 2023 20:48:45 +0800
 Received: from localhost (172.16.20.144) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 11 Apr
- 2023 20:48:43 +0800
+ 2023 20:48:44 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <phhuang@realtek.com>, <kevin_yang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH v6 0/5] wifi: rtw89: preparation of multiple interface concurrency support
-Date:   Tue, 11 Apr 2023 20:48:27 +0800
-Message-ID: <20230411124832.14965-1-pkshih@realtek.com>
+Subject: [PATCH v6 1/5] wifi: rtw89: 8852c: add beacon filter and CQM support
+Date:   Tue, 11 Apr 2023 20:48:28 +0800
+Message-ID: <20230411124832.14965-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230411124832.14965-1-pkshih@realtek.com>
+References: <20230411124832.14965-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,6 +46,10 @@ X-Originating-IP: [172.16.20.144]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -55,82 +61,430 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-To support concurrency, we implement beacon filter, CQM and
-ieee80211::remain_on_channel ops. Since our firmware doesn't support to TX
-null packet while doing remain-on-channel, driver does this instead. To
-ensure null packet send out before switching channel, patch 2/5 adds a
-waiting mechanism.
+From: Po-Hao Huang <phhuang@realtek.com>
 
-The patches 4/5 and 5/5 refine things we found during developing.
+Adding this supports beacon filter and connection quality monitor.
+To make host CPU wake up less, let firmware perform signal
+monitoring and beacon processing, then notify driver upon signal
+changes or beacon loss.
 
-v6:
-  - patch 2/5
-    - use kfree_rcu to free 'wait' object, so don't need spin_lock
-      introduced by v5. Then, no lock in TX path.
-  - others
-    - no change
+This feature needs firmware 0.27.56 or newer to support it.
 
-v5:
-  - patch 2/5
-    - use owner with spin_lock to replace original third work to make
-      code simpler.
-  - others
-    - no change
-
-v4:
-  - patch 1/5
-    - define h2c/c2h struct to set/get skb->data,
-      for example
-
-      * h2c = (__le32 *)skb->data; -->
-        h2c = (struct rtw89_h2c_bcnfltr *)skb->data;
-
-      * #define H2C_CFG_BCN_FLTR_LEN 4 (remove) --> sizeof(*h2c)
-
-      * h2c[0] = le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_RSSI) -->
-        h2c->w0 = le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_RSSI)
-
-    - I think this could improve a little more. If anyone have more ideas
-      in the future, I will open mind to change them again to make them
-      look better.
-
-  - others
-    - no change
-
-v3:
-  - patch 1/5
-    - remove unnecessary type casting
-    - use clear style of mask definition for H2C/C2H
-  - patch 2/5
-    - add comment to describe why polling can help freeing
-  - others
-    - no change
-
-v2:
-  - messed up, please ignore.
-
-Po-Hao Huang (5):
-  wifi: rtw89: 8852c: add beacon filter and CQM support
-  wifi: rtw89: add function to wait for completion of TX skbs
-  wifi: rtw89: add ieee80211::remain_on_channel ops
-  wifi: rtw89: add flag check for power state
-  wifi: rtw89: fix authentication fail during scan
-
- drivers/net/wireless/realtek/rtw89/chan.c     |  35 +++
- drivers/net/wireless/realtek/rtw89/chan.h     |   3 +
- drivers/net/wireless/realtek/rtw89/core.c     | 261 +++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/core.h     |  71 +++++
- drivers/net/wireless/realtek/rtw89/fw.c       | 116 +++++++-
- drivers/net/wireless/realtek/rtw89/fw.h       |  63 +++++
- drivers/net/wireless/realtek/rtw89/mac.c      |  62 +++++
+Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v6: no change
+v5: no change
+v4: define h2c/c2h struct to set/get skb->data
+---
+ drivers/net/wireless/realtek/rtw89/core.c     |  11 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |   1 +
+ drivers/net/wireless/realtek/rtw89/fw.c       | 101 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.h       |  63 +++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.c      |  59 ++++++++++
  drivers/net/wireless/realtek/rtw89/mac.h      |   1 +
- drivers/net/wireless/realtek/rtw89/mac80211.c |  88 +++++-
- drivers/net/wireless/realtek/rtw89/pci.c      |   5 +
- drivers/net/wireless/realtek/rtw89/pci.h      |   4 +-
- drivers/net/wireless/realtek/rtw89/ps.c       |   6 +
- drivers/net/wireless/realtek/rtw89/ps.h       |  16 ++
- 13 files changed, 716 insertions(+), 15 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   8 ++
+ 7 files changed, 243 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 56a13be2e2833..3e1d9dd6637dc 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -1457,6 +1457,7 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
+ 	struct rtw89_rx_desc_info *desc_info = iter_data->desc_info;
+ 	struct sk_buff *skb = iter_data->skb;
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	struct rtw89_rx_phy_ppdu *phy_ppdu = iter_data->phy_ppdu;
+ 	const u8 *bssid = iter_data->bssid;
+ 
+ 	if (rtwdev->scanning &&
+@@ -1475,8 +1476,11 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
+ 	if (!ether_addr_equal(vif->bss_conf.bssid, bssid))
+ 		return;
+ 
+-	if (ieee80211_is_beacon(hdr->frame_control))
++	if (ieee80211_is_beacon(hdr->frame_control)) {
++		if (vif->type == NL80211_IFTYPE_STATION)
++			rtw89_fw_h2c_rssi_offload(rtwdev, phy_ppdu);
+ 		pkt_stat->beacon_nr++;
++	}
+ 
+ 	if (!ether_addr_equal(vif->addr, hdr->addr1))
+ 		return;
+@@ -2539,6 +2543,9 @@ int rtw89_core_sta_disassoc(struct rtw89_dev *rtwdev,
+ 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)vif->drv_priv;
+ 	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
+ 
++	if (vif->type == NL80211_IFTYPE_STATION)
++		rtw89_fw_h2c_set_bcn_fltr_cfg(rtwdev, vif, false);
++
+ 	rtwdev->total_sta_assoc--;
+ 	if (sta->tdls)
+ 		rtwvif->tdls_peer--;
+@@ -3415,6 +3422,8 @@ static int rtw89_core_register_hw(struct rtw89_dev *rtwdev)
+ 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+ 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
++	if (RTW89_CHK_FW_FEATURE(BEACON_FILTER, &rtwdev->fw))
++		ieee80211_hw_set(hw, CONNECTION_MONITOR);
+ 
+ 	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+ 				     BIT(NL80211_IFTYPE_AP) |
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 40fb18b613d90..f81c098a7a89d 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3231,6 +3231,7 @@ enum rtw89_fw_feature {
+ 	RTW89_FW_FEATURE_NO_PACKET_DROP,
+ 	RTW89_FW_FEATURE_NO_DEEP_PS,
+ 	RTW89_FW_FEATURE_NO_LPS_PG,
++	RTW89_FW_FEATURE_BEACON_FILTER,
+ };
+ 
+ struct rtw89_fw_suit {
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 5fa6863d36b30..032afbaeb71d6 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -266,6 +266,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
+ 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 34, 0, TX_WAKE),
+ 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 36, 0, SCAN_OFFLOAD),
+ 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 40, 0, CRASH_TRIGGER),
++	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 56, 10, BEACON_FILTER),
+ };
+ 
+ static void rtw89_fw_recognize_features(struct rtw89_dev *rtwdev)
+@@ -1737,6 +1738,106 @@ int rtw89_fw_h2c_set_ofld_cfg(struct rtw89_dev *rtwdev)
+ 	return ret;
+ }
+ 
++int rtw89_fw_h2c_set_bcn_fltr_cfg(struct rtw89_dev *rtwdev,
++				  struct ieee80211_vif *vif,
++				  bool connect)
++{
++	struct rtw89_vif *rtwvif = vif_to_rtwvif_safe(vif);
++	struct ieee80211_bss_conf *bss_conf = vif ? &vif->bss_conf : NULL;
++	struct rtw89_h2c_bcnfltr *h2c;
++	u32 len = sizeof(*h2c);
++	struct sk_buff *skb;
++	int ret;
++
++	if (!RTW89_CHK_FW_FEATURE(BEACON_FILTER, &rtwdev->fw))
++		return -EINVAL;
++
++	if (!rtwvif || !bss_conf || rtwvif->net_type != RTW89_NET_TYPE_INFRA)
++		return -EINVAL;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
++	if (!skb) {
++		rtw89_err(rtwdev, "failed to alloc skb for h2c bcn filter\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, len);
++	h2c = (struct rtw89_h2c_bcnfltr *)skb->data;
++
++	h2c->w0 = le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_RSSI) |
++		  le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_BCN) |
++		  le32_encode_bits(connect, RTW89_H2C_BCNFLTR_W0_MON_EN) |
++		  le32_encode_bits(RTW89_BCN_FLTR_OFFLOAD_MODE_DEFAULT,
++				   RTW89_H2C_BCNFLTR_W0_MODE) |
++		  le32_encode_bits(RTW89_BCN_LOSS_CNT, RTW89_H2C_BCNFLTR_W0_BCN_LOSS_CNT) |
++		  le32_encode_bits(bss_conf->cqm_rssi_hyst, RTW89_H2C_BCNFLTR_W0_RSSI_HYST) |
++		  le32_encode_bits(bss_conf->cqm_rssi_thold + MAX_RSSI,
++				   RTW89_H2C_BCNFLTR_W0_RSSI_THRESHOLD) |
++		  le32_encode_bits(rtwvif->mac_id, RTW89_H2C_BCNFLTR_W0_MAC_ID);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC, H2C_CL_MAC_FW_OFLD,
++			      H2C_FUNC_CFG_BCNFLTR, 0, 1, len);
++
++	ret = rtw89_h2c_tx(rtwdev, skb, false);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to send h2c\n");
++		goto fail;
++	}
++
++	return 0;
++fail:
++	dev_kfree_skb_any(skb);
++
++	return ret;
++}
++
++int rtw89_fw_h2c_rssi_offload(struct rtw89_dev *rtwdev,
++			      struct rtw89_rx_phy_ppdu *phy_ppdu)
++{
++	struct rtw89_h2c_ofld_rssi *h2c;
++	u32 len = sizeof(*h2c);
++	struct sk_buff *skb;
++	s8 rssi;
++	int ret;
++
++	if (!RTW89_CHK_FW_FEATURE(BEACON_FILTER, &rtwdev->fw))
++		return -EINVAL;
++
++	if (!phy_ppdu)
++		return -EINVAL;
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
++	if (!skb) {
++		rtw89_err(rtwdev, "failed to alloc skb for h2c rssi\n");
++		return -ENOMEM;
++	}
++
++	rssi = phy_ppdu->rssi_avg >> RSSI_FACTOR;
++	skb_put(skb, len);
++	h2c = (struct rtw89_h2c_ofld_rssi *)skb->data;
++
++	h2c->w0 = le32_encode_bits(phy_ppdu->mac_id, RTW89_H2C_OFLD_RSSI_W0_MACID) |
++		  le32_encode_bits(1, RTW89_H2C_OFLD_RSSI_W0_NUM);
++	h2c->w1 = le32_encode_bits(rssi, RTW89_H2C_OFLD_RSSI_W1_VAL);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC, H2C_CL_MAC_FW_OFLD,
++			      H2C_FUNC_OFLD_RSSI, 0, 1, len);
++
++	ret = rtw89_h2c_tx(rtwdev, skb, false);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to send h2c\n");
++		goto fail;
++	}
++
++	return 0;
++fail:
++	dev_kfree_skb_any(skb);
++
++	return ret;
++}
++
+ #define H2C_RA_LEN 16
+ int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index c3c67ddf61a24..4d8d961f7b236 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -162,6 +162,27 @@ enum rtw89_p2pps_action {
+ 	RTW89_P2P_ACT_TERMINATE = 3,
+ };
+ 
++enum rtw89_bcn_fltr_offload_mode {
++	RTW89_BCN_FLTR_OFFLOAD_MODE_0 = 0,
++	RTW89_BCN_FLTR_OFFLOAD_MODE_1,
++	RTW89_BCN_FLTR_OFFLOAD_MODE_2,
++	RTW89_BCN_FLTR_OFFLOAD_MODE_3,
++
++	RTW89_BCN_FLTR_OFFLOAD_MODE_DEFAULT = RTW89_BCN_FLTR_OFFLOAD_MODE_0,
++};
++
++enum rtw89_bcn_fltr_type {
++	RTW89_BCN_FLTR_BEACON_LOSS,
++	RTW89_BCN_FLTR_RSSI,
++	RTW89_BCN_FLTR_NOTIFY,
++};
++
++enum rtw89_bcn_fltr_rssi_event {
++	RTW89_BCN_FLTR_RSSI_NOT_CHANGED,
++	RTW89_BCN_FLTR_RSSI_HIGH,
++	RTW89_BCN_FLTR_RSSI_LOW,
++};
++
+ #define FWDL_SECTION_MAX_NUM 10
+ #define FWDL_SECTION_CHKSUM_LEN	8
+ #define FWDL_SECTION_PER_PKT_LEN 2020
+@@ -216,6 +237,8 @@ struct rtw89_h2creg_sch_tx_en {
+ #define RTW89_SCAN_LIST_LIMIT \
+ 		((RTW89_H2C_MAX_SIZE / RTW89_MAC_CHINFO_SIZE) - RTW89_SCAN_LIST_GUARD)
+ 
++#define RTW89_BCN_LOSS_CNT 10
++
+ struct rtw89_mac_chinfo {
+ 	u8 period;
+ 	u8 dwell_time;
+@@ -3317,6 +3340,17 @@ static inline struct rtw89_fw_c2h_attr *RTW89_SKB_C2H_CB(struct sk_buff *skb)
+ #define RTW89_GET_MAC_C2H_REV_ACK_H2C_SEQ(c2h) \
+ 	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(23, 16))
+ 
++struct rtw89_c2h_mac_bcnfltr_rpt {
++	__le32 w0;
++	__le32 w1;
++	__le32 w2;
++} __packed;
++
++#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID GENMASK(7, 0)
++#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_TYPE GENMASK(9, 8)
++#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_EVENT GENMASK(11, 10)
++#define RTW89_C2H_MAC_BCNFLTR_RPT_W2_MA GENMASK(23, 16)
++
+ #define RTW89_GET_PHY_C2H_RA_RPT_MACID(c2h) \
+ 	le32_get_bits(*((const __le32 *)(c2h) + 2), GENMASK(15, 0))
+ #define RTW89_GET_PHY_C2H_RA_RPT_RETRY_RATIO(c2h) \
+@@ -3410,6 +3444,28 @@ static_assert(sizeof(struct rtw89_mac_mcc_tsf_rpt) <= RTW89_COMPLETION_BUF_SIZE)
+ #define RTW89_GET_MAC_C2H_MCC_STATUS_RPT_TSF_HIGH(c2h) \
+ 	le32_get_bits(*((const __le32 *)(c2h) + 4), GENMASK(31, 0))
+ 
++struct rtw89_h2c_bcnfltr {
++	__le32 w0;
++} __packed;
++
++#define RTW89_H2C_BCNFLTR_W0_MON_RSSI BIT(0)
++#define RTW89_H2C_BCNFLTR_W0_MON_BCN BIT(1)
++#define RTW89_H2C_BCNFLTR_W0_MON_EN BIT(2)
++#define RTW89_H2C_BCNFLTR_W0_MODE GENMASK(4, 3)
++#define RTW89_H2C_BCNFLTR_W0_BCN_LOSS_CNT GENMASK(11, 8)
++#define RTW89_H2C_BCNFLTR_W0_RSSI_HYST GENMASK(15, 12)
++#define RTW89_H2C_BCNFLTR_W0_RSSI_THRESHOLD GENMASK(23, 16)
++#define RTW89_H2C_BCNFLTR_W0_MAC_ID GENMASK(31, 24)
++
++struct rtw89_h2c_ofld_rssi {
++	__le32 w0;
++	__le32 w1;
++} __packed;
++
++#define RTW89_H2C_OFLD_RSSI_W0_MACID GENMASK(7, 0)
++#define RTW89_H2C_OFLD_RSSI_W0_NUM GENMASK(15, 8)
++#define RTW89_H2C_OFLD_RSSI_W1_VAL GENMASK(7, 0)
++
+ #define RTW89_FW_HDR_SIZE 32
+ #define RTW89_FW_SECTION_HDR_SIZE 16
+ 
+@@ -3537,6 +3593,8 @@ struct rtw89_fw_h2c_rf_reg_info {
+ #define H2C_FUNC_ADD_SCANOFLD_CH	0x16
+ #define H2C_FUNC_SCANOFLD		0x17
+ #define H2C_FUNC_PKT_DROP		0x1b
++#define H2C_FUNC_CFG_BCNFLTR		0x1e
++#define H2C_FUNC_OFLD_RSSI		0x1f
+ 
+ /* CLASS 10 - Security CAM */
+ #define H2C_CL_MAC_SEC_CAM		0xa
+@@ -3637,6 +3695,11 @@ int rtw89_fw_h2c_macid_pause(struct rtw89_dev *rtwdev, u8 sh, u8 grp,
+ int rtw89_fw_h2c_set_edca(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 			  u8 ac, u32 val);
+ int rtw89_fw_h2c_set_ofld_cfg(struct rtw89_dev *rtwdev);
++int rtw89_fw_h2c_set_bcn_fltr_cfg(struct rtw89_dev *rtwdev,
++				  struct ieee80211_vif *vif,
++				  bool connect);
++int rtw89_fw_h2c_rssi_offload(struct rtw89_dev *rtwdev,
++			      struct rtw89_rx_phy_ppdu *phy_ppdu);
+ int rtw89_fw_h2c_ra(struct rtw89_dev *rtwdev, struct rtw89_ra_info *ra, bool csi);
+ int rtw89_fw_h2c_cxdrv_init(struct rtw89_dev *rtwdev);
+ int rtw89_fw_h2c_cxdrv_role(struct rtw89_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index d0e138f8b880a..367a7f95401c8 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -4237,6 +4237,64 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+ 	}
+ }
+ 
++static void
++rtw89_mac_bcn_fltr_rpt(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
++		       struct sk_buff *skb)
++{
++	struct ieee80211_vif *vif = rtwvif_to_vif_safe(rtwvif);
++	enum nl80211_cqm_rssi_threshold_event nl_event;
++	const struct rtw89_c2h_mac_bcnfltr_rpt *c2h =
++		(const struct rtw89_c2h_mac_bcnfltr_rpt *)skb->data;
++	u8 type, event, mac_id;
++	s8 sig;
++
++	type = le32_get_bits(c2h->w2, RTW89_C2H_MAC_BCNFLTR_RPT_W2_TYPE);
++	sig = le32_get_bits(c2h->w2, RTW89_C2H_MAC_BCNFLTR_RPT_W2_MA) - MAX_RSSI;
++	event = le32_get_bits(c2h->w2, RTW89_C2H_MAC_BCNFLTR_RPT_W2_EVENT);
++	mac_id = le32_get_bits(c2h->w2, RTW89_C2H_MAC_BCNFLTR_RPT_W2_MACID);
++
++	if (mac_id != rtwvif->mac_id)
++		return;
++
++	rtw89_debug(rtwdev, RTW89_DBG_FW,
++		    "C2H bcnfltr rpt macid: %d, type: %d, ma: %d, event: %d\n",
++		    mac_id, type, sig, event);
++
++	switch (type) {
++	case RTW89_BCN_FLTR_BEACON_LOSS:
++		if (!rtwdev->scanning)
++			ieee80211_connection_loss(vif);
++		else
++			rtw89_fw_h2c_set_bcn_fltr_cfg(rtwdev, vif, true);
++		return;
++	case RTW89_BCN_FLTR_NOTIFY:
++		nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH;
++		break;
++	case RTW89_BCN_FLTR_RSSI:
++		if (event == RTW89_BCN_FLTR_RSSI_LOW)
++			nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW;
++		else if (event == RTW89_BCN_FLTR_RSSI_HIGH)
++			nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH;
++		else
++			return;
++		break;
++	default:
++		return;
++	}
++
++	ieee80211_cqm_rssi_notify(vif, nl_event, sig, GFP_KERNEL);
++}
++
++static void
++rtw89_mac_c2h_bcn_fltr_rpt(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
++			   u32 len)
++{
++	struct rtw89_vif *rtwvif;
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif)
++		rtw89_mac_bcn_fltr_rpt(rtwdev, rtwvif, c2h);
++}
++
+ static void
+ rtw89_mac_c2h_rec_ack(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
+ {
+@@ -4457,6 +4515,7 @@ void (* const rtw89_mac_c2h_ofld_handler[])(struct rtw89_dev *rtwdev,
+ 	[RTW89_MAC_C2H_FUNC_MACID_PAUSE] = rtw89_mac_c2h_macid_pause,
+ 	[RTW89_MAC_C2H_FUNC_SCANOFLD_RSP] = rtw89_mac_c2h_scanofld_rsp,
+ 	[RTW89_MAC_C2H_FUNC_TSF32_TOGL_RPT] = rtw89_mac_c2h_tsf32_toggle_rpt,
++	[RTW89_MAC_C2H_FUNC_BCNFLTR_RPT] = rtw89_mac_c2h_bcn_fltr_rpt,
+ };
+ 
+ static
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 8064d3953d7f2..899c45c6774e2 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -359,6 +359,7 @@ enum rtw89_mac_c2h_ofld_func {
+ 	RTW89_MAC_C2H_FUNC_MACID_PAUSE,
+ 	RTW89_MAC_C2H_FUNC_TSF32_TOGL_RPT = 0x6,
+ 	RTW89_MAC_C2H_FUNC_SCANOFLD_RSP = 0x9,
++	RTW89_MAC_C2H_FUNC_BCNFLTR_RPT = 0xd,
+ 	RTW89_MAC_C2H_FUNC_OFLD_MAX,
+ };
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 367a7bf319dae..629b32dafecb8 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -114,6 +114,11 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 		    vif->addr, vif->type, vif->p2p);
+ 
+ 	mutex_lock(&rtwdev->mutex);
++
++	if (RTW89_CHK_FW_FEATURE(BEACON_FILTER, &rtwdev->fw))
++		vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER |
++				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
++
+ 	rtwvif->rtwdev = rtwdev;
+ 	list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
+ 	INIT_WORK(&rtwvif->update_beacon_work, rtw89_core_update_beacon_work);
+@@ -425,6 +430,9 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_P2P_PS)
+ 		rtw89_process_p2p_ps(rtwdev, vif);
+ 
++	if (changed & BSS_CHANGED_CQM)
++		rtw89_fw_h2c_set_bcn_fltr_cfg(rtwdev, vif, true);
++
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
 -- 
 2.25.1
 
