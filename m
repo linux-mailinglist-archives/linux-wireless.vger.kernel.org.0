@@ -2,53 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E591E6DD45B
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 09:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6501B6DD481
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 09:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbjDKHjC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 03:39:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
+        id S230174AbjDKHmt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Apr 2023 03:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230053AbjDKHi5 (ORCPT
+        with ESMTP id S230089AbjDKHmb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 03:38:57 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A13442728
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 00:38:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=WwqqQpPTcJ4Oo+IPITxQIyJ74zb7uiwV/oXajxDHbyI=;
-        t=1681198731; x=1682408331; b=Za515eYzipFLuhxXhLQOk7DjgiXiMmu6EaStgwoznqeMgJv
-        o5h5MDCtnXqzdP7hHBECOKIyGn0ewFmBe/wsfLH0WwH6L27m16oKJh7yrUu6JgBoFy63jYeeYb+Zo
-        cTBjovDcU+Gsi9K/8oQDzF3NjjUljTfoBtQkXCKRpfD3KU3gv0HpfHCP2mQzWEDyT4q2Bl4GqAS1L
-        QDnvn0zGIkzLpATWCKhQhkjLfzfLwiw5kvwoYIQ4SYXPBCKU6DnK/3gE3ec4vHaDKKRtFNte7Lc3G
-        I2Y9tXSBPVYtrcGpi8rz1+vQCwaqkhAeSXFE0Us6OwIPIKWGDZtnoZ4rjx2PtqWA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pm8aW-00CdQi-2u;
-        Tue, 11 Apr 2023 09:38:48 +0200
-Message-ID: <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
-Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org
-Date:   Tue, 11 Apr 2023 09:38:48 +0200
-In-Reply-To: <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
-References: <20220902141259.377789-1-johannes@sipsolutions.net>
-         <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
-         <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
-         <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
-         <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
+        Tue, 11 Apr 2023 03:42:31 -0400
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64363C21
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 00:42:23 -0700 (PDT)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id 94D76836B2; Tue, 11 Apr 2023 08:41:16 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1681198919; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=npNHJ2gBAk2G76ZTvS284G0iL+79jVuSC83fd3m4qRZRXmj5yYehsYxCWxLzu08GC
+         IVl7fiFgI88ylPrhV+1twFrnm1bxpQcB/gRLUC4gEYKjOD7WmJF2PBVnwUbRcRagih
+         7Mhq9VYsdNFTmrk60x6fTHcGRh0kjgW2QJ4FmAE0+LkhB8karR43uR+2pnCA8uhfW0
+         fiI5i6Z2qZrMDGxpQGs32U/0n3TBDM0fdVc6JEC+YAbsg0pWib7QAZtAOVOfEyBx/Z
+         SoH6+2MPQhODDm7JkGuvBQSKr0k5Xrr5XJDQ3JXsA8FUCBbrvFW+2GMUKC/qtNUlcE
+         m/YnngZcEXp8g==
+Received: by mail.lokoho.com for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 07:40:45 GMT
+Message-ID: <20230411074501-0.1.58.1tj2q.0.1qcmij3uam@lokoho.com>
+Date:   Tue, 11 Apr 2023 07:40:45 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,25 +45,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-04-04 at 11:28 +0800, Wen Gong wrote:
->=20
-> May I also add a field such as "u16 active_links_count" in struct=20
-> wiphy_iftype_ext_capab,
-> and add logic in function ieee80211_set_vif_links_bitmaps() for station=
-=20
-> like this ?:
-> if (active_links_count && hweight16(links) <=3D active_links_count)
->  =C2=A0=C2=A0=C2=A0 then sdata->vif.active_links =3D links;
->=20
+Dzie=C5=84 dobry,
 
-Also here, not sure it makes sense in cfg80211 level?
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Though I'm not sure what the idea here is at all - you can refuse to
-link switch etc, what would you use this for?
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Then again, we haven't really designed out all the link selection stuff,
-do we want wpa_s to do it, driver to do it, etc.? Hence debugfs. So
-depending on what end up doing there, we will obviously need to
-advertise some level of link-concurrency to userspace.
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-johannes
+
+Pozdrawiam
+Adam Charachuta
