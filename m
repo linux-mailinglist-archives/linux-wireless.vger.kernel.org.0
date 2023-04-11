@@ -2,233 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D17CB6DE5B2
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 22:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76726DE62D
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 23:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjDKUXe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 16:23:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38410 "EHLO
+        id S229481AbjDKVI5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Apr 2023 17:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjDKUXb (ORCPT
+        with ESMTP id S229458AbjDKVI5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 16:23:31 -0400
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB663C3C;
-        Tue, 11 Apr 2023 13:23:04 -0700 (PDT)
-Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
-        by cmsmtp with ESMTP
-        id m4a6puf6W7P45mKW6pPVKP; Tue, 11 Apr 2023 20:23:03 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with ESMTP
-        id mKW5pYXOpuDdbmKW6p1png; Tue, 11 Apr 2023 20:23:02 +0000
-X-Authority-Analysis: v=2.4 cv=HM/Qq6hv c=1 sm=1 tr=0 ts=6435c1a6
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=d0f9/bL53tV7TyBwAeBj+g==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=dKHAf1wccvYA:10
- a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8 a=mDV3o1hIAAAA:8 a=VwQbUJbxAAAA:8
- a=sIshrF94AAAA:8 a=Wzh0sZPFK0vZwZ7TA3YA:9 a=QEXdDO2ut3YA:10 a=3IOs8h2EC4YA:10
- a=_FVE-zBwftR9WsbkzFJk:22 a=AjGcO6oz07-iQ99wixmX:22 a=39svzKx7NMVfYuMjZabV:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=vAQB5OrwRhZSt8DZNQ7EIcCPHq37jFquzX1qe3wm1Oo=; b=JyaVBGsKBehpvCeTF9OGrH2z+E
-        asL4PDUKYGZsAoJqI5w4voIUMHwuV7yRKOLxzK1P9BgOPWGq9gOaMFJcIVwB1c39aQ4mUQYV/j2Cc
-        oMwAo0BI7dm15+ksLAT+AlhTzllZi6fSnzpA3PxIKvdps1tONAQFBK+T0pT2h0EyzbM9scV59M+37
-        a3eddtGiNXT46j6MaGBtMLflnB/vRa7nFrbzcrhjd4buBtnfq4rASIKCyL2M1sZ3ru8oYGzjlwgCD
-        TDaAzVzyz5sD1Yj33PMNXEuLwDX52ETfp1xz0KSb8K+tlPY6RtP+L2ZsrszwgYI5u1tPgyBbIMgrP
-        NCqyUzgA==;
-Received: from 189.215.208.238.cable.dyn.cableonline.com.mx ([189.215.208.238]:14202 helo=[192.168.0.24])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1pmIsm-003i6h-P7;
-        Tue, 11 Apr 2023 13:38:20 -0500
-Message-ID: <cec9fa10-eb1e-dd5b-8ec0-579e87b5bc1d@embeddedor.com>
-Date:   Tue, 11 Apr 2023 12:39:06 -0600
+        Tue, 11 Apr 2023 17:08:57 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 973EF40C1
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 14:08:55 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id b25so311182ioc.7
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 14:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google; t=1681247335; x=1683839335;
+        h=mime-version:user-agent:content-transfer-encoding:organization:date
+         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pnWwfaTmj/AdrfC3bSbt+3Qvi9EwEtASP7Vxc60qFwQ=;
+        b=qabpwg6GuH/Zhx7R/BnbqfPabOFSawUngoe/ByEsT3I8IO7VWYkIeDdAB6kheXiSQt
+         pt8rr4X1yMsivZFmtPmVsgQ+zraL88Fq1kOZav8gAF/mbG4BoB1u7UkrRXWDqA8S+KA4
+         vCmUB97CjBDv5xYAtPqj7Kjusr72JXQCiYMor358qF5ajKirIhsTGRvk73MUy3Ei4kxC
+         ekpv2EOUsBHO/iE8R2luCGsGDQA5HIbsG1rFn+Z/ygPo/LLT5jCdqcX+b1VlOZaKIeGu
+         OfDcbxNrMQFagtJDb4DGbHPlcxNVIMSrQtJ96ycTNIebzOQlXUQ3lGO222Mc+Bz/B8rG
+         v9Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681247335; x=1683839335;
+        h=mime-version:user-agent:content-transfer-encoding:organization:date
+         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pnWwfaTmj/AdrfC3bSbt+3Qvi9EwEtASP7Vxc60qFwQ=;
+        b=M9OdEKVDLu0KWkR4h95VGkSqzq+4nQtC2yy/5lFwt212S0r65RYmf5uwxRZxSyhK/8
+         UOhSbm4po2ByPXjF3hRRmqgU5gGDkbURj5X2O4qSDweZD9xnV8/5KRtdwLcxJE2wAQFx
+         wUn70uVooorsCU4rx62WYlVcrCqahnha7NyI0/s1uxJm4kBDnkxAWSN7QEaLynt2IKeQ
+         A9uJbSfW7ndghd3LfPXIfsUeQjFHY+za14MNglDzbXFI3jDzpG+W1BL+UPX+IkbnDlv1
+         8TScxhVmPWtxCPZxqRQQ62Qi4hiCHbtng2jQ5WsMICNBd1MHNwPedrpWBpaap8peOEWb
+         awIg==
+X-Gm-Message-State: AAQBX9d5DZ9iLnRxxhPk+9Y2840w81g9nQqlBP15Vsvs9UEV82W35Ye3
+        OxRrcGRCVYjrCMe54uCJRM2D6gPkpR4Hc9CAww==
+X-Google-Smtp-Source: AKy350YkqKvVyJoVqRaChPYHNsHre/XheY7/hYRwhRJa8p53G/a9Bid3DaFqBXesHgnkMKoM5vEuoQ==
+X-Received: by 2002:a6b:f40f:0:b0:74c:bc54:def6 with SMTP id i15-20020a6bf40f000000b0074cbc54def6mr9862272iog.16.1681247334879;
+        Tue, 11 Apr 2023 14:08:54 -0700 (PDT)
+Received: from [10.1.100.16] ([76.130.90.80])
+        by smtp.gmail.com with ESMTPSA id c95-20020a029668000000b003afc548c3cdsm2254614jai.166.2023.04.11.14.08.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Apr 2023 14:08:54 -0700 (PDT)
+Message-ID: <e4cece9076cc9a5a4e4dbfa258a828eaec97e1af.camel@egauge.net>
+Subject: wilc1000: AP mode issue
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     Ajay Singh <ajay.kathat@microchip.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 11 Apr 2023 15:08:53 -0600
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH][next] wifi: mt76: Replace zero-length array with
- flexible-array member
-To:     Simon Horman <simon.horman@corigine.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-hardening@vger.kernel.org
-References: <ZC7X7KCb+JEkPe5D@work> <ZC/FA/t1mzrRydD7@corigine.com>
-Content-Language: en-US
-In-Reply-To: <ZC/FA/t1mzrRydD7@corigine.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.215.208.238
-X-Source-L: No
-X-Exim-ID: 1pmIsm-003i6h-P7
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 189.215.208.238.cable.dyn.cableonline.com.mx ([192.168.0.24]) [189.215.208.238]:14202
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 0
-X-Org:  HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDIrWkGexl/N/hqy94Tp3ZQKjXA/a/W9VOEuCcta6Fd5vUkEdsLrW4iPsqtmuj0EcMhPTOxFawjvk7A2na2U+swrymSfHwHyiv3bRHkpFJIkvsKJkKWw
- 6bOW/vaY0lpqn9QnH0ZhqmfU1vc1MHB4akucAY17qc5pmix4tsGjM/eLblBd8LB0qBvTIMx/LJ8SnVBVVhSI6MBXsJtz3QhDje0PWjkN85QX0dR0ZzdoEBoK
- oYRbebfpsXQEDsnmuhwW/qtBzZ6u5/t/UTuSJeGj1EhuwJ4nds0rfFYKeQSk3nh1AAKrUu+dwTaACVHWcPQNcl6aJleDDANHlW9pXMiOTq9n3Y91MzsNLAuT
- i/XUsMLy
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Ajay,
 
+I'm just starting to investigate an issue with the wilc1000 driver that occ=
+urs
+when it is operating as an access point.  I came across this thread:
 
-On 4/7/23 01:23, Simon Horman wrote:
-> On Thu, Apr 06, 2023 at 08:32:12AM -0600, Gustavo A. R. Silva wrote:
->> Zero-length arrays are deprecated [1] and have to be replaced by C99
->> flexible-array members.
->>
->> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE routines
->> on memcpy() and help to make progress towards globally enabling
->> -fstrict-flex-arrays=3 [2]
->>
->> Link: https://github.com/KSPP/linux/issues/78 [1]
->> Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [2]
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Reviewed-by: Simon Horman <simon.horman@corigine.com>
+  https://lore.kernel.org/linux-wireless/87pmkmylex.fsf@kernel.org/
 
-Thanks :)
+and was wondering if there has been progress towards converting the driver =
+to
+use the nl80211-based TX/RX interface.  If so, is this something that's
+available somewhere or could be shared?
 
-> 
->> ---
->>   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> index a5e6ee4daf92..9bf4b4199ee3 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
->> @@ -127,7 +127,7 @@ struct mt76_connac2_mcu_rxd {
->>   	u8 rsv1[2];
->>   	u8 s2d_index;
->>   
->> -	u8 tlv[0];
->> +	u8 tlv[];
->>   };
->>   
->>   struct mt76_connac2_patch_hdr {
-> 
-> Curiously -fstrict-flex-arrays=3 didn't flag this one in my environment,
-> Ubuntu Lunar.
+Thanks and best regards,
 
-Yep; that's why I didn't include any warning message in the changelog text
-this time.
+  --david
 
-And the reason for that is that tlv is not being indexed anywhere in the
-code. However, it's being used in the pointer arithmetic operation below:
-
-drivers/net/wireless/mediatek/mt76/mt7921/mcu.c:
-  164         rxd = (struct mt76_connac2_mcu_rxd *)skb->data;
-  165         grant = (struct mt7921_roc_grant_tlv *)(rxd->tlv + 4);
-
-
-which means that it can be considered as an array of size greater than zero
-at some point. Hence, it should be transformed into a C99 flexible array.
-
-> 
->   gcc-13 --version
->   gcc-13 (Ubuntu 13-20230320-1ubuntu1) 13.0.1 20230320 (experimental) [master r13-6759-g5194ad1958c]
->   Copyright (C) 2023 Free Software Foundation, Inc.
->   This is free software; see the source for copying conditions.  There is NO
->   warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-> 
-> I did, however, notice some other problems reported by gcc-13 with
-> -fstrict-flex-arrays=3 in drivers/net/wireless/mediatek/mt76
-> when run against net-next wireless. I've listed them in diff format below.
-> 
-> Are these on your radar too?
-
-Yep; those are being addressed here:
-
-https://lore.kernel.org/linux-hardening/ZBTUB%2FkJYQxq%2F6Cj@work/
-
---
-Gustavo
-
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
-> index 35268b0890ad..d09bb4eed1ec 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h
-> @@ -24,7 +24,7 @@ struct mt7921_asar_dyn {
->   	u8 names[4];
->   	u8 enable;
->   	u8 nr_tbl;
-> -	struct mt7921_asar_dyn_limit tbl[0];
-> +	struct mt7921_asar_dyn_limit tbl[];
->   } __packed;
->   
->   struct mt7921_asar_dyn_limit_v2 {
-> @@ -37,7 +37,7 @@ struct mt7921_asar_dyn_v2 {
->   	u8 enable;
->   	u8 rsvd;
->   	u8 nr_tbl;
-> -	struct mt7921_asar_dyn_limit_v2 tbl[0];
-> +	struct mt7921_asar_dyn_limit_v2 tbl[];
->   } __packed;
->   
->   struct mt7921_asar_geo_band {
-> @@ -55,7 +55,7 @@ struct mt7921_asar_geo {
->   	u8 names[4];
->   	u8 version;
->   	u8 nr_tbl;
-> -	struct mt7921_asar_geo_limit tbl[0];
-> +	struct mt7921_asar_geo_limit tbl[];
->   } __packed;
->   
->   struct mt7921_asar_geo_limit_v2 {
-> @@ -69,7 +69,7 @@ struct mt7921_asar_geo_v2 {
->   	u8 version;
->   	u8 rsvd;
->   	u8 nr_tbl;
-> -	struct mt7921_asar_geo_limit_v2 tbl[0];
-> +	struct mt7921_asar_geo_limit_v2 tbl[];
->   } __packed;
->   
->   struct mt7921_asar_cl {
-> @@ -85,7 +85,7 @@ struct mt7921_asar_fg {
->   	u8 rsvd;
->   	u8 nr_flag;
->   	u8 rsvd1;
-> -	u8 flag[0];
-> +	u8 flag[];
->   } __packed;
->   
->   struct mt7921_acpi_sar {
