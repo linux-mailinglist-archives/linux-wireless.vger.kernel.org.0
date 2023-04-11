@@ -2,119 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97F706DE34C
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 20:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 122C06DE351
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Apr 2023 20:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229747AbjDKSA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 14:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42550 "EHLO
+        id S229626AbjDKSA5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Apr 2023 14:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbjDKSA1 (ORCPT
+        with ESMTP id S229775AbjDKSA4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 14:00:27 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F34527C
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 11:00:25 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id g19so54490110lfr.9
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 11:00:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681236023;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lwRBXjW3LKaf6FMdA/wwWmZg0VHbU8BDgWyAU/QAHUs=;
-        b=lMLY/86gUy7qpoTj7Jju8dwSLtjfBksYqes73dWc11t6HM0axbTH0G6y4uu77e6DwA
-         TCaphi37UOFahFw1XyvLd4GUXYsgkgjAZdEc1lhDD5jxEtIi3WrLHoNhlapLv6MgsW8p
-         JH4a2GNcrynotw8G9Vc9dsZFY6AespUakqHHeVvKLEXGeArUiJ6QXQ6imqKVmbCsTdP+
-         M2QfSKSmYzXOfsLq8+szyxE1wsDRpg61SyVVbYwf2zOSCJA2IdUhNddfyj5ebUhi1lOI
-         1X/sTMNDl/SS0Iyl78UIVTDJB28yNRiZpaHcQBGXzPZyqrXtdrvlPVQ4OqaxeZHrX3Br
-         ZjdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681236023;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwRBXjW3LKaf6FMdA/wwWmZg0VHbU8BDgWyAU/QAHUs=;
-        b=1dYmKJF1oLafHknD1WfHKwRJq8EVNRfZoaWG3F7htlwF4ej5bOsOXBfqz+RSa55jcD
-         hfAg4ueS654Zfl3wtg5oSj1f1lDQvQOG92PDOS/DXi9/MzBtxUe+nYvkiEvr0onW4IIY
-         bmORq4rLmsnEd8NhoGmQ6QkJ/PkfqbM3eNFmsuzjT4DQ3bs7ewWtEPTWkJ4Ui/PGLh0E
-         pzTeCLMcP0G7rjDWMc0+63w9QWvToLx9UaZC9K7qiUQlyflzBIjDZaIQvLJNWQhgu+kM
-         YQg899toSgTDisJY6U5NIfGedm6rBw8Ef7ib0qaR/Jh5ovnL6Oxts3CXvscBsZkGTKja
-         HU2A==
-X-Gm-Message-State: AAQBX9e8VFu2ROvtYwQWLuYJ+T+3PS0rmvjb6e0+6u4PyhQbbyW6hHuz
-        ENpa4TgcggqgKV1PRAEimlxWhIyS80wbC/vV1m8=
-X-Google-Smtp-Source: AKy350aqc5tqwAqaVQBe8GDzYh3HXxWbAtPfO+P8owp08Yi0tPimjDPGezSAC+QgPFJyPYdSUVT+/g==
-X-Received: by 2002:ac2:43c3:0:b0:4dc:4b92:dbc4 with SMTP id u3-20020ac243c3000000b004dc4b92dbc4mr3212317lfl.14.1681236023345;
-        Tue, 11 Apr 2023 11:00:23 -0700 (PDT)
-Received: from [192.168.1.101] (abxj23.neoplus.adsl.tpnet.pl. [83.9.3.23])
-        by smtp.gmail.com with ESMTPSA id w6-20020ac254a6000000b004e9c8290512sm2632303lfk.82.2023.04.11.11.00.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Apr 2023 11:00:22 -0700 (PDT)
-Message-ID: <2aa69cb5-a545-13d4-4db2-7050d944f74e@linaro.org>
-Date:   Tue, 11 Apr 2023 20:00:20 +0200
+        Tue, 11 Apr 2023 14:00:56 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CA7526F
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 11:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=nFFsRWtVD/CNkj/qsHH4+ZCoif+5RQ9U7LxyMqRiHoA=;
+        t=1681236051; x=1682445651; b=tntMpXd5MrokmSQcP9yH+t+SABXr8NwtEgUtvjNO8NHviEX
+        DK5+IBIyVFUWVDJ9pYV6OeTVRlyFDB1DsKqA3TXIGVi1M35Ws8uuxSTMmRkCf4p/8DP5z/MowC/ep
+        UCc+Tio0v28kj4mRY8r5Z7xVAAqT0qlzzsa8l5RNoukO/D363PZw22I9mT7MH2JsfLGHrnxl0blLV
+        kpOHkPPau5pYXwT02LdBF5sOZ6XuZQCmkI8AqdKDmdCei0tDTRPUO6LHN6OmREMtj5qwpXRzTpWAP
+        g9l9TPd4O2nqzpTDwjA0lkmYA/12vhcH4hSgwvqTAoQ0Cb9GWrbcmTtF5NCjKSyQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pmIIR-00CpkA-10;
+        Tue, 11 Apr 2023 20:00:47 +0200
+Message-ID: <14dacce8ccf2f6b69fbeb49b92f864de9bdd216d.camel@sipsolutions.net>
+Subject: Re: ax200 reliable crash in 100Mbps bi-directional traffic test.
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ben Greear <greearb@candelatech.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     amol.jawale@candelatech.com,
+        Gregory Greenman <gregory.greenman@intel.com>
+Date:   Tue, 11 Apr 2023 20:00:46 +0200
+In-Reply-To: <0ec935a0-175c-38ae-cf3c-c001989a3334@candelatech.com>
+References: <0ec935a0-175c-38ae-cf3c-c001989a3334@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v3 1/2] dt-bindings: net: Convert ATH10K to YAML
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230406-topic-ath10k_bindings-v3-0-00895afc7764@linaro.org>
- <20230406-topic-ath10k_bindings-v3-1-00895afc7764@linaro.org>
- <e75a5a75-ea42-6c7c-f6ee-b32ef735cd81@linaro.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <e75a5a75-ea42-6c7c-f6ee-b32ef735cd81@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 2023-04-11 at 10:09 -0700, Ben Greear wrote:
+> Hello,
+>=20
+> Our test team reports that they get reliable firmware crashes on ax200 ra=
+dios against multiple
+> APs when running 100Mbps UL + DL traffic (100Mbps in both directions).
+>=20
+> This happens on 5.19-ish kernels as well as 6.2.9+.
+> ax210 radios in same setup are much more stable.
+>=20
+> Please let us know if you would like additional debug information, includ=
+ing binary
+> crash dump files from the radio....
+>=20
+> [19241.588542] sta0001: Limiting TX power to 27 (30 - 3) dBm as advertise=
+d by 28:80:88:f3:b2:00
+> 4[19245.998099] iwlwifi 0000:12:00.0: Microcode SW error detected. Restar=
+ting 0x0.
+> 5[19246.004160] iwlwifi 0000:12:00.0: Start IWL Error Log Dump:
+> 6[19246.008457] iwlwifi 0000:12:00.0: Transport status: 0x0000004B, valid=
+: 6
+> 7[19246.013867] iwlwifi 0000:12:00.0: Loaded firmware version: 72.daa0512=
+5.0 cc-a0-72.ucode
+> 8[19246.020573] iwlwifi 0000:12:00.0: 0x000022CE | ADVANCED_SYSASSERT
+>=20
 
+Pretty sure this means that the RX was faster than the CPU was
+processing, but why would that happen at 100 Mbps?
 
-On 11.04.2023 17:59, Krzysztof Kozlowski wrote:
-> On 06/04/2023 14:55, Konrad Dybcio wrote:
->> Convert the ATH10K bindings to YAML.
->>
->> Dropped properties that are absent at the current state of mainline:
->> - qcom,msi_addr
->> - qcom,msi_base
->>
->> qcom,coexist-support and qcom,coexist-gpio-pin do very little and should
->> be reconsidered on the driver side, especially the latter one.
->>
->> Somewhat based on the ath11k bindings.
->>
->> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
->> ---
->>  .../bindings/net/wireless/qcom,ath10k.txt          | 215 -------------
->>  .../bindings/net/wireless/qcom,ath10k.yaml         | 357 +++++++++++++++++++++
->>  2 files changed, 357 insertions(+), 215 deletions(-)
-> 
-> You should have received kernel test robot warning. If not, just
-> confirming here - you need to fix paths (docs, maintainers).
-Will do
-
-Konrad
-> 
-> Best regards,
-> Krzysztof
-> 
+johannes
