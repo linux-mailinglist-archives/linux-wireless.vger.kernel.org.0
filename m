@@ -2,87 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A919A6DF16D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 12:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7EC6DF173
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 12:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230181AbjDLKBp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 06:01:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
+        id S230177AbjDLKCj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 06:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbjDLKBj (ORCPT
+        with ESMTP id S229765AbjDLKCh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 06:01:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A3076B7
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 03:01:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A006C62D5C
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 10:01:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221EBC433D2;
-        Wed, 12 Apr 2023 10:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681293687;
-        bh=vGpPRHSc8ZffrKJ/mbrxrrpaOdGMrHu7FQNPIsAjjMQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=gLcseSvo2jn2tXYrpc/8R0ZSjPUekxZKfG9Ubm0imOFhr0Z3Dyb1BbJC48pGXSGfK
-         NkndqH6OTHQoi8BPXbq1ko2vk6CO66CKITwSrgMELNQzXIl02YQixDsa5mNkr5xsm4
-         /J7e29El1SnuNHY3pnBXQDzCGk5o1RlgZEUWaEWqMznKIEyS333C1DeMrc/IVOseF+
-         Td3vM9vwD1JjuGyUsNrOt2XbW+4RboHnTkqcqQeWb9jKE1R0KqWXEuV58Rei5EZnWE
-         Q4Qmtyks01Vjt90q+pqB9FCx1d4Advr3wm3zhRpprm9mxp+6QPF+02v7yLo5ohxl5Z
-         4DAZWM6go817g==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 12 Apr 2023 06:02:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4595372A3
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 03:02:23 -0700 (PDT)
+Message-ID: <6d5298e3-e4af-22c9-4558-fc55683f2ac2@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1681293741;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AT/+TeflV0CUYVPJA25hlE4wXZCvAoAyDeBgUoX72Yg=;
+        b=aGlLIlwyzgiVHV4Z6BiAkXIZiKIHwcFp9/WF6n8XnYsZfhVlFULsgjwjwgJJSQ2kdomiox
+        uc96I6+w69Z+Y7RTIr4/DnGngfGhk588x/bCmxYK9EU3yc2RwuiazMx4YhY5qyvgGbDv4y
+        UWZaVvp9jc4n8+C+T+K1hG5eNBNzz852+DVpsVuWiSdaINSq8vY8TX+TFWqt3B4SxQGezs
+        SeBtNBm2xB2GCx8ppnY2LKplzw/J7byfwMn+gDOMyKwse6H2vkBQl2LOJkODGHSxjl3C7T
+        BtuoXM/keo1Cr8H+O55zuRD6a4f+d7mXw703in2i8n/UkolFO7PzqZ7glnyB9g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1681293741;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AT/+TeflV0CUYVPJA25hlE4wXZCvAoAyDeBgUoX72Yg=;
+        b=gyWX1W17q657VVQM26f78oE0YOAG8ZkIQgDeBG5gzoY6dXpAVJt3Xzyz7bhXfcCiSUgjHB
+        4CX1LE99s7ICBxBw==
+Date:   Wed, 12 Apr 2023 12:02:21 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: Send 11d scan start before
- WMI_START_SCAN_CMDID
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230315161817.29627-1-quic_mpubbise@quicinc.com>
-References: <20230315161817.29627-1-quic_mpubbise@quicinc.com>
-To:     Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168129368423.14673.5586980853495473147.kvalo@kernel.org>
-Date:   Wed, 12 Apr 2023 10:01:25 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+Content-Language: de-DE
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+ <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
+ <26840cf1-9403-3d09-a4d2-352bc198efff@linutronix.de>
+ <a25acad730c94845a16552f321eb2660@realtek.com>
+ <e37633e5-5eec-5dc6-31fd-d91480b604c2@linutronix.de>
+ <98be492e-71f3-f525-1d9e-fd6f0bb0200f@gmail.com>
+From:   Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <98be492e-71f3-f525-1d9e-fd6f0bb0200f@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manikanta Pubbisetty <quic_mpubbise@quicinc.com> wrote:
-
-> Firmwares advertising the support of triggering 11d algorithm on the
-> scan results of a regular scan expects driver to send
-> WMI_11D_SCAN_START_CMDID before sending WMI_START_SCAN_CMDID.
-> Triggering 11d algorithm on the scan results of a normal scan helps
-> in completely avoiding a separate 11d scan for determining regdomain.
-> This indirectly helps in speeding up connections on station
-> interfaces on the chipsets supporting 11D scan.
+Am 09.04.23 um 14:41 schrieb Bitterblue Smith:
+> On 06/04/2023 18:09, Martin Kaistra wrote:
+>> Am 06.04.23 um 02:42 schrieb Ping-Ke Shih:
+>>>
+>>>
+>>>> -----Original Message-----
+>>>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>>>> Sent: Wednesday, April 5, 2023 11:31 PM
+>>>> To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>>>> <pkshih@realtek.com>; Sebastian Andrzej Siewior <bigeasy@linutronix.de>; linux-wireless@vger.kernel.org
+>>>> Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+>>>>
+>>>> Am 23.03.23 um 18:12 schrieb Bitterblue Smith:
+>>>>> On 22/03/2023 19:18, Martin Kaistra wrote:
+>>>>> Then I was able to turn on the AP and connect my phone to it. However,
+>>>>> the system froze after a few seconds. I had `journalctl --follow`
+>>>>> running. The last thing printed before the system froze was the DHCP
+>>>>> stuff (discover, offer, request, ack). The phone said it was connected,
+>>>>> but speedtest.net didn't have time to load before the freeze.
+>>>>
+>>>> Hi
+>>>>
+>>>> I could reproduce a frozen system with my hostapd setup, though it
+>>>> doesn't happen reliably and I don't have an error message when it happens.
+>>>>
+>>>
+>>> Using netcat would help to capture useful messages when system gets frozen.
+>>>
+>>> Ping-Ke
+>>>
+>>
+>> Thanks. I got a trace by using netconsole and netcat. It is a NULL pointer dereference in rtl8xxxu_fill_txdesc_v2():
+>>
+>>
+>>          if (rate_flags & IEEE80211_TX_RC_MCS &&
+>>              !ieee80211_is_mgmt(hdr->frame_control))
+>>                  rate = tx_info->control.rates[0].idx + DESC_RATE_MCS0;
+>>          else
+>>                  rate = tx_rate->hw_value;    <-- error happens here
+>>
+>>          if (rtl8xxxu_debug & RTL8XXXU_DEBUG_TX)
+>>                  dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
+>>
+>> This happens when ieee80211_get_tx_rate() hits the WARN_ON_ONCE and maybe also when c->control.rates[0].idx has another invalid value.
+>> See my previous comments about HAS_RATE_CONTROL.
 > 
-> To enable this feature, send WMI_11D_SCAN_START_CMDID just before
-> sending WMI_START_SCAN_CMDID if the firmware advertises
-> WMI_TLV_SERVICE_SUPPORT_11D_FOR_HOST_SCAN service flag.
+> Good job finding the problem!
 > 
-> WCN6750 & WCN6855 supports this feature.
+> ieee80211_get_tx_rate() is used since the initial commit, so only Jes
+> may know why. I assume we only ever need to use the rate from mac80211
+> for frame injection (IEEE80211_TX_CTRL_RATE_INJECT, currently ignored).
 > 
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-01160-QCAMSLSWPLZ-1
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+> If c->control.rates[0].idx is negative, is c->control.rates[0].flags
+> also unusable?
+
+control.rates[0].flags seems to be 0 normally in all my tests when 
+HAS_RATE_CONTROL is enabled, and when control.rates[0].idx is negative, 
+I see some random values which do not look like real flags.
+
 > 
-> Signed-off-by: Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ieee80211_get_rts_cts_rate() probably causes the same problem.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Yes, I agree.
 
-e89a51aedf38 wifi: ath11k: Send 11d scan start before WMI_START_SCAN_CMDID
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230315161817.29627-1-quic_mpubbise@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+How should proceed? I have a v2 of this patch series ready, do I need to 
+add a patch to remove the calls to ieee80211_get_tx_rate() and just set 
+rate in txdesc to 0 or should we handle this separately?
