@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D76C16DF146
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 11:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 969D86DF15A
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 12:00:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjDLJ7E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 05:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
+        id S229977AbjDLKAS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 06:00:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjDLJ7D (ORCPT
+        with ESMTP id S229634AbjDLKAQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 05:59:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC32730CB
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 02:59:02 -0700 (PDT)
+        Wed, 12 Apr 2023 06:00:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C50065B8
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 03:00:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A12C62D44
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 09:59:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFBAC433EF;
-        Wed, 12 Apr 2023 09:59:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AFA063284
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 10:00:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF989C433D2;
+        Wed, 12 Apr 2023 10:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681293541;
-        bh=DkbdkJrCIGKo6sV6b92AMSs4dyTp3F0mcGn6aU5aGz0=;
+        s=k20201202; t=1681293615;
+        bh=fK8C2lU5H+Gru/bw6YH75nU6KIJR8dwsXYKM5NXezzc=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Kmc8KbfDorBPScEa8DazjKwdSUc4LEMuOO5/q6m5ssC3xMf5tk5qyQCaUgL5QGEEF
-         C1C9qPE+kYZGDAj8VBzMa2BIUS4cxnW54MpZGo8Ml/gDDO9LHmo1hU/1sG7VfO2/ee
-         GYwS4bvRcbTlJ4DC0S7JW2kzZT9u7/QbaqH00aVgYeID0+wmMF56+FY8RfATnmXP74
-         iVIVZKeT4PiNfogmYMLOFnIWzP/aESORb8JBl6g4Y7goV09a4KLDq1a814KvTH62GW
-         FSgmcjVDDBxKxi6bEyQ+E4zp73eYAR1DvYgLKzmqz+qJ/qBz6BU+IPU30lXGSh8fnN
-         lWbyrV8oG/yGw==
+        b=gI3pR1stBxU5DrujSZxZtZAzlX7oL6Kxa/ksbTQDwejGXJmyjQnpmSRRfYBh3pHJ2
+         tyCTNfuSnh0Lewfuj+7sUwZFTc1JAOX1WMDyPvt67CZ32+VRJd4JiDECp1VcGAW2H+
+         GSZyGQ2hVlU9HnDS9JuWM+ZwvzzkeUT2U0QRXLqHJOgn3ePeYakFnqIrtOJxvfjmDa
+         nultbOstvpKjT0TJoQp5SlyN8sOCctzL62o1cXwPUq4Y3m77rU2NmcbLEr335EyX/s
+         wC+7Jlic3BVHa1eKwHgbXDLPZKcihiIUacJt7c2CF9DgIXWGHXBYfbH60cXvkeTd2x
+         cyZNpfoQsO3bg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: fix rssi station dump not updated in
- QCN9074
+Subject: Re: [PATCH] wifi: ath11k: Fix invalid management rx frame length
+ issue
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230320110312.20639-1-quic_ppranees@quicinc.com>
-References: <20230320110312.20639-1-quic_ppranees@quicinc.com>
-To:     P Praneesh <quic_ppranees@quicinc.com>
+In-Reply-To: <20230320133840.30162-1-quic_nmaran@quicinc.com>
+References: <20230320133840.30162-1-quic_nmaran@quicinc.com>
+To:     Nagarajan Maran <quic_nmaran@quicinc.com>
 Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>
+        Bhagavathi Perumal S <quic_bperumal@quicinc.com>,
+        Nagarajan Maran <quic_nmaran@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168129353877.14673.14171521280937840187.kvalo@kernel.org>
-Date:   Wed, 12 Apr 2023 09:59:00 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-ID: <168129361208.14673.5430321799624017931.kvalo@kernel.org>
+Date:   Wed, 12 Apr 2023 10:00:13 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,26 +56,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-P Praneesh <quic_ppranees@quicinc.com> wrote:
+Nagarajan Maran <quic_nmaran@quicinc.com> wrote:
 
-> In QCN9074, station dump signal values display default value which
-> is -95 dbm, since there is firmware header change for HAL_RX_MPDU_START
-> between QCN9074 and IPQ8074 which cause wrong peer_id fetch from msdu.
-> Fix this by updating hal_rx_mpdu_info with corresponding QCN9074 tlv
-> format.
+> The WMI management rx event has multiple arrays of TLVs, however the common
+> WMI TLV parser won't handle multiple TLV tags of same type.
+> So the multiple array tags of WMI management rx TLV is parsed incorrectly
+> and the length calculated becomes wrong when the target sends multiple
+> array tags.
+> 
+> Add separate TLV parser to handle multiple arrays for WMI management rx
+> TLV. This fixes invalid length issue when the target sends multiple array
+> tags.
 > 
 > Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-01695-QCAHKSWPL_SILICONZ-1
 > 
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Bhagavathi Perumal S <quic_bperumal@quicinc.com>
+> Co-developed-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+> Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-031ffa6c2cd3 wifi: ath11k: fix rssi station dump not updated in QCN9074
+447b0398a9cd wifi: ath11k: Fix invalid management rx frame length issue
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230320110312.20639-1-quic_ppranees@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230320133840.30162-1-quic_nmaran@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
