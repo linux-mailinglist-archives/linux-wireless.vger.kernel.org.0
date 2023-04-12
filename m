@@ -2,97 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA64A6DF020
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 11:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B93076DF0D7
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 11:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjDLJTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 05:19:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
+        id S229632AbjDLJqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 05:46:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjDLJTJ (ORCPT
+        with ESMTP id S229692AbjDLJqv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 05:19:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB99768F
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 02:19:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAEC060F78
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 09:19:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C112C4339B;
-        Wed, 12 Apr 2023 09:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681291147;
-        bh=bzUvRwr59wVHRCDw1b7h2SYW2FjX9c1LwaIMpXjxMC0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=gR3sR1H8RAfDkkf3k9GB1vF9MrG4JOn8jsLuLs+DXzFSTyURE39ukj8p13W5O6IAW
-         gb73EdhiBQ/2dqB0XQ0Cc3iSHdhcwX7nOJ/619pzVD9u4XlJDid4L3LLCIuY5hcsie
-         70eRKsuDXqhuN9iStOK3Dpg//AIUTyMTo1idEYwGi/z+34dS3WL9/NLR9pkHTntJBr
-         66m8xpAkB9RaluqcO9fOLby1Zj774yqnrDwGI2BmvIM/NzhB8V8CtrijCnLWGIyGqv
-         h6INV4zfsVPl0SgQ0o5O8Xm4jpvP9Zan2FahSkfyqhZOx9uUp8jXOR9QJxAkGSRyQT
-         7wPpzcHGViZ9w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Aloka Dixit <quic_alokad@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Subject: Re: [PATCH v2 06/11] wifi: ath12k: prepare EHT peer assoc parameters
-References: <20230403225146.14139-1-quic_alokad@quicinc.com>
-        <20230403225146.14139-7-quic_alokad@quicinc.com>
-        <b3282c7d-07c5-8657-fca2-c286f82cb235@quicinc.com>
-Date:   Wed, 12 Apr 2023 12:19:03 +0300
-In-Reply-To: <b3282c7d-07c5-8657-fca2-c286f82cb235@quicinc.com> (Aloka Dixit's
-        message of "Mon, 10 Apr 2023 09:22:53 -0700")
-Message-ID: <87r0sp8nlk.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 12 Apr 2023 05:46:51 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14F19008
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 02:46:23 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id h198so17544410ybg.12
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 02:46:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681292782; x=1683884782;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZNuVbYyBnP1BcaPopnX8lztKblurkV7/rLoacjW6Njs=;
+        b=yAaY1KHIpqwcoP5byyGOts6dHMQUhWaW8lZyTtgdsRUUgDlaAHH395rOIxlekGq55a
+         bAxYgNjrF5/lwJqeiX2SZRIlVk2wO1odlGdLhDv9ZjZ2OumLC3qfrIiMQFHTAFqR25OA
+         Tq4XhZxEjZAvYzp36dH5BRB6SW2vYxt8LosNPecG+dyOaNI09RB5a/JtDX8MusxhsSzW
+         Byn8erPSpBIlhHXnSrZzqjRlaYIdmdM+8LkwtNvqrZmqhF8RoY5A57vLjejbupdPrGyj
+         Win6bDULj8RGrz7JGPWkwlJEv6Gygsn0CLc+x8I+UaVtZentrbTSPAYiXwEANqQ3N8ED
+         beMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681292782; x=1683884782;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZNuVbYyBnP1BcaPopnX8lztKblurkV7/rLoacjW6Njs=;
+        b=4coYh1Qi2biakjKcsnr8VyMY0gtUSJRdlxDCzcl8c0PMb/Gj36fNeBPV7o0uavq7Wr
+         tghMJ7f28DrH72Jbd37BUpymvonjgB1Y1JV87v1qq/PfYuKaXHjor9xfF1VdFljcqfq0
+         3DphzVocjv4H4EdCVQ3V0XTZdCN9Ov5R/iS+9p/I8ekdgrkYQzGnLPcliLnE9sQKQ/2m
+         T84jA8wycpoSGyRMN4Fq6GZeec0qkCa3TM/9uEgLABzFKM/qIFZ0tErz9AY5DxV7sh40
+         qIzecFUIsLxgmb2rJs7BQKNV6OunPmYLORP7leq0FwHQ+rCW58AoB9Olukrxlz35/oCP
+         m7KQ==
+X-Gm-Message-State: AAQBX9eM99mg+M45Vot94QHFNUpNatNPkHUni3Cfj6s15rZ8HILSAdeW
+        gWMoBtoirenSImsC3J3igyKw2XcXfn88nj756on6+2unn5CUO+xH
+X-Google-Smtp-Source: AKy350bOIfX5NAzv6KgxUT2B1YGM2RvsdUbOEM86g0uqawtzMv77LJ92an89N0cSH4dLXjtnO5ExgpcLpL6DNZjWOTY=
+X-Received: by 2002:a25:da8e:0:b0:b8f:3647:d753 with SMTP id
+ n136-20020a25da8e000000b00b8f3647d753mr1197484ybf.9.1681292782236; Wed, 12
+ Apr 2023 02:46:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <87cz4ia35m.fsf@kernel.org> <8ceeee1e-8828-69a9-facb-20c3787207bd@linaro.org>
+ <87jzyh8mrw.fsf@kernel.org>
+In-Reply-To: <87jzyh8mrw.fsf@kernel.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Wed, 12 Apr 2023 12:46:11 +0300
+Message-ID: <CAA8EJpotq5KjbUAU+exR5uU9-9erFhdxPn_OTUJ58MrXM-Pngw@mail.gmail.com>
+Subject: Re: [PULL linux-firmware] ath10k & ath11k firmware 20230405
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-firmware@kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aloka Dixit <quic_alokad@quicinc.com> writes:
-
-> On 4/3/2023 3:51 PM, Aloka Dixit wrote:
+On Wed, 12 Apr 2023 at 12:36, Kalle Valo <kvalo@kernel.org> wrote:
 >
->> Add new parameters and prepare the association data for an EHT peer.
->> MCS data uses the format described in IEEE P802.11be/D2.0, May 2022,
->> 9.4.2.313.4, convert it into the format expected by the firmware.
->>
->> +	case IEEE80211_STA_RX_BW_320:
->> +		bw = &eht_cap->eht_mcs_nss_supp.bw._320;
->> +		ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
->> +				       bw->rx_tx_mcs9_max_nss,
->> +				       bw->rx_tx_mcs11_max_nss,
->> +				       bw->rx_tx_mcs13_max_nss,
->> +				       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_320],
->> +				       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_320]);
->> +		arg->peer_eht_mcs_count++;
->> +		fallthrough;
->> +
->> +	case IEEE80211_STA_RX_BW_160:
->> +		bw = &eht_cap->eht_mcs_nss_supp.bw._160;
->> +		ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
->> +				       bw->rx_tx_mcs9_max_nss,
->> +				       bw->rx_tx_mcs11_max_nss,
->> +				       bw->rx_tx_mcs13_max_nss,
->> +				       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_160],
->> +				       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_160]);
->> +		fallthrough;
->> +
+> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
 >
-> 'arg->peer_eht_mcs_count++' is missing for 160 MHz case.
-> Should I send a follow-up now for the series or wait for comments on
-> the remaining part for some time.
+> > Hi Kalle,
+> >
+> > On 05/04/2023 16:07, Kalle Valo wrote:
+> >> Hi,
+> >>
+> >> Here's a pull request for ath10k and ath11k. For ath10k we have lots of
+> >> board file updates in multiple hardware families. For ath11k we have new
+> >> firmware branches for QCN9074, IPQ6018 and IPQ8074. WCN6750 also got a
+> >> firmware update and WCN6855 has board file updates.
+> >>
+> >> Please let me know if there are any problems.
+> >>
+> >> Kalle
+> >
+> > Excuse me, a gentle reminder regarding WCN3990 board-2.bin. It was not
+> > included into this pull request.
+>
+> Oh man, sorry about that. I guess my installation script was buggy and
+> missed it somehow, I'll look at it later and make sure WCN3990 is not
+> skipped anymore.
 
-Sending a new version sounds like the best.
+No problem, thanks a lot!
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+With best wishes
+Dmitry
