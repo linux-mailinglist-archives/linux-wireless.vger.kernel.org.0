@@ -2,61 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FFE76DEA11
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 06:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E5B66DEA33
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 06:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjDLD76 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Apr 2023 23:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41062 "EHLO
+        id S229513AbjDLEK3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 00:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjDLD74 (ORCPT
+        with ESMTP id S229450AbjDLEK1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Apr 2023 23:59:56 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D27E40FB
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 20:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681271995; x=1712807995;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=JoTVwrmSr8I8e1Iq7VXkzz+7zvXfVdab0D9eX++G77k=;
-  b=VOTo+9nebw0czAAa0Zn4GUik014E5RojsvGzK+dA0vKHizlgFb3cnDm/
-   s4YPm70f+PJC0HRMa7YUEoTd2UPjWYQjnWIILUnHmOZpZKcqMhcMG9rYq
-   api010fKqu9opjeiCdB6l0F10MiIdZ0XnP17BGtUVfagDlIPUCPEMfcVI
-   JGiJJDcgUtKgHxfi2DAkQtvcA68LTdL25SE+r8+pqL5r8R++hZpNueFil
-   roTeHzJrI/8PuJ3oe7OxMYjb+f+Aofg3C2rzSgjm2Wqz5AHBACUtz5SzX
-   LZcVQ424c16LLf174CJAtQwXjkJcv3l54KzoWd1FKdL5UyqFXYRK+7wc8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="341283234"
-X-IronPort-AV: E=Sophos;i="5.98,338,1673942400"; 
-   d="scan'208";a="341283234"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2023 20:59:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10677"; a="934968435"
-X-IronPort-AV: E=Sophos;i="5.98,338,1673942400"; 
-   d="scan'208";a="934968435"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 11 Apr 2023 20:59:53 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pmReC-000XFD-23;
-        Wed, 12 Apr 2023 03:59:52 +0000
-Date:   Wed, 12 Apr 2023 11:59:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: [wireless-next:main] BUILD SUCCESS
- e3e0ca32cf478e78c579b02cd9c1657d93c97add
-Message-ID: <64362c9a.3uOUsWxr/fnb/ZPQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 12 Apr 2023 00:10:27 -0400
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884641989
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 21:10:26 -0700 (PDT)
+Received: by mail-io1-xd2e.google.com with SMTP id y187so227516iof.4
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Apr 2023 21:10:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=egauge.net; s=google; t=1681272626; x=1683864626;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VZYQZZXSKkY5XF+HRC7BIDu33gku+iW28o7XYPgj2xI=;
+        b=QVs/CPhXjNp617XvjBXeFaRN6OFeKqISFKPFD3+WiwALH+0WSX7NxJag6IveNaCIhm
+         x4cnszHkVAUuZKAhPwMdL/+o3hWS4enDBC888Xry6NH+468G0xH51pgxg1O8YTxfT1Ro
+         ujGxcy+BpIOlTKLzUdz7K3S+pXLnUmD7uzaFA2OV1vjPltgPCwlapwdENyUfLtytyJcq
+         SdfIWHiM/z8lXA4JDZpdqu5TS/rlINsTk/gPHiwHjuwE7lPqlWyvxO0S5/PzjDQLJloE
+         8z7ZRYBcpam0e4sO4Y5/iXWdihoGAhxrCkZbLLguIbrznkTwXXGsqyJoZCxu0/Gq8rdr
+         8s/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681272626; x=1683864626;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VZYQZZXSKkY5XF+HRC7BIDu33gku+iW28o7XYPgj2xI=;
+        b=gzjpNwdRWGbaNFtA0D/Q40DWao9tZQyfydrbjhNDKNbXGDgGU/r3s0Xtt1whuUz3Kj
+         ctjQOa+yaXC7Bk3tu+Qm3ssLLP/XGHbU+CAmmCe9Ml6BriJFWnPJ5o86QzinPbYtWw8B
+         rG/U33bsPuS3/vqnDMpwgi7okSjH3vOjVU61tzI2QUuoHVqqKGyV+mf6A3v/4Awwhbbc
+         CiauwRpiE7Z1UTIwAQhfekQ7cpSl2MYZ6BczqKOzUvn2biPNxXKMvzb0TJ4RkA/YRqyF
+         oE9/AMRXPEhCBghWBl2+k7oYIAGunKyGR4Us6mPsD5+VZJ/5m0kCc/oTHKQo3907CQlc
+         P0rw==
+X-Gm-Message-State: AAQBX9cniVc98WV5Ii+5/5LHomIA8KvM2/w7OzwDQ46ZStt37veK0VXc
+        YCSBxp1BmK+4jDsQThabsh1t
+X-Google-Smtp-Source: AKy350bzsXVNdqSp9MaWwwBLAdIRWMMeWi4UskDl4tPC3Nb57FHG4Q1hSbm5LNTvPxq7P5TvvJC3sA==
+X-Received: by 2002:a6b:f30d:0:b0:74c:91c7:8794 with SMTP id m13-20020a6bf30d000000b0074c91c78794mr9334603ioh.21.1681272625812;
+        Tue, 11 Apr 2023 21:10:25 -0700 (PDT)
+Received: from ?IPv6:2601:281:8300:a1:5d8a:622a:58d5:54e0? ([2601:281:8300:a1:5d8a:622a:58d5:54e0])
+        by smtp.gmail.com with ESMTPSA id q20-20020a5ea614000000b0074ca5ac5037sm4037472ioi.26.2023.04.11.21.10.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Apr 2023 21:10:25 -0700 (PDT)
+Message-ID: <6c661903ad35a4619aeb8c642998b9f21883b0c1.camel@egauge.net>
+Subject: Re: wilc1000: AP mode issue
+From:   David Mosberger-Tang <davidm@egauge.net>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 11 Apr 2023 22:10:20 -0600
+In-Reply-To: <bdd4f49a-213a-bf55-1c29-d74e56221795@microchip.com>
+References: <e4cece9076cc9a5a4e4dbfa258a828eaec97e1af.camel@egauge.net>
+         <bdd4f49a-213a-bf55-1c29-d74e56221795@microchip.com>
+Organization: eGauge Systems LLC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,194 +74,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: e3e0ca32cf478e78c579b02cd9c1657d93c97add  wifi: mac80211: set EHT support flag in AP mode
+On Wed, 2023-04-12 at 00:33 +0000, Ajay.Kathat@microchip.com wrote:
+> Hi David,
+>=20
+> On 4/11/23 14:08, David Mosberger-Tang wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you know =
+the content is safe
+> >=20
+> > Ajay,
+> >=20
+> > I'm just starting to investigate an issue with the wilc1000 driver that=
+ occurs
+> > when it is operating as an access point.  I came across this thread:
+>=20
+> What is the issue observed with the AP mode.
 
-elapsed time: 723m
+I'm still working on simplifying the test case.  Right now, it's rather
+complex:
 
-configs tested: 175
-configs skipped: 15
+ 1) Connect wlan0 in managed mode to an existing access point.
+ 2) Create a virtual interface wlan0 (iw dev wlan0ap interface add
+wlan0ap type __ap)
+ 3) Set up a captive portal on wlan0ap (iptables rules, web server,
+dnsmasq)
+ 3) Start hostapd on wlan0ap
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Once that's done, use a smartphone or any other client device to
+connect to the captive portal's SSID.  The captive portal redirects any
+HTTP requests to the portal's web server.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r001-20230409   gcc  
-alpha        buildonly-randconfig-r006-20230410   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230409   gcc  
-alpha                randconfig-r013-20230410   gcc  
-alpha                randconfig-r022-20230412   gcc  
-alpha                randconfig-r025-20230410   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r003-20230409   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r012-20230409   gcc  
-arc                  randconfig-r015-20230409   gcc  
-arc                  randconfig-r031-20230410   gcc  
-arc                  randconfig-r043-20230409   gcc  
-arc                  randconfig-r043-20230410   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm          buildonly-randconfig-r001-20230410   clang
-arm          buildonly-randconfig-r005-20230409   clang
-arm                                 defconfig   gcc  
-arm                  randconfig-r012-20230410   clang
-arm                  randconfig-r014-20230409   clang
-arm                  randconfig-r016-20230409   clang
-arm                  randconfig-r033-20230412   gcc  
-arm                  randconfig-r046-20230409   clang
-arm                  randconfig-r046-20230410   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r001-20230410   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r003-20230411   gcc  
-csky                 randconfig-r031-20230409   gcc  
-hexagon              randconfig-r001-20230411   clang
-hexagon              randconfig-r005-20230410   clang
-hexagon              randconfig-r024-20230412   clang
-hexagon              randconfig-r041-20230409   clang
-hexagon              randconfig-r041-20230410   clang
-hexagon              randconfig-r045-20230409   clang
-hexagon              randconfig-r045-20230410   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r006-20230410   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230410   clang
-i386                 randconfig-a002-20230410   clang
-i386                 randconfig-a003-20230410   clang
-i386                 randconfig-a004-20230410   clang
-i386                 randconfig-a005-20230410   clang
-i386                 randconfig-a006-20230410   clang
-i386                 randconfig-a011-20230410   gcc  
-i386                 randconfig-a012-20230410   gcc  
-i386                 randconfig-a013-20230410   gcc  
-i386                 randconfig-a014-20230410   gcc  
-i386                 randconfig-a015-20230410   gcc  
-i386                 randconfig-a016-20230410   gcc  
-i386                 randconfig-r015-20230410   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r001-20230410   gcc  
-ia64         buildonly-randconfig-r002-20230409   gcc  
-ia64         buildonly-randconfig-r005-20230409   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r002-20230410   gcc  
-ia64                 randconfig-r005-20230411   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r006-20230411   gcc  
-loongarch            randconfig-r022-20230409   gcc  
-loongarch            randconfig-r026-20230410   gcc  
-loongarch            randconfig-r034-20230410   gcc  
-loongarch            randconfig-r035-20230409   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r012-20230409   gcc  
-m68k                 randconfig-r034-20230412   gcc  
-microblaze   buildonly-randconfig-r004-20230410   gcc  
-microblaze           randconfig-r036-20230410   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r001-20230409   gcc  
-mips         buildonly-randconfig-r002-20230410   gcc  
-mips         buildonly-randconfig-r006-20230409   gcc  
-mips                 randconfig-r032-20230412   gcc  
-mips                 randconfig-r034-20230409   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r002-20230411   gcc  
-openrisc             randconfig-r012-20230410   gcc  
-openrisc             randconfig-r021-20230412   gcc  
-openrisc             randconfig-r022-20230410   gcc  
-parisc       buildonly-randconfig-r003-20230409   gcc  
-parisc       buildonly-randconfig-r003-20230410   gcc  
-parisc       buildonly-randconfig-r004-20230409   gcc  
-parisc       buildonly-randconfig-r004-20230410   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r013-20230409   gcc  
-parisc               randconfig-r014-20230409   gcc  
-parisc               randconfig-r023-20230410   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r003-20230410   gcc  
-powerpc              randconfig-r006-20230409   clang
-powerpc              randconfig-r016-20230409   gcc  
-powerpc              randconfig-r016-20230410   gcc  
-powerpc              randconfig-r036-20230412   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r002-20230409   gcc  
-riscv        buildonly-randconfig-r002-20230410   gcc  
-riscv        buildonly-randconfig-r005-20230410   gcc  
-riscv        buildonly-randconfig-r006-20230409   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r001-20230409   clang
-riscv                randconfig-r003-20230410   clang
-riscv                randconfig-r004-20230409   clang
-riscv                randconfig-r014-20230410   gcc  
-riscv                randconfig-r021-20230409   gcc  
-riscv                randconfig-r026-20230409   gcc  
-riscv                randconfig-r031-20230412   clang
-riscv                randconfig-r035-20230410   clang
-riscv                randconfig-r035-20230412   clang
-riscv                randconfig-r042-20230409   gcc  
-riscv                randconfig-r042-20230410   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r013-20230409   gcc  
-s390                 randconfig-r015-20230409   gcc  
-s390                 randconfig-r044-20230409   gcc  
-s390                 randconfig-r044-20230410   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r004-20230410   gcc  
-sh                   randconfig-r011-20230409   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r011-20230409   gcc  
-sparc                randconfig-r015-20230410   gcc  
-sparc64              randconfig-r011-20230410   gcc  
-sparc64              randconfig-r021-20230410   gcc  
-sparc64              randconfig-r032-20230409   gcc  
-sparc64              randconfig-r033-20230409   gcc  
-sparc64              randconfig-r036-20230409   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230410   clang
-x86_64               randconfig-a002-20230410   clang
-x86_64               randconfig-a003-20230410   clang
-x86_64               randconfig-a004-20230410   clang
-x86_64               randconfig-a005-20230410   clang
-x86_64               randconfig-a006-20230410   clang
-x86_64               randconfig-a011-20230410   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64               randconfig-a012-20230410   gcc  
-x86_64                        randconfig-a012   clang
-x86_64               randconfig-a013-20230410   gcc  
-x86_64                        randconfig-a013   gcc  
-x86_64               randconfig-a014-20230410   gcc  
-x86_64                        randconfig-a014   clang
-x86_64               randconfig-a015-20230410   gcc  
-x86_64                        randconfig-a015   gcc  
-x86_64               randconfig-a016-20230410   gcc  
-x86_64                        randconfig-a016   clang
-x86_64               randconfig-r006-20230410   clang
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r004-20230409   gcc  
-xtensa               randconfig-r004-20230411   gcc  
-xtensa               randconfig-r005-20230409   gcc  
-xtensa               randconfig-r014-20230410   gcc  
-xtensa               randconfig-r024-20230410   gcc  
-xtensa               randconfig-r033-20230410   gcc  
+Now, when the client starts downloading pages from the web server,
+something bad happens in the wilc1000.  The connections to the web
+server get stuck and wilc1000 stops broadcasting the hostapd's SSID.
+There are no error message (even with debug enabled in wilc1000).
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Depending on the client device, the problems appears sooner or later.
+For example, with Android 13, the problem happens infrequently but
+with iOS or Android 9, it happens rather reliably and early on (within
+the first few KiB of data transmission).
+
+> >=20
+> >   https://lore.kernel.org/linux-wireless/87pmkmylex.fsf@kernel.org/
+> >=20
+> > and was wondering if there has been progress towards converting the dri=
+ver to
+> > use the nl80211-based TX/RX interface.  If so, is this something that's
+> > available somewhere or could be shared?
+> >=20
+>=20
+> I haven't started working on this part yet. After completing few pending
+> ongoing patches. I will look into this.
+
+Great!
+
+Best regards,
+
+  --david
