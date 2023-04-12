@@ -2,205 +2,407 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E33A6DF81C
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 16:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 969346DFD09
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 19:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231530AbjDLONK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 10:13:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
+        id S230046AbjDLRwd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 13:52:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231524AbjDLONE (ORCPT
+        with ESMTP id S229548AbjDLRwc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 10:13:04 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2673826A6;
-        Wed, 12 Apr 2023 07:13:02 -0700 (PDT)
+        Wed, 12 Apr 2023 13:52:32 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28BEB5FD5;
+        Wed, 12 Apr 2023 10:52:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681308782; x=1712844782;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=AA3JNz177+CiLjgBZ5KXzeziWT+mfnlRMAcCC1An4Gw=;
-  b=d5tleeQa/d2iuoH5lacIxbpehg3omB7u/OmvQpU5vAoeQrslvO6tEH8N
-   /Y3Hc5H1knn0TwbcvuQ976VEq+KQiPWJmOGTIpw1jPWeV97Mm6/igiAWW
-   xI/QHaNesq78/MnuM/uZ5AazmhFXqF+Fdr8ubVTDcYKSXjKq20gEn/1h2
-   mq8IAwhZuDeaih1oHrPLwCfvPE6X4eNxsn96xR6sIl+0pCvo/zjTYvcqD
-   m2FeWB4uazRNb6JW28F66VhgxC0OBewb6LiYLeQrfehw9icUT73jgrIX4
-   Z9xMK0vranwql3xy14HubJ+BAjmIcPirdxRBCft00z7U2FUzsCONeChHb
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="332605339"
+  t=1681321949; x=1712857949;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TIYs4ZIk35TXWTPd2ztjdk8cMzBEHCggjBsOZcucAJ8=;
+  b=W2atG3cjXrSKeDODk/4uos1JTwPw1WcvwYCEr7xlpmzynw8fJsYL+9TJ
+   xe3vjxgMQPUi1nmoc447pbBnn7I0jSAfTubwbD1vFEzmt+4zQHy62kJf8
+   godMVqypYXjgqd4pEmgZ6corB06iOZfumSQuyBL29l58ZEwx15wJ5S+5T
+   e+OVpuAQe/SGUoUOEZGCZxnTwjuOZFSGP8Zh5R2EIAjzm2PZKN1lIxEnz
+   XEI8ptuOKkXwyHmBIgxEgd6Xgp17gJ2CtDUMqhzBLJQF6U6ckFFmwl2Jw
+   lHjeXNJU1Rr5QLLsn+bSgPM7ZtsjGqw+JdermrwCL1805Q1UA0VvCusoD
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="345763361"
 X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="332605339"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 07:13:01 -0700
+   d="scan'208";a="345763361"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 10:52:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="719389735"
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="682575524"
 X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="719389735"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga008.jf.intel.com with ESMTP; 12 Apr 2023 07:13:00 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 12 Apr 2023 07:13:00 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Wed, 12 Apr 2023 07:13:00 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Wed, 12 Apr 2023 07:12:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lddUoHUXPKU+ocY+iuks+EaWEF/W2lIiiJJ44YvpVOQbO6rMwQKk8hRPp+jiwMUiP4F6jqxpHYiUUVBqIvYoKeHGq/7Ao+PdhQRZfk/uEbDurZhs0HlE1YW/iE8cJj/iAAVpOIQyO3SR9KEpiqygJyDyBP2SKVRNYlKwO6y2FpbkroFsFR7i3+5MpZxEKSM2DhoFdx27FxcXaGxlpYJ7frXYXyWRNmwK3U4qaTAfcsoem+FzgRTECE5Aq6NxjdjgilPjpckEoqegxof/YSyulc3BNIu8xBKqG4NIQpwxwIgRUqA+AYXigccsSrgOLXxc+vAsvetjZGD7uOGnyU6yNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nwEnKrHgj+ukbtNgasJTGRONNCGek8hRnOHMgyDD2U4=;
- b=Jx+1Tu18k+xgZVnmjAlfqmeYXOSKA1PHD7Zp1TYWnGazF1RXYKu5U3VtJSRB4IaYFles+DAyrtRc3cdMSRW+GqjAi44cD6CyNWKAoz3r1pd7JGyonNnf3/75duoImPGF20Dfpo3pe5xJjsqncdn/Lmvie8EUhV4GtqaEMtwOZSIYbDB5QpKp6ToRpnltU7Mke97gmCoRJzIS0IcpkeMIbnmpQ/0zYAr8JVQvnqoo2oKBeKPUAciLYYFyfeASZxIsG6HUz90Qd1kz3Qyw9pKyV4uLuip+21J2czObyEbQhEJS/v2cUMJjZXw94YQhs229w86EZ/b9e4W+60VhBOJhDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB4886.namprd11.prod.outlook.com (2603:10b6:510:33::22)
- by MW3PR11MB4571.namprd11.prod.outlook.com (2603:10b6:303:59::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.38; Wed, 12 Apr
- 2023 14:12:56 +0000
-Received: from PH0PR11MB4886.namprd11.prod.outlook.com
- ([fe80::922:4817:b4f2:c7b3]) by PH0PR11MB4886.namprd11.prod.outlook.com
- ([fe80::922:4817:b4f2:c7b3%5]) with mapi id 15.20.6298.030; Wed, 12 Apr 2023
- 14:12:56 +0000
-Message-ID: <11811efa-7722-fded-b0bb-64808cfc1336@intel.com>
-Date:   Wed, 12 Apr 2023 09:12:52 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix missing unwind goto in
- `mt7921u_probe`
-To:     Jiefeng Li <jiefeng_li@hust.edu.cn>, Felix Fietkau <nbd@nbd.name>,
-        "Lorenzo Bianconi" <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        "Shayne Chen" <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        "Kalle Valo" <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-CC:     Dongliang Mu <dzm91@hust.edu.cn>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20230412062234.4810-1-jiefeng_li@hust.edu.cn>
-Content-Language: en-US
-From:   "Samudrala, Sridhar" <sridhar.samudrala@intel.com>
-In-Reply-To: <20230412062234.4810-1-jiefeng_li@hust.edu.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR04CA0004.namprd04.prod.outlook.com
- (2603:10b6:a03:40::17) To PH0PR11MB4886.namprd11.prod.outlook.com
- (2603:10b6:510:33::22)
+   d="scan'208";a="682575524"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 12 Apr 2023 10:52:20 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pmedo-000Xxf-0F;
+        Wed, 12 Apr 2023 17:52:20 +0000
+Date:   Thu, 13 Apr 2023 01:51:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 7d8214bba44c1aa6a75921a09a691945d26a8d43
+Message-ID: <6436efbb.08+e+yEDqvRxvHDP%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB4886:EE_|MW3PR11MB4571:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95a27486-f69d-4148-b419-08db3b600322
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Agxbn/jNCXctAR1QQS+w/zMsqPCSuDFvrDmhOS5GVZlQzcQyFQXmSdQupZJtYh91+PBsUr6uiY2NuJ3MlpMut8uet17ac/N9c0KvJV4W1M1+f5YdfkjGN9xVGTBjRT5fk3fcpkyzv8Xvw+5ksRO3AqLvXeH5b/JecqDtpuBI8kGb5ZTUtZRthx4jsSjG9Ezg04NuN4eFDBx2GG3u0R5vlJbDMHdNqhYP1IoMWHlMm+ju2lX58f9sR3Aik4L7rRBsmfU1Smq1k/bAToZwL6fx+D+SrNDa9bTo/fQgSLbWwupHBBmBDXXpzMKcS7cd+UPRvgxT8TmWe0bSK/3J4IUfOYmZSN4aZSQwMIDOkL1UpqqbW2xjyyJ/iexmKJMt2M//grQtnbrj/3NO3gekzSaW892rC+ii9bI7Fb4SlFzke3LEu7Vk1McZ3Py9trg/4geidEjQbZZGHxuioFfMWuWLwcDbMv9oxVQFJ5ZXnYl6l3siaVmaod0lTY8M9rEHDRwMpZglSRI7keppD2jE9c8FDv2OLItRIxxkBzeV94HErmP3vm4sn8ag5sNYh5QHqnVLXL24vi4Acsip2Lw+sIoZPcY6ZrWRH1YjFKJ7mVwZ//17UgY/v+kCR6r0NjlHQNJXg63LcIJuIu6rw46Cd6nbLYa6dMZYMjJvfFOJhAxRJHHYJ1lFV9pfV5jD1p26TVrk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB4886.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(396003)(39860400002)(136003)(346002)(366004)(451199021)(66946007)(6666004)(66476007)(66556008)(4326008)(8676002)(83380400001)(6506007)(26005)(186003)(6512007)(53546011)(86362001)(921005)(38100700002)(31696002)(2616005)(82960400001)(316002)(6486002)(36756003)(478600001)(110136005)(2906002)(31686004)(41300700001)(5660300002)(7416002)(8936002)(81973001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d0o5OHBPT1RoR2lEeFNHeG9GL0M2MFAxWjd2azhydDNwbzNoUFpCRkJkZDFT?=
- =?utf-8?B?akhTU0ZyYmxYRUJqS3pNVlJ2RUkxeE1kZkVhbjVMOE5GeVBFK3lYbTl3MEgv?=
- =?utf-8?B?djE2RVU2akMwbGZ3ZGdxSmxGVS9iZlJrSndzUnB2a0wrQWhkSTQ4NUREL0VN?=
- =?utf-8?B?NFhCOTdiNjZMaGxsa0w2VnNpeGVBRDZpaHBYTWJ5cDZ1dkRaTndBckJVMEc4?=
- =?utf-8?B?Ti83eHV3VmtxdndCd1AzSWdlNTMxWkprZUpzVElOckRkd3R6ZkxrTGV5ZDha?=
- =?utf-8?B?OE45U0UzdDhyMlU1QW5pMVp4SVpEMmU0VkpGUTFHempvdmFNQmRFT25aN3l3?=
- =?utf-8?B?VktmMjRxZVZWazRIdTh6RXVxWVZVaGlVS0d5YUVVYmJ1Y2xxYmZBbGxoSlp5?=
- =?utf-8?B?UWJLTWFvL2puQU5wWEhWQzJjTUxVM3NYSWxaWEo0TWdQSzNQNVBGZFh0c3Q3?=
- =?utf-8?B?RldUaUJRMktOQUZpNE01M1BHYVFCTGt6V3hOeEV4NHlleGtDZHRvOS8xQkRK?=
- =?utf-8?B?ZUc5RzVuZzQrWnBsa0dlaERBTWRWa01WL1o5NGlDVG1QVTM5bU1HaWJpaEli?=
- =?utf-8?B?a3RaTXR1K1JKOUk0SkNLeXB5a2xVWUx0U3JLZG1WdjVUcGpsVTBZb0ZHUHZU?=
- =?utf-8?B?Z2dwakkzdHVDTlo3cXpVR0pOdkQrUEpidVFJSldhMXlpSDlGNGs0dTVnQnhn?=
- =?utf-8?B?MGlDQzRyTjRjSFhKcjdBTGMvbU1lN2E2c2tKcGkyRHk2TVBEN2ZYMmFUTDNk?=
- =?utf-8?B?a2xIYkw0Smp4Mjl2R0NSZFJuMnlqYThqWjdPUU5oWTMxZUlGU0V4Qmp4MUpV?=
- =?utf-8?B?WjN2YU9NOElOVWVtWGZkVERsakt5VFhlUEtvcUZEZWhJdnczNWduaVRHWU04?=
- =?utf-8?B?Um9YOUl4ZVNpdzlwem50NHR3dXM1SG5jUjdTcHl5VjlJUjhNTzF1cFkzWkpo?=
- =?utf-8?B?bndZK3ErSVBMdDZDMllWNm1iK0w0TE1ubDNLMlNmRlNuQUtVL1RBcURIY1Bh?=
- =?utf-8?B?Mkdxb2h1eUpIYjBYRzliUEZLZ1E3L3JiOXdycFFGbEg0bkFNaEptR2hwOWpv?=
- =?utf-8?B?MkJnN3E3Z2haeXpmQVh5SkRSQW4wTU1BZnExdXJPTVY2MGxWdDBpZjF6dEZm?=
- =?utf-8?B?UjZpUUY3VSt6aFo1WGZQMlBXb0NPSlpsYU4xMVh2SWtnRGh1WUdONkhEWk1E?=
- =?utf-8?B?d2FsanBiQzdra0J6U3lESGI2ZDl4RUFCNUg5dzVQa242WUtTRmx6eWkrRzFj?=
- =?utf-8?B?RFRtRnpoejB0c0dSOWFXM2Jrb1lza2xHNkpoaW1iNWJkdWhPSVFQdWhOQlV0?=
- =?utf-8?B?RG0xVjRSdHJNc3pKWlQzK3hpTUJtaEdraEZaWjZYZXZmdzBjd3pCNnRqUCtq?=
- =?utf-8?B?UmNiYzAxN2dIbHQrSmpzVFhXa1E3UG1tbWcrOHNJejFoQ2ZtNFJHZW5FN3h1?=
- =?utf-8?B?VGRNeXlCdnA2VzM3WUt1TktqTkVwR003QlpmVm5wc0x4a1NSWGlXSEF0SGFD?=
- =?utf-8?B?WGFnY2tLKzY0em9NM1JEOUhGUDk3SGVSNzFtOUpXRUlEMm1ST25RU1JJZkJo?=
- =?utf-8?B?M2FzOU5HckcxV1ZjellPQkNxdHhJV1ZUR2lLVEVndytTU0xFZUJXblZEWDdI?=
- =?utf-8?B?ZmFkRTl2SDMwcXh4UXZxeEVxSnJ4SmdqQmNPTmJ6LzFTSXlPVHZVSm1WV0N3?=
- =?utf-8?B?T0tZbGFzOThJY1JLN05YQ1R4SlBha3dCZGVzSEx2WkYrVW1kN2pPMVhxQTMw?=
- =?utf-8?B?RHhVazNCdk8vM2xRejBMaTJ2eXdhN1A1N3VCTTFKT0pGYWh6Q0lRSmtrc0p6?=
- =?utf-8?B?NlhJSDE1YnFWZE14bXlWOVBhY1VRams3T04wRzRBN092a0NVUlNBb3NPcGlx?=
- =?utf-8?B?c2h0czNyYmRZZjFQd3l1LzZWOWp3V3dGMlo1U2pncDZPUDZNSVMrbWhNbW00?=
- =?utf-8?B?R1BIQ3Q2bk1pYTFseEUzTVVaTU5GVCsxU3UxUmxuYmxyTGN1SlRzcllseXB4?=
- =?utf-8?B?ellrMVhlWFJXWTJlVjhxR2wwVks5aDgzczduUmppZjE3RG54US9nbEk5d0Rr?=
- =?utf-8?B?dnFpWlFkTUJ0ZWN5VlUwOWttMzhtN2RVVU00UHdJRFF4VnNIL21aVzNacTY5?=
- =?utf-8?B?NXNvN0t2Y2xUYmVvMS9yYkU2UDZaTTZUNlNoZStzMUl2SDA1TjN0VEIxS0Y2?=
- =?utf-8?B?YVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95a27486-f69d-4148-b419-08db3b600322
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4886.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2023 14:12:56.0950
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S4UPHYlnLNKYs3xVyXxLyj59+yi2Uutx8koJYmiP5ZUiSrKAiQ0CZijRJ0YBO5kwVyh+eak/wLWA5GtGEl6j+3Yw/YscBeWnzZljel74txk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4571
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        SUSPICIOUS_RECIPS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 7d8214bba44c1aa6a75921a09a691945d26a8d43  Add linux-next specific files for 20230412
 
+Error/Warning reports:
 
-On 4/12/2023 1:22 AM, Jiefeng Li wrote:
-> `mt7921u_dma_init` can only return zero or negative number according to its
-> definition. When it returns non-zero number, there exists an error and this
-> function should handle this error rather than return directly.
-> 
-> Fixes: 0d2afe09fad5 ("mt76: mt7921: add mt7921u driver")
-> Signed-off-by: Jiefeng Li <jiefeng_li@hust.edu.cn>
-> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304061839.hi01VPl1-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304102354.Q4VOXGTE-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304112044.8NzKpvxM-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304121606.ltRFyuij-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202304121702.bav49HFN-lkp@intel.com
 
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Error/Warning: (recently discovered and may have been fixed)
 
-> ---
-> The issue is discovered by static analysis, and the patch is not tested yet.
-> ---
->   drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> index 8fef09ed29c9..70c9bbdbf60e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> @@ -272,7 +272,7 @@ static int mt7921u_probe(struct usb_interface *usb_intf,
->   
->   	ret = mt7921u_dma_init(dev, false);
->   	if (ret)
-> -		return ret;
-> +		goto error;
->   
->   	hw = mt76_hw(dev);
->   	/* check hw sg support in order to enable AMSDU */
+Error: failed to load BTF from vmlinux: No data available
+arch/arm/vfp/entry.S:27: undefined reference to `vfp_entry'
+arch/csky/abiv2/cacheflush.c:15:9: error: implicit declaration of function 'flush_tlb_page'; did you mean 'flush_anon_page'? [-Werror=implicit-function-declaration]
+diff: tools/arch/s390/include/uapi/asm/ptrace.h: No such file or directory
+drivers/bluetooth/hci_qca.c:1894:37: warning: unused variable 'qca_soc_data_wcn6855' [-Wunused-const-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/i915/gt/uc/guc_capture_fwif.h:62: warning: wrong kernel-doc identifier on line:
+drivers/gpu/drm/i915/i915_pmu.h:41: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+drivers/gpu/drm/i915/i915_request.h:176: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+drivers/gpu/drm/i915/i915_vma.h:145: warning: expecting prototype for i915_vma_offset(). Prototype was for i915_vma_size() instead
+drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+drivers/tty/serial/samsung_tty.c:2034:10: error: implicit declaration of function 'of_device_get_match_data' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+drivers/tty/serial/samsung_tty.c:2034:10: warning: incompatible integer to pointer conversion returning 'int' from a function with result type 'const struct s3c24xx_serial_drv_data *' [-Wint-conversion]
+drivers/tty/serial/samsung_tty.c:2034:24: error: implicit declaration of function 'of_device_get_match_data'; did you mean 'device_get_match_data'? [-Werror=implicit-function-declaration]
+drivers/tty/serial/samsung_tty.c:2034:24: warning: returning 'int' from a function with return type 'const struct s3c24xx_serial_drv_data *' makes pointer from integer without a cast [-Wint-conversion]
+make[3]: *** No rule to make target 'zip.h', needed by '/tools/build/libbpf/sharedobjs/libbpf.o'.
+make[3]: *** No rule to make target 'zip.h', needed by '/tools/build/libbpf/staticobjs/libbpf.o'.
+make[4]: *** No rule to make target 'zip.h', needed by 'kselftest/net/tools/build/libbpf/sharedobjs/libbpf.o'.
+make[4]: *** No rule to make target 'zip.h', needed by 'kselftest/net/tools/build/libbpf/staticobjs/libbpf.o'.
+membarrier_test_impl.h:27:30: error: 'MEMBARRIER_CMD_GET_REGISTRATIONS' undeclared (first use in this function)
+mount_setattr_test.c:107:8: error: redefinition of 'struct mount_attr'
+thermal_nl.h:6:10: fatal error: netlink/netlink.h: No such file or directory
+thermometer.c:21:10: fatal error: libconfig.h: No such file or directory
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
+drivers/crypto/intel/qat/qat_common/adf_cfg.c:262 adf_cfg_add_key_value_param() warn: argument 4 to %lx specifier is cast from pointer
+drivers/hwmon/pmbus/pmbus_core.c:3164:7-32: WARNING: Threaded IRQ with no primary handler requested without IRQF_ONESHOT (unless it is nested IRQ)
+drivers/soc/fsl/qe/tsa.c:140:26: sparse: sparse: incorrect type in argument 2 (different address spaces)
+drivers/soc/fsl/qe/tsa.c:150:27: sparse: sparse: incorrect type in argument 1 (different address spaces)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- alpha-randconfig-c023-20230409
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- alpha-randconfig-r016-20230409
+|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data
+|   `-- drivers-tty-serial-samsung_tty.c:warning:returning-int-from-a-function-with-return-type-const-struct-s3c24xx_serial_drv_data-makes-pointer-from-integer-without-a-cast
+|-- alpha-randconfig-r023-20230410
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- arm-keystone_defconfig
+|   `-- arch-arm-vfp-entry.S:undefined-reference-to-vfp_entry
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- csky-defconfig
+|   `-- arch-csky-abiv2-cacheflush.c:error:implicit-declaration-of-function-flush_tlb_page
+|-- csky-randconfig-r013-20230409
+|   `-- arch-csky-abiv2-cacheflush.c:error:implicit-declaration-of-function-flush_tlb_page
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- i386-randconfig-m021
+|   |-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
+|   `-- drivers-crypto-intel-qat-qat_common-adf_cfg.c-adf_cfg_add_key_value_param()-warn:argument-to-lx-specifier-is-cast-from-pointer
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- ia64-buildonly-randconfig-r005-20230409
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- ia64-randconfig-c44-20230409
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- ia64-randconfig-m031-20230410
+|   `-- drivers-crypto-intel-qat-qat_common-adf_cfg.c-adf_cfg_add_key_value_param()-warn:argument-to-lx-specifier-is-cast-from-pointer
+|-- ia64-randconfig-r002-20230410
+|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data
+|   `-- drivers-tty-serial-samsung_tty.c:warning:returning-int-from-a-function-with-return-type-const-struct-s3c24xx_serial_drv_data-makes-pointer-from-integer-without-a-cast
+|-- loongarch-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-defconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- loongarch-randconfig-r032-20230409
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- mips-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- parisc-randconfig-r003-20230412
+|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data
+|   `-- drivers-tty-serial-samsung_tty.c:warning:returning-int-from-a-function-with-return-type-const-struct-s3c24xx_serial_drv_data-makes-pointer-from-integer-without-a-cast
+|-- parisc-randconfig-r034-20230410
+|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data
+|   `-- drivers-tty-serial-samsung_tty.c:warning:returning-int-from-a-function-with-return-type-const-struct-s3c24xx_serial_drv_data-makes-pointer-from-integer-without-a-cast
+|-- parisc-randconfig-s053-20230409
+|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data
+|   `-- drivers-tty-serial-samsung_tty.c:warning:returning-int-from-a-function-with-return-type-const-struct-s3c24xx_serial_drv_data-makes-pointer-from-integer-without-a-cast
+|-- powerpc-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- powerpc-randconfig-s033-20230411
+|   |-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-const-noderef-__iomem-addr-got-void-noderef-__iomem-addr
+|   `-- drivers-soc-fsl-qe-tsa.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-noderef-__iomem-addr-got-void-noderef-__iomem-addr
+|-- riscv-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- riscv-randconfig-r042-20230410
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- s390-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- sparc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
+|-- sparc-randconfig-c041-20230409
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- x86_64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
+|-- x86_64-randconfig-c002
+|   `-- drivers-hwmon-pmbus-pmbus_core.c:WARNING:Threaded-IRQ-with-no-primary-handler-requested-without-IRQF_ONESHOT-(unless-it-is-nested-IRQ)
+`-- x86_64-randconfig-k001-20230410
+    |-- Error:failed-to-load-BTF-from-vmlinux:No-data-available
+    |-- diff:tools-arch-s390-include-uapi-asm-ptrace.h:No-such-file-or-directory
+    |-- make:No-rule-to-make-target-zip.h-needed-by-kselftest-net-tools-build-libbpf-sharedobjs-libbpf.o-.
+    |-- make:No-rule-to-make-target-zip.h-needed-by-kselftest-net-tools-build-libbpf-staticobjs-libbpf.o-.
+    |-- make:No-rule-to-make-target-zip.h-needed-by-tools-build-libbpf-sharedobjs-libbpf.o-.
+    |-- make:No-rule-to-make-target-zip.h-needed-by-tools-build-libbpf-staticobjs-libbpf.o-.
+    |-- membarrier_test_impl.h:error:MEMBARRIER_CMD_GET_REGISTRATIONS-undeclared-(first-use-in-this-function)
+    |-- mount_setattr_test.c:error:redefinition-of-struct-mount_attr
+    |-- thermal_nl.h:fatal-error:netlink-netlink.h:No-such-file-or-directory
+    `-- thermometer.c:fatal-error:libconfig.h:No-such-file-or-directory
+clang_recent_errors
+|-- hexagon-randconfig-r005-20230410
+|   `-- drivers-bluetooth-hci_qca.c:warning:unused-variable-qca_soc_data_wcn6855
+|-- i386-buildonly-randconfig-r004-20230410
+|   |-- drivers-tty-serial-samsung_tty.c:error:implicit-declaration-of-function-of_device_get_match_data-is-invalid-in-C99-Werror-Wimplicit-function-declaration
+|   `-- drivers-tty-serial-samsung_tty.c:warning:incompatible-integer-to-pointer-conversion-returning-int-from-a-function-with-result-type-const-struct-s3c24xx_serial_drv_data
+|-- x86_64-randconfig-a003-20230410
+|   `-- drivers-bluetooth-hci_qca.c:warning:unused-variable-qca_soc_data_wcn6855
+|-- x86_64-randconfig-a005-20230410
+|   |-- drivers-gpu-drm-i915-gt-uc-guc_capture_fwif.h:warning:wrong-kernel-doc-identifier-on-line:
+|   |-- drivers-gpu-drm-i915-i915_pmu.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   |-- drivers-gpu-drm-i915-i915_request.h:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+|   `-- drivers-gpu-drm-i915-i915_vma.h:warning:expecting-prototype-for-i915_vma_offset().-Prototype-was-for-i915_vma_size()-instead
+`-- x86_64-randconfig-r033-20230410
+    `-- drivers-bluetooth-hci_qca.c:warning:unused-variable-qca_soc_data_wcn6855
+
+elapsed time: 722m
+
+configs tested: 145
+configs skipped: 9
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r002-20230409   gcc  
+alpha                randconfig-r016-20230409   gcc  
+alpha                randconfig-r023-20230410   gcc  
+alpha                randconfig-r026-20230410   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r005-20230411   gcc  
+arc                  randconfig-r005-20230412   gcc  
+arc                  randconfig-r033-20230409   gcc  
+arc                  randconfig-r036-20230410   gcc  
+arc                  randconfig-r043-20230409   gcc  
+arc                  randconfig-r043-20230410   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm          buildonly-randconfig-r001-20230409   clang
+arm          buildonly-randconfig-r005-20230410   clang
+arm                                 defconfig   gcc  
+arm                  randconfig-r012-20230409   clang
+arm                  randconfig-r046-20230409   clang
+arm                  randconfig-r046-20230410   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r001-20230410   clang
+arm64                randconfig-r004-20230411   gcc  
+arm64                randconfig-r016-20230410   gcc  
+arm64                randconfig-r022-20230410   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r013-20230409   gcc  
+hexagon      buildonly-randconfig-r003-20230409   clang
+hexagon              randconfig-r005-20230410   clang
+hexagon              randconfig-r011-20230409   clang
+hexagon              randconfig-r041-20230409   clang
+hexagon              randconfig-r041-20230410   clang
+hexagon              randconfig-r045-20230409   clang
+hexagon              randconfig-r045-20230410   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r003-20230410   clang
+i386         buildonly-randconfig-r004-20230410   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230410   clang
+i386                 randconfig-a002-20230410   clang
+i386                 randconfig-a003-20230410   clang
+i386                 randconfig-a004-20230410   clang
+i386                 randconfig-a005-20230410   clang
+i386                 randconfig-a006-20230410   clang
+i386                 randconfig-a011-20230410   gcc  
+i386                 randconfig-a012-20230410   gcc  
+i386                 randconfig-a013-20230410   gcc  
+i386                 randconfig-a014-20230410   gcc  
+i386                 randconfig-a015-20230410   gcc  
+i386                 randconfig-a016-20230410   gcc  
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r005-20230409   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r002-20230410   gcc  
+ia64                 randconfig-r022-20230409   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r014-20230410   gcc  
+loongarch            randconfig-r024-20230409   gcc  
+loongarch            randconfig-r032-20230409   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r001-20230412   gcc  
+m68k                 randconfig-r004-20230412   gcc  
+m68k                 randconfig-r031-20230410   gcc  
+m68k                 randconfig-r035-20230409   gcc  
+m68k                 randconfig-r035-20230410   gcc  
+microblaze           randconfig-r001-20230411   gcc  
+microblaze           randconfig-r002-20230412   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r011-20230410   clang
+mips                 randconfig-r021-20230409   clang
+mips                 randconfig-r032-20230410   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r002-20230411   gcc  
+nios2                randconfig-r003-20230411   gcc  
+nios2                randconfig-r014-20230409   gcc  
+openrisc     buildonly-randconfig-r004-20230409   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r003-20230412   gcc  
+parisc               randconfig-r006-20230412   gcc  
+parisc               randconfig-r015-20230409   gcc  
+parisc               randconfig-r023-20230409   gcc  
+parisc               randconfig-r034-20230410   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r002-20230410   gcc  
+powerpc      buildonly-randconfig-r006-20230409   gcc  
+powerpc              randconfig-r006-20230409   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r001-20230409   clang
+riscv                randconfig-r003-20230410   clang
+riscv                randconfig-r004-20230409   clang
+riscv                randconfig-r006-20230411   gcc  
+riscv                randconfig-r024-20230410   gcc  
+riscv                randconfig-r042-20230409   gcc  
+riscv                randconfig-r042-20230410   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390         buildonly-randconfig-r002-20230409   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r026-20230409   gcc  
+s390                 randconfig-r044-20230409   gcc  
+s390                 randconfig-r044-20230410   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r004-20230410   gcc  
+sh                   randconfig-r012-20230410   gcc  
+sh                   randconfig-r013-20230410   gcc  
+sh                   randconfig-r025-20230409   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r031-20230409   gcc  
+sparc64              randconfig-r025-20230410   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230410   clang
+x86_64               randconfig-a002-20230410   clang
+x86_64               randconfig-a003-20230410   clang
+x86_64               randconfig-a004-20230410   clang
+x86_64               randconfig-a005-20230410   clang
+x86_64               randconfig-a006-20230410   clang
+x86_64               randconfig-a011-20230410   gcc  
+x86_64               randconfig-a012-20230410   gcc  
+x86_64               randconfig-a013-20230410   gcc  
+x86_64               randconfig-a014-20230410   gcc  
+x86_64               randconfig-a015-20230410   gcc  
+x86_64               randconfig-a016-20230410   gcc  
+x86_64               randconfig-r006-20230410   clang
+x86_64               randconfig-r021-20230410   gcc  
+x86_64               randconfig-r033-20230410   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r005-20230409   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
