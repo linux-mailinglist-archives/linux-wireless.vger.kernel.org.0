@@ -2,107 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1D16DEE18
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 10:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA64A6DF020
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 11:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229890AbjDLIkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 04:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46168 "EHLO
+        id S229491AbjDLJTK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 05:19:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230431AbjDLIjm (ORCPT
+        with ESMTP id S229477AbjDLJTJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 04:39:42 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C910658C
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 01:38:56 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-50489d1af35so2848932a12.3
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 01:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681288656;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JF3WPk1WtXSLnyqiPhKTVud46FRRu6czewRsuPqGnnA=;
-        b=ZSxAOBx1oV71IYBBZolreG5VEmcG3zApfwaekJpqpB/rFLbe14d/EZyc2f4gM4gjn5
-         66hPH7RQanNvJo9bHbC/g9qQdo2fj6N8LMo+laioykVoGdf6nakDppwWWF5XN95B4gNu
-         mz7gAQmfYPlgtCJuAmpA6itnaneNbtkzbEtZn+KurKTQeIBCJ5D2XK3ktlMkjPenisk4
-         f6YWA1U9rhY+MhgRwi4n6iD8hh69sZ+1r0UiK2U4fDB4MGNiczsXMd5yzk/UXoxZGoSo
-         feNNIQORsALodcix5fQ0VXH+6UpVXSw03ZUUGzaVX92BGy9zfcvViAqF6SoM6+Viqi+x
-         ugIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681288656;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JF3WPk1WtXSLnyqiPhKTVud46FRRu6czewRsuPqGnnA=;
-        b=thqVClpFYI09KurGD4C4ieVxuu7TO92SkfXcE5xioiTK6oTP3jSOSCKzTqCdygsQfH
-         x0AuekOUOg0BZf+6XkWkkp1BBCGrPFqCJm22ox30dU063+avySO7o8dBeEezeA57yUdN
-         Ohsfz3To2ja16ncBzNcFBJytaOr/aU0xKhvLN8lxjYCOxkezxv0NDwsrh+r+tcpYu9dJ
-         Zr6ZNh7EM4tThmZBaMpC3LnvHk6vVh+dRpYDSkc7SiFBg6HbLfFqrF7l57o2SxT9FLGH
-         PvDyOle/FjqaaPTmp8amkYwOP9vvrwSp5rGjaNL5CQDedhC8H8SKJR4wCJ3rtrLWRmOh
-         q5ew==
-X-Gm-Message-State: AAQBX9eBhIChxyjKQ2eZWmEXLHyyWfVf1RHo5tsfUCHoD4Oc+ZZq1Caw
-        oGkNxyOqhHkpSsdLCl8Gx400KQ==
-X-Google-Smtp-Source: AKy350aBwVs8SnHcaM/3pKKf00g7XCMEHYzXX/vNSI56mW4MmK0vC1Ick41N2B7PMC1esUn6k77bJQ==
-X-Received: by 2002:aa7:ca59:0:b0:505:879:b54f with SMTP id j25-20020aa7ca59000000b005050879b54fmr279118edt.37.1681288656056;
-        Wed, 12 Apr 2023 01:37:36 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:8fa0:9989:3f72:b14f? ([2a02:810d:15c0:828:8fa0:9989:3f72:b14f])
-        by smtp.gmail.com with ESMTPSA id co2-20020a0564020c0200b005049297c5d4sm3807023edb.56.2023.04.12.01.37.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Apr 2023 01:37:35 -0700 (PDT)
-Message-ID: <4e5d0efb-581e-1b2a-6173-75e5f8ba6588@linaro.org>
-Date:   Wed, 12 Apr 2023 10:37:34 +0200
+        Wed, 12 Apr 2023 05:19:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB99768F
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 02:19:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAEC060F78
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 09:19:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C112C4339B;
+        Wed, 12 Apr 2023 09:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681291147;
+        bh=bzUvRwr59wVHRCDw1b7h2SYW2FjX9c1LwaIMpXjxMC0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=gR3sR1H8RAfDkkf3k9GB1vF9MrG4JOn8jsLuLs+DXzFSTyURE39ukj8p13W5O6IAW
+         gb73EdhiBQ/2dqB0XQ0Cc3iSHdhcwX7nOJ/619pzVD9u4XlJDid4L3LLCIuY5hcsie
+         70eRKsuDXqhuN9iStOK3Dpg//AIUTyMTo1idEYwGi/z+34dS3WL9/NLR9pkHTntJBr
+         66m8xpAkB9RaluqcO9fOLby1Zj774yqnrDwGI2BmvIM/NzhB8V8CtrijCnLWGIyGqv
+         h6INV4zfsVPl0SgQ0o5O8Xm4jpvP9Zan2FahSkfyqhZOx9uUp8jXOR9QJxAkGSRyQT
+         7wPpzcHGViZ9w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Subject: Re: [PATCH v2 06/11] wifi: ath12k: prepare EHT peer assoc parameters
+References: <20230403225146.14139-1-quic_alokad@quicinc.com>
+        <20230403225146.14139-7-quic_alokad@quicinc.com>
+        <b3282c7d-07c5-8657-fca2-c286f82cb235@quicinc.com>
+Date:   Wed, 12 Apr 2023 12:19:03 +0300
+In-Reply-To: <b3282c7d-07c5-8657-fca2-c286f82cb235@quicinc.com> (Aloka Dixit's
+        message of "Mon, 10 Apr 2023 09:22:53 -0700")
+Message-ID: <87r0sp8nlk.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v4] dt-bindings: net: Convert ATH10K to YAML
-Content-Language: en-US
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230406-topic-ath10k_bindings-v4-1-9f67a6bb0d56@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230406-topic-ath10k_bindings-v4-1-9f67a6bb0d56@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/04/2023 20:19, Konrad Dybcio wrote:
-> Convert the ATH10K bindings to YAML.
-> 
-> Dropped properties that are absent at the current state of mainline:
-> - qcom,msi_addr
-> - qcom,msi_base
-> 
-> qcom,coexist-support and qcom,coexist-gpio-pin do very little and should
-> be reconsidered on the driver side, especially the latter one.
-> 
-> Somewhat based on the ath11k bindings.
-> 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Aloka Dixit <quic_alokad@quicinc.com> writes:
 
+> On 4/3/2023 3:51 PM, Aloka Dixit wrote:
+>
+>> Add new parameters and prepare the association data for an EHT peer.
+>> MCS data uses the format described in IEEE P802.11be/D2.0, May 2022,
+>> 9.4.2.313.4, convert it into the format expected by the firmware.
+>>
+>> +	case IEEE80211_STA_RX_BW_320:
+>> +		bw = &eht_cap->eht_mcs_nss_supp.bw._320;
+>> +		ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
+>> +				       bw->rx_tx_mcs9_max_nss,
+>> +				       bw->rx_tx_mcs11_max_nss,
+>> +				       bw->rx_tx_mcs13_max_nss,
+>> +				       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_320],
+>> +				       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_320]);
+>> +		arg->peer_eht_mcs_count++;
+>> +		fallthrough;
+>> +
+>> +	case IEEE80211_STA_RX_BW_160:
+>> +		bw = &eht_cap->eht_mcs_nss_supp.bw._160;
+>> +		ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
+>> +				       bw->rx_tx_mcs9_max_nss,
+>> +				       bw->rx_tx_mcs11_max_nss,
+>> +				       bw->rx_tx_mcs13_max_nss,
+>> +				       &rx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_160],
+>> +				       &tx_mcs[WMI_EHTCAP_TXRX_MCS_NSS_IDX_160]);
+>> +		fallthrough;
+>> +
+>
+> 'arg->peer_eht_mcs_count++' is missing for 160 MHz case.
+> Should I send a follow-up now for the series or wait for comments on
+> the remaining part for some time.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Sending a new version sounds like the best.
 
-Best regards,
-Krzysztof
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
