@@ -2,96 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4EA46DF17E
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 12:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 246E76DF20C
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Apr 2023 12:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230115AbjDLKDm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 06:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49594 "EHLO
+        id S229738AbjDLKeI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 06:34:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjDLKDl (ORCPT
+        with ESMTP id S229507AbjDLKeH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 06:03:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40F576AE;
-        Wed, 12 Apr 2023 03:03:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5723D62AF6;
-        Wed, 12 Apr 2023 10:03:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABB7C4339E;
-        Wed, 12 Apr 2023 10:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681293819;
-        bh=tEpNk+OfBlpzjfw7+X3xFjLc7iWcYLC+okDPMAZ5S8E=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=j4vi955Im0u3442ZSdiXtcvq3q4XLPHy5S8sO5xupwMzU9LBAJb2K7uv25yw8DEJY
-         n6pPjs4Zq1uW/F/0o4SaHjBzLO66/C9dxcYVm7cmBNPUbKFLJZZFBnaRwR7w0O/XSC
-         Ro4U0XKjCqi3Wqa4/8d0vFMOGC77bFWw50msOjDqrIvt2cel8xAbP4oPaz21rpbcjS
-         mOFVeg+CcbJt5MvIbAHnmXgd/2y6p0GgJRbCdcej0FcWWTY0MiHtD7DFtz9e04z3Ry
-         cmtXeDmRgVkhI/tRtOEXNYy+KW7boYNAPjchqm6FeiZrpzY8WI1uL+t5hRQq+CnrDR
-         Q8erlwVwUQvfA==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 12 Apr 2023 06:34:07 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0985C2D48;
+        Wed, 12 Apr 2023 03:34:06 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pmXnc-0001gq-N8; Wed, 12 Apr 2023 12:34:00 +0200
+Message-ID: <c63dab2b-906d-5383-39f9-b02e7d7d2659@leemhuis.info>
+Date:   Wed, 12 Apr 2023 12:34:00 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: [regression] Bug 217310 - mt7921e swiotlb buffer is full
+Cc:     Petr Tesarik <petr.tesarik.ext@huawei.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+To:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] wifi: ath11k: Remove redundant pci_clear_master
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230323112613.7550-1-cai.huoqing@linux.dev>
-References: <20230323112613.7550-1-cai.huoqing@linux.dev>
-To:     Cai Huoqing <cai.huoqing@linux.dev>
-Cc:     cai.huoqing@linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168129381469.14673.15764454080204541798.kvalo@kernel.org>
-Date:   Wed, 12 Apr 2023 10:03:36 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1681295646;7d9805e5;
+X-HE-SMSGID: 1pmXnc-0001gq-N8
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Cai Huoqing <cai.huoqing@linux.dev> wrote:
+Hi, Thorsten here, the Linux kernel's regression tracker.
 
-> Remove pci_clear_master to simplify the code,
-> the bus-mastering is also cleared in do_pci_disable_device,
-> like this:
-> ./drivers/pci/pci.c:2197
-> static void do_pci_disable_device(struct pci_dev *dev)
-> {
->         u16 pci_command;
+I noticed a regression report in bugzilla.kernel.org. As many (most?)
+kernel developers don't keep an eye on it, I decided to forward it by mail.
+
+Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
+not CCed them in mails like this.
+
+Petr, I CCed you because you apparently dealt with another case with a
+similar error message.
+
+Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217310 :
+
+>  Mike Lothian 2023-04-08 12:03:01 UTC
 > 
->         pci_read_config_word(dev, PCI_COMMAND, &pci_command);
->         if (pci_command & PCI_COMMAND_MASTER) {
->                 pci_command &= ~PCI_COMMAND_MASTER;
->                 pci_write_config_word(dev, PCI_COMMAND, pci_command);
->         }
+> Created attachment 304097 [details]
+> dmesg
 > 
->         pcibios_disable_device(dev);
-> }.
-> And dev->is_busmaster is set to 0 in pci_disable_device.
+> Since the start of the 6.3 kernel cycle I've been having issues with my
+> wifi when it's been going at high speeds, which usually requires me
+> having to disable and re enable wifi to get it going again
 > 
-> Signed-off-by: Cai Huoqing <cai.huoqing@linux.dev>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> When this happens I see this in the logs:
+> 
+> mt7921e 0000:05:00.0: swiotlb buffer is full (sz: 4096 bytes), total
+> 32768 (slots), used 32160 (slots)
+> 
+> I'm running the latest firmware from
+> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+> 
+> And I don't see this on 6.2
+> 
+> I've attached my dmesg and the device is listed as:
+> 
+> 05:00.0 Network controller [0280]: MEDIATEK Corp. MT7921 802.11ax PCI
+> Express Wireless Network Adapter [14c3:7961]
 
-3 patches applied to ath-next branch of ath.git, thanks.
+And later:
 
-f812e2a9f85d wifi: ath11k: Remove redundant pci_clear_master
-76008fc13b09 wifi: ath10k: Remove redundant pci_clear_master
-b9235aef8492 wifi: ath12k: Remove redundant pci_clear_master
+> I managed to work around it by setting swiotlb=131072
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230323112613.7550-1-cai.huoqing@linux.dev/
+See the ticket for more details.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
+[TLDR for the rest of this mail: I'm adding this report to the list of
+tracked Linux kernel regressions; the text you find below is based on a
+few templates paragraphs you might have encountered already in similar
+form.]
+
+BTW, let me use this mail to also add the report to the list of tracked
+regressions to ensure it's doesn't fall through the cracks:
+
+#regzbot introduced: v6.2..v6.3-rc6
+https://bugzilla.kernel.org/show_bug.cgi?id=217310
+#regzbot title: dma-mapping: / net: wireless: mt7921e swiotlb buffer is full
+#regzbot ignore-activity
+
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
+
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (e.g. the buzgzilla ticket and maybe this mail as well, if
+this thread sees some discussion). See page linked in footer for details.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+[1] because bugzilla.kernel.org tells users upon registration their
+"email address will never be displayed to logged out users"
