@@ -2,185 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 294756E0739
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 08:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F396E07FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 09:45:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjDMGyp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Apr 2023 02:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54172 "EHLO
+        id S230010AbjDMHpP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Apr 2023 03:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjDMGyn (ORCPT
+        with ESMTP id S229938AbjDMHpO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Apr 2023 02:54:43 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E75083F3
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 23:54:40 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-54f6fc7943eso146912417b3.3
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 23:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681368880; x=1683960880;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nc4lL7JxaxGf+XYCkFM159Jes+f3X5bXuBPCU38sK1A=;
-        b=x2EEYKNwns2Pbb+ucqgKdqZDtnOo6wufbG6wB0BNrEeumCTEuZUHPvnqh3lVB8O3Ey
-         mTULQ6o6izzJFtYG/CmIBv5nYiEKgr2DyZDnldRzaZh7eVaIWvpgL4Ay6F47ov6oirTX
-         AW1qSljM7dA9NwrfrCwhxK/hEgkFIQpwoAhzof9Rf0skU2RkGAAvOJCelN6C/IRrqQMa
-         +2zdkUsfddnMir10WHagqmm85rqs9dZYuaKpSJPFW1z0OIkZF6kGUvawuKLRTmrR4c9F
-         JnIvdJ8ZZ2tosOjJBCEQdb0d5hu0C+9eJS7hrK3n1bafevOABiyteWNqEmflKeY8hjOO
-         ++uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681368880; x=1683960880;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nc4lL7JxaxGf+XYCkFM159Jes+f3X5bXuBPCU38sK1A=;
-        b=h3XAOjCw3E+Bb/mJG8ycmM78C+jXU4aJvfACBdGou7fM0sgTbMHwHl6hUHbHUk5Tm+
-         M4poDrS+vbSuavaqnC/XuedwZqSgu/FjelqAzm6U3rel7acnvv/OKrggF7AfKSu90tw0
-         NL1pId+5QOZl4Y62Wh3c8AFX02xHv49VkLox0wv5avbO+X+EAlTYaDGKM0fpootRGLdE
-         Jherub2uLSZ88O8TgIf7vu4ieMCRCmMbZxduZ+1/Vxt6s/Tgg86reAN4ZBkVme5oOjjg
-         +7VvsmBYtY1ibFYYz0AcOC6yCTWBhuE8uPvacdjJ4/e7GnPK/ApbhzkicpIf4tIafED6
-         vUDQ==
-X-Gm-Message-State: AAQBX9euzTHMuz7ShbEqAi4tGH/RYG5oo9/d1T6RUa4tpDadUmFELTJ3
-        86nnlwg8DT32JL4ox799RZAWoO9qScGOAkvPYMw9dw==
-X-Google-Smtp-Source: AKy350ZbBKjG6fi9EeOO5NV/GOSg+h3W9R10VGi1N1iYeqzIYEjsf1O8fdUlo8BjVvNdE8zxrMdbrPdWIcFQ3gf2lg0=
-X-Received: by 2002:a81:4307:0:b0:545:f7cc:f30 with SMTP id
- q7-20020a814307000000b00545f7cc0f30mr755616ywa.0.1681368879779; Wed, 12 Apr
- 2023 23:54:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230407013118.466441-1-marex@denx.de>
-In-Reply-To: <20230407013118.466441-1-marex@denx.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 13 Apr 2023 08:54:03 +0200
-Message-ID: <CAPDyKFqMcNxUtJCtP09_APYX2Fefeqzs9-CmsSNVdzN=vPyChQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: add Cypress 43439 SDIO ids
-To:     Marek Vasut <marex@denx.de>
+        Thu, 13 Apr 2023 03:45:14 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F019683E5
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 00:45:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681371907; x=1712907907;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wrmz82dx/DsOCf6rn5CFoGOUKR+v/6IqU+u1+4VOvg0=;
+  b=VpG2N5ALb1mVuCiQYMbCUicM04xLGGZmo8Sy+8L2oJFo7hSKNXINDSMg
+   WlDgKgKNxvUKdwwJOBu4BhN6GSJKusy2kFZakaUTVXgk8iXQwotwuxfrV
+   LuIHGpy+BbXQyVjBqiQgmMVMbfkpliUVVLJAh9F1ftBvF/4iREJXj8bWB
+   vkZne5KXNNXcDZjfwC/yU7c5NvqTU7g19S62y4gygnAZENqMYnmr9kypm
+   nxlEzaSKjuHoTEav3IWMqztyk+Oq51k8NkZMeh0oaweeFKQhAn1BhtYS/
+   U4bwHqQuJ9eIVyCX5ZCXss7u09IIXkzJVAgztsNVH0G3Qc5ZT6nYBhq8v
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="323735906"
+X-IronPort-AV: E=Sophos;i="5.98,341,1673942400"; 
+   d="scan'208";a="323735906"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 00:45:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="833034648"
+X-IronPort-AV: E=Sophos;i="5.98,341,1673942400"; 
+   d="scan'208";a="833034648"
+Received: from apeled2-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.251.184.75])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 00:45:06 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Danny van Heumen <danny@dannyvanheumen.nl>,
-        Eric Dumazet <edumazet@google.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        SHA-cyfmac-dev-list@infineon.com,
-        brcm80211-dev-list.pdl@broadcom.com, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/15] wifi: iwlwifi: updates intended for v6.4 2023-04-13
+Date:   Thu, 13 Apr 2023 10:44:00 +0300
+Message-Id: <20230413074415.1054160-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 7 Apr 2023 at 03:31, Marek Vasut <marex@denx.de> wrote:
->
-> Add SDIO ids for use with the muRata 1YN (Cypress CYW43439).
-> The odd thing about this is that the previous 1YN populated
-> on M.2 card for evaluation purposes had BRCM SDIO vendor ID,
-> while the chip populated on real hardware has a Cypress one.
-> The device ID also differs between the two devices. But they
-> are both 43439 otherwise, so add the IDs for both.
->
-> ```
-> /sys/.../mmc_host/mmc2/mmc2:0001 # cat vendor device
-> 0x04b4
-> 0xbd3d
-> ```
->
-> Fixes: be376df724aa3 ("wifi: brcmfmac: add 43439 SDIO ids and initialization")
-> Signed-off-by: Marek Vasut <marex@denx.de>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+Hi,
 
-Kind regards
-Uffe
+Here's the next set of iwlwifi patches for v6.4.
+It's the ususal developement, mostly cleanups and bugfixes.
 
-> ---
-> NOTE: Please drop the Fixes tag if this is considered unjustified
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Arend van Spriel <aspriel@gmail.com>
-> Cc: Danny van Heumen <danny@dannyvanheumen.nl>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Paul Cercueil <paul@crapouillou.net>
-> Cc: SHA-cyfmac-dev-list@infineon.com
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> ---
->  .../net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c    | 9 ++++++++-
->  include/linux/mmc/sdio_ids.h                             | 5 ++++-
->  2 files changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index 65d4799a56584..ff710b0b5071a 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -965,6 +965,12 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
->                 .driver_data = BRCMF_FWVENDOR_ ## fw_vend \
->         }
->
-> +#define CYW_SDIO_DEVICE(dev_id, fw_vend) \
-> +       { \
-> +               SDIO_DEVICE(SDIO_VENDOR_ID_CYPRESS, dev_id), \
-> +               .driver_data = BRCMF_FWVENDOR_ ## fw_vend \
-> +       }
-> +
->  /* devices we support, null terminated */
->  static const struct sdio_device_id brcmf_sdmmc_ids[] = {
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43143, WCC),
-> @@ -979,6 +985,7 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4335_4339, WCC),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4339, WCC),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43430, WCC),
-> +       BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43439, WCC),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4345, WCC),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43455, WCC),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4354, WCC),
-> @@ -986,9 +993,9 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4359, WCC),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_4373, CYW),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43012, CYW),
-> -       BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439, CYW),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752, CYW),
->         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_89359, CYW),
-> +       CYW_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439, CYW),
->         { /* end: all zeroes */ }
->  };
->  MODULE_DEVICE_TABLE(sdio, brcmf_sdmmc_ids);
-> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-> index 0e4ef9c5127ad..bf3c95d8eb8af 100644
-> --- a/include/linux/mmc/sdio_ids.h
-> +++ b/include/linux/mmc/sdio_ids.h
-> @@ -74,10 +74,13 @@
->  #define SDIO_DEVICE_ID_BROADCOM_43362          0xa962
->  #define SDIO_DEVICE_ID_BROADCOM_43364          0xa9a4
->  #define SDIO_DEVICE_ID_BROADCOM_43430          0xa9a6
-> -#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439  0xa9af
-> +#define SDIO_DEVICE_ID_BROADCOM_43439          0xa9af
->  #define SDIO_DEVICE_ID_BROADCOM_43455          0xa9bf
->  #define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43752  0xaae8
->
-> +#define SDIO_VENDOR_ID_CYPRESS                 0x04b4
-> +#define SDIO_DEVICE_ID_BROADCOM_CYPRESS_43439  0xbd3d
-> +
->  #define SDIO_VENDOR_ID_MARVELL                 0x02df
->  #define SDIO_DEVICE_ID_MARVELL_LIBERTAS                0x9103
->  #define SDIO_DEVICE_ID_MARVELL_8688_WLAN       0x9104
-> --
-> 2.39.2
->
+Thanks,
+Gregory
+
+
+Avraham Stern (3):
+  wifi: iwlwifi: mvm: use OFDM rate if IEEE80211_TX_CTL_NO_CCK_RATE is set
+  wifi: iwlwifi: trans: don't trigger d3 interrupt twice
+  wifi: iwlwifi: mvm: don't set CHECKSUM_COMPLETE for unsupported protocols
+
+Daniel Gabay (1):
+  wifi: iwlwifi: nvm: Update HE capabilities on 6GHz band for EHT device
+
+Golan Ben Ami (1):
+  wifi: iwlwifi: mvm: enable bz hw checksum from c step
+
+Johannes Berg (5):
+  wifi: iwlwifi: debug: fix crash in __iwl_err()
+  wifi: iwlwifi: nvm-parse: enable 160/320 MHz for AP mode
+  wifi: iwlwifi: mvm: convert TID to FW value on queue remove
+  wifi: iwlwifi: mvm: fix A-MSDU checks
+  wifi: iwlwifi: mvm: refactor TX csum mode check
+
+Miri Korenblit (1):
+  wifi: iwlwifi: add a validity check of queue_id in iwl_txq_reclaim
+
+Mukesh Sisodiya (4):
+  wifi: iwlwifi: Update configuration for SO,SOF MAC and HR RF
+  wifi: iwlwifi: mvm: move function sequence
+  wifi: iwlwifi: Update init sequence if tx diversity supported
+  wifi: iwlwifi: Update configurations for Bnj-a0 and specific rf devices
+
+ .../net/wireless/intel/iwlwifi/iwl-debug.c    |   3 +-
+ .../wireless/intel/iwlwifi/iwl-eeprom-parse.h |   5 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  21 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 224 +++++++++---------
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  13 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |   8 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  11 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |   9 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c |  10 +-
+ 13 files changed, 176 insertions(+), 144 deletions(-)
+
+-- 
+2.38.1
+
