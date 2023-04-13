@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 832A66E1453
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 20:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D32BB6E1454
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 20:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbjDMSmY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Apr 2023 14:42:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60276 "EHLO
+        id S229879AbjDMSm0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Apr 2023 14:42:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229879AbjDMSmX (ORCPT
+        with ESMTP id S229950AbjDMSmY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Apr 2023 14:42:23 -0400
+        Thu, 13 Apr 2023 14:42:24 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CB0E6599
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 11:42:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F2B0868D
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 11:42:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681411329; x=1712947329;
+  t=1681411331; x=1712947331;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qK4ZJnVXZHIf+ARZwnesw+Jpu0/SzUy2QsZlZCy9AJc=;
-  b=f3KwOmgrJ/+9Zxq+CvCMfl4aHJUjQ4EBbIKYaDvl/s887xcN37IsyKBz
-   eiUHtLqa60Vj/1QnE99f+qF58WwOL85puyPW1j8aKHGwHF+wlqVI1Pzht
-   SvAaD7ErDt2irCN9LoMxegvbT2XymtrTO31CIR0nhASOXADPJS3/T+PLV
-   1teqKGWryoTdwyOgLixiTcErwp4AQWch3PXeXhBSJ896PWw4VnxxYBwo+
-   9L8aBcFoopKVmdBRbZgVUtFhqx7jAYSWtsPt2Oy2fpVJ0o4gTHomN7iZJ
-   2zAM9c8Hocj7Abl0cyMB5Bmr1ojJOD2bi/MBODAr5lOAd2kIlEeYQzIdg
+  bh=8gP8Uz3uktpIMl41OlNfnXXvFh9bUX3sOtjgtI6mGi0=;
+  b=XQEq79jGVYi0XaogDEb76skT2tYVUJBGZE/ttRYmoPGqe39QfjUokEub
+   1tvFDBfqGaP8rSKfn/A8sfRA8d9WrxnXNuYh/coRTKgwqL4AMr9lPmMZ+
+   dq+JH1vY7rny8dCsmM/1XgpewIFAdoPaWckiTsx4qubkOVH4XlH3nWBFd
+   PD7A2kP3iZQZ+lmQuIRVfsEKBJxFd4O09v3huhYoKwSp0oIZZ5hHzfO0Z
+   1G2FAdjM948feIdSh8rFOicTfdKANKe6zfe+SFW9ZxzMa55BbEw8qjWLL
+   av/K44s9ZzyVY5FEt4Dl/nlBIhbsxpT9HalU4BHoLnG4d46Gl5L/jSqiN
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="372127091"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="372127099"
 X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
-   d="scan'208";a="372127091"
+   d="scan'208";a="372127099"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:17 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:19 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="719984424"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="719984441"
 X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
-   d="scan'208";a="719984424"
+   d="scan'208";a="719984441"
 Received: from apeled2-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.251.184.75])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:16 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:18 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Daniel Gabay <daniel.gabay@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/15] wifi: iwlwifi: pcie: fix possible NULL pointer dereference
-Date:   Thu, 13 Apr 2023 21:40:32 +0300
-Message-Id: <20230413213309.082f6e21341b.I0db21d7fa9a828d571ca886713bd0b5d0b6e1e5c@changeid>
+Subject: [PATCH 13/15] wifi: iwlwifi: yoyo: skip dump correctly on hw error
+Date:   Thu, 13 Apr 2023 21:40:33 +0300
+Message-Id: <20230413213309.df6c0663179d.I36d8487b2419c6fefa65e5514855d94327c3b1eb@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230413184035.1140892-1-gregory.greenman@intel.com>
 References: <20230413184035.1140892-1-gregory.greenman@intel.com>
@@ -64,47 +64,40 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Daniel Gabay <daniel.gabay@intel.com>
 
-It is possible that iwl_pci_probe() will fail and free the trans,
-then afterwards iwl_pci_remove() will be called and crash by trying
-to access trans which is already freed, fix it.
+When NIC is in a bad state, reading data will return 28 bits as
+0xa5a5a5a and the lowest 4 bits are not fixed value.
 
-iwlwifi 0000:01:00.0: Detected crf-id 0xa5a5a5a2, cnv-id 0xa5a5a5a2
-		      wfpm id 0xa5a5a5a2
-iwlwifi 0000:01:00.0: Can't find a correct rfid for crf id 0x5a2
-...
-BUG: kernel NULL pointer dereference, address: 0000000000000028
-...
-RIP: 0010:iwl_pci_remove+0x12/0x30 [iwlwifi]
-pci_device_remove+0x3e/0xb0
-device_release_driver_internal+0x103/0x1f0
-driver_detach+0x4c/0x90
-bus_remove_driver+0x5c/0xd0
-driver_unregister+0x31/0x50
-pci_unregister_driver+0x40/0x90
-iwl_pci_unregister_driver+0x15/0x20 [iwlwifi]
-__exit_compat+0x9/0x98 [iwlwifi]
-__x64_sys_delete_module+0x147/0x260
+Mask these bits in a few places to skip the dump correctly.
 
+Fixes: 89639e06d0f3 ("iwlwifi: yoyo: support for new DBGI_SRAM region")
 Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 70f6c59eec5d..a60329079167 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1733,6 +1733,9 @@ static void iwl_pci_remove(struct pci_dev *pdev)
- {
- 	struct iwl_trans *trans = pci_get_drvdata(pdev);
- 
-+	if (!trans)
-+		return;
-+
- 	iwl_drv_stop(trans->drv);
- 
- 	iwl_trans_pcie_free(trans);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 51cdbc13fbcd..d5b51496bd0b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1038,7 +1038,7 @@ iwl_dump_ini_prph_mac_iter(struct iwl_fw_runtime *fwrt,
+ 	range->range_data_size = reg->dev_addr.size;
+ 	for (i = 0; i < le32_to_cpu(reg->dev_addr.size); i += 4) {
+ 		prph_val = iwl_read_prph(fwrt->trans, addr + i);
+-		if (prph_val == 0x5a5a5a5a)
++		if ((prph_val & ~0xf) == 0xa5a5a5a0)
+ 			return -EBUSY;
+ 		*val++ = cpu_to_le32(prph_val);
+ 	}
+@@ -1562,7 +1562,7 @@ iwl_dump_ini_dbgi_sram_iter(struct iwl_fw_runtime *fwrt,
+ 		prph_data = iwl_read_prph_no_grab(fwrt->trans, (i % 2) ?
+ 					  DBGI_SRAM_TARGET_ACCESS_RDATA_MSB :
+ 					  DBGI_SRAM_TARGET_ACCESS_RDATA_LSB);
+-		if (prph_data == 0x5a5a5a5a) {
++		if ((prph_data & ~0xf) == 0xa5a5a5a0) {
+ 			iwl_trans_release_nic_access(fwrt->trans);
+ 			return -EBUSY;
+ 		}
 -- 
 2.38.1
 
