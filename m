@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB2736E0803
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 09:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2B386E0804
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 09:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjDMHpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Apr 2023 03:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55806 "EHLO
+        id S230029AbjDMHpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Apr 2023 03:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbjDMHpS (ORCPT
+        with ESMTP id S230020AbjDMHpV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Apr 2023 03:45:18 -0400
+        Thu, 13 Apr 2023 03:45:21 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3700F83E5
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 00:45:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78E8383FA
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 00:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681371918; x=1712907918;
+  t=1681371920; x=1712907920;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6zpBPnnSs2G+7UOkVywjZGuS4XfMmCMz4SW/GKMwnBw=;
-  b=VOXHkjaI1OmwBfcfifOMR/aUMvJp7inyV0KhDufQJaTqAYL0re7ZOQBW
-   LaiuiAm4C25vNnR1g/v7ObTwtMqEfBIejrM0GrsVifd5gtUlFrxLcrTJF
-   44lKPQPIhF0izmJ50yRN4asTeCVbuQKmGQc6r3CIwWSs5L2yEXSwDDm+M
-   upsFdbGj9cgUub3hQobnT+u4O/xH3jPb4MNEWQhJj6fuDBAeUjQ3o3Ear
-   gRUY8QR5n+VMj7THqqYy9B9H5aFYzUjvWQbj4TbGL736QOZuJtuRqFI5x
-   p1jnD4jFDVlHT0/Cf4XHRzktcLxMGtXQL5r2jsjbfJdYSP+IEAB5VZ2rm
+  bh=CC0tkvqP3FfANwa5F2bM61FP7ShQZgujKBfcFZPLW2w=;
+  b=UApsCllzQYGm5hlPK7hUOWq0P9+cOnc4A9N0ySObaI+pQi7GwJq8W8qA
+   jgEdfyE4+igQk9cbfEqRnBrYmQf1Zl6p1AmG6gS/Ac0Exu2xaeo6jcxpw
+   8XtOTkZaSxHU1Sn8mxQVXlMZgqGTmMn9/vnwB/SETsjM/24rf2ZTXNV9A
+   rP4UKnl2QTgRq/X9TbGNVqY8imB7wlKr0Yl0j1MBFrsOAAGv7CWENcaO8
+   ZEtTppWnENJ5RrzTMJahUbrO77kgYZI6FuqXII76lS4Kj7fhBo1ZlXpc/
+   i/T1r7JBsR8VRXjsORyJpP6/UkJND4pgYtlD6t5nZ2kNKn8Ie78BBAiaU
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="323735946"
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="323735955"
 X-IronPort-AV: E=Sophos;i="5.98,341,1673942400"; 
-   d="scan'208";a="323735946"
+   d="scan'208";a="323735955"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 00:45:18 -0700
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 00:45:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="833034715"
+X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="833034725"
 X-IronPort-AV: E=Sophos;i="5.98,341,1673942400"; 
-   d="scan'208";a="833034715"
+   d="scan'208";a="833034725"
 Received: from apeled2-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.251.184.75])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 00:45:16 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 00:45:18 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 04/15] wifi: iwlwifi: Update configuration for SO,SOF MAC and HR RF
-Date:   Thu, 13 Apr 2023 10:44:04 +0300
-Message-Id: <20230413102635.86f08520323f.Ieccb50de47f877b85732000a0d67b645eeeb0c2a@changeid>
+Subject: [PATCH 05/15] wifi: iwlwifi: mvm: convert TID to FW value on queue remove
+Date:   Thu, 13 Apr 2023 10:44:05 +0300
+Message-Id: <20230413102635.6651077eaec3.Ia6868c8fc1a92063609bb057b6a618726712d0bb@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230413074415.1054160-1-gregory.greenman@intel.com>
 References: <20230413074415.1054160-1-gregory.greenman@intel.com>
@@ -62,51 +62,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-update the device configuration for HR1 device for SO and SOF device.
-QuZ device configuration is corrected to support specific CRF.
+On queue remove, we should convert the TID value to the
+firmware value (8 -> 15) just like we do on queue add.
+Otherwise, the firmware will not be able to find the
+correct queue to remove.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 3 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c     | 6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 86b094683631..3112821dad78 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -995,6 +995,11 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
- 		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB, IWL_CFG_ANY,
- 		      iwl_cfg_quz_a0_hr_b0, iwl_ax203_name),
-+	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-+		      IWL_CFG_MAC_TYPE_QUZ, SILICON_B_STEP,
-+		      IWL_CFG_RF_TYPE_HR2, IWL_CFG_ANY,
-+		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB, IWL_CFG_ANY,
-+		      iwl_cfg_quz_a0_hr_b0, iwl_ax201_name),
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 78d4f186cd99..ad71233a2299 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -268,6 +268,9 @@ static int iwl_mvm_mld_disable_txq(struct iwl_mvm *mvm, int sta_id,
+ 	int queue = *queueptr;
+ 	int ret = 0;
  
- /* QnJ with Hr */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
-@@ -1090,7 +1095,7 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY,
--		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB, IWL_CFG_ANY,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB, IWL_CFG_ANY,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SO, IWL_CFG_ANY,
-@@ -1107,7 +1112,7 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
- 		      IWL_CFG_RF_TYPE_HR1, IWL_CFG_ANY,
--		      IWL_CFG_160, IWL_CFG_ANY, IWL_CFG_NO_CDB, IWL_CFG_ANY,
-+		      IWL_CFG_NO_160, IWL_CFG_ANY, IWL_CFG_NO_CDB, IWL_CFG_ANY,
- 		      iwl_cfg_so_a0_hr_a0, iwl_ax101_name),
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_MAC_TYPE_SOF, IWL_CFG_ANY,
++	if (tid == IWL_MAX_TID_COUNT)
++		tid = IWL_MGMT_TID;
++
+ 	if (mvm->sta_remove_requires_queue_remove) {
+ 		u32 cmd_id = WIDE_ID(DATA_PATH_GROUP,
+ 				     SCD_QUEUE_CONFIG_CMD);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 50e224883af0..6b2690534f59 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -356,10 +356,14 @@ static int iwl_mvm_disable_txq(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 					     SCD_QUEUE_CONFIG_CMD);
+ 			struct iwl_scd_queue_cfg_cmd remove_cmd = {
+ 				.operation = cpu_to_le32(IWL_SCD_QUEUE_REMOVE),
+-				.u.remove.tid = cpu_to_le32(tid),
+ 				.u.remove.sta_mask = cpu_to_le32(BIT(sta_id)),
+ 			};
+ 
++			if (tid == IWL_MAX_TID_COUNT)
++				tid = IWL_MGMT_TID;
++
++			remove_cmd.u.remove.tid = cpu_to_le32(tid);
++
+ 			ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0,
+ 						   sizeof(remove_cmd),
+ 						   &remove_cmd);
 -- 
 2.38.1
 
