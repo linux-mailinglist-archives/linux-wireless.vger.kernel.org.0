@@ -2,124 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDA616E0382
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 03:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B56976E0448
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 04:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjDMBJe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Apr 2023 21:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
+        id S230223AbjDMChr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Apr 2023 22:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbjDMBJd (ORCPT
+        with ESMTP id S229929AbjDMChM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Apr 2023 21:09:33 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49BC961B6
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Apr 2023 18:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681348172; x=1712884172;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DV2/u8tdTMucqyHBAnGZ0UTD4sjtYvnh6UTO4CORWhE=;
-  b=HvFj7S3Lr1Gv1sO0j4axEvR/v2WWX/k8x69o6epZV4bYBI7iENRY8NOD
-   NnGW6aVIQEtxP6+5qjyNijamqnG3nKbrBEKUvm63r3YCopn4APZ0jukw2
-   0RxTzNAx0CktYUdTY3zizuufXkk+r+iX8jm7kIFe4KwfzT0AVdTzGlTnB
-   aU5pbrtCRtB8WyPskzKZ3gYuDHGoINM2CYPRAwn2PbFrvEbINUxWrvZky
-   uNy3SgFVwVvTu/7fNkh+0PDBEkZKtmLLiW5FZsBwpjvYVXdqLpwAkOabl
-   gShdeIQhyLaDAAJfYlt6WU5hBQ0vpN3vNmqZCpWRM2UCm8pciq3xOFwXO
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="409207916"
-X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="409207916"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2023 18:09:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10678"; a="666557707"
-X-IronPort-AV: E=Sophos;i="5.98,339,1673942400"; 
-   d="scan'208";a="666557707"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 12 Apr 2023 18:09:30 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pmlSr-000YCM-0y;
-        Thu, 13 Apr 2023 01:09:29 +0000
-Date:   Thu, 13 Apr 2023 09:08:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- b2a777d68434375dc05a6fda5fec34a474bbf21f
-Message-ID: <64375617.7kA/dXo0f2REQQvy%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Wed, 12 Apr 2023 22:37:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047028A64;
+        Wed, 12 Apr 2023 19:36:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE9063A8B;
+        Thu, 13 Apr 2023 02:36:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86DBC433D2;
+        Thu, 13 Apr 2023 02:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681353390;
+        bh=hw4xNWiwp8slyxeG+kC8WnPTYTvoQBMrOBS9+9t7ozY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Pis44oNAv5R0IgtecOZldo4RyDnyM9VOGMa3C9hBGCDHrxnvnWKvPNPhFgaDiA1QS
+         ClJi3mW3g/rkB3AQB3SXE0FDNEs4CMuix8l0LgiJ+1fT/VaKuHqpEnRl11IMa8kDSf
+         K4MPHbuKg9CtejNv6oXY/0TfbZmbRixwpyFHmjUS9x2Xu/9p1vaFFrwNHy7GxTMzUX
+         PQKM3UTfomXL9CyMgqcJUHT3vMyP3CT0cfwsq3dgAURK+UtI+tgV8WgXFTidWRybJC
+         Xll9cs56BQb3UHg8gdSU9NvXDMu12HqHztDau52jmdeiGwftk0oBggaChy+nXwVbwN
+         g4iagdRZZTMaA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, ryder.lee@mediatek.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, matthias.bgg@gmail.com, deren.wu@mediatek.com,
+        sean.wang@mediatek.com, mingyen.hsieh@mediatek.com,
+        yn.chen@mediatek.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.2 11/20] wifi: mt76: mt7921: Fix use-after-free in fw features query.
+Date:   Wed, 12 Apr 2023 22:35:49 -0400
+Message-Id: <20230413023601.74410-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230413023601.74410-1-sashal@kernel.org>
+References: <20230413023601.74410-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: b2a777d68434375dc05a6fda5fec34a474bbf21f  wifi: rtw88: Add support for the SDIO based RTL8821CS chipset
+From: Ben Greear <greearb@candelatech.com>
 
-elapsed time: 723m
+[ Upstream commit 2ceb76f734e37833824b7fab6af17c999eb48d2b ]
 
-configs tested: 42
-configs skipped: 3
+Stop referencing 'features' memory after release_firmware is called.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes this crash:
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-sh                               allmodconfig   gcc  
-sparc                               defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                               rhel-8.3   gcc  
+RIP: 0010:mt7921_check_offload_capability+0x17d
+mt7921_pci_probe+0xca/0x4b0
+...
 
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Acked-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/51fd8f76494348aa9ecbf0abc471ebe47a983dfd.1679502607.git.lorenzo@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index d4b681d7e1d22..f2c6ec4d8e2ee 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -162,12 +162,12 @@ mt7921_mac_init_band(struct mt7921_dev *dev, u8 band)
+ 
+ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+ {
+-	struct mt7921_fw_features *features = NULL;
+ 	const struct mt76_connac2_fw_trailer *hdr;
+ 	struct mt7921_realease_info *rel_info;
+ 	const struct firmware *fw;
+ 	int ret, i, offset = 0;
+ 	const u8 *data, *end;
++	u8 offload_caps = 0;
+ 
+ 	ret = request_firmware(&fw, fw_wm, dev);
+ 	if (ret)
+@@ -199,7 +199,10 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+ 		data += sizeof(*rel_info);
+ 
+ 		if (rel_info->tag == MT7921_FW_TAG_FEATURE) {
++			struct mt7921_fw_features *features;
++
+ 			features = (struct mt7921_fw_features *)data;
++			offload_caps = features->data;
+ 			break;
+ 		}
+ 
+@@ -209,7 +212,7 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+ out:
+ 	release_firmware(fw);
+ 
+-	return features ? features->data : 0;
++	return offload_caps;
+ }
+ EXPORT_SYMBOL_GPL(mt7921_check_offload_capability);
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.2
+
