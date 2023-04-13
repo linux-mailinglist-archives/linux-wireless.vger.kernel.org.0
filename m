@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F2B6E144A
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 20:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC6D6E144B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Apr 2023 20:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbjDMSln (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Apr 2023 14:41:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59382 "EHLO
+        id S229853AbjDMSlo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Apr 2023 14:41:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjDMSll (ORCPT
+        with ESMTP id S229864AbjDMSlm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Apr 2023 14:41:41 -0400
+        Thu, 13 Apr 2023 14:41:42 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6606599
-        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 11:41:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFD861A9
+        for <linux-wireless@vger.kernel.org>; Thu, 13 Apr 2023 11:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681411299; x=1712947299;
+  t=1681411300; x=1712947300;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Y+WRHwzUYy8l9NwU2ZzcfEnK0VJ2A+uhegmWj6dS7mc=;
-  b=IEz7QwjUIUrZwYPAqxpPPcWP1ruavEVT1SI9rhPBRNw9CZvfe5NktSxC
-   Uv0pGyC/dXprtts0rlX11LzcCcJ7AodVjU0Hz+h6UEfK2x5RwtQW+uBc4
-   n4xii+xp4BySBEos3sQ05fYZYrbvmFvgsKeZhcJxVVzm344GCwAAxwrTh
-   z+uFC4QfabR8ttTMS5ypxj3LZ1bGTBWDqjHcG35AIJTIcEhKHQEgsTxaF
-   jEtYS02lrIGiAv2u3rQxJbJ2h/F63L2e9SpSZ6Qr3Kojxoxwdiy9oD6El
-   RvUFToNSHxKrE76+Lscm1u9k2Gux6x/QEAPTAtLKBN3dpqkS7re59B6ZN
+  bh=MIBUiNGSBFJ3sGCwOeyFlxnZMhEobi0V/e5BlxX7SL8=;
+  b=d8csK1HasAKIzdE0J3kAMIUvX7hwu5zUNB6I6A6MxXX/+eJacNE/E2xy
+   r/FaOH14dG6XFHnu19gLk1RcgKXCUSDyJqBrmHJZ+N/ohhldPsB/Nuy+a
+   6qxdxDLmoVuOqyNbT+dzOialmlef2cQADCMLBIC596hVhUaCQrNjmEI9R
+   zpymPtFwv2bQKEgzpTowvHW8czWR6cf+t5uXnkoI2XaOgRRoxlL4aUkKN
+   RpToe9UNz6EVwShikE2HmwizSXbOyn/nN2sQkGuJxUbnP0frfP4MF9soU
+   8vTrFyan10oR21bBs8HpemsFYSqjx9kSEr4r2aROK1J7WNAQSi7TEaP85
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="372127037"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="372127051"
 X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
-   d="scan'208";a="372127037"
+   d="scan'208";a="372127051"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:08 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="719984355"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="719984358"
 X-IronPort-AV: E=Sophos;i="5.99,194,1677571200"; 
-   d="scan'208";a="719984355"
+   d="scan'208";a="719984358"
 Received: from apeled2-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.251.184.75])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:07 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2023 11:41:09 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 08/15] wifi: iwlwifi: mvm: cleanup beacon_inject_active during hw restart
-Date:   Thu, 13 Apr 2023 21:40:28 +0300
-Message-Id: <20230413213309.b021bce5e162.Ia5a0a0b5d8734f63077ceaac936176a345f8d3d1@changeid>
+Subject: [PATCH 09/15] wifi: iwlwifi: mvm: add DSM_FUNC_ENABLE_6E value to debugfs
+Date:   Thu, 13 Apr 2023 21:40:29 +0300
+Message-Id: <20230413213309.c9a787710e1e.If509b2e510e22d62f3eefb2c54ff1645e331dc23@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230413184035.1140892-1-gregory.greenman@intel.com>
 References: <20230413184035.1140892-1-gregory.greenman@intel.com>
@@ -62,34 +62,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-beacon_inject_active turns true and false via debugfs when we inject a
-beacon. During the time of the beacon injection we can't configure the
-FW with a beacon cmd. If we have a hw restart during the beacon injection
-then in the recovery flow we will not be able to configure the beacon
-cmd to the FW. Fix this by cleaning up this variable after an hw restart.
+In order to simplify checking that this value was set up
+correctly, add it to debugfs.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index ac5c4799fa7e..d6f29aa2a66f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1065,6 +1065,9 @@ static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
- 	mvm->rx_ba_sessions = 0;
- 	mvm->fwrt.dump.conf = FW_DBG_INVALID;
- 	mvm->monitor_on = false;
-+#ifdef CONFIG_IWLWIFI_DEBUGFS
-+	mvm->beacon_inject_active = false;
-+#endif
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 527daaf46f96..affaed4d13fa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -340,6 +340,26 @@ static ssize_t iwl_dbgfs_sar_geo_profile_read(struct file *file,
  
- 	/* keep statistics ticking */
- 	iwl_mvm_accu_radio_stats(mvm);
+ 	return simple_read_from_buffer(user_buf, count, ppos, buf, pos);
+ }
++
++static ssize_t iwl_dbgfs_wifi_6e_enable_read(struct file *file,
++					     char __user *user_buf,
++					     size_t count, loff_t *ppos)
++{
++	struct iwl_mvm *mvm = file->private_data;
++	int err, pos;
++	char buf[12];
++	u32 value;
++
++	err = iwl_acpi_get_dsm_u32(mvm->fwrt.dev, 0,
++				   DSM_FUNC_ENABLE_6E,
++				   &iwl_guid, &value);
++	if (err)
++		return err;
++
++	pos = sprintf(buf, "0x%08x\n", value);
++
++	return simple_read_from_buffer(user_buf, count, ppos, buf, pos);
++}
+ #endif
+ 
+ static ssize_t iwl_dbgfs_stations_read(struct file *file, char __user *user_buf,
+@@ -1898,6 +1918,7 @@ MVM_DEBUGFS_READ_FILE_OPS(uapsd_noagg_bssids);
+ 
+ #ifdef CONFIG_ACPI
+ MVM_DEBUGFS_READ_FILE_OPS(sar_geo_profile);
++MVM_DEBUGFS_READ_FILE_OPS(wifi_6e_enable);
+ #endif
+ 
+ MVM_DEBUGFS_READ_WRITE_STA_FILE_OPS(amsdu_len, 16);
+@@ -2092,6 +2113,7 @@ void iwl_mvm_dbgfs_register(struct iwl_mvm *mvm)
+ 	MVM_DEBUGFS_ADD_FILE(tas_get_status, mvm->debugfs_dir, 0400);
+ #ifdef CONFIG_ACPI
+ 	MVM_DEBUGFS_ADD_FILE(sar_geo_profile, mvm->debugfs_dir, 0400);
++	MVM_DEBUGFS_ADD_FILE(wifi_6e_enable, mvm->debugfs_dir, 0400);
+ #endif
+ 	MVM_DEBUGFS_ADD_FILE(he_sniffer_params, mvm->debugfs_dir, 0600);
+ 
 -- 
 2.38.1
 
