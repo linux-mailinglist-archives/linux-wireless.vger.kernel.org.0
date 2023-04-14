@@ -2,77 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A8D56E2BB8
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 23:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F9D6E2BDD
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 23:49:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229513AbjDNVYY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 17:24:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34456 "EHLO
+        id S229910AbjDNVtY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 17:49:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230147AbjDNVYN (ORCPT
+        with ESMTP id S229513AbjDNVtX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 17:24:13 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B285D6A70;
-        Fri, 14 Apr 2023 14:24:11 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4ec81245ae1so62156e87.0;
-        Fri, 14 Apr 2023 14:24:11 -0700 (PDT)
+        Fri, 14 Apr 2023 17:49:23 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF153E7F
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 14:49:21 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-50489b16e6aso4503540a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 14:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681507449; x=1684099449;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2EiDytvabdYN54DIeMJTMZ/ViwsZyEhMHyZ0a9MJx4o=;
-        b=f4bXWIVQdBvGSTrlBLVpdjpmOpLlf/2zdUUYvWsYmqr1oM2sa0uOWGdPjMUDAYU19/
-         9FRa/pjk5Bh3ItGibXEqYg/jPR8uXoOme2v5qsFilkyI+hJuLgtAaAP9vRbRD8YPJ9TP
-         TpQqaHKYS5JmhzpF/ivSf9LXQccZOYBd1u4hUxOGwpamErBL0Cep+J/a0+Wzl1LRhsXm
-         jWv/tCmWNbN8VVWD7Zo+g7mvIMoZqGYJgXlSuc4an0E+nlmGC6kqB1X3Cnjq0IEAEZvq
-         IRQerQ4SWmll4wSfdfNPParLM5LNk7Abli51mYfUvneX2An3VzgOyeQvd75oQzfsFTTK
-         9e7g==
+        d=gmail.com; s=20221208; t=1681508960; x=1684100960;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mlxse6cpmDWdjnEk2Pei778dacAoRMWQiqDarPRFbqs=;
+        b=SVme9sit6RL9v6yl0TTl4HrRHTSxDNZ1MheEcEZ+xhak0PNW9q0rIgP+exqUpzayfZ
+         ifSi1bMsMGhmnu/XyxPeibmmBcObaI338Z91chuBMOuOiZrPE9OcCRoGt7Mzb5GWbRG5
+         awJVHV5+iNNB2Lh594nBWerdXNDuAZgS7zk/U2jJkksvAXcYf6cSojttjUFyXvGGZoTQ
+         ti37Vbos7pJT5OB0Ep5sjyR4fRkuOXvf/iY0sNuiVUvsGeQ7z3dIFicJn+4cf9sPopar
+         V6tAoYIxq45KRpvIFoHDNmYRp2yTDvmj4/aljiXta4xq6LuDxJn4LyPBmBY8Njc4rd5j
+         45Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681507449; x=1684099449;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2EiDytvabdYN54DIeMJTMZ/ViwsZyEhMHyZ0a9MJx4o=;
-        b=L33sktSagTnIN+jS7RSlkaqsQtjDUMBQ2Tl+55arRAgqWxdLlU6jhFCBy5vAgNqHwy
-         pNbvLKHZ4X0z2qc7CbKw4bUmMWPa5njqLUjKwLItstX0H0+u3lVZDbg8+fA7etXyA9Of
-         cc6zDflrl37qBvS4zZIF9cPvl9hnesTVSDG6F5oLuta0LBqTmY6aUat6CX4jssn4jXC/
-         cWKI2k376nF8/obV5XjjhpiJAJyeyCUED9pV7gsqowIlOPBe4dqPB3dYubGMytWeeVQt
-         m1Uljdkupr5PXM/+tJFt1pfA5PQCBn8pR8AiIz3kEPU8WZZT65OOaSSdagChZswEoAeS
-         EUXg==
-X-Gm-Message-State: AAQBX9fd/SXRr/o8na+YSqZ1tp8AGv8jPGpr/XFjDytM7pPkOVqKx9lz
-        +4jYsaYNh5m+NUFBrSYV+Z8=
-X-Google-Smtp-Source: AKy350ZI1VywWQcvXG6FwGA8wlIsDCE6CZLzEI5r5l8KCp0+nQsf0jYJpptE+LEBb49w6SKevH1t1w==
-X-Received: by 2002:a19:7003:0:b0:4db:3605:9bd3 with SMTP id h3-20020a197003000000b004db36059bd3mr55621lfc.17.1681507449498;
-        Fri, 14 Apr 2023 14:24:09 -0700 (PDT)
-Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
-        by smtp.gmail.com with ESMTPSA id m11-20020a056512014b00b004ecad67a925sm961263lfo.66.2023.04.14.14.24.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Apr 2023 14:24:09 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     Kalle Valo <kvalo@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Robert Marko <robimarko@gmail.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH 3/3] wifi: ath11k: support reading radio MAC from DT
-Date:   Fri, 14 Apr 2023 23:23:56 +0200
-Message-Id: <20230414212356.9326-3-zajec5@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230414212356.9326-1-zajec5@gmail.com>
-References: <20230414212356.9326-1-zajec5@gmail.com>
+        d=1e100.net; s=20221208; t=1681508960; x=1684100960;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mlxse6cpmDWdjnEk2Pei778dacAoRMWQiqDarPRFbqs=;
+        b=bLhcwZE7h/i+ohL6Tx/WPB0JNDjKu2OuzQCMKg+OqTDTK6JJAKD3MOUGa2tcd0pQw9
+         mtXVtFaonig3qUZ/KZ4YpYocNeocEJ+IEpheCeL+fAGNXPxB65zvbY6K1paccu3RMFbb
+         LndKjcnX1wKSJMorxlpd2o2vMMSSuyckC9O5dWtny+VecbsoMgF1YXM7CXPpbsuNKhYZ
+         02bVP6HBSXUzWOWJAWt3m3QUCHAR1suZu+X/xFeKBNqKlmUtM29nluvC9F3p6hWgmR19
+         aAXIDZe/4G/CuKIA9FXtzw+UGXFBOgx5WGiG0LF4z1G5sorZkH4DJgboVIrm9gldsND7
+         FpQg==
+X-Gm-Message-State: AAQBX9d0AkqOkc+n0x9/z0wHOaCJ429zJU2XzKwpq5HIrlwHRCk4RsT4
+        02jybIcik8w4oSIZICvY3E9tObe5E3Q=
+X-Google-Smtp-Source: AKy350ZC2npq2OmQKnvNVNV5q0Qu/8ey1tADVN7iAK6zIPGw4XnU3jkf9VBNeVO2I0E/EqAttqyqrw==
+X-Received: by 2002:a50:ed0f:0:b0:504:aeb5:89c3 with SMTP id j15-20020a50ed0f000000b00504aeb589c3mr7897749eds.5.1681508960278;
+        Fri, 14 Apr 2023 14:49:20 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id t3-20020a05640203c300b004fce9ff4830sm2521732edw.88.2023.04.14.14.49.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Apr 2023 14:49:19 -0700 (PDT)
+Message-ID: <8fd2b0ae-9abd-134c-058e-e67bbeb0e8b8@gmail.com>
+Date:   Sat, 15 Apr 2023 00:49:18 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+To:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20230322171905.492855-1-martin.kaistra@linutronix.de>
+ <bbcc03ad-3003-c26e-3b8d-d2340243c8bf@gmail.com>
+ <26840cf1-9403-3d09-a4d2-352bc198efff@linutronix.de>
+ <a25acad730c94845a16552f321eb2660@realtek.com>
+ <e37633e5-5eec-5dc6-31fd-d91480b604c2@linutronix.de>
+ <98be492e-71f3-f525-1d9e-fd6f0bb0200f@gmail.com>
+ <6d5298e3-e4af-22c9-4558-fc55683f2ac2@linutronix.de>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <6d5298e3-e4af-22c9-4558-fc55683f2ac2@linutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,64 +84,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+On 12/04/2023 13:02, Martin Kaistra wrote:
+> Am 09.04.23 um 14:41 schrieb Bitterblue Smith:
+>> On 06/04/2023 18:09, Martin Kaistra wrote:
+>>> Am 06.04.23 um 02:42 schrieb Ping-Ke Shih:
+>>>>
+>>>>
+>>>>> -----Original Message-----
+>>>>> From: Martin Kaistra <martin.kaistra@linutronix.de>
+>>>>> Sent: Wednesday, April 5, 2023 11:31 PM
+>>>>> To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>>> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
+>>>>> <pkshih@realtek.com>; Sebastian Andrzej Siewior <bigeasy@linutronix.de>; linux-wireless@vger.kernel.org
+>>>>> Subject: Re: [RFC PATCH 00/14] wifi: rtl8xxxu: Add AP mode support for 8188f
+>>>>>
+>>>>> Am 23.03.23 um 18:12 schrieb Bitterblue Smith:
+>>>>>> On 22/03/2023 19:18, Martin Kaistra wrote:
+>>>>>> Then I was able to turn on the AP and connect my phone to it. However,
+>>>>>> the system froze after a few seconds. I had `journalctl --follow`
+>>>>>> running. The last thing printed before the system froze was the DHCP
+>>>>>> stuff (discover, offer, request, ack). The phone said it was connected,
+>>>>>> but speedtest.net didn't have time to load before the freeze.
+>>>>>
+>>>>> Hi
+>>>>>
+>>>>> I could reproduce a frozen system with my hostapd setup, though it
+>>>>> doesn't happen reliably and I don't have an error message when it happens.
+>>>>>
+>>>>
+>>>> Using netcat would help to capture useful messages when system gets frozen.
+>>>>
+>>>> Ping-Ke
+>>>>
+>>>
+>>> Thanks. I got a trace by using netconsole and netcat. It is a NULL pointer dereference in rtl8xxxu_fill_txdesc_v2():
+>>>
+>>>
+>>>          if (rate_flags & IEEE80211_TX_RC_MCS &&
+>>>              !ieee80211_is_mgmt(hdr->frame_control))
+>>>                  rate = tx_info->control.rates[0].idx + DESC_RATE_MCS0;
+>>>          else
+>>>                  rate = tx_rate->hw_value;    <-- error happens here
+>>>
+>>>          if (rtl8xxxu_debug & RTL8XXXU_DEBUG_TX)
+>>>                  dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
+>>>
+>>> This happens when ieee80211_get_tx_rate() hits the WARN_ON_ONCE and maybe also when c->control.rates[0].idx has another invalid value.
+>>> See my previous comments about HAS_RATE_CONTROL.
+>>
+>> Good job finding the problem!
+>>
+>> ieee80211_get_tx_rate() is used since the initial commit, so only Jes
+>> may know why. I assume we only ever need to use the rate from mac80211
+>> for frame injection (IEEE80211_TX_CTRL_RATE_INJECT, currently ignored).
+>>
+>> If c->control.rates[0].idx is negative, is c->control.rates[0].flags
+>> also unusable?
+> 
+> control.rates[0].flags seems to be 0 normally in all my tests when HAS_RATE_CONTROL is enabled, and when control.rates[0].idx is negative, I see some random values which do not look like real flags.
+> 
+>>
+>> ieee80211_get_rts_cts_rate() probably causes the same problem.
+> 
+> Yes, I agree.
+> 
+> How should proceed? I have a v2 of this patch series ready, do I need to add a patch to remove the calls to ieee80211_get_tx_rate() and just set rate in txdesc to 0 or should we handle this separately?
 
-On some devices (most routers) MAC is stored in an NVMEM cell. Support
-reading it.
+Adding a patch to the series sounds good to me. Remove the calls
+to ieee80211_get_tx_rate() and ieee80211_get_rts_cts_rate(), remove
+tx_info->control.rates[0].flags, send management and control frames
+with 1M.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
----
- drivers/net/wireless/ath/ath11k/mac.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index ad5a22d12bd3..6550bb5b2ece 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8,6 +8,7 @@
- #include <linux/etherdevice.h>
- #include <linux/bitfield.h>
- #include <linux/inetdevice.h>
-+#include <linux/of_net.h>
- #include <net/if_inet6.h>
- #include <net/ipv6.h>
- 
-@@ -9292,7 +9293,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
- 	struct ath11k_pdev *pdev;
- 	int i;
- 	int ret;
--	u8 mac_addr[ETH_ALEN] = {0};
-+	u8 device_mac_addr[ETH_ALEN] = {0};
- 
- 	if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
- 		return 0;
-@@ -9305,18 +9306,22 @@ int ath11k_mac_register(struct ath11k_base *ab)
- 	if (ret)
- 		return ret;
- 
--	device_get_mac_address(ab->dev, mac_addr);
-+	device_get_mac_address(ab->dev, device_mac_addr);
- 
- 	for (i = 0; i < ab->num_radios; i++) {
-+		u8 radio_mac_addr[ETH_ALEN];
-+
- 		pdev = &ab->pdevs[i];
- 		ar = pdev->ar;
--		if (ab->pdevs_macaddr_valid) {
-+		if (!of_get_mac_address(ar->np, radio_mac_addr)) {
-+			ether_addr_copy(ar->mac_addr, radio_mac_addr);
-+		} else if (ab->pdevs_macaddr_valid) {
- 			ether_addr_copy(ar->mac_addr, pdev->mac_addr);
- 		} else {
--			if (is_zero_ether_addr(mac_addr))
-+			if (is_zero_ether_addr(device_mac_addr))
- 				ether_addr_copy(ar->mac_addr, ab->mac_addr);
- 			else
--				ether_addr_copy(ar->mac_addr, mac_addr);
-+				ether_addr_copy(ar->mac_addr, device_mac_addr);
- 			ar->mac_addr[4] += i;
- 		}
- 
--- 
-2.34.1
-
+About ieee80211_get_rts_cts_rate(), we can go back to sending RTS
+with the 24M rate, like the vendor drivers do. It's unclear why
+commit a748a11038f8 ("rtl8xxxu: Obtain RTS rates from mac80211")
+changed this.
