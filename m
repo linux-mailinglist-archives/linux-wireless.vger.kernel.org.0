@@ -2,155 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A53F6E22FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 14:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F6366E230B
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 14:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbjDNMTm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 08:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36736 "EHLO
+        id S230034AbjDNMWC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 08:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230452AbjDNMTR (ORCPT
+        with ESMTP id S230028AbjDNMVv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 08:19:17 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E343AD34
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 05:19:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=OoK4N3JAdR+6jE+GCG09CL+9J0zhObgRe4yJcf3GsIw=; b=uAyHUfMlBpQa67vLG4iPEC3MNx
-        hcpw9cLvGs6BV4HTvrNm30djgHYBq5x6LBanEK4fCnW2nfCun5dN7LYgJ+A0zg8lqwyLPKC0bAnCe
-        jczNYxFHmQDqTUEpHIOjaBES4celDOGFTOdLffMucHEpLe6zx7G0jz6bsxLiCF6D7xJg=;
-Received: from p54ae9730.dip0.t-ipconnect.de ([84.174.151.48] helo=Maecks.lan)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1pnION-00EltZ-LG; Fri, 14 Apr 2023 14:19:03 +0200
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@kernel.org
-Subject: [PATCH wireless] mt76: add missing locking to protect against concurrent rx/status calls
-Date:   Fri, 14 Apr 2023 14:19:03 +0200
-Message-Id: <20230414121903.90080-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.39.0
+        Fri, 14 Apr 2023 08:21:51 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25BB9B468
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 05:21:26 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33ECKd382010098, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33ECKd382010098
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 14 Apr 2023 20:20:39 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 14 Apr 2023 20:21:01 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 14 Apr 2023 20:21:01 +0800
+Received: from RTEXDAG02.realtek.com.tw ([fe80::b457:c042:266c:6fec]) by
+ RTEXDAG02.realtek.com.tw ([fe80::b457:c042:266c:6fec%5]) with mapi id
+ 15.01.2375.007; Fri, 14 Apr 2023 20:21:01 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Bernie Huang" <phhuang@realtek.com>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
+Subject: Re: [PATCH 4/7] wifi: rtw88: disallow scan and PS during AP mode
+Thread-Topic: [PATCH 4/7] wifi: rtw88: disallow scan and PS during AP mode
+Thread-Index: AQHZZJfxtujM7P+LRUmfNtWeFqaSvq8nrpJDgAKZQgA=
+Date:   Fri, 14 Apr 2023 12:21:01 +0000
+Message-ID: <9ee7c56110273bae043577651cf37f3cc7831249.camel@realtek.com>
+References: <20230401124410.33221-1-pkshih@realtek.com>
+         <20230401124410.33221-5-pkshih@realtek.com> <877cuh8eb3.fsf@kernel.org>
+In-Reply-To: <877cuh8eb3.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.20.53]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C1A73254AA4B204982EE16D907AADC87@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-According to the documentation, ieee80211_rx_list must not run concurrently
-with ieee80211_tx_status (or its variants).
-
-Cc: stable@vger.kernel.org
-Fixes: 88046b2c9f6d ("mt76: add support for reporting tx status with skb")
-Reported-by: Brian Coverstone <brian@mainsequence.net>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/dma.c         | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c  | 5 ++++-
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c  | 5 ++++-
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.c | 5 ++++-
- drivers/net/wireless/mediatek/mt76/tx.c          | 4 ++++
- 5 files changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index da281cd1d36f..10c6d96dc149 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -576,7 +576,9 @@ mt76_dma_tx_queue_skb(struct mt76_dev *dev, struct mt76_queue *q,
- free_skb:
- 	status.skb = tx_info.skb;
- 	hw = mt76_tx_status_get_hw(dev, tx_info.skb);
-+	spin_lock_bh(&dev->rx_lock);
- 	ieee80211_tx_status_ext(hw, &status);
-+	spin_unlock_bh(&dev->rx_lock);
- 
- 	return ret;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 70a7f84af028..12e0af52082a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1279,8 +1279,11 @@ void mt7603_mac_add_txs(struct mt7603_dev *dev, void *data)
- 	if (wcidx >= MT7603_WTBL_STA || !sta)
- 		goto out;
- 
--	if (mt7603_fill_txs(dev, msta, &info, txs_data))
-+	if (mt7603_fill_txs(dev, msta, &info, txs_data)) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_noskb(mt76_hw(dev), sta, &info);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- out:
- 	rcu_read_unlock();
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 51a968a6afdc..5c41ad5955f4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1530,8 +1530,11 @@ static void mt7615_mac_add_txs(struct mt7615_dev *dev, void *data)
- 	if (wcid->phy_idx && dev->mt76.phys[MT_BAND1])
- 		mphy = dev->mt76.phys[MT_BAND1];
- 
--	if (mt7615_fill_txs(dev, msta, &info, txs_data))
-+	if (mt7615_fill_txs(dev, msta, &info, txs_data)) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_noskb(mphy->hw, sta, &info);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- out:
- 	rcu_read_unlock();
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-index d3f74473e6fb..3e41d809ade3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
-@@ -631,8 +631,11 @@ void mt76x02_send_tx_status(struct mt76x02_dev *dev,
- 
- 	mt76_tx_status_unlock(mdev, &list);
- 
--	if (!status.skb)
-+	if (!status.skb) {
-+		spin_lock_bh(&dev->mt76.rx_lock);
- 		ieee80211_tx_status_ext(mt76_hw(dev), &status);
-+		spin_unlock_bh(&dev->mt76.rx_lock);
-+	}
- 
- 	if (!len)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 1f309d05380a..b435aed6aff7 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -77,7 +77,9 @@ mt76_tx_status_unlock(struct mt76_dev *dev, struct sk_buff_head *list)
- 		}
- 
- 		hw = mt76_tx_status_get_hw(dev, skb);
-+		spin_lock_bh(&dev->rx_lock);
- 		ieee80211_tx_status_ext(hw, &status);
-+		spin_unlock_bh(&dev->rx_lock);
- 	}
- 	rcu_read_unlock();
- }
-@@ -263,7 +265,9 @@ void __mt76_tx_complete_skb(struct mt76_dev *dev, u16 wcid_idx, struct sk_buff *
- 	if (cb->pktid < MT_PACKET_ID_FIRST) {
- 		hw = mt76_tx_status_get_hw(dev, skb);
- 		status.sta = wcid_to_sta(wcid);
-+		spin_lock_bh(&dev->rx_lock);
- 		ieee80211_tx_status_ext(hw, &status);
-+		spin_unlock_bh(&dev->rx_lock);
- 		goto out;
- 	}
- 
--- 
-2.39.0
-
+T24gV2VkLCAyMDIzLTA0LTEyIGF0IDE1OjM5ICswMzAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiAN
+Cj4gUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyaXRlczoNCj4gDQo+ID4gRnJv
+bTogUG8tSGFvIEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPg0KPiA+IA0KPiA+IER1cmluZyBj
+b25jdXJyZW50IG9wZXJhdGlvbiwgdGhlIFZJRiBzaGFyaW5nIHNhbWUgY2hhbm5lbCB3aXRoIEFQ
+IG1vZGUNCj4gPiBtaWdodCBzY2FuLiBSZWplY3QgdGhvc2Ugc2NhbiByZXF1ZXN0cyBmcm9tIGRy
+aXZlciB3aGVuIHRoZXJlJ3MgQVANCj4gPiBjdXJyZW50bHkgb3BlcmF0aW5nLiBBbHNvLCBkaXNh
+bGxvdyBlbnRlcmluZyBwb3dlciBzYXZpbmcgbW9kZS4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5
+OiBQby1IYW8gSHVhbmcgPHBoaHVhbmdAcmVhbHRlay5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTog
+UGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IA0KPiBIb3cgaXMgYSBzdGF0aW9u
+IGludGVyZmFjZSB1c2VmdWwgaWYgaXQgY2Fubm90IHNjYW4gYXQgYWxsPyBJTUhPIHF1aXRlDQo+
+IGhhcmQgbGltaXRhdGlvbi4NCj4gDQoNCkR1ZSB0byBoYXJkd2FyZSBsaW1pdGF0aW9uLCBpdCBj
+YW4ndCBob3N0IGFzIEFQIG1vZGUgYW5kIGRvIHNjYW5uaW5nIGF0DQp0aGUgc2FtZSB0aW1lLCBz
+byB3ZSBtYWtlIHRoaXMgY2hvaWNlIGJlZm9yZS4gTm93LCB3ZSBkb24ndCByZWplY3Qgc2Nhbg0K
+cmVxdWVzdHMsIGJ1dCBBUCdzIGNsaWVudHMgY291bGQgZ2V0IGxvc3Qgb3IgZGlzY29ubmVjdGVk
+LiBJIHRoaW5rDQp0aGF0IGlzIGEgdHJhZGUtb2ZmLCBzbyB3ZSBsZWF2ZSB0aGlzIGRlY2lzaW9u
+IHRvIHVzZXIgc3BhY2UuDQoNCkkgaGF2ZSBzZW50IHYyIHdpdGggdGhpcyBjaGFuZ2UuDQoNClBp
+bmctS2UNCg0K
