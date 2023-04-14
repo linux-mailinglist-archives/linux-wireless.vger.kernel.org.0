@@ -2,46 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DFA36E20D6
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31A8A6E2140
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbjDNKcg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 06:32:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37852 "EHLO
+        id S230151AbjDNKth (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 06:49:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbjDNKce (ORCPT
+        with ESMTP id S230204AbjDNKte (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 06:32:34 -0400
-X-Greylist: delayed 46174 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Apr 2023 03:32:09 PDT
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4175D9009;
-        Fri, 14 Apr 2023 03:32:09 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1681468326; bh=NDBLIJpoqluWbT+SNHb4Zjr5K7zRBHfrlvu7guSlJl4=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=Rx2lfzmgTL2ZSoUPKZZDqtZnpTu9guFuufDFABCcplLB15j2MAn511WD7gV//U+0O
-         SInnKE4xcErF1PVl6CEXEjsAG/jZadA4UsLnTW75iqI0YkEv9G3KxNu0Z8yB6vwVWG
-         zXaKbShNMixQlZ1wn9O0qmBOHm8+eOshCtjadnHgIKFQjxj3bUw76j/SHSMKUl1A6p
-         QbHSvQFY5PEEA85d3rw0D4C5fKW1RpMvDDVjp9KqchG5RO3OV+YJjW5F1vRPEvOrGg
-         c3dwXWyL/EbSg6DqGgx3WdqPe0cX5l7nZmg5hSF0aU+v26XpfuuwJqH8QHzKfkj13Z
-         7GgPzx2F3RGUg==
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Kalle Valo <quic_kvalo@quicinc.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath9k: Don't mark channelmap stack variable
- read-only in ath9k_mci_update_wlan_channels()
-In-Reply-To: <87v8hysrzx.fsf@kernel.org>
-References: <20230413214118.153781-1-toke@toke.dk> <87v8hysrzx.fsf@kernel.org>
-Date:   Fri, 14 Apr 2023 12:32:05 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87bkjqzrdm.fsf@toke.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Fri, 14 Apr 2023 06:49:34 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7468B93F7
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=FFqWWqcg+eLPvzXi23BcqD9cmTgxy77R+/SgiTV18Uc=;
+        t=1681469359; x=1682678959; b=v7dZs5qxbL/TA4l+gcTMQmALD1e8QuEhE25fbNEYynKNzp7
+        p6Veiy5/3jRVSi0fO+GzRNBb86Z43B5ZETVsyrnYjhuimCeyoqFqESEmnXhqtlYEDbOxAlbiDCtV5
+        jMIELW8t3/4UTXuKiEk3j8QT1XeObhv9pKJY3DmW2xpzlsZiE/7PbCeh6aQns3wFmArVtL6GdVQwG
+        M5OzVJKOtr69bGn/azm5MGZpoUOS1eDkPpLAOpXDKFtYJvinQc6mIkoqiohKn56FBbw9t/C5eXhuO
+        ZOcPlMJrl3Yq1tRP0QXNaWEgGXTbyBTDzTAA5swCyKExGZsOQ4/638C6yYDpRcWg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pnGzV-00FYto-1J;
+        Fri, 14 Apr 2023 12:49:17 +0200
+Message-ID: <d595419a19c4707848eefd8d5dec86ca877f8b1e.camel@sipsolutions.net>
+Subject: Re: [PATCH] iw: Add more VHT capabilities reporting
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Anthony Refuerzo <anthony96922@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 14 Apr 2023 12:49:16 +0200
+In-Reply-To: <20230217084044.11424-1-anthony96922@gmail.com>
+References: <20230217084044.11424-1-anthony96922@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,32 +52,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+On Fri, 2023-02-17 at 00:40 -0800, Anthony Refuerzo wrote:
+>=20
+>  	/* RX STBC */
+> +	switch ((capa & 0x700) >> 8) {
+> +	case 1: printf("\t\t\tRX STBC 1-stream\n"); break;
+> +	case 2: printf("\t\t\tRX STBC 2-streams\n"); break;
 
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
->
->> This partially reverts commit e161d4b60ae3a5356e07202e0bfedb5fad82c6aa.
->>
->> Turns out the channelmap variable is not actually read-only, it's modifi=
-ed
->> through the MCI_GPM_CLR_CHANNEL_BIT() macro further down in the function,
->> so making it read-only causes page faults when that code is hit.
->>
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217183
->> Fixes: e161d4b60ae3 ("wifi: ath9k: Make arrays prof_prio and channelmap =
-static const")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
->
-> I guess the casting in MCI_GPM_CLR_CHANNEL_BIT() hide this and made it
-> impossible for the compiler to detect it? A perfect example why I hate
-> casting :)
+wait, isn't that wrong, this should be +1 (and can also just use the
+value+1 instead of having all those switch cases) no?
 
-Yup, exactly. I was also assuming the compiler would catch it, but yay, C! =
-:/
+Also generally, I'm not a huge fan of those compressed case statements
+yeah it seems denser at first, but then at least I had to look twice if
+the break was there, etc.
 
-Anyway, cf the bugzilla this was a pretty bad regression for 6.2, so
-would be good to move this along reasonably quickly (although I guess we
-just missed the -net PR for rc7)...
+> +	printf("\t\t\tMax A-MPDU Length: %d (exponent: %d)\n",
+> +		(1 << (((capa & 0x3800000) >> 23) + 13)) - 1,
+> +		((capa & 0x3800000) >> 23));
 
--Toke
+this kind of thing really makes me want to have bitfield.h from the
+kernel, but I guess we can't just copy that due to the license ... oh
+well.
+
+but at least it could use a variable for the exponent, so it doesn't
+have to be done twice? :)
+
+johannes
