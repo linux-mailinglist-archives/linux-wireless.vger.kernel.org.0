@@ -2,52 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 530446E234E
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 14:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C766E2356
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 14:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbjDNMc0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 08:32:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        id S230167AbjDNMdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 08:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjDNMcZ (ORCPT
+        with ESMTP id S229611AbjDNMdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 08:32:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACA4D7
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 05:32:21 -0700 (PDT)
+        Fri, 14 Apr 2023 08:33:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29321AF19;
+        Fri, 14 Apr 2023 05:33:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD97962B56
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 12:32:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460A8C4339B;
-        Fri, 14 Apr 2023 12:32:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF7C961FA3;
+        Fri, 14 Apr 2023 12:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3919FC433EF;
+        Fri, 14 Apr 2023 12:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681475540;
-        bh=wbYHVuhGWIXyTu0OxT57LXng3YOV5LO+g8Uaq4wCAX0=;
+        s=k20201202; t=1681475586;
+        bh=Y69wMnPQS9vYEGsWc6rHU3GfHiIE/Dgo33xdBBfWBQ0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=FSzU2/ommmYBeKoqtgmqZn39N18qCkLHk9qkGoCdEzyiufLS0ETfWknOEJ4eqMnZv
-         e45piCroicnSgDGJQ/yn8jPvaueeQPwGk4s+64K9vOGWckVU5gNrkXryEPlzkKiSMP
-         42ArEC90efQG/YAZOpuGIXh65wqXr/xlu98wUiYAZrddEVO8cYFJ3WoQ1vPGlFCMXv
-         2rNZB+BhKaUeebZ8j5WHdmdCidVH+cdAi/Nk3VRHdpW3NXKcUeTn/jR7LdhK3xtSQp
-         lHvzIM17KhRzLwOZNGBXHnl+hZasXiA6xxN8l1NRwtyRPTRKoSpx4MKNYbWa4iOtRK
-         yQ0m/EIj77z7A==
+        b=Vew1os5awK/kNZH7RGwefay6icS6yRfzxH4BJLlyuKm7xLVIPDzRDTO2Kx8S/4bzi
+         +Zm6v8hNYVnkBHY7KX1eLVg/lD9oZScQP2Kdo26bNysnCncVP+79XgJfVAKHlfwhG3
+         uNHK7A7PzL8S61TSgxd2RNaPGGhXksInvZIAAwmqffARGsHQFknSrNUrpVNy0gQN1i
+         dqNbjD8yThQSa+SNZ8vd5CGKXnhLwk+IPIZIWAdJYKLiPxP8hPR5QScaMfnNopUuwX
+         NLHY2Gl+v5IYIkd9gKbBRkg2SCryo/jLedFj6+zz1VdIYKw+ti1/nIlmJ4d8guD4y/
+         NlUu6NNeDomnA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/2] wifi: rtl8xxxu: Clean up some messy ifs
+Subject: Re: [PATCH] bcma: Add explicit of_device.h include
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <e24a5534-6e33-cfb9-0634-0caf4646513f@gmail.com>
-References: <e24a5534-6e33-cfb9-0634-0caf4646513f@gmail.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
+In-Reply-To: <20230410232701.1561613-1-robh@kernel.org>
+References: <20230410232701.1561613-1-robh@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168147553724.16522.17924195042305201326.kvalo@kernel.org>
-Date:   Fri, 14 Apr 2023 12:32:19 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-ID: <168147558198.16522.6525405237382366801.kvalo@kernel.org>
+Date:   Fri, 14 Apr 2023 12:33:05 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,21 +55,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+Rob Herring <robh@kernel.org> wrote:
 
-> Add some new members to rtl8xxxu_fileops and use them instead of
-> checking priv->rtl_chip.
+> bcma/main.c uses of_dma_configure() which is declared in of_device.h.
+> of_device.h gets implicitly included by of_platform.h, but that is going
+> to be removed soon.
 > 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-2 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-a5be45ea4593 wifi: rtl8xxxu: Clean up some messy ifs
-b9c3379dda14 wifi: rtl8xxxu: Support devices with 5-6 out endpoints
+666f4ab26c2c bcma: Add explicit of_device.h include
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/e24a5534-6e33-cfb9-0634-0caf4646513f@gmail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230410232701.1561613-1-robh@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
