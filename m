@@ -2,119 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B1D6E25CA
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 16:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 918376E2602
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 16:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbjDNOcK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 10:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
+        id S230365AbjDNOmq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 10:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbjDNOcJ (ORCPT
+        with ESMTP id S230205AbjDNOmo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 10:32:09 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91512B471
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 07:32:05 -0700 (PDT)
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33EE4O8L0022023, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33EE4O8L0022023
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 14 Apr 2023 22:04:24 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 14 Apr 2023 22:04:47 +0800
-Received: from localhost (172.16.20.53) by RTEXDAG02.realtek.com.tw
- (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 14 Apr
- 2023 22:04:46 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <gary.chang@realtek.com>, <phhuang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/5] wifi: rtw89: add support of concurrent mode
-Date:   Fri, 14 Apr 2023 22:04:39 +0800
-Message-ID: <20230414140439.27827-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+        Fri, 14 Apr 2023 10:42:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E56FB758;
+        Fri, 14 Apr 2023 07:42:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2D66633F0;
+        Fri, 14 Apr 2023 14:42:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181F1C433EF;
+        Fri, 14 Apr 2023 14:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681483359;
+        bh=DjZBywGFdDSzDPQzRUbyf7CiYMlqZMeQShR8K7hDGjw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=P2HHhMLemFRkqclbGCpkxceV7UNq3zgYQRAgNl2YkrNmCTy+SwKzmDIJ3RRIddcFI
+         YHV02zmxE0Yu8kB7Ds40HdKEXCkITZ7Q5WCoffur1c8fS23JIdzEvhlHnoRXJXMD6D
+         xU0uhrhbX1ZpP5ua568C0GE1hWCqPctwczuzuhCw6iYnQu074C0JxKxwFoiCvgE19n
+         5W6a/uIT9Ijhauj7qwWBFHy2FwvVq7qEOmyhiz6W2bhvziu/+8I0kZTwEAxM5gh+7o
+         GwG/NafhbD7OHb5EAfQrNjm5NZq75vQMBpVApr2OFE74HpqucmR3pF/+DrxRp5zFTV
+         KGU51KEn49t0w==
+Date:   Fri, 14 Apr 2023 07:42:38 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] net: extend drop reasons for multiple subsystems
+Message-ID: <20230414074238.2da8f8db@kernel.org>
+In-Reply-To: <9b5c442ce63c885514a833e5b7a422eed19a4314.camel@sipsolutions.net>
+References: <20230330212227.928595-1-johannes@sipsolutions.net>
+        <20230331213621.0993e25b@kernel.org>
+        <9b5c442ce63c885514a833e5b7a422eed19a4314.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.20.53]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXDAG02.realtek.com.tw (172.21.6.101)
-X-KSE-ServerInfo: RTEXDAG02.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
+On Fri, 14 Apr 2023 11:25:08 +0200 Johannes Berg wrote:
+> On Fri, 2023-03-31 at 21:36 -0700, Jakub Kicinski wrote:
+> >   
+> > > +/* Note: due to dynamic registrations, access must be under RCU */
+> > > +extern const struct drop_reason_list __rcu *
+> > > +drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM];
+> > > +
+> > > +void drop_reasons_register_subsys(enum skb_drop_reason_subsys subsys,
+> > > +				  const struct drop_reason_list *list);
+> > > +void drop_reasons_unregister_subsys(enum skb_drop_reason_subsys subsys);  
+> > 
+> > dropreason.h is included by skbuff.h because history, but I don't think
+> > any of the new stuff must be visible in skbuff.h.
+> > 
+> > Could you make a new header, and put as much of this stuff there as
+> > possible? Our future selves will thank us for shorter rebuild times..  
+> 
+> Sure. Not sure it'll make a big difference in rebuild, but we'll see :)
+> 
+> I ended up moving dropreason.h to dropreason-core.h first, that way we
+> also have a naming scheme for non-core dropreason files should they
+> become visible outside of the subsystem (i.e. mac80211 just has them
+> internally).
+> 
+> Dunno, let me know if you prefer something else, I just couldn't come up
+> with a non-confusing longer name for the new thing.
 
-Add iface_combination declaration to enable concurrent mode. Only two
-interfaces under same frequency is supported currently. We limit the
-role combination to be STA + P2P or STA + AP only for now until new
-feature is requested.
+Sounds good.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 25 +++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+> > Weak preference to also take the code out of skbuff.c but that's not as
+> > important.  
+> 
+> I guess I can create a new dropreason.c, but is that worth it? It's only
+> a few lines. Let me know, then I can resend.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 8cdab81ba5f07..60eeb6cea66e4 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -156,6 +156,28 @@ static struct ieee80211_rate rtw89_bitrates[] = {
- 	{ .bitrate = 540, .hw_value = 0x0b, },
- };
- 
-+static const struct ieee80211_iface_limit rtw89_iface_limits[] = {
-+	{
-+		.max = 1,
-+		.types = BIT(NL80211_IFTYPE_STATION),
-+	},
-+	{
-+		.max = 1,
-+		.types = BIT(NL80211_IFTYPE_P2P_CLIENT) |
-+			 BIT(NL80211_IFTYPE_P2P_GO) |
-+			 BIT(NL80211_IFTYPE_AP),
-+	},
-+};
-+
-+static const struct ieee80211_iface_combination rtw89_iface_combs[] = {
-+	{
-+		.limits = rtw89_iface_limits,
-+		.n_limits = ARRAY_SIZE(rtw89_iface_limits),
-+		.max_interfaces = 2,
-+		.num_different_channels = 1,
-+	}
-+};
-+
- bool rtw89_ra_report_to_bitrate(struct rtw89_dev *rtwdev, u8 rpt_rate, u16 *bitrate)
- {
- 	struct ieee80211_rate rate;
-@@ -3834,6 +3856,9 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	if (!hw)
- 		goto err;
- 
-+	hw->wiphy->iface_combinations = rtw89_iface_combs;
-+	hw->wiphy->n_iface_combinations = ARRAY_SIZE(rtw89_iface_combs);
-+
- 	rtwdev = hw->priv;
- 	rtwdev->hw = hw;
- 	rtwdev->dev = device;
--- 
-2.25.1
+It's hard to tell. Most additions to the core are small at the start so
+we end up chucking all of them into a handful of existing source files.
+And those files grow and grow. Splitting the later is extra work and
+makes backports harder.
 
+It's a game of predicting which code will likely grow into a reasonable
+~500+ LoC at some point, and which code will not. I have the feeling
+that dropreason code will grow. But yes, it's still fairly small, we 
+can defer.
+
+> > You To'd both wireless and netdev, who are you expecting to apply this?
+> > :S  
+> 
+> Good question :)
+> 
+> The first patch (patches in v3) really should go through net-next I
+> suppose, and I wouldn't mind if the other one did as well, it doesn't
+> right now touch anything likely to change.
+
+SG!
