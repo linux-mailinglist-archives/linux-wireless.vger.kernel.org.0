@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 596C56E2066
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A365A6E206A
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:12:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230241AbjDNKMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 06:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49574 "EHLO
+        id S229749AbjDNKMf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 06:12:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230115AbjDNKM1 (ORCPT
+        with ESMTP id S230126AbjDNKM1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 14 Apr 2023 06:12:27 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3801FFD
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E812983E3
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681467143; x=1713003143;
+  t=1681467145; x=1713003145;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MA67ytfhR0K3GVI5vrawlY1nmiZWsS555uk6f2KWCbE=;
-  b=XBtgevxDfooDs38KcPlyrctQP71ApiKTc15nfpr+ylMQayjWMxVoAXfK
-   0DAu7Mpnt2+w1UzEfY7AHcEk4f0RtCM+rebiwgnNS2RqYc2lXMlQvoqvs
-   cH7+dF93KsWBUCmxu78uXH0N7IySA//wHkoJPNz0b0+5VS7LXVZN+9cLJ
-   5mHoXzUvsIbN57gBxt+OxYIAEdmhE8FUJowOL+YB6+rUpbsyePijIB7Wn
-   vfCmKXQ+sCoG51JAQaIb3HC8nvn7SJpJKnTL+iXylZlwu+IBPQZ6XMg71
-   hzXqL6EZjlAZP1Ni3UZYPOHVcnyrXIWghWffcm93WL3lJH7qq3Tb/OWGn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263546"
+  bh=Ioi21VNimn9NCkgVisaqSddQ78yOJID/2dnxCJn4Lho=;
+  b=cASz8CEd6UDRoiRT7XgJxRNiCVo3J+1TFYfYFY3xVoCl9L2FUI+n3B2R
+   JYBzf8pN/liBGYbi3JLCn5vl2VLiZbOwlusDlrnm+VMXATCJ20NOvz3Nt
+   3cVHNNsrWLTvahaZ43tWwq7XFRTZbJF17W1A6nbWz8XcQHCD0V5We0wlU
+   N5xOXJwgpaiCPLXzBbYErs72zNSJ3Wra2VcTACZLxsRAMyzo2YmN7YqGi
+   AXhDcbPVl6LHHpiJvzKFaLx7DKuxsJxBNFbhV/Hg9q4McU9w9kk9jtpCY
+   D96P9kayQYQG4EBQi0rFipEYVeU9dooFtGxCDFlvq4Vid/KsYOeDsBvoT
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263556"
 X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="346263546"
+   d="scan'208";a="346263556"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:23 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351594"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351642"
 X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="692351594"
+   d="scan'208";a="692351642"
 Received: from yalankry-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.233.156])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:21 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:23 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/15] wifi: iwlwifi: add a new PCI device ID for BZ device
-Date:   Fri, 14 Apr 2023 13:11:53 +0300
-Message-Id: <20230414130637.56342664110d.I5aa6f2858fdcf69fdea4f1a873115a48bd43764e@changeid>
+Subject: [PATCH 03/15] wifi: iwlwifi: mvm: enable new MLD FW API
+Date:   Fri, 14 Apr 2023 13:11:54 +0300
+Message-Id: <20230414130637.5dc66b08539e.I1c65024c879346b0349e1e431d36ec2b5fd85dd7@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230414101206.1170180-1-gregory.greenman@intel.com>
 References: <20230414101206.1170180-1-gregory.greenman@intel.com>
@@ -62,28 +62,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-Add support for a new PCI device ID 0x272b once registering with PCIe.
+Enable the new FW API with MLD based on FW TLV.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/file.h |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 20 ++------------------
+ 2 files changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index fb0c2c0f236f..31b575f35410 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -504,6 +504,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+index 34ef106a2274..b00174c9ebce 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+@@ -459,6 +459,7 @@ enum iwl_ucode_tlv_capa {
+ 	IWL_UCODE_TLV_CAPA_SYNCED_TIME			= (__force iwl_ucode_tlv_capa_t)106,
+ 	IWL_UCODE_TLV_CAPA_TIME_SYNC_BOTH_FTM_TM        = (__force iwl_ucode_tlv_capa_t)108,
+ 	IWL_UCODE_TLV_CAPA_BIGTK_TX_SUPPORT		= (__force iwl_ucode_tlv_capa_t)109,
++	IWL_UCODE_TLV_CAPA_MLD_API_SUPPORT		= (__force iwl_ucode_tlv_capa_t)110,
+ 	IWL_UCODE_TLV_CAPA_SCAN_DONT_TOGGLE_ANT         = (__force iwl_ucode_tlv_capa_t)111,
  
- /* Bz devices */
- 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
- #endif /* CONFIG_IWLMVM */
+ #ifdef __CHECKER__
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 76ac8a480712..42e67df13a1e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1401,24 +1401,8 @@ static inline bool iwl_mvm_has_new_rx_api(struct iwl_mvm *mvm)
+ 
+ static inline bool iwl_mvm_has_mld_api(const struct iwl_fw *fw)
+ {
+-	return (iwl_fw_lookup_cmd_ver(fw, LINK_CONFIG_CMD,
+-				      IWL_FW_CMD_VER_UNKNOWN) !=
+-				IWL_FW_CMD_VER_UNKNOWN) &&
+-		(iwl_fw_lookup_cmd_ver(fw, MAC_CONFIG_CMD,
+-				       IWL_FW_CMD_VER_UNKNOWN) !=
+-				IWL_FW_CMD_VER_UNKNOWN) &&
+-		(iwl_fw_lookup_cmd_ver(fw, STA_CONFIG_CMD,
+-				       IWL_FW_CMD_VER_UNKNOWN) !=
+-				IWL_FW_CMD_VER_UNKNOWN) &&
+-		(iwl_fw_lookup_cmd_ver(fw, AUX_STA_CMD,
+-				       IWL_FW_CMD_VER_UNKNOWN) !=
+-				IWL_FW_CMD_VER_UNKNOWN) &&
+-		(iwl_fw_lookup_cmd_ver(fw, STA_REMOVE_CMD,
+-				       IWL_FW_CMD_VER_UNKNOWN) !=
+-				IWL_FW_CMD_VER_UNKNOWN) &&
+-		(iwl_fw_lookup_cmd_ver(fw, STA_DISABLE_TX_CMD,
+-				       IWL_FW_CMD_VER_UNKNOWN) !=
+-				IWL_FW_CMD_VER_UNKNOWN);
++	return fw_has_capa(&fw->ucode_capa,
++			   IWL_UCODE_TLV_CAPA_MLD_API_SUPPORT);
+ }
+ 
+ static inline bool iwl_mvm_has_new_tx_api(struct iwl_mvm *mvm)
 -- 
 2.38.1
 
