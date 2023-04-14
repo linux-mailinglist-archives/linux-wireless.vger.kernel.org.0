@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 072BC6E251C
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 16:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5126E251D
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 16:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230246AbjDNOFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 10:05:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55260 "EHLO
+        id S230290AbjDNOFD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 10:05:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbjDNOE7 (ORCPT
+        with ESMTP id S230156AbjDNOFC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 10:04:59 -0400
+        Fri, 14 Apr 2023 10:05:02 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17C7BB8A
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 07:04:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68B22AD37
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 07:04:33 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33EE3B4K0019825, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33EE3B4K0019825
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33EE3HKk8020006, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33EE3HKk8020006
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 14 Apr 2023 22:03:11 +0800
+        Fri, 14 Apr 2023 22:03:17 +0800
 Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 14 Apr 2023 22:03:34 +0800
+ 15.1.2507.17; Fri, 14 Apr 2023 22:03:39 +0800
 Received: from localhost (172.16.20.53) by RTEXDAG02.realtek.com.tw
  (172.21.6.101) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 14 Apr
- 2023 22:03:33 +0800
+ 2023 22:03:39 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <gary.chang@realtek.com>, <phhuang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 0/5] wifi: rtw89: support single channel concurrent mode
-Date:   Fri, 14 Apr 2023 22:03:11 +0800
-Message-ID: <20230414140316.27656-1-pkshih@realtek.com>
+Subject: [PATCH 1/5] wifi: rtw89: prohibit enter IPS during HW scan
+Date:   Fri, 14 Apr 2023 22:03:12 +0800
+Message-ID: <20230414140316.27656-2-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230414140316.27656-1-pkshih@realtek.com>
+References: <20230414140316.27656-1-pkshih@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,10 +46,6 @@ X-Originating-IP: [172.16.20.53]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXDAG02.realtek.com.tw (172.21.6.101)
 X-KSE-ServerInfo: RTEXDAG02.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -60,27 +58,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With previous materials and some fine tune in this patchset, we can
-declare this driver can support STA + P2P or STA + AP operating on single
-one channel.
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-Chih-Kang Chang (1):
-  wifi: rtw89: prohibit enter IPS during HW scan
+Mac80211 core may ask driver to change to idle mode during HW scan,
+then H2C command for HW scan will send failed since chip is in idle
+mode. Therefore, We check the SCANNING flag before entering IPS to
+prevent this behavior.
 
-Po-Hao Huang (4):
-  wifi: rtw89: refine scan function after chanctx
-  wifi: rtw89: update statistics to FW for fine-tuning performance
-  wifi: rtw89: Disallow power save with multiple stations
-  wifi: rtw89: add support of concurrent mode
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- drivers/net/wireless/realtek/rtw89/core.c     | 41 ++++++++-
- drivers/net/wireless/realtek/rtw89/core.h     |  7 +-
- drivers/net/wireless/realtek/rtw89/fw.c       | 88 ++++++++++++-------
- drivers/net/wireless/realtek/rtw89/fw.h       | 11 ++-
- drivers/net/wireless/realtek/rtw89/mac.c      | 14 +--
- drivers/net/wireless/realtek/rtw89/mac80211.c |  4 +-
- 6 files changed, 119 insertions(+), 46 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index b059aa8d88dbf..b5cbfc15ebad8 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -105,7 +105,8 @@ static int rtw89_ops_config(struct ieee80211_hw *hw, u32 changed)
+ 	}
+ 
+ 	if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
+-	    (hw->conf.flags & IEEE80211_CONF_IDLE))
++	    (hw->conf.flags & IEEE80211_CONF_IDLE) &&
++	    !rtwdev->scanning)
+ 		rtw89_enter_ips(rtwdev);
+ 
+ 	mutex_unlock(&rtwdev->mutex);
 -- 
 2.25.1
 
