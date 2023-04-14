@@ -2,59 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A956E2085
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DFA36E20D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjDNKP5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 06:15:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53754 "EHLO
+        id S229895AbjDNKcg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 06:32:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjDNKPz (ORCPT
+        with ESMTP id S229839AbjDNKce (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 06:15:55 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1799A2107
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681467346; x=1713003346;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TET7QFqLFEl8L4EgJteqE2HSDpxkWFXQNsZZ9jYFTbw=;
-  b=Ee+aI9MeVL4bAC6+Ff8vJJKX59u1svaAYCBp+4esKJcBPHKwXYufi7/k
-   3YhjaqVNvnyRAGZyZk3ApzmiD8wOEW4W4OUTS9SKWsx1KlNy9uGxujCUR
-   PEGb/1q2QmBTHWCxwZMIhuS/j9rYrPrwWhIzsx1N7fMHPAKIwPr/aqGLz
-   n8wfOgoqPW88IhPGDL6PQHG93nOrXITleFQ84sVPAMbQxHtgFxQaEPJkP
-   mQcLve+JxTyjpPCbHbnJE+wFBg/3pisJWzTXYWsYQCbJcE7F1hKGcpfgA
-   ViBQFjTQEP1kbNvb/XywdnhuMDspWALd8N92vtNuaLwxz2BFXQ2Kte/ul
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263703"
-X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="346263703"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351846"
-X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="692351846"
-Received: from yalankry-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.233.156])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:48 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 15/15] wifi: iwlwifi: mvm: tx: remove misleading if statement
-Date:   Fri, 14 Apr 2023 13:12:06 +0300
-Message-Id: <20230414130637.57c1eb58e655.I1b47a7771cd66306931089c150c6b5b240bdcba5@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230414101206.1170180-1-gregory.greenman@intel.com>
-References: <20230414101206.1170180-1-gregory.greenman@intel.com>
+        Fri, 14 Apr 2023 06:32:34 -0400
+X-Greylist: delayed 46174 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Apr 2023 03:32:09 PDT
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4175D9009;
+        Fri, 14 Apr 2023 03:32:09 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1681468326; bh=NDBLIJpoqluWbT+SNHb4Zjr5K7zRBHfrlvu7guSlJl4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Rx2lfzmgTL2ZSoUPKZZDqtZnpTu9guFuufDFABCcplLB15j2MAn511WD7gV//U+0O
+         SInnKE4xcErF1PVl6CEXEjsAG/jZadA4UsLnTW75iqI0YkEv9G3KxNu0Z8yB6vwVWG
+         zXaKbShNMixQlZ1wn9O0qmBOHm8+eOshCtjadnHgIKFQjxj3bUw76j/SHSMKUl1A6p
+         QbHSvQFY5PEEA85d3rw0D4C5fKW1RpMvDDVjp9KqchG5RO3OV+YJjW5F1vRPEvOrGg
+         c3dwXWyL/EbSg6DqGgx3WdqPe0cX5l7nZmg5hSF0aU+v26XpfuuwJqH8QHzKfkj13Z
+         7GgPzx2F3RGUg==
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Kalle Valo <quic_kvalo@quicinc.com>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath9k: Don't mark channelmap stack variable
+ read-only in ath9k_mci_update_wlan_channels()
+In-Reply-To: <87v8hysrzx.fsf@kernel.org>
+References: <20230413214118.153781-1-toke@toke.dk> <87v8hysrzx.fsf@kernel.org>
+Date:   Fri, 14 Apr 2023 12:32:05 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87bkjqzrdm.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,32 +49,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Kalle Valo <kvalo@kernel.org> writes:
 
-The if statement here is misleading, we return zero anyway
-since we just checked the 'ret' variable, simplify the code
-to remove the condition entirely.
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>
+>> This partially reverts commit e161d4b60ae3a5356e07202e0bfedb5fad82c6aa.
+>>
+>> Turns out the channelmap variable is not actually read-only, it's modifi=
+ed
+>> through the MCI_GPM_CLR_CHANNEL_BIT() macro further down in the function,
+>> so making it read-only causes page faults when that code is hit.
+>>
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217183
+>> Fixes: e161d4b60ae3 ("wifi: ath9k: Make arrays prof_prio and channelmap =
+static const")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+>
+> I guess the casting in MCI_GPM_CLR_CHANNEL_BIT() hide this and made it
+> impossible for the compiler to detect it? A perfect example why I hate
+> casting :)
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Yup, exactly. I was also assuming the compiler would catch it, but yay, C! =
+:/
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index ab448ff6a740..66b5e8700983 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1255,8 +1255,7 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	if (ret)
- 		return ret;
- 
--	if (WARN_ON(skb_queue_empty(&mpdus_skbs)))
--		return ret;
-+	WARN_ON(skb_queue_empty(&mpdus_skbs));
- 
- 	while (!skb_queue_empty(&mpdus_skbs)) {
- 		skb = __skb_dequeue(&mpdus_skbs);
--- 
-2.38.1
+Anyway, cf the bugzilla this was a pretty bad regression for 6.2, so
+would be good to move this along reasonably quickly (although I guess we
+just missed the -net PR for rc7)...
 
+-Toke
