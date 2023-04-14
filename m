@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCC516E2071
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C6F46E2074
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbjDNKMx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 06:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50356 "EHLO
+        id S229647AbjDNKNJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 06:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjDNKMp (ORCPT
+        with ESMTP id S229636AbjDNKNI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 06:12:45 -0400
+        Fri, 14 Apr 2023 06:13:08 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F2FA24D
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C41D4ED0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681467152; x=1713003152;
+  t=1681467161; x=1713003161;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZJGtKXfayxqz5VXFbJ88KsReJBYaEfsh+05frtg8Y7s=;
-  b=EMmGDvh9Na5fdqB2i3/UzIaa+SdCFrIn9IqVFPiQoi0x2Lua1S8CS1NF
-   0lX/oU8DuTGxkabYgbUkHJL9f8zBGnwsEePAaYST0c8wKLPSHPtHaCGGp
-   yes6YMTlHN73U4yWEkHHVy/MX5He1V69xd0hhSkRaWYX9F7ShqSmAd2Fa
-   X9KE+jTbT6s9AS+QjA1DhrO3nST/TKUGOjmYFQ6/xJ+KS75u1bYUoJZC1
-   PFa3Z4FpSVPrA2sqDR6fb0/GDphI5u7YpXlhFVe7ZDTGzn5Rd1iluJj8c
-   acdm9o3beXKuXu0S5EkB6MxKGmCQl1o5jQrDwH8E3Fj1xE7ExysLOaOxc
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263587"
+  bh=s9OP/gIZPXds2wY7KyxyQV4a6LysK11/BO5DZhuDGds=;
+  b=ln2PCBD9Ct9aY0D6mtVmc5qlyQKAhen3ZfEJWryRMk+F+wILbc/0SV1k
+   VcouaDi0qrZodOIF0HJ0AR9Z0R9BOwDFp1cHpF8AhVJ8HmNCC3Eow3OIN
+   thnym/0kO68s7FYvUzSyv80lKJNUoC8PW0mdVpfBiF4SiDH612przAwRd
+   OYib+rZ1zX6a3j8YDUD8K3CSxCnQjn9PVkNg+pblbUz1nvsNJwHmS3zwA
+   qNMqAje4VDa8Z++j+aAANyWdt73WdZPntANT43hUKaoZlIMYQK3SfilV5
+   CwocGVb4NMF9rxRyjaB5UFp+kpSkfCEny5MwgCpxj8xW7regA/ya6SE+J
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263604"
 X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="346263587"
+   d="scan'208";a="346263604"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:31 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:33 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351707"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351721"
 X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="692351707"
+   d="scan'208";a="692351721"
 Received: from yalankry-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.233.156])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:30 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:32 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, Tom Rix <trix@redhat.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 06/15] wifi: iwlwifi: mvm: initialize seq variable
-Date:   Fri, 14 Apr 2023 13:11:57 +0300
-Message-Id: <20230414130637.6dd372f84f93.If1f708c90e6424a935b4eba3917dfb7582e0dd0a@changeid>
+Subject: [PATCH 07/15] wifi: iwlwifi: fw: move memset before early return
+Date:   Fri, 14 Apr 2023 13:11:58 +0300
+Message-Id: <20230414130637.872a7175f1ff.I33802a77a91998276992b088fbe25f61c87c33ac@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230414101206.1170180-1-gregory.greenman@intel.com>
 References: <20230414101206.1170180-1-gregory.greenman@intel.com>
@@ -64,35 +63,44 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Tom Rix <trix@redhat.com>
 
-Clang static analysis reports this issue
-d3.c:567:22: warning: The left operand of '>' is
-  a garbage value
-  if (seq.tkip.iv32 > cur_rx_iv32)
-      ~~~~~~~~~~~~~ ^
+Clang static analysis reports this representative issue
+dbg.c:1455:6: warning: Branch condition evaluates to
+a garbage value
+  if (!rxf_data.size)
+       ^~~~~~~~~~~~~~
 
-seq is never initialized. Call ieee80211_get_key_rx_seq() to
-initialize seq.
+This check depends on iwl_ini_get_rxf_data() to clear
+rxf_data but the function can return early without
+doing the clear.  So move the memset before the early
+return.
 
-Fixes: 0419e5e672d6 ("iwlwifi: mvm: d3: separate TKIP data from key iteration")
+Fixes: cc9b6012d34b ("iwlwifi: yoyo: use hweight_long instead of bit manipulating")
 Signed-off-by: Tom Rix <trix@redhat.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index bf80b1d093a2..798a7a1299e1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -564,6 +564,7 @@ static void iwl_mvm_wowlan_get_tkip_data(struct ieee80211_hw *hw,
- 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index d5b51496bd0b..d9faaae01abd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1388,13 +1388,13 @@ static void iwl_ini_get_rxf_data(struct iwl_fw_runtime *fwrt,
+ 	if (!data)
+ 		return;
  
- 		for (i = 0; i < IWL_NUM_RSC; i++) {
-+			ieee80211_get_key_rx_seq(key, i, &seq);
- 			/* wrapping isn't allowed, AP must rekey */
- 			if (seq.tkip.iv32 > cur_rx_iv32)
- 				cur_rx_iv32 = seq.tkip.iv32;
++	memset(data, 0, sizeof(*data));
++
+ 	/* make sure only one bit is set in only one fid */
+ 	if (WARN_ONCE(hweight_long(fid1) + hweight_long(fid2) != 1,
+ 		      "fid1=%x, fid2=%x\n", fid1, fid2))
+ 		return;
+ 
+-	memset(data, 0, sizeof(*data));
+-
+ 	if (fid1) {
+ 		fifo_idx = ffs(fid1) - 1;
+ 		if (WARN_ONCE(fifo_idx >= MAX_NUM_LMAC, "fifo_idx=%d\n",
 -- 
 2.38.1
 
