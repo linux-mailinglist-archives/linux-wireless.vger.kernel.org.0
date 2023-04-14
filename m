@@ -2,49 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 918376E2602
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 16:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F0B6E28BA
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 18:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbjDNOmq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 10:42:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
+        id S230106AbjDNQwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 12:52:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbjDNOmo (ORCPT
+        with ESMTP id S229468AbjDNQwp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 10:42:44 -0400
+        Fri, 14 Apr 2023 12:52:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E56FB758;
-        Fri, 14 Apr 2023 07:42:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9C230FD
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 09:52:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2D66633F0;
-        Fri, 14 Apr 2023 14:42:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181F1C433EF;
-        Fri, 14 Apr 2023 14:42:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 375916395A
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 16:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760F6C433EF;
+        Fri, 14 Apr 2023 16:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681483359;
-        bh=DjZBywGFdDSzDPQzRUbyf7CiYMlqZMeQShR8K7hDGjw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=P2HHhMLemFRkqclbGCpkxceV7UNq3zgYQRAgNl2YkrNmCTy+SwKzmDIJ3RRIddcFI
-         YHV02zmxE0Yu8kB7Ds40HdKEXCkITZ7Q5WCoffur1c8fS23JIdzEvhlHnoRXJXMD6D
-         xU0uhrhbX1ZpP5ua568C0GE1hWCqPctwczuzuhCw6iYnQu074C0JxKxwFoiCvgE19n
-         5W6a/uIT9Ijhauj7qwWBFHy2FwvVq7qEOmyhiz6W2bhvziu/+8I0kZTwEAxM5gh+7o
-         GwG/NafhbD7OHb5EAfQrNjm5NZq75vQMBpVApr2OFE74HpqucmR3pF/+DrxRp5zFTV
-         KGU51KEn49t0w==
-Date:   Fri, 14 Apr 2023 07:42:38 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] net: extend drop reasons for multiple subsystems
-Message-ID: <20230414074238.2da8f8db@kernel.org>
-In-Reply-To: <9b5c442ce63c885514a833e5b7a422eed19a4314.camel@sipsolutions.net>
-References: <20230330212227.928595-1-johannes@sipsolutions.net>
-        <20230331213621.0993e25b@kernel.org>
-        <9b5c442ce63c885514a833e5b7a422eed19a4314.camel@sipsolutions.net>
+        s=k20201202; t=1681491162;
+        bh=ymu7g2uaVdfKeqRIR4pB6ksp9kMd/qZYNI8NivqgtVE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OLEP+ZrGMGqLbSXrxc1YvNZHubyLPB1wjKu0YuftUQkHaBTYdiD8UXJYtovaZuoxh
+         FotC1+NYNqz79QDOhquBfI5LDHgOU9TnEYcXEE5ZBC2lzWTWkS13vkpjNYkPKJuUpA
+         uk2P21w5idHAJU9IyUhVEwbn/cWMsydACAdmZAhIbAcWT60uzmO61stHTibuxwWvGr
+         ekHf4R53ISfGoA3Qy0K89xrVsctmQMOyaXHlJFPUnFKGa137Q072Ggw5ac036DArpa
+         ONtPT8VpKi4fEtpqRnW2XHn4oBDngUOPuMU6a4esckMIJhAPj/18iFzLCegSc/KkmI
+         1BgverK7L+u1w==
+Date:   Fri, 14 Apr 2023 11:52:41 -0500
+From:   Seth Forshee <sforshee@kernel.org>
+To:     Kirill <me@16depo.xyz>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [wireless-regdb] [PATCH] Update regulatory info for Russia (RU)
+ on 6GHz
+Message-ID: <ZDmE2YcOgbSektIE@do-x1extreme>
+References: <411a77cb-47f1-2f97-76c6-939c024654b4@16depo.xyz>
+ <000cae34-88be-9ac1-84c3-d7d0e6748b18@16depo.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <000cae34-88be-9ac1-84c3-d7d0e6748b18@16depo.xyz>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,58 +56,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 14 Apr 2023 11:25:08 +0200 Johannes Berg wrote:
-> On Fri, 2023-03-31 at 21:36 -0700, Jakub Kicinski wrote:
-> >   
-> > > +/* Note: due to dynamic registrations, access must be under RCU */
-> > > +extern const struct drop_reason_list __rcu *
-> > > +drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM];
-> > > +
-> > > +void drop_reasons_register_subsys(enum skb_drop_reason_subsys subsys,
-> > > +				  const struct drop_reason_list *list);
-> > > +void drop_reasons_unregister_subsys(enum skb_drop_reason_subsys subsys);  
+On Thu, Apr 13, 2023 at 11:25:12PM +0300, Kirill wrote:
+> Hello, Seth. Is patch for activation of 6GHz are good? Do i need to provide
+> some additional links?
+
+Sorry, I haven't had a chance to review it yet. It's been a busy week
+and I have to review patches in my spare time. I'm planning to get
+through all of these pending mails this weekend.
+
+Seth
+
+> 
+> On 25.03.2023 04:04, Kirill wrote:
+> > Update regulatory info for Russia on 6GHz in
+> >  accordance with current regulatory rules.
 > > 
-> > dropreason.h is included by skbuff.h because history, but I don't think
-> > any of the new stuff must be visible in skbuff.h.
+> > Source: https://docs.cntd.ru/document/1300597464?section=text
 > > 
-> > Could you make a new header, and put as much of this stuff there as
-> > possible? Our future selves will thank us for shorter rebuild times..  
-> 
-> Sure. Not sure it'll make a big difference in rebuild, but we'll see :)
-> 
-> I ended up moving dropreason.h to dropreason-core.h first, that way we
-> also have a naming scheme for non-core dropreason files should they
-> become visible outside of the subsystem (i.e. mac80211 just has them
-> internally).
-> 
-> Dunno, let me know if you prefer something else, I just couldn't come up
-> with a non-confusing longer name for the new thing.
-
-Sounds good.
-
-> > Weak preference to also take the code out of skbuff.c but that's not as
-> > important.  
-> 
-> I guess I can create a new dropreason.c, but is that worth it? It's only
-> a few lines. Let me know, then I can resend.
-
-It's hard to tell. Most additions to the core are small at the start so
-we end up chucking all of them into a handful of existing source files.
-And those files grow and grow. Splitting the later is extra work and
-makes backports harder.
-
-It's a game of predicting which code will likely grow into a reasonable
-~500+ LoC at some point, and which code will not. I have the feeling
-that dropreason code will grow. But yes, it's still fairly small, we 
-can defer.
-
-> > You To'd both wireless and netdev, who are you expecting to apply this?
-> > :S  
-> 
-> Good question :)
-> 
-> The first patch (patches in v3) really should go through net-next I
-> suppose, and I wouldn't mind if the other one did as well, it doesn't
-> right now touch anything likely to change.
-
-SG!
+> > Signed-off-by: Kirill Matvienko <me@16depo.xyz>
+> > ---
+> >  db.txt | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/db.txt b/db.txt
+> > index 915a3b9..7f338b2 100644
+> > --- a/db.txt
+> > +++ b/db.txt
+> > @@ -1500,11 +1500,12 @@ country RS: DFS-ETSI
+> >      # 60 GHz band channels 1-4, ref: Etsi En 302 567
+> >      (57000 - 66000 @ 2160), (40)
+> > 
+> > -# Source: https://docs.cntd.ru/document/902048009?section=text
+> > +# Source: https://docs.cntd.ru/document/1300597464?section=text
+> >  country RU: DFS-ETSI
+> >      (2400 - 2483.5 @ 40), (20)
+> >      (5150 - 5350 @ 160), (100 mW), NO-OUTDOOR, DFS
+> >      (5650 - 5850 @ 160), (100 mW), NO-OUTDOOR, DFS
+> > +    (5925 - 6425 @ 160), (100 mW), NO-OUTDOOR
+> >      # 60 GHz band channels 1-4, ref: Changes to NLA 124_Order
+> > №129_22042015.pdf
+> >      (57000 - 66000 @ 2160), (40), NO-OUTDOOR
+> > 
