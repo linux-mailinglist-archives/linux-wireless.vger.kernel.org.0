@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C54256E206F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC516E2071
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:12:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbjDNKMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 06:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49824 "EHLO
+        id S229949AbjDNKMx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 06:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbjDNKMc (ORCPT
+        with ESMTP id S230268AbjDNKMp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 06:12:32 -0400
+        Fri, 14 Apr 2023 06:12:45 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9797AA0
-        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F2FA24D
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681467149; x=1713003149;
+  t=1681467152; x=1713003152;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mmQXJpAbV62eerNVSuf2ZBBe0ugbQhovY7awLHk1NTc=;
-  b=NrIyD8CBgVLfqFlWBZNKOeEZrKjG3WJRnkANca+wpWmyca0pvFgZmJFg
-   KpA37I1B19l3E7z2AUc827HlnVLI3YL2D8ledN05BOAhaBmjYC17/0J7S
-   37PcbYs8hWDgFEz45p0YU+6BJgOwLZY2UBSU/HI50Y4PC+7Q4AT3V9aBI
-   eu8zoAHdMn71Q/X9yDyKLis24tvHYUx03Xun5otfSWSrfeUKz55ucFYtL
-   Be7g8rDUoOyZB0LBGd3WWyDsmcLCWQI9ksmcHGgdFoJkHmnZH7ZWz0ejz
-   u51MLiB+6hyT9E+cE3Wcl1suV4NQsjgQJU9uWTwxsDLJnPdWY68hp8VBE
+  bh=ZJGtKXfayxqz5VXFbJ88KsReJBYaEfsh+05frtg8Y7s=;
+  b=EMmGDvh9Na5fdqB2i3/UzIaa+SdCFrIn9IqVFPiQoi0x2Lua1S8CS1NF
+   0lX/oU8DuTGxkabYgbUkHJL9f8zBGnwsEePAaYST0c8wKLPSHPtHaCGGp
+   yes6YMTlHN73U4yWEkHHVy/MX5He1V69xd0hhSkRaWYX9F7ShqSmAd2Fa
+   X9KE+jTbT6s9AS+QjA1DhrO3nST/TKUGOjmYFQ6/xJ+KS75u1bYUoJZC1
+   PFa3Z4FpSVPrA2sqDR6fb0/GDphI5u7YpXlhFVe7ZDTGzn5Rd1iluJj8c
+   acdm9o3beXKuXu0S5EkB6MxKGmCQl1o5jQrDwH8E3Fj1xE7ExysLOaOxc
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263569"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263587"
 X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="346263569"
+   d="scan'208";a="346263587"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:29 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351688"
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351707"
 X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
-   d="scan'208";a="692351688"
+   d="scan'208";a="692351707"
 Received: from yalankry-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.233.156])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:28 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:30 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Colin Ian King <colin.i.king@gmail.com>,
+Cc:     linux-wireless@vger.kernel.org, Tom Rix <trix@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 05/15] wifi: iwlwifi: mvm: Fix spelling mistake "Gerenal" -> "General"
-Date:   Fri, 14 Apr 2023 13:11:56 +0300
-Message-Id: <20230414130637.eac55cbef8f1.I15cc5d3f1489759bf915bfb3cbbb72b67b18f8b6@changeid>
+Subject: [PATCH 06/15] wifi: iwlwifi: mvm: initialize seq variable
+Date:   Fri, 14 Apr 2023 13:11:57 +0300
+Message-Id: <20230414130637.6dd372f84f93.If1f708c90e6424a935b4eba3917dfb7582e0dd0a@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230414101206.1170180-1-gregory.greenman@intel.com>
 References: <20230414101206.1170180-1-gregory.greenman@intel.com>
@@ -62,29 +62,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Tom Rix <trix@redhat.com>
 
-There is a spelling mistake in a IWL_DEBUG_SCAN debug message. Fix it.
+Clang static analysis reports this issue
+d3.c:567:22: warning: The left operand of '>' is
+  a garbage value
+  if (seq.tkip.iv32 > cur_rx_iv32)
+      ~~~~~~~~~~~~~ ^
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+seq is never initialized. Call ieee80211_get_key_rx_seq() to
+initialize seq.
+
+Fixes: 0419e5e672d6 ("iwlwifi: mvm: d3: separate TKIP data from key iteration")
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 7749f15b7f14..7ac9bdbfe194 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -2297,7 +2297,7 @@ iwl_mvm_scan_umac_fill_general_p_v11(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index bf80b1d093a2..798a7a1299e1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -564,6 +564,7 @@ static void iwl_mvm_wowlan_get_tkip_data(struct ieee80211_hw *hw,
+ 		}
  
- 	iwl_mvm_scan_umac_dwell_v11(mvm, gp, params);
- 
--	IWL_DEBUG_SCAN(mvm, "Gerenal: flags=0x%x, flags2=0x%x\n",
-+	IWL_DEBUG_SCAN(mvm, "General: flags=0x%x, flags2=0x%x\n",
- 		       gen_flags, gen_flags2);
- 
- 	gp->flags = cpu_to_le16(gen_flags);
+ 		for (i = 0; i < IWL_NUM_RSC; i++) {
++			ieee80211_get_key_rx_seq(key, i, &seq);
+ 			/* wrapping isn't allowed, AP must rekey */
+ 			if (seq.tkip.iv32 > cur_rx_iv32)
+ 				cur_rx_iv32 = seq.tkip.iv32;
 -- 
 2.38.1
 
