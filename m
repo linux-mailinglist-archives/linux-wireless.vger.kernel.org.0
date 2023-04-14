@@ -2,82 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A0356E201A
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0327E6E205B
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Apr 2023 12:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbjDNKAl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Apr 2023 06:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
+        id S229828AbjDNKMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Apr 2023 06:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjDNKAj (ORCPT
+        with ESMTP id S229764AbjDNKMT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Apr 2023 06:00:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863617D94;
-        Fri, 14 Apr 2023 03:00:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DA43645FF;
-        Fri, 14 Apr 2023 10:00:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E36C433D2;
-        Fri, 14 Apr 2023 10:00:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681466437;
-        bh=+unhzZIt93zWvizO+N74h9hOS28VrKOnLga/YajlgSE=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=b1B6n5tYl5i7L/2mf6Z7/GE0jhkHJM/mSJkH8JHN+wh+6Yl/1PcFz6hHU9d/dvoFl
-         zo6qkq8We1ZLyhSkCoDDKBUUaNpoLsBGxD0T/LdzaodXxS0aIF2Rv9aQx3UZGrhdYw
-         J4HIqgPURwu2A1PHjHRQn45ctcavLdME1+OzkBQstVK/nbqmAyNmjrDzkpl3K2z4SX
-         bynMF3Poul4vcaP2t3Lve+Lb4xFHq+lrk6ta9MfgyThAiPunWt85mVBOTIWkid3kQf
-         NpPsPgt6DWMp9U6xNhwHHNZWvVyN/Mj99XuCbtHfQAI2tsd/YAH4I14AB4jIIcaXcq
-         fL5MQI8XyzUVQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     Kalle Valo <quic_kvalo@quicinc.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath9k: Don't mark channelmap stack variable read-only in ath9k_mci_update_wlan_channels()
-References: <20230413214118.153781-1-toke@toke.dk>
-Date:   Fri, 14 Apr 2023 13:00:34 +0300
-In-Reply-To: <20230413214118.153781-1-toke@toke.dk> ("Toke
-        \=\?utf-8\?Q\?H\=C3\=B8iland-J\=C3\=B8rgensen\=22's\?\= message of "Thu, 13 Apr 2023
- 23:41:18 +0200")
-Message-ID: <87v8hysrzx.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 14 Apr 2023 06:12:19 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C58198D
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Apr 2023 03:12:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681467138; x=1713003138;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=opIZTxk0/1YtqqykBfqA1bnL7410rQflN+QQMBGP5lw=;
+  b=KoKOKEEm6YPEX0NG2hs64y6F4u/t5H6iyhrMuhfcWWc0vda+vUde595R
+   ipZgY2yLrLhzdRsQf0aTJlSDdd0VTsrJnnZRqPneG/xHH3MScGXqrZEJ/
+   Id2PyWCzDtfYlNwyyqLTNIOHHlgk9MQncl5zK05zdSgi/Hj6aTtDP08JJ
+   DWFfok3QdwfB3USueI3oNKR9sw9qmNjjWf4OQeDXUmroxW2jmcLJlMlcr
+   4gIcB1PgrEKz5U5QAIEp8k3il/rPKAcVzGu7kYJw4QnPtu8PohLxz3IMr
+   qpi5QeheUvilnwfIg2kVwFUK7JhALLuRv5SWI2likPnVfYwrefmc/ECRM
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="346263533"
+X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
+   d="scan'208";a="346263533"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10679"; a="692351514"
+X-IronPort-AV: E=Sophos;i="5.99,195,1677571200"; 
+   d="scan'208";a="692351514"
+Received: from yalankry-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.233.156])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 03:12:16 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/15] wifi: iwlwifi: updates intended for v6.4 2023-04-14
+Date:   Fri, 14 Apr 2023 13:11:51 +0300
+Message-Id: <20230414101206.1170180-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-> This partially reverts commit e161d4b60ae3a5356e07202e0bfedb5fad82c6aa.
->
-> Turns out the channelmap variable is not actually read-only, it's modified
-> through the MCI_GPM_CLR_CHANNEL_BIT() macro further down in the function,
-> so making it read-only causes page faults when that code is hit.
->
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217183
-> Fixes: e161d4b60ae3 ("wifi: ath9k: Make arrays prof_prio and channelmap s=
-tatic const")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+Hi,
 
-I guess the casting in MCI_GPM_CLR_CHANNEL_BIT() hide this and made it
-impossible for the compiler to detect it? A perfect example why I hate
-casting :)
+Here's the next set of iwlwifi patches for v6.4.
+Same as the previous one, this set contains the
+ususal developement, small improvements, cleanups and
+bugfixes. It also enables the new MLO FW API.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+Thanks,
+Gregory
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Colin Ian King (2):
+  wifi: iwlwifi: Fix spelling mistake "upto" -> "up to"
+  wifi: iwlwifi: mvm: Fix spelling mistake "Gerenal" -> "General"
+
+Hyunwoo Kim (1):
+  wifi: iwlwifi: pcie: Fix integer overflow in iwl_write_to_user_buf
+
+Ilan Peer (1):
+  wifi: iwlwifi: mvm: Fix setting the rate for non station cases
+
+Johannes Berg (6):
+  wifi: iwlwifi: mvm: track AP STA pointer and use it for MFP
+  wifi: iwlwifi: mvm: make iwl_mvm_mac_ctxt_send_beacon() static
+  wifi: iwlwifi: mvm: fix ptk_pn memory leak
+  wifi: iwlwifi: mvm: set STA mask for keys in MLO
+  wifi: iwlwifi: mvm: validate station properly in flush
+  wifi: iwlwifi: mvm: tx: remove misleading if statement
+
+Miri Korenblit (1):
+  wifi: iwlwifi: mvm: enable new MLD FW API
+
+Mukesh Sisodiya (2):
+  wifi: iwlwifi: Add RF Step Type for BZ device
+  wifi: iwlwifi: add a new PCI device ID for BZ device
+
+Tom Rix (2):
+  wifi: iwlwifi: mvm: initialize seq variable
+  wifi: iwlwifi: fw: move memset before early return
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  47 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |   4 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   1 +
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   4 +
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   2 +
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |   7 +
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |   1 +
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  18 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  23 +-
+ .../net/wireless/intel/iwlwifi/mvm/mld-key.c  |  82 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  29 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  29 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 376 +++++++++---------
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |   2 +-
+ 17 files changed, 378 insertions(+), 256 deletions(-)
+
+-- 
+2.38.1
+
