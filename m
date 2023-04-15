@@ -2,355 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2606E2F47
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Apr 2023 08:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25BB6E3206
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Apr 2023 17:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjDOGbZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Apr 2023 02:31:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60516 "EHLO
+        id S229670AbjDOPFu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 15 Apr 2023 11:05:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjDOGbY (ORCPT
+        with ESMTP id S229535AbjDOPFs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Apr 2023 02:31:24 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65EE422F;
-        Fri, 14 Apr 2023 23:31:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681540282; x=1713076282;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vNjobJbkMOaL4V9aYbIr6Qr1gsthsCZ8xnDOUbhuCzI=;
-  b=dEsmiUk3aIzdGbq8sNsh120jqTf3HJGQnn6HxSb0rhPF0ITo++eKadkY
-   I0t63sdPFgLxxKsl4u144KVTJ0pnSjZ318m0wBfZUcnPUGX8hzhtnid99
-   usK0XxiSRbKE8WReTRB090JussiPk/dVQnSDHseETLHMhZegXAt+k/L4J
-   v/IJCvRCTf1BemIrd3MkVgx++pagEBqiq+1iGL+uMbjwLLagYlfGH5wTs
-   rzDa+ODt3q0BuSSP2mGwsH3DMTn9YipymRokHYDR8EWbRLEVHeEN940ux
-   pfcuDcYgImB37vFgAkcCKYPf7v+pU+1PCWKB7LNbMnNz1u1VL/JtCZ9Ob
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10680"; a="346464337"
-X-IronPort-AV: E=Sophos;i="5.99,199,1677571200"; 
-   d="scan'208";a="346464337"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2023 23:31:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10680"; a="722720540"
-X-IronPort-AV: E=Sophos;i="5.99,199,1677571200"; 
-   d="scan'208";a="722720540"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 14 Apr 2023 23:31:17 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pnZRM-000ab7-2f;
-        Sat, 15 Apr 2023 06:31:16 +0000
-Date:   Sat, 15 Apr 2023 14:30:28 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Mark Brown <broonie@kernel.org>, linux-xfs@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD SUCCESS WITH WARNING
- d3f2cd24819158bb70701c3549e586f9df9cee67
-Message-ID: <643a4484.lQNwSPXmxToKotfK%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Sat, 15 Apr 2023 11:05:48 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A12B3C3B;
+        Sat, 15 Apr 2023 08:05:47 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id eo6-20020a05600c82c600b003ee5157346cso13294318wmb.1;
+        Sat, 15 Apr 2023 08:05:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681571146; x=1684163146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zwxTHaEdDM59TU3KApuuMuKC7LO7W9mKFqhs96b3+4Y=;
+        b=pAdy9OpNyRv1mrYm5Uf6HqbxZo6eUc4IkyHQXp3rLLZ3mtYZ5JGjiuiqFbMHKKQsW8
+         f2jqPCpanpxfDRP5XdNa29FJKHCbor4KcQAYwoBbIMnih+wR7q2wou4w4yk+peU/1PHC
+         JsA0uSgFlVerM0k+ZsZKPPKU9iEA8+1YgEoWuueDc7H5pYr17mcMmZVYSeA/5/WITs0I
+         JDw5zqEG4TsECjYXYY3WvgBZmeWsrug2CelY+2KAJrem3AVMGTWzkt/kVG+kiJtyd49M
+         phxJnQwMVnilskM8QkwUq9FA8YbO/gSeh9HgB8La2vqmdPn6eCFNJYhRxhqtXZ2/oMmf
+         YEZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681571146; x=1684163146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zwxTHaEdDM59TU3KApuuMuKC7LO7W9mKFqhs96b3+4Y=;
+        b=hbLdzNVhW4HcMY4syGshv5V/s/rXmzIJ+U2PwZ/B7S4CcPzniXt+1dHfzdt2DUkzR6
+         zvXrY+FpwBgrWgvIgQYurjUXFSRkHLqPXbtYx4lFZkVzVLnGIcI6MY6+lV+ji3qPbyit
+         BjW8mTtYOtllraVLksnk6AwhcwqXaHOo5LK/wIoUH+OPRvoJ3hKKIjh0qxj7CWc/hHke
+         A/rq8sCYYCFFpNYpFh6/lSCIWqKgbnsy+kyTIZ6CucAKZCMWsQgxW98mP3mcBLZOu3U3
+         GA4mFcl/6y3GZ2TW08OiYuHfgf/WLoAr7iCIie+gswtw9PEs0h2KiB4s27PGsoCHQkXJ
+         JA4A==
+X-Gm-Message-State: AAQBX9e6SwVunlgTKkcX4zvINcqy/xDvbJi+TZQYVXcW9X4hgCoKdpJH
+        U8l7arlU3ZctpzCnpYDzFXg=
+X-Google-Smtp-Source: AKy350b4HGFEsNoz0CzqZsYFmqDwpZlqQr3G3X5b8lUqEm4pjyGBYq759ma7727uzhP6VWiEf58OxA==
+X-Received: by 2002:a7b:c309:0:b0:3f0:967e:2cfb with SMTP id k9-20020a7bc309000000b003f0967e2cfbmr7122512wmj.36.1681571145574;
+        Sat, 15 Apr 2023 08:05:45 -0700 (PDT)
+Received: from skynet.lan (255.red-79-146-124.dynamicip.rima-tde.net. [79.146.124.255])
+        by smtp.gmail.com with ESMTPSA id i8-20020a5d5228000000b002efb4dc5a5fsm5990556wra.7.2023.04.15.08.05.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Apr 2023 08:05:45 -0700 (PDT)
+From:   =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>
+To:     f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
+        toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        chunkeey@gmail.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= 
+        <noltari@gmail.com>
+Subject: [PATCH] ath9k: fix calibration data endianness
+Date:   Sat, 15 Apr 2023 17:05:42 +0200
+Message-Id: <20230415150542.2368179-1-noltari@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: d3f2cd24819158bb70701c3549e586f9df9cee67  Add linux-next specific files for 20230414
+BCM63xx (Big Endian MIPS) devices store the calibration data in MTD
+partitions but it needs to be swapped in order to work, otherwise it fails:
+ath9k 0000:00:01.0: enabling device (0000 -> 0002)
+ath: phy0: Ignoring endianness difference in EEPROM magic bytes.
+ath: phy0: Bad EEPROM VER 0x0001 or REV 0x00e0
+ath: phy0: Unable to initialize hardware; initialization status: -22
+ath9k 0000:00:01.0: Failed to initialize device
+ath9k: probe of 0000:00:01.0 failed with error -22
 
-Warning reports:
+Fixes: eb3a97a69be8 ("ath9k: fetch calibration data via nvmem subsystem")
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-https://lore.kernel.org/oe-kbuild-all/202303161521.jbGbaFjJ-lkp@intel.com
-
-Warning: (recently discovered and may have been fixed)
-
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:351:13: warning: variable 'bw_needed' set but not used [-Wunused-but-set-variable]
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_validation.c:352:25: warning: variable 'link' set but not used [-Wunused-but-set-variable]
-drivers/net/wireless/legacy/ray_cs.c:628:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
-drivers/phy/mediatek/phy-mtk-hdmi-mt8195.c:298:6: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
-
-Unverified Warning (likely false positive, please contact us if interested):
-
-drivers/acpi/property.c:985 acpi_data_prop_read_single() error: potentially dereferencing uninitialized 'obj'.
-drivers/gpu/host1x/context.c:82 host1x_memory_context_list_init() warn: missing error code 'err'
-drivers/gpu/host1x/dev.c:417 host1x_iommu_attach() warn: passing zero to 'ERR_PTR'
-fs/xfs/scrub/refcount.c: xfs_mount.h is included more than once.
-fs/xfs/scrub/refcount.c: xfs_trans_resv.h is included more than once.
-
-Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- alpha-randconfig-r013-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arc-randconfig-c023-20230412
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arc-randconfig-r022-20230409
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- arm-randconfig-m041-20230413
-|   |-- drivers-gpu-host1x-context.c-host1x_memory_context_list_init()-warn:missing-error-code-err
-|   `-- drivers-gpu-host1x-dev.c-host1x_iommu_attach()-warn:passing-zero-to-ERR_PTR
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- i386-randconfig-m021
-|   `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- loongarch-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- loongarch-defconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- microblaze-randconfig-r012-20230415
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- parisc-randconfig-r003-20230410
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- powerpc-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- powerpc-randconfig-r034-20230413
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- riscv-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- riscv-randconfig-r042-20230410
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- s390-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- sparc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|   `-- drivers-net-wireless-legacy-ray_cs.c:warning:strncpy-specified-bound-equals-destination-size
-|-- sparc64-randconfig-r014-20230415
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-|-- x86_64-allnoconfig
-|   |-- fs-xfs-scrub-refcount.c:xfs_mount.h-is-included-more-than-once.
-|   `-- fs-xfs-scrub-refcount.c:xfs_trans_resv.h-is-included-more-than-once.
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-bw_needed-set-but-not-used
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_validation.c:warning:variable-link-set-but-not-used
-`-- x86_64-randconfig-m001
-    `-- drivers-acpi-property.c-acpi_data_prop_read_single()-error:potentially-dereferencing-uninitialized-obj-.
-clang_recent_errors
-|-- arm-randconfig-r046-20230409
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-|-- arm64-randconfig-r032-20230410
-|   `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-`-- powerpc-randconfig-r035-20230410
-    `-- drivers-phy-mediatek-phy-mtk-hdmi-mt8195.c:warning:variable-ret-is-uninitialized-when-used-here
-
-elapsed time: 734m
-
-configs tested: 156
-configs skipped: 13
-
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r006-20230415   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r013-20230409   gcc  
-alpha                randconfig-r034-20230409   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r022-20230409   gcc  
-arc                  randconfig-r032-20230413   gcc  
-arc                  randconfig-r043-20230409   gcc  
-arc                  randconfig-r043-20230410   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm          buildonly-randconfig-r004-20230415   gcc  
-arm          buildonly-randconfig-r005-20230415   gcc  
-arm                                 defconfig   gcc  
-arm                       imx_v4_v5_defconfig   clang
-arm                        keystone_defconfig   gcc  
-arm                   milbeaut_m10v_defconfig   clang
-arm                  randconfig-r002-20230409   gcc  
-arm                  randconfig-r006-20230410   gcc  
-arm                  randconfig-r014-20230409   clang
-arm                  randconfig-r024-20230409   clang
-arm                  randconfig-r033-20230410   gcc  
-arm                  randconfig-r046-20230409   clang
-arm                  randconfig-r046-20230410   clang
-arm                           spitz_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r014-20230410   gcc  
-arm64                randconfig-r032-20230410   clang
-arm64                randconfig-r035-20230413   gcc  
-arm64                randconfig-r036-20230413   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r015-20230409   clang
-hexagon              randconfig-r015-20230413   clang
-hexagon              randconfig-r024-20230410   clang
-hexagon              randconfig-r031-20230409   clang
-hexagon              randconfig-r041-20230409   clang
-hexagon              randconfig-r041-20230410   clang
-hexagon              randconfig-r045-20230409   clang
-hexagon              randconfig-r045-20230410   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230410   clang
-i386                 randconfig-a002-20230410   clang
-i386                 randconfig-a003-20230410   clang
-i386                 randconfig-a004-20230410   clang
-i386                 randconfig-a005-20230410   clang
-i386                 randconfig-a006-20230410   clang
-i386                 randconfig-a011-20230410   gcc  
-i386                 randconfig-a012-20230410   gcc  
-i386                 randconfig-a013-20230410   gcc  
-i386                 randconfig-a014-20230410   gcc  
-i386                 randconfig-a015-20230410   gcc  
-i386                 randconfig-a016-20230410   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r006-20230409   gcc  
-loongarch            randconfig-r021-20230409   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r005-20230409   gcc  
-m68k                 randconfig-r012-20230409   gcc  
-m68k                 randconfig-r015-20230410   gcc  
-microblaze   buildonly-randconfig-r001-20230415   gcc  
-microblaze           randconfig-r003-20230409   gcc  
-microblaze           randconfig-r011-20230415   gcc  
-microblaze           randconfig-r012-20230415   gcc  
-microblaze           randconfig-r016-20230413   gcc  
-microblaze           randconfig-r021-20230410   gcc  
-microblaze           randconfig-r033-20230413   gcc  
-microblaze           randconfig-r035-20230409   gcc  
-microblaze           randconfig-r036-20230410   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                            gpr_defconfig   gcc  
-mips                 randconfig-r031-20230410   gcc  
-nios2        buildonly-randconfig-r003-20230415   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r011-20230409   gcc  
-nios2                randconfig-r016-20230409   gcc  
-nios2                randconfig-r026-20230409   gcc  
-openrisc             randconfig-r012-20230410   gcc  
-openrisc             randconfig-r022-20230410   gcc  
-openrisc             randconfig-r026-20230410   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r003-20230410   gcc  
-parisc               randconfig-r005-20230410   gcc  
-parisc               randconfig-r011-20230413   gcc  
-parisc               randconfig-r023-20230409   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                     ep8248e_defconfig   gcc  
-powerpc                 mpc8540_ads_defconfig   gcc  
-powerpc              randconfig-r034-20230413   gcc  
-powerpc              randconfig-r035-20230410   clang
-powerpc                    socrates_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r001-20230409   clang
-riscv                randconfig-r036-20230409   clang
-riscv                randconfig-r042-20230409   gcc  
-riscv                randconfig-r042-20230410   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r004-20230410   clang
-s390                 randconfig-r044-20230409   gcc  
-s390                 randconfig-r044-20230410   gcc  
-sh                               allmodconfig   gcc  
-sh                   randconfig-r001-20230410   gcc  
-sh                   randconfig-r002-20230410   gcc  
-sh                   randconfig-r013-20230410   gcc  
-sh                           se7722_defconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r004-20230409   gcc  
-sparc                randconfig-r011-20230410   gcc  
-sparc                randconfig-r013-20230415   gcc  
-sparc                randconfig-r032-20230409   gcc  
-sparc                randconfig-r033-20230409   gcc  
-sparc                       sparc64_defconfig   gcc  
-sparc64                          alldefconfig   gcc  
-sparc64              randconfig-r014-20230413   gcc  
-sparc64              randconfig-r014-20230415   gcc  
-sparc64              randconfig-r016-20230410   gcc  
-sparc64              randconfig-r016-20230415   gcc  
-sparc64              randconfig-r025-20230410   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64               randconfig-a011-20230410   gcc  
-x86_64               randconfig-a012-20230410   gcc  
-x86_64               randconfig-a013-20230410   gcc  
-x86_64               randconfig-a014-20230410   gcc  
-x86_64               randconfig-a015-20230410   gcc  
-x86_64               randconfig-a016-20230410   gcc  
-x86_64                        randconfig-k001   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r034-20230410   gcc  
-
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 4f00400c7ffb..1314fbc55c0b 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -615,7 +615,6 @@ static int ath9k_nvmem_request_eeprom(struct ath_softc *sc)
+ 
+ 	ah->nvmem_blob_len = len;
+ 	ah->ah_flags &= ~AH_USE_EEPROM;
+-	ah->ah_flags |= AH_NO_EEP_SWAP;
+ 
+ 	return 0;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.2
+
