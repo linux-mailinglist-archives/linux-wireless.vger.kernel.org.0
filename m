@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 822186E385B
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 14:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B88426E385C
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 14:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbjDPMs2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Apr 2023 08:48:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33260 "EHLO
+        id S230430AbjDPMsa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Apr 2023 08:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230418AbjDPMs1 (ORCPT
+        with ESMTP id S230420AbjDPMs3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Apr 2023 08:48:27 -0400
+        Sun, 16 Apr 2023 08:48:29 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61A252111
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 05:48:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C9EA3A81
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 05:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681649298; x=1713185298;
+  t=1681649300; x=1713185300;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZM94AJ2QnP5NwFcsIGEA+Xs+cKQC0bAndni2hxgTMec=;
-  b=Pn4IU0nLejOMY/BXP3P6lFyOqvm3YQ0PIogO5cjxQuHZ2KIK9pj8ygwx
-   Fi+Q/X7cy5hjEg++dLsepT8S0XmD5XmOkZaG9CnDEWVUgf2uW4RSAIR5g
-   8gMy0Lys4pB6QBiwA5weYOwdIkDqzuGUolAeaPLHBrL/JSjvaQOc4mLVI
-   bgBw1GnrQ+CBpN/Y9i7h3AiXAeA03AD/iCF3R18jn/sH/CrkEjixd2IwH
-   Q5nQsWXdQIxh7PII89/Y8eLX/oWKrPZRnwZcUhSckhJcWe4PVEMpkPtVf
-   iNr5qsoFihlsQ6rwBnw0Kg4tdcFbhqidwq3YYFAkukiDmvirx8u3v6MhX
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="333520573"
+  bh=AR3doaIp95BdfkaOIn65lxmv8JmAyvFz4N/Lbt0j1tw=;
+  b=dibcrDKu7ASkM3SycaYZQbb3du1YafHTOjkI79m0lVBAe/Nou6fScf2q
+   ENnJA8TmEa2U/VYJqBC9crJpK0XCfdF52E0QiniU26bvQ20EtY0KfMHho
+   ixP295ujfutrPhHK1OcBod3NFVHn351mhSxYZgfJByaN204vDSvR9WY6R
+   o9FMDcx5N8n5CiFeNxcba9mRTZEorkvXMSYUvsbb5jUdf2tGbHJA3n2/U
+   53G4pw9JnzPONtWm+lu1sM1iMuE2jfyh524tYR+dRxPDr11rHCACyhDNM
+   9GtCOVVJU8gSvoejBfv85MSFG3QVBNSOkMbGKizbCjCAxzHtVNhwUtVoF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="333520575"
 X-IronPort-AV: E=Sophos;i="5.99,202,1677571200"; 
-   d="scan'208";a="333520573"
+   d="scan'208";a="333520575"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2023 05:48:18 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2023 05:48:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="640670449"
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="640670454"
 X-IronPort-AV: E=Sophos;i="5.99,202,1677571200"; 
-   d="scan'208";a="640670449"
+   d="scan'208";a="640670454"
 Received: from lavnon-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.215.99])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2023 05:48:16 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2023 05:48:18 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 12/15] wifi: iwlwifi: mvm: implement key link switching
-Date:   Sun, 16 Apr 2023 15:47:36 +0300
-Message-Id: <20230416154301.c6a777dd5e47.I693f7fd7c52fe8b51a58af69d45488511367f49e@changeid>
+Subject: [PATCH 13/15] wifi: iwlwifi: mvm: allow number of beacons from FW
+Date:   Sun, 16 Apr 2023 15:47:37 +0300
+Message-Id: <20230416154301.0d7522533557.Ic6b5992e94446c35cb0f3add019defa6e7aded2a@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230416124739.1260800-1-gregory.greenman@intel.com>
 References: <20230416124739.1260800-1-gregory.greenman@intel.com>
@@ -65,140 +65,85 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Implement switching keys from one set of firmware station IDs
-to another set, during link switch.
+Newer firmware images have a TLV advertising how many
+beacons they support, use that to permit adding more
+links in AP mode (FW needs to support at least as many
+links as beacons).
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mld-key.c  | 53 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 11 +++-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  5 ++
- 3 files changed, 67 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/file.h          | 1 +
+ drivers/net/wireless/intel/iwlwifi/fw/img.h           | 1 +
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c          | 7 +++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 5 ++++-
+ 4 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-index a8ab35473924..8853821b3716 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-@@ -97,6 +97,59 @@ static u32 iwl_mvm_get_sec_flags(struct iwl_mvm *mvm,
- 	return flags;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+index b00174c9ebce..cddf09d6be1c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
+@@ -104,6 +104,7 @@ enum iwl_ucode_tlv_type {
+ 	IWL_UCODE_TLV_CURRENT_PC		= 68,
  
-+struct iwl_mvm_sta_key_update_data {
-+	struct ieee80211_sta *sta;
-+	u32 old_sta_mask;
-+	u32 new_sta_mask;
-+	int err;
-+};
-+
-+static void iwl_mvm_mld_update_sta_key(struct ieee80211_hw *hw,
-+				       struct ieee80211_vif *vif,
-+				       struct ieee80211_sta *sta,
-+				       struct ieee80211_key_conf *key,
-+				       void *_data)
-+{
-+	u32 cmd_id = WIDE_ID(DATA_PATH_GROUP, SEC_KEY_CMD);
-+	struct iwl_mvm_sta_key_update_data *data = _data;
-+	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-+	struct iwl_sec_key_cmd cmd = {
-+		.action = cpu_to_le32(FW_CTXT_ACTION_MODIFY),
-+		.u.modify.old_sta_mask = cpu_to_le32(data->old_sta_mask),
-+		.u.modify.new_sta_mask = cpu_to_le32(data->new_sta_mask),
-+		.u.modify.key_id = cpu_to_le32(key->keyidx),
-+		.u.modify.key_flags =
-+			cpu_to_le32(iwl_mvm_get_sec_flags(mvm, vif, sta, key)),
-+	};
-+	int err;
-+
-+	/* only need to do this for pairwise keys (link_id == -1) */
-+	if (sta != data->sta || key->link_id >= 0)
-+		return;
-+
-+	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_ASYNC, sizeof(cmd), &cmd);
-+
-+	if (err)
-+		data->err = err;
-+}
-+
-+int iwl_mvm_mld_update_sta_keys(struct iwl_mvm *mvm,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta,
-+				u32 old_sta_mask,
-+				u32 new_sta_mask)
-+{
-+	struct iwl_mvm_sta_key_update_data data = {
-+		.sta = sta,
-+		.old_sta_mask = old_sta_mask,
-+		.new_sta_mask = new_sta_mask,
-+	};
-+
-+	ieee80211_iter_keys_rcu(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
-+				&data);
-+	return data.err;
-+}
-+
- static int __iwl_mvm_sec_key_del(struct iwl_mvm *mvm, u32 sta_mask,
- 				 u32 key_flags, u32 keyidx, u32 flags)
- {
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 36d83e22f0af..65436736f87f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -994,6 +994,7 @@ static int iwl_mvm_mld_update_sta_baids(struct iwl_mvm *mvm,
- }
+ 	IWL_UCODE_TLV_FW_NUM_STATIONS		= IWL_UCODE_TLV_CONST_BASE + 0,
++	IWL_UCODE_TLV_FW_NUM_BEACONS		= IWL_UCODE_TLV_CONST_BASE + 2,
  
- static int iwl_mvm_mld_update_sta_resources(struct iwl_mvm *mvm,
-+					    struct ieee80211_vif *vif,
- 					    struct ieee80211_sta *sta,
- 					    u32 old_sta_mask,
- 					    u32 new_sta_mask)
-@@ -1006,6 +1007,12 @@ static int iwl_mvm_mld_update_sta_resources(struct iwl_mvm *mvm,
- 	if (ret)
- 		return ret;
+ 	IWL_UCODE_TLV_TYPE_DEBUG_INFO		= IWL_UCODE_TLV_DEBUG_BASE + 0,
+ 	IWL_UCODE_TLV_TYPE_BUFFER_ALLOCATION	= IWL_UCODE_TLV_DEBUG_BASE + 1,
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/img.h b/drivers/net/wireless/intel/iwlwifi/fw/img.h
+index f5c4d93d1033..8d0d58d61892 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/img.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/img.h
+@@ -51,6 +51,7 @@ struct iwl_ucode_capabilities {
+ 	u32 error_log_addr;
+ 	u32 error_log_size;
+ 	u32 num_stations;
++	u32 num_beacons;
+ 	unsigned long _api[BITS_TO_LONGS(NUM_IWL_UCODE_TLV_API)];
+ 	unsigned long _capa[BITS_TO_LONGS(NUM_IWL_UCODE_TLV_CAPA)];
  
-+	ret = iwl_mvm_mld_update_sta_keys(mvm, vif, sta,
-+					  old_sta_mask,
-+					  new_sta_mask);
-+	if (ret)
-+		return ret;
-+
- 	return iwl_mvm_mld_update_sta_baids(mvm, old_sta_mask, new_sta_mask);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 042c06a22f5f..34feb4d29adc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1155,6 +1155,12 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+ 			capa->num_stations =
+ 				le32_to_cpup((const __le32 *)tlv_data);
+ 			break;
++		case IWL_UCODE_TLV_FW_NUM_BEACONS:
++			if (tlv_len != sizeof(u32))
++				goto invalid_tlv_len;
++			capa->num_beacons =
++				le32_to_cpup((const __le32 *)tlv_data);
++			break;
+ 		case IWL_UCODE_TLV_UMAC_DEBUG_ADDRS: {
+ 			const struct iwl_umac_debug_addrs *dbg_ptrs =
+ 				(const void *)tlv_data;
+@@ -1415,6 +1421,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
+ 			IWL_DEFAULT_STANDARD_PHY_CALIBRATE_TBL_SIZE;
+ 	fw->ucode_capa.n_scan_channels = IWL_DEFAULT_SCAN_CHANNELS;
+ 	fw->ucode_capa.num_stations = IWL_MVM_STATION_COUNT_MAX;
++	fw->ucode_capa.num_beacons = 1;
+ 	/* dump all fw memory areas by default */
+ 	fw->dbg.dump_mask = 0xffffffff;
  
-@@ -1045,7 +1052,7 @@ int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 203f2513e7ea..99ef12c530ea 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -882,7 +882,10 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
+ 				n_active++;
+ 		}
+ 
+-		if (n_active > 1)
++		if (vif->type == NL80211_IFTYPE_AP &&
++		    n_active > mvm->fw->ucode_capa.num_beacons)
++			return -EOPNOTSUPP;
++		else if (n_active > 1)
+ 			return -EOPNOTSUPP;
  	}
  
- 	if (sta_mask_to_rem) {
--		ret = iwl_mvm_mld_update_sta_resources(mvm, sta,
-+		ret = iwl_mvm_mld_update_sta_resources(mvm, vif, sta,
- 						       current_sta_mask,
- 						       current_sta_mask &
- 							~sta_mask_to_rem);
-@@ -1123,7 +1130,7 @@ int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
- 	}
- 
- 	if (sta_mask_added) {
--		ret = iwl_mvm_mld_update_sta_resources(mvm, sta,
-+		ret = iwl_mvm_mld_update_sta_resources(mvm, vif, sta,
- 						       current_sta_mask,
- 						       current_sta_mask |
- 							sta_mask_added);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 29a87d1ba343..203eb7233c77 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2332,6 +2332,11 @@ void iwl_mvm_sec_key_remove_ap(struct iwl_mvm *mvm,
- 			       struct ieee80211_vif *vif,
- 			       struct iwl_mvm_vif_link_info *link,
- 			       unsigned int link_id);
-+int iwl_mvm_mld_update_sta_keys(struct iwl_mvm *mvm,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta,
-+				u32 old_sta_mask,
-+				u32 new_sta_mask);
- 
- int iwl_rfi_send_config_cmd(struct iwl_mvm *mvm,
- 			    struct iwl_rfi_lut_entry *rfi_table);
 -- 
 2.38.1
 
