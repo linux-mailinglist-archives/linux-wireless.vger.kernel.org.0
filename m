@@ -2,169 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57CAE6E3AD2
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 19:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 449DB6E3C38
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 23:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbjDPRr5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Apr 2023 13:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55788 "EHLO
+        id S229721AbjDPVtn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Apr 2023 17:49:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjDPRr4 (ORCPT
+        with ESMTP id S229513AbjDPVtm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Apr 2023 13:47:56 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2539C271B
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 10:47:54 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id fw30so5655701ejc.5
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 10:47:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681667272; x=1684259272;
-        h=content-transfer-encoding:in-reply-to:from:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uglpDOp7goqbtE2J4rWdMlmwo93bZX1oiv/KXPq3Ivs=;
-        b=ORbfzb5yM0zynidkQjLeUDBd0NWYN43ToXrFil4WbmxCpj6w/w324AyIPDtXiKCLyM
-         fm+XxMjNYszRT6r+CfwgfPgQQHyu5FXS3AZ0gmJkzPwT+hdbG/I/0XaV5nIbuknYamfd
-         pRTzKYiKK0Yyf2kB2ziQ6vfIfac8SDh8a7qyBnF4gL0W+5Jj5zug3BPCP4HNo3Cjz3vi
-         iIlAt0GKNBVk1xcQQWPklqih/MsVBbkXyiKLTxDtCbHtPKap3HqV6svWkzNCWGN2e+py
-         TuyFBFLSBkOZBUm3UbKtk5amSRRVe2JkWLQ0a+jw9px0ddspPwdzk9MZun+EcYQu4PUN
-         f0pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681667272; x=1684259272;
-        h=content-transfer-encoding:in-reply-to:from:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uglpDOp7goqbtE2J4rWdMlmwo93bZX1oiv/KXPq3Ivs=;
-        b=kHcWDcaGh/BrmMn8NPZc6QDeCrWOrC6nv8dnczZbATrsa7B3cLhMHRGWrGW7jHkK4Q
-         R4II9xF9PbEUP3qaAKS2HOHFY1brECXv1FNcWpK88pL17PdhQpxum3uBu/rBj0aBfr86
-         D58nmc+/Z+Omj/DlqD/NLiZwogDeWEXZR8gQEAFMW8tEkaOkuNjR8CzWTmh/YI/2gJbz
-         S8n0TZ6/myJozWsvjsVh71Li1U9Q1s8yFEfZOn55AgUj0b8giMyidq+ZrVrMoBe9r3Uo
-         moKA9XLUwzbcCRBUQvP3XqoVi3QoH6oy/2u8JyOoMROfQTnR6WAiCeU969udqaB8XBbf
-         AAvQ==
-X-Gm-Message-State: AAQBX9fTE5wahzO1tKZ97EJQgHZZALgo+dr0qB8vef6L6139r/IB+Jnf
-        akp5wdNc03s/DnaanbNT3sw=
-X-Google-Smtp-Source: AKy350bFlCckVE6ibcAq+DrEh085/pduyFReK19MDw6psRYzpviv2GdnJ2DMBVs3LrnsTmuJMPilyw==
-X-Received: by 2002:a17:907:770e:b0:94a:58a5:2300 with SMTP id kw14-20020a170907770e00b0094a58a52300mr4909164ejc.27.1681667272238;
-        Sun, 16 Apr 2023 10:47:52 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id mc2-20020a170906eb4200b00932fa67b48fsm5319415ejb.183.2023.04.16.10.47.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Apr 2023 10:47:51 -0700 (PDT)
-Message-ID: <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com>
-Date:   Sun, 16 Apr 2023 20:47:50 +0300
+        Sun, 16 Apr 2023 17:49:42 -0400
+X-Greylist: delayed 39576 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 16 Apr 2023 14:49:39 PDT
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732852113;
+        Sun, 16 Apr 2023 14:49:39 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1681681777; bh=/dZxFov0kKMekXQ4mAEBxqM+dB5IiCHd/Tlf9+QLYaI=;
+        h=From:To:Subject:In-Reply-To:References:Date:From;
+        b=Of0yv5IcxyGnQUqYVFewlixL1iIH0Me9MU71YH/oKH5oxpJuGz3YIvDxhRFZJadp7
+         nf2rCh0jL6P8CeJbzSN/TzUikSZ4MYxWXD0eo7PZe3CKMB/cRqCrvRsQ4AfSwGdDbQ
+         uLax9/u8Pc8XHX3TGBfByRONtpNCvY5xWm8qjRI4Q87vuYQR0NuWol4qSzdfM1AMJP
+         7kKUU+ZVJc0FviaoAIbaXzGYA2UAjNrzq9l12B/xyAKHPEkiXZnwXEEdrn2o/BKDOe
+         XIJCXFDhaBHl1CrpuGphsFD/DVYZ2Ux17e4eHGFofR/1wcDBLypip+78UglNG4XLxV
+         jwurhXeeK4PrA==
+To:     Christian Lamparter <chunkeey@gmail.com>,
+        =?utf-8?Q?=C3=81lvaro_Fern?= =?utf-8?Q?=C3=A1ndez?= Rojas 
+        <noltari@gmail.com>, f.fainelli@gmail.com, jonas.gorski@gmail.com,
+        nbd@nbd.name, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath9k: fix calibration data endianness
+In-Reply-To: <8caecebf-bd88-dffe-7749-b79b7ea61cc7@gmail.com>
+References: <20230415150542.2368179-1-noltari@gmail.com>
+ <87leitxj4k.fsf@toke.dk> <a7895e73-70a3-450d-64f9-8256c9470d25@gmail.com>
+ <03a74fbb-dd77-6283-0b08-6a9145a2f4f6@gmail.com> <874jpgxfs7.fsf@toke.dk>
+ <8caecebf-bd88-dffe-7749-b79b7ea61cc7@gmail.com>
+Date:   Sun, 16 Apr 2023 23:49:35 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <871qkjxztc.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: RTL8188EU (LogiLink WL0151A) - Malformed packets
-To:     Artem Makhutov <artem.makhutov@gmail.com>
-References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
-Content-Language: en-US
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,NUMERIC_HTTP_ADDR,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16/04/2023 16:45, Artem Makhutov wrote:
-> Hello,
-> 
-> I am not sure if it is ok to write to you directly but I could not find a place where to open a ticket about the rtl8xxxu driver.
-> 
-> I am having issues with the RTL8188EU (LogiLink WL0151A) where I get truncated packets when sending large packets. It's easy to reproduce with ping:
-> 
-> ping -s 1430 10.10.0.1
-> PING 10.10.0.1 (10.10.0.1) 1430(1458) bytes of data.
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=5 ttl=64 time=19.9 ms
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=8 ttl=64 time=250 ms
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=9 ttl=64 time=5.59 ms
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=10 ttl=64 time=1.94 ms
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=11 ttl=64 time=3.40 ms
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=12 ttl=64 time=1.94 ms
-> 1438 bytes from 10.10.0.1 <http://10.10.0.1>: icmp_seq=13 ttl=64 time=1.89 ms
-> [...]
-> 15 packets transmitted, 7 received, 53.3333% packet loss, time 14345ms
-> rtt min/avg/max/mdev = 1.885/40.654/249.918/85.640 ms
-> 
-> With tcpdump I see logs like this on the wireless interface. Some parts of the packets seem to be broken...
-> 
-> 13:16:54.448318 IP 10.10.0.111 > 10.10.0.1 <http://10.10.0.1>: ICMP echo request, id 63056, seq 14, length 1438
-> 13:16:54.450391 IP truncated-ip - 4 bytes missing! 10.10.0.1 > 10.10.0.111 <http://10.10.0.111>: ICMP echo reply, id 63056, seq 14, length 1438
-> 
-> Can you assist me to fix this issue?
-> 
-> Thanks, Artem
+Christian Lamparter <chunkeey@gmail.com> writes:
 
-Hi!
+> On 4/16/23 12:50, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Christian Lamparter <chunkeey@gmail.com> writes:
+>>=20
+>>> On 4/15/23 18:02, Christian Lamparter wrote:
+>>>> Hi,
+>>>>
+>>>> On 4/15/23 17:25, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>>> =C3=81lvaro Fern=C3=A1ndez Rojas <noltari@gmail.com> writes:
+>>>>>
+>>>>>> BCM63xx (Big Endian MIPS) devices store the calibration data in MTD
+>>>>>> partitions but it needs to be swapped in order to work, otherwise it=
+ fails:
+>>>>>> ath9k 0000:00:01.0: enabling device (0000 -> 0002)
+>>>>>> ath: phy0: Ignoring endianness difference in EEPROM magic bytes.
+>>>>>> ath: phy0: Bad EEPROM VER 0x0001 or REV 0x00e0
+>>>>>> ath: phy0: Unable to initialize hardware; initialization status: -22
+>>>>>> ath9k 0000:00:01.0: Failed to initialize device
+>>>>>> ath9k: probe of 0000:00:01.0 failed with error -22
+>>>>>
+>>>>> How does this affect other platforms? Why was the NO_EEP_SWAP flag set
+>>>>> in the first place? Christian, care to comment on this?
+>>>>
+>>>> I knew this would come up. I've written what I know and remember in the
+>>>> pull-request/buglink.
+>>>>
+>>>> Maybe this can be added to the commit?
+>>>> Link: https://github.com/openwrt/openwrt/pull/12365
+>>>>
+>>>> | From what I remember, the ah->ah_flags |=3D AH_NO_EEP_SWAP; was copi=
+ed verbatim from ath9k_of_init's request_eeprom.
+>>>>
+>>>> Since the existing request_firmware eeprom fetcher code set the flag,
+>>>> the nvmem code had to do it too.
+>>>>
+>>>> In theory, I don't think that not setting the AH_NO_EEP_SWAP flag will=
+ cause havoc.
+>>>> I don't know if there are devices out there, which have a swapped magi=
+c (which is
+>>>> used to detect the endianess), but the caldata is in the correct endia=
+nnes (or
+>>>> vice versa - Magic is correct, but data needs swapping).
+>>>>
+>>>> I can run tests with it on a Netzgear WNDR3700v2 (AR7161+2xAR9220)
+>>>> and FritzBox 7360v2 (Lantiq XWAY+AR9220). (But these worked fine.
+>>>> So I don't expect there to be a new issue there).
+>>>
+>>> Nope! This is a classic self-own!... Well at least, this now gets docum=
+ented!
+>>>
+>>> Here are my findings. Please excuse the overlong lines.
+>>>
+>>> ## The good news / AVM FritzBox 7360v2 ##
+>>>
+>>> The good news: The AVM FritzBox 7360v2 worked the same as before.
+>>=20
+>> [...]
+>>=20
+>>> ## The not so good news / Netgear WNDR3700v2 ##
+>>>
+>>> But not the Netgar WNDR3700v2. One WiFi (The 2.4G, reported itself now =
+as the 5G @0000:00:11.0 -
+>>> doesn't really work now), and the real 5G WiFi (@0000:00:12.0) failed w=
+ith:
+>>> "phy1: Bad EEPROM VER 0x0001 or REV 0x06e0"
+>>=20
+>> [...]
+>>=20
+>> Alright, so IIUC, we have a situation where some devices only work
+>> *with* the flag, and some devices only work *without* the flag? So we'll
+>> need some kind of platform-specific setting? Could we put this in the
+>> device trees, or is there a better solution?
+>
+> Depends. From what I gather, ath9k calls this "need_swap". Thing is,
+> the flag in the EEPROM is called "AR5416_EEPMISC_BIG_ENDIAN". In the
+> official documentation about the AR9170 Base EEPROM (has the same base
+> structure as AR5008 up to AR92xx) this is specified as:
+>
+> "Only bit 0 is defined as Big Endian. This bit should be written as 1
+> when the structure is interpreted in big Endian byte ordering. This bit
+> must be reviewed before any larger than byte parameters can be interprete=
+d."
+>
+> It makes sense that on a Big-Endian MIPS device (like the Netgear WNDR370=
+0v2),
+> the  caldata should be in "Big-Endian" too... so no swapping is necessary.
+>
+> Looking in ath9k's eeprom.c function ath9k_hw_nvram_swap_data() that deals
+> with this eepmisc flag:
+>
+> |       if (ah->eep_ops->get_eepmisc(ah) & AR5416_EEPMISC_BIG_ENDIAN) {
+> |               *swap_needed =3D true;
+> |               ath_dbg(common, EEPROM,
+> |                       "Big Endian EEPROM detected according to EEPMISC =
+register.\n");
+> |       } else {
+> |               *swap_needed =3D false;
+> |       }
+>
+> This doesn't take into consideration that swapping is not needed if
+> the data is in big endian format on a big endian device. So, this
+> could be changed so that the *swap_needed is only true if the flag and
+> device endiannes disagrees?
+>
+> That said, Martin and Felix have written their reasons in the cover letter
+> and patches for why the code is what it is:
+> <https://ath9k-devel.ath9k.narkive.com/2q5A6nu0/patch-0-5-ath9k-eeprom-sw=
+apping-improvements>
+>
+> Toke, What's your take on this? Having something similar like the
+> check_endian bool... but for OF? Or more logic that can somehow
+> figure out if it's big or little endian.
 
-Adding linux-wireless because that's the place to report bugs.
-Also bugzilla.kernel.org, but that's more dead.
+Digging into that old thread, it seems we are re-hashing a lot of the
+old discussion when those patches went in. Basically, the code you
+quoted above is correct because the commit that introduced it sets all
+fields to be __le16 and __le32 types and reads them using the
+leXX_to_cpu() macros.
 
-Unfortunately my TP-Link TL-WN725N is fine even with bigger packets:
+The code *further up* in that function is what is enabled by Alvaro's
+patch. Which is a different type of swapping (where the whole eeprom is
+swab16()'ed, not just the actual multi-byte data fields in them).
+However, in OpenWrt the in-driver code to do this is not used; instead,
+a hotplug script applies the swapping before the device is seen by the
+driver, as described in this commit[0]. Martin indeed mentions that this
+is a device-specific thing, so the driver can't actually do the right
+thing without some outside feature flag[1]. The commit[0] also indicates
+that there used used to exist a device-tree binding in the out-of-tree
+device trees used in OpenWrt to do the unconditional swab16().
 
-PING 192.168.1.7 (192.168.1.7) 2300(2328) bytes of data.
-[1681659077.535489] 2308 bytes from 192.168.1.7: icmp_seq=1 ttl=64 time=7.93 ms
-[1681659078.536313] 2308 bytes from 192.168.1.7: icmp_seq=2 ttl=64 time=6.24 ms
-...
---- 192.168.1.7 ping statistics ---
-24 packets transmitted, 24 received, 0% packet loss, time 23033ms
-rtt min/avg/max/mdev = 6.210/8.375/22.621/3.633 ms
+The code in [0] still exists in OpenWrt today, albeit in a somewhat
+modified form[2]. I guess the question then boils down to, =C3=81lvaro, can
+your issue be resolved by a pre-processing step similar to that which is
+done in [2]? Or do we need the device tree flag after all?
 
-(The router wouldn't reply to anything more than "-s 1472" but
-another computer on the network did.)
+-Toke
 
-
-What version of the kernel/driver are you running? On what kind
-of computer?
-
-Did you use any module parameters?
-
-Do you know if the other computer is receiving correct packets
-from your RTL8188EU?
-
-What's the biggest packet size which still works correctly?
-
-Did you test any other driver, like this one:
-https://github.com/lwfinger/rtl8188eu/tree/v5.2.2.4
-or this one:
-https://github.com/aircrack-ng/rtl8188eus
-?
-
-
-If the other computer is receiving correct packets, try this untested
-patch to see what rtl8xxxu is actually receiving:
-
-diff --git a/rtl8xxxu_core.c b/rtl8xxxu_core.c
-index c158137..5bec979 100644
---- a/rtl8xxxu_core.c
-+++ b/rtl8xxxu_core.c
-@@ -6142,6 +6147,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 		return RX_TYPE_ERROR;
- 	}
- 
-+	pr_warn("urb_len %d\n", urb_len);
-+
- 	do {
- 		rx_desc = (struct rtl8xxxu_rxdesc16 *)skb->data;
- 		_rx_desc_le = (__le32 *)skb->data;
-@@ -6164,6 +6171,11 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 		pkt_offset = roundup(pkt_len + drvinfo_sz + desc_shift +
- 				     sizeof(struct rtl8xxxu_rxdesc16), 128);
- 
-+		pr_warn("  pkt_cnt %d pkt_len %d drvinfo_sz %d desc_shift %d\n", pkt_cnt, pkt_len, drvinfo_sz, desc_shift);
-+
-+		print_hex_dump(KERN_WARNING, "  ", DUMP_PREFIX_OFFSET, 32, 4,
-+		       skb->data, skb->len, EFUSE_MAP_LEN, true);
-+
- 		/*
- 		 * Only clone the skb if there's enough data at the end to
- 		 * at least cover the rx descriptor
+[0] https://git.openwrt.org/?p=3Dopenwrt/openwrt.git;a=3Dcommitdiff;h=3Dafa=
+37092663d00aa0abf8c61943d9a1b5558b144
+[1] https://narkive.com/2q5A6nu0.34
+[2] https://git.openwrt.org/?p=3Dopenwrt/openwrt.git;a=3Dblob;f=3Dtarget/li=
+nux/lantiq/xway/base-files/etc/hotplug.d/firmware/12-ath9k-eeprom;h=3D98bb9=
+af6947a298775ff7fa26ac6501c57df8378;hb=3DHEAD
