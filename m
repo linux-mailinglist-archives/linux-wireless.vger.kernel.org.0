@@ -2,189 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB01A6E3827
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 14:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2868E6E3831
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 14:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230170AbjDPMkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Apr 2023 08:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53902 "EHLO
+        id S230321AbjDPMme (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Apr 2023 08:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjDPMkM (ORCPT
+        with ESMTP id S230282AbjDPMmc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Apr 2023 08:40:12 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F183630CA
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 05:40:10 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1po1fr-0006lP-E0; Sun, 16 Apr 2023 14:40:07 +0200
-Message-ID: <b1d19249-d232-2088-3b90-22017ca2ddde@leemhuis.info>
-Date:   Sun, 16 Apr 2023 14:40:06 +0200
+        Sun, 16 Apr 2023 08:42:32 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843881737;
+        Sun, 16 Apr 2023 05:42:30 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sendonly@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 580D3447CF;
+        Sun, 16 Apr 2023 12:42:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1681648947; bh=Mkd1JPhb3nS2pj7N8smN5I/IKmBOuca+sSQG67P1+dk=;
+        h=From:Subject:Date:To:Cc;
+        b=vVkaE07bZiUVG7gtA4MidB59VajJKt1rkQ4TQGlkO4MKwOFudLwx3dJXVcRnTg1XZ
+         klkdsoZq3VOLGGjFk5YY/Xwy5JFwvu/V1mZ6w0TeVegzhI7rJKMANTqUjsIDDgpWZR
+         FGfgF/nAUxRNlnW8mWUMf6BgNSG65YwukgL9C71vhRaY3JTlK76FJNPbmjVIh7vKJH
+         gnJGHs3HeadL7sFbkXdAlRR54jBYrY/kHbWa/8oiDoeNM66e7wWGi7Rbw+UmxwygqC
+         8OzX4TBZ+w5cVvzZYE17g/Vgf34FxOhZ5A8xlRGo0lg3UWspAmA04v6Nn3nWUQvmim
+         V66w5/8fNIEmg==
+From:   Hector Martin <marcan@marcan.st>
+Subject: [PATCH 0/2] brcmfmac: Demote some kernel errors to info
+Date:   Sun, 16 Apr 2023 21:42:16 +0900
+Message-Id: <20230416-brcmfmac-noise-v1-0-f0624e408761@marcan.st>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: iwlwifi frequent drops between v6.2-rc3 and v6.3-rc1
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-To:     regressions@lists.linux.dev
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Thomas Mann <rauchwolke@gmx.net>,
-        linux-wireless@vger.kernel.org,
-        Alexander Wetzel <alexander@wetzel-home.de>,
-        Vegard Nossum <vegard.nossum@oracle.com>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
-          Linux regressions mailing list 
-          <regressions@lists.linux.dev>
-References: <9d11ed29-1114-055d-5b26-0899a5fc0d7f@oracle.com>
- <70b7f54d-95b7-e01a-1a49-e29dc72d41b2@wetzel-home.de>
- <c7fdd08a-5ca2-6b86-d45d-97ab442438e5@wetzel-home.de>
- <257beca4-0c9b-66a1-37ca-aa7d37a45d5d@leemhuis.info>
-In-Reply-To: <257beca4-0c9b-66a1-37ca-aa7d37a45d5d@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1681648811;22e297a9;
-X-HE-SMSGID: 1po1fr-0006lP-E0
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACjtO2QC/x2NQQqDMBBFryKzbjBOShCvUrqYxInOwiiTWgTx7
+ o1dvvd5/BMKq3CBoTlB+StF1lyhezQQZ8oTGxkrA1p09tl5EzQuaaFo8iqFDQbi3vXOJxyhRoG
+ qDEo5znf28RaPNqjkad/ufVNOcvwPX+/r+gEA4845gAAAAA==
+To:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
+        Hector Martin <marcan@marcan.st>, stable@vger.kernel.org
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1405; i=marcan@marcan.st;
+ h=from:subject:message-id; bh=Mkd1JPhb3nS2pj7N8smN5I/IKmBOuca+sSQG67P1+dk=;
+ b=owGbwMvMwCEm+yP4NEe/cRLjabUkhhTrt7ru07SCfl5rmW3R5x16bpXI86Mc6klakxYp7Y+Te
+ GETl3C/o5SFQYyDQVZMkaXxRO+pbs/p59RVU6bDzGFlAhnCwMUpABP5mcLI8NXrfNq2qTnZNflc
+ y7uYv+Su4xC6mGH/P0Pi8wXZDQl2DYwMF9+5r1/orvoxO1pC14GNn+FpBN+Ok4/L+IR/KBcdaDr
+ GAAA=
+X-Developer-Key: i=marcan@marcan.st; a=openpgp;
+ fpr=FC18F00317968B7BE86201CBE22A629A4C515DD5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12.04.23 13:38, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-> for once, to make this easily accessible to everyone.
-> 
-> Vegard, any news here? Is this still happening?
-> 
-> And out of curiosity: how often is "[wifi started] dropping a lot"
-> actually? I have seen occasional disconnects with iwlwifi myself, but I
-> have no idea what's causing them -- and I think it started earlier
-> already (and might have started when I switched to iwd, not sure). And
-> the error messages in the log only look similar in a few cases.
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
-> 
-> #regzbot poke
+brcmfmac has some messages that are KERN_ERR even though they are
+harmless. This is spooking and confusing people, because they end up
+being the *only* kernel messages on their boot console with common
+error-only printk levels (at least on Apple Macs).
 
-Putting this on the backburner to reduce the noise in the list of
-tracked issues:
+Then, when their system does not boot to a GUI for some other reason,
+the brcmfmac errors are the only thing on their TTY (which also does
+not show a login prompt on tty1 in typical systemd setups) and they are
+thoroughly confused into believing their problem has something to do
+with brcmfmac.
 
-#regzbot backburner: not bisected and lack of data to debug this further
-#regzbot ignore-activity
+Seriously, I've had 10 or so people mention this by now, and multiple
+confused Reddit threads about it. Let's fix it.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+Signed-off-by: Hector Martin <marcan@marcan.st>
+---
+Hector Martin (2):
+      wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
+      wifi: brcmfmac: Demote p2p unknown frame error to info (once)
 
-> On 25.03.23 21:33, Alexander Wetzel wrote:
->> On 17.03.23 16:29, Alexander Wetzel wrote:
->>> On 17.03.23 09:53, Vegard Nossum wrote:
->>>>
->>>> Hi,
->>>>
->>>> Somewhere between e8f60cd7db24 (v6.2-rc3) and 2eb29d59ddf0 (v6.3-rc1) my
->>>> wifi started dropping a lot. I'm using iwlwifi and I've checked the old
->>>> logs that the firmware hasn't changed:
->>>>
->>>> Feb 25 16:22:33 kernel: iwlwifi 0000:04:00.0: loaded firmware version
->>>> 36.e91976c0.0 8000C-36.ucode op_mode iwlmvm
->>>>
->>>> My logs look like this:
->>>>
->>>> 09:01:50 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
->>>> 09:01:50 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED
->>>> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
->>>> 09:01:50 NetworkManager[8368]: <warn>  [1679040110.6548]
->>>> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
->>>> 09:01:50 NetworkManager[8368]: <info>  [1679040110.6656] device
->>>> (wlp4s0): supplicant interface state: completed -> disconnected
->>>> 09:01:50 NetworkManager[8368]: <info>  [1679040110.7609] device
->>>> (wlp4s0): supplicant interface state: disconnected -> scanning
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0: SME: Trying to authenticate
->>>> with [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
->>>> 09:01:53 kernel: wlp4s0: authenticate with [REDACTED]:0b:25
->>>> 09:01:53 kernel: wlp4s0: send auth to [REDACTED]:0b:25 (try 1/3)
->>>> 09:01:53 kernel: wlp4s0: authenticated
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0: Trying to associate with
->>>> [REDACTED]:0b:25 (SSID='[REDACTED]' freq=5500 MHz)
->>>> 09:01:53 kernel: wlp4s0: associate with [REDACTED]:0b:25 (try 1/3)
->>>> 09:01:53 kernel: wlp4s0: RX AssocResp from [REDACTED]:0b:25
->>>> (capab=0x1511 status=0 aid=36)
->>>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4553] device
->>>> (wlp4s0): supplicant interface state: scanning -> authenticating
->>>> 09:01:53 kernel: wlp4s0: associated
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0: Associated with [REDACTED]:0b:25
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0:
->>>> CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
->>>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4645] device
->>>> (wlp4s0): supplicant interface state: authenticating -> associating
->>>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.4829] device
->>>> (wlp4s0): supplicant interface state: associating -> associated
->>>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5175] device
->>>> (wlp4s0): supplicant interface state: associated -> 4-way handshake
->>>> 09:01:53 kernel: wlp4s0: Connection to AP [REDACTED]:0b:25 lost
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-DISCONNECTED
->>>> bssid=[REDACTED]:0b:25 reason=4 locally_generated=1
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0: WPA: 4-Way Handshake failed -
->>>> pre-shared key may be incorrect
->>>> 09:01:53 wpa_supplicant[1279]: wlp4s0: CTRL-EVENT-SSID-TEMP-DISABLED
->>>> id=0 ssid="[REDACTED]" auth_failures=1 duration=10 reason=WRONG_KEY
->>>> 09:01:53 NetworkManager[8368]: <warn>  [1679040113.5685]
->>>> sup-iface[0x5628f2495990,wlp4s0]: connection disconnected (reason -4)
->>>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.5737] device
->>>> (wlp4s0): supplicant interface state: 4-way handshake -> disconnected
->>>> 09:01:53 NetworkManager[8368]: <info>  [1679040113.6759] device
->>>> (wlp4s0): supplicant interface state: disconnected -> scanning
->>>>
->>>> I did see that somebody else reported a similar regression, but I don't
->>>> know if it could be the same problem or not (I see the driver is
->>>> different, but the fix looks generic):
->>>>
->>>> https://linux-regtracking.leemhuis.info/regzbot/regression/217119/
->>>>
->>>> The buggy commit that was identified there does seem to be within the
->>>> range of potential culprits:
->>>>
->>>> $ git log --oneline e8f60cd7db24..2eb29d59ddf0 | grep resumption
->>>> 4444bc2116ae wifi: mac80211: Proper mark iTXQs for resumption
->>>>
->>>> If people think it's the same, I could try the proposed fix -- otherwise
->>>> let me know what else I can do to help track this down.
->>>>
->>>
->>> You are using a iwlwilf/mvm card. The fix we plan to merge for that
->>> regression above won't help you. (mvm cards do not use the function we
->>> serialized in the end. iwlwifi/dvm on the other uses it.)
->>>
->>> But Johannes is working on a comparable issue affecting mvm cards.
->>> Check out
->>> https://lore.kernel.org/r/20230314103840.30771-1-jtornosm@redhat.com
->>>
->>> That may well fix your issue.
->>
->> It's surprisingly quiet here...
->> Are these fixes helping? Honestly I'm not very optimistic.
->> I expect that this is something else...
->>
->> If so, we can debug that here together.
->>
->> For start, I would like to see the full logs, starting from the initial
->> (working) connect.
->>
->> I also would like to get a confirmation, that by booting an older kernel
->> (v6.2-rc3 or older) the system gets stable again. (Not that
->> wpa_supplicant or the router got an update, too.)
->>
->> Alexander
->>
->>
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c | 4 ++--
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c | 4 ++--
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c      | 4 ++--
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c | 4 ++--
+ 4 files changed, 8 insertions(+), 8 deletions(-)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230416-brcmfmac-noise-2bae83836f2d
+
+Best regards,
+-- 
+Hector Martin <marcan@marcan.st>
+
