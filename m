@@ -2,74 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 057646E3611
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 10:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54DAD6E36C5
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Apr 2023 11:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230272AbjDPIf7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Apr 2023 04:35:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51738 "EHLO
+        id S230171AbjDPJrD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Apr 2023 05:47:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjDPIf6 (ORCPT
+        with ESMTP id S229849AbjDPJrC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Apr 2023 04:35:58 -0400
-Received: from hust.edu.cn (unknown [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118F12D59;
-        Sun, 16 Apr 2023 01:35:56 -0700 (PDT)
-Received: from localhost.localdomain ([222.20.126.128])
-        (user=ysxu@hust.edu.cn mech=LOGIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 33G8Uhvq027287-33G8Uhvr027287
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-        Sun, 16 Apr 2023 16:30:47 +0800
-From:   yingsha xu <ysxu@hust.edu.cn>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jiri Benc <jbenc@suse.cz>,
-        "John W. Linville" <linville@tuxdriver.com>
-Cc:     hust-os-kernel-patches@googlegroups.com,
-        yingsha xu <ysxu@hust.edu.cn>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: mac80211: use IS_ERR to check return value
-Date:   Sun, 16 Apr 2023 16:30:27 +0800
-Message-Id: <20230416083028.14044-1-ysxu@hust.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-FEAS-AUTH-USER: ysxu@hust.edu.cn
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Sun, 16 Apr 2023 05:47:02 -0400
+X-Greylist: delayed 2418 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 16 Apr 2023 02:47:01 PDT
+Received: from r2group.com (unknown [216.117.166.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA6B2709
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 02:47:01 -0700 (PDT)
+Received: (from r2groupc@localhost)
+        by r2group.com (8.13.8/8.13.1) id 33G9jvWP030158;
+        Sun, 16 Apr 2023 05:45:57 -0400
+X-Authentication-Warning: cent.server80: r2groupc set sender to support@wacommerce.net using -f
+To:     linux-wireless@vger.kernel.org
+Subject: Re: Hello
+X-PHP-Originating-Script: 703:remain.php(6) : eval()'d code
+Date:   Sun, 16 Apr 2023 05:45:57 -0400
+From:   Jerry Mccumber <support@wacommerce.net>
+Reply-To: senaidakohen@gmail.com
+Message-ID: <0150e5f5b0c9f172ee3c52cc241450d0@wacommerce.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_SOFTFAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-According to the annotation of function debugfs_create_fs, if
-an error occurs, ERR_PTR(-ERROR) will be returned instead of
-a null pointer or zero value.
-
-Fix it by using IS_ERR().
-
-Fixes: e9f207f0ff90 ("[MAC80211]: Add debugfs attributes.")
-Signed-off-by: yingsha xu <ysxu@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
----
- net/mac80211/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index dfb9f55e2685..672bf969ad88 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -674,7 +674,7 @@ void debugfs_hw_add(struct ieee80211_local *local)
- 	statsd = debugfs_create_dir("statistics", phyd);
- 
- 	/* if the dir failed, don't put all the other things into the root! */
--	if (!statsd)
-+	if (IS_ERR(statsd))
- 		return;
- 
- #ifdef CONFIG_MAC80211_DEBUG_COUNTERS
--- 
-2.17.1
+Ref Num: T1449B, Unclaimed inheritance funds on our file is linked to your name, for more info/claims email now: bar.jerrymccumber1@gmail.com
 
