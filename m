@@ -2,164 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1934F6E4FB5
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 19:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51F136E4FF0
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 20:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231204AbjDQRyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 13:54:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48728 "EHLO
+        id S230210AbjDQSLv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 14:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbjDQRyi (ORCPT
+        with ESMTP id S229567AbjDQSLu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 13:54:38 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EE266E97;
-        Mon, 17 Apr 2023 10:54:36 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id r184so10901553ybc.1;
-        Mon, 17 Apr 2023 10:54:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681754075; x=1684346075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oyR8W7v3COTYLNobCuykJJtDSCMEC7xmskW6emUW3jY=;
-        b=BvJ3B4oBQxTmyVZLNr0yv6+R9zNTpbS4Q+bz8Up5LfmkIHQTvNxDu+WLqlKqaMBR9d
-         2lQsUZjBM7phenPFqMqU6lDVX/6rb3ix6cVg7TM0HQzYm50ay0uklXvxww1yz24klY9Z
-         G1SKy6xVM32F9mgaesrv9rmgMBJ/T1Zh5AH5dXccZ9LBnRFojKjrvoOzHsEicQUJguy1
-         7LcPPNUSUIIhI15fqkOXlqkeQpZHL9t7qVFHpFt/RWf+O7KQMpmLyydyRbjMcAqUCsRu
-         69rAZwrxZprnC/g6Kx1IFBUDA+jGvPlnJ2L6DYZBdj5Zd3dPoWl7RcmaLRsCc3Jsstv8
-         HJ9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681754075; x=1684346075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oyR8W7v3COTYLNobCuykJJtDSCMEC7xmskW6emUW3jY=;
-        b=XCFUlbKik6reNn3VKGWyXzpap3kw/nStomBTrFqzin8n6u85XgNxU8dO2tEKepS6SA
-         A8pvZBVZXN1AegmAoCMJBBTpTRWnQVGkVg55iAsJ9fySJMbI9kKlN693PqhImvEBDf7D
-         Mg2oy3Oetpif2U6RISg/SC4BwkKfAMttFEcIAS9oID83RAv/GpjxSpKMgDAP9acAvz32
-         irEu9RjP80Fr/GZkMFLQwT/0IdzMFjS00sAJxRAImIG0nFa1cQ/FKIUAaoGi9IEFRcVO
-         Z54fh0S/nyPpzpTY+SOyFbAKanQn5vbkxmFJp8Ia9811qo8F04NbJlUtPUxg8LxPKKb2
-         EMQw==
-X-Gm-Message-State: AAQBX9cl9v0ESmHSeRHlvjaFJA5k4VvSydzErA26aCZAh3Pjp8iYqmlY
-        WYMUqTVon2oZM9QB/63HK/yO+sBs851XLsARTqQ=
-X-Google-Smtp-Source: AKy350aVcCPZirKE4e29h+YR180S7kRdUycNhPLL1rAIzCXyCib+3TlzUD9p5cdFIFr0nJmeRynje/8Rtgczf6uHy+s=
-X-Received: by 2002:a25:cb97:0:b0:b8b:f597:f3e5 with SMTP id
- b145-20020a25cb97000000b00b8bf597f3e5mr10181400ybg.9.1681754075318; Mon, 17
- Apr 2023 10:54:35 -0700 (PDT)
+        Mon, 17 Apr 2023 14:11:50 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3663510D;
+        Mon, 17 Apr 2023 11:11:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j2ZAyJa9MqgQ8jtWD9QQbsCDGQBtJNW/bL5akaYDVGFPP/xBW8Gj4cndTtVLuMWYR7VL9jn5Ad5+4g8W0TX+vJR/Xbrvd0mgAIPxuCX93at+Uu3UWp8peXviTnpAm8jud120a0pVZptIOwuq5ucvyHm1mOkCUm+5+VHrvPsK1aqCPtn1MfDPSl9pW6vJdaYB20mzLmZkLR2pCfnzdD48/bUAQYUsqNt7eaQFd20XfvdpJ1l++W09eQI+RC1Cv/nkZafBK8u/RQrCtI7Vov+dcfUcg8MQEIGvzo0VRoKZjFczloj8BGJOyp6R9qKsYHeJfI+S6GvSgQXJf0uy8Q7vOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FVPFlkCWGbx2AUI+Aq7ZHWQcyKexNy/PYpt15ANVKgY=;
+ b=YZyjcUdVaU1lO35LxbLVmgDGHt02STwOem/74Erlr3APqQ1SkawtP0OxDEa5O1yhnoaa4OEAA+QrFW8BoyXlQlBPWoNOtABJV84zR7Sl0SdDv4Fs2QhB4szXb72z1FDZO+WP9uzfVR8VGIn/OGjodSeR+1AQYwpeeGlJlrdQv8mqGAA8RX38GXTQ6MOEbu1UGGUiSLUhASVDI0ie9pBd1rkg/viBlROgWhv7prNjoVhhJ136IWxbYq0w66oa2Vd1Uz2MQyYMhslHQn330r5jpVEXrHh7juqdqAiz+7iPCJIHU2jbLNBbGZb3+xL+LNCOe+XCE6bTw3QIscsyQmKO9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nbd.name smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FVPFlkCWGbx2AUI+Aq7ZHWQcyKexNy/PYpt15ANVKgY=;
+ b=CauRnS297/MsSbyUdYfLz1GKKNJ7jfb3USuXTKTuMje08elu6ERoJx54HVaHoGnDcDhiUCKeCPyZ3eI9Vcl5CXqIOGoNAxqesJkLFg8eB0p/x9EHbSx8aTmA7VHjU5Zy8EHMKJCKAwIFZ24vOKZT+7yzQW8WZHJ5EGT64qUBeLs=
+Received: from MW4PR03CA0322.namprd03.prod.outlook.com (2603:10b6:303:dd::27)
+ by MW3PR12MB4489.namprd12.prod.outlook.com (2603:10b6:303:5e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.45; Mon, 17 Apr
+ 2023 18:11:45 +0000
+Received: from CO1NAM11FT083.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:dd:cafe::82) by MW4PR03CA0322.outlook.office365.com
+ (2603:10b6:303:dd::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.46 via Frontend
+ Transport; Mon, 17 Apr 2023 18:11:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT083.mail.protection.outlook.com (10.13.174.92) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6319.20 via Frontend Transport; Mon, 17 Apr 2023 18:11:44 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 17 Apr
+ 2023 13:11:42 -0500
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
+        "Lorenzo Bianconi" <lorenzo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+CC:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Anson Tsao <anson.tsao@amd.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2] wifi: mt76: mt7921e: Set memory space enable in PCI_COMMAND if unset
+Date:   Mon, 17 Apr 2023 13:11:29 -0500
+Message-ID: <20230417181130.4445-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230417053509.4808-1-noltari@gmail.com> <20230417053509.4808-3-noltari@gmail.com>
- <87wn2ax3sq.fsf@toke.dk>
-In-Reply-To: <87wn2ax3sq.fsf@toke.dk>
-From:   =?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>
-Date:   Mon, 17 Apr 2023 19:54:24 +0200
-Message-ID: <CAKR-sGftiGWf86uE2QwbpjJ+H7oyM6=AsFpHaxFBviJBrdueBg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] ath9k: of_init: add endian check
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Cc:     f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
-        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, chunkeey@gmail.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT083:EE_|MW3PR12MB4489:EE_
+X-MS-Office365-Filtering-Correlation-Id: da242e3e-5fea-4985-a135-08db3f6f33f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Hy+lxpGBwatzEc7B96xE2tY976FX0sSfLaIYkYvGqVayNTLZVMsqbLW0ruYBw8UWPod9bTlYUUFdUVdCRJIiG3Qrq7c6axwhBSvthyWGNf8mzr5JrsPS1xVljk2vzYDaBCU/Yr/TvqZPmCaGGJCy6afweVlWGxyQBDrheMVgIr/cNF9s+EXmzsab2fbaVFCcZUh9QaGIZWcmRzVRn7Sjkr3dXgq3YpieC9L0DnzoQE72rT3h7eb6VpFwzJEHmPby1Jww2OuIHX2VSMa1l5jmIAeV4BnR93ax6EqoW0XR+FI1jgxADLC0Dliundw/M83qD5vwAS/CdBgmMdCQBm9n1WxZyVKFMo0+OtFtMExZvy64RE6G1zkAX+Rt0aIdymR7SpU51xBwsH+5k0VGTsk8h6/2dwqDT5jyQrUHVn3tzV8J1rW5VTRwN/Y7y2RZx+k6Vyb+/mlipWOAzZSWvQNk3jpMcaAndaUcvWBMkQJGqqduDfxE9zwHjVn6vNoJRrSrIj1XAEB8zXV2CHtgMvWftE5vWPOXMfWoCRRhmBjoa4BbQ2ZEMrDuEOtdf5iQhKYWNzp+7EXLKHF1Dx+R2szm+toQ8OR0WEJkNsROJYlTEpxq12bfgb+/x7YH7Drg7KsAw+bXssbZUe6HwZJQlnXgG+bWxXhQFDGmdIAbzr/QqBiI9PJlVaOtL6dO20uoLwV8SOVvHgotQXekq/XG7Zuy1Y4AFCVoi3CSEfoWZvIpRPA=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(376002)(39860400002)(136003)(451199021)(40470700004)(46966006)(36840700001)(54906003)(110136005)(40480700001)(6666004)(478600001)(7696005)(356005)(81166007)(316002)(83380400001)(41300700001)(82740400003)(426003)(336012)(47076005)(4326008)(2616005)(36860700001)(186003)(16526019)(26005)(1076003)(70586007)(70206006)(5660300002)(44832011)(7416002)(2906002)(8936002)(8676002)(40460700003)(86362001)(82310400005)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2023 18:11:44.6887
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: da242e3e-5fea-4985-a135-08db3f6f33f1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT083.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4489
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-El lun, 17 abr 2023 a las 11:21, Toke H=C3=B8iland-J=C3=B8rgensen
-(<toke@toke.dk>) escribi=C3=B3:
->
-> =C3=81lvaro Fern=C3=A1ndez Rojas <noltari@gmail.com> writes:
->
-> > BCM63xx (Big Endian MIPS) devices store the calibration data in MTD
-> > partitions but it needs to be swapped in order to work, otherwise it fa=
-ils:
-> > ath9k 0000:00:01.0: enabling device (0000 -> 0002)
-> > ath: phy0: Ignoring endianness difference in EEPROM magic bytes.
-> > ath: phy0: Bad EEPROM VER 0x0001 or REV 0x00e0
-> > ath: phy0: Unable to initialize hardware; initialization status: -22
-> > ath9k 0000:00:01.0: Failed to initialize device
-> > ath9k: probe of 0000:00:01.0 failed with error -22
-> >
-> > For compatibility with current devices the AH_NO_EEP_SWAP flag will be
-> > activated only when qca,endian-check isn't present in the device tree.
-> > This is because some devices have the magic values swapped but not the =
-actual
-> > EEPROM data, so activating the flag for those devices will break them.
-> >
-> > Signed-off-by: =C3=81lvaro Fern=C3=A1ndez Rojas <noltari@gmail.com>
-> > ---
-> >  drivers/net/wireless/ath/ath9k/init.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wirele=
-ss/ath/ath9k/init.c
-> > index 4f00400c7ffb..abde953aec61 100644
-> > --- a/drivers/net/wireless/ath/ath9k/init.c
-> > +++ b/drivers/net/wireless/ath/ath9k/init.c
-> > @@ -615,7 +615,6 @@ static int ath9k_nvmem_request_eeprom(struct ath_so=
-ftc *sc)
-> >
-> >       ah->nvmem_blob_len =3D len;
-> >       ah->ah_flags &=3D ~AH_USE_EEPROM;
-> > -     ah->ah_flags |=3D AH_NO_EEP_SWAP;
-> >
-> >       return 0;
-> >  }
-> > @@ -688,9 +687,11 @@ static int ath9k_of_init(struct ath_softc *sc)
-> >                       return ret;
-> >
-> >               ah->ah_flags &=3D ~AH_USE_EEPROM;
-> > -             ah->ah_flags |=3D AH_NO_EEP_SWAP;
-> >       }
-> >
-> > +     if (!of_property_read_bool(np, "qca,endian-check"))
-> > +             ah->ah_flags |=3D AH_NO_EEP_SWAP;
-> > +
->
-> So I'm not sure just setting (or not) this flag actually leads to
-> consistent behaviour. The code in ath9k_hw_nvram_swap_data() that reacts
-> to this flag does an endianness check before swapping, and the behaviour
-> of this check depends on the CPU endianness. However, the byte swapping
-> you're after here also swaps u8 members of the eeprom, so it's not
-> really a data endianness swap, and I don't think it should depend on the
-> endianness of the CPU?
->
-> So at least conceptually, the magic byte check in
-> ath9k_hw_nvram_swap_data() is wrong; instead the byteswap check should
-> just be checking against the little-endian version of the firmware
-> (i.e., 0xa55a; I think that's what your device has, right?). However,
-> since we're setting an explicit per-device property anyway (in the
-> device tree), maybe it's better to just have that be an "eeprom needs
-> swapping" flag and do the swap unconditionally if it's set? I think that
-> would address Krzysztof's comment as well ("needs swapping" is a
-> hardware property, "do the check" is not).
+When the BIOS has been configured for Fast Boot, systems with mt7921e
+have non-functional wifi.  Turning on Fast boot caused both bus master
+enable and memory space enable bits in PCI_COMMAND not to get configured.
 
-Yes, you're right, it's probably better to introduce a new and more
-clear flag that swaps the content inconditionally.
+The mt7921 driver already sets bus master enable, but explicitly check
+and set memory access enable as well to fix this problem.
 
->
-> Now, the question becomes whether the "check" code path is actually used
-> for anything today? The old mail thread I quoted in the other thread
-> seems to indicate it's not, but it's not quite clear from the code
-> whether there's currently any way to call into
-> ath9k_hw_nvram_swap_data() without the NO_EEP_SWAP flag being set?
+Tested-by: Anson Tsao <anson.tsao@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Sean Wang <sean.wang@mediatek.com>
+---
+v1->v2:
+ * Pick up tag from Sean
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-It's only used when endian_check is enabled in ath9k_platform_data:
-https://github.com/torvalds/linux/blob/6a8f57ae2eb07ab39a6f0ccad60c76074305=
-1026/drivers/net/wireless/ath/ath9k/init.c#L645
-We're currently using it on OpenWrt for bmips:
-https://github.com/Noltari/openwrt/blob/457549665fcb93667453ef48c50bf43eddd=
-776ef/target/linux/bmips/files/arch/mips/bmips/ath9k-fixup.c#L198-L199
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 5c23c827abe47..41be108e1d5a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -263,6 +263,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	struct mt76_dev *mdev;
+ 	u8 features;
+ 	int ret;
++	u16 cmd;
+ 
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret)
+@@ -272,6 +273,11 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		return ret;
+ 
++	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
++	if (!(cmd & PCI_COMMAND_MEMORY)) {
++		cmd |= PCI_COMMAND_MEMORY;
++		pci_write_config_word(pdev, PCI_COMMAND, cmd);
++	}
+ 	pci_set_master(pdev);
+ 
+ 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
+-- 
+2.25.1
 
->
-> WDYT?
->
-> -Toke
