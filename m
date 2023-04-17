@@ -2,31 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CFE06E4AA7
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 16:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1286E4AB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 16:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230117AbjDQOEh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 10:04:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56072 "EHLO
+        id S230432AbjDQOEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 10:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230280AbjDQOEe (ORCPT
+        with ESMTP id S230236AbjDQOEg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 10:04:34 -0400
+        Mon, 17 Apr 2023 10:04:36 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E6F5B9B
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 07:04:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8DF59E6
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 07:04:13 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <sha@pengutronix.de>)
-        id 1poPSb-000482-ET; Mon, 17 Apr 2023 16:04:01 +0200
+        id 1poPSb-00047z-71; Mon, 17 Apr 2023 16:04:01 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <sha@pengutronix.de>)
-        id 1poPSa-00BtJv-On; Mon, 17 Apr 2023 16:04:00 +0200
+        id 1poPSa-00BtJs-Fv; Mon, 17 Apr 2023 16:04:00 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <sha@pengutronix.de>)
-        id 1poPSZ-009Or6-Ka; Mon, 17 Apr 2023 16:03:59 +0200
+        id 1poPSZ-009Or9-LM; Mon, 17 Apr 2023 16:03:59 +0200
 From:   Sascha Hauer <s.hauer@pengutronix.de>
 To:     linux-wireless <linux-wireless@vger.kernel.org>
 Cc:     Hans Ulli Kroll <linux@ulli-kroll.de>,
@@ -37,11 +37,13 @@ Cc:     Hans Ulli Kroll <linux@ulli-kroll.de>,
         Viktor Petrenko <g0000ga@gmail.com>,
         Andreas Henriksson <andreas@fatal.se>,
         ValdikSS <iam@valdikss.org.ru>, kernel@pengutronix.de,
-        Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH v3 0/4] RTW88 USB bug fixes
-Date:   Mon, 17 Apr 2023 16:03:54 +0200
-Message-Id: <20230417140358.2240429-1-s.hauer@pengutronix.de>
+        Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
+Subject: [PATCH v3 1/4] wifi: rtw88: usb: fix priority queue to endpoint mapping
+Date:   Mon, 17 Apr 2023 16:03:55 +0200
+Message-Id: <20230417140358.2240429-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230417140358.2240429-1-s.hauer@pengutronix.de>
+References: <20230417140358.2240429-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -57,44 +59,139 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Third round of the RTW88 USB bug fixes.
+The RTW88 chipsets have four different priority queues in hardware. For
+the USB type chipsets the packets destined for a specific priority queue
+must be sent through the endpoint corresponding to the queue. This was
+not fully understood when porting from the RTW88 USB out of tree driver
+and thus violated.
 
-After some discussion and thinking I came to the conclusion that the
-v1 variant of "wifi: rtw88: rtw8821c: Fix rfe_option field width" is
-better than the one posted in v2, so I reverted back to this version,
-but added a note to the commit message why this might not be entirely
-correct for all chip variants (though for all variants currently
-supported in the driver).
+This patch implements the qsel to endpoint mapping as in
+get_usb_bulkout_id_88xx() in the downstream driver.
 
-The patches are sorted in order of importance. 1/4 hasn't seen any
-negative comments and I think it should be applied right now.
-As stated above I think 2/4 should be applied as well. 3/4 fixes
-something I stumbled upon while reading in the vendor driver, but
-I don't what effect it actually has, I didn't notice any change
-in behaviour of the driver. 4/4 straightens the logic how
-rtw8821c_switch_rf_set() is called for different variants of the
-rtw8821c. This is taken from the vendor driver. From the supported
-chip variants this should only have an effect on the ones with
-rfe_option = 6, but I don't have that one available here for
-testing.
+Without this the driver often issues "timed out to flush queue 3"
+warnings and often TX stalls completely.
 
-I would be glad if at least 1/4 and 2/4 could be applied as these
-fix real issues in the driver.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: ValdikSS <iam@valdikss.org.ru>
+Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/wireless/realtek/rtw88/usb.c | 70 ++++++++++++++++--------
+ 1 file changed, 47 insertions(+), 23 deletions(-)
 
-Sascha
-
-Sascha Hauer (4):
-  wifi: rtw88: usb: fix priority queue to endpoint mapping
-  wifi: rtw88: rtw8821c: Fix rfe_option field width
-  wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
-  wifi: rtw88: call rtw8821c_switch_rf_set() according to chip variant
-
- drivers/net/wireless/realtek/rtw88/main.c     |  2 +-
- drivers/net/wireless/realtek/rtw88/main.h     |  2 +
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 25 +++++--
- drivers/net/wireless/realtek/rtw88/usb.c      | 70 +++++++++++++------
- 4 files changed, 69 insertions(+), 30 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index 2a8336b1847a5..a10d6fef4ffaf 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -118,6 +118,22 @@ static void rtw_usb_write32(struct rtw_dev *rtwdev, u32 addr, u32 val)
+ 	rtw_usb_write(rtwdev, addr, val, 4);
+ }
+ 
++static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
++{
++	switch (dma_mapping) {
++	case RTW_DMA_MAPPING_HIGH:
++		return 0;
++	case RTW_DMA_MAPPING_NORMAL:
++		return 1;
++	case RTW_DMA_MAPPING_LOW:
++		return 2;
++	case RTW_DMA_MAPPING_EXTRA:
++		return 3;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int rtw_usb_parse(struct rtw_dev *rtwdev,
+ 			 struct usb_interface *interface)
+ {
+@@ -129,6 +145,8 @@ static int rtw_usb_parse(struct rtw_dev *rtwdev,
+ 	int num_out_pipes = 0;
+ 	int i;
+ 	u8 num;
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	const struct rtw_rqpn *rqpn;
+ 
+ 	for (i = 0; i < interface_desc->bNumEndpoints; i++) {
+ 		endpoint = &host_interface->endpoint[i].desc;
+@@ -183,31 +201,34 @@ static int rtw_usb_parse(struct rtw_dev *rtwdev,
+ 
+ 	rtwdev->hci.bulkout_num = num_out_pipes;
+ 
+-	switch (num_out_pipes) {
+-	case 4:
+-	case 3:
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 2;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = 0;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = 0;
+-		break;
+-	case 2:
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = 1;
+-		rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = 1;
+-		break;
+-	case 1:
+-		break;
+-	default:
+-		rtw_err(rtwdev, "failed to get out_pipes(%d)\n", num_out_pipes);
++	if (num_out_pipes < 1 || num_out_pipes > 4) {
++		rtw_err(rtwdev, "invalid number of endpoints %d\n", num_out_pipes);
+ 		return -EINVAL;
+ 	}
+ 
++	rqpn = &chip->rqpn_table[num_out_pipes];
++
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID0] = dma_mapping_to_ep(rqpn->dma_map_be);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID1] = dma_mapping_to_ep(rqpn->dma_map_bk);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID2] = dma_mapping_to_ep(rqpn->dma_map_bk);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID3] = dma_mapping_to_ep(rqpn->dma_map_be);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID4] = dma_mapping_to_ep(rqpn->dma_map_vi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID5] = dma_mapping_to_ep(rqpn->dma_map_vi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID6] = dma_mapping_to_ep(rqpn->dma_map_vo);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = dma_mapping_to_ep(rqpn->dma_map_vo);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID8] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID9] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID10] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID11] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID12] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID13] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID14] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_TID15] = -EINVAL;
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_BEACON] = dma_mapping_to_ep(rqpn->dma_map_hi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_HIGH] = dma_mapping_to_ep(rqpn->dma_map_hi);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_MGMT] = dma_mapping_to_ep(rqpn->dma_map_mg);
++	rtwusb->qsel_to_ep[TX_DESC_QSEL_H2C] = dma_mapping_to_ep(rqpn->dma_map_hi);
++
+ 	return 0;
+ }
+ 
+@@ -250,7 +271,7 @@ static void rtw_usb_write_port_tx_complete(struct urb *urb)
+ static int qsel_to_ep(struct rtw_usb *rtwusb, unsigned int qsel)
+ {
+ 	if (qsel >= ARRAY_SIZE(rtwusb->qsel_to_ep))
+-		return 0;
++		return -EINVAL;
+ 
+ 	return rtwusb->qsel_to_ep[qsel];
+ }
+@@ -265,6 +286,9 @@ static int rtw_usb_write_port(struct rtw_dev *rtwdev, u8 qsel, struct sk_buff *s
+ 	int ret;
+ 	int ep = qsel_to_ep(rtwusb, qsel);
+ 
++	if (ep < 0)
++		return ep;
++
+ 	pipe = usb_sndbulkpipe(usbd, rtwusb->out_ep[ep]);
+ 	urb = usb_alloc_urb(0, GFP_ATOMIC);
+ 	if (!urb)
 -- 
 2.39.2
 
