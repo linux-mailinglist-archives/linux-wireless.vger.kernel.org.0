@@ -2,159 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C4D6E4FF2
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 20:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C20B66E505A
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 20:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230315AbjDQSLw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 14:11:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59114 "EHLO
+        id S229758AbjDQSmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 14:42:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjDQSLv (ORCPT
+        with ESMTP id S229542AbjDQSmV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 14:11:51 -0400
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2057.outbound.protection.outlook.com [40.107.96.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E28FF;
-        Mon, 17 Apr 2023 11:11:49 -0700 (PDT)
+        Mon, 17 Apr 2023 14:42:21 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB44E26B8
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 11:42:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1681756936; x=1713292936;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=g7P4kBfXhsouXa5mghOc0gz4owa8Ez+VPMK7PstBzKM=;
+  b=115r2eB3e8eSIpoa50grnnusdLIu/1dszQHcYyyPtdS/oO7Zex2Q7Lyh
+   hcONdNSv+qse/H6DREGVm57dM6Q4GZ2NYvuJiqAaV3fLJUiX0TltuFgOI
+   SDwjP7pI2naxxaUDEhBJTXNUSOLwEsoZeKVi4BoE+XsRXS7kCU5TIErDR
+   wY4a2bdJ1vVpX4NzvgnkUuixs+EM698dOicZ7hlVcR2zs5G07Li69Bg2q
+   l/4fLy79FzkarUDTfQ5x2xsaM1xrNuB/vx6FmTSgEofLtG5qcXnElnxv9
+   983BtXFA+F7kKkyL7tfUHbB8vpAZoZvgPSRuXtbLghBPggUflz+vGE5Wn
+   g==;
+X-IronPort-AV: E=Sophos;i="5.99,204,1677567600"; 
+   d="scan'208";a="147474686"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 17 Apr 2023 11:42:16 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 17 Apr 2023 11:42:15 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 17 Apr 2023 11:42:15 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q0ewRoiknnlgkOXjbnpS9dvyw1gFhwyG3/rSly+Kf+RlUT606HqWVsIFE2gQ0mzwfczmSC6oL4ssQXeXll+/gDLsr+9PLJcc64neeLHJvOVTTiz6GJoUkE0rFcksaSB2q4Jz/YAGO+u9BeH5tuGhpKDgfZ1Figc6w55GAGmDL/6UPT/1krycbOpLWERF6mCenDtfcV3OcoP0/s2OgUN4GMXQJAegukJXJPv0Ff/KcN3UVGSRSR1cFy+59Slse94zBIPps2vBWol3THciM2TvVlfezj2aY0luedUF5iPX0M5D+yN2aqrxyTxlVxjhUQV825Xh4TgfQreoRxfKPHc9lA==
+ b=PeSpBI+0LjUUo+8tk1mWWXPEvY+9d4iPoKlYFLK9gvO46zLopWEJvBCtfeBp13mZJSugsTwRZ1Puwa/M6+HpANWPYYq7NiJZpYkNqvuP5msXMo0hVLJVboHhWc6T4sYgs5nWf1wA9EZPxxGbtTsu2W4LeprP/IFVo/4vhKSvHi4fWtfX1xaWDi1Oldjz+eNZWeRWOEgx5FLjj3IVTjdeUtcfmJlRTRl6Zecu3ntWf4gZV5qOp82w5UVe2bLmsmrKQUZUhG3j/wHo2WkKKvyBblvYgFcZRpkjGImJ204I2jVGEXLaGD95uX98b3iOjz7u3CUxUa8BoFaTj07vRE7PuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FVPFlkCWGbx2AUI+Aq7ZHWQcyKexNy/PYpt15ANVKgY=;
- b=PlC+wSGIbNkKX7btB3Xdj08k7FjYoMMDCXzLYyvUoj4J++BAU0EqaKTAK68NgHX1pDhMRkSnHAqmUYrdPDX19iylShAjEL+YUK/8E+TiE5pRexqx+UBo/j+MGGAOexdlWtXnZGRvR5VmviQfaXhFn6pQMHa1JOWq3VpaFXXeAvqmDt0qc695Up4VuQhUgZC2srNw8moWjcbOlSphe1hVL8qd2U101XUALdxWDE+cKDIHQ9EkHYfL3fAwZBwHDU76rwgtpigCglkCVjtLirisIeGmNwbyalE7V7/Qz1zfDI3CXhtA1cxwBP4q4nQyq87mQnU7O7+j5QtKSqvaLdRqRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nbd.name smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=FLEtGoWIkOmCjwlJYSRuLk+1SRJgZSGa6QrhPafhbjI=;
+ b=Ud1olruSQQj0e5e3fCA8yD7igMFEGQns2e+oc1llAB2eeuB/xUvfL6h4PD9qJAdl+7Ek1KGYlEVDQcdZRmOv9dQBdqDd6/+eHJHJklC9PftUxLz0md/7dT9RY5u/Y+pTb6Lfz7UDs1Pl+YTWJcoIUBhbNWuDPO82eL6nfUY9nra5rTOvYoYWOKTVAV4xo8IV4Gyzf4ufU+FezBDRM+HpoiYwPViHsG5xYD357/1u/IDnvXxqo/J3tMqKVwXGLLvaadk+Yv75t26xVaPJWhLT4Kdh3ZF8nMCw5B90VA4LN8qrnGHtt83rvcBO4M12ZCyNxkU68Xy3TJUD6XqefqKtRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FVPFlkCWGbx2AUI+Aq7ZHWQcyKexNy/PYpt15ANVKgY=;
- b=RoY3taR1T4JXRKg9v3GBe54lzZdfeVfALN9KSWfZ0GiWHfnjI0EUVmozBR+Bl/sDXh80EBSfQkaVquNcIe008zdvKXVl97s1eoq1FZxMMU6Z3ai7pCi4KxeNTyhTzR8L9ZjYon1tVzM553n1p4HRcsdin7zPxfy2rgFeARgsM/g=
-Received: from MW4PR03CA0308.namprd03.prod.outlook.com (2603:10b6:303:dd::13)
- by MW5PR12MB5652.namprd12.prod.outlook.com (2603:10b6:303:1a0::15) with
+ bh=FLEtGoWIkOmCjwlJYSRuLk+1SRJgZSGa6QrhPafhbjI=;
+ b=DNtURd4fwCb6UUg1h1RLrlTizy2vH1AMEY9VWJpn1TPWVhAtsKPyjtE8E1S1nCbqtxidk59wMppVd1SgZBkK6njQBMfC1e5klHJwGqs1vgS9shXiiZodoglq/ulE+uiWcOzc41dTJAmHcS3mERD08qKCroKnrYiPRVQAvccSEYE=
+Received: from CY8PR11MB7393.namprd11.prod.outlook.com (2603:10b6:930:84::18)
+ by PH0PR11MB5879.namprd11.prod.outlook.com (2603:10b6:510:142::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.30; Mon, 17 Apr
- 2023 18:11:46 +0000
-Received: from CO1NAM11FT083.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:dd:cafe::77) by MW4PR03CA0308.outlook.office365.com
- (2603:10b6:303:dd::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.46 via Frontend
- Transport; Mon, 17 Apr 2023 18:11:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT083.mail.protection.outlook.com (10.13.174.92) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6319.20 via Frontend Transport; Mon, 17 Apr 2023 18:11:46 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 17 Apr
- 2023 13:11:44 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
-        "Lorenzo Bianconi" <lorenzo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-CC:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Anson Tsao <anson.tsao@amd.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH v2] wifi: mt76: mt7921e: Set memory space enable in PCI_COMMAND if unset
-Date:   Mon, 17 Apr 2023 13:11:30 -0500
-Message-ID: <20230417181130.4445-2-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230417181130.4445-1-mario.limonciello@amd.com>
-References: <20230417181130.4445-1-mario.limonciello@amd.com>
+ 2023 18:42:13 +0000
+Received: from CY8PR11MB7393.namprd11.prod.outlook.com
+ ([fe80::120a:e19e:e1d9:4711]) by CY8PR11MB7393.namprd11.prod.outlook.com
+ ([fe80::120a:e19e:e1d9:4711%5]) with mapi id 15.20.6298.030; Mon, 17 Apr 2023
+ 18:42:13 +0000
+From:   <Amisha.Patel@microchip.com>
+To:     <linux-wireless@vger.kernel.org>
+CC:     <Ajay.Kathat@microchip.com>, <Claudiu.Beznea@microchip.com>,
+        <Amisha.Patel@microchip.com>
+Subject: [PATCH v2] wifi: wilc1000: fix for absent RSN capabilities WFA
+ testcase
+Thread-Topic: [PATCH v2] wifi: wilc1000: fix for absent RSN capabilities WFA
+ testcase
+Thread-Index: AQHZcVxTbYUBq6/w3kmQK+MqPhbi/g==
+Date:   Mon, 17 Apr 2023 18:42:12 +0000
+Message-ID: <20230417184145.12593-1-amisha.patel@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR11MB7393:EE_|PH0PR11MB5879:EE_
+x-ms-office365-filtering-correlation-id: a7c1141d-b1c3-4f6b-b32e-08db3f73759e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: cxWYW92s1g0aRhKn9UoH616H5Dm8bQjtxh7JqDCUR+eJoZRIU7VgjCYsBWlnlnPlEa7r0FLtOhN/T+cGjR72C90gwe71WBlQ63NnZQVSBnZLL0hUxO3p+VhNbHd/PMRdyuoHbg1Bg9BI9egWPJ0YESzY8nzOCErKQKo3nLRIEGGxhmkT9M1vlJJOdL/KYuhhQdycC2uYV57N8/bDZrn4h0IK/9+e1C+Rj5uLWXAMSlDAFP+FTPjedoYMQ10EEyZmDdtSFzeejG24sFsZxpNFz5pPU+VAUs4szqgH5i8bpkmOzbme1Uf3p61pz3PNwKTA1eIDTWX2cjkz5MoRuJ/mNY7tDBVNMTHhLBHaA2GSRD+RL7OTQtgt1/IugcVap4dgM73ufGPH2JJCnfQdN4UNFw1GLji5/igrQXTBHZRQVfcxFPUFRGDgtypBDZCs8MlSsvbWz8P49zUOgFmgOU9bYopw86DEBSs4B8nrNCfKuvjkSSkprOcHCn+7Sf8qossVf3GOcmJMpuKqZjc6wVAj0jOz/4SOpccV2zaidFKCtpiePo7nO+0kn7Pg9vr8N3XJ9MK22PCVUz2B109aa3wNouWFM6x+x/PlRqf7zITNg1sIwHB4FuxoKmRT1FpFeTFo
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7393.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(136003)(396003)(39860400002)(366004)(376002)(451199021)(5660300002)(71200400001)(6486002)(76116006)(6916009)(66476007)(66556008)(2906002)(4326008)(66946007)(66446008)(36756003)(64756008)(91956017)(86362001)(8936002)(38070700005)(122000001)(41300700001)(38100700002)(478600001)(316002)(8676002)(54906003)(6506007)(6512007)(26005)(1076003)(2616005)(107886003)(186003)(83380400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?TYRmegDHTL8hxw1lPiIl6lZElckYoGX9l7bJz9CpX20bK61B8RZrW3iSYx?=
+ =?iso-8859-1?Q?t1ILSUbKXtngue1jKc4bxDhInelU4DxQJNCY8RcyQcszO0slzkGhQzN4qd?=
+ =?iso-8859-1?Q?Fp2d0nPQyItUQaJD9cK4zqYIwJ4N2PNDXjVnY1TOWPtuLqZGwzWL8L5lIO?=
+ =?iso-8859-1?Q?DW1Bz8qxO2EcTWc+yFupvxl8QZI2uZF9RynTKblR0pNEbhQiZ9CKRHUZXe?=
+ =?iso-8859-1?Q?UBPZl0zcD5DRNFamWwTafPzqswcmxjqse+B6RzUGe4isG/Es6MfQH9z/gE?=
+ =?iso-8859-1?Q?UKXYf15IDFe87T+wkU2BCCtbaqejtDKAHjUdt4DjYHldYSfubz90mj7Ixd?=
+ =?iso-8859-1?Q?mw2NIFrNmwYgrjJXKV+lg1AQz6aKHjdKe4ZgxjQd/vsty9yfJSsvQOLmis?=
+ =?iso-8859-1?Q?lQ/yM6WK54cgXw4+AG+7ol97yYO8TGGAMfch8ZZA6wfzuiuUisJCsV+h31?=
+ =?iso-8859-1?Q?qnqqkxO1BKaWUpBrjP0uNamm5yKHubhzI4uH/nk4EjNpP6Aa463osImnqe?=
+ =?iso-8859-1?Q?GKGtG2J8VaZ2aX0gJW7vCupDRrI70f5epQeCiDEshn9ERt5Kdr43gUR9gt?=
+ =?iso-8859-1?Q?eTVahn5jqWOip6C7E4iniqmWqFG08NEE/89Qw4kVJHUBcxYFXzo5zVDe4M?=
+ =?iso-8859-1?Q?bppc37nCUYto07R1xImpm/+6raVA/oOQ/DJ1GY7Y+TD+PRwZvlvDb4yxeH?=
+ =?iso-8859-1?Q?31v5YspuKD1l3Y4q1W9TcMYhTwJr7edFTMzsa6iAViRfMuP5RuDKtB186k?=
+ =?iso-8859-1?Q?acwdKvZuRXgL4mJfrmatPVYGocErQtZtGhOIO//1DHu0SwIi2ItjmRmjxX?=
+ =?iso-8859-1?Q?FVYbH1osMRGZ9GtMW4tdIRdImiLFkVf1VVBHnCl8eixOWsCvFYgbOR2Ibw?=
+ =?iso-8859-1?Q?T89NM2kMViMK34hl5qQ2Uw974SYrgW0qfeS3QwkGrmerq8Dc+xe2oBz1D4?=
+ =?iso-8859-1?Q?HjwxQIOTON4U1MSxH2z88I4aLREjdnuT1qA2wCfW8Y2Ma8NqZVuUwEc7Cl?=
+ =?iso-8859-1?Q?xr72tuqsmNteFJTaJ65qa4wla+O27fzKDC0AOi0uPsa8D549Th4Exhob9d?=
+ =?iso-8859-1?Q?0zFl2QKTjyTPl2KbDUNMGrcWy2dEfUjKeheK2nvrNTKrmhhyEsbyCQHChi?=
+ =?iso-8859-1?Q?0ni2cWdIj0l2XpFPk7bfmbfNNksGDaw2UOcBRwfeU8iFRX0DqjU1cIBeEj?=
+ =?iso-8859-1?Q?EB3Bd4CYLLYgHINBdib8y+2/3yF/Si/L96f9UANY8o/sUS/cE3zmS6iKyh?=
+ =?iso-8859-1?Q?aIyGQJkndmdz1r0Z0d5f/Qy7sj/enzcaVqJfZLp0pyniGVmrbjsVAN//O8?=
+ =?iso-8859-1?Q?PY/n1VGdsH+y4KdT3W7xKf2WQvNO0SrEVjkb0PfzieKr46vp/zSFt8Z5J+?=
+ =?iso-8859-1?Q?vehGEOhqWNIRFZoKP3mJed1XgTA5CLPeU1KI2/gdDEFRo7zvAWgyTz24aD?=
+ =?iso-8859-1?Q?OJ4QfQxMCnA33ITpeIPqQtJHdUL4VHgm0iV6AfwOiKGae0vVJNa8qDMOQb?=
+ =?iso-8859-1?Q?TZprzDnXHHT59FNZJxCV2+LxlQC2bvYDyzObaJ53qS7/y4HhwA7zRwDec1?=
+ =?iso-8859-1?Q?x5OxX0+5hoyXlDzGpt6XpbWxYyzLwmXVvTmecFNgeUeiMRn5RNH9jE6YYg?=
+ =?iso-8859-1?Q?lRNDlfe9fDLFyeLfVr8OeGAiVi00VcLmc9vPXavbEmGdkdKIP04u4n/w?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT083:EE_|MW5PR12MB5652:EE_
-X-MS-Office365-Filtering-Correlation-Id: febcff06-71e2-45d8-5390-08db3f6f350d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2aHYYuvZ7Z3lsceNoAGAruipanXIiJqfKoo5OZ9MlNH83bY8ZejsrPxEoQ5EYvADML45cbkLxt3bgh1BueCjjWVsK3bdclyuuuZGvNzAXfGgFy2n5s1OmI/XgghppHBbAfNV8HecYJDFrKMGQJlYzTJENXQweV/qrqHwl+Dd0G64enT0yGVDNU002opCygTs7QKmyw6esmLGX3upmJba0BEuiT3qRL60i1IxgIAeXM73yRSaQRijM4sqtdPwJ04ppON6MHRbAryfpsuw5jHL1VBKdHSGU8Jtv2PAoTKsK8nC9fpaVrVq48gHiwbLW4W4Wxlf8b63GkqAapVS4pjULqb1OheFiecDd5ZLGbRzdjYkyyqedxlJL61p6zqaqDMlcxkaA+5sSR/fHj473RyKImUgpH5GilmWgClKHzZmAgWkprbdR6yTbdVfYiMpBaNlmfHFn27xbZKEUVPrO7C0tsgqjYejVbng7NMbCP/D+o3yuXAUzL5ZZXxUrzdoHqXwKnRz52BMjiEP2fTS38NpxbcChCpXmKyzoKYzJlzBYtj/xKIWo+1i2yEDcbjHMYYyA1+kET40rUFstslL6dUJos5YgcN2gRneYECzYwsafQ4aFcwRClB/8rdcB5YnQB18QFxVXuAtsANGsIk6BKF8d3ItGBZB2CTKuwpVlIscYr7R1HWl454L7Yo0mdzuCDUlvbwtIKDwNDwIW2eFbCDO1VZJRM2QF58xS5j8khqHWSo=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(346002)(396003)(136003)(451199021)(46966006)(40470700004)(36840700001)(110136005)(336012)(426003)(26005)(1076003)(54906003)(40480700001)(47076005)(186003)(83380400001)(2616005)(16526019)(36860700001)(40460700003)(7696005)(5660300002)(478600001)(41300700001)(6666004)(82310400005)(316002)(8676002)(82740400003)(356005)(8936002)(86362001)(81166007)(70206006)(70586007)(36756003)(4326008)(2906002)(7416002)(44832011)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2023 18:11:46.5324
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7393.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7c1141d-b1c3-4f6b-b32e-08db3f73759e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Apr 2023 18:42:12.9727
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: febcff06-71e2-45d8-5390-08db3f6f350d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT083.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5652
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: o8Sts2t9+Eb/RkBURBB3JXOLJiZp/aDZ5KoFlmRbyUP0zn94h0M8cZDvwyy9mRPsSqOwfz801xqbd8EW6W5T8jzX20uakf5kwVp6Tv16Pqs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5879
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When the BIOS has been configured for Fast Boot, systems with mt7921e
-have non-functional wifi.  Turning on Fast boot caused both bus master
-enable and memory space enable bits in PCI_COMMAND not to get configured.
+Mandatory WFA testcase
+CT_Security_WPA2Personal_STA_RSNEBoundsVerification-AbsentRSNCap,
+performs bounds verfication on Beacon and/or Probe response frames. It
+failed and observed the reason to be absence of cipher suite and AKM
+suite in RSN information. To fix this, enable the RSN flag before extractin=
+g RSN
+capabilities.
 
-The mt7921 driver already sets bus master enable, but explicitly check
-and set memory access enable as well to fix this problem.
-
-Tested-by: Anson Tsao <anson.tsao@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Sean Wang <sean.wang@mediatek.com>
+Fixes: cd21d99e595e ("wifi: wilc1000: validate pairwise and authentication =
+suite offsets")
+Signed-off-by: Amisha Patel <amisha.patel@microchip.com>
 ---
-v1->v2:
- * Pick up tag from Sean
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v2 - modified commit log based on review
+---
+ drivers/net/wireless/microchip/wilc1000/hif.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 5c23c827abe47..41be108e1d5a1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -263,6 +263,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 	struct mt76_dev *mdev;
- 	u8 features;
- 	int ret;
-+	u16 cmd;
- 
- 	ret = pcim_enable_device(pdev);
- 	if (ret)
-@@ -272,6 +273,11 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
- 	if (ret)
- 		return ret;
- 
-+	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-+	if (!(cmd & PCI_COMMAND_MEMORY)) {
-+		cmd |= PCI_COMMAND_MEMORY;
-+		pci_write_config_word(pdev, PCI_COMMAND, cmd);
-+	}
- 	pci_set_master(pdev);
- 
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
--- 
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wi=
+reless/microchip/wilc1000/hif.c
+index 5adc69d5bcae..a28da5938481 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -485,6 +485,9 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bs=
+s,
+ 		int rsn_ie_len =3D sizeof(struct element) + rsn_ie[1];
+ 		int offset =3D 8;
+=20
++		param->mode_802_11i =3D 2;
++		param->rsn_found =3D true;
++
+ 		/* extract RSN capabilities */
+ 		if (offset < rsn_ie_len) {
+ 			/* skip over pairwise suites */
+@@ -494,11 +497,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *b=
+ss,
+ 				/* skip over authentication suites */
+ 				offset +=3D (rsn_ie[offset] * 4) + 2;
+=20
+-				if (offset + 1 < rsn_ie_len) {
+-					param->mode_802_11i =3D 2;
+-					param->rsn_found =3D true;
++				if (offset + 1 < rsn_ie_len)
+ 					memcpy(param->rsn_cap, &rsn_ie[offset], 2);
+-				}
+ 			}
+ 		}
+ 	}
+--=20
 2.25.1
-
