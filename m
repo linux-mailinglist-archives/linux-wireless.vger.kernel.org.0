@@ -2,147 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D606E4A0B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 15:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA366E4A11
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 15:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230302AbjDQNhH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 09:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
+        id S230428AbjDQNiN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 09:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbjDQNhG (ORCPT
+        with ESMTP id S230390AbjDQNiL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 09:37:06 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F9472B4
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 06:37:03 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4ec8133c59eso1371536e87.0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 06:37:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681738622; x=1684330622;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ajiTsFHjF5bEfn/T0pz497Y4T0W30EVlD5XZiWzW1G8=;
-        b=k5Ai8lynqBteD3+ZaXcqgNcsEUo5d6I1KDWEBPrXfHBbhz0GPJDjV+iWgcELffFW2N
-         T36YVT2Sy86NuQbvuMLTjodQ0XE3EhFULHLnHvQL09KakbwiDeB9ucZe8XqUj/CXRlSq
-         y+WC08aV7bI8zAmgTCxNzlYSLx1NmTVjh80jQmF4d5iM4PYnwi07FcBdx5Rv/ZV5ChPU
-         c2XTYkbs9qGVbJRcSVDiCT80JnDIQgpQvPJc49GEyYnTpSOcaJKRcMZZK49DouhhCho3
-         7vYIY/lZFf8B8w3lBpnziyPT6B9YA4JVLUswFvsV6lq6RLwnoPuzLu6lhQfowSwA7gho
-         WU0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681738622; x=1684330622;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajiTsFHjF5bEfn/T0pz497Y4T0W30EVlD5XZiWzW1G8=;
-        b=DUb3knPVQWyTspE4qugah+jQnBNjBEei6M5Iklo4PcUXL8D8OJsN2e9K1yqw3Q/KBl
-         6eSj72Lb2nfQ7IhJNGzQxRxUSxp3vMeRX3/x3TkwlkVPtqzSTbQZcyIQV1ypD9ecjBs+
-         KMQokuSZPd3Gm0UfHKQ2QmiKKMjwgS4amjqJRQfVomX/0Qvs3PA1o55QzcLkazoHgH4f
-         JDeaXCZPRtobFzrZtEDS5f8j2/VJF/1XyLQPsp/e97R1P5yJUhvt3DTWyGy9beR7r/Fq
-         BT/vST3u813zMCAk2HiEHXRW2dHe0nzdXAfqZEN0vGqCJGjhG1hs2dqDUa9y+Vw6fVVG
-         r4zA==
-X-Gm-Message-State: AAQBX9fFUuFdczA4Eb5A1xo2DlVI5o/56vUSPvy3oJ7RsutNSgCwsjcf
-        0fVxDPQcXl5x4aBDByDXrpRB2A==
-X-Google-Smtp-Source: AKy350bqpmBwO7pT6gTJyyulqIMk2WplO3I3p5A9atMkIk4oS8bLgIA8QDfDyLRF7NBH71KIU62zxQ==
-X-Received: by 2002:ac2:4c2f:0:b0:4ec:b1bf:a55b with SMTP id u15-20020ac24c2f000000b004ecb1bfa55bmr1642956lfq.24.1681738621717;
-        Mon, 17 Apr 2023 06:37:01 -0700 (PDT)
-Received: from [192.168.1.101] (abyk99.neoplus.adsl.tpnet.pl. [83.9.30.99])
-        by smtp.gmail.com with ESMTPSA id u6-20020ac243c6000000b004e7fa99f2b5sm2061422lfl.186.2023.04.17.06.37.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Apr 2023 06:37:01 -0700 (PDT)
-Message-ID: <8a6834d6-8e5a-3c48-8a04-8d9c4d160408@linaro.org>
-Date:   Mon, 17 Apr 2023 15:36:59 +0200
+        Mon, 17 Apr 2023 09:38:11 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E99872BA
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 06:37:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=gee+MJQCSYFi49kYv4mguY3pvMAUQQbP3FbJ+ehoerM=; b=fgBmUeVEsBS8Egs9jsQUi9zZN/
+        Cs+0DJ8KfBy55CU8baSaHk3AQnQPJmUWLzyQzUXQntn2d1KVCnLbE3asf8eFm5gRIktn2vJXbcwpI
+        rWt3ujQTxgLhfPzXalTcpRXubJSeEd/D5+6dXxn0CBQArIVhDsRp0wM2JCBs3eol2yAQ=;
+Received: from [2a01:598:b1a5:5f87:b534:7c55:b6fa:8ec] (helo=localhost.localdomain)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1poP3J-00Fgks-07; Mon, 17 Apr 2023 15:37:53 +0200
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net
+Subject: [PATCH] wifi: mac80211: remove ieee80211_tx_status_8023
+Date:   Mon, 17 Apr 2023 15:37:51 +0200
+Message-Id: <20230417133751.79160-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v4] dt-bindings: net: Convert ATH10K to YAML
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230406-topic-ath10k_bindings-v4-1-9f67a6bb0d56@linaro.org>
- <87pm82x1ew.fsf@kernel.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <87pm82x1ew.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+It is unused and should not be used. In order to avoid limitations in
+4-address mode, the driver should always use ieee80211_tx_status_ext for
+802.3 frames with a valid sta pointer.
 
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ include/net/mac80211.h | 20 --------------------
+ net/mac80211/status.c  | 24 ------------------------
+ 2 files changed, 44 deletions(-)
 
-On 17.04.2023 12:12, Kalle Valo wrote:
-> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
-> 
->> Convert the ATH10K bindings to YAML.
->>
->> Dropped properties that are absent at the current state of mainline:
->> - qcom,msi_addr
->> - qcom,msi_base
-> 
-> Very good, thanks. Clearly I had missed that those were unused during
-> the review.
-> 
->> qcom,coexist-support and qcom,coexist-gpio-pin do very little and should
->> be reconsidered on the driver side, especially the latter one.
-> 
-> I'm curious, what do you mean very little? We set ath10k firmware
-> parameters based on these coex properties. How would you propose to
-> handle these?
-Right, I first thought they did nothing and then realized they're
-sent to the fw.. I never amended the commit message though..
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index a8dadbd83d95..ac0370e76874 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5215,26 +5215,6 @@ static inline void ieee80211_tx_status_ni(struct ieee80211_hw *hw,
+ void ieee80211_tx_status_irqsafe(struct ieee80211_hw *hw,
+ 				 struct sk_buff *skb);
+ 
+-/**
+- * ieee80211_tx_status_8023 - transmit status callback for 802.3 frame format
+- *
+- * Call this function for all transmitted data frames after their transmit
+- * completion. This callback should only be called for data frames which
+- * are using driver's (or hardware's) offload capability of encap/decap
+- * 802.11 frames.
+- *
+- * This function may not be called in IRQ context. Calls to this function
+- * for a single hardware must be synchronized against each other and all
+- * calls in the same tx status family.
+- *
+- * @hw: the hardware the frame was transmitted by
+- * @vif: the interface for which the frame was transmitted
+- * @skb: the frame that was transmitted, owned by mac80211 after this call
+- */
+-void ieee80211_tx_status_8023(struct ieee80211_hw *hw,
+-			       struct ieee80211_vif *vif,
+-			       struct sk_buff *skb);
+-
+ /**
+  * ieee80211_report_low_ack - report non-responding station
+  *
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 3f9ddd7f04b6..2b13a52ce96c 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -1244,30 +1244,6 @@ void ieee80211_tx_rate_update(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL(ieee80211_tx_rate_update);
+ 
+-void ieee80211_tx_status_8023(struct ieee80211_hw *hw,
+-			      struct ieee80211_vif *vif,
+-			      struct sk_buff *skb)
+-{
+-	struct ieee80211_sub_if_data *sdata;
+-	struct ieee80211_tx_status status = {
+-		.skb = skb,
+-		.info = IEEE80211_SKB_CB(skb),
+-	};
+-	struct sta_info *sta;
+-
+-	sdata = vif_to_sdata(vif);
+-
+-	rcu_read_lock();
+-
+-	if (!ieee80211_lookup_ra_sta(sdata, skb, &sta) && !IS_ERR(sta))
+-		status.sta = &sta->sta;
+-
+-	ieee80211_tx_status_ext(hw, &status);
+-
+-	rcu_read_unlock();
+-}
+-EXPORT_SYMBOL(ieee80211_tx_status_8023);
+-
+ void ieee80211_report_low_ack(struct ieee80211_sta *pubsta, u32 num_packets)
+ {
+ 	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
+-- 
+2.39.0
 
-
-> 
->> Somewhat based on the ath11k bindings.
->>
->> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> 
-> [...]
-> 
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
->> @@ -0,0 +1,358 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Qualcomm Technologies ATH10K wireless devices
-> 
-> [...]
-> 
->> +  wifi-firmware:
->> +    type: object
->> +    additionalProperties: false
->> +    description: |
->> +      The ATH10K Wi-Fi node can contain one optional firmware subnode.
->> +      Firmware subnode is needed when the platform does not have Trustzone.
-> 
-> Is there a reason why you write ath10k in upper case? There are two case
-> of that in the yaml file. We usually write it in lower case, can I
-> change to that?
-No particular reason, my brain just implicitly decided that it
-should be this way.. Please unify it (or LMK if you want me to
-perform another resend)!
-
-Konrad
-> 
