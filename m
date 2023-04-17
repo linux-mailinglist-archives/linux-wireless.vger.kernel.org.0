@@ -2,102 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B12846E453F
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 12:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78BD6E4663
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 13:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231162AbjDQKdh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 06:33:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35904 "EHLO
+        id S230093AbjDQL1n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 07:27:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231149AbjDQKd0 (ORCPT
+        with ESMTP id S229583AbjDQL1m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 06:33:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3545FC0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 03:32:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9E63614E9
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 10:32:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD72EC433D2;
-        Mon, 17 Apr 2023 10:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681727521;
-        bh=VoKLRLIqg6P5TWJ+bX+VxLZ4+h/ZRGMm8P5ymLNr4rg=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=mJR1JO7fpiTgka6rXF/C1QJl3wpdwUFeKH/OyHgQZO1UeDy1W8pnGM3IXKjsx1niL
-         etfzAE294VvOT9Q/PJW3yZ8Kp1uFz/HB0ebLlNjLNUr/1AXQj3To6YHGAxUsc1RR2i
-         rHq1IDkF8z5X8+/ilrpN4v8WjBKauLs7D7Mn2vBEMN8djaM4RipF6MVaHbdPlpGVwV
-         dDFU//RTU9Llx1H1yuBEEG9cq3S8x5692WeR3ZxTYwiD/wcr1hXrfiiwCiOdjUC/bF
-         uCfHGYPfJhk5cReVZdT17f3lw0+7vwpMNAYVmbeTrYNCi7ZfywuMHuZFT1rm7KkHVw
-         H0+yK5e7fry5w==
-Content-Type: text/plain; charset="utf-8"
+        Mon, 17 Apr 2023 07:27:42 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756E24C1C;
+        Mon, 17 Apr 2023 04:26:51 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1poMyw-0000Lo-Iw; Mon, 17 Apr 2023 13:25:14 +0200
+Message-ID: <69602f1b-4afa-d864-b6d3-d8237f81a51d@leemhuis.info>
+Date:   Mon, 17 Apr 2023 13:25:13 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: kernel error at led trigger "phy0tpt"
+Content-Language: en-US, de-DE
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Tobias Dahms <dahms.tobias@web.de>,
+        Sean Wang <sean.wang@mediatek.com>
+Cc:     stable@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-leds@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+References: <91feceb2-0df4-19b9-5ffa-d37e3d344fdf@web.de>
+ <3fcc707b-f757-e74b-2800-3b6314217868@leemhuis.info>
+ <fcecf6fc-bf18-73a0-9fc1-6850e183323a@web.de>
+ <d14fb08c-70e3-4cc7-caf9-87e73eab9194@gmail.com>
+ <8b07ead5-f105-da86-e7da-ee49616f7c1d@collabora.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <8b07ead5-f105-da86-e7da-ee49616f7c1d@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] ath9k: fix per-packet TX-power cap for TPC
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230330132159.758088-1-jelonek.jonas@gmail.com>
-References: <20230330132159.758088-1-jelonek.jonas@gmail.com>
-To:     Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, thomas.huehn@hs-nordhausen.de,
-        nbd@nbd.name, johannes.berg@intel.com, lorenzo@kernel.org,
-        Jonas Jelonek <jelonek.jonas@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168172751777.21228.15075674009242455727.kvalo@kernel.org>
-Date:   Mon, 17 Apr 2023 10:31:59 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1681730811;1bf629c5;
+X-HE-SMSGID: 1poMyw-0000Lo-Iw
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jonas Jelonek <jelonek.jonas@gmail.com> wrote:
+[adding Matthias to the list of recipients, who back then applied to
+culprit]
 
-> Fix incorrect usage of plain rate_idx as index into the max (power) per
-> rate lookup table.
+Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+for once, to make this easily accessible to everyone.
+
+AngeloGioacchino, Has any progress been made to fix below regression? It
+doesn't look like it from here, hence I wondered if it fall through the
+cracks.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot poke
+
+On 27.03.23 10:23, AngeloGioacchino Del Regno wrote:
+> Il 26/03/23 15:23, Bagas Sanjaya ha scritto:
+>> On 3/26/23 02:20, Tobias Dahms wrote:
+>>> Hello,
+>>>
+>>> the bisection gives following result:
+>>> --------------------------------------------------------------------
+>>> 18c7deca2b812537aa4d928900e208710f1300aa is the first bad commit
+>>> commit 18c7deca2b812537aa4d928900e208710f1300aa
+>>> Author: AngeloGioacchino Del Regno
+>>> <angelogioacchino.delregno@collabora.com>
+>>> Date:   Tue May 17 12:47:08 2022 +0200
+>>>
+>>>      soc: mediatek: pwrap: Use readx_poll_timeout() instead of custom
+>>> function
+>>>
+>>>      Function pwrap_wait_for_state() is a function that polls an address
+>>>      through a helper function, but this is the very same operation that
+>>>      the readx_poll_timeout macro means to do.
+>>>      Convert all instances of calling pwrap_wait_for_state() to instead
+>>>      use the read_poll_timeout macro.
+>>>
+>>>      Signed-off-by: AngeloGioacchino Del Regno
+>>> <angelogioacchino.delregno@collabora.com>
+>>>      Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+>>>      Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+>>>      Link:
+>>> https://lore.kernel.org/r/20220517104712.24579-2-angelogioacchino.delregno@collabora.com
+>>>      Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+>>>
+>>>   drivers/soc/mediatek/mtk-pmic-wrap.c | 60
+>>> ++++++++++++++++++++----------------
+>>>   1 file changed, 33 insertions(+), 27 deletions(-)
+>>> --------------------------------------------------------------------
+>>>
+>>
+>> OK, I'm updating the regression status:
+>>
+>> #regzbot introduced: 18c7deca2b8125
+>>
+>> And for replying, don't top-post, but rather reply inline with
+>> appropriate context instead; hence I cut the replied context.
+>>
 > 
-> For transmit power control (TPC), the ath9k driver maintains internal
-> tables (in struct ath_hw) to store the max allowed power level per rate.
-> They are used to limit a given TX-power according to regulatory and user
-> limits in the TX-path per packet. The tables are filled in a predefined
-> order, starting with values for CCK + OFDM rates and followed by the
-> values for MCS rates. Thus, the maximum power levels for MCS do not
-> start at index 0 in the table but are shifted by a fixed value.
+> There are two possible solutions to that, specifically, either:
+>  1. Change readx_poll_timeout() to readx_poll_timeout_atomic(); or
+>  2. Fix the mt6323-led driver so that this operation gets done
+>     out of atomic context, which is IMO the option to prefer.
 > 
-> The TX-power limiting in ath_get_rate_txpower currently does not apply
-> this shift, thus retrieves the incorrect maximum power level for a given
-> rate. In particular for MCS rates, the maximum power levels for CCK/OFDM
-> rates were used, e.g. maximum power for OFDM 0 was used for MCS 0. If
-> STBC is used, the power is mostly limited to 0 because the STBC table
-> is zeroed for legacy CCK/OFDM rates. Encountered this during testing of
-> our work-in-progress TPC per packet for ath9k.
-> This only has an effect when TPC is enabled in ath9k (tpc_enabled in
-> struct ath_hw) which defaults to false. In this case it has a
-> significant impact on the used TX-power, throughput + RSSI. Otherwise
-> the affected code is just skipped and TX-power is limited with the
-> hardware registers only. This patch fixes this table lookup.
+> Ideas?
 > 
-> Tested on OpenWrt (kernel 5.15.98, but backported ath9k driver) with
-> small desk setup using ath9k chips AR9280 and AR9580. Cap of TX-power is
-> working properly for all rates now, throughput and RSSI as expected,
-> equal to as if TPC was disabled.
-> Compile-tested with latest 6.3 kernel + allyesconfig.
+> Regards,
+> Angelo
 > 
-> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-Patch applied to ath-next branch of ath.git, thanks.
-
-e04e4b6e01e7 wifi: ath9k: fix per-packet TX-power cap for TPC
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230330132159.758088-1-jelonek.jonas@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+> 
