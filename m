@@ -2,101 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB7A6E4404
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 11:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB3046E4426
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 11:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbjDQJgh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 05:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36478 "EHLO
+        id S230098AbjDQJky (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 05:40:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjDQJgW (ORCPT
+        with ESMTP id S230502AbjDQJkN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 05:36:22 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFFD59DC;
-        Mon, 17 Apr 2023 02:35:41 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1poLFA-0005dj-Nc; Mon, 17 Apr 2023 11:33:52 +0200
-Message-ID: <f84c39ed-b8d8-7d0c-0eff-c90feaf5ab4f@leemhuis.info>
-Date:   Mon, 17 Apr 2023 11:33:49 +0200
+        Mon, 17 Apr 2023 05:40:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B476EBF;
+        Mon, 17 Apr 2023 02:39:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 958C9620FB;
+        Mon, 17 Apr 2023 09:39:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A95C433EF;
+        Mon, 17 Apr 2023 09:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681724342;
+        bh=1uorpTMHkFqpZA4T6bDoEtA6/LqIAMt2Atw6Gugzt6Q=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Um7WLR1eSeWGdLVC7KRWp0f6anMSnLgAlSy5AYL6et1S/R70k5QeQVMW9SlBUp2tF
+         9BfmPQQGpvpj9FBx/sh+3y6wIQr3AEbhhXo/MpAi6gd41PvzqnnqPBGpHeJRNjEOe/
+         Kkx2Ycow71drfrrQ5ZtBqbY+CtiwX9on/HfoL9ue5r2rLK3phtnno+NmZJhlSbuXSD
+         ZWWggeIebyydOrqfi0v5M2BAnmxNykej9VVFApaRQ7SjqlveMEf5s1udAIjDOyZz5N
+         mlqrQc/q5fmvN5B/FhEgbocZYgfsTlj1FnMVmVLRFxU91sQQOMU9PqiYrDoozOIoa6
+         JipolWldjk/mA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     =?utf-8?Q?=C3=81lvaro_Fern=C3=A1ndez?= Rojas <noltari@gmail.com>,
+        f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
+        toke@toke.dk, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, chunkeey@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: net: wireless: ath9k: document endian check
+References: <20230417053509.4808-1-noltari@gmail.com>
+        <20230417053509.4808-2-noltari@gmail.com>
+        <dd1525de-fa91-965f-148a-f7f517ae48f9@kernel.org>
+Date:   Mon, 17 Apr 2023 12:38:54 +0300
+In-Reply-To: <dd1525de-fa91-965f-148a-f7f517ae48f9@kernel.org> (Krzysztof
+        Kozlowski's message of "Mon, 17 Apr 2023 09:19:58 +0200")
+Message-ID: <87wn2ax2z5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [regression] Bug 217286 - ath11k:deny assoc request, Invalid
- supported ch width and ext nss combination
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     P Praneesh <ppranees@codeaurora.org>,
-        Ganesh Sesetti <gseset@codeaurora.org>,
-        Sathishkumar Muruganandam <murugana@codeaurora.org>
-Cc:     ath11k <ath11k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Kalle Valo <kvalo@kernel.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <ed31b6fe-e73d-34af-445b-81c5c644d615@leemhuis.info>
-In-Reply-To: <ed31b6fe-e73d-34af-445b-81c5c644d615@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1681724141;503caf1c;
-X-HE-SMSGID: 1poLFA-0005dj-Nc
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 08.04.23 13:52, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Hi, Thorsten here, the Linux kernel's regression tracker.
-> 
-> I noticed a regression report in bugzilla.kernel.org. As many (most?)
-> kernel developers don't keep an eye on it, I decided to forward it by mail.
-> 
-> Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-> not CCed them in mails like this.
-> 
-> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=217286 :
-> 
->> Built and installed v6.2 kernel (with ath11k_pci) on arm64 hardware
->> running Ubuntu22.04. Hardware has both Atheros QCN9074 module and Intel
->> AX210 module. Running each (separately) in station mode and try to
->> connect to Synology router with WiFi Access Point based on QCN9074.
->> AX210 has no problem connecting to AP but Atheros is successfully
->> authenticating but association is rejected by AP with this error message:
->>
->>
->> wlan: [0:I:ANY] [UNSPECIFIED] vap-0(wlan100): [04:f0:21:a1:7c:3e]deny assoc request, Invalid supported ch width and ext nss combination
->>
->> Please note that when running v5.15.5 kernel (with ath11k_pci), I am
->> able to connect to the same AP without problems.
->>
->> Detailed logs follow:
->> [...]
-> 
-> See the ticket for more details.
+Krzysztof Kozlowski <krzk@kernel.org> writes:
 
-FWIW, the reporter bisected the regression down to
+>> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+>> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+>> @@ -44,6 +44,11 @@ properties:
+>>  
+>>    ieee80211-freq-limit: true
+>>  
+>> +  qca,endian-check:
+>> +    $ref: /schemas/types.yaml#/definitions/flag
+>> +    description:
+>> +      Indicates that the EEPROM endianness should be checked
+>
+> Does not look like hardware property. Do not instruct what driver should
+> or should not do. It's not the purpose of DT.
 
-552d6fd2f2 ("ath11k: add support for 80P80 and 160 MHz bandwidth")
+Also the documentation is vague and is not really telling anything new
+what could be figured out from the property name, I would not be able to
+understand just from this what value should be used.
 
-Authored by P Praneesh, Ganesh Sesetti, and Sathishkumar Muruganandam,.
-all of which I added to the list of recipients (just like Jouni Malinen,
-who handled the patch). Could one of you please look into this?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-While at it, let me update the tracking status:
-
-#regzbot introduced: 552d6fd2f2
-#regzbot ignore-activity
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
