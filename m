@@ -2,137 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 352F76E3F68
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 08:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DFE6E4094
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 09:20:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbjDQGIq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 02:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47334 "EHLO
+        id S230232AbjDQHUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 03:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbjDQGIo (ORCPT
+        with ESMTP id S230285AbjDQHUH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 02:08:44 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1842A1FE1
-        for <linux-wireless@vger.kernel.org>; Sun, 16 Apr 2023 23:08:42 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33H67nz86001805, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33H67nz86001805
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 17 Apr 2023 14:07:49 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 17 Apr 2023 14:08:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 17 Apr 2023 14:08:12 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Mon, 17 Apr 2023 14:08:12 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>
-CC:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: RE: [PATCH] wifi: rtw88: Fix memory leak in rtw88_usb
-Thread-Topic: [PATCH] wifi: rtw88: Fix memory leak in rtw88_usb
-Thread-Index: AQHZbzesjaETNjjjhUGpyEIsOiNIha8vBpzw
-Date:   Mon, 17 Apr 2023 06:08:12 +0000
-Message-ID: <085f8fe9ec9749689e9f3fc51bfe1cce@realtek.com>
-References: <20230415011422.11162-1-Larry.Finger@lwfinger.net>
-In-Reply-To: <20230415011422.11162-1-Larry.Finger@lwfinger.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 17 Apr 2023 03:20:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09C540F0;
+        Mon, 17 Apr 2023 00:20:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 84DD661E72;
+        Mon, 17 Apr 2023 07:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D45AC433EF;
+        Mon, 17 Apr 2023 07:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681716005;
+        bh=GIlq1xazAppk+4PJdlj+79u9JtEaGtPambHTZuB/bFQ=;
+        h=Date:Subject:To:References:From:In-Reply-To:From;
+        b=t/Wm+Z4lufEoglmsAGChmQMgJpQoB4XNwtH5NxGv6kKl2ec78W1E4q7AwMj1t0Ov4
+         71f9rzU6VJyeLhGZ4RxAMPf6XmUuDE+tj8Sgn82UffxPhDbOes+n0Nm3YEiV6Uta/w
+         vNYOr/Mrg0JuqM9gjhhmlA6TpbiSmNUjQ5YZZX1JXsb2YUc0T60uToZ07m37ouHPgm
+         xSMgy6IafpXkwa0mgKQg/ocvLqN0COG4iFUpGis67h3kS7UwSCUFp1Quto1MsbDzcy
+         guiNCaCQgPY4IgnbYX25LM1yGjkj+jFirD1k9mHiXa0fuM2DaBW1ZRKfe2shPNPCZl
+         ahFbB02ub2RDw==
+Message-ID: <dd1525de-fa91-965f-148a-f7f517ae48f9@kernel.org>
+Date:   Mon, 17 Apr 2023 09:19:58 +0200
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 1/2] dt-bindings: net: wireless: ath9k: document endian
+ check
+To:     =?UTF-8?Q?=c3=81lvaro_Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>,
+        f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
+        toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        chunkeey@gmail.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230417053509.4808-1-noltari@gmail.com>
+ <20230417053509.4808-2-noltari@gmail.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20230417053509.4808-2-noltari@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 17/04/2023 07:35, Álvaro Fernández Rojas wrote:
+> Document new endian check flag to allow checking the endianness of EEPROM and
+> swap its values if needed.
+> 
+> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC.  It might happen, that command when run on an older
+kernel, gives you outdated entries.  Therefore please be sure you base
+your patches on recent Linux kernel.
+
+You missed the lists so this won't be tested. Resend following Linux
+kernel submission process.
 
 
-> -----Original Message-----
-> From: Larry Finger <larry.finger@gmail.com> On Behalf Of Larry Finger
-> Sent: Saturday, April 15, 2023 9:14 AM
-> To: Kalle Valo <kvalo@kernel.org>
-> Cc: Johannes Berg <johannes@sipsolutions.net>; linux-wireless@vger.kernel.org; Larry Finger
-> <Larry.Finger@lwfinger.net>; Sascha Hauer <s.hauer@pengutronix.de>; Ping-Ke Shih <pkshih@realtek.com>
-> Subject: [PATCH] wifi: rtw88: Fix memory leak in rtw88_usb
-> 
-> Kmemleak shows the following leak arising from routine in the usb
-> probe routine:
-> 
-> unreferenced object 0xffff895cb29bba00 (size 512):
->   comm "(udev-worker)", pid 534, jiffies 4294903932 (age 102751.088s)
->   hex dump (first 32 bytes):
->     77 30 30 30 00 00 00 00 02 2f 2d 2b 30 00 00 00  w000...../-+0...
->     02 00 2a 28 00 00 00 00 ff 55 ff ff ff 00 00 00  ..*(.....U......
->   backtrace:
->     [<ffffffff9265fa36>] kmalloc_trace+0x26/0x90
->     [<ffffffffc17eec41>] rtw_usb_probe+0x2f1/0x680 [rtw_usb]
->     [<ffffffffc03e19fd>] usb_probe_interface+0xdd/0x2e0 [usbcore]
->     [<ffffffff92b4f2fe>] really_probe+0x18e/0x3d0
->     [<ffffffff92b4f5b8>] __driver_probe_device+0x78/0x160
->     [<ffffffff92b4f6bf>] driver_probe_device+0x1f/0x90
->     [<ffffffff92b4f8df>] __driver_attach+0xbf/0x1b0
->     [<ffffffff92b4d350>] bus_for_each_dev+0x70/0xc0
->     [<ffffffff92b4e51e>] bus_add_driver+0x10e/0x210
->     [<ffffffff92b50935>] driver_register+0x55/0xf0
->     [<ffffffffc03e0708>] usb_register_driver+0x88/0x140 [usbcore]
->     [<ffffffff92401153>] do_one_initcall+0x43/0x210
->     [<ffffffff9254f42a>] do_init_module+0x4a/0x200
->     [<ffffffff92551d1c>] __do_sys_finit_module+0xac/0x120
->     [<ffffffff92ee6626>] do_syscall_64+0x56/0x80
->     [<ffffffff9300006a>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> 
-> The leak was verified to be real by unloading the driver, which resulted
-> in a dangling pointer to the allocation.
-> 
-> The allocated memory is freed in rtw_usb_disconnect().
-> 
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Ping-Ke Shih <pkshih@realtek.com>
 > ---
->  drivers/net/wireless/realtek/rtw88/usb.c | 1 +
->  1 file changed, 1 insertion(+)
+>  .../devicetree/bindings/net/wireless/qca,ath9k.yaml          | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> index 68e1b782d199..d28493a8f16c 100644
-> --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> @@ -882,6 +882,7 @@ void rtw_usb_disconnect(struct usb_interface *intf)
->         rtw_unregister_hw(rtwdev, hw);
->         rtw_usb_deinit_tx(rtwdev);
->         rtw_usb_deinit_rx(rtwdev);
-> +       kfree(rtwusb->usb_data);
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> index 0e5412cff2bc..ff9ca5e3674b 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> @@ -44,6 +44,11 @@ properties:
+>  
+>    ieee80211-freq-limit: true
+>  
+> +  qca,endian-check:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      Indicates that the EEPROM endianness should be checked
 
-I suggest to do this in rtw_usb_intf_deinit() instead, because rtwusb->usb_data is
-allocated by rtw_usb_intf_init(). Not only make the code symmetric also can handle
-error cases properly of rtw_usb_probe().
+Does not look like hardware property. Do not instruct what driver should
+or should not do. It's not the purpose of DT.
 
-Ping-Ke
 
+Best regards,
+Krzysztof
 
