@@ -2,120 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2223A6E424B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 10:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DC406E42C3
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 10:42:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjDQIN6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 04:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60994 "EHLO
+        id S230145AbjDQImI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 04:42:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbjDQIN4 (ORCPT
+        with ESMTP id S229483AbjDQImG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 04:13:56 -0400
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22DDB40C3;
-        Mon, 17 Apr 2023 01:13:51 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 3696941F72;
-        Mon, 17 Apr 2023 08:13:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-        t=1681719229; bh=ZRiy6qdtYG9gSvsJM9Fbh019YpZ1VS/7JH0gfpCcJKU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Oc4R2Shwbxp0hWo+owR+2A1muBziLfN7tJBDMEigI4MJqhVtKjxc0cAQNcqUmO9b9
-         irzIcKQWpVNPQswzja+uszpvPMGErPcizmkTnVwcDycDbE8lJDl02sZmYQLMXyYT/8
-         CI4sJ/dEHUCt+sdRXw56dq+Yexdwb24Ze0DYbB3bSDJ05hEmYNwTrh3LH6EbfgqCi3
-         /4nSRgfUURtfrPdHyssArJtaGVlUmNexRYA91CKomdbmkghoXNvtaIyGvwVv0EGXCi
-         McileHTjhm9GjWzr5DHFZWvoJM3SdMjq5tXWR/qGEwsEXLOKG/+TSD60fKYuw5KGlp
-         O3tihc2Vryu3g==
-Message-ID: <1201f65f-1b92-a121-05af-9f0290eb0c47@marcan.st>
-Date:   Mon, 17 Apr 2023 17:13:43 +0900
+        Mon, 17 Apr 2023 04:42:06 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488681FEE
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 01:42:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681720925; x=1713256925;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wZSMjeseZvPRZ4zbRNhx2Such15yqvD96U1fDOjL1W4=;
+  b=nFUUspTEKYjSCbeoCJmpIcNGQsDyaVOLWvxppD0hLIhmjq81oLxHg3mT
+   ejOyLQlDR5Ly5z2HPuRIIbfMqsmVRbiIRNeXsHgyOgCd+Dty67SdUQLTL
+   gp9V9t3U1XksCHmjiNn/DDw4ZPcrZsX8thWWwKODQopMIMQ09A6nrsVVK
+   IEP/fLkBUGDw4Mf1xzbnAWc4zhJeaToVEwtEy5mXLgtPirVWFsQAakxQc
+   uR4MnC+JRZJS93Vlqv3GHK3A1HtDlL/mS5rSk+VH/TdJ814RIVfdDCA0I
+   g90g3EDnlc4yhbh+OhFmiOvB8ATPVEGdQASLa6dLLPl5MfAUqLqdsT8px
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="333634300"
+X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
+   d="scan'208";a="333634300"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:41:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="693173793"
+X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
+   d="scan'208";a="693173793"
+Received: from odotan1x-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.202.32])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:41:50 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/15] wifi: iwlwifi: updates intended for v6.4 2023-04-17 
+Date:   Mon, 17 Apr 2023 11:41:19 +0300
+Message-Id: <20230417084134.1338976-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/2] wifi: brcmfmac: Demote vendor-specific attach/detach
- messages to info
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
-        stable@vger.kernel.org
-References: <20230416-brcmfmac-noise-v1-0-f0624e408761@marcan.st>
- <20230416-brcmfmac-noise-v1-1-f0624e408761@marcan.st>
- <2023041631-crying-contour-5e11@gregkh>
- <8b2e7bb9-3681-0265-01bc-e7abdd0d08b8@marcan.st> <ZDz-F50Zlwkf2njN@kroah.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <ZDz-F50Zlwkf2njN@kroah.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 17/04/2023 17.06, Greg KH wrote:
-> On Mon, Apr 17, 2023 at 04:54:33PM +0900, Hector Martin wrote:
->> On 16/04/2023 21.46, Greg KH wrote:
->>> On Sun, Apr 16, 2023 at 09:42:17PM +0900, Hector Martin wrote:
->>>> People are getting spooked by brcmfmac errors on their boot console.
->>>> There's no reason for these messages to be errors.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
->>>> Signed-off-by: Hector Martin <marcan@marcan.st>
->>>> ---
->>>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c | 4 ++--
->>>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c | 4 ++--
->>>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c | 4 ++--
->>>>  3 files changed, 6 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
->>>> index ac3a36fa3640..c83bc435b257 100644
->>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
->>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
->>>> @@ -12,13 +12,13 @@
->>>>  
->>>>  static int brcmf_bca_attach(struct brcmf_pub *drvr)
->>>>  {
->>>> -	pr_err("%s: executing\n", __func__);
->>>> +	pr_info("%s: executing\n", __func__);
->>>
->>> Why are these here at all?  Please just remove these entirely, you can
->>> get this information normally with ftrace.
->>>
->>> Or, just delete these functions, why have empty ones at all?
->>
->> This is a new WIP code path that Arend introduced which currently
->> deliberately does nothing (but is intended to hold firmware vendor
->> specific init in the future). So we can just drop the messages, but I
->> don't think we want to remove the code entirely.
-> 
-> Why have empty functions that do nothing?  If you want to put
-> vendor-specific anything in here, add it when that is needed.  We don't
-> like having dead code laying around in the kernel if at all possible.
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-That's a question for Arend. But I think we should not be blocking this
-fix on that. I'll send a v2 that just removes the messages.
+Hi,
+
+Here's an additional set of iwlwifi patches for v6.4.
+Same as few patch sets before, this set contains the
+ususal developement, small improvements, cleanups and
+bugfixes. It bumps FW API to 78.
+
+Thanks,
+Gregory
 
 
-- Hector
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mvm: adopt the latest firmware API
+
+Gregory Greenman (2):
+  wifi: iwlwifi: mvm: update mac id management
+  wifi: iwlwifi: bump FW API to 78 for AX devices
+
+Johannes Berg (12):
+  wifi: iwlwifi: mvm: use BSSID when building probe requests
+  wifi: iwlwifi: mvm: allow NL80211_EXT_FEATURE_SCAN_MIN_PREQ_CONTENT
+  wifi: iwlwifi: mvm: remove per-STA MFP setting
+  wifi: iwlwifi: mvm: fix iwl_mvm_sta_rc_update for MLO
+  wifi: iwlwifi: mvm: only clients can be 20MHz-only
+  wifi: iwlwifi: mvm: rs-fw: properly access sband->iftype_data
+  wifi: iwlwifi: mvm: initialize per-link STA ratescale data
+  wifi: iwlwifi: mvm: remove RS rate init update argument
+  wifi: iwlwifi: fix iwl_mvm_max_amsdu_size() for MLO
+  wifi: iwlwifi: mvm: configure TLC on link activation
+  wifi: iwlwifi: mvm: add MLO support to SF - use sta pointer
+  wifi: iwlwifi: mvm: check firmware response size
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  2 +-
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 10 ---
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 10 +++
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 22 ++---
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 31 +++----
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac.c  |  7 --
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 24 ++++++
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  3 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 81 +++++++++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   | 13 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.h   | 21 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sf.c   | 29 ++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 37 ++++++++-
+ 15 files changed, 185 insertions(+), 112 deletions(-)
+
+-- 
+2.38.1
 
