@@ -2,102 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DFE6E4094
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 09:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F026E41A2
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 09:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjDQHUS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 03:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36216 "EHLO
+        id S230458AbjDQHy5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 03:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230285AbjDQHUH (ORCPT
+        with ESMTP id S230384AbjDQHyp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 03:20:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09C540F0;
-        Mon, 17 Apr 2023 00:20:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 17 Apr 2023 03:54:45 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34233594;
+        Mon, 17 Apr 2023 00:54:42 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84DD661E72;
-        Mon, 17 Apr 2023 07:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D45AC433EF;
-        Mon, 17 Apr 2023 07:20:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681716005;
-        bh=GIlq1xazAppk+4PJdlj+79u9JtEaGtPambHTZuB/bFQ=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=t/Wm+Z4lufEoglmsAGChmQMgJpQoB4XNwtH5NxGv6kKl2ec78W1E4q7AwMj1t0Ov4
-         71f9rzU6VJyeLhGZ4RxAMPf6XmUuDE+tj8Sgn82UffxPhDbOes+n0Nm3YEiV6Uta/w
-         vNYOr/Mrg0JuqM9gjhhmlA6TpbiSmNUjQ5YZZX1JXsb2YUc0T60uToZ07m37ouHPgm
-         xSMgy6IafpXkwa0mgKQg/ocvLqN0COG4iFUpGis67h3kS7UwSCUFp1Quto1MsbDzcy
-         guiNCaCQgPY4IgnbYX25LM1yGjkj+jFirD1k9mHiXa0fuM2DaBW1ZRKfe2shPNPCZl
-         ahFbB02ub2RDw==
-Message-ID: <dd1525de-fa91-965f-148a-f7f517ae48f9@kernel.org>
-Date:   Mon, 17 Apr 2023 09:19:58 +0200
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 18D6C4212E;
+        Mon, 17 Apr 2023 07:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+        t=1681718080; bh=9BgjppDTP78o93QzzyDV1mwP9TOqlheAYnzrgGrUZvs=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=eLdiolIPfg0qDBvve6LIvtScZrynBCa3ibW75H4luminZX8h3ma+SdY/5AV9T+2u6
+         4MU53gW6ne8k2AFtYieKV6xUmBcFYhfHt/5/5BDDID3ltJq8dZKjudCMETmfiBiqbU
+         hV0Yrnq0uTfWuJPV1ugZsCU/fM/2dLHo9NgPqfiv7wHZvmH98Iie9iWlcJT75reqEw
+         VL/7zPMKCgqpDI6R9qLy1HTRaNuLz3g8kpqbDv9fg9MDLZkT6ZH6ULdsT/yXU7VObc
+         T42OVJU/Au5qj/Vs/wpQ5kmhH0nveANqT/8ZcSkSI9TukCzW0SYfBE+Kn+kCDjeQIp
+         kO/G4VJjlxXfQ==
+Message-ID: <8b2e7bb9-3681-0265-01bc-e7abdd0d08b8@marcan.st>
+Date:   Mon, 17 Apr 2023 16:54:33 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: net: wireless: ath9k: document endian
- check
-To:     =?UTF-8?Q?=c3=81lvaro_Fern=c3=a1ndez_Rojas?= <noltari@gmail.com>,
-        f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
-        toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        chunkeey@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230417053509.4808-1-noltari@gmail.com>
- <20230417053509.4808-2-noltari@gmail.com>
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 1/2] wifi: brcmfmac: Demote vendor-specific attach/detach
+ messages to info
 Content-Language: en-US
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20230417053509.4808-2-noltari@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
+        stable@vger.kernel.org
+References: <20230416-brcmfmac-noise-v1-0-f0624e408761@marcan.st>
+ <20230416-brcmfmac-noise-v1-1-f0624e408761@marcan.st>
+ <2023041631-crying-contour-5e11@gregkh>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <2023041631-crying-contour-5e11@gregkh>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 17/04/2023 07:35, Álvaro Fernández Rojas wrote:
-> Document new endian check flag to allow checking the endianness of EEPROM and
-> swap its values if needed.
+On 16/04/2023 21.46, Greg KH wrote:
+> On Sun, Apr 16, 2023 at 09:42:17PM +0900, Hector Martin wrote:
+>> People are getting spooked by brcmfmac errors on their boot console.
+>> There's no reason for these messages to be errors.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
+>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>> ---
+>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c | 4 ++--
+>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c | 4 ++--
+>>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c | 4 ++--
+>>  3 files changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+>> index ac3a36fa3640..c83bc435b257 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
+>> @@ -12,13 +12,13 @@
+>>  
+>>  static int brcmf_bca_attach(struct brcmf_pub *drvr)
+>>  {
+>> -	pr_err("%s: executing\n", __func__);
+>> +	pr_info("%s: executing\n", __func__);
 > 
-> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC.  It might happen, that command when run on an older
-kernel, gives you outdated entries.  Therefore please be sure you base
-your patches on recent Linux kernel.
-
-You missed the lists so this won't be tested. Resend following Linux
-kernel submission process.
-
-
-> ---
->  .../devicetree/bindings/net/wireless/qca,ath9k.yaml          | 5 +++++
->  1 file changed, 5 insertions(+)
+> Why are these here at all?  Please just remove these entirely, you can
+> get this information normally with ftrace.
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> index 0e5412cff2bc..ff9ca5e3674b 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> @@ -44,6 +44,11 @@ properties:
->  
->    ieee80211-freq-limit: true
->  
-> +  qca,endian-check:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      Indicates that the EEPROM endianness should be checked
+> Or, just delete these functions, why have empty ones at all?
 
-Does not look like hardware property. Do not instruct what driver should
-or should not do. It's not the purpose of DT.
+This is a new WIP code path that Arend introduced which currently
+deliberately does nothing (but is intended to hold firmware vendor
+specific init in the future). So we can just drop the messages, but I
+don't think we want to remove the code entirely.
 
-
-Best regards,
-Krzysztof
+- Hector
 
