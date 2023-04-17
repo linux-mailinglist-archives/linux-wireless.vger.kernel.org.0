@@ -2,51 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC406E42C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 10:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5189E6E42C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 10:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbjDQImI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 04:42:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
+        id S230257AbjDQImJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 04:42:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjDQImG (ORCPT
+        with ESMTP id S229781AbjDQImH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 04:42:06 -0400
+        Mon, 17 Apr 2023 04:42:07 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488681FEE
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 01:42:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39DC74222
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 01:42:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681720925; x=1713256925;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wZSMjeseZvPRZ4zbRNhx2Such15yqvD96U1fDOjL1W4=;
-  b=nFUUspTEKYjSCbeoCJmpIcNGQsDyaVOLWvxppD0hLIhmjq81oLxHg3mT
-   ejOyLQlDR5Ly5z2HPuRIIbfMqsmVRbiIRNeXsHgyOgCd+Dty67SdUQLTL
-   gp9V9t3U1XksCHmjiNn/DDw4ZPcrZsX8thWWwKODQopMIMQ09A6nrsVVK
-   IEP/fLkBUGDw4Mf1xzbnAWc4zhJeaToVEwtEy5mXLgtPirVWFsQAakxQc
-   uR4MnC+JRZJS93Vlqv3GHK3A1HtDlL/mS5rSk+VH/TdJ814RIVfdDCA0I
-   g90g3EDnlc4yhbh+OhFmiOvB8ATPVEGdQASLa6dLLPl5MfAUqLqdsT8px
+  t=1681720926; x=1713256926;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=M8ovJ6YTZpMSUOKRFrWPffY+1oyUCSEZzBzmfp9vNOs=;
+  b=N1RXRnPcIdlY3LU/hHYIPMBA3j2AcdJPYwMfpsbAWTUu1eKPAyRGcC3g
+   HbhQLuaFTZ3VPRP4OtZdcCkh74k204qKVLADJh9rQ9UUaY3iluFb3qTmN
+   sFyblCCO7YB5aQhDcMz7SgXtUzPUVMeVmU7CHTJYqkaX2mA7NLQi2+Crr
+   Vks0gdnPtBhI5zmNnuY02VEPRz1oVgUDAtJwxvUesQyWhBWgW1kw9f3wR
+   xqFHXVQYUaoy2sXl3XAhLdGS2SKwM5qJazW9ykxu7n8wUQ/fyc5O4IDBk
+   34bnndN7vWmDgoHJgpqik+tzer49n9Gvv5aZumL4VZmovs5CFG5jndLOh
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="333634300"
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="333634306"
 X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
-   d="scan'208";a="333634300"
+   d="scan'208";a="333634306"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:41:51 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:41:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="693173793"
+X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="693173797"
 X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
-   d="scan'208";a="693173793"
+   d="scan'208";a="693173797"
 Received: from odotan1x-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.202.32])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:41:50 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:41:53 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 00/15] wifi: iwlwifi: updates intended for v6.4 2023-04-17 
-Date:   Mon, 17 Apr 2023 11:41:19 +0300
-Message-Id: <20230417084134.1338976-1-gregory.greenman@intel.com>
+Subject: [PATCH 01/15] wifi: iwlwifi: mvm: adopt the latest firmware API
+Date:   Mon, 17 Apr 2023 11:41:20 +0300
+Message-Id: <20230417113648.92aed4180a06.I277efa343c88081cb3fc890dcbeae3161cdffe16@changeid>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230417084134.1338976-1-gregory.greenman@intel.com>
+References: <20230417084134.1338976-1-gregory.greenman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -59,57 +62,77 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Hi,
+The firmware no longer wants the beacon template inside the MAC command.
 
-Here's an additional set of iwlwifi patches for v6.4.
-Same as few patch sets before, this set contains the
-ususal developement, small improvements, cleanups and
-bugfixes. It bumps FW API to 78.
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h | 10 ----------
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c    |  7 -------
+ 2 files changed, 17 deletions(-)
 
-Thanks,
-Gregory
-
-
-Emmanuel Grumbach (1):
-  wifi: iwlwifi: mvm: adopt the latest firmware API
-
-Gregory Greenman (2):
-  wifi: iwlwifi: mvm: update mac id management
-  wifi: iwlwifi: bump FW API to 78 for AX devices
-
-Johannes Berg (12):
-  wifi: iwlwifi: mvm: use BSSID when building probe requests
-  wifi: iwlwifi: mvm: allow NL80211_EXT_FEATURE_SCAN_MIN_PREQ_CONTENT
-  wifi: iwlwifi: mvm: remove per-STA MFP setting
-  wifi: iwlwifi: mvm: fix iwl_mvm_sta_rc_update for MLO
-  wifi: iwlwifi: mvm: only clients can be 20MHz-only
-  wifi: iwlwifi: mvm: rs-fw: properly access sband->iftype_data
-  wifi: iwlwifi: mvm: initialize per-link STA ratescale data
-  wifi: iwlwifi: mvm: remove RS rate init update argument
-  wifi: iwlwifi: fix iwl_mvm_max_amsdu_size() for MLO
-  wifi: iwlwifi: mvm: configure TLC on link activation
-  wifi: iwlwifi: mvm: add MLO support to SF - use sta pointer
-  wifi: iwlwifi: mvm: check firmware response size
-
- .../net/wireless/intel/iwlwifi/cfg/22000.c    |  2 +-
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 10 ---
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 10 +++
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 22 ++---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 31 +++----
- .../net/wireless/intel/iwlwifi/mvm/mld-mac.c  |  7 --
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 24 ++++++
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  3 +-
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 81 +++++++++++--------
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c   | 13 +--
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h   | 21 +++--
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  5 +-
- drivers/net/wireless/intel/iwlwifi/mvm/sf.c   | 29 ++-----
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  2 +
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 37 ++++++++-
- 15 files changed, 185 insertions(+), 112 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index 0bafa3e21cb5..74f2efbad34e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -223,15 +223,6 @@ struct iwl_mac_client_data {
+ 	__le32 ctwin;
+ } __packed; /* MAC_CONTEXT_CONFIG_CLIENT_DATA_API_S_VER_1 */
+ 
+-/**
+- * struct iwl_mac_go_ibss_data - configuration data for GO and IBSS MAC context
+- *
+- * @beacon_template: beacon template ID
+- */
+-struct iwl_mac_go_ibss_data {
+-	__le32 beacon_template;
+-} __packed; /* MAC_CONTEXT_CONFIG_GO_IBSS_DATA_API_S_VER_1 */
+-
+ /**
+  * struct iwl_mac_p2p_dev_data  - configuration data for P2P device MAC context
+  *
+@@ -304,7 +295,6 @@ struct iwl_mac_config_cmd {
+ 	/* MAC_CONTEXT_CONFIG_SPECIFIC_DATA_API_U_VER_1 */
+ 	union {
+ 		struct iwl_mac_client_data client;
+-		struct iwl_mac_go_ibss_data go_ibss;
+ 		struct iwl_mac_p2p_dev_data p2p_dev;
+ 	};
+ } __packed; /* MAC_CONTEXT_CONFIG_CMD_API_S_VER_1 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+index d73ab1712e0e..1717fb52dc12 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+@@ -167,7 +167,6 @@ static int iwl_mvm_mld_mac_ctxt_cmd_ibss(struct iwl_mvm *mvm,
+ 					 struct ieee80211_vif *vif,
+ 					 u32 action)
+ {
+-	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mac_config_cmd cmd = {};
+ 
+ 	WARN_ON(vif->type != NL80211_IFTYPE_ADHOC);
+@@ -178,9 +177,6 @@ static int iwl_mvm_mld_mac_ctxt_cmd_ibss(struct iwl_mvm *mvm,
+ 				       MAC_CFG_FILTER_ACCEPT_PROBE_REQ |
+ 				       MAC_CFG_FILTER_ACCEPT_GRP);
+ 
+-	/* TODO: Assumes that the beacon id == mac context id */
+-	cmd.go_ibss.beacon_template = cpu_to_le32(mvmvif->id);
+-
+ 	return iwl_mvm_mld_mac_ctxt_send_cmd(mvm, &cmd);
+ }
+ 
+@@ -220,9 +216,6 @@ static int iwl_mvm_mld_mac_ctxt_cmd_ap_go(struct iwl_mvm *mvm,
+ 						 MAC_CFG_FILTER_ACCEPT_PROBE_REQ,
+ 						 MAC_CFG_FILTER_ACCEPT_BEACON);
+ 
+-	/* TODO: Assume that the beacon id == mac context id */
+-	cmd.go_ibss.beacon_template = cpu_to_le32(mvmvif->id);
+-
+ 	return iwl_mvm_mld_mac_ctxt_send_cmd(mvm, &cmd);
+ }
+ 
 -- 
 2.38.1
 
