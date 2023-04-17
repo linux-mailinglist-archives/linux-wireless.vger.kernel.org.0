@@ -2,53 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 728586E494E
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 15:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401FA6E4985
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 15:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231233AbjDQNF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 09:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
+        id S229784AbjDQNMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 09:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231640AbjDQNFK (ORCPT
+        with ESMTP id S229688AbjDQNLe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 09:05:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8541B762
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 06:02:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA59261CB2
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 13:01:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCE8C433D2;
-        Mon, 17 Apr 2023 13:01:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681736478;
-        bh=vBAfpOF39qoB/LjTpHJuu0BLFpzakopzM1Xko9cDe1Q=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=T/0MqB+/a4fdfVUVd2KPtRAXv4rRwo6YUfv/7DbpK/n/J511474q9GURGeTFEy4GU
-         OIcXqLjtnQxtEeCXjy+67GD9qEVI+ZMa4JsJsRwQJwcRur3hBrkKZFnWPZSC9XiELG
-         9YZ5gikTIoNrgcUD25bqNDoKYvQAr31U8j+7/+WNVuJMdHFKAzSqhMlKE1DquXcVyn
-         FPZOG8Qbjo8QvPle0sgK01Ee9BaV6eeo+zaES8d4P0v36xvRBtoggqJf5CjAMRY6Xb
-         lrLj1NpwNXYiqO72xGN6X71Q0Wf4rmq7yzR1NgK07Fr0KPAuELTyXL5xL5z53pcJYp
-         CORrRlpOzT+dg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Aloka Dixit <quic_alokad@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Subject: Re: [PATCH v3 03/11] wifi: ath12k: process EHT capabilities
-References: <20230413215156.2649-1-quic_alokad@quicinc.com>
-        <20230413215156.2649-4-quic_alokad@quicinc.com>
-Date:   Mon, 17 Apr 2023 16:01:14 +0300
-In-Reply-To: <20230413215156.2649-4-quic_alokad@quicinc.com> (Aloka Dixit's
-        message of "Thu, 13 Apr 2023 14:51:48 -0700")
-Message-ID: <87h6tewtlx.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 17 Apr 2023 09:11:34 -0400
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AAD7BB8C;
+        Mon, 17 Apr 2023 06:10:59 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id d1so6542819oiw.13;
+        Mon, 17 Apr 2023 06:10:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681737035; x=1684329035;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VxzMSlWJqp0jC6TDxAVrz9kAacy8nE6CyreWMpO82qY=;
+        b=TbEeth/d+Lh7X3cP079eim5YXZH1gp/ubS+M/EdEEmEr3ismKJZrQsYApY76Yeus+f
+         7StSEJj7qqXVXAIRiy9mHUpd3+6TT7VKt/oLuAoOUZpMvSzBsrVR4K9cwWjBsZNRtVJf
+         vgJ/AloTEGeaTVUNFc18nVMbG5lRQ6GY9FhXDaKaDQMBQ+yG0DgRQabKAh+CK5pQ87KE
+         mk0MzNpOIzftWWojKTVbyIZyw4O8CpN3q56Hs1dXhcflfRl4ndhDkx6LICDJ+3Z58vmm
+         idZim2BiOGErFZUOEo6Aym0tfv7tRo1Td/tQrOoleoQLcmR6F3jYIX9MUQbhMVdamNuK
+         pPNQ==
+X-Gm-Message-State: AAQBX9ce+Jc253AwUtTvXM9EJ1zngxWmgPvNT8u6Hc9EqPB3GBrYOdg1
+        hqL72O3Ibfuee4J/0OlBSA==
+X-Google-Smtp-Source: AKy350ZlGphdnLNiDveQNO6I/GKvTFb/FnKDX5Ft9E5IDzE2uMM2gZ+a2HIyvJqu2MA7klFBfhkVoQ==
+X-Received: by 2002:a05:6808:bd5:b0:38d:e9e4:1ebd with SMTP id o21-20020a0568080bd500b0038de9e41ebdmr3351197oik.8.1681737035239;
+        Mon, 17 Apr 2023 06:10:35 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id r7-20020acada07000000b003895430852dsm4607496oig.54.2023.04.17.06.10.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Apr 2023 06:10:34 -0700 (PDT)
+Received: (nullmailer pid 2588774 invoked by uid 1000);
+        Mon, 17 Apr 2023 13:10:27 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+From:   Rob Herring <robh@kernel.org>
+To:     =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
+        devicetree@vger.kernel.org,
+        =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Robert Marko <robimarko@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Eric Dumazet <edumazet@google.com>
+In-Reply-To: <20230414212356.9326-1-zajec5@gmail.com>
+References: <20230414212356.9326-1-zajec5@gmail.com>
+Message-Id: <168173527510.2535500.15269428530497246338.robh@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: net: wireless: qcom,ath11k: allow
+ describing radios
+Date:   Mon, 17 Apr 2023 08:10:27 -0500
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,24 +73,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aloka Dixit <quic_alokad@quicinc.com> writes:
 
-> Add WMI support to process the EHT capabilities passed by the firmware.
-> Add required EHT specific definitions in structures ath12k_band_cap and
-> ath12k_wmi_svc_rdy_ext_parse.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+On Fri, 14 Apr 2023 23:23:54 +0200, Rafał Miłecki wrote:
+> From: Rafał Miłecki <rafal@milecki.pl>
+> 
+> Qualcomm ath11k chipsets can have up to 3 radios. Each radio may need to
+> be additionally described by including its MAC or available frequency
+> ranges.
+> 
+> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+> ---
+>  .../bindings/net/wireless/qcom,ath11k.yaml    | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
 
-This had a new warning:
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-drivers/net/wireless/ath/ath12k/wmi.c:4072: line length of 97 exceeds 90 columns
+yamllint warnings/errors:
 
-I fixed that in the pending branch. But please use ath12k-check before
-you submit the patches.
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dtb: wifi@c000000: radio@0: Unevaluated properties are not allowed ('reg' was unexpected)
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dtb: wifi@c000000: '#address-cells', '#size-cells' do not match any of the regexes: '^radio@[0-2]$', 'pinctrl-[0-9]+'
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+doc reference errors (make refcheckdocs):
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230414212356.9326-1-zajec5@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
