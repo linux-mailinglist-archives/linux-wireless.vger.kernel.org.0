@@ -2,58 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF76E6E42D2
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 10:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A97D6E4392
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 11:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbjDQImg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 04:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52070 "EHLO
+        id S229458AbjDQJWa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 05:22:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjDQImf (ORCPT
+        with ESMTP id S229504AbjDQJW1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 04:42:35 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C177EE6C
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 01:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681720943; x=1713256943;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RUWnt41J0CjhpTwGSW49zJ4mu5e99N3071XrQ5usNBc=;
-  b=NCvtfN8N3KVFg2DFiyD3W5Z1zEo1oRWhMjHG8kv+6I4brAH+cfcyICTq
-   tTVDmPTFZCSiim5Z+JLMteQYDjAclbGRnZDDr7djpejMhDxUiRGO/+b3P
-   pKIa06bl3ckvSAP9PHYxjnM7IqaEUW+x3jyH4w0Tme68Ob7IeIRP5cJdG
-   EGpuADd34uPvBLNdI6RW005hZFsthgyzCvkjJBMnp0UvywhZmoeh4fHY2
-   roy/VpFUtt/JPyjw6B+LqFQ56nOV8h5A3Mp3VnmtiKBLVBjlEXUVtw8uR
-   UlfbpslgtBWku86qJERGzeJAd6PUvTRUknmdjGRjsy6W7QTt1/hhDRrd0
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="333634453"
-X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
-   d="scan'208";a="333634453"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:42:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10682"; a="693173908"
-X-IronPort-AV: E=Sophos;i="5.99,203,1677571200"; 
-   d="scan'208";a="693173908"
-Received: from odotan1x-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.202.32])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2023 01:42:21 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 15/15] wifi: iwlwifi: bump FW API to 78 for AX devices
-Date:   Mon, 17 Apr 2023 11:41:34 +0300
-Message-Id: <20230417113648.5a4dcbf5a2c1.I125808566fe892ee0865e392bf1b1872daafe8ad@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230417084134.1338976-1-gregory.greenman@intel.com>
-References: <20230417084134.1338976-1-gregory.greenman@intel.com>
+        Mon, 17 Apr 2023 05:22:27 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9759240C6;
+        Mon, 17 Apr 2023 02:21:46 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1681723271; bh=zxAtmVjE1QkeQ/zLqggs+pv59RGEGM9/BqmB27YqErA=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=k4opQFXwX6NFBtUnZvJeOlasOPCBS1ZVU0UF4tDkBdh8MrESmp/+3HYwZhQPcFYlp
+         3K0jeLOWA/l4WqZ/bx6v1ELdeZurFySqP00tFCB/UCTRGDgl3pgNL9GLEiObG0BQol
+         8PX8ajnCVtbHjgDLiTywjFF/G74yOSQxlNwnHbvqGAll5HKsD/kZzQ6dE4XNhT1bh0
+         8RMOqChAkrWY7O+lZurhBjTqm9thnUKw49P/1tY4h8yrbapq6mwypQXeDvjL//Us2g
+         WqsCBuZbwv3Dq20Oc3UazMPL3Y5eX9ablQHo4bJmUsAwNojh773tBv44HgR+ITtRFq
+         /8NGHx17CpCYA==
+To:     =?utf-8?Q?=C3=81lvaro_Fern=C3=A1ndez?= Rojas <noltari@gmail.com>,
+        f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
+        kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, chunkeey@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     =?utf-8?Q?=C3=81lvaro_Fern=C3=A1ndez?= Rojas <noltari@gmail.com>
+Subject: Re: [PATCH v2 2/2] ath9k: of_init: add endian check
+In-Reply-To: <20230417053509.4808-3-noltari@gmail.com>
+References: <20230417053509.4808-1-noltari@gmail.com>
+ <20230417053509.4808-3-noltari@gmail.com>
+Date:   Mon, 17 Apr 2023 11:21:09 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87wn2ax3sq.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,28 +51,78 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+=C3=81lvaro Fern=C3=A1ndez Rojas <noltari@gmail.com> writes:
 
-Start supporting API version 78 for AX devices.
+> BCM63xx (Big Endian MIPS) devices store the calibration data in MTD
+> partitions but it needs to be swapped in order to work, otherwise it fail=
+s:
+> ath9k 0000:00:01.0: enabling device (0000 -> 0002)
+> ath: phy0: Ignoring endianness difference in EEPROM magic bytes.
+> ath: phy0: Bad EEPROM VER 0x0001 or REV 0x00e0
+> ath: phy0: Unable to initialize hardware; initialization status: -22
+> ath9k 0000:00:01.0: Failed to initialize device
+> ath9k: probe of 0000:00:01.0 failed with error -22
+>
+> For compatibility with current devices the AH_NO_EEP_SWAP flag will be
+> activated only when qca,endian-check isn't present in the device tree.
+> This is because some devices have the magic values swapped but not the ac=
+tual
+> EEPROM data, so activating the flag for those devices will break them.
+>
+> Signed-off-by: =C3=81lvaro Fern=C3=A1ndez Rojas <noltari@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath9k/init.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless=
+/ath/ath9k/init.c
+> index 4f00400c7ffb..abde953aec61 100644
+> --- a/drivers/net/wireless/ath/ath9k/init.c
+> +++ b/drivers/net/wireless/ath/ath9k/init.c
+> @@ -615,7 +615,6 @@ static int ath9k_nvmem_request_eeprom(struct ath_soft=
+c *sc)
+>=20=20
+>  	ah->nvmem_blob_len =3D len;
+>  	ah->ah_flags &=3D ~AH_USE_EEPROM;
+> -	ah->ah_flags |=3D AH_NO_EEP_SWAP;
+>=20=20
+>  	return 0;
+>  }
+> @@ -688,9 +687,11 @@ static int ath9k_of_init(struct ath_softc *sc)
+>  			return ret;
+>=20=20
+>  		ah->ah_flags &=3D ~AH_USE_EEPROM;
+> -		ah->ah_flags |=3D AH_NO_EEP_SWAP;
+>  	}
+>=20=20
+> +	if (!of_property_read_bool(np, "qca,endian-check"))
+> +		ah->ah_flags |=3D AH_NO_EEP_SWAP;
+> +
 
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+So I'm not sure just setting (or not) this flag actually leads to
+consistent behaviour. The code in ath9k_hw_nvram_swap_data() that reacts
+to this flag does an endianness check before swapping, and the behaviour
+of this check depends on the CPU endianness. However, the byte swapping
+you're after here also swaps u8 members of the eeprom, so it's not
+really a data endianness swap, and I don't think it should depend on the
+endianness of the CPU?
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index b98f0ff02362..532d14f61253 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -10,7 +10,7 @@
- #include "fw/api/txq.h"
- 
- /* Highest firmware API version supported */
--#define IWL_22000_UCODE_API_MAX	77
-+#define IWL_22000_UCODE_API_MAX	78
- 
- /* Lowest firmware API version supported */
- #define IWL_22000_UCODE_API_MIN	39
--- 
-2.38.1
+So at least conceptually, the magic byte check in
+ath9k_hw_nvram_swap_data() is wrong; instead the byteswap check should
+just be checking against the little-endian version of the firmware
+(i.e., 0xa55a; I think that's what your device has, right?). However,
+since we're setting an explicit per-device property anyway (in the
+device tree), maybe it's better to just have that be an "eeprom needs
+swapping" flag and do the swap unconditionally if it's set? I think that
+would address Krzysztof's comment as well ("needs swapping" is a
+hardware property, "do the check" is not).
 
+Now, the question becomes whether the "check" code path is actually used
+for anything today? The old mail thread I quoted in the other thread
+seems to indicate it's not, but it's not quite clear from the code
+whether there's currently any way to call into
+ath9k_hw_nvram_swap_data() without the NO_EEP_SWAP flag being set?
+
+WDYT?
+
+-Toke
