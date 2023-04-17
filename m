@@ -2,70 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 401FA6E4985
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 15:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D606E4A0B
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 15:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjDQNMU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 09:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
+        id S230302AbjDQNhH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 09:37:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjDQNLe (ORCPT
+        with ESMTP id S229933AbjDQNhG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 09:11:34 -0400
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AAD7BB8C;
-        Mon, 17 Apr 2023 06:10:59 -0700 (PDT)
-Received: by mail-oi1-f179.google.com with SMTP id d1so6542819oiw.13;
-        Mon, 17 Apr 2023 06:10:59 -0700 (PDT)
+        Mon, 17 Apr 2023 09:37:06 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F9472B4
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 06:37:03 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4ec8133c59eso1371536e87.0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 06:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681738622; x=1684330622;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ajiTsFHjF5bEfn/T0pz497Y4T0W30EVlD5XZiWzW1G8=;
+        b=k5Ai8lynqBteD3+ZaXcqgNcsEUo5d6I1KDWEBPrXfHBbhz0GPJDjV+iWgcELffFW2N
+         T36YVT2Sy86NuQbvuMLTjodQ0XE3EhFULHLnHvQL09KakbwiDeB9ucZe8XqUj/CXRlSq
+         y+WC08aV7bI8zAmgTCxNzlYSLx1NmTVjh80jQmF4d5iM4PYnwi07FcBdx5Rv/ZV5ChPU
+         c2XTYkbs9qGVbJRcSVDiCT80JnDIQgpQvPJc49GEyYnTpSOcaJKRcMZZK49DouhhCho3
+         7vYIY/lZFf8B8w3lBpnziyPT6B9YA4JVLUswFvsV6lq6RLwnoPuzLu6lhQfowSwA7gho
+         WU0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681737035; x=1684329035;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VxzMSlWJqp0jC6TDxAVrz9kAacy8nE6CyreWMpO82qY=;
-        b=TbEeth/d+Lh7X3cP079eim5YXZH1gp/ubS+M/EdEEmEr3ismKJZrQsYApY76Yeus+f
-         7StSEJj7qqXVXAIRiy9mHUpd3+6TT7VKt/oLuAoOUZpMvSzBsrVR4K9cwWjBsZNRtVJf
-         vgJ/AloTEGeaTVUNFc18nVMbG5lRQ6GY9FhXDaKaDQMBQ+yG0DgRQabKAh+CK5pQ87KE
-         mk0MzNpOIzftWWojKTVbyIZyw4O8CpN3q56Hs1dXhcflfRl4ndhDkx6LICDJ+3Z58vmm
-         idZim2BiOGErFZUOEo6Aym0tfv7tRo1Td/tQrOoleoQLcmR6F3jYIX9MUQbhMVdamNuK
-         pPNQ==
-X-Gm-Message-State: AAQBX9ce+Jc253AwUtTvXM9EJ1zngxWmgPvNT8u6Hc9EqPB3GBrYOdg1
-        hqL72O3Ibfuee4J/0OlBSA==
-X-Google-Smtp-Source: AKy350ZlGphdnLNiDveQNO6I/GKvTFb/FnKDX5Ft9E5IDzE2uMM2gZ+a2HIyvJqu2MA7klFBfhkVoQ==
-X-Received: by 2002:a05:6808:bd5:b0:38d:e9e4:1ebd with SMTP id o21-20020a0568080bd500b0038de9e41ebdmr3351197oik.8.1681737035239;
-        Mon, 17 Apr 2023 06:10:35 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r7-20020acada07000000b003895430852dsm4607496oig.54.2023.04.17.06.10.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Apr 2023 06:10:34 -0700 (PDT)
-Received: (nullmailer pid 2588774 invoked by uid 1000);
-        Mon, 17 Apr 2023 13:10:27 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20221208; t=1681738622; x=1684330622;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ajiTsFHjF5bEfn/T0pz497Y4T0W30EVlD5XZiWzW1G8=;
+        b=DUb3knPVQWyTspE4qugah+jQnBNjBEei6M5Iklo4PcUXL8D8OJsN2e9K1yqw3Q/KBl
+         6eSj72Lb2nfQ7IhJNGzQxRxUSxp3vMeRX3/x3TkwlkVPtqzSTbQZcyIQV1ypD9ecjBs+
+         KMQokuSZPd3Gm0UfHKQ2QmiKKMjwgS4amjqJRQfVomX/0Qvs3PA1o55QzcLkazoHgH4f
+         JDeaXCZPRtobFzrZtEDS5f8j2/VJF/1XyLQPsp/e97R1P5yJUhvt3DTWyGy9beR7r/Fq
+         BT/vST3u813zMCAk2HiEHXRW2dHe0nzdXAfqZEN0vGqCJGjhG1hs2dqDUa9y+Vw6fVVG
+         r4zA==
+X-Gm-Message-State: AAQBX9fFUuFdczA4Eb5A1xo2DlVI5o/56vUSPvy3oJ7RsutNSgCwsjcf
+        0fVxDPQcXl5x4aBDByDXrpRB2A==
+X-Google-Smtp-Source: AKy350bqpmBwO7pT6gTJyyulqIMk2WplO3I3p5A9atMkIk4oS8bLgIA8QDfDyLRF7NBH71KIU62zxQ==
+X-Received: by 2002:ac2:4c2f:0:b0:4ec:b1bf:a55b with SMTP id u15-20020ac24c2f000000b004ecb1bfa55bmr1642956lfq.24.1681738621717;
+        Mon, 17 Apr 2023 06:37:01 -0700 (PDT)
+Received: from [192.168.1.101] (abyk99.neoplus.adsl.tpnet.pl. [83.9.30.99])
+        by smtp.gmail.com with ESMTPSA id u6-20020ac243c6000000b004e7fa99f2b5sm2061422lfl.186.2023.04.17.06.37.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Apr 2023 06:37:01 -0700 (PDT)
+Message-ID: <8a6834d6-8e5a-3c48-8a04-8d9c4d160408@linaro.org>
+Date:   Mon, 17 Apr 2023 15:36:59 +0200
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc:     Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        devicetree@vger.kernel.org,
-        =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v4] dt-bindings: net: Convert ATH10K to YAML
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Robert Marko <robimarko@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Eric Dumazet <edumazet@google.com>
-In-Reply-To: <20230414212356.9326-1-zajec5@gmail.com>
-References: <20230414212356.9326-1-zajec5@gmail.com>
-Message-Id: <168173527510.2535500.15269428530497246338.robh@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: net: wireless: qcom,ath11k: allow
- describing radios
-Date:   Mon, 17 Apr 2023 08:10:27 -0500
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20230406-topic-ath10k_bindings-v4-1-9f67a6bb0d56@linaro.org>
+ <87pm82x1ew.fsf@kernel.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <87pm82x1ew.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,44 +87,62 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On Fri, 14 Apr 2023 23:23:54 +0200, Rafał Miłecki wrote:
-> From: Rafał Miłecki <rafal@milecki.pl>
+
+On 17.04.2023 12:12, Kalle Valo wrote:
+> Konrad Dybcio <konrad.dybcio@linaro.org> writes:
 > 
-> Qualcomm ath11k chipsets can have up to 3 radios. Each radio may need to
-> be additionally described by including its MAC or available frequency
-> ranges.
+>> Convert the ATH10K bindings to YAML.
+>>
+>> Dropped properties that are absent at the current state of mainline:
+>> - qcom,msi_addr
+>> - qcom,msi_base
 > 
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-> ---
->  .../bindings/net/wireless/qcom,ath11k.yaml    | 26 +++++++++++++++++++
->  1 file changed, 26 insertions(+)
+> Very good, thanks. Clearly I had missed that those were unused during
+> the review.
 > 
+>> qcom,coexist-support and qcom,coexist-gpio-pin do very little and should
+>> be reconsidered on the driver side, especially the latter one.
+> 
+> I'm curious, what do you mean very little? We set ath10k firmware
+> parameters based on these coex properties. How would you propose to
+> handle these?
+Right, I first thought they did nothing and then realized they're
+sent to the fw.. I never amended the commit message though..
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-yamllint warnings/errors:
+> 
+>> Somewhat based on the ath11k bindings.
+>>
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> 
+> [...]
+> 
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+>> @@ -0,0 +1,358 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath10k.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Qualcomm Technologies ATH10K wireless devices
+> 
+> [...]
+> 
+>> +  wifi-firmware:
+>> +    type: object
+>> +    additionalProperties: false
+>> +    description: |
+>> +      The ATH10K Wi-Fi node can contain one optional firmware subnode.
+>> +      Firmware subnode is needed when the platform does not have Trustzone.
+> 
+> Is there a reason why you write ath10k in upper case? There are two case
+> of that in the yaml file. We usually write it in lower case, can I
+> change to that?
+No particular reason, my brain just implicitly decided that it
+should be this way.. Please unify it (or LMK if you want me to
+perform another resend)!
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dtb: wifi@c000000: radio@0: Unevaluated properties are not allowed ('reg' was unexpected)
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.example.dtb: wifi@c000000: '#address-cells', '#size-cells' do not match any of the regexes: '^radio@[0-2]$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230414212356.9326-1-zajec5@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Konrad
+> 
