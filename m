@@ -2,112 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 481006E4ECF
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 19:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 269136E4F78
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 19:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbjDQRIu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 13:08:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
+        id S230428AbjDQRng (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 13:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbjDQRIt (ORCPT
+        with ESMTP id S229485AbjDQRnd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 13:08:49 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEBDC67A
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 10:08:23 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id dx24so22024646ejb.11
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 10:08:23 -0700 (PDT)
+        Mon, 17 Apr 2023 13:43:33 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3643D5BBA;
+        Mon, 17 Apr 2023 10:43:32 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-54f6a796bd0so311432017b3.12;
+        Mon, 17 Apr 2023 10:43:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681751302; x=1684343302;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7J/Gmt+spocMRrReMmVXHsLa3nxHGax+i2VF8ucgwDw=;
-        b=k/IyznacDhrUaTh16CNg0f3q44/7HVhdLTcDshPs6dgrzkJDoPFckMiKWSeCtMPN9N
-         WcyskBS6/Nt6gDjW47VQMccaHc2s9JiS+mtno/x61WZpWNV5K14rJeAY60e+ttNyAXdp
-         /nJYL2G519WAUzyFFC5WdXomZUkNmTPxw0A3eWm81w8GZofOHmSY4ioAps6qIg2iA23e
-         qe6slFQq20HSyJXX47OVfWvML+fTfenrx6X+ZUL8fbozo6psr+Txr5BN7c/p7NB9qymZ
-         i8D1smm1ZjC8d4U6wjO5Y0RZjbd0WQZVgsSqwzqcvtscY/cqp38XEVXQmr6MUSB+nG89
-         gAKA==
+        d=gmail.com; s=20221208; t=1681753411; x=1684345411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pXM3tcJHyt53uhVMevTZLqYzJa2bs0mj/T5pFqvF7sw=;
+        b=rqEWGzf8s7VoaYRlNCHWYM5J2ov3tWqIKn697PSaY4EhUKmPWJCGD0qaPA+i8sX5Wq
+         XlkMYWvWn/bgu2ewMy6bsrw/OTigdFbHTPkQIoeOz2V3+QVSmeu6vvp4tq3U2kS/LON6
+         DBS475NZjyeXVargZQQ6lLke5jGPhfGDFkEw6M4Q2M0RNjcrWnPWB/YYMl7WQzWKLkNI
+         AQ3q+i5+72qLKnb1j/J4JckwhE1p5fHvQAaU/WZOHpWXfTRRu1ouVp3cmzhD3YdjNJIB
+         UVFDiYRqWvnNS/yUhNnfFwFPgJ/gBWoCDC60rp7ZHl8XKq4agKMTBygzJDMHiaKAdwBJ
+         fMUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681751302; x=1684343302;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7J/Gmt+spocMRrReMmVXHsLa3nxHGax+i2VF8ucgwDw=;
-        b=PkbzXODEKR3LWzYrLrNyfysal5NnH62ZXi7D268pV6+07vb/Jv+aYQNbzZsTCx+x8l
-         TuPaLJfSj25CeMVckWZXsyRHQdF3wDXHAtXXwSIhGFNHWQl72+3u1WeGJvdyC3ofZnS9
-         XMOaWf2fETOk37W9hCyTlf9cpOlEAQMbBsXPlWXeagVYRHddtP6glD6BxcHaU88Q6uMB
-         Esx95pFBIJnuFC3pz62ijTKVS/ZFDw48J4Tn8C8pIDL3UIxK79aBazCJ/YFf/gB0QBvT
-         HN2bjNfz17nsC3pIUbqMMHbw6+Y/ckwJ5DPSRNJalR+/baifqXP3NmrXXbqT+O4In9mf
-         PqSw==
-X-Gm-Message-State: AAQBX9fNnGhkrLKgGBCN2WkAYo3PvOjBHd0x7CaRn0TaWFQbyQsCsk9+
-        mOlF6PgQiRBKAmSNdt8qQt8el7I+OjQ=
-X-Google-Smtp-Source: AKy350YtAgM254g9H/SS/BQI2je5MQY8V1QHNmdPFSXTWiPMA502p96CkY8rAWFPbwZ5YIam96rYtQ==
-X-Received: by 2002:a17:906:9bca:b0:94e:cfd0:ed9f with SMTP id de10-20020a1709069bca00b0094ecfd0ed9fmr7570786ejc.26.1681751301831;
-        Mon, 17 Apr 2023 10:08:21 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id qx11-20020a170906fccb00b0094f499257f7sm2805167ejb.151.2023.04.17.10.08.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Apr 2023 10:08:21 -0700 (PDT)
-Message-ID: <cf91ca69-70e3-4c20-c0b1-e59d452356a1@gmail.com>
-Date:   Mon, 17 Apr 2023 20:08:20 +0300
+        d=1e100.net; s=20221208; t=1681753411; x=1684345411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pXM3tcJHyt53uhVMevTZLqYzJa2bs0mj/T5pFqvF7sw=;
+        b=N4KesXjUzThBZ4RQXvmS/TykSQEHr3yNFZ/j2leIBgEKbZHzEZozqNNcyvPEo1ijlr
+         i+qt2VU8K8k57QJWVyf6e9WDnxEG83oFaignTvPIv//cgRyy2XgSuwu/f3MUUx59kl6S
+         JGg5YLK4bN5EQPHH93YyWdEV0JIe4kC/JWxMcj4gOk2NxBepySE3oCj+6zid25mgf+On
+         6uuQRsexnzF0EyNeP+O9y7U/FOp/9qaCiTo8XKwFRZ6HgiuYbmtl9/CVaI83XwtyJXCM
+         evg+ckKfiIUOvHXAmTx689bF/qZF6gCgNrpXW22PFGQbalxcuciPHGB+XFIZrCbOdN71
+         9eRA==
+X-Gm-Message-State: AAQBX9cc35oXO5Go30qQtkW2YJkY5SR+MKi3s6ThhqNwvvG/IhR1bt5f
+        XJWPCqNzQlxOGEA4MFMUEvJPZObj+kfmwP4f9FU=
+X-Google-Smtp-Source: AKy350aA7UVxFBwKHsCUM9rF9SZYtM4FMVPMBZlX8/uZZNtGF7JZ9CAPEV9Bf2aNlqbVwE4tJyTdPOq5KxDBdn/Isbs=
+X-Received: by 2002:a05:690c:706:b0:545:5f92:f7ee with SMTP id
+ bs6-20020a05690c070600b005455f92f7eemr10476696ywb.2.1681753411040; Mon, 17
+ Apr 2023 10:43:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: [PATCH 3/3] wifi: rtl8xxxu: Simplify setting the initial gain
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <a2a7d9df-0529-7890-3522-48dce613753f@gmail.com>
-In-Reply-To: <a2a7d9df-0529-7890-3522-48dce613753f@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230417053509.4808-1-noltari@gmail.com> <20230417053509.4808-2-noltari@gmail.com>
+ <dd1525de-fa91-965f-148a-f7f517ae48f9@kernel.org>
+In-Reply-To: <dd1525de-fa91-965f-148a-f7f517ae48f9@kernel.org>
+From:   =?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>
+Date:   Mon, 17 Apr 2023 19:43:20 +0200
+Message-ID: <CAKR-sGeQ5SJk54tcrN+zqZnX9rc32QAzmoOQjrEycS89N9HwCg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: net: wireless: ath9k: document endian check
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     f.fainelli@gmail.com, jonas.gorski@gmail.com, nbd@nbd.name,
+        toke@toke.dk, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        chunkeey@gmail.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The goal of writing 0x6954341e / 0x6955341e to REG_OFDM0_XA_AGC_CORE1
-appears to be setting the initial gain, which is stored in bits 0..6.
-Bits 7..31 are the same as what the phy init tables write.
+El lun, 17 abr 2023 a las 9:20, Krzysztof Kozlowski
+(<krzk@kernel.org>) escribi=C3=B3:
+>
+> On 17/04/2023 07:35, =C3=81lvaro Fern=C3=A1ndez Rojas wrote:
+> > Document new endian check flag to allow checking the endianness of EEPR=
+OM and
+> > swap its values if needed.
+> >
+> > Signed-off-by: =C3=81lvaro Fern=C3=A1ndez Rojas <noltari@gmail.com>
+>
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC.  It might happen, that command when run on an older
+> kernel, gives you outdated entries.  Therefore please be sure you base
+> your patches on recent Linux kernel.
 
-Modify only bits 0..6 so that we don't have to care about the values
-of the others. This way we don't have to add another "else if" for the
-RTL8192FU.
+I forgot to get the updated list for v2, sorry for that!
 
-Why we need to change the initial gain from the default 0x20 to 0x1e?
-Not sure. Some of the vendor drivers change it to 0x1e before scanning
-and then restore it to the original value after.
+>
+> You missed the lists so this won't be tested. Resend following Linux
+> kernel submission process.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Looks like we will need v3 anyway, so I'll get all the maintainers in
+the next version.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 03c0aaa9141c..fd8c8c6d53d6 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -7034,10 +7034,8 @@ static int rtl8xxxu_start(struct ieee80211_hw *hw)
- 	rtl8xxxu_write16(priv, REG_RXFLTMAP2, 0xffff);
- 	rtl8xxxu_write16(priv, REG_RXFLTMAP0, 0xffff);
- 
--	if (priv->rtl_chip == RTL8188E)
--		rtl8xxxu_write32(priv, REG_OFDM0_XA_AGC_CORE1, 0x6955341e);
--	else
--		rtl8xxxu_write32(priv, REG_OFDM0_XA_AGC_CORE1, 0x6954341e);
-+	rtl8xxxu_write32_mask(priv, REG_OFDM0_XA_AGC_CORE1,
-+			      OFDM0_X_AGC_CORE1_IGI_MASK, 0x1e);
- 
- 	return ret;
- 
--- 
-2.39.2
+>
+>
+> > ---
+> >  .../devicetree/bindings/net/wireless/qca,ath9k.yaml          | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.y=
+aml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > index 0e5412cff2bc..ff9ca5e3674b 100644
+> > --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> > @@ -44,6 +44,11 @@ properties:
+> >
+> >    ieee80211-freq-limit: true
+> >
+> > +  qca,endian-check:
+> > +    $ref: /schemas/types.yaml#/definitions/flag
+> > +    description:
+> > +      Indicates that the EEPROM endianness should be checked
+>
+> Does not look like hardware property. Do not instruct what driver should
+> or should not do. It's not the purpose of DT.
+>
+>
+> Best regards,
+> Krzysztof
+>
