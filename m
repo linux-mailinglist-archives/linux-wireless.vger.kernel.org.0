@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E5D6E4532
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 12:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B12846E453F
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Apr 2023 12:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230002AbjDQKaH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 06:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
+        id S231162AbjDQKdh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Apr 2023 06:33:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbjDQK3m (ORCPT
+        with ESMTP id S231149AbjDQKd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 06:29:42 -0400
+        Mon, 17 Apr 2023 06:33:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115337AB3
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 03:28:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3545FC0
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 03:32:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C20B661B65
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 10:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB38C433D2;
-        Mon, 17 Apr 2023 10:28:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9E63614E9
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 10:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD72EC433D2;
+        Mon, 17 Apr 2023 10:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681727331;
-        bh=3Iz5JePtM9cvykU/DcFaEXo6Tdj+TUSbHIg+gJXgJtM=;
+        s=k20201202; t=1681727521;
+        bh=VoKLRLIqg6P5TWJ+bX+VxLZ4+h/ZRGMm8P5ymLNr4rg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=jSRVAnegX0WNeUdqlH1s5pwjPZYfZg4DuSQXPevNIV0N/2vrliryZAJ3fPeKSKTd3
-         lX3pKD2hJbO9kK6Naugv6xidXxYNIHLIhU2ZpmYdQcD1XOWmOdeehw8PHfcsmJmEgZ
-         wkM2i8FBHN3nJIcSUfAVVgDV1QD+JXqW2MZYGi+zrCMSqO/+LIQ3Y5XHITpjMgnRLB
-         fKaUszztHQ/ZgEuMLAU/4bleKVRA0MaVl3gjpBtL3/c6cN/vMH/nckOS329RHxIAJD
-         5wHI4kjZsjhEkou4u/zAqFMo+mIHbLpBk3lQfLfDwjLLViX+XADh8aeg7veKOE2AFl
-         L5inedWQjnXpw==
+        b=mJR1JO7fpiTgka6rXF/C1QJl3wpdwUFeKH/OyHgQZO1UeDy1W8pnGM3IXKjsx1niL
+         etfzAE294VvOT9Q/PJW3yZ8Kp1uFz/HB0ebLlNjLNUr/1AXQj3To6YHGAxUsc1RR2i
+         rHq1IDkF8z5X8+/ilrpN4v8WjBKauLs7D7Mn2vBEMN8djaM4RipF6MVaHbdPlpGVwV
+         dDFU//RTU9Llx1H1yuBEEG9cq3S8x5692WeR3ZxTYwiD/wcr1hXrfiiwCiOdjUC/bF
+         uCfHGYPfJhk5cReVZdT17f3lw0+7vwpMNAYVmbeTrYNCi7ZfywuMHuZFT1rm7KkHVw
+         H0+yK5e7fry5w==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: ath11k: Ignore frags from uninitialized peer in
- dp.
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] ath9k: fix per-packet TX-power cap for TPC
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230403184155.8670-2-quic_nmaran@quicinc.com>
-References: <20230403184155.8670-2-quic_nmaran@quicinc.com>
-To:     Nagarajan Maran <quic_nmaran@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Harshitha Prem <quic_hprem@quicinc.com>,
-        Nagarajan Maran <quic_nmaran@quicinc.com>
+In-Reply-To: <20230330132159.758088-1-jelonek.jonas@gmail.com>
+References: <20230330132159.758088-1-jelonek.jonas@gmail.com>
+To:     Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, thomas.huehn@hs-nordhausen.de,
+        nbd@nbd.name, johannes.berg@intel.com, lorenzo@kernel.org,
+        Jonas Jelonek <jelonek.jonas@gmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168172732519.21228.13363006785669066948.kvalo@kernel.org>
-Date:   Mon, 17 Apr 2023 10:28:49 +0000 (UTC)
+Message-ID: <168172751777.21228.15075674009242455727.kvalo@kernel.org>
+Date:   Mon, 17 Apr 2023 10:31:59 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,54 +56,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nagarajan Maran <quic_nmaran@quicinc.com> wrote:
+Jonas Jelonek <jelonek.jonas@gmail.com> wrote:
 
-> When max virtual ap interfaces are configured in all the bands with
-> ACS and hostapd restart is done every 60s, a crash is observed at
-> random times.
-> In this certain scenario, a fragmented packet is received for
-> self peer, for which rx_tid and rx_frags are not initialized in
-> datapath. While handling this fragment, crash is observed as the
-> rx_frag list is uninitialised and when we walk in
-> ath11k_dp_rx_h_sort_frags, skb null leads to exception.
+> Fix incorrect usage of plain rate_idx as index into the max (power) per
+> rate lookup table.
 > 
-> To address this, before processing received fragments we check
-> dp_setup_done flag is set to ensure that peer has completed its
-> dp peer setup for fragment queue, else ignore processing the
-> fragments.
+> For transmit power control (TPC), the ath9k driver maintains internal
+> tables (in struct ath_hw) to store the max allowed power level per rate.
+> They are used to limit a given TX-power according to regulatory and user
+> limits in the TX-path per packet. The tables are filled in a predefined
+> order, starting with values for CCK + OFDM rates and followed by the
+> values for MCS rates. Thus, the maximum power levels for MCS do not
+> start at index 0 in the table but are shifted by a fixed value.
 > 
-> Call trace:
->   ath11k_dp_process_rx_err+0x550/0x1084 [ath11k]
->   ath11k_dp_service_srng+0x70/0x370 [ath11k]
->   0xffffffc009693a04
->   __napi_poll+0x30/0xa4
->   net_rx_action+0x118/0x270
->   __do_softirq+0x10c/0x244
->   irq_exit+0x64/0xb4
->   __handle_domain_irq+0x88/0xac
->   gic_handle_irq+0x74/0xbc
->   el1_irq+0xf0/0x1c0
->   arch_cpu_idle+0x10/0x18
->   do_idle+0x104/0x248
->   cpu_startup_entry+0x20/0x64
->   rest_init+0xd0/0xdc
->   arch_call_rest_init+0xc/0x14
->   start_kernel+0x480/0x4b8
->   Code: f9400281 f94066a2 91405021 b94a0023 (f9406401)
+> The TX-power limiting in ath_get_rate_txpower currently does not apply
+> this shift, thus retrieves the incorrect maximum power level for a given
+> rate. In particular for MCS rates, the maximum power levels for CCK/OFDM
+> rates were used, e.g. maximum power for OFDM 0 was used for MCS 0. If
+> STBC is used, the power is mostly limited to 0 because the STBC table
+> is zeroed for legacy CCK/OFDM rates. Encountered this during testing of
+> our work-in-progress TPC per packet for ath9k.
+> This only has an effect when TPC is enabled in ath9k (tpc_enabled in
+> struct ath_hw) which defaults to false. In this case it has a
+> significant impact on the used TX-power, throughput + RSSI. Otherwise
+> the affected code is just skipped and TX-power is limited with the
+> hardware registers only. This patch fixes this table lookup.
 > 
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+> Tested on OpenWrt (kernel 5.15.98, but backported ath9k driver) with
+> small desk setup using ath9k chips AR9280 and AR9580. Cap of TX-power is
+> working properly for all rates now, throughput and RSSI as expected,
+> equal to as if TPC was disabled.
+> Compile-tested with latest 6.3 kernel + allyesconfig.
 > 
-> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-> Signed-off-by: Nagarajan Maran <quic_nmaran@quicinc.com>
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-a06bfb3c9f69 wifi: ath11k: Ignore frags from uninitialized peer in dp.
-41e02bf4ae32 wifi: ath11k: fix undefined behavior with __fls in dp
+e04e4b6e01e7 wifi: ath9k: fix per-packet TX-power cap for TPC
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230403184155.8670-2-quic_nmaran@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230330132159.758088-1-jelonek.jonas@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
