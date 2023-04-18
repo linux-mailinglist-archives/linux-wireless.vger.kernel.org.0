@@ -2,59 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 895726E5CAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 10:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137D06E5CB3
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 11:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjDRI6O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 04:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
+        id S230317AbjDRI76 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 04:59:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229887AbjDRI6M (ORCPT
+        with ESMTP id S229734AbjDRI7z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 04:58:12 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5286E3C30
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 01:58:11 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pohA9-0001Sk-Kc; Tue, 18 Apr 2023 10:58:09 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pohA6-0007ze-G9; Tue, 18 Apr 2023 10:58:06 +0200
-Date:   Tue, 18 Apr 2023 10:58:06 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
-        Nick Morrow <morrownr@gmail.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        ValdikSS <iam@valdikss.org.ru>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific
- rtw8821c variants
-Message-ID: <20230418085806.GO13543@pengutronix.de>
-References: <20230417140358.2240429-1-s.hauer@pengutronix.de>
- <20230417140358.2240429-4-s.hauer@pengutronix.de>
- <abc17f5fe6c944a5a1361d4d76817a08@realtek.com>
+        Tue, 18 Apr 2023 04:59:55 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F68C40D5
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 01:59:54 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33I77YjV030047;
+        Tue, 18 Apr 2023 08:59:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=px8uqX1hsREvgok+XbCORC/WqEIB+kE1m4evsiay0jw=;
+ b=lppweXUao5fXIJ4tid//UmwKlNGKXOTQcJfOfDOfmZWIu6pRZF+9+RQSgM7H7gfQbG0L
+ 7OuI7LwY0V0gf1k7++vopxUP9scz450sp3Wl9IH4x53Y+2VBB0OcgGbqYNHxVApZBHRj
+ rv6wbtSORX9YN/adDBmlGe3NOCzbVcPn5DEOpj+Yq1rNlGNXZb0pRvUwGDH5mIBW/l4v
+ HgoDcF0fSTzlAUbEIxIc7fdbU34ZtssAZ+z0iwTXiKl60BVKoFMh2RNGkTrI+78f01W/
+ hhtYyFeN1kh/K1H6XA1XMJW883f+Y3ocvWyh7bScJti1Brzxq1Bit683K33+jjSQ5N2b 6A== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q12utavqh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 18 Apr 2023 08:59:48 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33I8xltT018764
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 18 Apr 2023 08:59:47 GMT
+Received: from [10.253.75.31] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Tue, 18 Apr
+ 2023 01:59:46 -0700
+Message-ID: <870ce439-85b1-f02c-70e5-2d424fd73372@quicinc.com>
+Date:   Tue, 18 Apr 2023 16:59:43 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abc17f5fe6c944a5a1361d4d76817a08@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+ <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+ <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+ <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
+ <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
+ <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
+ <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
+ <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
+ <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
+ <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
+ <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
+ <37958ca93039114b98909d730ff57dd1d10bb68d.camel@sipsolutions.net>
+ <b9c6d022-12c3-a696-c4b9-cb14a6d30a45@quicinc.com>
+ <91577d586475d290e08dee9e535cb6b4896e06d4.camel@sipsolutions.net>
+ <edfc26b5-f6d1-2ab7-f3cc-60a74c8c334d@quicinc.com>
+ <61268d31f8a6dd4eea10fcb6048d39244bc584e2.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <61268d31f8a6dd4eea10fcb6048d39244bc584e2.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: AUXXCHMwN7v32UVlvrCFyhmVeO_neD6k
+X-Proofpoint-ORIG-GUID: AUXXCHMwN7v32UVlvrCFyhmVeO_neD6k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-18_05,2023-04-17_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=740 lowpriorityscore=0 adultscore=0
+ phishscore=0 mlxscore=0 clxscore=1015 suspectscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304180077
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,106 +94,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 18, 2023 at 12:36:31AM +0000, Ping-Ke Shih wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Monday, April 17, 2023 10:04 PM
-> > To: linux-wireless <linux-wireless@vger.kernel.org>
-> > Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
-> > <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
-> > <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
-> > ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; Sascha Hauer <s.hauer@pengutronix.de>
-> > Subject: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
-> > 
-> > According to the vendor driver the pkg_type has to be set to '1'
-> > for some rtw8821c variants. As the pkg_type has been hardcoded to
-> > '0', add a field for it in struct rtw_hal and set this correctly
-> > in the rtw8821c part.
-> > With this parsing of a rtw_table is influenced and check_positive()
-> > in phy.c returns true for some cases here. The same is done in the
-> > vendor driver. However, this has no visible effect on the driver
-> > here.
-> 
-> I agree this patch, but still want to know more about the meaning of
-> "...no visible effect...". Do you mean your USB device works well with/without
-> this patch? or, IO is absolutely the same when loading parameters with
-> check_positive()?
+On 4/18/2023 4:15 PM, Johannes Berg wrote:
+> On Mon, 2023-04-17 at 22:07 +0800, Wen Gong wrote:
+>> OK. So I will try to put this in mac80211 layer, is it OK?
+>>
+> I guess? I'm still not really sure why you even want it, but hey, that's
+> up to you in a way. I really didn't like the suggestion with
+> wiphy_iftype_ext_capab (or any other capability for that matter), it
+> feels like it should be more dynamic, like maybe a new "add link"
+> callback or something? At least then you can't blame mac80211 for when
+> it breaks when you have two 5 GHz links ...
 
-Yes, it works with and without this patch. With this patch
-check_positive() returns true in some cases whereas without this patch
-check_positive always returns false.
-I don't know at all what effect this change could have, maybe I just
-need the right test case to verify it really makes a change.
+ok, so I would like to add callback such as
 
-I just realized that something like the below is missing, as the
-cond.rfe part needs the raw rfe value from fuses >> 3.
+"add_link(struct ieee80211_hw *hw, struct ieee80211_vif vif, struct 
+ieee80211_bss_conf *link_conf, unsigned int link_id)"
 
-Maybe we just take 1/4 and 2/4 and drop the others. I am running out of
-time for further debugging RTW8821C which is a chip our customer isn't
-interested in.
+in struct ieee80211_ops, and mac80211 call it in 
+ieee80211_mgd_setup_link()/ieee80211_vif_update_links,
 
-Sascha
+then lower-drvier could dynamic set the local addr of assoc 
+link_conf(also for 2nd link_conf), is it OK?
 
-
--------------------------------8<--------------------------------
-
-From 70e0bbf1e1d3949dede9f814d39970e5b27d3329 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 18 Apr 2023 10:33:56 +0200
-Subject: [PATCH] wifi: rtw88: rtw8821c: set rfe correctly in phy code
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/wireless/realtek/rtw88/main.h     | 1 +
- drivers/net/wireless/realtek/rtw88/phy.c      | 3 +++
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
- 3 files changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 462f69547be03..a75c86981acf7 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1738,6 +1738,7 @@ struct rtw_efuse {
- 	u8 country_code[2];
- 	u8 rf_board_option;
- 	u8 rfe_option;
-+	u8 rfe_type;
- 	u8 power_track_type;
- 	u8 thermal_meter[RTW_RF_PATH_MAX];
- 	u8 thermal_meter_k;
-diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
-index 128e75a81bf3c..deb39cbea440f 100644
---- a/drivers/net/wireless/realtek/rtw88/phy.c
-+++ b/drivers/net/wireless/realtek/rtw88/phy.c
-@@ -1048,6 +1048,9 @@ void rtw_phy_setup_phy_cond(struct rtw_dev *rtwdev, u32 pkg)
- 	cond.plat = 0x04;
- 	cond.rfe = efuse->rfe_option;
- 
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C)
-+		cond.rfe = efuse->rfe_type;
-+
- 	switch (rtw_hci_type(rtwdev)) {
- 	case RTW_HCI_TYPE_USB:
- 		cond.intf = INTF_USB;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index a50753ae235b5..72485c9471f11 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -49,6 +49,7 @@ static int rtw8821c_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
- 	map = (struct rtw8821c_efuse *)log_map;
- 
- 	efuse->rfe_option = map->rfe_option & 0x1f;
-+	efuse->rfe_type = map->rfe_option >> 3;
- 	efuse->rf_board_option = map->rf_board_option;
- 	efuse->crystal_cap = map->xtal_k;
- 	efuse->pa_type_2g = map->pa_type;
--- 
-2.39.2
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> johannes
