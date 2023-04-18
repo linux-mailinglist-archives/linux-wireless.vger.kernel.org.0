@@ -2,45 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 537556E5D3E
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 11:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B15CF6E5D50
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 11:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230417AbjDRJXN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 05:23:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59410 "EHLO
+        id S230453AbjDRJ1u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 05:27:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230312AbjDRJXM (ORCPT
+        with ESMTP id S230208AbjDRJ1t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 05:23:12 -0400
+        Tue, 18 Apr 2023 05:27:49 -0400
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC1E3C2B
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 02:23:11 -0700 (PDT)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33I6shVU013686;
-        Tue, 18 Apr 2023 09:23:02 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F061170E
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 02:27:48 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33I6sfQJ007777;
+        Tue, 18 Apr 2023 09:27:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=CFKMog9VfifSKbI/2CCxEKPCJcaOephdmWExTfF61qY=;
- b=nZgHLqy+f5OQW8Vmrq/ZgZ8BCdhAGKE2lxsSFFLtAaBEBwfnWlcv3x9yVTeCTSSs+wTB
- s0acFzJb30QyiXmCdLtsP2K9urf6i8vYF1CStqqKCS/DWjLQga9kmCZHWIIu3R2syb/p
- ThoVCRaGgUx5Bu3M7pOWraAzdyhhE+E1gzXCEh2x3UXacsTGHtHiUqmcMkEP2/73LIXE
- W5VxT1aWD6QpjXg3usAgiPE+glFVeyHP3E1xULRtUbF6f6MC9kOqlaN8zznD7f0IDhe1
- BeAfnvH3H1r8wwNPzmlasQdeJhhsk2wnxOOJY8P5VdN27fLzLsfPvZ3oy8gG4S4orann 3w== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q17yht6da-1
+ bh=8faAlypLPe1e1HG5LWGx9Kos22aWupKEa2+SCiIc3BY=;
+ b=HlKE1Qtvg1OTwrxyQXX5elS6crzWoL7G/IcMbBtRkuqjVFq1BkKjiySiK1Dk9TgSoUA8
+ 53HrPKUv08b2FawtfzRIq/okz79AkHlHwLEQauxTYl7t4Mrahn/mmuw7bopx2iJo3Qm1
+ N+FgB3EnSopctOJIJOTvsmqYMfIr8BcFDj+LMGIyvXzJx9Foqgp3pSegCiHwJ0BrrEyG
+ tR2hcs6zLUwQ0o5oQDZ+a9DVYtx1DQUuLpK4duTa5uUo/cw46GLSfbte0bYA1R+pomXv
+ kdf2J0LVJPB3haamap2S7eHmRJoR5F41yv81t5xW8Y/nDd6oM6Rbk3PsE0Tjth4jqt30 XA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q171gjcfj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Apr 2023 09:23:02 +0000
+        Tue, 18 Apr 2023 09:27:43 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33I9N1iR017827
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33I9RgU2021421
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 Apr 2023 09:23:01 GMT
+        Tue, 18 Apr 2023 09:27:42 GMT
 Received: from [10.253.75.31] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Tue, 18 Apr
- 2023 02:22:59 -0700
-Message-ID: <34212873-0b71-7f39-b064-6b50d8e514b4@quicinc.com>
-Date:   Tue, 18 Apr 2023 17:22:56 +0800
+ 2023 02:27:41 -0700
+Message-ID: <76863dec-1b2f-b933-7c5e-21c732de4bc6@quicinc.com>
+Date:   Tue, 18 Apr 2023 17:27:38 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
@@ -50,40 +50,32 @@ To:     Johannes Berg <johannes@sipsolutions.net>,
         <linux-wireless@vger.kernel.org>
 CC:     <ath11k@lists.infradead.org>
 References: <20220902141259.377789-1-johannes@sipsolutions.net>
- <2de44394-cb93-7be4-481f-2d92788b8d28@quicinc.com>
- <351f74e0e1cd6e9724f97dbd042bdc5e04c44842.camel@sipsolutions.net>
- <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
- <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
- <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
- <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
- <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
- <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
- <37958ca93039114b98909d730ff57dd1d10bb68d.camel@sipsolutions.net>
- <b9c6d022-12c3-a696-c4b9-cb14a6d30a45@quicinc.com>
- <91577d586475d290e08dee9e535cb6b4896e06d4.camel@sipsolutions.net>
- <edfc26b5-f6d1-2ab7-f3cc-60a74c8c334d@quicinc.com>
- <61268d31f8a6dd4eea10fcb6048d39244bc584e2.camel@sipsolutions.net>
- <870ce439-85b1-f02c-70e5-2d424fd73372@quicinc.com>
- <34ed0938b69ead648da1aa250a2e081054fb49d4.camel@sipsolutions.net>
+ <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+ <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+ <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+ <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
+ <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
+ <c15e368e-2fea-a1d8-9c0d-db9278ded5e5@quicinc.com>
+ <113761966918b2f390d3c9304307b42a0b4a829b.camel@sipsolutions.net>
 From:   Wen Gong <quic_wgong@quicinc.com>
-In-Reply-To: <34ed0938b69ead648da1aa250a2e081054fb49d4.camel@sipsolutions.net>
+In-Reply-To: <113761966918b2f390d3c9304307b42a0b4a829b.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.80.80.8]
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: WmMXVbskVZPPA2lZNdBAd1ET_aMA5vcl
-X-Proofpoint-GUID: WmMXVbskVZPPA2lZNdBAd1ET_aMA5vcl
+X-Proofpoint-GUID: DcFUHiZoGWDi28eYYFOkGGXldT-H-5rX
+X-Proofpoint-ORIG-GUID: DcFUHiZoGWDi28eYYFOkGGXldT-H-5rX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-04-18_05,2023-04-17_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 impostorscore=0 adultscore=0 suspectscore=0 mlxlogscore=921
- clxscore=1015 malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304180080
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ mlxlogscore=744 suspectscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 phishscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2304180081
 X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -94,55 +86,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/18/2023 5:11 PM, Johannes Berg wrote:
-> On Tue, 2023-04-18 at 16:59 +0800, Wen Gong wrote:
->> On 4/18/2023 4:15 PM, Johannes Berg wrote:
->>> On Mon, 2023-04-17 at 22:07 +0800, Wen Gong wrote:
->>>> OK. So I will try to put this in mac80211 layer, is it OK?
+On 4/18/2023 4:18 PM, Johannes Berg wrote:
+> On Mon, 2023-04-17 at 22:13 +0800, Wen Gong wrote:
+>> On 4/11/2023 3:38 PM, Johannes Berg wrote:
+>>> On Tue, 2023-04-04 at 11:28 +0800, Wen Gong wrote:
+>>>> May I also add a field such as "u16 active_links_count" in struct
+>>>> wiphy_iftype_ext_capab,
+>>>> and add logic in function ieee80211_set_vif_links_bitmaps() for station
+>>>> like this ?:
+>>>> if (active_links_count && hweight16(links) <= active_links_count)
+>>>>        then sdata->vif.active_links = links;
 >>>>
->>> I guess? I'm still not really sure why you even want it, but hey, that's
->>> up to you in a way. I really didn't like the suggestion with
->>> wiphy_iftype_ext_capab (or any other capability for that matter), it
->>> feels like it should be more dynamic, like maybe a new "add link"
->>> callback or something? At least then you can't blame mac80211 for when
->>> it breaks when you have two 5 GHz links ...
->> ok, so I would like to add callback such as
+>>> Also here, not sure it makes sense in cfg80211 level?
+>>>
+>>> Though I'm not sure what the idea here is at all - you can refuse to
+>>> link switch etc, what would you use this for?
+>> If I use ieee80211_set_active_links(),
+>> then I need add BSS_CHANGED_ASSOC and key for 2nd link in lower-driver.
 >>
->> "add_link(struct ieee80211_hw *hw, struct ieee80211_vif vif, struct
->> ieee80211_bss_conf *link_conf, unsigned int link_id)"
->>
->> in struct ieee80211_ops, and mac80211 call it in
->> ieee80211_mgd_setup_link()/ieee80211_vif_update_links,
->>
->> then lower-drvier could dynamic set the local addr of assoc
->> link_conf(also for 2nd link_conf), is it OK?
->>
-> Seems OK, but I'm not sure that _works_?
+>> I would like to active all links while assoc,
+>> then BSS_CHANGED_ASSOC and key will auto set for the 2nd link to
+>> lower-driver from mac80211.
+> I'm not convinced that makes sense. You're going to have to be able to
+> deal with changing links after association _anyway_, unless you plan on
+> breaking the entire connection once any of the links is getting out of
+> range or something?
 >
-> After all, we first set the addresses in assoc_data, when we don't have
-> a link_conf yet, no? Just what we were discussing in the other thread
-> about the leak.
+> So anyway you're going to have to be able to this for new links anyway?
+> I mean doing key management when link switching, and "association" (in
+> quotes, because as a term doesn't even make sense since this state is on
+> the MLD level, not the link level)...
+>
+> So not sure I get it?
 >
 > johannes
 
-It should work, I will test it later.
+Yes, you are right.
 
-For the 1st assoc link, the data->u.mgd.assoc_data is empty in 
-ieee80211_mgd_setup_link(),
+Now lower driver I used do not store the key and do not trigger
+BSS_CHANGED_ASSOC for new links after assoc.
 
-because ieee80211_mgd_setup_link() is called from nl80211_authenticate() 
-for the 1st assoc link.
+So my suggestion is a way to active all links while assoc, this way is 
+simple for lower driver I used.
 
-So ieee80211_mgd_setup_link() use eth_random_addr() for the 1st assoc link.
-
-
-For the 2nd link, ieee80211_mgd_setup_link() is called from 
-nl80211_associate(),
-
-the sdata->u.mgd.assoc_data is NOT empty,
-
-and the sdata->u.mgd.assoc_data->link[link_id].addr is valid,
-
-it is addr by eth_random_addr(assoc_data->link[i].addr) in 
-ieee80211_mgd_assoc().
+Also ieee80211_set_active_links() is another way to active all links 
+after assoc.
 
