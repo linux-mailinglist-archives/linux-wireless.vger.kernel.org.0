@@ -2,119 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FE166E5C75
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 10:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 895726E5CAD
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 10:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231574AbjDRItP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 04:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56304 "EHLO
+        id S230305AbjDRI6O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 04:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231204AbjDRItA (ORCPT
+        with ESMTP id S229887AbjDRI6M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 04:49:00 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A178B7690
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 01:48:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=2pNhfyigwf3jg3qPzX2v8I+sVoNNXo+B8ure2SdJcVw=;
-        t=1681807713; x=1683017313; b=ESmJIsRwKxEhCX/Lld0OZXB0Zu4mphFpb0R7gT9zLfJvObm
-        WO3vQUTY/5B1DLOOyFu+g+yDBRyE+TXV+Y7bHHK8cRuUwmeUE6fRFec+4taW0r48HlJ3P48IZl/Dd
-        cZUtRnZT92FyV4LesboBgofyAZdvUfdX7qbvdGKDJFBO0PwnRkFBixv+3pGEBeCkZWR/5Pdo496lb
-        pj856wWOUDJBCanPvfovCOn4oTYKmBLPxJ2NXEnZt+taFiZX1xayTBLmzoIO/2ZGq/q5eHbcJQXwf
-        cR9GfHpavu1nnZ4jJ7TS36LGrql0et7UQqjGWogg9XWuKu3LPg5LVSQJhLLsNYYg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1poh0n-001Y87-2I;
-        Tue, 18 Apr 2023 10:48:29 +0200
-Message-ID: <e40ee96ab2a8d9d079d3a06b7b1c615ab25a2403.camel@sipsolutions.net>
-Subject: Re: parsing the multi-link element with STA profile wifi: mac80211:
- support MLO authentication/association with one link
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Wen Gong <quic_wgong@quicinc.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     ath11k@lists.infradead.org
-Date:   Tue, 18 Apr 2023 10:48:28 +0200
-In-Reply-To: <571d8ecf-2ca6-8b7b-6e15-be12c56e9f88@quicinc.com>
-References: <48715509-62fd-2307-e38f-176234b482c1@quicinc.com>
-         <f240b33d507daf898480b0a11eb27d4475e45164.camel@sipsolutions.net>
-         <571d8ecf-2ca6-8b7b-6e15-be12c56e9f88@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Tue, 18 Apr 2023 04:58:12 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5286E3C30
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 01:58:11 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1pohA9-0001Sk-Kc; Tue, 18 Apr 2023 10:58:09 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1pohA6-0007ze-G9; Tue, 18 Apr 2023 10:58:06 +0200
+Date:   Tue, 18 Apr 2023 10:58:06 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific
+ rtw8821c variants
+Message-ID: <20230418085806.GO13543@pengutronix.de>
+References: <20230417140358.2240429-1-s.hauer@pengutronix.de>
+ <20230417140358.2240429-4-s.hauer@pengutronix.de>
+ <abc17f5fe6c944a5a1361d4d76817a08@realtek.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abc17f5fe6c944a5a1361d4d76817a08@realtek.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Tue, Apr 18, 2023 at 12:36:31AM +0000, Ping-Ke Shih wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Monday, April 17, 2023 10:04 PM
+> > To: linux-wireless <linux-wireless@vger.kernel.org>
+> > Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
+> > <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
+> > <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
+> > ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; Sascha Hauer <s.hauer@pengutronix.de>
+> > Subject: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
+> > 
+> > According to the vendor driver the pkg_type has to be set to '1'
+> > for some rtw8821c variants. As the pkg_type has been hardcoded to
+> > '0', add a field for it in struct rtw_hal and set this correctly
+> > in the rtw8821c part.
+> > With this parsing of a rtw_table is influenced and check_positive()
+> > in phy.c returns true for some cases here. The same is done in the
+> > vendor driver. However, this has no visible effect on the driver
+> > here.
+> 
+> I agree this patch, but still want to know more about the meaning of
+> "...no visible effect...". Do you mean your USB device works well with/without
+> this patch? or, IO is absolutely the same when loading parameters with
+> check_positive()?
 
-> My case is:
-> When connect with 2 links AP, the cfg80211_hold_bss() is called by=20
-> cfg80211_mlme_assoc()
-> for each BSS of the 2 links,
->=20
-> When asssocResp from AP is not success(such as status_code=3D=3D1), the=
-=20
-> ieee80211_link_data of 2nd link(sdata->link[link_id])
-> is NULL because ieee80211_assoc_success()->ieee80211_vif_update_links()=
-=20
-> is not called.
->=20
-> Then struct cfg80211_rx_assoc_resp resp in cfg80211_rx_assoc_resp() and
-> struct cfg80211_connect_resp_params cr in __cfg80211_connect_result()=20
-> will only have the data of
-> the 1st link, and finally cfg80211_connect_result_release_bsses() only=
-=20
-> call cfg80211_unhold_bss()
-> for the 1st link, then BSS of the 2nd link will never free because its=
-=20
-> hold is awlays > 0 now.
+Yes, it works with and without this patch. With this patch
+check_positive() returns true in some cases whereas without this patch
+check_positive always returns false.
+I don't know at all what effect this change could have, maybe I just
+need the right test case to verify it really makes a change.
 
-Hah, yes, ouch.
+I just realized that something like the below is missing, as the
+cond.rfe part needs the raw rfe value from fuses >> 3.
 
-> I found it is not easy to refine it, so do you have any advise/idea?
->=20
-> for (link_id =3D 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ieee80211_link_data *l=
-ink;
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 link =3D sdata_dereference(sd=
-ata->link[link_id], sdata);
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!link)
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 conti=
-nue;
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!assoc_data->link[link_id=
-].bss)
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 conti=
-nue;
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 resp.links[link_id].bss =3D a=
-ssoc_data->link[link_id].bss;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 resp.links[link_id].addr =3D =
-link->conf->addr;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 resp.links[link_id].status =
-=3D assoc_data->link[link_id].status;
->=20
+Maybe we just take 1/4 and 2/4 and drop the others. I am running out of
+time for further debugging RTW8821C which is a chip our customer isn't
+interested in.
 
-But is it really so hard? We only need link for link->conf->addr, and we
-can use assoc_data->link[link_id].addr for that instead, no? We need to
-store those locally to avoid a use-after-free, but that's at most 15
-addresses on the stack, which seems acceptable?
+Sascha
 
-Oh and there's the uapsd stuff but that only matters in the success case
-anyway. In fact I'm not even sure the address matters in the
-unsuccessful case but we have it pretty easily.
 
-johannes
+-------------------------------8<--------------------------------
+
+From 70e0bbf1e1d3949dede9f814d39970e5b27d3329 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 18 Apr 2023 10:33:56 +0200
+Subject: [PATCH] wifi: rtw88: rtw8821c: set rfe correctly in phy code
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/wireless/realtek/rtw88/main.h     | 1 +
+ drivers/net/wireless/realtek/rtw88/phy.c      | 3 +++
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
+ 3 files changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 462f69547be03..a75c86981acf7 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1738,6 +1738,7 @@ struct rtw_efuse {
+ 	u8 country_code[2];
+ 	u8 rf_board_option;
+ 	u8 rfe_option;
++	u8 rfe_type;
+ 	u8 power_track_type;
+ 	u8 thermal_meter[RTW_RF_PATH_MAX];
+ 	u8 thermal_meter_k;
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index 128e75a81bf3c..deb39cbea440f 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -1048,6 +1048,9 @@ void rtw_phy_setup_phy_cond(struct rtw_dev *rtwdev, u32 pkg)
+ 	cond.plat = 0x04;
+ 	cond.rfe = efuse->rfe_option;
+ 
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C)
++		cond.rfe = efuse->rfe_type;
++
+ 	switch (rtw_hci_type(rtwdev)) {
+ 	case RTW_HCI_TYPE_USB:
+ 		cond.intf = INTF_USB;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index a50753ae235b5..72485c9471f11 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -49,6 +49,7 @@ static int rtw8821c_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ 	map = (struct rtw8821c_efuse *)log_map;
+ 
+ 	efuse->rfe_option = map->rfe_option & 0x1f;
++	efuse->rfe_type = map->rfe_option >> 3;
+ 	efuse->rf_board_option = map->rf_board_option;
+ 	efuse->crystal_cap = map->xtal_k;
+ 	efuse->pa_type_2g = map->pa_type;
+-- 
+2.39.2
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
