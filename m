@@ -2,142 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2627D6E5D99
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 11:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8519E6E5D9C
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 11:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbjDRJjF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 05:39:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41252 "EHLO
+        id S231387AbjDRJjb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 05:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231395AbjDRJiw (ORCPT
+        with ESMTP id S231472AbjDRJjN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 05:38:52 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202881BE1;
-        Tue, 18 Apr 2023 02:38:49 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4ec816c9d03so2085472e87.2;
-        Tue, 18 Apr 2023 02:38:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681810727; x=1684402727;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2EiDytvabdYN54DIeMJTMZ/ViwsZyEhMHyZ0a9MJx4o=;
-        b=Mgp+FdmjTOO8yLjct8Ey6wAnQpaKYZlpn2pHIG/2fXHgwHj/Ymsw2LgM4jEvE+za4O
-         jAp/K7vJGFvKrT3Du403FmySbg0WVdwsklAz0iRECcpDaazBXpH62uSP6gUCQG0Q+uPH
-         gfhOAYxFyRewQeY9zawHDscntVwKav0mwa5QqidN9YpWT1+rwN2ck5CYjjqenxl03Tl7
-         tRe4tdK6V//ly3ZSmdFwmmlHxVGg79S5O4pJvxFMywh3NuWbwReXEWVmWD0oXdylO2x7
-         d/c20YL0TytiL9Amg2m/gKdQbF1YHytZTgBDbYhT91FWNjluR8A0ZG92/MlBjt5QbpZV
-         2qjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681810727; x=1684402727;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2EiDytvabdYN54DIeMJTMZ/ViwsZyEhMHyZ0a9MJx4o=;
-        b=jbkC9Rcgnd7CUrzhPAY9HGIO/mPw8Y6Tr/5zJ5xYrlAkHvjM3zb7xURkDf1HFEoQyy
-         g/z2DCPVIuVgwVvs7zEadobYtkze3nRvXYeTr64xNBoXZELtPDA45TVXknCnQxMV4Lii
-         g7Pj3qA/pjJNePzGV6X+cyRO9U1t2MTewOOvUz0HUcC7e3HOoxJw+PhXPRg/AzVX2klz
-         jsoPfGExfMOILAQQQA4A4IugzOBPRbKjdMmg6P+VQYIzgY/5QGPSzRsJqC2jxbM9D8Y9
-         2d6jXA55itplXOYZ90cyoDeDbITpBHi44hOOPWqRxIYSEgKcFnzOlNImK0PPM2f2neZm
-         GjgQ==
-X-Gm-Message-State: AAQBX9caHYT8SwPuzEXrFH/PdxY11ATu0UItJiUCi+MYIh1kwygxbzwN
-        /4A5ryhOckfrEW/+kIajbu0=
-X-Google-Smtp-Source: AKy350ZXxaKlonTpKEaCIg1QXYK9jvpC8SvvkEmTVCX2/ZXSW9v2VJsf2RGCeOgoAGtNFBxH/Rf4eA==
-X-Received: by 2002:ac2:46c9:0:b0:4ed:c537:d0ca with SMTP id p9-20020ac246c9000000b004edc537d0camr1608334lfo.59.1681810727353;
-        Tue, 18 Apr 2023 02:38:47 -0700 (PDT)
-Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
-        by smtp.gmail.com with ESMTPSA id x27-20020a05651c105b00b002a8c2a4fe99sm967813ljm.28.2023.04.18.02.38.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Apr 2023 02:38:46 -0700 (PDT)
-From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
-To:     Kalle Valo <kvalo@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Robert Marko <robimarko@gmail.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH V2 3/3] wifi: ath11k: support reading radio MAC from DT
-Date:   Tue, 18 Apr 2023 11:38:22 +0200
-Message-Id: <20230418093822.24005-3-zajec5@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230418093822.24005-1-zajec5@gmail.com>
-References: <20230418093822.24005-1-zajec5@gmail.com>
+        Tue, 18 Apr 2023 05:39:13 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADE872B7
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 02:39:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=M5Qtz6TP1ENIxoBnHcXZ0OmyvDVWJWQ9A1C/xTKJeRE=;
+        t=1681810740; x=1683020340; b=hHlGv9rB2CSb+gQ7nDTjZoBjdD0XQWStXifigpcASzcA3wZ
+        XFadBHqGGceL0FMLJJkiz97L3YJNAV/CTDX9C+1WeS8GV6z5M1+cdZyj1b8yVxUll53C/pJsdI46W
+        ZjwfvyzNpxTEXCom9yohynsAzWpONEIKmf+TcBTdo/WgIky6HE5SrvocVuOFEj3MRO9iMiS3GGm7u
+        5DuKeFxm7n5J8uCO7aUpT7hFkeMNeUcYOFgDG2if2ryYcmupixOryhfGwfyI0hxrp9/6dRDndfrSW
+        nOlEi+EHE87u1Au74826NtdWyJ25ZSzl08ebZjgpXRVOTaF7YnGxXM9aBOTExG3Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pohne-001ZI2-1K;
+        Tue, 18 Apr 2023 11:38:58 +0200
+Message-ID: <ab8f9ed0f04873cafb81cc1c9f5d5c804b146aa9.camel@sipsolutions.net>
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org
+Date:   Tue, 18 Apr 2023 11:38:57 +0200
+In-Reply-To: <13980456-11a6-384c-7be2-63c005410267@quicinc.com>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+         <c05780bc-864c-9323-499d-a8b1ba1c2ef2@quicinc.com>
+         <545227cf18baac94ea8aa24dc08b250c47949541.camel@sipsolutions.net>
+         <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
+         <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
+         <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
+         <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
+         <37958ca93039114b98909d730ff57dd1d10bb68d.camel@sipsolutions.net>
+         <b9c6d022-12c3-a696-c4b9-cb14a6d30a45@quicinc.com>
+         <91577d586475d290e08dee9e535cb6b4896e06d4.camel@sipsolutions.net>
+         <edfc26b5-f6d1-2ab7-f3cc-60a74c8c334d@quicinc.com>
+         <61268d31f8a6dd4eea10fcb6048d39244bc584e2.camel@sipsolutions.net>
+         <870ce439-85b1-f02c-70e5-2d424fd73372@quicinc.com>
+         <34ed0938b69ead648da1aa250a2e081054fb49d4.camel@sipsolutions.net>
+         <34212873-0b71-7f39-b064-6b50d8e514b4@quicinc.com>
+         <09b156b1ef05377ca7fa0db35e8e13beb5c60e2c.camel@sipsolutions.net>
+         <13980456-11a6-384c-7be2-63c005410267@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+On Tue, 2023-04-18 at 17:37 +0800, Wen Gong wrote:
 
-On some devices (most routers) MAC is stored in an NVMEM cell. Support
-reading it.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
----
- drivers/net/wireless/ath/ath11k/mac.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+> > > the sdata->u.mgd.assoc_data is NOT empty,
+> > >=20
+> > > and the sdata->u.mgd.assoc_data->link[link_id].addr is valid,
+> > >=20
+> > > it is addr by eth_random_addr(assoc_data->link[i].addr) in
+> > > ieee80211_mgd_assoc().
+> > >=20
+> > Exactly, so we've already decided on the address long before we actuall=
+y
+> > add the link data structure, so your callback would be much too late.
+> > We'd need to have it called from ieee80211_mgd_assoc() already?
+>=20
+> For the 2nd link, is it OK for me to use the random addr which is set in=
+=20
+> ieee80211_mgd_assoc().
+>=20
+> I only need to set the 1st assoc link in low driver.
+>=20
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index ad5a22d12bd3..6550bb5b2ece 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8,6 +8,7 @@
- #include <linux/etherdevice.h>
- #include <linux/bitfield.h>
- #include <linux/inetdevice.h>
-+#include <linux/of_net.h>
- #include <net/if_inet6.h>
- #include <net/ipv6.h>
- 
-@@ -9292,7 +9293,7 @@ int ath11k_mac_register(struct ath11k_base *ab)
- 	struct ath11k_pdev *pdev;
- 	int i;
- 	int ret;
--	u8 mac_addr[ETH_ALEN] = {0};
-+	u8 device_mac_addr[ETH_ALEN] = {0};
- 
- 	if (test_bit(ATH11K_FLAG_REGISTERED, &ab->dev_flags))
- 		return 0;
-@@ -9305,18 +9306,22 @@ int ath11k_mac_register(struct ath11k_base *ab)
- 	if (ret)
- 		return ret;
- 
--	device_get_mac_address(ab->dev, mac_addr);
-+	device_get_mac_address(ab->dev, device_mac_addr);
- 
- 	for (i = 0; i < ab->num_radios; i++) {
-+		u8 radio_mac_addr[ETH_ALEN];
-+
- 		pdev = &ab->pdevs[i];
- 		ar = pdev->ar;
--		if (ab->pdevs_macaddr_valid) {
-+		if (!of_get_mac_address(ar->np, radio_mac_addr)) {
-+			ether_addr_copy(ar->mac_addr, radio_mac_addr);
-+		} else if (ab->pdevs_macaddr_valid) {
- 			ether_addr_copy(ar->mac_addr, pdev->mac_addr);
- 		} else {
--			if (is_zero_ether_addr(mac_addr))
-+			if (is_zero_ether_addr(device_mac_addr))
- 				ether_addr_copy(ar->mac_addr, ab->mac_addr);
- 			else
--				ether_addr_copy(ar->mac_addr, mac_addr);
-+				ether_addr_copy(ar->mac_addr, device_mac_addr);
- 			ar->mac_addr[4] += i;
- 		}
- 
--- 
-2.34.1
+Ah. But does it make sense to restrict the API for that? I mean, if you
+just change the prototype a little bit and call it without the link
+conf, you can easily solve this problem too, no?
 
+Then your driver just has to call eth_radnom_addr() when it's "don't
+care", but that's OK?
+
+johannes
