@@ -2,147 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB3D56E5678
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 03:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B70406E5907
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 08:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbjDRB3G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Apr 2023 21:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48282 "EHLO
+        id S230479AbjDRF7x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 01:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbjDRB3C (ORCPT
+        with ESMTP id S230428AbjDRF7p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Apr 2023 21:29:02 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2865B9B
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 18:28:49 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33I1SiwiE015091, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33I1SiwiE015091
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 18 Apr 2023 09:28:44 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Tue, 18 Apr 2023 09:28:44 +0800
-Received: from localhost (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 18 Apr
- 2023 09:28:44 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <echuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2 7/7] wifi: rtw89: add EVM for antenna diversity
-Date:   Tue, 18 Apr 2023 09:28:20 +0800
-Message-ID: <20230418012820.5139-8-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230418012820.5139-1-pkshih@realtek.com>
-References: <20230418012820.5139-1-pkshih@realtek.com>
+        Tue, 18 Apr 2023 01:59:45 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0AB5FCD
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 22:59:34 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id dm2so70346717ejc.8
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Apr 2023 22:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681797572; x=1684389572;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
+        b=Q9XcLLXP5e8wboQuneHNRwA5cMY+ukHK/VdkGLUEPa2WH97xr/iMWRqkGgFlRDRmww
+         kBel7+Kq4mFvsQxYB/MnW5URrKGRuteDJwAFdC5isRzvOeI+yPizsN+hpI3D/XvqCk/g
+         Xl5dFhJgEE5cs8jky/l0yby6XiNa6AOPcJhwxx1RIN7fVVIKvCyBjBFnT1HEjX7pQ02S
+         pkJ79uNHwOtZ1HdzSdq79DxBfM4XPwZKyKgR4LcOSdw0f4O+AWz6LsnID8+kJhTdi4B6
+         jUdMHmmhtkbx5PHp8QrT4g+gt0tleFnzRklW9+2puzm58tAorAL1028T+b3iCyAQJHV5
+         91PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681797572; x=1684389572;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dQlu0Oc2Q0nPMBCNq5iTPUZpwrRZlsMdPt2zjra8+VI=;
+        b=HUGSYF5CnQTS0TKKaV4Ax6F4d3RTgttlHPhgWsQeUYAYceQ92lQV1Bvajo/GNyWRzB
+         yARDn5S6EMLN4LhXO54JajYpFzEJuFjz/KUAwcOu+nw0DlvHk90fX0rIJpv+J0l2Pxxb
+         zKUBf1YxVHUwU0t7Is3oaZbmP8Otb3GCxwcGrDDdrtAu9T21BdzYOYMCQ9Xu7uZt/LsL
+         BDxwv8DUQjRu51MjUnpNl7+BUIlXwxYTHuX/fqCi7S8EzIlxQZ4dZ3sl/3xeoU/kso9n
+         X5YphmNFfnT+7Pzf/jiJIaj5cttBdPn2IybON5Pvbj98xxqCF80wrgmRIbgj6qt2/XFk
+         wPDA==
+X-Gm-Message-State: AAQBX9cFVvWVPgU6ZeudKGzNv2oecTk+c/C77H+AjssnRuxD6Dwj9dhS
+        +tlRIHN5FieZ6BrgqSrypEuIFV0SuNzqczVMsPBMBq5VzDChu2lg
+X-Google-Smtp-Source: AKy350YRsUSKQ0+i58Lzun7WtY7IrRwSkm+DWIi2JdfS71rVYYWUT2OQ/a/Q5PRWIBazn3AQLm2dWBYGVxBajLvvRoE=
+X-Received: by 2002:a05:6512:96b:b0:4e8:4b7a:6b73 with SMTP id
+ v11-20020a056512096b00b004e84b7a6b73mr2935594lft.4.1681797550844; Mon, 17 Apr
+ 2023 22:59:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:ab2:2681:0:b0:1b6:840f:9075 with HTTP; Mon, 17 Apr 2023
+ 22:59:10 -0700 (PDT)
+Reply-To: mariamkouame.info@myself.com
+From:   Mariam Kouame <mariamkouame1992@gmail.com>
+Date:   Mon, 17 Apr 2023 22:59:10 -0700
+Message-ID: <CADUz=agNY633M0qMXMnAP3Ms7-3rKuWtAZGCOQZKeYpCdBxT_w@mail.gmail.com>
+Subject: from mariam kouame
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Eric Huang <echuang@realtek.com>
+Dear,
 
-Take EVM into consideration when doing antenna diversity, and the priority
-is higher than RSSI. Since EVM is more relevant to performance than RSSI,
-especially in OTA environment.
+Please grant me permission to share a very crucial discussion with
+you. I am looking forward to hearing from you at your earliest
+convenience.
 
-Signed-off-by: Eric Huang <echuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/phy.c  | 17 ++++++++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index ca9d6e9258ffa..40406ecce5bd3 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3134,6 +3134,7 @@ struct rtw89_antdiv_stats {
- 	u16 pkt_cnt_cck;
- 	u16 pkt_cnt_ofdm;
- 	u16 pkt_cnt_non_legacy;
-+	u32 evm;
- };
- 
- struct rtw89_antdiv_info {
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index b9a3ebc2e7901..5eac00cd51881 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2956,6 +2956,7 @@ void rtw89_phy_antdiv_sts_instance_reset(struct rtw89_antdiv_stats *antdiv_sts)
- 	antdiv_sts->pkt_cnt_cck = 0;
- 	antdiv_sts->pkt_cnt_ofdm = 0;
- 	antdiv_sts->pkt_cnt_non_legacy = 0;
-+	antdiv_sts->evm = 0;
- }
- 
- static void rtw89_phy_antdiv_sts_instance_add(struct rtw89_dev *rtwdev,
-@@ -2969,10 +2970,12 @@ static void rtw89_phy_antdiv_sts_instance_add(struct rtw89_dev *rtwdev,
- 		} else {
- 			ewma_rssi_add(&stats->ofdm_rssi_avg, phy_ppdu->rssi_avg);
- 			stats->pkt_cnt_ofdm++;
-+			stats->evm += phy_ppdu->ofdm.evm_min;
- 		}
- 	} else {
- 		ewma_rssi_add(&stats->non_legacy_rssi_avg, phy_ppdu->rssi_avg);
- 		stats->pkt_cnt_non_legacy++;
-+		stats->evm += phy_ppdu->ofdm.evm_min;
- 	}
- }
- 
-@@ -2988,6 +2991,11 @@ static u8 rtw89_phy_antdiv_sts_instance_get_rssi(struct rtw89_antdiv_stats *stat
- 		return ewma_rssi_read(&stats->cck_rssi_avg);
- }
- 
-+static u8 rtw89_phy_antdiv_sts_instance_get_evm(struct rtw89_antdiv_stats *stats)
-+{
-+	return phy_div(stats->evm, stats->pkt_cnt_non_legacy + stats->pkt_cnt_ofdm);
-+}
-+
- void rtw89_phy_antdiv_parse(struct rtw89_dev *rtwdev,
- 			    struct rtw89_rx_phy_ppdu *phy_ppdu)
- {
-@@ -4270,15 +4278,22 @@ static void rtw89_phy_antdiv_decision_state(struct rtw89_dev *rtwdev)
- 	struct rtw89_hal *hal = &rtwdev->hal;
- 	bool no_change = false;
- 	u8 main_rssi, aux_rssi;
-+	u8 main_evm, aux_evm;
- 	u32 candidate;
- 
- 	antdiv->get_stats = false;
- 	antdiv->training_count = 0;
- 
- 	main_rssi = rtw89_phy_antdiv_sts_instance_get_rssi(&antdiv->main_stats);
-+	main_evm = rtw89_phy_antdiv_sts_instance_get_evm(&antdiv->main_stats);
- 	aux_rssi = rtw89_phy_antdiv_sts_instance_get_rssi(&antdiv->aux_stats);
-+	aux_evm = rtw89_phy_antdiv_sts_instance_get_evm(&antdiv->aux_stats);
- 
--	if (main_rssi > aux_rssi + RTW89_TX_DIV_RSSI_RAW_TH)
-+	if (main_evm > aux_evm + ANTDIV_EVM_DIFF_TH)
-+		candidate = RF_A;
-+	else if (aux_evm > main_evm + ANTDIV_EVM_DIFF_TH)
-+		candidate = RF_B;
-+	else if (main_rssi > aux_rssi + RTW89_TX_DIV_RSSI_RAW_TH)
- 		candidate = RF_A;
- 	else if (aux_rssi > main_rssi + RTW89_TX_DIV_RSSI_RAW_TH)
- 		candidate = RF_B;
--- 
-2.25.1
-
+Mrs. Mariam Kouame
