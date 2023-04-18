@@ -2,101 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 751626E5E68
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 12:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C676E5E7A
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 12:19:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbjDRKPB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 06:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
+        id S231148AbjDRKTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 06:19:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230325AbjDRKO4 (ORCPT
+        with ESMTP id S231205AbjDRKTA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 06:14:56 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D8F468E
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 03:14:51 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1681812889; bh=6f+hmqC9dhEE6aVNnqEaCZHVEGrLH0O+/xJyQheH7mg=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=j8O1FTu1TOJaUbWvS8EiUOQsYE0cR8MupiKU+gdUELTL2i6mxfjBuBUqz7OzPojYN
-         Iib98FB3JgsbW+nMmivfhLXGj+3p9c2szvdi6OG/gsHt0zZqnwH3mSITEYMiAlh8YH
-         3Zk2DJXLTi3r0dJ2pjAACLHuL85E0P0KI6QtFDNwOFPoL1Zq5yTuhqMuzkx3iOgpcp
-         70Lmi01gAN2EFuJWq7V8fwBXAqjr9l37OvG4X6nJbf7KrRQS26PbQsOyTbAfo6AOb9
-         zMZhtW4mkrh5LNJuu4aLS1N96enq6Cfqk4B3kgvDrrgF1Xyjr6XTu8y+T7mQE/uCkT
-         ndYU6lMeGEUSg==
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Colin Ian King <colin.i.king@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath9k: Don't mark channelmap stack variable
- read-only in ath9k_mci_update_wlan_channels()
-In-Reply-To: <87edom7i6i.fsf@kernel.org>
-References: <20230413214118.153781-1-toke@toke.dk>
- <87v8hysrzx.fsf@kernel.org> <87bkjqzrdm.fsf@toke.dk>
- <87edom7i6i.fsf@kernel.org>
-Date:   Tue, 18 Apr 2023 12:14:48 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <877cu9wl7r.fsf@toke.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Tue, 18 Apr 2023 06:19:00 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F19D6EBD
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 03:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=F5GtC/Ug8FVHmzGkdMDsWJgCnt1hLX/XyGMcykgns/M=;
+        t=1681813139; x=1683022739; b=joDVo1JK7xXsc4AGxcGzfHzZM2M7FCyjpzTdwAIC8QWu6xp
+        xeHuhpQaUraDRO0HZaAWXRszaFchOhLAARng7gJIDHsUZbMstlJBwdgP9dvKtu6IJ5fsjmM2kYZML
+        ei6LvdWGcZpWKX1cKRvYmpbNI6dh1eQOhGXww/kJu+FoSTEl3QycDbRJ1zikB5vPyiQwrh0pI7EK6
+        b+rwIzKN1eaGR2G4YB6dFGDnhrKiy4N5ePjjnwvRxUiy7fBQZg9kvKZzmhGUYu6zq/wB3vHu3ZjwZ
+        Vq5RR3VKM/LA3Z57gGObHXREkj4FaEtKmYp/NFsIwbJXIdu3FyfFPR5vn+AcbMCw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1poiQK-001aBp-0x;
+        Tue, 18 Apr 2023 12:18:56 +0200
+Message-ID: <949040e5e573acef1a56269983a0e930951986ca.camel@sipsolutions.net>
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org
+Date:   Tue, 18 Apr 2023 12:18:55 +0200
+In-Reply-To: <a371eb4f-7d79-eeb4-5208-f9a342798021@quicinc.com>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+         <c7fd18fa-531f-a90d-a8fb-442a5aa66d7d@quicinc.com>
+         <d1fda46a-2481-8e05-e0a5-9f2bd3850ff4@quicinc.com>
+         <868131d13ed7c4c8b5d4938adcd71cf1ff8e9677.camel@sipsolutions.net>
+         <5765e3c5-46d4-e92b-a93b-4a2649acff2a@quicinc.com>
+         <37958ca93039114b98909d730ff57dd1d10bb68d.camel@sipsolutions.net>
+         <b9c6d022-12c3-a696-c4b9-cb14a6d30a45@quicinc.com>
+         <91577d586475d290e08dee9e535cb6b4896e06d4.camel@sipsolutions.net>
+         <edfc26b5-f6d1-2ab7-f3cc-60a74c8c334d@quicinc.com>
+         <61268d31f8a6dd4eea10fcb6048d39244bc584e2.camel@sipsolutions.net>
+         <870ce439-85b1-f02c-70e5-2d424fd73372@quicinc.com>
+         <34ed0938b69ead648da1aa250a2e081054fb49d4.camel@sipsolutions.net>
+         <34212873-0b71-7f39-b064-6b50d8e514b4@quicinc.com>
+         <09b156b1ef05377ca7fa0db35e8e13beb5c60e2c.camel@sipsolutions.net>
+         <13980456-11a6-384c-7be2-63c005410267@quicinc.com>
+         <ab8f9ed0f04873cafb81cc1c9f5d5c804b146aa9.camel@sipsolutions.net>
+         <a371eb4f-7d79-eeb4-5208-f9a342798021@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+On Tue, 2023-04-18 at 17:44 +0800, Wen Gong wrote:
+> On 4/18/2023 5:38 PM, Johannes Berg wrote:
+> > On Tue, 2023-04-18 at 17:37 +0800, Wen Gong wrote:
+> >=20
+> >=20
+> > > > > the sdata->u.mgd.assoc_data is NOT empty,
+> > > > >=20
+> > > > > and the sdata->u.mgd.assoc_data->link[link_id].addr is valid,
+> > > > >=20
+> > > > > it is addr by eth_random_addr(assoc_data->link[i].addr) in
+> > > > > ieee80211_mgd_assoc().
+> > > > >=20
+> > > > Exactly, so we've already decided on the address long before we act=
+ually
+> > > > add the link data structure, so your callback would be much too lat=
+e.
+> > > > We'd need to have it called from ieee80211_mgd_assoc() already?
+> > > For the 2nd link, is it OK for me to use the random addr which is set=
+ in
+> > > ieee80211_mgd_assoc().
+> > >=20
+> > > I only need to set the 1st assoc link in low driver.
+> > >=20
+> > Ah. But does it make sense to restrict the API for that? I mean, if you
+> > just change the prototype a little bit and call it without the link
+> > conf, you can easily solve this problem too, no?
+> Sorry, I am not sure how to solve this problem by remove the link conf=
+=20
+> in prototype.
 
-> (dropping stable from cc)
->
-> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
->
->> Kalle Valo <kvalo@kernel.org> writes:
->>
->>> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
->>>
->>>> This partially reverts commit e161d4b60ae3a5356e07202e0bfedb5fad82c6aa.
->>>>
->>>> Turns out the channelmap variable is not actually read-only, it's modi=
-fied
->>>> through the MCI_GPM_CLR_CHANNEL_BIT() macro further down in the functi=
-on,
->>>> so making it read-only causes page faults when that code is hit.
->>>>
->>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217183
->>>> Fixes: e161d4b60ae3 ("wifi: ath9k: Make arrays prof_prio and
->>>> channelmap static const")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
->>>
->>> I guess the casting in MCI_GPM_CLR_CHANNEL_BIT() hide this and made it
->>> impossible for the compiler to detect it? A perfect example why I hate
->>> casting :)
->>
->> Yup, exactly. I was also assuming the compiler would catch it, but yay, =
-C! :/
->
-> We have so many static checkers that I wonder if those would be able to
-> catch these kind of buggy casts? We had a similar bug in rtw89 something
-> like a year ago.
+Why, then you can have an output parameter for the address, and call it
+in mac80211 wherever it calls eth_random_addr() today, no?
 
-No idea. Would be nice, yeah... :)
-
->> Anyway, cf the bugzilla this was a pretty bad regression for 6.2, so
->> would be good to move this along reasonably quickly (although I guess we
->> just missed the -net PR for rc7)...
->
-> I'm not planning to send anymore stuff to v6.3 so my plan is to take
-> this to -next. The merge window is very close anyway so this shouldn't
-> cause too much delay.
-
-Hmm, okay, a bit unfortunate that we'll ship 6.3 with the same bug, but
-if it goes in during the merge window, I guess we'll get the fix into
-6.3.1 (or something close to that) via stable? I can live with that...
-
--Toke
+johannes
+>=20
