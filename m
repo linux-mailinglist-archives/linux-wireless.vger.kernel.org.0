@@ -2,250 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D92A6E607C
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 13:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA4A6E6553
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Apr 2023 15:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbjDRL5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 07:57:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
+        id S231355AbjDRNE5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 09:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231526AbjDRLzs (ORCPT
+        with ESMTP id S232408AbjDRNEy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 07:55:48 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729D3769F
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 04:53:53 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-2f40b891420so2384305f8f.0
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 04:53:53 -0700 (PDT)
+        Tue, 18 Apr 2023 09:04:54 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE71917CC1
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 06:04:34 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-2f9b9aa9d75so1178876f8f.0
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 06:04:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681818832; x=1684410832;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Le/IzLBZIve88XgqgZJCLLokjCnnuGyJJ/6tjOu1E4=;
-        b=iKgib1UNkNMchYvtlQgoc8l4M5WtDTTcpeTdf5vMXFkmn1WmtpEeDcZlbSg4P35kyZ
-         lhjFypLE4nSS+qeJoFf2aORJOiTDCFWXr1EngLf/jrSsF5mGw15MhPB1WpDzQ2/YpvTA
-         Or2uFy4gmzOG3FRfEAqePEUt8mSYIJJweqQ9jQ0+RljmDUU/gpV4FWlxfm/ZQQCnhIRE
-         cQmD33i3bAZOufhGvvxm09NuUGvg2qbOXF86A1cKwz++boMU0LhN2nkFlrWy7l4Ne/Ab
-         5PC0uiXMxYNTlQXPjf8lm/GXjBR15IWcLPp10FttmzE4Jm5VThT6EnTeIGNcs//MIhGf
-         X6EQ==
+        d=gmail.com; s=20221208; t=1681823073; x=1684415073;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hGy6jodUmVwrRPcXwmnMYYQa5rZSP0qhmnxkzslhlMM=;
+        b=W6eElZdn6wiETG1DO7EK8StBqdW+WCtnpSJSSQM2FzzT6lv08AGJQJGiAEJJ1ntxp0
+         dSTnRMDsjBs0iinVfmjmKVR3pYak1Bhmw1/ZnHGyjIjU8UN8P99xgizZyomEvEBboAtS
+         PZsaCsu6Kk+ggc/oBQbNLvc9L5I9Nh39bVdpvYTe9DpRDNoEjxW5NP85xEtVwUm6+k8s
+         LwclqiH0yJgcdNdi5P2yXqRJ9YWAOC7f8kQ1WIJQAd5e5AUjV+Wn7+SgIN16gtw8cZxm
+         6S3LkarMF/j3HKpc+XboqhOKG/DS8ffsIGm6dqnm+xyd+c6rB+2ni788zbQOPV4OcLpj
+         uABQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681818832; x=1684410832;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Le/IzLBZIve88XgqgZJCLLokjCnnuGyJJ/6tjOu1E4=;
-        b=X8KkQ+jZSriw5BGriGmijjNhQtQd2peO2YwVfRZT1mkTuqk0qwMUW2kSPACF4uaGmR
-         QIA0jkPnD8sRibuNYz+qPL6p+TBFHVSvqXCpeeKx+pDOvXqI0Y+iTYuQc8SDoYvSlRjj
-         yVpl42WVOBGRQfGLVtDUgw0+vthi+ICr8zfASiMfi2TD9JMHbG1OFTvK+g3uP+DZKqMG
-         RlAI489e6tT4TwLUMogzpoE0CN6R1wX7nYX7ePJ4fSvahGShIFmeDIw7jWiY/yGUXvhy
-         JAbibUM/6ks/p2ytaIMdKGKCER0Xwr+VCk+lhTEkV8Gocg3CdqantbVk2Wv5v+kzTXqr
-         FOwQ==
-X-Gm-Message-State: AAQBX9cP/PTnvFflo8TL+ST1fyUF+2m2UxAe1RUufnXPgrOQ4/C5bMf8
-        K/5Ry8oh7ubeVT/kmv8FcRLAK4TOwjFn4T2M1UmkJpZecjQ=
-X-Google-Smtp-Source: AKy350aQ7wiMt7TSN/maAix8S/bU8JA57UbvVvBfJ7CUqfqxFSSmzoe8Ggz9Xa84NGDbyV075o+zTQhmyE7PzC/oxVI=
-X-Received: by 2002:a5d:5958:0:b0:2f9:896a:7554 with SMTP id
- e24-20020a5d5958000000b002f9896a7554mr1599381wri.13.1681818831572; Tue, 18
- Apr 2023 04:53:51 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681823073; x=1684415073;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hGy6jodUmVwrRPcXwmnMYYQa5rZSP0qhmnxkzslhlMM=;
+        b=K6ojuLUv/AayL6gd+We/zrq5bmbzYGFnByICvcL2ShTz+HF+iVsn9vXBbCapXBbMol
+         YZ820UUYRh0MMog5WDLEkgrJdbcXjbceELw8TANm2Nw8YLkc6iL6MX9cA+yebvNntz+r
+         wX2NG9XqupsFgb4n4xF3V5UxcwPEbL8jFOp1yd3CUY39ScfuOOoqrJVjMeudFG+q8x51
+         LFkwTEvVaR5F/Y66Rs//87qrQVvb+xpfPq/Tey87GduU3rgimiY/J0rwPuJHtYujmIWZ
+         Or2MGfa1vaZMioNYjioeqoIg0YEy5RotBgA2Pso/9Y6CHsTrd7QT/+Zb5MpcorQ4ps4S
+         CjQQ==
+X-Gm-Message-State: AAQBX9f+8eQ41BiqlPrCWjLRPRPQloZOldP/yKq1nE7QDjzahnme0uJa
+        mRkdeypT2jS8EBuCmWI+KXFt8W5BAlw=
+X-Google-Smtp-Source: AKy350bjjMQUQwgHEpPZglAKECdrfl2ZenvA3eOE6k6JdAXZkHTlSBaF+3UtHjvJGjaGoN6ccgabVQ==
+X-Received: by 2002:adf:eb84:0:b0:2fb:c131:ad12 with SMTP id t4-20020adfeb84000000b002fbc131ad12mr2248961wrn.63.1681823073081;
+        Tue, 18 Apr 2023 06:04:33 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id s9-20020a5d6a89000000b002cf1c435afcsm13127774wru.11.2023.04.18.06.04.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Apr 2023 06:04:32 -0700 (PDT)
+Message-ID: <be2cd114-38c6-d539-446a-a35a872449fc@gmail.com>
+Date:   Tue, 18 Apr 2023 16:04:31 +0300
 MIME-Version: 1.0
-References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
- <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com>
-In-Reply-To: <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com>
-From:   Artem Makhutov <artem.makhutov@gmail.com>
-Date:   Tue, 18 Apr 2023 13:53:41 +0200
-Message-ID: <CALbLcfB7cMctHC-Fv93z1WVCZkQ76uW2F_=P6rCW7ZSPXvmapw@mail.gmail.com>
-Subject: Re: RTL8188EU (LogiLink WL0151A) - Malformed packets
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: en-US
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtl8xxxu: Support USB RX aggregation for the newer
+ chips
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+The driver can receive several frames in the same USB transfer.
+Add the code to handle this in rtl8xxxu_parse_rxdesc24(), even though
+currently all the relevant chips send only one frame per USB transfer
+(RTL8723BU, RTL8192EU, RTL8188FU, RTL8710BU).
 
-Am So., 16. Apr. 2023 um 19:47 Uhr schrieb Bitterblue Smith
-<rtl8821cerfe2@gmail.com>:
->
-> On 16/04/2023 16:45, Artem Makhutov wrote:
-> > Hello,
-> >
-> > I am not sure if it is ok to write to you directly but I could not find a place where to open a ticket about the rtl8xxxu driver.
-> >
-> > I am having issues with the RTL8188EU (LogiLink WL0151A) where I get truncated packets when sending large packets. It's easy to reproduce with ping:
-> > [...]
-> Hi!
->
-> Adding linux-wireless because that's the place to report bugs.
-> Also bugzilla.kernel.org, but that's more dead.
->
-> Unfortunately my TP-Link TL-WN725N is fine even with bigger packets:
-> [...]
+rtl8xxxu_parse_rxdesc16() used by RTL8723AU, RTL8192CU, and RTL8188EU
+already handles RX aggregation.
 
-Yes, I also have wifi networks where I have no issues at all. It seems
-to be only related to some wifi routers.
-With a Huawei AX3 router I have no issues. But with an Asus RT-AX53U i
-am getting corrupted data.
+This was tested with RTL8188FU, RTL8192EU, RTL8710BU, and RTL8192FU.
 
-> What version of the kernel/driver are you running? On what kind
-> of computer?
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 117 ++++++++++++------
+ 1 file changed, 76 insertions(+), 41 deletions(-)
 
-It is an embedded device with a STM32MP157C processor. It runs an
-5.15.67 kernel from ST (https://github.com/STMicroelectronics/linux/)
-I have backported the rtl8xxxu driver from
-https://github.com/torvalds/linux/ to that kernel by cherry-pick all
-the related commits.
-
-> Did you use any module parameters?
-
-No, I have not tried any parameters yet.
-
-> Do you know if the other computer is receiving correct packets
-> from your RTL8188EU?
-
-I have no ssh access to the router (it runs the stock firmware from
-Asus), but I can try to do some tests on another PC later.
-But I assume that it receives correct data as I can see a reply in tcpdump.
-
-> What's the biggest packet size which still works correctly?
-
-I think the magic number for ping is 1429. With ping -s 1428 I have no issues.
-
-> Did you test any other driver, like this one:
-> https://github.com/lwfinger/rtl8188eu/tree/v5.2.2.4
-
-Yes, I have tried this one. Here I had no issue with packet loss, but
-I was losing the wifi connection from time to time and the
-auto-reconnect also did not work.
-
-> or this one:
-> https://github.com/aircrack-ng/rtl8188eus
-
-I have not tried this one yet.
-
-But I have also tried https://github.com/ivanovborislav/rtl8188eu
-
-Here after some hours or days the wifi completely hangs up, loses the
-connection and does not see any wifi networks any more at all.
-
-> If the other computer is receiving correct packets, try this untested
-> patch to see what rtl8xxxu is actually receiving:
-> [...]
-
-I have applied the patch.
-
-For a working ping with a packet size of 1428 I am getting:
-urb_len 1562
-  pkt_cnt 136 pkt_len 1506 drvinfo_sz 32 desc_shift 0
-[...]
-
-For a broken ping with a packet size of 1430 I am getting the data below.
-The strange thing is that the urb_len 1560 for a 1430 bytes ping is
-smaller than a urb_len 1562 for a 1428 bytes large ping...
-
-urb_len 1560
-  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-  00000000: 84c405e0 21f0d700 30880052 0000104f 00000000 13283a20
-000d002f 0000fcc2  .......!R..0O....... :(./.......
-  00000020: 0000fcfa 3800c200 00000300 001e0f00 8400d100 00000000
-00244288 561cf170  .......8.................B$.p..V
-  00000040: eb50c390 142783f6 83f6eb50 05201427 00530007 00002000
-aaaa0000 00000003  ..P...'.P...'. ...S.. ..........
-  00000060: 00450008 1428b205 01400000 0a0ab438 0a0a0100 00006f00
-be070a23 78050100  ..E...(...@.8........o..#......x
-  00000080: 1d15643e 09080003 0d0c0b0a 11100f0e 15141312 19181716
-1d1c1b1a 21201f1e  >d............................ !
-  000000a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
-3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
-  000000c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
-5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
-  000000e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
-7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
-  00000100: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
-9d9c9b9a a1a09f9e  ................................
-  00000120: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
-bdbcbbba c1c0bfbe  ................................
-  00000140: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
-dddcdbda e1e0dfde  ................................
-  00000160: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
-fdfcfbfa 0100fffe  ................................
-  00000180: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
-1d1c1b1a 21201f1e  .............................. !
-  000001a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
-3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
-  000001c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
-5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
-  000001e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
-7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
-  00000200: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
-9d9c9b9a a1a09f9e  ................................
-  00000220: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
-bdbcbbba c1c0bfbe  ................................
-  00000240: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
-dddcdbda e1e0dfde  ................................
-  00000260: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
-fdfcfbfa 0100fffe  ................................
-  00000280: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
-1d1c1b1a 21201f1e  .............................. !
-  000002a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
-3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
-  000002c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
-5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
-  000002e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
-7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
-  00000300: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
-9d9c9b9a a1a09f9e  ................................
-  00000320: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
-bdbcbbba c1c0bfbe  ................................
-  00000340: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
-dddcdbda e1e0dfde  ................................
-  00000360: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
-fdfcfbfa 0100fffe  ................................
-  00000380: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
-1d1c1b1a 21201f1e  .............................. !
-  000003a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
-3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
-  000003c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
-5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
-  000003e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
-7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
-  00000400: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
-9d9c9b9a a1a09f9e  ................................
-  00000420: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
-bdbcbbba c1c0bfbe  ................................
-  00000440: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
-dddcdbda e1e0dfde  ................................
-  00000460: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
-fdfcfbfa 0100fffe  ................................
-  00000480: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
-1d1c1b1a 21201f1e  .............................. !
-  000004a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
-3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
-  000004c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
-5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
-  000004e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
-7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
-  00000500: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
-9d9c9b9a a1a09f9e  ................................
-  00000520: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
-bdbcbbba c1c0bfbe  ................................
-  00000540: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
-dddcdbda e1e0dfde  ................................
-  00000560: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
-fdfcfbfa 0100fffe  ................................
-  00000580: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
-1d1c1b1a 21201f1e  .............................. !
-  000005a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
-3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
-  000005c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
-5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
-  000005e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
-7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
-  00000600: 85848382 89888786 8d8c8b8a 91908f8e 95949392 330f81a8
-
-Thanks, Artem
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index fd8c8c6d53d6..5fccd898d607 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6197,61 +6197,96 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+ {
+ 	struct ieee80211_hw *hw = priv->hw;
+-	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
+-	struct rtl8xxxu_rxdesc24 *rx_desc =
+-		(struct rtl8xxxu_rxdesc24 *)skb->data;
++	struct ieee80211_rx_status *rx_status;
++	struct rtl8xxxu_rxdesc24 *rx_desc;
+ 	struct rtl8723au_phy_stats *phy_stats;
+-	__le32 *_rx_desc_le = (__le32 *)skb->data;
+-	u32 *_rx_desc = (u32 *)skb->data;
++	struct sk_buff *next_skb = NULL;
++	__le32 *_rx_desc_le;
++	u32 *_rx_desc;
+ 	int drvinfo_sz, desc_shift;
+-	int i;
++	int i, pkt_len, urb_len, pkt_offset;
+ 
+-	for (i = 0; i < (sizeof(struct rtl8xxxu_rxdesc24) / sizeof(u32)); i++)
+-		_rx_desc[i] = le32_to_cpu(_rx_desc_le[i]);
++	urb_len = skb->len;
+ 
+-	memset(rx_status, 0, sizeof(struct ieee80211_rx_status));
++	if (urb_len < sizeof(struct rtl8xxxu_rxdesc24)) {
++		kfree_skb(skb);
++		return RX_TYPE_ERROR;
++	}
+ 
+-	skb_pull(skb, sizeof(struct rtl8xxxu_rxdesc24));
++	do {
++		rx_desc = (struct rtl8xxxu_rxdesc24 *)skb->data;
++		_rx_desc_le = (__le32 *)skb->data;
++		_rx_desc = (u32 *)skb->data;
+ 
+-	phy_stats = (struct rtl8723au_phy_stats *)skb->data;
++		for (i = 0; i < (sizeof(struct rtl8xxxu_rxdesc24) / sizeof(u32)); i++)
++			_rx_desc[i] = le32_to_cpu(_rx_desc_le[i]);
+ 
+-	drvinfo_sz = rx_desc->drvinfo_sz * 8;
+-	desc_shift = rx_desc->shift;
+-	skb_pull(skb, drvinfo_sz + desc_shift);
++		pkt_len = rx_desc->pktlen;
+ 
+-	if (rx_desc->rpt_sel) {
+-		struct device *dev = &priv->udev->dev;
+-		dev_dbg(dev, "%s: C2H packet\n", __func__);
+-		rtl8723bu_handle_c2h(priv, skb);
+-		return RX_TYPE_C2H;
+-	}
++		drvinfo_sz = rx_desc->drvinfo_sz * 8;
++		desc_shift = rx_desc->shift;
++		pkt_offset = roundup(pkt_len + drvinfo_sz + desc_shift +
++				     sizeof(struct rtl8xxxu_rxdesc24), 8);
+ 
+-	if (rx_desc->phy_stats)
+-		priv->fops->parse_phystats(priv, rx_status, phy_stats,
+-					   rx_desc->rxmcs, (struct ieee80211_hdr *)skb->data,
+-					   rx_desc->crc32 || rx_desc->icverr);
++		/*
++		 * Only clone the skb if there's enough data at the end to
++		 * at least cover the rx descriptor
++		 */
++		if (urb_len >= (pkt_offset + sizeof(struct rtl8xxxu_rxdesc24)))
++			next_skb = skb_clone(skb, GFP_ATOMIC);
+ 
+-	rx_status->mactime = rx_desc->tsfl;
+-	rx_status->flag |= RX_FLAG_MACTIME_START;
++		rx_status = IEEE80211_SKB_RXCB(skb);
++		memset(rx_status, 0, sizeof(struct ieee80211_rx_status));
+ 
+-	if (!rx_desc->swdec)
+-		rx_status->flag |= RX_FLAG_DECRYPTED;
+-	if (rx_desc->crc32)
+-		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+-	if (rx_desc->bw)
+-		rx_status->bw = RATE_INFO_BW_40;
++		skb_pull(skb, sizeof(struct rtl8xxxu_rxdesc24));
+ 
+-	if (rx_desc->rxmcs >= DESC_RATE_MCS0) {
+-		rx_status->encoding = RX_ENC_HT;
+-		rx_status->rate_idx = rx_desc->rxmcs - DESC_RATE_MCS0;
+-	} else {
+-		rx_status->rate_idx = rx_desc->rxmcs;
+-	}
++		phy_stats = (struct rtl8723au_phy_stats *)skb->data;
++
++		skb_pull(skb, drvinfo_sz + desc_shift);
++
++		skb_trim(skb, pkt_len);
++
++		if (rx_desc->rpt_sel) {
++			struct device *dev = &priv->udev->dev;
++			dev_dbg(dev, "%s: C2H packet\n", __func__);
++			rtl8723bu_handle_c2h(priv, skb);
++		} else {
++			if (rx_desc->phy_stats)
++				priv->fops->parse_phystats(priv, rx_status, phy_stats,
++							   rx_desc->rxmcs, (struct ieee80211_hdr *)skb->data,
++							   rx_desc->crc32 || rx_desc->icverr);
++
++			rx_status->mactime = rx_desc->tsfl;
++			rx_status->flag |= RX_FLAG_MACTIME_START;
++
++			if (!rx_desc->swdec)
++				rx_status->flag |= RX_FLAG_DECRYPTED;
++			if (rx_desc->crc32)
++				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
++			if (rx_desc->bw)
++				rx_status->bw = RATE_INFO_BW_40;
+ 
+-	rx_status->freq = hw->conf.chandef.chan->center_freq;
+-	rx_status->band = hw->conf.chandef.chan->band;
++			if (rx_desc->rxmcs >= DESC_RATE_MCS0) {
++				rx_status->encoding = RX_ENC_HT;
++				rx_status->rate_idx = rx_desc->rxmcs - DESC_RATE_MCS0;
++			} else {
++				rx_status->rate_idx = rx_desc->rxmcs;
++			}
++
++			rx_status->freq = hw->conf.chandef.chan->center_freq;
++			rx_status->band = hw->conf.chandef.chan->band;
++
++			ieee80211_rx_irqsafe(hw, skb);
++		}
++
++		skb = next_skb;
++		if (skb)
++			skb_pull(next_skb, pkt_offset);
++
++		urb_len -= pkt_offset;
++		next_skb = NULL;
++	} while (skb && urb_len >= sizeof(struct rtl8xxxu_rxdesc24));
+ 
+-	ieee80211_rx_irqsafe(hw, skb);
+ 	return RX_TYPE_DATA_PKT;
+ }
+ 
+-- 
+2.39.2
