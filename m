@@ -2,189 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B80746E7028
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 02:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A2A06E7069
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 02:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231297AbjDSAG1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Apr 2023 20:06:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60462 "EHLO
+        id S231836AbjDSAVi convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Apr 2023 20:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231238AbjDSAGY (ORCPT
+        with ESMTP id S231891AbjDSAVf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Apr 2023 20:06:24 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DAF93ED
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 17:06:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1681862782; x=1713398782;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=axNdsdsDCP6WfO68a7BWkwibLfJhWFGfjBJDUaWEf8Q=;
-  b=KyS8Vr4D3X/xiBCGatIeU+V57AMkjhzxbhZig0Xmx+1Uj0tDoEV0b4R2
-   vs9D3pH7dbEUZSbaRr41nfZLmtZPWiHmglllhUrn9HzyiB14JNgSmyhUQ
-   s7X/qluAF8LRJUGZXpSTfzG5yUeZWorxb3OsJTEATUiyfRUYB7us3oQdf
-   CkIMl9/yHAMOh/Ip1PRCjbVe7fXWax1pJH/8nc+c4R5eydBmpVqsu1PXO
-   H3gnOaAzwwQgPyCKwakwXeU9pLrZ8n2MlOFWFH9+bVd9unr1vb8MKik9Y
-   /bKRDQohq5bB1a9KIgdy9wWA0PgoKbBEtIFxoC7NKXxSUN4oNncH9VqnL
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10684"; a="324932960"
-X-IronPort-AV: E=Sophos;i="5.99,208,1677571200"; 
-   d="scan'208";a="324932960"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2023 17:06:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10684"; a="835072675"
-X-IronPort-AV: E=Sophos;i="5.99,208,1677571200"; 
-   d="scan'208";a="835072675"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 18 Apr 2023 17:06:18 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1povKz-000eFI-39;
-        Wed, 19 Apr 2023 00:06:17 +0000
-Date:   Wed, 19 Apr 2023 08:05:38 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:pending] BUILD SUCCESS
- 4c6c476cafa7f6800c94d7f520cbf710a4aed8bc
-Message-ID: <643f3052.lMifl3V1mQIEnDAw%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Tue, 18 Apr 2023 20:21:35 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D254AA5E2
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Apr 2023 17:21:25 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33J0KYktC020268, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33J0KYktC020268
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 19 Apr 2023 08:20:34 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 19 Apr 2023 08:20:34 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 19 Apr 2023 08:20:34 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 19 Apr 2023 08:20:34 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+CC:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: RE: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
+Thread-Topic: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific
+ rtw8821c variants
+Thread-Index: AQHZcTWhs9mTMlEeIUm9+FRiD4ucxa8wOCrggAAHFgCAAYbR0A==
+Date:   Wed, 19 Apr 2023 00:20:33 +0000
+Message-ID: <3bad94b1b1914b30a38e8325e2593aeb@realtek.com>
+References: <20230417140358.2240429-1-s.hauer@pengutronix.de>
+ <20230417140358.2240429-4-s.hauer@pengutronix.de>
+ <abc17f5fe6c944a5a1361d4d76817a08@realtek.com>
+ <20230418085806.GO13543@pengutronix.de>
+In-Reply-To: <20230418085806.GO13543@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
-branch HEAD: 4c6c476cafa7f6800c94d7f520cbf710a4aed8bc  Merge tag 'mt76-for-kvalo-2023-04-18' of https://github.com/nbd168/wireless into pending
 
-elapsed time: 727m
 
-configs tested: 107
-configs skipped: 10
+> -----Original Message-----
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Sent: Tuesday, April 18, 2023 4:58 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: linux-wireless <linux-wireless@vger.kernel.org>; Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger
+> <Larry.Finger@lwfinger.net>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
+> <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
+> ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de
+> Subject: Re: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
+> 
+> On Tue, Apr 18, 2023 at 12:36:31AM +0000, Ping-Ke Shih wrote:
+> >
+> >
+> > > -----Original Message-----
+> > > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > > Sent: Monday, April 17, 2023 10:04 PM
+> > > To: linux-wireless <linux-wireless@vger.kernel.org>
+> > > Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
+> > > <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
+> > > <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
+> > > ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; Sascha Hauer <s.hauer@pengutronix.de>
+> > > Subject: [PATCH v3 3/4] wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
+> > >
+> > > According to the vendor driver the pkg_type has to be set to '1'
+> > > for some rtw8821c variants. As the pkg_type has been hardcoded to
+> > > '0', add a field for it in struct rtw_hal and set this correctly
+> > > in the rtw8821c part.
+> > > With this parsing of a rtw_table is influenced and check_positive()
+> > > in phy.c returns true for some cases here. The same is done in the
+> > > vendor driver. However, this has no visible effect on the driver
+> > > here.
+> >
+> > I agree this patch, but still want to know more about the meaning of
+> > "...no visible effect...". Do you mean your USB device works well with/without
+> > this patch? or, IO is absolutely the same when loading parameters with
+> > check_positive()?
+> 
+> Yes, it works with and without this patch. With this patch
+> check_positive() returns true in some cases whereas without this patch
+> check_positive always returns false.
+> I don't know at all what effect this change could have, maybe I just
+> need the right test case to verify it really makes a change.
+> 
+> I just realized that something like the below is missing, as the
+> cond.rfe part needs the raw rfe value from fuses >> 3.
+> 
+> Maybe we just take 1/4 and 2/4 and drop the others. I am running out of
+> time for further debugging RTW8821C which is a chip our customer isn't
+> interested in.
+> 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I think we can take all patches, because they go forward to correct direction,
+and other flaws can be fixed after people can really get that kind of modules.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r001-20230418   gcc  
-alpha                randconfig-r032-20230416   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r003-20230416   gcc  
-arc          buildonly-randconfig-r006-20230416   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r014-20230416   gcc  
-arc                  randconfig-r025-20230417   gcc  
-arc                  randconfig-r035-20230416   gcc  
-arc                  randconfig-r043-20230416   gcc  
-arc                  randconfig-r043-20230417   gcc  
-arc                        vdk_hs38_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                            mps2_defconfig   gcc  
-arm                  randconfig-r002-20230418   gcc  
-arm                  randconfig-r021-20230416   clang
-arm                  randconfig-r025-20230416   clang
-arm                  randconfig-r046-20230416   clang
-arm                  randconfig-r046-20230417   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r006-20230418   clang
-arm64                randconfig-r026-20230416   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r023-20230416   gcc  
-hexagon              randconfig-r005-20230418   clang
-hexagon              randconfig-r012-20230416   clang
-hexagon              randconfig-r041-20230416   clang
-hexagon              randconfig-r041-20230417   clang
-hexagon              randconfig-r045-20230416   clang
-hexagon              randconfig-r045-20230417   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230417   gcc  
-i386                 randconfig-a002-20230417   gcc  
-i386                 randconfig-a003-20230417   gcc  
-i386                 randconfig-a004-20230417   gcc  
-i386                 randconfig-a005-20230417   gcc  
-i386                 randconfig-a006-20230417   gcc  
-i386                 randconfig-a011-20230417   clang
-i386                 randconfig-a012-20230417   clang
-i386                 randconfig-a013-20230417   clang
-i386                 randconfig-a014-20230417   clang
-i386                 randconfig-a015-20230417   clang
-i386                 randconfig-a016-20230417   clang
-i386                 randconfig-r023-20230417   clang
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r034-20230416   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze           randconfig-r021-20230417   gcc  
-microblaze           randconfig-r024-20230416   gcc  
-microblaze           randconfig-r033-20230416   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                malta_qemu_32r6_defconfig   clang
-mips                 randconfig-r003-20230418   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r004-20230418   gcc  
-nios2                randconfig-r022-20230417   gcc  
-parisc       buildonly-randconfig-r004-20230416   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r005-20230416   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230416   gcc  
-riscv                randconfig-r042-20230417   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230416   gcc  
-s390                 randconfig-r044-20230417   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r036-20230416   gcc  
-sh                          sdk7780_defconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r031-20230416   gcc  
-sparc64              randconfig-r013-20230416   gcc  
-sparc64              randconfig-r016-20230416   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a011-20230417   clang
-x86_64               randconfig-a012-20230417   clang
-x86_64               randconfig-a013-20230417   clang
-x86_64               randconfig-a014-20230417   clang
-x86_64               randconfig-a015-20230417   clang
-x86_64               randconfig-a016-20230417   clang
-x86_64                               rhel-8.3   gcc  
+Ping-Ke
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
