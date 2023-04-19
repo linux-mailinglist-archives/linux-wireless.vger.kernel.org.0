@@ -2,123 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 379B66E80A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 19:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 622B26E8164
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 20:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229736AbjDSRwd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Apr 2023 13:52:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50966 "EHLO
+        id S230157AbjDSSpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Apr 2023 14:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229690AbjDSRwc (ORCPT
+        with ESMTP id S230349AbjDSSpV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Apr 2023 13:52:32 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F173E4EE2
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 10:52:30 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id o29-20020a05600c511d00b003f1739de43cso1846174wms.4
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 10:52:30 -0700 (PDT)
+        Wed, 19 Apr 2023 14:45:21 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5F9E4EE3
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 11:45:19 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f09b4a1584so618935e9.2
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 11:45:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681926749; x=1684518749;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uAlZzhaLhMERDpi+40W1+UdcU78haGw2hpIt6K/uu64=;
-        b=CXLjdHGhpkaYMEDesToTzOSTn92W/UqJc8nyX78EiE8kHikmyow4Aqi8gW7XygvxlH
-         MbCkgiV3T2IOYB4FYFNpehLrb+cM7KK3GoMFW9aY8+ZAA0Q4tRb+8VhQNI/ZkZPruiIE
-         yQvyfJO+9D+zBAdTbTiwNSblfNYDcOFFYHLf04BsL/XXBwa0UXSC4hncQ9evlXspWVs4
-         1ubW2DRMT6GTpB+Y5wnBtYBFpVO8Xxh5eJSLw55tmczAKf8RFYjOowxu7I/53LQp/9Ag
-         DSkUCsjIKdJQ52gDKzNcSsiYMJDczYDj+DOEsuufls7RZyOIKnjUr+qpn7dl0pC5C3xK
-         jnoQ==
+        d=gmail.com; s=20221208; t=1681929918; x=1684521918;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6Td2gNjM//DPvC/9Dur2VLR7CaLj8FhO87kSuZcqERw=;
+        b=OELpDn8bHJHCJGUt4OGc4oGt1rfD4pQUgYDj6SjfB7Z1wYheR2EEdHCOub1ZoTu3YR
+         7G3CdSmrH731MmswuIZEbj1mbjUGHPgU/bDjHpt/OwOJl3F5QIGckE/jI5iKgcky8ADL
+         8+RjkHS37cuQ0pE5PulSDQMt0JrTaWj/3SL+QKJIgbz5YAPELhXdclvsCuyhe/UaOLjE
+         3ZqnDG8f2+1Jrs0N3XKcexj/u28kJ8oQucGKI86z7/eZAcG8KO0h7f3m9eMh2HWlRChi
+         mUWqf3L6ZHdD1IxmGOH1dhc+WZZ0oxATVxpxYq11phKSp0GLYg5vE88IahT2D6YP/612
+         eYrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681926749; x=1684518749;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uAlZzhaLhMERDpi+40W1+UdcU78haGw2hpIt6K/uu64=;
-        b=BX71oKJ+Gc8ZpABX6voP8m/Y1jpRaDdxosYQmq9zcDf8eT0Scb7nu0Wb3Mz/xwUNKn
-         9UqkbGBLdkk8wIid+HlHZLEEvyzXUI1Aan3ngOZfU82v24yVVJs30c4BklKTABgEs1Ud
-         ux7qsVOrjk53wnKg2Q4kqwL/UFCOQ1yxTlCqrL7qEObFfqjAkP3uVCHVxEkWUA1PUGR8
-         WzE8gXkr3f1NFTZZidiZUy8Md4inwL6hbXONI1dLftgp9V46MDuj2jw737zwEj9jxBdL
-         DLewZuhGkgp3gF0Jl1Tgmc4f1YWdHeREr85Jv8ilGfzH7+C1/0EOvzwpDnqrtW+uT3iG
-         6lnA==
-X-Gm-Message-State: AAQBX9epjXMQGhqlXk91Vdi4IAFEK+8XHJ8/N4+exhyD+BFETg1WatTa
-        3WX0gXL8ihav0c80Vp68Z0DHa3iVQf6621T78LA=
-X-Google-Smtp-Source: AKy350YhtM3XBos9BqPCGSR5+LJqaPOFqGe7vmmG4uT93XQohG7XEh3UA33Li0zHB4+9oKHgtX7ZsuhO5XfQN685nOA=
-X-Received: by 2002:a05:600c:378b:b0:3ed:c84c:7efe with SMTP id
- o11-20020a05600c378b00b003edc84c7efemr2867146wmr.7.1681926749305; Wed, 19 Apr
- 2023 10:52:29 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681929918; x=1684521918;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6Td2gNjM//DPvC/9Dur2VLR7CaLj8FhO87kSuZcqERw=;
+        b=JbKbAzLDOx03qiX30I0MBo73PYbcXZWf1jVgfkHq0DcEk/D2sksyNrkCsHIsGJSC/C
+         dOPWfqiBwmr2jtE4IYtJZ/hJsW0zn9zDq2m7XTe0nreqMomlk2R8mOdmGtllxKxRp6on
+         smGGpHvcrVcZbsQ+aBg1dMRntxXa1ggtm+HScVLhdJQu3Tb4psO/7sQAFTH4DPzUDuQZ
+         02kEBynYzwwko50POUeO6znik/OwLuQT+s353sZIXfoKRuklu27DObJCqYbQqbtJflc3
+         3o+05d8Rg684OQVyVJeXqb8OI7b9tIiDjk/YzAx3pW1cgDyllaA0ons2atgIIJflDEbR
+         55Cg==
+X-Gm-Message-State: AAQBX9fdkPebaazmc0C8zBYa41ALvpn5Fcq29ZCMcAsLw+uNf1EL4PpJ
+        uAHlldCUPw0xYs+93eZRNm4=
+X-Google-Smtp-Source: AKy350YDLaerFvi3uYrkhJg3cB3NHX6rHgzKIs92lxLFIOIVReZ9tRg4kaikWdjNOGk8mrBd7RviKg==
+X-Received: by 2002:a5d:6881:0:b0:2f8:7cac:101a with SMTP id h1-20020a5d6881000000b002f87cac101amr5455012wru.41.1681929918272;
+        Wed, 19 Apr 2023 11:45:18 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id q1-20020adfcd81000000b002ff77b033b1sm1401503wrj.33.2023.04.19.11.45.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Apr 2023 11:45:17 -0700 (PDT)
+Message-ID: <38172c8e-d107-d96e-7292-09d0e3b061dd@gmail.com>
+Date:   Wed, 19 Apr 2023 21:45:16 +0300
 MIME-Version: 1.0
-References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
- <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com> <CALbLcfB7cMctHC-Fv93z1WVCZkQ76uW2F_=P6rCW7ZSPXvmapw@mail.gmail.com>
- <2857f998-1b1a-e3c2-20fe-d03dadcf8f23@gmail.com> <CALbLcfCsyGzhvrqjSz37+7cLvc3rc4Y_kgspZV=kiPNs4TBE4w@mail.gmail.com>
-In-Reply-To: <CALbLcfCsyGzhvrqjSz37+7cLvc3rc4Y_kgspZV=kiPNs4TBE4w@mail.gmail.com>
-From:   Artem Makhutov <artem.makhutov@gmail.com>
-Date:   Wed, 19 Apr 2023 19:52:17 +0200
-Message-ID: <CALbLcfBnF6njFMSfQk2TuOiZ3C3kHwqs4-c-MQGb72azzQ5sJA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
 Subject: Re: RTL8188EU (LogiLink WL0151A) - Malformed packets
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Content-Language: en-US
+To:     Artem Makhutov <artem.makhutov@gmail.com>
 Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
+ <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com>
+ <CALbLcfB7cMctHC-Fv93z1WVCZkQ76uW2F_=P6rCW7ZSPXvmapw@mail.gmail.com>
+ <2857f998-1b1a-e3c2-20fe-d03dadcf8f23@gmail.com>
+ <CALbLcfCsyGzhvrqjSz37+7cLvc3rc4Y_kgspZV=kiPNs4TBE4w@mail.gmail.com>
+ <CALbLcfBnF6njFMSfQk2TuOiZ3C3kHwqs4-c-MQGb72azzQ5sJA@mail.gmail.com>
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <CALbLcfBnF6njFMSfQk2TuOiZ3C3kHwqs4-c-MQGb72azzQ5sJA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+On 19/04/2023 20:52, Artem Makhutov wrote:
+> Hi
+> 
+>> I have also tested the driver from https://github.com/aircrack-ng/rtl8188eus
+>>
+>> The problem occurs here too, but much less frequently than in the
+>> rtl8xxxu driver. The strange thing is that sometimes I have 99% of
+>> broken packets with the rtl8xxxu driver, but sometimes only 1%...
+>> With the aircrack-ng driver I had maybe about 2% of failures.
+> 
+> Now I was just able to get the issue using the v5.2.2.4 driver too,
+> but not so frequent:
+> 
 
-> I have also tested the driver from https://github.com/aircrack-ng/rtl8188eus
->
-> The problem occurs here too, but much less frequently than in the
-> rtl8xxxu driver. The strange thing is that sometimes I have 99% of
-> broken packets with the rtl8xxxu driver, but sometimes only 1%...
-> With the aircrack-ng driver I had maybe about 2% of failures.
-
-Now I was just able to get the issue using the v5.2.2.4 driver too,
-but not so frequent:
-
-tcpdump -ni wlan0
-19:39:26.407253 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 1, length 1438
-19:39:26.410520 IP truncated-ip - 4 bytes missing! 10.10.0.1 >
-10.10.0.111: ICMP echo reply, id 34080, seq 1, length 1438
-19:39:27.442835 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 2, length 1438
-19:39:27.445703 IP truncated-ip - 4 bytes missing! 10.10.0.1 >
-10.10.0.111: ICMP echo reply, id 34080, seq 2, length 1438
-19:39:28.482846 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 3, length 1438
-19:39:28.490406 IP truncated-ip - 4 bytes missing! 10.10.0.1 >
-10.10.0.111: ICMP echo reply, id 34080, seq 3, length 1438
-19:39:29.522723 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 4, length 1438
-19:39:29.525468 IP 10.10.0.1 > 10.10.0.111: ICMP echo reply, id 34080,
-seq 4, length 1438
-19:39:30.524193 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 5, length 1438
-19:39:30.527100 IP 10.10.0.1 > 10.10.0.111: ICMP echo reply, id 34080,
-seq 5, length 1438
-19:39:31.525775 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 6, length 1438
-19:39:31.528707 IP 10.10.0.1 > 10.10.0.111: ICMP echo reply, id 34080,
-seq 6, length 1438
-19:39:32.527400 IP 10.10.0.111 > 10.10.0.1: ICMP echo request, id
-34080, seq 7, length 1438
-19:39:32.531262 IP 10.10.0.1 > 10.10.0.111: ICMP echo reply, id 34080,
-seq 7, length 1438
-
-Apr 19 19:39:26 kern.warn kernel: [ 3228.967023]
-rtl8188e_query_rx_desc_status: pkt_len: 1504
-Apr 19 19:39:27 kern.warn kernel: [ 3230.002515]
-rtl8188e_query_rx_desc_status: pkt_len: 1504
-Apr 19 19:39:28 kern.warn kernel: [ 3231.047199]
-rtl8188e_query_rx_desc_status: pkt_len: 1504
-Apr 19 19:39:29 kern.warn kernel: [ 3232.082274]
-rtl8188e_query_rx_desc_status: pkt_len: 1508
-Apr 19 19:39:30 kern.warn kernel: [ 3233.083901]
-rtl8188e_query_rx_desc_status: pkt_len: 1508
-
-Thanks, Artem
+Interesting. Can you try rtl8xxxu with the newer v28 firmware?
+You can download it from here:
+https://bugzilla.kernel.org/attachment.cgi?id=304160
