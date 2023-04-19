@@ -2,106 +2,288 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0C66E824E
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 22:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5635E6E82A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 22:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231604AbjDSUFL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Apr 2023 16:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60144 "EHLO
+        id S230385AbjDSU17 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Apr 2023 16:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231551AbjDSUFJ (ORCPT
+        with ESMTP id S230195AbjDSU15 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Apr 2023 16:05:09 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1375242
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 13:05:08 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-5068e99960fso279896a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 13:05:08 -0700 (PDT)
+        Wed, 19 Apr 2023 16:27:57 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617404ED8
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 13:27:55 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id q5so262414wmo.4
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 13:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681934706; x=1684526706;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O19qCOe0DTNX6gqRTl+uSUcgN/pbPN+NZIitnjjF7kU=;
-        b=WpzhJ5mOLEIpKXG0XRpkqTHjOLPik2bQL9X7PsdCdaHBu/yf3B3+GVSaDYQ1MHriKX
-         auq4CO/5oM0teoGCzA/49JRaU/urk1q3QCIluNfhYNMg7ePa1Obi2bc/T+/J/Gj/dtgH
-         3Z0jxuVMSNLzQH4OAb9Yu/pqPSWpAXsOpeHy0vqLT82UINEy+ZimfleZQCwzi49cVmja
-         wWdYYKVNDHWAOhYirwSkfKCYUFWfewrfWaUblRHf5iChOl6axhj7RV6HtrSB3J+fJPbL
-         uapx2QB9WIY9P52+Bi8SmXDcuiTgt0K1snBh6/1bp+4DzpOdu8GdeW55HkE11l0TFUuv
-         mczw==
+        d=gmail.com; s=20221208; t=1681936074; x=1684528074;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OQYJWIUN0EVDtc6NMEvB+qMW/lJl4SlH8ak+IcLQfbQ=;
+        b=nUJXaVVddJ63r9M0SPQTOSQngjh66vCFjl15WghX/iVYM3tTayZCWjUa9MMoJck/0/
+         u5imNQd7r/E4EHJYZjRs0b9O14FN41x/qOORoq0zDqicv6eEdk1KyQz0kXjTinuZ6vzD
+         v0EshSXCtLGZafjVc2G3c0SVqchcn9sPcDwj6VYIDq1K267h1Rcn9Kh43U9sIzj7owQd
+         rOo9Rgi3QknuIjkFTq8VN0jcWknrcP4vE1xqYluulf5cRitowrlMINd3bKSYuuDaD2bP
+         oxCwY9a7gwtC6ziKrUDbi1Teq8BXg7cJClQO0aBX3Eu8qmFSUPcY9fjdoxSWgswOijB2
+         Xvlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681934706; x=1684526706;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O19qCOe0DTNX6gqRTl+uSUcgN/pbPN+NZIitnjjF7kU=;
-        b=K4epTOPz/9tbCnHl9FTec7bXY41LL/Mznmm73I9hUgoBH2DJovRvtWAAfilbbZ6bbq
-         rKOE+nFE5P/uKfd4kN0Xu1CZeBR96lTlNUajkP1jGE1Ld1HVQbsrJo42lXkjpwJNl8nY
-         7QQio2KBu4s6Wr9ttqm2vRxRCBC9LKcdF2lhzUv3l7+r0ZUe2a4kZUKO2jJiEODdjK7Y
-         VlzDjoq3tRJLxf+JG39+SeOqvwKz323USjAlgqVFOcbZYVh1OJx7f97Jz3gHfeYkKhkh
-         /9z812zGefcACezOa8VCLZgdB/Bb06XKmOSYGTBaWEWhT9U7j4cz7/aIEBc7CiedL7kD
-         7RAA==
-X-Gm-Message-State: AAQBX9fO/whoI82t7SkNfOV7JK9PqoDathLikyQ4bNt2zTgGm1CoybEQ
-        ruKEelPd0lT7sQOCjrjdGQ8o3A==
-X-Google-Smtp-Source: AKy350aaLQ3lajWBdIxdSjFZYfHpAu1ZC15ZkICq3r8HSBuYErL71cxpOOL9pJEKVG9VG3IhfD1Qzg==
-X-Received: by 2002:aa7:d882:0:b0:506:747f:3bf0 with SMTP id u2-20020aa7d882000000b00506747f3bf0mr7038464edq.8.1681934706426;
-        Wed, 19 Apr 2023 13:05:06 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:976c:1d6c:6ed0:8935? ([2a02:810d:15c0:828:976c:1d6c:6ed0:8935])
-        by smtp.gmail.com with ESMTPSA id k26-20020a056402049a00b0050841de16e9sm440030edv.64.2023.04.19.13.05.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Apr 2023 13:05:05 -0700 (PDT)
-Message-ID: <4366b07b-a144-5e7f-ec41-1f58491b36f5@linaro.org>
-Date:   Wed, 19 Apr 2023 22:05:04 +0200
+        d=1e100.net; s=20221208; t=1681936074; x=1684528074;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OQYJWIUN0EVDtc6NMEvB+qMW/lJl4SlH8ak+IcLQfbQ=;
+        b=ccDUnM853oCALI450ikcNLfS1bPk1VIzYXttJpzbqUCyxzFTnKoFovMSvWbTn6LSZK
+         3rKD6hn3oPocGm6AwOxej+MZdcP0mxAmsJnzG0MkEZuoMFfXIFo0YtLZ2xBjqqcSDZi8
+         B90WvgOZS+it49tsbFmMeW9owkw6F4yK33/hDIePdY77E96vucvykToWC6JCiTRiM1zT
+         jlQCa4HHw4Zu48ioGJpTixYUXP3ILsQrG/cGT6/SJvsJNLToGo6KMna6J8C/6NtVYbnd
+         EVnEM87kmVBh61ZpqapYO04uZeOQbnsY5o8+uQlgf9Gig/w7ysej/3tRDYpA0u5zjWLk
+         ibqQ==
+X-Gm-Message-State: AAQBX9e2JTAP+cUKuO0pux8FVEusL2bWm/cE+gce7z+/OSavDndAef4M
+        +O0Nr9QQ74ukng3NXc5EihiDT+yma+4mQVQDAt+Ixtmrnps=
+X-Google-Smtp-Source: AKy350bW60sxNg5t2TIV6BeXpeKg2cCSqhYPPBynoUKrTlCxP2KclnVFTfuEyV21eo2hfxjY5WukCzOCfj6LugqzehY=
+X-Received: by 2002:a05:600c:3652:b0:3f1:71b2:9445 with SMTP id
+ y18-20020a05600c365200b003f171b29445mr11842802wmq.15.1681936073595; Wed, 19
+ Apr 2023 13:27:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH V2 1/3] dt-bindings: net: wireless: qcom,ath11k: allow
- describing radios
-Content-Language: en-US
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Robert Marko <robimarko@gmail.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
-References: <20230418093822.24005-1-zajec5@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230418093822.24005-1-zajec5@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
+ <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com> <CALbLcfB7cMctHC-Fv93z1WVCZkQ76uW2F_=P6rCW7ZSPXvmapw@mail.gmail.com>
+ <2857f998-1b1a-e3c2-20fe-d03dadcf8f23@gmail.com> <CALbLcfCsyGzhvrqjSz37+7cLvc3rc4Y_kgspZV=kiPNs4TBE4w@mail.gmail.com>
+ <CALbLcfBnF6njFMSfQk2TuOiZ3C3kHwqs4-c-MQGb72azzQ5sJA@mail.gmail.com> <38172c8e-d107-d96e-7292-09d0e3b061dd@gmail.com>
+In-Reply-To: <38172c8e-d107-d96e-7292-09d0e3b061dd@gmail.com>
+From:   Artem Makhutov <artem.makhutov@gmail.com>
+Date:   Wed, 19 Apr 2023 22:27:42 +0200
+Message-ID: <CALbLcfCHLU+zoFdTnTrJs22UUYwr2rETp5hqbv=NL352Qz-XgA@mail.gmail.com>
+Subject: Re: RTL8188EU (LogiLink WL0151A) - Malformed packets
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 18/04/2023 11:38, Rafał Miłecki wrote:
-> From: Rafał Miłecki <rafal@milecki.pl>
-> 
-> Qualcomm ath11k chipsets can have up to 3 radios. Each radio may need to
-> be additionally described by including its MAC or available frequency
-> ranges.
+Hi,
 
-The binding looks fine, but I wonder what is the radio here? It feels
-like one antenna, e.g. 2.4 or 5 GHz, but you added $ref to
-ieee80211.yaml which is used for entire device. What is the "radio" here?
+> Interesting. Can you try rtl8xxxu with the newer v28 firmware?
+> You can download it from here:
+> https://bugzilla.kernel.org/attachment.cgi?id=304160
 
-> 
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-> ---
-> V2: Fix dt_binding_check (add address + size cells & reg)
-> ---
+I might got better using rtl8xxxu, but I am not sure.
 
-Best regards,
-Krzysztof
+ping -I wlan0 -s 1430 10.10.0.1
+69 packets transmitted, 35 received, 49.2754% packet loss
 
+Here are the packet dumps of a broken and a working packet using v28 firmware:
+
+Broken:
+
+urb_len 1560
+  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
+  00000000: 84c405e0 21f0d700 30880012 0000104d 00000000 4a9c2c2e
+000c002f 0000fcbb  .......!...0M........,.J/.......
+  00000020: 0000fc06 3700c800 00000300 00200e00 8400d000 00000000
+00244288 561cf170  .......7...... ..........B$.p..V
+  00000040: eb50c390 142783f6 83f6eb50 01201427 00130007 00002000
+aaaa0000 00000003  ..P...'.P...'. ...... ..........
+  00000060: 00450008 515cb205 01400000 0a0a7704 0a0a0100 00006f00
+f6137e0a 4cbf0c00  ..E...\Q..@..w.......o...~.....L
+  00000080: 91606440 09080008 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  @d`........................... !
+  000000a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000000c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000000e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000100: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000120: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000140: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000160: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000180: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000001a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000001c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000001e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000200: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000220: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000240: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000260: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000280: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000002a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000002c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000002e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000300: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000320: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000340: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000360: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000380: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000003a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000003c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000003e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000400: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000420: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000440: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000460: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000480: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000004a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000004c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000004e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000500: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000520: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000540: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000560: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000580: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000005a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000005c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000005e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000600: 85848382 89888786 8d8c8b8a 91908f8e 95949392 5bbb8367
+              ....................g..[
+
+Working:
+
+urb_len 1564
+  pkt_cnt 136 pkt_len 1508 drvinfo_sz 32 desc_shift 0
+  00000000: 84c405e4 21f01700 3088001f 00001004 00000000 4cd774a4
+000c002f 0000fdbc  .......!...0.........t.L/.......
+  00000020: 0000fc06 4200c400 00000300 00210c00 8400d000 00000000
+00244288 561cf170  .......B......!..........B$.p..V
+  00000040: eb50c390 142783f6 83f6eb50 01f01427 00200007 00002000
+aaaa0000 00000003  ..P...'.P...'..... .. ..........
+  00000060: 00450008 8a61b205 01400000 0a0a3dff 0a0a0100 00006f00
+661d9b70 4ce50b00  ..E...a...@..=.......o..p..f...L
+  00000080: 04d36440 09080000 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  @d............................ !
+  000000a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000000c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000000e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000100: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000120: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000140: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000160: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000180: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000001a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000001c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000001e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000200: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000220: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000240: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000260: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000280: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000002a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000002c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000002e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000300: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000320: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000340: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000360: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000380: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000003a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000003c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000003e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000400: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000420: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000440: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000460: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000480: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000004a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000004c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000004e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000500: 85848382 89888786 8d8c8b8a 91908f8e 95949392 99989796
+9d9c9b9a a1a09f9e  ................................
+  00000520: a5a4a3a2 a9a8a7a6 adacabaa b1b0afae b5b4b3b2 b9b8b7b6
+bdbcbbba c1c0bfbe  ................................
+  00000540: c5c4c3c2 c9c8c7c6 cdcccbca d1d0cfce d5d4d3d2 d9d8d7d6
+dddcdbda e1e0dfde  ................................
+  00000560: e5e4e3e2 e9e8e7e6 edecebea f1f0efee f5f4f3f2 f9f8f7f6
+fdfcfbfa 0100fffe  ................................
+  00000580: 05040302 09080706 0d0c0b0a 11100f0e 15141312 19181716
+1d1c1b1a 21201f1e  .............................. !
+  000005a0: 25242322 29282726 2d2c2b2a 31302f2e 35343332 39383736
+3d3c3b3a 41403f3e  "#$%&'()*+,-./0123456789:;<=>?@A
+  000005c0: 45444342 49484746 4d4c4b4a 51504f4e 55545352 59585756
+5d5c5b5a 61605f5e  BCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`a
+  000005e0: 65646362 69686766 6d6c6b6a 71706f6e 75747372 79787776
+7d7c7b7a 81807f7e  bcdefghijklmnopqrstuvwxyz{|}~...
+  00000600: 85848382 89888786 8d8c8b8a 91908f8e 95949392 094523fb
+5c8ab2b3           .....................#E....\
