@@ -2,73 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39ACB6E76F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 11:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7F716E76FE
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 12:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232582AbjDSJ7O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Apr 2023 05:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54196 "EHLO
+        id S232548AbjDSKCZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Apr 2023 06:02:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232428AbjDSJ7L (ORCPT
+        with ESMTP id S232908AbjDSKCP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Apr 2023 05:59:11 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2358814453
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 02:58:39 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33J9WIfE032428;
-        Wed, 19 Apr 2023 09:58:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id; s=qcppdkim1;
- bh=nraxzcYXsGeNLGsYi+VqecXFFW2kNnGQ85j73xb3WM8=;
- b=I3Vs45kiuC0M/ioBq5SixBuCR6+stWyNfVQ5N6ZH5tjZ1DkXldpHb4q3fPyCMsCIkFNw
- 8tmR5s0Pzpw3pjQKGFsNix7O52wwUNc5sgFecHi8g+HReLLJLEDCKQi+aQ3FMCApAmY8
- swQBOzhTOOl5QZNZ6XKdNAsjvzzyrhYSJbZRM8mAjQ9+GGcn/YK+cd36Wj0rubOh6qrv
- Uzm9HKd8D9HruOD1KrEsOJR8CXWc7OGBQFqC2AjTZyRnmJ3yCg/F91WrlA/6juS2O+hT
- 6kgZ/T8b7jxqLEko7CvfJ/Sxrzxy9MXTmDbCff+4O0ezJhPp5qa5aYJjakKZoPa7/Cz+ YQ== 
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q292h8mdf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Apr 2023 09:58:04 +0000
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-        by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 33J9w1fE016973;
-        Wed, 19 Apr 2023 09:58:01 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 3pyn0kf1pq-1;
-        Wed, 19 Apr 2023 09:58:01 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33J9w0Qc016964;
-        Wed, 19 Apr 2023 09:58:00 GMT
-Received: from rgnanase-linux.qualcomm.com (rgnanase-linux.qualcomm.com [10.201.162.135])
-        by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 33J9w0tD016960;
-        Wed, 19 Apr 2023 09:58:00 +0000
-Received: by rgnanase-linux.qualcomm.com (Postfix, from userid 2378837)
-        id D8AFD1100068; Wed, 19 Apr 2023 15:27:59 +0530 (IST)
-From:   Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-To:     ath12k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, Karthik M <quic_karm@quicinc.com>,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Subject: [PATCH v2] wifi: ath12k: fix potential wmi_mgmt_tx_queue race condition
-Date:   Wed, 19 Apr 2023 15:27:58 +0530
-Message-Id: <20230419095758.19998-1-quic_rgnanase@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: EoJPcOCfLn77mnG_llHgkue4PlI0t1X0
-X-Proofpoint-GUID: EoJPcOCfLn77mnG_llHgkue4PlI0t1X0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-19_05,2023-04-18_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 malwarescore=0
- mlxlogscore=708 clxscore=1015 adultscore=0 spamscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304190086
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        Wed, 19 Apr 2023 06:02:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E14710F0
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 03:02:12 -0700 (PDT)
+From:   Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1681898530;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=LQYdVJUDPySzchOT4vFVGYN+gmULBehJeGoz9HQ8Srs=;
+        b=A7l00uWUE5kWUIA73mZye17zRaGV23DW62/DJq8qnR1ZFoyxJnXSAtImSdHUboHgtWflJ3
+        o2opCTlw0io0t20PO48L7YOG3Buo0VlOmBALeOIAXOj43+omfQo9b5McScExTmo2WaX3fz
+        343Rkvfn754rTk9Aii546r+830tQD54vT2+hFY8u7NcaDLM5q0mJIMl1F1+X7nSAUojn6d
+        OufXSd2PSd2LB3MtAM4GUYr3z4s+nZCnNwH8mCuQtgeTa8B7r96xnqGV6L1PsRwGwg13YF
+        aJ3aM+SiYUEQfJAr1NwYxOk6uOFhCHY2JtitBkBdDkTJslIXRNkfLbIZJwHfDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1681898530;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=LQYdVJUDPySzchOT4vFVGYN+gmULBehJeGoz9HQ8Srs=;
+        b=gSBwr6K05kVfm0j4gVcZTShhMXDO6lsD21C5S0fidmBFA4U/XYjUQAUkn5D0Rufv7lCQPa
+        YJvWFvHY3J6Gi5DQ==
+To:     linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v2 00/18] wifi: rtl8xxxu: Add AP mode support for 8188f
+Date:   Wed, 19 Apr 2023 12:01:27 +0200
+Message-Id: <20230419100145.159191-1-martin.kaistra@linutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,50 +56,102 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Karthik M <quic_karm@quicinc.com>
+This series intends to bring AP mode support to the rtl8xxxu driver,
+more specifically for the 8188f, because this is the HW I have.
+The work is based on the vendor driver as I do not have access to
+datasheets.
 
-During stress test with maximum VAPs and peer connected, below warning
-is seen:
+Also while doing some measurements with iperf3 to compare with the
+vendor driver, I saw, that TCP traffic from AP to STA is slower than in
+the vendor driver. For UDP it looks fine. I hope I can get some help to
+fix this.
 
-[ 1079.110967] ath12k_pci 0004:01:00.0: mgmt tx queue is full
-[ 1079.117708] ath12k_pci 0004:01:00.0: failed to queue management frame -28
-[ 1079.123191] ath12k_pci 0004:01:00.0: mgmt tx queue is full
-[ 1079.129960] ath12k_pci 0004:01:00.0: failed to queue management frame -28
-[ 1079.135641] ath12k_pci 0004:01:00.0: mgmt tx queue is full
+* vendor driver:
 
-This is caused by potential race condition while accessing skb_queue_len().
-When ath12k_mgmt_over_wmi_tx_work() and ath12k_mac_mgmt_tx() is called concurrently,
-then skb_queue_len() might fetch list length which is modified by skb_queue_tail()
-or skb_dequeue().
+  without 802.11n:
+    UDP (AP -> STA): 27 Mbits/sec
+    UDP (STA -> AP): 33 Mbits/sec
+    TCP (AP -> STA): 24 Mbits/sec
+    TCP (STA -> AP): 26 Mbits/sec
 
-Replace skb_queue_len() with skb_queue_len_lockless() which will
-prevent concurrent modified access using READ_ONCE(). And also use '>=',
-in case we queue a few SKBs simultaneously.
+  with 802.11n:
+    UDP (AP -> STA): 51 Mbits/sec
+    UDP (STA -> AP): 35 Mbits/sec
+    TCP (AP -> STA): 40 Mbits/sec
+    TCP (STA -> AP): 36 Mbits/sec
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+* rtl8xxxu:
 
-Signed-off-by: Karthik M <quic_karm@quicinc.com>
-Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
----
-v2:
-    - Corrected patch format
----
- drivers/net/wireless/ath/ath12k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  without 802.11n:
+    UDP (AP -> STA): 25 Mbits/sec
+    UDP (STA -> AP): 31 Mbits/sec
+    TCP (AP -> STA):  3 Mbits/sec !
+    TCP (STA -> AP): 25 Mbits/sec
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 0e5cc477ba56..cc458fed5e78 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4489,7 +4489,7 @@ static int ath12k_mac_mgmt_tx(struct ath12k *ar, struct sk_buff *skb,
- 		return -ENOSPC;
- 	}
- 
--	if (skb_queue_len(q) == ATH12K_TX_MGMT_NUM_PENDING_MAX) {
-+	if (skb_queue_len_lockless(q) >= ATH12K_TX_MGMT_NUM_PENDING_MAX) {
- 		ath12k_warn(ar->ab, "mgmt tx queue is full\n");
- 		return -ENOSPC;
- 	}
+  with 802.11n:
+    UDP (AP -> STA): 41 Mbits/sec
+    UDP (STA -> AP): 36 Mbits/sec
+    TCP (AP -> STA):  3 Mbits/sec !
+    TCP (STA -> AP): 32 Mbits/sec
+
+Thanks,
+  Martin
+
+v2 changelog:
+- dropped RFC prefix
+- rebase patches to newest wireless-next
+- add some R-bs
+- new patch: "Add parameter force to rtl8xxxu_refresh_rate_mask"
+- new patch: "Remove usage of ieee80211_get_tx_rate()"
+- new patch: "Remove usage of tx_info->control.rates[0].flags"
+- new patch: "Set maximum number of supported stations"
+- add macro for broadcast/multicast frames macid
+- add more explanation about beacon queue in commit message of patch 2
+- add macros for bit definitions for beacon functions
+- implement enable_beacon = false case
+- fix beacon valid loop so that error condition is actually reached
+- add more explanation about setting mac address register in add_interface
+  in commit message of patch 6
+- rename role macros for connect report h2c
+- use bitmap for assigning macids
+- add helper function for looking up assigned macids
+- move patch 7 so we can use rtl8xxxu_get_macid helper
+- add sta_remove callback
+- do things in sta_add only in AP mode
+- use IEEE80211_TX_CTL_ASSIGN_SEQ flag to determine when to use HW sequence
+  numbers
+- add priv->vif null pointer check in configure_filter, rework setting
+  BSSID_BEACON/BSSID_MATCH in RCR
+
+v1: https://lore.kernel.org/linux-wireless/20230322171905.492855-1-martin.kaistra@linutronix.de/
+
+Martin Kaistra (18):
+  wifi: rtl8xxxu: Add start_ap() callback
+  wifi: rtl8xxxu: Select correct queue for beacon frames
+  wifi: rtl8xxxu: Add beacon functions
+  wifi: rtl8xxxu: Add set_tim() callback
+  wifi: rtl8xxxu: Allow setting rts threshold to -1
+  wifi: rtl8xxxu: Allow creating interface in AP mode
+  wifi: rtl8xxxu: Actually use macid in rtl8xxxu_gen2_report_connect
+  wifi: rtl8xxxu: Add parameter role to report_connect
+  wifi: rtl8xxxu: Add parameter force to rtl8xxxu_refresh_rate_mask
+  wifi: rtl8xxxu: Add sta_add() and sta_remove() callbacks
+  wifi: rtl8xxxu: Put the macid in txdesc
+  wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+  wifi: rtl8xxxu: Enable hw seq for mgmt/non-QoS data frames
+  wifi: rtl8xxxu: Clean up filter configuration
+  wifi: rtl8xxxu: Remove usage of ieee80211_get_tx_rate()
+  wifi: rtl8xxxu: Remove usage of tx_info->control.rates[0].flags
+  wifi: rtl8xxxu: Declare AP mode support for 8188f
+  wifi: rtl8xxxu: Set maximum number of supported stations
+
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  39 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |   3 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |   2 +
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 346 ++++++++++++++----
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   5 +
+ 5 files changed, 311 insertions(+), 84 deletions(-)
+
 -- 
-2.17.1
+2.30.2
 
