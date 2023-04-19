@@ -2,75 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 107386E850F
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 00:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6536A6E88FC
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 06:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233434AbjDSWiJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Apr 2023 18:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38210 "EHLO
+        id S232629AbjDTELZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 00:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233366AbjDSWiJ (ORCPT
+        with ESMTP id S229520AbjDTELY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Apr 2023 18:38:09 -0400
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B317C7298
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 15:37:34 -0700 (PDT)
-Received: by mail-ua1-x92c.google.com with SMTP id az21so907775uab.12
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 15:37:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681943798; x=1684535798;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JNSFyRlX9HEFt50WYfUgo9upxgh9bvJM99DRmR2CX4o=;
-        b=A597psBi94uoZw1I01Mu/PYYMgObV7azHnWZEeUHeMBqGbRMwFmgnk5LIkkPSMwy4h
-         uvrtgPlGP++FzLqaklzFJ0Mnm8Tx7xMQg3hFcoF4RVg4DgDYJpaMvMcLIbZc8TjOo1PE
-         3k/qJYKW9JYo/mIAh5Km6Njts5vW0DqvjJsvOcidZVgYhFF7lT8nUmILphhuejFdPym3
-         x4lH8dvl1UfF/CiegsL8V6kwzDcK2USIuc1FUFcoJzogIMk7njYnwzx7umSi32jXRVEa
-         IVG7aWRlYJTsK0Fq0lYewTyJgkqrfhccOT/poYoP+f/QO52xXcV8Zsrr0cS45av+My/U
-         wEkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681943798; x=1684535798;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JNSFyRlX9HEFt50WYfUgo9upxgh9bvJM99DRmR2CX4o=;
-        b=DqO+xx7Zu8fXJY97JajW7cSx0ETiMeWmubjA544EamecNsU2exizTLtQQ+cGGLr7OI
-         lfQau0CiXU6Tx7stYQHsi0bx72mfizjVZxuQA3b4UGIIO/W/Y1RwOChN9T1L1G7TFh/x
-         i1up87xaHitUwdm+donUCn5Cf92QmKxsHLUrUN6vlqVPYJWQCQvbbmcrkW5OO37Xyyeg
-         0TebUGrGM1jxyWifr0BHx+o8GD30xJRew+T0a6UD50ztQ3W5sMduP2lH8ruHXhYlrCGO
-         6pVKVOe4b/uxyGomgsGB8DzRqKgsCpiAHy8VJJr2MDVS8X9Irhlm7obeArLKmf92jQCo
-         hefg==
-X-Gm-Message-State: AAQBX9eOtDbE7gQc2GNQ2sTjNWP7VCF2znT9j+6qavjPK9wMEJvQ/vTa
-        IPXOMsT6vGHOVY43qNl/sAHHzDy6AFry7xzjuyQ=
-X-Google-Smtp-Source: AKy350Z7KixYsm1EME4dIAoTLmL9Y+3UksezMwxYyFUeBHPPBO1zdhqUvGZ+k5p4FxPSPb1XkDWLvBhX+ja9FtXhjeA=
-X-Received: by 2002:a1f:5f93:0:b0:43b:c7bc:7203 with SMTP id
- t141-20020a1f5f93000000b0043bc7bc7203mr666957vkb.7.1681943797771; Wed, 19 Apr
- 2023 15:36:37 -0700 (PDT)
+        Thu, 20 Apr 2023 00:11:24 -0400
+X-Greylist: delayed 16211 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Apr 2023 21:11:21 PDT
+Received: from mx1.bulutepostam.com (mx1.bulutepostam.com [95.217.25.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05851BC2;
+        Wed, 19 Apr 2023 21:11:21 -0700 (PDT)
+Date:   Thu, 20 Apr 2023 02:31:04 +0300 (TRT)
+From:   MK <zibel.koc@hisarhospital.com>
+Reply-To: MK <marion.k07081@gmail.com>
+Message-ID: <485628902.5380582.1681947064724.JavaMail.zimbra@hisarhospital.com>
+Subject: Ciao raggio di sole, come stai?
 MIME-Version: 1.0
-From:   Sara james <techdatalist08@gmail.com>
-Date:   Wed, 19 Apr 2023 17:36:23 -0500
-Message-ID: <CAEtUfa8AFSV08ckoxCnLf+sBFgLnytgHwUQa1z2fZXiHuSmgXg@mail.gmail.com>
-Subject: RE: ASM Microbe Attendees Email List- 2023
-To:     Sara james <techdatalist08@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Thread-Index: U2B+rSS2ZwT9KC7G9W0S61RQYfM6hQ==
+Thread-Topic: Ciao raggio di sole, come stai?
+X-FEAS-Client-IP: 10.34.37.30
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=hisarhospital.com; s=e948eec2-1790-11eb-ab59-4e91913d126c; c=relaxed/relaxed;
+ h=date:from:reply-to:message-id:subject:mime-version:content-type;
+ bh=DfYitqjrdga9bw6dFmoW0UwdPJx2EjPBb9s2Of5FshQ=;
+ b=5pCwfX5nykHhE++QGJOad4UYQSeKHv1hg/PVpIkm3NSAwWdM83ha9k8tq7ZIndR3ls8ZFJ1QoGve
+        kwtHRdaudVJ7NXcMbQGShRo+ZNQsbbj8M9N9wMRnz0i/20ZPlW73axbOI4Ek/fVEc/b8cSUZGCMN
+        79qf8vQn/a520oY08xqw1XPYnELsllM9jLZYvdtdod4g68l62tQFxguWBPHcetXr3Mcp25GmprMp
+        tefY3egTndD968JfCzuh/O9cJVlUSatwYZ57hPQwouk02gvNgf3+6m+HxRuE1AqZ6z2/QX/pYS2n
+        FkMsd4cRn2Ojv9rhJpXUzKcQ+aDm1wCpdmRoTg==
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Mi dispiace disturbarti e invadere la tua privacy. Sono single,
+  solitario e bisognoso di un compagno premuroso, amorevole e romantico.
 
-Would you be interested in acquiring the American Society for
-Microbiology Attendees Email List -2023?
+Sono un ammiratore segreto e vorrei esplorare l'opportunit=C3=A0 di farlo
+saperne di pi=C3=B9 l'uno sull'altro. So che =C3=A8 strano contattarti
+in questo modo e spero che tu possa perdonarmi. Sono una persona timida e
+questo =C3=A8 l'unico modo in cui so di poter attirare la tua attenzione. V=
+oglio semplicemente
+per sapere cosa ne pensate e la mia intenzione non =C3=A8 di offendervi.
+Spero che possiamo essere amici se =C3=A8 quello che vuoi, anche se lo vorr=
+ei
+essere pi=C3=B9 di un semplice amico. So che hai alcune domande da fare
+chiedi e spero di poter soddisfare alcune delle tue curiosit=C3=A0 con alcu=
+ni
+risposte.
 
-Number of Contact: - 13,558
-Cost: $1,626
+Credo nel detto che "per il mondo sei solo una persona,
+ma per qualcuno di speciale tu sei il mondo'. Tutto quello che voglio =C3=
+=A8 amore,
+cure e attenzioni romantiche da una compagna speciale quale sono io
+sperando saresti tu.
 
-Interested? Email me back; I would love to provide more information on the list.
+Spero che questo messaggio sia l'inizio di un lungo periodo
+comunicazione tra di noi, =C3=A8 sufficiente inviare una risposta a questo =
+messaggio, it
+mi render=C3=A0 felice.
 
-Kind Regards,
-Sara James
+
+Baci e abbracci,
+
+Marion.
