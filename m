@@ -2,84 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1725A6E78B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 13:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C24C56E78DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Apr 2023 13:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231935AbjDSLhp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Apr 2023 07:37:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35154 "EHLO
+        id S232831AbjDSLp6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Apr 2023 07:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbjDSLhm (ORCPT
+        with ESMTP id S232403AbjDSLp5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Apr 2023 07:37:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBC155AD
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 04:37:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A24CA62C54
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 11:37:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE57EC433D2;
-        Wed, 19 Apr 2023 11:37:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681904260;
-        bh=JP788VccofvV99xI8Q+UF9R//0YhY/qQOWlGLhFUZGU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=N2q4X3ZhPP+FWmWQNi7V+GuX1FVwNBrpGAGNlvOUASj+tRBZ5xTWkR79NQ6eNUL51
-         hUCP77EKhR9EJ2zL7wl+tpDkH76Tfmbjg7ofj7Wj9sMhdsPd5E0fpEEJw78KymMTbt
-         3D7/Z00yANCM+PxVInlO/htK0D2okeO82WCwXgP5Om6QFTDLiEotSEVkQ37pLNZcWb
-         +uRji8PicHr/uQmGoOKewu7egsoBkgh+RoYDqKS8EcV/dhE40oo00whT4ZQ9QAeetT
-         liowd2Cj2D0fUn0ZgpVp8+zakCMEAU6OshF1SKMWjCqVAN2lLiTEBN9vp2ocVUY414
-         8l/ZjutNy3EWg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        quic_jjohnson@quicinc.com,
-        Kieran Frewen <kieran.frewen@morsemicro.com>
-Subject: Re: [PATCH v5 2/2] wifi: mac80211: S1G beacon/short beacon support
-References: <20230417012151.2512303-1-gilad.itzkovitch@virscient.com>
-        <20230417012151.2512303-2-gilad.itzkovitch@virscient.com>
-Date:   Wed, 19 Apr 2023 14:37:36 +0300
-In-Reply-To: <20230417012151.2512303-2-gilad.itzkovitch@virscient.com> (Gilad
-        Itzkovitch's message of "Mon, 17 Apr 2023 13:21:51 +1200")
-Message-ID: <87pm80qf0f.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 19 Apr 2023 07:45:57 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0684A4231
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 04:45:55 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33JBjlqT7009724, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33JBjlqT7009724
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 19 Apr 2023 19:45:47 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 19 Apr 2023 19:45:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 19 Apr 2023 19:45:47 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 19 Apr 2023 19:45:47 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Kevin Yang" <kevin_yang@realtek.com>
+Subject: [PATCH 0/5] wifi: rtw89: wait for firmware ack for certain H2C commands
+Thread-Topic: [PATCH 0/5] wifi: rtw89: wait for firmware ack for certain H2C
+ commands
+Thread-Index: AQHZcrR7E24lA9wuLUieNbPlauh+Xw==
+Date:   Wed, 19 Apr 2023 11:45:47 +0000
+Message-ID: <fc48a6204102e09f49e99ada80fb571ba0add5d9.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.16.139]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <33634438B49274469746A351E57A4000@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com> writes:
-
-> From: Kieran Frewen <kieran.frewen@morsemicro.com>
->
-> With the kernel able to send both short and long S1G beacons, include
-> the ability for setting the short beacon period. If configured, use
-> the S1G short beacon format. The S1G short beacon format includes a
-> limited set of information elements. It also adds the support for
-> distinguish short beacon head and tail.
->
-> Signed-off-by: Kieran Frewen <kieran.frewen@morsemicro.com>
-> Co-developed-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-> Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
->
-> v4:
->  - squash mac80211 commits together
->  - address hitting short head/tail code path in nl80211.c
->  - update code style
-> ---
-
-Same here as in patch 1.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+VHdvIEgyQyBjb21tYW5kcyByZWxhdGVkIHNjYW5uaW5nIGFyZSBuZWVkZWQgdG8gd2FpdCBmb3Ig
+ZmlybXdhcmUgYWNrDQpiZWZvcmUgc2VuZGluZyBhbm90aGVyIG9uZSwgYmVjYXVzZSBmaXJtd2Fy
+ZSBjYW4ndCBhbHdheXMgaGFuZGxlIGJ1cnN0IEgyQw0KcHJvcGVybHkuIFRvIHJlc29sdmUgdGhp
+cyBwb3RlbnRpYWwgcHJvYmxlbSwgYWRkIGEgd2FpdCBtZWNoYW5pc20uIEFsc28sDQpyZWZpbmUg
+cmVsYXRlZCBmbG93IHRvIGRlbGV0ZSBvZmZsb2FkIHBhY2tldHMuDQoNClpvbmctWmhlIFlhbmcg
+KDUpOg0KICB3aWZpOiBydHc4OTogcmVsZWFzZSBiaXQgaW4gcnR3ODlfZndfaDJjX2RlbF9wa3Rf
+b2ZmbG9hZCgpDQogIHdpZmk6IHJ0dzg5OiByZWZpbmUgcGFja2V0IG9mZmxvYWQgZGVsZXRlIGZs
+b3cgb2YgNiBHSHogcHJvYmUNCiAgd2lmaTogcnR3ODk6IHBhY2tldCBvZmZsb2FkIHdhaXQgZm9y
+IEZXIHJlc3BvbnNlDQogIHdpZmk6IHJ0dzg5OiBtYWM6IGhhbmRsZSBDMkggcmVjZWl2ZS9kb25l
+IEFDSyBpbiBpbnRlcnJ1cHQgY29udGV4dA0KICB3aWZpOiBydHc4OTogc2NhbiBvZmZsb2FkIHdh
+aXQgZm9yIEZXIGRvbmUgQUNLDQoNCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5
+L2NvcmUuYyB8IDQ0ICsrKysrKysrKysrKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVr
+L3J0dzg5L2NvcmUuaCB8IDIwICsrKy0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODkvZncuYyAgIHwgNzIgKysrKysrKysrKysrLS0tLS0tLS0tLQ0KIGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuaCAgIHwgNzAgKysrKysrKysrKysrKystLS0tLS0tDQog
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYyAgfCA3NSArKysrKysrKysr
+KysrKysrKysrKy0tLQ0KIDUgZmlsZXMgY2hhbmdlZCwgMjA4IGluc2VydGlvbnMoKyksIDczIGRl
+bGV0aW9ucygtKQ0KDQotLSANCjIuMjUuMQ0K
