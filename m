@@ -2,100 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1C66E88D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 05:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D3F6E891A
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 06:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231186AbjDTDnw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Apr 2023 23:43:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40898 "EHLO
+        id S231458AbjDTE2b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 00:28:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjDTDnv (ORCPT
+        with ESMTP id S233073AbjDTE23 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Apr 2023 23:43:51 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1F944A2;
-        Wed, 19 Apr 2023 20:43:50 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-63b781c9787so178511b3a.1;
-        Wed, 19 Apr 2023 20:43:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681962230; x=1684554230;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oGcjJrKVdJthT5jHtVz62KZrTMfTo60gqcHwgky1M9o=;
-        b=FCc/qGm6+G29tUJLe4kGCp99nHizxhCyIoVmVdv9gG1AGgxzNNG0Ym4ElJAPEDwqAf
-         LFSpdcBlvcNC7DAGVSkKaHgmkzBLuBaWbVIk/XqnZ02VsyK9ZHX03FmIpF0D0xtfJ6li
-         kH9kv5pcbl10bjBQvSducRMlhGqisnwu5FB2ZBsUKj/piISeCtlZIhcTItXJLYmLwUYy
-         wf3CgoDrqKIoSUQtORCVopqo2sjQbpr7o79TsZzsWaD/KAHOub1dG9kCFmUI49LcTlUa
-         5rs7GEoftI1tzdf3k2CdgOyxLdKQehsJHOv/010o5a/MBtAHYNZRHfmqEs0qIJmdCfY1
-         8jMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681962230; x=1684554230;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oGcjJrKVdJthT5jHtVz62KZrTMfTo60gqcHwgky1M9o=;
-        b=OtxzCrwdDLG0j9JgqdIXAl/qPIHw03iHjvedLCc1BHHlnDjJOkNxP+lV/SwdAGjmW3
-         SEljFw6eWu5d1ds/YIo2nWE605TUZBYVb5m7iG/F3K1aASrikJJ4y2TYMOxiW8Aat4jk
-         dGKNL2TZu4uOvTbPHyVz765aTuR/4QRxDUqVYqNP0NWcl7deDLWTxzHOTbt45hzJhJaf
-         4IH0xc6nEhvXkuDlIiRQQ2GUk0J3FscxMwVYYrE9b6EF5MwI1Bj1paVlffS2jOvVLgBD
-         lhzl1gPCkdXLYc3vi0VWFfTJMPB5KFwbw+m4ltRx0h9tDMh7bzpdBEQbb/Z+FH3zf6I/
-         ZwTg==
-X-Gm-Message-State: AAQBX9eerQCtJ6Ln8CC6rOLXrVO1rwEtIYVojOf72d9G1aDgR0a07tc1
-        QwlrdkDam+IoXKxrVlYc9cU9Vil/B+g=
-X-Google-Smtp-Source: AKy350YejakM543wXQPxP1eOvxQL1PSZzPWEdgrmCpGun8QQ8D66VT6iXwuH8Yu8e6fnr84gKm4SpA==
-X-Received: by 2002:a05:6a20:914a:b0:f0:38a7:dc71 with SMTP id x10-20020a056a20914a00b000f038a7dc71mr78867pzc.4.1681962229801;
-        Wed, 19 Apr 2023 20:43:49 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([2601:640:8200:33:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id o1-20020a654581000000b0051fa7704c1asm139644pgq.47.2023.04.19.20.43.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 20:43:49 -0700 (PDT)
-Date:   Wed, 19 Apr 2023 20:43:46 -0700
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>
-Cc:     "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "Stern, Avraham" <avraham.stern@intel.com>
-Subject: Re: pull-request: wireless-next-2023-03-30
-Message-ID: <ZEC08ivL3ngWFQBH@hoboy.vegasvil.org>
-References: <20230330205612.921134-1-johannes@sipsolutions.net>
- <20230331000648.543f2a54@kernel.org>
- <ZCtXGpqnCUL58Xzu@localhost>
- <ZDd4Hg6bEv22Pxi9@hoboy.vegasvil.org>
- <ccc046c7e7db68915447c05726dd90654a7a8ffc.camel@intel.com>
+        Thu, 20 Apr 2023 00:28:29 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20EA540C7
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Apr 2023 21:28:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1681964909; x=1713500909;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tbL/c9okS3BGH84ey44LNFPQKmCe8K644J7kHcUUeac=;
+  b=lulah5dWuE+eIVki9bu1yFORqXkZAwVxDH5/bg+CSSUM0DILcaMJtueq
+   nTuUaT0UjkxoqH9oBT7iWN6eB5hMumEy6cu872fn6L+4ev2YXdJsFMzjn
+   1JFvD4mPyMVGpD2vYc5S7Rhc5VmkXxcoxZW0xL8314dAikVfngTKq+Zhj
+   d/jtD9o0WCfHKg7MG5kmF9L2T2CSV/qxfj6moaz+sVsLcC1qvZ4EFBxPm
+   mZR2d1wV2jekMkktWHvFW/VB8n+EtRX/3VJ7/TMFZ+8VDvvXpmbukoe1V
+   PZjvQSrzGxLLy35yyav99rzoMJQ69Itga0pM3G0x2djEvSUNqaNe0Eyug
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="431906253"
+X-IronPort-AV: E=Sophos;i="5.99,211,1677571200"; 
+   d="scan'208";a="431906253"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2023 21:28:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10685"; a="685205533"
+X-IronPort-AV: E=Sophos;i="5.99,211,1677571200"; 
+   d="scan'208";a="685205533"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 19 Apr 2023 21:28:26 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ppLuD-000fTA-23;
+        Thu, 20 Apr 2023 04:28:25 +0000
+Date:   Thu, 20 Apr 2023 12:28:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [wireless-next:pending] BUILD SUCCESS
+ eccaf030c118d99e0cbc12afd48272622af1146c
+Message-ID: <6440bf5c.mTk//Zey9QchPuNn%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ccc046c7e7db68915447c05726dd90654a7a8ffc.camel@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 18, 2023 at 01:35:50PM +0000, Greenman, Gregory wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git pending
+branch HEAD: eccaf030c118d99e0cbc12afd48272622af1146c  Merge tag 'mt76-for-kvalo-2023-04-18' of https://github.com/nbd168/wireless into pending
 
-> Just a few clarifications. These two notifications are internal to iwlwifi, sent
-> by the firmware to the driver.
+elapsed time: 730m
 
-Obviously.
+configs tested: 55
+configs skipped: 3
 
-> Then, the timestamps are added to the rx/tx status
-> via mac80211 api.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Where?  I don't see that in the kernel anywhere.
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230417   gcc  
+i386                 randconfig-a002-20230417   gcc  
+i386                 randconfig-a003-20230417   gcc  
+i386                 randconfig-a004-20230417   gcc  
+i386                 randconfig-a005-20230417   gcc  
+i386                 randconfig-a006-20230417   gcc  
+i386                 randconfig-a011-20230417   clang
+i386                 randconfig-a012-20230417   clang
+i386                 randconfig-a013-20230417   clang
+i386                 randconfig-a014-20230417   clang
+i386                 randconfig-a015-20230417   clang
+i386                 randconfig-a016-20230417   clang
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                               rhel-8.3   gcc  
 
-Your WiFi driver would need to implement get_ts_info, no?
-
-> Actually, we already have a functional implementation of ptp4l
-> over wifi using this driver support.
-
-Why are changes needed to user space at all?
-
-Thanks,
-Richard
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
