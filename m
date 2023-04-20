@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D2B6E9730
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 16:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6736E9740
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 16:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231952AbjDTOdk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 10:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56432 "EHLO
+        id S231811AbjDTOfv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 10:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231624AbjDTOdj (ORCPT
+        with ESMTP id S231784AbjDTOfv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 10:33:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B1B7695;
-        Thu, 20 Apr 2023 07:33:23 -0700 (PDT)
+        Thu, 20 Apr 2023 10:35:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F2840EF;
+        Thu, 20 Apr 2023 07:35:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CCAE61791;
-        Thu, 20 Apr 2023 14:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252B0C4339B;
-        Thu, 20 Apr 2023 14:33:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90C1864A08;
+        Thu, 20 Apr 2023 14:35:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675D8C433D2;
+        Thu, 20 Apr 2023 14:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682001202;
-        bh=q2atBF0cJlaYHiFetu0vG4x/7tLR7MTaSABzMRmXwv4=;
+        s=k20201202; t=1682001349;
+        bh=gY4fsrxqILFWQLsDkiSerjm5DFs+2RxD+u+vD/hOMDM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=X3mPIEBX6NLvJa9OkFPu4tVqZSXj0fChyurge4rQ9NwbLE+Arg9GVSAdRNL2xU4mP
-         0Okkqvyuqzf3PKrpgRHsnY3QR6m5+R/ljLfNkY5QFOztMfiCJ3ki4U3GuxlF1GtCRd
-         r841Asy3mqEL5zIpFxVoLWvikElbPxz2mqrc10lJRJxsV2t4x5OTvJAIEslweVRLmt
-         7WrXAJlAYXdjKeOE/5Q0M41XWtTJobpY5wv0zI5qoTmJkHJwSHdF+qKkKwoJnhab6s
-         F/uYiomEphAYsJOuOfMZQaDebsk0vUsEjs4SJA8i29zMDx1n0LuULR8m49vjFHrdMI
-         TAKCv0QPp7+Gw==
-Date:   Thu, 20 Apr 2023 07:33:21 -0700
+        b=dOxG0MyNNl/0/Fron+tkqVcotSd8rWpX/zZc/8CDGVzd0kmsdGvegveGoDAmJiRSo
+         ZT7dxMox0G4j0SfH6B+VHJBL1y3II8ZET0H8FFpkzGiiUZPwRLHihGvmWcgUapL9vx
+         0Uppg1Sv3bmJtvinoXDYsE6NKv3/9BwHdW2o5AosZClSVmUrAd1O+dPwu/WkU/4S+U
+         ZqCNJgSqXnGSHDPQTw9VNL4PZOlbP2XRdiElyAS5O5fOdqWpis/IBfNUxsoKZxVvaE
+         3yAT50PaZ6CZ1h9uN/ao70P+7GSpYiAeJfdB/OjrKIe0nd9tIhjDeezmADoaOFCgDM
+         bPR3T/nXQ1fbA==
+Date:   Thu, 20 Apr 2023 07:35:47 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
 To:     Wang Jikai <wangjikai@hust.edu.cn>
 Cc:     Kalle Valo <kvalo@kernel.org>,
@@ -47,16 +47,16 @@ Cc:     Kalle Valo <kvalo@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/2] wifi: mt7601u: delete dead code checking debugfs
- returns
-Message-ID: <20230420073321.47dd0cfe@kernel.org>
-In-Reply-To: <20230420130815.8425-1-wangjikai@hust.edu.cn>
-References: <20230420130815.8425-1-wangjikai@hust.edu.cn>
+Subject: Re: [PATCH 2/2] wifi: mt7601u: remove debugfs directory on
+ disconnect
+Message-ID: <20230420073547.43e273e8@kernel.org>
+In-Reply-To: <20230420130924.8702-1-wangjikai@hust.edu.cn>
+References: <20230420130924.8702-1-wangjikai@hust.edu.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,18 +65,9 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 20 Apr 2023 13:08:14 +0000 Wang Jikai wrote:
-> Smatch reports that:
-> drivers/net/wireless/mediatek/mt7601u/debugfs.c:130
-> mt7601u_init_debugfs() warn: 'dir' is an error pointer or valid".
-> 
-> Debugfs code is not supposed to need error checking so instead of
-> changing this to if (IS_ERR()) the correct thing is to just delete
-> the dead code.
-> 
-> Fixes: c869f77d6abb ("add mt7601u driver")
+On Thu, 20 Apr 2023 13:09:24 +0000 Wang Jikai wrote:
+> Debugfs is created during device init but not removed.
+> Add a function mt7601u_remove_debugfs to remove debugfs
+> when the device disconnects.
 
-Don't add a Fixes tag on this cleanup.
-one - dead code is not a bug
-two - the semantics have changed since the driver was added
-      so it's certainly not the right Fixes tag
+No, the entire wiphy dir gets recursively removed.
