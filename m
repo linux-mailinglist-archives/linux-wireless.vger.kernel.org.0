@@ -2,278 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127F36E9521
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 14:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 669C46E953E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 15:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjDTM4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 08:56:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46692 "EHLO
+        id S230192AbjDTNBJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 09:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjDTM4y (ORCPT
+        with ESMTP id S230399AbjDTNBI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 08:56:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E876955A8
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 05:56:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85F7D64958
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 12:56:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8C3C433D2;
-        Thu, 20 Apr 2023 12:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681995410;
-        bh=str9SYcH0nLRDP5O/NapdErCeAH0OjdhB7kQfREcCho=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=vQ1UxvlFQQJbmaG4LO2uLq2z5dEY/5TxlS1VvFRn+fIVccuSScMwx7oY1WTZfvQ3Z
-         rOL+3kswcmZigwnTKLIK6ZD7QeNPamrVHu4bQuhI/Ao5XAIdK5XzQfDZGA8cnOkq8m
-         tgL5K4LK5c/RMle3Hj4aLyDJUNA4nRltrS3Bz6DjRXgZxbLqq0VvMPdcXbutTYZZoh
-         Wtyp89jbORogQjZTQyxIAsHpT95MgIyVeUHhcsIozD5nurBgxnQndI0T638zUD7T1G
-         i0amDX7xziFTs5IIE6ivLHJasfHuuY8genr13CYrSFmZDJ3ErJ4gCFJkN2mtFbSYP3
-         MX1TC8AkCfHyg==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 20 Apr 2023 09:01:08 -0400
+Received: from mx1.uni-rostock.de (mx1.uni-rostock.de [139.30.22.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0394A72BC
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 06:00:51 -0700 (PDT)
+DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmze; 
+ t=1681995649; bh=rc7f3eHH68lO2o9OBw5Uf7uK0dOhyJs7Z+EJUyodOmM=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=ed25519-sha256; b=
+ TZvxHJzV1u0InFyfVUcLW5TxAoY18LMCzz4pKuQgUkfdpjWF0L1WI48WOesRd0dPSe9vOjpw/LHTuMHtcKqXDg==
+DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmz; 
+ t=1681995649; bh=rc7f3eHH68lO2o9OBw5Uf7uK0dOhyJs7Z+EJUyodOmM=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=rsa-sha256; b=
+ dEvXdYz7Y1gfWMfYTlEjYILHsDWfYZBaPaz1kZ99pUfqnyXhebT5n4u2JwhMTTUucmeEZEcNFOkaKiwG2cTjF7Trc6sWzhxas5K1MrQjnBOaHz718iu8pPDagyWh3pkDB7etslUkv67ByXwF0gv4ZiMxhkJ0AhFLBNtneaBA36E=
+Received: from 139.30.22.84 by mx1.uni-rostock.de (Tls12, Aes256, Sha384,
+ DiffieHellmanEllipticKey384); Thu, 20 Apr 2023 13:00:49 GMT
+Received: from [139.30.201.34] (139.30.201.34) by mail1.uni-rostock.de
+ (139.30.22.84) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Thu, 20 Apr
+ 2023 15:00:47 +0200
+Message-ID: <4f0efc62-0ca5-fe85-fdd8-9beca7ff94d7@uni-rostock.de>
+Date:   Thu, 20 Apr 2023 15:00:54 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: pull request: mt76 2023-04-18 v2
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <5df957fd-e67a-3549-8c78-1b4599365b7c@nbd.name>
-References: <5df957fd-e67a-3549-8c78-1b4599365b7c@nbd.name>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168199540522.31131.16976755016088538294.kvalo@kernel.org>
-Date:   Thu, 20 Apr 2023 12:56:50 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v1] wifi: mac80211: Initialize EWMA fail avg to 1
+Content-Language: de-DE
+To:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Karthik M <quic_karm@quicinc.com>
+CC:     <linux-wireless@vger.kernel.org>,
+        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+References: <20230417100258.22965-1-quic_karm@quicinc.com>
+ <bc1903aa09391667262aeadf1859600579f0a9f1.camel@sipsolutions.net>
+ <50a76761-5be3-8ea7-c2f3-a14c158aa039@uni-rostock.de>
+ <e4dd26fa53ad2535f5a20be63a4b294d99306ffb.camel@sipsolutions.net>
+ <6d97d1f3-9f77-a1c3-68b5-83065c87b4ba@nbd.name>
+From:   Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
+Organization: =?UTF-8?Q?Universit=c3=a4t_Rostock?=
+In-Reply-To: <6d97d1f3-9f77-a1c3-68b5-83065c87b4ba@nbd.name>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Originating-IP: [139.30.201.34]
+X-ClientProxiedBy: EMAIL2.uni-rostock.de (139.30.22.82) To
+ mail1.uni-rostock.de (139.30.22.84)
+X-TM-SNTS-SMTP: BF481CF5BAA9850C82F4D28B023BCDBC09597E19397B1A960C97A89763ABE2062000:8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> wrote:
+Am 20.04.2023 um 14:22 schrieb Felix Fietkau:
+> On 20.04.23 12:27, Johannes Berg wrote:
+>> On Thu, 2023-04-20 at 11:30 +0200, Benjamin Beichler wrote:
+>>> > To me, basically, I see two ways to solve this:
+>>> >
+>>> > 1) we have DECLARE=5FEWMA=5FZERO=5FVALID() or something like that which
+>>> >=C2=A0=C2=A0=C2=A0=C2=A0 *doesn't* treat 0 as an uninitialized value, and=
+ either has a
+>>> >=C2=A0=C2=A0=C2=A0=C2=A0 separate "not initialized yet" bit (but that's i=
+ffy storage 
+>>> wise),
+>>> >=C2=A0=C2=A0=C2=A0=C2=A0 or simply has another argument to =5Finit() for =
+the initial 
+>>> value or
+>>> >=C2=A0=C2=A0=C2=A0=C2=A0 so.
+>>> >
+>>> > 2) you don't just don't use 0 and 100 but say 1 and 100, that 
+>>> results in
+>>> >=C2=A0=C2=A0=C2=A0=C2=A0 basically the same behaviour, but avoids the spe=
+cial 0.
+>>> >
+>>> > johannes
+>>>
+>>> I also ran into that problem in the past, and reviewing it again with a
+>>> college, I think, this is a real bug in the EWMA implementation. I try
+>>> to provide a proper patch in the next days, but actually the EWMA
+>>> handles the internal value zero, always like in the initialization,
+>>> which is wrong, e.g., for positive/negative averaged values.
+>>
+>> Yes, it's always wrong as long as you feed it something zero, or values
+>> with different sign.
+>>
+>> For a lot of use cases, however, that doesn't matter. Originally, it was
+>> used e.g. for signal strength averaging, average packet lengths, etc.
+>> where it really doesn't matter since you can never use 0 or values that
+>> have different sign.
+>>
+>>> A quick research shows, this bug is since the first implementation of
+>>> the ewma in the code ...
+>>>
+>>
+>> Yeah, I'm aware of that, I was around for it ;-)
+>>
+>> But see above, I'm not sure I'd even call it a bug, at least not
+>> originally with the users that we had intended.
+>>
+>> Hence I don't know if it's really good to fix this in general - for many
+>> of these cases zero can still be treated specially (and like I mentioned
+>> in my previous email, we can even here avoid 0), and then we don't spend
+>> an extra byte (or likely 4) to hold a "first time" flag.
+>>
+>> Dunno. Maybe it's not worth thinking about the extra memory space vs.
+>> the extra maintenance cost. But maybe at least on 64-bit we could steal
+>> a bit from the unsigned long=3F Not sure what all the users are..
+> We don't actually need a full bit. We can just add 1 to the internal
+> value for initialized values. How about this (completely untested):
+> https://nbd.name/p/69b00c5b
+>
+Nice hack, but even a bit more dirty than before :-D
 
-> Hi Kalle,
-> 
-> here's an updated version of my first request for 6.4.
-> It fixes an unused-but-set variable
-> 
+I think being more explicit, does not hurt here.
+
+Maybe we could rename it ewma=5F*=5Fadd=5For=5Finit and do a separate function=
+ 
+with ewma=5F*=5Fadd. Since it is inlined, there will be no significant text 
+size increase (except a driver uses both functions).
+
+
 > - Felix
-> 
-> The following changes since commit f22c0bffe8d9528ace89a853c6065b79dcb88c43:
-> 
->    wifi: rtw89: add support of concurrent mode (2023-04-17 12:49:52 +0300)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/nbd168/wireless tags/mt76-for-kvalo-2023-04-18
-> 
-> for you to fetch changes up to 3b522cadedfe6e9e0e8193d7d4ab5aa8d0c73209:
-> 
->    wifi: mt76: mt7996: fill txd by host driver (2023-04-19 10:09:43 +0200)
-> 
-> ----------------------------------------------------------------
-> mt76 patches for 6.4
-> 
-> - fixes
-> - connac code unification
-> - mt7921 p2p support
-> - mt7996 mesh a-msdu support
-> - mt7996 eht support
-> - mt7996 coredump support
-> 
-> ----------------------------------------------------------------
-> Bo Jiao (1):
->        wifi: mt76: mt7996: enable full system reset support
-> 
-> Dan Carpenter (1):
->        wifi: mt76: mt7915: unlock on error in mt7915_thermal_temp_store()
-> 
-> Deren Wu (3):
->        wifi: mt76: remove redundent MCU_UNI_CMD_* definitions
->        wifi: mt76: mt7921: fix wrong command to set STA channel
->        wifi: mt76: mt7921: fix PCI DMA hang after reboot
-> 
-> Felix Fietkau (4):
->        wifi: mt76: add missing locking to protect against concurrent rx/status calls
->        wifi: mt76: mt7615: increase eeprom size for mt7663
->        wifi: mt76: dma: use napi_build_skb
->        wifi: mt76: set NL80211_EXT_FEATURE_CAN_REPLACE_PTK0 on supported drivers
-> 
-> Frank Wunderlich (1):
->        dt-bindings: mt76: add active-low property for led
-> 
-> Gustavo A. R. Silva (2):
->        wifi: mt76: Replace zero-length array with flexible-array member
->        wifi: mt76: mt7921: Replace fake flex-arrays with flexible-array members
-> 
-> Howard Hsu (1):
->        wifi: mt76: mt7915: rework init flow in mt7915_thermal_init()
-> 
-> Jiefeng Li (1):
->        wifi: mt76: mt7921: fix missing unwind goto in `mt7921u_probe`
-> 
-> Kang Chen (1):
->        wifi: mt76: handle failure of vzalloc in mt7615_coredump_work
-> 
-> Lorenz Brun (1):
->        wifi: mt76: mt7915: expose device tree match table
-> 
-> Lorenzo Bianconi (8):
->        wifi: mt76: mt7921: introduce mt7921_get_mac80211_ops utility routine
->        wifi: mt76: move irq_tasklet in mt76_dev struct
->        wifi: mt76: add mt76_connac_irq_enable utility routine
->        wifi: mt76: get rid of unused sta_ps callbacks
->        wifi: mt76: add mt76_connac_gen_ppe_thresh utility routine
->        wifi: mt76: mt7921: get rid of eeprom.h
->        wifi: mt76: move shared mac definitions in mt76_connac2_mac.h
->        wifi: mt76: move mcu_uni_event and mcu_reg_event in common code
-> 
-> Mario Limonciello (1):
->        wifi: mt76: mt7921e: Set memory space enable in PCI_COMMAND if unset
-> 
-> Ming Yen Hsieh (1):
->        wifi: mt76: fix 6GHz high channel not be scanned
-> 
-> Neil Chen (1):
->        wifi: mt76: mt7921: use driver flags rather than mac80211 flags to mcu
-> 
-> Peter Chiu (4):
->        wifi: mt76: drop the incorrect scatter and gather frame
->        wifi: mt76: mt7996: fix pointer calculation in ie countdown event
->        wifi: mt76: mt7996: init mpdu density cap
->        wifi: mt76: mt7996: remove mt7996_mcu_set_pm()
-> 
-> Quan Zhou (3):
->        wifi: mt76: mt7921e: fix probe timeout after reboot
->        wifi: mt76: mt7921e: improve reliability of dma reset
->        wifi: mt76: mt7921e: stop chip reset worker in unregister hook
-> 
-> Reese Russell (1):
->        wifi: mt76: mt7921: add Netgear AXE3000 (A8000) support
-> 
-> Ryder Lee (15):
->        wifi: mt76: mt7996: fix radiotap bitfield
->        wifi: mt76: dynamic channel bandwidth changes in AP mode
->        wifi: mt76: connac: refresh tx session timer for WED device
->        wifi: mt76: mt7915: remove mt7915_mcu_beacon_check_caps()
->        wifi: mt76: mt7996: remove mt7996_mcu_beacon_check_caps()
->        wifi: mt76: mt7915: drop redundant prefix of mt7915_txpower_puts()
->        wifi: mt76: mt7996: add full system reset knobs into debugfs
->        wifi: mt76: mt7996: enable coredump support
->        wifi: mt76: connac: fix txd multicast rate setting
->        wifi: mt76: connac: add nss calculation into mt76_connac2_mac_tx_rate_val()
->        wifi: mt76: mt7996: enable BSS_CHANGED_BASIC_RATES support
->        wifi: mt76: mt7996: enable BSS_CHANGED_MCAST_RATE support
->        wifi: mt76: mt7996: enable configured beacon tx rate
->        wifi: mt76: mt7996: enable mesh HW amsdu/de-amsdu support
->        wifi: mt76: mt7996: fill txd by host driver
-> 
-> Sean Wang (2):
->        wifi: mt76: mt7921: enable p2p support
->        mt76: mt7921: fix kernel panic by accessing unallocated eeprom.data
-> 
-> Shayne Chen (3):
->        wifi: mt76: mt7996: add eht rx rate support
->        wifi: mt76: mt7996: let non-bufferable MMPDUs use correct hw queue
->        wifi: mt76: mt7996: remove unused eeprom band selection
-> 
-> StanleyYP Wang (1):
->        wifi: mt76: mt7996: fix eeprom tx path bitfields
-> 
-> Sujuan Chen (1):
->        wifi: mt76: mt7915: add dev->hif2 support for mt7916 WED device
-> 
-> Yang Li (1):
->        wifi: mt76: mt7996: Remove unneeded semicolon
-> 
->   Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml |   5 ++
->   drivers/net/wireless/mediatek/mt76/dma.c                          |  10 ++-
->   drivers/net/wireless/mediatek/mt76/dma.h                          |   1 +
->   drivers/net/wireless/mediatek/mt76/mac80211.c                     |  17 +++--
->   drivers/net/wireless/mediatek/mt76/mt76.h                         |  19 +++--
->   drivers/net/wireless/mediatek/mt76/mt7603/mac.c                   |   5 +-
->   drivers/net/wireless/mediatek/mt76/mt7615/dma.c                   |   5 +-
->   drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c                |   7 +-
->   drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h                |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7615/init.c                  |   1 +
->   drivers/net/wireless/mediatek/mt76/mt7615/mac.c                   |  18 ++---
->   drivers/net/wireless/mediatek/mt76/mt7615/mac.h                   |  12 ----
->   drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                   |  11 +--
->   drivers/net/wireless/mediatek/mt76/mt7615/mcu.h                   |  11 ---
->   drivers/net/wireless/mediatek/mt76/mt7615/mmio.c                  |  11 ++-
->   drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h                |  11 +--
->   drivers/net/wireless/mediatek/mt76/mt7615/pci.c                   |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c              |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7615/sdio.c                  |   1 -
->   drivers/net/wireless/mediatek/mt76/mt7615/usb.c                   |   1 -
->   drivers/net/wireless/mediatek/mt76/mt76_connac.h                  |  21 ++++++
->   drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h             |  22 ++++++
->   drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c              |  78 +++++++++++++++-----
->   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c              |  21 ++++--
->   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h              |  19 +++--
->   drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                  |   5 +-
->   drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c               |  36 +++++-----
->   drivers/net/wireless/mediatek/mt76/mt7915/dma.c                   |  10 ++-
->   drivers/net/wireless/mediatek/mt76/mt7915/init.c                  |  35 +++------
->   drivers/net/wireless/mediatek/mt76/mt7915/mac.c                   |   6 +-
->   drivers/net/wireless/mediatek/mt76/mt7915/mac.h                   |  33 +--------
->   drivers/net/wireless/mediatek/mt76/mt7915/main.c                  |   1 -
->   drivers/net/wireless/mediatek/mt76/mt7915/mcu.c                   | 115 +++++-------------------------
->   drivers/net/wireless/mediatek/mt76/mt7915/mmio.c                  |  17 +++--
->   drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h                |  18 +----
->   drivers/net/wireless/mediatek/mt76/mt7915/soc.c                   |   2 +
->   drivers/net/wireless/mediatek/mt76/mt7921/acpi_sar.h              |  10 +--
->   drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c               |   1 -
->   drivers/net/wireless/mediatek/mt76/mt7921/dma.c                   |  50 +++++++------
->   drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h                |  30 --------
->   drivers/net/wireless/mediatek/mt76/mt7921/init.c                  |  43 +++++++++--
->   drivers/net/wireless/mediatek/mt76/mt7921/mac.c                   |  18 +++--
->   drivers/net/wireless/mediatek/mt76/mt7921/mac.h                   |  53 --------------
->   drivers/net/wireless/mediatek/mt76/mt7921/main.c                  |  42 +++++------
->   drivers/net/wireless/mediatek/mt76/mt7921/mcu.c                   |  31 ++------
->   drivers/net/wireless/mediatek/mt76/mt7921/mcu.h                   |  11 ---
->   drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h                |  23 +++---
->   drivers/net/wireless/mediatek/mt76/mt7921/pci.c                   |  64 ++++++-----------
->   drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c               |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7921/sdio.c                  |  23 +-----
->   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c              |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c              |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7921/usb.c                   |  27 ++-----
->   drivers/net/wireless/mediatek/mt76/mt7921/usb_mac.c               |   2 +-
->   drivers/net/wireless/mediatek/mt76/mt7996/Kconfig                 |   1 +
->   drivers/net/wireless/mediatek/mt76/mt7996/Makefile                |   2 +
->   drivers/net/wireless/mediatek/mt76/mt7996/coredump.c              | 268 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->   drivers/net/wireless/mediatek/mt76/mt7996/coredump.h              |  97 +++++++++++++++++++++++++
->   drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c               | 149 +++++++++++++++++++++++++++++++++++----
->   drivers/net/wireless/mediatek/mt76/mt7996/dma.c                   |  64 +++++++++++++++++
->   drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c                |   4 --
->   drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h                |   9 ++-
->   drivers/net/wireless/mediatek/mt76/mt7996/init.c                  |  72 +++++++++++--------
->   drivers/net/wireless/mediatek/mt76/mt7996/mac.c                   | 501 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------
->   drivers/net/wireless/mediatek/mt76/mt7996/mac.h                   |  62 ++++++----------
->   drivers/net/wireless/mediatek/mt76/mt7996/main.c                  |  78 ++++++++++++++++----
->   drivers/net/wireless/mediatek/mt76/mt7996/mcu.c                   | 222 +++++++++++++++++----------------------------------------
->   drivers/net/wireless/mediatek/mt76/mt7996/mcu.h                   |  30 ++++----
->   drivers/net/wireless/mediatek/mt76/mt7996/mmio.c                  |  23 +++---
->   drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h                |  76 ++++++++++++++------
->   drivers/net/wireless/mediatek/mt76/mt7996/regs.h                  |  51 +++++++++++++-
->   drivers/net/wireless/mediatek/mt76/tx.c                           |   4 ++
->   72 files changed, 1710 insertions(+), 1028 deletions(-)
->   delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/eeprom.h
->   delete mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.h
->   create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
->   create mode 100644 drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
-
-Pulled, thanks.
-
-d2a158d113cb Merge tag 'mt76-for-kvalo-2023-04-18' of https://github.com/nbd168/wireless
+>
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/5df957fd-e67a-3549-8c78-1b4599365b7c@nbd.name/
+M.Sc. Benjamin Beichler
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Universit=C3=A4t Rostock, Fakult=C3=A4t f=C3=BCr Informatik und Elektrotechnik
+Institut f=C3=BCr Angewandte Mikroelektronik und Datentechnik
 
+University of Rostock, Department of CS and EE
+Institute of Applied Microelectronics and CE
+
+Albert-Einstein-Str. 26
+18059 Rostock
+Deutschland/Germany
+
+phone: +49 (0) 381 498 - 7278
+email: Benjamin.Beichler@uni-rostock.de
+www: http://www.imd.uni-rostock.de/
