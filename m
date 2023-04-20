@@ -2,189 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42496E9B93
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 20:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E265A6E9C76
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 21:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbjDTS1p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 14:27:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41562 "EHLO
+        id S232019AbjDTT2t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 15:28:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229709AbjDTS1o (ORCPT
+        with ESMTP id S232012AbjDTT2r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 14:27:44 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 648B630E3
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 11:27:42 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1ppZ0O-0001vs-0w; Thu, 20 Apr 2023 20:27:40 +0200
-Message-ID: <fc39889a-1353-c023-32a7-15bfdbc4176e@leemhuis.info>
-Date:   Thu, 20 Apr 2023 20:27:39 +0200
+        Thu, 20 Apr 2023 15:28:47 -0400
+X-Greylist: delayed 151 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 12:28:44 PDT
+Received: from resqmta-h1p-028596.sys.comcast.net (resqmta-h1p-028596.sys.comcast.net [IPv6:2001:558:fd02:2446::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6CFF40E5
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 12:28:44 -0700 (PDT)
+Received: from resomta-h1p-028516.sys.comcast.net ([96.102.179.207])
+        by resqmta-h1p-028596.sys.comcast.net with ESMTP
+        id pU8MpcmqXHswQpZv1pnw7c; Thu, 20 Apr 2023 19:26:11 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=comcastmailservice.net; s=20211018a; t=1682018771;
+        bh=1DP3ECCIZRxMH/ilBqU9PIR5cGFHw51ic0tdsG11mCY=;
+        h=Received:Received:From:To:Subject:Date:Message-Id:MIME-Version:
+         Xfinity-Spam-Result;
+        b=MD6jcyNjABpcc5YHdnE7dmfUIK3bLRPq14Rnevx1TskFh80kmh1nta2lJ8//KpmkV
+         SJd0QAZ3h3EurZfRvnlkjmeJGmPSyGxwsbOD875AZRkzOzm+kX4Mi0zMSVc/cIQSbd
+         HeN8r2fAYYCbwQAm4l/k05oyypnS0AI05G4XATBXPVuN70sHxQbShKqZAWGu68ceyl
+         AMUyh8I163Mj+B1/l8YCy3CpRMBKDrrw4IXAPL5/8m5fXQ1Ki/wxxnVrI/GHqzQ3DL
+         4PtqUiATyCTLaabZymNu66Gv/g7kAskJF+PEM6M2yiSD32CMDqx/yz+qW0WLjwJz5r
+         2vCIIeZ1ckrCg==
+Received: from Crushinator.home.mattwhitlock.com
+ ([IPv6:2601:18c:9082:afd:219:d1ff:fe75:dc2f])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 256/256 bits)
+        (Client did not present a certificate)
+        by resomta-h1p-028516.sys.comcast.net with ESMTPSA
+        id pZudpRnagwRIepZufpF7f3; Thu, 20 Apr 2023 19:25:50 +0000
+X-Xfinity-VMeta: sc=0.00;st=legit
+From:   Matt Whitlock <kernel@mattwhitlock.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Matt Whitlock <kernel@mattwhitlock.name>
+Subject: [PATCH] mt76: mt7921: don't assume adequate headroom for SDIO headers
+Date:   Thu, 20 Apr 2023 15:24:51 -0400
+Message-Id: <20230420192451.28814-1-kernel@mattwhitlock.name>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH] wifi: ath9k: Don't mark channelmap stack variable
- read-only in ath9k_mci_update_wlan_channels()
-Content-Language: en-US, de-DE
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-wireless@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <20230413214118.153781-1-toke@toke.dk> <87v8hysrzx.fsf@kernel.org>
- <87bkjqzrdm.fsf@toke.dk> <87edom7i6i.fsf@kernel.org> <877cu9wl7r.fsf@toke.dk>
- <87zg74v5cy.fsf@kernel.org>
- <f4939cb3-bc01-c9e1-aac9-2adb554bc3c4@leemhuis.info> <87edoetyve.fsf@toke.dk>
- <20230420075027.6852197a@kernel.org>
- <04d69168-8ead-84fb-a411-fa781502cceb@leemhuis.info>
- <20230420095506.671a8e34@kernel.org>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230420095506.671a8e34@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1682015262;fd65deb4;
-X-HE-SMSGID: 1ppZ0O-0001vs-0w
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing Linus: there are two things near the end of this mail where we're
-wondering how you feel about them]
+mt7921_usb_sdio_tx_prepare_skb() calls mt7921_usb_sdio_write_txwi() and
+mt7921_skb_add_usb_sdio_hdr(), both of which blindly assume that
+adequate headroom will be available in the passed skb. This assumption
+typically is satisfied when the skb was allocated in the net core for
+transmission via the mt7921 netdev (although even that is only an
+optimization and is not strictly guaranteed), but the assumption is
+sometimes not satisfied when the skb originated in the receive path of
+another netdev and was passed through to the mt7921, such as by the
+bridge layer. Blindly prepending bytes to an skb is always wrong.
 
-On 20.04.23 18:55, Jakub Kicinski wrote:
-> On Thu, 20 Apr 2023 17:59:49 +0200 Thorsten Leemhuis wrote:
->>> Out of curiosity, Thorsten, do you have stats on "how long does it take
->>> fixes to reach Linus" per tree? Stats get people to act much quicker
->>> than pleas, just sayin' ;)  
->>
->> I know, I know... :-( Nevertheless thx for the reminder. :-D
->>
->> I really wish that I had some, but right now the data I have in regzbot
->> is too messy and not a good base to generate such stats, as they would
->> likely be misleading (that's the long story short).
->>
->> I once had the rough plan to approach this differently by looking at all
->> commits that ended up in the first big batches of stable updates (e.g.
->> releases like 6.0.3 with many hundreds of changes). I wanted to filter
->> out the regression fixes and then (1)look how long it took from posting
->> the fix till it was mainlined and (2)backported to stable. But there
->> afaics is no good way to automate the first part of the job: filtering
->> out fixes for regressions that actually bothered someone and might or
->> might not have been tracked by regzbot (the "might not" share might be
->> the bigger one, which is part of the valid stats problem indicated above).
-> 
-> I wouldn't bother with the patches you didn't track in regzbot.
-> This probably depends on how various people apply / maintain their
-> patches (sigh) but for networking (and anything else that's pretty 
-> pure git management) author date of the commit should give you the
-> time when patch was posted.
+This commit introduces a call to skb_cow_head() before the call to
+mt7921_usb_sdio_write_txwi() in mt7921_usb_sdio_tx_prepare_skb() to
+ensure that at least MT_SDIO_TXD_SIZE + MT_SDIO_HDR_SIZE bytes can be
+pushed onto the skb.
 
-Unless the patch went through several revisions during review. But
-that's just a detail.
+Without this fix, I can trivially cause kernel panics by bridging an
+MT7921AU-based USB 802.11ax interface with an Ethernet interface on an
+Intel Atom-based x86 system using its onboard RTL8169 PCI Ethernet
+adapter and also on an ARM-based Raspberry Pi 1 using its onboard
+SMSC9512 USB Ethernet adapter. Note that the panics do not occur in
+every system configuration, as they occur only if the receiving netdev
+leaves less headroom in its received skbs than the mt7921 needs for its
+SDIO headers.
 
-> So we could go regzbot report date -> author date in upstream -> commit
-> date in stable potentially without much coding.
->
-> Going to Linus's tree vs stable should also be possible. Chris Mason
-> has showed me once a git incantation which finds the merge commit in
-> Linus's tree at which a given patch has arrived.. but I lost it.
+Here is an example stack trace of this panic on Raspberry Pi OS Lite
+2023-02-21 running kernel 6.1.24+ [1]:
 
-I have something ugly for that (I needed a python variant of this
-somewhere in regzbot):
+ skb_panic from skb_push+0x44/0x48
+ skb_push from mt7921_usb_sdio_tx_prepare_skb+0xd4/0x190 [mt7921_common]
+ mt7921_usb_sdio_tx_prepare_skb [mt7921_common] from mt76u_tx_queue_skb+0x94/0x1d0 [mt76_usb]
+ mt76u_tx_queue_skb [mt76_usb] from __mt76_tx_queue_skb+0x4c/0xc8 [mt76]
+ __mt76_tx_queue_skb [mt76] from mt76_txq_schedule.part.0+0x13c/0x398 [mt76]
+ mt76_txq_schedule.part.0 [mt76] from mt76_txq_schedule_all+0x24/0x30 [mt76]
+ mt76_txq_schedule_all [mt76] from mt7921_tx_worker+0x58/0xf4 [mt7921_common]
+ mt7921_tx_worker [mt7921_common] from __mt76_worker_fn+0x9c/0xec [mt76]
+ __mt76_worker_fn [mt76] from kthread+0xbc/0xe0
+ kthread from ret_from_fork+0x14/0x34
 
-commit=91dcf1e80;
-branch=origin/master;
-git show $(git rev-list "${commit}".."${branch}" --ancestry-path |
-grep -f <(git rev-list "${commit}".."${branch}" --first-parent) |
-tail -1)
+After this fix, bridging the mt7921 interface works fine on both of my
+previously problematic systems.
 
-[note: this will fail for any changes Linus committed directly to mainline]
+[1] https://github.com/raspberrypi/firmware/tree/5c276f55a4b21345cd4d6200a504ee991851ff7a
 
->>>> I'm OK with doing it that way; I'll do so later tonight unless Kalle or
->>>> Jakub complains before then...  
->>>
->>> Ah, just after our last(?) 6.3 PR was submitted :(
->>> No objections to you posting this directly to Linus...
->>>
->>> That said it is a 6.2 regression AFAICT so it's not exactly in the
->>> "must be fixed in 6.3" category.  
->>
->> Out of curiosity (really, it's not meant as a rhetorical device, I'm
->> trying to understand this point of view):
->>
->> Why do you think that? And should it really be like that?
->>
->> Sure, if it was an old problem (say from 5.18) that was only recently
->> found I'd agree, especially if the fix might have a more than average
->> risk of causing other trouble. But shouldn't we care about regressions
->> that were found shortly after a release (e.g. 6.2 in this case) at least
->> as much (or maybe even more?) as we care about those found during the
->> weeks preceding it?
->>
->> FWIW, it's not the first time I hear a statement like that and every
->> time I wonder how Linus thinks about this. But whatever, not going to CC
->> him for that.
-> 
-> I'm a but curious what Linus would think, too.
+Fixes: https://github.com/openwrt/openwrt/issues/11796
+Signed-off-by: Matt Whitlock <kernel@mattwhitlock.name>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-:-)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index dd1a241c45d6..72cd90829280 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1651,6 +1651,10 @@ int mt7921_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	if (unlikely(tx_info->skb->len <= ETH_HLEN))
+ 		return -EINVAL;
+ 
++	err = skb_cow_head(skb, MT_SDIO_TXD_SIZE + MT_SDIO_HDR_SIZE);
++	if (err)
++		return err;
++
+ 	if (!wcid)
+ 		wcid = &dev->mt76.global_wcid;
+ 
+-- 
+2.40.0
 
-I CCed Linus now, as another question for him came up below. With a bit
-of luck he'll share his view on these matters. And if not I'm pretty
-sure we'll all live happily ever after, too. :-D
-
-> Just to be clear the assumption I operate on is that all regressions
-> are important to fix within reasonable time frame. The question is
-> whether it matters for this regression that we're close to final.
-> Whether we should engage extraordinary means to get the fix in before
-> final is cut.
-
-Well, the risk obviously is a factor here, especially during a potential
-release week (like the one we're in); but I don't think the risk
-evaluation for "fixes for regressions introduced in the previous cycle"
-and "fixes for regressions introduced this cycle" should be much
-different. But that's see what Linus thinks about this.
-
-> If it was a 6.3 regression we should try as hard as we can to fix it
-> in final (e.g. the mlx5 regression), if it's in 6.2 already - the extra
-> week 
-
-Well, yes, in the ideal case it is just a week. But at this point of the
-devel cycle a one week delay in mainlining can easily result in a two
-week delay till the fix reaches users through the stable trees. To explain:
-
-* Assume this fix (posted one week ago) is not merged this week and
-Linus releases 6.3 on Sunday; assume further the fix then will go to
-mainline during the merge window (e.g. the one week delay scenario). If
-that happens during the first or second week of the merge window doesn't
-even matter much, as Greg apparently often waits till after -rc1 is
-released before be starts backporting most fixes. And that's where the
-extra week comes from. We of course could avoid this by bothering Greg
-to pick up the fix once it reached mainline; but then it might be better
-to bother Linus in the first place to merge is this week.
-
-Not to mention that there would have been another week of delay, if (a)
-I had not spoken up in this thread and (b) we get a rc8. But we afaics
-avoided that scenario already with the plan to merge the fix next week
-through the -net tree in case we get a rc8.
-
-> of waiting may not be worth skipping trees and bothering Linus.
-
-Linus, to you feel bothered by an occational additional pull request or
-a mail asking you to pick up a patch directly from the list?
-
-> IOW for older regressions there's only the question of whether the fix
-> is in upstream in a reasonable time. It doesn't matter as much which
-> particular tag it hits.
-
-Ciao, Thorsten
