@@ -2,126 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C10EA6E959D
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 15:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F44E6E964A
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 15:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbjDTNQC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 09:16:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S231672AbjDTNuf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 09:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229811AbjDTNQB (ORCPT
+        with ESMTP id S231732AbjDTNu2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 09:16:01 -0400
-Received: from nbd.name (nbd.name [46.4.11.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A2D270E
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 06:15:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-        s=20160729; h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:
-        Mime-Version:From:Content-Transfer-Encoding:Content-Type:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=kXFnjDYK7gWVoksmPYs99aYNRzc25o0pHI/JaY9LFRY=; b=tzQLJefYPnmiqTwlTgmDm3Qpvt
-        nCoDdM4smuUuc6Fce1at/F6q85vBAx4skUJxXCdP4Ug65znx0ny+UTvStoG5+AIrv578sZtSd0dLv
-        /8rh+gtZ2seXTm/73pHQhVpkxK2iwU5VE41WNlKXrbUDQdUl/QPEXzmPWz2I0Wg36Owk=;
-Received: from [2a01:598:b1a2:f936:a9ac:34e4:49fa:2af] (helo=smtpclient.apple)
-        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <nbd@nbd.name>)
-        id 1ppU8h-00GfPu-Aw; Thu, 20 Apr 2023 15:15:55 +0200
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   Felix Fietkau <nbd@nbd.name>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v1] wifi: mac80211: Initialize EWMA fail avg to 1
-Date:   Thu, 20 Apr 2023 15:15:44 +0200
-Message-Id: <04A41274-08B2-4473-AFD0-7D91D3850F4B@nbd.name>
-References: <4f0efc62-0ca5-fe85-fdd8-9beca7ff94d7@uni-rostock.de>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Karthik M <quic_karm@quicinc.com>,
+        Thu, 20 Apr 2023 09:50:28 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA50E35BB
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 06:50:26 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1ppUg4-0004pQ-QH; Thu, 20 Apr 2023 15:50:24 +0200
+Message-ID: <f4939cb3-bc01-c9e1-aac9-2adb554bc3c4@leemhuis.info>
+Date:   Thu, 20 Apr 2023 15:50:22 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH] wifi: ath9k: Don't mark channelmap stack variable
+ read-only in ath9k_mci_update_wlan_channels()
+Content-Language: en-US, de-DE
+To:     Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgense?= =?UTF-8?Q?n?= 
+        <toke@toke.dk>
+Cc:     Colin Ian King <colin.i.king@gmail.com>,
         linux-wireless@vger.kernel.org,
-        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-In-Reply-To: <4f0efc62-0ca5-fe85-fdd8-9beca7ff94d7@uni-rostock.de>
-To:     Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
-X-Mailer: iPhone Mail (20E252)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+References: <20230413214118.153781-1-toke@toke.dk> <87v8hysrzx.fsf@kernel.org>
+ <87bkjqzrdm.fsf@toke.dk> <87edom7i6i.fsf@kernel.org> <877cu9wl7r.fsf@toke.dk>
+ <87zg74v5cy.fsf@kernel.org>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <87zg74v5cy.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1681998626;3e067542;
+X-HE-SMSGID: 1ppUg4-0004pQ-QH
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+[CCing Jakub, Greg and the regressions list]
 
+On 19.04.23 06:54, Kalle Valo wrote:
+> Toke Høiland-Jørgensen <toke@toke.dk> writes:
+> 
+>>>> Anyway, cf the bugzilla
 
-> On 20. Apr 2023, at 15:00, Benjamin Beichler <Benjamin.Beichler@uni-rostoc=
-k.de> wrote:
->=20
-> =EF=BB=BFAm 20.04.2023 um 14:22 schrieb Felix Fietkau:
->>> On 20.04.23 12:27, Johannes Berg wrote:
->>> On Thu, 2023-04-20 at 11:30 +0200, Benjamin Beichler wrote:
->>>> > To me, basically, I see two ways to solve this:
->>>> >
->>>> > 1) we have DECLARE_EWMA_ZERO_VALID() or something like that which
->>>> >     *doesn't* treat 0 as an uninitialized value, and either has a
->>>> >     separate "not initialized yet" bit (but that's iffy storage wise)=
-,
->>>> >     or simply has another argument to _init() for the initial value o=
-r
->>>> >     so.
->>>> >
->>>> > 2) you don't just don't use 0 and 100 but say 1 and 100, that results=
- in
->>>> >     basically the same behaviour, but avoids the special 0.
->>>> >
->>>> > johannes
->>>>=20
->>>> I also ran into that problem in the past, and reviewing it again with a=
+[FWIW, it's this ticket Toke meant:
+https://bugzilla.kernel.org/show_bug.cgi?id=217286 ]
 
->>>> college, I think, this is a real bug in the EWMA implementation. I try
->>>> to provide a proper patch in the next days, but actually the EWMA
->>>> handles the internal value zero, always like in the initialization,
->>>> which is wrong, e.g., for positive/negative averaged values.
->>>=20
->>> Yes, it's always wrong as long as you feed it something zero, or values
->>> with different sign.
->>>=20
->>> For a lot of use cases, however, that doesn't matter. Originally, it was=
+>>>> this was a pretty bad regression for 6.2, so
+>>>> would be good to move this along reasonably quickly (although I guess we
+>>>> just missed the -net PR for rc7)...
+>>>
+>>> I'm not planning to send anymore stuff to v6.3 so my plan is to take
+>>> this to -next. The merge window is very close anyway so this shouldn't
+>>> cause too much delay.
+>>
+>> Hmm, okay, a bit unfortunate that we'll ship 6.3 with the same bug
+> 
+> Yeah, it is unfortunate.
 
->>> used e.g. for signal strength averaging, average packet lengths, etc.
->>> where it really doesn't matter since you can never use 0 or values that
->>> have different sign.
->>>=20
->>>> A quick research shows, this bug is since the first implementation of
->>>> the ewma in the code ...
->>>>=20
->>>=20
->>> Yeah, I'm aware of that, I was around for it ;-)
->>>=20
->>> But see above, I'm not sure I'd even call it a bug, at least not
->>> originally with the users that we had intended.
->>>=20
->>> Hence I don't know if it's really good to fix this in general - for many=
+Agreed.
 
->>> of these cases zero can still be treated specially (and like I mentioned=
+> But it is always a question of time :) To save
+> time I usually try to send two wireless tree pull requests per cycle,
+> one early in the cycle and the second around the middle.
 
->>> in my previous email, we can even here avoid 0), and then we don't spend=
+Why not ask Linus to pull this directly from the list then? He doesn't
+mind doing that for an occasional regression fix. And then he can decide
+himself if the change is worth the risk -- and obviously can take into
+account if he'll release and rc8 or not.
 
->>> an extra byte (or likely 4) to hold a "first time" flag.
->>>=20
->>> Dunno. Maybe it's not worth thinking about the extra memory space vs.
->>> the extra maintenance cost. But maybe at least on 64-bit we could steal
->>> a bit from the unsigned long? Not sure what all the users are..
->> We don't actually need a full bit. We can just add 1 to the internal
->> value for initialized values. How about this (completely untested):
->> https://nbd.name/p/69b00c5b
->>=20
-> Nice hack, but even a bit more dirty than before :-D
+That's why Documentation/process/handling-regressions.rst
+(https://docs.kernel.org/process/handling-regressions.html ) even tells
+people to use that approach in a situation like this one.
 
-I disagree. With my =E2=80=9Chack=E2=80=9D at least the implementation will d=
-o the right thing without the API user having to worry about 0 as a value. I=
-t could use some comments to clarify the details, but I do think it makes th=
-ings easier.
+Fun fact: that document also says "Subsystem maintainers are expected to
+assist in reaching those periods [...]. They thus might have to send
+git-pull requests earlier or more often than usual; [...]". That whole
+section has a lot of "Ideally" in it, because yes, this thing called
+real life is complicated sometimes and we are all volunteers. But still
+it's a bit unfortunate that such a important tree like wireless doesn't
+sent its fixes upstream every week.
 
-- Felix=
+> The patch has cc stable so I assume it should go quickly to stable
+> releases.
+
+To me it looks a lot like Greg most of the time only backports important
+bug fixes during merge windows (e.g. when asked or when he noticed
+something important) -- and leaves everything else often until after
+rc1. And when there are a lot of backports, he might even do it in two
+batches then. Hence it might easily take until ~May 11th or 18th (if we
+get a rc8) until this fix reaches 6.2.y and 6.3.y.
+
+Then it in the end would have taken about one month for the fix to reach
+the users. That is really unfortunate. Preventing such situations (which
+are not rare) is one of the main reason why handling-regressions.rst was
+written like it is...
+
+Ciao, Thorsten
