@@ -2,61 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0BD16E8E55
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 11:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0AEA6E8EB0
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 11:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234439AbjDTJhw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 05:37:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52004 "EHLO
+        id S234114AbjDTJzN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 05:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjDTJg5 (ORCPT
+        with ESMTP id S229612AbjDTJzM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 05:36:57 -0400
-X-Greylist: delayed 360 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 02:36:43 PDT
-Received: from mx1.uni-rostock.de (mx1.uni-rostock.de [139.30.22.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473DE359A
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 02:36:43 -0700 (PDT)
-DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmze; 
- t=1681983040; bh=NA/k4um9rHRfY4bXrpGgru77EhrVPivd3J33GG3aYO8=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
- a=ed25519-sha256; b=
- dfQWKSyLbiFxFFfiyCSOTc+96FhB867UzFmywXVCGYQAvVF5Wy3jsswdm1/pT+CrquqvHOjj/oW5ILFEatXcAg==
-DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmz; 
- t=1681983040; bh=NA/k4um9rHRfY4bXrpGgru77EhrVPivd3J33GG3aYO8=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
- a=rsa-sha256; b=
- eTzbK3XI2yNAXpPtpV92UuACqXjdd0YO9AXVkQvQoeQ2gNTNcBdRdD2JWmLg/VlLn+HTpp4ODRgf/rHoLrir8fbuM7mLKXsnoBjd1ToipSxQRKmssKJFdcZbUZSONnnz4CgeCuRJfh2aLrsv51qOkynPaAoPv2ZD7GyrepP1Dz8=
-Received: from 139.30.22.84 by mx1.uni-rostock.de (Tls12, Aes256, Sha384,
- DiffieHellmanEllipticKey384); Thu, 20 Apr 2023 09:30:40 GMT
-Received: from [139.30.201.34] (139.30.201.34) by mail1.uni-rostock.de
- (139.30.22.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Thu, 20 Apr
- 2023 11:30:39 +0200
-Message-ID: <50a76761-5be3-8ea7-c2f3-a14c158aa039@uni-rostock.de>
-Date:   Thu, 20 Apr 2023 11:30:47 +0200
+        Thu, 20 Apr 2023 05:55:12 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD1D10F
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 02:55:11 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33K9haS0016455;
+        Thu, 20 Apr 2023 09:54:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=8Qn5q/7ax1KIXG8AqHLj5T63wtVyklBZfXUgFt4XpSM=;
+ b=G+5QXeiwtlqPr5Q6MEeAnkR9O7Yuo/i0SBF0XTpUA5TCi/DmCpu/ocL1NLQ69OlTRPhI
+ xYrrKqGPiCq+Rv7Yn8o6VSaLOhAkyiuGKMZxZr0/DUN5uCuhX3v+OFmFgS2kAWPdjdK0
+ Wg2fi695WzLSsgpSIq4KAc2tiju5vMW2Yl0fcK3acrxj9qUw8qq1o6xLn263jWkqM6wY
+ aSJMxveI6jxQ1LtVnVLII87JjJrlyX8E5zFwBC0JKTG94z4eiqDqmxx2r6YyFodZvZPM
+ 4mjv+lWJ/n25KQD0sEsdeWwCKTrwYIDuB6x/neFI8Zkxjsvdd2r+QkCCYn8+Rp1BHUS/ 8g== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q2nn81r2d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Apr 2023 09:54:58 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33K9svHB010058
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Apr 2023 09:54:57 GMT
+Received: from [10.242.242.48] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 20 Apr
+ 2023 02:54:36 -0700
+Message-ID: <7d4eacd9-71be-e75f-fad4-ec07c00041d5@quicinc.com>
+Date:   Thu, 20 Apr 2023 15:24:21 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v1] wifi: mac80211: Initialize EWMA fail avg to 1
-Content-Language: de-DE
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Karthik M <quic_karm@quicinc.com>
-CC:     <linux-wireless@vger.kernel.org>,
-        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-References: <20230417100258.22965-1-quic_karm@quicinc.com>
- <bc1903aa09391667262aeadf1859600579f0a9f1.camel@sipsolutions.net>
-From:   Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
-X-Enigmail-Draft-Status: N02210
-Organization: =?UTF-8?Q?Universit=c3=a4t_Rostock?=
-In-Reply-To: <bc1903aa09391667262aeadf1859600579f0a9f1.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH 1/2] wifi: ath11k: factory test mode support
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Govindaraj Saminathan" <quic_gsaminat@quicinc.com>,
+        Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+References: <20230213130854.2473-1-quic_rajkbhag@quicinc.com>
+ <20230213130854.2473-2-quic_rajkbhag@quicinc.com> <87mt4hnfk2.fsf@kernel.org>
+Content-Language: en-US
+From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <87mt4hnfk2.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [139.30.201.34]
-X-ClientProxiedBy: EMAIL2.uni-rostock.de (139.30.22.82) To
- mail1.uni-rostock.de (139.30.22.84)
-X-TM-SNTS-SMTP: E863240B04B14804C3219B25F24F284C1B09F1985DBA2AEEE7B5932F10C236F32000:8
-X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: RFRIjXMJs9kUZ2L_-MIrkk5XIeGVq5M3
+X-Proofpoint-GUID: RFRIjXMJs9kUZ2L_-MIrkk5XIeGVq5M3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-20_06,2023-04-18_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ spamscore=0 impostorscore=0 clxscore=1015 phishscore=0 mlxlogscore=999
+ bulkscore=0 priorityscore=1501 adultscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304200079
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,53 +81,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 3/13/2023 3:23 PM, Kalle Valo wrote:
+> Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
+> 
+>> From: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
+>>
+>> Add support to process factory test mode commands(FTM) for calibration.
+>> By default firmware start with NORMAL mode and to process the FTM commands
+>> firmware needs to be restarted in FTM mode using module parameter ftm_mode.
+>> The pre-request is all the radios should be down before starting the test.
+>>
+>> When start command ATH11K_TM_CMD_TESTMODE_START is received, ar state
+>> is set to Test Mode. If the FTM command or event length is greater
+>> than 256 bytes, it will be broken down into multiple segments and
+>> encoded with TLV header if it is segmented commands, else it is sent
+>> to firmware as it is.
+>>
+>> On receiving UTF event from firmware, if it is segmented event, the driver
+>> will wait until it receives all the segments and notify the complete
+>> data to user application. In case the segmented sequence are missed or
+>> lost from the firmware, driver will skip the already received partial data.
+>>
+>> In case of unsegmented UTF event from firmware, driver notifies the
+>> data to the user application as it comes. Applications handles
+>> the data further.
+>>
+>> Command to boot in ftm mode
+>> insmod ath11k ftm_mode=1
+>>
+>> Tested-on : IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
+>> Co-developed-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+>> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> 
+> [...]
+> 
+>> --- a/drivers/net/wireless/ath/ath11k/core.c
+>> +++ b/drivers/net/wireless/ath/ath11k/core.c
+>> @@ -1,7 +1,7 @@
+>>  // SPDX-License-Identifier: BSD-3-Clause-Clear
+>>  /*
+>>   * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+>> - * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
+>> + * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+>>   */
+>>  
+>>  #include <linux/module.h>
+>> @@ -32,6 +32,10 @@ module_param_named(frame_mode, ath11k_frame_mode, uint, 0644);
+>>  MODULE_PARM_DESC(frame_mode,
+>>  		 "Datapath frame mode (0: raw, 1: native wifi (default), 2: ethernet)");
+>>  
+>> +unsigned int ath11k_ftm_mode;
+>> +module_param_named(ftm_mode, ath11k_ftm_mode, uint, 0444);
+>> +MODULE_PARM_DESC(ftm_mode, "Boots up in factory test mode");
+> 
+> I changed this to bool as there's only two values, true or false.
+> 
+>> @@ -1362,6 +1366,11 @@ static int ath11k_core_soc_create(struct ath11k_base *ab)
+>>  {
+>>  	int ret;
+>>  
+>> +	if (ath11k_ftm_mode) {
+>> +		ab->fw_mode = ATH11K_FIRMWARE_MODE_FTM;
+>> +		ath11k_info(ab, "Booting in ftm mode\n");
+>> +	}
+> 
+> I changed this to:
+> 
+> "Booting in factory test mode\n"
+> 
+>> @@ -1822,6 +1832,10 @@ static void ath11k_core_post_reconfigure_recovery(struct ath11k_base *ab)
+>>  			ath11k_warn(ab,
+>>  				    "device is wedged, will not restart radio %d\n", i);
+>>  			break;
+>> +		case ATH11K_STATE_TM:
+>> +			ath11k_warn(ab, "fw mode reset done radio %d\n", i);
+>> +			break;
+> 
+> What is this warning supposed to tell the user? Should it be a debug
+> message instead?
 
-> 
-> This still seems really non-intuitive to me.
-> 
-> It seems to me this is down to the special "0 means init" behaviour,
-> that you don't want, because your values actually fluctate between 0 and
-> 100, and you can actually legitimately reach 0 with a lot of successes.
-> 
-> But to me it's really non-intuitive, if not counter-intuitive, to say
-> "oh yeah my values are 0 to 100 inclusive, but I can't ever deal with
-> reaching 0 because then I jump to 100 immediately". That doesn't make
-> much sense to me?
-> 
-> I mean, I guess I can see where this patch makes some sense like from a
-> code point of view, this is sort of the minimal code change you could
-> make to make the existing code work, but ... I'd argue you're optimising
-> to the wrong metric here, "minimal code changes to fix the bug" should
-> normally not be your metric, it should be "code changes that make this
-> clearer and avoid the problem", or something like that?
-> 
-> Anyway I guess that's all a long-winded way of saying that I don't
-> really agree with this change.
-> 
-> To me, basically, I see two ways to solve this:
-> 
-> 1) we have DECLARE_EWMA_ZERO_VALID() or something like that which
->     *doesn't* treat 0 as an uninitialized value, and either has a
->     separate "not initialized yet" bit (but that's iffy storage wise),
->     or simply has another argument to _init() for the initial value or
->     so.
-> 
-> 2) you don't just don't use 0 and 100 but say 1 and 100, that results in
->     basically the same behaviour, but avoids the special 0.
-> 
-> johannes
+Will move this to debug message in version 2.
 
-I also ran into that problem in the past, and reviewing it again with a 
-college, I think, this is a real bug in the EWMA implementation. I try 
-to provide a proper patch in the next days, but actually the EWMA 
-handles the internal value zero, always like in the initialization, 
-which is wrong, e.g., for positive/negative averaged values.
 
-A quick research shows, this bug is since the first implementation of 
-the ewma in the code ...
-
-kind regards
-
-Benjamin
+Thanks,
+Raj
 
