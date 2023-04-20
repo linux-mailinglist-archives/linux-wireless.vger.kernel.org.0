@@ -2,138 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0966E929B
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 13:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 047A36E92EF
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 13:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234842AbjDTL25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 07:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58812 "EHLO
+        id S233952AbjDTLhf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 07:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234432AbjDTL2h (ORCPT
+        with ESMTP id S234209AbjDTLha (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 07:28:37 -0400
-Received: from mx1.uni-rostock.de (mx1.uni-rostock.de [139.30.22.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EEF186
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 04:27:38 -0700 (PDT)
-DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmze; 
- t=1681989140; bh=QUqY7pC8lL+MX38rl3VDzowCYLkNUS1wUK3+U61EDXM=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
- a=ed25519-sha256; b=
- z1t9tj6fBDCTgOW0M/riQIh+yDwOSd7N9KNpFaGiL1x6/bPK8hJ/gZ8HeHl7uzWR/H2/sog+9HKmTvvTjqtOBg==
-DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmz; 
- t=1681989140; bh=QUqY7pC8lL+MX38rl3VDzowCYLkNUS1wUK3+U61EDXM=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
- a=rsa-sha256; b=
- ZZWn/YcV3SrauGIpyzJHZhH1mk5M5gFJtdfgHClE0NegmQ7Zw8Wh9EXe0ZjEqllggEFInSXi6HW+A476ltN8x0o9ORRJ+VviTxx///x2q25nVQrBqQYYqhffEtKkbkeJ+jbwacIg/adDabaqjEuIdD7bz41vfG24rjZT2pQ/C+U=
-Received: from 139.30.22.84 by mx1.uni-rostock.de (Tls12, Aes256, Sha384,
- DiffieHellmanEllipticKey384); Thu, 20 Apr 2023 11:12:20 GMT
-Received: from [139.30.201.34] (139.30.201.34) by mail1.uni-rostock.de
- (139.30.22.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Thu, 20 Apr
- 2023 13:12:18 +0200
-Message-ID: <ed9249a7-04f6-572f-c35c-6880b3f9ebec@uni-rostock.de>
-Date:   Thu, 20 Apr 2023 13:12:26 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v1] wifi: mac80211: Initialize EWMA fail avg to 1
-Content-Language: de-DE
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Karthik M <quic_karm@quicinc.com>
+        Thu, 20 Apr 2023 07:37:30 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A10F10A
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 04:37:24 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33KAoesG010026;
+        Thu, 20 Apr 2023 11:37:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=vA2qVdkYQDkc5/Ki/k3q1Tq5RaRUy2Xue5gpLqVZtqw=;
+ b=LTjOa754ggBDPRDsM9qBqYovNCPKl1n+JcBHhSh39UVSncaH1hZud60KpZJF2KwR4vnf
+ UHeMqI+fVbJdQPs1DF8qoLH7ObONLqiIeAXh/mYkdrNVsuGnT6ClUK4OxVPLUpzwAmEO
+ Wcvg1LdIo5QsOEWiNGAuRfa8lmYAJsJaMXDqx6QjGJo6kzgEMes+ebX5o9IlxSOeAzOi
+ 40ZKjo4GNmTSphjqTStFuPwdd2iundOmPFtflvIFFZvcuaYW4Wa/JMbX4tIjqtcnUUlS
+ nc/N+vgOIG7XxC+ETWmv2Zgq2LlLlT7OVrZ11P8Ngnm3ip6GzBSDXf4kGbQpROvi4h2z eg== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q31t1rfgj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Apr 2023 11:37:19 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33KBbICu012258
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 20 Apr 2023 11:37:18 GMT
+Received: from rajkbhag-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Thu, 20 Apr 2023 04:37:17 -0700
+From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+To:     <ath11k@lists.infradead.org>
 CC:     <linux-wireless@vger.kernel.org>,
-        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-References: <20230417100258.22965-1-quic_karm@quicinc.com>
- <bc1903aa09391667262aeadf1859600579f0a9f1.camel@sipsolutions.net>
- <50a76761-5be3-8ea7-c2f3-a14c158aa039@uni-rostock.de>
- <e4dd26fa53ad2535f5a20be63a4b294d99306ffb.camel@sipsolutions.net>
-From:   Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
-Organization: =?UTF-8?Q?Universit=c3=a4t_Rostock?=
-In-Reply-To: <e4dd26fa53ad2535f5a20be63a4b294d99306ffb.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-X-Originating-IP: [139.30.201.34]
-X-ClientProxiedBy: EMAIL2.uni-rostock.de (139.30.22.82) To
- mail1.uni-rostock.de (139.30.22.84)
-X-TM-SNTS-SMTP: 5295FCA9975EB77C32C987FFB4221B33B6002EFDAD75B013F775E5F1B0790DE92000:8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Subject: [PATCH v2 0/4] ath11k: factory test mode support
+Date:   Thu, 20 Apr 2023 17:06:49 +0530
+Message-ID: <20230420113653.1686-1-quic_rajkbhag@quicinc.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: PPpgadt11G2hVfdeRIwB6Oq-QcoVg5tm
+X-Proofpoint-GUID: PPpgadt11G2hVfdeRIwB6Oq-QcoVg5tm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-20_07,2023-04-20_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0 mlxlogscore=682
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304200093
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Device is booted in factory test mode to calibrate the board.
+The commands are sent from a userspace application, which is
+sent to firmware using wmi commands. Firmware will send the
+response back to the application which stores the calibration
+data in caldata.bin file. This file will be loaded when the
+device boots up normally next time.
+
+Govindaraj Saminathan (3):
+  wifi: ath11k: remove unused function ath11k_tm_event_wmi
+  wifi: ath11k: optimize ath11k_tm_cmd_get_version
+  wifi: ath11k: factory test mode support
+
+Sowmiya Sree Elavalagan (1):
+  wifi: ath11k: Allow ath11k to boot without caldata in ftm mode
+
+---
+v2:
+- added separate patch for removal of ath11k_tm_event_wmi()
+- added separate patch for changes in ath11k_tm_cmd_get_version()
+- removed unused cmd and updated documentation for enum ath11k_tm_cmd
+- changed warning print to debug print
+---
+
+ drivers/net/wireless/ath/ath11k/ahb.c        |   3 +-
+ drivers/net/wireless/ath/ath11k/core.c       |  20 +-
+ drivers/net/wireless/ath/ath11k/core.h       |  15 +-
+ drivers/net/wireless/ath/ath11k/mac.c        |  13 +-
+ drivers/net/wireless/ath/ath11k/pci.c        |   3 +-
+ drivers/net/wireless/ath/ath11k/qmi.c        |  10 +-
+ drivers/net/wireless/ath/ath11k/testmode.c   | 320 ++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/testmode.h   |  20 +-
+ drivers/net/wireless/ath/ath11k/testmode_i.h |  16 +
+ drivers/net/wireless/ath/ath11k/wmi.c        |  40 ++-
+ drivers/net/wireless/ath/ath11k/wmi.h        |  20 ++
+ drivers/net/wireless/ath/ath11k/wow.c        |   3 +-
+ 12 files changed, 419 insertions(+), 64 deletions(-)
 
 
->>> To me, basically, I see two ways to solve this:
->>>
->>> 1) we have DECLARE=5FEWMA=5FZERO=5FVALID() or something like that which
->>>      *doesn't* treat 0 as an uninitialized value, and either has a
->>>      separate "not initialized yet" bit (but that's iffy storage wise),
->>>      or simply has another argument to =5Finit() for the initial value or
->>>      so.
->>>
->>> 2) you don't just don't use 0 and 100 but say 1 and 100, that results in
->>>      basically the same behaviour, but avoids the special 0.
->>>
->>> johannes
->> I also ran into that problem in the past, and reviewing it again with a
->> college, I think, this is a real bug in the EWMA implementation. I try
->> to provide a proper patch in the next days, but actually the EWMA
->> handles the internal value zero, always like in the initialization,
->> which is wrong, e.g., for positive/negative averaged values.
-> Yes, it's always wrong as long as you feed it something zero, or values
-> with different sign.
->
-> For a lot of use cases, however, that doesn't matter. Originally, it was
-> used e.g. for signal strength averaging, average packet lengths, etc.
-> where it really doesn't matter since you can never use 0 or values that
-> have different sign.
->
->> A quick research shows, this bug is since the first implementation of
->> the ewma in the code ...
->>
-> Yeah, I'm aware of that, I was around for it ;-)
->
-> But see above, I'm not sure I'd even call it a bug, at least not
-> originally with the users that we had intended.
->
-> Hence I don't know if it's really good to fix this in general - for many
-> of these cases zero can still be treated specially (and like I mentioned
-> in my previous email, we can even here avoid 0), and then we don't spend
-> an extra byte (or likely 4) to hold a "first time" flag.
->
-> Dunno. Maybe it's not worth thinking about the extra memory space vs.
-> the extra maintenance cost. But maybe at least on 64-bit we could steal
-> a bit from the unsigned long=3F Not sure what all the users are...
-I thought of introducing a separate function to initialize the 
-"average", which could be optimized away, when unused. I had a look at 
-the usage, and it looks like 10-15 places, which should work with 
-initializing or simply weight the new value always, instead of the 
-special case.
-
-For me the problem is, that the current implementation is unintuitive or 
-at least badly documented.
-And I would even claim the same argument, that for most users, the 
-behavior for initialization also does not matter, therefore I would use 
-the mathematically more natural implementation :-)
-
-
+base-commit: 12f167f02a1abe2c8817496a902de00758285b92
 -- 
-M.Sc. Benjamin Beichler
+2.17.1
 
-Universit=C3=A4t Rostock, Fakult=C3=A4t f=C3=BCr Informatik und Elektrotechnik
-Institut f=C3=BCr Angewandte Mikroelektronik und Datentechnik
-
-University of Rostock, Department of CS and EE
-Institute of Applied Microelectronics and CE
-
-Albert-Einstein-Str. 26
-18059 Rostock
-Deutschland/Germany
-
-phone: +49 (0) 381 498 - 7278
-email: Benjamin.Beichler@uni-rostock.de
-www: http://www.imd.uni-rostock.de/
