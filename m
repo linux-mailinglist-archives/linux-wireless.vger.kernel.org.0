@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B4546E91A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 13:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0FB6E9211
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 13:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234321AbjDTLFU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 07:05:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55282 "EHLO
+        id S235351AbjDTLHY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 07:07:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235242AbjDTLEZ (ORCPT
+        with ESMTP id S234063AbjDTLFR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 07:04:25 -0400
+        Thu, 20 Apr 2023 07:05:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B235BBF;
-        Thu, 20 Apr 2023 04:03:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5526EA5;
+        Thu, 20 Apr 2023 04:03:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4958663AA2;
-        Thu, 20 Apr 2023 11:02:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD2AC433D2;
-        Thu, 20 Apr 2023 11:02:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0041647A6;
+        Thu, 20 Apr 2023 11:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22CAC4339B;
+        Thu, 20 Apr 2023 11:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681988547;
+        s=k20201202; t=1681988585;
         bh=jpupAkuoIR9JZhgmPqEtxcQHV2WSoE1rm0Idsw6o3cc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZIDXD0JnR0ulJujsnKytrAeIEtkeVDumXgjC+l9El9jvs47d17GH2RaVKdS0KpTmF
-         5g088FDRjZ6SLuVeZbMn7rtitySoTEAJd+Mii8JLNfCm92iM7SNmVnIXTNCmqLM43V
-         Okg6R+Athsm8/g4dM4PM+b61y6Z5R3VJi5cd/siiKeQ7RwmxIugeltBqgxcGsoygaY
-         6xdP3tjvYDf8TbHF+/H8bVBarjvuhY1xsEtGGpbY8KudmpYw3DyutflKJrPJ/DKVKh
-         Cbz78GmZHoxsSgUWGReItkPOenuHc8lRO3gDm8kK8YwsGoM1ZS2c7J3fRKsbwmeFSA
-         0if9pJDiMEl2g==
+        b=MWk+tGb5SNwaYu2dCnSFjN6Zw8QyUEXjboVKhxmv5GiOhbxhv7AMtbLQmlqwIlbal
+         +KZbrrL1II042orlvzRDZ/eI4wOAex+d/90L/7ayvIR03dM9xM+S1jUvY4epzBd0XU
+         CBex9yzgecOTcyqbDEQmRONlqGfYLWfVyMVvtvf9YZOtxXl4YJAs4ZUs2LWVCwTWbE
+         a7gMaDI3+gU8BAavznsTblzs21MTHyCpZAFinsWH4FaX2GkezonI7qkm9dEwb9cA7n
+         oOna4vS1A31/Ah8a8GzolhFmLe6zMc9ylPTXJwpfHxY0m2jCMDSve4FMbAn+mkPrS/
+         q7/WuIvsFlH6A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kalle Valo <quic_kvalo@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
@@ -39,12 +39,12 @@ Cc:     Kalle Valo <quic_kvalo@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
         edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
         ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.2 16/17] wifi: ath11k: reduce the MHI timeout to 20s
-Date:   Thu, 20 Apr 2023 07:01:45 -0400
-Message-Id: <20230420110148.505779-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 14/15] wifi: ath11k: reduce the MHI timeout to 20s
+Date:   Thu, 20 Apr 2023 07:02:28 -0400
+Message-Id: <20230420110231.505992-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230420110148.505779-1-sashal@kernel.org>
-References: <20230420110148.505779-1-sashal@kernel.org>
+In-Reply-To: <20230420110231.505992-1-sashal@kernel.org>
+References: <20230420110231.505992-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
