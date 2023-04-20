@@ -2,105 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB156E956F
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 15:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C10EA6E959D
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 15:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231395AbjDTNLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 09:11:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56700 "EHLO
+        id S229980AbjDTNQC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 09:16:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231390AbjDTNL3 (ORCPT
+        with ESMTP id S229811AbjDTNQB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 09:11:29 -0400
-Received: from hust.edu.cn (mail.hust.edu.cn [202.114.0.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D56072A4;
-        Thu, 20 Apr 2023 06:11:28 -0700 (PDT)
-Received: from wjk.. ([10.12.190.56])
-        (user=wangjikai@hust.edu.cn mech=LOGIN bits=0)
-        by mx1.hust.edu.cn  with ESMTP id 33KD9Q5X018747-33KD9Q5Y018747
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Thu, 20 Apr 2023 21:09:32 +0800
-From:   Wang Jikai <wangjikai@hust.edu.cn>
-To:     Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     hust-os-kernel-patches@googlegroups.com,
-        Wang Jikai <wangjikai@hust.edu.cn>,
-        Jakub Kicinski <kubakici@wp.pl>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH 2/2] wifi: mt7601u: remove debugfs directory on disconnect
-Date:   Thu, 20 Apr 2023 13:09:24 +0000
-Message-Id: <20230420130924.8702-1-wangjikai@hust.edu.cn>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-FEAS-AUTH-USER: wangjikai@hust.edu.cn
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Thu, 20 Apr 2023 09:16:01 -0400
+Received: from nbd.name (nbd.name [46.4.11.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A2D270E
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 06:15:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+        s=20160729; h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:
+        Mime-Version:From:Content-Transfer-Encoding:Content-Type:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=kXFnjDYK7gWVoksmPYs99aYNRzc25o0pHI/JaY9LFRY=; b=tzQLJefYPnmiqTwlTgmDm3Qpvt
+        nCoDdM4smuUuc6Fce1at/F6q85vBAx4skUJxXCdP4Ug65znx0ny+UTvStoG5+AIrv578sZtSd0dLv
+        /8rh+gtZ2seXTm/73pHQhVpkxK2iwU5VE41WNlKXrbUDQdUl/QPEXzmPWz2I0Wg36Owk=;
+Received: from [2a01:598:b1a2:f936:a9ac:34e4:49fa:2af] (helo=smtpclient.apple)
+        by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <nbd@nbd.name>)
+        id 1ppU8h-00GfPu-Aw; Thu, 20 Apr 2023 15:15:55 +0200
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   Felix Fietkau <nbd@nbd.name>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v1] wifi: mac80211: Initialize EWMA fail avg to 1
+Date:   Thu, 20 Apr 2023 15:15:44 +0200
+Message-Id: <04A41274-08B2-4473-AFD0-7D91D3850F4B@nbd.name>
+References: <4f0efc62-0ca5-fe85-fdd8-9beca7ff94d7@uni-rostock.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Karthik M <quic_karm@quicinc.com>,
+        linux-wireless@vger.kernel.org,
+        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+In-Reply-To: <4f0efc62-0ca5-fe85-fdd8-9beca7ff94d7@uni-rostock.de>
+To:     Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
+X-Mailer: iPhone Mail (20E252)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Debugfs is created during device init but not removed.
-Add a function mt7601u_remove_debugfs to remove debugfs
-when the device disconnects.
 
-Fixes: c869f77d6abb ("add mt7601u driver")
-Signed-off-by: Wang Jikai <wangjikai@hust.edu.cn>
----
-The issue is found by static analysis and remains untested.
----
- drivers/net/wireless/mediatek/mt7601u/debugfs.c | 5 +++++
- drivers/net/wireless/mediatek/mt7601u/mt7601u.h | 1 +
- drivers/net/wireless/mediatek/mt7601u/usb.c     | 1 +
- 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt7601u/debugfs.c b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
-index dbddf256921b..1b87a4854e0e 100644
---- a/drivers/net/wireless/mediatek/mt7601u/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/debugfs.c
-@@ -136,3 +136,8 @@ void mt7601u_init_debugfs(struct mt7601u_dev *dev)
- 	debugfs_create_file("ampdu_stat", 0400, dir, dev, &mt7601u_ampdu_stat_fops);
- 	debugfs_create_file("eeprom_param", 0400, dir, dev, &mt7601u_eeprom_param_fops);
- }
-+
-+void mt7601u_remove_debugfs(struct mt7601u_dev *dev)
-+{
-+	debugfs_lookup_and_remove("mt7601u", dev->hw->wiphy->debugfsdir);
-+}
-diff --git a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
-index 118d43707853..0216ace4b8e9 100644
---- a/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
-+++ b/drivers/net/wireless/mediatek/mt7601u/mt7601u.h
-@@ -279,6 +279,7 @@ struct mt7601u_rxwi;
- extern const struct ieee80211_ops mt7601u_ops;
- 
- void mt7601u_init_debugfs(struct mt7601u_dev *dev);
-+void mt7601u_remove_debugfs(struct mt7601u_dev *dev);
- 
- u32 mt7601u_rr(struct mt7601u_dev *dev, u32 offset);
- void mt7601u_wr(struct mt7601u_dev *dev, u32 offset, u32 val);
-diff --git a/drivers/net/wireless/mediatek/mt7601u/usb.c b/drivers/net/wireless/mediatek/mt7601u/usb.c
-index cc772045d526..d9a93d05f1cf 100644
---- a/drivers/net/wireless/mediatek/mt7601u/usb.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/usb.c
-@@ -332,6 +332,7 @@ static void mt7601u_disconnect(struct usb_interface *usb_intf)
- 
- 	ieee80211_unregister_hw(dev->hw);
- 	mt7601u_cleanup(dev);
-+	mt7601u_remove_debugfs(dev);
- 
- 	usb_set_intfdata(usb_intf, NULL);
- 	usb_put_dev(interface_to_usbdev(usb_intf));
--- 
-2.34.1
+> On 20. Apr 2023, at 15:00, Benjamin Beichler <Benjamin.Beichler@uni-rostoc=
+k.de> wrote:
+>=20
+> =EF=BB=BFAm 20.04.2023 um 14:22 schrieb Felix Fietkau:
+>>> On 20.04.23 12:27, Johannes Berg wrote:
+>>> On Thu, 2023-04-20 at 11:30 +0200, Benjamin Beichler wrote:
+>>>> > To me, basically, I see two ways to solve this:
+>>>> >
+>>>> > 1) we have DECLARE_EWMA_ZERO_VALID() or something like that which
+>>>> >     *doesn't* treat 0 as an uninitialized value, and either has a
+>>>> >     separate "not initialized yet" bit (but that's iffy storage wise)=
+,
+>>>> >     or simply has another argument to _init() for the initial value o=
+r
+>>>> >     so.
+>>>> >
+>>>> > 2) you don't just don't use 0 and 100 but say 1 and 100, that results=
+ in
+>>>> >     basically the same behaviour, but avoids the special 0.
+>>>> >
+>>>> > johannes
+>>>>=20
+>>>> I also ran into that problem in the past, and reviewing it again with a=
 
+>>>> college, I think, this is a real bug in the EWMA implementation. I try
+>>>> to provide a proper patch in the next days, but actually the EWMA
+>>>> handles the internal value zero, always like in the initialization,
+>>>> which is wrong, e.g., for positive/negative averaged values.
+>>>=20
+>>> Yes, it's always wrong as long as you feed it something zero, or values
+>>> with different sign.
+>>>=20
+>>> For a lot of use cases, however, that doesn't matter. Originally, it was=
+
+>>> used e.g. for signal strength averaging, average packet lengths, etc.
+>>> where it really doesn't matter since you can never use 0 or values that
+>>> have different sign.
+>>>=20
+>>>> A quick research shows, this bug is since the first implementation of
+>>>> the ewma in the code ...
+>>>>=20
+>>>=20
+>>> Yeah, I'm aware of that, I was around for it ;-)
+>>>=20
+>>> But see above, I'm not sure I'd even call it a bug, at least not
+>>> originally with the users that we had intended.
+>>>=20
+>>> Hence I don't know if it's really good to fix this in general - for many=
+
+>>> of these cases zero can still be treated specially (and like I mentioned=
+
+>>> in my previous email, we can even here avoid 0), and then we don't spend=
+
+>>> an extra byte (or likely 4) to hold a "first time" flag.
+>>>=20
+>>> Dunno. Maybe it's not worth thinking about the extra memory space vs.
+>>> the extra maintenance cost. But maybe at least on 64-bit we could steal
+>>> a bit from the unsigned long? Not sure what all the users are..
+>> We don't actually need a full bit. We can just add 1 to the internal
+>> value for initialized values. How about this (completely untested):
+>> https://nbd.name/p/69b00c5b
+>>=20
+> Nice hack, but even a bit more dirty than before :-D
+
+I disagree. With my =E2=80=9Chack=E2=80=9D at least the implementation will d=
+o the right thing without the API user having to worry about 0 as a value. I=
+t could use some comments to clarify the details, but I do think it makes th=
+ings easier.
+
+- Felix=
