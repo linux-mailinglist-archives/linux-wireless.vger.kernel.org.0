@@ -2,54 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 240FB6E9487
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 14:35:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 655DE6E948D
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 14:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbjDTMfr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 08:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56828 "EHLO
+        id S231736AbjDTMgE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 08:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229887AbjDTMfq (ORCPT
+        with ESMTP id S231311AbjDTMf6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 08:35:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871405BA3
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 05:35:24 -0700 (PDT)
+        Thu, 20 Apr 2023 08:35:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A6D72BC
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 05:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72DD4616CA
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 12:35:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EC6C433D2;
-        Thu, 20 Apr 2023 12:35:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DF6264929
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 12:35:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A4AC433D2;
+        Thu, 20 Apr 2023 12:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681994121;
-        bh=RJoqQOH2liZFmyXxh7/NEKOileo83BHrjlGjWMwJ+ws=;
+        s=k20201202; t=1681994151;
+        bh=3GpX93Iz3XtHTHm2AsRZJsdq/vtguxZlsLqoel3bVtQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=iD/Ze+YzZ8Rcsvr+55bBzO7GRMb9/huy0pDnHSPMmr/Mx/3GUJmV62mhhbozTWQRg
-         Nw6aYfUIPgjye4sUWPf2O1nJXFJyUDfjyXhBhYoNdz6JB/C9y61RsfPKxbiCt761SC
-         b//5yTkIeK/3qmbhH+SQ/tUrboCd8/a42ZA1kJ7gLV3MDTQl0J9WnfI9wOTUWgHyl3
-         ReSLgbRiaNJS73q/TH3/0nxt9EzUydDJ7fV0CfXzlNNtNzFvaoWT678JLFh5L9ajK2
-         IVpL+4wp1ApWDeGjrutavEyx+No5cWap0D3hY57Tv4xFn8yNDm7VkPUK8ktVnzWjHd
-         5jrgG8BZm5lcg==
+        b=qGzfR4oFjpUyKDrDf5KLdbFPeNX3UvF1c4hExFaGBBfic8/E3Gh0AzSjtHr4mbS4O
+         6N8R5qK4yneRpixkONI7cXiLVcK0r71Riln0iiDcJzmZhu/u9Af5cs+M1XZnDyw/h1
+         eP7HRTh0kSnTk75gGcFmJvmMBefAKT86uCsu9xHoDDDQ+AJSn6GDsd+4CW44jBKfKY
+         AWx7/eoGBb5cpjEGtZEqnHCsNb0mvLNUr/5URgCIzTuqTVXLGe4hLtlamWc3km1rE1
+         T3rIZRdk2U9LxL0vPiW3eeKt6UsAFBObwZXG4gmIcRiaQ5eQSBdx/yryuFyMHWAmg+
+         w2qBJL3Er+8nA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: rtw88: Fix memory leak in rtw88_usb
+Subject: Re: [PATCH 1/3] wifi: rtl8xxxu: Don't print the vendor/product/serial
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230417160331.23071-1-Larry.Finger@lwfinger.net>
-References: <20230417160331.23071-1-Larry.Finger@lwfinger.net>
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
+In-Reply-To: <a2a7d9df-0529-7890-3522-48dce613753f@gmail.com>
+References: <a2a7d9df-0529-7890-3522-48dce613753f@gmail.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
         Ping-Ke Shih <pkshih@realtek.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168199411851.31131.7739840478967345232.kvalo@kernel.org>
-Date:   Thu, 20 Apr 2023 12:35:20 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-ID: <168199414822.31131.11910739234657361957.kvalo@kernel.org>
+Date:   Thu, 20 Apr 2023 12:35:50 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,50 +56,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Larry Finger <Larry.Finger@lwfinger.net> wrote:
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> Kmemleak shows the following leak arising from routine in the usb
-> probe routine:
+> Most devices have a vendor name, product name, and serial number in the
+> efuse, but it's pretty useless. It duplicates the information already
+> printed by the USB subsystem:
 > 
-> unreferenced object 0xffff895cb29bba00 (size 512):
->   comm "(udev-worker)", pid 534, jiffies 4294903932 (age 102751.088s)
->   hex dump (first 32 bytes):
->     77 30 30 30 00 00 00 00 02 2f 2d 2b 30 00 00 00  w000...../-+0...
->     02 00 2a 28 00 00 00 00 ff 55 ff ff ff 00 00 00  ..*(.....U......
->   backtrace:
->     [<ffffffff9265fa36>] kmalloc_trace+0x26/0x90
->     [<ffffffffc17eec41>] rtw_usb_probe+0x2f1/0x680 [rtw_usb]
->     [<ffffffffc03e19fd>] usb_probe_interface+0xdd/0x2e0 [usbcore]
->     [<ffffffff92b4f2fe>] really_probe+0x18e/0x3d0
->     [<ffffffff92b4f5b8>] __driver_probe_device+0x78/0x160
->     [<ffffffff92b4f6bf>] driver_probe_device+0x1f/0x90
->     [<ffffffff92b4f8df>] __driver_attach+0xbf/0x1b0
->     [<ffffffff92b4d350>] bus_for_each_dev+0x70/0xc0
->     [<ffffffff92b4e51e>] bus_add_driver+0x10e/0x210
->     [<ffffffff92b50935>] driver_register+0x55/0xf0
->     [<ffffffffc03e0708>] usb_register_driver+0x88/0x140 [usbcore]
->     [<ffffffff92401153>] do_one_initcall+0x43/0x210
->     [<ffffffff9254f42a>] do_init_module+0x4a/0x200
->     [<ffffffff92551d1c>] __do_sys_finit_module+0xac/0x120
->     [<ffffffff92ee6626>] do_syscall_64+0x56/0x80
->     [<ffffffff9300006a>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
+>    usb 1-4: New USB device found, idVendor=0bda, idProduct=8178, bcdDevice= 2.00
+>    usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+>    usb 1-4: Product: 802.11n WLAN Adapter
+>    usb 1-4: Manufacturer: Realtek
+>    usb 1-4: SerialNumber: 00e04c000001
+> -> usb 1-4: Vendor: Realtek
+> -> usb 1-4: Product: 802.11n WLAN Adapter
 > 
-> The leak was verified to be real by unloading the driver, which resulted
-> in a dangling pointer to the allocation.
+>    usb 1-4: New USB device found, idVendor=0bda, idProduct=818b, bcdDevice= 2.00
+>    usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+>    usb 1-4: Product: 802.11n NIC
+>    usb 1-4: Manufacturer: Realtek
+>    usb 1-4: SerialNumber: 00e04c000001
+> -> usb 1-4: Vendor: Realtek
+> -> usb 1-4: Product: 802.11n NIC
+> -> usb 1-4: Serial not available.
 > 
-> The allocated memory is freed in rtw_usb_intf_deinit().
+>    usb 1-4: New USB device found, idVendor=0bda, idProduct=f179, bcdDevice= 0.00
+>    usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+>    usb 1-4: Product: 802.11n
+>    usb 1-4: Manufacturer: Realtek
+>    usb 1-4: SerialNumber: 002E2DC0041F
+> -> usb 1-4: Vendor: Realtek
+> -> usb 1-4: Product: 802.11n
 > 
-> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Ping-Ke Shih <pkshih@realtek.com>
+>    usb 1-4: New USB device found, idVendor=0bda, idProduct=8179, bcdDevice= 0.00
+>    usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+>    usb 1-4: Product: 802.11n NIC
+>    usb 1-4: Manufacturer: Realtek
+>    usb 1-4: SerialNumber: 00E04C0001
+> -> usb 1-4: Vendor: Realtek
+> -> usb 1-4: Product: 802.11n NIC
+> -> usb 1-4: Serial: 00E04C0001
+> 
+> Also, that data is not interpreted correctly in all cases:
+> 
+> usb 3-1.1.2: New USB device found, idVendor=0bda, idProduct=8179, bcdDevice= 0.00
+> usb 3-1.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+> usb 3-1.1.2: Product: 802.11n NIC
+> usb 3-1.1.2: Manufacturer: Realtek
+> usb 3-1.1.2: Vendor: Realtek
+> usb 3-1.1.2: Product: \x03802.11n NI
+> usb 3-1.1.2: Serial: \xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217231
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 > Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+3 patches applied to wireless-next.git, thanks.
 
-59a3a3120097 wifi: rtw88: Fix memory leak in rtw88_usb
+af8678e6c5bd wifi: rtl8xxxu: Don't print the vendor/product/serial
+cd85c8b059c5 wifi: rtl8xxxu: Add rtl8xxxu_write{8,16,32}_{set,clear}
+c8bc37602779 wifi: rtl8xxxu: Simplify setting the initial gain
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230417160331.23071-1-Larry.Finger@lwfinger.net/
+https://patchwork.kernel.org/project/linux-wireless/patch/a2a7d9df-0529-7890-3522-48dce613753f@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
