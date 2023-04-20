@@ -2,51 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0516E9483
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 14:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D696E9485
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 14:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230081AbjDTMf2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 08:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
+        id S230464AbjDTMff (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 08:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231394AbjDTMfZ (ORCPT
+        with ESMTP id S229915AbjDTMfd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 08:35:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714687695
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 05:34:54 -0700 (PDT)
+        Thu, 20 Apr 2023 08:35:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573D261A8;
+        Thu, 20 Apr 2023 05:35:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F172764927
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 12:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7578EC433EF;
-        Thu, 20 Apr 2023 12:34:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37DDF647D2;
+        Thu, 20 Apr 2023 12:34:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B923BC433EF;
+        Thu, 20 Apr 2023 12:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681994050;
-        bh=n3AhfkANBgXoKmGkGOL43Ok4mXa7p3SWDOCseNUsRXk=;
+        s=k20201202; t=1681994095;
+        bh=ZVPl9soHfS/xgIlOXOG9k3GM/fGYYRXOIzddm4WJhjM=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Oc4T5CZnOM1swFBJNokOXqTK7VTUU6+vcu2Fwy/wu/Q6HexHnQIxEIp53J8oyAyGg
-         HOaTTPDifr8CCuozJ/IESukqUrC4o9vwmy6Hynjj09dQnP1Q0YpvEsRfynyDOrEz70
-         JoGbSFW6qzA6cyhOQIHmv71weGklbAzhmsCpi7CPLt0fSoeqexYEbLbeQxt05wbkVY
-         7bTyR1H90yYfVjUnIi07PrgOW8Z+4l5aHuinDv80YylwINDw4UquGVyIEobm+LVP35
-         iQiNdoLlbzPM3IG9+Qld3OPWOrxHWSeIfU1LlMOhu+NNST/9G/vaPpI9EMKsN3SH/W
-         i3lsYf7K3BzxA==
+        b=b8ljy5P3Z3nJqO65Pk3yCCziiE+r1s7kCSUhWku/dGfgSnTHtIbBV33ey0MUo9rs0
+         Y2VZV33LarMGQy0O5XgDSE+rFH7jmB5Tq1dDghjAYhgjbGcogK+G6M7lrSjMcB4hdx
+         78tBnXhneaARVVwTEXplra0jZIwCpLTIHiGV6Vy092lCTgyK20gub24iZVw6YtkeuG
+         Y5jwVPiWV4EjclCp9YwR66vtoeYnS/JVxCEYtPSaf2qszvWAs7Z9ndopB6xjYfQ36J
+         uCeWD37p9Ffu3hfi7bV7RM9gFfvjyQq1cVD302LJ/1zjqke0KytjrzjqoG0vSYpMLG
+         IV6VUFbjGfcnw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/8] wifi: rtw88: add bitmap for dynamic port settings
+Subject: Re: [PATCH v3 1/4] wifi: rtw88: usb: fix priority queue to endpoint
+ mapping
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230414121135.17828-2-pkshih@realtek.com>
-References: <20230414121135.17828-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <phhuang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
+In-Reply-To: <20230417140358.2240429-2-s.hauer@pengutronix.de>
+References: <20230417140358.2240429-2-s.hauer@pengutronix.de>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Pkshih <pkshih@realtek.com>, Tim K <tpkuester@gmail.com>,
+        "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>, kernel@pengutronix.de,
+        Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168199404727.31131.18077753114787654693.kvalo@kernel.org>
-Date:   Thu, 20 Apr 2023 12:34:09 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <168199409054.31131.13943288409295170406.kvalo@kernel.org>
+Date:   Thu, 20 Apr 2023 12:34:52 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,31 +64,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> From: Po-Hao Huang <phhuang@realtek.com>
+> The RTW88 chipsets have four different priority queues in hardware. For
+> the USB type chipsets the packets destined for a specific priority queue
+> must be sent through the endpoint corresponding to the queue. This was
+> not fully understood when porting from the RTW88 USB out of tree driver
+> and thus violated.
 > 
-> In order to support multiple interfaces, multiple port settings will
-> be required. Current code always uses port 0 and should be changed.
-> Declare a bitmap with size equal to hardware port number to record
-> the current usage.
+> This patch implements the qsel to endpoint mapping as in
+> get_usb_bulkout_id_88xx() in the downstream driver.
 > 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Without this the driver often issues "timed out to flush queue 3"
+> warnings and often TX stalls completely.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Tested-by: ValdikSS <iam@valdikss.org.ru>
+> Tested-by: Alexandru gagniuc <mr.nuke.me@gmail.com>
+> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 
-8 patches applied to wireless-next.git, thanks.
+4 patches applied to wireless-next.git, thanks.
 
-f0e741e4ddbc wifi: rtw88: add bitmap for dynamic port settings
-ccf73f6e69c0 wifi: rtw88: add port switch for AP mode
-ffa71c547779 wifi: rtw88: 8822c: extend reserved page number
-5ec69129f195 wifi: rtw88: disallow PS during AP mode
-982f4a2004f7 wifi: rtw88: refine reserved page flow for AP mode
-a1b8015da57a wifi: rtw88: prevent scan abort with other VIFs
-96fbb84de4ff wifi: rtw88: handle station mode concurrent scan with AP mode
-d16836cdcc3b wifi: rtw88: 8822c: add iface combination
+a6f187f92bcc wifi: rtw88: usb: fix priority queue to endpoint mapping
+14705f969d98 wifi: rtw88: rtw8821c: Fix rfe_option field width
+97c75e1adeda wifi: rtw88: set pkg_type correctly for specific rtw8821c variants
+172591baa2cc wifi: rtw88: call rtw8821c_switch_rf_set() according to chip variant
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230414121135.17828-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230417140358.2240429-2-s.hauer@pengutronix.de/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
