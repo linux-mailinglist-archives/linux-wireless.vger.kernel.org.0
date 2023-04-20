@@ -2,107 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6846F6E9039
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 12:30:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40FF86E91B2
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Apr 2023 13:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229729AbjDTKaP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 06:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
+        id S235160AbjDTLFW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 07:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234328AbjDTK3b (ORCPT
+        with ESMTP id S235116AbjDTLEd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 06:29:31 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747CC1A1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 03:27:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=W1LTOz9vjlQ8X0a4H/eS1OWTX5K2ecZO4ZMmv75gdHM=;
-        t=1681986436; x=1683196036; b=Ua6AhrUSUXtcXpnVxzNmAag1p0LwjC2QeTgYNTjxFiPRDwW
-        DjMpD9wj1Z3f7qFFM1brGm80OQ/9hAB8FZdOmf4Y4p6fZNdfsI/eC6Z/3LHAJb35nFg/Iv3w6YYS2
-        3nmQdLLjUp15JfrOePSxUEl1x51yDbmhelU87/th839WlCL9nka0ji4F4g85WkOmXAWDDmjgRInnm
-        OPBuENtvvLpIr0w2LYGLkqemD76LdWclOLuEAvFY6IrZrC1wGAbl0rIsDykqYN358WluE+5sMaObJ
-        o4O9qlR5d520SVmnBi0ZZf04Tjq9SZZDxT9THNIstaDNUi4h5VPljf3WcTB6CFpQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ppRVR-003R2E-0V;
-        Thu, 20 Apr 2023 12:27:13 +0200
-Message-ID: <e4dd26fa53ad2535f5a20be63a4b294d99306ffb.camel@sipsolutions.net>
-Subject: Re: [PATCH v1] wifi: mac80211: Initialize EWMA fail avg to 1
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>,
-        Karthik M <quic_karm@quicinc.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Date:   Thu, 20 Apr 2023 12:27:11 +0200
-In-Reply-To: <50a76761-5be3-8ea7-c2f3-a14c158aa039@uni-rostock.de>
-References: <20230417100258.22965-1-quic_karm@quicinc.com>
-         <bc1903aa09391667262aeadf1859600579f0a9f1.camel@sipsolutions.net>
-         <50a76761-5be3-8ea7-c2f3-a14c158aa039@uni-rostock.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Thu, 20 Apr 2023 07:04:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A81776BB;
+        Thu, 20 Apr 2023 04:03:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 190D6647C3;
+        Thu, 20 Apr 2023 11:02:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850AFC433D2;
+        Thu, 20 Apr 2023 11:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681988539;
+        bh=hw4xNWiwp8slyxeG+kC8WnPTYTvoQBMrOBS9+9t7ozY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=e0J8tkYUjcx9zrUeI+yQC7z7JQ00pXcrF7kWoBo9EyUIAmFRSpyJHaQrpSiFET/eE
+         b9OeOlABXdPQLrh7HVA+mkCuGBzHJmqd7kR9TQW7lCavtgOC6nifgjMjbnZW+4407t
+         3oqG1kT/dZoqqvh1hTLoZZlhlnigmZurkFfynfJIfs5FJOpLTxs9D3LOetofozcGDD
+         S+1+enaNoYiC0YnU95M85DdvxB7PCwU/T22kLYR0L3xtSGcB9qpUSNvMcBx6V6qL/z
+         Rb5ueq50DcD4orp2f6fTMgpn1OsqAbjXX8o9U1E3Lh1gGIPJzcNtSRzOaMy1QNHp42
+         MYSlPY7SeZ8MA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, ryder.lee@mediatek.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, matthias.bgg@gmail.com, deren.wu@mediatek.com,
+        sean.wang@mediatek.com, mingyen.hsieh@mediatek.com,
+        yn.chen@mediatek.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.2 11/17] wifi: mt76: mt7921: Fix use-after-free in fw features query.
+Date:   Thu, 20 Apr 2023 07:01:40 -0400
+Message-Id: <20230420110148.505779-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230420110148.505779-1-sashal@kernel.org>
+References: <20230420110148.505779-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-04-20 at 11:30 +0200, Benjamin Beichler wrote:
-> > To me, basically, I see two ways to solve this:
-> >=20
-> > 1) we have DECLARE_EWMA_ZERO_VALID() or something like that which
-> >     *doesn't* treat 0 as an uninitialized value, and either has a
-> >     separate "not initialized yet" bit (but that's iffy storage wise),
-> >     or simply has another argument to _init() for the initial value or
-> >     so.
-> >=20
-> > 2) you don't just don't use 0 and 100 but say 1 and 100, that results i=
-n
-> >     basically the same behaviour, but avoids the special 0.
-> >=20
-> > johannes
->=20
-> I also ran into that problem in the past, and reviewing it again with a=
-=20
-> college, I think, this is a real bug in the EWMA implementation. I try=
-=20
-> to provide a proper patch in the next days, but actually the EWMA=20
-> handles the internal value zero, always like in the initialization,=20
-> which is wrong, e.g., for positive/negative averaged values.
+From: Ben Greear <greearb@candelatech.com>
 
-Yes, it's always wrong as long as you feed it something zero, or values
-with different sign.
+[ Upstream commit 2ceb76f734e37833824b7fab6af17c999eb48d2b ]
 
-For a lot of use cases, however, that doesn't matter. Originally, it was
-used e.g. for signal strength averaging, average packet lengths, etc.
-where it really doesn't matter since you can never use 0 or values that
-have different sign.
+Stop referencing 'features' memory after release_firmware is called.
 
-> A quick research shows, this bug is since the first implementation of=20
-> the ewma in the code ...
->=20
+Fixes this crash:
 
-Yeah, I'm aware of that, I was around for it ;-)
+RIP: 0010:mt7921_check_offload_capability+0x17d
+mt7921_pci_probe+0xca/0x4b0
+...
 
-But see above, I'm not sure I'd even call it a bug, at least not
-originally with the users that we had intended.
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Acked-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/51fd8f76494348aa9ecbf0abc471ebe47a983dfd.1679502607.git.lorenzo@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Hence I don't know if it's really good to fix this in general - for many
-of these cases zero can still be treated specially (and like I mentioned
-in my previous email, we can even here avoid 0), and then we don't spend
-an extra byte (or likely 4) to hold a "first time" flag.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index d4b681d7e1d22..f2c6ec4d8e2ee 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -162,12 +162,12 @@ mt7921_mac_init_band(struct mt7921_dev *dev, u8 band)
+ 
+ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+ {
+-	struct mt7921_fw_features *features = NULL;
+ 	const struct mt76_connac2_fw_trailer *hdr;
+ 	struct mt7921_realease_info *rel_info;
+ 	const struct firmware *fw;
+ 	int ret, i, offset = 0;
+ 	const u8 *data, *end;
++	u8 offload_caps = 0;
+ 
+ 	ret = request_firmware(&fw, fw_wm, dev);
+ 	if (ret)
+@@ -199,7 +199,10 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+ 		data += sizeof(*rel_info);
+ 
+ 		if (rel_info->tag == MT7921_FW_TAG_FEATURE) {
++			struct mt7921_fw_features *features;
++
+ 			features = (struct mt7921_fw_features *)data;
++			offload_caps = features->data;
+ 			break;
+ 		}
+ 
+@@ -209,7 +212,7 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
+ out:
+ 	release_firmware(fw);
+ 
+-	return features ? features->data : 0;
++	return offload_caps;
+ }
+ EXPORT_SYMBOL_GPL(mt7921_check_offload_capability);
+ 
+-- 
+2.39.2
 
-Dunno. Maybe it's not worth thinking about the extra memory space vs.
-the extra maintenance cost. But maybe at least on 64-bit we could steal
-a bit from the unsigned long? Not sure what all the users are...
-
-johannes
