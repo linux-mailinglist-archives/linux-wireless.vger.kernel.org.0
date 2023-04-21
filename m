@@ -2,184 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69AD26EA35E
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 07:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E33B6EA390
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 08:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbjDUFxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Apr 2023 01:53:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44542 "EHLO
+        id S229469AbjDUGOA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Apr 2023 02:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233615AbjDUFx3 (ORCPT
+        with ESMTP id S229456AbjDUGN6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Apr 2023 01:53:29 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B6A61A7
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 22:53:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682056405; x=1713592405;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rRtfqkAQl1Ye5pcv39le2XF5WDQBHPmxMvnkLo5Yj3s=;
-  b=KD4FgOZeL0nvv3VxDNkt0VKC+n6Wlfx0f5ZijH3s3PXhHhsgtg7cTelN
-   gp7mbZOYi7+4GmYNY2lnvy7aptnTjCueDMGAe+9kHHA8/dq7wjicuppRg
-   WhZKEakTS3MjvupPiAXt2DXzdI12WH3e3dJlx44QUREjT1mUPhV/0MPGY
-   mQXt/3hPl8cc2q3KcbczVB0bVQFNOErU7GZO8D6UYqZr0rqiGhr4pYy1g
-   A35XJ0bIzmRycj2/D6qWsvgyQaUl3Ckjz28f52qIDDbVF/VJ4CMu+Oqxs
-   QMLXh2PhTXB9TTB7B+xR8mtGol7QzWmk5judaIM6E6jlFVOKBahYBMcfG
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="408860906"
-X-IronPort-AV: E=Sophos;i="5.99,214,1677571200"; 
-   d="scan'208";a="408860906"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 22:53:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="722649055"
-X-IronPort-AV: E=Sophos;i="5.99,214,1677571200"; 
-   d="scan'208";a="722649055"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 20 Apr 2023 22:53:05 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ppjhg-000gMC-0r;
-        Fri, 21 Apr 2023 05:53:04 +0000
-Date:   Fri, 21 Apr 2023 13:52:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [wireless-next:main] BUILD SUCCESS
- 3288ee5844b74cebb94ed15bc9b5b9d3223ae038
-Message-ID: <64422490.Evngop18qJ3sQvTY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        Fri, 21 Apr 2023 02:13:58 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C04A1BFE
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 23:13:55 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33L5Ald0005019;
+        Fri, 21 Apr 2023 06:13:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=8EMZQIqwZIdP0AjhCHcfFK/Llbb+vQHSXA8i55cD3R8=;
+ b=OfXwqQYkMlbTtHTbexmf9jr9l6fSHiKKGYailZP2svWre23EdrKlQg69P27OtgCfjveJ
+ F2BERH2XZ9uar0mYPbucMYc3H3ZJfvybESIZZrT1TKZZMcqOiDaSnJO9Ygoo+brBSQtY
+ ISRTKKRSnmgKcpQwyjxBdZr5zq+z6dcXcuc6H8xIwpnRJINTZvCpXBCA1mqk26rcxJzo
+ 10s8znpZszsAIpLluIG5U1BJinX72EZZiNDRX4E02JAM7gcYzaSMp9CBSEeUIlwYNKf4
+ VhwUweXMtcC3/coG5CZqbIgmGRXmYb7VGBriIYfpkLaNrC13+nfcrCPCd9NaRw3ISCrr uQ== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q37qfsnbc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Apr 2023 06:13:44 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33L6DhYJ000678
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 21 Apr 2023 06:13:43 GMT
+Received: from rajkbhag-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Thu, 20 Apr 2023 23:13:42 -0700
+From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Subject: [PATCH] wifi: cfg80211: allow reg update by driver even if wiphy->regd is set
+Date:   Fri, 21 Apr 2023 11:43:12 +0530
+Message-ID: <20230421061312.13722-1-quic_rajkbhag@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: klh2bScpfJZ-6DTqOiLX2tDWSl9szgFa
+X-Proofpoint-ORIG-GUID: klh2bScpfJZ-6DTqOiLX2tDWSl9szgFa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-20_17,2023-04-20_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ spamscore=0 clxscore=1011 phishscore=0 priorityscore=1501 bulkscore=0
+ mlxlogscore=999 impostorscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2304210052
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 3288ee5844b74cebb94ed15bc9b5b9d3223ae038  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+Currently regulatory update by driver is not allowed when the
+wiphy->regd is already set and drivers_request->intersect is false.
 
-elapsed time: 725m
+During wiphy registration, some drivers (ath10k does this currently)
+first register the world regulatory to cfg80211 using
+wiphy_apply_custom_regulatory(). The driver then obtain the current
+operating country and tries to update the correct regulatory to
+cfg80211 using regulatory_hint().
 
-configs tested: 102
-configs skipped: 4
+But at this point, wiphy->regd is already set to world regulatory.
+Also, since this is the first request from driver after the world
+regulatory is set this will result in drivers_request->intersect
+set to false. In this condition the driver request regulatory is not
+allowed to update to cfg80211 in reg_set_rd_driver(). This restricts
+the device operation to the world regulatory.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This driver request to update the requlatory with current operating
+country is valid and should be updated to cfg80211. Hence allow
+regulatory update by driver even if the wiphy->regd is already set
+and driver_request->intersect is false.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r005-20230417   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r006-20230416   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r043-20230416   gcc  
-arc                  randconfig-r043-20230417   gcc  
-arc                  randconfig-r043-20230420   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r046-20230416   clang
-arm                  randconfig-r046-20230417   gcc  
-arm                  randconfig-r046-20230420   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-hexagon      buildonly-randconfig-r003-20230417   clang
-hexagon              randconfig-r041-20230416   clang
-hexagon              randconfig-r041-20230417   clang
-hexagon              randconfig-r041-20230420   clang
-hexagon              randconfig-r045-20230416   clang
-hexagon              randconfig-r045-20230417   clang
-hexagon              randconfig-r045-20230420   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230417   gcc  
-i386                 randconfig-a002-20230417   gcc  
-i386                 randconfig-a003-20230417   gcc  
-i386                 randconfig-a004-20230417   gcc  
-i386                 randconfig-a005-20230417   gcc  
-i386                 randconfig-a006-20230417   gcc  
-i386                 randconfig-a011-20230417   clang
-i386                 randconfig-a012-20230417   clang
-i386                 randconfig-a013-20230417   clang
-i386                 randconfig-a014-20230417   clang
-i386                 randconfig-a015-20230417   clang
-i386                 randconfig-a016-20230417   clang
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r002-20230417   gcc  
-ia64         buildonly-randconfig-r005-20230416   gcc  
-ia64                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r006-20230418   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k         buildonly-randconfig-r005-20230418   gcc  
-m68k                                defconfig   gcc  
-microblaze   buildonly-randconfig-r003-20230418   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc     buildonly-randconfig-r006-20230417   gcc  
-parisc       buildonly-randconfig-r004-20230416   gcc  
-parisc       buildonly-randconfig-r004-20230417   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r001-20230417   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230416   gcc  
-riscv                randconfig-r042-20230417   clang
-riscv                randconfig-r042-20230420   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230416   gcc  
-s390                 randconfig-r044-20230417   clang
-s390                 randconfig-r044-20230420   gcc  
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r003-20230416   gcc  
-sparc        buildonly-randconfig-r001-20230416   gcc  
-sparc        buildonly-randconfig-r002-20230418   gcc  
-sparc                               defconfig   gcc  
-sparc64      buildonly-randconfig-r002-20230416   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230417   gcc  
-x86_64               randconfig-a002-20230417   gcc  
-x86_64               randconfig-a003-20230417   gcc  
-x86_64               randconfig-a004-20230417   gcc  
-x86_64               randconfig-a005-20230417   gcc  
-x86_64               randconfig-a006-20230417   gcc  
-x86_64               randconfig-a011-20230417   clang
-x86_64               randconfig-a012-20230417   clang
-x86_64               randconfig-a013-20230417   clang
-x86_64               randconfig-a014-20230417   clang
-x86_64               randconfig-a015-20230417   clang
-x86_64               randconfig-a016-20230417   clang
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r001-20230418   gcc  
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+---
+ net/wireless/reg.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 0d40d6af7e10..6cf0bc386f94 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -3833,7 +3833,7 @@ static int reg_set_rd_driver(const struct ieee80211_regdomain *rd,
+ {
+ 	const struct ieee80211_regdomain *regd;
+ 	const struct ieee80211_regdomain *intersected_rd = NULL;
+-	const struct ieee80211_regdomain *tmp;
++	const struct ieee80211_regdomain *tmp = NULL;
+ 	struct wiphy *request_wiphy;
+ 
+ 	if (is_world_regdom(rd->alpha2))
+@@ -3856,10 +3856,8 @@ static int reg_set_rd_driver(const struct ieee80211_regdomain *rd,
+ 	if (!driver_request->intersect) {
+ 		ASSERT_RTNL();
+ 		wiphy_lock(request_wiphy);
+-		if (request_wiphy->regd) {
+-			wiphy_unlock(request_wiphy);
+-			return -EALREADY;
+-		}
++		if (request_wiphy->regd)
++			tmp = get_wiphy_regdom(request_wiphy);
+ 
+ 		regd = reg_copy_regd(rd);
+ 		if (IS_ERR(regd)) {
+@@ -3868,6 +3866,7 @@ static int reg_set_rd_driver(const struct ieee80211_regdomain *rd,
+ 		}
+ 
+ 		rcu_assign_pointer(request_wiphy->regd, regd);
++		rcu_free_regdom(tmp);
+ 		wiphy_unlock(request_wiphy);
+ 		reset_regdomains(false, rd);
+ 		return 0;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.17.1
+
