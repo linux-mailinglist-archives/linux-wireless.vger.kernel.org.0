@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AEEB6EA1C4
+	by mail.lfdr.de (Postfix) with ESMTP id C6F296EA1C5
 	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 04:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233609AbjDUCqL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 22:46:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39940 "EHLO
+        id S233612AbjDUCqM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 22:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232790AbjDUCqK (ORCPT
+        with ESMTP id S229689AbjDUCqK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 20 Apr 2023 22:46:10 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A2A63AB9
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A14D3585
         for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 19:46:08 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33L2k1oB5015999, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33L2k2oB5015999, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33L2k1oB5015999
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33L2k2oB5015999
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 21 Apr 2023 10:46:01 +0800
+        Fri, 21 Apr 2023 10:46:02 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -33,9 +33,9 @@ From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <leo.li@realtek.com>, <gary.chang@realtek.com>,
         <linux-wireless@vger.kernel.org>
-Subject: [PATCH 1/8] wifi: rtw89: 8851b: add 8851B basic chip_info
-Date:   Fri, 21 Apr 2023 10:45:44 +0800
-Message-ID: <20230421024551.29994-2-pkshih@realtek.com>
+Subject: [PATCH 2/8] wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
+Date:   Fri, 21 Apr 2023 10:45:45 +0800
+Message-ID: <20230421024551.29994-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230421024551.29994-1-pkshih@realtek.com>
 References: <20230421024551.29994-1-pkshih@realtek.com>
@@ -58,145 +58,107 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-8851B is a 1x1 80 MHz bandwidth chip working on 2/5 GHz. Add these basic
-information, and more settings will be added by functions.
+Add PCI entry to 8851BE with its device ID 10ec:b851, also fill PCI info
+according to its capabilities.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 101 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8851b.h |  15 +++
- 2 files changed, 116 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b.h
+ .../net/wireless/realtek/rtw89/rtw8851be.c    | 86 +++++++++++++++++++
+ 1 file changed, 86 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851be.c
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
 new file mode 100644
-index 0000000000000..a0aaac74b0ec8
+index 0000000000000..0f7711c50bd15
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -0,0 +1,101 @@
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+@@ -0,0 +1,86 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/* Copyright(c) 2022-2023  Realtek Corporation
 + */
 +
-+#include "coex.h"
-+#include "fw.h"
-+#include "mac.h"
-+#include "phy.h"
++#include <linux/module.h>
++#include <linux/pci.h>
++
++#include "pci.h"
 +#include "reg.h"
 +#include "rtw8851b.h"
-+#include "rtw8851b_table.h"
-+#include "txrx.h"
-+#include "util.h"
 +
-+#define RTW8851B_FW_FORMAT_MAX 0
-+#define RTW8851B_FW_BASENAME "rtw89/rtw8851b_fw"
-+#define RTW8851B_MODULE_FIRMWARE \
-+	RTW8851B_FW_BASENAME ".bin"
++static const struct rtw89_pci_info rtw8851b_pci_info = {
++	.txbd_trunc_mode	= MAC_AX_BD_TRUNC,
++	.rxbd_trunc_mode	= MAC_AX_BD_TRUNC,
++	.rxbd_mode		= MAC_AX_RXBD_PKT,
++	.tag_mode		= MAC_AX_TAG_MULTI,
++	.tx_burst		= MAC_AX_TX_BURST_2048B,
++	.rx_burst		= MAC_AX_RX_BURST_128B,
++	.wd_dma_idle_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
++	.wd_dma_act_intvl	= MAC_AX_WD_DMA_INTVL_256NS,
++	.multi_tag_num		= MAC_AX_TAG_NUM_8,
++	.lbc_en			= MAC_AX_PCIE_ENABLE,
++	.lbc_tmr		= MAC_AX_LBC_TMR_2MS,
++	.autok_en		= MAC_AX_PCIE_DISABLE,
++	.io_rcy_en		= MAC_AX_PCIE_DISABLE,
++	.io_rcy_tmr		= MAC_AX_IO_RCY_ANA_TMR_6MS,
 +
-+static const struct rtw89_chip_ops rtw8851b_chip_ops = {
-+	.fem_setup		= NULL,
-+	.fill_txdesc		= rtw89_core_fill_txdesc,
-+	.fill_txdesc_fwcmd	= rtw89_core_fill_txdesc,
-+	.h2c_dctl_sec_cam	= NULL,
++	.init_cfg_reg		= R_AX_PCIE_INIT_CFG1,
++	.txhci_en_bit		= B_AX_TXHCI_EN,
++	.rxhci_en_bit		= B_AX_RXHCI_EN,
++	.rxbd_mode_bit		= B_AX_RXBD_MODE,
++	.exp_ctrl_reg		= R_AX_PCIE_EXP_CTRL,
++	.max_tag_num_mask	= B_AX_MAX_TAG_NUM,
++	.rxbd_rwptr_clr_reg	= R_AX_RXBD_RWPTR_CLR,
++	.txbd_rwptr_clr2_reg	= 0,
++	.dma_stop1		= {R_AX_PCIE_DMA_STOP1, B_AX_TX_STOP1_MASK_V1},
++	.dma_stop2		= {0},
++	.dma_busy1		= {R_AX_PCIE_DMA_BUSY1, DMA_BUSY1_CHECK_V1},
++	.dma_busy2_reg		= 0,
++	.dma_busy3_reg		= R_AX_PCIE_DMA_BUSY1,
++
++	.rpwm_addr		= R_AX_PCIE_HRPWM,
++	.cpwm_addr		= R_AX_CPWM,
++	.tx_dma_ch_mask		= BIT(RTW89_TXCH_ACH4) | BIT(RTW89_TXCH_ACH5) |
++				  BIT(RTW89_TXCH_ACH6) | BIT(RTW89_TXCH_ACH7) |
++				  BIT(RTW89_TXCH_CH10) | BIT(RTW89_TXCH_CH11),
++	.bd_idx_addr_low_power	= NULL,
++	.dma_addr_set		= &rtw89_pci_ch_dma_addr_set,
++	.bd_ram_table		= &rtw89_bd_ram_table_single,
++
++	.ltr_set		= rtw89_pci_ltr_set,
++	.fill_txaddr_info	= rtw89_pci_fill_txaddr_info,
++	.config_intr_mask	= rtw89_pci_config_intr_mask,
++	.enable_intr		= rtw89_pci_enable_intr,
++	.disable_intr		= rtw89_pci_disable_intr,
++	.recognize_intrs	= rtw89_pci_recognize_intrs,
 +};
 +
-+const struct rtw89_chip_info rtw8851b_chip_info = {
-+	.chip_id		= RTL8851B,
-+	.ops			= &rtw8851b_chip_ops,
-+	.fw_basename		= RTW8851B_FW_BASENAME,
-+	.fw_format_max		= RTW8851B_FW_FORMAT_MAX,
-+	.try_ce_fw		= true,
-+	.fifo_size		= 196608,
-+	.dle_scc_rsvd_size	= 98304,
-+	.max_amsdu_limit	= 3500,
-+	.dis_2g_40m_ul_ofdma	= true,
-+	.rsvd_ple_ofst		= 0x2f800,
-+	.wde_qempty_acq_num     = 4,
-+	.wde_qempty_mgq_sel     = 4,
-+	.rf_base_addr		= {0xe000},
-+	.pwr_on_seq		= NULL,
-+	.pwr_off_seq		= NULL,
-+	.bb_table		= &rtw89_8851b_phy_bb_table,
-+	.bb_gain_table		= &rtw89_8851b_phy_bb_gain_table,
-+	.rf_table		= {&rtw89_8851b_phy_radioa_table,},
-+	.nctl_table		= &rtw89_8851b_phy_nctl_table,
-+	.byr_table		= &rtw89_8851b_byr_table,
-+	.dflt_parms		= &rtw89_8851b_dflt_parms,
-+	.rfe_parms_conf		= rtw89_8851b_rfe_parms_conf,
-+	.txpwr_factor_rf	= 2,
-+	.txpwr_factor_mac	= 1,
-+	.dig_table		= NULL,
-+	.tssi_dbw_table		= NULL,
-+	.support_chanctx_num	= 0,
-+	.support_bands		= BIT(NL80211_BAND_2GHZ) |
-+				  BIT(NL80211_BAND_5GHZ),
-+	.support_bw160		= false,
-+	.support_ul_tb_ctrl	= true,
-+	.hw_sec_hdr		= false,
-+	.rf_path_num		= 1,
-+	.tx_nss			= 1,
-+	.rx_nss			= 1,
-+	.acam_num		= 32,
-+	.bcam_num		= 20,
-+	.scam_num		= 128,
-+	.bacam_num		= 2,
-+	.bacam_dynamic_num	= 4,
-+	.bacam_v1		= false,
-+	.sec_ctrl_efuse_size	= 4,
-+	.physical_efuse_size	= 1216,
-+	.logical_efuse_size	= 2048,
-+	.limit_efuse_size	= 1280,
-+	.dav_phy_efuse_size	= 0,
-+	.dav_log_efuse_size	= 0,
-+	.phycap_addr		= 0x580,
-+	.phycap_size		= 128,
-+	.para_ver		= 0,
-+	.wlcx_desired		= 0x06000000,
-+	.btcx_desired		= 0x7,
-+	.scbd			= 0x1,
-+	.mailbox		= 0x1,
-+
-+	.ps_mode_supported	= BIT(RTW89_PS_MODE_RFOFF) |
-+				  BIT(RTW89_PS_MODE_CLK_GATED),
-+	.low_power_hci_modes	= 0,
-+	.h2c_cctl_func_id	= H2C_FUNC_MAC_CCTLINFO_UD,
-+	.hci_func_en_addr	= R_AX_HCI_FUNC_EN,
-+	.h2c_desc_size		= sizeof(struct rtw89_txwd_body),
-+	.txwd_body_size		= sizeof(struct rtw89_txwd_body),
-+	.bss_clr_map_reg	= R_BSS_CLR_MAP_V1,
-+	.dma_ch_mask		= BIT(RTW89_DMA_ACH4) | BIT(RTW89_DMA_ACH5) |
-+				  BIT(RTW89_DMA_ACH6) | BIT(RTW89_DMA_ACH7) |
-+				  BIT(RTW89_DMA_B1MG) | BIT(RTW89_DMA_B1HI),
-+	.edcca_lvl_reg		= R_SEG0R_EDCCA_LVL_V1,
++static const struct rtw89_driver_info rtw89_8851be_info = {
++	.chip = &rtw8851b_chip_info,
++	.bus = {
++		.pci = &rtw8851b_pci_info,
++	},
 +};
-+EXPORT_SYMBOL(rtw8851b_chip_info);
 +
-+MODULE_FIRMWARE(RTW8851B_MODULE_FIRMWARE);
++static const struct pci_device_id rtw89_8851be_id_table[] = {
++	{
++		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xb851),
++		.driver_data = (kernel_ulong_t)&rtw89_8851be_info,
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(pci, rtw89_8851be_id_table);
++
++static struct pci_driver rtw89_8851be_driver = {
++	.name		= "rtw89_8851be",
++	.id_table	= rtw89_8851be_id_table,
++	.probe		= rtw89_pci_probe,
++	.remove		= rtw89_pci_remove,
++	.driver.pm	= &rtw89_pm_ops,
++};
++module_pci_driver(rtw89_8851be_driver);
++
 +MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11ax wireless 8851B driver");
++MODULE_DESCRIPTION("Realtek 802.11ax wireless 8851BE driver");
 +MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.h b/drivers/net/wireless/realtek/rtw89/rtw8851b.h
-new file mode 100644
-index 0000000000000..e34b7d09ad6df
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-+/* Copyright(c) 2022-2023  Realtek Corporation
-+ */
-+
-+#ifndef __RTW89_8851B_H__
-+#define __RTW89_8851B_H__
-+
-+#include "core.h"
-+
-+#define RF_PATH_NUM_8851B 1
-+#define BB_PATH_NUM_8851B 1
-+
-+extern const struct rtw89_chip_info rtw8851b_chip_info;
-+
-+#endif
 -- 
 2.25.1
 
