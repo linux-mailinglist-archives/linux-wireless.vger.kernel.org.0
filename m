@@ -2,87 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80F716EAD38
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 16:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 192056EAD4D
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 16:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232903AbjDUOkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Apr 2023 10:40:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46608 "EHLO
+        id S233069AbjDUOmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Apr 2023 10:42:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbjDUOjq (ORCPT
+        with ESMTP id S232930AbjDUOmG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Apr 2023 10:39:46 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF8415616
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Apr 2023 07:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=C4gj1rdsY5Z6p5jNGYbkOqRjPl5OXVGY3dVpTyv0MvY=;
-        t=1682087896; x=1683297496; b=WuB/ZryuPajYmZndafaa0O7NM24H/Mqy8nlhhh+Ay8fqhte
-        QUBi5tI56J1cq4ARlrErv06canUMd8flD9kKPrKjzsKI6Qs8d0HO7d0EkPo6h9mxEM7sMgpJP2nhz
-        R935UlqEYL0e8WKd2sWhWDhQkQox4zjVLsb1zjgy0RpduqTx62KRbbZ6Fs3XSryL1sO+F3s2s0Zxa
-        tCFFTwCrdCoaqZSqJ7Jrk6zNYpuWAElH/h3O7iclTgjwCeaeJ8mqd86djUrel6TM75WM3fPxnYt7N
-        dzIoGaTjKREYRYBInAqL7ByKu4nXVQBN+tH+RW1ccc2m8+fuAuuGQSi8Hmxv53YQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pprtg-004TZl-0b;
-        Fri, 21 Apr 2023 16:38:00 +0200
-Message-ID: <3f505aba559d4ce068ef6d2fd7743045e0d93b9f.camel@sipsolutions.net>
-Subject: Re: [RFC v2] average: rewrite for clearity
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Benjamin Beichler <benjamin.beichler@uni-rostock.de>, nbd@nbd.name,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 21 Apr 2023 16:37:59 +0200
-In-Reply-To: <20230421134604.211128-1-benjamin.beichler@uni-rostock.de>
-References: <20230421134604.211128-1-benjamin.beichler@uni-rostock.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Fri, 21 Apr 2023 10:42:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBDE146D0;
+        Fri, 21 Apr 2023 07:41:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB58365152;
+        Fri, 21 Apr 2023 14:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B38CC43442;
+        Fri, 21 Apr 2023 14:39:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682087975;
+        bh=qfrWl+B2v1A7R31TzqbsKEL9h1M0TeCmWSIKZk2uNPk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=YIIlLuafhg0lV3iGVvYNBY+o2Qqzg/Gl5H/Ff7aktjPRZtaqRGv2YxuiABufWmb7F
+         +VtNB3kApmE3Su7iRna8oac9IhJolFbBLgGlChauw1nZ7GbppqBHbO1txbqJlD4NCd
+         eXY3itnFWyr+61IaI+GZ/2PQmGPjXdHjEt7F6d9BOiTV2IwBbOyBXGAcA/uUNY4MPq
+         g04FTD/bI/9Gb0/lMlMsA/kK6LwQFkgBfZRfZg6vCIXV4bvhm2BHKr5Xiy3XDjY4q0
+         U7tPL/WsvS5zhT+sxJHsNR/H/GlwcuSDzin5oDHZxUJ3cKSsubYCjgdwrcSYvwXGxY
+         2jv07KOqgjCRw==
+Date:   Fri, 21 Apr 2023 07:39:34 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: pull-request: wireless-next-2023-04-21
+Message-ID: <20230421073934.1e4bc30c@kernel.org>
+In-Reply-To: <20230421104726.800BCC433D2@smtp.kernel.org>
+References: <20230421104726.800BCC433D2@smtp.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-04-21 at 13:46 +0000, Benjamin Beichler wrote:
-> Move the former *_add function with its implicit initialization into a
-> separate function, when the user explicitly wants to init with the first
-> added value, although this creates issues, when 0 is a expected value for
-> the internal value.
->=20
-> Add a separate init function with value parameter to allow init with
-> distinct value, which was formerly done by the implicit init of old
-> *_add function.
->=20
+On Fri, 21 Apr 2023 10:47:26 +0000 (UTC) Kalle Valo wrote:
+> Hi,
+> 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
 
-Sure, this is what you said :-)
+Sparse warning to follow up on:
 
-I still don't really think it's feasible. First, this breaks all the
-users, because if you have e.g. virtio's DECLARE_EWMA(pkt_len, 0, 64)
-then it will take a long time to get away from 0.
-
-So then we could say we'll just fix them, but what value actually makes
-sense to init with? You don't necessarily know, right? Initially biasing
-towards the first value makes a lot more sense than initially biasing
-towards zero, no? And then if you want to achieve that, now you have to
-either use _add_or_init(), which is probably what people will do, but
-that continues having the problem ...
-
-I don't really see how this is a net improvement - we'd still have to
-fix the individual users with it, e.g. maybe the mesh case that started
-this investigation could bias towards success (init with 100) and then
-use _add() rather than _add_or_init(), but then again we're back to
-having to make individual choices with the users. I don't really see how
-that's better than fixing it for real with the existing behaviour of
-biasing towards the first value?
-
-johannes
+drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25: warning: invalid assignment: |=
+drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25:    left side has type restricted __le32
+drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25:    right side has type unsigned long
