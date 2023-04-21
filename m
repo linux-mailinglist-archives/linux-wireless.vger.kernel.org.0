@@ -2,44 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 192056EAD4D
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 16:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8C26EAD7C
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 16:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233069AbjDUOmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Apr 2023 10:42:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45340 "EHLO
+        id S232936AbjDUOyN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Apr 2023 10:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232930AbjDUOmG (ORCPT
+        with ESMTP id S232480AbjDUOyH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Apr 2023 10:42:06 -0400
+        Fri, 21 Apr 2023 10:54:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBDE146D0;
-        Fri, 21 Apr 2023 07:41:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10C9BB86;
+        Fri, 21 Apr 2023 07:54:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB58365152;
-        Fri, 21 Apr 2023 14:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B38CC43442;
-        Fri, 21 Apr 2023 14:39:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1308E61083;
+        Fri, 21 Apr 2023 14:54:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECE3C433D2;
+        Fri, 21 Apr 2023 14:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682087975;
-        bh=qfrWl+B2v1A7R31TzqbsKEL9h1M0TeCmWSIKZk2uNPk=;
+        s=k20201202; t=1682088845;
+        bh=qTp7GhdoyNEaqLzE1Ywju/UzLL5cR+pDzBIJw/MlMXM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YIIlLuafhg0lV3iGVvYNBY+o2Qqzg/Gl5H/Ff7aktjPRZtaqRGv2YxuiABufWmb7F
-         +VtNB3kApmE3Su7iRna8oac9IhJolFbBLgGlChauw1nZ7GbppqBHbO1txbqJlD4NCd
-         eXY3itnFWyr+61IaI+GZ/2PQmGPjXdHjEt7F6d9BOiTV2IwBbOyBXGAcA/uUNY4MPq
-         g04FTD/bI/9Gb0/lMlMsA/kK6LwQFkgBfZRfZg6vCIXV4bvhm2BHKr5Xiy3XDjY4q0
-         U7tPL/WsvS5zhT+sxJHsNR/H/GlwcuSDzin5oDHZxUJ3cKSsubYCjgdwrcSYvwXGxY
-         2jv07KOqgjCRw==
-Date:   Fri, 21 Apr 2023 07:39:34 -0700
+        b=WWpP3Um8HdY7SUH9IcJoMzxwBQZbB84vX2zq+AuSwFv4OMIde7MUXVc12PfCHZNvi
+         d4VN3a5DyqavrREJh0pKbPe4K5MLQEqVIOjfqDaMhZJumstSnI3VZXn9sE0V3rKr93
+         lgqdKd2v8oyoR4BkQIfSlnSsErdhubzwEJVTMpdH0P6nT10IyuyHe/nWss9wuQqybF
+         wfXeiPhVP4I9RJ44X1TrvNwg2ICf+sbtD2Pmu1vt7XEfcRdLVSsmZ8rm5LZo2eTH8O
+         SqM7d/PRpPS8PmQGewbilGKE9mvtpb7CAieyhyoYJbsfuVuduYoGlv1mr7QMQ2bGJV
+         dcNTDS2CltK3w==
+Date:   Fri, 21 Apr 2023 07:54:04 -0700
 From:   Jakub Kicinski <kuba@kernel.org>
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 Subject: Re: pull-request: wireless-next-2023-04-21
-Message-ID: <20230421073934.1e4bc30c@kernel.org>
+Message-ID: <20230421075404.63c04bca@kernel.org>
 In-Reply-To: <20230421104726.800BCC433D2@smtp.kernel.org>
 References: <20230421104726.800BCC433D2@smtp.kernel.org>
 MIME-Version: 1.0
@@ -56,13 +54,12 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 On Fri, 21 Apr 2023 10:47:26 +0000 (UTC) Kalle Valo wrote:
-> Hi,
-> 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
+>  .../net/wireless/realtek/rtw89/rtw8851b_table.c    | 14824 +++++++++++++++++++
+>  .../net/wireless/realtek/rtw89/rtw8851b_table.h    |    21 +
 
-Sparse warning to follow up on:
+We should load these like FW, see the proposal outlined in
+https://lore.kernel.org/all/20221116222339.54052a83@kernel.org/
+for example. Would that not work?
 
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25: warning: invalid assignment: |=
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25:    left side has type restricted __le32
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25:    right side has type unsigned long
+The huge register tables in C sources makes it look like
+a Windows drivers :(
