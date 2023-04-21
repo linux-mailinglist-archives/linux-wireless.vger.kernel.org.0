@@ -2,82 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60B7C6EADA5
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 17:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9101A6EADDE
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 17:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232573AbjDUPAq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Apr 2023 11:00:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42888 "EHLO
+        id S231368AbjDUPQG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Apr 2023 11:16:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231694AbjDUPAn (ORCPT
+        with ESMTP id S229877AbjDUPQF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Apr 2023 11:00:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEC29EF2;
-        Fri, 21 Apr 2023 08:00:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D45A61B9D;
-        Fri, 21 Apr 2023 15:00:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F3072C433EF;
-        Fri, 21 Apr 2023 15:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682089242;
-        bh=cAGgKU7Q/1LqHz8wXIS3qEUfihzPCQ+eBotR0hAqZew=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=pqQUYkqw5KZ2xh2xQW0UTIyM6rB4gAtEzTO2qdohrVw/XbUNZsPyMemR99h2XI9st
-         gjoYlLWtgoTkngJcYtXPImCp8I8bexM+EZ3bNQTuBaPdoU8WpnBup+SFvS+S/Bx/5Q
-         gApcH9oacN7EDmlmGh0DpNu/0WEcWquu3fGgi4fwfSx4KNzlshaph7Fk8bvPdOigPA
-         aN4RcI5NBjrE1ih4EAUERyEoz5iXLzKMHH0HBXanUNa4oqtXxYVP/nUidB0CjQPZoR
-         TFUd1z13CNhC7UYBKBGCT5hgSlkprqdagFNm8rqSMLecVsnhCGRiy/mHznPPcKGLc1
-         Slky2zA7NHkrg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D69DAC561EE;
-        Fri, 21 Apr 2023 15:00:41 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Fri, 21 Apr 2023 11:16:05 -0400
+Received: from mx1.uni-rostock.de (mx1.uni-rostock.de [139.30.22.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492BA93F6
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Apr 2023 08:16:02 -0700 (PDT)
+DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmze; 
+ t=1682090160; bh=oHO0ZIn7nhiCUlXAjnguKWwzOIRSomeBe0HbzEeUUD0=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=ed25519-sha256; b=
+ F4+f7QO/2R2qBvU4nFnHhJQAWjGaeoI5AtFc1QefbPHVDqG+qh7WmQzDPrn1rWgYfrAEiewVUj2oxXzhX9+UBQ==
+DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmz; 
+ t=1682090160; bh=oHO0ZIn7nhiCUlXAjnguKWwzOIRSomeBe0HbzEeUUD0=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=rsa-sha256; b=
+ Swey5TTHr3on4/yrTbRuYGTHA/k8yQWK+D3W1NV/zpEa35aRW10U2bmIjILY6SJrvWwprva7byAcq1/kqHpes8aPjnU+6MYqXrvYDuAXyCHeUqEW1aA++JxM6IubdJ+VhKWYsM+Cl6ZqSsRK1wGCYg3Mw8xN8R3khPDtE6Ugyo0=
+Received: from 139.30.22.84 by mx1.uni-rostock.de (Tls12, Aes256, Sha384,
+ DiffieHellmanEllipticKey384); Fri, 21 Apr 2023 15:16:00 GMT
+Received: from [139.30.201.34] (139.30.201.34) by mail1.uni-rostock.de
+ (139.30.22.84) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Fri, 21 Apr
+ 2023 17:15:59 +0200
+Message-ID: <bea043c3-1cee-e2a6-ca4b-83e80404358c@uni-rostock.de>
+Date:   Fri, 21 Apr 2023 17:16:08 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-next-2023-04-21
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168208924187.15667.11609697303265049571.git-patchwork-notify@kernel.org>
-Date:   Fri, 21 Apr 2023 15:00:41 +0000
-References: <20230421104726.800BCC433D2@smtp.kernel.org>
-In-Reply-To: <20230421104726.800BCC433D2@smtp.kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC v2] average: rewrite for clearity
+Content-Language: de-DE
+To:     Johannes Berg <johannes@sipsolutions.net>, <nbd@nbd.name>,
+        <linux-wireless@vger.kernel.org>
+References: <20230421134604.211128-1-benjamin.beichler@uni-rostock.de>
+ <3f505aba559d4ce068ef6d2fd7743045e0d93b9f.camel@sipsolutions.net>
+From:   Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
+Organization: =?UTF-8?Q?Universit=c3=a4t_Rostock?=
+In-Reply-To: <3f505aba559d4ce068ef6d2fd7743045e0d93b9f.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Originating-IP: [139.30.201.34]
+X-ClientProxiedBy: EMAIL2.uni-rostock.de (139.30.22.82) To
+ mail1.uni-rostock.de (139.30.22.84)
+X-TM-SNTS-SMTP: 35B229DEEE8DAEF882B2533E0B56CDD00B4902532E4D6C4151FD4B822FCE37452000:8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Am 21.04.2023 um 16:37 schrieb Johannes Berg:
+> =5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
+=5F=5F=5F=5F=5F=5F=5F
+>   Achtung! Externe E-Mail: Klicken Sie erst dann auf Links und Anh=C3=A4nge,=
+ nachdem Sie die Vertrauensw=C3=BCrdigkeit der Absenderadresse gepr=C3=BCft ha=
+ben.
+> =5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
+=5F=5F=5F=5F=5F=5F=5F
+>
+> On Fri, 2023-04-21 at 13:46 +0000, Benjamin Beichler wrote:
+>> Move the former *=5Fadd function with its implicit initialization into a
+>> separate function, when the user explicitly wants to init with the first
+>> added value, although this creates issues, when 0 is a expected value for
+>> the internal value.
+>>
+>> Add a separate init function with value parameter to allow init with
+>> distinct value, which was formerly done by the implicit init of old
+>> *=5Fadd function.
+>>
+> Sure, this is what you said :-)
+>
+> I still don't really think it's feasible. First, this breaks all the
+> users, because if you have e.g. virtio's DECLARE=5FEWMA(pkt=5Flen, 0, 64)
+> then it will take a long time to get away from 0.
+>
+> So then we could say we'll just fix them, but what value actually makes
+> sense to init with=3F You don't necessarily know, right=3F Initially biasing
+> towards the first value makes a lot more sense than initially biasing
+> towards zero, no=3F And then if you want to achieve that, now you have to
+> either use =5Fadd=5For=5Finit(), which is probably what people will do, but
+> that continues having the problem ...
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I left out the the individual fixes for users, but for the samples I 
+looked into, either start values were given, or they were semantically 
+extractable.
 
-On Fri, 21 Apr 2023 10:47:26 +0000 (UTC) you wrote:
-> Hi,
-> 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-> 
-> Kalle
-> 
-> [...]
+e.g. virtios pkt=5Flen=C2=A0 ewma is clamped anyways, so using the clamp borde=
+r 
+or in between will be safe.
 
-Here is the summary with links:
-  - pull-request: wireless-next-2023-04-21
-    https://git.kernel.org/netdev/net-next/c/ca2889658015
+Most others are signals-strengths, many of them also only for 
+statistics, where a slow convergence is okay in my opinion.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> I don't really see how this is a net improvement - we'd still have to
+> fix the individual users with it, e.g. maybe the mesh case that started
+> this investigation could bias towards success (init with 100) and then
+> use =5Fadd() rather than =5Fadd=5For=5Finit(), but then again we're back to
+> having to make individual choices with the users. I don't really see how
+> that's better than fixing it for real with the existing behaviour of
+> biasing towards the first value=3F
 
+IMHO the net improvement is, that if you do not use the convenience 
+add=5For=5Finit function, it simply resembles the ewma filter of a math or 
+CS-textbook. The original problem was, that the ewma had a surprising 
+output in a special situation.
 
+But while writing the commit, I recognized, that the current ewma 
+implementation is only for unsigned values, which means the problem 
+really only happens for many consecutive 0 values. I try to think over, 
+what this means for the proposal of Felix, but I'm not able to think 
+about unsigned C-arithmetics today :-D
+
+If we use that fix, then we should have an additional compile time 
+check, that the precision has at least 2 or 4 bits, to really avoid the 
+problem, shouldn't we=3F
+
+Benjamin
