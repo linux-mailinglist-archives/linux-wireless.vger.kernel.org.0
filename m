@@ -2,53 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B27A6EAA23
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 14:17:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079706EBB06
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Apr 2023 21:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231788AbjDUMRx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Apr 2023 08:17:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57088 "EHLO
+        id S229508AbjDVTsq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Apr 2023 15:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231910AbjDUMRv (ORCPT
+        with ESMTP id S229751AbjDVTsp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Apr 2023 08:17:51 -0400
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1B3902B
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Apr 2023 05:17:49 -0700 (PDT)
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-760b58bcc0aso326484439f.3
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Apr 2023 05:17:49 -0700 (PDT)
+        Sat, 22 Apr 2023 15:48:45 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA321BD5
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Apr 2023 12:48:43 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3010889c6ebso1740731f8f.2
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Apr 2023 12:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1682192922; x=1684784922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UQMSHOEXy4dd32S1UV0ZhNWB6VKkhN22gnwR9IMusl0=;
+        b=nHmMObR7x3FiUkaAPIlaQyocvvgn5cZjZnvZUAlj19vRreiBRr0OrjVYcp34NcAoNu
+         9cdqrSazGuGiOA7k/p+EN9YMJFHSFkLxHLQH2DwgDlnX4sM6jZa3oJyPytw1Mwy05Nto
+         d5dQO1GKskQ4xoRCKnZaysBDP4R17bnTwmnNFBcoMesrDyLesbWmpJIsImdGvku+Hp3X
+         2wtM6bY/iq7tieTgsAPDLaFtxkcbUyqtyThPb1eNAPyowHojVgKL9R3TP3oUvIeVy/Cq
+         JS/jFKMN/GdYACkctrawwhLvQrne6MhmV7qhNGmqQ9/+7qwGfUWEj9PSm0JxNLaFWXYH
+         Zgrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682079469; x=1684671469;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=czyz4jPXZl6oM7+PF3+JFt1DVnlTxkTrAGRzEaB5Bgk=;
-        b=HMmuLw4IE0Sy1N8mMTRBk5FiRUo7R4nqIf0LYOVsiiY7nJ1R1g+F/6QjsmuYrUFeIp
-         EFyUJ8zk1wpaiiAP3y7dgjBBoL52Um6NhS/R/enhr8cS4ywNYSJkX6HN719oG//EYQMd
-         ZZDL54tzKlctmrSX8IjzHTejyNwCCPJCeobt9kYpHz/1iUqacbwPIxH8N/ZgKB0bF3KQ
-         lAMhYEHrUWqpk3rPBcORd5iB9gRbLWi5N722u2asKamMuFezugOvR3SYyZtXmmb4L7VC
-         eEagcN4hplPQ98OZ0hWZACyczJF5Xx51t2lwWem9aJ887rjWjHD07yJ3pks7183CZG96
-         LXOA==
-X-Gm-Message-State: AAQBX9dXN+xTv0fqoS+L5WK6AOPQMo7XFS4NkWfORUnIwf6Bdw6dy9VF
-        jyeArNF9vtbAmns/SYHSEVyXsDA8cM1NHC21gPpDQ+XCezC5
-X-Google-Smtp-Source: AKy350Z5L9F4MKiEFyqwzMO/3b69TKAPFK23KWq1pLXa3RrBpmt6Op3F0GyqDOTiThXXlsToK2BvgsLZYKFPH37pwP6WSpwcsuqJ
+        d=1e100.net; s=20221208; t=1682192922; x=1684784922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UQMSHOEXy4dd32S1UV0ZhNWB6VKkhN22gnwR9IMusl0=;
+        b=SCuRpeBigq7UOFzjLx7kXXKQdEFsiVKe9Fm23AFYInUmZwkLCcWTUhNAOzki6OWjRZ
+         kS6Q0fMUizyq3YLD/i/6XzGvjq6D84pN1fhIoyosX9mils+XtXnJosGptPvEkEEAFYbY
+         7gjfmTCc1eAYwT5i2q80nTceLdI5Kojuf6n58x5aasK9sl/eFxInR+H6EcZI4HTnNnX7
+         tr8uEUN2KRJbwi6kljWY91+S2e9rXR6ftMD5SO3R5C41R7PQXjdkIQKwArZGENjYKJ09
+         DQVsIuvp2Urbstcqv2sOAfgzr0qvR/7+fMZFdpaxzzThsqzFP6fCkEdFm2S7TAuLbRFC
+         mXPA==
+X-Gm-Message-State: AAQBX9eUC92yDhwtjT4epiIM/MM4RjCopQbs6I3yprtMOumPMiqIHLOy
+        4sZU2EQcb/Rk1fotLsV4/RtzMQ==
+X-Google-Smtp-Source: AKy350aLYJew3ugaktSPtVTFee5OZkYC67M5r+9LtUdpkJB3mKDc49tydAixWUKxvVGhL43y2CuajQ==
+X-Received: by 2002:adf:f3cb:0:b0:2f2:7adf:3c67 with SMTP id g11-20020adff3cb000000b002f27adf3c67mr6362132wrp.61.1682192922260;
+        Sat, 22 Apr 2023 12:48:42 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id u6-20020adff886000000b002f28de9f73bsm7159089wrp.55.2023.04.22.12.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Apr 2023 12:48:41 -0700 (PDT)
+Date:   Fri, 21 Apr 2023 15:39:45 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtw89: fix rtw89_read_chip_ver() for RTL8852B and
+ RTL8851B
+Message-ID: <3b1ed718-ce01-4a98-ae8b-3c042851c3f5@kili.mountain>
+References: <e4d912a2-37f8-4068-8861-7b9494ae731b@kili.mountain>
+ <7475bff70fd50c7e8527e66080e126b4eff440bb.camel@realtek.com>
 MIME-Version: 1.0
-X-Received: by 2002:a5e:a90b:0:b0:760:efd4:9582 with SMTP id
- c11-20020a5ea90b000000b00760efd49582mr2460102iod.2.1682079469260; Fri, 21 Apr
- 2023 05:17:49 -0700 (PDT)
-Date:   Fri, 21 Apr 2023 05:17:49 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000003fd60705f9d7a53b@google.com>
-Subject: [syzbot] [wireless?] WARNING in cfg80211_bss_update (3)
-From:   syzbot <syzbot+9d593239580fe3639301@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SORTED_RECIPS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7475bff70fd50c7e8527e66080e126b4eff440bb.camel@realtek.com>
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,67 +74,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Fri, Apr 21, 2023 at 11:48:43AM +0000, Ping-Ke Shih wrote:
+> On Fri, 2023-04-21 at 13:44 +0300, Dan Carpenter wrote:
+> > 
+> > The if statement is reversed so it will not record the chip version.
+> > This was detected using Smatch:
+> > 
+> >     drivers/net/wireless/realtek/rtw89/core.c:3593 rtw89_read_chip_ver()
+> >     error: uninitialized symbol 'val'.
+> 
+> I use smatch to check our driver regularly, but I can't find this error.
+> With the latest version v0.5.0-8321-g556064ca, I still can't find it.
+> Do I need to specify additional arguments? Thanks. 
+> 
 
-syzbot found the following issue on:
+You need the cross function database (which takes like 9 hours to build).
 
-HEAD commit:    6a8f57ae2eb0 Linux 6.3-rc7
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1716e35bc80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=11869c60f54496a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=9d593239580fe3639301
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+~/smatch/smatch_scripts/build_kernel_data.sh
 
-Unfortunately, I don't have any reproducer for this issue yet.
+regards,
+dan carpenter
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/beced60615bb/disk-6a8f57ae.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9ba2bd636062/vmlinux-6a8f57ae.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1f235faaf4bc/bzImage-6a8f57ae.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9d593239580fe3639301@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 15587 at net/wireless/scan.c:1584 cfg80211_combine_bsses net/wireless/scan.c:1584 [inline]
-WARNING: CPU: 1 PID: 15587 at net/wireless/scan.c:1584 cfg80211_bss_update+0x197d/0x21f0 net/wireless/scan.c:1778
-Modules linked in:
-CPU: 1 PID: 15587 Comm: kworker/u4:21 Not tainted 6.3.0-rc7-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
-Workqueue: phy15 ieee80211_iface_work
-RIP: 0010:cfg80211_combine_bsses net/wireless/scan.c:1584 [inline]
-RIP: 0010:cfg80211_bss_update+0x197d/0x21f0 net/wireless/scan.c:1778
-Code: df 48 c1 ea 03 80 3c 02 00 0f 85 15 06 00 00 49 c7 47 48 00 00 00 00 31 f6 31 ff e8 dd 1e 24 f8 e9 5c f1 ff ff e8 63 22 24 f8 <0f> 0b e9 8a f3 ff ff e8 57 22 24 f8 0f 0b 4c 89 f7 e8 6d 4d b5 fa
-RSP: 0018:ffffc9000637f598 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
-RDX: ffff88803b8cd7c0 RSI: ffffffff895ec8fd RDI: 0000000000000000
-RBP: ffff88807d2a8000 R08: 0000000000000000 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000094001 R12: ffff8880762a0068
-R13: 0000000000000005 R14: 0000000000000006 R15: ffff8880762a0000
-FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1f57b2eff8 CR3: 000000007df78000 CR4: 0000000000350ee0
-Call Trace:
- <TASK>
- cfg80211_inform_single_bss_frame_data+0x72c/0x1020 net/wireless/scan.c:2492
- cfg80211_inform_bss_frame_data+0xc3/0xca0 net/wireless/scan.c:2525
- ieee80211_bss_info_update+0x35c/0xb50 net/mac80211/scan.c:190
- ieee80211_rx_bss_info net/mac80211/ibss.c:1120 [inline]
- ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1609 [inline]
- ieee80211_ibss_rx_queued_mgmt+0x19c9/0x3030 net/mac80211/ibss.c:1638
- ieee80211_iface_process_skb net/mac80211/iface.c:1583 [inline]
- ieee80211_iface_work+0xa4d/0xd70 net/mac80211/iface.c:1637
- process_one_work+0x991/0x15c0 kernel/workqueue.c:2390
- worker_thread+0x669/0x1090 kernel/workqueue.c:2537
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
