@@ -2,59 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C166EA1CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 04:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0BE6EA1E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 04:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233329AbjDUCqi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Apr 2023 22:46:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40384 "EHLO
+        id S233710AbjDUCvS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Apr 2023 22:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233397AbjDUCqh (ORCPT
+        with ESMTP id S233728AbjDUCvN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Apr 2023 22:46:37 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DFCA6EA9
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Apr 2023 19:46:31 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33L2kOVZ1016490, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33L2kOVZ1016490
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 21 Apr 2023 10:46:24 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 21 Apr 2023 10:46:03 +0800
-Received: from localhost.localdomain (172.21.69.188) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 21 Apr 2023 10:46:02 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <leo.li@realtek.com>, <gary.chang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: [PATCH 8/8] wifi: rtw89: 8851b: add DLE mem and HFC quota
-Date:   Fri, 21 Apr 2023 10:45:51 +0800
-Message-ID: <20230421024551.29994-9-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230421024551.29994-1-pkshih@realtek.com>
-References: <20230421024551.29994-1-pkshih@realtek.com>
+        Thu, 20 Apr 2023 22:51:13 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C8E7692;
+        Thu, 20 Apr 2023 19:51:07 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-51f597c975fso1744062a12.0;
+        Thu, 20 Apr 2023 19:51:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682045466; x=1684637466;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2OMa4H5B7cQ31o0iO4EHjR7g/GmtbQFAxNrqAS+m3rA=;
+        b=ed6rzYNuCkWaolQBt1qf/IaUHcwfXxuC5SbNdlIaF08ctYw+9Z4paHRTmDAW4FtsAi
+         N8RRJRPFzktovjo7fpVlYA/p6AaCY2AgPdiXX26Trrodn72gYdhzSan2w7mBlOMVDpUJ
+         Tr6WoSC7BQ3lAtWHPpOrAcdMolmjkqZdiwhEkvWcfAyx5mxkKHBVpV29sanYgaENW+iB
+         +qOzsE1CiFbnqXwPWFDS3+KT81w7mLwRl1srwhsJW8DNKiJeKXelf8/Y8MuXTaCSEATO
+         1sp3CO6Lcx7iYnFy96NZbqYOjwpuPOb4qGltDAHHFWPwW5qvBsQYFUJnI1/aDJL9yayh
+         unVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682045466; x=1684637466;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2OMa4H5B7cQ31o0iO4EHjR7g/GmtbQFAxNrqAS+m3rA=;
+        b=GEMcwc5ZnkdVqUCwhYmulVUNujuN8xZVGiU06LHJmc9GUc0B2oBYbs5xtgL0gm4QcS
+         U2NIO7O3ZHRA+xFDq0tNwBk8s3xfa0i5mVjTQ82QaKmN53XOQRXJ3/8mxCLAItSwCBuQ
+         16v3jIuHc142Kos3kR7s0a8V/f6Errf2ouevAflZcqBDgMqTI/6lEjBCCnZtWxu4GDph
+         34hU23Xkn9ZQOeN0vFy1pNZXmSPoVgWz7jfThsPOAlLaD5/pUe+3nzL7bGwA/UZesiRs
+         PPdiZMs9+rKmVSq2Vh+WIxBHGTfhYOzu68Tl/Rp8TlplvQRcfImLSixbyV3X8GUDieec
+         tTAw==
+X-Gm-Message-State: AAQBX9cNaWqTcwL6PVXsLpnebGR7mDb47aPDAk8QXjYZE/29ysL6CF/k
+        llvAAKU0GPvb2RQMYf0RRDD8Gs1HXuU=
+X-Google-Smtp-Source: AKy350YTA23CBRwccIcJyFzB9Mc/n2eh72ar0ILix9ZmPuI+GmvdpgvBas6cCJHx++m1HW0Azj8EOg==
+X-Received: by 2002:a17:90a:ea09:b0:23f:7d05:8762 with SMTP id w9-20020a17090aea0900b0023f7d058762mr3389480pjy.23.1682045465785;
+        Thu, 20 Apr 2023 19:51:05 -0700 (PDT)
+Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
+        by smtp.gmail.com with ESMTPSA id jj2-20020a170903048200b001a6d08dc847sm1734028plb.173.2023.04.20.19.51.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Apr 2023 19:51:05 -0700 (PDT)
+Sender: Tejun Heo <htejun@gmail.com>
+From:   Tejun Heo <tj@kernel.org>
+To:     jiangshanlai@gmail.com
+Cc:     linux-kernel@vger.kernel.org, kernel-team@meta.com,
+        Tejun Heo <tj@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 08/22] wifi: ath10/11/12k: Use alloc_ordered_workqueue() to create ordered workqueues
+Date:   Thu, 20 Apr 2023 16:50:32 -1000
+Message-Id: <20230421025046.4008499-9-tj@kernel.org>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230421025046.4008499-1-tj@kernel.org>
+References: <20230421025046.4008499-1-tj@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,110 +79,114 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Configure DLE (data link engine) memory size for operating modes.
-Similarly, HFC standing for HCI flow control is used to set quota
-according to operating modes, which are SCC or download firmware.
+BACKGROUND
+==========
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+When multiple work items are queued to a workqueue, their execution order
+doesn't match the queueing order. They may get executed in any order and
+simultaneously. When fully serialized execution - one by one in the queueing
+order - is needed, an ordered workqueue should be used which can be created
+with alloc_ordered_workqueue().
+
+However, alloc_ordered_workqueue() was a later addition. Before it, an
+ordered workqueue could be obtained by creating an UNBOUND workqueue with
+@max_active==1. This originally was an implementation side-effect which was
+broken by 4c16bd327c74 ("workqueue: restore WQ_UNBOUND/max_active==1 to be
+ordered"). Because there were users that depended on the ordered execution,
+5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1 to be ordered")
+made workqueue allocation path to implicitly promote UNBOUND workqueues w/
+@max_active==1 to ordered workqueues.
+
+While this has worked okay, overloading the UNBOUND allocation interface
+this way creates other issues. It's difficult to tell whether a given
+workqueue actually needs to be ordered and users that legitimately want a
+min concurrency level wq unexpectedly gets an ordered one instead. With
+planned UNBOUND workqueue updates to improve execution locality and more
+prevalence of chiplet designs which can benefit from such improvements, this
+isn't a state we wanna be in forever.
+
+This patch series audits all callsites that create an UNBOUND workqueue w/
+@max_active==1 and converts them to alloc_ordered_workqueue() as necessary.
+
+WHAT TO LOOK FOR
+================
+
+The conversions are from
+
+  alloc_workqueue(WQ_UNBOUND | flags, 1, args..)
+
+to
+
+  alloc_ordered_workqueue(flags, args...)
+
+which don't cause any functional changes. If you know that fully ordered
+execution is not ncessary, please let me know. I'll drop the conversion and
+instead add a comment noting the fact to reduce confusion while conversion
+is in progress.
+
+If you aren't fully sure, it's completely fine to let the conversion
+through. The behavior will stay exactly the same and we can always
+reconsider later.
+
+As there are follow-up workqueue core changes, I'd really appreciate if the
+patch can be routed through the workqueue tree w/ your acks. Thanks.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
 ---
- drivers/net/wireless/realtek/rtw89/mac.c      |  2 +
- drivers/net/wireless/realtek/rtw89/mac.h      |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8851b.c | 50 +++++++++++++++++++
- 3 files changed, 53 insertions(+)
+ drivers/net/wireless/ath/ath10k/qmi.c | 3 +--
+ drivers/net/wireless/ath/ath11k/qmi.c | 3 +--
+ drivers/net/wireless/ath/ath12k/qmi.c | 3 +--
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index b8019cfc11b20..d93058bb56d12 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1475,6 +1475,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
- 	.ple_qt_52a_wow = {264, 0, 32, 20, 64, 13, 1005, 0, 64, 128, 120,},
- 	/* 8852B PCIE WOW */
- 	.ple_qt_52b_wow = {147, 0, 16, 20, 157, 13, 133, 0, 172, 14, 24, 0,},
-+	/* 8851B PCIE WOW */
-+	.ple_qt_51b_wow = {147, 0, 16, 20, 157, 13, 133, 0, 172, 14, 24, 0,},
- };
- EXPORT_SYMBOL(rtw89_mac_size);
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index 90f457b8e1fe..ebedef8767cd 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -1082,8 +1082,7 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_size)
+ 	if (ret)
+ 		goto err;
  
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
-index a8d9847ef0b49..d3922d4fe288a 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.h
-+++ b/drivers/net/wireless/realtek/rtw89/mac.h
-@@ -817,6 +817,7 @@ struct rtw89_mac_size_set {
- 	const struct rtw89_ple_quota ple_qt58;
- 	const struct rtw89_ple_quota ple_qt_52a_wow;
- 	const struct rtw89_ple_quota ple_qt_52b_wow;
-+	const struct rtw89_ple_quota ple_qt_51b_wow;
- };
+-	qmi->event_wq = alloc_workqueue("ath10k_qmi_driver_event",
+-					WQ_UNBOUND, 1);
++	qmi->event_wq = alloc_ordered_workqueue("ath10k_qmi_driver_event", 0);
+ 	if (!qmi->event_wq) {
+ 		ath10k_err(ar, "failed to allocate workqueue\n");
+ 		ret = -EFAULT;
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index ab923e24b0a9..26b252e62909 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -3256,8 +3256,7 @@ int ath11k_qmi_init_service(struct ath11k_base *ab)
+ 		return ret;
+ 	}
  
- extern const struct rtw89_mac_size_set rtw89_mac_size;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index ce5c7a8644c39..b68ebe950c4ef 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -18,6 +18,54 @@
- #define RTW8851B_MODULE_FIRMWARE \
- 	RTW8851B_FW_BASENAME ".bin"
+-	ab->qmi.event_wq = alloc_workqueue("ath11k_qmi_driver_event",
+-					   WQ_UNBOUND, 1);
++	ab->qmi.event_wq = alloc_ordered_workqueue("ath11k_qmi_driver_event", 0);
+ 	if (!ab->qmi.event_wq) {
+ 		ath11k_err(ab, "failed to allocate workqueue\n");
+ 		return -EFAULT;
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 979a63f2e2ab..471810877eed 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -3054,8 +3054,7 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
+ 		return ret;
+ 	}
  
-+static const struct rtw89_hfc_ch_cfg rtw8851b_hfc_chcfg_pcie[] = {
-+	{5, 343, grp_0}, /* ACH 0 */
-+	{5, 343, grp_0}, /* ACH 1 */
-+	{5, 343, grp_0}, /* ACH 2 */
-+	{5, 343, grp_0}, /* ACH 3 */
-+	{0, 0, grp_0}, /* ACH 4 */
-+	{0, 0, grp_0}, /* ACH 5 */
-+	{0, 0, grp_0}, /* ACH 6 */
-+	{0, 0, grp_0}, /* ACH 7 */
-+	{4, 344, grp_0}, /* B0MGQ */
-+	{4, 344, grp_0}, /* B0HIQ */
-+	{0, 0, grp_0}, /* B1MGQ */
-+	{0, 0, grp_0}, /* B1HIQ */
-+	{40, 0, 0} /* FWCMDQ */
-+};
-+
-+static const struct rtw89_hfc_pub_cfg rtw8851b_hfc_pubcfg_pcie = {
-+	448, /* Group 0 */
-+	0, /* Group 1 */
-+	448, /* Public Max */
-+	0 /* WP threshold */
-+};
-+
-+static const struct rtw89_hfc_param_ini rtw8851b_hfc_param_ini_pcie[] = {
-+	[RTW89_QTA_SCC] = {rtw8851b_hfc_chcfg_pcie, &rtw8851b_hfc_pubcfg_pcie,
-+			   &rtw89_mac_size.hfc_preccfg_pcie, RTW89_HCIFC_POH},
-+	[RTW89_QTA_DLFW] = {NULL, NULL, &rtw89_mac_size.hfc_preccfg_pcie,
-+			    RTW89_HCIFC_POH},
-+	[RTW89_QTA_INVALID] = {NULL},
-+};
-+
-+static const struct rtw89_dle_mem rtw8851b_dle_mem_pcie[] = {
-+	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size6,
-+			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt6,
-+			   &rtw89_mac_size.wde_qt6, &rtw89_mac_size.ple_qt18,
-+			   &rtw89_mac_size.ple_qt58},
-+	[RTW89_QTA_WOW] = {RTW89_QTA_WOW, &rtw89_mac_size.wde_size6,
-+			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt6,
-+			   &rtw89_mac_size.wde_qt6, &rtw89_mac_size.ple_qt18,
-+			   &rtw89_mac_size.ple_qt_51b_wow},
-+	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size9,
-+			    &rtw89_mac_size.ple_size8, &rtw89_mac_size.wde_qt4,
-+			    &rtw89_mac_size.wde_qt4, &rtw89_mac_size.ple_qt13,
-+			    &rtw89_mac_size.ple_qt13},
-+	[RTW89_QTA_INVALID] = {RTW89_QTA_INVALID, NULL, NULL, NULL, NULL, NULL,
-+			       NULL},
-+};
-+
- static const struct rtw89_xtal_info rtw8851b_xtal_info = {
- 	.xcap_reg		= R_AX_XTAL_ON_CTRL3,
- 	.sc_xo_mask		= B_AX_XTAL_SC_XO_A_BLOCK_MASK,
-@@ -52,6 +100,8 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.max_amsdu_limit	= 3500,
- 	.dis_2g_40m_ul_ofdma	= true,
- 	.rsvd_ple_ofst		= 0x2f800,
-+	.hfc_param_ini		= rtw8851b_hfc_param_ini_pcie,
-+	.dle_mem		= rtw8851b_dle_mem_pcie,
- 	.wde_qempty_acq_num     = 4,
- 	.wde_qempty_mgq_sel     = 4,
- 	.rf_base_addr		= {0xe000},
+-	ab->qmi.event_wq = alloc_workqueue("ath12k_qmi_driver_event",
+-					   WQ_UNBOUND, 1);
++	ab->qmi.event_wq = alloc_ordered_workqueue("ath12k_qmi_driver_event", 0);
+ 	if (!ab->qmi.event_wq) {
+ 		ath12k_err(ab, "failed to allocate workqueue\n");
+ 		return -EFAULT;
 -- 
-2.25.1
+2.40.0
 
