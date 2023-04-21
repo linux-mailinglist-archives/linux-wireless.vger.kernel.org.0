@@ -2,53 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0D86EAC00
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 15:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7046EACDE
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Apr 2023 16:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232236AbjDUNq6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Apr 2023 09:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34132 "EHLO
+        id S232532AbjDUO26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Apr 2023 10:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232144AbjDUNq0 (ORCPT
+        with ESMTP id S232190AbjDUO25 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Apr 2023 09:46:26 -0400
-Received: from mx2.uni-rostock.de (mx2.uni-rostock.de [139.30.22.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5D8133
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Apr 2023 06:46:23 -0700 (PDT)
-DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmze; 
- t=1682084781; bh=cU3nyN3MSiPACnW65e9W8xUMZFhYriikjqiwDUOdb1A=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
- a=ed25519-sha256; b=
- 6JYLKTOtYmPVgafkYpYJ/hbrSs6NezW31gsgI101N7vk76IwlrYRMes+5bOZZm/S13/NwVBSeFolBR5pI0pICw==
-DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmz; 
- t=1682084781; bh=cU3nyN3MSiPACnW65e9W8xUMZFhYriikjqiwDUOdb1A=; h=
- Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
- a=rsa-sha256; b=
- b3qoIgvKXETJobhQQAtgzr5hb6x0XvFYGOIE8OGvkSFPJ4/FzQWdcQ0qH1oEZCdqHD6ABmNQodvGGGSzHqkC2OX/BJbbktF68Cd+BoA4kNqGatu2+cIMce7qV8uXV/UJabU6SvaZm1GCvGqVwEBk5NBXxCsbGilB63J4eGTdjlE=
-Received: from 139.30.22.84 by mx2.uni-rostock.de (Tls12, Aes256, Sha384,
- DiffieHellmanEllipticKey384); Fri, 21 Apr 2023 13:46:21 GMT
-Received: from meshdev.amd.e-technik.uni-rostock.de (139.30.202.188) by
- mail1.uni-rostock.de (139.30.22.84) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 21 Apr 2023 15:46:21 +0200
-From:   Benjamin Beichler <benjamin.beichler@uni-rostock.de>
-To:     <nbd@nbd.name>, <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC:     Benjamin Beichler <benjamin.beichler@uni-rostock.de>
-Subject: [RFC v2] average: rewrite for clearity
-Date:   Fri, 21 Apr 2023 13:46:04 +0000
-Message-ID: <20230421134604.211128-1-benjamin.beichler@uni-rostock.de>
-X-Mailer: git-send-email 2.25.1
+        Fri, 21 Apr 2023 10:28:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F9830E9;
+        Fri, 21 Apr 2023 07:28:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9645665101;
+        Fri, 21 Apr 2023 14:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F192C4339C;
+        Fri, 21 Apr 2023 14:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682087336;
+        bh=SqeL1ZjkoRfB8AReeHRqh0HINangrhAFQKlYy4oXftg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Th0K9geNEH69pqjscKcQfL3qpAFMkpWCc+gR6hBFLwEQ6p3/CtvF5IXgdbe6uhh++
+         rdVFOI00HZ8WgQcDIATtz9KYRKtMsDH6GwroH5aU+EkMsj0ylwzcXMNy15p4T3IHml
+         U4jX2ZlkkGgQy63R46X35rYMZpxQLIz9ablkeEH92233CKEcZmAQ4QC3TqelBQxm57
+         K1u3fVZSLGJ9akkB4ZO2nqoKgbDkBHzCVbV4V4i7cSrpyJ2zxiVx5oabBaSZJNv5g5
+         R5plKo1KeZjncc8dBfeKRe1+j3LM9CR4DJK7IaeR02NIjkplgHCUk/Cg//c2Rzs5X5
+         A9/7AeWW8fgoA==
+Date:   Fri, 21 Apr 2023 07:28:54 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Wang Jikai <wangjikai@hust.edu.cn>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        hust-os-kernel-patches@googlegroups.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2] wifi: mt7601u: delete dead code checking debugfs
+ returns
+Message-ID: <20230421072854.6521ecef@kernel.org>
+In-Reply-To: <20230421092200.24456-1-wangjikai@hust.edu.cn>
+References: <20230421092200.24456-1-wangjikai@hust.edu.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [139.30.202.188]
-X-ClientProxiedBy: EMAIL2.uni-rostock.de (139.30.22.82) To
- mail1.uni-rostock.de (139.30.22.84)
-X-TM-SNTS-SMTP: 49532A7E5FF6BFFF311ED81FC50C0E0876439A2D11B5418B98365FC6D0F497DE2000:8
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,124 +64,15 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move the former *_add function with its implicit initialization into a
-separate function, when the user explicitly wants to init with the first
-added value, although this creates issues, when 0 is a expected value for
-the internal value.
+On Fri, 21 Apr 2023 09:22:00 +0000 Wang Jikai wrote:
+> Smatch reports that:
+> drivers/net/wireless/mediatek/mt7601u/debugfs.c:130
+> mt7601u_init_debugfs() warn: 'dir' is an error pointer or valid".
+> 
+> Debugfs code is not supposed to need error checking so instead of
+> changing this to if (IS_ERR()) the correct thing is to just delete
+> the dead code.
+> 
+> Signed-off-by: Wang Jikai <wangjikai@hust.edu.cn>
 
-Add a separate init function with value parameter to allow init with
-distinct value, which was formerly done by the implicit init of old
-*_add function.
-
-Move the compile time checks into a separate macro, as they are used
-multiple times and noise up the functions.
-
-Signed-off-by: Benjamin Beichler <benjamin.beichler@uni-rostock.de>
----
- include/linux/average.h | 86 ++++++++++++++++++++++++-----------------
- 1 file changed, 50 insertions(+), 36 deletions(-)
-
-diff --git a/include/linux/average.h b/include/linux/average.h
-index a1a8f09631ce..7149a9ee555a 100644
---- a/include/linux/average.h
-+++ b/include/linux/average.h
-@@ -25,47 +25,61 @@
-  * that this parameter must be a power of two for efficiency.
-  */
- 
--#define DECLARE_EWMA(name, _precision, _weight_rcp)			\
--	struct ewma_##name {						\
--		unsigned long internal;					\
--	};								\
--	static inline void ewma_##name##_init(struct ewma_##name *e)	\
--	{								\
-+#define EWMA_BUILD_TIME_CHECKS(_precision, _weight_rcp)			\
-+	do {								\
- 		BUILD_BUG_ON(!__builtin_constant_p(_precision));	\
- 		BUILD_BUG_ON(!__builtin_constant_p(_weight_rcp));	\
--		/*							\
--		 * Even if you want to feed it just 0/1 you should have	\
--		 * some bits for the non-fractional part...		\
--		 */							\
--		BUILD_BUG_ON((_precision) > 30);			\
--		BUILD_BUG_ON_NOT_POWER_OF_2(_weight_rcp);		\
--		e->internal = 0;					\
--	}								\
--	static inline unsigned long					\
--	ewma_##name##_read(struct ewma_##name *e)			\
--	{								\
--		BUILD_BUG_ON(!__builtin_constant_p(_precision));	\
--		BUILD_BUG_ON(!__builtin_constant_p(_weight_rcp));	\
--		BUILD_BUG_ON((_precision) > 30);			\
--		BUILD_BUG_ON_NOT_POWER_OF_2(_weight_rcp);		\
--		return e->internal >> (_precision);			\
--	}								\
--	static inline void ewma_##name##_add(struct ewma_##name *e,	\
--					     unsigned long val)		\
--	{								\
--		unsigned long internal = READ_ONCE(e->internal);	\
--		unsigned long weight_rcp = ilog2(_weight_rcp);		\
--		unsigned long precision = _precision;			\
- 									\
--		BUILD_BUG_ON(!__builtin_constant_p(_precision));	\
--		BUILD_BUG_ON(!__builtin_constant_p(_weight_rcp));	\
- 		BUILD_BUG_ON((_precision) > 30);			\
- 		BUILD_BUG_ON_NOT_POWER_OF_2(_weight_rcp);		\
--									\
--		WRITE_ONCE(e->internal, internal ?			\
--			(((internal << weight_rcp) - internal) +	\
--				(val << precision)) >> weight_rcp :	\
--			(val << precision));				\
-+	} while (0)
-+
-+#define DECLARE_EWMA(name, _precision, _weight_rcp)				\
-+	struct ewma_##name {							\
-+		unsigned long internal;						\
-+	};									\
-+	static inline void ewma_##name##_init_val(struct ewma_##name *e,	\
-+						  unsigned long init)		\
-+	{									\
-+		EWMA_BUILD_TIME_CHECKS(_precision, _weight_rcp)			\
-+		e->internal = init << _precision;				\
-+	}									\
-+	static inline void ewma_##name##_init(struct ewma_##name *e)		\
-+	{									\
-+			ewma_##name##_init_val(e, 0);				\
-+	}									\
-+	static inline unsigned long						\
-+	ewma_##name##_read(struct ewma_##name *e)				\
-+	{									\
-+		EWMA_BUILD_TIME_CHECKS(_precision, _weight_rcp)			\
-+		return e->internal >> (_precision);				\
-+	}									\
-+	static inline void ewma_##name##_add(struct ewma_##name *e,		\
-+					     unsigned long val)			\
-+	{									\
-+		unsigned long internal = READ_ONCE(e->internal);		\
-+		unsigned long weight_rcp = ilog2(_weight_rcp);			\
-+		unsigned long precision = _precision;				\
-+										\
-+		EWMA_BUILD_TIME_CHECKS(_precision, _weight_rcp)			\
-+										\
-+		WRITE_ONCE(e->internal,						\
-+			(((internal << weight_rcp) - internal) +		\
-+				(val << precision)) >> weight_rcp);		\
-+	}									\
-+	static inline void ewma_##name##_add_or_init(struct ewma_##name *e,	\
-+					     unsigned long val)			\
-+	{									\
-+		unsigned long internal = READ_ONCE(e->internal);		\
-+		unsigned long weight_rcp = ilog2(_weight_rcp);			\
-+		unsigned long precision = _precision;				\
-+										\
-+		EWMA_BUILD_TIME_CHECKS(_precision, _weight_rcp)			\
-+										\
-+		WRITE_ONCE(e->internal, internal ?				\
-+			(((internal << weight_rcp) - internal) +		\
-+				(val << precision)) >> weight_rcp :		\
-+			(val << precision));					\
- 	}
- 
- #endif /* _LINUX_AVERAGE_H */
--- 
-2.25.1
+Acked-by: Jakub Kicinski <kuba@kernel.org>
