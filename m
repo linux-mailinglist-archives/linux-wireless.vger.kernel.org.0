@@ -2,131 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 957F36EB960
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Apr 2023 15:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 133026EBA64
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Apr 2023 18:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjDVNdv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Apr 2023 09:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39518 "EHLO
+        id S229574AbjDVQnA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Apr 2023 12:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjDVNdt (ORCPT
+        with ESMTP id S229548AbjDVQnA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Apr 2023 09:33:49 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6ECB1718;
-        Sat, 22 Apr 2023 06:33:46 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1682170424; bh=YMRSn3zcYiCKxTTR1o2KV2jlgcDlQdjVd/13bW5LgQA=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=RcXC+ETEUIGozX7+QoCnMyT+ri10p8t3j9bLfACZPUmojlylrMyOTROQuG69TJuC7
-         5+DD9Th/jkOHiL3Ca5M9uUdUNGayD+rJC43YlQ3wUXTGdZ2+H8xUn+v5uPiKoSdcqF
-         aj5neObcyiagLWzuoO/DTiTDMdEpyEI+iffnjpbAcimzvjnz8DTg6zg5qGbQhpPZqB
-         A/csK3Wg+K47y7IP3sAN0COeexzN4YJYcjINez8da6STJ20PDCp6visLW9y21GquVb
-         572mLm2qvg/N+/gq//OXYZWCbdZXcIEh42OhbALqrRmvzGPHcjdzLkjqYI8TS3tvzt
-         YAv4dQDpSX/4A==
-To:     Peter Seiderer <ps.report@gmx.net>
-Cc:     Simon Horman <simon.horman@corigine.com>,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sujith Manoharan <c_manoha@qca.qualcomm.com>,
-        "John W . Linville" <linville@tuxdriver.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gregg Wonderly <greggwonderly@seqtechllc.com>
-Subject: Re: [PATCH v1] wifi: ath9k: fix AR9003 mac hardware hang check
- register offset calculation
-In-Reply-To: <20230422152234.639fc98e@gmx.net>
-References: <20230420204316.30475-1-ps.report@gmx.net>
- <ZEOf7LXAkdLR0yFI@corigine.com> <87bkjgmd9g.fsf@toke.dk>
- <20230422152234.639fc98e@gmx.net>
-Date:   Sat, 22 Apr 2023 15:33:43 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87zg70kpmw.fsf@toke.dk>
+        Sat, 22 Apr 2023 12:43:00 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27DB91FE4
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Apr 2023 09:42:59 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-18b5c8c2a49so1745157fac.3
+        for <linux-wireless@vger.kernel.org>; Sat, 22 Apr 2023 09:42:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682181778; x=1684773778;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MRNwK3wWnnloC0Gm+qdLRfu/6sQihDU4RrW+I9dUXgw=;
+        b=alTpLDBPL18wrQXVfJgBKXTuhfHBmluR4Ht3ltRUtiJ+Q/YSOnyL3baEqcc7pCVrUI
+         ZMyGpesNY0Ta3kwJwlG2DFasHs/CoM0vukHvgsFhKr/1phnL583hjoUcFbPv5jOHAySu
+         AvZYcXFP6lUGAbC+1fC8Ep3xcxTbMfvhGazuqqOYN/o/Ksit92+EeGNWsSow3QmuiC16
+         55h30rNsob+Il9vL9x7i77i7jcE0vpB4iKs1u6TS6h1WmYSy2NuWkQBYCJ7cid/JQY0u
+         i02xrrgdyYGkk6nyWqpJ3aVeGx8SVqC+gOnXxTzEl7mitlt3UHrPBb1EsLm4ebbd47YJ
+         uJ1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682181778; x=1684773778;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MRNwK3wWnnloC0Gm+qdLRfu/6sQihDU4RrW+I9dUXgw=;
+        b=mFZRPd2rK1cxb9Fln2+4xG6jIlb1vaNr6rlIP+YkrOu1wxBuwHBMZgdC1zV9u2h46J
+         yTKqxi0a+Hho8FgKVevm+e803WY+OrA1uBIiNUiT7SUS+YDJOZjXUj7YYBZf5pBfDQ0I
+         kXhY2Lyh/aFFlL/qXl48f2A/rdHOoOzIzzyIBRwIUE+NWcYkJ/FHRs3t+4EHxbAtzyoM
+         klOaf70e53TeaPt/Nq4SAUAAegPO9EJpMAfcwSeVf5twXW+oYbhb8U7FItrcsBmLUkaY
+         QNzYhIVWPnYuSA8R55WkLpZRdNnmDh121AWME3MdW4YKZJWJeboyn+9DQhYJg3Q18yzc
+         5uvQ==
+X-Gm-Message-State: AAQBX9cpga953bW7Ehlz5t59BNkBgMJ6z+IAbPjXhLdYfVJvANQzTTyX
+        e+pSSYrLajrJUjIrG6XB+chpx4tRrvY=
+X-Google-Smtp-Source: AKy350YFVfmj8+h0FKkfJrHuW6S8yuxSTAB+Wp5G5+xjiG5nicJy6FL7WyoF35uBj1ApBRYMyWKH1A==
+X-Received: by 2002:a05:6870:88a8:b0:177:a4d0:e389 with SMTP id m40-20020a05687088a800b00177a4d0e389mr5500778oam.28.1682181778345;
+        Sat, 22 Apr 2023 09:42:58 -0700 (PDT)
+Received: from [192.168.0.162] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id dy14-20020a056870c78e00b0017197629658sm2808181oab.56.2023.04.22.09.42.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Apr 2023 09:42:58 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <5c753c2b-ca3e-50d8-8829-9c350d35b9f5@lwfinger.net>
+Date:   Sat, 22 Apr 2023 11:42:57 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To:     Pkshih <pkshih@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Problems with HP BIOS
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Peter Seiderer <ps.report@gmx.net> writes:
+Ping-Ke,
 
-> On Sat, 22 Apr 2023 12:18:03 +0200, Toke H=C3=B8iland-J=C3=B8rgensen <tok=
-e@toke.dk> wrote:
->
->> Simon Horman <simon.horman@corigine.com> writes:
->>=20
->> > On Thu, Apr 20, 2023 at 10:43:16PM +0200, Peter Seiderer wrote:=20=20
->> >> Fix ath9k_hw_verify_hang()/ar9003_hw_detect_mac_hang() register offset
->> >> calculation (do not overflow the shift for the second register/queues
->> >> above five, use the register layout described in the comments above
->> >> ath9k_hw_verify_hang() instead).
->> >>=20
->> >> Fixes: 222e04830ff0 ("ath9k: Fix MAC HW hang check for AR9003")
->> >>=20
->> >> Reported-by: Gregg Wonderly <greggwonderly@seqtechllc.com>
->> >> Link: https://lore.kernel.org/linux-wireless/E3A9C354-0CB7-420C-ADEF-=
-F0177FB722F4@seqtechllc.com/
->> >> Signed-off-by: Peter Seiderer <ps.report@gmx.net>
->> >> ---
->> >> Notes:
->> >>   - tested with MikroTik R11e-5HnD/Atheros AR9300 Rev:4 (lspci: 168c:=
-0033
->> >>     Qualcomm Atheros AR958x 802.11abgn Wireless Network Adapter (rev =
-01))
->> >>     card
->> >> ---
->> >>  drivers/net/wireless/ath/ath9k/ar9003_hw.c | 27 ++++++++++++++------=
---
->> >>  1 file changed, 18 insertions(+), 9 deletions(-)
->> >>=20
->> >> diff --git a/drivers/net/wireless/ath/ath9k/ar9003_hw.c b/drivers/net=
-/wireless/ath/ath9k/ar9003_hw.c
->> >> index 4f27a9fb1482..0ccf13a35fb4 100644
->> >> --- a/drivers/net/wireless/ath/ath9k/ar9003_hw.c
->> >> +++ b/drivers/net/wireless/ath/ath9k/ar9003_hw.c
->> >> @@ -1099,17 +1099,22 @@ static bool ath9k_hw_verify_hang(struct ath_h=
-w *ah, unsigned int queue)
->> >>  {
->> >>  	u32 dma_dbg_chain, dma_dbg_complete;
->> >>  	u8 dcu_chain_state, dcu_complete_state;
->> >> +	unsigned int dbg_reg, reg_offset;
->> >>  	int i;
->> >>=20=20
->> >> -	for (i =3D 0; i < NUM_STATUS_READS; i++) {
->> >> -		if (queue < 6)
->> >> -			dma_dbg_chain =3D REG_READ(ah, AR_DMADBG_4);
->> >> -		else
->> >> -			dma_dbg_chain =3D REG_READ(ah, AR_DMADBG_5);
->> >> +	if (queue < 6) {
->> >> +		dbg_reg =3D AR_DMADBG_4;
->> >> +		reg_offset =3D i * 5;=20=20
->> >
->> > Hi Peter,
->> >
->> > unless my eyes are deceiving me, i is not initialised here.=20=20
->>=20
->> Nice catch! Hmm, I wonder why my test compile didn't complain about
->> that? Or maybe it did and I overlooked it? Anyway, Kalle, I already
->> delegated this patch to you in patchwork, so please drop it and I'll try
->> to do better on reviewing the next one :)
->
-> No warning reported because of Makefile:
->
->   1038 # Enabled with W=3D2, disabled by default as noisy
->   1039 ifdef CONFIG_CC_IS_GCC
->   1040 KBUILD_CFLAGS +=3D -Wno-maybe-uninitialized
->   1041 endif
+In https://github.com/lwfinger/rtw89/issues/226, users with an HP 450 G9 with an 
+Intel processor and an HP 645 G9 with an AMD CPU report problems that seem to be 
+from PCI bus power handling. Both models have an RTW8852BE wireless card. Adding 
+all 3 options for rtw89_pci did not solve the problem, but may have helped.
 
-Ah, I see! Right then, that explains it :)
+The user with the AMD CPU found a BIOS setting that disables PCI power saving 
+that seems to help a lot. I am not sure what to do at this point, but I wanted 
+to alert you to the problem.
 
--Toke
+Such BIOS problems appear to be most common with late model HP and Lenovo laptops.
+
+Larry
