@@ -2,89 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 133026EBA64
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Apr 2023 18:43:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42ADA6EBAAB
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Apr 2023 19:29:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjDVQnA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Apr 2023 12:43:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53886 "EHLO
+        id S229797AbjDVR3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Apr 2023 13:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjDVQnA (ORCPT
+        with ESMTP id S229556AbjDVR3d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Apr 2023 12:43:00 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27DB91FE4
-        for <linux-wireless@vger.kernel.org>; Sat, 22 Apr 2023 09:42:59 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-18b5c8c2a49so1745157fac.3
-        for <linux-wireless@vger.kernel.org>; Sat, 22 Apr 2023 09:42:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682181778; x=1684773778;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MRNwK3wWnnloC0Gm+qdLRfu/6sQihDU4RrW+I9dUXgw=;
-        b=alTpLDBPL18wrQXVfJgBKXTuhfHBmluR4Ht3ltRUtiJ+Q/YSOnyL3baEqcc7pCVrUI
-         ZMyGpesNY0Ta3kwJwlG2DFasHs/CoM0vukHvgsFhKr/1phnL583hjoUcFbPv5jOHAySu
-         AvZYcXFP6lUGAbC+1fC8Ep3xcxTbMfvhGazuqqOYN/o/Ksit92+EeGNWsSow3QmuiC16
-         55h30rNsob+Il9vL9x7i77i7jcE0vpB4iKs1u6TS6h1WmYSy2NuWkQBYCJ7cid/JQY0u
-         i02xrrgdyYGkk6nyWqpJ3aVeGx8SVqC+gOnXxTzEl7mitlt3UHrPBb1EsLm4ebbd47YJ
-         uJ1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682181778; x=1684773778;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MRNwK3wWnnloC0Gm+qdLRfu/6sQihDU4RrW+I9dUXgw=;
-        b=mFZRPd2rK1cxb9Fln2+4xG6jIlb1vaNr6rlIP+YkrOu1wxBuwHBMZgdC1zV9u2h46J
-         yTKqxi0a+Hho8FgKVevm+e803WY+OrA1uBIiNUiT7SUS+YDJOZjXUj7YYBZf5pBfDQ0I
-         kXhY2Lyh/aFFlL/qXl48f2A/rdHOoOzIzzyIBRwIUE+NWcYkJ/FHRs3t+4EHxbAtzyoM
-         klOaf70e53TeaPt/Nq4SAUAAegPO9EJpMAfcwSeVf5twXW+oYbhb8U7FItrcsBmLUkaY
-         QNzYhIVWPnYuSA8R55WkLpZRdNnmDh121AWME3MdW4YKZJWJeboyn+9DQhYJg3Q18yzc
-         5uvQ==
-X-Gm-Message-State: AAQBX9cpga953bW7Ehlz5t59BNkBgMJ6z+IAbPjXhLdYfVJvANQzTTyX
-        e+pSSYrLajrJUjIrG6XB+chpx4tRrvY=
-X-Google-Smtp-Source: AKy350YFVfmj8+h0FKkfJrHuW6S8yuxSTAB+Wp5G5+xjiG5nicJy6FL7WyoF35uBj1ApBRYMyWKH1A==
-X-Received: by 2002:a05:6870:88a8:b0:177:a4d0:e389 with SMTP id m40-20020a05687088a800b00177a4d0e389mr5500778oam.28.1682181778345;
-        Sat, 22 Apr 2023 09:42:58 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id dy14-20020a056870c78e00b0017197629658sm2808181oab.56.2023.04.22.09.42.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Apr 2023 09:42:58 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <5c753c2b-ca3e-50d8-8829-9c350d35b9f5@lwfinger.net>
-Date:   Sat, 22 Apr 2023 11:42:57 -0500
+        Sat, 22 Apr 2023 13:29:33 -0400
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842E01BF7;
+        Sat, 22 Apr 2023 10:29:30 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.94.2)
+        (envelope-from <m@bues.ch>)
+        id 1pqH2e-0008h1-Tl; Sat, 22 Apr 2023 19:28:54 +0200
+Date:   Sat, 22 Apr 2023 19:28:20 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lvc-project@linuxtesting.org,
+        Natalia Petrova <n.petrova@fintech.ru>
+Subject: Re: [PATCH v2] b43legacy: Add checking for null for
+ ssb_get_devtypedata(dev)
+Message-ID: <20230422192820.59e8e423@barney>
+In-Reply-To: <95cff855-cb12-cf66-888f-b296a712d37d@lwfinger.net>
+References: <20230418142918.70510-1-n.zhandarovich@fintech.ru>
+ <95cff855-cb12-cf66-888f-b296a712d37d@lwfinger.net>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To:     Pkshih <pkshih@realtek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Problems with HP BIOS
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/2UmYtPuo=8I_Omt_ytOLG9A";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke,
+--Sig_/2UmYtPuo=8I_Omt_ytOLG9A
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-In https://github.com/lwfinger/rtw89/issues/226, users with an HP 450 G9 with an 
-Intel processor and an HP 645 G9 with an AMD CPU report problems that seem to be 
-from PCI bus power handling. Both models have an RTW8852BE wireless card. Adding 
-all 3 options for rtw89_pci did not solve the problem, but may have helped.
+On Fri, 21 Apr 2023 17:14:18 -0500
+Larry Finger <Larry.Finger@lwfinger.net> wrote:
+> > (err) goto out;
+> >   		wl =3D ssb_get_devtypedata(dev);
+> > -		B43legacy_WARN_ON(!wl);
+> > +		if (!wl) {
+> > +			B43legacy_WARN_ON(!wl);
+> > +			err =3D -ENODEV;
+> > +			goto out;
+> > +		}
+> >   	}
+> >   	err =3D b43legacy_one_core_attach(dev, wl);
+> >   	if (err) =20
+>=20
+> I do not recall seeing v1. One additional nitpick: The latest
+> convention would have the subject as "wifi: b43legacy:...". Kalle may
+> be able to fix this on merging, but it not, a v3 might be required.
+> Otherwise, the patch is good.
+>=20
+> Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-The user with the AMD CPU found a BIOS setting that disables PCI power saving 
-that seems to help a lot. I am not sure what to do at this point, but I wanted 
-to alert you to the problem.
+No, it's not good. It's wrong. I already replied to it.
+wl can never be NULL here and the goto-out path is wrong (if there
+was a chance for it to trigger).
 
-Such BIOS problems appear to be most common with late model HP and Lenovo laptops.
+Please drop this patch, Kalle.
 
-Larry
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/2UmYtPuo=8I_Omt_ytOLG9A
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmREGTUACgkQ9TK+HZCN
+iw5QnxAAsP4FHvqBSFyCpRPrOwj512Kwf4RtO4TYNO/FC3zv09UAgjzILHDVJFDD
+nPmFfNaPsGiVqDUHTIfuPzBYFMdvDsZyibynDU4Fv24YFNXx9YkrytMAZH+Rzh6t
+4cID7MG82odxIJJP3ERs7vA0MX1HhD2cKR2BA2g6470gf1M1+EEqGt+xiu8Q09ja
+rJNpcZB616jmOd3kCxRtSmEVuksPZfVYFFm3Nj77MIUiO/DlIcn2abkFPDMGYpOf
+9GGCHTLc0DSTlZ2vTxmmnYQW/Jqhe6DAjjdY2v7OAN8Ma87VCKVWsCdjIKEhUSyf
+vKY8uxLK9mG5wE8NSD7MqKNALqBewpEcHJy9FyVsxPdq92FpbqfkQh8sWRZFPDC0
+kOT+Y9YqFaec9Ffe+jrISqN/lflkspnvCv4DJn2616NoaFa97zVMv43Oz+o5DYps
+H5TcuwMr/xGlXxHOTRYlxZUFPNMlarkkv6ZoXrhBJncjgZROTRvwjbzgsEeRSO1+
+OPUzTIIobbScYn3XNmNz85Ag8uBx/LrXqSW7F+N4dKyEhXs/EGXKjx/PnZIxSDNF
+s05UhkHRz6N624hRVSEIOS7R4HuZQxIg83usyAkhTT/o58UsHd9sjrK1Tv63m+wE
+XqbKdiC5cKgaN4Mhoeil2Cz6AZsSizVV4PYsAN7zGuk/iGOhC1Q=
+=vx0A
+-----END PGP SIGNATURE-----
+
+--Sig_/2UmYtPuo=8I_Omt_ytOLG9A--
