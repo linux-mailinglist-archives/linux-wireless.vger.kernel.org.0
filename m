@@ -2,63 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F070C6EC284
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Apr 2023 23:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B429C6EC2F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 00:40:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjDWVjZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Apr 2023 17:39:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55118 "EHLO
+        id S229516AbjDWWjE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Apr 2023 18:39:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbjDWVjX (ORCPT
+        with ESMTP id S229476AbjDWWjC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Apr 2023 17:39:23 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D00AEB
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 14:39:15 -0700 (PDT)
-X-UUID: 47bc074ae21f11edb6b9f13eb10bd0fe-20230424
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=BBn3QEzegzb0p42nF9E4XKquKjHmcytH4/jiephNRUc=;
-        b=MrZHj8NRSFQ2rbnk46R1PKjS6CbsOfPXOQs9znxkKD/FAZ4oaROM8xY8YqLaKlVRkPXghwh+Qsbsn0OVywSIArcbNfWZ5400JiitIv6qZGC7+1YP5OfCvNY4UQd7hj5IOaP1+vqrVpgOV3ETZaFit+Oxzgnk65unCaYPRgHEGHw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:31d95215-a288-45b5-a1c8-5f6c077a3833,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:120426c,CLOUDID:51dff684-cd9c-45f5-8134-710979e3df0e,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-UUID: 47bc074ae21f11edb6b9f13eb10bd0fe-20230424
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1187963085; Mon, 24 Apr 2023 05:39:09 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 24 Apr 2023 05:39:08 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Mon, 24 Apr 2023 05:39:08 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] wifi: mt76: connac: fix stats->tx_bytes calculation
-Date:   Mon, 24 Apr 2023 05:39:06 +0800
-Message-ID: <b3cd45596943cf5a06b2e08e2fe732ab0b51311b.1682285873.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <16fa938373e3b145cb07a2c98d2428fea2abadba.1682285873.git.ryder.lee@mediatek.com>
-References: <16fa938373e3b145cb07a2c98d2428fea2abadba.1682285873.git.ryder.lee@mediatek.com>
+        Sun, 23 Apr 2023 18:39:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B822AE6E
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 15:39:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BE3D61372
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 22:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B6FC433EF;
+        Sun, 23 Apr 2023 22:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682289540;
+        bh=H1tU+nDuBSDu9Hz8FWKRs7NfOSak2YZ5duCBuITkF1o=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=TpD2IGP8uIbI09mEbGnmVM2wA0fzntNFAllF9ynuYOL8IgnmVZHwUp9urQomRp7rF
+         NsS552qQN2owOIONB0ObhCromJCgDu3JkLYiU1lfgXVuoat4dXRTf20lN1r06DecnT
+         wg4yB66K2szfejnSCBU0Jgw05/0+fT7N3A33CAXW93/WxgEwUorpvzUbUCuFRcyj8S
+         QYkMf9jPFRMsD5Gv8Lz1v4W7GMsmpyF5//Z1ruEwuYdbaehl3TIazzL6gAUf4rton7
+         X0VZiHKd7+DAUMgEA0HoLxJZF7luxErVll4Q+z2HLN/MWo41EFVouv9D8vX7N66ZfE
+         KrdIKdy1O4WgQ==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 0CB63AA9B72; Mon, 24 Apr 2023 00:38:58 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "mh+debian-user-german@zugschlus.de" 
+        <mh+debian-user-german@zugschlus.de>,
+        "exp-311223@news.muster.net" <exp-311223@news.muster.net>,
+        "tychokirchner@gmail.com" <tychokirchner@gmail.com>,
+        "rene@debian.org" <rene@debian.org>,
+        "Juergen.bausa@online.de" <Juergen.bausa@online.de>,
+        "sebastian.suchanek@gmx.de" <sebastian.suchanek@gmx.de>
+Subject: Re: iwlwifi in German ICE4 trains
+In-Reply-To: <c0153e5dd0459d351807002df7cef9eb30b04e86.camel@intel.com>
+References: <20230423085510.xpmcuzfhzqa4dyhs@pengutronix.de>
+ <c0153e5dd0459d351807002df7cef9eb30b04e86.camel@intel.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Mon, 24 Apr 2023 00:38:58 +0200
+Message-ID: <87edoakyv1.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_MSPIKE_H2,RDNS_NONE,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,42 +65,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The stats->tx_bytes shall subtract retry byte from tx byte.
+"Greenman, Gregory" <gregory.greenman@intel.com> writes:
 
-Fixes: 43eaa3689507 (wifi: mt76: add PPDU based TxS support for WED device)
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c  | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+> On Sun, 2023-04-23 at 10:55 +0200, Uwe Kleine-K=C3=B6nig wrote:
+>> Hello Gregory,
+>>=20
+>> there is a thread on debian-user-german@lists.debian.org[1] about
+>> broken wifi on Thinkpads when they are supposed to be connected to the
+>> hotspots available in ICE4 trains. The mailing lists language is German
+>> and the thread is long, so I sum up the problem:
+>>=20
+>> - It only affects the wifi equipment in ICE4 trains, the older ones work
+>> =C2=A0 fine.
+>>=20
+>> - Can be seen at least on
+>> =C2=A0 - J=C3=BCrgen's laptop (Intel Corporation Wireless 8260 [8086:24f=
+3] (rev 3a))
+>> =C2=A0 - Marc's Thinkpad X260 (Intel Corporation Wireless 8260 [8086:24f=
+3] (rev 3a))
+>> =C2=A0 - Uwe's Thinkpad T460p (Intel Corporation Wireless 8260 [8086:24f=
+3] (rev 3a))
+>>=20
+>> - Other Thinkpads with a Realtek-Chip doesn't show the problem
+>>=20
+>> - Works on puppy-Linux with 4.19.23, however Debian with 4.19.0-18 is
+>> =C2=A0 also broken.
+>>=20
+>> - The OP provided a syslog dump at
+>> =C2=A0 https://lists.debian.org/msgid-search/75ad7ff2-ef25-90cd-2cb3-1f4=
+9f3e4909e@online.de
+>>=20
+>> =C2=A0 I don't reproduce it here, but the gist seems to be:
+>>=20
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Jun 23 15:44:53 lina ker=
+nel: [ 1006.011129] wlp1s0: deauthenticated from 3c:51:0e:56:32:80 (Reason:=
+ 2=3DPREV_AUTH_NOT_VALID)
+>>=20
+>> - it seems to help to do:
+>> =C2=A0 $ cat /etc/modprobe.d/iwlwifi.conf
+>> =C2=A0 options iwlwifi 11n_disable=3D1 swcrypto=3D0 bt_coex_active=3D0 p=
+ower_save=3D0
+>> =C2=A0 options iwlmvm power_scheme=3D1
+>> =C2=A0 options iwlwifi d0i3_disable=3D1
+>> =C2=A0 options iwlwifi uapsd_disable=3D1
+>> =C2=A0 options iwlwifi lar_disable=3D1
+>>=20
+>> I added all participants of said thread to Cc, in case I forgot
+>> something relevant.
+>>=20
+>> Tomorrow I might have the opportunity to test and reproduce the problem
+>> (I don't know if my train will be an ice4 or one of the older ones
+>> though.)
+>>=20
+>> I wonder if there is something you want me to test. Without further
+>> input I will try with the modprobe options and check for a minimal
+>> subset of them that makes the problem disappear.
+>>=20
+>> Is there something I can do to make the problem better understandable
+>> for someone who knows about the hardware? Or to find out the critical
+>> detail about the wifi hotspot that triggers the problem?
+>>=20
+>> Best regards
+>> Uwe
+>>=20
+>> [1] https://lists.debian.org/msgid-search/da8c1552-6bcb-14c3-0e86-abcb83=
+5ec350@online.de
+>>=20
+>
+> Hi Uwe,
+>
+> Based on the log, I can understand that it had successfully connected
+> to the AP (supplicant management interface state: associating ->
+> completed); then there're some DHCP errors and eventually the AP sends
+> a deauth.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-index a5ec0f631385..fabf637bdf7f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-@@ -173,7 +173,7 @@ enum {
- #define MT_TXS5_MPDU_TX_CNT		GENMASK(31, 23)
- 
- #define MT_TXS6_MPDU_FAIL_CNT		GENMASK(31, 23)
--
-+#define MT_TXS7_MPDU_RETRY_BYTE		GENMASK(22, 0)
- #define MT_TXS7_MPDU_RETRY_CNT		GENMASK(31, 23)
- 
- /* RXD DW0 */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index ee0fbfcd07d6..d39a3cc5e381 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -608,7 +608,8 @@ bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 	/* PPDU based reporting */
- 	if (FIELD_GET(MT_TXS0_TXS_FORMAT, txs) > 1) {
- 		stats->tx_bytes +=
--			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE);
-+			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_BYTE) -
-+			le32_get_bits(txs_data[7], MT_TXS7_MPDU_RETRY_BYTE);
- 		stats->tx_packets +=
- 			le32_get_bits(txs_data[5], MT_TXS5_MPDU_TX_CNT);
- 		stats->tx_failed +=
--- 
-2.18.0
+If it's DHCP failing it could be an issue with multicast traffic? I've
+definitely seen multicast failing on busy networks because it is set to
+too low a rate and gets overwhelmed, which leads to DHCP (and ARP)
+failures while unicast traffic works fine.
 
+It's probably not (only) a network issue if it works fine with other
+drivers, but maybe there's some kind of interaction between the driver
+and multicast? Just a thought :)
+
+-Toke
