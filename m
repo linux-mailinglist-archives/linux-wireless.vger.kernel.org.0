@@ -2,126 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 586106ED303
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 18:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CDC86ED306
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 19:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231794AbjDXQ7V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Apr 2023 12:59:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
+        id S230319AbjDXRAv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Apr 2023 13:00:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232239AbjDXQ7O (ORCPT
+        with ESMTP id S232125AbjDXRAl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Apr 2023 12:59:14 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15926AF26
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 09:58:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=KhWqgpIMHiV1j+Dv8BwTyQQCk7kgg453ejebDpyOwZI=;
-        t=1682355529; x=1683565129; b=cT7tbEYRYWzxQhEfd9PP+W5u7d9aLALl6L270UapuOasnfd
-        YI7cLPyuJgwLaD6ovU5lKZzWbkJpLz0k8IEuLQxoIDUamp7OMcDfm/ihexaCph497kzTPt1iMSo0f
-        4os3x8hsIHWUt6YAfWJ1u0QDV09trE4CYxt4GA/JdDL8etUht9hJyoxtJP6lll/PVBT50rDk/XZBV
-        C9UPuuvREdQq/HXsgYJUj8I+Oh690bVHx8LvwSGuB3gYVBmWkruxpz6buwzj0eqPSzc/Dl94Qrjd0
-        +mVi1GXB2pP12OlnYaOf8GCfld1CGP96ZIm+qo+jC1UuB43g1Co5x+MLR+eBL0wA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pqzWV-007JrN-0d;
-        Mon, 24 Apr 2023 18:58:43 +0200
-Message-ID: <e247d0832435218fcdb78f3b81a66306b8873946.camel@sipsolutions.net>
-Subject: Re: Question on why ieee80211_prep_channel clears the
- IEEE80211_CONN_DISABLE_160MHZ flag.
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Mon, 24 Apr 2023 18:58:42 +0200
-In-Reply-To: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
-References: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Mon, 24 Apr 2023 13:00:41 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24EC89778
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 10:00:26 -0700 (PDT)
+X-UUID: 7f20293ae2c111edb6b9f13eb10bd0fe-20230425
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=poIrmZi4s1zYm/2xaVP1qwgNvWRkJPjP8E8y43VdDUs=;
+        b=SeA0ZK8C9qWIHsDMQzeOSAUFewMOADhSItovtfQPhVlJV+SlQL6e6rd7JRgPJLXo5OpSe9SgRMwA0DsZG1pPJahkOgv/Rn1rAwem8RNMJOYaURWYiianJdGQac/4ipqbVlxR0bqPxmMMC1OnFdJAVKevT2MvC8Vu/K4jrgnaIVs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:a99f3485-7ad0-4183-9879-d480e7930bd6,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:120426c,CLOUDID:26091585-cd9c-45f5-8134-710979e3df0e,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-UUID: 7f20293ae2c111edb6b9f13eb10bd0fe-20230425
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 859539224; Tue, 25 Apr 2023 01:00:20 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 25 Apr 2023 01:00:19 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Tue, 25 Apr 2023 01:00:19 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: report tx retries/failed counts for non-WED path
+Date:   Tue, 25 Apr 2023 01:00:15 +0800
+Message-ID: <18bc7b966560a6025bdf71722482fb32d99793c2.1682318521.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
+X-MTK:  N
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-03-30 at 16:55 -0700, Ben Greear wrote:
-> I'm trying to have supplicant tell the STA to not allow 160Mhz.
->=20
-> In the method below, in my setup, *conn_flags has IEEE80211_CONN_DISABLE_=
-160MHZ
-> set when entering the method, but this method clears that and some relate=
-d flags.
-> The clear logic dates back to 2012, effectively, but I guess in 5.19 kern=
-el era somehow my hacks worked.
->=20
-> So question is, should it still be clearing the flags here?  I can add mo=
-re
-> hack-around logic, but possibly those lines should just be removed for ev=
-eryone?
->=20
-> static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
-> 				  struct ieee80211_link_data *link,
-> 				  struct cfg80211_bss *cbss,
-> 				  ieee80211_conn_flags_t *conn_flags)
-> {
-> 	struct ieee80211_local *local =3D sdata->local;
-> 	const struct ieee80211_ht_cap *ht_cap =3D NULL;
-> 	const struct ieee80211_ht_operation *ht_oper =3D NULL;
-> 	const struct ieee80211_vht_operation *vht_oper =3D NULL;
-> 	const struct ieee80211_he_operation *he_oper =3D NULL;
-> 	const struct ieee80211_eht_operation *eht_oper =3D NULL;
-> 	const struct ieee80211_s1g_oper_ie *s1g_oper =3D NULL;
-> 	struct ieee80211_supported_band *sband;
-> 	struct cfg80211_chan_def chandef;
-> 	bool is_6ghz =3D cbss->channel->band =3D=3D NL80211_BAND_6GHZ;
-> 	bool is_5ghz =3D cbss->channel->band =3D=3D NL80211_BAND_5GHZ;
-> 	struct ieee80211_bss *bss =3D (void *)cbss->priv;
-> 	struct ieee80211_elems_parse_params parse_params =3D {
-> 		.bss =3D cbss,
-> 		.link_id =3D -1,
-> 		.from_ap =3D true,
-> 	};
-> 	struct ieee802_11_elems *elems;
-> 	const struct cfg80211_bss_ies *ies;
-> 	int ret;
-> 	u32 i;
->=20
-> 	pr_info("prep-channel-0, CONN_DISABLE_160MHZ: %d\n",
-> 		!!(*conn_flags & IEEE80211_CONN_DISABLE_160MHZ));
->=20
-> 	rcu_read_lock();
->=20
-> 	ies =3D rcu_dereference(cbss->ies);
-> 	parse_params.start =3D ies->data;
-> 	parse_params.len =3D ies->len;
-> 	elems =3D ieee802_11_parse_elems_full(&parse_params);
-> 	if (!elems) {
-> 		rcu_read_unlock();
-> 		return -ENOMEM;
-> 	}
->=20
-> 	sband =3D local->hw.wiphy->bands[cbss->channel->band];
->=20
-> 	*conn_flags &=3D ~(IEEE80211_CONN_DISABLE_40MHZ |
-> 			 IEEE80211_CONN_DISABLE_80P80MHZ |
-> 			 IEEE80211_CONN_DISABLE_160MHZ);
->=20
+Get missing tx retries/failed counts from txfree done events and report
+them via mt7915_sta_statistics().
 
-I'm guessing - I don't really remember right now - that this is so we
-can make a new decision to set these flags? We don't really clear them
-in any other place, I guess?
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 22 +++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   |  7 +++++-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 12 +++++-----
+ 3 files changed, 32 insertions(+), 9 deletions(-)
 
-But honestly I don't know. There's a lot of state and maybe we should
-just memset() it all whenever we disconnect (get into some kind of idle
-state), just like we do with the links now that we free...
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 7df8d95fc3fb..8c34535e9c1e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -951,6 +951,7 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt76_txwi_cache *txwi;
+ 	struct ieee80211_sta *sta = NULL;
++	struct mt76_wcid *wcid = NULL;
+ 	LIST_HEAD(free_list);
+ 	void *end = data + len;
+ 	bool v3, wake = false;
+@@ -977,7 +978,6 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 		info = le32_to_cpu(*cur_info);
+ 		if (info & MT_TX_FREE_PAIR) {
+ 			struct mt7915_sta *msta;
+-			struct mt76_wcid *wcid;
+ 			u16 idx;
+ 
+ 			idx = FIELD_GET(MT_TX_FREE_WLAN_ID, info);
+@@ -994,7 +994,25 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 			continue;
+ 		}
+ 
+-		if (v3 && (info & MT_TX_FREE_MPDU_HEADER))
++		if (!mtk_wed_device_active(&mdev->mmio.wed) && wcid) {
++			u32 tx_retries = 0, tx_failed = 0;
++
++			if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3)) {
++				tx_retries =
++					FIELD_GET(MT_TX_FREE_COUNT_V3, info) - 1;
++				tx_failed = tx_retries +
++					!!FIELD_GET(MT_TX_FREE_STAT_V3, info);
++			} else {
++				tx_retries =
++					FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
++				tx_failed = tx_retries +
++					!!FIELD_GET(MT_TX_FREE_STAT, info);
++			}
++			wcid->stats.tx_retries += tx_retries;
++			wcid->stats.tx_failed += tx_failed;
++		}
++
++		if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3))
+ 			continue;
+ 
+ 		for (i = 0; i < 1 + v3; i++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+index ce94f87e2042..448b1b380190 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+@@ -9,7 +9,12 @@
+ #define MT_TX_FREE_VER			GENMASK(18, 16)
+ #define MT_TX_FREE_MSDU_CNT_V0		GENMASK(6, 0)
+ /* 0: success, others: dropped */
+-#define MT_TX_FREE_MPDU_HEADER		BIT(30)
++#define MT_TX_FREE_COUNT		GENMASK(12, 0)
++#define MT_TX_FREE_COUNT_V3		GENMASK(27, 24)
++#define MT_TX_FREE_STAT			GENMASK(14, 13)
++#define MT_TX_FREE_STAT_V3		GENMASK(29, 28)
++#define MT_TX_FREE_MPDU_HEADER		BIT(15)
++#define MT_TX_FREE_MPDU_HEADER_V3	BIT(30)
+ #define MT_TX_FREE_MSDU_ID_V3		GENMASK(14, 0)
+ 
+ #define MT_TXS5_F0_FINAL_MPDU		BIT(31)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 2ada2806de66..61157248d742 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1046,12 +1046,6 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
+ 		sinfo->tx_packets = msta->wcid.stats.tx_packets;
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
+ 
+-		sinfo->tx_failed = msta->wcid.stats.tx_failed;
+-		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
+-
+-		sinfo->tx_retries = msta->wcid.stats.tx_retries;
+-		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
+-
+ 		if (mtk_wed_get_rx_capa(&phy->dev->mt76.mmio.wed)) {
+ 			sinfo->rx_bytes = msta->wcid.stats.rx_bytes;
+ 			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
+@@ -1061,6 +1055,12 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
+ 		}
+ 	}
+ 
++	sinfo->tx_failed = msta->wcid.stats.tx_failed;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
++
++	sinfo->tx_retries = msta->wcid.stats.tx_retries;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
++
+ 	sinfo->ack_signal = (s8)msta->ack_signal;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
+ 
+-- 
+2.18.0
 
-johannes
