@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7158E6EC3D0
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 05:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 875BE6EC3D1
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 05:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjDXDFc convert rfc822-to-8bit (ORCPT
+        id S229797AbjDXDHS convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Apr 2023 23:05:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55770 "EHLO
+        Sun, 23 Apr 2023 23:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjDXDFb (ORCPT
+        with ESMTP id S229497AbjDXDHR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Apr 2023 23:05:31 -0400
+        Sun, 23 Apr 2023 23:07:17 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204441AC
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 20:05:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960351701
+        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 20:07:15 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33O35IdG4022805, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33O374sxC024527, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33O35IdG4022805
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33O374sxC024527
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 24 Apr 2023 11:05:18 +0800
+        Mon, 24 Apr 2023 11:07:04 +0800
 Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 24 Apr 2023 11:05:19 +0800
+ 15.1.2375.32; Mon, 24 Apr 2023 11:07:05 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Mon, 24 Apr 2023 11:05:19 +0800
+ 15.1.2375.34; Mon, 24 Apr 2023 11:07:05 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
  RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Mon, 24 Apr 2023 11:05:19 +0800
+ 15.01.2375.007; Mon, 24 Apr 2023 11:07:05 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     Martin Kaistra <martin.kaistra@linutronix.de>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
@@ -40,14 +40,15 @@ CC:     Jes Sorensen <Jes.Sorensen@gmail.com>,
         Kalle Valo <kvalo@kernel.org>,
         Bitterblue Smith <rtl8821cerfe2@gmail.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: RE: [PATCH v2 14/18] wifi: rtl8xxxu: Clean up filter configuration
-Thread-Topic: [PATCH v2 14/18] wifi: rtl8xxxu: Clean up filter configuration
-Thread-Index: AQHZcqYJf+EqxsRrsUC+dGE5d8rNda85zdSA
-Date:   Mon, 24 Apr 2023 03:05:19 +0000
-Message-ID: <adcd5bb3a3304be48ee6d82f459a6529@realtek.com>
+Subject: RE: [PATCH v2 15/18] wifi: rtl8xxxu: Remove usage of ieee80211_get_tx_rate()
+Thread-Topic: [PATCH v2 15/18] wifi: rtl8xxxu: Remove usage of
+ ieee80211_get_tx_rate()
+Thread-Index: AQHZcqYLpcRjqGoQSEK0bu1oVvleaa85zkzw
+Date:   Mon, 24 Apr 2023 03:07:04 +0000
+Message-ID: <22a53c2a0eb04c50bd602eb6efc20aa6@realtek.com>
 References: <20230419100145.159191-1-martin.kaistra@linutronix.de>
- <20230419100145.159191-15-martin.kaistra@linutronix.de>
-In-Reply-To: <20230419100145.159191-15-martin.kaistra@linutronix.de>
+ <20230419100145.159191-16-martin.kaistra@linutronix.de>
+In-Reply-To: <20230419100145.159191-16-martin.kaistra@linutronix.de>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
@@ -82,11 +83,19 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; Ping-Ke Shih
 > <pkshih@realtek.com>; Bitterblue Smith <rtl8821cerfe2@gmail.com>; Sebastian Andrzej Siewior
 > <bigeasy@linutronix.de>
-> Subject: [PATCH v2 14/18] wifi: rtl8xxxu: Clean up filter configuration
+> Subject: [PATCH v2 15/18] wifi: rtl8xxxu: Remove usage of ieee80211_get_tx_rate()
 > 
-> When RCR_CHECK_BSSID_MATCH is set in AP mode, we don't receive any data
-> frames. Rearrange RCR bits to filter flags to match other realtek drivers
-> and remove RCR_CHECK_BSSID_MATCH in AP mode.
+> As this driver uses HAS_RATE_CONTROL, tx_rates will not be provided by
+> mac80211.
+> 
+> For some frames c->control.rates[0].idx is negative, which means
+> ieee80211_get_tx_rate() will print a warning and return NULL.
+> 
+> Only management frames have USE_DRIVER_RATE set, so for all others the
+> rate info of txdesc is ignored anyway.
+> 
+> Remove call to ieee80211_get_tx_rate() and send management frames with
+> 1M (rate info = 0).
 > 
 > Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
 
