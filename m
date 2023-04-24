@@ -2,44 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFCC96ED1D2
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 17:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 586106ED303
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 18:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbjDXPzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Apr 2023 11:55:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
+        id S231794AbjDXQ7V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Apr 2023 12:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231851AbjDXPze (ORCPT
+        with ESMTP id S232239AbjDXQ7O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Apr 2023 11:55:34 -0400
+        Mon, 24 Apr 2023 12:59:14 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCE7A246
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 08:55:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15926AF26
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 09:58:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
         Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=g/1mjGCfIMb4t/rbKxT9ddITJFCqtTNLvrrm2VBAcpU=;
-        t=1682351718; x=1683561318; b=nPvoV1mY9ApoHa95gGUqRbtLa20zWaXI6nB4755ZAoijMx+
-        MCvwHa3/BvGyKjs9lcwaq2MOXzi+z4EhNw9fGbHAOE2Hb4s5npK3ivgNwALmNGZnXdKNzakY0xp0D
-        gRrLL7ztYLIq+LrAytoa8HQFwT6RnYX9lZF2hmjB4ExsxS/0/qYi5eUtH7W2ZFUQX0dFEHWjCuIQy
-        k0KrUb9n+sSAJe4H6b9Blx9geBX2CW/VASmgwsNVJcnY1ksAgechK1PuTgk1I61ENUsVOVCpXJwpb
-        NJUX6YH0ezEvD2qrgS2rXRgvKpAA0fi7opb6YytFq7gyjNzoHzSvszJ5s7UtfV1w==;
+        Resent-Cc:Resent-Message-ID; bh=KhWqgpIMHiV1j+Dv8BwTyQQCk7kgg453ejebDpyOwZI=;
+        t=1682355529; x=1683565129; b=cT7tbEYRYWzxQhEfd9PP+W5u7d9aLALl6L270UapuOasnfd
+        YI7cLPyuJgwLaD6ovU5lKZzWbkJpLz0k8IEuLQxoIDUamp7OMcDfm/ihexaCph497kzTPt1iMSo0f
+        4os3x8hsIHWUt6YAfWJ1u0QDV09trE4CYxt4GA/JdDL8etUht9hJyoxtJP6lll/PVBT50rDk/XZBV
+        C9UPuuvREdQq/HXsgYJUj8I+Oh690bVHx8LvwSGuB3gYVBmWkruxpz6buwzj0eqPSzc/Dl94Qrjd0
+        +mVi1GXB2pP12OlnYaOf8GCfld1CGP96ZIm+qo+jC1UuB43g1Co5x+MLR+eBL0wA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pqyX4-007Iho-1u;
-        Mon, 24 Apr 2023 17:55:14 +0200
-Message-ID: <bf641b6343baf9a810df41a5d68e0c073a059548.camel@sipsolutions.net>
-Subject: Re: [RFC v2] average: rewrite for clearity
+        id 1pqzWV-007JrN-0d;
+        Mon, 24 Apr 2023 18:58:43 +0200
+Message-ID: <e247d0832435218fcdb78f3b81a66306b8873946.camel@sipsolutions.net>
+Subject: Re: Question on why ieee80211_prep_channel clears the
+ IEEE80211_CONN_DISABLE_160MHZ flag.
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>, nbd@nbd.name,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 24 Apr 2023 17:55:13 +0200
-In-Reply-To: <bea043c3-1cee-e2a6-ca4b-83e80404358c@uni-rostock.de>
-References: <20230421134604.211128-1-benjamin.beichler@uni-rostock.de>
-         <3f505aba559d4ce068ef6d2fd7743045e0d93b9f.camel@sipsolutions.net>
-         <bea043c3-1cee-e2a6-ca4b-83e80404358c@uni-rostock.de>
+To:     Ben Greear <greearb@candelatech.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Mon, 24 Apr 2023 18:58:42 +0200
+In-Reply-To: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
+References: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
@@ -54,61 +53,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2023-04-21 at 17:16 +0200, Benjamin Beichler wrote:
-> >=20
-> > So then we could say we'll just fix them, but what value actually makes
-> > sense to init with? You don't necessarily know, right? Initially biasin=
-g
-> > towards the first value makes a lot more sense than initially biasing
-> > towards zero, no? And then if you want to achieve that, now you have to
-> > either use _add_or_init(), which is probably what people will do, but
-> > that continues having the problem ...
+On Thu, 2023-03-30 at 16:55 -0700, Ben Greear wrote:
+> I'm trying to have supplicant tell the STA to not allow 160Mhz.
 >=20
-> I left out the the individual fixes for users, but for the samples I=20
-> looked into, either start values were given, or they were semantically=
-=20
-> extractable.
+> In the method below, in my setup, *conn_flags has IEEE80211_CONN_DISABLE_=
+160MHZ
+> set when entering the method, but this method clears that and some relate=
+d flags.
+> The clear logic dates back to 2012, effectively, but I guess in 5.19 kern=
+el era somehow my hacks worked.
 >=20
-> e.g. virtios pkt_len=C2=A0 ewma is clamped anyways, so using the clamp bo=
-rder=20
-> or in between will be safe.
+> So question is, should it still be clearing the flags here?  I can add mo=
+re
+> hack-around logic, but possibly those lines should just be removed for ev=
+eryone?
 >=20
-> Most others are signals-strengths, many of them also only for=20
-> statistics, where a slow convergence is okay in my opinion.
+> static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+> 				  struct ieee80211_link_data *link,
+> 				  struct cfg80211_bss *cbss,
+> 				  ieee80211_conn_flags_t *conn_flags)
+> {
+> 	struct ieee80211_local *local =3D sdata->local;
+> 	const struct ieee80211_ht_cap *ht_cap =3D NULL;
+> 	const struct ieee80211_ht_operation *ht_oper =3D NULL;
+> 	const struct ieee80211_vht_operation *vht_oper =3D NULL;
+> 	const struct ieee80211_he_operation *he_oper =3D NULL;
+> 	const struct ieee80211_eht_operation *eht_oper =3D NULL;
+> 	const struct ieee80211_s1g_oper_ie *s1g_oper =3D NULL;
+> 	struct ieee80211_supported_band *sband;
+> 	struct cfg80211_chan_def chandef;
+> 	bool is_6ghz =3D cbss->channel->band =3D=3D NL80211_BAND_6GHZ;
+> 	bool is_5ghz =3D cbss->channel->band =3D=3D NL80211_BAND_5GHZ;
+> 	struct ieee80211_bss *bss =3D (void *)cbss->priv;
+> 	struct ieee80211_elems_parse_params parse_params =3D {
+> 		.bss =3D cbss,
+> 		.link_id =3D -1,
+> 		.from_ap =3D true,
+> 	};
+> 	struct ieee802_11_elems *elems;
+> 	const struct cfg80211_bss_ies *ies;
+> 	int ret;
+> 	u32 i;
+>=20
+> 	pr_info("prep-channel-0, CONN_DISABLE_160MHZ: %d\n",
+> 		!!(*conn_flags & IEEE80211_CONN_DISABLE_160MHZ));
+>=20
+> 	rcu_read_lock();
+>=20
+> 	ies =3D rcu_dereference(cbss->ies);
+> 	parse_params.start =3D ies->data;
+> 	parse_params.len =3D ies->len;
+> 	elems =3D ieee802_11_parse_elems_full(&parse_params);
+> 	if (!elems) {
+> 		rcu_read_unlock();
+> 		return -ENOMEM;
+> 	}
+>=20
+> 	sband =3D local->hw.wiphy->bands[cbss->channel->band];
+>=20
+> 	*conn_flags &=3D ~(IEEE80211_CONN_DISABLE_40MHZ |
+> 			 IEEE80211_CONN_DISABLE_80P80MHZ |
+> 			 IEEE80211_CONN_DISABLE_160MHZ);
+>=20
 
-Yeah I guess that's the thing, we can accept slower convergence in many
-cases, and "safe" start values mean that mostly. But why accept it when
-we don't have to?
+I'm guessing - I don't really remember right now - that this is so we
+can make a new decision to set these flags? We don't really clear them
+in any other place, I guess?
 
-> IMHO the net improvement is, that if you do not use the convenience=20
-> add_or_init function, it simply resembles the ewma filter of a math or=
-=20
-> CS-textbook.=C2=A0
-
-Not sure I see that as a good argument. The practical engineering side
-tends to always be more complex than the theory, and that's not really
-unexpected. We can comment why it's different :-)
-
-> The original problem was, that the ewma had a surprising=20
-> output in a special situation.
-
-Right, but that's an implementation issue, because we thought 0 =3D=3D
-uninit was clever, without realizing the corner case.
-
-> But while writing the commit, I recognized, that the current ewma=20
-> implementation is only for unsigned values, which means the problem=20
-> really only happens for many consecutive 0 values. I try to think over,=
-=20
-> what this means for the proposal of Felix, but I'm not able to think=20
-> about unsigned C-arithmetics today :-D
-
-Not much really, I think? It eases thinking about it though :)
-
-> If we use that fix, then we should have an additional compile time=20
-> check, that the precision has at least 2 or 4 bits, to really avoid the=
-=20
-> problem, shouldn't we?
-
-Yes. I think 1 bit is enough, but yes, it can't be 0 bits.
+But honestly I don't know. There's a lot of state and maybe we should
+just memset() it all whenever we disconnect (get into some kind of idle
+state), just like we do with the links now that we free...
 
 johannes
