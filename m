@@ -2,96 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE396ED1A4
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 17:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFCC96ED1D2
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 17:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjDXPpA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Apr 2023 11:45:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48616 "EHLO
+        id S232145AbjDXPzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Apr 2023 11:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232115AbjDXPo6 (ORCPT
+        with ESMTP id S231851AbjDXPze (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Apr 2023 11:44:58 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 770B77A8B
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 08:44:56 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-187b70ab997so25192932fac.0
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 08:44:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682351095; x=1684943095;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=YGkdGYkDdeg2BrZbnQt1lSYUo+/tsjqL79bQ/PID5NE=;
-        b=VqMCD6I/BPB1E/vwv8V9xjkWYKsv2h73Pt28R3ZQ0hFLTFdfw3seRWsVKDk0ZJOxAm
-         nNaEjPkru5CyubIpDSiEh0RnX3I+EYw8eK3lZd5IPf72t4B6ESpmgiLhnO7EyGDzfT5/
-         rFJ4sohE1xIm6NI0xSK3trYbe050s0iLEOa8nyQjjWEpLgrkbWHf05ca8Cd6KDkRLAKS
-         eEMmUxHJoKnbsTzw36/p0Hh20VMYVpYYv8gysPg9E+oxjRVGvHiHhAds/4UsXlutnJt5
-         mW+/7Byp98cA/KyS43FD1+oygTsCrSQREz7yIVTS0uIXDZNCo1jcj0d6+5Oy/imPOEIj
-         x9AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682351095; x=1684943095;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YGkdGYkDdeg2BrZbnQt1lSYUo+/tsjqL79bQ/PID5NE=;
-        b=Xw1PhO4wEAFWeQbDjczTWt5s+64bNNsy1BpkytU8xef0CXwCVibSFPpWqXTMWtKdjP
-         uTp3grr/f3ztxqN0JNcMxamxJK60QDvgQov3gDQfH2tJ9xYo5POR144MZURZyQfYllpx
-         79EH8LhanxCHhRz617hdYk+zABmvN00I9bRozZ6qb5ZD7e2TAmICbw8gNt1Xy+H+OQ9b
-         8mtqnxTIXtFH1yo2PN0TEz1OB75Xlx1q2ihAzknsrtj0jDn8F42vwlCBMJCn8560C1Lw
-         KWNNJF0VXoczJDQOyD4gZaHVJv/9fqymNHIamRoNIlNf+Cl7uv0NSYx9rtzWCV94FIxn
-         OD7Q==
-X-Gm-Message-State: AAQBX9cwziqlUbpNwFsxkeGRzL+NtqbhKCMdOSuce49f4C1X8kHcVuRd
-        tKKuMY5fXaANydzhNpJmEilQIUqRUS8=
-X-Google-Smtp-Source: AKy350YLFvFfqJzIuaBRf5KiPLJKiwSUsqJ5gItLz8nbmWRzcf+Ub3Z4yFa773bvx7S6KovJpds7+w==
-X-Received: by 2002:a54:4010:0:b0:38e:8e5a:6b53 with SMTP id x16-20020a544010000000b0038e8e5a6b53mr6309700oie.24.1682351094772;
-        Mon, 24 Apr 2023 08:44:54 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id o189-20020acabec6000000b0038c2e1bdf2asm1261398oif.36.2023.04.24.08.44.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 08:44:54 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <2a9d4092-cfcb-a683-90d4-a6d18e854adf@lwfinger.net>
-Date:   Mon, 24 Apr 2023 10:44:53 -0500
+        Mon, 24 Apr 2023 11:55:34 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCE7A246
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 08:55:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=g/1mjGCfIMb4t/rbKxT9ddITJFCqtTNLvrrm2VBAcpU=;
+        t=1682351718; x=1683561318; b=nPvoV1mY9ApoHa95gGUqRbtLa20zWaXI6nB4755ZAoijMx+
+        MCvwHa3/BvGyKjs9lcwaq2MOXzi+z4EhNw9fGbHAOE2Hb4s5npK3ivgNwALmNGZnXdKNzakY0xp0D
+        gRrLL7ztYLIq+LrAytoa8HQFwT6RnYX9lZF2hmjB4ExsxS/0/qYi5eUtH7W2ZFUQX0dFEHWjCuIQy
+        k0KrUb9n+sSAJe4H6b9Blx9geBX2CW/VASmgwsNVJcnY1ksAgechK1PuTgk1I61ENUsVOVCpXJwpb
+        NJUX6YH0ezEvD2qrgS2rXRgvKpAA0fi7opb6YytFq7gyjNzoHzSvszJ5s7UtfV1w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pqyX4-007Iho-1u;
+        Mon, 24 Apr 2023 17:55:14 +0200
+Message-ID: <bf641b6343baf9a810df41a5d68e0c073a059548.camel@sipsolutions.net>
+Subject: Re: [RFC v2] average: rewrite for clearity
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>, nbd@nbd.name,
+        linux-wireless@vger.kernel.org
+Date:   Mon, 24 Apr 2023 17:55:13 +0200
+In-Reply-To: <bea043c3-1cee-e2a6-ca4b-83e80404358c@uni-rostock.de>
+References: <20230421134604.211128-1-benjamin.beichler@uni-rostock.de>
+         <3f505aba559d4ce068ef6d2fd7743045e0d93b9f.camel@sipsolutions.net>
+         <bea043c3-1cee-e2a6-ca4b-83e80404358c@uni-rostock.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Problems with HP BIOS
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <5c753c2b-ca3e-50d8-8829-9c350d35b9f5@lwfinger.net>
- <7b5f33cb7c704e3696674a5cebe9dd8a@realtek.com>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <7b5f33cb7c704e3696674a5cebe9dd8a@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/23/23 21:09, Ping-Ke Shih wrote:
-> We have similar fix recently, and have sent a patch:
-> https://lore.kernel.org/linux-wireless/20230421015357.13940-1-pkshih@realtek.com/T/#u
-> 
-> Could you or the user give it a try?
-> 
+On Fri, 2023-04-21 at 17:16 +0200, Benjamin Beichler wrote:
+> >=20
+> > So then we could say we'll just fix them, but what value actually makes
+> > sense to init with? You don't necessarily know, right? Initially biasin=
+g
+> > towards the first value makes a lot more sense than initially biasing
+> > towards zero, no? And then if you want to achieve that, now you have to
+> > either use _add_or_init(), which is probably what people will do, but
+> > that continues having the problem ...
+>=20
+> I left out the the individual fixes for users, but for the samples I=20
+> looked into, either start values were given, or they were semantically=
+=20
+> extractable.
+>=20
+> e.g. virtios pkt_len=C2=A0 ewma is clamped anyways, so using the clamp bo=
+rder=20
+> or in between will be safe.
+>=20
+> Most others are signals-strengths, many of them also only for=20
+> statistics, where a slow convergence is okay in my opinion.
 
-Ping-Ke,
+Yeah I guess that's the thing, we can accept slower convergence in many
+cases, and "safe" start values mean that mostly. But why accept it when
+we don't have to?
 
-I had that patch in my "pending" list, but was waiting for it to appear in 
-wireless-next. I added it to the GitHub repo, pushed the change, and alerted the 
-several people with the problem. I will let you know the results.
+> IMHO the net improvement is, that if you do not use the convenience=20
+> add_or_init function, it simply resembles the ewma filter of a math or=
+=20
+> CS-textbook.=C2=A0
 
-Thanks,
+Not sure I see that as a good argument. The practical engineering side
+tends to always be more complex than the theory, and that's not really
+unexpected. We can comment why it's different :-)
 
-Larry
+> The original problem was, that the ewma had a surprising=20
+> output in a special situation.
 
+Right, but that's an implementation issue, because we thought 0 =3D=3D
+uninit was clever, without realizing the corner case.
+
+> But while writing the commit, I recognized, that the current ewma=20
+> implementation is only for unsigned values, which means the problem=20
+> really only happens for many consecutive 0 values. I try to think over,=
+=20
+> what this means for the proposal of Felix, but I'm not able to think=20
+> about unsigned C-arithmetics today :-D
+
+Not much really, I think? It eases thinking about it though :)
+
+> If we use that fix, then we should have an additional compile time=20
+> check, that the precision has at least 2 or 4 bits, to really avoid the=
+=20
+> problem, shouldn't we?
+
+Yes. I think 1 bit is enough, but yes, it can't be 0 bits.
+
+johannes
