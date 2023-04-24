@@ -2,171 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8A16ED5B9
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 21:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFAB86ED604
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 22:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230355AbjDXT6y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Apr 2023 15:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59702 "EHLO
+        id S232274AbjDXUQ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Apr 2023 16:16:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjDXT6x (ORCPT
+        with ESMTP id S229872AbjDXUQ2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Apr 2023 15:58:53 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322744211
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 12:58:18 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 68F6BC4006D;
-        Mon, 24 Apr 2023 19:58:16 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id BFD6113C2B0;
-        Mon, 24 Apr 2023 12:58:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BFD6113C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1682366295;
-        bh=8hKpYO0DxuaJ6Xo80gftvgxB+7nXii4+IhtLauvOTFA=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=LGWJiB184Vy8wM92c2hvwD7nxyPvvZaKFyhR3fyRGxVp3Ss6GW2ySPqQ2MVMmmnMX
-         Gf5oKqLtBicxAe9c5wedsEOoOGW4V1yA+yPiq7oZ8/v9SHfLfCNyI7tuP37oUSZ1iD
-         1OT9jobtGlViMOsQ56zqq1e19Vdm3RdpgwrABfCw=
-Message-ID: <dab721af-4f9b-20b8-94da-fb1913ff4095@candelatech.com>
-Date:   Mon, 24 Apr 2023 12:58:15 -0700
+        Mon, 24 Apr 2023 16:16:28 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD8E6AB
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 13:16:26 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f19a80a330so16395395e9.2
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 13:16:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682367385; x=1684959385;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2Zfj4drzBZISodVVEvLVzE/tLnnPKzm7ZXU8ovVtXfw=;
+        b=WifsAsW2OqgW7jMATbtGZPsO9WpDVfNkuYdCsNkxZw2qj9ExYDYtgS8bcb16TXbdxq
+         5P2LFcEaJ72BE24sQUSs/OYoefJ0Z5qE97vjDbZDlg4pau3g3/TpJz1w3hUCykldSVgo
+         +4OxP2X0mC9MIi+/1jBAsQa595RpecnxlH5iz8ttjUg0nAP3duX9TPyWf2C7nqoyzzny
+         neL6DIpYpbuJvUZmplAKCZ4W0G/gS6Y21qKpsrdCKHtoVHu3y2PeCz5w4N9JFMi9ANXx
+         YeOpIH4mtcBIWD3tleBLAKKjcd7g8T+5dh8MPst8xkr+a0tuDfSrt26gu+2Hi7cMrHH4
+         0SNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682367385; x=1684959385;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Zfj4drzBZISodVVEvLVzE/tLnnPKzm7ZXU8ovVtXfw=;
+        b=MDhStj/oJ7/60vfWITi/IkE5PAR8/f2qiedgG4f0gcMqazrnqGam4g+x/I9c2zaIh/
+         JXjwfxuMEpL2tVKBuN4RN61J7hJGQw7H4RWuwcLAWZdeokNCWy2I52E7BBxNz4HNoBAf
+         3rsFSIqOrFREcsD3JoNPmh+RWmc8Q+HPQUeIj+/ocgTf4gSiTkN5+wtSYoNwvbcTl4+5
+         xERcmN7ECKVYg2jXjA9iXMdbiDX5gH0b+TMypCwUU3ztax2zNRic3DFEb+ohv8STn5hg
+         X9X/DxQ5wj043e6dHXWXgIe4u3zs1KxnmvsXmAZqkOYG4nNegjb0TaIs0b74WznDhtum
+         99cw==
+X-Gm-Message-State: AAQBX9egxaqNNgGqkLWxMKnEpgguqVYTqk1d35s3xG7ybDvWG2mSsy/s
+        TZ0AQ2B+MfATKdCOek0BSi0wZe0vNZY=
+X-Google-Smtp-Source: AKy350aBcn3WlSGMijeCtBN6Y35PzZiQwhv8MCMSz1zK2byidfa0uiPk7ayL4O/r90J8cRDieRunvg==
+X-Received: by 2002:a5d:6690:0:b0:2fb:703d:1915 with SMTP id l16-20020a5d6690000000b002fb703d1915mr10580078wru.43.1682367385305;
+        Mon, 24 Apr 2023 13:16:25 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id k3-20020a7bc403000000b003f1745c7df3sm13047952wmi.23.2023.04.24.13.16.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Apr 2023 13:16:24 -0700 (PDT)
+Message-ID: <98355d5e-ac45-c522-3b8a-8cdc243b87cb@gmail.com>
+Date:   Mon, 24 Apr 2023 23:16:23 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Question on why ieee80211_prep_channel clears the
- IEEE80211_CONN_DISABLE_160MHZ flag.
+ Thunderbird/102.8.0
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH v2 18/18] wifi: rtl8xxxu: Set maximum number of supported
+ stations
+To:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        linux-wireless@vger.kernel.org
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20230419100145.159191-1-martin.kaistra@linutronix.de>
+ <20230419100145.159191-19-martin.kaistra@linutronix.de>
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-References: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
- <e247d0832435218fcdb78f3b81a66306b8873946.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <e247d0832435218fcdb78f3b81a66306b8873946.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20230419100145.159191-19-martin.kaistra@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MDID: 1682366297-Hd0owRLc8vFl
-X-MDID-O: us5;ut7;1682366297;Hd0owRLc8vFl;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/24/23 09:58, Johannes Berg wrote:
-> On Thu, 2023-03-30 at 16:55 -0700, Ben Greear wrote:
->> I'm trying to have supplicant tell the STA to not allow 160Mhz.
->>
->> In the method below, in my setup, *conn_flags has IEEE80211_CONN_DISABLE_160MHZ
->> set when entering the method, but this method clears that and some related flags.
->> The clear logic dates back to 2012, effectively, but I guess in 5.19 kernel era somehow my hacks worked.
->>
->> So question is, should it still be clearing the flags here?  I can add more
->> hack-around logic, but possibly those lines should just be removed for everyone?
->>
->> static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
->> 				  struct ieee80211_link_data *link,
->> 				  struct cfg80211_bss *cbss,
->> 				  ieee80211_conn_flags_t *conn_flags)
->> {
->> 	struct ieee80211_local *local = sdata->local;
->> 	const struct ieee80211_ht_cap *ht_cap = NULL;
->> 	const struct ieee80211_ht_operation *ht_oper = NULL;
->> 	const struct ieee80211_vht_operation *vht_oper = NULL;
->> 	const struct ieee80211_he_operation *he_oper = NULL;
->> 	const struct ieee80211_eht_operation *eht_oper = NULL;
->> 	const struct ieee80211_s1g_oper_ie *s1g_oper = NULL;
->> 	struct ieee80211_supported_band *sband;
->> 	struct cfg80211_chan_def chandef;
->> 	bool is_6ghz = cbss->channel->band == NL80211_BAND_6GHZ;
->> 	bool is_5ghz = cbss->channel->band == NL80211_BAND_5GHZ;
->> 	struct ieee80211_bss *bss = (void *)cbss->priv;
->> 	struct ieee80211_elems_parse_params parse_params = {
->> 		.bss = cbss,
->> 		.link_id = -1,
->> 		.from_ap = true,
->> 	};
->> 	struct ieee802_11_elems *elems;
->> 	const struct cfg80211_bss_ies *ies;
->> 	int ret;
->> 	u32 i;
->>
->> 	pr_info("prep-channel-0, CONN_DISABLE_160MHZ: %d\n",
->> 		!!(*conn_flags & IEEE80211_CONN_DISABLE_160MHZ));
->>
->> 	rcu_read_lock();
->>
->> 	ies = rcu_dereference(cbss->ies);
->> 	parse_params.start = ies->data;
->> 	parse_params.len = ies->len;
->> 	elems = ieee802_11_parse_elems_full(&parse_params);
->> 	if (!elems) {
->> 		rcu_read_unlock();
->> 		return -ENOMEM;
->> 	}
->>
->> 	sband = local->hw.wiphy->bands[cbss->channel->band];
->>
->> 	*conn_flags &= ~(IEEE80211_CONN_DISABLE_40MHZ |
->> 			 IEEE80211_CONN_DISABLE_80P80MHZ |
->> 			 IEEE80211_CONN_DISABLE_160MHZ);
->>
+On 19/04/2023 13:01, Martin Kaistra wrote:
+> Set maximum number of associated stations supported in AP mode. For
+> 8188f, the maximum number of supported macids is 16, reserve one for
+> broadcast/multicast frames.
 > 
-> I'm guessing - I don't really remember right now - that this is so we
-> can make a new decision to set these flags? We don't really clear them
-> in any other place, I guess?
+> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h       | 1 +
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 1 +
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 2 ++
+>  3 files changed, 4 insertions(+)
 > 
-> But honestly I don't know. There's a lot of state and maybe we should
-> just memset() it all whenever we disconnect (get into some kind of idle
-> state), just like we do with the links now that we free...
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> index 64e823f216967..e996168d0bfd1 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+> @@ -1946,6 +1946,7 @@ struct rtl8xxxu_fileops {
+>  	u8 ampdu_max_time;
+>  	u8 ustime_tsf_edca;
+>  	u8 supports_ap:1;
+> +	u16 max_sta_num;
+>  	u32 adda_1t_init;
+>  	u32 adda_1t_path_on;
+>  	u32 adda_2t_path_on_a;
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+> index 7dc2fd8aa5317..085721c734ae2 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+> @@ -1752,6 +1752,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
+>  	.ampdu_max_time = 0x70,
+>  	.ustime_tsf_edca = 0x28,
+>  	.supports_ap = 1,
+> +	.max_sta_num = 16,
+>  	.adda_1t_init = 0x03c00014,
+>  	.adda_1t_path_on = 0x03c00014,
+>  	.trxff_boundary = 0x3f7f,
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index bf471c3f98b86..6d0c775244274 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -7464,6 +7464,8 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+>  
+>  	hw->wiphy->max_scan_ssids = 1;
+>  	hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
+> +	if (priv->fops->max_sta_num)
+> +		hw->wiphy->max_ap_assoc_sta = priv->fops->max_sta_num - 1;
 
-We have been running this patch below for 3 or so weeks, and have not noticed any problems.
+The way you use it, "max_macid_num" would be a more accurate name.
 
-I am personally worried about making bigger changes to this sort of logic (ie, memset),
-as the over all code is convoluted and hard to think through all of the changes
-and use cases.
-
-The MLO changes seem to have done a better job of splitting up
-the configured vs current settings.  I think that split is key to better
-architecture over all.  Conn-flags is 'configured' as I understand it, so
-probably removing mac80211 code that changes it (as opposed to changing it from
-user-space or other configured input) is in the right direction.
-
-
-@@ -4762,9 +4762,13 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
-
-  	sband = local->hw.wiphy->bands[cbss->channel->band];
-
-+	/* This makes our logic to disable 160Mhz (at least) not work.
-+	 * I am not sure it is useful in any case, so commenting out for now.
-+	 * --Ben
-  	*conn_flags &= ~(IEEE80211_CONN_DISABLE_40MHZ |
-  			 IEEE80211_CONN_DISABLE_80P80MHZ |
-  			 IEEE80211_CONN_DISABLE_160MHZ);
-+	*/
-
-  	/* disable HT/VHT/HE if we don't support them */
-  	if (!sband->ht_cap.ht_supported && !is_6ghz) {
-
-I can send a patch to just remove those three lines if you think that is good approach?
-
-Thanks,
-Ben
-
-> 
-> johannes
-> 
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+>  	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION);
+>  	if (priv->fops->supports_ap)
+>  		hw->wiphy->interface_modes |= BIT(NL80211_IFTYPE_AP);
 
