@@ -2,103 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E156ECC7E
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 15:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BE396ED1A4
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 17:45:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231705AbjDXNDJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Apr 2023 09:03:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
+        id S232090AbjDXPpA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Apr 2023 11:45:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231156AbjDXNDI (ORCPT
+        with ESMTP id S232115AbjDXPo6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Apr 2023 09:03:08 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD26D3A93
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 06:03:07 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3f19c473b9eso44518445e9.0
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 06:03:07 -0700 (PDT)
+        Mon, 24 Apr 2023 11:44:58 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 770B77A8B
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 08:44:56 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-187b70ab997so25192932fac.0
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Apr 2023 08:44:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682341386; x=1684933386;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O0qu4IrE+l7+si2rWrqXyY3tqUUUcRa39pe0HYa886Q=;
-        b=loqgWo1kqI8QHBiZmFY1GcUA0dFk3sX4BsMYx+Tzq9CfqQgi+fRyil8dRcEGqvBT71
-         S6E7cm9JVyb7wZqavqmAoB49UHj8ISSd20+XwuBWYNvK1HtTwcL62N+4oB3wu18t+gsa
-         jlFNiZ44iuYkGtUCF4SPnwW4sxudqC634gqbOoPU6ENWxrjhV5gGxeVtsuGb/kQ3mels
-         ww4o7cBeQSbJ4QmM6kBJh529BPaP2ULrp0zJh9MS+pJuKJ7e5os9NYAIcfV0SCrk8JcE
-         2i+fRB/oAlWaEtBLLPHti38LjE5TKDZoYEwVr/ae/zwfegUUzUcM28Luc1JEWREZQ8AD
-         Poxw==
+        d=gmail.com; s=20221208; t=1682351095; x=1684943095;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=YGkdGYkDdeg2BrZbnQt1lSYUo+/tsjqL79bQ/PID5NE=;
+        b=VqMCD6I/BPB1E/vwv8V9xjkWYKsv2h73Pt28R3ZQ0hFLTFdfw3seRWsVKDk0ZJOxAm
+         nNaEjPkru5CyubIpDSiEh0RnX3I+EYw8eK3lZd5IPf72t4B6ESpmgiLhnO7EyGDzfT5/
+         rFJ4sohE1xIm6NI0xSK3trYbe050s0iLEOa8nyQjjWEpLgrkbWHf05ca8Cd6KDkRLAKS
+         eEMmUxHJoKnbsTzw36/p0Hh20VMYVpYYv8gysPg9E+oxjRVGvHiHhAds/4UsXlutnJt5
+         mW+/7Byp98cA/KyS43FD1+oygTsCrSQREz7yIVTS0uIXDZNCo1jcj0d6+5Oy/imPOEIj
+         x9AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682341386; x=1684933386;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1682351095; x=1684943095;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O0qu4IrE+l7+si2rWrqXyY3tqUUUcRa39pe0HYa886Q=;
-        b=R7Vs7WpASs9I9/4Ip9/knt1RYRtgVJ39eIKRdOlCeKTP+0xWpiVlc/61Gv4X4kPtUS
-         HUKVcM1/p+FNG9efVeJqVdSbQADydZ6Z+GwYNC/HyaCBQmWq31A1S8QPL1F0s0Uv13R3
-         EhcIhdinYMrGwcOHlQjP2xEFNGDSJbSlxEmbAQjhifZnkfRh9yd5PoTsXuGdFgZSHF4l
-         NheaIQEZpROfoNFE7imhMScneOfjznF3lLwYj37j+QTDBRfHOy616TK4ILwF5hlkDlEN
-         ZalcEgpYYm3o4VWASoSNhUt6ClI4tMARcHHDi8H41OaC5NzPWOYVZWL3cZaBUJzBm0bk
-         3B5g==
-X-Gm-Message-State: AAQBX9cjdlywAV7K/GNqT0yPJAckzeQ95Go8+uFEHWVl1FkPx5QMz3El
-        A3voSMGhGUspM1mxoVSHMDCLKSINP9t6JKihjCkKszoqhao=
-X-Google-Smtp-Source: AKy350awnhN6+skN8u0DjoTc1DI6RbhLscaJNKFSQFrIvchBEFdreGc30YNn+lUoWtLsjazxXu6j42kd/NtkuIUi2mc=
-X-Received: by 2002:a5d:4b01:0:b0:2fd:c315:bb2c with SMTP id
- v1-20020a5d4b01000000b002fdc315bb2cmr9839099wrq.22.1682341386105; Mon, 24 Apr
- 2023 06:03:06 -0700 (PDT)
+        bh=YGkdGYkDdeg2BrZbnQt1lSYUo+/tsjqL79bQ/PID5NE=;
+        b=Xw1PhO4wEAFWeQbDjczTWt5s+64bNNsy1BpkytU8xef0CXwCVibSFPpWqXTMWtKdjP
+         uTp3grr/f3ztxqN0JNcMxamxJK60QDvgQov3gDQfH2tJ9xYo5POR144MZURZyQfYllpx
+         79EH8LhanxCHhRz617hdYk+zABmvN00I9bRozZ6qb5ZD7e2TAmICbw8gNt1Xy+H+OQ9b
+         8mtqnxTIXtFH1yo2PN0TEz1OB75Xlx1q2ihAzknsrtj0jDn8F42vwlCBMJCn8560C1Lw
+         KWNNJF0VXoczJDQOyD4gZaHVJv/9fqymNHIamRoNIlNf+Cl7uv0NSYx9rtzWCV94FIxn
+         OD7Q==
+X-Gm-Message-State: AAQBX9cwziqlUbpNwFsxkeGRzL+NtqbhKCMdOSuce49f4C1X8kHcVuRd
+        tKKuMY5fXaANydzhNpJmEilQIUqRUS8=
+X-Google-Smtp-Source: AKy350YLFvFfqJzIuaBRf5KiPLJKiwSUsqJ5gItLz8nbmWRzcf+Ub3Z4yFa773bvx7S6KovJpds7+w==
+X-Received: by 2002:a54:4010:0:b0:38e:8e5a:6b53 with SMTP id x16-20020a544010000000b0038e8e5a6b53mr6309700oie.24.1682351094772;
+        Mon, 24 Apr 2023 08:44:54 -0700 (PDT)
+Received: from [192.168.0.162] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id o189-20020acabec6000000b0038c2e1bdf2asm1261398oif.36.2023.04.24.08.44.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Apr 2023 08:44:54 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <2a9d4092-cfcb-a683-90d4-a6d18e854adf@lwfinger.net>
+Date:   Mon, 24 Apr 2023 10:44:53 -0500
 MIME-Version: 1.0
-References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
- <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com> <CALbLcfB7cMctHC-Fv93z1WVCZkQ76uW2F_=P6rCW7ZSPXvmapw@mail.gmail.com>
- <2857f998-1b1a-e3c2-20fe-d03dadcf8f23@gmail.com> <CALbLcfCsyGzhvrqjSz37+7cLvc3rc4Y_kgspZV=kiPNs4TBE4w@mail.gmail.com>
- <CALbLcfBnF6njFMSfQk2TuOiZ3C3kHwqs4-c-MQGb72azzQ5sJA@mail.gmail.com>
- <38172c8e-d107-d96e-7292-09d0e3b061dd@gmail.com> <CALbLcfCHLU+zoFdTnTrJs22UUYwr2rETp5hqbv=NL352Qz-XgA@mail.gmail.com>
- <CALbLcfDZJmOyn-Gf24+9X-eHh3-3PY4_nP5soG3gHf_Vn85=EA@mail.gmail.com>
- <CALbLcfAiVgGi9iocEG4OfgET2XLDRq0dthbxDMP0vP3R6BBp_A@mail.gmail.com>
- <3ceecfc1-ab04-7d54-51bd-457a4708c0ac@gmail.com> <CALbLcfCpb8xbN+w2VvCZ6Gdr+L_ECH0UQsWZrpO1Hcpoef66UQ@mail.gmail.com>
- <8eaeb64e-3f7f-6752-4476-c0f0c88a008b@gmail.com> <CALbLcfD7AmMG72-Qxafc9533OQVBCL=RLDycjUCV2MJ0DRN6nw@mail.gmail.com>
-In-Reply-To: <CALbLcfD7AmMG72-Qxafc9533OQVBCL=RLDycjUCV2MJ0DRN6nw@mail.gmail.com>
-From:   Artem Makhutov <artem.makhutov@gmail.com>
-Date:   Mon, 24 Apr 2023 15:02:55 +0200
-Message-ID: <CALbLcfCPKhp0WX853XHgoGV+zaxwv=ThR-i-wR6s7gk_yqqHtA@mail.gmail.com>
-Subject: Re: RTL8188EU (LogiLink WL0151A) - Malformed packets
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: Problems with HP BIOS
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <5c753c2b-ca3e-50d8-8829-9c350d35b9f5@lwfinger.net>
+ <7b5f33cb7c704e3696674a5cebe9dd8a@realtek.com>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <7b5f33cb7c704e3696674a5cebe9dd8a@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 4/23/23 21:09, Ping-Ke Shih wrote:
+> We have similar fix recently, and have sent a patch:
+> https://lore.kernel.org/linux-wireless/20230421015357.13940-1-pkshih@realtek.com/T/#u
+> 
+> Could you or the user give it a try?
+> 
 
-I have purchased an Asus RT-AX53U (running Asus 3.0.0.4.382_45213
-firmware). And I can reproduce the problem in my own network now.
-Now I have tested a TP-Link TL-WN722N wifi module. The problem is the
-same here too.
+Ping-Ke,
 
-In my setup the rxht mode works with rxmcs 19 and rxmcs 17... all
-other values seem not to work...
+I had that patch in my "pending" list, but was waiting for it to appear in 
+wireless-next. I added it to the GitHub repo, pushed the change, and alerted the 
+several people with the problem. I will let you know the results.
 
-urb_len 1564  pkt_cnt 136 pkt_len 1508 drvinfo_sz 32 desc_shift 0
-rxmcs 19 rxht 1 paggr 1 faggr 1
-urb_len 1560  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-rxmcs 18 rxht 1 paggr 1 faggr 1
-urb_len 1560  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-rxmcs 18 rxht 1 paggr 1 faggr 1
-urb_len 1560  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-rxmcs 18 rxht 1 paggr 1 faggr 1
-urb_len 1564  pkt_cnt 136 pkt_len 1508 drvinfo_sz 32 desc_shift 0
-rxmcs 17 rxht 1 paggr 1 faggr 1
-urb_len 1564  pkt_cnt 136 pkt_len 1508 drvinfo_sz 32 desc_shift 0
-rxmcs 17 rxht 1 paggr 1 faggr 1
-urb_len 1560  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-rxmcs 16 rxht 1 paggr 1 faggr 1
-urb_len 1560  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-rxmcs 16 rxht 1 paggr 1 faggr 1
-urb_len 1560  pkt_cnt 136 pkt_len 1504 drvinfo_sz 32 desc_shift 0
-rxmcs 16 rxht 1 paggr 1 faggr 1
+Thanks,
+
+Larry
+
