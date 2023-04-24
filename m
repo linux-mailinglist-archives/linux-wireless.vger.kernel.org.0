@@ -2,62 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B429C6EC2F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 00:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87AF86EC382
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 03:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbjDWWjE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 23 Apr 2023 18:39:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
+        id S230011AbjDXB7N convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Apr 2023 21:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjDWWjC (ORCPT
+        with ESMTP id S229485AbjDXB7M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 23 Apr 2023 18:39:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B822AE6E
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 15:39:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BE3D61372
-        for <linux-wireless@vger.kernel.org>; Sun, 23 Apr 2023 22:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B6FC433EF;
-        Sun, 23 Apr 2023 22:39:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682289540;
-        bh=H1tU+nDuBSDu9Hz8FWKRs7NfOSak2YZ5duCBuITkF1o=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=TpD2IGP8uIbI09mEbGnmVM2wA0fzntNFAllF9ynuYOL8IgnmVZHwUp9urQomRp7rF
-         NsS552qQN2owOIONB0ObhCromJCgDu3JkLYiU1lfgXVuoat4dXRTf20lN1r06DecnT
-         wg4yB66K2szfejnSCBU0Jgw05/0+fT7N3A33CAXW93/WxgEwUorpvzUbUCuFRcyj8S
-         QYkMf9jPFRMsD5Gv8Lz1v4W7GMsmpyF5//Z1ruEwuYdbaehl3TIazzL6gAUf4rton7
-         X0VZiHKd7+DAUMgEA0HoLxJZF7luxErVll4Q+z2HLN/MWo41EFVouv9D8vX7N66ZfE
-         KrdIKdy1O4WgQ==
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 0CB63AA9B72; Mon, 24 Apr 2023 00:38:58 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "mh+debian-user-german@zugschlus.de" 
-        <mh+debian-user-german@zugschlus.de>,
-        "exp-311223@news.muster.net" <exp-311223@news.muster.net>,
-        "tychokirchner@gmail.com" <tychokirchner@gmail.com>,
-        "rene@debian.org" <rene@debian.org>,
-        "Juergen.bausa@online.de" <Juergen.bausa@online.de>,
-        "sebastian.suchanek@gmx.de" <sebastian.suchanek@gmx.de>
-Subject: Re: iwlwifi in German ICE4 trains
-In-Reply-To: <c0153e5dd0459d351807002df7cef9eb30b04e86.camel@intel.com>
-References: <20230423085510.xpmcuzfhzqa4dyhs@pengutronix.de>
- <c0153e5dd0459d351807002df7cef9eb30b04e86.camel@intel.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 24 Apr 2023 00:38:58 +0200
-Message-ID: <87edoakyv1.fsf@toke.dk>
+        Sun, 23 Apr 2023 21:59:12 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F0A19B0;
+        Sun, 23 Apr 2023 18:59:07 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33O1wY8h9006101, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33O1wY8h9006101
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 24 Apr 2023 09:58:34 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 24 Apr 2023 09:58:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 24 Apr 2023 09:58:35 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 24 Apr 2023 09:58:35 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Zhang Shurong <zhang_shurong@foxmail.com>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 01/10] wifi: rtw88: fix incorrect error codes in rtw_debugfs_set_write_reg
+Thread-Topic: [PATCH 01/10] wifi: rtw88: fix incorrect error codes in
+ rtw_debugfs_set_write_reg
+Thread-Index: AQHZdQLZEwGgnP9KBkK9dZfWruowpK85tNhw
+Date:   Mon, 24 Apr 2023 01:58:35 +0000
+Message-ID: <a3450e1f9ee740478f8215feea6127e4@realtek.com>
+References: <cover.1682156784.git.zhang_shurong@foxmail.com>
+ <tencent_6E21370EB57D5B7060611EB60A96A88B1208@qq.com>
+In-Reply-To: <tencent_6E21370EB57D5B7060611EB60A96A88B1208@qq.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,87 +78,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Greenman, Gregory" <gregory.greenman@intel.com> writes:
 
-> On Sun, 2023-04-23 at 10:55 +0200, Uwe Kleine-K=C3=B6nig wrote:
->> Hello Gregory,
->>=20
->> there is a thread on debian-user-german@lists.debian.org[1] about
->> broken wifi on Thinkpads when they are supposed to be connected to the
->> hotspots available in ICE4 trains. The mailing lists language is German
->> and the thread is long, so I sum up the problem:
->>=20
->> - It only affects the wifi equipment in ICE4 trains, the older ones work
->> =C2=A0 fine.
->>=20
->> - Can be seen at least on
->> =C2=A0 - J=C3=BCrgen's laptop (Intel Corporation Wireless 8260 [8086:24f=
-3] (rev 3a))
->> =C2=A0 - Marc's Thinkpad X260 (Intel Corporation Wireless 8260 [8086:24f=
-3] (rev 3a))
->> =C2=A0 - Uwe's Thinkpad T460p (Intel Corporation Wireless 8260 [8086:24f=
-3] (rev 3a))
->>=20
->> - Other Thinkpads with a Realtek-Chip doesn't show the problem
->>=20
->> - Works on puppy-Linux with 4.19.23, however Debian with 4.19.0-18 is
->> =C2=A0 also broken.
->>=20
->> - The OP provided a syslog dump at
->> =C2=A0 https://lists.debian.org/msgid-search/75ad7ff2-ef25-90cd-2cb3-1f4=
-9f3e4909e@online.de
->>=20
->> =C2=A0 I don't reproduce it here, but the gist seems to be:
->>=20
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Jun 23 15:44:53 lina ker=
-nel: [ 1006.011129] wlp1s0: deauthenticated from 3c:51:0e:56:32:80 (Reason:=
- 2=3DPREV_AUTH_NOT_VALID)
->>=20
->> - it seems to help to do:
->> =C2=A0 $ cat /etc/modprobe.d/iwlwifi.conf
->> =C2=A0 options iwlwifi 11n_disable=3D1 swcrypto=3D0 bt_coex_active=3D0 p=
-ower_save=3D0
->> =C2=A0 options iwlmvm power_scheme=3D1
->> =C2=A0 options iwlwifi d0i3_disable=3D1
->> =C2=A0 options iwlwifi uapsd_disable=3D1
->> =C2=A0 options iwlwifi lar_disable=3D1
->>=20
->> I added all participants of said thread to Cc, in case I forgot
->> something relevant.
->>=20
->> Tomorrow I might have the opportunity to test and reproduce the problem
->> (I don't know if my train will be an ice4 or one of the older ones
->> though.)
->>=20
->> I wonder if there is something you want me to test. Without further
->> input I will try with the modprobe options and check for a minimal
->> subset of them that makes the problem disappear.
->>=20
->> Is there something I can do to make the problem better understandable
->> for someone who knows about the hardware? Or to find out the critical
->> detail about the wifi hotspot that triggers the problem?
->>=20
->> Best regards
->> Uwe
->>=20
->> [1] https://lists.debian.org/msgid-search/da8c1552-6bcb-14c3-0e86-abcb83=
-5ec350@online.de
->>=20
->
-> Hi Uwe,
->
-> Based on the log, I can understand that it had successfully connected
-> to the AP (supplicant management interface state: associating ->
-> completed); then there're some DHCP errors and eventually the AP sends
-> a deauth.
 
-If it's DHCP failing it could be an issue with multicast traffic? I've
-definitely seen multicast failing on busy networks because it is set to
-too low a rate and gets overwhelmed, which leads to DHCP (and ARP)
-failures while unicast traffic works fine.
+> -----Original Message-----
+> From: Zhang Shurong <zhang_shurong@foxmail.com>
+> Sent: Saturday, April 22, 2023 6:05 PM
+> To: tony0620emma@gmail.com
+> Cc: kvalo@kernel.org; davem@davemloft.net; edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
+> linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Zhang Shurong
+> <zhang_shurong@foxmail.com>
+> Subject: [PATCH 01/10] wifi: rtw88: fix incorrect error codes in rtw_debugfs_set_write_reg
+> 
+> If there is a failure during copy_from_user or user-provided data
+> buffer is invalid, rtw_debugfs_set_write_reg should return negative
+> error code instead of a positive value count.
+> 
+> Fix this bug by returning correct error code. Moreover, the check
+> of buffer against null is removed since it will be handled by
+> copy_from_user.
+> 
+> Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/debug.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+> index fa3d73b333ba..bc41c5a7acaf 100644
+> --- a/drivers/net/wireless/realtek/rtw88/debug.c
+> +++ b/drivers/net/wireless/realtek/rtw88/debug.c
+> @@ -183,8 +183,8 @@ static int rtw_debugfs_copy_from_user(char tmp[], int size,
+> 
+>         tmp_len = (count > size - 1 ? size - 1 : count);
+> 
+> -       if (!buffer || copy_from_user(tmp, buffer, tmp_len))
+> -               return count;
+> +       if (copy_from_user(tmp, buffer, tmp_len))
+> +               return -EFAULT;
 
-It's probably not (only) a network issue if it works fine with other
-drivers, but maybe there's some kind of interaction between the driver
-and multicast? Just a thought :)
+This patchset is fine to me. The only thing is this chunk can be first patch,
+and squash other patches to second patch because they do the same thing
+in the same driver.
 
--Toke
+
+> 
+>         tmp[tmp_len] = '\0';
+> 
+> @@ -338,14 +338,17 @@ static ssize_t rtw_debugfs_set_write_reg(struct file *filp,
+>         char tmp[32 + 1];
+>         u32 addr, val, len;
+>         int num;
+> +       int ret;
+> 
+> -       rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
+> +       ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
+> +       if (ret < 0)
+> +               return ret;
+> 
+>         /* write BB/MAC register */
+>         num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
+> 
+>         if (num !=  3)
+> -               return count;
+> +               return -EINVAL;
+> 
+>         switch (len) {
+>         case 1:
+> --
+> 2.40.0
+
