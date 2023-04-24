@@ -2,56 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C6C6ED538
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 21:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38E06ED54E
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Apr 2023 21:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231398AbjDXTTZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Apr 2023 15:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35826 "EHLO
+        id S232656AbjDXTXN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Apr 2023 15:23:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231303AbjDXTTY (ORCPT
+        with ESMTP id S232670AbjDXTXE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Apr 2023 15:19:24 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD454C2B;
-        Mon, 24 Apr 2023 12:19:23 -0700 (PDT)
-Received: from fpc.. (unknown [46.242.14.200])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 2847A4076277;
-        Mon, 24 Apr 2023 19:19:21 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2847A4076277
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1682363961;
-        bh=Ndv3UKrB3QzOIT2rE3GkXyq8UTij4TcY2JmMRnQH7YU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mpvrbInnWHLEaNECUq4UUY726unmqUX7LoG9JOs4bRBcbyfF38K71RnSZfVeNI0bn
-         Y64XsH3P09pSVn25rmYiUoRvwAkOlmPvn3osGmpBgyqKU8oFHROuFMGbkBVJvERuG8
-         x47QuJ0UHqRfAVfTvEM5Y7Q+pyq1FHutBYkEQ4O8=
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Senthil Balasubramanian <senthilkumar@atheros.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
-        Sujith <Sujith.Manoharan@atheros.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com,
-        syzbot+df61b36319e045c00a08@syzkaller.appspotmail.com
-Subject: [PATCH v2] wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
-Date:   Mon, 24 Apr 2023 22:18:26 +0300
-Message-Id: <20230424191826.117354-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230424191158.iebfqubeanurdabk@fpc>
-References: 
+        Mon, 24 Apr 2023 15:23:04 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D7CF6EBA;
+        Mon, 24 Apr 2023 12:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Date:Message-ID:Subject:From:Cc:To:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References;
+        bh=7yqMz6dS/0GILuAnJ+Bw+7l2gpqpGz2ORupHC3iMp7g=; b=Udci7HXQo5Z06+JGryPD826NnV
+        4KHAviN35/kVbULrsH2ITkkI8qbaxejQXlubCdG2bGjuBJW1k+DU8bkSzpDbaq2KKRl2jNEMMeyCM
+        Z4otWX9AzD26rvexAy+93Cq1NKuKn07+egoTVvBjM1HrqqNae8xTbcRqBda/eCZCZX1gdabFYEyef
+        aJ1PE6Lu0nhYEUoyIhXcOZEuwY30hOMLLh9jDXQuNkv9VZxf+H4AnlLObPAnh2or8/0/uP7syO6IH
+        k1tM8LQo6tk8Vg3JrEzDxeHDNMBgSa/d2ryMmh2Ry+ecYcN6NWzck/IiCkTQU6n7NhmwxPr3l9L6I
+        RWzmSGKQ==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1pr1m3-0005db-97; Mon, 24 Apr 2023 21:22:55 +0200
+Received: from [85.1.206.226] (helo=linux.home)
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1pr1m3-0007lP-1F; Mon, 24 Apr 2023 21:22:55 +0200
+To:     netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc:     xdp-newbies@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netfilter-devel@vger.kernel.org
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Subject: LPC 2023 Networking and BPF Track CFP
+Message-ID: <1515db2c-f517-76da-8aad-127a67da802f@iogearbox.net>
+Date:   Mon, 24 Apr 2023 21:22:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26886/Mon Apr 24 09:25:10 2023)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -61,138 +60,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently, the synchronization between ath9k_wmi_cmd() and
-ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
-rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
+We are pleased to announce the Call for Proposals (CFP) for the Networking and
+BPF track at the 2023 edition of the Linux Plumbers Conference (LPC) which is
+taking place in Richmond, VA, United States, on November 13th - 15th, 2023.
 
-Consider the following scenario:
+Note that the conference is planned to be both in person and remote (hybrid).
+CFP submitters should ideally be able to give their presentation in person to
+minimize technical issues, although presenting remotely will also be possible.
 
-CPU0					CPU1
+The Networking and BPF track technical committee consists of:
 
-ath9k_wmi_cmd(...)
-  mutex_lock(&wmi->op_mutex)
-  ath9k_wmi_cmd_issue(...)
-  wait_for_completion_timeout(...)
-  ---
-  timeout
-  ---
-					/* the callback is being processed
-					 * before last_seq_id became zero
-					 */
-					ath9k_wmi_ctrl_rx(...)
-					  spin_lock_irqsave(...)
-					  /* wmi->last_seq_id check here
-					   * doesn't detect timeout yet
-					   */
-					  spin_unlock_irqrestore(...)
-  /* last_seq_id is zeroed to
-   * indicate there was a timeout
-   */
-  wmi->last_seq_id = 0
-  mutex_unlock(&wmi->op_mutex)
-  return -ETIMEDOUT
+    David S. Miller <davem@davemloft.net>
+    Jakub Kicinski <kuba@kernel.org>
+    Paolo Abeni <pabeni@redhat.com>
+    Eric Dumazet <edumazet@google.com>
+    Alexei Starovoitov <ast@kernel.org>
+    Daniel Borkmann <daniel@iogearbox.net>
+    Andrii Nakryiko <andrii@kernel.org>
+    Martin Lau <martin.lau@linux.dev>
 
-ath9k_wmi_cmd(...)
-  mutex_lock(&wmi->op_mutex)
-  /* the buffer is replaced with
-   * another one
-   */
-  wmi->cmd_rsp_buf = rsp_buf
-  wmi->cmd_rsp_len = rsp_len
-  ath9k_wmi_cmd_issue(...)
-    spin_lock_irqsave(...)
-    spin_unlock_irqrestore(...)
-  wait_for_completion_timeout(...)
-					/* the continuation of the
-					 * callback left after the first
-					 * ath9k_wmi_cmd call
-					 */
-					  ath9k_wmi_rsp_callback(...)
-					    /* copying data designated
-					     * to already timeouted
-					     * WMI command into an
-					     * inappropriate wmi_cmd_buf
-					     */
-					    memcpy(...)
-					    complete(&wmi->cmd_wait)
-  /* awakened by the bogus callback
-   * => invalid return result
-   */
-  mutex_unlock(&wmi->op_mutex)
-  return 0
+We are seeking proposals of 30 minutes in length (including Q&A discussion). Any
+kind of advanced Linux networking and/or BPF related topic will be considered.
 
-To fix this, move ath9k_wmi_rsp_callback() under wmi_lock inside
-ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
-initially designated wmi_cmd call, otherwise the path would be rejected
-with last_seq_id check.
+Please submit your proposals through the official LPC website at:
 
-Also move recording the rsp buffer and length into ath9k_wmi_cmd_issue()
-under the same wmi_lock with last_seq_id update to avoid their racy
-changes.
+    https://lpc.events/event/17/abstracts/
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Make sure to select "eBPF & Networking Track" in the track pull-down menu.
 
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Reported-and-tested-by: syzbot+df61b36319e045c00a08@syzkaller.appspotmail.com
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
-v2: do not extract ath9k_wmi_rsp_callback() internals, rephrase
-description
+Proposals must be submitted by September 27th, and submitters will be notified
+of acceptance by October 2nd. Final slides (as PDF) are due on the first day of
+the conference.
 
- drivers/net/wireless/ath/ath9k/wmi.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index d652c647d56b..688453a2e53a 100644
---- a/drivers/net/wireless/ath/ath9k/wmi.c
-+++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -242,10 +242,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
- 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 		goto free_skb;
- 	}
--	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
- 	/* WMI command response */
- 	ath9k_wmi_rsp_callback(wmi, skb);
-+	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
- free_skb:
- 	kfree_skb(skb);
-@@ -283,7 +283,8 @@ int ath9k_wmi_connect(struct htc_target *htc, struct wmi *wmi,
- 
- static int ath9k_wmi_cmd_issue(struct wmi *wmi,
- 			       struct sk_buff *skb,
--			       enum wmi_cmd_id cmd, u16 len)
-+			       enum wmi_cmd_id cmd, u16 len,
-+			       u8 *rsp_buf, u32 rsp_len)
- {
- 	struct wmi_cmd_hdr *hdr;
- 	unsigned long flags;
-@@ -293,6 +294,11 @@ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
- 	hdr->seq_no = cpu_to_be16(++wmi->tx_seq_id);
- 
- 	spin_lock_irqsave(&wmi->wmi_lock, flags);
-+
-+	/* record the rsp buffer and length */
-+	wmi->cmd_rsp_buf = rsp_buf;
-+	wmi->cmd_rsp_len = rsp_len;
-+
- 	wmi->last_seq_id = wmi->tx_seq_id;
- 	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
-@@ -333,11 +339,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 		goto out;
- 	}
- 
--	/* record the rsp buffer and length */
--	wmi->cmd_rsp_buf = rsp_buf;
--	wmi->cmd_rsp_len = rsp_len;
--
--	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len);
-+	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len, rsp_buf, rsp_len);
- 	if (ret)
- 		goto out;
- 
--- 
-2.34.1
-
+We are very much looking forward to a great conference and seeing you all!
