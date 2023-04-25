@@ -2,87 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EF56EE0F8
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 13:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492556EE17A
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 13:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233972AbjDYLO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 07:14:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35610 "EHLO
+        id S233984AbjDYL5r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 07:57:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233877AbjDYLOt (ORCPT
+        with ESMTP id S233013AbjDYL5p (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 07:14:49 -0400
-Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B395A9;
-        Tue, 25 Apr 2023 04:14:46 -0700 (PDT)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1682421284; bh=vrTSialJD2Li5vjQDpn9fTzt12D3cKs5drm5QZYYqCY=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=OrJABxrUwNHh6hEAw5k6Y80NDr8Y6rSn1mDeNMtSZmK65oiBYVB6RNr6fmpzYw8PV
-         NT32YOiek5iwEUoqbIAwkT3EsBROUL9aZFcwcjh+Mqmb3YmfmebnI4hbZlklYE0HLq
-         oTl4+NbXXMelRk8u+tVOcpCQM/jZG06MMFc+FZXW4WzD3n37mK8p9IbPFPN78txUxn
-         MuH2zDuAjmWidmU7lY4QJmP2c5h0wbXkS4HkFFthaX5y/JMceqfs+FqP7c2pYFynil
-         NkImXfAXBR6eg7oFkiKHbIZrZVw4AZ+/QkiuHEHWJ0Wxd+8LQ0QA2nbxtX69C+MMuZ
-         OE23MS4NTyK0g==
-To:     Fedor Pchelkin <pchelkin@ispras.ru>, Kalle Vallo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        Tue, 25 Apr 2023 07:57:45 -0400
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665BD12C8B
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 04:57:25 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id rHIOpwV85Od5IrHIOpk006; Tue, 25 Apr 2023 13:57:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1682423843;
+        bh=t3xAngYVnplShoMkDBT5wxr82rgMk9+s4xEzp+xQcGk=;
+        h=From:To:Cc:Subject:Date;
+        b=sLPw0Pw00uQk6bgsbUFMY+a4XjocYbk7duiHnLMdWW1BUkx9fWjVLP1NbmvOG8Gx5
+         Vi64m3fz2Gb18SOghspqNFubQlmjD+Usnvswdh5OFSbdGdaItUIlFhNkBdhxPYTDGp
+         0EQ0AG/mRUeuUjKQd2I4wbh2Z9EsPhzxoiQlBYuSJWuFt9gAdVkD0S3ClkPctw2/gz
+         cyj7XhOoTsRh9UpiZZkMD5xlLlHIoUa35C+Op3twgEMNobeEEwsTicbCeAZEfU69nQ
+         gPhVQLauG1wjWlUwecBQ/mCQ3coZ0bx/783BiRYLC4z20BU5IU+Bj6ONHlt7hbHK1m
+         zSHIxeo2nNRCQ==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 25 Apr 2023 13:57:23 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Kalle Valo <kvalo@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Senthil Balasubramanian <senthilkumar@atheros.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
-        Sujith <Sujith.Manoharan@atheros.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] wifi: ath9k: avoid referencing uninit memory in
- ath9k_wmi_ctrl_rx
-In-Reply-To: <20230424183348.111355-1-pchelkin@ispras.ru>
-References: <20230424183348.111355-1-pchelkin@ispras.ru>
-Date:   Tue, 25 Apr 2023 13:14:43 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87sfcojjrw.fsf@toke.dk>
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH] wifi: ath12k: Remove some dead code
+Date:   Tue, 25 Apr 2023 13:57:19 +0200
+Message-Id: <c17edf0811156a33bae6c5cf1906d751cc87edd4.1682423828.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fedor Pchelkin <pchelkin@ispras.ru> writes:
+ATH12K_HE_MCS_MAX = 11, so this test and the following one are the same.
+Remove the one with the hard coded 11 value.
 
-> For the reasons also described in commit b383e8abed41 ("wifi: ath9k: avoid
-> uninit memory read in ath9k_htc_rx_msg()"), ath9k_htc_rx_msg() should
-> validate pkt_len before accessing the SKB.
->
-> For example, the obtained SKB may have been badly constructed with
-> pkt_len =3D 8. In this case, the SKB can only contain a valid htc_frame_h=
-dr
-> but after being processed in ath9k_htc_rx_msg() and passed to
-> ath9k_wmi_ctrl_rx() endpoint RX handler, it is expected to have a WMI
-> command header which should be located inside its data payload.=20
->
-> Implement sanity checking inside ath9k_wmi_ctrl_rx(). Otherwise, uninit
-> memory can be referenced.
->
-> Tested on Qualcomm Atheros Communications AR9271 802.11n .
->
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
->
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Reported-and-tested-by: syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail=
-.com
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index e78478a5b978..79386562562f 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1362,11 +1362,6 @@ ath12k_update_per_peer_tx_stats(struct ath12k *ar,
+ 	 * Firmware rate's control to be skipped for this?
+ 	 */
+ 
+-	if (flags == WMI_RATE_PREAMBLE_HE && mcs > 11) {
+-		ath12k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
+-		return;
+-	}
+-
+ 	if (flags == WMI_RATE_PREAMBLE_HE && mcs > ATH12K_HE_MCS_MAX) {
+ 		ath12k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
+ 		return;
+-- 
+2.34.1
+
