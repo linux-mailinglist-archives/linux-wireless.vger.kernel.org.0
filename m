@@ -2,134 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDFE46EDAEE
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 06:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F486EDB3C
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 07:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232222AbjDYEmp convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 00:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37912 "EHLO
+        id S233181AbjDYFi1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 01:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjDYEmn (ORCPT
+        with ESMTP id S232112AbjDYFi0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 00:42:43 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2BE3AAA;
-        Mon, 24 Apr 2023 21:42:42 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33P4gUxZ5000552, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33P4gUxZ5000552
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 25 Apr 2023 12:42:30 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 25 Apr 2023 12:42:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 25 Apr 2023 12:42:31 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Tue, 25 Apr 2023 12:42:31 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Gregg Wonderly <greggwonderly@seqtechllc.com>
-CC:     Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: pull-request: wireless-next-2023-04-21
-Thread-Topic: pull-request: wireless-next-2023-04-21
-Thread-Index: AQHZdD60u8zT35eBqkOmWCVcBjPBJa81U6EAgAX6SUD//5x0gIAAjSlw
-Date:   Tue, 25 Apr 2023 04:42:31 +0000
-Message-ID: <038b1ab2cf7043908ee7dd399627fd7c@realtek.com>
+        Tue, 25 Apr 2023 01:38:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8ED65BC;
+        Mon, 24 Apr 2023 22:38:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74EAB629E2;
+        Tue, 25 Apr 2023 05:38:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8914C4339B;
+        Tue, 25 Apr 2023 05:38:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682401103;
+        bh=zZrxb/D1CPT+xTOAWqqm/3GaNY8wRigq9u3LlHSEFus=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=YL1YrjrYizvPaVyhFsS6x3GG6uxQ7xUC4bJdTZ3BAEI3mVSBpa4lCg45rF8EqYnIl
+         Fq5fe8c0q7tGuxbuVj0jd25FjjDFNaflP4CeGDzG60FOmbw3sIFYx3+ULtePkADUwJ
+         0kKKD978gg2v2ZG6vKrmMxW9+n6uRLHI96RGcgjypUYlQAyqssLXc1JWuiWKFKtsCN
+         qsy2MSla/yGKhvINqIRII2F7hvj9FpI3DTWnA5dcNS5k36W0uCMihCOBbEwo2+Ipht
+         /9VjfQBZJ+bfcJVa0jV1EuvXVaAdly1RDFnhV/vXqQ/oPN4LTOgtaUAU05jKOM1HG8
+         1v5Czuxgj7ebg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: pull-request: wireless-next-2023-04-21
 References: <20230421104726.800BCC433D2@smtp.kernel.org>
- <20230421075404.63c04bca@kernel.org>
- <e31dae6daa6640859d12bf4c4fc41599@realtek.com>
- <92FFD14B-6BE0-4AC1-9281-A37508817A3B@seqtechllc.com>
-In-Reply-To: <92FFD14B-6BE0-4AC1-9281-A37508817A3B@seqtechllc.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        <20230421075404.63c04bca@kernel.org>
+        <e31dae6daa6640859d12bf4c4fc41599@realtek.com>
+Date:   Tue, 25 Apr 2023 08:38:17 +0300
+In-Reply-To: <e31dae6daa6640859d12bf4c4fc41599@realtek.com> (Ping-Ke Shih's
+        message of "Tue, 25 Apr 2023 02:41:46 +0000")
+Message-ID: <87leigr06u.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Gregg,
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-(no top posting for wireless mailing list, so I move your post to bottom)
+>> -----Original Message-----
+>> From: Jakub Kicinski <kuba@kernel.org>
+>> Sent: Friday, April 21, 2023 10:54 PM
+>> To: Kalle Valo <kvalo@kernel.org>
+>> Cc: netdev@vger.kernel.org; linux-wireless@vger.kernel.org
+>> Subject: Re: pull-request: wireless-next-2023-04-21
+>> 
+>> On Fri, 21 Apr 2023 10:47:26 +0000 (UTC) Kalle Valo wrote:
+>> >  .../net/wireless/realtek/rtw89/rtw8851b_table.c    | 14824 +++++++++++++++++++
+>> >  .../net/wireless/realtek/rtw89/rtw8851b_table.h    |    21 +
+>> 
+>> We should load these like FW, see the proposal outlined in
+>> https://lore.kernel.org/all/20221116222339.54052a83@kernel.org/
+>> for example. Would that not work?
+>> 
+>
+> That would work, and I think struct fields addr and val should be __le32.
+> And, I have some draft ideas to handle some situations we will face:
+>
+> 1. upgrading to newer driver without built-in tables will break user space
+>    if people don't download table file from linux-firmware.git.
+>    Maybe, we can keep the built-in tables and support loading from files
+>    for couple years at least.
+>
+> 2. c code can do changes along with these tables, so driver should do some
+>    compatibility things for register version. 
+>
+> 3. The file contains not only simple registers tables but also TX power tables
+>    and power tracking tables. These tables are multiple dimensions, and
+>    dimensions can be changed due to more channels are supported, for example.
+>    To be backward compatible, we need to add conversion function from
+>    v1, v2 ... to current.
+>
+> I will think further to make this change smooth. 
 
-> -----Original Message-----
-> From: Gregg Wonderly <greggwonderly@seqtechllc.com>
-> Sent: Tuesday, April 25, 2023 12:15 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>; Kalle Valo <kvalo@kernel.org>; netdev@vger.kernel.org;
-> linux-wireless@vger.kernel.org
-> Subject: Re: pull-request: wireless-next-2023-04-21
-> 
-> > On Apr 24, 2023, at 9:41 PM, Ping-Ke Shih <pkshih@realtek.com> wrote:
-> >
-> >
-> >
-> >> -----Original Message-----
-> >> From: Jakub Kicinski <kuba@kernel.org>
-> >> Sent: Friday, April 21, 2023 10:54 PM
-> >> To: Kalle Valo <kvalo@kernel.org>
-> >> Cc: netdev@vger.kernel.org; linux-wireless@vger.kernel.org
-> >> Subject: Re: pull-request: wireless-next-2023-04-21
-> >>
-> >> On Fri, 21 Apr 2023 10:47:26 +0000 (UTC) Kalle Valo wrote:
-> >>> .../net/wireless/realtek/rtw89/rtw8851b_table.c    | 14824 +++++++++++++++++++
-> >>> .../net/wireless/realtek/rtw89/rtw8851b_table.h    |    21 +
-> >>
-> >> We should load these like FW, see the proposal outlined in
-> >> https://lore.kernel.org/all/20221116222339.54052a83@kernel.org/
-> >> for example. Would that not work?
-> >>
-> >
-> > That would work, and I think struct fields addr and val should be __le32.
-> > And, I have some draft ideas to handle some situations we will face:
-> >
-> > 1. upgrading to newer driver without built-in tables will break user space
-> >   if people don't download table file from linux-firmware.git.
-> >   Maybe, we can keep the built-in tables and support loading from files
-> >   for couple years at least.
-> >
-> > 2. c code can do changes along with these tables, so driver should do some
-> >   compatibility things for register version.
-> >
-> > 3. The file contains not only simple registers tables but also TX power tables
-> >   and power tracking tables. These tables are multiple dimensions, and
-> >   dimensions can be changed due to more channels are supported, for example.
-> >   To be backward compatible, we need to add conversion function from
-> >   v1, v2 ... to current.
-> >
-> > I will think further to make this change smooth.
-> >
-> 
-> Could this be expressed in a /proc structure of files and directories?
-> 
+IIRC we discussed this back in initial rtw88 or rtw89 driver review (not
+sure which one). At the time I pushed for the current solution to have
+the initvals in static variables just to avoid any backwards
+compatibility issues. I agree that the initvals in .c files are ugly but
+is it worth all the extra effort and complexity to move them outside the
+kernel? I'm starting to lean towards it's not worth all the extra work.
 
-I'm not clear what you meant. Could you please give me an example for reference?
+For me most important is that backwards compatibility is not broken,
+that would be bad for the users. So whatever we decide let's keep that
+in mind.
 
-Ping-Ke
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
