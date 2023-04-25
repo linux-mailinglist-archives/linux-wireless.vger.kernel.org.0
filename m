@@ -2,64 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C7936EE5AF
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 18:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137966EE605
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 18:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234727AbjDYQYh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 12:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56330 "EHLO
+        id S234366AbjDYQr1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 12:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234714AbjDYQYb (ORCPT
+        with ESMTP id S234049AbjDYQrZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 12:24:31 -0400
-Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6545D161A4;
-        Tue, 25 Apr 2023 09:24:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1682439864;
-        bh=IDTmH6R2OwB+nQcAtD+Ty/w+VtwcXIHQkO3n55itJrI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=NX+HKXCq2Sbsb3WL9o1Fo8A+NRjhUAJXVD9M77qucsTwjr2BuhBVbOWG40ANI0wSx
-         PbVRoVEVRe6ZYOy7beJSZKH76rTuA7RryW3qqbcg4a9wf161Tj1laNRaD7gVm+czxc
-         FKDp6SAB/GMCPBpkBzaghXh9KMr7o+QrzefvS31o=
-Received: from localhost.localdomain ([116.132.239.134])
-        by newxmesmtplogicsvrsza12-0.qq.com (NewEsmtp) with SMTP
-        id 60F0C276; Wed, 26 Apr 2023 00:24:15 +0800
-X-QQ-mid: xmsmtpt1682439861tim77xyyv
-Message-ID: <tencent_E2DD5600188F8798C22CAA9BC4D08D4FAD06@qq.com>
-X-QQ-XMAILINFO: NkHKfw09D6j8SaLeVQ/sV0Dvr/JRRZGPIwo8MAdjXGZaZxNEgBUwD6ayKk/efP
-         Y0vH3jVAAoOfZsBm1pYBEQcmc2m75348H6pQCpaPsi0hNr5eOabZ1VJzaF84gCY7BZ5V9F9bog82
-         0IZf8SpcW+n1gFBGz9UDb+335g5hlJszsCNmidzSYOSAuRguoP9PBe8nqtmkmlS9L+tjy43itWDL
-         IrlZ/0adhbueTurgtsCRricF7vKUTQjkvW77N5Dmn6l8RHkyPWV+gdlRsTjFBbRtNeCqFq/SSehX
-         ptrvhB/5eHjMXyxIWDXlL7L/KncUPc2myn6OKJXumJrT8dJsziU2TDpXoM/GPZ2SQbIOHcJIgUMx
-         8GBBhemdux6KCYQHpGHHA+UA8GAcmnfp/Pp/jWSGm9STFPVi45+wxphb8oYJlGKQzcKIvlZqHqmI
-         96F2Kfd0e6WU9TBaBLe/82857QSj55Q4JSRk0syX3cTafhQAnACLJaKw9HZowvKyn07nl89jS8ia
-         LCCmCF7VmiJmXiwyfJqrpNqTvxJ3TIo9IAJBzKL6yYkxf6obWUkg/8UAjUG0nkTI6pFCH0f7WlTF
-         LwJbMUrWMpRL+oggkhDvDlHdZM4g65+/lAKmrxZVnCktc+g/6UntFZKaua6mxgSP/KZp13EZi1bD
-         5DG4VtptY8aj/W5TXHqOR92ok2CfuBQUI0Yd8VJuzTawuLpiLG7RZctGL3U+JZ65oKk156u4DQut
-         rYhdm2J/agd3yuXXbQmcmjeyCGlQJwa/W1tpSXVzZg6HMcHppZNxO2QD93/+gYrzE1k7eao0jMR3
-         CYs2sQz5LJ6+sKlSlGemheg64LLUx/c5J8945PWTzIT0yPl7VEzjprObffCm12+ztGmIFLByoXj1
-         5a3SQtiBesDBwteqjlhLDzIZod/fSJyMPR90D5L07ov/sdn9Zu4utwdTBlFCtzm6TuP2BHpUP8Cb
-         4NJRCl8aZH8RjvW1nDBGKy1uWOmKXLrtCO8cfaKnPQjTGkuh9kwMjvcaWekHCOaXYv188Kc7L29T
-         4dW/PIBA==
-From:   Zhang Shurong <zhang_shurong@foxmail.com>
-To:     tony0620emma@gmail.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zhang Shurong <zhang_shurong@foxmail.com>
-Subject: [PATCH v2 2/2] wifi: rtw88: fix incorrect error codes in rtw_debugfs_set_*
-Date:   Wed, 26 Apr 2023 00:24:12 +0800
-X-OQ-MSGID: <b2f299c0f969991f41955a7f9d77ebc37efcaec9.1682438257.git.zhang_shurong@foxmail.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <cover.1682438257.git.zhang_shurong@foxmail.com>
-References: <cover.1682438257.git.zhang_shurong@foxmail.com>
+        Tue, 25 Apr 2023 12:47:25 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D12DD273D;
+        Tue, 25 Apr 2023 09:47:23 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 93A4A6015F;
+        Tue, 25 Apr 2023 18:47:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1682441241; bh=H1rO3PmmZakNuzvgJR8BRFczgnojbTocviBMNAnQQEk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VVmxafsBQ8bLykgSm+6xp8b/ZiM5piRPBqQ7dwmPMRaGLRBi6f3elZeC3CQeahC4Y
+         iO8e7XbxVXxdhCYZDnmkBCNbvsYNQ6slPPd6/R0XfuNYnKtOHpAM2cIQ4XSqE8Ge0S
+         8V5Q9eUQkFQuFX3+ziAhJuPvI4BXgAkpxGfPDDI8+2emf4O1Cn+nR5QxiVkM72QLye
+         vI0tVucJrYxyZXpXQW5VTYcTvGSuIi+D15YFd921ftrY2QfKX/dkaEAsMXiIvwiLPm
+         7FZHeOEdZd9SwrZhRvU5KgZKEouhcCN2uCT5fV6Lufazm0as9OoJU1Z2SE7krDU4OG
+         2+KKRsYeohKuw==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id xvPuZsjL1P_w; Tue, 25 Apr 2023 18:47:18 +0200 (CEST)
+Received: by domac.alu.hr (Postfix, from userid 1014)
+        id 739E960161; Tue, 25 Apr 2023 18:47:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1682441238; bh=H1rO3PmmZakNuzvgJR8BRFczgnojbTocviBMNAnQQEk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lr/AFa1g17/TC9+2pYhjHyBETC/kUllggPuQTW3woWq5XaCLS98HIj0XSKTXzGPzG
+         B/zI/XMLGGGntrV0IiAIZ33OjywMtS8jUe31GPvZwINJUMEC9ubMN7hyI1k5q4h9Fg
+         To68eR79mXFn723n37UeemexeznkRUXLw7TiGNs8i1+QmEn/1SUwuXrsZu1QpUt+f9
+         2p/+fwfBJD6zmkUFY5eT+Q/7QCWXAvwoLoqvLUVWRvpyxOD1i2/MsbEyFMI6kA6IoH
+         +Qo4nORFsmhoXz2IeoL47No9pWZFHPXdNZp2h7lCH8XjxcdyOgdG/aPdzfESyW2OTL
+         MUH2fySW9BPTg==
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Subject: [PATCH v4 1/1] wifi: mac80211: fortify the spinlock against deadlock by interrupt
+Date:   Tue, 25 Apr 2023 18:40:08 +0200
+Message-Id: <20230425164005.25272-1-mirsad.todorovac@alu.unizg.hr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,RDNS_DYNAMIC,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,172 +71,222 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If there is a failure during copy_from_user or user-provided data
-buffer is invalid, rtw_debugfs_set_* should return negative
-error code instead of a positive value count.
+In the function ieee80211_tx_dequeue() there is a particular locking
+sequence:
 
-Fix this bug by returning correct error code.
+begin:
+	spin_lock(&local->queue_stop_reason_lock);
+	q_stopped = local->queue_stop_reasons[q];
+	spin_unlock(&local->queue_stop_reason_lock);
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+However small the chance (increased by ftracetest), an asynchronous
+interrupt can occur in between of spin_lock() and spin_unlock(),
+and the interrupt routine will attempt to lock the same
+&local->queue_stop_reason_lock again.
+
+This will cause a costly reset of the CPU and the wifi device or an
+altogether hang in the single CPU and single core scenario.
+
+The only remaining spin_lock(&local->queue_stop_reason_lock) that
+did not disable interrupts was patched, which should prevent any
+deadlocks on the same CPU/core and the same wifi device.
+
+This is the probable trace of the deadlock:
+
+kernel: ================================
+kernel: WARNING: inconsistent lock state
+kernel: 6.3.0-rc6-mt-20230401-00001-gf86822a1170f #4 Tainted: G        W
+kernel: --------------------------------
+kernel: inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+kernel: kworker/5:0/25656 [HC0[0]:SC0[0]:HE1:SE1] takes:
+kernel: ffff9d6190779478 (&local->queue_stop_reason_lock){+.?.}-{2:2}, at: return_to_handler+0x0/0x40
+kernel: {IN-SOFTIRQ-W} state was registered at:
+kernel:   lock_acquire+0xc7/0x2d0
+kernel:   _raw_spin_lock+0x36/0x50
+kernel:   ieee80211_tx_dequeue+0xb4/0x1330 [mac80211]
+kernel:   iwl_mvm_mac_itxq_xmit+0xae/0x210 [iwlmvm]
+kernel:   iwl_mvm_mac_wake_tx_queue+0x2d/0xd0 [iwlmvm]
+kernel:   ieee80211_queue_skb+0x450/0x730 [mac80211]
+kernel:   __ieee80211_xmit_fast.constprop.66+0x834/0xa50 [mac80211]
+kernel:   __ieee80211_subif_start_xmit+0x217/0x530 [mac80211]
+kernel:   ieee80211_subif_start_xmit+0x60/0x580 [mac80211]
+kernel:   dev_hard_start_xmit+0xb5/0x260
+kernel:   __dev_queue_xmit+0xdbe/0x1200
+kernel:   neigh_resolve_output+0x166/0x260
+kernel:   ip_finish_output2+0x216/0xb80
+kernel:   __ip_finish_output+0x2a4/0x4d0
+kernel:   ip_finish_output+0x2d/0xd0
+kernel:   ip_output+0x82/0x2b0
+kernel:   ip_local_out+0xec/0x110
+kernel:   igmpv3_sendpack+0x5c/0x90
+kernel:   igmp_ifc_timer_expire+0x26e/0x4e0
+kernel:   call_timer_fn+0xa5/0x230
+kernel:   run_timer_softirq+0x27f/0x550
+kernel:   __do_softirq+0xb4/0x3a4
+kernel:   irq_exit_rcu+0x9b/0xc0
+kernel:   sysvec_apic_timer_interrupt+0x80/0xa0
+kernel:   asm_sysvec_apic_timer_interrupt+0x1f/0x30
+kernel:   _raw_spin_unlock_irqrestore+0x3f/0x70
+kernel:   free_to_partial_list+0x3d6/0x590
+kernel:   __slab_free+0x1b7/0x310
+kernel:   kmem_cache_free+0x52d/0x550
+kernel:   putname+0x5d/0x70
+kernel:   do_sys_openat2+0x1d7/0x310
+kernel:   do_sys_open+0x51/0x80
+kernel:   __x64_sys_openat+0x24/0x30
+kernel:   do_syscall_64+0x5c/0x90
+kernel:   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+kernel: irq event stamp: 5120729
+kernel: hardirqs last  enabled at (5120729): [<ffffffff9d149936>] trace_graph_return+0xd6/0x120
+kernel: hardirqs last disabled at (5120728): [<ffffffff9d149950>] trace_graph_return+0xf0/0x120
+kernel: softirqs last  enabled at (5069900): [<ffffffff9cf65b60>] return_to_handler+0x0/0x40
+kernel: softirqs last disabled at (5067555): [<ffffffff9cf65b60>] return_to_handler+0x0/0x40
+kernel:
+        other info that might help us debug this:
+kernel:  Possible unsafe locking scenario:
+kernel:        CPU0
+kernel:        ----
+kernel:   lock(&local->queue_stop_reason_lock);
+kernel:   <Interrupt>
+kernel:     lock(&local->queue_stop_reason_lock);
+kernel:
+         *** DEADLOCK ***
+kernel: 8 locks held by kworker/5:0/25656:
+kernel:  #0: ffff9d618009d138 ((wq_completion)events_freezable){+.+.}-{0:0}, at: process_one_work+0x1ca/0x530
+kernel:  #1: ffffb1ef4637fe68 ((work_completion)(&local->restart_work)){+.+.}-{0:0}, at: process_one_work+0x1ce/0x530
+kernel:  #2: ffffffff9f166548 (rtnl_mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #3: ffff9d6190778728 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #4: ffff9d619077b480 (&mvm->mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #5: ffff9d61907bacd8 (&trans_pcie->mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #6: ffffffff9ef9cda0 (rcu_read_lock){....}-{1:2}, at: iwl_mvm_queue_state_change+0x59/0x3a0 [iwlmvm]
+kernel:  #7: ffffffff9ef9cda0 (rcu_read_lock){....}-{1:2}, at: iwl_mvm_mac_itxq_xmit+0x42/0x210 [iwlmvm]
+kernel:
+        stack backtrace:
+kernel: CPU: 5 PID: 25656 Comm: kworker/5:0 Tainted: G        W          6.3.0-rc6-mt-20230401-00001-gf86822a1170f #4
+kernel: Hardware name: LENOVO 82H8/LNVNB161216, BIOS GGCN51WW 11/16/2022
+kernel: Workqueue: events_freezable ieee80211_restart_work [mac80211]
+kernel: Call Trace:
+kernel:  <TASK>
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  dump_stack_lvl+0x5f/0xa0
+kernel:  dump_stack+0x14/0x20
+kernel:  print_usage_bug.part.46+0x208/0x2a0
+kernel:  mark_lock.part.47+0x605/0x630
+kernel:  ? sched_clock+0xd/0x20
+kernel:  ? trace_clock_local+0x14/0x30
+kernel:  ? __rb_reserve_next+0x5f/0x490
+kernel:  ? _raw_spin_lock+0x1b/0x50
+kernel:  __lock_acquire+0x464/0x1990
+kernel:  ? mark_held_locks+0x4e/0x80
+kernel:  lock_acquire+0xc7/0x2d0
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ? ftrace_return_to_handler+0x8b/0x100
+kernel:  ? preempt_count_add+0x4/0x70
+kernel:  _raw_spin_lock+0x36/0x50
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_tx_dequeue+0xb4/0x1330 [mac80211]
+kernel:  ? prepare_ftrace_return+0xc5/0x190
+kernel:  ? ftrace_graph_func+0x16/0x20
+kernel:  ? 0xffffffffc02ab0b1
+kernel:  ? lock_acquire+0xc7/0x2d0
+kernel:  ? iwl_mvm_mac_itxq_xmit+0x42/0x210 [iwlmvm]
+kernel:  ? ieee80211_tx_dequeue+0x9/0x1330 [mac80211]
+kernel:  ? __rcu_read_lock+0x4/0x40
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_mac_itxq_xmit+0xae/0x210 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_queue_state_change+0x311/0x3a0 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_wake_sw_queue+0x17/0x20 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_unmap+0x1c9/0x1f0 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_free+0x55/0x130 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_tx_free+0x63/0x80 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  _iwl_trans_pcie_gen2_stop_device+0x3f3/0x5b0 [iwlwifi]
+kernel:  ? _iwl_trans_pcie_gen2_stop_device+0x9/0x5b0 [iwlwifi]
+kernel:  ? mutex_lock_nested+0x4/0x30
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_trans_pcie_gen2_stop_device+0x5f/0x90 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_stop_device+0x78/0xd0 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  __iwl_mvm_mac_start+0x114/0x210 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_mac_start+0x76/0x150 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  drv_start+0x79/0x180 [mac80211]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_reconfig+0x1523/0x1ce0 [mac80211]
+kernel:  ? synchronize_net+0x4/0x50
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_restart_work+0x108/0x170 [mac80211]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  process_one_work+0x250/0x530
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  worker_thread+0x48/0x3a0
+kernel:  ? __pfx_worker_thread+0x10/0x10
+kernel:  kthread+0x10f/0x140
+kernel:  ? __pfx_kthread+0x10/0x10
+kernel:  ret_from_fork+0x29/0x50
+kernel:  </TASK>
+
+Fixes: 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs for resumption")
+Link: https://lore.kernel.org/all/1f58a0d1-d2b9-d851-73c3-93fcc607501c@alu.unizg.hr/
+Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/all/cdc80531-f25f-6f9d-b15f-25e16130b53a@alu.unizg.hr/
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Alexander Wetzel <alexander@wetzel-home.de>
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 55 ++++++++++++++++------
- 1 file changed, 41 insertions(+), 14 deletions(-)
+v3 -> v4:
+- Added whole lockdep trace as advised.
+- Trimmed irrelevant line prefix.
+v2 -> v3:
+- Fix the Fixes: tag as advised.
+- Change the net: to wifi: to comply with the original patch that
+  is being fixed.
+v1 -> v2:
+- Minor rewording and clarification.
+- Cc:-ed people that replied to the original bug report (forgotten
+  in v1 by omission).
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index 3da477e1ebd3..786669a092f1 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -201,13 +201,16 @@ static ssize_t rtw_debugfs_set_read_reg(struct file *filp,
- 	char tmp[32 + 1];
- 	u32 addr, len;
- 	int num;
-+	int ret;
+ net/mac80211/tx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 7699fb410670..45cb8e7bcc61 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3781,6 +3781,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	ieee80211_tx_result r;
+ 	struct ieee80211_vif *vif = txq->vif;
+ 	int q = vif->hw_queue[txq->ac];
++	unsigned long flags;
+ 	bool q_stopped;
  
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 2);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 2);
-+	if (ret < 0)
-+		return ret;
+ 	WARN_ON_ONCE(softirq_count() == 0);
+@@ -3789,9 +3790,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 		return NULL;
  
- 	num = sscanf(tmp, "%x %x", &addr, &len);
+ begin:
+-	spin_lock(&local->queue_stop_reason_lock);
++	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
+ 	q_stopped = local->queue_stop_reasons[q];
+-	spin_unlock(&local->queue_stop_reason_lock);
++	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
  
- 	if (num !=  2)
--		return count;
-+		return -EINVAL;
- 
- 	if (len != 1 && len != 2 && len != 4) {
- 		rtw_warn(rtwdev, "read reg setting wrong len\n");
-@@ -288,8 +291,11 @@ static ssize_t rtw_debugfs_set_rsvd_page(struct file *filp,
- 	char tmp[32 + 1];
- 	u32 offset, page_num;
- 	int num;
-+	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 2);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 2);
-+	if (ret < 0)
-+		return ret;
- 
- 	num = sscanf(tmp, "%d %d", &offset, &page_num);
- 
-@@ -314,8 +320,11 @@ static ssize_t rtw_debugfs_set_single_input(struct file *filp,
- 	char tmp[32 + 1];
- 	u32 input;
- 	int num;
-+	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	if (ret < 0)
-+		return ret;
- 
- 	num = kstrtoint(tmp, 0, &input);
- 
-@@ -338,14 +347,17 @@ static ssize_t rtw_debugfs_set_write_reg(struct file *filp,
- 	char tmp[32 + 1];
- 	u32 addr, val, len;
- 	int num;
-+	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* write BB/MAC register */
- 	num = sscanf(tmp, "%x %x %x", &addr, &val, &len);
- 
- 	if (num !=  3)
--		return count;
-+		return -EINVAL;
- 
- 	switch (len) {
- 	case 1:
-@@ -381,8 +393,11 @@ static ssize_t rtw_debugfs_set_h2c(struct file *filp,
- 	char tmp[32 + 1];
- 	u8 param[8];
- 	int num;
-+	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
-+	if (ret < 0)
-+		return ret;
- 
- 	num = sscanf(tmp, "%hhx,%hhx,%hhx,%hhx,%hhx,%hhx,%hhx,%hhx",
- 		     &param[0], &param[1], &param[2], &param[3],
-@@ -408,14 +423,17 @@ static ssize_t rtw_debugfs_set_rf_write(struct file *filp,
- 	char tmp[32 + 1];
- 	u32 path, addr, mask, val;
- 	int num;
-+	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 4);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 4);
-+	if (ret < 0)
-+		return ret;
- 
- 	num = sscanf(tmp, "%x %x %x %x", &path, &addr, &mask, &val);
- 
- 	if (num !=  4) {
- 		rtw_warn(rtwdev, "invalid args, [path] [addr] [mask] [val]\n");
--		return count;
-+		return -EINVAL;
- 	}
- 
- 	mutex_lock(&rtwdev->mutex);
-@@ -438,14 +456,17 @@ static ssize_t rtw_debugfs_set_rf_read(struct file *filp,
- 	char tmp[32 + 1];
- 	u32 path, addr, mask;
- 	int num;
-+	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 3);
-+	if (ret < 0)
-+		return ret;
- 
- 	num = sscanf(tmp, "%x %x %x", &path, &addr, &mask);
- 
- 	if (num !=  3) {
- 		rtw_warn(rtwdev, "invalid args, [path] [addr] [mask] [val]\n");
--		return count;
-+		return -EINVAL;
- 	}
- 
- 	debugfs_priv->rf_path = path;
-@@ -467,7 +488,9 @@ static ssize_t rtw_debugfs_set_fix_rate(struct file *filp,
- 	char tmp[32 + 1];
- 	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = kstrtou8(tmp, 0, &fix_rate);
- 	if (ret) {
-@@ -860,7 +883,9 @@ static ssize_t rtw_debugfs_set_coex_enable(struct file *filp,
- 	bool enable;
- 	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = kstrtobool(tmp, &enable);
- 	if (ret) {
-@@ -930,7 +955,9 @@ static ssize_t rtw_debugfs_set_fw_crash(struct file *filp,
- 	bool input;
- 	int ret;
- 
--	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	ret = rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 1);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = kstrtobool(tmp, &input);
- 	if (ret)
+ 	if (unlikely(q_stopped)) {
+ 		/* mark for waking later */
 -- 
-2.40.0
+2.30.2
 
