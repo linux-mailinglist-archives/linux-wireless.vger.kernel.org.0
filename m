@@ -2,25 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10AB86EDE52
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 10:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1D776EDE71
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 10:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233440AbjDYIlN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 04:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57614 "EHLO
+        id S233748AbjDYIqb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 04:46:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234203AbjDYIk3 (ORCPT
+        with ESMTP id S233506AbjDYIqM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 04:40:29 -0400
+        Tue, 25 Apr 2023 04:46:12 -0400
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6EFA161B6
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 01:38:39 -0700 (PDT)
-X-UUID: 7cdd6308e34411edb6b9f13eb10bd0fe-20230425
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C6D2146C0
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 01:43:59 -0700 (PDT)
+X-UUID: 4e6f20aae34511edb6b9f13eb10bd0fe-20230425
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
         h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=GKEBBk8I8E0Ib+tKnKPBklCRbMe9hUzeTsEMpA7lmoI=;
-        b=g3iePMoaltjvtkkWPCAr4J88XAXxEW9mIlZlMwBHpeDR/y1XpxKJvEeFBr+eJi2PpPLlaI7jt/kBRFgDeG6vjPAEFxt3RaF9Ifys6dXFH97FTzuC0Rr7bqzwGTMxAeTXiSOiasRg9tNWjqd78KfoLQrZRsA08Orh0VuiN1vNS44=;
+        b=drew8+YS/GWDXqZxzzcCmPjPXo853iA5KH3w4VcLEcBQgcq6wz8TxGjJPsDa/JFbEIF2521+r38bHnmbYdeEH46CS7aKbLe++RK3lM6bZft6u5yK4zusHSc68xdFKqBMygs/nYIA0tIk4fsrTtSynYMxou21FuT01BcolRBGDpA=;
+X-CID-CACHE: Type:Local,Time:202304251638+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:90503540-7b1b-4de9-b1ac-24b86e3527d7,IP:0,U
+X-CID-O-INFO: VERSION:1.1.22,REQID:4a319755-7633-4875-9401-833badce7cd3,IP:0,U
         RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
         release,TS:0
 X-CID-META: VersionHash:120426c,CLOUDID:acd32b85-cd9c-45f5-8134-710979e3df0e,B
@@ -28,18 +29,18 @@ X-CID-META: VersionHash:120426c,CLOUDID:acd32b85-cd9c-45f5-8134-710979e3df0e,B
         RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
-X-UUID: 7cdd6308e34411edb6b9f13eb10bd0fe-20230425
+X-UUID: 4e6f20aae34511edb6b9f13eb10bd0fe-20230425
 Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
         (envelope-from <ryder.lee@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 332730307; Tue, 25 Apr 2023 16:38:01 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+        with ESMTP id 1938865880; Tue, 25 Apr 2023 16:43:52 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Tue, 25 Apr 2023 16:38:00 +0800
+ 15.2.1118.26; Tue, 25 Apr 2023 16:43:52 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 25 Apr 2023 16:38:00 +0800
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Tue, 25 Apr 2023 16:43:52 +0800
 From:   Ryder Lee <ryder.lee@mediatek.com>
 To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
 CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
@@ -48,19 +49,19 @@ CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         <linux-mediatek@lists.infradead.org>,
         Peter Chiu <chui-hao.chiu@mediatek.com>,
         Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 2/2] mt76: report non-binding skb tx rate wehn WED is active
-Date:   Tue, 25 Apr 2023 16:37:46 +0800
-Message-ID: <ed513e736b0727fdae99afd3392360e53dfa5012.1682411744.git.ryder.lee@mediatek.com>
+Subject: [PATCH 2/2] wifi: mt76: report non-binding skb tx rate when WED is active
+Date:   Tue, 25 Apr 2023 16:43:51 +0800
+Message-ID: <04be3a596ebf25136ab2e7d9abc602b8f061a9c8.1682412180.git.ryder.lee@mediatek.com>
 X-Mailer: git-send-email 2.18.0
-In-Reply-To: <d9466e4641a7db661058896f4ccd4bba4a9cdb3b.1682411744.git.ryder.lee@mediatek.com>
-References: <d9466e4641a7db661058896f4ccd4bba4a9cdb3b.1682411744.git.ryder.lee@mediatek.com>
+In-Reply-To: <d9466e4641a7db661058896f4ccd4bba4a9cdb3b.1682412179.git.ryder.lee@mediatek.com>
+References: <d9466e4641a7db661058896f4ccd4bba4a9cdb3b.1682412179.git.ryder.lee@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-MTK:  N
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
