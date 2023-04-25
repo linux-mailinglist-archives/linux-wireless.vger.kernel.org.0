@@ -2,132 +2,207 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 228006EE520
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 17:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE9FA6EE539
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 18:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234623AbjDYP7L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 11:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38788 "EHLO
+        id S234664AbjDYQEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 12:04:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234616AbjDYP7K (ORCPT
+        with ESMTP id S234540AbjDYQEV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 11:59:10 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E418C17A;
-        Tue, 25 Apr 2023 08:59:09 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 30A3960161;
-        Tue, 25 Apr 2023 17:59:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1682438346; bh=XJOm+PL1n+IETGdWyBevOpSz4W+XaMIM22aU7kvoNeM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=cRMRm47iPs5gE2T1yfXSuIqZyaUw8wqmyJ57DrP9jTNS6MGPMCvwL2us8Z3dPbdjP
-         dgAedUkUItsEQy4fkgxF4dB2MJwHOVpESemSzdRbbw0s1OCoeaHx0e0e9T8BojSWUy
-         sQmzcBHcqYoq52MqC6zGLbCZw5Im9Jz1IctQcLfT3evZbCPpAC/spAEGtl+OsnCcPm
-         3xb1raYTtSVe7TEiIFauSwv3MU73PuFOtakb0hiJAS5svyaF6Lfexn5OaqlQYEbUnD
-         kj5GzoyrUZ0ZPsrSsg3dLAEUvigG4LlPZC/icGfzdhr0NVlQTBmsv8oQ/AUc+EtR8b
-         XK5MXEESB5jKw==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MGaTbJ9yX1CL; Tue, 25 Apr 2023 17:59:04 +0200 (CEST)
-Received: from [10.0.1.134] (grf-nat.grf.hr [161.53.83.23])
-        by domac.alu.hr (Postfix) with ESMTPSA id C0E4B6015F;
-        Tue, 25 Apr 2023 17:59:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1682438344; bh=XJOm+PL1n+IETGdWyBevOpSz4W+XaMIM22aU7kvoNeM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=fTOp9HQFcasW9JeHbWAbqzZh5xeG3/BCY3vrSJpe3gq/BVQi9uNyzmA6HsnRArbnm
-         goOLewTfza7SHvXKLZkCC7qMqT4aqS872pTr9R0BiMGSPcavzFcX0LaOwzMscCLSPx
-         kk6bLVQMwmxcTFXt+y6jcGmJA33W8xlp1zvEMMaXEJHVkxu8pdB2Plm1ltXKoHECPN
-         t61BdbSifOHajs1M/YrGgKuYC37in5PEHX8d0RJ1ppRstfxQ3uDvqrmn4oF2sPNK5o
-         49rHExYqldoWJNH+7K6PaLtZNKmlM3QePa9CQVuZQH0hqhSIH890JZICJNkDa/8m/b
-         vV+hhg8KUQo0g==
-Message-ID: <3f91aab6-0f50-38cb-6a88-b2553b96e8cb@alu.unizg.hr>
-Date:   Tue, 25 Apr 2023 17:59:02 +0200
+        Tue, 25 Apr 2023 12:04:21 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 114F114F5B
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 09:04:17 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-18ecdb1f2aaso5611984fac.1
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 09:04:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682438656; x=1685030656;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Hly5uuBTfc4rAD7PMAe9rPQX2/9L+OPO0xvElZZMEA=;
+        b=O0yOtDdWSMV53DueZOfEQ/G4TfooMStlKXrbPrTdVz6+6b/WM5X/tSDZGihU3fmGCl
+         ETGYUTFt0PNijFQ15jkhuExrviIZsNLKot6RZI4EyB8RBK+9e5gJA03zTX/dupXoXFrh
+         Qrnz0AxWHrz7Hg4sckzsLu2Eb/yz9IewFokgSCZ2a2IbN6LkbDYesOYa5hWfcJDMBORD
+         dW+Bz90LWer1P6qSbzqdut7EXXuopqHImp0G0InlmU3e03o7c5807mQa+O/kSE+Q1TSW
+         OdY2u0JYTDYGALk2Vj8rSIZfHUr5uGxOn2PxLKcbSl4pBXSjFarA6Ba5XYctQvZGIibs
+         3qXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682438656; x=1685030656;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+Hly5uuBTfc4rAD7PMAe9rPQX2/9L+OPO0xvElZZMEA=;
+        b=YAClHQNAoBxmZ/9oQ+Vj/cyl61rQbNwhaJiguiPJG2DL18H0GfP9370+YNTOHEEQ+O
+         N7G3pUGyXc9rlBfHS227Thfdll5L1a0HcYx8YZaJdrcCg4inZNL+cN8d6Aj7YYGQ0UJb
+         PPhekIqLQfbcm/VDIHUIA4jagJHl95JuG5aSNDTwRtRP2DWCit4npUMfBjuwuZtbrKVO
+         qH8M19T3/CmPR3gXnidXvVarwCWUextB9Ntexua0YP/8KRrgTbTb0k2JtrH49OsactC5
+         r1Q7e/CrwZaREBmmWKjyL7bLzgutFX4NmgNbyD6DzGJmQsjCKfJeQn9yxLdkntt5hEW/
+         JqzQ==
+X-Gm-Message-State: AAQBX9fMUOYILjZcRgsob5/D/Eg1+4heplxzFWoazpMwggzotYRLX9A3
+        bIL0/FuEuEiETJWkaNRKC4w=
+X-Google-Smtp-Source: AKy350btTEYcfino+TZxwUz2/yFLP9aKsB3lfsl9D0Q8gZTiyyYqNTXwA3JhdsHaTqZX8yoQ65hmmw==
+X-Received: by 2002:a4a:e881:0:b0:547:9285:b099 with SMTP id g1-20020a4ae881000000b005479285b099mr3717756ooe.4.1682438655896;
+        Tue, 25 Apr 2023 09:04:15 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id p37-20020a4a95e8000000b0051134f333d3sm6109442ooi.16.2023.04.25.09.04.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Apr 2023 09:04:15 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <2784bfc8-9c5a-8e0c-aa0c-0864078e31b7@lwfinger.net>
+Date:   Tue, 25 Apr 2023 11:04:13 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v3 1/1] wifi: mac80211: fortify the spinlock against
- deadlock by interrupt
-Content-Language: en-US, hr
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Alexander Wetzel <alexander@wetzel-home.de>
-References: <20230425093547.1131-1-mirsad.todorovac@alu.unizg.hr>
- <20230425153353.GB27649@unreal>
-From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <20230425153353.GB27649@unreal>
+Subject: Re: [PATCH] wifi: rtw89: 8852b: adjust quota to avoid SER L1 caused
+ by access null page
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org
+References: <20230421015357.13940-1-pkshih@realtek.com>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20230421015357.13940-1-pkshih@realtek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 25.4.2023. 17:33, Leon Romanovsky wrote:
-> On Tue, Apr 25, 2023 at 11:35:48AM +0200, Mirsad Goran Todorovac wrote:
->> In the function ieee80211_tx_dequeue() there is a particular locking
->> sequence:
->>
->> begin:
->> 	spin_lock(&local->queue_stop_reason_lock);
->> 	q_stopped = local->queue_stop_reasons[q];
->> 	spin_unlock(&local->queue_stop_reason_lock);
->>
->> However small the chance (increased by ftracetest), an asynchronous
->> interrupt can occur in between of spin_lock() and spin_unlock(),
->> and the interrupt routine will attempt to lock the same
->> &local->queue_stop_reason_lock again.
->>
->> This will cause a costly reset of the CPU and the wifi device or an
->> altogether hang in the single CPU and single core scenario.
->>
->> This is the probable trace of the deadlock:
->>
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:  Possible unsafe locking scenario:
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:        CPU0
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:        ----
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:   lock(&local->queue_stop_reason_lock);
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:   <Interrupt>
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:     lock(&local->queue_stop_reason_lock);
->> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:
->>                                                   *** DEADLOCK ***
+On 4/20/23 20:53, Ping-Ke Shih wrote:
+> Though SER can recover this case, traffic can get stuck for a while. Fix it
+> by adjusting page quota to avoid hardware access null page of CMAC/DMAC.
 > 
-> Can you please add to the commit message whole lockdep trace?
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>   drivers/net/wireless/realtek/rtw89/mac.c      |  4 +++
+>   drivers/net/wireless/realtek/rtw89/mac.h      |  2 ++
+>   drivers/net/wireless/realtek/rtw89/rtw8852b.c | 28 +++++++++----------
+>   3 files changed, 20 insertions(+), 14 deletions(-)
 > 
-> And please trim "Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel: " line prefix,
-> it doesn't add any value.
+> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+> index b8019cfc11b20..512de491a064b 100644
+> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+> @@ -1425,6 +1425,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
+>   	.wde_size4 = {RTW89_WDE_PG_64, 0, 4096,},
+>   	/* PCIE 64 */
+>   	.wde_size6 = {RTW89_WDE_PG_64, 512, 0,},
+> +	/* 8852B PCIE SCC */
+> +	.wde_size7 = {RTW89_WDE_PG_64, 510, 2,},
+>   	/* DLFW */
+>   	.wde_size9 = {RTW89_WDE_PG_64, 0, 1024,},
+>   	/* 8852C DLFW */
+> @@ -1449,6 +1451,8 @@ const struct rtw89_mac_size_set rtw89_mac_size = {
+>   	.wde_qt4 = {0, 0, 0, 0,},
+>   	/* PCIE 64 */
+>   	.wde_qt6 = {448, 48, 0, 16,},
+> +	/* 8852B PCIE SCC */
+> +	.wde_qt7 = {446, 48, 0, 16,},
+>   	/* 8852C DLFW */
+>   	.wde_qt17 = {0, 0, 0,  0,},
+>   	/* 8852C PCIE SCC */
+> diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+> index a8d9847ef0b49..6ba633ccdd037 100644
+> --- a/drivers/net/wireless/realtek/rtw89/mac.h
+> +++ b/drivers/net/wireless/realtek/rtw89/mac.h
+> @@ -792,6 +792,7 @@ struct rtw89_mac_size_set {
+>   	const struct rtw89_dle_size wde_size0;
+>   	const struct rtw89_dle_size wde_size4;
+>   	const struct rtw89_dle_size wde_size6;
+> +	const struct rtw89_dle_size wde_size7;
+>   	const struct rtw89_dle_size wde_size9;
+>   	const struct rtw89_dle_size wde_size18;
+>   	const struct rtw89_dle_size wde_size19;
+> @@ -804,6 +805,7 @@ struct rtw89_mac_size_set {
+>   	const struct rtw89_wde_quota wde_qt0;
+>   	const struct rtw89_wde_quota wde_qt4;
+>   	const struct rtw89_wde_quota wde_qt6;
+> +	const struct rtw89_wde_quota wde_qt7;
+>   	const struct rtw89_wde_quota wde_qt17;
+>   	const struct rtw89_wde_quota wde_qt18;
+>   	const struct rtw89_ple_quota ple_qt4;
+> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+> index eaa2ea0586bc6..6da1b603a9a95 100644
+> --- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+> +++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
+> @@ -18,25 +18,25 @@
+>   	RTW8852B_FW_BASENAME "-" __stringify(RTW8852B_FW_FORMAT_MAX) ".bin"
+>   
+>   static const struct rtw89_hfc_ch_cfg rtw8852b_hfc_chcfg_pcie[] = {
+> -	{5, 343, grp_0}, /* ACH 0 */
+> -	{5, 343, grp_0}, /* ACH 1 */
+> -	{5, 343, grp_0}, /* ACH 2 */
+> -	{5, 343, grp_0}, /* ACH 3 */
+> +	{5, 341, grp_0}, /* ACH 0 */
+> +	{5, 341, grp_0}, /* ACH 1 */
+> +	{4, 342, grp_0}, /* ACH 2 */
+> +	{4, 342, grp_0}, /* ACH 3 */
+>   	{0, 0, grp_0}, /* ACH 4 */
+>   	{0, 0, grp_0}, /* ACH 5 */
+>   	{0, 0, grp_0}, /* ACH 6 */
+>   	{0, 0, grp_0}, /* ACH 7 */
+> -	{4, 344, grp_0}, /* B0MGQ */
+> -	{4, 344, grp_0}, /* B0HIQ */
+> +	{4, 342, grp_0}, /* B0MGQ */
+> +	{4, 342, grp_0}, /* B0HIQ */
+>   	{0, 0, grp_0}, /* B1MGQ */
+>   	{0, 0, grp_0}, /* B1HIQ */
+>   	{40, 0, 0} /* FWCMDQ */
+>   };
+>   
+>   static const struct rtw89_hfc_pub_cfg rtw8852b_hfc_pubcfg_pcie = {
+> -	448, /* Group 0 */
+> +	446, /* Group 0 */
+>   	0, /* Group 1 */
+> -	448, /* Public Max */
+> +	446, /* Public Max */
+>   	0 /* WP threshold */
+>   };
+>   
+> @@ -49,13 +49,13 @@ static const struct rtw89_hfc_param_ini rtw8852b_hfc_param_ini_pcie[] = {
+>   };
+>   
+>   static const struct rtw89_dle_mem rtw8852b_dle_mem_pcie[] = {
+> -	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size6,
+> -			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt6,
+> -			   &rtw89_mac_size.wde_qt6, &rtw89_mac_size.ple_qt18,
+> +	[RTW89_QTA_SCC] = {RTW89_QTA_SCC, &rtw89_mac_size.wde_size7,
+> +			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt7,
+> +			   &rtw89_mac_size.wde_qt7, &rtw89_mac_size.ple_qt18,
+>   			   &rtw89_mac_size.ple_qt58},
+> -	[RTW89_QTA_WOW] = {RTW89_QTA_WOW, &rtw89_mac_size.wde_size6,
+> -			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt6,
+> -			   &rtw89_mac_size.wde_qt6, &rtw89_mac_size.ple_qt18,
+> +	[RTW89_QTA_WOW] = {RTW89_QTA_WOW, &rtw89_mac_size.wde_size7,
+> +			   &rtw89_mac_size.ple_size6, &rtw89_mac_size.wde_qt7,
+> +			   &rtw89_mac_size.wde_qt7, &rtw89_mac_size.ple_qt18,
+>   			   &rtw89_mac_size.ple_qt_52b_wow},
+>   	[RTW89_QTA_DLFW] = {RTW89_QTA_DLFW, &rtw89_mac_size.wde_size9,
+>   			    &rtw89_mac_size.ple_size8, &rtw89_mac_size.wde_qt4,
 
-Sure. I will do this ASAP. I thought of it myself, but I reckoned it would
-be an overkill.
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Will come in PATCH v4.
+This patch has now been added to the repo at
+https://github.com/lwfinger/rtw89.git.
 
-Best regards,
-Mirsad
+Although it has been applied there for only a couple of days, it has fixed 
+timing problems on several new HP laptops [1][2].
 
--- 
-Mirsad Todorovac
-System engineer
-Faculty of Graphic Arts | Academy of Fine Arts
-University of Zagreb
-Republic of Croatia, the European Union
+My recommendation is that this be designated a "Fixes:" patch, be applied to 
+kernel 6.4, and be sent to 6.3 through the "Stable" mechanism.
 
-Sistem inženjer
-Grafički fakultet | Akademija likovnih umjetnosti
-Sveučilište u Zagrebu
+Larry
+
+[1] https://github.com/lwfinger/rtw89/issues/226#issuecomment-1520776761
+[2] https://github.com/lwfinger/rtw89/issues/240
 
