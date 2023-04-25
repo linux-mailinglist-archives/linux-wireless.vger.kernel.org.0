@@ -2,51 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 125DF6EDD40
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 09:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 921656EDDFC
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 10:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233303AbjDYHyl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 03:54:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58378 "EHLO
+        id S233511AbjDYI3v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 04:29:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231137AbjDYHyk (ORCPT
+        with ESMTP id S233247AbjDYI3u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 03:54:40 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC44A93;
-        Tue, 25 Apr 2023 00:54:38 -0700 (PDT)
-Received: from fpc (unknown [10.10.165.13])
-        by mail.ispras.ru (Postfix) with ESMTPSA id B178F4076B3E;
-        Tue, 25 Apr 2023 07:54:33 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B178F4076B3E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1682409273;
-        bh=x/dcm2H+pi6gUOqFCVOxGTCuLDZsjOAvdeX9hDCiq50=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ha5x9mUs3UEtB19J1XCR4MRHoL6FR6LT2yNTo2JYsvcMVjPHA/bq8OmLTktyraXoP
-         4/NlJ+NtnRg2/Kn+PNV3/5ADOUAnJwDLm9OT+nhQsXJColKxExzaplOSPtM7HygpfJ
-         +ysErXCQ/eOuCMgonfLq9PWYyVCbcoQv3zfUOLYU=
-Date:   Tue, 25 Apr 2023 10:54:26 +0300
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     Hillf Danton <hdanton@sina.com>
-Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com,
-        syzbot+df61b36319e045c00a08@syzkaller.appspotmail.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org
-Subject: Re: [PATCH v2] wifi: ath9k: fix races between ath9k_wmi_cmd and
- ath9k_wmi_ctrl_rx
-Message-ID: <20230425075426.ubfnohsqe3c2cjdq@fpc>
-References: <20230424191826.117354-1-pchelkin@ispras.ru>
- <20230425033832.2041-1-hdanton@sina.com>
+        Tue, 25 Apr 2023 04:29:50 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B79DF49C3;
+        Tue, 25 Apr 2023 01:29:48 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 789D960161;
+        Tue, 25 Apr 2023 10:29:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1682411385; bh=KyqatyXSmiybBdZf8kL0kB6Fpz4lArIKu5YaNvuHwlQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=ZruPUvK1iStW/J9EvlGBEHLp2qkXOYERHLn5Q5RZHvY0eLMVyR1RvEmftLCFu/ObQ
+         Ri5JvyaHWhY4svBF2PKc+WQusIJ3RiAU3rQYh6V1lpsB21AE6YpvrrtIZm//ED9XT7
+         F7n9h4DF/5DUqSLfsobB8vryUHOY62/M7+wEe3jht7/ED7pjOfWcPSD/jIuOGqTfEL
+         sedkUKq/Qbn6GmVwJrfiXoVnrr5GG6LEaWsshHHPeR9LFDZplEoGS3PzhdqOfXjMn6
+         WiSs6AnkGCDVbZ7jlkUmRH9cvTjyrGrMSllBNctV2gzNsJvTtgHtSiLlEIyFz3tJ//
+         OhLaYDRY7e2GQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Z3y7YojNxraQ; Tue, 25 Apr 2023 10:29:43 +0200 (CEST)
+Received: from [10.0.1.134] (grf-nat.grf.hr [161.53.83.23])
+        by domac.alu.hr (Postfix) with ESMTPSA id 65B466015F;
+        Tue, 25 Apr 2023 10:29:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1682411383; bh=KyqatyXSmiybBdZf8kL0kB6Fpz4lArIKu5YaNvuHwlQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=DxIJt7QNEXgwt5QgcyC1tuJnXD2hvUZmpDdZDFc/ZzIj/WGRRT6FTe/35h4k5F9hV
+         xr8GbDc62pmr2wHiNaXwiTLmo6oV17XzyTNXA0G+PBhWwNR4tbHxuZOS28g+IzJmkx
+         FvPxW8TDtHwYr+aiXRxh5AkHqNdzvXvxzgRK54Fsl21TzaqcbkQqbiVM3JjZ9+ryfX
+         PnUh6fKrjHat+k77Y2TosQgtYaRiAXDTbDuwdwehqttJN9DErfF+FEz+IXS0WbPyBN
+         VU5jm5+K+z0eV5ACZDEB3Ecaj6X+KWNZO1SDGjOt1nYUdXppb5KM0bbMAs/ZiydoHo
+         F7YW8Bn2lwNlQ==
+Message-ID: <cdc80531-f25f-6f9d-b15f-25e16130b53a@alu.unizg.hr>
+Date:   Tue, 25 Apr 2023 10:29:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230425033832.2041-1-hdanton@sina.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH RFC v1 1/1] net: mac80211: fortify the spinlock against
+ deadlock in interrupt
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexander Wetzel <alexander@wetzel-home.de>
+References: <20230423082403.49143-1-mirsad.todorovac@alu.unizg.hr>
+ <017c5178594e2df6ca02f2d7ffa9109755315c56.camel@sipsolutions.net>
+Content-Language: en-US, hr
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+In-Reply-To: <017c5178594e2df6ca02f2d7ffa9109755315c56.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,87 +75,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 25, 2023 at 11:38:32AM +0800, Hillf Danton wrote:
-> On 24 Apr 2023 22:18:26 +0300 Fedor Pchelkin <pchelkin@ispras.ru>
-> > Currently, the synchronization between ath9k_wmi_cmd() and
-> > ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
-> > rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
-> > 
-> > Consider the following scenario:
-> > 
-> > CPU0					CPU1
-> > 
-> > ath9k_wmi_cmd(...)
-> >   mutex_lock(&wmi->op_mutex)
-> >   ath9k_wmi_cmd_issue(...)
-> >   wait_for_completion_timeout(...)
-> >   ---
-> >   timeout
-> >   ---
-> > 					/* the callback is being processed
-> > 					 * before last_seq_id became zero
-> > 					 */
-> > 					ath9k_wmi_ctrl_rx(...)
-> > 					  spin_lock_irqsave(...)
-> > 					  /* wmi->last_seq_id check here
-> > 					   * doesn't detect timeout yet
-> > 					   */
-> > 					  spin_unlock_irqrestore(...)
-> >   /* last_seq_id is zeroed to
-> >    * indicate there was a timeout
-> >    */
-> >   wmi->last_seq_id = 0
+On 24.4.2023. 19:27, Johannes Berg wrote:
+> On Sun, 2023-04-23 at 10:24 +0200, Mirsad Goran Todorovac wrote:
+>> In the function ieee80211_tx_dequeue() there is a locking sequence:
+>>
+>> begin:
+>> 	spin_lock(&local->queue_stop_reason_lock);
+>> 	q_stopped = local->queue_stop_reasons[q];
+>> 	spin_unlock(&local->queue_stop_reason_lock);
+>>
+>> However small the chance (increased by ftracetest), an asynchronous
+>> interrupt can occur in between of spin_lock() and spin_unlock(),
+>> and the interrupt routine will attempt to lock the same
+>> &local->queue_stop_reason_lock again.
+>>
+>> This is the only remaining spin_lock() on local->queue_stop_reason_lock
+>> that did not disable interrupts and could have possibly caused the deadlock
+>> on the same CPU (core).
+>>
+>> This will cause a costly reset of the CPU and wifi device or an
+>> altogether hang in the single CPU and single core scenario.
+>>
+>> This is the probable reproduce of the deadlock:
+>>
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:  Possible unsafe locking scenario:
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:        CPU0
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:        ----
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:   lock(&local->queue_stop_reason_lock);
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:   <Interrupt>
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:     lock(&local->queue_stop_reason_lock);
+>> Apr 10 00:58:33 marvin-IdeaPad-3-15ITL6 kernel:
+>>                                                   *** DEADLOCK ***
+>>
+>> Fixes: 4444bc2116ae
 > 
-> Without	wmi->wmi_lock held, updating last_seq_id on the waiter side
-> means it is random on the waker side, so the fix below is incorrect.
+> That fixes tag is wrong, should be
 > 
-
-Thank you for noticing! Of course that should be done.
-
-> >   mutex_unlock(&wmi->op_mutex)
-> >   return -ETIMEDOUT
-> > 
-> > ath9k_wmi_cmd(...)
-> >   mutex_lock(&wmi->op_mutex)
-> >   /* the buffer is replaced with
-> >    * another one
-> >    */
-> >   wmi->cmd_rsp_buf = rsp_buf
-> >   wmi->cmd_rsp_len = rsp_len
-> >   ath9k_wmi_cmd_issue(...)
-> >     spin_lock_irqsave(...)
-> >     spin_unlock_irqrestore(...)
-> >   wait_for_completion_timeout(...)
-> > 					/* the continuation of the
-> > 					 * callback left after the first
-> > 					 * ath9k_wmi_cmd call
-> > 					 */
-> > 					  ath9k_wmi_rsp_callback(...)
-> > 					    /* copying data designated
-> > 					     * to already timeouted
-> > 					     * WMI command into an
-> > 					     * inappropriate wmi_cmd_buf
-> > 					     */
-> > 					    memcpy(...)
-> > 					    complete(&wmi->cmd_wait)
-> >   /* awakened by the bogus callback
-> >    * => invalid return result
-> >    */
-> >   mutex_unlock(&wmi->op_mutex)
-> >   return 0
-> > 
-> > To fix this, move ath9k_wmi_rsp_callback() under wmi_lock inside
-> > ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
-> > initially designated wmi_cmd call, otherwise the path would be rejected
-> > with last_seq_id check.
-> > 
-> > Also move recording the rsp buffer and length into ath9k_wmi_cmd_issue()
-> > under the same wmi_lock with last_seq_id update to avoid their racy
-> > changes.
+> Fixes: 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs for resumption")
 > 
-> Better in a seperate one.
+> Otherwise seems fine to me, submit it properly?
+> 
+> johannes
 
-Well, they are parts of the same problem but now it seems more relevant
-to divide the patch in two: the first one for incorrect last_seq_id
-synchronization and the second one for recording rsp buffer under the
-lock. Thanks!
+Will do, Sir. Do I have an Acked-by: ?
+
+Thank you.
+
+Mirsad
+
+-- 
+Mirsad Todorovac
+System engineer
+Faculty of Graphic Arts | Academy of Fine Arts
+University of Zagreb
+Republic of Croatia, the European Union
+
+Sistem inženjer
+Grafički fakultet | Akademija likovnih umjetnosti
+Sveučilište u Zagrebu
+
