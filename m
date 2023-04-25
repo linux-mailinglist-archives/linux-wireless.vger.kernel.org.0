@@ -2,232 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E506EE825
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 21:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C1C66EE837
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 21:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235605AbjDYTYE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 15:24:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42396 "EHLO
+        id S236026AbjDYT0e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 15:26:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235547AbjDYTXz (ORCPT
+        with ESMTP id S236006AbjDYT0b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 15:23:55 -0400
-Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F17418BB1
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 12:23:52 -0700 (PDT)
-Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-763761822f0so956231039f.0
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 12:23:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682450631; x=1685042631;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7wp9/5MJgDYCIUfKNZXJR2m1Kl0JfYcxjRayQuhYEtM=;
-        b=Zko3n76gV1gj0LCt8qEEL4xCzDrtoC8usOT0eC6niSUgGWWsRfjzv/W6opl1X/DiCy
-         XF7XM7PNrSJ66RO+1erU6XIxr6ykLBXg1B7dCGuX3HviM8WI0gJqMq73srSbzdVNCbeC
-         aOLzwF5NJ5GDcsoc818MHC5jNuT8QLV8alY0+H5v4dRKN4Tt5ckoB8AKyYpfj4LWn9kD
-         8Zfd601CnSJtCARpAm8rWCM0eljT1IWr8/L4XC5V/G9LZ4VqrcVWil1tPddVnf+cxFaQ
-         IQnxwTzqX2z1Dwpl8mDXc2wUaq24Nq0Jsbe66VaK0hHzVMeV+ZRGs1gF+d4PDtFClMVV
-         39Pw==
-X-Gm-Message-State: AAQBX9e7aunODtl4PDkQj/utjCOjS3S3g56De2HBc3L3hJzSV170KDee
-        to8oMza+iv7PNtlgsXaJP1x2CHQwkhwgFAwLe+9jibgCtsLZ
-X-Google-Smtp-Source: AKy350ZQKXuzUAurJ6lf35jiy82lk7RV10MpNHhQ60zclN1QTHlzonRs9Pcctvxdt7LMdl3iGiZWzsKMWGDTDgko/Wt/MDWTt2ZO
+        Tue, 25 Apr 2023 15:26:31 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B60516181;
+        Tue, 25 Apr 2023 12:26:21 -0700 (PDT)
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.4])
+        by mail.ispras.ru (Postfix) with ESMTPSA id AA7D440737A1;
+        Tue, 25 Apr 2023 19:26:16 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru AA7D440737A1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1682450776;
+        bh=vtxoNftItfp9sdIuiR6TC+lugMM08soTNMG6xlHTUHY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hHs4+//l7vV8UdP9DwaVLuG8XDv+uZPdvuzCG+8MFti52uZty2gE84aRweqUZIFAQ
+         b9RaIWs3ZkeIvOxVPB2gQ0Jjg2bCUCR5H5xy/LSRYOjFs1v4DeYERpO7JyRMgwnn9D
+         6nKCZLV/BySqjQd6RgrrvgrIklMSytHd5zxKyGLc=
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Vallo <kvalo@kernel.org>
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Senthil Balasubramanian <senthilkumar@atheros.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Sujith <Sujith.Manoharan@atheros.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org,
+        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com,
+        Hillf Danton <hdanton@sina.com>
+Subject: [PATCH v3 1/2] wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
+Date:   Tue, 25 Apr 2023 22:26:06 +0300
+Message-Id: <20230425192607.18015-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230425033832.2041-1-hdanton@sina.com>
+References: 
 MIME-Version: 1.0
-X-Received: by 2002:a02:b109:0:b0:40f:cf8d:86e6 with SMTP id
- r9-20020a02b109000000b0040fcf8d86e6mr7525030jah.4.1682450631423; Tue, 25 Apr
- 2023 12:23:51 -0700 (PDT)
-Date:   Tue, 25 Apr 2023 12:23:51 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000003cfeb205fa2e10e0@google.com>
-Subject: [syzbot] [wireless?] INFO: task hung in ath9k_hif_usb_firmware_cb (2)
-From:   syzbot <syzbot+d5635158fb0281b27bff@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        kvalo@kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com, toke@toke.dk
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SORTED_RECIPS,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Currently, the synchronization between ath9k_wmi_cmd() and
+ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
+rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
 
-syzbot found the following issue on:
+Consider the following scenario:
 
-HEAD commit:    8f40fc080813 usb: dwc3: gadget: Refactor EP0 forced stall/..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=14a6e320280000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=51fcd1c8b17faf3c
-dashboard link: https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+CPU0					CPU1
 
-Unfortunately, I don't have any reproducer for this issue yet.
+ath9k_wmi_cmd(...)
+  mutex_lock(&wmi->op_mutex)
+  ath9k_wmi_cmd_issue(...)
+  wait_for_completion_timeout(...)
+  ---
+  timeout
+  ---
+					/* the callback is being processed
+					 * before last_seq_id became zero
+					 */
+					ath9k_wmi_ctrl_rx(...)
+					  spin_lock_irqsave(...)
+					  /* wmi->last_seq_id check here
+					   * doesn't detect timeout yet
+					   */
+					  spin_unlock_irqrestore(...)
+  /* last_seq_id is zeroed to
+   * indicate there was a timeout
+   */
+  wmi->last_seq_id = 0
+  mutex_unlock(&wmi->op_mutex)
+  return -ETIMEDOUT
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/25d265ba0e56/disk-8f40fc08.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/117b3f370e35/vmlinux-8f40fc08.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/7046fc173e38/bzImage-8f40fc08.xz
+ath9k_wmi_cmd(...)
+  mutex_lock(&wmi->op_mutex)
+  /* the buffer is replaced with
+   * another one
+   */
+  wmi->cmd_rsp_buf = rsp_buf
+  wmi->cmd_rsp_len = rsp_len
+  ath9k_wmi_cmd_issue(...)
+    spin_lock_irqsave(...)
+    spin_unlock_irqrestore(...)
+  wait_for_completion_timeout(...)
+					/* the continuation of the
+					 * callback left after the first
+					 * ath9k_wmi_cmd call
+					 */
+					  ath9k_wmi_rsp_callback(...)
+					    /* copying data designated
+					     * to already timeouted
+					     * WMI command into an
+					     * inappropriate wmi_cmd_buf
+					     */
+					    memcpy(...)
+					    complete(&wmi->cmd_wait)
+  /* awakened by the bogus callback
+   * => invalid return result
+   */
+  mutex_unlock(&wmi->op_mutex)
+  return 0
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d5635158fb0281b27bff@syzkaller.appspotmail.com
+To fix this, update last_seq_id on timeout path inside ath9k_wmi_cmd()
+under the wmi_lock. Move ath9k_wmi_rsp_callback() under wmi_lock inside
+ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
+initially designated wmi_cmd call, otherwise the path would be rejected
+with last_seq_id check.
 
-INFO: task kworker/1:0:21 blocked for more than 143 seconds.
-      Not tainted 6.3.0-rc6-syzkaller-g8f40fc080813 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:0     state:D stack:21984 pid:21    ppid:2      flags:0x00004000
-Workqueue: events request_firmware_work_func
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5307 [inline]
- __schedule+0xa90/0x2da0 kernel/sched/core.c:6625
- schedule+0xde/0x1a0 kernel/sched/core.c:6701
- schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:6760
- __mutex_lock_common kernel/locking/mutex.c:679 [inline]
- __mutex_lock+0xa3b/0x1350 kernel/locking/mutex.c:747
- device_lock include/linux/device.h:832 [inline]
- ath9k_hif_usb_firmware_fail drivers/net/wireless/ath/ath9k/hif_usb.c:1146 [inline]
- ath9k_hif_usb_firmware_cb+0x3a9/0x620 drivers/net/wireless/ath/ath9k/hif_usb.c:1279
- request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
- process_one_work+0x991/0x15c0 kernel/workqueue.c:2390
- worker_thread+0x669/0x1090 kernel/workqueue.c:2537
- kthread+0x2ee/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Showing all locks held in the system:
-5 locks held by kworker/0:0/7:
-1 lock held by rcu_tasks_kthre/11:
- #0: ffffffff87c9bb70 (rcu_tasks.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x31/0xd80 kernel/rcu/tasks.h:510
-1 lock held by rcu_tasks_trace/12:
- #0: ffffffff87c9b870 (rcu_tasks_trace.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x31/0xd80 kernel/rcu/tasks.h:510
-3 locks held by kworker/1:0/21:
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: arch_atomic_long_set include/linux/atomic/atomic-long.h:41 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: atomic_long_set include/linux/atomic/atomic-instrumented.h:1280 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:639 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:666 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x87a/0x15c0 kernel/workqueue.c:2361
- #1: ffffc9000016fda8 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work+0x8ae/0x15c0 kernel/workqueue.c:2365
- #2: ffff88810e9d5190 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:832 [inline]
- #2: ffff88810e9d5190 (&dev->mutex){....}-{3:3}, at: ath9k_hif_usb_firmware_fail drivers/net/wireless/ath/ath9k/hif_usb.c:1146 [inline]
- #2: ffff88810e9d5190 (&dev->mutex){....}-{3:3}, at: ath9k_hif_usb_firmware_cb+0x3a9/0x620 drivers/net/wireless/ath/ath9k/hif_usb.c:1279
-1 lock held by khungtaskd/27:
- #0: ffffffff87c9c6c0 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x55/0x340 kernel/locking/lockdep.c:6495
-2 locks held by getty/2413:
- #0: ffff8881101e3098 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x26/0x80 drivers/tty/tty_ldisc.c:244
- #1: ffffc900000452f0 (&ldata->atomic_read_lock){+.+.}-{3:3}, at: n_tty_read+0xef4/0x13e0 drivers/tty/n_tty.c:2177
-2 locks held by kworker/1:4/5200:
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: arch_atomic_long_set include/linux/atomic/atomic-long.h:41 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: atomic_long_set include/linux/atomic/atomic-instrumented.h:1280 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:639 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:666 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x87a/0x15c0 kernel/workqueue.c:2361
- #1: ffffc90001977da8 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work+0x8ae/0x15c0 kernel/workqueue.c:2365
-4 locks held by udevd/7445:
- #0: ffff8881156c62f0 (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0xe3/0x12d0 fs/seq_file.c:182
- #1: ffff8881256c3888 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x4b/0x450 fs/kernfs/file.c:154
- #2: ffff88811dae3da0 (kn->active#28){++++}-{0:0}, at: kernfs_seq_start+0x75/0x450 fs/kernfs/file.c:155
- #3: ffff88810d5cd190 (&dev->mutex){....}-{3:3}, at: device_lock_interruptible include/linux/device.h:837 [inline]
- #3: ffff88810d5cd190 (&dev->mutex){....}-{3:3}, at: manufacturer_show+0x26/0xa0 drivers/usb/core/sysfs.c:142
-4 locks held by udevd/7446:
- #0: ffff888110bb19e0 (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0xe3/0x12d0 fs/seq_file.c:182
- #1: ffff88811a753488 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x4b/0x450 fs/kernfs/file.c:154
- #2: ffff88810d9c1a00 (kn->active#28){++++}-{0:0}, at: kernfs_seq_start+0x75/0x450 fs/kernfs/file.c:155
- #3: ffff8881161f3190 (&dev->mutex){....}-{3:3}, at: device_lock_interruptible include/linux/device.h:837 [inline]
- #3: ffff8881161f3190 (&dev->mutex){....}-{3:3}, at: manufacturer_show+0x26/0xa0 drivers/usb/core/sysfs.c:142
-6 locks held by kworker/1:6/7527:
- #0: ffff888109030938 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
- #0: ffff888109030938 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: arch_atomic_long_set include/linux/atomic/atomic-long.h:41 [inline]
- #0: ffff888109030938 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: atomic_long_set include/linux/atomic/atomic-instrumented.h:1280 [inline]
- #0: ffff888109030938 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:639 [inline]
- #0: ffff888109030938 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:666 [inline]
- #0: ffff888109030938 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: process_one_work+0x87a/0x15c0 kernel/workqueue.c:2361
- #1: ffffc900027afda8 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0x8ae/0x15c0 kernel/workqueue.c:2365
- #2: ffff88810ea91190 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:832 [inline]
- #2: ffff88810ea91190 (&dev->mutex){....}-{3:3}, at: hub_event+0x1c0/0x4ed0 drivers/usb/core/hub.c:5739
- #3: ffff88810d5cd190 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:832 [inline]
- #3: ffff88810d5cd190 (&dev->mutex){....}-{3:3}, at: __device_attach+0x76/0x4b0 drivers/base/dd.c:973
- #4: ffff8881256db118 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:832 [inline]
- #4: ffff8881256db118 (&dev->mutex){....}-{3:3}, at: __device_attach+0x76/0x4b0 drivers/base/dd.c:973
- #5: ffff8881f673b0d8 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested kernel/sched/core.c:539 [inline]
- #5: ffff8881f673b0d8 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock kernel/sched/sched.h:1366 [inline]
- #5: ffff8881f673b0d8 (&rq->__lock){-.-.}-{2:2}, at: rq_lock kernel/sched/sched.h:1653 [inline]
- #5: ffff8881f673b0d8 (&rq->__lock){-.-.}-{2:2}, at: __schedule+0x263/0x2da0 kernel/sched/core.c:6542
-2 locks held by kworker/0:6/7578:
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: arch_atomic64_set arch/x86/include/asm/atomic64_64.h:34 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: arch_atomic_long_set include/linux/atomic/atomic-long.h:41 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: atomic_long_set include/linux/atomic/atomic-instrumented.h:1280 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: set_work_data kernel/workqueue.c:639 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: set_work_pool_and_clear_pending kernel/workqueue.c:666 [inline]
- #0: ffff888100070d38 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x87a/0x15c0 kernel/workqueue.c:2361
- #1: ffffc90005c0fda8 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work+0x8ae/0x15c0 kernel/workqueue.c:2365
-
-=============================================
-
-NMI backtrace for cpu 0
-CPU: 0 PID: 27 Comm: khungtaskd Not tainted 6.3.0-rc6-syzkaller-g8f40fc080813 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
- nmi_cpu_backtrace+0x29c/0x350 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x273/0x2d0 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:148 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:222 [inline]
- watchdog+0xe16/0x1090 kernel/hung_task.c:379
- kthread+0x2ee/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 PID: 5211 Comm: syz-executor.5 Not tainted 6.3.0-rc6-syzkaller-g8f40fc080813 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
-RIP: 0010:wait_consider_task+0xa9/0x3ce0 kernel/exit.c:1389
-Code: 55 33 00 49 8d 87 f0 04 00 00 48 89 44 24 10 48 c1 e8 03 0f b6 04 28 84 c0 74 08 3c 03 0f 8e 6c 1a 00 00 45 8b a7 f0 04 00 00 <bf> 10 00 00 00 44 89 e6 e8 ba 51 33 00 41 83 fc 10 0f 84 f3 00 00
-RSP: 0018:ffffc900019d7b60 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff88810b338000 RSI: ffffffff811734c2 RDI: ffffc900019d7d18
-RBP: dffffc0000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000004 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88810b338000 R14: 0000000000000004 R15: ffff888118bb3900
-FS:  0000555556c19400(0000) GS:ffff8881f6700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f3100143918 CR3: 000000012a818000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- do_wait_thread kernel/exit.c:1495 [inline]
- do_wait+0x799/0xc30 kernel/exit.c:1612
- kernel_wait4+0x150/0x260 kernel/exit.c:1775
- __do_sys_wait4+0x13f/0x150 kernel/exit.c:1803
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f2239d01d06
-Code: 1f 44 00 00 31 c9 e9 09 00 00 00 66 0f 1f 84 00 00 00 00 00 49 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 11 b8 3d 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 5a c3 90 48 83 ec 28 89 54 24 14 48 89 74 24
-RSP: 002b:00007ffc75448bd8 EFLAGS: 00000246 ORIG_RAX: 000000000000003d
-RAX: ffffffffffffffda RBX: 000000000000010c RCX: 00007f2239d01d06
-RDX: 0000000040000001 RSI: 00007ffc75448c3c RDI: 00000000ffffffff
-RBP: 00007ffc75448c3c R08: 0000000000000150 R09: 00007ffc755ab080
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000032
-R13: 00000000000521a2 R14: 0000000000000000 R15: 00007ffc75448ca0
- </TASK>
-
-
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v2: do not extract ath9k_wmi_rsp_callback() internals, rephrase
+description
+v3: per Hillf Danton's comment, protect last_seq_id with wmi_lock on
+timeout path, divide the v2 version into two separate patches; the first
+one is concerned with last_seq_id and completion under wmi_lock, the
+second one is for moving rsp buffer and length recording under wmi lock.
+Note that it's been only tested with Syzkaller and on basic driver
+scenarios with real hardware.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+ drivers/net/wireless/ath/ath9k/wmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index d652c647d56b..04f363cb90fe 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -242,10 +242,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
+ 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 		goto free_skb;
+ 	}
+-	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 
+ 	/* WMI command response */
+ 	ath9k_wmi_rsp_callback(wmi, skb);
++	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 
+ free_skb:
+ 	kfree_skb(skb);
+@@ -308,8 +308,8 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	u16 headroom = sizeof(struct htc_frame_hdr) +
+ 		       sizeof(struct wmi_cmd_hdr);
++	unsigned long time_left, flags;
+ 	struct sk_buff *skb;
+-	unsigned long time_left;
+ 	int ret = 0;
+ 
+ 	if (ah->ah_flags & AH_UNPLUGGED)
+@@ -345,7 +345,9 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	if (!time_left) {
+ 		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
+ 			wmi_cmd_to_name(cmd_id));
++		spin_lock_irqsave(&wmi->wmi_lock, flags);
+ 		wmi->last_seq_id = 0;
++		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 		mutex_unlock(&wmi->op_mutex);
+ 		return -ETIMEDOUT;
+ 	}
+-- 
+2.34.1
+
