@@ -2,138 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 199526EE78C
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 20:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFA576EE819
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Apr 2023 21:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234546AbjDYScn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Apr 2023 14:32:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38744 "EHLO
+        id S234318AbjDYTOm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Apr 2023 15:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234436AbjDYScm (ORCPT
+        with ESMTP id S234084AbjDYTOk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Apr 2023 14:32:42 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5413D146CC
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 11:32:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=B4GkkT9hoo+4X/ogt33pFxtJeMbZvpg8GDMZTtnLqqw=;
-        t=1682447561; x=1683657161; b=qvxOsXe9wIXEDl/L3lw+f5cJ4RtdJBFACzJSHGcReRRi6hm
-        rBbfiobrvI+xHY8+UD5wijydvyl0nnDhl95wxA5tqJqR89kEDtoGxVFlfQq+8KrJgOzOZmB53wWE7
-        bbB7l52vSusayVcJyfdsLOa2qT2tyRw3sxrg3hebUf33o4ryfyVy9wysHkwV31ca1/TX0SPqWPDqZ
-        7jIpFoenMUUsEx6zrLh37v3rFJJNgQ3f842UnBf6OUZ7L9Mqwrvw2q6N84SPMT5zyvhIqy/xA/aEr
-        7NQNThc16E/P0/I6GgJeW4rnJPTy5eYCew+glsKI7f6Jz7tilDi8PSE+ydp9Steg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1prNSx-008JlW-0t;
-        Tue, 25 Apr 2023 20:32:39 +0200
-Message-ID: <1c2667ea4e668c53cca4d0a1663f7a9fcfc0fb20.camel@sipsolutions.net>
-Subject: Re: Question on why ieee80211_prep_channel clears the
- IEEE80211_CONN_DISABLE_160MHZ flag.
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Tue, 25 Apr 2023 20:32:38 +0200
-In-Reply-To: <dab721af-4f9b-20b8-94da-fb1913ff4095@candelatech.com>
-References: <451c423b-4d0b-c2e6-7f39-0dc7da3e8080@candelatech.com>
-         <e247d0832435218fcdb78f3b81a66306b8873946.camel@sipsolutions.net>
-         <dab721af-4f9b-20b8-94da-fb1913ff4095@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Tue, 25 Apr 2023 15:14:40 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C3B3C35
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 12:14:39 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-517bfdf55c3so3679977a12.2
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 12:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682450079; x=1685042079;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=haVieU44vaE/S1Kd+cX29AOXnP+W1832nsjiFBduO+g=;
+        b=RVXEAhrs+mWTaObAbThOqd8EuaLhUN0BshKXWG/uoFKGh7vcVMXXZ4iS1zweOjrmK3
+         bWez88/QmZXRCpzUX8YNwTztum8RqXq2qUvnR1zlG0TTjs5/6HcvIEnLsPz2HXjEpWem
+         mflWR7Ul291Lg2nc1TmTPFeMVNAoIn5D+oNd1+0KLHImcvU6Dtv8XN4c3LzRSomzsAsJ
+         vnsVjIuJMht3txfJL2VtCbIUwEvtyjLT2DwC5n2UYA9QVAovtGlXFRm9YbLheSejDAiP
+         nGcNT5yYK7vz1I5985uWalVYMAPnJrf7LZpC8GP6d637teenM6J14jWDvJ1L+Kl/IQYV
+         W72w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682450079; x=1685042079;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=haVieU44vaE/S1Kd+cX29AOXnP+W1832nsjiFBduO+g=;
+        b=VVQS7k8TFYZybOkFno7QhRAkigpf0urO9iobpZeVR2JQfr0mc6lojLZ4Z1JiQWnuov
+         0+bwuqDqYN4qZHLh+3LZmdZWoP8onJN+647nqIOF0pF43bJWN7DoAWvfVvdxswAHWwg4
+         KMCeXIqvVq7mcRCYLAgJfxEBVwhj57WDg+cHNEBzjOAVyj3ZQFuhRUC5VI7BxY2dkwrG
+         WNBl638whLb65yQECWgdyhsmwU4x9SulejJfuSxaroJUMxw9gzB8huhtXGf4CY/1bpvp
+         8CYTrwIY2Mk04X4ztwvsnuEenuN3EyIGyeOQWy3ttYso0CL1JN/nJ+Dd1GwH2ukaKE/5
+         bqlQ==
+X-Gm-Message-State: AAQBX9eCtehdURmDFev9Msx5mfCntbEw/1MPkgw9hDg5Dt43hg8LnF++
+        BejxHvVIDfcQe8PAbpo4lyeDXFPEzku+1w==
+X-Google-Smtp-Source: AKy350YykogpTuIxhqi0vg9myhQ7noCNqqeKaRtPdL3vERWUNGjV8p5veo85nfa8/wcuhS2YTDlw2A==
+X-Received: by 2002:a17:90a:1101:b0:23d:10f2:bda2 with SMTP id d1-20020a17090a110100b0023d10f2bda2mr18864380pja.30.1682450078972;
+        Tue, 25 Apr 2023 12:14:38 -0700 (PDT)
+Received: from [192.168.254.76] ([50.39.172.77])
+        by smtp.gmail.com with ESMTPSA id y14-20020a17090a2b4e00b002466f45788esm8174192pjc.46.2023.04.25.12.14.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Apr 2023 12:14:38 -0700 (PDT)
+Message-ID: <9c298074-9ae1-e053-d7da-85ca3063058c@gmail.com>
+Date:   Tue, 25 Apr 2023 12:14:38 -0700
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: CMD_REMAIN_ON_CHANNEL vs CMD_FRAME (offchannel)
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <6d3869e9-6d8f-f7cf-2fe9-b8188a02d086@gmail.com>
+ <9b4b6d3e-8840-f37a-52ec-6ea391fa67db@gmail.com>
+ <f5d14ce0b5053e4a99529677614d6d6aa797ac81.camel@sipsolutions.net>
+ <98f53583-400d-665f-d264-92e9f3e67280@gmail.com>
+ <f0383c934075f90d50af6e91aa3307057f6188f8.camel@sipsolutions.net>
+From:   James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <f0383c934075f90d50af6e91aa3307057f6188f8.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-04-24 at 12:58 -0700, Ben Greear wrote:
-> > >=20
-> > > 	*conn_flags &=3D ~(IEEE80211_CONN_DISABLE_40MHZ |
-> > > 			 IEEE80211_CONN_DISABLE_80P80MHZ |
-> > > 			 IEEE80211_CONN_DISABLE_160MHZ);
-> > >=20
-> >=20
-> > I'm guessing - I don't really remember right now - that this is so we
-> > can make a new decision to set these flags? We don't really clear them
-> > in any other place, I guess?
+Hi Johannes,
 
-Looks like this goes back to my commit 24398e39c8ee ("mac80211: set HT
-channel before association"). But looking at it briefly now, I'm not
-really sure why. I mean, it _looks_ like it needs to be preserved to not
-flip around the channel type between auth and assoc, but ... why this
-way?
+On 4/25/23 11:10 AM, Johannes Berg wrote:
+> Hi,
+> 
+>>> I can't tell with the information you gave - depends on the waiting
+>>> period for a response frame you ask for, I guess? With HW ROC (if you're
+>>> using iwlwifi) we cannot extend the previous period, see
+>>> ieee80211_coalesce_hw_started_roc().
+>>
+>> This is purely virtual at the moment, but in my case its looking like it
+>> cannot be extended either since the CMD_FRAME just queues a separate
+>> request.
+> 
+> Hm. Not sure then? I guess then you'd be falling into the max duration
+> or so?
+> 
+>                  if (!local->ops->remain_on_channel) {
+>                          /* If there's no hardware remain-on-channel, and
+>                           * doing so won't push us over the maximum r-o-c
+>                           * we allow, then we can just add the new one to
+>                           * the list and mark it as having started now.
+>                           * If it would push over the limit, don't try to
+>                           * combine with other started ones (that haven't
+>                           * been running as long) but potentially sort it
+>                           * with others that had the same fate.
+>                           */
+>                          unsigned long now = jiffies;
+>                          u32 elapsed = jiffies_to_msecs(now - tmp->start_time);
+>                          struct wiphy *wiphy = local->hw.wiphy;
+>                          u32 max_roc = wiphy->max_remain_on_channel_duration;
+> 
+>                          if (elapsed + roc->duration > max_roc) {
+>                                  combine_started = false;
+>                                  continue;
+>                          }
+> 
+> Or maybe that logic here is broken somewhat ...
 
-> > But honestly I don't know. There's a lot of state and maybe we should
-> > just memset() it all whenever we disconnect (get into some kind of idle
-> > state), just like we do with the links now that we free...
->=20
-> We have been running this patch below for 3 or so weeks, and have not not=
-iced any problems.
+I guess my assumption was if ROC is currently active then a CMD_FRAME 
+(on the same channel) should just go out immediately, not be queued, and 
+not even bother checking the duration. (and in this case I'm not even 
+setting a duration for CMD_FRAME).
 
-:)
+Does the OFFCHANNEL_TX_OK flag have any bearing on this? I found that I 
+have to set it even if ROC is ongoing, maybe thats another topic of 
+discussion.
 
-I'll note that we've also not added 320 MHz here and not seen any
-issues, but that may not mean all that much.
+> 
+>>> Not sure I understand this part. ROC is fine mostly for the "wait for
+>>> some frame and send a response", but not so much suited for "send a
+>>> frame and wait for a response" part. So 3-way-handshakes are iffy with
+>>> it...
+>>
+>> Yeah, and it actually has worked great for the entire DPP procedure
+>> using the same channel (presence -> auth request -> auth response ->
+>> auth confirm) assuming both sides respond in a timely fashion.
+>>
+>> The comes when changing the channel after the auth request. The auth
+>> request gets queued separately, which then delays the ROC and we
+>> can't/shouldn't send anything until ROC starts. The only strange thing
+>> is we actually receive the auth response on the new channel before the
+>> ROC for that new channel even starts. Its like the hardware and driver
+>> aren't quite in sync.
+> 
+> Did you say hwsim? That'd be weird. Though in hwsim I think you have an
+> additional quirk - it never really *leaves* the original channel it's
+> connected on, it kind of sticks around on *both* which isn't real but
+> some kind of simplification there. We might want to fix that eventually.
+> But not sure it's connected already in this case?
 
-> I am personally worried about making bigger changes to this sort of logic=
- (ie, memset),
-> as the over all code is convoluted and hard to think through all of the c=
-hanges
-> and use cases.
->=20
-> The MLO changes seem to have done a better job of splitting up
-> the configured vs current settings.  I think that split is key to better
-> architecture over all.  Conn-flags is 'configured' as I understand it, so
-> probably removing mac80211 code that changes it (as opposed to changing i=
-t from
-> user-space or other configured input) is in the right direction.
+Ah ok, thats probably whats happening then. And it is connected in this 
+case. We're connected to a BSS then initiate DPP to configure some 
+unprovisioned device. Start the protocol with the channel it used for 
+presence announcements, then tell the peer to transition to our 
+currently connected channel (by setting the frequency in the auth request).
 
-Well my point here was that for the links that aren't deflink we already
-now reset them to 0 because we completely free them and reallocate new
-ones, and expect that to work. So if that doesn't work for the deflink
-we have a problem with the others as well, most likely.
+> 
+>> But anyways I think its best to use ROC for presence (waiting for
+>> announcements) but then use CMD_FRAME for the rest of the protocol.
+> 
+> Right, that's pretty much the intent for this kind of thing. Similar in
+> P2P where we designed all this, really.
 
-So seems to me we should also reset this data, and see what falls out.
-Maybe we'll find bugs that apply to both cases, but hopefully not that
-much will break?
+Ok cool, thanks for clarifying
 
-> @@ -4762,9 +4762,13 @@ static int ieee80211_prep_channel(struct ieee80211=
-_sub_if_data *sdata,
->=20
->   	sband =3D local->hw.wiphy->bands[cbss->channel->band];
->=20
-> +	/* This makes our logic to disable 160Mhz (at least) not work.
-> +	 * I am not sure it is useful in any case, so commenting out for now.
-> +	 * --Ben
->   	*conn_flags &=3D ~(IEEE80211_CONN_DISABLE_40MHZ |
->   			 IEEE80211_CONN_DISABLE_80P80MHZ |
->   			 IEEE80211_CONN_DISABLE_160MHZ);
-> +	*/
->=20
->   	/* disable HT/VHT/HE if we don't support them */
->   	if (!sband->ht_cap.ht_supported && !is_6ghz) {
->=20
-> I can send a patch to just remove those three lines if you think that is =
-good approach?
-
-I wish I knew :)
-
-Clearly we eventually still call ieee80211_determine_chantype(), which
-should result in the same calculations again, right? And while it gets
-the input conn_flags, it anyway doesn't check the bandwidth bits
-there...
-
-So _seems_ safe? Maybe we were trying to be able to upgrade a connection
-to 40 MHz later on assoc, originally?
-
-johannes
+> 
+> johannes
