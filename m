@@ -2,112 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BACA76EEF73
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 09:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43B2C6EEFA1
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 09:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239835AbjDZHkn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Apr 2023 03:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42744 "EHLO
+        id S239652AbjDZHtu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Apr 2023 03:49:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239814AbjDZHkb (ORCPT
+        with ESMTP id S239409AbjDZHtt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Apr 2023 03:40:31 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A5A0423E
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 00:40:20 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33Q4f98E002228;
-        Wed, 26 Apr 2023 07:40:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=/wn+UXvrkEcudbHBgVVgpcXn1/etkPr2gofIOA2w5fA=;
- b=Rz7zpAlTVAcHUUDWUZRbo3uKe/KquuiP0jUVDWWfrh+3LYYOiUx94EVqJkxakfdqlgGK
- ADh7TeVUmeGEIcuSbuRqNYMHA39V7tOdm5Zqi9Mp3vUq1MUM72RpHNc3GJgz90hLlW/l
- i7QAElrF+aQz6dnJa1xyIr/4xIFMNeRPejJ8wbdQpUCX5vVTthVc3TKvkY7dphUjL791
- 3cOX76xIFZd78Gx0Xmy2KH9Tch7vP3ghZXGnMA7rkBiOYD+whhQE5v73sP8l+el0I2hY
- EIGGf/c/Fz94pr+uwbM+574kzFJlrocWNejPxlSoh1MC5NbXrWExYrk6eIq7V2REYcy4 Iw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q6kw09e8h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Apr 2023 07:40:11 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33Q7eAwW029366
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Apr 2023 07:40:10 GMT
-Received: from [10.242.242.48] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 26 Apr
- 2023 00:40:08 -0700
-Message-ID: <763c41bb-7452-1ded-ace5-8cda9ca64788@quicinc.com>
-Date:   Wed, 26 Apr 2023 13:09:56 +0530
+        Wed, 26 Apr 2023 03:49:49 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421CC9D
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 00:49:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682495388; x=1714031388;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qKEu0pg0uKpgUKkVf/VAz8l1h40iXmmsROwvY21J1s8=;
+  b=VTqA/7x39g2DN3sZOA7iikLsHs37p2GFmNK+Ho49M1wpjYFE4BHL+hyL
+   0r3OT5jWrdq0RpjRvx+y6HaCHItrkuzduacI2+J2j6uY9G9py2cvROT99
+   A1oyEhGwR4jeh0V+3lHrmRAwX2IKvlriQajpxkyrGtFLs5hJyJoq+jVzZ
+   e324yAcV7bpkTHU4QCmOEjjMvPAKdcZCUNAKjnDcZOD/slF62CXzdKglb
+   M44EXeygLQH79ecsLGExN21Od3fYa1TdPw23fhABy/4aFcDTjSFvHxr3r
+   BAgCWRsmn5IaBMN1NisnS5696uxPtduN6m3zFH3jFi5pZPrt0xKxU3zYu
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="349832872"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="349832872"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 00:49:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="837796264"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="837796264"
+Received: from lkp-server01.sh.intel.com (HELO 98ee5a99fc83) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Apr 2023 00:49:40 -0700
+Received: from kbuild by 98ee5a99fc83 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1prZuF-0000HO-2c;
+        Wed, 26 Apr 2023 07:49:39 +0000
+Date:   Wed, 26 Apr 2023 15:49:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH] wifi: rtl8xxxu: Support new chip RTL8192FU
+Message-ID: <202304261542.durvYngE-lkp@intel.com>
+References: <90102fa5-5065-9598-d21f-3624629a0cb5@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: ath11k: update proper pdev/vdev id for testmode
- command
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-References: <20230424092420.12794-1-quic_rajkbhag@quicinc.com>
- <87a5yvt831.fsf@kernel.org>
-From:   Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <87a5yvt831.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: n0BOrkUZLRU66NWJzGI6YnrYVJdKL9eN
-X-Proofpoint-ORIG-GUID: n0BOrkUZLRU66NWJzGI6YnrYVJdKL9eN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-26_02,2023-04-26_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxlogscore=912
- malwarescore=0 impostorscore=0 lowpriorityscore=0 adultscore=0
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304260069
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <90102fa5-5065-9598-d21f-3624629a0cb5@gmail.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/26/2023 12:59 PM, Kalle Valo wrote:
-> Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
-> 
->> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
->>
->> User can extend test mode command support to set vdev and pdev params
->> for debug purpose at run time by sending vdev/pdev param set command
->> through the testmode command interface.
->>
->> Fill the proper pdev/vdev id in driver since, pdev/vdev id details may
->> not be available at user space. It will make sure that the proper
->> vdev/pdev ids are sent to firmware.
->>
->> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
->>
->> Depends-On:
->> 	[v3,3/4] wifi: ath11k: factory test mode support
->>
->> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
->> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->> ---
-> 
-> Please add 'Depends-on' after the '---' line. This is for future
-> patches, no need to resend because of this.
-> 
+Hi Bitterblue,
 
-Thanks for pointing this. Will take care for future patches.
+kernel test robot noticed the following build errors:
 
-Thanks,
-Raj
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on next-20230425]
+[cannot apply to wireless/main linus/master v6.3]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtl8xxxu-Support-new-chip-RTL8192FU/20230426-012956
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/90102fa5-5065-9598-d21f-3624629a0cb5%40gmail.com
+patch subject: [PATCH] wifi: rtl8xxxu: Support new chip RTL8192FU
+config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20230426/202304261542.durvYngE-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/c6f497a5e6a511da963b0d2f92a13031cc9788c3
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Bitterblue-Smith/wifi-rtl8xxxu-Support-new-chip-RTL8192FU/20230426-012956
+        git checkout c6f497a5e6a511da963b0d2f92a13031cc9788c3
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202304261542.durvYngE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> aarch64-linux-ld: drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.o:(.rodata+0x3dc0): undefined reference to `rtl8192fu_fops'
+   aarch64-linux-ld: drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.o:(.rodata+0x3de0): undefined reference to `rtl8192fu_fops'
+   aarch64-linux-ld: drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.o:(.rodata+0x3e00): undefined reference to `rtl8192fu_fops'
+   aarch64-linux-ld: drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.o:(.rodata+0x3e20): undefined reference to `rtl8192fu_fops'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
