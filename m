@@ -2,77 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EB0A6EF784
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 17:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 814646EF8B1
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 18:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241179AbjDZPIs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Apr 2023 11:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36350 "EHLO
+        id S233327AbjDZQtn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Apr 2023 12:49:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241249AbjDZPIo (ORCPT
+        with ESMTP id S229758AbjDZQtl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Apr 2023 11:08:44 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4888F5FF4;
-        Wed, 26 Apr 2023 08:08:42 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-38e04d1b2b4so4066724b6e.3;
-        Wed, 26 Apr 2023 08:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682521721; x=1685113721;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0wUGEsG6neJ+5NAvtMB9CEdYBN8SKIspY+2lck0/+Q=;
-        b=Pvbu1Qyjti/qLBrv1fuyBdgehVwQuLt7U6ncdUwr1KQyAaPduxUlLwOIXMCma3H0Qn
-         f7PzyFXkxbV6/RSRBq2vfIS4c+eqzBn8SGYTz6LjwCLuFtbY4CYKsX77/GPqtAzUcDZe
-         2oASolz5jHRtXdb3Yb23Mx5UqEHvnE/1Q/oAnhWhVjzqXYMA8acVrMNP0RVNnkQdBla4
-         qtYEZ//xIAGcN6jOuza0Dme35qfT15Ij4P1r5Wigesgv8/41sqFOSeD82e+0bWthxNZX
-         H2XrML6PC1OOMP6GCB+WadUFFqC2kS7g0PRHWzeJab+U6q3qBaS3t59Ve8qJqjkRhdGF
-         E6zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682521721; x=1685113721;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+0wUGEsG6neJ+5NAvtMB9CEdYBN8SKIspY+2lck0/+Q=;
-        b=dAi+ygDhjf++h+EhdLrMwGBYhHDSHkj1kmRqi1YnrZ+byrHh+wITkx1k3Q6e4CI36D
-         XL2wc55s7B6diWPwX/dMQP92os38jCM6G0cE+10Z/UyDo+sKRX0VnjVnvSR8ey6BaXp7
-         te6IkkyLwFkS51bh6pGDCdV3jHmAH9pKeYX4dN1uHf0sHhQO6ajVyt3o3GyTqX3KvtAQ
-         XEybyL0v5xecyDksy2nijzpvcqcm4FggY3WN/DReP9dRwfwFoduhWypxhkpPim+l4Fb9
-         YUMdAMomUsC34WZjEcFshQ85lURx0YTj+XAQjTPiXgy9LDCMv1otKkNYiHLuNYXo1iLo
-         kzkQ==
-X-Gm-Message-State: AAQBX9eYBCbz+LBXeeW7A0U1qELVniHbZMdyI/KV2C4bZDoa1xUimDvM
-        uFwQt07xV10FG96LCugQTeE3s2Tj9PY=
-X-Google-Smtp-Source: AKy350aEr5909KadLgxA/i4EIx1ixO70aeikULJkp6F73THSomKME4oeltiJDHKlNbhZCQxfeNrKEA==
-X-Received: by 2002:a54:400f:0:b0:38e:8e39:51c6 with SMTP id x15-20020a54400f000000b0038e8e3951c6mr7380277oie.49.1682521721477;
-        Wed, 26 Apr 2023 08:08:41 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id v132-20020acade8a000000b00383eaf88e75sm6815886oig.39.2023.04.26.08.08.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Apr 2023 08:08:41 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <903aa497-e6d3-d396-22a7-74fe7382fc74@lwfinger.net>
-Date:   Wed, 26 Apr 2023 10:08:40 -0500
+        Wed, 26 Apr 2023 12:49:41 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4365FF4
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 09:49:39 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33QG4XYH025015;
+        Wed, 26 Apr 2023 16:49:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=OGFCBSk9Ao2wgRC4CQBkJE67+vbisEmpOdkqP44I7UI=;
+ b=R/wF55uO4Xg6cf5yblw3Iv7d0+fvlOEmEF5rFQYnMQfcURLY4PVLdq3kaNvmMn1/Hfh+
+ 1+iOaTR9dkE+VCi2xJOmIOi3YWG/Bv84rSYlX8lV12uQ6Y6XuWqLuy0T2smpx5wn8Sfi
+ zZRkFS7xilUfaer7FFjc15AlI3qf8fePa83tik0mH7s2yCzBmdRUNcI808/QMmQ437Os
+ CV4cFlX9rlEp3tNVueKYTwXhho8HAQ5TkQMXDll27mYsz1QU5rknBL83OQeqoQxHYOOi
+ +cxv2w0m+/hZ1ZS2SpzK630IkNgRy2lHsKxQok8OcjLUyq4bDsawDLpanyxJjyHtnigA rA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q6uprst0w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Apr 2023 16:49:30 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33QGnT3i007847
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Apr 2023 16:49:29 GMT
+Received: from [10.110.11.241] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 26 Apr
+ 2023 09:49:29 -0700
+Message-ID: <759bf2e8-ce51-b882-7d26-7ae57b8cf571@quicinc.com>
+Date:   Wed, 26 Apr 2023 09:49:28 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] wifi: rtw89: 8852b: adjust quota to avoid SER L1
- caused by access null page
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 00/11] wifi: ath12k: (v3) EHT support
+To:     Kalle Valo <kvalo@kernel.org>
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230413215156.2649-1-quic_alokad@quicinc.com>
+ <87ildjtc1c.fsf@kernel.org>
 Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20230426034737.24870-1-pkshih@realtek.com>
- <87r0s7teik.fsf@kernel.org> <b1c5e4f89ba843cd958f569547caa8e5@realtek.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <b1c5e4f89ba843cd958f569547caa8e5@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+In-Reply-To: <87ildjtc1c.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 8Ua1JzCLdsQzG9TIEPwsyCC_wqqpXbmD
+X-Proofpoint-GUID: 8Ua1JzCLdsQzG9TIEPwsyCC_wqqpXbmD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-26_08,2023-04-26_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ mlxscore=0 clxscore=1011 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 adultscore=0 impostorscore=0 spamscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2304260148
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,38 +79,32 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/26/23 00:16, Ping-Ke Shih wrote:
+On 4/25/2023 11:03 PM, Kalle Valo wrote:
+> Aloka Dixit <quic_alokad@quicinc.com> writes:
 > 
+>> Add driver support to bring AP up in EHT mode, configure a preamble
+>> puncturing bitmap and associate with an EHT client.
+>>
+>> v3: Modified patches 6 and 9 to fix some issues,
+>> changelog included in the respective patches.
+>> v2: This version modifies only few commit descriptions,
+>> changelog included in the respective patches.
+>>
+> This breaks WCN7850 support:
 > 
->> -----Original Message-----
->> From: Kalle Valo <kvalo@kernel.org>
->> Sent: Wednesday, April 26, 2023 1:10 PM
->> To: Ping-Ke Shih <pkshih@realtek.com>
->> Cc: stable@vger.kernel.org; Larry.Finger@lwfinger.net; linux-wireless@vger.kernel.org
->> Subject: Re: [PATCH v2] wifi: rtw89: 8852b: adjust quota to avoid SER L1 caused by access null page
->>
->> Ping-Ke Shih <pkshih@realtek.com> writes:
->>
->>> Though SER can recover this case, traffic can get stuck for a while. Fix it
->>> by adjusting page quota to avoid hardware access null page of CMAC/DMAC.
->>>
->>> Fixes: a1cb097168fa ("wifi: rtw89: 8852b: configure DLE mem")
->>> Fixes: 3e870b481733 ("wifi: rtw89: 8852b: add HFC quota arrays")
->>> Cc: stable@vger.kernel.org
->>> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
->>> Link: https://github.com/lwfinger/rtw89/issues/226#issuecomment-1520776761
->>> Link: https://github.com/lwfinger/rtw89/issues/240
->>> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->>> ---
->>> v2: add Fixes, Cc and Tested-by tags suggested by Larry.
->>
->> Should this go to wireless tree for v6.4?
->>
+> [  144.039164] ath12k_pci 0000:06:00.0: BAR 0: assigned [mem 0xda200000-0xda3fffff 64bit]
+> [  144.039315] ath12k_pci 0000:06:00.0: enabling device (0000 -> 0002)
+> [  144.046220] ath12k_pci 0000:06:00.0: Hardware name: wcn7850 hw2.0
+> [  144.118539] mhi mhi0: Requested to power ON
+> [  144.118716] mhi mhi0: Power on setup success
+> [  144.222303] mhi mhi0: Wait for device to enter SBL or Mission mode
+> [  144.627712] ath12k_pci 0000:06:00.0: chip_id 0x2 chip_family 0x4 board_id 0x104 soc_id 0x40170200
+> [  144.627945] ath12k_pci 0000:06:00.0: fw_version 0x1005bc12 fw_build_timestamp 2022-10-11 12:13 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> [  144.959196] ath12k_pci 0000:06:00.0: failed to parse tlv -22
+> [  144.959317] ath12k_pci 0000:06:00.0: failed to parse ext2 event tlv -22
+> [  150.263567] ath12k_pci 0000:06:00.0: failed to receive wmi service ready event: -110
+> [  150.276547] ath12k_pci 0000:06:00.0: failed to start core: -110
 > 
-> Yes, please take it to v6.4. People can get stable connection with this fix.
 
-I agree.
-
-Larry
-
-
+I have started seeing ETIMEDOUT on QCN9274 as well, AP bring up fails in 
+vdev sync. It works if the sync timeout is increased.
