@@ -2,85 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA3B6EF6A5
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 16:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451176EF770
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 17:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241466AbjDZOnp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Apr 2023 10:43:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
+        id S240813AbjDZPGY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Apr 2023 11:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241463AbjDZOno (ORCPT
+        with ESMTP id S240482AbjDZPGW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Apr 2023 10:43:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C28A769A
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 07:43:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31B5362F1B
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 14:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AAFC433D2;
-        Wed, 26 Apr 2023 14:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682520218;
-        bh=L2Vzdv6hOho6TXdQfHRywvuKJkSdfA/V0BiA3MIf7Mc=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=HQW/MxDfsTK4+daANmC4qmkyDQh+XE/cJsU3UMrv4tUXe2UGgmRwSknPRPQX/UyK1
-         IpzqEzflOQPjaHmxl4wk10rDjrsLLlXEP3XuDVVKYXqWEv08O3HplxM9RdBWtehlvZ
-         UfxyZms3RPSk2MbFgLN2HqUwDzijkZhFYBEoUdWG8JLPMcWFQP9v8liyrx9TUClx/o
-         J2LtTaFi8AAvKLtezoK8s2JiILRZbG4aOhpzvc1gJs4rY+h/918Q4JwtUoiBCzLn09
-         HIm0rBwmFoFyez4ZEgStMygu7HGvy17mb/mbJkP9yz8TcQ4HPrl5Vf9o96TobiSzgq
-         paxw110Brz+xw==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 26 Apr 2023 11:06:22 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862037AAC;
+        Wed, 26 Apr 2023 08:05:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=dJzI1wHa5Hs77g/e2Ra7+W4pHa6Ls/Aizvrowv5+dEU=;
+        t=1682521556; x=1683731156; b=CrzbqLfJPs1hpI2BJiQsfvPpcDS9JkQHeqT1ET35FZwZjOl
+        tnOnfzKXZhWnJl13PU7D0qs7OFW069rHAuV1yZNS/17y/qJrpgYZTix+leAscUqTW430kYvg3IeKD
+        KDcHK7KLSmkIhB+1wMNGLMHVGAOb72EYhdjS0LySVjtOzUQQKK12bvrft36wwv3rD5ahc4iUXBRSu
+        g2/v+XcFVNogGae1T2yMvKziI3Hs592QZacSJNL9JPasPrOztVrcHSfCuDrNh3Xo00pUpsh5hPzLh
+        AhFCe8ixhvATHIRZOXT8Phz8Kwe3+SwmhyHKyp28g7A6Ju4aiRdhsT7HdWga+UsQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1prgiE-009DHv-1e;
+        Wed, 26 Apr 2023 17:05:42 +0200
+Message-ID: <d1e8fff25b49f8ee8d3e38f7b072d6e1911759bb.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 1/1] wifi: mac80211: fortify the spinlock against
+ deadlock by interrupt
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Leon Romanovsky <leon@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Alexander Wetzel <alexander@wetzel-home.de>
+Date:   Wed, 26 Apr 2023 17:05:41 +0200
+In-Reply-To: <074cf5ed-c39d-1c16-12e7-4b14bbe0cac4@alu.unizg.hr>
+References: <20230425164005.25272-1-mirsad.todorovac@alu.unizg.hr>
+         <20230426064145.GE27649@unreal>
+         <074cf5ed-c39d-1c16-12e7-4b14bbe0cac4@alu.unizg.hr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/4] wifi: ath11k: remove unused function
- ath11k_tm_event_wmi
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230420120840.18712-2-quic_rajkbhag@quicinc.com>
-References: <20230420120840.18712-2-quic_rajkbhag@quicinc.com>
-To:     Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Govindaraj Saminathan <quic_gsaminat@quicinc.com>,
-        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168252021295.23116.4251638014405306608.kvalo@kernel.org>
-Date:   Wed, 26 Apr 2023 14:43:37 +0000 (UTC)
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> wrote:
+On Wed, 2023-04-26 at 16:02 +0200, Mirsad Todorovac wrote:
+>=20
+> That's awesome! Just to ask, do I need to send the PATCH v5 with the
+> Reviewed-by: tag, or it goes automatically?
+>=20
 
-> From: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
-> 
-> The function ath11k_tm_event_wmi() is only defined and it is not used
-> anywhere. Hence remove unused function ath11k_tm_event_wmi().
-> 
-> Tested-on : IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Patchwork will be pick it up automatically.
 
-Please wait I'll push back my changes to the pending and use that as the
-baseline for v4.
-
-4 patches set to Changes Requested.
-
-13218645 [v3,1/4] wifi: ath11k: remove unused function ath11k_tm_event_wmi
-13218646 [v3,2/4] wifi: ath11k: optimize ath11k_tm_cmd_get_version
-13218648 [v3,3/4] wifi: ath11k: factory test mode support
-13218647 [v3,4/4] wifi: ath11k: Allow ath11k to boot without caldata in ftm mode
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230420120840.18712-2-quic_rajkbhag@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+johannes
