@@ -2,109 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17F726EEDF4
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 08:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A9A6EEE2D
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Apr 2023 08:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239459AbjDZGEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Apr 2023 02:04:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36040 "EHLO
+        id S239383AbjDZGTU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Apr 2023 02:19:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjDZGEH (ORCPT
+        with ESMTP id S239359AbjDZGTT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Apr 2023 02:04:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72843213B
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 23:04:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0700F618C9
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 06:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD47C433D2;
-        Wed, 26 Apr 2023 06:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682489045;
-        bh=NKlsr26o1nZ46Pg3FtTO0jgQ8SsYgX7W/XJ+pGjtVUc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=VRO4FI8RWAVelaJQWVXkx5QeyH6eBLUSoAxro2ETMiGbBbg1oJxEo4Z1fBJwOF+nT
-         RILXJuzVU4hEBvD513hg56Gl3lyndoVMexcBob3eT2/iTEtOm2/REev//YzpDekwYi
-         bceAxxodOKmWbd3Ii/QafGqqy7wizQpOL9OF2za/fmIJw8iVDIyNnnXVpmXtYhPsET
-         LzX45RVudVo7jnGWKmXULtHHijNS9O/1tiabYpEbAjTHXJZYtx/rnLpD0+U1Hgzetg
-         xto1LfwPWBXW0/j4q4JOlsO0LQmWf/w2y4vnAN19B4K0CtWU48nJQoRoUCnoJG1nhm
-         qPadw7w/dZ1dg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Aloka Dixit <quic_alokad@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v3 00/11] wifi: ath12k: (v3) EHT support
-References: <20230413215156.2649-1-quic_alokad@quicinc.com>
-Date:   Wed, 26 Apr 2023 09:03:59 +0300
-In-Reply-To: <20230413215156.2649-1-quic_alokad@quicinc.com> (Aloka Dixit's
-        message of "Thu, 13 Apr 2023 14:51:45 -0700")
-Message-ID: <87ildjtc1c.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 26 Apr 2023 02:19:19 -0400
+Received: from mx2.uni-rostock.de (mx2.uni-rostock.de [139.30.22.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A7FC2134
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Apr 2023 23:19:13 -0700 (PDT)
+DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmze; 
+ t=1682489951; bh=e4TxUWFbHfbxvmEdNhXFdc4Bx4m+GTB7XKhuCjCdmvQ=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=ed25519-sha256; b=
+ 4r9Iz4VW2Md+l+GPrfI55YosPbl17VILRz/uRh7jXg6yc42OS4BotQq6GNqrqWKv2hbsKvuFU15V8wQo1GOLDA==
+DKIM-Signature: v=1; c=relaxed/relaxed; d=uni-rostock.de; s=itmz; 
+ t=1682489951; bh=e4TxUWFbHfbxvmEdNhXFdc4Bx4m+GTB7XKhuCjCdmvQ=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=rsa-sha256; b=
+ k0Z9365x/Q6VwP2qUm/Wnn6tInqWRWyGxpk+pv2q28B2hF6C9DtQLYx41eaJkSxmFGZau3cMbQuQ8aFQ++3Y4aOTwxZv4sC6c0CHjRXSMTlFPdlJjIllZcN1wyqJcWNF2KVH3QTgqFf2NbiP4KaOWbXOvOnpwU6aQ5LK1O1xXg8=
+Received: from 139.30.22.84 by mx2.uni-rostock.de (Tls12, Aes256, Sha384,
+ DiffieHellmanEllipticKey384); Wed, 26 Apr 2023 06:19:10 GMT
+Received: from [139.30.201.34] (139.30.201.34) by mail1.uni-rostock.de
+ (139.30.22.84) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Wed, 26 Apr
+ 2023 08:19:09 +0200
+Message-ID: <6d672602-55b2-fb11-2707-84bd360411f2@uni-rostock.de>
+Date:   Wed, 26 Apr 2023 08:19:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH v3] average: change non-init state and add check for
+ added values
+Content-Language: de-DE
+To:     Johannes Berg <johannes@sipsolutions.net>, <nbd@nbd.name>,
+        <linux-wireless@vger.kernel.org>
+References: <20230424210430.390592-1-benjamin.beichler@uni-rostock.de>
+ <a3ac7cf40706771977138a437560475b035efee4.camel@sipsolutions.net>
+From:   Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>
+Organization: =?UTF-8?Q?Universit=c3=a4t_Rostock?=
+In-Reply-To: <a3ac7cf40706771977138a437560475b035efee4.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Originating-IP: [139.30.201.34]
+X-ClientProxiedBy: EMAIL2.uni-rostock.de (139.30.22.82) To
+ mail1.uni-rostock.de (139.30.22.84)
+X-TM-SNTS-SMTP: F98BB533A878CA01E4A04554030DAFC7F7BB3035E533284687BB5988F4E7C00D2000:8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aloka Dixit <quic_alokad@quicinc.com> writes:
-
-> Add driver support to bring AP up in EHT mode, configure a preamble
-> puncturing bitmap and associate with an EHT client.
+Am 25.04.2023 um 20:18 schrieb Johannes Berg:
+> =5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
+=5F=5F=5F=5F=5F=5F=5F
+>   Achtung! Externe E-Mail: Klicken Sie erst dann auf Links und Anh=C3=A4nge,=
+ nachdem Sie die Vertrauensw=C3=BCrdigkeit der Absenderadresse gepr=C3=BCft ha=
+ben.
+> =5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
+=5F=5F=5F=5F=5F=5F=5F
 >
-> v3: Modified patches 6 and 9 to fix some issues,
-> changelog included in the respective patches.
-> v2: This version modifies only few commit descriptions,
-> changelog included in the respective patches.
+> On Mon, 2023-04-24 at 21:04 +0000, Benjamin Beichler wrote:
+>> The uninitialized state 0 involves the danger of reaching that state in
+>> normal operation. Since the weight=5Frcp value needs to be bigger than one
+>> (otherwise no averaging takes place), the final shifting in add ensures,
+>> that the internal state never reach ULONG=5FMAX. Therefore use this value
+>> to signal, that the ewma has no initial value.
+>>
+>> The add function needs to check, that val is not to big, otherwise the new
+>> value can overflow the internal state, which results in unexpected outputs.
+> This seems nice to me, FWIW.
+Okay. I would split up the patch into sensible parts and send it later. 
+You are also fine with the extra init function with explicit init value=3F 
+Of course this one also needs the check, that it really fits into the 
+internal state :-D
 >
-> Following list gives the details for each patch.
-> 1-4: Propagation of EHT capabilities from target to userspace.
-> Patches 1, 2 refactor the existing code to make EHT additions easier.
-> 5: Addition of EHT phy modes.
-> 6-9: EHT related additions in peer association.
-> 10: Process the new WMI service ready ext2 event.
-> 11: Preamble puncturing support.
->
-> Aloka Dixit (9):
->   wifi: ath12k: rename HE capabilities setup/copy functions
->   wifi: ath12k: move HE capabilities processing to a new function
->   wifi: ath12k: process EHT capabilities
->   wifi: ath12k: propagate EHT capabilities to userspace
->   wifi: ath12k: prepare EHT peer assoc parameters
->   wifi: ath12k: add WMI support for EHT peer
->   wifi: ath12k: peer assoc for 320 MHz
->   wifi: ath12k: parse WMI service ready ext2 event
->   wifi: ath12k: configure puncturing bitmap
->
-> Muna Sinada (1):
->   wifi: ath12k: add EHT PHY modes
->
-> Pradeep Kumar Chitrapu (1):
->   wifi: ath12k: add MLO header in peer association
+>> Move the compile time checks into a separate macro, as they are used
+>> multiple times and noise up the functions.
+> Why do we even have those multiple times=3F Should be enough to have them
+> once, since we always compile the static inline functions=3F
 
-This breaks WCN7850 support:
+Good question ... my assumption was, that the build-bug macro may not 
+work, if the function is unused and maybe optimized away, but I'm not 
+that familiar with those details. I'm more in favor with the 
+static=5Fasserts of C++, which have defined semantics. :-D
 
-[  144.039164] ath12k_pci 0000:06:00.0: BAR 0: assigned [mem 0xda200000-0xda3fffff 64bit]
-[  144.039315] ath12k_pci 0000:06:00.0: enabling device (0000 -> 0002)
-[  144.046220] ath12k_pci 0000:06:00.0: Hardware name: wcn7850 hw2.0
-[  144.118539] mhi mhi0: Requested to power ON
-[  144.118716] mhi mhi0: Power on setup success
-[  144.222303] mhi mhi0: Wait for device to enter SBL or Mission mode
-[  144.627712] ath12k_pci 0000:06:00.0: chip_id 0x2 chip_family 0x4 board_id 0x104 soc_id 0x40170200
-[  144.627945] ath12k_pci 0000:06:00.0: fw_version 0x1005bc12 fw_build_timestamp 2022-10-11 12:13 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-[  144.959196] ath12k_pci 0000:06:00.0: failed to parse tlv -22
-[  144.959317] ath12k_pci 0000:06:00.0: failed to parse ext2 event tlv -22
-[  150.263567] ath12k_pci 0000:06:00.0: failed to receive wmi service ready event: -110
-[  150.276547] ath12k_pci 0000:06:00.0: failed to start core: -110
+It would be nice to put the check into the struct, as some zero size bad 
+member, but I found no example in the kernel, so maybe this is not 
+easily doable.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+One may argue, that we only put it in init and if the users do not use 
+init, we call it shit-in-shit-out, but I'm not really in favor of that.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Anyone with more experiences on build time asserts in the kernel=3F
+
+Benjamin
