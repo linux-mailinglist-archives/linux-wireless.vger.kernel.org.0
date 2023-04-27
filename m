@@ -2,85 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA1506F0DD0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 23:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 966D36F0E8C
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 00:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245140AbjD0Vry (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Apr 2023 17:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34232 "EHLO
+        id S1344341AbjD0WuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Apr 2023 18:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229750AbjD0Vrw (ORCPT
+        with ESMTP id S1344353AbjD0WuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Apr 2023 17:47:52 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003542D5B
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 14:47:51 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-2fa47de5b04so8741903f8f.1
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 14:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682632070; x=1685224070;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JHFpiWV/4zmijgpBUi1Je9lWjHCbSkwSmirAiM2LkpU=;
-        b=Br5r6S+cxvZ7EbXL1iCXkWJbwdKpoJnLKaQSjPu1HoIaJ+/IBNuL9BQlJw/wwSav4x
-         XyPb18NIUuYgV6YHmdnXSyBk3DQLe5q6CnE2WVkIDmtlVnh3pp7dlO7fOouafaXUfNeo
-         tVLrnh73zi5avTW+GqJkEMCWNzglUPZAqR3q834r+SRNAFs2Ek/zcsH2LdvdO7u3JneF
-         PwIyBxCQ/61llMZTHJF16WCTt/UApuWom7Am/pPzSxogi+TWjAVrw0mcOSm0iRvwJ6py
-         gY82OjvFQz+beEZjL+DbrJU1+ksFopQqf1ioNAgZKxEo6WksOS7Mrdth6/Hx2+tBl1os
-         /elQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682632070; x=1685224070;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JHFpiWV/4zmijgpBUi1Je9lWjHCbSkwSmirAiM2LkpU=;
-        b=DJy1c2uoXV8tkhEe64hSc7+f8e3+ccVJtOzRGTg217b8c9Ozvksp0Gkdt46tl4aeZC
-         BP0odj2usGi51URP4psem/ikhryDVjCOh1YUPM9dgb1YHTh2egs17/Zpm9CmsE+X05F7
-         Ip1C65ABf81OJPMd6VbhGuvi33JfsNtoSJ9XrGafOc9RiTw3373GSBe+6ho9uNwHzDWh
-         1NqazRM9722v1RQIeIpQDS0UbqGWdoKUlWJOg7Mjea9lN4R95CpzMszsbdqlMalkWHKM
-         mVvtdSoMWAwzbitM1voyxor3XCdkMyvfcNmcFWsU35jQbOAZIiE7hzMePazqNzv13Tt7
-         f+iw==
-X-Gm-Message-State: AC+VfDyxV+ujbtlqbJhWkIEMVNVTS3F9GeCS4eW3lUHvQrsmuEM0h3Pm
-        Z82hU4wNe8lr2JrrIoTzpcbtoElX/5LwhdwKKafW9Rq+ir7G2w==
-X-Google-Smtp-Source: ACHHUZ7C/AhPO5dEyhH3utm4tNiDomV1HdHun9hZrvnIxwnIldo9Q3YzfWerLfet2180uq+no2GbTK232Yd+2wVsG2c=
-X-Received: by 2002:adf:ec09:0:b0:2ff:f37:9d0e with SMTP id
- x9-20020adfec09000000b002ff0f379d0emr2121329wrn.61.1682632070331; Thu, 27 Apr
- 2023 14:47:50 -0700 (PDT)
+        Thu, 27 Apr 2023 18:50:11 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4403A89
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 15:50:01 -0700 (PDT)
+X-UUID: d356f4aae54d11ed8e3aff58e85a36f4-20230428
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ibZNawFMAjADf2IQ8Wssk5fpWCpRz5r71nvdnT+MRkA=;
+        b=TXTnoVmtl2JKF025tX2s3R8Y/uqpAH/zus20+RRj59jNnV7CCglmWawqFhxp3zH/cTT+diO/kK1ADPpg4TrpWZh6LIV3kHvLH9REFMxxgHhbFirS55EOtvONDSeVgCYPV+7IsuE0ZOfV7f9QnHT4Hzc5Ix/PBChfmuCHpH1BmAk=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:ab903aa4-9ad8-4c46-ace8-7342ecf1e44e,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.22,REQID:ab903aa4-9ad8-4c46-ace8-7342ecf1e44e,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:120426c,CLOUDID:c23d1d30-6935-4eab-a959-f84f8da15543,B
+        ulkID:230428064956Z2VJI6IB,BulkQuantity:0,Recheck:0,SF:38|29|28|17|19|48,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+        L:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-UUID: d356f4aae54d11ed8e3aff58e85a36f4-20230428
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 750671034; Fri, 28 Apr 2023 06:49:53 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 28 Apr 2023 06:49:52 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 28 Apr 2023 06:49:52 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>
+Subject: [PATCH v3] wifi: mt76: mt7915: report tx retries/failed counts for non-WED path
+Date:   Fri, 28 Apr 2023 06:49:51 +0800
+Message-ID: <b582aef1382d933d5a8e76f6007c2a2ac456bfa2.1682635303.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <CALbLcfAXrHp4vsVGqU0nBdB_gFmKTKx0GcdrFJA7R_kodAy0Ew@mail.gmail.com>
- <bfe732f4-60dd-4d78-1259-5f9f6c11adbc@gmail.com> <CALbLcfB7cMctHC-Fv93z1WVCZkQ76uW2F_=P6rCW7ZSPXvmapw@mail.gmail.com>
- <2857f998-1b1a-e3c2-20fe-d03dadcf8f23@gmail.com> <CALbLcfCsyGzhvrqjSz37+7cLvc3rc4Y_kgspZV=kiPNs4TBE4w@mail.gmail.com>
- <CALbLcfBnF6njFMSfQk2TuOiZ3C3kHwqs4-c-MQGb72azzQ5sJA@mail.gmail.com>
- <38172c8e-d107-d96e-7292-09d0e3b061dd@gmail.com> <CALbLcfCHLU+zoFdTnTrJs22UUYwr2rETp5hqbv=NL352Qz-XgA@mail.gmail.com>
- <CALbLcfDZJmOyn-Gf24+9X-eHh3-3PY4_nP5soG3gHf_Vn85=EA@mail.gmail.com>
- <CALbLcfAiVgGi9iocEG4OfgET2XLDRq0dthbxDMP0vP3R6BBp_A@mail.gmail.com>
- <3ceecfc1-ab04-7d54-51bd-457a4708c0ac@gmail.com> <CALbLcfCpb8xbN+w2VvCZ6Gdr+L_ECH0UQsWZrpO1Hcpoef66UQ@mail.gmail.com>
- <8eaeb64e-3f7f-6752-4476-c0f0c88a008b@gmail.com> <CALbLcfD7AmMG72-Qxafc9533OQVBCL=RLDycjUCV2MJ0DRN6nw@mail.gmail.com>
- <2a679614-c964-dc3f-c987-6c7ee03923a0@gmail.com> <CALbLcfBGg8FTBZx-_8v6u5iLsAssr+=QgQYc+Q2bUbmEwJPRYQ@mail.gmail.com>
- <0ce23546-7bf6-ef96-9417-c62adaa77cb6@gmail.com> <CALbLcfCYO2Uk91Mq6FW1UCx4j8RiK1Hpy-1VU6wb9tipBi74Fw@mail.gmail.com>
-In-Reply-To: <CALbLcfCYO2Uk91Mq6FW1UCx4j8RiK1Hpy-1VU6wb9tipBi74Fw@mail.gmail.com>
-From:   Artem Makhutov <artem.makhutov@gmail.com>
-Date:   Thu, 27 Apr 2023 23:47:40 +0200
-Message-ID: <CALbLcfA9Ak59sZ_OvoTUaMBO7vVuDLPM+Zvr4WkJyWkPyqNotA@mail.gmail.com>
-Subject: Re: RTL8188EU (LogiLink WL0151A) - Malformed packets
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Get missing tx retries/failed counts from txfree done events and report
+them via mt7915_sta_statistics().
 
-did some more tests and it looks like that
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+---
+v3 - add a missing check for mt7921
+v2 - add a missing check for non-v3 format
+---
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |  4 +++-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 22 +++++++++++++++++--
+ .../net/wireless/mediatek/mt76/mt7915/mac.h   |  7 +++++-
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 12 +++++-----
+ 4 files changed, 35 insertions(+), 10 deletions(-)
 
-if (priv->rtl_chip == RTL8188E)
-                val32 &= ~RCR_APPEND_PHYSTAT;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index d39a3cc5e381..1fd36f9375ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -738,7 +738,9 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
+ 		info->status.ampdu_ack_len = !noacked;
+ 		info->status.rates[0].idx = -1;
+ 
+-		wcid->stats.tx_failed += noacked;
++		/* avoid double counting if dev supports txfree event */
++		if (is_mt7921(dev))
++			wcid->stats.tx_failed += noacked;
+ 
+ 		mt76_connac2_mac_fill_txs(dev, wcid, txs_data);
+ 		mt76_tx_status_skb_done(dev, skb, &list);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 7df8d95fc3fb..9b2ccd99854e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -951,6 +951,7 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt76_txwi_cache *txwi;
+ 	struct ieee80211_sta *sta = NULL;
++	struct mt76_wcid *wcid = NULL;
+ 	LIST_HEAD(free_list);
+ 	void *end = data + len;
+ 	bool v3, wake = false;
+@@ -977,7 +978,6 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 		info = le32_to_cpu(*cur_info);
+ 		if (info & MT_TX_FREE_PAIR) {
+ 			struct mt7915_sta *msta;
+-			struct mt76_wcid *wcid;
+ 			u16 idx;
+ 
+ 			idx = FIELD_GET(MT_TX_FREE_WLAN_ID, info);
+@@ -994,7 +994,25 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
+ 			continue;
+ 		}
+ 
+-		if (v3 && (info & MT_TX_FREE_MPDU_HEADER))
++		if (!mtk_wed_device_active(&mdev->mmio.wed) && wcid) {
++			u32 tx_retries = 0, tx_failed = 0;
++
++			if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3)) {
++				tx_retries =
++					FIELD_GET(MT_TX_FREE_COUNT_V3, info) - 1;
++				tx_failed = tx_retries +
++					!!FIELD_GET(MT_TX_FREE_STAT_V3, info);
++			} else if (!v3 && (info & MT_TX_FREE_MPDU_HEADER)) {
++				tx_retries =
++					FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
++				tx_failed = tx_retries +
++					!!FIELD_GET(MT_TX_FREE_STAT, info);
++			}
++			wcid->stats.tx_retries += tx_retries;
++			wcid->stats.tx_failed += tx_failed;
++		}
++
++		if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3))
+ 			continue;
+ 
+ 		for (i = 0; i < 1 + v3; i++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+index ce94f87e2042..448b1b380190 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+@@ -9,7 +9,12 @@
+ #define MT_TX_FREE_VER			GENMASK(18, 16)
+ #define MT_TX_FREE_MSDU_CNT_V0		GENMASK(6, 0)
+ /* 0: success, others: dropped */
+-#define MT_TX_FREE_MPDU_HEADER		BIT(30)
++#define MT_TX_FREE_COUNT		GENMASK(12, 0)
++#define MT_TX_FREE_COUNT_V3		GENMASK(27, 24)
++#define MT_TX_FREE_STAT			GENMASK(14, 13)
++#define MT_TX_FREE_STAT_V3		GENMASK(29, 28)
++#define MT_TX_FREE_MPDU_HEADER		BIT(15)
++#define MT_TX_FREE_MPDU_HEADER_V3	BIT(30)
+ #define MT_TX_FREE_MSDU_ID_V3		GENMASK(14, 0)
+ 
+ #define MT_TXS5_F0_FINAL_MPDU		BIT(31)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 2ada2806de66..61157248d742 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1046,12 +1046,6 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
+ 		sinfo->tx_packets = msta->wcid.stats.tx_packets;
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
+ 
+-		sinfo->tx_failed = msta->wcid.stats.tx_failed;
+-		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
+-
+-		sinfo->tx_retries = msta->wcid.stats.tx_retries;
+-		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
+-
+ 		if (mtk_wed_get_rx_capa(&phy->dev->mt76.mmio.wed)) {
+ 			sinfo->rx_bytes = msta->wcid.stats.rx_bytes;
+ 			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
+@@ -1061,6 +1055,12 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
+ 		}
+ 	}
+ 
++	sinfo->tx_failed = msta->wcid.stats.tx_failed;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
++
++	sinfo->tx_retries = msta->wcid.stats.tx_retries;
++	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
++
+ 	sinfo->ack_signal = (s8)msta->ack_signal;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
+ 
+-- 
+2.18.0
 
-Did the job for me... I will do some more tests later.
