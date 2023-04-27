@@ -2,109 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C769F6EFEF8
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 03:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0305B6EFF19
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 04:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242803AbjD0BbU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Apr 2023 21:31:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48696 "EHLO
+        id S242740AbjD0CGR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Apr 2023 22:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232094AbjD0BbT (ORCPT
+        with ESMTP id S229605AbjD0CGQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Apr 2023 21:31:19 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 069813AB8
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 18:31:18 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33QNwS2W018088;
-        Thu, 27 Apr 2023 01:31:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=spfbNfwmiL3qg7k8mINHhVDrbQKuteH3oLy9EIuNsHw=;
- b=ITrS99XDxvezNhs0NctLOTUTLHPHVY+VSeClaXYy8UmXpSCs9lyi9fZZ7jPrcDLk+m9k
- PT0xB7ETRF+Ocs8Tv4Rkt9wemMcL6wbCKJEwIyhguUYODBd45WnfksAPARfT4UnC/Wsz
- XyVb4bmqIDO2kzw+K0ky5P9u+BHxhjEe4zXGZ2smaijHlfo6AbAEvAOYaSmgcoHm6GWy
- dpMMeWtpgN2m0J3k3PtTWlw7nZMTjprEZoi5DzboHVFr1YOQkE1wISZREBX794/kQDh1
- jvDFn/a3CVysWFRdLli85FZB0HlXJhrlDTcZc0JbCb5m4I2c5N2AzGdf5SRBqzIXjUr7 PA== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q7dh2g6gu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Apr 2023 01:31:14 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33R1VBdT015040
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 27 Apr 2023 01:31:11 GMT
-Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Wed, 26 Apr 2023 18:30:37 -0700
-From:   Baochen Qiang <quic_bqiang@quicinc.com>
-To:     <ath12k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: ath12k: Use msdu_end to check MCBC
-Date:   Thu, 27 Apr 2023 09:30:21 +0800
-Message-ID: <20230427013021.29792-1-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 26 Apr 2023 22:06:16 -0400
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.196])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 06534359E;
+        Wed, 26 Apr 2023 19:06:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=8anvP
+        xD8XmwYs/lU3l44S7Jx4BpVN/L/yRKmtDO3HDQ=; b=XTNVCwqs6XL5Lj84+31bC
+        DVrzCAkDGi6I+n6azGA1E/HpVPBjZF+vIcDe9igzKF1XCa7/dCDvBCWgR7UtCIW9
+        hLwZCA+yqyJSCisxCVyDx04bs7mpFrGzrI0wiu47PRCla+rOFoqBXhuG4dArmNRF
+        b9abalyEVCXiP8MOO4+fwk=
+Received: from localhost.localdomain (unknown [116.128.244.169])
+        by zwqz-smtp-mta-g1-1 (Coremail) with SMTP id _____wBnOwFi2ElkFJLoAA--.8925S2;
+        Thu, 27 Apr 2023 10:05:23 +0800 (CST)
+From:   Yun Lu <luyun_611@163.com>
+To:     Jes.Sorensen@gmail.com
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+Date:   Thu, 27 Apr 2023 10:05:12 +0800
+Message-Id: <20230427020512.1221062-1-luyun_611@163.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Rpu3Jamhwdgros-R5vyRRiSG0HzVyGW2
-X-Proofpoint-GUID: Rpu3Jamhwdgros-R5vyRRiSG0HzVyGW2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-27_01,2023-04-26_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- spamscore=0 adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0
- mlxlogscore=833 mlxscore=0 lowpriorityscore=0 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304270012
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-CM-TRANSID: _____wBnOwFi2ElkFJLoAA--.8925S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAryDAw4UAFW5ZF43urykZrb_yoW5Gryxpr
+        WDCa4FyF1UJw1kW3y8Xa17CF1rX3WSqrs3uFyfJ34Svrs5X34S9F1F9F98AF4kurWkJFWa
+        qrWFyrsrGrn8W37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjQ6LUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbi6wRezlXl4lutdgAAst
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We are seeing a very low TCP throughput testing with some specific
-tools. This is because for sub-frames of an AMSDU, MCBC flag in
-mpdu_start may be not valid, and as a result those frames would be
-dropped by kernel.
+From: Yun Lu <luyun@kylinos.cn>
 
-Change to get it from msdu_end.
+When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
+probability of failure, which shows "authentication with ... timed out".
+Through debugging, it was found that the RCR register has been inexplicably
+modified to an incorrect value, resulting in the nic not being able to
+receive authenticated frames.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
+the RCR value every time the register is writen, and use it the next
+time the register need to be modified.
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
 ---
- drivers/net/wireless/ath/ath12k/hal.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index 0ec53afe9915..980ec2024b37 100644
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -889,8 +889,8 @@ static u8 *ath12k_hw_wcn7850_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index c8cee4a24755..4088aaa1c618 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1518,6 +1518,7 @@ struct rtl8xxxu_priv {
+ 	u32 rege9c;
+ 	u32 regeb4;
+ 	u32 regebc;
++	u32 regrcr;
+ 	int next_mbox;
+ 	int nr_out_eps;
  
- static bool ath12k_hw_wcn7850_rx_desc_is_mcbc(struct hal_rx_desc *desc)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 620a5cc2bfdd..2fe71933ba08 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4053,6 +4053,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
+ 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
+ 	rtl8xxxu_write32(priv, REG_RCR, val32);
++	priv->regrcr = val32;
+ 
+ 	if (priv->rtl_chip == RTL8188F) {
+ 		/* Accept all data frames */
+@@ -6273,7 +6274,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 				      unsigned int *total_flags, u64 multicast)
  {
--	return __le32_to_cpu(desc->u.wcn7850.mpdu_start.info6) &
--	       RX_MPDU_START_INFO6_MCAST_BCAST;
-+	return __le32_to_cpu(desc->u.wcn7850.msdu_end.info5) &
-+	       RX_MSDU_END_INFO5_DA_IS_MCBC;
- }
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+-	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
++	u32 rcr = priv->regrcr;
  
- static void ath12k_hw_wcn7850_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
-
-base-commit: d276b90ff7f9c51e1f2f8826b7cbb3dff20a4b66
+ 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
+ 		__func__, changed_flags, *total_flags);
+@@ -6319,6 +6320,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 	 */
+ 
+ 	rtl8xxxu_write32(priv, REG_RCR, rcr);
++	priv->regrcr = rcr;
+ 
+ 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
+ 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
 -- 
-2.25.1
+2.27.0
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
 
