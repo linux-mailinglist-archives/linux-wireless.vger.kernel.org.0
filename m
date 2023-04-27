@@ -2,148 +2,167 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 778E66F0BB0
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 20:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37A36F0BF6
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 20:32:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244461AbjD0SBq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Apr 2023 14:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39880 "EHLO
+        id S244553AbjD0ScL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Apr 2023 14:32:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjD0SBp (ORCPT
+        with ESMTP id S243521AbjD0ScJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Apr 2023 14:01:45 -0400
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 624353A91;
-        Thu, 27 Apr 2023 11:01:44 -0700 (PDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1879e28ab04so7081489fac.2;
-        Thu, 27 Apr 2023 11:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682618503; x=1685210503;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ydjrGkt4gIeKcYgkoU5EuhO/kYH9fZY+GJ0KKFuhI8=;
-        b=fW96y9kcUIa7cVIbKqiJ9fOEPwa0rS7hHU9EjWxjjN9zbZkDBw2oCf1OX3d3lbATBh
-         OtPKAEt+DMrju/qFRt535JaNZ54ddi0uGftEXAXKoGIzDlmBBqCPZXbuq2UU4F2b7M8z
-         YTFzzEHiRxNNUrZfvLFU5tChQsJgDzLFZxwd5ft/dFCqixh0Cnaass0D0O0hRpcCpOwb
-         seDSa5msDJqy6ZG2qyq09r083x3rYNDkKqpI3hPxV9P4fqwovv6LhT9+8yE+SCp891p7
-         5Ol+tCpwbxAlP+kBebjo8AyleswF3/tu1nZWCo5+BXvVn7vT9PNBzobMihZdef4zKQMn
-         GY0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682618503; x=1685210503;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+ydjrGkt4gIeKcYgkoU5EuhO/kYH9fZY+GJ0KKFuhI8=;
-        b=Z8Ne37ggXXCMb0UHVLjudEue6oPjN13mmJdGpi+n9/ZFEeXEOwRCGg4QIya8r47o9S
-         Qs4k+7GC5R+8OiscVVwqLr13HMpPUnDGnZqKOCEHI9tB7Qh9TlE9nGBCwvkUvU0WK1cg
-         cEd3TeVeQ8xcGmYWF2JV1aTytFSTRLx1rF4/staac9/tN5uV9l9TECrmNDw0aJGpBOrY
-         U3D8GJSFWZrQuLsjzy3dCCBM5va1/dm1uZWPhqZUT+TcpFDhICgShbp/WX87XK9w0B1p
-         CEC8HbrywlfoUmaO2t8iY/hVAim1xLfSe3ko3uDmpgq8WsJ3i0RUKWcFlVjrpBMPCw2H
-         DtKA==
-X-Gm-Message-State: AC+VfDz3bKBDpXlYY7gpiYtFZG9KB9RF8uhxBUy0yeWnKR7Biz0sdKXd
-        b0/kJ0+L7avu+RdKAczEadw=
-X-Google-Smtp-Source: ACHHUZ7HvL3iOBHvVYhcy2bXFQNS8zJtEnt4OKQ9GSTiL1U6GYFGr+E1wJl3/HcZGtsAl3kkscC+iA==
-X-Received: by 2002:a05:6870:3505:b0:177:809e:ead3 with SMTP id k5-20020a056870350500b00177809eead3mr1099769oah.41.1682618503341;
-        Thu, 27 Apr 2023 11:01:43 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id e2-20020a056870c34200b0017299192eb1sm7953605oak.25.2023.04.27.11.01.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Apr 2023 11:01:42 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <b2ea271c-2139-7579-e4a8-6eae009f6021@lwfinger.net>
-Date:   Thu, 27 Apr 2023 13:01:40 -0500
+        Thu, 27 Apr 2023 14:32:09 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D25A246B8
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 11:32:07 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33RGS0kS017091;
+        Thu, 27 Apr 2023 18:32:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=+UvwrbUZw1AadsSGY2d/6GxqkPQ35mggkyP28+sE+Bg=;
+ b=QdRUUy3DroUZMORYovJLTYGeUzozMyBEwB6VjRQcJrau6OjrXtd5ztq9/V21RE10ykZU
+ +/1S9JmJMKt2pnT7fXa/XHOVxVH2eKEDjaHqGJ2YRgg6zmhFIEShJb0jtw74A7ZSZ5bL
+ hEzvd0RdPb078SMKOElBi0w3O5lzwnjRB0qOYgzKE5BYVevACzdXIscKyCzl4ysGEVCz
+ Ym/H7Lkf8BXRU8DWm36/62vYg8wb7J2md/NO2WiA34id2bSY4cA/ihElBa1IcxtrFML1
+ 53WNS7IlXW7gwL0jymQdi+rxY++j2/b4kZW88eYaUaaqgP+bjvbApNseNNmNBiSZFwEO Lg== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q7kqu9t2e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Apr 2023 18:32:04 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33RIW35R021511
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Apr 2023 18:32:03 GMT
+Received: from msinada-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Thu, 27 Apr 2023 11:32:02 -0700
+From:   Muna Sinada <quic_msinada@quicinc.com>
+To:     <johannes@sipsolutions.net>
+CC:     <linux-wireless@vger.kernel.org>,
+        Muna Sinada <quic_msinada@quicinc.com>
+Subject: [PATCH v5 1/3] wifi: cfg80211: allow userspace to enable driver control of MU-EDCA
+Date:   Thu, 27 Apr 2023 11:31:53 -0700
+Message-ID: <1682620315-590-1-git-send-email-quic_msinada@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to
- incorrect RCR value
-Content-Language: en-US
-To:     Yun Lu <luyun_611@163.com>, Jes.Sorensen@gmail.com
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-References: <20230427020512.1221062-1-luyun_611@163.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20230427020512.1221062-1-luyun_611@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: D6pvpJhd4tsVD7EWqGIm5znIoIz3ZnhR
+X-Proofpoint-ORIG-GUID: D6pvpJhd4tsVD7EWqGIm5znIoIz3ZnhR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-04-27_09,2023-04-27_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ malwarescore=0 adultscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=683 bulkscore=0 phishscore=0
+ priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2303200000 definitions=main-2304270161
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/26/23 21:05, Yun Lu wrote:
-> From: Yun Lu <luyun@kylinos.cn>
-> 
-> When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
-> probability of failure, which shows "authentication with ... timed out".
-> Through debugging, it was found that the RCR register has been inexplicably
-> modified to an incorrect value, resulting in the nic not being able to
-> receive authenticated frames.
-> 
-> To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
-> the RCR value every time the register is writen, and use it the next
-> time the register need to be modified.
-> 
-> Signed-off-by: Yun Lu <luyun@kylinos.cn>
-> ---
->   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
->   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
->   2 files changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> index c8cee4a24755..4088aaa1c618 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-> @@ -1518,6 +1518,7 @@ struct rtl8xxxu_priv {
->   	u32 rege9c;
->   	u32 regeb4;
->   	u32 regebc;
-> +	u32 regrcr;
->   	int next_mbox;
->   	int nr_out_eps;
->   
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> index 620a5cc2bfdd..2fe71933ba08 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-> @@ -4053,6 +4053,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
->   		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
->   		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
->   	rtl8xxxu_write32(priv, REG_RCR, val32);
-> +	priv->regrcr = val32;
->   
->   	if (priv->rtl_chip == RTL8188F) {
->   		/* Accept all data frames */
-> @@ -6273,7 +6274,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
->   				      unsigned int *total_flags, u64 multicast)
->   {
->   	struct rtl8xxxu_priv *priv = hw->priv;
-> -	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
-> +	u32 rcr = priv->regrcr;
->   
->   	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
->   		__func__, changed_flags, *total_flags);
-> @@ -6319,6 +6320,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
->   	 */
->   
->   	rtl8xxxu_write32(priv, REG_RCR, rcr);
-> +	priv->regrcr = rcr;
->   
->   	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
->   			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
+Add option for user space to enable driver to dynamically update MU-EDCA
+parameters.
 
-Wouldn't it be better to find the location that is writing the incorrect value 
-to RCR and fix that? It seems to me that you are applying a band-aid rather than 
-fixing the problem.
+The updated MU-EDCA parameters from driver are part of an AP mode feature
+where firmware determines better MU-EDCA parameters based on channel
+conditions. The updated parameters are used and reported to user space
+to reflect in AP management frames. These dynamic parameter updates
+are offloaded to firmware for better user experience, thus details on
+algorithm are not provided. This is a driver specific feature, thus
+no spec references.
 
-Larry
+Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
+---
+v5: no change
+
+v4: newly created patch in response to review comment to add opt in
+    for user for this feature
+---
+ include/net/cfg80211.h       | 3 +++
+ include/uapi/linux/nl80211.h | 5 +++++
+ net/wireless/nl80211.c       | 5 +++++
+ 3 files changed, 13 insertions(+)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 9e04f69712b1..e56af095828e 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1359,6 +1359,8 @@ struct cfg80211_unsol_bcast_probe_resp {
+  * @punct_bitmap: Preamble puncturing bitmap. Each bit represents
+  *	a 20 MHz channel, lowest bit corresponding to the lowest channel.
+  *	Bit set to 1 indicates that the channel is punctured.
++ * @dyn_muedca_enable: enable/disable driver control of dynamically update
++ *     MU-EDCA parameters
+  */
+ struct cfg80211_ap_settings {
+ 	struct cfg80211_chan_def chandef;
+@@ -1394,6 +1396,7 @@ struct cfg80211_ap_settings {
+ 	struct cfg80211_unsol_bcast_probe_resp unsol_bcast_probe_resp;
+ 	struct cfg80211_mbssid_config mbssid_config;
+ 	u16 punct_bitmap;
++	bool dyn_muedca_enable;
+ };
+ 
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index cf4fb981e131..e68169130e7e 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2805,6 +2805,9 @@ enum nl80211_commands {
+  *	index. If the userspace includes more RNR elements than number of
+  *	MBSSID elements then these will be added in every EMA beacon.
+  *
++ * @NL80211_ATTR_DYN_MUEDCA_ENABLE: Flag attribute to indicate user space has
++ *  enabled Driver control of dynamically updating MU-EDCA parameters.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3341,6 +3344,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_EMA_RNR_ELEMS,
+ 
++	NL80211_ATTR_DYN_MUEDCA_ENABLE,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 3416c9db398f..e9e939706630 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -815,6 +815,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS] = { .type = NLA_U16 },
+ 	[NL80211_ATTR_HW_TIMESTAMP_ENABLED] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_EMA_RNR_ELEMS] = { .type = NLA_NESTED },
++	[NL80211_ATTR_DYN_MUEDCA_ENABLE] = { .type = NLA_FLAG },
+ };
+ 
+ /* policy for the key attributes */
+@@ -6156,6 +6157,10 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 		goto out_unlock;
+ 	}
+ 
++	if (info->attrs[NL80211_ATTR_DYN_MUEDCA_ENABLE])
++		params->dyn_muedca_enable =
++		     nla_get_flag(info->attrs[NL80211_ATTR_DYN_MUEDCA_ENABLE]);
++
+ 	err = nl80211_calculate_ap_params(params);
+ 	if (err)
+ 		goto out_unlock;
+-- 
+2.7.4
 
