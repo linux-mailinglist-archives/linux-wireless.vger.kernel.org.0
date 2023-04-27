@@ -2,113 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 471B26EFDCC
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 01:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD696EFE8F
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Apr 2023 02:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232197AbjDZXFo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Apr 2023 19:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35672 "EHLO
+        id S242836AbjD0AjH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Apr 2023 20:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjDZXFo (ORCPT
+        with ESMTP id S242821AbjD0AjF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Apr 2023 19:05:44 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4E22694
-        for <linux-wireless@vger.kernel.org>; Wed, 26 Apr 2023 16:05:42 -0700 (PDT)
-X-UUID: db88da34e48611eda9a90f0bb45854f4-20230427
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Tryf26oI7NZspdhQrPCelEOu5SNun7TuTLvbo5UwH9k=;
-        b=R8d/oKOWoMyjgRsz7JQiAyPz4DEfD65Wd1PoQTl5Z3bsLRFEcjIgvCWkr4A4487Yh2aXzEelb01tjYw34JrZIxkkSd0Rxn31sHB4Xv5PtwSd1cRUPXfjsGA4bnzwGYW3vL7ay1hjCiZPNO7GF7QbJAevM3NdOnWlvAsGXGS0Dpg=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:04546929-f7a9-4ef3-9fa6-83ce12d1ccde,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.22,REQID:04546929-f7a9-4ef3-9fa6-83ce12d1ccde,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:120426c,CLOUDID:cd37a0a2-8fcb-430b-954a-ba3f00fa94a5,B
-        ulkID:230427070537R7KUTHM6,BulkQuantity:0,Recheck:0,SF:38|29|28|17|19|48,T
-        C:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-        ,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-UUID: db88da34e48611eda9a90f0bb45854f4-20230427
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 153252989; Thu, 27 Apr 2023 07:05:37 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 27 Apr 2023 07:05:36 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 27 Apr 2023 07:05:36 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7996: fix header translation logic
-Date:   Thu, 27 Apr 2023 07:05:15 +0800
-Message-ID: <1ba50091a50574ff9700723a4485bccb3d93322f.1682549983.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Wed, 26 Apr 2023 20:39:05 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA2830D3;
+        Wed, 26 Apr 2023 17:39:01 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33R0chtI7022256, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33R0chtI7022256
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 27 Apr 2023 08:38:43 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 27 Apr 2023 08:38:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 27 Apr 2023 08:38:45 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Thu, 27 Apr 2023 08:38:45 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>
+CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: pull-request: wireless-next-2023-04-21
+Thread-Topic: pull-request: wireless-next-2023-04-21
+Thread-Index: AQHZdD60u8zT35eBqkOmWCVcBjPBJa81U6EAgAX6SUCAADntO4AAC0MAgAAvgQCAASv6AIAABsSA///NM4CAAY5GoA==
+Date:   Thu, 27 Apr 2023 00:38:45 +0000
+Message-ID: <ecaaf616d04d4e0b9303e1c680eefea7@realtek.com>
+References: <20230421104726.800BCC433D2@smtp.kernel.org>
+         <20230421075404.63c04bca@kernel.org>
+         <e31dae6daa6640859d12bf4c4fc41599@realtek.com> <87leigr06u.fsf@kernel.org>
+                 <20230425071848.6156c0a0@kernel.org>
+         <77cf7fa9de20be55d50f03ccbdd52e3c8682b2b3.camel@sipsolutions.net>
+         <c69f151c77f34ae594dc2106bc68f2ac@realtek.com>
+         <1a38a4289ef34672a2bc9a880e8608a8@realtek.com>
+ <7214a6a800e4af80b9319c30b13cc52286bba50a.camel@sipsolutions.net>
+In-Reply-To: <7214a6a800e4af80b9319c30b13cc52286bba50a.camel@sipsolutions.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When header translation failure is indicated, the hardware will insert
-an extra 2-byte field containing the data length after the protocol
-type field. This happens either when the LLC-SNAP pattern did not match,
-or if a VLAN header was detected.
-
-The previous commit accidentally breaks the logic, so reverts back.
-
-Fixes: 27db47ab1f47 (wifi: mt76: mt7996: enable mesh HW amsdu/de-amsdu support)
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 39a4a73ef8e6..4c03d5a3bcea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -836,14 +836,19 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, struct sk_buff *skb)
- 		skb_pull(skb, hdr_gap);
- 		if (!hdr_trans && status->amsdu && !(ieee80211_has_a4(fc) && is_mesh)) {
- 			pad_start = ieee80211_get_hdrlen_from_skb(skb);
--		} else if (hdr_trans && (rxd2 & MT_RXD2_NORMAL_HDR_TRANS_ERROR) &&
--			   get_unaligned_be16(skb->data + pad_start) == ETH_P_8021Q) {
-+		} else if (hdr_trans && (rxd2 & MT_RXD2_NORMAL_HDR_TRANS_ERROR)) {
- 			/* When header translation failure is indicated,
- 			 * the hardware will insert an extra 2-byte field
- 			 * containing the data length after the protocol
--			 * type field.
-+			 * type field. This happens either when the LLC-SNAP
-+			 * pattern did not match, or if a VLAN header was
-+			 * detected.
- 			 */
--			pad_start = 16;
-+			pad_start = 12;
-+			if (get_unaligned_be16(skb->data + pad_start) == ETH_P_8021Q)
-+				pad_start += 4;
-+			else
-+				pad_start = 0;
- 		}
- 
- 		if (pad_start) {
--- 
-2.18.0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9oYW5uZXMgQmVyZyA8
+am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4NCj4gU2VudDogV2VkbmVzZGF5LCBBcHJpbCAyNiwg
+MjAyMyA0OjI1IFBNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT47IEph
+a3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+OyBLYWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwu
+b3JnPg0KPiBDYzogbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsgbGludXgtd2lyZWxlc3NAdmdlci5r
+ZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBwdWxsLXJlcXVlc3Q6IHdpcmVsZXNzLW5leHQtMjAy
+My0wNC0yMQ0KPiANCj4gT24gV2VkLCAyMDIzLTA0LTI2IGF0IDAzOjMwICswMDAwLCBQaW5nLUtl
+IFNoaWggd3JvdGU6DQo+ID4gPiA+DQo+IA0KPiA+ID4NCj4gPiA+IEkgdGhpbmsgdGhlIGV4dHJh
+IHdvcmsgS2FsbGUgbWVhbnQgaXMgd2hhdCBJIG1lbnRpb25lZCBwcmV2aW91c2x5IC0tDQo+ID4g
+PiBuZWVkIGZ1bmN0aW9ucyB0byBjb252ZXJ0IG9sZCB0YWJsZXMgdjEsIHYyLCAuLi4gdG8gY3Vy
+cmVudC4gTGlrZSwNCj4gPiA+DQo+ID4NCj4gPiBzdHJ1Y3QgdGFibGVfdjEgeyAvLyBmcm9tIGZp
+bGUNCj4gPiAgICBfX2xlMzIgY2hhbm5lbF90eF9wb3dlclsxMF07DQo+ID4gfTsNCj4gPg0KPiA+
+IHN0cnVjdCB0YWJsZV92MiB7IC8vIGZyb20gZmlsZQ0KPiA+ICAgIF9fbGUzMiBjaGFubmVsX3R4
+X3Bvd2VyWzIwXTsNCj4gPiB9Ow0KPiA+DQo+ID4gc3RydWN0IHRhYmxlIHsgICAgLy8gZnJvbSBm
+aWxlLCB0aGUgbGF0ZXN0IHZlcnNpb24gb2YgY3VycmVudCB1c2UNCj4gPiAgICBfX2xlMzIgY2hh
+bm5lbF90eF9wb3dlclszMF07DQo+ID4gfTsNCj4gPg0KPiA+IHN0cnVjdCB0YWJsZV9jcHUgeyAg
+Ly8gY3VycmVudCB0YWJsZSBpbiBjcHUgb3JkZXINCj4gPiAgICB1MzIgY2hhbm5lbF90eF9wb3dl
+clszMF07DQo+ID4gfTsNCj4gPg0KPiA+IFRvIG1ha2UgZXhhbXBsZSBjbGVhcmVyLCBJIGNoYW5n
+ZSB0aGUgbmFtZSBvZiBmaWVsZHMsIGJlY2F1c2UgdGhlIHRoaW5nIEkNCj4gPiB3YW50IHRvIG1l
+bnRpb24gaXMgbm90IHJlZ2lzdGVyIHRhYmxlIHRoYXQgd291bGRuJ3QgbmVlZCBjb252ZXJzaW9u
+Lg0KPiANCj4gUmlnaHQsIHRoZSBmaWxlIGZvcm1hdCB3b3VsZCBoYXZlIHRvIGJlIF9fbGUzMiAo
+b3IgX19iZTMyKSwgYnV0IHRoYXQncw0KPiBwcmV0dHkgZWFzeSB0byBoYW5kbGUgd2hpbGUgd3Jp
+dGluZyBpdCB0byB0aGUgZGV2aWNlPw0KPiANCj4gTm90IHN1cmUgSSB1bmRlcnN0YW5kIHRoZSBv
+dGhlciB0aGluZyBhYm91dCBjb252ZXJzaW9uLg0KDQpSaWdodC4gSWYgYWxsIGVsZW1lbnRzIGFy
+ZSB0aGUgc2FtZSB0eXBlIChlLmcuIF9fbGUzMiksIGl0IHdvdWxkIGJlIG11Y2ggZWFzaWVyLg0K
+VGhlIGRpZmZpY3VsdHkgSSB3YW50IHRvIHNheSBpcyBiYWNrd2FyZCBjb21wYXRpYmlsaXR5Lg0K
+DQo+IA0KPiA+ID4gSWYgbG9hZGluZyBhIHRhYmxlX3YxIHRhYmxlLCBmb3IgZXhhbXBsZSwgd2Ug
+bmVlZCB0byBjb252ZXJ0IHRvIHRhYmxlX2NwdSBieQ0KPiA+ID4gc29tZSBydWxlcy4gQWxzbywg
+bWF5YmUgd2UgbmVlZCB0byBkaXNhYmxlIHNvbWUgZmVhdHVyZXMgcmVsYXkgb24gdGhlIHZhbHVl
+cw0KPiA+ID4gaW50cm9kdWNlZCBieSB0YWJsZV9jcHUuIEkgdGhpbmsgaXQgd2lsbCB3b3JrLCBi
+dXQganVzdCBhZGQgc29tZSBmbGFncyBhbmQNCj4gPiA+IHJ1bGVzIHRvIGhhbmRsZSB0aGVtLg0K
+PiANCj4gQnV0IHdvdWxkbid0IHRoaXMgYmFzaWNhbGx5IGJlIHRpZWQgdG8gYSBkcml2ZXI/IEkg
+bWVhbiB5b3UgY291bGQgaGF2ZSBhDQo+IGZpbGUgY2FsbGVkICJydGx3aWZpL3J0bHh5ei52MS50
+YWJsZXMiIHRoYXQgdGhlIGRyaXZlciBpbiBrZXJuZWwgNi40DQo+IGxvYWRzLCBhbmQgLi4udjIu
+Li4gdGhhdCB0aGUgZHJpdmVyIGluIDYuNSBsb2FkcywgYW5kIHJlcXVpcmVzIGZvcg0KPiBvcGVy
+YXRpb24/DQo+IA0KPiBUaGVuIGFnYWluIC0gaXQnZCBiZSBiZXR0ZXIgaWYgdGhlIGRyaXZlciBp
+biA2LjUgY2FuIGRlYWwgd2l0aCBpdCBpZiBhDQo+IHVzZXIgZGlkbid0IGluc3RhbGwgdGhlIHYy
+IGZpbGUgeWV0LCBpcyB0aGF0IHdoYXQgeW91IG1lYW50Pw0KDQpZZXMsIHRoaXMgaXMgbXkgcG9p
+bnQsIGFuZCBJIHRoaW5rIDYuNSBfbXVzdF8gZGVhbCB3aXRoIHYxIGZpbGUuDQoNCkNvbnNpZGVy
+aW5nIGJlbG93IGFydGlmaWNpYWwgZHJhbWE6IA0KDQoxLiBrZXJuZWwgNi40LCBkcml2ZXIgc3Vw
+cG9ydCAyR0h6IGNoYW5uZWxzIG9ubHkgKHRhYmxlIHYxKQ0KICAgX19sZTMyIGNoYW5uZWxfdHhf
+cG93ZXJfdjFbMkdIel9OVU1dDQoNCjIuIGtlcm5lbCA2LjUsIGRyaXZlciBzdXBwb3J0IDIgKyA1
+R0h6IGNoYW5uZWxzICh0YWJsZSB2MikNCiAgIF9fbGUzMiBjaGFubmVsX3R4X3Bvd2VyX3YyWzJH
+SHpfTlVNICsgNUdIel9OVU1dDQoNCiAgIEEgdXNlciBjb3VsZCBub3QgaW5zdGFsbCB2Miwgc28g
+SSBuZWVkIGEgY29udmVyc2lvbiwgbGlrZQ0KICAgY29udmVydF92MV90b192MihzdHJ1Y3QgdGFi
+bGVfdjEgKnYxLCBzdHJ1Y3QgdGFibGVfdjIgKnYyKSAvLyBhbHNvIGRpc2FibGUgNUdIeiBjaGFu
+bmVscw0KDQozLiBrZXJuZWwgNi42LCBkcml2ZXIgc3VwcG9ydCAyICsgNSArIDZHSHogY2hhbm5l
+bHMgKHRhYmxlIHYzKQ0KICAgX19sZTMyIGNoYW5uZWxfdHhfcG93ZXJfdjJbMkdIel9OVU0gKyA1
+R0h6X05VTSArIDZHSHpfTlVNXQ0KICAgQSB1c2VyIGNvdWxkIG5vdCBpbnN0YWxsIHYzLCBzbyBJ
+IG5lZWQgYW4gYWRkaXRpb25hbCBjb252ZXJzaW9uLCBsaWtlDQogICBjb252ZXJ0X3YyX3RvX3Yz
+KHN0cnVjdCB0YWJsZV92MiAqdjIsIHN0cnVjdCB0YWJsZV92MyAqdjMpIC8vIGFsc28gZGlzYWJs
+ZSA2R0h6IGNoYW5uZWxzDQoNCklmIG1vcmUgdGFibGUgdmVyc2lvbnMgYXJlIGludHJvZHVjZWQs
+IG1vcmUgY29udmVyc2lvbnMgYXJlIG5lZWRlZC4gQWxzbywNCkknbSBub3Qgc3VyZSBob3cgdGhl
+c2UgdGFibGVzIGNhbiBjaGFuZ2UgaW4gdGhlIGZ1dHVyZSwgc28gdGhlIGNvbnZlcnNpb24NCm1h
+eSBiZSBjb21wbGljYXRlZCBpZiB0aGV5IGhhdmUgYSBiaWcgY2hhbmdlIGZvciBjZXJ0YWluIHJl
+YXNvbi4gDQoNCk15IHBvaW50IGlzIHRoYXQgdGhpcyB3b3JrIGlzIHBvc3NpYmxlLCBidXQgaW50
+cm9kdWNlIHNvbWUgZXh0cmEgd29ya3MgdGhhdA0KbWF5YmUgbG9vayBhIGxpdHRsZSBkaXJ0eS4g
+DQoNClBpbmctS2UNCg0K
