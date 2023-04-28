@@ -2,152 +2,8227 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3DB6F1D2A
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 19:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B420B6F1E04
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 20:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240073AbjD1RGJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 13:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45114 "EHLO
+        id S1346453AbjD1S35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 14:29:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbjD1RGH (ORCPT
+        with ESMTP id S229780AbjD1S34 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 13:06:07 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D6A2710;
-        Fri, 28 Apr 2023 10:06:06 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-187de655f15so112352fac.3;
-        Fri, 28 Apr 2023 10:06:06 -0700 (PDT)
+        Fri, 28 Apr 2023 14:29:56 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9A9DE
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 11:29:51 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-18f16a2c329so13082512fac.0
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 11:29:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682701565; x=1685293565;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZwebSDbcEiTndvqleOUsphstm5KG1oepB9XO0kR9wf8=;
-        b=BBr99xho1LlxU8yTwHav1CVabMGj74RB2kcJZSHl1Ixjx+HGbxjXcvOjbgdEbgQPRl
-         BHAqjKhRKP0/nl0ewyz/GN+3tH6/0/LS8cZI6SMwv9cOZnXnAmkBBBeG8nCqvEYO7/m1
-         sa5miVL3/Gt6znLlvNJ4ODCbiH/HRxxzQmY4Bdy39oEKbRbzz3DW7brnan9YeVOqNPnH
-         W4AgqnkjyLWu0ugyf2IoUX0bkx6Jle+erxffw2Pij9I7ZT7574rpch0SZeDHN5yuswVt
-         oGqb9cnpJrfJvJgciMlJxaSwZ59EIkBRI6OFr5/UUGMVO4nmbbbZrQ1v63cxFRAnQVVk
-         0/JA==
+        d=gmail.com; s=20221208; t=1682706589; x=1685298589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=s4KTgPRWKqFJJtbuYpYkYucsieCC+1bveBrUbqH6YvY=;
+        b=RwkO7EloXoiQGFOouvXR6aulGDSR2U8ZvvVLrcpJOOTEOpbr0+X+YNrqbUyA/ibrw6
+         oXGTjnxSu1vC8ZfanFG3Tc1ZlMnXBxmEODFte/nqzUGgetQ422Y6FufMdQF+6MHlHyw/
+         kI8Ur06G8N10G3EUjt8VOAHmlXplGztWBjFCx19c1exbwZvmyovj/f5rkJRotUOKZJdY
+         O6WCmH/+uVvgxVYBsG/HRskhWyUpGT1Zp9EyrKw19a56SdOlq32ptS+TAI0+lwg+mvR6
+         hd35K4u+LIPTmJCiY4XNRgzwaD63yRtNjPsH5FYZfwUZ6p+CIdS6YvCD0a14n9+bEn+u
+         rYRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682701565; x=1685293565;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZwebSDbcEiTndvqleOUsphstm5KG1oepB9XO0kR9wf8=;
-        b=bJnurwQzwQ5NXyYBQP015Bd8v1S7eDLoUncBtFCd/HhOuH1nEYDDHnmoh3nxB2T+I+
-         GXf/jqNanRwUkx2QiMf2hLHw1nsCAk5JZWtO7g7Y07BoaheEEwq4pKnO3ScDP4g1hJmI
-         tumR79jVpkY69hX4ijjDZ3TW562enVnTA0j4jiwdVbzFxpO5gkop+0/QQLQxRqd6rKgo
-         6nlkuwF0PTIvx3tSF4Gy9nkcvyhamo9KvmfzKWBDkBqnRK85k+L7sttyyKgDyGUO97u1
-         iEZ68b0f/x33+y0l6Y6ZkxpOAXyY7bCF6V7oYA1DWBFv92ezdONqlh0RO5EWmUS28CPT
-         /6sA==
-X-Gm-Message-State: AC+VfDxR5YmMUbx8pTeKjgHCSRu5bErSt9slaaQ82FLraoJK8McnAWIP
-        pPOyW14mbHdOBWeGWKOH0txbgEER5Q8=
-X-Google-Smtp-Source: ACHHUZ6+9URlmsDBIOBUx8ggs+K/eEFuaPbj0Nf7i29aDO8gnip9GNXbXEzd/J45opRZeH7rg9RQvg==
-X-Received: by 2002:a54:4098:0:b0:384:833:2a79 with SMTP id i24-20020a544098000000b0038408332a79mr2919330oii.48.1682701565329;
-        Fri, 28 Apr 2023 10:06:05 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id p203-20020acaf1d4000000b0038cabfcb3ccsm9061020oih.15.2023.04.28.10.06.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 10:06:04 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682706589; x=1685298589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s4KTgPRWKqFJJtbuYpYkYucsieCC+1bveBrUbqH6YvY=;
+        b=bIQ2u9tR2j9stQOIGpCem+8k6TiX2yUYPmlFJR5Tq2LevxZtHaaoj7d/POecqQRWwY
+         EWjsZ99DnvCcezHdcHbDPEwMqQrEiW9myLw1ezs9BmMpi3HX3jMhHA/vmm+qELUkjSPp
+         7Xeg4Fy9M988tNi44sfUvMxsyKkRTazH63bc2ucRqPdhTSABdWmyXj2vLKaLueXVFOla
+         IEd6C1vfzO/14nbvNn6Wgkv/iV3JcXUjFXH3pbtriJMfe1LmtSd1AqCFChW6F1m2Rj4b
+         orutU7saUIjQsKM33l5g8Eg4101Vcras/g3Senlxdzy1m3ZbfAApw/ta6WawbMzc8XiK
+         OnnA==
+X-Gm-Message-State: AC+VfDz4DAMtxxVtZaUbBiBjAj+CxtNtFksWyPfG0djBngDp9zKBisZ0
+        ioeQKhJ7DyVZvo+HmqZQNqY=
+X-Google-Smtp-Source: ACHHUZ5OqcLV1ULHiFk78oryVWzINfxrnnZysmhDjme/8QBsKDJckEbWkuQkRszYUsapYpMJ/SOuIg==
+X-Received: by 2002:a05:6870:b493:b0:187:a154:eede with SMTP id y19-20020a056870b49300b00187a154eedemr5227897oap.4.1682706588327;
+        Fri, 28 Apr 2023 11:29:48 -0700 (PDT)
+Received: from localhost.localdomain ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id v68-20020a4a5a47000000b00541b5963069sm9893656ooa.20.2023.04.28.11.29.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Apr 2023 11:29:47 -0700 (PDT)
 Sender: Larry Finger <larry.finger@gmail.com>
-Content-Type: multipart/mixed; boundary="------------dXNjmVauvoy0tmBnxkx4nmvc"
-Message-ID: <d3743b66-23b1-011c-9dcd-c408b1963fca@lwfinger.net>
-Date:   Fri, 28 Apr 2023 12:06:03 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to
- incorrect RCR value
-Content-Language: en-US
-To:     wo <luyun_611@163.com>
-Cc:     Jes.Sorensen@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20230427020512.1221062-1-luyun_611@163.com>
- <866570c9-38d8-1006-4721-77e2945170b9@lwfinger.net>
- <76a784b2.2cb3.187c60f0f68.Coremail.luyun_611@163.com>
 From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <76a784b2.2cb3.187c60f0f68.Coremail.luyun_611@163.com>
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH] wifi: rtlwifi: rtl8192cu: Remove driver
+Date:   Fri, 28 Apr 2023 13:29:32 -0500
+Message-Id: <20230428182933.19157-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------dXNjmVauvoy0tmBnxkx4nmvc
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+The functionality of these devices has been replaced by the rtl8xxxu
+driver, thus the version under rtlwifi can be removed.
 
-On 4/27/23 23:11, wo wrote:
-> [  149.595642] [pid:7,cpu6,kworker/u16:0,0]BEFORE: REG_RCR differs from regrcr: 
-> 0x1830613 insted of 0x7000604e
-> [  160.676422] [pid:237,cpu6,kworker/u16:5,3]BEFORE: REG_RCR differs from 
-> regrcr: 0x70006009 insted of 0x700060ce
- > [  327.234588] [pid:7,cpu7,kworker/u16:0,5]BEFORE: REG_RCR differs from 
-regrcr: 0x1830d33 insted of 0x7000604e
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+ drivers/net/wireless/realtek/rtlwifi/Kconfig  |   17 +-
+ drivers/net/wireless/realtek/rtlwifi/Makefile |    1 -
+ drivers/net/wireless/realtek/rtlwifi/core.c   |    6 -
+ drivers/net/wireless/realtek/rtlwifi/pci.h    |    1 -
+ .../realtek/rtlwifi/rtl8192c/fw_common.c      |   10 +-
+ .../realtek/rtlwifi/rtl8192cu/Makefile        |   13 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/def.h  |   20 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/dm.c   |   90 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/dm.h   |    9 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/hw.c   | 2273 -----------------
+ .../wireless/realtek/rtlwifi/rtl8192cu/hw.h   |   83 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/led.c  |  118 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/led.h  |   13 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/mac.c  |  746 ------
+ .../wireless/realtek/rtlwifi/rtl8192cu/mac.h  |  132 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/phy.c  |  509 ----
+ .../wireless/realtek/rtlwifi/rtl8192cu/phy.h  |   24 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/reg.h  |    4 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/rf.c   |  442 ----
+ .../wireless/realtek/rtlwifi/rtl8192cu/rf.h   |   23 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/sw.c   |  391 ---
+ .../realtek/rtlwifi/rtl8192cu/table.c         | 1862 --------------
+ .../realtek/rtlwifi/rtl8192cu/table.h         |   45 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/trx.c  |  662 -----
+ .../wireless/realtek/rtlwifi/rtl8192cu/trx.h  |  403 ---
+ drivers/net/wireless/realtek/rtlwifi/wifi.h   |    1 -
+ 26 files changed, 2 insertions(+), 7896 deletions(-)
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/def.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/reg.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.h
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h
 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/Kconfig b/drivers/net/wireless/realtek/rtlwifi/Kconfig
+index 9f6a4e35543c..a83f30314c14 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/Kconfig
++++ b/drivers/net/wireless/realtek/rtlwifi/Kconfig
+@@ -106,18 +106,6 @@ config RTL8821AE
+ 
+ 	If you choose to build it as a module, it will be called rtl8821ae
+ 
+-config RTL8192CU
+-	tristate "Realtek RTL8192CU/RTL8188CU USB Wireless Network Adapter"
+-	depends on USB
+-	select RTLWIFI
+-	select RTLWIFI_USB
+-	select RTL8192C_COMMON
+-	help
+-	This is the driver for Realtek RTL8192CU/RTL8188CU 802.11n USB
+-	wireless network adapters.
+-
+-	If you choose to build it as a module, it will be called rtl8192cu
+-
+ config RTLWIFI
+ 	tristate
+ 	select FW_LOADER
+@@ -125,9 +113,6 @@ config RTLWIFI
+ config RTLWIFI_PCI
+ 	tristate
+ 
+-config RTLWIFI_USB
+-	tristate
+-
+ config RTLWIFI_DEBUG
+ 	bool "Debugging output for rtlwifi driver family"
+ 	depends on RTLWIFI
+@@ -139,7 +124,7 @@ config RTLWIFI_DEBUG
+ 
+ config RTL8192C_COMMON
+ 	tristate
+-	depends on RTL8192CE || RTL8192CU
++	depends on RTL8192CE
+ 	default y
+ 
+ config RTL8723_COMMON
+diff --git a/drivers/net/wireless/realtek/rtlwifi/Makefile b/drivers/net/wireless/realtek/rtlwifi/Makefile
+index 09c30e428375..8f0a30136c81 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/Makefile
++++ b/drivers/net/wireless/realtek/rtlwifi/Makefile
+@@ -21,7 +21,6 @@ rtl_usb-objs	:=		usb.o
+ 
+ obj-$(CONFIG_RTL8192C_COMMON)	+= rtl8192c/
+ obj-$(CONFIG_RTL8192CE)		+= rtl8192ce/
+-obj-$(CONFIG_RTL8192CU)		+= rtl8192cu/
+ obj-$(CONFIG_RTL8192SE)		+= rtl8192se/
+ obj-$(CONFIG_RTL8192DE)		+= rtl8192de/
+ obj-$(CONFIG_RTL8723AE)		+= rtl8723ae/
+diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
+index 6f10727cdb94..fac675b8d21c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/core.c
++++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+@@ -1770,12 +1770,6 @@ static void rtl_op_flush(struct ieee80211_hw *hw,
+ static int rtl_op_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+ 			  bool set)
+ {
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-
+-	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192CU)
+-		schedule_work(&rtlpriv->works.update_beacon_work);
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.h b/drivers/net/wireless/realtek/rtlwifi/pci.h
+index 866861626a0a..d61b9332e764 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.h
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.h
+@@ -79,7 +79,6 @@
+ #define RTL_PCI_8192CE_DID	0x8178	/*8192ce */
+ #define RTL_PCI_8191CE_DID	0x8177	/*8192ce */
+ #define RTL_PCI_8188CE_DID	0x8176	/*8192ce */
+-#define RTL_PCI_8192CU_DID	0x8191	/*8192ce */
+ #define RTL_PCI_8192DE_DID	0x8193	/*8192de */
+ #define RTL_PCI_8192DE_DID2	0x002B	/*92DE*/
+ #define RTL_PCI_8188EE_DID	0x8179  /*8188ee*/
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/fw_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/fw_common.c
+index b618f07f29b0..76d4e5b2be85 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/fw_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/fw_common.c
+@@ -16,15 +16,7 @@ static void _rtl92c_enable_fw_download(struct ieee80211_hw *hw, bool enable)
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 
+-	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192CU) {
+-		u32 value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
+-
+-		if (enable)
+-			value32 |= MCUFWDL_EN;
+-		else
+-			value32 &= ~MCUFWDL_EN;
+-		rtl_write_dword(rtlpriv, REG_MCUFWDL, value32);
+-	} else if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192CE) {
++	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192CE) {
+ 		u8 tmp;
+ 
+ 		if (enable) {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile
+deleted file mode 100644
+index 8b3921fd2cb6..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/Makefile
++++ /dev/null
+@@ -1,13 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-rtl8192cu-objs :=		\
+-		dm.o		\
+-		hw.o		\
+-		led.o		\
+-		mac.o		\
+-		phy.o		\
+-		rf.o		\
+-		sw.o		\
+-		table.o		\
+-		trx.o
+-
+-obj-$(CONFIG_RTL8192CU) += rtl8192cu.o
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/def.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/def.h
+deleted file mode 100644
+index 91e4427ab022..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/def.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../rtl8192ce/def.h"
+-
+-/*-------------------------------------------------------------------------
+- *	Chip specific
+- *-------------------------------------------------------------------------*/
+-#define NORMAL_CHIP			BIT(4)
+-#define CHIP_VENDOR_UMC			BIT(5)
+-#define CHIP_VENDOR_UMC_B_CUT		BIT(6)
+-
+-#define IS_92C_1T2R(version)		\
+-	(((version) & CHIP_92C) && ((version) & CHIP_92C_1T2R))
+-
+-#define IS_VENDOR_UMC(version)		\
+-	(((version) & CHIP_VENDOR_UMC) ? true : false)
+-
+-#define CHIP_BONDING_92C_1T2R	0x1
+-#define CHIP_BONDING_IDENTIFIER(_value)	(((_value) >> 22) & 0x3)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.c
+deleted file mode 100644
+index 9823872692b1..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.c
++++ /dev/null
+@@ -1,90 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../base.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "dm.h"
+-
+-void rtl92cu_dm_dynamic_txpower(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	long undec_sm_pwdb;
+-
+-	if (!rtlpriv->dm.dynamic_txpower_enable)
+-		return;
+-
+-	if (rtlpriv->dm.dm_flag & HAL_DM_HIPWR_DISABLE) {
+-		rtlpriv->dm.dynamic_txhighpower_lvl = TXHIGHPWRLEVEL_NORMAL;
+-		return;
+-	}
+-
+-	if ((mac->link_state < MAC80211_LINKED) &&
+-	    (rtlpriv->dm.entry_min_undec_sm_pwdb == 0)) {
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_TRACE,
+-			"Not connected to any\n");
+-
+-		rtlpriv->dm.dynamic_txhighpower_lvl = TXHIGHPWRLEVEL_NORMAL;
+-
+-		rtlpriv->dm.last_dtp_lvl = TXHIGHPWRLEVEL_NORMAL;
+-		return;
+-	}
+-
+-	if (mac->link_state >= MAC80211_LINKED) {
+-		if (mac->opmode == NL80211_IFTYPE_ADHOC) {
+-			undec_sm_pwdb = rtlpriv->dm.entry_min_undec_sm_pwdb;
+-			rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-				"AP Client PWDB = 0x%lx\n",
+-				undec_sm_pwdb);
+-		} else {
+-			undec_sm_pwdb = rtlpriv->dm.undec_sm_pwdb;
+-			rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-				"STA Default Port PWDB = 0x%lx\n",
+-				undec_sm_pwdb);
+-		}
+-	} else {
+-		undec_sm_pwdb = rtlpriv->dm.entry_min_undec_sm_pwdb;
+-
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"AP Ext Port PWDB = 0x%lx\n",
+-			undec_sm_pwdb);
+-	}
+-
+-	if (undec_sm_pwdb >= TX_POWER_NEAR_FIELD_THRESH_LVL2) {
+-		rtlpriv->dm.dynamic_txhighpower_lvl = TXHIGHPWRLEVEL_LEVEL1;
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"TXHIGHPWRLEVEL_LEVEL1 (TxPwr=0x0)\n");
+-	} else if ((undec_sm_pwdb < (TX_POWER_NEAR_FIELD_THRESH_LVL2 - 3)) &&
+-		   (undec_sm_pwdb >= TX_POWER_NEAR_FIELD_THRESH_LVL1)) {
+-
+-		rtlpriv->dm.dynamic_txhighpower_lvl = TXHIGHPWRLEVEL_LEVEL1;
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"TXHIGHPWRLEVEL_LEVEL1 (TxPwr=0x10)\n");
+-	} else if (undec_sm_pwdb < (TX_POWER_NEAR_FIELD_THRESH_LVL1 - 5)) {
+-		rtlpriv->dm.dynamic_txhighpower_lvl = TXHIGHPWRLEVEL_NORMAL;
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"TXHIGHPWRLEVEL_NORMAL\n");
+-	}
+-
+-	if ((rtlpriv->dm.dynamic_txhighpower_lvl != rtlpriv->dm.last_dtp_lvl)) {
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"PHY_SetTxPowerLevel8192S() Channel = %d\n",
+-			 rtlphy->current_channel);
+-		rtl92c_phy_set_txpower_level(hw, rtlphy->current_channel);
+-		if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-		    TXHIGHPWRLEVEL_NORMAL)
+-			dm_restorepowerindex(hw);
+-		else if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-			 TXHIGHPWRLEVEL_LEVEL1)
+-			dm_writepowerindex(hw, 0x14);
+-		else if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-			 TXHIGHPWRLEVEL_LEVEL2)
+-			dm_writepowerindex(hw, 0x10);
+-	}
+-
+-	rtlpriv->dm.last_dtp_lvl = rtlpriv->dm.dynamic_txhighpower_lvl;
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.h
+deleted file mode 100644
+index 2befc2f4e3fd..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/dm.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../rtl8192ce/dm.h"
+-
+-void rtl92cu_dm_dynamic_txpower(struct ieee80211_hw *hw);
+-void dm_savepowerindex(struct ieee80211_hw *hw);
+-void dm_writepowerindex(struct ieee80211_hw *hw, u8 value);
+-void dm_restorepowerindex(struct ieee80211_hw *hw);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+deleted file mode 100644
+index a040c07791d1..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
++++ /dev/null
+@@ -1,2273 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../efuse.h"
+-#include "../base.h"
+-#include "../cam.h"
+-#include "../ps.h"
+-#include "../usb.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "../rtl8192c/phy_common.h"
+-#include "mac.h"
+-#include "dm.h"
+-#include "../rtl8192c/dm_common.h"
+-#include "../rtl8192c/fw_common.h"
+-#include "hw.h"
+-#include "../rtl8192ce/hw.h"
+-#include "trx.h"
+-#include "led.h"
+-#include "table.h"
+-
+-static void _rtl92cu_phy_param_tab_init(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+-
+-	rtlphy->hwparam_tables[MAC_REG].length = RTL8192CUMAC_2T_ARRAYLENGTH;
+-	rtlphy->hwparam_tables[MAC_REG].pdata = RTL8192CUMAC_2T_ARRAY;
+-	if (IS_HIGHT_PA(rtlefuse->board_type)) {
+-		rtlphy->hwparam_tables[PHY_REG_PG].length =
+-			RTL8192CUPHY_REG_ARRAY_PG_HPLENGTH;
+-		rtlphy->hwparam_tables[PHY_REG_PG].pdata =
+-			RTL8192CUPHY_REG_ARRAY_PG_HP;
+-	} else {
+-		rtlphy->hwparam_tables[PHY_REG_PG].length =
+-			RTL8192CUPHY_REG_ARRAY_PGLENGTH;
+-		rtlphy->hwparam_tables[PHY_REG_PG].pdata =
+-			RTL8192CUPHY_REG_ARRAY_PG;
+-	}
+-	/* 2T */
+-	rtlphy->hwparam_tables[PHY_REG_2T].length =
+-			RTL8192CUPHY_REG_2TARRAY_LENGTH;
+-	rtlphy->hwparam_tables[PHY_REG_2T].pdata =
+-			RTL8192CUPHY_REG_2TARRAY;
+-	rtlphy->hwparam_tables[RADIOA_2T].length =
+-			RTL8192CURADIOA_2TARRAYLENGTH;
+-	rtlphy->hwparam_tables[RADIOA_2T].pdata =
+-			RTL8192CURADIOA_2TARRAY;
+-	rtlphy->hwparam_tables[RADIOB_2T].length =
+-			RTL8192CURADIOB_2TARRAYLENGTH;
+-	rtlphy->hwparam_tables[RADIOB_2T].pdata =
+-			RTL8192CU_RADIOB_2TARRAY;
+-	rtlphy->hwparam_tables[AGCTAB_2T].length =
+-			RTL8192CUAGCTAB_2TARRAYLENGTH;
+-	rtlphy->hwparam_tables[AGCTAB_2T].pdata =
+-			RTL8192CUAGCTAB_2TARRAY;
+-	/* 1T */
+-	if (IS_HIGHT_PA(rtlefuse->board_type)) {
+-		rtlphy->hwparam_tables[PHY_REG_1T].length =
+-			RTL8192CUPHY_REG_1T_HPARRAYLENGTH;
+-		rtlphy->hwparam_tables[PHY_REG_1T].pdata =
+-			RTL8192CUPHY_REG_1T_HPARRAY;
+-		rtlphy->hwparam_tables[RADIOA_1T].length =
+-			RTL8192CURADIOA_1T_HPARRAYLENGTH;
+-		rtlphy->hwparam_tables[RADIOA_1T].pdata =
+-			RTL8192CURADIOA_1T_HPARRAY;
+-		rtlphy->hwparam_tables[RADIOB_1T].length =
+-			RTL8192CURADIOB_1TARRAYLENGTH;
+-		rtlphy->hwparam_tables[RADIOB_1T].pdata =
+-			RTL8192CU_RADIOB_1TARRAY;
+-		rtlphy->hwparam_tables[AGCTAB_1T].length =
+-			RTL8192CUAGCTAB_1T_HPARRAYLENGTH;
+-		rtlphy->hwparam_tables[AGCTAB_1T].pdata =
+-			RTL8192CUAGCTAB_1T_HPARRAY;
+-	} else {
+-		rtlphy->hwparam_tables[PHY_REG_1T].length =
+-			 RTL8192CUPHY_REG_1TARRAY_LENGTH;
+-		rtlphy->hwparam_tables[PHY_REG_1T].pdata =
+-			RTL8192CUPHY_REG_1TARRAY;
+-		rtlphy->hwparam_tables[RADIOA_1T].length =
+-			RTL8192CURADIOA_1TARRAYLENGTH;
+-		rtlphy->hwparam_tables[RADIOA_1T].pdata =
+-			RTL8192CU_RADIOA_1TARRAY;
+-		rtlphy->hwparam_tables[RADIOB_1T].length =
+-			RTL8192CURADIOB_1TARRAYLENGTH;
+-		rtlphy->hwparam_tables[RADIOB_1T].pdata =
+-			RTL8192CU_RADIOB_1TARRAY;
+-		rtlphy->hwparam_tables[AGCTAB_1T].length =
+-			RTL8192CUAGCTAB_1TARRAYLENGTH;
+-		rtlphy->hwparam_tables[AGCTAB_1T].pdata =
+-			RTL8192CUAGCTAB_1TARRAY;
+-	}
+-}
+-
+-static void _rtl92cu_read_txpower_info_from_hwpg(struct ieee80211_hw *hw,
+-						 bool autoload_fail,
+-						 u8 *hwinfo)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	u8 rf_path, index, tempval;
+-	u16 i;
+-
+-	for (rf_path = 0; rf_path < 2; rf_path++) {
+-		for (i = 0; i < 3; i++) {
+-			if (!autoload_fail) {
+-				rtlefuse->
+-				    eeprom_chnlarea_txpwr_cck[rf_path][i] =
+-				    hwinfo[EEPROM_TXPOWERCCK + rf_path * 3 + i];
+-				rtlefuse->
+-				    eeprom_chnlarea_txpwr_ht40_1s[rf_path][i] =
+-				    hwinfo[EEPROM_TXPOWERHT40_1S + rf_path * 3 +
+-					   i];
+-			} else {
+-				rtlefuse->
+-				    eeprom_chnlarea_txpwr_cck[rf_path][i] =
+-				    EEPROM_DEFAULT_TXPOWERLEVEL;
+-				rtlefuse->
+-				    eeprom_chnlarea_txpwr_ht40_1s[rf_path][i] =
+-				    EEPROM_DEFAULT_TXPOWERLEVEL;
+-			}
+-		}
+-	}
+-	for (i = 0; i < 3; i++) {
+-		if (!autoload_fail)
+-			tempval = hwinfo[EEPROM_TXPOWERHT40_2SDIFF + i];
+-		else
+-			tempval = EEPROM_DEFAULT_HT40_2SDIFF;
+-		rtlefuse->eprom_chnl_txpwr_ht40_2sdf[RF90_PATH_A][i] =
+-		    (tempval & 0xf);
+-		rtlefuse->eprom_chnl_txpwr_ht40_2sdf[RF90_PATH_B][i] =
+-		    ((tempval & 0xf0) >> 4);
+-	}
+-	for (rf_path = 0; rf_path < 2; rf_path++)
+-		for (i = 0; i < 3; i++)
+-			RTPRINT(rtlpriv, FINIT, INIT_EEPROM,
+-				"RF(%d) EEPROM CCK Area(%d) = 0x%x\n",
+-				rf_path, i,
+-				rtlefuse->
+-				eeprom_chnlarea_txpwr_cck[rf_path][i]);
+-	for (rf_path = 0; rf_path < 2; rf_path++)
+-		for (i = 0; i < 3; i++)
+-			RTPRINT(rtlpriv, FINIT, INIT_EEPROM,
+-				"RF(%d) EEPROM HT40 1S Area(%d) = 0x%x\n",
+-				rf_path, i,
+-				rtlefuse->
+-				eeprom_chnlarea_txpwr_ht40_1s[rf_path][i]);
+-	for (rf_path = 0; rf_path < 2; rf_path++)
+-		for (i = 0; i < 3; i++)
+-			RTPRINT(rtlpriv, FINIT, INIT_EEPROM,
+-				"RF(%d) EEPROM HT40 2S Diff Area(%d) = 0x%x\n",
+-				rf_path, i,
+-				rtlefuse->
+-				eprom_chnl_txpwr_ht40_2sdf[rf_path][i]);
+-	for (rf_path = 0; rf_path < 2; rf_path++) {
+-		for (i = 0; i < 14; i++) {
+-			index = rtl92c_get_chnl_group((u8)i);
+-			rtlefuse->txpwrlevel_cck[rf_path][i] =
+-			    rtlefuse->eeprom_chnlarea_txpwr_cck[rf_path][index];
+-			rtlefuse->txpwrlevel_ht40_1s[rf_path][i] =
+-			    rtlefuse->
+-			    eeprom_chnlarea_txpwr_ht40_1s[rf_path][index];
+-			if ((rtlefuse->
+-			     eeprom_chnlarea_txpwr_ht40_1s[rf_path][index] -
+-			     rtlefuse->
+-			     eprom_chnl_txpwr_ht40_2sdf[rf_path][index])
+-			    > 0) {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] =
+-				    rtlefuse->
+-				    eeprom_chnlarea_txpwr_ht40_1s[rf_path]
+-				    [index] - rtlefuse->
+-				    eprom_chnl_txpwr_ht40_2sdf[rf_path]
+-				    [index];
+-			} else {
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i] = 0;
+-			}
+-		}
+-		for (i = 0; i < 14; i++) {
+-			RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-				"RF(%d)-Ch(%d) [CCK / HT40_1S / HT40_2S] = [0x%x / 0x%x / 0x%x]\n", rf_path, i,
+-				rtlefuse->txpwrlevel_cck[rf_path][i],
+-				rtlefuse->txpwrlevel_ht40_1s[rf_path][i],
+-				rtlefuse->txpwrlevel_ht40_2s[rf_path][i]);
+-		}
+-	}
+-	for (i = 0; i < 3; i++) {
+-		if (!autoload_fail) {
+-			rtlefuse->eeprom_pwrlimit_ht40[i] =
+-			    hwinfo[EEPROM_TXPWR_GROUP + i];
+-			rtlefuse->eeprom_pwrlimit_ht20[i] =
+-			    hwinfo[EEPROM_TXPWR_GROUP + 3 + i];
+-		} else {
+-			rtlefuse->eeprom_pwrlimit_ht40[i] = 0;
+-			rtlefuse->eeprom_pwrlimit_ht20[i] = 0;
+-		}
+-	}
+-	for (rf_path = 0; rf_path < 2; rf_path++) {
+-		for (i = 0; i < 14; i++) {
+-			index = rtl92c_get_chnl_group((u8)i);
+-			if (rf_path == RF90_PATH_A) {
+-				rtlefuse->pwrgroup_ht20[rf_path][i] =
+-				    (rtlefuse->eeprom_pwrlimit_ht20[index]
+-				     & 0xf);
+-				rtlefuse->pwrgroup_ht40[rf_path][i] =
+-				    (rtlefuse->eeprom_pwrlimit_ht40[index]
+-				     & 0xf);
+-			} else if (rf_path == RF90_PATH_B) {
+-				rtlefuse->pwrgroup_ht20[rf_path][i] =
+-				    ((rtlefuse->eeprom_pwrlimit_ht20[index]
+-				      & 0xf0) >> 4);
+-				rtlefuse->pwrgroup_ht40[rf_path][i] =
+-				    ((rtlefuse->eeprom_pwrlimit_ht40[index]
+-				      & 0xf0) >> 4);
+-			}
+-			RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-				"RF-%d pwrgroup_ht20[%d] = 0x%x\n",
+-				rf_path, i,
+-				rtlefuse->pwrgroup_ht20[rf_path][i]);
+-			RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-				"RF-%d pwrgroup_ht40[%d] = 0x%x\n",
+-				rf_path, i,
+-				rtlefuse->pwrgroup_ht40[rf_path][i]);
+-		}
+-	}
+-	for (i = 0; i < 14; i++) {
+-		index = rtl92c_get_chnl_group((u8)i);
+-		if (!autoload_fail)
+-			tempval = hwinfo[EEPROM_TXPOWERHT20DIFF + index];
+-		else
+-			tempval = EEPROM_DEFAULT_HT20_DIFF;
+-		rtlefuse->txpwr_ht20diff[RF90_PATH_A][i] = (tempval & 0xF);
+-		rtlefuse->txpwr_ht20diff[RF90_PATH_B][i] =
+-		    ((tempval >> 4) & 0xF);
+-		if (rtlefuse->txpwr_ht20diff[RF90_PATH_A][i] & BIT(3))
+-			rtlefuse->txpwr_ht20diff[RF90_PATH_A][i] |= 0xF0;
+-		if (rtlefuse->txpwr_ht20diff[RF90_PATH_B][i] & BIT(3))
+-			rtlefuse->txpwr_ht20diff[RF90_PATH_B][i] |= 0xF0;
+-		index = rtl92c_get_chnl_group((u8)i);
+-		if (!autoload_fail)
+-			tempval = hwinfo[EEPROM_TXPOWER_OFDMDIFF + index];
+-		else
+-			tempval = EEPROM_DEFAULT_LEGACYHTTXPOWERDIFF;
+-		rtlefuse->txpwr_legacyhtdiff[RF90_PATH_A][i] = (tempval & 0xF);
+-		rtlefuse->txpwr_legacyhtdiff[RF90_PATH_B][i] =
+-		    ((tempval >> 4) & 0xF);
+-	}
+-	rtlefuse->legacy_ht_txpowerdiff =
+-	    rtlefuse->txpwr_legacyhtdiff[RF90_PATH_A][7];
+-	for (i = 0; i < 14; i++)
+-		RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-			"RF-A Ht20 to HT40 Diff[%d] = 0x%x\n",
+-			i, rtlefuse->txpwr_ht20diff[RF90_PATH_A][i]);
+-	for (i = 0; i < 14; i++)
+-		RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-			"RF-A Legacy to Ht40 Diff[%d] = 0x%x\n",
+-			i, rtlefuse->txpwr_legacyhtdiff[RF90_PATH_A][i]);
+-	for (i = 0; i < 14; i++)
+-		RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-			"RF-B Ht20 to HT40 Diff[%d] = 0x%x\n",
+-			i, rtlefuse->txpwr_ht20diff[RF90_PATH_B][i]);
+-	for (i = 0; i < 14; i++)
+-		RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-			"RF-B Legacy to HT40 Diff[%d] = 0x%x\n",
+-			i, rtlefuse->txpwr_legacyhtdiff[RF90_PATH_B][i]);
+-	if (!autoload_fail)
+-		rtlefuse->eeprom_regulatory = (hwinfo[RF_OPTION1] & 0x7);
+-	else
+-		rtlefuse->eeprom_regulatory = 0;
+-	RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-		"eeprom_regulatory = 0x%x\n", rtlefuse->eeprom_regulatory);
+-	if (!autoload_fail) {
+-		rtlefuse->eeprom_tssi[RF90_PATH_A] = hwinfo[EEPROM_TSSI_A];
+-		rtlefuse->eeprom_tssi[RF90_PATH_B] = hwinfo[EEPROM_TSSI_B];
+-	} else {
+-		rtlefuse->eeprom_tssi[RF90_PATH_A] = EEPROM_DEFAULT_TSSI;
+-		rtlefuse->eeprom_tssi[RF90_PATH_B] = EEPROM_DEFAULT_TSSI;
+-	}
+-	RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-		"TSSI_A = 0x%x, TSSI_B = 0x%x\n",
+-		rtlefuse->eeprom_tssi[RF90_PATH_A],
+-		rtlefuse->eeprom_tssi[RF90_PATH_B]);
+-	if (!autoload_fail)
+-		tempval = hwinfo[EEPROM_THERMAL_METER];
+-	else
+-		tempval = EEPROM_DEFAULT_THERMALMETER;
+-	rtlefuse->eeprom_thermalmeter = (tempval & 0x1f);
+-	if (rtlefuse->eeprom_thermalmeter < 0x06 ||
+-	    rtlefuse->eeprom_thermalmeter > 0x1c)
+-		rtlefuse->eeprom_thermalmeter = 0x12;
+-	if (rtlefuse->eeprom_thermalmeter == 0x1f || autoload_fail)
+-		rtlefuse->apk_thermalmeterignore = true;
+-	rtlefuse->thermalmeter[0] = rtlefuse->eeprom_thermalmeter;
+-	RTPRINT(rtlpriv, FINIT, INIT_TXPOWER,
+-		"thermalmeter = 0x%x\n", rtlefuse->eeprom_thermalmeter);
+-}
+-
+-static void _rtl92cu_read_board_type(struct ieee80211_hw *hw, u8 *contents)
+-{
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	u8 boardtype;
+-
+-	if (IS_NORMAL_CHIP(rtlhal->version)) {
+-		boardtype = ((contents[EEPROM_RF_OPT1]) &
+-			    BOARD_TYPE_NORMAL_MASK) >> 5; /*bit[7:5]*/
+-	} else {
+-		boardtype = contents[EEPROM_RF_OPT4];
+-		boardtype &= BOARD_TYPE_TEST_MASK;
+-	}
+-	rtlefuse->board_type = boardtype;
+-	if (IS_HIGHT_PA(rtlefuse->board_type))
+-		rtlefuse->external_pa = 1;
+-	pr_info("Board Type %x\n", rtlefuse->board_type);
+-}
+-
+-static void _rtl92cu_read_adapter_info(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	int params[] = {RTL8190_EEPROM_ID, EEPROM_VID, EEPROM_DID,
+-			EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR,
+-			EEPROM_CHANNELPLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
+-			0};
+-	u8 *hwinfo;
+-
+-	hwinfo = kzalloc(HWSET_MAX_SIZE, GFP_KERNEL);
+-	if (!hwinfo)
+-		return;
+-
+-	if (rtl_get_hwinfo(hw, rtlpriv, HWSET_MAX_SIZE, hwinfo, params))
+-		goto exit;
+-
+-	_rtl92cu_read_txpower_info_from_hwpg(hw,
+-					   rtlefuse->autoload_failflag, hwinfo);
+-	_rtl92cu_read_board_type(hw, hwinfo);
+-
+-	rtlefuse->txpwr_fromeprom = true;
+-	if (rtlhal->oem_id == RT_CID_DEFAULT) {
+-		switch (rtlefuse->eeprom_oemid) {
+-		case EEPROM_CID_DEFAULT:
+-			if (rtlefuse->eeprom_did == 0x8176) {
+-				if ((rtlefuse->eeprom_svid == 0x103C &&
+-				     rtlefuse->eeprom_smid == 0x1629))
+-					rtlhal->oem_id = RT_CID_819X_HP;
+-				else
+-					rtlhal->oem_id = RT_CID_DEFAULT;
+-			} else {
+-				rtlhal->oem_id = RT_CID_DEFAULT;
+-			}
+-			break;
+-		case EEPROM_CID_TOSHIBA:
+-			rtlhal->oem_id = RT_CID_TOSHIBA;
+-			break;
+-		case EEPROM_CID_QMI:
+-			rtlhal->oem_id = RT_CID_819X_QMI;
+-			break;
+-		case EEPROM_CID_WHQL:
+-		default:
+-			rtlhal->oem_id = RT_CID_DEFAULT;
+-			break;
+-		}
+-	}
+-exit:
+-	kfree(hwinfo);
+-}
+-
+-static void _rtl92cu_hal_customized_behavior(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-
+-	switch (rtlhal->oem_id) {
+-	case RT_CID_819X_HP:
+-		rtlpriv->ledctl.led_opendrain = true;
+-		break;
+-	case RT_CID_819X_LENOVO:
+-	case RT_CID_DEFAULT:
+-	case RT_CID_TOSHIBA:
+-	case RT_CID_CCX:
+-	case RT_CID_819X_ACER:
+-	case RT_CID_WHQL:
+-	default:
+-		break;
+-	}
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG, "RT Customized ID: 0x%02X\n",
+-		rtlhal->oem_id);
+-}
+-
+-void rtl92cu_read_eeprom_info(struct ieee80211_hw *hw)
+-{
+-
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	u8 tmp_u1b;
+-
+-	if (!IS_NORMAL_CHIP(rtlhal->version))
+-		return;
+-	tmp_u1b = rtl_read_byte(rtlpriv, REG_9346CR);
+-	rtlefuse->epromtype = (tmp_u1b & BOOT_FROM_EEPROM) ?
+-			       EEPROM_93C46 : EEPROM_BOOT_EFUSE;
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from %s\n",
+-		tmp_u1b & BOOT_FROM_EEPROM ? "EERROM" : "EFUSE");
+-	rtlefuse->autoload_failflag = (tmp_u1b & EEPROM_EN) ? false : true;
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload %s\n",
+-		tmp_u1b & EEPROM_EN ? "OK!!" : "ERR!!");
+-	_rtl92cu_read_adapter_info(hw);
+-	_rtl92cu_hal_customized_behavior(hw);
+-	return;
+-}
+-
+-static int _rtl92cu_init_power_on(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	int		status = 0;
+-	u16		value16;
+-	u8		value8;
+-	/*  polling autoload done. */
+-	u32	pollingcount = 0;
+-
+-	do {
+-		if (rtl_read_byte(rtlpriv, REG_APS_FSMCO) & PFM_ALDN) {
+-			rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-				"Autoload Done!\n");
+-			break;
+-		}
+-		if (pollingcount++ > 100) {
+-			pr_err("Failed to polling REG_APS_FSMCO[PFM_ALDN] done!\n");
+-			return -ENODEV;
+-		}
+-	} while (true);
+-	/* 0. RSV_CTRL 0x1C[7:0] = 0 unlock ISO/CLK/Power control register */
+-	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0);
+-	/* Power on when re-enter from IPS/Radio off/card disable */
+-	/* enable SPS into PWM mode */
+-	rtl_write_byte(rtlpriv, REG_SPS0_CTRL, 0x2b);
+-	udelay(100);
+-	value8 = rtl_read_byte(rtlpriv, REG_LDOV12D_CTRL);
+-	if (0 == (value8 & LDV12_EN)) {
+-		value8 |= LDV12_EN;
+-		rtl_write_byte(rtlpriv, REG_LDOV12D_CTRL, value8);
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			" power-on :REG_LDOV12D_CTRL Reg0x21:0x%02x\n",
+-			value8);
+-		udelay(100);
+-		value8 = rtl_read_byte(rtlpriv, REG_SYS_ISO_CTRL);
+-		value8 &= ~ISO_MD2PP;
+-		rtl_write_byte(rtlpriv, REG_SYS_ISO_CTRL, value8);
+-	}
+-	/*  auto enable WLAN */
+-	pollingcount = 0;
+-	value16 = rtl_read_word(rtlpriv, REG_APS_FSMCO);
+-	value16 |= APFM_ONMAC;
+-	rtl_write_word(rtlpriv, REG_APS_FSMCO, value16);
+-	do {
+-		if (!(rtl_read_word(rtlpriv, REG_APS_FSMCO) & APFM_ONMAC)) {
+-			pr_info("MAC auto ON okay!\n");
+-			break;
+-		}
+-		if (pollingcount++ > 1000) {
+-			pr_err("Failed to polling REG_APS_FSMCO[APFM_ONMAC] done!\n");
+-			return -ENODEV;
+-		}
+-	} while (true);
+-	/* Enable Radio ,GPIO ,and LED function */
+-	rtl_write_word(rtlpriv, REG_APS_FSMCO, 0x0812);
+-	/* release RF digital isolation */
+-	value16 = rtl_read_word(rtlpriv, REG_SYS_ISO_CTRL);
+-	value16 &= ~ISO_DIOR;
+-	rtl_write_word(rtlpriv, REG_SYS_ISO_CTRL, value16);
+-	/* Reconsider when to do this operation after asking HWSD. */
+-	pollingcount = 0;
+-	rtl_write_byte(rtlpriv, REG_APSD_CTRL, (rtl_read_byte(rtlpriv,
+-						REG_APSD_CTRL) & ~BIT(6)));
+-	do {
+-		pollingcount++;
+-	} while ((pollingcount < 200) &&
+-		 (rtl_read_byte(rtlpriv, REG_APSD_CTRL) & BIT(7)));
+-	/* Enable MAC DMA/WMAC/SCHEDULE/SEC block */
+-	value16 = rtl_read_word(rtlpriv,  REG_CR);
+-	value16 |= (HCI_TXDMA_EN | HCI_RXDMA_EN | TXDMA_EN | RXDMA_EN |
+-		    PROTOCOL_EN | SCHEDULE_EN | MACTXEN | MACRXEN | ENSEC);
+-	rtl_write_word(rtlpriv, REG_CR, value16);
+-	return status;
+-}
+-
+-static void _rtl92cu_init_queue_reserved_page(struct ieee80211_hw *hw,
+-					      bool wmm_enable,
+-					      u8 out_ep_num,
+-					      u8 queue_sel)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	bool ischipn = IS_NORMAL_CHIP(rtlhal->version);
+-	u32 outepnum = (u32)out_ep_num;
+-	u32 numhq = 0;
+-	u32 numlq = 0;
+-	u32 numnq = 0;
+-	u32 numpubq;
+-	u32 value32;
+-	u8 value8;
+-	u32 txqpagenum, txqpageunit, txqremaininpage;
+-
+-	if (!wmm_enable) {
+-		numpubq = (ischipn) ? CHIP_B_PAGE_NUM_PUBQ :
+-			  CHIP_A_PAGE_NUM_PUBQ;
+-		txqpagenum = TX_TOTAL_PAGE_NUMBER - numpubq;
+-
+-		txqpageunit = txqpagenum / outepnum;
+-		txqremaininpage = txqpagenum % outepnum;
+-		if (queue_sel & TX_SELE_HQ)
+-			numhq = txqpageunit;
+-		if (queue_sel & TX_SELE_LQ)
+-			numlq = txqpageunit;
+-		/* HIGH priority queue always present in the configuration of
+-		 * 2 out-ep. Remainder pages have assigned to High queue */
+-		if (outepnum > 1 && txqremaininpage)
+-			numhq += txqremaininpage;
+-		/* NOTE: This step done before writing REG_RQPN. */
+-		if (ischipn) {
+-			if (queue_sel & TX_SELE_NQ)
+-				numnq = txqpageunit;
+-			value8 = (u8)_NPQ(numnq);
+-			rtl_write_byte(rtlpriv,  REG_RQPN_NPQ, value8);
+-		}
+-	} else {
+-		/* for WMM ,number of out-ep must more than or equal to 2! */
+-		numpubq = ischipn ? WMM_CHIP_B_PAGE_NUM_PUBQ :
+-			  WMM_CHIP_A_PAGE_NUM_PUBQ;
+-		if (queue_sel & TX_SELE_HQ) {
+-			numhq = ischipn ? WMM_CHIP_B_PAGE_NUM_HPQ :
+-				WMM_CHIP_A_PAGE_NUM_HPQ;
+-		}
+-		if (queue_sel & TX_SELE_LQ) {
+-			numlq = ischipn ? WMM_CHIP_B_PAGE_NUM_LPQ :
+-				WMM_CHIP_A_PAGE_NUM_LPQ;
+-		}
+-		/* NOTE: This step done before writing REG_RQPN. */
+-		if (ischipn) {
+-			if (queue_sel & TX_SELE_NQ)
+-				numnq = WMM_CHIP_B_PAGE_NUM_NPQ;
+-			value8 = (u8)_NPQ(numnq);
+-			rtl_write_byte(rtlpriv, REG_RQPN_NPQ, value8);
+-		}
+-	}
+-	/* TX DMA */
+-	value32 = _HPQ(numhq) | _LPQ(numlq) | _PUBQ(numpubq) | LD_RQPN;
+-	rtl_write_dword(rtlpriv, REG_RQPN, value32);
+-}
+-
+-static void _rtl92c_init_trx_buffer(struct ieee80211_hw *hw, bool wmm_enable)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	u8	txpktbuf_bndy;
+-	u8	value8;
+-
+-	if (!wmm_enable)
+-		txpktbuf_bndy = TX_PAGE_BOUNDARY;
+-	else /* for WMM */
+-		txpktbuf_bndy = (IS_NORMAL_CHIP(rtlhal->version))
+-						? WMM_CHIP_B_TX_PAGE_BOUNDARY
+-						: WMM_CHIP_A_TX_PAGE_BOUNDARY;
+-	rtl_write_byte(rtlpriv, REG_TXPKTBUF_BCNQ_BDNY, txpktbuf_bndy);
+-	rtl_write_byte(rtlpriv, REG_TXPKTBUF_MGQ_BDNY, txpktbuf_bndy);
+-	rtl_write_byte(rtlpriv, REG_TXPKTBUF_WMAC_LBK_BF_HD, txpktbuf_bndy);
+-	rtl_write_byte(rtlpriv, REG_TRXFF_BNDY, txpktbuf_bndy);
+-	rtl_write_byte(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
+-	rtl_write_word(rtlpriv,  (REG_TRXFF_BNDY + 2), 0x27FF);
+-	value8 = _PSRX(RX_PAGE_SIZE_REG_VALUE) | _PSTX(PBP_128);
+-	rtl_write_byte(rtlpriv, REG_PBP, value8);
+-}
+-
+-static void _rtl92c_init_chipn_reg_priority(struct ieee80211_hw *hw, u16 beq,
+-					    u16 bkq, u16 viq, u16 voq,
+-					    u16 mgtq, u16 hiq)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u16 value16 = (rtl_read_word(rtlpriv, REG_TRXDMA_CTRL) & 0x7);
+-
+-	value16 |= _TXDMA_BEQ_MAP(beq) | _TXDMA_BKQ_MAP(bkq) |
+-		   _TXDMA_VIQ_MAP(viq) | _TXDMA_VOQ_MAP(voq) |
+-		   _TXDMA_MGQ_MAP(mgtq) | _TXDMA_HIQ_MAP(hiq);
+-	rtl_write_word(rtlpriv,  REG_TRXDMA_CTRL, value16);
+-}
+-
+-static void _rtl92cu_init_chipn_one_out_ep_priority(struct ieee80211_hw *hw,
+-						    bool wmm_enable,
+-						    u8 queue_sel)
+-{
+-	u16 value;
+-
+-	switch (queue_sel) {
+-	case TX_SELE_HQ:
+-		value = QUEUE_HIGH;
+-		break;
+-	case TX_SELE_LQ:
+-		value = QUEUE_LOW;
+-		break;
+-	case TX_SELE_NQ:
+-		value = QUEUE_NORMAL;
+-		break;
+-	default:
+-		WARN_ON(1); /* Shall not reach here! */
+-		return;
+-	}
+-	_rtl92c_init_chipn_reg_priority(hw, value, value, value, value,
+-					value, value);
+-	pr_info("Tx queue select: 0x%02x\n", queue_sel);
+-}
+-
+-static void _rtl92cu_init_chipn_two_out_ep_priority(struct ieee80211_hw *hw,
+-						     bool wmm_enable,
+-						     u8 queue_sel)
+-{
+-	u16 beq, bkq, viq, voq, mgtq, hiq;
+-	u16 valuehi;
+-	u16 valuelow;
+-
+-	switch (queue_sel) {
+-	case (TX_SELE_HQ | TX_SELE_LQ):
+-		valuehi = QUEUE_HIGH;
+-		valuelow = QUEUE_LOW;
+-		break;
+-	case (TX_SELE_NQ | TX_SELE_LQ):
+-		valuehi = QUEUE_NORMAL;
+-		valuelow = QUEUE_LOW;
+-		break;
+-	case (TX_SELE_HQ | TX_SELE_NQ):
+-		valuehi = QUEUE_HIGH;
+-		valuelow = QUEUE_NORMAL;
+-		break;
+-	default:
+-		WARN_ON(1);
+-		break;
+-	}
+-	if (!wmm_enable) {
+-		beq = valuelow;
+-		bkq = valuelow;
+-		viq = valuehi;
+-		voq = valuehi;
+-		mgtq = valuehi;
+-		hiq = valuehi;
+-	} else {/* for WMM ,CONFIG_OUT_EP_WIFI_MODE */
+-		beq = valuehi;
+-		bkq = valuelow;
+-		viq = valuelow;
+-		voq = valuehi;
+-		mgtq = valuehi;
+-		hiq = valuehi;
+-	}
+-	_rtl92c_init_chipn_reg_priority(hw, beq, bkq, viq, voq, mgtq, hiq);
+-	pr_info("Tx queue select: 0x%02x\n", queue_sel);
+-}
+-
+-static void _rtl92cu_init_chipn_three_out_ep_priority(struct ieee80211_hw *hw,
+-						      bool wmm_enable,
+-						      u8 queue_sel)
+-{
+-	u16 beq, bkq, viq, voq, mgtq, hiq;
+-
+-	if (!wmm_enable) { /* typical setting */
+-		beq	= QUEUE_LOW;
+-		bkq	= QUEUE_LOW;
+-		viq	= QUEUE_NORMAL;
+-		voq	= QUEUE_HIGH;
+-		mgtq	= QUEUE_HIGH;
+-		hiq	= QUEUE_HIGH;
+-	} else { /* for WMM */
+-		beq	= QUEUE_LOW;
+-		bkq	= QUEUE_NORMAL;
+-		viq	= QUEUE_NORMAL;
+-		voq	= QUEUE_HIGH;
+-		mgtq	= QUEUE_HIGH;
+-		hiq	= QUEUE_HIGH;
+-	}
+-	_rtl92c_init_chipn_reg_priority(hw, beq, bkq, viq, voq, mgtq, hiq);
+-	pr_info("Tx queue select :0x%02x..\n", queue_sel);
+-}
+-
+-static void _rtl92cu_init_chipn_queue_priority(struct ieee80211_hw *hw,
+-					       bool wmm_enable,
+-					       u8 out_ep_num,
+-					       u8 queue_sel)
+-{
+-	switch (out_ep_num) {
+-	case 1:
+-		_rtl92cu_init_chipn_one_out_ep_priority(hw, wmm_enable,
+-							queue_sel);
+-		break;
+-	case 2:
+-		_rtl92cu_init_chipn_two_out_ep_priority(hw, wmm_enable,
+-							queue_sel);
+-		break;
+-	case 3:
+-		_rtl92cu_init_chipn_three_out_ep_priority(hw, wmm_enable,
+-							  queue_sel);
+-		break;
+-	default:
+-		WARN_ON(1); /* Shall not reach here! */
+-		break;
+-	}
+-}
+-
+-static void _rtl92cu_init_chipt_queue_priority(struct ieee80211_hw *hw,
+-					       bool wmm_enable,
+-					       u8 out_ep_num,
+-					       u8 queue_sel)
+-{
+-	u8 hq_sele = 0;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	switch (out_ep_num) {
+-	case 2:	/* (TX_SELE_HQ|TX_SELE_LQ) */
+-		if (!wmm_enable) /* typical setting */
+-			hq_sele =  HQSEL_VOQ | HQSEL_VIQ | HQSEL_MGTQ |
+-				   HQSEL_HIQ;
+-		else	/* for WMM */
+-			hq_sele = HQSEL_VOQ | HQSEL_BEQ | HQSEL_MGTQ |
+-				  HQSEL_HIQ;
+-		break;
+-	case 1:
+-		if (TX_SELE_LQ == queue_sel) {
+-			/* map all endpoint to Low queue */
+-			hq_sele = 0;
+-		} else if (TX_SELE_HQ == queue_sel) {
+-			/* map all endpoint to High queue */
+-			hq_sele =  HQSEL_VOQ | HQSEL_VIQ | HQSEL_BEQ |
+-				   HQSEL_BKQ | HQSEL_MGTQ | HQSEL_HIQ;
+-		}
+-		break;
+-	default:
+-		WARN_ON(1); /* Shall not reach here! */
+-		break;
+-	}
+-	rtl_write_byte(rtlpriv, (REG_TRXDMA_CTRL+1), hq_sele);
+-	pr_info("Tx queue select :0x%02x..\n", hq_sele);
+-}
+-
+-static void _rtl92cu_init_queue_priority(struct ieee80211_hw *hw,
+-						bool wmm_enable,
+-						u8 out_ep_num,
+-						u8 queue_sel)
+-{
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-
+-	if (IS_NORMAL_CHIP(rtlhal->version))
+-		_rtl92cu_init_chipn_queue_priority(hw, wmm_enable, out_ep_num,
+-						   queue_sel);
+-	else
+-		_rtl92cu_init_chipt_queue_priority(hw, wmm_enable, out_ep_num,
+-						   queue_sel);
+-}
+-
+-static void _rtl92cu_init_wmac_setting(struct ieee80211_hw *hw)
+-{
+-	u16 value16;
+-	u32 value32;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	value32 = (RCR_APM | RCR_AM | RCR_ADF | RCR_AB | RCR_APPFCS |
+-		   RCR_APP_ICV | RCR_AMF | RCR_HTC_LOC_CTRL |
+-		   RCR_APP_MIC | RCR_APP_PHYSTS | RCR_ACRC32);
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RCR, (u8 *)(&value32));
+-	/* Accept all multicast address */
+-	rtl_write_dword(rtlpriv,  REG_MAR, 0xFFFFFFFF);
+-	rtl_write_dword(rtlpriv,  REG_MAR + 4, 0xFFFFFFFF);
+-	/* Accept all management frames */
+-	value16 = 0xFFFF;
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_MGT_FILTER,
+-				      (u8 *)(&value16));
+-	/* Reject all control frame - default value is 0 */
+-	value16 = 0x0;
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_CTRL_FILTER,
+-				      (u8 *)(&value16));
+-	/* Accept all data frames */
+-	value16 = 0xFFFF;
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_DATA_FILTER,
+-				      (u8 *)(&value16));
+-}
+-
+-static void _rtl92cu_init_beacon_parameters(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-
+-	rtl_write_word(rtlpriv, REG_BCN_CTRL, 0x1010);
+-
+-	/* TODO: Remove these magic number */
+-	rtl_write_word(rtlpriv, REG_TBTT_PROHIBIT, 0x6404);
+-	rtl_write_byte(rtlpriv, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME);
+-	rtl_write_byte(rtlpriv, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME);
+-	/* Change beacon AIFS to the largest number
+-	 * beacause test chip does not contension before sending beacon.
+-	 */
+-	if (IS_NORMAL_CHIP(rtlhal->version))
+-		rtl_write_word(rtlpriv, REG_BCNTCFG, 0x660F);
+-	else
+-		rtl_write_word(rtlpriv, REG_BCNTCFG, 0x66FF);
+-}
+-
+-static int _rtl92cu_init_mac(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_usb_priv *usb_priv = rtl_usbpriv(hw);
+-	struct rtl_usb *rtlusb = rtl_usbdev(usb_priv);
+-	int err = 0;
+-	u32	boundary = 0;
+-	u8 wmm_enable = false; /* TODO */
+-	u8 out_ep_nums = rtlusb->out_ep_nums;
+-	u8 queue_sel = rtlusb->out_queue_sel;
+-
+-	err = _rtl92cu_init_power_on(hw);
+-
+-	if (err) {
+-		pr_err("Failed to init power on!\n");
+-		return err;
+-	}
+-	if (!wmm_enable) {
+-		boundary = TX_PAGE_BOUNDARY;
+-	} else { /* for WMM */
+-		boundary = (IS_NORMAL_CHIP(rtlhal->version))
+-					? WMM_CHIP_B_TX_PAGE_BOUNDARY
+-					: WMM_CHIP_A_TX_PAGE_BOUNDARY;
+-	}
+-	if (!rtl92c_init_llt_table(hw, boundary)) {
+-		pr_err("Failed to init LLT Table!\n");
+-		return -EINVAL;
+-	}
+-	_rtl92cu_init_queue_reserved_page(hw, wmm_enable, out_ep_nums,
+-					  queue_sel);
+-	_rtl92c_init_trx_buffer(hw, wmm_enable);
+-	_rtl92cu_init_queue_priority(hw, wmm_enable, out_ep_nums,
+-				     queue_sel);
+-	/* Get Rx PHY status in order to report RSSI and others. */
+-	rtl92c_init_driver_info_size(hw, RTL92C_DRIVER_INFO_SIZE);
+-	rtl92c_init_interrupt(hw);
+-	rtl92c_init_network_type(hw);
+-	_rtl92cu_init_wmac_setting(hw);
+-	rtl92c_init_adaptive_ctrl(hw);
+-	rtl92c_init_edca(hw);
+-	rtl92c_init_rate_fallback(hw);
+-	rtl92c_init_retry_function(hw);
+-	rtlpriv->cfg->ops->set_bw_mode(hw, NL80211_CHAN_HT20);
+-	rtl92c_set_min_space(hw, IS_92C_SERIAL(rtlhal->version));
+-	_rtl92cu_init_beacon_parameters(hw);
+-	rtl92c_init_ampdu_aggregation(hw);
+-	rtl92c_init_beacon_max_error(hw);
+-	return err;
+-}
+-
+-void rtl92cu_enable_hw_security_config(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 sec_reg_value = 0x0;
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+-		"PairwiseEncAlgorithm = %d GroupEncAlgorithm = %d\n",
+-		rtlpriv->sec.pairwise_enc_algorithm,
+-		rtlpriv->sec.group_enc_algorithm);
+-	if (rtlpriv->cfg->mod_params->sw_crypto || rtlpriv->sec.use_sw_sec) {
+-		rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG,
+-			"not open sw encryption\n");
+-		return;
+-	}
+-	sec_reg_value = SCR_TXENCENABLE | SCR_RXDECENABLE;
+-	if (rtlpriv->sec.use_defaultkey) {
+-		sec_reg_value |= SCR_TXUSEDK;
+-		sec_reg_value |= SCR_RXUSEDK;
+-	}
+-	if (IS_NORMAL_CHIP(rtlhal->version))
+-		sec_reg_value |= (SCR_RXBCUSEDK | SCR_TXBCUSEDK);
+-	rtl_write_byte(rtlpriv, REG_CR + 1, 0x02);
+-	rtl_dbg(rtlpriv, COMP_SEC, DBG_LOUD, "The SECR-value %x\n",
+-		sec_reg_value);
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_WPA_CONFIG, &sec_reg_value);
+-}
+-
+-static void _rtl92cu_hw_configure(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+-
+-	/* To Fix MAC loopback mode fail. */
+-	rtl_write_byte(rtlpriv, REG_LDOHCI12_CTRL, 0x0f);
+-	rtl_write_byte(rtlpriv, 0x15, 0xe9);
+-	/* HW SEQ CTRL */
+-	/* set 0x0 to 0xFF by tynli. Default enable HW SEQ NUM. */
+-	rtl_write_byte(rtlpriv, REG_HWSEQ_CTRL, 0xFF);
+-	/* fixed USB interface interference issue */
+-	rtl_write_byte(rtlpriv, 0xfe40, 0xe0);
+-	rtl_write_byte(rtlpriv, 0xfe41, 0x8d);
+-	rtl_write_byte(rtlpriv, 0xfe42, 0x80);
+-	rtlusb->reg_bcn_ctrl_val = 0x18;
+-	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (u8)rtlusb->reg_bcn_ctrl_val);
+-}
+-
+-static void _initpabias(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	u8 pa_setting;
+-
+-	/* FIXED PA current issue */
+-	pa_setting = efuse_read_1byte(hw, 0x1FA);
+-	if (!(pa_setting & BIT(0))) {
+-		rtl_set_rfreg(hw, RF90_PATH_A, 0x15, 0x0FFFFF, 0x0F406);
+-		rtl_set_rfreg(hw, RF90_PATH_A, 0x15, 0x0FFFFF, 0x4F406);
+-		rtl_set_rfreg(hw, RF90_PATH_A, 0x15, 0x0FFFFF, 0x8F406);
+-		rtl_set_rfreg(hw, RF90_PATH_A, 0x15, 0x0FFFFF, 0xCF406);
+-	}
+-	if (!(pa_setting & BIT(1)) && IS_NORMAL_CHIP(rtlhal->version) &&
+-	    IS_92C_SERIAL(rtlhal->version)) {
+-		rtl_set_rfreg(hw, RF90_PATH_B, 0x15, 0x0FFFFF, 0x0F406);
+-		rtl_set_rfreg(hw, RF90_PATH_B, 0x15, 0x0FFFFF, 0x4F406);
+-		rtl_set_rfreg(hw, RF90_PATH_B, 0x15, 0x0FFFFF, 0x8F406);
+-		rtl_set_rfreg(hw, RF90_PATH_B, 0x15, 0x0FFFFF, 0xCF406);
+-	}
+-	if (!(pa_setting & BIT(4))) {
+-		pa_setting = rtl_read_byte(rtlpriv, 0x16);
+-		pa_setting &= 0x0F;
+-		rtl_write_byte(rtlpriv, 0x16, pa_setting | 0x90);
+-	}
+-}
+-
+-int rtl92cu_hw_init(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	int err = 0;
+-	unsigned long flags;
+-
+-	/* As this function can take a very long time (up to 350 ms)
+-	 * and can be called with irqs disabled, reenable the irqs
+-	 * to let the other devices continue being serviced.
+-	 *
+-	 * It is safe doing so since our own interrupts will only be enabled
+-	 * in a subsequent step.
+-	 */
+-	local_save_flags(flags);
+-	local_irq_enable();
+-
+-	rtlhal->fw_ready = false;
+-	rtlhal->hw_type = HARDWARE_TYPE_RTL8192CU;
+-	err = _rtl92cu_init_mac(hw);
+-	if (err) {
+-		pr_err("init mac failed!\n");
+-		goto exit;
+-	}
+-	err = rtl92c_download_fw(hw);
+-	if (err) {
+-		rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+-			"Failed to download FW. Init HW without FW now..\n");
+-		err = 1;
+-		goto exit;
+-	}
+-
+-	rtlhal->fw_ready = true;
+-	rtlhal->last_hmeboxnum = 0; /* h2c */
+-	_rtl92cu_phy_param_tab_init(hw);
+-	rtl92cu_phy_mac_config(hw);
+-	rtl92cu_phy_bb_config(hw);
+-	rtlphy->rf_mode = RF_OP_BY_SW_3WIRE;
+-	rtl92c_phy_rf_config(hw);
+-	if (IS_VENDOR_UMC_A_CUT(rtlhal->version) &&
+-	    !IS_92C_SERIAL(rtlhal->version)) {
+-		rtl_set_rfreg(hw, RF90_PATH_A, RF_RX_G1, MASKDWORD, 0x30255);
+-		rtl_set_rfreg(hw, RF90_PATH_A, RF_RX_G2, MASKDWORD, 0x50a00);
+-	}
+-	rtlphy->rfreg_chnlval[0] = rtl_get_rfreg(hw, (enum radio_path)0,
+-						 RF_CHNLBW, RFREG_OFFSET_MASK);
+-	rtlphy->rfreg_chnlval[1] = rtl_get_rfreg(hw, (enum radio_path)1,
+-						 RF_CHNLBW, RFREG_OFFSET_MASK);
+-	rtl92cu_bb_block_on(hw);
+-	rtl_cam_reset_all_entry(hw);
+-	rtl92cu_enable_hw_security_config(hw);
+-	ppsc->rfpwr_state = ERFON;
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_ETHER_ADDR, mac->mac_addr);
+-	if (ppsc->rfpwr_state == ERFON) {
+-		rtl92c_phy_set_rfpath_switch(hw, 1);
+-		if (rtlphy->iqk_initialized) {
+-			rtl92c_phy_iq_calibrate(hw, true);
+-		} else {
+-			rtl92c_phy_iq_calibrate(hw, false);
+-			rtlphy->iqk_initialized = true;
+-		}
+-		rtl92c_dm_check_txpower_tracking(hw);
+-		rtl92c_phy_lc_calibrate(hw);
+-	}
+-	_rtl92cu_hw_configure(hw);
+-	_initpabias(hw);
+-	rtl92c_dm_init(hw);
+-exit:
+-	local_irq_disable();
+-	local_irq_restore(flags);
+-	return err;
+-}
+-
+-static void disable_rfafeandresetbb(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-/**************************************
+-a.	TXPAUSE 0x522[7:0] = 0xFF	Pause MAC TX queue
+-b.	RF path 0 offset 0x00 = 0x00	disable RF
+-c.	APSD_CTRL 0x600[7:0] = 0x40
+-d.	SYS_FUNC_EN 0x02[7:0] = 0x16	reset BB state machine
+-e.	SYS_FUNC_EN 0x02[7:0] = 0x14	reset BB state machine
+-***************************************/
+-	u8 erfpath = 0, value8 = 0;
+-
+-	rtl_write_byte(rtlpriv, REG_TXPAUSE, 0xFF);
+-	rtl_set_rfreg(hw, (enum radio_path)erfpath, 0x0, MASKBYTE0, 0x0);
+-
+-	value8 |= APSDOFF;
+-	rtl_write_byte(rtlpriv, REG_APSD_CTRL, value8); /*0x40*/
+-	value8 = 0;
+-	value8 |= (FEN_USBD | FEN_USBA | FEN_BB_GLB_RSTN);
+-	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, value8);/*0x16*/
+-	value8 &= (~FEN_BB_GLB_RSTN);
+-	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, value8); /*0x14*/
+-}
+-
+-static void  _resetdigitalprocedure1(struct ieee80211_hw *hw, bool withouthwsm)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-
+-	if (rtlhal->fw_version <=  0x20) {
+-		/*****************************
+-		f. MCUFWDL 0x80[7:0]=0		reset MCU ready status
+-		g. SYS_FUNC_EN 0x02[10]= 0	reset MCU reg, (8051 reset)
+-		h. SYS_FUNC_EN 0x02[15-12]= 5	reset MAC reg, DCORE
+-		i. SYS_FUNC_EN 0x02[10]= 1	enable MCU reg, (8051 enable)
+-		******************************/
+-		u16 valu16 = 0;
+-
+-		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0);
+-		valu16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
+-		rtl_write_word(rtlpriv, REG_SYS_FUNC_EN, (valu16 &
+-			       (~FEN_CPUEN))); /* reset MCU ,8051 */
+-		valu16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN)&0x0FFF;
+-		rtl_write_word(rtlpriv, REG_SYS_FUNC_EN, (valu16 |
+-			      (FEN_HWPDN|FEN_ELDR))); /* reset MAC */
+-		valu16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
+-		rtl_write_word(rtlpriv, REG_SYS_FUNC_EN, (valu16 |
+-			       FEN_CPUEN)); /* enable MCU ,8051 */
+-	} else {
+-		u8 retry_cnts = 0;
+-
+-		/* IF fw in RAM code, do reset */
+-		if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT(1)) {
+-			/* reset MCU ready status */
+-			rtl_write_byte(rtlpriv, REG_MCUFWDL, 0);
+-			/* 8051 reset by self */
+-			rtl_write_byte(rtlpriv, REG_HMETFR+3, 0x20);
+-			while ((retry_cnts++ < 100) &&
+-			       (FEN_CPUEN & rtl_read_word(rtlpriv,
+-			       REG_SYS_FUNC_EN))) {
+-				udelay(50);
+-			}
+-			if (retry_cnts >= 100) {
+-				pr_err("8051 reset failed!.........................\n");
+-				/* if 8051 reset fail, reset MAC. */
+-				rtl_write_byte(rtlpriv,
+-					       REG_SYS_FUNC_EN + 1,
+-					       0x50);
+-				udelay(100);
+-			}
+-		}
+-		/* Reset MAC and Enable 8051 */
+-		rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN + 1, 0x54);
+-		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0);
+-	}
+-	if (withouthwsm) {
+-		/*****************************
+-		  Without HW auto state machine
+-		g.SYS_CLKR 0x08[15:0] = 0x30A3		disable MAC clock
+-		h.AFE_PLL_CTRL 0x28[7:0] = 0x80		disable AFE PLL
+-		i.AFE_XTAL_CTRL 0x24[15:0] = 0x880F	gated AFE DIG_CLOCK
+-		j.SYS_ISu_CTRL 0x00[7:0] = 0xF9		isolated digital to PON
+-		******************************/
+-		rtl_write_word(rtlpriv, REG_SYS_CLKR, 0x70A3);
+-		rtl_write_byte(rtlpriv, REG_AFE_PLL_CTRL, 0x80);
+-		rtl_write_word(rtlpriv, REG_AFE_XTAL_CTRL, 0x880F);
+-		rtl_write_byte(rtlpriv, REG_SYS_ISO_CTRL, 0xF9);
+-	}
+-}
+-
+-static void _resetdigitalprocedure2(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-/*****************************
+-k. SYS_FUNC_EN 0x03[7:0] = 0x44		disable ELDR runction
+-l. SYS_CLKR 0x08[15:0] = 0x3083		disable ELDR clock
+-m. SYS_ISO_CTRL 0x01[7:0] = 0x83	isolated ELDR to PON
+-******************************/
+-	rtl_write_word(rtlpriv, REG_SYS_CLKR, 0x70A3);
+-	rtl_write_byte(rtlpriv, REG_SYS_ISO_CTRL+1, 0x82);
+-}
+-
+-static void _disablegpio(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-/***************************************
+-j. GPIO_PIN_CTRL 0x44[31:0]=0x000
+-k. Value = GPIO_PIN_CTRL[7:0]
+-l.  GPIO_PIN_CTRL 0x44[31:0] = 0x00FF0000 | (value <<8); write ext PIN level
+-m. GPIO_MUXCFG 0x42 [15:0] = 0x0780
+-n. LEDCFG 0x4C[15:0] = 0x8080
+-***************************************/
+-	u8	value8;
+-	u16	value16;
+-	u32	value32;
+-
+-	/* 1. Disable GPIO[7:0] */
+-	rtl_write_word(rtlpriv, REG_GPIO_PIN_CTRL+2, 0x0000);
+-	value32 = rtl_read_dword(rtlpriv, REG_GPIO_PIN_CTRL) & 0xFFFF00FF;
+-	value8 = (u8)(value32&0x000000FF);
+-	value32 |= ((value8<<8) | 0x00FF0000);
+-	rtl_write_dword(rtlpriv, REG_GPIO_PIN_CTRL, value32);
+-	/* 2. Disable GPIO[10:8] */
+-	rtl_write_byte(rtlpriv, REG_GPIO_MUXCFG+3, 0x00);
+-	value16 = rtl_read_word(rtlpriv, REG_GPIO_MUXCFG+2) & 0xFF0F;
+-	value8 = (u8)(value16&0x000F);
+-	value16 |= ((value8<<4) | 0x0780);
+-	rtl_write_word(rtlpriv, REG_GPIO_PIN_CTRL+2, value16);
+-	/* 3. Disable LED0 & 1 */
+-	rtl_write_word(rtlpriv, REG_LEDCFG0, 0x8080);
+-}
+-
+-static void disable_analog(struct ieee80211_hw *hw, bool withouthwsm)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u16 value16 = 0;
+-	u8 value8 = 0;
+-
+-	if (withouthwsm) {
+-		/*****************************
+-		n. LDOA15_CTRL 0x20[7:0] = 0x04	 disable A15 power
+-		o. LDOV12D_CTRL 0x21[7:0] = 0x54 disable digital core power
+-		r. When driver call disable, the ASIC will turn off remaining
+-		   clock automatically
+-		******************************/
+-		rtl_write_byte(rtlpriv, REG_LDOA15_CTRL, 0x04);
+-		value8 = rtl_read_byte(rtlpriv, REG_LDOV12D_CTRL);
+-		value8 &= (~LDV12_EN);
+-		rtl_write_byte(rtlpriv, REG_LDOV12D_CTRL, value8);
+-	}
+-
+-/*****************************
+-h. SPS0_CTRL 0x11[7:0] = 0x23		enter PFM mode
+-i. APS_FSMCO 0x04[15:0] = 0x4802	set USB suspend
+-******************************/
+-	rtl_write_byte(rtlpriv, REG_SPS0_CTRL, 0x23);
+-	value16 |= (APDM_HOST | AFSM_HSUS | PFM_ALDN);
+-	rtl_write_word(rtlpriv, REG_APS_FSMCO, (u16)value16);
+-	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0E);
+-}
+-
+-static void carddisable_hwsm(struct ieee80211_hw *hw)
+-{
+-	/* ==== RF Off Sequence ==== */
+-	disable_rfafeandresetbb(hw);
+-	/* ==== Reset digital sequence   ====== */
+-	_resetdigitalprocedure1(hw, false);
+-	/*  ==== Pull GPIO PIN to balance level and LED control ====== */
+-	_disablegpio(hw);
+-	/* ==== Disable analog sequence === */
+-	disable_analog(hw, false);
+-}
+-
+-static void carddisablewithout_hwsm(struct ieee80211_hw *hw)
+-{
+-	/*==== RF Off Sequence ==== */
+-	disable_rfafeandresetbb(hw);
+-	/*  ==== Reset digital sequence   ====== */
+-	_resetdigitalprocedure1(hw, true);
+-	/*  ==== Pull GPIO PIN to balance level and LED control ====== */
+-	_disablegpio(hw);
+-	/*  ==== Reset digital sequence   ====== */
+-	_resetdigitalprocedure2(hw);
+-	/*  ==== Disable analog sequence === */
+-	disable_analog(hw, true);
+-}
+-
+-static void _rtl92cu_set_bcn_ctrl_reg(struct ieee80211_hw *hw,
+-				      u8 set_bits, u8 clear_bits)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+-
+-	rtlusb->reg_bcn_ctrl_val |= set_bits;
+-	rtlusb->reg_bcn_ctrl_val &= ~clear_bits;
+-	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (u8)rtlusb->reg_bcn_ctrl_val);
+-}
+-
+-static void _rtl92cu_stop_tx_beacon(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-	u8 tmp1byte = 0;
+-
+-	if (IS_NORMAL_CHIP(rtlhal->version)) {
+-		tmp1byte = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL + 2);
+-		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL + 2,
+-			       tmp1byte & (~BIT(6)));
+-		rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT + 1, 0x64);
+-		tmp1byte = rtl_read_byte(rtlpriv, REG_TBTT_PROHIBIT + 2);
+-		tmp1byte &= ~(BIT(0));
+-		rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT + 2, tmp1byte);
+-	} else {
+-		rtl_write_byte(rtlpriv, REG_TXPAUSE,
+-			       rtl_read_byte(rtlpriv, REG_TXPAUSE) | BIT(6));
+-	}
+-}
+-
+-static void _rtl92cu_resume_tx_beacon(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-	u8 tmp1byte = 0;
+-
+-	if (IS_NORMAL_CHIP(rtlhal->version)) {
+-		tmp1byte = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL + 2);
+-		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL + 2,
+-			       tmp1byte | BIT(6));
+-		rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT + 1, 0xff);
+-		tmp1byte = rtl_read_byte(rtlpriv, REG_TBTT_PROHIBIT + 2);
+-		tmp1byte |= BIT(0);
+-		rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT + 2, tmp1byte);
+-	} else {
+-		rtl_write_byte(rtlpriv, REG_TXPAUSE,
+-			       rtl_read_byte(rtlpriv, REG_TXPAUSE) & (~BIT(6)));
+-	}
+-}
+-
+-static void _rtl92cu_enable_bcn_sub_func(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-
+-	if (IS_NORMAL_CHIP(rtlhal->version))
+-		_rtl92cu_set_bcn_ctrl_reg(hw, 0, BIT(1));
+-	else
+-		_rtl92cu_set_bcn_ctrl_reg(hw, 0, BIT(4));
+-}
+-
+-static void _rtl92cu_disable_bcn_sub_func(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-
+-	if (IS_NORMAL_CHIP(rtlhal->version))
+-		_rtl92cu_set_bcn_ctrl_reg(hw, BIT(1), 0);
+-	else
+-		_rtl92cu_set_bcn_ctrl_reg(hw, BIT(4), 0);
+-}
+-
+-static int _rtl92cu_set_media_status(struct ieee80211_hw *hw,
+-				     enum nl80211_iftype type)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 bt_msr = rtl_read_byte(rtlpriv, MSR);
+-	enum led_ctl_mode ledaction = LED_CTL_NO_LINK;
+-
+-	bt_msr &= 0xfc;
+-	if (type == NL80211_IFTYPE_UNSPECIFIED || type ==
+-	    NL80211_IFTYPE_STATION) {
+-		_rtl92cu_stop_tx_beacon(hw);
+-		_rtl92cu_enable_bcn_sub_func(hw);
+-	} else if (type == NL80211_IFTYPE_ADHOC || type == NL80211_IFTYPE_AP) {
+-		_rtl92cu_resume_tx_beacon(hw);
+-		_rtl92cu_disable_bcn_sub_func(hw);
+-	} else {
+-		rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+-			"Set HW_VAR_MEDIA_STATUS:No such media status(%x)\n",
+-			type);
+-	}
+-	switch (type) {
+-	case NL80211_IFTYPE_UNSPECIFIED:
+-		bt_msr |= MSR_NOLINK;
+-		ledaction = LED_CTL_LINK;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Set Network type to NO LINK!\n");
+-		break;
+-	case NL80211_IFTYPE_ADHOC:
+-		bt_msr |= MSR_ADHOC;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Set Network type to Ad Hoc!\n");
+-		break;
+-	case NL80211_IFTYPE_STATION:
+-		bt_msr |= MSR_INFRA;
+-		ledaction = LED_CTL_LINK;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Set Network type to STA!\n");
+-		break;
+-	case NL80211_IFTYPE_AP:
+-		bt_msr |= MSR_AP;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Set Network type to AP!\n");
+-		break;
+-	default:
+-		pr_err("Network type %d not supported!\n", type);
+-		goto error_out;
+-	}
+-	rtl_write_byte(rtlpriv, MSR, bt_msr);
+-	rtlpriv->cfg->ops->led_control(hw, ledaction);
+-	if ((bt_msr & MSR_MASK) == MSR_AP)
+-		rtl_write_byte(rtlpriv, REG_BCNTCFG + 1, 0x00);
+-	else
+-		rtl_write_byte(rtlpriv, REG_BCNTCFG + 1, 0x66);
+-	return 0;
+-error_out:
+-	return 1;
+-}
+-
+-void rtl92cu_card_disable(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	enum nl80211_iftype opmode;
+-
+-	mac->link_state = MAC80211_NOLINK;
+-	opmode = NL80211_IFTYPE_UNSPECIFIED;
+-	_rtl92cu_set_media_status(hw, opmode);
+-	rtlpriv->cfg->ops->led_control(hw, LED_CTL_POWER_OFF);
+-	RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_HALT_NIC);
+-	if (rtlusb->disablehwsm)
+-		carddisable_hwsm(hw);
+-	else
+-		carddisablewithout_hwsm(hw);
+-
+-	/* after power off we should do iqk again */
+-	rtlpriv->phy.iqk_initialized = false;
+-}
+-
+-void rtl92cu_set_check_bssid(struct ieee80211_hw *hw, bool check_bssid)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-	u32 reg_rcr;
+-
+-	if (rtlpriv->psc.rfpwr_state != ERFON)
+-		return;
+-
+-	rtlpriv->cfg->ops->get_hw_reg(hw, HW_VAR_RCR, (u8 *)(&reg_rcr));
+-
+-	if (check_bssid) {
+-		u8 tmp;
+-
+-		if (IS_NORMAL_CHIP(rtlhal->version)) {
+-			reg_rcr |= (RCR_CBSSID_DATA | RCR_CBSSID_BCN);
+-			tmp = BIT(4);
+-		} else {
+-			reg_rcr |= RCR_CBSSID;
+-			tmp = BIT(4) | BIT(5);
+-		}
+-		rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RCR,
+-					      (u8 *) (&reg_rcr));
+-		_rtl92cu_set_bcn_ctrl_reg(hw, 0, tmp);
+-	} else {
+-		u8 tmp;
+-
+-		if (IS_NORMAL_CHIP(rtlhal->version)) {
+-			reg_rcr &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);
+-			tmp = BIT(4);
+-		} else {
+-			reg_rcr &= ~RCR_CBSSID;
+-			tmp = BIT(4) | BIT(5);
+-		}
+-		reg_rcr &= (~(RCR_CBSSID_DATA | RCR_CBSSID_BCN));
+-		rtlpriv->cfg->ops->set_hw_reg(hw,
+-					      HW_VAR_RCR, (u8 *) (&reg_rcr));
+-		_rtl92cu_set_bcn_ctrl_reg(hw, tmp, 0);
+-	}
+-}
+-
+-/*========================================================================== */
+-
+-int rtl92cu_set_network_type(struct ieee80211_hw *hw, enum nl80211_iftype type)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	if (_rtl92cu_set_media_status(hw, type))
+-		return -EOPNOTSUPP;
+-
+-	if (rtlpriv->mac80211.link_state == MAC80211_LINKED) {
+-		if (type != NL80211_IFTYPE_AP)
+-			rtl92cu_set_check_bssid(hw, true);
+-	} else {
+-		rtl92cu_set_check_bssid(hw, false);
+-	}
+-
+-	return 0;
+-}
+-
+-static void _beacon_function_enable(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	_rtl92cu_set_bcn_ctrl_reg(hw, (BIT(4) | BIT(3) | BIT(1)), 0x00);
+-	rtl_write_byte(rtlpriv, REG_RD_CTRL+1, 0x6F);
+-}
+-
+-void rtl92cu_set_beacon_related_registers(struct ieee80211_hw *hw)
+-{
+-
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	u16 bcn_interval, atim_window;
+-	u32 value32;
+-
+-	bcn_interval = mac->beacon_interval;
+-	atim_window = 2;	/*FIX MERGE */
+-	rtl_write_word(rtlpriv, REG_ATIMWND, atim_window);
+-	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, bcn_interval);
+-	_rtl92cu_init_beacon_parameters(hw);
+-	rtl_write_byte(rtlpriv, REG_SLOT, 0x09);
+-	/*
+-	 * Force beacon frame transmission even after receiving beacon frame
+-	 * from other ad hoc STA
+-	 *
+-	 *
+-	 * Reset TSF Timer to zero, added by Roger. 2008.06.24
+-	 */
+-	value32 = rtl_read_dword(rtlpriv, REG_TCR);
+-	value32 &= ~TSFRST;
+-	rtl_write_dword(rtlpriv, REG_TCR, value32);
+-	value32 |= TSFRST;
+-	rtl_write_dword(rtlpriv, REG_TCR, value32);
+-	rtl_dbg(rtlpriv, COMP_INIT | COMP_BEACON, DBG_LOUD,
+-		"SetBeaconRelatedRegisters8192CUsb(): Set TCR(%x)\n",
+-		value32);
+-	/* TODO: Modify later (Find the right parameters)
+-	 * NOTE: Fix test chip's bug (about contention windows's randomness) */
+-	if ((mac->opmode == NL80211_IFTYPE_ADHOC) ||
+-	    (mac->opmode == NL80211_IFTYPE_MESH_POINT) ||
+-	    (mac->opmode == NL80211_IFTYPE_AP)) {
+-		rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_CCK, 0x50);
+-		rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x50);
+-	}
+-	_beacon_function_enable(hw);
+-}
+-
+-void rtl92cu_set_beacon_interval(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	u16 bcn_interval = mac->beacon_interval;
+-
+-	rtl_dbg(rtlpriv, COMP_BEACON, DBG_DMESG, "beacon_interval:%d\n",
+-		bcn_interval);
+-	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, bcn_interval);
+-}
+-
+-void rtl92cu_update_interrupt_mask(struct ieee80211_hw *hw,
+-				   u32 add_msr, u32 rm_msr)
+-{
+-}
+-
+-void rtl92cu_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-
+-	switch (variable) {
+-	case HW_VAR_RCR:
+-		*((u32 *)(val)) = mac->rx_conf;
+-		break;
+-	case HW_VAR_RF_STATE:
+-		*((enum rf_pwrstate *)(val)) = ppsc->rfpwr_state;
+-		break;
+-	case HW_VAR_FWLPS_RF_ON:{
+-			enum rf_pwrstate rfstate;
+-			u32 val_rcr;
+-
+-			rtlpriv->cfg->ops->get_hw_reg(hw, HW_VAR_RF_STATE,
+-						      (u8 *)(&rfstate));
+-			if (rfstate == ERFOFF) {
+-				*((bool *) (val)) = true;
+-			} else {
+-				val_rcr = rtl_read_dword(rtlpriv, REG_RCR);
+-				val_rcr &= 0x00070000;
+-				if (val_rcr)
+-					*((bool *) (val)) = false;
+-				else
+-					*((bool *) (val)) = true;
+-			}
+-			break;
+-		}
+-	case HW_VAR_FW_PSMODE_STATUS:
+-		*((bool *) (val)) = ppsc->fw_current_inpsmode;
+-		break;
+-	case HW_VAR_CORRECT_TSF:{
+-			u64 tsf;
+-			u32 *ptsf_low = (u32 *)&tsf;
+-			u32 *ptsf_high = ((u32 *)&tsf) + 1;
+-
+-			*ptsf_high = rtl_read_dword(rtlpriv, (REG_TSFTR + 4));
+-			*ptsf_low = rtl_read_dword(rtlpriv, REG_TSFTR);
+-			*((u64 *)(val)) = tsf;
+-			break;
+-		}
+-	case HW_VAR_MGT_FILTER:
+-		*((u16 *) (val)) = rtl_read_word(rtlpriv, REG_RXFLTMAP0);
+-		break;
+-	case HW_VAR_CTRL_FILTER:
+-		*((u16 *) (val)) = rtl_read_word(rtlpriv, REG_RXFLTMAP1);
+-		break;
+-	case HW_VAR_DATA_FILTER:
+-		*((u16 *) (val)) = rtl_read_word(rtlpriv, REG_RXFLTMAP2);
+-		break;
+-	case HAL_DEF_WOWLAN:
+-		break;
+-	default:
+-		pr_err("switch case %#x not processed\n", variable);
+-		break;
+-	}
+-}
+-
+-static bool usb_cmd_send_packet(struct ieee80211_hw *hw, struct sk_buff *skb)
+-{
+-  /* Currently nothing happens here.
+-   * Traffic stops after some seconds in WPA2 802.11n mode.
+-   * Maybe because rtl8192cu chip should be set from here?
+-   * If I understand correctly, the realtek vendor driver sends some urbs
+-   * if its "here".
+-   *
+-   * This is maybe necessary:
+-   * rtlpriv->cfg->ops->fill_tx_cmddesc(hw, buffer, 1, 1, skb);
+-   */
+-	dev_kfree_skb(skb);
+-
+-	return true;
+-}
+-
+-void rtl92cu_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	enum wireless_mode wirelessmode = mac->mode;
+-	u8 idx = 0;
+-
+-	switch (variable) {
+-	case HW_VAR_ETHER_ADDR:{
+-			for (idx = 0; idx < ETH_ALEN; idx++) {
+-				rtl_write_byte(rtlpriv, (REG_MACID + idx),
+-					       val[idx]);
+-			}
+-			break;
+-		}
+-	case HW_VAR_BASIC_RATE:{
+-			u16 rate_cfg = ((u16 *) val)[0];
+-			u8 rate_index = 0;
+-
+-			rate_cfg &= 0x15f;
+-			/* TODO */
+-			/* if (mac->current_network.vender == HT_IOT_PEER_CISCO
+-			 *     && ((rate_cfg & 0x150) == 0)) {
+-			 *	  rate_cfg |= 0x010;
+-			 * } */
+-			rate_cfg |= 0x01;
+-			rtl_write_byte(rtlpriv, REG_RRSR, rate_cfg & 0xff);
+-			rtl_write_byte(rtlpriv, REG_RRSR + 1,
+-				       (rate_cfg >> 8) & 0xff);
+-			while (rate_cfg > 0x1) {
+-				rate_cfg >>= 1;
+-				rate_index++;
+-			}
+-			rtl_write_byte(rtlpriv, REG_INIRTS_RATE_SEL,
+-				       rate_index);
+-			break;
+-		}
+-	case HW_VAR_BSSID:{
+-			for (idx = 0; idx < ETH_ALEN; idx++) {
+-				rtl_write_byte(rtlpriv, (REG_BSSID + idx),
+-					       val[idx]);
+-			}
+-			break;
+-		}
+-	case HW_VAR_SIFS:{
+-			rtl_write_byte(rtlpriv, REG_SIFS_CCK + 1, val[0]);
+-			rtl_write_byte(rtlpriv, REG_SIFS_OFDM + 1, val[1]);
+-			rtl_write_byte(rtlpriv, REG_SPEC_SIFS + 1, val[0]);
+-			rtl_write_byte(rtlpriv, REG_MAC_SPEC_SIFS + 1, val[0]);
+-			rtl_write_byte(rtlpriv, REG_R2T_SIFS+1, val[0]);
+-			rtl_write_byte(rtlpriv, REG_T2T_SIFS+1, val[0]);
+-			rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD, "HW_VAR_SIFS\n");
+-			break;
+-		}
+-	case HW_VAR_SLOT_TIME:{
+-			u8 e_aci;
+-			u8 QOS_MODE = 1;
+-
+-			rtl_write_byte(rtlpriv, REG_SLOT, val[0]);
+-			rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD,
+-				"HW_VAR_SLOT_TIME %x\n", val[0]);
+-			if (QOS_MODE) {
+-				for (e_aci = 0; e_aci < AC_MAX; e_aci++)
+-					rtlpriv->cfg->ops->set_hw_reg(hw,
+-								HW_VAR_AC_PARAM,
+-								&e_aci);
+-			} else {
+-				u8 sifstime = 0;
+-				u8	u1baifs;
+-
+-				if (IS_WIRELESS_MODE_A(wirelessmode) ||
+-				    IS_WIRELESS_MODE_N_24G(wirelessmode) ||
+-				    IS_WIRELESS_MODE_N_5G(wirelessmode))
+-					sifstime = 16;
+-				else
+-					sifstime = 10;
+-				u1baifs = sifstime + (2 *  val[0]);
+-				rtl_write_byte(rtlpriv, REG_EDCA_VO_PARAM,
+-					       u1baifs);
+-				rtl_write_byte(rtlpriv, REG_EDCA_VI_PARAM,
+-					       u1baifs);
+-				rtl_write_byte(rtlpriv, REG_EDCA_BE_PARAM,
+-					       u1baifs);
+-				rtl_write_byte(rtlpriv, REG_EDCA_BK_PARAM,
+-					       u1baifs);
+-			}
+-			break;
+-		}
+-	case HW_VAR_ACK_PREAMBLE:{
+-			u8 reg_tmp;
+-			u8 short_preamble = (bool)*val;
+-
+-			reg_tmp = 0;
+-			if (short_preamble)
+-				reg_tmp |= 0x80;
+-			rtl_write_byte(rtlpriv, REG_RRSR + 2, reg_tmp);
+-			break;
+-		}
+-	case HW_VAR_AMPDU_MIN_SPACE:{
+-			u8 min_spacing_to_set;
+-			u8 sec_min_space;
+-
+-			min_spacing_to_set = *val;
+-			if (min_spacing_to_set <= 7) {
+-				switch (rtlpriv->sec.pairwise_enc_algorithm) {
+-				case NO_ENCRYPTION:
+-				case AESCCMP_ENCRYPTION:
+-					sec_min_space = 0;
+-					break;
+-				case WEP40_ENCRYPTION:
+-				case WEP104_ENCRYPTION:
+-				case TKIP_ENCRYPTION:
+-					sec_min_space = 6;
+-					break;
+-				default:
+-					sec_min_space = 7;
+-					break;
+-				}
+-				if (min_spacing_to_set < sec_min_space)
+-					min_spacing_to_set = sec_min_space;
+-				mac->min_space_cfg = ((mac->min_space_cfg &
+-						     0xf8) |
+-						     min_spacing_to_set);
+-				*val = min_spacing_to_set;
+-				rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD,
+-					"Set HW_VAR_AMPDU_MIN_SPACE: %#x\n",
+-					mac->min_space_cfg);
+-				rtl_write_byte(rtlpriv, REG_AMPDU_MIN_SPACE,
+-					       mac->min_space_cfg);
+-			}
+-			break;
+-		}
+-	case HW_VAR_SHORTGI_DENSITY:{
+-			u8 density_to_set;
+-
+-			density_to_set = *val;
+-			density_to_set &= 0x1f;
+-			mac->min_space_cfg &= 0x07;
+-			mac->min_space_cfg |= (density_to_set << 3);
+-			rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD,
+-				"Set HW_VAR_SHORTGI_DENSITY: %#x\n",
+-				mac->min_space_cfg);
+-			rtl_write_byte(rtlpriv, REG_AMPDU_MIN_SPACE,
+-				       mac->min_space_cfg);
+-			break;
+-		}
+-	case HW_VAR_AMPDU_FACTOR:{
+-			u8 regtoset_normal[4] = {0x41, 0xa8, 0x72, 0xb9};
+-			u8 factor_toset;
+-			u8 *p_regtoset = NULL;
+-			u8 index = 0;
+-
+-			p_regtoset = regtoset_normal;
+-			factor_toset = *val;
+-			if (factor_toset <= 3) {
+-				factor_toset = (1 << (factor_toset + 2));
+-				if (factor_toset > 0xf)
+-					factor_toset = 0xf;
+-				for (index = 0; index < 4; index++) {
+-					if ((p_regtoset[index] & 0xf0) >
+-					    (factor_toset << 4))
+-						p_regtoset[index] =
+-						     (p_regtoset[index] & 0x0f)
+-						     | (factor_toset << 4);
+-					if ((p_regtoset[index] & 0x0f) >
+-					     factor_toset)
+-						p_regtoset[index] =
+-						     (p_regtoset[index] & 0xf0)
+-						     | (factor_toset);
+-					rtl_write_byte(rtlpriv,
+-						       (REG_AGGLEN_LMT + index),
+-						       p_regtoset[index]);
+-				}
+-				rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD,
+-					"Set HW_VAR_AMPDU_FACTOR: %#x\n",
+-					factor_toset);
+-			}
+-			break;
+-		}
+-	case HW_VAR_AC_PARAM:{
+-			u8 e_aci = *val;
+-			u32 u4b_ac_param;
+-			u16 cw_min = le16_to_cpu(mac->ac[e_aci].cw_min);
+-			u16 cw_max = le16_to_cpu(mac->ac[e_aci].cw_max);
+-			u16 tx_op = le16_to_cpu(mac->ac[e_aci].tx_op);
+-
+-			u4b_ac_param = (u32) mac->ac[e_aci].aifs;
+-			u4b_ac_param |= (u32) ((cw_min & 0xF) <<
+-					 AC_PARAM_ECW_MIN_OFFSET);
+-			u4b_ac_param |= (u32) ((cw_max & 0xF) <<
+-					 AC_PARAM_ECW_MAX_OFFSET);
+-			u4b_ac_param |= (u32) tx_op << AC_PARAM_TXOP_OFFSET;
+-			rtl_dbg(rtlpriv, COMP_MLME, DBG_LOUD,
+-				"queue:%x, ac_param:%x\n",
+-				e_aci, u4b_ac_param);
+-			switch (e_aci) {
+-			case AC1_BK:
+-				rtl_write_dword(rtlpriv, REG_EDCA_BK_PARAM,
+-						u4b_ac_param);
+-				break;
+-			case AC0_BE:
+-				rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM,
+-						u4b_ac_param);
+-				break;
+-			case AC2_VI:
+-				rtl_write_dword(rtlpriv, REG_EDCA_VI_PARAM,
+-						u4b_ac_param);
+-				break;
+-			case AC3_VO:
+-				rtl_write_dword(rtlpriv, REG_EDCA_VO_PARAM,
+-						u4b_ac_param);
+-				break;
+-			default:
+-				WARN_ONCE(true, "rtl8192cu: invalid aci: %d !\n",
+-					  e_aci);
+-				break;
+-			}
+-			break;
+-		}
+-	case HW_VAR_RCR:{
+-			rtl_write_dword(rtlpriv, REG_RCR, ((u32 *) (val))[0]);
+-			mac->rx_conf = ((u32 *) (val))[0];
+-			rtl_dbg(rtlpriv, COMP_RECV, DBG_DMESG,
+-				"### Set RCR(0x%08x) ###\n", mac->rx_conf);
+-			break;
+-		}
+-	case HW_VAR_RETRY_LIMIT:{
+-			u8 retry_limit = val[0];
+-
+-			rtl_write_word(rtlpriv, REG_RL,
+-				       retry_limit << RETRY_LIMIT_SHORT_SHIFT |
+-				       retry_limit << RETRY_LIMIT_LONG_SHIFT);
+-			rtl_dbg(rtlpriv, COMP_MLME, DBG_DMESG,
+-				"Set HW_VAR_RETRY_LIMIT(0x%08x)\n",
+-				retry_limit);
+-			break;
+-		}
+-	case HW_VAR_DUAL_TSF_RST:
+-		rtl_write_byte(rtlpriv, REG_DUAL_TSF_RST, (BIT(0) | BIT(1)));
+-		break;
+-	case HW_VAR_EFUSE_BYTES:
+-		rtlefuse->efuse_usedbytes = *((u16 *) val);
+-		break;
+-	case HW_VAR_EFUSE_USAGE:
+-		rtlefuse->efuse_usedpercentage = *val;
+-		break;
+-	case HW_VAR_IO_CMD:
+-		rtl92c_phy_set_io_cmd(hw, (*(enum io_type *)val));
+-		break;
+-	case HW_VAR_WPA_CONFIG:
+-		rtl_write_byte(rtlpriv, REG_SECCFG, *val);
+-		break;
+-	case HW_VAR_SET_RPWM:{
+-			u8 rpwm_val = rtl_read_byte(rtlpriv, REG_USB_HRPWM);
+-
+-			if (rpwm_val & BIT(7))
+-				rtl_write_byte(rtlpriv, REG_USB_HRPWM, *val);
+-			else
+-				rtl_write_byte(rtlpriv, REG_USB_HRPWM,
+-					       *val | BIT(7));
+-			break;
+-		}
+-	case HW_VAR_H2C_FW_PWRMODE:{
+-			u8 psmode = *val;
+-
+-			if ((psmode != FW_PS_ACTIVE_MODE) &&
+-			   (!IS_92C_SERIAL(rtlhal->version)))
+-				rtl92c_dm_rf_saving(hw, true);
+-			rtl92c_set_fw_pwrmode_cmd(hw, (*val));
+-			break;
+-		}
+-	case HW_VAR_FW_PSMODE_STATUS:
+-		ppsc->fw_current_inpsmode = *((bool *) val);
+-		break;
+-	case HW_VAR_H2C_FW_JOINBSSRPT:{
+-			u8 mstatus = *val;
+-			u8 tmp_reg422;
+-			bool recover = false;
+-
+-			if (mstatus == RT_MEDIA_CONNECT) {
+-				rtlpriv->cfg->ops->set_hw_reg(hw,
+-							 HW_VAR_AID, NULL);
+-				rtl_write_byte(rtlpriv, REG_CR + 1, 0x03);
+-				_rtl92cu_set_bcn_ctrl_reg(hw, 0, BIT(3));
+-				_rtl92cu_set_bcn_ctrl_reg(hw, BIT(4), 0);
+-				tmp_reg422 = rtl_read_byte(rtlpriv,
+-							REG_FWHW_TXQ_CTRL + 2);
+-				if (tmp_reg422 & BIT(6))
+-					recover = true;
+-				rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL + 2,
+-					       tmp_reg422 & (~BIT(6)));
+-				rtl92c_set_fw_rsvdpagepkt(hw,
+-							  &usb_cmd_send_packet);
+-				_rtl92cu_set_bcn_ctrl_reg(hw, BIT(3), 0);
+-				_rtl92cu_set_bcn_ctrl_reg(hw, 0, BIT(4));
+-				if (recover)
+-					rtl_write_byte(rtlpriv,
+-						 REG_FWHW_TXQ_CTRL + 2,
+-						tmp_reg422 | BIT(6));
+-				rtl_write_byte(rtlpriv, REG_CR + 1, 0x02);
+-			}
+-			rtl92c_set_fw_joinbss_report_cmd(hw, (*val));
+-			break;
+-		}
+-	case HW_VAR_AID:{
+-			u16 u2btmp;
+-
+-			u2btmp = rtl_read_word(rtlpriv, REG_BCN_PSR_RPT);
+-			u2btmp &= 0xC000;
+-			rtl_write_word(rtlpriv, REG_BCN_PSR_RPT,
+-				       (u2btmp | mac->assoc_id));
+-			break;
+-		}
+-	case HW_VAR_CORRECT_TSF:{
+-			u8 btype_ibss = val[0];
+-
+-			if (btype_ibss)
+-				_rtl92cu_stop_tx_beacon(hw);
+-			_rtl92cu_set_bcn_ctrl_reg(hw, 0, BIT(3));
+-			rtl_write_dword(rtlpriv, REG_TSFTR, (u32)(mac->tsf &
+-					0xffffffff));
+-			rtl_write_dword(rtlpriv, REG_TSFTR + 4,
+-					(u32)((mac->tsf >> 32) & 0xffffffff));
+-			_rtl92cu_set_bcn_ctrl_reg(hw, BIT(3), 0);
+-			if (btype_ibss)
+-				_rtl92cu_resume_tx_beacon(hw);
+-			break;
+-		}
+-	case HW_VAR_MGT_FILTER:
+-		rtl_write_word(rtlpriv, REG_RXFLTMAP0, *(u16 *)val);
+-		mac->rx_mgt_filter = *(u16 *)val;
+-		break;
+-	case HW_VAR_CTRL_FILTER:
+-		rtl_write_word(rtlpriv, REG_RXFLTMAP1, *(u16 *)val);
+-		mac->rx_ctrl_filter = *(u16 *)val;
+-		break;
+-	case HW_VAR_DATA_FILTER:
+-		rtl_write_word(rtlpriv, REG_RXFLTMAP2, *(u16 *)val);
+-		mac->rx_data_filter = *(u16 *)val;
+-		break;
+-	case HW_VAR_KEEP_ALIVE:{
+-			u8 array[2];
+-
+-			array[0] = 0xff;
+-			array[1] = *((u8 *)val);
+-			rtl92c_fill_h2c_cmd(hw, H2C_92C_KEEP_ALIVE_CTRL, 2,
+-					    array);
+-			break;
+-		}
+-	default:
+-		pr_err("switch case %#x not processed\n", variable);
+-		break;
+-	}
+-}
+-
+-static void rtl92cu_update_hal_rate_table(struct ieee80211_hw *hw,
+-					  struct ieee80211_sta *sta)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	u32 ratr_value;
+-	u8 ratr_index = 0;
+-	u8 nmode = mac->ht_enable;
+-	u8 mimo_ps = IEEE80211_SMPS_OFF;
+-	u16 shortgi_rate;
+-	u32 tmp_ratr_value;
+-	u8 curtxbw_40mhz = mac->bw_40;
+-	u8 curshortgi_40mhz = (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SGI_40) ?
+-			       1 : 0;
+-	u8 curshortgi_20mhz = (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SGI_20) ?
+-			       1 : 0;
+-	enum wireless_mode wirelessmode = mac->mode;
+-
+-	if (rtlhal->current_bandtype == BAND_ON_5G)
+-		ratr_value = sta->deflink.supp_rates[1] << 4;
+-	else
+-		ratr_value = sta->deflink.supp_rates[0];
+-	if (mac->opmode == NL80211_IFTYPE_ADHOC)
+-		ratr_value = 0xfff;
+-
+-	ratr_value |= (sta->deflink.ht_cap.mcs.rx_mask[1] << 20 |
+-			sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
+-	switch (wirelessmode) {
+-	case WIRELESS_MODE_B:
+-		if (ratr_value & 0x0000000c)
+-			ratr_value &= 0x0000000d;
+-		else
+-			ratr_value &= 0x0000000f;
+-		break;
+-	case WIRELESS_MODE_G:
+-		ratr_value &= 0x00000FF5;
+-		break;
+-	case WIRELESS_MODE_N_24G:
+-	case WIRELESS_MODE_N_5G:
+-		nmode = 1;
+-		if (mimo_ps == IEEE80211_SMPS_STATIC) {
+-			ratr_value &= 0x0007F005;
+-		} else {
+-			u32 ratr_mask;
+-
+-			if (get_rf_type(rtlphy) == RF_1T2R ||
+-			    get_rf_type(rtlphy) == RF_1T1R)
+-				ratr_mask = 0x000ff005;
+-			else
+-				ratr_mask = 0x0f0ff005;
+-
+-			ratr_value &= ratr_mask;
+-		}
+-		break;
+-	default:
+-		if (rtlphy->rf_type == RF_1T2R)
+-			ratr_value &= 0x000ff0ff;
+-		else
+-			ratr_value &= 0x0f0ff0ff;
+-
+-		break;
+-	}
+-
+-	ratr_value &= 0x0FFFFFFF;
+-
+-	if (nmode && ((curtxbw_40mhz &&
+-			 curshortgi_40mhz) || (!curtxbw_40mhz &&
+-					       curshortgi_20mhz))) {
+-		ratr_value |= 0x10000000;
+-		tmp_ratr_value = (ratr_value >> 12);
+-
+-		for (shortgi_rate = 15; shortgi_rate > 0; shortgi_rate--) {
+-			if ((1 << shortgi_rate) & tmp_ratr_value)
+-				break;
+-		}
+-
+-		shortgi_rate = (shortgi_rate << 12) | (shortgi_rate << 8) |
+-		    (shortgi_rate << 4) | (shortgi_rate);
+-	}
+-
+-	rtl_write_dword(rtlpriv, REG_ARFR0 + ratr_index * 4, ratr_value);
+-
+-	rtl_dbg(rtlpriv, COMP_RATR, DBG_DMESG, "%x\n",
+-		rtl_read_dword(rtlpriv, REG_ARFR0));
+-}
+-
+-static void rtl92cu_update_hal_rate_mask(struct ieee80211_hw *hw,
+-					 struct ieee80211_sta *sta,
+-					 u8 rssi_level, bool update_bw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_sta_info *sta_entry = NULL;
+-	u32 ratr_bitmap;
+-	u8 ratr_index;
+-	u8 curtxbw_40mhz = (sta->deflink.bandwidth >= IEEE80211_STA_RX_BW_40) ? 1 : 0;
+-	u8 curshortgi_40mhz = curtxbw_40mhz &&
+-			      (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SGI_40) ?
+-				1 : 0;
+-	u8 curshortgi_20mhz = (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_SGI_20) ?
+-				1 : 0;
+-	enum wireless_mode wirelessmode = 0;
+-	bool shortgi = false;
+-	u8 rate_mask[5];
+-	u8 macid = 0;
+-	u8 mimo_ps = IEEE80211_SMPS_OFF;
+-
+-	sta_entry = (struct rtl_sta_info *) sta->drv_priv;
+-	wirelessmode = sta_entry->wireless_mode;
+-	if (mac->opmode == NL80211_IFTYPE_STATION ||
+-	    mac->opmode == NL80211_IFTYPE_MESH_POINT)
+-		curtxbw_40mhz = mac->bw_40;
+-	else if (mac->opmode == NL80211_IFTYPE_AP ||
+-		mac->opmode == NL80211_IFTYPE_ADHOC)
+-		macid = sta->aid + 1;
+-
+-	if (rtlhal->current_bandtype == BAND_ON_5G)
+-		ratr_bitmap = sta->deflink.supp_rates[1] << 4;
+-	else
+-		ratr_bitmap = sta->deflink.supp_rates[0];
+-	if (mac->opmode == NL80211_IFTYPE_ADHOC)
+-		ratr_bitmap = 0xfff;
+-	ratr_bitmap |= (sta->deflink.ht_cap.mcs.rx_mask[1] << 20 |
+-			sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
+-	switch (wirelessmode) {
+-	case WIRELESS_MODE_B:
+-		ratr_index = RATR_INX_WIRELESS_B;
+-		if (ratr_bitmap & 0x0000000c)
+-			ratr_bitmap &= 0x0000000d;
+-		else
+-			ratr_bitmap &= 0x0000000f;
+-		break;
+-	case WIRELESS_MODE_G:
+-		ratr_index = RATR_INX_WIRELESS_GB;
+-
+-		if (rssi_level == 1)
+-			ratr_bitmap &= 0x00000f00;
+-		else if (rssi_level == 2)
+-			ratr_bitmap &= 0x00000ff0;
+-		else
+-			ratr_bitmap &= 0x00000ff5;
+-		break;
+-	case WIRELESS_MODE_A:
+-		ratr_index = RATR_INX_WIRELESS_A;
+-		ratr_bitmap &= 0x00000ff0;
+-		break;
+-	case WIRELESS_MODE_N_24G:
+-	case WIRELESS_MODE_N_5G:
+-		ratr_index = RATR_INX_WIRELESS_NGB;
+-
+-		if (mimo_ps == IEEE80211_SMPS_STATIC) {
+-			if (rssi_level == 1)
+-				ratr_bitmap &= 0x00070000;
+-			else if (rssi_level == 2)
+-				ratr_bitmap &= 0x0007f000;
+-			else
+-				ratr_bitmap &= 0x0007f005;
+-		} else {
+-			if (rtlphy->rf_type == RF_1T2R ||
+-			    rtlphy->rf_type == RF_1T1R) {
+-				if (curtxbw_40mhz) {
+-					if (rssi_level == 1)
+-						ratr_bitmap &= 0x000f0000;
+-					else if (rssi_level == 2)
+-						ratr_bitmap &= 0x000ff000;
+-					else
+-						ratr_bitmap &= 0x000ff015;
+-				} else {
+-					if (rssi_level == 1)
+-						ratr_bitmap &= 0x000f0000;
+-					else if (rssi_level == 2)
+-						ratr_bitmap &= 0x000ff000;
+-					else
+-						ratr_bitmap &= 0x000ff005;
+-				}
+-			} else {
+-				if (curtxbw_40mhz) {
+-					if (rssi_level == 1)
+-						ratr_bitmap &= 0x0f0f0000;
+-					else if (rssi_level == 2)
+-						ratr_bitmap &= 0x0f0ff000;
+-					else
+-						ratr_bitmap &= 0x0f0ff015;
+-				} else {
+-					if (rssi_level == 1)
+-						ratr_bitmap &= 0x0f0f0000;
+-					else if (rssi_level == 2)
+-						ratr_bitmap &= 0x0f0ff000;
+-					else
+-						ratr_bitmap &= 0x0f0ff005;
+-				}
+-			}
+-		}
+-
+-		if ((curtxbw_40mhz && curshortgi_40mhz) ||
+-		    (!curtxbw_40mhz && curshortgi_20mhz)) {
+-
+-			if (macid == 0)
+-				shortgi = true;
+-			else if (macid == 1)
+-				shortgi = false;
+-		}
+-		break;
+-	default:
+-		ratr_index = RATR_INX_WIRELESS_NGB;
+-
+-		if (rtlphy->rf_type == RF_1T2R)
+-			ratr_bitmap &= 0x000ff0ff;
+-		else
+-			ratr_bitmap &= 0x0f0ff0ff;
+-		break;
+-	}
+-	sta_entry->ratr_index = ratr_index;
+-
+-	rtl_dbg(rtlpriv, COMP_RATR, DBG_DMESG,
+-		"ratr_bitmap :%x\n", ratr_bitmap);
+-	*(u32 *)&rate_mask = (ratr_bitmap & 0x0fffffff) |
+-				     (ratr_index << 28);
+-	rate_mask[4] = macid | (shortgi ? 0x20 : 0x00) | 0x80;
+-	rtl_dbg(rtlpriv, COMP_RATR, DBG_DMESG,
+-		"Rate_index:%x, ratr_val:%x, %5phC\n",
+-		ratr_index, ratr_bitmap, rate_mask);
+-	memcpy(rtlpriv->rate_mask, rate_mask, 5);
+-	/* rtl92c_fill_h2c_cmd() does USB I/O and will result in a
+-	 * "scheduled while atomic" if called directly */
+-	schedule_work(&rtlpriv->works.fill_h2c_cmd);
+-
+-	if (macid != 0)
+-		sta_entry->ratr_index = ratr_index;
+-}
+-
+-void rtl92cu_update_hal_rate_tbl(struct ieee80211_hw *hw,
+-				 struct ieee80211_sta *sta,
+-				 u8 rssi_level, bool update_bw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	if (rtlpriv->dm.useramask)
+-		rtl92cu_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
+-	else
+-		rtl92cu_update_hal_rate_table(hw, sta);
+-}
+-
+-void rtl92cu_update_channel_access_setting(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	u16 sifs_timer;
+-
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_SLOT_TIME,
+-				      &mac->slot_time);
+-	if (!mac->ht_enable)
+-		sifs_timer = 0x0a0a;
+-	else
+-		sifs_timer = 0x0e0e;
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_SIFS, (u8 *)&sifs_timer);
+-}
+-
+-bool rtl92cu_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 * valid)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	enum rf_pwrstate e_rfpowerstate_toset, cur_rfstate;
+-	u8 u1tmp = 0;
+-	bool actuallyset = false;
+-	unsigned long flag = 0;
+-	/* to do - usb autosuspend */
+-	u8 usb_autosuspend = 0;
+-
+-	if (ppsc->swrf_processing)
+-		return false;
+-	spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flag);
+-	if (ppsc->rfchange_inprogress) {
+-		spin_unlock_irqrestore(&rtlpriv->locks.rf_ps_lock, flag);
+-		return false;
+-	} else {
+-		ppsc->rfchange_inprogress = true;
+-		spin_unlock_irqrestore(&rtlpriv->locks.rf_ps_lock, flag);
+-	}
+-	cur_rfstate = ppsc->rfpwr_state;
+-	if (usb_autosuspend) {
+-		/* to do................... */
+-	} else {
+-		if (ppsc->pwrdown_mode) {
+-			u1tmp = rtl_read_byte(rtlpriv, REG_HSISR);
+-			e_rfpowerstate_toset = (u1tmp & BIT(7)) ?
+-					       ERFOFF : ERFON;
+-			rtl_dbg(rtlpriv, COMP_POWER, DBG_DMESG,
+-				"pwrdown, 0x5c(BIT7)=%02x\n", u1tmp);
+-		} else {
+-			rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG,
+-				       rtl_read_byte(rtlpriv,
+-				       REG_MAC_PINMUX_CFG) & ~(BIT(3)));
+-			u1tmp = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
+-			e_rfpowerstate_toset  = (u1tmp & BIT(3)) ?
+-						 ERFON : ERFOFF;
+-			rtl_dbg(rtlpriv, COMP_POWER, DBG_DMESG,
+-				"GPIO_IN=%02x\n", u1tmp);
+-		}
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD, "N-SS RF =%x\n",
+-			e_rfpowerstate_toset);
+-	}
+-	if ((ppsc->hwradiooff) && (e_rfpowerstate_toset == ERFON)) {
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"GPIOChangeRF  - HW Radio ON, RF ON\n");
+-		ppsc->hwradiooff = false;
+-		actuallyset = true;
+-	} else if ((!ppsc->hwradiooff) && (e_rfpowerstate_toset  ==
+-		    ERFOFF)) {
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"GPIOChangeRF  - HW Radio OFF\n");
+-		ppsc->hwradiooff = true;
+-		actuallyset = true;
+-	} else {
+-		rtl_dbg(rtlpriv, COMP_POWER, DBG_LOUD,
+-			"pHalData->bHwRadioOff and eRfPowerStateToSet do not match: pHalData->bHwRadioOff %x, eRfPowerStateToSet %x\n",
+-			 ppsc->hwradiooff, e_rfpowerstate_toset);
+-	}
+-	if (actuallyset) {
+-		ppsc->hwradiooff = true;
+-		if (e_rfpowerstate_toset == ERFON) {
+-			if ((ppsc->reg_rfps_level  & RT_RF_OFF_LEVL_ASPM) &&
+-			     RT_IN_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_ASPM))
+-				RT_CLEAR_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_ASPM);
+-			else if ((ppsc->reg_rfps_level  & RT_RF_OFF_LEVL_PCI_D3)
+-				 && RT_IN_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_PCI_D3))
+-				RT_CLEAR_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_PCI_D3);
+-		}
+-		spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flag);
+-		ppsc->rfchange_inprogress = false;
+-		spin_unlock_irqrestore(&rtlpriv->locks.rf_ps_lock, flag);
+-		/* For power down module, we need to enable register block
+-		 * contrl reg at 0x1c. Then enable power down control bit
+-		 * of register 0x04 BIT4 and BIT15 as 1.
+-		 */
+-		if (ppsc->pwrdown_mode && e_rfpowerstate_toset == ERFOFF) {
+-			/* Enable register area 0x0-0xc. */
+-			rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0);
+-			rtl_write_word(rtlpriv, REG_APS_FSMCO, 0x8812);
+-		}
+-		if (e_rfpowerstate_toset == ERFOFF) {
+-			if (ppsc->reg_rfps_level  & RT_RF_OFF_LEVL_ASPM)
+-				RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_ASPM);
+-			else if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_PCI_D3)
+-				RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_PCI_D3);
+-		}
+-	} else if (e_rfpowerstate_toset == ERFOFF || cur_rfstate == ERFOFF) {
+-		/* Enter D3 or ASPM after GPIO had been done. */
+-		if (ppsc->reg_rfps_level  & RT_RF_OFF_LEVL_ASPM)
+-			RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_ASPM);
+-		else if (ppsc->reg_rfps_level  & RT_RF_OFF_LEVL_PCI_D3)
+-			RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_PCI_D3);
+-		spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flag);
+-		ppsc->rfchange_inprogress = false;
+-		spin_unlock_irqrestore(&rtlpriv->locks.rf_ps_lock, flag);
+-	} else {
+-		spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flag);
+-		ppsc->rfchange_inprogress = false;
+-		spin_unlock_irqrestore(&rtlpriv->locks.rf_ps_lock, flag);
+-	}
+-	*valid = 1;
+-	return !ppsc->hwradiooff;
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.h
+deleted file mode 100644
+index 5c48c3fd45e4..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.h
++++ /dev/null
+@@ -1,83 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92CU_HW_H__
+-#define __RTL92CU_HW_H__
+-
+-#define H2C_RA_MASK	6
+-
+-#define LLT_LAST_ENTRY_OF_TX_PKT_BUFFER		255
+-
+-#define RX_PAGE_SIZE_REG_VALUE			PBP_128
+-/* Note: We will divide number of page equally for each queue
+- * other than public queue! */
+-#define TX_TOTAL_PAGE_NUMBER			0xF8
+-#define TX_PAGE_BOUNDARY			(TX_TOTAL_PAGE_NUMBER + 1)
+-
+-#define CHIP_B_PAGE_NUM_PUBQ			0xE7
+-
+-/* For Test Chip Setting
+- * (HPQ + LPQ + PUBQ) shall be TX_TOTAL_PAGE_NUMBER */
+-#define CHIP_A_PAGE_NUM_PUBQ			0x7E
+-
+-/* For Chip A Setting */
+-#define WMM_CHIP_A_TX_TOTAL_PAGE_NUMBER		0xF5
+-#define WMM_CHIP_A_TX_PAGE_BOUNDARY		\
+-	(WMM_CHIP_A_TX_TOTAL_PAGE_NUMBER + 1) /* F6 */
+-
+-#define WMM_CHIP_A_PAGE_NUM_PUBQ		0xA3
+-#define WMM_CHIP_A_PAGE_NUM_HPQ			0x29
+-#define WMM_CHIP_A_PAGE_NUM_LPQ			0x29
+-
+-/* Note: For Chip B Setting ,modify later */
+-#define WMM_CHIP_B_TX_TOTAL_PAGE_NUMBER		0xF5
+-#define WMM_CHIP_B_TX_PAGE_BOUNDARY		\
+-	(WMM_CHIP_B_TX_TOTAL_PAGE_NUMBER + 1) /* F6 */
+-
+-#define WMM_CHIP_B_PAGE_NUM_PUBQ		0xB0
+-#define WMM_CHIP_B_PAGE_NUM_HPQ			0x29
+-#define WMM_CHIP_B_PAGE_NUM_LPQ			0x1C
+-#define WMM_CHIP_B_PAGE_NUM_NPQ			0x1C
+-
+-#define BOARD_TYPE_NORMAL_MASK			0xE0
+-#define BOARD_TYPE_TEST_MASK			0x0F
+-
+-/* should be renamed and moved to another file */
+-enum _BOARD_TYPE_8192CUSB {
+-	BOARD_USB_DONGLE		= 0,	/* USB dongle */
+-	BOARD_USB_HIGH_PA		= 1,	/* USB dongle - high power PA */
+-	BOARD_MINICARD			= 2,	/* Minicard */
+-	BOARD_USB_SOLO			= 3,	/* USB solo-Slim module */
+-	BOARD_USB_COMBO			= 4,	/* USB Combo-Slim module */
+-};
+-
+-#define IS_HIGHT_PA(boardtype)		\
+-	((boardtype == BOARD_USB_HIGH_PA) ? true : false)
+-
+-#define RTL92C_DRIVER_INFO_SIZE				4
+-void rtl92cu_read_eeprom_info(struct ieee80211_hw *hw);
+-void rtl92cu_enable_hw_security_config(struct ieee80211_hw *hw);
+-int rtl92cu_hw_init(struct ieee80211_hw *hw);
+-void rtl92cu_card_disable(struct ieee80211_hw *hw);
+-int rtl92cu_set_network_type(struct ieee80211_hw *hw, enum nl80211_iftype type);
+-void rtl92cu_set_beacon_related_registers(struct ieee80211_hw *hw);
+-void rtl92cu_set_beacon_interval(struct ieee80211_hw *hw);
+-void rtl92cu_update_interrupt_mask(struct ieee80211_hw *hw,
+-				   u32 add_msr, u32 rm_msr);
+-void rtl92cu_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
+-void rtl92cu_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
+-
+-void rtl92cu_update_channel_access_setting(struct ieee80211_hw *hw);
+-bool rtl92cu_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 * valid);
+-void rtl92cu_set_check_bssid(struct ieee80211_hw *hw, bool check_bssid);
+-int rtl92c_download_fw(struct ieee80211_hw *hw);
+-void rtl92c_set_fw_pwrmode_cmd(struct ieee80211_hw *hw, u8 mode);
+-void rtl92c_set_fw_joinbss_report_cmd(struct ieee80211_hw *hw, u8 mstatus);
+-void rtl92c_fill_h2c_cmd(struct ieee80211_hw *hw,
+-			 u8 element_id, u32 cmd_len, u8 *p_cmdbuffer);
+-bool rtl92cu_phy_mac_config(struct ieee80211_hw *hw);
+-void rtl92cu_update_hal_rate_tbl(struct ieee80211_hw *hw,
+-				 struct ieee80211_sta *sta,
+-				 u8 rssi_level, bool update_bw);
+-
+-#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.c
+deleted file mode 100644
+index 1488f52a2d2f..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.c
++++ /dev/null
+@@ -1,118 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../usb.h"
+-#include "reg.h"
+-#include "led.h"
+-
+-static void _rtl92cu_init_led(struct ieee80211_hw *hw,
+-			      struct rtl_led *pled, enum rtl_led_pin ledpin)
+-{
+-	pled->hw = hw;
+-	pled->ledpin = ledpin;
+-	pled->ledon = false;
+-}
+-
+-static void rtl92cu_deinit_led(struct rtl_led *pled)
+-{
+-}
+-
+-void rtl92cu_sw_led_on(struct ieee80211_hw *hw, struct rtl_led *pled)
+-{
+-	u8 ledcfg;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_dbg(rtlpriv, COMP_LED, DBG_LOUD, "LedAddr:%X ledpin=%d\n",
+-		REG_LEDCFG2, pled->ledpin);
+-	ledcfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
+-	switch (pled->ledpin) {
+-	case LED_PIN_GPIO0:
+-		break;
+-	case LED_PIN_LED0:
+-		rtl_write_byte(rtlpriv,
+-			       REG_LEDCFG2, (ledcfg & 0xf0) | BIT(5) | BIT(6));
+-		break;
+-	case LED_PIN_LED1:
+-		rtl_write_byte(rtlpriv, REG_LEDCFG2, (ledcfg & 0x0f) | BIT(5));
+-		break;
+-	default:
+-		pr_err("switch case %#x not processed\n",
+-		       pled->ledpin);
+-		break;
+-	}
+-	pled->ledon = true;
+-}
+-
+-void rtl92cu_sw_led_off(struct ieee80211_hw *hw, struct rtl_led *pled)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 ledcfg;
+-
+-	rtl_dbg(rtlpriv, COMP_LED, DBG_LOUD, "LedAddr:%X ledpin=%d\n",
+-		REG_LEDCFG2, pled->ledpin);
+-	ledcfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
+-	switch (pled->ledpin) {
+-	case LED_PIN_GPIO0:
+-		break;
+-	case LED_PIN_LED0:
+-		ledcfg &= 0xf0;
+-		if (rtlpriv->ledctl.led_opendrain)
+-			rtl_write_byte(rtlpriv, REG_LEDCFG2,
+-				       (ledcfg | BIT(1) | BIT(5) | BIT(6)));
+-		else
+-			rtl_write_byte(rtlpriv, REG_LEDCFG2,
+-				       (ledcfg | BIT(3) | BIT(5) | BIT(6)));
+-		break;
+-	case LED_PIN_LED1:
+-		ledcfg &= 0x0f;
+-		rtl_write_byte(rtlpriv, REG_LEDCFG2, (ledcfg | BIT(3)));
+-		break;
+-	default:
+-		pr_err("switch case %#x not processed\n",
+-		       pled->ledpin);
+-		break;
+-	}
+-	pled->ledon = false;
+-}
+-
+-void rtl92cu_init_sw_leds(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	_rtl92cu_init_led(hw, &rtlpriv->ledctl.sw_led0, LED_PIN_LED0);
+-	_rtl92cu_init_led(hw, &rtlpriv->ledctl.sw_led1, LED_PIN_LED1);
+-}
+-
+-void rtl92cu_deinit_sw_leds(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl92cu_deinit_led(&rtlpriv->ledctl.sw_led0);
+-	rtl92cu_deinit_led(&rtlpriv->ledctl.sw_led1);
+-}
+-
+-static void _rtl92cu_sw_led_control(struct ieee80211_hw *hw,
+-				    enum led_ctl_mode ledaction)
+-{
+-}
+-
+-void rtl92cu_led_control(struct ieee80211_hw *hw,
+-			enum led_ctl_mode ledaction)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-
+-	if ((ppsc->rfoff_reason > RF_CHANGE_BY_PS) &&
+-	    (ledaction == LED_CTL_TX ||
+-	     ledaction == LED_CTL_RX ||
+-	     ledaction == LED_CTL_SITE_SURVEY ||
+-	     ledaction == LED_CTL_LINK ||
+-	     ledaction == LED_CTL_NO_LINK ||
+-	     ledaction == LED_CTL_START_TO_LINK ||
+-	     ledaction == LED_CTL_POWER_ON)) {
+-		return;
+-	}
+-	rtl_dbg(rtlpriv, COMP_LED, DBG_LOUD, "ledaction %d\n", ledaction);
+-	_rtl92cu_sw_led_control(hw, ledaction);
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.h
+deleted file mode 100644
+index 3fc1e7c8f78b..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/led.h
++++ /dev/null
+@@ -1,13 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92CU_LED_H__
+-#define __RTL92CU_LED_H__
+-
+-void rtl92cu_init_sw_leds(struct ieee80211_hw *hw);
+-void rtl92cu_deinit_sw_leds(struct ieee80211_hw *hw);
+-void rtl92cu_sw_led_on(struct ieee80211_hw *hw, struct rtl_led *pled);
+-void rtl92cu_sw_led_off(struct ieee80211_hw *hw, struct rtl_led *pled);
+-void rtl92cu_led_control(struct ieee80211_hw *hw, enum led_ctl_mode ledaction);
+-
+-#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.c
+deleted file mode 100644
+index 4ff0d4118193..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.c
++++ /dev/null
+@@ -1,746 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../pci.h"
+-#include "../usb.h"
+-#include "../ps.h"
+-#include "../cam.h"
+-#include "../stats.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "rf.h"
+-#include "dm.h"
+-#include "mac.h"
+-#include "trx.h"
+-#include "../rtl8192c/fw_common.h"
+-
+-#include <linux/module.h>
+-
+-/* macro to shorten lines */
+-
+-#define LINK_Q	ui_link_quality
+-#define RX_EVM	rx_evm_percentage
+-#define RX_SIGQ	rx_mimo_sig_qual
+-
+-void rtl92c_read_chip_version(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+-	enum version_8192c chip_version = VERSION_UNKNOWN;
+-	const char *versionid;
+-	u32 value32;
+-
+-	value32 = rtl_read_dword(rtlpriv, REG_SYS_CFG);
+-	if (value32 & TRP_VAUX_EN) {
+-		chip_version = (value32 & TYPE_ID) ? VERSION_TEST_CHIP_92C :
+-			       VERSION_TEST_CHIP_88C;
+-	} else {
+-		/* Normal mass production chip. */
+-		chip_version = NORMAL_CHIP;
+-		chip_version |= ((value32 & TYPE_ID) ? CHIP_92C : 0);
+-		chip_version |= ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);
+-		if (IS_VENDOR_UMC(chip_version))
+-			chip_version |= ((value32 & CHIP_VER_RTL_MASK) ?
+-					 CHIP_VENDOR_UMC_B_CUT : 0);
+-		if (IS_92C_SERIAL(chip_version)) {
+-			value32 = rtl_read_dword(rtlpriv, REG_HPON_FSM);
+-			chip_version |= ((CHIP_BONDING_IDENTIFIER(value32) ==
+-				 CHIP_BONDING_92C_1T2R) ? CHIP_92C_1T2R : 0);
+-		}
+-	}
+-	rtlhal->version  = (enum version_8192c)chip_version;
+-	pr_info("Chip version 0x%x\n", chip_version);
+-	switch (rtlhal->version) {
+-	case VERSION_NORMAL_TSMC_CHIP_92C_1T2R:
+-		versionid = "NORMAL_B_CHIP_92C";
+-		break;
+-	case VERSION_NORMAL_TSMC_CHIP_92C:
+-		versionid = "NORMAL_TSMC_CHIP_92C";
+-		break;
+-	case VERSION_NORMAL_TSMC_CHIP_88C:
+-		versionid = "NORMAL_TSMC_CHIP_88C";
+-		break;
+-	case VERSION_NORMAL_UMC_CHIP_92C_1T2R_A_CUT:
+-		versionid = "NORMAL_UMC_CHIP_i92C_1T2R_A_CUT";
+-		break;
+-	case VERSION_NORMAL_UMC_CHIP_92C_A_CUT:
+-		versionid = "NORMAL_UMC_CHIP_92C_A_CUT";
+-		break;
+-	case VERSION_NORMAL_UMC_CHIP_88C_A_CUT:
+-		versionid = "NORMAL_UMC_CHIP_88C_A_CUT";
+-		break;
+-	case VERSION_NORMAL_UMC_CHIP_92C_1T2R_B_CUT:
+-		versionid = "NORMAL_UMC_CHIP_92C_1T2R_B_CUT";
+-		break;
+-	case VERSION_NORMAL_UMC_CHIP_92C_B_CUT:
+-		versionid = "NORMAL_UMC_CHIP_92C_B_CUT";
+-		break;
+-	case VERSION_NORMAL_UMC_CHIP_88C_B_CUT:
+-		versionid = "NORMAL_UMC_CHIP_88C_B_CUT";
+-		break;
+-	case VERSION_TEST_CHIP_92C:
+-		versionid = "TEST_CHIP_92C";
+-		break;
+-	case VERSION_TEST_CHIP_88C:
+-		versionid = "TEST_CHIP_88C";
+-		break;
+-	default:
+-		versionid = "UNKNOWN";
+-		break;
+-	}
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-		"Chip Version ID: %s\n", versionid);
+-
+-	if (IS_92C_SERIAL(rtlhal->version))
+-		rtlphy->rf_type =
+-			 (IS_92C_1T2R(rtlhal->version)) ? RF_1T2R : RF_2T2R;
+-	else
+-		rtlphy->rf_type = RF_1T1R;
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+-		"Chip RF Type: %s\n",
+-		rtlphy->rf_type == RF_2T2R ? "RF_2T2R" : "RF_1T1R");
+-	if (get_rf_type(rtlphy) == RF_1T1R)
+-		rtlpriv->dm.rfpath_rxenable[0] = true;
+-	else
+-		rtlpriv->dm.rfpath_rxenable[0] =
+-		    rtlpriv->dm.rfpath_rxenable[1] = true;
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "VersionID = 0x%4x\n",
+-		rtlhal->version);
+-}
+-
+-/**
+- * rtl92c_llt_write - LLT table write access
+- * @hw: Pointer to the ieee80211_hw structure.
+- * @address: LLT logical address.
+- * @data: LLT data content
+- *
+- * Realtek hardware access function.
+- *
+- */
+-bool rtl92c_llt_write(struct ieee80211_hw *hw, u32 address, u32 data)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	bool status = true;
+-	long count = 0;
+-	u32 value = _LLT_INIT_ADDR(address) |
+-	    _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
+-
+-	rtl_write_dword(rtlpriv, REG_LLT_INIT, value);
+-	do {
+-		value = rtl_read_dword(rtlpriv, REG_LLT_INIT);
+-		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value))
+-			break;
+-		if (count > POLLING_LLT_THRESHOLD) {
+-			pr_err("Failed to polling write LLT done at address %d! _LLT_OP_VALUE(%x)\n",
+-			       address, _LLT_OP_VALUE(value));
+-			status = false;
+-			break;
+-		}
+-	} while (++count);
+-	return status;
+-}
+-
+-/**
+- * rtl92c_init_llt_table - Init LLT table
+- * @hw: Pointer to the ieee80211_hw structure.
+- * @boundary: Page boundary.
+- *
+- * Realtek hardware access function.
+- */
+-bool rtl92c_init_llt_table(struct ieee80211_hw *hw, u32 boundary)
+-{
+-	bool rst = true;
+-	u32	i;
+-
+-	for (i = 0; i < (boundary - 1); i++) {
+-		rst = rtl92c_llt_write(hw, i , i + 1);
+-		if (!rst) {
+-			pr_err("===> %s #1 fail\n", __func__);
+-			return rst;
+-		}
+-	}
+-	/* end of list */
+-	rst = rtl92c_llt_write(hw, (boundary - 1), 0xFF);
+-	if (!rst) {
+-		pr_err("===> %s #2 fail\n", __func__);
+-		return rst;
+-	}
+-	/* Make the other pages as ring buffer
+-	 * This ring buffer is used as beacon buffer if we config this MAC
+-	 *  as two MAC transfer.
+-	 * Otherwise used as local loopback buffer.
+-	 */
+-	for (i = boundary; i < LLT_LAST_ENTRY_OF_TX_PKT_BUFFER; i++) {
+-		rst = rtl92c_llt_write(hw, i, (i + 1));
+-		if (!rst) {
+-			pr_err("===> %s #3 fail\n", __func__);
+-			return rst;
+-		}
+-	}
+-	/* Let last entry point to the start entry of ring buffer */
+-	rst = rtl92c_llt_write(hw, LLT_LAST_ENTRY_OF_TX_PKT_BUFFER, boundary);
+-	if (!rst) {
+-		pr_err("===> %s #4 fail\n", __func__);
+-		return rst;
+-	}
+-	return rst;
+-}
+-
+-void rtl92c_set_key(struct ieee80211_hw *hw, u32 key_index,
+-		     u8 *p_macaddr, bool is_group, u8 enc_algo,
+-		     bool is_wepkey, bool clear_all)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	u8 *macaddr = p_macaddr;
+-	u32 entry_id = 0;
+-	bool is_pairwise = false;
+-	static u8 cam_const_addr[4][6] = {
+-		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+-		{0x00, 0x00, 0x00, 0x00, 0x00, 0x01},
+-		{0x00, 0x00, 0x00, 0x00, 0x00, 0x02},
+-		{0x00, 0x00, 0x00, 0x00, 0x00, 0x03}
+-	};
+-	static u8 cam_const_broad[] = {
+-		0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+-	};
+-
+-	if (clear_all) {
+-		u8 idx = 0;
+-		u8 cam_offset = 0;
+-		u8 clear_number = 5;
+-
+-		rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG, "clear_all\n");
+-		for (idx = 0; idx < clear_number; idx++) {
+-			rtl_cam_mark_invalid(hw, cam_offset + idx);
+-			rtl_cam_empty_entry(hw, cam_offset + idx);
+-			if (idx < 5) {
+-				memset(rtlpriv->sec.key_buf[idx], 0,
+-				       MAX_KEY_LEN);
+-				rtlpriv->sec.key_len[idx] = 0;
+-			}
+-		}
+-	} else {
+-		switch (enc_algo) {
+-		case WEP40_ENCRYPTION:
+-			enc_algo = CAM_WEP40;
+-			break;
+-		case WEP104_ENCRYPTION:
+-			enc_algo = CAM_WEP104;
+-			break;
+-		case TKIP_ENCRYPTION:
+-			enc_algo = CAM_TKIP;
+-			break;
+-		case AESCCMP_ENCRYPTION:
+-			enc_algo = CAM_AES;
+-			break;
+-		default:
+-			pr_err("illegal switch case\n");
+-			enc_algo = CAM_TKIP;
+-			break;
+-		}
+-		if (is_wepkey || rtlpriv->sec.use_defaultkey) {
+-			macaddr = cam_const_addr[key_index];
+-			entry_id = key_index;
+-		} else {
+-			if (is_group) {
+-				macaddr = cam_const_broad;
+-				entry_id = key_index;
+-			} else {
+-				if (mac->opmode == NL80211_IFTYPE_AP ||
+-				    mac->opmode == NL80211_IFTYPE_MESH_POINT) {
+-					entry_id = rtl_cam_get_free_entry(hw,
+-								 p_macaddr);
+-					if (entry_id >=  TOTAL_CAM_ENTRY) {
+-						pr_err("Can not find free hw security cam entry\n");
+-						return;
+-					}
+-				} else {
+-					entry_id = CAM_PAIRWISE_KEY_POSITION;
+-				}
+-
+-				key_index = PAIRWISE_KEYIDX;
+-				is_pairwise = true;
+-			}
+-		}
+-		if (rtlpriv->sec.key_len[key_index] == 0) {
+-			rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG,
+-				"delete one entry\n");
+-			if (mac->opmode == NL80211_IFTYPE_AP ||
+-			    mac->opmode == NL80211_IFTYPE_MESH_POINT)
+-				rtl_cam_del_entry(hw, p_macaddr);
+-			rtl_cam_delete_one_entry(hw, p_macaddr, entry_id);
+-		} else {
+-			rtl_dbg(rtlpriv, COMP_SEC, DBG_LOUD,
+-				"The insert KEY length is %d\n",
+-				 rtlpriv->sec.key_len[PAIRWISE_KEYIDX]);
+-			rtl_dbg(rtlpriv, COMP_SEC, DBG_LOUD,
+-				"The insert KEY is %x %x\n",
+-				rtlpriv->sec.key_buf[0][0],
+-				rtlpriv->sec.key_buf[0][1]);
+-			rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG,
+-				"add one entry\n");
+-			if (is_pairwise) {
+-				RT_PRINT_DATA(rtlpriv, COMP_SEC, DBG_LOUD,
+-					      "Pairwise Key content",
+-					      rtlpriv->sec.pairwise_key,
+-					      rtlpriv->sec.
+-					      key_len[PAIRWISE_KEYIDX]);
+-				rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG,
+-					"set Pairwise key\n");
+-
+-				rtl_cam_add_one_entry(hw, macaddr, key_index,
+-						entry_id, enc_algo,
+-						CAM_CONFIG_NO_USEDK,
+-						rtlpriv->sec.
+-						key_buf[key_index]);
+-			} else {
+-				rtl_dbg(rtlpriv, COMP_SEC, DBG_DMESG,
+-					"set group key\n");
+-				if (mac->opmode == NL80211_IFTYPE_ADHOC) {
+-					rtl_cam_add_one_entry(hw,
+-						rtlefuse->dev_addr,
+-						PAIRWISE_KEYIDX,
+-						CAM_PAIRWISE_KEY_POSITION,
+-						enc_algo,
+-						CAM_CONFIG_NO_USEDK,
+-						rtlpriv->sec.key_buf
+-						[entry_id]);
+-				}
+-				rtl_cam_add_one_entry(hw, macaddr, key_index,
+-						entry_id, enc_algo,
+-						CAM_CONFIG_NO_USEDK,
+-						rtlpriv->sec.key_buf[entry_id]);
+-			}
+-		}
+-	}
+-}
+-
+-u32 rtl92c_get_txdma_status(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	return rtl_read_dword(rtlpriv, REG_TXDMA_STATUS);
+-}
+-
+-void rtl92c_enable_interrupt(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+-	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
+-
+-	if (IS_HARDWARE_TYPE_8192CE(rtlpriv)) {
+-		rtl_write_dword(rtlpriv, REG_HIMR, rtlpci->irq_mask[0] &
+-				0xFFFFFFFF);
+-		rtl_write_dword(rtlpriv, REG_HIMRE, rtlpci->irq_mask[1] &
+-				0xFFFFFFFF);
+-	} else {
+-		rtl_write_dword(rtlpriv, REG_HIMR, rtlusb->irq_mask[0] &
+-				0xFFFFFFFF);
+-		rtl_write_dword(rtlpriv, REG_HIMRE, rtlusb->irq_mask[1] &
+-				0xFFFFFFFF);
+-	}
+-}
+-
+-void rtl92c_init_interrupt(struct ieee80211_hw *hw)
+-{
+-	 rtl92c_enable_interrupt(hw);
+-}
+-
+-void rtl92c_disable_interrupt(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_dword(rtlpriv, REG_HIMR, IMR8190_DISABLED);
+-	rtl_write_dword(rtlpriv, REG_HIMRE, IMR8190_DISABLED);
+-}
+-
+-void rtl92c_set_qos(struct ieee80211_hw *hw, int aci)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl92c_dm_init_edca_turbo(hw);
+-	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_AC_PARAM, (u8 *)&aci);
+-}
+-
+-void rtl92c_init_driver_info_size(struct ieee80211_hw *hw, u8 size)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_byte(rtlpriv, REG_RX_DRVINFO_SZ, size);
+-}
+-
+-int rtl92c_set_network_type(struct ieee80211_hw *hw, enum nl80211_iftype type)
+-{
+-	u8 value;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	switch (type) {
+-	case NL80211_IFTYPE_UNSPECIFIED:
+-		value = NT_NO_LINK;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"Set Network type to NO LINK!\n");
+-		break;
+-	case NL80211_IFTYPE_ADHOC:
+-		value = NT_LINK_AD_HOC;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"Set Network type to Ad Hoc!\n");
+-		break;
+-	case NL80211_IFTYPE_STATION:
+-		value = NT_LINK_AP;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"Set Network type to STA!\n");
+-		break;
+-	case NL80211_IFTYPE_AP:
+-		value = NT_AS_AP;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"Set Network type to AP!\n");
+-		break;
+-	default:
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"Network type %d not supported!\n", type);
+-		return -EOPNOTSUPP;
+-	}
+-	rtl_write_byte(rtlpriv, MSR, value);
+-	return 0;
+-}
+-
+-void rtl92c_init_network_type(struct ieee80211_hw *hw)
+-{
+-	rtl92c_set_network_type(hw, NL80211_IFTYPE_UNSPECIFIED);
+-}
+-
+-void rtl92c_init_adaptive_ctrl(struct ieee80211_hw *hw)
+-{
+-	u16	value16;
+-	u32	value32;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	/* Response Rate Set */
+-	value32 = rtl_read_dword(rtlpriv, REG_RRSR);
+-	value32 &= ~RATE_BITMAP_ALL;
+-	value32 |= RATE_RRSR_CCK_ONLY_1M;
+-	rtl_write_dword(rtlpriv, REG_RRSR, value32);
+-	/* SIFS (used in NAV) */
+-	value16 = _SPEC_SIFS_CCK(0x10) | _SPEC_SIFS_OFDM(0x10);
+-	rtl_write_word(rtlpriv,  REG_SPEC_SIFS, value16);
+-	/* Retry Limit */
+-	value16 = _LRL(0x30) | _SRL(0x30);
+-	rtl_write_dword(rtlpriv,  REG_RL, value16);
+-}
+-
+-void rtl92c_init_rate_fallback(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	/* Set Data Auto Rate Fallback Retry Count register. */
+-	rtl_write_dword(rtlpriv,  REG_DARFRC, 0x00000000);
+-	rtl_write_dword(rtlpriv,  REG_DARFRC+4, 0x10080404);
+-	rtl_write_dword(rtlpriv,  REG_RARFRC, 0x04030201);
+-	rtl_write_dword(rtlpriv,  REG_RARFRC+4, 0x08070605);
+-}
+-
+-static void rtl92c_set_cck_sifs(struct ieee80211_hw *hw, u8 trx_sifs,
+-				u8 ctx_sifs)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_byte(rtlpriv, REG_SIFS_CCK, trx_sifs);
+-	rtl_write_byte(rtlpriv, (REG_SIFS_CCK + 1), ctx_sifs);
+-}
+-
+-static void rtl92c_set_ofdm_sifs(struct ieee80211_hw *hw, u8 trx_sifs,
+-				 u8 ctx_sifs)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_byte(rtlpriv, REG_SIFS_OFDM, trx_sifs);
+-	rtl_write_byte(rtlpriv, (REG_SIFS_OFDM + 1), ctx_sifs);
+-}
+-
+-void rtl92c_init_edca_param(struct ieee80211_hw *hw,
+-			    u16 queue, u16 txop, u8 cw_min, u8 cw_max, u8 aifs)
+-{
+-	/* sequence: VO, VI, BE, BK ==> the same as 92C hardware design.
+-	 * referenc : enum nl80211_txq_q or ieee80211_set_wmm_default function.
+-	 */
+-	u32 value;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	value = (u32)aifs;
+-	value |= ((u32)cw_min & 0xF) << 8;
+-	value |= ((u32)cw_max & 0xF) << 12;
+-	value |= (u32)txop << 16;
+-	/* 92C hardware register sequence is the same as queue number. */
+-	rtl_write_dword(rtlpriv, (REG_EDCA_VO_PARAM + (queue * 4)), value);
+-}
+-
+-void rtl92c_init_edca(struct ieee80211_hw *hw)
+-{
+-	u16 value16;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	/* disable EDCCA count down, to reduce collison and retry */
+-	value16 = rtl_read_word(rtlpriv, REG_RD_CTRL);
+-	value16 |= DIS_EDCA_CNT_DWN;
+-	rtl_write_word(rtlpriv, REG_RD_CTRL, value16);
+-	/* Update SIFS timing.  ??????????
+-	 * pHalData->SifsTime = 0x0e0e0a0a; */
+-	rtl92c_set_cck_sifs(hw, 0xa, 0xa);
+-	rtl92c_set_ofdm_sifs(hw, 0xe, 0xe);
+-	/* Set CCK/OFDM SIFS to be 10us. */
+-	rtl_write_word(rtlpriv, REG_SIFS_CCK, 0x0a0a);
+-	rtl_write_word(rtlpriv, REG_SIFS_OFDM, 0x1010);
+-	rtl_write_word(rtlpriv, REG_PROT_MODE_CTRL, 0x0204);
+-	rtl_write_dword(rtlpriv, REG_BAR_MODE_CTRL, 0x014004);
+-	/* TXOP */
+-	rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, 0x005EA42B);
+-	rtl_write_dword(rtlpriv, REG_EDCA_BK_PARAM, 0x0000A44F);
+-	rtl_write_dword(rtlpriv, REG_EDCA_VI_PARAM, 0x005EA324);
+-	rtl_write_dword(rtlpriv, REG_EDCA_VO_PARAM, 0x002FA226);
+-	/* PIFS */
+-	rtl_write_byte(rtlpriv, REG_PIFS, 0x1C);
+-	/* AGGR BREAK TIME Register */
+-	rtl_write_byte(rtlpriv, REG_AGGR_BREAK_TIME, 0x16);
+-	rtl_write_word(rtlpriv, REG_NAV_PROT_LEN, 0x0040);
+-	rtl_write_byte(rtlpriv, REG_BCNDMATIM, 0x02);
+-	rtl_write_byte(rtlpriv, REG_ATIMWND, 0x02);
+-}
+-
+-void rtl92c_init_ampdu_aggregation(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_dword(rtlpriv, REG_AGGLEN_LMT, 0x99997631);
+-	rtl_write_byte(rtlpriv, REG_AGGR_BREAK_TIME, 0x16);
+-	/* init AMPDU aggregation number, tuning for Tx's TP, */
+-	rtl_write_word(rtlpriv, 0x4CA, 0x0708);
+-}
+-
+-void rtl92c_init_beacon_max_error(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_byte(rtlpriv, REG_BCN_MAX_ERR, 0xFF);
+-}
+-
+-void rtl92c_init_rdg_setting(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_byte(rtlpriv, REG_RD_CTRL, 0xFF);
+-	rtl_write_word(rtlpriv, REG_RD_NAV_NXT, 0x200);
+-	rtl_write_byte(rtlpriv, REG_RD_RESP_PKT_TH, 0x05);
+-}
+-
+-void rtl92c_init_retry_function(struct ieee80211_hw *hw)
+-{
+-	u8	value8;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	value8 = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL);
+-	value8 |= EN_AMPDU_RTY_NEW;
+-	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, value8);
+-	/* Set ACK timeout */
+-	rtl_write_byte(rtlpriv, REG_ACKTO, 0x40);
+-}
+-
+-void rtl92c_disable_fast_edca(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	rtl_write_word(rtlpriv, REG_FAST_EDCA_CTRL, 0);
+-}
+-
+-void rtl92c_set_min_space(struct ieee80211_hw *hw, bool is2T)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 value = is2T ? MAX_MSS_DENSITY_2T : MAX_MSS_DENSITY_1T;
+-
+-	rtl_write_byte(rtlpriv, REG_AMPDU_MIN_SPACE, value);
+-}
+-
+-/*==============================================================*/
+-
+-static void _rtl92c_query_rxphystatus(struct ieee80211_hw *hw,
+-				      struct rtl_stats *pstats,
+-				      struct rx_desc_92c *p_desc,
+-				      struct rx_fwinfo_92c *p_drvinfo,
+-				      bool packet_match_bssid,
+-				      bool packet_toself,
+-				      bool packet_beacon)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct phy_sts_cck_8192s_t *cck_buf;
+-	s8 rx_pwr_all = 0, rx_pwr[4];
+-	u8 rf_rx_num = 0, evm, pwdb_all;
+-	u8 i, max_spatial_stream;
+-	u32 rssi, total_rssi = 0;
+-	bool in_powersavemode = false;
+-	bool is_cck_rate;
+-	__le32 *pdesc = (__le32 *)p_desc;
+-
+-	is_cck_rate = RX_HAL_IS_CCK_RATE(p_desc->rxmcs);
+-	pstats->packet_matchbssid = packet_match_bssid;
+-	pstats->packet_toself = packet_toself;
+-	pstats->packet_beacon = packet_beacon;
+-	pstats->is_cck = is_cck_rate;
+-	pstats->RX_SIGQ[0] = -1;
+-	pstats->RX_SIGQ[1] = -1;
+-	if (is_cck_rate) {
+-		u8 report, cck_highpwr;
+-
+-		cck_buf = (struct phy_sts_cck_8192s_t *)p_drvinfo;
+-		if (!in_powersavemode)
+-			cck_highpwr = rtlphy->cck_high_power;
+-		else
+-			cck_highpwr = false;
+-		if (!cck_highpwr) {
+-			u8 cck_agc_rpt = cck_buf->cck_agc_rpt;
+-
+-			report = cck_buf->cck_agc_rpt & 0xc0;
+-			report = report >> 6;
+-			switch (report) {
+-			case 0x3:
+-				rx_pwr_all = -46 - (cck_agc_rpt & 0x3e);
+-				break;
+-			case 0x2:
+-				rx_pwr_all = -26 - (cck_agc_rpt & 0x3e);
+-				break;
+-			case 0x1:
+-				rx_pwr_all = -12 - (cck_agc_rpt & 0x3e);
+-				break;
+-			case 0x0:
+-				rx_pwr_all = 16 - (cck_agc_rpt & 0x3e);
+-				break;
+-			}
+-		} else {
+-			u8 cck_agc_rpt = cck_buf->cck_agc_rpt;
+-
+-			report = p_drvinfo->cfosho[0] & 0x60;
+-			report = report >> 5;
+-			switch (report) {
+-			case 0x3:
+-				rx_pwr_all = -46 - ((cck_agc_rpt & 0x1f) << 1);
+-				break;
+-			case 0x2:
+-				rx_pwr_all = -26 - ((cck_agc_rpt & 0x1f) << 1);
+-				break;
+-			case 0x1:
+-				rx_pwr_all = -12 - ((cck_agc_rpt & 0x1f) << 1);
+-				break;
+-			case 0x0:
+-				rx_pwr_all = 16 - ((cck_agc_rpt & 0x1f) << 1);
+-				break;
+-			}
+-		}
+-		pwdb_all = rtl_query_rxpwrpercentage(rx_pwr_all);
+-		pstats->rx_pwdb_all = pwdb_all;
+-		pstats->recvsignalpower = rx_pwr_all;
+-		if (packet_match_bssid) {
+-			u8 sq;
+-
+-			if (pstats->rx_pwdb_all > 40)
+-				sq = 100;
+-			else {
+-				sq = cck_buf->sq_rpt;
+-				if (sq > 64)
+-					sq = 0;
+-				else if (sq < 20)
+-					sq = 100;
+-				else
+-					sq = ((64 - sq) * 100) / 44;
+-			}
+-			pstats->signalquality = sq;
+-			pstats->RX_SIGQ[0] = sq;
+-			pstats->RX_SIGQ[1] = -1;
+-		}
+-	} else {
+-		rtlpriv->dm.rfpath_rxenable[0] =
+-		    rtlpriv->dm.rfpath_rxenable[1] = true;
+-		for (i = RF90_PATH_A; i < RF90_PATH_MAX; i++) {
+-			if (rtlpriv->dm.rfpath_rxenable[i])
+-				rf_rx_num++;
+-			rx_pwr[i] =
+-			    ((p_drvinfo->gain_trsw[i] & 0x3f) * 2) - 110;
+-			rssi = rtl_query_rxpwrpercentage(rx_pwr[i]);
+-			total_rssi += rssi;
+-			rtlpriv->stats.rx_snr_db[i] =
+-			    (long)(p_drvinfo->rxsnr[i] / 2);
+-
+-			if (packet_match_bssid)
+-				pstats->rx_mimo_signalstrength[i] = (u8) rssi;
+-		}
+-		rx_pwr_all = ((p_drvinfo->pwdb_all >> 1) & 0x7f) - 110;
+-		pwdb_all = rtl_query_rxpwrpercentage(rx_pwr_all);
+-		pstats->rx_pwdb_all = pwdb_all;
+-		pstats->rxpower = rx_pwr_all;
+-		pstats->recvsignalpower = rx_pwr_all;
+-		if (get_rx_desc_rx_mcs(pdesc) &&
+-		    get_rx_desc_rx_mcs(pdesc) >= DESC_RATEMCS8 &&
+-		    get_rx_desc_rx_mcs(pdesc) <= DESC_RATEMCS15)
+-			max_spatial_stream = 2;
+-		else
+-			max_spatial_stream = 1;
+-		for (i = 0; i < max_spatial_stream; i++) {
+-			evm = rtl_evm_db_to_percentage(p_drvinfo->rxevm[i]);
+-			if (packet_match_bssid) {
+-				if (i == 0)
+-					pstats->signalquality =
+-					    (u8) (evm & 0xff);
+-				pstats->RX_SIGQ[i] =
+-				    (u8) (evm & 0xff);
+-			}
+-		}
+-	}
+-	if (is_cck_rate)
+-		pstats->signalstrength =
+-		    (u8)(rtl_signal_scale_mapping(hw, pwdb_all));
+-	else if (rf_rx_num != 0)
+-		pstats->signalstrength =
+-		    (u8)(rtl_signal_scale_mapping(hw, total_rssi /= rf_rx_num));
+-}
+-
+-void rtl92c_translate_rx_signal_stuff(struct ieee80211_hw *hw,
+-					       struct sk_buff *skb,
+-					       struct rtl_stats *pstats,
+-					       struct rx_desc_92c *pdesc,
+-					       struct rx_fwinfo_92c *p_drvinfo)
+-{
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	struct ieee80211_hdr *hdr;
+-	u8 *tmp_buf;
+-	u8 *praddr;
+-	__le16 fc;
+-	u16 type, cpu_fc;
+-	bool packet_matchbssid, packet_toself, packet_beacon = false;
+-
+-	tmp_buf = skb->data + pstats->rx_drvinfo_size + pstats->rx_bufshift;
+-	hdr = (struct ieee80211_hdr *)tmp_buf;
+-	fc = hdr->frame_control;
+-	cpu_fc = le16_to_cpu(fc);
+-	type = WLAN_FC_GET_TYPE(fc);
+-	praddr = hdr->addr1;
+-	packet_matchbssid =
+-	    ((IEEE80211_FTYPE_CTL != type) &&
+-	     ether_addr_equal(mac->bssid,
+-			      (cpu_fc & IEEE80211_FCTL_TODS) ? hdr->addr1 :
+-			      (cpu_fc & IEEE80211_FCTL_FROMDS) ? hdr->addr2 :
+-			      hdr->addr3) &&
+-	     (!pstats->hwerror) && (!pstats->crc) && (!pstats->icv));
+-
+-	packet_toself = packet_matchbssid &&
+-	    ether_addr_equal(praddr, rtlefuse->dev_addr);
+-	if (ieee80211_is_beacon(fc))
+-		packet_beacon = true;
+-	_rtl92c_query_rxphystatus(hw, pstats, pdesc, p_drvinfo,
+-				   packet_matchbssid, packet_toself,
+-				   packet_beacon);
+-	rtl_process_phyinfo(hw, tmp_buf, pstats);
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.h
+deleted file mode 100644
+index dd76a05829d5..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/mac.h
++++ /dev/null
+@@ -1,132 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92C_MAC_H__
+-#define __RTL92C_MAC_H__
+-
+-#define LLT_LAST_ENTRY_OF_TX_PKT_BUFFER		255
+-#define DRIVER_EARLY_INT_TIME					0x05
+-#define BCN_DMA_ATIME_INT_TIME				0x02
+-
+-void rtl92c_read_chip_version(struct ieee80211_hw *hw);
+-bool rtl92c_llt_write(struct ieee80211_hw *hw, u32 address, u32 data);
+-bool rtl92c_init_llt_table(struct ieee80211_hw *hw, u32 boundary);
+-void rtl92c_set_key(struct ieee80211_hw *hw, u32 key_index,
+-		     u8 *p_macaddr, bool is_group, u8 enc_algo,
+-		     bool is_wepkey, bool clear_all);
+-void rtl92c_enable_interrupt(struct ieee80211_hw *hw);
+-void rtl92c_disable_interrupt(struct ieee80211_hw *hw);
+-void rtl92c_set_qos(struct ieee80211_hw *hw, int aci);
+-
+-/*---------------------------------------------------------------
+- *	Hardware init functions
+- *---------------------------------------------------------------*/
+-void rtl92c_init_interrupt(struct ieee80211_hw *hw);
+-void rtl92c_init_driver_info_size(struct ieee80211_hw *hw, u8 size);
+-
+-int rtl92c_set_network_type(struct ieee80211_hw *hw, enum nl80211_iftype type);
+-void rtl92c_init_network_type(struct ieee80211_hw *hw);
+-void rtl92c_init_adaptive_ctrl(struct ieee80211_hw *hw);
+-void rtl92c_init_rate_fallback(struct ieee80211_hw *hw);
+-
+-void rtl92c_init_edca_param(struct ieee80211_hw *hw,
+-							u16 queue,
+-							u16 txop,
+-							u8 ecwmax,
+-							u8 ecwmin,
+-							u8 aifs);
+-
+-void rtl92c_init_edca(struct ieee80211_hw *hw);
+-void rtl92c_init_ampdu_aggregation(struct ieee80211_hw *hw);
+-void rtl92c_init_beacon_max_error(struct ieee80211_hw *hw);
+-void rtl92c_init_rdg_setting(struct ieee80211_hw *hw);
+-void rtl92c_init_retry_function(struct ieee80211_hw *hw);
+-
+-void rtl92c_disable_fast_edca(struct ieee80211_hw *hw);
+-void rtl92c_set_min_space(struct ieee80211_hw *hw, bool is2T);
+-
+-u32 rtl92c_get_txdma_status(struct ieee80211_hw *hw);
+-
+-struct rx_fwinfo_92c {
+-	u8 gain_trsw[4];
+-	u8 pwdb_all;
+-	u8 cfosho[4];
+-	u8 cfotail[4];
+-	s8 rxevm[2];
+-	s8 rxsnr[4];
+-	u8 pdsnr[2];
+-	u8 csi_current[2];
+-	u8 csi_target[2];
+-	u8 sigevm;
+-	u8 max_ex_pwr;
+-	u8 ex_intf_flag:1;
+-	u8 sgi_en:1;
+-	u8 rxsc:2;
+-	u8 reserve:4;
+-} __packed;
+-
+-struct rx_desc_92c {
+-	u32 length:14;
+-	u32 crc32:1;
+-	u32 icverror:1;
+-	u32 drv_infosize:4;
+-	u32 security:3;
+-	u32 qos:1;
+-	u32 shift:2;
+-	u32 phystatus:1;
+-	u32 swdec:1;
+-	u32 lastseg:1;
+-	u32 firstseg:1;
+-	u32 eor:1;
+-	u32 own:1;
+-	u32 macid:5;	/* word 1 */
+-	u32 tid:4;
+-	u32 hwrsvd:5;
+-	u32 paggr:1;
+-	u32 faggr:1;
+-	u32 a1_fit:4;
+-	u32 a2_fit:4;
+-	u32 pam:1;
+-	u32 pwr:1;
+-	u32 moredata:1;
+-	u32 morefrag:1;
+-	u32 type:2;
+-	u32 mc:1;
+-	u32 bc:1;
+-	u32 seq:12;	/* word 2 */
+-	u32 frag:4;
+-	u32 nextpktlen:14;
+-	u32 nextind:1;
+-	u32 rsvd:1;
+-	u32 rxmcs:6;	/* word 3 */
+-	u32 rxht:1;
+-	u32 amsdu:1;
+-	u32 splcp:1;
+-	u32 bandwidth:1;
+-	u32 htc:1;
+-	u32 tcpchk_rpt:1;
+-	u32 ipcchk_rpt:1;
+-	u32 tcpchk_valid:1;
+-	u32 hwpcerr:1;
+-	u32 hwpcind:1;
+-	u32 iv0:16;
+-	u32 iv1;	/* word 4 */
+-	u32 tsfl;	/* word 5 */
+-	u32 bufferaddress;	/* word 6 */
+-	u32 bufferaddress64;	/* word 7 */
+-} __packed;
+-
+-enum rtl_desc_qsel rtl92c_map_hwqueue_to_fwqueue(u16 fc,
+-							  unsigned int
+-							  skb_queue);
+-void rtl92c_translate_rx_signal_stuff(struct ieee80211_hw *hw,
+-				      struct sk_buff *skb,
+-				      struct rtl_stats *pstats,
+-				      struct rx_desc_92c *pdesc,
+-				      struct rx_fwinfo_92c *p_drvinfo);
+-
+-/*---------------------------------------------------------------
+- *	Card disable functions
+- *---------------------------------------------------------------*/
+-
+-#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+deleted file mode 100644
+index a8d9fe269f31..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
++++ /dev/null
+@@ -1,509 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../pci.h"
+-#include "../ps.h"
+-#include "../core.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "../rtl8192c/phy_common.h"
+-#include "rf.h"
+-#include "dm.h"
+-#include "../rtl8192c/dm_common.h"
+-#include "../rtl8192c/fw_common.h"
+-#include "table.h"
+-
+-u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
+-			     enum radio_path rfpath, u32 regaddr, u32 bitmask)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u32 original_value, readback_value, bitshift;
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-
+-	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+-		"regaddr(%#x), rfpath(%#x), bitmask(%#x)\n",
+-		regaddr, rfpath, bitmask);
+-	if (rtlphy->rf_mode != RF_OP_BY_FW) {
+-		original_value = _rtl92c_phy_rf_serial_read(hw,
+-							    rfpath, regaddr);
+-	} else {
+-		original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+-							       rfpath, regaddr);
+-	}
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
+-	readback_value = (original_value & bitmask) >> bitshift;
+-	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+-		"regaddr(%#x), rfpath(%#x), bitmask(%#x), original_value(%#x)\n",
+-		regaddr, rfpath, bitmask, original_value);
+-	return readback_value;
+-}
+-
+-void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+-			    enum radio_path rfpath,
+-			    u32 regaddr, u32 bitmask, u32 data)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	u32 original_value, bitshift;
+-
+-	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+-		"regaddr(%#x), bitmask(%#x), data(%#x), rfpath(%#x)\n",
+-		regaddr, bitmask, data, rfpath);
+-	if (rtlphy->rf_mode != RF_OP_BY_FW) {
+-		if (bitmask != RFREG_OFFSET_MASK) {
+-			original_value = _rtl92c_phy_rf_serial_read(hw,
+-								    rfpath,
+-								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
+-			data =
+-			    ((original_value & (~bitmask)) |
+-			     (data << bitshift));
+-		}
+-		_rtl92c_phy_rf_serial_write(hw, rfpath, regaddr, data);
+-	} else {
+-		if (bitmask != RFREG_OFFSET_MASK) {
+-			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+-								       rfpath,
+-								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
+-			data =
+-			    ((original_value & (~bitmask)) |
+-			     (data << bitshift));
+-		}
+-		_rtl92c_phy_fw_rf_serial_write(hw, rfpath, regaddr, data);
+-	}
+-	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+-		"regaddr(%#x), bitmask(%#x), data(%#x), rfpath(%#x)\n",
+-		regaddr, bitmask, data, rfpath);
+-}
+-
+-bool rtl92cu_phy_mac_config(struct ieee80211_hw *hw)
+-{
+-	bool rtstatus;
+-
+-	rtstatus = _rtl92cu_phy_config_mac_with_headerfile(hw);
+-	return rtstatus;
+-}
+-
+-bool rtl92cu_phy_bb_config(struct ieee80211_hw *hw)
+-{
+-	bool rtstatus = true;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u16 regval;
+-	u32 regval32;
+-	u8 b_reg_hwparafile = 1;
+-
+-	_rtl92c_phy_init_bb_rf_register_definition(hw);
+-	regval = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
+-	rtl_write_word(rtlpriv, REG_SYS_FUNC_EN, regval | BIT(13) |
+-		       BIT(0) | BIT(1));
+-	rtl_write_byte(rtlpriv, REG_AFE_PLL_CTRL, 0x83);
+-	rtl_write_byte(rtlpriv, REG_AFE_PLL_CTRL + 1, 0xdb);
+-	rtl_write_byte(rtlpriv, REG_RF_CTRL, RF_EN | RF_RSTB | RF_SDMRSTB);
+-	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, FEN_USBA | FEN_USBD |
+-		       FEN_BB_GLB_RSTN | FEN_BBRSTB);
+-	regval32 = rtl_read_dword(rtlpriv, 0x87c);
+-	rtl_write_dword(rtlpriv, 0x87c, regval32 & (~BIT(31)));
+-	rtl_write_byte(rtlpriv, REG_LDOHCI12_CTRL, 0x0f);
+-	rtl_write_byte(rtlpriv, REG_AFE_XTAL_CTRL + 1, 0x80);
+-	if (b_reg_hwparafile == 1)
+-		rtstatus = _rtl92c_phy_bb8192c_config_parafile(hw);
+-	return rtstatus;
+-}
+-
+-bool _rtl92cu_phy_config_mac_with_headerfile(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	u32 i;
+-	u32 arraylength;
+-	u32 *ptrarray;
+-
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE, "Read Rtl819XMACPHY_ARRAY\n");
+-	arraylength =  rtlphy->hwparam_tables[MAC_REG].length ;
+-	ptrarray = rtlphy->hwparam_tables[MAC_REG].pdata;
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE, "Img:RTL8192CUMAC_2T_ARRAY\n");
+-	for (i = 0; i < arraylength; i = i + 2)
+-		rtl_write_byte(rtlpriv, ptrarray[i], (u8) ptrarray[i + 1]);
+-	return true;
+-}
+-
+-bool _rtl92cu_phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
+-					    u8 configtype)
+-{
+-	int i;
+-	u32 *phy_regarray_table;
+-	u32 *agctab_array_table;
+-	u16 phy_reg_arraylen, agctab_arraylen;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-
+-	if (IS_92C_SERIAL(rtlhal->version)) {
+-		agctab_arraylen = rtlphy->hwparam_tables[AGCTAB_2T].length;
+-		agctab_array_table =  rtlphy->hwparam_tables[AGCTAB_2T].pdata;
+-		phy_reg_arraylen = rtlphy->hwparam_tables[PHY_REG_2T].length;
+-		phy_regarray_table = rtlphy->hwparam_tables[PHY_REG_2T].pdata;
+-	} else {
+-		agctab_arraylen = rtlphy->hwparam_tables[AGCTAB_1T].length;
+-		agctab_array_table =  rtlphy->hwparam_tables[AGCTAB_1T].pdata;
+-		phy_reg_arraylen = rtlphy->hwparam_tables[PHY_REG_1T].length;
+-		phy_regarray_table = rtlphy->hwparam_tables[PHY_REG_1T].pdata;
+-	}
+-	if (configtype == BASEBAND_CONFIG_PHY_REG) {
+-		for (i = 0; i < phy_reg_arraylen; i = i + 2) {
+-			rtl_addr_delay(phy_regarray_table[i]);
+-			rtl_set_bbreg(hw, phy_regarray_table[i], MASKDWORD,
+-				      phy_regarray_table[i + 1]);
+-			udelay(1);
+-			rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-				"The phy_regarray_table[0] is %x Rtl819XPHY_REGARRAY[1] is %x\n",
+-				phy_regarray_table[i],
+-				phy_regarray_table[i + 1]);
+-		}
+-	} else if (configtype == BASEBAND_CONFIG_AGC_TAB) {
+-		for (i = 0; i < agctab_arraylen; i = i + 2) {
+-			rtl_set_bbreg(hw, agctab_array_table[i], MASKDWORD,
+-				      agctab_array_table[i + 1]);
+-			udelay(1);
+-			rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-				"The agctab_array_table[0] is %x Rtl819XPHY_REGARRAY[1] is %x\n",
+-				agctab_array_table[i],
+-				agctab_array_table[i + 1]);
+-		}
+-	}
+-	return true;
+-}
+-
+-bool _rtl92cu_phy_config_bb_with_pgheaderfile(struct ieee80211_hw *hw,
+-					      u8 configtype)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	int i;
+-	u32 *phy_regarray_table_pg;
+-	u16 phy_regarray_pg_len;
+-
+-	rtlphy->pwrgroup_cnt = 0;
+-	phy_regarray_pg_len = rtlphy->hwparam_tables[PHY_REG_PG].length;
+-	phy_regarray_table_pg = rtlphy->hwparam_tables[PHY_REG_PG].pdata;
+-	if (configtype == BASEBAND_CONFIG_PHY_REG) {
+-		for (i = 0; i < phy_regarray_pg_len; i = i + 3) {
+-			rtl_addr_delay(phy_regarray_table_pg[i]);
+-			_rtl92c_store_pwrindex_diffrate_offset(hw,
+-						  phy_regarray_table_pg[i],
+-						  phy_regarray_table_pg[i + 1],
+-						  phy_regarray_table_pg[i + 2]);
+-		}
+-	} else {
+-		rtl_dbg(rtlpriv, COMP_SEND, DBG_TRACE,
+-			"configtype != BaseBand_Config_PHY_REG\n");
+-	}
+-	return true;
+-}
+-
+-bool rtl92cu_phy_config_rf_with_headerfile(struct ieee80211_hw *hw,
+-					  enum radio_path rfpath)
+-{
+-	int i;
+-	u32 *radioa_array_table;
+-	u32 *radiob_array_table;
+-	u16 radioa_arraylen, radiob_arraylen;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-
+-	if (IS_92C_SERIAL(rtlhal->version)) {
+-		radioa_arraylen = rtlphy->hwparam_tables[RADIOA_2T].length;
+-		radioa_array_table = rtlphy->hwparam_tables[RADIOA_2T].pdata;
+-		radiob_arraylen = rtlphy->hwparam_tables[RADIOB_2T].length;
+-		radiob_array_table = rtlphy->hwparam_tables[RADIOB_2T].pdata;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Radio_A:RTL8192CURADIOA_2TARRAY\n");
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Radio_B:RTL8192CU_RADIOB_2TARRAY\n");
+-	} else {
+-		radioa_arraylen = rtlphy->hwparam_tables[RADIOA_1T].length;
+-		radioa_array_table = rtlphy->hwparam_tables[RADIOA_1T].pdata;
+-		radiob_arraylen = rtlphy->hwparam_tables[RADIOB_1T].length;
+-		radiob_array_table = rtlphy->hwparam_tables[RADIOB_1T].pdata;
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Radio_A:RTL8192CU_RADIOA_1TARRAY\n");
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-			"Radio_B:RTL8192CU_RADIOB_1TARRAY\n");
+-	}
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE, "Radio No %x\n", rfpath);
+-	switch (rfpath) {
+-	case RF90_PATH_A:
+-		for (i = 0; i < radioa_arraylen; i = i + 2) {
+-			rtl_rfreg_delay(hw, rfpath, radioa_array_table[i],
+-					RFREG_OFFSET_MASK,
+-					radioa_array_table[i + 1]);
+-		}
+-		break;
+-	case RF90_PATH_B:
+-		for (i = 0; i < radiob_arraylen; i = i + 2) {
+-			rtl_rfreg_delay(hw, rfpath, radiob_array_table[i],
+-					RFREG_OFFSET_MASK,
+-					radiob_array_table[i + 1]);
+-		}
+-		break;
+-	case RF90_PATH_C:
+-	case RF90_PATH_D:
+-		pr_err("switch case %#x not processed\n", rfpath);
+-		break;
+-	default:
+-		break;
+-	}
+-	return true;
+-}
+-
+-void rtl92cu_phy_set_bw_mode_callback(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	u8 reg_bw_opmode;
+-	u8 reg_prsr_rsc;
+-
+-	rtl_dbg(rtlpriv, COMP_SCAN, DBG_TRACE, "Switch to %s bandwidth\n",
+-		rtlphy->current_chan_bw == HT_CHANNEL_WIDTH_20 ?
+-		"20MHz" : "40MHz");
+-	if (is_hal_stop(rtlhal)) {
+-		rtlphy->set_bwmode_inprogress = false;
+-		return;
+-	}
+-	reg_bw_opmode = rtl_read_byte(rtlpriv, REG_BWOPMODE);
+-	reg_prsr_rsc = rtl_read_byte(rtlpriv, REG_RRSR + 2);
+-	switch (rtlphy->current_chan_bw) {
+-	case HT_CHANNEL_WIDTH_20:
+-		reg_bw_opmode |= BW_OPMODE_20MHZ;
+-		rtl_write_byte(rtlpriv, REG_BWOPMODE, reg_bw_opmode);
+-		break;
+-	case HT_CHANNEL_WIDTH_20_40:
+-		reg_bw_opmode &= ~BW_OPMODE_20MHZ;
+-		rtl_write_byte(rtlpriv, REG_BWOPMODE, reg_bw_opmode);
+-		reg_prsr_rsc =
+-		    (reg_prsr_rsc & 0x90) | (mac->cur_40_prime_sc << 5);
+-		rtl_write_byte(rtlpriv, REG_RRSR + 2, reg_prsr_rsc);
+-		break;
+-	default:
+-		pr_err("unknown bandwidth: %#X\n",
+-		       rtlphy->current_chan_bw);
+-		break;
+-	}
+-	switch (rtlphy->current_chan_bw) {
+-	case HT_CHANNEL_WIDTH_20:
+-		rtl_set_bbreg(hw, RFPGA0_RFMOD, BRFMOD, 0x0);
+-		rtl_set_bbreg(hw, RFPGA1_RFMOD, BRFMOD, 0x0);
+-		rtl_set_bbreg(hw, RFPGA0_ANALOGPARAMETER2, BIT(10), 1);
+-		break;
+-	case HT_CHANNEL_WIDTH_20_40:
+-		rtl_set_bbreg(hw, RFPGA0_RFMOD, BRFMOD, 0x1);
+-		rtl_set_bbreg(hw, RFPGA1_RFMOD, BRFMOD, 0x1);
+-		rtl_set_bbreg(hw, RCCK0_SYSTEM, BCCK_SIDEBAND,
+-			      (mac->cur_40_prime_sc >> 1));
+-		rtl_set_bbreg(hw, ROFDM1_LSTF, 0xC00, mac->cur_40_prime_sc);
+-		rtl_set_bbreg(hw, RFPGA0_ANALOGPARAMETER2, BIT(10), 0);
+-		rtl_set_bbreg(hw, 0x818, (BIT(26) | BIT(27)),
+-			      (mac->cur_40_prime_sc ==
+-			       HAL_PRIME_CHNL_OFFSET_LOWER) ? 2 : 1);
+-		break;
+-	default:
+-		pr_err("unknown bandwidth: %#X\n",
+-		       rtlphy->current_chan_bw);
+-		break;
+-	}
+-	rtl92cu_phy_rf6052_set_bandwidth(hw, rtlphy->current_chan_bw);
+-	rtlphy->set_bwmode_inprogress = false;
+-	rtl_dbg(rtlpriv, COMP_SCAN, DBG_TRACE, "<==\n");
+-}
+-
+-void rtl92cu_bb_block_on(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	mutex_lock(&rtlpriv->io.bb_mutex);
+-	rtl_set_bbreg(hw, RFPGA0_RFMOD, BCCKEN, 0x1);
+-	rtl_set_bbreg(hw, RFPGA0_RFMOD, BOFDMEN, 0x1);
+-	mutex_unlock(&rtlpriv->io.bb_mutex);
+-}
+-
+-void _rtl92cu_phy_lc_calibrate(struct ieee80211_hw *hw, bool is2t)
+-{
+-	u8 tmpreg;
+-	u32 rf_a_mode = 0, rf_b_mode = 0, lc_cal;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	tmpreg = rtl_read_byte(rtlpriv, 0xd03);
+-
+-	if ((tmpreg & 0x70) != 0)
+-		rtl_write_byte(rtlpriv, 0xd03, tmpreg & 0x8F);
+-	else
+-		rtl_write_byte(rtlpriv, REG_TXPAUSE, 0xFF);
+-
+-	if ((tmpreg & 0x70) != 0) {
+-		rf_a_mode = rtl_get_rfreg(hw, RF90_PATH_A, 0x00, MASK12BITS);
+-		if (is2t)
+-			rf_b_mode = rtl_get_rfreg(hw, RF90_PATH_B, 0x00,
+-						  MASK12BITS);
+-		rtl_set_rfreg(hw, RF90_PATH_A, 0x00, MASK12BITS,
+-			      (rf_a_mode & 0x8FFFF) | 0x10000);
+-		if (is2t)
+-			rtl_set_rfreg(hw, RF90_PATH_B, 0x00, MASK12BITS,
+-				      (rf_b_mode & 0x8FFFF) | 0x10000);
+-	}
+-	lc_cal = rtl_get_rfreg(hw, RF90_PATH_A, 0x18, MASK12BITS);
+-	rtl_set_rfreg(hw, RF90_PATH_A, 0x18, MASK12BITS, lc_cal | 0x08000);
+-	mdelay(100);
+-	if ((tmpreg & 0x70) != 0) {
+-		rtl_write_byte(rtlpriv, 0xd03, tmpreg);
+-		rtl_set_rfreg(hw, RF90_PATH_A, 0x00, MASK12BITS, rf_a_mode);
+-		if (is2t)
+-			rtl_set_rfreg(hw, RF90_PATH_B, 0x00, MASK12BITS,
+-				      rf_b_mode);
+-	} else {
+-		rtl_write_byte(rtlpriv, REG_TXPAUSE, 0x00);
+-	}
+-}
+-
+-static bool _rtl92cu_phy_set_rf_power_state(struct ieee80211_hw *hw,
+-					    enum rf_pwrstate rfpwr_state)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	bool bresult = true;
+-	u8 i, queue_id;
+-	struct rtl8192_tx_ring *ring = NULL;
+-
+-	switch (rfpwr_state) {
+-	case ERFON:
+-		if ((ppsc->rfpwr_state == ERFOFF) &&
+-		    RT_IN_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_HALT_NIC)) {
+-			bool rtstatus;
+-			u32 init_count = 0;
+-
+-			do {
+-				init_count++;
+-				rtl_dbg(rtlpriv, COMP_RF, DBG_DMESG,
+-					"IPS Set eRf nic enable\n");
+-				rtstatus = rtl_ps_enable_nic(hw);
+-			} while (!rtstatus && (init_count < 10));
+-			RT_CLEAR_PS_LEVEL(ppsc,
+-					  RT_RF_OFF_LEVL_HALT_NIC);
+-		} else {
+-			rtl_dbg(rtlpriv, COMP_RF, DBG_DMESG,
+-				"Set ERFON slept:%d ms\n",
+-				jiffies_to_msecs(jiffies -
+-						 ppsc->last_sleep_jiffies));
+-			ppsc->last_awake_jiffies = jiffies;
+-			rtl92ce_phy_set_rf_on(hw);
+-		}
+-		if (mac->link_state == MAC80211_LINKED) {
+-			rtlpriv->cfg->ops->led_control(hw,
+-						       LED_CTL_LINK);
+-		} else {
+-			rtlpriv->cfg->ops->led_control(hw,
+-						       LED_CTL_NO_LINK);
+-		}
+-		break;
+-	case ERFOFF:
+-		for (queue_id = 0, i = 0;
+-		     queue_id < RTL_PCI_MAX_TX_QUEUE_COUNT;) {
+-			ring = &pcipriv->dev.tx_ring[queue_id];
+-			if (skb_queue_len(&ring->queue) == 0 ||
+-				queue_id == BEACON_QUEUE) {
+-				queue_id++;
+-				continue;
+-			} else {
+-				rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+-					"eRf Off/Sleep: %d times TcbBusyQueue[%d] =%d before doze!\n",
+-					i + 1,
+-					queue_id,
+-					skb_queue_len(&ring->queue));
+-				udelay(10);
+-				i++;
+-			}
+-			if (i >= MAX_DOZE_WAITING_TIMES_9x) {
+-				rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+-					"ERFOFF: %d times TcbBusyQueue[%d] = %d !\n",
+-					MAX_DOZE_WAITING_TIMES_9x,
+-					queue_id,
+-					skb_queue_len(&ring->queue));
+-				break;
+-			}
+-		}
+-		if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_HALT_NIC) {
+-			rtl_dbg(rtlpriv, COMP_RF, DBG_DMESG,
+-				"IPS Set eRf nic disable\n");
+-			rtl_ps_disable_nic(hw);
+-			RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_HALT_NIC);
+-		} else {
+-			if (ppsc->rfoff_reason == RF_CHANGE_BY_IPS) {
+-				rtlpriv->cfg->ops->led_control(hw,
+-							 LED_CTL_NO_LINK);
+-			} else {
+-				rtlpriv->cfg->ops->led_control(hw,
+-							 LED_CTL_POWER_OFF);
+-			}
+-		}
+-		break;
+-	case ERFSLEEP:
+-		if (ppsc->rfpwr_state == ERFOFF)
+-			return false;
+-		for (queue_id = 0, i = 0;
+-		     queue_id < RTL_PCI_MAX_TX_QUEUE_COUNT;) {
+-			ring = &pcipriv->dev.tx_ring[queue_id];
+-			if (skb_queue_len(&ring->queue) == 0) {
+-				queue_id++;
+-				continue;
+-			} else {
+-				rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+-					"eRf Off/Sleep: %d times TcbBusyQueue[%d] =%d before doze!\n",
+-					i + 1, queue_id,
+-					skb_queue_len(&ring->queue));
+-				udelay(10);
+-				i++;
+-			}
+-			if (i >= MAX_DOZE_WAITING_TIMES_9x) {
+-				rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
+-					"ERFSLEEP: %d times TcbBusyQueue[%d] = %d !\n",
+-					MAX_DOZE_WAITING_TIMES_9x,
+-					queue_id,
+-					skb_queue_len(&ring->queue));
+-				break;
+-			}
+-		}
+-		rtl_dbg(rtlpriv, COMP_RF, DBG_DMESG,
+-			"Set ERFSLEEP awaked:%d ms\n",
+-			jiffies_to_msecs(jiffies - ppsc->last_awake_jiffies));
+-		ppsc->last_sleep_jiffies = jiffies;
+-		_rtl92c_phy_set_rf_sleep(hw);
+-		break;
+-	default:
+-		pr_err("switch case %#x not processed\n",
+-		       rfpwr_state);
+-		bresult = false;
+-		break;
+-	}
+-	if (bresult)
+-		ppsc->rfpwr_state = rfpwr_state;
+-	return bresult;
+-}
+-
+-bool rtl92cu_phy_set_rf_power_state(struct ieee80211_hw *hw,
+-				    enum rf_pwrstate rfpwr_state)
+-{
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	bool bresult = false;
+-
+-	if (rfpwr_state == ppsc->rfpwr_state)
+-		return bresult;
+-	bresult = _rtl92cu_phy_set_rf_power_state(hw, rfpwr_state);
+-	return bresult;
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.h
+deleted file mode 100644
+index a3cc980c42fe..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.h
++++ /dev/null
+@@ -1,24 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../rtl8192ce/phy.h"
+-
+-void rtl92cu_bb_block_on(struct ieee80211_hw *hw);
+-bool rtl8192_phy_check_is_legal_rfpath(struct ieee80211_hw *hw, u32 rfpath);
+-void rtl92c_phy_set_io(struct ieee80211_hw *hw);
+-bool _rtl92cu_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+-bool rtl92cu_phy_bb_config(struct ieee80211_hw *hw);
+-u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
+-			     enum radio_path rfpath, u32 regaddr, u32 bitmask);
+-void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+-			    enum radio_path rfpath,
+-			    u32 regaddr, u32 bitmask, u32 data);
+-bool rtl92cu_phy_mac_config(struct ieee80211_hw *hw);
+-bool _rtl92cu_phy_config_bb_with_pgheaderfile(struct ieee80211_hw *hw,
+-					      u8 configtype);
+-void _rtl92cu_phy_lc_calibrate(struct ieee80211_hw *hw, bool is2t);
+-bool _rtl92cu_phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
+-					    u8 configtype);
+-void rtl92cu_phy_set_bw_mode_callback(struct ieee80211_hw *hw);
+-bool rtl92cu_phy_set_rf_power_state(struct ieee80211_hw *hw,
+-				    enum rf_pwrstate rfpwr_state);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/reg.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/reg.h
+deleted file mode 100644
+index b4b6cde23341..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/reg.h
++++ /dev/null
+@@ -1,4 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../rtl8192ce/reg.h"
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.c
+deleted file mode 100644
+index 288033f02266..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.c
++++ /dev/null
+@@ -1,442 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "rf.h"
+-#include "dm.h"
+-
+-static bool _rtl92c_phy_rf6052_config_parafile(struct ieee80211_hw *hw);
+-
+-void rtl92cu_phy_rf6052_set_bandwidth(struct ieee80211_hw *hw, u8 bandwidth)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-
+-	switch (bandwidth) {
+-	case HT_CHANNEL_WIDTH_20:
+-		rtlphy->rfreg_chnlval[0] = ((rtlphy->rfreg_chnlval[0] &
+-					     0xfffff3ff) | 0x0400);
+-		rtl_set_rfreg(hw, RF90_PATH_A, RF_CHNLBW, RFREG_OFFSET_MASK,
+-			      rtlphy->rfreg_chnlval[0]);
+-		break;
+-	case HT_CHANNEL_WIDTH_20_40:
+-		rtlphy->rfreg_chnlval[0] = ((rtlphy->rfreg_chnlval[0] &
+-					     0xfffff3ff));
+-		rtl_set_rfreg(hw, RF90_PATH_A, RF_CHNLBW, RFREG_OFFSET_MASK,
+-			      rtlphy->rfreg_chnlval[0]);
+-		break;
+-	default:
+-		pr_err("unknown bandwidth: %#X\n", bandwidth);
+-		break;
+-	}
+-}
+-
+-void rtl92cu_phy_rf6052_set_cck_txpower(struct ieee80211_hw *hw,
+-					u8 *ppowerlevel)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	u32 tx_agc[2] = { 0, 0 }, tmpval = 0;
+-	u8 idx1, idx2;
+-	u8 *ptr;
+-
+-	if (mac->act_scanning) {
+-		tx_agc[RF90_PATH_A] = 0x3f3f3f3f;
+-		tx_agc[RF90_PATH_B] = 0x3f3f3f3f;
+-		for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {
+-			tx_agc[idx1] = ppowerlevel[idx1] |
+-			    (ppowerlevel[idx1] << 8) |
+-			    (ppowerlevel[idx1] << 16) |
+-			    (ppowerlevel[idx1] << 24);
+-			if (tx_agc[idx1] > 0x20 && rtlefuse->external_pa)
+-				tx_agc[idx1] = 0x20;
+-		}
+-	} else {
+-		if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-		    TXHIGHPWRLEVEL_LEVEL1) {
+-			tx_agc[RF90_PATH_A] = 0x10101010;
+-			tx_agc[RF90_PATH_B] = 0x10101010;
+-		} else if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-			   TXHIGHPWRLEVEL_LEVEL2) {
+-			tx_agc[RF90_PATH_A] = 0x00000000;
+-			tx_agc[RF90_PATH_B] = 0x00000000;
+-		} else {
+-			for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {
+-				tx_agc[idx1] = ppowerlevel[idx1] |
+-				    (ppowerlevel[idx1] << 8) |
+-				    (ppowerlevel[idx1] << 16) |
+-				    (ppowerlevel[idx1] << 24);
+-			}
+-			if (rtlefuse->eeprom_regulatory == 0) {
+-				tmpval = (rtlphy->mcs_offset[0][6]) +
+-					(rtlphy->mcs_offset[0][7] <<  8);
+-				tx_agc[RF90_PATH_A] += tmpval;
+-				tmpval = (rtlphy->mcs_offset[0][14]) +
+-					(rtlphy->mcs_offset[0][15] << 24);
+-				tx_agc[RF90_PATH_B] += tmpval;
+-			}
+-		}
+-	}
+-	for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {
+-		ptr = (u8 *) (&(tx_agc[idx1]));
+-		for (idx2 = 0; idx2 < 4; idx2++) {
+-			if (*ptr > RF6052_MAX_TX_PWR)
+-				*ptr = RF6052_MAX_TX_PWR;
+-			ptr++;
+-		}
+-	}
+-	tmpval = tx_agc[RF90_PATH_A] & 0xff;
+-	rtl_set_bbreg(hw, RTXAGC_A_CCK1_MCS32, MASKBYTE1, tmpval);
+-
+-	RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-		"CCK PWR 1M (rf-A) = 0x%x (reg 0x%x)\n",
+-		tmpval, RTXAGC_A_CCK1_MCS32);
+-
+-	tmpval = tx_agc[RF90_PATH_A] >> 8;
+-	if (mac->mode == WIRELESS_MODE_B)
+-		tmpval = tmpval & 0xff00ffff;
+-	rtl_set_bbreg(hw, RTXAGC_B_CCK11_A_CCK2_11, 0xffffff00, tmpval);
+-	RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-		"CCK PWR 2~11M (rf-A) = 0x%x (reg 0x%x)\n",
+-		tmpval, RTXAGC_B_CCK11_A_CCK2_11);
+-	tmpval = tx_agc[RF90_PATH_B] >> 24;
+-	rtl_set_bbreg(hw, RTXAGC_B_CCK11_A_CCK2_11, MASKBYTE0, tmpval);
+-	RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-		"CCK PWR 11M (rf-B) = 0x%x (reg 0x%x)\n",
+-		tmpval, RTXAGC_B_CCK11_A_CCK2_11);
+-	tmpval = tx_agc[RF90_PATH_B] & 0x00ffffff;
+-	rtl_set_bbreg(hw, RTXAGC_B_CCK1_55_MCS32, 0xffffff00, tmpval);
+-	RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-		"CCK PWR 1~5.5M (rf-B) = 0x%x (reg 0x%x)\n",
+-		tmpval, RTXAGC_B_CCK1_55_MCS32);
+-}
+-
+-static void rtl92c_phy_get_power_base(struct ieee80211_hw *hw,
+-				      u8 *ppowerlevel, u8 channel,
+-				      u32 *ofdmbase, u32 *mcsbase)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	u32 powerbase0, powerbase1;
+-	u8 legacy_pwrdiff = 0, ht20_pwrdiff = 0;
+-	u8 i, powerlevel[2];
+-
+-	for (i = 0; i < 2; i++) {
+-		powerlevel[i] = ppowerlevel[i];
+-		legacy_pwrdiff = rtlefuse->txpwr_legacyhtdiff[i][channel - 1];
+-		powerbase0 = powerlevel[i] + legacy_pwrdiff;
+-		powerbase0 = (powerbase0 << 24) | (powerbase0 << 16) |
+-		    (powerbase0 << 8) | powerbase0;
+-		*(ofdmbase + i) = powerbase0;
+-		RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-			" [OFDM power base index rf(%c) = 0x%x]\n",
+-			i == 0 ? 'A' : 'B', *(ofdmbase + i));
+-	}
+-	for (i = 0; i < 2; i++) {
+-		if (rtlphy->current_chan_bw == HT_CHANNEL_WIDTH_20) {
+-			ht20_pwrdiff = rtlefuse->txpwr_ht20diff[i][channel - 1];
+-			powerlevel[i] += ht20_pwrdiff;
+-		}
+-		powerbase1 = powerlevel[i];
+-		powerbase1 = (powerbase1 << 24) |
+-		    (powerbase1 << 16) | (powerbase1 << 8) | powerbase1;
+-		*(mcsbase + i) = powerbase1;
+-		RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-			" [MCS power base index rf(%c) = 0x%x]\n",
+-			i == 0 ? 'A' : 'B', *(mcsbase + i));
+-	}
+-}
+-
+-static void _rtl92c_get_txpower_writeval_by_regulatory(struct ieee80211_hw *hw,
+-						       u8 channel, u8 index,
+-						       u32 *powerbase0,
+-						       u32 *powerbase1,
+-						       u32 *p_outwriteval)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	u8 i, chnlgroup = 0, pwr_diff_limit[4];
+-	u32 writeval, customer_limit, rf;
+-
+-	for (rf = 0; rf < 2; rf++) {
+-		switch (rtlefuse->eeprom_regulatory) {
+-		case 0:
+-			chnlgroup = 0;
+-			writeval = rtlphy->mcs_offset
+-			    [chnlgroup][index + (rf ? 8 : 0)]
+-			    + ((index < 2) ? powerbase0[rf] : powerbase1[rf]);
+-			RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-				"RTK better performance,writeval(%c) = 0x%x\n",
+-				rf == 0 ? 'A' : 'B', writeval);
+-			break;
+-		case 1:
+-			if (rtlphy->pwrgroup_cnt == 1)
+-				chnlgroup = 0;
+-			if (rtlphy->pwrgroup_cnt >= 3) {
+-				if (channel <= 3)
+-					chnlgroup = 0;
+-				else if (channel >= 4 && channel <= 9)
+-					chnlgroup = 1;
+-				else if (channel > 9)
+-					chnlgroup = 2;
+-				if (rtlphy->current_chan_bw ==
+-				    HT_CHANNEL_WIDTH_20)
+-					chnlgroup++;
+-				else
+-					chnlgroup += 4;
+-			}
+-			writeval = rtlphy->mcs_offset[chnlgroup][index +
+-					(rf ? 8 : 0)] +
+-					((index < 2) ? powerbase0[rf] :
+-					powerbase1[rf]);
+-			RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-				"Realtek regulatory, 20MHz, writeval(%c) = 0x%x\n",
+-				rf == 0 ? 'A' : 'B', writeval);
+-			break;
+-		case 2:
+-			writeval = ((index < 2) ? powerbase0[rf] :
+-				   powerbase1[rf]);
+-			RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-				"Better regulatory,writeval(%c) = 0x%x\n",
+-				rf == 0 ? 'A' : 'B', writeval);
+-			break;
+-		case 3:
+-			chnlgroup = 0;
+-			if (rtlphy->current_chan_bw ==
+-			    HT_CHANNEL_WIDTH_20_40) {
+-				RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-					"customer's limit, 40MHzrf(%c) = 0x%x\n",
+-					rf == 0 ? 'A' : 'B',
+-					rtlefuse->pwrgroup_ht40[rf]
+-					[channel - 1]);
+-			} else {
+-				RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-					"customer's limit, 20MHz rf(%c) = 0x%x\n",
+-					rf == 0 ? 'A' : 'B',
+-					rtlefuse->pwrgroup_ht20[rf]
+-					[channel - 1]);
+-			}
+-			for (i = 0; i < 4; i++) {
+-				pwr_diff_limit[i] = (u8) ((rtlphy->mcs_offset
+-				    [chnlgroup][index + (rf ? 8 : 0)]
+-				    & (0x7f << (i * 8))) >> (i * 8));
+-				if (rtlphy->current_chan_bw ==
+-				    HT_CHANNEL_WIDTH_20_40) {
+-					if (pwr_diff_limit[i] >
+-					    rtlefuse->pwrgroup_ht40[rf]
+-						[channel - 1])
+-						pwr_diff_limit[i] = rtlefuse->
+-						    pwrgroup_ht40[rf]
+-						    [channel - 1];
+-				} else {
+-					if (pwr_diff_limit[i] >
+-					    rtlefuse->pwrgroup_ht20[rf]
+-						[channel - 1])
+-						pwr_diff_limit[i] =
+-						    rtlefuse->pwrgroup_ht20[rf]
+-						    [channel - 1];
+-				}
+-			}
+-			customer_limit = (pwr_diff_limit[3] << 24) |
+-			    (pwr_diff_limit[2] << 16) |
+-			    (pwr_diff_limit[1] << 8) | (pwr_diff_limit[0]);
+-			RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-				"Customer's limit rf(%c) = 0x%x\n",
+-				rf == 0 ? 'A' : 'B', customer_limit);
+-			writeval = customer_limit + ((index < 2) ?
+-				   powerbase0[rf] : powerbase1[rf]);
+-			RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-				"Customer, writeval rf(%c)= 0x%x\n",
+-				rf == 0 ? 'A' : 'B', writeval);
+-			break;
+-		default:
+-			chnlgroup = 0;
+-			writeval = rtlphy->mcs_offset[chnlgroup]
+-				   [index + (rf ? 8 : 0)] + ((index < 2) ?
+-				   powerbase0[rf] : powerbase1[rf]);
+-			RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-				"RTK better performance, writevalrf(%c) = 0x%x\n",
+-				rf == 0 ? 'A' : 'B', writeval);
+-			break;
+-		}
+-		if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-		    TXHIGHPWRLEVEL_LEVEL1)
+-			writeval = 0x14141414;
+-		else if (rtlpriv->dm.dynamic_txhighpower_lvl ==
+-			 TXHIGHPWRLEVEL_LEVEL2)
+-			writeval = 0x00000000;
+-		if (rtlpriv->dm.dynamic_txhighpower_lvl == TXHIGHPWRLEVEL_BT1)
+-			writeval = writeval - 0x06060606;
+-		*(p_outwriteval + rf) = writeval;
+-	}
+-}
+-
+-static void _rtl92c_write_ofdm_power_reg(struct ieee80211_hw *hw,
+-					 u8 index, u32 *value)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	u16 regoffset_a[6] = {
+-		RTXAGC_A_RATE18_06, RTXAGC_A_RATE54_24,
+-		RTXAGC_A_MCS03_MCS00, RTXAGC_A_MCS07_MCS04,
+-		RTXAGC_A_MCS11_MCS08, RTXAGC_A_MCS15_MCS12
+-	};
+-	u16 regoffset_b[6] = {
+-		RTXAGC_B_RATE18_06, RTXAGC_B_RATE54_24,
+-		RTXAGC_B_MCS03_MCS00, RTXAGC_B_MCS07_MCS04,
+-		RTXAGC_B_MCS11_MCS08, RTXAGC_B_MCS15_MCS12
+-	};
+-	u8 i, rf, pwr_val[4];
+-	u32 writeval;
+-	u16 regoffset;
+-
+-	for (rf = 0; rf < 2; rf++) {
+-		writeval = value[rf];
+-		for (i = 0; i < 4; i++) {
+-			pwr_val[i] = (u8)((writeval & (0x7f << (i * 8))) >>
+-					  (i * 8));
+-			if (pwr_val[i] > RF6052_MAX_TX_PWR)
+-				pwr_val[i] = RF6052_MAX_TX_PWR;
+-		}
+-		writeval = (pwr_val[3] << 24) | (pwr_val[2] << 16) |
+-		    (pwr_val[1] << 8) | pwr_val[0];
+-		if (rf == 0)
+-			regoffset = regoffset_a[index];
+-		else
+-			regoffset = regoffset_b[index];
+-		rtl_set_bbreg(hw, regoffset, MASKDWORD, writeval);
+-		RTPRINT(rtlpriv, FPHY, PHY_TXPWR,
+-			"Set 0x%x = %08x\n", regoffset, writeval);
+-		if (((get_rf_type(rtlphy) == RF_2T2R) &&
+-		     (regoffset == RTXAGC_A_MCS15_MCS12 ||
+-		      regoffset == RTXAGC_B_MCS15_MCS12)) ||
+-		    ((get_rf_type(rtlphy) != RF_2T2R) &&
+-		     (regoffset == RTXAGC_A_MCS07_MCS04 ||
+-		      regoffset == RTXAGC_B_MCS07_MCS04))) {
+-			writeval = pwr_val[3];
+-			if (regoffset == RTXAGC_A_MCS15_MCS12 ||
+-			    regoffset == RTXAGC_A_MCS07_MCS04)
+-				regoffset = 0xc90;
+-			if (regoffset == RTXAGC_B_MCS15_MCS12 ||
+-			    regoffset == RTXAGC_B_MCS07_MCS04)
+-				regoffset = 0xc98;
+-			for (i = 0; i < 3; i++) {
+-				if (i != 2)
+-					writeval = (writeval > 8) ?
+-						   (writeval - 8) : 0;
+-				else
+-					writeval = (writeval > 6) ?
+-						   (writeval - 6) : 0;
+-				rtl_write_byte(rtlpriv, (u32)(regoffset + i),
+-					      (u8)writeval);
+-			}
+-		}
+-	}
+-}
+-
+-void rtl92cu_phy_rf6052_set_ofdm_txpower(struct ieee80211_hw *hw,
+-					 u8 *ppowerlevel, u8 channel)
+-{
+-	u32 writeval[2], powerbase0[2], powerbase1[2];
+-	u8 index = 0;
+-
+-	rtl92c_phy_get_power_base(hw, ppowerlevel,
+-				  channel, &powerbase0[0], &powerbase1[0]);
+-	for (index = 0; index < 6; index++) {
+-		_rtl92c_get_txpower_writeval_by_regulatory(hw,
+-							   channel, index,
+-							   &powerbase0[0],
+-							   &powerbase1[0],
+-							   &writeval[0]);
+-		_rtl92c_write_ofdm_power_reg(hw, index, &writeval[0]);
+-	}
+-}
+-
+-bool rtl92cu_phy_rf6052_config(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	bool rtstatus = true;
+-	u8 b_reg_hwparafile = 1;
+-
+-	if (rtlphy->rf_type == RF_1T1R)
+-		rtlphy->num_total_rfpath = 1;
+-	else
+-		rtlphy->num_total_rfpath = 2;
+-	if (b_reg_hwparafile == 1)
+-		rtstatus = _rtl92c_phy_rf6052_config_parafile(hw);
+-	return rtstatus;
+-}
+-
+-static bool _rtl92c_phy_rf6052_config_parafile(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+-	u32 u4_regvalue = 0;
+-	u8 rfpath;
+-	bool rtstatus = true;
+-	struct bb_reg_def *pphyreg;
+-
+-	for (rfpath = 0; rfpath < rtlphy->num_total_rfpath; rfpath++) {
+-		pphyreg = &rtlphy->phyreg_def[rfpath];
+-		switch (rfpath) {
+-		case RF90_PATH_A:
+-		case RF90_PATH_C:
+-			u4_regvalue = rtl_get_bbreg(hw, pphyreg->rfintfs,
+-						    BRFSI_RFENV);
+-			break;
+-		case RF90_PATH_B:
+-		case RF90_PATH_D:
+-			u4_regvalue = rtl_get_bbreg(hw, pphyreg->rfintfs,
+-						    BRFSI_RFENV << 16);
+-			break;
+-		}
+-		rtl_set_bbreg(hw, pphyreg->rfintfe, BRFSI_RFENV << 16, 0x1);
+-		udelay(1);
+-		rtl_set_bbreg(hw, pphyreg->rfintfo, BRFSI_RFENV, 0x1);
+-		udelay(1);
+-		rtl_set_bbreg(hw, pphyreg->rfhssi_para2,
+-			      B3WIREADDREAALENGTH, 0x0);
+-		udelay(1);
+-		rtl_set_bbreg(hw, pphyreg->rfhssi_para2, B3WIREDATALENGTH, 0x0);
+-		udelay(1);
+-		switch (rfpath) {
+-		case RF90_PATH_A:
+-		case RF90_PATH_B:
+-			rtstatus = rtl92cu_phy_config_rf_with_headerfile(hw,
+-					(enum radio_path) rfpath);
+-			break;
+-		case RF90_PATH_C:
+-			break;
+-		case RF90_PATH_D:
+-			break;
+-		}
+-		switch (rfpath) {
+-		case RF90_PATH_A:
+-		case RF90_PATH_C:
+-			rtl_set_bbreg(hw, pphyreg->rfintfs,
+-				      BRFSI_RFENV, u4_regvalue);
+-			break;
+-		case RF90_PATH_B:
+-		case RF90_PATH_D:
+-			rtl_set_bbreg(hw, pphyreg->rfintfs,
+-				      BRFSI_RFENV << 16, u4_regvalue);
+-			break;
+-		}
+-		if (!rtstatus) {
+-			rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
+-				"Radio[%d] Fail!!\n", rfpath);
+-			goto phy_rf_cfg_fail;
+-		}
+-	}
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE, "<---\n");
+-phy_rf_cfg_fail:
+-	return rtstatus;
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.h
+deleted file mode 100644
+index 2661e5f8f6da..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/rf.h
++++ /dev/null
+@@ -1,23 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92CU_RF_H__
+-#define __RTL92CU_RF_H__
+-
+-#define RF6052_MAX_TX_PWR		0x3F
+-#define RF6052_MAX_PATH			2
+-
+-void rtl92cu_phy_rf6052_set_bandwidth(struct ieee80211_hw *hw, u8 bandwidth);
+-void rtl92c_phy_rf6052_set_cck_txpower(struct ieee80211_hw *hw,
+-				       u8 *ppowerlevel);
+-void rtl92c_phy_rf6052_set_ofdm_txpower(struct ieee80211_hw *hw,
+-					u8 *ppowerlevel, u8 channel);
+-bool rtl92cu_phy_rf6052_config(struct ieee80211_hw *hw);
+-bool rtl92cu_phy_config_rf_with_headerfile(struct ieee80211_hw *hw,
+-					   enum radio_path rfpath);
+-void rtl92cu_phy_rf6052_set_cck_txpower(struct ieee80211_hw *hw,
+-					u8 *ppowerlevel);
+-void rtl92cu_phy_rf6052_set_ofdm_txpower(struct ieee80211_hw *hw,
+-					 u8 *ppowerlevel, u8 channel);
+-
+-#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+deleted file mode 100644
+index 876c14d46c2f..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ /dev/null
+@@ -1,391 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../core.h"
+-#include "../usb.h"
+-#include "../efuse.h"
+-#include "../base.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "mac.h"
+-#include "dm.h"
+-#include "rf.h"
+-#include "trx.h"
+-#include "led.h"
+-#include "hw.h"
+-#include "../rtl8192c/fw_common.h"
+-#include <linux/module.h>
+-
+-MODULE_AUTHOR("Georgia		<georgia@realtek.com>");
+-MODULE_AUTHOR("Ziv Huang	<ziv_huang@realtek.com>");
+-MODULE_AUTHOR("Larry Finger	<Larry.Finger@lwfinger.net>");
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("Realtek 8192C/8188C 802.11n USB wireless");
+-MODULE_FIRMWARE("rtlwifi/rtl8192cufw.bin");
+-MODULE_FIRMWARE("rtlwifi/rtl8192cufw_A.bin");
+-MODULE_FIRMWARE("rtlwifi/rtl8192cufw_B.bin");
+-MODULE_FIRMWARE("rtlwifi/rtl8192cufw_TMSC.bin");
+-
+-static int rtl92cu_init_sw_vars(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	int err;
+-	char *fw_name;
+-
+-	rtlpriv->dm.dm_initialgain_enable = true;
+-	rtlpriv->dm.dm_flag = 0;
+-	rtlpriv->dm.disable_framebursting = false;
+-	rtlpriv->dm.thermalvalue = 0;
+-
+-	/* for firmware buf */
+-	rtlpriv->rtlhal.pfirmware = vzalloc(0x4000);
+-	if (!rtlpriv->rtlhal.pfirmware) {
+-		pr_err("Can't alloc buffer for fw\n");
+-		return 1;
+-	}
+-	if (IS_VENDOR_UMC_A_CUT(rtlpriv->rtlhal.version) &&
+-	    !IS_92C_SERIAL(rtlpriv->rtlhal.version)) {
+-		fw_name = "rtlwifi/rtl8192cufw_A.bin";
+-	} else if (IS_81XXC_VENDOR_UMC_B_CUT(rtlpriv->rtlhal.version)) {
+-		fw_name = "rtlwifi/rtl8192cufw_B.bin";
+-	} else {
+-		fw_name = "rtlwifi/rtl8192cufw_TMSC.bin";
+-	}
+-	/* provide name of alternative file */
+-	rtlpriv->cfg->alt_fw_name = "rtlwifi/rtl8192cufw.bin";
+-	pr_info("Loading firmware %s\n", fw_name);
+-	rtlpriv->max_fw_size = 0x4000;
+-	err = request_firmware_nowait(THIS_MODULE, 1,
+-				      fw_name, rtlpriv->io.dev,
+-				      GFP_KERNEL, hw, rtl_fw_cb);
+-	if (err) {
+-		vfree(rtlpriv->rtlhal.pfirmware);
+-		rtlpriv->rtlhal.pfirmware = NULL;
+-	}
+-	return err;
+-}
+-
+-static void rtl92cu_deinit_sw_vars(struct ieee80211_hw *hw)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	if (rtlpriv->rtlhal.pfirmware) {
+-		vfree(rtlpriv->rtlhal.pfirmware);
+-		rtlpriv->rtlhal.pfirmware = NULL;
+-	}
+-}
+-
+-/* get bt coexist status */
+-static bool rtl92cu_get_btc_status(void)
+-{
+-	return false;
+-}
+-
+-static struct rtl_hal_ops rtl8192cu_hal_ops = {
+-	.init_sw_vars = rtl92cu_init_sw_vars,
+-	.deinit_sw_vars = rtl92cu_deinit_sw_vars,
+-	.read_chip_version = rtl92c_read_chip_version,
+-	.read_eeprom_info = rtl92cu_read_eeprom_info,
+-	.enable_interrupt = rtl92c_enable_interrupt,
+-	.disable_interrupt = rtl92c_disable_interrupt,
+-	.hw_init = rtl92cu_hw_init,
+-	.hw_disable = rtl92cu_card_disable,
+-	.set_network_type = rtl92cu_set_network_type,
+-	.set_chk_bssid = rtl92cu_set_check_bssid,
+-	.set_qos = rtl92c_set_qos,
+-	.set_bcn_reg = rtl92cu_set_beacon_related_registers,
+-	.set_bcn_intv = rtl92cu_set_beacon_interval,
+-	.update_interrupt_mask = rtl92cu_update_interrupt_mask,
+-	.get_hw_reg = rtl92cu_get_hw_reg,
+-	.set_hw_reg = rtl92cu_set_hw_reg,
+-	.update_rate_tbl = rtl92cu_update_hal_rate_tbl,
+-	.fill_tx_desc = rtl92cu_tx_fill_desc,
+-	.fill_fake_txdesc = rtl92cu_fill_fake_txdesc,
+-	.fill_tx_cmddesc = rtl92cu_tx_fill_cmddesc,
+-	.query_rx_desc = rtl92cu_rx_query_desc,
+-	.set_channel_access = rtl92cu_update_channel_access_setting,
+-	.radio_onoff_checking = rtl92cu_gpio_radio_on_off_checking,
+-	.set_bw_mode = rtl92c_phy_set_bw_mode,
+-	.switch_channel = rtl92c_phy_sw_chnl,
+-	.dm_watchdog = rtl92c_dm_watchdog,
+-	.scan_operation_backup = rtl_phy_scan_operation_backup,
+-	.set_rf_power_state = rtl92cu_phy_set_rf_power_state,
+-	.led_control = rtl92cu_led_control,
+-	.enable_hw_sec = rtl92cu_enable_hw_security_config,
+-	.set_key = rtl92c_set_key,
+-	.init_sw_leds = rtl92cu_init_sw_leds,
+-	.deinit_sw_leds = rtl92cu_deinit_sw_leds,
+-	.get_bbreg = rtl92c_phy_query_bb_reg,
+-	.set_bbreg = rtl92c_phy_set_bb_reg,
+-	.get_rfreg = rtl92cu_phy_query_rf_reg,
+-	.set_rfreg = rtl92cu_phy_set_rf_reg,
+-	.phy_rf6052_config = rtl92cu_phy_rf6052_config,
+-	.phy_rf6052_set_cck_txpower = rtl92cu_phy_rf6052_set_cck_txpower,
+-	.phy_rf6052_set_ofdm_txpower = rtl92cu_phy_rf6052_set_ofdm_txpower,
+-	.config_bb_with_headerfile = _rtl92cu_phy_config_bb_with_headerfile,
+-	.config_bb_with_pgheaderfile = _rtl92cu_phy_config_bb_with_pgheaderfile,
+-	.phy_lc_calibrate = _rtl92cu_phy_lc_calibrate,
+-	.phy_set_bw_mode_callback = rtl92cu_phy_set_bw_mode_callback,
+-	.dm_dynamic_txpower = rtl92cu_dm_dynamic_txpower,
+-	.fill_h2c_cmd = rtl92c_fill_h2c_cmd,
+-	.get_btc_status = rtl92cu_get_btc_status,
+-};
+-
+-static struct rtl_mod_params rtl92cu_mod_params = {
+-	.sw_crypto = 0,
+-	.debug_level = 0,
+-	.debug_mask = 0,
+-};
+-
+-module_param_named(swenc, rtl92cu_mod_params.sw_crypto, bool, 0444);
+-module_param_named(debug_level, rtl92cu_mod_params.debug_level, int, 0644);
+-module_param_named(debug_mask, rtl92cu_mod_params.debug_mask, ullong, 0644);
+-MODULE_PARM_DESC(swenc, "Set to 1 for software crypto (default 0)\n");
+-MODULE_PARM_DESC(debug_level, "Set debug level (0-5) (default 0)");
+-MODULE_PARM_DESC(debug_mask, "Set debug mask (default 0)");
+-
+-static struct rtl_hal_usbint_cfg rtl92cu_interface_cfg = {
+-	/* rx */
+-	.in_ep_num = RTL92C_USB_BULK_IN_NUM,
+-	.rx_urb_num = RTL92C_NUM_RX_URBS,
+-	.rx_max_size = RTL92C_SIZE_MAX_RX_BUFFER,
+-	.usb_rx_hdl = rtl8192cu_rx_hdl,
+-	.usb_rx_segregate_hdl = NULL,
+-	/* tx */
+-	.usb_tx_cleanup = rtl8192c_tx_cleanup,
+-	.usb_tx_post_hdl = rtl8192c_tx_post_hdl,
+-	.usb_tx_aggregate_hdl = rtl8192c_tx_aggregate_hdl,
+-	/* endpoint mapping */
+-	.usb_endpoint_mapping = rtl8192cu_endpoint_mapping,
+-	.usb_mq_to_hwq = rtl8192cu_mq_to_hwq,
+-};
+-
+-static struct rtl_hal_cfg rtl92cu_hal_cfg = {
+-	.name = "rtl92c_usb",
+-	.ops = &rtl8192cu_hal_ops,
+-	.mod_params = &rtl92cu_mod_params,
+-	.usb_interface_cfg = &rtl92cu_interface_cfg,
+-
+-	.maps[SYS_ISO_CTRL] = REG_SYS_ISO_CTRL,
+-	.maps[SYS_FUNC_EN] = REG_SYS_FUNC_EN,
+-	.maps[SYS_CLK] = REG_SYS_CLKR,
+-	.maps[MAC_RCR_AM] = AM,
+-	.maps[MAC_RCR_AB] = AB,
+-	.maps[MAC_RCR_ACRC32] = ACRC32,
+-	.maps[MAC_RCR_ACF] = ACF,
+-	.maps[MAC_RCR_AAP] = AAP,
+-
+-	.maps[EFUSE_TEST] = REG_EFUSE_TEST,
+-	.maps[EFUSE_CTRL] = REG_EFUSE_CTRL,
+-	.maps[EFUSE_CLK] = 0,
+-	.maps[EFUSE_CLK_CTRL] = REG_EFUSE_CTRL,
+-	.maps[EFUSE_PWC_EV12V] = PWC_EV12V,
+-	.maps[EFUSE_FEN_ELDR] = FEN_ELDR,
+-	.maps[EFUSE_LOADER_CLK_EN] = LOADER_CLK_EN,
+-	.maps[EFUSE_ANA8M] = EFUSE_ANA8M,
+-	.maps[EFUSE_HWSET_MAX_SIZE] = HWSET_MAX_SIZE,
+-	.maps[EFUSE_MAX_SECTION_MAP] = EFUSE_MAX_SECTION,
+-	.maps[EFUSE_REAL_CONTENT_SIZE] = EFUSE_REAL_CONTENT_LEN,
+-
+-	.maps[RWCAM] = REG_CAMCMD,
+-	.maps[WCAMI] = REG_CAMWRITE,
+-	.maps[RCAMO] = REG_CAMREAD,
+-	.maps[CAMDBG] = REG_CAMDBG,
+-	.maps[SECR] = REG_SECCFG,
+-	.maps[SEC_CAM_NONE] = CAM_NONE,
+-	.maps[SEC_CAM_WEP40] = CAM_WEP40,
+-	.maps[SEC_CAM_TKIP] = CAM_TKIP,
+-	.maps[SEC_CAM_AES] = CAM_AES,
+-	.maps[SEC_CAM_WEP104] = CAM_WEP104,
+-
+-	.maps[RTL_IMR_BCNDMAINT6] = IMR_BCNDMAINT6,
+-	.maps[RTL_IMR_BCNDMAINT5] = IMR_BCNDMAINT5,
+-	.maps[RTL_IMR_BCNDMAINT4] = IMR_BCNDMAINT4,
+-	.maps[RTL_IMR_BCNDMAINT3] = IMR_BCNDMAINT3,
+-	.maps[RTL_IMR_BCNDMAINT2] = IMR_BCNDMAINT2,
+-	.maps[RTL_IMR_BCNDMAINT1] = IMR_BCNDMAINT1,
+-	.maps[RTL_IMR_BCNDOK8] = IMR_BCNDOK8,
+-	.maps[RTL_IMR_BCNDOK7] = IMR_BCNDOK7,
+-	.maps[RTL_IMR_BCNDOK6] = IMR_BCNDOK6,
+-	.maps[RTL_IMR_BCNDOK5] = IMR_BCNDOK5,
+-	.maps[RTL_IMR_BCNDOK4] = IMR_BCNDOK4,
+-	.maps[RTL_IMR_BCNDOK3] = IMR_BCNDOK3,
+-	.maps[RTL_IMR_BCNDOK2] = IMR_BCNDOK2,
+-	.maps[RTL_IMR_BCNDOK1] = IMR_BCNDOK1,
+-	.maps[RTL_IMR_TIMEOUT2] = IMR_TIMEOUT2,
+-	.maps[RTL_IMR_TIMEOUT1] = IMR_TIMEOUT1,
+-
+-	.maps[RTL_IMR_TXFOVW] = IMR_TXFOVW,
+-	.maps[RTL_IMR_PSTIMEOUT] = IMR_PSTIMEOUT,
+-	.maps[RTL_IMR_BCNINT] = IMR_BCNINT,
+-	.maps[RTL_IMR_RXFOVW] = IMR_RXFOVW,
+-	.maps[RTL_IMR_RDU] = IMR_RDU,
+-	.maps[RTL_IMR_ATIMEND] = IMR_ATIMEND,
+-	.maps[RTL_IMR_BDOK] = IMR_BDOK,
+-	.maps[RTL_IMR_MGNTDOK] = IMR_MGNTDOK,
+-	.maps[RTL_IMR_TBDER] = IMR_TBDER,
+-	.maps[RTL_IMR_HIGHDOK] = IMR_HIGHDOK,
+-	.maps[RTL_IMR_TBDOK] = IMR_TBDOK,
+-	.maps[RTL_IMR_BKDOK] = IMR_BKDOK,
+-	.maps[RTL_IMR_BEDOK] = IMR_BEDOK,
+-	.maps[RTL_IMR_VIDOK] = IMR_VIDOK,
+-	.maps[RTL_IMR_VODOK] = IMR_VODOK,
+-	.maps[RTL_IMR_ROK] = IMR_ROK,
+-	.maps[RTL_IBSS_INT_MASKS] = (IMR_BCNINT | IMR_TBDOK | IMR_TBDER),
+-
+-	.maps[RTL_RC_CCK_RATE1M] = DESC_RATE1M,
+-	.maps[RTL_RC_CCK_RATE2M] = DESC_RATE2M,
+-	.maps[RTL_RC_CCK_RATE5_5M] = DESC_RATE5_5M,
+-	.maps[RTL_RC_CCK_RATE11M] = DESC_RATE11M,
+-	.maps[RTL_RC_OFDM_RATE6M] = DESC_RATE6M,
+-	.maps[RTL_RC_OFDM_RATE9M] = DESC_RATE9M,
+-	.maps[RTL_RC_OFDM_RATE12M] = DESC_RATE12M,
+-	.maps[RTL_RC_OFDM_RATE18M] = DESC_RATE18M,
+-	.maps[RTL_RC_OFDM_RATE24M] = DESC_RATE24M,
+-	.maps[RTL_RC_OFDM_RATE36M] = DESC_RATE36M,
+-	.maps[RTL_RC_OFDM_RATE48M] = DESC_RATE48M,
+-	.maps[RTL_RC_OFDM_RATE54M] = DESC_RATE54M,
+-	.maps[RTL_RC_HT_RATEMCS7] = DESC_RATEMCS7,
+-	.maps[RTL_RC_HT_RATEMCS15] = DESC_RATEMCS15,
+-};
+-
+-#define USB_VENDOR_ID_REALTEK		0x0bda
+-
+-/* 2010-10-19 DID_USB_V3.4 */
+-static const struct usb_device_id rtl8192c_usb_ids[] = {
+-
+-	/*=== Realtek demoboard ===*/
+-	/* Default ID */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8191, rtl92cu_hal_cfg)},
+-
+-	/****** 8188CU ********/
+-	/* RTL8188CTV */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x018a, rtl92cu_hal_cfg)},
+-	/* 8188CE-VAU USB minCard */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8170, rtl92cu_hal_cfg)},
+-	/* 8188cu 1*1 dongle */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8176, rtl92cu_hal_cfg)},
+-	/* 8188cu 1*1 dongle, (b/g mode only) */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8177, rtl92cu_hal_cfg)},
+-	/* 8188cu Slim Solo */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817a, rtl92cu_hal_cfg)},
+-	/* 8188cu Slim Combo */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817b, rtl92cu_hal_cfg)},
+-	/* 8188RU High-power USB Dongle */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817d, rtl92cu_hal_cfg)},
+-	/* 8188CE-VAU USB minCard (b/g mode only) */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817e, rtl92cu_hal_cfg)},
+-	/* 8188RU in Alfa AWUS036NHR */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817f, rtl92cu_hal_cfg)},
+-	/* RTL8188CUS-VL */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x818a, rtl92cu_hal_cfg)},
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x819a, rtl92cu_hal_cfg)},
+-	/* 8188 Combo for BC4 */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8754, rtl92cu_hal_cfg)},
+-
+-	/****** 8192CU ********/
+-	/* 8192cu 2*2 */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8178, rtl92cu_hal_cfg)},
+-	/* 8192CE-VAU USB minCard */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817c, rtl92cu_hal_cfg)},
+-
+-	/*=== Customer ID ===*/
+-	/****** 8188CU ********/
+-	{RTL_USB_DEVICE(0x050d, 0x1102, rtl92cu_hal_cfg)}, /*Belkin - Edimax*/
+-	{RTL_USB_DEVICE(0x050d, 0x11f2, rtl92cu_hal_cfg)}, /*Belkin - ISY*/
+-	{RTL_USB_DEVICE(0x06f8, 0xe033, rtl92cu_hal_cfg)}, /*Hercules - Edimax*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8188, rtl92cu_hal_cfg)}, /*Abocom - Abocom*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8189, rtl92cu_hal_cfg)}, /*Funai - Abocom*/
+-	{RTL_USB_DEVICE(0x0846, 0x9041, rtl92cu_hal_cfg)}, /*NetGear WNA1000M*/
+-	{RTL_USB_DEVICE(0x0846, 0x9043, rtl92cu_hal_cfg)}, /*NG WNA1000Mv2*/
+-	{RTL_USB_DEVICE(0x0b05, 0x17ba, rtl92cu_hal_cfg)}, /*ASUS-Edimax*/
+-	{RTL_USB_DEVICE(0x0bda, 0x5088, rtl92cu_hal_cfg)}, /*Thinkware-CC&C*/
+-	{RTL_USB_DEVICE(0x0df6, 0x0052, rtl92cu_hal_cfg)}, /*Sitecom - Edimax*/
+-	{RTL_USB_DEVICE(0x0df6, 0x005c, rtl92cu_hal_cfg)}, /*Sitecom - Edimax*/
+-	{RTL_USB_DEVICE(0x0df6, 0x0070, rtl92cu_hal_cfg)}, /*Sitecom - 150N */
+-	{RTL_USB_DEVICE(0x0df6, 0x0077, rtl92cu_hal_cfg)}, /*Sitecom-WLA2100V2*/
+-	{RTL_USB_DEVICE(0x0eb0, 0x9071, rtl92cu_hal_cfg)}, /*NO Brand - Etop*/
+-	{RTL_USB_DEVICE(0x4856, 0x0091, rtl92cu_hal_cfg)}, /*NetweeN - Feixun*/
+-	/* HP - Lite-On ,8188CUS Slim Combo */
+-	{RTL_USB_DEVICE(0x103c, 0x1629, rtl92cu_hal_cfg)},
+-	{RTL_USB_DEVICE(0x13d3, 0x3357, rtl92cu_hal_cfg)}, /* AzureWave */
+-	{RTL_USB_DEVICE(0x2001, 0x3308, rtl92cu_hal_cfg)}, /*D-Link - Alpha*/
+-	{RTL_USB_DEVICE(0x2019, 0x4902, rtl92cu_hal_cfg)}, /*Planex - Etop*/
+-	{RTL_USB_DEVICE(0x2019, 0xab2a, rtl92cu_hal_cfg)}, /*Planex - Abocom*/
+-	/*SW-WF02-AD15 -Abocom*/
+-	{RTL_USB_DEVICE(0x2019, 0xab2e, rtl92cu_hal_cfg)},
+-	{RTL_USB_DEVICE(0x2019, 0xed17, rtl92cu_hal_cfg)}, /*PCI - Edimax*/
+-	{RTL_USB_DEVICE(0x20f4, 0x648b, rtl92cu_hal_cfg)}, /*TRENDnet - Cameo*/
+-	{RTL_USB_DEVICE(0x7392, 0x7811, rtl92cu_hal_cfg)}, /*Edimax - Edimax*/
+-	{RTL_USB_DEVICE(0x13d3, 0x3358, rtl92cu_hal_cfg)}, /*Azwave 8188CE-VAU*/
+-	/* Russian customer -Azwave (8188CE-VAU  b/g mode only) */
+-	{RTL_USB_DEVICE(0x13d3, 0x3359, rtl92cu_hal_cfg)},
+-	{RTL_USB_DEVICE(0x4855, 0x0090, rtl92cu_hal_cfg)}, /* Feixun */
+-	{RTL_USB_DEVICE(0x4855, 0x0091, rtl92cu_hal_cfg)}, /* NetweeN-Feixun */
+-	{RTL_USB_DEVICE(0x9846, 0x9041, rtl92cu_hal_cfg)}, /* Netgear Cameo */
+-
+-	/****** 8188 RU ********/
+-	/* Netcore */
+-	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x317f, rtl92cu_hal_cfg)},
+-
+-	/****** 8188CUS Slim Solo********/
+-	{RTL_USB_DEVICE(0x04f2, 0xaff7, rtl92cu_hal_cfg)}, /*Xavi*/
+-	{RTL_USB_DEVICE(0x04f2, 0xaff9, rtl92cu_hal_cfg)}, /*Xavi*/
+-	{RTL_USB_DEVICE(0x04f2, 0xaffa, rtl92cu_hal_cfg)}, /*Xavi*/
+-	{RTL_USB_DEVICE(0x0846, 0x9042, rtl92cu_hal_cfg)}, /*On Netwrks N150MA*/
+-
+-	/****** 8188CUS Slim Combo ********/
+-	{RTL_USB_DEVICE(0x04f2, 0xaff8, rtl92cu_hal_cfg)}, /*Xavi*/
+-	{RTL_USB_DEVICE(0x04f2, 0xaffb, rtl92cu_hal_cfg)}, /*Xavi*/
+-	{RTL_USB_DEVICE(0x04f2, 0xaffc, rtl92cu_hal_cfg)}, /*Xavi*/
+-	{RTL_USB_DEVICE(0x2019, 0x1201, rtl92cu_hal_cfg)}, /*Planex-Vencer*/
+-
+-	/****** 8192CU ********/
+-	{RTL_USB_DEVICE(0x050d, 0x1004, rtl92cu_hal_cfg)}, /*Belcom-SurfN300*/
+-	{RTL_USB_DEVICE(0x050d, 0x2102, rtl92cu_hal_cfg)}, /*Belcom-Sercomm*/
+-	{RTL_USB_DEVICE(0x050d, 0x2103, rtl92cu_hal_cfg)}, /*Belcom-Edimax*/
+-	{RTL_USB_DEVICE(0x0586, 0x341f, rtl92cu_hal_cfg)}, /*Zyxel -Abocom*/
+-	{RTL_USB_DEVICE(0x07aa, 0x0056, rtl92cu_hal_cfg)}, /*ATKK-Gemtek*/
+-	{RTL_USB_DEVICE(0x07b8, 0x8178, rtl92cu_hal_cfg)}, /*Funai -Abocom*/
+-	{RTL_USB_DEVICE(0x0846, 0x9021, rtl92cu_hal_cfg)}, /*Netgear-Sercomm*/
+-	{RTL_USB_DEVICE(0x0846, 0xf001, rtl92cu_hal_cfg)}, /*On Netwrks N300MA*/
+-	{RTL_USB_DEVICE(0x0b05, 0x17ab, rtl92cu_hal_cfg)}, /*ASUS-Edimax*/
+-	{RTL_USB_DEVICE(0x0bda, 0x8186, rtl92cu_hal_cfg)}, /*Realtek 92CE-VAU*/
+-	{RTL_USB_DEVICE(0x0df6, 0x0061, rtl92cu_hal_cfg)}, /*Sitecom-Edimax*/
+-	{RTL_USB_DEVICE(0x0e66, 0x0019, rtl92cu_hal_cfg)}, /*Hawking-Edimax*/
+-	{RTL_USB_DEVICE(0x2001, 0x3307, rtl92cu_hal_cfg)}, /*D-Link-Cameo*/
+-	{RTL_USB_DEVICE(0x2001, 0x3309, rtl92cu_hal_cfg)}, /*D-Link-Alpha*/
+-	{RTL_USB_DEVICE(0x2001, 0x330a, rtl92cu_hal_cfg)}, /*D-Link-Alpha*/
+-	{RTL_USB_DEVICE(0x2001, 0x330d, rtl92cu_hal_cfg)}, /*D-Link DWA-131 */
+-	{RTL_USB_DEVICE(0x2019, 0xab2b, rtl92cu_hal_cfg)}, /*Planex -Abocom*/
+-	{RTL_USB_DEVICE(0x20f4, 0x624d, rtl92cu_hal_cfg)}, /*TRENDNet*/
+-	{RTL_USB_DEVICE(0x2357, 0x0100, rtl92cu_hal_cfg)}, /*TP-Link WN8200ND*/
+-	{RTL_USB_DEVICE(0x7392, 0x7822, rtl92cu_hal_cfg)}, /*Edimax -Edimax*/
+-	{}
+-};
+-
+-MODULE_DEVICE_TABLE(usb, rtl8192c_usb_ids);
+-
+-static int rtl8192cu_probe(struct usb_interface *intf,
+-			   const struct usb_device_id *id)
+-{
+-	return rtl_usb_probe(intf, id, &rtl92cu_hal_cfg);
+-}
+-
+-static struct usb_driver rtl8192cu_driver = {
+-	.name = "rtl8192cu",
+-	.probe = rtl8192cu_probe,
+-	.disconnect = rtl_usb_disconnect,
+-	.id_table = rtl8192c_usb_ids,
+-
+-#ifdef CONFIG_PM
+-	/* .suspend = rtl_usb_suspend, */
+-	/* .resume = rtl_usb_resume, */
+-	/* .reset_resume = rtl8192c_resume, */
+-#endif /* CONFIG_PM */
+-	.disable_hub_initiated_lpm = 1,
+-};
+-
+-module_usb_driver(rtl8192cu_driver);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.c
+deleted file mode 100644
+index addeac90ee0c..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.c
++++ /dev/null
+@@ -1,1862 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "table.h"
+-
+-u32 RTL8192CUPHY_REG_2TARRAY[RTL8192CUPHY_REG_2TARRAY_LENGTH] = {
+-	0x024, 0x0011800f,
+-	0x028, 0x00ffdb83,
+-	0x800, 0x80040002,
+-	0x804, 0x00000003,
+-	0x808, 0x0000fc00,
+-	0x80c, 0x0000000a,
+-	0x810, 0x10000330,
+-	0x814, 0x020c3d10,
+-	0x818, 0x02200385,
+-	0x81c, 0x00000000,
+-	0x820, 0x01000100,
+-	0x824, 0x00390004,
+-	0x828, 0x01000100,
+-	0x82c, 0x00390004,
+-	0x830, 0x27272727,
+-	0x834, 0x27272727,
+-	0x838, 0x27272727,
+-	0x83c, 0x27272727,
+-	0x840, 0x00010000,
+-	0x844, 0x00010000,
+-	0x848, 0x27272727,
+-	0x84c, 0x27272727,
+-	0x850, 0x00000000,
+-	0x854, 0x00000000,
+-	0x858, 0x569a569a,
+-	0x85c, 0x0c1b25a4,
+-	0x860, 0x66e60230,
+-	0x864, 0x061f0130,
+-	0x868, 0x27272727,
+-	0x86c, 0x2b2b2b27,
+-	0x870, 0x07000700,
+-	0x874, 0x22184000,
+-	0x878, 0x08080808,
+-	0x87c, 0x00000000,
+-	0x880, 0xc0083070,
+-	0x884, 0x000004d5,
+-	0x888, 0x00000000,
+-	0x88c, 0xcc0000c0,
+-	0x890, 0x00000800,
+-	0x894, 0xfffffffe,
+-	0x898, 0x40302010,
+-	0x89c, 0x00706050,
+-	0x900, 0x00000000,
+-	0x904, 0x00000023,
+-	0x908, 0x00000000,
+-	0x90c, 0x81121313,
+-	0xa00, 0x00d047c8,
+-	0xa04, 0x80ff000c,
+-	0xa08, 0x8c838300,
+-	0xa0c, 0x2e68120f,
+-	0xa10, 0x9500bb78,
+-	0xa14, 0x11144028,
+-	0xa18, 0x00881117,
+-	0xa1c, 0x89140f00,
+-	0xa20, 0x1a1b0000,
+-	0xa24, 0x090e1317,
+-	0xa28, 0x00000204,
+-	0xa2c, 0x00d30000,
+-	0xa70, 0x101fbf00,
+-	0xa74, 0x00000007,
+-	0xc00, 0x48071d40,
+-	0xc04, 0x03a05633,
+-	0xc08, 0x000000e4,
+-	0xc0c, 0x6c6c6c6c,
+-	0xc10, 0x08800000,
+-	0xc14, 0x40000100,
+-	0xc18, 0x08800000,
+-	0xc1c, 0x40000100,
+-	0xc20, 0x00000000,
+-	0xc24, 0x00000000,
+-	0xc28, 0x00000000,
+-	0xc2c, 0x00000000,
+-	0xc30, 0x69e9ac44,
+-	0xc34, 0x469652cf,
+-	0xc38, 0x49795994,
+-	0xc3c, 0x0a97971c,
+-	0xc40, 0x1f7c403f,
+-	0xc44, 0x000100b7,
+-	0xc48, 0xec020107,
+-	0xc4c, 0x007f037f,
+-	0xc50, 0x69543420,
+-	0xc54, 0x43bc0094,
+-	0xc58, 0x69543420,
+-	0xc5c, 0x433c0094,
+-	0xc60, 0x00000000,
+-	0xc64, 0x5116848b,
+-	0xc68, 0x47c00bff,
+-	0xc6c, 0x00000036,
+-	0xc70, 0x2c7f000d,
+-	0xc74, 0x2186115b,
+-	0xc78, 0x0000001f,
+-	0xc7c, 0x00b99612,
+-	0xc80, 0x40000100,
+-	0xc84, 0x20f60000,
+-	0xc88, 0x40000100,
+-	0xc8c, 0xa0e40000,
+-	0xc90, 0x00121820,
+-	0xc94, 0x00000000,
+-	0xc98, 0x00121820,
+-	0xc9c, 0x00007f7f,
+-	0xca0, 0x00000000,
+-	0xca4, 0x00000080,
+-	0xca8, 0x00000000,
+-	0xcac, 0x00000000,
+-	0xcb0, 0x00000000,
+-	0xcb4, 0x00000000,
+-	0xcb8, 0x00000000,
+-	0xcbc, 0x28000000,
+-	0xcc0, 0x00000000,
+-	0xcc4, 0x00000000,
+-	0xcc8, 0x00000000,
+-	0xccc, 0x00000000,
+-	0xcd0, 0x00000000,
+-	0xcd4, 0x00000000,
+-	0xcd8, 0x64b22427,
+-	0xcdc, 0x00766932,
+-	0xce0, 0x00222222,
+-	0xce4, 0x00000000,
+-	0xce8, 0x37644302,
+-	0xcec, 0x2f97d40c,
+-	0xd00, 0x00080740,
+-	0xd04, 0x00020403,
+-	0xd08, 0x0000907f,
+-	0xd0c, 0x20010201,
+-	0xd10, 0xa0633333,
+-	0xd14, 0x3333bc43,
+-	0xd18, 0x7a8f5b6b,
+-	0xd2c, 0xcc979975,
+-	0xd30, 0x00000000,
+-	0xd34, 0x80608000,
+-	0xd38, 0x00000000,
+-	0xd3c, 0x00027293,
+-	0xd40, 0x00000000,
+-	0xd44, 0x00000000,
+-	0xd48, 0x00000000,
+-	0xd4c, 0x00000000,
+-	0xd50, 0x6437140a,
+-	0xd54, 0x00000000,
+-	0xd58, 0x00000000,
+-	0xd5c, 0x30032064,
+-	0xd60, 0x4653de68,
+-	0xd64, 0x04518a3c,
+-	0xd68, 0x00002101,
+-	0xd6c, 0x2a201c16,
+-	0xd70, 0x1812362e,
+-	0xd74, 0x322c2220,
+-	0xd78, 0x000e3c24,
+-	0xe00, 0x2a2a2a2a,
+-	0xe04, 0x2a2a2a2a,
+-	0xe08, 0x03902a2a,
+-	0xe10, 0x2a2a2a2a,
+-	0xe14, 0x2a2a2a2a,
+-	0xe18, 0x2a2a2a2a,
+-	0xe1c, 0x2a2a2a2a,
+-	0xe28, 0x00000000,
+-	0xe30, 0x1000dc1f,
+-	0xe34, 0x10008c1f,
+-	0xe38, 0x02140102,
+-	0xe3c, 0x681604c2,
+-	0xe40, 0x01007c00,
+-	0xe44, 0x01004800,
+-	0xe48, 0xfb000000,
+-	0xe4c, 0x000028d1,
+-	0xe50, 0x1000dc1f,
+-	0xe54, 0x10008c1f,
+-	0xe58, 0x02140102,
+-	0xe5c, 0x28160d05,
+-	0xe60, 0x00000010,
+-	0xe68, 0x001b25a4,
+-	0xe6c, 0x63db25a4,
+-	0xe70, 0x63db25a4,
+-	0xe74, 0x0c1b25a4,
+-	0xe78, 0x0c1b25a4,
+-	0xe7c, 0x0c1b25a4,
+-	0xe80, 0x0c1b25a4,
+-	0xe84, 0x63db25a4,
+-	0xe88, 0x0c1b25a4,
+-	0xe8c, 0x63db25a4,
+-	0xed0, 0x63db25a4,
+-	0xed4, 0x63db25a4,
+-	0xed8, 0x63db25a4,
+-	0xedc, 0x001b25a4,
+-	0xee0, 0x001b25a4,
+-	0xeec, 0x6fdb25a4,
+-	0xf14, 0x00000003,
+-	0xf4c, 0x00000000,
+-	0xf00, 0x00000300,
+-};
+-
+-u32 RTL8192CUPHY_REG_1TARRAY[RTL8192CUPHY_REG_1TARRAY_LENGTH] = {
+-	0x024, 0x0011800f,
+-	0x028, 0x00ffdb83,
+-	0x800, 0x80040000,
+-	0x804, 0x00000001,
+-	0x808, 0x0000fc00,
+-	0x80c, 0x0000000a,
+-	0x810, 0x10000330,
+-	0x814, 0x020c3d10,
+-	0x818, 0x02200385,
+-	0x81c, 0x00000000,
+-	0x820, 0x01000100,
+-	0x824, 0x00390004,
+-	0x828, 0x00000000,
+-	0x82c, 0x00000000,
+-	0x830, 0x00000000,
+-	0x834, 0x00000000,
+-	0x838, 0x00000000,
+-	0x83c, 0x00000000,
+-	0x840, 0x00010000,
+-	0x844, 0x00000000,
+-	0x848, 0x00000000,
+-	0x84c, 0x00000000,
+-	0x850, 0x00000000,
+-	0x854, 0x00000000,
+-	0x858, 0x569a569a,
+-	0x85c, 0x001b25a4,
+-	0x860, 0x66e60230,
+-	0x864, 0x061f0130,
+-	0x868, 0x00000000,
+-	0x86c, 0x32323200,
+-	0x870, 0x07000700,
+-	0x874, 0x22004000,
+-	0x878, 0x00000808,
+-	0x87c, 0x00000000,
+-	0x880, 0xc0083070,
+-	0x884, 0x000004d5,
+-	0x888, 0x00000000,
+-	0x88c, 0xccc000c0,
+-	0x890, 0x00000800,
+-	0x894, 0xfffffffe,
+-	0x898, 0x40302010,
+-	0x89c, 0x00706050,
+-	0x900, 0x00000000,
+-	0x904, 0x00000023,
+-	0x908, 0x00000000,
+-	0x90c, 0x81121111,
+-	0xa00, 0x00d047c8,
+-	0xa04, 0x80ff000c,
+-	0xa08, 0x8c838300,
+-	0xa0c, 0x2e68120f,
+-	0xa10, 0x9500bb78,
+-	0xa14, 0x11144028,
+-	0xa18, 0x00881117,
+-	0xa1c, 0x89140f00,
+-	0xa20, 0x1a1b0000,
+-	0xa24, 0x090e1317,
+-	0xa28, 0x00000204,
+-	0xa2c, 0x00d30000,
+-	0xa70, 0x101fbf00,
+-	0xa74, 0x00000007,
+-	0xc00, 0x48071d40,
+-	0xc04, 0x03a05611,
+-	0xc08, 0x000000e4,
+-	0xc0c, 0x6c6c6c6c,
+-	0xc10, 0x08800000,
+-	0xc14, 0x40000100,
+-	0xc18, 0x08800000,
+-	0xc1c, 0x40000100,
+-	0xc20, 0x00000000,
+-	0xc24, 0x00000000,
+-	0xc28, 0x00000000,
+-	0xc2c, 0x00000000,
+-	0xc30, 0x69e9ac44,
+-	0xc34, 0x469652cf,
+-	0xc38, 0x49795994,
+-	0xc3c, 0x0a97971c,
+-	0xc40, 0x1f7c403f,
+-	0xc44, 0x000100b7,
+-	0xc48, 0xec020107,
+-	0xc4c, 0x007f037f,
+-	0xc50, 0x69543420,
+-	0xc54, 0x43bc0094,
+-	0xc58, 0x69543420,
+-	0xc5c, 0x433c0094,
+-	0xc60, 0x00000000,
+-	0xc64, 0x5116848b,
+-	0xc68, 0x47c00bff,
+-	0xc6c, 0x00000036,
+-	0xc70, 0x2c7f000d,
+-	0xc74, 0x018610db,
+-	0xc78, 0x0000001f,
+-	0xc7c, 0x00b91612,
+-	0xc80, 0x40000100,
+-	0xc84, 0x20f60000,
+-	0xc88, 0x40000100,
+-	0xc8c, 0x20200000,
+-	0xc90, 0x00121820,
+-	0xc94, 0x00000000,
+-	0xc98, 0x00121820,
+-	0xc9c, 0x00007f7f,
+-	0xca0, 0x00000000,
+-	0xca4, 0x00000080,
+-	0xca8, 0x00000000,
+-	0xcac, 0x00000000,
+-	0xcb0, 0x00000000,
+-	0xcb4, 0x00000000,
+-	0xcb8, 0x00000000,
+-	0xcbc, 0x28000000,
+-	0xcc0, 0x00000000,
+-	0xcc4, 0x00000000,
+-	0xcc8, 0x00000000,
+-	0xccc, 0x00000000,
+-	0xcd0, 0x00000000,
+-	0xcd4, 0x00000000,
+-	0xcd8, 0x64b22427,
+-	0xcdc, 0x00766932,
+-	0xce0, 0x00222222,
+-	0xce4, 0x00000000,
+-	0xce8, 0x37644302,
+-	0xcec, 0x2f97d40c,
+-	0xd00, 0x00000740,
+-	0xd04, 0x00020401,
+-	0xd08, 0x0000907f,
+-	0xd0c, 0x20010201,
+-	0xd10, 0xa0633333,
+-	0xd14, 0x3333bc43,
+-	0xd18, 0x7a8f5b6b,
+-	0xd2c, 0xcc979975,
+-	0xd30, 0x00000000,
+-	0xd34, 0x80608000,
+-	0xd38, 0x00000000,
+-	0xd3c, 0x00027293,
+-	0xd40, 0x00000000,
+-	0xd44, 0x00000000,
+-	0xd48, 0x00000000,
+-	0xd4c, 0x00000000,
+-	0xd50, 0x6437140a,
+-	0xd54, 0x00000000,
+-	0xd58, 0x00000000,
+-	0xd5c, 0x30032064,
+-	0xd60, 0x4653de68,
+-	0xd64, 0x04518a3c,
+-	0xd68, 0x00002101,
+-	0xd6c, 0x2a201c16,
+-	0xd70, 0x1812362e,
+-	0xd74, 0x322c2220,
+-	0xd78, 0x000e3c24,
+-	0xe00, 0x2a2a2a2a,
+-	0xe04, 0x2a2a2a2a,
+-	0xe08, 0x03902a2a,
+-	0xe10, 0x2a2a2a2a,
+-	0xe14, 0x2a2a2a2a,
+-	0xe18, 0x2a2a2a2a,
+-	0xe1c, 0x2a2a2a2a,
+-	0xe28, 0x00000000,
+-	0xe30, 0x1000dc1f,
+-	0xe34, 0x10008c1f,
+-	0xe38, 0x02140102,
+-	0xe3c, 0x681604c2,
+-	0xe40, 0x01007c00,
+-	0xe44, 0x01004800,
+-	0xe48, 0xfb000000,
+-	0xe4c, 0x000028d1,
+-	0xe50, 0x1000dc1f,
+-	0xe54, 0x10008c1f,
+-	0xe58, 0x02140102,
+-	0xe5c, 0x28160d05,
+-	0xe60, 0x00000008,
+-	0xe68, 0x001b25a4,
+-	0xe6c, 0x631b25a0,
+-	0xe70, 0x631b25a0,
+-	0xe74, 0x081b25a0,
+-	0xe78, 0x081b25a0,
+-	0xe7c, 0x081b25a0,
+-	0xe80, 0x081b25a0,
+-	0xe84, 0x631b25a0,
+-	0xe88, 0x081b25a0,
+-	0xe8c, 0x631b25a0,
+-	0xed0, 0x631b25a0,
+-	0xed4, 0x631b25a0,
+-	0xed8, 0x631b25a0,
+-	0xedc, 0x001b25a0,
+-	0xee0, 0x001b25a0,
+-	0xeec, 0x6b1b25a0,
+-	0xf14, 0x00000003,
+-	0xf4c, 0x00000000,
+-	0xf00, 0x00000300,
+-};
+-
+-u32 RTL8192CUPHY_REG_ARRAY_PG[RTL8192CUPHY_REG_ARRAY_PGLENGTH] = {
+-	0xe00, 0xffffffff, 0x07090c0c,
+-	0xe04, 0xffffffff, 0x01020405,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x0b0c0c0e,
+-	0xe14, 0xffffffff, 0x01030506,
+-	0xe18, 0xffffffff, 0x0b0c0d0e,
+-	0xe1c, 0xffffffff, 0x01030509,
+-	0x830, 0xffffffff, 0x07090c0c,
+-	0x834, 0xffffffff, 0x01020405,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x0b0c0d0e,
+-	0x848, 0xffffffff, 0x01030509,
+-	0x84c, 0xffffffff, 0x0b0c0d0e,
+-	0x868, 0xffffffff, 0x01030509,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x04040404,
+-	0xe04, 0xffffffff, 0x00020204,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x06060606,
+-	0xe14, 0xffffffff, 0x00020406,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x04040404,
+-	0x834, 0xffffffff, 0x00020204,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x06060606,
+-	0x848, 0xffffffff, 0x00020406,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x04040404,
+-	0xe04, 0xffffffff, 0x00020204,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x04040404,
+-	0x834, 0xffffffff, 0x00020204,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-};
+-
+-u32 RTL8192CURADIOA_2TARRAY[RTL8192CURADIOA_2TARRAYLENGTH] = {
+-	0x000, 0x00030159,
+-	0x001, 0x00031284,
+-	0x002, 0x00098000,
+-	0x003, 0x00018c63,
+-	0x004, 0x000210e7,
+-	0x009, 0x0002044f,
+-	0x00a, 0x0001adb1,
+-	0x00b, 0x00054867,
+-	0x00c, 0x0008992e,
+-	0x00d, 0x0000e52c,
+-	0x00e, 0x00039ce7,
+-	0x00f, 0x00000451,
+-	0x019, 0x00000000,
+-	0x01a, 0x00010255,
+-	0x01b, 0x00060a00,
+-	0x01c, 0x000fc378,
+-	0x01d, 0x000a1250,
+-	0x01e, 0x0004445f,
+-	0x01f, 0x00080001,
+-	0x020, 0x0000b614,
+-	0x021, 0x0006c000,
+-	0x022, 0x00000000,
+-	0x023, 0x00001558,
+-	0x024, 0x00000060,
+-	0x025, 0x00000483,
+-	0x026, 0x0004f000,
+-	0x027, 0x000ec7d9,
+-	0x028, 0x000577c0,
+-	0x029, 0x00004783,
+-	0x02a, 0x00000001,
+-	0x02b, 0x00021334,
+-	0x02a, 0x00000000,
+-	0x02b, 0x00000054,
+-	0x02a, 0x00000001,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00053333,
+-	0x02c, 0x0000000c,
+-	0x02a, 0x00000002,
+-	0x02b, 0x00000808,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000003,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000004,
+-	0x02b, 0x00000808,
+-	0x02b, 0x0006b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000005,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00073333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000006,
+-	0x02b, 0x00000709,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000007,
+-	0x02b, 0x00000709,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000008,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0004b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000009,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00053333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000a,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000b,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000c,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0006b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000d,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00073333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000e,
+-	0x02b, 0x0000050b,
+-	0x02b, 0x00066666,
+-	0x02c, 0x0000001a,
+-	0x02a, 0x000e0000,
+-	0x010, 0x0004000f,
+-	0x011, 0x000e31fc,
+-	0x010, 0x0006000f,
+-	0x011, 0x000ff9f8,
+-	0x010, 0x0002000f,
+-	0x011, 0x000203f9,
+-	0x010, 0x0003000f,
+-	0x011, 0x000ff500,
+-	0x010, 0x00000000,
+-	0x011, 0x00000000,
+-	0x010, 0x0008000f,
+-	0x011, 0x0003f100,
+-	0x010, 0x0009000f,
+-	0x011, 0x00023100,
+-	0x012, 0x00032000,
+-	0x012, 0x00071000,
+-	0x012, 0x000b0000,
+-	0x012, 0x000fc000,
+-	0x013, 0x000287b3,
+-	0x013, 0x000244b7,
+-	0x013, 0x000204ab,
+-	0x013, 0x0001c49f,
+-	0x013, 0x00018493,
+-	0x013, 0x0001429b,
+-	0x013, 0x00010299,
+-	0x013, 0x0000c29c,
+-	0x013, 0x000081a0,
+-	0x013, 0x000040ac,
+-	0x013, 0x00000020,
+-	0x014, 0x0001944c,
+-	0x014, 0x00059444,
+-	0x014, 0x0009944c,
+-	0x014, 0x000d9444,
+-	0x015, 0x0000f424,
+-	0x015, 0x0004f424,
+-	0x015, 0x0008f424,
+-	0x015, 0x000cf424,
+-	0x016, 0x000e0330,
+-	0x016, 0x000a0330,
+-	0x016, 0x00060330,
+-	0x016, 0x00020330,
+-	0x000, 0x00010159,
+-	0x018, 0x0000f401,
+-	0x0fe, 0x00000000,
+-	0x0fe, 0x00000000,
+-	0x01f, 0x00080003,
+-	0x0fe, 0x00000000,
+-	0x0fe, 0x00000000,
+-	0x01e, 0x00044457,
+-	0x01f, 0x00080000,
+-	0x000, 0x00030159,
+-};
+-
+-u32 RTL8192CU_RADIOB_2TARRAY[RTL8192CURADIOB_2TARRAYLENGTH] = {
+-	0x000, 0x00030159,
+-	0x001, 0x00031284,
+-	0x002, 0x00098000,
+-	0x003, 0x00018c63,
+-	0x004, 0x000210e7,
+-	0x009, 0x0002044f,
+-	0x00a, 0x0001adb1,
+-	0x00b, 0x00054867,
+-	0x00c, 0x0008992e,
+-	0x00d, 0x0000e52c,
+-	0x00e, 0x00039ce7,
+-	0x00f, 0x00000451,
+-	0x012, 0x00032000,
+-	0x012, 0x00071000,
+-	0x012, 0x000b0000,
+-	0x012, 0x000fc000,
+-	0x013, 0x000287af,
+-	0x013, 0x000244b7,
+-	0x013, 0x000204ab,
+-	0x013, 0x0001c49f,
+-	0x013, 0x00018493,
+-	0x013, 0x00014297,
+-	0x013, 0x00010295,
+-	0x013, 0x0000c298,
+-	0x013, 0x0000819c,
+-	0x013, 0x000040a8,
+-	0x013, 0x0000001c,
+-	0x014, 0x0001944c,
+-	0x014, 0x00059444,
+-	0x014, 0x0009944c,
+-	0x014, 0x000d9444,
+-	0x015, 0x0000f424,
+-	0x015, 0x0004f424,
+-	0x015, 0x0008f424,
+-	0x015, 0x000cf424,
+-	0x016, 0x000e0330,
+-	0x016, 0x000a0330,
+-	0x016, 0x00060330,
+-	0x016, 0x00020330,
+-};
+-
+-u32 RTL8192CU_RADIOA_1TARRAY[RTL8192CURADIOA_1TARRAYLENGTH] = {
+-	0x000, 0x00030159,
+-	0x001, 0x00031284,
+-	0x002, 0x00098000,
+-	0x003, 0x00018c63,
+-	0x004, 0x000210e7,
+-	0x009, 0x0002044f,
+-	0x00a, 0x0001adb1,
+-	0x00b, 0x00054867,
+-	0x00c, 0x0008992e,
+-	0x00d, 0x0000e52c,
+-	0x00e, 0x00039ce7,
+-	0x00f, 0x00000451,
+-	0x019, 0x00000000,
+-	0x01a, 0x00010255,
+-	0x01b, 0x00060a00,
+-	0x01c, 0x000fc378,
+-	0x01d, 0x000a1250,
+-	0x01e, 0x0004445f,
+-	0x01f, 0x00080001,
+-	0x020, 0x0000b614,
+-	0x021, 0x0006c000,
+-	0x022, 0x00000000,
+-	0x023, 0x00001558,
+-	0x024, 0x00000060,
+-	0x025, 0x00000483,
+-	0x026, 0x0004f000,
+-	0x027, 0x000ec7d9,
+-	0x028, 0x000577c0,
+-	0x029, 0x00004783,
+-	0x02a, 0x00000001,
+-	0x02b, 0x00021334,
+-	0x02a, 0x00000000,
+-	0x02b, 0x00000054,
+-	0x02a, 0x00000001,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00053333,
+-	0x02c, 0x0000000c,
+-	0x02a, 0x00000002,
+-	0x02b, 0x00000808,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000003,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000004,
+-	0x02b, 0x00000808,
+-	0x02b, 0x0006b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000005,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00073333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000006,
+-	0x02b, 0x00000709,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000007,
+-	0x02b, 0x00000709,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000008,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0004b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000009,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00053333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000a,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000b,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000c,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0006b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000d,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00073333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000e,
+-	0x02b, 0x0000050b,
+-	0x02b, 0x00066666,
+-	0x02c, 0x0000001a,
+-	0x02a, 0x000e0000,
+-	0x010, 0x0004000f,
+-	0x011, 0x000e31fc,
+-	0x010, 0x0006000f,
+-	0x011, 0x000ff9f8,
+-	0x010, 0x0002000f,
+-	0x011, 0x000203f9,
+-	0x010, 0x0003000f,
+-	0x011, 0x000ff500,
+-	0x010, 0x00000000,
+-	0x011, 0x00000000,
+-	0x010, 0x0008000f,
+-	0x011, 0x0003f100,
+-	0x010, 0x0009000f,
+-	0x011, 0x00023100,
+-	0x012, 0x00032000,
+-	0x012, 0x00071000,
+-	0x012, 0x000b0000,
+-	0x012, 0x000fc000,
+-	0x013, 0x000287b3,
+-	0x013, 0x000244b7,
+-	0x013, 0x000204ab,
+-	0x013, 0x0001c49f,
+-	0x013, 0x00018493,
+-	0x013, 0x0001429b,
+-	0x013, 0x00010299,
+-	0x013, 0x0000c29c,
+-	0x013, 0x000081a0,
+-	0x013, 0x000040ac,
+-	0x013, 0x00000020,
+-	0x014, 0x0001944c,
+-	0x014, 0x00059444,
+-	0x014, 0x0009944c,
+-	0x014, 0x000d9444,
+-	0x015, 0x0000f405,
+-	0x015, 0x0004f405,
+-	0x015, 0x0008f405,
+-	0x015, 0x000cf405,
+-	0x016, 0x000e0330,
+-	0x016, 0x000a0330,
+-	0x016, 0x00060330,
+-	0x016, 0x00020330,
+-	0x000, 0x00010159,
+-	0x018, 0x0000f401,
+-	0x0fe, 0x00000000,
+-	0x0fe, 0x00000000,
+-	0x01f, 0x00080003,
+-	0x0fe, 0x00000000,
+-	0x0fe, 0x00000000,
+-	0x01e, 0x00044457,
+-	0x01f, 0x00080000,
+-	0x000, 0x00030159,
+-};
+-
+-u32 RTL8192CU_RADIOB_1TARRAY[RTL8192CURADIOB_1TARRAYLENGTH] = {
+-	0x0,
+-};
+-
+-u32 RTL8192CUMAC_2T_ARRAY[RTL8192CUMAC_2T_ARRAYLENGTH] = {
+-	0x420, 0x00000080,
+-	0x423, 0x00000000,
+-	0x430, 0x00000000,
+-	0x431, 0x00000000,
+-	0x432, 0x00000000,
+-	0x433, 0x00000001,
+-	0x434, 0x00000004,
+-	0x435, 0x00000005,
+-	0x436, 0x00000006,
+-	0x437, 0x00000007,
+-	0x438, 0x00000000,
+-	0x439, 0x00000000,
+-	0x43a, 0x00000000,
+-	0x43b, 0x00000001,
+-	0x43c, 0x00000004,
+-	0x43d, 0x00000005,
+-	0x43e, 0x00000006,
+-	0x43f, 0x00000007,
+-	0x440, 0x0000005d,
+-	0x441, 0x00000001,
+-	0x442, 0x00000000,
+-	0x444, 0x00000015,
+-	0x445, 0x000000f0,
+-	0x446, 0x0000000f,
+-	0x447, 0x00000000,
+-	0x458, 0x00000041,
+-	0x459, 0x000000a8,
+-	0x45a, 0x00000072,
+-	0x45b, 0x000000b9,
+-	0x460, 0x00000066,
+-	0x461, 0x00000066,
+-	0x462, 0x00000008,
+-	0x463, 0x00000003,
+-	0x4c8, 0x000000ff,
+-	0x4c9, 0x00000008,
+-	0x4cc, 0x000000ff,
+-	0x4cd, 0x000000ff,
+-	0x4ce, 0x00000001,
+-	0x500, 0x00000026,
+-	0x501, 0x000000a2,
+-	0x502, 0x0000002f,
+-	0x503, 0x00000000,
+-	0x504, 0x00000028,
+-	0x505, 0x000000a3,
+-	0x506, 0x0000005e,
+-	0x507, 0x00000000,
+-	0x508, 0x0000002b,
+-	0x509, 0x000000a4,
+-	0x50a, 0x0000005e,
+-	0x50b, 0x00000000,
+-	0x50c, 0x0000004f,
+-	0x50d, 0x000000a4,
+-	0x50e, 0x00000000,
+-	0x50f, 0x00000000,
+-	0x512, 0x0000001c,
+-	0x514, 0x0000000a,
+-	0x515, 0x00000010,
+-	0x516, 0x0000000a,
+-	0x517, 0x00000010,
+-	0x51a, 0x00000016,
+-	0x524, 0x0000000f,
+-	0x525, 0x0000004f,
+-	0x546, 0x00000040,
+-	0x547, 0x00000000,
+-	0x550, 0x00000010,
+-	0x551, 0x00000010,
+-	0x559, 0x00000002,
+-	0x55a, 0x00000002,
+-	0x55d, 0x000000ff,
+-	0x605, 0x00000030,
+-	0x608, 0x0000000e,
+-	0x609, 0x0000002a,
+-	0x652, 0x00000020,
+-	0x63c, 0x00000008,
+-	0x63d, 0x00000008,
+-	0x63e, 0x0000000c,
+-	0x63f, 0x0000000c,
+-	0x66e, 0x00000005,
+-	0x700, 0x00000021,
+-	0x701, 0x00000043,
+-	0x702, 0x00000065,
+-	0x703, 0x00000087,
+-	0x708, 0x00000021,
+-	0x709, 0x00000043,
+-	0x70a, 0x00000065,
+-	0x70b, 0x00000087,
+-};
+-
+-u32 RTL8192CUAGCTAB_2TARRAY[RTL8192CUAGCTAB_2TARRAYLENGTH] = {
+-	0xc78, 0x7b000001,
+-	0xc78, 0x7b010001,
+-	0xc78, 0x7b020001,
+-	0xc78, 0x7b030001,
+-	0xc78, 0x7b040001,
+-	0xc78, 0x7b050001,
+-	0xc78, 0x7a060001,
+-	0xc78, 0x79070001,
+-	0xc78, 0x78080001,
+-	0xc78, 0x77090001,
+-	0xc78, 0x760a0001,
+-	0xc78, 0x750b0001,
+-	0xc78, 0x740c0001,
+-	0xc78, 0x730d0001,
+-	0xc78, 0x720e0001,
+-	0xc78, 0x710f0001,
+-	0xc78, 0x70100001,
+-	0xc78, 0x6f110001,
+-	0xc78, 0x6e120001,
+-	0xc78, 0x6d130001,
+-	0xc78, 0x6c140001,
+-	0xc78, 0x6b150001,
+-	0xc78, 0x6a160001,
+-	0xc78, 0x69170001,
+-	0xc78, 0x68180001,
+-	0xc78, 0x67190001,
+-	0xc78, 0x661a0001,
+-	0xc78, 0x651b0001,
+-	0xc78, 0x641c0001,
+-	0xc78, 0x631d0001,
+-	0xc78, 0x621e0001,
+-	0xc78, 0x611f0001,
+-	0xc78, 0x60200001,
+-	0xc78, 0x49210001,
+-	0xc78, 0x48220001,
+-	0xc78, 0x47230001,
+-	0xc78, 0x46240001,
+-	0xc78, 0x45250001,
+-	0xc78, 0x44260001,
+-	0xc78, 0x43270001,
+-	0xc78, 0x42280001,
+-	0xc78, 0x41290001,
+-	0xc78, 0x402a0001,
+-	0xc78, 0x262b0001,
+-	0xc78, 0x252c0001,
+-	0xc78, 0x242d0001,
+-	0xc78, 0x232e0001,
+-	0xc78, 0x222f0001,
+-	0xc78, 0x21300001,
+-	0xc78, 0x20310001,
+-	0xc78, 0x06320001,
+-	0xc78, 0x05330001,
+-	0xc78, 0x04340001,
+-	0xc78, 0x03350001,
+-	0xc78, 0x02360001,
+-	0xc78, 0x01370001,
+-	0xc78, 0x00380001,
+-	0xc78, 0x00390001,
+-	0xc78, 0x003a0001,
+-	0xc78, 0x003b0001,
+-	0xc78, 0x003c0001,
+-	0xc78, 0x003d0001,
+-	0xc78, 0x003e0001,
+-	0xc78, 0x003f0001,
+-	0xc78, 0x7b400001,
+-	0xc78, 0x7b410001,
+-	0xc78, 0x7b420001,
+-	0xc78, 0x7b430001,
+-	0xc78, 0x7b440001,
+-	0xc78, 0x7b450001,
+-	0xc78, 0x7a460001,
+-	0xc78, 0x79470001,
+-	0xc78, 0x78480001,
+-	0xc78, 0x77490001,
+-	0xc78, 0x764a0001,
+-	0xc78, 0x754b0001,
+-	0xc78, 0x744c0001,
+-	0xc78, 0x734d0001,
+-	0xc78, 0x724e0001,
+-	0xc78, 0x714f0001,
+-	0xc78, 0x70500001,
+-	0xc78, 0x6f510001,
+-	0xc78, 0x6e520001,
+-	0xc78, 0x6d530001,
+-	0xc78, 0x6c540001,
+-	0xc78, 0x6b550001,
+-	0xc78, 0x6a560001,
+-	0xc78, 0x69570001,
+-	0xc78, 0x68580001,
+-	0xc78, 0x67590001,
+-	0xc78, 0x665a0001,
+-	0xc78, 0x655b0001,
+-	0xc78, 0x645c0001,
+-	0xc78, 0x635d0001,
+-	0xc78, 0x625e0001,
+-	0xc78, 0x615f0001,
+-	0xc78, 0x60600001,
+-	0xc78, 0x49610001,
+-	0xc78, 0x48620001,
+-	0xc78, 0x47630001,
+-	0xc78, 0x46640001,
+-	0xc78, 0x45650001,
+-	0xc78, 0x44660001,
+-	0xc78, 0x43670001,
+-	0xc78, 0x42680001,
+-	0xc78, 0x41690001,
+-	0xc78, 0x406a0001,
+-	0xc78, 0x266b0001,
+-	0xc78, 0x256c0001,
+-	0xc78, 0x246d0001,
+-	0xc78, 0x236e0001,
+-	0xc78, 0x226f0001,
+-	0xc78, 0x21700001,
+-	0xc78, 0x20710001,
+-	0xc78, 0x06720001,
+-	0xc78, 0x05730001,
+-	0xc78, 0x04740001,
+-	0xc78, 0x03750001,
+-	0xc78, 0x02760001,
+-	0xc78, 0x01770001,
+-	0xc78, 0x00780001,
+-	0xc78, 0x00790001,
+-	0xc78, 0x007a0001,
+-	0xc78, 0x007b0001,
+-	0xc78, 0x007c0001,
+-	0xc78, 0x007d0001,
+-	0xc78, 0x007e0001,
+-	0xc78, 0x007f0001,
+-	0xc78, 0x3800001e,
+-	0xc78, 0x3801001e,
+-	0xc78, 0x3802001e,
+-	0xc78, 0x3803001e,
+-	0xc78, 0x3804001e,
+-	0xc78, 0x3805001e,
+-	0xc78, 0x3806001e,
+-	0xc78, 0x3807001e,
+-	0xc78, 0x3808001e,
+-	0xc78, 0x3c09001e,
+-	0xc78, 0x3e0a001e,
+-	0xc78, 0x400b001e,
+-	0xc78, 0x440c001e,
+-	0xc78, 0x480d001e,
+-	0xc78, 0x4c0e001e,
+-	0xc78, 0x500f001e,
+-	0xc78, 0x5210001e,
+-	0xc78, 0x5611001e,
+-	0xc78, 0x5a12001e,
+-	0xc78, 0x5e13001e,
+-	0xc78, 0x6014001e,
+-	0xc78, 0x6015001e,
+-	0xc78, 0x6016001e,
+-	0xc78, 0x6217001e,
+-	0xc78, 0x6218001e,
+-	0xc78, 0x6219001e,
+-	0xc78, 0x621a001e,
+-	0xc78, 0x621b001e,
+-	0xc78, 0x621c001e,
+-	0xc78, 0x621d001e,
+-	0xc78, 0x621e001e,
+-	0xc78, 0x621f001e,
+-};
+-
+-u32 RTL8192CUAGCTAB_1TARRAY[RTL8192CUAGCTAB_1TARRAYLENGTH] = {
+-	0xc78, 0x7b000001,
+-	0xc78, 0x7b010001,
+-	0xc78, 0x7b020001,
+-	0xc78, 0x7b030001,
+-	0xc78, 0x7b040001,
+-	0xc78, 0x7b050001,
+-	0xc78, 0x7a060001,
+-	0xc78, 0x79070001,
+-	0xc78, 0x78080001,
+-	0xc78, 0x77090001,
+-	0xc78, 0x760a0001,
+-	0xc78, 0x750b0001,
+-	0xc78, 0x740c0001,
+-	0xc78, 0x730d0001,
+-	0xc78, 0x720e0001,
+-	0xc78, 0x710f0001,
+-	0xc78, 0x70100001,
+-	0xc78, 0x6f110001,
+-	0xc78, 0x6e120001,
+-	0xc78, 0x6d130001,
+-	0xc78, 0x6c140001,
+-	0xc78, 0x6b150001,
+-	0xc78, 0x6a160001,
+-	0xc78, 0x69170001,
+-	0xc78, 0x68180001,
+-	0xc78, 0x67190001,
+-	0xc78, 0x661a0001,
+-	0xc78, 0x651b0001,
+-	0xc78, 0x641c0001,
+-	0xc78, 0x631d0001,
+-	0xc78, 0x621e0001,
+-	0xc78, 0x611f0001,
+-	0xc78, 0x60200001,
+-	0xc78, 0x49210001,
+-	0xc78, 0x48220001,
+-	0xc78, 0x47230001,
+-	0xc78, 0x46240001,
+-	0xc78, 0x45250001,
+-	0xc78, 0x44260001,
+-	0xc78, 0x43270001,
+-	0xc78, 0x42280001,
+-	0xc78, 0x41290001,
+-	0xc78, 0x402a0001,
+-	0xc78, 0x262b0001,
+-	0xc78, 0x252c0001,
+-	0xc78, 0x242d0001,
+-	0xc78, 0x232e0001,
+-	0xc78, 0x222f0001,
+-	0xc78, 0x21300001,
+-	0xc78, 0x20310001,
+-	0xc78, 0x06320001,
+-	0xc78, 0x05330001,
+-	0xc78, 0x04340001,
+-	0xc78, 0x03350001,
+-	0xc78, 0x02360001,
+-	0xc78, 0x01370001,
+-	0xc78, 0x00380001,
+-	0xc78, 0x00390001,
+-	0xc78, 0x003a0001,
+-	0xc78, 0x003b0001,
+-	0xc78, 0x003c0001,
+-	0xc78, 0x003d0001,
+-	0xc78, 0x003e0001,
+-	0xc78, 0x003f0001,
+-	0xc78, 0x7b400001,
+-	0xc78, 0x7b410001,
+-	0xc78, 0x7b420001,
+-	0xc78, 0x7b430001,
+-	0xc78, 0x7b440001,
+-	0xc78, 0x7b450001,
+-	0xc78, 0x7a460001,
+-	0xc78, 0x79470001,
+-	0xc78, 0x78480001,
+-	0xc78, 0x77490001,
+-	0xc78, 0x764a0001,
+-	0xc78, 0x754b0001,
+-	0xc78, 0x744c0001,
+-	0xc78, 0x734d0001,
+-	0xc78, 0x724e0001,
+-	0xc78, 0x714f0001,
+-	0xc78, 0x70500001,
+-	0xc78, 0x6f510001,
+-	0xc78, 0x6e520001,
+-	0xc78, 0x6d530001,
+-	0xc78, 0x6c540001,
+-	0xc78, 0x6b550001,
+-	0xc78, 0x6a560001,
+-	0xc78, 0x69570001,
+-	0xc78, 0x68580001,
+-	0xc78, 0x67590001,
+-	0xc78, 0x665a0001,
+-	0xc78, 0x655b0001,
+-	0xc78, 0x645c0001,
+-	0xc78, 0x635d0001,
+-	0xc78, 0x625e0001,
+-	0xc78, 0x615f0001,
+-	0xc78, 0x60600001,
+-	0xc78, 0x49610001,
+-	0xc78, 0x48620001,
+-	0xc78, 0x47630001,
+-	0xc78, 0x46640001,
+-	0xc78, 0x45650001,
+-	0xc78, 0x44660001,
+-	0xc78, 0x43670001,
+-	0xc78, 0x42680001,
+-	0xc78, 0x41690001,
+-	0xc78, 0x406a0001,
+-	0xc78, 0x266b0001,
+-	0xc78, 0x256c0001,
+-	0xc78, 0x246d0001,
+-	0xc78, 0x236e0001,
+-	0xc78, 0x226f0001,
+-	0xc78, 0x21700001,
+-	0xc78, 0x20710001,
+-	0xc78, 0x06720001,
+-	0xc78, 0x05730001,
+-	0xc78, 0x04740001,
+-	0xc78, 0x03750001,
+-	0xc78, 0x02760001,
+-	0xc78, 0x01770001,
+-	0xc78, 0x00780001,
+-	0xc78, 0x00790001,
+-	0xc78, 0x007a0001,
+-	0xc78, 0x007b0001,
+-	0xc78, 0x007c0001,
+-	0xc78, 0x007d0001,
+-	0xc78, 0x007e0001,
+-	0xc78, 0x007f0001,
+-	0xc78, 0x3800001e,
+-	0xc78, 0x3801001e,
+-	0xc78, 0x3802001e,
+-	0xc78, 0x3803001e,
+-	0xc78, 0x3804001e,
+-	0xc78, 0x3805001e,
+-	0xc78, 0x3806001e,
+-	0xc78, 0x3807001e,
+-	0xc78, 0x3808001e,
+-	0xc78, 0x3c09001e,
+-	0xc78, 0x3e0a001e,
+-	0xc78, 0x400b001e,
+-	0xc78, 0x440c001e,
+-	0xc78, 0x480d001e,
+-	0xc78, 0x4c0e001e,
+-	0xc78, 0x500f001e,
+-	0xc78, 0x5210001e,
+-	0xc78, 0x5611001e,
+-	0xc78, 0x5a12001e,
+-	0xc78, 0x5e13001e,
+-	0xc78, 0x6014001e,
+-	0xc78, 0x6015001e,
+-	0xc78, 0x6016001e,
+-	0xc78, 0x6217001e,
+-	0xc78, 0x6218001e,
+-	0xc78, 0x6219001e,
+-	0xc78, 0x621a001e,
+-	0xc78, 0x621b001e,
+-	0xc78, 0x621c001e,
+-	0xc78, 0x621d001e,
+-	0xc78, 0x621e001e,
+-	0xc78, 0x621f001e,
+-};
+-
+-u32 RTL8192CUPHY_REG_1T_HPARRAY[RTL8192CUPHY_REG_1T_HPARRAYLENGTH] = {
+-	0x024, 0x0011800f,
+-	0x028, 0x00ffdb83,
+-	0x040, 0x000c0004,
+-	0x800, 0x80040000,
+-	0x804, 0x00000001,
+-	0x808, 0x0000fc00,
+-	0x80c, 0x0000000a,
+-	0x810, 0x10005388,
+-	0x814, 0x020c3d10,
+-	0x818, 0x02200385,
+-	0x81c, 0x00000000,
+-	0x820, 0x01000100,
+-	0x824, 0x00390204,
+-	0x828, 0x00000000,
+-	0x82c, 0x00000000,
+-	0x830, 0x00000000,
+-	0x834, 0x00000000,
+-	0x838, 0x00000000,
+-	0x83c, 0x00000000,
+-	0x840, 0x00010000,
+-	0x844, 0x00000000,
+-	0x848, 0x00000000,
+-	0x84c, 0x00000000,
+-	0x850, 0x00000000,
+-	0x854, 0x00000000,
+-	0x858, 0x569a569a,
+-	0x85c, 0x001b25a4,
+-	0x860, 0x66e60230,
+-	0x864, 0x061f0130,
+-	0x868, 0x00000000,
+-	0x86c, 0x20202000,
+-	0x870, 0x03000300,
+-	0x874, 0x22004000,
+-	0x878, 0x00000808,
+-	0x87c, 0x00ffc3f1,
+-	0x880, 0xc0083070,
+-	0x884, 0x000004d5,
+-	0x888, 0x00000000,
+-	0x88c, 0xccc000c0,
+-	0x890, 0x00000800,
+-	0x894, 0xfffffffe,
+-	0x898, 0x40302010,
+-	0x89c, 0x00706050,
+-	0x900, 0x00000000,
+-	0x904, 0x00000023,
+-	0x908, 0x00000000,
+-	0x90c, 0x81121111,
+-	0xa00, 0x00d047c8,
+-	0xa04, 0x80ff000c,
+-	0xa08, 0x8c838300,
+-	0xa0c, 0x2e68120f,
+-	0xa10, 0x9500bb78,
+-	0xa14, 0x11144028,
+-	0xa18, 0x00881117,
+-	0xa1c, 0x89140f00,
+-	0xa20, 0x15160000,
+-	0xa24, 0x070b0f12,
+-	0xa28, 0x00000104,
+-	0xa2c, 0x00d30000,
+-	0xa70, 0x101fbf00,
+-	0xa74, 0x00000007,
+-	0xc00, 0x48071d40,
+-	0xc04, 0x03a05611,
+-	0xc08, 0x000000e4,
+-	0xc0c, 0x6c6c6c6c,
+-	0xc10, 0x08800000,
+-	0xc14, 0x40000100,
+-	0xc18, 0x08800000,
+-	0xc1c, 0x40000100,
+-	0xc20, 0x00000000,
+-	0xc24, 0x00000000,
+-	0xc28, 0x00000000,
+-	0xc2c, 0x00000000,
+-	0xc30, 0x69e9ac44,
+-	0xc34, 0x469652cf,
+-	0xc38, 0x49795994,
+-	0xc3c, 0x0a97971c,
+-	0xc40, 0x1f7c403f,
+-	0xc44, 0x000100b7,
+-	0xc48, 0xec020107,
+-	0xc4c, 0x007f037f,
+-	0xc50, 0x6954342e,
+-	0xc54, 0x43bc0094,
+-	0xc58, 0x6954342f,
+-	0xc5c, 0x433c0094,
+-	0xc60, 0x00000000,
+-	0xc64, 0x5116848b,
+-	0xc68, 0x47c00bff,
+-	0xc6c, 0x00000036,
+-	0xc70, 0x2c46000d,
+-	0xc74, 0x018610db,
+-	0xc78, 0x0000001f,
+-	0xc7c, 0x00b91612,
+-	0xc80, 0x24000090,
+-	0xc84, 0x20f60000,
+-	0xc88, 0x24000090,
+-	0xc8c, 0x20200000,
+-	0xc90, 0x00121820,
+-	0xc94, 0x00000000,
+-	0xc98, 0x00121820,
+-	0xc9c, 0x00007f7f,
+-	0xca0, 0x00000000,
+-	0xca4, 0x00000080,
+-	0xca8, 0x00000000,
+-	0xcac, 0x00000000,
+-	0xcb0, 0x00000000,
+-	0xcb4, 0x00000000,
+-	0xcb8, 0x00000000,
+-	0xcbc, 0x28000000,
+-	0xcc0, 0x00000000,
+-	0xcc4, 0x00000000,
+-	0xcc8, 0x00000000,
+-	0xccc, 0x00000000,
+-	0xcd0, 0x00000000,
+-	0xcd4, 0x00000000,
+-	0xcd8, 0x64b22427,
+-	0xcdc, 0x00766932,
+-	0xce0, 0x00222222,
+-	0xce4, 0x00000000,
+-	0xce8, 0x37644302,
+-	0xcec, 0x2f97d40c,
+-	0xd00, 0x00080740,
+-	0xd04, 0x00020401,
+-	0xd08, 0x0000907f,
+-	0xd0c, 0x20010201,
+-	0xd10, 0xa0633333,
+-	0xd14, 0x3333bc43,
+-	0xd18, 0x7a8f5b6b,
+-	0xd2c, 0xcc979975,
+-	0xd30, 0x00000000,
+-	0xd34, 0x80608000,
+-	0xd38, 0x00000000,
+-	0xd3c, 0x00027293,
+-	0xd40, 0x00000000,
+-	0xd44, 0x00000000,
+-	0xd48, 0x00000000,
+-	0xd4c, 0x00000000,
+-	0xd50, 0x6437140a,
+-	0xd54, 0x00000000,
+-	0xd58, 0x00000000,
+-	0xd5c, 0x30032064,
+-	0xd60, 0x4653de68,
+-	0xd64, 0x04518a3c,
+-	0xd68, 0x00002101,
+-	0xd6c, 0x2a201c16,
+-	0xd70, 0x1812362e,
+-	0xd74, 0x322c2220,
+-	0xd78, 0x000e3c24,
+-	0xe00, 0x24242424,
+-	0xe04, 0x24242424,
+-	0xe08, 0x03902024,
+-	0xe10, 0x24242424,
+-	0xe14, 0x24242424,
+-	0xe18, 0x24242424,
+-	0xe1c, 0x24242424,
+-	0xe28, 0x00000000,
+-	0xe30, 0x1000dc1f,
+-	0xe34, 0x10008c1f,
+-	0xe38, 0x02140102,
+-	0xe3c, 0x681604c2,
+-	0xe40, 0x01007c00,
+-	0xe44, 0x01004800,
+-	0xe48, 0xfb000000,
+-	0xe4c, 0x000028d1,
+-	0xe50, 0x1000dc1f,
+-	0xe54, 0x10008c1f,
+-	0xe58, 0x02140102,
+-	0xe5c, 0x28160d05,
+-	0xe60, 0x00000008,
+-	0xe68, 0x001b25a4,
+-	0xe6c, 0x631b25a0,
+-	0xe70, 0x631b25a0,
+-	0xe74, 0x081b25a0,
+-	0xe78, 0x081b25a0,
+-	0xe7c, 0x081b25a0,
+-	0xe80, 0x081b25a0,
+-	0xe84, 0x631b25a0,
+-	0xe88, 0x081b25a0,
+-	0xe8c, 0x631b25a0,
+-	0xed0, 0x631b25a0,
+-	0xed4, 0x631b25a0,
+-	0xed8, 0x631b25a0,
+-	0xedc, 0x001b25a0,
+-	0xee0, 0x001b25a0,
+-	0xeec, 0x6b1b25a0,
+-	0xee8, 0x31555448,
+-	0xf14, 0x00000003,
+-	0xf4c, 0x00000000,
+-	0xf00, 0x00000300,
+-};
+-
+-u32 RTL8192CUPHY_REG_ARRAY_PG_HP[RTL8192CUPHY_REG_ARRAY_PG_HPLENGTH] = {
+-	0xe00, 0xffffffff, 0x06080808,
+-	0xe04, 0xffffffff, 0x00040406,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x04060608,
+-	0xe14, 0xffffffff, 0x00020204,
+-	0xe18, 0xffffffff, 0x04060608,
+-	0xe1c, 0xffffffff, 0x00020204,
+-	0x830, 0xffffffff, 0x06080808,
+-	0x834, 0xffffffff, 0x00040406,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x04060608,
+-	0x848, 0xffffffff, 0x00020204,
+-	0x84c, 0xffffffff, 0x04060608,
+-	0x868, 0xffffffff, 0x00020204,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-	0xe00, 0xffffffff, 0x00000000,
+-	0xe04, 0xffffffff, 0x00000000,
+-	0xe08, 0x0000ff00, 0x00000000,
+-	0x86c, 0xffffff00, 0x00000000,
+-	0xe10, 0xffffffff, 0x00000000,
+-	0xe14, 0xffffffff, 0x00000000,
+-	0xe18, 0xffffffff, 0x00000000,
+-	0xe1c, 0xffffffff, 0x00000000,
+-	0x830, 0xffffffff, 0x00000000,
+-	0x834, 0xffffffff, 0x00000000,
+-	0x838, 0xffffff00, 0x00000000,
+-	0x86c, 0x000000ff, 0x00000000,
+-	0x83c, 0xffffffff, 0x00000000,
+-	0x848, 0xffffffff, 0x00000000,
+-	0x84c, 0xffffffff, 0x00000000,
+-	0x868, 0xffffffff, 0x00000000,
+-};
+-
+-u32 RTL8192CURADIOA_1T_HPARRAY[RTL8192CURADIOA_1T_HPARRAYLENGTH] = {
+-	0x000, 0x00030159,
+-	0x001, 0x00031284,
+-	0x002, 0x00098000,
+-	0x003, 0x00018c63,
+-	0x004, 0x000210e7,
+-	0x009, 0x0002044f,
+-	0x00a, 0x0001adb0,
+-	0x00b, 0x00054867,
+-	0x00c, 0x0008992e,
+-	0x00d, 0x0000e529,
+-	0x00e, 0x00039ce7,
+-	0x00f, 0x00000451,
+-	0x019, 0x00000000,
+-	0x01a, 0x00000255,
+-	0x01b, 0x00060a00,
+-	0x01c, 0x000fc378,
+-	0x01d, 0x000a1250,
+-	0x01e, 0x0004445f,
+-	0x01f, 0x00080001,
+-	0x020, 0x0000b614,
+-	0x021, 0x0006c000,
+-	0x022, 0x0000083c,
+-	0x023, 0x00001558,
+-	0x024, 0x00000060,
+-	0x025, 0x00000483,
+-	0x026, 0x0004f000,
+-	0x027, 0x000ec7d9,
+-	0x028, 0x000977c0,
+-	0x029, 0x00004783,
+-	0x02a, 0x00000001,
+-	0x02b, 0x00021334,
+-	0x02a, 0x00000000,
+-	0x02b, 0x00000054,
+-	0x02a, 0x00000001,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00053333,
+-	0x02c, 0x0000000c,
+-	0x02a, 0x00000002,
+-	0x02b, 0x00000808,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000003,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000004,
+-	0x02b, 0x00000808,
+-	0x02b, 0x0006b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000005,
+-	0x02b, 0x00000808,
+-	0x02b, 0x00073333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000006,
+-	0x02b, 0x00000709,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000007,
+-	0x02b, 0x00000709,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000008,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0004b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x00000009,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00053333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000a,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0005b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000b,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00063333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000c,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x0006b333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000d,
+-	0x02b, 0x0000060a,
+-	0x02b, 0x00073333,
+-	0x02c, 0x0000000d,
+-	0x02a, 0x0000000e,
+-	0x02b, 0x0000050b,
+-	0x02b, 0x00066666,
+-	0x02c, 0x0000001a,
+-	0x02a, 0x000e0000,
+-	0x010, 0x0004000f,
+-	0x011, 0x000e31fc,
+-	0x010, 0x0006000f,
+-	0x011, 0x000ff9f8,
+-	0x010, 0x0002000f,
+-	0x011, 0x000203f9,
+-	0x010, 0x0003000f,
+-	0x011, 0x000ff500,
+-	0x010, 0x00000000,
+-	0x011, 0x00000000,
+-	0x010, 0x0008000f,
+-	0x011, 0x0003f100,
+-	0x010, 0x0009000f,
+-	0x011, 0x00023100,
+-	0x012, 0x000d8000,
+-	0x012, 0x00090000,
+-	0x012, 0x00051000,
+-	0x012, 0x00012000,
+-	0x013, 0x00028fb4,
+-	0x013, 0x00024fa8,
+-	0x013, 0x000207a4,
+-	0x013, 0x0001c798,
+-	0x013, 0x000183a4,
+-	0x013, 0x00014398,
+-	0x013, 0x000101a4,
+-	0x013, 0x0000c198,
+-	0x013, 0x000080a4,
+-	0x013, 0x00004098,
+-	0x013, 0x00000000,
+-	0x014, 0x0001944c,
+-	0x014, 0x00059444,
+-	0x014, 0x0009944c,
+-	0x014, 0x000d9444,
+-	0x015, 0x0000f405,
+-	0x015, 0x0004f405,
+-	0x015, 0x0008f405,
+-	0x015, 0x000cf405,
+-	0x016, 0x000e0330,
+-	0x016, 0x000a0330,
+-	0x016, 0x00060330,
+-	0x016, 0x00020330,
+-	0x000, 0x00010159,
+-	0x018, 0x0000f401,
+-	0x0fe, 0x00000000,
+-	0x0fe, 0x00000000,
+-	0x01f, 0x00080003,
+-	0x0fe, 0x00000000,
+-	0x0fe, 0x00000000,
+-	0x01e, 0x00044457,
+-	0x01f, 0x00080000,
+-	0x000, 0x00030159,
+-};
+-
+-u32 RTL8192CUAGCTAB_1T_HPARRAY[RTL8192CUAGCTAB_1T_HPARRAYLENGTH] = {
+-	0xc78, 0x7b000001,
+-	0xc78, 0x7b010001,
+-	0xc78, 0x7b020001,
+-	0xc78, 0x7b030001,
+-	0xc78, 0x7b040001,
+-	0xc78, 0x7b050001,
+-	0xc78, 0x7b060001,
+-	0xc78, 0x7b070001,
+-	0xc78, 0x7b080001,
+-	0xc78, 0x7a090001,
+-	0xc78, 0x790a0001,
+-	0xc78, 0x780b0001,
+-	0xc78, 0x770c0001,
+-	0xc78, 0x760d0001,
+-	0xc78, 0x750e0001,
+-	0xc78, 0x740f0001,
+-	0xc78, 0x73100001,
+-	0xc78, 0x72110001,
+-	0xc78, 0x71120001,
+-	0xc78, 0x70130001,
+-	0xc78, 0x6f140001,
+-	0xc78, 0x6e150001,
+-	0xc78, 0x6d160001,
+-	0xc78, 0x6c170001,
+-	0xc78, 0x6b180001,
+-	0xc78, 0x6a190001,
+-	0xc78, 0x691a0001,
+-	0xc78, 0x681b0001,
+-	0xc78, 0x671c0001,
+-	0xc78, 0x661d0001,
+-	0xc78, 0x651e0001,
+-	0xc78, 0x641f0001,
+-	0xc78, 0x63200001,
+-	0xc78, 0x62210001,
+-	0xc78, 0x61220001,
+-	0xc78, 0x60230001,
+-	0xc78, 0x46240001,
+-	0xc78, 0x45250001,
+-	0xc78, 0x44260001,
+-	0xc78, 0x43270001,
+-	0xc78, 0x42280001,
+-	0xc78, 0x41290001,
+-	0xc78, 0x402a0001,
+-	0xc78, 0x262b0001,
+-	0xc78, 0x252c0001,
+-	0xc78, 0x242d0001,
+-	0xc78, 0x232e0001,
+-	0xc78, 0x222f0001,
+-	0xc78, 0x21300001,
+-	0xc78, 0x20310001,
+-	0xc78, 0x06320001,
+-	0xc78, 0x05330001,
+-	0xc78, 0x04340001,
+-	0xc78, 0x03350001,
+-	0xc78, 0x02360001,
+-	0xc78, 0x01370001,
+-	0xc78, 0x00380001,
+-	0xc78, 0x00390001,
+-	0xc78, 0x003a0001,
+-	0xc78, 0x003b0001,
+-	0xc78, 0x003c0001,
+-	0xc78, 0x003d0001,
+-	0xc78, 0x003e0001,
+-	0xc78, 0x003f0001,
+-	0xc78, 0x7b400001,
+-	0xc78, 0x7b410001,
+-	0xc78, 0x7b420001,
+-	0xc78, 0x7b430001,
+-	0xc78, 0x7b440001,
+-	0xc78, 0x7b450001,
+-	0xc78, 0x7b460001,
+-	0xc78, 0x7b470001,
+-	0xc78, 0x7b480001,
+-	0xc78, 0x7a490001,
+-	0xc78, 0x794a0001,
+-	0xc78, 0x784b0001,
+-	0xc78, 0x774c0001,
+-	0xc78, 0x764d0001,
+-	0xc78, 0x754e0001,
+-	0xc78, 0x744f0001,
+-	0xc78, 0x73500001,
+-	0xc78, 0x72510001,
+-	0xc78, 0x71520001,
+-	0xc78, 0x70530001,
+-	0xc78, 0x6f540001,
+-	0xc78, 0x6e550001,
+-	0xc78, 0x6d560001,
+-	0xc78, 0x6c570001,
+-	0xc78, 0x6b580001,
+-	0xc78, 0x6a590001,
+-	0xc78, 0x695a0001,
+-	0xc78, 0x685b0001,
+-	0xc78, 0x675c0001,
+-	0xc78, 0x665d0001,
+-	0xc78, 0x655e0001,
+-	0xc78, 0x645f0001,
+-	0xc78, 0x63600001,
+-	0xc78, 0x62610001,
+-	0xc78, 0x61620001,
+-	0xc78, 0x60630001,
+-	0xc78, 0x46640001,
+-	0xc78, 0x45650001,
+-	0xc78, 0x44660001,
+-	0xc78, 0x43670001,
+-	0xc78, 0x42680001,
+-	0xc78, 0x41690001,
+-	0xc78, 0x406a0001,
+-	0xc78, 0x266b0001,
+-	0xc78, 0x256c0001,
+-	0xc78, 0x246d0001,
+-	0xc78, 0x236e0001,
+-	0xc78, 0x226f0001,
+-	0xc78, 0x21700001,
+-	0xc78, 0x20710001,
+-	0xc78, 0x06720001,
+-	0xc78, 0x05730001,
+-	0xc78, 0x04740001,
+-	0xc78, 0x03750001,
+-	0xc78, 0x02760001,
+-	0xc78, 0x01770001,
+-	0xc78, 0x00780001,
+-	0xc78, 0x00790001,
+-	0xc78, 0x007a0001,
+-	0xc78, 0x007b0001,
+-	0xc78, 0x007c0001,
+-	0xc78, 0x007d0001,
+-	0xc78, 0x007e0001,
+-	0xc78, 0x007f0001,
+-	0xc78, 0x3800001e,
+-	0xc78, 0x3801001e,
+-	0xc78, 0x3802001e,
+-	0xc78, 0x3803001e,
+-	0xc78, 0x3804001e,
+-	0xc78, 0x3805001e,
+-	0xc78, 0x3806001e,
+-	0xc78, 0x3807001e,
+-	0xc78, 0x3808001e,
+-	0xc78, 0x3c09001e,
+-	0xc78, 0x3e0a001e,
+-	0xc78, 0x400b001e,
+-	0xc78, 0x440c001e,
+-	0xc78, 0x480d001e,
+-	0xc78, 0x4c0e001e,
+-	0xc78, 0x500f001e,
+-	0xc78, 0x5210001e,
+-	0xc78, 0x5611001e,
+-	0xc78, 0x5a12001e,
+-	0xc78, 0x5e13001e,
+-	0xc78, 0x6014001e,
+-	0xc78, 0x6015001e,
+-	0xc78, 0x6016001e,
+-	0xc78, 0x6217001e,
+-	0xc78, 0x6218001e,
+-	0xc78, 0x6219001e,
+-	0xc78, 0x621a001e,
+-	0xc78, 0x621b001e,
+-	0xc78, 0x621c001e,
+-	0xc78, 0x621d001e,
+-	0xc78, 0x621e001e,
+-	0xc78, 0x621f001e,
+-};
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.h
+deleted file mode 100644
+index efc89f7db80f..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/table.h
++++ /dev/null
+@@ -1,45 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92CU_TABLE__H_
+-#define __RTL92CU_TABLE__H_
+-
+-#include <linux/types.h>
+-
+-#define RTL8192CUPHY_REG_2TARRAY_LENGTH		374
+-extern u32 RTL8192CUPHY_REG_2TARRAY[RTL8192CUPHY_REG_2TARRAY_LENGTH];
+-#define RTL8192CUPHY_REG_1TARRAY_LENGTH		374
+-extern u32 RTL8192CUPHY_REG_1TARRAY[RTL8192CUPHY_REG_1TARRAY_LENGTH];
+-
+-#define RTL8192CUPHY_REG_ARRAY_PGLENGTH		336
+-extern u32 RTL8192CUPHY_REG_ARRAY_PG[RTL8192CUPHY_REG_ARRAY_PGLENGTH];
+-
+-#define RTL8192CURADIOA_2TARRAYLENGTH	282
+-extern u32 RTL8192CURADIOA_2TARRAY[RTL8192CURADIOA_2TARRAYLENGTH];
+-#define RTL8192CURADIOB_2TARRAYLENGTH	78
+-extern u32 RTL8192CU_RADIOB_2TARRAY[RTL8192CURADIOB_2TARRAYLENGTH];
+-#define RTL8192CURADIOA_1TARRAYLENGTH	282
+-extern u32 RTL8192CU_RADIOA_1TARRAY[RTL8192CURADIOA_1TARRAYLENGTH];
+-#define RTL8192CURADIOB_1TARRAYLENGTH	1
+-extern u32 RTL8192CU_RADIOB_1TARRAY[RTL8192CURADIOB_1TARRAYLENGTH];
+-
+-#define RTL8192CUMAC_2T_ARRAYLENGTH		172
+-extern u32 RTL8192CUMAC_2T_ARRAY[RTL8192CUMAC_2T_ARRAYLENGTH];
+-
+-#define RTL8192CUAGCTAB_2TARRAYLENGTH	320
+-extern u32 RTL8192CUAGCTAB_2TARRAY[RTL8192CUAGCTAB_2TARRAYLENGTH];
+-#define RTL8192CUAGCTAB_1TARRAYLENGTH	320
+-extern u32 RTL8192CUAGCTAB_1TARRAY[RTL8192CUAGCTAB_1TARRAYLENGTH];
+-
+-#define RTL8192CUPHY_REG_1T_HPARRAYLENGTH 378
+-extern u32 RTL8192CUPHY_REG_1T_HPARRAY[RTL8192CUPHY_REG_1T_HPARRAYLENGTH];
+-
+-#define RTL8192CUPHY_REG_ARRAY_PG_HPLENGTH 336
+-extern u32 RTL8192CUPHY_REG_ARRAY_PG_HP[RTL8192CUPHY_REG_ARRAY_PG_HPLENGTH];
+-
+-#define RTL8192CURADIOA_1T_HPARRAYLENGTH 282
+-extern u32 RTL8192CURADIOA_1T_HPARRAY[RTL8192CURADIOA_1T_HPARRAYLENGTH];
+-#define RTL8192CUAGCTAB_1T_HPARRAYLENGTH 320
+-extern u32 RTL8192CUAGCTAB_1T_HPARRAY[RTL8192CUAGCTAB_1T_HPARRAYLENGTH];
+-
+-#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+deleted file mode 100644
+index ae3c4f97637e..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
++++ /dev/null
+@@ -1,662 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#include "../wifi.h"
+-#include "../usb.h"
+-#include "../ps.h"
+-#include "../base.h"
+-#include "reg.h"
+-#include "def.h"
+-#include "phy.h"
+-#include "rf.h"
+-#include "dm.h"
+-#include "mac.h"
+-#include "trx.h"
+-#include "../rtl8192c/fw_common.h"
+-
+-static int configvertoutep(struct ieee80211_hw *hw)
+-{
+-	u8 ep_cfg, txqsele;
+-	u8 ep_nums = 0;
+-
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_usb_priv *usb_priv = rtl_usbpriv(hw);
+-	struct rtl_usb *rtlusb = rtl_usbdev(usb_priv);
+-
+-	rtlusb->out_queue_sel = 0;
+-	ep_cfg = rtl_read_byte(rtlpriv, REG_TEST_SIE_OPTIONAL);
+-	ep_cfg = (ep_cfg & USB_TEST_EP_MASK) >> USB_TEST_EP_SHIFT;
+-	switch (ep_cfg)	{
+-	case 0:		/* 2 bulk OUT, 1 bulk IN */
+-	case 3:
+-		rtlusb->out_queue_sel  = TX_SELE_HQ | TX_SELE_LQ;
+-		ep_nums = 2;
+-		break;
+-	case 1:	/* 1 bulk IN/OUT => map all endpoint to Low queue */
+-	case 2:	/* 1 bulk IN, 1 bulk OUT => map all endpoint to High queue */
+-		txqsele = rtl_read_byte(rtlpriv, REG_TEST_USB_TXQS);
+-		if (txqsele & 0x0F) /* /map all endpoint to High queue */
+-			rtlusb->out_queue_sel =  TX_SELE_HQ;
+-		else if (txqsele&0xF0) /* map all endpoint to Low queue */
+-			rtlusb->out_queue_sel =  TX_SELE_LQ;
+-		ep_nums = 1;
+-		break;
+-	default:
+-		break;
+-	}
+-	return (rtlusb->out_ep_nums == ep_nums) ? 0 : -EINVAL;
+-}
+-
+-static int configvernoutep(struct ieee80211_hw *hw)
+-{
+-	u8 ep_cfg;
+-	u8 ep_nums = 0;
+-
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_usb_priv *usb_priv = rtl_usbpriv(hw);
+-	struct rtl_usb *rtlusb = rtl_usbdev(usb_priv);
+-
+-	rtlusb->out_queue_sel = 0;
+-	/* Normal and High queue */
+-	ep_cfg =  rtl_read_byte(rtlpriv, (REG_NORMAL_SIE_EP + 1));
+-	if (ep_cfg & USB_NORMAL_SIE_EP_MASK) {
+-		rtlusb->out_queue_sel |= TX_SELE_HQ;
+-		ep_nums++;
+-	}
+-	if ((ep_cfg >> USB_NORMAL_SIE_EP_SHIFT) & USB_NORMAL_SIE_EP_MASK) {
+-		rtlusb->out_queue_sel |= TX_SELE_NQ;
+-		ep_nums++;
+-	}
+-	/* Low queue */
+-	ep_cfg =  rtl_read_byte(rtlpriv, (REG_NORMAL_SIE_EP + 2));
+-	if (ep_cfg & USB_NORMAL_SIE_EP_MASK) {
+-		rtlusb->out_queue_sel |= TX_SELE_LQ;
+-		ep_nums++;
+-	}
+-	return (rtlusb->out_ep_nums == ep_nums) ? 0 : -EINVAL;
+-}
+-
+-static void twooutepmapping(struct ieee80211_hw *hw, bool is_chip8,
+-			     bool  bwificfg, struct rtl_ep_map *ep_map)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	if (bwificfg) { /* for WMM */
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"USB Chip-B & WMM Setting.....\n");
+-		ep_map->ep_mapping[RTL_TXQ_BE]	= 2;
+-		ep_map->ep_mapping[RTL_TXQ_BK]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_VI]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_VO] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
+-	} else { /* typical setting */
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"USB typical Setting.....\n");
+-		ep_map->ep_mapping[RTL_TXQ_BE]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_BK]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_VI]	= 2;
+-		ep_map->ep_mapping[RTL_TXQ_VO]	= 2;
+-		ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
+-	}
+-}
+-
+-static void threeoutepmapping(struct ieee80211_hw *hw, bool  bwificfg,
+-			       struct rtl_ep_map *ep_map)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	if (bwificfg) { /* for WMM */
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"USB 3EP Setting for WMM.....\n");
+-		ep_map->ep_mapping[RTL_TXQ_BE]	= 5;
+-		ep_map->ep_mapping[RTL_TXQ_BK]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_VI]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_VO]	= 2;
+-		ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
+-	} else { /* typical setting */
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"USB 3EP Setting for typical.....\n");
+-		ep_map->ep_mapping[RTL_TXQ_BE]	= 5;
+-		ep_map->ep_mapping[RTL_TXQ_BK]	= 5;
+-		ep_map->ep_mapping[RTL_TXQ_VI]	= 3;
+-		ep_map->ep_mapping[RTL_TXQ_VO]	= 2;
+-		ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+-		ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
+-	}
+-}
+-
+-static void oneoutepmapping(struct ieee80211_hw *hw, struct rtl_ep_map *ep_map)
+-{
+-	ep_map->ep_mapping[RTL_TXQ_BE]	= 2;
+-	ep_map->ep_mapping[RTL_TXQ_BK]	= 2;
+-	ep_map->ep_mapping[RTL_TXQ_VI]	= 2;
+-	ep_map->ep_mapping[RTL_TXQ_VO] = 2;
+-	ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+-	ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+-	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
+-}
+-
+-static int _out_ep_mapping(struct ieee80211_hw *hw)
+-{
+-	int err = 0;
+-	bool ischipn, bwificfg = false;
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	struct rtl_usb_priv *usb_priv = rtl_usbpriv(hw);
+-	struct rtl_usb *rtlusb = rtl_usbdev(usb_priv);
+-	struct rtl_ep_map *ep_map = &(rtlusb->ep_map);
+-
+-	ischipn = IS_NORMAL_CHIP(rtlhal->version);
+-	switch (rtlusb->out_ep_nums) {
+-	case 2:
+-		twooutepmapping(hw, ischipn, bwificfg, ep_map);
+-		break;
+-	case 3:
+-		/* Test chip doesn't support three out EPs. */
+-		if (!ischipn) {
+-			err  =  -EINVAL;
+-			goto err_out;
+-		}
+-		threeoutepmapping(hw, ischipn, ep_map);
+-		break;
+-	case 1:
+-		oneoutepmapping(hw, ep_map);
+-		break;
+-	default:
+-		err  =  -EINVAL;
+-		break;
+-	}
+-err_out:
+-	return err;
+-
+-}
+-
+-/* endpoint mapping */
+-int  rtl8192cu_endpoint_mapping(struct ieee80211_hw *hw)
+-{
+-	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+-	int error = 0;
+-
+-	if (likely(IS_NORMAL_CHIP(rtlhal->version)))
+-		error = configvernoutep(hw);
+-	else
+-		error = configvertoutep(hw);
+-	if (error)
+-		goto err_out;
+-	error = _out_ep_mapping(hw);
+-	if (error)
+-		goto err_out;
+-err_out:
+-	return error;
+-}
+-
+-u16 rtl8192cu_mq_to_hwq(__le16 fc, u16 mac80211_queue_index)
+-{
+-	u16 hw_queue_index;
+-
+-	if (unlikely(ieee80211_is_beacon(fc))) {
+-		hw_queue_index = RTL_TXQ_BCN;
+-		goto out;
+-	}
+-	if (ieee80211_is_mgmt(fc)) {
+-		hw_queue_index = RTL_TXQ_MGT;
+-		goto out;
+-	}
+-	switch (mac80211_queue_index) {
+-	case 0:
+-		hw_queue_index = RTL_TXQ_VO;
+-		break;
+-	case 1:
+-		hw_queue_index = RTL_TXQ_VI;
+-		break;
+-	case 2:
+-		hw_queue_index = RTL_TXQ_BE;
+-		break;
+-	case 3:
+-		hw_queue_index = RTL_TXQ_BK;
+-		break;
+-	default:
+-		hw_queue_index = RTL_TXQ_BE;
+-		WARN_ONCE(true, "rtl8192cu: QSLT_BE queue, skb_queue:%d\n",
+-			  mac80211_queue_index);
+-		break;
+-	}
+-out:
+-	return hw_queue_index;
+-}
+-
+-static enum rtl_desc_qsel _rtl8192cu_mq_to_descq(struct ieee80211_hw *hw,
+-					 __le16 fc, u16 mac80211_queue_index)
+-{
+-	enum rtl_desc_qsel qsel;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-
+-	if (unlikely(ieee80211_is_beacon(fc))) {
+-		qsel = QSLT_BEACON;
+-		goto out;
+-	}
+-	if (ieee80211_is_mgmt(fc)) {
+-		qsel = QSLT_MGNT;
+-		goto out;
+-	}
+-	switch (mac80211_queue_index) {
+-	case 0:	/* VO */
+-		qsel = QSLT_VO;
+-		rtl_dbg(rtlpriv, COMP_USB, DBG_DMESG,
+-			"VO queue, set qsel = 0x%x\n", QSLT_VO);
+-		break;
+-	case 1:	/* VI */
+-		qsel = QSLT_VI;
+-		rtl_dbg(rtlpriv, COMP_USB, DBG_DMESG,
+-			"VI queue, set qsel = 0x%x\n", QSLT_VI);
+-		break;
+-	case 3:	/* BK */
+-		qsel = QSLT_BK;
+-		rtl_dbg(rtlpriv, COMP_USB, DBG_DMESG,
+-			"BK queue, set qsel = 0x%x\n", QSLT_BK);
+-		break;
+-	case 2:	/* BE */
+-	default:
+-		qsel = QSLT_BE;
+-		rtl_dbg(rtlpriv, COMP_USB, DBG_DMESG,
+-			"BE queue, set qsel = 0x%x\n", QSLT_BE);
+-		break;
+-	}
+-out:
+-	return qsel;
+-}
+-
+-/* =============================================================== */
+-
+-/*----------------------------------------------------------------------
+- *
+- *	Rx handler
+- *
+- *---------------------------------------------------------------------- */
+-bool rtl92cu_rx_query_desc(struct ieee80211_hw *hw,
+-			   struct rtl_stats *stats,
+-			   struct ieee80211_rx_status *rx_status,
+-			   u8 *pdesc8, struct sk_buff *skb)
+-{
+-	struct rx_fwinfo_92c *p_drvinfo;
+-	struct rx_desc_92c *p_desc = (struct rx_desc_92c *)pdesc8;
+-	__le32 *pdesc = (__le32 *)pdesc8;
+-	u32 phystatus = get_rx_desc_phy_status(pdesc);
+-
+-	stats->length = (u16)get_rx_desc_pkt_len(pdesc);
+-	stats->rx_drvinfo_size = (u8)get_rx_desc_drvinfo_size(pdesc) *
+-				 RX_DRV_INFO_SIZE_UNIT;
+-	stats->rx_bufshift = (u8)(get_rx_desc_shift(pdesc) & 0x03);
+-	stats->icv = (u16)get_rx_desc_icv(pdesc);
+-	stats->crc = (u16)get_rx_desc_crc32(pdesc);
+-	stats->hwerror = (stats->crc | stats->icv);
+-	stats->decrypted = !get_rx_desc_swdec(pdesc);
+-	stats->rate = (u8)get_rx_desc_rx_mcs(pdesc);
+-	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
+-	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
+-	stats->isfirst_ampdu = (bool)((get_rx_desc_paggr(pdesc) == 1) &&
+-				      (get_rx_desc_faggr(pdesc) == 1));
+-	stats->timestamp_low = get_rx_desc_tsfl(pdesc);
+-	stats->rx_is40mhzpacket = (bool)get_rx_desc_bw(pdesc);
+-	stats->is_ht = (bool)get_rx_desc_rx_ht(pdesc);
+-	rx_status->freq = hw->conf.chandef.chan->center_freq;
+-	rx_status->band = hw->conf.chandef.chan->band;
+-	if (get_rx_desc_crc32(pdesc))
+-		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+-	if (!get_rx_desc_swdec(pdesc))
+-		rx_status->flag |= RX_FLAG_DECRYPTED;
+-	if (get_rx_desc_bw(pdesc))
+-		rx_status->bw = RATE_INFO_BW_40;
+-	if (get_rx_desc_rx_ht(pdesc))
+-		rx_status->encoding = RX_ENC_HT;
+-	rx_status->flag |= RX_FLAG_MACTIME_START;
+-	if (stats->decrypted)
+-		rx_status->flag |= RX_FLAG_DECRYPTED;
+-	rx_status->rate_idx = rtlwifi_rate_mapping(hw, stats->is_ht,
+-						   false, stats->rate);
+-	rx_status->mactime = get_rx_desc_tsfl(pdesc);
+-	if (phystatus) {
+-		p_drvinfo = (struct rx_fwinfo_92c *)(skb->data +
+-						     stats->rx_bufshift);
+-		rtl92c_translate_rx_signal_stuff(hw, skb, stats, p_desc,
+-						 p_drvinfo);
+-	}
+-	/*rx_status->qual = stats->signal; */
+-	rx_status->signal = stats->recvsignalpower + 10;
+-	return true;
+-}
+-
+-#define RTL_RX_DRV_INFO_UNIT		8
+-
+-static void _rtl_rx_process(struct ieee80211_hw *hw, struct sk_buff *skb)
+-{
+-	struct ieee80211_rx_status *rx_status =
+-		 (struct ieee80211_rx_status *)IEEE80211_SKB_RXCB(skb);
+-	u32 skb_len, pkt_len, drvinfo_len;
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	__le32 *rxdesc;
+-	struct rtl_stats stats = {
+-		.signal = 0,
+-		.rate = 0,
+-	};
+-	struct rx_fwinfo_92c *p_drvinfo;
+-	bool bv;
+-	__le16 fc;
+-	struct ieee80211_hdr *hdr;
+-
+-	memset(rx_status, 0, sizeof(*rx_status));
+-	rxdesc	= (__le32 *)skb->data;
+-	skb_len	= skb->len;
+-	drvinfo_len = (get_rx_desc_drvinfo_size(rxdesc) * RTL_RX_DRV_INFO_UNIT);
+-	pkt_len		= get_rx_desc_pkt_len(rxdesc);
+-	/* TODO: Error recovery. drop this skb or something. */
+-	WARN_ON(skb_len < (pkt_len + RTL_RX_DESC_SIZE + drvinfo_len));
+-	stats.length = (u16)get_rx_desc_pkt_len(rxdesc);
+-	stats.rx_drvinfo_size = (u8)get_rx_desc_drvinfo_size(rxdesc) *
+-				RX_DRV_INFO_SIZE_UNIT;
+-	stats.rx_bufshift = (u8)(get_rx_desc_shift(rxdesc) & 0x03);
+-	stats.icv = (u16)get_rx_desc_icv(rxdesc);
+-	stats.crc = (u16)get_rx_desc_crc32(rxdesc);
+-	stats.hwerror = (stats.crc | stats.icv);
+-	stats.decrypted = !get_rx_desc_swdec(rxdesc);
+-	stats.rate = (u8)get_rx_desc_rx_mcs(rxdesc);
+-	stats.shortpreamble = (u16)get_rx_desc_splcp(rxdesc);
+-	stats.isampdu = (bool)((get_rx_desc_paggr(rxdesc) == 1) &&
+-			       (get_rx_desc_faggr(rxdesc) == 1));
+-	stats.timestamp_low = get_rx_desc_tsfl(rxdesc);
+-	stats.rx_is40mhzpacket = (bool)get_rx_desc_bw(rxdesc);
+-	stats.is_ht = (bool)get_rx_desc_rx_ht(rxdesc);
+-	/* TODO: is center_freq changed when doing scan? */
+-	/* TODO: Shall we add protection or just skip those two step? */
+-	rx_status->freq = hw->conf.chandef.chan->center_freq;
+-	rx_status->band = hw->conf.chandef.chan->band;
+-	if (get_rx_desc_crc32(rxdesc))
+-		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+-	if (!get_rx_desc_swdec(rxdesc))
+-		rx_status->flag |= RX_FLAG_DECRYPTED;
+-	if (get_rx_desc_bw(rxdesc))
+-		rx_status->bw = RATE_INFO_BW_40;
+-	if (get_rx_desc_rx_ht(rxdesc))
+-		rx_status->encoding = RX_ENC_HT;
+-	/* Data rate */
+-	rx_status->rate_idx = rtlwifi_rate_mapping(hw, stats.is_ht,
+-						   false, stats.rate);
+-	/*  There is a phy status after this rx descriptor. */
+-	if (get_rx_desc_phy_status(rxdesc)) {
+-		p_drvinfo = (struct rx_fwinfo_92c *)(rxdesc + RTL_RX_DESC_SIZE);
+-		rtl92c_translate_rx_signal_stuff(hw, skb, &stats,
+-				 (struct rx_desc_92c *)rxdesc, p_drvinfo);
+-	}
+-	skb_pull(skb, (drvinfo_len + RTL_RX_DESC_SIZE));
+-	hdr = (struct ieee80211_hdr *)(skb->data);
+-	fc = hdr->frame_control;
+-	bv = ieee80211_is_probe_resp(fc);
+-	if (bv)
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-			"Got probe response frame\n");
+-	if (ieee80211_is_beacon(fc))
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG, "Got beacon frame\n");
+-	if (ieee80211_is_data(fc))
+-		rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG, "Got data frame\n");
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-		"Fram: fc = 0x%X addr1 = 0x%02X:0x%02X:0x%02X:0x%02X:0x%02X:0x%02X\n",
+-		fc,
+-		(u32)hdr->addr1[0], (u32)hdr->addr1[1],
+-		(u32)hdr->addr1[2], (u32)hdr->addr1[3],
+-		(u32)hdr->addr1[4], (u32)hdr->addr1[5]);
+-	ieee80211_rx(hw, skb);
+-}
+-
+-void  rtl8192cu_rx_hdl(struct ieee80211_hw *hw, struct sk_buff * skb)
+-{
+-	_rtl_rx_process(hw, skb);
+-}
+-
+-/*----------------------------------------------------------------------
+- *
+- *	Tx handler
+- *
+- *---------------------------------------------------------------------- */
+-void rtl8192c_tx_cleanup(struct ieee80211_hw *hw, struct sk_buff  *skb)
+-{
+-}
+-
+-int rtl8192c_tx_post_hdl(struct ieee80211_hw *hw, struct urb *urb,
+-			 struct sk_buff *skb)
+-{
+-	return 0;
+-}
+-
+-struct sk_buff *rtl8192c_tx_aggregate_hdl(struct ieee80211_hw *hw,
+-					   struct sk_buff_head *list)
+-{
+-	return skb_dequeue(list);
+-}
+-
+-/*======================================== trx ===============================*/
+-
+-static void _rtl_fill_usb_tx_desc(__le32 *txdesc)
+-{
+-	set_tx_desc_own(txdesc, 1);
+-	set_tx_desc_last_seg(txdesc, 1);
+-	set_tx_desc_first_seg(txdesc, 1);
+-}
+-
+-/*
+- *	For HW recovery information
+- */
+-static void _rtl_tx_desc_checksum(__le32 *txdesc)
+-{
+-	__le16 *ptr = (__le16 *)txdesc;
+-	u16	checksum = 0;
+-	u32 index;
+-
+-	/* Clear first */
+-	set_tx_desc_tx_desc_checksum(txdesc, 0);
+-	for (index = 0; index < 16; index++)
+-		checksum = checksum ^ le16_to_cpu(*(ptr + index));
+-	set_tx_desc_tx_desc_checksum(txdesc, checksum);
+-}
+-
+-void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
+-			  struct ieee80211_hdr *hdr, u8 *pdesc_tx,
+-			  u8 *pbd_desc_tx, struct ieee80211_tx_info *info,
+-			  struct ieee80211_sta *sta,
+-			  struct sk_buff *skb,
+-			  u8 queue_index,
+-			  struct rtl_tcb_desc *tcb_desc)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+-	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+-	bool defaultadapter = true;
+-	u8 *qc = ieee80211_get_qos_ctl(hdr);
+-	u8 tid = qc[0] & IEEE80211_QOS_CTL_TID_MASK;
+-	u16 seq_number;
+-	__le16 fc = hdr->frame_control;
+-	u8 rate_flag = info->control.rates[0].flags;
+-	u16 pktlen = skb->len;
+-	enum rtl_desc_qsel fw_qsel = _rtl8192cu_mq_to_descq(hw, fc,
+-						skb_get_queue_mapping(skb));
+-	u8 *txdesc8;
+-	__le32 *txdesc;
+-
+-	seq_number = (le16_to_cpu(hdr->seq_ctrl) & IEEE80211_SCTL_SEQ) >> 4;
+-	rtl_get_tcb_desc(hw, info, sta, skb, tcb_desc);
+-	txdesc8 = skb_push(skb, RTL_TX_HEADER_SIZE);
+-	txdesc = (__le32 *)txdesc8;
+-	memset(txdesc, 0, RTL_TX_HEADER_SIZE);
+-	set_tx_desc_pkt_size(txdesc, pktlen);
+-	set_tx_desc_linip(txdesc, 0);
+-	set_tx_desc_pkt_offset(txdesc, RTL_DUMMY_OFFSET);
+-	set_tx_desc_offset(txdesc, RTL_TX_HEADER_SIZE);
+-	set_tx_desc_tx_rate(txdesc, tcb_desc->hw_rate);
+-	if (tcb_desc->use_shortgi || tcb_desc->use_shortpreamble)
+-		set_tx_desc_data_shortgi(txdesc, 1);
+-	if (mac->tids[tid].agg.agg_state == RTL_AGG_ON &&
+-		    info->flags & IEEE80211_TX_CTL_AMPDU) {
+-		set_tx_desc_agg_enable(txdesc, 1);
+-		set_tx_desc_max_agg_num(txdesc, 0x14);
+-	} else {
+-		set_tx_desc_agg_break(txdesc, 1);
+-	}
+-	set_tx_desc_seq(txdesc, seq_number);
+-	set_tx_desc_rts_enable(txdesc,
+-			       ((tcb_desc->rts_enable &&
+-				!tcb_desc->cts_enable) ? 1 : 0));
+-	set_tx_desc_hw_rts_enable(txdesc,
+-				  ((tcb_desc->rts_enable ||
+-				   tcb_desc->cts_enable) ? 1 : 0));
+-	set_tx_desc_cts2self(txdesc, ((tcb_desc->cts_enable) ? 1 : 0));
+-	set_tx_desc_rts_stbc(txdesc, ((tcb_desc->rts_stbc) ? 1 : 0));
+-	set_tx_desc_rts_rate(txdesc, tcb_desc->rts_rate);
+-	set_tx_desc_rts_bw(txdesc, 0);
+-	set_tx_desc_rts_sc(txdesc, tcb_desc->rts_sc);
+-	set_tx_desc_rts_short(txdesc,
+-			      ((tcb_desc->rts_rate <= DESC_RATE54M) ?
+-			       (tcb_desc->rts_use_shortpreamble ? 1 : 0)
+-			       : (tcb_desc->rts_use_shortgi ? 1 : 0)));
+-	if (mac->bw_40) {
+-		if (rate_flag & IEEE80211_TX_RC_DUP_DATA) {
+-			set_tx_desc_data_bw(txdesc, 1);
+-			set_tx_desc_data_sc(txdesc, 3);
+-		} else if(rate_flag & IEEE80211_TX_RC_40_MHZ_WIDTH){
+-			set_tx_desc_data_bw(txdesc, 1);
+-			set_tx_desc_data_sc(txdesc, mac->cur_40_prime_sc);
+-		} else {
+-			set_tx_desc_data_bw(txdesc, 0);
+-			set_tx_desc_data_sc(txdesc, 0);
+-		}
+-	} else {
+-		set_tx_desc_data_bw(txdesc, 0);
+-		set_tx_desc_data_sc(txdesc, 0);
+-	}
+-	rcu_read_lock();
+-	sta = ieee80211_find_sta(mac->vif, mac->bssid);
+-	if (sta) {
+-		u8 ampdu_density = sta->deflink.ht_cap.ampdu_density;
+-
+-		set_tx_desc_ampdu_density(txdesc, ampdu_density);
+-	}
+-	rcu_read_unlock();
+-	if (info->control.hw_key) {
+-		struct ieee80211_key_conf *keyconf = info->control.hw_key;
+-
+-		switch (keyconf->cipher) {
+-		case WLAN_CIPHER_SUITE_WEP40:
+-		case WLAN_CIPHER_SUITE_WEP104:
+-		case WLAN_CIPHER_SUITE_TKIP:
+-			set_tx_desc_sec_type(txdesc, 0x1);
+-			break;
+-		case WLAN_CIPHER_SUITE_CCMP:
+-			set_tx_desc_sec_type(txdesc, 0x3);
+-			break;
+-		default:
+-			set_tx_desc_sec_type(txdesc, 0x0);
+-			break;
+-		}
+-	}
+-	set_tx_desc_pkt_id(txdesc, 0);
+-	set_tx_desc_queue_sel(txdesc, fw_qsel);
+-	set_tx_desc_data_rate_fb_limit(txdesc, 0x1F);
+-	set_tx_desc_rts_rate_fb_limit(txdesc, 0xF);
+-	set_tx_desc_disable_fb(txdesc, 0);
+-	set_tx_desc_use_rate(txdesc, tcb_desc->use_driver_rate ? 1 : 0);
+-	if (ieee80211_is_data_qos(fc)) {
+-		if (mac->rdg_en) {
+-			rtl_dbg(rtlpriv, COMP_SEND, DBG_TRACE,
+-				"Enable RDG function\n");
+-			set_tx_desc_rdg_enable(txdesc, 1);
+-			set_tx_desc_htc(txdesc, 1);
+-		}
+-	}
+-	if (rtlpriv->dm.useramask) {
+-		set_tx_desc_rate_id(txdesc, tcb_desc->ratr_index);
+-		set_tx_desc_macid(txdesc, tcb_desc->mac_id);
+-	} else {
+-		set_tx_desc_rate_id(txdesc, 0xC + tcb_desc->ratr_index);
+-		set_tx_desc_macid(txdesc, tcb_desc->ratr_index);
+-	}
+-	if ((!ieee80211_is_data_qos(fc)) && ppsc->leisure_ps &&
+-	      ppsc->fwctrl_lps) {
+-		set_tx_desc_hwseq_en(txdesc, 1);
+-		set_tx_desc_pkt_id(txdesc, 8);
+-		if (!defaultadapter)
+-			set_tx_desc_qos(txdesc, 1);
+-	}
+-	if (ieee80211_has_morefrags(fc))
+-		set_tx_desc_more_frag(txdesc, 1);
+-	if (is_multicast_ether_addr(ieee80211_get_DA(hdr)) ||
+-	    is_broadcast_ether_addr(ieee80211_get_DA(hdr)))
+-		set_tx_desc_bmc(txdesc, 1);
+-	_rtl_fill_usb_tx_desc(txdesc);
+-	_rtl_tx_desc_checksum(txdesc);
+-	rtl_dbg(rtlpriv, COMP_SEND, DBG_TRACE, "==>\n");
+-}
+-
+-void rtl92cu_fill_fake_txdesc(struct ieee80211_hw *hw, u8 *pdesc8,
+-			      u32 buffer_len, bool is_pspoll)
+-{
+-	__le32 *pdesc = (__le32 *)pdesc8;
+-
+-	/* Clear all status */
+-	memset(pdesc, 0, RTL_TX_HEADER_SIZE);
+-	set_tx_desc_first_seg(pdesc, 1); /* bFirstSeg; */
+-	set_tx_desc_last_seg(pdesc, 1); /* bLastSeg; */
+-	set_tx_desc_offset(pdesc, RTL_TX_HEADER_SIZE); /* Offset = 32 */
+-	set_tx_desc_pkt_size(pdesc, buffer_len); /* Buffer size + command hdr */
+-	set_tx_desc_queue_sel(pdesc, QSLT_MGNT); /* Fixed queue of Mgnt queue */
+-	/* Set NAVUSEHDR to prevent Ps-poll AId filed to be changed to error
+-	 * vlaue by Hw. */
+-	if (is_pspoll) {
+-		set_tx_desc_nav_use_hdr(pdesc, 1);
+-	} else {
+-		set_tx_desc_hwseq_en(pdesc, 1); /* Hw set sequence number */
+-		set_tx_desc_pkt_id(pdesc, BIT(3)); /* set bit3 to 1. */
+-	}
+-	set_tx_desc_use_rate(pdesc, 1); /* use data rate which is set by Sw */
+-	set_tx_desc_own(pdesc, 1);
+-	set_tx_desc_tx_rate(pdesc, DESC_RATE1M);
+-	_rtl_tx_desc_checksum(pdesc);
+-}
+-
+-void rtl92cu_tx_fill_cmddesc(struct ieee80211_hw *hw,
+-			     u8 *pdesc8, bool firstseg,
+-			     bool lastseg, struct sk_buff *skb)
+-{
+-	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	u8 fw_queue = QSLT_BEACON;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)(skb->data);
+-	__le16 fc = hdr->frame_control;
+-	__le32 *pdesc = (__le32 *)pdesc8;
+-
+-	memset((void *)pdesc, 0, RTL_TX_HEADER_SIZE);
+-	if (firstseg)
+-		set_tx_desc_offset(pdesc, RTL_TX_HEADER_SIZE);
+-	set_tx_desc_tx_rate(pdesc, DESC_RATE1M);
+-	set_tx_desc_seq(pdesc, 0);
+-	set_tx_desc_linip(pdesc, 0);
+-	set_tx_desc_queue_sel(pdesc, fw_queue);
+-	set_tx_desc_first_seg(pdesc, 1);
+-	set_tx_desc_last_seg(pdesc, 1);
+-	set_tx_desc_rate_id(pdesc, 7);
+-	set_tx_desc_macid(pdesc, 0);
+-	set_tx_desc_own(pdesc, 1);
+-	set_tx_desc_pkt_size(pdesc, (u16)skb->len);
+-	set_tx_desc_first_seg(pdesc, 1);
+-	set_tx_desc_last_seg(pdesc, 1);
+-	set_tx_desc_offset(pdesc, 0x20);
+-	set_tx_desc_use_rate(pdesc, 1);
+-	if (!ieee80211_is_data_qos(fc)) {
+-		set_tx_desc_hwseq_en(pdesc, 1);
+-		set_tx_desc_pkt_id(pdesc, 8);
+-	}
+-	RT_PRINT_DATA(rtlpriv, COMP_CMD, DBG_LOUD, "H2C Tx Cmd Content",
+-		      pdesc, RTL_TX_DESC_SIZE);
+-}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h
+deleted file mode 100644
+index 171fe39dfb0c..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.h
++++ /dev/null
+@@ -1,403 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92CU_TRX_H__
+-#define __RTL92CU_TRX_H__
+-
+-#define RTL92C_USB_BULK_IN_NUM			1
+-#define RTL92C_NUM_RX_URBS			8
+-#define RTL92C_NUM_TX_URBS			32
+-
+-#define RTL92C_SIZE_MAX_RX_BUFFER		15360   /* 8192 */
+-#define RX_DRV_INFO_SIZE_UNIT			8
+-
+-#define RTL_AGG_ON				1
+-
+-enum usb_rx_agg_mode {
+-	USB_RX_AGG_DISABLE,
+-	USB_RX_AGG_DMA,
+-	USB_RX_AGG_USB,
+-	USB_RX_AGG_DMA_USB
+-};
+-
+-#define TX_SELE_HQ				BIT(0)	/* High Queue */
+-#define TX_SELE_LQ				BIT(1)	/* Low Queue */
+-#define TX_SELE_NQ				BIT(2)	/* Normal Queue */
+-
+-#define RTL_USB_TX_AGG_NUM_DESC			5
+-
+-#define RTL_USB_RX_AGG_PAGE_NUM			4
+-#define RTL_USB_RX_AGG_PAGE_TIMEOUT		3
+-
+-#define RTL_USB_RX_AGG_BLOCK_NUM		5
+-#define RTL_USB_RX_AGG_BLOCK_TIMEOUT		3
+-
+-/*======================== rx status =========================================*/
+-
+-struct rx_drv_info_92c {
+-	/*
+-	 * Driver info contain PHY status and other variabel size info
+-	 * PHY Status content as below
+-	 */
+-
+-	/* DWORD 0 */
+-	u8 gain_trsw[4];
+-
+-	/* DWORD 1 */
+-	u8 pwdb_all;
+-	u8 cfosho[4];
+-
+-	/* DWORD 2 */
+-	u8 cfotail[4];
+-
+-	/* DWORD 3 */
+-	s8 rxevm[2];
+-	s8 rxsnr[4];
+-
+-	/* DWORD 4 */
+-	u8 pdsnr[2];
+-
+-	/* DWORD 5 */
+-	u8 csi_current[2];
+-	u8 csi_target[2];
+-
+-	/* DWORD 6 */
+-	u8 sigevm;
+-	u8 max_ex_pwr;
+-	u8 ex_intf_flag:1;
+-	u8 sgi_en:1;
+-	u8 rxsc:2;
+-	u8 reserve:4;
+-} __packed;
+-
+-/* macros to read various fields in RX descriptor */
+-
+-/* DWORD 0 */
+-static inline u32 get_rx_desc_pkt_len(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, GENMASK(13, 0));
+-}
+-
+-static inline u32 get_rx_desc_crc32(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, BIT(14));
+-}
+-
+-static inline u32 get_rx_desc_icv(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, BIT(15));
+-}
+-
+-static inline u32 get_rx_desc_drvinfo_size(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, GENMASK(19, 16));
+-}
+-
+-static inline u32 get_rx_desc_shift(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, GENMASK(25, 24));
+-}
+-
+-static inline u32 get_rx_desc_phy_status(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, BIT(26));
+-}
+-
+-static inline u32 get_rx_desc_swdec(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*__rxdesc, BIT(27));
+-}
+-
+-
+-/* DWORD 1 */
+-static inline u32 get_rx_desc_paggr(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*(__rxdesc + 1), BIT(14));
+-}
+-
+-static inline u32 get_rx_desc_faggr(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*(__rxdesc + 1), BIT(15));
+-}
+-
+-
+-/* DWORD 3 */
+-static inline u32 get_rx_desc_rx_mcs(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*(__rxdesc + 3), GENMASK(5, 0));
+-}
+-
+-static inline u32 get_rx_desc_rx_ht(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*(__rxdesc + 3), BIT(6));
+-}
+-
+-static inline u32 get_rx_desc_splcp(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*(__rxdesc + 3), BIT(8));
+-}
+-
+-static inline u32 get_rx_desc_bw(__le32 *__rxdesc)
+-{
+-	return le32_get_bits(*(__rxdesc + 3), BIT(9));
+-}
+-
+-
+-/* DWORD 5 */
+-static inline u32 get_rx_desc_tsfl(__le32 *__rxdesc)
+-{
+-	return le32_to_cpu(*((__rxdesc + 5)));
+-}
+-
+-
+-/*======================= tx desc ============================================*/
+-
+-/* macros to set various fields in TX descriptor */
+-
+-/* Dword 0 */
+-static inline void set_tx_desc_pkt_size(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, GENMASK(15, 0));
+-}
+-
+-static inline void set_tx_desc_offset(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, GENMASK(23, 16));
+-}
+-
+-static inline void set_tx_desc_bmc(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, BIT(24));
+-}
+-
+-static inline void set_tx_desc_htc(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, BIT(25));
+-}
+-
+-static inline void set_tx_desc_last_seg(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, BIT(26));
+-}
+-
+-static inline void set_tx_desc_first_seg(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, BIT(27));
+-}
+-
+-static inline void set_tx_desc_linip(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, BIT(28));
+-}
+-
+-static inline void set_tx_desc_own(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits(__txdesc, __value, BIT(31));
+-}
+-
+-
+-/* Dword 1 */
+-static inline void set_tx_desc_macid(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, GENMASK(4, 0));
+-}
+-
+-static inline void set_tx_desc_agg_enable(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, BIT(5));
+-}
+-
+-static inline void set_tx_desc_agg_break(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, BIT(6));
+-}
+-
+-static inline void set_tx_desc_rdg_enable(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, BIT(7));
+-}
+-
+-static inline void set_tx_desc_queue_sel(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, GENMASK(12, 8));
+-}
+-
+-static inline void set_tx_desc_rate_id(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, GENMASK(19, 16));
+-}
+-
+-static inline void set_tx_desc_nav_use_hdr(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, BIT(20));
+-}
+-
+-static inline void set_tx_desc_sec_type(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, GENMASK(23, 22));
+-}
+-
+-static inline void set_tx_desc_pkt_offset(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 1), __value, GENMASK(30, 26));
+-}
+-
+-
+-/* Dword 2 */
+-static inline void set_tx_desc_more_frag(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 2), __value, BIT(17));
+-}
+-
+-static inline void set_tx_desc_ampdu_density(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 2), __value, GENMASK(22, 20));
+-}
+-
+-
+-/* Dword 3 */
+-static inline void set_tx_desc_seq(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 3), __value, GENMASK(27, 16));
+-}
+-
+-static inline void set_tx_desc_pkt_id(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 3), __value, GENMASK(31, 28));
+-}
+-
+-
+-/* Dword 4 */
+-static inline void set_tx_desc_rts_rate(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, GENMASK(4, 0));
+-}
+-
+-static inline void set_tx_desc_qos(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(6));
+-}
+-
+-static inline void set_tx_desc_hwseq_en(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(7));
+-}
+-
+-static inline void set_tx_desc_use_rate(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(8));
+-}
+-
+-static inline void set_tx_desc_disable_fb(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(10));
+-}
+-
+-static inline void set_tx_desc_cts2self(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(11));
+-}
+-
+-static inline void set_tx_desc_rts_enable(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(12));
+-}
+-
+-static inline void set_tx_desc_hw_rts_enable(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(13));
+-}
+-
+-static inline void set_tx_desc_data_sc(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, GENMASK(21, 20));
+-}
+-
+-static inline void set_tx_desc_data_bw(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(25));
+-}
+-
+-static inline void set_tx_desc_rts_short(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(26));
+-}
+-
+-static inline void set_tx_desc_rts_bw(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, BIT(27));
+-}
+-
+-static inline void set_tx_desc_rts_sc(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, GENMASK(29, 28));
+-}
+-
+-static inline void set_tx_desc_rts_stbc(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 4), __value, GENMASK(31, 30));
+-}
+-
+-
+-/* Dword 5 */
+-static inline void set_tx_desc_tx_rate(__le32 *__pdesc, u32 __val)
+-{
+-	le32p_replace_bits((__pdesc + 5), __val, GENMASK(5, 0));
+-}
+-
+-static inline void set_tx_desc_data_shortgi(__le32 *__pdesc, u32 __val)
+-{
+-	le32p_replace_bits((__pdesc + 5), __val, BIT(6));
+-}
+-
+-static inline void set_tx_desc_data_rate_fb_limit(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 5), __value, GENMASK(12, 8));
+-}
+-
+-static inline void set_tx_desc_rts_rate_fb_limit(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 5), __value, GENMASK(16, 13));
+-}
+-
+-
+-/* Dword 6 */
+-static inline void set_tx_desc_max_agg_num(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 6), __value, GENMASK(15, 11));
+-}
+-
+-
+-/* Dword 7 */
+-static inline void set_tx_desc_tx_desc_checksum(__le32 *__txdesc, u32 __value)
+-{
+-	le32p_replace_bits((__txdesc + 7), __value, GENMASK(15, 0));
+-}
+-
+-
+-int  rtl8192cu_endpoint_mapping(struct ieee80211_hw *hw);
+-u16 rtl8192cu_mq_to_hwq(__le16 fc, u16 mac80211_queue_index);
+-bool rtl92cu_rx_query_desc(struct ieee80211_hw *hw,
+-			   struct rtl_stats *stats,
+-			   struct ieee80211_rx_status *rx_status,
+-			   u8 *p_desc, struct sk_buff *skb);
+-void  rtl8192cu_rx_hdl(struct ieee80211_hw *hw, struct sk_buff * skb);
+-void rtl8192c_tx_cleanup(struct ieee80211_hw *hw, struct sk_buff  *skb);
+-int rtl8192c_tx_post_hdl(struct ieee80211_hw *hw, struct urb *urb,
+-			 struct sk_buff *skb);
+-struct sk_buff *rtl8192c_tx_aggregate_hdl(struct ieee80211_hw *,
+-					   struct sk_buff_head *);
+-void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
+-			  struct ieee80211_hdr *hdr, u8 *pdesc_tx,
+-			  u8 *pbd_desc_tx, struct ieee80211_tx_info *info,
+-			  struct ieee80211_sta *sta,
+-			  struct sk_buff *skb,
+-			  u8 queue_index,
+-			  struct rtl_tcb_desc *tcb_desc);
+-void rtl92cu_fill_fake_txdesc(struct ieee80211_hw *hw, u8 *pdesc,
+-			       u32 buffer_len, bool ispspoll);
+-void rtl92cu_tx_fill_cmddesc(struct ieee80211_hw *hw,
+-			     u8 *pdesc, bool b_firstseg,
+-			     bool b_lastseg, struct sk_buff *skb);
+-
+-#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 082af216760f..ad506793a7de 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -325,7 +325,6 @@ enum hardware_type {
+ 	HARDWARE_TYPE_RTL8192SE,
+ 	HARDWARE_TYPE_RTL8192SU,
+ 	HARDWARE_TYPE_RTL8192CE,
+-	HARDWARE_TYPE_RTL8192CU,
+ 	HARDWARE_TYPE_RTL8192DE,
+ 	HARDWARE_TYPE_RTL8192DU,
+ 	HARDWARE_TYPE_RTL8723AE,
+-- 
+2.40.1
 
-My patch was messed up, but it got the information that I wanted, which is shown 
-in the quoted lines above. One of these differs only in the low-order byte, 
-while the other 2 are completely different. Strange!
-
-It is possible that there is a firmware error. My system, which does not show 
-the problem, reports the following:
-
-[54130.741148] usb 3-6: RTL8192CU rev A (TSMC) romver 0, 2T2R, TX queues 2, 
-WiFi=1, BT=0, GPS=0, HI PA=0
-[54130.741153] usb 3-6: RTL8192CU MAC: xx:xx:xx:xx:xx:xx
-[54130.741155] usb 3-6: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
-[54130.742301] usb 3-6: Firmware revision 88.2 (signature 0x88c1)
-
-Which firmware does your unit use?
-
-Attached is a new test patch. When it logs a CORRUPTED value, I would like to 
-know what task is attached to the pid listed in the message. Note that the two 
-instances where the entire word was wrong came from pid:7.
-
-Could improper locking could produce these results?
-
-Larry
-
---------------dXNjmVauvoy0tmBnxkx4nmvc
-Content-Type: text/x-patch; charset=UTF-8; name="log_data_2.patch"
-Content-Disposition: attachment; filename="log_data_2.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL01ha2VmaWxlIGIvTWFrZWZpbGUKaW5kZXggZjU1NDNlZWY0ZjgyLi42
-ZDk4NWExNzVkNzggMTAwNjQ0Ci0tLSBhL01ha2VmaWxlCisrKyBiL01ha2VmaWxlCkBAIC0x
-LDggKzEsOCBAQAogIyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMAogVkVSU0lP
-TiA9IDYKLVBBVENITEVWRUwgPSAzCitQQVRDSExFVkVMID0gNAogU1VCTEVWRUwgPSAwCi1F
-WFRSQVZFUlNJT04gPQorRVhUUkFWRVJTSU9OID0gLXJjMAogTkFNRSA9IEh1cnIgZHVyciBJ
-J21hIG5pbmphIHNsb3RoCiAKICMgKkRPQ1VNRU5UQVRJT04qCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYyBiL2Ry
-aXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfY29yZS5jCmlu
-ZGV4IDgzMTYzOWQ3MzY1Ny4uOWQ3Nzg0MDBkMmI5IDEwMDY0NAotLS0gYS9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYworKysgYi9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1X2NvcmUuYwpAQCAt
-NDg2NCw2ICs0ODY0LDEwIEBAIHJ0bDh4eHh1X2Jzc19pbmZvX2NoYW5nZWQoc3RydWN0IGll
-ZWU4MDIxMV9odyAqaHcsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsCiAJdTMyIHZhbDMy
-OwogCXU4IHZhbDg7CiAKKwlpZiAocHJpdi0+cmVncmNyICE9IHJ0bDh4eHh1X3JlYWQzMihw
-cml2LCBSRUdfUkNSKSkgeworCQlwcl9pbmZvKCJSRUdfUkNSIGNvcnJ1cHRlZCBpbiAlczog
-MHgleCBpbnN0ZWQgb2YgMHgleFxuIiwKKwkJCV9fZnVuY19fLCBydGw4eHh4dV9yZWFkMzIo
-cHJpdiwgUkVHX1JDUiksIHByaXYtPnJlZ3Jjcik7CisJfQogCXJhcnB0ID0gJnByaXYtPnJh
-X3JlcG9ydDsKIAogCWlmIChjaGFuZ2VkICYgQlNTX0NIQU5HRURfQVNTT0MpIHsKQEAgLTY1
-MDQsNiArNjUwOCwxMCBAQCBzdGF0aWMgdm9pZCBydGw4eHh4dV9jb25maWd1cmVfZmlsdGVy
-KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LAogCXN0cnVjdCBydGw4eHh4dV9wcml2ICpwcml2
-ID0gaHctPnByaXY7CiAJdTMyIHJjciA9IHByaXYtPnJlZ3JjcjsKIAorCWlmIChwcml2LT5y
-ZWdyY3IgIT0gcnRsOHh4eHVfcmVhZDMyKHByaXYsIFJFR19SQ1IpKSB7CisJCXByX2luZm8o
-IlJFR19SQ1IgY29ycnVwdGVkIGluICVzOiAweCV4IGluc3RlZCBvZiAweCV4XG4iLAorCQkJ
-X19mdW5jX18sIHJ0bDh4eHh1X3JlYWQzMihwcml2LCBSRUdfUkNSKSwgcHJpdi0+cmVncmNy
-KTsKKwl9CiAJZGV2X2RiZygmcHJpdi0+dWRldi0+ZGV2LCAiJXM6IGNoYW5nZWRfZmxhZ3Mg
-JTA4eCwgdG90YWxfZmxhZ3MgJTA4eFxuIiwKIAkJX19mdW5jX18sIGNoYW5nZWRfZmxhZ3Ms
-ICp0b3RhbF9mbGFncyk7CiAK
-
---------------dXNjmVauvoy0tmBnxkx4nmvc--
