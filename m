@@ -2,136 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F77C6F1F33
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 22:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C256C6F1FA4
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 22:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345839AbjD1UVV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 16:21:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43534 "EHLO
+        id S1346740AbjD1UuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 16:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjD1UVT (ORCPT
+        with ESMTP id S1346736AbjD1UuK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 16:21:19 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2122.outbound.protection.outlook.com [40.107.243.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9BE41FE6;
-        Fri, 28 Apr 2023 13:21:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HkKxWPfQEx7gLewLqVKTN24XUHSAHQAIIC0fpofMBHEOrZYrNrKIew26tVB6XlkvVlBOIPsAk+Sd8UyBArmI6oMPQpUEUaRUwjZ4sFPBKyVRo/0rR+MZIoGHOyDCeVJhnp5OgB+SDItyi/Ni5OMoX0eO4bXLuPRP/8jcw1nT293m2rxCS3uzLnEpHE3SvUkt6Zu3WJ0gWbCQHb1Vhgjlug9JjyjTMoXNTL59eEmRf7cxb72QWp9T9Mbn/TvuagsAchOgLTnQ6S4mc4ipqp/dh3wJgAog5JvYkgpnowasvp/hIplBSOebRbfUIcmN3rUaY3x4gGQsj8J9rdoFmpshrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DtNeKrUgHWgybUZiwFn9ZUfLZPf1mFcItNAAG+dA7hk=;
- b=dpMVVlZIcRmccmfiJgTr6bHlHKiTsntVmP8p8/GkXFU5SL2YFEj49B8xGBCYltLjn3wS//rrE740ShQJGbJcO20nQBqG5R4UvRca/oWA3wctKqZzMHHrUSZ6eAuMNhxu7+odlMI8D3QoDH9abj9SoLLScRVvRIYPMUXI/cOK/1Ia/JReVzqJIV/zJPvpCWISfgRsbQbWsphpAwCt7CPEhQ8qkDLUomG1PDRU1KMCxd27ehVmvDjg9LyM4AewcOjFegwHvYi7fVr//Yqqz9aEQ4wxVSuOfntPutxS8OX72EYemL3mXNu//4lyotPL5oGUi8yFL40EWtK1Z1yGnX+Khg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DtNeKrUgHWgybUZiwFn9ZUfLZPf1mFcItNAAG+dA7hk=;
- b=Mkgog0ehn9Aau+MxIt/2tQ+I8n+/oV7VCUl//1iyhpC8CoCnZ5mlerGxpzgZCK0PZS6ixLpBG6rkW2Dhg5moK+04DQv3bomeL4eQzYLKh2rKzX/IXYKmfGaeA19Z38zuB6xEdVyIo06yb7pInKbVuOHAAm+nut9IZJG5Z4vuYqE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BLAPR13MB4675.namprd13.prod.outlook.com (2603:10b6:208:321::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.22; Fri, 28 Apr
- 2023 20:21:15 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6340.022; Fri, 28 Apr 2023
- 20:21:15 +0000
-Date:   Fri, 28 Apr 2023 22:21:07 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] wifi: ath11k: Use list_count_nodes()
-Message-ID: <ZEwqs0B9FSarvYS6@corigine.com>
-References: <941484caae24b89d20524b1a5661dd1fd7025492.1682542084.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <941484caae24b89d20524b1a5661dd1fd7025492.1682542084.git.christophe.jaillet@wanadoo.fr>
-X-ClientProxiedBy: AS4P251CA0029.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d3::19) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Fri, 28 Apr 2023 16:50:10 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05F71730
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 13:50:08 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2F1D4C0067
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 20:50:07 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 8D4FA13C2B0;
+        Fri, 28 Apr 2023 13:50:06 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8D4FA13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1682715006;
+        bh=t6ImqsfTV0cMv4AI8GnWlbCmtnwkJ2Vy3J0TH2gq6Ps=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WyDReiEIwLpVvhn6j/yV0lEwjKIPJYX8qQLiTwPQ7Y120cidyA/XiKmeL8abfZRsm
+         nuBKTGDmb9taBMIakAGmJWepOJBWRvtlLbay+dq2XGyMMJe26wdkl2f8voGzcU9pxB
+         BunYAShtCO8Ol/SjoIOssOVaPv9k6l7DUhAaBnmE=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 1/6] wifi: mt76: mt7915: Support vht mu-mimo sniffer feature.
+Date:   Fri, 28 Apr 2023 13:49:55 -0700
+Message-Id: <20230428205000.2647945-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BLAPR13MB4675:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f5094f4-aafa-48de-027c-08db48261dfe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: VjM/JXx14lSGvdZA807urD+wP0UqxfHJQkbppjjLUtjsfxE3gfhk5/gSrL0GZ/IvmLwn9cVGndSKXVsdJfkzO3ILWncR6f9NwoehJTucsJcENYchJGpl4DKTz7jFhsQzbzCxS7ELF0pFlNQhjJ0kgujvXxnCoSryolxxPsW5SF0XuDPazU0bv9PyKActrx/8ub5RDXFY+vUwdYBEY4VXV2g/+1Hnb3+vCRv48Jh9klOlkITqk4oqIdXPe70GJclS/lN5nlOIgO6T0WHWjR2uFmecNOpJgJswak0kFetU0UwonewJcKpq+PCzUCrdY0Hz/HFYwQnzymQH0er++olFz3wQXfBMQauLNmvfJDqckw88wegGv+kgQLsjXtq/XQQVZqjDdc1rMLQthEf25zRR5X2NJxeQlzZGWwM6HNMp6JeOEGez+jWtWYZ5WGrau3PnSaf3unQY9cOIzMgolb7B9islzBG3cm+SrcCk67UptGsxvVFt+KWLHV7uazcHNIfKrl5qFs41+RCLrHxZaCs/GCfpyIu6JHOhGGwBfMXj/CW6OmcHhZzJPDOmq5hLYNVR
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39840400004)(376002)(366004)(136003)(346002)(396003)(451199021)(186003)(6512007)(6506007)(2616005)(66476007)(44832011)(66946007)(6916009)(66556008)(7416002)(316002)(41300700001)(38100700002)(5660300002)(4744005)(4326008)(2906002)(86362001)(54906003)(478600001)(8936002)(6666004)(8676002)(6486002)(36756003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KZRZdbQH3vaTK6Yab+jIUvny66vZkD+xK34jdIK3FBTuY29GdMWDTGe2pO4q?=
- =?us-ascii?Q?fyPHA2/L/SAEeQp7Rfuo70IYVlhUMx+FU6eXdNnZ4AsjWnq7ltcK1p3xFPbS?=
- =?us-ascii?Q?2Q7r4xDEiavYyZyim4Hq45v1j6rML/xxvObkLnCn8HqTTgEHyJAjWTitZeqO?=
- =?us-ascii?Q?D7zLs/KcwEOGpEf8S2lSWxEq/p4u68K8PUqQtnfZ8vru76AtAlMam7ahp9vT?=
- =?us-ascii?Q?KyzqHkBoHH6axxxJ+pZri1+iphykBLQU/9TCoYD1yGeYQl4V4fSkGAH2T65n?=
- =?us-ascii?Q?x8kGq4VePlryfKRQS6yiTbW+1pdU8sisbVfwKipVgbC26hPJG32+hTn/EmHs?=
- =?us-ascii?Q?k3P5l6+tAMN9ue2IarhMpiWAuxeYjpHqpQ0oV/a3wLcXBWdJG/MJVQeTno2J?=
- =?us-ascii?Q?oT7WiuhUojx42YB7aSdc2jBg3Bz+UNd9xXl+68Ga69Op5w7Pc6xvZz46hk++?=
- =?us-ascii?Q?UWwmc4Jsg2QUqQsFECjFuCBsRHuYSA85UmIx/WimnAknm2O5k3mInqBGG5oU?=
- =?us-ascii?Q?ljwB6IpiFWKP7fftjYdosPk6igLzHoaCMCxBDbzwZMFfM6x3Xk6C065S07Rl?=
- =?us-ascii?Q?PFw+HnsJ5SfoRQB2lj/NbcwqXpsImms1Bhg06ZbEsa5I/uklunRBY6QhFOI8?=
- =?us-ascii?Q?T/NEFRE0vVpexRI8q3CJOZP+x1OuxyqYdd6QBSkMxDCa7MNANMEp6QecwLf7?=
- =?us-ascii?Q?LxdPtrBWcks69SeQ5VYxlfofdAd0HwxseGcSOva22ZGHVupO6H5bxSSFFkEV?=
- =?us-ascii?Q?tK292Nb/6PfgV8cFdVNXacanZ/JNmpEnW7Doun1CMi8hcvtyPKwjPjjltYM4?=
- =?us-ascii?Q?g+IvAc50E/ztDHd7WKy4q6dsRgV0u6eXTve4ReiYfCBuR8uhHBhaRtAMLQZl?=
- =?us-ascii?Q?bjQfNQkSeY8lfQT4W/nw6Y+2hwWfw9hEOICspcbUufdCq8Ug6iJ34wf6y3de?=
- =?us-ascii?Q?P2vh5pJrmwy1x1KU5eGmPBMO4h9TypSS9DjaFbV2noQNealxwc0hZ7yvdbdd?=
- =?us-ascii?Q?TYGPCWT1oN91vt/zLU0jBJgoErtcV0C/iJ/wWqXwFvnaB36LAX6QQViVFo1M?=
- =?us-ascii?Q?p7cbJqiKcyzjr35xd/4/U+++wQFe8YMVtiifSYe0jTbaSE7CVTLFc52bxfS6?=
- =?us-ascii?Q?4qt3BdtibHxNDHxfmVYWvEJsdReAiJWwfNt7pV3GD5Rb7UoYTeYirxhpw/Oe?=
- =?us-ascii?Q?C4+HmmCkJj26CB3wwxQ2iUNu05pTK/D1xdl9ABXlmxqh1eTYlBwb8kT2FQgK?=
- =?us-ascii?Q?KPFYZmQuKwvjlYg0NFGGkoUvuDAA3iDNmYYMfde38mPuYK2EuQdZpvO/dh7Y?=
- =?us-ascii?Q?O/pH494o0w4GVBL5Qjp8qi89C6+9Mmbol0JpcPuTOV89X+X1FZzlTftj7h5X?=
- =?us-ascii?Q?hO17lBhXP4bukR60gnOAonZKLHAk+Ef55/J65mpq9YO6G/MExV3TNt879qz9?=
- =?us-ascii?Q?LKnlr00eqGwbEy99Ze9YKQV/uGPiPNC1KV6OLUnNFq0dhlMdVgI+iLnPv0nw?=
- =?us-ascii?Q?NPkvgqlD1vC4VjTPXAJOIFlVKSUKyvTJg5Vgw5QtmVc4oWC/hlcQXlfsZQ+v?=
- =?us-ascii?Q?KCyqK1rnDoNr9oxbaxe5vXrdpKSP3ykOB/Ec1I9BQ2M9zqZ5gfYhVmB+dcK7?=
- =?us-ascii?Q?9QPjzwidn3MQ+oIGHBghMQOu37dDiuhQb9QdOxj1Eg8svDlbqXkHWYDoAKBY?=
- =?us-ascii?Q?vl1lQA=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f5094f4-aafa-48de-027c-08db48261dfe
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2023 20:21:15.3698
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 34zwtlkeyK24Y8+7caO3KN9DUB395jFAC+5lRYmtoiaXf5N5YpPlwkU+AHvqOPYDrBKo+slPsOZRA1I4tqwsdndubXpXY8Xk4FnC76X/K1o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR13MB4675
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1682715007-7SVzZyX8NQMt
+X-MDID-O: us5;ut7;1682715007;7SVzZyX8NQMt;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 26, 2023 at 10:48:59PM +0200, Christophe JAILLET wrote:
-> ath11k_wmi_fw_stats_num_vdevs() and ath11k_wmi_fw_stats_num_bcn() really
-> look the same as list_count_nodes(), so use the latter instead of hand
-> writing it.
-> 
-> The first ones use list_for_each_entry() and the other list_for_each(), but
-> they both count the number of nodes in the list.
-> 
-> While at it, also remove to prototypes of non-existent functions.
-> Based on the names and prototypes, it is likely that they should be
-> equivalent to list_count_nodes().
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ben Greear <greearb@candelatech.com>
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+This feature allows mac80211 to update the driver with mu-mimo
+group to allow the monitor port to capture MU-MIMO (VHT) frames.
+
+The mt7915 driver implementation will only enable this feature
+when there is only a monitor vdev.  I was afraid that it would mess
+up a sta + monitor vdev combination, for instance.
+
+Original code from Ryder
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  5 +++
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |  1 +
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 41 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  | 10 +++++
+ 4 files changed, 57 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 6b07b8fafec2..d4ae53d80d07 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -945,6 +945,11 @@ static inline u16 mt76_rev(struct mt76_dev *dev)
+ 	return dev->rev & 0xffff;
+ }
+ 
++static inline int mt76_vif_count(struct mt76_dev *dev)
++{
++	return hweight_long(dev->vif_mask);
++}
++
+ #define mt76xx_chip(dev) mt76_chip(&((dev)->mt76))
+ #define mt76xx_rev(dev) mt76_rev(&((dev)->mt76))
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index ac2049f49bb3..bea75615872f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -370,6 +370,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_FILS_DISCOVERY);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CAN_REPLACE_PTK0);
++	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_MU_MIMO_AIR_SNIFFER);
+ 
+ 	if (!is_mt7915(&dev->mt76))
+ 		wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 1b361199c061..7566db0cf523 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -592,6 +592,34 @@ mt7915_update_bss_color(struct ieee80211_hw *hw,
+ 	}
+ }
+ 
++static void
++mt7915_update_mu_group(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++		       struct ieee80211_bss_conf *info)
++{
++	struct mt7915_phy *phy = mt7915_hw_phy(hw);
++	struct mt7915_dev *dev = mt7915_hw_dev(hw);
++	u8 i, band = phy->mt76->band_idx;
++	u32 *mu;
++
++	mu = (u32 *)info->mu_group.membership;
++	for (i = 0; i < WLAN_MEMBERSHIP_LEN / sizeof(*mu); i++) {
++		if (is_mt7916(&dev->mt76))
++			mt76_wr(dev, MT_WF_PHY_RX_GID_TAB_VLD_MT7916(band, i),
++				mu[i]);
++		else
++			mt76_wr(dev, MT_WF_PHY_RX_GID_TAB_VLD(band, i), mu[i]);
++	}
++
++	mu = (u32 *)info->mu_group.position;
++	for (i = 0; i < WLAN_USER_POSITION_LEN / sizeof(*mu); i++) {
++		if (is_mt7916(&dev->mt76))
++			mt76_wr(dev, MT_WF_PHY_RX_GID_TAB_POS_MT7916(band, i),
++				mu[i]);
++		else
++			mt76_wr(dev, MT_WF_PHY_RX_GID_TAB_POS(band, i), mu[i]);
++	}
++}
++
+ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 				    struct ieee80211_vif *vif,
+ 				    struct ieee80211_bss_conf *info,
+@@ -650,6 +678,19 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 		       BSS_CHANGED_FILS_DISCOVERY))
+ 		mt7915_mcu_add_beacon(hw, vif, info->enable_beacon, changed);
+ 
++	if (changed & BSS_CHANGED_MU_GROUPS) {
++		/* Assumption is that in case of non-monitor VDEV existing, then
++		 * that device should control the mu-group directly.
++		 */
++		int vif_count = mt76_vif_count(&dev->mt76);
++		int max_ok = 0;
++
++		if (phy->monitor_vif)
++			max_ok = 1;
++		if (vif_count <= max_ok)
++			mt7915_update_mu_group(hw, vif, info);
++	}
++
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index c8e478a55081..5e057cce5c9f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -1183,6 +1183,16 @@ enum offs_rev {
+ #define MT_WF_PHY_BASE			0x83080000
+ #define MT_WF_PHY(ofs)			(MT_WF_PHY_BASE + (ofs))
+ 
++#define MT_WF_PHY_RX_GID_TAB_VLD(_phy, i)		MT_WF_PHY(0x1054 + \
++								  (i) * 4 + ((_phy) << 16))
++#define MT_WF_PHY_RX_GID_TAB_VLD_MT7916(_phy, i)	MT_WF_PHY(0x1054 + \
++								  (i) * 4 + ((_phy) << 20))
++
++#define MT_WF_PHY_RX_GID_TAB_POS(_phy, i)		MT_WF_PHY(0x105c + \
++								  (i) * 4 + ((_phy) << 16))
++#define MT_WF_PHY_RX_GID_TAB_POS_MT7916(_phy, i)	MT_WF_PHY(0x105c + \
++								  (i) * 4 + ((_phy) << 20))
++
+ #define MT_WF_PHY_RX_CTRL1(_phy)	MT_WF_PHY(0x2004 + ((_phy) << 16))
+ #define MT_WF_PHY_RX_CTRL1_MT7916(_phy)	MT_WF_PHY(0x2004 + ((_phy) << 20))
+ #define MT_WF_PHY_RX_CTRL1_IPI_EN	GENMASK(2, 0)
+-- 
+2.40.0
 
