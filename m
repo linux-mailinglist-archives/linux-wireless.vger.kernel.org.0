@@ -2,129 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 597F96F1A0D
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 15:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90E536F1B1D
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 17:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346173AbjD1N4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 09:56:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54652 "EHLO
+        id S1346279AbjD1PIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 11:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjD1N4O (ORCPT
+        with ESMTP id S1346254AbjD1PIu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 09:56:14 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E01A171E
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 06:56:14 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f19b9d5358so76895585e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 06:56:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682690172; x=1685282172;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lN6ZH6CIrNE0KT/OlcPAHKY4iybPDBrxjoMtRJOd8aA=;
-        b=qBWVLAmUcc9MtObvn/Do+I6SJZEFBwNY95NjNlwbxxroVPupqJ7NFM5ZoAL7PHOHpI
-         6Khezn1peuKFD45XW9oYFLABXMhXbdQ08Gqd12aByOSSlMX3/eZHBS4iQB84ssWLgccL
-         x5nWE6hln2pLx6OFpNtIUu7My5Qp/eSjbl0MZEId1SxSghzGyZy6T0r4oiDZNeriQu/M
-         L2JN1DBVTdTsy5k6uJAXrjYNFCNsIjvnDeLqVRB1NbSSmO6P+/6sxiLf2Vqn3s+FvHmy
-         3THBKl/AiCmz1tlh+YAc8PnyNEBPpLqqNXafwUg3BkdTlwPUQrs9HeFIWsIwr1aseOsW
-         FenQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682690172; x=1685282172;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lN6ZH6CIrNE0KT/OlcPAHKY4iybPDBrxjoMtRJOd8aA=;
-        b=foW71Xufs+lmAJDD31zxgaQxaTQR+Pptc4ghp5NjCI3gx7uDv6IDH0vFeztoH9/JSM
-         oiNz0sgBfrC2EaOSTaJ7XKCF+h95sVmd2AiqJLpKS8r8Wwr+x1TCTYlZrolw4Fasgpha
-         grqUFIin7T++oWx5pvqXKHc3HFH7tAsvSsQtV51aJKOkzL9nK6XcwWPTJmSuJmEt/AKn
-         zuUYH/mXfRrK6kNwATC+FvEdBsQHtbnlhzc2r/pssxquipKiwhlaF9rz/Zu/yPrkrW0e
-         P0F78BFQ/hSMt7+Sfpot5J9VNugBM0vgCN/851uEkNjudbrjPLbzsZsPStLr3t2anJts
-         A7BQ==
-X-Gm-Message-State: AC+VfDytccNHtiBWtZj2R7Bo6owIb4dYGC5hK0OVsKbGrm3jDHVEn8lC
-        /vjeotWbmfQl/ZXeLtGu9CFHO4rq2woKM3VgzsnkRnrHJDo=
-X-Google-Smtp-Source: ACHHUZ54LtRtYYF0r3gbczenbxKnBqoKoGswsCoIplEcoTorJe8pFPFTVx9JXDe2mLHwd3TnMX/TsvnfR8mZhB+ako0=
-X-Received: by 2002:a1c:6a05:0:b0:3f1:95af:172c with SMTP id
- f5-20020a1c6a05000000b003f195af172cmr3851405wmc.41.1682690172417; Fri, 28 Apr
- 2023 06:56:12 -0700 (PDT)
-MIME-Version: 1.0
-From:   Gabriel Tisan <gabriel.tisan@gmail.com>
-Date:   Fri, 28 Apr 2023 15:56:01 +0200
-Message-ID: <CAD9ZU8BcYM_zZqFzTBFDQOoF0Jd3vNj4OWODOy+UZbWXCUwA7A@mail.gmail.com>
-Subject: rtw88: 8822cu (LM842) --> LOWER_UP link messages
+        Fri, 28 Apr 2023 11:08:50 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25704EF5
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 08:08:40 -0700 (PDT)
+From:   Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1682694518;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=vLfXhzKGUBGpqhKrM2KQdtZ6pveXyiOStB3HCLc5shU=;
+        b=jvTJSdNJeLr0clNnN/BuluPxnznEH6xTrvqLfqZCjzrhMuxj7N+kOgN6JCP7d55xxXDKSv
+        Nj56ljJQLgRxdheXkFTY43xC5cYLCp0MHxjrXDX98OHCfkjua57f/UIdMqAYC2rewoQKNT
+        2WuXXMlGobK8E9cRXgsMuJTbFTTkSckodGa04ry7QILVMcsJ1LaxwPaK50v0kvFHS9AKxN
+        t/tnWON1TxirnCMSlvKOb3fShYwGl7d7XdbI1btHtK2ZskFjXfIUAjw7YoqtkDjsOnqJKf
+        YMMr4XiGfeOylMDYeUQZTtyw+Tq4VWIoPvQTze1dDr4PbaAsnVE61WYR2gJzBQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1682694518;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=vLfXhzKGUBGpqhKrM2KQdtZ6pveXyiOStB3HCLc5shU=;
+        b=/SrfjLSb/jk37bemX6FNbyQII4dWFmmF90ju8Gc0RKVprcRw2AUVwhXItkxwcMwkZNJbhY
+        L/+MO45t8WaSnACQ==
 To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH v4 00/18] wifi: rtl8xxxu: Add AP mode support for 8188f
+Date:   Fri, 28 Apr 2023 17:08:15 +0200
+Message-Id: <20230428150833.218605-1-martin.kaistra@linutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi !
+This series intends to bring AP mode support to the rtl8xxxu driver,
+more specifically for the 8188f, because this is the HW I have.
+The work is based on the vendor driver as I do not have access to
+datasheets.
 
-I use a LM842 wifi stick on a Linux kernel 5.15 with last patches for
-rtw88 from linux-next applied.
-Firmware version is 9.9.15
+The iperf3 measurements for TCP in AP mode still look slower in the
+AP->STA direction compared to the vendor driver, UDP looks fine. I still
+hope, this can be fixed by future patches.
 
-When I connect LM842 as a station to an AP, after the link is up first
-time, it comes from time to time more LOWER_UP message.
-The stick is plugged and the connection to AP is still valid.
+Thanks,
+  Martin
 
-# ip -oneline -family inet monitor link
+v4 changelog:
+- restructured beacon enable code in bss_info_changed 
+v3 changelog:
+- add some R-bs
+- remove priv->beacon_enabled
+- rename max_sta_num to max_macid_num
+v2 changelog:
+- dropped RFC prefix
+- rebase patches to newest wireless-next
+- add some R-bs
+- new patch: "Add parameter force to rtl8xxxu_refresh_rate_mask"
+- new patch: "Remove usage of ieee80211_get_tx_rate()"
+- new patch: "Remove usage of tx_info->control.rates[0].flags"
+- new patch: "Set maximum number of supported stations"
+- add macro for broadcast/multicast frames macid
+- add more explanation about beacon queue in commit message of patch 2
+- add macros for bit definitions for beacon functions
+- implement enable_beacon = false case
+- fix beacon valid loop so that error condition is actually reached
+- add more explanation about setting mac address register in add_interface
+  in commit message of patch 6
+- rename role macros for connect report h2c
+- use bitmap for assigning macids
+- add helper function for looking up assigned macids
+- move patch 7 so we can use rtl8xxxu_get_macid helper
+- add sta_remove callback
+- do things in sta_add only in AP mode
+- use IEEE80211_TX_CTL_ASSIGN_SEQ flag to determine when to use HW sequence
+  numbers
+- add priv->vif null pointer check in configure_filter, rework setting
+  BSSID_BEACON/BSSID_MATCH in RCR
 
-5: wlan0: <BROADCAST,MULTICAST> mtu 1500 qdisc noqueue state DOWN
-group default \    link/ether 34:c9:f0:99:b6:a1 brd ff:ff:ff:ff:ff:ff
+v1: https://lore.kernel.org/linux-wireless/20230322171905.492855-1-martin.kaistra@linutronix.de/
+v2: https://lore.kernel.org/linux-wireless/20230419100145.159191-1-martin.kaistra@linutronix.de/
+v3: https://lore.kernel.org/linux-wireless/20230427090922.165088-1-martin.kaistra@linutronix.de/
 
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
-state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
-ff:ff:ff:ff:ff:ff
+Martin Kaistra (18):
+  wifi: rtl8xxxu: Add start_ap() callback
+  wifi: rtl8xxxu: Select correct queue for beacon frames
+  wifi: rtl8xxxu: Add beacon functions
+  wifi: rtl8xxxu: Add set_tim() callback
+  wifi: rtl8xxxu: Allow setting rts threshold to -1
+  wifi: rtl8xxxu: Allow creating interface in AP mode
+  wifi: rtl8xxxu: Actually use macid in rtl8xxxu_gen2_report_connect
+  wifi: rtl8xxxu: Add parameter role to report_connect
+  wifi: rtl8xxxu: Add parameter force to rtl8xxxu_refresh_rate_mask
+  wifi: rtl8xxxu: Add sta_add() and sta_remove() callbacks
+  wifi: rtl8xxxu: Put the macid in txdesc
+  wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+  wifi: rtl8xxxu: Enable hw seq for mgmt/non-QoS data frames
+  wifi: rtl8xxxu: Clean up filter configuration
+  wifi: rtl8xxxu: Remove usage of ieee80211_get_tx_rate()
+  wifi: rtl8xxxu: Remove usage of tx_info->control.rates[0].flags
+  wifi: rtl8xxxu: Declare AP mode support for 8188f
+  wifi: rtl8xxxu: Set maximum number of supported stations
 
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
-state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
-ff:ff:ff:ff:ff:ff
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  37 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188e.c         |   3 +-
+ .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |   2 +
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 337 ++++++++++++++----
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   5 +
+ 5 files changed, 300 insertions(+), 84 deletions(-)
 
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> \    link/ether
+-- 
+2.30.2
 
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
-noqueue state DORMANT group default \    link/ether 34:c9:f0:99:b6:a1
-brd ff:ff:ff:ff:ff:ff
-
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
-state UP group default \    link/ether 34:c9:f0:99:b6:a1 brd
-ff:ff:ff:ff:ff:ff
-
-
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-
-
-
-
-Any idea what I can do ?
-
-Did someone also reproduce that problem ?
-
-
-
-Regards,
-
-Gabriel
