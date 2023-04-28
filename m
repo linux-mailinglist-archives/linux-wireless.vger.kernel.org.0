@@ -2,31 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E1C6F104E
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 04:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6EFB6F105C
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 04:34:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344621AbjD1C0g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Apr 2023 22:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
+        id S1344379AbjD1CeW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Apr 2023 22:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229713AbjD1C0f (ORCPT
+        with ESMTP id S1344285AbjD1CeW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Apr 2023 22:26:35 -0400
-X-Greylist: delayed 399 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 27 Apr 2023 19:26:33 PDT
+        Thu, 27 Apr 2023 22:34:22 -0400
 Received: from mail.kevlo.org (ns.kevlo.org [220.134.220.36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29012690
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 19:26:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E76268D
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 19:34:20 -0700 (PDT)
 Received: from localhost (ns.kevlo.org [local])
-        by ns.kevlo.org (OpenSMTPD) with ESMTPA id 2e0bd63c;
-        Fri, 28 Apr 2023 10:19:50 +0800 (CST)
-Date:   Fri, 28 Apr 2023 10:19:50 +0800
+        by ns.kevlo.org (OpenSMTPD) with ESMTPA id 799a2ac0;
+        Fri, 28 Apr 2023 10:34:17 +0800 (CST)
+Date:   Fri, 28 Apr 2023 10:34:17 +0800
 From:   Kevin Lo <kevlo@kevlo.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
         Jes Sorensen <Jes.Sorensen@gmail.com>,
         Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH] wifi: rtl8xxxu: 8188f: no need to initialize interrupts
-Message-ID: <ZEstRr5LwGqphsvi@ns.kevlo.org>
+Subject: [PATCH v2] wifi: rtl8xxxu: 8188f: no need to initialize interrupts
+Message-ID: <ZEswqUHBXPHC/znL@ns.kevlo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -41,7 +40,10 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 There's no need to initialize interrupts for RTL8188FTV like the vendor driver.
 
-Signed-off-by: Kevin Lo <kevlo@kevlo>
+Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+---
+v2:
+ - Fix my email address.
 ---
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
 index 620a5cc2bfdd..7f620dc47ee0 100644
