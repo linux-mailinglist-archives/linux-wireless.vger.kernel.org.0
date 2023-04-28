@@ -2,54 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DAB6F1137
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 07:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD086F1163
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 07:40:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345162AbjD1FE1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 01:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46620 "EHLO
+        id S1345112AbjD1Fkl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 01:40:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjD1FE0 (ORCPT
+        with ESMTP id S1345054AbjD1Fkk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 01:04:26 -0400
+        Fri, 28 Apr 2023 01:40:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEEA26A2;
-        Thu, 27 Apr 2023 22:04:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED431BC5
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 22:40:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7A8660AB4;
-        Fri, 28 Apr 2023 05:04:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC619C433D2;
-        Fri, 28 Apr 2023 05:04:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5492463F9B
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 05:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EADC433EF;
+        Fri, 28 Apr 2023 05:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682658264;
-        bh=1jG17+/ymFzEo1DeDLBm4GJ1/6GRzCzGRAUyoi4cchE=;
+        s=k20201202; t=1682660438;
+        bh=Z6NUqTrlWX5VBE5oRjZuHIG9wfGp1DFGIcVkDpuGTfQ=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=WUpZRmPs+HS5nSEp2lgOEhgiHzBXVP1F5Zeods3BiFK9ogpLPHdf6SR0TF9cclENd
-         2CULicHnBKqko0P9GmyZEe12EJbf8lzw+htBtqEHGxIEXSwwJGNacj8gWksXnJ6tv6
-         ot5hv+spL+5dy7gZUtoFtXO+0bD2GiCBvUqLTqvFTRp0tbl5x364LID+luPvwzdzx2
-         bfFK2sRD9evMxl2EB13Sr3ocNoHujQ2e9rdNXFRd0DkJvKK5g24wYcROTh7DNhcIEj
-         oLhONSt6TrVDjBBNxLA5uorU3GIK5gQjl8X88DnKc3JB18CdvHGDRIFuMqxK9tuGHv
-         khXWAXkfdsqPA==
+        b=sBDZPzys/tD7jgEOxzC6LLL/GIRgSqOJptkcw25m44BTW0nq0yOSg3fXaSb7fzORy
+         rICmSfY0MNSZkdDu7QNbsKSVK9NkMWL1SiIfRVd7j0uxoDd+1kPpUnlPR3sOzDWdOy
+         FMl1u/czxdGoQKMd7E7eFDhARbmZdQDSxVSjQ/GiK3PsjiF0aExUnlGeIDKBVxf/H+
+         5+iAZIscW0d6nXHMp4TE4Tj4AZ0wPujljMJJYRnbDtqKztI1zH8DQ0/QCDBdMIIFa9
+         56QlecN2LbUrJE1pwn2CscRqtX2gLFpwoMBN/UoKDFTanb3RJVC6hkAIeW8QNqjS7y
+         3rzMKy6lq30kg==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Aloka Dixit <quic_alokad@quicinc.com>,
-        Muna Sinada <quic_msinada@quicinc.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] wifi: mac80211: Fix puncturing bitmap handling in __ieee80211_csa_finalize()
-References: <e84a3f80fe536787f7a2c7180507efc36cd14f95.1682358088.git.christophe.jaillet@wanadoo.fr>
-Date:   Fri, 28 Apr 2023 08:04:19 +0300
-In-Reply-To: <e84a3f80fe536787f7a2c7180507efc36cd14f95.1682358088.git.christophe.jaillet@wanadoo.fr>
-        (Christophe JAILLET's message of "Mon, 24 Apr 2023 19:42:04 +0200")
-Message-ID: <87mt2sppgs.fsf@kernel.org>
+To:     Kevin Lo <kevlo@kevlo.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH v2] wifi: rtl8xxxu: 8188f: no need to initialize interrupts
+References: <ZEswqUHBXPHC/znL@ns.kevlo.org>
+Date:   Fri, 28 Apr 2023 08:40:34 +0300
+In-Reply-To: <ZEswqUHBXPHC/znL@ns.kevlo.org> (Kevin Lo's message of "Fri, 28
+        Apr 2023 10:34:17 +0800")
+Message-ID: <87ildgpnsd.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,19 +57,14 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
+Kevin Lo <kevlo@kevlo.org> writes:
 
-> 'changed' can be OR'ed with BSS_CHANGED_EHT_PUNCTURING which is larger than
-> an u32.
-> So, turn 'changed' into an u64 and update ieee80211_set_after_csa_beacon()
-> accordingly.
+> There's no need to initialize interrupts for RTL8188FTV like the vendor driver.
 >
-> In the commit in Fixes, only ieee80211_start_ap() was updated.
->
-> Fixes: 2cc25e4b2a04 ("wifi: mac80211: configure puncturing bitmap")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Kevin Lo <kevlo@kevlo.org>
 
-FWIW mac80211 patches go to wireless tree, not net.
+Why do this, what's the benefit? Or is this just a theoretical fix. The
+commit log should explain this.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
