@@ -2,101 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9616F1E06
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 20:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED3F6F1E29
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 20:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346472AbjD1Sav (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 14:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55008 "EHLO
+        id S1346517AbjD1SmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 14:42:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjD1Sau (ORCPT
+        with ESMTP id S1346506AbjD1SmC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 14:30:50 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31AADE;
-        Fri, 28 Apr 2023 11:30:49 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-38c35975545so238347b6e.1;
-        Fri, 28 Apr 2023 11:30:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682706649; x=1685298649;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=v0p8vLatMOCOsAkUrgnq0FtbnVi/IKxHmV8XesaoHcg=;
-        b=fWhQ4QRIcNCQFe1WTDE8YH6Iq//MpFbWoDdF4B44FKRHSa6OZrfrQer6TcZq/IIPOM
-         TKlwtYxx3B0tLDQESpKbLZ/sxQDWaBG1Aj47x+MC/seRqUruV/Ma1P0Idk0qWVYb98Mm
-         pTqrpBWmQoBzLnwWKglFXanLyYD8lXgurkE4iEObpDwcmASQT8WvYvwA6Hui76rnji9E
-         8t2J2/HGaF9h0GMUB/K80FsqGSLMblV2dZSPNVNB0afx5GUu5pLmWssXvwfVfqYS9LpE
-         Bn37YC/8qEObJABgUuidE38ZI9NBKKPyfVsUbxzeMg/FEAzyu3vaiDMb73TPWY2gKfJY
-         oMvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682706649; x=1685298649;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v0p8vLatMOCOsAkUrgnq0FtbnVi/IKxHmV8XesaoHcg=;
-        b=f3YOWjwHYsbvtyYUAn3E3SWsBgIL8cWb5TACkJWUOFH7fpgXmfiOg8Bciv5oQEUkCv
-         F5t10PI5vhfcF8SPrHhrTG7QzrjHbnN3GlvdsBMHLl1IBSv2UaALj6hRaq6THPMxeGHz
-         V9iwlPkWyODdlySxH0PGJOqEPAkOOmN3o8VKaxnaGfgslLtHeKS64zTo0YjdWLz+OPeB
-         SRUw8bzDqKYjLYgbXhSAyqZ2NQoKhq4jRRcgjl4ef/i2Lz+s0Jjkn7a+HumE2unc6Q+7
-         BeajJocp77PSaP1Q6YesTC0NLGUcDqV1thtPENwco8KZodx+3LqX54WSYQI099yt44aC
-         ouzw==
-X-Gm-Message-State: AC+VfDwxKLMz0LL8mDIo+IScz7IeZV0VrRtUMbXHnQ4wuHN+sTH0iBnL
-        MxcxM0cG9b0tTFPtwVywDWo=
-X-Google-Smtp-Source: ACHHUZ5NC74ymKfxOsZ63jhLeMRw67J/ZW5MHj5sEVfst/QHh/sZuQqSIiasr7nJ2eyuEShDhSMruA==
-X-Received: by 2002:a05:6808:2110:b0:390:9226:2c75 with SMTP id r16-20020a056808211000b0039092262c75mr3029124oiw.55.1682706649029;
-        Fri, 28 Apr 2023 11:30:49 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id n9-20020acabd09000000b0038c06ae307asm9121022oif.52.2023.04.28.11.30.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 11:30:48 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <79edb0c1-170a-8a09-5247-951d833647cd@lwfinger.net>
-Date:   Fri, 28 Apr 2023 13:30:47 -0500
+        Fri, 28 Apr 2023 14:42:02 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDCE1FEB
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 11:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=rI9YjSYporZwQ/Z29ciG40cmBGqz8bYjrXtFm3OicjY=;
+        t=1682707319; x=1683916919; b=Eei27pxTa5KYOOIS7qE+LEy56aXVQm4iMP68u9mcG5Nkafu
+        Y33EXSTxr5GI3Hp1gohXwA3GQW7XbxS/heHnFrzG0BkJCw4tsycoVMg0XNKrlP+5cdnKTdezQU7a4
+        ZjOoDl22SCJU2HA2X6PWg5BgNo8HEwfV8jbnSZhrs4TwUts7BE3PCob1Zrgy6r32E5Dvsxk59KoBb
+        x1pNMEBCuBvsYaduLMow5HmNWJy7eqoxheJFaD/0VKFnlui/c0kHC9VGWhyBep8rqVEt3cpUZpiQ4
+        kcMN9IJqR3kCyDIp1vNMDdgwpAKulVjYnlPEQqmXrSsCOuSPz4tMrKAO8p4537yw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1psT2Y-00BKpO-1d;
+        Fri, 28 Apr 2023 20:41:54 +0200
+Message-ID: <431b8d98c2e5d81c20862965151ac63596f04bf3.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: rtlwifi: rtl8192cu: Remove driver
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 28 Apr 2023 20:41:53 +0200
+In-Reply-To: <20230428182933.19157-1-Larry.Finger@lwfinger.net>
+References: <20230428182933.19157-1-Larry.Finger@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to
- incorrect RCR value
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>, wo <luyun_611@163.com>
-Cc:     Jes.Sorensen@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-References: <20230427020512.1221062-1-luyun_611@163.com>
- <866570c9-38d8-1006-4721-77e2945170b9@lwfinger.net>
- <53e5cb36.2d9d.187c61b8405.Coremail.luyun_611@163.com>
- <87ttx0s9a3.fsf@kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <87ttx0s9a3.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/28/23 03:25, Kalle Valo wrote:
-> wo  <luyun_611@163.com> writes:
-> 
->> In fact, there is another driver rtl8192cu.ko
->> (drivers/net/wireless/realtek/rtlwifi/), that can also match this
->> device.
-> 
-> It's not good if there are two drivers supporting same hardware. Should
-> the support be removed from rtlwifi?
+On Fri, 2023-04-28 at 13:29 -0500, Larry Finger wrote:
+> --- a/drivers/net/wireless/realtek/rtlwifi/core.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/core.c
+> @@ -1770,12 +1770,6 @@ static void rtl_op_flush(struct ieee80211_hw *hw,
+> =C2=A0static int rtl_op_set_tim(struct ieee80211_hw *hw, struct ieee80211=
+_sta *sta,
+> =C2=A0			=C2=A0 bool set)
+> =C2=A0{
+> -	struct rtl_priv *rtlpriv =3D rtl_priv(hw);
+> -	struct rtl_hal *rtlhal =3D rtl_hal(rtl_priv(hw));
+> -
+> -	if (rtlhal->hw_type =3D=3D HARDWARE_TYPE_RTL8192CU)
+> -		schedule_work(&rtlpriv->works.update_beacon_work);
+> -
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
 
-Kalle,
+Looks like you could remove that entire method if it does nothing now,
+it doesn't matter to mac80211 if you have it or not (since you don't use
+AP_LINK_PS.)
 
-I have just sent a patch removing rtl8192cu.
+Not sure it matters to you in the driver :)
 
-Larry
-
-
+johannes
