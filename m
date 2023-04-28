@@ -2,280 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 811FB6F202C
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 23:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D94356F2036
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 23:43:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346180AbjD1Vj0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 17:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53988 "EHLO
+        id S1345349AbjD1Vm7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 17:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345755AbjD1VjY (ORCPT
+        with ESMTP id S230158AbjD1Vm6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 17:39:24 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C73A26B9
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 14:39:16 -0700 (PDT)
-X-UUID: 1cccf214e60d11edb20a276fd37b9834-20230429
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:To:From; bh=GutBT2cFm5X0kzCNmAVKfXwjeymcQl6bwR7+vmhQFUs=;
-        b=d819u1bIz1qPB/FMKClGD1wENl9VBZzjtLTiLW4JZuEcDmiiw+oPMjK41IKdFtfX6QLU/G9//X07ykn3LW2hhZ5v0ykBBk6RKm54kW7y+Af5ae/Efs63OQQlaYi0gT1te/TEb6JuVQT7/Qob5Bq9EROQtYtEy75GkEeXmtj9QuA=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:a90bd0e9-ecdb-4795-97b3-1bfe60dba352,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:45
-X-CID-INFO: VERSION:1.1.22,REQID:a90bd0e9-ecdb-4795-97b3-1bfe60dba352,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-        elease,TS:45
-X-CID-META: VersionHash:120426c,CLOUDID:34e948bf-e32c-4c97-918d-fbb3fc224d4e,B
-        ulkID:2304290517372ZUR1TVN,BulkQuantity:4,Recheck:0,SF:19|48|38|29|28|17|1
-        02,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:41,QS:nil,BEC:nil,CO
-        L:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-UUID: 1cccf214e60d11edb20a276fd37b9834-20230429
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2018121042; Sat, 29 Apr 2023 05:39:11 +0800
-Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Sat, 29 Apr 2023 05:39:09 +0800
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
- 15.2.1118.25 via Frontend Transport; Sat, 29 Apr 2023 05:39:09 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nJguN5eVZG3R8kpTI6QwUdDD67/yxghgZLuXBxe/HwXMj16zhrTP74ITGezt2n8PvW/A/ZqTfBBhCjCMxpVrg42Xn6t3PtUdOGQSn87MNtfd4pGLhrp8oUdKPkubF3sNxkGvwGeRQhkKyqco04q9MBVGr/lKHzefCUiXrUCL/Ymu4TVqKLRCwftDmq6WICmoE9rSwjiMm2nOdxpW2vYtRY9OsGS02BSCp/kmePRPXLiaGRMLfYC+NN/zxVqGP4pANKjl5zXmrnvgQtNqYuL0r6uFN0havwH10MRuhnsTEiwN7NAEdNGL3+nBdnksb8N299oCQg6ivBXPRZV6CViVKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GutBT2cFm5X0kzCNmAVKfXwjeymcQl6bwR7+vmhQFUs=;
- b=ZG+PzAhp3Mo1RGUhUXljqvsWxXVkH5XtLfNM0BDXvuLq7Cjm9tz6t7waji6PnZVU8i+mWHuhIpoIsBQMsZgzClrQgUK11fYFYZbPJrUuszDWKqwHq8pIWLvdu1ir3qyFqzPyxpRcr4m2z9j1X8V7gCkUJsjE5LDgCmJe3yrkRjArKwxnxNu8ligL3do4xxNiPexAtoXplzkgcU4LkI/6rZECcRKcKTqsiNaxQvHzwwSHt5rknPKB/ctbJRr81ReMjQKDqwxqfMxbzJF5I3+2cbFXy0wjCIO8c6JdDSA2ZAETTCuW7ti3NOHw7hgGptHTHOhzIqSNr8BULQChxJ1/Wg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GutBT2cFm5X0kzCNmAVKfXwjeymcQl6bwR7+vmhQFUs=;
- b=bKSDUidtHXXowLSVGlo7+bgAQcMWN3HqVfe287Y/fnwkOxSaYeWZU2G+emvNo4KPATTgkXEuBDFS/0xLPqT3ibvLyM33Utb9c1E4rhKwPNJyGhWJUpBt0dfJtPihBM+TryCYa0UcNbV3w9DWv1EY98xkuEKlU3kbk+6YeOZFbFk=
-Received: from TY0PR03MB6354.apcprd03.prod.outlook.com (2603:1096:400:14a::9)
- by TYZPR03MB5533.apcprd03.prod.outlook.com (2603:1096:400:56::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.23; Fri, 28 Apr
- 2023 21:39:07 +0000
-Received: from TY0PR03MB6354.apcprd03.prod.outlook.com
- ([fe80::d6f0:880d:41c4:8086]) by TY0PR03MB6354.apcprd03.prod.outlook.com
- ([fe80::d6f0:880d:41c4:8086%3]) with mapi id 15.20.6340.025; Fri, 28 Apr 2023
- 21:39:07 +0000
-From:   Ryder Lee <Ryder.Lee@mediatek.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "greearb@candelatech.com" <greearb@candelatech.com>
-Subject: Re: [PATCH 2/6] wifi: mt76: mt7915: Move rxfilter logic into central
- location.
-Thread-Topic: [PATCH 2/6] wifi: mt76: mt7915: Move rxfilter logic into central
- location.
-Thread-Index: AQHZehMjJaW0PwsWP0GWUstVyPSmw69BP5GA
-Date:   Fri, 28 Apr 2023 21:39:07 +0000
-Message-ID: <839c41d9a49e3334230974ff9c6bacf628550c44.camel@mediatek.com>
-References: <20230428205000.2647945-1-greearb@candelatech.com>
-         <20230428205000.2647945-2-greearb@candelatech.com>
-In-Reply-To: <20230428205000.2647945-2-greearb@candelatech.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY0PR03MB6354:EE_|TYZPR03MB5533:EE_
-x-ms-office365-filtering-correlation-id: f6df74fd-ed92-47a3-9345-08db4830fef4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GwCwwwfIl7s9iVMthOey6HmZuF1gLMeQQt9nG3Xq/0aUBhuR2WOPlQVhbLxNV31yVULDqBQzbmIi9Y0Luchn90mawBVMYJiAZJDsSqYBrt+Yekt/FJyQ/AIVx+IzOtRLuKalkwMLnCMd5AhWyH98SsbjgwOMXcV6IB/J/4ENE336H/F8dvEUpOO/jjW8gfsNRYWkLueTpghlV62/yrKg6RXvSot7M41qKHeAsXld/W5Vl2UKYWGxVYH+Uo1EqYzkYY6qvaqpzJ1F1XHMe307EddzNa5RLcpGyUDKaaPTdQtujpsWK0hqKG86v/G8Pek+g1Br2Wh6RGxhVTgObwj6hvDvtfwM/BW28EgK+F5q4eQ+71sr6MWOQqVsMHKAJcMp+TkazB9hcGHdXwsEFzTjLutPdjJdV9vN28vpAy1MsQMYu4ZLUAhmEoV1CTQBNy9iLuOY3O87UALjSgkl2BZFBir0x488IIPnyZC2WYPVfP/U6Ouk3Z8GYE0gd5AT81r7KS2FNg63I4cZo7bMe6ahF/JtkIOYEWpg2lbmfWQ51lQoaI9dQrYBQwFQpIHvqvu9hr3Y5UkRECkyJWPJKT4tFWErVR06+aKsZARDYn/2WZGIexkwIiIwvkCCv2QQEMYS
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY0PR03MB6354.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(136003)(366004)(39860400002)(451199021)(2616005)(83380400001)(186003)(64756008)(2906002)(66556008)(41300700001)(38070700005)(76116006)(66446008)(8676002)(5660300002)(66476007)(66946007)(8936002)(26005)(6512007)(316002)(6506007)(86362001)(478600001)(110136005)(6486002)(122000001)(38100700002)(36756003)(71200400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aC9sS0VmOCtlQVduUGhTUEkrbC9NZEtHTDFYL202aE5sY083Wm9lNkZQVStS?=
- =?utf-8?B?TjdxaFRZK3VRbTV1ZTAvMDlBYVVzTW8zRzU2MVd6NjJpM1IyYUJXd3Jtblls?=
- =?utf-8?B?dkhMVDZnUGpSNFdYTXpVdXpnUFdZNDFqQUR2UmN1aUR5VTR3UVRIYTcwNFo3?=
- =?utf-8?B?SUVwQUpFeDhjYkkwNjIyTk95eFFIUVFncXlHM0ZGMDNIeCs4Q1YxV3VQVVF0?=
- =?utf-8?B?NE5kd0ZNUUcreWxPZytPbkJreFpzenV6eHNOOWtXajcvekwrRTZMekF3YlZI?=
- =?utf-8?B?OUdBSGhxL1pxbHlmdy9QOE5nRU8yNUEzbTQzaDhuTlR1UTRmUkNjbEJGVTFx?=
- =?utf-8?B?M0REdjVjV1d0anJWbGdjNk1ZNnBxY05IUDRRMi9ETFo2VUtrTExSY1BFQ29U?=
- =?utf-8?B?ZytOM0x2REhaY3czendVSWdjZ0QxZTFPOFN3OGx5cGxwVnJXdGMyUUlpRXF4?=
- =?utf-8?B?VTRDamJrV3lub3R6c2E1a2kzN0x5R0JwYVZNSFZUaml4R2ZWelI4ZFBNZisw?=
- =?utf-8?B?SlBKTzBsb2toL0xQWUx3V0duM2hpR1BJOWtLa3NINnJteWtUd3ZpOHJ2NUhD?=
- =?utf-8?B?SndRVktnSnU1R3Nid1dKdmVhMEZIUVRMNitzYTJLSUhMQmU2MkllcDVhNkl2?=
- =?utf-8?B?dXBhUzczaVA2RVdRdXRSSmt5emhVaXVPNit1V2xYcVMrSmtEQjAwa3N4M2pP?=
- =?utf-8?B?N3pQcmlkMis2MWtmSXRtNVlBSXRhQXE1MFpvR3Z0L050ZWROR0ZnMmhmcUx5?=
- =?utf-8?B?RTZTckZ2aTN1bWZ1SG85MFlwclZsR1ZRdGpxR2paYUlvZnp4WnlGL2FzN1li?=
- =?utf-8?B?OGxsSklQZmpGM2luaGRScHZCTFIxL1RtTENyUG5VNXBqUDhNb05VWGNxMDFV?=
- =?utf-8?B?Mmo3bjFYKy93b0Q5VGRNN0NTeWNSSWFQWllQWXhXTUs4bnhrbDRBRjdYL09s?=
- =?utf-8?B?bjQvc21BV0dpd29zQ2NuazJLalVyem9yRG5Db0lmc0J5MDN1WHhtaHpoRzEx?=
- =?utf-8?B?N1B6WjJkSmd4RnZWTko4d2ZUMG50VWd6ZHFIQlRkQnBBOHhsUFJTeVJvWWN3?=
- =?utf-8?B?Q3FKcUo5WXNRaUgwcCswU3NGWFN4RStvb1NTWXh6UkJ4Z3hLNXhheU11MnJw?=
- =?utf-8?B?ZHA3UTVXWG1oYjgrVmhqN1RDaTQ4d1RVNkhwS2V0R3l2Nll2UnhXZzBMZ01u?=
- =?utf-8?B?aStIekdCZXZvRGVjcU1oY0p6NDkzVlFsTjc1dUtCTG1qaUdWRW9CVmR0dE1u?=
- =?utf-8?B?SWNXWlE5WFA5M05GZHdjVXBiUWxOYWQ3RHZwMlhlZFQwVWlvZFhhRDJiUzVM?=
- =?utf-8?B?UE9TSUE2MWFYSW43Y1NSNEFJUGh0S01MdUE1cWl5VDFoRWtHdFY1MnYwcHND?=
- =?utf-8?B?UnJVeTA2VkMzcC9nZWtBT2dQSmh2UmpBSUlHNkZ0MkVqNjFkWDNnUWlxN1VH?=
- =?utf-8?B?bFdlbU9ZSy9ka3M5a0FjTEZpSkc0Und5L2N2ZnUwRWs0akF3Q3JRL3ZiUnov?=
- =?utf-8?B?TXVneUhXU0MwS2wrWlVXTnlKR2pvb1BIWFJQTlZXdDNFL0ZvZ2JPNjZMZWhj?=
- =?utf-8?B?ZEE3QWd0L3lMVjJkdy9YdlNvcUpHL3gvaloxdWI0M1d5TXFYL001VWZ3bS9v?=
- =?utf-8?B?T08veWpZWDhMQlg2SVNtQzA0UkZ6N1Z1U2E3bmZ1RThJa3pYOUVyVmNSd2xN?=
- =?utf-8?B?VHJ4RlN3M0tuQ3NYbXI1Y0dPUTJUc3dSbEdLSTJhdisxa3JzeE5QeVdUTTdU?=
- =?utf-8?B?VUxFOWlxQmJBOHJBTFRVQnFLYzBhcUpDWS9nZy91T05KZ3dUVytOTlhKM3NO?=
- =?utf-8?B?NnJqUERsc1lXc2s2aFlLQTg1M3pwRmZBMjl6ZFg0Mk1tQXVmK0J2WllVY2Js?=
- =?utf-8?B?OXY0L2JHYXFvUjZ2dnR3aWlZekxJbFNvVU5LOThzNzNPZmJ5czljN04zL2pY?=
- =?utf-8?B?UlNyNm1QNkFDQytWYjFVL2tOcmxEZEhyek0rb2x3Rjg5bnZHUmxndXlHL0ht?=
- =?utf-8?B?aWxieE91WlJjc1VKQnBmNkhUUUErZTU5cmh0dncrRmRnYVlzeEQvdGRkZklo?=
- =?utf-8?B?ZTN0aDg4TkFEbm9xVEYrVWhpNjI3VkJGbkNETTk2aWhoWm1Vc2ErNXpmRUp6?=
- =?utf-8?B?bkJINWdzejZ1S2RQbUU4ZUFYdlVkT3ZJRTc4bTZtbGsxaHZRcEYyNU1lQW8r?=
- =?utf-8?B?eEE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <67504B663603F44B8390BB71383BDFC1@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Fri, 28 Apr 2023 17:42:58 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1123A26AF
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 14:42:57 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D39BD340067
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 21:42:54 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 3AAB013C2B0
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 14:42:54 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3AAB013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1682718174;
+        bh=Cog2Db6CxdZiGIxLN9VNc1J/Aa7hLiHl6MP1J1mi3bg=;
+        h=Date:To:From:Subject:From;
+        b=sK2Tgcg9Sr/22+wQyPzsd7HOTph28R+MNdnobG2FqpHRejfOoLrufgLL10i5en6Uo
+         OrDpyjgH0fsM1kvyz+ZIonRPdxrjddEPnxU3A5m04+fTAE/rZD8FtQzAL9gc09u85I
+         s9vug4iI7bYgLbFoHmt9J7ii6LrDPngRkCXSXkAY=
+Message-ID: <a558d27a-33ef-6c75-0552-03772ccfbe5f@candelatech.com>
+Date:   Fri, 28 Apr 2023 14:42:53 -0700
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY0PR03MB6354.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6df74fd-ed92-47a3-9345-08db4830fef4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2023 21:39:07.5525
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KbShm5IqdSingDWaJ+k24f4XRaHVkIaSC3Moe2snJKyvorV8k1CJa/HNw1PkT0R/qXs17HypWlO3T68oY6EX0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB5533
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: ax210 fw v78 crash in 6.4-ish kernel.
+Organization: Candela Technologies
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1682718175-cmWD4iZevOgp
+X-MDID-O: us5;at1;1682718175;cmWD4iZevOgp;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIzLTA0LTI4IGF0IDEzOjQ5IC0wNzAwLCBncmVlYXJiQGNhbmRlbGF0ZWNoLmNv
-bSB3cm90ZToNCj4gRXh0ZXJuYWwgZW1haWwgOiBQbGVhc2UgZG8gbm90IGNsaWNrIGxpbmtzIG9y
-IG9wZW4gYXR0YWNobWVudHMgdW50aWwNCj4geW91IGhhdmUgdmVyaWZpZWQgdGhlIHNlbmRlciBv
-ciB0aGUgY29udGVudC4NCj4gDQo+IA0KPiBGcm9tOiBCZW4gR3JlZWFyIDxncmVlYXJiQGNhbmRl
-bGF0ZWNoLmNvbT4NCj4gDQo+IEFuZCBlbnN1cmUgbW9uaXRvciBtb2RlIGlzIHRha2VuIGludG8g
-YWNjb3VudCB3aGVuIGNhbGN1bGF0aW5nIHRoZQ0KPiBmaWx0ZXIuDQo+IA0KPiBFbmFibGUgUk1B
-Q19UT1BfVEZfU05JRkZFUiB3aGVuIGluIHByb21pc2MgbW9kZS4NCj4gDQo+IFNpZ25lZC1vZmYt
-Ynk6IEJlbiBHcmVlYXIgPGdyZWVhcmJAY2FuZGVsYXRlY2guY29tPg0KPiAtLS0NCj4gIC4uLi9u
-ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jICB8IDUxICsrKysrKysrKysr
-KysrLS0tDQo+IC0tDQo+ICAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1
-LmggICAgfCAgMiArDQo+ICAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3Jl
-Z3MuaCAgfCAgMyArKw0KPiAgMyBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCAxMiBk
-ZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzkxNS9tYWluLmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzkxNS9tYWluLmMNCj4gaW5kZXggNzU2NmRiMGNmNTIzLi43ZWM5ZjQ1Y2ZhMTUg
-MTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L21haW4uYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
-NS9tYWluLmMNCj4gQEAgLTgsNiArOCwxMSBAQA0KPiAgI2luY2x1ZGUgIm10NzkxNS5oIg0KPiAg
-I2luY2x1ZGUgIm1jdS5oIg0KPiANCj4gK3N0YXRpYyB2b2lkIF9fbXQ3OTE1X2NvbmZpZ3VyZV9m
-aWx0ZXIoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsDQo+ICsgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IGNoYW5nZWRfZmxhZ3MsDQo+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50ICp0b3RhbF9mbGFncywNCj4g
-KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB1NjQgbXVsdGljYXN0KTsNCj4g
-Kw0KPiAgc3RhdGljIGJvb2wgbXQ3OTE1X2Rldl9ydW5uaW5nKHN0cnVjdCBtdDc5MTVfZGV2ICpk
-ZXYpDQo+ICB7DQo+ICAgICAgICAgc3RydWN0IG10NzkxNV9waHkgKnBoeTsNCj4gQEAgLTQ4MSwx
-NiArNDg2LDE1IEBAIHN0YXRpYyBpbnQgbXQ3OTE1X2NvbmZpZyhzdHJ1Y3QgaWVlZTgwMjExX2h3
-DQo+ICpodywgdTMyIGNoYW5nZWQpDQo+ICAgICAgICAgaWYgKGNoYW5nZWQgJiBJRUVFODAyMTFf
-Q09ORl9DSEFOR0VfTU9OSVRPUikgew0KPiAgICAgICAgICAgICAgICAgYm9vbCBlbmFibGVkID0g
-ISEoaHctPmNvbmYuZmxhZ3MgJg0KPiBJRUVFODAyMTFfQ09ORl9NT05JVE9SKTsNCj4gICAgICAg
-ICAgICAgICAgIGJvb2wgYmFuZCA9IHBoeS0+bXQ3Ni0+YmFuZF9pZHg7DQo+ICsgICAgICAgICAg
-ICAgICB1MzIgdG90YWxfZmxhZ3MgPSBwaHktPm1hYzgwMjExX3J4ZmlsdGVyX2ZsYWdzOw0KPiAr
-ICAgICAgICAgICAgICAgdTY0IG11bHRpY2FzdCA9IDA7IC8qIG5vdCB1c2VkIGJ5IHRoaXMgZHJp
-dmVyDQo+IGN1cnJlbnRseS4gKi8NCj4gDQo+IC0gICAgICAgICAgICAgICBpZiAoIWVuYWJsZWQp
-DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIHBoeS0+cnhmaWx0ZXIgfD0gTVRfV0ZfUkZDUl9E
-Uk9QX09USEVSX1VDOw0KPiAtICAgICAgICAgICAgICAgZWxzZQ0KPiAtICAgICAgICAgICAgICAg
-ICAgICAgICBwaHktPnJ4ZmlsdGVyICY9IH5NVF9XRl9SRkNSX0RST1BfT1RIRVJfVUM7DQo+ICsg
-ICAgICAgICAgICAgICBwaHktPm1vbml0b3JfZW5hYmxlZCA9IGVuYWJsZWQ7DQo+IA0KPiAgICAg
-ICAgICAgICAgICAgbXQ3Nl9ybXdfZmllbGQoZGV2LCBNVF9ETUFfRENSMChiYW5kKSwNCj4gTVRf
-RE1BX0RDUjBfUlhEX0c1X0VOLA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZW5h
-YmxlZCk7DQo+ICAgICAgICAgICAgICAgICBtdDc2X3Rlc3Rtb2RlX3Jlc2V0KHBoeS0+bXQ3Niwg
-dHJ1ZSk7DQo+IC0gICAgICAgICAgICAgICBtdDc2X3dyKGRldiwgTVRfV0ZfUkZDUihiYW5kKSwg
-cGh5LT5yeGZpbHRlcik7DQo+ICsgICAgICAgICAgICAgICBfX210NzkxNV9jb25maWd1cmVfZmls
-dGVyKGh3LCAwLCAmdG90YWxfZmxhZ3MsDQo+IG11bHRpY2FzdCk7DQo+ICAgICAgICAgfQ0KPiAN
-Cj4gICAgICAgICBtdXRleF91bmxvY2soJmRldi0+bXQ3Ni5tdXRleCk7DQo+IEBAIC01MTIsMTAg
-KzUxNiwxMCBAQCBtdDc5MTVfY29uZl90eChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgc3RydWN0
-DQo+IGllZWU4MDIxMV92aWYgKnZpZiwNCj4gICAgICAgICByZXR1cm4gMDsNCj4gIH0NCj4gDQo+
-IC1zdGF0aWMgdm9pZCBtdDc5MTVfY29uZmlndXJlX2ZpbHRlcihzdHJ1Y3QgaWVlZTgwMjExX2h3
-ICpodywNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50
-IGNoYW5nZWRfZmxhZ3MsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVu
-c2lnbmVkIGludCAqdG90YWxfZmxhZ3MsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHU2NCBtdWx0aWNhc3QpDQo+ICtzdGF0aWMgdm9pZCBfX210NzkxNV9jb25maWd1cmVf
-ZmlsdGVyKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KPiArICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBjaGFuZ2VkX2ZsYWdzLA0KPiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCAqdG90YWxfZmxhZ3MsDQo+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdTY0IG11bHRpY2FzdCkNCj4g
-IHsNCj4gICAgICAgICBzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2ID0gbXQ3OTE1X2h3X2Rldihodyk7
-DQo+ICAgICAgICAgc3RydWN0IG10NzkxNV9waHkgKnBoeSA9IG10NzkxNV9od19waHkoaHcpOw0K
-PiBAQCAtNTI2LDYgKzUzMCw4IEBAIHN0YXRpYyB2b2lkIG10NzkxNV9jb25maWd1cmVfZmlsdGVy
-KHN0cnVjdA0KPiBpZWVlODAyMTFfaHcgKmh3LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICBN
-VF9XRl9SRkNSMV9EUk9QX0NGRU5EIHwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgTVRfV0Zf
-UkZDUjFfRFJPUF9DRkFDSzsNCj4gICAgICAgICB1MzIgZmxhZ3MgPSAwOw0KPiArICAgICAgIGJv
-b2wgaXNfcHJvbWlzYyA9ICp0b3RhbF9mbGFncyAmIEZJRl9DT05UUk9MIHx8IHBoeS0NCj4gPm1v
-bml0b3JfdmlmIHx8DQo+ICsgICAgICAgICAgICAgICBwaHktPm1vbml0b3JfZW5hYmxlZDsNCj4g
-DQo+ICAjZGVmaW5lIE1UNzZfRklMVEVSKF9mbGFnLCBfaHcpIGRvDQo+IHsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIFwNCj4gICAgICAgICAgICAgICAgIGZsYWdzIHw9ICp0b3Rh
-bF9mbGFncyAmDQo+IEZJRl8jI19mbGFnOyAgICAgICAgICAgICAgICAgICAgXA0KPiBAQCAtNTMz
-LDcgKzUzOSw3IEBAIHN0YXRpYyB2b2lkIG10NzkxNV9jb25maWd1cmVfZmlsdGVyKHN0cnVjdA0K
-PiBpZWVlODAyMTFfaHcgKmh3LA0KPiAgICAgICAgICAgICAgICAgcGh5LT5yeGZpbHRlciB8PSAh
-KGZsYWdzICYgRklGXyMjX2ZsYWcpICoNCj4gKF9odyk7ICAgICAgICBcDQo+ICAgICAgICAgfSB3
-aGlsZSAoMCkNCj4gDQo+IC0gICAgICAgbXV0ZXhfbG9jaygmZGV2LT5tdDc2Lm11dGV4KTsNCj4g
-KyAgICAgICBwaHktPm1hYzgwMjExX3J4ZmlsdGVyX2ZsYWdzID0gKnRvdGFsX2ZsYWdzOyAvKiBz
-YXZlDQo+IHJlcXVlc3RlZCBmbGFncyBmb3IgbGF0ZXIgKi8NCj4gDQo+ICAgICAgICAgcGh5LT5y
-eGZpbHRlciAmPSB+KE1UX1dGX1JGQ1JfRFJPUF9PVEhFUl9CU1MgfA0KPiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBNVF9XRl9SRkNSX0RST1BfT1RIRVJfQkVBQ09OIHwNCj4gQEAgLTU0Nyw2
-ICs1NTMsOCBAQCBzdGF0aWMgdm9pZCBtdDc5MTVfY29uZmlndXJlX2ZpbHRlcihzdHJ1Y3QNCj4g
-aWVlZTgwMjExX2h3ICpodywNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgTVRfV0ZfUkZD
-Ul9EUk9QX1VOV0FOVEVEX0NUTCB8DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1UX1dG
-X1JGQ1JfRFJPUF9TVEJDX01VTFRJKTsNCj4gDQo+ICsgICAgICAgcGh5LT5yeGZpbHRlciB8PSBN
-VF9XRl9SRkNSX0RST1BfT1RIRVJfVUM7DQo+ICsNCj4gICAgICAgICBNVDc2X0ZJTFRFUihPVEhF
-Ul9CU1MsIE1UX1dGX1JGQ1JfRFJPUF9PVEhFUl9USU0gfA0KPiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgTVRfV0ZfUkZDUl9EUk9QX0EzX01BQyB8DQo+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBNVF9XRl9SRkNSX0RST1BfQTNfQlNTSUQpOw0KPiBAQCAtNTU3LDE0ICs1
-NjUsMzMgQEAgc3RhdGljIHZvaWQgbXQ3OTE1X2NvbmZpZ3VyZV9maWx0ZXIoc3RydWN0DQo+IGll
-ZWU4MDIxMV9odyAqaHcsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTVRfV0ZfUkZD
-Ul9EUk9QX1JUUyB8DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTVRfV0ZfUkZDUl9E
-Uk9QX0NUTF9SU1YgfA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIE1UX1dGX1JGQ1Jf
-RFJPUF9ORFBBKTsNCj4gKyAgICAgICBpZiAoaXNfcHJvbWlzYykNCj4gKyAgICAgICAgICAgICAg
-IHBoeS0+cnhmaWx0ZXIgJj0gfk1UX1dGX1JGQ1JfRFJPUF9PVEhFUl9VQzsNCj4gDQo+ICAgICAg
-ICAgKnRvdGFsX2ZsYWdzID0gZmxhZ3M7DQo+ICAgICAgICAgbXQ3Nl93cihkZXYsIE1UX1dGX1JG
-Q1IoYmFuZCksIHBoeS0+cnhmaWx0ZXIpOw0KPiANCj4gLSAgICAgICBpZiAoKnRvdGFsX2ZsYWdz
-ICYgRklGX0NPTlRST0wpDQo+ICsgICAgICAgaWYgKGlzX3Byb21pc2MpIHsNCj4gICAgICAgICAg
-ICAgICAgIG10NzZfY2xlYXIoZGV2LCBNVF9XRl9SRkNSMShiYW5kKSwgY3RsX2ZsYWdzKTsNCj4g
-LSAgICAgICBlbHNlDQo+ICsgICAgICAgICAgICAgICBtdDc2X3NldChkZXYsIE1UX1dGX1JNQUNf
-VE9QX1RGX1BBUlNFUihiYW5kKSwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgIE1UX1dGX1JN
-QUNfVE9QX1RGX1NOSUZGRVIpOw0KPiArICAgICAgIH0gZWxzZSB7DQo+ICAgICAgICAgICAgICAg
-ICBtdDc2X3NldChkZXYsIE1UX1dGX1JGQ1IxKGJhbmQpLCBjdGxfZmxhZ3MpOw0KPiArICAgICAg
-ICAgICAgICAgbXQ3Nl9jbGVhcihkZXYsIE1UX1dGX1JNQUNfVE9QX1RGX1BBUlNFUihiYW5kKSwN
-Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgTVRfV0ZfUk1BQ19UT1BfVEZfU05JRkZFUik7
-DQo+ICsgICAgICAgfQ0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCBtdDc5MTVfY29uZmlndXJl
-X2ZpbHRlcihzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywNCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IGNoYW5nZWRfZmxhZ3MsDQo+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCAqdG90YWxfZmxhZ3MsDQo+ICsg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHU2NCBtdWx0aWNhc3QpDQo+ICt7DQo+
-ICsgICAgICAgc3RydWN0IG10NzkxNV9kZXYgKmRldiA9IG10NzkxNV9od19kZXYoaHcpOw0KPiAr
-DQo+ICsgICAgICAgbXV0ZXhfbG9jaygmZGV2LT5tdDc2Lm11dGV4KTsNCj4gKw0KPiArICAgICAg
-IF9fbXQ3OTE1X2NvbmZpZ3VyZV9maWx0ZXIoaHcsIGNoYW5nZWRfZmxhZ3MsIHRvdGFsX2ZsYWdz
-LA0KPiBtdWx0aWNhc3QpOw0KPiANCj4gICAgICAgICBtdXRleF91bmxvY2soJmRldi0+bXQ3Ni5t
-dXRleCk7DQo+ICB9DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzkxNS9tdDc5MTUuaA0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L210NzkxNS5oDQo+IGluZGV4IGIzZWFkMzUzMDc0MC4uMDZmOThlNWNkOTVl
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
-NS9tdDc5MTUuaA0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzkxNS9tdDc5MTUuaA0KPiBAQCAtMjQ0LDYgKzI0NCw4IEBAIHN0cnVjdCBtdDc5MTVfcGh5IHsN
-Cj4gICAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqbW9uaXRvcl92aWY7DQo+IA0KPiAgICAg
-ICAgIHN0cnVjdCB0aGVybWFsX2Nvb2xpbmdfZGV2aWNlICpjZGV2Ow0KPiArICAgICAgIHUzMiBt
-YWM4MDIxMV9yeGZpbHRlcl9mbGFnczsNCj4gKyAgICAgICB1OCBtb25pdG9yX2VuYWJsZWQ7DQo+
-ICAgICAgICAgdTggY2Rldl9zdGF0ZTsNCj4gICAgICAgICB1OCB0aHJvdHRsZV9zdGF0ZTsNCj4g
-ICAgICAgICB1MzIgdGhyb3R0bGVfdGVtcFsyXTsgLyogMDogY3JpdGljYWwgaGlnaCwgMTogbWF4
-aW11bSAqLw0KPiANCkkgcHJlZmVyIHNvbWV0aGluZyBsaWtlIHRoaXMgc28gdGhhdCB3ZSBkb24n
-dCBuZWVkIGEgbW9uaXRvcl9lbmFibGVkPw0KIGlmIChjaGFuZ2VkICYgSUVFRTgwMjExX0NPTkZf
-Q0hBTkdFX01PTklUT1IpDQoJbXQ3OTE1X3NldF9tb25pdG9yKHBoeSwgISEoaHctPmNvbmYuZmxh
-Z3MgJiYNCklFRUU4MDIxMV9DT05GX01PTklUT1IpKTsNCg0KUnlkZXINCg0K
+I saw this in kernel based on recent Linus tree:
+
+[  154.760738] iwlwifi 0000:0c:00.0: Microcode SW error detected. Restarting 0x2.
+[  154.766812] iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
+[  154.771123] iwlwifi 0000:0c:00.0: Transport status: 0x0000004B, valid: 6
+[  154.776564] iwlwifi 0000:0c:00.0: Loaded firmware version: 78.3bfdc55f.0 ty-a0-gf-a0-78.ucode
+[  154.783811] iwlwifi 0000:0c:00.0: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL
+[  154.789485] iwlwifi 0000:0c:00.0: 0x00808203 | trm_hw_status0
+[  154.793954] iwlwifi 0000:0c:00.0: 0x00000000 | trm_hw_status1
+[  154.798427] iwlwifi 0000:0c:00.0: 0x004DC220 | branchlink2
+[  154.802623] iwlwifi 0000:0c:00.0: 0x000088B8 | interruptlink1
+[  154.807108] iwlwifi 0000:0c:00.0: 0x000088B8 | interruptlink2
+[  154.811568] iwlwifi 0000:0c:00.0: 0x00016AEC | data1
+[  154.815257] iwlwifi 0000:0c:00.0: 0x00000010 | data2
+[  154.818949] iwlwifi 0000:0c:00.0: 0x00000000 | data3
+[  154.822656] iwlwifi 0000:0c:00.0: 0x41817919 | beacon time
+[  154.826873] iwlwifi 0000:0c:00.0: 0x7E3EA72C | tsf low
+[  154.830722] iwlwifi 0000:0c:00.0: 0x00000003 | tsf hi
+[  154.834492] iwlwifi 0000:0c:00.0: 0x00000000 | time gp1
+[  154.838446] iwlwifi 0000:0c:00.0: 0x01CE3A83 | time gp2
+[  154.842385] iwlwifi 0000:0c:00.0: 0x00000001 | uCode revision type
+[  154.847273] iwlwifi 0000:0c:00.0: 0x0000004E | uCode version major
+[  154.852165] iwlwifi 0000:0c:00.0: 0x3BFDC55F | uCode version minor
+[  154.857090] iwlwifi 0000:0c:00.0: 0x00000420 | hw version
+[  154.861201] iwlwifi 0000:0c:00.0: 0x00C80002 | board version
+[  154.865594] iwlwifi 0000:0c:00.0: 0x806EF400 | hcmd
+[  154.869182] iwlwifi 0000:0c:00.0: 0xE6F4B610 | isr0
+[  154.872785] iwlwifi 0000:0c:00.0: 0x01448000 | isr1
+[  154.876378] iwlwifi 0000:0c:00.0: 0x40F8011A | isr2
+[  154.879994] iwlwifi 0000:0c:00.0: 0x00C00008 | isr3
+[  154.883611] iwlwifi 0000:0c:00.0: 0x00200000 | isr4
+[  154.887259] iwlwifi 0000:0c:00.0: 0x0311001C | last cmd Id
+[  154.891459] iwlwifi 0000:0c:00.0: 0x00016AEC | wait_event
+[  154.895573] iwlwifi 0000:0c:00.0: 0x00004288 | l2p_control
+[  154.899806] iwlwifi 0000:0c:00.0: 0x00019C14 | l2p_duration
+[  154.904092] iwlwifi 0000:0c:00.0: 0x00000000 | l2p_mhvalid
+[  154.908304] iwlwifi 0000:0c:00.0: 0x00EF00F8 | l2p_addr_match
+[  154.912777] iwlwifi 0000:0c:00.0: 0x00000009 | lmpm_pmg_sel
+[  154.917065] iwlwifi 0000:0c:00.0: 0x00000000 | timestamp
+[  154.921103] iwlwifi 0000:0c:00.0: 0x05F83838 | flow_handler
+[  154.925473] iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
+[  154.929778] iwlwifi 0000:0c:00.0: Transport status: 0x0000004B, valid: 7
+[  154.935190] iwlwifi 0000:0c:00.0: 0x20100246 | ADVANCED_SYSASSERT
+[  154.940001] iwlwifi 0000:0c:00.0: 0x00000000 | umac branchlink1
+[  154.944643] iwlwifi 0000:0c:00.0: 0x8046D728 | umac branchlink2
+[  154.949291] iwlwifi 0000:0c:00.0: 0x8048DB02 | umac interruptlink1
+[  154.954190] iwlwifi 0000:0c:00.0: 0x00000000 | umac interruptlink2
+[  154.959117] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data1
+[  154.963238] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data2
+[  154.967367] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data3
+[  154.971493] iwlwifi 0000:0c:00.0: 0x0000004E | umac major
+[  154.975657] iwlwifi 0000:0c:00.0: 0x3BFDC55F | umac minor
+[  154.979798] iwlwifi 0000:0c:00.0: 0x01CE3A7D | frame pointer
+[  154.984177] iwlwifi 0000:0c:00.0: 0xC0887F00 | stack pointer
+[  154.988574] iwlwifi 0000:0c:00.0: 0x00030303 | last host cmd
+[  154.992985] iwlwifi 0000:0c:00.0: 0x00010008 | isr status reg
+[  154.997471] iwlwifi 0000:0c:00.0: IML/ROM dump:
+[  155.000722] iwlwifi 0000:0c:00.0: 0x00000B03 | IML/ROM error/state
+[  155.005655] iwlwifi 0000:0c:00.0: 0x00007F8A | IML/ROM data1
+[  155.010041] iwlwifi 0000:0c:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+[  155.015285] iwlwifi 0000:0c:00.0: Fseq Registers:
+[  155.018704] iwlwifi 0000:0c:00.0: 0x60000000 | FSEQ_ERROR_CODE
+[  155.023255] iwlwifi 0000:0c:00.0: 0x80440006 | FSEQ_TOP_INIT_VERSION
+[  155.028328] iwlwifi 0000:0c:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+[  155.033572] iwlwifi 0000:0c:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+[  155.038221] iwlwifi 0000:0c:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+[  155.043557] iwlwifi 0000:0c:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+[  155.048196] iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVI_ID
+[  155.052486] iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVR_ID
+[  155.056776] iwlwifi 0000:0c:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+[  155.061611] iwlwifi 0000:0c:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+[  155.066453] iwlwifi 0000:0c:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+[  155.073000] iwlwifi 0000:0c:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+[  155.079912] iwlwifi 0000:0c:00.0: UMAC CURRENT PC: 0xd05c18
+[  155.084204] iwlwifi 0000:0c:00.0: LMAC1 CURRENT PC: 0xd05c1c
+[  155.089017] iwlwifi 0000:0c:00.0: WRT: Collecting data: ini trigger 4 fired (delay=0ms).
+[  155.089026] ieee80211 wiphy5: Hardware restart was requested
+[  155.089064] iwlwifi 0000:0c:00.0: FW error in SYNC CMD UNKNOWN
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
