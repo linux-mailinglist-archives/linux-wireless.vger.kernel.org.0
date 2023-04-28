@@ -2,199 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 966D36F0E8C
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 00:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0FE6F0F8D
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 02:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344341AbjD0WuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Apr 2023 18:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53418 "EHLO
+        id S1344164AbjD1AXE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Apr 2023 20:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344353AbjD0WuL (ORCPT
+        with ESMTP id S1343716AbjD1AXD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Apr 2023 18:50:11 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4403A89
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 15:50:01 -0700 (PDT)
-X-UUID: d356f4aae54d11ed8e3aff58e85a36f4-20230428
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ibZNawFMAjADf2IQ8Wssk5fpWCpRz5r71nvdnT+MRkA=;
-        b=TXTnoVmtl2JKF025tX2s3R8Y/uqpAH/zus20+RRj59jNnV7CCglmWawqFhxp3zH/cTT+diO/kK1ADPpg4TrpWZh6LIV3kHvLH9REFMxxgHhbFirS55EOtvONDSeVgCYPV+7IsuE0ZOfV7f9QnHT4Hzc5Ix/PBChfmuCHpH1BmAk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.22,REQID:ab903aa4-9ad8-4c46-ace8-7342ecf1e44e,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:95
-X-CID-INFO: VERSION:1.1.22,REQID:ab903aa4-9ad8-4c46-ace8-7342ecf1e44e,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
-        :quarantine,TS:95
-X-CID-META: VersionHash:120426c,CLOUDID:c23d1d30-6935-4eab-a959-f84f8da15543,B
-        ulkID:230428064956Z2VJI6IB,BulkQuantity:0,Recheck:0,SF:38|29|28|17|19|48,T
-        C:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
-        L:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-UUID: d356f4aae54d11ed8e3aff58e85a36f4-20230428
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 750671034; Fri, 28 Apr 2023 06:49:53 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 28 Apr 2023 06:49:52 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 28 Apr 2023 06:49:52 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: [PATCH v3] wifi: mt76: mt7915: report tx retries/failed counts for non-WED path
-Date:   Fri, 28 Apr 2023 06:49:51 +0800
-Message-ID: <b582aef1382d933d5a8e76f6007c2a2ac456bfa2.1682635303.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Thu, 27 Apr 2023 20:23:03 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF0CE65;
+        Thu, 27 Apr 2023 17:22:58 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 33S0MLmD4004117, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 33S0MLmD4004117
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 28 Apr 2023 08:22:21 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 28 Apr 2023 08:22:23 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Fri, 28 Apr 2023 08:22:23 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Fri, 28 Apr 2023 08:22:23 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Kaiser <martin@kaiser.cx>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtl8xxxu: (trivial) remove unnecessary return
+Thread-Topic: [PATCH] wifi: rtl8xxxu: (trivial) remove unnecessary return
+Thread-Index: AQHZeTvAQ7/UWm//bUGU0T04vRyWxq8/3How
+Date:   Fri, 28 Apr 2023 00:22:23 +0000
+Message-ID: <e75e9d80de2c46a795a4e1412e92ce71@realtek.com>
+References: <20230427185936.923777-1-martin@kaiser.cx>
+In-Reply-To: <20230427185936.923777-1-martin@kaiser.cx>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get missing tx retries/failed counts from txfree done events and report
-them via mt7915_sta_statistics().
 
-Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
----
-v3 - add a missing check for mt7921
-v2 - add a missing check for non-v3 format
----
- .../wireless/mediatek/mt76/mt76_connac_mac.c  |  4 +++-
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 22 +++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7915/mac.h   |  7 +++++-
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 12 +++++-----
- 4 files changed, 35 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index d39a3cc5e381..1fd36f9375ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -738,7 +738,9 @@ bool mt76_connac2_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 		info->status.ampdu_ack_len = !noacked;
- 		info->status.rates[0].idx = -1;
- 
--		wcid->stats.tx_failed += noacked;
-+		/* avoid double counting if dev supports txfree event */
-+		if (is_mt7921(dev))
-+			wcid->stats.tx_failed += noacked;
- 
- 		mt76_connac2_mac_fill_txs(dev, wcid, txs_data);
- 		mt76_tx_status_skb_done(dev, skb, &list);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 7df8d95fc3fb..9b2ccd99854e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -951,6 +951,7 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
- 	struct mt76_dev *mdev = &dev->mt76;
- 	struct mt76_txwi_cache *txwi;
- 	struct ieee80211_sta *sta = NULL;
-+	struct mt76_wcid *wcid = NULL;
- 	LIST_HEAD(free_list);
- 	void *end = data + len;
- 	bool v3, wake = false;
-@@ -977,7 +978,6 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
- 		info = le32_to_cpu(*cur_info);
- 		if (info & MT_TX_FREE_PAIR) {
- 			struct mt7915_sta *msta;
--			struct mt76_wcid *wcid;
- 			u16 idx;
- 
- 			idx = FIELD_GET(MT_TX_FREE_WLAN_ID, info);
-@@ -994,7 +994,25 @@ mt7915_mac_tx_free(struct mt7915_dev *dev, void *data, int len)
- 			continue;
- 		}
- 
--		if (v3 && (info & MT_TX_FREE_MPDU_HEADER))
-+		if (!mtk_wed_device_active(&mdev->mmio.wed) && wcid) {
-+			u32 tx_retries = 0, tx_failed = 0;
-+
-+			if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3)) {
-+				tx_retries =
-+					FIELD_GET(MT_TX_FREE_COUNT_V3, info) - 1;
-+				tx_failed = tx_retries +
-+					!!FIELD_GET(MT_TX_FREE_STAT_V3, info);
-+			} else if (!v3 && (info & MT_TX_FREE_MPDU_HEADER)) {
-+				tx_retries =
-+					FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
-+				tx_failed = tx_retries +
-+					!!FIELD_GET(MT_TX_FREE_STAT, info);
-+			}
-+			wcid->stats.tx_retries += tx_retries;
-+			wcid->stats.tx_failed += tx_failed;
-+		}
-+
-+		if (v3 && (info & MT_TX_FREE_MPDU_HEADER_V3))
- 			continue;
- 
- 		for (i = 0; i < 1 + v3; i++) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-index ce94f87e2042..448b1b380190 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
-@@ -9,7 +9,12 @@
- #define MT_TX_FREE_VER			GENMASK(18, 16)
- #define MT_TX_FREE_MSDU_CNT_V0		GENMASK(6, 0)
- /* 0: success, others: dropped */
--#define MT_TX_FREE_MPDU_HEADER		BIT(30)
-+#define MT_TX_FREE_COUNT		GENMASK(12, 0)
-+#define MT_TX_FREE_COUNT_V3		GENMASK(27, 24)
-+#define MT_TX_FREE_STAT			GENMASK(14, 13)
-+#define MT_TX_FREE_STAT_V3		GENMASK(29, 28)
-+#define MT_TX_FREE_MPDU_HEADER		BIT(15)
-+#define MT_TX_FREE_MPDU_HEADER_V3	BIT(30)
- #define MT_TX_FREE_MSDU_ID_V3		GENMASK(14, 0)
- 
- #define MT_TXS5_F0_FINAL_MPDU		BIT(31)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 2ada2806de66..61157248d742 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1046,12 +1046,6 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
- 		sinfo->tx_packets = msta->wcid.stats.tx_packets;
- 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_PACKETS);
- 
--		sinfo->tx_failed = msta->wcid.stats.tx_failed;
--		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
--
--		sinfo->tx_retries = msta->wcid.stats.tx_retries;
--		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
--
- 		if (mtk_wed_get_rx_capa(&phy->dev->mt76.mmio.wed)) {
- 			sinfo->rx_bytes = msta->wcid.stats.rx_bytes;
- 			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_BYTES64);
-@@ -1061,6 +1055,12 @@ static void mt7915_sta_statistics(struct ieee80211_hw *hw,
- 		}
- 	}
- 
-+	sinfo->tx_failed = msta->wcid.stats.tx_failed;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
-+
-+	sinfo->tx_retries = msta->wcid.stats.tx_retries;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
-+
- 	sinfo->ack_signal = (s8)msta->ack_signal;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_ACK_SIGNAL);
- 
--- 
-2.18.0
+> -----Original Message-----
+> From: Martin Kaiser <martin@kaiser.cx>
+> Sent: Friday, April 28, 2023 3:00 AM
+> To: Jes Sorensen <Jes.Sorensen@gmail.com>; Kalle Valo <kvalo@kernel.org>; David S. Miller
+> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>
+> Cc: Martin Kaiser <martin@kaiser.cx>; linux-wireless@vger.kernel.org; netdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org
+> Subject: [PATCH] wifi: rtl8xxxu: (trivial) remove unnecessary return
+> 
+> Remove a return statement at the end of a void function.
+> 
+> This fixes a checkpatch warning.
+> 
+> WARNING: void function return statements are not generally useful
+> 6206: FILE: ./drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:6206:
+> +  return;
+> +}
+> 
+> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index fd8c8c6d53d6..7e7bb11231e3 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -6281,7 +6281,6 @@ static void rtl8xxxu_rx_complete(struct urb *urb)
+>  cleanup:
+>         usb_free_urb(urb);
+>         dev_kfree_skb(skb);
+> -       return;
+>  }
+> 
+>  static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
+> --
+> 2.30.2
 
