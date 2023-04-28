@@ -2,1271 +2,275 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F77E6F1FFC
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 23:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD7636F2001
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 23:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbjD1VLw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 17:11:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
+        id S230123AbjD1VRq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 17:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229707AbjD1VLv (ORCPT
+        with ESMTP id S229707AbjD1VRp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 17:11:51 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F89E69
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 14:11:47 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f1950f5676so1320765e9.3
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 14:11:47 -0700 (PDT)
+        Fri, 28 Apr 2023 17:17:45 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B311FF7
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 14:17:41 -0700 (PDT)
+X-UUID: 18bb4926e60a11edb20a276fd37b9834-20230429
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:To:From; bh=77jg18AJ8uXs/HQ80ayToYvE83IPDCm3ZE3lYl1+btM=;
+        b=fRUHjf1sYEWvolwMKChfcV4Wt0cCVIM6XhXKE8BmOdh2q0Ge4vaG7xAb/xtXXzohB6tH0p3BMxD4rZgas6oyUO4XVLYBa6jQcyuVeRSrTirQ0y6aSylRwQpgw0TuxDwLiPqkkKKHXCFxLTb3XWlbnSJBsv4hcOLBxT2km312dnI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.22,REQID:c16aa7d0-80cc-498f-b893-b34e831b6f31,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:45
+X-CID-INFO: VERSION:1.1.22,REQID:c16aa7d0-80cc-498f-b893-b34e831b6f31,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+        elease,TS:45
+X-CID-META: VersionHash:120426c,CLOUDID:3479416a-2f20-4998-991c-3b78627e4938,B
+        ulkID:2304290517372ZUR1TVN,BulkQuantity:0,Recheck:0,SF:28|17|19|48|38|29|1
+        02,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,C
+        OL:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-UUID: 18bb4926e60a11edb20a276fd37b9834-20230429
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 2126787317; Sat, 29 Apr 2023 05:17:35 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.25; Sat, 29 Apr 2023 05:17:34 +0800
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.1118.25 via Frontend Transport; Sat, 29 Apr 2023 05:17:34 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Uwwxy8RdhlHaVQI7O0XlC8C3u+hmJzK/o+dkaHk/+TeFpC+M52qTr9zRWkBkvI/3oo0mxbwA8gC8LkQBJ9m/EkjWaHOS34KaCp0EdpaLNYaPKEcd9w02x/aSnZoSSZWdKO3OnHmE4yKZbpvUFYWY2vHWkihoKsiXGmR7T3NOj8Rrt0Mbhj93hv1HypudSU3tt68IyJkpiEzsbwjVXPUSR/YENilik4I4troc6B0aV1tyzeiXp6J6VXhXAXNz3dWxkZGCKD8jNfj1rrp/RHJXUahS6O+vZFH1VoD8c324uP0iYYENGewvZLf4I2qIgc9eEd66q8N3xuRyYHUG8ctJEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=77jg18AJ8uXs/HQ80ayToYvE83IPDCm3ZE3lYl1+btM=;
+ b=eWYKB8rA/ffZ/yO3dqVD3mVSUEjsn7+D7wmbyRT+qKgIJeKW/V3yxiOp1gK4pE1A3d8O45UyDDWPK7zap/oL/aaJV7fX3+toHWp5oWDsYdPEyldX+SAMQOSlNvT8q6Lj1ZZSAQ/T+cFc71wg1yUnjf8LnulskBVpwUlQua3UG9o8a6FtbZ4jvPhxGwSTfNciVnMCLSGDNFb5FUZiR1iTR15Fajiil9CxwuD2TBdHWT4ufCnyOUa00Q4U8KhtmUJPAK3YJZNFmHlKAVIX4ImfQAx9mJp+FV3Wjlc+QJ0GVz7oTQtPwxnMZbSHH3PBi01EZl1Lz4AxZTed7rTVk5Q7wQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682716306; x=1685308306;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iM8uBSqU+7JHnkbotyqVt5sn59Mc9+aZrKWATgZvX5g=;
-        b=AempnN3kGgD+8ezkSDHMF+fAz13uKdILvKLX0Pt6+YaU0cwV9p/iSGCSE+ONvCa2Lm
-         v7229Nolm7ClMpXzqgjzQSmhNCOHQ8YLElAozFJdbNTJ0bquZo6vliZ1EF3hNtZo1O8S
-         J91GWOSBERWB/+DWWF/jJXqXdHqRKwCbxFTumgEMp/G2nrxh/taXlD9Ddg11Uf8A8uya
-         YhyxvwcWannJDx/jfoNlnr3oaRArqDTRk3ZLqxpe+36cNNYN8+jtpvCYr5fyhsEyFlCq
-         gI2K2esDwrt0OVz1HmhrWEMMg1uq0PLOIRc8te8PYc6Mz13ox6twGav7DIhlc2jKmXfu
-         1xpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682716306; x=1685308306;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iM8uBSqU+7JHnkbotyqVt5sn59Mc9+aZrKWATgZvX5g=;
-        b=PTjVnfGJw6ECIMx9HlDF1JXTNUeXK7jKDfSp8E65Yk8SGLoE4+wkw0o20nI2tE5ELK
-         aQ0GIh6myHpUSYwyyCY6mgXPH6Urg/tEGqVrtDvHDinuRUmD71PEEZ/JPUqiHGmCn8Xq
-         dl4yPFUqaFnDoapXYUWJtGfYhXsf/oOmU8Sk+akBbyXPZ/yjcQQ60bsiyeN58JtMbeKe
-         edUFpOB30kFr2EIMEPW3nQq4RZvw4mMYTzyqEfd5+Jenz2LH3kgZTLbWLt3/A72/iJ72
-         lg61igAAW3z5dgvhs03Izr0ZIRT8leXasiv5OfCTpjU1vE06uCG3opG6K+I9sDqHgFQ0
-         Ci2Q==
-X-Gm-Message-State: AC+VfDzG4nvrY7AFJFacjGKi42t9dv5FUelC8th1sVTyHmLoNgdweQ6+
-        B5MEieSydTPhxczMVtj92+4=
-X-Google-Smtp-Source: ACHHUZ4bVU8UFNu5IWQPuP5Trnwy9/PbHdWuZTfEns6baXfQqNfWkCe48rd0P8Gu8EzKXczMMJ2MnA==
-X-Received: by 2002:a05:6000:136a:b0:304:79c1:725d with SMTP id q10-20020a056000136a00b0030479c1725dmr4699466wrz.45.1682716305504;
-        Fri, 28 Apr 2023 14:11:45 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id m18-20020adffa12000000b003047297a5e8sm15284002wrr.54.2023.04.28.14.11.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 14:11:45 -0700 (PDT)
-Message-ID: <c2e57571-4fc4-69ef-f8a1-049bf2eca9ed@gmail.com>
-Date:   Sat, 29 Apr 2023 00:11:43 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: Support new chip RTL8192FU
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>
-References: <90102fa5-5065-9598-d21f-3624629a0cb5@gmail.com>
- <867b2c35f606434bb82ecc17d0fd9336@realtek.com>
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=77jg18AJ8uXs/HQ80ayToYvE83IPDCm3ZE3lYl1+btM=;
+ b=Pu5EMXlAL62FQi4IIVL1mF2qzkDGP+tHoYXK3jGTA2WgLKeX4ciGZqfKKJioh4o31mKEtuffiL+1ZPMfHsAzgvepLlK7ppUHPwytHGODZfhnU0u3qxombiriUzJBA8cUVRN5Q/cKwgztqb/ay5vdqVxGg76mUVlpO1q49ALisjU=
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com (2603:1096:400:14a::9)
+ by SG2PR03MB6229.apcprd03.prod.outlook.com (2603:1096:4:168::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.23; Fri, 28 Apr
+ 2023 21:17:32 +0000
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::d6f0:880d:41c4:8086]) by TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::d6f0:880d:41c4:8086%3]) with mapi id 15.20.6340.025; Fri, 28 Apr 2023
+ 21:17:31 +0000
+From:   Ryder Lee <Ryder.Lee@mediatek.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "greearb@candelatech.com" <greearb@candelatech.com>
+Subject: Re: [PATCH 1/6] wifi: mt76: mt7915: Support vht mu-mimo sniffer
+ feature.
+Thread-Topic: [PATCH 1/6] wifi: mt76: mt7915: Support vht mu-mimo sniffer
+ feature.
+Thread-Index: AQHZehMPqg3Wm28JCEGt5B0hwlvI5a9BOYmA
+Date:   Fri, 28 Apr 2023 21:17:31 +0000
+Message-ID: <3d784f9d0b36c4147a37a090c213a58bdeed6401.camel@mediatek.com>
+References: <20230428205000.2647945-1-greearb@candelatech.com>
+In-Reply-To: <20230428205000.2647945-1-greearb@candelatech.com>
+Accept-Language: en-US
 Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <867b2c35f606434bb82ecc17d0fd9336@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY0PR03MB6354:EE_|SG2PR03MB6229:EE_
+x-ms-office365-filtering-correlation-id: 9fcd176f-9ca5-4288-bbc5-08db482dfa98
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ruohWFiBavAG6hFpBW1zsk0ru0uFMx6T1GQSoFs476UGTQQdboDRwL5jqOjlVX634zPY+wafXGkqn6Fy2Z+gx2md+hU4x6mg3GOFPNbl92qny6uuaQwrKIGJpZFhqpq5PyKPIWAdvVzKrjsn7Bea8L95q5OwFLh0KWdT31NUJL3Dp+sbcPuFoxmWRlYk5CHfntoKJ4DmYcIeqMLfN9VfFsssDYFFVx95elBKLTUKiEeEOP2etEFKeDlx0ENsOz8i0PZxWRsQ/wULmGiHYymF0nXjdUacJFz3qx2OPRjVQCktY2/ktuaNq8gpob+TBl+GL4MdhBLU0YUH5YnGQgYygqwaESmLCa+U+Y/ScZynls8oxwAjG+Qk6BZSgcjH/tBeKGMS/nhVOu1rQZsb5VniRaIGB0cZkP1Yxik9euEAE2i4nnfrVcgMTx2KrwvP747X0bgvOmeeRnq/yb+Ej/jYcDYLWJAoleluBtSStfdDSrjiTVw+4r53WtXLqdTiFwY4Ox8ewXmD+bv7eEkL/l4G31eU3HiXZObd2DpZ/fhcv45iDuSuMVQ8ttgWvHCHK1UccjQZlgPIKah1Aj5U60V3OZi/5ys1TLvueUN9UNyTkGHb4+b+WgMP4YsKt96wDXvn
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY0PR03MB6354.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(366004)(136003)(346002)(396003)(451199021)(478600001)(36756003)(8936002)(5660300002)(8676002)(71200400001)(26005)(66946007)(64756008)(2906002)(66556008)(76116006)(66446008)(66476007)(186003)(41300700001)(110136005)(316002)(122000001)(38070700005)(6512007)(6506007)(83380400001)(2616005)(86362001)(38100700002)(6486002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MHNHUldsVXZGNysvUlZrL1c4Y2ZHVXdhbTNQTlRMc0xSV3RkU051Q0dtTWYw?=
+ =?utf-8?B?YzFEQ1Q2YmFTelVUUDZuQ2xnL3JRbEVSU0dlN2ZhOFFxc2h4QkxST2xEMjI4?=
+ =?utf-8?B?dC9LZWszVXJGampPa24xdkR1Z3NMalk5bU52YW0zVU03U3hxUGgwQjQ3UXM0?=
+ =?utf-8?B?anlwb2tqclVWS1lCbmZCWjg1emtNSGxGaE1Rcml4VTZlL2NFYks5RzhZcVNI?=
+ =?utf-8?B?YUVBUGZ0S1gwdzVXQ3o0cER4aUZDOXUvTHR2Uk1WRzB2L0Z4OVpCUS9mSTN1?=
+ =?utf-8?B?bWhSeGQxQXBIK2g0YnlpRXJqUmdibXRNSlJNdUE1a2tSWVdrN2Q4UWlXMXA3?=
+ =?utf-8?B?RWgwbTFoYnFvaWx0Q0VSNHh4SUt5SnluM2VqT3lEdjkzaWdWUldnakJsaGtE?=
+ =?utf-8?B?KzdFRTNvMDNpSlFUUUw0TURXakNjdzBseHNubjVqZEh3M01tVE01b2hGK2V1?=
+ =?utf-8?B?WmRoemtGKzFBeXRFcXcyL3ZLa0FSVVBzSjJWdDBPUTZwaU5nV3NGcTgrQnJi?=
+ =?utf-8?B?eHV2QkNERkdpMWJIc2txQndiOElkT3J2eFdZZUFMT3ZFRWh0S1RGdEVEc3VP?=
+ =?utf-8?B?eVg2MUxiSEN4M0VUWkh0dERuMGQ4M0NRaWRvY0FhbGZNbER0Rmd1ampKQkZT?=
+ =?utf-8?B?SXZSM3dSS3V5R0VQczR0dkQ4L3dYd2hpZnRsa1V1dTg5dm1hWkNnZlNhQlhr?=
+ =?utf-8?B?K0hKWENEME9vZDU5aHN2ZlhkazRQWHg2QzZyY1FCNzlIZUlzby9NcHhIdDdX?=
+ =?utf-8?B?V0ljNFBBKzVjTm8rWUhuM090SnFjT0huN0IrcEVSTFhFYUFlcm5reDZhODUr?=
+ =?utf-8?B?Q1lYUDZOdnNHN0F5Qk1RdG1QUUJpRWJhOVlKdnFWU3FRVnFQS0hCOEJBaUR4?=
+ =?utf-8?B?OGh2Z3dmZUZKNmlyR0FvcUxiZUFtRlkrdnVueFp1OEV0YmxDNmhZZ3FGYVdY?=
+ =?utf-8?B?YVQ1ZWgyT3VYQ29mdjlzVHE0ak9LK3ByRUkwcDVHS0k5a0ZXeFQ1RW9xcFJR?=
+ =?utf-8?B?dVE5S3p5SGI4emppcWlZL1JqZ3FyOUxBOUtCa1RzNkdpcUVmeEdVb0ZBTkkz?=
+ =?utf-8?B?T1V3c0pITHVjWThmRXhKZFpZUmVBa25UQnZuSHRkMEVEMXEyTWE3dkFuOWxX?=
+ =?utf-8?B?OEMwcENFK05pNXp5YmNxK0JMbjJ1ZXh4YVpsTFhHam15U2R3VGJMcXpubW1H?=
+ =?utf-8?B?b2Rybk9pcG1PMGtVY0dlOVF0dFcvWmZTNHgxTXVQWnBONUluMUcrWUIrdCta?=
+ =?utf-8?B?YkhTLy9HYkdpS05JR1dlRHJSc0pOWHdxRkEyMDF5cXUyMEl6UGRZZ1lURjZt?=
+ =?utf-8?B?TXJIQy85TnJROWVaYVlFTkk4L1NqRmhNSW1tMTlreU9NTEtSWGtOQmdhQ0I3?=
+ =?utf-8?B?cmRBNXlHVDNET0NUSnY2MSt5TVp0SHBVZTZ5Z21aSnRDVlVqUGdzZTF2RWJO?=
+ =?utf-8?B?Nlczb051L1JycWlsUHNIcnpLNXkyT3dGV1lLWjVTcnJCeXQ1RTFBZzdLSVhj?=
+ =?utf-8?B?OUcvTGYxbGg2VGZEQll6cFRoV2NZQTZ5M0g1Tk5UWjdRNDJjRFhoWXJVc3Nm?=
+ =?utf-8?B?UXlDNyt4RU9sU3VqYkoxcnNsMVR1YlRjLy9xaHhhSHF5Q3NXNVQ3RzJ6Y0dR?=
+ =?utf-8?B?VFExZmx6VkhuTmdZb1E1Y3pTMjVJTGhZTE54VlpNb1daTnhTbGVDdTBGVENU?=
+ =?utf-8?B?dExwVHQ1bWNUL1NKTXlMemc0aWNHVkc1WUx2enc1OXBwS2JLRjdJc3lnZzY4?=
+ =?utf-8?B?K2F5eUh4Z3NKc3VNWGw1bExKQVRQeFkzZXh6R2pNbW93TGZjMlBpTjN4a3pw?=
+ =?utf-8?B?dklPT1BNRlEwUWViTHVoQ1dtbGZ4K08rbGxLWllSa3NZNDE4SzR6Ri9rNm1T?=
+ =?utf-8?B?MEFGYWZRR3VOREpWS241bTVRdUs2RHhCMTBTYVVoRExkR1A0Y3dQV05WeWs2?=
+ =?utf-8?B?MTBPV0dlY0ZLUk9BMS9Xd3FOL2pxSElPN3M0R3VwTVhQMTFjYVBFYmNOUm5O?=
+ =?utf-8?B?UnlFT1ovRU9YRmU0ZFRsQmd4WTliK1J5aEZES1haUXpDcVBxTjN1T3VJTnl1?=
+ =?utf-8?B?cmxnOG1HQVBTL3NQNTBZcVQzeFMrdGl3RzVyR1FBMmRGZ1RJaW44aWQreE9M?=
+ =?utf-8?B?UzZkNVU1N3dsTWVSWklOMWoyWHpIQld1TEprb3JXRWMyNzZHalU5cDNweEQ5?=
+ =?utf-8?B?WUE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <201D7B75BD75464EB399895F6F972544@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY0PR03MB6354.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9fcd176f-9ca5-4288-bbc5-08db482dfa98
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2023 21:17:31.7781
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uZZeypPrLQzXjp4kteJjFS/38ij/UWugZQ8z1o8efooUj5SSpV9FaEjbHt2VAQVTR4LKVWD7nn5Wz2jLhH/oNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR03MB6229
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 28/04/2023 09:21, Ping-Ke Shih wrote:
-> 
-> 
->> -----Original Message-----
->> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> Sent: Wednesday, April 26, 2023 1:28 AM
->> To: linux-wireless@vger.kernel.org
->> Cc: Jes Sorensen <Jes.Sorensen@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>
->> Subject: [PATCH] wifi: rtl8xxxu: Support new chip RTL8192FU
->>
->> This is a newer chip, similar to the RTL8710BU in that it uses the same
->> PHY status structs.
->>
->> Features: 2.4 GHz, b/g/n mode, 2T2R, 300 Mbps.
->>
->> It can allegedly have Bluetooth, but that's not implemented here.
->>
->> This chip can have many RFE (RF front end) types, of which type 5 is
->> the only one tested. Many of the other types need different
->> initialisation tables. They can be added if someone wants them.
->>
->> The vendor driver v5.8.6.2_35538.20191028_COEX20190910-0d02 from
->> https://github.com/BrightX/rtl8192fu was used as reference.
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>  drivers/net/wireless/realtek/rtl8xxxu/Kconfig |    3 +-
->>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   47 +
->>  .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |    3 +-
->>  .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 2081 +++++++++++++++++
->>  .../realtek/rtl8xxxu/rtl8xxxu_8710b.c         |    1 +
->>  .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |    1 +
->>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  104 +-
->>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   15 +
->>  8 files changed, 2225 insertions(+), 30 deletions(-)
->>  create mode 100644 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
->>
-> 
-> [...]
-> 
->> +static void rtl8192fu_config_kfree(struct rtl8xxxu_priv *priv, u8 channel)
->> +{
->> +       u8 bb_gain[3] = { EFUSE_UNDEFINED, EFUSE_UNDEFINED, EFUSE_UNDEFINED };
->> +       u8 bb_gain_path_mask[2] = { 0x0f, 0xf0 };
->> +       enum rtl8xxxu_rfpath rfpath;
->> +       u8 bb_gain_for_path;
->> +       u8 channel_idx;
->> +
->> +       if (channel >= 1 && channel <= 3)
->> +               channel_idx = 0;
->> +       if (channel >= 4 && channel <= 9)
->> +               channel_idx = 1;
->> +       if (channel >= 10 && channel <= 14)
->> +               channel_idx = 2;
->> +
->> +       rtl8xxxu_read_efuse8(priv, 0x1ee, &bb_gain[1]);
->> +       rtl8xxxu_read_efuse8(priv, 0x1ec, &bb_gain[0]);
->> +       rtl8xxxu_read_efuse8(priv, 0x1ea, &bb_gain[2]);
-> 
-> Can you define these fields in struct rtl8192fu_efuse, and access via
-> the struct? 
-> 
-
-They are not in the efuse map. These are "physical" efuse addresses.
-I don't know what that means, as I have not studied the efuse stuff.
-
-> 
->> +
->> +       if (bb_gain[1] == EFUSE_UNDEFINED)
->> +               return;
->> +
->> +       if (bb_gain[0] == EFUSE_UNDEFINED)
->> +               bb_gain[0] = bb_gain[1];
->> +
->> +       if (bb_gain[2] == EFUSE_UNDEFINED)
->> +               bb_gain[2] = bb_gain[1];
->> +
->> +       for (rfpath = RF_A; rfpath < priv->rf_paths; rfpath++) {
->> +               /* power_trim based on 55[19:14] */
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_UNKNOWN_55,
->> +                                         BIT(5), 1);
->> +
->> +               /* enable 55[14] for 0.5db step */
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, 0xf5, BIT(18), 1);
-> 
-> #define RF6052_REG_GAIN_CTRL 0x55
-> 
->> +
->> +               /* enter power_trim debug mode */
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_UNKNOWN_DF,
->> +                                         BIT(7), 1);
->> +
->> +               /* write enable */
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_WE_LUT, BIT(7), 1);
->> +
->> +               bb_gain_for_path = (bb_gain[channel_idx] & bb_gain_path_mask[rfpath])
->> +                                >> __ffs(bb_gain_path_mask[rfpath]);
-> 
-> Normally, putting operator >> in tail, but this statement is so long.
-> How about this?
-> 
-> 		bb_gain_for_path = (bb_gain[channel_idx] & bb_gain_path_mask[rfpath]);
-> 		bb_gain_for_path >>= __ffs(bb_gain_path_mask[rfpath]);
-> 
-
-Looks good. I didn't think of that.
-
->> +
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_TXPA_G3,
->> +                                         0x70000, channel_idx * 2);
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_TXPA_G3,
->> +                                         0x3f, bb_gain_for_path);
->> +
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_TXPA_G3,
->> +                                         0x70000, channel_idx * 2 + 1);
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_TXPA_G3,
->> +                                         0x3f, bb_gain_for_path);
->> +
->> +               /* leave power_trim debug mode */
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_UNKNOWN_DF,
->> +                                         BIT(7), 0);
->> +
->> +               /* write disable */
->> +               rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_WE_LUT, BIT(7), 0);
->> +       }
->> +}
->> +
-> 
-> [...]
-> 
->> +static void rtl8192fu_init_phy_bb(struct rtl8xxxu_priv *priv)
->> +{
->> +       /* Enable BB and RF */
->> +       rtl8xxxu_write16_set(priv, REG_SYS_FUNC,
->> +                            SYS_FUNC_BBRSTB | SYS_FUNC_BB_GLB_RSTN);
->> +
->> +       rtl8xxxu_write8(priv, REG_RF_CTRL, RF_ENABLE | RF_RSTB | RF_SDMRSTB);
->> +
->> +       /* To Fix MAC loopback mode fail. */
->> +       rtl8xxxu_write8(priv, REG_LDOHCI12_CTRL, 0xf);
->> +       rtl8xxxu_write8(priv, 0x15, 0xe9);
-> 
-> #define REG_SYS_SWR_CTRL2 0x14
-> 
-> You can use REG_SYS_SWR_CTRL2 + 1 here.
-> 
->> +
->> +       rtl8xxxu_init_phy_regs(priv, rtl8192fu_phy_init_table);
->> +
->> +       rtl8xxxu_init_phy_regs(priv, rtl8192f_agc_table);
->> +}
->> +
-> 
-> [...]
-> 
->> +static int rtl8192fu_iqk_path_a(struct rtl8xxxu_priv *priv)
->> +{
->> +       u32 reg_eac, reg_e94, reg_e9c, val32;
->> +       u32 rf_0x58_i, rf_0x58_q;
->> +       u8 rfe = priv->rfe_type;
->> +       int result = 0;
->> +       int ktime, i;
->> +
->> +       /* Leave IQK mode */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
->> +       rtl8xxxu_write32(priv, 0xd94, 0x44ffbb44);
-> 
-> #define REG_ANAPWR1 0xd94
-> 
->> +       rtl8xxxu_write32(priv, REG_RX_WAIT_CCA, 0x00400040);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TRX_PATH_ENABLE, 0x6f005403);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TR_MUX_PAR, 0x000804e4);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000100);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(4), 1);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
->> +       if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12)
->> +               val32 = 0x30;
->> +       else
->> +               val32 = 0xe9;
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x003ff, val32);
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +
->> +       /* path-A IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x18008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x8214000f);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x28140000);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK, 0x01007c00);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK, 0x01004800);
->> +
->> +       /* LO calibration setting */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x00e62911);
->> +
->> +       /* One shot, path A LOK & IQK */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa005800);
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8005800);
->> +
->> +       mdelay(15);
->> +
->> +       ktime = 0;
->> +       while (rtl8xxxu_read32(priv, 0xe98) == 0 && ktime < 21) {
-> 
-> #define REG_IQK_RTP_TXA 0xe98
-> 
->> +               mdelay(5);
->> +               ktime += 5;
->> +       }
->> +
->> +       /* Check failed */
->> +       reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +       reg_e94 = rtl8xxxu_read32(priv, REG_TX_POWER_BEFORE_IQK_A);
->> +       reg_e9c = rtl8xxxu_read32(priv, REG_TX_POWER_AFTER_IQK_A);
->> +
->> +       /* reload 0xdf and CCK_IND off */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_WE_LUT, BIT(4), 1);
->> +
->> +       val32 = rtl8xxxu_read_rfreg(priv, RF_A, 0x58);
-> 
-> #define RF6052_REG_TXMOD 0x58
-> 
->> +       rf_0x58_i = u32_get_bits(val32, 0xfc000);
->> +       rf_0x58_q = u32_get_bits(val32, 0x003f0);
->> +
->> +       for (i = 0; i < 8; i++) {
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_TXPA_G3,
->> +                                         0x1c000, i);
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_TXPA_G3,
->> +                                         0x00fc0, rf_0x58_i);
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_TXPA_G3,
->> +                                         0x0003f, rf_0x58_q);
->> +       }
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_AC, BIT(14), 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_WE_LUT, BIT(4), 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00810, 0);
->> +
->> +       if (!(reg_eac & BIT(28)) &&
->> +           ((reg_e94 & 0x03ff0000) != 0x01420000) &&
->> +           ((reg_e9c & 0x03ff0000) != 0x00420000))
->> +               result |= 0x01;
->> +
->> +       return result;
->> +}
->> +
->> +static int rtl8192fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
->> +{
->> +       u32 reg_ea4, reg_eac, reg_e94, reg_e9c, val32;
->> +       int result = 0;
->> +       int ktime;
->> +
->> +       /* Leave IQK mode */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       /* PA/PAD control by 0x56, and set = 0x0 */
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
->> +       rtl8xxxu_write_rfreg(priv, RF_A, 0x35, 0);
-> 
-> #define RF6052_REG_GAIN_P1  0x35
-> #define RF6052_REG_PAD_TXG 0x56
-> #define RF6052_REG_GAIN_CCA 0xdf
-> 
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x003ff, 0x27);
->> +
->> +       /* Enter IQK mode */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +
->> +       /* path-A IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x18008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x82160027);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x28160000);
->> +
->> +       /* Tx IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK, 0x01007c00);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK, 0x01004800);
->> +
->> +       /* LO calibration setting */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0086a911);
->> +
->> +       /* One shot, path A LOK & IQK */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa005800);
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8005800);
->> +
->> +       mdelay(15);
->> +
->> +       ktime = 0;
->> +       while (rtl8xxxu_read32(priv, 0xe98) == 0 && ktime < 21) {
-> 
-> #define REG_IQK_RTP_TXA 0xe98
-> 
->> +               mdelay(5);
->> +               ktime += 5;
->> +       }
->> +
->> +       /* Check failed */
->> +       reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +       reg_e94 = rtl8xxxu_read32(priv, REG_TX_POWER_BEFORE_IQK_A);
->> +       reg_e9c = rtl8xxxu_read32(priv, REG_TX_POWER_AFTER_IQK_A);
->> +
->> +       if (!(reg_eac & BIT(28)) &&
->> +           ((reg_e94 & 0x03ff0000) != 0x01420000) &&
->> +           ((reg_e9c & 0x03ff0000) != 0x00420000)) {
->> +               result |= 0x01;
->> +       } else { /* If TX not OK, ignore RX */
->> +               /* PA/PAD controlled by 0x0 */
->> +               rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF,
->> +                                         BIT(11), 0);
->> +
->> +               return result;
->> +       }
->> +
->> +       val32 = 0x80007c00 | (reg_e94 & 0x3ff0000) | ((reg_e9c & 0x3ff0000) >> 16);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK, val32);
->> +
->> +       /* Modify RX IQK mode table */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       /* PA/PAD control by 0x56, and set = 0x0 */
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
->> +       rtl8xxxu_write_rfreg(priv, RF_A, 0x35, 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x003ff, 0x1e0);
->> +
->> +       rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
->> +       rtl8xxxu_write32(priv, 0xd94, 0x44ffbb44);
->> +       rtl8xxxu_write32(priv, REG_RX_WAIT_CCA, 0x00400040);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TRX_PATH_ENABLE, 0x6f005403);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TR_MUX_PAR, 0x000804e4);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000100);
->> +
->> +       /* Enter IQK mode */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +
->> +       /* path-A IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x18008c1c);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_PI_A, 0x82170000);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_PI_A, 0x28170000);
->> +
->> +       /* RX IQK setting */
->> +       rtl8xxxu_write32(priv, REG_RX_IQK, 0x01004800);
->> +
->> +       /* LO calibration setting */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0046a8d1);
->> +
->> +       /* One shot, path A LOK & IQK */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa005800);
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8005800);
->> +
->> +       mdelay(15);
->> +
->> +       ktime = 0;
->> +       while (rtl8xxxu_read32(priv, 0xea8) == 0 && ktime < 21) {
-> 
-> #define REG_IQK_RTP_RXA 0xea8
-> 
->> +               mdelay(5);
->> +               ktime += 5;
->> +       }
->> +
->> +       /* Check failed */
->> +       reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +       reg_ea4 = rtl8xxxu_read32(priv, REG_RX_POWER_BEFORE_IQK_A_2);
->> +
->> +       /* Leave IQK mode */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 0);
->> +       rtl8xxxu_write_rfreg(priv, RF_A, 0x35, 0x02000);
->> +
->> +       if (!(reg_eac & BIT(27)) &&
->> +           ((reg_ea4 & 0x03ff0000) != 0x01320000) &&
->> +           ((reg_eac & 0x03ff0000) != 0x00360000))
->> +               result |= 0x02;
->> +
->> +       return result;
->> +}
->> +
->> +static int rtl8192fu_iqk_path_b(struct rtl8xxxu_priv *priv)
->> +{
->> +       u32 reg_eac, reg_eb4, reg_ebc, val32;
->> +       u32 rf_0x58_i, rf_0x58_q;
->> +       u8 rfe = priv->rfe_type;
->> +       int result = 0;
->> +       int ktime, i;
->> +
->> +       /* PA/PAD controlled by 0x0 */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
->> +       rtl8xxxu_write32(priv, 0xd94, 0x44ffbb44);
->> +       rtl8xxxu_write32(priv, REG_RX_WAIT_CCA, 0x00400040);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TRX_PATH_ENABLE, 0x6f005403);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TR_MUX_PAR, 0x000804e4);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000000);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(4), 1);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
->> +       if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12)
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56,
->> +                                         0x003ff, 0x30);
->> +       else
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56,
->> +                                         0x00fff, 0xe9);
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +
->> +       /* Path B IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x18008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x8214000F);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_PI_B, 0x28140000);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK, 0x01007c00);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK, 0x01004800);
->> +
->> +       /* LO calibration setting */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x00e62911);
->> +
->> +       /* One shot, path B LOK & IQK */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa005800);
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8005800);
->> +
->> +       mdelay(15);
->> +
->> +       ktime = 0;
->> +       while (rtl8xxxu_read32(priv, 0xeb8) == 0 && ktime < 21) {
-> 
-> #define REG_IQK_RTP_TXB 0xeb8
-> 
->> +               mdelay(5);
->> +               ktime += 5;
->> +       }
->> +
->> +       /* Check failed */
->> +       reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +       reg_eb4 = rtl8xxxu_read32(priv, REG_TX_POWER_BEFORE_IQK_B);
->> +       reg_ebc = rtl8xxxu_read32(priv, REG_TX_POWER_AFTER_IQK_B);
->> +
->> +       /* reload 0xdf and CCK_IND off */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_WE_LUT, BIT(4), 1);
->> +
->> +       val32 = rtl8xxxu_read_rfreg(priv, RF_B, 0x58);
->> +       rf_0x58_i = u32_get_bits(val32, 0xfc000);
->> +       rf_0x58_q = u32_get_bits(val32, 0x003f0);
->> +
->> +       for (i = 0; i < 8; i++) {
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_TXPA_G3,
->> +                                         0x1c000, i);
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_TXPA_G3,
->> +                                         0x00fc0, rf_0x58_i);
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_TXPA_G3,
->> +                                         0x0003f, rf_0x58_q);
->> +       }
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_AC, BIT(14), 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_WE_LUT, BIT(4), 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00810, 0);
->> +
->> +       if (!(reg_eac & BIT(31)) &&
->> +           ((reg_eb4 & 0x03ff0000) != 0x01420000) &&
->> +           ((reg_ebc & 0x03ff0000) != 0x00420000))
->> +               result |= 0x01;
->> +       else
->> +               dev_warn(&priv->udev->dev, "%s: Path B IQK failed!\n",
->> +                        __func__);
->> +
->> +       return result;
->> +}
->> +
->> +static int rtl8192fu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
->> +{
->> +       u32 reg_eac, reg_eb4, reg_ebc, reg_ec4, reg_ecc, val32;
->> +       int result = 0;
->> +       int ktime;
->> +
->> +       /* Leave IQK mode */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
->> +       rtl8xxxu_write_rfreg(priv, RF_B, 0x35, 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x003ff, 0x67);
->> +
->> +       rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
->> +       rtl8xxxu_write32(priv, 0xd94, 0x44ffbb44);
->> +       rtl8xxxu_write32(priv, REG_RX_WAIT_CCA, 0x00400040);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TRX_PATH_ENABLE, 0x6f005403);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TR_MUX_PAR, 0x000804e4);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000000);
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +
->> +       /* path-B IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x18008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x38008c1c);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x82160027);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_PI_B, 0x28160000);
->> +
->> +       /* LO calibration setting */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0086a911);
->> +
->> +       /* One shot, path A LOK & IQK */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa005800);
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8005800);
->> +
->> +       mdelay(15);
->> +
->> +       ktime = 0;
->> +       while (rtl8xxxu_read32(priv, 0xeb8) == 0 && ktime < 21) {
->> +               mdelay(5);
->> +               ktime += 5;
->> +       }
->> +
->> +       /* Check failed */
->> +       reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +       reg_eb4 = rtl8xxxu_read32(priv, REG_TX_POWER_BEFORE_IQK_B);
->> +       reg_ebc = rtl8xxxu_read32(priv, REG_TX_POWER_AFTER_IQK_B);
->> +
->> +       if (!(reg_eac & BIT(31)) &&
->> +           ((reg_eb4 & 0x03ff0000) != 0x01420000) &&
->> +           ((reg_ebc & 0x03ff0000) != 0x00420000)) {
->> +               result |= 0x01;
->> +       } else {
->> +               /* PA/PAD controlled by 0x0 */
->> +               rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +               rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF,
->> +                                         BIT(11), 0);
->> +
->> +               return result;
->> +       }
->> +
->> +       val32 = 0x80007c00 | (reg_eb4 & 0x03ff0000) | ((reg_ebc >> 16) & 0x03ff);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK, val32);
->> +
->> +       /* Modify RX IQK mode table */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
->> +       rtl8xxxu_write_rfreg(priv, RF_B, 0x35, 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x003ff, 0x1e0);
->> +
->> +       rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
->> +       rtl8xxxu_write32(priv, 0xd94, 0x44ffbb44);
->> +       rtl8xxxu_write32(priv, REG_RX_WAIT_CCA, 0x00400040);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TRX_PATH_ENABLE, 0x6f005403);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TR_MUX_PAR, 0x000804e4);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000000);
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +
->> +       /* Path B IQK setting */
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_A, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_TONE_B, 0x38008c1c);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_TONE_B, 0x18008c1c);
->> +
->> +       rtl8xxxu_write32(priv, REG_TX_IQK_PI_B, 0x82170000);
->> +       rtl8xxxu_write32(priv, REG_RX_IQK_PI_B, 0x28170000);
->> +
->> +       /* IQK setting */
->> +       rtl8xxxu_write32(priv, REG_RX_IQK, 0x01004800);
->> +
->> +       /* LO calibration setting */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_RSP, 0x0046a911);
->> +
->> +       /* One shot, path A LOK & IQK */
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xfa005800);
->> +       rtl8xxxu_write32(priv, REG_IQK_AGC_PTS, 0xf8005800);
->> +
->> +       mdelay(15);
->> +
->> +       ktime = 0;
->> +       while (rtl8xxxu_read32(priv, 0xec8) == 0 && ktime < 21) {
-> 
-> #define REG_IQK_RTP_RXB 0xec8
-> 
->> +               mdelay(5);
->> +               ktime += 5;
->> +       }
->> +
->> +       reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +       reg_ec4 = rtl8xxxu_read32(priv, REG_RX_POWER_BEFORE_IQK_B_2);
->> +       reg_ecc = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_B_2);
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000100);
->> +
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 0);
->> +       rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(1), 0);
->> +       rtl8xxxu_write_rfreg(priv, RF_B, 0x35, 0x02000);
->> +
->> +       if (!(reg_eac & BIT(30)) &&
->> +           ((reg_ec4 & 0x03ff0000) != 0x01320000) &&
->> +           ((reg_ecc & 0x03ff0000) != 0x00360000))
->> +               result |= 0x02;
->> +       else
->> +               dev_warn(&priv->udev->dev, "%s: Path B RX IQK failed!\n",
->> +                        __func__);
->> +
->> +       return result;
->> +}
->> +
->> +static void rtl8192fu_phy_iqcalibrate(struct rtl8xxxu_priv *priv,
->> +                                     int result[][8], int t)
->> +{
->> +       static const u32 adda_regs[2] = {
->> +               0xd94, REG_RX_WAIT_CCA
->> +       };
->> +       static const u32 iqk_mac_regs[RTL8XXXU_MAC_REGS] = {
->> +               REG_TXPAUSE, REG_BEACON_CTRL,
->> +               REG_BEACON_CTRL_1, REG_GPIO_MUXCFG
->> +       };
->> +       static const u32 iqk_bb_regs[RTL8XXXU_BB_REGS] = {
->> +               REG_OFDM0_TRX_PATH_ENABLE, REG_OFDM0_TR_MUX_PAR,
->> +               REG_FPGA0_XCD_RF_SW_CTRL, REG_CONFIG_ANT_A, REG_CONFIG_ANT_B,
->> +               REG_DPDT_CTRL, REG_RFE_CTRL_ANTA_SRC,
->> +               0x938, REG_CCK0_AFE_SETTING
->> +       };
-> 
-> #define REG_RFE_CTRL_ANT_SRC2 0x938
-> 
->> +       u32 rx_initial_gain_a, rx_initial_gain_b;
->> +       struct device *dev = &priv->udev->dev;
->> +       int path_a_ok, path_b_ok;
->> +       u8 rfe = priv->rfe_type;
->> +       int retry = 2;
->> +       u32 i, val32;
->> +
->> +       /*
->> +        * Note: IQ calibration must be performed after loading
->> +        *       PHY_REG.txt , and radio_a, radio_b.txt
->> +        */
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rx_initial_gain_a = rtl8xxxu_read32(priv, REG_OFDM0_XA_AGC_CORE1);
->> +       rx_initial_gain_b = rtl8xxxu_read32(priv, REG_OFDM0_XB_AGC_CORE1);
->> +
->> +       if (t == 0) {
->> +               /* Save ADDA parameters, turn Path A ADDA on */
->> +               rtl8xxxu_save_regs(priv, adda_regs, priv->adda_backup,
->> +                                  ARRAY_SIZE(adda_regs));
->> +               rtl8xxxu_save_mac_regs(priv, iqk_mac_regs, priv->mac_backup);
->> +               rtl8xxxu_save_regs(priv, iqk_bb_regs,
->> +                                  priv->bb_backup, RTL8XXXU_BB_REGS);
->> +       }
->> +
->> +       /* Instead of rtl8xxxu_path_adda_on */
->> +       rtl8xxxu_write32_set(priv, REG_FPGA0_XCD_RF_PARM, BIT(31));
->> +
->> +       /* MAC settings */
->> +       rtl8xxxu_write8(priv, REG_TXPAUSE, 0xff);
->> +       rtl8xxxu_write8_clear(priv, REG_GPIO_MUXCFG, GPIO_MUXCFG_IO_SEL_ENBT);
->> +
->> +       if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12) {
->> +               /* in ePA IQK, rfe_func_config & SW both pull down */
->> +               /* path A */
->> +               rtl8xxxu_write32_mask(priv, REG_RFE_CTRL_ANTA_SRC, 0xF, 0x7);
->> +               rtl8xxxu_write32_mask(priv, REG_DPDT_CTRL, 0x1, 0x0);
->> +
->> +               rtl8xxxu_write32_mask(priv, REG_RFE_CTRL_ANTA_SRC, 0xF00, 0x7);
->> +               rtl8xxxu_write32_mask(priv, REG_DPDT_CTRL, 0x4, 0x0);
->> +
->> +               rtl8xxxu_write32_mask(priv, REG_RFE_CTRL_ANTA_SRC, 0xF000, 0x7);
->> +               rtl8xxxu_write32_mask(priv, REG_DPDT_CTRL, 0x8, 0x0);
->> +
->> +               /* path B */
->> +               rtl8xxxu_write32_mask(priv, 0x938, 0xF0, 0x7);
->> +               rtl8xxxu_write32_mask(priv, REG_DPDT_CTRL, 0x20000, 0x0);
->> +
->> +               rtl8xxxu_write32_mask(priv, 0x938, 0xF0000, 0x7);
->> +               rtl8xxxu_write32_mask(priv, REG_DPDT_CTRL, 0x100000, 0x0);
->> +
->> +               rtl8xxxu_write32_mask(priv, 0x93c, 0xF000, 0x7);
-> 
-> #define REG_RFE_CTRL_ANT_SRC3 0x93c
-> 
->> +               rtl8xxxu_write32_mask(priv, REG_DPDT_CTRL, 0x8000000, 0x0);
->> +       }
->> +
->> +       if (priv->rf_paths > 1) {
->> +               /* path B standby */
->> +               rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x000000);
->> +               rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_AC, 0x10000);
->> +               rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
->> +       }
->> +
->> +       for (i = 0; i < retry; i++) {
->> +               path_a_ok = rtl8192fu_iqk_path_a(priv);
->> +
->> +               if (path_a_ok == 0x01) {
->> +                       val32 = rtl8xxxu_read32(priv, REG_TX_POWER_BEFORE_IQK_A);
->> +                       result[t][0] = (val32 >> 16) & 0x3ff;
->> +
->> +                       val32 = rtl8xxxu_read32(priv, REG_TX_POWER_AFTER_IQK_A);
->> +                       result[t][1] = (val32 >> 16) & 0x3ff;
->> +                       break;
->> +               } else {
->> +                       result[t][0] = 0x100;
->> +                       result[t][1] = 0x0;
->> +               }
->> +       }
->> +
->> +       for (i = 0; i < retry; i++) {
->> +               path_a_ok = rtl8192fu_rx_iqk_path_a(priv);
->> +
->> +               if (path_a_ok == 0x03) {
->> +                       val32 = rtl8xxxu_read32(priv, REG_RX_POWER_BEFORE_IQK_A_2);
->> +                       result[t][2] = (val32 >> 16) & 0x3ff;
->> +
->> +                       val32 = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
->> +                       result[t][3] = (val32 >> 16) & 0x3ff;
->> +                       break;
->> +               } else {
->> +                       result[t][2] = 0x100;
->> +                       result[t][3] = 0x0;
->> +               }
->> +       }
->> +
->> +       if (!path_a_ok)
->> +               dev_warn(dev, "%s: Path A IQK failed!\n", __func__);
->> +
->> +       if (priv->rf_paths > 1) {
->> +               for (i = 0; i < retry; i++) {
->> +                       path_b_ok = rtl8192fu_iqk_path_b(priv);
->> +
->> +                       if (path_b_ok == 0x01) {
->> +                               val32 = rtl8xxxu_read32(priv, REG_TX_POWER_BEFORE_IQK_B);
->> +                               result[t][4] = (val32 >> 16) & 0x3ff;
->> +
->> +                               val32 = rtl8xxxu_read32(priv, REG_TX_POWER_AFTER_IQK_B);
->> +                               result[t][5] = (val32 >> 16) & 0x3ff;
->> +                               break;
->> +                       } else {
->> +                               result[t][4] = 0x100;
->> +                               result[t][5] = 0x0;
->> +                       }
->> +               }
->> +
->> +               for (i = 0; i < retry; i++) {
->> +                       path_b_ok = rtl8192fu_rx_iqk_path_b(priv);
->> +
->> +                       if (path_b_ok == 0x03) {
->> +                               val32 = rtl8xxxu_read32(priv, REG_RX_POWER_BEFORE_IQK_B_2);
->> +                               result[t][6] = (val32 >> 16) & 0x3ff;
->> +
->> +                               val32 = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_B_2);
->> +                               result[t][7] = (val32 >> 16) & 0x3ff;
->> +                               break;
->> +                       } else {
->> +                               result[t][6] = 0x100;
->> +                               result[t][7] = 0x0;
->> +                       }
->> +               }
->> +
->> +               if (!path_b_ok)
->> +                       dev_warn(dev, "%s: Path B IQK failed!\n", __func__);
->> +       }
->> +
->> +       /* Back to BB mode, load original value */
->> +       rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
->> +
->> +       rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xcc0000c0);
->> +
->> +       rtl8xxxu_write32(priv, 0xd94, 0x44bbbb44);
->> +       rtl8xxxu_write32(priv, REG_RX_WAIT_CCA, 0x80408040);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TRX_PATH_ENABLE, 0x6f005433);
->> +       rtl8xxxu_write32(priv, REG_OFDM0_TR_MUX_PAR, 0x000004e4);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04003400);
->> +       rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000100);
->> +
->> +       /* Reload ADDA power saving parameters */
->> +       rtl8xxxu_restore_regs(priv, adda_regs, priv->adda_backup,
->> +                             ARRAY_SIZE(adda_regs));
->> +
->> +       /* Reload MAC parameters */
->> +       rtl8xxxu_restore_mac_regs(priv, iqk_mac_regs, priv->mac_backup);
->> +
->> +       /* Reload BB parameters */
->> +       rtl8xxxu_restore_regs(priv, iqk_bb_regs, priv->bb_backup, RTL8XXXU_BB_REGS);
->> +
->> +       rtl8xxxu_write32_clear(priv, REG_FPGA0_XCD_RF_PARM, BIT(31));
->> +
->> +       /* Restore RX initial gain */
->> +       rtl8xxxu_write32_mask(priv, REG_OFDM0_XA_AGC_CORE1, 0xff, 0x50);
->> +       rtl8xxxu_write32_mask(priv, REG_OFDM0_XA_AGC_CORE1, 0xff,
->> +                             rx_initial_gain_a & 0xff);
->> +       if (priv->rf_paths > 1) {
->> +               rtl8xxxu_write32_mask(priv, REG_OFDM0_XB_AGC_CORE1, 0xff, 0x50);
->> +               rtl8xxxu_write32_mask(priv, REG_OFDM0_XB_AGC_CORE1, 0xff,
->> +                                     rx_initial_gain_b & 0xff);
->> +       }
->> +}
->> +
->> +static void rtl8192fu_phy_iq_calibrate(struct rtl8xxxu_priv *priv)
->> +{
->> +       s32 reg_e94, reg_e9c, reg_ea4, reg_eac;
->> +       s32 reg_eb4, reg_ebc, reg_ec4, reg_ecc;
->> +       struct device *dev = &priv->udev->dev;
->> +       u32 path_a_0xdf, path_a_0x35;
->> +       u32 path_b_0xdf, path_b_0x35;
->> +       bool path_a_ok, path_b_ok;
->> +       u8 rfe = priv->rfe_type;
->> +       u32 rfe_path_select;
->> +       int result[4][8]; /* last is final result */
->> +       int i, candidate;
->> +       s32 reg_tmp = 0;
->> +       bool simu;
->> +       u32 val32;
->> +
->> +       rfe_path_select = rtl8xxxu_read32(priv, REG_RFE_PATH_SELECT);
->> +
->> +       path_a_0xdf = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
->> +       path_a_0x35 = rtl8xxxu_read_rfreg(priv, RF_A, 0x35);
->> +       path_b_0xdf = rtl8xxxu_read_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF);
->> +       path_b_0x35 = rtl8xxxu_read_rfreg(priv, RF_B, 0x35);
->> +
->> +       memset(result, 0, sizeof(result));
->> +       candidate = -1;
->> +
->> +       path_a_ok = false;
->> +       path_b_ok = false;
->> +
->> +       for (i = 0; i < 3; i++) {
->> +               rtl8192fu_phy_iqcalibrate(priv, result, i);
->> +
->> +               if (i == 1) {
->> +                       simu = rtl8xxxu_gen2_simularity_compare(priv, result, 0, 1);
->> +                       if (simu) {
->> +                               candidate = 0;
->> +                               break;
->> +                       }
->> +               }
->> +
->> +               if (i == 2) {
->> +                       simu = rtl8xxxu_gen2_simularity_compare(priv, result, 0, 2);
->> +                       if (simu) {
->> +                               candidate = 0;
->> +                               break;
->> +                       }
->> +
->> +                       simu = rtl8xxxu_gen2_simularity_compare(priv, result, 1, 2);
->> +                       if (simu) {
->> +                               candidate = 1;
->> +                       } else {
->> +                               for (i = 0; i < 8; i++)
->> +                                       reg_tmp += result[3][i];
->> +
->> +                               if (reg_tmp)
->> +                                       candidate = 3;
->> +                               else
->> +                                       candidate = -1;
->> +                       }
->> +               }
->> +       }
->> +
->> +       if (candidate >= 0) {
->> +               reg_e94 = result[candidate][0];
->> +               reg_e9c = result[candidate][1];
->> +               reg_ea4 = result[candidate][2];
->> +               reg_eac = result[candidate][3];
->> +               reg_eb4 = result[candidate][4];
->> +               reg_ebc = result[candidate][5];
->> +               reg_ec4 = result[candidate][6];
->> +               reg_ecc = result[candidate][7];
->> +
->> +               dev_dbg(dev, "%s: candidate is %x\n", __func__, candidate);
->> +               dev_dbg(dev, "%s: e94=%x e9c=%x ea4=%x eac=%x eb4=%x ebc=%x ec4=%x ecc=%c\n",
->> +                       __func__, reg_e94, reg_e9c, reg_ea4, reg_eac,
->> +                       reg_eb4, reg_ebc, reg_ec4, reg_ecc);
->> +
->> +               path_a_ok = true;
->> +               path_b_ok = true;
->> +       }
->> +
->> +       rtl8xxxu_write32_mask(priv, REG_TX_IQK_TONE_A, 0x3ff00000, 0x100);
->> +       rtl8xxxu_write32_mask(priv, 0xe20, 0x3ff, 0);
-> 
-> #define REG_NP_ANTA 0xe20
-> 
->> +       rtl8xxxu_write32_mask(priv, REG_TX_IQK_TONE_B, 0x3ff00000, 0x100);
->> +       rtl8xxxu_write32_mask(priv, REG_TAP_UPD_97F, 0x3ff, 0);
->> +
->> +       if (candidate >= 0) {
->> +               if (reg_e94)
->> +                       rtl8xxxu_fill_iqk_matrix_a(priv, path_a_ok, result,
->> +                                                  candidate, (reg_ea4 == 0));
->> +
->> +               if (reg_eb4)
->> +                       rtl8xxxu_fill_iqk_matrix_b(priv, path_b_ok, result,
->> +                                                  candidate, (reg_ec4 == 0));
->> +       }
->> +
->> +       rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, path_a_0xdf);
->> +       rtl8xxxu_write_rfreg(priv, RF_A, 0x35, path_a_0x35);
->> +       rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, path_b_0xdf);
->> +       rtl8xxxu_write_rfreg(priv, RF_B, 0x35, path_b_0x35);
->> +
->> +       if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12) {
->> +               rtl8xxxu_write32_set(priv, REG_SW_GPIO_SHARE_CTRL_1, 0x70000);
->> +               rtl8xxxu_write32_clear(priv, REG_LEDCFG0, 0x6c00000);
->> +               rtl8xxxu_write32_set(priv, REG_PAD_CTRL1, BIT(29) | BIT(28));
->> +               rtl8xxxu_write32_clear(priv, REG_SW_GPIO_SHARE_CTRL_0,
->> +                                      0x600000 | BIT(4));
->> +
->> +               /*
->> +                * Originally:
->> +                * odm_set_bb_reg(dm, R_0x944, BIT(11) | 0x1F, 0x3F);
->> +                *
->> +                * It clears bit 11 and sets bits 0..4. The mask doesn't cover
->> +                * bit 5 so it's not modified. Is that what it's supposed to
->> +                * accomplish?
->> +                */
->> +               val32 = rtl8xxxu_read32(priv, REG_RFE_BUFFER);
->> +               val32 &= ~BIT(11);
->> +               val32 |= 0x1f;
->> +               rtl8xxxu_write32(priv, REG_RFE_BUFFER, val32);
->> +
->> +               if (rfe == 7) {
->> +                       rtl8xxxu_write32_mask(priv, REG_RFE_CTRL_ANTA_SRC,
->> +                                             0xfffff, 0x23200);
->> +                       rtl8xxxu_write32_mask(priv, 0x938, 0xfffff, 0x23200);
->> +                       rtl8xxxu_write32_mask(priv, 0x934, 0xf000, 0x3);
->> +                       rtl8xxxu_write32_mask(priv, 0x93c, 0xf000, 0x3);
->> +               } else {
->> +                       rtl8xxxu_write32_mask(priv, REG_RFE_CTRL_ANTA_SRC,
->> +                                             0xfffff, 0x22200);
->> +                       rtl8xxxu_write32_mask(priv, 0x938, 0xfffff, 0x22200);
->> +                       rtl8xxxu_write32_mask(priv, 0x934, 0xf000, 0x2);
-> 
-> #define REG_RFE_CTRL_ANT_SRC1 0x934
-> 
->> +                       rtl8xxxu_write32_mask(priv, 0x93c, 0xf000, 0x2);
->> +               }
->> +
->> +               rtl8xxxu_write32_clear(priv, 0x968, BIT(2));
-> 
-> #define REG_REF_OPT62 0x968
-> >> +
->> +               if (rfe == 7)
->> +                       rtl8xxxu_write32(priv, 0x920, 0x03000003);
-> 
-> #define REG_REF_OPT 0x920
-> 
->> +
->> +               rtl8xxxu_write32(priv, REG_RFE_PATH_SELECT, rfe_path_select);
->> +       }
->> +}
->> +
->> +static void rtl8192fu_disabled_to_emu(struct rtl8xxxu_priv *priv)
->> +{
->> +       rtl8xxxu_write16_clear(priv, REG_APS_FSMCO,
->> +                              APS_FSMCO_HW_POWERDOWN | APS_FSMCO_HW_SUSPEND);
->> +
->> +       rtl8xxxu_write32_clear(priv, REG_GPIO_INTM, BIT(16));
->> +
->> +       rtl8xxxu_write16_clear(priv, REG_APS_FSMCO,
->> +                              APS_FSMCO_PCIE | APS_FSMCO_HW_SUSPEND);
->> +}
->> +
->> +static int rtl8192fu_emu_to_active(struct rtl8xxxu_priv *priv)
->> +{
->> +       u32 val32;
->> +       u16 val16;
->> +       int count;
->> +
->> +       /* enable LDOA12 MACRO block for all interface */
->> +       rtl8xxxu_write8_set(priv, REG_LDOA15_CTRL, LDOA15_ENABLE);
->> +
->> +       /* disable BT_GPS_SEL pins */
->> +       rtl8xxxu_write32_clear(priv, REG_PAD_CTRL1, BIT(28));
->> +
->> +       mdelay(1);
->> +
->> +       /* release analog Ips to digital */
->> +       rtl8xxxu_write8_clear(priv, REG_SYS_ISO_CTRL, SYS_ISO_ANALOG_IPS);
->> +
->> +       val16 = APS_FSMCO_PCIE | APS_FSMCO_HW_SUSPEND | APS_FSMCO_SW_LPS;
->> +       rtl8xxxu_write16_clear(priv, REG_APS_FSMCO, val16);
->> +
->> +       /* wait till 0x04[17] = 1 power ready */
->> +       for (count = RTL8XXXU_MAX_REG_POLL; count; count--) {
->> +               val32 = rtl8xxxu_read32(priv, REG_APS_FSMCO);
->> +               if (val32 & BIT(17))
->> +                       break;
->> +
->> +               udelay(10);
->> +       }
->> +
->> +       if (!count)
->> +               return -EBUSY;
->> +
->> +       rtl8xxxu_write32_set(priv, REG_APS_FSMCO, APS_FSMCO_WLON_RESET);
->> +
->> +       for (count = RTL8XXXU_MAX_REG_POLL; count; count--) {
->> +               val32 = rtl8xxxu_read32(priv, REG_APS_FSMCO);
->> +               if ((val32 & (APS_FSMCO_MAC_ENABLE | APS_FSMCO_MAC_OFF)) == 0)
->> +                       break;
->> +
->> +               udelay(10);
->> +       }
->> +
->> +       if (!count)
->> +               return -EBUSY;
->> +
->> +       /* SWR OCP enable */
->> +       rtl8xxxu_write32_set(priv, REG_AFE_MISC, BIT(18));
->> +
->> +       rtl8xxxu_write16_clear(priv, REG_APS_FSMCO, APS_FSMCO_HW_POWERDOWN);
->> +
->> +       rtl8xxxu_write16_clear(priv, REG_APS_FSMCO,
->> +                              APS_FSMCO_PCIE | APS_FSMCO_HW_SUSPEND);
->> +
->> +       /* 0x7c[31]=1, LDO has max output capability */
->> +       rtl8xxxu_write32_set(priv, REG_LDO_SW_CTRL, BIT(31));
->> +
->> +       rtl8xxxu_write16_set(priv, REG_APS_FSMCO, APS_FSMCO_MAC_ENABLE);
->> +
->> +       for (count = RTL8XXXU_MAX_REG_POLL; count; count--) {
->> +               val32 = rtl8xxxu_read32(priv, REG_APS_FSMCO);
->> +               if ((val32 & APS_FSMCO_MAC_ENABLE) == 0)
->> +                       break;
->> +
->> +               udelay(10);
->> +       }
->> +
->> +       if (!count)
->> +               return -EBUSY;
->> +
->> +       /* Enable WL control XTAL setting */
->> +       rtl8xxxu_write8_set(priv, REG_AFE_MISC, AFE_MISC_WL_XTAL_CTRL);
->> +
->> +       /* Enable falling edge triggering interrupt */
->> +       rtl8xxxu_write16_set(priv, REG_GPIO_INTM, GPIO_INTM_EDGE_TRIG_IRQ);
->> +
->> +       /* Enable GPIO9 data mode */
->> +       rtl8xxxu_write16_clear(priv, REG_GPIO_IO_SEL_2, GPIO_IO_SEL_2_GPIO09_IRQ);
->> +
->> +       /* Enable GPIO9 input mode */
->> +       rtl8xxxu_write16_clear(priv, REG_GPIO_IO_SEL_2, GPIO_IO_SEL_2_GPIO09_INPUT);
->> +
->> +       /* Enable HSISR GPIO[C:0] interrupt */
->> +       rtl8xxxu_write8_set(priv, REG_HSIMR, BIT(0));
->> +
->> +       /* RF HW ON/OFF Enable */
->> +       rtl8xxxu_write8_clear(priv, REG_MULTI_FUNC_CTRL, MULTI_WIFI_HW_ROF_EN);
->> +
->> +       /* Register Lock Disable */
->> +       rtl8xxxu_write8_set(priv, REG_RSV_CTRL, BIT(7));
->> +
->> +       /* For GPIO9 internal pull high setting */
->> +       rtl8xxxu_write16_set(priv, REG_MULTI_FUNC_CTRL, BIT(14));
->> +
->> +       /* reset RF path S1 */
->> +       rtl8xxxu_write8(priv, REG_RF_CTRL, 0);
->> +
->> +       /* reset RF path S0 */
->> +       rtl8xxxu_write8(priv, 0x7b, 0);
-> 
-> #define REG_AFE_CTRL4 0x78
-> 
-> use REG_AFE_CTRL4 + 3 for 0x7b
-> 
->> +
->> +       /* enable RF path S1 */
->> +       rtl8xxxu_write8(priv, REG_RF_CTRL, RF_SDMRSTB | RF_RSTB | RF_ENABLE);
->> +
->> +       /* enable RF path S0 */
->> +       rtl8xxxu_write8(priv, 0x7b, RF_SDMRSTB | RF_RSTB | RF_ENABLE);
->> +
->> +       /* AFE_Ctrl */
->> +       rtl8xxxu_write8_set(priv, 0x97, BIT(5));
-> 
-> #define REG_RSVD_1 0x97
-> 
->> +
->> +       /* AFE_Ctrl */
->> +       rtl8xxxu_write8(priv, 0xdc, 0xcc);
-> 
-> #define REG_RSVD_4 0xdc
-> 
-> The name looks not so meaningful, but designers did give it as is.
-> 
->> +
->> +       /* AFE_Ctrl 0x24[4:3]=00 for xtal gmn */
->> +       rtl8xxxu_write8_clear(priv, REG_AFE_XTAL_CTRL, BIT(4) | BIT(3));
->> +
->> +       /* GPIO_A[31:0] Pull down software register */
->> +       rtl8xxxu_write32(priv, 0x1050, 0xffffffff);
-> 
-> #define REG_GPIO_A0 0x1050
-> 
->> +
->> +       /* GPIO_B[7:0] Pull down software register */
->> +       rtl8xxxu_write8(priv, 0x105b, 0xff);
-> 
-> #define REG_GPIO_B0 0x105b
-> 
->> +
->> +       /* Register Lock Enable */
->> +       rtl8xxxu_write8_clear(priv, REG_RSV_CTRL, BIT(7));
->> +
->> +       return 0;
->> +}
->> +
-> 
-> [...]
-> 
->> @@ -2842,10 +2864,14 @@ void rtl8xxxu_fill_iqk_matrix_b(struct rtl8xxxu_priv *priv, bool iqk_ok,
->>
->>         reg = (result[candidate][7] >> 6) & 0xf;
->>
->> -       val32 = rtl8xxxu_read32(priv, REG_OFDM0_AGCR_SSI_TABLE);
->> -       val32 &= ~0x0000f000;
->> -       val32 |= (reg << 12);
->> -       rtl8xxxu_write32(priv, REG_OFDM0_AGCR_SSI_TABLE, val32);
->> +       if (priv->rtl_chip == RTL8192F) {
->> +               val32 = rtl8xxxu_write32_mask(priv, 0xca8, 0x000000f0, reg);
-> 
-> Setting val32 to return value isn't reasonable. 
-> 
-> #dfine REG_RXIQB_EXT 0xca8
-> 
->> +       } else {
->> +               val32 = rtl8xxxu_read32(priv, REG_OFDM0_AGCR_SSI_TABLE);
->> +               val32 &= ~0x0000f000;
->> +               val32 |= (reg << 12);
->> +               rtl8xxxu_write32(priv, REG_OFDM0_AGCR_SSI_TABLE, val32);
->> +       }
->>  }
->>
-> 
-> [...]
-> 
-> I lookup register document for uncertain addresses, but this isn't a simple
-> copy-paste thing, so I may mess something. Please tell me if something look weird.
-
-Thank you for the names!
-
-I wonder about these:
-
-#define REG_IQK_RTP_TXA 0xe98
-#define REG_IQK_RTP_RXA 0xea8
-#define REG_IQK_RTP_TXB 0xeb8
-#define REG_IQK_RTP_RXB 0xec8
-
-Should they be REG_IQK_RPT_... for "report"?
-
-And these:
-
-#define REG_REF_OPT62 0x968
-#define REG_REF_OPT 0x920
-
-Should they be REG_RFE_... ?
-
-> 
-> Ping-Ke
-> 
-
+T24gRnJpLCAyMDIzLTA0LTI4IGF0IDEzOjQ5IC0wNzAwLCBncmVlYXJiQGNhbmRlbGF0ZWNoLmNv
+bSB3cm90ZToNCj4gRXh0ZXJuYWwgZW1haWwgOiBQbGVhc2UgZG8gbm90IGNsaWNrIGxpbmtzIG9y
+IG9wZW4gYXR0YWNobWVudHMgdW50aWwNCj4geW91IGhhdmUgdmVyaWZpZWQgdGhlIHNlbmRlciBv
+ciB0aGUgY29udGVudC4NCj4gDQo+IA0KPiBGcm9tOiBCZW4gR3JlZWFyIDxncmVlYXJiQGNhbmRl
+bGF0ZWNoLmNvbT4NCj4gDQo+IFRoaXMgZmVhdHVyZSBhbGxvd3MgbWFjODAyMTEgdG8gdXBkYXRl
+IHRoZSBkcml2ZXIgd2l0aCBtdS1taW1vDQo+IGdyb3VwIHRvIGFsbG93IHRoZSBtb25pdG9yIHBv
+cnQgdG8gY2FwdHVyZSBNVS1NSU1PIChWSFQpIGZyYW1lcy4NCj4gDQo+IFRoZSBtdDc5MTUgZHJp
+dmVyIGltcGxlbWVudGF0aW9uIHdpbGwgb25seSBlbmFibGUgdGhpcyBmZWF0dXJlDQo+IHdoZW4g
+dGhlcmUgaXMgb25seSBhIG1vbml0b3IgdmRldi4gIEkgd2FzIGFmcmFpZCB0aGF0IGl0IHdvdWxk
+IG1lc3MNCj4gdXAgYSBzdGEgKyBtb25pdG9yIHZkZXYgY29tYmluYXRpb24sIGZvciBpbnN0YW5j
+ZS4NCj4gDQo+IE9yaWdpbmFsIGNvZGUgZnJvbSBSeWRlcg0KPiANCj4gU2lnbmVkLW9mZi1ieTog
+QmVuIEdyZWVhciA8Z3JlZWFyYkBjYW5kZWxhdGVjaC5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmggICAgIHwgIDUgKysrDQo+ICAuLi4vbmV0
+L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYyAgfCAgMSArDQo+ICAuLi4vbmV0
+L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYyAgfCA0MQ0KPiArKysrKysrKysr
+KysrKysrKysrDQo+ICAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3Mu
+aCAgfCAxMCArKysrKw0KPiAgNCBmaWxlcyBjaGFuZ2VkLCA1NyBpbnNlcnRpb25zKCspDQo+IA0K
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmgN
+Cj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYuaA0KPiBpbmRleCA2
+YjA3YjhmYWZlYzIuLmQ0YWU1M2Q4MGQwNyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2LmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc2LmgNCj4gQEAgLTk0NSw2ICs5NDUsMTEgQEAgc3RhdGljIGlubGlu
+ZSB1MTYgbXQ3Nl9yZXYoc3RydWN0IG10NzZfZGV2ICpkZXYpDQo+ICAgICAgICAgcmV0dXJuIGRl
+di0+cmV2ICYgMHhmZmZmOw0KPiAgfQ0KPiANCj4gK3N0YXRpYyBpbmxpbmUgaW50IG10NzZfdmlm
+X2NvdW50KHN0cnVjdCBtdDc2X2RldiAqZGV2KQ0KPiArew0KPiArICAgICAgIHJldHVybiBod2Vp
+Z2h0X2xvbmcoZGV2LT52aWZfbWFzayk7DQo+ICt9DQo+ICsNCj4gICNkZWZpbmUgbXQ3Nnh4X2No
+aXAoZGV2KSBtdDc2X2NoaXAoJigoZGV2KS0+bXQ3NikpDQo+ICAjZGVmaW5lIG10NzZ4eF9yZXYo
+ZGV2KSBtdDc2X3JldigmKChkZXYpLT5tdDc2KSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMNCj4gYi9kcml2ZXJzL25l
+dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMNCj4gaW5kZXggYWMyMDQ5ZjQ5
+YmIzLi5iZWE3NTYxNTg3MmYgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMNCj4gQEAgLTM3MCw2ICszNzAsNyBAQCBtdDc5MTVf
+aW5pdF93aXBoeShzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5KQ0KPiAgICAgICAgIHdpcGh5X2V4dF9m
+ZWF0dXJlX3NldCh3aXBoeSwNCj4gTkw4MDIxMV9FWFRfRkVBVFVSRV9GSUxTX0RJU0NPVkVSWSk7
+DQo+ICAgICAgICAgd2lwaHlfZXh0X2ZlYXR1cmVfc2V0KHdpcGh5LA0KPiBOTDgwMjExX0VYVF9G
+RUFUVVJFX0FDS19TSUdOQUxfU1VQUE9SVCk7DQo+ICAgICAgICAgd2lwaHlfZXh0X2ZlYXR1cmVf
+c2V0KHdpcGh5LA0KPiBOTDgwMjExX0VYVF9GRUFUVVJFX0NBTl9SRVBMQUNFX1BUSzApOw0KPiAr
+ICAgICAgIHdpcGh5X2V4dF9mZWF0dXJlX3NldCh3aXBoeSwNCj4gTkw4MDIxMV9FWFRfRkVBVFVS
+RV9NVV9NSU1PX0FJUl9TTklGRkVSKTsNCj4gDQo+ICAgICAgICAgaWYgKCFpc19tdDc5MTUoJmRl
+di0+bXQ3NikpDQo+ICAgICAgICAgICAgICAgICB3aXBoeV9leHRfZmVhdHVyZV9zZXQod2lwaHks
+DQo+IE5MODAyMTFfRVhUX0ZFQVRVUkVfU1RBX1RYX1BXUik7DQo+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCj4gYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCj4gaW5kZXggMWIzNjEx
+OTljMDYxLi43NTY2ZGIwY2Y1MjMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYw0KPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCj4gQEAgLTU5Miw2ICs1OTIsMzQgQEAgbXQ3
+OTE1X3VwZGF0ZV9ic3NfY29sb3Ioc3RydWN0IGllZWU4MDIxMV9odyAqaHcsDQo+ICAgICAgICAg
+fQ0KPiAgfQ0KPiANCj4gK3N0YXRpYyB2b2lkDQo+ICttdDc5MTVfdXBkYXRlX211X2dyb3VwKHN0
+cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZg0KPiAqdmlmLA0KPiAr
+ICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBpZWVlODAyMTFfYnNzX2NvbmYgKmluZm8pDQo+
+ICt7DQo+ICsgICAgICAgc3RydWN0IG10NzkxNV9waHkgKnBoeSA9IG10NzkxNV9od19waHkoaHcp
+Ow0KPiArICAgICAgIHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYgPSBtdDc5MTVfaHdfZGV2KGh3KTsN
+Cj4gKyAgICAgICB1OCBpLCBiYW5kID0gcGh5LT5tdDc2LT5iYW5kX2lkeDsNCj4gKyAgICAgICB1
+MzIgKm11Ow0KPiArDQo+ICsgICAgICAgbXUgPSAodTMyICopaW5mby0+bXVfZ3JvdXAubWVtYmVy
+c2hpcDsNCj4gKyAgICAgICBmb3IgKGkgPSAwOyBpIDwgV0xBTl9NRU1CRVJTSElQX0xFTiAvIHNp
+emVvZigqbXUpOyBpKyspIHsNCj4gKyAgICAgICAgICAgICAgIGlmIChpc19tdDc5MTYoJmRldi0+
+bXQ3NikpDQo+ICsgICAgICAgICAgICAgICAgICAgICAgIG10NzZfd3IoZGV2LA0KPiBNVF9XRl9Q
+SFlfUlhfR0lEX1RBQl9WTERfTVQ3OTE2KGJhbmQsIGkpLA0KPiArICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIG11W2ldKTsNCj4gKyAgICAgICAgICAgICAgIGVsc2UNCj4gKyAgICAgICAg
+ICAgICAgICAgICAgICAgbXQ3Nl93cihkZXYsIE1UX1dGX1BIWV9SWF9HSURfVEFCX1ZMRChiYW5k
+LA0KPiBpKSwgbXVbaV0pOw0KPiArICAgICAgIH0NCj4gKw0KPiArICAgICAgIG11ID0gKHUzMiAq
+KWluZm8tPm11X2dyb3VwLnBvc2l0aW9uOw0KPiArICAgICAgIGZvciAoaSA9IDA7IGkgPCBXTEFO
+X1VTRVJfUE9TSVRJT05fTEVOIC8gc2l6ZW9mKCptdSk7IGkrKykgew0KPiArICAgICAgICAgICAg
+ICAgaWYgKGlzX210NzkxNigmZGV2LT5tdDc2KSkNCj4gKyAgICAgICAgICAgICAgICAgICAgICAg
+bXQ3Nl93cihkZXYsDQo+IE1UX1dGX1BIWV9SWF9HSURfVEFCX1BPU19NVDc5MTYoYmFuZCwgaSks
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbXVbaV0pOw0KPiArICAgICAgICAg
+ICAgICAgZWxzZQ0KPiArICAgICAgICAgICAgICAgICAgICAgICBtdDc2X3dyKGRldiwgTVRfV0Zf
+UEhZX1JYX0dJRF9UQUJfUE9TKGJhbmQsDQo+IGkpLCBtdVtpXSk7DQo+ICsgICAgICAgfQ0KPiAr
+fQ0KPiArDQo+ICBzdGF0aWMgdm9pZCBtdDc5MTVfYnNzX2luZm9fY2hhbmdlZChzdHJ1Y3QgaWVl
+ZTgwMjExX2h3ICpodywNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3Ry
+dWN0IGllZWU4MDIxMV92aWYgKnZpZiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgc3RydWN0IGllZWU4MDIxMV9ic3NfY29uZiAqaW5mbywNCj4gQEAgLTY1MCw2ICs2Nzgs
+MTkgQEAgc3RhdGljIHZvaWQgbXQ3OTE1X2Jzc19pbmZvX2NoYW5nZWQoc3RydWN0DQo+IGllZWU4
+MDIxMV9odyAqaHcsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgQlNTX0NIQU5HRURfRklMU19E
+SVNDT1ZFUlkpKQ0KPiAgICAgICAgICAgICAgICAgbXQ3OTE1X21jdV9hZGRfYmVhY29uKGh3LCB2
+aWYsIGluZm8tPmVuYWJsZV9iZWFjb24sDQo+IGNoYW5nZWQpOw0KPiANCj4gKyAgICAgICBpZiAo
+Y2hhbmdlZCAmIEJTU19DSEFOR0VEX01VX0dST1VQUykgew0KPiArICAgICAgICAgICAgICAgLyog
+QXNzdW1wdGlvbiBpcyB0aGF0IGluIGNhc2Ugb2Ygbm9uLW1vbml0b3IgVkRFVg0KPiBleGlzdGlu
+ZywgdGhlbg0KPiArICAgICAgICAgICAgICAgICogdGhhdCBkZXZpY2Ugc2hvdWxkIGNvbnRyb2wg
+dGhlIG11LWdyb3VwIGRpcmVjdGx5Lg0KPiArICAgICAgICAgICAgICAgICovDQo+ICsgICAgICAg
+ICAgICAgICBpbnQgdmlmX2NvdW50ID0gbXQ3Nl92aWZfY291bnQoJmRldi0+bXQ3Nik7DQo+ICsg
+ICAgICAgICAgICAgICBpbnQgbWF4X29rID0gMDsNCg0KSSBkb24ndCB0aGluayB3ZSBuZWVkIGNo
+ZWNrcyBoZXJlIGFzIHVzZXIgY2FuIGZ1bGx5IGhhbmRsZSB0aGlzIHdpdGgNCnRvZ2dsaW5nIGl3
+IGNvbW1hbmQgLSBpdyBkZXYgbW9uMCBzZXQgbW9uaXRvciBtdW1pbW8tZ3JvdXBpZCA8R3JvdXAg
+SUQ+DQoNCkFsc28sIHRoZSBHcm91cCBJRCBtZ210IGZyYW1lIGlzIHRyYW5zbWl0dGVkIGJ5IHRo
+ZSBBUCB0byBhc3NpZ24gb3INCmNoYW5nZSB0aGUgdXNlciBwb3NpdGlvbiBvZiBhIFNUQSwgd2hp
+Y2ggd2lsbCBub3RpZnkgdW5kZXJseWluZyBkcml2ZXINCm9mIGNoYW5nZXMuDQoNCj4gKyAgICAg
+ICAgICAgICAgIGlmIChwaHktPm1vbml0b3JfdmlmKQ0KPiArICAgICAgICAgICAgICAgICAgICAg
+ICBtYXhfb2sgPSAxOw0KPiArICAgICAgICAgICAgICAgaWYgKHZpZl9jb3VudCA8PSBtYXhfb2sp
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIG10NzkxNV91cGRhdGVfbXVfZ3JvdXAoaHcsIHZp
+ZiwgaW5mbyk7DQo+ICsgICAgICAgfQ0KPiArDQo+ICAgICAgICAgbXV0ZXhfdW5sb2NrKCZkZXYt
+Pm10NzYubXV0ZXgpOw0KPiAgfQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3OTE1L3JlZ3MuaA0KPiBpbmRleCBjOGU0NzhhNTUwODEuLjVlMDU3
+Y2NlNWM5ZiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni9tdDc5MTUvcmVncy5oDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L3JlZ3MuaA0KPiBAQCAtMTE4Myw2ICsxMTgzLDE2IEBAIGVudW0gb2Zmc19yZXYg
+ew0KPiAgI2RlZmluZSBNVF9XRl9QSFlfQkFTRSAgICAgICAgICAgICAgICAgMHg4MzA4MDAwMA0K
+PiAgI2RlZmluZSBNVF9XRl9QSFkob2ZzKSAgICAgICAgICAgICAgICAgKE1UX1dGX1BIWV9CQVNF
+ICsgKG9mcykpDQo+IA0KPiArI2RlZmluZSBNVF9XRl9QSFlfUlhfR0lEX1RBQl9WTEQoX3BoeSwN
+Cj4gaSkgICAgICAgICAgICAgIE1UX1dGX1BIWSgweDEwNTQgKyBcDQo+ICsgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIChpKQ0K
+PiAqIDQgKyAoKF9waHkpIDw8IDE2KSkNCj4gKyNkZWZpbmUgTVRfV0ZfUEhZX1JYX0dJRF9UQUJf
+VkxEX01UNzkxNihfcGh5LA0KPiBpKSAgICAgICBNVF9XRl9QSFkoMHgxMDU0ICsgXA0KPiArICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAoaSkNCj4gKiA0ICsgKChfcGh5KSA8PCAyMCkpDQo+ICsNCj4gKyNkZWZpbmUgTVRfV0Zf
+UEhZX1JYX0dJRF9UQUJfUE9TKF9waHksDQo+IGkpICAgICAgICAgICAgICBNVF9XRl9QSFkoMHgx
+MDVjICsgXA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAoaSkNCj4gKiA0ICsgKChfcGh5KSA8PCAxNikpDQo+ICsjZGVm
+aW5lIE1UX1dGX1BIWV9SWF9HSURfVEFCX1BPU19NVDc5MTYoX3BoeSwNCj4gaSkgICAgICAgTVRf
+V0ZfUEhZKDB4MTA1YyArIFwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKGkpDQo+ICogNCArICgoX3BoeSkgPDwgMjAp
+KQ0KPiArDQo+ICAjZGVmaW5lIE1UX1dGX1BIWV9SWF9DVFJMMShfcGh5KSAgICAgICBNVF9XRl9Q
+SFkoMHgyMDA0ICsgKChfcGh5KSA8PA0KPiAxNikpDQo+ICAjZGVmaW5lIE1UX1dGX1BIWV9SWF9D
+VFJMMV9NVDc5MTYoX3BoeSkgICAgICAgIE1UX1dGX1BIWSgweDIwMDQgKw0KPiAoKF9waHkpIDw8
+IDIwKSkNCj4gICNkZWZpbmUgTVRfV0ZfUEhZX1JYX0NUUkwxX0lQSV9FTiAgICAgIEdFTk1BU0so
+MiwgMCkNCj4gLS0NCj4gMi40MC4wDQo+IA0K
