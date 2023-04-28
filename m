@@ -2,77 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C79096F110C
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 06:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3E86F1136
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 07:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345309AbjD1EbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 00:31:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39946 "EHLO
+        id S1345130AbjD1FDb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 01:03:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345179AbjD1EbL (ORCPT
+        with ESMTP id S229570AbjD1FDa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 00:31:11 -0400
-Received: from m13123.mail.163.com (m13123.mail.163.com [220.181.13.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C66A1BFE;
-        Thu, 27 Apr 2023 21:31:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-        Message-ID; bh=orKYBcnCSrfD8lnOQKKIt2WstY3dyNfJ3FD+enhl4lQ=; b=c
-        uELsu9PKoxRndZJHDQBuH1ACoN+I5O4PWZvv4kvJr1pbP0Ai884JGLTlzYD/iHbY
-        LfGKeCyuFeVM+6yTmBgwkbqSdTVx8iKX9rO4aqbNQRDPlboer2V+sxE8t5EBkc8C
-        HVyAKWHHCoZ4C4ardITvls2mSUX6X2Fv0nCZEA49LA=
-Received: from luyun_611$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr123 (Coremail) ; Fri, 28 Apr 2023 12:30:47 +0800 (CST)
-X-Originating-IP: [116.128.244.169]
-Date:   Fri, 28 Apr 2023 12:30:47 +0800 (CST)
-From:   "Yun Lu" <luyun_611@163.com>
-To:     "Bitterblue Smith" <rtl8821cerfe2@gmail.com>
-Cc:     Jes.Sorensen@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re:Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to
- incorrect RCR value
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <3854af21-822d-75f4-0e74-e1998143d59f@gmail.com>
-References: <20230427020512.1221062-1-luyun_611@163.com>
- <3854af21-822d-75f4-0e74-e1998143d59f@gmail.com>
-X-NTES-SC: AL_QuyTAPqeuUov4SCaZOkWmEgRjug5UMGxv/0i3oJUPZE0nivL3xEYU3JzF3jM0vOdDzqQvRWrdztr0t1ZYZVke4ErRhlLZLj/mIEwyixmaxI1
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+        Fri, 28 Apr 2023 01:03:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C0D26A2
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 22:03:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD18560D3D
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 05:03:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F7FC433D2;
+        Fri, 28 Apr 2023 05:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682658205;
+        bh=KeAjELWR8MQg9MqM1OtAJaVWpO2/4TbzOdm52pKlkq8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=nCLGyvI4OOaNgy/CQ2++p2r6avT//Yh9fHaTXLGdNrG059hHwVCZMCz7J6jYudvZo
+         GJiRKrU9B9iDbg7oZqtR6uRkWC7Vi00mkPTpyxEBgaHubmk6X/34v06omt3d2p6RgP
+         JcKTon/eupRUM0f6yKCbd7z3jNW0ELrQcI5KDRFEFeyE1AtmAiSPEtAgpl4v6S4+Ty
+         r0SvCp134W80BUM2oJ+/Ri7xUbP8KHU2crp7CBFacYcdSSnQkCbDNApJLLvP+AiZua
+         xlWPlQvcY4a3HcXlPQhgHfugbLFn3/LODRR9EGYmT0Ko74LLu3pZacQUV+P3GjfwVV
+         8A6LTUDc3k8tw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 1/2] wifi: mt76: mt7996: fix endianness of MT_TXD6_TX_RATE
+References: <16fa938373e3b145cb07a2c98d2428fea2abadba.1682285873.git.ryder.lee@mediatek.com>
+Date:   Fri, 28 Apr 2023 08:03:18 +0300
+In-Reply-To: <16fa938373e3b145cb07a2c98d2428fea2abadba.1682285873.git.ryder.lee@mediatek.com>
+        (Ryder Lee's message of "Mon, 24 Apr 2023 05:39:05 +0800")
+Message-ID: <87r0s4ppih.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Message-ID: <48b7ad54.2dfc.187c620bcf0.Coremail.luyun_611@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: e8GowADHBT34S0tkfAkPAA--.45289W
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiWxpfzmI0Z0p1VQACsJ
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QXQgMjAyMy0wNC0yOCAwMTowMTowNiwgIkJpdHRlcmJsdWUgU21pdGgiIDxydGw4ODIxY2VyZmUy
-QGdtYWlsLmNvbT4gd3JvdGU6Cj5PbiAyNy8wNC8yMDIzIDA1OjA1LCBZdW4gTHUgd3JvdGU6Cj4+
-IEZyb206IFl1biBMdSA8bHV5dW5Aa3lsaW5vcy5jbj4KPj4gCj4+IFdoZW4gdXNpbmcgcnRsODE5
-MmN1IHdpdGggcnRsOHh4eHUgZHJpdmVyIHRvIGNvbm5lY3Qgd2lmaSwgdGhlcmUgaXMgYQo+PiBw
-cm9iYWJpbGl0eSBvZiBmYWlsdXJlLCB3aGljaCBzaG93cyAiYXV0aGVudGljYXRpb24gd2l0aCAu
-Li4gdGltZWQgb3V0Ii4KPj4gVGhyb3VnaCBkZWJ1Z2dpbmcsIGl0IHdhcyBmb3VuZCB0aGF0IHRo
-ZSBSQ1IgcmVnaXN0ZXIgaGFzIGJlZW4gaW5leHBsaWNhYmx5Cj4+IG1vZGlmaWVkIHRvIGFuIGlu
-Y29ycmVjdCB2YWx1ZSwgcmVzdWx0aW5nIGluIHRoZSBuaWMgbm90IGJlaW5nIGFibGUgdG8KPj4g
-cmVjZWl2ZSBhdXRoZW50aWNhdGVkIGZyYW1lcy4KPj4gCj4+IFRvIGZpeCB0aGlzIHByb2JsZW0s
-IGFkZCByZWdyY3IgaW4gcnRsOHh4eHVfcHJpdiBzdHJ1Y3QsIGFuZCBzdG9yZQo+PiB0aGUgUkNS
-IHZhbHVlIGV2ZXJ5IHRpbWUgdGhlIHJlZ2lzdGVyIGlzIHdyaXRlbiwgYW5kIHVzZSBpdCB0aGUg
-bmV4dAo+PiB0aW1lIHRoZSByZWdpc3RlciBuZWVkIHRvIGJlIG1vZGlmaWVkLgo+PiAKPgo+Q2Fu
-IHRoaXMgYnVnIGJlIHJlcHJvZHVjZWQgZWFzaWx5PyBJcyBpdCBhbHdheXMgdGhlIHNhbWUgYml0
-cyB3aGljaAo+YXJlIG15c3RlcmlvdXNseSBjbGVhcmVkIGZyb20gUkVHX1JDUj8KCk9uIHRoZSBk
-ZXZpY2UoRURJTUFYIEVXLTc4MjJVQW4pIHdlIHVzZWQsIGl0IGNhbiBiZSByZXByb2R1Y2VkIGVh
-c2lseS4KQW5kIHRoZSBjaGFuZ2VkIGJpdHMgaXMgbm90IGFsd2F5cyB0aGUgc2FtZSwgYXMgdGhl
-IGxvZyBzaG93cyBpbiBteSByZXBseQp0byBMYXJyeS4KSXQgc2VlbXMgdGhhdCB0aGUgbmljIHdp
-bGwgbW9kaWZ5IHRoZSB2YWx1ZSBvZiB0aGlzIHJlZ2lzdGVyIGl0c2VsZj8gSSBndWVzcyBpdC4K
-ClRoYW5rcy4K
+Ryder Lee <ryder.lee@mediatek.com> writes:
+
+> To avoid sparse warning:
+> sparse: warning: invalid assignment: |=
+> sparse:    left side has type restricted __le32
+> sparse:    right side has type unsigned lon
+>
+> Fixes: 15ee62e73705 ("wifi: mt76: mt7996: enable BSS_CHANGED_BASIC_RATES support")
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+
+I guess this is the fix for Jakub's report? I should take it to wireless
+then?
+
+What about patch 2, should I also take it to wireless? Felix, ack?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
