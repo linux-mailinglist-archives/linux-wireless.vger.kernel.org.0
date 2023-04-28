@@ -2,54 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3E86F1136
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 07:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72DAB6F1137
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 07:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345130AbjD1FDb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 01:03:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
+        id S1345162AbjD1FE1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 01:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjD1FDa (ORCPT
+        with ESMTP id S229570AbjD1FE0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 01:03:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C0D26A2
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Apr 2023 22:03:26 -0700 (PDT)
+        Fri, 28 Apr 2023 01:04:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEEA26A2;
+        Thu, 27 Apr 2023 22:04:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD18560D3D
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 05:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F7FC433D2;
-        Fri, 28 Apr 2023 05:03:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7A8660AB4;
+        Fri, 28 Apr 2023 05:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC619C433D2;
+        Fri, 28 Apr 2023 05:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682658205;
-        bh=KeAjELWR8MQg9MqM1OtAJaVWpO2/4TbzOdm52pKlkq8=;
+        s=k20201202; t=1682658264;
+        bh=1jG17+/ymFzEo1DeDLBm4GJ1/6GRzCzGRAUyoi4cchE=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=nCLGyvI4OOaNgy/CQ2++p2r6avT//Yh9fHaTXLGdNrG059hHwVCZMCz7J6jYudvZo
-         GJiRKrU9B9iDbg7oZqtR6uRkWC7Vi00mkPTpyxEBgaHubmk6X/34v06omt3d2p6RgP
-         JcKTon/eupRUM0f6yKCbd7z3jNW0ELrQcI5KDRFEFeyE1AtmAiSPEtAgpl4v6S4+Ty
-         r0SvCp134W80BUM2oJ+/Ri7xUbP8KHU2crp7CBFacYcdSSnQkCbDNApJLLvP+AiZua
-         xlWPlQvcY4a3HcXlPQhgHfugbLFn3/LODRR9EGYmT0Ko74LLu3pZacQUV+P3GjfwVV
-         8A6LTUDc3k8tw==
+        b=WUpZRmPs+HS5nSEp2lgOEhgiHzBXVP1F5Zeods3BiFK9ogpLPHdf6SR0TF9cclENd
+         2CULicHnBKqko0P9GmyZEe12EJbf8lzw+htBtqEHGxIEXSwwJGNacj8gWksXnJ6tv6
+         ot5hv+spL+5dy7gZUtoFtXO+0bD2GiCBvUqLTqvFTRp0tbl5x364LID+luPvwzdzx2
+         bfFK2sRD9evMxl2EB13Sr3ocNoHujQ2e9rdNXFRd0DkJvKK5g24wYcROTh7DNhcIEj
+         oLhONSt6TrVDjBBNxLA5uorU3GIK5gQjl8X88DnKc3JB18CdvHGDRIFuMqxK9tuGHv
+         khXWAXkfdsqPA==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 1/2] wifi: mt76: mt7996: fix endianness of MT_TXD6_TX_RATE
-References: <16fa938373e3b145cb07a2c98d2428fea2abadba.1682285873.git.ryder.lee@mediatek.com>
-Date:   Fri, 28 Apr 2023 08:03:18 +0300
-In-Reply-To: <16fa938373e3b145cb07a2c98d2428fea2abadba.1682285873.git.ryder.lee@mediatek.com>
-        (Ryder Lee's message of "Mon, 24 Apr 2023 05:39:05 +0800")
-Message-ID: <87r0s4ppih.fsf@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Aloka Dixit <quic_alokad@quicinc.com>,
+        Muna Sinada <quic_msinada@quicinc.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net] wifi: mac80211: Fix puncturing bitmap handling in __ieee80211_csa_finalize()
+References: <e84a3f80fe536787f7a2c7180507efc36cd14f95.1682358088.git.christophe.jaillet@wanadoo.fr>
+Date:   Fri, 28 Apr 2023 08:04:19 +0300
+In-Reply-To: <e84a3f80fe536787f7a2c7180507efc36cd14f95.1682358088.git.christophe.jaillet@wanadoo.fr>
+        (Christophe JAILLET's message of "Mon, 24 Apr 2023 19:42:04 +0200")
+Message-ID: <87mt2sppgs.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,20 +63,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ryder Lee <ryder.lee@mediatek.com> writes:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
 
-> To avoid sparse warning:
-> sparse: warning: invalid assignment: |=
-> sparse:    left side has type restricted __le32
-> sparse:    right side has type unsigned lon
+> 'changed' can be OR'ed with BSS_CHANGED_EHT_PUNCTURING which is larger than
+> an u32.
+> So, turn 'changed' into an u64 and update ieee80211_set_after_csa_beacon()
+> accordingly.
 >
-> Fixes: 15ee62e73705 ("wifi: mt76: mt7996: enable BSS_CHANGED_BASIC_RATES support")
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+> In the commit in Fixes, only ieee80211_start_ap() was updated.
+>
+> Fixes: 2cc25e4b2a04 ("wifi: mac80211: configure puncturing bitmap")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-I guess this is the fix for Jakub's report? I should take it to wireless
-then?
-
-What about patch 2, should I also take it to wireless? Felix, ack?
+FWIW mac80211 patches go to wireless tree, not net.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
