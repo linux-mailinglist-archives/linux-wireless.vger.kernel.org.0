@@ -2,90 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E2B6F15F1
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 12:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597F96F1A0D
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 15:56:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345755AbjD1Kn0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 06:43:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40136 "EHLO
+        id S1346173AbjD1N4P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 09:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345591AbjD1KnW (ORCPT
+        with ESMTP id S229471AbjD1N4O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 06:43:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB092706;
-        Fri, 28 Apr 2023 03:43:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 373DB60C0D;
-        Fri, 28 Apr 2023 10:43:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99344C433D2;
-        Fri, 28 Apr 2023 10:43:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682678599;
-        bh=cr4spr+W66ImQd/SIrHqDWMlzeS4k1hTXtCqSr7iwq4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=pQ0n3z9HiSrlu//prMDjjr0LEr/n6Rd6ox4qzO2h2D82IqV1bm27D4lqc90sN3rcK
-         sLzSg9ZhcPmBePPlEbMnmgri1fX3tLlahglqBimvJhDkXXy0iZHgb4h6+wvOMcxdDC
-         5WtDDo2CShXyWCCOksggWKENeXdAoW/F+wdBAbzb9DayPIIzffzsrba0mMYb3XB1X/
-         /YfazB9vuv+tq2WGf3rjRNQdKslzPoQER3Ifgvach0/uN/XEhhC6KdN8pXSDyFfEzb
-         mYREaOdM99EucnGEMhI2SlxyPBMkku0ByUrTnJ358yyJBDiA2kwk+PRgOlunEZmxwv
-         jNBtpZeujTk0w==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: pull-request: wireless-next-2023-04-21
-References: <20230421104726.800BCC433D2@smtp.kernel.org>
-        <20230421075404.63c04bca@kernel.org>
-        <e31dae6daa6640859d12bf4c4fc41599@realtek.com>
-        <87leigr06u.fsf@kernel.org> <20230425071848.6156c0a0@kernel.org>
-Date:   Fri, 28 Apr 2023 13:43:16 +0300
-In-Reply-To: <20230425071848.6156c0a0@kernel.org> (Jakub Kicinski's message of
-        "Tue, 25 Apr 2023 07:18:48 -0700")
-Message-ID: <87cz3os2wr.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 28 Apr 2023 09:56:14 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E01A171E
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 06:56:14 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f19b9d5358so76895585e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 06:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682690172; x=1685282172;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lN6ZH6CIrNE0KT/OlcPAHKY4iybPDBrxjoMtRJOd8aA=;
+        b=qBWVLAmUcc9MtObvn/Do+I6SJZEFBwNY95NjNlwbxxroVPupqJ7NFM5ZoAL7PHOHpI
+         6Khezn1peuKFD45XW9oYFLABXMhXbdQ08Gqd12aByOSSlMX3/eZHBS4iQB84ssWLgccL
+         x5nWE6hln2pLx6OFpNtIUu7My5Qp/eSjbl0MZEId1SxSghzGyZy6T0r4oiDZNeriQu/M
+         L2JN1DBVTdTsy5k6uJAXrjYNFCNsIjvnDeLqVRB1NbSSmO6P+/6sxiLf2Vqn3s+FvHmy
+         3THBKl/AiCmz1tlh+YAc8PnyNEBPpLqqNXafwUg3BkdTlwPUQrs9HeFIWsIwr1aseOsW
+         FenQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682690172; x=1685282172;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lN6ZH6CIrNE0KT/OlcPAHKY4iybPDBrxjoMtRJOd8aA=;
+        b=foW71Xufs+lmAJDD31zxgaQxaTQR+Pptc4ghp5NjCI3gx7uDv6IDH0vFeztoH9/JSM
+         oiNz0sgBfrC2EaOSTaJ7XKCF+h95sVmd2AiqJLpKS8r8Wwr+x1TCTYlZrolw4Fasgpha
+         grqUFIin7T++oWx5pvqXKHc3HFH7tAsvSsQtV51aJKOkzL9nK6XcwWPTJmSuJmEt/AKn
+         zuUYH/mXfRrK6kNwATC+FvEdBsQHtbnlhzc2r/pssxquipKiwhlaF9rz/Zu/yPrkrW0e
+         P0F78BFQ/hSMt7+Sfpot5J9VNugBM0vgCN/851uEkNjudbrjPLbzsZsPStLr3t2anJts
+         A7BQ==
+X-Gm-Message-State: AC+VfDytccNHtiBWtZj2R7Bo6owIb4dYGC5hK0OVsKbGrm3jDHVEn8lC
+        /vjeotWbmfQl/ZXeLtGu9CFHO4rq2woKM3VgzsnkRnrHJDo=
+X-Google-Smtp-Source: ACHHUZ54LtRtYYF0r3gbczenbxKnBqoKoGswsCoIplEcoTorJe8pFPFTVx9JXDe2mLHwd3TnMX/TsvnfR8mZhB+ako0=
+X-Received: by 2002:a1c:6a05:0:b0:3f1:95af:172c with SMTP id
+ f5-20020a1c6a05000000b003f195af172cmr3851405wmc.41.1682690172417; Fri, 28 Apr
+ 2023 06:56:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Gabriel Tisan <gabriel.tisan@gmail.com>
+Date:   Fri, 28 Apr 2023 15:56:01 +0200
+Message-ID: <CAD9ZU8BcYM_zZqFzTBFDQOoF0Jd3vNj4OWODOy+UZbWXCUwA7A@mail.gmail.com>
+Subject: rtw88: 8822cu (LM842) --> LOWER_UP link messages
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Hi !
 
-> On Tue, 25 Apr 2023 08:38:17 +0300 Kalle Valo wrote:
->> IIRC we discussed this back in initial rtw88 or rtw89 driver review (not
->> sure which one). At the time I pushed for the current solution to have
->> the initvals in static variables just to avoid any backwards
->> compatibility issues. I agree that the initvals in .c files are ugly but
->> is it worth all the extra effort and complexity to move them outside the
->> kernel? I'm starting to lean towards it's not worth all the extra work.
->
-> I don't think it's that much extra work, the driver requires FW
-> according to modinfo, anyway, so /lib/firmware is already required.
-> And on smaller systems with few hundred MB of RAM it'd be nice to not
-> hold all the stuff in kernel memory, I'd think.
+I use a LM842 wifi stick on a Linux kernel 5.15 with last patches for
+rtw88 from linux-next applied.
+Firmware version is 9.9.15
 
-Later in this thread Ping explained pretty well the challenges here,
-that sums exactly what I'm worried about.
+When I connect LM842 as a station to an AP, after the link is up first
+time, it comes from time to time more LOWER_UP message.
+The stick is plugged and the connection to AP is still valid.
 
-> We have a rule against putting FW as a static table in the driver
-> source, right? Or did we abandon that? Isn't this fundamentally similar?
+# ip -oneline -family inet monitor link
 
-My understanding is that these are just initialisation values for
-hardware, not executable code. (Ping, please correct me if I
-misunderstood.) So that's why I thought these are ok to have in kernel.
-So I took practicality over elegance here.
+5: wlan0: <BROADCAST,MULTICAST> mtu 1500 qdisc noqueue state DOWN
+group default \    link/ether 34:c9:f0:99:b6:a1 brd ff:ff:ff:ff:ff:ff
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
+state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
+ff:ff:ff:ff:ff:ff
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
+state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
+ff:ff:ff:ff:ff:ff
+
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> \    link/ether
+
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
+noqueue state DORMANT group default \    link/ether 34:c9:f0:99:b6:a1
+brd ff:ff:ff:ff:ff:ff
+
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
+state UP group default \    link/ether 34:c9:f0:99:b6:a1 brd
+ff:ff:ff:ff:ff:ff
+
+
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
+
+
+
+
+
+Any idea what I can do ?
+
+Did someone also reproduce that problem ?
+
+
+
+Regards,
+
+Gabriel
