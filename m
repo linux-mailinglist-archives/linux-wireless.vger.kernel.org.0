@@ -2,155 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CDDD6F1EBE
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 21:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D38D56F1ED2
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 21:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346583AbjD1T21 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 15:28:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53148 "EHLO
+        id S230395AbjD1Tr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 15:47:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346570AbjD1T20 (ORCPT
+        with ESMTP id S229578AbjD1Tr1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 15:28:26 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65E1849D2
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 12:28:25 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-38dec65ab50so242842b6e.2
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 12:28:25 -0700 (PDT)
+        Fri, 28 Apr 2023 15:47:27 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2127.outbound.protection.outlook.com [40.107.220.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF8B19B9;
+        Fri, 28 Apr 2023 12:47:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ApTpUO2cFlyC1FQhC0J+wfJc2XcBBhtNJ8vkOGZpzyu2shXyRdppMqw2oD79z6z5P1g7UXyaQWDsse0Bq9mY5ARcf2TsvqLjYPnKDo836ooagZp8PkCW4lfSrc97yL7rZaov8TEvUYk3UzQlrpxFcwPuicj3FFsVicdqy3RLe6FIY+h/hIUgLYBAY48v/BLdCSghjLQO8fm/ErgmKrhumU0gHj+h5XMzg1UHvqEf1Icwu3hn6X7NLQ9qMUTcaKhcwm7e1PP8b6j+gWA2RAwJJOa+ZQyGJrCz6cDfZ8lpznhZirSaDVZIKOpSswzMfWzx2KcJcpNXYKFrkOKYI6VD2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RaFl4fqMIYsj9k8l7A1XUu8w29DTpzfQPosA5TF2tMw=;
+ b=PKppm9prbd2EOdNlK+XcNN1SdqFA56wQWRgzjNy445InnLcIkujln9YAr9Ypzk46t5vDYiO3BMc/5el9LCUrmLO7KsppdaSE5AjNL+2oPIxnDzQMg7fZHJhzLs0OpYmq13fVFpFLKZwptQZCQF0oyGiZdiTJ1S1BhwS0cjcYbCfOvPvJWhZ7LEB9kemHylA4RmfIu9RaQc133ZHpNYLlm/g2LUIy6rig/EeCLmPInzePtVhCN2ryaPaWMi5DSfhshEoyxcvcbEchhrHGRnAHWHtxjukSOgsg3giE98MUsQgkRnpZU4zibfgrFPtQ/2xox0RTIkcV91VvzLxAbUqlew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682710104; x=1685302104;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=a6vzlKNk4RUiM+MhugYFPY8/fTDfT9NyXIgg3OMojQc=;
-        b=IRyJN7GGzbldBp0Ue/yz0Qgdv9F8o9Rt/Etyc43HfLBjytxAZlK3bvQix2i8LAOC5f
-         6KBjPyaLAnsAoGy+09mE0UhBoEzvBgRGWzQ/vVgJ3/Yo/GF99Un+CWcylW1jk69Qzt21
-         JmS4Y43weRgxgaq2EVbWRe3W5pfeBfpnEQ++z3jJV8lR8iPmHFmkqvEoC9zFucO8MZe2
-         a53qcOWXB99vZWjZTfqQ1KMyHeX6voGywdTlPFQDZ/V7D5AoNna/6IoI7kh17EGFOWTP
-         3DC1bsmFCB+u+7lF24vjGrp1CiS3wmU2Wyydn4pxP1EstaGFnTcVyH4pjwrzysJftzGs
-         BRNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682710104; x=1685302104;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a6vzlKNk4RUiM+MhugYFPY8/fTDfT9NyXIgg3OMojQc=;
-        b=bAVLE1kQBFeUl3eziNYYUaYqYuf1uan+1Y3Fju8RNlpas8X/rVsUF5ME1feLlZk2va
-         cEwvY4dV5cuNTg22dnTfQNkq3EWQCymUms9aINYmHcijMj+8hFwxgs5H60qjvHpQFKUI
-         GbGWXWZP2uwQOeHOYstZHZXBzTWCW8Py3flYpLrOQcWTyLvbm2GlzaOeCF/N5/iMFssb
-         4yaabACOcPlHYuZ//ijlmFy23ghhgDOwuJ95EjGnOiscu23JnGqlYPuMBCKQgAdIRQLm
-         qE/r1pHu2nAuY2ZTSUsHZT9tuwyhaiS0lqD8M9bHwwMaA7GRlEwpcbbCpPZFuS/r/8LS
-         op7w==
-X-Gm-Message-State: AC+VfDySzy6DdyaE/QuL0YbEZwaULTMpodv9Q1UcUq5fFjPvU0Y/1LpB
-        NMajiTbFHqu2i89NB3Nwqu7xKWZ3iC4=
-X-Google-Smtp-Source: ACHHUZ7Ioq75RjaiRtu8MUv+f4O2l3MI79lh7AHM06IX+Roo6nxvpkhmnugLCpZjg6f/nKagn8c+xw==
-X-Received: by 2002:aca:100f:0:b0:38e:880a:25c7 with SMTP id 15-20020aca100f000000b0038e880a25c7mr2925084oiq.25.1682710104713;
-        Fri, 28 Apr 2023 12:28:24 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id p205-20020acaf1d6000000b00386eff32f58sm9165384oih.13.2023.04.28.12.28.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 12:28:24 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <0529ba07-db97-fe95-4ab8-aba47b8b0bc4@lwfinger.net>
-Date:   Fri, 28 Apr 2023 14:28:23 -0500
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RaFl4fqMIYsj9k8l7A1XUu8w29DTpzfQPosA5TF2tMw=;
+ b=oH4vLaEjNZOAfQBJvXPFIcavxJ77oj9ken4Vl7nzJi6Y6V/OPo2ilB2oCN/uJpZuKyqPY6J2GJex6DX3Di+l/h0Ld/oNDVQgsQ9QOidW6Q0TtB2UE13P3uViajHFK18ZlejNBoTelEfz5OxyA8ALPtDEXEShiutfyDqiElh5or8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by DS7PR13MB4752.namprd13.prod.outlook.com (2603:10b6:5:3a4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.22; Fri, 28 Apr
+ 2023 19:47:23 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6340.022; Fri, 28 Apr 2023
+ 19:47:23 +0000
+Date:   Fri, 28 Apr 2023 21:47:15 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] wifi: ath10k: Use list_count_nodes()
+Message-ID: <ZEwiw+zPc7Wdyixf@corigine.com>
+References: <e6ec525c0c5057e97e33a63f8a4aa482e5c2da7f.1682541872.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e6ec525c0c5057e97e33a63f8a4aa482e5c2da7f.1682541872.git.christophe.jaillet@wanadoo.fr>
+X-ClientProxiedBy: AM9P193CA0006.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21e::11) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: rtw88: 8822cu (LM842) --> LOWER_UP link messages
-Content-Language: en-US
-To:     Gabriel Tisan <gabriel.tisan@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <CAD9ZU8BcYM_zZqFzTBFDQOoF0Jd3vNj4OWODOy+UZbWXCUwA7A@mail.gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <CAD9ZU8BcYM_zZqFzTBFDQOoF0Jd3vNj4OWODOy+UZbWXCUwA7A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|DS7PR13MB4752:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14456666-8ee1-47d2-2b73-08db482162ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uXAQ5g7KFywjQGWKrzVfFcx8OmHxeICAOBvUeauFiu+iNiULf9Bq1qsWhY+8L5Jh21qK9/NGOPo1tkrTzHpIjAlMPcM8GhGl7bnkX8xliU3FRpUnxyLiz2+ja3vTqY0yANrFEnEStWd4l/+VKU7gquCuOL7Z+OzC6lxUWn8JoncpP4EmpsOoYYktPclw6Njl4ayeg697l2/7TdI0BjkzhOPmV2csMVRrSD69ZNoZ4XmOC69ZzbW80pOoG4N0PZPMb7L9VnvhLaDcbf9jsX9tCu0HzStrUN0dAeDFXHoNAWz+1EhMT5nAa7soE8j4hdesOaj0aTdLGzNgODM3HHmVvXYg1hIOLQl5bBZ9geH/XsixBliyEARmOJaNE0fqEyre89meuh8FOCzrV+iAyKu2cEYwYlN0+rPMj5X6Vaam/ufmUPDhLgl9BQQXV3LtC3Vjx31sTmDFyobTP4m/AVZUgR3tgl7WV6hJGcUtq4tSHqtMU++PM1DQySbsydweoJNLFxSCdDxe6/F5ksgmqo7JuuskwENaYquyZWytTM5o9/M0/1tFP60in5aobJ3ZrH/yKBZWqSrnHDjLzUFoeEZTN8v8q1B9WbC3Kk9FhhG5istgJUF66gqjKyqXP1nSexBZZNHKAOikpAuaHyBVsPpU0w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(39840400004)(366004)(136003)(346002)(451199021)(86362001)(4744005)(2906002)(36756003)(44832011)(186003)(6486002)(6666004)(6512007)(6506007)(66556008)(4326008)(6916009)(2616005)(478600001)(66476007)(316002)(5660300002)(38100700002)(41300700001)(66946007)(54906003)(8936002)(8676002)(7416002)(67856001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HmNHl4RPj92g1vhf4WQAgv3QcIE6ZEzZdgxb9HCKTv93e5YD190iyxlDw5uJ?=
+ =?us-ascii?Q?c2Yrke+T/ZZPVhiJZR5Va23aem8D5l42h6wDFJtWVSB76NpWLpfeHDX4tPI6?=
+ =?us-ascii?Q?F4xnrRfIFWGUHHcIRnCMqiCgElcihBOD4TuimeltVjYpvN0nUet4rlCoHd+J?=
+ =?us-ascii?Q?vkemYcPSvqgCEWcRkIz2Li7I90k/mUDVYOIHIkSAfKKxtMSkkDeVHDMAFNbA?=
+ =?us-ascii?Q?ZzdjKQPPVI5I++ysV9UeJ3LKO7gopZLUiTGlmdI+sVCA9C9hXsIVrQS0Mvzo?=
+ =?us-ascii?Q?wHrCosrNLUU+HVrV3U+A2VAIiWX4DacFAAchQvug5YIRlUVhffVrxYKYPgt7?=
+ =?us-ascii?Q?U19anPUtnJnvbuukDyIrwktuPIjZy0RpfDNJmWdmHmh9GYmUZmITGG0Y1+Qk?=
+ =?us-ascii?Q?7ZKuLnmZ+JYfafh3DNXOn/RREuAtnzMOMZc9ZWSP5Zf8z74L8z7V3ewWptsK?=
+ =?us-ascii?Q?EUbE76WMikINX7xVpq+E10+6J24GD0Ki1GniV7sXs8eNHrZsdhBNPAS+3uZC?=
+ =?us-ascii?Q?9jY43DlPq4nviiyjYHS9itbGQftPqCzA7QQGylmeIFLOhA4WSJw9Dczq5yFk?=
+ =?us-ascii?Q?h3+HgDqe43CUG1GJbAGC8GZx9ENF3QBj+mNYuyHOBqw2HO9jroZxA1ll20WI?=
+ =?us-ascii?Q?t7s4+RdhjwirlJzTZznyNDNStSbQvDnGDKl0PykuHB1UCMtPekcfo0s8ydl6?=
+ =?us-ascii?Q?YL0kCJ6R6ZfF+X4H5NeFpaq/ZJdMm9bnGutk0C5niID36AQtPhsbuYPKysfZ?=
+ =?us-ascii?Q?P5UcJ3UPKlJ6u0Rk+XLYaqZuUWZW4u+1/GhG1qRWBBcWdiDfN2KTVbV14kYg?=
+ =?us-ascii?Q?zcPjwlHQ+KBxCWOV+9YlXWZ+AkRBvV27h7b/FLtTCzQc7U6pMZ82osnfXaQt?=
+ =?us-ascii?Q?cSO2OKzXIOLxNDWn+QNVIT9+3JUa06LE0CpPse1O7MMiF8f5gCBK2FcljiHL?=
+ =?us-ascii?Q?PU2C1b3gUhsEIO8svd0zGJFb7Br4RYMShivfeGQ26FCpVSaFX1xKlIxQrDIt?=
+ =?us-ascii?Q?3OkXL1EDqXJd8q+EC739lX5biB1QiPrAugjCQ0iXj/Z4vGCBhPAqUrLwAcVS?=
+ =?us-ascii?Q?irWMxmfWqoM9rheR4EfJDAd52qIz0rA0wnuiIuvFvZ0dQIEWoCEs4U6uS9Fb?=
+ =?us-ascii?Q?QKKPQIEba5o1uvtzsYeTRsMuYY1G8bq+J24BgaJKX1vBP5yrPFIVtdvZAJHQ?=
+ =?us-ascii?Q?Ibu5qjB2Gjv1W3uFYTE7X8YyNx+G3ozkWXvYB9Xvn/cGxXS7ivj1aRVpgy/r?=
+ =?us-ascii?Q?hxE/Bxw1ai4KSwhVXnzeVEunuE1emckXlt4pQTraRwgMEd6d1AFIOhJo5XSa?=
+ =?us-ascii?Q?PY7do0G/LwAXCqc+Ah8UbOozWXsq91XhfXb7/lxHet7S093bEp7HXCXatGc3?=
+ =?us-ascii?Q?vvD+CcyQj+YLqUBN8Ae8MAKCdqXt8bmZAhqoZVQmC/rnHc4mfjLl720GP+5R?=
+ =?us-ascii?Q?06ZaaGk0ANl+4Z+PBJ/hTMEQIpvdlOwCzLD4aDfLP8n8IQNblScHFPNnf3rY?=
+ =?us-ascii?Q?6NWW4V5dXgMDn5o+JgVVWNe6f/WNMgsAZPzJxynP7TWaQ9MgsgHyEEOqAoXv?=
+ =?us-ascii?Q?5Y5dN3fznFmoPAlOKavLQLweSrv2HMM3sPv0YL2eF3Id5Ywxh1fAKva5xr7d?=
+ =?us-ascii?Q?PUzevG8fdyvI9rl91Gh2gaD4SOR05y8l9XEXQsyiSBb91xKU1rPl5BbAntzl?=
+ =?us-ascii?Q?Yk+YiA=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14456666-8ee1-47d2-2b73-08db482162ba
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2023 19:47:23.2073
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MSWPTu+lAtrWK3G64Tia3etA7gEsDw4UNWdlGPelNAbGMmV/dtsaHocrW40Kpqc+i4fXW/J3BOWRvmx8zCH9VQIqatnsvaaEqnxh2j2FFlk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR13MB4752
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/28/23 08:56, Gabriel Tisan wrote:
-> Hi !
+On Wed, Apr 26, 2023 at 10:49:07PM +0200, Christophe JAILLET wrote:
+> ath10k_wmi_fw_stats_num_peers() and ath10k_wmi_fw_stats_num_vdevs() really
+> look the same as list_count_nodes(), so use the latter instead of hand
+> writing it.
 > 
-> I use a LM842 wifi stick on a Linux kernel 5.15 with last patches for
-> rtw88 from linux-next applied.
-> Firmware version is 9.9.15
+> The first ones use list_for_each_entry() and the other list_for_each(), but
+> they both count the number of nodes in the list.
 > 
-> When I connect LM842 as a station to an AP, after the link is up first
-> time, it comes from time to time more LOWER_UP message.
-> The stick is plugged and the connection to AP is still valid.
-> 
-> # ip -oneline -family inet monitor link
-> 
-> 5: wlan0: <BROADCAST,MULTICAST> mtu 1500 qdisc noqueue state DOWN
-> group default \    link/ether 34:c9:f0:99:b6:a1 brd ff:ff:ff:ff:ff:ff
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
-> state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
-> ff:ff:ff:ff:ff:ff
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
-> state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
-> ff:ff:ff:ff:ff:ff
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> \    link/ether
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
-> noqueue state DORMANT group default \    link/ether 34:c9:f0:99:b6:a1
-> brd ff:ff:ff:ff:ff:ff
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
-> state UP group default \    link/ether 34:c9:f0:99:b6:a1 brd
-> ff:ff:ff:ff:ff:ff
-> 
-> 
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 
-> 
-> 
-> 
-> 
-> Any idea what I can do ?
-> 
-> Did someone also reproduce that problem ?
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-No, I do not see that problem. When I run your command, I get
-
-finger@localhost:~/rtw88>ip -oneline -family inet monitor link
-12: wlp0s20u6i2: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-12: wlp0s20u6i2: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-12: wlp0s20u6i2: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-
-My connection is very stable; however, my device is an 8822BU, not an 8822CU.
-
-When the connection is dropped, what is logged? You can see that with a 'sudo 
-dmesg | less' command.
-
-Larry
-
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
