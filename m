@@ -2,47 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6552B6F1FA7
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7B56F1FA6
 	for <lists+linux-wireless@lfdr.de>; Fri, 28 Apr 2023 22:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346743AbjD1UuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Apr 2023 16:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35178 "EHLO
+        id S1346738AbjD1UuP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Apr 2023 16:50:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346735AbjD1UuK (ORCPT
+        with ESMTP id S1346737AbjD1UuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Apr 2023 16:50:10 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2292426AF
+        Fri, 28 Apr 2023 16:50:11 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C369E3C26
         for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 13:50:09 -0700 (PDT)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 70E253C006D
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5B14F600074
         for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 20:50:07 +0000 (UTC)
 Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id C683A13C2B1;
+        by mail3.candelatech.com (Postfix) with ESMTP id F152F13C2B3;
         Fri, 28 Apr 2023 13:50:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C683A13C2B1
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F152F13C2B3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1682715006;
-        bh=okpTzhGyjXSE0viv7hybvNEp4Hs5VVeEAUGSd7oVDiY=;
+        s=default; t=1682715007;
+        bh=Tvwip7ZoQQeNbf9yZkS2AOgXYlGiAEtNfvDbWOz0Nuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EewEXS8RDCvXPnmipoH+37yUJjMTXZ64bM3UCQFvDq+IRZBPn573fwpz/JmEH4RvO
-         eoQbEidz8P7aU6n1v1cIZckxdn1lXyC5eshO1aPU2/c2EkktAtcwK9BdvMUh7TpZPz
-         za4k8kWuTcxRhS6+W0B4wzQDw4jWh7AOUWA+mGFc=
+        b=mXR8vVKch8RIf0Ztfle9KTVjP+01j9NnMKsQHXLPdaS99PhbjSYrcEIbX4WFV7PRR
+         4IQwpVZfIuHUHdHiy1aDpcJvUOgk0J313rR2Ip9IMNs/mXehn0rEXrmJ7VrQFWBLOm
+         kUM9jcn01BlRksK8Ff+l7f2rBIjRxpeYgeIihp+o=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 2/6] wifi: mt76: mt7915: Move rxfilter logic into central location.
-Date:   Fri, 28 Apr 2023 13:49:56 -0700
-Message-Id: <20230428205000.2647945-2-greearb@candelatech.com>
+Subject: [PATCH 3/6] wifi: mt76: mt7915: Support setting aid when in monitor mode.
+Date:   Fri, 28 Apr 2023 13:49:57 -0700
+Message-Id: <20230428205000.2647945-3-greearb@candelatech.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230428205000.2647945-1-greearb@candelatech.com>
 References: <20230428205000.2647945-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1682715008-WpvlsfnULbd3
-X-MDID-O: us5;at1;1682715008;WpvlsfnULbd3;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-MDID: 1682715008-JJHd7dwU1h9S
+X-MDID-O: us5;ut7;1682715008;JJHd7dwU1h9S;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -55,160 +55,202 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-And ensure monitor mode is taken into account when calculating the
-filter.
+The parser expects values in hex.
+Syntax: aid color uldl enables
 
-Enable RMAC_TOP_TF_SNIFFER when in promisc mode.
+The enables value is a set of flags to enable any/all of the
+aid, color, and/or uldl (in that order).
+options.  For uldl, 0x1 means upload.
+Example, capture aid 11:
+echo "b 0 0 1" > /debug/ieee80211/phy0/mt76/he_sniffer_params
+
+Note that you must also enable the group-5 fields in the rx-status
+header for he-trig (and he-mu) to show up properly in a packet
+capture.
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 51 ++++++++++++++-----
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  2 +
- .../net/wireless/mediatek/mt76/mt7915/regs.h  |  3 ++
- 3 files changed, 44 insertions(+), 12 deletions(-)
+ .../wireless/mediatek/mt76/mt7915/debugfs.c   | 60 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 35 +++++++++++
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  8 +++
+ .../net/wireless/mediatek/mt76/mt7915/regs.h  |  9 +++
+ 4 files changed, 112 insertions(+)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 879884ead660..f836754103dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -247,6 +247,64 @@ mt7915_muru_debug_get(void *data, u64 *val)
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_muru_debug, mt7915_muru_debug_get,
+ 			 mt7915_muru_debug_set, "%lld\n");
+ 
++static ssize_t
++mt7915_he_monitor_set(struct file *file, const char __user *user_buf,
++		      size_t count, loff_t *ppos)
++{
++	struct mt7915_phy *phy = file->private_data;
++	char buf[64] = {0};
++	u32 aid, bss_color, uldl, enables;
++	int ret;
++	struct mt7915_dev *dev = phy->dev;
++
++	if (count >= sizeof(buf))
++		return -EINVAL;
++
++	if (copy_from_user(buf, user_buf, count))
++		return -EFAULT;
++
++	ret = sscanf(buf, "%x %x %x %x",
++		     &aid, &bss_color, &uldl, &enables);
++	if (ret != 4)
++		return -EINVAL;
++
++	phy->monitor_cur_aid = aid;
++	phy->monitor_cur_color = bss_color;
++	phy->monitor_cur_uldl = uldl;
++	phy->monitor_cur_enables = enables;
++
++	mutex_lock(&dev->mt76.mutex);
++	mt7915_check_apply_monitor_config(phy);
++	mutex_unlock(&dev->mt76.mutex);
++
++	return count;
++}
++
++static ssize_t
++mt7915_he_monitor_get(struct file *file, char __user *user_buf,
++		      size_t count, loff_t *ppos)
++{
++	struct mt7915_phy *phy = file->private_data;
++	u8 buf[32];
++	int len;
++
++	len = scnprintf(buf, sizeof(buf),
++			"aid: 0x%x bss-color: 0x%x  uldl: 0x%x  enables: 0x%x\n"
++			"  ULDL:  0 is download, 1 is upload\n"
++			"  Enable-bits: 1: AID  2: Color  4: ULDL\n",
++			phy->monitor_cur_aid, phy->monitor_cur_color,
++			phy->monitor_cur_uldl, phy->monitor_cur_enables);
++
++	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
++}
++
++static const struct file_operations mt7915_he_sniffer_ops = {
++	.write = mt7915_he_monitor_set,
++	.read = mt7915_he_monitor_get,
++	.open = simple_open,
++	.llseek = default_llseek,
++};
++
+ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
+ {
+ 	struct mt7915_phy *phy = file->private;
+@@ -1230,6 +1288,8 @@ int mt7915_init_debugfs(struct mt7915_phy *phy)
+ 	debugfs_create_file("tx_stats", 0400, dir, phy, &mt7915_tx_stats_fops);
+ 	debugfs_create_file("sys_recovery", 0600, dir, phy,
+ 			    &mt7915_sys_recovery_ops);
++	debugfs_create_file("he_sniffer_params", 0600, dir, phy,
++			    &mt7915_he_sniffer_ops);
+ 	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
+ 	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
+ 	debugfs_create_file("fw_debug_bin", 0600, dir, dev, &fops_fw_debug_bin);
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 7566db0cf523..7ec9f45cfa15 100644
+index 7ec9f45cfa15..fec30cf26855 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -8,6 +8,11 @@
- #include "mt7915.h"
- #include "mcu.h"
- 
-+static void __mt7915_configure_filter(struct ieee80211_hw *hw,
-+				      unsigned int changed_flags,
-+				      unsigned int *total_flags,
-+				      u64 multicast);
-+
- static bool mt7915_dev_running(struct mt7915_dev *dev)
- {
- 	struct mt7915_phy *phy;
-@@ -481,16 +486,15 @@ static int mt7915_config(struct ieee80211_hw *hw, u32 changed)
- 	if (changed & IEEE80211_CONF_CHANGE_MONITOR) {
- 		bool enabled = !!(hw->conf.flags & IEEE80211_CONF_MONITOR);
- 		bool band = phy->mt76->band_idx;
-+		u32 total_flags = phy->mac80211_rxfilter_flags;
-+		u64 multicast = 0; /* not used by this driver currently. */
- 
--		if (!enabled)
--			phy->rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
--		else
--			phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
-+		phy->monitor_enabled = enabled;
- 
- 		mt76_rmw_field(dev, MT_DMA_DCR0(band), MT_DMA_DCR0_RXD_G5_EN,
- 			       enabled);
- 		mt76_testmode_reset(phy->mt76, true);
--		mt76_wr(dev, MT_WF_RFCR(band), phy->rxfilter);
-+		__mt7915_configure_filter(hw, 0, &total_flags, multicast);
- 	}
- 
- 	mutex_unlock(&dev->mt76.mutex);
-@@ -512,10 +516,10 @@ mt7915_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+@@ -516,6 +516,40 @@ mt7915_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
  	return 0;
  }
  
--static void mt7915_configure_filter(struct ieee80211_hw *hw,
--				    unsigned int changed_flags,
--				    unsigned int *total_flags,
--				    u64 multicast)
-+static void __mt7915_configure_filter(struct ieee80211_hw *hw,
-+				      unsigned int changed_flags,
-+				      unsigned int *total_flags,
-+				      u64 multicast)
- {
- 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
- 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
-@@ -526,6 +530,8 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
- 			MT_WF_RFCR1_DROP_CFEND |
- 			MT_WF_RFCR1_DROP_CFACK;
- 	u32 flags = 0;
-+	bool is_promisc = *total_flags & FIF_CONTROL || phy->monitor_vif ||
-+		phy->monitor_enabled;
- 
- #define MT76_FILTER(_flag, _hw) do {					\
- 		flags |= *total_flags & FIF_##_flag;			\
-@@ -533,7 +539,7 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
- 		phy->rxfilter |= !(flags & FIF_##_flag) * (_hw);	\
- 	} while (0)
- 
--	mutex_lock(&dev->mt76.mutex);
-+	phy->mac80211_rxfilter_flags = *total_flags; /* save requested flags for later */
- 
- 	phy->rxfilter &= ~(MT_WF_RFCR_DROP_OTHER_BSS |
- 			   MT_WF_RFCR_DROP_OTHER_BEACON |
-@@ -547,6 +553,8 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
- 			   MT_WF_RFCR_DROP_UNWANTED_CTL |
- 			   MT_WF_RFCR_DROP_STBC_MULTI);
- 
-+	phy->rxfilter |= MT_WF_RFCR_DROP_OTHER_UC;
++void mt7915_check_apply_monitor_config(struct mt7915_phy *phy)
++{
++	/* I first thought that this would not work well when combined
++	 * with STA mode, but now I think it will not matter since it appears
++	 * the HEMU rule 1 is only used after normal HE MU operations
++	 * have happened. --Ben
++	 */
++	struct mt7915_dev *dev = phy->dev;
++	u32 reg = mt76_rr(dev, MT_WF_HEMU_RULE1);
 +
- 	MT76_FILTER(OTHER_BSS, MT_WF_RFCR_DROP_OTHER_TIM |
- 			       MT_WF_RFCR_DROP_A3_MAC |
- 			       MT_WF_RFCR_DROP_A3_BSSID);
-@@ -557,14 +565,33 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
- 			     MT_WF_RFCR_DROP_RTS |
- 			     MT_WF_RFCR_DROP_CTL_RSV |
- 			     MT_WF_RFCR_DROP_NDPA);
-+	if (is_promisc)
-+		phy->rxfilter &= ~MT_WF_RFCR_DROP_OTHER_UC;
- 
- 	*total_flags = flags;
- 	mt76_wr(dev, MT_WF_RFCR(band), phy->rxfilter);
- 
--	if (*total_flags & FIF_CONTROL)
-+	if (is_promisc) {
- 		mt76_clear(dev, MT_WF_RFCR1(band), ctl_flags);
--	else
-+		mt76_set(dev, MT_WF_RMAC_TOP_TF_PARSER(band),
-+			 MT_WF_RMAC_TOP_TF_SNIFFER);
-+	} else {
- 		mt76_set(dev, MT_WF_RFCR1(band), ctl_flags);
-+		mt76_clear(dev, MT_WF_RMAC_TOP_TF_PARSER(band),
-+			   MT_WF_RMAC_TOP_TF_SNIFFER);
++	reg &= ~(MT_WF_HEMU_RULE1_AID |
++		 MT_WF_HEMU_RULE1_COLOR |
++		 MT_WF_HEMU_RULE1_ULDL |
++		 MT_WF_HEMU_RULE1_AID_ENABLE |
++		 MT_WF_HEMU_RULE1_BSS_COLOR_ENABLE |
++		 MT_WF_HEMU_RULE1_ULDL_ENABLE |
++		 MT_WF_HEMU_RULE1_PRIORITY);
++	reg |= phy->monitor_cur_aid;
++	reg |= (phy->monitor_cur_color << 10) & 0x3f;
++	if (phy->monitor_cur_uldl)
++		reg |= MT_WF_HEMU_RULE1_ULDL;
++	if (phy->monitor_cur_enables) {
++		if (phy->monitor_cur_enables & 0x1)
++			reg |= MT_WF_HEMU_RULE1_AID_ENABLE;
++		if (phy->monitor_cur_enables & 0x2)
++			reg |= MT_WF_HEMU_RULE1_BSS_COLOR_ENABLE;
++		if (phy->monitor_cur_enables & 0x4)
++			reg |= MT_WF_HEMU_RULE1_ULDL_ENABLE;
++		reg |= MT_WF_HEMU_RULE1_PRIORITY; /* set priority to 7 */
 +	}
++
++	mt76_wr(dev, MT_WF_HEMU_RULE1, reg);
 +}
 +
-+static void mt7915_configure_filter(struct ieee80211_hw *hw,
-+				    unsigned int changed_flags,
-+				    unsigned int *total_flags,
-+				    u64 multicast)
-+{
-+	struct mt7915_dev *dev = mt7915_hw_dev(hw);
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	__mt7915_configure_filter(hw, changed_flags, total_flags, multicast);
- 
- 	mutex_unlock(&dev->mt76.mutex);
- }
+ static void __mt7915_configure_filter(struct ieee80211_hw *hw,
+ 				      unsigned int changed_flags,
+ 				      unsigned int *total_flags,
+@@ -575,6 +609,7 @@ static void __mt7915_configure_filter(struct ieee80211_hw *hw,
+ 		mt76_clear(dev, MT_WF_RFCR1(band), ctl_flags);
+ 		mt76_set(dev, MT_WF_RMAC_TOP_TF_PARSER(band),
+ 			 MT_WF_RMAC_TOP_TF_SNIFFER);
++		mt7915_check_apply_monitor_config(phy);
+ 	} else {
+ 		mt76_set(dev, MT_WF_RFCR1(band), ctl_flags);
+ 		mt76_clear(dev, MT_WF_RMAC_TOP_TF_PARSER(band),
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index b3ead3530740..06f98e5cd95e 100644
+index 06f98e5cd95e..084001647aaa 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -244,6 +244,8 @@ struct mt7915_phy {
+@@ -242,6 +242,13 @@ struct mt7915_phy {
+ 	struct ieee80211_sband_iftype_data iftype[NUM_NL80211_BANDS][NUM_NL80211_IFTYPES];
+ 
  	struct ieee80211_vif *monitor_vif;
++	u16 monitor_cur_aid; /* aid to be used in monitor mode to capture HE trigger frames */
++	/* bss-color to be used in monitor mode to capture HE trigger frames */
++	u8 monitor_cur_color;
++	/* upload/download to be used in monitor mode to capture HE trigger frames */
++	u8 monitor_cur_uldl;
++	/* Specifies which of the above are used:  0x1 is AID, 0x2 is color, 0x3 is uldl */
++	u8 monitor_cur_enables;
  
  	struct thermal_cooling_device *cdev;
-+	u32 mac80211_rxfilter_flags;
-+	u8 monitor_enabled;
- 	u8 cdev_state;
- 	u8 throttle_state;
- 	u32 throttle_temp[2]; /* 0: critical high, 1: maximum */
+ 	u32 mac80211_rxfilter_flags;
+@@ -628,6 +635,7 @@ int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enable);
+ int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms);
+ int mt7915_mcu_wed_enable_rx_stats(struct mt7915_dev *dev);
+ int mt7915_init_debugfs(struct mt7915_phy *phy);
++void mt7915_check_apply_monitor_config(struct mt7915_phy *phy);
+ void mt7915_debugfs_rx_fw_monitor(struct mt7915_dev *dev, const void *data, int len);
+ bool mt7915_debugfs_rx_log(struct mt7915_dev *dev, const void *data, int len);
+ #ifdef CONFIG_MAC80211_DEBUGFS
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-index 5e057cce5c9f..0118fdaa96b3 100644
+index 0118fdaa96b3..252e5f1405cf 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
-@@ -566,6 +566,9 @@ enum offs_rev {
- #define MT_WF_RMAC_MIB_AIRTIME4(_band)	MT_WF_RMAC(_band, 0x0390)
- #define MT_WF_RMAC_MIB_QOS23_BACKOFF	GENMASK(31, 0)
+@@ -1217,4 +1217,13 @@ enum offs_rev {
+ #define MT_MCU_WM_CIRQ_EINT_MASK_CLR_ADDR	MT_MCU_WM_CIRQ(0x108)
+ #define MT_MCU_WM_CIRQ_EINT_SOFT_ADDR		MT_MCU_WM_CIRQ(0x118)
  
-+#define MT_WF_RMAC_TOP_TF_PARSER(_band) MT_WF_RMAC(_band, 0x0604)
-+#define MT_WF_RMAC_TOP_TF_SNIFFER       (BIT(10) | BIT(12))
++#define MT_WF_HEMU_RULE1                       (MT_WF_PHY_BASE + 0x10e0)
++#define MT_WF_HEMU_RULE1_AID                   GENMASK(10, 0)
++#define MT_WF_HEMU_RULE1_COLOR                 GENMASK(21, 16)
++#define MT_WF_HEMU_RULE1_ULDL                  (BIT(22)) /* 0 dl, 1 ul */
++#define MT_WF_HEMU_RULE1_AID_ENABLE            (BIT(24))
++#define MT_WF_HEMU_RULE1_BSS_COLOR_ENABLE      (BIT(25))
++#define MT_WF_HEMU_RULE1_ULDL_ENABLE           (BIT(26))
++#define MT_WF_HEMU_RULE1_PRIORITY              GENMASK(30, 28) /* 0 disable, 7 is highest */
 +
- /* WFDMA0 */
- #define MT_WFDMA0_BASE			__REG(WFDMA0_ADDR)
- #define MT_WFDMA0(ofs)			(MT_WFDMA0_BASE + (ofs))
+ #endif
 -- 
 2.40.0
 
