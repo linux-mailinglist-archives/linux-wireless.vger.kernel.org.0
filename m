@@ -2,52 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D58E56F230B
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Apr 2023 07:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81E556F230C
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Apr 2023 07:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbjD2FQ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Apr 2023 01:16:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S230394AbjD2FVA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Apr 2023 01:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjD2FQy (ORCPT
+        with ESMTP id S229437AbjD2FU7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Apr 2023 01:16:54 -0400
+        Sat, 29 Apr 2023 01:20:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E83C2706;
-        Fri, 28 Apr 2023 22:16:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17D11FCF
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 22:20:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA22260F4D;
-        Sat, 29 Apr 2023 05:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46D2C433EF;
-        Sat, 29 Apr 2023 05:16:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78CFD61022
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Apr 2023 05:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3B3C433EF;
+        Sat, 29 Apr 2023 05:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682745413;
-        bh=9EbmiYIZMWGtF3gGoIlyTxa/ZhoxOpHzUctWNuN4Wq0=;
+        s=k20201202; t=1682745656;
+        bh=+Ce7hsewW9AaYw3BQ3lTmmyLJmdmL+YYQKZgd9ohDxI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bKXr/GO+957j6cwoXpiipvLxaX+0+y0C73LfkEWr4QzsCP0k0g7KlzPfo4NcAbf5j
-         hlg3OC+Q/Ux88P8lUo7nXBfreaumzjU0RmI2r/hfq6HfeMK9RFKGAyZlie+xxCbO8G
-         XtoI2u4wxO68yhASQhmRGvXl2y1FmVfngLv7IaTJkRvWk6aIKTvn1X2L3DxXK7C81W
-         aEorDGCcfOIFy1sxfUjFFys1JjJZ37wAXQR4zDohpDqTB7rynCeHnsqy30Yrl7WH3r
-         Ifu0njSyVdKHQVmn6xX3xjCvfTXuasAxOLwDx0WUf5yixs33SQbsu1h/EjMzaYKGFI
-         GhPMke87AWCBw==
+        b=fAPVZFB50UdQPVhMxkmpNWxzcDwRvT1z8xV6XCBgiE1FjPyQKrmhyDjoS+2ul2F8X
+         EsDqK5fo2Id2dcEV9JAYeGSn59QApCyI7u4p9NOpL5OgRTjBrey20zI/T5ZK7xJnE4
+         jJ6x1WiJtD1DTCv39kPPL5oz4bH/xEPiNpZFXfOOEWKBYDDiHrEZa6A6lTyLpM4Gff
+         r2eR+0Ch/0/flS/sn9tiWWsgsiusnSa4UZ5RS+hyoXjNDnwb46r4JPnmo0k9j+Kzxa
+         +0EStmgA6mj4kOXQodsc7QOTiLWGQDVQ2ycqn2WFE7vOuJkafN6HRjqmiEbzLyhFHG
+         Xgyacu8/8+dRA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     wo <luyun_611@163.com>, Jes.Sorensen@gmail.com,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
-References: <20230427020512.1221062-1-luyun_611@163.com>
-        <866570c9-38d8-1006-4721-77e2945170b9@lwfinger.net>
-        <53e5cb36.2d9d.187c61b8405.Coremail.luyun_611@163.com>
-        <87ttx0s9a3.fsf@kernel.org>
-        <79edb0c1-170a-8a09-5247-951d833647cd@lwfinger.net>
-Date:   Sat, 29 Apr 2023 08:16:48 +0300
-In-Reply-To: <79edb0c1-170a-8a09-5247-951d833647cd@lwfinger.net> (Larry
-        Finger's message of "Fri, 28 Apr 2023 13:30:47 -0500")
-Message-ID: <87v8hfqncv.fsf@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: rtlwifi: rtl8192cu: Remove driver
+References: <20230428182933.19157-1-Larry.Finger@lwfinger.net>
+Date:   Sat, 29 Apr 2023 08:20:54 +0300
+In-Reply-To: <20230428182933.19157-1-Larry.Finger@lwfinger.net> (Larry
+        Finger's message of "Fri, 28 Apr 2023 13:29:32 -0500")
+Message-ID: <87pm7nqn61.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,21 +57,12 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-> On 4/28/23 03:25, Kalle Valo wrote:
->> wo  <luyun_611@163.com> writes:
->>
->>> In fact, there is another driver rtl8192cu.ko
->>> (drivers/net/wireless/realtek/rtlwifi/), that can also match this
->>> device.
->>
->> It's not good if there are two drivers supporting same hardware. Should
->> the support be removed from rtlwifi?
+> The functionality of these devices has been replaced by the rtl8xxxu
+> driver, thus the version under rtlwifi can be removed.
 >
-> Kalle,
->
-> I have just sent a patch removing rtl8192cu.
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Awesome, thanks Larry.
+Should I take this to wireless tree for v6.4?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
