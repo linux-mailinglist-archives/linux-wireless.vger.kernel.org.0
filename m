@@ -2,52 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECC0C6F232F
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Apr 2023 07:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 199DD6F239B
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Apr 2023 09:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347395AbjD2Fjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Apr 2023 01:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40804 "EHLO
+        id S230138AbjD2Hgo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Apr 2023 03:36:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347349AbjD2Fj1 (ORCPT
+        with ESMTP id S229487AbjD2Hgm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Apr 2023 01:39:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7492C46B1
-        for <linux-wireless@vger.kernel.org>; Fri, 28 Apr 2023 22:38:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7CAD6135D
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Apr 2023 05:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F119C43445;
-        Sat, 29 Apr 2023 05:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682746667;
-        bh=KcRS/gSUxsdaEHHgcHS4mEbJp1Za+VdXFHnn97XmJA4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CcXINkHQdc/my3AWAk1Mwcc5+46F0VQHMzKEKYRnCGe1degcBR3qR6AH78YDk8n3U
-         +HpfZ3CLLefCRrv5xs5XCCPQiFAeqyb0X/pF1MTVheWrfU/MnaTLhoy3q8pyAr0R9L
-         qcMfRsb2D7aBRar5n0U+YXHvjXbROdFttCsctnLzdopMMfKAnyYEJlOkS52xg1sPZT
-         9/n3byJq5Z/3Zo9n9DlvglUCQlSqmMhRKUcP1FlHUjFe5qbfKF78+ZE1A38qEnNXbA
-         c1lgmWxoI4c5ynJO4BEc/k36D+/LADEfBnND8DmU/kw30uXwC+XINrvuUPqkZXw2e7
-         EgDJQDhaZ8bsA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Aloka Dixit <quic_alokad@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v3 4/7] wifi: ath11k: MBSSID parameter configuration in AP mode
-References: <20230405221648.17950-1-quic_alokad@quicinc.com>
-        <20230405221648.17950-5-quic_alokad@quicinc.com>
-Date:   Sat, 29 Apr 2023 08:37:40 +0300
-In-Reply-To: <20230405221648.17950-5-quic_alokad@quicinc.com> (Aloka Dixit's
-        message of "Wed, 5 Apr 2023 15:16:45 -0700")
-Message-ID: <87leibqme3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Sat, 29 Apr 2023 03:36:42 -0400
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3F8FE1BDC
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Apr 2023 00:36:40 -0700 (PDT)
+Message-ID: <1f5e0a66-e68e-a673-feea-d2a3baaf54d4@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1682753797;
+        bh=3zEWMzvpRO6mmn5H8AbYdS5EKoN9JntNQVO2PtllDxU=;
+        h=Date:Subject:From:To:References:Cc:In-Reply-To;
+        b=p/85jjhle/A0R75AnUoLZ30nGcJfI+rEFOheil1gyWaIvRsEm//EN9bU9EA9rknRh
+         aKrRx+5hULM2aL0C7UpO6tT/mjQs0cHK5q0OtJKri4dUtHo2VHXatmC9mQY5yEFLkB
+         gcz7AimFckRlxL8bSL31GLdf6xqDKkkItxsNxgUc=
+Date:   Sat, 29 Apr 2023 09:36:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: Performance degradation with "wifi: mac80211: Drop support for TX
+ push path"
+Content-Language: en-US
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+To:     Maxime Bizon <mbizon@freebox.fr>
+References: <ZEwBXkj7nwXY2cF+@sakura>
+ <140bdbc3-8cb3-e7bd-13ee-fdacdf3b20da@wetzel-home.de>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+In-Reply-To: <140bdbc3-8cb3-e7bd-13ee-fdacdf3b20da@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,60 +48,95 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aloka Dixit <quic_alokad@quicinc.com> writes:
+Adding linux-wireless to the discussion:
 
-> Include MBSSID parameters in WMI vdev up operation.
->
-> Tested-on : IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-> Co-developed-by: John Crispin <john@phrozen.org>
-> Signed-off-by: John Crispin <john@phrozen.org>
-> ---
+On 28.04.23 22:08, Alexander Wetzel wrote:
+> On 28.04.23 19:24, Maxime Bizon wrote:
+>>
+>> Hello Alexander,
+>>
+> 
+> I would like to keep linux-wireless in the loop for discussions.
+> When that's ok for you, just add linux-wireless@vger.kernel.org when you 
+> reply...
+> 
+>> First I would like to thank you for the cleanups you are doing in
+>> mac80211, as a driver writer [1] I used to scratch my head to
+>> understand the internals.
+>>
+>> I work for a french ISP called Free, and actively maintain the
+>> software of all router/gateway devices (couple millions deployed)
+>>
+>> We have a very large number of old devices deployed that are >10 years
+>> old but on which we manage to run a mainline kernel. Those are ARM
+>> Kirkwook (armv5 1Ghz) based devices, wifi is Marvell 11n 2.4Ghz (mwl8k
+>> based) + QCA 11ac 5ghz (QCA998X/ath10k).
+>>
+>> The CPU was always a bit underpowered for the 11ac card, but I could
+>> reach ~400Mbit/s in a routing test between WAN and Wifi, 100% CPU usage.
+>>
+>> Since work started in 2019 on ath10k debloat, I applied that patch [2]
+>> to avoid performance degration.
+>>
+>> Since "wifi: mac80211: Drop support for TX push path", it's not
+>> possible to do that anymore, so I did a benchmark to see the impact,
+>> the same routing test caps at 250Mbit/s. I suppose some openwrt users
+>> will be affected also.
+> 
+> Well, I guess calling wake_tx_queue and then transmitting (mostly) one 
+> packet is probably causing that. Now there are some ideas to improve 
+> that by using a kthreads. It's hidden in the discussion here:
+> https://lore.kernel.org/all/82d5623b-8d21-a8c1-e835-e446adf96cde@wetzel-home.de/
+> 
+> My problem with doing that *now* is, that I'm working on a invasive 
+> patch set in mac80211. Which will really clean up the old logic and not 
+> just tweak some simple things.
+> It's mostly sorted out and written, only a few issue left till I can try 
+> it out. But I'm not getting around to wrap that up for work/private 
+> reasons for quite some weeks (really months...) now. Rebasing and then 
+> testing the already working patches for a wake_tx_queue implementation 
+> using kthreads is something I'm hoping to avoid:-)
+> 
+> Now, I've more or less already decided to add the kthread patch to that 
+> series, once I get it stabilized at its current level.
+> I have some hopes, that I can reuse the reworked PS mechanism to even 
+> simplify such an patch.
+> 
+> But it's hard to even estimate when I'll have that patch set together, 
+> so I would have something for you to test.
+> (Should at least be this year. Originally I was aiming for 6.4. But that 
+> was weeks ago and I've found no time to work on that till then...)
+> 
+> Getting the push path operational in >= 6.2 will be non-trival. You 
+> basically would have to revert drivers/mac80211 to 6.1 and maintain your 
+> own tree. Looks like a very bad idea...
+> 
+> When you need a fix in the near future and you have time to work on that 
+> I would look into using a kthread for wake_tx_queue. Seems to be the 
+> most promising way to solve the issue.. (Maybe I'm to optimistic, but 
+> that could even be faster...)
+> 
+> Of course some people on the list may have other - simpler to implement? 
+> - ideas why it's so much slower for you to use wake_tx_queue.
+> 
+> 
+>>
+>> I don't want to hinder progress of course, and I can still revert it
+>> (for now at least), but if you had an idea to keep a simpler
+>> alternative tx path without too much maintenance burden, I'd be
+>> willing to put the effort into it.
+>>
+> 
+> I don't think that we'll ever bring the push path back.
+> We'll have to figure out how to change wake_tx_queue, so you get the 
+> same - or better - performance.
+> 
+> 
+>> Thanks,
+>>
+>> [1] https://marc.info/?l=linux-wireless&m=158862152015048&w=2
+>> [2] 
+>> https://patchwork.kernel.org/project/ath10k/patch/1467201146-6844-1-git-send-email-michal.kazior@tieto.com/
+>>
+> 
 
-[...]
-
-> @@ -7153,8 +7161,13 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
->  			ath11k_warn(ab, "failed to update bcn tmpl during csa: %d\n",
->  				    ret);
->  
-> +		if (arvif->vif->mbssid_tx_vif)
-> +			tx_arvif = (struct ath11k_vif *)arvif->vif->mbssid_tx_vif->drv_priv;
-
-This had a warning:
-
-drivers/net/wireless/ath/ath11k/mac.c:7200: line length of 92 exceeds 90 columns
-
-In the pending branch I fixed it like this:
-
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -7143,6 +7143,7 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
- {
-        struct ath11k_base *ab = ar->ab;
-        struct ath11k_vif *arvif, *tx_arvif = NULL;
-+       struct ieee80211_vif *mbssid_tx_vif;
-        int ret;
-        int i;
-        bool monitor_vif = false;
-@@ -7196,8 +7197,10 @@ ath11k_mac_update_vif_chan(struct ath11k *ar,
-                        ath11k_warn(ab, "failed to update bcn tmpl during csa: %d\n",
-                                    ret);
- 
--               if (arvif->vif->mbssid_tx_vif)
--                       tx_arvif = (struct ath11k_vif *)arvif->vif->mbssid_tx_vif->drv_priv;
-+               mbssid_tx_vif = arvif->vif->mbssid_tx_vif;
-+               if (mbssid_tx_vif)
-+                       tx_arvif = (struct ath11k_vif *)mbssid_tx_vif->drv_priv;
-+
-                ret = ath11k_wmi_vdev_up(arvif->ar, arvif->vdev_id, arvif->aid,
-                                         arvif->bssid,
-                                         tx_arvif ? tx_arvif->bssid : NULL,
-
-Link to the commit:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=c884238009e778a0c8202a5eb0a7f68b13200bde
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
