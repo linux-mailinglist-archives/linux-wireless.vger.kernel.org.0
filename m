@@ -2,105 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 864E16F2560
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Apr 2023 19:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C8156F25BA
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Apr 2023 20:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbjD2RDV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Apr 2023 13:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59344 "EHLO
+        id S230223AbjD2SSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Apr 2023 14:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjD2RDU (ORCPT
+        with ESMTP id S230047AbjD2SSB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Apr 2023 13:03:20 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150CD171C
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Apr 2023 10:03:19 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-541f2112f82so391522eaf.1
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Apr 2023 10:03:19 -0700 (PDT)
+        Sat, 29 Apr 2023 14:18:01 -0400
+Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2ED79F;
+        Sat, 29 Apr 2023 11:18:00 -0700 (PDT)
+Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-44089f95265so290352e0c.3;
+        Sat, 29 Apr 2023 11:18:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682787796; x=1685379796;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=T3+G6ZWCIVNK2XuUsz0UiHCcvWSvAylc8cD0NX8Cq3A=;
-        b=QzC5C+zGUX1x6ib9+JCIJaAayaKHYygPeUaCB+/e3NmEPlreETvMR6Km9JnORcrb9t
-         5pF9xOvMZbNOqufFzoF3RM0lK7PjL5V7EK/Nn7R9bhC17V1UGsKuNWiVyNmZ0w38O7S5
-         Y2vkXnrPUrpyWjA3SdKzHhCRJiRtUBaYliMAgqPsM4YNAUWzQM+/87ESs2UauTCmGSGu
-         1rnKQm82htf8QXpEa9b5LgmPrYWkY5N8DWYDuad7drrQEbLvBzBvkHvxiT+9QmDa4zF9
-         IuL8S6p9YoJWyLHooMbPU1MIHSDKcep+Ukei5JziJP6+1yRlMKJLrNgZdsmgeY4rU6r2
-         /0vw==
+        d=gmail.com; s=20221208; t=1682792280; x=1685384280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r1iDAowj027iaBmQvYLZLlsdgLbrABEug20GI/GfAo4=;
+        b=qFbq5Sj7+zxZlOrpitzMN8wuN/wkDrUeRn3nzPHxlf6QYDD9BDV9wa2Z5bpOvBCqOt
+         R3UtJb7Pa/DUIRT6gTEKPJgTsf2BurAFEj8Qo2Mh9AS5gowIPPbkEhuiRcNVmW8+pQG7
+         RInOsoIsMZQpz2rFLgXUzlZXgiW/ZfqP+ZRzNiv7PuuHLubvw6i3WD/68aiqqnadFchi
+         Btv0PmA25qZ9ZihhRg+1Hgf8YcR7yCeteBIhppqaXyP/CRF69CrJWzNW4dqid56hpfL2
+         1luN881Qa2CmFsUAkhd8OAV1aahJAbC6mVGVZmvXSQ2eaPOA1nz4UJQiIRbkZyu1Ud83
+         7DWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682787796; x=1685379796;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=T3+G6ZWCIVNK2XuUsz0UiHCcvWSvAylc8cD0NX8Cq3A=;
-        b=hRTvcxM8AKACMRyYxVIVdFwB5yMXHLPUy0m62QirIPdZEZdZjqxpOfHwETF95rsksJ
-         qvRgUa4sIH1RrBbhVqfgcgCYbf5nGHn6VMMHjO68JpAdvpNDFDYXY7rxDmHIP+SAeTH1
-         hkGg+UZ+KOSQnd/D28hyK6jgjgjvKjxG1zBeVdDgBN5UA0n9bzWW/lFeeOVkBJ26YrUe
-         l7IwHj6+ZLwHWFbUfM2MHAtTQ8zBfyXpCb9pK5jcmYqHVWbkNEhvUdpkreDMaf+IzPFq
-         EDBZtfebiyZDeAMrrMdjGaoRNhXz/7fNzJuhm/cGKljHB+E/ai/agUcR8lV75G7xGxpT
-         dYWA==
-X-Gm-Message-State: AC+VfDzEtCWrm/ja0JLjkV//GPUFQ1RDL3HH948hJ5nAN3gdrmaZbvMT
-        lbBkZHHqqmJBQqlcCLfwxDReUhRY1d8=
-X-Google-Smtp-Source: ACHHUZ7lVm0lgpUfV6r5QZPLp7gQwCPRFzNNFXuw/X1Er84GRFSA397iBVjmdDyC2+L/XVhbwXzNkA==
-X-Received: by 2002:a4a:e847:0:b0:547:4fe2:bd17 with SMTP id m7-20020a4ae847000000b005474fe2bd17mr4867856oom.9.1682787796508;
-        Sat, 29 Apr 2023 10:03:16 -0700 (PDT)
-Received: from [192.168.0.162] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id v68-20020a4a5a47000000b00541b5963069sm10880559ooa.20.2023.04.29.10.03.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Apr 2023 10:03:16 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <53260a3b-9256-07a2-1d66-553e865362b7@lwfinger.net>
-Date:   Sat, 29 Apr 2023 12:03:14 -0500
+        d=1e100.net; s=20221208; t=1682792280; x=1685384280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r1iDAowj027iaBmQvYLZLlsdgLbrABEug20GI/GfAo4=;
+        b=dkSP7XsV1gt9w1JjqXADRFrYQwNg1XgciS3MUxg2GEdj4d2dcV1FA3004khp0ygAeJ
+         cA0w5u3VkYTzXlhBYNw1ZlHg06AK0BL0IekMYqLUnzPY4oA2fss8xEtKVdXK0Pc64EV9
+         mUlelWllbCHmEwaJ3NUf+LNU8hCbFr6O/NnTSkYFR6cK+SBXaByVMN3SD5wK/9YOTWeZ
+         mXo01OSm8FZb2FuMYn4A/wQPKb/Lwe120qtepAd1BXKDXNRbdTmmIK0ztn8nOzea8Qnr
+         r0KcN5o12KYG+OfGbjOhL75thNzoyZw38SbmXU1xofZMBYP6wxCY9dXD1rM42yrcrkRB
+         rutQ==
+X-Gm-Message-State: AC+VfDxjQzk+l5xpS38ScXVx8hUe16bPEJbN9vYbMR9BQdBlyQ0u/1if
+        r1qPtXVhCAT7kWw6B/qT22GsSzW0HBZbJS5TLzQ=
+X-Google-Smtp-Source: ACHHUZ4gAyBPwxEd6oY9ni3Df1iyIVtAfUw2w1QS6RzCTPmfziF/rQAQXVApUObLwF1k+G4lvXaJeFWCuo7dyiF05b4=
+X-Received: by 2002:a1f:e282:0:b0:440:8a24:e71f with SMTP id
+ z124-20020a1fe282000000b004408a24e71fmr3264011vkg.7.1682792279508; Sat, 29
+ Apr 2023 11:17:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: rtlwifi: rtl8192cu: Remove driver
-Content-Language: en-US
-To:     Martin Kaistra <martin.kaistra@linutronix.de>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20230428182933.19157-1-Larry.Finger@lwfinger.net>
- <cab66a9d-9a66-7cd1-408b-91e8cd9d8a9c@linutronix.de>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <cab66a9d-9a66-7cd1-408b-91e8cd9d8a9c@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230429020951.082353595@lindbergh.monkeyblade.net>
+ <CAAJw_ZueYAHQtM++4259TXcxQ_btcRQKiX93u85WEs2b2p19wA@mail.gmail.com> <ZE0kndhsXNBIb1g7@debian.me>
+In-Reply-To: <ZE0kndhsXNBIb1g7@debian.me>
+From:   Jeff Chua <jeff.chua.linux@gmail.com>
+Date:   Sun, 30 Apr 2023 02:17:48 +0800
+Message-ID: <CAAJw_Zvxtf-Ny2iymoZdBGF577aeNomWP7u7-5rWyn6A7rzKRg@mail.gmail.com>
+Subject: Re: iwlwifi broken in post-linux-6.3.0 after April 26
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/29/23 04:42, Martin Kaistra wrote:
-> Am 28.04.23 um 20:29 schrieb Larry Finger:
->> The functionality of these devices has been replaced by the rtl8xxxu
->> driver, thus the version under rtlwifi can be removed.
->>
->> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-> 
-> Things to keep in mind:
-> - rtlwifi offers AP mode support for rtl8192cu devices, rtl8xxxu doesn't (yet) 
-> do that. Should be relatively easy to add that on top of [1], though.
-> - The rtl8192cu devices are currently hidden behind CONFIG_RTL8XXXU_UNTESTED in 
-> the rtl8xxxu driver with the comment "Still supported by rtlwifi".
-> 
-> 
-> [1] 
-> https://lore.kernel.org/linux-wireless/20230428150833.218605-1-martin.kaistra@linutronix.de/
+On Sat, Apr 29, 2023 at 10:07=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail.co=
+m> wrote:
+>
+> On Sat, Apr 29, 2023 at 01:22:03PM +0800, Jeff Chua wrote:
+> > Can't start wifi on latest linux git pull ... started happening 3 days =
+ago ...
+>
+> Are you testing mainline?
 
-Kalle,
+I'm pulling from https://github.com/torvalds/linux.git, currently at ...
 
-I failed to consider this point. Please drop my patch. Instead, I will submit 
-one to remove that configuration parameter that says the rtl8192cu is "untested".
+commit 1ae78a14516b9372e4c90a89ac21b259339a3a3a (HEAD -> master,
+origin/master, origin/HEAD)
+Merge: 4e1c80ae5cf4 74d7970febf7
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Apr 29 11:10:39 2023 -0700
 
-Larry
+> Certainly you should do bisection.
 
+ok, will do.
