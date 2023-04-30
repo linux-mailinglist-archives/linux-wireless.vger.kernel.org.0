@@ -2,163 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1BA6F2872
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Apr 2023 12:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9046F2879
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Apr 2023 12:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbjD3Kao (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 30 Apr 2023 06:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33844 "EHLO
+        id S230211AbjD3Kg4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 30 Apr 2023 06:36:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjD3Kan (ORCPT
+        with ESMTP id S229461AbjD3Kgz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 30 Apr 2023 06:30:43 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA20710F7
-        for <linux-wireless@vger.kernel.org>; Sun, 30 Apr 2023 03:30:41 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-3010889c6ebso816370f8f.2
-        for <linux-wireless@vger.kernel.org>; Sun, 30 Apr 2023 03:30:41 -0700 (PDT)
+        Sun, 30 Apr 2023 06:36:55 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049891BFF;
+        Sun, 30 Apr 2023 03:36:54 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-3062c1e7df8so108151f8f.1;
+        Sun, 30 Apr 2023 03:36:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682850640; x=1685442640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m4G8UhnbxhsYM0Xf5ZW26+QRa14/9Q4I0bIU7lceQC8=;
-        b=Y1bg7Sk97eX4154YzIMDWJDnSTfrtmZwPaId8BdCQVoiL8jJVz/62Pl0jWBoaHRgpK
-         kct8pQMwHxN/3TJAXiaWUFjl4JYf4D1M74kcOieVrd383yZbvBxtehiunvEZS8fFqpmR
-         hhEpes7I729eSi89jBHUJTxpivMrBrHWXGaJ6WVfDA1w/4Wi9Pif1E5OxeuaYDKJbXIj
-         xeA1+2bp+nwt20XRZqbkKE2FLt3dtS4G/VuuO9SVdDorunKa9EJNADTHgfOiVAVgiR6Z
-         s13xeqTpDhrqktLOymOWAQVRRDM1eVTtdrWg7wAnckGoA4xhDld0x8rpUQR+WKsSxyJJ
-         ocMQ==
+        d=gmail.com; s=20221208; t=1682851012; x=1685443012;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bNpv0WM5O3XzF1IvDudqU5WB9Uw2W8qTwnpkdxgYnb8=;
+        b=CuJLyjLNFiDvzdpjC3oEp3zc0I5OKagwgy8U3Ax2St7kCJ07KCpTmSeoBQf9TtsY3H
+         cZsYhUSG7A1g3ELJ14qYEmQvgZUeA5GMj+MR355dqZHayO/RJ3d0erG7/agN6uBdG/qR
+         Mk0w/YfuM6/A2ldTlQxbnuByFyzxbLcB/ZMk+7Ku2LvK5Ihj7tGsIQ91GRklcvf6+PCq
+         Uu9knlx2hTVhoGqCP+NyiyTPT+1tYfbU7CQ8625gUbm/uFzjjGiC7mLsO4zudx/KMIrf
+         zlDidRyB6+ms7hTgYqUyF9YlFgq2Wuepku9L0lSo1TWFUcVnJi5j83zSV23ak5JqiKuz
+         cjcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682850640; x=1685442640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m4G8UhnbxhsYM0Xf5ZW26+QRa14/9Q4I0bIU7lceQC8=;
-        b=bd3pyP17HK4TxeettSInhtkhsFWTFEJwDBg2kifRV3dPWVLmOrYcEK2pko+vaGkmKy
-         LtL3trKVRTgsIJWOWbI7A+xkqfgXHWsqhcEiVZzHtEvzwu1OQ1jE8RxHN2SJqXFIog/3
-         Mxl62bJPN/H5dQIoWT+iezChewOY7usXc4PkTzc+fltUe7N6ucWXmJSK9idmgvv5Hv0C
-         cHlwCTWjEh893NgrcJklkTYOqsBg70QoKnw1ILrPdxwX66rMoub4i+6eQMajk799rMhE
-         XQSf+Rb48Ax6Uj2R1gonkq4qyM2QQShDazrvWm1N/+hwiAD9adsBy3vYRu1vHNcjXN8I
-         h7XQ==
-X-Gm-Message-State: AC+VfDwzOVSBEwyWjh+jAySbdNQap3XwT7bAru651gGYIsZnsg5GwTtU
-        EPIcyGjaqfxYkS5wjUbwB71zJFmRiA9iH3kv2llhza9VdKs=
-X-Google-Smtp-Source: ACHHUZ7NmrtGutpRfHrjMGJM7zbhe2+lvZfdsjeOiVQh2k5l6U5l+Kl7E9iKWewPbLLBkvLy8aPewzbAMJ9FQuqyAWY=
-X-Received: by 2002:a5d:4408:0:b0:304:89f0:3e65 with SMTP id
- z8-20020a5d4408000000b0030489f03e65mr7525409wrq.36.1682850639943; Sun, 30 Apr
- 2023 03:30:39 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682851012; x=1685443012;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bNpv0WM5O3XzF1IvDudqU5WB9Uw2W8qTwnpkdxgYnb8=;
+        b=Xf/MQUWP6dpX3DoWMxXkcY+7g1rJ90Bgn7Yk5NIMXw9b/z92yfOAeUwLUvTFz94VRX
+         61QuY/v2O5Jo0vUUtLrJoWLFIaZkh1mfoJ1/h12P4ninZokGVg9ggTnfHMbCW/uxKIHX
+         agc1u51XSCVPT0PGYV0advE6nbOzVridtKi5W/JyksTCnNRgYMa99zxksN3Iyht2Hqsp
+         Yem7VVXAd3++R6S4CbUAgRo/sTMF85VyUQOH+GyJx9H/HZv5RkvJh33zgWD6pJg1eapn
+         stgVtczp0znlSpZAfUl5bEtDPpF3nig1MyxNCga+argaQxePkoSGxxAgzGrXrDKudrH8
+         zL/Q==
+X-Gm-Message-State: AC+VfDxzruztrF5NMEjpbGScyMaB5XbeD/8xRPeBe2vJWGfU/bE3fMfb
+        0oy2h4XhGYeLSeIPQ+kE6M4=
+X-Google-Smtp-Source: ACHHUZ7yAWo8Z+cdUwaQzKvRpUpHO+kW7h597KI6nQ25igD829dtStATqMgbjB6eofom0+jOzNe1zA==
+X-Received: by 2002:a05:6000:181:b0:306:2b64:fd1b with SMTP id p1-20020a056000018100b003062b64fd1bmr995166wrx.52.1682851012190;
+        Sun, 30 Apr 2023 03:36:52 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id g13-20020adfe40d000000b002f8d402b191sm25592077wrm.112.2023.04.30.03.36.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Apr 2023 03:36:51 -0700 (PDT)
+Message-ID: <794ab671-43a3-7548-13f0-4b289f07425f@gmail.com>
+Date:   Sun, 30 Apr 2023 13:36:50 +0300
 MIME-Version: 1.0
-References: <CAD9ZU8BcYM_zZqFzTBFDQOoF0Jd3vNj4OWODOy+UZbWXCUwA7A@mail.gmail.com>
- <0529ba07-db97-fe95-4ab8-aba47b8b0bc4@lwfinger.net>
-In-Reply-To: <0529ba07-db97-fe95-4ab8-aba47b8b0bc4@lwfinger.net>
-From:   Gabriel Tisan <gabriel.tisan@gmail.com>
-Date:   Sun, 30 Apr 2023 12:30:28 +0200
-Message-ID: <CAD9ZU8Ati86h0kzxuoSM0js31-rqShv7UNFZSVGE6jcykKsZvQ@mail.gmail.com>
-Subject: Re: rtw88: 8822cu (LM842) --> LOWER_UP link messages
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to
+ incorrect RCR value
+To:     Yun Lu <luyun_611@163.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Jes.Sorensen@gmail.com, kvalo@kernel.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20230427020512.1221062-1-luyun_611@163.com>
+ <866570c9-38d8-1006-4721-77e2945170b9@lwfinger.net>
+ <76a784b2.2cb3.187c60f0f68.Coremail.luyun_611@163.com>
+ <d3743b66-23b1-011c-9dcd-c408b1963fca@lwfinger.net>
+ <62d9fe90.63b.187cb1481f8.Coremail.luyun_611@163.com>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <62d9fe90.63b.187cb1481f8.Coremail.luyun_611@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Actually the connection is not dropped. That is the problem : the
-message LOWER_UP is coming although the connection is not dropped.
+On 29/04/2023 06:35, Yun Lu wrote:
+> At 2023-04-29 01:06:03, "Larry Finger" <Larry.Finger@lwfinger.net> wrote:
+>> On 4/27/23 23:11, wo wrote:
+>>> [  149.595642] [pid:7,cpu6,kworker/u16:0,0]BEFORE: REG_RCR differs from regrcr: 
+>>> 0x1830613 insted of 0x7000604e
+>>> [  160.676422] [pid:237,cpu6,kworker/u16:5,3]BEFORE: REG_RCR differs from 
+>>> regrcr: 0x70006009 insted of 0x700060ce
+>>> [  327.234588] [pid:7,cpu7,kworker/u16:0,5]BEFORE: REG_RCR differs from 
+>> regrcr: 0x1830d33 insted of 0x7000604e
+>>
+>>
+>> My patch was messed up, but it got the information that I wanted, which is shown 
+>> in the quoted lines above. One of these differs only in the low-order byte, 
+>> while the other 2 are completely different. Strange!
+>>
+>> It is possible that there is a firmware error. My system, which does not show 
+>> the problem, reports the following:
+>>
+>> [54130.741148] usb 3-6: RTL8192CU rev A (TSMC) romver 0, 2T2R, TX queues 2, 
+>> WiFi=1, BT=0, GPS=0, HI PA=0
+>> [54130.741153] usb 3-6: RTL8192CU MAC: xx:xx:xx:xx:xx:xx
+>> [54130.741155] usb 3-6: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
+>> [54130.742301] usb 3-6: Firmware revision 88.2 (signature 0x88c1)
+>>
+>> Which firmware does your unit use?
+> 
+> The firmware verion we used is 80.0 (signature 0x88c1)
+>  [  903.873107] [pid:14,cpu0,kworker/0:1,2]usb 1-1.2: RTL8192CU rev A (TSMC) 2T2R, TX queues 2, WiFi=1, BT=0, GPS=0, HI PA=0
+> [  903.873138] [pid:14,cpu0,kworker/0:1,3]usb 1-1.2: RTL8192CU MAC: 08:be:xx:xx:xx:xx
+> [  903.873138] [pid:14,cpu0,kworker/0:1,4]usb 1-1.2: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
+> [  903.873474] [pid:14,cpu0,kworker/0:1,5]usb 1-1.2: Firmware revision 80.0 (signature 0x88c1)
+> 
+>>
+>> Attached is a new test patch. When it logs a CORRUPTED value, I would like to 
+>> know what task is attached to the pid listed in the message. Note that the two 
+>> instances where the entire word was wrong came from pid:7.
+>>
+>> Could improper locking could produce these results?
+>>
+>> Larry
+> 
+> Apply your new patch, then turn on/off the wireless network switch on the network control panel serverl loops.
+> The log shows:
+> [   85.384429] [pid:221,cpu6,kworker/u16:6,5]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x70006009 insted of 0x700060ce
+> [  121.681976] [pid:216,cpu6,kworker/u16:3,0]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x70006009 insted of 0x700060ce
+> [  144.416992] [pid:217,cpu6,kworker/u16:4,1]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x70006009 insted of 0x700060ce
+> 
+> And if we up/down the interface serverl loops as follows:
+> ifconfig wlx08bexxxxxx down
+> sleep 1
+> ifconfig wlx08bexxxxxx up
+> sleep 10
+> The log shows:
+> [  282.112335] [2023:04:29 10:30:34][pid:95,cpu6,kworker/u16:1,3]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1832e13 insted of 0x7000604e
+> [  293.311462] [2023:04:29 10:30:45][pid:217,cpu7,kworker/u16:4,9]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1830e72 insted of 0x7000604e
+> [  304.435089] [2023:04:29 10:30:56][pid:217,cpu6,kworker/u16:4,9]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1830ed3 insted of 0x7000604e
+> [  315.532257] [2023:04:29 10:31:07][pid:95,cpu7,kworker/u16:1,8]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x7000604e insted of 0x7000604e
+> [  324.114379] [2023:04:29 10:31:16][pid:221,cpu6,kworker/u16:6,7]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1832e14 insted of 0x7000604e
+> 
+> We also update the  firmware verion to 88.2, and the test results are the same as above.
+> 
+> Thank you for helping debug this issue, which seems to be related to specific devices.
+> 
+> Yun Lu
+> 
+> 
+> 
+> 
+There was this bug report about phantom MAC addresses with
+the RTL8188CUS:
+https://lore.kernel.org/linux-wireless/a31d9500-73a3-f890-bebd-d0a4014f87da@reto-schneider.ch/
 
-I suppose that LOWER_UP notification is send wrong by the driver.
-
-In the log nothing comes.
-I tried to increase log level, but I didn't find any /proc/rtw88.
-I have debug activated:
-CONFIG_RTW88_DEBUG=3Dy
-CONFIG_RTW88_DEBUGFS=3Dy
-
-On Fri, Apr 28, 2023 at 9:28=E2=80=AFPM Larry Finger <Larry.Finger@lwfinger=
-.net> wrote:
->
-> On 4/28/23 08:56, Gabriel Tisan wrote:
-> > Hi !
-> >
-> > I use a LM842 wifi stick on a Linux kernel 5.15 with last patches for
-> > rtw88 from linux-next applied.
-> > Firmware version is 9.9.15
-> >
-> > When I connect LM842 as a station to an AP, after the link is up first
-> > time, it comes from time to time more LOWER_UP message.
-> > The stick is plugged and the connection to AP is still valid.
-> >
-> > # ip -oneline -family inet monitor link
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST> mtu 1500 qdisc noqueue state DOWN
-> > group default \    link/ether 34:c9:f0:99:b6:a1 brd ff:ff:ff:ff:ff:ff
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
-> > state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
-> > ff:ff:ff:ff:ff:ff
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue
-> > state DOWN group default \    link/ether 34:c9:f0:99:b6:a1 brd
-> > ff:ff:ff:ff:ff:ff
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> \    link/ether
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc
-> > noqueue state DORMANT group default \    link/ether 34:c9:f0:99:b6:a1
-> > brd ff:ff:ff:ff:ff:ff
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue
-> > state UP group default \    link/ether 34:c9:f0:99:b6:a1 brd
-> > ff:ff:ff:ff:ff:ff
-> >
-> >
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> > 5: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> >
-> >
-> >
-> >
-> >
-> > Any idea what I can do ?
-> >
-> > Did someone also reproduce that problem ?
->
-> No, I do not see that problem. When I run your command, I get
->
-> finger@localhost:~/rtw88>ip -oneline -family inet monitor link
-> 12: wlp0s20u6i2: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 12: wlp0s20u6i2: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
-> 12: wlp0s20u6i2: <BROADCAST,MULTICAST,UP,LOWER_UP> \    link/ether
->
-> My connection is very stable; however, my device is an 8822BU, not an 882=
-2CU.
->
-> When the connection is dropped, what is logged? You can see that with a '=
-sudo
-> dmesg | less' command.
->
-> Larry
->
->
+See the pcap file. I wonder if it's related?
