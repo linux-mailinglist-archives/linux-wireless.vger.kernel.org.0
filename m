@@ -2,245 +2,293 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC3EA6F3168
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 May 2023 15:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FD346F317A
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 May 2023 15:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjEANHo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 1 May 2023 09:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51352 "EHLO
+        id S232417AbjEANUE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 1 May 2023 09:20:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjEANHn (ORCPT
+        with ESMTP id S229482AbjEANUD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 1 May 2023 09:07:43 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F0918E
-        for <linux-wireless@vger.kernel.org>; Mon,  1 May 2023 06:07:38 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 341AtGvS011133
-        for <linux-wireless@vger.kernel.org>; Mon, 1 May 2023 13:07:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=Yb41jroayvgIiwbV5ke2qLUrVfrx57ndmqDf87YsWFA=;
- b=KcotXfcgcysgBQ3C5VvKJRbY9IUPu4Nyu5opEXKHNr+kB2K/1405rwh4cq58bX9g6jNO
- bH6K9TYwg8UofWR5icfRrkCIO208okqSgyN++fG8FWcgzcdrU1tAuQHvKyYSYXKwji13
- KfnPEVeJQzzDeJk1QkAsd18lf2lpzg69CU+a440f8qh5WOmAQnDdIf//S9TuiPktCrJe
- KXs/WMnN+OVLMbvPNAJc990N8dsC03ll9fzLCfRlnetpFtoo2IfbWis+HOzDbnwcj16e
- 12CsWGZW5u0T2hl+af3fPrJuEW9sPCkO+tm8q0+GwakvCiCVrnnTQ70mhnRv7SoADcsE OQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q8umg3gej-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Mon, 01 May 2023 13:07:37 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 341D7axG016912
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Mon, 1 May 2023 13:07:36 GMT
-Received: from tamizhr-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Mon, 1 May 2023 06:07:34 -0700
-From:   Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-To:     <ath11k-review.external@qti.qualcomm.com>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH] ath11k: Add mac80211 based AQL support in ath11k
-Date:   Mon, 1 May 2023 18:37:25 +0530
-Message-ID: <20230501130725.7171-1-quic_tamizhr@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 1 May 2023 09:20:03 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A465128
+        for <linux-wireless@vger.kernel.org>; Mon,  1 May 2023 06:20:01 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5D2AE10006E;
+        Mon,  1 May 2023 13:19:59 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.112.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 4EDD613C2B0;
+        Mon,  1 May 2023 06:19:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4EDD613C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1682947197;
+        bh=PP1j5uRuWSEBU8uWvj4N0D7YJC6Tbz2abV3nq1NOlbE=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=SNUbglON8dYE0VxPlUZTSG5ANuKNQa0yQTws583uWZq1J8wiOGml5vu63ij0bZkkr
+         GAMMgXacmib9PVQ9Ol9f7cYMSML/dbfjJEXJR1HsEHB1scAZ92OGfULTY6hCajuWzn
+         1g8OAaxiKFiTudJ8G3BHObr3ub/qZzbN3VM3370o=
+Subject: Re: ax210 fw v78 crash in 6.4-ish kernel.
+To:     "Greenman, Gregory" <gregory.greenman@intel.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <a558d27a-33ef-6c75-0552-03772ccfbe5f@candelatech.com>
+ <cb551f45-ae06-f06b-4a72-dfd312f8eddf@candelatech.com>
+ <f4398b3eb4e5652cef870a18c07f18f908d1de20.camel@intel.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <8d820460-8f9d-31aa-7159-37a9575f49fd@candelatech.com>
+Date:   Mon, 1 May 2023 06:19:56 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: eFNvAhAKu67VceKSgP5E_BXKHUe4g0r2
-X-Proofpoint-ORIG-GUID: eFNvAhAKu67VceKSgP5E_BXKHUe4g0r2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-01_06,2023-04-27_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- impostorscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 suspectscore=0
- clxscore=1011 priorityscore=1501 malwarescore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305010104
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <f4398b3eb4e5652cef870a18c07f18f908d1de20.camel@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 8bit
+X-MDID: 1682947200-4AxA4paDQ2De
+X-MDID-O: us5;ut7;1682947200;4AxA4paDQ2De;<greearb@candelatech.com>;265462eed456beb3817746e42c55c9f9
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add wake_tx_queue mac op to support AQL and support
-txq dequeueing from mac80211. Also implement a
-simple scheduler for pulling all skbs from txqs
-of all AC's at the end of tx completion NAPI.
+On 4/30/23 1:54 PM, Greenman, Gregory wrote:
+> Hi Ben,
+> 
+> On Fri, 2023-04-28 at 15:17 -0700, Ben Greear wrote:
+>> On 4/28/23 14:42, Ben Greear wrote:
+>>> I saw this in kernel based on recent Linus tree:
+>>>
+>>> [  154.760738] iwlwifi 0000:0c:00.0: Microcode SW error detected. Restarting 0x2.
+>>> [  154.766812] iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
+>>> [  154.771123] iwlwifi 0000:0c:00.0: Transport status: 0x0000004B, valid: 6
+>>> [  154.776564] iwlwifi 0000:0c:00.0: Loaded firmware version: 78.3bfdc55f.0 ty-a0-gf-a0-78.ucode
+>>> [  154.783811] iwlwifi 0000:0c:00.0: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL
+>>> [  154.789485] iwlwifi 0000:0c:00.0: 0x00808203 | trm_hw_status0
+>>> [  154.793954] iwlwifi 0000:0c:00.0: 0x00000000 | trm_hw_status1
+>>> [  154.798427] iwlwifi 0000:0c:00.0: 0x004DC220 | branchlink2
+>>> [  154.802623] iwlwifi 0000:0c:00.0: 0x000088B8 | interruptlink1
+>>> [  154.807108] iwlwifi 0000:0c:00.0: 0x000088B8 | interruptlink2
+>>> [  154.811568] iwlwifi 0000:0c:00.0: 0x00016AEC | data1
+>>> [  154.815257] iwlwifi 0000:0c:00.0: 0x00000010 | data2
+>>> [  154.818949] iwlwifi 0000:0c:00.0: 0x00000000 | data3
+>>> [  154.822656] iwlwifi 0000:0c:00.0: 0x41817919 | beacon time
+>>> [  154.826873] iwlwifi 0000:0c:00.0: 0x7E3EA72C | tsf low
+>>> [  154.830722] iwlwifi 0000:0c:00.0: 0x00000003 | tsf hi
+>>> [  154.834492] iwlwifi 0000:0c:00.0: 0x00000000 | time gp1
+>>> [  154.838446] iwlwifi 0000:0c:00.0: 0x01CE3A83 | time gp2
+>>> [  154.842385] iwlwifi 0000:0c:00.0: 0x00000001 | uCode revision type
+>>> [  154.847273] iwlwifi 0000:0c:00.0: 0x0000004E | uCode version major
+>>> [  154.852165] iwlwifi 0000:0c:00.0: 0x3BFDC55F | uCode version minor
+>>> [  154.857090] iwlwifi 0000:0c:00.0: 0x00000420 | hw version
+>>> [  154.861201] iwlwifi 0000:0c:00.0: 0x00C80002 | board version
+>>> [  154.865594] iwlwifi 0000:0c:00.0: 0x806EF400 | hcmd
+>>> [  154.869182] iwlwifi 0000:0c:00.0: 0xE6F4B610 | isr0
+>>> [  154.872785] iwlwifi 0000:0c:00.0: 0x01448000 | isr1
+>>> [  154.876378] iwlwifi 0000:0c:00.0: 0x40F8011A | isr2
+>>> [  154.879994] iwlwifi 0000:0c:00.0: 0x00C00008 | isr3
+>>> [  154.883611] iwlwifi 0000:0c:00.0: 0x00200000 | isr4
+>>> [  154.887259] iwlwifi 0000:0c:00.0: 0x0311001C | last cmd Id
+>>> [  154.891459] iwlwifi 0000:0c:00.0: 0x00016AEC | wait_event
+>>> [  154.895573] iwlwifi 0000:0c:00.0: 0x00004288 | l2p_control
+>>> [  154.899806] iwlwifi 0000:0c:00.0: 0x00019C14 | l2p_duration
+>>> [  154.904092] iwlwifi 0000:0c:00.0: 0x00000000 | l2p_mhvalid
+>>> [  154.908304] iwlwifi 0000:0c:00.0: 0x00EF00F8 | l2p_addr_match
+>>> [  154.912777] iwlwifi 0000:0c:00.0: 0x00000009 | lmpm_pmg_sel
+>>> [  154.917065] iwlwifi 0000:0c:00.0: 0x00000000 | timestamp
+>>> [  154.921103] iwlwifi 0000:0c:00.0: 0x05F83838 | flow_handler
+>>> [  154.925473] iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
+>>> [  154.929778] iwlwifi 0000:0c:00.0: Transport status: 0x0000004B, valid: 7
+>>> [  154.935190] iwlwifi 0000:0c:00.0: 0x20100246 | ADVANCED_SYSASSERT
+>>> [  154.940001] iwlwifi 0000:0c:00.0: 0x00000000 | umac branchlink1
+>>> [  154.944643] iwlwifi 0000:0c:00.0: 0x8046D728 | umac branchlink2
+>>> [  154.949291] iwlwifi 0000:0c:00.0: 0x8048DB02 | umac interruptlink1
+>>> [  154.954190] iwlwifi 0000:0c:00.0: 0x00000000 | umac interruptlink2
+>>> [  154.959117] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data1
+>>> [  154.963238] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data2
+>>> [  154.967367] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data3
+>>> [  154.971493] iwlwifi 0000:0c:00.0: 0x0000004E | umac major
+>>> [  154.975657] iwlwifi 0000:0c:00.0: 0x3BFDC55F | umac minor
+>>> [  154.979798] iwlwifi 0000:0c:00.0: 0x01CE3A7D | frame pointer
+>>> [  154.984177] iwlwifi 0000:0c:00.0: 0xC0887F00 | stack pointer
+>>> [  154.988574] iwlwifi 0000:0c:00.0: 0x00030303 | last host cmd
+>>> [  154.992985] iwlwifi 0000:0c:00.0: 0x00010008 | isr status reg
+>>> [  154.997471] iwlwifi 0000:0c:00.0: IML/ROM dump:
+>>> [  155.000722] iwlwifi 0000:0c:00.0: 0x00000B03 | IML/ROM error/state
+>>> [  155.005655] iwlwifi 0000:0c:00.0: 0x00007F8A | IML/ROM data1
+>>> [  155.010041] iwlwifi 0000:0c:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+>>> [  155.015285] iwlwifi 0000:0c:00.0: Fseq Registers:
+>>> [  155.018704] iwlwifi 0000:0c:00.0: 0x60000000 | FSEQ_ERROR_CODE
+>>> [  155.023255] iwlwifi 0000:0c:00.0: 0x80440006 | FSEQ_TOP_INIT_VERSION
+>>> [  155.028328] iwlwifi 0000:0c:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+>>> [  155.033572] iwlwifi 0000:0c:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+>>> [  155.038221] iwlwifi 0000:0c:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+>>> [  155.043557] iwlwifi 0000:0c:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+>>> [  155.048196] iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVI_ID
+>>> [  155.052486] iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVR_ID
+>>> [  155.056776] iwlwifi 0000:0c:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+>>> [  155.061611] iwlwifi 0000:0c:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+>>> [  155.066453] iwlwifi 0000:0c:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+>>> [  155.073000] iwlwifi 0000:0c:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+>>> [  155.079912] iwlwifi 0000:0c:00.0: UMAC CURRENT PC: 0xd05c18
+>>> [  155.084204] iwlwifi 0000:0c:00.0: LMAC1 CURRENT PC: 0xd05c1c
+>>> [  155.089017] iwlwifi 0000:0c:00.0: WRT: Collecting data: ini trigger 4 fired (delay=0ms).
+>>> [  155.089026] ieee80211 wiphy5: Hardware restart was requested
+>>> [  155.089064] iwlwifi 0000:0c:00.0: FW error in SYNC CMD UNKNOWN
+>>
+>> v77 firmware crashes as well:
+>>
+>> [  107.339313] iwlwifi 0000:0c:00.0: Microcode SW error detected. Restarting 0x100.
+>> [  107.347603] iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
+>> [  107.351904] iwlwifi 0000:0c:00.0: Transport status: 0x0000004B, valid: 6
+>> [  107.357345] iwlwifi 0000:0c:00.0: Loaded firmware version: 77.f92b5fed.0 ty-a0-gf-a0-77.ucode
+>> [  107.364602] iwlwifi 0000:0c:00.0: 0x00000071 | NMI_INTERRUPT_UMAC_FATAL
+>> [  107.370297] iwlwifi 0000:0c:00.0: 0x00000C07 | trm_hw_status0
+>> [  107.374772] iwlwifi 0000:0c:00.0: 0x00000000 | trm_hw_status1
+>> [  107.379244] iwlwifi 0000:0c:00.0: 0x004DC582 | branchlink2
+>> [  107.383459] iwlwifi 0000:0c:00.0: 0x00008B14 | interruptlink1
+>> [  107.387929] iwlwifi 0000:0c:00.0: 0x00008B14 | interruptlink2
+>> [  107.392407] iwlwifi 0000:0c:00.0: 0x0000C586 | data1
+>> [  107.396090] iwlwifi 0000:0c:00.0: 0x00000010 | data2
+>> [  107.399791] iwlwifi 0000:0c:00.0: 0x00000000 | data3
+>> [  107.403482] iwlwifi 0000:0c:00.0: 0x08003A16 | beacon time
+>> [  107.407690] iwlwifi 0000:0c:00.0: 0xC22E862C | tsf low
+>> [  107.411556] iwlwifi 0000:0c:00.0: 0x00000003 | tsf hi
+>> [  107.415332] iwlwifi 0000:0c:00.0: 0x00000000 | time gp1
+>> [  107.419283] iwlwifi 0000:0c:00.0: 0x006FCDBE | time gp2
+>> [  107.423227] iwlwifi 0000:0c:00.0: 0x00000001 | uCode revision type
+>> [  107.428129] iwlwifi 0000:0c:00.0: 0x0000004D | uCode version major
+>> [  107.433039] iwlwifi 0000:0c:00.0: 0xF92B5FED | uCode version minor
+>> [  107.437937] iwlwifi 0000:0c:00.0: 0x00000420 | hw version
+>> [  107.442049] iwlwifi 0000:0c:00.0: 0x18C80002 | board version
+>> [  107.446427] iwlwifi 0000:0c:00.0: 0x80EAFF00 | hcmd
+>> [  107.450023] iwlwifi 0000:0c:00.0: 0xE6F48400 | isr0
+>> [  107.453624] iwlwifi 0000:0c:00.0: 0x01000000 | isr1
+>> [  107.457218] iwlwifi 0000:0c:00.0: 0x40F8001A | isr2
+>> [  107.460812] iwlwifi 0000:0c:00.0: 0x04C3601E | isr3
+>> [  107.464429] iwlwifi 0000:0c:00.0: 0x00200000 | isr4
+>> [  107.468035] iwlwifi 0000:0c:00.0: 0x0402001C | last cmd Id
+>> [  107.472251] iwlwifi 0000:0c:00.0: 0x0000C586 | wait_event
+>> [  107.476374] iwlwifi 0000:0c:00.0: 0x00004A88 | l2p_control
+>> [  107.480573] iwlwifi 0000:0c:00.0: 0x0001BC34 | l2p_duration
+>> [  107.484863] iwlwifi 0000:0c:00.0: 0x000003BF | l2p_mhvalid
+>> [  107.489089] iwlwifi 0000:0c:00.0: 0x00EF00F8 | l2p_addr_match
+>> [  107.493559] iwlwifi 0000:0c:00.0: 0x00000009 | lmpm_pmg_sel
+>> [  107.497849] iwlwifi 0000:0c:00.0: 0x00000000 | timestamp
+>> [  107.501899] iwlwifi 0000:0c:00.0: 0x05F8C8C8 | flow_handler
+>> [  107.506240] iwlwifi 0000:0c:00.0: Start IWL Error Log Dump:
+>> [  107.510534] iwlwifi 0000:0c:00.0: Transport status: 0x0000004B, valid: 7
+>> [  107.515953] iwlwifi 0000:0c:00.0: 0x20100246 | ADVANCED_SYSASSERT
+>> [  107.520774] iwlwifi 0000:0c:00.0: 0x00000000 | umac branchlink1
+>> [  107.525405] iwlwifi 0000:0c:00.0: 0x8046D64C | umac branchlink2
+>> [  107.530044] iwlwifi 0000:0c:00.0: 0x8048D8D6 | umac interruptlink1
+>> [  107.534940] iwlwifi 0000:0c:00.0: 0x00000000 | umac interruptlink2
+>> [  107.539852] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data1
+>> [  107.543982] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data2
+>> [  107.548090] iwlwifi 0000:0c:00.0: 0xDEADBEEF | umac data3
+>> [  107.552198] iwlwifi 0000:0c:00.0: 0x0000004D | umac major
+>> [  107.556326] iwlwifi 0000:0c:00.0: 0xF92B5FED | umac minor
+>> [  107.560448] iwlwifi 0000:0c:00.0: 0x006FCDB8 | frame pointer
+>> [  107.564840] iwlwifi 0000:0c:00.0: 0xC0887F00 | stack pointer
+>> [  107.569214] iwlwifi 0000:0c:00.0: 0x007B0303 | last host cmd
+>> [  107.573588] iwlwifi 0000:0c:00.0: 0x00010008 | isr status reg
+>> [  107.578077] iwlwifi 0000:0c:00.0: IML/ROM dump:
+>> [  107.581340] iwlwifi 0000:0c:00.0: 0x00000B03 | IML/ROM error/state
+>> [  107.586286] iwlwifi 0000:0c:00.0: 0x00007D74 | IML/ROM data1
+>> [  107.590699] iwlwifi 0000:0c:00.0: 0x00000080 | IML/ROM WFPM_AUTH_KEY_0
+>> [  107.595963] iwlwifi 0000:0c:00.0: Fseq Registers:
+>> [  107.599385] iwlwifi 0000:0c:00.0: 0x60000100 | FSEQ_ERROR_CODE
+>> [  107.603950] iwlwifi 0000:0c:00.0: 0x80440006 | FSEQ_TOP_INIT_VERSION
+>> [  107.609024] iwlwifi 0000:0c:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+>> [  107.614282] iwlwifi 0000:0c:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+>> [  107.618921] iwlwifi 0000:0c:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+>> [  107.624250] iwlwifi 0000:0c:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+>> [  107.628903] iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVI_ID
+>> [  107.633203] iwlwifi 0000:0c:00.0: 0x00400410 | FSEQ_CNVR_ID
+>> [  107.637503] iwlwifi 0000:0c:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+>> [  107.642328] iwlwifi 0000:0c:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+>> [  107.647155] iwlwifi 0000:0c:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+>> [  107.653702] iwlwifi 0000:0c:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
+>> [  107.660601] iwlwifi 0000:0c:00.0: UMAC CURRENT PC: 0xd05c18
+>> [  107.664895] iwlwifi 0000:0c:00.0: LMAC1 CURRENT PC: 0xd05c1c
+>> [  107.669512] iwlwifi 0000:0c:00.0: WRT: Collecting data: ini trigger 4 fired (delay=0ms).
+>> [  107.669517] ieee80211 wiphy5: Hardware restart was requested
+>> [  107.669528] iwlwifi 0000:0c:00.0: FW error in SYNC CMD UNKNOWN
+>> [  107.674073] CPU: 1 PID: 193 Comm: kworker/1:3 Not tainted 6.3.0+ #1
+>> [  107.674078] Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/19/2019
+>> [  107.674081] Workqueue: events iwl_mvm_tcm_work [iwlmvm]
+>> [  107.674132] Call Trace:
+>> [  107.674135]  <TASK>
+>> [  107.674137]  dump_stack_lvl+0x43/0x60
+>> [  107.674145]  iwl_trans_txq_send_hcmd+0x578/0x760 [iwlwifi]
+>> [  107.674207]  ? iwl_trans_txq_freeze_timer+0x1f0/0x1f0 [iwlwifi]
+>> [  107.674258]  ? destroy_sched_domains_rcu+0x30/0x30
+>> [  107.674268]  ? stack_trace_save+0x8c/0xc0
+>> [  107.674274]  ? filter_irq_stacks+0x18/0x60
+>> [  107.674277]  ? __stack_depot_save+0x35/0x470
+>> [  107.674283]  iwl_trans_send_cmd+0xc4/0x180 [iwlwifi]
+>> [  107.674328]  iwl_mvm_send_cmd+0x32/0x80 [iwlmvm]
+>> [  107.674368]  iwl_mvm_send_low_latency_cmd+0x107/0x170 [iwlmvm]
+>> [  107.674406]  ? iwl_mvm_rx_diversity_allowed+0x150/0x150 [iwlmvm]
+>> [  107.674442]  ? enqueue_timer+0xbf/0x1e0
+>> [  107.674447]  ? detach_if_pending+0x1e/0x180
+>> [  107.674452]  iwl_mvm_update_low_latency+0xc9/0x120 [iwlmvm]
+>> [  107.674492]  __iterate_interfaces+0x102/0x190 [mac80211]
+>> [  107.674633]  ? iwl_mvm_update_low_latency+0x120/0x120 [iwlmvm]
+>> [  107.674671]  ? iwl_mvm_update_low_latency+0x120/0x120 [iwlmvm]
+>> [  107.674710]  ieee80211_iterate_interfaces+0x32/0x50 [mac80211]
+>> [  107.674811]  iwl_mvm_recalc_tcm+0x1e7/0x990 [iwlmvm]
+>> [  107.674862]  ? iwl_mvm_tcm_load_percentage+0x20/0x20 [iwlmvm]
+>> [  107.674916]  ? __schedule+0x7b3/0x1250
+>> [  107.674920]  ? io_schedule_timeout+0xb0/0xb0
+>> [  107.674924]  ? strscpy+0x146/0x190
+>> [  107.674928]  process_one_work+0x463/0x790
+>> [  107.674935]  worker_thread+0x88/0x6f0
+>> [  107.674939]  ? migrate_enable+0x170/0x170
+>> [  107.674945]  ? process_one_work+0x790/0x790
+>> [  107.674949]  kthread+0x16d/0x1b0
+>> [  107.674954]  ? kthread_complete_and_exit+0x20/0x20
+>> [  107.674958]  ret_from_fork+0x1f/0x30
+>> [  107.674965]  </TASK>
+>> [  107.674974] iwlwifi 0000:0c:00.0: Failed to send low latency command
+>> [  122.878885] iwlwifi 0000:0c:00.0: mcast filter cmd error. ret=-5
+>> [  122.883632] iwlwifi 0000:0c:00.0: Failed to synchronize multicast groups update
+>> [  123.791841] iwlwifi 0000:0c:00.0: Master Disable Timed Out, 100 usec
+>> [  234.009047] iwlwifi 0000:0c:00.0: WRT: Invalid buffer destination
+>> [  234.240960] iwlwifi 0000:0c:00.0: WFPM_UMAC_PD_NOTIFICATION: 0x1f
+>> [  234.258687] iwlwifi 0000:0c:00.0: WFPM_LMAC2_PD_NOTIFICATION: 0x1f
+>> [  234.262627] iwlwifi 0000:0c:00.0: WFPM_AUTH_KEY_0: 0x80
+>> [  234.266550] iwlwifi 0000:0c:00.0: CNVI_SCU_SEQ_DATA_DW9: 0x0
+>>
+>>
+>>>
+>>> Thanks,
+>>> Ben
+>>>
+>>
+> Do you have a way to reproduce it or it just happens randomly?
 
-Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+The system I looked at was crashing often and regularly.  I can get you a binary
+crash dump from the firmware if that would help.
 
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/dp_tx.c | 11 ++++
- drivers/net/wireless/ath/ath11k/mac.c   | 70 ++++++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/mac.h   |  1 +
- 3 files changed, 76 insertions(+), 6 deletions(-)
+Thanks,
+Ben
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 08a28464eb7a..bb1fed197707 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -681,12 +681,14 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 	struct ath11k_dp *dp = &ab->dp;
- 	int hal_ring_id = dp->tx_ring[ring_id].tcl_comp_ring.ring_id;
- 	struct hal_srng *status_ring = &ab->hal.srng_list[hal_ring_id];
-+	bool mac_id_scheduled[MAX_RADIOS];
- 	struct sk_buff *msdu;
- 	struct hal_tx_status ts = { 0 };
- 	struct dp_tx_ring *tx_ring = &dp->tx_ring[ring_id];
- 	u32 *desc;
- 	u32 msdu_id;
- 	u8 mac_id;
-+	int i;
- 
- 	spin_lock_bh(&status_ring->lock);
- 
-@@ -751,6 +753,15 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 			wake_up(&ar->dp.tx_empty_waitq);
- 
- 		ath11k_dp_tx_complete_msdu(ar, msdu, &ts);
-+		mac_id_scheduled[mac_id] = true;
-+	}
-+
-+	/* Schedule remaining Tx packets for the radio */
-+	for (i = 0; i <  MAX_RADIOS; i++) {
-+		if (!mac_id_scheduled[i])
-+			continue;
-+		ar = ab->pdevs[i].ar;
-+		ath11k_mac_tx_push_pending(ar);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 1c93f1afccc5..4dc76b5ba77f 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5907,9 +5907,9 @@ static int ath11k_mac_mgmt_tx(struct ath11k *ar, struct sk_buff *skb,
- 	return 0;
- }
- 
--static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
--			     struct ieee80211_tx_control *control,
--			     struct sk_buff *skb)
-+static void ath11k_mac_tx(struct ieee80211_hw *hw,
-+			  struct ieee80211_sta *sta,
-+			  struct sk_buff *skb)
- {
- 	struct ath11k_skb_cb *skb_cb = ATH11K_SKB_CB(skb);
- 	struct ath11k *ar = hw->priv;
-@@ -5944,8 +5944,8 @@ static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
- 		return;
- 	}
- 
--	if (control->sta)
--		arsta = (struct ath11k_sta *)control->sta->drv_priv;
-+	if (sta)
-+		arsta = (struct ath11k_sta *)sta->drv_priv;
- 
- 	ret = ath11k_dp_tx(ar, arvif, arsta, skb);
- 	if (unlikely(ret)) {
-@@ -5954,6 +5954,62 @@ static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
- 	}
- }
- 
-+static void ath11k_mac_schedule_txq(struct ieee80211_hw *hw, u32 ac)
-+{
-+	struct ieee80211_txq *txq;
-+	struct sk_buff *skb;
-+
-+	ieee80211_txq_schedule_start(hw, ac);
-+	while ((txq = ieee80211_next_txq(hw, ac))) {
-+		while ((skb = ieee80211_tx_dequeue_ni(hw, txq)))
-+			ath11k_mac_tx(hw, txq->sta, skb);
-+
-+		ieee80211_return_txq(hw, txq, false);
-+	}
-+	ieee80211_txq_schedule_end(hw, ac);
-+}
-+
-+void ath11k_mac_tx_push_pending(struct ath11k *ar)
-+{
-+	struct ieee80211_hw *hw = ar->hw;
-+	u32 ac;
-+
-+	rcu_read_lock();
-+	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++)
-+		ath11k_mac_schedule_txq(hw, ac);
-+
-+	rcu_read_unlock();
-+}
-+
-+static void ath11k_mac_op_wake_tx_queue(struct ieee80211_hw *hw,
-+					struct ieee80211_txq *txq)
-+{
-+	u8 ac;
-+	struct sk_buff *skb;
-+
-+	ac = txq->ac;
-+	ieee80211_txq_schedule_start(hw, ac);
-+	txq = ieee80211_next_txq(hw, ac);
-+
-+	if (!txq)
-+		goto out;
-+
-+	while ((skb = ieee80211_tx_dequeue_ni(hw, txq)))
-+		ath11k_mac_tx(hw, txq->sta, skb);
-+
-+	ieee80211_return_txq(hw, txq, false);
-+
-+out:
-+	ieee80211_txq_schedule_end(hw, ac);
-+}
-+
-+static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
-+			     struct ieee80211_tx_control *control,
-+			     struct sk_buff *skb)
-+{
-+	ath11k_mac_tx(hw, control->sta, skb);
-+}
-+
- void ath11k_mac_drain_tx(struct ath11k *ar)
- {
- 	/* make sure rcu-protected mac80211 tx path itself is drained */
-@@ -8763,7 +8819,7 @@ static int ath11k_mac_op_get_txpower(struct ieee80211_hw *hw,
- 
- static const struct ieee80211_ops ath11k_ops = {
- 	.tx				= ath11k_mac_op_tx,
--	.wake_tx_queue			= ieee80211_handle_wake_tx_queue,
-+	.wake_tx_queue			= ath11k_mac_op_wake_tx_queue,
- 	.start                          = ath11k_mac_op_start,
- 	.stop                           = ath11k_mac_op_stop,
- 	.reconfig_complete              = ath11k_mac_op_reconfig_complete,
-@@ -9263,6 +9319,8 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 	    ab->hw_params.bios_sar_capa)
- 		ar->hw->wiphy->sar_capa = ab->hw_params.bios_sar_capa;
- 
-+	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_AQL);
-+
- 	ret = ieee80211_register_hw(ar->hw);
- 	if (ret) {
- 		ath11k_err(ar->ab, "ieee80211 registration failed: %d\n", ret);
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index 0231783ad754..15517e9a3408 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -175,4 +175,5 @@ int ath11k_mac_wait_tx_complete(struct ath11k *ar);
- int ath11k_mac_vif_set_keepalive(struct ath11k_vif *arvif,
- 				 enum wmi_sta_keepalive_method method,
- 				 u32 interval);
-+void ath11k_mac_tx_push_pending(struct ath11k *ar);
- #endif
+> 
+> Thanks,
+> Gregory
+> 
 
-base-commit: 12f167f02a1abe2c8817496a902de00758285b92
+
 -- 
-2.17.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
