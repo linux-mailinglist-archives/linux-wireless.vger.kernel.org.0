@@ -2,78 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B16EE6F4E94
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 May 2023 03:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1CC86F4FE8
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 May 2023 08:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbjECBaS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 2 May 2023 21:30:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60944 "EHLO
+        id S229580AbjECGG6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 May 2023 02:06:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjECBaR (ORCPT
+        with ESMTP id S229572AbjECGG5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 2 May 2023 21:30:17 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD011BCA
-        for <linux-wireless@vger.kernel.org>; Tue,  2 May 2023 18:30:16 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3431U8zF4016172, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3431U8zF4016172
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 3 May 2023 09:30:08 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 3 May 2023 09:30:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 3 May 2023 09:30:12 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Wed, 3 May 2023 09:30:12 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
-Subject: RE: [PATCH v2 2/2] wifi: rtl8xxxu: Rename some registers
-Thread-Topic: [PATCH v2 2/2] wifi: rtl8xxxu: Rename some registers
-Thread-Index: AQHZfSWZA/5a8sqVFkGDjZSZZz857K9Hwxew
-Date:   Wed, 3 May 2023 01:30:12 +0000
-Message-ID: <9db2d0be61ea4af4b815f91b96a20079@realtek.com>
-References: <c43d971c-21bf-6714-d852-c76e515438b0@gmail.com>
- <1779693f-c40b-fb86-e697-fd7958ea90bd@gmail.com>
-In-Reply-To: <1779693f-c40b-fb86-e697-fd7958ea90bd@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 3 May 2023 02:06:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A8362680
+        for <linux-wireless@vger.kernel.org>; Tue,  2 May 2023 23:06:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 783A160F59
+        for <linux-wireless@vger.kernel.org>; Wed,  3 May 2023 06:06:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBF1C433D2;
+        Wed,  3 May 2023 06:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683094010;
+        bh=14vWyACdAlpviMqo/JMD3zkhlbzDVQOA0xylV/06V/A=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=oDN69PnXR/zFGwTsSMhVvEpeX7bMpAx1wqiclWJLenAs+ytVml3IQ6zY5jd8Rl5SM
+         +q9YCHAV44qRhn+DdDsnmM8YLAJQC72iZhOqJdHDlXm1/AAb9Har5Cfja/yxCzYl9k
+         o0hGlopDK7YIKZhsjVRZA2Bd4tdoL7h5lRZx2gsDRpnL4UTrlgyN/4C4A+T4Uz4uPi
+         k3Mh8KeXaT+Yq4tkNzg0ZS4Z7LQLvEH9LUO+fSGs7zE2MQB9Q/yu/J82VdJI+MS0ns
+         mxL6VqwPVPu/rMHTKWgbU2OFWUWRDT9AgxGXOuLGtPOszki9ilPiBta4yP0Qtvq1y6
+         SVoOuQXBtN5vQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next] wifi: mt76: mt76x02: remove WEP support
+References: <d560f1a16c9024b6e4029bd0baf53384f4552f5a.1683020788.git.lorenzo@kernel.org>
+Date:   Wed, 03 May 2023 09:06:46 +0300
+In-Reply-To: <d560f1a16c9024b6e4029bd0baf53384f4552f5a.1683020788.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Tue, 2 May 2023 11:49:05 +0200")
+Message-ID: <871qjyosnd.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
-aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgTWF5IDMsIDIw
-MjMgMjo0MSBBTQ0KPiBUbzogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IENjOiBK
-ZXMgU29yZW5zZW4gPEplcy5Tb3JlbnNlbkBnbWFpbC5jb20+OyBQaW5nLUtlIFNoaWggPHBrc2hp
-aEByZWFsdGVrLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIHYyIDIvMl0gd2lmaTogcnRsOHh4eHU6
-IFJlbmFtZSBzb21lIHJlZ2lzdGVycw0KPiANCj4gR2l2ZSBwcm9wZXIgbmFtZXM6DQo+IA0KPiBS
-RjYwNTJfUkVHX1VOS05PV05fNTYgLT4gUkY2MDUyX1JFR19QQURfVFhHDQo+IFJGNjA1Ml9SRUdf
-VU5LTk9XTl9ERiAtPiBSRjYwNTJfUkVHX0dBSU5fQ0NBDQo+IA0KPiBBbmQgZml4IHR5cG9zOg0K
-PiANCj4gUkVHX09GRE0wX0FHQ1JfU1NJX1RBQkxFIC0+IFJFR19PRkRNMF9BR0NfUlNTSV9UQUJM
-RQ0KPiBSRUdfQkJfQUNDRUVTU19DVFJMIC0+IFJFR19CQl9BQ0NFU1NfQ1RSTA0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQoN
-ClJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KDQo=
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
+
+> Get rid of WEP support in mt76x02_set_key routine since it is not longer
+> supported upstream.
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+You marked this for wireless-next so should I take this directly?
+
+Does this fix something or is just cleanup? It would be good to mention
+that in the commit log.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
