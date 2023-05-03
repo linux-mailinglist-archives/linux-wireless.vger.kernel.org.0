@@ -2,69 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA2446F519B
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 May 2023 09:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7ED16F5257
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 May 2023 09:53:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbjECHcW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 May 2023 03:32:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
+        id S229564AbjECHw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 May 2023 03:52:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbjECHbu (ORCPT
+        with ESMTP id S229661AbjECHwg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 May 2023 03:31:50 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEFD94EDE
-        for <linux-wireless@vger.kernel.org>; Wed,  3 May 2023 00:30:50 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-63b64a32fd2so5395981b3a.2
-        for <linux-wireless@vger.kernel.org>; Wed, 03 May 2023 00:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683099050; x=1685691050;
-        h=content-transfer-encoding:mime-version:subject:message-id:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Iuwe7YFzomxVqnp5CFO/6ropMzsm662vY9Qw+tp8e4=;
-        b=nmbv0plEDPGgp6syUXUiontSo2+Qd4rPAyIt1AGlAI+wq/VPFF5yt9E834uCmiorqP
-         acJpIOwo9wXJDntjornBqhN4SnKMTfEtJmkhjoeORir/qmDeuCCuXZYRXUG1TLBA/75V
-         mA/QZisijQNqXoXmnn/si4sgpqPLWd0U0YCKTY1E+g5LUJCuj7lhgGaRtVUd65zHnRzQ
-         9gHIDuBA/fcBea7YKFA/WdUB8glJLWqv/vUdAOob9+a37sObfdTAlWu/7hG5tqWA/Q6M
-         BV1ExKojF3IIybKdXUz7ISogXCUpxM4YlbsjdGPORVK3rT2PHeiE51vEenMpugv40GH7
-         iwsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683099050; x=1685691050;
-        h=content-transfer-encoding:mime-version:subject:message-id:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Iuwe7YFzomxVqnp5CFO/6ropMzsm662vY9Qw+tp8e4=;
-        b=g0KC8L5gJGpW7uS3YRq5imEbR2w9biojqc3G4sstWLEdq1IEPfVNcMMS0zRhzE1nj2
-         KT+fnk4Scj+CweEm2ikcSmO8ZSU4lnHgW5PKkov5EDPuzoiNElwQ1B25uOD76PPBJPAR
-         jEHii2ivcKXLm0QCgD6BQ17A/uJAl0WF1Yk7l2v8pof1nboymnMeixX9T94KhQ+9xfT+
-         RtJvP1Gm9erRNMbWB+CDwomxmxJdVEfE7UJR46TaSQypHiXw0wdvszoGdXxIYv6lnw4h
-         kPFXayH6b/G9NaskRJuTeCv2cUVU4fhIZU60sQN68kgYPfwA45pdcROKoSrjWJYMBJ3L
-         IBCw==
-X-Gm-Message-State: AC+VfDzMXgMBBQosorqJfTafI7T24XB3bIu5Bp48KAczbSfy9T6mo7l7
-        pLENGuRL69tAF2JzUbnxe/RQ0pmLxEU=
-X-Google-Smtp-Source: ACHHUZ53X7pkcavV7vCCSlmkBPb7x+dZM159+5csKGWFSEzKXhJxrfx/0oq5W42iP0oK74OBv577/g==
-X-Received: by 2002:a05:6a20:9596:b0:ef:e240:b55d with SMTP id iu22-20020a056a20959600b000efe240b55dmr21849988pzb.55.1683099050052;
-        Wed, 03 May 2023 00:30:50 -0700 (PDT)
-Received: from localhost ([2401:4900:5446:db2f::e30:7113])
-        by smtp.gmail.com with ESMTPSA id h2-20020a63c002000000b004fc1d91e695sm19697074pgg.79.2023.05.03.00.30.47
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 May 2023 00:30:49 -0700 (PDT)
-Date:   Wed, 3 May 2023 13:00:45 +0530 (GMT+05:30)
-From:   sitaramstrmydv@gmail.com
-To:     linux-wireless@vger.kernel.org
-Message-ID: <77426432.17.1683099045542@localhost>
-Subject: =?UTF-8?Q?After_years_of_careful_study,_we=E2=80=99re_finding=E2=80=A6?=
+        Wed, 3 May 2023 03:52:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8EB2120
+        for <linux-wireless@vger.kernel.org>; Wed,  3 May 2023 00:52:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F21A560BD4
+        for <linux-wireless@vger.kernel.org>; Wed,  3 May 2023 07:52:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12240C433EF;
+        Wed,  3 May 2023 07:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683100354;
+        bh=IEdCIHikHXx2e9SyXy2ThDRVxCAUufbXsMGMgDOZltw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J7qIvGllWz3Q34wiJctzYz4ItgbAbYmpVQofRnNRExBZkZNDLIhiri4RhNAoukwhi
+         DPbWK8XnZTXKob4+OHibLQ47KZxFY+duiEfehtflKl+Kb0WHqSUTDF562RVEVOPwf9
+         dtN37InflT0pgxihw0ZtJ4YTj1Eo3fK6nr1+ro9/BkCPG/+7V3x5eF1MN8leFQcazh
+         ebr8RPI/xPD1A6jNV17kbTW62J0WdnLHyewgtLYgPJfYhNu+VyQux6lepoKWCElV+t
+         9ZexEAbwzhMe6WNTBXiaHN7SYG8uMhnlFzYEYcZ9rRRVaQhGlROOu+d1mkAF3WKAB9
+         /l0KVABraHAGg==
+Date:   Wed, 3 May 2023 09:52:30 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next] wifi: mt76: mt76x02: remove WEP support
+Message-ID: <ZFISvk7QzpqVkV/L@lore-desk>
+References: <d560f1a16c9024b6e4029bd0baf53384f4552f5a.1683020788.git.lorenzo@kernel.org>
+ <871qjyosnd.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="EsNC/2K8zetZ9mc4"
+Content-Disposition: inline
+In-Reply-To: <871qjyosnd.fsf@kernel.org>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-How are you today? Many organizations tell us that there no longer exist barriers between technology goals and business goals. Our proprietary interviews and data collection supports the anecdotal evidence as well.
+
+--EsNC/2K8zetZ9mc4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>=20
+> > Get rid of WEP support in mt76x02_set_key routine since it is not longer
+> > supported upstream.
+> >
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+> You marked this for wireless-next so should I take this directly?
+
+it is not a fix, "wireless-next" is just the default subjectprefix for my
+git tree, sorry for the confusion. I think it can go through Felix's tree.
+
+Regards,
+Lorenzo
+
+>=20
+> Does this fix something or is just cleanup? It would be good to mention
+> that in the commit log.
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+
+--EsNC/2K8zetZ9mc4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZFISvgAKCRA6cBh0uS2t
+rDnfAP9a+JJVv3SE0AME3xzi761cvox8GmzPcW+TgvhZrbdV5QEA0DCJ5ODLeoO3
+zmxwKx27kNY7PLPOta/ntYJ7wf163go=
+=vZhj
+-----END PGP SIGNATURE-----
+
+--EsNC/2K8zetZ9mc4--
