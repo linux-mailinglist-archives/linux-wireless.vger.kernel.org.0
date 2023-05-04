@@ -2,123 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 398016F74BD
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 21:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1736F7484
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 21:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231613AbjEDTw5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 May 2023 15:52:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58146 "EHLO
+        id S231570AbjEDTvN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 May 2023 15:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231222AbjEDTv5 (ORCPT
+        with ESMTP id S231651AbjEDTuW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 May 2023 15:51:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7869F11B49;
-        Thu,  4 May 2023 12:47:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88620637A1;
-        Thu,  4 May 2023 19:46:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D910C433A4;
-        Thu,  4 May 2023 19:46:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683229565;
-        bh=xU5+GS7Z0ZOvuzry9gq4roNZWabzqWYxzl3qKvzYpew=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XwXn1xyjBbrzpWZzkeqWrU1e2NtZ2DUlZ1nB/aWbgt7AAlow9IHC8y28Vnt6H1Vuw
-         jEZbHKxZcyIB8hgEqqTxZhR67LSEqo2yYoWHg72/iBd4MQumYyhhtOsLKYTj0OIS/D
-         yj7lq2919LtCuLQ28uU4vJMxNXBIVMtw4KqWcORwpABCK2sQfHio1Neu8aN5rBH9/h
-         EtEBPpqgi14Iouk05ME4pBZaePPsB7DX/Wo3BGatMhaUdO3+bS1KiKMLYmi9ZYOWn+
-         U+cUCT9mN3SFLAvJDgJGgprlrVx/m8VuxovWicziEv3BIPfBb27GN6gFsnBBd8OAOu
-         zTiDEc5k0aG9A==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        tony0620emma@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.2 41/53] wifi: rtw88: Fix memory leak in rtw88_usb
-Date:   Thu,  4 May 2023 15:44:01 -0400
-Message-Id: <20230504194413.3806354-41-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230504194413.3806354-1-sashal@kernel.org>
-References: <20230504194413.3806354-1-sashal@kernel.org>
+        Thu, 4 May 2023 15:50:22 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14551150C5
+        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 12:46:41 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-965ab8ed1fcso159718266b.2
+        for <linux-wireless@vger.kernel.org>; Thu, 04 May 2023 12:46:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1683229543; x=1685821543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eyTt7tGov3iBmFi/kzGDUemFQGYK+SpkwEhsD2aEmi8=;
+        b=gpq2ciqVx8BSdPLw5JYIFMR5xyKVU2T0OpoSV1meZuIwNxp0A71GNHyqkmz6aQTruM
+         cR4XpcLsBzFm6+2laIVTivInHfwAgcTYzomzSSXUg3ZlsF3V1yQ9sco9x7JXKPQRbXFW
+         ul5orePYQy5eNhaDjfa7ztld38+QLhBB1nc2PLKYoOMAe1nhVLWmkWHlWYXYJrbaQFAn
+         bWP32gi6i+5cQGfMv3StlnYzqbu++M1c7WdLj/qHPU2d1eGz54RKr5rai1SEQK3zGsBf
+         tC0VRraulEsU0SYpqoFcgl/eQJOabISeFa6KW6Zqo7a+ty1gLh6i4cmF+dWj00vln1Io
+         9qmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683229543; x=1685821543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eyTt7tGov3iBmFi/kzGDUemFQGYK+SpkwEhsD2aEmi8=;
+        b=Y/19IWa841/+gCCYk8RBJB5HUH2Q4+2b5KCYXYGlAasuaiSxgabwqo4uA2652f9vwT
+         PhgpPbLEVE2W8w0CSNPXq264yARpkschnWm+MWRONgiRT9yMVdpNrvf4arjf16z+r0gg
+         Ig76EErHJAkvSEJOazqHdEB9Nw+gUm8FW0TxzabUkaUZMX8cTZhGkFlYgPSFbqVM7uV5
+         L+iPa8cFmvX+bYs16mztr2lt/SIMembrO1qvVWeo2gCHfSui4SibQw7hxYifEV2pa46x
+         6KrK3+jmYRN3ftUoHg0AfsLKldnT8r8ELh9KCrM7xHgum8nrstLIp8jbePs8/kz5c+vC
+         KRmQ==
+X-Gm-Message-State: AC+VfDzALSTqOF3ctyOiPZMYyUJyTB4p3KIKbXhV1Xns0tt9yhP7kZ8Z
+        FUrkLoHtTeCF+tnURVdGASNrPVCUXI759CXvEPl86dEioUk=
+X-Google-Smtp-Source: ACHHUZ6mBoHkh+nEEksxOImtonU0rw1s8jW9oaV7pdGgVDhXzYwdVIhAnZGQd/8EVx8Rv3qsZRWrRAQjNeAWamGkdfo=
+X-Received: by 2002:a17:907:6d0e:b0:94b:4a4:2836 with SMTP id
+ sa14-20020a1709076d0e00b0094b04a42836mr7087927ejc.69.1683229542539; Thu, 04
+ May 2023 12:45:42 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <72a8eeb1-c91c-80a7-5a09-1b7963e0996b@lwfinger.net>
+ <5930608.lOV4Wx5bFT@jernej-laptop> <813d74b8-6d9f-c7b0-40b4-c661fca13002@lwfinger.net>
+In-Reply-To: <813d74b8-6d9f-c7b0-40b4-c661fca13002@lwfinger.net>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Thu, 4 May 2023 21:45:31 +0200
+Message-ID: <CAFBinCB3xnCrLvEvqsFMQuDxL+xC9tkxnwubfC+xEMP3-ZXqSg@mail.gmail.com>
+Subject: Re: Driver for rtw8723ds
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     =?UTF-8?Q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Larry Finger <Larry.Finger@lwfinger.net>
+Hi Larry,
 
-[ Upstream commit 59a3a312009723e3e5082899655fdcc420e2b47a ]
+On Thu, May 4, 2023 at 9:25=E2=80=AFPM Larry Finger <Larry.Finger@lwfinger.=
+net> wrote:
+[...]
+> > Can you ask that user to test following commits?
+> > https://github.com/xdarklight/linux/commit/
+> > 3866a7a3702f7f24557f2c065b7d4088f7027466
+> > https://github.com/xdarklight/linux/commit/
+> > 66fd078556a6bf246337270b2e91d73c079fce2d
+> >
+> > Patches are trivial, but some testing needs to be done to confirm the d=
+river
+> > actually works as intended.
+>
+> Jernej,
+>
+> The user needs the rtw8723ds driver - the SDIO equivalent of rtw8723du.c =
+that is
+> used by the USB device. The riscv changes may be needed, but we are not q=
+uite
+> that far yet.
+Strange, can you please elaborate what you are seeing in terms of riscv?
+The two commits that Jernej shared are for an update to rtw8723d.c [0]
+and the addition of a rtw8723ds driver [1]. None of these mentions
+riscv (at least that's what my tired eyes are seeing today).
 
-Kmemleak shows the following leak arising from routine in the usb
-probe routine:
 
-unreferenced object 0xffff895cb29bba00 (size 512):
-  comm "(udev-worker)", pid 534, jiffies 4294903932 (age 102751.088s)
-  hex dump (first 32 bytes):
-    77 30 30 30 00 00 00 00 02 2f 2d 2b 30 00 00 00  w000...../-+0...
-    02 00 2a 28 00 00 00 00 ff 55 ff ff ff 00 00 00  ..*(.....U......
-  backtrace:
-    [<ffffffff9265fa36>] kmalloc_trace+0x26/0x90
-    [<ffffffffc17eec41>] rtw_usb_probe+0x2f1/0x680 [rtw_usb]
-    [<ffffffffc03e19fd>] usb_probe_interface+0xdd/0x2e0 [usbcore]
-    [<ffffffff92b4f2fe>] really_probe+0x18e/0x3d0
-    [<ffffffff92b4f5b8>] __driver_probe_device+0x78/0x160
-    [<ffffffff92b4f6bf>] driver_probe_device+0x1f/0x90
-    [<ffffffff92b4f8df>] __driver_attach+0xbf/0x1b0
-    [<ffffffff92b4d350>] bus_for_each_dev+0x70/0xc0
-    [<ffffffff92b4e51e>] bus_add_driver+0x10e/0x210
-    [<ffffffff92b50935>] driver_register+0x55/0xf0
-    [<ffffffffc03e0708>] usb_register_driver+0x88/0x140 [usbcore]
-    [<ffffffff92401153>] do_one_initcall+0x43/0x210
-    [<ffffffff9254f42a>] do_init_module+0x4a/0x200
-    [<ffffffff92551d1c>] __do_sys_finit_module+0xac/0x120
-    [<ffffffff92ee6626>] do_syscall_64+0x56/0x80
-    [<ffffffff9300006a>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
+Best regards,
+Martin
 
-The leak was verified to be real by unloading the driver, which resulted
-in a dangling pointer to the allocation.
 
-The allocated memory is freed in rtw_usb_intf_deinit().
-
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230417160331.23071-1-Larry.Finger@lwfinger.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/realtek/rtw88/usb.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 68e1b782d1992..05c7326443614 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -780,6 +780,7 @@ static void rtw_usb_intf_deinit(struct rtw_dev *rtwdev,
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
- 
- 	usb_put_dev(rtwusb->udev);
-+	kfree(rtwusb->usb_data);
- 	usb_set_intfdata(intf, NULL);
- }
- 
--- 
-2.39.2
-
+[0] https://github.com/xdarklight/linux/commit/3866a7a3702f7f24557f2c065b7d=
+4088f7027466
+[1] https://github.com/xdarklight/linux/commit/66fd078556a6bf246337270b2e91=
+d73c079fce2d
