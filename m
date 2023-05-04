@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6D86F6D26
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 15:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E7B76F6D27
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 15:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbjEDNpn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 May 2023 09:45:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36506 "EHLO
+        id S231197AbjEDNpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 May 2023 09:45:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjEDNpm (ORCPT
+        with ESMTP id S231191AbjEDNpp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 May 2023 09:45:42 -0400
+        Thu, 4 May 2023 09:45:45 -0400
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311847DB3
-        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 06:45:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC317EC5
+        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 06:45:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683207940; x=1714743940;
+  t=1683207942; x=1714743942;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UirbkUlSIYRHUfGjTqLTiQ+5nyU8MCfx894kcZ0O/1U=;
-  b=dEs9NWzLJ7sR+J1R3H5FGenQJJccUPNTlkmK30yeDdTaifxY+5w57fkW
-   Kkc+hAduizkg7ZfmbNndm4C8zq0aP/P8O+qeMC8spM3kHg9xQc3eRBXCd
-   QZbDcAd6ytPiGg57LmUito3w8FLPHKxl2+xAQ5qxhfrumpUfoT08zxGse
-   yzVnwwGUynfNU40CJmqzSCL0ikmbMPB3EDD144nFQhIOXITVmo37omSIM
-   faj1oNQqZPOtvy0EORz1ZrJxOY0JxWP1wDZN882R8xdAapil5+dVWIfrR
-   8COzDxRNI/rTnXZ/TtcfNmr+EAUTMXiuiGIPqZptQptsVrf0bzc5UOqpB
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="435242637"
+  bh=HvaAqA13vJXhSlXuQyBaDNlie/dLJ60DefoE4qrwVBM=;
+  b=GIctvAT9UW95+TfM0Yl9UkkxFt5QuEbUNOoGyus6lPg5fjGDkq2AAlpE
+   Oe+l+Ijc6k7L6lYyEZ1PfQmswJ9byMHq6tfhIUsLhNbg+NqXqzaa9y8VN
+   JiRlcdVJ8hGGMWJIBFQks1O8gO5XrRduSTtytuzUkv6ardx7d0Kxqe/da
+   srIm/QWVAWBzy4S1O5QLxTS6mLxm2+GRd4MwNt8XesazD+wwrosD6iSSl
+   D51J40b04RD1VMddvXFJhopTCJlmcUAWmn5ODMum3kawR5gReTA1x6Rcv
+   /YbOL2X7I3g8j4zZlSNHoPzX4l77RoyHMHXTuPitEc+kKAKOYek5pAOyR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="435242651"
 X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
-   d="scan'208";a="435242637"
+   d="scan'208";a="435242651"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 06:45:39 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 06:45:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="766591757"
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="766591780"
 X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
-   d="scan'208";a="766591757"
+   d="scan'208";a="766591780"
 Received: from haddadra-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.238.144])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 06:45:38 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 06:45:40 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>,
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 06/11] wifi: mac80211: Fix elements scratch buffer allocation
-Date:   Thu,  4 May 2023 16:45:06 +0300
-Message-Id: <20230504134511.828474-7-gregory.greenman@intel.com>
+Subject: [PATCH 07/11] wifi: mac80211_hwsim: avoid warning with MLO PS stations
+Date:   Thu,  4 May 2023 16:45:07 +0300
+Message-Id: <20230504134511.828474-8-gregory.greenman@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230504134511.828474-1-gregory.greenman@intel.com>
 References: <20230504134511.828474-1-gregory.greenman@intel.com>
@@ -61,65 +62,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Current code allocated a scratch buffer that is the length
-of the elements. However this is not sufficient as the
-defragmentation can happen in the following places concurrently:
+If the station disables all links it's in powersave and
+we shouldn't transmit anything to it, but we don't handle
+that correctly yet. For now, just avoid the warning, once
+we really add support for this case we can revert to the
+old warning.
 
-- MBSSID element defragmentation
-- EHT ML element defragmentation
-- EHT ML element sub element defragmentation
-
-Fix the length and the scratch buffer allocation to allow
-up to 3 defragmentations.
-
-While at it remove the 'scratch_len' field from
-'struct ieee80211_elems_parse_params' as it is not
-really needed or used.
-
-Fixes: ff05d4b45dd8 ("wifi: mac80211: fix MBSSID parsing use-after-free")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/ieee80211_i.h | 3 ---
- net/mac80211/util.c        | 2 +-
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index b0372e76f373..e67c5c754be1 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2269,8 +2269,6 @@ static inline void ieee80211_tx_skb(struct ieee80211_sub_if_data *sdata,
-  *	(or re-association) response frame if this is given
-  * @from_ap: frame is received from an AP (currently used only
-  *	for EHT capabilities parsing)
-- * @scratch_len: if non zero, specifies the requested length of the scratch
-- *      buffer; otherwise, 'len' is used.
-  */
- struct ieee80211_elems_parse_params {
- 	const u8 *start;
-@@ -2281,7 +2279,6 @@ struct ieee80211_elems_parse_params {
- 	struct cfg80211_bss *bss;
- 	int link_id;
- 	bool from_ap;
--	size_t scratch_len;
- };
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 2211fa58fe41..4f44d87a5c13 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -1940,7 +1940,14 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+ 								 hdr, &link_sta);
+ 		}
  
- struct ieee802_11_elems *
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index ead4b095cc4d..b0c035cf13da 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1604,7 +1604,7 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- 	const struct element *non_inherit = NULL;
- 	u8 *nontransmitted_profile;
- 	int nontransmitted_profile_len = 0;
--	size_t scratch_len = params->scratch_len ?: 3 * params->len;
-+	size_t scratch_len = 3 * params->len;
- 
- 	elems = kzalloc(sizeof(*elems) + scratch_len, GFP_ATOMIC);
- 	if (!elems)
+-		if (WARN_ON(!bss_conf)) {
++		if (unlikely(!bss_conf)) {
++			/* if it's an MLO STA, it might have deactivated all
++			 * links temporarily - but we don't handle real PS in
++			 * this code yet, so just drop the frame in that case
++			 */
++			WARN(link != IEEE80211_LINK_UNSPECIFIED || !sta || !sta->mlo,
++			     "link:%d, sta:%pM, sta->mlo:%d\n",
++			     link, sta ? sta->addr : NULL, sta ? sta->mlo : -1);
+ 			ieee80211_free_txskb(hw, skb);
+ 			return;
+ 		}
 -- 
 2.38.1
 
