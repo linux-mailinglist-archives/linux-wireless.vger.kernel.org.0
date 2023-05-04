@@ -2,66 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3BDF6F6CEF
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 15:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 392A66F6D20
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 15:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229942AbjEDNaR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 May 2023 09:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57114 "EHLO
+        id S230513AbjEDNp2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 May 2023 09:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbjEDNaQ (ORCPT
+        with ESMTP id S229768AbjEDNp0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 May 2023 09:30:16 -0400
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02E54C24
-        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 06:30:15 -0700 (PDT)
-Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-4346efda846so295586137.1
-        for <linux-wireless@vger.kernel.org>; Thu, 04 May 2023 06:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683207015; x=1685799015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WOxE372B6YQMi4PxOq7FaeZ+RepVPmY7i1cKRhI3wmM=;
-        b=R4G3RNhmBwKCQQL/lB/4YqQBPvB4UbEXbcm6O5hmtpqsHeplQ538hi/b8WAa01oyUo
-         Ba8As10yPkI3L1uKeiGfX0Fo/RmJ87AejqIcCt5gvW5BJd7o7QB3pX6rSlO7JLM0TM3M
-         xtG/yVy64CxzOK+dCb51NoY6qlOdMNMVvS/v9hwGrV7pQLmyPA3EFDOiiHssEMslLpIG
-         y5Yat5DB06iz9rN//YJsXmOS6V7X4U72VeYs7UnjhdpJsYu3L9ZcdTI0Yl8nuJEWDS1m
-         ay85ToDQStenKDTHfxK3Bjzyed+Z9Sn9zPMCQfIySN0h2yeUd23aLrX42XahwBtxUwej
-         J/kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683207015; x=1685799015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WOxE372B6YQMi4PxOq7FaeZ+RepVPmY7i1cKRhI3wmM=;
-        b=WXBCjz71Uh5MWDJLKQW7KA4aqp8CP9Eb21uiCiR0zbHlgRdf/uKbs5NfKUPYIO1+6g
-         n/UzHzyvy4tes1cPS0NuDEVaclvLoXSGTRtbc8kjdWCZvY5Sa/WC9U6dxOFwAHqFaOz4
-         7QxHiXvh6qIntbKDuRLboU1m0R/l4+f5u2NutVsqMaCyvnV2FqbiG3kMulGoO0roO0f2
-         vz+12tj6dpDgQPWwYkQ7sTE2Pde/ui046RnjPqcjtJGqP/9umAec9hWw9aeQ7grNAwZK
-         kqPFDWBFJd57xGMmRkA8vuf3Eu4BEQg5wyjL2946JHabVjEXB3a5PzFLv5pCKDknWCHP
-         +vNA==
-X-Gm-Message-State: AC+VfDwLKpA385eKZK8Kmk5NJjUajaTfxcWB+WkKy8q6nG4jRKX25Oaj
-        NBrwNK6yMWZSCo0g8oeF61z+7K/JBK5EyxR143NcPsgr
-X-Google-Smtp-Source: ACHHUZ44JUsBPmJMRCCi13RJP7uJHgXXIKHJKhcE5rfCq/GNRx0EkTLyLgCMtkhPm2dnjOlTr30YfBN965u/fIYywyw=
-X-Received: by 2002:a67:e24e:0:b0:42e:58ed:7970 with SMTP id
- w14-20020a67e24e000000b0042e58ed7970mr3004701vse.19.1683207014942; Thu, 04
- May 2023 06:30:14 -0700 (PDT)
+        Thu, 4 May 2023 09:45:26 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD2C7A99
+        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 06:45:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683207925; x=1714743925;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=p9krqr+xm2nJWIxjgOB5fSPNEOB5VXGX/b7fHRvUU8M=;
+  b=ezRiW3+1tYXY6fl6tc/B9RaUBGWpKVxKSWVhQTfIpdxzlaj95Yumpdmc
+   ayAf7AQFs7tIhhCDX//L5hQBGER3No6GlfzaVrhTp3iKZSiS/qpgOLYex
+   BPMlstvhoZQsNAEjIkm7ban0ZsonRJoRopc9QWdos2z3HM0FN683rJTQK
+   0s63oNYUzTYHEKlfNffZatb1rXy938yNRdKWRrvuVXR63L59opCBOSLMW
+   y1qVQ/1nhRbCt2nTZCinu1Rhv2qZ697sUBToDJyCflkg/pABEx/aLIsGq
+   dV5QuzNhju+lxXA19iVUo9m4rKyuxdHl6JyOYH3r08IE4T8Dy1bHMDODO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="435242556"
+X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
+   d="scan'208";a="435242556"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 06:45:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10700"; a="766591600"
+X-IronPort-AV: E=Sophos;i="5.99,249,1677571200"; 
+   d="scan'208";a="766591600"
+Received: from haddadra-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.238.144])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2023 06:45:24 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/11] cfg80211/mac80211 patches from our internal tree 2023-05-04
+Date:   Thu,  4 May 2023 16:45:00 +0300
+Message-Id: <20230504134511.828474-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <20230430201830.2f8f88fe49f6.I2f0076ef1d1cbe5d10010549c875b7038ec4c365@changeid>
- <CAAJw_ZuFaE-oYWQWQ+k0Lz_GcJH+adF6SZuwaKpV8UB0XGqVzw@mail.gmail.com>
-In-Reply-To: <CAAJw_ZuFaE-oYWQWQ+k0Lz_GcJH+adF6SZuwaKpV8UB0XGqVzw@mail.gmail.com>
-From:   Jeff Chua <jeff.chua.linux@gmail.com>
-Date:   Thu, 4 May 2023 21:30:04 +0800
-Message-ID: <CAAJw_ZsK5c5Y7NpFeNG6i2-kozeT9jscog57+bwwEy6RtiFm8Q@mail.gmail.com>
-Subject: Re: [PATCH] wifi: iwlwifi: mvm: rfi: disable RFI feature
-To:     gregory.greenman@intel.com
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,31 +59,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 1, 2023 at 7:56=E2=80=AFAM Jeff Chua <jeff.chua.linux@gmail.com=
-> wrote:
->
-> On Mon, May 1, 2023 at 1:18=E2=80=AFAM <gregory.greenman@intel.com> wrote=
-:
-> >
-> > From: Gregory Greenman <gregory.greenman@intel.com>
-> >
-> > This feature depends on a platform bugfix. Until we have a
-> > mechanism that can verify a platform has the required bugfix,
-> > disable RFI.
->
-> Greg,
->
-> Patch applied and worked! Thank you!
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Only issue with that is I was in the office with EAP, and couldn't
-connect to the WIFI. I'll need more time to bisect next week at the
-office.
+Hi,
 
-Jeff
+A bunch of patches from our internal tree with mac80211 and
+cfg80211 changes. It's the usual developement, cleanups and
+bugfixes.
 
+Thanks,
+Gregory
 
-> > Fixes: ef3ed33dfc8f ("wifi: iwlwifi: bump FW API to 77 for AX devices")
-> > Reported-by: Jeff Chua <jeff.chua.linux@gmail.com>
-> > Link: https://lore.kernel.org/linux-wireless/CAAJw_ZvZdFpw9W2Hisc9c2BAF=
-bYAnQuaFFaFG6N7qPUP2fOL_w@mail.gmail.com/
-> > Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Emmanuel Grumbach (1):
+  wifi: mac80211: fetch and store the EML capability information
+
+Ilan Peer (1):
+  wifi: mac80211: Fix elements scratch buffer allocation
+
+Johannes Berg (8):
+  wifi: mac80211: fix min center freq offset tracing
+  wifi: mac80211: simplify chanctx allocation
+  wifi: mac80211: consider reserved chanctx for mindef
+  wifi: mac80211: recalc chanctx mindef before assigning
+  wifi: mac80211: HW restart for MLO
+  wifi: mac80211_hwsim: avoid warning with MLO PS stations
+  wifi: mac80211: skip EHT BSS membership selector
+  wifi: mac80211: implement proper AP MLD HW restart
+
+Mukesh Sisodiya (1):
+  wifi: cfg80211: Add null check for ie data
+
+ drivers/net/wireless/virtual/mac80211_hwsim.c |   9 +-
+ include/linux/ieee80211.h                     |  40 ++++-
+ include/net/mac80211.h                        |   2 +
+ net/mac80211/chan.c                           |  75 +++++----
+ net/mac80211/ieee80211_i.h                    |   6 +-
+ net/mac80211/mlme.c                           |  16 +-
+ net/mac80211/trace.h                          |   2 +-
+ net/mac80211/util.c                           | 155 +++++++++++++-----
+ net/wireless/sme.c                            |   2 +-
+ 9 files changed, 232 insertions(+), 75 deletions(-)
+
+-- 
+2.38.1
+
