@@ -2,360 +2,277 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88EF66F6303
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 04:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC10B6F6326
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 05:10:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjEDCto (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 3 May 2023 22:49:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59818 "EHLO
+        id S229584AbjEDDKi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 3 May 2023 23:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjEDCtn (ORCPT
+        with ESMTP id S229459AbjEDDKg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 3 May 2023 22:49:43 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47CD6E73
-        for <linux-wireless@vger.kernel.org>; Wed,  3 May 2023 19:49:41 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-63b62d2f729so24028b3a.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 May 2023 19:49:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20221208.gappssmtp.com; s=20221208; t=1683168581; x=1685760581;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gdBsapl1cekSBby7Qju/NnK/ibSlcRZlDinsSUvqyBA=;
-        b=FPgO7DHZULCaZTeslIL9cbiWjt0LHb7cx48X5DXJGDgv9bDOw7j7rscP6dX+yYP2/f
-         z7vp1MYLXsyzoB9NBvj4pmGiAmyVvWNBqN1/ss77wBdkiyo534ffZXD/GcW0e/9wVEx5
-         GSgcVVidBgYuuJnf//dewqXMXStL0oqVGjooDWk52zh84iNhwjkc2uStTkjTtq02YysR
-         E3yhxBE1iBLv/K2uNLx1XAw/MjJKwmRLWl5zGU1WY/TZxJdU+R4ll9EMcx6dS14d5WNH
-         Nfw2psIERVlDTmC8U8qMwwoRiN1uV/mmRUik8fpzhutpjstPz4r2WMrLi6vAKNkMfXW7
-         xKtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683168581; x=1685760581;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gdBsapl1cekSBby7Qju/NnK/ibSlcRZlDinsSUvqyBA=;
-        b=fn2wiN4WtGicAol4kuojwb6F28gEUh2mhhsTcK13AdiUrH8Ej+YTbXOV1IAf8mxk8I
-         8xvBhquD4WGeKyazkLqycNn0l2+KDvaczjZ3p7PZX3UKpxUufpPKvR63ZEK+adJGlXPe
-         hooGvCX4M/Myko7YDylDrqJtIrtDXPn6DT8LxVFDYeIGoZHQGB7rmZ2SnBSyi6s4/C4G
-         nGdNfUp2qT0hHB09MKWmvWGE3ru+O9YLTu8Yn1KEU1EhVTx3rLUCWCfNOZ7Vj1XKyjYu
-         gSh9MMvBsIE7sy3wLX0ZMMTIBhzhmFadyK4KcTSXPnCDUYVGSMN2UCadjCIakqtLV9Hw
-         vHdA==
-X-Gm-Message-State: AC+VfDyXQyQ7YBEc+Q3X8zmF6ricIQb/SPOcd3nCsQ+T37bteIsDooz+
-        04HywA1ap7Um20yPkmJ828ctOQ==
-X-Google-Smtp-Source: ACHHUZ4zlSdqUUZGKRZAymIuB9qdzvDj3rycRjiib7NIlhj1/FEY9zkCa+BRy8YSRTNTSNvDWS+/TQ==
-X-Received: by 2002:a05:6a00:178d:b0:637:3234:4e22 with SMTP id s13-20020a056a00178d00b0063732344e22mr896487pfg.23.1683168580690;
-        Wed, 03 May 2023 19:49:40 -0700 (PDT)
-Received: from virs-pc-014.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
-        by smtp.gmail.com with ESMTPSA id p10-20020a056a000a0a00b0062d8e79ea22sm24049496pfh.40.2023.05.03.19.49.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 19:49:40 -0700 (PDT)
-From:   Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
-        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Subject: [PATCH] cfg80211: S1G rate information and calculations
-Date:   Thu,  4 May 2023 14:49:23 +1200
-Message-Id: <20230504024923.1925530-1-gilad.itzkovitch@morsemicro.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+        Wed, 3 May 2023 23:10:36 -0400
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2043.outbound.protection.outlook.com [40.107.101.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F06D7
+        for <linux-wireless@vger.kernel.org>; Wed,  3 May 2023 20:10:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eTHsmyWHwQJjFKpujqjrcH2dmHYwXaVKyyMHNIyD/z5Opbq40h9iDxe0lRB05Uwm2a2wnT5w+gAiG/g5L925OMpyP2a9/zvb3lk398hbGDQWgP95pWfqjo/gMXvNzh4+nY7omdyGzb06pE0vWp9LAOSbtRbwYviHGaKdewecuwPKb0j5b10aReCcrQXXIe9mlvw1yVK4BZ3dBRMRS/EwUNYgr2oyg87ojytdW1WTI1yF9hc8ty3ILm8K+FL/JHavf04PIqCCY6fxOY6ROsTm3ZqBps329k904apG1NjqVR5HDoLo8utg1oVy2qAvwpa3QG2pXPdUuOCeo2ae+W0l8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Jy94da4rWAdYKUH5Y+rZpsTVE8wfvu8qbGyukaxC6Sc=;
+ b=m7lHSOMU79v51rdpRVWC0uehPaGCmi7AAGoNJtGJKBWm+EKZkg7mqJGdU+CmIRYiUbL5+vuhGpg8U5QuJosKVnK+amDXWhefiftdUubZr4fpLeSLFnBVvR8VJVvMiO4jdp0e+VliuY5bkMpupfr3ce7rSWoLmvFw/u3/ioHAxckP/Baqt+pkkCEYfP96aiQBw5qH3uXfF9efN3dguoKH2G/p1DQsWP4dn/3HGS8MVVKhNVtSfjMx8gJOURPeDyO12vun0G9bVa7tYBFiAbxuBUHOWLXEUIkXjiFNS8XxGF8Mvxdkx6qGMaiXir+r7i2tz4yIcBxrviHEIkjpWXzjlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Jy94da4rWAdYKUH5Y+rZpsTVE8wfvu8qbGyukaxC6Sc=;
+ b=J5RzlSAtgpmer/HTb8Zvx2MXlF+D+l91gZ/cRgGJwTi1Ez3jJ6v+dTrv7Xf4RflKbqxUOOII5+gE7y+biEZBdruLs8qnFvIuO4tqsZRoVLs5PYPj/p1D/1o5HwsuOTnN+q4JndmuAT5ttdU2FUz+EVnn1DzHpdi9su0oINI+0S0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB2843.namprd12.prod.outlook.com (2603:10b6:5:48::24) by
+ LV3PR12MB9119.namprd12.prod.outlook.com (2603:10b6:408:1a2::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6363.22; Thu, 4 May 2023 03:10:31 +0000
+Received: from DM6PR12MB2843.namprd12.prod.outlook.com
+ ([fe80::863a:5f29:1e76:db60]) by DM6PR12MB2843.namprd12.prod.outlook.com
+ ([fe80::863a:5f29:1e76:db60%5]) with mapi id 15.20.6363.020; Thu, 4 May 2023
+ 03:10:31 +0000
+Message-ID: <4b3f4c5b-cada-bb7c-65f3-936437261b08@amd.com>
+Date:   Thu, 4 May 2023 13:10:24 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.5.1
+Subject: Re: Slow RTL8822CE 802.11ac PCIe Wireless Network Adapter
+Content-Language: en-US
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Yan-Hsuan Chuang <tony0620emma@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <75906666-df37-988a-c448-a6338b8a1cff@amd.com>
+ <b7a59145-37b0-eade-3a9e-b565cc75de35@lwfinger.net>
+From:   Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <b7a59145-37b0-eade-3a9e-b565cc75de35@lwfinger.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-ClientProxiedBy: SYAPR01CA0040.ausprd01.prod.outlook.com (2603:10c6:1:1::28)
+ To DM6PR12MB2843.namprd12.prod.outlook.com (2603:10b6:5:48::24)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2843:EE_|LV3PR12MB9119:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa07f759-99d5-4fe3-8422-08db4c4d1e6e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vob3BwyKQf69I51ZmcFfmXiIoe/xNfaYf84QOa5yPrnNc0IJhcNMDoJA12emUqMBuDY3TKSDW4HXXjUwHLmvAsgFMn5ijI6BgiCPQ7ECw2yGmhUvBOFmG3cHe2WFufcrUN09zShnA7WmuG1sWMsMPhkF2tNCPNK2gyfWIgJ7pXtQ+EzHxKFk76xJmDJcLLamdi0CG9pERJLeY8/nA78C/FsorDPg4PSyi6qpZUEBuZszpHdLEB8VvBSETcbzmwVd+xaX4r48RCI5HY2KaLIZyjJSN6psnyLOcyQXo0zNHzosmqHmHnPmV07iwJP38UdMFGQQ9G4MDxmE4BF9kBKSW0HiYw46aPzEUGXS4j13rDdY77+sj65de7KdbT2/aKgvBaiv3WTHXFRgMRUzU2qBrDxxn4adtkRgCPzJeHcc6duEAqAizS4+ViWU6BxCic0ZWCi4c2C4L8i1CrPMzB2ObJGzlTrkGhr1EBB/cBuGtxS9Dz1Kt97VyAhfsq0Qt2rEX2tzbm/bRarzF9o73YmId8aD24xqvAVHoyA5eJ/b4bCULNkTtwRtr5/GZbftZsDen+eAegvldQSuvHaA2bJgkjNZSGOnM9BPcG69Ww0c2eVQ1EAB4/z3vNFlogwHlsJZvCUtXpIMKywUMhl2LdcJEx/PyUNAPoNzzHB6VAzlJNI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2843.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(39860400002)(396003)(366004)(376002)(451199021)(2906002)(6512007)(6506007)(26005)(83380400001)(53546011)(186003)(2616005)(41300700001)(6486002)(6666004)(5660300002)(966005)(8936002)(8676002)(36756003)(66476007)(66556008)(66946007)(478600001)(316002)(31686004)(31696002)(4326008)(38100700002)(110136005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZEl4M1NoUDBNeG5YaytwMU1nVVFmMmwwMS9xazQrakFGQXdNQWIxUDRoZ1Fu?=
+ =?utf-8?B?YnFtejBnVHBKbXQ4c2daazFpc21KZ1RGL0xNdlllVVJCUEVZcFBsOUpYMnhJ?=
+ =?utf-8?B?bDdRaEhZRk83cVA0RlliY2RzbkFJOTgxR3JveDZxNHhHTmI1cis5MEdLcnAr?=
+ =?utf-8?B?TjZWMk1mRVdmSmFhOENrUklkVTdiUmpCMlpERVZxdFlJekNMOFNzZmFhSmNN?=
+ =?utf-8?B?T2UyMCtWVUVSVG5ISzJ3WVBkVnZ6S3FId2NSa0Yrcmx2MWNjY3YyMXdJckRX?=
+ =?utf-8?B?MkdYQy9STUVBSngvWEIreG1BOE5QR29kU3lzenFsUDRwclhsT25vcG5uQVBu?=
+ =?utf-8?B?QTRTWTJRNCtTWFN2TzRFNUEraDliUUlrdW9aWmlxM1JrOTE3MTNKMlpPNFpo?=
+ =?utf-8?B?RE1lQnpUS0xUdjBNOE5BZDA5bW9wUm1udVVFdTFJQ0svZndza0pJcWRkdXln?=
+ =?utf-8?B?M0pod1lnSFp0Yy80ZmZvdE42V041MmJoV2xOMEh1a2ZadFJCRUtha1dzR2lD?=
+ =?utf-8?B?MlErYlFFUDdVRXdaMTZONWhDVW52RFVXZVF5aWdoZkx6TnlMeUdqNjFXTCsv?=
+ =?utf-8?B?ejR1d25NK2M2QXRjNkhGYnhHVzk1NjM3SWEzbnZudVRmN2ZGWnNkbjhhVDRB?=
+ =?utf-8?B?aWJNN3BHSWI0V01NZjU5Y2ZMK2NOL1NjVXhuYXZ2eFNyUiswdlJiM2dKTzJ6?=
+ =?utf-8?B?Y2E5MU10ZkZSR0QzR28wQTlIZ1kvQ0dybk1Pd2VVZ2c3VjhMaCtmazdnT25m?=
+ =?utf-8?B?aVA0TjN4Lyt5WTh1czF6M1RFWWlPR1dORlBPWGMwaVAwb2lraVVuWjQ2M3hv?=
+ =?utf-8?B?YWpCaCtQOGptVU43YWJ0UFVsS1RpUnJwMWJ0R3ppNnZ6N2VJUlNiRmxHck1M?=
+ =?utf-8?B?Vzd0aExXaXZJeG9DaEprdmtxTWs1RWRkRFdnWTFuck1qcXo2RUdoSlllRVEz?=
+ =?utf-8?B?TWhYVUVjT1ZvZ1Y5MHpyRDNKaGhsd0kzVml5R2t0VTEyOE5zdm12aUJ4dFM1?=
+ =?utf-8?B?TElnSUl5L21UTE1OTkc2U0pOb2RsU28vbEpvQWRoaXg1alhBekJ1S1RZYVpS?=
+ =?utf-8?B?MUMzTm9saTN5UDUwT0dURVBwMnFTVUpaK3dmYmQvNXJ5Qkh3YWhWUDA3ZFln?=
+ =?utf-8?B?YWdIeU9WT2lSWitpM0dDSkRTNDRPMktBemFPSTM1QTAwQWhVaGFmNVJkQzRY?=
+ =?utf-8?B?enB3cERGd2lmS1NSckhjTk1WRVJuUHBSSXpxM09rZkNDRHBzWmdyZEN3ZEtz?=
+ =?utf-8?B?S1pwWWRwK1AzVFYvdGladjVBVURYdWtmeDJ2WUpKY3lyei9UMnIza2JOSDJI?=
+ =?utf-8?B?MHRZL0NTVVl1QVJ3clZsbnlqR2FIS1JScTFyV291c0ZjL291ZXhSS2lzQXQy?=
+ =?utf-8?B?M1MzQmVzd3hVVFJ2MXRWZStSUkptYnNNR2NRakQzcEoxNW1BdWhSZkhWZElQ?=
+ =?utf-8?B?a0dGcmxPcGtsdUhiUE85OXpuNlAyR2VpNGpYOVpNMEI4azU0RTZDRkZNamd0?=
+ =?utf-8?B?NlJIbFh3MXJaa25XSGZjNTByaFdQN3hjSURvUlVRWGRxOTg4NjM0QTVGc2VB?=
+ =?utf-8?B?Ynd5a2czK1FCZDdPQ0M3WUpjaklNQmZQSFBmS2F5RmdlMklrZW5tdDZBbSth?=
+ =?utf-8?B?WEdvQTlXNXFPS0dOeEdEbXBpbEdUQnJuLzROTzZHRlFzKzZRcUJJUTJza2k2?=
+ =?utf-8?B?Ym50N1pPVE04T1JPL1RndzVCODcwUGRnSGNrUUc0RW1hUmQ3WDdhN0hDcEJK?=
+ =?utf-8?B?ang0aXYvRXo4VEY3eTl5U2RSTzcwQzlZa1VxMTdGU3hLTGJ6dzJGbWhBNjI3?=
+ =?utf-8?B?MUpvaTg0ZDJ2aXUrSEJKUmxtekF2Q29MMDJvVGE4UzN0TDUzbUJWbkk1eTgw?=
+ =?utf-8?B?ZTRnZEh2M29xRlNDekhFS0hVNTJiRUdBSXY2TGhqQ2prVVdOSkRndzdLNzdW?=
+ =?utf-8?B?TWlqYWVDRG0rcWJwWnRqNTR0bXQ4bUNXelJXVzVpdGRIQUdmTC9wN2FZVFJl?=
+ =?utf-8?B?NDFFbTU1VFFDb3RDRWZla1krSmdKbkpva29ZSEhnak5BQSt3SkZhRExyLzZF?=
+ =?utf-8?B?UmdVTlZYOGRtWWJBcDhiRlJPbzgwaGZ3U3ZoUlVkVks4Zzc1akpVR2RtUVNs?=
+ =?utf-8?Q?N9vHcjiaxAH0sviUJOuFEpnE+?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa07f759-99d5-4fe3-8422-08db4c4d1e6e
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2843.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2023 03:10:31.2700
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fhH/yY71u1KsR+CezzPyeTetsuMsgmg7zvBlUNRDuPa/Jb9bBPM5EQsx7Cqg9s44bJSWuAqXI2LAXipGM3Qg5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9119
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Increase the size of S1G rate_info flags to support S1G and add
-flags for new S1G MCS and the supported bandwidths. Also, include
-S1G rate information to netlink STA rate message. Lastly, add
-rate calculation function for S1G MCS.
 
-Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
----
- include/net/cfg80211.h       |  18 +++++-
- include/uapi/linux/nl80211.h |  14 +++++
- net/wireless/nl80211.c       |  23 ++++++++
- net/wireless/util.c          | 110 +++++++++++++++++++++++++++++++++++
- 4 files changed, 162 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 9e04f69712b1..b7c26ccdb690 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1702,6 +1702,7 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
-  * @RATE_INFO_FLAGS_EDMG: 60GHz MCS in EDMG mode
-  * @RATE_INFO_FLAGS_EXTENDED_SC_DMG: 60GHz extended SC MCS
-  * @RATE_INFO_FLAGS_EHT_MCS: EHT MCS information
-+ * @RATE_INFO_FLAGS_S1G_MCS: MCS field filled with S1G MCS
-  */
- enum rate_info_flags {
- 	RATE_INFO_FLAGS_MCS			= BIT(0),
-@@ -1712,6 +1713,7 @@ enum rate_info_flags {
- 	RATE_INFO_FLAGS_EDMG			= BIT(5),
- 	RATE_INFO_FLAGS_EXTENDED_SC_DMG		= BIT(6),
- 	RATE_INFO_FLAGS_EHT_MCS			= BIT(7),
-+	RATE_INFO_FLAGS_S1G_MCS			= BIT(8),
- };
- 
- /**
-@@ -1728,6 +1730,11 @@ enum rate_info_flags {
-  * @RATE_INFO_BW_HE_RU: bandwidth determined by HE RU allocation
-  * @RATE_INFO_BW_320: 320 MHz bandwidth
-  * @RATE_INFO_BW_EHT_RU: bandwidth determined by EHT RU allocation
-+ * @RATE_INFO_BW_1: 1 MHz bandwidth
-+ * @RATE_INFO_BW_2: 2 MHz bandwidth
-+ * @RATE_INFO_BW_4: 4 MHz bandwidth
-+ * @RATE_INFO_BW_8: 8 MHz bandwidth
-+ * @RATE_INFO_BW_16: 16 MHz bandwidth
-  */
- enum rate_info_bw {
- 	RATE_INFO_BW_20 = 0,
-@@ -1739,6 +1746,11 @@ enum rate_info_bw {
- 	RATE_INFO_BW_HE_RU,
- 	RATE_INFO_BW_320,
- 	RATE_INFO_BW_EHT_RU,
-+	RATE_INFO_BW_1,
-+	RATE_INFO_BW_2,
-+	RATE_INFO_BW_4,
-+	RATE_INFO_BW_8,
-+	RATE_INFO_BW_16,
- };
- 
- /**
-@@ -1747,8 +1759,8 @@ enum rate_info_bw {
-  * Information about a receiving or transmitting bitrate
-  *
-  * @flags: bitflag of flags from &enum rate_info_flags
-- * @mcs: mcs index if struct describes an HT/VHT/HE rate
-  * @legacy: bitrate in 100kbit/s for 802.11abg
-+ * @mcs: mcs index if struct describes an HT/VHT/HE rate
-  * @nss: number of streams (VHT & HE only)
-  * @bw: bandwidth (from &enum rate_info_bw)
-  * @he_gi: HE guard interval (from &enum nl80211_he_gi)
-@@ -1761,9 +1773,9 @@ enum rate_info_bw {
-  *	only valid if bw is %RATE_INFO_BW_EHT_RU)
-  */
- struct rate_info {
--	u8 flags;
--	u8 mcs;
-+	u16 flags;
- 	u16 legacy;
-+	u8 mcs;
- 	u8 nss;
- 	u8 bw;
- 	u8 he_gi;
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index c59fec406da5..435c4ac5d9bf 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -3667,6 +3667,13 @@ enum nl80211_eht_ru_alloc {
-  *	(u8, see &enum nl80211_eht_gi)
-  * @NL80211_RATE_INFO_EHT_RU_ALLOC: EHT RU allocation, if not present then
-  *	non-OFDMA was used (u8, see &enum nl80211_eht_ru_alloc)
-+ * @NL80211_RATE_INFO_S1G_MCS: S1G MCS index (u8, 0-10)
-+ * @NL80211_RATE_INFO_S1G_NSS: S1G NSS value (u8, 1-4)
-+ * @NL80211_RATE_INFO_1_MHZ_WIDTH: 1 MHz S1G rate
-+ * @NL80211_RATE_INFO_2_MHZ_WIDTH: 2 MHz S1G rate
-+ * @NL80211_RATE_INFO_4_MHZ_WIDTH: 4 MHz S1G rate
-+ * @NL80211_RATE_INFO_8_MHZ_WIDTH: 8 MHz S1G rate
-+ * @NL80211_RATE_INFO_16_MHZ_WIDTH: 16 MHz S1G rate
-  * @__NL80211_RATE_INFO_AFTER_LAST: internal use
-  */
- enum nl80211_rate_info {
-@@ -3693,6 +3700,13 @@ enum nl80211_rate_info {
- 	NL80211_RATE_INFO_EHT_NSS,
- 	NL80211_RATE_INFO_EHT_GI,
- 	NL80211_RATE_INFO_EHT_RU_ALLOC,
-+	NL80211_RATE_INFO_S1G_MCS,
-+	NL80211_RATE_INFO_S1G_NSS,
-+	NL80211_RATE_INFO_1_MHZ_WIDTH,
-+	NL80211_RATE_INFO_2_MHZ_WIDTH,
-+	NL80211_RATE_INFO_4_MHZ_WIDTH,
-+	NL80211_RATE_INFO_8_MHZ_WIDTH,
-+	NL80211_RATE_INFO_16_MHZ_WIDTH,
- 
- 	/* keep last */
- 	__NL80211_RATE_INFO_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index d95f8053020d..8fb8c8905b48 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6365,12 +6365,27 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
- 		return false;
- 
- 	switch (info->bw) {
-+	case RATE_INFO_BW_1:
-+		rate_flg = NL80211_RATE_INFO_1_MHZ_WIDTH;
-+		break;
-+	case RATE_INFO_BW_2:
-+		rate_flg = NL80211_RATE_INFO_2_MHZ_WIDTH;
-+		break;
-+	case RATE_INFO_BW_4:
-+		rate_flg = NL80211_RATE_INFO_4_MHZ_WIDTH;
-+		break;
- 	case RATE_INFO_BW_5:
- 		rate_flg = NL80211_RATE_INFO_5_MHZ_WIDTH;
- 		break;
-+	case RATE_INFO_BW_8:
-+		rate_flg = NL80211_RATE_INFO_8_MHZ_WIDTH;
-+		break;
- 	case RATE_INFO_BW_10:
- 		rate_flg = NL80211_RATE_INFO_10_MHZ_WIDTH;
- 		break;
-+	case RATE_INFO_BW_16:
-+		rate_flg = NL80211_RATE_INFO_16_MHZ_WIDTH;
-+		break;
- 	default:
- 		WARN_ON(1);
- 		fallthrough;
-@@ -6429,6 +6444,14 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
- 		    nla_put_u8(msg, NL80211_RATE_INFO_HE_RU_ALLOC,
- 			       info->he_ru_alloc))
- 			return false;
-+	} else if (info->flags & RATE_INFO_FLAGS_S1G_MCS) {
-+		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_MCS, info->mcs))
-+			return false;
-+		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_NSS, info->nss))
-+			return false;
-+		if (info->flags & RATE_INFO_FLAGS_SHORT_GI &&
-+		    nla_put_flag(msg, NL80211_RATE_INFO_SHORT_GI))
-+			return false;
- 	} else if (info->flags & RATE_INFO_FLAGS_EHT_MCS) {
- 		if (nla_put_u8(msg, NL80211_RATE_INFO_EHT_MCS, info->mcs))
- 			return false;
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 3bc0c3072e78..9874a8469ef1 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1646,6 +1646,114 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
- 	return result / 10000;
- }
- 
-+static u32 cfg80211_calculate_bitrate_s1g(struct rate_info *rate)
-+{
-+	/* For 1, 2, 4, 8 and 16 MHz channels */
-+	static const u32 base[5][11] = {
-+		{  300000,
-+		   600000,
-+		   900000,
-+		  1200000,
-+		  1800000,
-+		  2400000,
-+		  2700000,
-+		  3000000,
-+		  3600000,
-+		  4000000,
-+		  /* MCS 10 supported in 1 MHz only */
-+		  150000,
-+		},
-+		{  650000,
-+		  1300000,
-+		  1950000,
-+		  2600000,
-+		  3900000,
-+		  5200000,
-+		  5850000,
-+		  6500000,
-+		  7800000,
-+		  /* MCS 9 not valid */
-+		},
-+		{  1350000,
-+		   2700000,
-+		   4050000,
-+		   5400000,
-+		   8100000,
-+		  10800000,
-+		  12150000,
-+		  13500000,
-+		  16200000,
-+		  18000000,
-+		},
-+		{  2925000,
-+		   5850000,
-+		   8775000,
-+		  11700000,
-+		  17550000,
-+		  23400000,
-+		  26325000,
-+		  29250000,
-+		  35100000,
-+		  39000000,
-+		},
-+		{  8580000,
-+		  11700000,
-+		  17550000,
-+		  23400000,
-+		  35100000,
-+		  46800000,
-+		  52650000,
-+		  58500000,
-+		  70200000,
-+		  78000000,
-+		},
-+	};
-+	u32 bitrate;
-+	/* default is 1 MHz index */
-+	int idx = 0;
-+
-+	if (rate->mcs > 11)
-+		goto warn;
-+
-+	switch (rate->bw) {
-+	case RATE_INFO_BW_16:
-+		idx = 4;
-+		break;
-+	case RATE_INFO_BW_8:
-+		idx = 3;
-+		break;
-+	case RATE_INFO_BW_4:
-+		idx = 2;
-+		break;
-+	case RATE_INFO_BW_2:
-+		idx = 1;
-+		break;
-+	case RATE_INFO_BW_1:
-+		idx = 0;
-+		break;
-+	case RATE_INFO_BW_5:
-+	case RATE_INFO_BW_10:
-+	case RATE_INFO_BW_20:
-+	case RATE_INFO_BW_40:
-+	case RATE_INFO_BW_80:
-+	case RATE_INFO_BW_160:
-+	default:
-+		goto warn;
-+	}
-+
-+	bitrate = base[idx][rate->mcs];
-+	bitrate *= rate->nss;
-+
-+	if (rate->flags & RATE_INFO_FLAGS_SHORT_GI)
-+		bitrate = (bitrate / 9) * 10;
-+	/* do NOT round down here */
-+	return (bitrate + 50000) / 100000;
-+warn:
-+	WARN_ONCE(1, "invalid rate bw=%d, mcs=%d, nss=%d\n",
-+		  rate->bw, rate->mcs, rate->nss);
-+	return 0;
-+}
-+
- u32 cfg80211_calculate_bitrate(struct rate_info *rate)
- {
- 	if (rate->flags & RATE_INFO_FLAGS_MCS)
-@@ -1662,6 +1770,8 @@ u32 cfg80211_calculate_bitrate(struct rate_info *rate)
- 		return cfg80211_calculate_bitrate_he(rate);
- 	if (rate->flags & RATE_INFO_FLAGS_EHT_MCS)
- 		return cfg80211_calculate_bitrate_eht(rate);
-+	if (rate->flags & RATE_INFO_FLAGS_S1G_MCS)
-+		return cfg80211_calculate_bitrate_s1g(rate);
- 
- 	return rate->legacy;
- }
+On 4/5/23 00:42, Larry Finger wrote:
+> On 5/3/23 02:13, Alexey Kardashevskiy wrote:
+>> Hi!
+>>
+>> I am seeing dropouts in 5GHz and 2.5GHz wifi and seeking for help.
+>>
+>> HP laptop with RTL8822CE 802.11ac PCIe Wireless Network Adapter, 
+>> Fedora36 with 6.2.9-100.fc36.x86_64, the AP is Ubiquity, it is 5m away 
+>> behind a thin wall, a house in low density area (I do not see 
+>> neighbors APs in "iw dev scan").
+>>
+>> Pinging a gateway (1gbit ethernet between AP and GW) suddenly goes 
+>> from 3-5ms to  >1000ms. Good and bad "iw" output is below. Moving 
+>> laptop by 2cm (or its lid) helps sometime.
+>>
+>> These 2 observation made me suspect the linux driver:
+>>
+>> 1) If I reboot the laptop to Windows10 without moving/touching it 
+>> after it went bad in linux - there pings are 1-2ms and occasionally 
+>> may go up to hundreds but for a very short time, feels like the driver 
+>> notices something and fixes it.
+>>
+>> 2) Two other laptops with Intel Wifi cards on the same spot with the 
+>> same fedora on the same network do not show the problem at all.
+>>
+>> Changing txpower 10..23dBm (where 2300 is the maximum) does not help, 
+>> done via "iw dev wlp1s0 set txpower limit 2300", "iw dev wlp1s0 info" 
+>> confirms that it changes.
+>>
+>> I have these in /etc/modprobe.d/50-rtw88.conf
+>> options rtw88_core disable_lps_deep=y
+>> options rtw88_pci disable_aspm=y
+>> no change either.
+>>
+>> Is there anything else to try? Thanks,
+>>
+>>
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=26 ttl=64 time=6.97 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=27 ttl=64 time=3.68 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=28 ttl=64 time=3.44 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=29 ttl=64 time=3.97 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=30 ttl=64 time=3.68 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=31 ttl=64 time=17.0 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=32 ttl=64 time=33.1 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=33 ttl=64 time=697 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=34 ttl=64 time=1130 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=35 ttl=64 time=114 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=36 ttl=64 time=1796 ms
+>> 64 bytes from _gateway (192.168.10.200): icmp_seq=37 ttl=64 time=749 ms
+>>
+>> Good status:
+>>
+>> [root@aiemdeew wlp1s0]# iw dev wlp1s0 info ; iw wlp1s0 link
+>> Interface wlp1s0
+>>      ifindex 2
+>>      wdev 0x1
+>>      addr 50:c2:e8:5d:ba:fd
+>>      type managed
+>>      wiphy 0
+>>      channel 36 (5180 MHz), width: 80 MHz, center1: 5210 MHz
+>>      txpower 22.00 dBm
+>>      multicast TXQ:
+>>          qsz-byt    qsz-pkt    flows    drops    marks    overlmt    
+>> hashcol tx-bytes    tx-packets
+>>          0    0    0    0    0    0    0    0        0
+>> Connected to f4:92:bf:04:1a:ce (on wlp1s0)
+>>      SSID: aikhomenet
+>>      freq: 5180
+>>      RX: 37035326 bytes (60439 packets)
+>>      TX: 2880943 bytes (14231 packets)
+>>      signal: -53 dBm
+>>      rx bitrate: 130.0 MBit/s VHT-MCS 7 VHT-NSS 2
+>>      tx bitrate: 390.0 MBit/s VHT-MCS 4 80MHz short GI VHT-NSS 2
+>>
+>>      bss flags:    short-slot-time
+>>      dtim period:    2
+>>      beacon int:    100
+>>
+>>
+>> Bad status:
+>>
+>> Interface wlp1s0
+>>          ifindex 2
+>>          wdev 0x1
+>>          addr 50:c2:e8:5d:ba:fd
+>>          type managed
+>>          wiphy 0
+>>          channel 36 (5180 MHz), width: 80 MHz, center1: 5210 MHz
+>>          txpower 22.00 dBm
+>>          multicast TXQ:
+>>                  qsz-byt qsz-pkt flows   drops   marks   overlmt 
+>> hashcol tx-bytes        tx-packets
+>>                  0    0    0    0    0    0    0    0               0
+>> Connected to f4:92:bf:04:1a:ce (on wlp1s0)
+>>          SSID: aikhomenet
+>>          freq: 5180
+>>          RX: 38078401 bytes (68758 packets)
+>>          TX: 3039702 bytes (15006 packets)
+>>          signal: -62 dBm
+>>          rx bitrate: 117.0 MBit/s VHT-MCS 6 VHT-NSS 2
+>>          tx bitrate: 433.3 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 1
+>>
+>>          bss flags:    short-slot-time
+>>          dtim period:    2
+>>          beacon int:     100
+>>
+> 
+> Something certainly changed for your signal strength to drop from -53 to 
+> -62 dBm. The higher value is acceptable, but will not provide high data 
+> rates. The lower value is marginal.
 
-base-commit: 28b17f6270f182e22cdad5a0fdc4979031e4486a
+Well, one of the other laptops (Intel nic) reports -68 dBm and pings are 
+solid 2ms. The one with realtek reports -61dBm and pings are 3.5ms+. 
+Never saw 2ms with Realtek in Fedora but I saw that in Windows10. But 
+probably Windows' ping calculates times differently :)
+
+> There are some changes between kernel 6.2 and the current contents of 
+> the wireless-next repo, which is the code to be found in kernel 6.4 when 
+> it is released. Could you try the code in 
+> https://github.com/lwfinger/rtw88.git? This repo has the code found in 
+> wireless-next modified to build on older kernels. You would need to 
+> blacklist rtw88_8822ce. This sequence should do it for you:
+> 
+> sudo dnf install git kernel-headers kernel-devel
+> sudo dnf group install "C Development Tools and Libraries"
+> git clone https://github.com/lwfinger/rtw88.git
+> cd rtw88
+> make
+> sudo make install
+> sudo touch /usr/lib/modprobe.d/50-blacklist-8822ce.conf
+> 
+> As root, using your favorite editor, add the following line to the above 
+> file:
+> blacklist rtw88_8822ce
+> 
+> Then reboot. Report if there are any changes. This way, we will be able 
+> to determine if the problem has already been fixed.
+
+My bad, I should have mentioned that I tried this one as well, 
+https://github.com/lwfinger/rtw88/commit/75e2c81 3weeks old, no 
+difference there.
+
+And it does not look like there was any change related to my problem 
+since then, is it still worth trying the very latest version? Btw reboot 
+is not really required, it is Linux, not Windows, rmmod+modprobe should 
+do ;) Thanks,
+
+
 -- 
-2.34.1
-
+Alexey
