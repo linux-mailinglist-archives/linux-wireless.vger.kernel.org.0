@@ -2,163 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 969B16F71A5
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 19:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B916F7327
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 May 2023 21:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbjEDRzh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 May 2023 13:55:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48230 "EHLO
+        id S229506AbjEDTZw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 May 2023 15:25:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjEDRze (ORCPT
+        with ESMTP id S229463AbjEDTZv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 May 2023 13:55:34 -0400
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECA92694;
-        Thu,  4 May 2023 10:55:33 -0700 (PDT)
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1aaea43def7so5419155ad.2;
-        Thu, 04 May 2023 10:55:33 -0700 (PDT)
+        Thu, 4 May 2023 15:25:51 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E317AB0
+        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 12:25:50 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1928eee97f7so801871fac.2
+        for <linux-wireless@vger.kernel.org>; Thu, 04 May 2023 12:25:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683228350; x=1685820350;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=epBl2J8JRNhxFkoakvGttrTzx/eWFI2LOQ6SQooIWBQ=;
+        b=dzE8tm4Y3d400A5ot3fySxQlOOudTgwmyN1TsIKcV8i+Zz7Colzz0uiBiLYFmGE4d+
+         SGdhMiIToXbLu+TfmKCIU1COOd0/SwDhaKBFCrj3rq+t2VnYk0KBlQWfgQoRFz8Cti50
+         3NJ2w8wXoiNLixfY2z3AeoTdZA9x9ZDVhZzrDfb4rHhrBmhYUzVV1eg/v+2BlRmZhVkw
+         keFGVhFk4+bT1UnTkBwAIeE0d+tH34T4Hasdx461i8DEi3MjLz+PmtEBZRSXKwFclZ2M
+         obRf/CjiZCbf6qKdjuKK1bAsksuDi3IsGDUxVTJfUYHOHdoMVVp1lzdj4OdJ2o/xxHcp
+         5XgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683222933; x=1685814933;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kYGmSvNgFDY7g35LY35L0BjxtnZwRN1BFpVvX5bSjqA=;
-        b=FGxtAsbS7c91Wes4epS1OwkuW/gKvQO1KCveikOJ0pePTF1iuC7n7O8/8AY89Tsfb1
-         lY+0iw/eD3guAJiFbd1BoydIZgGZ6ph78pZPPat4mBzNhgFsub0tI6QjdDn+5pt+wvTe
-         Waf4EZVMc5BJ4pNl2hn/O73KILcXY9Kg11hDqiGFcaYK0WC4Z4FO7lxT2wiKUIc2XStA
-         J/ZE2U/ff9eizeqjMXDgCF52quR7iUkz9GM/6IpOdezDdeaBsGQdymHhJL0PQao4fwV4
-         XzI+3jqCNRWd/HdjdmTKwUZrxTwOcx6aFVBG5MN7jZZbIRJCwIrkaobahFMqAfxvhJYF
-         eZkg==
-X-Gm-Message-State: AC+VfDzYUU4AXQ84MjH0SUrR8sB2jAahKCsU5PLOUbLCjqY8tDRNbwdA
-        ouNXVKWpMu8gVeQ+v09ZTLo=
-X-Google-Smtp-Source: ACHHUZ7KuPnRR+3jp8S9m88zEhOWRMOn2zzLuliNOUx9/rxh/nwh2z6tIFO3RCXtHKL7OY8spYpQgA==
-X-Received: by 2002:a17:902:d50a:b0:1a6:5fa2:3293 with SMTP id b10-20020a170902d50a00b001a65fa23293mr5686816plg.56.1683222932569;
-        Thu, 04 May 2023 10:55:32 -0700 (PDT)
-Received: from sultan-box.localdomain ([142.147.89.230])
-        by smtp.gmail.com with ESMTPSA id f14-20020a170902ab8e00b001aafe56ea70sm7076770plr.5.2023.05.04.10.55.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 May 2023 10:55:32 -0700 (PDT)
-Date:   Thu, 4 May 2023 10:55:29 -0700
-From:   Sultan Alsawaf <sultan@kerneltoast.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>,
-        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] wifi: iwlwifi: Fix spurious packet drops with RSS
-Message-ID: <ZFPxkRKep27H74Su@sultan-box.localdomain>
-References: <20230430001348.3552-1-sultan@kerneltoast.com>
- <8d2b0aec270b8cd0111654dc4b361987a112d3ce.camel@sipsolutions.net>
+        d=1e100.net; s=20221208; t=1683228350; x=1685820350;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=epBl2J8JRNhxFkoakvGttrTzx/eWFI2LOQ6SQooIWBQ=;
+        b=Ry3/F1HjuqSvYY43Us37CZXw4Wf3yz09UOAnInH/zzJaumsLsnRptm5KiBZS40756B
+         upMpKEeJefbGnOTfNCMNNMtHPbSaKC+UZaDL9ie3KienpRSq6JooipddkvFPP3N0Fs1t
+         fVYUTW9xUwmxNSYXKYZsyle8gMIFoHOVaPTxxEb8uD3IZYeFKpeGLD/DsVuf73mllozv
+         Ao+eFrtSZW+g6Wlp1NzLpr8R89nyxC/hllf0aaCPFah708MTok6As0TXs3dUxxQjsn61
+         DJj0y27rjopMvRu55NOl0yuiy0PIeTYIkl6krz0dS44nvOvIUYqUFecB9PgulO+bLxxa
+         MJgg==
+X-Gm-Message-State: AC+VfDzSuMQ6+FkWG00xLtNtjpf8eYkiA6WJ7m+5y9ls62h9UBP+wLT+
+        9Ec6zo2zs5obJAcYLj1O95u0rOzn4Ts=
+X-Google-Smtp-Source: ACHHUZ5LgHTcdH5KJfeem/KpCU9dQwNzuoO41oq0+IFbkprmHqS12fL+kfE0A3kGN6KRPigg9MKMrg==
+X-Received: by 2002:a05:6870:9207:b0:18f:558a:1f35 with SMTP id e7-20020a056870920700b0018f558a1f35mr1658182oaf.59.1683228349960;
+        Thu, 04 May 2023 12:25:49 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id e2-20020a056870450200b0017f84f81f3csm956951oao.52.2023.05.04.12.25.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 May 2023 12:25:49 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <813d74b8-6d9f-c7b0-40b4-c661fca13002@lwfinger.net>
+Date:   Thu, 4 May 2023 14:25:48 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d2b0aec270b8cd0111654dc4b361987a112d3ce.camel@sipsolutions.net>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: Driver for rtw8723ds
+Content-Language: en-US
+To:     =?UTF-8?Q?Jernej_=c5=a0krabec?= <jernej.skrabec@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+References: <72a8eeb1-c91c-80a7-5a09-1b7963e0996b@lwfinger.net>
+ <5930608.lOV4Wx5bFT@jernej-laptop>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <5930608.lOV4Wx5bFT@jernej-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 04, 2023 at 02:10:50PM +0200, Johannes Berg wrote:
-> [let's see if my reply will make it to the list, the original seems to
-> not have]
+On 5/2/23 14:27, Jernej Škrabec wrote:
+> Hi Larry,
 > 
-> On Sun, 2023-04-30 at 00:13 +0000, Sultan Alsawaf wrote:
-> > From: Sultan Alsawaf <sultan@kerneltoast.com>
-> > 
-> > When RSS is used and one of the RX queues lags behind others by more than
-> > 2048 frames, then new frames arriving on the lagged RX queue are
-> > incorrectly treated as old rather than new by the reorder buffer, and are
-> > thus spuriously dropped. This is because the reorder buffer treats frames
-> > as old when they have an SN that is more than 2048 away from the head SN,
-> > which causes the reorder buffer to drop frames that are actually valid.
-> > 
-> > The odds of this occurring naturally increase with the number of
-> > RX queues used, so CPUs with many threads are more susceptible to
-> > encountering spurious packet drops caused by this issue.
-> > 
-> > As it turns out, the firmware already detects when a frame is either old or
-> > duplicated and exports this information, but it's currently unused. Using
-> > these firmware bits to decide when frames are old or duplicated fixes the
-> > spurious drops.
+> /cc Martin
 > 
-> So I assume you tested it now, and it works? Somehow I had been under
-> the impression we never got it to work back when...
-
-Yep, I've been using this for about a year and have let it run through the
-original iperf3 reproducer I mentioned on bugzilla for hours with no stalls. My
-big git clones don't freeze anymore either. :)
-
-What I wasn't able to get working was the big reorder buffer cleanup that's made
-possible by using these firmware bits. The explicit queue sync can be removed
-easily, but there were further potential cleanups you had mentioned that I
-wasn't able to get working.
-
-I hadn't submitted this patch until now because I was hoping to get the big
-cleanup done simultaneously but I got too busy until now. Since this small patch
-does fix the issue, my thought is that this could be merged and sent to stable,
-and with subsequent patches I can chip away at cleaning up the reorder buffer.
-
-> > Johannes mentions that the 9000 series' firmware doesn't support these
-> > bits, so disable RSS on the 9000 series chipsets since they lack a
-> > mechanism to properly detect old and duplicated frames.
+> Dne nedelja, 30. april 2023 ob 18:51:15 CEST je Larry Finger napisal(a):
+>> Jernej,
+>>
+>> Is there a reason that the driver for RTW8723DS was not included along with
+>> the other SDIO versions in rtw88?
 > 
-> Indeed, I checked this again, I also somehow thought it was backported
-> to some versions but doesn't look like. We can either leave those old
-> ones broken (they only shipped with fewer cores anyway), or just disable
-> it as you did here, not sure. RSS is probably not as relevant with those
-> slower speeds anyway.
-
-Agreed, I think it's worth disabling RSS on 9000 series to fix it there. If the
-RX queues are heavily backed up and incoming packets are not released fast
-enough due to a slow CPU, then I think the spurious drops could happen somewhat
-regularly on slow devices using 9000 series.
-
-It's probably also difficult to judge the impact/frequency of these spurious
-drops in the wild due to TCP retries potentially masking them. The issue can be
-very noticeable when a lot of packets are spuriously dropped at once though, so
-I think it's certainly worth the tradeoff to disable RSS on the older chipsets.
-
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-> > @@ -918,7 +918,6 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
-> >         struct iwl_mvm_sta *mvm_sta;
-> >         struct iwl_mvm_baid_data *baid_data;
-> >         struct iwl_mvm_reorder_buffer *buffer;
-> > -       struct sk_buff *tail;
-> >         u32 reorder = le32_to_cpu(desc->reorder_data);
-> >         bool amsdu = desc->mac_flags2 & IWL_RX_MPDU_MFLG2_AMSDU;
-> >         bool last_subframe =
-> > @@ -1020,7 +1019,7 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
-> >                                  rx_status->device_timestamp, queue);
-> > 
-> >         /* drop any oudated packets */
-> > -       if (ieee80211_sn_less(sn, buffer->head_sn))
-> > +       if (reorder & IWL_RX_MPDU_REORDER_BA_OLD_SN)
-> >                 goto drop;
-> > 
-> >         /* release immediately if allowed by nssn and no stored frames */
-> > @@ -1068,24 +1067,12 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
-> >                 return false;
-> >         }
+> We have no HW to test.
 > 
-> All that "send queue sync" code in the middle that was _meant_ to fix
-> this issue but I guess never really did can also be removed, no? And the
-> timer, etc. etc.
+>>
+>> I have a user of one of my GitHub repos that uses this device.
+> 
+> Can you ask that user to test following commits?
+> https://github.com/xdarklight/linux/commit/
+> 3866a7a3702f7f24557f2c065b7d4088f7027466
+> https://github.com/xdarklight/linux/commit/
+> 66fd078556a6bf246337270b2e91d73c079fce2d
+> 
+> Patches are trivial, but some testing needs to be done to confirm the driver
+> actually works as intended.
 
-Indeed, and removing the queue sync + timer are easy. Would you prefer I send
-additional patches for at least those cleanups before the fix itself can be
-considered for merging?
+Jernej,
 
-Sultan
+The user needs the rtw8723ds driver - the SDIO equivalent of rtw8723du.c that is 
+used by the USB device. The riscv changes may be needed, but we are not quite 
+that far yet.
+
+Larry
+
+
