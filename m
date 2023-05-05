@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7E36F8269
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 14:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 625FF6F826E
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 14:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbjEEMAp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 May 2023 08:00:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53476 "EHLO
+        id S231564AbjEEMBV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 May 2023 08:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231564AbjEEMAn (ORCPT
+        with ESMTP id S231989AbjEEMBU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 May 2023 08:00:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 530221884B
-        for <linux-wireless@vger.kernel.org>; Fri,  5 May 2023 05:00:43 -0700 (PDT)
+        Fri, 5 May 2023 08:01:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E6031A627
+        for <linux-wireless@vger.kernel.org>; Fri,  5 May 2023 05:01:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBDB063D8D
-        for <linux-wireless@vger.kernel.org>; Fri,  5 May 2023 12:00:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6076AC433D2;
-        Fri,  5 May 2023 12:00:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC51563D8D
+        for <linux-wireless@vger.kernel.org>; Fri,  5 May 2023 12:01:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4A2C433D2;
+        Fri,  5 May 2023 12:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683288042;
-        bh=rNeB+ns+pdIh2cLPTWaFcd/xbxv1L4AjNJL8XYuBti4=;
+        s=k20201202; t=1683288077;
+        bh=chzuA/J8hMY0kdlp7X2Sug5itdlXc5dTgDT3fwotc4M=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ljO2S/oNKJtZmN3zAaElMbG6PU32/s0sU6G567opc6zl5jXUi1dgF4Zo/BNeVPlbx
-         BlAXHXo4TCyjKxZi7En6ALT0faFmDLYYBR3MhAJ8VDbEx2URDRhrIqliq7UqO7N0jU
-         s1LKP7AV+6UcJBIcVarsu3YLcUjOsArXpGg8LkoUjTlLoSSMg7J4AlOXkdVMGwTcps
-         8P8kWA9680p0PwxKecnS6WWZXRfHmyJH/kGZ4J1BB/v7dOYtFAMHyJx1yTLQ1qacXk
-         oHOO+7m4IL2RDwcQwih15NiKytq1ctbbfrmE+ucWjDvKxuQCO0R+Pv1FJWK7gUPnMR
-         1Rn+dT/mkBBSQ==
+        b=FMbsodsXeKrLUsJL4x4mnUDbv65EdJXpvpRzLQuPPF0DrOu4nDsZ9pky1oq5fv2rd
+         zpj5D89jCuBWC+dHhq//uXG8Ksto3Y/Kcm1wHzA6au5nMqo/2LbTCWSe5LZoWnG/w8
+         oyO2ArHksv9HdVB1pgDdj2RN2arSv49llNf9oBhAf71bI4rKeGR+MK7R3yAJM8WQSO
+         Ow2cUHqITJwoe4qm5kMxCnvwydiMifnNljF1I7xmBtgb+B9k5MyI1MAbfjKMGqvVoi
+         7knYr3kViRK0gfxK31deFRdsi9+wYPlEG6/giR2ju5Y4W+khgCVt6aYAnVMY3WGlEF
+         szBvHThV74YBg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/8] wifi: rtw89: 8851b: add 8851B basic chip_info
+Subject: Re: [PATCH 1/5] wifi: rtw89: 8851b: add set_channel_rf()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230421024551.29994-2-pkshih@realtek.com>
-References: <20230421024551.29994-2-pkshih@realtek.com>
+In-Reply-To: <20230424065242.17477-2-pkshih@realtek.com>
+References: <20230424065242.17477-2-pkshih@realtek.com>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <leo.li@realtek.com>, <gary.chang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
+Cc:     <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168328803919.30117.8666430288453487819.kvalo@kernel.org>
-Date:   Fri,  5 May 2023 12:00:41 +0000 (UTC)
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <168328807497.30117.9322865317001714468.kvalo@kernel.org>
+Date:   Fri,  5 May 2023 12:01:16 +0000 (UTC)
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,24 +56,21 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> 8851B is a 1x1 80 MHz bandwidth chip working on 2/5 GHz. Add these basic
-> information, and more settings will be added by functions.
+> Add to set RF registers according to the channel we want to switch. The
+> callers will be added afterward.
 > 
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-8 patches applied to wireless-next.git, thanks.
+5 patches applied to wireless-next.git, thanks.
 
-c8d89bf6b82f wifi: rtw89: 8851b: add 8851B basic chip_info
-99ff8da56322 wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
-a24be8bbcbd2 wifi: rtw89: 8851b: add NCTL post table
-0789881aa370 wifi: rtw89: add CFO XTAL registers field to support 8851B
-ce816ab54bc9 wifi: rtw89: use chip_info::small_fifo_size to choose debug_mask
-b6335d91607d wifi: rtw89: change naming of BA CAM from V1 to V0_EXT
-2273dd724a6c wifi: rtw89: 8851b: add support WoWLAN to 8851B
-85d1539c0273 wifi: rtw89: 8851b: add DLE mem and HFC quota
+2a59fe291fb3 wifi: rtw89: 8851b: add set_channel_rf()
+27d5559fd169 wifi: rtw89: 8851b: rfk: add AACK
+ae546f0a2390 wifi: rtw89: 8851b: rfk: add RCK
+93fbbeedca3b wifi: rtw89: 8851b: rfk: add DACK
+a83c6bb22745 wifi: rtw89: 8851b: rfk: add IQK
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230421024551.29994-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230424065242.17477-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
