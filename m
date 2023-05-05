@@ -2,144 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E64EF6F7D0D
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 08:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EA486F7DCE
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 09:28:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230055AbjEEGkg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 May 2023 02:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55614 "EHLO
+        id S231297AbjEEH2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 May 2023 03:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229905AbjEEGkf (ORCPT
+        with ESMTP id S230411AbjEEH2a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 May 2023 02:40:35 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B6215EC7;
-        Thu,  4 May 2023 23:40:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=X0c1PBLFOhai+mqhEBi/tW1OeYtirBEECbmlevNdTtM=;
-        t=1683268834; x=1684478434; b=tYED6gMyFU8FHCp/t2Z6rOgjV0iHJl6LS3GH/R3WbiO4vZV
-        Qj4cn5YUTsx/4o08IYEzd90oy6527pEyfaXDS5UlujiTe6R5rcWSzwW4Z/IYozCcNL1b0uKkwdomr
-        FBN19mi5RqNndBQ0QHPZ2GRrQcvPlHe0/lxQj2UIutnub+3CPlgLCI9txyKjwI0ak7wGsstlH9MKU
-        u4uegyw6u2uyhkBd5HhyBGG7VWVKD3DMb8O6J0Kk/UENTPLzsX/Z8KboshxtZzHozZ9RLRuS1uGJv
-        QlpTxgPNdBhIx77QQLZQAzlxjerzjVuoOQ2tIugubMKOr+Qc1713nLkV4C2OFKAA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pup74-000CRq-0E;
-        Fri, 05 May 2023 08:40:18 +0200
-Message-ID: <f02a94a6cad2e87e0cfe9c8ca8eedc89753313ab.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: iwlwifi: Fix spurious packet drops with RSS
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sultan Alsawaf <sultan@kerneltoast.com>
-Cc:     "Greenman, Gregory" <gregory.greenman@intel.com>,
-        Kalle Valo <kvalo@kernel.org>,
+        Fri, 5 May 2023 03:28:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A18E411B46;
+        Fri,  5 May 2023 00:28:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2316163BD7;
+        Fri,  5 May 2023 07:28:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C2CC433EF;
+        Fri,  5 May 2023 07:28:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683271708;
+        bh=HGcw8Vw0AzQTVV6N2gMPiN/OeHEKIDyg23ka93ctRj4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=qTSQOBucqeabhs5gStK3QY/z89vtK5rbUaN1AFcEERtYYIFm3UcKh/2P16HG6K//z
+         d+2bkfnjrtpd+rpL6ilQEz1KaIDRRj2z1gdTh/UqwwWZ6ni1NlviqlBpUPg9Wp1z1G
+         loIXVNmga3WFkI9sGKAnwuv+L5s62Im1Y9ZS5cDq0AenVMFotdA+mz9Mp60HunwEgT
+         kCvTV15TWTt3VDhNnZ+BlLQ0SFVZU1wrTSd/Ja9U4PCRe3bmLTrXl9M6hvgH+wf0RK
+         oYDM4oA8+yyY/Dju72VLEhhSrVdVFrKWThK+tjxcUZ7Xn0J0/cL8yPeadH5iJ+rMJF
+         4RpLH+TixdBqQ==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] b43legacy: Add checking for null for
+ ssb_get_devtypedata(dev)
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230418142918.70510-1-n.zhandarovich@fintech.ru>
+References: <20230418142918.70510-1-n.zhandarovich@fintech.ru>
+To:     Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        "Goodstein, Mordechay" <mordechay.goodstein@intel.com>,
-        "Coelho, Luciano" <luciano.coelho@intel.com>,
-        "Sisodiya, Mukesh" <mukesh.sisodiya@intel.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Date:   Fri, 05 May 2023 08:40:16 +0200
-In-Reply-To: <ZFPxkRKep27H74Su@sultan-box.localdomain>
-References: <20230430001348.3552-1-sultan@kerneltoast.com>
-         <8d2b0aec270b8cd0111654dc4b361987a112d3ce.camel@sipsolutions.net>
-         <ZFPxkRKep27H74Su@sultan-box.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        "John W. Linville" <linville@tuxdriver.com>,
+        <linux-wireless@vger.kernel.org>, <b43-dev@lists.infradead.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lvc-project@linuxtesting.org>,
+        Natalia Petrova <n.petrova@fintech.ru>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <168327170198.10202.6098292886788823721.kvalo@kernel.org>
+Date:   Fri,  5 May 2023 07:28:25 +0000 (UTC)
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-05-04 at 10:55 -0700, Sultan Alsawaf wrote:
-> >=20
-> > So I assume you tested it now, and it works? Somehow I had been under
-> > the impression we never got it to work back when...
->=20
-> Yep, I've been using this for about a year and have let it run through th=
-e
-> original iperf3 reproducer I mentioned on bugzilla for hours with no stal=
-ls. My
-> big git clones don't freeze anymore either. :)
+Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
 
-Oh! OK, great.
+> Since second call of ssb_get_devtypedata() may fail as well as the
+> first one, the NULL return value in 'wl' will be later dereferenced in
+> calls to b43legacy_one_core_attach() and schedule_work().
+> 
+> Instead of merely warning about this failure with
+> B43legacy_WARN_ON(), properly return with error to avoid any further
+> NULL pointer dereferences.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with static
+> analysis tool SVACE.
+> 
+> Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
+> Co-developed-by: Natalia Petrova <n.petrova@fintech.ru>
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+> Reviewed-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-> What I wasn't able to get working was the big reorder buffer cleanup that=
-'s made
-> possible by using these firmware bits. The explicit queue sync can be rem=
-oved
-> easily, but there were further potential cleanups you had mentioned that =
-I
-> wasn't able to get working.
+Dropped per Michael's request.
 
-Fair enough.
+Patch set to Rejected.
 
-> I hadn't submitted this patch until now because I was hoping to get the b=
-ig
-> cleanup done simultaneously but I got too busy until now. Since this smal=
-l patch
-> does fix the issue, my thought is that this could be merged and sent to s=
-table,
-> and with subsequent patches I can chip away at cleaning up the reorder bu=
-ffer.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20230418142918.70510-1-n.zhandarovich@fintech.ru/
 
-Sure, that makes sense.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-> > > Johannes mentions that the 9000 series' firmware doesn't support thes=
-e
-> > > bits, so disable RSS on the 9000 series chipsets since they lack a
-> > > mechanism to properly detect old and duplicated frames.
-> >=20
-> > Indeed, I checked this again, I also somehow thought it was backported
-> > to some versions but doesn't look like. We can either leave those old
-> > ones broken (they only shipped with fewer cores anyway), or just disabl=
-e
-> > it as you did here, not sure. RSS is probably not as relevant with thos=
-e
-> > slower speeds anyway.
->=20
-> Agreed, I think it's worth disabling RSS on 9000 series to fix it there. =
-If the
-> RX queues are heavily backed up and incoming packets are not released fas=
-t
-> enough due to a slow CPU, then I think the spurious drops could happen so=
-mewhat
-> regularly on slow devices using 9000 series.
->=20
-> It's probably also difficult to judge the impact/frequency of these spuri=
-ous
-> drops in the wild due to TCP retries potentially masking them. The issue =
-can be
-> very noticeable when a lot of packets are spuriously dropped at once thou=
-gh, so
-> I think it's certainly worth the tradeoff to disable RSS on the older chi=
-psets.
-
-:)
-
-> Indeed, and removing the queue sync + timer are easy. Would you prefer I =
-send
-> additional patches for at least those cleanups before the fix itself can =
-be
-> considered for merging?
->=20
-
-No, you know, maybe this is easier since it's the smallest possible
-change that fixes issues. Just have to see what Emmanuel says, he had
-said he sees issues with this change.
-
-johannes
