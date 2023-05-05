@@ -2,78 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F03E36F7AB3
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 03:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5BD56F7B61
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 05:10:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbjEEBf4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 4 May 2023 21:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50852 "EHLO
+        id S229588AbjEEDK0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 4 May 2023 23:10:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjEEBfz (ORCPT
+        with ESMTP id S229482AbjEEDKX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 4 May 2023 21:35:55 -0400
-Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com [IPv6:2607:f8b0:4864:20::c2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8DE11B47
-        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 18:35:54 -0700 (PDT)
-Received: by mail-oo1-xc2a.google.com with SMTP id 006d021491bc7-54c6c4c4845so627651eaf.1
-        for <linux-wireless@vger.kernel.org>; Thu, 04 May 2023 18:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683250553; x=1685842553;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=z0wUVYjmCB20u3Vom7wnQiPFIize619OP7FEu4CRV0g=;
-        b=jMFefYVBseZVSHuo5KszGNDI4Us7mB1HWimkFItdx7SnwiiM5dodkN8OtWz03ZLG/d
-         TUGvAjEq7UliS/HPE7RZaGzCyg83Fnq1Ds17aWIhDOK0E8bgGnsalQQjLsrAItIaJqX+
-         GZDtq8VvOozsl9/Ires6840zVARadN1V4r6kBoDXBHZCdcW/KJdrEBUJax0CQOGG5lXq
-         v1msKnmkboZBt7rw1UBORHl1CiAQK6Hv7iqn0SAEDmOoCn2ohi/CNCvxb/BvXYNU7/QF
-         fw8sV10j27Ry4LrwebcZhNCeZ43CVz1voZxDujFRZlwUL4cJZslF6YMRciC4wwKn6VZm
-         AhDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683250553; x=1685842553;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z0wUVYjmCB20u3Vom7wnQiPFIize619OP7FEu4CRV0g=;
-        b=NZzDUGpIjcQop4PKBYXApkseS5400Rxdo5WT8DW/XxJ3VJlwg8Xsz6H4B9/nSMI2fV
-         m+Ua6KE2ypbhYsEjEH+o1vQlOeoBkeFjNNsDhd4quGw4kTIhf8RoOAV1Yb8RzJpD5qFA
-         V5f0tv1k5bCWUFAFCiBl14Crmk5jtiRSweWw5wAKso2DlRh+CVBjK7o9Gkn2kLF49UfM
-         ytCBSypMSdujScu6x6v1zBktzRLByuqaROpryRv52ohhLNi2i6VkewuutBPr2/+LpkgS
-         /n+wIR4vkaDKWfnL4xltRc1WQMm+SfqUOC61e0Syhg6roATaejQuAOnfLXCT4T/+UCSr
-         2Aiw==
-X-Gm-Message-State: AC+VfDxFBf+Rb6iqKHYSx6kBFbQ1q2rJY/mhh0CAPsNNZaBuquh0MFP0
-        YEKUJ1QEDvLGrcTjqjHAcguZQGUwVCI=
-X-Google-Smtp-Source: ACHHUZ58P8Md5Z46ecXQyn6xdT1W+nNTDbGW91DAknfXDfkDIF55w09/++AjEYyc6/75dcdiSHiFEA==
-X-Received: by 2002:aca:ba41:0:b0:38e:a005:720b with SMTP id k62-20020acaba41000000b0038ea005720bmr2161005oif.1.1683250553384;
-        Thu, 04 May 2023 18:35:53 -0700 (PDT)
-Received: from [192.168.0.117] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id c5-20020a4ad8c5000000b0054cbf3be7e1sm383853oov.32.2023.05.04.18.35.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 May 2023 18:35:53 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <b5f379e5-1917-d83b-ab3b-b651444d8f67@lwfinger.net>
-Date:   Thu, 4 May 2023 20:35:46 -0500
+        Thu, 4 May 2023 23:10:23 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE86211DBF
+        for <linux-wireless@vger.kernel.org>; Thu,  4 May 2023 20:10:18 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34532nhs030745;
+        Fri, 5 May 2023 03:10:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=+EEcic9YW8adPflQvC7dJKIL2bz4FIbMGUzGQptH45M=;
+ b=MIsn6qTPMTtqDSh0HoEa8rQZ6kBY0/HAvX7CPXqAk4mlM3cGMaC1Gzxwb9RpGPPIlgx3
+ XV/TGF/xbIijkX4nmabeThmDTGX4c4BmO1VVj2cP9YugolwAy9JDvOxVXu46fsx7DzUX
+ Fl/2QbrjqGSNwHkIyjDPAoHgGaiz/p0ijSx4Hf+r8Wy11xRc+qsH0Idd9QbQ5wznTIeU
+ enngi1xf1LCwUWS6/TIbl8b2kx0fFV7k16wbJPE0hRwKDr+rkv+G9m7L23PrHC2hq9/J
+ DZhq/nbhpoSlx/bZm1GoiImbhp5ksvIGO1+FohwS2wGIrGz7+wc3w6SBAd2QLYO36nRr 9A== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qc7a42fnk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 May 2023 03:10:13 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3453ACLS012193
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 5 May 2023 03:10:12 GMT
+Received: from [10.253.76.254] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 4 May 2023
+ 20:10:11 -0700
+Message-ID: <d131fe0b-f416-f221-217d-4a42b932a680@quicinc.com>
+Date:   Fri, 5 May 2023 11:09:24 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: Slow RTL8822CE 802.11ac PCIe Wireless Network Adapter
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 00/11] wifi: ath12k: (v3) EHT support
 Content-Language: en-US
-To:     Alexey Kardashevskiy <aik@amd.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <75906666-df37-988a-c448-a6338b8a1cff@amd.com>
- <b7a59145-37b0-eade-3a9e-b565cc75de35@lwfinger.net>
- <4b3f4c5b-cada-bb7c-65f3-936437261b08@amd.com>
- <98f8852a-1710-2792-3196-e74fe614a03d@lwfinger.net>
- <eed0261b-6447-fe8a-ef98-073ae45ff137@amd.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <eed0261b-6447-fe8a-ef98-073ae45ff137@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+To:     Kalle Valo <kvalo@kernel.org>,
+        Aloka Dixit <quic_alokad@quicinc.com>
+CC:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20230413215156.2649-1-quic_alokad@quicinc.com>
+ <87ildjtc1c.fsf@kernel.org>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <87ildjtc1c.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9K_6JayOUGDY5DBxUxzwl88WCePnWWIH
+X-Proofpoint-ORIG-GUID: 9K_6JayOUGDY5DBxUxzwl88WCePnWWIH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-04_15,2023-05-04_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 clxscore=1011
+ mlxlogscore=846 mlxscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2305050026
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,100 +80,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/4/23 20:23, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 5/5/23 01:04, Larry Finger wrote:
->> On 5/3/23 22:10, Alexey Kardashevskiy wrote:
->>> My bad, I should have mentioned that I tried this one as well, 
->>> https://github.com/lwfinger/rtw88/commit/75e2c81 3weeks old, no difference 
->>> there.
->>>
->>> And it does not look like there was any change related to my problem since 
->>> then, is it still worth trying the very latest version? Btw reboot is not 
->>> really required, it is Linux, not Windows, rmmod+modprobe should do 😉 Thanks,
->>
->> I added a bunch of stuff on April 24-25, so a 3-week old pull would have 
->> missed some important stuff.
->>
->> The problem with rmmod+modprobe is that the rtw88_core module is not removed, 
->> certainly not with a 'sudo modprobe -rv rtw88_8822ce, and it is really easy to 
->> get a mixed bunch. I get tired of explaining that to a bunch of newbies, thus 
->> I recommend a reboot. Of course, I do not reboot.
-> 
-> Turns out I had to reboot because of the module signature :-/
-> 
-> Anyway it does not appear to work any better. Below are bad ping and good ping, 
-> the difference is moving laptop 2cm to the left. I believe the right driver is 
-> loaded as the modules are "rtw_" and not "rtw88_". It is quite bizarre how 
-> moving the laptop for a little bit helps and moving it back does not necessarily 
-> put it in the bad state, may be there is a microcrack in some PCB or something :-/
-> 
-> 
-> aik@aiemdeew ~> ping -c3 192.168.10.200 ; iw wlp1s0 link | grep signal
-> PING 192.168.10.200 (192.168.10.200) 56(84) bytes of data.
-> 64 bytes from 192.168.10.200: icmp_seq=1 ttl=64 time=7707 ms
-> 64 bytes from 192.168.10.200: icmp_seq=2 ttl=64 time=6677 ms
-> 64 bytes from 192.168.10.200: icmp_seq=3 ttl=64 time=5653 ms
-> 
-> --- 192.168.10.200 ping statistics ---
-> 3 packets transmitted, 3 received, 0% packet loss, time 2054ms
-> rtt min/avg/max/mdev = 5653.382/6679.203/7706.911/838.350 ms, pipe 3
->      signal: -56 dBm
-> aik@aiemdeew ~> ping -c3 192.168.10.200 ; iw wlp1s0 link | grep signal
-> PING 192.168.10.200 (192.168.10.200) 56(84) bytes of data.
-> 64 bytes from 192.168.10.200: icmp_seq=1 ttl=64 time=3.35 ms
-> 64 bytes from 192.168.10.200: icmp_seq=2 ttl=64 time=3.48 ms
-> 64 bytes from 192.168.10.200: icmp_seq=3 ttl=64 time=3.84 ms
-> 
-> --- 192.168.10.200 ping statistics ---
-> 3 packets transmitted, 3 received, 0% packet loss, time 2003ms
-> rtt min/avg/max/mdev = 3.347/3.553/3.837/0.207 ms
->      signal: -55 dBm
-> 
-> 
-> aik@aiemdeew ~> modinfo rtw_8822ce
-> filename: 
-> /lib/modules/6.2.9-100.fc36.x86_64/kernel/drivers/net/wireless/realtek/rtw88/rtw_8822ce.ko.xz
-> license:        Dual BSD/GPL
-> description:    Realtek 802.11ac wireless 8822ce driver
-> author:         Realtek Corporation
-> alias:          pci:v000010ECd0000C82Fsv*sd*bc*sc*i*
-> alias:          pci:v000010ECd0000C822sv*sd*bc*sc*i*
-> depends:        rtw_pci,rtw_8822c
-> retpoline:      Y
-> name:           rtw_8822ce
-> vermagic:       6.2.9-100.fc36.x86_64 SMP preempt mod_unload
-> sig_id:         PKCS#7
-> signer:         Custom MOK
-> sig_key:        0C:F6:31:12:B9:95:09:20:A6:62:E6:72:4F:D1:85:00:F4:A6:A9:B6
-> sig_hashalgo:   sha256
-> signature:      9F:F1:74:86:E8:B6:63:FA:F5:EC:2C:84:02:75:63:DC:66:C8:99:92:
->          9D:A8:1E:2F:FB:5F:50:EE:DD:59:A5:EC:DE:5F:AB:8A:4C:F9:D3:8A:
->          CC:CE:BE:3B:55:C8:E9:D9:AF:12:D0:A4:DE:B7:FB:A4:44:B2:F0:96:
->          CD:E2:C0:69:0C:A8:EB:1C:9C:BF:A8:91:3E:D2:7F:AD:9B:7D:22:A4:
->          3F:33:8F:86:40:DD:B3:42:B9:96:5B:94:CD:0B:E3:38:A0:8E:4E:8C:
->          62:38:11:01:D6:16:EC:B6:E2:28:48:07:A0:C4:6C:6C:55:04:01:F6:
->          C6:82:7E:F9:DE:EA:D0:20:63:41:4F:0A:D8:27:56:49:F6:84:E2:B9:
->          21:DF:3E:4B:C2:A7:C6:0A:8C:B7:66:17:E5:81:13:D6:5E:CA:94:D1:
->          E7:60:EF:B1:9D:52:E0:64:F8:4D:C5:54:CE:EF:F5:DC:2F:AA:22:5C:
->          81:52:CE:AF:9B:FA:9B:8B:88:99:2F:2C:8E:6A:A3:44:58:3B:6B:08:
->          78:43:B1:E9:27:C9:43:E6:49:BB:86:0E:23:10:0E:05:33:0C:23:B0:
->          5E:47:92:EE:0B:96:EA:65:92:89:69:DC:73:50:1D:A5:96:5A:11:32:
->          C6:2A:69:7A:B6:FE:6A:22:7F:69:61:B1:9B:F1:CF:66
-> aik@aiemdeew ~> lsmod | grep rtw
-> rtw_8822ce             16384  0
-> rtw_8822c             499712  1 rtw_8822ce
-> rtw_pci                40960  1 rtw_8822ce
-> rtw_core              319488  2 rtw_8822c,rtw_pci
-> mac80211             1486848  2 rtw_core,rtw_pci
-> cfg80211             1273856  2 rtw_core,mac80211
-
-You do have the right modules. It would take a really strange environment where 
-moving the computer 2 cm would have a drastic effect.
-
-I think I have gone as far as I can.
-
-Larry
-
-
+On 4/26/2023 2:03 PM, Kalle Valo wrote:
+> Aloka Dixit <quic_alokad@quicinc.com> writes:
+>
+>
+...
+> This breaks WCN7850 support:
+>
+> [  144.039164] ath12k_pci 0000:06:00.0: BAR 0: assigned [mem 0xda200000-0xda3fffff 64bit]
+> [  144.039315] ath12k_pci 0000:06:00.0: enabling device (0000 -> 0002)
+> [  144.046220] ath12k_pci 0000:06:00.0: Hardware name: wcn7850 hw2.0
+> [  144.118539] mhi mhi0: Requested to power ON
+> [  144.118716] mhi mhi0: Power on setup success
+> [  144.222303] mhi mhi0: Wait for device to enter SBL or Mission mode
+> [  144.627712] ath12k_pci 0000:06:00.0: chip_id 0x2 chip_family 0x4 board_id 0x104 soc_id 0x40170200
+> [  144.627945] ath12k_pci 0000:06:00.0: fw_version 0x1005bc12 fw_build_timestamp 2022-10-11 12:13 fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> [  144.959196] ath12k_pci 0000:06:00.0: failed to parse tlv -22
+> [  144.959317] ath12k_pci 0000:06:00.0: failed to parse ext2 event tlv -22
+> [  150.263567] ath12k_pci 0000:06:00.0: failed to receive wmi service ready event: -110
+> [  150.276547] ath12k_pci 0000:06:00.0: failed to start core: -110
+WCN7850 use "single_pdev_only = true" in ath12k_hw_params, it has some 
+difference while handler WMI_SERVICE_READY_EXT2_EVENTID.
+I have patch to handler this for WCN7850, and the patch is verified.
