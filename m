@@ -2,53 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F96E6F836B
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 15:01:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFEA6F8375
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 15:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbjEENBm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 May 2023 09:01:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
+        id S232304AbjEENGy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 May 2023 09:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjEENBi (ORCPT
+        with ESMTP id S231592AbjEENGw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 May 2023 09:01:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E4101E988;
-        Fri,  5 May 2023 06:01:36 -0700 (PDT)
+        Fri, 5 May 2023 09:06:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05A83A84;
+        Fri,  5 May 2023 06:06:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57DDD63DE1;
-        Fri,  5 May 2023 13:01:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31970C4339B;
-        Fri,  5 May 2023 13:01:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48A7463DE3;
+        Fri,  5 May 2023 13:06:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E1CC4339B;
+        Fri,  5 May 2023 13:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683291695;
-        bh=/jJRR7zmYd2NwUUaRgBBZHi/LSaazlrrBn7yHDLa/LU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=t/mbZcq+P0886LZVkw2H1mTTOmyup06UBoiSTdWhIW6Pn6ti/K1wrQluxmIYHiFX/
-         Z6FgPgYD8y39GyFjDQSwKPs5E9q8akELmhuy6/C30zOz6E6QbpX09JfjrNgpkBVJo3
-         v7n5MDbBuyMfZdrYXOk+WApl27ejJx/RxVFnvu3xea9Pr+Nw9Fsvdel9d9vurJuakS
-         CDMCra2j+xn6DXRQqMJJlRuDmxAFX5Y3Z2toQDTG4zyQH50hs+mXV04eFVZlzrOkiv
-         zq0mlLy21GDgKPClAGK8mSRk+kr1Q/I90ANi4oH4NLMHNqN76yucZXW6dY3nitoEh5
-         m6RzZgD6N6qsQ==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath10k: Serialize wake_tx_queue ops
+        s=k20201202; t=1683292010;
+        bh=pTi9hgjtIKX3NwObZUFs81T3q3enyeNeTCEnzZ4nioM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=P0vlDSVZxfrK8JJ3M0hnyg59yongnYzs1xV61CEaNMRBiPPWaUkw1hdwpv+24URhL
+         CK/e5oHBXIAfaHnuY8K2N77Pue1nupGgyHK0jQLdc7NWwXMl6v2dEgMISDNdAr2MUi
+         np2umZbtSTbDKa/kAUkiqH4DZJhefdeXZUu8zA26D/O5br7dVosDsQW0NB1np8nVDo
+         ZQeV08cV6OvCX1nfQtUBV8P2uaJTrQVkCj57mqhGajX7WRSBciSnUxlw05gZlKOIug
+         3Ts1SAqz7LLeJ22VVMlm/eXv+zXvzio4hQ4VCtfsaEUZ1Jjt0FdeIBgqWQDdy9zhOL
+         pvbBD8UDQ/zzw==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230323165527.156414-1-alexander@wetzel-home.de>
-References: <20230323165527.156414-1-alexander@wetzel-home.de>
-To:     Alexander Wetzel <alexander@wetzel-home.de>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgens?= =?utf-8?q?en?= 
-        <toke@toke.dk>, Alexander Wetzel <alexander@wetzel-home.de>,
-        Felix Fietkau <nbd@nbd.name>, stable@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168329168628.4336.2281740515872835038.kvalo@kernel.org>
-Date:   Fri,  5 May 2023 13:01:34 +0000 (UTC)
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] wifi: ath11k: Use list_count_nodes()
+References: <941484caae24b89d20524b1a5661dd1fd7025492.1682542084.git.christophe.jaillet@wanadoo.fr>
+Date:   Fri, 05 May 2023 16:06:46 +0300
+In-Reply-To: <941484caae24b89d20524b1a5661dd1fd7025492.1682542084.git.christophe.jaillet@wanadoo.fr>
+        (Christophe JAILLET's message of "Wed, 26 Apr 2023 22:48:59 +0200")
+Message-ID: <877ctnorkp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,33 +59,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Alexander Wetzel <alexander@wetzel-home.de> wrote:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
 
-> Serialize the ath10k implementation of the wake_tx_queue ops.
-> ath10k_mac_op_wake_tx_queue() must not run concurrent since it's using
-> ieee80211_txq_schedule_start().
-> 
-> The intend of this patch is to sort out an issue discovered in the discussion
-> referred to by the Link tag.
-> 
-> I can't test it with real hardware and thus just implemented the per-ac queue
-> lock Felix suggested. One obvious alternative to the per-ac lock would be to
-> bring back the txqs_lock commit bb2edb733586 ("ath10k: migrate to mac80211 txq
-> scheduling") dropped.
-> 
-> Fixes: bb2edb733586 ("ath10k: migrate to mac80211 txq scheduling")
-> Reported-by: Felix Fietkau <nbd@nbd.name>
-> Link: https://lore.kernel.org/r/519b5bb9-8899-ae7c-4eff-f3116cdfdb56@nbd.name
-> CC: <stable@vger.kernel.org>
-> Signed-off-by: Alexander Wetzel <alexander@wetzel-home.de>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ath11k_wmi_fw_stats_num_vdevs() and ath11k_wmi_fw_stats_num_bcn() really
+> look the same as list_count_nodes(), so use the latter instead of hand
+> writing it.
+>
+> The first ones use list_for_each_entry() and the other list_for_each(), but
+> they both count the number of nodes in the list.
+>
+> While at it, also remove to prototypes of non-existent functions.
+> Based on the names and prototypes, it is likely that they should be
+> equivalent to list_count_nodes().
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Un-tested
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-b719ebc37a1e wifi: ath10k: Serialize wake_tx_queue ops
+BTW I prefer to have "Compile tested only" in the commit log to make it
+clear that it's not tested on a real device. So I added that sentence to
+both this and ath10k patch.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230323165527.156414-1-alexander@wetzel-home.de/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
