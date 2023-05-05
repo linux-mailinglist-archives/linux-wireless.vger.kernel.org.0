@@ -2,83 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6026F7E04
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 09:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062D06F7F6B
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 10:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231357AbjEEHi3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 May 2023 03:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
+        id S231308AbjEEIzx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 May 2023 04:55:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjEEHi2 (ORCPT
+        with ESMTP id S229658AbjEEIzv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 May 2023 03:38:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF5411544;
-        Fri,  5 May 2023 00:38:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2884363BDF;
-        Fri,  5 May 2023 07:38:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B21C433EF;
-        Fri,  5 May 2023 07:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683272306;
-        bh=Pw3z/wSPton4j3lNLrHMugPK+GlT51qJrffU70l3EZ0=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=C1/ydpdinmi/GrtJJ0vsKhISDEEVcNA8iEONGU11bwz25hwix5IZMYYJg8lfnUK7N
-         nKcmR6lxOJPPst1pMh5miDsd8PP5Ea5tZ/Wq9zNBBdekpqsd5WiszUQhqfJFnEs2OY
-         duzKLsiKZ5pYZAxvSIety3CAQ+JSmw9TaapH3p49Q4AJuYkhXkTfkWMWBhkbp+8PmZ
-         YqAsAbYAkghk1T7B2foI2Tsu7zu7hzEYWT5xYjtKwacAGFvIW8YZxT7Yrx/SVQbwGK
-         jZkq30G0Qp38istRCVFLToSfa0xnfAsgxBQWOYzRByPtX+CaAzdOJXLCFwP42d/jkb
-         MVh0twUDY0A9A==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 5 May 2023 04:55:51 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC4516340;
+        Fri,  5 May 2023 01:55:50 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id 98e67ed59e1d1-24df4ef05d4so1400142a91.2;
+        Fri, 05 May 2023 01:55:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683276949; x=1685868949;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7qggiSY1N4hXsG4GusF3Q4X4oHxbWVclOiEvUebsvAc=;
+        b=AHt5tGE1O/11WlBj67g5zhG4SVhlWo9BpSfj+2jzNBIsNiVp6iJi8D5vuK/ataD6qa
+         aa4zLpmCXvCKDKB886BMqMRWLMFQRvoCpPmv4jc+K+jPL9/pNWjivpfUkogQUh3Q0Fj0
+         iro1kVpwsazHSW5QhhgXBzbi9XZcRMgbDmqLIAJ0B5XadxGwtN+6tkdxeh12tlbR3igO
+         hA9Px0v6J26lHllUdThnwgj6vI2bGWBDZSx7/qpg9n7JI4UIZ4cU70l+0x2knzGUth+X
+         Bjfq6FMaMC8N+EtgNnU0XUWV00BfpWyLkv41sKK2cboS9hkkxshdaXB9vMAZQkckfb0L
+         An3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683276949; x=1685868949;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7qggiSY1N4hXsG4GusF3Q4X4oHxbWVclOiEvUebsvAc=;
+        b=g0YK7EHotXxFnocYOP0L4zMbU7hPir4U/T6y/u3SQtULzNVISBHdLkK/grOd3Lcc+B
+         mRws8Zxk8hooylx76LX7z+XiBdYrLdgOTmHXT0IagEtPuP1/j8IJdsC/7chubXGh4lXP
+         vIUNQPMNddgoGqulI8q8S9P1H2le/TOk+WTMhQPyrvTFinx7IEtr9oTRNru6b0VkNFOX
+         aRME7YGgB9MsGuGTZhgRrsZ/0aNQ/8cT2OIjhQrlbW7kh3I3XDh5oGmL/fF3MY2BfImM
+         9NXC/t6wlg7XYTJiZVDh+f5HLP/5BAMz9aEnRYIPRUzopY5HJGFLQwKeoESR9QxLluR2
+         ho0w==
+X-Gm-Message-State: AC+VfDyDOm/jIjLQ05sidEM+MlwASc/Xo7gvvPVBYAQ0MPVzwcteiP6S
+        E207BtnTQSbSdLsiX7roAZWbEbRMCHlvuMSqrOZ4pA==
+X-Google-Smtp-Source: ACHHUZ63P+H1/ALQGLFDCJjSr/VvyGxqGf4ZwyGf/GG+vSWlEzkYKkJSE0Rs9LyNq4czYzyFI5YLFA==
+X-Received: by 2002:a17:90b:3757:b0:247:afed:6d62 with SMTP id ne23-20020a17090b375700b00247afed6d62mr688203pjb.46.1683276949329;
+        Fri, 05 May 2023 01:55:49 -0700 (PDT)
+Received: from DESKTOP (softbank126117125098.bbtec.net. [126.117.125.98])
+        by smtp.gmail.com with ESMTPSA id o3-20020a17090ad24300b0024e47fbe731sm4660079pjw.24.2023.05.05.01.55.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 May 2023 01:55:48 -0700 (PDT)
+Date:   Fri, 5 May 2023 17:55:44 +0900
+From:   Takeshi Misawa <jeantsuru.cumc.mandola@gmail.com>
+To:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Sujith <Sujith.Manoharan@atheros.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Senthil Balasubramanian <senthilkumar@atheros.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] [net] Fix memory leak in htc_connect_service
+Message-ID: <ZFTEkCsFcEa44CN8@DESKTOP>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/2] wifi: rtw88: fix incorrect error codes in
- rtw_debugfs_copy_from_user
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <tencent_D2EB102CC7435C0110154E62ECA6A7D67505@qq.com>
-References: <tencent_D2EB102CC7435C0110154E62ECA6A7D67505@qq.com>
-To:     Zhang Shurong <zhang_shurong@foxmail.com>
-Cc:     pkshih@realtek.com, tony0620emma@gmail.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Zhang Shurong <zhang_shurong@foxmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168327230065.10202.16584084872255391845.kvalo@kernel.org>
-Date:   Fri,  5 May 2023 07:38:24 +0000 (UTC)
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zhang Shurong <zhang_shurong@foxmail.com> wrote:
+Timeout occurs in htc_connect_service(), then this function returns
+without freeing skb.
 
-> If there is a failure during copy_from_user or user-provided data
-> buffer is invalid, rtw_debugfs_copy_from_user should return negative
-> error code instead of a positive value count.
-> 
-> Fix this bug by returning correct error code. Moreover, the check
-> of buffer against null is removed since it will be handled by
-> copy_from_user.
-> 
-> Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Fix this by going to err path.
 
-2 patches applied to wireless-next.git, thanks.
+syzbot report:
+https://syzkaller.appspot.com/bug?id=fbf138952d6c1115ba7d797cf7d56f6935184e3f
+BUG: memory leak
+unreferenced object 0xffff88810a980800 (size 240):
+  comm "kworker/1:1", pid 24, jiffies 4294947427 (age 16.220s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff83b971c6>] __alloc_skb+0x206/0x270 net/core/skbuff.c:552
+    [<ffffffff82eb3731>] alloc_skb include/linux/skbuff.h:1270 [inline]
+    [<ffffffff82eb3731>] htc_connect_service+0x121/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:259
+    [<ffffffff82ec03a5>] ath9k_htc_connect_svc drivers/net/wireless/ath/ath9k/htc_drv_init.c:137 [inline]
+    [<ffffffff82ec03a5>] ath9k_init_htc_services.constprop.0+0xe5/0x390 drivers/net/wireless/ath/ath9k/htc_drv_init.c:157
+    [<ffffffff82ec0747>] ath9k_htc_probe_device+0xf7/0x8a0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
+    [<ffffffff82eb3ef5>] ath9k_htc_hw_init+0x35/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:521
+    [<ffffffff82eb68dd>] ath9k_hif_usb_firmware_cb+0xcd/0x1f0 drivers/net/wireless/ath/ath9k/hif_usb.c:1243
+    [<ffffffff82aa835b>] request_firmware_work_func+0x4b/0x90 drivers/base/firmware_loader/main.c:1107
+    [<ffffffff8129a35a>] process_one_work+0x2ba/0x5f0 kernel/workqueue.c:2289
+    [<ffffffff8129ac7d>] worker_thread+0x5d/0x5b0 kernel/workqueue.c:2436
+    [<ffffffff812a4fa9>] kthread+0x129/0x170 kernel/kthread.c:376
+    [<ffffffff81002dcf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-225622256b1b wifi: rtw88: fix incorrect error codes in rtw_debugfs_copy_from_user
-770055337772 wifi: rtw88: fix incorrect error codes in rtw_debugfs_set_*
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Reported-and-tested-by: syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
+Signed-off-by: Takeshi Misawa <jeantsuru.cumc.mandola@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/htc_hst.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+index ca05b07a45e6..6878da6d15b4 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_hst.c
++++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+@@ -285,7 +285,8 @@ int htc_connect_service(struct htc_target *target,
+ 	if (!time_left) {
+ 		dev_err(target->dev, "Service connection timeout for: %d\n",
+ 			service_connreq->service_id);
+-		return -ETIMEDOUT;
++		ret = -ETIMEDOUT;
++		goto err;
+ 	}
+ 
+ 	*conn_rsp_epid = target->conn_rsp_epid;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/tencent_D2EB102CC7435C0110154E62ECA6A7D67505@qq.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.39.2
 
