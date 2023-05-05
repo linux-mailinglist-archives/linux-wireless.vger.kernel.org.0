@@ -2,198 +2,440 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C10396F8A6D
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 22:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748AB6F8A87
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 May 2023 23:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233368AbjEEUxU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 5 May 2023 16:53:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
+        id S230081AbjEEVFw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 5 May 2023 17:05:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233353AbjEEUxT (ORCPT
+        with ESMTP id S229622AbjEEVFw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 5 May 2023 16:53:19 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AACFA1984
-        for <linux-wireless@vger.kernel.org>; Fri,  5 May 2023 13:53:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1683319997; x=1714855997;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=2GOiWxlqOdpNmEeQNgwYubMTCR77OHdyo/2ZEhiWIHk=;
-  b=jwqeGGqaTZ/0+gKh7azZGg7qxrJO3tvRxRRL7ja6xcG46Fuq4/X7U8Ak
-   J0Y2QdLYEA7//42MVsq9lBLxyhuMtqsm3cK/u6mSjxqT49JX603NBPjHH
-   oxbqYMJDtfSQ0rlhpdAqsC4hI+RnXYQUyaAdCnmwhjd/SCYyS2AQ6PO9E
-   Hbl0Y2E2iynLM/fCweQoOg0QN2rfHmiNQ8QZPbKUEdyp6Qc62eXnYqJli
-   kjlVE4g8xh5K8MV1utrZHWXkKna9OquCJzJncdaW5Tq70ewawmbFmxDQ/
-   xZpCBHy6H6+DdXnnmhODzXPAEdlS7Q4aoHb9GIwXu1CEe49tsStfM80KO
-   g==;
-X-IronPort-AV: E=Sophos;i="5.99,253,1677567600"; 
-   d="scan'208";a="212653381"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 05 May 2023 13:53:17 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Fri, 5 May 2023 13:53:15 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Fri, 5 May 2023 13:53:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iSr8UcyeHKVep+esA+jjuO1ZDKpmFJG/V4cg1GEl2Xa2SL4UbWId8Avm0Nl/fZCzeM7+UuipXZL8eftyO3bPo6sK6cjHANW0350phEVTbNr0Cfj/Xcyaqcw7pJnW6EnT90/DYRZ3gLUYxYN+nYGVUK5SeNYW5s9YJkAjzO95nWguYWg2IQjEWwhvbocfvfiE0TseRdk1nRM+r1ip4Ot4YIRZfh3Fz6O7uk0tGa6MpIlNzlUjGEf4Y7sN9bec6/yoF7J8ISEwYYb8C7E2r4uSo0RDyplPfD3aPxuSCbJZJCEfzw/RwaOg/ujgees8/IldoWo/KBiVndLtIf/841rkqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2GOiWxlqOdpNmEeQNgwYubMTCR77OHdyo/2ZEhiWIHk=;
- b=BiQDMfDNBwFH6jf0ddh+Cl7bPJukfCDF1zoFONCV7WcCAPpCyUhjtGLiFNjR5VR9hsxb2wqOL+d5a+EJ095fXqZ5eDtNM5wK7WSBjJgS3Uizgbhkqmc4yx0CkCA0LdgAlup2uskO4c8hQDxLd+dL0aUQlsFgn8r2HmL6et0uQInk44Xm6L36RMPKIlpEBp17S/4xldvGjcdklOD0AjTrURlBaAPl6oZgJpeqOJE9ptPMeHjWsCYPeIozeT0EIU48Qaxyeql9Cfn7VeE0XiaXmp23H6AouKa+c2zVHfmMJN/NBcxX9cVRINAh4EPG+ojBBqPHEOEMHZLIvUCj+yznHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2GOiWxlqOdpNmEeQNgwYubMTCR77OHdyo/2ZEhiWIHk=;
- b=bnLd/g7muQPD1Xp5U1/P9HCR0zP9d98Lqd/Em7Vd+JvhMMfTuW7zR/afAHKiuFN0rgRPTNAswaHXnjLCoMvpOnjbwFFYPcQTW8ML3QL2C9IKAZjiKXeHsWLSoMakTh6EyEcH03r7KrQYU0lFuVCqhUIEtixDdg+mi5nap88KvSg=
-Received: from PH0PR11MB5176.namprd11.prod.outlook.com (2603:10b6:510:3f::5)
- by PH7PR11MB8569.namprd11.prod.outlook.com (2603:10b6:510:304::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.22; Fri, 5 May
- 2023 20:53:13 +0000
-Received: from PH0PR11MB5176.namprd11.prod.outlook.com
- ([fe80::30d9:173b:e580:28c6]) by PH0PR11MB5176.namprd11.prod.outlook.com
- ([fe80::30d9:173b:e580:28c6%5]) with mapi id 15.20.6363.027; Fri, 5 May 2023
- 20:53:12 +0000
-From:   <Ajay.Kathat@microchip.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <Claudiu.Beznea@microchip.com>,
-        <Sripad.Balwadgi@microchip.com>, <mwalle@kernel.org>
-Subject: Re: [PATCH] wifi: wilc1000: fix kernel oops during interface down
- during background scan
-Thread-Topic: [PATCH] wifi: wilc1000: fix kernel oops during interface down
- during background scan
-Thread-Index: AQHZZpOxdxNIPScHF0Gh2r71RWeobK9MBL6BgABRhgA=
-Date:   Fri, 5 May 2023 20:53:12 +0000
-Message-ID: <cffca4d1-5ab5-0633-7bab-00d65526bfa7@microchip.com>
-References: <20230404012010.15261-1-ajay.kathat@microchip.com>
- <87wn1mok5g.fsf@kernel.org>
-In-Reply-To: <87wn1mok5g.fsf@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR11MB5176:EE_|PH7PR11MB8569:EE_
-x-ms-office365-filtering-correlation-id: 126135e2-82f9-4c55-4eba-08db4daabddd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: sNRAuBH1KsSAH8RI2iYpegA6gFrsYJS5snCOOcC/XQhtrMJFsAFLxpXPaXN1jdMjbcBk8ZzMO9w02psqRlVzBz51L5UQzNw7kdvczNIfk5VWbWiZeEQx4g5T6HJd7g5h9CX3O6yWcF9297XfhP+pU3tocWHww/KvhvA21eF1xKdtMv8O4z8KgzUCCgjoB12+u1QeRWE+GvkssGx4XVpIOA+bbHaelF1QB4AzfWkaZx9KtnWRAzbPjbANbLzgdPhbpHUxyWbPvRydpMGyn/FbhVdUAX6/1IpLIRKip4zePrn4CVpTqhWOPMbKWRtGVPOj+gj4HHGCVcebPyCRMOj7n8XMH+rr+dSXeNqJ8d3V1bBfSX1+y9RdZ9eAUuiQ0dyBoHjskP01eyzmyLoGfeHOS3bCiIqUyzvPX437lGBldujwckmi8IcVvODwMJWhDHJfj8WJSbUfc2Ke7j+KHO90CXsBxi7/dy7C8ZFdKgWkiIwWX7Ci2q+OgvXJR0qf1dxxsoODJojYfy8kaEnytQ8mH4NyK3LykNE/X+5YhquTLw4gq/5zxunNxKZNYxwjji/gEelAoxYCVY6OH5tZGLuZBDc4Zg0WWeN6T/KFhVSWXvpPiJZepJ+go7rnGZUQpVFqubGvvCjKbCSUII6zwD4q9lA7b+YvOO2gUfVj5P/HHSY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5176.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(136003)(366004)(39860400002)(396003)(451199021)(36756003)(478600001)(71200400001)(31696002)(86362001)(6486002)(54906003)(316002)(66556008)(66446008)(64756008)(6916009)(66946007)(66476007)(76116006)(4326008)(966005)(41300700001)(8676002)(8936002)(5660300002)(38070700005)(186003)(2906002)(38100700002)(122000001)(2616005)(6506007)(26005)(6512007)(53546011)(83380400001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UGYxU1FxbTlKYSsrNUovMERCMXdMajVCWk5ScGxnNjBmVnFISWdiMitpaDJa?=
- =?utf-8?B?a2NLRUwwVVZjdzVDVlFWNllEQkFMOEJFcEZpTEdkTndLWFFIRlE2NU0rVzdY?=
- =?utf-8?B?QXJ5bE45TzVsVzVRNlFHSHZZd1h1U0w4MGpxNTJ3VFNqWWxWOWhmL2ZodXgw?=
- =?utf-8?B?RW5OVnE4dWhPL2hYWXIyU3JBOFEzRVg5cDlLbjBGYUt4ZVo3aGg2QWZac0F5?=
- =?utf-8?B?NXg3L2lGZTk3ZUhkMk82K2FzZ3kreGNRbUl6SjR2N0svV2Y1NGhqd2ZGY3BM?=
- =?utf-8?B?RWQ5enJSTFlCc1Z6UWJRU3MxanB4dnMwRmUrQ1lId01IUzlMMlJnVGh5NFRu?=
- =?utf-8?B?NFBSZDdERktBWjFaUHZRUUZvN0pmTHRieGxNSGZONUQ0eXhueU12anNodDFl?=
- =?utf-8?B?eHd2YXpQZWdmTExPanF0ZGhPeXBaQVZ5SEd4eUJ2MTQwTDByczBvSWloTDh6?=
- =?utf-8?B?U3poSW4rVHlrVzIzY0t6TDdlVzZnOVlyOUh4Q3BTRUlLV1RSRWk3MHhSNC9L?=
- =?utf-8?B?SC9oMStRang2TlFOcTVtWnMvTC9mL2luM2NGTlNmRmtSR0hod3E2RlV5MFNu?=
- =?utf-8?B?REZMSnE2VjJZMGRSRkVqakVoSmtnYXFTazVna2doYk8yRWIxNms2L3NvdGZK?=
- =?utf-8?B?YmJ2cEIxcCtWNHYyZnBJdDZqVnRSbCswazZ2OFRIdllPT2pWcml5M2RFNFVR?=
- =?utf-8?B?VFBubjBKdlhQTzFHSndiS1k5Sm9ucGRqWXhXLzdUUllkMHFVWFFad3FhNmhB?=
- =?utf-8?B?NnM4UFRicmNEK1g2ZmFiY3JQZ1pVRktiYzZETE9hOWhWSXVYK20xYkk1ZDlv?=
- =?utf-8?B?V25SQSt3N1ErYTlYcUVTMnJoL0NyU1lNUEFEdEtOdDNDaGVDK2Y4UzJSRkx5?=
- =?utf-8?B?L1FMNjVnOE1EMjFJaEc2SmFzV2Z2blJ2b0QwQWRnbXYveUJRaVM0NG9QVUJ6?=
- =?utf-8?B?Rlh5RzJhaHZ1UlAxWG8xdzhsQjhsa0YzOFhGRjNwZmZXM1Q0QXFFZFdWZ1NI?=
- =?utf-8?B?d3plelJLY3NsL0dLYm1tUnF5Z2ZQRXJDYU1BL3o0NmZLU2hVTm0yYXZyNTJn?=
- =?utf-8?B?ZFFvWlQ0NDV3K0ZOODdCWjhkTzdKa3orT2t3SUcxQkVzMi82TDlvVldhRGt1?=
- =?utf-8?B?SUNMWGZET1M3dzN1VytWTHZ6RmlseTdtcDQzLzZ0MjlzcDNHK2l3eDNReXBz?=
- =?utf-8?B?SzBjOHFRdGFuZWlwK0tpaGxjR280R3F4U0ludUNnMXVKMUhMbXRRME5jWldj?=
- =?utf-8?B?Y3ZNR3h3N1A1Uzk1cGNpOEhiWi82R1BaRWxmQWRwZWlOV0RwMkkxYVRNWHUw?=
- =?utf-8?B?bFFxVHNyTGpvdlAyTWs1QVhnR3ErY2UvTlJRUXN2c0FpSUIvTVlNRjdxYXg3?=
- =?utf-8?B?eWgvOTJBNndrcU90enJVK0tya3VjVE9laWl6WWNzZzRtclV2aGszWk9oVlBX?=
- =?utf-8?B?TlZnZVdkWkJRRU1nUVV3YkpJWk0vQjltY3dLN1AvaUFQdEczNFk0bW5EZGNn?=
- =?utf-8?B?Wm1Cd2VaVXpsSlFOU1RCQ0NXalkvVDFwdHhXczlVbHBTd25UY2dVaE03Y29m?=
- =?utf-8?B?K2F3L1YxU2lFUzJsMXo3OTZadGNzZTk5anRGaFVzRXl6Ykt0d011VlJMRVFZ?=
- =?utf-8?B?UG0wMEh5ZnorQWo5TlFRbXkwQStUV2YrN2V5Mi9pTmJvZENNOU00QTl0NGkz?=
- =?utf-8?B?N3Ixeno1dVVHbmxJOHcwaWdnZnFaU0xyejJ2aEk2NTQrOVNWYjZBVUYzdWZU?=
- =?utf-8?B?VVZWakVpcTNJY0FhUnpNRVlMTTJDWWg0S0tWMkd1NzJ0d2lZcElDWlZFNkN6?=
- =?utf-8?B?Ly92dCtHdGM2SUMxa3ZoOHRuaFRpSDVlWVN6MmNLN2FEZEhKSHNhemN6WW9m?=
- =?utf-8?B?eDI4UlB1eVFWUm90WldIYUpBQkZMUzhoT1YvWjBPZzAza0ppY3YyWmZOemNk?=
- =?utf-8?B?RitzVkwvUlJTUXhOQ2drTHBDMFQ4VmpkVkVGdjNPYnBEY3FhcWRQclVZYllG?=
- =?utf-8?B?UGI5Z1BkVlFMRzF3aFNWeVg3WkRZYXc2bElHWFdiRm4yNmZNMnFHc2xudnhE?=
- =?utf-8?B?SUdQQ2FIUVo3S0FvOHpEK2pjVmRLbTlwTzEwVERaYUVMMFZhWnRURzVuVjE4?=
- =?utf-8?Q?81uIfAwGAtVjcq3LgNEC2Pf1B?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C8FCB3FD47BF714CB582DC94750E1778@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Fri, 5 May 2023 17:05:52 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE362736
+        for <linux-wireless@vger.kernel.org>; Fri,  5 May 2023 14:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=yD5KqW6fleOp1VeyJMpJ5WuchVlGk+M1lU7YCoBSrXQ=; t=1683320749; x=1684530349; 
+        b=bRc9Mmpi77a8Q+ga1nTq3+22tsOWGdAqfFOafqltCSMWQ3ZYg/YH+/94rEzCNyEwHuT4rFZV7e7
+        M7OkXAq5GLzoaLhBIfcRzyQaA99pfUfrLRhTwOv599fzrzbHsDW01L6yAboQqVHjPGBwcSya/IQGu
+        cWq8lXingrVQSSxmVVK0oisBruUM2PbAj8VH8KPnKjx+YiYHkobwC6gykRsF0eivy12eoPKf28oin
+        ixCLNZRnMuiGcej/7rT7ChpHuw+OVROfeU1YBA2bX51soYj+Zgwh4bdlOeWyqg5hsVr9jYaUl8fCR
+        enRgpC+zh/I46NlEUrBPwlp/y42KcsamvNVQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pv2cc-000XRt-1E;
+        Fri, 05 May 2023 23:05:46 +0200
+Message-ID: <f3471853cd7063a4bd2d783caa14706ee9115748.camel@sipsolutions.net>
+Subject: wireless locking simplifications
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+        Benjamin Berg <benjamin@sipsolutions.net>
+Date:   Fri, 05 May 2023 23:05:45 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5176.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 126135e2-82f9-4c55-4eba-08db4daabddd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 May 2023 20:53:12.7989
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5D06iRWd4CvbpAYliESvrPZ/yt1bGvq5JLrEZfpGBqbBDsroMXF2qRG3/+ssOJhhQT1ldL4Z3rXojasIdiN9eI7gi/bP0QcS4+v4kk5on2s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8569
-X-Spam-Status: No, score=-8.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgS2FsbGUsDQoNCk9uIDUvNS8yMyAwODo0NywgS2FsbGUgVmFsbyB3cm90ZToNCj4gRVhURVJO
-QUwgRU1BSUw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5
-b3Uga25vdyB0aGUgY29udGVudCBpcyBzYWZlDQo+IA0KPiA8QWpheS5LYXRoYXRAbWljcm9jaGlw
-LmNvbT4gd3JpdGVzOg0KPiANCj4+IEZpeCBmb3Iga2VybmVsIGNyYXNoIG9ic2VydmVkIHdpdGgg
-Zm9sbG93aW5nIHRlc3QgcHJvY2VkdXJlIFsxXToNCj4+ICAgd2hpbGUgdHJ1ZTsNCj4+ICAgICBk
-byBpZmNvbmZpZyB3bGFuMCB1cDsNCj4+ICAgICBpdyBkZXYgd2xhbjAgc2NhbiAmDQo+PiAgICAg
-aWZjb25maWcgd2xhbjAgZG93bjsNCj4+ICAgZG9uZQ0KPj4NCj4+IER1cmluZyB0aGUgYWJvdmUg
-dGVzdCBwcm9jZWR1cmUsIHRoZSBzY2FuIHJlc3VsdHMgYXJlIHJlY2VpdmVkIGZyb20gZmlybXdh
-cmUNCj4+IGZvciAnaXcgc2NhbicgY29tbWFuZCBnZXRzIHF1ZXVlZCBldmVuIHdoZW4gdGhlIGlu
-dGVyZmFjZSBpcyBnb2luZyBkb3duLiBJdA0KPj4gd2FzIGNhdXNpbmcgdGhlIGtlcm5lbCBvb3Bz
-IHdoZW4gZGVyZWZlcmVuY2luZyB0aGUgZnJlZWQgcG9pbnRlcnMuDQo+Pg0KPj4gRm9yIHN5bmNo
-cm9uaXphdGlvbiwgJ21hY19jbG9zZSgpJyBjYWxscyBmbHVzaF93b3JrcXVldWUoKSB0byBibG9j
-ayBpdHMNCj4+IGV4ZWN1dGlvbiB0aWxsIGFsbCBwZW5kaW5nIHdvcmsgaXMgY29tcGxldGVkLiBB
-ZnRlcndhcmRzICd3aWxjLT5jbG9zZScgZmxhZw0KPj4gd2hpY2ggaXMgc2V0IGJlZm9yZSB0aGUg
-Zmx1c2hfd29ya3F1ZXVlKCkgc2hvdWxkIGF2b2lkIGFkZGluZyBuZXcgd29yay4NCj4+IEFkZGVk
-ICd3aWxjLT5jbG9zZScgY2hlY2sgaW4gd2lsY19oYW5kbGVfaXNyKCkgd2hpY2ggaXMgY29tbW9u
-IGZvcg0KPj4gU1BJL1NESU8gYnVzIHRvIGlnbm9yZSB0aGUgaW50ZXJydXB0cyBmcm9tIGZpcm13
-YXJlIHRoYXQgaW50dXJucyBhZGRzIHRoZQ0KPj4gd29yayBzaW5jZSB0aGUgaW50ZXJmYWNlIGlz
-IGdldHRpbmcgY2xvc2VkLg0KPj4NCj4+IDEuIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4
-LXdpcmVsZXNzLzIwMjIxMDI0MTM1NDA3Ljd1ZG8zZHdsM21xeXYyeWpAMDAwMi4zZmZlLmRlLw0K
-Pj4NCj4+IFJlcG9ydGVkLWJ5OiBNaWNoYWVsIFdhbGxlIDxtd2FsbGVAa2VybmVsLm9yZz4NCj4+
-IFNpZ25lZC1vZmYtYnk6IEFqYXkgU2luZ2ggPGFqYXkua2F0aGF0QG1pY3JvY2hpcC5jb20+DQo+
-IA0KPiBbLi4uXQ0KPiANCj4+IEBAIC03ODEsMTMgKzc3NiwxNSBAQCBzdGF0aWMgaW50IHdpbGNf
-bWFjX2Nsb3NlKHN0cnVjdCBuZXRfZGV2aWNlICpuZGV2KQ0KPj4gICAgICAgaWYgKHZpZi0+bmRl
-dikgew0KPj4gICAgICAgICAgICAgICBuZXRpZl9zdG9wX3F1ZXVlKHZpZi0+bmRldik7DQo+Pg0K
-Pj4gKyAgICAgICAgICAgICBpZiAod2wtPm9wZW5faWZjcyA9PSAwKQ0KPj4gKyAgICAgICAgICAg
-ICAgICAgICAgIHdsLT5jbG9zZSA9IDE7DQo+PiArDQo+IA0KPiB3bC1jbG9zZSBpcyBhbiBpbnQs
-IEkgd29uZGVyIGlmIGl0J3MgcmFjeSB0byBpbnQgYXMgYSBmbGFnIGxpa2UgdGhpcz8gSW4NCj4g
-Y2FzZXMgbGlrZSB0aGlzIEkgdXN1YWxseSB1c2Ugc2V0X2JpdCgpICYgY28gYmVjYXVzZSB0aG9z
-ZSBndWFyYW50ZWUNCj4gYXRvbWljaXR5LCB0aG91Z2ggZG9uJ3Qga25vdyBpZiB0aGF0J3Mgb3Zl
-cmtpbGwuDQo+IA0KDQpJIHRoaW5rIGl0J3MgYSBnb29kIGlkZWEgdG8gdXNlIGFuIGF0b21pYyBv
-cGVyYXRpb24gYnV0IEkgYW0gbm90IHN1cmUgaWYNCnVzaW5nIGF0b21pYyBmb3IgJ3dsLT5jbG9z
-ZScgd2lsbCBoYXZlIG11Y2ggaW1wYWN0LiBGb3IgaW5zdGFuY2UsIGlmIGFueQ0KbmV3IHdvcmsg
-Z2V0cyBhZGRlZCB0byB0aGUgd29ya3F1ZXVlIGJlZm9yZSB0aGUgJ3dsLT5jbG9zZT0xJyBpcyBm
-dWxseQ0KY29tcGxldGVkLCB0aGVuIHRoYXQgd29yayB3b3VsZCBnZXQgZXhlY3V0ZWQgYXMgbm9y
-bWFsLg0KSG93ZXZlciwgSSBmZWVsIGl0J3Mgc2FmZSB0byBkZWZpbmUgJ3dsLT5jbG9zZScgYXMg
-YXRvbWljX3QgdHlwZS4gSSB3aWxsDQpwcmVwYXJlIHRoZSBjb252ZXJzaW9uIHBhdGNoIGFuZCB3
-aWxsIHRyeSB0byBpbmNsdWRlIGl0IGFsb25nIHdpdGggdGhlDQp1cGRhdGVkIHZlcnNpb24gb2Yg
-dGhpcyBwYXRjaC4NCg0KUmVnYXJkcywNCkFqYXkNCg0K
+Hi,
+
+Recently, partially prompted by the issues we accidentally introduced
+with multi-link in mac80211, I've been thinking again about locking
+simplifications in wifi again.
+
+I don't entirely remember the last time I looked at this, but I had
+approached this as "let's remove a mutex at a time", e.g. removing the
+sta_mtx in mac80211. This ends up failing, and a large part of the
+reason for this is the complexity in the layers of the stack, combined
+with the many work structs we use. See, the thing with work structs is
+that you have to make sure to cancel them, and you can't while holding a
+lock that the work might also take [1].
+
+Now why is that so much of an issue? It's mostly an issue because of the
+layering in the stack - we might need to flush a work struct in mac80211
+when told to do something by userspace, i.e. via cfg80211/nl80211, but
+we also use cfg80211's locks (sdata_lock() =3D=3D wdev_lock()), and cfg8021=
+1
+doesn't know about the works that might need to be flushed.
+
+I'll also add a couple of additional observations:
+
+ 1) The wdev->mtx is pretty much useless, we almost always hold the
+    wiphy->mtx as well, only in a few regulatory and wext cases we
+    don't. I actually suspect this saves us in quite a few places, as
+    the locking with wdev->mtx is far from consistent.
+
+ 2) The locking is extremely difficult to reason about :-)
+
+ 3) Drivers tend to have their own big "per-device" lock, similar to
+    wiphy->mtx (e.g. iwlwifi's mvm->mutex) which is held for basically
+    everything in the control plane, which makes concurrency not really
+    exist, similar to (1).
+
+ 4) At least in mac80211, most work structs are on the ordered workqueue
+    that it allocates, again meaning there's basically no concurrency.
+    Even where today we have per-STA locks like sta->ampdu_mlme.mtx.
+
+
+Looking at all that, we realize that there's effectively no multi-
+threading in the cfg80211 code nor in the mac80211 control plane. Which
+means all this complexity is for nothing ... and really it just grew out
+of making lockdep happy with various different code paths acquiring
+different locking order, and particularly because of cfg80211 and
+workers.
+
+
+So I've started to think we actually can radically simplify the locking
+in the wifi stack:
+
+ 1) We can remove wdev->mtx, and simply make wdev_lock() and
+    sdata_lock() be lockdep assertions on holding wiphy->mtx. This seems
+    surprisingly easy, only a few places in cfg80211 (reg, wext) seem to
+    not have that already, and in mac80211 it's a few more.
+
+ 2) If we can have a cfg80211 per-wiphy workqueue with special
+    semantics, notably the semantics being that nothing can execute on
+    it while you're in a wiphy_lock()ed section. That is, not even a
+    worker can run there that's stuck on wiphy_lock() itself, which can
+    happen today and leads to all the cancel issues once you start
+    reducing locking complexity.
+
+ 3) We can effectively remove all other mutexes in mac80211, and just
+    always wiphy_lock(). In fact even drivers could eventually do that.
+
+
+The implementation of (2) is a bit ... awkward, @Tejun, @Lai, there's no
+way to "pause" an ordered workqueue, is there? I came up with the below
+patch, but it's a bit ugly and requires a lot of context switches. Just
+flushing isn't enough since then some work might start and hang on
+acquiring the lock.
+
+
+johannes
+
+[1] which I hope is obvious by now, I remember explaining this to many
+people after I added the lockdep annotations 15 years ago in commit
+4e6045f13478 ("workqueue: debug flushing deadlocks with lockdep") :)
+
+
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 725c88d28e0d..9016ae853350 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -5403,6 +5403,9 @@ struct wiphy_iftype_akm_suites {
+  */
+ struct wiphy {
+ 	struct mutex mtx;
++#ifdef CONFIG_LOCKDEP
++	bool mutex_fully_held;
++#endif
+=20
+ 	/* assign these fields before you register the wiphy */
+=20
+@@ -5722,22 +5725,105 @@ struct cfg80211_internal_bss;
+ struct cfg80211_cached_keys;
+ struct cfg80211_cqm_config;
+=20
++/**
++ * wiphy_lock_from_worker - lock the wiphy from worker on cfg80211 workque=
+ue
++ * @wiphy: the wiphy to lock
++ *
++ * If the driver uses the cfg80211 workqueue (see wiphy_queue_work())
++ * and the workers need to lock the wiphy, this version must be used.
++ *
++ * (Note: this is a macro for the _ONCE part of the warning.)
++ */
++#define wiphy_lock_from_worker(wiphy) do {			\
++	__acquire(&(wiphy)->mtx);				\
++	mutex_lock(&(wiphy)->mtx);				\
++	/* FIXME: can this be done better? */			\
++	WARN_ON_ONCE(strncmp(current->comm, "kworker/", 8));	\
++} while (0)
++
+ /**
+  * wiphy_lock - lock the wiphy
+  * @wiphy: the wiphy to lock
+  *
+- * This is mostly exposed so it can be done around registering and
+- * unregistering netdevs that aren't created through cfg80211 calls,
+- * since that requires locking in cfg80211 when the notifiers is
+- * called, but that cannot differentiate which way it's called.
++ * This is needed around registering and unregistering netdevs that
++ * aren't created through cfg80211 calls, since that requires locking
++ * in cfg80211 when the notifiers is called, but that cannot
++ * differentiate which way it's called.
++ *
++ * It can also be used by drivers for their own purposes.
+  *
+  * When cfg80211 ops are called, the wiphy is already locked.
++ *
++ * Note that this makes sure that no workers that have been queued
++ * with wiphy_queue_work() are running.
+  */
+-static inline void wiphy_lock(struct wiphy *wiphy)
+-	__acquires(&wiphy->mtx)
++void wiphy_lock(struct wiphy *wiphy) __acquires(&wiphy->mtx);
++
++/**
++ * wiphy_queue_work - queue work for the wiphy
++ * @wiphy: the wiphy to queue for
++ * @work: the worker
++ *
++ * This is useful for work that must be done asynchronously, and work
++ * queued here has the special property that it cannot run concurrently
++ * with any wiphy_lock() section, even if it doesn't use
++ * wiphy_lock_from_worker() itself. Therefore, wiphy_cancel_work() can
++ * use just cancel_work() instead of cancel_work_sync(), it requires
++ * being in a section protected by wiphy_lock().
++ */
++void wiphy_queue_work(struct wiphy *wiphy, struct work_struct *work);
++
++/**
++ * wiphy_cancel_work - cancel previously queued work
++ * @wiphy: the wiphy, for debug purposes
++ * @work: the work to cancel
++ *
++ * Cancel the work *without* waiting for it, this assumes being
++ * called under the wiphy mutex acquired by wiphy_lock().
++ */
++static inline void wiphy_cancel_work(struct wiphy *wiphy, struct work_stru=
+ct *work)
++{
++#ifdef CONFIG_LOCKDEP
++	lockdep_assert_held(&wiphy->mtx);
++	WARN_ON_ONCE(!wiphy->mutex_fully_held);
++#endif
++	cancel_work(work);
++}
++
++/**
++ * wiphy_queue_delayed_work - queue delayed work for the wiphy
++ * @wiphy: the wiphy to queue for
++ * @dwork: the delayable worker
++ * @delay: number of jiffies to wait before queueing
++ *
++ * This is useful for work that must be done asynchronously, and work
++ * queued here has the special property that it cannot run concurrently
++ * with any wiphy_lock() section, even if it doesn't use
++ * wiphy_lock_from_worker() itself. Therefore,
++ * wiphy_cancel_delayed_work() can use just cancel_delayed_work()
++ * instead of cancel_delayed_work_sync(), it requires being in a
++ * section protected by wiphy_lock().
++ */
++void wiphy_queue_delayed_work(struct wiphy *wiphy,
++			      struct delayed_work *dwork,
++			      unsigned long delay);
++
++/**
++ * wiphy_cancel_delayed_work - cancel previously queued delayed work
++ * @wiphy: the wiphy, for debug purposes
++ * @dwork: the delayed work to cancel
++ *
++ * Cancel the work *without* waiting for it, this assumes being
++ * called under the wiphy mutex acquired by wiphy_lock().
++ */
++static inline void wiphy_cancel_delayed_work(struct wiphy *wiphy,
++					     struct delayed_work *dwork)
+ {
+-	mutex_lock(&wiphy->mtx);
+-	__acquire(&wiphy->mtx);
++#ifdef CONFIG_LOCKDEP
++	lockdep_assert_held(&wiphy->mtx);
++	WARN_ON_ONCE(!wiphy->mutex_fully_held);
++#endif
++	cancel_delayed_work(dwork);
+ }
+=20
+ /**
+@@ -5748,6 +5834,9 @@ static inline void wiphy_unlock(struct wiphy *wiphy)
+ 	__releases(&wiphy->mtx)
+ {
+ 	__release(&wiphy->mtx);
++#ifdef CONFIG_LOCKDEP
++	wiphy->mutex_fully_held =3D false;
++#endif
+ 	mutex_unlock(&wiphy->mtx);
+ }
+=20
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 2492242da5c8..c4e4a506d33e 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -408,6 +408,20 @@ static void cfg80211_propagate_cac_done_wk(struct work=
+_struct *work)
+ 	rtnl_unlock();
+ }
+=20
++static void wiphy_work_sync(struct work_struct *work)
++{
++	struct cfg80211_registered_device *rdev;
++
++	rdev =3D container_of(work, struct cfg80211_registered_device,
++			    wq_sync_work);
++
++	complete(&rdev->wq_sync_started);
++	wait_for_completion(&rdev->wq_sync_continue);
++	/* we'll now hang on the lock until the other side unlocks */
++	wiphy_lock_from_worker(&rdev->wiphy);
++	wiphy_unlock(&rdev->wiphy);
++}
++
+ /* exported functions */
+=20
+ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv=
+,
+@@ -500,6 +514,11 @@ use_default_name:
+ 	}
+=20
+ 	mutex_init(&rdev->wiphy.mtx);
++	INIT_WORK(&rdev->wq_sync_work, wiphy_work_sync);
++	mutex_init(&rdev->wq_sync_mtx);
++	init_completion(&rdev->wq_sync_started);
++	init_completion(&rdev->wq_sync_continue);
++
+ 	INIT_LIST_HEAD(&rdev->wiphy.wdev_list);
+ 	INIT_LIST_HEAD(&rdev->beacon_registrations);
+ 	spin_lock_init(&rdev->beacon_registrations_lock);
+@@ -540,6 +559,12 @@ use_default_name:
+ 		return NULL;
+ 	}
+=20
++	rdev->wq =3D alloc_ordered_workqueue("%s", 0, dev_name(&rdev->wiphy.dev))=
+;
++	if (!rdev->wq) {
++		wiphy_free(&rdev->wiphy);
++		return NULL;
++	}
++
+ 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
+ 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
+ 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
+@@ -1073,6 +1098,13 @@ void wiphy_unregister(struct wiphy *wiphy)
+ 	wiphy_unlock(&rdev->wiphy);
+ 	rtnl_unlock();
+=20
++	/*
++	 * flush again, even if wiphy_lock() did above, something might
++	 * have been reaching it still while the code above was running,
++	 * e.g. via debugfs.
++	 */
++	flush_workqueue(rdev->wq);
++
+ 	flush_work(&rdev->scan_done_wk);
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+@@ -1098,6 +1130,10 @@ void cfg80211_dev_free(struct cfg80211_registered_de=
+vice *rdev)
+ {
+ 	struct cfg80211_internal_bss *scan, *tmp;
+ 	struct cfg80211_beacon_registration *reg, *treg;
++
++	if (rdev->wq) /* might be NULL in error cases */
++		destroy_workqueue(rdev->wq);
++
+ 	rfkill_destroy(rdev->wiphy.rfkill);
+ 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
+ 		list_del(&reg->list);
+@@ -1573,6 +1609,66 @@ static struct pernet_operations cfg80211_pernet_ops =
+=3D {
+ 	.exit =3D cfg80211_pernet_exit,
+ };
+=20
++void wiphy_lock(struct wiphy *wiphy)
++{
++	struct cfg80211_registered_device *rdev =3D wiphy_to_rdev(wiphy);
++
++	/* lock the sync mutex so we're the only one using the work */
++	mutex_lock(&rdev->wq_sync_mtx);
++	/* flush the work in case it didn't complete yet after lock */
++	flush_work(&rdev->wq_sync_work);
++	/* reinit the completions so we can use them again */
++	reinit_completion(&rdev->wq_sync_started);
++	reinit_completion(&rdev->wq_sync_continue);
++
++	/* queue the work */
++	wiphy_queue_work(wiphy, &rdev->wq_sync_work);
++	/* and wait for it to start */
++	wait_for_completion(&rdev->wq_sync_started);
++
++	/*
++	 * Now that the special work is running (we got the completion
++	 * from it) actually take the wiphy mutex, if anything is now
++	 * on the workqueue it's queued, but not running, and cannot
++	 * be trying to take the lock.
++	 */
++	mutex_lock(&wiphy->mtx);
++
++	/* and tell the worker to also continue and do that */
++	complete(&rdev->wq_sync_continue);
++
++	/*
++	 * No longer need that now, the worker is now stuck waiting for
++	 * the mutex we own and anyone else calling wiphy_lock() can get
++	 * the wq_sync_mtx, but will wait on flushing the worker first,
++	 * then do it all over again...
++	 */
++	mutex_unlock(&rdev->wq_sync_mtx);
++
++#ifdef CONFIG_LOCKDEP
++	wiphy->mutex_fully_held =3D true;
++#endif
++}
++EXPORT_SYMBOL(wiphy_lock);
++
++void wiphy_queue_work(struct wiphy *wiphy, struct work_struct *work)
++{
++	struct cfg80211_registered_device *rdev =3D wiphy_to_rdev(wiphy);
++
++	queue_work(rdev->wq, work);
++}
++EXPORT_SYMBOL(wiphy_queue_work);
++
++void wiphy_queue_delayed_work(struct wiphy *wiphy,
++			      struct delayed_work *dwork,
++			      unsigned long delay)
++{
++	struct cfg80211_registered_device *rdev =3D wiphy_to_rdev(wiphy);
++
++	queue_delayed_work(rdev->wq, dwork, delay);
++}
++EXPORT_SYMBOL(wiphy_queue_delayed_work);
++
+ static int __init cfg80211_init(void)
+ {
+ 	int err;
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 5887b0d30619..b9de20b1b188 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -109,6 +109,12 @@ struct cfg80211_registered_device {
+ 	/* lock for all wdev lists */
+ 	spinlock_t mgmt_registrations_lock;
+=20
++	struct workqueue_struct *wq;
++	struct mutex wq_sync_mtx;
++	struct completion wq_sync_started;
++	struct completion wq_sync_continue;
++	struct work_struct wq_sync_work;
++
+ 	/* must be last because of the way we do wiphy_priv(),
+ 	 * and it should at least be aligned to NETDEV_ALIGN */
+ 	struct wiphy wiphy __aligned(NETDEV_ALIGN);
+
