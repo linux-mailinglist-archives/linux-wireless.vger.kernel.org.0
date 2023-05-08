@@ -2,122 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2856FA1F0
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F08376FA220
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233309AbjEHIMr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 04:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42298 "EHLO
+        id S233475AbjEHIY6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 04:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233205AbjEHIMp (ORCPT
+        with ESMTP id S233361AbjEHIYo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 04:12:45 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5238D19D5C
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:12:40 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3488CRj84006094, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3488CRj84006094
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 8 May 2023 16:12:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 8 May 2023 16:12:33 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 8 May 2023
- 16:12:32 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/3] wifi: rtw89: support U-NII-4 channels on 5GHz band
-Date:   Mon, 8 May 2023 16:12:11 +0800
-Message-ID: <20230508081211.38760-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230508081211.38760-1-pkshih@realtek.com>
-References: <20230508081211.38760-1-pkshih@realtek.com>
+        Mon, 8 May 2023 04:24:44 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815701707
+        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683534283; x=1715070283;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XHkaj0jvmzl1f7PNpnG3do7Qju1IXmKs6HxdqjLSwjg=;
+  b=LohjVDhkLyLyrN9WNd46/5UOLT2Xm/vqdQpS2i4pL/8yIjr29XBLKZNo
+   +qnlh55KufczBm4J23EqoECK9rXo7CQzsVhIODZ/DWfW2OravtZNb1VAK
+   yUSYpF1GR6Sg+O4j7BRZICByz9zPuaQhWpJ98pa9hqEO4JMtQGCkQMnbp
+   RYwNnmKEKDzIdsYoXa+sTDDAEWxVNI5GhhvU1D3Y+ArQp8HvpxJy9NIu/
+   Z+mhg0EEW1r4Ek8V217j9ovssjDOnpRYv80Fjd3KMUD49/PSmhkqs72zl
+   qlqqWC8/nVJFo9RQh9yRCkp209zXuQLTALUzdjN+oNWl0Nbh0Z+7lxsGT
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949841"
+X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
+   d="scan'208";a="329949841"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982542"
+X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
+   d="scan'208";a="767982542"
+Received: from shemert-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.224.248])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:42 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/14] wifi: iwlwifi: updates intended for v6.4 2023-05-08 
+Date:   Mon,  8 May 2023 11:24:19 +0300
+Message-Id: <20230508082433.1349733-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-U-NII-4 band, i.e 5.9GHz channels, can be supported by chip 8852C, 8852B
-and 8851B. But, it is not supported by chip 8852A. Flag support_unii4 is
-added in chip info and defined by chip accordingly to indicate that.
-We reference this flag of runtime chip to decide whether to register
-5.9GHz channels.
+Hi,
 
-After that, we consider if U-NII-4 band is allowed by our regulatory
-rule of U-NII-4. If chip::support_unii4 but not regd::allow_unii4,
-we stll do not register 5.9GHz channels.
+Here's the first set of patches for v6.5
+It contains the continuation of MLO work (mostly small fixes
+and adjustments) as well as a few other small changes.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c |  3 +++
- drivers/net/wireless/realtek/rtw89/regd.c | 10 ++++++++++
- 2 files changed, 13 insertions(+)
+Thanks,
+Gregory
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 09296e79f07b4..fbcb9b6e6f754 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -77,6 +77,9 @@ static struct ieee80211_channel rtw89_channels_5ghz[] = {
- 	RTW89_DEF_CHAN_5G(5785, 157),
- 	RTW89_DEF_CHAN_5G(5805, 161),
- 	RTW89_DEF_CHAN_5G_NO_HT40MINUS(5825, 165),
-+	RTW89_DEF_CHAN_5G(5845, 169),
-+	RTW89_DEF_CHAN_5G(5865, 173),
-+	RTW89_DEF_CHAN_5G(5885, 177),
- };
- 
- static struct ieee80211_channel rtw89_channels_6ghz[] = {
-diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index 7800ca36bc133..377a7a1c560b7 100644
---- a/drivers/net/wireless/realtek/rtw89/regd.c
-+++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -288,6 +288,7 @@ static void rtw89_regd_setup_unii4(struct rtw89_dev *rtwdev,
- {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	bool regd_allow_unii_4 = chip->support_unii4;
-+	struct ieee80211_supported_band *sband;
- 	int ret;
- 	u8 val;
- 
-@@ -318,6 +319,15 @@ static void rtw89_regd_setup_unii4(struct rtw89_dev *rtwdev,
- bottom:
- 	rtw89_debug(rtwdev, RTW89_DBG_REGD, "regd: allow unii 4: %d\n",
- 		    regd_allow_unii_4);
-+
-+	if (regd_allow_unii_4)
-+		return;
-+
-+	sband = wiphy->bands[NL80211_BAND_5GHZ];
-+	if (!sband)
-+		return;
-+
-+	sband->n_channels -= 3;
- }
- 
- int rtw89_regd_setup(struct rtw89_dev *rtwdev)
+Avraham Stern (1):
+  wifi: iwlwifi: mvm: support PASN for MLO
+
+Emmanuel Grumbach (2):
+  wifi: iwlwifi: mvm: update the FW apis for LINK and MAC commands
+  wifi: iwlwifi: pass the esr_transition_timeout to the firmware
+
+Golan Ben Ami (1):
+  wifi: iwlwifi: cfg: freeze 22500 devices FW API
+
+Gregory Greenman (1):
+  wifi: iwlwifi: mvm: adjust csa notifications and commands to MLO
+
+Haim Dreyfuss (1):
+  wifi: iwlwifi: don't silently ignore missing suspend or resume ops
+
+Johannes Berg (6):
+  wifi: iwlwifi: mvm: make internal callback structs const
+  wifi: iwlwifi: mvm: always free dup_data
+  wifi: iwlwifi: mvm: dissolve iwl_mvm_mac_add_interface_common()
+  wifi: iwlwifi: mvm: don't double-init spinlock
+  wifi: iwlwifi: mvm: fix cancel_delayed_work_sync() deadlock
+  wifi: iwlwifi: mvm: fix number of concurrent link checks
+
+Miri Korenblit (1):
+  wifi: iwlwifi: mvm: Make iwl_mvm_diversity_iter() MLO aware
+
+Yedidya Benshimol (1):
+  wifi: iwlwifi: mvm: use link ID in missed beacon notification
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  20 +--
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   |  57 ++++++--
+ .../net/wireless/intel/iwlwifi/fw/api/mac.h   |  22 +++-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c |  18 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  94 +++++++++----
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 123 ++++++++----------
+ .../net/wireless/intel/iwlwifi/mvm/mld-key.c  |  27 ++--
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac.c  |  13 +-
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  15 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  22 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  31 ++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  46 +++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |   9 +-
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    |  20 +--
+ 17 files changed, 342 insertions(+), 184 deletions(-)
+
 -- 
-2.25.1
+2.38.1
 
