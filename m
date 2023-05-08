@@ -2,136 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 704896FA299
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50FE16FA2A5
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:55:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233287AbjEHIwj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 04:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
+        id S229969AbjEHIzB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 04:55:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbjEHIwi (ORCPT
+        with ESMTP id S229794AbjEHIy7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 04:52:38 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26C4D4234;
-        Mon,  8 May 2023 01:52:37 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id D7A3D32002E2;
-        Mon,  8 May 2023 04:52:32 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Mon, 08 May 2023 04:52:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1683535952; x=1683622352; bh=iJ
-        dvc4SRQrLz+3W/Ez8+i72AurjuOlLDf24cELwYcVE=; b=pnJ0mn5Pa/QzV8ZIaM
-        SRbHsFrI9iqt/gq2ptRf7jKyTxVwaTK69qoRXP1rgps2xX3U0RXmYPC1IZ2LHTgW
-        pu9bi28FR+JI3j/Urvw75XRPf8JXoeXE44CVskN1L8laOSSJRefqZdEC522Irwc9
-        W/plnnBQKyozVG/bMVRIPbkkziSP56XzjGwiXkSWge++GOrHcNxjUm2nf6J4Dg01
-        Hsuh4pXa66FhryZxOycnQJ5OrMm119+yiCe4hpaF1Bnhm1cZGMPspXxofSxdX5Si
-        /29C8NsP9yQrn+mXinIr0qLXuQlcXzJrx5jqO7k9EZzc1cLhGSWxYPi6rlz2aizS
-        fNvg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1683535952; x=1683622352; bh=iJdvc4SRQrLz+
-        3W/Ez8+i72AurjuOlLDf24cELwYcVE=; b=SgDJPcdzZzknasipJlIz/AHKCTPE+
-        4PdbFI+yda23wf8OKl5GJPIwLycT6p1dYp0C/zcOky7Hxim6GZEcgdeciW/YLBHf
-        slHORB546oVXtKGUXQQ8sLiFec1eBfkr466qoagbjPxHAfJbU+2LQxeRYMLn4jbr
-        9pxlabN50OOq/PoGByfDegIKI9mlrTbHQ+IrjMISALEOz07BQIXMJ4SPiZ5ayJlL
-        93dw8oZyw3R0lkOISE64Gr4iZgaCrPbGlcSUha8JYvRgKFdsilDGs6/aHikT32P4
-        8kJ8Mik45kP4NhbRzGl4tf0mxvmHHnYYdJixq6xLlKpwMTYP04ku6FqgQ==
-X-ME-Sender: <xms:ULhYZPJFmqn4J9UETLTJLNH8DtkPV_V_YoCQTCfBFDaim3kOcrqt6w>
-    <xme:ULhYZDJQlXAdYjy9W4se8h-D_UIVvF4Efk3Ps0o5qq8PuViTDzrZM0INfUATDH5go
-    ANZh3tGcIdn95uScFw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefkedgtdelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:ULhYZHtpGFdF_240rDsYEjyS1GGrw_MlViAB2BwQtKnuI3-0hEfnHA>
-    <xmx:ULhYZIbXcDDXy_Eu-P90z1fN-2OlNNPPK57dR2UdEC8iamrVqmUbhw>
-    <xmx:ULhYZGbseSHMBtETCdUBuKStSE6RJtB3OwcjRYDVkZcuIH-RQMaNgg>
-    <xmx:ULhYZOqO-DWRySw_E1PrXJiso16T58m0yr7AqYfJxU784pQZkXD33A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 0DCB5B60086; Mon,  8 May 2023 04:52:31 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-386-g2404815117-fm-20230425.001-g24048151
-Mime-Version: 1.0
-Message-Id: <504c5a7d-0bfd-4b1e-a7f0-65d072657e0a@app.fastmail.com>
-In-Reply-To: <87ttwnnrer.fsf@kernel.org>
-References: <20230417205447.1800912-1-arnd@kernel.org>
- <87ttwnnrer.fsf@kernel.org>
-Date:   Mon, 08 May 2023 10:52:11 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Kalle Valo" <kvalo@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Johannes Berg" <johannes.berg@intel.com>,
-        "Manikanta Pubbisetty" <quic_mpubbise@quicinc.com>,
-        "Wen Gong" <quic_wgong@quicinc.com>,
-        "Baochen Qiang" <quic_bqiang@quicinc.com>,
-        "Sowmiya Sree Elavalagan" <quic_ssreeela@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
-        ath12k@lists.infradead.org
-Subject: Re: [PATCH] wireless: ath: work around false-positive stringop-overread
- warning
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Mon, 8 May 2023 04:54:59 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 916EA4ED7;
+        Mon,  8 May 2023 01:54:53 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3488sXzG5030855, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3488sXzG5030855
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 8 May 2023 16:54:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 8 May 2023 16:54:39 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 8 May 2023
+ 16:54:38 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>, <tony0620emma@gmail.com>
+CC:     <stable@vger.kernel.org>, <Larry.Finger@lwfinger.net>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw88: use work to update rate to avoid RCU warning
+Date:   Mon, 8 May 2023 16:54:29 +0800
+Message-ID: <20230508085429.46653-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 8, 2023, at 10:44, Kalle Valo wrote:
-> Arnd Bergmann <arnd@kernel.org> writes:
->
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> In a rare arm64 randconfig build, I got multiple warnings for ath11k
->> and ath12k:
->>
->> In function 'ath11k_peer_assoc_h_ht',
->>     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2665:2:
->> drivers/net/wireless/ath/ath11k/mac.c:1709:13: error: 'ath11k_peer_assoc_h_ht_masked' reading 10 bytes from a region of size 0 [-Werror=stringop-overread]
->>  1709 |         if (ath11k_peer_assoc_h_ht_masked(ht_mcs_mask))
->>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>
->> This happens whenever gcc-13 fails to inline one of the functions
->> that take a fixed-length array argument but gets passed a pointer.
->>
->> Change these functions to all take a regular pointer argument
->> instead.
->>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> s/wireless:/wifi:/ but I can fix that.
+The ieee80211_ops::sta_rc_update must be atomic, because
+ieee80211_chan_bw_change() holds rcu_read lock while calling
+drv_sta_rc_update(), so create a work to do original things.
 
-Ok, thanks!
+ Voluntary context switch within RCU read-side critical section!
+ WARNING: CPU: 0 PID: 4621 at kernel/rcu/tree_plugin.h:318
+ rcu_note_context_switch+0x571/0x5d0
+ CPU: 0 PID: 4621 Comm: kworker/u16:2 Tainted: G        W  OE
+ Workqueue: phy3 ieee80211_chswitch_work [mac80211]
+ RIP: 0010:rcu_note_context_switch+0x571/0x5d0
+ Call Trace:
+  <TASK>
+  __schedule+0xb0/0x1460
+  ? __mod_timer+0x116/0x360
+  schedule+0x5a/0xc0
+  schedule_timeout+0x87/0x150
+  ? trace_raw_output_tick_stop+0x60/0x60
+  wait_for_completion_timeout+0x7b/0x140
+  usb_start_wait_urb+0x82/0x160 [usbcore
+  usb_control_msg+0xe3/0x140 [usbcore
+  rtw_usb_read+0x88/0xe0 [rtw_usb
+  rtw_usb_read8+0xf/0x10 [rtw_usb
+  rtw_fw_send_h2c_command+0xa0/0x170 [rtw_core
+  rtw_fw_send_ra_info+0xc9/0xf0 [rtw_core
+  drv_sta_rc_update+0x7c/0x160 [mac80211
+  ieee80211_chan_bw_change+0xfb/0x110 [mac80211
+  ieee80211_change_chanctx+0x38/0x130 [mac80211
+  ieee80211_vif_use_reserved_switch+0x34e/0x900 [mac80211
+  ieee80211_link_use_reserved_context+0x88/0xe0 [mac80211
+  ieee80211_chswitch_work+0x95/0x170 [mac80211
+  process_one_work+0x201/0x410
+  worker_thread+0x4a/0x3b0
+  ? process_one_work+0x410/0x410
+  kthread+0xe1/0x110
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork+0x1f/0x30
+  </TASK>
 
-> In a awat it's a shame to lose the explicit length but I guess there's
-> no other way to fix this?
+Cc: stable@vger.kernel.org
+Fixes: c1edc86472fc ("rtw88: add ieee80211:sta_rc_update ops")
+Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
+Link: https://lore.kernel.org/linux-wireless/f1e31e8e-f84e-3791-50fb-663a83c5c6e9@lwfinger.net/T/#t
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
+ drivers/net/wireless/realtek/rtw88/main.c     | 15 +++++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 +++
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-There might be, but I couldn't figure out a way that works.
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 7aa6edad0d012..a6c024cab7ee4 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -918,7 +918,7 @@ static void rtw_ops_sta_rc_update(struct ieee80211_hw *hw,
+ 	struct rtw_sta_info *si = (struct rtw_sta_info *)sta->drv_priv;
+ 
+ 	if (changed & IEEE80211_RC_BW_CHANGED)
+-		rtw_update_sta_info(rtwdev, si, true);
++		ieee80211_queue_work(rtwdev->hw, &si->rc_work);
+ }
+ 
+ const struct ieee80211_ops rtw_ops = {
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 5bf6b45815578..d30a191c9291d 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -319,6 +319,17 @@ static u8 rtw_acquire_macid(struct rtw_dev *rtwdev)
+ 	return mac_id;
+ }
+ 
++static void rtw_sta_rc_work(struct work_struct *work)
++{
++	struct rtw_sta_info *si = container_of(work, struct rtw_sta_info,
++					       rc_work);
++	struct rtw_dev *rtwdev = si->rtwdev;
++
++	mutex_lock(&rtwdev->mutex);
++	rtw_update_sta_info(rtwdev, si, true);
++	mutex_unlock(&rtwdev->mutex);
++}
++
+ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 		struct ieee80211_vif *vif)
+ {
+@@ -329,12 +340,14 @@ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 	if (si->mac_id >= RTW_MAX_MAC_ID_NUM)
+ 		return -ENOSPC;
+ 
++	si->rtwdev = rtwdev;
+ 	si->sta = sta;
+ 	si->vif = vif;
+ 	si->init_ra_lv = 1;
+ 	ewma_rssi_init(&si->avg_rssi);
+ 	for (i = 0; i < ARRAY_SIZE(sta->txq); i++)
+ 		rtw_txq_init(rtwdev, sta->txq[i]);
++	INIT_WORK(&si->rc_work, rtw_sta_rc_work);
+ 
+ 	rtw_update_sta_info(rtwdev, si, true);
+ 	rtw_fw_media_status_report(rtwdev, si->mac_id, true);
+@@ -353,6 +366,8 @@ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
+ 	struct rtw_sta_info *si = (struct rtw_sta_info *)sta->drv_priv;
+ 	int i;
+ 
++	cancel_work_sync(&si->rc_work);
++
+ 	rtw_release_macid(rtwdev, si->mac_id);
+ 	if (fw_exist)
+ 		rtw_fw_media_status_report(rtwdev, si->mac_id, false);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index a563285e90ede..9e841f6991a9a 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -743,6 +743,7 @@ struct rtw_txq {
+ DECLARE_EWMA(rssi, 10, 16);
+ 
+ struct rtw_sta_info {
++	struct rtw_dev *rtwdev;
+ 	struct ieee80211_sta *sta;
+ 	struct ieee80211_vif *vif;
+ 
+@@ -767,6 +768,8 @@ struct rtw_sta_info {
+ 
+ 	bool use_cfg_mask;
+ 	struct cfg80211_bitrate_mask *mask;
++
++	struct work_struct rc_work;
+ };
+ 
+ enum rtw_bfee_role {
+-- 
+2.25.1
 
-> Also I hope you find the time to add GCC 13 to crosstool :) Related to
-> this
-
-I uploaded gcc-13.1.0 binaries last week, but still need to
-update the html page, so it's not yet linked. You can navigate
-the directories from the gcc-12 builds.
-
-     Arnd
