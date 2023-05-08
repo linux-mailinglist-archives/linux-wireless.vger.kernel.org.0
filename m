@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 524456FA21E
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BB0C6FA223
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233349AbjEHIYy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 04:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48008 "EHLO
+        id S233163AbjEHIZ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 04:25:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233365AbjEHIYu (ORCPT
+        with ESMTP id S232779AbjEHIYx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 04:24:50 -0400
+        Mon, 8 May 2023 04:24:53 -0400
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CE291707
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:24:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B061707
+        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683534289; x=1715070289;
+  t=1683534291; x=1715070291;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jpKLEsw59/RfAh3pFbSju4xzIou/KeZ5fmagQTop+JM=;
-  b=ne6E/Jaqop+0MNwUjqD+Gh8LjLpeI/7aVkns/lI8ooGA9LzS3uZz40I1
-   HX+P+tKZqCFSPjDtVi761Zo2YzR+GGwPjKzjgidPfAh9SyVb3J96hcuOE
-   ReKG/1ypqG9PF4N4wncryE13VdPSomOFbhz2hIa9BGdSPe2qtv8yg73zZ
-   FJhYRHNkT+RTG/i85fczf/bYbD/di5YxjA8rA1YMupk5cL/NerJhASXES
-   /9CD2+6xs73yw1VJGiPchlQGm3hajsNd4XTHkq32RQZwxoxohIN2fjWeQ
-   G6E6d7tt/JhOhvfcjY6NgJX9LaL4DYD+aZPH9sWnPfFkFZxkE4ybOLWBQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949853"
+  bh=JjRhdwXY/5Gez+4iZRc0AEmrFWod1wb8Juncfi2ZktM=;
+  b=k/BShAZVsjvW2KgQF3SauVScPSMMw40DwhJ5VcS2BsGM0j4uls95jtNb
+   puOq15UMOTp3s30onTZri5zGQJogv4m8fPuyjdv/lBzCMCwlzpDiGX5YB
+   HgV9SKqE5wb6q4VTz5qB9bXFs+SLZ/pYO3qIAYHYUHGqpDfA6X+CYQ+PS
+   OT/PhKrwbuHAItIrFTc+Lgv/rWKeyVLfVSo+CAWbtmYv+G9cxzXXbEWmC
+   w4qgqf97egoRtvEzhR1Gja3k7bTnR9Q3IK69aPkNbtc+w/Vszl+mxyo3P
+   s5/PR6y9CzUN16tsP38OXCOWZKMAiCRjv+uG+dqPXk4kg6HFwzijlml4f
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949859"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="329949853"
+   d="scan'208";a="329949859"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:49 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:51 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982571"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982582"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="767982571"
+   d="scan'208";a="767982582"
 Received: from shemert-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.224.248])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:47 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:49 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/14] wifi: iwlwifi: mvm: use link ID in missed beacon notification
-Date:   Mon,  8 May 2023 11:24:21 +0300
-Message-Id: <20230508082433.1349733-3-gregory.greenman@intel.com>
+Subject: [PATCH 03/14] wifi: iwlwifi: mvm: make internal callback structs const
+Date:   Mon,  8 May 2023 11:24:22 +0300
+Message-Id: <20230508082433.1349733-4-gregory.greenman@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230508082433.1349733-1-gregory.greenman@intel.com>
 References: <20230508082433.1349733-1-gregory.greenman@intel.com>
@@ -62,188 +62,225 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-This new version of missed beacon notification uses link_id
-instead of mac_id. Also add an option to use link id for
-retrieving vif.
+There's no need for these to be writable, so they can
+be const (and static).
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/mac.h   | 22 ++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  3 ++
- drivers/net/wireless/intel/iwlwifi/mvm/link.c |  5 ++++
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 29 +++++++++++++++----
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 15 ++++++++++
- 5 files changed, 66 insertions(+), 8 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 28 +++++++++----------
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  2 +-
+ 4 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
-index e3eda251c728..c51c6c3a69ad 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
-@@ -353,7 +353,7 @@ struct iwl_nonqos_seq_query_cmd {
- } __packed; /* NON_QOS_TX_COUNTER_GET_SET_API_S_VER_1 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 0f01b62357c6..5e28a53dad26 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3054,7 +3054,7 @@ static void iwl_mvm_bss_info_changed(struct ieee80211_hw *hw,
+ 				     struct ieee80211_bss_conf *bss_conf,
+ 				     u64 changes)
+ {
+-	struct iwl_mvm_bss_info_changed_ops callbacks = {
++	static const struct iwl_mvm_bss_info_changed_ops callbacks = {
+ 		.bss_info_changed_sta = iwl_mvm_bss_info_changed_station,
+ 		.bss_info_changed_ap_ibss = iwl_mvm_bss_info_changed_ap_ibss,
+ 	};
+@@ -3067,7 +3067,7 @@ void
+ iwl_mvm_bss_info_changed_common(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif,
+ 				struct ieee80211_bss_conf *bss_conf,
+-				struct iwl_mvm_bss_info_changed_ops *callbacks,
++				const struct iwl_mvm_bss_info_changed_ops *callbacks,
+ 				u64 changes)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+@@ -3564,7 +3564,7 @@ static int iwl_mvm_mac_sta_state(struct ieee80211_hw *hw,
+ 				 enum ieee80211_sta_state old_state,
+ 				 enum ieee80211_sta_state new_state)
+ {
+-	struct iwl_mvm_sta_state_ops callbacks = {
++	static const struct iwl_mvm_sta_state_ops callbacks = {
+ 		.add_sta = iwl_mvm_add_sta,
+ 		.update_sta = iwl_mvm_update_sta,
+ 		.rm_sta = iwl_mvm_rm_sta,
+@@ -3672,7 +3672,7 @@ static int
+ iwl_mvm_sta_state_notexist_to_none(struct iwl_mvm *mvm,
+ 				   struct ieee80211_vif *vif,
+ 				   struct ieee80211_sta *sta,
+-				   struct iwl_mvm_sta_state_ops *callbacks)
++				   const struct iwl_mvm_sta_state_ops *callbacks)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	unsigned int i;
+@@ -3721,7 +3721,7 @@ iwl_mvm_sta_state_auth_to_assoc(struct ieee80211_hw *hw,
+ 				struct iwl_mvm *mvm,
+ 				struct ieee80211_vif *vif,
+ 				struct ieee80211_sta *sta,
+-				struct iwl_mvm_sta_state_ops *callbacks)
++				const struct iwl_mvm_sta_state_ops *callbacks)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
+@@ -3778,7 +3778,7 @@ static int
+ iwl_mvm_sta_state_assoc_to_authorized(struct iwl_mvm *mvm,
+ 				      struct ieee80211_vif *vif,
+ 				      struct ieee80211_sta *sta,
+-				      struct iwl_mvm_sta_state_ops *callbacks)
++				      const struct iwl_mvm_sta_state_ops *callbacks)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
+@@ -3813,7 +3813,7 @@ static int
+ iwl_mvm_sta_state_authorized_to_assoc(struct iwl_mvm *mvm,
+ 				      struct ieee80211_vif *vif,
+ 				      struct ieee80211_sta *sta,
+-				      struct iwl_mvm_sta_state_ops *callbacks)
++				      const struct iwl_mvm_sta_state_ops *callbacks)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+@@ -3851,7 +3851,7 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
+ 				 struct ieee80211_sta *sta,
+ 				 enum ieee80211_sta_state old_state,
+ 				 enum ieee80211_sta_state new_state,
+-				 struct iwl_mvm_sta_state_ops *callbacks)
++				 const struct iwl_mvm_sta_state_ops *callbacks)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+@@ -4578,7 +4578,7 @@ static int iwl_mvm_roc(struct ieee80211_hw *hw,
+ 		       int duration,
+ 		       enum ieee80211_roc_type type)
+ {
+-	struct iwl_mvm_roc_ops ops = {
++	static const struct iwl_mvm_roc_ops ops = {
+ 		.add_aux_sta_for_hs20 = iwl_mvm_add_aux_sta_for_hs20,
+ 		.switch_phy_ctxt = iwl_mvm_roc_switch_binding,
+ 	};
+@@ -4590,7 +4590,7 @@ static int iwl_mvm_roc(struct ieee80211_hw *hw,
+ int iwl_mvm_roc_common(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		       struct ieee80211_channel *channel, int duration,
+ 		       enum ieee80211_roc_type type,
+-		       struct iwl_mvm_roc_ops *ops)
++		       const struct iwl_mvm_roc_ops *ops)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+@@ -5097,7 +5097,7 @@ static void iwl_mvm_unassign_vif_chanctx(struct ieee80211_hw *hw,
+ static int
+ iwl_mvm_switch_vif_chanctx_swap(struct iwl_mvm *mvm,
+ 				struct ieee80211_vif_chanctx_switch *vifs,
+-				struct iwl_mvm_switch_vif_chanctx_ops *ops)
++				const struct iwl_mvm_switch_vif_chanctx_ops *ops)
+ {
+ 	int ret;
  
- /**
-- * struct iwl_missed_beacons_notif - information on missed beacons
-+ * struct iwl_missed_beacons_notif_ver_3 - information on missed beacons
-  * ( MISSED_BEACONS_NOTIFICATION = 0xa2 )
-  * @mac_id: interface ID
-  * @consec_missed_beacons_since_last_rx: number of consecutive missed
-@@ -362,7 +362,7 @@ struct iwl_nonqos_seq_query_cmd {
-  * @num_expected_beacons: number of expected beacons
-  * @num_recvd_beacons: number of received beacons
-  */
--struct iwl_missed_beacons_notif {
-+struct iwl_missed_beacons_notif_ver_3 {
- 	__le32 mac_id;
- 	__le32 consec_missed_beacons_since_last_rx;
- 	__le32 consec_missed_beacons;
-@@ -370,6 +370,24 @@ struct iwl_missed_beacons_notif {
- 	__le32 num_recvd_beacons;
- } __packed; /* MISSED_BEACON_NTFY_API_S_VER_3 */
+@@ -5156,7 +5156,7 @@ iwl_mvm_switch_vif_chanctx_swap(struct iwl_mvm *mvm,
+ static int
+ iwl_mvm_switch_vif_chanctx_reassign(struct iwl_mvm *mvm,
+ 				    struct ieee80211_vif_chanctx_switch *vifs,
+-				    struct iwl_mvm_switch_vif_chanctx_ops *ops)
++				    const struct iwl_mvm_switch_vif_chanctx_ops *ops)
+ {
+ 	int ret;
  
-+/**
-+ * struct iwl_missed_beacons_notif - information on missed beacons
-+ * ( MISSED_BEACONS_NOTIFICATION = 0xa2 )
-+ * @link_id: fw link ID
-+ * @consec_missed_beacons_since_last_rx: number of consecutive missed
-+ *	beacons since last RX.
-+ * @consec_missed_beacons: number of consecutive missed beacons
-+ * @num_expected_beacons: number of expected beacons
-+ * @num_recvd_beacons: number of received beacons
-+ */
-+struct iwl_missed_beacons_notif {
-+	__le32 link_id;
-+	__le32 consec_missed_beacons_since_last_rx;
-+	__le32 consec_missed_beacons;
-+	__le32 num_expected_beacons;
-+	__le32 num_recvd_beacons;
-+} __packed; /* MISSED_BEACON_NTFY_API_S_VER_4 */
-+
- /**
-  * struct iwl_he_backoff_conf - used for backoff configuration
-  * Per each trigger-based AC, (set by MU EDCA Parameter set info-element)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index b35c96cf7ad2..08b1e15241ce 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1591,6 +1591,9 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 		RCU_INIT_POINTER(mvm->fw_id_to_link_sta[i], NULL);
- 	}
- 
-+	for (i = 0; i < IWL_MVM_FW_MAX_LINK_ID + 1; i++)
-+		RCU_INIT_POINTER(mvm->link_id_to_link_conf[i], NULL);
-+
- 	memset(&mvm->fw_link_ids_map, 0, sizeof(mvm->fw_link_ids_map));
- 
- 	mvm->tdls_cs.peer.sta_id = IWL_MVM_INVALID_STA;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index eb828de40a3c..c94aca398789 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -63,6 +63,9 @@ int iwl_mvm_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 								    mvmvif);
- 		if (link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID)
- 			return -EINVAL;
-+
-+		rcu_assign_pointer(mvm->link_id_to_link_conf[link_info->fw_link_id],
-+				   link_conf);
- 	}
- 
- 	/* Update SF - Disable if needed. if this fails, SF might still be on
-@@ -260,6 +263,8 @@ int iwl_mvm_remove_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		    link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID))
- 		return -EINVAL;
- 
-+	RCU_INIT_POINTER(mvm->link_id_to_link_conf[link_info->fw_link_id],
-+			 NULL);
- 	cmd.link_id = cpu_to_le32(link_info->fw_link_id);
- 	iwl_mvm_release_fw_link_id(mvm, link_info->fw_link_id);
- 	link_info->fw_link_id = IWL_MVM_FW_LINK_ID_INVALID;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index cc90f2884cff..0ecf4159e139 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1555,21 +1555,38 @@ void iwl_mvm_rx_missed_beacons_notif(struct iwl_mvm *mvm,
- 	u32 stop_trig_missed_bcon, stop_trig_missed_bcon_since_rx;
- 	u32 rx_missed_bcon, rx_missed_bcon_since_rx;
- 	struct ieee80211_vif *vif;
--	u32 id = le32_to_cpu(mb->mac_id);
-+	/* Id can be mac/link id depending on the notification version */
-+	u32 id = le32_to_cpu(mb->link_id);
- 	union iwl_dbg_tlv_tp_data tp_data = { .fw_pkt = pkt };
- 	u32 mac_type;
-+	u8 notif_ver = iwl_fw_lookup_notif_ver(mvm->fw, LEGACY_GROUP,
-+					       MISSED_BEACONS_NOTIFICATION,
-+					       0);
-+
-+	rcu_read_lock();
-+
-+	/* before version four the ID in the notification refers to mac ID */
-+	if (notif_ver < 4) {
-+		vif = iwl_mvm_rcu_dereference_vif_id(mvm, id, true);
-+	} else {
-+		struct ieee80211_bss_conf *bss_conf =
-+			iwl_mvm_rcu_fw_link_id_to_link_conf(mvm, id, true);
-+
-+		if (!bss_conf)
-+			goto out;
-+
-+		vif = bss_conf->vif;
-+	}
- 
- 	IWL_DEBUG_INFO(mvm,
--		       "missed bcn mac_id=%u, consecutive=%u (%u, %u, %u)\n",
--		       le32_to_cpu(mb->mac_id),
-+		       "missed bcn %s_id=%u, consecutive=%u (%u, %u, %u)\n",
-+		       notif_ver < 4 ? "mac" : "link",
-+		       id,
- 		       le32_to_cpu(mb->consec_missed_beacons),
- 		       le32_to_cpu(mb->consec_missed_beacons_since_last_rx),
- 		       le32_to_cpu(mb->num_recvd_beacons),
- 		       le32_to_cpu(mb->num_expected_beacons));
- 
--	rcu_read_lock();
--
--	vif = iwl_mvm_rcu_dereference_vif_id(mvm, id, true);
- 	if (!vif)
- 		goto out;
- 
+@@ -5199,7 +5199,7 @@ iwl_mvm_switch_vif_chanctx_common(struct ieee80211_hw *hw,
+ 				  struct ieee80211_vif_chanctx_switch *vifs,
+ 				  int n_vifs,
+ 				  enum ieee80211_chanctx_switch_mode mode,
+-				  struct iwl_mvm_switch_vif_chanctx_ops *ops)
++				  const struct iwl_mvm_switch_vif_chanctx_ops *ops)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	int ret;
+@@ -5228,7 +5228,7 @@ static int iwl_mvm_switch_vif_chanctx(struct ieee80211_hw *hw,
+ 				      int n_vifs,
+ 				      enum ieee80211_chanctx_switch_mode mode)
+ {
+-	struct iwl_mvm_switch_vif_chanctx_ops ops = {
++	static const struct iwl_mvm_switch_vif_chanctx_ops ops = {
+ 		.__assign_vif_chanctx = __iwl_mvm_assign_vif_chanctx,
+ 		.__unassign_vif_chanctx = __iwl_mvm_unassign_vif_chanctx,
+ 	};
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index fbc2d5ed1006..9dfb07db396e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -492,7 +492,7 @@ static int iwl_mvm_mld_mac_sta_state(struct ieee80211_hw *hw,
+ 				     enum ieee80211_sta_state old_state,
+ 				     enum ieee80211_sta_state new_state)
+ {
+-	struct iwl_mvm_sta_state_ops callbacks = {
++	static const struct iwl_mvm_sta_state_ops callbacks = {
+ 		.add_sta = iwl_mvm_mld_add_sta,
+ 		.update_sta = iwl_mvm_mld_update_sta,
+ 		.rm_sta = iwl_mvm_mld_rm_sta,
+@@ -779,7 +779,7 @@ iwl_mvm_mld_switch_vif_chanctx(struct ieee80211_hw *hw,
+ 			       int n_vifs,
+ 			       enum ieee80211_chanctx_switch_mode mode)
+ {
+-	struct iwl_mvm_switch_vif_chanctx_ops ops = {
++	static const struct iwl_mvm_switch_vif_chanctx_ops ops = {
+ 		.__assign_vif_chanctx = __iwl_mvm_mld_assign_vif_chanctx,
+ 		.__unassign_vif_chanctx = __iwl_mvm_mld_unassign_vif_chanctx,
+ 	};
+@@ -871,7 +871,7 @@ static int iwl_mvm_mld_roc(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			   struct ieee80211_channel *channel, int duration,
+ 			   enum ieee80211_roc_type type)
+ {
+-	struct iwl_mvm_roc_ops ops = {
++	static const struct iwl_mvm_roc_ops ops = {
+ 		.add_aux_sta_for_hs20 = iwl_mvm_mld_add_aux_sta,
+ 		.switch_phy_ctxt = iwl_mvm_link_switch_phy_ctx,
+ 	};
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 6e7470d3a826..b9975af671db 100644
+index b9975af671db..0f278a73a997 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1003,6 +1003,8 @@ struct iwl_mvm {
+@@ -1888,7 +1888,7 @@ void
+ iwl_mvm_bss_info_changed_common(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif,
+ 				struct ieee80211_bss_conf *bss_conf,
+-				struct iwl_mvm_bss_info_changed_ops *callbacks,
++				const struct iwl_mvm_bss_info_changed_ops *callbacks,
+ 				u64 changes);
+ void
+ iwl_mvm_bss_info_changed_station_common(struct iwl_mvm *mvm,
+@@ -1922,7 +1922,7 @@ struct iwl_mvm_roc_ops {
+ int iwl_mvm_roc_common(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		       struct ieee80211_channel *channel, int duration,
+ 		       enum ieee80211_roc_type type,
+-		       struct iwl_mvm_roc_ops *ops);
++		       const struct iwl_mvm_roc_ops *ops);
+ int iwl_mvm_cancel_roc(struct ieee80211_hw *hw,
+ 		       struct ieee80211_vif *vif);
+ /*Session Protection */
+@@ -2420,7 +2420,7 @@ iwl_mvm_switch_vif_chanctx_common(struct ieee80211_hw *hw,
+ 				  struct ieee80211_vif_chanctx_switch *vifs,
+ 				  int n_vifs,
+ 				  enum ieee80211_chanctx_switch_mode mode,
+-				  struct iwl_mvm_switch_vif_chanctx_ops *ops);
++				  const struct iwl_mvm_switch_vif_chanctx_ops *ops);
  
- 	struct ieee80211_vif __rcu *vif_id_to_mac[NUM_MAC_INDEX_DRIVER];
+ /* Channel info utils */
+ static inline bool iwl_mvm_has_ultra_hb_channel(struct iwl_mvm *mvm)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+index a61d4f88125f..f5f8d41f5134 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+@@ -616,7 +616,7 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
+ 				 struct ieee80211_sta *sta,
+ 				 enum ieee80211_sta_state old_state,
+ 				 enum ieee80211_sta_state new_state,
+-				 struct iwl_mvm_sta_state_ops *callbacks);
++				 const struct iwl_mvm_sta_state_ops *callbacks);
  
-+	struct ieee80211_bss_conf __rcu *link_id_to_link_conf[IWL_MVM_FW_MAX_LINK_ID + 1];
-+
- 	/* -1 for always, 0 for never, >0 for that many times */
- 	s8 fw_restart;
- 	u8 *error_recovery_buf;
-@@ -1302,6 +1304,19 @@ iwl_mvm_rcu_dereference_vif_id(struct iwl_mvm *mvm, u8 vif_id, bool rcu)
- 					 lockdep_is_held(&mvm->mutex));
- }
- 
-+static inline struct ieee80211_bss_conf *
-+iwl_mvm_rcu_fw_link_id_to_link_conf(struct iwl_mvm *mvm, u8 link_id, bool rcu)
-+{
-+	if (WARN_ON(link_id >= ARRAY_SIZE(mvm->link_id_to_link_conf)))
-+		return NULL;
-+
-+	if (rcu)
-+		return rcu_dereference(mvm->link_id_to_link_conf[link_id]);
-+
-+	return rcu_dereference_protected(mvm->link_id_to_link_conf[link_id],
-+					 lockdep_is_held(&mvm->mutex));
-+}
-+
- static inline bool iwl_mvm_is_adaptive_dwell_supported(struct iwl_mvm *mvm)
- {
- 	return fw_has_api(&mvm->fw->ucode_capa,
+ /* New MLD STA related APIs */
+ /* STA */
 -- 
 2.38.1
 
