@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 413E66FA226
+	by mail.lfdr.de (Postfix) with ESMTP id 8BED86FA227
 	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:25:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233380AbjEHIZb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 04:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48298 "EHLO
+        id S233490AbjEHIZc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 04:25:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233361AbjEHIY7 (ORCPT
+        with ESMTP id S233551AbjEHIZD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 04:24:59 -0400
+        Mon, 8 May 2023 04:25:03 -0400
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02E91C0F4
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:24:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA0121544
+        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:24:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683534297; x=1715070297;
+  t=1683534299; x=1715070299;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+JkSkfvkv1cXhhzvR1efj36ToSOCv287MVFFsp3NKOQ=;
-  b=LmhDWH3dl0PuZnj8FMZWGFAeh6xQkifKbRidDVocuC9MLt1VIRt2lUwd
-   +rXzbnNEbt4q9DDVmgnma2B9sMJFlCy7+qOHBzXi/CJjbjIz6ZkZXbBb7
-   edwyXIQqyusT1HnvuLHAPeYrx2TZL3CAVo8bxeWxTKqq4xhOiMW4F226h
-   D6gwJOTz1Cr3yGAomu5TAshgJOc1swAkMz1kmmeyHKr0bPYWsckB6ILf+
-   44X7o8CfnjXcuPil54/e09gTkpWtpydpbCLPqODQD/Ypl3eZ+AGcJi5HT
-   An5zNT0UfmWF6ycXec7lLg56oy411JxxRq/yXtnv7jOXA4WJoLm3LsOtQ
+  bh=Mjj+kJ6d5lwyILzh4rqwz+7vUHyuSIBqSmc0gWSmtlQ=;
+  b=aRnK0OXgx/YfPECKuLH/E1lQRAqBO5/BJQIcLAfKLpJ1leRuiO6rgwKf
+   XgL6lFeI9wXUquR9UOxT8uR3WaDsbH+fYebhNGJwgO2cpBGyiYU/bIkIv
+   nq8yYnibpzgaI4frDj8RpDM/QPA6GmvWK9VOUzwhuN3P1IdtTs/3YldT9
+   k2vW2v8WF2t7y2YcyixlAgKOhK/X+W5XvjnIyW2P7ghvMyRShOKaUFCV2
+   d66sHaVPUvwAeW7yLAKaTPBay2ao6FYoL8qfDARwZp6pXaR7i9Xfp92oQ
+   kGVPOenCt3D09hzR2vbWLELx3Yk/VP5vswX/PFOMKDzCi1fUCbBak6gKK
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949879"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949884"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="329949879"
+   d="scan'208";a="329949884"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:57 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982623"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982636"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="767982623"
+   d="scan'208";a="767982636"
 Received: from shemert-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.224.248])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:56 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:24:57 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 06/14] wifi: iwlwifi: mvm: don't double-init spinlock
-Date:   Mon,  8 May 2023 11:24:25 +0300
-Message-Id: <20230508082433.1349733-7-gregory.greenman@intel.com>
+Subject: [PATCH 07/14] wifi: iwlwifi: mvm: fix cancel_delayed_work_sync() deadlock
+Date:   Mon,  8 May 2023 11:24:26 +0300
+Message-Id: <20230508082433.1349733-8-gregory.greenman@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230508082433.1349733-1-gregory.greenman@intel.com>
 References: <20230508082433.1349733-1-gregory.greenman@intel.com>
@@ -64,42 +64,34 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We don't need to (and shouldn't) initialize the spinlock
-during HW restart that was already initialized, so move
-that into the correct if block. Since then we have two
-consecutive if statements with the same (though inverted)
-condition, unify those as well.
+Lockdep points out that we can deadlock here by calling
+cancel_delayed_work_sync() because that might be already
+running and gotten interrupted by the NAPI soft-IRQ.
+Even just calling something that can sleep is wrong in
+this context though.
 
+Luckily, it doesn't even really matter since the things
+we need to do are idempotent, so just drop the _sync().
+
+Fixes: e5d153ec54f0 ("iwlwifi: mvm: fix CSA AP side")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index f877be850589..19f1545b3c7e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -667,15 +667,15 @@ int iwl_mvm_mld_add_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		ret = iwl_mvm_mld_alloc_sta_links(mvm, vif, sta);
- 		if (ret)
- 			return ret;
--	}
- 
--	spin_lock_init(&mvm_sta->lock);
-+		spin_lock_init(&mvm_sta->lock);
- 
--	if (test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
--		ret = iwl_mvm_alloc_sta_after_restart(mvm, vif, sta);
--	else
- 		ret = iwl_mvm_sta_init(mvm, vif, sta, IWL_MVM_INVALID_STA,
- 				       STATION_TYPE_PEER);
-+	} else {
-+		ret = iwl_mvm_alloc_sta_after_restart(mvm, vif, sta);
-+	}
-+
- 	if (ret)
- 		goto err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index e1d02c260e69..01432274a6da 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -2512,7 +2512,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 				RCU_INIT_POINTER(mvm->csa_tx_blocked_vif, NULL);
+ 				/* Unblock BCAST / MCAST station */
+ 				iwl_mvm_modify_all_sta_disable_tx(mvm, mvmvif, false);
+-				cancel_delayed_work_sync(&mvm->cs_tx_unblock_dwork);
++				cancel_delayed_work(&mvm->cs_tx_unblock_dwork);
+ 			}
+ 		}
  
 -- 
 2.38.1
