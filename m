@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B85496FA230
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC1A6FA22F
 	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232478AbjEHIZ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 04:25:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48802 "EHLO
+        id S233765AbjEHIZ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 04:25:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233768AbjEHIZW (ORCPT
+        with ESMTP id S233769AbjEHIZX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 04:25:22 -0400
+        Mon, 8 May 2023 04:25:23 -0400
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC121940E
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:25:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 433F619D5C
+        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:25:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683534318; x=1715070318;
+  t=1683534319; x=1715070319;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WNNmq6hQQ8WX3i9H7Gz9k6QPIKcpJCZ+Yk3vH9TLWOs=;
-  b=WvyWkt0/heeWfCZNCXTfQlY5ksJoKLYhGIC0g/9NsGazPXgLCWU1SIvi
-   AGL+AZZHUgsAwvPl3zXef5mme6Cab26leLnggdGOzgidwqVKjCZPBRneT
-   elh+U48q54PPRb5qn0o2uRsBPwWfaBkYuE9uWBcwVkJfHD6+CjzKYIkDz
-   8UZzOjmeyvhFx37EoXeETKBB4hSdLsvELNKT+BpLm+L+qFQiQcVTFMnUb
-   DoDeKhtEE1rrRqqgsvob9kDAJhTK1baYkH2lXsWvMPS/yUsmKGdc85aws
-   kNp5LzUeC2jUOM2mOraiq7CsZM+QmigxRmR2jxuIGrvZ6/KxPW81n2DRx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949924"
+  bh=cMwx1kn3P5ygp/EMddgaSnCrovvvDEhJtvgZP5XBy4Y=;
+  b=hYqc2vRPBkwV2tIXgctCqdHnGZdQb542PnzwlvfEy5m1fNXVouzeCyGq
+   pg0/ibmCfunkHtA96ohtW6fIz0g2655BBxlBAQoQRExVuED8KXtbOiz1C
+   oHJX4gi+6XG814u1Uyq126n+tbNJ3DkayzD7j9ivGz+LQgPq5gCYH1oO8
+   QqETdb2YkLpfAYQeitoQtQYAvAM1D3cL9/biaJuuY7FkjSKjyJU+Q9qQI
+   KDL8/OAQarPUaE/hbOaM2AOuQe/ajofukrozBJPZUa14km9jheqvYLWrv
+   63GIJLwR5ol5hTHcykNLhMMuKOTGzFsZIBXnELjo22/5+oCJUCN1mNcsI
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="329949935"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="329949924"
+   d="scan'208";a="329949935"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:25:11 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:25:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982683"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="767982691"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="767982683"
+   d="scan'208";a="767982691"
 Received: from shemert-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.224.248])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:25:09 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 01:25:11 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 13/14] wifi: iwlwifi: mvm: fix number of concurrent link checks
-Date:   Mon,  8 May 2023 11:24:32 +0300
-Message-Id: <20230508082433.1349733-14-gregory.greenman@intel.com>
+Subject: [PATCH 14/14] wifi: iwlwifi: pass the esr_transition_timeout to the firmware
+Date:   Mon,  8 May 2023 11:24:33 +0300
+Message-Id: <20230508082433.1349733-15-gregory.greenman@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230508082433.1349733-1-gregory.greenman@intel.com>
 References: <20230508082433.1349733-1-gregory.greenman@intel.com>
@@ -62,62 +62,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-The concurrent link checks need to correctly differentiate
-between AP and non-AP, fix that.
+The firmware needs to know the esr_transtition_timeout to time the
+transition between EMLSR and single radio with the AP.
+Add the EMLSR support bit to the wiphy extended capabilities so that
+it'll be sent in our association request frame.
+We can set this field unconditionally since it'll be used only if the
+MLO is supported.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c        | 12 +++++++-----
- .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c    |  9 +++++----
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c  | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index a1d31c6eab2c..dc31f8de7d1d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -127,11 +127,13 @@ int iwl_mvm_link_changed(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 				if (mvmvif->link[i]->phy_ctxt)
- 					count++;
- 
--			/* FIXME: IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM should be
--			 * defined per HW
--			 */
--			if (count >= IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM)
--				return -EINVAL;
-+			if (vif->type == NL80211_IFTYPE_AP) {
-+				if (count > mvm->fw->ucode_capa.num_beacons)
-+					return -EOPNOTSUPP;
-+			/* this should be per HW or such */
-+			} else if (count >= IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM) {
-+				return -EOPNOTSUPP;
-+			}
- 		}
- 
- 		/* Catch early if driver tries to activate or deactivate a link
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 9dfb07db396e..fb06cf94fcc3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -906,11 +906,12 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
- 				n_active++;
- 		}
- 
--		if (vif->type == NL80211_IFTYPE_AP &&
--		    n_active > mvm->fw->ucode_capa.num_beacons)
--			return -EOPNOTSUPP;
--		else if (n_active > 1)
-+		if (vif->type == NL80211_IFTYPE_AP) {
-+			if (n_active > mvm->fw->ucode_capa.num_beacons)
-+				return -EOPNOTSUPP;
-+		} else if (n_active > 1) {
- 			return -EOPNOTSUPP;
-+		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 2ae665ba2ac9..c9c072a3c832 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -251,6 +251,8 @@ static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
+ 		.extended_capabilities = he_if_types_ext_capa_sta,
+ 		.extended_capabilities_mask = he_if_types_ext_capa_sta,
+ 		.extended_capabilities_len = sizeof(he_if_types_ext_capa_sta),
++		/* relevant only if EHT is supported */
++		.eml_capabilities = IEEE80211_EML_CAP_EMLSR_SUPP,
+ 	},
+ 	{
+ 		.iftype = NL80211_IFTYPE_STATION,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+index 99bf71a2b690..f55b08d9642f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
+@@ -133,6 +133,9 @@ static int iwl_mvm_mld_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
  	}
  
- 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+ 	cmd.client.assoc_id = cpu_to_le16(vif->cfg.aid);
++	cmd.client.esr_transition_timeout =
++		u16_get_bits(vif->cfg.eml_cap,
++			     IEEE80211_EML_CAP_TRANSITION_TIMEOUT);
+ 
+ 	if (vif->probe_req_reg && vif->cfg.assoc && vif->p2p)
+ 		cmd.filter_flags |= cpu_to_le32(MAC_CFG_FILTER_ACCEPT_PROBE_REQ);
 -- 
 2.38.1
 
