@@ -2,77 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A3D6FB225
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 16:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83BBD6FB34F
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 16:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234177AbjEHOEL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 10:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43304 "EHLO
+        id S234227AbjEHO5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 10:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234139AbjEHOEK (ORCPT
+        with ESMTP id S234034AbjEHO5t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 10:04:10 -0400
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF7F36CDC
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 07:04:06 -0700 (PDT)
-Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6ab032b33cdso1046177a34.0
-        for <linux-wireless@vger.kernel.org>; Mon, 08 May 2023 07:04:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683554645; x=1686146645;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=iu1LCK9aWFLvkKRKxPgFSQaW4ctFl06OcvYqtORiBDE=;
-        b=WRemzRIVK7betkekH7Oe6VQgAOPTMTjxBw+XyJrvOxeqZlE4sGIB1hiYz0WQAHGfhK
-         DG9sEXglOybdersXQwubQ3ybhpHEOomblZu7VfaasxxwDxhFDlnICkgaVVws0jlTWlQZ
-         TXEySwurNlwwje36Q3UQVv/k7AsMDWR6tQpZGzQq1kyVZfp94R2FK6GmsdrnlSyq7uzv
-         KCy0jwvQfu/48VsBOQr1zSP5eNHWql5lTWE34W2T+FCRYf6vLkAt33lKxOPAuQWL2Bq1
-         9hNVXVGBCb3hhEjQ+L2Ck1WBxoy8FL3Rfy6iohJrCbLF/Ah0OqYCAx6Ov2ozJKzBhRXp
-         uQ3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683554645; x=1686146645;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iu1LCK9aWFLvkKRKxPgFSQaW4ctFl06OcvYqtORiBDE=;
-        b=C2nKIQMZTvcOzb2gSbPjBA8fOlImDDCjPMTPzzVumN7Pj0CV6+l+RPTtsErt7i4XmD
-         q47DR8NwWJEZa8eN3J4Mevvn5beDM8jqoQ52pPBDSq13drKNDstwf6Pkdk1L0ZWU+FA8
-         UHAKPde/SlXeNLOlnXKmrymk3Np+qsria0Bpsh4b5DYUHm5capsmjWyUjJn7SFK+ngfg
-         5p0XipCmID6IwSlzqehmq0hmyYQ9NjTwZdbXC/J+qTl9rZekRwWphMpkExrZqJFRqMJu
-         pj04zagX7DOiehbvQ5xnjdI7LY9CcovY7gLCxan1MJcc/QobH6ovOHAIC3fIz0smRlGE
-         S/1Q==
-X-Gm-Message-State: AC+VfDx7n/qATDSooo8iH5PotU01WmFWaykqk0hmHe8NPNQrPvPZ3gE4
-        x3FGQYYWMU6w3daKuOLMmwc=
-X-Google-Smtp-Source: ACHHUZ787RmCLw9sv5Df6DrTZRMkU5rKi96KGntL0ufC8ahXOrsaWz49uh6ONqTHR05d/KYGJQ+BFA==
-X-Received: by 2002:a9d:6392:0:b0:6a6:f2e:a891 with SMTP id w18-20020a9d6392000000b006a60f2ea891mr5400027otk.6.1683554645528;
-        Mon, 08 May 2023 07:04:05 -0700 (PDT)
-Received: from [10.62.118.118] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id r5-20020a056830134500b006a973ec4660sm4091712otq.78.2023.05.08.07.04.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 07:04:05 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <3c157ef7-8bf3-e886-769c-c27b9cc00547@lwfinger.net>
-Date:   Mon, 8 May 2023 09:04:03 -0500
+        Mon, 8 May 2023 10:57:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80000E41;
+        Mon,  8 May 2023 07:57:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F16361F44;
+        Mon,  8 May 2023 14:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E4AC433EF;
+        Mon,  8 May 2023 14:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683557867;
+        bh=jpGRNu5+FvMQ20aEk+IlpTRzk8prDExhd+C0AMyLLyw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=anFJPecn/2S9eutk1Qd8p9EpzhLZTKjmEO6uDDAdmhnwqPwjC+Dc649EeATu+fW8r
+         Lg03ejDhC2ypyNUTlQLqxMQyTrheCnxW9JNKqZ/QoLxxtg7k0ApxR63q0W9VEJhWWP
+         m6bkgHqadtNE7lgaBMn+tvwFBbEBknyO1KrWqs1zMw4qkR7JHX/HmVnrfo6f7NDVkR
+         f2i2wP6rKemgcTqz6COJVNofUvu/7lenlrfMXAECq8mpwJMC9uCVAaryQM9yCxUxhM
+         gYP/Q0rVA0VyUYL0rrCee3i1S5oCGtxI7dZ0mXD2A3yR2NTTm1O/IoYkw0kaTkpMYH
+         RnyR+vcJ8SGhw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "Arnd Bergmann" <arnd@arndb.de>
+Cc:     "Arnd Bergmann" <arnd@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Johannes Berg" <johannes.berg@intel.com>,
+        "Manikanta Pubbisetty" <quic_mpubbise@quicinc.com>,
+        "Wen Gong" <quic_wgong@quicinc.com>,
+        "Baochen Qiang" <quic_bqiang@quicinc.com>,
+        "Sowmiya Sree Elavalagan" <quic_ssreeela@quicinc.com>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
+        ath12k@lists.infradead.org
+Subject: Re: [PATCH] wireless: ath: work around false-positive stringop-overread warning
+References: <20230417205447.1800912-1-arnd@kernel.org>
+        <87ttwnnrer.fsf@kernel.org>
+        <504c5a7d-0bfd-4b1e-a7f0-65d072657e0a@app.fastmail.com>
+Date:   Mon, 08 May 2023 17:57:39 +0300
+In-Reply-To: <504c5a7d-0bfd-4b1e-a7f0-65d072657e0a@app.fastmail.com> (Arnd
+        Bergmann's message of "Mon, 08 May 2023 10:52:11 +0200")
+Message-ID: <87mt2eoopo.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [bug report] wifi: rtw88: usb: fix priority queue to endpoint
- mapping
-Content-Language: en-US
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <c3f70197-829d-48ed-ae15-66a9de80fa90@kili.mountain>
- <ab52f337fdf842499912458efab7704c@realtek.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <ab52f337fdf842499912458efab7704c@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,16 +68,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/7/23 21:39, Ping-Ke Shih wrote:
-> return type of dma_mapping_to_ep() is 'int' and it also possibly returns -EINVAL, and
-> rtwusb->qsel_to_ep[] is used by qsel_to_ep() that also use 'int' as return type.
-> Therefore, I would like to change type of qsel_to_ep[] from 'u8' to 'int'. Does it
-> work to you?
-> 
-Sasha and Ping-Ke,
+"Arnd Bergmann" <arnd@arndb.de> writes:
 
-I have been testing using s8 rather than u8 for qsel_to_ep[], if you would like 
-to keep the array the same size. All the values fit within the s8 limits.
+> On Mon, May 8, 2023, at 10:44, Kalle Valo wrote:
+>
+>> Arnd Bergmann <arnd@kernel.org> writes:
+>>
+>>> From: Arnd Bergmann <arnd@arndb.de>
+>>>
+>>> In a rare arm64 randconfig build, I got multiple warnings for ath11k
+>>> and ath12k:
+>>>
+>>> In function 'ath11k_peer_assoc_h_ht',
+>>>     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2665:2:
+>>> drivers/net/wireless/ath/ath11k/mac.c:1709:13: error: 'ath11k_peer_assoc_h_ht_masked' reading 10 bytes from a region of size 0 [-Werror=stringop-overread]
+>>>  1709 |         if (ath11k_peer_assoc_h_ht_masked(ht_mcs_mask))
+>>>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>>
+>>> This happens whenever gcc-13 fails to inline one of the functions
+>>> that take a fixed-length array argument but gets passed a pointer.
+>>>
+>>> Change these functions to all take a regular pointer argument
+>>> instead.
+>>>
+>>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>>
+>> s/wireless:/wifi:/ but I can fix that.
+>
+> Ok, thanks!
+>
+>> In a awat it's a shame to lose the explicit length but I guess there's
+>> no other way to fix this?
+>
+> There might be, but I couldn't figure out a way that works.
 
-Larry
+Ok.
 
+>> Also I hope you find the time to add GCC 13 to crosstool :) Related to
+>> this
+>
+> I uploaded gcc-13.1.0 binaries last week, but still need to
+> update the html page, so it's not yet linked. You can navigate
+> the directories from the gcc-12 builds.
+
+Thanks! I was able to find the build[1] but having an issue:
+
+$ ./x86_64-linux-gcc -v
+./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.35' not found (required by ./x86_64-linux-gcc)
+./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by ./x86_64-linux-gcc)
+./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by ./x86_64-linux-gcc)
+./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.36' not found (required by ./x86_64-linux-gcc)
+./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by ./x86_64-linux-gcc)
+
+With older GCC versions from your page I don't have this problem. I'm
+using Debian 10 still so so is my libc too old?
+
+ii  libc6:amd64          2.28-10+deb10u2:amd6 GNU C Library: Shared libraries
+
+[1] https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/13.1.0/x86_64-gcc-13.1.0-nolibc-x86_64-linux.tar.gz
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
