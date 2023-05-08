@@ -2,132 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83BBD6FB34F
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 16:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C87F96FB489
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 17:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234227AbjEHO5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 10:57:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59816 "EHLO
+        id S234466AbjEHP6l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 11:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234034AbjEHO5t (ORCPT
+        with ESMTP id S234080AbjEHP6k (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 10:57:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80000E41;
-        Mon,  8 May 2023 07:57:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F16361F44;
-        Mon,  8 May 2023 14:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E4AC433EF;
-        Mon,  8 May 2023 14:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683557867;
-        bh=jpGRNu5+FvMQ20aEk+IlpTRzk8prDExhd+C0AMyLLyw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=anFJPecn/2S9eutk1Qd8p9EpzhLZTKjmEO6uDDAdmhnwqPwjC+Dc649EeATu+fW8r
-         Lg03ejDhC2ypyNUTlQLqxMQyTrheCnxW9JNKqZ/QoLxxtg7k0ApxR63q0W9VEJhWWP
-         m6bkgHqadtNE7lgaBMn+tvwFBbEBknyO1KrWqs1zMw4qkR7JHX/HmVnrfo6f7NDVkR
-         f2i2wP6rKemgcTqz6COJVNofUvu/7lenlrfMXAECq8mpwJMC9uCVAaryQM9yCxUxhM
-         gYP/Q0rVA0VyUYL0rrCee3i1S5oCGtxI7dZ0mXD2A3yR2NTTm1O/IoYkw0kaTkpMYH
-         RnyR+vcJ8SGhw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     "Arnd Bergmann" <arnd@arndb.de>
-Cc:     "Arnd Bergmann" <arnd@kernel.org>,
+        Mon, 8 May 2023 11:58:40 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C6E040D4;
+        Mon,  8 May 2023 08:58:39 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f00d41df22so29644816e87.1;
+        Mon, 08 May 2023 08:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683561517; x=1686153517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qoKeBGVLOBu4DrLK/qM8cN/bO+eEqfiWPQ9nbUj9vHo=;
+        b=njc2uBhQTwCCXVHXm/oE2IOFTW4zhdBqaTkEe+Jkvty3fbq0HmDNIHQ+Dtnov5JE5B
+         DlCRgIXF4wRZsVTIxt/In6dIIJjr93rvVkJbdIsGM0WJCVM2PkZZP6nK3YzraVbSFXZ/
+         y1axOGjBwCE6LLrV2/3hb3EdM9u2ked3GmCe5fNpfHcYDPSYlh20egY3TJDc/69WfH/S
+         JxsccU+FleZQKxQ98hjZKKI9ARdJDrE+RaZG1h0IycyLct/DXTCWhglMwDQ/8TryxT10
+         x6tdLtYXTIzB2e7w21vFDYkqfD65okleWow13EfeXpkPHi+Q2wdW6Wp9I8giWU6MD12i
+         BE7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683561517; x=1686153517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qoKeBGVLOBu4DrLK/qM8cN/bO+eEqfiWPQ9nbUj9vHo=;
+        b=VU3FADEDuY01raMw91lD/L4S9sUuOURItKEASwE1vIWy/6GSoOiGuy/KSa6gWCvRbT
+         8AwJvpMIXqW+XY3nRMi2sWEfUzh7YAiokIWiG0rUxgHwqILQAM0AoCX663rHo1ZOJ0M2
+         eOOAaqSGmQwUqs0b3+8Bq/r7WoRuZfcfU3vXEs97ZBZasFuFEiwRBZl0KWQqbH5gs1AJ
+         Vew9rY7K/vd35NDgDzQ4psPwlb6WDDWpaBgUpyFA9AYLis1BrtyYW67pa0nHOETs3Hrr
+         d23hQttWWUSlM5ZXQFVclDbJLUl7DiMVkAasDU5ZF850J9eKecRXtPAo1C6uQeJQmKz6
+         IE8w==
+X-Gm-Message-State: AC+VfDyIYnfKRXbu6jOBF84j6s0GTpAQ+8utGr55Wrf+UFY+EJKMn4oP
+        0yzXiQPgUDlYbRyQLb2cOFY=
+X-Google-Smtp-Source: ACHHUZ6pT3RD+p8XzST+vQ2EfJpmtSMjPL9zzBcCqUFO+eXzEx90tVk4CD3LshCQFBxntLgVrASleA==
+X-Received: by 2002:a05:6512:3b14:b0:4f1:b38d:bfb8 with SMTP id f20-20020a0565123b1400b004f1b38dbfb8mr1765747lfv.24.1683561517097;
+        Mon, 08 May 2023 08:58:37 -0700 (PDT)
+Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
+        by smtp.gmail.com with ESMTPSA id b29-20020ac25e9d000000b004edce1d338csm30878lfq.89.2023.05.08.08.58.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 May 2023 08:58:36 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     Felix Fietkau <nbd@nbd.name>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Johannes Berg" <johannes.berg@intel.com>,
-        "Manikanta Pubbisetty" <quic_mpubbise@quicinc.com>,
-        "Wen Gong" <quic_wgong@quicinc.com>,
-        "Baochen Qiang" <quic_bqiang@quicinc.com>,
-        "Sowmiya Sree Elavalagan" <quic_ssreeela@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
-        ath12k@lists.infradead.org
-Subject: Re: [PATCH] wireless: ath: work around false-positive stringop-overread warning
-References: <20230417205447.1800912-1-arnd@kernel.org>
-        <87ttwnnrer.fsf@kernel.org>
-        <504c5a7d-0bfd-4b1e-a7f0-65d072657e0a@app.fastmail.com>
-Date:   Mon, 08 May 2023 17:57:39 +0300
-In-Reply-To: <504c5a7d-0bfd-4b1e-a7f0-65d072657e0a@app.fastmail.com> (Arnd
-        Bergmann's message of "Mon, 08 May 2023 10:52:11 +0200")
-Message-ID: <87mt2eoopo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Christian Marangi <ansuelsmth@gmail.com>
+Subject: [PATCH] dt-bindings: mt76: support pointing to EEPROM using NVMEM cell
+Date:   Mon,  8 May 2023 17:58:20 +0200
+Message-Id: <20230508155820.9963-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Arnd Bergmann" <arnd@arndb.de> writes:
+From: Rafał Miłecki <rafal@milecki.pl>
 
-> On Mon, May 8, 2023, at 10:44, Kalle Valo wrote:
->
->> Arnd Bergmann <arnd@kernel.org> writes:
->>
->>> From: Arnd Bergmann <arnd@arndb.de>
->>>
->>> In a rare arm64 randconfig build, I got multiple warnings for ath11k
->>> and ath12k:
->>>
->>> In function 'ath11k_peer_assoc_h_ht',
->>>     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2665:2:
->>> drivers/net/wireless/ath/ath11k/mac.c:1709:13: error: 'ath11k_peer_assoc_h_ht_masked' reading 10 bytes from a region of size 0 [-Werror=stringop-overread]
->>>  1709 |         if (ath11k_peer_assoc_h_ht_masked(ht_mcs_mask))
->>>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>>
->>> This happens whenever gcc-13 fails to inline one of the functions
->>> that take a fixed-length array argument but gets passed a pointer.
->>>
->>> Change these functions to all take a regular pointer argument
->>> instead.
->>>
->>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->>
->> s/wireless:/wifi:/ but I can fix that.
->
-> Ok, thanks!
->
->> In a awat it's a shame to lose the explicit length but I guess there's
->> no other way to fix this?
->
-> There might be, but I couldn't figure out a way that works.
+All kind of calibration data should be described as NVMEM cells of NVMEM
+devices. That is more generic solution than "mediatek,mtd-eeprom" which
+is MTD specific.
 
-Ok.
+Add support for EEPROM NVMEM cells and deprecate existing MTD-based
+property.
 
->> Also I hope you find the time to add GCC 13 to crosstool :) Related to
->> this
->
-> I uploaded gcc-13.1.0 binaries last week, but still need to
-> update the html page, so it's not yet linked. You can navigate
-> the directories from the gcc-12 builds.
+Cc: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+---
+Ansuel is working on mt76 driver support for NVMEM based EEPROM access:
+https://github.com/openwrt/mt76/pull/765
 
-Thanks! I was able to find the build[1] but having an issue:
+I took the liberty to propose this binding patch.
 
-$ ./x86_64-linux-gcc -v
-./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.35' not found (required by ./x86_64-linux-gcc)
-./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.32' not found (required by ./x86_64-linux-gcc)
-./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.33' not found (required by ./x86_64-linux-gcc)
-./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.36' not found (required by ./x86_64-linux-gcc)
-./x86_64-linux-gcc: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by ./x86_64-linux-gcc)
+One important difference: my binding uses "eeprom" while Ansuel went
+with "precal". I found a lot of "eeprom" references and only one
+"precal". If you think however "precal" fits better please comment.
+---
+ .../bindings/net/wireless/mediatek,mt76.yaml         | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-With older GCC versions from your page I don't have this problem. I'm
-using Debian 10 still so so is my libc too old?
-
-ii  libc6:amd64          2.28-10+deb10u2:amd6 GNU C Library: Shared libraries
-
-[1] https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/13.1.0/x86_64-gcc-13.1.0-nolibc-x86_64-linux.tar.gz
-
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index 67b63f119f64..0500caa4107c 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -71,6 +71,14 @@ properties:
+ 
+   ieee80211-freq-limit: true
+ 
++  nvmem-cells:
++    items:
++      - description: NVMEM cell with EEPROM
++
++  nvmem-cell-names:
++    items:
++      - const: eeprom
++
+   mediatek,eeprom-data:
+     $ref: /schemas/types.yaml#/definitions/uint32-array
+     description:
+@@ -84,6 +92,7 @@ properties:
+           - description: offset containing EEPROM data
+     description:
+       Phandle to a MTD partition + offset containing EEPROM data
++    deprecated: true
+ 
+   big-endian:
+     $ref: /schemas/types.yaml#/definitions/flag
+@@ -258,7 +267,8 @@ examples:
+       interrupt-parent = <&cpuintc>;
+       interrupts = <6>;
+ 
+-      mediatek,mtd-eeprom = <&factory 0x0>;
++      nvmem-cells = <&eeprom>;
++      nvmem-cell-names = "eeprom";
+     };
+ 
+   - |
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.35.3
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
