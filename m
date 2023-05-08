@@ -2,51 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809B76FA36D
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 11:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA94A6FA63F
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 12:18:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233587AbjEHJf1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 05:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37222 "EHLO
+        id S234418AbjEHKSA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 06:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232854AbjEHJfZ (ORCPT
+        with ESMTP id S234353AbjEHKRs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 05:35:25 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA52A13A
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 02:35:24 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pvxH8-0001Rg-M1; Mon, 08 May 2023 11:35:22 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1pvxH8-0001Sj-39; Mon, 08 May 2023 11:35:22 +0200
-Date:   Mon, 8 May 2023 11:35:22 +0200
-From:   "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [bug report] wifi: rtw88: usb: fix priority queue to endpoint
- mapping
-Message-ID: <20230508093522.GV29365@pengutronix.de>
-References: <c3f70197-829d-48ed-ae15-66a9de80fa90@kili.mountain>
- <ab52f337fdf842499912458efab7704c@realtek.com>
+        Mon, 8 May 2023 06:17:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3BB6D04D;
+        Mon,  8 May 2023 03:17:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 59327624E3;
+        Mon,  8 May 2023 10:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464ABC433EF;
+        Mon,  8 May 2023 10:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1683541058;
+        bh=VcVr4HRav66u8ZpAo9LD0FoqBN0HlX52IbJUdRpdA3A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=VFzLzFjuY2C57YW22SpejTYohrt+YvL6XWMUzbeAa2wmlMmPOaVr8IdIGpeZwHMKc
+         sxMlYx/Yr9iHu7PvuUZj87Lu2qzGEO8ncC6q6+vrbI9VJZSJY0Ijtny12h9fzwM/Fm
+         tlYgsK7xSIif8u2TFHCb7Ea3KE/ZOrMLSt2MkZr0=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.1 601/611] wifi: ath11k: synchronize ath11k_mac_he_gi_to_nl80211_he_gi()s return type
+Date:   Mon,  8 May 2023 11:47:23 +0200
+Message-Id: <20230508094441.433673192@linuxfoundation.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230508094421.513073170@linuxfoundation.org>
+References: <20230508094421.513073170@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab52f337fdf842499912458efab7704c@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,46 +62,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Ping-Ke,
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-On Mon, May 08, 2023 at 02:39:19AM +0000, Ping-Ke Shih wrote:
-> Hi Sascha,
-> 
-> > -----Original Message-----
-> > From: Dan Carpenter <dan.carpenter@linaro.org>
-> > Sent: Thursday, May 4, 2023 6:56 PM
-> > To: s.hauer@pengutronix.de
-> > Cc: linux-wireless@vger.kernel.org
-> > Subject: [bug report] wifi: rtw88: usb: fix priority queue to endpoint mapping
-> > 
-> > Hello Sascha Hauer,
-> > 
-> > The patch a6f187f92bcc: "wifi: rtw88: usb: fix priority queue to
-> > endpoint mapping" from Apr 17, 2023, leads to the following Smatch
-> > static checker warning:
-> > 
-> > drivers/net/wireless/realtek/rtw88/usb.c:219 rtw_usb_parse() warn: assigning (-22) to unsigned variable
-> > 'rtwusb->qsel_to_ep[8]'
-> 
-> [...]
-> 
-> >     218         rtwusb->qsel_to_ep[TX_DESC_QSEL_TID7] = dma_mapping_to_ep(rqpn->dma_map_vo);
-> > --> 219         rtwusb->qsel_to_ep[TX_DESC_QSEL_TID8] = -EINVAL;
-> > 
-> > Can't save negative error codes to a u8.
-> > 
-> 
-> return type of dma_mapping_to_ep() is 'int' and it also possibly returns -EINVAL, and
-> rtwusb->qsel_to_ep[] is used by qsel_to_ep() that also use 'int' as return type. 
-> Therefore, I would like to change type of qsel_to_ep[] from 'u8' to 'int'. Does it
-> work to you?
+commit dd1c2322694522f674c874f5fa02ac5ae39135dd upstream.
 
-Fine with me. I acked your patch.
+ath11k_mac_he_gi_to_nl80211_he_gi() generates a valid warning with gcc-13:
+  drivers/net/wireless/ath/ath11k/mac.c:321:20: error: conflicting types for 'ath11k_mac_he_gi_to_nl80211_he_gi' due to enum/integer mismatch; have 'enum nl80211_he_gi(u8)'
+  drivers/net/wireless/ath/ath11k/mac.h:166:5: note: previous declaration of 'ath11k_mac_he_gi_to_nl80211_he_gi' with type 'u32(u8)'
 
-Sascha
+I.e. the type of the return value ath11k_mac_he_gi_to_nl80211_he_gi() in
+the declaration is u32, while the definition spells enum nl80211_he_gi.
+Synchronize them to the latter.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Cc: Martin Liska <mliska@suse.cz>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20221031114341.10377-1-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/wireless/ath/ath11k/mac.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/drivers/net/wireless/ath/ath11k/mac.h
++++ b/drivers/net/wireless/ath/ath11k/mac.h
+@@ -163,7 +163,7 @@ void ath11k_mac_drain_tx(struct ath11k *
+ void ath11k_mac_peer_cleanup_all(struct ath11k *ar);
+ int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
+ u8 ath11k_mac_bw_to_mac80211_bw(u8 bw);
+-u32 ath11k_mac_he_gi_to_nl80211_he_gi(u8 sgi);
++enum nl80211_he_gi ath11k_mac_he_gi_to_nl80211_he_gi(u8 sgi);
+ enum nl80211_he_ru_alloc ath11k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy);
+ enum nl80211_he_ru_alloc ath11k_mac_he_ru_tones_to_nl80211_he_ru_alloc(u16 ru_tones);
+ enum ath11k_supported_bw ath11k_mac_mac80211_bw_to_ath11k_bw(enum rate_info_bw bw);
+
+
