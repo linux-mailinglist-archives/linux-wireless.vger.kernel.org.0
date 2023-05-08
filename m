@@ -2,103 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 881A46FC09D
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 09:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0636FC198
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 10:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234305AbjEIHoE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 May 2023 03:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58096 "EHLO
+        id S234755AbjEIIWO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 May 2023 04:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233676AbjEIHoD (ORCPT
+        with ESMTP id S234739AbjEIIWL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 May 2023 03:44:03 -0400
-Received: from bin-mail-out-06.binero.net (bin-mail-out-06.binero.net [195.74.38.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D201AD0E
-        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 00:44:00 -0700 (PDT)
-X-Halon-ID: 3d682f38-ee3d-11ed-b7d6-cf458ee68324
-Authorized-sender: petter@technux.se
-Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
-        by bin-vsp-out-03.atm.binero.net (Halon) with ESMTPSA
-        id 3d682f38-ee3d-11ed-b7d6-cf458ee68324;
-        Tue, 09 May 2023 09:43:54 +0200 (CEST)
-From:   Petter Mabacker <petter@technux.se>
-To:     s.hauer@pengutronix.de
-Cc:     linux-wireless@vger.kernel.org, petter@technux.se,
-        pkshih@realtek.com, tony0620emma@gmail.com
-Subject: Re: rtw88: rtw8822cu (LM842) -> failed to get tx report from firmware
-Date:   Tue,  9 May 2023 09:43:50 +0200
-Message-Id: <20230509074350.2862571-1-petter@technux.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230508134626.GZ29365@pengutronix.de>
-References: <20230508134626.GZ29365@pengutronix.de>
+        Tue, 9 May 2023 04:22:11 -0400
+X-Greylist: delayed 88201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 May 2023 01:22:10 PDT
+Received: from mail.rawlinsfis.com (mail.rawlinsfis.com [89.40.118.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8857469D
+        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 01:22:10 -0700 (PDT)
+Received: by mail.rawlinsfis.com (Postfix, from userid 1001)
+        id 4D5B481DBD; Mon,  8 May 2023 08:45:59 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rawlinsfis.com;
+        s=mail; t=1683531969;
+        bh=lDo1OjfzzJ3sOfR9tSDg5RMmT4aDyBP45hIVJCLtIrE=;
+        h=Date:From:To:Subject:From;
+        b=mAVBVzDBvB2hbYYM1e6OFRL7hA4aiYBQB0C5LXsMm9BoXkat0rILuAvpY60k0cY0s
+         697Gc6wjrTBmIg4VbH7QGh8Sc0/v8+AuWdXQ0f+PSPRuEPZPJkn/vO5QBRhTPiVx7q
+         e+iJSKicuzkjXlLpTIM2b9xPuPWyqEKfeE50iNGrsedg2rONLEicQnQj4uTi4vJ8TO
+         lSsK8ULuNbqfewQBs7vW3feczNwyPQEC7kz7oHHK9UTN6pJ04frQBMReJNq65Eg7UK
+         5ZllDK0EBredqmXCYsHXAl8YG7DRObzyE1Kq05Rrbqzbv253eQ9FstkhrikvVjdfxE
+         dQN6TR+XHU3gA==
+Received: by mail.rawlinsfis.com for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 07:45:54 GMT
+Message-ID: <20230508074500-0.1.3d.5mf7.0.223f8i1khl@rawlinsfis.com>
+Date:   Mon,  8 May 2023 07:45:54 GMT
+From:   "Damian Hordych" <damian.hordych@rawlinsfis.com>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?Pompy_ciep=C5=82a_-_nowe_warunki_?=
+X-Mailer: mail.rawlinsfis.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->> I'm working with a Linux 6.1 based track, but with all the mentioned bug fixes cherry-picked to that track. They have all made the LM842 a lot more stabile, but the issue I see with "tx report failed" is currently blocking me from using the LM842, since the mender upgrade is a crucial part for my use-case.
->> 
->> I have been trying to find a better way to reproduce the issue, without any success so far. For me it takes just 10-30 sec with above mention flooding using iperf to at least trigger a similar case.
->> 
->> ...
->> [  671.908527] rtw_8822cu 1-1:1.2: failed to get rx_queue, overflow
->> [  671.914632] rtw_8822cu 1-1:1.2: failed to get rx_queue, overflow
->> [  671.920750] rtw_8822cu 1-1:1.2: failed to get rx_queue, overflow
->> [  671.926792] rtw_8822cu 1-1:1.2: failed to get rx_queue, overflow
->> [  671.932924] rtw_8822cu 1-1:1.2: failed to get rx_queue, overflow
+Dzie=C5=84 dobry,
 
->I am still not sure what to do about this. It happens with high RX load.
->One way would be to just drop the log level of this message.
->Otherwise this message should be harmless.
+w ramach nowej edycji programu Czyste Powietrze dla klient=C3=B3w indywid=
+ualnych mog=C4=85 otrzyma=C4=87 Pa=C5=84stwo do 135 tys. z=C5=82 wsparcia=
+ na zakup pompy ciep=C5=82a.
 
-Like stated in earlier mails, the initial problem was found during a mender upgrade (streaming a ~200MB file). In that case the problem occurs without any high RX load warnings. So that is not really related (at least I don't think so).
+Pr=C3=B3cz wy=C5=BCszego dofinansowania program zak=C5=82ada m.in. podwy=C5=
+=BCszenie prog=C3=B3w dochodowych oraz mo=C5=BCliwo=C5=9B=C4=87 z=C5=82o=C5=
+=BCenia kolejnego wniosku o dofinansowanie dla tych, kt=C3=B3rzy ju=C5=BC=
+ wcze=C5=9Bniej skorzystali z Programu.
 
-The real problem is that the driver ends-up in a not working state after this. Not even hot-plugging the dongle will help. Instead a reboot or reset of the driver (rmmod/insmod etc) is required.
+Jako firma specjalizuj=C4=85ca si=C4=99 w dostawie, monta=C5=BCu i serwis=
+ie pomp ciep=C5=82a pomo=C5=BCemy Pa=C5=84stwu w uzyskaniu dofinansowania=
+ wraz z kompleksow=C4=85 realizacj=C4=85 ca=C5=82ego projektu.
 
->> 
->> [  694.709045] rtw_8822cu 1-1:1.2: failed to get tx report from firmware
->> 
->> [  710.169496] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
->> [  717.701235] rtw_8822cu 1-1:1.2: failed to send h2c command
->> 
->> I can also mention that I'm running this in a i.MX6 SoloX based board.
->> 
->> I will let you guys know if I find a better way to reproduce the
->> issue. But if you have any good ideas what above error (that brings
->> down the entire interface) really mean (for example does it indicate
->> kernel or firmware issue), please feel free to share some information
->> about it and it might help me in troubleshooting the issue further.
+S=C4=85 Pa=C5=84stwo zainteresowani?
 
->Please try reproducing this with a recent mainline vanilla kernel. It
->shouldn't be too hard to bring up a i.MX6 board with a vanilla kernel.
-
-Just to be sure, I have tried this using latest kernel tree as you suggested:
-
-~# uname -r
-6.4.0-rc1-g5ca44e46dff4
-
-However I get the very same behavior (in this case it's from the failed mender upgrade):
-[  724.788270] rtw_8822cu 1-1:1.2: failed to get tx report from firmware
-[  728.499480] rtw_8822cu 1-1:1.2: failed to send h2c command
-[  758.558511] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
-May 09 06:48:17 iotgw mender[643]: time="2023-05-09T06:48:17Z" level=error msg="Download connection broken: read tcp 192.168.68.113:54072->52.239.140.42:443: read: connection timed out"
-[  796.975782] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
-[  835.251656] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
-[  843.586421] rtw_8822cu 1-1:1.2: failed to send h2c command
-
-When I try to hotplug the dongle (that still don't solve the issue). I can see below printout, any ideas what it really mean? (I never see this before the problem occurs, only when hotplugging after the problem occurs):
-
-[ 2298.729359] wlx34c9f08deb60: Limiting TX power to 23 (23 - 0) dBm as advertised by 1c:3b:f3:55:59:93
-
-Since you cannot reproduce the similar (perhaps not even the same root issue) issue I saw using iperf, I will focus on trying to reproduce it using something similar as the streaming procedure done by mender. Any other suggestions from your side, or any logs etc that could be of interest?
-
-BR Petter
-
->Regards,
-> Sascha
+Pozdrawiam
+Damian Hordych
