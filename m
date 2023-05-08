@@ -2,69 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B68086FB688
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 20:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E16096FB68A
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 20:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232717AbjEHS6c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 14:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
+        id S232429AbjEHS70 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 14:59:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjEHS6b (ORCPT
+        with ESMTP id S229452AbjEHS70 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 14:58:31 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE3855B6;
-        Mon,  8 May 2023 11:58:30 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1962e7284baso7122fac.3;
-        Mon, 08 May 2023 11:58:30 -0700 (PDT)
+        Mon, 8 May 2023 14:59:26 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 432C55FF4;
+        Mon,  8 May 2023 11:59:25 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-38ea3f8e413so2545127b6e.2;
+        Mon, 08 May 2023 11:59:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683572309; x=1686164309;
+        d=gmail.com; s=20221208; t=1683572364; x=1686164364;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=khJ7hj8pKzFr6tqyeboXwy6UfhzWTFVnsM5WxLOl67M=;
-        b=Zo84P87WI5Ps+SkkrQmvC+jCg+4VfseRp8HtoeRvasjynnkU0vS7bM96JKKunjJwGV
-         TrrFf892d1ur2PVpu4/o7OoR87P9BCNdk9HKLTk4kfaCvRN0oeWsFlrVabJQ47LhAlpu
-         h0HOKYIovqy9DfzVUzMaK4EJiAW30d0/8h8IQY5FnAEoitXgte4heA1ymkhOFZreQpqK
-         AvGUKxrtIn5yBILorWtEAIRSTUgdvtDSkOAKlqzZwZAd/p4HdVDZj2oI1+cjT78gQK6K
-         /qCCbeGgTWJf+KplquPJzl0pWwGDtp5o+1vQq2eXNyZikBNCLhx4MpBwx7pILAEn98Sz
-         gwFQ==
+        bh=PZkDmZHcRiHp/Q7/Uo7N6bFtU8+8Snn1+dcariI9Db4=;
+        b=p7x8BsPzsyBMuTdqQL1gaBcd3fyd9hwZMdGoMYHm1X8hGob2I1fze7ohSBdS/j+DIu
+         xngXoPWAF3mivdiM1jkhgY5e+xUbjp/nfO9+5j86Fjhmp9v/p8t6YE5qj+juHrmEpLPS
+         Arvib59/852hwYT5B12PYPdSJM2ZgG8xIc3OSwDWxfTUQP4eLFZxyxd2Q7tMnpfEMI33
+         OwWVJ+sCQ23sd7Yv9sWgX/x5q0BuflZf6sAF0cEpp8I6TBgnSbi56UpFPX+joCGgFkTU
+         zAs7CAqpGjUIcxr7nxrtj+RuUfyBx5gf8nlzt/Q3w3xH7Jaj9hdblLwYy9FZEdgrPT4B
+         r8OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683572309; x=1686164309;
+        d=1e100.net; s=20221208; t=1683572364; x=1686164364;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=khJ7hj8pKzFr6tqyeboXwy6UfhzWTFVnsM5WxLOl67M=;
-        b=eMGEdqqvy8hdNQQdPXG0oaS3mSIvFThOJiLkR7603Gi397LnODepdCzykR8JbPo2pB
-         WCHd4wQgUmUVBJEIHV2xlXJhKqbvlUhSVwhF+ux86bmdEP4xpPx2AMWb/jD4WK+Kvdan
-         yZYwXGNB1/zhkx5otvMS1O+TNriFSJwHV/bHe2eq4MrA8Xjq758o421KkvnkjpIMOxDG
-         THEkMNh0g0YaSBxm/zVcNkwHpB5z0fyWyhL9md/LcmhtNTFDYp5gN0Gl0wYzqX52O9y/
-         FlodPPMVfTkVFAjOzxxHfZQ69SG6+nWteFIv/hgMhwJMMccYRV/T+GGrBJdVCryHZEXT
-         59/A==
-X-Gm-Message-State: AC+VfDyu1DcpgmX/Fnfl8jxFTJmmsS+2MLTha3fHKrBhTRqSk0kO0qmX
-        Kdm8rsCWZxDWM4zISSdK+yA=
-X-Google-Smtp-Source: ACHHUZ6qrVcnbOYHKkYyusot+yOC9Ow29ttRwx7lPN1Jp+Xc9r0nKJgHT+eEVd0nRzF1YmOPUPc9QA==
-X-Received: by 2002:a05:6870:5141:b0:18e:8a68:fe41 with SMTP id z1-20020a056870514100b0018e8a68fe41mr5507010oak.56.1683572309668;
-        Mon, 08 May 2023 11:58:29 -0700 (PDT)
+        bh=PZkDmZHcRiHp/Q7/Uo7N6bFtU8+8Snn1+dcariI9Db4=;
+        b=fHon4haFIOgY3O1Hqrzoo3ys9tQKIvaWhWpmF3ZMGd97GfAGbkBcWX9t53QQGSxFPZ
+         PxbWa0RoDuXC4HyV0kapUWxXVe1FWH1xsavORdJ41ES67edAIDb2SoQeHAmUCbubT3mA
+         ziVtPwGOgFWzvKbBzcurvj00KXD8oE7xbt/zB1brFuYYgO8Vd6vYl7WMRyzK99h1n6t+
+         VRW0dqIo3QTb7kRJu/J979fpeY5G/KiGosqIfE6Jl2739HCse1Zkx42rlvgCB2lB1cdj
+         c+c/AG63wjJQFrW1Vh0nm9tu9CTEzDHfl1yBtpIFjk/uSWjPGjUmdsF1B39HCDCarCXK
+         HP/Q==
+X-Gm-Message-State: AC+VfDwV+4vfY2e+iSs3dOQ8Dgtbzhk3MIny/sZIztBuLjZqskbGeyTv
+        P6NviA+pejXhlNvCaI0OTMo=
+X-Google-Smtp-Source: ACHHUZ44oeGRxyI4iSdEzH2tiKUCbu/BdxXUIpsgke9dmFcxggtZej2UJWEYFmoxqSrHSDEamQm/lQ==
+X-Received: by 2002:a05:6808:3a84:b0:38e:8d7f:c07e with SMTP id fb4-20020a0568083a8400b0038e8d7fc07emr17370oib.52.1683572364484;
+        Mon, 08 May 2023 11:59:24 -0700 (PDT)
 Received: from [10.62.118.118] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id h3-20020a056870860300b0017fea9c156esm5248412oal.18.2023.05.08.11.58.29
+        by smtp.gmail.com with ESMTPSA id 6-20020aca0b06000000b0038c5c0d8a83sm311408oil.33.2023.05.08.11.59.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 11:58:29 -0700 (PDT)
+        Mon, 08 May 2023 11:59:24 -0700 (PDT)
 Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <33aff1cc-37f9-88a5-9fd5-5d8db21dc42d@lwfinger.net>
-Date:   Mon, 8 May 2023 13:58:28 -0500
+Message-ID: <8975f4d5-b042-5983-e15a-40b8a3452a9f@lwfinger.net>
+Date:   Mon, 8 May 2023 13:59:22 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: Re: [PATCH] wifi: rtw88: use work to update rate to avoid RCU warning
+Subject: Re: [PATCH] wifi: rtw88: correct qsel_to_ep[] type as int
 Content-Language: en-US
 To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org,
         tony0620emma@gmail.com
-Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20230508085429.46653-1-pkshih@realtek.com>
+Cc:     s.hauer@pengutronix.de, stable@vger.kernel.org,
+        dan.carpenter@linaro.org, linux-wireless@vger.kernel.org
+References: <20230508085539.46795-1-pkshih@realtek.com>
 From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20230508085429.46653-1-pkshih@realtek.com>
+In-Reply-To: <20230508085539.46795-1-pkshih@realtek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -78,59 +79,21 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/8/23 03:54, Ping-Ke Shih wrote:
-> The ieee80211_ops::sta_rc_update must be atomic, because
-> ieee80211_chan_bw_change() holds rcu_read lock while calling
-> drv_sta_rc_update(), so create a work to do original things.
-> 
->   Voluntary context switch within RCU read-side critical section!
->   WARNING: CPU: 0 PID: 4621 at kernel/rcu/tree_plugin.h:318
->   rcu_note_context_switch+0x571/0x5d0
->   CPU: 0 PID: 4621 Comm: kworker/u16:2 Tainted: G        W  OE
->   Workqueue: phy3 ieee80211_chswitch_work [mac80211]
->   RIP: 0010:rcu_note_context_switch+0x571/0x5d0
->   Call Trace:
->    <TASK>
->    __schedule+0xb0/0x1460
->    ? __mod_timer+0x116/0x360
->    schedule+0x5a/0xc0
->    schedule_timeout+0x87/0x150
->    ? trace_raw_output_tick_stop+0x60/0x60
->    wait_for_completion_timeout+0x7b/0x140
->    usb_start_wait_urb+0x82/0x160 [usbcore
->    usb_control_msg+0xe3/0x140 [usbcore
->    rtw_usb_read+0x88/0xe0 [rtw_usb
->    rtw_usb_read8+0xf/0x10 [rtw_usb
->    rtw_fw_send_h2c_command+0xa0/0x170 [rtw_core
->    rtw_fw_send_ra_info+0xc9/0xf0 [rtw_core
->    drv_sta_rc_update+0x7c/0x160 [mac80211
->    ieee80211_chan_bw_change+0xfb/0x110 [mac80211
->    ieee80211_change_chanctx+0x38/0x130 [mac80211
->    ieee80211_vif_use_reserved_switch+0x34e/0x900 [mac80211
->    ieee80211_link_use_reserved_context+0x88/0xe0 [mac80211
->    ieee80211_chswitch_work+0x95/0x170 [mac80211
->    process_one_work+0x201/0x410
->    worker_thread+0x4a/0x3b0
->    ? process_one_work+0x410/0x410
->    kthread+0xe1/0x110
->    ? kthread_complete_and_exit+0x20/0x20
->    ret_from_fork+0x1f/0x30
->    </TASK>
+On 5/8/23 03:55, Ping-Ke Shih wrote:
+> qsel_to_ep[] can be assigned negative value, so change type from 'u8' to
+> 'int'. Otherwise, Smatch static checker warns:
+>    drivers/net/wireless/realtek/rtw88/usb.c:219 rtw_usb_parse() warn:
+>    assigning (-22) to unsigned variable 'rtwusb->qsel_to_ep[8]'
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: c1edc86472fc ("rtw88: add ieee80211:sta_rc_update ops")
-> Reported-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Link: https://lore.kernel.org/linux-wireless/f1e31e8e-f84e-3791-50fb-663a83c5c6e9@lwfinger.net/T/#t
+> Fixes: a6f187f92bcc ("wifi: rtw88: usb: fix priority queue to endpoint mapping")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Link: https://lore.kernel.org/linux-wireless/c3f70197-829d-48ed-ae15-66a9de80fa90@kili.mountain/
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 > ---
->   drivers/net/wireless/realtek/rtw88/mac80211.c |  2 +-
->   drivers/net/wireless/realtek/rtw88/main.c     | 15 +++++++++++++++
->   drivers/net/wireless/realtek/rtw88/main.h     |  3 +++
->   3 files changed, 19 insertions(+), 1 deletion(-)
 
 Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-
-Thanks,
 
 Larry
 
