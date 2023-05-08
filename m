@@ -2,146 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5FB6FA286
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC4EF6FA288
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 May 2023 10:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233230AbjEHIoJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 04:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33216 "EHLO
+        id S232854AbjEHIo4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 04:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233221AbjEHIoH (ORCPT
+        with ESMTP id S233297AbjEHIoy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 04:44:07 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0822421558
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 01:44:01 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3488hnOM3008152, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3488hnOM3008152
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 8 May 2023 16:43:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 8 May 2023 16:43:55 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 8 May 2023
- 16:43:54 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <timlee@realtek.com>, <kevin_yang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/3] wifi: rtw89: suppress the log for specific SER called CMDPSR_FRZTO
-Date:   Mon, 8 May 2023 16:43:35 +0800
-Message-ID: <20230508084335.42953-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230508084335.42953-1-pkshih@realtek.com>
-References: <20230508084335.42953-1-pkshih@realtek.com>
+        Mon, 8 May 2023 04:44:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB14A4ED3;
+        Mon,  8 May 2023 01:44:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 604B162099;
+        Mon,  8 May 2023 08:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC5FC433EF;
+        Mon,  8 May 2023 08:44:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683535492;
+        bh=4r3I/p321L24aAx0oFkvVjKBy4Ysck/E+5s0WPzJpB4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Idi0uxdhC0IAIqdFhRDaGnjKm6BtsAeoZxde4HBaCAGj0spmTGStkmr7e8SPNw8rp
+         Nu3QMcgKRSvP1m4fTcff+oBGfiROJfCLvCF27uuKlSHDOjPB0A4pKZqhWCbmunFJMb
+         eTmXv+aOLEvT0SLoNxKYjChy9TaxfsZXlIpTN1SeIDxO4OKSk3xASB0H1FeBzVxKLa
+         Wuk7qx5qIQ8otkjmAUrArGp0Bhz71uBjmHEbG+SPtFR5g+YEyp5fbBgTfteLOxSg+e
+         JwQYSksPZCHm3jVUueeJJeprPuDHMim7rJONUbR+kSr6rK7McAE1OfM4B0POrZ/xeW
+         /QUr6qcr0r/WA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
+        Wen Gong <quic_wgong@quicinc.com>,
+        Baochen Qiang <quic_bqiang@quicinc.com>,
+        Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ath12k@lists.infradead.org
+Subject: Re: [PATCH] wireless: ath: work around false-positive stringop-overread warning
+References: <20230417205447.1800912-1-arnd@kernel.org>
+Date:   Mon, 08 May 2023 11:44:44 +0300
+In-Reply-To: <20230417205447.1800912-1-arnd@kernel.org> (Arnd Bergmann's
+        message of "Mon, 17 Apr 2023 22:54:20 +0200")
+Message-ID: <87ttwnnrer.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chin-Yen Lee <timlee@realtek.com>
+Arnd Bergmann <arnd@kernel.org> writes:
 
-For 8852CE, there is abnormal state called CMDPSR_FRZTO,
-which occasionally happens in some platforms, and could be
-found by firmware and fixed in current SER flow, so we add
-suppress function to avoid verbose message for this resolved case.
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> In a rare arm64 randconfig build, I got multiple warnings for ath11k
+> and ath12k:
+>
+> In function 'ath11k_peer_assoc_h_ht',
+>     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2665:2:
+> drivers/net/wireless/ath/ath11k/mac.c:1709:13: error: 'ath11k_peer_assoc_h_ht_masked' reading 10 bytes from a region of size 0 [-Werror=stringop-overread]
+>  1709 |         if (ath11k_peer_assoc_h_ht_masked(ht_mcs_mask))
+>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> This happens whenever gcc-13 fails to inline one of the functions
+> that take a fixed-length array argument but gets passed a pointer.
+>
+> Change these functions to all take a regular pointer argument
+> instead.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h |  1 +
- drivers/net/wireless/realtek/rtw89/mac.c  | 36 +++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+s/wireless:/wifi:/ but I can fix that.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index b71827751848a..154fec1a231d1 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3939,6 +3939,7 @@ enum rtw89_ser_rcvy_step {
- 	RTW89_SER_DRV_STOP_RX,
- 	RTW89_SER_DRV_STOP_RUN,
- 	RTW89_SER_HAL_STOP_DMA,
-+	RTW89_SER_SUPPRESS_LOG,
- 	RTW89_NUM_OF_SER_FLAGS
- };
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index e5996a94c0def..acba53cf7cc31 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -644,6 +644,39 @@ static void rtw89_mac_dump_err_status(struct rtw89_dev *rtwdev,
- 	rtw89_info(rtwdev, "<---\n");
- }
- 
-+static bool rtw89_mac_suppress_log(struct rtw89_dev *rtwdev, u32 err)
-+{
-+	struct rtw89_ser *ser = &rtwdev->ser;
-+	u32 dmac_err, imr, isr;
-+	int ret;
-+
-+	if (rtwdev->chip->chip_id == RTL8852C) {
-+		ret = rtw89_mac_check_mac_en(rtwdev, 0, RTW89_DMAC_SEL);
-+		if (ret)
-+			return true;
-+
-+		if (err == MAC_AX_ERR_L1_ERR_DMAC) {
-+			dmac_err = rtw89_read32(rtwdev, R_AX_DMAC_ERR_ISR);
-+			imr = rtw89_read32(rtwdev, R_AX_TXPKTCTL_B0_ERRFLAG_IMR);
-+			isr = rtw89_read32(rtwdev, R_AX_TXPKTCTL_B0_ERRFLAG_ISR);
-+
-+			if ((dmac_err & B_AX_TXPKTCTRL_ERR_FLAG) &&
-+			    ((isr & imr) & B_AX_B0_ISR_ERR_CMDPSR_FRZTO)) {
-+				set_bit(RTW89_SER_SUPPRESS_LOG, ser->flags);
-+				return true;
-+			}
-+		} else if (err == MAC_AX_ERR_L1_RESET_DISABLE_DMAC_DONE) {
-+			if (test_bit(RTW89_SER_SUPPRESS_LOG, ser->flags))
-+				return true;
-+		} else if (err == MAC_AX_ERR_L1_RESET_RECOVERY_DONE) {
-+			if (test_and_clear_bit(RTW89_SER_SUPPRESS_LOG, ser->flags))
-+				return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
- {
- 	u32 err, err_scnr;
-@@ -667,6 +700,9 @@ u32 rtw89_mac_get_err_status(struct rtw89_dev *rtwdev)
- 	else if (err_scnr == RTW89_RXI300_ERROR)
- 		err = MAC_AX_ERR_RXI300;
- 
-+	if (rtw89_mac_suppress_log(rtwdev, err))
-+		return err;
-+
- 	rtw89_fw_st_dbg_dump(rtwdev);
- 	rtw89_mac_dump_err_status(rtwdev, err);
- 
+In a awat it's a shame to lose the explicit length but I guess there's
+no other way to fix this?
+
+Also I hope you find the time to add GCC 13 to crosstool :) Related to
+this, last year we had a similar warning with GCC 11 for which I added this
+not-so-pretty workaround:
+
+abf93f369419 wifi: ath11k: mac: fix reading 16 bytes from a region of size 0 warning
+
+https://git.kernel.org/linus/abf93f369419
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
