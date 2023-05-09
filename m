@@ -2,191 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA1A6FBCB2
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 03:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF936FBD8A
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 05:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233900AbjEIBvJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 8 May 2023 21:51:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
+        id S232838AbjEIDMe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 8 May 2023 23:12:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233895AbjEIBvD (ORCPT
+        with ESMTP id S234498AbjEIDM3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 8 May 2023 21:51:03 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37473AD23;
-        Mon,  8 May 2023 18:50:46 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1aaebed5bd6so37148685ad.1;
-        Mon, 08 May 2023 18:50:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683597045; x=1686189045;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QMTTy8Xq3DQysjr0Apwc28XqtPWPIN/Qk2iVDooviS4=;
-        b=DcJ7t//ro7U/ttHMBFC9attG41EeH8VZtSXuwOroBYbJWhoKZNI4AV1KG5CeHOcRmO
-         ECsAMMzBkOBp29bRrORU2z666uQHw0dYQm+6fgQkpamYB4oKMGKokl0W8OZrujBS6ltA
-         oJkH2HEjJ/yL50TyNebQGtX6iXTrrOCoja74sdoYXYeZ36wllotLKdhFh6JwLGfRZJvZ
-         XXy8Sfcu2kvmbNC4oHLLSbLaM40HpkKcN8u4d+BFupNEL5GNVORMOj1sRkjxxbEovwk8
-         ySdD1vMNYGpJZXuXyMdszB62AKUBeDypRwSg7TaF1EN00A3P4fDhAvnQrY8Rhzixh4Cu
-         sONQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683597045; x=1686189045;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QMTTy8Xq3DQysjr0Apwc28XqtPWPIN/Qk2iVDooviS4=;
-        b=LaUZsJrc4COiF5Ik6UCdJxCoWH9zTIxpGsFFxLX2L0CUa+YmbF8q0h21j2cdmSq1OM
-         w0yrgcuTJ4S1joDnKAgiQlE6pgljP11IAVWtMzAKi6BK3nacigyNh3KwMjflQHG7vfIs
-         mDa64VRw8eax3LXJ30ZM14WHQ5EsIQbr1ZkBjcGVGip6fa9Rdv63MT0NHGynV4NzHibA
-         AMbdAggVLKRtoTbT016EeX4Cdo+hs2XhdjlVuXhXvWAGtNYnzFmq04OYywGLSz77qqO2
-         NHZ1CDWqOkFyG3l+8gbb1hyJag0lJKQzmDXGjzuEHvvzUx7AyMtYNa9vLWF3tQ9yWCgP
-         1tbw==
-X-Gm-Message-State: AC+VfDwma+Hk9fYb5w4pEsQYz+/ZoXPTUPBG2FEhYIWvsAeuCoOjOLyS
-        srRtQZC7Ny7EDuyqWiVNHO4=
-X-Google-Smtp-Source: ACHHUZ4bv7//zjoXAVozZ9A4o/qCIb2Vg+jgfHItIU4zO6YD64j7Wt4dENV1GblH0pUluA5l6Rlrhw==
-X-Received: by 2002:a17:902:ef96:b0:1aa:ce4d:c77d with SMTP id iz22-20020a170902ef9600b001aace4dc77dmr11830781plb.24.1683597045176;
-        Mon, 08 May 2023 18:50:45 -0700 (PDT)
-Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
-        by smtp.gmail.com with ESMTPSA id i12-20020a17090332cc00b001ac5896e96esm139330plr.207.2023.05.08.18.50.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 18:50:44 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-From:   Tejun Heo <tj@kernel.org>
-To:     jiangshanlai@gmail.com
-Cc:     linux-kernel@vger.kernel.org, kernel-team@meta.com,
-        Tejun Heo <tj@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH 05/13] wifi: ath10/11/12k: Use alloc_ordered_workqueue() to create ordered workqueues
-Date:   Mon,  8 May 2023 15:50:24 -1000
-Message-Id: <20230509015032.3768622-6-tj@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230509015032.3768622-1-tj@kernel.org>
-References: <20230509015032.3768622-1-tj@kernel.org>
+        Mon, 8 May 2023 23:12:29 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B051A93FB
+        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 20:12:09 -0700 (PDT)
+X-UUID: 4416d12aee1711edb20a276fd37b9834-20230509
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=KGzNdZj5bBIgcavZMAN1mE0iGEII7p8CqoCQyefWETw=;
+        b=hrbsO0vrU6OQZnpvUkbc1nODgIZ01IVEefuOmoihwfCyj6zdcI/V437uUVqBC4mhcA12vzHhb+YEKSKf4MffZXT3g03bEDwsOThTgNjeCxJPBzKcNTjoeElU1k4kPgKYCb2H+9Sdk9y6TKVryjNRC3aSNep7QO81feryiZkpy4E=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.23,REQID:5e05cc90-e35f-4a6f-8927-20908c949e21,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+        :release,TS:95
+X-CID-INFO: VERSION:1.1.23,REQID:5e05cc90-e35f-4a6f-8927-20908c949e21,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTION
+        :quarantine,TS:95
+X-CID-META: VersionHash:697ab71,CLOUDID:23312f6b-2f20-4998-991c-3b78627e4938,B
+        ulkID:230509111201QP2C2WXZ,BulkQuantity:0,Recheck:0,SF:28|17|19|48|38|29,T
+        C:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+        L:0,OSI:0,OSA:0,AV:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-UUID: 4416d12aee1711edb20a276fd37b9834-20230509
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 2052149975; Tue, 09 May 2023 11:12:01 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 9 May 2023 11:12:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Tue, 9 May 2023 11:12:00 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        <linux-mediatek@lists.infradead.org>,
+        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7915: fix background radar event being blocked
+Date:   Tue, 9 May 2023 11:11:57 +0800
+Message-ID: <5cc3ad59270940a3c4229a4c780e106b1b0fe53c.1683587774.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,RDNS_NONE,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-BACKGROUND
-==========
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-When multiple work items are queued to a workqueue, their execution order
-doesn't match the queueing order. They may get executed in any order and
-simultaneously. When fully serialized execution - one by one in the queueing
-order - is needed, an ordered workqueue should be used which can be created
-with alloc_ordered_workqueue().
+The background radar uses MT_RX_SEL2 as its band indication, so fix it.
 
-However, alloc_ordered_workqueue() was a later addition. Before it, an
-ordered workqueue could be obtained by creating an UNBOUND workqueue with
-@max_active==1. This originally was an implementation side-effect which was
-broken by 4c16bd327c74 ("workqueue: restore WQ_UNBOUND/max_active==1 to be
-ordered"). Because there were users that depended on the ordered execution,
-5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1 to be ordered")
-made workqueue allocation path to implicitly promote UNBOUND workqueues w/
-@max_active==1 to ordered workqueues.
-
-While this has worked okay, overloading the UNBOUND allocation interface
-this way creates other issues. It's difficult to tell whether a given
-workqueue actually needs to be ordered and users that legitimately want a
-min concurrency level wq unexpectedly gets an ordered one instead. With
-planned UNBOUND workqueue updates to improve execution locality and more
-prevalence of chiplet designs which can benefit from such improvements, this
-isn't a state we wanna be in forever.
-
-This patch series audits all callsites that create an UNBOUND workqueue w/
-@max_active==1 and converts them to alloc_ordered_workqueue() as necessary.
-
-WHAT TO LOOK FOR
-================
-
-The conversions are from
-
-  alloc_workqueue(WQ_UNBOUND | flags, 1, args..)
-
-to
-
-  alloc_ordered_workqueue(flags, args...)
-
-which don't cause any functional changes. If you know that fully ordered
-execution is not ncessary, please let me know. I'll drop the conversion and
-instead add a comment noting the fact to reduce confusion while conversion
-is in progress.
-
-If you aren't fully sure, it's completely fine to let the conversion
-through. The behavior will stay exactly the same and we can always
-reconsider later.
-
-As there are follow-up workqueue core changes, I'd really appreciate if the
-patch can be routed through the workqueue tree w/ your acks. Thanks.
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
+Fixes: 7a53eecd5c87 (wifi: mt76: mt7915: check the correctness of event data)
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
- drivers/net/wireless/ath/ath10k/qmi.c | 3 +--
- drivers/net/wireless/ath/ath11k/qmi.c | 3 +--
- drivers/net/wireless/ath/ath12k/qmi.c | 3 +--
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 038c5903c0dc..52c1a3de8da6 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -1082,8 +1082,7 @@ int ath10k_qmi_init(struct ath10k *ar, u32 msa_size)
- 	if (ret)
- 		goto err;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 9fcb22fa1f97..088a065e37d5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -274,7 +274,7 @@ mt7915_mcu_rx_radar_detected(struct mt7915_dev *dev, struct sk_buff *skb)
  
--	qmi->event_wq = alloc_workqueue("ath10k_qmi_driver_event",
--					WQ_UNBOUND, 1);
-+	qmi->event_wq = alloc_ordered_workqueue("ath10k_qmi_driver_event", 0);
- 	if (!qmi->event_wq) {
- 		ath10k_err(ar, "failed to allocate workqueue\n");
- 		ret = -EFAULT;
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index ab923e24b0a9..26b252e62909 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -3256,8 +3256,7 @@ int ath11k_qmi_init_service(struct ath11k_base *ab)
- 		return ret;
- 	}
+ 	r = (struct mt7915_mcu_rdd_report *)skb->data;
  
--	ab->qmi.event_wq = alloc_workqueue("ath11k_qmi_driver_event",
--					   WQ_UNBOUND, 1);
-+	ab->qmi.event_wq = alloc_ordered_workqueue("ath11k_qmi_driver_event", 0);
- 	if (!ab->qmi.event_wq) {
- 		ath11k_err(ab, "failed to allocate workqueue\n");
- 		return -EFAULT;
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 03ba245fbee9..0a7892b1a8f8 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -3056,8 +3056,7 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
- 		return ret;
- 	}
+-	if (r->band_idx > MT_BAND1)
++	if (r->band_idx > MT_RX_SEL2)
+ 		return;
  
--	ab->qmi.event_wq = alloc_workqueue("ath12k_qmi_driver_event",
--					   WQ_UNBOUND, 1);
-+	ab->qmi.event_wq = alloc_ordered_workqueue("ath12k_qmi_driver_event", 0);
- 	if (!ab->qmi.event_wq) {
- 		ath12k_err(ab, "failed to allocate workqueue\n");
- 		return -EFAULT;
+ 	if ((r->band_idx && !dev->phy.mt76->band_idx) &&
 -- 
-2.40.1
+2.18.0
 
