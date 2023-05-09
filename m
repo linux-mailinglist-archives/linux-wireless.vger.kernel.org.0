@@ -2,63 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A401D6FCBA0
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 18:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E75D46FCC3E
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 19:03:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjEIQsb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 May 2023 12:48:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32802 "EHLO
+        id S235371AbjEIRD2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 May 2023 13:03:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233293AbjEIQsa (ORCPT
+        with ESMTP id S235275AbjEIRDM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 May 2023 12:48:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B525F1732;
-        Tue,  9 May 2023 09:48:29 -0700 (PDT)
+        Tue, 9 May 2023 13:03:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB061D2CF
+        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 10:00:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BAE862CFC;
-        Tue,  9 May 2023 16:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C37CC433D2;
-        Tue,  9 May 2023 16:48:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FF5D60F4D
+        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 16:59:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7769DC433EF;
+        Tue,  9 May 2023 16:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683650908;
-        bh=LmjYrDWXMZE+8F8WkMaybmS9iZ4N0nimi6u9xcjFLKw=;
+        s=k20201202; t=1683651563;
+        bh=nJ7qm7dCXPLZjsUv2Zv2I3JSUpvWHMqX5gDg8LKZjmc=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=tt6jpfyiENoz5vf/hNM2dFYrXBE3rwqEm5YlxpWgmSbjpWgSb0HlsDwfQEGWzW/U8
-         khDffhNuS0gK3J0c4VBdGPx+SL0VHUDQGL3Hax0enSTzgyJhvA2/XcmIq67TL4OsZF
-         yVRuho1lTp0XgQDdn2b4wRBYCklmWQtMu+dsxAjkGux5E0U0S+Q4D0vLhyhUuMKyKj
-         o4NdE5m+rfNOicFPmRWj3/O945/d0l+axShBhrO7VMgwCyKmzRxg8GpdROAAvRNW4v
-         YF/aZCKw8fZ8CXR0DAH/+t7UocW91MxFFt8v+AegAhRpvoBpZi9VF999DtPpqhPQh8
-         aTzX2VBX17Ikw==
+        b=MID/fIbNlOxp3BXiZ39BIObWwCumMLRBa0r0jPe+3lNBBRbZtNLf+owPIbOZAjYrx
+         pZvJ8n0bN7W2AdjxZxwlCmPX5qFtcu1Sc3CMrbSZcCDdmBYdtRli4YzVJDokpoFEU1
+         lCg1WGEKBeTbSnwlZ3o1qWf4bX6oB0rB+pxHg9Hu9Ap3pj9/9EX0CYNKN0CCAnu9QB
+         4wXsK6jpuMcUdf/hVliUT9gqcBhW/a9veqsWHDT1eezMJvbbpwuD7nQIOS5e3qmoG2
+         XGHmjIrayhjD4q2fvhQzQIewZnUU8X8Kf7rW0MvSjWQLbkoQPA9CK9xFAy4BB3v/Lm
+         TXsu+GTwoqfzA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wireless: ath: work around false-positive
- stringop-overread
- warning
+Subject: Re: [PATCH v3 1/7] wifi: ath11k: driver settings for MBSSID and EMA
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230417205447.1800912-1-arnd@kernel.org>
-References: <20230417205447.1800912-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>,
-        Wen Gong <quic_wgong@quicinc.com>,
-        Baochen Qiang <quic_bqiang@quicinc.com>,
-        Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ath12k@lists.infradead.org
+In-Reply-To: <20230405221648.17950-2-quic_alokad@quicinc.com>
+References: <20230405221648.17950-2-quic_alokad@quicinc.com>
+To:     Aloka Dixit <quic_alokad@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168365090000.15706.12307969406639304142.kvalo@kernel.org>
-Date:   Tue,  9 May 2023 16:48:25 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <168365155854.21274.2582854709073882511.kvalo@kernel.org>
+Date:   Tue,  9 May 2023 16:59:22 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,32 +54,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> wrote:
+Aloka Dixit <quic_alokad@quicinc.com> wrote:
 
-> In a rare arm64 randconfig build, I got multiple warnings for ath11k
-> and ath12k:
+> Advertise the driver support for multiple BSSID (MBSSID) and
+> enhanced multi-BSSID advertisements (EMA) by setting extended
+> capabilities.
 > 
-> In function 'ath11k_peer_assoc_h_ht',
->     inlined from 'ath11k_peer_assoc_prepare' at drivers/net/wireless/ath/ath11k/mac.c:2665:2:
-> drivers/net/wireless/ath/ath11k/mac.c:1709:13: error: 'ath11k_peer_assoc_h_ht_masked' reading 10 bytes from a region of size 0 [-Werror=stringop-overread]
->  1709 |         if (ath11k_peer_assoc_h_ht_masked(ht_mcs_mask))
->       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> Configure mbssid_max_interfaces and ema_max_profile_periodicity
+> fields in structure wiphy which are used to advertise maximum number
+> of interfaces and profile periodicity supported by the driver.
 > 
-> This happens whenever gcc-13 fails to inline one of the functions
-> that take a fixed-length array argument but gets passed a pointer.
+> Add new WMI fields to configure maximum vdev count supported for
+> MBSSID and profile periodicity in case of EMA.
+> Setting WMI_RSRC_CFG_FLAG2_CALC_NEXT_DTIM_COUNT_SET flag
+> indicates that the firmware should track and update the DTIM counts
+> for each non-transmitted profile.
 > 
-> Change these functions to all take a regular pointer argument
-> instead.
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
 > 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+> Co-developed-by: John Crispin <john@phrozen.org>
+> Signed-off-by: John Crispin <john@phrozen.org>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+7 patches applied to ath-next branch of ath.git, thanks.
 
-695df2f417d2 wifi: ath: work around false-positive stringop-overread warning
+a08dbb04d736 wifi: ath11k: driver settings for MBSSID and EMA
+5a81610acf66 wifi: ath11k: MBSSID configuration during vdev create/start
+cf604e72bc6e wifi: ath11k: rename MBSSID fields in wmi_vdev_up_cmd
+c82dc33f252f wifi: ath11k: MBSSID parameter configuration in AP mode
+cb9bea773c85 wifi: ath11k: refactor vif parameter configurations
+335a92765d30 wifi: ath11k: MBSSID beacon support
+87bd40113816 wifi: ath11k: EMA beacon support
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230417205447.1800912-1-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230405221648.17950-2-quic_alokad@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
