@@ -2,47 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B0D46FBEBA
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 07:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B48C06FBED7
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 07:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjEIFad (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 May 2023 01:30:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
+        id S234439AbjEIFri (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 May 2023 01:47:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjEIFac (ORCPT
+        with ESMTP id S232230AbjEIFrh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 May 2023 01:30:32 -0400
+        Tue, 9 May 2023 01:47:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336799027
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 22:30:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7AD18A73
+        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 22:47:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B42C064423
-        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 05:30:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59091C433EF;
-        Tue,  9 May 2023 05:30:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6923D64437
+        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 05:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79FFC433D2;
+        Tue,  9 May 2023 05:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683610230;
-        bh=tfK56c7AYEPmr0e77RaY2s4xdbpEAsF0d7sMOIndBZo=;
+        s=k20201202; t=1683611255;
+        bh=zOcgAcC8AXKTciPL55taKoUt6vrpDkRxqlwfoOtaK3k=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=bJmmN1zvlYTH3Rp9Ked3zBrBDB/9mp0ht2SH4fipxUgUDmOh0Z5CDAg7NdMzQ5ro8
-         9E9ToLIX+T4+6Khk+GlSGaE5DeBDtdOkwaLWwPL8XXDgFq71fA7PvE3wKEHmyvOB7w
-         aeiD/729P3vYw9bgZIKUP+5cIoqeN9n019pR2Fa1O/0gVYIU/RaVmZnZiUQDrxgZ9M
-         vNyKy/f2L7+jnSbY/jyscOPsVJJQ9IlCIrgIsR1nZdfJpkmjOt3EAlpz06AZ3cNzms
-         vcuqbL5eOo8F91F09vlvmsHUIS4oA5GGDoumNryw+VYTZ9eOqtLRls1tQzxVbS60YX
-         LdSJeGUq8ypMw==
+        b=sgxG9HgdTYvWKii3GemqMjw9oHR1RfP+2IuHj2/FWcBNgEhZ9OALf+w84W0H0PCts
+         fZy3P1faiVc2zXLfkQJuU7eDX36XtQdGg3wVTt++FyG0elAfzAvk9wUhtIn/FTNxjw
+         crsfojO31HjvEutBQSueC4Mp5NjgCpNq/VyMA61kXQ/vCo6rLhriuAh3oiP4VmwSOn
+         wS9kziBMovG+8582ujpRUGZqJEL4BcfJx3LEbGyl28YIS9/MA4L0Rj6+cDaLfMiqcG
+         UavNP4rx6CAQcwj/hTf02P23hxahLgxc9GXuHjtByjLx0PjIfa/Sjo6lUkMDmxBVl/
+         uVHuA5xd7T/Ww==
 From:   Kalle Valo <kvalo@kernel.org>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: ath12k: Use msdu_end to check MCBC
-References: <20230427013021.29792-1-quic_bqiang@quicinc.com>
-        <87zg6rqnhv.fsf@kernel.org>
-        <b0321483-ae4e-c44f-ed41-4a83e8693f09@quicinc.com>
-Date:   Tue, 09 May 2023 08:30:23 +0300
-In-Reply-To: <b0321483-ae4e-c44f-ed41-4a83e8693f09@quicinc.com> (Baochen
-        Qiang's message of "Tue, 9 May 2023 11:42:43 +0800")
-Message-ID: <87ednqnkb4.fsf@kernel.org>
+To:     <Amisha.Patel@microchip.com>
+Cc:     <linux-wireless@vger.kernel.org>, <Ajay.Kathat@microchip.com>,
+        <Claudiu.Beznea@microchip.com>
+Subject: Re: [PATCH] wifi: wilc1000: Increase ASSOC response buffer
+References: <20230508161848.3509-1-amisha.patel@microchip.com>
+Date:   Tue, 09 May 2023 08:47:31 +0300
+In-Reply-To: <20230508161848.3509-1-amisha.patel@microchip.com> (Amisha
+        Patel's message of "Mon, 8 May 2023 16:19:36 +0000")
+Message-ID: <87a5yenjik.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -56,28 +55,16 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+<Amisha.Patel@microchip.com> writes:
 
-> On 4/29/2023 1:13 PM, Kalle Valo wrote:
+> In recent access points, information element is longer as they include
+> additional data which exceeds 256 bytes. To accommodate longer
+> association response, increase the ASSOC response buffer.
 >
->> New warnings:
->>
->> drivers/net/wireless/ath/ath12k/hal.c:892:16: warning: cast to restricted __le32
->> drivers/net/wireless/ath/ath12k/hal.c:892:16: warning: cast from restricted __le16
->>
->> Please remember always run ath12k-check (with sparse installed).
->
-> Hi Kalle,
->
-> I have sent v2 where I change __le32_to_cpu to __le16_to_cpu which
-> should fix this warning.
->
-> But I can not find ath12k-check, where is this tool? Could you help
-> point out?
+> Signed-off-by: Amisha <amisha.patel@microchip.com>
 
-It's here:
-
-https://github.com/qca/qca-swiss-army-knife/tree/master/tools/scripts/ath12k
+From field is missing your full name and s-o-b is missing your last
+name. Please see the wiki link below for more information.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
