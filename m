@@ -2,52 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B48C06FBED7
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 07:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E1426FC094
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 May 2023 09:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234439AbjEIFri (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 9 May 2023 01:47:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
+        id S229543AbjEIHkp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 9 May 2023 03:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232230AbjEIFrh (ORCPT
+        with ESMTP id S234194AbjEIHko (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 9 May 2023 01:47:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7AD18A73
-        for <linux-wireless@vger.kernel.org>; Mon,  8 May 2023 22:47:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6923D64437
-        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 05:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79FFC433D2;
-        Tue,  9 May 2023 05:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683611255;
-        bh=zOcgAcC8AXKTciPL55taKoUt6vrpDkRxqlwfoOtaK3k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=sgxG9HgdTYvWKii3GemqMjw9oHR1RfP+2IuHj2/FWcBNgEhZ9OALf+w84W0H0PCts
-         fZy3P1faiVc2zXLfkQJuU7eDX36XtQdGg3wVTt++FyG0elAfzAvk9wUhtIn/FTNxjw
-         crsfojO31HjvEutBQSueC4Mp5NjgCpNq/VyMA61kXQ/vCo6rLhriuAh3oiP4VmwSOn
-         wS9kziBMovG+8582ujpRUGZqJEL4BcfJx3LEbGyl28YIS9/MA4L0Rj6+cDaLfMiqcG
-         UavNP4rx6CAQcwj/hTf02P23hxahLgxc9GXuHjtByjLx0PjIfa/Sjo6lUkMDmxBVl/
-         uVHuA5xd7T/Ww==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     <Amisha.Patel@microchip.com>
-Cc:     <linux-wireless@vger.kernel.org>, <Ajay.Kathat@microchip.com>,
-        <Claudiu.Beznea@microchip.com>
-Subject: Re: [PATCH] wifi: wilc1000: Increase ASSOC response buffer
-References: <20230508161848.3509-1-amisha.patel@microchip.com>
-Date:   Tue, 09 May 2023 08:47:31 +0300
-In-Reply-To: <20230508161848.3509-1-amisha.patel@microchip.com> (Amisha
-        Patel's message of "Mon, 8 May 2023 16:19:36 +0000")
-Message-ID: <87a5yenjik.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 9 May 2023 03:40:44 -0400
+Received: from mail.feshiecree.pl (mail.feshiecree.pl [89.40.114.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0FC59DF
+        for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 00:40:34 -0700 (PDT)
+Received: by mail.feshiecree.pl (Postfix, from userid 1001)
+        id D62CA836F8; Tue,  9 May 2023 08:36:57 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=feshiecree.pl;
+        s=mail; t=1683617878;
+        bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
+        h=Date:From:To:Subject:From;
+        b=mgFJrW89zd2SerFtyAQQHSBdhA1ZI5QPE/ukwE84zb7/9c6KEE4uHp45xJ8dBwvum
+         axepd2MICPCUlno4zXKgherU1f2g6PToay1r8nniBgJ/0qXl7EtesF0g3uTkUbPp3+
+         unn3jNOakzRfio2riGllFC70U3p6JWpy9O2mfI3B1UtVewlWOcVlrgyBSsrP56TSYY
+         /5anDGeclKXF1XsaqVbNsnu5YmG1+K5RfusbvNEFVBgPFIL28LorUru3yyPNDlfDKZ
+         36KLzsATm+7E/+ZWtDiWbSOa79ribphEI9+G0uI7FCm4m0RYiUpbCH2ncAy+TzDpws
+         3UFoJI6+Iv38w==
+Received: by mail.feshiecree.pl for <linux-wireless@vger.kernel.org>; Tue,  9 May 2023 07:35:45 GMT
+Message-ID: <20230509074504-0.1.2g.fakl.0.nb6fcsb1wb@feshiecree.pl>
+Date:   Tue,  9 May 2023 07:35:45 GMT
+From:   "Krystian Wieczorek" <krystian.wieczorek@feshiecree.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.feshiecree.pl
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SORBS_DUL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,18 +47,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<Amisha.Patel@microchip.com> writes:
+Dzie=C5=84 dobry,
 
-> In recent access points, information element is longer as they include
-> additional data which exceeds 256 bytes. To accommodate longer
-> association response, increase the ASSOC response buffer.
->
-> Signed-off-by: Amisha <amisha.patel@microchip.com>
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-From field is missing your full name and s-o-b is missing your last
-name. Please see the wiki link below for more information.
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam
+Krystian Wieczorek
