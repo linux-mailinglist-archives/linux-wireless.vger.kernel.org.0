@@ -2,151 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA466FDB49
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 12:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB446FDB4A
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 12:05:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236144AbjEJKF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 06:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59312 "EHLO
+        id S236239AbjEJKFr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 06:05:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236125AbjEJKF0 (ORCPT
+        with ESMTP id S236189AbjEJKFq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 06:05:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F130665A4
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 03:04:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683713078;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=mxi0tssM/MIAC/Us8XUva2O6e9fov44nkm6fQlyWJnA=;
-        b=isZBKGAMh/uErCczrg+3ycs049+oSB7jjrpMcgTbQwPDOg5SKzhqjQTs7OXi1OlGXfpz/i
-        o0R310S2oasetMdjZchpBfQLa8ORqz90VP+gHzT0s13vxlRMyctPO0PEpU1XkSH6RMNeRV
-        PuXblabWXjeuNCvu/mB2j0k60tXk+cU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-RF3bSlhWNEWYIg6Moz6nyA-1; Wed, 10 May 2023 06:04:35 -0400
-X-MC-Unique: RF3bSlhWNEWYIg6Moz6nyA-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-9662ead7bf8so421227266b.0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 03:04:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683713074; x=1686305074;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxi0tssM/MIAC/Us8XUva2O6e9fov44nkm6fQlyWJnA=;
-        b=jmB7fQTpmHABgFyX2MjOaJTwZhmF+hxkOFdkEAmhEui1aTh5yuzXoQTFi/V0dPN6jV
-         4DQu1ynH5SnwIVgCJQ4HfOJ/Zq11RhRR2dTJpJxx2wcpEFZXxg7oTnwbizONrm+wQrDv
-         qnyOKFkwxqnI1nl8sw2ENOWReletVd5XjM0EfW1uLFqpCeUydB3kQbzu9eMFnHpHaWtl
-         jamgQBedEb35yojTgY00fl9h7eEVAnQPtgv13XPYtapUT2HkSdpH7GXI9zgwMqQE+guD
-         Vmj8s/BB2H8y8siiPL8VZO1Z6fGWWMeZjj4mH3MppV31aUVNBqidmKaRlG8fXUN2KGyk
-         l05g==
-X-Gm-Message-State: AC+VfDxiswLnYqKVZRFXSfqrewhX+tKWS/cJGP2PXY/T/XrrP9+JkbMr
-        OW9IdlVsCFZfP6m4ENsc/QGoKb7iaQrNH/2ome75NWjmfONWN+l0gClC9UyoPwvJHsopQJFWOv1
-        85sGMHGChK31fh58LPgJemPJ4t+8=
-X-Received: by 2002:a17:906:dc93:b0:94f:a292:20cc with SMTP id cs19-20020a170906dc9300b0094fa29220ccmr15643205ejc.41.1683713074314;
-        Wed, 10 May 2023 03:04:34 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6g3VLlchZ4NQ4dVKKV7VFeDXbAdsULvGoTQhQBYH7wgUiWDxOc+E6cOLAsZqVz3BCBbS6/Sw==
-X-Received: by 2002:a17:906:dc93:b0:94f:a292:20cc with SMTP id cs19-20020a170906dc9300b0094fa29220ccmr15643186ejc.41.1683713074026;
-        Wed, 10 May 2023 03:04:34 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id de25-20020a1709069bd900b0096664376ec9sm2486973ejc.55.2023.05.10.03.04.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 May 2023 03:04:33 -0700 (PDT)
-Message-ID: <c7aa9034-59f8-11aa-7170-86c0db012dda@redhat.com>
-Date:   Wed, 10 May 2023 12:04:32 +0200
+        Wed, 10 May 2023 06:05:46 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF626A6E
+        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 03:05:40 -0700 (PDT)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34A9DPZm005408;
+        Wed, 10 May 2023 10:05:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=kv8MWVu60Lknq1EU2YKGBd4G7B8gOFMpvJZU5/lJV4o=;
+ b=TJZz4oaV2n1q90GsewZYQ1dafPF5bOWeTbmLla3kfmtp0PFI7t2Fesyq78C/x390exqD
+ IJd5gOlVFV5xKVqxsh3Mh9SS2ha/N8TrTR3T8gpYbwj/mqg8s6lEMF1XRn7WhGu6Olyb
+ O1OFhXiFngiOmaw1j5atjjOnMy3uv3dFYa4HTi5gBU3tCayZXa6xWa7Gi1sY2ad6xKfv
+ vbS2TgV8U45U11ckwWwkilb1CQmF1clfbVkvW52lGugeqPDN5C6F5F80jqst2B3j0ocG
+ Ez/QxXiBwTLFJfQHYGtMC95AR6zDRrmFXkpxC2s6aarwOl2deJTQeCovcgArP+RRCmyu jA== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qfuna1e0u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 10 May 2023 10:05:35 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34AA5Y5Y028253
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 10 May 2023 10:05:34 GMT
+Received: from [10.201.192.62] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 10 May
+ 2023 03:05:33 -0700
+Message-ID: <a409ded2-f6e5-bc74-3fdb-231a92d9bde5@quicinc.com>
+Date:   Wed, 10 May 2023 15:35:20 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [REGRESSION] wifi: brcmfmac: add firmware vendor info in driver
- info
-Content-Language: en-US, nl
-To:     Felix <nimrod4garoa@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>
-Cc:     regressions@lists.linux.dev,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <4ef3f252ff530cbfa336f5a0d80710020fc5cb1e.camel@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <4ef3f252ff530cbfa336f5a0d80710020fc5cb1e.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 1/2] ath11k: Relocate the func
+ ath11k_mac_bitrate_mask_num_ht_rates() and change hweight16 to hweight8
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>
+References: <20230504092033.3542456-2-quic_mkenna@quicinc.com>
+Content-Language: en-US
+From:   Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
+In-Reply-To: <20230504092033.3542456-2-quic_mkenna@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 4cbLziBOcoqGqutvn0aq68RFU3oV7RCJ
+X-Proofpoint-GUID: 4cbLziBOcoqGqutvn0aq68RFU3oV7RCJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-10_04,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=666 mlxscore=0 clxscore=1015 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305100079
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Felix,
+Hi,
 
-On 5/10/23 10:25, Felix wrote:
-> Changes made by the mentioned commit lead to Oops when waking up after
-> suspend to RAM.
-> 
-> When waking up a Dell XPS 13 9350 with BCM4350 wifi card after suspend
-> to RAM, the kernel hangs with a NULL pointer dereference and Oops. The
-> issues was introduced by commit
-> da6d9c8ecd00e20218461007948f2b0a8e7fa242 and only happens when the
-> brcmfmac module is loaded. This issue is the reason we could not
-> upgrade to newer kernels than the 6.1 series on the affected machine.
-> 
-> 
-> Details:
-> 
-> On a Dell XPS 13 9350 laptop with Broadcom BCM4350 wifi card (according
-> to lspci), every kernel starting with 6.2 hangs when waking up after
-> suspend to RAM. The issue persisted as of May 2nd (last tested commit
-> was 348551ddaf311c76b01cdcbaf61b6fef06a49144). Passing the debug and
-> no_console_suspend parameters to the kernel show that a NULL pointer
-> dereference and an Oops happen at wakeup. Please find the kernel
-> messages readable on the screen at this point attached
-> (kernel_log_after_suspend.txt).
-> 
-> A bisection was successful and produced the first bad commit
-> [da6d9c8ecd00e20218461007948f2b0a8e7fa242] wifi: brcmfmac: add firmware
-> vendor info in driver info
-> I've attached the bisection log as well (bisect.txt).
-> 
-> Suspend to RAM works on this machine on newer kernels once the brcmfmac
-> module is unloaded.
-> 
-> Distribution: Arch Linux
-> Architecture: x86_64
-> Device: Dell XPS 13 9350 with BCM4350 wifi card
-> Kernel config used at compilation (created using the Arch Linux default
-> config and make olddefconfig):
-> https://gist.githubusercontent.com/maclomhair/e33fa7eece8f8c77e5a88c4eede2f523/raw/429dfb022498c026225865dbb3ab2f75d5030a54/config
-> Dmesg output after boot:
-> https://gist.githubusercontent.com/maclomhair/47c75fa759d93800e7fb5e937fabef3e/raw/10750996a1ea9dcb3fa14d9b94e11fedd3abf280/dmesg
-> 
-> #regzbot introduced da6d9c8ecd00e20218461007948f2b0a8e7fa242
+Ignore this patchset, I have sent the v2 version of this patchset by 
+rebasing it on latest TOT.
 
-Thank you for reporting this and thank you for bisecting it too!
-
-As a result of your excellent bug report I've been able to write
-a fix for this. I'm confident enough in the fix that I've submitted
-it upstream right away.
-
-But it would still be good if you can test the fix and let us know
-if it fixes this issue for you. You should have received a copy
-of the patch when I submitted it upstream.
-
-Regards,
-
-Hans
-
-
-
-
+> Relocate the function ath11k_mac_bitrate_mask_num_ht_rates() definition
+> to call this function from other functions which helps to avoid the
+> compilation error (function not defined).
+>
+> ht_mcs[] is 1 byte array and it is enough to use hweight8() instead
+> of hweight16(). Hence, fixed the same.
+>
+> Tested on: Compile tested only.
+>
+> Signed-off-by: Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
+> ---
+>   drivers/net/wireless/ath/ath11k/mac.c | 30 +++++++++++++--------------
+>   1 file changed, 15 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+> index 05920ad413c5..eb46d06272de 100644
+> --- a/drivers/net/wireless/ath/ath11k/mac.c
+> +++ b/drivers/net/wireless/ath/ath11k/mac.c
+> @@ -1,7 +1,7 @@
+>   // SPDX-License-Identifier: BSD-3-Clause-Clear
+>   /*
+>    * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+> - * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
+> + * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+>    */
+>   
+>   #include <net/mac80211.h>
+> @@ -4159,6 +4159,20 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+>   	return ret;
+>   }
+>   
+> +static int
+> +ath11k_mac_bitrate_mask_num_ht_rates(struct ath11k *ar,
+> +				     enum nl80211_band band,
+> +				     const struct cfg80211_bitrate_mask *mask)
+> +{
+> +	int num_rates = 0;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(mask->control[band].ht_mcs); i++)
+> +		num_rates += hweight8(mask->control[band].ht_mcs[i]);
+> +
+> +	return num_rates;
+> +}
+> +
+>   static int
+>   ath11k_mac_bitrate_mask_num_vht_rates(struct ath11k *ar,
+>   				      enum nl80211_band band,
+> @@ -7542,20 +7556,6 @@ static void ath11k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *v
+>   	ath11k_mac_flush_tx_complete(ar);
+>   }
+>   
+> -static int
+> -ath11k_mac_bitrate_mask_num_ht_rates(struct ath11k *ar,
+> -				     enum nl80211_band band,
+> -				     const struct cfg80211_bitrate_mask *mask)
+> -{
+> -	int num_rates = 0;
+> -	int i;
+> -
+> -	for (i = 0; i < ARRAY_SIZE(mask->control[band].ht_mcs); i++)
+> -		num_rates += hweight16(mask->control[band].ht_mcs[i]);
+> -
+> -	return num_rates;
+> -}
+> -
+>   static bool
+>   ath11k_mac_has_single_legacy_rate(struct ath11k *ar,
+>   				  enum nl80211_band band,
