@@ -2,53 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B6356FE39E
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 20:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E04BB6FE3B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 20:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230165AbjEJSKB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 14:10:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49762 "EHLO
+        id S231486AbjEJSQL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 14:16:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjEJSKA (ORCPT
+        with ESMTP id S230440AbjEJSQJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 14:10:00 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7824A5B80
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 11:09:59 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-24e14a24c9dso5474031a91.0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 11:09:59 -0700 (PDT)
+        Wed, 10 May 2023 14:16:09 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1562B61B0;
+        Wed, 10 May 2023 11:16:03 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1aad5245632so54648195ad.3;
+        Wed, 10 May 2023 11:16:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1683742199; x=1686334199;
+        d=gmail.com; s=20221208; t=1683742562; x=1686334562;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tiygZOTM/QauPyCMixB8V7aM36/db24ouJqobVB/VFw=;
-        b=YxgWqyd+r+99dFYRRgD00VWEy1qOcxTAuAHqi3IHHkiXCGqMTNVXNDe3PLHp5+B0xY
-         /AbjGykFWXc4vvD72bmluzjmewD2tJyMcp6bP7Pwxrbi+Ql4rE/pTyHebWfu+hjXDrjj
-         eNTV5uGAgwvC/P/nMVz1q1n4T8jWN2QLdSaMA=
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MV9KKbnlL+o+b9x6xmrTpuZGcH+89cbdDhrFO47jPDI=;
+        b=o5Y7xv20o5mb5unhzSkkqEMFLfZemZ3Fq7tIeDgj5NY1msy0Go/2xY/wrMzxSfT9D9
+         JwJMcse7ELe/2fUUuGgymqY0hXejB61olNuRHmUKr0Z8boiMUjl7njBt3h9xf/bNKwFd
+         xVkjozoLCJQOL0/KCaHABwNZ0vbBae2mjSS+/jhRJl3/V91GXz7iWNNn4AVYNHoZSaYZ
+         dmQvMPiRSQbmR9YgMom1IYy94DESmAzhyBARwsmm9FsMMHhdiJyPZwdij2iXvsuYkf93
+         miMGoKNSWCwprwfIgGEMuVLBCAWWkFDY5uJmxg4nDETy0lz5FHKo1Okb+ouDQemKHr15
+         o9Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683742199; x=1686334199;
+        d=1e100.net; s=20221208; t=1683742562; x=1686334562;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tiygZOTM/QauPyCMixB8V7aM36/db24ouJqobVB/VFw=;
-        b=a4tb1o5DmN+TXkg/UoqanE3fbF2tVyDmz7lDKLhzyLlbRbGd3y5KHbC3Bwzhz+eWbj
-         Lm1OsZLTMP1AHVOsOLv0wTQ9VS7dtr3ARSafKC/ZoI/aKZ0+sXOfJYfyIkKkhEBNG7Ks
-         ElMfQWTQwM0XaYzcnbircjg7ssM1d7GmGEK7FzMQRbGxoegkwFFicKlCd5CHdumK4CD7
-         24aS3BZh1yjl9lTogFn9lhCvnC37h432zKyyeIE/a3qPj5sSj1tSHRpfxw1fu6CdfNA2
-         +e4V3g55NOfX74KgqILPn7jtkxT6PTDb/JJJHnEQDEnOLU/ug5JW/bx6ZR2/+uof2n8Z
-         TxGg==
-X-Gm-Message-State: AC+VfDyqfepZyoyJBPsnaKKPIL1KjpZPW0GEfu0f7/SegVw+6NxFAnMN
-        DcFHLRQykVe1yVmXJ+cUlfYR/Q==
-X-Google-Smtp-Source: ACHHUZ6+BjWagvevIinrLLujuzL7p6CVC5DXvppVsd1qgMDZjorehB2nrce6URDfl8DHzwf3JbZUtg==
-X-Received: by 2002:a17:90b:1296:b0:246:af1f:62ef with SMTP id fw22-20020a17090b129600b00246af1f62efmr17995931pjb.5.1683742198966;
-        Wed, 10 May 2023 11:09:58 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:17a2:4d38:332d:67a0])
-        by smtp.gmail.com with ESMTPSA id o3-20020a17090ad24300b00246be20e216sm13725577pjw.34.2023.05.10.11.09.57
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MV9KKbnlL+o+b9x6xmrTpuZGcH+89cbdDhrFO47jPDI=;
+        b=kzFRYuA0zfGGYB8TmhLvGuge5JkqplhH/PW8feAIumZXCORS1I/AQkRJwFCM3X2jzJ
+         rl45HrjyXUQxNcMeyaZNJWwcKKirub4uSo8hVaMUjTworBVK2s0P1qDRrufEuKW/Qg4J
+         U78vYdRYGn+Ntc2rSFcircIUAsPVYBLI2S2FP9WQotC0sdg0qSxh9DJcjtEJoA6ypLrn
+         AbYbSB9eBRS4zX9pMjsCipf/nXROSuxtHTyRsPquj4RaconI2Y3H1ardRFUqHSVRH8d1
+         RPUqQPz1lNxLNUEN+iPVP1bemrc/7l8Jo9fKMuvo4BvNTS/NiepDBiWAHewnW+5fK2Qt
+         5ivQ==
+X-Gm-Message-State: AC+VfDxU4lXZEhmZ0yRzvjD+iBh78RzOgxOvlbDDA6tIZXldqq8GtH+A
+        URUe24yybYPBTxGyuYEE5CY=
+X-Google-Smtp-Source: ACHHUZ5zdzxE/nxzHwipE7aLMexdW6UuNkId05cX7KuDNO37PTIHoYGXQ2ZzwwAuGUkqY/Bm0hpOJg==
+X-Received: by 2002:a17:902:eb4b:b0:1a6:7632:2b20 with SMTP id i11-20020a170902eb4b00b001a676322b20mr19942490pli.40.1683742562313;
+        Wed, 10 May 2023 11:16:02 -0700 (PDT)
+Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
+        by smtp.gmail.com with ESMTPSA id j12-20020a170902690c00b001a04d27ee92sm4082703plk.241.2023.05.10.11.16.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 May 2023 11:09:58 -0700 (PDT)
-Date:   Wed, 10 May 2023 11:09:55 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Tejun Heo <tj@kernel.org>
+        Wed, 10 May 2023 11:16:01 -0700 (PDT)
+Sender: Tejun Heo <htejun@gmail.com>
+Date:   Wed, 10 May 2023 08:16:00 -1000
+From:   Tejun Heo <tj@kernel.org>
+To:     Brian Norris <briannorris@chromium.org>
 Cc:     jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
         kernel-team@meta.com, Amitkumar Karwar <amitkarwar@gmail.com>,
         Ganapathi Bhat <ganapathi017@gmail.com>,
@@ -62,54 +67,47 @@ Cc:     jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Subject: Re: [PATCH 02/13] wifi: mwifiex: Use default @max_active for
  workqueues
-Message-ID: <ZFvd8zcPq4ijSszM@google.com>
+Message-ID: <ZFvfYK-u8suHjPFw@slm.duckdns.org>
 References: <20230509015032.3768622-1-tj@kernel.org>
  <20230509015032.3768622-3-tj@kernel.org>
+ <ZFvd8zcPq4ijSszM@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230509015032.3768622-3-tj@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZFvd8zcPq4ijSszM@google.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 08, 2023 at 03:50:21PM -1000, Tejun Heo wrote:
-> These workqueues only host a single work item and thus doen't need explicit
-> concurrency limit. Let's use the default @max_active. This doesn't cost
-> anything and clearly expresses that @max_active doesn't matter.
-> 
-> Signed-off-by: Tejun Heo <tj@kernel.org>
-> Cc: Amitkumar Karwar <amitkarwar@gmail.com>
-> Cc: Ganapathi Bhat <ganapathi017@gmail.com>
-> Cc: Sharvari Harisangam <sharvari.harisangam@nxp.com>
-> Cc: Xinming Hu <huxinming820@gmail.com>
-> Cc: Kalle Valo <kvalo@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
+Hello,
 
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+On Wed, May 10, 2023 at 11:09:55AM -0700, Brian Norris wrote:
+> I'll admit, the workqueue documentation sounds a bit like "max_active ==
+> 1 + WQ_UNBOUND" is what we want ("one work item [...] active at any
+> given time"), but that's more of my misunderstanding than anything --
+> each work item can only be active in a single context at any given time,
+> so that note is talking about distinct (i.e., more than 1) work items.
 
-I'll admit, the workqueue documentation sounds a bit like "max_active ==
-1 + WQ_UNBOUND" is what we want ("one work item [...] active at any
-given time"), but that's more of my misunderstanding than anything --
-each work item can only be active in a single context at any given time,
-so that note is talking about distinct (i.e., more than 1) work items.
+Yeah, a future patch is gonna change the semantics a bit and I'll update the
+doc to be clearer.
 
-While I'm here: we're still debugging what's affecting WiFi performance
-on some of our WiFi systems, but it's possible I'll be turning some of
-these into struct kthread_worker instead. We can cross that bridge
-(including potential conflicts) if/when we come to it though.
+> While I'm here: we're still debugging what's affecting WiFi performance
+> on some of our WiFi systems, but it's possible I'll be turning some of
+> these into struct kthread_worker instead. We can cross that bridge
+> (including potential conflicts) if/when we come to it though.
 
-Thanks,
-Brian
+Can you elaborate the performance problem you're seeing? I'm working on a
+major update for workqueue to improve its locality behavior, so if you're
+experiencing issues on CPUs w/ multiple L3 caches, it'd be a good test case.
+
+Thanks.
+
+-- 
+tejun
