@@ -2,46 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9EC46FDC5C
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 13:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 193ED6FDCAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 13:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236410AbjEJLL7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 07:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38796 "EHLO
+        id S236880AbjEJLZS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 07:25:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbjEJLL6 (ORCPT
+        with ESMTP id S236322AbjEJLZR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 07:11:58 -0400
+        Wed, 10 May 2023 07:25:17 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C66AAB0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 04:11:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE9D7EC0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 04:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=9knHFr7otlMBFfqKoMSKVuSBAyhiYea7O0k8x1nSNpQ=;
-        t=1683717117; x=1684926717; b=qJiDDyoRfLeSzmb3W72XI8jBOM0IPuAqeyt3dGcrtLPDm66
-        xUPAH6wgVRsjkVfy6omaH9jjtJN5U9WmSAxpslK1IJu9qd3Hm8yKokU6RJqtSxF4mnXSxyjcQOn6O
-        y8T1T4lYVUpPXet1BYH/wPa4v8Knx6FO3v42SEbB1Uqp+EhTlLYfLcgbR2tE7AF5Y9hVEE1GnHvnE
-        Wo9abXT1iO4RmBRlhR2Izzyv2dWp1vYdAU5nswvoO76lTqw2Kbuf/LaN/ottCldjFzc2dAVySbP1O
-        Sw4S/2wNITSFytn+pvhobSbGqwLWm87OhzE+xsB7DqOG1iTb7vkwc9ufy7rpcnqw==;
+        Resent-Cc:Resent-Message-ID; bh=w9MxrihC9RXYLubXGMYNsnytf0IQ9XTjJYddmYpxYys=;
+        t=1683717883; x=1684927483; b=QCFOySlt5rs7QxpTgnBNjsJvcjqwMgqAyXKzz4I8CAkmI2N
+        6b+qCEioxOjm2n2Bb/yQm+2Sdyqy61N7q4W9hJFQu0PZ3yqHqBwxdEhKEYACR94KC/wAQ0h7qVvXD
+        ln8Ssm6JG4qJn+AIMbogcdSsWyK2NPqvOO12sdFdKcylReiI6OCvgivdVy2WeCYRXnU3+r6CWxDHX
+        bFrkFHykYl8B54IoIsJvgcH0U/nQpZOGC9hNsDVVxa7DAymFty6dfMYFuiKWkGsEBX+VdFUp10nkX
+        2cf94QVzFlvewyOCB2Ry3T9RXbyKvshanFJ3vZR25nBsUXomOVcdYqi+ngYCP9Ng==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1pwhjf-005Mjg-14;
-        Wed, 10 May 2023 13:11:55 +0200
-Message-ID: <3fc1b7605f6a5e66184cb02781b3eba3e82e9ae9.camel@sipsolutions.net>
-Subject: Re: wireless locking simplifications
+        id 1pwhw1-005N3F-0N;
+        Wed, 10 May 2023 13:24:41 +0200
+Message-ID: <0e7023062f44d0ea68625c27cb13731d17857311.camel@sipsolutions.net>
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tejun Heo <tj@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Benjamin Berg <benjamin@sipsolutions.net>
-Date:   Wed, 10 May 2023 13:11:54 +0200
-In-Reply-To: <12d77a1427cb4c0888783d8544772e3c2d1a8908.camel@sipsolutions.net>
-References: <f3471853cd7063a4bd2d783caa14706ee9115748.camel@sipsolutions.net>
-         <ZFV6fTH_7umEa5H0@slm.duckdns.org>
-         <12d77a1427cb4c0888783d8544772e3c2d1a8908.camel@sipsolutions.net>
+To:     Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org
+Date:   Wed, 10 May 2023 13:24:40 +0200
+In-Reply-To: <5e3ec5f8-1462-5de6-2b5a-4cf62f23deb7@quicinc.com>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+         <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+         <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+         <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+         <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
+         <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
+         <5e3ec5f8-1462-5de6-2b5a-4cf62f23deb7@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
@@ -57,26 +59,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-05-10 at 12:58 +0200, Johannes Berg wrote:
-> Hi Tejun,
+On Wed, 2023-05-10 at 19:06 +0800, Wen Gong wrote:
+> On 4/11/2023 3:38 PM, Johannes Berg wrote:
+> > On Tue, 2023-04-04 at 11:28 +0800, Wen Gong wrote:
+> > > May I also add a field such as "u16 active_links_count" in struct
+> > > wiphy_iftype_ext_capab,
+> > > and add logic in function ieee80211_set_vif_links_bitmaps() for stati=
+on
+> > > like this ?:
+> > > if (active_links_count && hweight16(links) <=3D active_links_count)
+> > >   =C2=A0=C2=A0=C2=A0 then sdata->vif.active_links =3D links;
+> > >=20
+> > Also here, not sure it makes sense in cfg80211 level?
+> >=20
+> > Though I'm not sure what the idea here is at all - you can refuse to
+> > link switch etc, what would you use this for?
+> >=20
+> > Then again, we haven't really designed out all the link selection stuff=
+,
+> > do we want wpa_s to do it, driver to do it, etc.? Hence debugfs. So
+> > depending on what end up doing there, we will obviously need to
+> > advertise some level of link-concurrency to userspace.
 >=20
-> > There isn't currently but workqueue already does something similar for
-> > freezing by temporarily setting max_active to zero, so if you apply a p=
-atch
-> > like the following
+> So will you plan to do something to let wpa_s/userspace app=20
+> active/deactive links?
 >=20
-> Thanks for that! I came up with a bit of a different patch, see below.
+> Or you already have implemented that?
 >=20
 
-But ... this raises another interesting thing.
-
-Now I have to call workqueue_resume() somewhere. But that means I need
-two versions of wiphy_unlock(), one that does the resume and one that
-doesn't, which is interesting. I can track it I think though.
-
-This is probably a stretch ;-) But what would you think about a
-workqueue variant that gets a mutex pointer to hold for all work
-structs? Then we'd not really have to worry about that in each of them.
-But it's not great to implement, I just tried a bit.
+No plans right now, and honestly not sure what the right thing even is.
 
 johannes
