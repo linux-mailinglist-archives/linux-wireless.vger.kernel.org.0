@@ -2,82 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED6BF6FE46F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 21:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B27756FE47F
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 21:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235984AbjEJTTY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 15:19:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S236189AbjEJT27 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 15:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbjEJTTX (ORCPT
+        with ESMTP id S229586AbjEJT25 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 15:19:23 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB78F5255;
-        Wed, 10 May 2023 12:19:22 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6439e6f5a33so4431114b3a.2;
-        Wed, 10 May 2023 12:19:22 -0700 (PDT)
+        Wed, 10 May 2023 15:28:57 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036B66A4B;
+        Wed, 10 May 2023 12:28:57 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1ab01bf474aso58807065ad.1;
+        Wed, 10 May 2023 12:28:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683746362; x=1686338362;
+        d=gmail.com; s=20221208; t=1683746936; x=1686338936;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vdKoW9P2jhBRnfmfNK6oFRBXOmfqdpLVW/L7FZNRlBQ=;
-        b=RPF5HXOjB1S+X34THeUgO74GhOevm4XKHWyln3kcxR64HMWwEYRMAiv1yihOGbxoOY
-         V68pDwIC6StEtl85K2ZEvsrtryxcSaTDq5fB5gSK849T/Y7nrVESXimWoInf04t8SqQD
-         ugZEhVj6IAhE+5df0H8ElTx8vUhoxXLjstdOUdEU7cauKmrKgeTbrivxOxCsPsEfBubs
-         x+FOeiipp2XiYXuLQYlRkHnh4BBDzK6Vu/WgbUE7LcLq3l+nGqvR9k51fhCDko5r2jXB
-         eismONkkFymXXp6+VZy7E5uNPwWetYXO+8CJH1GRfWeAjDlA2QpJqHAFcJKfMR3E+tPf
-         4NGQ==
+        bh=St8Hsth3yEssLy+3L8DNZSzYbP8LaSjJkmswj6bNhNY=;
+        b=jmprtQ6vpXwG0djM6z+KYh5xl8h/Ac8X1jiJLHIWobiFbjifXXm2vyi3dzLL8l8FCU
+         gMtCj9s2LzKLXPphcW+x0sL3jIRVsCybxzXG73KULcUwKpMnjBJTZDQEtfxWRGVnJLCN
+         5My6mKN9k8Syy7gNptWZg2RQMKupWGbxmFd3k6myHjpkphei3w3WCmBlOSLyHS0Em8Kl
+         RQW1rKBEN+MMEXR3IJABsWyW8nMvdZElwXOIix/q0IPG628wL9CFeCsWHHrZ6/JbNM76
+         TPVMHtbLqST4NDstlWGNC2LD8EMAVl3xpGpm083kfa2mHDjwN5tOix+zZukkW2rSfBW5
+         1x0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683746362; x=1686338362;
+        d=1e100.net; s=20221208; t=1683746936; x=1686338936;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vdKoW9P2jhBRnfmfNK6oFRBXOmfqdpLVW/L7FZNRlBQ=;
-        b=EXUAkhoqi4SJ62AAhcKaKGnhCJn2dwP/sl8mxIkiaPAvCxc8xMaFLJQqMC912l9V5I
-         Xsx7XOdYzDdLFZu2NWJMmDtMjaOq2OanC20IhznRy4SUN+89O5vuvz411qp5dSWpfrrP
-         IqaD0B4SbjjSFiE+SP3Jp9sB5253VkNHfhhTNygXP+mkDvEtqC90uJ87BfvsKnC3HBUq
-         kJ9QGZuM47H0lWTXtRJBl9v9beOPfll9v05rjSltnCOmPJEnQ46C/MtEaGK2UD+H/cMP
-         o11pqTuhCR/WN50H054ehBKGNOOeIJitYlVuizlvgjqAqQaTkvJQyLFpFKv45Fu6UiSX
-         h80A==
-X-Gm-Message-State: AC+VfDy5WZo2gr1VLfwDWNyY3GrhRu4p6LGV6dpWDFcyzE5K4UC8EP4r
-        vNhUu5Kn1AuQe26d7x5SU5o=
-X-Google-Smtp-Source: ACHHUZ4dbVM57Fb+/Mp2jiw4JmUznHlGsRzKlTeN0YuWMzJY71pwMBbkE3WhK4cDOE37L/6/O0B3Iw==
-X-Received: by 2002:a05:6a00:248d:b0:63a:8f4c:8be1 with SMTP id c13-20020a056a00248d00b0063a8f4c8be1mr27949390pfv.10.1683746362066;
-        Wed, 10 May 2023 12:19:22 -0700 (PDT)
+        bh=St8Hsth3yEssLy+3L8DNZSzYbP8LaSjJkmswj6bNhNY=;
+        b=RYd6/s3lGMjzeEFME9IwL+EHk45sQaNodqDuicGvcDnpXAnQxmxMkf2FF9+692y/Wz
+         7GMZkaPKMQI+RzlDlCUc692CAm4WQig4VkZur6UBsdJNeLYTwxwVndp88rjvMCLfSpNw
+         GbzNXfm42mgVWN+OX9yLKQGcQQultUTx/SxlbWoPxL8Ni7BhqBH8LAcTYYDcC3nFSgzb
+         dwDWutaAFzuWIHblfZzDn5tq8eudN6a/H6LieiBmLbminiKiInNJHqF5eVhIppfF3aT7
+         xavFOFYevxIpnx5GTLIjue14a3e8voBtvjPy4T+vM8xH4kNJfFQ4ekXyq79NEFqkVOSY
+         9+6A==
+X-Gm-Message-State: AC+VfDzfNmkdlVYgvx3Lqnz0SI3uQCXESG5h49CS8JePAE/72JYnsdmj
+        bVocfkN5fdPVyTgDz0sbLpM=
+X-Google-Smtp-Source: ACHHUZ45Vb34sEQWoilNdNFya7MELHannGfHXzwWNj9+lbiu9vgdbORva+tXb7Ric3zyI/9AUWDN/w==
+X-Received: by 2002:a17:902:c402:b0:1ac:b259:87ea with SMTP id k2-20020a170902c40200b001acb25987eamr4196664plk.0.1683746936214;
+        Wed, 10 May 2023 12:28:56 -0700 (PDT)
 Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
-        by smtp.gmail.com with ESMTPSA id n22-20020aa79056000000b0063d24fcc2b7sm3918870pfo.1.2023.05.10.12.19.21
+        by smtp.gmail.com with ESMTPSA id x5-20020a170902b40500b0019a6cce2060sm4156156plr.57.2023.05.10.12.28.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 May 2023 12:19:21 -0700 (PDT)
+        Wed, 10 May 2023 12:28:55 -0700 (PDT)
 Sender: Tejun Heo <htejun@gmail.com>
-Date:   Wed, 10 May 2023 09:19:20 -1000
+Date:   Wed, 10 May 2023 09:28:54 -1000
 From:   Tejun Heo <tj@kernel.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-        kernel-team@meta.com, Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Pin-yen Lin <treapking@chromium.org>
-Subject: Re: [PATCH 02/13] wifi: mwifiex: Use default @max_active for
- workqueues
-Message-ID: <ZFvuOK_dpGTE4UVS@slm.duckdns.org>
-References: <20230509015032.3768622-1-tj@kernel.org>
- <20230509015032.3768622-3-tj@kernel.org>
- <ZFvd8zcPq4ijSszM@google.com>
- <ZFvfYK-u8suHjPFw@slm.duckdns.org>
- <ZFvpJb9Dh0FCkLQA@google.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Lai Jiangshan <jiangshanlai@gmail.com>
+Subject: Re: [RFC PATCH 2/4] workqueue: support holding a mutex for each work
+Message-ID: <ZFvwdro1T4lnLDrs@slm.duckdns.org>
+References: <20230510160428.175409-1-johannes@sipsolutions.net>
+ <20230510175846.cc21c84b0e6b.I9d3df459c43a78530d9c2046724bb45626402d5f@changeid>
+ <ZFvjoUtg2ax11UlC@slm.duckdns.org>
+ <0c44265eae421eff49e19be3ebfe20d1fb5e6f9a.camel@sipsolutions.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZFvpJb9Dh0FCkLQA@google.com>
+In-Reply-To: <0c44265eae421eff49e19be3ebfe20d1fb5e6f9a.camel@sipsolutions.net>
 X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
@@ -91,66 +79,33 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello,
 
-On Wed, May 10, 2023 at 11:57:41AM -0700, Brian Norris wrote:
-> Test case: iperf TCP RX (i.e., hits "MWIFIEX_RX_WORK_QUEUE" a lot) at
-> some of the higher (VHT 80 MHz) data rates.
+On Wed, May 10, 2023 at 09:16:09PM +0200, Johannes Berg wrote:
+> Yeah I thought you'd say that :)
+
+Sorry about being so predictable. :)
+
+> It isn't difficult, the issue is just that in the case I'm envisioning,
+> you can't just call wiphy_lock() since that would attempt to pause the
+> workqueue, which can't work from on the workqueue itself. So you need
+> wiphy_lock_from_work()/wiphy_unlock_from_work() or remember to use the
+> mutex directly there, which all seemed more error-prone and harder to
+> maintain.
 > 
-> Hardware: Mediatek MT8173 2xA53 (little) + 2xA72 (big) CPU
-> (I'm not familiar with its cache details)
-> +
-> Marvell SD8897 SDIO WiFi (mwifiex_sdio)
-
-Yeah, we had multiple of similar cases on, what I think are, similar
-configurations, which is why I'm working on improving workqueue locality.
-
-> We're looking at a major regression from our 4.19 kernel to a 5.15
-> kernel (yeah, that's downstream reality). So far, we've found that
-> performance is:
-
-That's curious. 4.19 is old but I scanned the history and there's nothing
-which can cause that kind of perf regression for unbound workqueues between
-4.19 and 5.15.
-
-> (1) much better (nearly the same as 4.19) if we add WQ_SYSFS and pin the
-> work queue to one CPU (doesn't really matter which CPU, as long as it's
-> not the one loaded with IRQ(?) work)
+> But anyway I could easily implement _both_ of these in cfg80211
+> directly, with just a linked list of works and a single struct
+> work_struct to execute things on the list, with the right locking. That
+> might be easier overall, just at the expense of more churn while
+> converting, but that's not even necessarily _bad_, it would really
+> guarantee that we can tell immediately the work is properly done...
 > 
-> (2) moderately better if we pin the CPU frequency (e.g., "performance"
-> cpufreq governor instead of "schedutil")
-> 
-> (3) moderately better (not quite as good as (2)) if we switch a
-> kthread_worker and don't pin anything.
+> I'll play with that idea some, I guess. Would you still want the
+> pause/resume patch anyway, even if I end up not using it then?
 
-Hmm... so it's not just workqueue.
-
-> We tried (2) because we saw a lot more CPU migration on kernel 5.15
-> (work moves across all 4 CPUs throughout the run; on kernel 4.19 it
-> mostly switched between 2 CPUs).
-
-Workqueue can contribute to this but it seems more likely that scheduling
-changes are also part of the story.
-
-> We tried (3) suspecting some kind of EAS issue (instead of distributing
-> our workload onto 4 different kworkers, our work (and therefore our load
-> calculation) is mostly confined to a single kernel thread). But it still
-> seems like our issues are more than "just" EAS / cpufreq issues, since
-> (2) and (3) aren't as good as (1).
-> 
-> NB: there weren't many relevant mwifiex or MTK-SDIO changes in this
-> range.
-> 
-> So we're still investigating a few other areas, but it does seem like
-> "locality" (in some sense of the word) is relevant. We'd probably be
-> open to testing any patches you have, although it's likely we'd have the
-> easiest time if we can port those to 5.15. We're constantly working on
-> getting good upstream support for Chromebook chips, but ARM SoC reality
-> is that it still varies a lot as to how much works upstream on any given
-> system.
-
-I should be able to post the patchset later today or tomorrow. It comes with
-sysfs knobs to control affinity scopes and strictness, so hopefully you
-should be able to find the configuration that works without too much
-difficulty.
+I think it's something inherently useful (along with the ability to do the
+same thing to a work time - ie. cancel and inhibit a work item to be
+queued0); however, it's probably not a good idea to merge without an in-tree
+user. Would you mind posting a fixed patch nonetheless for future reference
+if it's not too much hassle?
 
 Thanks.
 
