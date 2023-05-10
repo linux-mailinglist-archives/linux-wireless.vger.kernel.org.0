@@ -2,161 +2,195 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B76BA6FDFDD
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 16:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDA496FDFE0
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 16:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237361AbjEJOTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 10:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
+        id S237272AbjEJOTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 10:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237391AbjEJOTq (ORCPT
+        with ESMTP id S237371AbjEJOTx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 10:19:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F90546A9
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 07:18:51 -0700 (PDT)
+        Wed, 10 May 2023 10:19:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5342B2D63
+        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 07:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683728331;
+        s=mimecast20190719; t=1683728344;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QuOUa9KYh5PmE79OUIXU+YKRUs/vGY8xczPXTJ10Qec=;
-        b=CZV7mcemfpZ7mqFY+gW/OUMn+gOFgtbf0YFW3oYVhYtpEPyBhnM3TG4Fm8kl7JpXvlvEID
-        nsNi6ycW+GBfhXf2ATRjxSytONtCEM1GmKfzimpHlxbHVy7wPLtluzt1xKo+P1BRNsbwa9
-        OsZODzZu/Ecj/6oXpRuVmHYQo9uniRw=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-6KAN4uZfOR2fM5W5q6Y8ZQ-1; Wed, 10 May 2023 10:18:49 -0400
-X-MC-Unique: 6KAN4uZfOR2fM5W5q6Y8ZQ-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-50de84a3861so171499a12.3
-        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 07:18:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683728328; x=1686320328;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QuOUa9KYh5PmE79OUIXU+YKRUs/vGY8xczPXTJ10Qec=;
-        b=PC4ivzY6ARcq+e55mvKxSi1xJUdU3IjHzKrh0shs4ncyIGcaN/mmBCCYYigfS14dqX
-         lJ+mXRb8UVyLEHNcNDwCx/HMUwAX0Byaz2BRvmPmWGA/+R8N7wB08nSQTGylWB8bFSoR
-         U68UXWm9kj58tilZ5IcOfbhxvforpnRxFLMCwlkHeEPLp5MrEDhFfs6BVNP88CBi1vtv
-         Wfit7HELo7Yt8gVtZb3nqX3Ni0NtkQQgJxW/s0i5hgClmf/HvFvmroq7kHcsN2U4UOMC
-         n/Vk6NPP8FkuF1etWIJxeUwnj7EMxk0uRk2B5/Fa0DpXGLjyp+Yzv99SbR4HUc+OL/+Z
-         IUYw==
-X-Gm-Message-State: AC+VfDwpyQM/OWl31+ST6J9Hia+LDthC0TUCj6n7LrEHD6QvLKD8ZDI3
-        /05XoictO/kwvq7qt5j2eCKZ8ymUcIf0LGPuOZHHg2nk3ZYicuG15ZEiMSshrviJkbPLiokeHKR
-        pl7goKcmt6iXuVAYkWQwvvuiVIPY=
-X-Received: by 2002:a17:906:7304:b0:921:da99:f39c with SMTP id di4-20020a170906730400b00921da99f39cmr19213520ejc.12.1683728328730;
-        Wed, 10 May 2023 07:18:48 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4vHpbiTR7GNjFCfIEAqh1zlSEJZmji3BktutSVamw7Oiyr+82YNobx9E3OjNmbuwL6OHbHVQ==
-X-Received: by 2002:a17:906:7304:b0:921:da99:f39c with SMTP id di4-20020a170906730400b00921da99f39cmr19213485ejc.12.1683728328430;
-        Wed, 10 May 2023 07:18:48 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id t27-20020a170906269b00b0096616aef7e5sm2804404ejc.149.2023.05.10.07.18.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 May 2023 07:18:47 -0700 (PDT)
-Message-ID: <ed5b02e3-ded8-1edd-c903-d7a439065c3a@redhat.com>
-Date:   Wed, 10 May 2023 16:18:47 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: brcmfmac: Check for probe() id argument being NULL
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Arend van Spriel <aspriel@gmail.com>,
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=I3UrWSrzJKX0tjy3agppZnZNgX5U4BYubRWFY3jwDKM=;
+        b=LC2xU6svgAKJCsd3X3nxtAoj47N3Qx2K9B3+NPI6kFqAjvCB5hCmH9gzD/DMAsGZkJ0zbf
+        Du4dAhwmbZ+PV1Yc+dldfqsoOgUmfHFAdrsmSq92Ni3SXOR66S8iiw4R/wmNYsVthcasOs
+        ifwTi4jCuSmTOm9yh8mf5+u1IBaqWH8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-77-EnOzf-MaOlSmgJT0Zd9HYg-1; Wed, 10 May 2023 10:19:00 -0400
+X-MC-Unique: EnOzf-MaOlSmgJT0Zd9HYg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3BD4C3C0ED58;
+        Wed, 10 May 2023 14:18:59 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.195.159])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8C11963F88;
+        Wed, 10 May 2023 14:18:57 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org,
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        linux-wireless@vger.kernel.org,
         brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com, regressions@lists.linux.dev,
-        Felix <nimrod4garoa@gmail.com>, stable@vger.kernel.org
-References: <20230510100050.27099-1-hdegoede@redhat.com>
- <7f563b21-4c06-134e-f30d-02ed61521c1f@broadcom.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <7f563b21-4c06-134e-f30d-02ed61521c1f@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
+        Felix <nimrod4garoa@gmail.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] wifi: brcmfmac: Check for probe() id argument being NULL
+Date:   Wed, 10 May 2023 16:18:56 +0200
+Message-Id: <20230510141856.46532-1-hdegoede@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Arend,
+The probe() id argument may be NULL in 2 scenarios:
 
-On 5/10/23 14:12, Arend van Spriel wrote:
-> On 5/10/2023 12:00 PM, Hans de Goede wrote:
->> The probe() id argument may be NULL in 2 scenarios:
->>
->> 1. brcmf_pcie_pm_leave_D3() calling brcmf_pcie_probe() to reprobe
->>     the device.
->>
->> 2. If a user tries to manually bind the driver from sysfs then the sdio /
->>     pcie / usb probe() function gets called with NULL as id argument.
->>
->> 1. Is being hit by users causing the following oops on resume and causing
->> wifi to stop working:
->>
->> BUG: kernel NULL pointer dereference, address: 0000000000000018
->> <snip>
->> Hardware name: Dell Inc. XPS 13 9350/0PWNCR, BIDS 1.13.0 02/10/2020
->> Workgueue: events_unbound async_run_entry_fn
->> RIP: 0010:brcmf_pcie_probe+Ox16b/0x7a0 [brcmfmac]
->> <snip>
->> Call Trace:
->>   <TASK>
->>   brcmf_pcie_pm_leave_D3+0xc5/8x1a0 [brcmfmac be3b4cefca451e190fa35be8f00db1bbec293887]
->>   ? pci_pm_resume+0x5b/0xf0
->>   ? pci_legacy_resume+0x80/0x80
->>   dpm_run_callback+0x47/0x150
->>   device_resume+0xa2/0x1f0
->>   async_resume+0x1d/0x30
->> <snip>
->>
->> Fix this by checking for id being NULL.
->>
->> In the case of brcmf_pcie_probe() also add a manual lookup of the id
->> when it is NULL so that fwvid will still get set correctly on reprobe
->> on resume.
-> 
-> Hi Hans,
-> 
-> Thanks for looking into this and coming up with a fix. Does it make sense to proceed with 
-> BRCMF_FWVENDOR_INVALID though. I think it will end up in probe failure in brcmf_fwvid_attach() 
-> because of it so why not bail out right away.
+1. brcmf_pcie_pm_leave_D3() calling brcmf_pcie_probe() to reprobe
+   the device.
 
-You are right since the vendor stuff is in separate modules I thought
-the driver would just continue without, but that indeed does not work.
+2. If a user tries to manually bind the driver from sysfs then the sdio /
+   pcie / usb probe() function gets called with NULL as id argument.
 
-I have just prepared a version 2 which immediately bails from probe()
-if id is still null after doing a pci_match_id() / usb_match_id()
-to try and lookup the id. Note for the SDIO case v2 will immediately
-bail on a NULL id since there is no sdio_match_id() helper.
+1. Is being hit by users causing the following oops on resume and causing
+wifi to stop working:
 
-I'll send out v2 right away.
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+<snip>
+Hardware name: Dell Inc. XPS 13 9350/0PWNCR, BIDS 1.13.0 02/10/2020
+Workgueue: events_unbound async_run_entry_fn
+RIP: 0010:brcmf_pcie_probe+Ox16b/0x7a0 [brcmfmac]
+<snip>
+Call Trace:
+ <TASK>
+ brcmf_pcie_pm_leave_D3+0xc5/8x1a0 [brcmfmac be3b4cefca451e190fa35be8f00db1bbec293887]
+ ? pci_pm_resume+0x5b/0xf0
+ ? pci_legacy_resume+0x80/0x80
+ dpm_run_callback+0x47/0x150
+ device_resume+0xa2/0x1f0
+ async_resume+0x1d/0x30
+<snip>
 
-Regards,
+Fix this by checking for id being NULL.
 
-Hans
+In the PCI and USB cases try a manual lookup of the id so that manually
+binding the driver through sysfs and more importantly brcmf_pcie_probe()
+on resume will work.
 
+For the SDIO case there is no helper to do a manual sdio_device_id lookup,
+so just directly error out on a NULL id there.
 
+Fixes: da6d9c8ecd00 ("wifi: brcmfmac: add firmware vendor info in driver info")
+Reported-by: Felix <nimrod4garoa@gmail.com>
+Link: https://lore.kernel.org/regressions/4ef3f252ff530cbfa336f5a0d80710020fc5cb1e.camel@gmail.com/
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v2:
+- Using BRCMF_FWVENDOR_INVALID will just lead to a probe() error later on,
+  if NULL error out immediately instead of using BRCMF_FWVENDOR_INVALID.
+---
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c |  5 +++++
+ .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 11 +++++++++++
+ .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c    | 11 +++++++++++
+ 3 files changed, 27 insertions(+)
 
->> Fixes: da6d9c8ecd00 ("wifi: brcmfmac: add firmware vendor info in driver info")
->> Reported-by: Felix <nimrod4garoa@gmail.com>
->> Link: https://lore.kernel.org/regressions/4ef3f252ff530cbfa336f5a0d80710020fc5cb1e.camel@gmail.com/
->> Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 8 +++++++-
->>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c    | 2 +-
->>   3 files changed, 9 insertions(+), 3 deletions(-)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 65d4799a5658..f06684f84789 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -1032,6 +1032,11 @@ static int brcmf_ops_sdio_probe(struct sdio_func *func,
+ 	struct brcmf_sdio_dev *sdiodev;
+ 	struct brcmf_bus *bus_if;
+ 
++	if (!id) {
++		dev_err(&func->dev, "Error no sdio_device_id passed for %x:%x\n", func->vendor, func->device);
++		return -ENODEV;
++	}
++
+ 	brcmf_dbg(SDIO, "Enter\n");
+ 	brcmf_dbg(SDIO, "Class=%x\n", func->class);
+ 	brcmf_dbg(SDIO, "sdio vendor ID: 0x%04x\n", func->vendor);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index a9b9b2dc62d4..d9ecaa0cfdc4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -2339,6 +2339,9 @@ static void brcmf_pcie_debugfs_create(struct device *dev)
+ }
+ #endif
+ 
++/* Forward declaration for pci_match_id() call */
++static const struct pci_device_id brcmf_pcie_devid_table[];
++
+ static int
+ brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+@@ -2349,6 +2352,14 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	struct brcmf_core *core;
+ 	struct brcmf_bus *bus;
+ 
++	if (!id) {
++		id = pci_match_id(brcmf_pcie_devid_table, pdev);
++		if (!id) {
++			pci_err(pdev, "Error could not find pci_device_id for %x:%x\n", pdev->vendor, pdev->device);
++			return -ENODEV;
++		}
++	}
++
+ 	brcmf_dbg(PCIE, "Enter %x:%x\n", pdev->vendor, pdev->device);
+ 
+ 	ret = -ENOMEM;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 246843aeb696..2178675ae1a4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -1331,6 +1331,9 @@ brcmf_usb_disconnect_cb(struct brcmf_usbdev_info *devinfo)
+ 	brcmf_usb_detach(devinfo);
+ }
+ 
++/* Forward declaration for usb_match_id() call */
++static const struct usb_device_id brcmf_usb_devid_table[];
++
+ static int
+ brcmf_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ {
+@@ -1342,6 +1345,14 @@ brcmf_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 	u32 num_of_eps;
+ 	u8 endpoint_num, ep;
+ 
++	if (!id) {
++		id = usb_match_id(intf, brcmf_usb_devid_table);
++		if (!id) {
++			dev_err(&intf->dev, "Error could not find matching usb_device_id\n");
++			return -ENODEV;
++		}
++	}
++
+ 	brcmf_dbg(USB, "Enter 0x%04x:0x%04x\n", id->idVendor, id->idProduct);
+ 
+ 	devinfo = kzalloc(sizeof(*devinfo), GFP_ATOMIC);
+-- 
+2.40.1
 
