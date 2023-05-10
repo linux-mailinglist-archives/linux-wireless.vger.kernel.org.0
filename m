@@ -2,112 +2,143 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27756FE47F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 21:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E4976FE49B
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 May 2023 21:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236189AbjEJT27 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 15:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59648 "EHLO
+        id S236041AbjEJTun (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 15:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjEJT25 (ORCPT
+        with ESMTP id S229500AbjEJTum (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 15:28:57 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036B66A4B;
-        Wed, 10 May 2023 12:28:57 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1ab01bf474aso58807065ad.1;
-        Wed, 10 May 2023 12:28:56 -0700 (PDT)
+        Wed, 10 May 2023 15:50:42 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B6040CD
+        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 12:50:39 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id 98e67ed59e1d1-24e24b0193fso5715019a91.2
+        for <linux-wireless@vger.kernel.org>; Wed, 10 May 2023 12:50:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683746936; x=1686338936;
+        d=chromium.org; s=google; t=1683748239; x=1686340239;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=St8Hsth3yEssLy+3L8DNZSzYbP8LaSjJkmswj6bNhNY=;
-        b=jmprtQ6vpXwG0djM6z+KYh5xl8h/Ac8X1jiJLHIWobiFbjifXXm2vyi3dzLL8l8FCU
-         gMtCj9s2LzKLXPphcW+x0sL3jIRVsCybxzXG73KULcUwKpMnjBJTZDQEtfxWRGVnJLCN
-         5My6mKN9k8Syy7gNptWZg2RQMKupWGbxmFd3k6myHjpkphei3w3WCmBlOSLyHS0Em8Kl
-         RQW1rKBEN+MMEXR3IJABsWyW8nMvdZElwXOIix/q0IPG628wL9CFeCsWHHrZ6/JbNM76
-         TPVMHtbLqST4NDstlWGNC2LD8EMAVl3xpGpm083kfa2mHDjwN5tOix+zZukkW2rSfBW5
-         1x0Q==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RzJXq5M126VXCpiLaXhWPXp33e8DOHU0imjBBTS6ocY=;
+        b=UYPeCm9xk2F+UqFzo7t2g252TthUcu3MmFve6bnrGKluC0KPQdbx+R96WtCPlOzvP/
+         GuwquTTUWnmNSWWBlWU7CiHXyhNZ3FvMvvbZiaUU6GddxjxTW4Hp7rQKk0S1eLZq5tyl
+         3NSD3wRK/T9jfmIbLeJkVJQhKWt+8t/pPHfQ4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683746936; x=1686338936;
+        d=1e100.net; s=20221208; t=1683748239; x=1686340239;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=St8Hsth3yEssLy+3L8DNZSzYbP8LaSjJkmswj6bNhNY=;
-        b=RYd6/s3lGMjzeEFME9IwL+EHk45sQaNodqDuicGvcDnpXAnQxmxMkf2FF9+692y/Wz
-         7GMZkaPKMQI+RzlDlCUc692CAm4WQig4VkZur6UBsdJNeLYTwxwVndp88rjvMCLfSpNw
-         GbzNXfm42mgVWN+OX9yLKQGcQQultUTx/SxlbWoPxL8Ni7BhqBH8LAcTYYDcC3nFSgzb
-         dwDWutaAFzuWIHblfZzDn5tq8eudN6a/H6LieiBmLbminiKiInNJHqF5eVhIppfF3aT7
-         xavFOFYevxIpnx5GTLIjue14a3e8voBtvjPy4T+vM8xH4kNJfFQ4ekXyq79NEFqkVOSY
-         9+6A==
-X-Gm-Message-State: AC+VfDzfNmkdlVYgvx3Lqnz0SI3uQCXESG5h49CS8JePAE/72JYnsdmj
-        bVocfkN5fdPVyTgDz0sbLpM=
-X-Google-Smtp-Source: ACHHUZ45Vb34sEQWoilNdNFya7MELHannGfHXzwWNj9+lbiu9vgdbORva+tXb7Ric3zyI/9AUWDN/w==
-X-Received: by 2002:a17:902:c402:b0:1ac:b259:87ea with SMTP id k2-20020a170902c40200b001acb25987eamr4196664plk.0.1683746936214;
-        Wed, 10 May 2023 12:28:56 -0700 (PDT)
-Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
-        by smtp.gmail.com with ESMTPSA id x5-20020a170902b40500b0019a6cce2060sm4156156plr.57.2023.05.10.12.28.55
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RzJXq5M126VXCpiLaXhWPXp33e8DOHU0imjBBTS6ocY=;
+        b=aLstKEUZNBbkdSJQR+cDvLNgpKHvqUjeF0apjJQn0p+i/JJ0/BsMx4PMaQGmsPIerM
+         bQrI3LkFe+EqJ8Y4Aj/q2tp+hN3kFoh4jEZ+heppPwp7nuXley9Lfvp7BRNAEUOBW712
+         Wl60ATmy91Qb1qYPmuMLhG2sIUvigHGjYi7PAu6LBLTWEUAjwHZLjJpdGp+y9jo5j+oi
+         e765T4NRr34RIDc8bsA+gU8fGjO3vU8YX6tQlHNbx2rNApxCJPdAJNXwZls8gSflbUJZ
+         0rScfonxxorknxLNNADHFUBmIu0rvBqKhGNIXTjr+fwglDW+29cLQnY+rbMj6v9LoESu
+         WTSA==
+X-Gm-Message-State: AC+VfDzCUZca4y8UR8EVGfeK20x9SHq5fhJyJlF6uCA3VTHHNhu3YI32
+        NTCyPElSE6h+lMLBqYlzQiwdag==
+X-Google-Smtp-Source: ACHHUZ4hSLTRdAWmIJbXpDVFtmGq/SMTG5NAr/KdpxYfUUkv2hBQi11Hb8rjTqCQj4EVVAL1KHNGtQ==
+X-Received: by 2002:a17:90a:4618:b0:250:6bd9:cf6 with SMTP id w24-20020a17090a461800b002506bd90cf6mr13900854pjg.15.1683748239244;
+        Wed, 10 May 2023 12:50:39 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:17a2:4d38:332d:67a0])
+        by smtp.gmail.com with ESMTPSA id 3-20020a630a03000000b0051b930b2b49sm3579202pgk.72.2023.05.10.12.50.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 May 2023 12:28:55 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-Date:   Wed, 10 May 2023 09:28:54 -1000
-From:   Tejun Heo <tj@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Lai Jiangshan <jiangshanlai@gmail.com>
-Subject: Re: [RFC PATCH 2/4] workqueue: support holding a mutex for each work
-Message-ID: <ZFvwdro1T4lnLDrs@slm.duckdns.org>
-References: <20230510160428.175409-1-johannes@sipsolutions.net>
- <20230510175846.cc21c84b0e6b.I9d3df459c43a78530d9c2046724bb45626402d5f@changeid>
- <ZFvjoUtg2ax11UlC@slm.duckdns.org>
- <0c44265eae421eff49e19be3ebfe20d1fb5e6f9a.camel@sipsolutions.net>
+        Wed, 10 May 2023 12:50:38 -0700 (PDT)
+Date:   Wed, 10 May 2023 12:50:36 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Tejun Heo <tj@kernel.org>
+Cc:     jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
+        kernel-team@meta.com, Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Pin-yen Lin <treapking@chromium.org>
+Subject: Re: [PATCH 02/13] wifi: mwifiex: Use default @max_active for
+ workqueues
+Message-ID: <ZFv1jM2PErlNUNsm@google.com>
+References: <20230509015032.3768622-1-tj@kernel.org>
+ <20230509015032.3768622-3-tj@kernel.org>
+ <ZFvd8zcPq4ijSszM@google.com>
+ <ZFvfYK-u8suHjPFw@slm.duckdns.org>
+ <ZFvpJb9Dh0FCkLQA@google.com>
+ <ZFvuOK_dpGTE4UVS@slm.duckdns.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0c44265eae421eff49e19be3ebfe20d1fb5e6f9a.camel@sipsolutions.net>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+In-Reply-To: <ZFvuOK_dpGTE4UVS@slm.duckdns.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-
-On Wed, May 10, 2023 at 09:16:09PM +0200, Johannes Berg wrote:
-> Yeah I thought you'd say that :)
-
-Sorry about being so predictable. :)
-
-> It isn't difficult, the issue is just that in the case I'm envisioning,
-> you can't just call wiphy_lock() since that would attempt to pause the
-> workqueue, which can't work from on the workqueue itself. So you need
-> wiphy_lock_from_work()/wiphy_unlock_from_work() or remember to use the
-> mutex directly there, which all seemed more error-prone and harder to
-> maintain.
+On Wed, May 10, 2023 at 09:19:20AM -1000, Tejun Heo wrote:
+> On Wed, May 10, 2023 at 11:57:41AM -0700, Brian Norris wrote:
+> > (1) much better (nearly the same as 4.19) if we add WQ_SYSFS and pin the
+> > work queue to one CPU (doesn't really matter which CPU, as long as it's
+> > not the one loaded with IRQ(?) work)
+> > 
+> > (2) moderately better if we pin the CPU frequency (e.g., "performance"
+> > cpufreq governor instead of "schedutil")
+> > 
+> > (3) moderately better (not quite as good as (2)) if we switch a
+> > kthread_worker and don't pin anything.
 > 
-> But anyway I could easily implement _both_ of these in cfg80211
-> directly, with just a linked list of works and a single struct
-> work_struct to execute things on the list, with the right locking. That
-> might be easier overall, just at the expense of more churn while
-> converting, but that's not even necessarily _bad_, it would really
-> guarantee that we can tell immediately the work is properly done...
+> Hmm... so it's not just workqueue.
+
+Right. And not just cpufreq either.
+
+> > We tried (2) because we saw a lot more CPU migration on kernel 5.15
+> > (work moves across all 4 CPUs throughout the run; on kernel 4.19 it
+> > mostly switched between 2 CPUs).
 > 
-> I'll play with that idea some, I guess. Would you still want the
-> pause/resume patch anyway, even if I end up not using it then?
+> Workqueue can contribute to this but it seems more likely that scheduling
+> changes are also part of the story.
 
-I think it's something inherently useful (along with the ability to do the
-same thing to a work time - ie. cancel and inhibit a work item to be
-queued0); however, it's probably not a good idea to merge without an in-tree
-user. Would you mind posting a fixed patch nonetheless for future reference
-if it's not too much hassle?
+Yeah, that's one theory. And in that vein, that's one reason we might
+consider switching to a kthread_worker anyway, even if that doesn't
+solve all the regression -- because schedutil relies on per-entity load
+calculations to make decisions, and workqueues don't help the scheduler
+understand that load when spread across N CPUs (workers). A dedicated
+kthread would better represent our workload to the scheduler.
 
-Thanks.
+(Threaded NAPI -- mwifiex doesn't support NAPI -- takes a similar
+approach, as it has its own thread per NAPI context.)
 
--- 
-tejun
+> > We tried (3) suspecting some kind of EAS issue (instead of distributing
+> > our workload onto 4 different kworkers, our work (and therefore our load
+> > calculation) is mostly confined to a single kernel thread). But it still
+> > seems like our issues are more than "just" EAS / cpufreq issues, since
+> > (2) and (3) aren't as good as (1).
+> > 
+> > NB: there weren't many relevant mwifiex or MTK-SDIO changes in this
+> > range.
+> > 
+> > So we're still investigating a few other areas, but it does seem like
+> > "locality" (in some sense of the word) is relevant. We'd probably be
+> > open to testing any patches you have, although it's likely we'd have the
+> > easiest time if we can port those to 5.15. We're constantly working on
+> > getting good upstream support for Chromebook chips, but ARM SoC reality
+> > is that it still varies a lot as to how much works upstream on any given
+> > system.
+> 
+> I should be able to post the patchset later today or tomorrow. It comes with
+> sysfs knobs to control affinity scopes and strictness, so hopefully you
+> should be able to find the configuration that works without too much
+> difficulty.
+
+Great!
+
+Brian
