@@ -2,95 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 092716FF812
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 19:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA446FF8BB
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 19:51:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238554AbjEKRGI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 May 2023 13:06:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44458 "EHLO
+        id S238839AbjEKRvf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 May 2023 13:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238867AbjEKRGB (ORCPT
+        with ESMTP id S238673AbjEKRvX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 May 2023 13:06:01 -0400
-X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 11 May 2023 10:05:59 PDT
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7E74CDB;
-        Thu, 11 May 2023 10:05:59 -0700 (PDT)
-Received: from smtpclient.apple (p4fefc45b.dip0.t-ipconnect.de [79.239.196.91])
-        by mail.holtmann.org (Postfix) with ESMTPSA id 59C4FCECEA;
-        Thu, 11 May 2023 18:50:16 +0200 (CEST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH net] MAINTAINERS: exclude wireless drivers from netdev
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20230511160310.979113-1-kuba@kernel.org>
-Date:   Thu, 11 May 2023 18:50:15 +0200
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        netdev <netdev@vger.kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, kvalo@kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <639C8EA4-1F6E-42BE-8F04-E4A753A6EFFC@holtmann.org>
-References: <20230511160310.979113-1-kuba@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Thu, 11 May 2023 13:51:23 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6285F1BEC
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 10:51:14 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-55a8e9e2c53so87414317b3.1
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 10:51:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683827473; x=1686419473;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AJf82yenaiO5gd3GrLwZqndqFsgk7YATjQEjq8QoNyo=;
+        b=nFPOQHMQlzPNwdJ8+1XfMbmdj5/OgtPiaTOxfwWE2Yj4L8/p4fnSAsKHY1F1jiw3WH
+         hiOqGVfqT7mkcHGMqchJOLLzoVe8Uq//4NfE2whgaB5/Pp3sVY9tVOhgnJXnUuhka214
+         0jhFc4SBtar21kA6Bro2hYAA8KZczbp63vpgb94MSZGN+lSDi7zfgXr2obeenNO87BYZ
+         w+BJjmboVBiGhcrjsLlAmj5TWznKhDFF+1IaIo/xIhhHOy+4ubjF6j+U/xzMEzJdLkeU
+         xm5fXd4hPce9yiYYP9UJ+V0+Gf4KSzsxSHkUd75FiVvbpBiwJUxb/DL0mA9rQyHpnULv
+         D+Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683827473; x=1686419473;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AJf82yenaiO5gd3GrLwZqndqFsgk7YATjQEjq8QoNyo=;
+        b=h3d2vGtO5FltzAO6HmC7z08QcVJLnKLrdfAYtKJHHHSHKrlDDdy68Ywqa5uvWczZs8
+         OgyWxDx7ZdHVjIKXlrMubyOEvEzdr+b5/atWC9xgQnwG0X35XishR0/b2UoNaMQmznHB
+         6oJwssUqgF6GO2EsuedvHpUCKmj9BmROTHQ4DzOYdLiWbrzDztFRFI/UNZIhJUOGTSRp
+         BmWdz+G0zEDG2lwqKjqhSLT4xu+q6zX1O6P9C3e2GP0zzAztAGGJpEPl3sSpXCKJfoMb
+         wMrctNKq++mPAy4gVi32XAfcydM68M2IPNXyh4pNlPSH2ArvTK+uGyvQg/YvmxTje2Kv
+         g7MA==
+X-Gm-Message-State: AC+VfDyVeaGAIuyTLFRdUIprHjy3zs4FMwkG6OzscNPdgDIrNjtn1WUp
+        n4esIjEc8NvUIKlHMIdte+m6g/i4H0tdHyjGylk=
+X-Google-Smtp-Source: ACHHUZ4ht3YIiQ50e8huJt2XxdPKH3NDmiEMRyFqq9xXTdAkUC6C03nSsn3iEVOSU3w1gmk1o/YuGxesawPWwGdqCtQ=
+X-Received: by 2002:a0d:d401:0:b0:55a:a9b6:6da with SMTP id
+ w1-20020a0dd401000000b0055aa9b606damr22977371ywd.11.1683827473537; Thu, 11
+ May 2023 10:51:13 -0700 (PDT)
+MIME-Version: 1.0
+From:   Charlotte George <eventdatalist6@gmail.com>
+Date:   Thu, 11 May 2023 23:21:02 +0530
+Message-ID: <CACS77DVEqswLstbHaU395iaB=cfYBqD4GxhyMPVm_3-t9jrZoQ@mail.gmail.com>
+Subject: RE: ISC West Attendees Data List 2023
+To:     Charlotte George <eventdatalist6@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.0 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
+        FILL_THIS_FORM_LONG,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jakub,
+Hi,
 
-> It seems that we mostly get netdev CCed on wireless patches
-> which are written by people who don't know any better and
-> CC everything that get_maintainers spits out. Rather than
-> patches which indeed could benefit from general networking
-> review.
-> 
-> Marking them down in patchwork as Awaiting Upstream is
-> a bit tedious.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: kvalo@kernel.org
-> CC: johannes@sipsolutions.net
-> CC: linux-wireless@vger.kernel.org
-> 
-> Is this okay with everyone?
-> 
-> It's not a big deal, but it really feels that for wireless
-> we only get bot/autogenerated patches to netdev..
-> 
-> Here's the list of patches we marked as Awaiting Upstream:
-> https://patchwork.kernel.org/project/netdevbpf/list/?delegate=netdev&param=-date&order=date&state=8
-> ---
-> MAINTAINERS | 1 +
-> 1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 58239fbc7007..4c49f4703a18 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14565,6 +14565,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
-> F:	Documentation/devicetree/bindings/net/
-> F:	drivers/connector/
-> F:	drivers/net/
-> +X:	drivers/net/wireless/
-> F:	include/dt-bindings/net/
-> F:	include/linux/etherdevice.h
-> F:	include/linux/fcdevice.h
+ I hope you're doing great and staying healthy!
 
-I didn’t know such an option existed, can we do the same for Bluetooth?
+ Would you be interested in acquiring ISC West Attendees data list 2023?
 
-Regards
+ List contains: Company Name, Contact Name, First Name, Middle Name,
+Last Name, Title,   Address, Street, City, Zip code, State, Country,
+Telephone and Email address.
 
-Marcel
+ Number of Contacts: 34,526
+ Cost: $1,789
 
+ I appreciate your time. Looking forward to your response.
+
+ Kind Regards,
+ Charlotte George
+ Marketing Coordinator
