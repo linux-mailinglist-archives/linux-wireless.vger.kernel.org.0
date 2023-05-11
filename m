@@ -2,215 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6581D6FF028
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 12:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADCFA6FF056
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 13:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237885AbjEKKwv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 May 2023 06:52:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
+        id S237480AbjEKLBo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 May 2023 07:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237884AbjEKKwt (ORCPT
+        with ESMTP id S237709AbjEKLBj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 May 2023 06:52:49 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F4159C4
-        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 03:52:47 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f42711865eso30832615e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 03:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683802366; x=1686394366;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NDBhj27KR354yxCuqIR8nQ0Enpmy7HIOWmEyGFYjPvM=;
-        b=vpVG77K+fYQq9IbnIicPnh+6U80NPZc1JkzuK2dYRf2wha68CvWklO5Yb4dBJzECsb
-         JbrgJkhQx8hp16p3UFedQLL1yMjJKl6zPibT8acJJHxIemlt/LC8ygzdssPU6dB9AnMZ
-         YzHBqCJ3DCVK/hzXqTb/ppnHYmJJ7fxKoa8FkLV8Bsv9Q97QsVfffPY1X6IxdPBJzvio
-         6W+VolZYXjuORsxf64TMk+b0QxvXeFuwmtZ8JxJx6rer8F/fFTEPUH9ncpqPj6FriVXj
-         OeuTog+8I+3dhk+NtqMqfCu09aM36Gx2JFLlAf/VCGH7jaickNWu2bQ96IFOhA+Cb++j
-         r63w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683802366; x=1686394366;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NDBhj27KR354yxCuqIR8nQ0Enpmy7HIOWmEyGFYjPvM=;
-        b=ALnSqGip+kmwylrhM5JaULchKjh00LW27Qs1vuuu0xhOjgzjGXCnYNwHZT5ai79vYi
-         CIKxZ0rpMjiJu6au2Qkq3s+WNfBH/M9RtVevB+pUKIMq7ukRaIA00/4rpSknIc56dJmB
-         J5yBf5KT5OKl93I4eMfM/mnOJaNflxaCvDDbCT0DmJTaC+io7bH+NpPqS2uGQEr2IXxK
-         z8DTCTg3wCHuUMizcHwB4svdVR0M4Njzvl8Oggb7nj3Q6VggYPgNYFt0ZiDhMGaXg1gu
-         Gx/vSLkw6H+MsFY/Z1X23Ewy4EQUyQFuQGxE4GbD0n0sJhE1AINiAqHIxD7r1UTkDuhs
-         SaLw==
-X-Gm-Message-State: AC+VfDzNE/x+fEA2s6SxrLyhxxq3TTvj2xQOe4lTSrx/XTxszbeyM//0
-        W/SFxSUG2w3arLcFWzJUYOS2sQ==
-X-Google-Smtp-Source: ACHHUZ6AK9XHSAZFK8k+X9wtcgdEy9/6iAKy9Y42tWATBZpE2gMXe5wM0YJdpz9OgeVr1CN6CSFxyQ==
-X-Received: by 2002:a7b:c843:0:b0:3f4:b6bc:bd80 with SMTP id c3-20020a7bc843000000b003f4b6bcbd80mr3533902wml.33.1683802366342;
-        Thu, 11 May 2023 03:52:46 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id d6-20020a056000114600b00306344eaebfsm20107119wrx.28.2023.05.11.03.52.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 May 2023 03:52:45 -0700 (PDT)
-Date:   Thu, 11 May 2023 13:52:42 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     oe-kbuild@lists.linux.dev,
-        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>,
-        johannes@sipsolutions.net
-Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
-        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
-Subject: Re: [PATCH] cfg80211: S1G rate information and calculations
-Message-ID: <468502fa-a43e-4e4c-b00b-cb2af9f7cac1@kili.mountain>
+        Thu, 11 May 2023 07:01:39 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94912101
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 04:01:37 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34BACVWU032335;
+        Thu, 11 May 2023 11:01:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=WKy8kmBhpVPjti8A8Z4JIB9qnscpRMGvPXjfG+OpgcQ=;
+ b=Eqafg5qDJVO5H2dR0rO80xfjrtwNTPyV0gTIOrWqLJ25PLECAYBnQ2hwRNmVAoPZiaHK
+ GCHWscXMDGioaqQpjoOa9GWzq+Fue2KS5zQwxrHaTDU1QB9DTM0dYR2gG4XYMadLJnvY
+ NAkH56rtLN6BhEnt6+NB6ApNspxzksXmF6U6s5n0wvKet0WnJGZdljYidxDG8lOOXnN3
+ LwCOMD40FH9g68strwCStG4uYdzhQLkSqVScorGpniidYBs/9/qGigz2OfOnPM52nKyB
+ Y2MYS9vDRT4qG80yxdyDytatG2bnkqMcvbPHUJgDkNpOo2qfiVWaDSdV4LsVvUblPBp7 Xw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qged2j0w8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 11 May 2023 11:01:28 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34BB1QhY009435
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 11 May 2023 11:01:26 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 11 May
+ 2023 04:01:25 -0700
+Message-ID: <2d3a6578-68c5-a0f3-b18b-bce2e67d3fdc@quicinc.com>
+Date:   Thu, 11 May 2023 19:01:22 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230504024923.1925530-1-gilad.itzkovitch@morsemicro.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: parsing the multi-link element with STA profile wifi: mac80211:
+ support MLO authentication/association with one link
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>
+References: <48715509-62fd-2307-e38f-176234b482c1@quicinc.com>
+ <f240b33d507daf898480b0a11eb27d4475e45164.camel@sipsolutions.net>
+ <571d8ecf-2ca6-8b7b-6e15-be12c56e9f88@quicinc.com>
+ <e40ee96ab2a8d9d079d3a06b7b1c615ab25a2403.camel@sipsolutions.net>
+ <2842f57c-e383-fb9e-d994-95336cb65e0d@quicinc.com>
+ <6a33a41b5aa6c98d95ff934fbb6a10dfe78e6e6e.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <6a33a41b5aa6c98d95ff934fbb6a10dfe78e6e6e.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IBxAePh062ioRr7AhY3I3HG7yodxVpkS
+X-Proofpoint-GUID: IBxAePh062ioRr7AhY3I3HG7yodxVpkS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-11_07,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305110094
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Gilad,
+On 4/18/2023 5:11 PM, Johannes Berg wrote:
+> On Tue, 2023-04-18 at 17:02 +0800, Wen Gong wrote:
+>> On 4/18/2023 4:48 PM, Johannes Berg wrote:
+>>> Hi,
+>>>
+>>>> My case is:
+>>>> When connect with 2 links AP, the cfg80211_hold_bss() is called by
+>>>> cfg80211_mlme_assoc()
+>>>> for each BSS of the 2 links,
+>>>>
+>>>> When asssocResp from AP is not success(such as status_code==1), the
+>>>> ieee80211_link_data of 2nd link(sdata->link[link_id])
+>>>> is NULL because ieee80211_assoc_success()->ieee80211_vif_update_links()
+>>>> is not called.
+>>>>
+>>>> Then struct cfg80211_rx_assoc_resp resp in cfg80211_rx_assoc_resp() and
+>>>> struct cfg80211_connect_resp_params cr in __cfg80211_connect_result()
+>>>> will only have the data of
+>>>> the 1st link, and finally cfg80211_connect_result_release_bsses() only
+>>>> call cfg80211_unhold_bss()
+>>>> for the 1st link, then BSS of the 2nd link will never free because its
+>>>> hold is awlays > 0 now.
+>>> Hah, yes, ouch.
+>>>
+>>>> I found it is not easy to refine it, so do you have any advise/idea?
+>>>>
+>>>> for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
+>>>>            struct ieee80211_link_data *link;
+>>>>
+>>>>            link = sdata_dereference(sdata->link[link_id], sdata);
+>>>>            if (!link)
+>>>>                continue;
+>>>>
+>>>>            if (!assoc_data->link[link_id].bss)
+>>>>                continue;
+>>>>
+>>>>            resp.links[link_id].bss = assoc_data->link[link_id].bss;
+>>>>            resp.links[link_id].addr = link->conf->addr;
+>>>>            resp.links[link_id].status = assoc_data->link[link_id].status;
+>>>>
+>>> But is it really so hard? We only need link for link->conf->addr, and we
+>>> can use assoc_data->link[link_id].addr for that instead, no? We need to
+>>> store those locally to avoid a use-after-free, but that's at most 15
+>>> addresses on the stack, which seems acceptable?
+>>>
+>>> Oh and there's the uapsd stuff but that only matters in the success case
+>>> anyway. In fact I'm not even sure the address matters in the
+>>> unsuccessful case but we have it pretty easily.
+>>>
+>>> johannes
+>> OK. So I guess you already have good way to refine it?
+>>
+> No, not really, was just thinking out loud here :)
+>
+> johannes
 
-kernel test robot noticed the following build warnings:
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Gilad-Itzkovitch/cfg80211-S1G-rate-information-and-calculations/20230504-105056
-base:   28b17f6270f182e22cdad5a0fdc4979031e4486a
-patch link:    https://lore.kernel.org/r/20230504024923.1925530-1-gilad.itzkovitch%40morsemicro.com
-patch subject: [PATCH] cfg80211: S1G rate information and calculations
-config: microblaze-randconfig-m031-20230509 (https://download.01.org/0day-ci/archive/20230511/202305110435.EhEiLYWA-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 12.1.0
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <error27@gmail.com>
-| Link: https://lore.kernel.org/r/202305110435.EhEiLYWA-lkp@intel.com/
-
-New smatch warnings:
-net/wireless/util.c:1744 cfg80211_calculate_bitrate_s1g() error: buffer overflow 'base[idx]' 11 <= 11
-
-vim +1744 net/wireless/util.c
-
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1649  static u32 cfg80211_calculate_bitrate_s1g(struct rate_info *rate)
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1650  {
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1651  	/* For 1, 2, 4, 8 and 16 MHz channels */
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1652  	static const u32 base[5][11] = {
-                                                                                ^^^^
-11 elements.
-
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1653  		{  300000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1654  		   600000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1655  		   900000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1656  		  1200000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1657  		  1800000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1658  		  2400000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1659  		  2700000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1660  		  3000000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1661  		  3600000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1662  		  4000000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1663  		  /* MCS 10 supported in 1 MHz only */
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1664  		  150000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1665  		},
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1666  		{  650000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1667  		  1300000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1668  		  1950000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1669  		  2600000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1670  		  3900000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1671  		  5200000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1672  		  5850000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1673  		  6500000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1674  		  7800000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1675  		  /* MCS 9 not valid */
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1676  		},
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1677  		{  1350000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1678  		   2700000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1679  		   4050000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1680  		   5400000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1681  		   8100000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1682  		  10800000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1683  		  12150000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1684  		  13500000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1685  		  16200000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1686  		  18000000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1687  		},
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1688  		{  2925000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1689  		   5850000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1690  		   8775000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1691  		  11700000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1692  		  17550000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1693  		  23400000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1694  		  26325000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1695  		  29250000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1696  		  35100000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1697  		  39000000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1698  		},
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1699  		{  8580000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1700  		  11700000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1701  		  17550000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1702  		  23400000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1703  		  35100000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1704  		  46800000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1705  		  52650000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1706  		  58500000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1707  		  70200000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1708  		  78000000,
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1709  		},
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1710  	};
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1711  	u32 bitrate;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1712  	/* default is 1 MHz index */
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1713  	int idx = 0;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1714  
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1715  	if (rate->mcs > 11)
-                                                                      ^^^^
-Needs to be >= 11 to prevent off by one.
-
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1716  		goto warn;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1717  
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1718  	switch (rate->bw) {
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1719  	case RATE_INFO_BW_16:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1720  		idx = 4;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1721  		break;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1722  	case RATE_INFO_BW_8:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1723  		idx = 3;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1724  		break;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1725  	case RATE_INFO_BW_4:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1726  		idx = 2;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1727  		break;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1728  	case RATE_INFO_BW_2:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1729  		idx = 1;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1730  		break;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1731  	case RATE_INFO_BW_1:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1732  		idx = 0;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1733  		break;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1734  	case RATE_INFO_BW_5:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1735  	case RATE_INFO_BW_10:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1736  	case RATE_INFO_BW_20:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1737  	case RATE_INFO_BW_40:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1738  	case RATE_INFO_BW_80:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1739  	case RATE_INFO_BW_160:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1740  	default:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1741  		goto warn;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1742  	}
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1743  
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04 @1744  	bitrate = base[idx][rate->mcs];
-                                                                            ^^^^^^^^^
-
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1745  	bitrate *= rate->nss;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1746  
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1747  	if (rate->flags & RATE_INFO_FLAGS_SHORT_GI)
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1748  		bitrate = (bitrate / 9) * 10;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1749  	/* do NOT round down here */
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1750  	return (bitrate + 50000) / 100000;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1751  warn:
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1752  	WARN_ONCE(1, "invalid rate bw=%d, mcs=%d, nss=%d\n",
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1753  		  rate->bw, rate->mcs, rate->nss);
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1754  	return 0;
-d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1755  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Hi Johannes, if you have any patch to fix it, I can download and test.
 
