@@ -2,196 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C95E6FE9E4
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 04:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20BFF6FEA1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 05:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231660AbjEKCpn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 10 May 2023 22:45:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54620 "EHLO
+        id S230004AbjEKDT3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 10 May 2023 23:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjEKCpm (ORCPT
+        with ESMTP id S229799AbjEKDT1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 10 May 2023 22:45:42 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D93194C0D;
-        Wed, 10 May 2023 19:45:40 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-39431e2b2cdso817583b6e.3;
-        Wed, 10 May 2023 19:45:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683773140; x=1686365140;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=1rVAcfYHatzHlN2VVCLFgi47fHp8lJNnw2nLmoxn86I=;
-        b=btCVg2FXZlWmBbNgrtAiiOaCW+GQ+ly8JVo8OWzhw51Ji8yfZ5A+OjtmRj2bgGKREL
-         qD9u39dV8zuBgdft7D4N3Y99oI0QUvFQy4BEOBLKXNVMvNv+4FwA43mDMtbOfz5RVOCB
-         oz8gf5iynbpeASKciZZ3KBfjrX2UhDtzYf9QljoTQqI6NyuNx1k/kYjX4Guk1OFOGAP+
-         RhEEdRkW5CXnYuWnDhOwM+ZlGpQ4eezJ7UT5zUNEH+btgAeNcoAULn0qtwynCnuNxkzc
-         kdxea4cfzzo8+4MUqjTfAzbHMwhWZnLY1fEifxM3P/FQ7INwL7VvsF3fz3VEdacahwT6
-         FKMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683773140; x=1686365140;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1rVAcfYHatzHlN2VVCLFgi47fHp8lJNnw2nLmoxn86I=;
-        b=LK6MyzWMolJQSsnFgCnt4I6TYqxdoQHp2vdwjTJGq40YtsYN1k7iJ56cvv2JPGn80z
-         jWZMkGFDfxgNUhUwGTwzLPCs70RsZt3ip6UUSWk720D/slUTCkX4/gPCk2RsuyzjWpzm
-         1h0FW/f7+WNeCcW6L+dxcJb8Vlk2wnLrU5WAmM1U5B+YE5c4BvD2J7q5tG2f+abNUr9t
-         GgpGJnaqEkRgT0n4vFjrsmt97DII/zUOmA3rtenYRjmBxG+mPjNWCNPp5PJED3troF8T
-         5gq/6j901P9k2cwm14kKrKUPnDsU9KPT/YLjdSNuxWU1ioAcWETp8j5BblhzFwWJRlHG
-         o42Q==
-X-Gm-Message-State: AC+VfDzA8yr+3EsW3MLQD5Rzsf2kxlQwPG9Tyuk5XX7tAOMGAQ01EyH9
-        VOPFN1WJbbyBHlSKDRqsd6sbz3Z9WGY=
-X-Google-Smtp-Source: ACHHUZ6gdqhSA/R49jhIHEru5eSRBNgmsMatF8hKx8Ebx0ROrMHnHBiJDZlx6G74ePlyuh61Cbt3Aw==
-X-Received: by 2002:aca:d19:0:b0:38b:eb6b:315f with SMTP id 25-20020aca0d19000000b0038beb6b315fmr3848087oin.41.1683773139978;
-        Wed, 10 May 2023 19:45:39 -0700 (PDT)
-Received: from [10.62.118.118] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id w14-20020a4ac18e000000b00541854ce607sm6789223oop.28.2023.05.10.19.45.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 May 2023 19:45:39 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <c21206d6-eb4b-2e7d-eb2e-cab9f3b06c62@lwfinger.net>
-Date:   Wed, 10 May 2023 21:45:37 -0500
+        Wed, 10 May 2023 23:19:27 -0400
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.196])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 503BAE63;
+        Wed, 10 May 2023 20:19:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=fqTZe
+        yYMGiYuy99yTw2mCq9WCFqKj4kqAdwg8UFHt8I=; b=Noh2+cJ8cwYOLyIEmBYU9
+        gdnHcKuLA69Ptt1PGNH+/iHZwRJDd2iGWglLOvs3ssW+UyY2XKxl4XctSNLN94d1
+        dq0M/4BuSsZD64Lg70pjYNmQqLc/DRHbyI57fap7yotVJSHt97/s7nwCLGzUbIRV
+        bisNf6LPZ7Dc8Pnch6J52I=
+Received: from localhost.localdomain (unknown [116.128.244.169])
+        by zwqz-smtp-mta-g1-4 (Coremail) with SMTP id _____wD3_0eCXlxkoDwhBA--.34445S2;
+        Thu, 11 May 2023 11:18:26 +0800 (CST)
+From:   Yun Lu <luyun_611@163.com>
+To:     Jes.Sorensen@gmail.com, Larry.Finger@lwfinger.net
+Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH v2] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+Date:   Thu, 11 May 2023 11:18:25 +0800
+Message-Id: <20230511031825.2125279-1-luyun_611@163.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] wifi: rtl8xxxu: fix authentication timeout due to
- incorrect RCR value
-Content-Language: en-US
-To:     Yun Lu <luyun_611@163.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc:     Jes.Sorensen@gmail.com, kvalo@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-References: <20230427020512.1221062-1-luyun_611@163.com>
- <866570c9-38d8-1006-4721-77e2945170b9@lwfinger.net>
- <76a784b2.2cb3.187c60f0f68.Coremail.luyun_611@163.com>
- <d3743b66-23b1-011c-9dcd-c408b1963fca@lwfinger.net>
- <62d9fe90.63b.187cb1481f8.Coremail.luyun_611@163.com>
- <794ab671-43a3-7548-13f0-4b289f07425f@gmail.com>
- <75c2fe43.3e15.187e5b4182f.Coremail.luyun_611@163.com>
- <4856a7f8.1909.18808a46ab6.Coremail.luyun_611@163.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <4856a7f8.1909.18808a46ab6.Coremail.luyun_611@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-CM-TRANSID: _____wD3_0eCXlxkoDwhBA--.34445S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAryDKw4kJF4UAw4fGw1UGFg_yoW5Xr1Upr
+        WDCa4FyF1UJr1kWw48Xa17CF1rX3WSqrs3uFyfJ34Svrs5Z34S9F1F9F90yF4kurWkJFWa
+        qrZYyrsrG3Z8W37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjPfQUUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiWwdszmI0Z+svngAAsV
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/10/23 21:29, Yun Lu wrote:
-> Larry  and  Bitterblue:
-> 
-> Thank you for your reply,  are there any further questions or suggestions on this issue?
-> Could this patch be merged? There seems to be no other side effects.
-> 
-> 
-> 
-> 在 2023-05-04 15:39:57，"Yun Lu" <luyun_611@163.com> 写道：
->>
->> 在 2023-04-30 18:36:50，"Bitterblue Smith" <rtl8821cerfe2@gmail.com> 写道：
->>> On 29/04/2023 06:35, Yun Lu wrote:
->>>> At 2023-04-29 01:06:03, "Larry Finger" <Larry.Finger@lwfinger.net> wrote:
->>>>> On 4/27/23 23:11, wo wrote:
->>>>>> [  149.595642] [pid:7,cpu6,kworker/u16:0,0]BEFORE: REG_RCR differs from regrcr:
->>>>>> 0x1830613 insted of 0x7000604e
->>>>>> [  160.676422] [pid:237,cpu6,kworker/u16:5,3]BEFORE: REG_RCR differs from
->>>>>> regrcr: 0x70006009 insted of 0x700060ce
->>>>>> [  327.234588] [pid:7,cpu7,kworker/u16:0,5]BEFORE: REG_RCR differs from
->>>>> regrcr: 0x1830d33 insted of 0x7000604e
->>>>>
->>>>>
->>>>> My patch was messed up, but it got the information that I wanted, which is shown
->>>>> in the quoted lines above. One of these differs only in the low-order byte,
->>>>> while the other 2 are completely different. Strange!
->>>>>
->>>>> It is possible that there is a firmware error. My system, which does not show
->>>>> the problem, reports the following:
->>>>>
->>>>> [54130.741148] usb 3-6: RTL8192CU rev A (TSMC) romver 0, 2T2R, TX queues 2,
->>>>> WiFi=1, BT=0, GPS=0, HI PA=0
->>>>> [54130.741153] usb 3-6: RTL8192CU MAC: xx:xx:xx:xx:xx:xx
->>>>> [54130.741155] usb 3-6: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
->>>>> [54130.742301] usb 3-6: Firmware revision 88.2 (signature 0x88c1)
->>>>>
->>>>> Which firmware does your unit use?
->>>>
->>>> The firmware verion we used is 80.0 (signature 0x88c1)
->>>>   [  903.873107] [pid:14,cpu0,kworker/0:1,2]usb 1-1.2: RTL8192CU rev A (TSMC) 2T2R, TX queues 2, WiFi=1, BT=0, GPS=0, HI PA=0
->>>> [  903.873138] [pid:14,cpu0,kworker/0:1,3]usb 1-1.2: RTL8192CU MAC: 08:be:xx:xx:xx:xx
->>>> [  903.873138] [pid:14,cpu0,kworker/0:1,4]usb 1-1.2: rtl8xxxu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
->>>> [  903.873474] [pid:14,cpu0,kworker/0:1,5]usb 1-1.2: Firmware revision 80.0 (signature 0x88c1)
->>>>
->>>>>
->>>>> Attached is a new test patch. When it logs a CORRUPTED value, I would like to
->>>>> know what task is attached to the pid listed in the message. Note that the two
->>>>> instances where the entire word was wrong came from pid:7.
->>>>>
->>>>> Could improper locking could produce these results?
->>>>>
->>>>> Larry
->>>>
->>>> Apply your new patch, then turn on/off the wireless network switch on the network control panel serverl loops.
->>>> The log shows:
->>>> [   85.384429] [pid:221,cpu6,kworker/u16:6,5]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x70006009 insted of 0x700060ce
->>>> [  121.681976] [pid:216,cpu6,kworker/u16:3,0]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x70006009 insted of 0x700060ce
->>>> [  144.416992] [pid:217,cpu6,kworker/u16:4,1]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x70006009 insted of 0x700060ce
->>>>
->>>> And if we up/down the interface serverl loops as follows:
->>>> ifconfig wlx08bexxxxxx down
->>>> sleep 1
->>>> ifconfig wlx08bexxxxxx up
->>>> sleep 10
->>>> The log shows:
->>>> [  282.112335] [2023:04:29 10:30:34][pid:95,cpu6,kworker/u16:1,3]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1832e13 insted of 0x7000604e
->>>> [  293.311462] [2023:04:29 10:30:45][pid:217,cpu7,kworker/u16:4,9]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1830e72 insted of 0x7000604e
->>>> [  304.435089] [2023:04:29 10:30:56][pid:217,cpu6,kworker/u16:4,9]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1830ed3 insted of 0x7000604e
->>>> [  315.532257] [2023:04:29 10:31:07][pid:95,cpu7,kworker/u16:1,8]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x7000604e insted of 0x7000604e
->>>> [  324.114379] [2023:04:29 10:31:16][pid:221,cpu6,kworker/u16:6,7]REG_RCR corrupted in rtl8xxxu_configure_filter: 0x1832e14 insted of 0x7000604e
->>>>
->>>> We also update the  firmware verion to 88.2, and the test results are the same as above.
->>>>
->>>> Thank you for helping debug this issue, which seems to be related to specific devices.
->>>>
->>>> Yun Lu
->>>>
->>>>
->>>>
->>>>
->>> There was this bug report about phantom MAC addresses with
->>> the RTL8188CUS:
->>> https://lore.kernel.org/linux-wireless/a31d9500-73a3-f890-bebd-d0a4014f87da@reto-schneider.ch/
->>>
->>> See the pcap file. I wonder if it's related?
->>
->> The bug in the link is a high retransmission rate during message transmission, but the problem we encountered is that
->> the nic cannot receive authentication frames, resulting in authentication timeout and inability to connect to WiFi. It seems
->> that these two issues are not related.
->>
->> We also enabled monitor mode and found that the AP has replied to the authentication message, but the nic cannot receive
->> this reply message due to the incorrect RCR register value. Once the RCR register is modified to the correct value,
->> the authentication message can be received normally and the connection to WIFI can be normal.
+From: Yun Lu <luyun@kylinos.cn>
 
-Yun Lu,
+When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
+probability of failure, which shows "authentication with ... timed out".
+Through debugging, it was found that the RCR register has been inexplicably
+modified to an incorrect value, resulting in the nic not being able to
+receive authenticated frames.
 
-I have no objection to adding this patch. Although it looked a little ad-hoc at 
-first, it seems to fix a hardware or firmware error for your device. It 
-certainly does no harm other than taking up a bit of memory in the loaded driver.
+To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
+the RCR value every time the register is writen, and use it the next
+time the register need to be modified.
 
-Resubmit the patch with a new version number, and I will Ack it.
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
+---
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-Larry
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index c8cee4a24755..4088aaa1c618 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1518,6 +1518,7 @@ struct rtl8xxxu_priv {
+ 	u32 rege9c;
+ 	u32 regeb4;
+ 	u32 regebc;
++	u32 regrcr;
+ 	int next_mbox;
+ 	int nr_out_eps;
+ 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 620a5cc2bfdd..2fe71933ba08 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4053,6 +4053,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
+ 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
+ 	rtl8xxxu_write32(priv, REG_RCR, val32);
++	priv->regrcr = val32;
+ 
+ 	if (priv->rtl_chip == RTL8188F) {
+ 		/* Accept all data frames */
+@@ -6273,7 +6274,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 				      unsigned int *total_flags, u64 multicast)
+ {
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+-	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
++	u32 rcr = priv->regrcr;
+ 
+ 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
+ 		__func__, changed_flags, *total_flags);
+@@ -6319,6 +6320,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 	 */
+ 
+ 	rtl8xxxu_write32(priv, REG_RCR, rcr);
++	priv->regrcr = rcr;
+ 
+ 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
+ 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
+-- 
+2.25.1
 
 
-Larry
-
+No virus found
+		Checked by Hillstone Network AntiVirus
 
