@@ -2,77 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FF96FEFC2
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 12:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6581D6FF028
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 12:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237288AbjEKKPk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 May 2023 06:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53726 "EHLO
+        id S237885AbjEKKwv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 May 2023 06:52:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237258AbjEKKPi (ORCPT
+        with ESMTP id S237884AbjEKKwt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 May 2023 06:15:38 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD6F10DD
-        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 03:15:37 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34B8EN91021129;
-        Thu, 11 May 2023 10:15:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=3dcVaqAB/bdugJEpbEzzQDKLrrtwmbvcyw9R2s1UEIg=;
- b=Xe0o68WFffKTBaQOisXPdgWpifTm3ELPPmJE8kZUVO9rXjigqUnXPUHioYotXa38GYqn
- Df7xXV2HIz3iw3CPvnX7v5nqmdq9GBB3WjITm6lmWh5eaidZe0nH0LpDtgdZQoNgXbop
- wKhIgjzqUvzLzyf/pW6J3CLyAeQw6znqr+hUJs3wtnsL/Lmkj+fE4/zXp3UAXC5iCD3Z
- sX/nFx6lrBsFC7WB+CMdQ+J//8a6WC9rFK9vlcR5J0lUIPWkX+zpEcKTlUqxtRvEGu3h
- 7vga3J0mbGlCiIHxXqOdKWclJQ+2jHr1IQJzshBPa4RM7p36tP54UHgXniRLYqzh0br7 bQ== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qgv1t8bde-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 11 May 2023 10:15:26 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34BAFQJ3004987
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 11 May 2023 10:15:26 GMT
-Received: from [10.201.192.62] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 11 May
- 2023 03:15:24 -0700
-Message-ID: <dd5c9dfb-519f-0d64-72a8-50f72f7a9998@quicinc.com>
-Date:   Thu, 11 May 2023 15:45:22 +0530
+        Thu, 11 May 2023 06:52:49 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F4159C4
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 03:52:47 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f42711865eso30832615e9.0
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 03:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683802366; x=1686394366;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NDBhj27KR354yxCuqIR8nQ0Enpmy7HIOWmEyGFYjPvM=;
+        b=vpVG77K+fYQq9IbnIicPnh+6U80NPZc1JkzuK2dYRf2wha68CvWklO5Yb4dBJzECsb
+         JbrgJkhQx8hp16p3UFedQLL1yMjJKl6zPibT8acJJHxIemlt/LC8ygzdssPU6dB9AnMZ
+         YzHBqCJ3DCVK/hzXqTb/ppnHYmJJ7fxKoa8FkLV8Bsv9Q97QsVfffPY1X6IxdPBJzvio
+         6W+VolZYXjuORsxf64TMk+b0QxvXeFuwmtZ8JxJx6rer8F/fFTEPUH9ncpqPj6FriVXj
+         OeuTog+8I+3dhk+NtqMqfCu09aM36Gx2JFLlAf/VCGH7jaickNWu2bQ96IFOhA+Cb++j
+         r63w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683802366; x=1686394366;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NDBhj27KR354yxCuqIR8nQ0Enpmy7HIOWmEyGFYjPvM=;
+        b=ALnSqGip+kmwylrhM5JaULchKjh00LW27Qs1vuuu0xhOjgzjGXCnYNwHZT5ai79vYi
+         CIKxZ0rpMjiJu6au2Qkq3s+WNfBH/M9RtVevB+pUKIMq7ukRaIA00/4rpSknIc56dJmB
+         J5yBf5KT5OKl93I4eMfM/mnOJaNflxaCvDDbCT0DmJTaC+io7bH+NpPqS2uGQEr2IXxK
+         z8DTCTg3wCHuUMizcHwB4svdVR0M4Njzvl8Oggb7nj3Q6VggYPgNYFt0ZiDhMGaXg1gu
+         Gx/vSLkw6H+MsFY/Z1X23Ewy4EQUyQFuQGxE4GbD0n0sJhE1AINiAqHIxD7r1UTkDuhs
+         SaLw==
+X-Gm-Message-State: AC+VfDzNE/x+fEA2s6SxrLyhxxq3TTvj2xQOe4lTSrx/XTxszbeyM//0
+        W/SFxSUG2w3arLcFWzJUYOS2sQ==
+X-Google-Smtp-Source: ACHHUZ6AK9XHSAZFK8k+X9wtcgdEy9/6iAKy9Y42tWATBZpE2gMXe5wM0YJdpz9OgeVr1CN6CSFxyQ==
+X-Received: by 2002:a7b:c843:0:b0:3f4:b6bc:bd80 with SMTP id c3-20020a7bc843000000b003f4b6bcbd80mr3533902wml.33.1683802366342;
+        Thu, 11 May 2023 03:52:46 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id d6-20020a056000114600b00306344eaebfsm20107119wrx.28.2023.05.11.03.52.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 May 2023 03:52:45 -0700 (PDT)
+Date:   Thu, 11 May 2023 13:52:42 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     oe-kbuild@lists.linux.dev,
+        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>,
+        johannes@sipsolutions.net
+Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+        linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
+        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+Subject: Re: [PATCH] cfg80211: S1G rate information and calculations
+Message-ID: <468502fa-a43e-4e4c-b00b-cb2af9f7cac1@kili.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 1/2] ath11k: Relocate the func
- ath11k_mac_bitrate_mask_num_ht_rates() and change hweight16 to hweight8
-To:     Kalle Valo <kvalo@kernel.org>
-CC:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20230504092033.3542456-2-quic_mkenna@quicinc.com>
- <a409ded2-f6e5-bc74-3fdb-231a92d9bde5@quicinc.com>
- <877ctfnpnb.fsf@kernel.org>
-Content-Language: en-US
-From:   Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
-In-Reply-To: <877ctfnpnb.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: NjNlN1IH-OIivDoucrgD9d4_WpM6esyR
-X-Proofpoint-GUID: NjNlN1IH-OIivDoucrgD9d4_WpM6esyR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-11_06,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=858 malwarescore=0 suspectscore=0 clxscore=1011
- priorityscore=1501 mlxscore=0 adultscore=0 spamscore=0 phishscore=0
- bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2304280000 definitions=main-2305110087
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230504024923.1925530-1-gilad.itzkovitch@morsemicro.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,20 +73,144 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Gilad,
 
-On 5/11/2023 3:41 PM, Kalle Valo wrote:
-> Maharaja Kennadyrajan <quic_mkenna@quicinc.com> writes:
->
->> Ignore this patchset, I have sent the v2 version of this patchset by
->> rebasing it on latest TOT.
-> Why? I had already applied v1 to the pending branch without issues:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=e3fd9d322448ee29c65a30e9bedaed222d7548b9
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=b7c3ee0ddc2bf3ecf511793aa55622a9aa62e420
->
-> Is there a reason why I should take v2 instead?
-[Maha]: No change in v2. As the cover letter of v1 patch was not sent 
-along with with v1 patches, cover letter mail didn't link to the patches 
-mail in the patchwork. Hence, sent v2 patch.
-Please proceed with v1 patch if it is already in progress.
+kernel test robot noticed the following build warnings:
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Gilad-Itzkovitch/cfg80211-S1G-rate-information-and-calculations/20230504-105056
+base:   28b17f6270f182e22cdad5a0fdc4979031e4486a
+patch link:    https://lore.kernel.org/r/20230504024923.1925530-1-gilad.itzkovitch%40morsemicro.com
+patch subject: [PATCH] cfg80211: S1G rate information and calculations
+config: microblaze-randconfig-m031-20230509 (https://download.01.org/0day-ci/archive/20230511/202305110435.EhEiLYWA-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 12.1.0
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <error27@gmail.com>
+| Link: https://lore.kernel.org/r/202305110435.EhEiLYWA-lkp@intel.com/
+
+New smatch warnings:
+net/wireless/util.c:1744 cfg80211_calculate_bitrate_s1g() error: buffer overflow 'base[idx]' 11 <= 11
+
+vim +1744 net/wireless/util.c
+
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1649  static u32 cfg80211_calculate_bitrate_s1g(struct rate_info *rate)
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1650  {
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1651  	/* For 1, 2, 4, 8 and 16 MHz channels */
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1652  	static const u32 base[5][11] = {
+                                                                                ^^^^
+11 elements.
+
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1653  		{  300000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1654  		   600000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1655  		   900000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1656  		  1200000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1657  		  1800000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1658  		  2400000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1659  		  2700000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1660  		  3000000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1661  		  3600000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1662  		  4000000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1663  		  /* MCS 10 supported in 1 MHz only */
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1664  		  150000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1665  		},
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1666  		{  650000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1667  		  1300000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1668  		  1950000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1669  		  2600000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1670  		  3900000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1671  		  5200000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1672  		  5850000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1673  		  6500000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1674  		  7800000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1675  		  /* MCS 9 not valid */
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1676  		},
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1677  		{  1350000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1678  		   2700000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1679  		   4050000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1680  		   5400000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1681  		   8100000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1682  		  10800000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1683  		  12150000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1684  		  13500000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1685  		  16200000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1686  		  18000000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1687  		},
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1688  		{  2925000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1689  		   5850000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1690  		   8775000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1691  		  11700000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1692  		  17550000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1693  		  23400000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1694  		  26325000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1695  		  29250000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1696  		  35100000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1697  		  39000000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1698  		},
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1699  		{  8580000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1700  		  11700000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1701  		  17550000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1702  		  23400000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1703  		  35100000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1704  		  46800000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1705  		  52650000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1706  		  58500000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1707  		  70200000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1708  		  78000000,
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1709  		},
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1710  	};
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1711  	u32 bitrate;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1712  	/* default is 1 MHz index */
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1713  	int idx = 0;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1714  
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1715  	if (rate->mcs > 11)
+                                                                      ^^^^
+Needs to be >= 11 to prevent off by one.
+
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1716  		goto warn;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1717  
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1718  	switch (rate->bw) {
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1719  	case RATE_INFO_BW_16:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1720  		idx = 4;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1721  		break;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1722  	case RATE_INFO_BW_8:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1723  		idx = 3;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1724  		break;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1725  	case RATE_INFO_BW_4:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1726  		idx = 2;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1727  		break;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1728  	case RATE_INFO_BW_2:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1729  		idx = 1;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1730  		break;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1731  	case RATE_INFO_BW_1:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1732  		idx = 0;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1733  		break;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1734  	case RATE_INFO_BW_5:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1735  	case RATE_INFO_BW_10:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1736  	case RATE_INFO_BW_20:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1737  	case RATE_INFO_BW_40:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1738  	case RATE_INFO_BW_80:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1739  	case RATE_INFO_BW_160:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1740  	default:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1741  		goto warn;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1742  	}
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1743  
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04 @1744  	bitrate = base[idx][rate->mcs];
+                                                                            ^^^^^^^^^
+
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1745  	bitrate *= rate->nss;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1746  
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1747  	if (rate->flags & RATE_INFO_FLAGS_SHORT_GI)
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1748  		bitrate = (bitrate / 9) * 10;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1749  	/* do NOT round down here */
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1750  	return (bitrate + 50000) / 100000;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1751  warn:
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1752  	WARN_ONCE(1, "invalid rate bw=%d, mcs=%d, nss=%d\n",
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1753  		  rate->bw, rate->mcs, rate->nss);
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1754  	return 0;
+d973f1b0d4a136 Gilad Itzkovitch     2023-05-04  1755  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
+
