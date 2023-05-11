@@ -2,95 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1CAA6FF6B6
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 18:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4526FF78F
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 18:38:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238607AbjEKQDV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 May 2023 12:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53306 "EHLO
+        id S238470AbjEKQiv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 May 2023 12:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjEKQDU (ORCPT
+        with ESMTP id S238496AbjEKQis (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 May 2023 12:03:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B25859C6
-        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 09:03:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 236646152D
-        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 16:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07328C433EF;
-        Thu, 11 May 2023 16:03:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683820998;
-        bh=M7ZEQZqgAAXcrxGaXk4Dj3qyK03hAF6XiCjUf0alVH4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NkXhlUtpvEU2uBX0YrMaOddcB6CoWbKkd1rVoBGpfEdJ2wpvxU/f/83G4oNJH1ip/
-         sJDjUQYVp8B4a4DTU/MtsMW324Ymt81MSQHJYN9sJKaYZANsOgLlBlZ1cCc41QQoou
-         lreFQQGzCLhMHe8988HUV7r7BdmvnQpcU7G6mRVJrA1hoPLaD71EU67cj1FPn6UbNc
-         YA53XSYzolo6U2gebbdmn1HiqwVNpTc46hJE7PfhrkLpfTBPJJwJi7nxNr73EBswSb
-         XX9lBWGmHDemFWeLfSKy38NYfjcz3V2avQuaeCxetHJfE2bo1mvQIShvTjMv6H0N/c
-         VxE28HWWgcz1w==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     davem@davemloft.net
+        Thu, 11 May 2023 12:38:48 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A83191;
+        Thu, 11 May 2023 09:38:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=S5sSOihAPDoJskkXfQCZv8/1DF5rWBymy8J4UjuaQX8=;
+        t=1683823126; x=1685032726; b=DSpsQh67pb7blGSs3PfgJFkcjn4CXX1C65xBWGZBr0xSGpB
+        9iPo8EmwYzE3l0ttqUhH/LPt1twLpnOKo0rEcgHBuflpYjYDzaso5XFZQ6FWoyuXshUxgyEjzvvZX
+        yg+v0teWzL9LuFurg09tRREj9knDaWFP0hT0EdhsuzacQIuv1TSV2LMAoKAQYa82aW1/fduP+Sbi/
+        zXmD93WVNJXC0GgXJVWzUI15rdJMsz0el/Kb6na4LKXGmQcC8WWmyxO3EMkpeoC86ZptYZUbxcQlz
+        GU9covqfnS1Kf+2HpQvIgNYYg1W7qb1uAEECGa2iNkpuiEXNMhgi+5TgY0ORvnGQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1px9JO-006YXk-35;
+        Thu, 11 May 2023 18:38:39 +0200
+Message-ID: <d505bf5bbcd0f13a37f9c8465667e355ce20bc26.camel@sipsolutions.net>
+Subject: Re: [PATCH net] MAINTAINERS: exclude wireless drivers from netdev
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
 Cc:     netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-        Jakub Kicinski <kuba@kernel.org>, kvalo@kernel.org,
-        johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: [PATCH net] MAINTAINERS: exclude wireless drivers from netdev
-Date:   Thu, 11 May 2023 09:03:10 -0700
-Message-Id: <20230511160310.979113-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        kvalo@kernel.org, linux-wireless@vger.kernel.org
+Date:   Thu, 11 May 2023 18:38:37 +0200
+In-Reply-To: <20230511160310.979113-1-kuba@kernel.org>
+References: <20230511160310.979113-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It seems that we mostly get netdev CCed on wireless patches
-which are written by people who don't know any better and
-CC everything that get_maintainers spits out. Rather than
-patches which indeed could benefit from general networking
-review.
+On Thu, 2023-05-11 at 09:03 -0700, Jakub Kicinski wrote:
+> It seems that we mostly get netdev CCed on wireless patches
+> which are written by people who don't know any better and
+> CC everything that get_maintainers spits out. Rather than
+> patches which indeed could benefit from general networking
+> review.
+>=20
+> Marking them down in patchwork as Awaiting Upstream is
+> a bit tedious.
+>=20
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: kvalo@kernel.org
+> CC: johannes@sipsolutions.net
+> CC: linux-wireless@vger.kernel.org
+>=20
+> Is this okay with everyone?
+>=20
 
-Marking them down in patchwork as Awaiting Upstream is
-a bit tedious.
+Yeah, makes sense.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: kvalo@kernel.org
-CC: johannes@sipsolutions.net
-CC: linux-wireless@vger.kernel.org
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
 
-Is this okay with everyone?
+Are you going to take it (since you marked it 'net')?
 
-It's not a big deal, but it really feels that for wireless
-we only get bot/autogenerated patches to netdev..
-
-Here's the list of patches we marked as Awaiting Upstream:
-https://patchwork.kernel.org/project/netdevbpf/list/?delegate=netdev&param=-date&order=date&state=8
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 58239fbc7007..4c49f4703a18 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14565,6 +14565,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
- F:	Documentation/devicetree/bindings/net/
- F:	drivers/connector/
- F:	drivers/net/
-+X:	drivers/net/wireless/
- F:	include/dt-bindings/net/
- F:	include/linux/etherdevice.h
- F:	include/linux/fcdevice.h
--- 
-2.40.1
-
+johannes
