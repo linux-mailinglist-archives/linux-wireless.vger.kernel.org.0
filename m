@@ -2,88 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4696FFC16
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 May 2023 23:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC88E6FFD74
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 01:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239309AbjEKVuk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 May 2023 17:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47944 "EHLO
+        id S239247AbjEKXpQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 May 2023 19:45:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232437AbjEKVuj (ORCPT
+        with ESMTP id S238915AbjEKXpP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 May 2023 17:50:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82703A93;
-        Thu, 11 May 2023 14:50:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=xU7fZnVdzagYrmtjwdn7klJrvtP0zckutlKJ2V4cbrI=;
-        t=1683841838; x=1685051438; b=qHPlL8XB5vgd1uyfiOgoEFiZgNWRPP8QqIEuGEsyVktlZkb
-        w2BrNlDzB//uAFYqaEPVX6/y7yaqZ+f7IaMD5I3xh70oSFoJzrmXM5+lF2TrnwLSpZHPxc046Fm8G
-        f80vpSyjDOTXGchiuDaqEylxr1TkEZygOJd3QKBKGkGmAWkn8LGBEtL1qastn5kgfMevvxDy+yeRl
-        DtCTjQIi2tObpKSFk0Z+Ppa8Ae0nxoXDZu4OJPN5ivWqftzPaKZRVFCUDGIbUqDqMeJKHQYXhGkN/
-        IskrPaQupjUKgwvhl73J7zBWPgLMkSLo8n+Xaf1GJWsRTkqQvGyCaUqRJW/MFmFQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1pxEBI-006fls-2U;
-        Thu, 11 May 2023 23:50:36 +0200
-Message-ID: <aa7a0e08edf6567db027058cd331dfae86f54e62.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH v2 2/3] wifi: cfg80211: add a workqueue with special
- semantics
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org, Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>
-Date:   Thu, 11 May 2023 23:50:35 +0200
-In-Reply-To: <20230510220918.96de601f45f6.I28a06f59bf647db6dea519e6fca1894f94227d73@changeid>
-References: <20230510201205.308542-1-johannes@sipsolutions.net>
-         <20230510220918.96de601f45f6.I28a06f59bf647db6dea519e6fca1894f94227d73@changeid>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Thu, 11 May 2023 19:45:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF1B4EC5
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 16:45:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CF0161B10
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 23:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8F1C433EF;
+        Thu, 11 May 2023 23:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683848714;
+        bh=mi+RppI1xPmKTuMJIR8MHZyivO+TPEPXVXYn9BuiJNM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=YOsg8sLbAEyqUi+M6RiOL9dwZTneV6pqytvd9+LLW/w0jNoQKFYVtTaxgqn1uq5R/
+         skEg0rUpjI6zE/3Te/f0C7cldLtjFrMperZoQ2pyMHQ3OzmKmm2k0+6VavA3TRtvwC
+         bS3pUeQN88xDrZkEurhFV5VmUsowHg7AxYaebgC4t/JlNux75NugxSOwRVYvQdM+2t
+         aw8aD1mH23rwAgOB+52XxEQBSPS9t6+dih2EaX9C6kEc7EF/VNYFlF3emepng2Y7La
+         fFugA0gmN0y1N0j58bwNRC1UiRGA2VVDlvY54uINV5mI605myzMBPtEkMVL+CevGmC
+         UWmFefNtyGJGQ==
+Date:   Thu, 11 May 2023 16:45:12 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Marcel Holtmann <marcel@holtmann.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        netdev <netdev@vger.kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, kvalo@kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH net] MAINTAINERS: exclude wireless drivers from netdev
+Message-ID: <20230511164512.0cbf3940@kernel.org>
+In-Reply-To: <639C8EA4-1F6E-42BE-8F04-E4A753A6EFFC@holtmann.org>
+References: <20230511160310.979113-1-kuba@kernel.org>
+        <639C8EA4-1F6E-42BE-8F04-E4A753A6EFFC@holtmann.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now that I look at this more ...
+On Thu, 11 May 2023 18:50:15 +0200 Marcel Holtmann wrote:
+> I didn=E2=80=99t know such an option existed,
 
-> +static void cfg80211_wiphy_work(struct work_struct *work)
-> +{
-> +	struct cfg80211_registered_device *rdev;
-> +
-> +	rdev =3D container_of(work, struct cfg80211_registered_device, wiphy_wo=
-rk);
-> +
-> +	spin_lock_irq(&rdev->wiphy_work_lock);
-> +	while (!list_empty(&rdev->wiphy_work_list)) {
-> +		struct wiphy_work *wk;
-> +
-> +		wk =3D list_first_entry(&rdev->wiphy_work_list,
-> +				      struct wiphy_work, entry);
-> +		list_del_init(&wk->entry);
-> +		spin_unlock_irq(&rdev->wiphy_work_lock);
-> +
-> +		mutex_lock(&rdev->wiphy.mtx);
+Same, I was looking for something unrelated in MAINTAINERS yesterday:
+https://lore.kernel.org/all/20230511020204.910178-1-kuba@kernel.org/
+and I noticed the X: entries in Documentation :)
 
-If I just change the locking here to take the wiphy.mtx before looking
-at the list, which basically doesn't matter, then I don't even need
-workqueue_pause() and all, nor do I even need a separate workqueue, just
-schedule_work() will be good enough ... Just needs a _bit_ more work
-when cancelling and here we should reschedule the work if the list isn't
-empty after the first round, but overall that ends up far simpler.
+> can we do the same for Bluetooth?
 
-So I think I'll drop the workqueue pause/resume the next time around,
-FWIW.
-
-johannes
-
+SG, I'll give folks a couple of days to object to this one,=20
+and it goes thru send a similar one for Bluetooth.
