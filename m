@@ -2,230 +2,365 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC32370056F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 12:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 349957007D9
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 14:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240756AbjELK2Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 May 2023 06:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
+        id S240097AbjELM1A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 May 2023 08:27:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240766AbjELK15 (ORCPT
+        with ESMTP id S232808AbjELM07 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 May 2023 06:27:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3690630E7
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 03:26:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9EF3614B8
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 10:26:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C727C433EF;
-        Fri, 12 May 2023 10:26:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683887208;
-        bh=ZJjlXCsgilJlEHdWzlZFkVo0T9zgBWhPYF9/8+rz5iA=;
-        h=From:Subject:To:Cc:Date:From;
-        b=ZcwO+ZWtalRsKSYUynj6aPuSne1D/hLv6NgVXQMj2zesO5bC+etE+/XYRiwSrOwIw
-         BiG1Gis31ZBRqeJvzDw3JZ0T9o16z8mUkG4gP1F3mo1P+1xc0qfn4xwTk83IqGsVdR
-         NTVgiCyhRod7gzsGjzWq+WzTPn3gePm3d36Ape6mjvMBZCIvXZm2Od+LanBIdoa/XH
-         HPhiVvDbXDo+LH4REUxRjpvuIoymahouivigbJjfWQ3hiowkznTi/f3G8tDPgToqZj
-         qyAuF21hFouUw2n6gXdanGgK/6niRmJJyK1L/Q5muVfikQZeVU3+HCQKgDn+Uk/dqC
-         SBuZ/20YEG2FQ==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 12 May 2023 08:26:59 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B16120BF
+        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 05:26:23 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6436e075166so7438447b3a.0
+        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 05:26:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=morsemicro-com.20221208.gappssmtp.com; s=20221208; t=1683894381; x=1686486381;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FJbIKYuohwzzSm8loyBWPEPqlsCKtt7iHJJPpvnx7u8=;
+        b=wk7Wzws1pqSSNymeIPJM9NcJ81FDW1p1D1QpnqhLmzGJBw2YsmPh11LlX5t13/zP32
+         mfYv4ygQnXMMHYihFL9CwsWvChuH+XOlijfZA6mhUYwlvlG+hInSAz3Ed2BHnR4RitrV
+         1U4/gOQpNVCaJxWxcZWw1Ek2ekOh0mTihXn+lCjur6JCb2qAiwUzDRZV89HBkbbeWkLH
+         Wd7rQX51685+FUPXQkt9vLGau/faiSNe7dw+iB2QtX1Pi8reLF+gRLTmNzD6HRGzP7Fp
+         195nkmxrAefYvoNmOqrD8fY7hrS8UC67CsFsOGe1Tbz4v2AeNa6C7bwa+QM/DNuMk7k6
+         Q4wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683894381; x=1686486381;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FJbIKYuohwzzSm8loyBWPEPqlsCKtt7iHJJPpvnx7u8=;
+        b=QJ55a4JyhAoNZ8q0B5fLaXLLNKBV+gsqGa9dNBppCJiqNJlJA/Kz5mvfa+8jNwjkrP
+         WCI4PC4MWCDdarYW8IdFhXMjlR4DgXPlZb9MjeHjAdcVojwdcEjbakLDNP4A8er/l07m
+         Tvwuk4rIP1dTlIiORCgQSDvlcuivqYVCK5DzfpwmJvrBFo/EnPwnnsJc43N56HC0Gg4P
+         j1gqmCybE3o3hpuOXwiizxtIslPbvESqN5b8bH1iLJaVn0Z/GdgwXlLfG4NDu1c7hxSD
+         P2EJwMYufiMrqWFcx7GhUAYW8KuPpe2aMH7gEyQYf2W+6j6Bw9v3ik35wSm0smuuY1dy
+         P/CA==
+X-Gm-Message-State: AC+VfDzmY8z7ZFT5daxnkcjZyp6d+XNbd7E7fzx/AmvLpXlQ7OklSwzP
+        XN/wCNaaIRCQ6p7ozzcp7a0x/Q==
+X-Google-Smtp-Source: ACHHUZ4sqBv76WRHbv8LwsWCqs9k1usT0/Auqqg3MCteA1McUTxuGEtpci4OkW0/oHyO/vpZsqjLhQ==
+X-Received: by 2002:a05:6a21:1087:b0:f5:75f7:a0bd with SMTP id nl7-20020a056a21108700b000f575f7a0bdmr25883412pzb.13.1683894380850;
+        Fri, 12 May 2023 05:26:20 -0700 (PDT)
+Received: from virs-pc-014.intranet.virscient.com (124-248-138-161.static.lightwire.co.nz. [124.248.138.161])
+        by smtp.gmail.com with ESMTPSA id g8-20020aa78188000000b005a8bf239f5csm6928821pfi.193.2023.05.12.05.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 May 2023 05:26:20 -0700 (PDT)
+From:   Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, quic_jjohnson@quicinc.com,
+        Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>,
+        kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>
+Subject: [PATCH v2] cfg80211: S1G rate information and calculations
+Date:   Sat, 13 May 2023 00:25:39 +1200
+Message-Id: <20230512122539.3868849-1-gilad.itzkovitch@morsemicro.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-next-2023-05-12
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20230512102647.8C727C433EF@smtp.kernel.org>
-Date:   Fri, 12 May 2023 10:26:47 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Increase the size of S1G rate_info flags to support S1G and add
+flags for new S1G MCS and the supported bandwidths. Also, include
+S1G rate information to netlink STA rate message. Lastly, add
+rate calculation function for S1G MCS.
 
-here's a pull request to net-next tree, more info below. Please let me know if
-there are any problems.
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/202305110435.EhEiLYWA-lkp@intel.com/
+Signed-off-by: Gilad Itzkovitch <gilad.itzkovitch@morsemicro.com>
+---
+ include/net/cfg80211.h       |  18 +++++-
+ include/uapi/linux/nl80211.h |  14 +++++
+ net/wireless/nl80211.c       |  23 ++++++++
+ net/wireless/util.c          | 110 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 162 insertions(+), 3 deletions(-)
 
-Kalle
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 9e04f69712b1..14c4f92ed28e 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1702,6 +1702,7 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
+  * @RATE_INFO_FLAGS_EDMG: 60GHz MCS in EDMG mode
+  * @RATE_INFO_FLAGS_EXTENDED_SC_DMG: 60GHz extended SC MCS
+  * @RATE_INFO_FLAGS_EHT_MCS: EHT MCS information
++ * @RATE_INFO_FLAGS_S1G_MCS: MCS field filled with S1G MCS
+  */
+ enum rate_info_flags {
+ 	RATE_INFO_FLAGS_MCS			= BIT(0),
+@@ -1712,6 +1713,7 @@ enum rate_info_flags {
+ 	RATE_INFO_FLAGS_EDMG			= BIT(5),
+ 	RATE_INFO_FLAGS_EXTENDED_SC_DMG		= BIT(6),
+ 	RATE_INFO_FLAGS_EHT_MCS			= BIT(7),
++	RATE_INFO_FLAGS_S1G_MCS			= BIT(8),
+ };
+ 
+ /**
+@@ -1728,6 +1730,11 @@ enum rate_info_flags {
+  * @RATE_INFO_BW_HE_RU: bandwidth determined by HE RU allocation
+  * @RATE_INFO_BW_320: 320 MHz bandwidth
+  * @RATE_INFO_BW_EHT_RU: bandwidth determined by EHT RU allocation
++ * @RATE_INFO_BW_1: 1 MHz bandwidth
++ * @RATE_INFO_BW_2: 2 MHz bandwidth
++ * @RATE_INFO_BW_4: 4 MHz bandwidth
++ * @RATE_INFO_BW_8: 8 MHz bandwidth
++ * @RATE_INFO_BW_16: 16 MHz bandwidth
+  */
+ enum rate_info_bw {
+ 	RATE_INFO_BW_20 = 0,
+@@ -1739,6 +1746,11 @@ enum rate_info_bw {
+ 	RATE_INFO_BW_HE_RU,
+ 	RATE_INFO_BW_320,
+ 	RATE_INFO_BW_EHT_RU,
++	RATE_INFO_BW_1,
++	RATE_INFO_BW_2,
++	RATE_INFO_BW_4,
++	RATE_INFO_BW_8,
++	RATE_INFO_BW_16,
+ };
+ 
+ /**
+@@ -1747,8 +1759,8 @@ enum rate_info_bw {
+  * Information about a receiving or transmitting bitrate
+  *
+  * @flags: bitflag of flags from &enum rate_info_flags
+- * @mcs: mcs index if struct describes an HT/VHT/HE rate
+  * @legacy: bitrate in 100kbit/s for 802.11abg
++ * @mcs: mcs index if struct describes an HT/VHT/HE/EHT/S1G rate
+  * @nss: number of streams (VHT & HE only)
+  * @bw: bandwidth (from &enum rate_info_bw)
+  * @he_gi: HE guard interval (from &enum nl80211_he_gi)
+@@ -1761,9 +1773,9 @@ enum rate_info_bw {
+  *	only valid if bw is %RATE_INFO_BW_EHT_RU)
+  */
+ struct rate_info {
+-	u8 flags;
+-	u8 mcs;
++	u16 flags;
+ 	u16 legacy;
++	u8 mcs;
+ 	u8 nss;
+ 	u8 bw;
+ 	u8 he_gi;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index c59fec406da5..435c4ac5d9bf 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3667,6 +3667,13 @@ enum nl80211_eht_ru_alloc {
+  *	(u8, see &enum nl80211_eht_gi)
+  * @NL80211_RATE_INFO_EHT_RU_ALLOC: EHT RU allocation, if not present then
+  *	non-OFDMA was used (u8, see &enum nl80211_eht_ru_alloc)
++ * @NL80211_RATE_INFO_S1G_MCS: S1G MCS index (u8, 0-10)
++ * @NL80211_RATE_INFO_S1G_NSS: S1G NSS value (u8, 1-4)
++ * @NL80211_RATE_INFO_1_MHZ_WIDTH: 1 MHz S1G rate
++ * @NL80211_RATE_INFO_2_MHZ_WIDTH: 2 MHz S1G rate
++ * @NL80211_RATE_INFO_4_MHZ_WIDTH: 4 MHz S1G rate
++ * @NL80211_RATE_INFO_8_MHZ_WIDTH: 8 MHz S1G rate
++ * @NL80211_RATE_INFO_16_MHZ_WIDTH: 16 MHz S1G rate
+  * @__NL80211_RATE_INFO_AFTER_LAST: internal use
+  */
+ enum nl80211_rate_info {
+@@ -3693,6 +3700,13 @@ enum nl80211_rate_info {
+ 	NL80211_RATE_INFO_EHT_NSS,
+ 	NL80211_RATE_INFO_EHT_GI,
+ 	NL80211_RATE_INFO_EHT_RU_ALLOC,
++	NL80211_RATE_INFO_S1G_MCS,
++	NL80211_RATE_INFO_S1G_NSS,
++	NL80211_RATE_INFO_1_MHZ_WIDTH,
++	NL80211_RATE_INFO_2_MHZ_WIDTH,
++	NL80211_RATE_INFO_4_MHZ_WIDTH,
++	NL80211_RATE_INFO_8_MHZ_WIDTH,
++	NL80211_RATE_INFO_16_MHZ_WIDTH,
+ 
+ 	/* keep last */
+ 	__NL80211_RATE_INFO_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d95f8053020d..8fb8c8905b48 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6365,12 +6365,27 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
+ 		return false;
+ 
+ 	switch (info->bw) {
++	case RATE_INFO_BW_1:
++		rate_flg = NL80211_RATE_INFO_1_MHZ_WIDTH;
++		break;
++	case RATE_INFO_BW_2:
++		rate_flg = NL80211_RATE_INFO_2_MHZ_WIDTH;
++		break;
++	case RATE_INFO_BW_4:
++		rate_flg = NL80211_RATE_INFO_4_MHZ_WIDTH;
++		break;
+ 	case RATE_INFO_BW_5:
+ 		rate_flg = NL80211_RATE_INFO_5_MHZ_WIDTH;
+ 		break;
++	case RATE_INFO_BW_8:
++		rate_flg = NL80211_RATE_INFO_8_MHZ_WIDTH;
++		break;
+ 	case RATE_INFO_BW_10:
+ 		rate_flg = NL80211_RATE_INFO_10_MHZ_WIDTH;
+ 		break;
++	case RATE_INFO_BW_16:
++		rate_flg = NL80211_RATE_INFO_16_MHZ_WIDTH;
++		break;
+ 	default:
+ 		WARN_ON(1);
+ 		fallthrough;
+@@ -6429,6 +6444,14 @@ bool nl80211_put_sta_rate(struct sk_buff *msg, struct rate_info *info, int attr)
+ 		    nla_put_u8(msg, NL80211_RATE_INFO_HE_RU_ALLOC,
+ 			       info->he_ru_alloc))
+ 			return false;
++	} else if (info->flags & RATE_INFO_FLAGS_S1G_MCS) {
++		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_MCS, info->mcs))
++			return false;
++		if (nla_put_u8(msg, NL80211_RATE_INFO_S1G_NSS, info->nss))
++			return false;
++		if (info->flags & RATE_INFO_FLAGS_SHORT_GI &&
++		    nla_put_flag(msg, NL80211_RATE_INFO_SHORT_GI))
++			return false;
+ 	} else if (info->flags & RATE_INFO_FLAGS_EHT_MCS) {
+ 		if (nla_put_u8(msg, NL80211_RATE_INFO_EHT_MCS, info->mcs))
+ 			return false;
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 3bc0c3072e78..610a867c14f7 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1646,6 +1646,114 @@ static u32 cfg80211_calculate_bitrate_eht(struct rate_info *rate)
+ 	return result / 10000;
+ }
+ 
++static u32 cfg80211_calculate_bitrate_s1g(struct rate_info *rate)
++{
++	/* For 1, 2, 4, 8 and 16 MHz channels */
++	static const u32 base[5][11] = {
++		{  300000,
++		   600000,
++		   900000,
++		  1200000,
++		  1800000,
++		  2400000,
++		  2700000,
++		  3000000,
++		  3600000,
++		  4000000,
++		  /* MCS 10 supported in 1 MHz only */
++		  150000,
++		},
++		{  650000,
++		  1300000,
++		  1950000,
++		  2600000,
++		  3900000,
++		  5200000,
++		  5850000,
++		  6500000,
++		  7800000,
++		  /* MCS 9 not valid */
++		},
++		{  1350000,
++		   2700000,
++		   4050000,
++		   5400000,
++		   8100000,
++		  10800000,
++		  12150000,
++		  13500000,
++		  16200000,
++		  18000000,
++		},
++		{  2925000,
++		   5850000,
++		   8775000,
++		  11700000,
++		  17550000,
++		  23400000,
++		  26325000,
++		  29250000,
++		  35100000,
++		  39000000,
++		},
++		{  8580000,
++		  11700000,
++		  17550000,
++		  23400000,
++		  35100000,
++		  46800000,
++		  52650000,
++		  58500000,
++		  70200000,
++		  78000000,
++		},
++	};
++	u32 bitrate;
++	/* default is 1 MHz index */
++	int idx = 0;
++
++	if (rate->mcs >= 11)
++		goto warn;
++
++	switch (rate->bw) {
++	case RATE_INFO_BW_16:
++		idx = 4;
++		break;
++	case RATE_INFO_BW_8:
++		idx = 3;
++		break;
++	case RATE_INFO_BW_4:
++		idx = 2;
++		break;
++	case RATE_INFO_BW_2:
++		idx = 1;
++		break;
++	case RATE_INFO_BW_1:
++		idx = 0;
++		break;
++	case RATE_INFO_BW_5:
++	case RATE_INFO_BW_10:
++	case RATE_INFO_BW_20:
++	case RATE_INFO_BW_40:
++	case RATE_INFO_BW_80:
++	case RATE_INFO_BW_160:
++	default:
++		goto warn;
++	}
++
++	bitrate = base[idx][rate->mcs];
++	bitrate *= rate->nss;
++
++	if (rate->flags & RATE_INFO_FLAGS_SHORT_GI)
++		bitrate = (bitrate / 9) * 10;
++	/* do NOT round down here */
++	return (bitrate + 50000) / 100000;
++warn:
++	WARN_ONCE(1, "invalid rate bw=%d, mcs=%d, nss=%d\n",
++		  rate->bw, rate->mcs, rate->nss);
++	return 0;
++}
++
+ u32 cfg80211_calculate_bitrate(struct rate_info *rate)
+ {
+ 	if (rate->flags & RATE_INFO_FLAGS_MCS)
+@@ -1662,6 +1770,8 @@ u32 cfg80211_calculate_bitrate(struct rate_info *rate)
+ 		return cfg80211_calculate_bitrate_he(rate);
+ 	if (rate->flags & RATE_INFO_FLAGS_EHT_MCS)
+ 		return cfg80211_calculate_bitrate_eht(rate);
++	if (rate->flags & RATE_INFO_FLAGS_S1G_MCS)
++		return cfg80211_calculate_bitrate_s1g(rate);
+ 
+ 	return rate->legacy;
+ }
 
-The following changes since commit 28b17f6270f182e22cdad5a0fdc4979031e4486a:
+base-commit: f3dc7bb037d813ab7da84f488dd485f0fce66347
+-- 
+2.34.1
 
-  net: phy: marvell-88x2222: remove unnecessary (void*) conversions (2023-04-25 09:43:50 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2023-05-12
-
-for you to fetch changes up to 8130e94e888bf90e495f88d1a1e63c43e1cfbc18:
-
-  wifi: rtw89: suppress the log for specific SER called CMDPSR_FRZTO (2023-05-11 16:19:51 +0300)
-
-----------------------------------------------------------------
-wireless-next patches for v6.5
-
-The first pull request for v6.5 and only driver changes this time.
-rtl8xxxu has been making lots of progress lately and now has AP mode
-support.
-
-Major changes:
-
-rtl8xxxu
-
-* AP mode support, initially only for rtl8188f
-
-rtw89
-
-* provide RSSI, EVN and SNR statistics via debugfs
-
-* support U-NII-4 channels on 5 GHz band
-
-----------------------------------------------------------------
-Amisha Patel (2):
-      wifi: wilc1000: fix for absent RSN capabilities WFA testcase
-      wifi: wilc1000: Increase ASSOC response buffer
-
-Bitterblue Smith (1):
-      wifi: rtl8xxxu: Support USB RX aggregation for the newer chips
-
-Chia-Yuan Li (1):
-      wifi: rtw89: add CFO XTAL registers field to support 8851B
-
-Chih-Kang Chang (1):
-      wifi: rtw89: 8851b: add support WoWLAN to 8851B
-
-Chin-Yen Lee (1):
-      wifi: rtw89: suppress the log for specific SER called CMDPSR_FRZTO
-
-Christophe JAILLET (2):
-      wifi: mwifiex: Use list_count_nodes()
-      wifi: mwifiex: Fix the size of a memory allocation in mwifiex_ret_802_11_scan()
-
-Dan Carpenter (2):
-      wifi: rtw89: fix rtw89_read_chip_ver() for RTL8852B and RTL8851B
-      wifi: rtw88: unlock on error path in rtw_ops_add_interface()
-
-Eric Huang (3):
-      wifi: rtw89: initialize antenna for antenna diversity
-      wifi: rtw89: add RSSI based antenna diversity
-      wifi: rtw89: add EVM for antenna diversity
-
-Martin Kaiser (1):
-      wifi: rtl8xxxu: rtl8xxxu_rx_complete(): remove unnecessary return
-
-Martin Kaistra (18):
-      wifi: rtl8xxxu: Add start_ap() callback
-      wifi: rtl8xxxu: Select correct queue for beacon frames
-      wifi: rtl8xxxu: Add beacon functions
-      wifi: rtl8xxxu: Add set_tim() callback
-      wifi: rtl8xxxu: Allow setting rts threshold to -1
-      wifi: rtl8xxxu: Allow creating interface in AP mode
-      wifi: rtl8xxxu: Actually use macid in rtl8xxxu_gen2_report_connect
-      wifi: rtl8xxxu: Add parameter role to report_connect
-      wifi: rtl8xxxu: Add parameter force to rtl8xxxu_refresh_rate_mask
-      wifi: rtl8xxxu: Add sta_add() and sta_remove() callbacks
-      wifi: rtl8xxxu: Put the macid in txdesc
-      wifi: rtl8xxxu: Add parameter macid to update_rate_mask
-      wifi: rtl8xxxu: Enable hw seq for mgmt/non-QoS data frames
-      wifi: rtl8xxxu: Clean up filter configuration
-      wifi: rtl8xxxu: Remove usage of ieee80211_get_tx_rate()
-      wifi: rtl8xxxu: Remove usage of tx_info->control.rates[0].flags
-      wifi: rtl8xxxu: Declare AP mode support for 8188f
-      wifi: rtl8xxxu: Set maximum number of supported stations
-
-Ping-Ke Shih (15):
-      wifi: rtw89: use struct rtw89_phy_sts_ie0 instead of macro to access PHY IE0 status
-      wifi: rtw89: set capability of TX antenna diversity
-      wifi: rtw89: add RSSI statistics for the case of antenna diversity to debugfs
-      wifi: rtw89: add EVM and SNR statistics to debugfs
-      wifi: rtw89: 8851b: add 8851B basic chip_info
-      wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
-      wifi: rtw89: 8851b: add NCTL post table
-      wifi: rtw89: use chip_info::small_fifo_size to choose debug_mask
-      wifi: rtw89: change naming of BA CAM from V1 to V0_EXT
-      wifi: rtw89: 8851b: add DLE mem and HFC quota
-      wifi: rtw89: 8851b: add set_channel_rf()
-      wifi: rtw89: 8851b: rfk: add AACK
-      wifi: rtw89: 8851b: rfk: add RCK
-      wifi: rtw89: 8851b: rfk: add DACK
-      wifi: rtw89: 8851b: rfk: add IQK
-
-Wang Jikai (1):
-      wifi: mt7601u: delete dead code checking debugfs returns
-
-Zhang Shurong (2):
-      wifi: rtw88: fix incorrect error codes in rtw_debugfs_copy_from_user
-      wifi: rtw88: fix incorrect error codes in rtw_debugfs_set_*
-
-Zong-Zhe Yang (10):
-      wifi: rtw89: release bit in rtw89_fw_h2c_del_pkt_offload()
-      wifi: rtw89: refine packet offload delete flow of 6 GHz probe
-      wifi: rtw89: packet offload wait for FW response
-      wifi: rtw89: mac: handle C2H receive/done ACK in interrupt context
-      wifi: rtw89: scan offload wait for FW done ACK
-      wifi: rtw89: introduce realtek ACPI DSM method
-      wifi: rtw89: regd: judge UNII-4 according to BIOS and chip
-      wifi: rtw89: support U-NII-4 channels on 5GHz band
-      wifi: rtw89: pci: fix interrupt enable mask for HALT C2H of RTL8851B
-      wifi: rtw89: ser: L1 add pre-M0 and post-M0 states
-
- drivers/net/wireless/marvell/mwifiex/11n.h         |    4 +-
- drivers/net/wireless/marvell/mwifiex/scan.c        |    6 +-
- drivers/net/wireless/marvell/mwifiex/wmm.h         |   15 -
- drivers/net/wireless/mediatek/mt7601u/debugfs.c    |    2 -
- drivers/net/wireless/microchip/wilc1000/hif.c      |    8 +-
- drivers/net/wireless/microchip/wilc1000/hif.h      |    2 -
- drivers/net/wireless/microchip/wilc1000/wlan_cfg.h |    2 +-
- drivers/net/wireless/microchip/wilc1000/wlan_if.h  |    2 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |   37 +-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c |    3 +-
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c |    2 +
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |  463 +++--
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h  |    5 +
- drivers/net/wireless/realtek/rtw88/debug.c         |   59 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c      |    4 +-
- drivers/net/wireless/realtek/rtw89/Makefile        |    3 +-
- drivers/net/wireless/realtek/rtw89/acpi.c          |   52 +
- drivers/net/wireless/realtek/rtw89/acpi.h          |   21 +
- drivers/net/wireless/realtek/rtw89/core.c          |  131 +-
- drivers/net/wireless/realtek/rtw89/core.h          |   76 +-
- drivers/net/wireless/realtek/rtw89/debug.c         |   24 +-
- drivers/net/wireless/realtek/rtw89/fw.c            |   84 +-
- drivers/net/wireless/realtek/rtw89/fw.h            |   76 +-
- drivers/net/wireless/realtek/rtw89/mac.c           |  126 +-
- drivers/net/wireless/realtek/rtw89/mac.h           |    3 +
- drivers/net/wireless/realtek/rtw89/mac80211.c      |    7 +-
- drivers/net/wireless/realtek/rtw89/pci.c           |   13 +-
- drivers/net/wireless/realtek/rtw89/pci.h           |    1 +
- drivers/net/wireless/realtek/rtw89/phy.c           |  283 +++-
- drivers/net/wireless/realtek/rtw89/phy.h           |   12 +
- drivers/net/wireless/realtek/rtw89/reg.h           |   49 +-
- drivers/net/wireless/realtek/rtw89/regd.c          |   61 +
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |  174 ++
- drivers/net/wireless/realtek/rtw89/rtw8851b.h      |   15 +
- drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c  | 1775 ++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h  |   18 +
- drivers/net/wireless/realtek/rtw89/rtw8851be.c     |   86 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |   12 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |    6 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |    6 +-
- drivers/net/wireless/realtek/rtw89/ser.c           |   43 +-
- drivers/net/wireless/realtek/rtw89/txrx.h          |   19 +-
- drivers/net/wireless/realtek/rtw89/wow.c           |    2 +-
- 43 files changed, 3490 insertions(+), 302 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw89/acpi.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/acpi.h
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b.h
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h
- create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851be.c
