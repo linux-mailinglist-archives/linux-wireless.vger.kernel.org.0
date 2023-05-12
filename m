@@ -2,52 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E67E170034F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 11:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC32370056F
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 12:28:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240385AbjELJF0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 May 2023 05:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42170 "EHLO
+        id S240756AbjELK2Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 May 2023 06:28:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240303AbjELJFU (ORCPT
+        with ESMTP id S240766AbjELK15 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 May 2023 05:05:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30879E702
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 02:05:11 -0700 (PDT)
+        Fri, 12 May 2023 06:27:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3690630E7
+        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 03:26:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C01AE65408
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 09:05:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E27FC433D2;
-        Fri, 12 May 2023 09:05:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9EF3614B8
+        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 10:26:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C727C433EF;
+        Fri, 12 May 2023 10:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683882310;
-        bh=gZF+Xguz9RCrAkGQCEJKmm2Z525C7fjWB8wIIxVpGCA=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=FhRWeq3XRRWxjPA8ps/Vk2I5RRROK9fE7uoVdKKQkq7vGKs7baX0UkqEG3hwHTIWX
-         D/HAy47x5SfVuneU+R9NXM9WQmi3HjlmpnLgzgUkVU9P+aMzr4lb38MYRewBDSKDdH
-         1ZbPoe4ibzbbDGfeOU0VJL3ETTwWktL5zku+1IoKXj4u/dpe+w6kzRSZG3QoN2U7x4
-         gSPmJ63Ix/hICW3RSj8FsjGTUIMXF0bEbVF1CGDknyCNFqCvSYjgGsBXSp5vLfVkO9
-         2NSfFiRVmjbze1qZm5rnHdUoUaMm5BupwTgcVlAFH0XMHmfq84hJPg4pcq1+e2up7r
-         EhOxNa8tgF6og==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 0/2] ath11k: factory test mode support
-References: <20230213130854.2473-1-quic_rajkbhag@quicinc.com>
-        <87edpson9o.fsf@kernel.org>
-        <0289c7f1-e729-e924-5ae8-a6156266e675@quicinc.com>
-Date:   Fri, 12 May 2023 12:05:05 +0300
-In-Reply-To: <0289c7f1-e729-e924-5ae8-a6156266e675@quicinc.com> (Raj Kumar
-        Bhagat's message of "Tue, 28 Mar 2023 10:16:58 +0530")
-Message-ID: <87ttwhncn2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        s=k20201202; t=1683887208;
+        bh=ZJjlXCsgilJlEHdWzlZFkVo0T9zgBWhPYF9/8+rz5iA=;
+        h=From:Subject:To:Cc:Date:From;
+        b=ZcwO+ZWtalRsKSYUynj6aPuSne1D/hLv6NgVXQMj2zesO5bC+etE+/XYRiwSrOwIw
+         BiG1Gis31ZBRqeJvzDw3JZ0T9o16z8mUkG4gP1F3mo1P+1xc0qfn4xwTk83IqGsVdR
+         NTVgiCyhRod7gzsGjzWq+WzTPn3gePm3d36Ape6mjvMBZCIvXZm2Od+LanBIdoa/XH
+         HPhiVvDbXDo+LH4REUxRjpvuIoymahouivigbJjfWQ3hiowkznTi/f3G8tDPgToqZj
+         qyAuF21hFouUw2n6gXdanGgK/6niRmJJyK1L/Q5muVfikQZeVU3+HCQKgDn+Uk/dqC
+         SBuZ/20YEG2FQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-next-2023-05-12
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20230512102647.8C727C433EF@smtp.kernel.org>
+Date:   Fri, 12 May 2023 10:26:47 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,50 +51,181 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
+Hi,
 
-> On 3/13/2023 5:51 PM, Kalle Valo wrote:
->
->> Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
->> 
->>> Device is booted in factory test mode to calibrate the board.
->>> The commands are sent from a userspace application, which is
->>> sent to firmware using wmi commands. Firmware will send the
->>> response back to the application which stores the calibration
->>> data in caldata.bin file. This file will be loaded when the
->>> device boots up normally next time.
->>>
->>> Govindaraj Saminathan (1):
->>>   wifi: ath11k: factory test mode support
->>>
->>> Sowmiya Sree Elavalagan (1):
->>>   wifi: ath11k: Allow ath11k to boot without caldata in ftm mode
->> 
->> While reviewing the patches I made quite a few style cleanup to patches
->> (too many to list):
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=master-pending&id=4a5ca29c396ace5c46b208a8c15a3ba53eabaddd
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=master-pending&id=ba74c7478f5d15ce38e609b9ad4810db7511a3dd
->> 
->> I only compile tested them. Please use these as the baseline for v2.
->> 
-> Hi Kalle,
->
-> Unable to get the baseline patch for v2 from the above link. Getting the
-> below error with the link:
-> Bad commit reference: 4a5ca29c396ace5c46b208a8c15a3ba53eabaddd
+here's a pull request to net-next tree, more info below. Please let me know if
+there are any problems.
 
-I now pushed them again:
+Kalle
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=f3d1f7ae115e12108ba7d7fa0ea6374b9e28869c
+The following changes since commit 28b17f6270f182e22cdad5a0fdc4979031e4486a:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=229ea354bdd24bf3c33c9447674fab8d609e24a2
+  net: phy: marvell-88x2222: remove unnecessary (void*) conversions (2023-04-25 09:43:50 +0100)
 
-From now I'll tag every time I change the pending branch, this should
-prevent old commits from disappearing.
+are available in the Git repository at:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2023-05-12
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+for you to fetch changes up to 8130e94e888bf90e495f88d1a1e63c43e1cfbc18:
+
+  wifi: rtw89: suppress the log for specific SER called CMDPSR_FRZTO (2023-05-11 16:19:51 +0300)
+
+----------------------------------------------------------------
+wireless-next patches for v6.5
+
+The first pull request for v6.5 and only driver changes this time.
+rtl8xxxu has been making lots of progress lately and now has AP mode
+support.
+
+Major changes:
+
+rtl8xxxu
+
+* AP mode support, initially only for rtl8188f
+
+rtw89
+
+* provide RSSI, EVN and SNR statistics via debugfs
+
+* support U-NII-4 channels on 5 GHz band
+
+----------------------------------------------------------------
+Amisha Patel (2):
+      wifi: wilc1000: fix for absent RSN capabilities WFA testcase
+      wifi: wilc1000: Increase ASSOC response buffer
+
+Bitterblue Smith (1):
+      wifi: rtl8xxxu: Support USB RX aggregation for the newer chips
+
+Chia-Yuan Li (1):
+      wifi: rtw89: add CFO XTAL registers field to support 8851B
+
+Chih-Kang Chang (1):
+      wifi: rtw89: 8851b: add support WoWLAN to 8851B
+
+Chin-Yen Lee (1):
+      wifi: rtw89: suppress the log for specific SER called CMDPSR_FRZTO
+
+Christophe JAILLET (2):
+      wifi: mwifiex: Use list_count_nodes()
+      wifi: mwifiex: Fix the size of a memory allocation in mwifiex_ret_802_11_scan()
+
+Dan Carpenter (2):
+      wifi: rtw89: fix rtw89_read_chip_ver() for RTL8852B and RTL8851B
+      wifi: rtw88: unlock on error path in rtw_ops_add_interface()
+
+Eric Huang (3):
+      wifi: rtw89: initialize antenna for antenna diversity
+      wifi: rtw89: add RSSI based antenna diversity
+      wifi: rtw89: add EVM for antenna diversity
+
+Martin Kaiser (1):
+      wifi: rtl8xxxu: rtl8xxxu_rx_complete(): remove unnecessary return
+
+Martin Kaistra (18):
+      wifi: rtl8xxxu: Add start_ap() callback
+      wifi: rtl8xxxu: Select correct queue for beacon frames
+      wifi: rtl8xxxu: Add beacon functions
+      wifi: rtl8xxxu: Add set_tim() callback
+      wifi: rtl8xxxu: Allow setting rts threshold to -1
+      wifi: rtl8xxxu: Allow creating interface in AP mode
+      wifi: rtl8xxxu: Actually use macid in rtl8xxxu_gen2_report_connect
+      wifi: rtl8xxxu: Add parameter role to report_connect
+      wifi: rtl8xxxu: Add parameter force to rtl8xxxu_refresh_rate_mask
+      wifi: rtl8xxxu: Add sta_add() and sta_remove() callbacks
+      wifi: rtl8xxxu: Put the macid in txdesc
+      wifi: rtl8xxxu: Add parameter macid to update_rate_mask
+      wifi: rtl8xxxu: Enable hw seq for mgmt/non-QoS data frames
+      wifi: rtl8xxxu: Clean up filter configuration
+      wifi: rtl8xxxu: Remove usage of ieee80211_get_tx_rate()
+      wifi: rtl8xxxu: Remove usage of tx_info->control.rates[0].flags
+      wifi: rtl8xxxu: Declare AP mode support for 8188f
+      wifi: rtl8xxxu: Set maximum number of supported stations
+
+Ping-Ke Shih (15):
+      wifi: rtw89: use struct rtw89_phy_sts_ie0 instead of macro to access PHY IE0 status
+      wifi: rtw89: set capability of TX antenna diversity
+      wifi: rtw89: add RSSI statistics for the case of antenna diversity to debugfs
+      wifi: rtw89: add EVM and SNR statistics to debugfs
+      wifi: rtw89: 8851b: add 8851B basic chip_info
+      wifi: rtw89: 8851be: add 8851BE PCI entry and fill PCI capabilities
+      wifi: rtw89: 8851b: add NCTL post table
+      wifi: rtw89: use chip_info::small_fifo_size to choose debug_mask
+      wifi: rtw89: change naming of BA CAM from V1 to V0_EXT
+      wifi: rtw89: 8851b: add DLE mem and HFC quota
+      wifi: rtw89: 8851b: add set_channel_rf()
+      wifi: rtw89: 8851b: rfk: add AACK
+      wifi: rtw89: 8851b: rfk: add RCK
+      wifi: rtw89: 8851b: rfk: add DACK
+      wifi: rtw89: 8851b: rfk: add IQK
+
+Wang Jikai (1):
+      wifi: mt7601u: delete dead code checking debugfs returns
+
+Zhang Shurong (2):
+      wifi: rtw88: fix incorrect error codes in rtw_debugfs_copy_from_user
+      wifi: rtw88: fix incorrect error codes in rtw_debugfs_set_*
+
+Zong-Zhe Yang (10):
+      wifi: rtw89: release bit in rtw89_fw_h2c_del_pkt_offload()
+      wifi: rtw89: refine packet offload delete flow of 6 GHz probe
+      wifi: rtw89: packet offload wait for FW response
+      wifi: rtw89: mac: handle C2H receive/done ACK in interrupt context
+      wifi: rtw89: scan offload wait for FW done ACK
+      wifi: rtw89: introduce realtek ACPI DSM method
+      wifi: rtw89: regd: judge UNII-4 according to BIOS and chip
+      wifi: rtw89: support U-NII-4 channels on 5GHz band
+      wifi: rtw89: pci: fix interrupt enable mask for HALT C2H of RTL8851B
+      wifi: rtw89: ser: L1 add pre-M0 and post-M0 states
+
+ drivers/net/wireless/marvell/mwifiex/11n.h         |    4 +-
+ drivers/net/wireless/marvell/mwifiex/scan.c        |    6 +-
+ drivers/net/wireless/marvell/mwifiex/wmm.h         |   15 -
+ drivers/net/wireless/mediatek/mt7601u/debugfs.c    |    2 -
+ drivers/net/wireless/microchip/wilc1000/hif.c      |    8 +-
+ drivers/net/wireless/microchip/wilc1000/hif.h      |    2 -
+ drivers/net/wireless/microchip/wilc1000/wlan_cfg.h |    2 +-
+ drivers/net/wireless/microchip/wilc1000/wlan_if.h  |    2 +
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |   37 +-
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c |    3 +-
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c |    2 +
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |  463 +++--
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h  |    5 +
+ drivers/net/wireless/realtek/rtw88/debug.c         |   59 +-
+ drivers/net/wireless/realtek/rtw88/mac80211.c      |    4 +-
+ drivers/net/wireless/realtek/rtw89/Makefile        |    3 +-
+ drivers/net/wireless/realtek/rtw89/acpi.c          |   52 +
+ drivers/net/wireless/realtek/rtw89/acpi.h          |   21 +
+ drivers/net/wireless/realtek/rtw89/core.c          |  131 +-
+ drivers/net/wireless/realtek/rtw89/core.h          |   76 +-
+ drivers/net/wireless/realtek/rtw89/debug.c         |   24 +-
+ drivers/net/wireless/realtek/rtw89/fw.c            |   84 +-
+ drivers/net/wireless/realtek/rtw89/fw.h            |   76 +-
+ drivers/net/wireless/realtek/rtw89/mac.c           |  126 +-
+ drivers/net/wireless/realtek/rtw89/mac.h           |    3 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c      |    7 +-
+ drivers/net/wireless/realtek/rtw89/pci.c           |   13 +-
+ drivers/net/wireless/realtek/rtw89/pci.h           |    1 +
+ drivers/net/wireless/realtek/rtw89/phy.c           |  283 +++-
+ drivers/net/wireless/realtek/rtw89/phy.h           |   12 +
+ drivers/net/wireless/realtek/rtw89/reg.h           |   49 +-
+ drivers/net/wireless/realtek/rtw89/regd.c          |   61 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c      |  174 ++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.h      |   15 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c  | 1775 ++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h  |   18 +
+ drivers/net/wireless/realtek/rtw89/rtw8851be.c     |   86 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c      |   12 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c      |    6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c      |    6 +-
+ drivers/net/wireless/realtek/rtw89/ser.c           |   43 +-
+ drivers/net/wireless/realtek/rtw89/txrx.h          |   19 +-
+ drivers/net/wireless/realtek/rtw89/wow.c           |    2 +-
+ 43 files changed, 3490 insertions(+), 302 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw89/acpi.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/acpi.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h
+ create mode 100644 drivers/net/wireless/realtek/rtw89/rtw8851be.c
