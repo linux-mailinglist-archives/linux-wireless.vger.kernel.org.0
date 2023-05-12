@@ -2,162 +2,307 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA771700FC7
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 22:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3417170117C
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 23:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238641AbjELUew (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 12 May 2023 16:34:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45104 "EHLO
+        id S235912AbjELVpC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 12 May 2023 17:45:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239375AbjELUet (ORCPT
+        with ESMTP id S234887AbjELVpA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 12 May 2023 16:34:49 -0400
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C922E1
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 13:34:48 -0700 (PDT)
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3351e9dbf1dso109956235ab.2
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 13:34:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683923687; x=1686515687;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0Jbdlq6Qh2gIvbCvuqqmkF7qyFanKC+s6l78ieWXaEQ=;
-        b=CfdcnANLDUlJiXoHLGl41qQ/vGzHcjnkJnywG2TD5M3YfvBb+CWv3BDGxw/fvcxjsV
-         9KW+m5zYjLxA5QRkR08fLfHA5+pjuWMGy/ln6xiIL4aNuV98PjVio4KM1K6rhIMQjb/n
-         3ZTJkjyMVrbudbqRl+ugZkYWNecITCXiyi/VSJtlQeYNjUQzjtlpZfRS7vlMvsXEKqVa
-         EhkXjMzfFvdmmQ7LK+1p93J8NNi0uDncSLlQjJFccOPRJEIfkRmKO97s2Wg6RmFxmYhd
-         wojcMs5rW9NQ/q3Eu0k7OR1SC9+wWjNn5OjgGZANrN1PWDZpX0oWG+2bIsgyVgu1/YmP
-         36sw==
-X-Gm-Message-State: AC+VfDwDfw48ouxZD8ZT9XYH6KB2g4KxoLzg8UmvcL1zUialJSI31W/E
-        L1dproqagT1CAHo68zjn25E0KlKJ13lUWlgAVToX6h42hfI5
-X-Google-Smtp-Source: ACHHUZ75RRPVogNTRfUpjWWSirB/LfsHA7kwauVX9LwfzKRe4UnntCZBUDvPWYCdDrHdwQ/ZRl5xYQYoQCfxDj74PNDqKlzssjKS
-MIME-Version: 1.0
-X-Received: by 2002:a02:b1d5:0:b0:40f:99ae:dba8 with SMTP id
- u21-20020a02b1d5000000b0040f99aedba8mr7589353jah.1.1683923687453; Fri, 12 May
- 2023 13:34:47 -0700 (PDT)
-Date:   Fri, 12 May 2023 13:34:47 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000383da505fb8509b7@google.com>
-Subject: [syzbot] [wireless?] memory leak in hwsim_new_radio_nl
-From:   syzbot <syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, edumazet@google.com,
-        johannes@sipsolutions.net, kuba@kernel.org, kvalo@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, pabeni@redhat.com,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        Fri, 12 May 2023 17:45:00 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75A895B93
+        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 14:44:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683927899; x=1715463899;
+  h=date:from:to:cc:subject:message-id;
+  bh=cN/T+MvWuZzUMSwih+zx1uml0kDf4D9GG6fsc3AP2Cs=;
+  b=CtIv5bg5YV+vcTczgBvPMwNve42pTUm5UEvbX62GEaqQOW81FIPmB82O
+   pe7labn0pYit5wIuFU96tF2xTTSxlvQp+aoU2zzSmvi2ceACVyldAU56c
+   e0ICHS6CM1IiIKm46gYRZbSInJ1qbwZWYb0OPhgQpIg7yGtpk6GmBme9S
+   90ZN+N63GjdGEskeU80ks+H58uO0YhKDdgHx9XReqsy+wRcgf0QSawUt8
+   7wO5epON219p5GtNAjus1/u8XO8l2sXg7DJu1IPlGXwTjoOhjDJuMaDxG
+   2hK3+Y1d0/YMFcHnuCPh52Q7D2IFNl7qsnZv0ieckaojN8EXbiLdeAHo0
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="335415084"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="335415084"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 14:44:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10708"; a="730962176"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="730962176"
+Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 12 May 2023 14:44:57 -0700
+Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pxaZM-00057w-2j;
+        Fri, 12 May 2023 21:44:56 +0000
+Date:   Sat, 13 May 2023 05:44:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ bcafcb959a57a6890e900199690c5fc47da1a304
+Message-ID: <20230512214424.F3qXg%lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: bcafcb959a57a6890e900199690c5fc47da1a304  wifi: rtw88: use work to update rate to avoid RCU warning
 
-syzbot found the following issue on:
+elapsed time: 724m
 
-HEAD commit:    105131df9c3b Merge tag 'dt-fixes-6.4' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1193dc92280000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=fa9562c0bfb72fa2
-dashboard link: https://syzkaller.appspot.com/bug?extid=904ce6fbb38532d9795c
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10b4577c280000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14a9e29e280000
+configs tested: 229
+configs skipped: 16
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/029c9c553eb9/disk-105131df.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c807843227d1/vmlinux-105131df.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/dfce3441d47b/bzImage-105131df.xz
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r011-20230509   gcc  
+alpha                randconfig-r036-20230510   gcc  
+arc                              allyesconfig   gcc  
+arc          buildonly-randconfig-r003-20230510   gcc  
+arc          buildonly-randconfig-r003-20230511   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r001-20230509   gcc  
+arc                  randconfig-r006-20230509   gcc  
+arc                  randconfig-r011-20230511   gcc  
+arc                  randconfig-r033-20230511   gcc  
+arc                  randconfig-r036-20230512   gcc  
+arc                  randconfig-r043-20230509   gcc  
+arc                  randconfig-r043-20230511   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                          pxa168_defconfig   clang
+arm                            qcom_defconfig   gcc  
+arm                  randconfig-r005-20230509   clang
+arm                  randconfig-r006-20230511   gcc  
+arm                  randconfig-r016-20230509   gcc  
+arm                  randconfig-r046-20230509   gcc  
+arm                  randconfig-r046-20230511   clang
+arm                         wpcm450_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64        buildonly-randconfig-r005-20230511   clang
+arm64                               defconfig   gcc  
+arm64                randconfig-r003-20230509   gcc  
+arm64                randconfig-r005-20230511   clang
+arm64                randconfig-r011-20230509   clang
+arm64                randconfig-r012-20230511   gcc  
+arm64                randconfig-r026-20230509   clang
+csky         buildonly-randconfig-r002-20230511   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r004-20230511   gcc  
+csky                 randconfig-r025-20230509   gcc  
+csky                 randconfig-r035-20230511   gcc  
+hexagon              randconfig-r002-20230509   clang
+hexagon              randconfig-r004-20230509   clang
+hexagon              randconfig-r015-20230511   clang
+hexagon              randconfig-r021-20230511   clang
+hexagon              randconfig-r023-20230509   clang
+hexagon              randconfig-r024-20230509   clang
+hexagon              randconfig-r024-20230511   clang
+hexagon              randconfig-r031-20230509   clang
+hexagon              randconfig-r032-20230511   clang
+hexagon              randconfig-r034-20230509   clang
+hexagon              randconfig-r041-20230509   clang
+hexagon              randconfig-r041-20230511   clang
+hexagon              randconfig-r045-20230509   clang
+hexagon              randconfig-r045-20230511   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                          randconfig-a001   gcc  
+i386                          randconfig-a002   clang
+i386                          randconfig-a003   gcc  
+i386                          randconfig-a004   clang
+i386                          randconfig-a005   gcc  
+i386                          randconfig-a006   clang
+i386                          randconfig-a011   clang
+i386                          randconfig-a012   gcc  
+i386                          randconfig-a013   clang
+i386                          randconfig-a014   gcc  
+i386                          randconfig-a015   clang
+i386                          randconfig-a016   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r013-20230509   gcc  
+ia64                 randconfig-r013-20230511   gcc  
+ia64                 randconfig-r023-20230509   gcc  
+ia64                 randconfig-r025-20230509   gcc  
+ia64                 randconfig-r026-20230509   gcc  
+ia64                 randconfig-r036-20230511   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch    buildonly-randconfig-r005-20230511   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r001-20230511   gcc  
+loongarch            randconfig-r003-20230509   gcc  
+loongarch            randconfig-r006-20230511   gcc  
+loongarch            randconfig-r024-20230511   gcc  
+m68k                             allmodconfig   gcc  
+m68k                          atari_defconfig   gcc  
+m68k         buildonly-randconfig-r003-20230511   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r002-20230511   gcc  
+m68k                 randconfig-r005-20230509   gcc  
+m68k                 randconfig-r006-20230509   gcc  
+m68k                 randconfig-r012-20230509   gcc  
+m68k                 randconfig-r016-20230511   gcc  
+m68k                 randconfig-r031-20230512   gcc  
+m68k                 randconfig-r033-20230509   gcc  
+m68k                 randconfig-r036-20230511   gcc  
+microblaze   buildonly-randconfig-r001-20230511   gcc  
+microblaze           randconfig-r001-20230509   gcc  
+microblaze           randconfig-r002-20230509   gcc  
+microblaze           randconfig-r003-20230509   gcc  
+microblaze           randconfig-r013-20230509   gcc  
+microblaze           randconfig-r021-20230509   gcc  
+microblaze           randconfig-r022-20230509   gcc  
+microblaze           randconfig-r031-20230510   gcc  
+microblaze           randconfig-r033-20230511   gcc  
+microblaze           randconfig-r034-20230511   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r003-20230511   gcc  
+mips                 randconfig-r011-20230511   clang
+mips                 randconfig-r015-20230509   gcc  
+mips                 randconfig-r022-20230511   clang
+mips                 randconfig-r024-20230509   gcc  
+mips                 randconfig-r024-20230511   clang
+mips                 randconfig-r025-20230511   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r002-20230511   gcc  
+nios2                randconfig-r006-20230509   gcc  
+nios2                randconfig-r025-20230511   gcc  
+nios2                randconfig-r032-20230510   gcc  
+nios2                randconfig-r033-20230512   gcc  
+openrisc     buildonly-randconfig-r001-20230511   gcc  
+openrisc             randconfig-r004-20230509   gcc  
+openrisc             randconfig-r011-20230511   gcc  
+openrisc             randconfig-r022-20230509   gcc  
+openrisc             randconfig-r022-20230511   gcc  
+openrisc             randconfig-r025-20230511   gcc  
+openrisc             randconfig-r035-20230509   gcc  
+parisc       buildonly-randconfig-r001-20230510   gcc  
+parisc       buildonly-randconfig-r005-20230510   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r012-20230511   gcc  
+parisc               randconfig-r015-20230509   gcc  
+parisc               randconfig-r024-20230509   gcc  
+parisc               randconfig-r032-20230511   gcc  
+parisc               randconfig-r035-20230510   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r002-20230510   clang
+powerpc               mpc834x_itxgp_defconfig   clang
+powerpc                     mpc83xx_defconfig   gcc  
+powerpc                      pcm030_defconfig   gcc  
+powerpc                         ps3_defconfig   gcc  
+powerpc              randconfig-r001-20230509   gcc  
+powerpc              randconfig-r003-20230511   clang
+powerpc              randconfig-r016-20230511   gcc  
+powerpc              randconfig-r023-20230511   gcc  
+powerpc              randconfig-r026-20230511   gcc  
+powerpc              randconfig-r036-20230509   gcc  
+powerpc                    sam440ep_defconfig   gcc  
+powerpc                     tqm5200_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv        buildonly-randconfig-r004-20230511   gcc  
+riscv        buildonly-randconfig-r006-20230511   gcc  
+riscv                               defconfig   gcc  
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                randconfig-r021-20230509   clang
+riscv                randconfig-r023-20230511   gcc  
+riscv                randconfig-r032-20230509   gcc  
+riscv                randconfig-r036-20230511   clang
+riscv                randconfig-r042-20230509   clang
+riscv                randconfig-r042-20230511   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r002-20230509   gcc  
+s390                 randconfig-r003-20230511   clang
+s390                 randconfig-r013-20230509   clang
+s390                 randconfig-r021-20230509   clang
+s390                 randconfig-r026-20230511   gcc  
+s390                 randconfig-r031-20230511   clang
+s390                 randconfig-r033-20230510   gcc  
+s390                 randconfig-r044-20230509   clang
+s390                 randconfig-r044-20230511   gcc  
+sh                               allmodconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sh                   randconfig-r001-20230511   gcc  
+sh                   randconfig-r006-20230511   gcc  
+sh                   randconfig-r014-20230509   gcc  
+sh                          rsk7264_defconfig   gcc  
+sh                           se7722_defconfig   gcc  
+sparc        buildonly-randconfig-r002-20230511   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r005-20230511   gcc  
+sparc                randconfig-r012-20230509   gcc  
+sparc                randconfig-r014-20230511   gcc  
+sparc                randconfig-r021-20230511   gcc  
+sparc                randconfig-r022-20230509   gcc  
+sparc                randconfig-r035-20230512   gcc  
+sparc                       sparc64_defconfig   gcc  
+sparc64              randconfig-r004-20230511   gcc  
+sparc64              randconfig-r014-20230511   gcc  
+sparc64              randconfig-r016-20230509   gcc  
+sparc64              randconfig-r022-20230511   gcc  
+sparc64              randconfig-r024-20230511   gcc  
+sparc64              randconfig-r032-20230511   gcc  
+sparc64              randconfig-r032-20230512   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                        randconfig-a001   clang
+x86_64                        randconfig-a002   gcc  
+x86_64                        randconfig-a003   clang
+x86_64                        randconfig-a004   gcc  
+x86_64                        randconfig-a005   clang
+x86_64                        randconfig-a006   gcc  
+x86_64                        randconfig-a011   gcc  
+x86_64                        randconfig-a012   clang
+x86_64                        randconfig-a013   gcc  
+x86_64                        randconfig-a014   clang
+x86_64                        randconfig-a015   gcc  
+x86_64                        randconfig-a016   clang
+x86_64                        randconfig-k001   clang
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-kvm   gcc  
+x86_64                           rhel-8.3-syz   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r006-20230510   gcc  
+xtensa               randconfig-r001-20230511   gcc  
+xtensa               randconfig-r015-20230511   gcc  
+xtensa               randconfig-r024-20230509   gcc  
+xtensa               randconfig-r031-20230511   gcc  
 
-Warning: Permanently added '10.128.1.177' (ECDSA) to the list of known hosts.
-executing program
-executing program
-BUG: memory leak
-unreferenced object 0xffff88810e2ac920 (size 32):
-  comm "syz-executor238", pid 4983, jiffies 4294944120 (age 14.000s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff815458a4>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1057
-    [<ffffffff830fc4fb>] kmalloc include/linux/slab.h:559 [inline]
-    [<ffffffff830fc4fb>] hwsim_new_radio_nl+0x43b/0x660 drivers/net/wireless/virtual/mac80211_hwsim.c:5962
-    [<ffffffff83f4aa6e>] genl_family_rcv_msg_doit.isra.0+0xee/0x150 net/netlink/genetlink.c:968
-    [<ffffffff83f4ada7>] genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
-    [<ffffffff83f4ada7>] genl_rcv_msg+0x2d7/0x430 net/netlink/genetlink.c:1065
-    [<ffffffff83f49111>] netlink_rcv_skb+0x91/0x1e0 net/netlink/af_netlink.c:2546
-    [<ffffffff83f4a118>] genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
-    [<ffffffff83f4805b>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-    [<ffffffff83f4805b>] netlink_unicast+0x39b/0x4d0 net/netlink/af_netlink.c:1365
-    [<ffffffff83f4852a>] netlink_sendmsg+0x39a/0x720 net/netlink/af_netlink.c:1913
-    [<ffffffff83db5258>] sock_sendmsg_nosec net/socket.c:724 [inline]
-    [<ffffffff83db5258>] sock_sendmsg+0x58/0xb0 net/socket.c:747
-    [<ffffffff83db5817>] ____sys_sendmsg+0x397/0x430 net/socket.c:2503
-    [<ffffffff83db9e08>] ___sys_sendmsg+0xa8/0x110 net/socket.c:2557
-    [<ffffffff83db9fac>] __sys_sendmsg+0x8c/0x100 net/socket.c:2586
-    [<ffffffff84a127b9>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84a127b9>] do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-BUG: memory leak
-unreferenced object 0xffff88810e2ac800 (size 32):
-  comm "syz-executor238", pid 4984, jiffies 4294944700 (age 8.200s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff815458a4>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1057
-    [<ffffffff830fc4fb>] kmalloc include/linux/slab.h:559 [inline]
-    [<ffffffff830fc4fb>] hwsim_new_radio_nl+0x43b/0x660 drivers/net/wireless/virtual/mac80211_hwsim.c:5962
-    [<ffffffff83f4aa6e>] genl_family_rcv_msg_doit.isra.0+0xee/0x150 net/netlink/genetlink.c:968
-    [<ffffffff83f4ada7>] genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
-    [<ffffffff83f4ada7>] genl_rcv_msg+0x2d7/0x430 net/netlink/genetlink.c:1065
-    [<ffffffff83f49111>] netlink_rcv_skb+0x91/0x1e0 net/netlink/af_netlink.c:2546
-    [<ffffffff83f4a118>] genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
-    [<ffffffff83f4805b>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
-    [<ffffffff83f4805b>] netlink_unicast+0x39b/0x4d0 net/netlink/af_netlink.c:1365
-    [<ffffffff83f4852a>] netlink_sendmsg+0x39a/0x720 net/netlink/af_netlink.c:1913
-    [<ffffffff83db5258>] sock_sendmsg_nosec net/socket.c:724 [inline]
-    [<ffffffff83db5258>] sock_sendmsg+0x58/0xb0 net/socket.c:747
-    [<ffffffff83db5817>] ____sys_sendmsg+0x397/0x430 net/socket.c:2503
-    [<ffffffff83db9e08>] ___sys_sendmsg+0xa8/0x110 net/socket.c:2557
-    [<ffffffff83db9fac>] __sys_sendmsg+0x8c/0x100 net/socket.c:2586
-    [<ffffffff84a127b9>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84a127b9>] do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the bug is already fixed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to change bug's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the bug is a duplicate of another bug, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
