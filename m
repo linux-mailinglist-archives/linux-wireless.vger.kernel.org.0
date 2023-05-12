@@ -2,123 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07BA56FFE5D
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 03:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D3986FFEC8
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 May 2023 04:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239702AbjELBVe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 11 May 2023 21:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35450 "EHLO
+        id S239724AbjELCM7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 11 May 2023 22:12:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230257AbjELBVc (ORCPT
+        with ESMTP id S231799AbjELCM5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 11 May 2023 21:21:32 -0400
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7932A59F1;
-        Thu, 11 May 2023 18:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=V8Xvu
-        YhJ5ml6LZvSt04SN4AvdmFKt9PQ9GnG5dzpVVI=; b=Xv118CEMinxfAy5tKyMnc
-        RlaefxCTLa7vjguIjBYHsuegKUnTAaCRCfjkKdVgW6YPPDqwY+aVJlcK6nzcIyYG
-        JjIhen6RKrsoICTjeDgdqYO3rGX/9rdJkwAAnXej90F7p+ASud1MAZbJkVevXBWd
-        yPUw45r1Ntlzed6yyKxHFg=
-Received: from localhost.localdomain (unknown [116.128.244.169])
-        by zwqz-smtp-mta-g2-3 (Coremail) with SMTP id _____wBHR1iBlF1kn+jmBA--.43921S2;
-        Fri, 12 May 2023 09:21:06 +0800 (CST)
-From:   Yun Lu <luyun_611@163.com>
-To:     Jes.Sorensen@gmail.com, Larry.Finger@lwfinger.net
-Cc:     kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH v3] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
-Date:   Fri, 12 May 2023 09:20:55 +0800
-Message-Id: <20230512012055.2990472-1-luyun_611@163.com>
-X-Mailer: git-send-email 2.27.0
+        Thu, 11 May 2023 22:12:57 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 162D31FD4
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 19:12:57 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6ab0bad2587so3464738a34.3
+        for <linux-wireless@vger.kernel.org>; Thu, 11 May 2023 19:12:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683857576; x=1686449576;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=CT3lvlvlbiejQBnn+yxG6OjQ+mZSBPxq/l3659gUwks=;
+        b=sxVG81jbv/Ssr4+9ppcbWdGRuUlTu0IuFvNf6RZR+3WwCueacBfuVy7+3Ts8gJZQuF
+         npXpn3yKStnVFmGxC8FGoTj1MLj1hqRHCnmRnMHPk/FA9Lop2hlFgL+TKXzYPsITNlJ1
+         KDB0XubWcQDl6oZy1HZD84o4uK/eNZlz8PCUkcLHn0U8Tamf6xU/wirSashMgYc5xWON
+         UjO3n9073+FrANrmaXtjx7e1eAnPJKg/WWgk8hoeqiqp4ldxBWDWvHBcKpqqchh71U7r
+         DZLRqhs0i+a1HMD874IYvPDzd5M8aInearJ9PNCsx2rowtDRTE1Mx1KnpeAkadoeI7dJ
+         urdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683857576; x=1686449576;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CT3lvlvlbiejQBnn+yxG6OjQ+mZSBPxq/l3659gUwks=;
+        b=LIgaH7lDX2YQqODuKoFbPSkPMi9JDlKrwEEwknFIcNc3KH/w+XQkawH8mCch6dhTf2
+         XjvvDeohYuGzlIwMxpFvv5etgS8nWdDmaprAoMYxRV/XDPYUKVaTPrBHD8E2PPR9zIj4
+         mPGTu6ilt2V6rF6GPWbw+50vU3krHWgfpKB9ZUsdpRnwnZKSqJh6r0JpQSjR+3DxJXDD
+         A7I7z90ocwjllkCNZ7GJaFmZLwC0Jxcfl/iZiRqeAEcNokW4wfwmhEhXjAlo/NO68NZZ
+         Afh1zm/S5bDIfhnUFvDkV3ayKXFA+fvfewi+ZZ5TCwxEy8UdHknykyV8T4cxTI+ec/hE
+         wbWw==
+X-Gm-Message-State: AC+VfDzSCYTH7lkCyUWNONAFbEmxWyujMsqbSZXbeja8CcqEZB9CuXq/
+        Z8fzM0XX1P4A04d4DzdaqXMay27TxRI=
+X-Google-Smtp-Source: ACHHUZ6EKEurjk8Kj9eexFleauxA1M53Sjdlhjvs3IGu6c3YeuempLSSBTQiUBnoHZoPxrCVGyp0Bg==
+X-Received: by 2002:a05:6830:1206:b0:6ab:1727:c255 with SMTP id r6-20020a056830120600b006ab1727c255mr5916200otp.38.1683857576338;
+        Thu, 11 May 2023 19:12:56 -0700 (PDT)
+Received: from [10.62.118.118] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id n25-20020a9d4d19000000b006a94f27988csm7930890otf.8.2023.05.11.19.12.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 May 2023 19:12:55 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <da5e25df-75bd-5474-a7e6-1d86ad604261@lwfinger.net>
+Date:   Thu, 11 May 2023 21:12:54 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wBHR1iBlF1kn+jmBA--.43921S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAryDKw4kJF4UAw4fGw1UGFg_yoW5Xryrpr
-        WDCa4Fyr1UGr1kWw48Xa17CF1rX3WSqrs3uFyfJ34Svrs5X34S9F1F9F90yF4kurWkJFWa
-        qrZYyrsrG3Z8W37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j8eOJUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiMgNtzlWB3uAnNwAAso
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH] wifi: rtlwifi: rtl8192cu: Remove driver
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Martin Kaistra <martin.kaistra@linutronix.de>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+References: <20230428182933.19157-1-Larry.Finger@lwfinger.net>
+ <cab66a9d-9a66-7cd1-408b-91e8cd9d8a9c@linutronix.de>
+ <53260a3b-9256-07a2-1d66-553e865362b7@lwfinger.net>
+ <873543nlto.fsf@kernel.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <873543nlto.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yun Lu <luyun@kylinos.cn>
+On 5/11/23 06:34, Kalle Valo wrote:
+> 
+> The original reason why we added CONFIG_RTL8XXXU_UNTESTED back in the
+> day was so that we would not have two drivers supporting the same
+> hardware. Though I don't know how much the kconfig helped with that but
+> at least the conflicts were somehow documented.
+> 
+> Now that rtl8xxxu has matured and gained more features, I would really
+> like the idea of removing rtl8192cu driver. Of course we should make
+> sure that we are not accidentally removing any devices support, for
+> example I was not able to find this device in rtl8xxxu:
+> 
+> 	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817c, rtl92cu_hal_cfg)},
 
-When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
-probability of failure, which shows "authentication with ... timed out".
-Through debugging, it was found that the RCR register has been inexplicably
-modified to an incorrect value, resulting in the nic not being able to
-receive authenticated frames.
+I will submit a patch to add this device, and check the vendor driver to see if 
+there are any devices that were missed in the rtlwifi driver, but that can wait 
+until I remove rtl8192cu, which has to wait until rtl8xxxu can support AP mode 
+on the devices. When that happens, I will resubmit the patch for the removal of 
+CONFIG_RTL8XXXU_UNTESTED as part of a 3-patch series.
 
-To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
-the RCR value every time the register is written, and use it the next
-time the register need to be modified.
+Larry
 
-v3: Fix spelling mistake.
-
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index c8cee4a24755..4088aaa1c618 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1518,6 +1518,7 @@ struct rtl8xxxu_priv {
- 	u32 rege9c;
- 	u32 regeb4;
- 	u32 regebc;
-+	u32 regrcr;
- 	int next_mbox;
- 	int nr_out_eps;
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 620a5cc2bfdd..2fe71933ba08 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4053,6 +4053,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
- 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
- 	rtl8xxxu_write32(priv, REG_RCR, val32);
-+	priv->regrcr = val32;
- 
- 	if (priv->rtl_chip == RTL8188F) {
- 		/* Accept all data frames */
-@@ -6273,7 +6274,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 				      unsigned int *total_flags, u64 multicast)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
--	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
-+	u32 rcr = priv->regrcr;
- 
- 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
- 		__func__, changed_flags, *total_flags);
-@@ -6319,6 +6320,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 	 */
- 
- 	rtl8xxxu_write32(priv, REG_RCR, rcr);
-+	priv->regrcr = rcr;
- 
- 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
- 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
--- 
-2.25.1
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
 
