@@ -2,651 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8127019E4
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 22:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17905701A01
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 23:15:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbjEMUt4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 May 2023 16:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39720 "EHLO
+        id S230333AbjEMVM1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 May 2023 17:12:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231286AbjEMUty (ORCPT
+        with ESMTP id S229799AbjEMVM0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 May 2023 16:49:54 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F994C0E
-        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 13:49:22 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f417ea5252so59629515e9.0
-        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 13:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684010909; x=1686602909;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KjUD4u7JkiZuH168LMeHAg5LTCYODVcr1T2iwFE7+kg=;
-        b=QFlhwyWJvz5nOff7vtRh9mBRijyBrfByyN+SDqE96BTh8wFvyYxIPwN09z00u6o57n
-         HwGMOcpUqWVnugTAJ7+hyfvAahvcCyGWyZAMbHrVTUV//IVphzjvjyJ2n72chCwq8XN7
-         2znoW7vda5HP9rF+UaaZrYviS/3DUWToMb6QhdCcTHMPp+58Zg6YKT6lP0WI1mQpKjoe
-         pFVtvJpBg5U01FaYtLLFRHl9/MSTwW8XBplYVCnaYajZb+WMdspLXO3cSu9iiow6PLoG
-         2nWNUBkm1QhYRqEDxlPDhcrg1R7B9/uDEX8vYe/zygB6b2VYyS8mEyeyQ9FHPKVmIU4Z
-         HtaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684010909; x=1686602909;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KjUD4u7JkiZuH168LMeHAg5LTCYODVcr1T2iwFE7+kg=;
-        b=LLgkoeXU//Olpy4H6ZPjRczH+L59dn+ihSh7VqdgMmNXuc44KiH8AH9y6OJMp3lhvQ
-         CH8pnaMSsTOIsVXhXcVPBZ0d8HlOGTFn2i7uJ/wQ4JNXzG2t9dGe6Y3mid407pCBiKs7
-         AA06OJ5x7yxO5Dvjud3hlOmJIEQnd5KQirxfUz5wcUKIqppwBxeYXNIM6yZHAqnDnLuB
-         fLfQLrJKYzORLUMjnaw5xaVQG4mb4xIl/f8weFRWTsJdkVCSSGkNqv/P7pTFi2SCzLSZ
-         p6A578q7wIwQW7K3FXfk5opmZMrvyj+jRx8eh5OLWofKqiOqJTWmbhY0cUJIhItQOOtT
-         DDNw==
-X-Gm-Message-State: AC+VfDzSuor8/1Od8Oeoyq2+93ehg+8gLQ+s9ebYo4Y/dUDMwobSKL1B
-        1z5Bx9BHFcYM4sHkspv8GVpDxvUIHps=
-X-Google-Smtp-Source: ACHHUZ4R18/ddMmjo71PP/C9Hmb0OcC1CjFhOWxRcoZ3QxaVolnNPYvIElbYSDFJRQaSCpt8vlHGUw==
-X-Received: by 2002:a05:600c:b42:b0:3f4:f0c2:125 with SMTP id k2-20020a05600c0b4200b003f4f0c20125mr5707871wmr.23.1684010909102;
-        Sat, 13 May 2023 13:48:29 -0700 (PDT)
-Received: from [192.168.1.50] ([81.196.40.55])
-        by smtp.gmail.com with ESMTPSA id t9-20020a7bc3c9000000b003f1958eeadcsm14168372wmj.17.2023.05.13.13.48.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 May 2023 13:48:28 -0700 (PDT)
-Message-ID: <40157253-76bd-8b23-06e0-3365139b5395@gmail.com>
-Date:   Sat, 13 May 2023 23:48:27 +0300
+        Sat, 13 May 2023 17:12:26 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9B61997;
+        Sat, 13 May 2023 14:12:25 -0700 (PDT)
+Received: from fpc (unknown [10.10.165.8])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 8D4FF44C100C;
+        Sat, 13 May 2023 21:12:21 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8D4FF44C100C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1684012341;
+        bh=h5VwOgu4Ms78MtO1SJ+EbrnBbcjgQHHWiMcv59ZFSQs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=n54qSLzEKR06mgSWFz9DOGBBEfBdAxzLrb0WYa8XCQDbRx1opF5RTbluQWabw/lyl
+         kyoa3nrgWVUGKCW9fhG0zEYfmxaUcHDKVYadkp1N5a0lk0qoENgaQHq5PENP2Yi9Eo
+         LbsgEUap0NBvo18y5yo3n9KyoA4i000wfnm36jM4=
+Date:   Sun, 14 May 2023 00:12:14 +0300
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     Takeshi Misawa <jeantsuru.cumc.mandola@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Sujith <Sujith.Manoharan@atheros.com>,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Senthil Balasubramanian <senthilkumar@atheros.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH] wifi: ath9k: Fix memory leak in htc_connect_service
+Message-ID: <20230513211214.qtr7yejodbubjbyd@fpc>
+References: <ZFXk/AIKeapT72Pj@DESKTOP>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: [PATCH v4 2/2] wifi: rtl8xxxu: Rename some registers
-Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>
-References: <7dcf9fb9-1c97-ac28-5286-2236e287a18c@gmail.com>
-In-Reply-To: <7dcf9fb9-1c97-ac28-5286-2236e287a18c@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZFXk/AIKeapT72Pj@DESKTOP>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Give proper names:
+Hi,
 
-RF6052_REG_UNKNOWN_56 -> RF6052_REG_PAD_TXG
-RF6052_REG_UNKNOWN_DF -> RF6052_REG_GAIN_CCA
+On Sat, May 06, 2023 at 02:26:20PM +0900, Takeshi Misawa wrote:
+> Timeout occurs in htc_connect_service(), then this function returns
+> without freeing skb.
+> 
+> Fix this by going to err path.
 
-And fix typos:
+This will lead to UAF [1]. If a timeout occurs, htc_connect_service()
+returns with error but it is possible that a belated callback will touch
+the already freed SKB. It is actually a callback's responsibilty to free
+the buffer. The callback is ath9k_htc_txcompletion_cb(). As the urb is
+submitted, callback should be always executed, otherwise there is an error
+in usb core, not ath9k.
 
-REG_OFDM0_AGCR_SSI_TABLE -> REG_OFDM0_AGC_RSSI_TABLE
-REG_BB_ACCEESS_CTRL -> REG_BB_ACCESS_CTRL
+So the problem lies in somewhat another place.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v4:
- - No change.
+htc_connect_service() issues service connection requests via control
+ENDPOINT0. Its pipe_ids are configured in ath9k_htc_hw_alloc():
 
-v3:
- - Rebase on top of wireless-next.
+	/* Assign control endpoint pipe IDs */
+	endpoint = &target->endpoint[ENDPOINT0];
+	endpoint->ul_pipeid = hif->control_ul_pipe;
+	endpoint->dl_pipeid = hif->control_dl_pipe;
 
-v2:
- - Patch is new in v2.
----
- .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         | 20 +++---
- .../realtek/rtl8xxxu/rtl8xxxu_8192e.c         | 28 ++++----
- .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 64 +++++++++----------
- .../realtek/rtl8xxxu/rtl8xxxu_8710b.c         | 36 +++++------
- .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |  4 +-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  6 +-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |  8 +--
- 7 files changed, 83 insertions(+), 83 deletions(-)
+ul_pipe is USB_REG_OUT_PIPE and service connection requests should go that
+way.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-index cb45546c4c68..1e1c8fa194cb 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-@@ -654,7 +654,7 @@ static void rtl8188fu_config_channel(struct ieee80211_hw *hw)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RX_BB2, val32);
- 
- 	/* RC Corner */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00140);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x00140);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RX_G2, 0x01c6c);
- }
- 
-@@ -854,8 +854,8 @@ static int rtl8188fu_iqk_path_a(struct rtl8xxxu_priv *priv, u32 *lok_result)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0x07ff7);
- 
- 	/* PA,PAD gain adjust */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x5102a);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x980);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, 0x5102a);
- 
- 	/* enter IQK mode */
- 	val32 = rtl8xxxu_read32(priv, REG_FPGA0_IQK);
-@@ -886,7 +886,7 @@ static int rtl8188fu_iqk_path_a(struct rtl8xxxu_priv *priv, u32 *lok_result)
- 	val32 &= 0x000000ff;
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, val32);
- 
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x180);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x180);
- 
- 	/* save LOK result */
- 	*lok_result = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_TXM_IDAC);
-@@ -927,8 +927,8 @@ static int rtl8188fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf1173);
- 
- 	/* PA,PAD gain adjust */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x5102a);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x980);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, 0x5102a);
- 
- 	/*
- 	 * Enter IQK mode
-@@ -967,7 +967,7 @@ static int rtl8188fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	val32 &= 0x000000ff;
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, val32);
- 
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x180);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x180);
- 
- 	/* Check failed */
- 	reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
-@@ -1002,8 +1002,8 @@ static int rtl8188fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	/*
- 	 * PA, PAD setting
- 	 */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x51000);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x980);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, 0x51000);
- 
- 	/*
- 	 * Enter IQK mode
-@@ -1041,7 +1041,7 @@ static int rtl8188fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	val32 &= 0x000000ff;
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, val32);
- 
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x180);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x180);
- 
- 	/* reload LOK value */
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXM_IDAC, lok_result);
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-index fcc2926ea938..f673aa9ba15a 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-@@ -716,7 +716,7 @@ static int rtl8192eu_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	 * PA/PAD controlled by 0x0
- 	 */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00180);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x00180);
- 
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_WE_LUT, 0x800a0);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_RCK_OS, 0x20000);
-@@ -776,8 +776,8 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf1173);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x511e0);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x00980);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, 0x511e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -816,7 +816,7 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	} else {
- 		/* PA/PAD controlled by 0x0 */
- 		rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
--		rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x180);
-+		rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x180);
- 		goto out;
- 	}
- 
-@@ -838,8 +838,8 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_TXPA_G2, 0xf7ff2);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x510e0);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x00980);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, 0x510e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -869,7 +869,7 @@ static int rtl8192eu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	reg_ea4 = rtl8xxxu_read32(priv, REG_RX_POWER_BEFORE_IQK_A_2);
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x180);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x180);
- 
- 	if (!(reg_eac & BIT(27)) &&
- 	    ((reg_ea4 & 0x03ff0000) != 0x01320000) &&
-@@ -889,7 +889,7 @@ static int rtl8192eu_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	int result = 0;
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00180);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA, 0x00180);
- 
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_WE_LUT, 0x800a0);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_RCK_OS, 0x20000);
-@@ -952,8 +952,8 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf1173);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x511e0);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA, 0x00980);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_PAD_TXG, 0x511e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -995,7 +995,7 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 		 * Vendor driver restores RF_A here which I believe is a bug
- 		 */
- 		rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
--		rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x180);
-+		rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA, 0x180);
- 		goto out;
- 	}
- 
-@@ -1017,8 +1017,8 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf7ff2);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00980);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x510e0);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA, 0x00980);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_PAD_TXG, 0x510e0);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x80800000);
-@@ -1049,7 +1049,7 @@ static int rtl8192eu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	reg_ecc = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_B_2);
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, 0x00000000);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x180);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA, 0x180);
- 
- 	if (!(reg_eac & BIT(30)) &&
- 	    ((reg_ec4 & 0x03ff0000) != 0x01320000) &&
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-index 50225f1d9478..18dc5221a9c0 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-@@ -569,7 +569,7 @@ static void rtl8192fu_config_kfree(struct rtl8xxxu_priv *priv, u8 channel)
- 					  BIT(18), 1);
- 
- 		/* enter power_trim debug mode */
--		rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_UNKNOWN_DF,
-+		rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_GAIN_CCA,
- 					  BIT(7), 1);
- 
- 		/* write enable */
-@@ -589,7 +589,7 @@ static void rtl8192fu_config_kfree(struct rtl8xxxu_priv *priv, u8 channel)
- 					  0x3f, bb_gain_for_path);
- 
- 		/* leave power_trim debug mode */
--		rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_UNKNOWN_DF,
-+		rtl8xxxu_write_rfreg_mask(priv, rfpath, RF6052_REG_GAIN_CCA,
- 					  BIT(7), 0);
- 
- 		/* write disable */
-@@ -831,13 +831,13 @@ static int rtl8192fu_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
- 	rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000100);
- 
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(4), 1);
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(4), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(11), 1);
- 	if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12)
- 		val32 = 0x30;
- 	else
- 		val32 = 0xe9;
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x003ff, val32);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_PAD_TXG, 0x003ff, val32);
- 
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
- 
-@@ -893,7 +893,7 @@ static int rtl8192fu_iqk_path_a(struct rtl8xxxu_priv *priv)
- 
- 	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_AC, BIT(14), 0);
- 	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_WE_LUT, BIT(4), 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x00810, 0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, 0x00810, 0);
- 
- 	if (!(reg_eac & BIT(28)) &&
- 	    ((reg_e94 & 0x03ff0000) != 0x01420000) &&
-@@ -913,10 +913,10 @@ static int rtl8192fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(1), 1);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_P1, 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x003ff, 0x27);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(11), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_PAD_TXG, 0x003ff, 0x27);
- 
- 	/* Enter IQK mode */
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
-@@ -962,7 +962,7 @@ static int rtl8192fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 		/* PA/PAD controlled by 0x0 */
- 		rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
--		rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF,
-+		rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA,
- 					  BIT(11), 0);
- 
- 		return result;
-@@ -975,10 +975,10 @@ static int rtl8192fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
- 	/* PA/PAD control by 0x56, and set = 0x0 */
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(1), 1);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_P1, 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_56, 0x003ff, 0x1e0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(11), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_PAD_TXG, 0x003ff, 0x1e0);
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
- 	rtl8xxxu_write32(priv, REG_ANAPWR1, 0x44ffbb44);
-@@ -1025,7 +1025,7 @@ static int rtl8192fu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	/* Leave IQK mode */
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
--	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_UNKNOWN_DF, BIT(11), 0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_A, RF6052_REG_GAIN_CCA, BIT(11), 0);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_P1, 0x02000);
- 
- 	if (!(reg_eac & BIT(27)) &&
-@@ -1055,13 +1055,13 @@ static int rtl8192fu_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_FPGA0_XCD_RF_SW_CTRL, 0x04203400);
- 	rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000000);
- 
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(4), 1);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(4), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(11), 1);
- 	if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12)
--		rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56,
-+		rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_PAD_TXG,
- 					  0x003ff, 0x30);
- 	else
--		rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56,
-+		rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_PAD_TXG,
- 					  0x00fff, 0xe9);
- 
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0x808000);
-@@ -1118,7 +1118,7 @@ static int rtl8192fu_iqk_path_b(struct rtl8xxxu_priv *priv)
- 
- 	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_AC, BIT(14), 0);
- 	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_WE_LUT, BIT(4), 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, 0x00810, 0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, 0x00810, 0);
- 
- 	if (!(reg_eac & BIT(31)) &&
- 	    ((reg_eb4 & 0x03ff0000) != 0x01420000) &&
-@@ -1140,10 +1140,10 @@ static int rtl8192fu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	/* Leave IQK mode */
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(1), 1);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_P1, 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x003ff, 0x67);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(11), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_PAD_TXG, 0x003ff, 0x67);
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
- 	rtl8xxxu_write32(priv, REG_ANAPWR1, 0x44ffbb44);
-@@ -1192,7 +1192,7 @@ static int rtl8192fu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 		/* PA/PAD controlled by 0x0 */
- 		rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
--		rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF,
-+		rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA,
- 					  BIT(11), 0);
- 
- 		return result;
-@@ -1204,10 +1204,10 @@ static int rtl8192fu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	/* Modify RX IQK mode table */
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(1), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(1), 1);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_P1, 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 1);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_56, 0x003ff, 0x1e0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(11), 1);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_PAD_TXG, 0x003ff, 0x1e0);
- 
- 	rtl8xxxu_write32(priv, REG_FPGA0_ANALOG4, 0xccf000c0);
- 	rtl8xxxu_write32(priv, REG_ANAPWR1, 0x44ffbb44);
-@@ -1253,8 +1253,8 @@ static int rtl8192fu_rx_iqk_path_b(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32_mask(priv, REG_FPGA0_IQK, 0xffffff00, 0);
- 	rtl8xxxu_write32(priv, REG_FPGA0_XA_HSSI_PARM1, 0x01000100);
- 
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(11), 0);
--	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_UNKNOWN_DF, BIT(1), 0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(11), 0);
-+	rtl8xxxu_write_rfreg_mask(priv, RF_B, RF6052_REG_GAIN_CCA, BIT(1), 0);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_P1, 0x02000);
- 
- 	if (!(reg_eac & BIT(30)) &&
-@@ -1472,9 +1472,9 @@ static void rtl8192fu_phy_iq_calibrate(struct rtl8xxxu_priv *priv)
- 
- 	rfe_path_select = rtl8xxxu_read32(priv, REG_RFE_PATH_SELECT);
- 
--	path_a_0xdf = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+	path_a_0xdf = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 	path_a_0x35 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_P1);
--	path_b_0xdf = rtl8xxxu_read_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF);
-+	path_b_0xdf = rtl8xxxu_read_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA);
- 	path_b_0x35 = rtl8xxxu_read_rfreg(priv, RF_B, RF6052_REG_GAIN_P1);
- 
- 	memset(result, 0, sizeof(result));
-@@ -1550,9 +1550,9 @@ static void rtl8192fu_phy_iq_calibrate(struct rtl8xxxu_priv *priv)
- 						   candidate, (reg_ec4 == 0));
- 	}
- 
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, path_a_0xdf);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, path_a_0xdf);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_P1, path_a_0x35);
--	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_UNKNOWN_DF, path_b_0xdf);
-+	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_CCA, path_b_0xdf);
- 	rtl8xxxu_write_rfreg(priv, RF_B, RF6052_REG_GAIN_P1, path_b_0x35);
- 
- 	if (rfe == 7 || rfe == 8 || rfe == 9 || rfe == 12) {
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
-index 2990475100ec..f0d17b75c5f1 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
-@@ -1031,12 +1031,12 @@ static int rtl8710bu_iqk_path_a(struct rtl8xxxu_priv *priv, u32 *lok_result)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0x07ff7);
- 
- 	/* PA,PAD gain adjust */
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 	val32 |= BIT(11);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, val32);
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, val32);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_PAD_TXG);
- 	u32p_replace_bits(&val32, 0x1ed, 0x00fff);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, val32);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, val32);
- 
- 	/* enter IQK mode */
- 	val32 = rtl8xxxu_read32(priv, REG_FPGA0_IQK);
-@@ -1068,9 +1068,9 @@ static int rtl8710bu_iqk_path_a(struct rtl8xxxu_priv *priv, u32 *lok_result)
- 	u32p_replace_bits(&val32, 0, 0xffffff00);
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, val32);
- 
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 	val32 &= ~BIT(11);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, val32);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, val32);
- 
- 	/* save LOK result */
- 	*lok_result = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_TXM_IDAC);
-@@ -1113,12 +1113,12 @@ static int rtl8710bu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXPA_G2, 0xf1173);
- 
- 	/* PA,PAD gain adjust */
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 	val32 |= BIT(11);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, val32);
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, val32);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_PAD_TXG);
- 	u32p_replace_bits(&val32, 0xf, 0x003e0);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, val32);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, val32);
- 
- 	/*
- 	 * Enter IQK mode
-@@ -1170,9 +1170,9 @@ static int rtl8710bu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 		u32p_replace_bits(&val32, 0, 0xffffff00);
- 		rtl8xxxu_write32(priv, REG_FPGA0_IQK, val32);
- 
--		val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+		val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 		val32 &= ~BIT(11);
--		rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, val32);
-+		rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, val32);
- 
- 		return result;
- 	}
-@@ -1197,12 +1197,12 @@ static int rtl8710bu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	/*
- 	 * PA, PAD setting
- 	 */
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 	val32 |= BIT(11);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, val32);
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, val32);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_PAD_TXG);
- 	u32p_replace_bits(&val32, 0x2a, 0x00fff);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_56, val32);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_PAD_TXG, val32);
- 
- 	/*
- 	 * Enter IQK mode
-@@ -1241,9 +1241,9 @@ static int rtl8710bu_rx_iqk_path_a(struct rtl8xxxu_priv *priv, u32 lok_result)
- 	u32p_replace_bits(&val32, 0, 0xffffff00);
- 	rtl8xxxu_write32(priv, REG_FPGA0_IQK, val32);
- 
--	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF);
-+	val32 = rtl8xxxu_read_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA);
- 	val32 &= ~BIT(11);
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, val32);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, val32);
- 
- 	/* reload LOK value */
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_TXM_IDAC, lok_result);
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-index a7ad62a8a7c6..13ad5d5b73f4 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-@@ -824,7 +824,7 @@ static int rtl8723bu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	/*
- 	 * PA, PAD setting
- 	 */
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0xf80);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0xf80);
- 	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_55, 0x4021f);
- 
- 	/*
-@@ -888,7 +888,7 @@ static int rtl8723bu_rx_iqk_path_a(struct rtl8xxxu_priv *priv)
- 	reg_eac = rtl8xxxu_read32(priv, REG_RX_POWER_AFTER_IQK_A_2);
- 	reg_ea4 = rtl8xxxu_read32(priv, REG_RX_POWER_BEFORE_IQK_A_2);
- 
--	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_UNKNOWN_DF, 0x780);
-+	rtl8xxxu_write_rfreg(priv, RF_A, RF6052_REG_GAIN_CCA, 0x780);
- 
- 	val32 = (reg_eac >> 16) & 0x3ff;
- 	if (val32 & 0x200)
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 52029fdf67c8..8d74a0cdf2c5 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -643,7 +643,7 @@ const u32 rtl8xxxu_iqk_phy_iq_bb_reg[RTL8XXXU_BB_REGS] = {
- 	REG_OFDM0_XA_RX_IQ_IMBALANCE,
- 	REG_OFDM0_XB_RX_IQ_IMBALANCE,
- 	REG_OFDM0_ENERGY_CCA_THRES,
--	REG_OFDM0_AGCR_SSI_TABLE,
-+	REG_OFDM0_AGC_RSSI_TABLE,
- 	REG_OFDM0_XA_TX_IQ_IMBALANCE,
- 	REG_OFDM0_XB_TX_IQ_IMBALANCE,
- 	REG_OFDM0_XC_TX_AFE,
-@@ -2881,10 +2881,10 @@ void rtl8xxxu_fill_iqk_matrix_b(struct rtl8xxxu_priv *priv, bool iqk_ok,
- 	if (priv->rtl_chip == RTL8192F) {
- 		rtl8xxxu_write32_mask(priv, REG_RXIQB_EXT, 0x000000f0, reg);
- 	} else {
--		val32 = rtl8xxxu_read32(priv, REG_OFDM0_AGCR_SSI_TABLE);
-+		val32 = rtl8xxxu_read32(priv, REG_OFDM0_AGC_RSSI_TABLE);
- 		val32 &= ~0x0000f000;
- 		val32 |= (reg << 12);
--		rtl8xxxu_write32(priv, REG_OFDM0_AGCR_SSI_TABLE, val32);
-+		rtl8xxxu_write32(priv, REG_OFDM0_AGC_RSSI_TABLE, val32);
- 	}
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-index 17573f81a2f1..920ee50e2115 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-@@ -449,7 +449,7 @@
- #define  LLT_OP_READ			(0x2 << 30)
- #define  LLT_OP_MASK			(0x3 << 30)
- 
--#define REG_BB_ACCEESS_CTRL		0x01e8
-+#define REG_BB_ACCESS_CTRL		0x01e8
- #define REG_BB_ACCESS_DATA		0x01ec
- 
- #define REG_HMBOX_EXT0_8723B		0x01f0
-@@ -1077,7 +1077,7 @@
- 
- #define REG_OFDM0_AGC_PARM1		0x0c70
- 
--#define REG_OFDM0_AGCR_SSI_TABLE	0x0c78
-+#define REG_OFDM0_AGC_RSSI_TABLE	0x0c78
- 
- #define REG_OFDM0_XA_TX_IQ_IMBALANCE	0x0c80
- #define REG_OFDM0_XB_TX_IQ_IMBALANCE	0x0c88
-@@ -1356,11 +1356,11 @@
- #define RF6052_REG_T_METER_8723B	0x42
- #define RF6052_REG_UNKNOWN_43		0x43
- #define RF6052_REG_UNKNOWN_55		0x55
--#define RF6052_REG_UNKNOWN_56		0x56
-+#define RF6052_REG_PAD_TXG		0x56
- #define RF6052_REG_TXMOD		0x58
- #define RF6052_REG_RXG_MIX_SWBW		0x87
- #define RF6052_REG_S0S1			0xb0
--#define RF6052_REG_UNKNOWN_DF		0xdf
-+#define RF6052_REG_GAIN_CCA		0xdf
- #define RF6052_REG_UNKNOWN_ED		0xed
- #define RF6052_REG_WE_LUT		0xef
- #define RF6052_REG_GAIN_CTRL		0xf5
--- 
-2.39.2
+However, the reproducer managed to issue the WMI_CMD and Beacon requests
+via USB_REG_OUT_PIPE, but the third one was issued via USB_WLAN_TX_PIPE.
+As it went on the wrong way, the SKB simply got lost in __hif_usb_tx() as
+the special conditions weren't satisfied.
+
+Somehow the ENDPOINT0 ul_pipeid has unexpectedly changed... Well, it is
+htc_process_conn_rsp() which received a badly constructed "service
+connection reply" from a bad USB device: the endpoint which attributes
+were to be changed pointed to ENDPOINT0 which should never happen with
+healthy firmware. But ENDPOINT0 pipeid attributes were changed, so the
+next service conn requests went on the wrong path.
+
+The fix seems to be that htc_process_conn_rsp() should immediately return
+if the received endpoint which is to be connected to a new service is
+ENDPOINT0. 
+
+[1]: https://lore.kernel.org/linux-wireless/20200404041838.10426-2-hqjagain@gmail.com/
+> 
+> syzbot report:
+> BUG: memory leak
+> unreferenced object 0xffff88810a980800 (size 240):
+>   comm "kworker/1:1", pid 24, jiffies 4294947427 (age 16.220s)
+>   hex dump (first 32 bytes):
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace:
+>     [<ffffffff83b971c6>] __alloc_skb+0x206/0x270 net/core/skbuff.c:552
+>     [<ffffffff82eb3731>] alloc_skb include/linux/skbuff.h:1270 [inline]
+>     [<ffffffff82eb3731>] htc_connect_service+0x121/0x230 drivers/net/wireless/ath/ath9k/htc_hst.c:259
+>     [<ffffffff82ec03a5>] ath9k_htc_connect_svc drivers/net/wireless/ath/ath9k/htc_drv_init.c:137 [inline]
+>     [<ffffffff82ec03a5>] ath9k_init_htc_services.constprop.0+0xe5/0x390 drivers/net/wireless/ath/ath9k/htc_drv_init.c:157
+>     [<ffffffff82ec0747>] ath9k_htc_probe_device+0xf7/0x8a0 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
+>     [<ffffffff82eb3ef5>] ath9k_htc_hw_init+0x35/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:521
+>     [<ffffffff82eb68dd>] ath9k_hif_usb_firmware_cb+0xcd/0x1f0 drivers/net/wireless/ath/ath9k/hif_usb.c:1243
+>     [<ffffffff82aa835b>] request_firmware_work_func+0x4b/0x90 drivers/base/firmware_loader/main.c:1107
+>     [<ffffffff8129a35a>] process_one_work+0x2ba/0x5f0 kernel/workqueue.c:2289
+>     [<ffffffff8129ac7d>] worker_thread+0x5d/0x5b0 kernel/workqueue.c:2436
+>     [<ffffffff812a4fa9>] kthread+0x129/0x170 kernel/kthread.c:376
+>     [<ffffffff81002dcf>] ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+> 
+> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+> Link: https://syzkaller.appspot.com/bug?id=fbf138952d6c1115ba7d797cf7d56f6935184e3f
+> Reported-and-tested-by: syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
+> Signed-off-by: Takeshi Misawa <jeantsuru.cumc.mandola@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath9k/htc_hst.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+> index ca05b07a45e6..6878da6d15b4 100644
+> --- a/drivers/net/wireless/ath/ath9k/htc_hst.c
+> +++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+> @@ -285,7 +285,8 @@ int htc_connect_service(struct htc_target *target,
+>  	if (!time_left) {
+>  		dev_err(target->dev, "Service connection timeout for: %d\n",
+>  			service_connreq->service_id);
+> -		return -ETIMEDOUT;
+> +		ret = -ETIMEDOUT;
+> +		goto err;
+>  	}
+>  
+>  	*conn_rsp_epid = target->conn_rsp_epid;
+> -- 
+> 2.39.2
+> 
