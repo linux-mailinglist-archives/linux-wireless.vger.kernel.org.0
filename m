@@ -2,196 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F201701999
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 22:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 722627019B1
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 22:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230342AbjEMUNp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 May 2023 16:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
+        id S229566AbjEMUm2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 May 2023 16:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbjEMUNo (ORCPT
+        with ESMTP id S229464AbjEMUmY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 May 2023 16:13:44 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04CDF269F
-        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 13:13:43 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-50db91640d3so9163310a12.0
-        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 13:13:42 -0700 (PDT)
+        Sat, 13 May 2023 16:42:24 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 338632D48
+        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 13:42:23 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3090d3e9c92so706148f8f.2
+        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 13:42:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684008821; x=1686600821;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kEErDdrJn25oBFjvI56TXsq/CzMc14Vwk/YUKzC7yzQ=;
-        b=hH01tPLj7haED0K36mpb4S++wo2dR2eE2fV8xCzaerRG0yC8dX7sP1rkvQn+A97Zxg
-         7Cq2rERjjqDOYjNtREzyFAQr+V/U418crKnbPlEHSOMDb53r5Zju4tAaSIy9JyFtzx06
-         udVmzCPIRVke9why8CIYp1NJz2mmZSyYGMPKDG8by4QeIXN/p4PJtSkxOAgAYYmCEBwh
-         bz5ktajDMy5JkDXsKCukBqrgMkZkxLOiUT+d1uW8Z2bHVo7HJ0HeVaHKYy+/+yJzoljx
-         dwyVlomCdRTpcXBX6+KUmL6O3WvRlOnb/8BsAdOL/GBq4qvMbi1Pk8Pp3eBoqH7F9Ixu
-         q5HQ==
+        d=gmail.com; s=20221208; t=1684010541; x=1686602541;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5NuTlZARGpYtUbpAIisRPiVEsNcUwoEdVoK2pjpcdRU=;
+        b=Ep52cXoba4uBbzZcxaTLRENd1XOPDjhv07p9JQ3+tE40WS2jeh15aVTzTQAfeB54rS
+         7IzGwiunWRvPFU+Wz4wgIwAH4f9FcRwhw70LHyqV3o5gx2syrbVBM3KfLNLF8fQXyHwT
+         cctUn4yunXU8QCFvwYizfPDk9uK0RcNpXbE9EZNL8vo0jcar5+4WzEHk7X0a5Sy7CDkb
+         GNQouKDlx+oWuZftZHuJYI8HFYb4+QdFTMlmScT8tgmJuRVp9gRhHgwJgFlpCAldSiXU
+         S3UNqKlUAx0V4zwbrMnkNFQTacPeoBzttvoUE5groNstF90zQn6U9y4yKyRCKQiNR7hQ
+         rEOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684008821; x=1686600821;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kEErDdrJn25oBFjvI56TXsq/CzMc14Vwk/YUKzC7yzQ=;
-        b=esyRLjYvm0KcMBUz/7S/xwNwJka42zhpO4pIewL7kEGIqidhEwj2F6B7uUBa+PIclX
-         tgzWt+yhLJYvMxMMixQHlGqXKjxwFdWX5P8EDN+RJrK+RRNLdw69Zqpw49yInA6ygWRG
-         dPnFsMxvgiCekuTu6PyUSwVO2W+5A68RGdk8toLMv3+SdPbwOu7Sp+z+qMksmbsSus7a
-         wqfioKq+zapWXItvCHmaDfedoG8Kc85wM+dyQBDg3xyZutdwdWtRE/ubWYThqWDsysNB
-         E32Ge3hD4meGMvLdXqSgJh6yGiB4B9/PGtWdjgBOaw1equCR0wcrakOnpSJ2gyCQEyn6
-         ihrg==
-X-Gm-Message-State: AC+VfDz0h8y8dYFvDQ/+bbbLOazFxXiOSzNqXhYLBId4zH2clUntsOwu
-        Nq4TvBXSC+1vfLv5/JDGo+tLNNyyuzSerA==
-X-Google-Smtp-Source: ACHHUZ758z0Qh8lrIbbxucqIrrI+8OptlO6Bt3H2urkRuRQ8J7iPUUzMHELwg2jhq2ejW2ZljiHhjA==
-X-Received: by 2002:a05:6402:1a5b:b0:50b:c475:4f8b with SMTP id bf27-20020a0564021a5b00b0050bc4754f8bmr20628182edb.15.1684008821137;
-        Sat, 13 May 2023 13:13:41 -0700 (PDT)
-Received: from jernej-laptop.localnet (89-212-118-115.static.t-2.net. [89.212.118.115])
-        by smtp.gmail.com with ESMTPSA id u24-20020a056402111800b0050bc4eb9846sm5206600edv.1.2023.05.13.13.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 May 2023 13:13:40 -0700 (PDT)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: Driver for rtw8723ds
-Date:   Sat, 13 May 2023 22:13:39 +0200
-Message-ID: <21872829.EfDdHjke4D@jernej-laptop>
-In-Reply-To: <f3368bf9-c6e6-f418-41da-b9de185acd34@lwfinger.net>
-References: <72a8eeb1-c91c-80a7-5a09-1b7963e0996b@lwfinger.net>
- <13262218.uLZWGnKmhe@jernej-laptop>
- <f3368bf9-c6e6-f418-41da-b9de185acd34@lwfinger.net>
+        d=1e100.net; s=20221208; t=1684010541; x=1686602541;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5NuTlZARGpYtUbpAIisRPiVEsNcUwoEdVoK2pjpcdRU=;
+        b=HBBGxq8gX0bOW/fMJzMgTQVynFhN0mU51U94HBJRAHEaFV8LOwORZqp3pde8Xg6uzF
+         vz6/UZ/6pjuU+EYdVKoKHWqRzeLm8ag9OPzeoNlNVGCdndleVcbO97VSX6nbo2VGNHU3
+         POkz/C1CU9wJ2jRCXrPVOEeseBDZeQ+A2/E4xuNxtNNij9ATsCd/emQeGMSwjua7THY3
+         NHWx7ZugEVabXm0pLFMDGpomddYxvGBvALgYvjKBXoTIaBeEd67tFrEEbWc1hqbzZRJ6
+         Wzb05YUOB63+Nal6wYMaLxoDlt2Zrw9QnZ85NyRCvqGRauAFG4cirBDdS42WmsqOdr0d
+         ulpA==
+X-Gm-Message-State: AC+VfDx/pK/2VgyD8dMrUyCTOXEUkAgGT+u3voHs7JTZEVu1m5R38YOy
+        zo6knPLu+b5iglbHV620UOI=
+X-Google-Smtp-Source: ACHHUZ7Hm2p/yqyNr7B84fMRzXA8pAK1dIZ8nppCzROrnsRZ86S4eHsROvXTZ5+WQtV+vb65bHMClA==
+X-Received: by 2002:adf:d846:0:b0:307:8651:258e with SMTP id k6-20020adfd846000000b003078651258emr17863599wrl.21.1684010541374;
+        Sat, 13 May 2023 13:42:21 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.55])
+        by smtp.gmail.com with ESMTPSA id v3-20020adfebc3000000b00307c0afc030sm10360315wrn.4.2023.05.13.13.42.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 May 2023 13:42:20 -0700 (PDT)
+Message-ID: <f19bb9e3-a706-2a22-c1fb-029b77719831@gmail.com>
+Date:   Sat, 13 May 2023 23:42:19 +0300
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="nextPart7520481.EvYhyI6sBW"
-Content-Transfer-Encoding: 7Bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v3 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+References: <98eff876-bb91-f51a-ffe9-b37d27518f9d@gmail.com>
+ <094340810bbcbb7d85dd9c9c06b48d3a19aadd85.camel@realtek.com>
+Content-Language: en-US
+From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <094340810bbcbb7d85dd9c9c06b48d3a19aadd85.camel@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
+On 13/05/2023 09:13, Ping-Ke Shih wrote:
+> On Fri, 2023-05-12 at 20:07 +0300, Bitterblue Smith wrote:
+>> External mail.
+>>
+>>
+>>
+>> This is a newer chip, similar to the RTL8710BU in that it uses the same
+>> PHY status structs.
+>>
+>> Features: 2.4 GHz, b/g/n mode, 2T2R, 300 Mbps.
+>>
+>> It can allegedly have Bluetooth, but that's not implemented here.
+>>
+>> This chip can have many RFE (RF front end) types, of which types 1
+>> and 5 are the only ones tested. Many of the other types need different
+>> initialisation tables. They can be added if someone wants them.
+>>
+>> The vendor driver v5.8.6.2_35538.20191028_COEX20190910-0d02 from
+>> https://github.com/BrightX/rtl8192fu was used as reference, with
+>> additional device IDs taken from
+>> https://github.com/kelebek333/rtl8192fu-dkms.
+>>
+>> The vendor driver also claims to support devices with ID 0bda:a725,
+>> but that is found in some bluetooth-only devices, so it's not supported
+>> here.
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>> v3:
+>>  - Rebase on top of wireless-next.
+>>  - Mark device 0b05:18b1 and RFE type 1 (ASUS USB-N13 C1) as tested.
+>>
+>> v2:
+>>  - Feedback from Ping-Ke Shih:
+>>    - Add rtl8xxxu_8192f.o to Makefile.
+>>    - Initialise variable channel_idx in rtl8192fu_config_kfree() and
+>>      variable ledcfg in rtl8192fu_led_brightness_set() to avoid
+>>      warnings.
+>>    - Give names to a lot of registers.
+>>    - Initialise bb_gain_for_path in rtl8192fu_config_kfree() in two
+>>      steps.
+>>    - Don't assign the return value of rtl8xxxu_write32_mask() to
+>>      variable val32 in rtl8xxxu_fill_iqk_matrix_b().
+>>  - Add more information about device IDs to the commit message.
+>> ---
+>>  drivers/net/wireless/realtek/rtl8xxxu/Kconfig |    3 +-
+>>  .../net/wireless/realtek/rtl8xxxu/Makefile    |    2 +-
+>>  .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |   47 +
+>>  .../realtek/rtl8xxxu/rtl8xxxu_8188f.c         |    3 +-
+>>  .../realtek/rtl8xxxu/rtl8xxxu_8192f.c         | 2090 +++++++++++++++++
+>>  .../realtek/rtl8xxxu/rtl8xxxu_8710b.c         |    1 +
+>>  .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         |    1 +
+>>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c |  107 +-
+>>  .../wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h |   39 +
+>>  9 files changed, 2262 insertions(+), 31 deletions(-)
+>>  create mode 100644 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+>>
+>>
+> 
+> [...]
+> 
+>> @@ -7484,6 +7522,9 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+>>                 if (id->idProduct == 0x0109)
+>>                         untested = 0;
+>>                 break;
+>> +       case 0x0b05:
+>> +               if (id->idProduct == 0x18f1)
+>> +                       untested = 0;
+> 
+> 'break;' is missing. 
+> 
 
---nextPart7520481.EvYhyI6sBW
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Ah, sorry about that.
 
-Dne sobota, 13. maj 2023 ob 21:55:51 CEST je Larry Finger napisal(a):
-> On 5/13/23 05:23, Jernej =C5=A0krabec wrote:
-> > Larry,
-> >=20
-> > Dne sreda, 10. maj 2023 ob 23:47:24 CEST je Larry Finger napisal(a):
-> >> On 5/10/23 16:07, Martin Blumenstingl wrote:
-> >>> On Wed, May 10, 2023 at 12:02=E2=80=AFAM Larry Finger <Larry.Finger@l=
-wfinger.net> wrote:
-> >>> [...]
-> >>>> I added that patch to the driver. The user reports that he was able =
-to do a ping
-> >>>> and an nslookup before it crashed with the following in the log:
-> >>> That's some positive news alongside the crash log: it seems that a
-> >>> part of the driver works! :-)
-> >>>
-> >>>> [    8.700626] skbuff: skb_over_panic: text:ffff8000011924ac len:334=
-1 put:3341
-> >>>> head:ffff000003b3c000 data:ffff000003b3c040 tail:0xd4d end:0x2c0 dev=
-:<NULL>
-> >>> [...]
-> >>>> Somehow skb->tail was greater than skb->end. Unfortunately I do not =
-have access
-> >>>> to gdb to tell you what line corresponds to rtw_sdio_rx_skb+0x50 on =
-the MangoPi
-> >>>> MQ Quad.
-> >>> I need to have a closer look at the pkg_offset and struct
-> >>> rtw_rx_pkt_stat which we receive.
-> >>> Recently my own MangoPI MQ-Quad arrived but I did not have the time to
-> >>> set it up yet. I'll try to do so during the weekend so I can debug
-> >>> this on my own.
-> >>>
-> >>> Please ping me next week in case I haven't provided any update until =
-then.
-> >>
-> >> I have some test prints in to check for skb overrun. My initial indica=
-tion is
-> >> that the problem was in the c2h branch of rtw_sdio_rx_skb(), but my ne=
-xt run
-> >> should verify that. My changes will do a pr_warn_once() when the probl=
-em
-> >> happens, and then drop the skb.
-> >>
-> >> My contact reported that he had one run of 3 minutes before the problem
-> >> happened, which is good news for most of the driver.
-> >=20
-> > I may have discovered something interesting. rtl8723ds vendor driver has
-> > following checks in RX data parsing code:
-> > https://github.com/lwfinger/rtl8723ds/blob/master/hal/rtl8723d/sdio/rtl=
-8723ds_recv.c#L83-L99
-> >=20
-> > Those checks are absent in rtl8822bs vendor driver, which was my origin=
-al
-> > development platform for SDIO. This may indicate some kind of bug in FW
-> > and/or HW.
-> >=20
-> > I think that at least second check, which checks for exactly the case y=
-our
-> > client experience, can be easily added and tested.
->=20
-> Thanks for this update. I added the following to the start of rtw_sdio_rx=
-_skb():
->         /* fix Hardware RX data error, drop whole recv_buffer */
->         if (!(rtwdev->hal.rcr & BIT_ACRC32) && pkt_stat->crc_err) {
->                 kfree_skb(skb);
->                 return;
->         }
-> I think that duplicates the code in the vendor driver.
->=20
-> I have not heard from my user as to whether it helps. My communications w=
-ith him=20
-> are at https://github.com/lwfinger/rtl8723ds/issues/37.
-
-I had second part in mind (see attachment), but this is IMO only sanity che=
-ck
-and it will mask the issue. At this point I'm not sure if this is something=
- that
-can happen occasionally or is there additional bug in rtw88 code. I'll check
-rtl8723ds c2h code in greater detail.
-
-In any case, I would argue that all 3 patches in this thread are valid and
-should be submitted upstream.
-
-Best regards,
-Jernej
-
-
---nextPart7520481.EvYhyI6sBW
-Content-Disposition: attachment; filename="sdio-size-check.patch"
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/x-patch; charset="utf-8"; name="sdio-size-check.patch"
-
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index af0459a79899..d69ce76ad0f4 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -975,7 +975,13 @@ static void rtw_sdio_rxfifo_recv(struct rtw_dev *rtwdev, u32 rx_len)
- 		curr_pkt_len = ALIGN(pkt_offset + pkt_stat.pkt_len,
- 				     RTW_SDIO_DATA_PTR_ALIGN);
- 
--		if ((curr_pkt_len + pkt_desc_sz) >= rx_len) {
-+		if ((curr_pkt_len + pkt_desc_sz) > rx_len) {
-+			dev_warn(rtwdev->dev, "Invalid RX packet size!");
-+			dev_kfree_skb_any(skb);
-+			return;
-+		}
-+
-+		if ((curr_pkt_len + pkt_desc_sz) == rx_len) {
- 			/* Use the original skb (with it's adjusted offset)
- 			 * when processing the last (or even the only) entry to
- 			 * have it's memory freed automatically.
-
---nextPart7520481.EvYhyI6sBW--
-
-
+>>         default:
+>>                 break;
+>>         }
+>>
+> 
+> [...]
+> 
 
