@@ -2,120 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF1C701493
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 08:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE707015BF
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 11:31:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232477AbjEMGN0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 May 2023 02:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60378 "EHLO
+        id S238161AbjEMJbw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 May 2023 05:31:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjEMGNZ (ORCPT
+        with ESMTP id S234083AbjEMJbp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 May 2023 02:13:25 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF97F1987
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 23:13:24 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34D6DC5w8029823, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34D6DC5w8029823
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Sat, 13 May 2023 14:13:12 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Sat, 13 May 2023 14:13:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Sat, 13 May 2023 14:13:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Sat, 13 May 2023 14:13:19 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
-CC:     "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
-Subject: Re: [PATCH v3 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
-Thread-Topic: [PATCH v3 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
-Thread-Index: AQHZhPRIWxnMPupUf0aw0RcUAAXWra9XM/QA
-Date:   Sat, 13 May 2023 06:13:19 +0000
-Message-ID: <094340810bbcbb7d85dd9c9c06b48d3a19aadd85.camel@realtek.com>
-References: <98eff876-bb91-f51a-ffe9-b37d27518f9d@gmail.com>
-In-Reply-To: <98eff876-bb91-f51a-ffe9-b37d27518f9d@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [172.16.17.85]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <70F4AD6CDA7F9C49983E8E5BB7EABBA1@realtek.com>
-Content-Transfer-Encoding: base64
+        Sat, 13 May 2023 05:31:45 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B933D83E1
+        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 02:31:38 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2ac82912a59so115942431fa.3
+        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 02:31:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683970296; x=1686562296;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=SLLhHtlhLsOwzgCf+9ODvlw4dTLaH3cZrdu7lC+dHdIV66WRVMOK4eYsd4b4Gvvs9x
+         o97LCm9QF+eqaS+XN6fwaz8zRAAde8OvfdND8NnDs9P4qgm7mZABgLqFkj2GDHkB5wfK
+         PMUswbxDcX+ob6U51fHySFGdUpw8J4twVi2i8Ix4WgPf4x9JIzAslaiXECgE9tC7AErD
+         xbFM9S0/xyRGsvVlE4F1Mg8tQY9imoiBCZ7DFdD2ddP0JXqdk6iZ8yzVl+WiZUBFWXoC
+         pk0QTRyjyuhk/EnbLUpIVb+0H/viRhRw7nnIUaffllglnPMVK7QqsQ3j9vq3fKaYrETj
+         89fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683970296; x=1686562296;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=aT9EVQcz8GAOjv9mqv4eAiNOy7rUTnLSmcKXdMwXaqt4Y0S8LnJJ7unEkO+7zA/ivk
+         h4X1TJEkM6i9ZsMKhNqvULM01faaqGnOnkd+lTKfU98LS864Ar/L6U1yjOme0xCiCeIA
+         L/Q6a+psTfbYKpoHZxmDR3uMbzQomWuIg+BbN8uRPAb3xaJFf3VvsnAKsSmff6uZVh31
+         We8ibbl2g9ZkkhWOemrdO/Oqhb2f0etqN7IMaChPswtEobRB8fvy1rRRd5FK/Nc2n+sE
+         6QvbfYNyPEwdcHOjam7wpnEeaDCWNJZOzkzB7kRqzQoM94xtYFCBl7BRlANvgVwrtJ/0
+         ZWqw==
+X-Gm-Message-State: AC+VfDxvpwJqkiRsHH5vVq5fOIS25R4CPZ1qE+Mi+9E0bBf9MFWz0Ihy
+        /yS69fkOcu2wv4dCmhCVTxp56jqjnR0ewwdEi44=
+X-Google-Smtp-Source: ACHHUZ69yZnOfKT7w5SfUoQY/Cu6wzxYh4muPSQB6E+OFUFLbN2XZi1yBozAa0YVISxiMDtckCQ4QvDJ0SHLEBfq0P0=
+X-Received: by 2002:a2e:350d:0:b0:2a8:c858:fb9 with SMTP id
+ z13-20020a2e350d000000b002a8c8580fb9mr5241206ljz.29.1683970296351; Sat, 13
+ May 2023 02:31:36 -0700 (PDT)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a2e:98cf:0:b0:2ac:a011:b92d with HTTP; Sat, 13 May 2023
+ 02:31:35 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <info.ninacoulibaly11@gmail.com>
+Date:   Sat, 13 May 2023 02:31:35 -0700
+Message-ID: <CAKjR=URVXeQOJMp8Rh+g1gg9HYS5Usrx0OJzpyoQzruWKyn90w@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIzLTA1LTEyIGF0IDIwOjA3ICswMzAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
-Og0KPiBFeHRlcm5hbCBtYWlsLg0KPiANCj4gDQo+IA0KPiBUaGlzIGlzIGEgbmV3ZXIgY2hpcCwg
-c2ltaWxhciB0byB0aGUgUlRMODcxMEJVIGluIHRoYXQgaXQgdXNlcyB0aGUgc2FtZQ0KPiBQSFkg
-c3RhdHVzIHN0cnVjdHMuDQo+IA0KPiBGZWF0dXJlczogMi40IEdIeiwgYi9nL24gbW9kZSwgMlQy
-UiwgMzAwIE1icHMuDQo+IA0KPiBJdCBjYW4gYWxsZWdlZGx5IGhhdmUgQmx1ZXRvb3RoLCBidXQg
-dGhhdCdzIG5vdCBpbXBsZW1lbnRlZCBoZXJlLg0KPiANCj4gVGhpcyBjaGlwIGNhbiBoYXZlIG1h
-bnkgUkZFIChSRiBmcm9udCBlbmQpIHR5cGVzLCBvZiB3aGljaCB0eXBlcyAxDQo+IGFuZCA1IGFy
-ZSB0aGUgb25seSBvbmVzIHRlc3RlZC4gTWFueSBvZiB0aGUgb3RoZXIgdHlwZXMgbmVlZCBkaWZm
-ZXJlbnQNCj4gaW5pdGlhbGlzYXRpb24gdGFibGVzLiBUaGV5IGNhbiBiZSBhZGRlZCBpZiBzb21l
-b25lIHdhbnRzIHRoZW0uDQo+IA0KPiBUaGUgdmVuZG9yIGRyaXZlciB2NS44LjYuMl8zNTUzOC4y
-MDE5MTAyOF9DT0VYMjAxOTA5MTAtMGQwMiBmcm9tDQo+IGh0dHBzOi8vZ2l0aHViLmNvbS9Ccmln
-aHRYL3J0bDgxOTJmdSB3YXMgdXNlZCBhcyByZWZlcmVuY2UsIHdpdGgNCj4gYWRkaXRpb25hbCBk
-ZXZpY2UgSURzIHRha2VuIGZyb20NCj4gaHR0cHM6Ly9naXRodWIuY29tL2tlbGViZWszMzMvcnRs
-ODE5MmZ1LWRrbXMuDQo+IA0KPiBUaGUgdmVuZG9yIGRyaXZlciBhbHNvIGNsYWltcyB0byBzdXBw
-b3J0IGRldmljZXMgd2l0aCBJRCAwYmRhOmE3MjUsDQo+IGJ1dCB0aGF0IGlzIGZvdW5kIGluIHNv
-bWUgYmx1ZXRvb3RoLW9ubHkgZGV2aWNlcywgc28gaXQncyBub3Qgc3VwcG9ydGVkDQo+IGhlcmUu
-DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdt
-YWlsLmNvbT4NCj4gLS0tDQo+IHYzOg0KPiAgLSBSZWJhc2Ugb24gdG9wIG9mIHdpcmVsZXNzLW5l
-eHQuDQo+ICAtIE1hcmsgZGV2aWNlIDBiMDU6MThiMSBhbmQgUkZFIHR5cGUgMSAoQVNVUyBVU0It
-TjEzIEMxKSBhcyB0ZXN0ZWQuDQo+IA0KPiB2MjoNCj4gIC0gRmVlZGJhY2sgZnJvbSBQaW5nLUtl
-IFNoaWg6DQo+ICAgIC0gQWRkIHJ0bDh4eHh1XzgxOTJmLm8gdG8gTWFrZWZpbGUuDQo+ICAgIC0g
-SW5pdGlhbGlzZSB2YXJpYWJsZSBjaGFubmVsX2lkeCBpbiBydGw4MTkyZnVfY29uZmlnX2tmcmVl
-KCkgYW5kDQo+ICAgICAgdmFyaWFibGUgbGVkY2ZnIGluIHJ0bDgxOTJmdV9sZWRfYnJpZ2h0bmVz
-c19zZXQoKSB0byBhdm9pZA0KPiAgICAgIHdhcm5pbmdzLg0KPiAgICAtIEdpdmUgbmFtZXMgdG8g
-YSBsb3Qgb2YgcmVnaXN0ZXJzLg0KPiAgICAtIEluaXRpYWxpc2UgYmJfZ2Fpbl9mb3JfcGF0aCBp
-biBydGw4MTkyZnVfY29uZmlnX2tmcmVlKCkgaW4gdHdvDQo+ICAgICAgc3RlcHMuDQo+ICAgIC0g
-RG9uJ3QgYXNzaWduIHRoZSByZXR1cm4gdmFsdWUgb2YgcnRsOHh4eHVfd3JpdGUzMl9tYXNrKCkg
-dG8NCj4gICAgICB2YXJpYWJsZSB2YWwzMiBpbiBydGw4eHh4dV9maWxsX2lxa19tYXRyaXhfYigp
-Lg0KPiAgLSBBZGQgbW9yZSBpbmZvcm1hdGlvbiBhYm91dCBkZXZpY2UgSURzIHRvIHRoZSBjb21t
-aXQgbWVzc2FnZS4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4
-eHh1L0tjb25maWcgfCAgICAzICstDQo+ICAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4
-eHUvTWFrZWZpbGUgICAgfCAgICAyICstDQo+ICAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
-OHh4eHUvcnRsOHh4eHUuaCAgfCAgIDQ3ICsNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4
-eHh1XzgxODhmLmMgICAgICAgICB8ICAgIDMgKy0NCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0
-bDh4eHh1XzgxOTJmLmMgICAgICAgICB8IDIwOTAgKysrKysrKysrKysrKysrKysNCj4gIC4uLi9y
-ZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1Xzg3MTBiLmMgICAgICAgICB8ICAgIDEgKw0KPiAgLi4u
-L3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfODcyM2IuYyAgICAgICAgIHwgICAgMSArDQo+ICAu
-Li4vd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMgfCAgMTA3ICstDQo+
-ICAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9yZWdzLmggfCAgIDM5ICsN
-Cj4gIDkgZmlsZXMgY2hhbmdlZCwgMjI2MiBpbnNlcnRpb25zKCspLCAzMSBkZWxldGlvbnMoLSkN
-Cj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4
-eHh1L3J0bDh4eHh1XzgxOTJmLmMNCj4gDQo+IA0KDQpbLi4uXQ0KDQo+IEBAIC03NDg0LDYgKzc1
-MjIsOSBAQCBzdGF0aWMgaW50IHJ0bDh4eHh1X3Byb2JlKHN0cnVjdCB1c2JfaW50ZXJmYWNlICpp
-bnRlcmZhY2UsDQo+ICAgICAgICAgICAgICAgICBpZiAoaWQtPmlkUHJvZHVjdCA9PSAweDAxMDkp
-DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHVudGVzdGVkID0gMDsNCj4gICAgICAgICAgICAg
-ICAgIGJyZWFrOw0KPiArICAgICAgIGNhc2UgMHgwYjA1Og0KPiArICAgICAgICAgICAgICAgaWYg
-KGlkLT5pZFByb2R1Y3QgPT0gMHgxOGYxKQ0KPiArICAgICAgICAgICAgICAgICAgICAgICB1bnRl
-c3RlZCA9IDA7DQoNCidicmVhazsnIGlzIG1pc3NpbmcuIA0KDQo+ICAgICAgICAgZGVmYXVsdDoN
-Cj4gICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAgICAgICAgIH0NCj4gDQoNClsuLi5dDQoNCg==
+Dear,
+
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
+
+Best Regards.
+
+Mrs Nina Coulibaly
