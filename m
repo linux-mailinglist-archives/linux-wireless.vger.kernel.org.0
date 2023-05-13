@@ -2,51 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0752F701489
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 07:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF1C701493
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 08:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231730AbjEMFpF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 May 2023 01:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55040 "EHLO
+        id S232477AbjEMGN0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 May 2023 02:13:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231535AbjEMFpC (ORCPT
+        with ESMTP id S229463AbjEMGNZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 May 2023 01:45:02 -0400
+        Sat, 13 May 2023 02:13:25 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BF635BD
-        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 22:44:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF97F1987
+        for <linux-wireless@vger.kernel.org>; Fri, 12 May 2023 23:13:24 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34D5igXaB026723, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34D6DC5w8029823, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34D5igXaB026723
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34D6DC5w8029823
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Sat, 13 May 2023 13:44:42 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+        Sat, 13 May 2023 14:13:12 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Sat, 13 May 2023 13:44:50 +0800
-Received: from [127.0.1.1] (172.16.17.85) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Sat, 13 May
- 2023 13:44:49 +0800
+ 15.1.2375.32; Sat, 13 May 2023 14:13:20 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Sat, 13 May 2023 14:13:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Sat, 13 May 2023 14:13:19 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/3] wifi: rtw89: 8851b: rfk: add TSSI
-Date:   Sat, 13 May 2023 13:44:25 +0800
-Message-ID: <20230513054425.9689-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230513054425.9689-1-pkshih@realtek.com>
-References: <20230513054425.9689-1-pkshih@realtek.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+CC:     "Jes.Sorensen@gmail.com" <Jes.Sorensen@gmail.com>
+Subject: Re: [PATCH v3 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
+Thread-Topic: [PATCH v3 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
+Thread-Index: AQHZhPRIWxnMPupUf0aw0RcUAAXWra9XM/QA
+Date:   Sat, 13 May 2023 06:13:19 +0000
+Message-ID: <094340810bbcbb7d85dd9c9c06b48d3a19aadd85.camel@realtek.com>
+References: <98eff876-bb91-f51a-ffe9-b37d27518f9d@gmail.com>
+In-Reply-To: <98eff876-bb91-f51a-ffe9-b37d27518f9d@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.17.85]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <70F4AD6CDA7F9C49983E8E5BB7EABBA1@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.17.85]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -61,687 +70,52 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-TSSI is transmitter signal strength indication, which is a close-loop
-hardware circuit to feedback actual transmitting power as a reference for
-next transmission.
-
-When we setup channel to connect an AP, it does full calibration. When
-switching bands or channels, it needs to reset hardware status to prevent
-use wrong feedback of previous transmission.
-
-To do TX power compensation reflecting current temperature, it loads tables
-of compensation values into registers according to channel and band group.
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- .../net/wireless/realtek/rtw89/rtw8851b_rfk.c | 617 ++++++++++++++++++
- .../net/wireless/realtek/rtw89/rtw8851b_rfk.h |   4 +
- 2 files changed, 621 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-index ab430d7e782f4..d58d6935e7b82 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-@@ -21,6 +21,9 @@
- #define RTW8851B_IQK_VER 0x2a
- #define RTW8851B_IQK_SS 1
- #define RTW8851B_LOK_GRAM 10
-+#define RTW8851B_TSSI_PATH_NR 1
-+
-+#define _TSSI_DE_MASK GENMASK(21, 12)
- 
- enum dpk_id {
- 	LBK_RXIQK	= 0x06,
-@@ -81,6 +84,14 @@ enum rf_mode {
- 	RF_RXK2 = 0x7,
- };
- 
-+static const u32 _tssi_de_cck_long[RF_PATH_NUM_8851B] = {0x5858};
-+static const u32 _tssi_de_cck_short[RF_PATH_NUM_8851B] = {0x5860};
-+static const u32 _tssi_de_mcs_20m[RF_PATH_NUM_8851B] = {0x5838};
-+static const u32 _tssi_de_mcs_40m[RF_PATH_NUM_8851B] = {0x5840};
-+static const u32 _tssi_de_mcs_80m[RF_PATH_NUM_8851B] = {0x5848};
-+static const u32 _tssi_de_mcs_80m_80m[RF_PATH_NUM_8851B] = {0x5850};
-+static const u32 _tssi_de_mcs_5m[RF_PATH_NUM_8851B] = {0x5828};
-+static const u32 _tssi_de_mcs_10m[RF_PATH_NUM_8851B] = {0x5830};
- static const u32 g_idxrxgain[RTW8851B_RXK_GROUP_NR] = {0x10e, 0x116, 0x28e, 0x296};
- static const u32 g_idxattc2[RTW8851B_RXK_GROUP_NR] = {0x0, 0xf, 0x0, 0xf};
- static const u32 g_idxrxagc[RTW8851B_RXK_GROUP_NR] = {0x0, 0x1, 0x2, 0x3};
-@@ -2596,6 +2607,521 @@ static void _rck(struct rtw89_dev *rtwdev, enum rtw89_rf_path path)
- 		    rtw89_read_rf(rtwdev, path, RR_RCKC, RFREG_MASK));
- }
- 
-+static void _tssi_set_sys(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+			  enum rtw89_rf_path path)
-+{
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	enum rtw89_band band = chan->band_type;
-+
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_sys_defs_tbl);
-+
-+	rtw89_rfk_parser_by_cond(rtwdev, band == RTW89_BAND_2G,
-+				 &rtw8851b_tssi_sys_a_defs_2g_tbl,
-+				 &rtw8851b_tssi_sys_a_defs_5g_tbl);
-+}
-+
-+static void _tssi_ini_txpwr_ctrl_bb(struct rtw89_dev *rtwdev,
-+				    enum rtw89_phy_idx phy,
-+				    enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_init_txpwr_defs_a_tbl);
-+}
-+
-+static void _tssi_ini_txpwr_ctrl_bb_he_tb(struct rtw89_dev *rtwdev,
-+					  enum rtw89_phy_idx phy,
-+					  enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_init_txpwr_he_tb_defs_a_tbl);
-+}
-+
-+static void _tssi_set_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+			  enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_dck_defs_a_tbl);
-+}
-+
-+static void _tssi_set_tmeter_tbl(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				 enum rtw89_rf_path path)
-+{
-+#define RTW8851B_TSSI_GET_VAL(ptr, idx)			\
-+({							\
-+	s8 *__ptr = (ptr);				\
-+	u8 __idx = (idx), __i, __v;			\
-+	u32 __val = 0;					\
-+	for (__i = 0; __i < 4; __i++) {			\
-+		__v = (__ptr[__idx + __i]);		\
-+		__val |= (__v << (8 * __i));		\
-+	}						\
-+	__val;						\
-+})
-+	struct rtw89_tssi_info *tssi_info = &rtwdev->tssi;
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u8 ch = chan->channel;
-+	u8 subband = chan->subband_type;
-+	const s8 *thm_up_a = NULL;
-+	const s8 *thm_down_a = NULL;
-+	u8 thermal = 0xff;
-+	s8 thm_ofst[64] = {0};
-+	u32 tmp = 0;
-+	u8 i, j;
-+
-+	switch (subband) {
-+	default:
-+	case RTW89_CH_2G:
-+		thm_up_a = rtw89_8851b_trk_cfg.delta_swingidx_2ga_p;
-+		thm_down_a = rtw89_8851b_trk_cfg.delta_swingidx_2ga_n;
-+		break;
-+	case RTW89_CH_5G_BAND_1:
-+		thm_up_a = rtw89_8851b_trk_cfg.delta_swingidx_5ga_p[0];
-+		thm_down_a = rtw89_8851b_trk_cfg.delta_swingidx_5ga_n[0];
-+		break;
-+	case RTW89_CH_5G_BAND_3:
-+		thm_up_a = rtw89_8851b_trk_cfg.delta_swingidx_5ga_p[1];
-+		thm_down_a = rtw89_8851b_trk_cfg.delta_swingidx_5ga_n[1];
-+		break;
-+	case RTW89_CH_5G_BAND_4:
-+		thm_up_a = rtw89_8851b_trk_cfg.delta_swingidx_5ga_p[2];
-+		thm_down_a = rtw89_8851b_trk_cfg.delta_swingidx_5ga_n[2];
-+		break;
-+	}
-+
-+	if (path == RF_PATH_A) {
-+		thermal = tssi_info->thermal[RF_PATH_A];
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI] ch=%d thermal_pathA=0x%x\n", ch, thermal);
-+
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TMETER, B_P0_TMETER_DIS, 0x0);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TMETER, B_P0_TMETER_TRK, 0x1);
-+
-+		if (thermal == 0xff) {
-+			rtw89_phy_write32_mask(rtwdev, R_P0_TMETER, B_P0_TMETER, 32);
-+			rtw89_phy_write32_mask(rtwdev, R_P0_RFCTM, B_P0_RFCTM_VAL, 32);
-+
-+			for (i = 0; i < 64; i += 4) {
-+				rtw89_phy_write32(rtwdev, R_P0_TSSI_BASE + i, 0x0);
-+
-+				rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+					    "[TSSI] write 0x%x val=0x%08x\n",
-+					    R_P0_TSSI_BASE + i, 0x0);
-+			}
-+
-+		} else {
-+			rtw89_phy_write32_mask(rtwdev, R_P0_TMETER, B_P0_TMETER,
-+					       thermal);
-+			rtw89_phy_write32_mask(rtwdev, R_P0_RFCTM, B_P0_RFCTM_VAL,
-+					       thermal);
-+
-+			i = 0;
-+			for (j = 0; j < 32; j++)
-+				thm_ofst[j] = i < DELTA_SWINGIDX_SIZE ?
-+					      -thm_down_a[i++] :
-+					      -thm_down_a[DELTA_SWINGIDX_SIZE - 1];
-+
-+			i = 1;
-+			for (j = 63; j >= 32; j--)
-+				thm_ofst[j] = i < DELTA_SWINGIDX_SIZE ?
-+					      thm_up_a[i++] :
-+					      thm_up_a[DELTA_SWINGIDX_SIZE - 1];
-+
-+			for (i = 0; i < 64; i += 4) {
-+				tmp = RTW8851B_TSSI_GET_VAL(thm_ofst, i);
-+				rtw89_phy_write32(rtwdev, R_P0_TSSI_BASE + i, tmp);
-+
-+				rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+					    "[TSSI] write 0x%x val=0x%08x\n",
-+					    0x5c00 + i, tmp);
-+			}
-+		}
-+		rtw89_phy_write32_mask(rtwdev, R_P0_RFCTM, R_P0_RFCTM_RDY, 0x1);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_RFCTM, R_P0_RFCTM_RDY, 0x0);
-+	}
-+#undef RTW8851B_TSSI_GET_VAL
-+}
-+
-+static void _tssi_set_dac_gain_tbl(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				   enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_dac_gain_defs_a_tbl);
-+}
-+
-+static void _tssi_slope_cal_org(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				enum rtw89_rf_path path)
-+{
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	enum rtw89_band band = chan->band_type;
-+
-+	rtw89_rfk_parser_by_cond(rtwdev, band == RTW89_BAND_2G,
-+				 &rtw8851b_tssi_slope_a_defs_2g_tbl,
-+				 &rtw8851b_tssi_slope_a_defs_5g_tbl);
-+}
-+
-+static void _tssi_alignment_default(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				    enum rtw89_rf_path path, bool all)
-+{
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	enum rtw89_band band = chan->band_type;
-+
-+	rtw89_rfk_parser_by_cond(rtwdev, band == RTW89_BAND_2G,
-+				 &rtw8851b_tssi_align_a_2g_defs_tbl,
-+				 &rtw8851b_tssi_align_a_5g_defs_tbl);
-+}
-+
-+static void _tssi_set_tssi_slope(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				 enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_slope_defs_a_tbl);
-+}
-+
-+static void _tssi_set_tssi_track(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				 enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_track_defs_a_tbl);
-+}
-+
-+static void _tssi_set_txagc_offset_mv_avg(struct rtw89_dev *rtwdev,
-+					  enum rtw89_phy_idx phy,
-+					  enum rtw89_rf_path path)
-+{
-+	rtw89_rfk_parser(rtwdev, &rtw8851b_tssi_mv_avg_defs_a_tbl);
-+}
-+
-+static void _tssi_enable(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
-+{
-+	_tssi_set_tssi_track(rtwdev, phy, RF_PATH_A);
-+	_tssi_set_txagc_offset_mv_avg(rtwdev, phy, RF_PATH_A);
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_MV_AVG, B_P0_TSSI_MV_CLR, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_AVG, B_P0_TSSI_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_AVG, B_P0_TSSI_EN, 0x1);
-+	rtw89_write_rf(rtwdev, RF_PATH_A, RR_TXGA_V1, RR_TXGA_V1_TRK_EN, 0x1);
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_RFC, 0x3);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT, 0xc0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x1);
-+
-+	rtwdev->is_tssi_mode[RF_PATH_A] = true;
-+}
-+
-+static void _tssi_disable(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
-+{
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_AVG, B_P0_TSSI_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x1);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_MV_AVG, B_P0_TSSI_MV_CLR, 0x1);
-+
-+	rtwdev->is_tssi_mode[RF_PATH_A] = false;
-+}
-+
-+static u32 _tssi_get_cck_group(struct rtw89_dev *rtwdev, u8 ch)
-+{
-+	switch (ch) {
-+	case 1 ... 2:
-+		return 0;
-+	case 3 ... 5:
-+		return 1;
-+	case 6 ... 8:
-+		return 2;
-+	case 9 ... 11:
-+		return 3;
-+	case 12 ... 13:
-+		return 4;
-+	case 14:
-+		return 5;
-+	}
-+
-+	return 0;
-+}
-+
-+#define TSSI_EXTRA_GROUP_BIT (BIT(31))
-+#define TSSI_EXTRA_GROUP(idx) (TSSI_EXTRA_GROUP_BIT | (idx))
-+#define IS_TSSI_EXTRA_GROUP(group) ((group) & TSSI_EXTRA_GROUP_BIT)
-+#define TSSI_EXTRA_GET_GROUP_IDX1(group) ((group) & ~TSSI_EXTRA_GROUP_BIT)
-+#define TSSI_EXTRA_GET_GROUP_IDX2(group) (TSSI_EXTRA_GET_GROUP_IDX1(group) + 1)
-+
-+static u32 _tssi_get_ofdm_group(struct rtw89_dev *rtwdev, u8 ch)
-+{
-+	switch (ch) {
-+	case 1 ... 2:
-+		return 0;
-+	case 3 ... 5:
-+		return 1;
-+	case 6 ... 8:
-+		return 2;
-+	case 9 ... 11:
-+		return 3;
-+	case 12 ... 14:
-+		return 4;
-+	case 36 ... 40:
-+		return 5;
-+	case 41 ... 43:
-+		return TSSI_EXTRA_GROUP(5);
-+	case 44 ... 48:
-+		return 6;
-+	case 49 ... 51:
-+		return TSSI_EXTRA_GROUP(6);
-+	case 52 ... 56:
-+		return 7;
-+	case 57 ... 59:
-+		return TSSI_EXTRA_GROUP(7);
-+	case 60 ... 64:
-+		return 8;
-+	case 100 ... 104:
-+		return 9;
-+	case 105 ... 107:
-+		return TSSI_EXTRA_GROUP(9);
-+	case 108 ... 112:
-+		return 10;
-+	case 113 ... 115:
-+		return TSSI_EXTRA_GROUP(10);
-+	case 116 ... 120:
-+		return 11;
-+	case 121 ... 123:
-+		return TSSI_EXTRA_GROUP(11);
-+	case 124 ... 128:
-+		return 12;
-+	case 129 ... 131:
-+		return TSSI_EXTRA_GROUP(12);
-+	case 132 ... 136:
-+		return 13;
-+	case 137 ... 139:
-+		return TSSI_EXTRA_GROUP(13);
-+	case 140 ... 144:
-+		return 14;
-+	case 149 ... 153:
-+		return 15;
-+	case 154 ... 156:
-+		return TSSI_EXTRA_GROUP(15);
-+	case 157 ... 161:
-+		return 16;
-+	case 162 ... 164:
-+		return TSSI_EXTRA_GROUP(16);
-+	case 165 ... 169:
-+		return 17;
-+	case 170 ... 172:
-+		return TSSI_EXTRA_GROUP(17);
-+	case 173 ... 177:
-+		return 18;
-+	}
-+
-+	return 0;
-+}
-+
-+static u32 _tssi_get_trim_group(struct rtw89_dev *rtwdev, u8 ch)
-+{
-+	switch (ch) {
-+	case 1 ... 8:
-+		return 0;
-+	case 9 ... 14:
-+		return 1;
-+	case 36 ... 48:
-+		return 2;
-+	case 52 ... 64:
-+		return 3;
-+	case 100 ... 112:
-+		return 4;
-+	case 116 ... 128:
-+		return 5;
-+	case 132 ... 144:
-+		return 6;
-+	case 149 ... 177:
-+		return 7;
-+	}
-+
-+	return 0;
-+}
-+
-+static s8 _tssi_get_ofdm_de(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+			    enum rtw89_rf_path path)
-+{
-+	struct rtw89_tssi_info *tssi_info = &rtwdev->tssi;
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u32 gidx, gidx_1st, gidx_2nd;
-+	u8 ch = chan->channel;
-+	s8 de_1st;
-+	s8 de_2nd;
-+	s8 val;
-+
-+	gidx = _tssi_get_ofdm_group(rtwdev, ch);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+		    "[TSSI][TRIM]: path=%d mcs group_idx=0x%x\n", path, gidx);
-+
-+	if (IS_TSSI_EXTRA_GROUP(gidx)) {
-+		gidx_1st = TSSI_EXTRA_GET_GROUP_IDX1(gidx);
-+		gidx_2nd = TSSI_EXTRA_GET_GROUP_IDX2(gidx);
-+		de_1st = tssi_info->tssi_mcs[path][gidx_1st];
-+		de_2nd = tssi_info->tssi_mcs[path][gidx_2nd];
-+		val = (de_1st + de_2nd) / 2;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM]: path=%d mcs de=%d 1st=%d 2nd=%d\n",
-+			    path, val, de_1st, de_2nd);
-+	} else {
-+		val = tssi_info->tssi_mcs[path][gidx];
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM]: path=%d mcs de=%d\n", path, val);
-+	}
-+
-+	return val;
-+}
-+
-+static s8 _tssi_get_ofdm_trim_de(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
-+				 enum rtw89_rf_path path)
-+{
-+	struct rtw89_tssi_info *tssi_info = &rtwdev->tssi;
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u32 tgidx, tgidx_1st, tgidx_2nd;
-+	u8 ch = chan->channel;
-+	s8 tde_1st;
-+	s8 tde_2nd;
-+	s8 val;
-+
-+	tgidx = _tssi_get_trim_group(rtwdev, ch);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+		    "[TSSI][TRIM]: path=%d mcs trim_group_idx=0x%x\n",
-+		    path, tgidx);
-+
-+	if (IS_TSSI_EXTRA_GROUP(tgidx)) {
-+		tgidx_1st = TSSI_EXTRA_GET_GROUP_IDX1(tgidx);
-+		tgidx_2nd = TSSI_EXTRA_GET_GROUP_IDX2(tgidx);
-+		tde_1st = tssi_info->tssi_trim[path][tgidx_1st];
-+		tde_2nd = tssi_info->tssi_trim[path][tgidx_2nd];
-+		val = (tde_1st + tde_2nd) / 2;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM]: path=%d mcs trim_de=%d 1st=%d 2nd=%d\n",
-+			    path, val, tde_1st, tde_2nd);
-+	} else {
-+		val = tssi_info->tssi_trim[path][tgidx];
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM]: path=%d mcs trim_de=%d\n",
-+			    path, val);
-+	}
-+
-+	return val;
-+}
-+
-+static void _tssi_set_efuse_to_de(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
-+{
-+	struct rtw89_tssi_info *tssi_info = &rtwdev->tssi;
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u8 ch = chan->channel;
-+	u8 gidx;
-+	s8 ofdm_de;
-+	s8 trim_de;
-+	s32 val;
-+	u32 i;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_TSSI, "[TSSI][TRIM]: phy=%d ch=%d\n",
-+		    phy, ch);
-+
-+	for (i = RF_PATH_A; i < RTW8851B_TSSI_PATH_NR; i++) {
-+		gidx = _tssi_get_cck_group(rtwdev, ch);
-+		trim_de = _tssi_get_ofdm_trim_de(rtwdev, phy, i);
-+		val = tssi_info->tssi_cck[i][gidx] + trim_de;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM]: path=%d cck[%d]=0x%x trim=0x%x\n",
-+			    i, gidx, tssi_info->tssi_cck[i][gidx], trim_de);
-+
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_cck_long[i], _TSSI_DE_MASK, val);
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_cck_short[i], _TSSI_DE_MASK, val);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI] Set TSSI CCK DE 0x%x[21:12]=0x%x\n",
-+			    _tssi_de_cck_long[i],
-+			    rtw89_phy_read32_mask(rtwdev, _tssi_de_cck_long[i],
-+						  _TSSI_DE_MASK));
-+
-+		ofdm_de = _tssi_get_ofdm_de(rtwdev, phy, i);
-+		trim_de = _tssi_get_ofdm_trim_de(rtwdev, phy, i);
-+		val = ofdm_de + trim_de;
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI][TRIM]: path=%d mcs=0x%x trim=0x%x\n",
-+			    i, ofdm_de, trim_de);
-+
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_mcs_20m[i], _TSSI_DE_MASK, val);
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_mcs_40m[i], _TSSI_DE_MASK, val);
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_mcs_80m[i], _TSSI_DE_MASK, val);
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_mcs_80m_80m[i], _TSSI_DE_MASK, val);
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_mcs_5m[i], _TSSI_DE_MASK, val);
-+		rtw89_phy_write32_mask(rtwdev, _tssi_de_mcs_10m[i], _TSSI_DE_MASK, val);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_TSSI,
-+			    "[TSSI] Set TSSI MCS DE 0x%x[21:12]=0x%x\n",
-+			    _tssi_de_mcs_20m[i],
-+			    rtw89_phy_read32_mask(rtwdev, _tssi_de_mcs_20m[i],
-+						  _TSSI_DE_MASK));
-+	}
-+}
-+
-+static void _tssi_alimentk_dump_result(struct rtw89_dev *rtwdev, enum rtw89_rf_path path)
-+{
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "[TSSI PA K]\n0x%x = 0x%08x\n0x%x = 0x%08x\n0x%x = 0x%08x\n0x%x = 0x%08x\n"
-+		    "0x%x = 0x%08x\n0x%x = 0x%08x\n0x%x = 0x%08x\n0x%x = 0x%08x\n",
-+		    R_TSSI_PA_K1 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_TSSI_PA_K1 + (path << 13), MASKDWORD),
-+		    R_TSSI_PA_K2 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_TSSI_PA_K2 + (path << 13), MASKDWORD),
-+		    R_P0_TSSI_ALIM1 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_P0_TSSI_ALIM1 + (path << 13), MASKDWORD),
-+		    R_P0_TSSI_ALIM3 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_P0_TSSI_ALIM3 + (path << 13), MASKDWORD),
-+		    R_TSSI_PA_K5 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_TSSI_PA_K5 + (path << 13), MASKDWORD),
-+		    R_P0_TSSI_ALIM2 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_P0_TSSI_ALIM2 + (path << 13), MASKDWORD),
-+		    R_P0_TSSI_ALIM4 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_P0_TSSI_ALIM4 + (path << 13), MASKDWORD),
-+		    R_TSSI_PA_K8 + (path << 13),
-+		    rtw89_phy_read32_mask(rtwdev, R_TSSI_PA_K8 + (path << 13), MASKDWORD));
-+}
-+
-+static void _tssi_alimentk_done(struct rtw89_dev *rtwdev,
-+				enum rtw89_phy_idx phy, enum rtw89_rf_path path)
-+{
-+	struct rtw89_tssi_info *tssi_info = &rtwdev->tssi;
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u8 channel = chan->channel;
-+	u8 band;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "======>%s   phy=%d   path=%d\n", __func__, phy, path);
-+
-+	if (channel >= 1 && channel <= 14)
-+		band = TSSI_ALIMK_2G;
-+	else if (channel >= 36 && channel <= 64)
-+		band = TSSI_ALIMK_5GL;
-+	else if (channel >= 100 && channel <= 144)
-+		band = TSSI_ALIMK_5GM;
-+	else if (channel >= 149 && channel <= 177)
-+		band = TSSI_ALIMK_5GH;
-+	else
-+		band = TSSI_ALIMK_2G;
-+
-+	if (tssi_info->alignment_done[path][band]) {
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_ALIM1 + (path << 13), MASKDWORD,
-+				       tssi_info->alignment_value[path][band][0]);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_ALIM3 + (path << 13), MASKDWORD,
-+				       tssi_info->alignment_value[path][band][1]);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_ALIM2 + (path << 13), MASKDWORD,
-+				       tssi_info->alignment_value[path][band][2]);
-+		rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_ALIM4 + (path << 13), MASKDWORD,
-+				       tssi_info->alignment_value[path][band][3]);
-+	}
-+
-+	_tssi_alimentk_dump_result(rtwdev, path);
-+}
-+
- static void rtw8851b_by_rate_dpd(struct rtw89_dev *rtwdev)
- {
- 	rtw89_write32_mask(rtwdev, R_AX_PWR_SWING_OTHER_CTRL0,
-@@ -2712,6 +3238,97 @@ void rtw8851b_dpk_track(struct rtw89_dev *rtwdev)
- 	_dpk_track(rtwdev);
- }
- 
-+void rtw8851b_tssi(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool hwtx_en)
-+{
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_A);
-+	u8 i;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_TSSI, "[TSSI] %s: phy=%d\n", __func__, phy);
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
-+
-+	_tssi_disable(rtwdev, phy);
-+
-+	for (i = RF_PATH_A; i < RF_PATH_NUM_8851B; i++) {
-+		_tssi_set_sys(rtwdev, phy, i);
-+		_tssi_ini_txpwr_ctrl_bb(rtwdev, phy, i);
-+		_tssi_ini_txpwr_ctrl_bb_he_tb(rtwdev, phy, i);
-+		_tssi_set_dck(rtwdev, phy, i);
-+		_tssi_set_tmeter_tbl(rtwdev, phy, i);
-+		_tssi_set_dac_gain_tbl(rtwdev, phy, i);
-+		_tssi_slope_cal_org(rtwdev, phy, i);
-+		_tssi_alignment_default(rtwdev, phy, i, true);
-+		_tssi_set_tssi_slope(rtwdev, phy, i);
-+	}
-+
-+	_tssi_enable(rtwdev, phy);
-+	_tssi_set_efuse_to_de(rtwdev, phy);
-+
-+	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_STOP);
-+}
-+
-+void rtw8851b_tssi_scan(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
-+{
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u8 channel = chan->channel;
-+	u32 i;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "======>%s   phy=%d  channel=%d\n", __func__, phy, channel);
-+
-+	_tssi_disable(rtwdev, phy);
-+
-+	for (i = RF_PATH_A; i < RF_PATH_NUM_8851B; i++) {
-+		_tssi_set_sys(rtwdev, phy, i);
-+		_tssi_set_tmeter_tbl(rtwdev, phy, i);
-+		_tssi_slope_cal_org(rtwdev, phy, i);
-+		_tssi_alignment_default(rtwdev, phy, i, true);
-+	}
-+
-+	_tssi_enable(rtwdev, phy);
-+	_tssi_set_efuse_to_de(rtwdev, phy);
-+}
-+
-+static void rtw8851b_tssi_default_txagc(struct rtw89_dev *rtwdev,
-+					enum rtw89_phy_idx phy, bool enable)
-+{
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-+	u8 channel = chan->channel;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "======> %s   ch=%d\n",
-+		    __func__, channel);
-+
-+	if (enable)
-+		return;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "======>%s 1 SCAN_END Set 0x5818[7:0]=0x%x\n",
-+		    __func__,
-+		    rtw89_phy_read32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT));
-+
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT, 0xc0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x0);
-+	rtw89_phy_write32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT_EN, 0x1);
-+
-+	_tssi_alimentk_done(rtwdev, phy, RF_PATH_A);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "======>%s 2 SCAN_END Set 0x5818[7:0]=0x%x\n",
-+		    __func__,
-+		    rtw89_phy_read32_mask(rtwdev, R_P0_TSSI_TRK, B_P0_TSSI_OFT));
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+		    "======> %s   SCAN_END\n", __func__);
-+}
-+
-+void rtw8851b_wifi_scan_notify(struct rtw89_dev *rtwdev, bool scan_start,
-+			       enum rtw89_phy_idx phy_idx)
-+{
-+	if (scan_start)
-+		rtw8851b_tssi_default_txagc(rtwdev, phy_idx, true);
-+	else
-+		rtw8851b_tssi_default_txagc(rtwdev, phy_idx, false);
-+}
-+
- static void _bw_setting(struct rtw89_dev *rtwdev, enum rtw89_rf_path path,
- 			enum rtw89_bandwidth bw, bool dav)
- {
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h
-index ce3bc8d405abd..bf0c79d58a71d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.h
-@@ -15,6 +15,10 @@ void rtw8851b_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx);
- void rtw8851b_dpk_init(struct rtw89_dev *rtwdev);
- void rtw8851b_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy);
- void rtw8851b_dpk_track(struct rtw89_dev *rtwdev);
-+void rtw8851b_tssi(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool hwtx_en);
-+void rtw8851b_tssi_scan(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy);
-+void rtw8851b_wifi_scan_notify(struct rtw89_dev *rtwdev, bool scan_start,
-+			       enum rtw89_phy_idx phy_idx);
- void rtw8851b_set_channel_rf(struct rtw89_dev *rtwdev,
- 			     const struct rtw89_chan *chan,
- 			     enum rtw89_phy_idx phy_idx);
--- 
-2.25.1
-
+T24gRnJpLCAyMDIzLTA1LTEyIGF0IDIwOjA3ICswMzAwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3Rl
+Og0KPiBFeHRlcm5hbCBtYWlsLg0KPiANCj4gDQo+IA0KPiBUaGlzIGlzIGEgbmV3ZXIgY2hpcCwg
+c2ltaWxhciB0byB0aGUgUlRMODcxMEJVIGluIHRoYXQgaXQgdXNlcyB0aGUgc2FtZQ0KPiBQSFkg
+c3RhdHVzIHN0cnVjdHMuDQo+IA0KPiBGZWF0dXJlczogMi40IEdIeiwgYi9nL24gbW9kZSwgMlQy
+UiwgMzAwIE1icHMuDQo+IA0KPiBJdCBjYW4gYWxsZWdlZGx5IGhhdmUgQmx1ZXRvb3RoLCBidXQg
+dGhhdCdzIG5vdCBpbXBsZW1lbnRlZCBoZXJlLg0KPiANCj4gVGhpcyBjaGlwIGNhbiBoYXZlIG1h
+bnkgUkZFIChSRiBmcm9udCBlbmQpIHR5cGVzLCBvZiB3aGljaCB0eXBlcyAxDQo+IGFuZCA1IGFy
+ZSB0aGUgb25seSBvbmVzIHRlc3RlZC4gTWFueSBvZiB0aGUgb3RoZXIgdHlwZXMgbmVlZCBkaWZm
+ZXJlbnQNCj4gaW5pdGlhbGlzYXRpb24gdGFibGVzLiBUaGV5IGNhbiBiZSBhZGRlZCBpZiBzb21l
+b25lIHdhbnRzIHRoZW0uDQo+IA0KPiBUaGUgdmVuZG9yIGRyaXZlciB2NS44LjYuMl8zNTUzOC4y
+MDE5MTAyOF9DT0VYMjAxOTA5MTAtMGQwMiBmcm9tDQo+IGh0dHBzOi8vZ2l0aHViLmNvbS9Ccmln
+aHRYL3J0bDgxOTJmdSB3YXMgdXNlZCBhcyByZWZlcmVuY2UsIHdpdGgNCj4gYWRkaXRpb25hbCBk
+ZXZpY2UgSURzIHRha2VuIGZyb20NCj4gaHR0cHM6Ly9naXRodWIuY29tL2tlbGViZWszMzMvcnRs
+ODE5MmZ1LWRrbXMuDQo+IA0KPiBUaGUgdmVuZG9yIGRyaXZlciBhbHNvIGNsYWltcyB0byBzdXBw
+b3J0IGRldmljZXMgd2l0aCBJRCAwYmRhOmE3MjUsDQo+IGJ1dCB0aGF0IGlzIGZvdW5kIGluIHNv
+bWUgYmx1ZXRvb3RoLW9ubHkgZGV2aWNlcywgc28gaXQncyBub3Qgc3VwcG9ydGVkDQo+IGhlcmUu
+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdt
+YWlsLmNvbT4NCj4gLS0tDQo+IHYzOg0KPiAgLSBSZWJhc2Ugb24gdG9wIG9mIHdpcmVsZXNzLW5l
+eHQuDQo+ICAtIE1hcmsgZGV2aWNlIDBiMDU6MThiMSBhbmQgUkZFIHR5cGUgMSAoQVNVUyBVU0It
+TjEzIEMxKSBhcyB0ZXN0ZWQuDQo+IA0KPiB2MjoNCj4gIC0gRmVlZGJhY2sgZnJvbSBQaW5nLUtl
+IFNoaWg6DQo+ICAgIC0gQWRkIHJ0bDh4eHh1XzgxOTJmLm8gdG8gTWFrZWZpbGUuDQo+ICAgIC0g
+SW5pdGlhbGlzZSB2YXJpYWJsZSBjaGFubmVsX2lkeCBpbiBydGw4MTkyZnVfY29uZmlnX2tmcmVl
+KCkgYW5kDQo+ICAgICAgdmFyaWFibGUgbGVkY2ZnIGluIHJ0bDgxOTJmdV9sZWRfYnJpZ2h0bmVz
+c19zZXQoKSB0byBhdm9pZA0KPiAgICAgIHdhcm5pbmdzLg0KPiAgICAtIEdpdmUgbmFtZXMgdG8g
+YSBsb3Qgb2YgcmVnaXN0ZXJzLg0KPiAgICAtIEluaXRpYWxpc2UgYmJfZ2Fpbl9mb3JfcGF0aCBp
+biBydGw4MTkyZnVfY29uZmlnX2tmcmVlKCkgaW4gdHdvDQo+ICAgICAgc3RlcHMuDQo+ICAgIC0g
+RG9uJ3QgYXNzaWduIHRoZSByZXR1cm4gdmFsdWUgb2YgcnRsOHh4eHVfd3JpdGUzMl9tYXNrKCkg
+dG8NCj4gICAgICB2YXJpYWJsZSB2YWwzMiBpbiBydGw4eHh4dV9maWxsX2lxa19tYXRyaXhfYigp
+Lg0KPiAgLSBBZGQgbW9yZSBpbmZvcm1hdGlvbiBhYm91dCBkZXZpY2UgSURzIHRvIHRoZSBjb21t
+aXQgbWVzc2FnZS4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4
+eHh1L0tjb25maWcgfCAgICAzICstDQo+ICAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4
+eHUvTWFrZWZpbGUgICAgfCAgICAyICstDQo+ICAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
+OHh4eHUvcnRsOHh4eHUuaCAgfCAgIDQ3ICsNCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4
+eHh1XzgxODhmLmMgICAgICAgICB8ICAgIDMgKy0NCj4gIC4uLi9yZWFsdGVrL3J0bDh4eHh1L3J0
+bDh4eHh1XzgxOTJmLmMgICAgICAgICB8IDIwOTAgKysrKysrKysrKysrKysrKysNCj4gIC4uLi9y
+ZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1Xzg3MTBiLmMgICAgICAgICB8ICAgIDEgKw0KPiAgLi4u
+L3JlYWx0ZWsvcnRsOHh4eHUvcnRsOHh4eHVfODcyM2IuYyAgICAgICAgIHwgICAgMSArDQo+ICAu
+Li4vd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9jb3JlLmMgfCAgMTA3ICstDQo+
+ICAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS9ydGw4eHh4dV9yZWdzLmggfCAgIDM5ICsN
+Cj4gIDkgZmlsZXMgY2hhbmdlZCwgMjI2MiBpbnNlcnRpb25zKCspLCAzMSBkZWxldGlvbnMoLSkN
+Cj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4
+eHh1L3J0bDh4eHh1XzgxOTJmLmMNCj4gDQo+IA0KDQpbLi4uXQ0KDQo+IEBAIC03NDg0LDYgKzc1
+MjIsOSBAQCBzdGF0aWMgaW50IHJ0bDh4eHh1X3Byb2JlKHN0cnVjdCB1c2JfaW50ZXJmYWNlICpp
+bnRlcmZhY2UsDQo+ICAgICAgICAgICAgICAgICBpZiAoaWQtPmlkUHJvZHVjdCA9PSAweDAxMDkp
+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHVudGVzdGVkID0gMDsNCj4gICAgICAgICAgICAg
+ICAgIGJyZWFrOw0KPiArICAgICAgIGNhc2UgMHgwYjA1Og0KPiArICAgICAgICAgICAgICAgaWYg
+KGlkLT5pZFByb2R1Y3QgPT0gMHgxOGYxKQ0KPiArICAgICAgICAgICAgICAgICAgICAgICB1bnRl
+c3RlZCA9IDA7DQoNCidicmVhazsnIGlzIG1pc3NpbmcuIA0KDQo+ICAgICAgICAgZGVmYXVsdDoN
+Cj4gICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAgICAgICAgIH0NCj4gDQoNClsuLi5dDQoNCg==
