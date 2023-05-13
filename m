@@ -2,78 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE707015BF
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 11:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFDDC701621
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 12:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238161AbjEMJbw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 May 2023 05:31:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
+        id S237357AbjEMKXh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 13 May 2023 06:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234083AbjEMJbp (ORCPT
+        with ESMTP id S238057AbjEMKXZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 May 2023 05:31:45 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B933D83E1
-        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 02:31:38 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2ac82912a59so115942431fa.3
-        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 02:31:38 -0700 (PDT)
+        Sat, 13 May 2023 06:23:25 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38804868D
+        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 03:23:21 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-965ac4dd11bso2163689166b.2
+        for <linux-wireless@vger.kernel.org>; Sat, 13 May 2023 03:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683970296; x=1686562296;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
-        b=SLLhHtlhLsOwzgCf+9ODvlw4dTLaH3cZrdu7lC+dHdIV66WRVMOK4eYsd4b4Gvvs9x
-         o97LCm9QF+eqaS+XN6fwaz8zRAAde8OvfdND8NnDs9P4qgm7mZABgLqFkj2GDHkB5wfK
-         PMUswbxDcX+ob6U51fHySFGdUpw8J4twVi2i8Ix4WgPf4x9JIzAslaiXECgE9tC7AErD
-         xbFM9S0/xyRGsvVlE4F1Mg8tQY9imoiBCZ7DFdD2ddP0JXqdk6iZ8yzVl+WiZUBFWXoC
-         pk0QTRyjyuhk/EnbLUpIVb+0H/viRhRw7nnIUaffllglnPMVK7QqsQ3j9vq3fKaYrETj
-         89fg==
+        d=gmail.com; s=20221208; t=1683973399; x=1686565399;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J22Q5H27WmcmWSXLvWXXEDseF5qQQ4t6t/II9V1keG0=;
+        b=EUXTvSjC1CvDfnB/0Cf6ubHy8POd3W8Xh9FNOdhUKrHDCE2ycWOv/0EbCmAdxfNhEQ
+         mfELGkxBqJvY2hbJBq4pewu7bKJZADAY6S9llr0HvL5CG4HT0r0p/n5Z1dzGXPTKtnqc
+         T/HJn1J3hN8JBU2zwbp2r2x+FeLUAeQihs4Woj7VCuM9klbkF7qb3lou9DX2nnBXNNl7
+         khWy8M/yNLpdjufTrUcy/ZBengZsaGUi86QQlL3qZSnZRKBILtRkuaxcrYvRFf2coAPz
+         bmxhncGnjpwFYmdt71lsBaBMSMjEA4y5AhCrtqq9BpCXVfiunoFmwNhL8pMGnUSFz7vH
+         8vBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683970296; x=1686562296;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
-        b=aT9EVQcz8GAOjv9mqv4eAiNOy7rUTnLSmcKXdMwXaqt4Y0S8LnJJ7unEkO+7zA/ivk
-         h4X1TJEkM6i9ZsMKhNqvULM01faaqGnOnkd+lTKfU98LS864Ar/L6U1yjOme0xCiCeIA
-         L/Q6a+psTfbYKpoHZxmDR3uMbzQomWuIg+BbN8uRPAb3xaJFf3VvsnAKsSmff6uZVh31
-         We8ibbl2g9ZkkhWOemrdO/Oqhb2f0etqN7IMaChPswtEobRB8fvy1rRRd5FK/Nc2n+sE
-         6QvbfYNyPEwdcHOjam7wpnEeaDCWNJZOzkzB7kRqzQoM94xtYFCBl7BRlANvgVwrtJ/0
-         ZWqw==
-X-Gm-Message-State: AC+VfDxvpwJqkiRsHH5vVq5fOIS25R4CPZ1qE+Mi+9E0bBf9MFWz0Ihy
-        /yS69fkOcu2wv4dCmhCVTxp56jqjnR0ewwdEi44=
-X-Google-Smtp-Source: ACHHUZ69yZnOfKT7w5SfUoQY/Cu6wzxYh4muPSQB6E+OFUFLbN2XZi1yBozAa0YVISxiMDtckCQ4QvDJ0SHLEBfq0P0=
-X-Received: by 2002:a2e:350d:0:b0:2a8:c858:fb9 with SMTP id
- z13-20020a2e350d000000b002a8c8580fb9mr5241206ljz.29.1683970296351; Sat, 13
- May 2023 02:31:36 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683973399; x=1686565399;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J22Q5H27WmcmWSXLvWXXEDseF5qQQ4t6t/II9V1keG0=;
+        b=A5loBR3GeAPjgFsVlH8ExUa70WfECfzYz6T9ozlDbT1w57Ii4JCNrEVDllx4OsMsd5
+         x48X+2wLxxVGcZcMb+XajxabsoX1+hI2jSQWgZyCUYvRwMD9hbfLAVAyhTXCxibYrKo9
+         4Czg27UD4bu+knTCQPIS63vl7XF/ZeiuYL/wqwEdKo45JJZQ3BOu/FslSLVQQp2S5DG6
+         qFFKyNb/tQt0hoNoaWJPfAmnUuMIEQNQ9onTM8iTRsR1RgqrH7KvyPf2JGK3SsQM/f1K
+         gcuBIM11RyTMNi4xHudz1iM2lhyvy8H6ZsbylJC7i6Ch5mFjgjIE5zl81nD9BnQoYZ2e
+         FmNQ==
+X-Gm-Message-State: AC+VfDzA9tVjmobdANJFh3CzqFZK0T2rvfHrPdAM9IcEHXBRND1Lk2mt
+        MTYOkhsLTLxcivtxYabvGlM=
+X-Google-Smtp-Source: ACHHUZ625T+d7YPvGMxIwRX/D2cgwsyYzZvSm9QamwpaOqeh7VCRVMZcW5dLitTS4skacXLVUBB0HA==
+X-Received: by 2002:a17:907:1c01:b0:966:335a:5b0b with SMTP id nc1-20020a1709071c0100b00966335a5b0bmr22701935ejc.18.1683973399440;
+        Sat, 13 May 2023 03:23:19 -0700 (PDT)
+Received: from jernej-laptop.localnet (89-212-118-115.static.t-2.net. [89.212.118.115])
+        by smtp.gmail.com with ESMTPSA id jy11-20020a170907762b00b0094f3b18044bsm6621624ejc.218.2023.05.13.03.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 May 2023 03:23:18 -0700 (PDT)
+From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: Driver for rtw8723ds
+Date:   Sat, 13 May 2023 12:23:17 +0200
+Message-ID: <13262218.uLZWGnKmhe@jernej-laptop>
+In-Reply-To: <880bb4ed-f3a5-2d7f-db10-fec65087dd05@lwfinger.net>
+References: <72a8eeb1-c91c-80a7-5a09-1b7963e0996b@lwfinger.net>
+ <CAFBinCAA2CXZBRO7yb4Hjg6Cos4JFQiCMWZLGVh8DCOYWg7HhA@mail.gmail.com>
+ <880bb4ed-f3a5-2d7f-db10-fec65087dd05@lwfinger.net>
 MIME-Version: 1.0
-Received: by 2002:a2e:98cf:0:b0:2ac:a011:b92d with HTTP; Sat, 13 May 2023
- 02:31:35 -0700 (PDT)
-Reply-To: ninacoulibaly03@hotmail.com
-From:   nina coulibaly <info.ninacoulibaly11@gmail.com>
-Date:   Sat, 13 May 2023 02:31:35 -0700
-Message-ID: <CAKjR=URVXeQOJMp8Rh+g1gg9HYS5Usrx0OJzpyoQzruWKyn90w@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear,
+Larry,
 
-I am interested to invest with you in your country with total trust
-and i hope you will give me total support, sincerity and commitment.
-Please get back to me as soon as possible so that i can give you my
-proposed details of funding and others.
+Dne sreda, 10. maj 2023 ob 23:47:24 CEST je Larry Finger napisal(a):
+> On 5/10/23 16:07, Martin Blumenstingl wrote:
+> > On Wed, May 10, 2023 at 12:02=E2=80=AFAM Larry Finger <Larry.Finger@lwf=
+inger.net> wrote:
+> > [...]
+> >> I added that patch to the driver. The user reports that he was able to=
+ do a ping
+> >> and an nslookup before it crashed with the following in the log:
+> > That's some positive news alongside the crash log: it seems that a
+> > part of the driver works! :-)
+> >=20
+> >> [    8.700626] skbuff: skb_over_panic: text:ffff8000011924ac len:3341 =
+put:3341
+> >> head:ffff000003b3c000 data:ffff000003b3c040 tail:0xd4d end:0x2c0 dev:<=
+NULL>
+> > [...]
+> >> Somehow skb->tail was greater than skb->end. Unfortunately I do not ha=
+ve access
+> >> to gdb to tell you what line corresponds to rtw_sdio_rx_skb+0x50 on th=
+e MangoPi
+> >> MQ Quad.
+> > I need to have a closer look at the pkg_offset and struct
+> > rtw_rx_pkt_stat which we receive.
+> > Recently my own MangoPI MQ-Quad arrived but I did not have the time to
+> > set it up yet. I'll try to do so during the weekend so I can debug
+> > this on my own.
+> >=20
+> > Please ping me next week in case I haven't provided any update until th=
+en.
+>=20
+> I have some test prints in to check for skb overrun. My initial indicatio=
+n is=20
+> that the problem was in the c2h branch of rtw_sdio_rx_skb(), but my next =
+run=20
+> should verify that. My changes will do a pr_warn_once() when the problem=
+=20
+> happens, and then drop the skb.
+>=20
+> My contact reported that he had one run of 3 minutes before the problem=20
+> happened, which is good news for most of the driver.
 
-Best Regards.
+I may have discovered something interesting. rtl8723ds vendor driver has
+following checks in RX data parsing code:
+https://github.com/lwfinger/rtl8723ds/blob/master/hal/rtl8723d/sdio/rtl8723=
+ds_recv.c#L83-L99
 
-Mrs Nina Coulibaly
+Those checks are absent in rtl8822bs vendor driver, which was my original
+development platform for SDIO. This may indicate some kind of bug in FW
+and/or HW.
+
+I think that at least second check, which checks for exactly the case your
+client experience, can be easily added and tested.
+
+Best regards,
+Jernej
+
+
+
