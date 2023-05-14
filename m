@@ -2,89 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A089701A19
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 May 2023 23:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E35D8701C75
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 May 2023 11:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjEMVmH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 13 May 2023 17:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
+        id S234377AbjENJQZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 May 2023 05:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjEMVmG (ORCPT
+        with ESMTP id S229942AbjENJQY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 13 May 2023 17:42:06 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 807482720;
-        Sat, 13 May 2023 14:42:05 -0700 (PDT)
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.8])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 9E12E44C1012;
-        Sat, 13 May 2023 21:42:03 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9E12E44C1012
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1684014123;
-        bh=6rJLFQzTqQuln9eGYgx3BvQDSlEIAh0h1G71nSAdqhM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=k9KSWGlIEpOYLlMwhxUF82/VVZlhZ+BvdDYsi8ZAyB9O8IUdFKawCuVsHX/evAMBT
-         shuB4nuBRMXGU4o11FN4sppoCgMcDfm7mt553lgz2Ep0Ek6rmJnVczZtPAvQw4WcSl
-         2xp01YsVkoD7ZL6Fb+bkxHewqHBpoNKoPW9Mg9c4=
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Takeshi Misawa <jeliantsurux@gmail.com>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
-Subject: [PATCH] wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
-Date:   Sun, 14 May 2023 00:41:46 +0300
-Message-Id: <20230513214146.120963-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
+        Sun, 14 May 2023 05:16:24 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094C326AB
+        for <linux-wireless@vger.kernel.org>; Sun, 14 May 2023 02:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684055772; x=1715591772;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kdRbVgqcqYyxMrZWZr2y3jhmcjH7thuw6k2DYHegLBI=;
+  b=OkCpWCakAGZnrbgnjcVJmiKy+GGl9EnhnO9Pmkm3szEWaxWrUOxfRmER
+   B4nVZMneXvQwIY7EL97ApvXcqckrNX+knnq0WEPGg2M8+PuYLobHKA/Px
+   jsEi6e5pE0aVNkpNi5+5oxI++QRY8loDQSv9R2WZcc0NiXaZ3a3wy3bzN
+   O43Ua2xM0jXPMDtTIEs/75lD8AeSlu/tQsFW19k82AG59uxDGKKKImmuT
+   VKvIc3CjJpCdIo4IbMU7ttAr44TX3k7mh85HxklMo+XsyGrk/+p49qBN5
+   Zrzb43YE9y5PEM6OTeP4OVY1wYAW7K5xwsEwrRQeSQU1BfP4vR4sVvlvc
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="340366811"
+X-IronPort-AV: E=Sophos;i="5.99,274,1677571200"; 
+   d="scan'208";a="340366811"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2023 02:16:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="731300220"
+X-IronPort-AV: E=Sophos;i="5.99,274,1677571200"; 
+   d="scan'208";a="731300220"
+Received: from seran-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.239.223])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2023 02:16:11 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH wireless 00/12] wifi: iwlwifi: fixes for v6.4 2023-05-14 
+Date:   Sun, 14 May 2023 12:15:43 +0300
+Message-Id: <20230514091555.168392-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A bad USB device is able to construct a service connection response
-message with target endpoint being ENDPOINT0 which is reserved for
-HTC_CTRL_RSVD_SVC and should not be modified to be used for any other
-services.
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Reject such service connection responses.
+Hi,
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Here're a few iwlwifi fixes that we'd like to send to v6.4.
+Fixing a few locking and memory issues, MLO fix and a few other
+rather small fixes.
 
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Reported-by: syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/net/wireless/ath/ath9k/htc_hst.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Gregory
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
-index fe62ff668f75..a15d8d80df87 100644
---- a/drivers/net/wireless/ath/ath9k/htc_hst.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
-@@ -114,7 +114,7 @@ static void htc_process_conn_rsp(struct htc_target *target,
- 
- 	if (svc_rspmsg->status == HTC_SERVICE_SUCCESS) {
- 		epid = svc_rspmsg->endpoint_id;
--		if (epid < 0 || epid >= ENDPOINT_MAX)
-+		if (epid <= 0 || epid >= ENDPOINT_MAX)
- 			return;
- 
- 		service_id = be16_to_cpu(svc_rspmsg->service_id);
+Alon Giladi (2):
+  wifi: iwlwifi: fix OEM's name in the ppag approved list
+  wifi: iwlwifi: mvm: fix OEM's name in the tas approved list
+
+Ariel Malamud (1):
+  wifi: iwlwifi: mvm: Add locking to the rate read flow
+
+Gregory Greenman (1):
+  wifi: iwlwifi: mvm: fix access to fw_id_to_mac_id
+
+Johannes Berg (6):
+  wifi: iwlwifi: mvm: always free dup_data
+  wifi: iwlwifi: mvm: don't double-init spinlock
+  wifi: iwlwifi: mvm: fix cancel_delayed_work_sync() deadlock
+  wifi: iwlwifi: mvm: fix number of concurrent link checks
+  wifi: iwlwifi: fw: fix DBGI dump
+  wifi: iwlwifi: mvm: don't trust firmware n_channels
+
+Miri Korenblit (1):
+  wifi: iwlwifi: Don't use valid_links to iterate sta links
+
+Mukesh Sisodiya (1):
+  wifi: iwlwifi: mvm: fix initialization of a return value
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 19 ++++---
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |  5 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c | 12 ++--
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 55 +++++++++----------
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  9 +--
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 14 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  | 10 ++++
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |  3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  9 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 13 +++--
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  2 +-
+ 13 files changed, 92 insertions(+), 63 deletions(-)
+
 -- 
-2.34.1
+2.38.1
 
