@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 262C2701C79
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 May 2023 11:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D87C701C7A
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 May 2023 11:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235091AbjENJQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 May 2023 05:16:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41594 "EHLO
+        id S235216AbjENJQe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 May 2023 05:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbjENJQ1 (ORCPT
+        with ESMTP id S234750AbjENJQ1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sun, 14 May 2023 05:16:27 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A722683
-        for <linux-wireless@vger.kernel.org>; Sun, 14 May 2023 02:16:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C3F2691
+        for <linux-wireless@vger.kernel.org>; Sun, 14 May 2023 02:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684055785; x=1715591785;
+  t=1684055786; x=1715591786;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hina5WF2GvD6F9d+Gh7VJZvPA4HPyIkUXO09tm/2auA=;
-  b=WyguKxZJMzLXU6WueSeVhQj5Uv7M7pIUxDpQoNIg+zlnSlexI1Yux3Nf
-   02+4gobPgihhOtBlsEk/2MKQ1CsCz2uy172sfiegFfcacNZxDg3M+Aliv
-   v9x0jafXcOzozS8FNXUa7fKqqmyCFWXQd80rQFih8jj+mSJrYA8IXSPjr
-   RmZsf+CKSp3uwk7o3WXX96uF32GKfEKTF8CScAkEnDU4AWRiPS/WcbS+z
-   yrHAte8SR13kTKiNgxYGdN0LW1E2BnVVIpUky0S/2H3XEjoWCeRmBIk12
-   rCRR5bADrMvpTvr+bodnQJNj+fhDcfV26jsPNE4tSlE1OoAIh2aFibfn2
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="340366840"
+  bh=SSJ/aDCQfbvSV86JqW7iGE2mjb+1YyiDQwxDMz73nTQ=;
+  b=W5u227SDXUXv6G+jp823G1MwfXmBC73smwpia5OgiG0XEIwp9kIjbhMB
+   ot5zMVRw9ouiWUUgG1XZUAKjnG60WZ8PbbG9B0tCi0q5TXEl7ug0ajG0I
+   RDOM5yfuehPZhR28tt6/al01N94ytugGfrLco3vy5tnzMkeFFe4upOCnf
+   blxbD41oeqoG7KyeSYKtuHAhpc4/Cr81dYQ/Yh7ghmBTCwHiWANz3JOry
+   Lsi9MyBRBsBszGwbndM/sU8DJ+foHgllT2CYQfHiNFxMR1bqH4nYibr8W
+   F2+ueh9PL9OUN20+SPRAY6Pybrgfjf1+G5JxRbuD/ks+qq/P3TS+R/0uc
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="340366843"
 X-IronPort-AV: E=Sophos;i="5.99,274,1677571200"; 
-   d="scan'208";a="340366840"
+   d="scan'208";a="340366843"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2023 02:16:24 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2023 02:16:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="731300368"
+X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="731300381"
 X-IronPort-AV: E=Sophos;i="5.99,274,1677571200"; 
-   d="scan'208";a="731300368"
+   d="scan'208";a="731300381"
 Received: from seran-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.239.223])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2023 02:16:23 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2023 02:16:25 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH wireless 04/12] wifi: iwlwifi: mvm: fix number of concurrent link checks
-Date:   Sun, 14 May 2023 12:15:47 +0300
-Message-Id: <20230514120631.992b2f981ef6.I7d386c19354e9be39c4822f436dd22c93422b660@changeid>
+Subject: [PATCH wireless 05/12] wifi: iwlwifi: fw: fix DBGI dump
+Date:   Sun, 14 May 2023 12:15:48 +0300
+Message-Id: <20230514120631.19a302ae4c65.I12272599f7c1930666157b9d5e7f81fe9ec4c421@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230514091555.168392-1-gregory.greenman@intel.com>
 References: <20230514091555.168392-1-gregory.greenman@intel.com>
@@ -64,60 +64,81 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The concurrent link checks need to correctly differentiate
-between AP and non-AP, fix that.
+The DBGI dump is (unsurprisingly) of type DBGI, not SRAM.
+This leads to bad register accesses because the union is
+built differently, there's no allocation ID, and thus the
+allocation ID ends up being 0x8000.
 
+Note that this was already wrong for DRAM vs. SMEM since
+they use different parts of the union, but the allocation
+ID is at the same place, so it worked.
+
+Fix all of this but set the allocation ID in a way that
+the offset calculation ends up without any offset.
+
+Fixes: 34bc27783a31 ("iwlwifi: yoyo: fix DBGI_SRAM ini dump header.")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c        | 12 +++++++-----
- .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c    |  9 +++++----
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index eb828de40a3c..3814915cb1a6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -123,11 +123,13 @@ int iwl_mvm_link_changed(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 				if (mvmvif->link[i]->phy_ctxt)
- 					count++;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index d9faaae01abd..55219974b92b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1664,14 +1664,10 @@ static __le32 iwl_get_mon_reg(struct iwl_fw_runtime *fwrt, u32 alloc_id,
+ }
  
--			/* FIXME: IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM should be
--			 * defined per HW
--			 */
--			if (count >= IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM)
--				return -EINVAL;
-+			if (vif->type == NL80211_IFTYPE_AP) {
-+				if (count > mvm->fw->ucode_capa.num_beacons)
-+					return -EOPNOTSUPP;
-+			/* this should be per HW or such */
-+			} else if (count >= IWL_MVM_FW_MAX_ACTIVE_LINKS_NUM) {
-+				return -EOPNOTSUPP;
-+			}
- 		}
+ static void *
+-iwl_dump_ini_mon_fill_header(struct iwl_fw_runtime *fwrt,
+-			     struct iwl_dump_ini_region_data *reg_data,
++iwl_dump_ini_mon_fill_header(struct iwl_fw_runtime *fwrt, u32 alloc_id,
+ 			     struct iwl_fw_ini_monitor_dump *data,
+ 			     const struct iwl_fw_mon_regs *addrs)
+ {
+-	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
+-	u32 alloc_id = le32_to_cpu(reg->dram_alloc_id);
+-
+ 	if (!iwl_trans_grab_nic_access(fwrt->trans)) {
+ 		IWL_ERR(fwrt, "Failed to get monitor header\n");
+ 		return NULL;
+@@ -1702,8 +1698,10 @@ iwl_dump_ini_mon_dram_fill_header(struct iwl_fw_runtime *fwrt,
+ 				  void *data, u32 data_len)
+ {
+ 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
++	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
++	u32 alloc_id = le32_to_cpu(reg->dram_alloc_id);
  
- 		/* Catch early if driver tries to activate or deactivate a link
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index fbc2d5ed1006..7fb66c570959 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -906,11 +906,12 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
- 				n_active++;
- 		}
+-	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
++	return iwl_dump_ini_mon_fill_header(fwrt, alloc_id, mon_dump,
+ 					    &fwrt->trans->cfg->mon_dram_regs);
+ }
  
--		if (vif->type == NL80211_IFTYPE_AP &&
--		    n_active > mvm->fw->ucode_capa.num_beacons)
--			return -EOPNOTSUPP;
--		else if (n_active > 1)
-+		if (vif->type == NL80211_IFTYPE_AP) {
-+			if (n_active > mvm->fw->ucode_capa.num_beacons)
-+				return -EOPNOTSUPP;
-+		} else if (n_active > 1) {
- 			return -EOPNOTSUPP;
-+		}
- 	}
+@@ -1713,8 +1711,10 @@ iwl_dump_ini_mon_smem_fill_header(struct iwl_fw_runtime *fwrt,
+ 				  void *data, u32 data_len)
+ {
+ 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
++	struct iwl_fw_ini_region_tlv *reg = (void *)reg_data->reg_tlv->data;
++	u32 alloc_id = le32_to_cpu(reg->internal_buffer.alloc_id);
  
- 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+-	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
++	return iwl_dump_ini_mon_fill_header(fwrt, alloc_id, mon_dump,
+ 					    &fwrt->trans->cfg->mon_smem_regs);
+ }
+ 
+@@ -1725,7 +1725,10 @@ iwl_dump_ini_mon_dbgi_fill_header(struct iwl_fw_runtime *fwrt,
+ {
+ 	struct iwl_fw_ini_monitor_dump *mon_dump = (void *)data;
+ 
+-	return iwl_dump_ini_mon_fill_header(fwrt, reg_data, mon_dump,
++	return iwl_dump_ini_mon_fill_header(fwrt,
++					    /* no offset calculation later */
++					    IWL_FW_INI_ALLOCATION_ID_DBGC1,
++					    mon_dump,
+ 					    &fwrt->trans->cfg->mon_dbgi_regs);
+ }
+ 
 -- 
 2.38.1
 
