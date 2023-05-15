@@ -2,52 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3259B703C83
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 20:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51707703C8F
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 20:25:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244687AbjEOSVq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 May 2023 14:21:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55742 "EHLO
+        id S243350AbjEOSZj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 May 2023 14:25:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244470AbjEOSV3 (ORCPT
+        with ESMTP id S242842AbjEOSZe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 May 2023 14:21:29 -0400
+        Mon, 15 May 2023 14:25:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551F81A3AD
-        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 11:20:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEFBF16902;
+        Mon, 15 May 2023 11:25:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1DEF63163
-        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 18:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE59C433D2;
-        Mon, 15 May 2023 18:19:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3767363151;
+        Mon, 15 May 2023 18:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFE5C433D2;
+        Mon, 15 May 2023 18:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684174781;
-        bh=sPGj3wUvKkGvX6ucvXxr19BMmg8jC165fTb+gTv88BU=;
+        s=k20201202; t=1684175128;
+        bh=Ig15CCmRbUDwPdPSwSK6wyvGYkr4LLBCPsnJsdn+kxc=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=sTxOklfMjCLWl8G7wJVMdBk7Q1VEBwMnTosD06SMuPhinu2B9DTNvcvrn6CX2vEID
-         70MaCuxxHghRrLP4PmdlNo7lRJoPagjy9Jcdy3v3a7HVZZ4x2wtYx+yBP0hnK+alYS
-         GhHnD/79iWyuUdjOtyIXSMrM9eZ2sXxTMfYwH5YCbe4c1760yZx6ImusQJU9yg5mC8
-         j9Zh/sF7kihAsj0HyIJ9shi+LYU0i388LIHy8sLrNrQiu+5P/eUwE8e7a0mxAwsnTs
-         0P6K516ITbsARbQu50vBNMLOPbUPdFa60HBAeo8N3U66n7pVAJi/18O6zzYB7kDwR4
-         LGqtBePxum1qg==
+        b=WWqgCUvVE4SWqJhd6/HvsEI3yUhzihrHCFHep97/HecWMzqFFL7iqK68FJ7dIxva/
+         GrB6/PUR+dRLm7VYmWDCGyy2ENv+QXUHT4TlgWcnErrfnGVcLAaqH+nT6Y+dBLzyNI
+         ix4gmt5lVp4+27curWS55iBcCO4G1aIQw2n8A8NLLyQGHkhCeMUSEhS+g9PNpLsPKG
+         5rciF5NncV3/zcYcVXwTuNjXAgSIlLZ/MGksntjpYkMRv7EFZd6gzHiFkV76+isBTB
+         ynZI8nZ7vnhdbeiPCm6yRhOAr/RTrFXP6K/r2By+1emMjkPhH4cjN5FQOWOCRJWZOR
+         J5I+CSUtoNCOQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [v3] wifi: rtl8xxxu: fix authentication timeout due to incorrect
- RCR value
+Subject: Re: wifi: brcmfmac: wcc: Add debug messages
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230512012055.2990472-1-luyun_611@163.com>
-References: <20230512012055.2990472-1-luyun_611@163.com>
-To:     Yun Lu <luyun_611@163.com>
-Cc:     Jes.Sorensen@gmail.com, Larry.Finger@lwfinger.net,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
+In-Reply-To: <20230509100420.26094-1-matthias.bgg@kernel.org>
+References: <20230509100420.26094-1-matthias.bgg@kernel.org>
+To:     matthias.bgg@kernel.org
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Matthias Brugger <mbrugger@suse.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168417477523.32723.7861980499011954948.kvalo@kernel.org>
-Date:   Mon, 15 May 2023 18:19:38 +0000 (UTC)
+Message-ID: <168417511892.10390.13808783964763445641.kvalo@kernel.org>
+Date:   Mon, 15 May 2023 18:25:25 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,29 +66,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Yun Lu <luyun_611@163.com> wrote:
+matthias.bgg@kernel.org wrote:
 
-> From: Yun Lu <luyun@kylinos.cn>
+> From: Matthias Brugger <mbrugger@suse.com>
 > 
-> When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
-> probability of failure, which shows "authentication with ... timed out".
-> Through debugging, it was found that the RCR register has been inexplicably
-> modified to an incorrect value, resulting in the nic not being able to
-> receive authenticated frames.
+> The message is attach and detach function are merly for debugging,
+> change them from pr_err to pr_debug.
 > 
-> To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
-> the RCR value every time the register is written, and use it the next
-> time the register need to be modified.
-> 
-> Signed-off-by: Yun Lu <luyun@kylinos.cn>
-> Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
+> Signed-off-by: Matthias Brugger <mbrugger@suse.com>
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Patch applied to wireless.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-20429444e653 wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+87807f77a03d wifi: brcmfmac: wcc: Add debug messages
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230512012055.2990472-1-luyun_611@163.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230509100420.26094-1-matthias.bgg@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
