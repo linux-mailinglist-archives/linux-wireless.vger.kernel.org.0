@@ -2,121 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F9D7021AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 04:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44FAF7021D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 04:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239014AbjEOCYa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 May 2023 22:24:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59928 "EHLO
+        id S229964AbjEOCp1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 May 2023 22:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238944AbjEOCYJ (ORCPT
+        with ESMTP id S229708AbjEOCp0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 May 2023 22:24:09 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979B61BE3;
-        Sun, 14 May 2023 19:23:21 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-52c30fbccd4so11189252a12.0;
-        Sun, 14 May 2023 19:23:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684117315; x=1686709315;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=niU+K5V3bpGotdNKpKxWKa4Y6tYufU19KgTr2VkMAOs=;
-        b=TzK1q0I0oFDYjnlEeRsc/RoZzCBtJzngsvHVhHS26gVUo+WtNoR51Fq2J0eVQ7V9JY
-         XX0str2BASSFHiaTZa1p20RDKWbCbOTBcVuekLzpi+JmZ4hAQLVVVB90JscQ/O6LCq1m
-         33xxZQotsk6xDNqaz6r/SXYBOFjKiK34BEgRgIf3SE8nx/vpkktc1z5RUd4lzSW7sJB2
-         P3RGZxJ3dl0sty4J4Jtsg1bY3TLj3M9bGjC0VJ+RR/8NDFZFpuj/779GgmLIhRQ1UThQ
-         qCYHhUs9gdv2JpOwsO6mZQe93pMNthS3PcHmjjjp2VFKGesJhteE0NfOKhrUYUfNqBgH
-         +zsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684117315; x=1686709315;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=niU+K5V3bpGotdNKpKxWKa4Y6tYufU19KgTr2VkMAOs=;
-        b=ZAdH1+YoAz9QQwVYthSx29MvakU3YSlXFmniNN5AzAtYvQN6W2SumJJtUgVY43x3wt
-         UojbrrnGfWcU0WxX1N8wApzZiZyc02BQYeJiI0mkaIcSJw+//eYvLT62i48kCm3bquJR
-         6uEjfIXE03HB10wNCoAo8yEJz2dyW0Z4jv/Q7TwFBNcdPBWMIq9ZebTAFXLIXNm48jjv
-         8r76ILE0o04y0p9HzjfJ24qLa3L+8djeVT8TAzV7POveTr1J2oZ+KnYS3CSnE8g+drY9
-         +dlFg29bstcIZrJEz+dlpIvS1mqJrsqClK5VEa+NsjJwsZXbODtwYf8ld+O1Fj/x0dOb
-         OWNg==
-X-Gm-Message-State: AC+VfDzFNXel8zdKgCYFAwBlpyfWkURMI61DeAfUY5yN/XsGWPkPJBjd
-        zbgnbb+CG6/Sd+OhQqvuWGqSqEPxB5A=
-X-Google-Smtp-Source: ACHHUZ6b0O29/SbNOOB1m/nfqjkm8TsYEwR4PWrH+ndWxFONqfoISHkRpOfAkfaFUYT1OsPN24E65Q==
-X-Received: by 2002:a17:902:f7c9:b0:1ad:eb62:f617 with SMTP id h9-20020a170902f7c900b001adeb62f617mr9893964plw.45.1684117314765;
-        Sun, 14 May 2023 19:21:54 -0700 (PDT)
-Received: from [192.168.43.80] (subs03-180-214-233-25.three.co.id. [180.214.233.25])
-        by smtp.gmail.com with ESMTPSA id r4-20020a1709028bc400b001a95aef9728sm4568073plo.19.2023.05.14.19.21.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 May 2023 19:21:54 -0700 (PDT)
-Message-ID: <018f62d0-ee1d-9198-9c38-e45b10921e2e@gmail.com>
-Date:   Mon, 15 May 2023 09:21:38 +0700
+        Sun, 14 May 2023 22:45:26 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B5ED9;
+        Sun, 14 May 2023 19:45:24 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.57])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4QKNwz27qgzLmGM;
+        Mon, 15 May 2023 10:44:03 +0800 (CST)
+Received: from [10.174.178.66] (10.174.178.66) by
+ dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 15 May 2023 10:45:21 +0800
+Message-ID: <ae4c68c8-e798-778f-f53c-9c455c6a9f6c@huawei.com>
+Date:   Mon, 15 May 2023 10:45:20 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To:     Linux Regressions <regressions@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Broadcom 80211 Devices <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA cyfmac Subsystem <SHA-cyfmac-dev-list@infineon.com>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>
-Cc:     Hante Meuleman <hante.meuleman@broadcom.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, julien.falque@gmail.com
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: Freeze after resuming from hibernation (culprit is brcmfmac
- change?)
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.2
+Subject: Re: [syzbot] [wireless?] memory leak in hwsim_new_radio_nl
+To:     syzbot <syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com>,
+        <davem@davemloft.net>, <edumazet@google.com>,
+        <johannes@sipsolutions.net>, <kuba@kernel.org>, <kvalo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+        <syzkaller-bugs@googlegroups.com>
+References: <000000000000383da505fb8509b7@google.com>
+From:   shaozhengchao <shaozhengchao@huawei.com>
+In-Reply-To: <000000000000383da505fb8509b7@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Originating-IP: [10.174.178.66]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-I notice a regression report on bugzilla [1]. Quoting from it:
 
->  julien.falque@gmail.com 2023-05-14 09:55:38 UTC
+On 2023/5/13 4:34, syzbot wrote:
+> Hello,
 > 
-> Since a Kernel update a few weeks ago, my laptop freezes when resuming from hibernation. It seems to handle the resume process normally but at the moment I should see Gnome login screen, I either get a black screen with just a white underscore instead, or nothing displayed at all (no backlight). I can't do anything at that point and I have to hard reboot.
+> syzbot found the following issue on:
 > 
-> Steps to reproduce:
-> - hibernate
-> - resume
-> - wait until the resuming process should finish: black screen instead of e.g. Gnome's login screen
+> HEAD commit:    105131df9c3b Merge tag 'dt-fixes-6.4' of git://git.kernel...
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1193dc92280000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=fa9562c0bfb72fa2
+> dashboard link: https://syzkaller.appspot.com/bug?extid=904ce6fbb38532d9795c
+> compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10b4577c280000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14a9e29e280000
 > 
-> journalctl gives nothing between the beginning of the resume and the crash, as if it never happened.
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/029c9c553eb9/disk-105131df.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/c807843227d1/vmlinux-105131df.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/dfce3441d47b/bzImage-105131df.xz
 > 
-> I have a Dell XPS 15 (9550) with Arch Linux. The issue happens on linux (since v6.2.0 I think) but linux-lts (currently v6.1.28) is fine.
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com
 > 
-> A bisect on linux-git gave commit da6d9c8ecd00 as the cause of the problem.
+> Warning: Permanently added '10.128.1.177' (ECDSA) to the list of known hosts.
+> executing program
+> executing program
+> BUG: memory leak
+> unreferenced object 0xffff88810e2ac920 (size 32):
+>    comm "syz-executor238", pid 4983, jiffies 4294944120 (age 14.000s)
+>    hex dump (first 32 bytes):
+>      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>    backtrace:
+>      [<ffffffff815458a4>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1057
+>      [<ffffffff830fc4fb>] kmalloc include/linux/slab.h:559 [inline]
+>      [<ffffffff830fc4fb>] hwsim_new_radio_nl+0x43b/0x660 drivers/net/wireless/virtual/mac80211_hwsim.c:5962
+>      [<ffffffff83f4aa6e>] genl_family_rcv_msg_doit.isra.0+0xee/0x150 net/netlink/genetlink.c:968
+>      [<ffffffff83f4ada7>] genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+>      [<ffffffff83f4ada7>] genl_rcv_msg+0x2d7/0x430 net/netlink/genetlink.c:1065
+>      [<ffffffff83f49111>] netlink_rcv_skb+0x91/0x1e0 net/netlink/af_netlink.c:2546
+>      [<ffffffff83f4a118>] genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+>      [<ffffffff83f4805b>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+>      [<ffffffff83f4805b>] netlink_unicast+0x39b/0x4d0 net/netlink/af_netlink.c:1365
+>      [<ffffffff83f4852a>] netlink_sendmsg+0x39a/0x720 net/netlink/af_netlink.c:1913
+>      [<ffffffff83db5258>] sock_sendmsg_nosec net/socket.c:724 [inline]
+>      [<ffffffff83db5258>] sock_sendmsg+0x58/0xb0 net/socket.c:747
+>      [<ffffffff83db5817>] ____sys_sendmsg+0x397/0x430 net/socket.c:2503
+>      [<ffffffff83db9e08>] ___sys_sendmsg+0xa8/0x110 net/socket.c:2557
+>      [<ffffffff83db9fac>] __sys_sendmsg+0x8c/0x100 net/socket.c:2586
+>      [<ffffffff84a127b9>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+>      [<ffffffff84a127b9>] do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+>      [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> 
+> BUG: memory leak
+> unreferenced object 0xffff88810e2ac800 (size 32):
+>    comm "syz-executor238", pid 4984, jiffies 4294944700 (age 8.200s)
+>    hex dump (first 32 bytes):
+>      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>    backtrace:
+>      [<ffffffff815458a4>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1057
+>      [<ffffffff830fc4fb>] kmalloc include/linux/slab.h:559 [inline]
+>      [<ffffffff830fc4fb>] hwsim_new_radio_nl+0x43b/0x660 drivers/net/wireless/virtual/mac80211_hwsim.c:5962
+>      [<ffffffff83f4aa6e>] genl_family_rcv_msg_doit.isra.0+0xee/0x150 net/netlink/genetlink.c:968
+>      [<ffffffff83f4ada7>] genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
+>      [<ffffffff83f4ada7>] genl_rcv_msg+0x2d7/0x430 net/netlink/genetlink.c:1065
+>      [<ffffffff83f49111>] netlink_rcv_skb+0x91/0x1e0 net/netlink/af_netlink.c:2546
+>      [<ffffffff83f4a118>] genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+>      [<ffffffff83f4805b>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+>      [<ffffffff83f4805b>] netlink_unicast+0x39b/0x4d0 net/netlink/af_netlink.c:1365
+>      [<ffffffff83f4852a>] netlink_sendmsg+0x39a/0x720 net/netlink/af_netlink.c:1913
+>      [<ffffffff83db5258>] sock_sendmsg_nosec net/socket.c:724 [inline]
+>      [<ffffffff83db5258>] sock_sendmsg+0x58/0xb0 net/socket.c:747
+>      [<ffffffff83db5817>] ____sys_sendmsg+0x397/0x430 net/socket.c:2503
+>      [<ffffffff83db9e08>] ___sys_sendmsg+0xa8/0x110 net/socket.c:2557
+>      [<ffffffff83db9fac>] __sys_sendmsg+0x8c/0x100 net/socket.c:2586
+>      [<ffffffff84a127b9>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+>      [<ffffffff84a127b9>] do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+>      [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> 
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the bug is already fixed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+> 
+> If you want to change bug's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the bug is a duplicate of another bug, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
+> 
+> 
 
-See bugzilla for the full thread.
+This issue is introduced by 92d13386ec55 ("mac80211_hwsim: add PMSR
+capability support")
+When parse_pmsr_capa failed in hwsim_new_radio_nl, the memory resources
+applied for by pmsr_capa are not released. It should replace
+param.pmsr_capa with pmsr_capa to release memory.
 
-Julien: I asked you to also provide dmesg log as I don't know
-what exactly happened, but you mentioned the culprit was
-da6d9c8ecd00e2 ("wifi: brcmfmac: add firmware vendor info in driver info"),
-which implies that the crash involves your wifi device. From my experience
-though, GDM crashes are usually caused by xwayland.
+I will fix it today.
 
-Anyway, I'm adding this to regzbot:
-
-#regzbot introduced: da6d9c8ecd00e2 https://bugzilla.kernel.org/show_bug.cgi?id=217442
-#regzbot title: brcmfmac firmware vendor info addition triggers GDM crash on resuming from hibernation
-
-Thanks. 
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217442
-
--- 
-An old man doll... just what I always wanted! - Clara
+Zhengchao Shao
