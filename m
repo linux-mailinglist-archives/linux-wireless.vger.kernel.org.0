@@ -2,154 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A231F70315D
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 17:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CE677031A0
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 17:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242299AbjEOPT1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 May 2023 11:19:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
+        id S241380AbjEOPd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 May 2023 11:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjEOPTZ (ORCPT
+        with ESMTP id S238199AbjEOPdz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 May 2023 11:19:25 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 272C619B1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 08:19:21 -0700 (PDT)
-X-UUID: da108d3af33311edb20a276fd37b9834-20230515
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Qx15U+hd8QpD5rotC7V7Dk7K0wTKid64awhhfoNqR0w=;
-        b=l5CunfaYsZwDqRynBE8MW8ggTKpxWklyxtRSQPN/RIGGt9mSznvhmPRWqYMPidD9p8bFfIYU9xkzy+mM8+xjMxwaT26t46bfgPVDy8WXVc/Q1kWijk+BtxMZJo4Dm7+LCiTu+No8mKZSaBOvOqsFNaSKs4hkV/9vEcR7hxqOgJE=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.24,REQID:a88950d6-94ed-43b9-a7d8-3c2ad39d9a54,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:178d4d4,CLOUDID:16b8e7c0-e32c-4c97-918d-fbb3fc224d4e,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-UUID: da108d3af33311edb20a276fd37b9834-20230515
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 10367979; Mon, 15 May 2023 23:19:14 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.194) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 15 May 2023 23:19:13 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 15 May 2023 23:19:13 +0800
-From:   Deren Wu <deren.wu@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC:     Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Quan Zhou <quan.zhou@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921e: report tx retries/failed counts in tx free event
-Date:   Mon, 15 May 2023 23:18:50 +0800
-Message-ID: <a22524899498365b0d136f399438306568e77064.1684163657.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Mon, 15 May 2023 11:33:55 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C51E76
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 08:33:54 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id 2adb3069b0e04-4f1411e8111so14913505e87.1
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 08:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684164832; x=1686756832;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ds/+e8MbsIwR8zyWJQL9G2z1Z+fUDkq/gu9HouZE2bY=;
+        b=eMVhHtN268v/VJvI6SbPVUUIaJyB5hRKmPZKErssPQzV8oW+rn4o4PYcCd+dTRDSXU
+         KftygwmT/Gq9ccDK9Vu1wmFq7fo4/z52soKbw1UO4mlvwZdC7Obl93mGpGUOkGaj3bpo
+         B5NAVz7SfwAb/DjDRbpbVDUwFwODcp6zUDWOLUtMt/HTxGPER1APNIILgsBTYlXCM5HD
+         BFKnu6FYna65UsL8OPR5Im4eU+qnRgAPr5NfCwMNFAAj8KubsFVy9lWYtYq59NMJb/k+
+         DtLwFbxrFfx4l1Jq2FSEipw00vs19GRlYkVObgn2am3ZtQmVubbywhAU1yZegUdmMB52
+         Emhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684164832; x=1686756832;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ds/+e8MbsIwR8zyWJQL9G2z1Z+fUDkq/gu9HouZE2bY=;
+        b=R9nXVnsNnliMgYSNISNxnYUzbgMQQddkU6Q79zKnG1yFcaE9EU78ubNfDuRIsCSFb5
+         3JXnj5/rHkL/cscSmKrJwIY97lJRHvUs4Fpg4GRZXbAhLYf0+MsmvSAS3EeX8SgnKXyx
+         4IPLZrmzoTxNWc0uVgfttPzWiOemaTC6fb6hg86g0RZeqVsip9h6KzIZFyA4DeH2vUX9
+         wY1ICYlqwyupS6SOC0sW/Jga+3cHuwXHKuEG8rFySE9q7hixYV3YISCRiTA5h4KuoghH
+         cTqE4Qx3WtBVzMeez0QTOZKXK1wKDa0bW2tt0t9SK93Kl+oJihOdzFMSmjgOcsW62QrC
+         YvtQ==
+X-Gm-Message-State: AC+VfDzs6R8CcdrSuX2ZKzckKnGMJVIFkM8+ARx0wk4Q2u839QpbSU/0
+        sEavR8rUoHN9nCW3VTFiZxUk0cRP2ZAotkqCfqo=
+X-Google-Smtp-Source: ACHHUZ6R3L6pwkm1RRYiZ4JuQOvGcBQsvdOd2qkrgDjXf1Hki6YO3QeM2AqUYhDOwme3mkde5qCSp3HoKPXF5LBquBY=
+X-Received: by 2002:ac2:4894:0:b0:4ef:eda6:c14 with SMTP id
+ x20-20020ac24894000000b004efeda60c14mr6773813lfc.35.1684164831962; Mon, 15
+ May 2023 08:33:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6022:9028:b0:3f:1229:2da2 with HTTP; Mon, 15 May 2023
+ 08:33:51 -0700 (PDT)
+Reply-To: lschantal86@gmail.com
+From:   "L.S Chantal" <ms5532077@gmail.com>
+Date:   Mon, 15 May 2023 15:33:51 +0000
+Message-ID: <CAMdNc1Zb97JEZBZUfVQn_zvNXpaCnbaEyzLTW1qQ6EqtpbMPyw@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:141 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5024]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ms5532077[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [lschantal86[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ms5532077[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get missing tx retries/failed counts from txfree done events and report
-them via mt7921_sta_statistics().
+Good day to you , I have a lucrative business proposal, which I
 
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
-v1: based on "[v3,1/6] wifi: mt76: mt7915: report tx retries/failed counts for non-WED path"
-https://patchwork.kernel.org/project/linux-wireless/patch/e3cddf1cff5f060478c2de9e4e4021541549e750.1683670255.git.ryder.lee@mediatek.com/
----
- drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c       | 8 +++++++-
- drivers/net/wireless/mediatek/mt76/mt7921/main.c      | 6 ++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+believe we could mutually benefit from. Kindly notify me for more
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-index a5ec0f631385..cb612d7c7616 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-@@ -34,7 +34,7 @@ enum {
- 
- #define MT_TX_FREE_MSDU_CNT		GENMASK(9, 0)
- #define MT_TX_FREE_WLAN_ID		GENMASK(23, 14)
--#define MT_TX_FREE_LATENCY		GENMASK(12, 0)
-+#define MT_TX_FREE_COUNT		GENMASK(12, 0)
- /* 0: success, others: dropped */
- #define MT_TX_FREE_STATUS		GENMASK(14, 13)
- #define MT_TX_FREE_MSDU_ID		GENMASK(30, 16)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 1675bf520481..a3d31b69217b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -614,6 +614,7 @@ static void mt7921_mac_tx_free(struct mt7921_dev *dev, void *data, int len)
- 	struct mt76_dev *mdev = &dev->mt76;
- 	struct mt76_txwi_cache *txwi;
- 	struct ieee80211_sta *sta = NULL;
-+	struct mt76_wcid *wcid = NULL;
- 	struct sk_buff *skb, *tmp;
- 	void *end = data + len;
- 	LIST_HEAD(free_list);
-@@ -637,7 +638,6 @@ static void mt7921_mac_tx_free(struct mt7921_dev *dev, void *data, int len)
- 		 */
- 		if (info & MT_TX_FREE_PAIR) {
- 			struct mt7921_sta *msta;
--			struct mt76_wcid *wcid;
- 			u16 idx;
- 
- 			count++;
-@@ -658,6 +658,12 @@ static void mt7921_mac_tx_free(struct mt7921_dev *dev, void *data, int len)
- 		msdu = FIELD_GET(MT_TX_FREE_MSDU_ID, info);
- 		stat = FIELD_GET(MT_TX_FREE_STATUS, info);
- 
-+		if (wcid) {
-+			wcid->stats.tx_retries +=
-+				FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
-+			wcid->stats.tx_failed += !!stat;
-+		}
-+
- 		txwi = mt76_token_release(mdev, msdu, &wake);
- 		if (!txwi)
- 			continue;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 0c9a472bc81a..418a1fa67477 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1400,6 +1400,12 @@ static void mt7921_sta_statistics(struct ieee80211_hw *hw,
- 		sinfo->txrate.he_dcm = txrate->he_dcm;
- 		sinfo->txrate.he_ru_alloc = txrate->he_ru_alloc;
- 	}
-+	sinfo->tx_failed = msta->wcid.stats.tx_failed;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_FAILED);
-+
-+	sinfo->tx_retries = msta->wcid.stats.tx_retries;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
-+
- 	sinfo->txrate.flags = txrate->flags;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
- 
--- 
-2.18.0
+details, if interested.
 
+Thanks
