@@ -2,172 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FAF7021D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 04:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7302E70228E
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 05:42:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbjEOCp1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 May 2023 22:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48614 "EHLO
+        id S238190AbjEODmB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 May 2023 23:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbjEOCp0 (ORCPT
+        with ESMTP id S238452AbjEODlS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 May 2023 22:45:26 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33B5ED9;
-        Sun, 14 May 2023 19:45:24 -0700 (PDT)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4QKNwz27qgzLmGM;
-        Mon, 15 May 2023 10:44:03 +0800 (CST)
-Received: from [10.174.178.66] (10.174.178.66) by
- dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 15 May 2023 10:45:21 +0800
-Message-ID: <ae4c68c8-e798-778f-f53c-9c455c6a9f6c@huawei.com>
-Date:   Mon, 15 May 2023 10:45:20 +0800
+        Sun, 14 May 2023 23:41:18 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F65E189;
+        Sun, 14 May 2023 20:38:46 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QKQ362z3czqSKL;
+        Mon, 15 May 2023 11:34:26 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 15 May
+ 2023 11:38:43 +0800
+From:   Zhengchao Shao <shaozhengchao@huawei.com>
+To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
+        <shaozhengchao@huawei.com>,
+        <syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com>
+Subject: [PATCH net-next] mac80211_hwsim: fix memory leak in hwsim_new_radio_nl
+Date:   Mon, 15 May 2023 11:47:12 +0800
+Message-ID: <20230515034712.2425489-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0.2
-Subject: Re: [syzbot] [wireless?] memory leak in hwsim_new_radio_nl
-To:     syzbot <syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com>,
-        <davem@davemloft.net>, <edumazet@google.com>,
-        <johannes@sipsolutions.net>, <kuba@kernel.org>, <kvalo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-        <syzkaller-bugs@googlegroups.com>
-References: <000000000000383da505fb8509b7@google.com>
-From:   shaozhengchao <shaozhengchao@huawei.com>
-In-Reply-To: <000000000000383da505fb8509b7@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.66]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  dggpeml500026.china.huawei.com (7.185.36.106)
 X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 2023/5/13 4:34, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    105131df9c3b Merge tag 'dt-fixes-6.4' of git://git.kernel...
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1193dc92280000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=fa9562c0bfb72fa2
-> dashboard link: https://syzkaller.appspot.com/bug?extid=904ce6fbb38532d9795c
-> compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10b4577c280000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14a9e29e280000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/029c9c553eb9/disk-105131df.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/c807843227d1/vmlinux-105131df.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/dfce3441d47b/bzImage-105131df.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com
-> 
-> Warning: Permanently added '10.128.1.177' (ECDSA) to the list of known hosts.
-> executing program
-> executing program
-> BUG: memory leak
-> unreferenced object 0xffff88810e2ac920 (size 32):
->    comm "syz-executor238", pid 4983, jiffies 4294944120 (age 14.000s)
->    hex dump (first 32 bytes):
->      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->    backtrace:
->      [<ffffffff815458a4>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1057
->      [<ffffffff830fc4fb>] kmalloc include/linux/slab.h:559 [inline]
->      [<ffffffff830fc4fb>] hwsim_new_radio_nl+0x43b/0x660 drivers/net/wireless/virtual/mac80211_hwsim.c:5962
->      [<ffffffff83f4aa6e>] genl_family_rcv_msg_doit.isra.0+0xee/0x150 net/netlink/genetlink.c:968
->      [<ffffffff83f4ada7>] genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
->      [<ffffffff83f4ada7>] genl_rcv_msg+0x2d7/0x430 net/netlink/genetlink.c:1065
->      [<ffffffff83f49111>] netlink_rcv_skb+0x91/0x1e0 net/netlink/af_netlink.c:2546
->      [<ffffffff83f4a118>] genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
->      [<ffffffff83f4805b>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
->      [<ffffffff83f4805b>] netlink_unicast+0x39b/0x4d0 net/netlink/af_netlink.c:1365
->      [<ffffffff83f4852a>] netlink_sendmsg+0x39a/0x720 net/netlink/af_netlink.c:1913
->      [<ffffffff83db5258>] sock_sendmsg_nosec net/socket.c:724 [inline]
->      [<ffffffff83db5258>] sock_sendmsg+0x58/0xb0 net/socket.c:747
->      [<ffffffff83db5817>] ____sys_sendmsg+0x397/0x430 net/socket.c:2503
->      [<ffffffff83db9e08>] ___sys_sendmsg+0xa8/0x110 net/socket.c:2557
->      [<ffffffff83db9fac>] __sys_sendmsg+0x8c/0x100 net/socket.c:2586
->      [<ffffffff84a127b9>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->      [<ffffffff84a127b9>] do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
->      [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-> 
-> BUG: memory leak
-> unreferenced object 0xffff88810e2ac800 (size 32):
->    comm "syz-executor238", pid 4984, jiffies 4294944700 (age 8.200s)
->    hex dump (first 32 bytes):
->      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->    backtrace:
->      [<ffffffff815458a4>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1057
->      [<ffffffff830fc4fb>] kmalloc include/linux/slab.h:559 [inline]
->      [<ffffffff830fc4fb>] hwsim_new_radio_nl+0x43b/0x660 drivers/net/wireless/virtual/mac80211_hwsim.c:5962
->      [<ffffffff83f4aa6e>] genl_family_rcv_msg_doit.isra.0+0xee/0x150 net/netlink/genetlink.c:968
->      [<ffffffff83f4ada7>] genl_family_rcv_msg net/netlink/genetlink.c:1048 [inline]
->      [<ffffffff83f4ada7>] genl_rcv_msg+0x2d7/0x430 net/netlink/genetlink.c:1065
->      [<ffffffff83f49111>] netlink_rcv_skb+0x91/0x1e0 net/netlink/af_netlink.c:2546
->      [<ffffffff83f4a118>] genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
->      [<ffffffff83f4805b>] netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
->      [<ffffffff83f4805b>] netlink_unicast+0x39b/0x4d0 net/netlink/af_netlink.c:1365
->      [<ffffffff83f4852a>] netlink_sendmsg+0x39a/0x720 net/netlink/af_netlink.c:1913
->      [<ffffffff83db5258>] sock_sendmsg_nosec net/socket.c:724 [inline]
->      [<ffffffff83db5258>] sock_sendmsg+0x58/0xb0 net/socket.c:747
->      [<ffffffff83db5817>] ____sys_sendmsg+0x397/0x430 net/socket.c:2503
->      [<ffffffff83db9e08>] ___sys_sendmsg+0xa8/0x110 net/socket.c:2557
->      [<ffffffff83db9fac>] __sys_sendmsg+0x8c/0x100 net/socket.c:2586
->      [<ffffffff84a127b9>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->      [<ffffffff84a127b9>] do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
->      [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-> 
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the bug is already fixed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to change bug's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the bug is a duplicate of another bug, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
-> 
-> 
-
-This issue is introduced by 92d13386ec55 ("mac80211_hwsim: add PMSR
-capability support")
 When parse_pmsr_capa failed in hwsim_new_radio_nl, the memory resources
-applied for by pmsr_capa are not released. It should replace
-param.pmsr_capa with pmsr_capa to release memory.
+applied for by pmsr_capa are not released. Add release processing to the
+incorrect path.
 
-I will fix it today.
+Fixes: 92d13386ec55 ("mac80211_hwsim: add PMSR capability support")
+Reported-by: syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Zhengchao Shao
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 9a8faaf4c6b6..6a50858a5645 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -5965,8 +5965,10 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
+ 			goto out_free;
+ 		}
+ 		ret = parse_pmsr_capa(info->attrs[HWSIM_ATTR_PMSR_SUPPORT], pmsr_capa, info);
+-		if (ret)
++		if (ret) {
++			kfree(pmsr_capa);
+ 			goto out_free;
++		}
+ 		param.pmsr_capa = pmsr_capa;
+ 	}
+ 
+-- 
+2.34.1
+
