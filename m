@@ -2,110 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F27AE7020B8
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 02:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB3A7020C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 02:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235666AbjEOAPL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 May 2023 20:15:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51522 "EHLO
+        id S237188AbjEOAWD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 14 May 2023 20:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbjEOAPJ (ORCPT
+        with ESMTP id S229800AbjEOAWC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 May 2023 20:15:09 -0400
-X-Greylist: delayed 493 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 14 May 2023 17:15:07 PDT
-Received: from mail-out01.belwue.de (mail-out01.belwue.de [129.143.76.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83686E69
-        for <linux-wireless@vger.kernel.org>; Sun, 14 May 2023 17:15:07 -0700 (PDT)
-Received: from mail-hub01.belwue.de (mail-hub01.belwue.de [IPv6:2001:7c0:0:76::41])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by mail-out01.belwue.de (Postfix) with ESMTPS id 4QKKRb4bR6z500pT;
-        Mon, 15 May 2023 02:06:51 +0200 (CEST)
-Received: from exhubcas01.dhbw-ravensburg.de (unknown [141.68.130.11])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by mail-hub01.belwue.de (Postfix) with ESMTPS id 4QKKRF0Gv1z52B5s;
-        Mon, 15 May 2023 02:06:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dhbw-ravensburg.de;
-        s=DKIM001; t=1684109211; h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RNaOgrSy70wp7WTLmZJTA9WP9+nLRpFE39oHhVNwQlE=;
-        b=pVf9yLbFnDc7w0W9eIjiOm7Gx+SwRKIw+B6DeR2x3meGk7tJ1VSGMgePQZh3s5RoCte6yE
-        kOJK9TjaW4Y0UUUorRvS3Fvfa1As8tiNe6kQ4MpIbrysUnj8ueEl7G62F+alH5u6vRO3mo
-        FDmEoGOB+PE5GNyv6pUVbQVdrcR1N4G6P2XDy7qW+V07DNnMPPjAJk9nuiGisSbluX5SOc
-        o0fu4QURxPL6KlppEI7Let5TRUxeq8BkU9OdZ+irQgxk30y69cpr0oBlYCKZRPe8wA26RH
-        Q/MjSZwaUW2ryapm+01qBnSm8jEnfTeqQhk5+84/AFDu6vX7utm8TqD4JLO59w==
-Received: from EXHUBCAS02.msx-dhbw-rv.intra (141.68.130.12) by
- exhubcas01.msx-dhbw-rv.intra (141.68.130.11) with Microsoft SMTP Server (TLS)
- id 14.3.498.0; Mon, 15 May 2023 01:54:45 +0200
-Received: from EXMAIL02.msx-dhbw-rv.intra ([141.68.130.22]) by exhubcas02
- ([141.68.130.12]) with mapi id 14.03.0513.000; Mon, 15 May 2023 01:54:43
- +0200
-From:   "Bergmann, Michaela - DHBW-Ravensburg" <bergmann@dhbw-ravensburg.de>
-Subject: Aw: Das META-Unternehmen Zuschuss 
-Thread-Topic: Aw: Das META-Unternehmen Zuschuss 
-Thread-Index: AdmGv3H1QvYiHyu8QKKRvvJCI5+7Og==
-Date:   Sun, 14 May 2023 23:54:41 +0000
-Message-ID: <9B98CDA3A8E98B478103857425C9C0FD042A441359@exmail02>
-Reply-To: "contact@mtagroup.info" <contact@mtagroup.info>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
+        Sun, 14 May 2023 20:22:02 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B873A1B1
+        for <linux-wireless@vger.kernel.org>; Sun, 14 May 2023 17:22:00 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34F0LmIB2014713, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34F0LmIB2014713
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 15 May 2023 08:21:48 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 15 May 2023 08:21:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 15 May 2023 08:21:56 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 15 May 2023 08:21:56 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Jes Sorensen <Jes.Sorensen@gmail.com>
+Subject: RE: [PATCH v4 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
+Thread-Topic: [PATCH v4 1/2] wifi: rtl8xxxu: Support new chip RTL8192FU
+Thread-Index: AQHZhdwsrFGRToeLFU6+3rypbdTZla9aeqYw
+Date:   Mon, 15 May 2023 00:21:56 +0000
+Message-ID: <440f821c34bd4b48861dbcafe9ac4fc5@realtek.com>
+References: <7dcf9fb9-1c97-ac28-5286-2236e287a18c@gmail.com>
+In-Reply-To: <7dcf9fb9-1c97-ac28-5286-2236e287a18c@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-originating-ip: [141.68.120.240]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-To:     Undisclosed recipients:;
-X-Rspamd-Queue-Id: 4QKKRF0Gv1z52B5s
-X-Rspamd-UID: 483599
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,LOTS_OF_MONEY,
-        MONEY_FORM,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-META Unternehmen
-Facebook, Instagram und WhatsApp
-1601 WILLOW ROAD MENLO PARK, CA 94025
-www. facebook. com
-
-Dem Unternehmen META geh=F6ren neben anderen Produkten und Dienstleistungen=
- auch Facebook, Instagram und WhatsApp. Meta ist eines der wertvollsten Unt=
-ernehmen der Welt.
-
-META (die Muttergesellschaft von Facebook, Instagram und WhatsApp) vergibt =
-einen Zuschuss in H=F6he von $920.000,00USD an 10 gl=FCckliche Kunden aus a=
-llen L=E4ndern der Welt. Wir gratulieren Ihnen, dass Sie einer der zehn Gl=
-=FCcklichen sind, die diesen Zuschuss von $920.000,00USD erhalten.
-
-Kontaktieren Sie uns per E-Mail: contact@mtagroup.info mit den folgenden In=
-formationen, um Ihren Zuschuss zu bearbeiten.
-=A0
-Vollst=E4ndige Namen .............
-Telefonnummer ........
-Adresse .............
-Land ................
-Geschlecht .................
-Alter ....................
-Beruf .............
-=A0
-Die Firma META sch=E4tzt Ihr Recht auf Privatsph=E4re! Ihre Daten sind zu 1=
-00 % sicher und werden ausschlie=DFlich f=FCr den Zweck dieses Zuschusses v=
-erwendet.
-
-Es gelten die allgemeinen Gesch=E4ftsbedingungen.
-
-
-
-B=FCro des Pr=E4sidenten von
-Facebook-CEO
-Herr Mark Zuckerberg
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+DQo+IFNlbnQ6IFN1bmRheSwgTWF5IDE0LCAyMDIz
+IDQ6NDggQU0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KPiBDYzogSmVz
+IFNvcmVuc2VuIDxKZXMuU29yZW5zZW5AZ21haWwuY29tPjsgUGluZy1LZSBTaGloIDxwa3NoaWhA
+cmVhbHRlay5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCB2NCAxLzJdIHdpZmk6IHJ0bDh4eHh1OiBT
+dXBwb3J0IG5ldyBjaGlwIFJUTDgxOTJGVQ0KPiANCj4gVGhpcyBpcyBhIG5ld2VyIGNoaXAsIHNp
+bWlsYXIgdG8gdGhlIFJUTDg3MTBCVSBpbiB0aGF0IGl0IHVzZXMgdGhlIHNhbWUNCj4gUEhZIHN0
+YXR1cyBzdHJ1Y3RzLg0KPiANCj4gRmVhdHVyZXM6IDIuNCBHSHosIGIvZy9uIG1vZGUsIDJUMlIs
+IDMwMCBNYnBzLg0KPiANCj4gSXQgY2FuIGFsbGVnZWRseSBoYXZlIEJsdWV0b290aCwgYnV0IHRo
+YXQncyBub3QgaW1wbGVtZW50ZWQgaGVyZS4NCj4gDQo+IFRoaXMgY2hpcCBjYW4gaGF2ZSBtYW55
+IFJGRSAoUkYgZnJvbnQgZW5kKSB0eXBlcywgb2Ygd2hpY2ggdHlwZXMgMQ0KPiBhbmQgNSBhcmUg
+dGhlIG9ubHkgb25lcyB0ZXN0ZWQuIE1hbnkgb2YgdGhlIG90aGVyIHR5cGVzIG5lZWQgZGlmZmVy
+ZW50DQo+IGluaXRpYWxpc2F0aW9uIHRhYmxlcy4gVGhleSBjYW4gYmUgYWRkZWQgaWYgc29tZW9u
+ZSB3YW50cyB0aGVtLg0KPiANCj4gVGhlIHZlbmRvciBkcml2ZXIgdjUuOC42LjJfMzU1MzguMjAx
+OTEwMjhfQ09FWDIwMTkwOTEwLTBkMDIgZnJvbQ0KPiBodHRwczovL2dpdGh1Yi5jb20vQnJpZ2h0
+WC9ydGw4MTkyZnUgd2FzIHVzZWQgYXMgcmVmZXJlbmNlLCB3aXRoDQo+IGFkZGl0aW9uYWwgZGV2
+aWNlIElEcyB0YWtlbiBmcm9tDQo+IGh0dHBzOi8vZ2l0aHViLmNvbS9rZWxlYmVrMzMzL3J0bDgx
+OTJmdS1ka21zLg0KPiANCj4gVGhlIHZlbmRvciBkcml2ZXIgYWxzbyBjbGFpbXMgdG8gc3VwcG9y
+dCBkZXZpY2VzIHdpdGggSUQgMGJkYTphNzI1LA0KPiBidXQgdGhhdCBpcyBmb3VuZCBpbiBzb21l
+IGJsdWV0b290aC1vbmx5IGRldmljZXMsIHNvIGl0J3Mgbm90IHN1cHBvcnRlZA0KPiBoZXJlLg0K
+PiANCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFp
+bC5jb20+DQoNClJldmlld2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4N
+Cg0KDQoNCg==
