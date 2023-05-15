@@ -2,81 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAD417027E8
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 11:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A489A702824
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 11:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239631AbjEOJKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 May 2023 05:10:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
+        id S240063AbjEOJTg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 May 2023 05:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238810AbjEOJKQ (ORCPT
+        with ESMTP id S239763AbjEOJTG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 May 2023 05:10:16 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD431981
-        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 02:10:04 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1pyUDS-0002Wj-0h; Mon, 15 May 2023 11:10:02 +0200
-Message-ID: <36eac50e-912b-a9af-2041-4d28b2eeb4e8@leemhuis.info>
-Date:   Mon, 15 May 2023 11:10:01 +0200
+        Mon, 15 May 2023 05:19:06 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 131F2272D;
+        Mon, 15 May 2023 02:14:00 -0700 (PDT)
+Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QKYTx1CBjzqSV0;
+        Mon, 15 May 2023 17:09:41 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
+ (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 15 May
+ 2023 17:13:58 +0800
+From:   Zhengchao Shao <shaozhengchao@huawei.com>
+To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <johannes@sipsolutions.net>, <kvalo@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+CC:     <jaewan@google.com>, <steen.hegelund@microchip.com>,
+        <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
+        <shaozhengchao@huawei.com>,
+        <syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com>
+Subject: [PATCH net-next,v2] mac80211_hwsim: fix memory leak in hwsim_new_radio_nl
+Date:   Mon, 15 May 2023 17:22:27 +0800
+Message-ID: <20230515092227.2691437-1-shaozhengchao@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH] wifi: iwlwifi: mvm: rfi: disable RFI feature
-Content-Language: en-US, de-DE
-To:     Jeff Chua <jeff.chua.linux@gmail.com>, gregory.greenman@intel.com
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230430201830.2f8f88fe49f6.I2f0076ef1d1cbe5d10010549c875b7038ec4c365@changeid>
- <CAAJw_ZuFaE-oYWQWQ+k0Lz_GcJH+adF6SZuwaKpV8UB0XGqVzw@mail.gmail.com>
- <CAAJw_ZsK5c5Y7NpFeNG6i2-kozeT9jscog57+bwwEy6RtiFm8Q@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <CAAJw_ZsK5c5Y7NpFeNG6i2-kozeT9jscog57+bwwEy6RtiFm8Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1684141804;a16b0b18;
-X-HE-SMSGID: 1pyUDS-0002Wj-0h
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500026.china.huawei.com (7.185.36.106)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04.05.23 15:30, Jeff Chua wrote:
-> On Mon, May 1, 2023 at 7:56 AM Jeff Chua <jeff.chua.linux@gmail.com> wrote:
->>
->> On Mon, May 1, 2023 at 1:18 AM <gregory.greenman@intel.com> wrote:
->>>
->>> From: Gregory Greenman <gregory.greenman@intel.com>
->>>
->>> This feature depends on a platform bugfix. Until we have a
->>> mechanism that can verify a platform has the required bugfix,
->>> disable RFI.
+When parse_pmsr_capa failed in hwsim_new_radio_nl, the memory resources
+applied for by pmsr_capa are not released. Add release processing to the
+incorrect path.
 
-Hmm, looks from here like there was no progress with this for two weeks
-now. :-/
+Fixes: 92d13386ec55 ("mac80211_hwsim: add PMSR capability support")
+Reported-by: syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+---
+v2: move the value assigned to pmsr_capa before parse_pmsr_capa
+---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
->> Greg,
->>
->> Patch applied and worked! Thank you!
-> 
-> Only issue with that is I was in the office with EAP, and couldn't
-> connect to the WIFI. I'll need more time to bisect next week at the
-> office.
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 9a8faaf4c6b6..89c7a1420381 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -5964,10 +5964,11 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
+ 			ret = -ENOMEM;
+ 			goto out_free;
+ 		}
++		param.pmsr_capa = pmsr_capa;
++
+ 		ret = parse_pmsr_capa(info->attrs[HWSIM_ATTR_PMSR_SUPPORT], pmsr_capa, info);
+ 		if (ret)
+ 			goto out_free;
+-		param.pmsr_capa = pmsr_capa;
+ 	}
+ 
+ 	ret = mac80211_hwsim_new_radio(info, &param);
+-- 
+2.34.1
 
-Jeff, did you ever look into this and check if that's due to the
-proposed patch or some other change applied for 6.4? If it's (likely)
-the latter it might be the best if we go ahead with this change and
-handle the other problem separately.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
