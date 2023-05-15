@@ -2,91 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 215BC703DB1
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 21:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDF8703DD0
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 21:44:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245215AbjEOTZm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 15 May 2023 15:25:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40014 "EHLO
+        id S244534AbjEOToC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 May 2023 15:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245186AbjEOTZZ (ORCPT
+        with ESMTP id S243617AbjEOToA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 15 May 2023 15:25:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77CE517948;
-        Mon, 15 May 2023 12:24:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 15 May 2023 15:44:00 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D72FDC58
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 12:43:59 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A9EB9980089
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 19:43:57 +0000 (UTC)
+Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C6BD62299;
-        Mon, 15 May 2023 19:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CDAC433D2;
-        Mon, 15 May 2023 19:24:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684178691;
-        bh=C4wXwE3SPYYJ5PgdOQEua70Xotse/PA3G9oTdV89q3o=;
-        h=Date:From:To:Cc:Subject:From;
-        b=KvDlSowej9w11xUBHag2aqhuCFCP0F3u4EfeKILBNNsqpIcU0dccNWO71WMmo3ylV
-         3pRRZ6+nWsFdzLcyeUSSdtoaY2XVtf92vBREFxb0drolV19E++uxYdBbxBe8tZ569N
-         pvvf+J0rz9lmAqsPaFsGJqxmusFzNE4/WSP+PRbRUfvDjuqFsJqyBP8Bgiq+KaZ+N2
-         8og8sVCcwNjLRx+9VEZcNx0NEonYI6dsjO8m+VoI8GvtW6WpWfwg6pyBfPXMIoX90D
-         1/Trv+ggdmK9DxOqrp4dPgMi3VIsnkZSus9RLioTbQxXGhhG9fyKxe9bWmOSiqOxSj
-         rfjgSMIsZKVlw==
-Date:   Mon, 15 May 2023 13:25:39 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH][next] wifi: wil6210: wmi: Replace zero-length array with
- DECLARE_FLEX_ARRAY() helper
-Message-ID: <ZGKHM+MWFsuqzTjm@work>
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 0935513C2B0
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 12:43:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0935513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1684179837;
+        bh=ESIJjeP/9mIJEJrS8e0niyAydWzurxN4H57o9ESSE7w=;
+        h=Date:To:From:Subject:From;
+        b=Cgm+ZubBPHvDa5XJJ5iJ6oOWkm/RLOn3Hnz1IMWiVGelBUQES1Cln6+m8a4BUUqmY
+         rH1UR2xLQHXH/NZzuZWNp3pyeprPphtU1khmTRFLIWGE+7pvlz/sQZu37qUG1zskyK
+         7tYZrpfo8SikzCgGajoZR3cMkDRSpeBugPUyk5T4=
+Message-ID: <3c897080-aea5-82cb-2136-7d36201cc976@candelatech.com>
+Date:   Mon, 15 May 2023 12:43:56 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+From:   Ben Greear <greearb@candelatech.com>
+Subject: Plan to update 'iw' for wifi-7?
+Organization: Candela Technologies
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1684179838-0d62CIn9jQNW
+X-MDID-O: us5;at1;1684179838;0d62CIn9jQNW;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zero-length arrays are deprecated, and we are moving towards adopting
-C99 flexible-array members, instead. So, replace zero-length arrays
-declarations alone in structs with the new DECLARE_FLEX_ARRAY()
-helper macro.
+Hello,
 
-This helper allows for flexible-array members alone in structs.
+ From what I can tell, iw doesn't how any wifi-7 capabilities.  What is the plan to add this?
 
-Link: https://github.com/KSPP/linux/issues/193
-Link: https://github.com/KSPP/linux/issues/288
-Link: https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/ath/wil6210/wmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Ben
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-index 9affa4525609..71bf2ae27a98 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.h
-+++ b/drivers/net/wireless/ath/wil6210/wmi.h
-@@ -2763,7 +2763,7 @@ struct wmi_rf_xpm_write_result_event {
- 
- /* WMI_TX_MGMT_PACKET_EVENTID */
- struct wmi_tx_mgmt_packet_event {
--	u8 payload[0];
-+	DECLARE_FLEX_ARRAY(u8, payload);
- } __packed;
- 
- /* WMI_RX_MGMT_PACKET_EVENTID */
 -- 
-2.34.1
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
