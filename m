@@ -2,46 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7302E70228E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 05:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3077B702663
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 May 2023 09:50:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238190AbjEODmB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 14 May 2023 23:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47588 "EHLO
+        id S239651AbjEOHuj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 15 May 2023 03:50:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238452AbjEODlS (ORCPT
+        with ESMTP id S238839AbjEOHuh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 14 May 2023 23:41:18 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F65E189;
-        Sun, 14 May 2023 20:38:46 -0700 (PDT)
-Received: from dggpeml500026.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QKQ362z3czqSKL;
-        Mon, 15 May 2023 11:34:26 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpeml500026.china.huawei.com
- (7.185.36.106) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 15 May
- 2023 11:38:43 +0800
-From:   Zhengchao Shao <shaozhengchao@huawei.com>
-To:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <johannes@sipsolutions.net>, <kvalo@kernel.org>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>
-CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
-        <shaozhengchao@huawei.com>,
-        <syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com>
-Subject: [PATCH net-next] mac80211_hwsim: fix memory leak in hwsim_new_radio_nl
-Date:   Mon, 15 May 2023 11:47:12 +0800
-Message-ID: <20230515034712.2425489-1-shaozhengchao@huawei.com>
-X-Mailer: git-send-email 2.34.1
+        Mon, 15 May 2023 03:50:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB81199F
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 00:50:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30B6861FA2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 May 2023 07:50:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 85900C433A4;
+        Mon, 15 May 2023 07:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684137025;
+        bh=WPkossC5wCRbrnRCBcADhhmyj2KDsombbtJfKgYZl8A=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=HjzxpCGz+Acela76tqnVmbBKETgX9yK4lu1FpvpY4698y6tdrSEH27dsidhwp5/tG
+         /6BovS1FpoAD3FLrDKW342NnC2ue9+cXi/7zzWtSn5+L9ic1RLG0rpRtPVHPjw1+Ps
+         nV10BsO/QlOXMgiPt+h+Pv9wZzKRIaoWQ/9uHHRE6fS+Zy+Vkfl74q8zSUHReLvfLm
+         8ddGZJwjXdJOcn+kGSaHexDdYBXRBDaz5PCIMpno9HjDYMS3uWnbF5HPQDxAOT+eNC
+         NpjoXWGeAkTYFDA4l6Zi+D/LdzdAZhTZRLitaorX7ofn31xvagHNIB2YEy/nij1M6Q
+         fAISdzh7j0vIA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 54E7DE5421B;
+        Mon, 15 May 2023 07:50:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500026.china.huawei.com (7.185.36.106)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2023-05-12
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168413702534.26935.6972873267729953061.git-patchwork-notify@kernel.org>
+Date:   Mon, 15 May 2023 07:50:25 +0000
+References: <20230512102647.8C727C433EF@smtp.kernel.org>
+In-Reply-To: <20230512102647.8C727C433EF@smtp.kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,33 +56,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When parse_pmsr_capa failed in hwsim_new_radio_nl, the memory resources
-applied for by pmsr_capa are not released. Add release processing to the
-incorrect path.
+Hello:
 
-Fixes: 92d13386ec55 ("mac80211_hwsim: add PMSR capability support")
-Reported-by: syzbot+904ce6fbb38532d9795c@syzkaller.appspotmail.com
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
----
- drivers/net/wireless/virtual/mac80211_hwsim.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This pull request was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 9a8faaf4c6b6..6a50858a5645 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -5965,8 +5965,10 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
- 			goto out_free;
- 		}
- 		ret = parse_pmsr_capa(info->attrs[HWSIM_ATTR_PMSR_SUPPORT], pmsr_capa, info);
--		if (ret)
-+		if (ret) {
-+			kfree(pmsr_capa);
- 			goto out_free;
-+		}
- 		param.pmsr_capa = pmsr_capa;
- 	}
- 
+On Fri, 12 May 2023 10:26:47 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
+> 
+> Kalle
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-next-2023-05-12
+    https://git.kernel.org/netdev/net-next/c/6d4ff8aed3b3
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
