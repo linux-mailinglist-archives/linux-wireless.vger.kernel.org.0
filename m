@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D0A07047B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 10:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8ABC7047B2
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 10:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230469AbjEPIZV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 May 2023 04:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46060 "EHLO
+        id S230454AbjEPIZZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 May 2023 04:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230437AbjEPIZT (ORCPT
+        with ESMTP id S229510AbjEPIZT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 16 May 2023 04:25:19 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B1B30EA
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 01:25:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A87E40D3
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 01:25:18 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34G8OurT6024306, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34G8OwJoA024354, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34G8OurT6024306
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34G8OwJoA024354
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 16 May 2023 16:24:56 +0800
+        Tue, 16 May 2023 16:24:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 16 May 2023 16:25:05 +0800
+ 15.1.2375.32; Tue, 16 May 2023 16:25:07 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 16 May
- 2023 16:25:04 +0800
+ 2023 16:25:06 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 1/3] wifi: rtw89: ser: reset total_sta_assoc and tdls_peer when L2
-Date:   Tue, 16 May 2023 16:24:39 +0800
-Message-ID: <20230516082441.11154-2-pkshih@realtek.com>
+Subject: [PATCH 2/3] wifi: rtw89: tweak H2C TX waiting function for SER
+Date:   Tue, 16 May 2023 16:24:40 +0800
+Message-ID: <20230516082441.11154-3-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230516082441.11154-1-pkshih@realtek.com>
 References: <20230516082441.11154-1-pkshih@realtek.com>
@@ -63,39 +63,83 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-The total_sta_assoc and the tdls_peer are used for statistics accodring
-to stations' information. L2 (Level 2) SER (system error recovery) will
-call ieee80211_restart_hw() which re-invokes sta_state ops. And then,
-the total_sta_assoc and tdls_peer will be re-increased. In case wrong
-statistics results, we reset them in SER L2 handling.
+Some specific H2C (host to chip command) needs waiting until FW ACK by
+C2H (chip to host event). However, during SER (system error recovery),
+most interrupts are disabled, so we can't receive C2H immediately. It
+causes this kind of H2C TX waits will always time out during SER.
+
+To save time spent by SER, we don't do these redundant waits. And, to
+make a difference from -ETIMEDOUT in other cases, we make the function
+return 1 for SER case. When some H2C callers really catch `ret == 1` at
+runtime, they can determine whether it's reasonable or not, and consider
+how to resolve their flow if needed.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/ser.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.h | 1 +
+ drivers/net/wireless/realtek/rtw89/fw.c   | 8 ++++++++
+ drivers/net/wireless/realtek/rtw89/ser.c  | 2 ++
+ 3 files changed, 11 insertions(+)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index b60cd9852259e..5893ac9eb3f9b 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3504,6 +3504,7 @@ enum rtw89_flags {
+ 	RTW89_FLAG_LOW_POWER_MODE,
+ 	RTW89_FLAG_INACTIVE_PS,
+ 	RTW89_FLAG_CRASH_SIMULATING,
++	RTW89_FLAG_SER_HANDLING,
+ 	RTW89_FLAG_WOWLAN,
+ 	RTW89_FLAG_FORBIDDEN_TRACK_WROK,
+ 	RTW89_FLAG_CHANGING_INTERFACE,
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index ad277f22b1973..b7befcfd4a913 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -3792,6 +3792,11 @@ int rtw89_fw_wow_cam_update(struct rtw89_dev *rtwdev,
+ 	return ret;
+ }
+ 
++/* Return < 0, if failures happen during waiting for the condition.
++ * Return 0, when waiting for the condition succeeds.
++ * Return > 0, if the wait is considered unreachable due to driver/FW design,
++ * where 1 means during SER.
++ */
+ static int rtw89_h2c_tx_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ 				 struct rtw89_wait_info *wait, unsigned int cond)
+ {
+@@ -3804,6 +3809,9 @@ static int rtw89_h2c_tx_and_wait(struct rtw89_dev *rtwdev, struct sk_buff *skb,
+ 		return -EBUSY;
+ 	}
+ 
++	if (test_bit(RTW89_FLAG_SER_HANDLING, rtwdev->flags))
++		return 1;
++
+ 	return rtw89_wait_for_cond(wait, cond);
+ }
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index 9ba99f3764e7e..54b314b8b3292 100644
+index 54b314b8b3292..0462ba693f6fd 100644
 --- a/drivers/net/wireless/realtek/rtw89/ser.c
 +++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -303,6 +303,7 @@ static void ser_reset_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- 	rtw89_core_release_bit_map(rtwdev->hw_port, rtwvif->port);
- 	rtwvif->net_type = RTW89_NET_TYPE_NO_LINK;
- 	rtwvif->trigger = false;
-+	rtwvif->tdls_peer = 0;
- }
- 
- static void ser_sta_deinit_cam_iter(void *data, struct ieee80211_sta *sta)
-@@ -341,6 +342,8 @@ static void ser_reset_mac_binding(struct rtw89_dev *rtwdev)
- 	rtw89_core_release_all_bits_map(rtwdev->mac_id_map, RTW89_MAX_MAC_ID_NUM);
- 	rtw89_for_each_rtwvif(rtwdev, rtwvif)
- 		ser_reset_vif(rtwdev, rtwvif);
-+
-+	rtwdev->total_sta_assoc = 0;
- }
- 
- /* hal function */
+@@ -409,6 +409,7 @@ static void ser_idle_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 	switch (evt) {
+ 	case SER_EV_STATE_IN:
+ 		rtw89_hci_recovery_complete(rtwdev);
++		clear_bit(RTW89_FLAG_SER_HANDLING, rtwdev->flags);
+ 		clear_bit(RTW89_FLAG_CRASH_SIMULATING, rtwdev->flags);
+ 		break;
+ 	case SER_EV_L1_RESET_PREPARE:
+@@ -421,6 +422,7 @@ static void ser_idle_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 		ser_state_goto(ser, SER_L2_RESET_ST);
+ 		break;
+ 	case SER_EV_STATE_OUT:
++		set_bit(RTW89_FLAG_SER_HANDLING, rtwdev->flags);
+ 		rtw89_hci_recovery_start(rtwdev);
+ 		break;
+ 	default:
 -- 
 2.25.1
 
