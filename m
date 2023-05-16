@@ -2,124 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66931705598
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 20:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 103067055DE
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 20:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbjEPSCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 May 2023 14:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
+        id S232109AbjEPSTt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 May 2023 14:19:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjEPSCq (ORCPT
+        with ESMTP id S232164AbjEPSTq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 May 2023 14:02:46 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75D27E0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 11:02:45 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0DA1FB8006C
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 18:02:42 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 8805213C2B0;
-        Tue, 16 May 2023 11:02:41 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8805213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1684260161;
-        bh=9wzoQXDCuK8zVJxElKPiOjahf8PcuvnqVfzJAFELXcg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VxRWtSllgcOzkSMFT3K534E2y4z02sjioiOviXMr5SfG+Rhlx1zwmtbJoX3e2ONc7
-         ua2ia8wYujX5vLe9GR+8nuhl9q3tuO3vZtrP55nj9yjYfJ0LdnxGtIrIVJp8UGeZIu
-         qSr3OUVrXpEYybaqlFeQu77rMFU8syGFsikRLdNc=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] iw:  Fix EHT rates printing.
-Date:   Tue, 16 May 2023 11:02:38 -0700
-Message-Id: <20230516180238.673624-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.40.0
+        Tue, 16 May 2023 14:19:46 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C5B26AB
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 11:19:37 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae3fe67980so8107455ad.3
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 11:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1684261177; x=1686853177;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=alPm1FkLfJCzAk9pEVOJArmhF62w6dqf91iv/i5ryBk=;
+        b=GfVb7bP9VkgyQIpD6rmCEdxEa2h4o48x0FB0TnkzXoe0SUE9nRrwUQ0Qx4s+FJPmUN
+         o+GTZGH33myPwTlPd14fYLgg3Dbpev6hLXs3CIuI+C+mXv0lsQGdfzbsgR4KXgYJwRlL
+         o5om+MRUpKCRVwbB+6dHjMS696gCKLhrt9p4M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684261177; x=1686853177;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=alPm1FkLfJCzAk9pEVOJArmhF62w6dqf91iv/i5ryBk=;
+        b=LUZGo258pl2ccibtoCmCnIVEpRI1qE8UPli8zXEKFP5DBhE8k3/PmjXE/ITNfFETNr
+         j4CqZ8YQ9qCPgsB/OSquolwPOejrNGvtCwFVB0KfWfIhzoA7WLD24qt3fwq2/flNTfiI
+         mMHZAhnbjtaEqs465CvUM5H4GxyQ32GXlC01uoimjcbqcqXamcL2mUiSr32bN7Eq7ir7
+         WYCSSE6mclz1Zerx5MyHJItRc7ukPlorvsMNAmjn+MJ0Xir9gsRMu+r2REhtTphVWw95
+         nU5AqskHExkxtAQEsQ8xYulSKqCyv3CbQvtcwXNaU58AdSn3vDkGjCE4oChXZQXR6gz6
+         ENTQ==
+X-Gm-Message-State: AC+VfDywV0RU2ha+wQ/0HS6xxrhAB+61xkhYSzwsYJuyO8Oa3aFvHOnD
+        sq7u/B7c591LI+9wA5jJwx8tRw==
+X-Google-Smtp-Source: ACHHUZ6uVa+nfzK9d6+UKGJYTR7xfDV6f0n91uwgaR0OIfF6UxU7TS/xzV7gJVCr5GhfD4qejQviBQ==
+X-Received: by 2002:a17:902:db02:b0:1ac:815e:320b with SMTP id m2-20020a170902db0200b001ac815e320bmr36577912plx.17.1684261177044;
+        Tue, 16 May 2023 11:19:37 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id g14-20020a1709029f8e00b001ac68a87255sm15831519plq.93.2023.05.16.11.19.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 May 2023 11:19:36 -0700 (PDT)
+Date:   Tue, 16 May 2023 11:19:35 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: wil6210: fw: Replace zero-length arrays with
+ DECLARE_FLEX_ARRAY() helper
+Message-ID: <202305161119.2158E464CF@keescook>
+References: <ZGKHByxujJoygK+l@work>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1684260162-hnxkoY8BPs7Z
-X-MDID-O: us5;ut7;1684260162;hnxkoY8BPs7Z;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZGKHByxujJoygK+l@work>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On Mon, May 15, 2023 at 01:24:55PM -0600, Gustavo A. R. Silva wrote:
+> Zero-length arrays are deprecated, and we are moving towards adopting
+> C99 flexible-array members, instead. So, replace zero-length arrays
+> declarations alone in structs with the new DECLARE_FLEX_ARRAY()
+> helper macro.
+> 
+> This helper allows for flexible-array members alone in structs.
+> 
+> Link: https://github.com/KSPP/linux/issues/193
+> Link: https://github.com/KSPP/linux/issues/287
+> Link: https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-The 20Mhz rates thing is a union with the others, so print one or
-the other.  This appears to fix the output of the mcs/bw printout.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- util.c | 46 +++++++++++++++++++++-------------------------
- 1 file changed, 21 insertions(+), 25 deletions(-)
-
-diff --git a/util.c b/util.c
-index 31b0308..75f415e 100644
---- a/util.c
-+++ b/util.c
-@@ -1541,33 +1541,29 @@ static void __print_eht_capa(int band,
- 			printf("%s\t\tEHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
- 			       pre, mcs[i],
- 			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
--	}
--
--	mcs_set += 4;
--	if (he_phy_cap[0] & (BIT(2) << 8)) {
--		for (i = 0; i < 3; i++)
--			printf("%s\t\tEHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i + 1],
--			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
--
--	}
--
--	mcs_set += 3;
--	if (he_phy_cap[0] & (BIT(3) << 8)) {
--		for (i = 0; i < 3; i++)
--			printf("%s\t\tEHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i + 1],
--			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
--
--	}
-+	} else {
-+		if (he_phy_cap[0] & (BIT(2) << 8)) {
-+			for (i = 0; i < 3; i++)
-+				printf("%s\t\tEHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
-+				       pre, mcs[i + 1],
-+				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+		}
-+		mcs_set += 3;
- 
--	mcs_set += 3;
--	if (band == NL80211_BAND_6GHZ && (phy_cap[0] & BIT(1))) {
--		for (i = 0; i < 3; i++)
--			printf("%s\t\tEHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i + 1],
--			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+		if (he_phy_cap[0] & (BIT(3) << 8)) {
-+			for (i = 0; i < 3; i++)
-+				printf("%s\t\tEHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
-+				       pre, mcs[i + 1],
-+				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+		}
- 
-+		mcs_set += 3;
-+		if (band == NL80211_BAND_6GHZ && (phy_cap[0] & BIT(1))) {
-+			for (i = 0; i < 3; i++)
-+				printf("%s\t\tEHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
-+				       pre, mcs[i + 1],
-+				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+		}
- 	}
- 
- 	if (ppet && ppet_len && (phy_cap[1] & BIT(11))) {
 -- 
-2.40.0
-
+Kees Cook
