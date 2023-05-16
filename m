@@ -2,65 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A66705223
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 17:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6B26705427
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 18:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232617AbjEPPa3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 May 2023 11:30:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53516 "EHLO
+        id S229678AbjEPQkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 May 2023 12:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232434AbjEPPa0 (ORCPT
+        with ESMTP id S231806AbjEPQjw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 May 2023 11:30:26 -0400
-Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231AF5FEB
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 08:30:25 -0700 (PDT)
-Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-453859b6b18so2161942e0c.3
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 08:30:25 -0700 (PDT)
+        Tue, 16 May 2023 12:39:52 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F4B19C
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 09:39:44 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-965c3f9af2aso2205489066b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 09:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684251024; x=1686843024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oCgs2LTB3dxZ4xbHOHdUNZqAn1/mmiw/ghYzbuQljZU=;
-        b=V9YJEg/pEqnB3v5VcBwBpPPTgZBOsaFIS90Y6hN3+xWAgbMbfqreIs+qXZlYbW6Obw
-         YO1+B6R8O0RBixptgo+6TJ4CimLm8FNE0SQQalFyjSU5FE3uaw8DYyXT2SnkZBrQyN9b
-         BVoLPPqjEQAFmrMEWsdL2TJUXWoqTM0kXsWKciKRb1nVbMl//gd5QRQvET6vlPdC3kWj
-         Om2GBs8L7qDddaMbNOu6qC0Hl8a9clWnDVSpPRXsWVIZZTCE1ZUjR99nl6Iv1Uw146VZ
-         JZ6XPmey+krkHmpXbdu7jnmI09EdzWxMFmNpxdQwaaIdzktgx+yimkMrHYiWoxBzRhtA
-         KJCw==
+        d=googlemail.com; s=20221208; t=1684255183; x=1686847183;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TTErjYm0YU/D0XaSqiHAs0XifIDzBMEoij1eY6eHmxo=;
+        b=GgEW0lp3ZwlmEvRVGAJJxxi2ib2aDMulEPdQ5yPyR8ownpLrIt1L2nycvUNIpfUzV5
+         6DaewNVX/nTFtEZIS4FVconnMA7unC7QhbDNM38CGlWpvzjf+uPgnQWGo5LZRE70MCjc
+         aiCUMu7hEu2FL0pQgTgqI0wVuM7FLVj8ApoJ55Rx0hiC/C0KBrw1tRB+i6d0iLa/qccM
+         VH4gHxpkY9gRsOyXWelkiwm2eRKi7owPzNYx/fKfbBSj+PzhZDiJx1r7V23OFXa77q6K
+         IKbV1x9z67/AmR57fD8VkCoPJBgiT1nfUJtPTaYSVQ2zVUZJUE+qqIygog12PP03BTjc
+         +ecA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684251024; x=1686843024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oCgs2LTB3dxZ4xbHOHdUNZqAn1/mmiw/ghYzbuQljZU=;
-        b=WEtB9VHE+ouRlw1ndh6HIRH549UbIn/jprXStyq/R/L2Wdae8SiEXrLL2FY522uaCS
-         BW/CrJ9TdkOzpSqeDY/278KSUYdOqhbejURlOuGFduk9MOo/NiTRQ/G+DaU6ZzqwmRpy
-         LHLMcuVcXX38TDzig+fVkAV6CibyGjqU6Iap+mamkgtYcxQkuGbiivB8QxKLGXxNG199
-         gyqIDhQemvZ4UCmiLk64PMvyOgiAYVESbAGCb4GQtLbN0C2Futuc2yVrM3g+w8nSE3QJ
-         XYrvdeQLwi2eOvgnzE5rqGh5hjseo+gafg76py1piWSigaiFrmJHouJIxslSbITyXQ6I
-         mFSQ==
-X-Gm-Message-State: AC+VfDz63YhsZKpZM6H0V1vDm4wurQp9+XCeue2mKTTgLzOymvRP3Ppv
-        rkmljW//PbPV6JtPG+ycGXgQmV5ge/SeK2lZx/s=
-X-Google-Smtp-Source: ACHHUZ4kxuYtwNEJ2Vc+kAaUbNXdY/23mc8LHFZB/pvufBQkO2ZvfY3Hdh8WcvxoMRpdXeb1GCxr0QvhY4/FyDGPPsA=
-X-Received: by 2002:a1f:4d06:0:b0:44f:d1d6:1978 with SMTP id
- a6-20020a1f4d06000000b0044fd1d61978mr12665773vkb.5.1684251024008; Tue, 16 May
- 2023 08:30:24 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684255183; x=1686847183;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TTErjYm0YU/D0XaSqiHAs0XifIDzBMEoij1eY6eHmxo=;
+        b=eY+RgRphOEAMLZQiZ4dIBByh3vw1QG0YVowl2V5zx/BJWJsJKuQcwUJ84hHgzgZyl1
+         iw0NOZh46Ki9VuX7/BB1ys5HjQy74m82kj1/2qco3+dEjSIuhHa5fn2/rU22cmIPnK2T
+         ckBIbmU7vGjEKgDWh1RiagOI7Ez3GVzkxgeXjgm3jQDh4TsuEksXN74IqyfCdSTxEPYJ
+         IFy1bWiuNB0uLb4ejxorjcA2YY1G1xQx/z/E0M1E7q80FPm14NwWLnsu0wDDos+VrFq8
+         9nsKNlZpboCL7Rz9aCFqM8EjSVdqd4hms74RYCZRRiUdALjABK837g1GMUjlQW3VA0bj
+         jIiw==
+X-Gm-Message-State: AC+VfDyTpCCcSzzkOf6fkEB7LeEuNDiDiBhgScji+zJEBhvAALfyRvBc
+        ulgA+wgZgYP5w3DHdSsBQPDhR+wm3dmfaX8PBj0=
+X-Google-Smtp-Source: ACHHUZ6KE3vDBkS6VW69jQzYi/F2uvTObbro3w2ez2bEorun15jGSliPu5XB8J4K8JzlssskEB0ioxmSoD4f53SylJk=
+X-Received: by 2002:a17:907:868f:b0:969:f9e8:a77c with SMTP id
+ qa15-20020a170907868f00b00969f9e8a77cmr27195437ejc.64.1684255182708; Tue, 16
+ May 2023 09:39:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230430201830.2f8f88fe49f6.I2f0076ef1d1cbe5d10010549c875b7038ec4c365@changeid>
- <CAAJw_ZuFaE-oYWQWQ+k0Lz_GcJH+adF6SZuwaKpV8UB0XGqVzw@mail.gmail.com>
- <CAAJw_ZsK5c5Y7NpFeNG6i2-kozeT9jscog57+bwwEy6RtiFm8Q@mail.gmail.com> <36eac50e-912b-a9af-2041-4d28b2eeb4e8@leemhuis.info>
-In-Reply-To: <36eac50e-912b-a9af-2041-4d28b2eeb4e8@leemhuis.info>
-From:   Jeff Chua <jeff.chua.linux@gmail.com>
-Date:   Tue, 16 May 2023 23:30:13 +0800
-Message-ID: <CAAJw_ZuzsEsoOR0HsbEfhpxnUAxyh2dmJ+37eEspv=ZTjDL9cw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: iwlwifi: mvm: rfi: disable RFI feature
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     gregory.greenman@intel.com, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 16 May 2023 18:39:31 +0200
+Message-ID: <CAFBinCD=HVyedXpqRfAC=m3A=wstDbtQfLDZqjHufSawdLKwiw@mail.gmail.com>
+Subject: wifi: rtw88: questions about adding support for RTL8723DS/RTL8723BS
+To:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>, tony0620emma@gmail.com,
+        jernej.skrabec@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -71,47 +64,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 15, 2023 at 5:10=E2=80=AFPM Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> On 04.05.23 15:30, Jeff Chua wrote:
-> > On Mon, May 1, 2023 at 7:56=E2=80=AFAM Jeff Chua <jeff.chua.linux@gmail=
-.com> wrote:
-> >>
-> >> On Mon, May 1, 2023 at 1:18=E2=80=AFAM <gregory.greenman@intel.com> wr=
-ote:
-> >>>
-> >>> From: Gregory Greenman <gregory.greenman@intel.com>
-> >>>
-> >>> This feature depends on a platform bugfix. Until we have a
-> >>> mechanism that can verify a platform has the required bugfix,
-> >>> disable RFI.
->
-> Hmm, looks from here like there was no progress with this for two weeks
-> now. :-/
+Hello Ping-Ke,
 
-I've tried the latest git pull linux, applied the patch from Greg, it
-works fine on WPA2, but not on EAP. Just couldn't connect. Reverted
-the patch, and downgrade IWL_22000_UCODE_API_MAX from 78 to 75, and
-EAP works again.
+as a next step I want to add support for RTW_WCPU_11N SDIO cards to
+the rtw88 driver.
+Currently only one RTW_WCPU_11N chip is supported: RTL8723D by the
+rtw88 (PCIe and USB HCIs).
+
+My first question is very hopefully a simple one:
+It seems that RTL8723DS has two SDIO IDs: 0xd723 and 0xd724.
+Do these have the same name or is there some kind of "revision" (like
+rev 2, revision B, ...) internally?
+
+My second question is more abstract:
+Based on my understanding of the vendor drivers for RTL8723BS and
+RTL8723DS both seem very close in terms of registers. initialization
+sequence, ...
+So I am hoping that it's possible to add RTL8723BS support to the rtw88 driver.
+There's two main differences that I found so far:
+- rtw_dump_hw_feature() doesn't work because REG_C2HEVT has an
+incorrect value (C2H_HW_FEATURE_REPORT is expected but it still
+contains C2H_HW_FEATURE_DUMP). It seems that this is a firmware issue.
+- The whole ltecoex support (my understanding is: this is part of the
+Bluetooth 4.2 spec but RTL8723BS was originally developed for the
+Bluetooth 4.0 spec) seems missing in terms of all required registers.
+I'm not sure if this is a hardware or firmware topic.
+
+Have you considered adding RTW8723B support to the rtw88 driver?
+Do you have some initial suggestions on what would be needed to do so
+(is my list from above complete, what do do about these points, ...)?
+
+There's a huge number of boards with RTL8723BS out there and I think
+they could benefit from the rtw88 driver (and so we can finally get
+rid of drivers/staging/rtl8723bs/).
 
 
->
-> >> Greg,
-> >>
-> >> Patch applied and worked! Thank you!
-> >
-> > Only issue with that is I was in the office with EAP, and couldn't
-> > connect to the WIFI. I'll need more time to bisect next week at the
-> > office.
->
-> Jeff, did you ever look into this and check if that's due to the
-> proposed patch or some other change applied for 6.4? If it's (likely)
-> the latter it might be the best if we go ahead with this change and
-> handle the other problem separately.
->
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
+Best regards,
+Martin
