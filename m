@@ -2,74 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADCD5705979
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 23:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E6D1705B72
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 01:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbjEPV3l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 May 2023 17:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47968 "EHLO
+        id S231367AbjEPXly (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 May 2023 19:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjEPV3k (ORCPT
+        with ESMTP id S231261AbjEPXlx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 May 2023 17:29:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A35CF6A54
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 14:29:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C371619A5
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 21:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CECC433D2
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 21:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684272578;
-        bh=KdrFBmwsH2DCr1kLBx/EFi0WhyIjHl597QOTRQ1PrTo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Rao2UlWFPds4/Z0048aaBGooRiC4gvttA4YpnyJFEY1yvfbzWTLmPXJk1tBApBzRy
-         /xnh/LacUL+8mk5znjEdaVV63OWtzzUy90lfz0Iif05FLm6WdJB6BmRJzi8hk0tF/h
-         f4WrOrLPQYkpZLOQoJFGc0k0hknp+hmjEtLFM1undVkCAb2AsPyUh0bzjXw1Kx0J3e
-         H44E37epF3h8BSxubnUHjDe41reByXsoO+H8IMNEugx+kmv71b3fSqwkqsb9Vdbh6m
-         dXMrLaT3HBbP6IYNXI4YKChHNvejO0HMa5uKJjZ1uJEb0QrlUwU4oLffM5vB0/Ghfw
-         MUOvV9P/KM3vw==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2aeea823a5eso4612191fa.1
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 14:29:38 -0700 (PDT)
-X-Gm-Message-State: AC+VfDypSZ4a3gsSaChgaDip9zET6H+CIxnB+rWe6PTdlFVhyCIdlg0I
-        XpqGLiDVKe3QvH7R6SQOCVsc92S6rk07/kNQW3Q=
-X-Google-Smtp-Source: ACHHUZ5NrB1cmR2MJRhwC+C1kpZnsCi31ICmNP0Zc/w6YmKerMw32y0W+2AhKAwShOxZrq7MGEeORmlzDG1w99IWTwU=
-X-Received: by 2002:ac2:521b:0:b0:4e8:586c:f13 with SMTP id
- a27-20020ac2521b000000b004e8586c0f13mr154590lfl.6.1684272576666; Tue, 16 May
- 2023 14:29:36 -0700 (PDT)
+        Tue, 16 May 2023 19:41:53 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4231B527C
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 16:41:52 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6ab0967093dso153425a34.3
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 16:41:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684280511; x=1686872511;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=5OqbjUWSPQ7aIaIGQbhH/u54X9htzzqfehRPAy3oeVA=;
+        b=N+se8bLzasUMFYIFs97h3VFz3zzu0j2jcCToV1hJtrNOZ0g5SlmO9a16b+olY7jhH5
+         /fKkwvd7fcY5ijoDD63iRVeHXyRuZ/rVvDLQhuyFTxcbH5IMI+uuHpPjtWMcCvf7LLMd
+         P5Wc9hcAUABa1OlFvdBhgvPp9I8QN39FzQcrTeL1nQFt32arKkqD/AkHo2EdxrhLjZlF
+         XJXR1RStzeMdHrGMgc4VyiuaiIcp7SWQq+1Xnk5du3rffXdw3FS/f55AuJQsfgUz3Nop
+         QJkmpEbr8yoncTjwRd9C3GqgJqhq7viRkmDx4hfNuKovt5jAx9AUaIMpWIQiCgDreOVW
+         VTYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684280511; x=1686872511;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5OqbjUWSPQ7aIaIGQbhH/u54X9htzzqfehRPAy3oeVA=;
+        b=e8SlCl5Yie9yceXzkYZ5db5d6tGluE4f4k0/YuI4yKD6qGmyDZGDXrHx55/HQWIlKL
+         nrSpaTLdeQU9wmYF3KxfgRATWYSKcuWleMi3Q81KzxkCKbDuIP1/8zt1u5Fqk1IZp+Nx
+         0udeGHrFunw9Ltm7o2Sh0NVdJPMvLr2V41VDROwy5MU1okq19VF3rKqC4jc8cKdGvOPR
+         mTGt1WYaQtb2UnMR9AsnRyX7Dm2o66rrblNsYvuEiIkRoshC/4gsdLoLBiyQN55WsnJ6
+         Ymv1YffQTZhqAnl5bzOcoGCm4yDwYPayFppcfX5oZX2taZQLKCBHUEbcFEG8IoKHIj2S
+         Smfw==
+X-Gm-Message-State: AC+VfDyp1XFPREoohqjPQUujcAiZzxE/WRtf/K/s6O66oktltPctCM55
+        z+VDdHsh44kIT0Ya5zw0j10=
+X-Google-Smtp-Source: ACHHUZ7A/I5l0nkDemGPLrItrqUFtmDhZFN37t1nZapO1D/zlFdXyOxUxSyeMleHjepo23vzYVEU3w==
+X-Received: by 2002:a9d:6e0f:0:b0:6ab:75a1:ee1b with SMTP id e15-20020a9d6e0f000000b006ab75a1ee1bmr10504385otr.36.1684280511406;
+        Tue, 16 May 2023 16:41:51 -0700 (PDT)
+Received: from [192.168.0.200] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id o13-20020a9d5c0d000000b006864b5f4650sm13036695otk.46.2023.05.16.16.41.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 May 2023 16:41:50 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <c11a65bc-9927-898b-b91d-fc876b51e19d@lwfinger.net>
+Date:   Tue, 16 May 2023 18:41:50 -0500
 MIME-Version: 1.0
-References: <a22524899498365b0d136f399438306568e77064.1684163657.git.deren.wu@mediatek.com>
-In-Reply-To: <a22524899498365b0d136f399438306568e77064.1684163657.git.deren.wu@mediatek.com>
-From:   Sean Wang <sean.wang@kernel.org>
-Date:   Tue, 16 May 2023 14:29:24 -0700
-X-Gmail-Original-Message-ID: <CAGp9LzrN0Hz2J0QzYCpq1sHN4CANNHPrhtGj326b9wC6YO+15A@mail.gmail.com>
-Message-ID: <CAGp9LzrN0Hz2J0QzYCpq1sHN4CANNHPrhtGj326b9wC6YO+15A@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7921e: report tx retries/failed counts in
- tx free event
-To:     Deren Wu <deren.wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Quan Zhou <quan.zhou@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Driver for rtw8723ds
+Content-Language: en-US
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     =?UTF-8?Q?Jernej_=c5=a0krabec?= <jernej.skrabec@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <72a8eeb1-c91c-80a7-5a09-1b7963e0996b@lwfinger.net>
+ <3162376.5fSG56mABF@jernej-laptop>
+ <cee4e4f8-78e9-1bf7-c1a9-8ae5c662c785@lwfinger.net>
+ <1855371.CQOukoFCf9@jernej-laptop>
+ <CAFBinCCjzLH7ZZJ9Siw1Lp49qneO+qRJp-g8rGwAYuRwNj2Oyw@mail.gmail.com>
+ <CAFBinCAD-7Mi06z-RGVREDQ3bYsDUOyDkBgoNW5mDLuKM8H7sg@mail.gmail.com>
+ <7106ab11-197d-e0d1-f54a-f56d438a022d@lwfinger.net>
+ <CAFBinCDbY5_xs7eNv5M-GyYGGFSwwTUtRSQSi9R9wZFzumiE5Q@mail.gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <CAFBinCDbY5_xs7eNv5M-GyYGGFSwwTUtRSQSi9R9wZFzumiE5Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,99 +85,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Deren,
+On 5/16/23 13:48, Martin Blumenstingl wrote:
+> Hi Larry,
+> 
+> On Tue, May 16, 2023 at 8:31 PM Larry Finger <Larry.Finger@lwfinger.net> wrote:
+> [...]
+>>>> I'm out of time for today though so I cannot continue testing.
+>>> I took time during my lunch break for some more experiments and came
+>>> up with the attached patch (the vendor driver does something similar
+>>> and I only noticed that after I observed some rtw_rx_pkt_stat with
+>>> pkt_len being zero).
+>>> It survived 30 minutes of uptime, updating my system and several
+>>> iperf3 runs (in both directions).
+>>> iperf results:
+>>> - RX: 48 Mbit/s
+>>> - TX: 33 Mbit/s
+>>>
+>>> And to be clear, those results are with:
+>>> - the word IO bugfix
+>>> - the initial two patches from this series
+>>> - Larry's addition of the second RTL8723DS SDIO ID
+>>> - the attached patch
+>>
+>> Martin,
+>>
+>> Please send me a copy of the version of sdio.c that works. It seems likely that
+>> I got mine all messed up as the OP at GitHub is getting lots of warnings from
+>> net/mac80211/rx.c:803.
+> Please take the file from [0] - this is how I successfully tested it.
 
-On Mon, May 15, 2023 at 8:20=E2=80=AFAM Deren Wu <deren.wu@mediatek.com> wr=
-ote:
->
-> Get missing tx retries/failed counts from txfree done events and report
-> them via mt7921_sta_statistics().
->
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Thanks. I got it and replaced the one in rtw88. Speedtest shows him getting a 
+little over 40 Mbps.
 
-Reviewed-by: Sean Wang <sean.wang@mediatek.com>
+Thanks for the help from both of you,
 
-> ---
-> v1: based on "[v3,1/6] wifi: mt76: mt7915: report tx retries/failed count=
-s for non-WED path"
-> https://patchwork.kernel.org/project/linux-wireless/patch/e3cddf1cff5f060=
-478c2de9e4e4021541549e750.1683670255.git.ryder.lee@mediatek.com/
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h | 2 +-
->  drivers/net/wireless/mediatek/mt76/mt7921/mac.c       | 8 +++++++-
->  drivers/net/wireless/mediatek/mt76/mt7921/main.c      | 6 ++++++
->  3 files changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/driv=
-ers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-> index a5ec0f631385..cb612d7c7616 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
-> @@ -34,7 +34,7 @@ enum {
->
->  #define MT_TX_FREE_MSDU_CNT            GENMASK(9, 0)
->  #define MT_TX_FREE_WLAN_ID             GENMASK(23, 14)
-> -#define MT_TX_FREE_LATENCY             GENMASK(12, 0)
-> +#define MT_TX_FREE_COUNT               GENMASK(12, 0)
->  /* 0: success, others: dropped */
->  #define MT_TX_FREE_STATUS              GENMASK(14, 13)
->  #define MT_TX_FREE_MSDU_ID             GENMASK(30, 16)
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/mac.c
-> index 1675bf520481..a3d31b69217b 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-> @@ -614,6 +614,7 @@ static void mt7921_mac_tx_free(struct mt7921_dev *dev=
-, void *data, int len)
->         struct mt76_dev *mdev =3D &dev->mt76;
->         struct mt76_txwi_cache *txwi;
->         struct ieee80211_sta *sta =3D NULL;
-> +       struct mt76_wcid *wcid =3D NULL;
->         struct sk_buff *skb, *tmp;
->         void *end =3D data + len;
->         LIST_HEAD(free_list);
-> @@ -637,7 +638,6 @@ static void mt7921_mac_tx_free(struct mt7921_dev *dev=
-, void *data, int len)
->                  */
->                 if (info & MT_TX_FREE_PAIR) {
->                         struct mt7921_sta *msta;
-> -                       struct mt76_wcid *wcid;
->                         u16 idx;
->
->                         count++;
-> @@ -658,6 +658,12 @@ static void mt7921_mac_tx_free(struct mt7921_dev *de=
-v, void *data, int len)
->                 msdu =3D FIELD_GET(MT_TX_FREE_MSDU_ID, info);
->                 stat =3D FIELD_GET(MT_TX_FREE_STATUS, info);
->
-> +               if (wcid) {
-> +                       wcid->stats.tx_retries +=3D
-> +                               FIELD_GET(MT_TX_FREE_COUNT, info) - 1;
-> +                       wcid->stats.tx_failed +=3D !!stat;
-> +               }
-> +
->                 txwi =3D mt76_token_release(mdev, msdu, &wake);
->                 if (!txwi)
->                         continue;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/main.c
-> index 0c9a472bc81a..418a1fa67477 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> @@ -1400,6 +1400,12 @@ static void mt7921_sta_statistics(struct ieee80211=
-_hw *hw,
->                 sinfo->txrate.he_dcm =3D txrate->he_dcm;
->                 sinfo->txrate.he_ru_alloc =3D txrate->he_ru_alloc;
->         }
-> +       sinfo->tx_failed =3D msta->wcid.stats.tx_failed;
-> +       sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_TX_FAILED);
-> +
-> +       sinfo->tx_retries =3D msta->wcid.stats.tx_retries;
-> +       sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_TX_RETRIES);
-> +
->         sinfo->txrate.flags =3D txrate->flags;
->         sinfo->filled |=3D BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
->
-> --
-> 2.18.0
->
+Larry
+
+
+
