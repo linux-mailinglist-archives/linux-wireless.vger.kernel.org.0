@@ -2,152 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0DA704A6A
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 12:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98148704A7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 12:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232314AbjEPKW5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 May 2023 06:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50704 "EHLO
+        id S232354AbjEPK0y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 May 2023 06:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232263AbjEPKWq (ORCPT
+        with ESMTP id S232320AbjEPK0S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 May 2023 06:22:46 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4565C46AF
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 03:22:45 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-50bc2feb320so21266484a12.3
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 03:22:45 -0700 (PDT)
+        Tue, 16 May 2023 06:26:18 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2114.outbound.protection.outlook.com [40.107.102.114])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D97F359D;
+        Tue, 16 May 2023 03:25:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RHvuu6lqkvT9UJi9vmiN56+nqFZ4AAjWbs+9mCdfIWRyx6Gy8EGHfHx37nlghjHw2kpdBhYfuQ80FI35SbAFgKYx2CnVQ19nNw0pVztEMCdegkOIL5FhBQrvhNDmvd1TXX+pwn+Eb+/+lx16NuzpfEfxh7bJ4BbuLZLVWxiaoEqLY8ArLfcDI7XNbaWAOiYaiaoNKHmptnpIKbjC9kMVJK/1pUQ4PQiIMamDIvkLa/uRVncC5rZw/cNLcOaoGJv/c2MUVAzYW/IPWrDzwpDuvzabXJcsFTtwyhtgog1uUblAEkaZJojdbzWTIOoOBN8kCqs4Yli90rAQkPH6FCzryw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WuBn4G+NgZa0+wd7P6CL5pqi9NLgle/eZm7JtNbhA0A=;
+ b=jEn6vGnj2NcpZpkUX7jFSeVpMzq45cCH3JoWMg92rxKMgWe3fvEe1vwL5Y+zMCJroNq8plK8URnSwm+CJjD4ZoVGkxEtWExIIqxw3uihYQTMBwvZD9n7iy20JDfli8jJh3L1MaUI1LuAQ9QLmBLE4/Z0hAHokpsn5SqUqqH9nPMIhme96cOXyVggADY1YDcx0dHkZa3WsPSNz2V4KRsaMELwyaoePwVnXqeRvtU3fNqyN32bVi9YL0fXASxmP2ISIlgwwCj5BtsH0JfbVc0hBXXo6gcIZxiPDNThfNAQV3Gcy/AzYK/A3OS+PassTJ/4PbTGRMT8/7hG3xthgLX1aQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1684232563; x=1686824563;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9M+3zvEs7MDkEDkOfZLDXBOdDgZB/D2hpS6+6+qhcng=;
-        b=kRES/NZ5K/vXJ7IrT8zSFp80SBLenkoGXxoRmEk033/6qSRUlp1ixlaTUgJxt8dRIT
-         Qur0b7MWfJ+KHvO4bCtEe+T+fSkCSV2B2l8I/vqDVX1McWT7JQQXTVLBgXp5yZyIRppl
-         oo9Z/JD5YmJXgjkJbc9hI+o7ZqsbPfoPTJ6E44wvqlQTOiseHPry3/Z7IRfwBFf6cBxM
-         HVt4SAiJG4zoBcsD8lMusWwu+u6Cs4K1K/POdEHKV/i51ImzR2qugdJzgTm4cI7rbpv6
-         L9mGCCk6PZfZJlNbsHdfqGmRIk4AwL2kAcJTKDGAFPf3mUS/+1nzzBpss3kwafWxJ31g
-         7+Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684232563; x=1686824563;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9M+3zvEs7MDkEDkOfZLDXBOdDgZB/D2hpS6+6+qhcng=;
-        b=HkqrWmkMYmknYvkzBT0lmp0of38vXAfq5LU/SvkhSk1N3G/AMkB8HFhqacRKKiPfiD
-         qaIxcYSSrlvD+rFN9Rnh0xta95Jj29LsH8TPU3boweklwUsRMZG0OtgHF90Y8dDyhRpK
-         yXuFCsDjc00HNc0MqKeJBuCJhs7RkXDpEmDEk15ePkNA5y5xuDDcy/gMV+YA9AWcVB7N
-         ZKnQJReAJzVgmnMcYQgTt1W3gjcJNX0mMYztwZAW2rXedU4besqB1ABuR4BXwJXsZR4k
-         0dThXsAt7mrHDYCZPMxnPKSEvm5dIESNeDmVY8VQ7DsSXyL8DTLy1oYMJta9eAmtfLIS
-         Erlg==
-X-Gm-Message-State: AC+VfDzY6/qHK7M8bsAA8UAtO8ZJu7Jx/Z0uXFrzzCVuDz5IoBa9N9B4
-        TzlR37mjDgadA+4sVeIMUEE7IbBflqHvj6Ns6HSkTjHPX/Y=
-X-Google-Smtp-Source: ACHHUZ7LAmqGUjLEDwm4GS/HTvEJiibTbjjZk2b0irzPmHVIA+crVlZ88FzKTpLKkFg5zeCSLKm8uj1hGjU0+Jtfu1k=
-X-Received: by 2002:a17:907:8690:b0:96a:3119:ac0 with SMTP id
- qa16-20020a170907869000b0096a31190ac0mr19266632ejc.69.1684232563308; Tue, 16
- May 2023 03:22:43 -0700 (PDT)
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WuBn4G+NgZa0+wd7P6CL5pqi9NLgle/eZm7JtNbhA0A=;
+ b=jppnzApeMpnxupG/2RcXtrWLlSF3eiyg2/SV/gZ9AwwTr4jrla4lO0v460Io6lEHiAEV2onV0MUnIsWZLBYxcxpqN09XfZJI+pETWv4WXZexTzUs5QOWD2lKTxdKFDUS5bSI4u/PMrWN9Ymp7VKx36LHyWqacbWBtkA8NbthCxY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by SJ0PR13MB6073.namprd13.prod.outlook.com (2603:10b6:a03:4ee::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Tue, 16 May
+ 2023 10:25:49 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6387.033; Tue, 16 May 2023
+ 10:25:49 +0000
+Date:   Tue, 16 May 2023 12:25:43 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] wifi: mt7601u: update firmware path
+Message-ID: <ZGNaJ63mM58DCas7@corigine.com>
+References: <fefcbf36f13873ae0d97438a0156b87e7e1ae64e.1684191377.git.daniel@makrotopia.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fefcbf36f13873ae0d97438a0156b87e7e1ae64e.1684191377.git.daniel@makrotopia.org>
+X-ClientProxiedBy: AM0PR03CA0096.eurprd03.prod.outlook.com
+ (2603:10a6:208:69::37) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-References: <72a8eeb1-c91c-80a7-5a09-1b7963e0996b@lwfinger.net>
- <3162376.5fSG56mABF@jernej-laptop> <cee4e4f8-78e9-1bf7-c1a9-8ae5c662c785@lwfinger.net>
- <1855371.CQOukoFCf9@jernej-laptop> <CAFBinCCjzLH7ZZJ9Siw1Lp49qneO+qRJp-g8rGwAYuRwNj2Oyw@mail.gmail.com>
-In-Reply-To: <CAFBinCCjzLH7ZZJ9Siw1Lp49qneO+qRJp-g8rGwAYuRwNj2Oyw@mail.gmail.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 16 May 2023 12:22:32 +0200
-Message-ID: <CAFBinCAD-7Mi06z-RGVREDQ3bYsDUOyDkBgoNW5mDLuKM8H7sg@mail.gmail.com>
-Subject: Re: Driver for rtw8723ds
-To:     =?UTF-8?Q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="000000000000a7ee2b05fbccf3f6"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SJ0PR13MB6073:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89c1eb90-8915-4ef3-4b7b-08db55f7eb45
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ma2hKwPQXENHt7VpYgKpbh99/4wzz17HPGrqJiRLFaQaMGOEC/RI6mK0UUgmyyi2Mg2/v497Go5gniO8nFX+Ec8CSRd+OPm+6n9NWLLzR9FE+c7IbQui9K+rMG/XNpX61zkQdd/ExMcZW27pp+8c21MQy0A/6RIXQYhdDrJww7F5K1gH9N8F5tCu0Lw8q3PyiMhBFknllmYDuZNbdQJmNfQPn1Ofp4Fkse6UTd7Ye+euoMr4TeeIHjcdmMGASeloA0kqpWdElRixuRDgoC9Rg3A+aKxyEfSs7yjbmWjvqmA7oDmhhTMWeQcaPGTrXI17lPZKhDuZszJERAqE7zn4uDRDrp996hl2hrfYuPSC+IneZ4rYpOeg+77WyHRJXaQs4CGRtsUg4SwpeCl5MBVfhswxqP2BU4GS3LUBON7KiC9A2m67wAEIMkEH+T2J9LjSo6vu+U49nRF6xzKPXJFmJZnO6/T8b62PK//27PMMomz71paorWOmPX1Hi/+Yex2ZbFubqIJkWg6mxio/VJxmWGfijvoN6ZCQz2mclh7Y+Nwhb/GSbJCiqbrEIa4sT1bNLJRo5Roo3OcvZMDHPHOy7o5lGYu7VDdqUl16UA311Bk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39840400004)(376002)(366004)(346002)(136003)(451199021)(6512007)(478600001)(6666004)(6486002)(54906003)(186003)(4744005)(2906002)(15650500001)(6916009)(316002)(4326008)(66946007)(66556008)(66476007)(41300700001)(8936002)(8676002)(7416002)(5660300002)(44832011)(38100700002)(83380400001)(36756003)(86362001)(2616005)(6506007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Km2PuGbAqfP51KY8VMAlKttVfojkcSLMcnEnFOdAxqQZ7YN2n20sjiDiDoeI?=
+ =?us-ascii?Q?nyGlbnWrU7e0Tmm7Kqo68Si0HOaiYVmIeDAWcGYUSQpPQMxvlCPjhPy83O3/?=
+ =?us-ascii?Q?14qpav5MmPzFcooyEWHNISdgJ96o+76d4zJNPfz363w/FTG5Evc9goIMOF3W?=
+ =?us-ascii?Q?6OaWo5U8RVUbEeMDWZE8O3AfIInbBIDnWFiQvGgGh35ghof9mRAkDSfZe+aB?=
+ =?us-ascii?Q?aidUaNunJ/hQWURV3iY02eeG23o08r7LcrOPI3/AvSE2YRGD68kW78tqSEQJ?=
+ =?us-ascii?Q?xnJwapUdU0AyLflnNd8Vv3SsFwJ5D1jZ0QiGlv4EGV4YgQaAyVvGbS+HqdbX?=
+ =?us-ascii?Q?Tzg8aX6BY/rcqKolb2znGiT/bheFrSfTMRa4Yf1xtXaOpqPfHN7mGvdwwHch?=
+ =?us-ascii?Q?7QWClTv9t0qo4ld3mznvhEPjZAY6xBhTdMCP1f8IPaU7nF8BWIjmj+FQhKQo?=
+ =?us-ascii?Q?5fbVAbyl7w5J2ncAA759BUHkvR4inbiGI9zGpRn5zcHaNVwGGuWyRXfCMVAY?=
+ =?us-ascii?Q?GXDTIfuyHMsjcTcjn/LNub652dgN7+E5ZpT+a5tyNF7jwPqLYrO0GTM0Dn/S?=
+ =?us-ascii?Q?FzcKKIauLJlzw2+0r2zYBK1TVm5kmB2DFr4WtVk6PxQuhof+apaC2YRB2qyI?=
+ =?us-ascii?Q?Pbuf8YB7xLjJzNJBsVPHtyj+woAfeDhiaLzCexYdvzzgJ73XTVtzFEpisoSs?=
+ =?us-ascii?Q?WoENUkOfYM71iLORDDCNrOR42HUdJctt8+NbCvJIEwozmkwOHxlCT9Yz52Z7?=
+ =?us-ascii?Q?p0YnJ7Xq9856vJiNBEiADcR0BPTaErMXx91ISq+l17zPPtIiCPLP5jdZPcQL?=
+ =?us-ascii?Q?GJXLPpVV4Dn78AebxLtnQBu/AfS+AVKqx87ZeRePz8OBPlp19bBlIT/XxF14?=
+ =?us-ascii?Q?P/x9w3DJgo61InUS+IX9/mcJwq+n1Y72KDxLcRjv41AVl4OEUECyM3MD8UJx?=
+ =?us-ascii?Q?rj9/43/Oe3hXIbYdKdIySyZy0NWTsaSJU2jMdpU+JJxaH0tYXZYpWGAr9nSA?=
+ =?us-ascii?Q?sYilIDBZ2SYy906WfyGtYqXlUeQdSvJjuegxdvqX6OBIyiwnN8MbXrCwVgB+?=
+ =?us-ascii?Q?CCqHPPEtBzwYKKG4lXoqsWUGAvOY1lXangirbUpKizkAZtL7FJMsKbiiu3wo?=
+ =?us-ascii?Q?RN1+s/J3J0Oyz6Crj40O8wyEXmwUcr8mRk2lFGqvkelNjV0P9UxcEvCQ0Teo?=
+ =?us-ascii?Q?RP8pqmHtPgSSLEB3ENEzbSdECHN6G8phfntsEmqLsCVs8h1UEo/km/V4oEul?=
+ =?us-ascii?Q?JgNzdZ9xkF7UZbXx/Kd4wVCyfufLaAiqS12yzj82biMVdzR4tX5HzhicQcRl?=
+ =?us-ascii?Q?adjRhoQI/kdSHZUU+uSVMtqBqhGGWIJslvvGWxmB3jfcNiVN5YYfhtRRqMeb?=
+ =?us-ascii?Q?UFYv8olqYN60qY1HUwrlZVZQgZwHj5CCgtN/+7qa2HINibZfb7QUQaAqqfQ5?=
+ =?us-ascii?Q?jvwNjexU/zoX7vMeHz09Z1U1PDO/WpTXpJjT5Yl+DCoNv7qEyv7JQKrQihk4?=
+ =?us-ascii?Q?Y3WvJ76QqKWbaZgEWQUoG/Ub8LWB7hYtAVZ8xlp6Uz9xuIasm+ak3Ewn70T1?=
+ =?us-ascii?Q?q5yXMIPyRDrtU9OhzgZwnuJdpOGfnky6NYYylDk0aLcOtSlBj4WjdoNafnEy?=
+ =?us-ascii?Q?/TfkBrtSiQKaH8Phtxz06UaNr9FxfGl+/q8cqeeQF6JXR022lMNe/Al6fKzS?=
+ =?us-ascii?Q?zINcXw=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89c1eb90-8915-4ef3-4b7b-08db55f7eb45
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2023 10:25:49.7050
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TAMUFVMCWqqPkD0P4jNRlZjfO5/XTCRlgNoMs59u7Liv+cXtkq8QH/pIbBvDtcDBLiNPGHY0qMNJOguv47WpyirBMyPEC0F8VLNYREO/9Pc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR13MB6073
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---000000000000a7ee2b05fbccf3f6
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Tue, May 16, 2023 at 12:56:53AM +0200, Daniel Golle wrote:
+> mt7601u.bin was moved to mediatek/ folder in linux-wireless via commit
+> 8451c2b1 ("mt76xx: Move the old Mediatek WiFi firmware to mediatek")
+> and linux-firmware release 20230515.
+> 
+> Update the firmware path requested by the mt7601u driver to follow up
+> with the move of the file.
+> 
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
-On Mon, May 15, 2023 at 11:11=E2=80=AFPM Martin Blumenstingl
-<martin.blumenstingl@googlemail.com> wrote:
->
-> Hi Jernej,
->
-> On Mon, May 15, 2023 at 10:37=E2=80=AFPM Jernej =C5=A0krabec
-> <jernej.skrabec@gmail.com> wrote:
-> [...]
-> > > With aggregation disabled, we still get "Invalid RX packet size!" mes=
-sages. I am
-> > > changing the statement to log (curr_pkt_len + pkt_desc_sz) > rx_len. =
-I will let
-> > > you know when the OP responds.
-> >
-> > Yeah, I saw. I just find another possible reason, which fits nicely in =
-current
-> > situation. Vendor driver parses drv_info_sz and shift fields only if pa=
-cket
-> > is normal, e.g. not c2h type. However, rtw88 always parses those fields=
-. It's
-> > possible that they have some value which should be ignored on 8723ds. I
-> > appended another patch to test.
-> I tried that patch and it didn't work for me (I can't get the card to
-> assoc to my AP with that patch).
-> Additionally I tried a simplified version (attached) and it didn't work.
->
-> I'm out of time for today though so I cannot continue testing.
-I took time during my lunch break for some more experiments and came
-up with the attached patch (the vendor driver does something similar
-and I only noticed that after I observed some rtw_rx_pkt_stat with
-pkt_len being zero).
-It survived 30 minutes of uptime, updating my system and several
-iperf3 runs (in both directions).
-iperf results:
-- RX: 48 Mbit/s
-- TX: 33 Mbit/s
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
-And to be clear, those results are with:
-- the word IO bugfix
-- the initial two patches from this series
-- Larry's addition of the second RTL8723DS SDIO ID
-- the attached patch
-
-
-Best regards,
-Martin
-
---000000000000a7ee2b05fbccf3f6
-Content-Type: text/x-patch; charset="US-ASCII"; 
-	name="rtw88-sdio-rx-isr-check-rx-request-bit.diff"
-Content-Disposition: attachment; 
-	filename="rtw88-sdio-rx-isr-check-rx-request-bit.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lhq4iol50>
-X-Attachment-Id: f_lhq4iol50
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rpby5jIGIv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9zZGlvLmMKaW5kZXggMDZmY2U3YzNh
-ZGRhLi5hOTRjNGUxNTIwNGIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvc2Rpby5jCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
-c2Rpby5jCkBAIC05OTgsNyArOTk4LDcgQEAgc3RhdGljIHZvaWQgcnR3X3NkaW9fcnhmaWZvX3Jl
-Y3Yoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTMyIHJ4X2xlbikKIAogc3RhdGljIHZvaWQgcnR3
-X3NkaW9fcnhfaXNyKHN0cnVjdCBydHdfZGV2ICpydHdkZXYpCiB7Ci0JdTMyIHJ4X2xlbiwgdG90
-YWxfcnhfYnl0ZXMgPSAwOworCXUzMiByeF9sZW4sIGhpc3IsIHRvdGFsX3J4X2J5dGVzID0gMDsK
-IAogCXdoaWxlICh0b3RhbF9yeF9ieXRlcyA8IFNaXzY0SykgewogCQlpZiAocnR3X2NoaXBfd2Nw
-dV8xMW4ocnR3ZGV2KSkKQEAgLTEwMTIsNiArMTAxMiwxOCBAQCBzdGF0aWMgdm9pZCBydHdfc2Rp
-b19yeF9pc3Ioc3RydWN0IHJ0d19kZXYgKnJ0d2RldikKIAkJcnR3X3NkaW9fcnhmaWZvX3JlY3Yo
-cnR3ZGV2LCByeF9sZW4pOwogCiAJCXRvdGFsX3J4X2J5dGVzICs9IHJ4X2xlbjsKKworCQkvKiBT
-dG9wIGlmIG5vIG1vcmUgUlggcmVxdWVzdHMgYXJlIHBlbmRpbmcsIGV2ZW4gaWYgcnhfbGVuCisJ
-CSAqIGNvdWxkIGJlIGdyZWF0ZXIgdGhhbiB6ZXJvIGluIHRoZSBuZXh0IGl0ZXJhdGlvbi4gVGhp
-cyBpcworCQkgKiBuZWVkZWQgYmVjYXVzZSB0aGUgUlggYnVmZmVyIG1heSBhbHJlYWR5IGNvbnRh
-aW4gZGF0YSB3aGlsZQorCQkgKiB0aGUgY2hpcCBpcyBub3QgZG9uZSBmaWxsaW5nIHRoYXQgYnVm
-ZmVyIHlldC4gU3RpbGwgcmVhZGluZworCQkgKiB0aGUgYnVmZmVyIGNhbiByZXN1bHQgaW4gZW1w
-dHkgcGFja2V0cyBvciByZWFkaW5nIHBhY2tldHMKKwkJICogd2hlcmUgcnR3X3J4X3BrdF9zdGF0
-LnBrdF9sZW4gcG9pbnRzIGJleW9uZCB0aGUgZW5kIG9mIHRoZQorCQkgKiBidWZmZXIuCisJCSAq
-LworCQloaXNyID0gcnR3X3JlYWQzMihydHdkZXYsIFJFR19TRElPX0hJU1IpOworCQlpZiAoISho
-aXNyICYgUkVHX1NESU9fSElTUl9SWF9SRVFVRVNUKSkKKwkJCWJyZWFrOwogCX0KIH0KIAo=
---000000000000a7ee2b05fbccf3f6--
