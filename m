@@ -2,102 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6B26705427
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 18:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E5A70549F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 May 2023 19:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbjEPQkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 16 May 2023 12:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
+        id S230073AbjEPRB2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 16 May 2023 13:01:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231806AbjEPQjw (ORCPT
+        with ESMTP id S230223AbjEPRB0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 16 May 2023 12:39:52 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F4B19C
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 09:39:44 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-965c3f9af2aso2205489066b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 09:39:44 -0700 (PDT)
+        Tue, 16 May 2023 13:01:26 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3409593CB
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 10:00:54 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-96aa0cab88dso853529966b.1
+        for <linux-wireless@vger.kernel.org>; Tue, 16 May 2023 10:00:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1684255183; x=1686847183;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TTErjYm0YU/D0XaSqiHAs0XifIDzBMEoij1eY6eHmxo=;
-        b=GgEW0lp3ZwlmEvRVGAJJxxi2ib2aDMulEPdQ5yPyR8ownpLrIt1L2nycvUNIpfUzV5
-         6DaewNVX/nTFtEZIS4FVconnMA7unC7QhbDNM38CGlWpvzjf+uPgnQWGo5LZRE70MCjc
-         aiCUMu7hEu2FL0pQgTgqI0wVuM7FLVj8ApoJ55Rx0hiC/C0KBrw1tRB+i6d0iLa/qccM
-         VH4gHxpkY9gRsOyXWelkiwm2eRKi7owPzNYx/fKfbBSj+PzhZDiJx1r7V23OFXa77q6K
-         IKbV1x9z67/AmR57fD8VkCoPJBgiT1nfUJtPTaYSVQ2zVUZJUE+qqIygog12PP03BTjc
-         +ecA==
+        d=gmail.com; s=20221208; t=1684256452; x=1686848452;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4/sySkFBOR2Hnso7Rs7LEKhuuYS+AT+syOblrJTklYQ=;
+        b=KZX2jEiMydjCMV9CDO9S/JnETPjF74Iji14qD1Zjj1dW9QHuHAONBd3Cjm9wE6kBd5
+         cABVbAzprSbLp8Ls5jSZRh75HAAqi6oKEbvuhgoADvZ7Y7WQJRGdymk3ANx1+vL9npNm
+         Af5MWNGZ/dDBFty860l2h8yAJpzyKhCw6bbBAocXzvDJhepXImwKMgGdtxoN9BWptqUU
+         0zYGiETPaqwVz+77Etryx3IpjgMuUDVaAnfmpG8/b1yoKBGeuMIF5hnPsamT+rjYYvtI
+         5ayoGOhkBf69DeNOFWbXyStNvPFZQ91LRYqN+eT8snanzgF3KbjW3uZG25QqjIJNTOS9
+         p+7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684255183; x=1686847183;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TTErjYm0YU/D0XaSqiHAs0XifIDzBMEoij1eY6eHmxo=;
-        b=eY+RgRphOEAMLZQiZ4dIBByh3vw1QG0YVowl2V5zx/BJWJsJKuQcwUJ84hHgzgZyl1
-         iw0NOZh46Ki9VuX7/BB1ys5HjQy74m82kj1/2qco3+dEjSIuhHa5fn2/rU22cmIPnK2T
-         ckBIbmU7vGjEKgDWh1RiagOI7Ez3GVzkxgeXjgm3jQDh4TsuEksXN74IqyfCdSTxEPYJ
-         IFy1bWiuNB0uLb4ejxorjcA2YY1G1xQx/z/E0M1E7q80FPm14NwWLnsu0wDDos+VrFq8
-         9nsKNlZpboCL7Rz9aCFqM8EjSVdqd4hms74RYCZRRiUdALjABK837g1GMUjlQW3VA0bj
-         jIiw==
-X-Gm-Message-State: AC+VfDyTpCCcSzzkOf6fkEB7LeEuNDiDiBhgScji+zJEBhvAALfyRvBc
-        ulgA+wgZgYP5w3DHdSsBQPDhR+wm3dmfaX8PBj0=
-X-Google-Smtp-Source: ACHHUZ6KE3vDBkS6VW69jQzYi/F2uvTObbro3w2ez2bEorun15jGSliPu5XB8J4K8JzlssskEB0ioxmSoD4f53SylJk=
-X-Received: by 2002:a17:907:868f:b0:969:f9e8:a77c with SMTP id
- qa15-20020a170907868f00b00969f9e8a77cmr27195437ejc.64.1684255182708; Tue, 16
- May 2023 09:39:42 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684256452; x=1686848452;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4/sySkFBOR2Hnso7Rs7LEKhuuYS+AT+syOblrJTklYQ=;
+        b=dp+kJ3/s8zYIgKbM6/D2+71HFDvi7X+VI5DFpzyKof4916bwHVRQkXVtvgJOVpUwJD
+         7R0fIXtTcWiDknpYTvvVsc8oFf7QNDuZZHl2NVSVr1MQZFkU3i4dRCRYNhdPYYPodAGc
+         O4bFL/IJiiWaj8u5HCyWpVk5HSWub8H34BALt9IeXgnt1y8X0VL+kz6KI18ffBdsFSjG
+         45rqcMuNiCvz+2OfdnBAzC0aEG7x9aUuOBmTQUUT0i04X2dSFZyj8Lec1IMz7l9GHPfY
+         bwmkrAojqOwlBSHXLShqJ9NzwF0zYkXUgQqFrECbmh20cqC8vmfYDE+N2GAaKS5tUG5b
+         epMg==
+X-Gm-Message-State: AC+VfDzfRlEzOe4zJt5ckROl6QyEKqaSwmQMsoQce+rWxTohXOjDiiP9
+        qlOp8ZH1omyUg0wAvdbnFGzkBnebD/Thr3tLqrU=
+X-Google-Smtp-Source: ACHHUZ6kTW53oKW0VOzKMVoj25QsqmvOWm76vMOZZDSoXjDJNAs84+e6qqXJ+y1KHQgDZ/3vOx+xqYVbUZPyuFwkte0=
+X-Received: by 2002:a17:907:708:b0:961:be96:b0e7 with SMTP id
+ xb8-20020a170907070800b00961be96b0e7mr34104667ejb.48.1684256451466; Tue, 16
+ May 2023 10:00:51 -0700 (PDT)
 MIME-Version: 1.0
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 16 May 2023 18:39:31 +0200
-Message-ID: <CAFBinCD=HVyedXpqRfAC=m3A=wstDbtQfLDZqjHufSawdLKwiw@mail.gmail.com>
-Subject: wifi: rtw88: questions about adding support for RTL8723DS/RTL8723BS
-To:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Cc:     Larry Finger <Larry.Finger@lwfinger.net>, tony0620emma@gmail.com,
-        jernej.skrabec@gmail.com
+Sender: extra.bognon05@gmail.com
+Received: by 2002:a05:7208:1494:b0:67:3fcf:83ff with HTTP; Tue, 16 May 2023
+ 10:00:51 -0700 (PDT)
+From:   Miss Reacheal <Reacheal4u@gmail.com>
+Date:   Tue, 16 May 2023 17:00:51 +0000
+X-Google-Sender-Auth: QUVLr_GK5jjQ7BOIvl5YhtODo3c
+Message-ID: <CAFONc4zWypYeo8iOBxMrjViKL+vjQVaFPd-xoDJCPezL1uZ5tw@mail.gmail.com>
+Subject: RE: HELLO DEAR
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ping-Ke,
+Hej,
 
-as a next step I want to add support for RTW_WCPU_11N SDIO cards to
-the rtw88 driver.
-Currently only one RTW_WCPU_11N chip is supported: RTL8723D by the
-rtw88 (PCIe and USB HCIs).
+Modtog du min tidligere besked? Jeg kontaktede dig f=C3=B8r, men beskeden
+kom ikke tilbage, s=C3=A5 jeg besluttede at skrive igen. Bekr=C3=A6ft venli=
+gst,
+om du modtager dette, s=C3=A5 jeg kan forts=C3=A6tte,
 
-My first question is very hopefully a simple one:
-It seems that RTL8723DS has two SDIO IDs: 0xd723 and 0xd724.
-Do these have the same name or is there some kind of "revision" (like
-rev 2, revision B, ...) internally?
+venter p=C3=A5 dit svar.
 
-My second question is more abstract:
-Based on my understanding of the vendor drivers for RTL8723BS and
-RTL8723DS both seem very close in terms of registers. initialization
-sequence, ...
-So I am hoping that it's possible to add RTL8723BS support to the rtw88 driver.
-There's two main differences that I found so far:
-- rtw_dump_hw_feature() doesn't work because REG_C2HEVT has an
-incorrect value (C2H_HW_FEATURE_REPORT is expected but it still
-contains C2H_HW_FEATURE_DUMP). It seems that this is a firmware issue.
-- The whole ltecoex support (my understanding is: this is part of the
-Bluetooth 4.2 spec but RTL8723BS was originally developed for the
-Bluetooth 4.0 spec) seems missing in terms of all required registers.
-I'm not sure if this is a hardware or firmware topic.
-
-Have you considered adding RTW8723B support to the rtw88 driver?
-Do you have some initial suggestions on what would be needed to do so
-(is my list from above complete, what do do about these points, ...)?
-
-There's a huge number of boards with RTL8723BS out there and I think
-they could benefit from the rtw88 driver (and so we can finally get
-rid of drivers/staging/rtl8723bs/).
-
-
-Best regards,
-Martin
+Med venlig hilsen
+Miss Reacheal
