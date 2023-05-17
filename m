@@ -2,75 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7361706838
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 14:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0783C706A12
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 15:40:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230464AbjEQMeB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 May 2023 08:34:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47750 "EHLO
+        id S230481AbjEQNk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 May 2023 09:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230414AbjEQMeA (ORCPT
+        with ESMTP id S229707AbjEQNk1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 May 2023 08:34:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E04B1BD6
-        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 05:33:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684326797;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=8z2vZD/Mt9cHAxNPllMtq5Gn202/y1MZsQVh5pJbJGM=;
-        b=ib+M0AL8v9877lvme7UrMuz2yL57uu8VI6R7XiC8iAZxjn6GOAxWJY/R2BYZc69Pvs7jhA
-        jOTrRuCpiOl/rvf21NMBL2xy/vUFWHHGWX9EZFa7WVma6B7gYCn7hME0YjrqOEzIWG5rUs
-        Scx3GDsOhHg9Q1MbzS7Zw3CAsD6leq4=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-sRg8Sh26PT-p9-8Z8JPVPA-1; Wed, 17 May 2023 08:33:16 -0400
-X-MC-Unique: sRg8Sh26PT-p9-8Z8JPVPA-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6238c64280fso944126d6.2
-        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 05:33:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684326795; x=1686918795;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8z2vZD/Mt9cHAxNPllMtq5Gn202/y1MZsQVh5pJbJGM=;
-        b=QRQstE0Xzkr/iai/7PFRK9utWknWeuB3wb19GU4n3BEyrk9st7oW0136dzprTY6wWR
-         4Cuf9cW48H/0tmTTUVgdMOJ8MSN0kjCKxU25vRovTTiOb0rrDOEKqO1Yw5jTIOC8ijG/
-         sEiNfAQngmy9rVv36UNEoE3ob2Cvly98jf/RgDcGrUp61oHJl0AxqYN8NDa3ubCTgHtn
-         uz9IprouRK4ncsxuhIUFiEYDMpmdHDbRmM/0Vh0snoZR6lc4I0gUlQfKicCaltndAUDV
-         GiGOpNZ0tuf5Q2G0ZFIchB/DwivMbujrtrcbO7PMnWZGt43FFGFlNtcnMZ68Ta6CEQoe
-         CVZA==
-X-Gm-Message-State: AC+VfDy0+hk0nE+QTwVsmPsXwoIE81TWQqOxvPgb2u5w4AgZCsYPTfkm
-        VTeA25Wo7lcmUYjWynAHT6OnVYhct3jOiFgMsH2tCPLgeJ8+wbhBB6epm2xTLrzwhlDnKXh7jb5
-        0AhTm/81D9ED1BO34910zyMtNx48=
-X-Received: by 2002:a05:6214:501b:b0:5ef:45a7:a3c0 with SMTP id jo27-20020a056214501b00b005ef45a7a3c0mr64278014qvb.27.1684326795652;
-        Wed, 17 May 2023 05:33:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6lcwZCrP5ym6tgc0dTs+Pyybh7A+czybYSDpfRXvVjBpMBMbt7jNR80EZ4gMhVuD96wNBLdQ==
-X-Received: by 2002:a05:6214:501b:b0:5ef:45a7:a3c0 with SMTP id jo27-20020a056214501b00b005ef45a7a3c0mr64277993qvb.27.1684326795438;
-        Wed, 17 May 2023 05:33:15 -0700 (PDT)
-Received: from dell-per740-01.7a2m.lab.eng.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
-        by smtp.gmail.com with ESMTPSA id j5-20020a37c245000000b007595df328dcsm564251qkm.115.2023.05.17.05.33.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 05:33:15 -0700 (PDT)
-From:   Tom Rix <trix@redhat.com>
-To:     johannes@sipsolutions.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        nathan@kernel.org, ndesaulniers@google.com
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] lib80211: remove unused variables iv32 and iv16
-Date:   Wed, 17 May 2023 08:33:10 -0400
-Message-Id: <20230517123310.873023-1-trix@redhat.com>
-X-Mailer: git-send-email 2.27.0
+        Wed, 17 May 2023 09:40:27 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F1EF4C33
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 06:40:26 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34HCdsYx021637;
+        Wed, 17 May 2023 13:40:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=ZS2Efzy/toMgnp9LuAovWtDzui+A5q5A7Q+rYYMYdRU=;
+ b=JJ7L8/+tbi1WiLz+nvnHpxQ5LJPAmya0/NE8vbw2zqldAT5OPvFgVOhgWCvBXZLTtkKm
+ o3vB4ZfPHh2c31zm2SbTQa0JMtrFSkZFvGsAZkRsIH91gc7e5PLGkIMyEMB+B9bIwOmL
+ SbPSxNqrr0phDPOn/wPNSWA/hJv2RATMrmu0TRNbOqFutz1f+O0e1FarxtlkLbIroFJW
+ 5j8NneNXKjr+4J1peMZtOtLnhK1wPGhHzSzM7AeaVgkd1yKSyi9QQq3/okUzVB5ko2hT
+ I5fPhGLhyrGT32XQQo++O8CDbF8mAqOhtZvxXTj6ZKwwU+I36kDmS1nm6UdqMuv0GSYw bw== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qmwnr8btq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 May 2023 13:40:14 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34HDeDvk028006
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 May 2023 13:40:13 GMT
+Received: from wgong-HP3-Z230-SFF-Workstation.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Wed, 17 May 2023 06:40:12 -0700
+From:   Wen Gong <quic_wgong@quicinc.com>
+To:     <ath11k@lists.infradead.org>
+CC:     <linux-wireless@vger.kernel.org>, <quic_wgong@quicinc.com>
+Subject: [PATCH] wifi: ath11k: add support default regdb while searching board-2.bin for WCN6855
+Date:   Wed, 17 May 2023 09:39:59 -0400
+Message-ID: <20230517133959.8224-1-quic_wgong@quicinc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -PgoB5aDyxu-wVhWEn5a2kxuA8Ajrghw
+X-Proofpoint-ORIG-GUID: -PgoB5aDyxu-wVhWEn5a2kxuA8Ajrghw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-17_02,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ clxscore=1015 malwarescore=0 priorityscore=1501 spamscore=0 phishscore=0
+ adultscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305170111
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,37 +74,129 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-clang with W=1 reports
-net/wireless/lib80211_crypt_tkip.c:667:7: error: variable 'iv32'
-  set but not used [-Werror,-Wunused-but-set-variable]
-                u32 iv32 = tkey->tx_iv32;
-                    ^
-This variable not used so remove it.
-Then remove a similar iv16 variable.
-Remove the comment because the length is returned.
+Sometimes board-2.bin does not have the regdb data which matched the
+parameters such as vendor, device, subsystem-vendor, subsystem-device
+and etc. Add default regdb data with 'bus=%s' into board-2.bin for
+WCN6855, then ath11k use 'bus=pci' to search regdb data in board-2.bin
+for WCN6855.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
+kernel: [  122.515808] ath11k_pci 0000:03:00.0: boot using board name 'bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262'
+kernel: [  122.517240] ath11k_pci 0000:03:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 6179564
+kernel: [  122.517280] ath11k_pci 0000:03:00.0: failed to fetch regdb data for bus=pci,vendor=17cb,device=1103,subsystem-vendor=17cb,subsystem-device=3374,qmi-chip-id=2,qmi-board-id=262 from ath11k/WCN6855/hw2.0/board-2.bin
+kernel: [  122.517464] ath11k_pci 0000:03:00.0: boot using board name 'bus=pci'
+kernel: [  122.518901] ath11k_pci 0000:03:00.0: boot firmware request ath11k/WCN6855/hw2.0/board-2.bin size 6179564
+kernel: [  122.518915] ath11k_pci 0000:03:00.0: board name
+kernel: [  122.518917] ath11k_pci 0000:03:00.0: 00000000: 62 75 73 3d 70 63 69                             bus=pci
+kernel: [  122.518918] ath11k_pci 0000:03:00.0: boot found match regdb data for name 'bus=pci'
+kernel: [  122.518920] ath11k_pci 0000:03:00.0: boot found regdb data for 'bus=pci'
+kernel: [  122.518921] ath11k_pci 0000:03:00.0: fetched regdb
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
 ---
- net/wireless/lib80211_crypt_tkip.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 53 +++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/net/wireless/lib80211_crypt_tkip.c b/net/wireless/lib80211_crypt_tkip.c
-index 1b4d6c87a5c5..9b411b6a7b5d 100644
---- a/net/wireless/lib80211_crypt_tkip.c
-+++ b/net/wireless/lib80211_crypt_tkip.c
-@@ -662,12 +662,6 @@ static int lib80211_tkip_get_key(void *key, int len, u8 * seq, void *priv)
- 	memcpy(key, tkey->key, TKIP_KEY_LEN);
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index b1b90bd34d67..5648963baeb9 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -961,7 +961,8 @@ int ath11k_core_check_dt(struct ath11k_base *ab)
+ }
  
- 	if (seq) {
--		/* Return the sequence number of the last transmitted frame. */
--		u16 iv16 = tkey->tx_iv16;
--		u32 iv32 = tkey->tx_iv32;
--		if (iv16 == 0)
--			iv32--;
--		iv16--;
- 		seq[0] = tkey->tx_iv16;
- 		seq[1] = tkey->tx_iv16 >> 8;
- 		seq[2] = tkey->tx_iv32;
+ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+-					   size_t name_len, bool with_variant)
++					   size_t name_len, bool with_variant,
++					   bool bus_type_mode)
+ {
+ 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
+ 	char variant[9 + ATH11K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
+@@ -972,15 +973,20 @@ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 
+ 	switch (ab->id.bdf_search) {
+ 	case ATH11K_BDF_SEARCH_BUS_AND_BOARD:
+-		scnprintf(name, name_len,
+-			  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
+-			  ath11k_bus_str(ab->hif.bus),
+-			  ab->id.vendor, ab->id.device,
+-			  ab->id.subsystem_vendor,
+-			  ab->id.subsystem_device,
+-			  ab->qmi.target.chip_id,
+-			  ab->qmi.target.board_id,
+-			  variant);
++		if (bus_type_mode)
++			scnprintf(name, name_len,
++				  "bus=%s",
++				  ath11k_bus_str(ab->hif.bus));
++		else
++			scnprintf(name, name_len,
++				  "bus=%s,vendor=%04x,device=%04x,subsystem-vendor=%04x,subsystem-device=%04x,qmi-chip-id=%d,qmi-board-id=%d%s",
++				  ath11k_bus_str(ab->hif.bus),
++				  ab->id.vendor, ab->id.device,
++				  ab->id.subsystem_vendor,
++				  ab->id.subsystem_device,
++				  ab->qmi.target.chip_id,
++				  ab->qmi.target.board_id,
++				  variant);
+ 		break;
+ 	default:
+ 		scnprintf(name, name_len,
+@@ -999,13 +1005,19 @@ static int __ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ static int ath11k_core_create_board_name(struct ath11k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+-	return __ath11k_core_create_board_name(ab, name, name_len, true);
++	return __ath11k_core_create_board_name(ab, name, name_len, true, false);
+ }
+ 
+ static int ath11k_core_create_fallback_board_name(struct ath11k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath11k_core_create_board_name(ab, name, name_len, false);
++	return __ath11k_core_create_board_name(ab, name, name_len, false, false);
++}
++
++static int ath11k_core_create_bus_type_board_name(struct ath11k_base *ab, char *name,
++						  size_t name_len)
++{
++	return __ath11k_core_create_board_name(ab, name, name_len, false, true);
+ }
+ 
+ const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
+@@ -1309,7 +1321,7 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ 
+ int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd)
+ {
+-	char boardname[BOARD_NAME_SIZE];
++	char boardname[BOARD_NAME_SIZE], default_boardname[BOARD_NAME_SIZE];
+ 	int ret;
+ 
+ 	ret = ath11k_core_create_board_name(ab, boardname, BOARD_NAME_SIZE);
+@@ -1326,6 +1338,21 @@ int ath11k_core_fetch_regdb(struct ath11k_base *ab, struct ath11k_board_data *bd
+ 	if (!ret)
+ 		goto exit;
+ 
++	ret = ath11k_core_create_bus_type_board_name(ab, default_boardname,
++						     BOARD_NAME_SIZE);
++	if (ret) {
++		ath11k_dbg(ab, ATH11K_DBG_BOOT,
++			   "failed to create default board name for regdb: %d", ret);
++		goto exit;
++	}
++
++	ret = ath11k_core_fetch_board_data_api_n(ab, bd, default_boardname,
++						 ATH11K_BD_IE_REGDB,
++						 ATH11K_BD_IE_REGDB_NAME,
++						 ATH11K_BD_IE_REGDB_DATA);
++	if (!ret)
++		goto exit;
++
+ 	ret = ath11k_core_fetch_board_data_api_1(ab, bd, ATH11K_REGDB_FILE_NAME);
+ 	if (ret)
+ 		ath11k_dbg(ab, ATH11K_DBG_BOOT, "failed to fetch %s from %s\n",
+
+base-commit: 0a00db612b6df1fad80485e3642529d1f28ea084
 -- 
-2.27.0
+2.40.1
 
