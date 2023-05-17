@@ -2,148 +2,331 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB005706C95
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 17:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A17FF706CED
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 17:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232065AbjEQPYZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 May 2023 11:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53432 "EHLO
+        id S231533AbjEQPge (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 May 2023 11:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232005AbjEQPYY (ORCPT
+        with ESMTP id S229683AbjEQPgb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 May 2023 11:24:24 -0400
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2136.outbound.protection.outlook.com [40.107.95.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D821B7;
-        Wed, 17 May 2023 08:24:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Uvy7eDycdY/Rl8k5ccTYrLQWRQl0r9JyceQ8TmRJIGKQNGfFOBHEOyNkzNoigUo0pnS6N2FjzS3WFP6mg/5dlUylwsAWpk2fKOY21N3P+fiEIPm9fwPJnfhmmZqqP5x1p99a7juOZDz5K6tj8BVUJP+DItAqA0KpkMKuXk4/YPClfVTOJ40/CdbTXP2A5crnHx5CzCeHPSsPNQGtcMOEcZCD/SrhttWvt+Y4qE1afYTJzjRemZ5lC8/URbiCqkmh7haX3z0UpLuSEovNodifzM2eUSvFzyzfcmEL2JyvHCADbTVyyWzWLKc3MfkzGtvAn0RIyBxjqcZ60OpmHwStpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OhMr9sZi4rABGR79KHcDrNxiczite7LhBujapFvUJ4M=;
- b=BGjUNelvluY/b/tQb49X4yVIzIfsz6B7e1LLflBsA7j09u4bMIzSgVMWI2KGNSw4DOun8bWYA06AHHKknc5D6xQDuib244lTV+OhLuSTvieBfMu3JHtz5WRPKe57QVSv9LL2I2kmYFoNWRsAVdOq2Tz+xbiAVSKKUTI5BNrMPE/iJ+IDNPGFToLclYS+aYH79oQObc/IsVorg7vp1S2HMmetjBQ9unh6FnQl9VVU7+DCAIB/B0spt6tqIhgqQoPcr5ZSR4bKnGTpQYvVgXuvUyCtLJUELlL5I4Q+UBcItQLXNHt6ktAsH2qYlCdN9WdWySFGkJ2RekyRAEmET3a+zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OhMr9sZi4rABGR79KHcDrNxiczite7LhBujapFvUJ4M=;
- b=qDhmt2Upn362MCV/yNOGZFfuCSGBMBi+6/6kuBZm6dhr4RtfR3GBH5to+Ee4XmgZmL8aMJ+TFKNIBCyAAc7l9lkwlVfrVYQLbghdJ3r6Xpobop+xDjdHno3RhkCrZrD10rJkgX0GQ4KgmKEmcH+H6G7JDthbE/ypn3ATiuTLVck=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by LV3PR13MB6406.namprd13.prod.outlook.com (2603:10b6:408:19c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Wed, 17 May
- 2023 15:24:20 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6387.033; Wed, 17 May 2023
- 15:24:20 +0000
-Date:   Wed, 17 May 2023 17:24:11 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Deren Wu <deren.wu@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-        Leon Yen <Leon.Yen@mediatek.com>,
-        Eric-SY Chang <Eric-SY.Chang@mediatek.com>,
-        KM Lin <km.lin@mediatek.com>,
-        Robin Chiu <robin.chiu@mediatek.com>,
-        CH Yeh <ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>,
-        Stella Chang <Stella.Chang@mediatek.com>,
-        Quan Zhou <quan.zhou@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: mt76: mt7921: fix skb leak by txs missing in
- AMSDU
-Message-ID: <ZGTxm5o9w8c+mSmQ@corigine.com>
-References: <3c9926f5492523e0128bbc4897815d75b83e324a.1684312995.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c9926f5492523e0128bbc4897815d75b83e324a.1684312995.git.deren.wu@mediatek.com>
-X-ClientProxiedBy: AM0PR08CA0020.eurprd08.prod.outlook.com
- (2603:10a6:208:d2::33) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Wed, 17 May 2023 11:36:31 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD5A01996
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 08:36:24 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5FA0F5000C2
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 15:36:21 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id E964013C2B0;
+        Wed, 17 May 2023 08:36:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com E964013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1684337781;
+        bh=nq8Yw0kJ3nwAlivM+X+3QEgDoen0HzZovGFa4jX5j10=;
+        h=From:To:Cc:Subject:Date:From;
+        b=HMxazMr9OlXbXKBFOgjhOGhR2iqOiZrs0XWACiWkuyiGh/KfrKfaS+Z/H5I7x15VT
+         nRLuxWvK+X6N09zfrEhwYEv76VFawT8H0yajBxPyRvMjqwk6sfx5HH2R6c6BabbLMX
+         gVzwzsw7CJ7Kh5uaShSaSlV1OD3HXe8YiV4/vbR0=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] iwlwifi: Support changing antenna settings.
+Date:   Wed, 17 May 2023 08:36:18 -0700
+Message-Id: <20230517153618.941040-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|LV3PR13MB6406:EE_
-X-MS-Office365-Filtering-Correlation-Id: 919974f7-6e2d-4b25-2856-08db56eac903
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: D3a6jiuzs17Vvn8dhm12g+Aea81SkBbqaSd2feyFEJSMgwBTNkAzdfTxHVagAv7TmBVzvF6khwoyjOmgETeO1rF73pEMIdn9QbtRj8YXONpQDIAn0l1/TRjQina6foUDu/x4POIXrQBHc++rEPmKPLgJEccnPF+6HhPHFZH3bQBsmKCPCqk1XCVUo+1Fo4zO9LtXPdrLVngt1b/VwRrMpda4R/Z1QfrW+s4Zse16SEikwyapmmgaObmeSQBrHnAKMoeMKA1Q17+9Dge0CsIaKe5rknrj5zp8vmp+DgFI4/1f8X3V0oN/bmdfwGKw3gFawlv8aL7JIov6SHrq8cPPWX8WJGGyO9/u6dKikcXAx3RxSUdp1V5em5Ip5v5t4uqjyKkb8zPPCKHhGCZZda6llfUAeOIK02pCv81y9xH2cAjNZ5ZTxpXWV3CpV0SDu8xItbXfsPsCziv5ICADMOorwWAYun77wGAdu1VW9kfuXgRM3T+1LdZlDvBXkZ9Zp2eh1+E219XtjBveI5xmKUPuB8tg0Cx0phz5851N93WwjW//3iiX3yp3oXdGGGEWRhaUyBTIvgFBJBPu2CV55tSy5V0dDUdcQqXdRR8kEGTbcXdn6avs6vsVopnds7yVQFKCqCDSTE1MxQvvZc18RAnXx2++ZPZvdcsDJp2UqwGtQMI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(39840400004)(376002)(136003)(366004)(396003)(451199021)(36756003)(86362001)(54906003)(66946007)(66556008)(4326008)(66476007)(316002)(6916009)(478600001)(6666004)(8676002)(8936002)(6486002)(5660300002)(41300700001)(4744005)(2906002)(44832011)(7416002)(38100700002)(2616005)(6506007)(6512007)(186003)(83380400001)(67856001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tGd/oMdHJQwPu8LXBmC4bIimx/t3/nfo3tL0FCF+ybeeJwRF6Znk6NEMPVfa?=
- =?us-ascii?Q?0kJNd5vGlsAi2aKlClkaiqRrMKOxHLVTKO/0QlPm6eWymzCncFyGtKRSZfNa?=
- =?us-ascii?Q?1eZQfEv2TGe5LB7n5SrnrXo8/RCj1HYondDeGzDiRvlH6vpOscXPxrHKFoHh?=
- =?us-ascii?Q?biYeIkD/iwxxnyTdHF60uey9abGcy9QDX65Yg1il/VpTG/+IG/owrvw+XYbe?=
- =?us-ascii?Q?WOt6ZkfcAU4jUorAeZRn42Ucsre6al3nBdxktIB+56AKIlrG0GWt8am+RuX/?=
- =?us-ascii?Q?e6Lc3QGlvy+Ca+0vYWHN1qVJJxMeA30b6JYKbAfmePKkZzXzejw5LtiFqBBl?=
- =?us-ascii?Q?czcUka1Ga/PwKvPOTnpnnX2jve8nXyqA+Vvpr32Icj0OISolXiob/8FqlC1p?=
- =?us-ascii?Q?UYOkSKQ8CsJHZ2dxwoRPQxdPn58kHUBi7G3wUNBXw8AGl+XGGqvjp6QS/02M?=
- =?us-ascii?Q?JX1KpDzHb7RRKSZGQg7kDNA1NbeabZjc9kl79aJ4u9gd1Urh8KmxjdxV5MU5?=
- =?us-ascii?Q?M48LWmXE7qLJZAAIGEW0BnmVp5GVzxOTQYPI1/SfhrNoYXy+h6CIc3hpoN55?=
- =?us-ascii?Q?Hs2viBeFHvIQWjKySBYC9yyy4LBaOcHd1JogY6QCAE4yjDWR0CSN50IRgIbT?=
- =?us-ascii?Q?WDuAb5nkYkQhuHZhgrYqWG+dm8Qw0DtSrGGKRRkMqV8dsddSfMDd8tbLMu8Y?=
- =?us-ascii?Q?pfVWoG9qfiRMzf2hx9pptBBBMlBUOi2IC8EvpoSB0g9H231QwG93vuvIka2L?=
- =?us-ascii?Q?rlejEtaBfQlPZPCnAzawarr6whOlyO9Oe4Cc9SKTAk3rbPTyDOCe8rgbrWvA?=
- =?us-ascii?Q?INCt6TzcWz0vu6KqtfP36BJDdqN84hfmaC3fACeEFGkgy+kmdWNCg0Vmen9+?=
- =?us-ascii?Q?mgGGQwkz1cv/Lqw3go4UZNzH667gNGjjr3hrACjhMGple8bmVUJLnn8rMsp5?=
- =?us-ascii?Q?cETKei2s4YCkjzymqgOuGznBWeaxsZLhpa0K4Tp/9st/5EkNQ4TVo8te8hD2?=
- =?us-ascii?Q?qfSRdMKVmghGisI9eahEziBWQuc5/5wk1yhq3LrgadO/xsQwYowsi4CZmlDH?=
- =?us-ascii?Q?OAGCevQ/7ADOT2GJT7xwpqPSMbvJMrB0hevS6yPNRCaKtlGfX7KbF8Zzz7P4?=
- =?us-ascii?Q?tGdqsSVDlCUX8UuOtTGRv+gvY/YwLu/SXIMM195vWoaVFB9qlcHJhGFVy6wv?=
- =?us-ascii?Q?wj4F8qFcFTHcWiumjN+/o8IWktpS/AoCmjEhFyF+BXLdjOX8Hdy2sQdzcxHS?=
- =?us-ascii?Q?uk+yDCqbIJKyR7YyKBps48faCL7Ino1cndHk8rY6XJxMyGvMU3YO/TxD1xTe?=
- =?us-ascii?Q?6wVqRzPKHERxZe4hFrICM2zQaZpQE0xb2arFDM0H2hMR2nZX5anuZUMWYHq1?=
- =?us-ascii?Q?w3+WunD+Lj0yp8nmBQOOipnJ8ux6dlerHbNLwptppR2qVqVPtP9KaM0V1Lfr?=
- =?us-ascii?Q?qTgov+A6vLzpyvFR+WNI3jOSOaWp1z2MuKgrt2XKpoBTO1XcOjyv1k8SE4d4?=
- =?us-ascii?Q?+bvnY3xnaGJITcLStSg933QMNOREHRpG1HAZJnIlvvIH2g4VVQfgL7bgRj8c?=
- =?us-ascii?Q?HirDKUWIYTxa87UUx4Fu3+XVUiqAMgQ017VuhuAmRsg9AlrtmpPj4gI/i9qa?=
- =?us-ascii?Q?PcOzWN+8DRUrUOTiGuXIChgyXIw4QT+ykcQ9nHq1rFKVH2R+maLt7gR61bbe?=
- =?us-ascii?Q?5Mm2xQ=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 919974f7-6e2d-4b25-2856-08db56eac903
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 15:24:19.9610
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E4s8gHD452RgBtK+uG0h3ov0SgwzNTlv/Jl4HCdgaqHR2dUpxCbotG6cztrnHPFHyVF7vS12icMNnFGjvMTdCgAaR5AFgbN8NVT0vBBqSv8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR13MB6406
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1684337783-4U-ZNw8xRPx9
+X-MDID-O: us5;ut7;1684337783;4U-ZNw8xRPx9;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 17, 2023 at 05:18:24PM +0800, Deren Wu wrote:
-> txs may be dropped if the frame is aggregated in AMSDU. When the problem
-> shows up, some SKBs would be hold in driver to cause network stopped
-> temporarily. Even if the problem can be recovered by txs timeout handling,
-> mt7921 still need to disable txs in AMSDU to avoid this issue.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 163f4d22c118 ("mt76: mt7921: add MAC support")
-> Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> ---
-> v2: * update operation for booleans, not bitfields (suggested by Simon Horman)
->     * rectify fixes tag for downstream backport
+From: Ben Greear <greearb@candelatech.com>
 
-Thanks, LGTM.
+Support 'iw phy foo set_antenna 0x1'
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Allow re-initializing the capabilities, and then call that when
+antenna-change is requested
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+
+NOTE:  This is against recent iwlwifi backports driver.  Something
+similar can work against in-kernel driver.
+
+ .../wireless/intel/iwlwifi/iwl-eeprom-parse.c |  5 ++
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 77 +++++++++++++++++--
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.h    | 10 +++
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  9 +++
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 +
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    | 16 ++++
+ 7 files changed, 114 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c
+index 302794c7ed6a..8fbbae1a9509 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-eeprom-parse.c
+@@ -83,8 +83,13 @@ void iwl_init_ht_hw_capab(struct iwl_trans *trans,
+ 	ht_info->mcs.rx_mask[0] = 0xFF;
+ 	if (rx_chains >= 2)
+ 		ht_info->mcs.rx_mask[1] = 0xFF;
++	else
++		ht_info->mcs.rx_mask[1] = 0;
++
+ 	if (rx_chains >= 3)
+ 		ht_info->mcs.rx_mask[2] = 0xFF;
++	else
++		ht_info->mcs.rx_mask[2] = 0;
+ 
+ 	if (cfg->ht_params->ht_greenfield_support)
+ 		ht_info->cap |= IEEE80211_HT_CAP_GRN_FLD;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index f4f6e9b338ee..060c9cffcca2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -964,6 +964,12 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 				iftype_data->eht_cap.eht_cap_elem.phy_cap_info[4] |= 0x10;
+ 			}
+ 		}
++		if (iftype_data->eht_cap.has_eht) {
++			struct ieee80211_eht_mcs_nss_supp *mcs_nss =
++				&iftype_data->eht_cap.eht_mcs_nss_supp;
++
++			memset(mcs_nss, 0x22, sizeof(*mcs_nss));
++		}
+ 	} else {
+ 		if (iftype_data->eht_cap.has_eht) {
+ 			struct ieee80211_eht_mcs_nss_supp *mcs_nss =
+@@ -983,6 +989,26 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 			iftype_data->he_cap.he_cap_elem.phy_cap_info[7] |=
+ 				IEEE80211_HE_PHY_CAP7_MAX_NC_1;
+ 		}
++
++		/* If antennas were forced - make sure not declaring MIMO when
++		 * we actually are SISO
++		 * Recall that there are 2 bits per stream in the "HE Tx/Rx HE
++		 * MCS NSS Support Field", so if some antenna is forced on but
++		 * not both A and B - we should work in SISO mode, so mark the
++		 * 2nd SS as not supported
++		 */
++		iftype_data->he_cap.he_mcs_nss_supp.rx_mcs_80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		iftype_data->he_cap.he_mcs_nss_supp.tx_mcs_80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		iftype_data->he_cap.he_mcs_nss_supp.rx_mcs_160 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		iftype_data->he_cap.he_mcs_nss_supp.tx_mcs_160 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		iftype_data->he_cap.he_mcs_nss_supp.rx_mcs_80p80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
++		iftype_data->he_cap.he_mcs_nss_supp.tx_mcs_80p80 |=
++			cpu_to_le16(IEEE80211_HE_MCS_NOT_SUPPORTED << 2);
+ 	}
+ 
+ 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210 && !is_ap)
+@@ -1058,10 +1084,6 @@ static void iwl_init_he_hw_capab(struct iwl_trans *trans,
+ 	struct ieee80211_sband_iftype_data *iftype_data;
+ 	int i;
+ 
+-	/* should only initialize once */
+-	if (WARN_ON(sband->iftype_data))
+-		return;
+-
+ 	BUILD_BUG_ON(sizeof(data->iftd.low) != sizeof(iwl_he_eht_capa));
+ 	BUILD_BUG_ON(sizeof(data->iftd.high) != sizeof(iwl_he_eht_capa));
+ 	BUILD_BUG_ON(sizeof(data->iftd.uhb) != sizeof(iwl_he_eht_capa));
+@@ -1244,6 +1266,8 @@ static void iwl_init_eht_band_override(struct iwl_trans *trans,
+ 	int i;
+ 
+ 	for (i = 0; i < sband->n_iftype_data; i++) {
++		struct ieee80211_eht_mcs_nss_supp *mcs_nss;
++
+ 		/* we know it's writable - we set it before ourselves */
+ 		iftype_data = (void *)(uintptr_t)&sband->iftype_data[i];
+ 
+@@ -1251,16 +1275,16 @@ static void iwl_init_eht_band_override(struct iwl_trans *trans,
+ 		if (!iftype_data->eht_cap.has_eht)
+ 			continue;
+ 
++		mcs_nss = &iftype_data->eht_cap.eht_mcs_nss_supp;
+ 		if (trans->dbg_cfg.valid_ants &&
+ 		    (trans->dbg_cfg.valid_ants & ANT_AB) != ANT_AB) {
+ 			/* For all MCS and bandwidth, set 1 NSS for both Tx and
+ 			 * Rx - note we don't set the only_20mhz, but due to this
+ 			 * being a union, it gets set correctly anyway.
+ 			 */
+-			struct ieee80211_eht_mcs_nss_supp *mcs_nss =
+-				&iftype_data->eht_cap.eht_mcs_nss_supp;
+-
+ 			memset(mcs_nss, 0x11, sizeof(*mcs_nss));
++		} else {
++			memset(mcs_nss, 0x22, sizeof(*mcs_nss));
+ 		}
+ 
+ 		IWL_COPY_BIN(eht_ppe_thres, eht_cap.eht_ppe_thres);
+@@ -1302,6 +1326,45 @@ static void iwl_init_he_eht_override(struct iwl_trans *trans,
+ }
+ #endif
+ 
++/* This is a subsection of the logic in iwl_init_bands */
++void iwl_reinit_capab(struct iwl_trans *trans,
++		      struct iwl_nvm_data *data,
++		      u8 tx_chains, u8 rx_chains, const struct iwl_fw *fw)
++{
++	struct ieee80211_supported_band *sband;
++
++	sband = &data->bands[NL80211_BAND_2GHZ];
++	iwl_init_ht_hw_capab(trans, data, &sband->ht_cap, NL80211_BAND_2GHZ,
++			     tx_chains, rx_chains);
++
++	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains, fw);
++	else
++		sband->iftype_data = NULL;
++
++	sband = &data->bands[NL80211_BAND_5GHZ];
++	iwl_init_ht_hw_capab(trans, data, &sband->ht_cap, NL80211_BAND_5GHZ,
++			     tx_chains, rx_chains);
++	if (data->sku_cap_11ac_enable && !iwlwifi_mod_params.disable_11ac)
++		iwl_init_vht_hw_capab(trans, data, &sband->vht_cap,
++				      tx_chains, rx_chains);
++	else
++		sband->vht_cap.vht_supported = false;
++
++	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains, fw);
++	else
++		sband->iftype_data = NULL;
++
++	sband = &data->bands[NL80211_BAND_6GHZ];
++
++	if (data->sku_cap_11ax_enable && !iwlwifi_mod_params.disable_11ax)
++		iwl_init_he_hw_capab(trans, data, sband, tx_chains, rx_chains, fw);
++	else
++		sband->iftype_data = NULL;
++}
++IWL_EXPORT_SYMBOL(iwl_reinit_capab);
++
+ static void iwl_init_sbands(struct iwl_trans *trans,
+ 			    struct iwl_nvm_data *data,
+ 			    const void *nvm_ch_flags, u8 tx_chains,
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
+index c79f72d54482..a4d5b19038fb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
+@@ -90,4 +90,14 @@ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		       const struct iwl_mei_nvm *mei_nvm,
+ 		       const struct iwl_fw *fw);
+ 
++/**
++ * iwl_reinit_capab - Re-initialize the current HT, VHT and/or HE capabilities
++ *
++ * This should be called when changing values that affect the capabilities, such
++ * as number of spatial streams.
++ */
++void iwl_reinit_capab(struct iwl_trans *trans,
++		      struct iwl_nvm_data *data,
++		      u8 tx_chains, u8 rx_chains, const struct iwl_fw *fw);
++
+ #endif /* __iwl_nvm_parse_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 622c63de4b4b..a03f93cfa73b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -319,6 +319,14 @@ int iwl_mvm_op_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
+ 	return 0;
+ }
+ 
++int
++iwl_mvm_op_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
++{
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++
++	return iwl_mvm_set_valid_ant(mvm, tx_ant, rx_ant);
++}
++
+ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
+ {
+ 	struct ieee80211_hw *hw = mvm->hw;
+@@ -6443,6 +6451,7 @@ const struct ieee80211_ops iwl_mvm_hw_ops = {
+ 	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
+ 	.ampdu_action = iwl_mvm_mac_ampdu_action,
+ 	.get_antenna = iwl_mvm_op_get_antenna,
++	.set_antenna = iwl_mvm_op_set_antenna,
+ 	.start = iwl_mvm_mac_start,
+ 	.reconfig_complete = iwl_mvm_mac_reconfig_complete,
+ 	.stop = iwl_mvm_mac_stop,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 2102cb4cbd7f..2c20f358b02c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -1164,6 +1164,7 @@ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
+ 	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
+ 	.ampdu_action = iwl_mvm_mac_ampdu_action,
+ 	.get_antenna = iwl_mvm_op_get_antenna,
++	.set_antenna = iwl_mvm_op_set_antenna,
+ 	.start = iwl_mvm_mac_start,
+ 	.reconfig_complete = iwl_mvm_mac_reconfig_complete,
+ 	.stop = iwl_mvm_mac_stop,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 41398b42fd9e..3b414bee4e9c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1779,6 +1779,8 @@ static inline u8 iwl_mvm_get_valid_rx_ant(struct iwl_mvm *mvm)
+ 	       mvm->fw->valid_rx_ant;
+ }
+ 
++int iwl_mvm_set_valid_ant(struct iwl_mvm *mvm, u32 tx_ant, u32 rx_ant);
++
+ static inline void iwl_mvm_toggle_tx_ant(struct iwl_mvm *mvm, u8 *ant)
+ {
+ 	*ant = iwl_mvm_next_antenna(mvm, iwl_mvm_get_valid_tx_ant(mvm), *ant);
+@@ -2694,6 +2696,7 @@ int iwl_mvm_mac_ampdu_action(struct ieee80211_hw *hw,
+ 			     struct ieee80211_vif *vif,
+ 			     struct ieee80211_ampdu_params *params);
+ int iwl_mvm_op_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant);
++int iwl_mvm_op_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant);
+ int iwl_mvm_mac_start(struct ieee80211_hw *hw);
+ void iwl_mvm_mac_reconfig_complete(struct ieee80211_hw *hw,
+ 				   enum ieee80211_reconfig_type reconfig_type);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index 2d7deb08cd45..8bff4ef84563 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -150,6 +150,22 @@ int iwl_mvm_legacy_hw_idx_to_mac80211_idx(u32 rate_n_flags,
+ 	return is_LB ? rate : -1;
+ }
+ 
++int iwl_mvm_set_valid_ant(struct iwl_mvm *mvm, u32 tx_ant, u32 rx_ant)
++{
++	if (mvm->nvm_data) {
++		mvm->nvm_data->valid_rx_ant = (rx_ant & ANT_ABC);
++		mvm->nvm_data->valid_tx_ant = (tx_ant & ANT_ABC);
++
++		iwl_reinit_capab(mvm->trans, mvm->nvm_data, mvm->nvm_data->valid_tx_ant,
++				 mvm->nvm_data->valid_rx_ant, mvm->fw);
++
++		return 0;
++	} else {
++		pr_err("ERROR:  iwl-mvm-set-valid-ant:  mvm->nvm_data is NULL\n");
++		return -EINVAL;
++	}
++}
++
+ int iwl_mvm_legacy_rate_to_mac80211_idx(u32 rate_n_flags,
+ 					enum nl80211_band band)
+ {
+-- 
+2.40.0
+
