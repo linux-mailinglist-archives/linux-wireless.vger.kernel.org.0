@@ -2,525 +2,299 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BD10706F88
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 19:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71BA1707109
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 20:44:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229873AbjEQRfE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 May 2023 13:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44376 "EHLO
+        id S229558AbjEQSoj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 May 2023 14:44:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbjEQRfA (ORCPT
+        with ESMTP id S229791AbjEQSoh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 May 2023 13:35:00 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05E2430C2
-        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 10:34:52 -0700 (PDT)
-X-UUID: 1ec3822ef4d911ed9cb5633481061a41-20230518
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=mlHnmfMVWOkrXN2k6M2NNo4a/YNgR/yy93IFw7b3w8w=;
-        b=bot7BWp5FhsZvtzEZB6TOXkQVnW3dMSjz9bIhL9F4flbBaewQeCZHNRYybPAXhuNJamjpEnYvQPRgjjJUxcreMcU+WnygE+MKXhcoR7jECoqyragr+H+i8TDWbSa7c+q1YwVgqRJfvzdBx2peS63OPXVgcB13EYQkjz7V3jhDUc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.25,REQID:831d0b35-513d-428b-9834-e8f10f3241ec,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:d5b0ae3,CLOUDID:6021246c-2f20-4998-991c-3b78627e4938,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-UUID: 1ec3822ef4d911ed9cb5633481061a41-20230518
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 160576563; Thu, 18 May 2023 01:34:47 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 18 May 2023 01:34:46 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 18 May 2023 01:34:46 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v2 2/2] wifi: mt76: mt7915: accumulate mu-mimo ofdma muru stats
-Date:   Thu, 18 May 2023 01:34:43 +0800
-Message-ID: <d09c5445911dfbd0cb14226265272872b665972f.1684344626.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <78ae2336a119f416eb970ee403f85db35af2ef09.1684344625.git.ryder.lee@mediatek.com>
-References: <78ae2336a119f416eb970ee403f85db35af2ef09.1684344625.git.ryder.lee@mediatek.com>
+        Wed, 17 May 2023 14:44:37 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2194C5FDF
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 11:44:35 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 47AD7280073
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 18:44:33 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id C6E8D13C2B0;
+        Wed, 17 May 2023 11:44:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C6E8D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1684349072;
+        bh=dQWWeps64Hb6iBrt8IcSax38qocHA25d5jDhOu1MrGk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VBKXeVdhC+MWiVyV/R6+3H38jtOBI7MG6sWRqBhUui9DDfDuYWaAOzYxjLS6MvB3C
+         GH/o3Z7QvVKD/2VbTTPoLEl9VQIYJpWoWD0r0OclO2YPj28znO+3jY7KfU+nw6qCX2
+         VARyE0yTiY7C+k78uOnnOE4q6Tw53V79qUwKg4oE=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] wifi: mac80211:  add eht_capa debugfs field.
+Date:   Wed, 17 May 2023 11:44:28 -0700
+Message-Id: <20230517184428.999384-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1684349073-BQlD_W03cvpb
+X-MDID-O: us5;ut7;1684349073;BQlD_W03cvpb;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The stats are clear-on-read, which makes it very difficult for tools
-to adequately deal with wrapped stats and with keeping good totals.
+From: Ben Greear <greearb@candelatech.com>
 
-So, accumulate these values when they are read from the firmware/radio
-and present totals to user-space.
+Output looks like this:
+
+[root@ct523c-0b29 ~]# cat /debug/ieee80211/wiphy6/netdev\:wlan6/stations/50\:28\:4a\:bd\:f4\:a7/eht_capa
+EHT supported
+MAC-CAP: 0x82 0x00
+PHY-CAP: 0x0c 0x00 0x00 0x00 0x00 0x48 0x00 0x00 0x00
+		OM-CONTROL
+		MAX-MPDU-LEN: 11454
+		242-TONE-RU-GT20MHZ
+		NDP-4-EHT-LFT-32-GI
+		BEAMFORMEE-80-NSS: 0
+		BEAMFORMEE-160-NSS: 0
+		BEAMFORMEE-320-NSS: 0
+		SOUNDING-DIM-80-NSS: 0
+		SOUNDING-DIM-160-NSS: 0
+		SOUNDING-DIM-320-NSS: 0
+		MAX_NC: 0
+		PPE_THRESHOLD_PRESENT
+		NOMINAL_PKT_PAD: 0us
+		MAX-NUM-SUPP-EHT-LTF: 1
+		SUPP-EXTRA-EHT-LTF
+		MCS15-SUPP-MASK: 0
+
+		EHT bw <= 80 MHz, max NSS for MCS 8-9: Rx=2, Tx=2
+		EHT bw <= 80 MHz, max NSS for MCS 10-11: Rx=2, Tx=2
+		EHT bw <= 80 MHz, max NSS for MCS 12-13: Rx=2, Tx=2
+		EHT bw <= 160 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
+		EHT bw <= 160 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
+		EHT bw <= 160 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
+		EHT bw <= 320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
+		EHT bw <= 320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
+		EHT bw <= 320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
+EHT PPE Thresholds: 0xc1 0x0e 0xe0 0x00 0x00
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 ---
-change since v2 - adjust __dl_u32 __ul_u32 position
----
- .../wireless/mediatek/mt76/mt7915/debugfs.c   | 124 ++++++++----------
- .../net/wireless/mediatek/mt76/mt7915/mac.c   |   3 +
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  63 +++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  43 +++++-
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  34 ++++-
- 5 files changed, 196 insertions(+), 71 deletions(-)
+ net/mac80211/debugfs_sta.c | 185 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 185 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-index 879884ead660..48099284ba89 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
-@@ -251,7 +251,6 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- {
- 	struct mt7915_phy *phy = file->private;
- 	struct mt7915_dev *dev = phy->dev;
--	struct mt7915_mcu_muru_stats mu_stats = {};
- 	static const char * const dl_non_he_type[] = {
- 		"CCK", "OFDM", "HT MIX", "HT GF",
- 		"VHT SU", "VHT 2MU", "VHT 3MU", "VHT 4MU"
-@@ -275,7 +274,7 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 
- 	mutex_lock(&dev->mt76.mutex);
- 
--	ret = mt7915_mcu_muru_debug_get(phy, &mu_stats);
-+	ret = mt7915_mcu_muru_debug_get(phy);
- 	if (ret)
- 		goto exit;
- 
-@@ -285,14 +284,13 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 	for (i = 0; i < 5; i++)
- 		seq_printf(file, "%8s | ", dl_non_he_type[i]);
- 
--#define __dl_u32(s)     le32_to_cpu(mu_stats.dl.s)
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | %8u | %8u | %8u | ",
--		   __dl_u32(cck_cnt),
--		   __dl_u32(ofdm_cnt),
--		   __dl_u32(htmix_cnt),
--		   __dl_u32(htgf_cnt),
--		   __dl_u32(vht_su_cnt));
-+		   phy->mib.dl_cck_cnt,
-+		   phy->mib.dl_ofdm_cnt,
-+		   phy->mib.dl_htmix_cnt,
-+		   phy->mib.dl_htgf_cnt,
-+		   phy->mib.dl_vht_su_cnt);
- 
- 	seq_puts(file, "\nDownlink MU-MIMO\nData Type:  ");
- 
-@@ -301,23 +299,23 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | %8u | ",
--		   __dl_u32(vht_2mu_cnt),
--		   __dl_u32(vht_3mu_cnt),
--		   __dl_u32(vht_4mu_cnt));
-+		   phy->mib.dl_vht_2mu_cnt,
-+		   phy->mib.dl_vht_3mu_cnt,
-+		   phy->mib.dl_vht_4mu_cnt);
- 
--	sub_total_cnt = __dl_u32(vht_2mu_cnt) +
--		__dl_u32(vht_3mu_cnt) +
--		__dl_u32(vht_4mu_cnt);
-+	sub_total_cnt = phy->mib.dl_vht_2mu_cnt +
-+			phy->mib.dl_vht_3mu_cnt +
-+			phy->mib.dl_vht_4mu_cnt;
- 
- 	seq_printf(file, "\nTotal non-HE MU-MIMO DL PPDU count: %lld",
- 		   sub_total_cnt);
- 
- 	total_ppdu_cnt = sub_total_cnt +
--		__dl_u32(cck_cnt) +
--		__dl_u32(ofdm_cnt) +
--		__dl_u32(htmix_cnt) +
--		__dl_u32(htgf_cnt) +
--		__dl_u32(vht_su_cnt);
-+			 phy->mib.dl_cck_cnt +
-+			 phy->mib.dl_ofdm_cnt +
-+			 phy->mib.dl_htmix_cnt +
-+			 phy->mib.dl_htgf_cnt +
-+			 phy->mib.dl_vht_su_cnt;
- 
- 	seq_printf(file, "\nAll non-HE DL PPDU count: %lld", total_ppdu_cnt);
- 
-@@ -329,8 +327,7 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | ",
--		   __dl_u32(he_su_cnt),
--		   __dl_u32(he_ext_su_cnt));
-+		   phy->mib.dl_he_su_cnt, phy->mib.dl_he_ext_su_cnt);
- 
- 	seq_puts(file, "\nDownlink MU-MIMO\nData Type:  ");
- 
-@@ -339,9 +336,8 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | %8u | ",
--		   __dl_u32(he_2mu_cnt),
--		   __dl_u32(he_3mu_cnt),
--		   __dl_u32(he_4mu_cnt));
-+		   phy->mib.dl_he_2mu_cnt, phy->mib.dl_he_3mu_cnt,
-+		   phy->mib.dl_he_4mu_cnt);
- 
- 	seq_puts(file, "\nDownlink OFDMA\nData Type:  ");
- 
-@@ -350,37 +346,35 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | %8u | %8u | %9u | %8u | ",
--		   __dl_u32(he_2ru_cnt),
--		   __dl_u32(he_3ru_cnt),
--		   __dl_u32(he_4ru_cnt),
--		   __dl_u32(he_5to8ru_cnt),
--		   __dl_u32(he_9to16ru_cnt),
--		   __dl_u32(he_gtr16ru_cnt));
--
--	sub_total_cnt = __dl_u32(he_2mu_cnt) +
--		__dl_u32(he_3mu_cnt) +
--		__dl_u32(he_4mu_cnt);
-+		   phy->mib.dl_he_2ru_cnt,
-+		   phy->mib.dl_he_3ru_cnt,
-+		   phy->mib.dl_he_4ru_cnt,
-+		   phy->mib.dl_he_5to8ru_cnt,
-+		   phy->mib.dl_he_9to16ru_cnt,
-+		   phy->mib.dl_he_gtr16ru_cnt);
-+
-+	sub_total_cnt = phy->mib.dl_he_2mu_cnt +
-+			phy->mib.dl_he_3mu_cnt +
-+			phy->mib.dl_he_4mu_cnt;
- 	total_ppdu_cnt = sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE MU-MIMO DL PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	sub_total_cnt = __dl_u32(he_2ru_cnt) +
--		__dl_u32(he_3ru_cnt) +
--		__dl_u32(he_4ru_cnt) +
--		__dl_u32(he_5to8ru_cnt) +
--		__dl_u32(he_9to16ru_cnt) +
--		__dl_u32(he_gtr16ru_cnt);
-+	sub_total_cnt = phy->mib.dl_he_2ru_cnt +
-+			phy->mib.dl_he_3ru_cnt +
-+			phy->mib.dl_he_4ru_cnt +
-+			phy->mib.dl_he_5to8ru_cnt +
-+			phy->mib.dl_he_9to16ru_cnt +
-+			phy->mib.dl_he_gtr16ru_cnt;
- 	total_ppdu_cnt += sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE OFDMA DL PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	total_ppdu_cnt += __dl_u32(he_su_cnt) +
--		__dl_u32(he_ext_su_cnt);
-+	total_ppdu_cnt += phy->mib.dl_he_su_cnt + phy->mib.dl_he_ext_su_cnt;
- 
- 	seq_printf(file, "\nAll HE DL PPDU count: %lld", total_ppdu_cnt);
--#undef __dl_u32
- 
- 	/* HE Uplink */
- 	seq_puts(file, "\n\nUplink");
-@@ -389,12 +383,11 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 	for (i = 0; i < 3; i++)
- 		seq_printf(file, "%8s | ", ul_he_type[i]);
- 
--#define __ul_u32(s)     le32_to_cpu(mu_stats.ul.s)
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | %8u | ",
--		   __ul_u32(hetrig_2mu_cnt),
--		   __ul_u32(hetrig_3mu_cnt),
--		   __ul_u32(hetrig_4mu_cnt));
-+		   phy->mib.ul_hetrig_2mu_cnt,
-+		   phy->mib.ul_hetrig_3mu_cnt,
-+		   phy->mib.ul_hetrig_4mu_cnt);
- 
- 	seq_puts(file, "\nTrigger-based Uplink OFDMA\nData Type:  ");
- 
-@@ -403,37 +396,36 @@ static int mt7915_muru_stats_show(struct seq_file *file, void *data)
- 
- 	seq_puts(file, "\nTotal Count:");
- 	seq_printf(file, "%8u | %8u | %8u | %8u | %8u | %9u |  %7u | ",
--		   __ul_u32(hetrig_su_cnt),
--		   __ul_u32(hetrig_2ru_cnt),
--		   __ul_u32(hetrig_3ru_cnt),
--		   __ul_u32(hetrig_4ru_cnt),
--		   __ul_u32(hetrig_5to8ru_cnt),
--		   __ul_u32(hetrig_9to16ru_cnt),
--		   __ul_u32(hetrig_gtr16ru_cnt));
--
--	sub_total_cnt = __ul_u32(hetrig_2mu_cnt) +
--		__ul_u32(hetrig_3mu_cnt) +
--		__ul_u32(hetrig_4mu_cnt);
-+		   phy->mib.ul_hetrig_su_cnt,
-+		   phy->mib.ul_hetrig_2ru_cnt,
-+		   phy->mib.ul_hetrig_3ru_cnt,
-+		   phy->mib.ul_hetrig_4ru_cnt,
-+		   phy->mib.ul_hetrig_5to8ru_cnt,
-+		   phy->mib.ul_hetrig_9to16ru_cnt,
-+		   phy->mib.ul_hetrig_gtr16ru_cnt);
-+
-+	sub_total_cnt = phy->mib.ul_hetrig_2mu_cnt +
-+			phy->mib.ul_hetrig_3mu_cnt +
-+			phy->mib.ul_hetrig_4mu_cnt;
- 	total_ppdu_cnt = sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE MU-MIMO UL TB PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	sub_total_cnt = __ul_u32(hetrig_2ru_cnt) +
--		__ul_u32(hetrig_3ru_cnt) +
--		__ul_u32(hetrig_4ru_cnt) +
--		__ul_u32(hetrig_5to8ru_cnt) +
--		__ul_u32(hetrig_9to16ru_cnt) +
--		__ul_u32(hetrig_gtr16ru_cnt);
-+	sub_total_cnt = phy->mib.ul_hetrig_2ru_cnt +
-+			phy->mib.ul_hetrig_3ru_cnt +
-+			phy->mib.ul_hetrig_4ru_cnt +
-+			phy->mib.ul_hetrig_5to8ru_cnt +
-+			phy->mib.ul_hetrig_9to16ru_cnt +
-+			phy->mib.ul_hetrig_gtr16ru_cnt;
- 	total_ppdu_cnt += sub_total_cnt;
- 
- 	seq_printf(file, "\nTotal HE OFDMA UL TB PPDU count: %lld",
- 		   sub_total_cnt);
- 
--	total_ppdu_cnt += __ul_u32(hetrig_su_cnt);
-+	total_ppdu_cnt += phy->mib.ul_hetrig_su_cnt;
- 
- 	seq_printf(file, "\nAll HE UL TB PPDU count: %lld\n", total_ppdu_cnt);
--#undef __ul_u32
- 
- exit:
- 	mutex_unlock(&dev->mt76.mutex);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index dfe42af6dc97..e06bfa4288b7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -2075,6 +2075,9 @@ void mt7915_mac_work(struct work_struct *work)
- 
- 		mt7915_mac_update_stats(phy);
- 		mt7915_mac_severe_check(phy);
-+
-+		if (phy->dev->muru_debug)
-+			mt7915_mcu_muru_debug_get(phy);
- 	}
- 
- 	mutex_unlock(&mphy->dev->mutex);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index bf87aa4cc630..226ec3755efd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1255,6 +1255,38 @@ static const char mt7915_gstrings_stats[][ETH_GSTRING_LEN] = {
- 	"rx_vec_queue_overflow_drop_cnt",
- 	"rx_ba_cnt",
- 
-+	/* muru mu-mimo and ofdma related stats */
-+	"dl_cck_cnt",
-+	"dl_ofdm_cnt",
-+	"dl_htmix_cnt",
-+	"dl_htgf_cnt",
-+	"dl_vht_su_cnt",
-+	"dl_vht_2mu_cnt",
-+	"dl_vht_3mu_cnt",
-+	"dl_vht_4mu_cnt",
-+	"dl_he_su_cnt",
-+	"dl_he_ext_su_cnt",
-+	"dl_he_2ru_cnt",
-+	"dl_he_2mu_cnt",
-+	"dl_he_3ru_cnt",
-+	"dl_he_3mu_cnt",
-+	"dl_he_4ru_cnt",
-+	"dl_he_4mu_cnt",
-+	"dl_he_5to8ru_cnt",
-+	"dl_he_9to16ru_cnt",
-+	"dl_he_gtr16ru_cnt",
-+
-+	"ul_hetrig_su_cnt",
-+	"ul_hetrig_2ru_cnt",
-+	"ul_hetrig_3ru_cnt",
-+	"ul_hetrig_4ru_cnt",
-+	"ul_hetrig_5to8ru_cnt",
-+	"ul_hetrig_9to16ru_cnt",
-+	"ul_hetrig_gtr16ru_cnt",
-+	"ul_hetrig_2mu_cnt",
-+	"ul_hetrig_3mu_cnt",
-+	"ul_hetrig_4mu_cnt",
-+
- 	/* per vif counters */
- 	"v_tx_mode_cck",
- 	"v_tx_mode_ofdm",
-@@ -1409,6 +1441,37 @@ void mt7915_get_et_stats(struct ieee80211_hw *hw,
- 	data[ei++] = mib->rx_vec_queue_overflow_drop_cnt;
- 	data[ei++] = mib->rx_ba_cnt;
- 
-+	data[ei++] = mib->dl_cck_cnt;
-+	data[ei++] = mib->dl_ofdm_cnt;
-+	data[ei++] = mib->dl_htmix_cnt;
-+	data[ei++] = mib->dl_htgf_cnt;
-+	data[ei++] = mib->dl_vht_su_cnt;
-+	data[ei++] = mib->dl_vht_2mu_cnt;
-+	data[ei++] = mib->dl_vht_3mu_cnt;
-+	data[ei++] = mib->dl_vht_4mu_cnt;
-+	data[ei++] = mib->dl_he_su_cnt;
-+	data[ei++] = mib->dl_he_ext_su_cnt;
-+	data[ei++] = mib->dl_he_2ru_cnt;
-+	data[ei++] = mib->dl_he_2mu_cnt;
-+	data[ei++] = mib->dl_he_3ru_cnt;
-+	data[ei++] = mib->dl_he_3mu_cnt;
-+	data[ei++] = mib->dl_he_4ru_cnt;
-+	data[ei++] = mib->dl_he_4mu_cnt;
-+	data[ei++] = mib->dl_he_5to8ru_cnt;
-+	data[ei++] = mib->dl_he_9to16ru_cnt;
-+	data[ei++] = mib->dl_he_gtr16ru_cnt;
-+
-+	data[ei++] = mib->ul_hetrig_su_cnt;
-+	data[ei++] = mib->ul_hetrig_2ru_cnt;
-+	data[ei++] = mib->ul_hetrig_3ru_cnt;
-+	data[ei++] = mib->ul_hetrig_4ru_cnt;
-+	data[ei++] = mib->ul_hetrig_5to8ru_cnt;
-+	data[ei++] = mib->ul_hetrig_9to16ru_cnt;
-+	data[ei++] = mib->ul_hetrig_gtr16ru_cnt;
-+	data[ei++] = mib->ul_hetrig_2mu_cnt;
-+	data[ei++] = mib->ul_hetrig_3mu_cnt;
-+	data[ei++] = mib->ul_hetrig_4mu_cnt;
-+
- 	/* Add values for all stations owned by this vif */
- 	wi.initial_stat_idx = ei;
- 	ieee80211_iterate_stations_atomic(hw, mt7915_ethtool_worker, &wi);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 5916dcaa8c7e..6d7d70ee0386 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2116,12 +2116,11 @@ int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enabled)
- 				sizeof(data), false);
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index 607ba9367738..a3bd4fd0de7b 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -1239,6 +1239,190 @@ static ssize_t link_sta_he_capa_read(struct file *file, char __user *userbuf,
  }
+ LINK_STA_OPS(he_capa);
  
--int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms)
-+int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy)
- {
- 	struct mt7915_dev *dev = phy->dev;
- 	struct sk_buff *skb;
--	struct mt7915_mcu_muru_stats *mu_stats =
--				(struct mt7915_mcu_muru_stats *)ms;
-+	struct mt7915_mcu_muru_stats *mu_stats;
- 	int ret;
- 
- 	struct {
-@@ -2137,7 +2136,43 @@ int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms)
- 	if (ret)
- 		return ret;
- 
--	memcpy(mu_stats, skb->data, sizeof(struct mt7915_mcu_muru_stats));
-+	mu_stats = (struct mt7915_mcu_muru_stats *)(skb->data);
++static ssize_t link_sta_eht_capa_read(struct file *file, char __user *userbuf,
++				      size_t count, loff_t *ppos)
++{
++	char *buf, *p;
++	size_t buf_sz = PAGE_SIZE;
++	struct link_sta_info *link_sta = file->private_data;
++	struct ieee80211_sta_eht_cap *bec = &link_sta->pub->eht_cap;
++	struct ieee80211_eht_cap_elem_fixed *fixed = &bec->eht_cap_elem;
++	struct ieee80211_eht_mcs_nss_supp *nss = &bec->eht_mcs_nss_supp;
++	u8 *cap;
++	int i;
++	ssize_t ret;
++	static const char *mcs_desc[] = { "0-7", "8-9", "10-11", "12-13"};
 +
-+	/* accumulate stats, these are clear-on-read */
-+#define __dl_u32(s)	 phy->mib.dl_##s += le32_to_cpu(mu_stats->dl.s)
-+#define __ul_u32(s)	 phy->mib.ul_##s += le32_to_cpu(mu_stats->ul.s)
-+	__dl_u32(cck_cnt);
-+	__dl_u32(ofdm_cnt);
-+	__dl_u32(htmix_cnt);
-+	__dl_u32(htgf_cnt);
-+	__dl_u32(vht_su_cnt);
-+	__dl_u32(vht_2mu_cnt);
-+	__dl_u32(vht_3mu_cnt);
-+	__dl_u32(vht_4mu_cnt);
-+	__dl_u32(he_su_cnt);
-+	__dl_u32(he_2ru_cnt);
-+	__dl_u32(he_2mu_cnt);
-+	__dl_u32(he_3ru_cnt);
-+	__dl_u32(he_3mu_cnt);
-+	__dl_u32(he_4ru_cnt);
-+	__dl_u32(he_4mu_cnt);
-+	__dl_u32(he_5to8ru_cnt);
-+	__dl_u32(he_9to16ru_cnt);
-+	__dl_u32(he_gtr16ru_cnt);
++	buf = kmalloc(buf_sz, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++	p = buf;
 +
-+	__ul_u32(hetrig_su_cnt);
-+	__ul_u32(hetrig_2ru_cnt);
-+	__ul_u32(hetrig_3ru_cnt);
-+	__ul_u32(hetrig_4ru_cnt);
-+	__ul_u32(hetrig_5to8ru_cnt);
-+	__ul_u32(hetrig_9to16ru_cnt);
-+	__ul_u32(hetrig_gtr16ru_cnt);
-+	__ul_u32(hetrig_2mu_cnt);
-+	__ul_u32(hetrig_3mu_cnt);
-+	__ul_u32(hetrig_4mu_cnt);
-+#undef __dl_u32
-+#undef __ul_u32
++	p += scnprintf(p, buf_sz + buf - p, "EHT %ssupported\n",
++		       bec->has_eht ? "" : "not ");
++	if (!bec->has_eht)
++		goto out;
 +
- 	dev_kfree_skb(skb);
++	p += scnprintf(p, buf_sz + buf - p,
++		       "MAC-CAP: %#.2x %#.2x\n",
++		       fixed->mac_cap_info[0], fixed->mac_cap_info[1]);
++	p += scnprintf(p, buf_sz + buf - p,
++		       "PHY-CAP: %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x\n",
++		       fixed->phy_cap_info[0], fixed->phy_cap_info[1],
++		       fixed->phy_cap_info[2], fixed->phy_cap_info[3],
++		       fixed->phy_cap_info[4], fixed->phy_cap_info[5],
++		       fixed->phy_cap_info[6], fixed->phy_cap_info[7],
++		       fixed->phy_cap_info[8]);
++
++#define PRINT(fmt, ...)							\
++	p += scnprintf(p, buf_sz + buf - p, "\t\t" fmt "\n",		\
++		       ##__VA_ARGS__)
++
++#define PFLAG(t, n, a, b)						\
++	do {								\
++		if (cap[n] & IEEE80211_EHT_##t##_CAP##n##_##a)		\
++			PRINT("%s", b);					\
++	} while (0)
++
++	cap = fixed->mac_cap_info;
++	PFLAG(MAC, 0, EPCS_PRIO_ACCESS, "EPCS-PRIO-ACCESS");
++	PFLAG(MAC, 0, OM_CONTROL, "OM-CONTROL");
++	PFLAG(MAC, 0, TRIG_TXOP_SHARING_MODE1, "TRIG-TXOP-SHARING-MODE1");
++	PFLAG(MAC, 0, TRIG_TXOP_SHARING_MODE2, "TRIG-TXOP-SHARING-MODE2");
++	PFLAG(MAC, 0, RESTRICTED_TWT, "RESTRICTED-TWT");
++	PFLAG(MAC, 0, SCS_TRAFFIC_DESC, "SCS-TRAFFIC-DESC");
++	switch ((cap[0] & 0xc0) >> 6) {
++	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_3895:
++		PRINT("MAX-MPDU-LEN: 3985");
++		break;
++	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_7991:
++		PRINT("MAX-MPDU-LEN: 7991");
++		break;
++	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454:
++		PRINT("MAX-MPDU-LEN: 11454");
++		break;
++	}
++
++	cap = fixed->phy_cap_info;
++	PFLAG(PHY, 0, 320MHZ_IN_6GHZ, "320MHZ-IN-6GHZ");
++	PFLAG(PHY, 0, 242_TONE_RU_GT20MHZ, "242-TONE-RU-GT20MHZ");
++	PFLAG(PHY, 0, NDP_4_EHT_LFT_32_GI, "NDP-4-EHT-LFT-32-GI");
++	PFLAG(PHY, 0, PARTIAL_BW_UL_MU_MIMO, "PARTIAL-BW-UL-MU-MIMO");
++	PFLAG(PHY, 0, SU_BEAMFORMER, "SU-BEAMFORMER");
++	PFLAG(PHY, 0, SU_BEAMFORMEE, "SU-BEAMFORMEE");
++	i = cap[0] >> 7;
++	i |= (cap[1] & 0x3) << 1;
++	PRINT("BEAMFORMEE-80-NSS: %i", i);
++	PRINT("BEAMFORMEE-160-NSS: %i", (cap[1] >> 2) & 0x7);
++	PRINT("BEAMFORMEE-320-NSS: %i", (cap[1] >> 5) & 0x7);
++	PRINT("SOUNDING-DIM-80-NSS: %i", (cap[2] & 0x7));
++	PRINT("SOUNDING-DIM-160-NSS: %i", (cap[2] >> 3) & 0x7);
++	i = cap[2] >> 6;
++	i |= (cap[3] & 0x1) << 3;
++	PRINT("SOUNDING-DIM-320-NSS: %i", i);
++
++	PFLAG(PHY, 3, NG_16_SU_FEEDBACK, "NG-16-SU-FEEDBACK");
++	PFLAG(PHY, 3, NG_16_MU_FEEDBACK, "NG-16-MU-FEEDBACK");
++	PFLAG(PHY, 3, CODEBOOK_4_2_SU_FDBK, "CODEBOOK-4-2-SU-FDBK");
++	PFLAG(PHY, 3, CODEBOOK_7_5_MU_FDBK, "CODEBOOK-7-5-MU-FDBK");
++	PFLAG(PHY, 3, TRIG_SU_BF_FDBK, "TRIG-SU-BF-FDBK");
++	PFLAG(PHY, 3, TRIG_MU_BF_PART_BW_FDBK, "TRIG-MU-BF-PART-BW-FDBK");
++	PFLAG(PHY, 3, TRIG_CQI_FDBK, "TRIG-CQI-FDBK");
++
++	PFLAG(PHY, 4, PART_BW_DL_MU_MIMO, "PART-BW-DL-MU-MIMO");
++	PFLAG(PHY, 4, PSR_SR_SUPP, "PSR-SR-SUPP");
++	PFLAG(PHY, 4, POWER_BOOST_FACT_SUPP, "POWER-BOOST-FACT-SUPP");
++	PFLAG(PHY, 4, EHT_MU_PPDU_4_EHT_LTF_08_GI, "EHT-MU-PPDU-4-EHT-LTF-08-GI");
++	PRINT("MAX_NC: %i", cap[4] >> 4);
++
++	PFLAG(PHY, 5, NON_TRIG_CQI_FEEDBACK, "NON-TRIG-CQI-FEEDBACK");
++	PFLAG(PHY, 5, TX_LESS_242_TONE_RU_SUPP, "TX-LESS-242-TONE-RU-SUPP");
++	PFLAG(PHY, 5, RX_LESS_242_TONE_RU_SUPP, "RX-LESS-242-TONE-RU-SUPP");
++	PFLAG(PHY, 5, PPE_THRESHOLD_PRESENT, "PPE_THRESHOLD_PRESENT");
++	switch (cap[5] >> 4 & 0x3) {
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_0US:
++		PRINT("NOMINAL_PKT_PAD: 0us");
++		break;
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_8US:
++		PRINT("NOMINAL_PKT_PAD: 8us");
++		break;
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US:
++		PRINT("NOMINAL_PKT_PAD: 16us");
++		break;
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_20US:
++		PRINT("NOMINAL_PKT_PAD: 20us");
++		break;
++	}
++	i = cap[5] >> 6;
++	i |= cap[6] & 0x7;
++	PRINT("MAX-NUM-SUPP-EHT-LTF: %i", i);
++	PFLAG(PHY, 5, SUPP_EXTRA_EHT_LTF, "SUPP-EXTRA-EHT-LTF");
++
++	i = (cap[6] >> 3) & 0xf;
++	PRINT("MCS15-SUPP-MASK: %i", i);
++	PFLAG(PHY, 6, EHT_DUP_6GHZ_SUPP, "EHT-DUP-6GHZ-SUPP");
++
++	PFLAG(PHY, 7, 20MHZ_STA_RX_NDP_WIDER_BW, "20MHZ-STA-RX-NDP-WIDER-BW");
++	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_80MHZ, "NON-OFDMA-UL-MU-MIMO-80MHZ");
++	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_160MHZ, "NON-OFDMA-UL-MU-MIMO-160MHZ");
++	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_320MHZ, "NON-OFDMA-UL-MU-MIMO-320MHZ");
++	PFLAG(PHY, 7, MU_BEAMFORMER_80MHZ, "MU-BEAMFORMER-80MHZ");
++	PFLAG(PHY, 7, MU_BEAMFORMER_160MHZ, "MU-BEAMFORMER-160MHZ");
++	PFLAG(PHY, 7, MU_BEAMFORMER_320MHZ, "MU-BEAMFORMER-320MHZ");
++	PFLAG(PHY, 7, TB_SOUNDING_FDBK_RATE_LIMIT, "TB-SOUNDING-FDBK-RATE-LIMIT");
++
++	PFLAG(PHY, 8, RX_1024QAM_WIDER_BW_DL_OFDMA, "RX-1024QAM-WIDER-BW-DL-OFDMA");
++	PFLAG(PHY, 8, RX_4096QAM_WIDER_BW_DL_OFDMA, "RX-4096QAM-WIDER-BW-DL-OFDMA");
++
++#undef PFLAG
++
++	PRINT(""); /* newline */
++	if (!(link_sta->pub->he_cap.he_cap_elem.phy_cap_info[0] &
++	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
++		u8 *mcs_vals = (u8 *)(&nss->only_20mhz);
++
++		for (i = 0; i < 4; i++)
++			PRINT("EHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++	} else {
++		u8 *mcs_vals = (u8 *)(&nss->bw._80);
++
++		for (i = 0; i < 3; i++)
++			PRINT("EHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i + 1],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++
++		mcs_vals = (u8 *)(&nss->bw._160);
++		for (i = 0; i < 3; i++)
++			PRINT("EHT bw <= 160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i + 1],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++
++		mcs_vals = (u8 *)(&nss->bw._320);
++		for (i = 0; i < 3; i++)
++			PRINT("EHT bw <= 320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i + 1],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++	}
++
++	if (cap[5] & IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT) {
++		u8 ppe_size = ieee80211_eht_ppe_size(bec->eht_ppe_thres[0], cap);
++
++		p += scnprintf(p, buf_sz + buf - p, "EHT PPE Thresholds: ");
++		for (i = 0; i < ppe_size; i++)
++			p += scnprintf(p, buf_sz + buf - p, "0x%02x ",
++				       bec->eht_ppe_thres[i]);
++		PRINT(""); /* newline */
++	}
++
++out:
++	ret = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
++	kfree(buf);
++	return ret;
++}
++LINK_STA_OPS(eht_capa);
++
+ #define DEBUGFS_ADD(name) \
+ 	debugfs_create_file(#name, 0400, \
+ 		sta->debugfs_dir, sta, &sta_ ##name## _ops)
+@@ -1333,6 +1517,7 @@ void ieee80211_link_sta_debugfs_add(struct link_sta_info *link_sta)
+ 	DEBUGFS_ADD(ht_capa);
+ 	DEBUGFS_ADD(vht_capa);
+ 	DEBUGFS_ADD(he_capa);
++	DEBUGFS_ADD(eht_capa);
  
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 145f89a19443..929d49792a01 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -216,6 +216,38 @@ struct mib_stats {
- 
- 	u32 tx_amsdu[8];
- 	u32 tx_amsdu_cnt;
-+
-+	/* mcu_muru_stats */
-+	u32 dl_cck_cnt;
-+	u32 dl_ofdm_cnt;
-+	u32 dl_htmix_cnt;
-+	u32 dl_htgf_cnt;
-+	u32 dl_vht_su_cnt;
-+	u32 dl_vht_2mu_cnt;
-+	u32 dl_vht_3mu_cnt;
-+	u32 dl_vht_4mu_cnt;
-+	u32 dl_he_su_cnt;
-+	u32 dl_he_ext_su_cnt;
-+	u32 dl_he_2ru_cnt;
-+	u32 dl_he_2mu_cnt;
-+	u32 dl_he_3ru_cnt;
-+	u32 dl_he_3mu_cnt;
-+	u32 dl_he_4ru_cnt;
-+	u32 dl_he_4mu_cnt;
-+	u32 dl_he_5to8ru_cnt;
-+	u32 dl_he_9to16ru_cnt;
-+	u32 dl_he_gtr16ru_cnt;
-+
-+	u32 ul_hetrig_su_cnt;
-+	u32 ul_hetrig_2ru_cnt;
-+	u32 ul_hetrig_3ru_cnt;
-+	u32 ul_hetrig_4ru_cnt;
-+	u32 ul_hetrig_5to8ru_cnt;
-+	u32 ul_hetrig_9to16ru_cnt;
-+	u32 ul_hetrig_gtr16ru_cnt;
-+	u32 ul_hetrig_2mu_cnt;
-+	u32 ul_hetrig_3mu_cnt;
-+	u32 ul_hetrig_4mu_cnt;
- };
- 
- /* crash-dump */
-@@ -625,7 +657,7 @@ void mt7915_set_stream_he_caps(struct mt7915_phy *phy);
- void mt7915_set_stream_vht_txbf_caps(struct mt7915_phy *phy);
- void mt7915_update_channel(struct mt76_phy *mphy);
- int mt7915_mcu_muru_debug_set(struct mt7915_dev *dev, bool enable);
--int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy, void *ms);
-+int mt7915_mcu_muru_debug_get(struct mt7915_phy *phy);
- int mt7915_mcu_wed_enable_rx_stats(struct mt7915_dev *dev);
- int mt7915_init_debugfs(struct mt7915_phy *phy);
- void mt7915_debugfs_rx_fw_monitor(struct mt7915_dev *dev, const void *data, int len);
+ 	DEBUGFS_ADD_COUNTER(rx_duplicates, rx_stats.num_duplicates);
+ 	DEBUGFS_ADD_COUNTER(rx_fragments, rx_stats.fragments);
 -- 
-2.18.0
+2.40.0
 
