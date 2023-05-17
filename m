@@ -2,63 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2D8F705FE6
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 08:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BC5070622D
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 10:06:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232319AbjEQGYg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 May 2023 02:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40508 "EHLO
+        id S229867AbjEQIGV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 May 2023 04:06:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232688AbjEQGYa (ORCPT
+        with ESMTP id S229634AbjEQIGV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 May 2023 02:24:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D50359E;
-        Tue, 16 May 2023 23:24:22 -0700 (PDT)
+        Wed, 17 May 2023 04:06:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47020E4
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 01:06:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 050836422F;
-        Wed, 17 May 2023 06:24:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F3AC433D2;
-        Wed, 17 May 2023 06:24:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9DBC64354
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 08:06:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4876C4339C;
+        Wed, 17 May 2023 08:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684304661;
-        bh=gMk6/EoGfuHArSq0Q8XKhHxU1olH0Y7/8YUqrbeK/Yc=;
+        s=k20201202; t=1684310779;
+        bh=ve1VERBFy59hmtQ5h/1MN+TRRin8MekKZccfkbp8ze8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=FL8IyGRp6X7P8iL2t+MVz0jzW1UWUAYcxDsC/CE6eib1w50IkJqa54LgNvsl0kyWO
-         rzmbyK7nlkeaGwFZFHjEpaahPC5gwXeKJ00OwfL+dLuqxVuh03V2CUzJs1esJnDR6f
-         5HdNbKKPT8KUYlL3W7RoBuxNjQJY9bDLiO4/oJMmrwmWVvJDpWgyL6xiwcznhhvhvU
-         /1seolds4UBEwVzHC6MJnmJ3LQiD6aKW1K43ccdSZJLQ/Irqhb8f2CoRRZnGx6KPSa
-         FTw2fL9au1RYB/4VJsfNbSGJ6ABjpVqgeMTsPQJYaNBTPUxHZ3hg/uEcBpuNe5/9KT
-         n5L+7U11iM4kA==
+        b=lOvHz2ks8ZRWyPhuEMh4U8sQGcBGgMMiHP0dO3Rw3GIenLBFfhCozJx2tZFhx6/Sn
+         9HlKVeG9jc90zm6QdY81+zMsRhqiL6vkhIsrrH8DkdL6rExVLGoK2WfW0DEj4XRBMe
+         /Vm7J1Xo7mR2FEzTmix6sLKPvRkcRdJToe7qbK47ilPxNBlgWcElXVAvPNCvNeIQM8
+         weIrLo1XjAeeVRU7H0U6zEHHm/loLJUkSLTCbVc4wfEA7R20jEzduotXyslRWpM7Kn
+         1L+iobZXFrfVOTIRuYEXwz/xqBbMKsPm/siCCtQRQwIqXvwBFuWkPebyzvnT6/cW/J
+         K3/u4sLgZG3lw==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] [v2] wifi: b43: fix incorrect __packed annotation
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/6] wifi: rtw89: 8851b: add to read efuse version to
+ recognize hardware version B
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230516183442.536589-1-arnd@kernel.org>
-References: <20230516183442.536589-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        =?utf-8?q?Michael_B=C3=BCsch?= <m@bues.ch>,
-        kernel test robot <lkp@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-wireless@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+In-Reply-To: <20230512061220.16544-2-pkshih@realtek.com>
+References: <20230512061220.16544-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168430465407.24096.14761627656437604341.kvalo@kernel.org>
-Date:   Wed, 17 May 2023 06:24:17 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Message-ID: <168431077533.4384.12669817943092977259.kvalo@kernel.org>
+Date:   Wed, 17 May 2023 08:06:18 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,37 +55,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> From: Arnd Bergmann <arnd@arndb.de>
+> 8851B hardware version A and B use different firmware, but register version
+> code of these two are the same, so add this helper to read efuse version to
+> determine which version is installed.
 > 
-> clang warns about an unpacked structure inside of a packed one:
-> 
-> drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
-> 
-> The problem here is that the anonymous union has the default alignment
-> from its members, apparently because the original author mixed up the
-> placement of the __packed attribute by placing it next to the struct
-> member rather than the union definition. As the struct itself is
-> also marked as __packed, there is no need to mark its members, so just
-> move the annotation to the inner type instead.
-> 
-> As Michael noted, the same problem is present in b43legacy, so
-> change both at the same time.
-> 
-> Acked-by: Michael Büsch <m@bues.ch>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reviewed-by: Simon Horman <simon.horman@corigine.com>
-> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless.git, thanks.
+6 patches applied to wireless-next.git, thanks.
 
-212457ccbd60 wifi: b43: fix incorrect __packed annotation
+40bb2ab49c36 wifi: rtw89: 8851b: add to read efuse version to recognize hardware version B
+f03bd0429f9b wifi: rtw89: 8851b: configure GPIO according to RFE type
+4885b17ebb92 wifi: rtw89: 8851b: add BT coexistence support function
+31df6df89f93 wifi: rtw89: 8851b: add basic power on function
+e948213fb856 wifi: rtw89: 8851b: add set channel function
+f4244d7fbc91 wifi: rtw89: 8851b: add to parse efuse content
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230516183442.536589-1-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230512061220.16544-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
