@@ -2,324 +2,270 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDAE170738F
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 23:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BE91707450
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 May 2023 23:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjEQVKo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 17 May 2023 17:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50418 "EHLO
+        id S229690AbjEQVcX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 17 May 2023 17:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjEQVKn (ORCPT
+        with ESMTP id S229668AbjEQVcS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 17 May 2023 17:10:43 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22BE055AE
-        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 14:10:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684357842; x=1715893842;
-  h=date:from:to:cc:subject:message-id;
-  bh=4hUV/bJNMRGgcjrC3yN+7lmx4eQupqq828oLBc7OuOM=;
-  b=fNmyuSeDT/a5T1w+bK0jLl5H2hFxluQC0XnyThVtxaJTQScSNSDKq61k
-   fCbgu0NesCqjJ2/Ewgig4tDBX88aCwuHdylnOCc4kacMfK8AGayqCpRxu
-   G08b2Ukg+20TKVINKcyAeBw5xbC6eOVNi43XH9xK5dtUwqFXdwuBqzGbe
-   S/yPmyXIML9mi3PR7wRGmJbffT4Ze0Qx7LO3AYtL295Lydiv1HWykLKP5
-   9xOjAKu9ryzDqDi6APmpTLsMEcHlAvYidVdHKQzRpR1xt97PlW7Jywcln
-   /ghv6oHtGubE5L4fEG4flPKqRnsA70g5zICecC9gGVpE9nRtCLkqsGf8n
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="331492212"
-X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; 
-   d="scan'208";a="331492212"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 14:10:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="791655603"
-X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; 
-   d="scan'208";a="791655603"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 17 May 2023 14:10:39 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pzOPv-0009ET-03;
-        Wed, 17 May 2023 21:10:39 +0000
-Date:   Thu, 18 May 2023 05:10:05 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kalle Valo <kvalo@kernel.org>
+        Wed, 17 May 2023 17:32:18 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D7830ED;
+        Wed, 17 May 2023 14:32:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 5979960177;
+        Wed, 17 May 2023 23:32:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1684359122; bh=2UIzJQv6U3IVyIe7FfBsKDq4TgdpbPwnJiasL/OapkM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VR+UdAKQ8iwx50Ni2q8aUPolHlSeRmeMqUd4CD0rT1SSOADiKY5UIU2WnS7c/D/qQ
+         zZeI0sQ8+zGrUMnKbmNa0H13BlPvD9UhvRZhfIqrTmwFMcn56lFzEWE45r7/wQiRAw
+         tqPVagB8D0e1vUMcJAYPR+4PiG0KY0fHqucc9bHM1sMbUCypl1FRwbf24VD8olffSM
+         AV3Hq/jSeylEWSyM+MZFUDhOqIaupoqKMqbc49Go2Y9Tpbjz4uPNFZHFxzjxZkP39l
+         AzPywTdByxqP4bRHHeTKgcxkUfd2vy7o6goap6HY6kLutC1+SutkWdApcW9pugnHpE
+         c0Ek5Nj+koO9A==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id FvDIITb732VJ; Wed, 17 May 2023 23:31:59 +0200 (CEST)
+Received: from defiant.. (unknown [77.237.113.62])
+        by domac.alu.hr (Postfix) with ESMTPSA id 8572260174;
+        Wed, 17 May 2023 23:31:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1684359119; bh=2UIzJQv6U3IVyIe7FfBsKDq4TgdpbPwnJiasL/OapkM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=YRmGWXCFviVT+l3gho3OKeydVoubb8oEaRCjlSUCoz75YqXmzpn19lCO64OM3kbyg
+         j2QIq4k9YcP0BE+bk7howrD0P0oXyuASl3qoAkkndd3qm53ZRW2Hjj8rRaqmpoF5Cy
+         9QHK3B2gezVxbtoKoZ4Bc6wmoW6FCgRB89UJ21QdWha5G5IBNFnfaYhHG7HU2O7DCN
+         977qtYZE5DgvdRtWSA1xnM1g8WECug/kEFKDF3xgddaCHdKgUEYJizgTfABM2MYAPa
+         UEWpsq+dCVMr/ra6nyY1kEd82GwCOYOs+xkFEZocZS1FQP6ldYVcRnDZvWWWPkpInH
+         hkS2c5AK87uJg==
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 3f2da9fc17f66af17a1349d4d32f6a6ba245b94d
-Message-ID: <20230517211005.0PrMb%lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Leon Romanovsky <leonro@nvidia.com>
+Subject: [PATCH v5 1/1] wifi: mac80211: fortify the spinlock against deadlock by interrupt
+Date:   Wed, 17 May 2023 23:31:02 +0200
+Message-Id: <20230517213101.25617-1-mirsad.todorovac@alu.unizg.hr>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: INFO setup_repo_specs: /db/releases/20230517200055/lkp-src/repo/*/wireless-next
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 3f2da9fc17f66af17a1349d4d32f6a6ba245b94d  wifi: rtw89: 8851b: rfk: add TSSI
+In the function ieee80211_tx_dequeue() there is a particular locking
+sequence:
 
-elapsed time: 725m
+begin:
+	spin_lock(&local->queue_stop_reason_lock);
+	q_stopped = local->queue_stop_reasons[q];
+	spin_unlock(&local->queue_stop_reason_lock);
 
-configs tested: 245
-configs skipped: 15
+However small the chance (increased by ftracetest), an asynchronous
+interrupt can occur in between of spin_lock() and spin_unlock(),
+and the interrupt routine will attempt to lock the same
+&local->queue_stop_reason_lock again.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This will cause a costly reset of the CPU and the wifi device or an
+altogether hang in the single CPU and single core scenario.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r001-20230517   gcc  
-alpha        buildonly-randconfig-r002-20230517   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r013-20230517   gcc  
-alpha                randconfig-r015-20230517   gcc  
-alpha                randconfig-r024-20230517   gcc  
-alpha                randconfig-r034-20230517   gcc  
-alpha                randconfig-r035-20230517   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r005-20230517   gcc  
-arc          buildonly-randconfig-r006-20230517   gcc  
-arc                                 defconfig   gcc  
-arc                        nsimosci_defconfig   gcc  
-arc                  randconfig-r001-20230517   gcc  
-arc                  randconfig-r022-20230517   gcc  
-arc                  randconfig-r025-20230517   gcc  
-arc                  randconfig-r043-20230517   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                      jornada720_defconfig   gcc  
-arm                        keystone_defconfig   gcc  
-arm                        mvebu_v7_defconfig   gcc  
-arm                  randconfig-r001-20230517   gcc  
-arm                  randconfig-r006-20230517   gcc  
-arm                  randconfig-r031-20230517   gcc  
-arm                  randconfig-r034-20230517   gcc  
-arm                  randconfig-r035-20230517   gcc  
-arm                  randconfig-r036-20230517   gcc  
-arm                  randconfig-r046-20230517   clang
-arm                           u8500_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r011-20230517   gcc  
-arm64                randconfig-r014-20230517   gcc  
-arm64                randconfig-r023-20230517   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r006-20230517   gcc  
-csky                 randconfig-r024-20230517   gcc  
-csky                 randconfig-r025-20230517   gcc  
-hexagon              randconfig-r012-20230517   clang
-hexagon              randconfig-r016-20230517   clang
-hexagon              randconfig-r035-20230517   clang
-hexagon              randconfig-r041-20230517   clang
-hexagon              randconfig-r045-20230517   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r003-20230517   gcc  
-ia64                                defconfig   gcc  
-ia64                      gensparse_defconfig   gcc  
-ia64                 randconfig-r005-20230517   gcc  
-ia64                 randconfig-r012-20230517   gcc  
-ia64                 randconfig-r013-20230517   gcc  
-ia64                 randconfig-r014-20230517   gcc  
-ia64                 randconfig-r023-20230517   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r002-20230517   gcc  
-loongarch    buildonly-randconfig-r005-20230517   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r002-20230517   gcc  
-loongarch            randconfig-r003-20230517   gcc  
-loongarch            randconfig-r004-20230517   gcc  
-loongarch            randconfig-r011-20230517   gcc  
-loongarch            randconfig-r032-20230517   gcc  
-loongarch            randconfig-r033-20230517   gcc  
-loongarch            randconfig-r035-20230517   gcc  
-m68k                             alldefconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        mvme16x_defconfig   gcc  
-m68k                 randconfig-r005-20230517   gcc  
-m68k                 randconfig-r015-20230517   gcc  
-m68k                 randconfig-r023-20230517   gcc  
-microblaze   buildonly-randconfig-r003-20230517   gcc  
-microblaze   buildonly-randconfig-r005-20230517   gcc  
-microblaze           randconfig-r006-20230517   gcc  
-microblaze           randconfig-r021-20230517   gcc  
-microblaze           randconfig-r025-20230517   gcc  
-microblaze           randconfig-r031-20230517   gcc  
-microblaze           randconfig-r033-20230517   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                        maltaup_defconfig   clang
-mips                 randconfig-r002-20230517   gcc  
-mips                 randconfig-r003-20230517   gcc  
-mips                 randconfig-r006-20230517   gcc  
-mips                 randconfig-r015-20230517   clang
-mips                 randconfig-r016-20230517   clang
-mips                 randconfig-r023-20230517   clang
-mips                 randconfig-r032-20230517   gcc  
-nios2                         10m50_defconfig   gcc  
-nios2        buildonly-randconfig-r002-20230517   gcc  
-nios2        buildonly-randconfig-r006-20230517   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r003-20230517   gcc  
-nios2                randconfig-r004-20230517   gcc  
-nios2                randconfig-r011-20230517   gcc  
-nios2                randconfig-r023-20230517   gcc  
-nios2                randconfig-r025-20230517   gcc  
-nios2                randconfig-r032-20230517   gcc  
-openrisc     buildonly-randconfig-r004-20230517   gcc  
-openrisc             randconfig-r001-20230517   gcc  
-openrisc             randconfig-r002-20230517   gcc  
-openrisc             randconfig-r003-20230517   gcc  
-openrisc             randconfig-r004-20230517   gcc  
-openrisc             randconfig-r013-20230517   gcc  
-openrisc             randconfig-r031-20230517   gcc  
-openrisc             randconfig-r035-20230517   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r002-20230517   gcc  
-parisc               randconfig-r016-20230517   gcc  
-parisc               randconfig-r026-20230517   gcc  
-parisc               randconfig-r032-20230517   gcc  
-parisc               randconfig-r033-20230517   gcc  
-parisc64                            defconfig   gcc  
-powerpc                    adder875_defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r004-20230517   gcc  
-powerpc                        fsp2_defconfig   clang
-powerpc                       maple_defconfig   gcc  
-powerpc                 mpc837x_rdb_defconfig   gcc  
-powerpc              randconfig-r012-20230517   gcc  
-powerpc              randconfig-r014-20230517   gcc  
-powerpc                     tqm5200_defconfig   clang
-powerpc                      walnut_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv        buildonly-randconfig-r001-20230517   gcc  
-riscv        buildonly-randconfig-r003-20230517   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r011-20230517   gcc  
-riscv                randconfig-r014-20230517   gcc  
-riscv                randconfig-r015-20230517   gcc  
-riscv                randconfig-r024-20230517   gcc  
-riscv                randconfig-r026-20230517   gcc  
-riscv                randconfig-r032-20230517   clang
-riscv                randconfig-r042-20230517   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390         buildonly-randconfig-r004-20230517   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r003-20230517   clang
-s390                 randconfig-r004-20230517   clang
-s390                 randconfig-r005-20230517   clang
-s390                 randconfig-r016-20230517   gcc  
-s390                 randconfig-r021-20230517   gcc  
-s390                 randconfig-r022-20230517   gcc  
-s390                 randconfig-r031-20230517   clang
-s390                 randconfig-r032-20230517   clang
-s390                 randconfig-r044-20230517   gcc  
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r004-20230517   gcc  
-sh           buildonly-randconfig-r005-20230517   gcc  
-sh           buildonly-randconfig-r006-20230517   gcc  
-sh                          polaris_defconfig   gcc  
-sh                   randconfig-r001-20230517   gcc  
-sh                   randconfig-r005-20230517   gcc  
-sh                   randconfig-r013-20230517   gcc  
-sh                   randconfig-r021-20230517   gcc  
-sh                   randconfig-r022-20230517   gcc  
-sh                   randconfig-r024-20230517   gcc  
-sh                   randconfig-r025-20230517   gcc  
-sh                   randconfig-r036-20230517   gcc  
-sh                          rsk7269_defconfig   gcc  
-sh                           se7619_defconfig   gcc  
-sh                           se7721_defconfig   gcc  
-sh                           se7722_defconfig   gcc  
-sh                           se7780_defconfig   gcc  
-sh                   secureedge5410_defconfig   gcc  
-sh                        sh7785lcr_defconfig   gcc  
-sh                             shx3_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sh                          urquell_defconfig   gcc  
-sparc        buildonly-randconfig-r002-20230517   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r001-20230517   gcc  
-sparc                randconfig-r003-20230517   gcc  
-sparc                randconfig-r021-20230517   gcc  
-sparc                randconfig-r022-20230517   gcc  
-sparc                randconfig-r024-20230517   gcc  
-sparc                randconfig-r036-20230517   gcc  
-sparc                       sparc64_defconfig   gcc  
-sparc64      buildonly-randconfig-r001-20230517   gcc  
-sparc64      buildonly-randconfig-r005-20230517   gcc  
-sparc64              randconfig-r005-20230517   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a011   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a013   gcc  
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a015   gcc  
-x86_64                        randconfig-a016   clang
-x86_64                        randconfig-x051   gcc  
-x86_64                        randconfig-x052   clang
-x86_64                        randconfig-x053   gcc  
-x86_64                        randconfig-x054   clang
-x86_64                        randconfig-x055   gcc  
-x86_64                        randconfig-x056   clang
-x86_64                        randconfig-x061   gcc  
-x86_64                        randconfig-x062   clang
-x86_64                        randconfig-x063   gcc  
-x86_64                        randconfig-x064   clang
-x86_64                        randconfig-x065   gcc  
-x86_64                        randconfig-x066   clang
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa                           alldefconfig   gcc  
-xtensa       buildonly-randconfig-r001-20230517   gcc  
-xtensa       buildonly-randconfig-r003-20230517   gcc  
-xtensa               randconfig-r004-20230517   gcc  
-xtensa               randconfig-r026-20230517   gcc  
-xtensa               randconfig-r031-20230517   gcc  
-xtensa               randconfig-r032-20230517   gcc  
-xtensa                    xip_kc705_defconfig   gcc  
+The only remaining spin_lock(&local->queue_stop_reason_lock) that
+did not disable interrupts was patched, which should prevent any
+deadlocks on the same CPU/core and the same wifi device.
 
+This is the probable trace of the deadlock:
+
+kernel: ================================
+kernel: WARNING: inconsistent lock state
+kernel: 6.3.0-rc6-mt-20230401-00001-gf86822a1170f #4 Tainted: G        W
+kernel: --------------------------------
+kernel: inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+kernel: kworker/5:0/25656 [HC0[0]:SC0[0]:HE1:SE1] takes:
+kernel: ffff9d6190779478 (&local->queue_stop_reason_lock){+.?.}-{2:2}, at: return_to_handler+0x0/0x40
+kernel: {IN-SOFTIRQ-W} state was registered at:
+kernel:   lock_acquire+0xc7/0x2d0
+kernel:   _raw_spin_lock+0x36/0x50
+kernel:   ieee80211_tx_dequeue+0xb4/0x1330 [mac80211]
+kernel:   iwl_mvm_mac_itxq_xmit+0xae/0x210 [iwlmvm]
+kernel:   iwl_mvm_mac_wake_tx_queue+0x2d/0xd0 [iwlmvm]
+kernel:   ieee80211_queue_skb+0x450/0x730 [mac80211]
+kernel:   __ieee80211_xmit_fast.constprop.66+0x834/0xa50 [mac80211]
+kernel:   __ieee80211_subif_start_xmit+0x217/0x530 [mac80211]
+kernel:   ieee80211_subif_start_xmit+0x60/0x580 [mac80211]
+kernel:   dev_hard_start_xmit+0xb5/0x260
+kernel:   __dev_queue_xmit+0xdbe/0x1200
+kernel:   neigh_resolve_output+0x166/0x260
+kernel:   ip_finish_output2+0x216/0xb80
+kernel:   __ip_finish_output+0x2a4/0x4d0
+kernel:   ip_finish_output+0x2d/0xd0
+kernel:   ip_output+0x82/0x2b0
+kernel:   ip_local_out+0xec/0x110
+kernel:   igmpv3_sendpack+0x5c/0x90
+kernel:   igmp_ifc_timer_expire+0x26e/0x4e0
+kernel:   call_timer_fn+0xa5/0x230
+kernel:   run_timer_softirq+0x27f/0x550
+kernel:   __do_softirq+0xb4/0x3a4
+kernel:   irq_exit_rcu+0x9b/0xc0
+kernel:   sysvec_apic_timer_interrupt+0x80/0xa0
+kernel:   asm_sysvec_apic_timer_interrupt+0x1f/0x30
+kernel:   _raw_spin_unlock_irqrestore+0x3f/0x70
+kernel:   free_to_partial_list+0x3d6/0x590
+kernel:   __slab_free+0x1b7/0x310
+kernel:   kmem_cache_free+0x52d/0x550
+kernel:   putname+0x5d/0x70
+kernel:   do_sys_openat2+0x1d7/0x310
+kernel:   do_sys_open+0x51/0x80
+kernel:   __x64_sys_openat+0x24/0x30
+kernel:   do_syscall_64+0x5c/0x90
+kernel:   entry_SYSCALL_64_after_hwframe+0x72/0xdc
+kernel: irq event stamp: 5120729
+kernel: hardirqs last  enabled at (5120729): [<ffffffff9d149936>] trace_graph_return+0xd6/0x120
+kernel: hardirqs last disabled at (5120728): [<ffffffff9d149950>] trace_graph_return+0xf0/0x120
+kernel: softirqs last  enabled at (5069900): [<ffffffff9cf65b60>] return_to_handler+0x0/0x40
+kernel: softirqs last disabled at (5067555): [<ffffffff9cf65b60>] return_to_handler+0x0/0x40
+kernel:
+        other info that might help us debug this:
+kernel:  Possible unsafe locking scenario:
+kernel:        CPU0
+kernel:        ----
+kernel:   lock(&local->queue_stop_reason_lock);
+kernel:   <Interrupt>
+kernel:     lock(&local->queue_stop_reason_lock);
+kernel:
+         *** DEADLOCK ***
+kernel: 8 locks held by kworker/5:0/25656:
+kernel:  #0: ffff9d618009d138 ((wq_completion)events_freezable){+.+.}-{0:0}, at: process_one_work+0x1ca/0x530
+kernel:  #1: ffffb1ef4637fe68 ((work_completion)(&local->restart_work)){+.+.}-{0:0}, at: process_one_work+0x1ce/0x530
+kernel:  #2: ffffffff9f166548 (rtnl_mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #3: ffff9d6190778728 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #4: ffff9d619077b480 (&mvm->mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #5: ffff9d61907bacd8 (&trans_pcie->mutex){+.+.}-{3:3}, at: return_to_handler+0x0/0x40
+kernel:  #6: ffffffff9ef9cda0 (rcu_read_lock){....}-{1:2}, at: iwl_mvm_queue_state_change+0x59/0x3a0 [iwlmvm]
+kernel:  #7: ffffffff9ef9cda0 (rcu_read_lock){....}-{1:2}, at: iwl_mvm_mac_itxq_xmit+0x42/0x210 [iwlmvm]
+kernel:
+        stack backtrace:
+kernel: CPU: 5 PID: 25656 Comm: kworker/5:0 Tainted: G        W          6.3.0-rc6-mt-20230401-00001-gf86822a1170f #4
+kernel: Hardware name: LENOVO 82H8/LNVNB161216, BIOS GGCN51WW 11/16/2022
+kernel: Workqueue: events_freezable ieee80211_restart_work [mac80211]
+kernel: Call Trace:
+kernel:  <TASK>
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  dump_stack_lvl+0x5f/0xa0
+kernel:  dump_stack+0x14/0x20
+kernel:  print_usage_bug.part.46+0x208/0x2a0
+kernel:  mark_lock.part.47+0x605/0x630
+kernel:  ? sched_clock+0xd/0x20
+kernel:  ? trace_clock_local+0x14/0x30
+kernel:  ? __rb_reserve_next+0x5f/0x490
+kernel:  ? _raw_spin_lock+0x1b/0x50
+kernel:  __lock_acquire+0x464/0x1990
+kernel:  ? mark_held_locks+0x4e/0x80
+kernel:  lock_acquire+0xc7/0x2d0
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ? ftrace_return_to_handler+0x8b/0x100
+kernel:  ? preempt_count_add+0x4/0x70
+kernel:  _raw_spin_lock+0x36/0x50
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_tx_dequeue+0xb4/0x1330 [mac80211]
+kernel:  ? prepare_ftrace_return+0xc5/0x190
+kernel:  ? ftrace_graph_func+0x16/0x20
+kernel:  ? 0xffffffffc02ab0b1
+kernel:  ? lock_acquire+0xc7/0x2d0
+kernel:  ? iwl_mvm_mac_itxq_xmit+0x42/0x210 [iwlmvm]
+kernel:  ? ieee80211_tx_dequeue+0x9/0x1330 [mac80211]
+kernel:  ? __rcu_read_lock+0x4/0x40
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_mac_itxq_xmit+0xae/0x210 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_queue_state_change+0x311/0x3a0 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_wake_sw_queue+0x17/0x20 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_unmap+0x1c9/0x1f0 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_free+0x55/0x130 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_txq_gen2_tx_free+0x63/0x80 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  _iwl_trans_pcie_gen2_stop_device+0x3f3/0x5b0 [iwlwifi]
+kernel:  ? _iwl_trans_pcie_gen2_stop_device+0x9/0x5b0 [iwlwifi]
+kernel:  ? mutex_lock_nested+0x4/0x30
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_trans_pcie_gen2_stop_device+0x5f/0x90 [iwlwifi]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_stop_device+0x78/0xd0 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  __iwl_mvm_mac_start+0x114/0x210 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  iwl_mvm_mac_start+0x76/0x150 [iwlmvm]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  drv_start+0x79/0x180 [mac80211]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_reconfig+0x1523/0x1ce0 [mac80211]
+kernel:  ? synchronize_net+0x4/0x50
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  ieee80211_restart_work+0x108/0x170 [mac80211]
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  process_one_work+0x250/0x530
+kernel:  ? ftrace_regs_caller_end+0x66/0x66
+kernel:  worker_thread+0x48/0x3a0
+kernel:  ? __pfx_worker_thread+0x10/0x10
+kernel:  kthread+0x10f/0x140
+kernel:  ? __pfx_kthread+0x10/0x10
+kernel:  ret_from_fork+0x29/0x50
+kernel:  </TASK>
+
+Fixes: 4444bc2116ae ("wifi: mac80211: Proper mark iTXQs for resumption")
+Link: https://lore.kernel.org/all/1f58a0d1-d2b9-d851-73c3-93fcc607501c@alu.unizg.hr/
+Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Link: https://lore.kernel.org/all/cdc80531-f25f-6f9d-b15f-25e16130b53a@alu.unizg.hr/
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ net/mac80211/tx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 1a3327407552..0d9fbc8458fd 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3791,6 +3791,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	ieee80211_tx_result r;
+ 	struct ieee80211_vif *vif = txq->vif;
+ 	int q = vif->hw_queue[txq->ac];
++	unsigned long flags;
+ 	bool q_stopped;
+ 
+ 	WARN_ON_ONCE(softirq_count() == 0);
+@@ -3799,9 +3800,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 		return NULL;
+ 
+ begin:
+-	spin_lock(&local->queue_stop_reason_lock);
++	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
+ 	q_stopped = local->queue_stop_reasons[q];
+-	spin_unlock(&local->queue_stop_reason_lock);
++	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
+ 
+ 	if (unlikely(q_stopped)) {
+ 		/* mark for waking later */
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.34.1
+
