@@ -2,129 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DA187089FC
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 23:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F88708ABC
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 23:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbjERVBS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 17:01:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
+        id S230002AbjERVuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 17:50:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229622AbjERVBR (ORCPT
+        with ESMTP id S230087AbjERVuX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 17:01:17 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4754EE
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 14:01:15 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E25A3C4008E;
-        Thu, 18 May 2023 21:01:13 +0000 (UTC)
-Received: from [192.168.100.159] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        Thu, 18 May 2023 17:50:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610ECE7A
+        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 14:50:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 5D9A213C2B0;
-        Thu, 18 May 2023 14:01:11 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5D9A213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1684443671;
-        bh=f7UVOeajqZxAbdDvUIeocPHQUDJcwEflHXkitMYSEDw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=KGBL4VCjJL+V41jky79OVvHe7L3ho5XpGiDLZFRBKE4IDkc4K/WUaRg2d1/bGcHjh
-         7+hYvXBubAQkmqsi1AAe1lAJrhQ++FQQl9R6fcWc0nmnYLiOpDk9rvkWD40XEQDUdU
-         BB5HowQUmRgqgKTg0SHx3TDog7Xm1JOmQd4VwjPY=
-Message-ID: <43d01aa8-b594-2770-59d0-13e6388c5758@candelatech.com>
-Date:   Thu, 18 May 2023 14:01:11 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] wifi: mt76: mt7921: Support temp sensor.
-Content-Language: en-US
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAB1D65265
+        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 21:50:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B9DC433D2;
+        Thu, 18 May 2023 21:50:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684446621;
+        bh=d4QQ61ZSMghe8tSspFIwBhXqAKHIUixZPK8avoQLJWI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=N1LntZtYFmae3HC1DnGr5+Ml1tYRaldtoj8Iv1vIJNakOirfHORp1ofTd2Vv53cxm
+         o4Tm/UiZmWx+QvvjeAHxQ2wJk9LtXjplGt9Ow4N2ivapAtf1CNSVY+7wx+ZgoBGLhT
+         k9GUrnOu+4UfFjU8n49lXMgvtsT5BRf17nKAeYm+1pYeK1kbPzkNIc+Ye3BYgyFMFX
+         +iz971/OpM5WsEdy27ovn7NxRDhVKD08OAieMG5ZUjGbElHimNH23YHgNZIwQ8UwJA
+         BuILusmxkTxmf22ueI9upLudeJAgMZK2z+VJ1QT0M/w27b/mNdfC1h/WeZkUNFwaKm
+         X5MxsLlM/8L6g==
+Date:   Thu, 18 May 2023 23:51:27 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Ben Greear <greearb@candelatech.com>
 Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: mt76: mt7921: Support temp sensor.
+Message-ID: <ZGad36FQEK2/MduJ@localhost.localdomain>
 References: <20230518200718.1367381-1-greearb@candelatech.com>
  <ZGaNm8mMfbqdtWa0@lore-desk>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <ZGaNm8mMfbqdtWa0@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1684443674-JpsseWCM7R4p
-X-MDID-O: us5;ut7;1684443674;JpsseWCM7R4p;<greearb@candelatech.com>;0161bc757c83381a5b931166ef547186
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <43d01aa8-b594-2770-59d0-13e6388c5758@candelatech.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="C6NMl48XVxljFi9E"
+Content-Disposition: inline
+In-Reply-To: <43d01aa8-b594-2770-59d0-13e6388c5758@candelatech.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/18/23 13:42, Lorenzo Bianconi wrote:
->> From: Ben Greear <greearb@candelatech.com>
->>
->> Allow sensors tool to read radio's temperature, example:
->>
->> mt7921_phy17-pci-1800
->> Adapter: PCI adapter
->> temp1:        +72.0°C
->>
->> Signed-off-by: Ben Greear <greearb@candelatech.com>
->> ---
->>   .../net/wireless/mediatek/mt76/mt7921/init.c  | 53 +++++++++++++++++++
->>   .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++
->>   .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
->>   3 files changed, 71 insertions(+)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> index c15ce1a19000..18f0f2dfbbcf 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
->> @@ -2,6 +2,9 @@
->>   /* Copyright (C) 2020 MediaTek Inc. */
->>   
->>   #include <linux/etherdevice.h>
->> +#include <linux/hwmon.h>
->> +#include <linux/hwmon-sysfs.h>
->> +#include <linux/thermal.h>
->>   #include <linux/firmware.h>
->>   #include "mt7921.h"
->>   #include "../mt76_connac2_mac.h"
->> @@ -58,6 +61,50 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
->>   	}
->>   };
->>   
->> +static ssize_t mt7921_thermal_temp_show(struct device *dev,
->> +					struct device_attribute *attr,
->> +					char *buf)
->> +{
->> +	struct mt7921_phy *phy = dev_get_drvdata(dev);
->> +	int i = to_sensor_dev_attr(attr)->index;
->> +	int temperature;
->> +
->> +	switch (i) {
-> 
-> nit: you can drop i and just use to_sensor_dev_attr(attr)->index
-> 
->> +	case 0:
-> 
-> I think you need to wake the device up here running mt7921_mutex_acquire
-> before sending the mcu command.
 
-I need to wake it up and acquire a mutex, or does acquiring the mutex wake it
-automatically?
+--C6NMl48XVxljFi9E
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-And, mt7915 has some other logic in this area.  I left the switch logic in
-to match that, thinking maybe later we can add the other options to 7921?
+> On 5/18/23 13:42, Lorenzo Bianconi wrote:
+> > > From: Ben Greear <greearb@candelatech.com>
+> > >=20
+> > > Allow sensors tool to read radio's temperature, example:
+> > >=20
+> > > mt7921_phy17-pci-1800
+> > > Adapter: PCI adapter
+> > > temp1:        +72.0=B0C
+> > >=20
+> > > Signed-off-by: Ben Greear <greearb@candelatech.com>
+> > > ---
+> > >   .../net/wireless/mediatek/mt76/mt7921/init.c  | 53 ++++++++++++++++=
++++
+> > >   .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++
+> > >   .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
+> > >   3 files changed, 71 insertions(+)
+> > >=20
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drive=
+rs/net/wireless/mediatek/mt76/mt7921/init.c
+> > > index c15ce1a19000..18f0f2dfbbcf 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> > > @@ -2,6 +2,9 @@
+> > >   /* Copyright (C) 2020 MediaTek Inc. */
+> > >   #include <linux/etherdevice.h>
+> > > +#include <linux/hwmon.h>
+> > > +#include <linux/hwmon-sysfs.h>
+> > > +#include <linux/thermal.h>
+> > >   #include <linux/firmware.h>
+> > >   #include "mt7921.h"
+> > >   #include "../mt76_connac2_mac.h"
+> > > @@ -58,6 +61,50 @@ static const struct ieee80211_iface_combination if=
+_comb_chanctx[] =3D {
+> > >   	}
+> > >   };
+> > > +static ssize_t mt7921_thermal_temp_show(struct device *dev,
+> > > +					struct device_attribute *attr,
+> > > +					char *buf)
+> > > +{
+> > > +	struct mt7921_phy *phy =3D dev_get_drvdata(dev);
+> > > +	int i =3D to_sensor_dev_attr(attr)->index;
+> > > +	int temperature;
+> > > +
+> > > +	switch (i) {
+> >=20
+> > nit: you can drop i and just use to_sensor_dev_attr(attr)->index
+> >=20
+> > > +	case 0:
+> >=20
+> > I think you need to wake the device up here running mt7921_mutex_acquire
+> > before sending the mcu command.
+>=20
+> I need to wake it up and acquire a mutex, or does acquiring the mutex wak=
+e it
+> automatically?
 
-Do you know if 7921 supports the other options like 7915?
+acquiring the lock with mt7921_mutex_acquire() will wake the device up.
 
-Thanks,
-Ben
+>=20
+> And, mt7915 has some other logic in this area.  I left the switch logic in
+> to match that, thinking maybe later we can add the other options to 7921?
+>=20
+> Do you know if 7921 supports the other options like 7915?
 
+nope.
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Regards,
+Lorenzo
 
+>=20
+> Thanks,
+> Ben
+>=20
+>=20
+> --=20
+> Ben Greear <greearb@candelatech.com>
+> Candela Technologies Inc  http://www.candelatech.com
+>=20
+>=20
 
+--C6NMl48XVxljFi9E
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZGad3AAKCRA6cBh0uS2t
+rKpRAP45Q8ZJSJ861BW/+1ZNwmE5X85hvzWDVsKKDr/NKKPZNAEAtZd2ZwzS8Mvb
+IgPiZiSAzc4BeRq+j9BeZPrSiSnPJgM=
+=wmMR
+-----END PGP SIGNATURE-----
+
+--C6NMl48XVxljFi9E--
