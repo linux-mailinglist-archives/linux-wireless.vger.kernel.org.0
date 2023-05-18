@@ -2,173 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8AAD7085CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 18:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 195FC7085D9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 18:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjERQSI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 12:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49524 "EHLO
+        id S229682AbjERQUT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 12:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjERQSD (ORCPT
+        with ESMTP id S229491AbjERQUR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 12:18:03 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D4F13E;
-        Thu, 18 May 2023 09:18:02 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-510d6b939bfso3491211a12.0;
-        Thu, 18 May 2023 09:18:02 -0700 (PDT)
+        Thu, 18 May 2023 12:20:17 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2136.outbound.protection.outlook.com [40.107.92.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0564F10D0;
+        Thu, 18 May 2023 09:20:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lpQ8bZG9X6O7WFfQMwmBpvxxAWSC4jkWzg3c5oVTGaIg6YnHk3z3crg8Qz0cottBqUGvUAfL/CuYCjgenIU+lQobFgYPsRypYUrRZTPsPiPmzGbm10VJ8cKcZCGzJLNlOM826LyqFynoIXamrrSZXptV1BdLS/h9cyTouPzL6T8NOoMlbzs8etRI1yv5wu1I3qQTYaHAwxSfUyV/RsJRYAqARSkjVOFPvfOfwLIvLcFyJa/TjYmyTFdRLM7isKYp+CIMyI46LWsIXH2+be2J6CKd2PORV9H+214s9frECwR/amPYyHdDvN0NhmE4DRm2Uzf5fiYJZ7TmptaxSG7oOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bqK1cm5PrVikdVylor80+Xt79IA7sjfvuZ0d5095d4E=;
+ b=Oj5xirNvGnuUMqR9zZHx6Kyf6EXU7C7LQxCgch6DYICyysa8vgKPvnIUK7ovymSGn8KuP0fa4BPAatNUFZEa9XUZr/BH3vKJg3Fo1U7jucUqOe1H26I1Ms86JjuhmXJ9kdWcOts7LFe/5fzZs7AMoWoOgxUzlB9p0N/WBABsY5fg3FZRZ3lv/R0hlHCHn9Y6JyTzIlaCHOPJkwGWb9uMRuhJ3dhcYa0KjHeWqOBhKOUaf/c+16FQKbTUtjdnfcyuI5sZjqAr4fUEMG7nqBK5h4hHxsWIVoEbOJ70E0gZGfJ9sjQv8x0uQIApFjGSS19xihnZ0uNgCRL4XS4FwGpVdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1684426680; x=1687018680;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gVuUzhjr+2NlfNCMwyqYcJUkzoS2xm3xsSK+vysljqE=;
-        b=YVCinwZm3Gpv165ZjZWCIZri/1QZyYQIn49J9Kna/LVRhk/XIwcv1WY5QUr8Q9Icu3
-         cMb/ONAZxrlMVXZhp/YyKT2rQHoS2qKCMR8BoJNraCeeEmshi/25pkRvIp4XFU3Tr9yH
-         p0lXXjLx4UNsmdPhM6//okX+LaoS5s1KjaekoR/um3vqF5YXO9SuLE2zAr9SBnI4WUkD
-         JUWN8p0E8yvngOA+LoUY6arbd8uxvmJ1MAtaGxgBPSGzKg26Bwp0VWc1cV/uzfSXsK/p
-         bR0hdNi2GsR/srkw+Xl/Z85XnlldRR2c0NwmFl06UVo/9ZA0P893nrJ5yFsCcJFXzDPH
-         8KNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684426680; x=1687018680;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gVuUzhjr+2NlfNCMwyqYcJUkzoS2xm3xsSK+vysljqE=;
-        b=egpNzWzZWM/NubZnNGuiwMj+u1HDBLnbWYOlbjjo2lgaHHpo79LnGTdsTAMN+y0NYW
-         kp/N+fjB69xkBE0pGh5JeMSnZy1CTirvQPuFGIpBjhHebkI3ncylBgdh0GwGLdHK7woW
-         bILF2SHNfabgLy4Xax7glF+COJog/q/4zpqxtLawkRwsgirJb8BkOrTaXx5NEc8rkl45
-         JhzHFPzltNTTeC7ix2Z4sjU/ONjmmEa0gejjWGQQ40Hl6LUFT6xDOMMwpqVfLU3ZWi4/
-         6zlmz/D9KoTGeL0VxGLDl8l/5tuUNd7c6SzM9cFF7B/24LjVg+YPRu6OIDSkjQDDVqne
-         f7gA==
-X-Gm-Message-State: AC+VfDyFVd1wdr242DLfjVP9+R8NDZzXEnyPqa1b8+tDTGb+6zLW3gd5
-        ZSB/axLcety77X/0ol7PlXU3SE27ogQ=
-X-Google-Smtp-Source: ACHHUZ4SCXgMWbeecxLrsOOUibPYuErb/E+Wn+uaw1/dOF9iex4ZUNGyodWojXCBkYT4U1FrcdWZaA==
-X-Received: by 2002:a05:6402:53:b0:4fa:b302:84d4 with SMTP id f19-20020a056402005300b004fab30284d4mr5088857edu.13.1684426680518;
-        Thu, 18 May 2023 09:18:00 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a01-0c22-73e5-9e00-0000-0000-0000-0e63.c22.pool.telefonica.de. [2a01:c22:73e5:9e00::e63])
-        by smtp.googlemail.com with ESMTPSA id c14-20020aa7c74e000000b0050bc13e5aa9sm756307eds.63.2023.05.18.09.17.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 May 2023 09:18:00 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ulf.hansson@linaro.org, kvalo@kernel.org, tony0620emma@gmail.com,
-        Peter Robinson <pbrobinson@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>, jernej.skrabec@gmail.com,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: [PATCH wireless-next v1 4/4] wifi: rtw88: Add support for the SDIO based RTL8723DS chipset
-Date:   Thu, 18 May 2023 18:17:49 +0200
-Message-Id: <20230518161749.1311949-5-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230518161749.1311949-1-martin.blumenstingl@googlemail.com>
-References: <20230518161749.1311949-1-martin.blumenstingl@googlemail.com>
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bqK1cm5PrVikdVylor80+Xt79IA7sjfvuZ0d5095d4E=;
+ b=LCI2Oo0i/Tn6HbvjCEKP8Mp5jwIdZA7JlfWV+nVvo8VQGG2vpqw9mllKH24xbq+IPSs1/iuWsehJ18AP1nfbqtr9qBW74PhSFfbhYZGzA2vp1E5i7oQIBB90rqoIP1ybL1114nzuqRBmh3zqyZ2CtdA92uH+j8nR07I4wQeqxUE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by SJ0PR13MB5771.namprd13.prod.outlook.com (2603:10b6:a03:40e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.30; Thu, 18 May
+ 2023 16:20:07 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6411.019; Thu, 18 May 2023
+ 16:20:07 +0000
+Date:   Thu, 18 May 2023 18:19:56 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Frank Wunderlich <frank-w@public-files.de>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Sujuan Chen <sujuan.chen@mediatek.com>,
+        Bo Jiao <bo.jiao@mediatek.com>,
+        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+        Howard Hsu <howard-yh.hsu@mediatek.com>,
+        MeiChia Chiu <MeiChia.Chiu@mediatek.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Wang Yufen <wangyufen@huawei.com>,
+        Lorenz Brun <lorenz@brun.one>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2 2/2] wifi: mt76: mt7915: add support for MT7981
+Message-ID: <ZGZQLNydnuP/sok8@corigine.com>
+References: <cover.1684155848.git.daniel@makrotopia.org>
+ <5f906578cd213b70e1049e927a2905ad1cb63afd.1684155848.git.daniel@makrotopia.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f906578cd213b70e1049e927a2905ad1cb63afd.1684155848.git.daniel@makrotopia.org>
+X-ClientProxiedBy: AM9P193CA0001.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21e::6) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|SJ0PR13MB5771:EE_
+X-MS-Office365-Filtering-Correlation-Id: 558f6ec9-dedd-4d31-d12a-08db57bbbe83
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: yH4q24MlFUc+QoC78eKDMYUKsbF6GyczR3Uu+AeLnsEnq2rQ2HXszsrPfYFPL5B9jaHRGZj2kHyphIAelX5jS5v85cbWq49niNCk28UwgOVYb6biZd9KWNHOeJoKPeUMg2abvOrSPp15HAP6OWh/V/gJo6+Ori2XJ998WfsQ1zslrVTv0s7/wqsM1/aEo9sl3JkhVCL4uQHjGi5oiporohO0b0rWwQ63u0ZAZnyeD0B9kzpXUfWjmEwRu0/XLxjS9xVaLoCPZ+ZC2bQzIDqU2jISAaQ+nY/QuDACTnEid6KOVdrW1DTEqKTfXsvZbNT2S54ymiMkUa08TMmTgIvxvie3w9+HMhHp1MGfzaZKH5bRXurImNe1oSWLSwZrQv5ZalX+jbwNx5T/BIWWKEz7g8Cmz+um90QGF6uI2cRNKTh1HQuXP86nM51HnT/oNNyV/nhjQXhhu3r1Ix3Rd1UinKgWQ5l3Md1eiZDjejugCZnMsfxOFN6NAFCixngQt7ArzmNw3Vix++IJYTY3fzG8i82BMo7iELATq9QPunL4lMbVfTMDtR6Yftuuo1Qh+z4q
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(39840400004)(396003)(136003)(376002)(451199021)(66556008)(4326008)(6916009)(66476007)(54906003)(66946007)(478600001)(316002)(44832011)(8676002)(6486002)(6666004)(2906002)(7416002)(8936002)(41300700001)(5660300002)(7406005)(4744005)(86362001)(6506007)(2616005)(6512007)(186003)(38100700002)(36756003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gWbRUB2Wgl0Twhm/zym4cbxJYNE1HjuKmLWtTiu5ok+umb5v07l91hO8U6g3?=
+ =?us-ascii?Q?9Z3O9L23vxguojZYeD8FW9GypCQkp5G5S9OBMEEbFHHaIX1U4/1/onXWM34j?=
+ =?us-ascii?Q?/TT3F4i2kQSkEScTYWg+btMG6TzdHImWBCD7BzYr3U3/ahYfebDMqIKsasiL?=
+ =?us-ascii?Q?XOlhAfka2qr8SrViw4AYeQ/Ab/z2LVgPFC0Pu1V0YIcQvbRG8mo1GHgXu/Kx?=
+ =?us-ascii?Q?8yeoeQtv3x4iXN/mPcBCgaE3uuyqgEA9vgUbI2qEEpsLp5AXxKuPmWTX0kYc?=
+ =?us-ascii?Q?5VL2HFfKedUFnNN7ovyNBjsZYrZ9wS+FebjU93HMRc6h8fWhH/koHokO11xa?=
+ =?us-ascii?Q?6D0uhn7FF/+e6/jlq36v3cqIlo3F5gsLCqtfjOaW/VnJVt3kEmm+0YQX3PKQ?=
+ =?us-ascii?Q?i/IUIMnr2b+TtnJHagnGZeMrOHL++JN/8KsSR+UQZWd4si6RwWhHfQnbsELd?=
+ =?us-ascii?Q?5iYajoviV9k6xbWns57wicYL7WyUWDsPWh2g7p4BhDW9jaPtGAw8THWPraXy?=
+ =?us-ascii?Q?1UFRPzTlrSt1+WONvfXl0+ellDxhAgmPGmf8xJRKvcLcHXs06TtGYjAP5wn1?=
+ =?us-ascii?Q?zL/l/SrIpfrUdM3jSsd089tq15sBrCqPqrg4qX12UTCqL8uDCqhzdagfNQm2?=
+ =?us-ascii?Q?oflpwIyBQOjLsFL0z2cnEeFbaXg2xsHzLulQIWqzn6akbbPwqnH7AMooNG8i?=
+ =?us-ascii?Q?YIdxM+nadxu3nrQiB2yC3eq7eqwm0T0qAusCUmR/ndV1cfv+jU/AFLoIPZr6?=
+ =?us-ascii?Q?ZJgwz8A1Rx5qClq8xyPTkizMDQKf8yQ+0ANmj8TdICfRfYBt7T8URO5spZC9?=
+ =?us-ascii?Q?3t9QcDBPWiiRwYbiV8/aB6E8FMaQBYBn0bjtZwVJb9TMpYqMLavF7YoJt0Sc?=
+ =?us-ascii?Q?8Xv6iLI/2hmV6uIlM2CeQCshJZXAX6MYUu8+tfu0drhM766VTvdQCD4Pt9m2?=
+ =?us-ascii?Q?g2f+b1WmIIN0ps5ZVNg/1E/GOiq7eVmuZbn9aIgv04xxtm9ChYoKj2tYFwjv?=
+ =?us-ascii?Q?OvV0mqlBZ73ub3NubvYClOZw17jGeVaovXev0BsV051xOsHweD3NUQqjRhYq?=
+ =?us-ascii?Q?DAHQ6u67q+kKe3PdYnl+Gf2h8yV6rQHYWeJdoodMfFnTOroABK3ZHT5bU88r?=
+ =?us-ascii?Q?IlELYR40b61FfQmzHduxrn2lI0BbDxD17NRkld26P7joa8OeRSsXtH3VtVQG?=
+ =?us-ascii?Q?H89HO6AvFQor8IFUFMqSwH58rTzfpgFBUWUy19a2Gyjo7D1S7xjHj+pJYKtf?=
+ =?us-ascii?Q?yPiT74SSw2ZalIaPM5epcWoDvCCSAc+FE4IpbnniDA+6TjL2DhuK5gO6aANY?=
+ =?us-ascii?Q?f3D95SbQWkpqYNSOgJH7RjSQjGQbSaYUSs2792ONChMbQM+aNfySWAkALFVg?=
+ =?us-ascii?Q?Qx43pmnDPmuLERQ9UAfI4rilmKs4Xi/xVcUPY4tTtz3z5Yeb8oPxC+ASVTXt?=
+ =?us-ascii?Q?7zWS8h/MPbFc7a4eCKHcv9jdBF2tKb52RukIpEGM4azBwPsJkMO8uowp0udr?=
+ =?us-ascii?Q?4smD7EFaskR7/syqRJTZJXvylkr3ipbCp2DqZF9JBVw2Zkcr3z4QULiLDCzh?=
+ =?us-ascii?Q?SsYHcKtaUfVAW1nAQ5fLZINiEpwd+bGPeBk0shbybygzrEpsH8Yk4EnOT8AL?=
+ =?us-ascii?Q?upko1ri3ROmfSV12dSFQ2dS/iJMZN6dRYv1ep711R0xDeEk49H5xo4pfnDHy?=
+ =?us-ascii?Q?i44SMQ=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 558f6ec9-dedd-4d31-d12a-08db57bbbe83
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 16:20:07.1933
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Df+U3wK7M+ZJfOdrxjv3rzLsDWI6ilutzwd0KGYQqikoBXiP4jSo1bGruM5nyXJWFNDehnnbI+25fMmuzE531XWbys1EWdQtfpi9MyfZTGI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR13MB5771
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wire up RTL8723DS chipset support using the rtw88 SDIO HCI code as well
-as the existing RTL8723D chipset code.
+On Mon, May 15, 2023 at 03:27:12PM +0200, Daniel Golle wrote:
+> From: Alexander Couzens <lynxis@fe80.eu>
+> 
+> Add support for the MediaTek MT7981 SoC which is similar to the MT7986
+> but with a newer IP cores and only 2x ARM Cortex-A53 instead of 4x.
+> Unlike MT7986 the MT7981 can only connect a single wireless frontend,
+> usually MT7976 is used for DBDC.
+> 
+> Signed-off-by: Alexander Couzens <lynxis@fe80.eu>
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
----
- drivers/net/wireless/realtek/rtw88/Kconfig    | 11 +++++
- drivers/net/wireless/realtek/rtw88/Makefile   |  3 ++
- .../net/wireless/realtek/rtw88/rtw8723ds.c    | 41 +++++++++++++++++++
- 3 files changed, 55 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723ds.c
-
-diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
-index 29eb2f8e0eb7..cffad1c01249 100644
---- a/drivers/net/wireless/realtek/rtw88/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -111,6 +111,17 @@ config RTW88_8723DE
- 
- 	  802.11n PCIe wireless network adapter
- 
-+config RTW88_8723DS
-+	tristate "Realtek 8723DS SDIO wireless network adapter"
-+	depends on MMC
-+	select RTW88_CORE
-+	select RTW88_SDIO
-+	select RTW88_8723D
-+	help
-+	  Select this option will enable support for 8723DS chipset
-+
-+	  802.11n SDIO wireless network adapter
-+
- config RTW88_8723DU
- 	tristate "Realtek 8723DU USB wireless network adapter"
- 	depends on USB
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index 82979b30ae8d..fd212c09d88a 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -50,6 +50,9 @@ rtw88_8723d-objs		:= rtw8723d.o rtw8723d_table.o
- obj-$(CONFIG_RTW88_8723DE)	+= rtw88_8723de.o
- rtw88_8723de-objs		:= rtw8723de.o
- 
-+obj-$(CONFIG_RTW88_8723DS)	+= rtw88_8723ds.o
-+rtw88_8723ds-objs		:= rtw8723ds.o
-+
- obj-$(CONFIG_RTW88_8723DU)	+= rtw88_8723du.o
- rtw88_8723du-objs		:= rtw8723du.o
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723ds.c b/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
-new file mode 100644
-index 000000000000..e5b6960ba0a0
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
-@@ -0,0 +1,41 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-+ */
-+
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/module.h>
-+#include "main.h"
-+#include "rtw8723d.h"
-+#include "sdio.h"
-+
-+static const struct sdio_device_id rtw_8723ds_id_table[] =  {
-+	{
-+		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
-+			    SDIO_DEVICE_ID_REALTEK_RTW8723DS_1ANT),
-+		.driver_data = (kernel_ulong_t)&rtw8723d_hw_spec,
-+	},
-+	{
-+		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
-+			    SDIO_DEVICE_ID_REALTEK_RTW8723DS_2ANT),
-+		.driver_data = (kernel_ulong_t)&rtw8723d_hw_spec,
-+	},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(sdio, rtw_8723ds_id_table);
-+
-+static struct sdio_driver rtw_8723ds_driver = {
-+	.name = "rtw_8723ds",
-+	.probe = rtw_sdio_probe,
-+	.remove = rtw_sdio_remove,
-+	.id_table = rtw_8723ds_id_table,
-+	.drv = {
-+		.pm = &rtw_sdio_pm_ops,
-+		.shutdown = rtw_sdio_shutdown,
-+	}
-+};
-+module_sdio_driver(rtw_8723ds_driver);
-+
-+MODULE_AUTHOR("Martin Blumenstingl <martin.blumenstingl@googlemail.com>");
-+MODULE_DESCRIPTION("Realtek 802.11n wireless 8723ds driver");
-+MODULE_LICENSE("Dual BSD/GPL");
--- 
-2.40.1
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
