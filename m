@@ -2,82 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19CDA707951
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 06:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC056707A30
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 08:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbjEREu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 00:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44394 "EHLO
+        id S229862AbjERGRU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 02:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbjEREuZ (ORCPT
+        with ESMTP id S229549AbjERGRT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 00:50:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82870213E
-        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 21:50:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CC2464CFF
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 04:50:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 62661C4339B;
-        Thu, 18 May 2023 04:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684385423;
-        bh=Dx6EnHQo2Yjjh9KrD0mEn6bgue46Bf7wi+SxbOFW2MA=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=euBko7G75JYEBaZV4vf7SOQW71XpzQeeJsAa6zH0/QNjVxq4TC1rRUsSX/rT2xPjX
-         LFN6MGPeaUxFVViQQSkw9URfE2lBdMr1S++OP5kuk2Es/90oqpl0BzcPuxZguFpY+O
-         jx+QjOLFJpyPcU8t3m/4nXsTIu92Ylf6hL9xZXIv3eiG2v+CmC5ihNgYNi1sZ7ahcz
-         zbxrkZMyzkAq2CPCpubdQwbJBObOgzfNvHRqCSxruf5Fmx3KLwvQM4ryrd0vnJcOJm
-         r/BfU6xMsIiiwkQ9SCqzJNJ9/Nxc0fwyTCJF5lxw+lojC38PgKO0YzWKImFBrYTJQM
-         DkgKRV5Klm6Iw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 386BDC73FE2;
-        Thu, 18 May 2023 04:50:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 18 May 2023 02:17:19 -0400
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320DE1FE9
+        for <linux-wireless@vger.kernel.org>; Wed, 17 May 2023 23:17:15 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id zWwipDLQ5jCyEzWwiphDGq; Thu, 18 May 2023 08:17:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1684390627;
+        bh=lHzeDDfUlQX3RH1HXK0XsiQwqk7lqO7xwS/nUPsFcJ8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=QOwSADmn96OEyVdr0c7A5uO5YPGAzWOZyiU0QJi2BiJnl6Pt/jVDU1puyRiTyZws/
+         Y5tgDazDLcZP61+sofQWEaUzFmCo0OO3KL5ppkUwxna38ivSWqlzxe/mUZZ1rXkBfp
+         6Rp4irTvkCaJn4X3tLsg6SoKwxS/gR8ua5sEN23+I8R5pTd+oCUXqHYeCsDOp8mY76
+         97Tem981S6ocQ5+IaqA1Mwtaxs0IIs8nu2gCVPx6XIXtmRs4DujC8efA6TySfcKIym
+         vV87QeD5I5LOb2G3S8Te7GQQOpsBUbwlMG0xvsE9ME3RHih7r/o0HiJ8GPUNYWfPtB
+         Qu9l6av+Y2AHg==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 18 May 2023 08:17:07 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <bd9f392c-93e5-7147-0f21-f6732b210df5@wanadoo.fr>
+Date:   Thu, 18 May 2023 08:17:03 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: AW: [PATCH] wifi: ath12k: Remove some dead code
+Content-Language: fr
+To:     Walter Harms <wharms@bfs.de>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <c17edf0811156a33bae6c5cf1906d751cc87edd4.1682423828.git.christophe.jaillet@wanadoo.fr>
+ <d0c5ed33fb1644328fbdc5d7aba20a97@bfs.de>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <d0c5ed33fb1644328fbdc5d7aba20a97@bfs.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: wireless-2023-05-17
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168438542322.13974.13019571815680311724.git-patchwork-notify@kernel.org>
-Date:   Thu, 18 May 2023 04:50:23 +0000
-References: <20230517151914.B0AF6C433EF@smtp.kernel.org>
-In-Reply-To: <20230517151914.B0AF6C433EF@smtp.kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
-
-This pull request was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 17 May 2023 15:19:14 +0000 (UTC) you wrote:
-> Hi,
+Le 25/04/2023 à 14:10, Walter Harms a écrit :
+> Does  mcs = ATH12K_HE_MCS_MAX make sense ?
 > 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
+
+Based on [1], I would say yes, WMI_RATE_PREAMBLE_HE (i.e. 11) looks like 
+a valid value.
+
+CJ
+
+[1]: https://www.7signal.com/info/mcs
+
+> re,
+>   wh
+> ________________________________________
+> Von: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Gesendet: Dienstag, 25. April 2023 13:57:19
+> An: Kalle Valo; David S. Miller; Eric Dumazet; Jakub Kicinski; Paolo Abeni
+> Cc: linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org; Christophe JAILLET; ath12k@lists.infradead.org; linux-wireless@vger.kernel.org; netdev@vger.kernel.org
+> Betreff: [PATCH] wifi: ath12k: Remove some dead code
 > 
-> Kalle
+> ATH12K_HE_MCS_MAX = 11, so this test and the following one are the same.
+> Remove the one with the hard coded 11 value.
 > 
-> [...]
-
-Here is the summary with links:
-  - pull-request: wireless-2023-05-17
-    https://git.kernel.org/netdev/net/c/c259ad11698b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>   drivers/net/wireless/ath/ath12k/dp_rx.c | 5 -----
+>   1 file changed, 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> index e78478a5b978..79386562562f 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> @@ -1362,11 +1362,6 @@ ath12k_update_per_peer_tx_stats(struct ath12k *ar,
+>           * Firmware rate's control to be skipped for this?
+>           */
+> 
+> -       if (flags == WMI_RATE_PREAMBLE_HE && mcs > 11) {
+> -               ath12k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
+> -               return;
+> -       }
+> -
+>          if (flags == WMI_RATE_PREAMBLE_HE && mcs > ATH12K_HE_MCS_MAX) {
+>                  ath12k_warn(ab, "Invalid HE mcs %d peer stats",  mcs);
+>                  return;
+> --
+> 2.34.1
+> 
+> 
 
