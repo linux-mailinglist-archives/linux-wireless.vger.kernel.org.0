@@ -2,90 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8A770849A
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 17:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB7370853C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 17:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbjERPFs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 11:05:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
+        id S231343AbjERPoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 11:44:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232006AbjERPEz (ORCPT
+        with ESMTP id S230257AbjERPod (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 11:04:55 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1007912E
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 08:04:30 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-510b4e488e4so3842293a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 08:04:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684422258; x=1687014258;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vgyyCi8tJLPzAHMcTGzr1hdEUMqdZmekNUwmKIEbLWw=;
-        b=pl6rsy9PE8JWvUgxE0R7I5wWECkhXspBpSKWo2vcbiiKDJLttP+XMN/PLUgceCVy2n
-         Dw5gP1JW20kdpIJpg5hVsM1GK/5XRXmIEG4ybJybxt8MCl/SVN5wq9wVImh+Fsgh4yYe
-         hG23RN/3UjE8DBYRoXvfyuw7izqNYSekMlSPZYFPDCssPGc+mqPJFXFfXFhbu8Ven2Qv
-         SddLVJoCNbwTqgBjNr07Np0sWSYxcrESe5Kx4Yl/2piE+590iirPns7MW5ZvpznwAl4m
-         /4brl/STXYhLadAfMeSrUpw8B/NLRFeBZaH7c5sK61cNRXyb9DJm9SlhFydG4lFBDO06
-         skMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684422258; x=1687014258;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vgyyCi8tJLPzAHMcTGzr1hdEUMqdZmekNUwmKIEbLWw=;
-        b=Vj5pnGIOh6x1kJUhc8vFLLIHJe4f/7wPQ0SAAHXMlPKY09wyhcEKI+JFan4Od5rQfu
-         wMlQca3r/CN2tdbYxYMF1nyIi8EOPB+2QWSs3SyQJq3nE6Srz032YHdI5wlWLwzqdQ6W
-         gFx41gTYLjrpXPtKX003hXyTlx0FrbCoabnIEdPR9AV5PHaVL0wsGz63j/+yDA+0gZTD
-         kUJhIJzUhhxoLIy0o0Se5uWpzAyACCUcGSFfl3y5W7V1ac9eioYVDBbcwgtEKmS+DDi3
-         SjjSmnmnbMDp9QW/QDfX5xjE4PHNqrCm898FsMaLzau9t9ZLaUYxpDGJDzZ5LsTBAmwU
-         cB7w==
-X-Gm-Message-State: AC+VfDzXQG4UXl8j1No9q+ZFCP6Dk2AcJGORxd6UVD/hNIShpuEageD5
-        cmeG/DJBDbg0QFd4V4zOF4febC0V6KknIcOD4Ui9k/k0W60=
-X-Google-Smtp-Source: ACHHUZ4IYFt0uz8+tza/aIHhSCeywECUwa1/9uJMB4LSAzXKH9mhtpzGUr+u8B8sdTa/mQ3oYUcUhYHHWfqvrih+ezs=
-X-Received: by 2002:aa7:c710:0:b0:506:fcd5:6159 with SMTP id
- i16-20020aa7c710000000b00506fcd56159mr5683003edq.21.1684422258413; Thu, 18
- May 2023 08:04:18 -0700 (PDT)
+        Thu, 18 May 2023 11:44:33 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3482993;
+        Thu, 18 May 2023 08:44:32 -0700 (PDT)
+Received: from fpc (unknown [46.242.14.200])
+        by mail.ispras.ru (Postfix) with ESMTPSA id E431444C1015;
+        Thu, 18 May 2023 15:44:28 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru E431444C1015
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1684424669;
+        bh=4UYZ2IcmL1KklQiEztNjChNplhlI6pOuen+vw5gYh7c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kx2tqMuCqGe7yKU3/GeQZ06VhdriXeA/5nKMyfZ2/eRm8uC60sAgVtUeAfHXwW0bl
+         uLmfY2sEIfZHLxCKrYXbet5anJxGPxhak2PVLtNFYkCynQ2+zmmprL3OScahQwfarS
+         MwHq+3s0EmwsYfyqSfBy7O8XR0VN4ScmK87UtPuc=
+Date:   Thu, 18 May 2023 18:44:24 +0300
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     Hillf Danton <hdanton@sina.com>
+Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Vallo <kvalo@kernel.org>,
+        syzbot+f2cb6e0ffdb961921e4d@syzkaller.appspotmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org
+Subject: Re: [PATCH v3 1/2] wifi: ath9k: fix races between ath9k_wmi_cmd and
+ ath9k_wmi_ctrl_rx
+Message-ID: <20230518154424.62urbguy4rxetkty@fpc>
+References: <20230425192607.18015-1-pchelkin@ispras.ru>
+ <20230425230708.2132-1-hdanton@sina.com>
+ <20230426190206.ni2au5mpjc5oty67@fpc>
+ <20230518102437.4443-1-hdanton@sina.com>
 MIME-Version: 1.0
-From:   Fabrizio del Tin <devotedmystic@gmail.com>
-Date:   Thu, 18 May 2023 17:04:05 +0200
-Message-ID: <CAMzNfvPpi9GiFHf0UcBpS8oozg6o_s3wwzOAPJ0FzGy7LaC4pw@mail.gmail.com>
-Subject: Realtek RTL8832CU compatibility
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230518102437.4443-1-hdanton@sina.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
-I got a recent RTL8832CU
-(https://es.aliexpress.com/item/1005005544770386.html?spm=3Da2g0o.productli=
-st.main.1.78ff96c6qceFKn&algo_pvid=3D9ee2eb8d-9883-4709-90f5-0dc6d98c40da&a=
-lgo_exp_id=3D9ee2eb8d-9883-4709-90f5-0dc6d98c40da-0&pdp_npi=3D3%40dis%21EUR=
-%2161.26%2130.62%21%21%21%21%21%402145277316844042289821012d07b5%2112000033=
-481930568%21sea%21IT%211918944861&curPageLogUid=3DOMcZ7AW58cDB).
-It's a very affordable tri band usb wifi 6 card, which is sold as AXE3000.
+On Thu, May 18, 2023 at 06:24:37PM +0800, Hillf Danton wrote:
+> Fedor Pchelkin <pchelkin@ispras.ru> writes:
+> 
+> > On Wed, Apr 26, 2023 at 07:07:08AM +0800, Hillf Danton wrote: 
+> >> Given similar wait timeout[1], just taking lock on the waiter side is not
+> >> enough wrt fixing the race, because in case job done on the waker side,
+> >> waiter needs to wait again after timeout.
+> >> 
+> >
+> > As I understand you correctly, you mean the case when a timeout occurs
+> > during ath9k_wmi_ctrl_rx() callback execution. I suppose if a timeout has
+> > occurred on a waiter's side, it should return immediately and doesn't have
+> > to care in which state the callback has been at that moment.
+> >
+> > AFAICS, this is controlled properly with taking a wmi_lock on waiter and
+> > waker sides, and there is no data corruption.
+> >
+> > If a callback has not managed to do its work entirely (performing a
+> > completion and subsequently waking waiting thread is included here), then,
+> > well, it is considered a timeout, in my opinion.
+> >
+> > Your suggestion makes a wmi_cmd call to give a little more chance for the
+> > belated callback to complete (although timeout has actually expired). That
+> > is probably good, but increasing a timeout value makes that job, too. I
+> > don't think it makes any sense on real hardware.
+> >
+> > Or do you mean there is data corruption that is properly fixed with your patch?
+> 
+> Given complete() not paired with wait_for_completion(), what is the
+> difference after this patch?
 
-I tested it on Arch Linux, kernel 6.3.2, to no avail.
+The main thing in the patch is making ath9k_wmi_ctrl_rx() release wmi_lock
+after calling ath9k_wmi_rsp_callback() which does copying data into the
+shared wmi->cmd_rsp_buf buffer. Otherwise there can occur a data
+corrupting scenario outlined in the patch description (added it here,
+too).
 
-Once inserted, it gives:
-0bda:1a2b Realtek Semiconductor Corp. RTL8188GU 802.11n WLAN Adapter
-(Driver CDROM Mode)
+On Tue, 25 Apr 2023 22:26:06 +0300, Fedor Pchelkin wrote:
+> CPU0					CPU1
+> 
+> ath9k_wmi_cmd(...)
+>   mutex_lock(&wmi->op_mutex)
+>   ath9k_wmi_cmd_issue(...)
+>   wait_for_completion_timeout(...)
+>   ---
+>   timeout
+>   ---
+> 					/* the callback is being processed
+> 					 * before last_seq_id became zero
+> 					 */
+> 					ath9k_wmi_ctrl_rx(...)
+> 					  spin_lock_irqsave(...)
+> 					  /* wmi->last_seq_id check here
+> 					   * doesn't detect timeout yet
+> 					   */
+> 					  spin_unlock_irqrestore(...)
+>   /* last_seq_id is zeroed to
+>    * indicate there was a timeout
+>    */
+>   wmi->last_seq_id = 0
+>   mutex_unlock(&wmi->op_mutex)
+>   return -ETIMEDOUT
+> 
+> ath9k_wmi_cmd(...)
+>   mutex_lock(&wmi->op_mutex)
+>   /* the buffer is replaced with
+>    * another one
+>    */
+>   wmi->cmd_rsp_buf = rsp_buf
+>   wmi->cmd_rsp_len = rsp_len
+>   ath9k_wmi_cmd_issue(...)
+>     spin_lock_irqsave(...)
+>     spin_unlock_irqrestore(...)
+>   wait_for_completion_timeout(...)
+> 					/* the continuation of the
+> 					 * callback left after the first
+> 					 * ath9k_wmi_cmd call
+> 					 */
+> 					  ath9k_wmi_rsp_callback(...)
+> 					    /* copying data designated
+> 					     * to already timeouted
+> 					     * WMI command into an
+> 					     * inappropriate wmi_cmd_buf
+> 					     */
+> 					    memcpy(...)
+> 					    complete(&wmi->cmd_wait)
+>   /* awakened by the bogus callback
+>    * => invalid return result
+>    */
+>   mutex_unlock(&wmi->op_mutex)
+>   return 0
 
-After an eject cdrom, it gives:
-0bda:c832 Realtek Semiconductor Corp. 802.11ax WLAN Adapter
+So before the patch the wmi->last_seq_id check in ath9k_wmi_ctrl_rx()
+wasn't helpful in case wmi->last_seq_id value was changed during
+ath9k_wmi_rsp_callback() execution because of the next ath9k_wmi_cmd()
+call.
 
-I wonder if there will be any plan to make a Linux driver for it. The
-only tri band in kernel solution seems to be the Netgear A8000, which
-is widely available, but very expensive. The ALFA AWUS036AXML cannot
-be found in my country. And there is no other option.
-
-Thank you,
-Fabrizio Lanza
+With the proposed patch the wmi->last_seq_id check in ath9k_wmi_ctrl_rx()
+accomplishes its job as:
+ - the next ath9k_wmi_cmd call changes last_seq_id value under lock so
+   it either waits for a belated ath9k_wmi_ctrl_rx() to finish or updates
+   last_seq_id value so that the timeout check in ath9k_wmi_ctrl_rx()
+   indicates that the waiter side has timeouted and we shouldn't further
+   process the callback.
+ - memcopying in ath9k_wmi_rsp_callback() is made to a valid place if
+   the last_seq_id check was successful under the lock.
