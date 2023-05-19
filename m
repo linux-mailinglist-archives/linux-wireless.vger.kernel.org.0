@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC9E6708E32
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 05:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ECD5708E33
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 05:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjESDP0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 23:15:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
+        id S230235AbjESDP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 23:15:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230139AbjESDPX (ORCPT
+        with ESMTP id S229812AbjESDPZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 23:15:23 -0400
+        Thu, 18 May 2023 23:15:25 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E38110
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 20:15:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE6FA6
+        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 20:15:23 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34J3F75G0004516, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34J3F75G0004516
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34J3F8Qc8004536, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34J3F8Qc8004536
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 19 May 2023 11:15:07 +0800
+        Fri, 19 May 2023 11:15:08 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 19 May 2023 11:15:16 +0800
+ 15.1.2375.32; Fri, 19 May 2023 11:15:18 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 19 May
- 2023 11:15:16 +0800
+ 2023 11:15:17 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <kvalo@kernel.org>
 CC:     <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/7] wifi: rtw89: enlarge supported length of read_reg debugfs entry
-Date:   Fri, 19 May 2023 11:14:58 +0800
-Message-ID: <20230519031500.21087-6-pkshih@realtek.com>
+Subject: [PATCH 6/7] wifi: rtw89: add tx_wake notify for 8851B
+Date:   Fri, 19 May 2023 11:14:59 +0800
+Message-ID: <20230519031500.21087-7-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230519031500.21087-1-pkshih@realtek.com>
 References: <20230519031500.21087-1-pkshih@realtek.com>
@@ -48,6 +48,10 @@ X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -57,72 +61,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The register ranges of upcoming chips are different from current, and even
-existing chips have different ranges, so support longer length to dump
-registers. Then, user space can decide the ranges according to chip.
+From: Chin-Yen Lee <timlee@realtek.com>
 
-Since arbitrary length (e.g. 7) would be a little complicated, so simply
-make length a multiple of 16. The output looks like
+8851B has the same issue: management frames get stuck when WiFi
+chip enters low PS mode, so we also add notify wake function to
+trigger WiFi chip wake before forwarding management frames.
 
-18620000h : 8580801f 82828282 82828282 080800fd
-
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/debug.c | 23 +++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 6f418f14ec3fe..39f6b7f5f6563 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -30,7 +30,7 @@ struct rtw89_debugfs_priv {
- 		u32 cb_data;
- 		struct {
- 			u32 addr;
--			u8 len;
-+			u32 len;
- 		} read_reg;
- 		struct {
- 			u32 addr;
-@@ -164,12 +164,15 @@ static int rtw89_debug_priv_read_reg_get(struct seq_file *m, void *v)
- {
- 	struct rtw89_debugfs_priv *debugfs_priv = m->private;
- 	struct rtw89_dev *rtwdev = debugfs_priv->rtwdev;
--	u32 addr, data;
--	u8 len;
-+	u32 addr, end, data, k;
-+	u32 len;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index ad277f22b1973..918f7bcad7fea 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -256,6 +256,7 @@ struct __fw_feat_cfg {
+ 	}
  
- 	len = debugfs_priv->read_reg.len;
- 	addr = debugfs_priv->read_reg.addr;
- 
-+	if (len > 4)
-+		goto ndata;
-+
- 	switch (len) {
- 	case 1:
- 		data = rtw89_read8(rtwdev, addr);
-@@ -187,6 +190,20 @@ static int rtw89_debug_priv_read_reg_get(struct seq_file *m, void *v)
- 
- 	seq_printf(m, "get %d bytes at 0x%08x=0x%08x\n", len, addr, data);
- 
-+	return 0;
-+
-+ndata:
-+	end = addr + len;
-+
-+	for (; addr < end; addr += 16) {
-+		seq_printf(m, "%08xh : ", 0x18600000 + addr);
-+		for (k = 0; k < 16; k += 4) {
-+			data = rtw89_read32(rtwdev, addr + k);
-+			seq_printf(m, "%08x ", data);
-+		}
-+		seq_puts(m, "\n");
-+	}
-+
- 	return 0;
- }
- 
+ static const struct __fw_feat_cfg fw_feat_tbl[] = {
++	__CFG_FW_FEAT(RTL8851B, ge, 0, 29, 37, 1, TX_WAKE),
+ 	__CFG_FW_FEAT(RTL8852A, le, 0, 13, 29, 0, OLD_HT_RA_FORMAT),
+ 	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, SCAN_OFFLOAD),
+ 	__CFG_FW_FEAT(RTL8852A, ge, 0, 13, 35, 0, TX_WAKE),
 -- 
 2.25.1
 
