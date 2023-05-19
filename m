@@ -2,184 +2,305 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C27D709961
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 16:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2604A709C58
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 18:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbjESOT7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 May 2023 10:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46608 "EHLO
+        id S229643AbjESQXl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 May 2023 12:23:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjESOT6 (ORCPT
+        with ESMTP id S229611AbjESQXi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 May 2023 10:19:58 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2131.outbound.protection.outlook.com [40.107.92.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5311ED3
-        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 07:19:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A6MxIe2KmvyFy/LUfub0BoLBSKxXVTWFnXGMAJqlf7g7KaJf964htnGjGpz3qV9J2TJRnYiqwcw9cMhyknNyj/8ricrzzIVOaWvul4Ve/OUpf+965wgkWK2YWvPFMKpnz4exj+FyvM/INz7cSZfgBwZgvSVogrDyYQf9k7RlHNSgR7lPKA+oUDfK0xhSf56NV9ZZ8Oj/nlDlAQ1xtbQD3+AxWepH/kwweihd9oTC7v7N4BGX1vPOwCBgIl/hOAb26+i9ELY45xk/EQusvDJstKXhiFwdIHk5BQSSWSLRxVLjShEqkY5wq0OQCo+052pd2INqWmOnU8kj6vueH1n0jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a+oPsDun6PntWdfZTqe6HVevZ4lCLAWqDNMzIT99LrE=;
- b=X3scia+tiFvf6VkUHvVXVll/oYRafdUPHYjt/2ukxdBhyc5c+iO4MEDnyq/5mby0tQ2DRSnV5pavxdxJwstVcn1gYnJ7CD4S/Jr9JF4ge6o6oQB+DDjL0/ja8lVIN3giPo2/KUu8g2K1bTpCCqJoXzqXhxf5ySSmEAZyfVi9G9i1DALlFbhPeQjlMgjlXo/lLat6qpyKf+Z0smoIaS4uODLhtiuVLmXzXJ1S0RTW7gaHSyC18S51Eju8D0O6u7ddOpYAF1BwLmz8DtFVYIFh1T2LLuhwKvKnvOX5HSpBa4DQtRnEKebFOOLk2eAOfenEfGFlRcRtuNFGUc2/FWa7LQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a+oPsDun6PntWdfZTqe6HVevZ4lCLAWqDNMzIT99LrE=;
- b=qdrK0bSUD/GsAE0dGkaXeuTtAAV/2c6kZ/9jd4Z8Ej18A9se5X3XPstp4KwV0S7UOrh7TkO1/i5ZrYLMia3a7DuUGL51TROUbtQk8zIvQ4WKXCe2xIPialcWXrd1zCMXgxWkQqZP3yMJZ6mxwd6BXKuhxHkuBTjcCbkbbdlbGcM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BLAPR13MB4739.namprd13.prod.outlook.com (2603:10b6:208:306::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.21; Fri, 19 May
- 2023 14:19:53 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6411.021; Fri, 19 May 2023
- 14:19:53 +0000
-Date:   Fri, 19 May 2023 16:19:47 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     greearb@candelatech.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: mt76: mt7921:  Support temp sensor.
-Message-ID: <ZGeFgxR7OUkhPvTB@corigine.com>
-References: <20230518200718.1367381-1-greearb@candelatech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230518200718.1367381-1-greearb@candelatech.com>
-X-ClientProxiedBy: AM0PR10CA0100.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:e6::17) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        Fri, 19 May 2023 12:23:38 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C087102
+        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 09:23:36 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BCA0E180087
+        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 16:23:34 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 3190513C2B0;
+        Fri, 19 May 2023 09:23:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3190513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1684513414;
+        bh=LhIgTSgx07CQD7LqPRN+jVba95LeKxN6tuV4IAgEukE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=H5//20hC68NMcTG6WGaFbW1fnUeyWsVspboRJmYTFOujl/fdIy4MUrLngx8DlsvOH
+         qNdgyglSGg5Cvqmddpd1i/jZabPvLbxmb6LwG08+xCdDu2rkljJHqY6V7a3h18xeAV
+         hs0AMQ8gF4717vTIaxqXI4cb5AKaDgopcZCtWbzc=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH v2] wifi: mac80211:  add eht_capa debugfs field.
+Date:   Fri, 19 May 2023 09:23:24 -0700
+Message-Id: <20230519162324.1633120-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BLAPR13MB4739:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69e845ee-dd18-4a2b-598f-08db58741ced
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gLFYn88ui8A2Xe4ABbHIPSEE6ZwNdxfH5kq3oc09O5PBkjfioEyvGIgxl6zKn3THdFrfcg1eHfGbQ6N6vPiziSzL+cwA/+2NLTiHjJEMbsZZc+r26z27gvv5sfSGBB8SMpMcOXR+nZ/LYBMvWpMjFDz8UyApT/FQzv7DD+R4l7uJQ3r9jTce1OkpiYudU+RHdpuXELqBKEz+rCL38hGr6HANp6neGMk0G+kxQeLWjKsS3jmZLL4I+kK7WRe7wtgL79ttdRCf9NwylyS19QFlyrpqP09ZlPDJqxcQGA4gn28w14DquV1/+VzbXrc+bN03/u12Z1h/+ZH3XJiv2OiXdl0pGgt5aO5zKDtfEW1nX7juaptxajXZv9VT0F2oJ1bOmO2/+8TYDtIP388imf+2l1lf++PyMDcHDKx8c5qhJOO4LY06BPXi6xwAGxONPTQ65FDoRDVST13eHxoHL6xC2ZyTDJg59xgKxURQOzsM2uK0M4c1xSnu+HnRqIpgeFw3idJ384sYsj3blFG31OSbQP1+pQmLyTQOBBq8v2FpcNbwxD44wIrAUCP7wh3FBvOd
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(136003)(346002)(39840400004)(366004)(451199021)(478600001)(316002)(5660300002)(44832011)(8936002)(8676002)(41300700001)(4326008)(6916009)(2906002)(66476007)(66556008)(66946007)(36756003)(6486002)(6512007)(6666004)(186003)(6506007)(38100700002)(2616005)(86362001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y2tSc3VnaDRJUlpqSXNHNnpkTU5hbWhINHRGUDFxMnNla2l2QjBxNWNwTThV?=
- =?utf-8?B?a1p0NmRZNHBVanZKOC9URjNBOVVzSzNhS2JJRndKREhlMGtOeWdXaXgwSmlP?=
- =?utf-8?B?b0ZtMmNCS2V6ZmJUWDZtU0tJZFhJa0ZUWGJQTk8xL05aTmU1MFpzZjVPWllk?=
- =?utf-8?B?dXcxOFFhclIyRWNrZnpseDd1UHRqSlNQeCs5eWdOY3NvMXNTUjV0YVhLRjhs?=
- =?utf-8?B?K3k5NzdIbGtYelFpOUVMT1BlSmZVSHdqZG1rV3hJMEV1a1I5a1RydENSaE0w?=
- =?utf-8?B?NFF1dHNaQXNoQ2doZjI2T1ZwbVBuR0lPV1pEdW1xWEkrMGNudGhKOU5OZ0FZ?=
- =?utf-8?B?REJSRk5vQ1lmMlg5WS8zd24zZTczTVMvWnhmNG4yRFRuWEU1M2s1RFhGVnNS?=
- =?utf-8?B?cXF0bnZaZDZVYUlZK0lqbGRpdWtqMXI3NTFuV3NZZlFTSVIycm1xTWJaNVk3?=
- =?utf-8?B?bW1rNkJuUzdwMFJFRjF3TjNudHo3M0dTWlhtOTR0TTlQc0N6S3hTNHBFWmtO?=
- =?utf-8?B?b0VYNlZVeGxWbld5cGpoRmVmVCs4MmhtQ0NsdkhJK2hDZ0JWc3VjTHhTdmg1?=
- =?utf-8?B?aHhSbWFXQjhLWWRpVUNqb05nS3VJRGh6cTZNcng4Rm5uWTJpMzJwSHdJeVAw?=
- =?utf-8?B?aWU1UGdINDU3b0swbVV0Qkt1OVozdnNaMDVjdTE1SnZ4cG16bmh4ZUFSOTlp?=
- =?utf-8?B?MkhGL1luMkZ6N1o2MHErMXJtcXZWdlZJcUtHVFhOWTJNQ3pZTFRUTWhsWWJw?=
- =?utf-8?B?dVBJVXFMTXJVc0ZMbXNjbks2RjZyNW4yQXhVUUo0eDQ4YVAvejVaYU93SWhk?=
- =?utf-8?B?a2NNYVJkUUpVKzQzL2RhMnhvWjdnREN2V090dlFYaEdSWjhIVm5ITk55cHky?=
- =?utf-8?B?UWpJTklvSDZoekJKbUdMVnhqV2t2QzVVWXZpZ21DL0tVTkZuSEpDRTl0cVlD?=
- =?utf-8?B?SGFWMERJYWFGMStWTjU0LzM0RGlIVENZaGdaR1NibmcrZHhXdk56NWU5WThz?=
- =?utf-8?B?UHU2MHg2LzBEc1ZVbHp6ZzJxcmQ0VVpaaWMzMjBqb2dVTHNIKytqb1VVS0JS?=
- =?utf-8?B?RGVVV0JxeENoVlFXWkp3dGx3L09YaGYwVDNjdGVtMDl2b2dROTluR2t2OUcy?=
- =?utf-8?B?L3NKcVEyR2ZuNlo1VkNVR2hEN0czYTZ0VmdTdG04QjBJT2dZV3JKakwrK2pv?=
- =?utf-8?B?dmVLcm9qZ3JJK25SOUJhdGZlVmtTb1dKNURRUE1QVXozMUVlNG1UQ0xxQzU4?=
- =?utf-8?B?SVJTT09lR29EWndmOEJEVkZnaDI3OXQ4UG9GVlNaOEI3dzBBVUdQTHRRTWg3?=
- =?utf-8?B?aEVtY1daWi9YRVFNS2JoZnpPaVRiOEdvWldJcEs4eWY0NjFjcmlSR2wxRUtp?=
- =?utf-8?B?bVZISEFsVmtJK2lpcDg0VENpWDVVVlRaUlMyRjJ0bUErVW5KV0xJSGRmNjVB?=
- =?utf-8?B?V1UwcW1mQ0RDOHp3bi9nVkJQUS84Sm9Md0V1TkVjU3p2K0ErT3JCcUlwd3Jo?=
- =?utf-8?B?MXBKTHo4Z2U0RmRqQi8zRGFBUEJzaytmaExSRjdqUm81Vzh1eWVBRVEvaGNL?=
- =?utf-8?B?cW1DZEUrckVhd1R3NUZrRUE0QVQyUFpZRm1Id2NqNDhZcXpMaWU0MmZ6d0dn?=
- =?utf-8?B?WlU5SWo0TnUwL1kwdm42SUIwYzR4UEtrNFBXVkFtTjdOZENpbk5mTEV5bHRE?=
- =?utf-8?B?ZGRKWU11K2RMQythRU9obFRncHRYeStQWXUxYjZNOEZEZEVwcXhjU3dUUVMx?=
- =?utf-8?B?UDRxaXQyYk1zL0hYLzZCWW1NNU1EaGkwWnVmcDB6QXRVRXJVNlpydHVBaVFL?=
- =?utf-8?B?b3YrV3ZpYksvZzEzaEVqR1FLazlCQWdUU3VXUkoyeGdkaVFweVNtUHpscC9s?=
- =?utf-8?B?M25aRVArOWc3elJLVU43QXBYUjlpMnFVTFVQZ1FTVU4wWnZNeXdxUGQ1SGVN?=
- =?utf-8?B?ZWgvSDJaRGNmZ3d1ckxweVZGdkVTMURJSFJtU3JlY2dSaGp4Q3VJbkRsRUVC?=
- =?utf-8?B?Q1dscTYwR1FUYjl3WTRBYVY4clBLTkcwOFhFUDNCTnFzczVNdUh3OFRESFM2?=
- =?utf-8?B?VGdCZ3UrbUo1UVFsSlVZbU1pNFFDOW4rUGl4ZXVsbUpTRVhHbmNPL2hDUSta?=
- =?utf-8?B?cDNPUS9XRnJ3blVpU2JzQ09XVjFoY0dYNVQxdS9qN3pqL2FhZVdxV1hkOWxq?=
- =?utf-8?B?eitNaG9LRUhqRW9yV1l0R2kzZkZmYVZ0Qi9nN0t4VlBwY1FkUnh6TXVYQnRZ?=
- =?utf-8?B?dytDMTIyWDRoZ2U5ZGloZkc1NWhRPT0=?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69e845ee-dd18-4a2b-598f-08db58741ced
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2023 14:19:52.9584
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QoGkEaTv3kg4UAwEI+jCv1Us/rk1wgzcYst7vzfx9+bp0BQmw9Q4PHwUI8Wpm97hZKSq9hrzPJdVctNrJ71LuzeTt0B90x81OeKKjAvcsGk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR13MB4739
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-MDID: 1684513415-1X3OvaTG9Uo1
+X-MDID-O: us5;ut7;1684513415;1X3OvaTG9Uo1;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 18, 2023 at 01:07:18PM -0700, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
-> 
-> Allow sensors tool to read radio's temperature, example:
-> 
-> mt7921_phy17-pci-1800
-> Adapter: PCI adapter
-> temp1:        +72.0°C
-> 
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt7921/init.c  | 53 +++++++++++++++++++
->  .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++
->  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
->  3 files changed, 71 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> index c15ce1a19000..18f0f2dfbbcf 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -2,6 +2,9 @@
->  /* Copyright (C) 2020 MediaTek Inc. */
->  
->  #include <linux/etherdevice.h>
-> +#include <linux/hwmon.h>
-> +#include <linux/hwmon-sysfs.h>
-> +#include <linux/thermal.h>
->  #include <linux/firmware.h>
->  #include "mt7921.h"
->  #include "../mt76_connac2_mac.h"
-> @@ -58,6 +61,50 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
->  	}
->  };
->  
-> +static ssize_t mt7921_thermal_temp_show(struct device *dev,
-> +					struct device_attribute *attr,
-> +					char *buf)
-> +{
-> +	struct mt7921_phy *phy = dev_get_drvdata(dev);
-> +	int i = to_sensor_dev_attr(attr)->index;
-> +	int temperature;
-> +
-> +	switch (i) {
-> +	case 0:
-> +		temperature = mt7921_mcu_get_temperature(phy);
-> +		if (temperature < 0)
-> +			return temperature;
-> +		/* display in millidegree celcius */
+From: Ben Greear <greearb@candelatech.com>
 
-Hi Ben,
+Output looks like this:
 
-a minor nit from my side: s/celcius/Celsius/
+[root@ct523c-0b29 ~]# cat /debug/ieee80211/wiphy6/netdev\:wlan6/stations/50\:28\:4a\:bd\:f4\:a7/eht_capa
+EHT supported
+MAC-CAP: 0x82 0x00
+PHY-CAP: 0x0c 0x00 0x00 0x00 0x00 0x48 0x00 0x00 0x00
+		OM-CONTROL
+		MAX-MPDU-LEN: 11454
+		242-TONE-RU-GT20MHZ
+		NDP-4-EHT-LFT-32-GI
+		BEAMFORMEE-80-NSS: 0
+		BEAMFORMEE-160-NSS: 0
+		BEAMFORMEE-320-NSS: 0
+		SOUNDING-DIM-80-NSS: 0
+		SOUNDING-DIM-160-NSS: 0
+		SOUNDING-DIM-320-NSS: 0
+		MAX_NC: 0
+		PPE_THRESHOLD_PRESENT
+		NOMINAL_PKT_PAD: 0us
+		MAX-NUM-SUPP-EHT-LTF: 1
+		MCS15-SUPP-MASK: 0
 
-> +		return sprintf(buf, "%u\n", temperature * 1000);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
+		EHT bw <= 80 MHz, max NSS for MCS 8-9: Rx=2, Tx=2
+		EHT bw <= 80 MHz, max NSS for MCS 10-11: Rx=2, Tx=2
+		EHT bw <= 80 MHz, max NSS for MCS 12-13: Rx=2, Tx=2
+		EHT bw <= 160 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
+		EHT bw <= 160 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
+		EHT bw <= 160 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
+		EHT bw <= 320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
+		EHT bw <= 320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
+		EHT bw <= 320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
+EHT PPE Thresholds: 0xc1 0x0e 0xe0 0x00 0x00
 
-...
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+v2:  Comment out  SUPP_EXTRA_EHT_LTF flag to make 'next' build-bot
+happy.
+
+ net/mac80211/debugfs_sta.c | 189 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 189 insertions(+)
+
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index 607ba9367738..5c87f601c572 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -1239,6 +1239,194 @@ static ssize_t link_sta_he_capa_read(struct file *file, char __user *userbuf,
+ }
+ LINK_STA_OPS(he_capa);
+ 
++static ssize_t link_sta_eht_capa_read(struct file *file, char __user *userbuf,
++				      size_t count, loff_t *ppos)
++{
++	char *buf, *p;
++	size_t buf_sz = PAGE_SIZE;
++	struct link_sta_info *link_sta = file->private_data;
++	struct ieee80211_sta_eht_cap *bec = &link_sta->pub->eht_cap;
++	struct ieee80211_eht_cap_elem_fixed *fixed = &bec->eht_cap_elem;
++	struct ieee80211_eht_mcs_nss_supp *nss = &bec->eht_mcs_nss_supp;
++	u8 *cap;
++	int i;
++	ssize_t ret;
++	static const char *mcs_desc[] = { "0-7", "8-9", "10-11", "12-13"};
++
++	buf = kmalloc(buf_sz, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++	p = buf;
++
++	p += scnprintf(p, buf_sz + buf - p, "EHT %ssupported\n",
++		       bec->has_eht ? "" : "not ");
++	if (!bec->has_eht)
++		goto out;
++
++	p += scnprintf(p, buf_sz + buf - p,
++		       "MAC-CAP: %#.2x %#.2x\n",
++		       fixed->mac_cap_info[0], fixed->mac_cap_info[1]);
++	p += scnprintf(p, buf_sz + buf - p,
++		       "PHY-CAP: %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x\n",
++		       fixed->phy_cap_info[0], fixed->phy_cap_info[1],
++		       fixed->phy_cap_info[2], fixed->phy_cap_info[3],
++		       fixed->phy_cap_info[4], fixed->phy_cap_info[5],
++		       fixed->phy_cap_info[6], fixed->phy_cap_info[7],
++		       fixed->phy_cap_info[8]);
++
++#define PRINT(fmt, ...)							\
++	p += scnprintf(p, buf_sz + buf - p, "\t\t" fmt "\n",		\
++		       ##__VA_ARGS__)
++
++#define PFLAG(t, n, a, b)						\
++	do {								\
++		if (cap[n] & IEEE80211_EHT_##t##_CAP##n##_##a)		\
++			PRINT("%s", b);					\
++	} while (0)
++
++	cap = fixed->mac_cap_info;
++	PFLAG(MAC, 0, EPCS_PRIO_ACCESS, "EPCS-PRIO-ACCESS");
++	PFLAG(MAC, 0, OM_CONTROL, "OM-CONTROL");
++	PFLAG(MAC, 0, TRIG_TXOP_SHARING_MODE1, "TRIG-TXOP-SHARING-MODE1");
++	PFLAG(MAC, 0, TRIG_TXOP_SHARING_MODE2, "TRIG-TXOP-SHARING-MODE2");
++	PFLAG(MAC, 0, RESTRICTED_TWT, "RESTRICTED-TWT");
++	PFLAG(MAC, 0, SCS_TRAFFIC_DESC, "SCS-TRAFFIC-DESC");
++	switch ((cap[0] & 0xc0) >> 6) {
++	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_3895:
++		PRINT("MAX-MPDU-LEN: 3985");
++		break;
++	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_7991:
++		PRINT("MAX-MPDU-LEN: 7991");
++		break;
++	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454:
++		PRINT("MAX-MPDU-LEN: 11454");
++		break;
++	}
++
++	cap = fixed->phy_cap_info;
++	PFLAG(PHY, 0, 320MHZ_IN_6GHZ, "320MHZ-IN-6GHZ");
++	PFLAG(PHY, 0, 242_TONE_RU_GT20MHZ, "242-TONE-RU-GT20MHZ");
++	PFLAG(PHY, 0, NDP_4_EHT_LFT_32_GI, "NDP-4-EHT-LFT-32-GI");
++	PFLAG(PHY, 0, PARTIAL_BW_UL_MU_MIMO, "PARTIAL-BW-UL-MU-MIMO");
++	PFLAG(PHY, 0, SU_BEAMFORMER, "SU-BEAMFORMER");
++	PFLAG(PHY, 0, SU_BEAMFORMEE, "SU-BEAMFORMEE");
++	i = cap[0] >> 7;
++	i |= (cap[1] & 0x3) << 1;
++	PRINT("BEAMFORMEE-80-NSS: %i", i);
++	PRINT("BEAMFORMEE-160-NSS: %i", (cap[1] >> 2) & 0x7);
++	PRINT("BEAMFORMEE-320-NSS: %i", (cap[1] >> 5) & 0x7);
++	PRINT("SOUNDING-DIM-80-NSS: %i", (cap[2] & 0x7));
++	PRINT("SOUNDING-DIM-160-NSS: %i", (cap[2] >> 3) & 0x7);
++	i = cap[2] >> 6;
++	i |= (cap[3] & 0x1) << 3;
++	PRINT("SOUNDING-DIM-320-NSS: %i", i);
++
++	PFLAG(PHY, 3, NG_16_SU_FEEDBACK, "NG-16-SU-FEEDBACK");
++	PFLAG(PHY, 3, NG_16_MU_FEEDBACK, "NG-16-MU-FEEDBACK");
++	PFLAG(PHY, 3, CODEBOOK_4_2_SU_FDBK, "CODEBOOK-4-2-SU-FDBK");
++	PFLAG(PHY, 3, CODEBOOK_7_5_MU_FDBK, "CODEBOOK-7-5-MU-FDBK");
++	PFLAG(PHY, 3, TRIG_SU_BF_FDBK, "TRIG-SU-BF-FDBK");
++	PFLAG(PHY, 3, TRIG_MU_BF_PART_BW_FDBK, "TRIG-MU-BF-PART-BW-FDBK");
++	PFLAG(PHY, 3, TRIG_CQI_FDBK, "TRIG-CQI-FDBK");
++
++	PFLAG(PHY, 4, PART_BW_DL_MU_MIMO, "PART-BW-DL-MU-MIMO");
++	PFLAG(PHY, 4, PSR_SR_SUPP, "PSR-SR-SUPP");
++	PFLAG(PHY, 4, POWER_BOOST_FACT_SUPP, "POWER-BOOST-FACT-SUPP");
++	PFLAG(PHY, 4, EHT_MU_PPDU_4_EHT_LTF_08_GI, "EHT-MU-PPDU-4-EHT-LTF-08-GI");
++	PRINT("MAX_NC: %i", cap[4] >> 4);
++
++	PFLAG(PHY, 5, NON_TRIG_CQI_FEEDBACK, "NON-TRIG-CQI-FEEDBACK");
++	PFLAG(PHY, 5, TX_LESS_242_TONE_RU_SUPP, "TX-LESS-242-TONE-RU-SUPP");
++	PFLAG(PHY, 5, RX_LESS_242_TONE_RU_SUPP, "RX-LESS-242-TONE-RU-SUPP");
++	PFLAG(PHY, 5, PPE_THRESHOLD_PRESENT, "PPE_THRESHOLD_PRESENT");
++	switch (cap[5] >> 4 & 0x3) {
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_0US:
++		PRINT("NOMINAL_PKT_PAD: 0us");
++		break;
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_8US:
++		PRINT("NOMINAL_PKT_PAD: 8us");
++		break;
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US:
++		PRINT("NOMINAL_PKT_PAD: 16us");
++		break;
++	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_20US:
++		PRINT("NOMINAL_PKT_PAD: 20us");
++		break;
++	}
++
++	i = cap[5] >> 6;
++	i |= cap[6] & 0x7;
++	PRINT("MAX-NUM-SUPP-EHT-LTF: %i", i);
++	/* TODO:  Fix and re-add this.  It compiles in 6.4 but not against 'next'
++	 * according to the kernel build bot.
++	 * PFLAG(PHY, 5, SUPP_EXTRA_EHT_LTF, "SUPP-EXTRA-EHT-LTF");
++	 */
++
++	i = (cap[6] >> 3) & 0xf;
++	PRINT("MCS15-SUPP-MASK: %i", i);
++	PFLAG(PHY, 6, EHT_DUP_6GHZ_SUPP, "EHT-DUP-6GHZ-SUPP");
++
++	PFLAG(PHY, 7, 20MHZ_STA_RX_NDP_WIDER_BW, "20MHZ-STA-RX-NDP-WIDER-BW");
++	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_80MHZ, "NON-OFDMA-UL-MU-MIMO-80MHZ");
++	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_160MHZ, "NON-OFDMA-UL-MU-MIMO-160MHZ");
++	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_320MHZ, "NON-OFDMA-UL-MU-MIMO-320MHZ");
++	PFLAG(PHY, 7, MU_BEAMFORMER_80MHZ, "MU-BEAMFORMER-80MHZ");
++	PFLAG(PHY, 7, MU_BEAMFORMER_160MHZ, "MU-BEAMFORMER-160MHZ");
++	PFLAG(PHY, 7, MU_BEAMFORMER_320MHZ, "MU-BEAMFORMER-320MHZ");
++	PFLAG(PHY, 7, TB_SOUNDING_FDBK_RATE_LIMIT, "TB-SOUNDING-FDBK-RATE-LIMIT");
++
++	PFLAG(PHY, 8, RX_1024QAM_WIDER_BW_DL_OFDMA, "RX-1024QAM-WIDER-BW-DL-OFDMA");
++	PFLAG(PHY, 8, RX_4096QAM_WIDER_BW_DL_OFDMA, "RX-4096QAM-WIDER-BW-DL-OFDMA");
++
++#undef PFLAG
++
++	PRINT(""); /* newline */
++	if (!(link_sta->pub->he_cap.he_cap_elem.phy_cap_info[0] &
++	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
++		u8 *mcs_vals = (u8 *)(&nss->only_20mhz);
++
++		for (i = 0; i < 4; i++)
++			PRINT("EHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++	} else {
++		u8 *mcs_vals = (u8 *)(&nss->bw._80);
++
++		for (i = 0; i < 3; i++)
++			PRINT("EHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i + 1],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++
++		mcs_vals = (u8 *)(&nss->bw._160);
++		for (i = 0; i < 3; i++)
++			PRINT("EHT bw <= 160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i + 1],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++
++		mcs_vals = (u8 *)(&nss->bw._320);
++		for (i = 0; i < 3; i++)
++			PRINT("EHT bw <= 320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
++			      mcs_desc[i + 1],
++			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
++	}
++
++	if (cap[5] & IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT) {
++		u8 ppe_size = ieee80211_eht_ppe_size(bec->eht_ppe_thres[0], cap);
++
++		p += scnprintf(p, buf_sz + buf - p, "EHT PPE Thresholds: ");
++		for (i = 0; i < ppe_size; i++)
++			p += scnprintf(p, buf_sz + buf - p, "0x%02x ",
++				       bec->eht_ppe_thres[i]);
++		PRINT(""); /* newline */
++	}
++
++out:
++	ret = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
++	kfree(buf);
++	return ret;
++}
++LINK_STA_OPS(eht_capa);
++
+ #define DEBUGFS_ADD(name) \
+ 	debugfs_create_file(#name, 0400, \
+ 		sta->debugfs_dir, sta, &sta_ ##name## _ops)
+@@ -1333,6 +1521,7 @@ void ieee80211_link_sta_debugfs_add(struct link_sta_info *link_sta)
+ 	DEBUGFS_ADD(ht_capa);
+ 	DEBUGFS_ADD(vht_capa);
+ 	DEBUGFS_ADD(he_capa);
++	DEBUGFS_ADD(eht_capa);
+ 
+ 	DEBUGFS_ADD_COUNTER(rx_duplicates, rx_stats.num_duplicates);
+ 	DEBUGFS_ADD_COUNTER(rx_fragments, rx_stats.fragments);
+-- 
+2.40.0
+
