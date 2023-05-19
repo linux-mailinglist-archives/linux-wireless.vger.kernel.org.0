@@ -2,155 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1F88708ABC
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 May 2023 23:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69D58708CF9
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 02:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230002AbjERVuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 17:50:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54914 "EHLO
+        id S229616AbjESAhC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 20:37:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbjERVuX (ORCPT
+        with ESMTP id S229543AbjESAhB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 17:50:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610ECE7A
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 14:50:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAB1D65265
-        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 21:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B9DC433D2;
-        Thu, 18 May 2023 21:50:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684446621;
-        bh=d4QQ61ZSMghe8tSspFIwBhXqAKHIUixZPK8avoQLJWI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=N1LntZtYFmae3HC1DnGr5+Ml1tYRaldtoj8Iv1vIJNakOirfHORp1ofTd2Vv53cxm
-         o4Tm/UiZmWx+QvvjeAHxQ2wJk9LtXjplGt9Ow4N2ivapAtf1CNSVY+7wx+ZgoBGLhT
-         k9GUrnOu+4UfFjU8n49lXMgvtsT5BRf17nKAeYm+1pYeK1kbPzkNIc+Ye3BYgyFMFX
-         +iz971/OpM5WsEdy27ovn7NxRDhVKD08OAieMG5ZUjGbElHimNH23YHgNZIwQ8UwJA
-         BuILusmxkTxmf22ueI9upLudeJAgMZK2z+VJ1QT0M/w27b/mNdfC1h/WeZkUNFwaKm
-         X5MxsLlM/8L6g==
-Date:   Thu, 18 May 2023 23:51:27 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: mt76: mt7921: Support temp sensor.
-Message-ID: <ZGad36FQEK2/MduJ@localhost.localdomain>
-References: <20230518200718.1367381-1-greearb@candelatech.com>
- <ZGaNm8mMfbqdtWa0@lore-desk>
- <43d01aa8-b594-2770-59d0-13e6388c5758@candelatech.com>
+        Thu, 18 May 2023 20:37:01 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3673EE5A;
+        Thu, 18 May 2023 17:36:58 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1ae4be0b1f3so20041025ad.0;
+        Thu, 18 May 2023 17:36:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684456617; x=1687048617;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sJgSzGtgikyMjdsd1BSJ/7i+WEAYOWc3x+UR966c4LU=;
+        b=Y+UAGCe7cLK92GhY6jl+kEGjDFxbxZ/KfX3qZTCxudL6DxuVvRm4s5XSZ1vXJuR7B2
+         Yqt3GULH3mZ2NY7RNidCre5jRZnpnxFj/+pqGKeBMdZZiTaLSHtZFnCzTC2T7ndZialz
+         FAL0AbL18+a2/1x7DKzmm2fWDfjaDaQBmWVCqAL7cLwIyayVcS9Nu5q4bMJAeE2F6oib
+         bLVpZCHmRxxJW/25zA3k3uvDRfJ0Z2WBzGvLY4Mo4XsvqQJP1AEtvYVvzaW7E4b/OR6d
+         RvNVq9cZDbQ09G+Hx6jeMbou0HzpE1i93tKWvQSp/2Lyl4clrJnDwv2zOKtQgUrbnOtD
+         sANg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684456617; x=1687048617;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sJgSzGtgikyMjdsd1BSJ/7i+WEAYOWc3x+UR966c4LU=;
+        b=iwNRtLoLPYTJjiWQT5mq6IwD4o15z4xWvmhbfmO6QMTMnuBY6svVtzd21D30K+lbdY
+         VfDtH1Q5FN+DW45kkfhsamz9EdsbK2ED26hc0dr14cuQGWkc+1LwUvlsbwxo4W7Sditd
+         BWn2ZuB+330/o4nbd8f6A+pSYSkh9zhulb23xXYkKJvZTVX8KBWOJZGkS9FnUiYYKPIs
+         G/ZebW1cm7Txb2goFDzeFZznvrSQS40R45iatqdpgmMmoL2p0tLv60VjkXkzL7oAj+Fm
+         Hv4IKZjRAlAa0qsCnyS7qQZHu2024VyjDd2C0+Vm+WC94Jo4mOkWDK6JxQBMZR2oVGA4
+         fz4A==
+X-Gm-Message-State: AC+VfDxZlXTHuFNCYtg/Vjs81XsnJ7yHS+aY9L8ror2KijiWt2VS+Wkg
+        FmMCo+deSW17XFSAHCHf0UIfgSdIa8M=
+X-Google-Smtp-Source: ACHHUZ4+/TArAWN3BndzVZerlnFGVtVemG6aevDvPcQBvkAKGW8/QfS9QeeM+QywIFyBmBcjpcL5EA==
+X-Received: by 2002:a17:902:7448:b0:1a6:dd9a:62c5 with SMTP id e8-20020a170902744800b001a6dd9a62c5mr964259plt.10.1684456617383;
+        Thu, 18 May 2023 17:36:57 -0700 (PDT)
+Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
+        by smtp.gmail.com with ESMTPSA id u2-20020a170902b28200b001ac7c6fd12asm2066109plr.104.2023.05.18.17.36.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 May 2023 17:36:56 -0700 (PDT)
+Sender: Tejun Heo <htejun@gmail.com>
+Date:   Thu, 18 May 2023 14:36:55 -1000
+From:   Tejun Heo <tj@kernel.org>
+To:     jiangshanlai@gmail.com
+Cc:     linux-kernel@vger.kernel.org, kernel-team@meta.com,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 02/13] wifi: mwifiex: Use default @max_active for
+ workqueues
+Message-ID: <ZGbEp3CTOgg8HxlV@slm.duckdns.org>
+References: <20230509015032.3768622-1-tj@kernel.org>
+ <20230509015032.3768622-3-tj@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="C6NMl48XVxljFi9E"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43d01aa8-b594-2770-59d0-13e6388c5758@candelatech.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230509015032.3768622-3-tj@kernel.org>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, May 08, 2023 at 03:50:21PM -1000, Tejun Heo wrote:
+> These workqueues only host a single work item and thus doen't need explicit
+> concurrency limit. Let's use the default @max_active. This doesn't cost
+> anything and clearly expresses that @max_active doesn't matter.
 
---C6NMl48XVxljFi9E
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to wq/for-6.5-cleanup-ordered.
 
-> On 5/18/23 13:42, Lorenzo Bianconi wrote:
-> > > From: Ben Greear <greearb@candelatech.com>
-> > >=20
-> > > Allow sensors tool to read radio's temperature, example:
-> > >=20
-> > > mt7921_phy17-pci-1800
-> > > Adapter: PCI adapter
-> > > temp1:        +72.0=B0C
-> > >=20
-> > > Signed-off-by: Ben Greear <greearb@candelatech.com>
-> > > ---
-> > >   .../net/wireless/mediatek/mt76/mt7921/init.c  | 53 ++++++++++++++++=
-+++
-> > >   .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++
-> > >   .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
-> > >   3 files changed, 71 insertions(+)
-> > >=20
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drive=
-rs/net/wireless/mediatek/mt76/mt7921/init.c
-> > > index c15ce1a19000..18f0f2dfbbcf 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> > > @@ -2,6 +2,9 @@
-> > >   /* Copyright (C) 2020 MediaTek Inc. */
-> > >   #include <linux/etherdevice.h>
-> > > +#include <linux/hwmon.h>
-> > > +#include <linux/hwmon-sysfs.h>
-> > > +#include <linux/thermal.h>
-> > >   #include <linux/firmware.h>
-> > >   #include "mt7921.h"
-> > >   #include "../mt76_connac2_mac.h"
-> > > @@ -58,6 +61,50 @@ static const struct ieee80211_iface_combination if=
-_comb_chanctx[] =3D {
-> > >   	}
-> > >   };
-> > > +static ssize_t mt7921_thermal_temp_show(struct device *dev,
-> > > +					struct device_attribute *attr,
-> > > +					char *buf)
-> > > +{
-> > > +	struct mt7921_phy *phy =3D dev_get_drvdata(dev);
-> > > +	int i =3D to_sensor_dev_attr(attr)->index;
-> > > +	int temperature;
-> > > +
-> > > +	switch (i) {
-> >=20
-> > nit: you can drop i and just use to_sensor_dev_attr(attr)->index
-> >=20
-> > > +	case 0:
-> >=20
-> > I think you need to wake the device up here running mt7921_mutex_acquire
-> > before sending the mcu command.
->=20
-> I need to wake it up and acquire a mutex, or does acquiring the mutex wak=
-e it
-> automatically?
+Thanks.
 
-acquiring the lock with mt7921_mutex_acquire() will wake the device up.
-
->=20
-> And, mt7915 has some other logic in this area.  I left the switch logic in
-> to match that, thinking maybe later we can add the other options to 7921?
->=20
-> Do you know if 7921 supports the other options like 7915?
-
-nope.
-
-Regards,
-Lorenzo
-
->=20
-> Thanks,
-> Ben
->=20
->=20
-> --=20
-> Ben Greear <greearb@candelatech.com>
-> Candela Technologies Inc  http://www.candelatech.com
->=20
->=20
-
---C6NMl48XVxljFi9E
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZGad3AAKCRA6cBh0uS2t
-rKpRAP45Q8ZJSJ861BW/+1ZNwmE5X85hvzWDVsKKDr/NKKPZNAEAtZd2ZwzS8Mvb
-IgPiZiSAzc4BeRq+j9BeZPrSiSnPJgM=
-=wmMR
------END PGP SIGNATURE-----
-
---C6NMl48XVxljFi9E--
+-- 
+tejun
