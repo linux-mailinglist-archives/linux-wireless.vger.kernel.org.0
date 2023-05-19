@@ -2,78 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2465708D00
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 02:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A36708E2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 05:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230337AbjESAlS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 18 May 2023 20:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41076 "EHLO
+        id S229956AbjESDPW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 18 May 2023 23:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230440AbjESAlQ (ORCPT
+        with ESMTP id S229485AbjESDPV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 18 May 2023 20:41:16 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EBF137;
-        Thu, 18 May 2023 17:41:14 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-64d2ca9ef0cso451057b3a.1;
-        Thu, 18 May 2023 17:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684456874; x=1687048874;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2YJeCVahMakSFFIeHkE0L5vaAYWzeS9qst+vBo++bi0=;
-        b=gPyTu7Ftro36DNbp+lkqcM/uD9AZNx5HrIUkeYjWtOsDesNs073VVmKX4OA1iDWGmj
-         IzPUjHYderK9FHrwkfLPVzFJ4k1uiQ6NVykF/MVLc0MN9Vjy/eOiZz3b+V2Gvmty8ljD
-         ZdLk8uPFZ1H7Uj8uRu8bF94mYyQzcsLxg7L0hOi86nBrwLkcb+pmkZ65H7lBAel0MAnh
-         uePHkr/6fHRtHAvWT1/TkcN6/YlNzfypbGpuuQggqRcnHhieiK8ohtlCof/FIdUarpvx
-         80owNV31vyWprVxxApRxjryIaKIPdKnn6L5EXyY5Z19cLRVV/uNkUf7W8zqBHHtiMTgp
-         83Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684456874; x=1687048874;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2YJeCVahMakSFFIeHkE0L5vaAYWzeS9qst+vBo++bi0=;
-        b=XYOOsdG6SdUGVPgYyjHqhT2jWU+00EWO0HpHNC9yUUqyn4fhoKhNtUgjIiyjIVEJqE
-         DdfT80dlrMVsPBmCNqy7YnlH7TSTAUO7yfPfBqDpjSzC7S5ZN5rDmOc7h/IoTlsDZciR
-         XHdpedXYf7O6IPuM/h4bunq+E5qNuZ2Ipr1JagSNYsu4Rg1NrBkUrbq5sUbuart/LUKj
-         25SIa2ELbW9IVcVqiAdbINjnlj4vdqUtzNSQtsvxyYRhWPH3okRD7DWbTBGaGKG/NCgg
-         2ei5zIwTBOUCOGLcAOOG2kr0p5hhzeN/BHpIi+PeBUCXAsrrSbLpgJg8urOhXP3jvSSL
-         uyxQ==
-X-Gm-Message-State: AC+VfDxx7BWg85CWrLgmyiiy3XH5cgL4l92+vwK5eq8YJvtuoQPZVH1C
-        O37LfWP1i549V0Xn9erM8+0=
-X-Google-Smtp-Source: ACHHUZ5FTXkHQ/buCBgpFS1XdJiWwBLPshYyJNbxkY/nKsr3BpBS9vFVOL2VkgoHrkIB89J4sGkcFg==
-X-Received: by 2002:a05:6a20:1448:b0:101:241d:55fe with SMTP id a8-20020a056a20144800b00101241d55femr239063pzi.45.1684456873560;
-        Thu, 18 May 2023 17:41:13 -0700 (PDT)
-Received: from localhost (2603-800c-1a02-1bae-a7fa-157f-969a-4cde.res6.spectrum.com. [2603:800c:1a02:1bae:a7fa:157f:969a:4cde])
-        by smtp.gmail.com with ESMTPSA id fe16-20020a056a002f1000b0063d6666ee4csm1903212pfb.34.2023.05.18.17.41.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 May 2023 17:41:13 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-Date:   Thu, 18 May 2023 14:41:11 -1000
-From:   Tejun Heo <tj@kernel.org>
-To:     jiangshanlai@gmail.com
-Cc:     linux-kernel@vger.kernel.org, kernel-team@meta.com,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 05/13] wifi: ath10/11/12k: Use alloc_ordered_workqueue()
- to create ordered workqueues
-Message-ID: <ZGbFpxqk37-VhfUS@slm.duckdns.org>
-References: <20230509015032.3768622-1-tj@kernel.org>
- <20230509015032.3768622-6-tj@kernel.org>
+        Thu, 18 May 2023 23:15:21 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F52B1
+        for <linux-wireless@vger.kernel.org>; Thu, 18 May 2023 20:15:16 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34J3ExbF6004157, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34J3ExbF6004157
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 19 May 2023 11:14:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 19 May 2023 11:15:08 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 19 May
+ 2023 11:15:08 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <timlee@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/7] wifi: rtw89: 8851b: add to enable 8851BE
+Date:   Fri, 19 May 2023 11:14:53 +0800
+Message-ID: <20230519031500.21087-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230509015032.3768622-6-tj@kernel.org>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,9 +55,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Applied to wq/for-6.5-cleanup-ordered.
+With preparation before, this patchset can enable 8851BE eventually.
+Thanks for the review, Kalle.
 
-Thanks.
+The first four patches are to add remaining chip_ops and chip_info.
+Patch 5/7 is to extend debugfs entry of read_reg to have ability to read
+wider length of registers. Patch 6/7 is to enable a firmware feature, and
+other features like hardware scan aren't verified completely, so I defer
+to enable them later because current version can still work fine.
+
+The last patch 7/7 is to modify Kconfig and Makefile to enable 8851BE.
+
+Chin-Yen Lee (1):
+  wifi: rtw89: add tx_wake notify for 8851B
+
+Ping-Ke Shih (6):
+  wifi: rtw89: 8851b: add TX power related functions
+  wifi: rtw89: 8851b: fill BB related capabilities to chip_info
+  wifi: rtw89: 8851b: add MAC configurations to chip_info
+  wifi: rtw89: 8851b: add RF configurations
+  wifi: rtw89: enlarge supported length of read_reg debugfs entry
+  wifi: rtw89: 8851b: add 8851be to Makefile and Kconfig
+
+ drivers/net/wireless/realtek/rtw89/Kconfig    |  14 +
+ drivers/net/wireless/realtek/rtw89/Makefile   |   9 +
+ drivers/net/wireless/realtek/rtw89/debug.c    |  23 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |   1 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |   2 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c | 603 ++++++++++++++++++
+ 6 files changed, 649 insertions(+), 3 deletions(-)
 
 -- 
-tejun
+2.25.1
+
