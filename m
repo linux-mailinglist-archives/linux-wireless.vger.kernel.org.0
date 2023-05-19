@@ -2,45 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2604A709C58
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 18:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B05B6709C85
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 May 2023 18:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbjESQXl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 19 May 2023 12:23:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
+        id S230178AbjESQgT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 19 May 2023 12:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjESQXi (ORCPT
+        with ESMTP id S229675AbjESQgS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 19 May 2023 12:23:38 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C087102
-        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 09:23:36 -0700 (PDT)
+        Fri, 19 May 2023 12:36:18 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A5038F
+        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 09:36:17 -0700 (PDT)
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BCA0E180087
-        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 16:23:34 +0000 (UTC)
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8F0E1C0009B
+        for <linux-wireless@vger.kernel.org>; Fri, 19 May 2023 16:36:15 +0000 (UTC)
 Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 3190513C2B0;
-        Fri, 19 May 2023 09:23:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3190513C2B0
+        by mail3.candelatech.com (Postfix) with ESMTP id D5EB313C2B0;
+        Fri, 19 May 2023 09:36:14 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D5EB313C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1684513414;
-        bh=LhIgTSgx07CQD7LqPRN+jVba95LeKxN6tuV4IAgEukE=;
+        s=default; t=1684514174;
+        bh=l7ea+bs8bxlAWU+jgTrt27EimjhtfnXmrEdSTpXWkMs=;
         h=From:To:Cc:Subject:Date:From;
-        b=H5//20hC68NMcTG6WGaFbW1fnUeyWsVspboRJmYTFOujl/fdIy4MUrLngx8DlsvOH
-         qNdgyglSGg5Cvqmddpd1i/jZabPvLbxmb6LwG08+xCdDu2rkljJHqY6V7a3h18xeAV
-         hs0AMQ8gF4717vTIaxqXI4cb5AKaDgopcZCtWbzc=
+        b=f4dLjer4qmPjVR/EG0B1e7bcWXrniKUISMbzGo4cKuXy4Rg5P1lNTfR9GOjyBGOrI
+         AhRu9Nn2DoFaF0VApR+mdHnqiIDi+giNxv+kz+VttOXZqdL70eBTC1wdBNd073sj+B
+         CFi8ELk13sziw6JTz0KyCZZGGeZY6e2ZnWVO50sk=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v2] wifi: mac80211:  add eht_capa debugfs field.
-Date:   Fri, 19 May 2023 09:23:24 -0700
-Message-Id: <20230519162324.1633120-1-greearb@candelatech.com>
+Subject: [PATCH v2] wifi: mt76: mt7921:  Support temp sensor.
+Date:   Fri, 19 May 2023 09:36:11 -0700
+Message-Id: <20230519163611.1640585-1-greearb@candelatech.com>
 X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MDID: 1684513415-1X3OvaTG9Uo1
-X-MDID-O: us5;ut7;1684513415;1X3OvaTG9Uo1;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-MDID: 1684514176-S414O4ruwi13
+X-MDID-O: us5;ut7;1684514176;S414O4ruwi13;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -53,254 +54,143 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-Output looks like this:
+Allow sensors tool to read radio's temperature, example:
 
-[root@ct523c-0b29 ~]# cat /debug/ieee80211/wiphy6/netdev\:wlan6/stations/50\:28\:4a\:bd\:f4\:a7/eht_capa
-EHT supported
-MAC-CAP: 0x82 0x00
-PHY-CAP: 0x0c 0x00 0x00 0x00 0x00 0x48 0x00 0x00 0x00
-		OM-CONTROL
-		MAX-MPDU-LEN: 11454
-		242-TONE-RU-GT20MHZ
-		NDP-4-EHT-LFT-32-GI
-		BEAMFORMEE-80-NSS: 0
-		BEAMFORMEE-160-NSS: 0
-		BEAMFORMEE-320-NSS: 0
-		SOUNDING-DIM-80-NSS: 0
-		SOUNDING-DIM-160-NSS: 0
-		SOUNDING-DIM-320-NSS: 0
-		MAX_NC: 0
-		PPE_THRESHOLD_PRESENT
-		NOMINAL_PKT_PAD: 0us
-		MAX-NUM-SUPP-EHT-LTF: 1
-		MCS15-SUPP-MASK: 0
-
-		EHT bw <= 80 MHz, max NSS for MCS 8-9: Rx=2, Tx=2
-		EHT bw <= 80 MHz, max NSS for MCS 10-11: Rx=2, Tx=2
-		EHT bw <= 80 MHz, max NSS for MCS 12-13: Rx=2, Tx=2
-		EHT bw <= 160 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
-		EHT bw <= 160 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
-		EHT bw <= 160 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
-		EHT bw <= 320 MHz, max NSS for MCS 8-9: Rx=0, Tx=0
-		EHT bw <= 320 MHz, max NSS for MCS 10-11: Rx=0, Tx=0
-		EHT bw <= 320 MHz, max NSS for MCS 12-13: Rx=0, Tx=0
-EHT PPE Thresholds: 0xc1 0x0e 0xe0 0x00 0x00
+mt7921_phy17-pci-1800
+Adapter: PCI adapter
+temp1:        +72.0°C
 
 Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
-v2:  Comment out  SUPP_EXTRA_EHT_LTF flag to make 'next' build-bot
-happy.
 
- net/mac80211/debugfs_sta.c | 189 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 189 insertions(+)
+v2:  Add mutex to protect mcu call, fix nits.
 
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 607ba9367738..5c87f601c572 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -1239,6 +1239,194 @@ static ssize_t link_sta_he_capa_read(struct file *file, char __user *userbuf,
- }
- LINK_STA_OPS(he_capa);
+ .../net/wireless/mediatek/mt76/mt7921/init.c  | 56 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
+ 3 files changed, 74 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index c15ce1a19000..01ad28102c8c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -2,6 +2,9 @@
+ /* Copyright (C) 2020 MediaTek Inc. */
  
-+static ssize_t link_sta_eht_capa_read(struct file *file, char __user *userbuf,
-+				      size_t count, loff_t *ppos)
+ #include <linux/etherdevice.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
++#include <linux/thermal.h>
+ #include <linux/firmware.h>
+ #include "mt7921.h"
+ #include "../mt76_connac2_mac.h"
+@@ -58,6 +61,53 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
+ 	}
+ };
+ 
++static ssize_t mt7921_thermal_temp_show(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
 +{
-+	char *buf, *p;
-+	size_t buf_sz = PAGE_SIZE;
-+	struct link_sta_info *link_sta = file->private_data;
-+	struct ieee80211_sta_eht_cap *bec = &link_sta->pub->eht_cap;
-+	struct ieee80211_eht_cap_elem_fixed *fixed = &bec->eht_cap_elem;
-+	struct ieee80211_eht_mcs_nss_supp *nss = &bec->eht_mcs_nss_supp;
-+	u8 *cap;
-+	int i;
-+	ssize_t ret;
-+	static const char *mcs_desc[] = { "0-7", "8-9", "10-11", "12-13"};
++	switch (to_sensor_dev_attr(attr)->index) {
++	case 0:
++		struct mt7921_phy *phy = dev_get_drvdata(dev);
++		struct mt7921_dev *mdev = phy->dev;
++		int temperature;
 +
-+	buf = kmalloc(buf_sz, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+	p = buf;
++		mt7921_mutex_acquire(mdev);
++		temperature = mt7921_mcu_get_temperature(phy);
++		mt7921_mutex_release(mdev);
 +
-+	p += scnprintf(p, buf_sz + buf - p, "EHT %ssupported\n",
-+		       bec->has_eht ? "" : "not ");
-+	if (!bec->has_eht)
-+		goto out;
-+
-+	p += scnprintf(p, buf_sz + buf - p,
-+		       "MAC-CAP: %#.2x %#.2x\n",
-+		       fixed->mac_cap_info[0], fixed->mac_cap_info[1]);
-+	p += scnprintf(p, buf_sz + buf - p,
-+		       "PHY-CAP: %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x %#.2x\n",
-+		       fixed->phy_cap_info[0], fixed->phy_cap_info[1],
-+		       fixed->phy_cap_info[2], fixed->phy_cap_info[3],
-+		       fixed->phy_cap_info[4], fixed->phy_cap_info[5],
-+		       fixed->phy_cap_info[6], fixed->phy_cap_info[7],
-+		       fixed->phy_cap_info[8]);
-+
-+#define PRINT(fmt, ...)							\
-+	p += scnprintf(p, buf_sz + buf - p, "\t\t" fmt "\n",		\
-+		       ##__VA_ARGS__)
-+
-+#define PFLAG(t, n, a, b)						\
-+	do {								\
-+		if (cap[n] & IEEE80211_EHT_##t##_CAP##n##_##a)		\
-+			PRINT("%s", b);					\
-+	} while (0)
-+
-+	cap = fixed->mac_cap_info;
-+	PFLAG(MAC, 0, EPCS_PRIO_ACCESS, "EPCS-PRIO-ACCESS");
-+	PFLAG(MAC, 0, OM_CONTROL, "OM-CONTROL");
-+	PFLAG(MAC, 0, TRIG_TXOP_SHARING_MODE1, "TRIG-TXOP-SHARING-MODE1");
-+	PFLAG(MAC, 0, TRIG_TXOP_SHARING_MODE2, "TRIG-TXOP-SHARING-MODE2");
-+	PFLAG(MAC, 0, RESTRICTED_TWT, "RESTRICTED-TWT");
-+	PFLAG(MAC, 0, SCS_TRAFFIC_DESC, "SCS-TRAFFIC-DESC");
-+	switch ((cap[0] & 0xc0) >> 6) {
-+	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_3895:
-+		PRINT("MAX-MPDU-LEN: 3985");
-+		break;
-+	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_7991:
-+		PRINT("MAX-MPDU-LEN: 7991");
-+		break;
-+	case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454:
-+		PRINT("MAX-MPDU-LEN: 11454");
-+		break;
++		if (temperature < 0)
++			return temperature;
++		/* display in millidegree Celcius */
++		return sprintf(buf, "%u\n", temperature * 1000);
++	default:
++		return -EINVAL;
 +	}
-+
-+	cap = fixed->phy_cap_info;
-+	PFLAG(PHY, 0, 320MHZ_IN_6GHZ, "320MHZ-IN-6GHZ");
-+	PFLAG(PHY, 0, 242_TONE_RU_GT20MHZ, "242-TONE-RU-GT20MHZ");
-+	PFLAG(PHY, 0, NDP_4_EHT_LFT_32_GI, "NDP-4-EHT-LFT-32-GI");
-+	PFLAG(PHY, 0, PARTIAL_BW_UL_MU_MIMO, "PARTIAL-BW-UL-MU-MIMO");
-+	PFLAG(PHY, 0, SU_BEAMFORMER, "SU-BEAMFORMER");
-+	PFLAG(PHY, 0, SU_BEAMFORMEE, "SU-BEAMFORMEE");
-+	i = cap[0] >> 7;
-+	i |= (cap[1] & 0x3) << 1;
-+	PRINT("BEAMFORMEE-80-NSS: %i", i);
-+	PRINT("BEAMFORMEE-160-NSS: %i", (cap[1] >> 2) & 0x7);
-+	PRINT("BEAMFORMEE-320-NSS: %i", (cap[1] >> 5) & 0x7);
-+	PRINT("SOUNDING-DIM-80-NSS: %i", (cap[2] & 0x7));
-+	PRINT("SOUNDING-DIM-160-NSS: %i", (cap[2] >> 3) & 0x7);
-+	i = cap[2] >> 6;
-+	i |= (cap[3] & 0x1) << 3;
-+	PRINT("SOUNDING-DIM-320-NSS: %i", i);
-+
-+	PFLAG(PHY, 3, NG_16_SU_FEEDBACK, "NG-16-SU-FEEDBACK");
-+	PFLAG(PHY, 3, NG_16_MU_FEEDBACK, "NG-16-MU-FEEDBACK");
-+	PFLAG(PHY, 3, CODEBOOK_4_2_SU_FDBK, "CODEBOOK-4-2-SU-FDBK");
-+	PFLAG(PHY, 3, CODEBOOK_7_5_MU_FDBK, "CODEBOOK-7-5-MU-FDBK");
-+	PFLAG(PHY, 3, TRIG_SU_BF_FDBK, "TRIG-SU-BF-FDBK");
-+	PFLAG(PHY, 3, TRIG_MU_BF_PART_BW_FDBK, "TRIG-MU-BF-PART-BW-FDBK");
-+	PFLAG(PHY, 3, TRIG_CQI_FDBK, "TRIG-CQI-FDBK");
-+
-+	PFLAG(PHY, 4, PART_BW_DL_MU_MIMO, "PART-BW-DL-MU-MIMO");
-+	PFLAG(PHY, 4, PSR_SR_SUPP, "PSR-SR-SUPP");
-+	PFLAG(PHY, 4, POWER_BOOST_FACT_SUPP, "POWER-BOOST-FACT-SUPP");
-+	PFLAG(PHY, 4, EHT_MU_PPDU_4_EHT_LTF_08_GI, "EHT-MU-PPDU-4-EHT-LTF-08-GI");
-+	PRINT("MAX_NC: %i", cap[4] >> 4);
-+
-+	PFLAG(PHY, 5, NON_TRIG_CQI_FEEDBACK, "NON-TRIG-CQI-FEEDBACK");
-+	PFLAG(PHY, 5, TX_LESS_242_TONE_RU_SUPP, "TX-LESS-242-TONE-RU-SUPP");
-+	PFLAG(PHY, 5, RX_LESS_242_TONE_RU_SUPP, "RX-LESS-242-TONE-RU-SUPP");
-+	PFLAG(PHY, 5, PPE_THRESHOLD_PRESENT, "PPE_THRESHOLD_PRESENT");
-+	switch (cap[5] >> 4 & 0x3) {
-+	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_0US:
-+		PRINT("NOMINAL_PKT_PAD: 0us");
-+		break;
-+	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_8US:
-+		PRINT("NOMINAL_PKT_PAD: 8us");
-+		break;
-+	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US:
-+		PRINT("NOMINAL_PKT_PAD: 16us");
-+		break;
-+	case IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_20US:
-+		PRINT("NOMINAL_PKT_PAD: 20us");
-+		break;
-+	}
-+
-+	i = cap[5] >> 6;
-+	i |= cap[6] & 0x7;
-+	PRINT("MAX-NUM-SUPP-EHT-LTF: %i", i);
-+	/* TODO:  Fix and re-add this.  It compiles in 6.4 but not against 'next'
-+	 * according to the kernel build bot.
-+	 * PFLAG(PHY, 5, SUPP_EXTRA_EHT_LTF, "SUPP-EXTRA-EHT-LTF");
-+	 */
-+
-+	i = (cap[6] >> 3) & 0xf;
-+	PRINT("MCS15-SUPP-MASK: %i", i);
-+	PFLAG(PHY, 6, EHT_DUP_6GHZ_SUPP, "EHT-DUP-6GHZ-SUPP");
-+
-+	PFLAG(PHY, 7, 20MHZ_STA_RX_NDP_WIDER_BW, "20MHZ-STA-RX-NDP-WIDER-BW");
-+	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_80MHZ, "NON-OFDMA-UL-MU-MIMO-80MHZ");
-+	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_160MHZ, "NON-OFDMA-UL-MU-MIMO-160MHZ");
-+	PFLAG(PHY, 7, NON_OFDMA_UL_MU_MIMO_320MHZ, "NON-OFDMA-UL-MU-MIMO-320MHZ");
-+	PFLAG(PHY, 7, MU_BEAMFORMER_80MHZ, "MU-BEAMFORMER-80MHZ");
-+	PFLAG(PHY, 7, MU_BEAMFORMER_160MHZ, "MU-BEAMFORMER-160MHZ");
-+	PFLAG(PHY, 7, MU_BEAMFORMER_320MHZ, "MU-BEAMFORMER-320MHZ");
-+	PFLAG(PHY, 7, TB_SOUNDING_FDBK_RATE_LIMIT, "TB-SOUNDING-FDBK-RATE-LIMIT");
-+
-+	PFLAG(PHY, 8, RX_1024QAM_WIDER_BW_DL_OFDMA, "RX-1024QAM-WIDER-BW-DL-OFDMA");
-+	PFLAG(PHY, 8, RX_4096QAM_WIDER_BW_DL_OFDMA, "RX-4096QAM-WIDER-BW-DL-OFDMA");
-+
-+#undef PFLAG
-+
-+	PRINT(""); /* newline */
-+	if (!(link_sta->pub->he_cap.he_cap_elem.phy_cap_info[0] &
-+	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL)) {
-+		u8 *mcs_vals = (u8 *)(&nss->only_20mhz);
-+
-+		for (i = 0; i < 4; i++)
-+			PRINT("EHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			      mcs_desc[i],
-+			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
-+	} else {
-+		u8 *mcs_vals = (u8 *)(&nss->bw._80);
-+
-+		for (i = 0; i < 3; i++)
-+			PRINT("EHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			      mcs_desc[i + 1],
-+			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
-+
-+		mcs_vals = (u8 *)(&nss->bw._160);
-+		for (i = 0; i < 3; i++)
-+			PRINT("EHT bw <= 160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			      mcs_desc[i + 1],
-+			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
-+
-+		mcs_vals = (u8 *)(&nss->bw._320);
-+		for (i = 0; i < 3; i++)
-+			PRINT("EHT bw <= 320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u",
-+			      mcs_desc[i + 1],
-+			      mcs_vals[i] & 0xf, mcs_vals[i] >> 4);
-+	}
-+
-+	if (cap[5] & IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT) {
-+		u8 ppe_size = ieee80211_eht_ppe_size(bec->eht_ppe_thres[0], cap);
-+
-+		p += scnprintf(p, buf_sz + buf - p, "EHT PPE Thresholds: ");
-+		for (i = 0; i < ppe_size; i++)
-+			p += scnprintf(p, buf_sz + buf - p, "0x%02x ",
-+				       bec->eht_ppe_thres[i]);
-+		PRINT(""); /* newline */
-+	}
-+
-+out:
-+	ret = simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
-+	kfree(buf);
-+	return ret;
 +}
-+LINK_STA_OPS(eht_capa);
++static SENSOR_DEVICE_ATTR_RO(temp1_input, mt7921_thermal_temp, 0);
 +
- #define DEBUGFS_ADD(name) \
- 	debugfs_create_file(#name, 0400, \
- 		sta->debugfs_dir, sta, &sta_ ##name## _ops)
-@@ -1333,6 +1521,7 @@ void ieee80211_link_sta_debugfs_add(struct link_sta_info *link_sta)
- 	DEBUGFS_ADD(ht_capa);
- 	DEBUGFS_ADD(vht_capa);
- 	DEBUGFS_ADD(he_capa);
-+	DEBUGFS_ADD(eht_capa);
++static struct attribute *mt7921_hwmon_attrs[] = {
++	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(mt7921_hwmon);
++
++static int mt7921_thermal_init(struct mt7921_phy *phy)
++{
++	struct wiphy *wiphy = phy->mt76->hw->wiphy;
++	struct device *hwmon;
++	const char *name;
++
++	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
++			      wiphy_name(wiphy));
++
++	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
++						       mt7921_hwmon_groups);
++	if (IS_ERR(hwmon))
++		return PTR_ERR(hwmon);
++
++	return 0;
++}
++
+ static void
+ mt7921_regd_notifier(struct wiphy *wiphy,
+ 		     struct regulatory_request *request)
+@@ -384,6 +434,12 @@ static void mt7921_init_work(struct work_struct *work)
+ 		return;
+ 	}
  
- 	DEBUGFS_ADD_COUNTER(rx_duplicates, rx_stats.num_duplicates);
- 	DEBUGFS_ADD_COUNTER(rx_fragments, rx_stats.fragments);
++	ret = mt7921_thermal_init(&dev->phy);
++	if (ret) {
++		dev_err(dev->mt76.dev, "thermal_init failed\n");
++		return;
++	}
++
+ 	/* we support chip reset now */
+ 	dev->hw_init_done = true;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 9c4dcc0e5a7c..abeedacc28f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1346,6 +1346,23 @@ int mt7921_mcu_set_clc(struct mt7921_dev *dev, u8 *alpha2,
+ 	return 0;
+ }
+ 
++int mt7921_mcu_get_temperature(struct mt7921_phy *phy)
++{
++	struct mt7921_dev *dev = phy->dev;
++	struct {
++		u8 ctrl_id;
++		u8 action;
++		u8 band_idx;
++		u8 rsv[5];
++	} req = {
++		.ctrl_id = THERMAL_SENSOR_TEMP_QUERY,
++		.band_idx = phy->mt76->band_idx,
++	};
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_CTRL), &req,
++				 sizeof(req), true);
++}
++
+ int mt7921_mcu_set_rxfilter(struct mt7921_dev *dev, u32 fif,
+ 			    u8 bit_op, u32 bit_map)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 706f00df6836..85fddf99d497 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -568,6 +568,7 @@ int mt7921_mcu_set_sniffer(struct mt7921_dev *dev, struct ieee80211_vif *vif,
+ 			   bool enable);
+ int mt7921_mcu_config_sniffer(struct mt7921_vif *vif,
+ 			      struct ieee80211_chanctx_conf *ctx);
++int mt7921_mcu_get_temperature(struct mt7921_phy *phy);
+ 
+ int mt7921_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 				   enum mt76_txq_id qid, struct mt76_wcid *wcid,
 -- 
 2.40.0
 
