@@ -2,100 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 459A670A62D
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 May 2023 09:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD7470A636
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 May 2023 09:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230307AbjETHib (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 May 2023 03:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52474 "EHLO
+        id S230318AbjETHxY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 May 2023 03:53:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjETHi2 (ORCPT
+        with ESMTP id S229890AbjETHxX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 May 2023 03:38:28 -0400
-Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AEC1A8
-        for <linux-wireless@vger.kernel.org>; Sat, 20 May 2023 00:38:26 -0700 (PDT)
+        Sat, 20 May 2023 03:53:23 -0400
+Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF111AC
+        for <linux-wireless@vger.kernel.org>; Sat, 20 May 2023 00:53:21 -0700 (PDT)
 Received: from pop-os.home ([86.243.2.178])
         by smtp.orange.fr with ESMTPA
-        id 0HAVqW6X7JVCN0HAVqfvyc; Sat, 20 May 2023 09:38:25 +0200
+        id 0HOvqGVAANhDH0HOvqRvZf; Sat, 20 May 2023 09:53:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1684568305;
-        bh=NMjTFjxZxa7W+uVqFF89Z29R05LLDCicjWL4MP87TLA=;
+        s=t20230301; t=1684569199;
+        bh=MDlJlO33FY7uj3rYCO/3V6AqX7RWZP0/+LeG854Chsc=;
         h=From:To:Cc:Subject:Date;
-        b=rjfSfBGl4jypnBJRKK4oqNz4knkIQvQt35+3zw44PGHb8ZXZAdN6zVsLZP690+JIr
-         /ZR2d8XIqBwP1JuiHyaRMKIGdurVz4gklakLC+Y8qHtfu3BibGOACEVxhewlRNGSdi
-         HsH3opyCszrZ0qEyI+CFyW8MT0aZXr+QX6dqzpsEKuKnMtzFMFGUL0vWzY4dg4uSd9
-         mim6BrdJVCZETBuzOaWLXt+TnsHPzzK5Vuy2r3KDwmDLYaC0LIZaHoYFkBwIIlYcfl
-         ohxbqvZiRFyzMswmwBir5Zrpq0r2EaAcyqbQZvxNivgc83CgAfJuCky1YU92P6KKl5
-         4SRn2Bi2Y97QQ==
+        b=jbenmieo8P8YlN9wS/QLbCsv9uEoQ7tJqUvY7qyi3nF6wSoyhO5PgDLIXXDUDyMjc
+         jsYG1YuaOQgtBKopDT4Bb+5s+KWvYnIxNs0AxFdMRf2RDl004R3CdPhFfIT8KfFhL/
+         P/kLYo6sJf1aQ+5VwNkW1vfzkl4fkL1xaYAR3iUdAyckZBXGpGrIufzgSK7jEAYQtu
+         qDVqAz4ysyop4F0JdBzQunwfQPHY9ytaikY7ed3UVQXjoNCXbizRkF+PHnMbhGx3Cx
+         oJCbeoZyYzLYd2ycq16z03kHWmi+V57IPBh4FSRIg11CxWWlgOcpv21Gd8XcKu+R/J
+         nEegtuJT0KSeA==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 20 May 2023 09:38:25 +0200
+X-ME-Date: Sat, 20 May 2023 09:53:19 +0200
 X-ME-IP: 86.243.2.178
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Kalle Valo <kvalo@kernel.org>,
+To:     Simon Kelley <simon@thekelleys.org.uk>,
+        Kalle Valo <kvalo@kernel.org>,
         Dominik Brodowski <linux@dominikbrodowski.net>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH] orinoco: Fix an error handling path in orinoco_cs_probe()
-Date:   Sat, 20 May 2023 09:38:22 +0200
-Message-Id: <e24735ce4d82901d5f7ea08419eea53bfdde3d65.1684568286.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH wireless] atmel: Fix an error handling path in atmel_probe()
+Date:   Sat, 20 May 2023 09:53:14 +0200
+Message-Id: <1e65f174607a83348034197fa7d603bab10ba4a9.1684569156.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Should orinoco_cs_config() fail, some resources need to be released as
-already done in the remove function.
+Should atmel_config() fail, some resources need to be released as already
+done in the remove function.
 
 While at it, remove a useless and erroneous comment. The probe is
-orinoco_cs_probe(), not orinoco_cs_attach().
+atmel_probe(), not atmel_attach().
 
 Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/net/wireless/intersil/orinoco/orinoco_cs.c | 13 +++++++++++--
+ drivers/net/wireless/atmel/atmel_cs.c | 13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_cs.c b/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
-index a956f965a1e5..03bfd2482656 100644
---- a/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
-+++ b/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
-@@ -96,6 +96,7 @@ orinoco_cs_probe(struct pcmcia_device *link)
+diff --git a/drivers/net/wireless/atmel/atmel_cs.c b/drivers/net/wireless/atmel/atmel_cs.c
+index 453bb84cb338..58bba9875d36 100644
+--- a/drivers/net/wireless/atmel/atmel_cs.c
++++ b/drivers/net/wireless/atmel/atmel_cs.c
+@@ -72,6 +72,7 @@ struct local_info {
+ static int atmel_probe(struct pcmcia_device *p_dev)
  {
- 	struct orinoco_private *priv;
- 	struct orinoco_pccard *card;
+ 	struct local_info *local;
 +	int ret;
  
- 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
- 				orinoco_cs_hard_reset, NULL);
-@@ -107,8 +108,16 @@ orinoco_cs_probe(struct pcmcia_device *link)
- 	card->p_dev = link;
- 	link->priv = priv;
+ 	dev_dbg(&p_dev->dev, "atmel_attach()\n");
  
--	return orinoco_cs_config(link);
--}				/* orinoco_cs_attach */
-+	ret = orinoco_cs_config(link);
+@@ -82,8 +83,16 @@ static int atmel_probe(struct pcmcia_device *p_dev)
+ 
+ 	p_dev->priv = local;
+ 
+-	return atmel_config(p_dev);
+-} /* atmel_attach */
++	ret = atmel_config(p_dev);
 +	if (ret)
-+		goto err_free_orinocodev;
++		goto err_free_priv;
 +
 +	return 0;
 +
-+err_free_orinocodev:
-+	free_orinocodev(priv);
++err_free_priv:
++	kfree(p_dev->priv);
 +	return ret;
 +}
  
- static void orinoco_cs_detach(struct pcmcia_device *link)
+ static void atmel_detach(struct pcmcia_device *link)
  {
 -- 
 2.34.1
