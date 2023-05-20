@@ -2,102 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBD7470A636
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 May 2023 09:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A4070A645
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 May 2023 10:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230318AbjETHxY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 20 May 2023 03:53:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
+        id S229595AbjETIFP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 20 May 2023 04:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbjETHxX (ORCPT
+        with ESMTP id S230039AbjETIFO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 20 May 2023 03:53:23 -0400
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF111AC
-        for <linux-wireless@vger.kernel.org>; Sat, 20 May 2023 00:53:21 -0700 (PDT)
+        Sat, 20 May 2023 04:05:14 -0400
+Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 194A51BD
+        for <linux-wireless@vger.kernel.org>; Sat, 20 May 2023 01:05:11 -0700 (PDT)
 Received: from pop-os.home ([86.243.2.178])
         by smtp.orange.fr with ESMTPA
-        id 0HOvqGVAANhDH0HOvqRvZf; Sat, 20 May 2023 09:53:19 +0200
+        id 0HaPqGwrCcjUo0HaPqpKsf; Sat, 20 May 2023 10:05:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1684569199;
-        bh=MDlJlO33FY7uj3rYCO/3V6AqX7RWZP0/+LeG854Chsc=;
+        s=t20230301; t=1684569910;
+        bh=FbFOTo7bbOqLCpse5mxCwFCHaJIvxu1hx1VMbc9WcyM=;
         h=From:To:Cc:Subject:Date;
-        b=jbenmieo8P8YlN9wS/QLbCsv9uEoQ7tJqUvY7qyi3nF6wSoyhO5PgDLIXXDUDyMjc
-         jsYG1YuaOQgtBKopDT4Bb+5s+KWvYnIxNs0AxFdMRf2RDl004R3CdPhFfIT8KfFhL/
-         P/kLYo6sJf1aQ+5VwNkW1vfzkl4fkL1xaYAR3iUdAyckZBXGpGrIufzgSK7jEAYQtu
-         qDVqAz4ysyop4F0JdBzQunwfQPHY9ytaikY7ed3UVQXjoNCXbizRkF+PHnMbhGx3Cx
-         oJCbeoZyYzLYd2ycq16z03kHWmi+V57IPBh4FSRIg11CxWWlgOcpv21Gd8XcKu+R/J
-         nEegtuJT0KSeA==
+        b=qdMsTmyonGN4tbdfAOPFZbo+BSHaTAIcTWJzN2NC6vs4YHHkOyEkNkY4XoDQg3JDs
+         3Jrwx6PbOR+8JAyxXuxaNTZ1CjT29AYgT4obgLcaCy6vpUXF7gaNRgJfKl31kOQ15z
+         HE/fFAysTZ8iN5Bl1m79+DZO3hujEUMEIMyDLzEn75CZOJ9IgIlZTBS+boHFKzbR1T
+         VYVeRs/bOElY2UI0AiCoth7u2WAmrxeAwMbDon39eAcHDngCKycr9bot5/JmsOEywx
+         7bStQcNkoXiMv6h5vkHwClIsk5rEJznzt37cALRrE1HgXWoOHKHItV9GU5zeQLtC07
+         +VcWt7T5QjsLA==
 X-ME-Helo: pop-os.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 20 May 2023 09:53:19 +0200
+X-ME-Date: Sat, 20 May 2023 10:05:10 +0200
 X-ME-IP: 86.243.2.178
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Simon Kelley <simon@thekelleys.org.uk>,
-        Kalle Valo <kvalo@kernel.org>,
+To:     Kalle Valo <kvalo@kernel.org>,
         Dominik Brodowski <linux@dominikbrodowski.net>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH wireless] atmel: Fix an error handling path in atmel_probe()
-Date:   Sat, 20 May 2023 09:53:14 +0200
-Message-Id: <1e65f174607a83348034197fa7d603bab10ba4a9.1684569156.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH wireless] wl3501_cs: Fix an error handling path in wl3501_probe()
+Date:   Sat, 20 May 2023 10:05:08 +0200
+Message-Id: <7cc9c9316489b7d69b36aeb0edd3123538500b41.1684569865.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Should atmel_config() fail, some resources need to be released as already
+Should wl3501_config() fail, some resources need to be released as already
 done in the remove function.
-
-While at it, remove a useless and erroneous comment. The probe is
-atmel_probe(), not atmel_attach().
 
 Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/net/wireless/atmel/atmel_cs.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/wireless/legacy/wl3501_cs.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/atmel/atmel_cs.c b/drivers/net/wireless/atmel/atmel_cs.c
-index 453bb84cb338..58bba9875d36 100644
---- a/drivers/net/wireless/atmel/atmel_cs.c
-+++ b/drivers/net/wireless/atmel/atmel_cs.c
-@@ -72,6 +72,7 @@ struct local_info {
- static int atmel_probe(struct pcmcia_device *p_dev)
+diff --git a/drivers/net/wireless/legacy/wl3501_cs.c b/drivers/net/wireless/legacy/wl3501_cs.c
+index 7fb2f9513476..c45c4b7cbbaf 100644
+--- a/drivers/net/wireless/legacy/wl3501_cs.c
++++ b/drivers/net/wireless/legacy/wl3501_cs.c
+@@ -1862,6 +1862,7 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
  {
- 	struct local_info *local;
+ 	struct net_device *dev;
+ 	struct wl3501_card *this;
 +	int ret;
  
- 	dev_dbg(&p_dev->dev, "atmel_attach()\n");
+ 	/* The io structure describes IO port mapping */
+ 	p_dev->resource[0]->end	= 16;
+@@ -1873,8 +1874,7 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
  
-@@ -82,8 +83,16 @@ static int atmel_probe(struct pcmcia_device *p_dev)
+ 	dev = alloc_etherdev(sizeof(struct wl3501_card));
+ 	if (!dev)
+-		goto out_link;
+-
++		return -ENOMEM;
  
- 	p_dev->priv = local;
+ 	dev->netdev_ops		= &wl3501_netdev_ops;
+ 	dev->watchdog_timeo	= 5 * HZ;
+@@ -1887,9 +1887,15 @@ static int wl3501_probe(struct pcmcia_device *p_dev)
+ 	netif_stop_queue(dev);
+ 	p_dev->priv = dev;
  
--	return atmel_config(p_dev);
--} /* atmel_attach */
-+	ret = atmel_config(p_dev);
+-	return wl3501_config(p_dev);
+-out_link:
+-	return -ENOMEM;
++	ret = wl3501_config(p_dev);
 +	if (ret)
-+		goto err_free_priv;
++		goto out_free_etherdev;
 +
 +	return 0;
 +
-+err_free_priv:
-+	kfree(p_dev->priv);
++out_free_etherdev:
++	free_netdev(dev);
 +	return ret;
-+}
+ }
  
- static void atmel_detach(struct pcmcia_device *link)
- {
+ static int wl3501_config(struct pcmcia_device *link)
 -- 
 2.34.1
 
