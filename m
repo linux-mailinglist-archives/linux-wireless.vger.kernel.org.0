@@ -2,113 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F50370BEF2
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 15:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1224770BF13
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 15:03:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233894AbjEVNAl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 09:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58646 "EHLO
+        id S233763AbjEVNDf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 09:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233819AbjEVNAi (ORCPT
+        with ESMTP id S233326AbjEVNDe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 09:00:38 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDDFEBB
-        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 06:00:35 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1q159K-00027Q-RD; Mon, 22 May 2023 15:00:30 +0200
-Message-ID: <ad948b42-74d3-b4f1-bbd6-449f71703083@leemhuis.info>
-Date:   Mon, 22 May 2023 15:00:30 +0200
+        Mon, 22 May 2023 09:03:34 -0400
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B41092
+        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 06:03:32 -0700 (PDT)
+Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6af6df840ffso1185340a34.1
+        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 06:03:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684760611; x=1687352611;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=OGYIAzQOuTRI66Am1Ptve2sIqi15jbY7Ad1+ZUDPwKs=;
+        b=i5Kz0r5ksBfNMoLvbcZm3FoTs8aKSS31URr0dnQifGl3GSRY0iQmGaTTsn3OJ3DRMk
+         6fYnCvdN6lDnPcP6YBl0iMErSRSmok1KG2suYSIbt4NAYB05rl3+7uganJ8XJIIag1DJ
+         kfxuoO02x85/XemYGsM9mCaTNxgSLHO2XCcRp0rB29VWFT6j+E/xJdC/oXBHrAJkKXlX
+         UGqShnqj4f6jxy9WI57JxFBw3Ih7PjzfpEPclco1Gno40Sjj/gs7yC3M90EcEFIBnpPq
+         tbwoTMGixLVWHLVpy7Z9qo5bMr2MNS4bz8wfwfGPxsP3KxKbg+R8idvPcC95ZtsCDWta
+         8efA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684760611; x=1687352611;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OGYIAzQOuTRI66Am1Ptve2sIqi15jbY7Ad1+ZUDPwKs=;
+        b=TeZAKtnMY4HGozWlXauId2NN9P1+y7WkrhNQjqVpVge6y8CAaeggfGCr9UASc+hYHG
+         IvmtvBUSyEdiOJJzpmJpWw5910rljmR7dERC8Ro5d41FJvoSq8dGSJq4nXRtwE1qR5Gt
+         SfhOTUaQwQu6KM1SGMSFIvrnHdDpllKX2rpvnvRR0AQY3mdGyGVHntacg+YiwFtfnOXN
+         ppTFX6w8x8OXIn7WAlfCzYjWJxe+bd/LL6rBhy/vp1m2NC0Mk2IdmEWKrXyMf2ninWvY
+         NF2QTAjycFqqnwJopzyq430ISwn3BaSR8CVBCdjNl8zs1EQTIaN8+PhKagIhf36DNyy/
+         GLow==
+X-Gm-Message-State: AC+VfDz+yKrgNKv70sSyrskiHO5p+lEhNkS9NUlgdURwTTL8Ar1tSq8H
+        9cl6Sv1mBoBokHofNczL1+k=
+X-Google-Smtp-Source: ACHHUZ6ZSm+kScG2S70dbxhzmm/gzyAoLaeONw8KuC4YzXluOOGmB9LEswKykWoqpTWtm+/gTYVA5g==
+X-Received: by 2002:a9d:5e8f:0:b0:6af:793b:a87 with SMTP id f15-20020a9d5e8f000000b006af793b0a87mr1646601otl.28.1684760610982;
+        Mon, 22 May 2023 06:03:30 -0700 (PDT)
+Received: from [192.168.0.200] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id t3-20020a9d5903000000b006a43519523fsm2324970oth.1.2023.05.22.06.03.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 May 2023 06:03:30 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <e0086aed-6aad-1b1c-65d0-1bb5e2ae3698@lwfinger.net>
+Date:   Mon, 22 May 2023 08:03:29 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: MT7922 problem with "fix rx filter incorrect by drv/fw
- inconsistent"
-Content-Language: en-US, de-DE
-To:     Andrey Rakhmatullin <wrar@wrar.name>,
-        linux-wireless@vger.kernel.org, Neil Chen <yn.chen@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <ZGY4peApQnPAmDkY@durkon.wrar.name>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <ZGY4peApQnPAmDkY@durkon.wrar.name>
-Content-Type: text/plain; charset=UTF-8
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 0/7] wifi: rtw89: 8851b: add to enable 8851BE
+To:     Ping-Ke Shih <pkshih@realtek.com>, kvalo@kernel.org
+Cc:     timlee@realtek.com, linux-wireless@vger.kernel.org
+References: <20230519031500.21087-1-pkshih@realtek.com>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <20230519031500.21087-1-pkshih@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1684760435;4e3dfdc8;
-X-HE-SMSGID: 1q159K-00027Q-RD
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[CCing the regression list, as it should be in the loop for regressions:
-https://docs.kernel.org/admin-guide/reporting-regressions.html]
-
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; the text you find below is based on a few templates
-paragraphs you might have encountered already in similar form.
-See link in footer if these mails annoy you.]
-
-On 18.05.23 16:39, Andrey Rakhmatullin wrote:
-> Hello. I have a "MEDIATEK Corp. MT7922 802.11ax PCI Express Wireless
-> Network Adapter" (14c3:0616) and when the commit c222f77fd4 ("wifi: mt76:
-> mt7921: fix rx filter incorrect by drv/fw inconsistent") is applied (found
-> by bisecting, checked by reverting it on v6.3) I have the following
-> problem on my machine: when I connect to my router no DHCPv4 exchange
-> happens, I don't see responses in tcpdump. My network setup is non-trivial
-> though, and it looks like the problem is specific to it, but I still
-> wonder if it's some bug in the aforementioned patch as my setup works with
-> all other devices and I would expect it to work as long as the network
-> packets sent by the device are the same.
+On 5/18/23 22:14, Ping-Ke Shih wrote:
+> With preparation before, this patchset can enable 8851BE eventually.
+> Thanks for the review, Kalle.
 > 
-> My setup is as follows: I have an ISP router which provides a 2.4GHz
-> network and another router (Xiaomi R4AC with OpenWRT) connected by
-> Ethernet to it that provides a 5GHz network and is configured as a "Relay
-> bridge" (using relayd) to forward packets to the ISP router and back. This
-> includes DHCPv4 packets, which are handled by the ISP router. tcpdump on
-> the machine with MT7922 shows that the DHCP requests are sent while the
-> responses are not received, while tcpdump on the bridge router shows both
-> requests and responses.
+> The first four patches are to add remaining chip_ops and chip_info.
+> Patch 5/7 is to extend debugfs entry of read_reg to have ability to read
+> wider length of registers. Patch 6/7 is to enable a firmware feature, and
+> other features like hardware scan aren't verified completely, so I defer
+> to enable them later because current version can still work fine.
 > 
-> I've tried connecting the machine to the ISP router network directly and
-> also to another AP (one on my phone) and those work correctly on all
-> kernels.
+> The last patch 7/7 is to modify Kconfig and Makefile to enable 8851BE.
 > 
-> Please let me know if I need to do any other debugging or troubleshooting
-> steps. Thank you.
+> Chin-Yen Lee (1):
+>    wifi: rtw89: add tx_wake notify for 8851B
+> 
+> Ping-Ke Shih (6):
+>    wifi: rtw89: 8851b: add TX power related functions
+>    wifi: rtw89: 8851b: fill BB related capabilities to chip_info
+>    wifi: rtw89: 8851b: add MAC configurations to chip_info
+>    wifi: rtw89: 8851b: add RF configurations
+>    wifi: rtw89: enlarge supported length of read_reg debugfs entry
+>    wifi: rtw89: 8851b: add 8851be to Makefile and Kconfig
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+I received samples of the RTW8851BE and the preliminary version of these patches 
+one week ago. I tested with that code for 4 days, and then switched to this 
+version when it was posted here. During the nearly 7 days of testing, I found no 
+major issues. The connection was stable with a local LibreSpeed server and 
+Speedtest.net both showing 400-500 Mbps up and down. The connection was to an 
+ax1500 AP using the 5G band.
 
-#regzbot ^introduced c222f77fd
-#regzbot title wifi: mt76: mt7921: DHCPv4 exchange broke
-#regzbot ignore-activity
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+Larry
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
