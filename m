@@ -2,326 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BFB70AF76
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 May 2023 20:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3663270B2DC
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 03:43:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231358AbjEUS2q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 21 May 2023 14:28:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49046 "EHLO
+        id S231386AbjEVBnZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 21 May 2023 21:43:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbjEUSYG (ORCPT
+        with ESMTP id S229533AbjEVBnY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 21 May 2023 14:24:06 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52A899
-        for <linux-wireless@vger.kernel.org>; Sun, 21 May 2023 11:23:56 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2af214a1929so3270121fa.0
-        for <linux-wireless@vger.kernel.org>; Sun, 21 May 2023 11:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684693435; x=1687285435;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A3TQmWXl4xK9b7IraiSCyRC87p37qgUiDMZ/vIuTWlI=;
-        b=AvCOG0nL4oYTJNcRDHnoua1VFnMqNVLYy5g57sqhydBOMiMwGjVp0iicSSZEGj0CHL
-         F3o9sj35Dfzpp94ZK4p5VjbVnytDRdDZNpvtmfjE9dCRFdMEzPsiq94bRKwFZvsu9wMO
-         qVLePIO8bEPWTOXHNwIViDBVtGlw2Uvg7zx6hAqLqOMDzymLj1j4wMojS9qkQOgPLoc+
-         sSuxkyQYf3O9PxGN1SEMy3mpVQf5tE7viO3pqJzmPCU5vgKK5vYCMmkGTFu3hhsa/6Ft
-         OjdfJzT2++xBAzA+S3eXY19EfqaTKmWca8kc8k12H5c+YTjGHoxV3VqSbLHCPj7pril1
-         3TJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684693435; x=1687285435;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A3TQmWXl4xK9b7IraiSCyRC87p37qgUiDMZ/vIuTWlI=;
-        b=Bzi9NXVIiQ14+9UeKSQQ58drcxBL7l3Xw8S7CUa4FjpTgQpnj7A0gElnS6pF7VbnDb
-         teOaKXVQh8dHYypSRhytstrwoPsqH3qHPbEIRlfCbU0Xr8IwgbUnamaLAv2MYYdyATaK
-         2qLDPQmXnkgnik+f428srmEJp9oqxfyhiOrfs0hVZ7hwe8h6JGKSEw0HMTW19Z3YNe7t
-         pTUtNZ0wrDecBEoaP/GsUCqammfN262WgCgprGvYQyhD4PEASZnEWLbTSv0yd03rPwhm
-         /v5NoKIgU5zL3RT1Qy/T9uC0KUPdZqk1/LQADaRaXee2TcCGuObk9KsUkGG/EwrTOfM3
-         qZyg==
-X-Gm-Message-State: AC+VfDzyZizr+qxmyOC+C/I9HVguN6jtrt4Wni1guRPAF4tuEmqwhsuu
-        Eth11zb0WDLNcEK5KvUX687c++DoxI8YXvEYpJ+SdDyd
-X-Google-Smtp-Source: ACHHUZ4WSFv5ZRN2OAiT0HFbP9IAYaRq8dId4nHr1j2x84UQK1NIs2UQdfpVF6xI1yi2NL1KKauzQ88hHmdrPlwTLDg=
-X-Received: by 2002:a2e:b62c:0:b0:2af:1ce9:41ac with SMTP id
- s12-20020a2eb62c000000b002af1ce941acmr3233333ljn.4.1684693434675; Sun, 21 May
- 2023 11:23:54 -0700 (PDT)
+        Sun, 21 May 2023 21:43:24 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24182AF;
+        Sun, 21 May 2023 18:43:20 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34M1go4iB030448, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34M1go4iB030448
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 22 May 2023 09:42:50 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 22 May 2023 09:43:01 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 22 May 2023 09:43:00 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 22 May 2023 09:43:00 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "Peter Robinson" <pbrobinson@gmail.com>,
+        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>
+Subject: RE: [PATCH wireless-next v1 1/4] wifi: rtw88: sdio: Check the HISR RX_REQUEST bit in rtw_sdio_rx_isr()
+Thread-Topic: [PATCH wireless-next v1 1/4] wifi: rtw88: sdio: Check the HISR
+ RX_REQUEST bit in rtw_sdio_rx_isr()
+Thread-Index: AQHZiaRUyNopi6TOU06ASkVQiZhTKq9liWyA
+Date:   Mon, 22 May 2023 01:43:00 +0000
+Message-ID: <d6a5555d13ed467db8c181962c2adb85@realtek.com>
+References: <20230518161749.1311949-1-martin.blumenstingl@googlemail.com>
+ <20230518161749.1311949-2-martin.blumenstingl@googlemail.com>
+In-Reply-To: <20230518161749.1311949-2-martin.blumenstingl@googlemail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Received: by 2002:ab3:6fc5:0:b0:228:a15b:323c with HTTP; Sun, 21 May 2023
- 11:23:53 -0700 (PDT)
-In-Reply-To: <a5e29cc3-b56b-4233-94f6-0fb82b53dd61@kili.mountain>
-References: <a5e29cc3-b56b-4233-94f6-0fb82b53dd61@kili.mountain>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Sun, 21 May 2023 20:23:53 +0200
-Message-ID: <CAKR_QVLsWEyCvRFDrdTps0haCgATsRbWjNg6ASuDCb6zcOMVTg@mail.gmail.com>
-Subject: Re: [bug report] wifi: rt2x00: add TX LOFT calibration for MT7620
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello
 
-This was all taken from reference driver.
-i did not go through detailed debugging to see if the value is
-overwritten in vendor driver.
 
-Maybe ask devs from openwrt who upstreamed these patches
+> -----Original Message-----
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Sent: Friday, May 19, 2023 12:18 AM
+> To: linux-wireless@vger.kernel.org
+> Cc: linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org; ulf.hansson@linaro.org; kvalo@kernel.org;
+> tony0620emma@gmail.com; Peter Robinson <pbrobinson@gmail.com>; Ping-Ke Shih <pkshih@realtek.com>;
+> jernej.skrabec@gmail.com; Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Subject: [PATCH wireless-next v1 1/4] wifi: rtw88: sdio: Check the HISR RX_REQUEST bit in rtw_sdio_rx_isr()
+> 
+> rtw_sdio_rx_isr() is responsible for receiving data from the wifi chip
+> and is called from the SDIO interrupt handler when the interrupt status
+> register (HISR) has the RX_REQUEST bit set. After the first batch of
+> data has been processed by the driver the wifi chip may have more data
+> ready to be read, which is managed by a loop in rtw_sdio_rx_isr().
+> 
+> It turns out that there are cases where the RX buffer length (from the
+> REG_SDIO_RX0_REQ_LEN register) does not match the data we receive. The
+> following two cases were observed with a RTL8723DS card:
+> - RX length is smaller than the total packet length including overhead
+>   and actual data bytes (whose length is part of the buffer we read from
+>   the wifi chip and is stored in rtw_rx_pkt_stat.pkt_len). This can
+>   result in errors like:
+>     skbuff: skb_over_panic: text:ffff8000011924ac len:3341 put:3341
+>   (one case observed was: RX buffer length = 1536 bytes but
+>    rtw_rx_pkt_stat.pkt_len = 1546 bytes, this is not valid as it means
+>    we need to read beyond the end of the buffer)
+> - RX length looks valid but rtw_rx_pkt_stat.pkt_len is zero
+> 
+> Check if the RX_REQUEST is set in the HISR register for each iteration
+> inside rtw_sdio_rx_isr(). This mimics what the RTL8723DS vendor driver
+> does and makes the driver only read more data if the RX_REQUEST bit is
+> set (which seems to be a way for the card's hardware or firmware to
+> tell the host that data is ready to be processed).
+> 
+> For RTW_WCPU_11AC chips this check is not needed. The RTL8822BS vendor
+> driver for example states that this check is unnecessary (but still uses
+> it) and the RTL8822CS drops this check entirely.
+> 
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/sdio.c | 23 ++++++++++++++++++++---
+>  1 file changed, 20 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+> index 06fce7c3adda..32b8c9194b2c 100644
+> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
+> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+> @@ -998,9 +998,9 @@ static void rtw_sdio_rxfifo_recv(struct rtw_dev *rtwdev, u32 rx_len)
+> 
+>  static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
+>  {
+> -       u32 rx_len, total_rx_bytes = 0;
+> +       u32 rx_len, hisr, total_rx_bytes = 0;
+> 
+> -       while (total_rx_bytes < SZ_64K) {
+> +       do {
+>                 if (rtw_chip_wcpu_11n(rtwdev))
+>                         rx_len = rtw_read16(rtwdev, REG_SDIO_RX0_REQ_LEN);
+>                 else
+> @@ -1012,7 +1012,24 @@ static void rtw_sdio_rx_isr(struct rtw_dev *rtwdev)
+>                 rtw_sdio_rxfifo_recv(rtwdev, rx_len);
+> 
+>                 total_rx_bytes += rx_len;
+> -       }
+> +
+> +               if (rtw_chip_wcpu_11n(rtwdev))
+> +                       /* Stop if no more RX requests are pending, even if
+> +                        * rx_len could be greater than zero in the next
+> +                        * iteration. This is needed because the RX buffer may
+> +                        * already contain data while either HW or FW are not
+> +                        * done filling that buffer yet. Still reading the
+> +                        * buffer can result in packets where
+> +                        * rtw_rx_pkt_stat.pkt_len is zero or points beyond the
+> +                        * end of the buffer.
+> +                        */
+> +                       hisr = rtw_read32(rtwdev, REG_SDIO_HISR);
+> +               else
+> +                       /* RTW_WCPU_11AC chips have improved hardware or
+> +                        * firmware and can use rx_len unconditionally.
+> +                        */
+> +                       hisr = REG_SDIO_HISR_RX_REQUEST;
 
-On 20/05/2023, Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> Hello Tomislav Po=C5=BEega,
->
-> The patch dab902fe1d29: "wifi: rt2x00: add TX LOFT calibration for
-> MT7620" from Sep 17, 2022, leads to the following Smatch static
-> checker warning:
->
-> 	drivers/net/wireless/ralink/rt2x00/rt2800lib.c:9681
-> rt2800_loft_iq_calibration()
-> 	warn: unsigned 'vga_gain[ch_idx]' is never less than zero.
->
-> drivers/net/wireless/ralink/rt2x00/rt2800lib.c
->     9540 static void rt2800_loft_iq_calibration(struct rt2x00_dev
-> *rt2x00dev)
->     9541 {
->     9542         struct rf_reg_pair rf_store[CHAIN_NUM][13];
->     9543         u32 macorg1 =3D 0;
->     9544         u32 macorg2 =3D 0;
->     9545         u32 macorg3 =3D 0;
->     9546         u32 macorg4 =3D 0;
->     9547         u32 macorg5 =3D 0;
->     9548         u32 orig528 =3D 0;
->     9549         u32 orig52c =3D 0;
->     9550
->     9551         u32 savemacsysctrl =3D 0;
->     9552         u32 macvalue =3D 0;
->     9553         u32 mac13b8 =3D 0;
->     9554         u32 p0 =3D 0, p1 =3D 0;
->     9555         u32 p0_idx10 =3D 0, p1_idx10 =3D 0;
->     9556
->     9557         u8 rfvalue;
->     9558         u8 loft_dc_search_result[CHAIN_NUM][RF_ALC_NUM][2];
->     9559         u8 ger[CHAIN_NUM], per[CHAIN_NUM];
->     9560
->     9561         u8 vga_gain[] =3D {14, 14};
->                  ^^^^^^^^^^^^^
->
->     9562         u8 bbp =3D 0, ch_idx =3D 0, rf_alc_idx =3D 0, idx =3D 0;
->     9563         u8 bbpr30, rfb0r39, rfb0r42;
->     9564         u8 bbpr1;
->     9565         u8 bbpr4;
->     9566         u8 bbpr241, bbpr242;
->     9567         u8 count_step;
->     9568
->     9569         static const u8 rf_gain[] =3D {0x00, 0x01, 0x02, 0x04, 0=
-x08,
-> 0x0c};
->     9570         static const u8 rfvga_gain_table[] =3D {0x24, 0x25, 0x26=
-,
-> 0x27, 0x28, 0x2c, 0x2d, 0x2e, 0x2f, 0x30,
->     9571                                               0x31, 0x38, 0x39,
-> 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3F};
->     9572         static const u8 bbp_2324gain[] =3D {0x16, 0x14, 0x12, 0x=
-10,
-> 0x0c, 0x08};
->     9573
->     9574         savemacsysctrl =3D rt2800_register_read(rt2x00dev,
-> MAC_SYS_CTRL);
->     9575         macorg1 =3D rt2800_register_read(rt2x00dev, TX_PIN_CFG);
->     9576         macorg2 =3D rt2800_register_read(rt2x00dev, RF_CONTROL0)=
-;
->     9577         macorg3 =3D rt2800_register_read(rt2x00dev, RF_BYPASS0);
->     9578         macorg4 =3D rt2800_register_read(rt2x00dev, RF_CONTROL3)=
-;
->     9579         macorg5 =3D rt2800_register_read(rt2x00dev, RF_BYPASS3);
->     9580         mac13b8 =3D rt2800_register_read(rt2x00dev, 0x13b8);
->     9581         orig528 =3D rt2800_register_read(rt2x00dev, RF_CONTROL2)=
-;
->     9582         orig52c =3D rt2800_register_read(rt2x00dev, RF_BYPASS2);
->     9583
->     9584         macvalue =3D rt2800_register_read(rt2x00dev, MAC_SYS_CTR=
-L);
->     9585         macvalue &=3D (~0x04);
->     9586         rt2800_register_write(rt2x00dev, MAC_SYS_CTRL, macvalue)=
-;
->     9587
->     9588         if (unlikely(rt2800_wait_bbp_rf_ready(rt2x00dev,
-> MAC_STATUS_CFG_BBP_RF_BUSY_TX)))
->     9589                 rt2x00_warn(rt2x00dev, "RF TX busy in LOFT IQ
-> calibration\n");
->     9590
->     9591         macvalue =3D rt2800_register_read(rt2x00dev, MAC_SYS_CTR=
-L);
->     9592         macvalue &=3D (~0x08);
->     9593         rt2800_register_write(rt2x00dev, MAC_SYS_CTRL, macvalue)=
-;
->     9594
->     9595         if (unlikely(rt2800_wait_bbp_rf_ready(rt2x00dev,
-> MAC_STATUS_CFG_BBP_RF_BUSY_RX)))
->     9596                 rt2x00_warn(rt2x00dev, "RF RX busy in LOFT IQ
-> calibration\n");
->     9597
->     9598         for (ch_idx =3D 0; ch_idx < 2; ch_idx++)
->     9599                 rt2800_rf_configstore(rt2x00dev, rf_store,
-> ch_idx);
->     9600
->     9601         bbpr30 =3D rt2800_bbp_read(rt2x00dev, 30);
->     9602         rfb0r39 =3D rt2800_rfcsr_read_bank(rt2x00dev, 0, 39);
->     9603         rfb0r42 =3D rt2800_rfcsr_read_bank(rt2x00dev, 0, 42);
->     9604
->     9605         rt2800_bbp_write(rt2x00dev, 30, 0x1F);
->     9606         rt2800_rfcsr_write_bank(rt2x00dev, 0, 39, 0x80);
->     9607         rt2800_rfcsr_write_bank(rt2x00dev, 0, 42, 0x5B);
->     9608
->     9609         rt2800_bbp_write(rt2x00dev, 23, 0x00);
->     9610         rt2800_bbp_write(rt2x00dev, 24, 0x00);
->     9611
->     9612         rt2800_setbbptonegenerator(rt2x00dev);
->     9613
->     9614         for (ch_idx =3D 0; ch_idx < 2; ch_idx++) {
->     9615                 rt2800_bbp_write(rt2x00dev, 23, 0x00);
->     9616                 rt2800_bbp_write(rt2x00dev, 24, 0x00);
->     9617                 rt2800_register_write(rt2x00dev, MAC_SYS_CTRL,
-> 0x00);
->     9618                 rt2800_register_write(rt2x00dev, TX_PIN_CFG,
-> 0x0000000F);
->     9619                 rt2800_register_write(rt2x00dev, RF_CONTROL0,
-> 0x00000004);
->     9620                 rt2800_register_write(rt2x00dev, RF_BYPASS0,
-> 0x00003306);
->     9621                 rt2800_register_write(rt2x00dev, 0x13b8, 0x10);
->     9622                 udelay(1);
->     9623
->     9624                 if (ch_idx =3D=3D 0)
->     9625                         rt2800_rf_aux_tx0_loopback(rt2x00dev);
->     9626                 else
->     9627                         rt2800_rf_aux_tx1_loopback(rt2x00dev);
->     9628
->     9629                 udelay(1);
->     9630
->     9631                 if (ch_idx =3D=3D 0)
->     9632                         rt2800_register_write(rt2x00dev,
-> RF_CONTROL0, 0x00001004);
->     9633                 else
->     9634                         rt2800_register_write(rt2x00dev,
-> RF_CONTROL0, 0x00002004);
->     9635
->     9636                 rt2800_bbp_write(rt2x00dev, 158, 0x05);
->     9637                 rt2800_bbp_write(rt2x00dev, 159, 0x00);
->     9638
->     9639                 rt2800_bbp_write(rt2x00dev, 158, 0x01);
->     9640                 if (ch_idx =3D=3D 0)
->     9641                         rt2800_bbp_write(rt2x00dev, 159, 0x00);
->     9642                 else
->     9643                         rt2800_bbp_write(rt2x00dev, 159, 0x01);
->     9644
->     9645                 vga_gain[ch_idx] =3D 18;
->                                             ^^
->
->     9646                 for (rf_alc_idx =3D 0; rf_alc_idx < 3; rf_alc_id=
-x++)
-> {
->     9647                         rt2800_bbp_write(rt2x00dev, 23,
-> bbp_2324gain[rf_alc_idx]);
->     9648                         rt2800_bbp_write(rt2x00dev, 24,
-> bbp_2324gain[rf_alc_idx]);
->     9649
->     9650                         macvalue =3D rt2800_register_read(rt2x00=
-dev,
-> RF_CONTROL3);
->     9651                         macvalue &=3D (~0x0000F1F1);
->     9652                         macvalue |=3D (rf_gain[rf_alc_idx] << 4)=
-;
->     9653                         macvalue |=3D (rf_gain[rf_alc_idx] << 12=
-);
->     9654                         rt2800_register_write(rt2x00dev,
-> RF_CONTROL3, macvalue);
->     9655                         macvalue =3D (0x0000F1F1);
->     9656                         rt2800_register_write(rt2x00dev,
-> RF_BYPASS3, macvalue);
->     9657
->     9658                         if (rf_alc_idx =3D=3D 0) {
->     9659                                 rt2800_write_dc(rt2x00dev, ch_id=
-x,
-> 0, 1, 0x21);
->     9660                                 for (; vga_gain[ch_idx] > 0;
->     9661                                      vga_gain[ch_idx] =3D
-> vga_gain[ch_idx] - 2) {
->
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 18 is an even number so this can't actually underflow.
->
->
->     9662                                         rfvalue =3D
-> rfvga_gain_table[vga_gain[ch_idx]];
->     9663
-> rt2800_rfcsr_write_dccal(rt2x00dev, 3, rfvalue);
->     9664
-> rt2800_rfcsr_write_dccal(rt2x00dev, 4, rfvalue);
->     9665                                         rt2800_write_dc(rt2x00de=
-v,
-> ch_idx, 0, 1, 0x00);
->     9666                                         rt2800_write_dc(rt2x00de=
-v,
-> ch_idx, 0, 0, 0x00);
->     9667                                         p0 =3D
-> rt2800_do_fft_accumulation(rt2x00dev, 0x0A, 0);
->     9668                                         rt2800_write_dc(rt2x00de=
-v,
-> ch_idx, 0, 0, 0x21);
->     9669                                         p1 =3D
-> rt2800_do_fft_accumulation(rt2x00dev, 0x0A, 0);
->     9670                                         rt2x00_dbg(rt2x00dev, "L=
-OFT
-> AGC %d %d\n", p0, p1);
->     9671                                         if ((p0 < 7000 * 7000) &=
-&
-> (p1 < (7000 * 7000)))
->     9672                                                 break;
->     9673                                 }
->     9674
->     9675                                 rt2800_write_dc(rt2x00dev, ch_id=
-x,
-> 0, 0, 0x00);
->     9676                                 rt2800_write_dc(rt2x00dev, ch_id=
-x,
-> 0, 1, 0x00);
->     9677
->     9678                                 rt2x00_dbg(rt2x00dev, "Used VGA =
-%d
-> %x\n", vga_gain[ch_idx],
->     9679
-> rfvga_gain_table[vga_gain[ch_idx]]);
->     9680
-> --> 9681                                 if (vga_gain[ch_idx] < 0)
->                                              ^^^^^^^^^^^^^^^^^^^^
-> But if it could then this test would not work because the type is u8.
->
->     9682                                         vga_gain[ch_idx] =3D 0;
->     9683                         }
->     9684
->     9685                         rfvalue =3D
-> rfvga_gain_table[vga_gain[ch_idx]];
->     9686
->     9687                         rt2800_rfcsr_write_dccal(rt2x00dev, 3,
-> rfvalue);
->     9688                         rt2800_rfcsr_write_dccal(rt2x00dev, 4,
-> rfvalue);
->     9689
->     9690                         rt2800_loft_search(rt2x00dev, ch_idx,
-> rf_alc_idx, loft_dc_search_result);
->     9691                 }
->     9692         }
->
-> regards,
-> dan carpenter
->
+nit: adding braces to these branches would be clearer. 
+
+If not, this patch still looks good to me, so
+
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+
+
+> +       } while (total_rx_bytes < SZ_64K && hisr & REG_SDIO_HISR_RX_REQUEST);
+>  }
+> 
+>  static void rtw_sdio_handle_interrupt(struct sdio_func *sdio_func)
+> --
+> 2.40.1
+
