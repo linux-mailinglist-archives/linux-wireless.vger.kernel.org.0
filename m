@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 745A770C712
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 21:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE62570C60B
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 21:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234610AbjEVTZ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 15:25:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
+        id S230221AbjEVTOZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 15:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234603AbjEVTZ2 (ORCPT
+        with ESMTP id S233603AbjEVTOY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 15:25:28 -0400
+        Mon, 22 May 2023 15:14:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC492A9;
-        Mon, 22 May 2023 12:25:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43AC5FE;
+        Mon, 22 May 2023 12:14:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7142262892;
-        Mon, 22 May 2023 19:25:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DBFC4339B;
-        Mon, 22 May 2023 19:25:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC57162732;
+        Mon, 22 May 2023 19:14:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0CEC4339B;
+        Mon, 22 May 2023 19:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684783526;
+        s=korg; t=1684782859;
         bh=Wn4gTbf57LwpDRCHeR+QJZofpS9uoSncq21OSvW/Kd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ttF/mOc/2/gduVi81V7Qxm6TSm+KfHHa/bzs5woCrV1OOukTxNoa1DyRH0rEa9L2D
-         DdQIKEom5W5YuvOqmvafszFYIk6YM3WhNHxiUp6g7pa7lUCKSnGdF6lHHeOiL5PbfW
-         y181k//AtWWRsuNeZyHPBQDHy1vT634389Kp4sjM=
+        b=VNSsa/KiPjABqIPjUvU1wJW87lbTgkTLBCu6NxxVZbbgDXle4AtdF6XXntFMGTT5L
+         rRujl06L7ihgV2GCSOXsJLa+vp6SGMuD4u84/ouBDpo7CUDsVqUMzijNuRn7ir2X0q
+         GuP2Smim1HkaiDg/Vnp1ayRShCrvbSMrX6+imGtY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -41,12 +41,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kees Cook <keescook@chromium.org>,
         Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/292] wifi: ath: Silence memcpy run-time false positive warning
-Date:   Mon, 22 May 2023 20:07:10 +0100
-Message-Id: <20230522190407.788501941@linuxfoundation.org>
+Subject: [PATCH 5.15 049/203] wifi: ath: Silence memcpy run-time false positive warning
+Date:   Mon, 22 May 2023 20:07:53 +0100
+Message-Id: <20230522190356.355494047@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
-References: <20230522190405.880733338@linuxfoundation.org>
+In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
+References: <20230522190354.935300867@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
