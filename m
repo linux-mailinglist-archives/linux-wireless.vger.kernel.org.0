@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BAF770C8BD
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 21:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 745A770C712
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 21:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235161AbjEVTll (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 15:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35506 "EHLO
+        id S234610AbjEVTZ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 15:25:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235176AbjEVTl3 (ORCPT
+        with ESMTP id S234603AbjEVTZ2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 15:41:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540EC19A4;
-        Mon, 22 May 2023 12:40:55 -0700 (PDT)
+        Mon, 22 May 2023 15:25:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC492A9;
+        Mon, 22 May 2023 12:25:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 268AE629FF;
-        Mon, 22 May 2023 19:40:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77FAC433D2;
-        Mon, 22 May 2023 19:40:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7142262892;
+        Mon, 22 May 2023 19:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DBFC4339B;
+        Mon, 22 May 2023 19:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684784454;
+        s=korg; t=1684783526;
         bh=Wn4gTbf57LwpDRCHeR+QJZofpS9uoSncq21OSvW/Kd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tHEH9taE3lJmhj9U0bSKgsT5arEEFbtaSyZ1W8xhjlo1iMHWbEyTUVvctp6sd1afY
-         YnR8Dpnvt/3qviHjDVRLsAUk41tPUPJB6jdM98PuWHn9DbmgaAMUEw0MlryWQWqgdB
-         MPsBRbpJwhq9q/wCtXdrS6hj1LPbE344MeceZdcY=
+        b=ttF/mOc/2/gduVi81V7Qxm6TSm+KfHHa/bzs5woCrV1OOukTxNoa1DyRH0rEa9L2D
+         DdQIKEom5W5YuvOqmvafszFYIk6YM3WhNHxiUp6g7pa7lUCKSnGdF6lHHeOiL5PbfW
+         y181k//AtWWRsuNeZyHPBQDHy1vT634389Kp4sjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -41,18 +41,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kees Cook <keescook@chromium.org>,
         Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 088/364] wifi: ath: Silence memcpy run-time false positive warning
-Date:   Mon, 22 May 2023 20:06:33 +0100
-Message-Id: <20230522190414.956248682@linuxfoundation.org>
+Subject: [PATCH 6.1 073/292] wifi: ath: Silence memcpy run-time false positive warning
+Date:   Mon, 22 May 2023 20:07:10 +0100
+Message-Id: <20230522190407.788501941@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190412.801391872@linuxfoundation.org>
-References: <20230522190412.801391872@linuxfoundation.org>
+In-Reply-To: <20230522190405.880733338@linuxfoundation.org>
+References: <20230522190405.880733338@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
