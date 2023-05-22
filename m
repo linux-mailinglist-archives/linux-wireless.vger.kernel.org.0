@@ -2,80 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9816870B897
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 11:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E04CF70BA2C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 12:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231848AbjEVJJN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 05:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49688 "EHLO
+        id S229603AbjEVKac (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 06:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjEVJJJ (ORCPT
+        with ESMTP id S229788AbjEVKaa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 05:09:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB14BB
-        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 02:09:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17F6F61735
-        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 09:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201C9C433D2;
-        Mon, 22 May 2023 09:09:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684746547;
-        bh=Z8uuQCKFkOKGtGX/On+BwiaICnJovYkCowCwzcELjW4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ljkp5Y1dP0iEtoMERKIKUimTi0NoOnvN/F+9waZc9MPnveWcBHonSVuI3DtvRT1nI
-         4WL/BbxLyUHQjMtYbvSwrUZh4a9t5aB1uxytnj7jpyU5iy/HkFcf11U+JNjDAsa03R
-         bra9NWq9IwjsTN38j1nF9j/FdcVEXr9tLgDJJN8ksi3CdBWyYobL6GYd7SvnjcHM2x
-         iBuelkVL5t6E4dPfv29qnQ+mGFK08SfFpo4C2wHJz+8EcLAfcS2XfQZk4L3/9GRmMn
-         abw2xligXMHBjy5YT9PK6HoX1Dc+A2dS2OX4+hQ5mfTMpBGOL4ajAx8lsmFsG96qs7
-         ib72uDuHFXUkQ==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7996: fix endianness warning in mt7996_mac_write_txwi
-Date:   Mon, 22 May 2023 11:09:01 +0200
-Message-Id: <9509f4bc32d9321f3419a3c0029a01b426f13fd8.1684746447.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        Mon, 22 May 2023 06:30:30 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF6381A5
+        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 03:30:03 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34M9pFjG005172;
+        Mon, 22 May 2023 10:29:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : from : subject : to : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=vrMxRStfgjFU+Q5pAq2tUukJWCBvSe62os97n9wFLXg=;
+ b=Ewi7n9eiCvUjQaJu7sMoJcfZ+bhhLjkHyRTV+t1e32czmdE+GP2NMVncNvjj0MeHqjZz
+ GmjTyYq689cIpjtRu26mS4fK16Qop9cJ3AsLq313e/OZGxHAwEojWlJhdnQw0tGQMvId
+ 73Q1Sf5fDp4uXNOxDTosIdwO1UZYrM2HvednG4oPpQfrTzZ/2ywbBWPmUzm2U8MVjDV/
+ bb30tgWsDo+dtg86qu+cF2NGa2bHAYkn2vVVeabHoX3u4zY9YYZn4ZPqm019NPw0AFzL
+ CDBM3tDQO7GEIa/evOjYmGVzFs43U2CZvsdB+lbsQKPUWQ5kLAe3+ksR5tKsE2uEKwMq iA== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qpnhrufek-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 10:29:43 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34MATfIp013394
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 22 May 2023 10:29:42 GMT
+Received: from [10.216.55.15] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 22 May
+ 2023 03:29:40 -0700
+Message-ID: <c344366f-7fa6-9436-73c4-55e4eb57a109@quicinc.com>
+Date:   Mon, 22 May 2023 15:59:36 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+From:   Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+Subject: Re: [PATCH] wifi: mac80211: Add support to randomize TA of auth and
+ deauth frames
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+References: <20230112012415.167556-3-quic_vjakkam@quicinc.com>
+ <20230307102225.74883-1-johannes@sipsolutions.net>
+ <bd40816c-9759-a0af-9075-cc684f81fd70@quicinc.com>
+ <67d681751d9af226fc84c533649d620ea1bb7664.camel@sipsolutions.net>
+Content-Language: en-US
+In-Reply-To: <67d681751d9af226fc84c533649d620ea1bb7664.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: X4wqpKw6ao5h__URL2UxXnzhBJ89CHYl
+X-Proofpoint-GUID: X4wqpKw6ao5h__URL2UxXnzhBJ89CHYl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-22_06,2023-05-22_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 phishscore=0 mlxscore=0
+ mlxlogscore=949 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220088
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following endianness warning in mt7996_mac_write_txwi routine:
 
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25: warning: invalid assignment: |=
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25:    left side has type restricted __le32
-drivers/net/wireless/mediatek/mt76/mt7996/mac.c:1091:25:    right side has type unsigned long
+On 4/11/2023 3:45 PM, Johannes Berg wrote:
+>
+> Huh, yeah, looks like I just missed that? Sorry about that.
+>
+> Seeing that though, I remembered another thing - don't we have to adjust
+> the merging logic in ieee80211_start_roc_work() and maybe also
+> ieee80211_coalesce_hw_started_roc()?
+>
+> johannes
 
-Fixes: 15ee62e73705 ("wifi: mt76: mt7996: enable BSS_CHANGED_BASIC_RATES support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 7905070afc2c..942152a70f6c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1088,7 +1088,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 		else if (beacon && mvif->beacon_rates_idx)
- 			idx = mvif->beacon_rates_idx;
- 
--		txwi[6] |= FIELD_PREP(MT_TXD6_TX_RATE, idx);
-+		txwi[6] |= cpu_to_le32(FIELD_PREP(MT_TXD6_TX_RATE, idx));
- 		txwi[3] |= cpu_to_le32(MT_TXD3_BA_DISABLE);
- 	}
- }
--- 
-2.40.1
+All the cases(HW/SW RoCs, merged/combined RoCs) handled in 
+ieee80211_start_roc_work() and ieee80211_coalesce_hw_started_roc() 
+should end up calling ieee80211_handle_roc_started(), hence kept the 
+temp_address configuration logic in ieee80211_handle_roc_started(). 
+Please let me know if I am missing something?
+
+--
+
+veeru
+
 
