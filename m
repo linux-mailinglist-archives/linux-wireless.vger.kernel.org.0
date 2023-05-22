@@ -2,132 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE62570C60B
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 21:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E944070CA86
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 22:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230221AbjEVTOZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 15:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37370 "EHLO
+        id S235030AbjEVUNo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 16:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233603AbjEVTOY (ORCPT
+        with ESMTP id S233740AbjEVUNm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 15:14:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43AC5FE;
-        Mon, 22 May 2023 12:14:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC57162732;
-        Mon, 22 May 2023 19:14:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0CEC4339B;
-        Mon, 22 May 2023 19:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1684782859;
-        bh=Wn4gTbf57LwpDRCHeR+QJZofpS9uoSncq21OSvW/Kd4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VNSsa/KiPjABqIPjUvU1wJW87lbTgkTLBCu6NxxVZbbgDXle4AtdF6XXntFMGTT5L
-         rRujl06L7ihgV2GCSOXsJLa+vp6SGMuD4u84/ouBDpo7CUDsVqUMzijNuRn7ir2X0q
-         GuP2Smim1HkaiDg/Vnp1ayRShCrvbSMrX6+imGtY=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/203] wifi: ath: Silence memcpy run-time false positive warning
-Date:   Mon, 22 May 2023 20:07:53 +0100
-Message-Id: <20230522190356.355494047@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230522190354.935300867@linuxfoundation.org>
-References: <20230522190354.935300867@linuxfoundation.org>
-User-Agent: quilt/0.67
+        Mon, 22 May 2023 16:13:42 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04093CF;
+        Mon, 22 May 2023 13:13:39 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-510d8b0169fso68713a12.1;
+        Mon, 22 May 2023 13:13:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1684786417; x=1687378417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GZNAvuoSua7WwcqydioYVqvGkj4SSXZS2il2MPGqL0M=;
+        b=OhMQ4gNMZw7f/4lFXSoam6/8avsvMtG1EMKwbAGYEVs9iDjNQHcQN6gNNQBR4SJQ4O
+         v9r7FBZTjB+179gs+wkfVthGcbpFc4sVVb6k+ReRb0HPesCP+bGJsGcKvNnd+t44zWBl
+         ArWSoO0dnUOvwM8upDZBSev0dAkZcQK7bCgmlFrTSp4CF+ilNJFzZWo7mAVoQgaBA3sx
+         UjE4L2Dv1Kr5sYUP+Vgjgjtd4Xn8HAo/JZu9KOIlT3x/dv+YQtWZyWOnZ/K/no/3h/bb
+         D9t14DLURXvpmBfCIKN2oyjyX4KyX560jkST9SVD+7n0QcCeb8/VO3Kcu9Ct7QFGgpiq
+         ehFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684786417; x=1687378417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GZNAvuoSua7WwcqydioYVqvGkj4SSXZS2il2MPGqL0M=;
+        b=NEKmg9SYxZGwcgN4ctRnP9BUGpYSE2mUDP61XvCRUMBxa3H3NZm7UJwQ0vRrDophOb
+         ApRFBrB7YWeqjPQ0PeZf77qsI3xqdlhQh5IaGC2Jk/KrFqncL2F3/8pcwcmI5xm/jbqB
+         44GCBWJ+jtlAePSMHMi+3SqgBRMi9/X5zV2B6CGd55zW9/OKwhg188q72jUcXkU1hmyv
+         AodnyZrDDuAVe/nxnf0pBPX474T+YOATg/gdMkgXAjN3ePqfVUGY6qeQwSuCL2kuuAep
+         QlhQyO8sSp2o3NLx1yn5zwx5v/1AivTZEP6zHsjPH6da+nMhjnlnV6VWaCQyQUk3V+ai
+         E0JA==
+X-Gm-Message-State: AC+VfDy7yRIUFaw5yQ2F0KiYKITWtfFR4ZSVWzvMEi5jhZARc5mye24w
+        ERS+0zFjm1qs2q66uIWP5YptkfqV4dRgXBl108bH89CK6Wc=
+X-Google-Smtp-Source: ACHHUZ47dJhLso1KMARR9qtY2jRHlSSsf8sMqLKqnDK+v9DK7ypDGWN2y1WGJF8YCk8u7voVB8nV+4Nicg/rI2lPfeU=
+X-Received: by 2002:a17:906:4788:b0:96f:57ba:4b56 with SMTP id
+ cw8-20020a170906478800b0096f57ba4b56mr12944986ejc.20.1684786417236; Mon, 22
+ May 2023 13:13:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230518161749.1311949-1-martin.blumenstingl@googlemail.com>
+ <20230518161749.1311949-5-martin.blumenstingl@googlemail.com> <c52c11c712e24e1fb783c2ce1251aba5@realtek.com>
+In-Reply-To: <c52c11c712e24e1fb783c2ce1251aba5@realtek.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Mon, 22 May 2023 22:13:26 +0200
+Message-ID: <CAFBinCC+Lz7uGBAuK5gQ-2ngutcgNG5EN4TTdM5tdFQB5uXtqw@mail.gmail.com>
+Subject: Re: [PATCH wireless-next v1 4/4] wifi: rtw88: Add support for the
+ SDIO based RTL8723DS chipset
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        Peter Robinson <pbrobinson@gmail.com>,
+        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+On Mon, May 22, 2023 at 3:49=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> > Sent: Friday, May 19, 2023 12:18 AM
+> > To: linux-wireless@vger.kernel.org
+> > Cc: linux-mmc@vger.kernel.org; linux-kernel@vger.kernel.org; ulf.hansso=
+n@linaro.org; kvalo@kernel.org;
+> > tony0620emma@gmail.com; Peter Robinson <pbrobinson@gmail.com>; Ping-Ke =
+Shih <pkshih@realtek.com>;
+> > jernej.skrabec@gmail.com; Martin Blumenstingl <martin.blumenstingl@goog=
+lemail.com>
+> > Subject: [PATCH wireless-next v1 4/4] wifi: rtw88: Add support for the =
+SDIO based RTL8723DS chipset
+> >
+> > Wire up RTL8723DS chipset support using the rtw88 SDIO HCI code as well
+> > as the existing RTL8723D chipset code.
+> >
+> > Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>
+> I'm so surprised that this small patchset can support an new chip. Nice j=
+ob. :-)
+Please also take it as feedback/learning for yourself and to your team
+at Realtek:
+In my opinion the rtw88 driver is a good piece of software and it
+shows why it is the first choice that Jernej and I had in mind when
+thinking about future RTL8723BS support.
 
-[ Upstream commit bfcc8ba45eb87bfaaff900bbad2b87b204899d41 ]
-
-The memcpy() in ath_key_config() was attempting to write across
-neighboring struct members in struct ath_keyval. Introduce a wrapping
-struct_group, kv_values, to be the addressable target of the memcpy
-without overflowing an individual member. Silences the false positive
-run-time warning:
-
-  memcpy: detected field-spanning write (size 32) of single field "hk.kv_val" at drivers/net/wireless/ath/key.c:506 (size 16)
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=282254
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230210054310.never.554-kees@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath.h | 12 +++++++-----
- drivers/net/wireless/ath/key.c |  2 +-
- 2 files changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
-index f083fb9038c36..f02a308a9ffc5 100644
---- a/drivers/net/wireless/ath/ath.h
-+++ b/drivers/net/wireless/ath/ath.h
-@@ -96,11 +96,13 @@ struct ath_keyval {
- 	u8 kv_type;
- 	u8 kv_pad;
- 	u16 kv_len;
--	u8 kv_val[16]; /* TK */
--	u8 kv_mic[8]; /* Michael MIC key */
--	u8 kv_txmic[8]; /* Michael MIC TX key (used only if the hardware
--			 * supports both MIC keys in the same key cache entry;
--			 * in that case, kv_mic is the RX key) */
-+	struct_group(kv_values,
-+		u8 kv_val[16]; /* TK */
-+		u8 kv_mic[8]; /* Michael MIC key */
-+		u8 kv_txmic[8]; /* Michael MIC TX key (used only if the hardware
-+				 * supports both MIC keys in the same key cache entry;
-+				 * in that case, kv_mic is the RX key) */
-+	);
- };
- 
- enum ath_cipher {
-diff --git a/drivers/net/wireless/ath/key.c b/drivers/net/wireless/ath/key.c
-index 61b59a804e308..b7b61d4f02bae 100644
---- a/drivers/net/wireless/ath/key.c
-+++ b/drivers/net/wireless/ath/key.c
-@@ -503,7 +503,7 @@ int ath_key_config(struct ath_common *common,
- 
- 	hk.kv_len = key->keylen;
- 	if (key->keylen)
--		memcpy(hk.kv_val, key->key, key->keylen);
-+		memcpy(&hk.kv_values, key->key, key->keylen);
- 
- 	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE)) {
- 		switch (vif->type) {
--- 
-2.39.2
+> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Thank you!
 
 
-
+Best regards,
+Martin
