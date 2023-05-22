@@ -2,100 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD5470BAE5
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 12:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA43A70BD3D
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 14:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233145AbjEVKzH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 06:55:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
+        id S233840AbjEVMPb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 08:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232900AbjEVKxN (ORCPT
+        with ESMTP id S233346AbjEVMPL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 06:53:13 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B8510E2;
-        Mon, 22 May 2023 03:51:44 -0700 (PDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34MAlKsh001871;
-        Mon, 22 May 2023 10:51:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=t/p78aF3Fsm1r4WfO8KCNR7jJUnK5tXbW+4ATVnvcIw=;
- b=gQ8TUjzxE8e9vNofYwMyW2tEolkWboT+AOxlYZ8SKzzHBnTJrOQWS/jRKCVH9xEt35b7
- Q1lk0hbyXlT4TALonhyI+7+a4QfWgbW8GeYu5K3GUL3e0R/CAGlCfKxwKAHJyqO2pX60
- XZOSw6zq1GPn3r4HMr3muvjo/LIEqLYftn/JnMTGQBtZXYjecnfeb8JslWR4SXZmG/R0
- xipQBxYtHH1bi8FcEanqls7Dcs5fc5SDaUHfSQUCAf8WBicssezPiBIprzL5/Ps5GGux
- 4XrsICnR9qJmU7rrDGvJv0ngAgGEEo+991afOD1hIXDQD7mZv49pDnd6kZNzza7JDWzG Qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qqd3tc9fm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 22 May 2023 10:51:34 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34MARHtB007329;
-        Mon, 22 May 2023 10:51:33 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qqd3tc9f2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 22 May 2023 10:51:33 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34M3P0ds016258;
-        Mon, 22 May 2023 10:51:31 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-        by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qppdk0w9c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 22 May 2023 10:51:31 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-        by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34MApSbc18744042
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 22 May 2023 10:51:29 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DB18320043;
-        Mon, 22 May 2023 10:51:28 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8287120040;
-        Mon, 22 May 2023 10:51:28 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Mon, 22 May 2023 10:51:28 +0000 (GMT)
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
-        Jouni Malinen <j@w1.fi>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-wireless@vger.kernel.org
-Subject: [PATCH v5 43/44] wireless: add HAS_IOPORT dependencies
-Date:   Mon, 22 May 2023 12:50:48 +0200
-Message-Id: <20230522105049.1467313-44-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230522105049.1467313-1-schnelle@linux.ibm.com>
-References: <20230522105049.1467313-1-schnelle@linux.ibm.com>
+        Mon, 22 May 2023 08:15:11 -0400
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2104.outbound.protection.outlook.com [40.107.101.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429731737;
+        Mon, 22 May 2023 05:13:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=edHle/clZxuZtQtMnAZvAKPnzlCP7PbwCinJzwWqjFI2Fu7LsD1dfJ/+fdJQYb9/B0kKGYra/uytJDGEQIxeTl5AmDfl097rZWt+nx+8XIAHOgKigEUD0aMvq6MDHhxmXC6m4ZL2zDf6zEomFkmKx2dZ71u5eendf6aNPKpLwPRkuElaWe0Nb0UQS9JL7CZOfG0KmmE0iJbeyQv2p5A7GbeU5MG2ud2e1d5CQ4LRL8fPA4rneRXWy01ZipEFbrHU1l8x2EIzQYrqi9iBXnn1BrW6qz+U/qcAwOb7xaW1qNg3TRp6sLtaU1zlzA15yWV5BqbJNe+OBvMWm6R3dOTHyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JTznEZk9OhQySyauYe0xlntrH602tjAKLNcjDczvv6I=;
+ b=imp681u5xddL1MC4mH4Q3eLwQY0Us8xD27qafjCqhFboP3cAjwm4wpirdIJV4q3n+BjORK5zWifFSMrd4fYsWgULPucq/N6R1sdd8qM5Tbg512JzIUyImEK8L0124Bj42IRovLCYyPzVK6e6IJ4SWcmTMzeiHdmoy4nN5FUijOvkNgWVgyvPhBVoEFaHBsrpBLj+KsUG4GRxjNgAWw5LrGbJQBS/ryYiU57023bvukTMoMrh8X6flwTjGRXZHPtlIeywW4l5Rk9NCjx+1uKOD4y6LdqZa34DJUzpk9JhFDYwfd2bxnfjcU/1cf4x0eZbPUmmuorwB49rBcEe3QZ9EQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JTznEZk9OhQySyauYe0xlntrH602tjAKLNcjDczvv6I=;
+ b=ZhnG53VefTnIeyNyGdvCvgyBupdcpo4NokA3bgwyaXqqi7NS7bsnMQAhnoa3SaAKAUCNVbwu+9x5E0AJJj2ECY6pRcBxzm7nZdrCW6/0fXxNSfQ8iMm5TL/ddH9S2XTO4VLKjnfgafKLduq2Jeg5qacbXFhNrgWNNnimQSpkZuQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by PH7PR13MB5406.namprd13.prod.outlook.com (2603:10b6:510:126::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Mon, 22 May
+ 2023 12:13:47 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6411.028; Mon, 22 May 2023
+ 12:13:47 +0000
+Date:   Mon, 22 May 2023 14:13:41 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: rtw89: 8851b: rfk: Fix spelling mistake
+ KIP_RESOTRE -> KIP_RESTORE
+Message-ID: <ZGtcdZU5IGpW3XRL@corigine.com>
+References: <20230522085924.913649-1-colin.i.king@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230522085924.913649-1-colin.i.king@gmail.com>
+X-ClientProxiedBy: AM0PR02CA0183.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28e::20) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hkoqqsehAPnW0cobvIyfm0NtXdLn8nJK
-X-Proofpoint-GUID: QRu9rlE6l0g8yNJUAoBhXPjk5Ht-RbBR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-22_06,2023-05-22_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 mlxscore=0 bulkscore=0 spamscore=0
- mlxlogscore=939 impostorscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305220089
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|PH7PR13MB5406:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26230e5a-b8fd-49ba-c1a9-08db5abdfeca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: oewSZBKh2t4eVvdpV0nQShyFhrx+p5RIUUzzpR+2aiN2rm5p44kOYgKFXPyUIukLUELzsKBS4klD4nKGE07oP/JW415/dsv30udrfsW4Iw1E0gh6gdGYdEdIpEFo+s3lSbw5U2phX3MmVE75/fDC/pDKifIKLHkbiD7+XW1hhYVhczqiaab821PywHcTi+npwznj2fFI3HyYtGP9LsZwaFu3F/8IE2lCvXSlhWLsmbJRmkdY8KXeUdAqHjGw8VCRgYMQw6n4hfFx44MKVy1xQYXM+6d5HwuR88zYmUFC2PU9EV/eSojyDZiDUeQlNeZQgNhUhfrjJ2HiSBeM/pYQD5w15471scoSEOTAdXVy7AOXj/EOyFeZm5F+fH15hHG+rh917CcofZLf0ZxWQByHzIcTVzYzoNd1panZzWxY7vZ0f4AGH4JXEBsyilDzQOG7esk4v/IjWadcU/tPNaNzHXwh2dK+GXfsW4ZoArqmEmBDtWqOFRTmVmqvKkUZCWMYLwn0ZV4mba1QK+BPVQFkF13ZUPh/3WsV90iIuF3iQDWGkuQ30xaZRJObbYsobPCMEMzpWxZDGQ3IQffgNSrdH3nIcbxKNWG3htBVkdoWIHI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(39840400004)(366004)(396003)(136003)(376002)(451199021)(2906002)(5660300002)(8676002)(8936002)(44832011)(36756003)(66946007)(66556008)(66476007)(4326008)(6916009)(54906003)(316002)(478600001)(41300700001)(558084003)(6666004)(6486002)(86362001)(2616005)(186003)(6506007)(6512007)(38100700002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wTQDTzXSistf20xQwgRy259A+o89krolwgUTrcn2et8ncfixTeHonk2Gz5yJ?=
+ =?us-ascii?Q?Le96k36N4KQXcPuHbjMWCM8NuftJiF2Bu2Xzr/DjBUawcfS+jtYS9sTcBWAV?=
+ =?us-ascii?Q?HYZbK6NvQG4mx69ZPH0V7R+IVc5MvdoUe5eG5DxpuJj37UpB17S0FNZ00sxQ?=
+ =?us-ascii?Q?NnjZAaKpER0vlWU6p7jFfyw8rar1maEzTw0SidM8n3xrDfjD5k+mJqUjg0tr?=
+ =?us-ascii?Q?H5+4l9Y0d7zQcQoTtPHV2pkkLGAX9i+3fVfY4yyANzr+kKLf+XFlyyP6nHaK?=
+ =?us-ascii?Q?NCdZCuRyhQXjlMZue1oEBwxFQa9zsdaVACk1BEo0dP48xqA0ln7do7jKo1WA?=
+ =?us-ascii?Q?IPLtgObD6ugNRHlaR1AaCKki6i5Fw9ofFA6KjsaBYo+UOTWpYOJ+vknZ8AIH?=
+ =?us-ascii?Q?HsjV16ZsOge1ibVQog7WLhFg+QQJdaIi4xJVhvKknGp+dweVlB/aNyf1ghwo?=
+ =?us-ascii?Q?dknkq7f/i5SCLUrlqXXTJt7O+EaQHSsfXlzXiCdqL6mewl1bRR7FIZzyZHqa?=
+ =?us-ascii?Q?Yj2hTKkcaz5zn+DMKE1y4a0aymaceTyVPoMmHGoxWnA6U05pXuDuTOfTjbet?=
+ =?us-ascii?Q?n/IGGckyZiR5YCn3SSnleSOA5LyvuUNemKdxDDfFHsNFfuMb+H5k9+saLkf/?=
+ =?us-ascii?Q?scSa4vU7eLnuLMU6osUft41+GrPpWvg+SDZu02XRYfOmH/vKOnecAB2bKHru?=
+ =?us-ascii?Q?xQH5M1AT2H444fgd1PBfcyV3iUnV39Q2MhE+3yDeKBUWJkLDtV4cy3Srppd1?=
+ =?us-ascii?Q?BaeP4JpaLaXUfPBlKq4WRz9BLe8qlYeyrM+7T+W5K/i0pZp3lYFuPLmTvjHr?=
+ =?us-ascii?Q?U55Qb38NifVvggaVD07609QXZlKi2Jukn4StK6NDIas0eQu/pGsonH/h2Of/?=
+ =?us-ascii?Q?mpq3X/kT60VUqgjeoBqOhBx0iv/CZibR4W6aaPFhOHPA+GPISatVPWDqHrgg?=
+ =?us-ascii?Q?+/+bjeLL9ivFMcDKuLTUWEKF/hrRJAnw7EaXZbSxUA9Qvg8AFrF3HJjwnuYw?=
+ =?us-ascii?Q?Qn3bztTtleBmDIMO0Vu6tQzN2UwGGbbIH1usW2RZgiLtBxCdq5rVSj2Q/+5J?=
+ =?us-ascii?Q?Br6F+sJyj+u14uA8q+kxarDTByGIPDRbZCrLfNlTvZmC9/JpSXmSPVBBKlPU?=
+ =?us-ascii?Q?VjvcgKbKMhWbvNt7MHikQ0B6T6X6+EjMKO7d4Q0BHxZwJGbGZWYYMSaU7NA8?=
+ =?us-ascii?Q?Wj3XaENsRpRMPMfVRrqHGtuT/AA/xGqFPTfNud833nxuZHQfzrWQpIhzZxxt?=
+ =?us-ascii?Q?BzYinHGs/bvd4N0hHU/h7dsvIkBu1n4yYHXkliKFIl4rJWL9qjs0PRGWVA/p?=
+ =?us-ascii?Q?S4emiPpifI32QfvD4z9f8mUhqZGbvs+t51k08363RV2En3lv5JMbmmgCp0OF?=
+ =?us-ascii?Q?OdZoe8BfyMbl3YQalSOA2ePeeuFOzzM/sfbFe9ieWOja+CUTZiJUt7LiS6/Y?=
+ =?us-ascii?Q?Po/UoHI9kHjvLBIHdypKxPzcnOBjC7NRWCmgCqRvl6BoqWITN7uhJvVm9mJ1?=
+ =?us-ascii?Q?K1zn+M5WophDYM04TM40WxH2sSNcHzEldmL2Y/tUasTKiZSD/LRjo2UpcXaR?=
+ =?us-ascii?Q?Z24pd907wVIbsoWGitJ60Z0SoCtCKYa6myN+bmk4RQlSkUE66QZa+Tx+igkZ?=
+ =?us-ascii?Q?MEAPwwLHzBZFo66D8EOBDYNc4vSn8tSX4lvMayAUBb2xe5wuMYkCJLvZEwvk?=
+ =?us-ascii?Q?t1f0ew=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26230e5a-b8fd-49ba-c1a9-08db5abdfeca
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 12:13:47.4525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CewZBwTOTXdunrU5cKhkzztRZcEEqBpdtIr7dIDEyA+6tiyiBIr+Jg/tzssKE8T1H4RfhRPgUGm1drZX+jvAGYO8UT9XHChCjHw36J8B+2s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR13MB5406
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -103,45 +116,10 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
-not being declared. We thus need to add HAS_IOPORT as dependency for
-those drivers using them.
+On Mon, May 22, 2023 at 09:59:24AM +0100, Colin Ian King wrote:
+> There is a spelling mistake in a literal string. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
- drivers/net/wireless/atmel/Kconfig           | 2 +-
- drivers/net/wireless/intersil/hostap/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/atmel/Kconfig b/drivers/net/wireless/atmel/Kconfig
-index ca45a1021cf4..bafdd57b049a 100644
---- a/drivers/net/wireless/atmel/Kconfig
-+++ b/drivers/net/wireless/atmel/Kconfig
-@@ -14,7 +14,7 @@ if WLAN_VENDOR_ATMEL
- 
- config ATMEL
- 	tristate "Atmel at76c50x chipset  802.11b support"
--	depends on CFG80211 && (PCI || PCMCIA)
-+	depends on CFG80211 && (PCI || PCMCIA) && HAS_IOPORT
- 	select WIRELESS_EXT
- 	select WEXT_PRIV
- 	select FW_LOADER
-diff --git a/drivers/net/wireless/intersil/hostap/Kconfig b/drivers/net/wireless/intersil/hostap/Kconfig
-index c865d3156cea..2edff8efbcbb 100644
---- a/drivers/net/wireless/intersil/hostap/Kconfig
-+++ b/drivers/net/wireless/intersil/hostap/Kconfig
-@@ -56,7 +56,7 @@ config HOSTAP_FIRMWARE_NVRAM
- 
- config HOSTAP_PLX
- 	tristate "Host AP driver for Prism2/2.5/3 in PLX9052 PCI adaptors"
--	depends on PCI && HOSTAP
-+	depends on PCI && HOSTAP && HAS_IOPORT
- 	help
- 	Host AP driver's version for Prism2/2.5/3 PC Cards in PLX9052 based
- 	PCI adaptors.
--- 
-2.39.2
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
