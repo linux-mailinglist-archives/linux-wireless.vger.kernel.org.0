@@ -2,217 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6423A70C239
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 17:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5737170C268
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 May 2023 17:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233109AbjEVPWN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 22 May 2023 11:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56852 "EHLO
+        id S233883AbjEVPbm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 22 May 2023 11:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjEVPWL (ORCPT
+        with ESMTP id S229692AbjEVPbk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 22 May 2023 11:22:11 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2127.outbound.protection.outlook.com [40.107.94.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B537C6
-        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 08:22:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HWcrg7RPzvRrZbUwwsIS+irmmG1EPNDiE7yr5fwY5km5eDrW+rTRw+RaLQJ8IDdkh3rh6LdmsDh8r+9fIRE/0Nh0trI/xr6Efqn0EJs0ptT8I/7G8t7llQTKpFbcfTlwJ9ixFlDHHNB6SGoC5Wzts+mERy1O+h3qmAGDcjamb9oXLPDIuPIZJ42pg3vbmUzGW+MdSqcO0vy8jRu5WjVCjr5ZPwh2Ev0OjyflTzzQUfy/9dhEC2qp2u8kbWKFeANVHlL8DqB8cI+AvXQXLmoB8BWCM9919XgMqFXdo2Kj+4dYxwq3Vkhyx18Z+cA6aNea7JfYWWfqoPCJTbuCMSRqsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dW7VRvFk7z/ACjt8IGAkFf2+zSevAwzDhh1DZRIVhx4=;
- b=BDfR7WkImVLG8JgfMWGoncQl2vl5LIdMCAtQaERF7kEscnbI1lzves94l3yWYVsQzzUdESV01kAiZf/LQYMb+kxpF9AXynSbiUMI1/JPeWuY/eBYCuiD0Dn5IuvRoLi8oMWW0PGhCtkml348Vr12dqXpho6IKzWIW70+SEsufsXuYPIL3ZXyshSw7WVKHlNrm0z5IDKnzB7hXsZymbBtbZblmwxIPZ0kRiwst1XHaXsbxghow+khSazydT8v345rz8eZWfxYDQHEjJ7TdOuoqzM0dTc4gbv5dViPuPPfv0x3kSTuwNkDtGFihPZ+oap+77IU5r2IGVLVcxLyoAOJuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Mon, 22 May 2023 11:31:40 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A40FA1
+        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 08:31:39 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-38eb2984c82so2083366b6e.0
+        for <linux-wireless@vger.kernel.org>; Mon, 22 May 2023 08:31:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dW7VRvFk7z/ACjt8IGAkFf2+zSevAwzDhh1DZRIVhx4=;
- b=ZHhNhThhQK4DDjLTf/8d+Tk+FQ7EC2VOl8XykquPvOCIn6BlLT2yjo1g80iNKQVhpLKOAl3N/ceiGkOJm/sctYhiM9jMt40FCpbPT/QoIqKi45t9FCOyZIeuFznbItKKWkb0CtHFYUQs4Ifgv2mynVF8gSpOok2Marj9GgmUlJE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BN0PR13MB5118.namprd13.prod.outlook.com (2603:10b6:408:161::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Mon, 22 May
- 2023 15:22:06 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::f416:544d:18b7:bb34%5]) with mapi id 15.20.6411.028; Mon, 22 May 2023
- 15:22:06 +0000
-Date:   Mon, 22 May 2023 17:22:01 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     greearb@candelatech.com
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: mt76: mt7921:  Support temp sensor.
-Message-ID: <ZGuImWxI9Hr8jj1/@corigine.com>
-References: <20230519163611.1640585-1-greearb@candelatech.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230519163611.1640585-1-greearb@candelatech.com>
-X-ClientProxiedBy: AM3PR07CA0066.eurprd07.prod.outlook.com
- (2603:10a6:207:4::24) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=gmail.com; s=20221208; t=1684769499; x=1687361499;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=rirIJ0oPf7dKvMcuSdiFYHXM3msoOJCcy3omFuyhtFE=;
+        b=BfDC/6oBRzdCsVJLLdJ08+nyaTjrmUoo8lV2Ul2pvzrXBG7LTqjpmkjG6+7qgLrzRt
+         XySoYBF4NCk8kZ/7atIPCQO4vyezg7QbDxdGntPtxQvtFj3aQIOKmUAxWeNHTL4cvaBt
+         xPPfaDR8kMFN26P9x4bqke7MrlyxhTbHab0YuzjnR8dJHXnzx5MFkSSg7/cgxGeGXmjA
+         6IobcSRg7qgwZNq7cwhmd6t9TrB7xQLJLtSxJxxpZjXQC9q8T6m4M/4VjpjnKt1wdlIr
+         k5v/YkukjGx+9izt5eCnALZdQH4VqZHCxu71UjXhBSD5cN/AmgcaKWWVabwu5im8Tajl
+         NSOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684769499; x=1687361499;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rirIJ0oPf7dKvMcuSdiFYHXM3msoOJCcy3omFuyhtFE=;
+        b=gpXI4wOpZm/VUW2UKFn8ibVE9lA+1zhzWXrletLlC4zqc5yTxIkwkzHYR81Tz5UFZO
+         1G61Jcc5ByXcomd4srueUtjmX2ow/QYwKyyFprtivdT/3IkpoEEeuD2pJtYiQO30RulZ
+         RtWVfurH1rqQ6bkKTkBC/b3BAjdX5pcmLn7jGfXJQyH63UoqtAQYgjJXlhYjJLQGxyOb
+         rIyOTxLz1QdKdWHdcYsfVciL7kwGFyfppZ0iB6THYd3DH6wkZq7YLgjVSoVAzllxUaKV
+         BudAXouJSyIKqhj1WZkZegNi838q0dIjHJRuaGl1WsCuDtsLSi93EzD43X+qfpdDuymh
+         hWeg==
+X-Gm-Message-State: AC+VfDy360md3NGg7e8tFSzAMrZ4kkxA8ZE2uyhoZl11p3KF68egFfaf
+        HjbQGWwSiTo0/Xd2mxJdfEAk1lZhtRU=
+X-Google-Smtp-Source: ACHHUZ647+k6wXFLPBbwWDjCYVqCmYf9DrU63Q0gHCl0U8XltW+bFNVjZAwAf5/zZ4NiQRcbUsXgQQ==
+X-Received: by 2002:a54:4698:0:b0:397:f439:d416 with SMTP id k24-20020a544698000000b00397f439d416mr3067219oic.35.1684769498642;
+        Mon, 22 May 2023 08:31:38 -0700 (PDT)
+Received: from [192.168.0.200] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id y83-20020acae156000000b0037832f60518sm2842176oig.14.2023.05.22.08.31.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 May 2023 08:31:38 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <6f014d1e-7d50-5688-1ffc-88e00c77a61f@lwfinger.net>
+Date:   Mon, 22 May 2023 10:31:37 -0500
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BN0PR13MB5118:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44ced203-634d-43d8-6e7e-08db5ad84da6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vsFKtlXJRHUnhLCOrC9oZOpZfgxfytygP7HSXisr6oU3jU2yXDNB7uEvbD3wesSbDTYtRjFnczwh2NyuNg/hFJNwuyu2wwNj0OVVfQzgqZR7WjuPmpdMpi843PqKFt2TwQXfe8cT963dGiMLDntm2OYfa2m9Y7nu+urfg2gISUgFmRndYR1DuP7LrqLH8qqsszBwOBBM1ZalhjiKRlh59QU34qLqXO/tcw2Tua6OaGA/fzsatnbELz/V5Z7ARKV8xANxQel8AfsqX1mk0C74k/KtZ9rMpaey8WOWqGATRGd6hdR8UL9NC7lgRD/McMaVXFO6XInLKuuNSwaVLjo4e++qj+6QKOdSDuHnm3BlVpeM3gbvxFQa1389FeLO/5Qx9xMsxW3YMvG3GL0gc3fYKPC30O+LGsh6mEh2ydGfCk2dere30N6NCdvYvWzuv0aMkioSrB2E4sUsk2UVlUUyGWIxIEdyv1SrQcbdC0fUZNxTFs7/gAiKB/CjT2ZIaf516OlYHTR+aBnRFjtrM12XO+RSzyUqTPKTlAqlB2z/hea5CAR2JlXXCjo+uuqavkIsIMrpyfKpfx/eQFDuDQ8JuD2l7RB4T4Bk+pEjIhLu74o=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(376002)(39840400004)(366004)(136003)(451199021)(5660300002)(8676002)(8936002)(86362001)(6506007)(6512007)(2906002)(83380400001)(2616005)(36756003)(186003)(44832011)(6916009)(66556008)(66476007)(4326008)(66946007)(316002)(38100700002)(478600001)(6486002)(41300700001)(6666004);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dWxKS3hob00xY0pRbm53T29XRTJlY2RIcGdZQ1h0OXRYUEw1NUpMN2N6MXhY?=
- =?utf-8?B?bDlQdTBrUThpQzM4NTdSaUtMQmowRUs5K240NVlUWTZIMnNqT0tUeGVrNmls?=
- =?utf-8?B?L3JWUWwrUTZxZWxaTWNEZHU4am9sa29RN0FnN0ZaRk9kVTd6OE1pV2w1VWcv?=
- =?utf-8?B?anFzWTJVaWl3a3c4Z25naG5yb3VxRXM3b3J2OStIUWMrdGJqRjBuUHpPQi83?=
- =?utf-8?B?LzR3RE1YWlJMMDI5eXE1WG8vK0Q1QXBKTm5qTDJXRjhUVXZuUDFTYTEvMDk2?=
- =?utf-8?B?SnVRcEM1UmZDejJwREpYcFBMR3FIMXU4K0tpK2xaTUI4WWdvSGlQTG1JT3Fa?=
- =?utf-8?B?aFhIZm8vMkJZb0U3T05tVjFQQXVxQjFsczVzRE9HSFNkQ1F2MWd1TmxMV3Rn?=
- =?utf-8?B?Q0dOMk5jSTl3QTR5N0VnRTBnRWMycnBra1RrNzJPVGxtbUEyaDBEL2hDcFVl?=
- =?utf-8?B?c3Y4VDJycjBCNDd2a2VrQnNZSmZIN3ZLNG02RTRsS3pxcXNDRWM4eFdobE9G?=
- =?utf-8?B?VDZmS1lkS1BJVEQ4RU9RakNnRjNYbjZhTHJBa0JtbktYZjdFVU53dU16bTNW?=
- =?utf-8?B?d0RYa0JjVnVrclZOcEIrelBmdlcwZTJTdVpxc1pERXBSckMyOEdMeitKeTRR?=
- =?utf-8?B?S2NDb0w0ZjU5eGRUVjFVSStWS1JUWkFWbmU0VlJVU2hGY2JnWXBFUmVJa3hZ?=
- =?utf-8?B?eWJNQ1g3SlAwRTNiR2xTQVpEZGpEdEQreWFwWVZNTTZ0Wk56a25CR1Jya2Vw?=
- =?utf-8?B?Z2tJRmN2MmJhZ0N4bWJWWTA5OTk0bmZKWW9PRXo2ZTd0MEdramRzM3psdU5u?=
- =?utf-8?B?cjJnQ2FyR2RSb09TblF4Z2FxMlZpRVluemk1Ny9iZ2pCd0VCSm4wNlFHSnpV?=
- =?utf-8?B?dnlXc0hTUC9mcXVGZU5QYzcxMEZUOUVTNWtFVmhDZ0RsY2xRYlkzZ2hreXRk?=
- =?utf-8?B?YUxlSzRrNHIrRjl6YVNBRFVPMFdHUHlqN0R5UGtraW1hTWhUcnZ4dXdVbjI3?=
- =?utf-8?B?NWRMcC92WkpZMUtHbk9pRzlrRy95dWNIK2Y1L3Z3Q3VZV3d4UGlCMmdyRWR6?=
- =?utf-8?B?ZUp1Q3Nma1RjTU14SzVzWFgxUllsOVphMDhNTUZsaVREejRBY2FrbjFGcHlx?=
- =?utf-8?B?S2ZIeTVBUkFqUks5bGJEUHRtcWtEdklkTW9DOEZXZEJPWnYzeVl2VXNnRmtZ?=
- =?utf-8?B?cTJ6TjFKYWJ1aU15OXdCekQwQnlLcnNaQWloeEp3cnV1bHRSMDJFQzNRc2lB?=
- =?utf-8?B?a3hUKy9hSHNuRVNlcFh0dHJYcVdDbHc2YzN2aEZQMFp6Y1B2dXM2TzJqM2xr?=
- =?utf-8?B?ODVJSDdjaDNKN0M3V24yeWIwcllFK1VuNjB6b21tK08vT3ZmK01xVDBrZjJw?=
- =?utf-8?B?Zk1XWnRtdWsrNUJGY2poRjB0ZmpNaGsrV1pEYmpVVm54dGlZUExLRS9tZUY1?=
- =?utf-8?B?dWFqNkZseWZSQk1GbWEzZXhIV2hyNEk2dzVVRTBmL2RNakhEa3BWOFJPTU5G?=
- =?utf-8?B?SnBJZnR0eUlMblRxM2lubmJvUWE0UEtSTi9xUEVhRmlqVFNMUWJrWFo2YUNj?=
- =?utf-8?B?THcrd3F6UHdoMmFpd29PM0J6ZmFpeVF6MGVRMVIxTSt0RW1HTUF5UWxzQVJS?=
- =?utf-8?B?RlUrVjlFSVNXY3h5R0VsaHkrQU1RbmxjcTdnSHFja1N4VkVjSGY0NWVlcUt3?=
- =?utf-8?B?MnFiQ2tXQ1E0ZFM5UUNzdmlJY04yYU5weXlYUjlVeWRGU2ozLzJOQVpTZjdL?=
- =?utf-8?B?THorb1hGem0rajB4MmI1aVBid1BHVmZSNVkvK0lhaEc1Z2ZQTTFrTkhiRXBL?=
- =?utf-8?B?OVdOaTRDUitYQVlFbXE4Znh2ZmJONHJiQzUrelpLNjhGYWJlY3h6OC93SS9R?=
- =?utf-8?B?cHREYjF1d29BVnFKaWVjZlZkSEVSQWlXUTlOeHQyTlcvVVRRd3Y4dEtSZ3Yw?=
- =?utf-8?B?VXFia3NXV0JhZ1FaUE92SlFGKzZlREhDVVVZdjdIaDRNa0VweU0veTVwZDBi?=
- =?utf-8?B?QzlkaEtobVhQWityYU10d1MxSkhwMkorNXdnVkdIOE9nL2FTZ0doaXVSTVRk?=
- =?utf-8?B?WjM0bTJKd3ArdDJMZWVDTThOZlBMYm5UQm1RZGNDeUlibE9CQ2I0b3RHbko3?=
- =?utf-8?B?c0piQ1dTNVZIZzB2cGNkcThYeG5pbDZkbENMY1hrZzdqVU05OGZnOFg3VTlL?=
- =?utf-8?B?VnFabnFuYWU2aC9Pa0JxaGhaS3djWDBnOEx5RGduZnRLNTNHd2FJREx4VWtk?=
- =?utf-8?B?cncvL3IrQWZrQjJuRHgvRDZHSzhnPT0=?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44ced203-634d-43d8-6e7e-08db5ad84da6
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 15:22:06.6739
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hFKllq6Jc/a8jYeDbCLnwunJ08GItYNxsFBgJ6XsKRnr/1rjXN9xcFdAoTSMzOgOVQ2LmzVzcHV/M6Ozyu7IKJjtCB00bFCxcR7ekRGvjDc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR13MB5118
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Realtek RTL8832CU compatibility
+Content-Language: en-US
+To:     Fabrizio del Tin <devotedmystic@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, James <bjlockie@lockie.ca>
+References: <CAMzNfvPpi9GiFHf0UcBpS8oozg6o_s3wwzOAPJ0FzGy7LaC4pw@mail.gmail.com>
+ <777df364-6a1c-4427-ab68-46a9a71fc629@lockie.ca>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <777df364-6a1c-4427-ab68-46a9a71fc629@lockie.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 19, 2023 at 09:36:11AM -0700, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
+On 5/18/23 11:02, James wrote:
+> Ask here: https://github.com/morrownr/USB-WiFi
 > 
-> Allow sensors tool to read radio's temperature, example:
+> May 18, 2023 11:05:50 Fabrizio del Tin <devotedmystic@gmail.com>:
 > 
-> mt7921_phy17-pci-1800
-> Adapter: PCI adapter
-> temp1:        +72.0°C
-> 
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>> Hello,
+>> I got a recent RTL8832CU
+>> (https://es.aliexpress.com/item/1005005544770386.html?spm=a2g0o.productlist.main.1.78ff96c6qceFKn&algo_pvid=9ee2eb8d-9883-4709-90f5-0dc6d98c40da&algo_exp_id=9ee2eb8d-9883-4709-90f5-0dc6d98c40da-0&pdp_npi=3%40dis%21EUR%2161.26%2130.62%21%21%21%21%21%402145277316844042289821012d07b5%2112000033481930568%21sea%21IT%211918944861&curPageLogUid=OMcZ7AW58cDB).
+>> It's a very affordable tri band usb wifi 6 card, which is sold as AXE3000.
+>>
+>> I tested it on Arch Linux, kernel 6.3.2, to no avail.
+>>
+>> Once inserted, it gives:
+>> 0bda:1a2b Realtek Semiconductor Corp. RTL8188GU 802.11n WLAN Adapter
+>> (Driver CDROM Mode)
+>>
+>> After an eject cdrom, it gives:
+>> 0bda:c832 Realtek Semiconductor Corp. 802.11ax WLAN Adapter
+>>
+>> I wonder if there will be any plan to make a Linux driver for it. The
+>> only tri band in kernel solution seems to be the Netgear A8000, which
+>> is widely available, but very expensive. The ALFA AWUS036AXML cannot
+>> be found in my country. And there is no other option.
 
-Hi Ben,
+Fabrizio,
 
-me again.
+I have acquired one of the AX3000 or Realtek 8832CU devices. I installed it on a 
+Windows VM using the driver on the initial cdrom.
 
-...
+I have written to my contact at Realtek to see if I can get a copy of the Linux 
+driver. If I can, I will upload it to a GitHub repo.
 
-> @@ -58,6 +61,53 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
->  	}
->  };
->  
-> +static ssize_t mt7921_thermal_temp_show(struct device *dev,
-> +					struct device_attribute *attr,
-> +					char *buf)
-> +{
-> +	switch (to_sensor_dev_attr(attr)->index) {
-> +	case 0:
-> +		struct mt7921_phy *phy = dev_get_drvdata(dev);
-> +		struct mt7921_dev *mdev = phy->dev;
-> +		int temperature;
-> +
-> +		mt7921_mutex_acquire(mdev);
-> +		temperature = mt7921_mcu_get_temperature(phy);
-> +		mt7921_mutex_release(mdev);
-> +
-> +		if (temperature < 0)
-> +			return temperature;
-> +		/* display in millidegree Celcius */
+I will let you know what happens.
 
-nit: s/Celcius/Celsius/
-     Did I get that wrong last time?
-     If so, sorry.
-
-> +		return sprintf(buf, "%u\n", temperature * 1000);
-
-clang-16 does not seem to like this:
-
-drivers/net/wireless/mediatek/mt76/mt7921/init.c:63:3: error: expected expression
-                struct mt7921_phy *phy = dev_get_drvdata(dev);
-                ^
-drivers/net/wireless/mediatek/mt76/mt7921/init.c:64:29: error: use of undeclared identifier 'phy'
-                struct mt7921_dev *mdev = phy->dev;
-                                          ^
-drivers/net/wireless/mediatek/mt76/mt7921/init.c:68:44: error: use of undeclared identifier 'phy'
-                temperature = mt7921_mcu_get_temperature(phy);
-                                                         ^
-drivers/net/wireless/mediatek/mt76/mt7921/init.c:64:22: warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
-                struct mt7921_dev *mdev = phy->dev;
-                                   ^
-1 warning and 3 errors generated.
+Larry
 
 
-I think a fix is:
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index af9b1d5e520b..9655dbd5cfc8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -59,7 +59,7 @@ static ssize_t mt7921_thermal_temp_show(struct device *dev,
- 					char *buf)
- {
- 	switch (to_sensor_dev_attr(attr)->index) {
--	case 0:
-+	case 0: {
- 		struct mt7921_phy *phy = dev_get_drvdata(dev);
- 		struct mt7921_dev *mdev = phy->dev;
- 		int temperature;
-@@ -72,6 +72,7 @@ static ssize_t mt7921_thermal_temp_show(struct device *dev,
- 			return temperature;
- 		/* display in millidegree Celcius */
- 		return sprintf(buf, "%u\n", temperature * 1000);
-+	}
- 	default:
- 		return -EINVAL;
- 	}
-
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +static SENSOR_DEVICE_ATTR_RO(temp1_input, mt7921_thermal_temp, 0);
-
-...
