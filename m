@@ -2,115 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B5670EB48
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 04:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87EB270EB57
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 04:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236608AbjEXCVr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 23 May 2023 22:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52884 "EHLO
+        id S236486AbjEXCcQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 23 May 2023 22:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbjEXCVo (ORCPT
+        with ESMTP id S229991AbjEXCcP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 23 May 2023 22:21:44 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947C5198;
-        Tue, 23 May 2023 19:21:33 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34O2LEYa8030191, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34O2LEYa8030191
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 24 May 2023 10:21:14 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 24 May 2023 10:21:25 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 24 May 2023 10:21:25 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Wed, 24 May 2023 10:21:25 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Tue, 23 May 2023 22:32:15 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 23 May 2023 19:32:14 PDT
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74293C5
+        for <linux-wireless@vger.kernel.org>; Tue, 23 May 2023 19:32:14 -0700 (PDT)
+Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
+        by cmsmtp with ESMTP
+        id 1bEuqBPQ6bK1V1eGyqSgPz; Wed, 24 May 2023 02:30:44 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id 1eGwqzKP77EP01eGxq65nh; Wed, 24 May 2023 02:30:43 +0000
+X-Authority-Analysis: v=2.4 cv=ZoT+lv3G c=1 sm=1 tr=0 ts=646d76d3
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=P0xRbXHiH_UA:10
+ a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8 a=n9Sqmae0AAAA:8 a=NEAV23lmAAAA:8
+ a=mDV3o1hIAAAA:8 a=8x618Ytda_mi-GpODIUA:9 a=QEXdDO2ut3YA:10 a=3IOs8h2EC4YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=UmAUUZEt6-oIqEbegvw9:22 a=_FVE-zBwftR9WsbkzFJk:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=aasTBZQZv56mUB/he0G3yIgLrQXzoF0Jna8m775QSPo=; b=yVeyFgkgSqd9sVwqNbCmQd10v5
+        ZrYkd0xRd9opKBUoM+cnKlDhJ6IVP0hWMLfj1uR4clLebAx4ULey9Oluk5HTGQ/kTrsSH0tHTmC+d
+        fmOcr/Hd7d25OrzWDz9llsPhnkkccI1Q48foyO8rbM4Jr2TRJ1oPfoV9/HXdf7co/OEmZ/A5WMgPB
+        bB6bO5SI+bv3ZufNjm31d/SzqCeuU+HMX+5zsK85xGwcoi/Lh1pdYC+XJu/j32YRfwPRqOtjoiny5
+        u3axL2ESVtn2ZTgosSL5d5MOymt4B/dGMVaNyzzL+rlxw3ETn1lCubM87paAEO9QQ7K3Un+3W/R5J
+        vD0+Zcug==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:41992 helo=[192.168.15.7])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1q1eGw-000m3M-9t;
+        Tue, 23 May 2023 21:30:42 -0500
+Message-ID: <13a74848-d961-7424-da7e-2bb7b904e899@embeddedor.com>
+Date:   Tue, 23 May 2023 20:31:36 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH][next] wifi: rtw89: coex: Fix __write_overflow_field error
+Content-Language: en-US
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Kalle Valo <kvalo@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: RE: [PATCH][next] wifi: rtw89: coex: Fix __write_overflow_field error
-Thread-Topic: [PATCH][next] wifi: rtw89: coex: Fix __write_overflow_field
- error
-Thread-Index: AQHZjeUfoZQNequdOUWsjmGdWAjtMa9osDuw
-Date:   Wed, 24 May 2023 02:21:25 +0000
-Message-ID: <b45c71d19add4f749a687e5ca483244b@realtek.com>
 References: <ZG1ynqdAnXArMfBE@work>
-In-Reply-To: <ZG1ynqdAnXArMfBE@work>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+ <b45c71d19add4f749a687e5ca483244b@realtek.com>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <b45c71d19add4f749a687e5ca483244b@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1q1eGw-000m3M-9t
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.7]) [187.162.21.192]:41992
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfG2EffLzVddMmp8A9w1u8XgTl+PbcF101BZVz6xrNuENwzfoF15bPC4iGlFdifQkUBbZ8ycJwNTPp+7kSRIVU1tWmZ1MzM4BO9wrxrB+TWMpxuBMCx+b
+ BD0i9KgryzwL9bmTuhM1AzSyViEcZiITSRUOcMiYl4pKJjuumgijOlNA9QLVFiNsyKUz0m24fofdLDRnaC1aOggDTNN8G09LzzNcauG6QiIMtj2MfNgxa2MV
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogR3VzdGF2byBBLiBSLiBT
-aWx2YSA8Z3VzdGF2b2Fyc0BrZXJuZWwub3JnPg0KPiBTZW50OiBXZWRuZXNkYXksIE1heSAyNCwg
-MjAyMyAxMDoxMyBBTQ0KPiBUbzogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+OyBL
-YWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3JnPg0KPiBDYzogbGludXgtd2lyZWxlc3NAdmdlci5r
-ZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBHdXN0YXZvIEEuIFIuIFNp
-bHZhDQo+IDxndXN0YXZvYXJzQGtlcm5lbC5vcmc+OyBsaW51eC1oYXJkZW5pbmdAdmdlci5rZXJu
-ZWwub3JnDQo+IFN1YmplY3Q6IFtQQVRDSF1bbmV4dF0gd2lmaTogcnR3ODk6IGNvZXg6IEZpeCBf
-X3dyaXRlX292ZXJmbG93X2ZpZWxkIGVycm9yDQo+IA0KPiBPbmUtZWxlbWVudCBhcnJheXMgYXMg
-ZmFrZSBmbGV4aWJsZSBhcnJheXMgYXJlIGRlcHJlY2F0ZWQsIGFuZCB3ZSBhcmUNCj4gbW92aW5n
-IHRvd2FyZHMgYWRvcHRpbmcgQzk5IGZsZXhpYmxlLWFycmF5IG1lbWJlcnMgaW5zdGVhZC4NCj4g
-DQo+IEZpeCB0aGUgZm9sbG93aW5nIGVycm9yIHNlZW4gdW5kZXIgR0NDLTEzIGFuZCAtZnN0cmlj
-dC1mbGV4LWFycmF5cz0zOg0KPiBJbiBmdW5jdGlvbiDigJhmb3J0aWZ5X21lbWNweV9jaGvigJks
-DQo+ICAgICBpbmxpbmVkIGZyb20g4oCYX2FwcGVuZF90ZG1h4oCZIGF0IGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODkvY29leC5jOjE1Nzk6MzoNCj4gaW5jbHVkZS9saW51eC9mb3J0
-aWZ5LXN0cmluZy5oOjU4MzoyNTogZXJyb3I6IGNhbGwgdG8g4oCYX193cml0ZV9vdmVyZmxvd19m
-aWVsZOKAmSBkZWNsYXJlZCB3aXRoIGF0dHJpYnV0ZQ0KPiB3YXJuaW5nOiBkZXRlY3RlZCB3cml0
-ZSBiZXlvbmQgc2l6ZSBvZiBmaWVsZCAoMXN0IHBhcmFtZXRlcik7IG1heWJlIHVzZSBzdHJ1Y3Rf
-Z3JvdXAoKT8NCj4gWy1XZXJyb3I9YXR0cmlidXRlLXdhcm5pbmddDQo+ICAgNTgzIHwgICAgICAg
-ICAgICAgICAgICAgICAgICAgX193cml0ZV9vdmVyZmxvd19maWVsZChwX3NpemVfZmllbGQsIHNp
-emUpOw0KPiAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fg0KPiANCj4gVGhpcyBoZWxwcyB3aXRoIHRoZSBvbmdv
-aW5nIGVmZm9ydHMgdG8gdGlnaHRlbiB0aGUgRk9SVElGWV9TT1VSQ0UNCj4gcm91dGluZXMgb24g
-bWVtY3B5KCkgYW5kIGhlbHAgdXMgbWFrZSBwcm9ncmVzcyB0b3dhcmRzIGdsb2JhbGx5DQo+IGVu
-YWJsaW5nIC1mc3RyaWN0LWZsZXgtYXJyYXlzPTMgWzFdLg0KPiANCj4gVGhpcyByZXN1bHRzIGlu
-IG5vIGRpZmZlcmVuY2VzIGluIGJpbmFyeSBvdXRwdXQuDQo+IA0KPiBMaW5rOiBodHRwczovL2dp
-dGh1Yi5jb20vS1NQUC9saW51eC9pc3N1ZXMvMjENCj4gTGluazogaHR0cHM6Ly9naXRodWIuY29t
-L0tTUFAvbGludXgvaXNzdWVzLzI5OQ0KPiBMaW5rOiBodHRwczovL2djYy5nbnUub3JnL3BpcGVy
-bWFpbC9nY2MtcGF0Y2hlcy8yMDIyLU9jdG9iZXIvNjAyOTAyLmh0bWwgWzFdDQo+IFNpZ25lZC1v
-ZmYtYnk6IEd1c3Rhdm8gQS4gUi4gU2lsdmEgPGd1c3Rhdm9hcnNAa2VybmVsLm9yZz4NCj4gLS0t
-DQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2NvZXguYyB8IDIgKy0NCj4g
-IDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvY29leC5jIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9jb2V4LmMNCj4gaW5kZXggM2E1ODZhOTcx
-ZThmLi5iZGEwZTFlOTlhOGMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
-YWx0ZWsvcnR3ODkvY29leC5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODkvY29leC5jDQo+IEBAIC0yMDYsNyArMjA2LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBy
-dHc4OV9idGNfdmVyIHJ0dzg5X2J0Y192ZXJfZGVmc1tdID0gew0KPiAgc3RydWN0IHJ0dzg5X2J0
-Y19idGZfdGx2IHsNCj4gICAgICAgICB1OCB0eXBlOw0KPiAgICAgICAgIHU4IGxlbjsNCj4gLSAg
-ICAgICB1OCB2YWxbMV07DQo+ICsgICAgICAgdTggdmFsW107DQo+ICB9IF9fcGFja2VkOw0KPiAN
-Cj4gIGVudW0gYnRjX2J0Zl9zZXRfcmVwb3J0X2VuIHsNCg0KQXJuZCBoYXMgc2VudCB0aGUgc2Ft
-ZSBwYXRjaCBbMV0gYXMgeW91cnMuIA0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGlu
-dXgtd2lyZWxlc3MvMjdhNzAxMGRlOGJlNDAwNmEzZTRiOTVlODUxNzgxYzZAcmVhbHRlay5jb20v
-VC8jbWNhNjE5YzgyNjFiODdiODhlZWRkMzkxY2VhZmIzNGM0MGQ1MTNjZTUNCg0K
+
+
+On 5/23/23 20:21, Ping-Ke Shih wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> Sent: Wednesday, May 24, 2023 10:13 AM
+>> To: Ping-Ke Shih <pkshih@realtek.com>; Kalle Valo <kvalo@kernel.org>
+>> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org; Gustavo A. R. Silva
+>> <gustavoars@kernel.org>; linux-hardening@vger.kernel.org
+>> Subject: [PATCH][next] wifi: rtw89: coex: Fix __write_overflow_field error
+>>
+>> One-element arrays as fake flexible arrays are deprecated, and we are
+>> moving towards adopting C99 flexible-array members instead.
+>>
+>> Fix the following error seen under GCC-13 and -fstrict-flex-arrays=3:
+>> In function ‘fortify_memcpy_chk’,
+>>      inlined from ‘_append_tdma’ at drivers/net/wireless/realtek/rtw89/coex.c:1579:3:
+>> include/linux/fortify-string.h:583:25: error: call to ‘__write_overflow_field’ declared with attribute
+>> warning: detected write beyond size of field (1st parameter); maybe use struct_group()?
+>> [-Werror=attribute-warning]
+>>    583 |                         __write_overflow_field(p_size_field, size);
+>>        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>
+>> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+>> routines on memcpy() and help us make progress towards globally
+>> enabling -fstrict-flex-arrays=3 [1].
+>>
+>> This results in no differences in binary output.
+>>
+>> Link: https://github.com/KSPP/linux/issues/21
+>> Link: https://github.com/KSPP/linux/issues/299
+>> Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> ---
+>>   drivers/net/wireless/realtek/rtw89/coex.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+>> index 3a586a971e8f..bda0e1e99a8c 100644
+>> --- a/drivers/net/wireless/realtek/rtw89/coex.c
+>> +++ b/drivers/net/wireless/realtek/rtw89/coex.c
+>> @@ -206,7 +206,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+>>   struct rtw89_btc_btf_tlv {
+>>          u8 type;
+>>          u8 len;
+>> -       u8 val[1];
+>> +       u8 val[];
+>>   } __packed;
+>>
+>>   enum btc_btf_set_report_en {
+> 
+> Arnd has sent the same patch [1] as yours.
+
+Oh that's great! What a coincidence. :)
+
+Thanks for letting me know.
+--
+Gustavo
+
+> 
+> [1] https://lore.kernel.org/linux-wireless/27a7010de8be4006a3e4b95e851781c6@realtek.com/T/#mca619c8261b87b88eedd391ceafb34c40d513ce5
+> 
