@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A2170FCFC
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 19:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C586170FD00
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 19:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236109AbjEXRp5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 13:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56118 "EHLO
+        id S236153AbjEXRqA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 13:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236110AbjEXRpx (ORCPT
+        with ESMTP id S236044AbjEXRpy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 13:45:53 -0400
+        Wed, 24 May 2023 13:45:54 -0400
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1BE122
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 10:45:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144D6135
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 10:45:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684950317; x=1716486317;
+  t=1684950318; x=1716486318;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GdnDifGCq605v24mSJbVHN2idq5dUI+5r+hWnGkWoXQ=;
-  b=U/4t0VPBNgF0O7Y46zennTOGMHaQ5Ugh/nXuLQWkWP+f7yO3L4tMnIUC
-   4WK5p50qd0ZimboPUyoPd9sMGu+Sto4PRpN8KYtKygVnVd7RRMrd/Rxwa
-   wXp9Lz2q1EhYlj8Fe1POnLV6JUCvhhZCzTHBiOFzrBLCsL1teBqjq5XZ4
-   DIh0wKHE3hYb3W/jfPhZo11xfF3NLKNuU+2lYbRIO6ikL8e0zis7JvUPn
-   BNhC9r4qLMaXIsqGiKPAAsrDGy19566ODqRMg1MNAIKO6OFPGqvGW+NRt
-   oONFq1H28ZqxjIPzO2IpPQDg7hsgNO/Bek9BXHnhfz0V/JHAP3xybi9c/
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="440000404"
+  bh=PqtcsslFkkVNO7nrIn1NxBzz1jUiP1SwibqK0cqnKLU=;
+  b=Q6o2eYB9WjLH6z5iB15r0WGMtuF9PjLB6CgDEFXyWpjPgW4YMeQASpmY
+   sCh81YMaAhvvHyNlL6SzgAs89gf19uQUFNHM3U3iR/v3ZiBlDtutExC0V
+   LcbFAcsviea7ps6pnTbSiiT+wcBPw/uafwYuno13ItVnob6Glp5YWOvE1
+   BVqD99p1A1PLEOCjaiSPCkh7sZSV/wj8pPg4B56Had+Q/AcInlX1YG8Jr
+   EcCcwCrjr8j/uAWFklRemviemJsA8AJdGNjsrUBTzNBD+noWUhW9N4kqW
+   AW4Fj0rk3TStJzw8B51Syj2S03Yr9yzSIFDl8yYGAZDATgDV/aMlOX9/H
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="440000423"
 X-IronPort-AV: E=Sophos;i="6.00,189,1681196400"; 
-   d="scan'208";a="440000404"
+   d="scan'208";a="440000423"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 10:42:48 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 10:42:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="769547925"
+X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="769547941"
 X-IronPort-AV: E=Sophos;i="6.00,189,1681196400"; 
-   d="scan'208";a="769547925"
+   d="scan'208";a="769547941"
 Received: from hmozes-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.249.89.195])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 10:42:46 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 10:42:48 -0700
 From:   gregory.greenman@intel.com
 To:     kvalo@kernel.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 06/14] wifi: iwlwifi: don't silently ignore missing suspend or resume ops
-Date:   Wed, 24 May 2023 20:42:03 +0300
-Message-Id: <20230524203151.0c55e0ca92f1.I6870fe1683215e65d3d036f9b576b03b7b7257be@changeid>
+Subject: [PATCH 07/14] wifi: iwlwifi: mvm: Make iwl_mvm_diversity_iter() MLO aware
+Date:   Wed, 24 May 2023 20:42:04 +0300
+Message-Id: <20230524203151.56a9c709e987.I9716195ec288cce2c929338c254ee9add8cfcc1f@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230524174211.1482360-1-gregory.greenman@intel.com>
 References: <20230524174211.1482360-1-gregory.greenman@intel.com>
@@ -62,39 +62,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Haim Dreyfuss <haim.dreyfuss@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-In case the driver doesn't implement suspend or resume operations
-on the transport layer, notify the driver's upper layer.
-Otherwise, we might access d3_status uninitialized.
+This function is MLO related, so it should iterate over all the links,
+and not only on deflink.
 
-Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    | 20 +++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 9f1228b5a384..885581e636c7 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1160,7 +1160,7 @@ static inline int iwl_trans_d3_suspend(struct iwl_trans *trans, bool test,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index af31b09c3966..2a10d851d2e4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -413,16 +413,20 @@ static void iwl_mvm_diversity_iter(void *_data, u8 *mac,
  {
- 	might_sleep();
- 	if (!trans->ops->d3_suspend)
--		return 0;
-+		return -EOPNOTSUPP;
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm_diversity_iter_data *data = _data;
+-	int i;
++	int i, link_id;
  
- 	return trans->ops->d3_suspend(trans, test, reset);
- }
-@@ -1171,7 +1171,7 @@ static inline int iwl_trans_d3_resume(struct iwl_trans *trans,
- {
- 	might_sleep();
- 	if (!trans->ops->d3_resume)
--		return 0;
-+		return -EOPNOTSUPP;
+-	if (mvmvif->deflink.phy_ctxt != data->ctxt)
+-		return;
++	for_each_mvm_vif_valid_link(mvmvif, link_id) {
++		struct iwl_mvm_vif_link_info *link_info = mvmvif->link[link_id];
  
- 	return trans->ops->d3_resume(trans, status, test, reset);
+-	for (i = 0; i < NUM_IWL_MVM_SMPS_REQ; i++) {
+-		if (mvmvif->deflink.smps_requests[i] == IEEE80211_SMPS_STATIC ||
+-		    mvmvif->deflink.smps_requests[i] == IEEE80211_SMPS_DYNAMIC) {
+-			data->result = false;
+-			break;
++		if (link_info->phy_ctxt != data->ctxt)
++			continue;
++
++		for (i = 0; i < NUM_IWL_MVM_SMPS_REQ; i++) {
++			if (link_info->smps_requests[i] == IEEE80211_SMPS_STATIC ||
++			    link_info->smps_requests[i] == IEEE80211_SMPS_DYNAMIC) {
++				data->result = false;
++				break;
++			}
+ 		}
+ 	}
  }
 -- 
 2.38.1
