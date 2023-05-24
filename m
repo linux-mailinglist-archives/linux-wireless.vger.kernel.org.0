@@ -2,54 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F17570F464
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 12:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD20170F471
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 12:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbjEXKkM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 06:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54472 "EHLO
+        id S233637AbjEXKnz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 06:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbjEXKkL (ORCPT
+        with ESMTP id S229564AbjEXKny (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 06:40:11 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF204184
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 03:40:07 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q1luY-0007Bz-79; Wed, 24 May 2023 12:40:06 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q1luS-002Sq9-Q2; Wed, 24 May 2023 12:40:00 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q1luS-004JJK-8p; Wed, 24 May 2023 12:40:00 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Pkshih <pkshih@realtek.com>, Tim K <tpkuester@gmail.com>,
-        "Alex G ." <mr.nuke.me@gmail.com>,
-        Nick Morrow <morrownr@gmail.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        ValdikSS <iam@valdikss.org.ru>, kernel@pengutronix.de,
-        petter@technux.se, Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Date:   Wed, 24 May 2023 12:39:34 +0200
-Message-Id: <20230524103934.1019096-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        Wed, 24 May 2023 06:43:54 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 24 May 2023 03:43:52 PDT
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0AA7B7
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 03:43:52 -0700 (PDT)
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+        by cmsmtp with ESMTP
+        id 1kLjqQ7sDKBQa1lwjqXhdy; Wed, 24 May 2023 10:42:21 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id 1lwiqv8GiOdlB1lwiqKjvN; Wed, 24 May 2023 10:42:20 +0000
+X-Authority-Analysis: v=2.4 cv=RojWkQqK c=1 sm=1 tr=0 ts=646dea0c
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=P0xRbXHiH_UA:10
+ a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8 a=533kGXqUlK_MWtiuI0gA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=jyuIbAssiy/Sf7j9Qj1G/b2n1LG+av2mAC3uxplu1Lw=; b=Ek8Ow101SykqzlMQ57/EQMUBcx
+        Nufs7SkTH2dJogpkDBWx/QEztnaOruUgR1Sr82mr9pxAZoaTOkN6YN0uE2y5f0tvfHS9EMKKRbilz
+        mN0ZLEA1BTk2QWiHWqRBdVPecZrWf/eJLREJR/K89ur5F6B89kiBDSzxxKYcUK/K2B9JJ49PhabfA
+        zxyrcSARIMnpqu18J/Ig3o7cV5BRCgD+Wke+JKn6T3QfnBt/+CaJsWZdtP8TvH6AfSEmvDbn4iQfQ
+        NhjbOmSaQmFM5+/Zu84muZcSZk1FpYv5G5gnYKh0nw21fWkBEAZJQJ0JyG401zzcTjGkMEct/Oxf/
+        zpH+/V/Q==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:46694 helo=[192.168.15.7])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1q1lwh-003bxf-Pa;
+        Wed, 24 May 2023 05:42:19 -0500
+Message-ID: <d247d8ec-0ab6-c552-fef5-8d48b245a7dd@embeddedor.com>
+Date:   Wed, 24 May 2023 04:43:08 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] rtw89: use flexible array member in rtw89_btc_btf_tlv
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Ching-Te Ku <ku920601@realtek.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230523113241.2772811-1-arnd@kernel.org>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20230523113241.2772811-1-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1q1lwh-003bxf-Pa
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.7]) [187.162.21.192]:46694
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCr2YuXb9Y3QQgVLXVmqe+DnRPLPoHdp8Qk1wncC8eOBYFLXOBuEpNDIfPkv3mW6Z2xtuwAX8oATVpsm3mZ/6EcQvaIKdT2iw1gVN1iCHnd/6bjpxf+A
+ qe+z2KR5uP80rUZqvVP2+DTgu9NPj/9KB8z89wA+2J5kzohZrxp9pY0xWqUUhNjZoUQ/TznXx+2zuYqfseoab7Pw2W5ndbXk6iGkJgK13gLxcHaJdtSbA2IV
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,41 +91,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When receiving more rx packets than the kernel can handle the driver
-drops the packets and issues an error message. This is bad for two
-reasons. The logs are flooded with myriads of messages, but then time
-consumed for printing messages in that critical code path brings down
-the device. After some time of excessive rx load the driver responds
-with:
 
-rtw_8822cu 1-1:1.2: failed to get tx report from firmware
-rtw_8822cu 1-1:1.2: firmware failed to report density after scan
-rtw_8822cu 1-1:1.2: firmware failed to report density after scan
 
-The device stops working until being replugged.
+On 5/23/23 05:32, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> struct rtw89_btc_btf_tlv contains a one-byte member that is intended as a
+> flexible array:
+> 
+> In function 'fortify_memcpy_chk',
+>      inlined from '_append_tdma' at drivers/net/wireless/realtek/rtw89/coex.c:1579:3:
+> include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+>    583 |                         __write_overflow_field(p_size_field, size);
+>        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Make this actually use a flexible array to let the compiler understand.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Fix this by lowering the priority to debug level and also by
-ratelimiting it.
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/wireless/realtek/rtw88/usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks!
+--
+Gustavo
 
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 44a5fafb99055..976eafa739a2d 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -535,7 +535,7 @@ static void rtw_usb_rx_handler(struct work_struct *work)
- 		}
- 
- 		if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
--			rtw_err(rtwdev, "failed to get rx_queue, overflow\n");
-+			dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
- 			dev_kfree_skb_any(skb);
- 			continue;
- 		}
--- 
-2.39.2
-
+> ---
+>   drivers/net/wireless/realtek/rtw89/coex.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+> index 3a586a971e8f..bda0e1e99a8c 100644
+> --- a/drivers/net/wireless/realtek/rtw89/coex.c
+> +++ b/drivers/net/wireless/realtek/rtw89/coex.c
+> @@ -206,7 +206,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+>   struct rtw89_btc_btf_tlv {
+>   	u8 type;
+>   	u8 len;
+> -	u8 val[1];
+> +	u8 val[];
+>   } __packed;
+>   
+>   enum btc_btf_set_report_en {
