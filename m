@@ -2,133 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 065C970FE61
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 21:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB4870FF42
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 22:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjEXTSS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 15:18:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
+        id S230129AbjEXUcA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 16:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjEXTSR (ORCPT
+        with ESMTP id S229489AbjEXUb7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 15:18:17 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE75A4
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 12:18:16 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51190fd46c3so2525011a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 12:18:16 -0700 (PDT)
+        Wed, 24 May 2023 16:31:59 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF61610B
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 13:31:57 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-19674cab442so590910fac.3
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 13:31:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684955894; x=1687547894;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rCEHiMZmuwTNVUdwjTWepSBtatrmKEIluaAneglLNVI=;
-        b=K0d2TAe64fFe5Ld6a5VBc+LP5dPcp2dRoVAJ8IbRBAV2X9mYTnS0poFhcIWk46Hodt
-         WEipHkzjJkZ4PzdKjIVuZGnCfpbxU6EhbaG+NeBsinf+nl+ozqjEc+a8anV2qwoW6gxN
-         6YcCj2483rfzRWUJFMIT+OZ4KzWXSNywg9+n/mTi0XmQHq07UrOwyFHesGB/Glk4rCal
-         ygoCzoIICGBAE08zUSE2jlVj9z5HwJRUY/GQ1FetCST5ULB2VfQx/YKOTBpmvW3KYu8F
-         OqsEbBX7CHMyjRRNMJWiC+zI31sXe680ALTxg2JfqXfRZaHs7N4/jFNUrHmimy8K3Mem
-         Al3A==
+        d=gmail.com; s=20221208; t=1684960317; x=1687552317;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=INAF0tX8rmBBU+wYFCtXzVhr54eZNosdE/vo/Z06pxg=;
+        b=omOArGIim/fPKcFnv+EMB/mql7qOlQ2bFDFJPBRV90M82vwwfN3tMELKvS9VslzX+Z
+         f1ywZQKR2RaR0qtOZo4WolMHcZnKeuza9nlkGvMfHtcHY+Nhn8vos90S7AXGPt2yCksa
+         vtiQ2cuYqPsJDvl+Zl0jO821KA7Oq7CTRiIe8H7lLqo8rZqq3iGIzyRAFtqCZ+UBP5tP
+         Yl3YWDs6e2AlAf/YlzEIENSlxdEfxtLfH0t71QWRiz38s9n++jdhgOcdS7RubT+JuRsI
+         qCYznl4l+W1ctpwV8xcIYMRTx6hNd54GaD8SThXv9bc/DNSjjQ/bbmFmaTRr/Ihnalbg
+         VOhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684955894; x=1687547894;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rCEHiMZmuwTNVUdwjTWepSBtatrmKEIluaAneglLNVI=;
-        b=drzxRpfVrdk/s3V78Hk+NNu7RpLM6BSgl84rvRaIrQCGo1S6JCuSkoMIy5Yib/2tBK
-         TtqLPuF4P2gUKW6MZJ66ugXe6w9mYC1H/YXfejUCuI8T/THrEXjaBXETIgz59YogvKIO
-         T/2zCNXw1tobUnPo3ocLT9DNg48YW3zyXb5rHh0va7wqfLBtVP8pzVssX6LwCk3hcj0M
-         fgueh0I+AMGDVQikh3tv0AvDrmgt65DI+NW07WXMHu6bKYTl9Fyq/LrkMCGevLQnkXfs
-         HWUqpKPAOiHCcOt/T/z5lhrRnJ0xtxRX/Ybpm4W6nZOlmSxMX5MeMZ3Ur4N8Uc67tcG3
-         mNtQ==
-X-Gm-Message-State: AC+VfDwOO4WMoiy54E3JS3g0HMOLWnFGrytfWULS+vc6Dr1G6mqmxJNK
-        b0m8VAb4c3O4qBTs/AjaXQ8=
-X-Google-Smtp-Source: ACHHUZ4QSg/Uj4W5sc0MCR0ffm1tNzcvcJlaCycC49TVHmq+b5YVoH4mp4Lt9GuFEGBY/7JjVmgy4Q==
-X-Received: by 2002:a17:907:2d9f:b0:96f:a0ee:114b with SMTP id gt31-20020a1709072d9f00b0096fa0ee114bmr13852997ejc.21.1684955894489;
-        Wed, 24 May 2023 12:18:14 -0700 (PDT)
-Received: from jernej-laptop.localnet (82-149-1-233.dynamic.telemach.net. [82.149.1.233])
-        by smtp.gmail.com with ESMTPSA id jx26-20020a170907761a00b0096f8ec46498sm6049807ejc.2.2023.05.24.12.18.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 12:18:13 -0700 (PDT)
-From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: rtw88: Problem with sdio.c
-Date:   Wed, 24 May 2023 21:18:12 +0200
-Message-ID: <2681990.mvXUDI8C0e@jernej-laptop>
-In-Reply-To: <1027342a-97dd-83cd-f363-43cff49967e2@lwfinger.net>
-References: <1027342a-97dd-83cd-f363-43cff49967e2@lwfinger.net>
+        d=1e100.net; s=20221208; t=1684960317; x=1687552317;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=INAF0tX8rmBBU+wYFCtXzVhr54eZNosdE/vo/Z06pxg=;
+        b=ffSw3lFuMK+PLSn7TSzPtLIbLzFcExcwTp7jozlCGmWYWAqFWctbWxxNwZg+mq8by9
+         Re70FkFN9Ygot/7lK5Y5UOjH78I44cDPr7lkPGibKQ52giBsplXDCiRdVX4xFbMGdEQL
+         +3DTdDtTnwTHOd8n3vPBjWU0HzWuHnCIRcEgkY2+5go3p8wdu6kc8ZoWouiiRYPLS0vH
+         +/8oLg/6qKB2MnxDf4YxgPIHc1nBsCUavUQeiqB4NF7bNlBvVmL8DhaJSTLtgoMW+amh
+         1z8wbLma2OCOfbrXzqXQZV8ygK31o0mc/r4ig3TEokZLWV89jFfXUIDim0zSyLcgHp9e
+         4LdQ==
+X-Gm-Message-State: AC+VfDyHGfv/adFIRFlRz0ko6k5jxtOWNwDiHO0XE50p+S5g0EUk+9t4
+        51hcp7w6NthU58GcJXvWA3w=
+X-Google-Smtp-Source: ACHHUZ7wTikKBXTCYiR6v5RMlzRS5F7AqZQ1A753CX/ttKwEdmQ6ZOKk+BPLJQqXAiYc6Qbo4FNF7Q==
+X-Received: by 2002:a05:6870:b286:b0:18e:d237:9693 with SMTP id c6-20020a056870b28600b0018ed2379693mr483313oao.46.1684960317299;
+        Wed, 24 May 2023 13:31:57 -0700 (PDT)
+Received: from [192.168.0.159] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id a2-20020a056870b14200b0018045663fc5sm325226oal.48.2023.05.24.13.31.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 May 2023 13:31:56 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <547524c3-bfb4-8132-b309-6eb9e648881e@lwfinger.net>
+Date:   Wed, 24 May 2023 15:31:55 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: rtw88: Problem with sdio.c
+Content-Language: en-US
+To:     =?UTF-8?Q?Jernej_=c5=a0krabec?= <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <1027342a-97dd-83cd-f363-43cff49967e2@lwfinger.net>
+ <2681990.mvXUDI8C0e@jernej-laptop>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <2681990.mvXUDI8C0e@jernej-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dne sreda, 24. maj 2023 ob 20:51:53 CEST je Larry Finger napisal(a):
-> Martin,
+On 5/24/23 14:18, Jernej Škrabec wrote:
 > 
-> When I applied your latest changes to my rtw88 repo, the driver for 8723ds 
-> broke. The dmesg log first showed things like:
-> 
-> [    3.603884] rtw_8723ds mmc1:0001:1: Firmware version 48.0.0, H2C version 0
-> [    3.615430] sunxi-mmc 4021000.mmc: unaligned scatterlist: os e80 length 2
-> [    3.622248] sunxi-mmc 4021000.mmc: map DMA failed
-> [    3.626974] rtw_8723ds mmc1:0001:1: sdio read16 failed (0x10040): -22
-> [    3.633435] sunxi-mmc 4021000.mmc: unaligned scatterlist: os e80 length 2
-> [    3.640236] sunxi-mmc 4021000.mmc: map DMA failed
-> 
-> There were similar messages for write16 operations.
+> This was fixed in:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cb0ddaaa5db09d7d216fcbf0e68779be223a1128
 
-This was fixed in:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cb0ddaaa5db09d7d216fcbf0e68779be223a1128
+That fix is in the kernel mainline source, but not in wireless-next, where I got 
+my source. I hope it gets resolved correctly.
 
-Best regards,
-Jernej
-
-> 
-> I was able to "fix" the problem by turning off rea16/write16 operations for the 
-> RTW8723DS with the following patch that uses the rtw_chip_wcpu_11n() function:
-> 
-> diff --git a/sdio.c b/sdio.c
-> index 1647cdc..2051c30 100644
-> --- a/sdio.c
-> +++ b/sdio.c
-> @@ -87,7 +87,7 @@ static void rtw_sdio_writew(struct rtw_dev *rtwdev, u16 val, 
-> u32 addr,
->          u8 buf[2];
->          int i;
-> 
-> -       if (rtw_sdio_use_memcpy_io(rtwdev, addr, 2)) {
-> +       if (rtw_sdio_use_memcpy_io(rtwdev, addr, 2) && !rtw_chip_wcpu_11n(rtwdev)) {
->                  sdio_writew(rtwsdio->sdio_func, val, addr, err_ret);
->                  return;
->          }
-> @@ -125,7 +125,7 @@ static u16 rtw_sdio_readw(struct rtw_dev *rtwdev, u32 addr, 
-> int *err_ret)
->          u8 buf[2];
->          int i;
-> 
-> -       if (rtw_sdio_use_memcpy_io(rtwdev, addr, 2))
-> +       if (rtw_sdio_use_memcpy_io(rtwdev, addr, 2) && !rtw_chip_wcpu_11n(rtwdev))
->                  return sdio_readw(rtwsdio->sdio_func, addr, err_ret);
-> 
->          for (i = 0; i < 2; i++) {
-> 
-> This leaves 16-bit reads and write enabled for the other chips. Alternatives 
-> would be to detect when this particular SDIO controller is in use, or last of 
-> all, add a module parameter.
-> 
-> Larry
-> 
-
-
+Larry
 
 
