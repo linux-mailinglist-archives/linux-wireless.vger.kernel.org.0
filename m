@@ -2,138 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26FDB70F9D5
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 17:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC05170FB51
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 18:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235635AbjEXPK7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 11:10:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52640 "EHLO
+        id S229624AbjEXQFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 12:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231633AbjEXPK6 (ORCPT
+        with ESMTP id S232979AbjEXQEo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 11:10:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B02FE9;
-        Wed, 24 May 2023 08:10:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA398632AF;
-        Wed, 24 May 2023 15:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD444C433D2;
-        Wed, 24 May 2023 15:10:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684941056;
-        bh=1HziZk0Ofryk7MpDRZfUaSYzXybvtVckG6+PfRVCo1c=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=VtjnI42vjLtKXXQrmlFpD4S0MDxUXc3TpPumveYqzmCrv1phZPzw7aRVWX9r8I8yP
-         YcjvDpK6GkfOBA/6OeuZwCDBgZ2WckqL/A+/9iwEtBPG9/SIwno60R6pfkl913ttyW
-         nL25h06PJrbFVcD7bmLFRfSdcJJU5y29FLYXidHBuQRR+cf4ZNvdjD1T7PWAaVwSFC
-         Rj0W0eGEa4LsxRsjwtWcKvGP92NeX3DdYfDctqQnAGbBjegMhH5WDiuy3f+XbD978d
-         cu7RGX43IKJ6B0X2NNZRbNNbflLK2CP+uPHAUTIf75BZNgbEoakwdIXqFS2oTrmxBt
-         7JaVh7h5oEUrw==
-Date:   Wed, 24 May 2023 10:10:54 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Janusz Dziedzic <janusz.dziedzic@tieto.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dean Luick <dean.luick@cornelisnetworks.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] wifi: ath10k: Use RMW accessors for changing
- LNKCTL
-Message-ID: <ZG4o/pYseBklnrTc@bhelgaas>
+        Wed, 24 May 2023 12:04:44 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2EC218C;
+        Wed, 24 May 2023 09:04:18 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-96f683e8855so160914366b.2;
+        Wed, 24 May 2023 09:04:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684944257; x=1687536257;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4kbf7t2pjWoddD/1MgzGcuAxsDnlYNa6SWc1ur855+0=;
+        b=XhD7ZTwRg5hQpPojq8rOyf59MuJ/qo/orICMJ3Gdy+ebzPL5HfD/EeN1LUufBJvXqx
+         F3NqMSNuN0EwBtInPwkaUoRzafUTIdptWNJBahQd4rmuhMcAKtiO5iyxhyFcfC/lt0tT
+         XXVq3PCg7Buu2pp4JU3L70aThvmQgYfQALjY5hw+Qg2NClu2m/eb5OrmFKMJNyCW1WQw
+         8qNacPvJPV7juEugKy4L94KIil10lr5Wv1tEu4PPOFZdG89NO0F9kOD2V7ZM/lcoHfR5
+         bp6pJXf20ZKBe7tk7whf2Dwq8FOmr6LHDfFECTrHuzg5uHxDyrXQla5c1cEBcxvTw4AJ
+         IHwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684944257; x=1687536257;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4kbf7t2pjWoddD/1MgzGcuAxsDnlYNa6SWc1ur855+0=;
+        b=NJ311M1zBleR+R3HJswC68oga3O19eQmpScBmFUcOSUtvNHJzhIHTyjkvp44oAqqgI
+         C32LCbRu3EHhZf1GHVYpbus8hPsq/z5bhg4PuAEsDhZinxXWqbfmWh0g8A/J52XQJHKO
+         z9kpi9jRTS+/oAX7cbFCVDxPYEfq+qLnAMDTwepi7IXh4uNKT2gJR73umEdWwQwPudD6
+         TDY85IjSC21P6A95J+7fLw0CEoJORZSoGe8VTMW0ARcsAneUafG0nMNy2dCdQ9+SKXIk
+         PGYPGiEPKwqOYeZuNKWet7RwGLa2gCS9py7r+PanlzbNP31HoVb1nc5VqBnRzt41aLAP
+         Njkg==
+X-Gm-Message-State: AC+VfDyLC6MaNXEIXbu7NaPJTpH/nakQ8kDCJEEAfM8C609KkxdkcY4s
+        0nUvdvOOayBTZpavmLyu1dE=
+X-Google-Smtp-Source: ACHHUZ6C8yNw/UxyHTDYSjn75RxO0AsCVtDKdsK2VfVhCxqyB/r7LKc43zomLnbMqbzBCGTWywoXqA==
+X-Received: by 2002:a17:906:eecd:b0:94a:74c9:3611 with SMTP id wu13-20020a170906eecd00b0094a74c93611mr18129346ejb.35.1684944256346;
+        Wed, 24 May 2023 09:04:16 -0700 (PDT)
+Received: from Osmten.. ([103.84.150.66])
+        by smtp.gmail.com with ESMTPSA id gw17-20020a170906f15100b0096f78953b77sm6025576ejb.147.2023.05.24.09.04.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 May 2023 09:04:16 -0700 (PDT)
+From:   Osama Muhammad <osmtendev@gmail.com>
+To:     nbd@nbd.name, ryder.lee@mediatek.com, lorenzo@kernel.org,
+        shayne.chen@mediatek.com, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Osama Muhammad <osmtendev@gmail.com>
+Subject: [PATCH] debugfs.c: Fix error checking for debugfs_create_dir
+Date:   Wed, 24 May 2023 21:03:52 +0500
+Message-Id: <20230524160352.19704-1-osmtendev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230517105235.29176-10-ilpo.jarvinen@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 17, 2023 at 01:52:35PM +0300, Ilpo Järvinen wrote:
-> Don't assume that only the driver would be accessing LNKCTL. ASPM
-> policy changes can trigger write to LNKCTL outside of driver's control.
-> 
-> Use RMW capability accessors which does proper locking to avoid losing
-> concurrent updates to the register value. On restore, clear the ASPMC
-> field properly.
-> 
-> Fixes: 76d870ed09ab ("ath10k: enable ASPM")
-> Suggested-by: Lukas Wunner <lukas@wunner.de>
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> index a7f44f6335fb..9275a672f90c 100644
-> --- a/drivers/net/wireless/ath/ath10k/pci.c
-> +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> @@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
->  	ath10k_pci_irq_enable(ar);
->  	ath10k_pci_rx_post(ar);
->  
-> -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> -				   ar_pci->link_ctl);
-> +	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> +					   PCI_EXP_LNKCTL_ASPMC,
-> +					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
->  
->  	return 0;
->  }
-> @@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
->  
->  	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
->  				  &ar_pci->link_ctl);
-> -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> -				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
-> +	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> +				   PCI_EXP_LNKCTL_ASPMC);
+This patch fixes the error checking in debugfs.c in
+debugfs_create_dir. The correct way to check if an error occurred
+is using 'IS_ERR' inline function.
 
-These ath drivers all have the form:
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  1) read LNKCTL
-  2) save LNKCTL value in ->link_ctl
-  3) write LNKCTL with "->link_ctl & ~PCI_EXP_LNKCTL_ASPMC"
-     to disable ASPM
-  4) write LNKCTL with ->link_ctl, presumably to re-enable ASPM
+diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
+index 57fbcc83e074..d9ba700131fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
+@@ -109,7 +109,7 @@ mt76_register_debugfs_fops(struct mt76_phy *phy,
+ 	struct dentry *dir;
+ 
+ 	dir = debugfs_create_dir("mt76", phy->hw->wiphy->debugfsdir);
+-	if (!dir)
++	if (IS_ERR(dir))
+ 		return NULL;
+ 
+ 	debugfs_create_u8("led_pin", 0600, dir, &phy->leds.pin);
+-- 
+2.34.1
 
-These patches close the hole between 1) and 3) where other LNKCTL
-updates could interfere, which is definitely a good thing.
-
-But the hole between 1) and 4) is much bigger and still there.  Any
-update by the PCI core in that interval would be lost.
-
-Straw-man proposal:
-
-  - Change pci_disable_link_state() so it ignores aspm_disabled and
-    always disables ASPM even if platform firmware hasn't granted
-    ownership.  Maybe this should warn and taint the kernel.
-
-  - Change drivers to use pci_disable_link_state() instead of writing
-    LNKCTL directly.
-
-Bjorn
