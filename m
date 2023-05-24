@@ -2,98 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F6B70F296
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 11:22:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F9370F2FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 11:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240536AbjEXJWy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 05:22:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46806 "EHLO
+        id S229448AbjEXJhG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 05:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240674AbjEXJWs (ORCPT
+        with ESMTP id S230143AbjEXJgp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 05:22:48 -0400
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4447FE74
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 02:22:25 -0700 (PDT)
-Received: by mail-yb1-xb42.google.com with SMTP id 3f1490d57ef6-ba82059ef0bso655850276.1
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 02:22:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684920144; x=1687512144;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cpy7HUUl9JUJVfHeyZRx3CTbUVGObKlyKlmgTELiasw=;
-        b=rO2GCpdjmun/iHzG6gQ6eVnyzXqJSVKDuFFFDyJVpeBKr7jm+IbQfX4mCh2H+i9nnr
-         QL3Hl5mkarr2KPzc1KC1RmJC1iVYIF8NV+llUi4yR7xD8ecwlpYjKhkPC968UIoB574C
-         GjPl3GZ7lO5rKuQjwBxjt5sptk9ZgLUqrkXjmNiBB2MVF3qjRBZu7UxqrPFzA6BiqIby
-         8ItbqvTpYPiI3iiF6SEOZfop6dgSZQyUbsH2D0zHfWJJX5VgqVex0e0haftdwS+htG3x
-         73gt4TpkMCc7dR2de7Y1D4WRU1+jrohuECJDF26f1DAgd4l8KrPytle7iXtfUMN2295d
-         qvFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684920144; x=1687512144;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cpy7HUUl9JUJVfHeyZRx3CTbUVGObKlyKlmgTELiasw=;
-        b=iHdUGuf87UW02cNwTUgA5kX+84/++PH7Zw+WC8iHxanp9UqcBHJyRVvRB9y8LqtC6e
-         Tjihyd/jCcwM3adbzC05SfSk6Qz2W/jCqJLoUpf2KuyDkpvm8576uIIh2Ymmq8rjoeoF
-         i54rccreupHC+T7fCzf0D6j6yFlXxjb/c4K3CAy6jvtZpn2z3IO4HLcmnzLoCZ7d6CvD
-         BCz94Zb/Cy4hN4vKb8sNVOLX5UcaWArNZ7QtZIzn0Z0NI0SR/077+QqzW+9JVsvyOCK2
-         MuE5FL/Yn0DcnNvOmbW4TvLM18A7tvSyVVkVV1RWolNek94nH//xi8GJOKvYl4QirPck
-         qUIw==
-X-Gm-Message-State: AC+VfDwzIh0/fOXPX33jflo8+YaqVS6gweRax490tB1yw4g0bN5lcEuS
-        nSnZk3ScrlheKfZ0Z1KU9hKn1B8ihElQLyvAPyU=
-X-Google-Smtp-Source: ACHHUZ7mkZfe9kfHByEaLTUpKYvYYHrn4VSdO6pPb2YIA9I0+12zHZ4yZ7hXM2XVVloeWMijXpVS+wr1YQsw6ZmiXEs=
-X-Received: by 2002:a25:f447:0:b0:b9a:7693:93f7 with SMTP id
- p7-20020a25f447000000b00b9a769393f7mr16532689ybe.45.1684920143691; Wed, 24
- May 2023 02:22:23 -0700 (PDT)
+        Wed, 24 May 2023 05:36:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E34E58
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 02:36:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D1420639B6
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 09:36:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA40AC433D2;
+        Wed, 24 May 2023 09:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684920982;
+        bh=3RDAmXbPpZPlOZLbdKiVZC4UxcSl6x7J31OGNvXq5Rc=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bmJlENkBDccadjEH4PGKANOqT/6lqCbALQYInWsgBP5OJU+zonwS9F0jnSYtH1Kj/
+         UFt2W3H7a3OUEoqry9N6asPSLTOKBh4brdVAIr4Uil5ARjtjAq14hphcJn7IQ8JM8A
+         Tyt1FOYiLwGvN7BscozZ8uwFzSHsCp311RbTSigiVbdR4AT48o5VcXd9qT2t96qvYM
+         M8yI+M3iPuNBAo3xODQRHVK915onOprsEHBJXBy1Ere1iW+DI64jZ6NGCUc9b7V+Q8
+         t3hduGP9XDxw8BHRhfY950yyL3Rdc2phE0vsn0FrgNRqCuTKho4oQOTSR9qedIaW8X
+         JxNRFNGOPKZLA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Maharaja Kennadyrajan <quic_mkenna@quicinc.com>
+Cc:     Tyler Stachecki <stachecki.tyler@gmail.com>,
+        "open list\:QUALCOMM ATHEROS ATH11K WIRELESS DRIVER" 
+        <ath11k@lists.infradead.org>,
+        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
+        <linux-wireless@vger.kernel.org>, <quic_akalaise@quicinc.com>,
+        <quic_mpubbise@quicinc.com>
+Subject: Re: [PATCH v3] wifi: ath11k: Add rx histogram stats
+References: <CAC6wqPVvke=Gy59yvYcaps2dwVzO=wfwdSTGNxFzAOWc5OpoDw@mail.gmail.com>
+        <d6f794e3-7463-da7d-721e-00869faf4c17@quicinc.com>
+Date:   Wed, 24 May 2023 12:36:16 +0300
+In-Reply-To: <d6f794e3-7463-da7d-721e-00869faf4c17@quicinc.com> (Maharaja
+        Kennadyrajan's message of "Wed, 24 May 2023 14:33:03 +0530")
+Message-ID: <87h6s2kr5b.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a05:7000:bb10:b0:4d0:8b23:c08c with HTTP; Wed, 24 May 2023
- 02:22:23 -0700 (PDT)
-Reply-To: philipsjohnsongoodp@gmail.com
-From:   philips <robertandersongood7@gmail.com>
-Date:   Wed, 24 May 2023 11:22:23 +0200
-Message-ID: <CAE=WtcSJv2U88-tqY7YG5o_Q5Hebo2f_r2zvWVgkof3+1iMXew@mail.gmail.com>
-Subject: good
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=3.3 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-0JTQvtGA0L7Qs9C+0Lkg0LTRgNGD0LMsDQrQnNC10L3RjyDQt9C+0LLRg9GCINCR0LDRgC7QpNC4
-0LvQuNC/0YEg0JTQttC+0L3RgdC+0L0sINGPINCw0LTQstC+0LrQsNGCINC4INGH0LDRgdGC0L3R
-i9C5DQrQvNC10L3QtdC00LbQtdGAINC/0L4g0YDQsNCx0L7RgtC1INGBINC60LvQuNC10L3RgtCw
-0LzQuCDQvNC+0LXQvNGDINC/0L7QutC+0LnQvdC+0LzRgyDQutC70LjQtdC90YLRgy4g0JIgMjAx
-NyDQs9C+0LTRgw0K0LzQvtC5INC60LvQuNC10L3RgiDQv9C+INC40LzQtdC90LgNCtCc0LjRgdGC
-0LXRgCDQmtCw0YDQu9C+0YEsINGPINGB0LLRj9C30LDQu9GB0Y8g0YEg0LLQsNC80Lgg0L/QviDR
-gtC+0Lkg0L/RgNC40YfQuNC90LUsINGH0YLQviDQstGLDQrQvdC+0YHQuNGC0Ywg0L7QtNC90YMg
-0YTQsNC80LjQu9C40Y4g0YEg0L/QvtC60L7QudC90YvQvCwg0Lgg0Y8g0LzQvtCz0YMg0L/RgNC1
-0LTRgdGC0LDQstC40YLRjCDQstCw0YEg0LrQsNC6DQrQsdC10L3QtdGE0LjRhtC40LDRgCDQuCDQ
-sdC70LjQttCw0LnRiNC40Lkg0YDQvtC00YHRgtCy0LXQvdC90LjQuiDRgdGA0LXQtNGB0YLQsiDQ
-vNC+0LXQs9C+INC/0L7QutC+0LnQvdC+0LPQviDQutC70LjQtdC90YLQsCwg0YLQvtCz0LTQsCDQ
-stGLDQrQstGL0YHRgtGD0L/QuNGC0Ywg0LIg0LrQsNGH0LXRgdGC0LLQtSDQtdCz0L4g0LHQu9C4
-0LbQsNC50YjQtdCz0L4g0YDQvtC00YHRgtCy0LXQvdC90LjQutCwINC4INC/0L7RgtGA0LXQsdC+
-0LLQsNGC0YwNCtGB0YDQtdC00YHRgtCy0LAuINC+0YHRgtCw0LLQu9GP0YLRjCDQvdCw0LvQuNGH
-0L3Ri9C1DQrQvdCw0YHQu9C10LTRgdGC0LLQviDRgdC10LzQuCDQvNC40LvQu9C40L7QvdC+0LIg
-0L/Rj9GC0LjRgdC+0YIg0YLRi9GB0Y/RhyDQodC+0LXQtNC40L3QtdC90L3Ri9GFINCo0YLQsNGC
-0L7Qsg0K0JTQvtC70LvQsNGA0L7QsiAoNyA1MDAgMDAwLDAwINC00L7Qu9C70LDRgNC+0LIg0KHQ
-qNCQKS4g0JzQvtC5INC/0L7QutC+0LnQvdGL0Lkg0LrQu9C40LXQvdGCINC4INC30LDQutCw0LTR
-i9GH0L3Ri9C5DQrQtNGA0YPQsyDQstGL0YDQvtGBINCyDQrCq9CU0L7QvCDQsdC10Lcg0LzQsNGC
-0LXRgNC4wrsuINCjINC90LXQs9C+INC90LUg0LHRi9C70L4g0L3QuCDRgdC10LzRjNC4LCDQvdC4
-INCx0LXQvdC10YTQuNGG0LjQsNGA0LAsINC90Lgg0YHQu9C10LTRg9GO0YnQtdCz0L4NCtGA0L7Q
-tNGB0YLQstC10L3QvdC40LrQvtCyINCyINC90LDRgdC70LXQtNGB0YLQstC+INCh0YDQtdC00YHR
-gtCy0LAg0L7RgdGC0LDQstC70LXQvdGLINCyINCx0LDQvdC60LUuDQrQktGLINC00L7Qu9C20L3R
-iyDRgdCy0Y/Qt9Cw0YLRjNGB0Y8g0YHQviDQvNC90L7QuSDRh9C10YDQtdC3INC80L7QuSDQu9C4
-0YfQvdGL0Lkg0LDQtNGA0LXRgSDRjdC70LXQutGC0YDQvtC90L3QvtC5INC/0L7Rh9GC0Ys6DQpw
-aGlsaXBzam9obnNvbmdvb2RwQGdtYWlsLmNvbQ0K0KEg0L3QsNC40LvRg9GH0YjQuNC80Lgg0L/Q
-vtC20LXQu9Cw0L3QuNGP0LzQuCwNCtCR0LDRgC4g0KTQuNC70LjQv9GBINCU0LbQvtC90YHQvtC9
-DQo=
+Maharaja Kennadyrajan <quic_mkenna@quicinc.com> writes:
+
+> On 5/21/2023 11:21 PM, Tyler Stachecki wrote:
+>
+>> Was this really tested on QCN9074 as the commit text suggests...?
+>>
+>>> const struct ath11k_hw_ops ipq6018_ops = {
+>>> @@ -1132,6 +1147,7 @@ const struct ath11k_hw_ops wcn6750_ops = {
+>>>   .rx_desc_get_msdu_payload = ath11k_hw_qcn9074_rx_desc_get_msdu_payload,
+>>>   .reo_setup = ath11k_hw_wcn6855_reo_setup,
+>>>   .mpdu_info_get_peerid = ath11k_hw_ipq8074_mpdu_info_get_peerid,
+>>> + .mpdu_info_get_mpdu_len = ath11k_hw_qcn9074_mpdu_info_get_mpdu_len,
+>> ...
+>>
+>>> +static u32 ath11k_hal_rx_mpduinfo_get_mpdu_len(struct ath11k_base *ab,
+>>> +       struct hal_rx_mpdu_info *mpdu_info)
+>>> +{
+>>> + return ab->hw_params.hw_ops->mpdu_info_get_mpdu_len(mpdu_info);
+>>> +}
+>> I think you want to put this under qcn9074_ops. As of now, when
+>> QCN9074 is present, it attempts to jump to a NULL pointer as
+>> mpdu_info_get_mpdu_len remains uninitialized for qcn9074_ops.
+>>
+>> And, do you not need to define mpdu_info_get_mpdu_len for all the
+>> other hw_ops? If so, please be careful about defining it for
+>> WCN6855/WCN6750 as there was a recent regression due to how the RX
+>> MPDU info is provided by those firmwares as it differed from
+>> IPQ8074/QCN9074. I personally do not have the appropriate literature
+>> to determine whether or not this is consequential or not here as well,
+>> though it seems like it would be:
+>> https://lore.kernel.org/linux-wireless/20230404072234.18503-3-quic_youghand@quicinc.com/
+>>
+>> Tyler
+>
+> Thanks for your comments. Will fix this in the upcoming patchset.
+
+I have some comments as well but I haven't been able to send them yet. I
+recommend waiting for them before sending the next version.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
