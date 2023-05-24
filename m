@@ -2,63 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B10A770EF92
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 09:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 993AB70EF97
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 09:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239957AbjEXHiN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 03:38:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39908 "EHLO
+        id S239748AbjEXHjr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 03:39:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239861AbjEXHiL (ORCPT
+        with ESMTP id S239476AbjEXHjq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 03:38:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CA3AA;
-        Wed, 24 May 2023 00:38:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D31A63A1D;
-        Wed, 24 May 2023 07:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38090C433D2;
-        Wed, 24 May 2023 07:38:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684913887;
-        bh=Hbz8LEfGaSM02H3iNlB0mthVRySAG3og3BSuDmEKWfQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=RsujwDTA38sOCzbP6mo9BclpTmK6Ngysw2u951NSNd9DsKSy2KQ91nstwobR/85HK
-         EBQklxmOxubaVti2y3WGG+Dyra4GxlLKjNpd5JspoYf7pGt9Da25qdGegQtqUYvaAN
-         tabXzpnW6s56sBxjY9NPD1AjoAQI7LqPpyzwfu3QILxMgdHYD2VjIbbJQnabtyv3Nx
-         eFe6D2UuGMYyzh+wCBAAJtGDH/f880TuJgbLfjPFBx4hGD5slX+uvZP39ScVJ8ZB7e
-         TGZkCb6e9DxzdAr6PN4n2GaLtHsWTBja9NPnqPskYNrW0K1hlbBuu2BL7RMC4/c1ei
-         jWG9gvoUkZ9Jg==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 24 May 2023 03:39:46 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F478F
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 00:39:45 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34O5nqPc021003;
+        Wed, 24 May 2023 07:39:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=CgT0p0n5Ta12gb6kqsmYR9CbA+Jcv69Q0WyCPyHwvjA=;
+ b=kqo81PthXfN7VmabueNrjbtRzD0OO+Bo52l8OUfoEk/vP8mdd6Un8y5WVkHR8x/lexU+
+ qwhVLMyJaBAIgTBDlP3HJFNSRK+1kBgFVmORnpA4baO4YtKsNdk9KZDG9tvCDymyYlu2
+ Tbn7uSYZJxS2cBiLH49QDB7QJuf3JTpDiwEdHR5MWTMuVT27vORF/QrvFXbaxBredEdp
+ Tvbr96uTVtdd/f2JH37eQ09s5HfEUy72XtKRg/ePF4YbCuZOal+IEkaBkGEn7UW+0KPh
+ 2W//CVdwGPXAbI2G/4nEz/ctm0bRNfSysjbka/Uv5TBI7tO+G9X/zjXc1i0xnVnF7q2g pQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qrsx0txfg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 24 May 2023 07:39:34 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34O7d59U027310
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 24 May 2023 07:39:05 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 24 May
+ 2023 00:39:04 -0700
+Message-ID: <02c7d3f8-2486-cc59-4503-52326e12a76d@quicinc.com>
+Date:   Wed, 24 May 2023 15:39:02 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+ <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+ <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+ <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+ <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
+ <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
+ <c15e368e-2fea-a1d8-9c0d-db9278ded5e5@quicinc.com>
+ <113761966918b2f390d3c9304307b42a0b4a829b.camel@sipsolutions.net>
+ <76863dec-1b2f-b933-7c5e-21c732de4bc6@quicinc.com>
+ <2cc79101249548f2a92c14af6aff6121143907d6.camel@sipsolutions.net>
+Content-Language: en-US
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <2cc79101249548f2a92c14af6aff6121143907d6.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 43/44] wireless: add HAS_IOPORT dependencies
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230522105049.1467313-44-schnelle@linux.ibm.com>
-References: <20230522105049.1467313-44-schnelle@linux.ibm.com>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jouni Malinen <j@w1.fi>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168491387892.8984.13248048073287184221.kvalo@kernel.org>
-Date:   Wed, 24 May 2023 07:38:04 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: b2YeXSwRSFkEW01lQ5dvifFsQERfP7B9
+X-Proofpoint-GUID: b2YeXSwRSFkEW01lQ5dvifFsQERfP7B9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-24_03,2023-05-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 suspectscore=0 mlxscore=0 mlxlogscore=940
+ clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305240065
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -67,22 +88,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+On 4/18/2023 5:34 PM, Johannes Berg wrote:
+> On Tue, 2023-04-18 at 17:27 +0800, Wen Gong wrote:
+>> Now lower driver I used do not store the key
+>>
+> Sure, that's fine.
+>
+>> and do not trigger
+>> BSS_CHANGED_ASSOC for new links after assoc.
+> I think you need to think hard about this ... whatever BSS_CHANGED_ASSOC
+> causes is likely no longer correct in MLO. Again, the assoc state
+> *itself* is only changed once, when the whole MLD associated.
+>
+>> So my suggestion is a way to active all links while assoc, this way is
+>> simple for lower driver I used.
+> Sure, and we do that.
+>
+> But that's not what you're asking - you're asking to re-do some *MLD*
+> state when a new link is added, and I'm saying that it doesn't make
+> sense to "add" (again) a key to the MLD that was already added, nor
+> calling a vif (MLD!) level method saying the MLD changed state to
+> associated (again).
+>
+> I really think you should solve this in the driver, that doesn't mean
+> you have to _store_ he key, you can use one of the iteration functions
+> as well.
+>
+>> Also ieee80211_set_active_links() is another way to active all links
+>> after assoc.
+>>
+> Sure.
 
-> In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
-> not being declared. We thus need to add HAS_IOPORT as dependency for
-> those drivers using them.
-> 
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-> Acked-by: Kalle Valo <kvalo@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Hi Johannes,
 
-Now that the dependencies are in v6.4-rc1 my plan is to take this to
-wireless-next, is that ok for everyone?
+May I add a new ops in struct ieee80211_ops? like this:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230522105049.1467313-44-schnelle@linux.ibm.com/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+u16 active_links(struct ieee80211_hw *hw, struct ieee80211_vif vif, u16 
+new_links)"
 
+then ieee80211_set_vif_links_bitmaps() call the ops to get the links for 
+station and set the sdata->vif.active_links with the return value from 
+lower driver,
+it means lower driver will dynamic select the links count at this moment.
+
+If lower driver not register ops active_links, then keep current logic.
+>
+> johannes
