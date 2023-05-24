@@ -2,60 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7A070EFD3
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 09:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B149B70F191
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 10:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239380AbjEXHre (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 03:47:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
+        id S240392AbjEXI5b convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 04:57:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234973AbjEXHrc (ORCPT
+        with ESMTP id S240209AbjEXI53 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 03:47:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52813B6;
-        Wed, 24 May 2023 00:47:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2E8863A17;
-        Wed, 24 May 2023 07:47:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2144C433EF;
-        Wed, 24 May 2023 07:47:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684914446;
-        bh=KhQ0blVR5cXlzUR6vdxYF+zuuLth0MWzdADoCBQqa44=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=pLpUbESyZfGpmf0GKjmrfiv0HHs77Na8zqN6Wm0A4OWoRIqWT/PyZufb9YZz4NZWC
-         Ak2xLnl8NWJfwuYnjB8LEZBwoCQw16eHDK1JYar9J+uOnj3AoTwLrZalzcX7Vfj/Sp
-         8aRkeCka6sTbv9VltyPUCMqe6jrev4TDqj1FLNzLThHZZyawLZJbU4rVjakc3TR5Bo
-         6S4U+EXpcQbuvBM8Xehrfa8zzvdAQhrGijsGP2zEYHbTcOsWUt/0BOK6Foz9RkShS6
-         WmcvuYcrck/2xnpHctbegwgKwNi+n0peoHIi/UNq+8g6zb3udU5seVDMXa9wW3UtMh
-         qOR899x8zbmzg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] wifi: mt7601u: update firmware path
-References: <fefcbf36f13873ae0d97438a0156b87e7e1ae64e.1684191377.git.daniel@makrotopia.org>
-        <87o7mkn91f.fsf@kernel.org>
-Date:   Wed, 24 May 2023 10:47:21 +0300
-In-Reply-To: <87o7mkn91f.fsf@kernel.org> (Kalle Valo's message of "Tue, 16 May
-        2023 08:24:12 +0300")
-Message-ID: <87ttw2kw6u.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 24 May 2023 04:57:29 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9890132
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 01:57:27 -0700 (PDT)
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34O8YebsE031126, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34O8YebsE031126
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 24 May 2023 16:34:40 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 24 May 2023 16:34:51 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 24 May 2023 16:34:51 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 24 May 2023 16:34:51 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: pull reques [v3]t: rtw89: 8851b: add firmware v0.29.41.0
+Thread-Topic: pull reques [v3]t: rtw89: 8851b: add firmware v0.29.41.0
+Thread-Index: AdmOGmoMCVNQIP+kRjGOG3ZL0CKpxA==
+Date:   Wed, 24 May 2023 08:34:51 +0000
+Message-ID: <7c011b352b344cae8fa6b3a1beb71d8f@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,42 +61,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Hi,
 
-> Daniel Golle <daniel@makrotopia.org> writes:
->
->> mt7601u.bin was moved to mediatek/ folder in linux-wireless via commit
->> 8451c2b1 ("mt76xx: Move the old Mediatek WiFi firmware to mediatek")
->> and linux-firmware release 20230515.
->
-> Why was it moved?
+Add initial firmware of rtw89 driver for newly supported chip 8851BE.
 
-Here's the link to the commit in linux-firmware:
+Add the missing WHENCE by v2.
+Modify driver description to mention RTL8851B by v3.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=8451c2b1d529dc1a49328ac9235d3cf5bb8a8fcb
+Thank you
+Ping-Ke
+---
+The following changes since commit 1ba3519eab0fbc3cedf6b423ea0470461b902c1b:
 
-It would be good to include that in the commit log. Unfortunately the
-linux-firmware commit doesn't explain why the change is made, oh well.
+  Merge branch 'dev-queue' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/firmware (2023-05-23 13:07:29 -0400)
 
->> --- a/drivers/net/wireless/mediatek/mt7601u/usb.h
->> +++ b/drivers/net/wireless/mediatek/mt7601u/usb.h
->> @@ -8,7 +8,7 @@
->>  
->>  #include "mt7601u.h"
->>  
->> -#define MT7601U_FIRMWARE	"mt7601u.bin"
->> +#define MT7601U_FIRMWARE	"mediatek/mt7601u.bin"
->
-> How do we handle backwards compatibility? We have a rule that old
-> userspace needs to work with new kernel and this change breaks that.
+are available in the Git repository at:
 
-Luckily the linux-firmware commit added symlinks so that won't break the
-backward compatibility. But I think in the driver we still need to
-support both the old and new location for several years. So the driver
-should first try the new location, next the old location and only after
-that fail.
+  https://github.com/pkshih/linux-firmware.git HEAD
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+for you to fetch changes up to c10facaf11266da21db27de9af1c51756ecd07bf:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  rtw89: 8851b: add firmware v0.29.41.0 (2023-05-24 16:30:58 +0800)
+
+----------------------------------------------------------------
+Ping-Ke Shih (1):
+      rtw89: 8851b: add firmware v0.29.41.0
+
+ WHENCE                |   3 ++-
+ rtw89/rtw8851b_fw.bin | Bin 0 -> 1090544 bytes
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+ create mode 100644 rtw89/rtw8851b_fw.bin
+
