@@ -2,60 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7E4711678
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 21:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CD6B7116D7
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 21:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243271AbjEYS4W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 14:56:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45248 "EHLO
+        id S243252AbjEYTBc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 15:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243500AbjEYSzX (ORCPT
+        with ESMTP id S243658AbjEYS7l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 14:55:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D262F210A;
-        Thu, 25 May 2023 11:47:17 -0700 (PDT)
+        Thu, 25 May 2023 14:59:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012D559FE;
+        Thu, 25 May 2023 11:49:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A45C60AFD;
-        Thu, 25 May 2023 18:45:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C639C433EF;
-        Thu, 25 May 2023 18:45:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B69364914;
+        Thu, 25 May 2023 18:45:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9460C4339C;
+        Thu, 25 May 2023 18:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685040304;
-        bh=aql5NXzheAYQGdrzLD5fzib1YS8adfuPpeMQmFo/SR4=;
+        s=k20201202; t=1685040356;
+        bh=K0DHSQSZVAT8N8ouP5wZ7sV+pKaXBbvB5JzNzqtza14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c5mXoxZAiZcY8iDe6vCIlTN03oNXgq+06RMHByKdoompPR7xhqR+b/XUlGwZ3cCW4
-         QEnxIJzjo6/PukA2GgMVyLf49xsu4kg+zZAM+63jTeElznHe14I9STqK1gSlUdL8eK
-         d2Ileb4AMLJOmvfK6jSMvXcSnUOni/+3g9rP6vt0ktbtyyzs/dvJK2fJuqquGRaBpI
-         FYotsiJor8Auig9i3Bqo0KdOPoLoCN2bXi0XJvxYRpSr4IuENAY0tCBLpVY44pQaFZ
-         lauZjUSCSi6w0ZSVFFLHnrw9jg2ArKRr4wkSn/VO9zOKEpoFYf8HxzAalzUCDK4qJv
-         u8RU4q2LDShoA==
+        b=EyPbOm1ZW8q9BfDUXvNVfPoFPgEgR6XQeVjZoJMjuitWJVz0VWV8oYd1XAZJBNBk+
+         OlGhvkxe2f8UL38OjgtxqprkVMSQ5QNSj+MXZ6xZshz+nvMPrAF77waoEOQiYCjyhN
+         ViXNvmOMVn2f7Oc/PF88KCeK6kyuo90AzequT9c/qU7UW2sZIFb9EhcP2BKjX12RT7
+         ZXecXGkqszXHKxm2q7Bom8mqZD1qqpb/kyUytDBK43fZbdwQRZgkVRJSpADsixWsF5
+         TfO3nj0dQ0TzfUWbPutoK9NLF5DQKXECwvnVvwgeKPNcrEPZv/3nueaT2zlo84NP7x
+         PqIirsoTgYGyg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-        kernel test robot <lkp@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        nathan@kernel.org, ndesaulniers@google.com,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 4.19 23/27] wifi: b43: fix incorrect __packed annotation
-Date:   Thu, 25 May 2023 14:43:49 -0400
-Message-Id: <20230525184356.1974216-23-sashal@kernel.org>
+Cc:     Yun Lu <luyun@kylinos.cn>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, Jes.Sorensen@gmail.com,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 13/20] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+Date:   Thu, 25 May 2023 14:45:09 -0400
+Message-Id: <20230525184520.2004878-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230525184356.1974216-1-sashal@kernel.org>
-References: <20230525184356.1974216-1-sashal@kernel.org>
+In-Reply-To: <20230525184520.2004878-1-sashal@kernel.org>
+References: <20230525184520.2004878-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,64 +57,71 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Yun Lu <luyun@kylinos.cn>
 
-[ Upstream commit 212457ccbd60dba34f965e4ffbe62f0e4f970538 ]
+[ Upstream commit 20429444e653ee8242dfbf815c0c37866beb371b ]
 
-clang warns about an unpacked structure inside of a packed one:
+When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
+probability of failure, which shows "authentication with ... timed out".
+Through debugging, it was found that the RCR register has been inexplicably
+modified to an incorrect value, resulting in the nic not being able to
+receive authenticated frames.
 
-drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
+To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
+the RCR value every time the register is written, and use it the next
+time the register need to be modified.
 
-The problem here is that the anonymous union has the default alignment
-from its members, apparently because the original author mixed up the
-placement of the __packed attribute by placing it next to the struct
-member rather than the union definition. As the struct itself is
-also marked as __packed, there is no need to mark its members, so just
-move the annotation to the inner type instead.
-
-As Michael noted, the same problem is present in b43legacy, so
-change both at the same time.
-
-Acked-by: Michael Büsch <m@bues.ch>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230516183442.536589-1-arnd@kernel.org
+Link: https://lore.kernel.org/r/20230512012055.2990472-1-luyun_611@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/b43/b43.h             | 2 +-
- drivers/net/wireless/broadcom/b43legacy/b43legacy.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/b43.h b/drivers/net/wireless/broadcom/b43/b43.h
-index b77d1a904f7e6..a449561fccf28 100644
---- a/drivers/net/wireless/broadcom/b43/b43.h
-+++ b/drivers/net/wireless/broadcom/b43/b43.h
-@@ -651,7 +651,7 @@ struct b43_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index c1163f2a09251..1913b51c1e809 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1268,6 +1268,7 @@ struct rtl8xxxu_priv {
+ 	u32 rege9c;
+ 	u32 regeb4;
+ 	u32 regebc;
++	u32 regrcr;
+ 	int next_mbox;
+ 	int nr_out_eps;
  
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 1c9f7e1f63cfd..bfd704b17a447 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -4051,6 +4051,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
+ 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
+ 	rtl8xxxu_write32(priv, REG_RCR, val32);
++	priv->regrcr = val32;
  
-diff --git a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-index 6b0cec467938f..f49365d14619f 100644
---- a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-+++ b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-@@ -379,7 +379,7 @@ struct b43legacy_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
+ 	/*
+ 	 * Accept all multicast
+@@ -5591,7 +5592,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 				      unsigned int *total_flags, u64 multicast)
+ {
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+-	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
++	u32 rcr = priv->regrcr;
  
- #define B43legacy_PHYMODE(phytype)	(1 << (phytype))
+ 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
+ 		__func__, changed_flags, *total_flags);
+@@ -5637,6 +5638,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
+ 	 */
+ 
+ 	rtl8xxxu_write32(priv, REG_RCR, rcr);
++	priv->regrcr = rcr;
+ 
+ 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
+ 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
 -- 
 2.39.2
 
