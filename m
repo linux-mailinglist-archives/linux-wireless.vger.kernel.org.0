@@ -2,76 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCB4870FF42
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 May 2023 22:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04068710214
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 02:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbjEXUcA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 16:32:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40118 "EHLO
+        id S233797AbjEYAqv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 24 May 2023 20:46:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjEXUb7 (ORCPT
+        with ESMTP id S229661AbjEYAqt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 16:31:59 -0400
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF61610B
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 13:31:57 -0700 (PDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-19674cab442so590910fac.3
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 13:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684960317; x=1687552317;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=INAF0tX8rmBBU+wYFCtXzVhr54eZNosdE/vo/Z06pxg=;
-        b=omOArGIim/fPKcFnv+EMB/mql7qOlQ2bFDFJPBRV90M82vwwfN3tMELKvS9VslzX+Z
-         f1ywZQKR2RaR0qtOZo4WolMHcZnKeuza9nlkGvMfHtcHY+Nhn8vos90S7AXGPt2yCksa
-         vtiQ2cuYqPsJDvl+Zl0jO821KA7Oq7CTRiIe8H7lLqo8rZqq3iGIzyRAFtqCZ+UBP5tP
-         Yl3YWDs6e2AlAf/YlzEIENSlxdEfxtLfH0t71QWRiz38s9n++jdhgOcdS7RubT+JuRsI
-         qCYznl4l+W1ctpwV8xcIYMRTx6hNd54GaD8SThXv9bc/DNSjjQ/bbmFmaTRr/Ihnalbg
-         VOhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684960317; x=1687552317;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=INAF0tX8rmBBU+wYFCtXzVhr54eZNosdE/vo/Z06pxg=;
-        b=ffSw3lFuMK+PLSn7TSzPtLIbLzFcExcwTp7jozlCGmWYWAqFWctbWxxNwZg+mq8by9
-         Re70FkFN9Ygot/7lK5Y5UOjH78I44cDPr7lkPGibKQ52giBsplXDCiRdVX4xFbMGdEQL
-         +3DTdDtTnwTHOd8n3vPBjWU0HzWuHnCIRcEgkY2+5go3p8wdu6kc8ZoWouiiRYPLS0vH
-         +/8oLg/6qKB2MnxDf4YxgPIHc1nBsCUavUQeiqB4NF7bNlBvVmL8DhaJSTLtgoMW+amh
-         1z8wbLma2OCOfbrXzqXQZV8ygK31o0mc/r4ig3TEokZLWV89jFfXUIDim0zSyLcgHp9e
-         4LdQ==
-X-Gm-Message-State: AC+VfDyHGfv/adFIRFlRz0ko6k5jxtOWNwDiHO0XE50p+S5g0EUk+9t4
-        51hcp7w6NthU58GcJXvWA3w=
-X-Google-Smtp-Source: ACHHUZ7wTikKBXTCYiR6v5RMlzRS5F7AqZQ1A753CX/ttKwEdmQ6ZOKk+BPLJQqXAiYc6Qbo4FNF7Q==
-X-Received: by 2002:a05:6870:b286:b0:18e:d237:9693 with SMTP id c6-20020a056870b28600b0018ed2379693mr483313oao.46.1684960317299;
-        Wed, 24 May 2023 13:31:57 -0700 (PDT)
-Received: from [192.168.0.159] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id a2-20020a056870b14200b0018045663fc5sm325226oal.48.2023.05.24.13.31.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 May 2023 13:31:56 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <547524c3-bfb4-8132-b309-6eb9e648881e@lwfinger.net>
-Date:   Wed, 24 May 2023 15:31:55 -0500
+        Wed, 24 May 2023 20:46:49 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD98D3
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 17:46:45 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34P0jCRk9023752, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34P0jCRk9023752
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 25 May 2023 08:45:12 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 25 May 2023 08:45:23 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Thu, 25 May 2023 08:45:23 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Thu, 25 May 2023 08:45:23 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+CC:     Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "petter@technux.se" <petter@technux.se>
+Subject: RE: [PATCH] wifi: rtw88: usb: silence log flooding error message
+Thread-Topic: [PATCH] wifi: rtw88: usb: silence log flooding error message
+Thread-Index: AQHZjiwhpaOYDLChaE6ysR4gEzG9Hq9qJPMQ
+Date:   Thu, 25 May 2023 00:45:23 +0000
+Message-ID: <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
+References: <20230524103934.1019096-1-s.hauer@pengutronix.de>
+In-Reply-To: <20230524103934.1019096-1-s.hauer@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: rtw88: Problem with sdio.c
-Content-Language: en-US
-To:     =?UTF-8?Q?Jernej_=c5=a0krabec?= <jernej.skrabec@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-References: <1027342a-97dd-83cd-f363-43cff49967e2@lwfinger.net>
- <2681990.mvXUDI8C0e@jernej-laptop>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <2681990.mvXUDI8C0e@jernej-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,14 +77,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/24/23 14:18, Jernej Škrabec wrote:
+
+
+> -----Original Message-----
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Sent: Wednesday, May 24, 2023 6:40 PM
+> To: linux-wireless <linux-wireless@vger.kernel.org>
+> Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
+> <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
+> <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
+> ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; petter@technux.se; Sascha Hauer
+> <s.hauer@pengutronix.de>
+> Subject: [PATCH] wifi: rtw88: usb: silence log flooding error message
 > 
-> This was fixed in:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cb0ddaaa5db09d7d216fcbf0e68779be223a1128
+> When receiving more rx packets than the kernel can handle the driver
+> drops the packets and issues an error message.
 
-That fix is in the kernel mainline source, but not in wireless-next, where I got 
-my source. I hope it gets resolved correctly.
+The workqueue rtw88_usb is using is:
 
-Larry
+	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
 
+Have you tried workqueue with flags WQ_UNBOUND and WQ_HIGHPRI? Like,
+
+	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+or
+	rtwusb->rxwq = alloc_ordered_workqueue("rtw88_usb: rx wq", WQ_HIGHPRI);
+
+Then, driver get more time to process RX, so it could ease flooding messages. 
+
+Ping-Ke
 
