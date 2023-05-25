@@ -2,93 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4734071119D
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 19:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB070711332
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 20:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240206AbjEYRE4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 13:04:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57146 "EHLO
+        id S234582AbjEYSHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 14:07:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231964AbjEYREz (ORCPT
+        with ESMTP id S229944AbjEYSHP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 13:04:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28702189;
-        Thu, 25 May 2023 10:04:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8C51647B1;
-        Thu, 25 May 2023 17:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB65C433D2;
-        Thu, 25 May 2023 17:04:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685034293;
-        bh=gBgpG9vTwOaMKv/+/eY1oC9MAIfEaLOfyfZw8B7xYrs=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=pio0Er+luZrzNM1SJ2AttAghtZM4LVeBGEhQJeM8Btg85aqeZ7C0Uk0WtKDGG48Hh
-         3SvpKa7OJKD21AzpxfUrxY0K6PiIbpIG2Cd1EidA3FOwdiYMtDsgP8c3SnaoTyDCDL
-         Oth+XHrdB2RPFdHB9gRJXFxYMD8tTQsG6iL+PvNWZrcwn22p4nktAuZOzgSkPimdPP
-         huP2sDOiV5QXSqeEwmdAHnJEqY6wOR4r41JG04UUpZQGMabslLkYHOfui+rP+xmMF1
-         vmSqg+dYqpgXHSHm4Abtsp/KplIC8kVbOGMHywkQCNCCSvMycqmrifBux7tTi59mFm
-         oYEmkyuR07H3g==
-Content-Type: text/plain; charset="utf-8"
+        Thu, 25 May 2023 14:07:15 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C7C10D8
+        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 11:06:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=2GDCas6rHFTYHyZNTEV2dfITJGih9s/r4h1Kzmr/hMk=;
+        t=1685038007; x=1686247607; b=g38VMkZZBkmh/HoKFgT6hPXRORdcnoyHzotZ3z+qGWTc2rr
+        c8RGoh11qJnJTmptsxDStip8frizN168ZLADjLfu9Xm1zWP3mTTR6eAhNV/gHquP2j9qxCzVjC6xs
+        c7mdk4dITEhohtafJ9p2q0FrM1JG+HInzVSsp0EOTzMDnpvH4RJFDzMvO+tOm48J1wzb/CvnP+1SH
+        a3vJmcjJdKb6KWYwa0KPhprEoBs4g9MmsJfTEZSR3o8fDyytFhrUi4OoI7pd+9a/HNEm5vSx8fXj6
+        0dlgcPQ9toWbm8LpDCC0S0LF5BwyBdPFRQDs6w/MaGq6F9N7xg7eIP/i/upa0rbQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1q2FL8-003OWq-0U;
+        Thu, 25 May 2023 20:05:30 +0200
+Message-ID: <fa9429cb8d24c9bb4b810c423b150aefe116148c.camel@sipsolutions.net>
+Subject: Re: Question about power save
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Thu, 25 May 2023 11:05:27 -0700
+In-Reply-To: <c385be75-71db-6265-1a6c-24eca64e5d7f@lwfinger.net>
+References: <c385be75-71db-6265-1a6c-24eca64e5d7f@lwfinger.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] wifi: ath9k: don't allow to overwrite ENDPOINT0
- attributes
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230516150427.79469-1-pchelkin@ispras.ru>
-References: <20230516150427.79469-1-pchelkin@ispras.ru>
-To:     Fedor Pchelkin <pchelkin@ispras.ru>
-Cc:     =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Takeshi Misawa <jeliantsurux@gmail.com>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org,
-        syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168503428836.19957.620283860814904448.kvalo@kernel.org>
-Date:   Thu, 25 May 2023 17:04:50 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+Hi Larry,
 
-> A bad USB device is able to construct a service connection response
-> message with target endpoint being ENDPOINT0 which is reserved for
-> HTC_CTRL_RSVD_SVC and should not be modified to be used for any other
-> services.
-> 
-> Reject such service connection responses.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-> Reported-by: syzbot+b68fbebe56d8362907e8@syzkaller.appspotmail.com
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> One of the users of an rtw8821ce found an increase of power usage from 27=
+2 mW in=20
+> kernel 5.19.13 to 579 mW in kernel 6.2.8. If he reverted commit 28977e790=
+b5d=20
+> ("wifi: mac80211: skip powersave recalc if driver SUPPORTS_DYNAMIC_PS"), =
+the=20
+> original power usage is restored.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Yeah, I think I saw the report, but I'm travelling and didn't have that
+much time to reply.
 
-061b0cb9327b wifi: ath9k: don't allow to overwrite ENDPOINT0 attributes
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230516150427.79469-1-pchelkin@ispras.ru/
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -1787,7 +1787,8 @@ void ieee80211_recalc_ps(struct ieee80211_local *lo=
+cal)
+>          int count =3D 0;
+>          int timeout;
+>=20
+> -       if (!ieee80211_hw_check(&local->hw, SUPPORTS_PS)) {
+> +       if (!ieee80211_hw_check(&local->hw, SUPPORTS_PS) ||
+> +           ieee80211_hw_check(&local->hw, SUPPORTS_DYNAMIC_PS)) {
+>                  local->ps_sdata =3D NULL;
+>                  return;
+>          }
+>=20
+> The driver in question has both SUPPORTS_PS and SUPPORTS_DYNAMIC_PS set, =
+thus=20
+> this patch enables the dependent part of this test. Is this what was inte=
+nded?=20
+> If so, then rtw88 is not supporting DYNAMIC_PS correctly.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I didn't really have time to analyze this ... In mac80211.h we say:
 
+ * Dynamic powersave is simply supported by mac80211 enabling and disabling
+ * PS based on traffic. Driver needs to only set %IEEE80211_HW_SUPPORTS_PS
+ * flag and mac80211 will handle everything automatically. Additionally,
+ * hardware having support for the dynamic PS feature may set the
+ * %IEEE80211_HW_SUPPORTS_DYNAMIC_PS flag to indicate that it can support
+ * dynamic PS mode itself. The driver needs to look at the
+ * @dynamic_ps_timeout hardware configuration value and use it that value
+ * whenever %IEEE80211_CONF_PS is set. In this case mac80211 will disable
+ * dynamic PS feature in stack and will just keep %IEEE80211_CONF_PS
+ * enabled whenever user has enabled powersave.
+
+
+but maybe the issue is that now CONF_PS isn't set any more?
+
+johannes
