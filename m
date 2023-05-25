@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68AD171109A
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1E5271109D
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233391AbjEYQNd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 12:13:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57328 "EHLO
+        id S234473AbjEYQOF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 12:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231745AbjEYQNc (ORCPT
+        with ESMTP id S233856AbjEYQOE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 12:13:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27AFE10B
-        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 09:13:31 -0700 (PDT)
+        Thu, 25 May 2023 12:14:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 517E313A;
+        Thu, 25 May 2023 09:14:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFB1B64695
-        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 16:13:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9495EC433EF;
-        Thu, 25 May 2023 16:13:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD647646FC;
+        Thu, 25 May 2023 16:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3001FC433EF;
+        Thu, 25 May 2023 16:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685031210;
-        bh=g+fGec5xJgpwZFb1JcUtl0o7XfOMV9jDXxHQ4GUSOb4=;
+        s=k20201202; t=1685031242;
+        bh=ZB5EPQUbKqDpfb9ok4JwrHH51/rqG188wIZzix5/NQ0=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=oFE0W0bjwfAcSmTsfTsQxrcULFy9IiKE1dgYMmm7/yMNLjKjp+UG9cVZEbzCUh/H0
-         7UJH7omW6boYfj+UOTpHT1+NVcqn0BpH7UdUNHiQ3xEBE91KPwidFrblNVxMbH2+0b
-         ieqDYne0uDnEWb0Ns2AOnDOYamcT11Ta1eczGMwJyTLkRLvSPcI4z1GavVDld2L46B
-         63xHBBUALNZmhI2mrwLwGmcvqIAo0S7Ldi5bYjWGQzFT4mp3kQbKJGH7KKfiBK+30H
-         UaZgSM+uXS1Wziq6ZDuqGkPDl4L10C0z4tpzWXuTVgpGgswRsJM5a8Mv4qBrf6kgzh
-         eJDfkQ5BsulRg==
+        b=XB4c5j8hRx3foYptlaefAIhjOCtnnU1WoNMQdO5TdWDnE52Ie+NLFh7JtYyFRgIf9
+         4OOTLgi6tvEQCzIczWVaRl4MTN4u0vGE9euJdpag+gu9x5Cgwe6kjHB+J3Nwpi19KR
+         c8/JKsUbo1T0vg/rgbsOek9rIPdICv+of1JJcZkET7uqr200/ZGzYB62StezUoLVk2
+         WMbLWCHzweQyxNc1If7kmvx5Sfa9iAGJfPGFlqlKsStOQP/aeeH3OrqdgWaOngYoYB
+         on1rpG7yTCxYztLoc+U2HMa8X3VgacRE35n9csTdGtA7jTviy12J7xgloq6UnBMPNb
+         s/T1bN6sy2+jQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] wifi: rtw89: add chip_ops::query_rxdesc() and rxd_len
- as
- helpers to support newer chips
+Subject: Re: [PATCH][next] wifi: rtw89: 8851b: rfk: Fix spelling mistake
+ KIP_RESOTRE -> KIP_RESTORE
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230522122513.13559-2-pkshih@realtek.com>
-References: <20230522122513.13559-2-pkshih@realtek.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>
+In-Reply-To: <20230522085924.913649-1-colin.i.king@gmail.com>
+References: <20230522085924.913649-1-colin.i.king@gmail.com>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168503120740.22756.467572244695871068.kvalo@kernel.org>
-Date:   Thu, 25 May 2023 16:13:29 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-ID: <168503123937.22756.15706511892404618610.kvalo@kernel.org>
+Date:   Thu, 25 May 2023 16:14:01 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,25 +56,19 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Colin Ian King <colin.i.king@gmail.com> wrote:
 
-> The next generation chips use different RX descriptor format, so add
-> a chip_ops to hook suitable handlers. Also, the length of RX descriptor is
-> different, so add a variable to store the length according to chip and
-> descriptor content dynamically. Then, the code can be more general.
+> There is a spelling mistake in a literal string. Fix it.
 > 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
-5 patches applied to wireless-next.git, thanks.
+Patch applied to wireless-next.git, thanks.
 
-de9f93385d0f wifi: rtw89: add chip_ops::query_rxdesc() and rxd_len as helpers to support newer chips
-88bdc3ff956c wifi: rtw89: use struct and le32_get_bits to access RX info
-332debb80488 wifi: rtw89: use struct and le32_get_bits() to access received PHY status IEs
-c26700d2df01 wifi: rtw89: use struct and le32_get_bits() to access RX descriptor
-68012b44dfc7 wifi: rtw89: use struct to access register-based H2C/C2H
+56fc4d482783 wifi: rtw89: 8851b: rfk: Fix spelling mistake KIP_RESOTRE -> KIP_RESTORE
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230522122513.13559-2-pkshih@realtek.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230522085924.913649-1-colin.i.king@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
