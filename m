@@ -2,80 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF627110BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B31711195
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 19:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239400AbjEYQSD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 12:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32906 "EHLO
+        id S235070AbjEYRDW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 13:03:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239157AbjEYQRz (ORCPT
+        with ESMTP id S233274AbjEYRDV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 12:17:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784DFE43;
-        Thu, 25 May 2023 09:17:50 -0700 (PDT)
+        Thu, 25 May 2023 13:03:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F796C0;
+        Thu, 25 May 2023 10:03:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0060B64768;
-        Thu, 25 May 2023 16:17:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B06DC433D2;
-        Thu, 25 May 2023 16:17:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14B0863FFB;
+        Thu, 25 May 2023 17:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D09C433D2;
+        Thu, 25 May 2023 17:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685031469;
-        bh=VicTrJ2ntuwnnu4pbUhx/YvsuZlVA4KOAzl8vhAzKbM=;
+        s=k20201202; t=1685034199;
+        bh=K9n01kiiSt4kRO6VRK0U3IaunCH/mjPmCGWushqaFCE=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=pTjBla7PsTgrYjSSKANIBu0STb/AChcsymUF6Z0bOspy5WMUDGFaD+gVPAcja4KVX
-         cx7cAsL2jcd01YCWce2g4Wu0uK/+0VXzCKLthCk6nXM59pxrJRO/KXZg7A0dV1zJVH
-         L6i0M0mNqe/F+oISfg8e0PiayFzT+Bjgaaqe+m4NvVDVqKD7pSnX8yAuInKneMiMMq
-         x0PlNRopDI1Dg9ARwqrRiq2S6tfRjlMWyjP6ev0JrlA/YVW3DKogIo9i74GkjhLjpC
-         5O05XrDuvUDlaFUNUYtebgfhugeilfo62+kSZQ51M/6WCq8UphnR3k8NXtE7gmauOS
-         cRSrnW23HSgTQ==
+        b=BW+9I/AXFnxNseELZ+15IxLElvl0zyNLVlnJWYcHRu0IrlpC7jiZkWiUGQ8ZvhK3q
+         HDr4fK4ssieD0qGC5k2Q/3YYQNbFKR078nRvsLNTW20nEiWjqcyMrEojIfYlTdzgtx
+         9UDH0sEMDZuKXC15O/yHOmcO8CKMQKKE8yGFosNNsLr4xOQ6S/Ds2T7MHWC5xzNTmv
+         6AWxobC8SwwDD3AnHlwIvELVJjS0nezwg0M2RHeKo83dd9PcITpL+SR9FKuut3eAV4
+         9iGLND/JSCEJTLidzJQUP1YWvPU7jpz0dFv/C1NyhzUzsIEx3BhSJHKrQmzJ93fuVl
+         PNGocxeBKbxDg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [wireless] wifi: ray_cs: Fix an error handling path in
- ray_probe()
+Subject: Re: [PATCH][next] wifi: wil6210: fw: Replace zero-length arrays with
+ DECLARE_FLEX_ARRAY() helper
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <8c544d18084f8b37dd108e844f7e79e85ff708ff.1684570373.git.christophe.jaillet@wanadoo.fr>
-References: <8c544d18084f8b37dd108e844f7e79e85ff708ff.1684570373.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-wireless@vger.kernel.org
+In-Reply-To: <ZGKHByxujJoygK+l@work>
+References: <ZGKHByxujJoygK+l@work>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168503146551.22756.9737707686556677922.kvalo@kernel.org>
-Date:   Thu, 25 May 2023 16:17:47 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <168503419448.19957.18092228078896033455.kvalo@kernel.org>
+Date:   Thu, 25 May 2023 17:03:17 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> Should ray_config() fail, some resources need to be released as already
-> done in the remove function.
+> Zero-length arrays are deprecated, and we are moving towards adopting
+> C99 flexible-array members, instead. So, replace zero-length arrays
+> declarations alone in structs with the new DECLARE_FLEX_ARRAY()
+> helper macro.
 > 
-> While at it, remove a useless and erroneous comment. The probe is
-> ray_probe(), not ray_attach().
+> This helper allows for flexible-array members alone in structs.
 > 
-> Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Link: https://github.com/KSPP/linux/issues/193
+> Link: https://github.com/KSPP/linux/issues/287
+> Link: https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to wireless-next.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-4f8d66a9fb2e wifi: ray_cs: Fix an error handling path in ray_probe()
+cbb3debbb163 wifi: wil6210: fw: Replace zero-length arrays with DECLARE_FLEX_ARRAY() helper
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/8c544d18084f8b37dd108e844f7e79e85ff708ff.1684570373.git.christophe.jaillet@wanadoo.fr/
+https://patchwork.kernel.org/project/linux-wireless/patch/ZGKHByxujJoygK+l@work/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
