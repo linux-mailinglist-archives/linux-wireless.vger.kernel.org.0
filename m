@@ -2,54 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CAF8711087
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08FEA711092
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjEYQKk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 12:10:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54628 "EHLO
+        id S233178AbjEYQLr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 12:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231596AbjEYQKi (ORCPT
+        with ESMTP id S233104AbjEYQLq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 12:10:38 -0400
+        Thu, 25 May 2023 12:11:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCAC197;
-        Thu, 25 May 2023 09:10:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09DF21B6
+        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 09:11:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B66061757;
-        Thu, 25 May 2023 16:10:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58393C4339C;
-        Thu, 25 May 2023 16:10:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2657164751
+        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 16:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF111C433EF;
+        Thu, 25 May 2023 16:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685031002;
-        bh=iSGDiZcRAOZP9QDfA3b+KrqjP8hgBXB5BdpCRXEb0kE=;
+        s=k20201202; t=1685031073;
+        bh=dKI1coD7ah1DWH/RjD8YoJ1O3N0Fb39DzbMKepdNzlU=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=JLrgHoPNQWg9xYlSsC7hRL8KjCHdpQtZKez3rHTFyvGRg6zed3yFm41mx9H8DjZeP
-         i7fTlUCIV9jMho6j6N/KfIWqMAbUTb8yOREFed84Ts1k8dyAbYx8m8xMX0Y/HstftD
-         oySFVpGQ5GgvjnG0OecTTXAJcMPKW0GfkH9h17RhcHgMGqiq1HKgJb80MFuPPfWbMU
-         7b5ilNbcnmOQ/ZUjWxaFb/unrN1oc0N2cBQLVMN0NbfR7hOhKa6t/fd2L1IKKCZ3z0
-         aS3j3GTT83Yd2N8bPVWOxm5spLtvjUulD8P8uUy4U2pxW8U6ENVe+HQXuIg28lSchz
-         fyIwW/oLnWb3w==
+        b=i5bVwC86FBXCGKMIijeVtd1HQz6NPZQhoIpkWR3C6wRGki/SRPyXsWbsRO8/yV4qZ
+         aPahPm2elaCHzBGRgTLtAP4g8O9MbF20PqR/zXPNApxeSAvUJ2XXit9r8eQ7vy9WMh
+         /1aPym7q0Tba08TlYA6FOjIimyHo9vZxzWg54fC3J2rl2iij8vO2JAQ3e2BWFIpeKA
+         j3WEEaGokxxlv0I0rF38FYD2wwelzyol8dpOL0sGfEJLO0bh51qiHw3+eb2oXPf00P
+         WZ4QNufxVchXZ1AWGOUlwV/GyBKLwNeL4lyd9aLvcht8onedHUv+wud8WaNLJ5wKH2
+         9J5ouDYhav29g==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-next v2 1/4] wifi: rtw88: sdio: Check the HISR
- RX_REQUEST bit in rtw_sdio_rx_isr()
+Subject: Re: [PATCH 1/3] wifi: rtw89: ser: reset total_sta_assoc and tdls_peer
+ when L2
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230522202425.1827005-2-martin.blumenstingl@googlemail.com>
-References: <20230522202425.1827005-2-martin.blumenstingl@googlemail.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
-        tony0620emma@gmail.com, Peter Robinson <pbrobinson@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>, jernej.skrabec@gmail.com,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+In-Reply-To: <20230516082441.11154-2-pkshih@realtek.com>
+References: <20230516082441.11154-2-pkshih@realtek.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168503099830.22756.1444846830853755949.kvalo@kernel.org>
-Date:   Thu, 25 May 2023 16:10:00 +0000 (UTC)
+Message-ID: <168503107072.22756.9472067177641035272.kvalo@kernel.org>
+Date:   Thu, 25 May 2023 16:11:12 +0000 (UTC)
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,49 +55,27 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> rtw_sdio_rx_isr() is responsible for receiving data from the wifi chip
-> and is called from the SDIO interrupt handler when the interrupt status
-> register (HISR) has the RX_REQUEST bit set. After the first batch of
-> data has been processed by the driver the wifi chip may have more data
-> ready to be read, which is managed by a loop in rtw_sdio_rx_isr().
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
 > 
-> It turns out that there are cases where the RX buffer length (from the
-> REG_SDIO_RX0_REQ_LEN register) does not match the data we receive. The
-> following two cases were observed with a RTL8723DS card:
-> - RX length is smaller than the total packet length including overhead
->   and actual data bytes (whose length is part of the buffer we read from
->   the wifi chip and is stored in rtw_rx_pkt_stat.pkt_len). This can
->   result in errors like:
->     skbuff: skb_over_panic: text:ffff8000011924ac len:3341 put:3341
->   (one case observed was: RX buffer length = 1536 bytes but
->    rtw_rx_pkt_stat.pkt_len = 1546 bytes, this is not valid as it means
->    we need to read beyond the end of the buffer)
-> - RX length looks valid but rtw_rx_pkt_stat.pkt_len is zero
+> The total_sta_assoc and the tdls_peer are used for statistics accodring
+> to stations' information. L2 (Level 2) SER (system error recovery) will
+> call ieee80211_restart_hw() which re-invokes sta_state ops. And then,
+> the total_sta_assoc and tdls_peer will be re-increased. In case wrong
+> statistics results, we reset them in SER L2 handling.
 > 
-> Check if the RX_REQUEST is set in the HISR register for each iteration
-> inside rtw_sdio_rx_isr(). This mimics what the RTL8723DS vendor driver
-> does and makes the driver only read more data if the RX_REQUEST bit is
-> set (which seems to be a way for the card's hardware or firmware to
-> tell the host that data is ready to be processed).
-> 
-> For RTW_WCPU_11AC chips this check is not needed. The RTL8822BS vendor
-> driver for example states that this check is unnecessary (but still uses
-> it) and the RTL8822CS drops this check entirely.
-> 
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-4 patches applied to wireless-next.git, thanks.
+3 patches applied to wireless-next.git, thanks.
 
-e967229ead0e wifi: rtw88: sdio: Check the HISR RX_REQUEST bit in rtw_sdio_rx_isr()
-9be20a822327 wifi: rtw88: rtw8723d: Implement RTL8723DS (SDIO) efuse parsing
-09fcdbd28404 mmc: sdio: Add/rename SDIO ID of the RTL8723DS SDIO wifi cards
-a3b125ceb45e wifi: rtw88: Add support for the SDIO based RTL8723DS chipset
+cda66049bab5 wifi: rtw89: ser: reset total_sta_assoc and tdls_peer when L2
+b79a84fbbdb0 wifi: rtw89: tweak H2C TX waiting function for SER
+8b21c08ef7df wifi: rtw89: refine packet offload handling under SER
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230522202425.1827005-2-martin.blumenstingl@googlemail.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230516082441.11154-2-pkshih@realtek.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
