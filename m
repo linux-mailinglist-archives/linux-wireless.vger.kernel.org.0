@@ -2,185 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF2A8710994
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 12:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFF2B710B9B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 14:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240796AbjEYKMV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 06:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47708 "EHLO
+        id S240906AbjEYMB7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 08:01:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240809AbjEYKMQ (ORCPT
+        with ESMTP id S239928AbjEYMB6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 06:12:16 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06FE51B1;
-        Thu, 25 May 2023 03:12:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685009522; x=1716545522;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=N/zwrSVypYR69GoZqPE+SbIhxpOv+B6QByyWYEs768E=;
-  b=ilJ1+XzFjHnlOrV0x8DWRKcoNnbkuh3EgV+pLe/6Leqe9Mb+GZkJxaca
-   NAnjT3/oLwrVH+hbB0dIfGWBCbUIQJN4x2Ep8BeydXW6eDM2y4I61/uwH
-   TbyL3zYTm5WSWDx3y7035arwab5+BTuuhY2yT6as1XEQuNapUeXjoAAsQ
-   lExkOKaDi0CXPTqoAjwOgc4qnP3Q6FIiv269YBuaLeQ4lNpH0hYbmnTwg
-   pM1nLy2oJWlsXefRiGLj2Xum/6+Ba4JlR/hBcnPTQohNH3MhUg1c8Fd8S
-   pPB84aOx3kf3OezJkxHVBZrrk8toFZDdoxVYyVpLmw4hJpwf92q//y25D
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="334194535"
-X-IronPort-AV: E=Sophos;i="6.00,190,1681196400"; 
-   d="scan'208";a="334194535"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2023 03:12:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10720"; a="655164459"
-X-IronPort-AV: E=Sophos;i="6.00,190,1681196400"; 
-   d="scan'208";a="655164459"
-Received: from aghiriba-mobl.ger.corp.intel.com ([10.249.40.17])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2023 03:11:54 -0700
-Date:   Thu, 25 May 2023 13:11:51 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Janusz Dziedzic <janusz.dziedzic@tieto.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dean Luick <dean.luick@cornelisnetworks.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] wifi: ath10k: Use RMW accessors for changing
- LNKCTL
-In-Reply-To: <ZG4o/pYseBklnrTc@bhelgaas>
-Message-ID: <ecdc8e85-786-db97-a7d4-bfd82c08714@linux.intel.com>
-References: <ZG4o/pYseBklnrTc@bhelgaas>
+        Thu, 25 May 2023 08:01:58 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 841039C;
+        Thu, 25 May 2023 05:01:54 -0700 (PDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34PBE7gv009110;
+        Thu, 25 May 2023 12:01:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=N74mf/q4dLNgAVVmA6FO42kwVM2DzKnj6y8VFxGHQZk=;
+ b=HK2a/Uoh4JJZCox4kTNgU1C/Ydx7Xo1pHn+IzHj8XzaybhrvuTFVm6685/WOzDzso9sy
+ XsShlbz2WtwXSvZb73tjRookdntOg77tQ6RucQJiogdCYQFwB8htbiST0s9aOGmmzucL
+ D+rSc8nJPOadA9SoosDN5/o7xBOVyC6uJGWCjOzsgyUijxQxRZOhGAP5mkx3ug88v4TR
+ xLZhJ3LMt4d6HSzfrYW+z6yqcaVewTK08lLMZIKs/L2GV243VQYnwAt8lV/xu0qOeWCz
+ 9b4i45yUkkUpeeaKtgd5ugs1udW5QH4vTIWEDi1pU2CJjSOV4oMAMIZPslORLOGFXZEp Og== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qt6m6s430-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 May 2023 12:01:35 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34PBFOIG012156;
+        Thu, 25 May 2023 12:01:34 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qt6m6s41q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 May 2023 12:01:34 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34P8FB11030209;
+        Thu, 25 May 2023 12:01:31 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+        by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3qppcf2119-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 25 May 2023 12:01:31 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+        by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34PC1TdJ53543422
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 25 May 2023 12:01:29 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2F69820049;
+        Thu, 25 May 2023 12:01:29 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 23DFA20043;
+        Thu, 25 May 2023 12:01:28 +0000 (GMT)
+Received: from [9.171.55.66] (unknown [9.171.55.66])
+        by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 25 May 2023 12:01:28 +0000 (GMT)
+Message-ID: <74c45bdac7398632db844c6794c9a59cd87e0ecf.camel@linux.ibm.com>
+Subject: Re: [PATCH v5 43/44] wireless: add HAS_IOPORT dependencies
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Jouni Malinen <j@w1.fi>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-wireless@vger.kernel.org
+Date:   Thu, 25 May 2023 14:01:27 +0200
+In-Reply-To: <168491387892.8984.13248048073287184221.kvalo@kernel.org>
+References: <20230522105049.1467313-44-schnelle@linux.ibm.com>
+         <168491387892.8984.13248048073287184221.kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1525169391-1685006896=:1738"
-Content-ID: <e7b32c4d-e7b9-c81d-670-b54285b6b554@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: BSsJlYkbBpMOVnlpEFZDK8l22-q1R0eB
+X-Proofpoint-GUID: hWIuyBXOqODGhJ8iDxYhpmgSB2vnsEoE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-25_06,2023-05-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0 adultscore=0
+ impostorscore=0 mlxlogscore=534 priorityscore=1501 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305250096
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Wed, 2023-05-24 at 07:38 +0000, Kalle Valo wrote:
+> Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+>=20
+> > In a future patch HAS_IOPORT=3Dn will result in inb()/outb() and friend=
+s
+> > not being declared. We thus need to add HAS_IOPORT as dependency for
+> > those drivers using them.
+> >=20
+> > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> > Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> > Acked-by: Kalle Valo <kvalo@kernel.org>
+> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+>=20
+> Now that the dependencies are in v6.4-rc1 my plan is to take this to
+> wireless-next, is that ok for everyone?
+>=20
 
---8323329-1525169391-1685006896=:1738
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <5114585-6ccd-c09a-416-a53bb2256299@linux.intel.com>
-
-On Wed, 24 May 2023, Bjorn Helgaas wrote:
-
-> On Wed, May 17, 2023 at 01:52:35PM +0300, Ilpo Järvinen wrote:
-> > Don't assume that only the driver would be accessing LNKCTL. ASPM
-> > policy changes can trigger write to LNKCTL outside of driver's control.
-> > 
-> > Use RMW capability accessors which does proper locking to avoid losing
-> > concurrent updates to the register value. On restore, clear the ASPMC
-> > field properly.
-> > 
-> > Fixes: 76d870ed09ab ("ath10k: enable ASPM")
-> > Suggested-by: Lukas Wunner <lukas@wunner.de>
-> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
-> >  1 file changed, 5 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> > index a7f44f6335fb..9275a672f90c 100644
-> > --- a/drivers/net/wireless/ath/ath10k/pci.c
-> > +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> > @@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
-> >  	ath10k_pci_irq_enable(ar);
-> >  	ath10k_pci_rx_post(ar);
-> >  
-> > -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > -				   ar_pci->link_ctl);
-> > +	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > +					   PCI_EXP_LNKCTL_ASPMC,
-> > +					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
-> >  
-> >  	return 0;
-> >  }
-> > @@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
-> >  
-> >  	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> >  				  &ar_pci->link_ctl);
-> > -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > -				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
-> > +	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > +				   PCI_EXP_LNKCTL_ASPMC);
-> 
-> These ath drivers all have the form:
-> 
->   1) read LNKCTL
->   2) save LNKCTL value in ->link_ctl
->   3) write LNKCTL with "->link_ctl & ~PCI_EXP_LNKCTL_ASPMC"
->      to disable ASPM
->   4) write LNKCTL with ->link_ctl, presumably to re-enable ASPM
-> 
-> These patches close the hole between 1) and 3) where other LNKCTL
-> updates could interfere, which is definitely a good thing.
-> 
-> But the hole between 1) and 4) is much bigger and still there.  Any
-> update by the PCI core in that interval would be lost.
-
-Any update to PCI_EXP_LNKCTL_ASPMC field in that interval is lost yes, the 
-updates to _the other fields_ in LNKCTL are not lost.
-
-I know this might result in drivers/pci/pcie/aspm.c disagreeing what
-the state of the ASPM is (as shown under sysfs) compared with LNKCTL 
-value but the cause can no longer be due racing RMW. Essentially, 4) is 
-seen as an override to what core did if it changed ASPMC in between. 
-Technically, something is still "lost" like you say but for a different 
-reason than this series is trying to fix.
-
-> Straw-man proposal:
-> 
->   - Change pci_disable_link_state() so it ignores aspm_disabled and
->     always disables ASPM even if platform firmware hasn't granted
->     ownership.  Maybe this should warn and taint the kernel.
-> 
->   - Change drivers to use pci_disable_link_state() instead of writing
->     LNKCTL directly.
-
-I fully agree that's the direction we should be moving, yes. However, I'm 
-a bit hesitant to take that leap in one step. These drivers currently not 
-only disable ASPM but also re-enable it (assuming we guessed the intent
-right).
-
-If I directly implement that proposal, ASPM is not going to be re-enabled 
-when PCI core does not allowing it. Could it cause some power related 
-regression?
-
-My plan is to make another patch series after these to realize exactly 
-what you're proposing. It would allow better to isolate the problems that 
-related to the lack of ASPM.
-
-I hope this two step approach is an acceptable way forward? I can of 
-course add those patches on top of these if that would be preferrable.
-
-
--- 
- i.
---8323329-1525169391-1685006896=:1738--
+Yes okay by me. Thank you.
