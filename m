@@ -2,73 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04068710214
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 02:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B094710588
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 07:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233797AbjEYAqv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 24 May 2023 20:46:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43554 "EHLO
+        id S238059AbjEYFzs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 01:55:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbjEYAqt (ORCPT
+        with ESMTP id S233044AbjEYFzk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 24 May 2023 20:46:49 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD98D3
-        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 17:46:45 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34P0jCRk9023752, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34P0jCRk9023752
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Thu, 25 May 2023 08:45:12 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Thu, 25 May 2023 08:45:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Thu, 25 May 2023 08:45:23 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Thu, 25 May 2023 08:45:23 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-CC:     Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
-        Nick Morrow <morrownr@gmail.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        ValdikSS <iam@valdikss.org.ru>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "petter@technux.se" <petter@technux.se>
-Subject: RE: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Thread-Topic: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Thread-Index: AQHZjiwhpaOYDLChaE6ysR4gEzG9Hq9qJPMQ
-Date:   Thu, 25 May 2023 00:45:23 +0000
-Message-ID: <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
-References: <20230524103934.1019096-1-s.hauer@pengutronix.de>
-In-Reply-To: <20230524103934.1019096-1-s.hauer@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Thu, 25 May 2023 01:55:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5D4183
+        for <linux-wireless@vger.kernel.org>; Wed, 24 May 2023 22:55:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5EE96419A
+        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 05:55:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C2DC433D2;
+        Thu, 25 May 2023 05:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684994119;
+        bh=acZ5PbxAi8JxMHmjdpEAaUSh7XzjyxNU90ZWpqWEnlM=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LB8CFaMpa+9X6LWpPFdIb86dQ3PhMWND8d/TWdzUUO0VSDFyuzdeTZsTaehAyWeOn
+         vCazey4Sysa3NNkw88m8eeNV5CWROSxHMHvBFehn2wrEi+bekHUVrqjVl3uEwWZm7t
+         zuv8qD8CJYRDqqM49saA269UUe1s4ZrQCd2qjojtc5I+NXjXEQQ/FrZt7kjiulaGUc
+         8E/4grXpoI0JPq+6kPNS7sz2tEwy2E/98RqhjAylalpJLbKu8enh3GuYJW6xjQlIo8
+         AEl60SHCDonRXKnKFMECjUN4SU1n+SzrL9o1DMeygzbTlUQZK4cLYjloXI5PygF21G
+         ti6IfI4zmrgXw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        nbd@nbd.name
+Subject: Re: [PATCH wireless] wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
+References: <48b23404b759de4f1db2ef85975c72a4aeb1097c.1684938695.git.lorenzo@kernel.org>
+Date:   Thu, 25 May 2023 08:55:14 +0300
+In-Reply-To: <48b23404b759de4f1db2ef85975c72a4aeb1097c.1684938695.git.lorenzo@kernel.org>
+        (Lorenzo Bianconi's message of "Wed, 24 May 2023 16:39:32 +0200")
+Message-ID: <87h6s1kla5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,33 +55,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
+> Grab sta_poll_lock spinlock in mt7615_mac_sta_poll routine in order to
+> avoid possible races with mt7615_mac_add_txs() or mt7615_mac_fill_rx()
+> removing msta pointer from sta_poll_list.
+>
+> Fixes: a621372a04ac ("mt76: mt7615: rework mt7615_mac_sta_poll for usb code")
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> -----Original Message-----
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Sent: Wednesday, May 24, 2023 6:40 PM
-> To: linux-wireless <linux-wireless@vger.kernel.org>
-> Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
-> <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
-> <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
-> ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; petter@technux.se; Sascha Hauer
-> <s.hauer@pengutronix.de>
-> Subject: [PATCH] wifi: rtw88: usb: silence log flooding error message
-> 
-> When receiving more rx packets than the kernel can handle the driver
-> drops the packets and issues an error message.
+I'll take this to wireless tree.
 
-The workqueue rtw88_usb is using is:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
-
-Have you tried workqueue with flags WQ_UNBOUND and WQ_HIGHPRI? Like,
-
-	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
-or
-	rtwusb->rxwq = alloc_ordered_workqueue("rtw88_usb: rx wq", WQ_HIGHPRI);
-
-Then, driver get more time to process RX, so it could ease flooding messages. 
-
-Ping-Ke
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
