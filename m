@@ -2,50 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6806D7110A0
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 382237110A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 18:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235080AbjEYQOh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 12:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58108 "EHLO
+        id S235383AbjEYQPY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 25 May 2023 12:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234629AbjEYQOf (ORCPT
+        with ESMTP id S235065AbjEYQPW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 12:14:35 -0400
+        Thu, 25 May 2023 12:15:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83724197;
-        Thu, 25 May 2023 09:14:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2468610B;
+        Thu, 25 May 2023 09:15:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2026A60B01;
-        Thu, 25 May 2023 16:14:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFA0C433EF;
-        Thu, 25 May 2023 16:14:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B35C4619F2;
+        Thu, 25 May 2023 16:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D113CC433D2;
+        Thu, 25 May 2023 16:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685031267;
-        bh=Pay7zXnTH9PqGCRlQFGcYsvLrrwOtY59XBAuD/yITWU=;
+        s=k20201202; t=1685031320;
+        bh=UIf24JuFY8GbUnTCn0hrDOQvEAVSb0BLaysT60eUH7M=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=naCMRFK9mnn8k6imfaNYQMAKxQFyo8rKPsRbQAN7KLviL6Yf9aFbHRNPEGgdP2U0T
-         gFTQV2tLgHX+vretzWvrMLHmHdGxsFgsSDcVj07SC/lNx9Fw8m2rL4/g1aZ22c8FKt
-         Znuul1BYYXbHcKaiAG8OiBdnAT+vfmgrkJqJyRR4fXQJ1ZnQYL6FjKxmy/LcgNAmG1
-         RYEtK9WGylhwn6sjVIon+J8JCGjyjP8/KonStqTzYuK9FaDytS6ORarYzoxxRu91bc
-         5usAHu2uZ7oOAMVg4cKez5pneUX8vNAD5VDFq3RhqhlJGnZUVMbafnE9wmbmqlTG80
-         iRavCo7+LBZqA==
+        b=c37fb8RlAPr4xe15/Nh5rUt5TM9E8ILE2V5J1uuD06NcB8Fl9E5HsgYqY0BQw/iYa
+         swsUZpe12CsJ99kkOOKEIEmVmUx5JbynWKg+NJOXTXIzd3+XZMpycOIA6qm7v6yDRh
+         l8BErV8eUBGLXowmkdZ/picEjw+qYZLU5/JMdiPubGsPiYi+McrfwcG9wdOZ8lsufQ
+         mK+dhaGE37TZZHtI51plErqwHeR9bu1JmlcnkNnSYjZeh6uCVeYsq6+2a8ocWCTHcZ
+         kLf11R/jQZcIpNzQKkdJ96hHYU36kXHdOZT+oe1WJjpc83WWios5t2JyYWWoyJjCXF
+         gK5bxL+EwaXAg==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: rtw89: use flexible array member in rtw89_btc_btf_tlv
+Subject: Re: [wireless] wifi: orinoco: Fix an error handling path in
+ spectrum_cs_probe()
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230523113241.2772811-1-arnd@kernel.org>
-References: <20230523113241.2772811-1-arnd@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, Arnd Bergmann <arnd@arndb.de>,
-        Ching-Te Ku <ku920601@realtek.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr>
+References: <c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168503126425.22756.6147214283956787608.kvalo@kernel.org>
-Date:   Thu, 25 May 2023 16:14:25 +0000 (UTC)
+Message-ID: <168503131684.22756.16438673377728729868.kvalo@kernel.org>
+Date:   Thu, 25 May 2023 16:15:18 +0000 (UTC)
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,31 +58,24 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> wrote:
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> From: Arnd Bergmann <arnd@arndb.de>
+> Should spectrum_cs_config() fail, some resources need to be released as
+> already done in the remove function.
 > 
-> struct rtw89_btc_btf_tlv contains a one-byte member that is intended as a
-> flexible array:
+> While at it, remove a useless and erroneous comment. The probe is
+> spectrum_cs_probe(), not spectrum_cs_attach().
 > 
-> In function 'fortify_memcpy_chk',
->     inlined from '_append_tdma' at drivers/net/wireless/realtek/rtw89/coex.c:1579:3:
-> include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
->   583 |                         __write_overflow_field(p_size_field, size);
->       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> Make this actually use a flexible array to let the compiler understand.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
 Patch applied to wireless-next.git, thanks.
 
-47e612268ea0 wifi: rtw89: use flexible array member in rtw89_btc_btf_tlv
+925244325159 wifi: orinoco: Fix an error handling path in spectrum_cs_probe()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230523113241.2772811-1-arnd@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
