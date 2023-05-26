@@ -2,105 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0C687123BD
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 11:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 784437123E4
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 11:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243268AbjEZJei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 05:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
+        id S230268AbjEZJkO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 05:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243249AbjEZJeP (ORCPT
+        with ESMTP id S242995AbjEZJj2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 05:34:15 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E9110F3
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 02:33:39 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q2Tp5-0007HF-QH; Fri, 26 May 2023 11:33:23 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q2Tp1-0007tg-Pm; Fri, 26 May 2023 11:33:19 +0200
-Date:   Fri, 26 May 2023 11:33:19 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Hans Ulli Kroll <linux@ulli-kroll.de>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
-        Nick Morrow <morrownr@gmail.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        Andreas Henriksson <andreas@fatal.se>,
-        ValdikSS <iam@valdikss.org.ru>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "petter@technux.se" <petter@technux.se>
-Subject: Re: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Message-ID: <20230526093319.GR17518@pengutronix.de>
-References: <20230524103934.1019096-1-s.hauer@pengutronix.de>
- <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
+        Fri, 26 May 2023 05:39:28 -0400
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63441170B
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 02:38:56 -0700 (PDT)
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-77481baed40so257679639f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 02:38:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685093935; x=1687685935;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HZDBnsdsW0y73fGsliM6Bx8oo1s3VdarCwOTBqSzGCc=;
+        b=kYPCvfVxaSvXvo/RMpHgD5HagxTcGG/4C6r75zsAtJE6s7frMG7YvPcDk6+0MQ/g3E
+         UMt6nPcGeE2AqH4j9hKU/IxJmlXCHeclTLW9P9jrzG34lav5L4muNvEqpR59q9MHhRFn
+         ih6ewVCHdooY/EDIpJ2mzn9V/L1A8hrrod7g1G7QZFXX52oPtaBv60gZxJqR0LUBnsId
+         w1JMjk8eXFr8Nx18QrRNFBCCIbTgjqelFrfm6BhK2O0yEXWE9+tjt826qtWVg9MDe9KN
+         qQlglYtMWoIONBQFMN73GIZ336Txw6rObn7dhMZ1WARSgPW/Fl7yuacAhSvs450FELe6
+         Aung==
+X-Gm-Message-State: AC+VfDyE6iwjJPBTAb9KDrzKxXs9m/VYm5A3FnL5RVSy5xdjHhPTx/LU
+        lJTMaubGkzScxKdlPP5ODBV1DxICK0B2OEtF9gbRGIkrNZMT
+X-Google-Smtp-Source: ACHHUZ6t1Y3iFCF2npLfihazO9ZT5NgGe7L9XEVUDso+2xdttDxLQyGeEKhxr8sGfwtCbfbidzc9r8MsAPP34lifzG+mi5e2N8+x
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a02:2983:0:b0:411:b866:8345 with SMTP id
+ p125-20020a022983000000b00411b8668345mr430480jap.0.1685093935718; Fri, 26 May
+ 2023 02:38:55 -0700 (PDT)
+Date:   Fri, 26 May 2023 02:38:55 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000073a88805fc95817f@google.com>
+Subject: [syzbot] Monthly wireless report (May 2023)
+From:   syzbot <syzbot+list132aa227160b7dc530f8@syzkaller.appspotmail.com>
+To:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 25, 2023 at 12:45:23AM +0000, Ping-Ke Shih wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Wednesday, May 24, 2023 6:40 PM
-> > To: linux-wireless <linux-wireless@vger.kernel.org>
-> > Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
-> > <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
-> > <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
-> > ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; petter@technux.se; Sascha Hauer
-> > <s.hauer@pengutronix.de>
-> > Subject: [PATCH] wifi: rtw88: usb: silence log flooding error message
-> > 
-> > When receiving more rx packets than the kernel can handle the driver
-> > drops the packets and issues an error message.
-> 
-> The workqueue rtw88_usb is using is:
-> 
-> 	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
-> 
-> Have you tried workqueue with flags WQ_UNBOUND and WQ_HIGHPRI? Like,
-> 
-> 	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
-> or
-> 	rtwusb->rxwq = alloc_ordered_workqueue("rtw88_usb: rx wq", WQ_HIGHPRI);
-> 
-> Then, driver get more time to process RX, so it could ease flooding messages. 
+Hello wireless maintainers/developers,
 
-No, I haven't tried this. Regardless of that, I think it still makes
-sense to rate limit the messages. There will always be a slower system
-that can't cope with the number of packets even with a higher priority
-workqueue.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Sascha
+During the period, 0 new issues were detected and 1 were fixed.
+In total, 33 issues are still open and 105 have been fixed so far.
 
+Some of the still happening issues:
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Ref  Crashes Repro Title
+<1>  7256    Yes   KMSAN: uninit-value in hwsim_cloned_frame_received_nl
+                   https://syzkaller.appspot.com/bug?extid=b2645b5bf1512b81fa22
+<2>  5107    Yes   WARNING in ieee80211_bss_info_change_notify
+                   https://syzkaller.appspot.com/bug?extid=09d1cd2f71e6dd3bfd2c
+<3>  4172    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  3892    Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<5>  905     No    WARNING in ieee80211_ibss_csa_beacon (2)
+                   https://syzkaller.appspot.com/bug?extid=b10a54cb0355d83fd75c
+<6>  802     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
+<7>  721     Yes   WARNING in ieee80211_link_info_change_notify (2)
+                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
+<8>  597     Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<9>  362     Yes   INFO: task hung in rfkill_global_led_trigger_worker (2)
+                   https://syzkaller.appspot.com/bug?extid=2e39bc6569d281acbcfb
+<10> 240     No    INFO: task hung in ath9k_hif_usb_firmware_cb (2)
+                   https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
