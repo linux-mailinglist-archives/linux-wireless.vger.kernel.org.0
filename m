@@ -2,126 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3C7E7116DE
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 May 2023 21:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261C1711F6C
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 07:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243461AbjEYS5V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 25 May 2023 14:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45762 "EHLO
+        id S230058AbjEZF4B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 01:56:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243709AbjEYSzy (ORCPT
+        with ESMTP id S229479AbjEZF4A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 25 May 2023 14:55:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB45C2D5A;
-        Thu, 25 May 2023 11:47:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 773F360FD1;
-        Thu, 25 May 2023 18:46:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E11BC433D2;
-        Thu, 25 May 2023 18:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685040366;
-        bh=aql5NXzheAYQGdrzLD5fzib1YS8adfuPpeMQmFo/SR4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ONrmJeql4sFdZVFWtmVLsIdlm29JEHADG1VdTb/dc8HiZPEP8XodJbnMih6BBD9uC
-         QcaNIj85rZcK1ryKVCRStNBn0k3RnFETT7FgIylVUgJqCcjjSJeFiIfgp7DfOE73VH
-         wxYRCmF6KtvBafPSeq8UUn0ke/94gh50y4uSafAgycA0b2RMBL8i3NLVF1W1aHuyqC
-         7kpX1a6loddmVvuHzmea0rLxDmcBGjUUlYjoPGhy45+K9tdzDHufMcWpX1rpvd79Az
-         vbvJee6Y3nnTMWN1YcNGaIwLl6MfTEXtEslh+xQjax4zAEXj0vXpMy9RymxsBwYB2n
-         bXebrrN7TV/vw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-        kernel test robot <lkp@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        nathan@kernel.org, ndesaulniers@google.com,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 4.14 16/20] wifi: b43: fix incorrect __packed annotation
-Date:   Thu, 25 May 2023 14:45:12 -0400
-Message-Id: <20230525184520.2004878-16-sashal@kernel.org>
+        Fri, 26 May 2023 01:56:00 -0400
+Received: from bin-mail-out-05.binero.net (bin-mail-out-05.binero.net [195.74.38.228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FE1BE7
+        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 22:55:58 -0700 (PDT)
+X-Halon-ID: f8928910-fb89-11ed-b7d6-cf458ee68324
+Authorized-sender: petter@technux.se
+Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
+        by bin-vsp-out-03.atm.binero.net (Halon) with ESMTPSA
+        id f8928910-fb89-11ed-b7d6-cf458ee68324;
+        Fri, 26 May 2023 07:55:54 +0200 (CEST)
+From:   Petter Mabacker <petter@technux.se>
+To:     s.hauer@pengutronix.de
+Cc:     linux-wireless@vger.kernel.org, petter@technux.se,
+        pkshih@realtek.com, tony0620emma@gmail.com
+Subject: Re: rtw88: rtw8822cu (LM842) -> failed to get tx report from firmware
+Date:   Fri, 26 May 2023 07:55:51 +0200
+Message-Id: <20230526055551.1823094-1-petter@technux.se>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230525184520.2004878-1-sashal@kernel.org>
-References: <20230525184520.2004878-1-sashal@kernel.org>
+In-Reply-To: <20230524104510.GV15436@pengutronix.de>
+References: <20230524104510.GV15436@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+>Hi Petter,
 
-[ Upstream commit 212457ccbd60dba34f965e4ffbe62f0e4f970538 ]
+>On Thu, Apr 06, 2023 at 10:41:20AM +0000, petter@technux.se wrote:
+>> Hi,
+>> 
+>> I have seen a very similar issue as Andreas. It was found when streaming a mender file (using mender install <url> from my arm device. But I have also managed to reproduce a similar issue by flooding the interface using iperf. 
+>> 
+>> on target:
+>> $ sudo iperf -s -u
+>> 
+>> On host:
+>> $ iperf -c <ip> -u -b 200M -t 300
+>> 
+>> Then it will almost instantly get problems causing the lm842 dongle to stop working.
 
-clang warns about an unpacked structure inside of a packed one:
+>I could finally reproduce this problem by placing an access point close
+>enough to my device. Only then the incoming packet rate is high enough
+>that the "failed to get rx_queue, overflow" message triggers.
 
-drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
+>In my case the time it takes to print this message many times is enough
+>to confuse the device so that it finally responds with:
 
-The problem here is that the anonymous union has the default alignment
-from its members, apparently because the original author mixed up the
-placement of the __packed attribute by placing it next to the struct
-member rather than the union definition. As the struct itself is
-also marked as __packed, there is no need to mark its members, so just
-move the annotation to the inner type instead.
+>[  126.449305] rtw_8822cu 1-1:1.2: failed to get tx report from firmware
+>[  142.081419] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
+>[  175.929407] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
 
-As Michael noted, the same problem is present in b43legacy, so
-change both at the same time.
+>I just sent a patch printing the message with dev_dbg_ratelimited
+>instead which fixes that problem for me, you're on Cc.
 
-Acked-by: Michael Büsch <m@bues.ch>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230516183442.536589-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/broadcom/b43/b43.h             | 2 +-
- drivers/net/wireless/broadcom/b43legacy/b43legacy.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+>It likely won't fix Andreas' problem though, as I don't see this message
+>in his bug report.
 
-diff --git a/drivers/net/wireless/broadcom/b43/b43.h b/drivers/net/wireless/broadcom/b43/b43.h
-index b77d1a904f7e6..a449561fccf28 100644
---- a/drivers/net/wireless/broadcom/b43/b43.h
-+++ b/drivers/net/wireless/broadcom/b43/b43.h
-@@ -651,7 +651,7 @@ struct b43_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
- 
- 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-index 6b0cec467938f..f49365d14619f 100644
---- a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-+++ b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-@@ -379,7 +379,7 @@ struct b43legacy_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
- 
- #define B43legacy_PHYMODE(phytype)	(1 << (phytype))
--- 
-2.39.2
+>Sascha
+
+Nice work. I have tested your patch v1 for the flooding at it solves my
+iperf issue. Also when you describe above, its the
+very same situation for me, I have been using a board that is very close
+to the access point, so this is likely why I could reproduce it quite
+easy.
+
+I have however finally manage to make some break-through about the
+original issue Andreas described, that so far has only been seen when
+running mender install. A similar behaviour is to download large amount
+of data combined with writing to the disk. So for me I can reproduce the
+issue on my i.MX6 SoloX (single cpu board) by doing.
+
+$ sudo dd if=/dev/urandom of=/path/to/bigfile bs=4M count=500
+
+and in parallell download a large file such as:
+
+$ wget -O /dev/null http://speedtest.tele2.net/10GB.zip
+
+This will trigger the problem quite fast (within 5-15 min at least):
+[  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
+[  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+[  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+[  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+[  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+[  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+[  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+
+However one very interesting thing is that I can not reproduce this on a
+more powerful device, such as i.MX8 or RPi4 etc.. But when I tried this
+on another less powerful old single core device (BCM2835), I was able to
+reproduce it quite easily again..
+
+So from my understanding it seems to be a bit related to how the driver
+behaves when the network queue/buffer etc are a bit stretch and the
+system occupied with high I/O and/or system load. By increasing buffer sizes and
+priorities for network queues, the system can handle it a bit better,
+but still enough stress of the system seems to trigger the driver to
+bail out completely..
+
+Any suggestions or ideas around this is most welcome..
+
+BR Petter
+
+>-- 
+>Pengutronix e.K.                           |                             |
+>Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
