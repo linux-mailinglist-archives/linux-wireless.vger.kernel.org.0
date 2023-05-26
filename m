@@ -2,77 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F09D7125DF
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A37D7125EC
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243228AbjEZLtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 07:49:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40252 "EHLO
+        id S243376AbjEZLta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 07:49:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242638AbjEZLtA (ORCPT
+        with ESMTP id S243401AbjEZLt2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 07:49:00 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B18BA7;
-        Fri, 26 May 2023 04:48:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685101739; x=1716637739;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=a3wG2//AE5g6ej11oeRcir7XyPQe4vKlHzlqyjzy2Is=;
-  b=LQ3jsNoo/AbcKkdFvYmV2kxJJJ4tsJBf/fSzVGu9ZTfeUd1OsN9s7Htm
-   bg+I8h9gXGu/JfVpCgEg+9ZwzStGn9KoAp2cePbR9CiRscKp/f1xmAxeB
-   YzI6vlFOmXjEPE8ykXJHbTCZvVKDFFU44kUH4YFCVhLaDEPtbBvY1YP3v
-   tXjL5JfvYltvZ61fm/qi0+urhL8JLtZj7icpcy2ohwb6YhIZRdhBxiMin
-   do2IyWk474f8oLj2FOkyb21orM+MlbNK0H0Fo/wZvxdDLRux+T7KEDVoV
-   RDGMhnyc82OjxJQQ8zUiS584d7ML4ovG48I/hEvZGa8G9LZfbk9MierAK
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="440539314"
-X-IronPort-AV: E=Sophos;i="6.00,194,1681196400"; 
-   d="scan'208";a="440539314"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2023 04:48:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10721"; a="770317196"
-X-IronPort-AV: E=Sophos;i="6.00,194,1681196400"; 
-   d="scan'208";a="770317196"
-Received: from gschrom-mobl.amr.corp.intel.com ([10.251.223.174])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2023 04:48:50 -0700
-Date:   Fri, 26 May 2023 14:48:44 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Janusz Dziedzic <janusz.dziedzic@tieto.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dean Luick <dean.luick@cornelisnetworks.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] wifi: ath10k: Use RMW accessors for changing
- LNKCTL
-In-Reply-To: <ecdc8e85-786-db97-a7d4-bfd82c08714@linux.intel.com>
-Message-ID: <4a67bac-9b4c-1260-f7a-287f4c205dbb@linux.intel.com>
-References: <ZG4o/pYseBklnrTc@bhelgaas> <ecdc8e85-786-db97-a7d4-bfd82c08714@linux.intel.com>
+        Fri, 26 May 2023 07:49:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 922F4E5A
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 04:49:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8F7164F80
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 11:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9235FC4339B;
+        Fri, 26 May 2023 11:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685101755;
+        bh=4zBF2mdWj0qm6m7N0xeZdQTBhYiWgiMIDwC9R8eOOIw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=rfWXS/+lbBDj3ck4f7uVQVnDvHCRKJf0EGbsQhDxYNJtISN/WcheFsIw5hiURGGzF
+         /P5Bwl5uWtDWX416Mcgx9R0iS2FH5yu5LOUQBOBjYF4eKxegFw9ziUoW5SuPyXB4Vy
+         QDksVCM9uQ2U2N4eMwkl65Xbj/LQF9BwHLSU0zh+U5dduerT3jrJXv6aLzc8cSpBUF
+         7AeZSEXIOHPsfG+3UcTQ7aM0+brCn3yRbTnQGQrQmzdtBkU9QJw8CvOEd7oYLp0e89
+         SRQlZFoAd3OC+190wI/eAK+7btyRqAZVZplkFqlQFBcfk+VbWy4TpMe3UD6QQRJeNR
+         rkhlLml6PO08Q==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 5/5] wifi: rtw89: use struct to access register-based H2C/C2H
+References: <20230522122513.13559-1-pkshih@realtek.com>
+        <20230522122513.13559-6-pkshih@realtek.com>
+        <87cz2ol7i5.fsf@kernel.org>
+        <709fd6a89f3f4a637410c0974b32154a8a1b89fe.camel@realtek.com>
+Date:   Fri, 26 May 2023 14:49:12 +0300
+In-Reply-To: <709fd6a89f3f4a637410c0974b32154a8a1b89fe.camel@realtek.com>
+        (Ping-Ke Shih's message of "Fri, 26 May 2023 11:46:21 +0000")
+Message-ID: <87y1lbjosn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1451476970-1685097931=:1602"
-Content-ID: <f72023b2-74c2-48a1-fd5b-ca48b16d5030@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,126 +57,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
---8323329-1451476970-1685097931=:1602
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <f7a6cddb-c0a2-a85e-a615-b91ce664f3de@linux.intel.com>
+> On Thu, 2023-05-25 at 19:07 +0300, Kalle Valo wrote:
+>
+>> 
+>> Ping-Ke Shih <pkshih@realtek.com> writes:
+>> 
+>> > The register-based H2C/C2H are used to exchange commands and events with
+>> > firmware. The exchange data is limited, but it is relatively simple,
+>> > because it can work before HCI initialization. To make these code clean,
+>> > use struct to access them. This patch doesn't change logic at all.
+>> > 
+>> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+>> 
+>> [...]
+>> 
+>> > --- a/drivers/net/wireless/realtek/rtw89/fw.h
+>> > +++ b/drivers/net/wireless/realtek/rtw89/fw.h
+>> > @@ -18,15 +18,51 @@ enum rtw89_fw_dl_status {
+>> >       RTW89_FWDL_WCPU_FW_INIT_RDY = 7
+>> >  };
+>> > 
+>> > -#define RTW89_GET_C2H_HDR_FUNC(info) \
+>> > -     u32_get_bits(info, GENMASK(6, 0))
+>> > -#define RTW89_GET_C2H_HDR_LEN(info) \
+>> > -     u32_get_bits(info, GENMASK(11, 8))
+>> > +struct rtw89_c2hreg_hdr {
+>> > +     u32 w0;
+>> > +};
+>> 
+>> Why this is u32? Shouldn't it be __le32?
+>> 
+>> > +#define RTW89_C2HREG_HDR_FUNC_MASK GENMASK(6, 0)
+>> > +#define RTW89_C2HREG_HDR_ACK BIT(7)
+>> > +#define RTW89_C2HREG_HDR_LEN_MASK GENMASK(11, 8)
+>> > +#define RTW89_C2HREG_HDR_SEQ_MASK GENMASK(15, 12)
+>> > +
+>> > +struct rtw89_c2hreg_phycap {
+>> > +     u32 w0;
+>> > +     u32 w1;
+>> > +     u32 w2;
+>> > +     u32 w3;
+>> > +} __packed;
+>> 
+>> Here as well? And I saw more in the patch.
+>> 
+>> Of course these were already there so isn't a problem introduced by this
+>> patchset, but I started wondering if we are missing some little endian
+>> types?
+>> 
+>
+> I had the same question as yours when I did this conversion, but they
+> are correct because we access these H2C commands/C2H events via registers
+> which are CPU order.
 
-On Thu, 25 May 2023, Ilpo Järvinen wrote:
-
-> On Wed, 24 May 2023, Bjorn Helgaas wrote:
-> 
-> > On Wed, May 17, 2023 at 01:52:35PM +0300, Ilpo Järvinen wrote:
-> > > Don't assume that only the driver would be accessing LNKCTL. ASPM
-> > > policy changes can trigger write to LNKCTL outside of driver's control.
-> > > 
-> > > Use RMW capability accessors which does proper locking to avoid losing
-> > > concurrent updates to the register value. On restore, clear the ASPMC
-> > > field properly.
-> > > 
-> > > Fixes: 76d870ed09ab ("ath10k: enable ASPM")
-> > > Suggested-by: Lukas Wunner <lukas@wunner.de>
-> > > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > >  drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
-> > >  1 file changed, 5 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> > > index a7f44f6335fb..9275a672f90c 100644
-> > > --- a/drivers/net/wireless/ath/ath10k/pci.c
-> > > +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> > > @@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
-> > >  	ath10k_pci_irq_enable(ar);
-> > >  	ath10k_pci_rx_post(ar);
-> > >  
-> > > -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > > -				   ar_pci->link_ctl);
-> > > +	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > > +					   PCI_EXP_LNKCTL_ASPMC,
-> > > +					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
-> > >  
-> > >  	return 0;
-> > >  }
-> > > @@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
-> > >  
-> > >  	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > >  				  &ar_pci->link_ctl);
-> > > -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > > -				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
-> > > +	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-> > > +				   PCI_EXP_LNKCTL_ASPMC);
-> > 
-> > These ath drivers all have the form:
-> > 
-> >   1) read LNKCTL
-> >   2) save LNKCTL value in ->link_ctl
-> >   3) write LNKCTL with "->link_ctl & ~PCI_EXP_LNKCTL_ASPMC"
-> >      to disable ASPM
-> >   4) write LNKCTL with ->link_ctl, presumably to re-enable ASPM
-> > 
-> > These patches close the hole between 1) and 3) where other LNKCTL
-> > updates could interfere, which is definitely a good thing.
-> > 
-> > But the hole between 1) and 4) is much bigger and still there.  Any
-> > update by the PCI core in that interval would be lost.
-> 
-> Any update to PCI_EXP_LNKCTL_ASPMC field in that interval is lost yes, the 
-> updates to _the other fields_ in LNKCTL are not lost.
-> 
-> I know this might result in drivers/pci/pcie/aspm.c disagreeing what
-> the state of the ASPM is (as shown under sysfs) compared with LNKCTL 
-> value but the cause can no longer be due racing RMW. Essentially, 4) is 
-> seen as an override to what core did if it changed ASPMC in between. 
-> Technically, something is still "lost" like you say but for a different 
-> reason than this series is trying to fix.
-> 
-> > Straw-man proposal:
-> > 
-> >   - Change pci_disable_link_state() so it ignores aspm_disabled and
-> >     always disables ASPM even if platform firmware hasn't granted
-> >     ownership.  Maybe this should warn and taint the kernel.
-> > 
-> >   - Change drivers to use pci_disable_link_state() instead of writing
-> >     LNKCTL directly.
-
-Now that I took a deeper look into what pci_disable_link_state() and 
-pci_enable_link_state() do, I realized they're not really disable/enable 
-pair like I had assumed from their names. Disable adds to ->aspm_disable 
-and flags are never removed from that because enable does not touch 
-aspm_disable at all but has it's own flag variable. This asymmetry looks 
-intentional.
-
-So if ath drivers would do pci_disable_link_state() to realize 1)-3), 
-there is no way to undo it in 4). It looks as if ath drivers would 
-actually want to use pci_enable_link_state() with different state 
-parameters to realize what they want to do in 1)-4).
-
-Any suggestion which way I should go with these ath drivers here, use 
-pci_enable_link_state()?
-
-(There are other drivers where pci_disable_link_state() is very much valid 
-thing to do.)
+Ah, thanks for the explanation.
 
 -- 
- i.
-	
-> I fully agree that's the direction we should be moving, yes. However, I'm 
-> a bit hesitant to take that leap in one step. These drivers currently not 
-> only disable ASPM but also re-enable it (assuming we guessed the intent
-> right).
-> 
-> If I directly implement that proposal, ASPM is not going to be re-enabled 
-> when PCI core does not allowing it. Could it cause some power related 
-> regression?
-> 
-> My plan is to make another patch series after these to realize exactly 
-> what you're proposing. It would allow better to isolate the problems that 
-> related to the lack of ASPM.
-> 
-> I hope this two step approach is an acceptable way forward? I can of 
-> course add those patches on top of these if that would be preferrable.
---8323329-1451476970-1685097931=:1602--
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
