@@ -2,54 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A37D7125EC
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 542D471260F
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:55:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243376AbjEZLta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 07:49:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
+        id S231381AbjEZLzr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 07:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243401AbjEZLt2 (ORCPT
+        with ESMTP id S231124AbjEZLzp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 07:49:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 922F4E5A
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 04:49:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8F7164F80
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 11:49:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9235FC4339B;
-        Fri, 26 May 2023 11:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685101755;
-        bh=4zBF2mdWj0qm6m7N0xeZdQTBhYiWgiMIDwC9R8eOOIw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rfWXS/+lbBDj3ck4f7uVQVnDvHCRKJf0EGbsQhDxYNJtISN/WcheFsIw5hiURGGzF
-         /P5Bwl5uWtDWX416Mcgx9R0iS2FH5yu5LOUQBOBjYF4eKxegFw9ziUoW5SuPyXB4Vy
-         QDksVCM9uQ2U2N4eMwkl65Xbj/LQF9BwHLSU0zh+U5dduerT3jrJXv6aLzc8cSpBUF
-         7AeZSEXIOHPsfG+3UcTQ7aM0+brCn3yRbTnQGQrQmzdtBkU9QJw8CvOEd7oYLp0e89
-         SRQlZFoAd3OC+190wI/eAK+7btyRqAZVZplkFqlQFBcfk+VbWy4TpMe3UD6QQRJeNR
-         rkhlLml6PO08Q==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 5/5] wifi: rtw89: use struct to access register-based H2C/C2H
-References: <20230522122513.13559-1-pkshih@realtek.com>
-        <20230522122513.13559-6-pkshih@realtek.com>
-        <87cz2ol7i5.fsf@kernel.org>
-        <709fd6a89f3f4a637410c0974b32154a8a1b89fe.camel@realtek.com>
-Date:   Fri, 26 May 2023 14:49:12 +0300
-In-Reply-To: <709fd6a89f3f4a637410c0974b32154a8a1b89fe.camel@realtek.com>
-        (Ping-Ke Shih's message of "Fri, 26 May 2023 11:46:21 +0000")
-Message-ID: <87y1lbjosn.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 26 May 2023 07:55:45 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60B1195
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 04:55:44 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34QBtGJE1009662, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34QBtGJE1009662
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 26 May 2023 19:55:16 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 26 May 2023 19:55:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 26 May 2023 19:55:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Fri, 26 May 2023 19:55:27 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: Question about power save
+Thread-Topic: Question about power save
+Thread-Index: AQHZjyJp/omCEnmceEyfVuCNSiYYRa9qwpaAgAAIjACAASJfgA==
+Date:   Fri, 26 May 2023 11:55:27 +0000
+Message-ID: <731603cd61e49fece503780a74d0efdef8c7e380.camel@realtek.com>
+References: <c385be75-71db-6265-1a6c-24eca64e5d7f@lwfinger.net>
+         <fa9429cb8d24c9bb4b810c423b150aefe116148c.camel@sipsolutions.net>
+         <6d635666-4973-b498-f67b-64762dbbd768@lwfinger.net>
+In-Reply-To: <6d635666-4973-b498-f67b-64762dbbd768@lwfinger.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.76.140]
+x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <ECBD065A88199047840110913F8F6939@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,64 +72,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
-
-> On Thu, 2023-05-25 at 19:07 +0300, Kalle Valo wrote:
->
->> 
->> Ping-Ke Shih <pkshih@realtek.com> writes:
->> 
->> > The register-based H2C/C2H are used to exchange commands and events with
->> > firmware. The exchange data is limited, but it is relatively simple,
->> > because it can work before HCI initialization. To make these code clean,
->> > use struct to access them. This patch doesn't change logic at all.
->> > 
->> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> 
->> [...]
->> 
->> > --- a/drivers/net/wireless/realtek/rtw89/fw.h
->> > +++ b/drivers/net/wireless/realtek/rtw89/fw.h
->> > @@ -18,15 +18,51 @@ enum rtw89_fw_dl_status {
->> >       RTW89_FWDL_WCPU_FW_INIT_RDY = 7
->> >  };
->> > 
->> > -#define RTW89_GET_C2H_HDR_FUNC(info) \
->> > -     u32_get_bits(info, GENMASK(6, 0))
->> > -#define RTW89_GET_C2H_HDR_LEN(info) \
->> > -     u32_get_bits(info, GENMASK(11, 8))
->> > +struct rtw89_c2hreg_hdr {
->> > +     u32 w0;
->> > +};
->> 
->> Why this is u32? Shouldn't it be __le32?
->> 
->> > +#define RTW89_C2HREG_HDR_FUNC_MASK GENMASK(6, 0)
->> > +#define RTW89_C2HREG_HDR_ACK BIT(7)
->> > +#define RTW89_C2HREG_HDR_LEN_MASK GENMASK(11, 8)
->> > +#define RTW89_C2HREG_HDR_SEQ_MASK GENMASK(15, 12)
->> > +
->> > +struct rtw89_c2hreg_phycap {
->> > +     u32 w0;
->> > +     u32 w1;
->> > +     u32 w2;
->> > +     u32 w3;
->> > +} __packed;
->> 
->> Here as well? And I saw more in the patch.
->> 
->> Of course these were already there so isn't a problem introduced by this
->> patchset, but I started wondering if we are missing some little endian
->> types?
->> 
->
-> I had the same question as yours when I did this conversion, but they
-> are correct because we access these H2C commands/C2H events via registers
-> which are CPU order.
-
-Ah, thanks for the explanation.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+T24gVGh1LCAyMDIzLTA1LTI1IGF0IDEzOjM2IC0wNTAwLCBMYXJyeSBGaW5nZXIgd3JvdGU6DQo+
+IA0KPiBPbiA1LzI1LzIzIDEzOjA1LCBKb2hhbm5lcyBCZXJnIHdyb3RlOg0KPiA+IFllYWgsIEkg
+dGhpbmsgSSBzYXcgdGhlIHJlcG9ydCwgYnV0IEknbSB0cmF2ZWxsaW5nIGFuZCBkaWRuJ3QgaGF2
+ZSB0aGF0DQo+ID4gbXVjaCB0aW1lIHRvIHJlcGx5Lg0KPiANCj4gSm9oYW5uZXMsDQo+IA0KPiBU
+aGUgcnR3ODggZHJpdmVycyBhcmUgZGVmaW5pdGVseSBzZXR0aW5nIGJvdGggU1VQUE9SVFNfUFMg
+YW5kDQo+IFNVUFBPUlRTX0RZTkFNSUNfUFMuIEl0IHNlZW1zIHRoYXQgdGhlcmUgaXMgYSBidWcg
+c29tZXdoZXJlIGlzIHRob3NlIGRyaXZlcnMuDQo+IA0KPiBJbiBteSByZXBvLCBJIHdpbGwgcmVt
+b3ZlIHRoZSBTVVBQT1JUU19EWU5BTUlDX1BTLCB3aGljaCB3aWxsIHNvbHZlIHRoZSBwcm9ibGVt
+DQo+IHJhaXNlZCBpbiB0aGUgR2l0SHViIGlzc3VlLiBUaGF0IHdpbGwgZ2l2ZSBtZSB0aW1lIHRv
+IGZpbmQgdGhhdCBidWcuDQo+IA0KDQpXZSBhbHNvIGhhdmUgYmVlbiBhd2FyZSBvZiB0aGlzIGEg
+Y291cGxlIGRheXMgYWdvLCBzbyB3ZSBhcmUgcHJlcGFyaW5nIHBhdGNoZXMNCnRvIGNvcnJlY3Qg
+dGhpcyBmb3IgYm90aCBydHc4OC84OS4gVGhlIG1ldGhvZCBpcyB0aGF0IHJlLWNhbGN1bGF0ZSBp
+ZiB3ZSBjYW4NCmVudGVyIFBTIGJ5IGNoYW5nZXMgb2YgQlNTX0NIQU5HRURfUFMgYW5kIHZpZi0+
+Y2ZnLnBzLg0KSSB3aWxsIHN1Ym1pdCB0aGUgcGF0Y2ggc29vbi4gDQoNClBpbmctS2UNCg0K
