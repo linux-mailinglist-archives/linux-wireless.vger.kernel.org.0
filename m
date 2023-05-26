@@ -2,43 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19966712C17
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 19:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65EF712FEA
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 May 2023 00:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbjEZRz5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 13:55:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
+        id S236852AbjEZWVT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 18:21:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjEZRz4 (ORCPT
+        with ESMTP id S235695AbjEZWVR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 13:55:56 -0400
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 508A5A4
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 10:55:54 -0700 (PDT)
-Date:   Fri, 26 May 2023 17:55:48 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1685123752; x=1685382952;
-        bh=LfPI5yLmcVzJvRmZZg6b6ZL754UI72XeZwVc220tpYc=;
-        h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=aC+9m2XllgUSgqySO/jbwHwi5X+9A6TEC1kdssOVREhUdPhyO0pkXxPNw8kmgg73z
-         g7uDBgfuQSLjPMkKfHbe/NRLl7hA3XM9JqhEea/7opXY48s0yfbrPOcYnfWh9vtRc6
-         ojJO5CHqdQXCokFKYOb2p60vTQwmED/FqpKGlV6W26zJHzZ6ZpI6kEL1OC6WDGQPvz
-         e1I1bd6HVKT7omARhaE96+HY1szOC6Mmqypw2SgPr2BcWZlTWst6Lfh+N2A7EzZb66
-         LIcO2WPifDLI7JtO8Q/kPbsfxyeSJz9fB5owJULtM/0DgRfZgyb9s7P3BV8qneZC2L
-         6sPn95ftvk4Ug==
-To:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: iwlwifi: AX201 misdetected as AX101
-Message-ID: <gAwMzXEPlQZUgbc6n3yYY2soROKl4-D_JfWwoHW8CMx-LDkDEeAlwcyjOMy767W3eEVxS-e7oEihVh1PNHT-_iznSKneJjW0vu0PN7aQ9K8=@protonmail.com>
-Feedback-ID: 20568564:user:proton
+        Fri, 26 May 2023 18:21:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6113FE44;
+        Fri, 26 May 2023 15:21:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2B91617B8;
+        Fri, 26 May 2023 22:21:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7E3C433D2;
+        Fri, 26 May 2023 22:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685139660;
+        bh=lOzCRNj+JqZpdCytsoPRsr+dfh1OGTQUhlnSsQfeAQg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=l3+rM4uJF/odFYD/rDnO0AYNweWpKOiTD4lOFb+8SudOVpUcXBHMnZdY7XXVi9I6g
+         FI7YepVeiWViXeMC0vcp3IJJyYRx1DZMsoAy4JErArPtzvmpwOJ9/0UpvkKFS1A+7E
+         WRbC3ntMBsg0iLEpV19Bo5vER/U36rtBY1N6WPKqGSUd/mnnQvv04ndMneMtJXxmpy
+         07hOZlH4Y8j0Y5swtiCZfcAEcXRcFl0TqhIPM220U31NCrlwCqS3wyS5vBwMfyhgBo
+         plwjefGwMmgFEWsQhuhP83uO4SU4KOSHJdRX66KKIEErBYitZLVOtciha9LYTHeFi4
+         mJsgmSw0bCKbw==
+Date:   Fri, 26 May 2023 17:20:58 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Michal Kazior <michal.kazior@tieto.com>,
+        Janusz Dziedzic <janusz.dziedzic@tieto.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dean Luick <dean.luick@cornelisnetworks.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 9/9] wifi: ath10k: Use RMW accessors for changing
+ LNKCTL
+Message-ID: <ZHEwysZmar7ibkw6@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ecdc8e85-786-db97-a7d4-bfd82c08714@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,58 +73,110 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi all,
+On Thu, May 25, 2023 at 01:11:51PM +0300, Ilpo Järvinen wrote:
+> On Wed, 24 May 2023, Bjorn Helgaas wrote:
+> > On Wed, May 17, 2023 at 01:52:35PM +0300, Ilpo Järvinen wrote:
+> > > Don't assume that only the driver would be accessing LNKCTL. ASPM
+> > > policy changes can trigger write to LNKCTL outside of driver's control.
+> > > 
+> > > Use RMW capability accessors which does proper locking to avoid losing
+> > > concurrent updates to the register value. On restore, clear the ASPMC
+> > > field properly.
+> > > 
+> > > Fixes: 76d870ed09ab ("ath10k: enable ASPM")
+> > > Suggested-by: Lukas Wunner <lukas@wunner.de>
+> > > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> > > Cc: stable@vger.kernel.org
+> > > ---
+> > >  drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
+> > >  1 file changed, 5 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+> > > index a7f44f6335fb..9275a672f90c 100644
+> > > --- a/drivers/net/wireless/ath/ath10k/pci.c
+> > > +++ b/drivers/net/wireless/ath/ath10k/pci.c
+> > > @@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
+> > >  	ath10k_pci_irq_enable(ar);
+> > >  	ath10k_pci_rx_post(ar);
+> > >  
+> > > -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> > > -				   ar_pci->link_ctl);
+> > > +	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> > > +					   PCI_EXP_LNKCTL_ASPMC,
+> > > +					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
+> > >  
+> > >  	return 0;
+> > >  }
+> > > @@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
+> > >  
+> > >  	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> > >  				  &ar_pci->link_ctl);
+> > > -	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> > > -				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
+> > > +	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+> > > +				   PCI_EXP_LNKCTL_ASPMC);
+> > 
+> > These ath drivers all have the form:
+> > 
+> >   1) read LNKCTL
+> >   2) save LNKCTL value in ->link_ctl
+> >   3) write LNKCTL with "->link_ctl & ~PCI_EXP_LNKCTL_ASPMC"
+> >      to disable ASPM
+> >   4) write LNKCTL with ->link_ctl, presumably to re-enable ASPM
+> > 
+> > These patches close the hole between 1) and 3) where other LNKCTL
+> > updates could interfere, which is definitely a good thing.
+> > 
+> > But the hole between 1) and 4) is much bigger and still there.  Any
+> > update by the PCI core in that interval would be lost.
+> 
+> Any update to PCI_EXP_LNKCTL_ASPMC field in that interval is lost yes, the 
+> updates to _the other fields_ in LNKCTL are not lost.
 
-I have an Acer Aspire A315-58 laptop[0], which, according to lspci has the =
-following intel wireless chip:
+Ah, yes, you're right, I missed the masking to PCI_EXP_LNKCTL_ASPMC in
+the pcie_capability_clear_word().
 
-   Device:=0900:14.3
-    Class:=09Network controller [0280]
-   Vendor:=09Intel Corporation [8086]
-   Device:=09Wi-Fi 6 AX201 [a0f0]
-  SVendor:=09Intel Corporation [8086]
-  SDevice:=09Wi-Fi 6 AX201 [0244]
-      Rev:=0920
-   ProgIf:=0900
-   Driver:=09iwlwifi
-   Module:=09iwlwifi
+> > Straw-man proposal:
+> > 
+> >   - Change pci_disable_link_state() so it ignores aspm_disabled and
+> >     always disables ASPM even if platform firmware hasn't granted
+> >     ownership.  Maybe this should warn and taint the kernel.
+> > 
+> >   - Change drivers to use pci_disable_link_state() instead of writing
+> >     LNKCTL directly.
+> 
+> I fully agree that's the direction we should be moving, yes. However, I'm 
+> a bit hesitant to take that leap in one step. These drivers currently not 
+> only disable ASPM but also re-enable it (assuming we guessed the intent
+> right).
+> 
+> If I directly implement that proposal, ASPM is not going to be re-enabled 
+> when PCI core does not allowing it. Could it cause some power related 
+> regression?
 
-However, in the kernel message buffer, the following message is written:
+IIUC the potential problem only happens with:
 
-  [    3.633490] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX101, REV=
-=3D0x351
+  - A platform that enables ASPM but doesn't grant PCIe Capability
+    ownership to the OS, and
 
-Also, this chip did not work with the 6.3.3 Arch Linux kernel, the driver l=
-oaded the
-`QuZ-a0-hr-b0-74.ucode` firmware:
+  - A device where we force-disable ASPM, presumably to avoid some
+    hardware defect.
 
-  [    6.516505] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger 13=
- fired (delay=3D0ms).
-  [    6.517615] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
-  [    6.517616] iwlwifi 0000:00:14.3: Transport status: 0x0000004A, valid:=
- 6
-  [    6.517617] iwlwifi 0000:00:14.3: Loaded firmware version: 74.a5e9588b=
-.0 QuZ-a0-hr-b0-74.ucode
-  [    6.517619] iwlwifi 0000:00:14.3: 0x00000084 | NMI_INTERRUPT_UNKNOWN  =
-    =20
-  ...
-  [    6.861510] iwlwifi 0000:00:14.3: Failed to run INIT ucode: -110
+I'm not sure this case is worth worrying about.  A platform that
+enables ASPM without allowing the OS to disable it is taking a risk
+because it can't know about these device defects or even about user
+preferences.  A device that has an ASPM-related defect may use more
+power than necessary.  I think that's to be expected.
 
+> My plan is to make another patch series after these to realize exactly 
+> what you're proposing. It would allow better to isolate the problems that 
+> related to the lack of ASPM.
+> 
+> I hope this two step approach is an acceptable way forward? I can of 
+> course add those patches on top of these if that would be preferrable.
 
-I then noticed that firmwares 75-77 are available and that there were recen=
-t changes
-to the iwlwifi module that increased IWL_22000_UCODE_API_MAX, so I gave it =
-a go,
-and built the kernel at ae8373a5add4ea39f032563cf12a02946d1e3546 and now fi=
-rmware 77
-is loaded, and that seems to work, at least I did not notice any issues so =
-far.
+I think two steps is OK.  It's a little more work for the driver
+maintainers to review them, but this step is pretty trivial already
+reviewed (except for the GPUs, which are probably the most important :)).
 
-The full logs and other information about the laptop can be found here[0].
-
-
-Regards,
-Barnab=C3=A1s P=C5=91cze
-
-
-[0]: https://linux-hardware.org/?probe=3D43069955ee
+Bjorn
