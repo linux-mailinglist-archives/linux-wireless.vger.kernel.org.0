@@ -2,126 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 261C1711F6C
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 07:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 013D97123B0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 11:32:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230058AbjEZF4B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 01:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49640 "EHLO
+        id S243158AbjEZJcK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 05:32:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjEZF4A (ORCPT
+        with ESMTP id S243090AbjEZJcI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 01:56:00 -0400
-Received: from bin-mail-out-05.binero.net (bin-mail-out-05.binero.net [195.74.38.228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FE1BE7
-        for <linux-wireless@vger.kernel.org>; Thu, 25 May 2023 22:55:58 -0700 (PDT)
-X-Halon-ID: f8928910-fb89-11ed-b7d6-cf458ee68324
-Authorized-sender: petter@technux.se
-Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
-        by bin-vsp-out-03.atm.binero.net (Halon) with ESMTPSA
-        id f8928910-fb89-11ed-b7d6-cf458ee68324;
-        Fri, 26 May 2023 07:55:54 +0200 (CEST)
-From:   Petter Mabacker <petter@technux.se>
-To:     s.hauer@pengutronix.de
-Cc:     linux-wireless@vger.kernel.org, petter@technux.se,
-        pkshih@realtek.com, tony0620emma@gmail.com
-Subject: Re: rtw88: rtw8822cu (LM842) -> failed to get tx report from firmware
-Date:   Fri, 26 May 2023 07:55:51 +0200
-Message-Id: <20230526055551.1823094-1-petter@technux.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230524104510.GV15436@pengutronix.de>
-References: <20230524104510.GV15436@pengutronix.de>
+        Fri, 26 May 2023 05:32:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E487B3
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 02:32:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E9D7964E87
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 09:32:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667FFC4339B;
+        Fri, 26 May 2023 09:32:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685093526;
+        bh=y/K1EmIoa3slmOujvbe2/SbxkjnvSTEeTtaX5VkJ+p8=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=CJn/FCYxpSMDmdMxY4QeTgaNfSry0JtSNSvrVd83JCRawbKh4Xf0hhjlupcDworBs
+         gdaPr9/FgBeT4/0D0NsjV0/C9Bm+3IG0CHKsg6wJPPvoELYLsSp2Zdz5knQfrorqTH
+         Yvpgcui/DmQCyYELBIxYfm2UOwkEVk0mbahLNoQLsYtdKj3tQld5tMQAXjnia0HSf9
+         KyC9HI8SgPCdRxtA23n9qN16oRl9F759fWOzJWFEClIyDL19d18EWsEHhH4B8iMfQv
+         19XWD9aktnOe6rAg88F2x/02kK7UqrlPenh+exTfOeePfNtKfHETavtcC6bZ/gSVyd
+         TvtW+V3+zmJyA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Baochen Qiang <quic_bqiang@quicinc.com>
+Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] wifi: ath12k: Use msdu_end to check MCBC
+References: <20230509033638.3228-1-quic_bqiang@quicinc.com>
+Date:   Fri, 26 May 2023 12:32:00 +0300
+In-Reply-To: <20230509033638.3228-1-quic_bqiang@quicinc.com> (Baochen Qiang's
+        message of "Tue, 9 May 2023 11:36:38 +0800")
+Message-ID: <878rdbl9pr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->Hi Petter,
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
->On Thu, Apr 06, 2023 at 10:41:20AM +0000, petter@technux.se wrote:
->> Hi,
->> 
->> I have seen a very similar issue as Andreas. It was found when streaming a mender file (using mender install <url> from my arm device. But I have also managed to reproduce a similar issue by flooding the interface using iperf. 
->> 
->> on target:
->> $ sudo iperf -s -u
->> 
->> On host:
->> $ iperf -c <ip> -u -b 200M -t 300
->> 
->> Then it will almost instantly get problems causing the lm842 dongle to stop working.
+> We are seeing a very low TCP throughput testing with some specific
+> tools. This is because for sub-frames of an AMSDU, MCBC flag in
+> mpdu_start may be not valid, and as a result those frames would be
+> dropped by kernel.
+>
+> Add a new helper to get it from msdu_end.
+>
+> Since original helper is not used for now, add __maybe_unused
+> attribute to make GCC happy.
+>
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> ---
+> v2:
+>  1. add a new helper according to Vasanth's comment.
+>  2. change to use __le16_to_cpu instead of __le32_to_cpu
+>
+>  drivers/net/wireless/ath/ath12k/dp_rx.c | 13 ++++++++++---
+>  drivers/net/wireless/ath/ath12k/hal.c   | 14 ++++++++++++++
+>  drivers/net/wireless/ath/ath12k/hal.h   |  1 +
+>  3 files changed, 25 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> index 8c8162fbe5c6..972034b7f159 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> @@ -193,13 +193,20 @@ static void ath12k_dp_rxdesc_set_msdu_len(struct ath12k_base *ab,
+>  	ab->hw_params->hal_ops->rx_desc_set_msdu_len(desc, len);
+>  }
+>  
+> -static bool ath12k_dp_rx_h_is_mcbc(struct ath12k_base *ab,
+> -				   struct hal_rx_desc *desc)
+> +static __maybe_unused bool ath12k_dp_rx_h_is_mcbc(struct ath12k_base *ab,
+> +						  struct hal_rx_desc *desc)
+>  {
+>  	return (ath12k_dp_rx_h_first_msdu(ab, desc) &&
+>  		ab->hw_params->hal_ops->rx_desc_is_mcbc(desc));
+>  }
 
->I could finally reproduce this problem by placing an access point close
->enough to my device. Only then the incoming packet rate is high enough
->that the "failed to get rx_queue, overflow" message triggers.
+Using __maybe_unused is usually a bad idea, it should be used only on
+very special cases.
 
->In my case the time it takes to print this message many times is enough
->to confuse the device so that it finally responds with:
+But why do you leave struct hal_ops::rx_desc_is_mcbc? Nobody is using it
+and we should not have dead code lying around.
 
->[  126.449305] rtw_8822cu 1-1:1.2: failed to get tx report from firmware
->[  142.081419] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
->[  175.929407] rtw_8822cu 1-1:1.2: firmware failed to report density after scan
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
->I just sent a patch printing the message with dev_dbg_ratelimited
->instead which fixes that problem for me, you're on Cc.
-
->It likely won't fix Andreas' problem though, as I don't see this message
->in his bug report.
-
->Sascha
-
-Nice work. I have tested your patch v1 for the flooding at it solves my
-iperf issue. Also when you describe above, its the
-very same situation for me, I have been using a board that is very close
-to the access point, so this is likely why I could reproduce it quite
-easy.
-
-I have however finally manage to make some break-through about the
-original issue Andreas described, that so far has only been seen when
-running mender install. A similar behaviour is to download large amount
-of data combined with writing to the disk. So for me I can reproduce the
-issue on my i.MX6 SoloX (single cpu board) by doing.
-
-$ sudo dd if=/dev/urandom of=/path/to/bigfile bs=4M count=500
-
-and in parallell download a large file such as:
-
-$ wget -O /dev/null http://speedtest.tele2.net/10GB.zip
-
-This will trigger the problem quite fast (within 5-15 min at least):
-[  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
-[  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
-[  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
-[  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
-[  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
-[  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
-[  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
-
-However one very interesting thing is that I can not reproduce this on a
-more powerful device, such as i.MX8 or RPi4 etc.. But when I tried this
-on another less powerful old single core device (BCM2835), I was able to
-reproduce it quite easily again..
-
-So from my understanding it seems to be a bit related to how the driver
-behaves when the network queue/buffer etc are a bit stretch and the
-system occupied with high I/O and/or system load. By increasing buffer sizes and
-priorities for network queues, the system can handle it a bit better,
-but still enough stress of the system seems to trigger the driver to
-bail out completely..
-
-Any suggestions or ideas around this is most welcome..
-
-BR Petter
-
->-- 
->Pengutronix e.K.                           |                             |
->Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
