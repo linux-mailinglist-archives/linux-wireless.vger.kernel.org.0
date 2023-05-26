@@ -2,117 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E67C7125AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA1977125D1
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:45:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243343AbjEZLgw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 07:36:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35340 "EHLO
+        id S237214AbjEZLpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 07:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237023AbjEZLgu (ORCPT
+        with ESMTP id S236478AbjEZLpy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 07:36:50 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE1419C
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 04:36:22 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34QBY6wkC020641, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34QBY6wkC020641
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 26 May 2023 19:34:06 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 26 May 2023 19:34:18 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 26 May 2023 19:34:18 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Fri, 26 May 2023 19:34:18 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-CC:     "iam@valdikss.org.ru" <iam@valdikss.org.ru>,
-        "g0000ga@gmail.com" <g0000ga@gmail.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "andreas@fatal.se" <andreas@fatal.se>,
-        "mr.nuke.me@gmail.com" <mr.nuke.me@gmail.com>,
-        "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "morrownr@gmail.com" <morrownr@gmail.com>,
-        "petter@technux.se" <petter@technux.se>,
-        "tpkuester@gmail.com" <tpkuester@gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Thread-Topic: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Thread-Index: AQHZjiwhpaOYDLChaE6ysR4gEzG9Hq9qJPMQgAGizoCAACHEAA==
-Date:   Fri, 26 May 2023 11:34:17 +0000
-Message-ID: <8fcb481dae3114ddf18590d5aaa3a87f0c379887.camel@realtek.com>
-References: <20230524103934.1019096-1-s.hauer@pengutronix.de>
-         <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
-         <20230526093319.GR17518@pengutronix.de>
-In-Reply-To: <20230526093319.GR17518@pengutronix.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.1-2 
-x-originating-ip: [125.224.76.140]
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <FFB4A2C60D03BE42AE2E237D2D5830DB@realtek.com>
-Content-Transfer-Encoding: base64
+        Fri, 26 May 2023 07:45:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EF713A
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 04:45:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C793A64E66
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 11:45:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C26C433D2;
+        Fri, 26 May 2023 11:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685101552;
+        bh=eLGJ7IUKjlVRda4uTh5jj6HszvyHA1EtoDaEo1TBUT4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=B4bAuXbcCvaIzLkzZQHPFE5nQ32iRUqyjxg6VV4VD74T6COWaqc+F7EopDlzf7N1+
+         JYTNYorTUEP1e4sZpp0R9NcusdUccU3BrbrgKevmYv4XjLpVOJcq7p2azOaPLw6vWn
+         Qi7UKHuybpvfm/gpZVBdQzlF+laTVV5JnwE38d/M3bBVQXo25uFquoateGbGcUDJ/e
+         cU7UosRGX6Zjw37BA1FX5fsYQEbcP1O0nzgJiH558sP2EWCLfuGkL8CiKLPOJxIz8n
+         CXToDlUZNuhaaQB+33HVJyE5JyuMSSiDnoMuPEZT+UE7qXPGL+voH6cDpmoyHM7Xr8
+         9pFPHYHzdJrQg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     mhi@lists.linux.dev, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] mhi: allow MHI client drivers to provide the firmware via a pointer
+References: <20230308152522.6728-1-kvalo@kernel.org>
+        <20230308152522.6728-2-kvalo@kernel.org>
+        <20230315081820.GD25575@thinkpad>
+Date:   Fri, 26 May 2023 14:45:46 +0300
+In-Reply-To: <20230315081820.GD25575@thinkpad> (Manivannan Sadhasivam's
+        message of "Wed, 15 Mar 2023 13:48:20 +0530")
+Message-ID: <87353jl3it.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gRnJpLCAyMDIzLTA1LTI2IGF0IDExOjMzICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+
-IA0KPiBPbiBUaHUsIE1heSAyNSwgMjAyMyBhdCAxMjo0NToyM0FNICswMDAwLCBQaW5nLUtlIFNo
-aWggd3JvdGU6DQo+ID4gDQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4g
-RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPg0KPiA+ID4gU2VudDog
-V2VkbmVzZGF5LCBNYXkgMjQsIDIwMjMgNjo0MCBQTQ0KPiA+ID4gVG86IGxpbnV4LXdpcmVsZXNz
-IDxsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc+DQo+ID4gPiBDYzogSGFucyBVbGxpIEty
-b2xsIDxsaW51eEB1bGxpLWtyb2xsLmRlPjsgTGFycnkgRmluZ2VyIDxMYXJyeS5GaW5nZXJAbHdm
-aW5nZXIubmV0PjsgUGluZy1LZQ0KPiA+ID4gU2hpaA0KPiA+ID4gPHBrc2hpaEByZWFsdGVrLmNv
-bT47IFRpbSBLIDx0cGt1ZXN0ZXJAZ21haWwuY29tPjsgQWxleCBHIC4gPG1yLm51a2UubWVAZ21h
-aWwuY29tPjsgTmljaw0KPiA+ID4gTW9ycm93DQo+ID4gPiA8bW9ycm93bnJAZ21haWwuY29tPjsg
-VmlrdG9yIFBldHJlbmtvIDxnMDAwMGdhQGdtYWlsLmNvbT47IEFuZHJlYXMgSGVucmlrc3NvbiA8
-DQo+ID4gPiBhbmRyZWFzQGZhdGFsLnNlPjsNCj4gPiA+IFZhbGRpa1NTIDxpYW1AdmFsZGlrc3Mu
-b3JnLnJ1Pjsga2VybmVsQHBlbmd1dHJvbml4LmRlOyBwZXR0ZXJAdGVjaG51eC5zZTsgU2FzY2hh
-IEhhdWVyDQo+ID4gPiA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4NCj4gPiA+IFN1YmplY3Q6IFtQ
-QVRDSF0gd2lmaTogcnR3ODg6IHVzYjogc2lsZW5jZSBsb2cgZmxvb2RpbmcgZXJyb3IgbWVzc2Fn
-ZQ0KPiA+ID4gDQo+ID4gPiBXaGVuIHJlY2VpdmluZyBtb3JlIHJ4IHBhY2tldHMgdGhhbiB0aGUg
-a2VybmVsIGNhbiBoYW5kbGUgdGhlIGRyaXZlcg0KPiA+ID4gZHJvcHMgdGhlIHBhY2tldHMgYW5k
-IGlzc3VlcyBhbiBlcnJvciBtZXNzYWdlLg0KPiA+IA0KPiA+IFRoZSB3b3JrcXVldWUgcnR3ODhf
-dXNiIGlzIHVzaW5nIGlzOg0KPiA+IA0KPiA+ICAgICAgIHJ0d3VzYi0+cnh3cSA9IGNyZWF0ZV9z
-aW5nbGV0aHJlYWRfd29ya3F1ZXVlKCJydHc4OF91c2I6IHJ4IHdxIik7DQo+ID4gDQo+ID4gSGF2
-ZSB5b3UgdHJpZWQgd29ya3F1ZXVlIHdpdGggZmxhZ3MgV1FfVU5CT1VORCBhbmQgV1FfSElHSFBS
-ST8gTGlrZSwNCj4gPiANCj4gPiAgICAgICBydHd1c2ItPnJ4d3EgPSBhbGxvY193b3JrcXVldWUo
-InJ0dzg4X3VzYjogcnggd3EiLCBXUV9VTkJPVU5EIHwgV1FfSElHSFBSSSwgMCk7DQo+ID4gb3IN
-Cj4gPiAgICAgICBydHd1c2ItPnJ4d3EgPSBhbGxvY19vcmRlcmVkX3dvcmtxdWV1ZSgicnR3ODhf
-dXNiOiByeCB3cSIsIFdRX0hJR0hQUkkpOw0KPiA+IA0KPiA+IFRoZW4sIGRyaXZlciBnZXQgbW9y
-ZSB0aW1lIHRvIHByb2Nlc3MgUlgsIHNvIGl0IGNvdWxkIGVhc2UgZmxvb2RpbmcgbWVzc2FnZXMu
-DQo+IA0KPiBObywgSSBoYXZlbid0IHRyaWVkIHRoaXMuIFJlZ2FyZGxlc3Mgb2YgdGhhdCwgSSB0
-aGluayBpdCBzdGlsbCBtYWtlcw0KPiBzZW5zZSB0byByYXRlIGxpbWl0IHRoZSBtZXNzYWdlcy4g
-VGhlcmUgd2lsbCBhbHdheXMgYmUgYSBzbG93ZXIgc3lzdGVtDQo+IHRoYXQgY2FuJ3QgY29wZSB3
-aXRoIHRoZSBudW1iZXIgb2YgcGFja2V0cyBldmVuIHdpdGggYSBoaWdoZXIgcHJpb3JpdHkNCj4g
-d29ya3F1ZXVlLg0KPiANCg0KTXkgb3BpbmlvbiBpcyBqdXN0IHJlbGF0ZWQgdGhpbmcgdGhhdCBp
-cyBhbiBpZGVhIHRvIGdldCBhIGxpdHRsZSBiaXQNCmltcHJvdmVtZW50LiBCdXQsIHlvdSBhcmUg
-cmlnaHQuIFRoaXMgbWF5IGJlIHVzZWxlc3MgZm9yIHNsb3dlciBzeXN0ZW0uDQpBbHNvLCB5b3Vy
-IHBhdGNoIHRvdGFsbHkgbWFrZSBzZW5zZSB0byBtZS4gDQoNClJldmlld2VkLWJ5OiBQaW5nLUtl
-IFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KDQo=
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+
+> On Wed, Mar 08, 2023 at 05:25:20PM +0200, Kalle Valo wrote:
+>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>> 
+>
+> Subject prefix should be: "bus: mhi: host: ..."
+
+Will do.
+
+>> @@ -392,9 +390,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
+>>  	const struct firmware *firmware = NULL;
+>>  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+>>  	const char *fw_name;
+>> +	const u8 *fw_data;
+>>  	void *buf;
+>>  	dma_addr_t dma_addr;
+>> -	size_t size;
+>> +	size_t size, fw_sz;
+>>  	int i, ret;
+>>  
+>>  	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
+>> @@ -424,6 +423,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
+>>  	fw_name = (mhi_cntrl->ee == MHI_EE_EDL) ?
+>>  		mhi_cntrl->edl_image : mhi_cntrl->fw_image;
+>>  
+>
+> Can you please add a comment here?
+
+Ok.
+
+>
+>> +	if (!fw_name && mhi_cntrl->fbc_download &&
+>> +	    mhi_cntrl->fw_data && mhi_cntrl->fw_sz) {
+>> +		size = mhi_cntrl->sbl_size;
+>
+> Don't you need to validate sbl_size?
+
+Good point, I'll add that.
+
+>> --- a/include/linux/mhi.h
+>> +++ b/include/linux/mhi.h
+>> @@ -299,6 +299,10 @@ struct mhi_controller_config {
+>>   * @iova_start: IOMMU starting address for data (required)
+>>   * @iova_stop: IOMMU stop address for data (required)
+>>   * @fw_image: Firmware image name for normal booting (optional)
+>> + * @fw_data: Firmware image data content for normal booting, used only
+>> + *           if fw_image is NULL (optional)
+>> + * @fw_sz: Firmware image data size for normal booting, used only if fw_image
+>> + *         is NULL and fbc_download is true (optional)
+>>   * @edl_image: Firmware image name for emergency download mode (optional)
+>>   * @rddm_size: RAM dump size that host should allocate for debugging purpose
+>>   * @sbl_size: SBL image size downloaded through BHIe (optional)
+>> @@ -384,6 +388,8 @@ struct mhi_controller {
+>>  	dma_addr_t iova_start;
+>>  	dma_addr_t iova_stop;
+>>  	const char *fw_image;
+>> +	const u8 *fw_data;
+>> +	size_t fw_sz;
+>
+> Even though these members are not creating holes now, shuffling the datatypes
+> will create holes in the future. So I always prefer to keep the struct members
+> sorted in the below order:
+>
+> pointer
+> struct/union
+> u64
+> u32
+> u16
+> u8
+> bool
+
+I'm not sure what are suggesting here as struct mhi_controller is not
+using that style. Are you saying that fw_sz should be after reg_len? So
+something like this:
+
+	const u8 *fw_data;
+	const char *edl_image;
+	size_t rddm_size;
+	size_t sbl_size;
+	size_t seg_len;
+	size_t reg_len;
+	size_t fw_sz;
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
