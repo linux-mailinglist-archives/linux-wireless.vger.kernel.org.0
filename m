@@ -2,107 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 013D97123B0
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 11:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0C687123BD
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 11:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243158AbjEZJcK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 05:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
+        id S243268AbjEZJei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 05:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243090AbjEZJcI (ORCPT
+        with ESMTP id S243249AbjEZJeP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 05:32:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E487B3
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 02:32:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9D7964E87
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 09:32:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667FFC4339B;
-        Fri, 26 May 2023 09:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685093526;
-        bh=y/K1EmIoa3slmOujvbe2/SbxkjnvSTEeTtaX5VkJ+p8=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=CJn/FCYxpSMDmdMxY4QeTgaNfSry0JtSNSvrVd83JCRawbKh4Xf0hhjlupcDworBs
-         gdaPr9/FgBeT4/0D0NsjV0/C9Bm+3IG0CHKsg6wJPPvoELYLsSp2Zdz5knQfrorqTH
-         Yvpgcui/DmQCyYELBIxYfm2UOwkEVk0mbahLNoQLsYtdKj3tQld5tMQAXjnia0HSf9
-         KyC9HI8SgPCdRxtA23n9qN16oRl9F759fWOzJWFEClIyDL19d18EWsEHhH4B8iMfQv
-         19XWD9aktnOe6rAg88F2x/02kK7UqrlPenh+exTfOeePfNtKfHETavtcC6bZ/gSVyd
-         TvtW+V3+zmJyA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Baochen Qiang <quic_bqiang@quicinc.com>
-Cc:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] wifi: ath12k: Use msdu_end to check MCBC
-References: <20230509033638.3228-1-quic_bqiang@quicinc.com>
-Date:   Fri, 26 May 2023 12:32:00 +0300
-In-Reply-To: <20230509033638.3228-1-quic_bqiang@quicinc.com> (Baochen Qiang's
-        message of "Tue, 9 May 2023 11:36:38 +0800")
-Message-ID: <878rdbl9pr.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 26 May 2023 05:34:15 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E9110F3
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 02:33:39 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1q2Tp5-0007HF-QH; Fri, 26 May 2023 11:33:23 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1q2Tp1-0007tg-Pm; Fri, 26 May 2023 11:33:19 +0200
+Date:   Fri, 26 May 2023 11:33:19 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Hans Ulli Kroll <linux@ulli-kroll.de>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Tim K <tpkuester@gmail.com>, "Alex G ." <mr.nuke.me@gmail.com>,
+        Nick Morrow <morrownr@gmail.com>,
+        Viktor Petrenko <g0000ga@gmail.com>,
+        Andreas Henriksson <andreas@fatal.se>,
+        ValdikSS <iam@valdikss.org.ru>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "petter@technux.se" <petter@technux.se>
+Subject: Re: [PATCH] wifi: rtw88: usb: silence log flooding error message
+Message-ID: <20230526093319.GR17518@pengutronix.de>
+References: <20230524103934.1019096-1-s.hauer@pengutronix.de>
+ <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+On Thu, May 25, 2023 at 12:45:23AM +0000, Ping-Ke Shih wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Wednesday, May 24, 2023 6:40 PM
+> > To: linux-wireless <linux-wireless@vger.kernel.org>
+> > Cc: Hans Ulli Kroll <linux@ulli-kroll.de>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih
+> > <pkshih@realtek.com>; Tim K <tpkuester@gmail.com>; Alex G . <mr.nuke.me@gmail.com>; Nick Morrow
+> > <morrownr@gmail.com>; Viktor Petrenko <g0000ga@gmail.com>; Andreas Henriksson <andreas@fatal.se>;
+> > ValdikSS <iam@valdikss.org.ru>; kernel@pengutronix.de; petter@technux.se; Sascha Hauer
+> > <s.hauer@pengutronix.de>
+> > Subject: [PATCH] wifi: rtw88: usb: silence log flooding error message
+> > 
+> > When receiving more rx packets than the kernel can handle the driver
+> > drops the packets and issues an error message.
+> 
+> The workqueue rtw88_usb is using is:
+> 
+> 	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
+> 
+> Have you tried workqueue with flags WQ_UNBOUND and WQ_HIGHPRI? Like,
+> 
+> 	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+> or
+> 	rtwusb->rxwq = alloc_ordered_workqueue("rtw88_usb: rx wq", WQ_HIGHPRI);
+> 
+> Then, driver get more time to process RX, so it could ease flooding messages. 
 
-> We are seeing a very low TCP throughput testing with some specific
-> tools. This is because for sub-frames of an AMSDU, MCBC flag in
-> mpdu_start may be not valid, and as a result those frames would be
-> dropped by kernel.
->
-> Add a new helper to get it from msdu_end.
->
-> Since original helper is not used for now, add __maybe_unused
-> attribute to make GCC happy.
->
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
->
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> ---
-> v2:
->  1. add a new helper according to Vasanth's comment.
->  2. change to use __le16_to_cpu instead of __le32_to_cpu
->
->  drivers/net/wireless/ath/ath12k/dp_rx.c | 13 ++++++++++---
->  drivers/net/wireless/ath/ath12k/hal.c   | 14 ++++++++++++++
->  drivers/net/wireless/ath/ath12k/hal.h   |  1 +
->  3 files changed, 25 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> index 8c8162fbe5c6..972034b7f159 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> @@ -193,13 +193,20 @@ static void ath12k_dp_rxdesc_set_msdu_len(struct ath12k_base *ab,
->  	ab->hw_params->hal_ops->rx_desc_set_msdu_len(desc, len);
->  }
->  
-> -static bool ath12k_dp_rx_h_is_mcbc(struct ath12k_base *ab,
-> -				   struct hal_rx_desc *desc)
-> +static __maybe_unused bool ath12k_dp_rx_h_is_mcbc(struct ath12k_base *ab,
-> +						  struct hal_rx_desc *desc)
->  {
->  	return (ath12k_dp_rx_h_first_msdu(ab, desc) &&
->  		ab->hw_params->hal_ops->rx_desc_is_mcbc(desc));
->  }
+No, I haven't tried this. Regardless of that, I think it still makes
+sense to rate limit the messages. There will always be a slower system
+that can't cope with the number of packets even with a higher priority
+workqueue.
 
-Using __maybe_unused is usually a bad idea, it should be used only on
-very special cases.
+Sascha
 
-But why do you leave struct hal_ops::rx_desc_is_mcbc? Nobody is using it
-and we should not have dead code lying around.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
