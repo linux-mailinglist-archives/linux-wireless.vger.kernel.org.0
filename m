@@ -2,114 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90A0D712460
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 12:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E67C7125AA
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 May 2023 13:36:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236842AbjEZKRt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 26 May 2023 06:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
+        id S243343AbjEZLgw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 26 May 2023 07:36:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236577AbjEZKRt (ORCPT
+        with ESMTP id S237023AbjEZLgu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 26 May 2023 06:17:49 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8E23A9
-        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 03:17:47 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q2UVv-0005lp-2T; Fri, 26 May 2023 12:17:39 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1q2UVs-0001xx-Mr; Fri, 26 May 2023 12:17:36 +0200
-Date:   Fri, 26 May 2023 12:17:36 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Simon Horman <simon.horman@corigine.com>
-Cc:     Pkshih <pkshih@realtek.com>, Hans Ulli Kroll <linux@ulli-kroll.de>,
-        ValdikSS <iam@valdikss.org.ru>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Tim K <tpkuester@gmail.com>, Nick Morrow <morrownr@gmail.com>,
-        Viktor Petrenko <g0000ga@gmail.com>,
-        "Alex G ." <mr.nuke.me@gmail.com>, kernel@pengutronix.de,
-        petter@technux.se, Andreas Henriksson <andreas@fatal.se>,
-        Larry Finger <Larry.Finger@lwfinger.net>
+        Fri, 26 May 2023 07:36:50 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE1419C
+        for <linux-wireless@vger.kernel.org>; Fri, 26 May 2023 04:36:22 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34QBY6wkC020641, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34QBY6wkC020641
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 26 May 2023 19:34:06 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 26 May 2023 19:34:18 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 26 May 2023 19:34:18 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Fri, 26 May 2023 19:34:18 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+CC:     "iam@valdikss.org.ru" <iam@valdikss.org.ru>,
+        "g0000ga@gmail.com" <g0000ga@gmail.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "andreas@fatal.se" <andreas@fatal.se>,
+        "mr.nuke.me@gmail.com" <mr.nuke.me@gmail.com>,
+        "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "morrownr@gmail.com" <morrownr@gmail.com>,
+        "petter@technux.se" <petter@technux.se>,
+        "tpkuester@gmail.com" <tpkuester@gmail.com>
 Subject: Re: [PATCH] wifi: rtw88: usb: silence log flooding error message
-Message-ID: <20230526101736.GS17518@pengutronix.de>
+Thread-Topic: [PATCH] wifi: rtw88: usb: silence log flooding error message
+Thread-Index: AQHZjiwhpaOYDLChaE6ysR4gEzG9Hq9qJPMQgAGizoCAACHEAA==
+Date:   Fri, 26 May 2023 11:34:17 +0000
+Message-ID: <8fcb481dae3114ddf18590d5aaa3a87f0c379887.camel@realtek.com>
 References: <20230524103934.1019096-1-s.hauer@pengutronix.de>
- <ZG32XKBsAub+Y+bO@corigine.com>
+         <290b05447cc542a9b35c25ff89ba8ff3@realtek.com>
+         <20230526093319.GR17518@pengutronix.de>
+In-Reply-To: <20230526093319.GR17518@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.76.140]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FFB4A2C60D03BE42AE2E237D2D5830DB@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZG32XKBsAub+Y+bO@corigine.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 24, 2023 at 01:34:52PM +0200, Simon Horman wrote:
-> On Wed, May 24, 2023 at 12:39:34PM +0200, Sascha Hauer wrote:
-> > When receiving more rx packets than the kernel can handle the driver
-> > drops the packets and issues an error message. This is bad for two
-> > reasons. The logs are flooded with myriads of messages, but then time
-> > consumed for printing messages in that critical code path brings down
-> > the device. After some time of excessive rx load the driver responds
-> > with:
-> > 
-> > rtw_8822cu 1-1:1.2: failed to get tx report from firmware
-> > rtw_8822cu 1-1:1.2: firmware failed to report density after scan
-> > rtw_8822cu 1-1:1.2: firmware failed to report density after scan
-> > 
-> > The device stops working until being replugged.
-> > 
-> > Fix this by lowering the priority to debug level and also by
-> > ratelimiting it.
-> > 
-> > Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/net/wireless/realtek/rtw88/usb.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> > index 44a5fafb99055..976eafa739a2d 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> > @@ -535,7 +535,7 @@ static void rtw_usb_rx_handler(struct work_struct *work)
-> >  		}
-> >  
-> >  		if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
-> > -			rtw_err(rtwdev, "failed to get rx_queue, overflow\n");
-> > +			dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
-> 
-> This is certainly an improvement. But as I understand things
-> it is still somewhat verbose if the condition persists.
-> Did you consider dev_dbg_once()?
-
-My rationale was that dev_dbg() is normally disabled anyway. With
-CONFIG_DYNAMIC_PRINTK you would still have fine grained control if you
-want to see this message or not.
-
-Personally I don't care that much, I would switch to dev_dbg_once() if
-that's preferred.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+T24gRnJpLCAyMDIzLTA1LTI2IGF0IDExOjMzICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6DQo+
+IA0KPiBPbiBUaHUsIE1heSAyNSwgMjAyMyBhdCAxMjo0NToyM0FNICswMDAwLCBQaW5nLUtlIFNo
+aWggd3JvdGU6DQo+ID4gDQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4g
+RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPg0KPiA+ID4gU2VudDog
+V2VkbmVzZGF5LCBNYXkgMjQsIDIwMjMgNjo0MCBQTQ0KPiA+ID4gVG86IGxpbnV4LXdpcmVsZXNz
+IDxsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc+DQo+ID4gPiBDYzogSGFucyBVbGxpIEty
+b2xsIDxsaW51eEB1bGxpLWtyb2xsLmRlPjsgTGFycnkgRmluZ2VyIDxMYXJyeS5GaW5nZXJAbHdm
+aW5nZXIubmV0PjsgUGluZy1LZQ0KPiA+ID4gU2hpaA0KPiA+ID4gPHBrc2hpaEByZWFsdGVrLmNv
+bT47IFRpbSBLIDx0cGt1ZXN0ZXJAZ21haWwuY29tPjsgQWxleCBHIC4gPG1yLm51a2UubWVAZ21h
+aWwuY29tPjsgTmljaw0KPiA+ID4gTW9ycm93DQo+ID4gPiA8bW9ycm93bnJAZ21haWwuY29tPjsg
+VmlrdG9yIFBldHJlbmtvIDxnMDAwMGdhQGdtYWlsLmNvbT47IEFuZHJlYXMgSGVucmlrc3NvbiA8
+DQo+ID4gPiBhbmRyZWFzQGZhdGFsLnNlPjsNCj4gPiA+IFZhbGRpa1NTIDxpYW1AdmFsZGlrc3Mu
+b3JnLnJ1Pjsga2VybmVsQHBlbmd1dHJvbml4LmRlOyBwZXR0ZXJAdGVjaG51eC5zZTsgU2FzY2hh
+IEhhdWVyDQo+ID4gPiA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4NCj4gPiA+IFN1YmplY3Q6IFtQ
+QVRDSF0gd2lmaTogcnR3ODg6IHVzYjogc2lsZW5jZSBsb2cgZmxvb2RpbmcgZXJyb3IgbWVzc2Fn
+ZQ0KPiA+ID4gDQo+ID4gPiBXaGVuIHJlY2VpdmluZyBtb3JlIHJ4IHBhY2tldHMgdGhhbiB0aGUg
+a2VybmVsIGNhbiBoYW5kbGUgdGhlIGRyaXZlcg0KPiA+ID4gZHJvcHMgdGhlIHBhY2tldHMgYW5k
+IGlzc3VlcyBhbiBlcnJvciBtZXNzYWdlLg0KPiA+IA0KPiA+IFRoZSB3b3JrcXVldWUgcnR3ODhf
+dXNiIGlzIHVzaW5nIGlzOg0KPiA+IA0KPiA+ICAgICAgIHJ0d3VzYi0+cnh3cSA9IGNyZWF0ZV9z
+aW5nbGV0aHJlYWRfd29ya3F1ZXVlKCJydHc4OF91c2I6IHJ4IHdxIik7DQo+ID4gDQo+ID4gSGF2
+ZSB5b3UgdHJpZWQgd29ya3F1ZXVlIHdpdGggZmxhZ3MgV1FfVU5CT1VORCBhbmQgV1FfSElHSFBS
+ST8gTGlrZSwNCj4gPiANCj4gPiAgICAgICBydHd1c2ItPnJ4d3EgPSBhbGxvY193b3JrcXVldWUo
+InJ0dzg4X3VzYjogcnggd3EiLCBXUV9VTkJPVU5EIHwgV1FfSElHSFBSSSwgMCk7DQo+ID4gb3IN
+Cj4gPiAgICAgICBydHd1c2ItPnJ4d3EgPSBhbGxvY19vcmRlcmVkX3dvcmtxdWV1ZSgicnR3ODhf
+dXNiOiByeCB3cSIsIFdRX0hJR0hQUkkpOw0KPiA+IA0KPiA+IFRoZW4sIGRyaXZlciBnZXQgbW9y
+ZSB0aW1lIHRvIHByb2Nlc3MgUlgsIHNvIGl0IGNvdWxkIGVhc2UgZmxvb2RpbmcgbWVzc2FnZXMu
+DQo+IA0KPiBObywgSSBoYXZlbid0IHRyaWVkIHRoaXMuIFJlZ2FyZGxlc3Mgb2YgdGhhdCwgSSB0
+aGluayBpdCBzdGlsbCBtYWtlcw0KPiBzZW5zZSB0byByYXRlIGxpbWl0IHRoZSBtZXNzYWdlcy4g
+VGhlcmUgd2lsbCBhbHdheXMgYmUgYSBzbG93ZXIgc3lzdGVtDQo+IHRoYXQgY2FuJ3QgY29wZSB3
+aXRoIHRoZSBudW1iZXIgb2YgcGFja2V0cyBldmVuIHdpdGggYSBoaWdoZXIgcHJpb3JpdHkNCj4g
+d29ya3F1ZXVlLg0KPiANCg0KTXkgb3BpbmlvbiBpcyBqdXN0IHJlbGF0ZWQgdGhpbmcgdGhhdCBp
+cyBhbiBpZGVhIHRvIGdldCBhIGxpdHRsZSBiaXQNCmltcHJvdmVtZW50LiBCdXQsIHlvdSBhcmUg
+cmlnaHQuIFRoaXMgbWF5IGJlIHVzZWxlc3MgZm9yIHNsb3dlciBzeXN0ZW0uDQpBbHNvLCB5b3Vy
+IHBhdGNoIHRvdGFsbHkgbWFrZSBzZW5zZSB0byBtZS4gDQoNClJldmlld2VkLWJ5OiBQaW5nLUtl
+IFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KDQo=
