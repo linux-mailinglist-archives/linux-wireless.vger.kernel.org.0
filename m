@@ -2,126 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48F31713683
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 May 2023 23:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4AF713700
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 May 2023 00:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbjE0VMa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 May 2023 17:12:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59516 "EHLO
+        id S229460AbjE0W2v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 May 2023 18:28:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjE0VM3 (ORCPT
+        with ESMTP id S229454AbjE0W2r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 May 2023 17:12:29 -0400
+        Sat, 27 May 2023 18:28:47 -0400
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7562AC7;
-        Sat, 27 May 2023 14:12:25 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A8EAD;
+        Sat, 27 May 2023 15:28:45 -0700 (PDT)
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id B062B84671;
-        Sat, 27 May 2023 23:12:16 +0200 (CEST)
+        by phobos.denx.de (Postfix) with ESMTPSA id 245E884673;
+        Sun, 28 May 2023 00:28:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1685221937;
-        bh=Bx/bXNjb2IOpW6Kp9gSlSspt35H9ACoDVnbFbqhl+O8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=sSP64hDoEJuGBCEIowAgDmABQJL8Fm4JMhiQXiry8K6MATNUHQAr3XosoQTda5pR3
-         BlEh/P5xG5GVLeqIXbAAKcJvx2Swhd9/QdwsUI2ON+rHW542DzmaXqpy3hmhoJmNbe
-         1ursbRIGNGHFn5gVevqA6dihDz0iO1OK9a35DvdF15qYoHLgot4HGuo3CV+ZAWGOD2
-         iUwIRrU2rC5svMtxXZlPeNr/PjqoQTizIFzD66HNgef8O5eAKnSGolA1a31+SaJMN5
-         7nsZFio3UW7FYxXoBamDARAW3MvH4ShuoxKdccAFDbCVI8W0pw2PoXO5RWNcRalyyX
-         NmQqmz8m50bfQ==
-Message-ID: <8eb3f1fc-0dee-3e5d-b309-e62349820be8@denx.de>
-Date:   Sat, 27 May 2023 23:12:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3] MAINTAINERS: Add new maintainers to Redpine driver
-To:     Kalle Valo <kvalo@kernel.org>,
-        Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Amol Hanwate <amol.hanwate@silabs.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Narasimha Anumolu <narasimha.anumolu@silabs.com>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Shivanadam Gude <shivanadam.gude@silabs.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Srinivas Chappidi <srinivas.chappidi@silabs.com>,
-        netdev@vger.kernel.org
-References: <1675433281-6132-1-git-send-email-ganapathi.kondraju@silabs.com>
- <87lekj1jx2.fsf@kernel.org>
-Content-Language: en-US
+        s=phobos-20191101; t=1685226523;
+        bh=bcKQnIzsbSZhdBuEWfnx3ch1Jsf9OWtNztHG9Wber3U=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WAXvxCBnd28nPI9gsfwFiLmBIzyGKxJQO+N/CSTp561Go7XwO+UArZnIvg1JGNT5Y
+         0R3JfeNNFjs5hhluOQ66f9jHYeWm5fQb6/M8y3QzPD2uEMyGhGq+z3VFJqqb76grrU
+         ZKk3Msp8zzrbl28wIZqkndb7k20eiebyGmvsa2L84hWXIUr4l/vOkjlPJyn/etlSzr
+         /dMWwCV7TJAyj5/lYracKBN22Zg4i96LoKWH/tLQqBD5k4VsfJtXAI/fBULeM4smCB
+         Xj+oDBMQ9uvsq/tkqy4MlnFEpw3gXjIlsL1Vcsz0iVJYYhPShE3jqgG/dI2ICtfsYI
+         3lLFJ4m+cd37Q==
 From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <87lekj1jx2.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     linux-wireless@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jilin Yuan <yuanjilin@cdjrlc.com>,
+        Kalle Valo <kvalo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        netdev@vger.kernel.org
+Subject: [PATCH] wifi: rsi: Do not configure WoWlan in shutdown hook if not enabled
+Date:   Sun, 28 May 2023 00:28:33 +0200
+Message-Id: <20230527222833.273741-1-marex@denx.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/27/23 11:28, Kalle Valo wrote:
-> Ganapathi Kondraju <ganapathi.kondraju@silabs.com> writes:
-> 
->> Silicon Labs acquired Redpine Signals recently. It needs to continue
->> giving support to the existing REDPINE WIRELESS DRIVER. This patch adds
->> new Maintainers for it.
->>
->> Signed-off-by: Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
->> ---
->> V2:
->> - Add proper prefix for patch subject.
->> - Reorder the maintainers list alphabetically.
->> - Add a new member to the list.
->> ---
->> V3:
->> - Fix sentence formation in the patch subject and description.
->> ---
->>
->>   MAINTAINERS | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index ea941dc..04a08c7 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -17709,8 +17709,14 @@ S:	Maintained
->>   F:	drivers/net/wireless/realtek/rtw89/
->>   
->>   REDPINE WIRELESS DRIVER
->> +M:	Amol Hanwate <amol.hanwate@silabs.com>
->> +M:	Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
->> +M:	Jérôme Pouiller <jerome.pouiller@silabs.com>
->> +M:	Narasimha Anumolu <narasimha.anumolu@silabs.com>
->> +M:	Shivanadam Gude <shivanadam.gude@silabs.com>
->> +M:	Srinivas Chappidi <srinivas.chappidi@silabs.com>
->>   L:	linux-wireless@vger.kernel.org
->> -S:	Orphan
->> +S:	Maintained
->>   F:	drivers/net/wireless/rsi/
-> 
-> For me six maintainers is way too much. Just last November I marked this
-> driver as orphan, I really do not want to add all these people to
-> MAINTAINERS and never hear from them again.
-> 
-> Ideally I would prefer to have one or two maintainers who would be
-> actively working with the drivers. And also I would like to see some
-> proof (read: reviewing patches and providing feedback) that the
-> maintainers are really parciticiping in upstream before changing the
-> status.
+In case WoWlan was never configured during the operation of the system,
+the hw->wiphy->wowlan_config will be NULL. rsi_config_wowlan() checks
+whether wowlan_config is non-NULL and if it is not, then WARNs about it.
+The warning is valid, as during normal operation the rsi_config_wowlan()
+should only ever be called with non-NULL wowlan_config. In shutdown this
+rsi_config_wowlan() should only ever be called if WoWlan was configured
+before by the user.
 
-Has there been any progress on improving this driver maintainership 
-since this patch ?
+Add checks for non-NULL wowlan_config into the shutdown hook. While at it,
+check whether the wiphy is also non-NULL before accessing wowlan_config .
+Drop the single-use wowlan_config variable, just inline it into function
+call.
+
+Fixes: 16bbc3eb8372 ("rsi: fix null pointer dereference during rsi_shutdown()")
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jilin Yuan <yuanjilin@cdjrlc.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/wireless/rsi/rsi_91x_sdio.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+index d09998796ac08..6e33a2563fdbd 100644
+--- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
++++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
+@@ -1463,10 +1463,8 @@ static void rsi_shutdown(struct device *dev)
+ 
+ 	rsi_dbg(ERR_ZONE, "SDIO Bus shutdown =====>\n");
+ 
+-	if (hw) {
+-		struct cfg80211_wowlan *wowlan = hw->wiphy->wowlan_config;
+-
+-		if (rsi_config_wowlan(adapter, wowlan))
++	if (hw && hw->wiphy && hw->wiphy->wowlan_config) {
++		if (rsi_config_wowlan(adapter, hw->wiphy->wowlan_config))
+ 			rsi_dbg(ERR_ZONE, "Failed to configure WoWLAN\n");
+ 	}
+ 
+-- 
+2.39.2
+
