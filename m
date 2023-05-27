@@ -2,129 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B0071353B
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 May 2023 16:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE9A7135E5
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 May 2023 19:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232170AbjE0O4e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 May 2023 10:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
+        id S229593AbjE0RaZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 May 2023 13:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230375AbjE0O4c (ORCPT
+        with ESMTP id S229494AbjE0RaX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 May 2023 10:56:32 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2099.outbound.protection.outlook.com [40.107.223.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7606E1
-        for <linux-wireless@vger.kernel.org>; Sat, 27 May 2023 07:56:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S/UZ1EZgq23hDwoXJLD6uTVg8pKKDGDSRJ5Dxf/ZqNbaf0tgmD7QVplnNem0k+JQcdHY8kYd/eFpbKxCNnXhxuZkvqUNofUwRhuB57PVC14j7TaeQ6VE6IunGVggjHQEcUkg9A86wzkrWJIcNUavz2p32BetNUbVs88BQCT0PLNmHJdN1xT/1VB8jYH6gnqA1YNRPvceeqWQlAM/zN6VIFF1gFG1BtJd845uqgPZecRIRcG/8+mtEaV41aef413CGqjpaBB/37odB87MoiOoJwTtVLE4b3W+QFV8KBpH/g5u7To7yeqgBEXOdrLui/2rybEBoCxBY1R8wgqQHrS4gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3cEgbv7341n4+Ivbs0rv8C2IPJdTxkVdmJjGV3/eV64=;
- b=l87oZ4yJpzMEE4M5PSjtThXvZXIrn6esNIe9Phr44vycbeabrKHEEGtm8kUJHaqZMSid1sBdbaNUzHWtJX9WMg2fLBYdChz+0L33GGNQu5KYp5BFDMyggtPksSHWN4XZ/LM6rwzZuZOv3VGqTNUc+kHE/sZc8isTqxtt1V8Y5lQWWG0rUp90jIp9OPbG6326O4xHaz6wEBeTI5OeyWz6VkzHrXLX3Y5/Eukra2wwiDnSz/uu4hYec5UEke1bVyMhTU2kArHKq+nXKyOfrTnkRu525ScHd74sG9rELXgzClZCecHVVuEqqOdQhQ93KO8zB9l7IIOidul7a61HGXwlxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        Sat, 27 May 2023 13:30:23 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E0CBC
+        for <linux-wireless@vger.kernel.org>; Sat, 27 May 2023 10:30:22 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6af6f83fc49so1540279a34.3
+        for <linux-wireless@vger.kernel.org>; Sat, 27 May 2023 10:30:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3cEgbv7341n4+Ivbs0rv8C2IPJdTxkVdmJjGV3/eV64=;
- b=T5PYl0+v8EPUKObGsfNjzH0shWA76O/8F/wjb05YHqfeLNYt5DtE70ZanTiJHG2WxePGtE9Dncu87S9PYKEnRwt+k9PIm5AqILjcUPouykmjxSOMFyMebyN7gNfxRaNAQZ4yH7xh55dvkjnT6YwdH03UgMcMgssL+51eQx6KEfA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by CH2PR13MB4555.namprd13.prod.outlook.com (2603:10b6:610:61::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.18; Sat, 27 May
- 2023 14:56:29 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::5e55:9a39:751f:55f6]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::5e55:9a39:751f:55f6%3]) with mapi id 15.20.6433.018; Sat, 27 May 2023
- 14:56:29 +0000
-Date:   Sat, 27 May 2023 16:56:22 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Juhee Kang <claudiajkang@gmail.com>
-Cc:     aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: Re: [PATCH wireless-next 2/2] brcmutil: use helper function
- pktq_empty() instead of open code
-Message-ID: <ZHIaFvyeUvelj/rG@corigine.com>
-References: <20230527114954.3281-1-claudiajkang@gmail.com>
- <20230527114954.3281-2-claudiajkang@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230527114954.3281-2-claudiajkang@gmail.com>
-X-ClientProxiedBy: AM9P195CA0006.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:21f::11) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=gmail.com; s=20221208; t=1685208621; x=1687800621;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=FF1JwJIEQ+P231FLhJoH3xdnR6xF+oJCIkA+AFBc2ZU=;
+        b=ADqgF9djOuvQtG+pLCWWB9GjkUehlzk4pYJGV0Bxusp3iv1rSoMO5Cs8gM7XKQXOdf
+         6/EZwxPZA/6wJEOmy81t/ZrbjX0FSw+iKmDz7jamaootF0YbaDKKyXwami2EG2N6HifX
+         s1bq3gK/2mMzHUpfw/iPmo2JcntlpGvYsbICqIm6XqlYabQriLfM4vi9vHDiTjfAYkn1
+         oeH8umTK6Pu+YYD/MUlau7if9coiyvtbEGX3ADSeluQnTP6lF8JSAumHuh1ONnQhL0kC
+         wsGnGyGgVzp4lWfqdjMZI03UDb71waMlKw7UiIgbIXC4nbfJzI88haUD6VjdRD5cBE3P
+         TdbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685208621; x=1687800621;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FF1JwJIEQ+P231FLhJoH3xdnR6xF+oJCIkA+AFBc2ZU=;
+        b=kx5otcpJ33QoFsB53OpkHR3mok/NGahccuv4WK+/oBRb2WPR4Q/PavCrpV+nE5he/r
+         E6QCLH0JlsSB7IvpyNqV5pMC3ZWQSSrsAcoIDUC5CkvQevN1PeUf831a72WEKBgVb5Ik
+         l5p410JnupqrXYrK+qq9zugrFULr8uDznKP4QsqQ8FVzIqMNMAoFuDh/whupy1U0IDkK
+         hDAOWdeMSjIaJo4GKwCBUVXXTtHdg8yzyrlilwSuBJr0z8oRK4QDAuQZ1WrD9KNYgrfh
+         e2kbtyklY91xSIgtJC930+n24yQz230yJDojnYWERnuYPR/qL7/TSkwy6/iTWY1e91aq
+         Gq5w==
+X-Gm-Message-State: AC+VfDxXwaTwuQC+7MStNu6yCPhQfCRIcquMT1SXtYlpGxZJB99Xixkg
+        X6YPtQFUOyVHeVvQ+WtdovGyiv4Ov/k=
+X-Google-Smtp-Source: ACHHUZ6Ja7xtZJ4ApmvdcftZ6lGTjke6bcZUtEofD991Zqz6L+PQYVHHk/vg8+UQaBexq38Z6KHPyg==
+X-Received: by 2002:a05:6830:134b:b0:6b0:cccc:3279 with SMTP id r11-20020a056830134b00b006b0cccc3279mr2617557otq.12.1685208621293;
+        Sat, 27 May 2023 10:30:21 -0700 (PDT)
+Received: from [192.168.0.200] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id g10-20020a9d620a000000b006a5e0165d3esm2925659otj.19.2023.05.27.10.30.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 May 2023 10:30:20 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <6104c768-d055-6fff-004b-5e7c98b77a60@lwfinger.net>
+Date:   Sat, 27 May 2023 12:30:17 -0500
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|CH2PR13MB4555:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6657b456-3a8b-449a-7fb3-08db5ec28d9c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HGUCO9GEY9hp3GSd/K6Wc0l9S6ohBNXhL9WZ1sf7j4w5EIC2jSEcaTtG3SDGkDv5eWrPJ/umbh5bb1ho2taSh2aWZw32ZhV5S4STmC0UDjaS7EoSd5EZ1SPZQMu3XHsZqbWAN+BfwU6vrumwdgRQYjU6+odgkhzqHU2KVRRzcam8VqrQ6SbpUjjSrNDnSFgvto1U9PZvaG/fXmLOwFm/xPwZVK5yuLyt2xwQxk3WY91WsCkHfpn9rQxqvOzDva+fRAADQ68H6B4AyJc+LqH3tOXUBFXx2vTWrT80tBL02vB5ywZeajzmFzJchQblchyw+J4kU2y8EOPkAULBWIiI8SY8jxH4yKiZBoOJFoQCx9qSxj1xrtfFxoMJUN9H9lV1sJFWecmq9vMVgxRt9LLScsB7OTeGDOnzC+4D9kjtfADIvZ/ybZuVN4aLbLu1NyH0FVy4oeKyOMrvUH+xtc3jhsLzUgYb7ymtQRbIzYLmJIT/quIBoOOxBh88X1O4IVK2G949oG1nBTJA4gDX0h9fG2QZ7drDIFGojnhaoROQxDadq3aJB43vIqBt/PjgQh4P
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(376002)(136003)(366004)(39830400003)(451199021)(186003)(86362001)(478600001)(2616005)(4744005)(2906002)(66476007)(66946007)(44832011)(36756003)(66556008)(4326008)(6916009)(6666004)(6512007)(316002)(6506007)(6486002)(5660300002)(8676002)(41300700001)(8936002)(38100700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?B50g9mRjxphhpJKfjGeTtLdgK3caPpZbxuSc06v+ebanqFE2B1YlrhN1p56Q?=
- =?us-ascii?Q?ILuukk7FdayLAiDpZzg1Gnp6HSdROt/xlUt0yi4Vi9P7vv4UqzHXJ/1ycdVM?=
- =?us-ascii?Q?P4uo4xcjDsLfIvEJxnwp62LPXNmbjEiFbuW2B3sRhYqXMd6qWHGNJxMLHHvS?=
- =?us-ascii?Q?zramy+t0BDYGwgJa0b3qjjSXQnG5E6hw093YyZecQoyT46DwrA9X4fqffnNO?=
- =?us-ascii?Q?5OFwKOAkVwocLhNLyFnm3bzIDEOr6OoIJgPZU3Cn4s+1T01tvlc0a4KgrRDF?=
- =?us-ascii?Q?tNgDLrZXpJIeeG0/hBIBueeW20jv0ZlALKF91STYS/Xvyb54bjm+2pael0KK?=
- =?us-ascii?Q?+ZLhjUfJ2ritX24Bp7w2xNFId5kG5EWi2d+PGkBwl0TG4l/8VJbOU3kyPTIe?=
- =?us-ascii?Q?3NFDzuZCDBinfwdlBc+1A3W6m//9niNQOZRx2dMKvdFx9/OsOja+Gl6jxj8V?=
- =?us-ascii?Q?5kgB6egQ3AJiv/y16HEnBQeXGScP0C+n1ueFPCNpS+UuEUtf4UecU+//IGWQ?=
- =?us-ascii?Q?N11u8802mT7wXYHHhLr3ueZ3q3fHuG4tsWHj1c0EnDlwuCe/pNf97VLtMji2?=
- =?us-ascii?Q?VSGma7u1rBJpFKK983mFvm4IPgBXW11W76QCdDeVg4Njvwom0otefMIpqNWM?=
- =?us-ascii?Q?gonS3Vz3vLvG3bTpM9h7aYG0IcLiA1yfaEi2/TfCwEgUSjoTE+sKMXhjl0+5?=
- =?us-ascii?Q?he8v2iqUH9iwLrkjf0vnS5mAFmqSbxfOi0kbpmK1X4pKcZvTZg0qcv090fQb?=
- =?us-ascii?Q?N1oyiQ9QxdyJrjqUXHHOJkGXsp6wfnVQM5Ebqkr6lNoiu6yQW5Vn26iyiOgb?=
- =?us-ascii?Q?iXhIvcmU1xnBsZDwUM/cq7k37IPUca9UaFfQJEEYSmqM98mhBKqkbuJc2yBp?=
- =?us-ascii?Q?oknkpC70VS1Y9Jn5qxPgPWD1G+XErd+vuAZVyFwT/q+9lG7o1mpZgGTohpJH?=
- =?us-ascii?Q?WnwIy38Vt126Fyj9wNjq4WRxoGljR/0nUfYQPZzJYWtQwOy2fcod5yjdjyy5?=
- =?us-ascii?Q?74KF2xov+n+puNRko2CQ7XRGl0vOjZLdJD5TJxNXp4ezY3LJZXAIf647nAD2?=
- =?us-ascii?Q?1jyWzk2Wxz+K6X/rLPsn2NpJCK+SdP2n6zWlMJhc1wcIYm5BxKQaYyZHDjBc?=
- =?us-ascii?Q?Bjg3/MFjj7/b11OiwxM99mAZOM4HIdFLqrIiFrqiEA98lV9jQevFPHViHtbn?=
- =?us-ascii?Q?9HZ+xe93GKjikv9JMyuMj5qBLVmBYIs72vXpZlIbNf/DtnduI0llAk1IOQU5?=
- =?us-ascii?Q?CqA9esicJvSsfgEQ6JvNcsW2jORvi5wFjLUjaSPgePI4ZkB7axeQxoSOtXr+?=
- =?us-ascii?Q?4trMwCQ8DBP6AOh65LVdwDH7Jr8zLv5MvWvIIUS848qjPvN1h3uR3hlCUyde?=
- =?us-ascii?Q?L1FzerhkczHJWQ1e3WUbPcoihZgLHiJjA/cl3IdERoRYqQS0ak4LcQbp0Q22?=
- =?us-ascii?Q?Nsjg3jiyApgiQmA3Ee3eXzChcX3uk/fNm0xRDrm+z0IcFyZ/VCwAio4hCFS9?=
- =?us-ascii?Q?h17XQfVMBjS8/CGvCvdKqpQOquLHhqlvabsFaouITcuLaxP7jxKL/5JzNMfo?=
- =?us-ascii?Q?dcFt8yz1KtVdxV/1CIBKD42SqPpRHyKGy7NEbRm1NT+vPNxvGDvFjl/YUcJZ?=
- =?us-ascii?Q?Hv5DwQpZi2IXIbEuCA0fxm+Z8WwplEBKlajERcIl81u4Z+1NCGAog+kXaSXf?=
- =?us-ascii?Q?r+7Hxw=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6657b456-3a8b-449a-7fb3-08db5ec28d9c
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2023 14:56:29.6740
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Cn59AZNnP0+cPENPbnpoEEPFnOTCt/vS6GP1CalBpaSNFW5rYOr4Jli8HF7/vUbXYEEytRredLOT95NGN7ZrXzn7IYU5UjMyp4ZWOjCQ4PM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR13MB4555
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Question about power save
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <c385be75-71db-6265-1a6c-24eca64e5d7f@lwfinger.net>
+ <fa9429cb8d24c9bb4b810c423b150aefe116148c.camel@sipsolutions.net>
+ <6d635666-4973-b498-f67b-64762dbbd768@lwfinger.net>
+ <731603cd61e49fece503780a74d0efdef8c7e380.camel@realtek.com>
+ <00a86f46c8ebd1f95691c77de7f009bf19c6c6fa.camel@realtek.com>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <00a86f46c8ebd1f95691c77de7f009bf19c6c6fa.camel@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, May 27, 2023 at 08:49:54PM +0900, Juhee Kang wrote:
-> pktq_empty was added in commit 5b435de0d786 ("net: wireless: add brcm80211
-> drivers") but it is currently not being utilized in some areas. This commit
-> replaces the open code with the pktq_empty() function.
+On 5/27/23 03:41, Ping-Ke Shih wrote:
 > 
-> Signed-off-by: Juhee Kang <claudiajkang@gmail.com>
+> I have sent fixes [1]. Please see the patchset about the detail.
+> 
+> [1] https://lore.kernel.org/linux-wireless/20230527082939.11206-1-pkshih@realtek.com/T/#t
+> 
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Ping-Ke,
+
+I applied those patches to the rtw88 and rtw89 repos at GitHub and asked the 
+reporter of increased power usage to test and report back. I will let you know 
+of the response.
+
+Thanks,
+
+Larry
+
 
