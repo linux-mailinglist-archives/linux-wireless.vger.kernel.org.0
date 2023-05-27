@@ -2,84 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03DDB71335A
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 May 2023 10:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8444A713360
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 May 2023 10:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231727AbjE0IaP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 May 2023 04:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52478 "EHLO
+        id S229948AbjE0Ia6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 27 May 2023 04:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231708AbjE0IaN (ORCPT
+        with ESMTP id S229708AbjE0Ia5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 May 2023 04:30:13 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E91DF;
-        Sat, 27 May 2023 01:30:11 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34R8TqdcE019728, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34R8TqdcE019728
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Sat, 27 May 2023 16:29:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Sat, 27 May 2023 16:30:04 +0800
-Received: from [127.0.1.1] (172.16.16.243) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Sat, 27 May
- 2023 16:30:04 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <kvalo@kernel.org>, <tony0620emma@gmail.com>
-CC:     <stable@vger.kernel.org>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/3] wifi: rtw89: remove redundant check of entering LPS
-Date:   Sat, 27 May 2023 16:29:39 +0800
-Message-ID: <20230527082939.11206-4-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230527082939.11206-1-pkshih@realtek.com>
-References: <20230527082939.11206-1-pkshih@realtek.com>
+        Sat, 27 May 2023 04:30:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F5CDF;
+        Sat, 27 May 2023 01:30:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A2FB6118D;
+        Sat, 27 May 2023 08:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C549C433D2;
+        Sat, 27 May 2023 08:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685176255;
+        bh=JPWS/TwdOmrDP3bAilXLTKSHhTzY9cMCJkusV8E0+Y4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=RIVD0UAN0fIQcBDS3hqZEECqeCQPULxMKN0dS0PPFeuev6RJALAXdbSt1MiLkfODQ
+         7MyPXAgCRJDky6cECRkUdCEuODEWOJWkMrh7rJ/iPcWs/CvyDmUbISdUV4yoEPzjqL
+         yzZNTfyhmku9xfspfEcJjvoIqsTHLrRuQqKGq0dIclLYC1XpH+Ph6cX+TtrbRR28Mc
+         1sfv6+AZlKl9uYmdmfGFtfyjl+G1V4kHaGWHPheDf71feV3w6cn2poiojStcV5X6TC
+         T4+PsWxYLmGphIYRCy2woGA3lzpFe3RgA6dr5/GjUYmATMCf9OWM3AppKuF4yhrYgY
+         ZTOXQJOOeoNwg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.16.16.243]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/2] wifi: ray_cs: remove one redundant del_timer
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20230316133236.556198-2-dzm91@hust.edu.cn>
+References: <20230316133236.556198-2-dzm91@hust.edu.cn>
+To:     Dongliang Mu <dzm91@hust.edu.cn>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <168517624975.21544.1147869212838344605.kvalo@kernel.org>
+Date:   Sat, 27 May 2023 08:30:53 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Originally, add this check rule to prevent entering LPS if more than one
-vif (in station mode) connect to AP. Since we have checked this by previous
-commit, remove this redundant check.
+Dongliang Mu <dzm91@hust.edu.cn> wrote:
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c | 3 ---
- 1 file changed, 3 deletions(-)
+> In ray_detach, it and its child function ray_release both call
+> del_timer(_sync) on the same timer.
+> 
+> Fix this by removing the del_timer_sync in the ray_detach, and revising
+> the del_timer to del_timer_sync.
+> 
+> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 101047686fffb..65581ca506d3f 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2619,9 +2619,6 @@ static void rtw89_vif_enter_lps(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwv
- 	    rtwvif->tdls_peer)
- 		return;
- 
--	if (rtwdev->total_sta_assoc > 1)
--		return;
--
- 	if (rtwvif->offchan)
- 		return;
- 
+2 patches applied to wireless-next.git, thanks.
+
+daef020558bc wifi: ray_cs: remove one redundant del_timer
+072210c725c4 wifi: ray_cs: add sanity check on local->sram/rmem/amem
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20230316133236.556198-2-dzm91@hust.edu.cn/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
