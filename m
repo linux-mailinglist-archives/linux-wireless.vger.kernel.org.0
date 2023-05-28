@@ -2,97 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA85F713701
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 May 2023 00:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9BD17138EF
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 May 2023 12:00:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbjE0W3K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 27 May 2023 18:29:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38180 "EHLO
+        id S229551AbjE1KAI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 May 2023 06:00:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjE0W3I (ORCPT
+        with ESMTP id S229536AbjE1KAG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 27 May 2023 18:29:08 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1021BEC;
-        Sat, 27 May 2023 15:29:04 -0700 (PDT)
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id F1C05846E3;
-        Sun, 28 May 2023 00:29:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1685226542;
-        bh=wnP21VChaBTxAaPJsoZYssejkrEL9X+Q26Zlv5EAZx0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=yKYA2QxAd/MUR/OdurN1xNOEJ9qHzJ5mi2kV2JTXs6jMB2QpwfcXUKhbQ6xLw+Oca
-         9J6MdTX62lNQ7tJKqrQjHXoLuJ9MfoSoZK9//FG36GnNNPJrErN5VBepwA7vfmlQuo
-         FJbMj6cijY38OAT++2GsEYJC02fvZWyURlLzNn0OWqFoDnA7dUjvgiKSxVQRfk1l8P
-         tvyIRL0NCCZqDsRWulhKYXD7ZWteoW0HfR73XI45VDvCpdTOj3neq+FXIfTZTfu3EH
-         nMML6Un3c23G5tsoQLd+IGwwypQcr9Dh1ogrS1Z7AIu23VOStTrr9+chOYngGPnU8H
-         pUxnMz5flADhg==
-From:   Marek Vasut <marex@denx.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     Marek Vasut <marex@denx.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jilin Yuan <yuanjilin@cdjrlc.com>,
-        Kalle Valo <kvalo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        netdev@vger.kernel.org
-Subject: [PATCH] wifi: rsi: Do not set MMC_PM_KEEP_POWER in shutdown
-Date:   Sun, 28 May 2023 00:28:59 +0200
-Message-Id: <20230527222859.273768-1-marex@denx.de>
-X-Mailer: git-send-email 2.39.2
+        Sun, 28 May 2023 06:00:06 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA45D8
+        for <linux-wireless@vger.kernel.org>; Sun, 28 May 2023 03:00:05 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id a640c23a62f3a-969f90d71d4so329688666b.3
+        for <linux-wireless@vger.kernel.org>; Sun, 28 May 2023 03:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685268004; x=1687860004;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=Fp6papBPorRne6YLmVM5uixrxKGdcFQkNzEvmYGk5TBkI0vBbgk7uTZCdxG+qClOwJ
+         Kvxf84+xvF8VcPuxnBt9/Rja7PRMVwaCuA5ca8aK5+hYx6AEoQKJ+7bvRuEKbwhsZZuw
+         g7mp/JWcHU8f4bKhUyl8S1ZbWGYHcHtWNUUPh0CLvMTM2+lVAd1b8NeEj9dNupSYVHdB
+         miZtUHW/pxyTw78Hu1wiXKZseCjY1jKMWtE8Mrxb4AOSGSj3TY+4FXMptLaDRdtOIlTK
+         RB8HHRAkCbfytv6yyPtajbBDSRXU1gRAAdo1ToMw3+6lSRyvKcySjo2joHK9TM/kic8y
+         8mTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685268004; x=1687860004;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=WoaIb8bqVwo37gVsF7sWQZBkiq1nV9WIwi5Xss3MZbyzHVobaMeX68eKlfdb/43py5
+         hclXKK1HE+YlzOiUs0LrfaavNPzA5dhJ+wn2Ic3SiFWLUKhvCOkwZkCQ/AsMN4j3PQTL
+         dQA/vQSw+GTKqMxgpvMfdZG5q968fGiMlzzMvfsh9U1wP1AFU3ewr0eTl5jAcY3s1TTr
+         Ek563ROqFXQGjrT8yDDhTrKTq+eH8MExRa8EinqNNjE/XPgzIXo5YROO7mgGD53tlYCj
+         b98rysh+7Eg2WLJo4fdYn0ae3PYlEnq3C3pINdFQwDpIscMCnNKpFAKkpQUombGQokpg
+         /kuQ==
+X-Gm-Message-State: AC+VfDxARquX9KTiHRCPKs6xjidsZUh6oFbPkFf88pgU3E74kWx7LM66
+        xA4UV0a2F45g7hF9LbWHAjyEu8DBvTI3PKStbTM=
+X-Google-Smtp-Source: ACHHUZ7DUP9/P0qaJ972m0bc4tExXgVs/FXyyGMm+kpT1QdFkVRseDvWlTnVPNFVSrWhIabkc7wq3Ys96sRzdN3mErg=
+X-Received: by 2002:a17:907:7f88:b0:966:5a6c:7549 with SMTP id
+ qk8-20020a1709077f8800b009665a6c7549mr8461036ejc.14.1685268003413; Sun, 28
+ May 2023 03:00:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a50:3282:0:b0:219:d045:cc6b with HTTP; Sun, 28 May 2023
+ 03:00:02 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <ninacoulibaly330@gmail.com>
+Date:   Sun, 28 May 2023 03:00:02 -0700
+Message-ID: <CAJiCSoC6_HRd+j6wxY7ztnuSci3fPm37xDzmA=Ky6eWWEoo3sA@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:644 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4998]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ninacoulibaly330[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [ninacoulibaly330[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [ninacoulibaly03[at]hotmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It makes no sense to set MMC_PM_KEEP_POWER in shutdown. The flag
-indicates to the MMC subsystem to keep the slot powered on during
-suspend, but in shutdown the slot should actually be powered off.
-Drop this call.
+Dear,
 
-Fixes: 063848c3e155 ("rsi: sdio: Add WOWLAN support for S5 shutdown state")
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jilin Yuan <yuanjilin@cdjrlc.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Marek Vasut <marex@denx.de>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
- drivers/net/wireless/rsi/rsi_91x_sdio.c | 3 ---
- 1 file changed, 3 deletions(-)
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_sdio.c b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-index 6e33a2563fdbd..1911fef3bbad6 100644
---- a/drivers/net/wireless/rsi/rsi_91x_sdio.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_sdio.c
-@@ -1479,9 +1479,6 @@ static void rsi_shutdown(struct device *dev)
- 	if (sdev->write_fail)
- 		rsi_dbg(INFO_ZONE, "###### Device is not ready #######\n");
- 
--	if (rsi_set_sdio_pm_caps(adapter))
--		rsi_dbg(INFO_ZONE, "Setting power management caps failed\n");
--
- 	rsi_dbg(INFO_ZONE, "***** RSI module shut down *****\n");
- }
- 
--- 
-2.39.2
+Best Regards.
 
+Mrs Nina Coulibaly
