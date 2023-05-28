@@ -2,152 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDAC713B6F
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 May 2023 20:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20BAD713EF9
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 May 2023 21:40:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjE1SEf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 28 May 2023 14:04:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51242 "EHLO
+        id S231140AbjE1Tkk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 28 May 2023 15:40:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjE1SEe (ORCPT
+        with ESMTP id S231129AbjE1Tkj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 28 May 2023 14:04:34 -0400
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8636DA3
-        for <linux-wireless@vger.kernel.org>; Sun, 28 May 2023 11:04:33 -0700 (PDT)
-Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
-         client-signature RSA-PSS (2048 bits) client-digest SHA256)
-        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
-        by mx0.riseup.net (Postfix) with ESMTPS id 4QTml50GzSz9t4L;
-        Sun, 28 May 2023 18:04:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-        t=1685297073; bh=kd0gr9zU3M9sCyyuW1FElZLLgJs0S0mlTv0FCVwrOT0=;
-        h=Date:From:Subject:To:Cc:From;
-        b=SMuFZKWvNiVQTV/+ZQosF3/lH59tEr6hEX3adEvqCRNU9nMCUOpVB6YMklGiuLR3S
-         f5J+SC0ReU7EGFAhFhMVM5l6u4oZXzp6ZgO48PgFw96ayv6biXlcMJ6KIu/A1f/pRH
-         7jB0LxX/D8k2ggzchAlmhV8wOYiRNJ9D0H0HmUKo=
-X-Riseup-User-ID: F3B25438CE897A8CBA30A1FCD53C2EE40712085F7E84966CED8E7CD1EA643C96
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-         by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4QTml234zPzFs02;
-        Sun, 28 May 2023 18:04:30 +0000 (UTC)
-Message-ID: <61b9ff43-1064-f928-2ebe-4c40b564540b@riseup.net>
-Date:   Sun, 28 May 2023 21:04:28 +0300
+        Sun, 28 May 2023 15:40:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF91FA8;
+        Sun, 28 May 2023 12:40:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A101B61EB7;
+        Sun, 28 May 2023 19:40:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE60C433A0;
+        Sun, 28 May 2023 19:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685302833;
+        bh=Wn4gTbf57LwpDRCHeR+QJZofpS9uoSncq21OSvW/Kd4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=h/7PKlF3umLug0RyblJ1YEcKVu5L3oxf3eQ8lWIwZkvyNfucnlTyfOgodkdqk2J1H
+         DGAzlzGkFIvlDglGTrL42AqHnF67VzH/WiyE9gz2DhDHlLOhbRLMQy/U7b6HC1TQIx
+         t619M+mtryKMTmFWsKSr2D3Ppr/Twl/Kmgy/g2Lw=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 044/211] wifi: ath: Silence memcpy run-time false positive warning
+Date:   Sun, 28 May 2023 20:09:25 +0100
+Message-Id: <20230528190844.660748045@linuxfoundation.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230528190843.514829708@linuxfoundation.org>
+References: <20230528190843.514829708@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-From:   Rany Hany <rany_hany@riseup.net>
-Subject: [PATCH 1/1] wifi: mt76: mt7915: fix command timeout in AP stop period
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>
-Cc:     linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Due to AP stop improperly, mt7915 driver would face random command timeout
-by chip fw problem. Migrate AP start/stop process to .start_ap/.stop_ap and
-congiure BSS network settings in both hooks.
+From: Kees Cook <keescook@chromium.org>
 
-The new flow is shown below.
-* AP start
-    .start_ap()
-      configure BSS network resource
-      set BSS to connected state
-    .bss_info_changed()
-      enable fw beacon offload
+[ Upstream commit bfcc8ba45eb87bfaaff900bbad2b87b204899d41 ]
 
-* AP stop
-    .bss_info_changed()
-      disable fw beacon offload (skip this command)
-    .stop_ap()
-      set BSS to disconnected state (beacon offload disabled automatically)
-      destroy BSS network resource
+The memcpy() in ath_key_config() was attempting to write across
+neighboring struct members in struct ath_keyval. Introduce a wrapping
+struct_group, kv_values, to be the addressable target of the memcpy
+without overflowing an individual member. Silences the false positive
+run-time warning:
 
-Based on "mt76: mt7921: fix command timeout in AP stop period"
+  memcpy: detected field-spanning write (size 32) of single field "hk.kv_val" at drivers/net/wireless/ath/key.c:506 (size 16)
 
-Signed-off-by: Rany Hany <rany_hany@riseup.net>
+Link: https://bbs.archlinux.org/viewtopic.php?id=282254
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230210054310.never.554-kees@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7915/main.c  | 38 ++++++++++++++++---
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath.h | 12 +++++++-----
+ drivers/net/wireless/ath/key.c |  2 +-
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 1b361199c061..cc37cb8e89f9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -629,11 +629,6 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 		}
- 	}
+diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+index f083fb9038c36..f02a308a9ffc5 100644
+--- a/drivers/net/wireless/ath/ath.h
++++ b/drivers/net/wireless/ath/ath.h
+@@ -96,11 +96,13 @@ struct ath_keyval {
+ 	u8 kv_type;
+ 	u8 kv_pad;
+ 	u16 kv_len;
+-	u8 kv_val[16]; /* TK */
+-	u8 kv_mic[8]; /* Michael MIC key */
+-	u8 kv_txmic[8]; /* Michael MIC TX key (used only if the hardware
+-			 * supports both MIC keys in the same key cache entry;
+-			 * in that case, kv_mic is the RX key) */
++	struct_group(kv_values,
++		u8 kv_val[16]; /* TK */
++		u8 kv_mic[8]; /* Michael MIC key */
++		u8 kv_txmic[8]; /* Michael MIC TX key (used only if the hardware
++				 * supports both MIC keys in the same key cache entry;
++				 * in that case, kv_mic is the RX key) */
++	);
+ };
  
--	if (changed & BSS_CHANGED_BEACON_ENABLED && info->enable_beacon) {
--		mt7915_mcu_add_bss_info(phy, vif, true);
--		mt7915_mcu_add_sta(dev, vif, NULL, true);
--	}
--
- 	/* ensure that enable txcmd_mode after bss_info */
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
- 		mt7915_mcu_set_tx(dev, vif);
-@@ -653,6 +648,37 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 	mutex_unlock(&dev->mt76.mutex);
- }
+ enum ath_cipher {
+diff --git a/drivers/net/wireless/ath/key.c b/drivers/net/wireless/ath/key.c
+index 61b59a804e308..b7b61d4f02bae 100644
+--- a/drivers/net/wireless/ath/key.c
++++ b/drivers/net/wireless/ath/key.c
+@@ -503,7 +503,7 @@ int ath_key_config(struct ath_common *common,
  
-+static int
-+mt7915_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+		struct ieee80211_bss_conf *link_conf)
-+{
-+	struct mt7915_phy *phy = mt7915_hw_phy(hw);
-+	struct mt7915_dev *dev = mt7915_hw_dev(hw);
-+	int err;
-+
-+	mutex_lock(&dev->mt76.mutex);
-+
-+	err = mt7915_mcu_add_bss_info(phy, vif, true);
-+	if (err)
-+		goto out;
-+	err = mt7915_mcu_add_sta(dev, vif, NULL, true);
-+out:
-+	mutex_unlock(&dev->mt76.mutex);
-+
-+	return err;
-+}
-+
-+static void
-+mt7915_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+	       struct ieee80211_bss_conf *link_conf)
-+{
-+	struct mt7915_dev *dev = mt7915_hw_dev(hw);
-+
-+	mutex_lock(&dev->mt76.mutex);
-+	mt7915_mcu_add_sta(dev, vif, NULL, false);
-+	mutex_unlock(&dev->mt76.mutex);
-+}
-+
- static void
- mt7915_channel_switch_beacon(struct ieee80211_hw *hw,
- 			     struct ieee80211_vif *vif,
-@@ -1526,6 +1552,8 @@ const struct ieee80211_ops mt7915_ops = {
- 	.conf_tx = mt7915_conf_tx,
- 	.configure_filter = mt7915_configure_filter,
- 	.bss_info_changed = mt7915_bss_info_changed,
-+	.start_ap = mt7915_start_ap,
-+	.stop_ap = mt7915_stop_ap,
- 	.sta_add = mt7915_sta_add,
- 	.sta_remove = mt7915_sta_remove,
- 	.sta_pre_rcu_remove = mt76_sta_pre_rcu_remove,
+ 	hk.kv_len = key->keylen;
+ 	if (key->keylen)
+-		memcpy(hk.kv_val, key->key, key->keylen);
++		memcpy(&hk.kv_values, key->key, key->keylen);
+ 
+ 	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE)) {
+ 		switch (vif->type) {
 -- 
-2.34.1
+2.39.2
 
 
 
