@@ -2,117 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2BD5714C88
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 May 2023 16:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EAE3714CA4
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 May 2023 17:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbjE2Oy6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 May 2023 10:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
+        id S229601AbjE2PDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 May 2023 11:03:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229755AbjE2Oy5 (ORCPT
+        with ESMTP id S229519AbjE2PDv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 May 2023 10:54:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD20B7
-        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 07:54:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F359D618D3
-        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 14:54:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AF0C433EF;
-        Mon, 29 May 2023 14:54:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685372095;
-        bh=SMHn6wTSbVnhz3UizFfT772MdT40Cv5srR/7EX50dPc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rbhyxAD0txxLqDj6Md2m+pRpkh+sCQpcs1dwdTy7Z3a3qO6PWDaV5XKca3+BRql3B
-         sVIIGH8dqDJL77QqCTqhiHggAcvklgQzeWEVkHTsnveQV7jJgmVxEswnHFf4IpgJra
-         qt1K7NDpRSEGMZs6yphfUqOrmtXS2F/hPF4uucr6QqwDKcioeHBJ7kZ2X1niQF7m9o
-         YqVfjXAdfaw75hrd05jtiyGE4bLB2sqP8MUFXrNyk0Alean7vPoIYEjH0DbdsaryIY
-         hQZGBjec1InXSEDmRVY/iPdaZJ8GDurUvNiYg1qIK8eoVGDmckryBK0uNDGNEhXyEA
-         Nv6uMne8rIxsg==
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7996: rely on mt76_sta_stats in mt76_wcid
-Date:   Mon, 29 May 2023 16:54:32 +0200
-Message-Id: <183a95ac89a4f5cb567e09fd214ef134ffc2329f.1685371997.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        Mon, 29 May 2023 11:03:51 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1BBC9F
+        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 08:03:50 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-75affb4d0f9so182397485a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 08:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685372630; x=1687964630;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dKqc0+iBhChYWRLd+i2VOE30xoKpG2HHI7h724Oy+cw=;
+        b=aa5wQIkAzTkxtx/vKStDOl2QO4ycmzCCwNccbMp8QwD2tko0wU40xI8SZUVDrv0A69
+         jrUKMSxC1auQWD8oHBbpozKA67flpBdMVy+0intchZ/euBOmc+P85jZ45e1B9NEVoOjE
+         3ZP7KNJ142/7CwCr++GsO+AvXzNoIxLvQlHYfgpmtbdwF7J2sFoEbpvxInRGlupcS3ef
+         ydxE8aP+jNHihbgsci26+kh3leR5hyIi+NrK48ZIzXoPUKTgD6z6eYKJ/8W98vnhLNVH
+         1Q9lmBffBvdgVA/ILZ3zin3re6sK4WrzIgGgvzPwrjQeoLKOdGh1y5P7O4b5tuRpaLXA
+         0FnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685372630; x=1687964630;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dKqc0+iBhChYWRLd+i2VOE30xoKpG2HHI7h724Oy+cw=;
+        b=etAYC6SbflPcS+dN1mcJdUxmFL/AD5DSKEMpjRDZK5LHqJfqxAyoCxbkV67YZvVgQU
+         CHPyXU0g/b+pcsYBXzG8OZOMKSXUHC2CYkLk3vahAgc0oz30GVxgaCHVBIo1z4Fj8Cst
+         yEsmPMHbln0GJ8U5zY390o7YM8aKsc4Q7aAWzNViRJTReLt9WIviI/i0XPDroFl5jZ0d
+         ZghHPzrZYU6bH+9wADDjV+lqYIo9UXacU0ZN7E8bsB86zcjPaFBycvd0mZRM8sHd5X0J
+         +AJndAJ4SF0r5DW8zNH63/NRqzXBxLuqTsOgm76dMopWJh2LZjumaad7/0TJiddzNxIY
+         ZwJw==
+X-Gm-Message-State: AC+VfDy7OZHs07V2lbNzqtGh3hqW6FIOjC8YpnifxXimCsQ4R3/ys1kV
+        gZABMae7JRzs7msSgKw66BFBACpjEkai9Z0CbX4=
+X-Google-Smtp-Source: ACHHUZ6OwG7fY2aBYqMe1tEPFDr5NZnCql3Ub0YSSaeoOy5LD7IvZf3DrpPZkeJOWIhrZnMJ7asqICBrCaoGDh7Bh1o=
+X-Received: by 2002:a05:620a:8f02:b0:75b:23a0:e7c2 with SMTP id
+ rh2-20020a05620a8f0200b0075b23a0e7c2mr6418204qkn.35.1685372630056; Mon, 29
+ May 2023 08:03:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a59:b8a8:0:b0:3da:172b:b340 with HTTP; Mon, 29 May 2023
+ 08:03:49 -0700 (PDT)
+Reply-To: mansonjohnson@live.com
+From:   Manson Johnson <koffiadams2012@gmail.com>
+Date:   Mon, 29 May 2023 15:03:49 +0000
+Message-ID: <CANXrao048vUfdx07GzmEvEQsMqJb+8f8-jvqFwjb+5WV6HK49Q@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt76 now accounts station stats in mt76_sta_stats available in mt76_wcid
-struct. Get rid of mt7996 private copy.
-
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c    | 7 ++++---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c   | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 2 --
- 3 files changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 130eb7b4fd91..0bd097ece25c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1319,9 +1319,10 @@ mt7996_mac_tx_free(struct mt7996_dev *dev, void *data, int len)
- }
- 
- static bool
--mt7996_mac_add_txs_skb(struct mt7996_dev *dev, struct mt76_wcid *wcid, int pid,
--		       __le32 *txs_data, struct mt76_sta_stats *stats)
-+mt7996_mac_add_txs_skb(struct mt7996_dev *dev, struct mt76_wcid *wcid,
-+		       int pid, __le32 *txs_data)
- {
-+	struct mt76_sta_stats *stats = &wcid->stats;
- 	struct ieee80211_supported_band *sband;
- 	struct mt76_dev *mdev = &dev->mt76;
- 	struct mt76_phy *mphy;
-@@ -1483,7 +1484,7 @@ static void mt7996_mac_add_txs(struct mt7996_dev *dev, void *data)
- 
- 	msta = container_of(wcid, struct mt7996_sta, wcid);
- 
--	mt7996_mac_add_txs_skb(dev, wcid, pid, txs_data, &msta->stats);
-+	mt7996_mac_add_txs_skb(dev, wcid, pid, txs_data);
- 
- 	if (!wcid->sta)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 0975774fe244..c7917e301c87 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1187,7 +1187,7 @@ static void mt7996_ethtool_worker(void *wi_data, struct ieee80211_sta *sta)
- 	if (msta->vif->mt76.idx != wi->idx)
- 		return;
- 
--	mt76_ethtool_worker(wi, &msta->stats, true);
-+	mt76_ethtool_worker(wi, &msta->wcid.stats, true);
- }
- 
- static
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 4d7dcb95a620..c9f0e541abe4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -106,8 +106,6 @@ struct mt7996_sta {
- 	unsigned long jiffies;
- 	unsigned long ampdu_state;
- 
--	struct mt76_sta_stats stats;
--
- 	struct mt76_connac_sta_key_conf bip;
- 
- 	struct {
 -- 
-2.40.1
-
+You didn't respond to my message ?
