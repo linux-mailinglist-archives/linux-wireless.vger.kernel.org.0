@@ -2,70 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EAE3714CA4
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 May 2023 17:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D621A714F28
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 May 2023 20:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjE2PDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 May 2023 11:03:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
+        id S229531AbjE2SGY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 May 2023 14:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjE2PDv (ORCPT
+        with ESMTP id S229453AbjE2SGX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 May 2023 11:03:51 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1BBC9F
-        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 08:03:50 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-75affb4d0f9so182397485a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 08:03:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685372630; x=1687964630;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dKqc0+iBhChYWRLd+i2VOE30xoKpG2HHI7h724Oy+cw=;
-        b=aa5wQIkAzTkxtx/vKStDOl2QO4ycmzCCwNccbMp8QwD2tko0wU40xI8SZUVDrv0A69
-         jrUKMSxC1auQWD8oHBbpozKA67flpBdMVy+0intchZ/euBOmc+P85jZ45e1B9NEVoOjE
-         3ZP7KNJ142/7CwCr++GsO+AvXzNoIxLvQlHYfgpmtbdwF7J2sFoEbpvxInRGlupcS3ef
-         ydxE8aP+jNHihbgsci26+kh3leR5hyIi+NrK48ZIzXoPUKTgD6z6eYKJ/8W98vnhLNVH
-         1Q9lmBffBvdgVA/ILZ3zin3re6sK4WrzIgGgvzPwrjQeoLKOdGh1y5P7O4b5tuRpaLXA
-         0FnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685372630; x=1687964630;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dKqc0+iBhChYWRLd+i2VOE30xoKpG2HHI7h724Oy+cw=;
-        b=etAYC6SbflPcS+dN1mcJdUxmFL/AD5DSKEMpjRDZK5LHqJfqxAyoCxbkV67YZvVgQU
-         CHPyXU0g/b+pcsYBXzG8OZOMKSXUHC2CYkLk3vahAgc0oz30GVxgaCHVBIo1z4Fj8Cst
-         yEsmPMHbln0GJ8U5zY390o7YM8aKsc4Q7aAWzNViRJTReLt9WIviI/i0XPDroFl5jZ0d
-         ZghHPzrZYU6bH+9wADDjV+lqYIo9UXacU0ZN7E8bsB86zcjPaFBycvd0mZRM8sHd5X0J
-         +AJndAJ4SF0r5DW8zNH63/NRqzXBxLuqTsOgm76dMopWJh2LZjumaad7/0TJiddzNxIY
-         ZwJw==
-X-Gm-Message-State: AC+VfDy7OZHs07V2lbNzqtGh3hqW6FIOjC8YpnifxXimCsQ4R3/ys1kV
-        gZABMae7JRzs7msSgKw66BFBACpjEkai9Z0CbX4=
-X-Google-Smtp-Source: ACHHUZ6OwG7fY2aBYqMe1tEPFDr5NZnCql3Ub0YSSaeoOy5LD7IvZf3DrpPZkeJOWIhrZnMJ7asqICBrCaoGDh7Bh1o=
-X-Received: by 2002:a05:620a:8f02:b0:75b:23a0:e7c2 with SMTP id
- rh2-20020a05620a8f0200b0075b23a0e7c2mr6418204qkn.35.1685372630056; Mon, 29
- May 2023 08:03:50 -0700 (PDT)
+        Mon, 29 May 2023 14:06:23 -0400
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28E3DA7
+        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 11:06:19 -0700 (PDT)
+Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
+         client-signature RSA-PSS (2048 bits) client-digest SHA256)
+        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
+        by mx0.riseup.net (Postfix) with ESMTPS id 4QVNkf4sLPz9spH;
+        Mon, 29 May 2023 18:06:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+        t=1685383578; bh=JNZoS7iEfkvzjtwztSzjQT0UZ4MtUGZ5lyWvO6Ap7Fc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=bDRdR4K/ZvortX+DIQXC8VNzWCaWKKsz9oClnG7En7TVKRW1Mmk36HA3qzcB67nHl
+         Kmvy2Ze0RSUVaqq2hDQOBWOXAacwn5qfZtzYedftdy9fUpaPX+bjSvW6ErJEmQx+t7
+         OCPF3IMlE+iBtxxVDKRO1l+KU8EPPkrTwcqMVrO8=
+X-Riseup-User-ID: 6F1A2A2C14BB40DDE81CFEAECACAC6F34EC8963B346DF5980560B58831D21368
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+         by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4QVNkc5ndKzFqh4;
+        Mon, 29 May 2023 18:06:16 +0000 (UTC)
+Message-ID: <f99f3a85-494a-b796-189a-99cf5976c3be@riseup.net>
+Date:   Mon, 29 May 2023 21:06:14 +0300
 MIME-Version: 1.0
-Received: by 2002:a59:b8a8:0:b0:3da:172b:b340 with HTTP; Mon, 29 May 2023
- 08:03:49 -0700 (PDT)
-Reply-To: mansonjohnson@live.com
-From:   Manson Johnson <koffiadams2012@gmail.com>
-Date:   Mon, 29 May 2023 15:03:49 +0000
-Message-ID: <CANXrao048vUfdx07GzmEvEQsMqJb+8f8-jvqFwjb+5WV6HK49Q@mail.gmail.com>
-Subject: Hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Subject: Re: [PATCH 04/13] wifi: mt76: mt7615: rely on shared sta_poll_list
+ and sta_poll_lock
+Content-Language: en-US
+To:     Lorenzo Bianconi <lorenzo@kernel.org>, nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+References: <cover.1685356673.git.lorenzo@kernel.org>
+ <ed7b5c338fe5eb4084b98e08170a1d8bcda67181.1685356673.git.lorenzo@kernel.org>
+From:   Rany Hany <rany_hany@riseup.net>
+In-Reply-To: <ed7b5c338fe5eb4084b98e08170a1d8bcda67181.1685356673.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
--- 
-You didn't respond to my message ?
+Hi,
+
+On 5/29/23 13:40, Lorenzo Bianconi wrote:
+> Rely on sta_poll_list and sta_poll_lock fields in mt76_dev structure
+> and get rid of private copies.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  .../net/wireless/mediatek/mt76/mt7615/init.c  |  2 --
+>  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 19 ++++++++++---------
+>  .../net/wireless/mediatek/mt76/mt7615/main.c  |  8 ++++----
+>  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 ---
+>  4 files changed, 14 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> index 621e69f07e3c..155931978ed8 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> @@ -626,8 +626,6 @@ void mt7615_init_device(struct mt7615_dev *dev)
+>  	INIT_DELAYED_WORK(&dev->coredump.work, mt7615_coredump_work);
+>  	skb_queue_head_init(&dev->phy.scan_event_list);
+>  	skb_queue_head_init(&dev->coredump.msg_list);
+> -	INIT_LIST_HEAD(&dev->sta_poll_list);
+> -	spin_lock_init(&dev->sta_poll_lock);
+>  	init_waitqueue_head(&dev->reset_wait);
+>  	init_waitqueue_head(&dev->phy.roc_wait);
+>  
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+> index d90378a30d15..a6d267c56dd4 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+> @@ -387,10 +387,11 @@ static int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+>  		struct mt7615_sta *msta;
+>  
+>  		msta = container_of(status->wcid, struct mt7615_sta, wcid);
+> -		spin_lock_bh(&dev->sta_poll_lock);
+> +		spin_lock_bh(&dev->mt76.sta_poll_lock);
+>  		if (list_empty(&msta->poll_list))
+> -			list_add_tail(&msta->poll_list, &dev->sta_poll_list);
+> -		spin_unlock_bh(&dev->sta_poll_lock);
+> +			list_add_tail(&msta->poll_list,
+> +				      &dev->mt76.sta_poll_list);
+> +		spin_unlock_bh(&dev->mt76.sta_poll_lock);
+>  	}
+>  
+>  	if (mt76_is_mmio(&dev->mt76) && (rxd0 & csum_mask) == csum_mask &&
+> @@ -905,9 +906,9 @@ void mt7615_mac_sta_poll(struct mt7615_dev *dev)
+>  	int i;
+>  
+>  	INIT_LIST_HEAD(&sta_poll_list);
+> -	spin_lock_bh(&dev->sta_poll_lock);
+> -	list_splice_init(&dev->sta_poll_list, &sta_poll_list);
+> -	spin_unlock_bh(&dev->sta_poll_lock);
+> +	spin_lock_bh(&dev->mt76.sta_poll_lock);
+> +	list_splice_init(&dev->mt76.sta_poll_list, &sta_poll_list);
+> +	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+>  
+>  	while (!list_empty(&sta_poll_list)) {
+>  		bool clear = false;
+> @@ -1539,10 +1540,10 @@ static void mt7615_mac_add_txs(struct mt7615_dev *dev, void *data)
+>  	msta = container_of(wcid, struct mt7615_sta, wcid);
+>  	sta = wcid_to_sta(wcid);
+>  
+> -	spin_lock_bh(&dev->sta_poll_lock);
+> +	spin_lock_bh(&dev->mt76.sta_poll_lock);
+>  	if (list_empty(&msta->poll_list))
+> -		list_add_tail(&msta->poll_list, &dev->sta_poll_list);
+> -	spin_unlock_bh(&dev->sta_poll_lock);
+> +		list_add_tail(&msta->poll_list, &dev->mt76.sta_poll_list);
+> +	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+>  
+>  	if (mt7615_mac_add_txs_skb(dev, msta, pid, txs_data))
+>  		goto out;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+> index ab4c1b4478aa..2a5462bd54c2 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+> @@ -274,10 +274,10 @@ static void mt7615_remove_interface(struct ieee80211_hw *hw,
+>  
+>  	mt7615_mutex_release(dev);
+>  
+> -	spin_lock_bh(&dev->sta_poll_lock);
+> +	spin_lock_bh(&dev->mt76.sta_poll_lock);
+>  	if (!list_empty(&msta->poll_list))
+>  		list_del_init(&msta->poll_list);
+> -	spin_unlock_bh(&dev->sta_poll_lock);
+> +	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+>  
+>  	mt76_packet_id_flush(&dev->mt76, &mvif->sta.wcid);
+>  }
+> @@ -677,10 +677,10 @@ void mt7615_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+>  	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
+>  		mt7615_mcu_add_bss_info(phy, vif, sta, false);
+>  
+> -	spin_lock_bh(&dev->sta_poll_lock);
+> +	spin_lock_bh(&mdev->sta_poll_lock);
+>  	if (!list_empty(&msta->poll_list))
+>  		list_del_init(&msta->poll_list);
+> -	spin_unlock_bh(&dev->sta_poll_lock);
+> +	spin_unlock_bh(&mdev->sta_poll_lock);
+>  
+>  	mt76_connac_power_save_sched(phy->mt76, &dev->pm);
+>  }
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+> index 0381c53bc96a..7386495f8299 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+> @@ -262,9 +262,6 @@ struct mt7615_dev {
+>  	wait_queue_head_t reset_wait;
+>  	u32 reset_state;
+>  
+> -	struct list_head sta_poll_list;
+> -	spinlock_t sta_poll_lock;
+> -
+>  	struct {
+>  		u8 n_pulses;
+>  		u32 period;
+
+From code review on GitHub, you did not update to use the shared sta_poll_lock in line 919 and 921.
