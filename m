@@ -2,54 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5F37146AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 May 2023 10:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A66F0714718
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 May 2023 11:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjE2IyG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 29 May 2023 04:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54076 "EHLO
+        id S231626AbjE2Jar (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 29 May 2023 05:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbjE2IyE (ORCPT
+        with ESMTP id S231558AbjE2Jaq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 29 May 2023 04:54:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A188D91
-        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 01:54:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35EB2612F0
-        for <linux-wireless@vger.kernel.org>; Mon, 29 May 2023 08:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9922AC4339B;
-        Mon, 29 May 2023 08:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685350442;
-        bh=yFQoDbvUZKYP4JLoEIA7FnYN2Ge8Oy7LN+ea+G62uSQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=AITr/IMOjkW+VO6xNWU+UkmxItrOQAupHiqyWB2Zq9B1oK/XDwizemcQyaRvofPKg
-         8u3ETytUXcsd6uqUZ0Yzw+Tt59607gtdPubIhZ3dTr77mA0M7W5v4gsjfOoZpjb+xF
-         sL2HERxHZcjHFFN1QQKzY0ml9fF9MpygKKnIegDk7+k87yltppZSID2OAb6LKpHA9e
-         q8TZFLF8cCysqmlwKTH7MyQZvaFHUkbCpSj8Lk0r+12+3iZyQj91VTc5Q0qxwgdj7o
-         Y5X0KeMvtfllG8vASNJxUlyj9zMX6oCF/4zh+VlLPwsiseNKwWTdMFqpqfJyHw+AGE
-         3ywrMDCRzq9FQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     mhi@lists.linux.dev, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mhi: allow MHI client drivers to provide the firmware via a pointer
-References: <20230308152522.6728-1-kvalo@kernel.org>
-        <20230308152522.6728-2-kvalo@kernel.org>
-        <20230315081820.GD25575@thinkpad> <87353jl3it.fsf@kernel.org>
-        <20230528145721.GE2814@thinkpad>
-Date:   Mon, 29 May 2023 11:53:57 +0300
-In-Reply-To: <20230528145721.GE2814@thinkpad> (Manivannan Sadhasivam's message
-        of "Sun, 28 May 2023 20:27:21 +0530")
-Message-ID: <87pm6jjz6i.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 29 May 2023 05:30:46 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DA2AF;
+        Mon, 29 May 2023 02:30:44 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QV9F974HxzsSZD;
+        Mon, 29 May 2023 17:28:29 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 29 May 2023 17:30:42 +0800
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH net-next v2 3/3] page_pool: remove PP_FLAG_PAGE_FRAG flag
+Date:   Mon, 29 May 2023 17:28:40 +0800
+Message-ID: <20230529092840.40413-4-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20230529092840.40413-1-linyunsheng@huawei.com>
+References: <20230529092840.40413-1-linyunsheng@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.69.192.56]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,101 +72,123 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+PP_FLAG_PAGE_FRAG is not really needed after non-frag and
+frag page support is unified, so remove it.
+An extra benefit is that drivers don't need to handle the
+failback to use page_pool_alloc_pages() API for arch with
+PAGE_POOL_DMA_USE_PP_FRAG_COUNT being true when using
+page_pool_alloc_frag() API.
 
-> On Fri, May 26, 2023 at 02:45:46PM +0300, Kalle Valo wrote:
->
->> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
->> 
->> > On Wed, Mar 08, 2023 at 05:25:20PM +0200, Kalle Valo wrote:
->> >> From: Kalle Valo <quic_kvalo@quicinc.com>
->> >> 
->> >
->> > Subject prefix should be: "bus: mhi: host: ..."
->> 
->> Will do.
->> 
->> >> @@ -392,9 +390,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->> >>  	const struct firmware *firmware = NULL;
->> >>  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
->> >>  	const char *fw_name;
->> >> +	const u8 *fw_data;
->> >>  	void *buf;
->> >>  	dma_addr_t dma_addr;
->> >> -	size_t size;
->> >> +	size_t size, fw_sz;
->> >>  	int i, ret;
->> >>  
->> >>  	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
->> >> @@ -424,6 +423,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->> >>  	fw_name = (mhi_cntrl->ee == MHI_EE_EDL) ?
->> >>  		mhi_cntrl->edl_image : mhi_cntrl->fw_image;
->> >>  
->> >
->> > Can you please add a comment here?
->> 
->> Ok.
->> 
->> >
->> >> +	if (!fw_name && mhi_cntrl->fbc_download &&
->> >> +	    mhi_cntrl->fw_data && mhi_cntrl->fw_sz) {
->> >> +		size = mhi_cntrl->sbl_size;
->> >
->> > Don't you need to validate sbl_size?
->> 
->> Good point, I'll add that.
->> 
->> >> --- a/include/linux/mhi.h
->> >> +++ b/include/linux/mhi.h
->> >> @@ -299,6 +299,10 @@ struct mhi_controller_config {
->> >>   * @iova_start: IOMMU starting address for data (required)
->> >>   * @iova_stop: IOMMU stop address for data (required)
->> >>   * @fw_image: Firmware image name for normal booting (optional)
->> >> + * @fw_data: Firmware image data content for normal booting, used only
->> >> + *           if fw_image is NULL (optional)
->> >> + * @fw_sz: Firmware image data size for normal booting, used only if fw_image
->> >> + *         is NULL and fbc_download is true (optional)
->> >>   * @edl_image: Firmware image name for emergency download mode (optional)
->> >>   * @rddm_size: RAM dump size that host should allocate for debugging purpose
->> >>   * @sbl_size: SBL image size downloaded through BHIe (optional)
->> >> @@ -384,6 +388,8 @@ struct mhi_controller {
->> >>  	dma_addr_t iova_start;
->> >>  	dma_addr_t iova_stop;
->> >>  	const char *fw_image;
->> >> +	const u8 *fw_data;
->> >> +	size_t fw_sz;
->> >
->> > Even though these members are not creating holes now, shuffling the datatypes
->> > will create holes in the future. So I always prefer to keep the struct members
->> > sorted in the below order:
->> >
->> > pointer
->> > struct/union
->> > u64
->> > u32
->> > u16
->> > u8
->> > bool
->> 
->> I'm not sure what are suggesting here as struct mhi_controller is not
->> using that style. Are you saying that fw_sz should be after reg_len? So
->> something like this:
->> 
->> 	const u8 *fw_data;
->> 	const char *edl_image;
->> 	size_t rddm_size;
->> 	size_t sbl_size;
->> 	size_t seg_len;
->> 	size_t reg_len;
->> 	size_t fw_sz;
->> 
->
-> Ah, I thought I already sorted them up but apparently not. Keep it as it is,
-> I'll sort this and other structs later.
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+CC: Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c          | 3 +--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
+ include/net/page_pool.h                                  | 4 +---
+ net/core/page_pool.c                                     | 4 ----
+ net/core/skbuff.c                                        | 2 +-
+ 7 files changed, 6 insertions(+), 13 deletions(-)
 
-Thanks, I'll then keep it as is and send v3 soon.
-
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index b676496ec6d7..4e613d5bf1fd 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4925,8 +4925,7 @@ static void hns3_put_ring_config(struct hns3_nic_priv *priv)
+ static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
+ {
+ 	struct page_pool_params pp_params = {
+-		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
+-				PP_FLAG_DMA_SYNC_DEV,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.order = hns3_page_order(ring),
+ 		.pool_size = ring->desc_num * hns3_buf_size(ring) /
+ 				(PAGE_SIZE << hns3_page_order(ring)),
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index a79cb680bb23..404caec467af 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1426,7 +1426,7 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
+ 		return 0;
+ 	}
+ 
+-	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
++	pp_params.flags = PP_FLAG_DMA_MAP;
+ 	pp_params.pool_size = numptrs;
+ 	pp_params.nid = NUMA_NO_NODE;
+ 	pp_params.dev = pfvf->dev;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 2944691f06ad..096da3cb05ec 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -853,7 +853,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
+ 		struct page_pool_params pp_params = { 0 };
+ 
+ 		pp_params.order     = 0;
+-		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | PP_FLAG_PAGE_FRAG;
++		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+ 		pp_params.pool_size = pool_size;
+ 		pp_params.nid       = node;
+ 		pp_params.dev       = rq->pdev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 467afef98ba2..ee72869e5572 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -566,7 +566,7 @@ int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
+ {
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+-		.flags = PP_FLAG_PAGE_FRAG,
++		.flags = 0,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = dev->dma_dev,
+ 	};
+diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+index ea7a0c0592a5..11817f144f69 100644
+--- a/include/net/page_pool.h
++++ b/include/net/page_pool.h
+@@ -45,10 +45,8 @@
+ 					* Please note DMA-sync-for-CPU is still
+ 					* device driver responsibility
+ 					*/
+-#define PP_FLAG_PAGE_FRAG	BIT(2) /* for page frag feature */
+ #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP |\
+-				 PP_FLAG_DMA_SYNC_DEV |\
+-				 PP_FLAG_PAGE_FRAG)
++				 PP_FLAG_DMA_SYNC_DEV)
+ 
+ #define PAGE_POOL_DMA_USE_PP_FRAG_COUNT \
+ 		(sizeof(dma_addr_t) > sizeof(unsigned long))
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index e84ec6eabefd..eafaeb4bfc45 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -177,10 +177,6 @@ static int page_pool_init(struct page_pool *pool,
+ 		 */
+ 	}
+ 
+-	if (PAGE_POOL_DMA_USE_PP_FRAG_COUNT &&
+-	    pool->p.flags & PP_FLAG_PAGE_FRAG)
+-		return -EINVAL;
+-
+ #ifdef CONFIG_PAGE_POOL_STATS
+ 	pool->recycle_stats = alloc_percpu(struct page_pool_recycle_stats);
+ 	if (!pool->recycle_stats)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index f4a5b51aed22..e0a48867ece2 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5650,7 +5650,7 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
+ 	/* In general, avoid mixing page_pool and non-page_pool allocated
+ 	 * pages within the same SKB. Additionally avoid dealing with clones
+ 	 * with page_pool pages, in case the SKB is using page_pool fragment
+-	 * references (PP_FLAG_PAGE_FRAG). Since we only take full page
++	 * references (page_pool_alloc_frag()). Since we only take full page
+ 	 * references for cloned SKBs at the moment that would result in
+ 	 * inconsistent reference counts.
+ 	 * In theory we could take full references if @from is cloned and
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.33.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
