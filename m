@@ -2,129 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 260DD716123
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 May 2023 15:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5F9F71629D
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 May 2023 15:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232556AbjE3NJh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 May 2023 09:09:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38106 "EHLO
+        id S232008AbjE3Nuu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 May 2023 09:50:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjE3NJf (ORCPT
+        with ESMTP id S231422AbjE3Nus (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 May 2023 09:09:35 -0400
-Received: from bin-mail-out-06.binero.net (bin-mail-out-06.binero.net [195.74.38.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B89EA
-        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 06:09:21 -0700 (PDT)
-X-Halon-ID: 2ee03f63-feeb-11ed-b7d6-cf458ee68324
-Authorized-sender: petter@technux.se
-Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
-        by bin-vsp-out-03.atm.binero.net (Halon) with ESMTPSA
-        id 2ee03f63-feeb-11ed-b7d6-cf458ee68324;
-        Tue, 30 May 2023 15:09:18 +0200 (CEST)
-From:   petter@technux.se
-To:     kvalo@kernel.org
-Cc:     Larry.Finger@lwfinger.net, andreas@fatal.se, iam@valdikss.org.ru,
-        kernel@pengutronix.de, linux-wireless@vger.kernel.org,
-        linux@ulli-kroll.de, petter.mabacker@esab.se, petter@technux.se,
-        pkshih@realtek.com, s.hauer@pengutronix.de
-Subject: Re: [PATCH] wifi: rtw88: usb: Make work queues high prio
-Date:   Tue, 30 May 2023 15:09:17 +0200
-Message-Id: <20230530130917.2716182-1-petter@technux.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <87zg5mjeu4.fsf@kernel.org>
-References: <87zg5mjeu4.fsf@kernel.org>
+        Tue, 30 May 2023 09:50:48 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE12113;
+        Tue, 30 May 2023 06:50:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685454643; x=1716990643;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=coaE20tPVJ7AZBZ9YIPPD7ohxPRVwifqLulonpO6f/c=;
+  b=fja4gN7hCJmVNFFIFoOIMG9fWwsaN7mLQ8X4uGWBjjO5p659dLetg0U4
+   JcA1wXe6s7760OvLEZ2GyVnhLraHDR0k2dvtCJIsHLApbZ/HNvjKO4biG
+   F+rzZRF3WbnsnJYYFd/cy97IOrjW9T82l6zL513+LLGcpwVAD+fatHpP1
+   F966BKV9YYgjumbo3k/H0x4JNjEOhUg9c8WirtQBPCPj4D+5c7Y1t3EmO
+   n5dZevGjnkOe2fzDH8sFSywSf9ZQKJBdzhP81zu3kxfw2wnOoCpMgmatb
+   zwAXA5cHvZ9rXzLeF4rIKk32imkepLz9HAKlS4nG5hyirBZUdLnAogtol
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="352418864"
+X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; 
+   d="scan'208";a="352418864"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2023 06:50:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="771552147"
+X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; 
+   d="scan'208";a="771552147"
+Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 30 May 2023 06:50:23 -0700
+Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q3zjy-0000aN-2p;
+        Tue, 30 May 2023 13:50:22 +0000
+Date:   Tue, 30 May 2023 21:50:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        kvalo@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+        ryder.lee@mediatek.com, shayne.chen@mediatek.com,
+        sean.wang@mediatek.com, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com, Mario.Limonciello@amd.com,
+        Lijo.Lazar@amd.com
+Cc:     oe-kbuild-all@lists.linux.dev, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 8/9] drm/amd/pm: enable Wifi RFI mitigation feature
+ support for SMU13.0.0
+Message-ID: <202305302118.3mARqykY-lkp@intel.com>
+References: <20230530024227.2139632-9-evan.quan@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230530024227.2139632-9-evan.quan@amd.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-petter@technux.se writes:
+Hi Evan,
 
->> From: Petter Mabacker <petter.mabacker@esab.se>
->>
->> The rtw8822cu driver have problem to handle high rx or tx rates compared
->> with high load (such as high I/O) on slower systems, such as for example
->> i.MX6 SoloX and similar platforms.
->>
->> The problems are more frequent when having the access point close to the
->> device. On slower systems it's often enough to download a large file,
->> combined with generating I/O load to trigger:
->>
->> [  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
->> [  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> [  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->> [  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> [  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->> [  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> [  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->> [  489.426263] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->>
->> Another way is to simply perform a wifi rescan.
->>
->> Benchmarking shows that setting a high prio workqueue for tx/rx will
->> significally improve things. Also compared alloc_workqueue with
->> alloc_ordered_workqueue, but even thou the later seems to slightly
->> improve things it's still quite easy to reproduce the above issues. So
->> that leads to the decision to go for alloc_workqueue.
->>
->> Thanks to Ping-Ke Shih <pkshih@realtek.com> that came up with the idea
->> of exploring tweaking of the work queue's within a similar discussion.
->>
->> Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
->> Signed-off-by: Petter Mabacker <petter.mabacker@esab.se>
->> ---
->>  drivers/net/wireless/realtek/rtw88/usb.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
->> index 44a5fafb9905..bfe0845528ec 100644
->> --- a/drivers/net/wireless/realtek/rtw88/usb.c
->> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
->> @@ -716,7 +716,7 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
->>  	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
->>  	int i;
->>  
->> -	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
->> +	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
->>  	if (!rtwusb->rxwq) {
->>  		rtw_err(rtwdev, "failed to create RX work queue\n");
->>  		return -ENOMEM;
->> @@ -750,7 +750,7 @@ static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
->>  	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
->>  	int i;
->>  
->> -	rtwusb->txwq = create_singlethread_workqueue("rtw88_usb: tx wq");
->> +	rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
->>  	if (!rtwusb->txwq) {
->>  		rtw_err(rtwdev, "failed to create TX work queue\n");
->>  		return -ENOMEM;
+kernel test robot noticed the following build errors:
 
->Should this workqueue be ordered or not? Please check Tejun's patchset
->about using ordered queues:
+[auto build test ERROR on drm-misc/drm-misc-next]
+[also build test ERROR on kvalo-ath/ath-next wireless-next/main wireless/main linus/master v6.4-rc4]
+[cannot apply to next-20230530]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->https://lore.kernel.org/lkml/20230421025046.4008499-1-tj@kernel.org/
+url:    https://github.com/intel-lab-lkp/linux/commits/Evan-Quan/drivers-acpi-Add-support-for-Wifi-band-RF-mitigations/20230530-104541
+base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+patch link:    https://lore.kernel.org/r/20230530024227.2139632-9-evan.quan%40amd.com
+patch subject: [PATCH 8/9] drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20230530/202305302118.3mARqykY-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 12.3.0
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/8ecc361da81a0915bb626156b47403a91b678de1
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Evan-Quan/drivers-acpi-Add-support-for-Wifi-band-RF-mitigations/20230530-104541
+        git checkout 8ecc361da81a0915bb626156b47403a91b678de1
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=powerpc olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
 
-Thanks for pointing out this interesting patchset. As described in the
-commit msg, I did play around with alloc_ordered_workqueue. But at least
-on the slower systems I tested it on (i.MX6 SoloX and BCM2835) it worked
-a bit better, but I was still able to reproduce the above mention issue.
-So I tried to instead use alloc_workqueue and set max_active=0 and that
-seems to be enough to make things a lot more stable.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202305302118.3mARqykY-lkp@intel.com/
 
-However after reading Tejun's patchet I'm very intersted of feedback if
-you or someone else have comments about using alloc_workqueue with
-max_active=0 , or if this can give some other issues? It seems to work
-fine for me when running it also on a i.MX8 multicore system.
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
->
->-- 
->https://patchwork.kernel.org/project/linux-wireless/list/
->
->https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>> ERROR: modpost: "__umoddi3" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+>> ERROR: modpost: "__udivdi3" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
