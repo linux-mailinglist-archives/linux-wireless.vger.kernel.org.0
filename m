@@ -2,56 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E123715C7E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 May 2023 13:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5237715CE4
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 May 2023 13:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231681AbjE3LCm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 May 2023 07:02:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48946 "EHLO
+        id S231307AbjE3LT1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 May 2023 07:19:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjE3LCk (ORCPT
+        with ESMTP id S229873AbjE3LT0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 May 2023 07:02:40 -0400
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66D6993;
-        Tue, 30 May 2023 04:02:39 -0700 (PDT)
-Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-6237faa8677so22225806d6.1;
-        Tue, 30 May 2023 04:02:39 -0700 (PDT)
+        Tue, 30 May 2023 07:19:26 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 390B8EC;
+        Tue, 30 May 2023 04:19:25 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-6262be06e2eso6833296d6.1;
+        Tue, 30 May 2023 04:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685444558; x=1688036558;
+        d=gmail.com; s=20221208; t=1685445564; x=1688037564;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qKJRw70btDvw6dzoRPZe1V0n3W0ShFothndLD85zokQ=;
-        b=ddbwUXkiE48vFE2zz7Fh1VMI2SkkBKiWtS23kb1YI4nSv4xUWs+Sg5xz0/ycdXsjEp
-         oDENZSNXp5erZRt6f2KyTXTxvHMrKcNjdXaKHrZKzQMTP3EN6ZqhJP+vsY8PFHg9ZFlt
-         PVJiuE50WxSwHfeprajWksMW0MTA/psTVfTeynP/GufAWpcfH/B+Y726AcHvzTG5jw28
-         9Dc08fAC4vXudjSv6+aLOEdHLaJeDcwSvJTV0L20WFENfPnjGxoTFE/xi+WlYylVUxDk
-         wVhJ3zjBf564+7o9sdAWXw6YxZ69wGlS0qcSFZ9NQ89s9tHIm5tR2/7KpOdEhqTvHaAj
-         yiww==
+        bh=4JcaGk53DfoljsKEc0Vqh4/+1ZEOZS900niaaCgJ++s=;
+        b=C2wDD805ebGsBV7b0K81S5Eb8pSn0DdvY2plhQ2gb9qX9Yc7JMgWFs16+iG8k/PL7d
+         Vh/G674aaMIecEd3AsU84A9PZcegaZiYkUvaOPXzGWz86nGsaE2MdYq2fTBWcpfJ6+0c
+         u9ZBexHLihF2fVBIfwb8eYxzRM2sZgPSBcCeNASGxO0CBKjpGu1owbw7G3ZDuxQoYCKh
+         q0Mna3NfUGyNzTuPtoUnsXvzvLH/2PfPj+NfwjTD3vxmin6ybiA43QNaW8kVxJAiE/pa
+         h8TxQs3NRqxvWg+s48i59MqnlRuUnd3GxL8Gw11vw/bMS0gTFI1XQ+6JeJxWyJ1zhcnB
+         wJKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685444558; x=1688036558;
+        d=1e100.net; s=20221208; t=1685445564; x=1688037564;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qKJRw70btDvw6dzoRPZe1V0n3W0ShFothndLD85zokQ=;
-        b=WkFA4ZZqGJ3RuIUxGHgysKCGuU6+Kq3zNrnDo29TYNcjYDf8+vh37DQRFbAKb1FqrF
-         aD73xIMZ9Fiy7PsA9BZvbI2XKPsbeyYSiIv2ybTcfUhUbrgSu1Co5BS+3ZTaAC6vr+jP
-         AiHzO2xbxf6sAZO24iUGK9GiMDf2TEtLfZEg5eyiaS5KDMGbiP71hip1UNzA6purm26T
-         tlmhy9NZklyGhFT7xkHYBqcelKG+7syyalGYdMYmGvFK8UVHwoj74Ou7rBzjIbjc3jFo
-         5TGkC1eNtr8AlNJZy9RqlyhPR+n0NlMSRu/qnW6qAEED38tYpikYh+CVH+s0ubVsaM7z
-         H6bQ==
-X-Gm-Message-State: AC+VfDxjMgaJFSpKM6Lj6kKWDi2HOoy3sWB96b6hsTuIlqad+hypt8th
-        LUm+pGOBagDb2VImHWgvXVGj0WFkKniXEvOUXYXH5y95s1BnFA==
-X-Google-Smtp-Source: ACHHUZ6V2oyzYSC9B8OgIPn2MIpfB098Yw//lpK0uP02DNwlKin+3aIcnmVspzn0674k6LFbXQu1RHfDfYo4IpheSfk=
-X-Received: by 2002:ad4:5baa:0:b0:626:1be5:1777 with SMTP id
- 10-20020ad45baa000000b006261be51777mr1296836qvq.52.1685444558153; Tue, 30 May
- 2023 04:02:38 -0700 (PDT)
+        bh=4JcaGk53DfoljsKEc0Vqh4/+1ZEOZS900niaaCgJ++s=;
+        b=XW7n3NzvFdUZcC7i3Q1eyOGhZORnk5SbvRFfcpXRGqkHbUc25ApiH8hxbHiF3D29oA
+         I5a7RiU6eUxSNz0zgHnvOWUxskbVdCcaEwAW1b0eVG8oCw2tSMlNMKE1PJaivv8sFZB/
+         X1VLt2kCvBdAqjlDPTAtvYebSeuYW/207W6NBg6Ps15grvglIVtDpJqvs51NAKbjZpIp
+         FVDUWluVMOlZcRhn0EH/wUEyH8yGqrDkK1JItK3mBk1EvRnaG81pIMy7QZQSuj5wJZnL
+         moUFdjfHNelKM2I/SyM+pyVSr63AOYLD4Ddm/JrQpJi77LgIn7VPooWInD2fbSrVvImj
+         8B8w==
+X-Gm-Message-State: AC+VfDyqPz5+s6+VDWOwwQiyxDEnh7k4WS0FaNPDDCDUnQzsXHDiEaBR
+        7+daQz2QOMuSfo2fv66hksjWyhVRYdZ/IlELCHc=
+X-Google-Smtp-Source: ACHHUZ5DBOUiWsRXCdlSENWFz5Kmv7KFin+OkFZ+1MD7nnexfUJEN1pyBDQ9HHsusXK2WSP6vMn4DZZaMjG9/b5DC9E=
+X-Received: by 2002:a05:6214:2627:b0:623:c96a:e735 with SMTP id
+ gv7-20020a056214262700b00623c96ae735mr1861312qvb.1.1685445563839; Tue, 30 May
+ 2023 04:19:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230524160352.19704-1-osmtendev@gmail.com> <87v8gajeni.fsf@kernel.org>
-In-Reply-To: <87v8gajeni.fsf@kernel.org>
+ <CAK6rUAPUKNREyYL-d5Y23SOV__-zPY8KJL+MMzWX8ShOhDGWLA@mail.gmail.com>
+In-Reply-To: <CAK6rUAPUKNREyYL-d5Y23SOV__-zPY8KJL+MMzWX8ShOhDGWLA@mail.gmail.com>
 From:   Osama Muhammad <osmtendev@gmail.com>
-Date:   Tue, 30 May 2023 16:02:27 +0500
-Message-ID: <CAK6rUAPUKNREyYL-d5Y23SOV__-zPY8KJL+MMzWX8ShOhDGWLA@mail.gmail.com>
+Date:   Tue, 30 May 2023 16:19:13 +0500
+Message-ID: <CAK6rUANkoGLAMSQjy5Wrav02u10MKxK8ov1Xekq-goMNu0Tcug@mail.gmail.com>
 Subject: Re: [PATCH] debugfs.c: Fix error checking for debugfs_create_dir
 To:     Kalle Valo <kvalo@kernel.org>
 Cc:     nbd@nbd.name, ryder.lee@mediatek.com, lorenzo@kernel.org,
@@ -71,43 +72,56 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-I will keep that in mind and send with the right subject while
-submitting a revision of the patch.
+In the previous email mistakenly I have referenced debugfs_create_file
+but it's the same for debugfs_create_dir also.
 
-Regarding the patch after researching more into it I have come to know
-that the debugfs
-API will not return null on error but an ERR_PTR. The modern wisdom
-about it is to ignore the errors returned by the function as stated in
-the comment  above the function debugfs_create_file.
-
-> * NOTE: it's expected that most callers should _ignore_ the errors returned
- >* by this function. Other debugfs functions handle the fact that the "dentry"
- >* passed to them could be an error and they don't crash in that case.
-> * Drivers should generally work fine even if debugfs fails to init anyway.
-Here is the link to comment :-
-https://elixir.bootlin.com/linux/latest/source/fs/debugfs/inode.c#L451
-
-Considering this, I will send the revision of the patch by removing
-error checks. Please correct me if  there are any concerns with this.
+Here is the link to comment above the function debugfs_create_dir
+https://elixir.bootlin.com/linux/latest/source/fs/debugfs/inode.c#L564
 
 Thanks,
 Osmten
 
-On Tue, 30 May 2023 at 15:29, Kalle Valo <kvalo@kernel.org> wrote:
+On Tue, 30 May 2023 at 16:02, Osama Muhammad <osmtendev@gmail.com> wrote:
 >
-> Osama Muhammad <osmtendev@gmail.com> writes:
+> Hi,
 >
-> > This patch fixes the error checking in debugfs.c in
-> > debugfs_create_dir. The correct way to check if an error occurred
-> > is using 'IS_ERR' inline function.
+> I will keep that in mind and send with the right subject while
+> submitting a revision of the patch.
+>
+> Regarding the patch after researching more into it I have come to know
+> that the debugfs
+> API will not return null on error but an ERR_PTR. The modern wisdom
+> about it is to ignore the errors returned by the function as stated in
+> the comment  above the function debugfs_create_file.
+>
+> > * NOTE: it's expected that most callers should _ignore_ the errors returned
+>  >* by this function. Other debugfs functions handle the fact that the "dentry"
+>  >* passed to them could be an error and they don't crash in that case.
+> > * Drivers should generally work fine even if debugfs fails to init anyway.
+> Here is the link to comment :-
+> https://elixir.bootlin.com/linux/latest/source/fs/debugfs/inode.c#L451
+>
+> Considering this, I will send the revision of the patch by removing
+> error checks. Please correct me if  there are any concerns with this.
+>
+> Thanks,
+> Osmten
+>
+> On Tue, 30 May 2023 at 15:29, Kalle Valo <kvalo@kernel.org> wrote:
 > >
-> > Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
->
-> The title is wrong, please see the wiki page below how to create titles.
->
-> Also no need to say "This patch fixes..", saying "Fix..." is enough.
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> > Osama Muhammad <osmtendev@gmail.com> writes:
+> >
+> > > This patch fixes the error checking in debugfs.c in
+> > > debugfs_create_dir. The correct way to check if an error occurred
+> > > is using 'IS_ERR' inline function.
+> > >
+> > > Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+> >
+> > The title is wrong, please see the wiki page below how to create titles.
+> >
+> > Also no need to say "This patch fixes..", saying "Fix..." is enough.
+> >
+> > --
+> > https://patchwork.kernel.org/project/linux-wireless/list/
+> >
+> > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
