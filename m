@@ -2,88 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8339371583C
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 May 2023 10:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F12DA7159B0
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 May 2023 11:15:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbjE3IT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 May 2023 04:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36240 "EHLO
+        id S229720AbjE3JPr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 May 2023 05:15:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbjE3ITp (ORCPT
+        with ESMTP id S229446AbjE3JPq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 May 2023 04:19:45 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA50410C
-        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 01:19:35 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5147e8972a1so6635266a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 01:19:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citymesh.com; s=google; t=1685434774; x=1688026774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yct+blJyddmlgzq/6V7/zpY66Xis2osuomoldczLeo0=;
-        b=Qe4IR/d/014/xzh6ZLl19csHPxEnzgylVEmxzpbuIThRwYTfyWAGb+xq9WaSCPUtxP
-         DG5cS1LWHYaoZIEFZUSJo7gPmScfZfh4irQRIqQzINbUTPs45qvH40SHBOt/O51vYg4f
-         Pt9OTX303MnyLX+yFDS7uPfix7m+400U91m7tyHs9DKDiUDpqhRixjqfqTRA3AEc5LSg
-         1T3l1+vlCICQ+X9wl6Ps8Fu/l5V8n4gDSdxIYq1WeAQo+29GF8tatgM7QFMd1Tmu6+SS
-         XMdzsPIco6oAR+6RGiT8B15geipOINXkje7TlZRxZ1O6QnuWenm+lcmp3R4N7bUGindV
-         UXdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685434774; x=1688026774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yct+blJyddmlgzq/6V7/zpY66Xis2osuomoldczLeo0=;
-        b=gkdbIzro9j7PEprp19hJBUXl6Vt19jX8BsAaApTS/5FsHL8loWlwK0iSTlbx1p9RQh
-         2m5HNrOHVnnJL7lszqvRRHNGiWRWoHXNk3JetF06XwQB7U/gbQvw6p24dDE4vNWAfn43
-         4CiUcr2Nb+BTkFbrbEoXWSlZysNqIRu1/niWYL2KcZy0t6f2UFJd/Yv08/8cI0XoD325
-         g1cydo2S/BAmyIwXyFzutmQdWAUC4ENgutMjiS67g06QlwpZNNkgAbos05NxLHZ1QqYW
-         0+tEFH822WyWFJaoL5VjbaW3UrT4LWFjWqT7yxCJgaz9oHJo706Fw1SQo5s5unZ/CF6h
-         wsAw==
-X-Gm-Message-State: AC+VfDzZW+SMkjHN1ziC0b+s7+LPdsDoeSRUUWxkpDUCdg36KTIB98g2
-        QTYfB+aFPPLrGLzD+YI0HUlntyWp55GQjQotxH4eSh29uKRkiHJZ
-X-Google-Smtp-Source: ACHHUZ5pcF6ydtdCIcjYsop1XcXbeF3wrQj/fQCRRw4Z6c7/4aCBuDqZonUNtez1Y18GYu6xLv+JwHDKRxf9g5K127A=
-X-Received: by 2002:a17:907:3e01:b0:970:1a15:62d1 with SMTP id
- hp1-20020a1709073e0100b009701a1562d1mr1774343ejc.34.1685434774110; Tue, 30
- May 2023 01:19:34 -0700 (PDT)
+        Tue, 30 May 2023 05:15:46 -0400
+Received: from bin-mail-out-06.binero.net (bin-mail-out-06.binero.net [195.74.38.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5479CBE
+        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 02:15:43 -0700 (PDT)
+X-Halon-ID: 88cb9742-feca-11ed-9190-9961c02482a6
+Authorized-sender: petter@technux.se
+Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
+        by bin-vsp-out-02.atm.binero.net (Halon) with ESMTPSA
+        id 88cb9742-feca-11ed-9190-9961c02482a6;
+        Tue, 30 May 2023 11:15:37 +0200 (CEST)
+From:   petter@technux.se
+To:     linux-wireless@vger.kernel.org
+Cc:     s.hauer@pengutronix.de, Larry.Finger@lwfinger.net,
+        andreas@fatal.se, g0000ga@gmail.com, iam@valdikss.org.ru,
+        kernel@pengutronix.de, linux@ulli-kroll.de, morrownr@gmail.com,
+        mr.nuke.me@gmail.com, petter@technux.se, pkshih@realtek.com,
+        tpkuester@gmail.com, Petter Mabacker <petter.mabacker@esab.se>
+Subject: [PATCH] wifi: rtw88: usb: Make work queues high prio
+Date:   Tue, 30 May 2023 11:15:32 +0200
+Message-Id: <20230530091532.2711675-1-petter@technux.se>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <CAPh3n823v205C-_JAYz84MqUiEVPe8rsAy2Cpc39f_MsJrsnYA@mail.gmail.com>
-In-Reply-To: <CAPh3n823v205C-_JAYz84MqUiEVPe8rsAy2Cpc39f_MsJrsnYA@mail.gmail.com>
-From:   Koen Vandeputte <koen.vandeputte@citymesh.com>
-Date:   Tue, 30 May 2023 10:19:23 +0200
-Message-ID: <CAPh3n83NZFXh25-KN8XQ8VGuPqWOiBx6Qg_HNSWkm9Sf_EnovQ@mail.gmail.com>
-Subject: Re: ipq4019 - Coverage Class not supported??
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Cc:     Ben Greear <greearb@candelatech.com>, quic_kvalo@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 30, 2023 at 10:10=E2=80=AFAM Koen Vandeputte
-<koen.vandeputte@citymesh.com> wrote:
->
-> Hi all,
->
-> To my surprise I noticed that IPQ4019 wireless (802.11 AC Wave 2)
-> does not seem to support setting coverage class.
->
-> According to Ben Greear, the qca firmware seems to support the
-> PDEV_PARAM_TX_ACK_TIMEOUT wmi command.
->
-> Does anyone have a patchset hidden somewhere that adds support for
-> this WMI command?
->
-> Thanks!
->
-> Koen
+From: Petter Mabacker <petter.mabacker@esab.se>
 
-fixup Kalle's old e-mail address
+The rtw8822cu driver have problem to handle high rx or tx rates compared
+with high load (such as high I/O) on slower systems, such as for example
+i.MX6 SoloX and similar platforms.
+
+The problems are more frequent when having the access point close to the
+device. On slower systems it's often enough to download a large file,
+combined with generating I/O load to trigger:
+
+[  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
+[  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+[  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+[  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+[  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+[  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+[  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+[  489.426263] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+
+Another way is to simply perform a wifi rescan.
+
+Benchmarking shows that setting a high prio workqueue for tx/rx will
+significally improve things. Also compared alloc_workqueue with
+alloc_ordered_workqueue, but even thou the later seems to slightly
+improve things it's still quite easy to reproduce the above issues. So
+that leads to the decision to go for alloc_workqueue.
+
+Thanks to Ping-Ke Shih <pkshih@realtek.com> that came up with the idea
+of exploring tweaking of the work queue's within a similar discussion.
+
+Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
+Signed-off-by: Petter Mabacker <petter.mabacker@esab.se>
+---
+ drivers/net/wireless/realtek/rtw88/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index 44a5fafb9905..bfe0845528ec 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -716,7 +716,7 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+ 	int i;
+ 
+-	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
++	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+ 	if (!rtwusb->rxwq) {
+ 		rtw_err(rtwdev, "failed to create RX work queue\n");
+ 		return -ENOMEM;
+@@ -750,7 +750,7 @@ static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+ 	int i;
+ 
+-	rtwusb->txwq = create_singlethread_workqueue("rtw88_usb: tx wq");
++	rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+ 	if (!rtwusb->txwq) {
+ 		rtw_err(rtwdev, "failed to create TX work queue\n");
+ 		return -ENOMEM;
+-- 
+2.39.2
+
