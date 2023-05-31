@@ -2,149 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F37B71842B
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 May 2023 16:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B35718503
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 May 2023 16:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237515AbjEaOF4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 31 May 2023 10:05:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
+        id S236780AbjEaOa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 May 2023 10:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237512AbjEaOFn (ORCPT
+        with ESMTP id S236820AbjEaOav (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 31 May 2023 10:05:43 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7638955AD
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 07:00:18 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-64d3fdcadb8so4063398b3a.3
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 07:00:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685541553; x=1688133553;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6BZZCnP2GiYn1lTtNgOs+Ak6zQVz1K4t2mnjh1u+GPE=;
-        b=FGHcu6q+w5Hfvc0K3nH2AzjZ2vE0SVBR+fHsBZQkAM3ahQ1xUijYETFC1Rc7cqwnsS
-         o8pZMOT3piRVYz1cVGBONbWfXLK0ZKra91Bh6OP7Fkm8rrx6P6bf5n/ZUdnpyv9IybVF
-         /fH2uS40Ro+DDBi99pJoFSWNngM0Yaxa0pgz4DG2imFKAdZQ3PAoahLtRWJ4+JlQaXQU
-         e6SyWg7RFMIHFR3ABKqe47u3WtLq1M04s21tjw2crpdF0k55xdycuZE5RNIhbgolizLK
-         tHN50jMQAJH+F7llmBBGSVciLGMSOuzWArBHauND3tHcL6GoWdU7kixT4COcj3aZNdVQ
-         Sxvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685541553; x=1688133553;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6BZZCnP2GiYn1lTtNgOs+Ak6zQVz1K4t2mnjh1u+GPE=;
-        b=FrdaXPYOOCnb2a1L36uG4EZpBbYv8LVF1LVsVPm4VsGhOtfYP78l6UxTOBddEGwnk2
-         YWbKjPuzya/kNY4cWHwVIwZHS7Y7XlybzQRfrlJLnmBq3GSRlpM7M2eWisSVWufL6gGO
-         QeKVZlV6eu4o8ezI4RQL2dTU2c30TeRdByuVkc4QnZrjD+TvDuu2WNVBPEgGjIpPQnQ0
-         vDRWbE13627LgKfPuvEdgZF7XPmeNncDtaaTvVtFWvn6tesIjMcI1WVFx/elxDhlvp4P
-         ExwCmgbBpHigHEs5rs8WMRgOSOwZH7uVFqekZJVp4XQf3bTkue2gpid4Mt5cepXlhKLk
-         jOUQ==
-X-Gm-Message-State: AC+VfDydyq9JIQpSArQX3VD+/g3G8P6mI6qrpJ+/XktcSOdngF/OKRy3
-        gpYKgvU5rCaqtdnRYYSjaDg=
-X-Google-Smtp-Source: ACHHUZ5v2w0egjsLOzrLJ8jkL/x2vqfDwXHPw3ockLWBxecpTR/w5ZJcFoqgAHynQsux2H+lMrLqAg==
-X-Received: by 2002:a05:6a00:14cb:b0:64e:bada:2411 with SMTP id w11-20020a056a0014cb00b0064ebada2411mr5783023pfu.25.1685541552756;
-        Wed, 31 May 2023 06:59:12 -0700 (PDT)
-Received: from debian.me (subs03-180-214-233-12.three.co.id. [180.214.233.12])
-        by smtp.gmail.com with ESMTPSA id v11-20020a655c4b000000b00520b677c645sm1223359pgr.41.2023.05.31.06.59.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 May 2023 06:59:12 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 41531106990; Wed, 31 May 2023 20:59:09 +0700 (WIB)
-Date:   Wed, 31 May 2023 20:59:09 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: Re: iwlwifi: AX201 misdetected as AX101
-Message-ID: <ZHdSrGmyN-TjYxEO@debian.me>
-References: <gAwMzXEPlQZUgbc6n3yYY2soROKl4-D_JfWwoHW8CMx-LDkDEeAlwcyjOMy767W3eEVxS-e7oEihVh1PNHT-_iznSKneJjW0vu0PN7aQ9K8=@protonmail.com>
+        Wed, 31 May 2023 10:30:51 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7356C5
+        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 07:30:47 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:451f:0:640:499:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id 40CF460049;
+        Wed, 31 May 2023 17:30:46 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id UUOQ9upWkGk0-P6xuZycr;
+        Wed, 31 May 2023 17:30:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685543445;
+        bh=6dsjsWinHR8DnDzz+nz2SH8BKY3aXl8tYeEVM5pMw6E=;
+        h=Message-Id:Date:Cc:Subject:To:From;
+        b=tTCQ/u+dS7D1e9RSXB+5sCAU+NnJRpmFXZijB/8HgxP1S2cdTOdBEQmvyN4vVoDXz
+         ZR+Ohfp0oVroaq27FWZZoCUGslNxaG2NJ/fEXBUDY5d8sXDRvSYd5JcyglL/NGT2pt
+         2E9ouyq7aHnBj589VZFiozBJOHn7YCjHgR9tPnLw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Dmitriy Antipov <Dmitriy.Antipov@softline.com>
+Subject: [PATCH] rtlwifi: remove unused timer and related code
+Date:   Wed, 31 May 2023 17:30:01 +0300
+Message-Id: <20230531143001.674220-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="23nFZxpH4dyHvOLV"
-Content-Disposition: inline
-In-Reply-To: <gAwMzXEPlQZUgbc6n3yYY2soROKl4-D_JfWwoHW8CMx-LDkDEeAlwcyjOMy767W3eEVxS-e7oEihVh1PNHT-_iznSKneJjW0vu0PN7aQ9K8=@protonmail.com>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Drop unused 'dualmac_easyconcurrent_retrytimer' of 'struct rtl_works',
+corresponding 'rtl_easy_concurrent_retrytimer_callback()' handler,
+'dualmac_easy_concurrent' function pointer of 'struct rtl_hal_ops'
+and related call to 'timer_setup()' in '_rtl_init_deferred_work()'.
 
---23nFZxpH4dyHvOLV
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Dmitriy Antipov <Dmitriy.Antipov@softline.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/base.c | 16 +---------------
+ drivers/net/wireless/realtek/rtlwifi/base.h |  1 -
+ drivers/net/wireless/realtek/rtlwifi/wifi.h |  2 --
+ 3 files changed, 1 insertion(+), 18 deletions(-)
 
-On Fri, May 26, 2023 at 05:55:48PM +0000, Barnab=C3=A1s P=C5=91cze wrote:
-> Hi all,
->=20
-> I have an Acer Aspire A315-58 laptop[0], which, according to lspci has th=
-e following intel wireless chip:
->=20
->    Device:	00:14.3
->     Class:	Network controller [0280]
->    Vendor:	Intel Corporation [8086]
->    Device:	Wi-Fi 6 AX201 [a0f0]
->   SVendor:	Intel Corporation [8086]
->   SDevice:	Wi-Fi 6 AX201 [0244]
->       Rev:	20
->    ProgIf:	00
->    Driver:	iwlwifi
->    Module:	iwlwifi
->=20
-> However, in the kernel message buffer, the following message is written:
->=20
->   [    3.633490] iwlwifi 0000:00:14.3: Detected Intel(R) Wi-Fi 6 AX101, R=
-EV=3D0x351
->=20
-> Also, this chip did not work with the 6.3.3 Arch Linux kernel, the driver=
- loaded the
-> `QuZ-a0-hr-b0-74.ucode` firmware:
->=20
->   [    6.516505] iwlwifi 0000:00:14.3: WRT: Collecting data: ini trigger =
-13 fired (delay=3D0ms).
->   [    6.517615] iwlwifi 0000:00:14.3: Start IWL Error Log Dump:
->   [    6.517616] iwlwifi 0000:00:14.3: Transport status: 0x0000004A, vali=
-d: 6
->   [    6.517617] iwlwifi 0000:00:14.3: Loaded firmware version: 74.a5e958=
-8b.0 QuZ-a0-hr-b0-74.ucode
->   [    6.517619] iwlwifi 0000:00:14.3: 0x00000084 | NMI_INTERRUPT_UNKNOWN=
-      =20
->   ...
->   [    6.861510] iwlwifi 0000:00:14.3: Failed to run INIT ucode: -110
->=20
->=20
-> I then noticed that firmwares 75-77 are available and that there were rec=
-ent changes
-> to the iwlwifi module that increased IWL_22000_UCODE_API_MAX, so I gave i=
-t a go,
-> and built the kernel at ae8373a5add4ea39f032563cf12a02946d1e3546 and now =
-firmware 77
-> is loaded, and that seems to work, at least I did not notice any issues s=
-o far.
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+index 9e7e98b55eff..44846e96b2ab 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.c
++++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+@@ -452,8 +452,7 @@ static int _rtl_init_deferred_work(struct ieee80211_hw *hw)
+ 	/* <1> timer */
+ 	timer_setup(&rtlpriv->works.watchdog_timer,
+ 		    rtl_watch_dog_timer_callback, 0);
+-	timer_setup(&rtlpriv->works.dualmac_easyconcurrent_retrytimer,
+-		    rtl_easy_concurrent_retrytimer_callback, 0);
++
+ 	/* <2> work queue */
+ 	rtlpriv->works.hw = hw;
+ 	rtlpriv->works.rtl_wq = wq;
+@@ -2366,19 +2365,6 @@ static void rtl_c2hcmd_wq_callback(struct work_struct *work)
+ 	rtl_c2hcmd_launcher(hw, 1);
+ }
+ 
+-void rtl_easy_concurrent_retrytimer_callback(struct timer_list *t)
+-{
+-	struct rtl_priv *rtlpriv =
+-		from_timer(rtlpriv, t, works.dualmac_easyconcurrent_retrytimer);
+-	struct ieee80211_hw *hw = rtlpriv->hw;
+-	struct rtl_priv *buddy_priv = rtlpriv->buddy_priv;
+-
+-	if (buddy_priv == NULL)
+-		return;
+-
+-	rtlpriv->cfg->ops->dualmac_easy_concurrent(hw);
+-}
+-
+ /*********************************************************
+  *
+  * frame process functions
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.h b/drivers/net/wireless/realtek/rtlwifi/base.h
+index 0e4f8a8ae3a5..f081a9a90563 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.h
++++ b/drivers/net/wireless/realtek/rtlwifi/base.h
+@@ -124,7 +124,6 @@ int rtl_send_smps_action(struct ieee80211_hw *hw,
+ u8 *rtl_find_ie(u8 *data, unsigned int len, u8 ie);
+ void rtl_recognize_peer(struct ieee80211_hw *hw, u8 *data, unsigned int len);
+ u8 rtl_tid_to_ac(u8 tid);
+-void rtl_easy_concurrent_retrytimer_callback(struct timer_list *t);
+ extern struct rtl_global_var rtl_global_var;
+ void rtl_phy_scan_operation_backup(struct ieee80211_hw *hw, u8 operation);
+ 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 082af216760f..bc1d68cb9183 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -2300,7 +2300,6 @@ struct rtl_hal_ops {
+ 			  u32 regaddr, u32 bitmask, u32 data);
+ 	void (*linked_set_reg)(struct ieee80211_hw *hw);
+ 	void (*chk_switch_dmdp)(struct ieee80211_hw *hw);
+-	void (*dualmac_easy_concurrent)(struct ieee80211_hw *hw);
+ 	void (*dualmac_switch_to_dmdp)(struct ieee80211_hw *hw);
+ 	bool (*phy_rf6052_config)(struct ieee80211_hw *hw);
+ 	void (*phy_rf6052_set_cck_txpower)(struct ieee80211_hw *hw,
+@@ -2465,7 +2464,6 @@ struct rtl_works {
+ 
+ 	/*timer */
+ 	struct timer_list watchdog_timer;
+-	struct timer_list dualmac_easyconcurrent_retrytimer;
+ 	struct timer_list fw_clockoff_timer;
+ 	struct timer_list fast_antenna_training_timer;
+ 	/*task */
+-- 
+2.40.1
 
-Does 6.3.x work with your v77 firmware? 6.4-rc4 with previous v74 firmware?
-
-Seems like moving all parts at once here, hence I asked above to
-isolate possible reason why your above case works.
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---23nFZxpH4dyHvOLV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZHdSqAAKCRD2uYlJVVFO
-o0RuAP4xn1GRKP6vslUe5NOImW+UHf7BqDHY4eIkUskhD1b0pgEAiaiqQL3u8/iQ
-+R2Vh9oM1s56kPCFlrEI8KxXeTX+fg4=
-=1p9c
------END PGP SIGNATURE-----
-
---23nFZxpH4dyHvOLV--
