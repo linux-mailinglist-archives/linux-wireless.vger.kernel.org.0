@@ -2,66 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5710C7176B3
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 May 2023 08:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D821D7176C2
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 May 2023 08:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230146AbjEaGPR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 31 May 2023 02:15:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34106 "EHLO
+        id S234365AbjEaGVB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 31 May 2023 02:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjEaGPP (ORCPT
+        with ESMTP id S234215AbjEaGU7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 31 May 2023 02:15:15 -0400
+        Wed, 31 May 2023 02:20:59 -0400
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BAFCC0
-        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 23:15:14 -0700 (PDT)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34V3UEu3010687
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 06:15:13 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8557511B
+        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 23:20:58 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34V6EC82023721;
+        Wed, 31 May 2023 06:20:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=9A5byIPszYYxuxTIUDlnZ6HTCMUJowDdoebwSFb8iAM=;
- b=O6Ah2wx8dIKxjQa7IJZXVS8b+iiU5Pqq4Fhhn4r899Vq2sh6Qm2E+hW4XJjtq61oVGGL
- oS/k1EF65QInhbPgwkCnlpRQga+Gz61YH8E0+E7TGqp7fmA6pMp6hK6L3M+FT5gF5RYI
- +mHiOMVewooWwbEtZ102+sTEYNjdbf1QBUo5S8asAmIMmSYg9hzDNrUU4OL6oqjcrMSE
- pBBJMD/iCmbCCA4vJOEfjx/iF5pfrLh6p/Qh4x/jcIbs0TExw7AKplYAjHyJ1aOOmlXh
- p+Gi5umSq1YylJ3K+cUYGNyY89dLW7/FmlcHRLvMqQ96KE4ghj63uL+uN8P51SoeN9ur gw== 
+ bh=hbyndIlRA9ylE4dTn2ncgqE5pW0Y3api4qKwYzX9nYQ=;
+ b=SD7C7ZyFgE/zFN3LLxstdTyCnOKOZ14+XGT1s66Y30VLZN+1JYBIn7dExuWPqggJiKZj
+ fExOUcW69GlBzFr4/CQlvRSAxf0PVEatBMwfwj2IXyR0ADKSonHkS9x3g09v08h8v82U
+ mGhMq+Mhh+gJAY6QjBi1WSo9RqrxC8zWc0pfoaZlH75dPnejXxalu39iWjhzivj/A71Q
+ Fl8MS49zXu1wEL65ObmAM3GKi84BZc0y+verlDOmA9s7pGp8LHwXJSOLFgM1eOmgaUdD
+ gmQma3eY4bHSwsNa7AQTM55OlX+VTMcvLS24itZwDQzxSSa8vbr0lunm/EbqgSO6g4ku ZA== 
 Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qwwbtgcrd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 06:15:13 +0000
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qx0sbr0dt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 31 May 2023 06:20:54 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34V6FCDv006610
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 06:15:12 GMT
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34V6KRJ3014291
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 31 May 2023 06:20:27 GMT
 Received: from adisi-linux.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Tue, 30 May 2023 23:15:10 -0700
+ 15.2.986.42; Tue, 30 May 2023 23:20:26 -0700
 From:   Aditya Kumar Singh <quic_adisi@quicinc.com>
 To:     <linux-wireless@vger.kernel.org>
-CC:     Aditya Kumar Singh <quic_adisi@quicinc.com>
-Subject: [PATCH] wifi: mac80211: fix switch count in EMA beacons
-Date:   Wed, 31 May 2023 11:44:54 +0530
-Message-ID: <20230531061454.3701-1-quic_adisi@quicinc.com>
+CC:     <johannes@sipsolutions.net>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: [PATCH v2] wifi: mac80211: fix switch count in EMA beacons
+Date:   Wed, 31 May 2023 11:50:12 +0530
+Message-ID: <20230531062012.4537-1-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: UeHT1xz6Y0YZMq0gO2ZLqzyaGQhh_iCH
-X-Proofpoint-ORIG-GUID: UeHT1xz6Y0YZMq0gO2ZLqzyaGQhh_iCH
+X-Proofpoint-GUID: VarAehfVUo-VbnUoxtU9--rZVfCT9ugA
+X-Proofpoint-ORIG-GUID: VarAehfVUo-VbnUoxtU9--rZVfCT9ugA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_02,2023-05-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- malwarescore=0 mlxlogscore=847 adultscore=0 spamscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305310054
+ definitions=2023-05-31_01,2023-05-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ mlxlogscore=870 mlxscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305310055
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -104,6 +105,10 @@ the EMA beacons.
 Fixes: bd54f3c29077 ("wifi: mac80211: generate EMA beacons in AP mode")
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
+v2: - added base-commit tag
+    - CCed to Johannes
+
+---
  net/mac80211/tx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
@@ -120,6 +125,8 @@ index 1a3327407552..76506f26c40b 100644
  				       &ema_beacons));
  
  	return ema_beacons;
+
+base-commit: 1f1784a59caf3eefd127908a1a3cf224017ff9c7
 -- 
 2.17.1
 
