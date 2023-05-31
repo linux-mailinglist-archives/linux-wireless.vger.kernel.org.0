@@ -2,112 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 022C0717263
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 May 2023 02:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BC97172B8
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 May 2023 02:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232926AbjEaA0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 30 May 2023 20:26:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46960 "EHLO
+        id S233724AbjEaAqV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 30 May 2023 20:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbjEaA0V (ORCPT
+        with ESMTP id S231534AbjEaAqU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 30 May 2023 20:26:21 -0400
+        Tue, 30 May 2023 20:46:20 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79DD9F3
-        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 17:26:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A9DE8
+        for <linux-wireless@vger.kernel.org>; Tue, 30 May 2023 17:46:15 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34V0PQCl8032547, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 34V0ifa97025976, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34V0PQCl8032547
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 34V0ifa97025976
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 31 May 2023 08:25:27 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+        Wed, 31 May 2023 08:44:41 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 31 May 2023 08:25:40 +0800
+ 15.1.2507.17; Wed, 31 May 2023 08:44:54 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Wed, 31 May 2023 08:25:40 +0800
+ 15.1.2375.7; Wed, 31 May 2023 08:44:54 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
  RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Wed, 31 May 2023 08:25:40 +0800
+ 15.01.2375.007; Wed, 31 May 2023 08:44:54 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>,
+To:     "petter@technux.se" <petter@technux.se>,
+        "kvalo@kernel.org" <kvalo@kernel.org>
+CC:     "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "andreas@fatal.se" <andreas@fatal.se>,
+        "iam@valdikss.org.ru" <iam@valdikss.org.ru>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-        Dmitriy Antipov <Dmitriy.Antipov@softline.com>
-Subject: RE: [PATCH] rtlwifi: rtl8188ee: drop RTX_POWER_BEFORE_IQK_A and RTX_POWER_AFTER_IQK_A reads
-Thread-Topic: [PATCH] rtlwifi: rtl8188ee: drop RTX_POWER_BEFORE_IQK_A and
- RTX_POWER_AFTER_IQK_A reads
-Thread-Index: AQHZkxBmPVoxZYMjUEiVPr+B6yKXPa9yj+sAgAAMRgCAAAgdAIAA4Yuw
-Date:   Wed, 31 May 2023 00:25:39 +0000
-Message-ID: <c861d21d606441c9bf40ff963090d098@realtek.com>
-References: <20230530155446.555091-1-dmantipov@yandex.ru>
- <b747b45e-e176-4c55-0886-abfcb1e33717@lwfinger.net>
- <09191d90-c29d-bdf5-4192-19553f8911fd@yandex.ru>
- <bee18794-8c4a-2af9-cf1c-807969be3dd2@lwfinger.net>
-In-Reply-To: <bee18794-8c4a-2af9-cf1c-807969be3dd2@lwfinger.net>
+        "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
+        "petter.mabacker@esab.se" <petter.mabacker@esab.se>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Subject: RE: [PATCH] wifi: rtw88: usb: Make work queues high prio
+Thread-Topic: [PATCH] wifi: rtw88: usb: Make work queues high prio
+Thread-Index: AQHZktdSd7H9r3V3PEuOOEkQppWIDa9ynIlG//+njICAAUS58A==
+Date:   Wed, 31 May 2023 00:44:54 +0000
+Message-ID: <96e0b705b5a64679a14ce5440674f4b0@realtek.com>
+References: <87zg5mjeu4.fsf@kernel.org>
+ <20230530130917.2716182-1-petter@technux.se>
+In-Reply-To: <20230530130917.2716182-1-petter@technux.se>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
 x-kse-antispam-interceptor-info: fallback
 x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycnkgRmluZ2VyIDxs
-YXJyeS5maW5nZXJAZ21haWwuY29tPiBPbiBCZWhhbGYgT2YgTGFycnkgRmluZ2VyDQo+IFNlbnQ6
-IFdlZG5lc2RheSwgTWF5IDMxLCAyMDIzIDI6NTUgQU0NCj4gVG86IERtaXRyeSBBbnRpcG92IDxk
-bWFudGlwb3ZAeWFuZGV4LnJ1PjsgUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+
-IENjOiBLYWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3JnPjsgbGludXgtd2lyZWxlc3NAdmdlci5r
-ZXJuZWwub3JnOyBsdmMtcHJvamVjdEBsaW51eHRlc3Rpbmcub3JnOyBEbWl0cml5DQo+IEFudGlw
-b3YgPERtaXRyaXkuQW50aXBvdkBzb2Z0bGluZS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hd
-IHJ0bHdpZmk6IHJ0bDgxODhlZTogZHJvcCBSVFhfUE9XRVJfQkVGT1JFX0lRS19BIGFuZCBSVFhf
-UE9XRVJfQUZURVJfSVFLX0EgcmVhZHMNCj4gDQo+IE9uIDUvMzAvMjMgMTM6MjYsIERtaXRyeSBB
-bnRpcG92IHdyb3RlOg0KPiA+IE9uIDUvMzAvMjMgMjA6NDIsIExhcnJ5IEZpbmdlciB3cm90ZToN
-Cj4gPg0KPiA+PiBJIGRvIG5vdCBrbm93IHRoZSBhbnN3ZXIgdG8gdGhpcyBxdWVzdGlvbiBlaXRo
-ZXIsIGJ1dCBob3cgZG9lcw0KPiA+PiB5b3VyIHRvb2wga25vdyB0aGF0IHRoZSBzdGF0ZW1lbnRz
-IGJldHdlZW4gdGhlIGZpcnN0IHJlYWQgYW5kDQo+ID4+IHRoZSBzZWNvbmQgaGF2ZSBub3QgY2F1
-c2VkIHRoZSBmaXJtd2FyZSB0byBjaGFuZ2UgdGhlIGNvbnRlbnRzID4gb2YgdGhlIEJCDQo+ID4+
-IHJlZ2lzdGVycz8NCj4gPg0KPiA+IFRoaXMgdG9vbCBpcyBhIHN0YXRpYyBhbmFseXNpcyBzb2Z0
-d2FyZSBhbmQgaGFzIG5vIHNwZWNpYWwga25vd2xlZGdlDQo+ID4gYWJvdXQgYW55IHBhcnRpY3Vs
-YXIgaGFyZHdhcmUuIFNvIEkgZG8gbm90IHN0cm9uZ2x5IGluc2lzdCBvbiB0aGlzDQo+ID4gY2hh
-bmdlIHdoaWNoIHNob3VsZCBiZSB0cmVhdGVkIGFzIGEgc3ViamVjdCB0byBtb3JlIGRldGFpbGVk
-IGNvbnNpZGVyYXRpb24uDQo+ID4NCj4gPiBJJ3ZlIG5vdGljZWQgNmM3NWVhYjA0MTdiOWU1YjA1
-YTE4ZGJmYzM3M2UyN2E4ZWY4NzZkOCB3aGVyZSBydGxfZ2V0X2JicmVnKCkNCj4gPiBpcyBwcmVz
-ZXJ2ZWQgYnV0IHRoZSByZXN1bHQgaXMgaWdub3JlZC4gV291bGQgdGhlIHNpbWlsYXIgdGhpbmcg
-YmUgYSBraW5kDQo+ID4gb2YgYSBjbGVhbnVwIGZvciB0aGlzIGNhc2UgYXMgd2VsbD8NCj4gPg0K
-PiANCj4gWWVzLCB5b3UgY291bGQgaWdub3JlIHRoZSBvdXRwdXQgZnJvbSBydGxfZ2V0X2JicmVn
-KCkgZm9yIGxpbmVzIDE0ODQgYW5kIDE0ODUuDQo+IA0KDQpBbm90aGVyIHdheSBpcyB0byBhZGQg
-YSBkZWJ1ZyBtZXNzYWdlIHRvIHNob3cgdGhlbSwgYW5kIHRoZW4gc3RhdGljIGNoZWNrZXINCnNo
-b3VsZG4ndCB3YXJuIHRoaXMuIEFsc28sIHBlb3BsZSBjYW4gZGlhZ25vc2UgSVFLICYgTE9LIHJl
-c3VsdHMgaWYgbmVlZGVkLiANCg0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dGx3aWZpL3J0bDgxODhlZS9waHkuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydGx3aWZpL3J0bDgxODhlZS9waHkuYw0KQEAgLTE0NzksNiArMTQ3OSwxMCBAQCBzdGF0aWMg
-dTggX3J0bDg4ZV9waHlfcGF0aF9hX3J4X2lxayhzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgYm9v
-bCBjb25maWdfcGF0aGIpDQogICAgICAgIHJlZ19lOWMgPSBydGxfZ2V0X2JicmVnKGh3LCBSVFhf
-UE9XRVJfQUZURVJfSVFLX0EsIE1BU0tEV09SRCk7DQogICAgICAgIHJlZ19lYTQgPSBydGxfZ2V0
-X2JicmVnKGh3LCBSUlhfUE9XRVJfQkVGT1JFX0lRS19BXzIsIE1BU0tEV09SRCk7DQoNCisgICAg
-ICAgcnRsX2RiZyhydGxwcml2LCBDT01QX0lRSywgREJHX0xPVUQsDQorICAgICAgICAgICAgICAg
-IlBhdGggQSBSeCBMT0sgJiBJUUsgcmVzdWx0cyAweGVhYz0weCV4IDB4ZTk0PTB4JXggMHhlOWM9
-MHgleCAweGVhND0weCV4XG4iLA0KKyAgICAgICAgICAgICAgIHJlZ19lYWMsIHJlZ19lOTQsIHJl
-Z19lOWMsIHJlZ19lYTQpOw0KKw0KICAgICAgICBpZiAoIShyZWdfZWFjICYgQklUKDI3KSkgJiYN
-CiAgICAgICAgICAgICgoKHJlZ19lYTQgJiAweDAzRkYwMDAwKSA+PiAxNikgIT0gMHgxMzIpICYm
-DQogICAgICAgICAgICAoKChyZWdfZWFjICYgMHgwM0ZGMDAwMCkgPj4gMTYpICE9IDB4MzYpKQ0K
-DQpQaW5nLUtlDQoNCg==
+
+
+> -----Original Message-----
+> From: petter@technux.se <petter@technux.se>
+> Sent: Tuesday, May 30, 2023 9:09 PM
+> To: kvalo@kernel.org
+> Cc: Larry.Finger@lwfinger.net; andreas@fatal.se; iam@valdikss.org.ru; kernel@pengutronix.de;
+> linux-wireless@vger.kernel.org; linux@ulli-kroll.de; petter.mabacker@esab.se; petter@technux.se; Ping-Ke
+> Shih <pkshih@realtek.com>; s.hauer@pengutronix.de
+> Subject: Re: [PATCH] wifi: rtw88: usb: Make work queues high prio
+> 
+> petter@technux.se writes:
+> 
+> >> From: Petter Mabacker <petter.mabacker@esab.se>
+> >>
+> >> The rtw8822cu driver have problem to handle high rx or tx rates compared
+> >> with high load (such as high I/O) on slower systems, such as for example
+> >> i.MX6 SoloX and similar platforms.
+> >>
+> >> The problems are more frequent when having the access point close to the
+> >> device. On slower systems it's often enough to download a large file,
+> >> combined with generating I/O load to trigger:
+> >>
+> >> [  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
+> >> [  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+> >> [  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+> >> [  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+> >> [  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+> >> [  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+> >> [  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
+> >> [  489.426263] rtw_8822cu 1-1.2:1.2: failed to send h2c command
+> >>
+> >> Another way is to simply perform a wifi rescan.
+> >>
+> >> Benchmarking shows that setting a high prio workqueue for tx/rx will
+> >> significally improve things. Also compared alloc_workqueue with
+> >> alloc_ordered_workqueue, but even thou the later seems to slightly
+> >> improve things it's still quite easy to reproduce the above issues. So
+> >> that leads to the decision to go for alloc_workqueue.
+> >>
+> >> Thanks to Ping-Ke Shih <pkshih@realtek.com> that came up with the idea
+> >> of exploring tweaking of the work queue's within a similar discussion.
+> >>
+> >> Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
+> >> Signed-off-by: Petter Mabacker <petter.mabacker@esab.se>
+> >> ---
+> >>  drivers/net/wireless/realtek/rtw88/usb.c | 4 ++--
+> >>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> >> index 44a5fafb9905..bfe0845528ec 100644
+> >> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+> >> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+> >> @@ -716,7 +716,7 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
+> >>      struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+> >>      int i;
+> >>
+> >> -    rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
+> >> +    rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+> >>      if (!rtwusb->rxwq) {
+> >>              rtw_err(rtwdev, "failed to create RX work queue\n");
+> >>              return -ENOMEM;
+> >> @@ -750,7 +750,7 @@ static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
+> >>      struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+> >>      int i;
+> >>
+> >> -    rtwusb->txwq = create_singlethread_workqueue("rtw88_usb: tx wq");
+> >> +    rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+> >>      if (!rtwusb->txwq) {
+> >>              rtw_err(rtwdev, "failed to create TX work queue\n");
+> >>              return -ENOMEM;
+> 
+> >Should this workqueue be ordered or not? Please check Tejun's patchset
+> >about using ordered queues:
+> 
+> >https://lore.kernel.org/lkml/20230421025046.4008499-1-tj@kernel.org/
+> 
+> Thanks for pointing out this interesting patchset. As described in the
+> commit msg, I did play around with alloc_ordered_workqueue. But at least
+> on the slower systems I tested it on (i.MX6 SoloX and BCM2835) it worked
+> a bit better, but I was still able to reproduce the above mention issue.
+> So I tried to instead use alloc_workqueue and set max_active=0 and that
+> seems to be enough to make things a lot more stable.
+> 
+> However after reading Tejun's patchet I'm very intersted of feedback if
+> you or someone else have comments about using alloc_workqueue with
+> max_active=0 , or if this can give some other issues? It seems to work
+> fine for me when running it also on a i.MX8 multicore system.
+> 
+
+Both rtwusb->rxwq and rtwusb->txwq are only queued single one work respectively,
+so I thought alloc_workqueue() and alloc_ordered_workqueue() would get the same
+results, but it seems not. That is a little weird to me.
+
+I'm not familiar with workqueue, but I think we can bisect arguments to address
+what impact the results.
+
+First we can expand macro alloc_ordered_workqueue() below
+    rtwusb->txwq = alloc_ordered_workqueue("rtw88_usb: tx wq", WQ_HIGHPRI);
+into
+    rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq",
+                                   WQ_UNBOUND | __WQ_ORDERED | __WQ_ORDERED_EXPLICIT |
+                                   WQ_HIGHPRI, 1);
+
+Secondly, compare the one you are using:
+    rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
+
+Then, we can align the arguments one-by-one to know which argument dominates
+the result. 
+
+Ping-Ke
+
