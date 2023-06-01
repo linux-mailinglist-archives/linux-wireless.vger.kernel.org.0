@@ -2,74 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 019C4719ECF
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 15:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AB69719FA3
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 16:21:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233065AbjFANuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Jun 2023 09:50:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48462 "EHLO
+        id S233679AbjFAOUj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Jun 2023 10:20:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbjFANuK (ORCPT
+        with ESMTP id S233677AbjFAOUi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Jun 2023 09:50:10 -0400
-Received: from forward500c.mail.yandex.net (forward500c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d500])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92243192
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 06:50:05 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:2991:0:640:bb47:0])
-        by forward500c.mail.yandex.net (Yandex) with ESMTP id 8956D5EDC4;
-        Thu,  1 Jun 2023 16:50:03 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 2oOC6E0DYW20-Fml5YSnz;
-        Thu, 01 Jun 2023 16:50:03 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685627403;
-        bh=P1xAhTZF2QZP+jUph4FSayyg5vKki7ub5CyGBI7GfE0=;
-        h=Subject:From:In-Reply-To:Cc:Date:References:To:Message-ID;
-        b=IjvtbO07lcYBkGfiSS0Pnc1z4ZbO6xrBbEXd2Bhd+w5uzwVwTCCInFDd3BQvlkl9Z
-         jHvoSIeEGiUgIzBL3BkzXrjVxwmltMo0eIJKfD52OoUuDslK3JDbU7J7WE/tHDqZRz
-         6ZYXZ3rJRt9ztCTdcrPHtBFGFqiEHSzbeDYa5yFQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <0d1f24b9-a058-52fd-b669-54aa4e9162f9@yandex.ru>
-Date:   Thu, 1 Jun 2023 16:50:02 +0300
+        Thu, 1 Jun 2023 10:20:38 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF23D1A8
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 07:20:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685629234; x=1717165234;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hG9sjoshQnFQltSqbNkO30xazJMnjp50CEiUdVYGcaA=;
+  b=eJhR/su1rDyouasbKLtTP2mpDFOe7FaGCsENPNXAQRZJ1RzRjtEyK1+f
+   5c+BtSYGPpHw+fOw/sZbXDkLJJuH19H4MNpRfBC9OxmiOiGMPaBmUq4K1
+   4V6M98auVGJwF/HPhd3522fZvkWrLBUMki+oEfwzEFfufdLaCQgVTforQ
+   zSSQ8qRzxRBEZwzGgHwFDDeN9B2kK217rz+N3amOiUQohG0U5nNHMpBhq
+   u2CMyLWzd0vRjnmB6XdR7+M+8BbMpesukvyTk62qkpZPCGGX0fs8AY9fi
+   DkwFwzQIEiNuofbD4siFHzwMMwcf7bzsU0i2jHYEt/eW10QtxQ3WWNImB
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="441931802"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="441931802"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:20:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="819812710"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="819812710"
+Received: from dvinnyc-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.249.93.27])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:20:21 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 0/6] wifi: iwlwifi: updates intended for v6.5 2023-06-01 
+Date:   Thu,  1 Jun 2023 17:20:02 +0300
+Message-Id: <20230601142008.375040-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <b2198915-0e92-de99-d950-be46c2bd8e91@yandex.ru>
- <20230601105215.27013-1-dmantipov@yandex.ru>
- <3b92f9205003f44187f7ebf7add6c3e0626e9646.camel@realtek.com>
-Content-Language: en-US
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-Subject: Re: [PATCH] rtlwifi: rtl8188ee: mark RTX_POWER_{BEFORE,AFTER}_IQK_A
- reads as unused
-In-Reply-To: <3b92f9205003f44187f7ebf7add6c3e0626e9646.camel@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/1/23 15:30, Ping-Ke Shih wrote:
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-> Normally, mention a commit by `commit <12 digits SHA1> ("subject")`
+Hi,
 
-OK
+This patch set includes iwlwifi patches intended for v6.5.
+It has few small kernel-doc fixes along with two other bugfixes.
 
-> Why not just
-> 
-> rtl_get_bbreg(hw, RTX_POWER_BEFORE_IQK_A, MASKDWORD);
-> rtl_get_bbreg(hw, RTX_POWER_AFTER_IQK_A, MASKDWORD);
+Thanks,
+Gregory
 
-Compiler with -Wextra etc. or static analysis tool may complain about an unused
-return value. As far as I know GCC has __attribute__((warn_unused_result)) but
-lacks an opposite thing, so (somewhat ugly explicit) cast to 'void' may be helpful.
+Alon Giladi (1):
+  wifi: iwlwifi: mvm: fix OEM's name in the tas approved list
 
-Dmitry
+Johannes Berg (5):
+  wifi: iwlwifi: api: link context action in kernel-doc
+  wifi: iwlwifi: api: use __le16 instead of u16
+  wifi: iwlwifi: api: remove unused commands
+  wifi: iwlwifi: api: fix kernel-doc links
+  wifi: iwlwifi: limit queue use independent of allocation
+
+ .../wireless/intel/iwlwifi/fw/api/binding.h   |  6 ++---
+ .../wireless/intel/iwlwifi/fw/api/commands.h  | 23 +++++++------------
+ .../wireless/intel/iwlwifi/fw/api/context.h   | 13 +++++++----
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |  6 +++--
+ .../wireless/intel/iwlwifi/fw/api/location.h  | 16 +++++++++----
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   |  6 ++---
+ .../net/wireless/intel/iwlwifi/fw/api/mac.h   |  2 +-
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   | 11 ++++++---
+ .../wireless/intel/iwlwifi/fw/api/offload.h   |  3 ++-
+ .../wireless/intel/iwlwifi/fw/api/phy-ctxt.h  |  6 ++---
+ .../net/wireless/intel/iwlwifi/fw/api/phy.h   | 10 +++++---
+ .../net/wireless/intel/iwlwifi/fw/api/power.h |  2 +-
+ .../intel/iwlwifi/fw/api/time-event.h         |  7 +++---
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  2 --
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 23 ++++++++++++++++---
+ 17 files changed, 87 insertions(+), 53 deletions(-)
+
+-- 
+2.38.1
 
