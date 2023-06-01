@@ -2,77 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51E5571927B
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 07:44:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE0B7192AE
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 07:48:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231309AbjFAFoj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Jun 2023 01:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52158 "EHLO
+        id S231649AbjFAFsb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Jun 2023 01:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbjFAFof (ORCPT
+        with ESMTP id S231706AbjFAFrl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Jun 2023 01:44:35 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1A3819B
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 22:44:26 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3985f70cf1bso169268b6e.3
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 22:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685598266; x=1688190266;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1uvgcoQcQ4Z853Ind5gxnEDVRn2AFhQFsoVwaotUlNE=;
-        b=jszcBTPSZ81RGvohbVbHovQHmgIkiz9h97QThTwpJOuRZQXypCVMaRVrUjCj8TA8TA
-         iaWTnQUE54CHJ3dr1j/ZbRh/OCRtQTldin0zHOLm4bXS3jT0P6lbbcixxtEAS4zfBk1D
-         ii7k6g3qVDeVXtWTmek/sSV5B09lUuI3KSTth6xG/Btgx2QSPS3SMGSnv8h1Gpp49slL
-         E2uWT1xWqY4fmL0j/qPSvwpt58dbDKT8WWBc1Hon4d2LKVYZMDPjqtHPAR1fP2sB2w/y
-         Us1lhQnU789okQW4uVJJf9P+P+ENajLqNnmapBMjuvEoqO/AqW4u3KNYvL2CzmyYPW3b
-         CBwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685598266; x=1688190266;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1uvgcoQcQ4Z853Ind5gxnEDVRn2AFhQFsoVwaotUlNE=;
-        b=fb2Cu50iJFzfQ9G8CFJkKnhF380Y5i49crAIzZvwmrludPBiknJjFi8wh09ACMm8aq
-         chDv3kI6BfXPhXwWR08Ds8Sey3BOhOq/GuGQ+hPdjPODVXWe/5H5wS7bMsuZjTxvf10v
-         bXRpiDltToUcQgL7cWsaNNbKUQ4Dqop2mDXXiLHt4LFNT7DpK074BwcGp62OZR411x1W
-         IU0AHqP+OrqlrEXbAVsYewapuR0vbIxxqYQFVYJuU1fPgQ5/duvK0vrH9MMvoOHGU9J5
-         iv5GLgDGxpf4AnqHHIJ2T/3KK/v8BUm6lILM6llv7dnbaq0F4tXFffRqrIWlWJC0O8AW
-         DtoA==
-X-Gm-Message-State: AC+VfDy0sXbzDd6aIb04df7l6Ow1kl3U7WxJXBvrCzicPRGP+/etOu6R
-        hjqet3ugljq4bLvtsFYXclfUFE3ExYO8kSuZitw=
-X-Google-Smtp-Source: ACHHUZ5kdaM0va6nLf08V7NKzVDqVOCRQsLt9+2APwYqwbkXzhB9j3We9G4YsEIqrZ36JKoLDW3HDqIB5432Kpub9GI=
-X-Received: by 2002:a05:6808:10ce:b0:397:fb63:73b2 with SMTP id
- s14-20020a05680810ce00b00397fb6373b2mr5825453ois.36.1685598265929; Wed, 31
- May 2023 22:44:25 -0700 (PDT)
+        Thu, 1 Jun 2023 01:47:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D015193
+        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 22:46:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28EF66410B
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 05:46:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FCCC433EF;
+        Thu,  1 Jun 2023 05:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685598400;
+        bh=XWzczwSVD81gIENTfEhJ4epaujBLX/EjJGMZiLS1eJ0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ex8oWCDtVzR6fdxs3TkWYUA6TdR0kDrTNt+speRSf0rKIXqYPn3dZeMcBT71qs3rz
+         9SA5XadAMgI55S37eCOVa46WiIJdAuISmOVta+l+tz6KyzmivtyFao9x2xhW6z5pa2
+         Kj3WqRd8qoEKqwgJISDo3zLeAp5gTPKNmgKQ7C6ISr9pEqjDv1GWa5OGgWW2kHOv6v
+         w7CBKbPYCe1cxgpIEm05z2wonhNYHAee3suBIhIUmYLUWttUq2Z0WDpv10f/5x9FUf
+         NL7xP65tSfoxduXTGxC7i2eds8KRV1Z1MObAZ+rjv+Zix9NannXedaA1lePHR3dxYZ
+         JsgKJlrI2R3ew==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Dmitriy Antipov <Dmitriy.Antipov@softline.com>
+Subject: Re: [PATCH] wifi: rtlwifi: remove unused timer and related code
+References: <20230531143001.674220-1-dmantipov@yandex.ru>
+        <20230601042352.7746-1-dmantipov@yandex.ru>
+        <6c9982b9f48e41c4ba4f3528cb5489fd@realtek.com>
+Date:   Thu, 01 Jun 2023 08:46:34 +0300
+In-Reply-To: <6c9982b9f48e41c4ba4f3528cb5489fd@realtek.com> (Ping-Ke Shih's
+        message of "Thu, 1 Jun 2023 05:10:36 +0000")
+Message-ID: <87leh3ka4l.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <CAJ4cxaQiYWEOmf9sZHsvXqYc_SKSg2dm5jQvifa82+o+W41aNw@mail.gmail.com>
- <87h6rrkdv1.fsf@kernel.org>
-In-Reply-To: <87h6rrkdv1.fsf@kernel.org>
-From:   Neal Sidhwaney <nealsid@gmail.com>
-Date:   Thu, 1 Jun 2023 01:43:49 -0400
-Message-ID: <CAJ4cxaQ04_H06OCaUgt0mnVhu5YZDiQxoBiALFwj9pyBjARLoA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: Detect corner error case earlier with log
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> From looking at patchwork the patch seems to be malformed:
->
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Sorry about that! I thought I clicked the right setting to send as
-text but I must have missed it. New version submitted using 'git
-send-email'.  Thank you,
+>> -----Original Message-----
+>> From: Dmitry Antipov <dmantipov@yandex.ru>
+>> Sent: Thursday, June 1, 2023 12:24 PM
+>> To: Ping-Ke Shih <pkshih@realtek.com>
+>> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org;
+>> Dmitry Antipov <dmantipov@yandex.ru>;
+>> Dmitriy Antipov <Dmitriy.Antipov@softline.com>
+>> Subject: [PATCH] wifi: rtlwifi: remove unused timer and related code
+>
+> Should increase version number such as v2, v3, ... for newer one.
 
-Neal
+And also always include a changelog, see the wiki link below for more.
+
+> Checkpatch warns this patch:
+>
+> 	ERROR: Missing Signed-off-by: line by nominal patch author
+> 'Dmitry Antipov <dmantipov@yandex.ru>'
+
+Yeah, From and s-o-b need to always match.
+
+> Maybe, you can adjust your s-o-b to e-mail address of "From".
+
+It's also possible to add a second From field to the body of the
+message. Here's an example how I do it when I use kernel.org to submit
+my patches:
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20230530141813.29333-3-kvalo@kernel.org/
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
