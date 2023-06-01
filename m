@@ -2,74 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7160A7191D4
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 06:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9226719212
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 07:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbjFAE0C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Jun 2023 00:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35892 "EHLO
+        id S230472AbjFAFK7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Jun 2023 01:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjFAE0B (ORCPT
+        with ESMTP id S230110AbjFAFK6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Jun 2023 00:26:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AAA3101
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 21:26:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D84663689
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 04:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43292C433EF;
-        Thu,  1 Jun 2023 04:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685593559;
-        bh=V7fI4XEjnNZk+iN+EP2u/wmo7xyoIyh84s6MyENF4BU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=KrSwinupbKOXFA8VvXcp0Re81B5LQWHZAgo3YQWszpx6rFPMCiIEmQaKhcf3PAQX9
-         KFcr0DDWS3gfunujmUtODiKvRakiANvY79H8p2HtsINikzbHg9H+QTR8OTM/F7129N
-         W2GTYsxltEjKseTfVY+M5CyMtqJMPZCoF7K1e3V2ePy41ocX1Xrb8pVLCWYR/4IbgX
-         HMjHjpp8CswssPXHXuKM1oNN1aKFWb7lBGiV3uuu86dlks9fD5J6vdCATJGQfM3tz8
-         vYCf6EuXrR15xUTZzpsjONM7DVSpxmglBkjfz+NJKkUdFjBlZQn0JQv04H+fZTKEy6
-         9ISLMeo7Yw6aA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Neal Sidhwaney <nealsid@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH] wifi: brcmfmac: Detect corner error case earlier with log
-References: <CAJ4cxaQiYWEOmf9sZHsvXqYc_SKSg2dm5jQvifa82+o+W41aNw@mail.gmail.com>
-Date:   Thu, 01 Jun 2023 07:25:54 +0300
-In-Reply-To: <CAJ4cxaQiYWEOmf9sZHsvXqYc_SKSg2dm5jQvifa82+o+W41aNw@mail.gmail.com>
-        (Neal Sidhwaney's message of "Wed, 31 May 2023 22:23:48 -0400")
-Message-ID: <87h6rrkdv1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 1 Jun 2023 01:10:58 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BD1129
+        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 22:10:55 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3515ANgvC006192, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3515ANgvC006192
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 1 Jun 2023 13:10:23 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 1 Jun 2023 13:10:37 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 1 Jun 2023 13:10:37 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Thu, 1 Jun 2023 13:10:37 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Dmitriy Antipov <Dmitriy.Antipov@softline.com>
+Subject: RE: [PATCH] wifi: rtlwifi: remove unused timer and related code
+Thread-Topic: [PATCH] wifi: rtlwifi: remove unused timer and related code
+Thread-Index: AQHZlEDwksDAfXS7wE2xroXcgSbEma91ZUrw
+Date:   Thu, 1 Jun 2023 05:10:36 +0000
+Message-ID: <6c9982b9f48e41c4ba4f3528cb5489fd@realtek.com>
+References: <20230531143001.674220-1-dmantipov@yandex.ru>
+ <20230601042352.7746-1-dmantipov@yandex.ru>
+In-Reply-To: <20230601042352.7746-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Neal Sidhwaney <nealsid@gmail.com> writes:
 
-> In some corner cases, an I/O read can fail and return -1, and this
-> patch detects this slightly earlier than is done today and logs an
-> appropriate message.
->
-> Signed-off-by: Neal Sidhwaney <nealsid@gmail.com>
 
-From looking at patchwork the patch seems to be malformed:
+> -----Original Message-----
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+> Sent: Thursday, June 1, 2023 12:24 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry Antipov <dmantipov@yandex.ru>;
+> Dmitriy Antipov <Dmitriy.Antipov@softline.com>
+> Subject: [PATCH] wifi: rtlwifi: remove unused timer and related code
 
-https://patchwork.kernel.org/project/linux-wireless/patch/CAJ4cxaQiYWEOmf9sZHsvXqYc_SKSg2dm5jQvifa82+o+W41aNw@mail.gmail.com/
+Should increase version number such as v2, v3, ... for newer one.
 
-I strongly recommend using git-send-email to submit patches to avoid
-issues like this, more info in the wiki link below.
+Checkpatch warns this patch:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+	ERROR: Missing Signed-off-by: line by nominal patch author 'Dmitry Antipov <dmantipov@yandex.ru>'
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Maybe, you can adjust your s-o-b to e-mail address of "From".
+
+
