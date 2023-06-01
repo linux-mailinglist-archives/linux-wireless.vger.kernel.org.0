@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A9787191AA
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 06:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE5507191C7
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 06:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbjFAETV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Jun 2023 00:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60684 "EHLO
+        id S229840AbjFAEXh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Jun 2023 00:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjFAETT (ORCPT
+        with ESMTP id S231301AbjFAEXO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Jun 2023 00:19:19 -0400
-Received: from forward501c.mail.yandex.net (forward501c.mail.yandex.net [178.154.239.209])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8F8107
-        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 21:19:17 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:239a:0:640:2833:0])
-        by forward501c.mail.yandex.net (Yandex) with ESMTP id 672155E59C;
-        Thu,  1 Jun 2023 07:19:13 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CJFqPP2WkOs0-dWqkhg6O;
-        Thu, 01 Jun 2023 07:19:12 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685593152;
-        bh=wM7CM/ZJ2pDBqDdqTea46gMYTXmppt61sFT8IQqfCOc=;
-        h=Subject:From:In-Reply-To:Cc:Date:References:To:Message-ID;
-        b=tCzcTzrH43RQOyds3qf3RcV24zjCLKgxp2zz2iMh5dNr9SxKjXHSDgqTA6DgDMGWq
-         MtpUAmh6GwmA3rKhwp58MH0Dp4wMZnQicZeAVHyDk/b9tJt7MIBWaDcTJyVtNnJipR
-         kWYCXmUm6B0Zl5pzs/Xn4yz3NRmfr4pBpI/sDEVI=
-Authentication-Results: mail-nwsmtp-smtp-production-main-57.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <f9db0f15-bd7e-7ccb-0fd3-190f47a82037@yandex.ru>
-Date:   Thu, 1 Jun 2023 07:19:12 +0300
+        Thu, 1 Jun 2023 00:23:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03256134
+        for <linux-wireless@vger.kernel.org>; Wed, 31 May 2023 21:22:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9421560FB2
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 04:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63682C433EF;
+        Thu,  1 Jun 2023 04:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685593374;
+        bh=Xv2fMCbkmd0ylm+6FVJm8o9GXvKs9p+1igAMlybCEJg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=FydQYeLEblK/9STm89lIJo/mrbWbaltouJW7/LNfPbTVhrehbL2JmnDxVgKhqVgiD
+         HYCgkYU8Os3EunMACCSOnUtMkoZEKnLbBiAwC7jKiP0gkN90kYy9/WDHzWuSMKaKKt
+         0tY6E3XjHf9wXglkAS1SVHZptLjznq0Ia3MgFSPXoBRA4kKfISFE9aSlka0a6JCtWr
+         KeisgMVCiNzxmjmqFn2P7DZDn5AvVuJnwa3zMCseM3TtgwfL4dT6PSj15GJT6Ynp4F
+         G3KCavfFwTaN+X3N/1/TVxpTRenuj+/VD0ai2DAWaOgk3POyrV2SMPy+43i/8D/YPb
+         n2aww1Kj7j4nw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     greearb@candelatech.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: mt76: mt7921:  Support temp sensor.
+References: <20230519163611.1640585-1-greearb@candelatech.com>
+Date:   Thu, 01 Jun 2023 07:22:48 +0300
+In-Reply-To: <20230519163611.1640585-1-greearb@candelatech.com> (greearb's
+        message of "Fri, 19 May 2023 09:36:11 -0700")
+Message-ID: <87leh3ke07.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Dmitriy Antipov <Dmitriy.Antipov@softline.com>
-References: <20230531143001.674220-1-dmantipov@yandex.ru>
- <b3860092d9d342e389569be49512ef8f@realtek.com>
-Content-Language: en-US
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-Subject: Re: [PATCH] rtlwifi: remove unused timer and related code
-In-Reply-To: <b3860092d9d342e389569be49512ef8f@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,16 +55,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/1/23 04:36, Ping-Ke Shih wrote:
+greearb@candelatech.com writes:
 
-> subject prefix "wifi: rtlwifi: ..."
+> From: Ben Greear <greearb@candelatech.com>
+>
+> Allow sensors tool to read radio's temperature, example:
+>
+> mt7921_phy17-pci-1800
+> Adapter: PCI adapter
+> temp1:        +72.0=C2=B0C
+>
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
 
-OK
+Cosmetic issues in the title, there are two spaces after "mt7921:" and
+no need for period at the end. This is the recommended style:
 
-> s-o-b doesn't match your e-mail address of "From".
+wifi: mt76: mt7921: Support temp sensor
 
-There are some corporate rather than technical reasons for introducing such a mess.
-I should say sorry for it and hopes that the things will change in the near future.
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Dmitry
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
