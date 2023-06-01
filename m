@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEC937196F9
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 11:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CCB67199A5
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 12:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232286AbjFAJbD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Jun 2023 05:31:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48904 "EHLO
+        id S233485AbjFAK01 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Jun 2023 06:26:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231726AbjFAJbB (ORCPT
+        with ESMTP id S233311AbjFAK0H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Jun 2023 05:31:01 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507BA99
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 02:30:59 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q4ee1-0005e4-Ky; Thu, 01 Jun 2023 11:30:57 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q4ee0-004Jx2-0m; Thu, 01 Jun 2023 11:30:56 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1q4edz-00A78v-6b; Thu, 01 Jun 2023 11:30:55 +0200
-Date:   Thu, 1 Jun 2023 11:30:55 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, Eric Dumazet <edumazet@google.com>,
-        kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH net-next 0/4] Convert to platform remove callback
- returning void
-Message-ID: <20230601093055.ovmhypa5jw2bq32q@pengutronix.de>
-References: <20230601082556.2738446-1-u.kleine-koenig@pengutronix.de>
- <87h6rrk0cn.fsf@kernel.org>
+        Thu, 1 Jun 2023 06:26:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 697E026B3
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 03:24:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED345615D7
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 10:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC90C433EF;
+        Thu,  1 Jun 2023 10:23:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685615013;
+        bh=nT3VqUSHcgSuYegNgg5ujoQ1kd3Z2W22ZLPHr9mqYyY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=kdB1r85nkRPJsTa3J5/llQdYEbqQFQ6ex4utYBKDrVleZSsr2zJROuYenv6ggZ0GG
+         S2PlPMeSK45xF7JmpvC6E/zCtPEIsMxSXb/6YZhFfElXrm5jOuOFwRxiSPQQdMTinz
+         xBkKwY4SMjlgtVvS18XkrXBTa/76nCfmhi7Qsub8IVUcziywB6WobpduQ9LQ64cqXM
+         pTjAiiXrjIKqob6NKiPdkhSpcNY9ke39pK3Pb94lgaS1Lm3V/3pAhlgImBYoQm7ae/
+         VEC9zfNQOTbcW5OA+VSgUH5P4WVi55NlW0UsvhlaILXKdQfxj8L3f0Mxlc7D57r1Rm
+         t3eCqS0Jwew5w==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Govindaraj Saminathan <quic_gsaminat@quicinc.com>,
+        Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>
+Subject: Re: [PATCH v4 3/4] wifi: ath11k: factory test mode support
+References: <20230517135934.16408-1-quic_rajkbhag@quicinc.com>
+        <20230517135934.16408-4-quic_rajkbhag@quicinc.com>
+Date:   Thu, 01 Jun 2023 13:23:29 +0300
+In-Reply-To: <20230517135934.16408-4-quic_rajkbhag@quicinc.com> (Raj Kumar
+        Bhagat's message of "Wed, 17 May 2023 19:29:33 +0530")
+Message-ID: <87cz2fjxb2.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="g4pasupk4odv3umz"
-Content-Disposition: inline
-In-Reply-To: <87h6rrk0cn.fsf@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,66 +58,64 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
 
---g4pasupk4odv3umz
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
+>
+> Add support to process factory test mode commands(FTM) for calibration.
+> By default firmware start with NORMAL mode and to process the FTM commands
+> firmware needs to be restarted in FTM mode using module parameter ftm_mode.
+> The pre-request is all the radios should be down before starting the test.
+>
+> When start command ATH11K_TM_CMD_TESTMODE_START is received, ar state
+> is set to Test Mode. If the FTM command or event length is greater
+> than 256 bytes, it will be broken down into multiple segments and
+> encoded with TLV header if it is segmented commands, else it is sent
+> to firmware as it is.
+>
+> On receiving UTF event from firmware, if it is segmented event, the driver
+> will wait until it receives all the segments and notify the complete
+> data to user application. In case the segmented sequence are missed or
+> lost from the firmware, driver will skip the already received partial data.
+>
+> In case of unsegmented UTF event from firmware, driver notifies the
+> data to the user application as it comes. Applications handles
+> the data further.
+>
+> Command to boot in ftm mode:
+>
+> insmod ath11k ftm_mode=1
+>
+> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
+> Co-developed-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Hello Kalle,
+[...]
 
-On Thu, Jun 01, 2023 at 12:17:44PM +0300, Kalle Valo wrote:
-> Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> writes:
->=20
-> > the motivation for this series is patch #3, patch #2 is a preparation f=
-or it
-> > and patches #1 and #4 are just cleanups that I noticed en passant.
-> >
-> > Best regards
-> > Uwe
-> >
-> > Uwe Kleine-K=F6nig (4):
-> >   ath10k: Drop cleaning of driver data from probe error path and remove
-> >   ath10k: Drop checks that are always false
-> >   ath10k: Convert to platform remove callback returning void
-> >   atk10k: Don't opencode ath10k_pci_priv() in ath10k_ahb_priv()
-> >
-> >  drivers/net/wireless/ath/ath10k/ahb.c  | 20 +++-----------------
-> >  drivers/net/wireless/ath/ath10k/snoc.c |  8 +++-----
-> >  2 files changed, 6 insertions(+), 22 deletions(-)
->=20
-> ath10k patches go to my ath.git tree, not net-next.
+> --- a/drivers/net/wireless/ath/ath11k/testmode.h
+> +++ b/drivers/net/wireless/ath/ath11k/testmode.h
+> @@ -8,11 +8,16 @@
+>  
+>  #ifdef CONFIG_NL80211_TESTMODE
+>  
+> +void ath11k_tm_wmi_event(struct ath11k_base *ab, u32 cmd_id, struct sk_buff *skb);
+>  int ath11k_tm_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  		  void *data, int len);
+>  
+>  #else
+>  
+> +void ath11k_tm_wmi_event(struct ath11k_base *ab, u32 cmd_id, struct sk_buff *skb)
+> +{
+> +}
+> +
 
-This isn't obvious for outsiders. Not sure what can be improved to
-make this easier to spot.
+This introduced an warning and to fix it I changed it to static inline function.
 
-> Also "wifi:" is missing from the title but I can add that.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-oops, I wondered about that, too, but was sure that I used the prefix
-=66rom previous commits. Now that you said it, suddenly all previous
-commits have this wifi prefix. Hmm, somebody must have tinkered with my
-source tree :-)
-
-Thanks for fixing my misdemeanors,
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---g4pasupk4odv3umz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR4ZU4ACgkQj4D7WH0S
-/k4Utwf/dhPpcpseS9x4rk209oXT1aUQ8EwAXqrNMqTSAUjG325bqhzAYUBeNqK2
-nrHzvynSDmP9BEW8zD+dcOKLZesUPgBkIuxoAz9fR4ac+KktWdUBlIRQ40cYMcyq
-hm6z9GthpphkyrEzDUv7LympX8CPnQlYBA/pTEXdtXSYMAQX4w5K3q4/rt2theCV
-4U/FIiTNrC7GBNgncXsq8YuGfaLwoNpoAg8SLipvPhdhsFLyjm+flS3NeJrhf6Yf
-h0HzJObYBEKMTmFLKhqf/LWa8DRXYiuEIk3eeTTh5NGsv9DUKx2Cd4XYq5vIB6Ro
-DeHLYMNpWlkU2sEax8AAx8wLv01Qgw==
-=gVBP
------END PGP SIGNATURE-----
-
---g4pasupk4odv3umz--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
