@@ -2,87 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB761719D4B
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 15:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019C4719ECF
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Jun 2023 15:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233451AbjFANVn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 1 Jun 2023 09:21:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
+        id S233065AbjFANuL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 1 Jun 2023 09:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229866AbjFANVm (ORCPT
+        with ESMTP id S232840AbjFANuK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 1 Jun 2023 09:21:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4387EE7
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 06:21:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE5E964435
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 13:21:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC90C433EF;
-        Thu,  1 Jun 2023 13:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685625700;
-        bh=RqjrPYnvUJzRVywrJOrTYUsyPyv1BqLehdpXFxXeWv4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ewBtFp2rRzMe6WlmOU+McDv+7ilTktozcVAZKKsv1VraFly1hPrA0QAQk24rcdjDe
-         g8z6EhK8jS4Ge/DZNt6fZGugURrB6V7ndFX6w8li2ddbzJ7yUOHPQxebRPVsVlGXk6
-         1uAXYk59fvZx2Dc/IMcqd73e9xPHkBGxBOqyUIQZLazhh3UuBS7A59m/b64WNzxuOJ
-         iWWvII7/8njibuEhdmjex0t+u0MaZY7xySvXITT+BQjtT93aTDN4vzr0Ti65uiKCo/
-         e63cPXBjxJ2hUbt19zkEUtLYYKUeXfyEevREbEdd7G4YdnESA6byZfrCz6WLCj8Rae
-         owec4JRFE8D+Q==
-Date:   Thu, 1 Jun 2023 08:21:39 -0500
-From:   Seth Forshee <sforshee@kernel.org>
-To:     Mohammed Ismail <m.ismael@gmail.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: wireless-regdb: Update regulatory rules for Egypt (EG) on 5GHz
-Message-ID: <ZHibY/SqV02YuEWL@ubuntu-x1>
-References: <CAKOr0YRiWtywH_hggMn0jFivS7GOp9huw+ib5Lz43BxWo5M7CA@mail.gmail.com>
+        Thu, 1 Jun 2023 09:50:10 -0400
+Received: from forward500c.mail.yandex.net (forward500c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d500])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92243192
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 06:50:05 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:2991:0:640:bb47:0])
+        by forward500c.mail.yandex.net (Yandex) with ESMTP id 8956D5EDC4;
+        Thu,  1 Jun 2023 16:50:03 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 2oOC6E0DYW20-Fml5YSnz;
+        Thu, 01 Jun 2023 16:50:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685627403;
+        bh=P1xAhTZF2QZP+jUph4FSayyg5vKki7ub5CyGBI7GfE0=;
+        h=Subject:From:In-Reply-To:Cc:Date:References:To:Message-ID;
+        b=IjvtbO07lcYBkGfiSS0Pnc1z4ZbO6xrBbEXd2Bhd+w5uzwVwTCCInFDd3BQvlkl9Z
+         jHvoSIeEGiUgIzBL3BkzXrjVxwmltMo0eIJKfD52OoUuDslK3JDbU7J7WE/tHDqZRz
+         6ZYXZ3rJRt9ztCTdcrPHtBFGFqiEHSzbeDYa5yFQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <0d1f24b9-a058-52fd-b669-54aa4e9162f9@yandex.ru>
+Date:   Thu, 1 Jun 2023 16:50:02 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKOr0YRiWtywH_hggMn0jFivS7GOp9huw+ib5Lz43BxWo5M7CA@mail.gmail.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <b2198915-0e92-de99-d950-be46c2bd8e91@yandex.ru>
+ <20230601105215.27013-1-dmantipov@yandex.ru>
+ <3b92f9205003f44187f7ebf7add6c3e0626e9646.camel@realtek.com>
+Content-Language: en-US
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH] rtlwifi: rtl8188ee: mark RTX_POWER_{BEFORE,AFTER}_IQK_A
+ reads as unused
+In-Reply-To: <3b92f9205003f44187f7ebf7add6c3e0626e9646.camel@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, May 25, 2023 at 12:04:00PM +0300, Mohammed Ismail wrote:
-> Hi
-> Current rules are
+On 6/1/23 15:30, Ping-Ke Shih wrote:
+
+> Normally, mention a commit by `commit <12 digits SHA1> ("subject")`
+
+OK
+
+> Why not just
 > 
-> country EG: DFS-ETSI
->         (2402 - 2483 @ 40), (N/A, 20), (N/A)
->         (5150 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
->         (5250 - 5330 @ 80), (N/A, 20), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
-> 
-> it is outdated , here are the updated information
-> 
-> https://www.tra.gov.eg/wp-content/uploads/2021/11/EGY-NTRA-June21-NFAT.pdf
-> 
-> https://www.tra.gov.eg/wp-content/uploads/2021/11/EGY-NTRA-June21-Chart.pdf
+> rtl_get_bbreg(hw, RTX_POWER_BEFORE_IQK_A, MASKDWORD);
+> rtl_get_bbreg(hw, RTX_POWER_AFTER_IQK_A, MASKDWORD);
 
-Thanks for the links, however they don't seem to contain the information
-about power limits, etc. that we need to update the database. I found
-this document:
+Compiler with -Wextra etc. or static analysis tool may complain about an unused
+return value. As far as I know GCC has __attribute__((warn_unused_result)) but
+lacks an opposite thing, so (somewhat ugly explicit) cast to 'void' may be helpful.
 
-https://www.tra.gov.eg/wp-content/uploads/2022/03/EGY-NTRA-March-2022-SRD_English_Final.pdf
+Dmitry
 
-From this I think the correct rules are:
-
-country EG: DFS-ETSI
-        (2402 - 2483.5 @ 40), (20)
-        (5150 - 5250 @ 80), (23), AUTO-BW, wmmrule=ETSI
-        (5250 - 5350 @ 80), (20), DFS, AUTO-BW, wmmrule=ETSI
-        (57000 - 66000 @ 2160), (40)
-
-If this looks correct to you, I'll send a patch.
-
-Thanks,
-Seth
