@@ -2,107 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F77F720C1F
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 00:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56ACB720C6C
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 01:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236675AbjFBW6o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 18:58:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
+        id S236753AbjFBX6o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 19:58:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236467AbjFBW6m (ORCPT
+        with ESMTP id S236470AbjFBX6m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 18:58:42 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACEFE40
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 15:58:38 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5659cfd627dso39272727b3.2
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Jun 2023 15:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685746718; x=1688338718;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QhTMWm7QFFgSbHkbOWfdA14D72uDfJV2WhL1oS/z9is=;
-        b=U6R666rMvV8N6MzZyn9MSIAtaLChZI1h4enUtXtJXD7fbyeh0YrdlY0B+sTtLoBW9J
-         CcrQ6Y1wNgUJbWcZF/JxLqD2/VVFd41MZuL32OLv3BUIXq4gDb1TJd6xRAM+GORPiK50
-         FEslMaspC4mVAddlLd4eM4ZNqN86sS24JxmpxpxdkxRIxW9sACv8NIKOeUcfh8sgCrmu
-         7DpiksAETyZ/Tc3p1GLTYoeQhCC5CQgyCpvgZ0Ii6rLeI4mN1x/QoCJBmTl+u+p2KIFR
-         ObPgeMWnusR+khFo3RQlyoM3Ucs12gcqTX3/E1yuFOPDsPhladPB8lTtQecAY+cDyjoU
-         Kn7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685746718; x=1688338718;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QhTMWm7QFFgSbHkbOWfdA14D72uDfJV2WhL1oS/z9is=;
-        b=FH6HI0jv9uvQsR+XmpZe9zXfbbSURj3hBo9ckDXcolr00H12FOYMBt/XnG97gGkNbh
-         p1f8lzfMn/kKUZEjh5io0KDi6ndeU8XP+6lBjHHW7O8PK9uHuDIZlP9SCMEs/rc+EHf5
-         maL1IRwgIBYPlZUlfvtU3JWzQyKKd7G2B2B+3K+IUj1MFWAbVeOVALvecpvHZtcHI567
-         Dh3O7KTnjr7vO8p4X+vvQj1VWbe44miV1A4uzZv6DRRAYTGgP7bqx380v95yo8G3xpl3
-         41yKNk98DRIFlXRZv7lzow9YEcjU0lvdRjmfIJwa9zzTOyRyvLp6nc6KjNnq4dfffQlp
-         gbhA==
-X-Gm-Message-State: AC+VfDzBKfBZnZ4hJfuC928kuCIQGxqjtvDjZtrpXTI8W6DUIO1NCdue
-        bnZMtjvyvfZQJlZrb6w+2jyU9p6VWps=
-X-Google-Smtp-Source: ACHHUZ72BOotxTxKf6sfqxFc/lQgBW7K5+6B5Q9hnluS511cfw4gOc5IqrIBSkJ9jmMhfIkDWKWhYkxZQ1Q=
-X-Received: from kglund1.bld.corp.google.com ([2620:15c:183:200:a5cd:5418:e5f2:aca5])
- (user=kglund job=sendgmr) by 2002:a81:a805:0:b0:54f:b56a:cd0f with SMTP id
- f5-20020a81a805000000b0054fb56acd0fmr724030ywh.3.1685746718170; Fri, 02 Jun
- 2023 15:58:38 -0700 (PDT)
-Date:   Fri,  2 Jun 2023 16:57:51 -0600
-In-Reply-To: <20230602225751.164525-1-kglund@google.com>
-Mime-Version: 1.0
-References: <20230602225751.164525-1-kglund@google.com>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230602225751.164525-2-kglund@google.com>
-Subject: [PATCH 2/2] wifi: mwifiex: Stop rejecting connection attempts while connected
-From:   Kevin Lund <kglund@google.com>
-To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Cc:     Kevin Lund <kglund@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        Fri, 2 Jun 2023 19:58:42 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EF6E43
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 16:58:41 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 352NuUU5015940;
+        Fri, 2 Jun 2023 23:58:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=o0gBrf+qVGuuJhEhQifxMrD/a4+Nl6CYSqEiVAhH7iI=;
+ b=igtBc+z7WZvAUOfKTqkLrXmh+akcFKeahOuk3mvTVWU9kauGwDoGFeNga7ehDC2aqDMA
+ wZu3gJGNNRXpBqXkA556WEyDQ3wFuqw6SoU3ovCmeh71t4vOZuVQZyet8qLCf64GOnGV
+ lYb8Mx97jCgq5aX6B9ns4F4xRBSmuWijjAV3D4ySLIknPFex0SiZEEAKq8xKRYyVs91m
+ SYcXbwLqnuIxqoaz21xBvgq5uxrLs0Hel31s5dqZGGJa1ruTxXkD3YWFYEmzbK05xVsi
+ M45E146LWZSytM6+oOCOow14QP8rndApyAHznPyxQP+MFHdNnptOwja2in2H/EQSqUXB LQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qytc880ff-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Jun 2023 23:58:35 +0000
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 352NwZXR017563
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 2 Jun 2023 23:58:35 GMT
+Received: from alokad-linux.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Fri, 2 Jun 2023 16:58:34 -0700
+From:   Aloka Dixit <quic_alokad@quicinc.com>
+To:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+CC:     Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH v4 00/11] wifi: ath12k: (v4) EHT support
+Date:   Fri, 2 Jun 2023 16:58:09 -0700
+Message-ID: <20230602235820.23912-1-quic_alokad@quicinc.com>
+X-Mailer: git-send-email 2.39.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 1m6b52pI-oLvVH9h4DYz2p3Be3XErAw-
+X-Proofpoint-ORIG-GUID: 1m6b52pI-oLvVH9h4DYz2p3Be3XErAw-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-02_18,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ clxscore=1011 spamscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2306020189
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently, the Marvell WiFi driver rejects any connection attmept while
-we are currently connected. This is poor logic, since there are several
-legitimate use-cases for initiating a connection attempt while
-connected, including re-association and BSS Transitioning. This logic
-means that it's impossible for userspace to request the driver to
-connect to a different BSS on the same ESS without explicitly requesting
-a disconnect first.
+Add driver support for EHT bring-up, association and
+preamble puncturing.
 
-Remove the check from the driver so that we can complete BSS transitions
-on the first attempt.
+v4: Modified patch 3 to support WCN7850.
+v3: Modified patches 6 and 9 to fix some issues,
+changelog included in the respective patches.
+v2: This version modifies only few commit descriptions,
+changelog included in the respective patches.
 
-Testing on Chrome OS has shown that this change resolves some issues
-with failed BSS transitions.
+Following list gives the details for each patch.
+1-4: Propagation of EHT capabilities from target to userspace.
+5: Addition of EHT phy modes.
+6-9: EHT related additions in peer association.
+10: Process the new WMI service ready ext2 event.
+11: Preamble puncturing support.
 
-Signed-off-by: Kevin Lund <kglund@google.com>
----
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 6 ------
- 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index bcd564dc3554a..84d650c9dceb0 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -2414,12 +2414,6 @@ mwifiex_cfg80211_connect(struct wiphy *wiphy, struct net_device *dev,
- 		return -EINVAL;
- 	}
- 
--	if (priv->wdev.connected) {
--		mwifiex_dbg(adapter, ERROR,
--			    "%s: already connected\n", dev->name);
--		return -EALREADY;
--	}
--
- 	if (priv->scan_block)
- 		priv->scan_block = false;
- 
+Aloka Dixit (9):
+  wifi: ath12k: rename HE capabilities setup/copy functions
+  wifi: ath12k: move HE capabilities processing to a new function
+  wifi: ath12k: WMI support to process EHT capabilities
+  wifi: ath12k: propagate EHT capabilities to userspace
+  wifi: ath12k: prepare EHT peer assoc parameters
+  wifi: ath12k: add WMI support for EHT peer
+  wifi: ath12k: peer assoc for 320 MHz
+  wifi: ath12k: parse WMI service ready ext2 event
+  wifi: ath12k: configure puncturing bitmap
+
+Muna Sinada (1):
+  wifi: ath12k: add EHT PHY modes
+
+Pradeep Kumar Chitrapu (1):
+  wifi: ath12k: add MLO header in peer association
+
+ drivers/net/wireless/ath/ath12k/core.h |  17 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 556 ++++++++++++++++++++-----
+ drivers/net/wireless/ath/ath12k/mac.h  |   2 +-
+ drivers/net/wireless/ath/ath12k/wmi.c  | 252 ++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h  | 116 +++++-
+ 5 files changed, 833 insertions(+), 110 deletions(-)
+
+
+base-commit: a4756ac34a7002861c9bdf8cf45aec53a77fb78d
 -- 
-2.39.2
+2.39.0
 
