@@ -2,54 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B745F7203E1
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 15:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 675797203E3
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 16:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235645AbjFBN7q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 09:59:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54108 "EHLO
+        id S235303AbjFBN76 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 09:59:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234960AbjFBN7p (ORCPT
+        with ESMTP id S234769AbjFBN7r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 09:59:45 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D2C813E;
-        Fri,  2 Jun 2023 06:59:44 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2b1b2ca09b9so5613201fa.1;
-        Fri, 02 Jun 2023 06:59:44 -0700 (PDT)
+        Fri, 2 Jun 2023 09:59:47 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A293C13E;
+        Fri,  2 Jun 2023 06:59:46 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4f4d80bac38so2749540e87.2;
+        Fri, 02 Jun 2023 06:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685714382; x=1688306382;
+        d=gmail.com; s=20221208; t=1685714385; x=1688306385;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LrRm9mbhnmjr+sQNDH4TjteCZ6R8/1j4j0I2dwDcxPE=;
-        b=rJMHJt+8tlPhpCkKZYtqXnfYId/ftqviQyj0WKyxdzv3Q2V0qQxNLBbedqjIjrDXFR
-         q3zACnKLczXJgEqgm5NNcj2lcmLZtPgFkTuM1j4lTqy/WjIsLvYI0qFSt1lEr7hwDjxw
-         zrvcIOh2yS1Q6hrt844RVfoyLM6/h+ByPCecJpOzJPTLShT9pO+mxhrn1fmUO1Qpe2Q7
-         u8j+vdlCzdhjyLQkPwPeLkdxI5QXTychr2xRCetqZvhoF/BL+l8lbwOgom3kDDxBNJ6N
-         Op+kb7pvvhtE/y8M7X+qCv2Qe8CyxybjDcmst1cWqdB2qAI52vu7CEIpd0CpasBq0tzw
-         w3vg==
+        bh=nTN3SqBStdfh47dkRHJQq2annqGcH5JYkK2qy9Njd5A=;
+        b=NlIcjLaqw+UJ4KMHwtXzN9tvEZMSxzwkfvzVg988ePm1k7mdTVc3Nc6ItSknw3wLvo
+         POZi029DR3dzEnfriPincsQejUzZckw1MH2qBUPxCDKliTPL59/El/Q9N9AII5rAh+Cz
+         VP8yXiVo8I4yg7KHWjMJmThZNjmcqXghnnKSLtfBkeuH89RkvOG7+NeLszWIhx9nQV/7
+         oCzuOsbvjbKigEnUwh3Q6dFaWebml9aG/iKhI8uKoUMLxPXTg93LkAC+AgOm9pKlMv0I
+         V3Wvvi0pd/Djyx1yO7HpFE5VvKaIYbiTVCHY7D//8dVGNRJhuMYsaTV7dDI/EXhV5zdt
+         9QgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685714382; x=1688306382;
+        d=1e100.net; s=20221208; t=1685714385; x=1688306385;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LrRm9mbhnmjr+sQNDH4TjteCZ6R8/1j4j0I2dwDcxPE=;
-        b=ATnGa9ATbMcZRMOfDQDHPoG1NrPTce+kamS+XKGffH42hpsLw6bFHxrvDlMQBIgszu
-         xFjZRiZhPUy+06H4IaFWfvE1ML9tCH8IG848dkFo3Oz0FXN6HPhtaZHf+97pAabODpY5
-         MrWi+KXPMLn/YVugyVF7oFxvNIoJTGQh8q4+qx48+azuuHVl4Zlfc96p/nk2ZsDQNgsw
-         L2py5AJXfg91dmPTB+9/VZjMFFceeQub18u0J6ILmg/bfqyjpsfpk0EFsfsVd0pGOjaE
-         8XAMv+00jHpwI+FEAcMGhbUoIlhw0DLqd3WEF1dWqR5cRoinwtRzuWDpoAGuye11cbB+
-         RaTA==
-X-Gm-Message-State: AC+VfDzlICRxFBrmEyaO3ZHGmEP2npS6BloPqXTyTQVVe4dAETy3sqvu
-        kvTOo+IGovEAXgpX4iXWbxQ=
-X-Google-Smtp-Source: ACHHUZ5ACdd5I3ygzTy0xC/I+FT8wUQxaU/RIIf/a2zI+IJjOKk4gyQFKVfpUpWpoDXqI4CaaqKvYQ==
-X-Received: by 2002:a2e:7308:0:b0:2b0:5f62:8cd with SMTP id o8-20020a2e7308000000b002b05f6208cdmr90743ljc.0.1685714382551;
-        Fri, 02 Jun 2023 06:59:42 -0700 (PDT)
+        bh=nTN3SqBStdfh47dkRHJQq2annqGcH5JYkK2qy9Njd5A=;
+        b=RXvHWD99IuRFbFent/VsQEmuGDFtNQ2gaeoXIfG0/NkstM5DPiOAswS8BCFriz2QF5
+         wfoa0N3YTFU2VAxYSAwcESfE3MuINIURsPS59rh5t45i4Mm4uCEFvY3TW8VQhn4bWOKq
+         Xnl6NxvM/LnIKT9kPzv6vnOBlYNMwCTu+wtm/G2N91uCZDRtyUrElMPOPAeJXU7ryNrV
+         92pM6y75ciWjFrXb+HPnqexlB+NY2W+zoKE3EB6fIj7GypmpedbXrvPI2B9tvBrWdukE
+         fxtBCdYdwV9WRto4GoU5bS6YoSA31/R0iteLR7kYj5bjv1/O2N11B+TckMnqgbyb/H0+
+         gGtA==
+X-Gm-Message-State: AC+VfDwiCYrXa1qQeloLm89kBfSkhcqxsrKe1wlAp/bSkw/eicmJzDRS
+        YOpIcgspd3hK1/wwckU3Ayc=
+X-Google-Smtp-Source: ACHHUZ7l909Tryh8qYkMllMSiYfajl6Ve8Ib66Jep6sx4kUqMNiBCc0vU3137Hc8OAifDcZmjGy9wg==
+X-Received: by 2002:a2e:87d6:0:b0:2ac:819f:f73f with SMTP id v22-20020a2e87d6000000b002ac819ff73fmr68955ljj.20.1685714384802;
+        Fri, 02 Jun 2023 06:59:44 -0700 (PDT)
 Received: from localhost.lan (031011218106.poznan.vectranet.pl. [31.11.218.106])
-        by smtp.gmail.com with ESMTPSA id e25-20020a2e8199000000b002adbf24212esm236579ljg.49.2023.06.02.06.59.41
+        by smtp.gmail.com with ESMTPSA id e25-20020a2e8199000000b002adbf24212esm236579ljg.49.2023.06.02.06.59.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 06:59:41 -0700 (PDT)
+        Fri, 02 Jun 2023 06:59:44 -0700 (PDT)
 From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
 To:     Kalle Valo <kvalo@kernel.org>,
         Florian Fainelli <f.fainelli@gmail.com>
@@ -66,9 +66,9 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         bcm-kernel-feedback-list@broadcom.com,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-Subject: [PATCH 2/3] dt-bindings: net: wireless: brcm,bcm4329-fmac: allow generic properties
-Date:   Fri,  2 Jun 2023 15:59:24 +0200
-Message-Id: <20230602135925.14143-2-zajec5@gmail.com>
+Subject: [PATCH 3/3] ARM: dts: BCM5301X: Add Netgear R8000 WiFi regulator mappings
+Date:   Fri,  2 Jun 2023 15:59:25 +0200
+Message-Id: <20230602135925.14143-3-zajec5@gmail.com>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230602135925.14143-1-zajec5@gmail.com>
 References: <20230602135925.14143-1-zajec5@gmail.com>
@@ -87,38 +87,59 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Rafał Miłecki <rafal@milecki.pl>
 
-Include ieee80211.yaml to allow using generic 802.11 properties for
-bindings of Broadcom FullMAC devices. That allows specifying frequencies
-ranges.
+This allows setting FullMAC firmware regulatory domain.
 
 Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 ---
- .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/bcm4709-netgear-r8000.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-index 527f055a6683..4aa521f1be8c 100644
---- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-@@ -15,6 +15,9 @@ description:
-   These chips also have a Bluetooth portion described in a separate
-   binding.
+diff --git a/arch/arm/boot/dts/bcm4709-netgear-r8000.dts b/arch/arm/boot/dts/bcm4709-netgear-r8000.dts
+index 14303ab521ea..3552b6deffc2 100644
+--- a/arch/arm/boot/dts/bcm4709-netgear-r8000.dts
++++ b/arch/arm/boot/dts/bcm4709-netgear-r8000.dts
+@@ -137,8 +137,10 @@ bridge@0,0,0 {
+ 		#size-cells = <2>;
  
-+allOf:
-+  - $ref: ieee80211.yaml#
+ 		wifi@0,1,0 {
++			compatible = "brcm,bcm4366-fmac", "brcm,bcm4329-fmac";
+ 			reg = <0x0000 0 0 0 0>;
+ 			ieee80211-freq-limit = <5735000 5835000>;
++			brcm,ccode-map = "JP-JP-78", "US-Q2-86";
+ 		};
+ 	};
+ };
+@@ -159,6 +161,19 @@ bridge@1,1,0 {
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+ 
++			bridge@1,0 {
++				reg = <0x800 0 0 0 0>;
 +
- properties:
-   compatible:
-     oneOf:
-@@ -121,7 +124,7 @@ required:
-   - compatible
-   - reg
++				#address-cells = <3>;
++				#size-cells = <2>;
++
++				wifi@0,0 {
++					compatible = "brcm,bcm4366-fmac", "brcm,bcm4329-fmac";
++					reg = <0x0000 0 0 0 0>;
++					brcm,ccode-map = "JP-JP-78", "US-Q2-86";
++				};
++			};
++
+ 			bridge@1,2,2 {
+ 				reg = <0x1000 0 0 0 0>;
  
--additionalProperties: false
-+unevaluatedProperties: false
+@@ -166,8 +181,10 @@ bridge@1,2,2 {
+ 				#size-cells = <2>;
  
- examples:
-   - |
+ 				wifi@1,4,0 {
++					compatible = "brcm,bcm4366-fmac", "brcm,bcm4329-fmac";
+ 					reg = <0x0000 0 0 0 0>;
+ 					ieee80211-freq-limit = <5170000 5730000>;
++					brcm,ccode-map = "JP-JP-78", "US-Q2-86";
+ 				};
+ 			};
+ 		};
 -- 
 2.35.3
 
