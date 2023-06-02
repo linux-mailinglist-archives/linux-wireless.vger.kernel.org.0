@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F09720C6F
+	by mail.lfdr.de (Postfix) with ESMTP id 07354720C6E
 	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 01:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236643AbjFBX6r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 19:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236629AbjFBX6n (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
+        id S236663AbjFBX6n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 2 Jun 2023 19:58:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234452AbjFBX6l (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 2 Jun 2023 19:58:41 -0400
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DFFE45
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 16:58:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485FC1B6
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 16:58:40 -0700 (PDT)
 Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 352NvInG004540;
-        Fri, 2 Jun 2023 23:58:37 GMT
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 352Nwc6H007093;
+        Fri, 2 Jun 2023 23:58:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=qcppdkim1;
- bh=HH2ykZGmZ9UM4SXqbLYyE+IdCaHHAOPLFyRbaBg7S3E=;
- b=YNfTl1gqLUgRhGVvbxmRPu2xYt2R9AFWyw9kayhBXAZK8+hG93pT6UlvmIsgzVMv2aJM
- rF0Js6oE2CD2pVq7FHqbbrBjSS6LXOWU3Z1tsUVacqbtsq9eyEoU0VWj3COjJ5JUtY/C
- 6Fj18caf9IcOH9LDlZzAxUFRTbiWj+h/4wzhAZnD+6pzur0Y3X4e1nKa4wCP7hq+/56k
- G+2GCMzYY4c460+Yn9JvxkT1k26xUJXC3A/GtsGGcGh4KwmC4t/RFoih4e3/fzZOUVjK
- CXp2eoohxeHoYb8R6usYLDiQb+d77Q1cAzUOSzlFn60UutaEfdsf2tL5Dzsh5lxWDYpk /w== 
+ bh=uLnKGz8mJRBHU8htkWkmXj7O852md0i7wDlA+FzFFTk=;
+ b=fpEbydlvM1kQNGLA7zWLg6bNyTA/BwIiOXKcQmQQu575DX45FK48/Lvph7aymLzPIzAd
+ LukJP/nTiLRnAzoB3bmwAKoQ674gzGPf6XBGNGUNs2E7x+TEBtKYevuYZmb+pduOR5ej
+ h+nzKRB2UeJQ6N5vZPQd1oyumuWf28TyHrjLSO69CeWgoNt+VVW9QJLFVkqm7I5BgCf3
+ V92YNS8jGFqF/U5H22lpWC/YD+AtyyrgKgvlRiRAUzk1pzrM+niT+zLz7/Tk6ZoAWpDE
+ 7ZoPjyxUr3VuYQLawydSCVRuwOunI17Z6Rfkq9K/v/MNaCy9qUwAPnQFPhAJJTe7mthS zw== 
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qyb6f20pq-1
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qyb6f20pr-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
         Fri, 02 Jun 2023 23:58:37 +0000
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 352Nwapg003799
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 352NwbwZ003803
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 2 Jun 2023 23:58:36 GMT
+        Fri, 2 Jun 2023 23:58:37 GMT
 Received: from alokad-linux.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.986.42; Fri, 2 Jun 2023 16:58:36 -0700
 From:   Aloka Dixit <quic_alokad@quicinc.com>
 To:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Subject: [PATCH v4 04/11] wifi: ath12k: propagate EHT capabilities to userspace
-Date:   Fri, 2 Jun 2023 16:58:13 -0700
-Message-ID: <20230602235820.23912-5-quic_alokad@quicinc.com>
+CC:     Muna Sinada <quic_msinada@quicinc.com>,
+        Aloka Dixit <quic_alokad@quicinc.com>
+Subject: [PATCH v4 05/11] wifi: ath12k: add EHT PHY modes
+Date:   Fri, 2 Jun 2023 16:58:14 -0700
+Message-ID: <20230602235820.23912-6-quic_alokad@quicinc.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230602235820.23912-1-quic_alokad@quicinc.com>
 References: <20230602235820.23912-1-quic_alokad@quicinc.com>
@@ -57,8 +57,8 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: RmDN8YeSmW5ysnsz5CTAoezAGmiwQfWg
-X-Proofpoint-ORIG-GUID: RmDN8YeSmW5ysnsz5CTAoezAGmiwQfWg
+X-Proofpoint-GUID: ccxa2XMMihCB17x4XBUqpgdb75Iwc7Wi
+X-Proofpoint-ORIG-GUID: ccxa2XMMihCB17x4XBUqpgdb75Iwc7Wi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-02_18,2023-06-02_02,2023-05-22_02
@@ -77,169 +77,208 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Propagate EHT capabilities to the userspace using a new member
-'eht_cap' in structure ieee80211_sband_iftype_data.
+From: Muna Sinada <quic_msinada@quicinc.com>
 
-MCS-NSS capabilities are copied depending on the supported bandwidths
-for the given band.
+Add support to retrieve and configure the phy modes supported
+by the hardware.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
 Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-Signed-off-by: Pradeep Kumar Chitrapu<quic_pradeepc@quicinc.com>
 ---
 v4: No change from v3.
 v3: No change from v2.
-v2: No change from v1.
+v2: Changed 'target' to 'hardware' in the description.
 
- drivers/net/wireless/ath/ath12k/mac.c | 128 ++++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
+ drivers/net/wireless/ath/ath12k/mac.c | 98 +++++++++++++++++++++------
+ drivers/net/wireless/ath/ath12k/mac.h |  2 +-
+ drivers/net/wireless/ath/ath12k/wmi.h | 13 +++-
+ 3 files changed, 91 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2eec7e114196..d4e97424dbc1 100644
+index d4e97424dbc1..4f61c8993c87 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4262,6 +4262,132 @@ static void ath12k_mac_copy_he_cap(struct ath12k_band_cap *band_cap,
- 		ath12k_gen_ppe_thresh(&band_cap->he_ppet, he_cap->ppe_thres);
+@@ -182,32 +182,35 @@ ath12k_phymodes[NUM_NL80211_BANDS][ATH12K_CHAN_WIDTH_NUM] = {
+ 	[NL80211_BAND_2GHZ] = {
+ 			[NL80211_CHAN_WIDTH_5] = MODE_UNKNOWN,
+ 			[NL80211_CHAN_WIDTH_10] = MODE_UNKNOWN,
+-			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11AX_HE20_2G,
+-			[NL80211_CHAN_WIDTH_20] = MODE_11AX_HE20_2G,
+-			[NL80211_CHAN_WIDTH_40] = MODE_11AX_HE40_2G,
+-			[NL80211_CHAN_WIDTH_80] = MODE_11AX_HE80_2G,
++			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11BE_EHT20_2G,
++			[NL80211_CHAN_WIDTH_20] = MODE_11BE_EHT20_2G,
++			[NL80211_CHAN_WIDTH_40] = MODE_11BE_EHT40_2G,
++			[NL80211_CHAN_WIDTH_80] = MODE_UNKNOWN,
+ 			[NL80211_CHAN_WIDTH_80P80] = MODE_UNKNOWN,
+ 			[NL80211_CHAN_WIDTH_160] = MODE_UNKNOWN,
++			[NL80211_CHAN_WIDTH_320] = MODE_UNKNOWN,
+ 	},
+ 	[NL80211_BAND_5GHZ] = {
+ 			[NL80211_CHAN_WIDTH_5] = MODE_UNKNOWN,
+ 			[NL80211_CHAN_WIDTH_10] = MODE_UNKNOWN,
+-			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11AX_HE20,
+-			[NL80211_CHAN_WIDTH_20] = MODE_11AX_HE20,
+-			[NL80211_CHAN_WIDTH_40] = MODE_11AX_HE40,
+-			[NL80211_CHAN_WIDTH_80] = MODE_11AX_HE80,
+-			[NL80211_CHAN_WIDTH_160] = MODE_11AX_HE160,
+-			[NL80211_CHAN_WIDTH_80P80] = MODE_11AX_HE80_80,
++			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11BE_EHT20,
++			[NL80211_CHAN_WIDTH_20] = MODE_11BE_EHT20,
++			[NL80211_CHAN_WIDTH_40] = MODE_11BE_EHT40,
++			[NL80211_CHAN_WIDTH_80] = MODE_11BE_EHT80,
++			[NL80211_CHAN_WIDTH_160] = MODE_11BE_EHT160,
++			[NL80211_CHAN_WIDTH_80P80] = MODE_11BE_EHT80_80,
++			[NL80211_CHAN_WIDTH_320] = MODE_11BE_EHT320,
+ 	},
+ 	[NL80211_BAND_6GHZ] = {
+ 			[NL80211_CHAN_WIDTH_5] = MODE_UNKNOWN,
+ 			[NL80211_CHAN_WIDTH_10] = MODE_UNKNOWN,
+-			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11AX_HE20,
+-			[NL80211_CHAN_WIDTH_20] = MODE_11AX_HE20,
+-			[NL80211_CHAN_WIDTH_40] = MODE_11AX_HE40,
+-			[NL80211_CHAN_WIDTH_80] = MODE_11AX_HE80,
+-			[NL80211_CHAN_WIDTH_160] = MODE_11AX_HE160,
+-			[NL80211_CHAN_WIDTH_80P80] = MODE_11AX_HE80_80,
++			[NL80211_CHAN_WIDTH_20_NOHT] = MODE_11BE_EHT20,
++			[NL80211_CHAN_WIDTH_20] = MODE_11BE_EHT20,
++			[NL80211_CHAN_WIDTH_40] = MODE_11BE_EHT40,
++			[NL80211_CHAN_WIDTH_80] = MODE_11BE_EHT80,
++			[NL80211_CHAN_WIDTH_160] = MODE_11BE_EHT160,
++			[NL80211_CHAN_WIDTH_80P80] = MODE_11BE_EHT80_80,
++			[NL80211_CHAN_WIDTH_320] = MODE_11BE_EHT320,
+ 	},
+ 
+ };
+@@ -292,6 +295,24 @@ static const char *ath12k_mac_phymode_str(enum wmi_phy_mode mode)
+ 		return "11ax-he40-2g";
+ 	case MODE_11AX_HE80_2G:
+ 		return "11ax-he80-2g";
++	case MODE_11BE_EHT20:
++		return "11be-eht20";
++	case MODE_11BE_EHT40:
++		return "11be-eht40";
++	case MODE_11BE_EHT80:
++		return "11be-eht80";
++	case MODE_11BE_EHT80_80:
++		return "11be-eht80+80";
++	case MODE_11BE_EHT160:
++		return "11be-eht160";
++	case MODE_11BE_EHT160_160:
++		return "11be-eht160+160";
++	case MODE_11BE_EHT320:
++		return "11be-eht320";
++	case MODE_11BE_EHT20_2G:
++		return "11be-eht20-2g";
++	case MODE_11BE_EHT40_2G:
++		return "11be-eht40-2g";
+ 	case MODE_UNKNOWN:
+ 		/* skip */
+ 		break;
+@@ -1929,6 +1950,38 @@ static enum wmi_phy_mode ath12k_mac_get_phymode_he(struct ath12k *ar,
+ 	return MODE_UNKNOWN;
  }
  
-+static void
-+ath12k_mac_copy_eht_mcs_nss(struct ath12k_band_cap *band_cap,
-+			    struct ieee80211_eht_mcs_nss_supp *mcs_nss,
-+			    const struct ieee80211_he_cap_elem *he_cap,
-+			    const struct ieee80211_eht_cap_elem_fixed *eht_cap)
++static enum wmi_phy_mode ath12k_mac_get_phymode_eht(struct ath12k *ar,
++						    struct ieee80211_sta *sta)
 +{
-+	if ((he_cap->phy_cap_info[0] &
-+	     (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
-+	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G |
-+	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
-+	      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)) == 0)
-+		memcpy(&mcs_nss->only_20mhz, &band_cap->eht_mcs_20_only,
-+		       sizeof(struct ieee80211_eht_mcs_nss_supp_20mhz_only));
++	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_320)
++		if (sta->deflink.eht_cap.eht_cap_elem.phy_cap_info[0] &
++		    IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
++			return MODE_11BE_EHT320;
++	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160) {
++		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
++		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
++			return MODE_11BE_EHT160;
 +
-+	if (he_cap->phy_cap_info[0] &
-+	    (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G |
-+	     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
-+		memcpy(&mcs_nss->bw._80, &band_cap->eht_mcs_80,
-+		       sizeof(struct ieee80211_eht_mcs_nss_supp_bw));
++		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
++			 IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
++			return MODE_11BE_EHT80_80;
 +
-+	if (he_cap->phy_cap_info[0] &
-+	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
-+		memcpy(&mcs_nss->bw._160, &band_cap->eht_mcs_160,
-+		       sizeof(struct ieee80211_eht_mcs_nss_supp_bw));
-+
-+	if (eht_cap->phy_cap_info[0] & IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
-+		memcpy(&mcs_nss->bw._320, &band_cap->eht_mcs_320,
-+		       sizeof(struct ieee80211_eht_mcs_nss_supp_bw));
-+}
-+
-+static void ath12k_mac_copy_eht_ppet_ru(u32 ppet, u8 ppe_thres[], int ru)
-+{
-+	int i;
-+	u32 val = 0;
-+	u8 ppet_size_ru = IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE * 2;
-+	u8 bit = IEEE80211_EHT_PPE_THRES_INFO_HEADER_SIZE;
-+
-+	u32p_replace_bits(&val, ppet >> (ru * ppet_size_ru),
-+			  GENMASK(ppet_size_ru - 1, 0));
-+
-+	val = ((val >> IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE) & GENMASK(2, 0)) |
-+	      ((val & GENMASK(2, 0)) << IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE);
-+
-+	for (i = ppet_size_ru - 1; i >= 0; i--) {
-+		ppe_thres[bit / 8] |= (((val >> i) & 0x1) << ((bit % 8)));
-+		bit++;
-+	}
-+}
-+
-+static void ath12k_mac_copy_eht_ppe_thresh(struct ath12k_wmi_ppe_threshold_arg *fw_ppet,
-+					   struct ieee80211_sta_eht_cap *cap)
-+{
-+	int nss, ru;
-+	u8 len = 0;
-+
-+	len = hweight8(fw_ppet->ru_bit_mask);
-+	len *= (1 + fw_ppet->numss_m1);
-+
-+	len = (len * IEEE80211_EHT_PPE_THRES_INFO_PPET_SIZE) +
-+	      IEEE80211_EHT_PPE_THRES_INFO_HEADER_SIZE;
-+	len = DIV_ROUND_UP(len, 8);
-+
-+	u8p_replace_bits(&cap->eht_ppe_thres[0], fw_ppet->numss_m1,
-+			 IEEE80211_EHT_PPE_THRES_NSS_MASK);
-+
-+	u16p_replace_bits((u16 *)&cap->eht_ppe_thres[0], fw_ppet->ru_bit_mask,
-+			  IEEE80211_EHT_PPE_THRES_RU_INDEX_BITMASK_MASK);
-+
-+	for (nss = 0; nss <= fw_ppet->numss_m1; nss++) {
-+		for (ru = 0;
-+		     ru < hweight8(IEEE80211_EHT_PPE_THRES_RU_INDEX_BITMASK_MASK);
-+		     ru++) {
-+			if ((fw_ppet->ru_bit_mask & BIT(ru)) == 0)
-+				continue;
-+
-+			ath12k_mac_copy_eht_ppet_ru(fw_ppet->ppet16_ppet8_ru3_ru0[nss],
-+						    cap->eht_ppe_thres, ru);
-+		}
-+	}
-+}
-+
-+static void ath12k_mac_copy_eht_cap(struct ath12k_band_cap *band_cap,
-+				    struct ieee80211_he_cap_elem *he_cap_elem,
-+				    int iftype,
-+				    struct ieee80211_sta_eht_cap *eht_cap)
-+{
-+	struct ieee80211_eht_cap_elem_fixed *eht_cap_elem = &eht_cap->eht_cap_elem;
-+
-+	memset(eht_cap, 0, sizeof(struct ieee80211_sta_eht_cap));
-+	eht_cap->has_eht = true;
-+	memcpy(eht_cap_elem->mac_cap_info, band_cap->eht_cap_mac_info,
-+	       sizeof(eht_cap_elem->mac_cap_info));
-+	memcpy(eht_cap_elem->phy_cap_info, band_cap->eht_cap_phy_info,
-+	       sizeof(eht_cap_elem->phy_cap_info));
-+
-+	switch (iftype) {
-+	case NL80211_IFTYPE_AP:
-+		eht_cap_elem->phy_cap_info[0] &=
-+			~IEEE80211_EHT_PHY_CAP0_242_TONE_RU_GT20MHZ;
-+		eht_cap_elem->phy_cap_info[4] &=
-+			~IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO;
-+		eht_cap_elem->phy_cap_info[5] &=
-+			~IEEE80211_EHT_PHY_CAP5_TX_LESS_242_TONE_RU_SUPP;
-+		break;
-+	case NL80211_IFTYPE_STATION:
-+		eht_cap_elem->phy_cap_info[7] &=
-+			~(IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ |
-+			  IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ |
-+			  IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ);
-+		eht_cap_elem->phy_cap_info[7] &=
-+			~(IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ |
-+			  IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ |
-+			  IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ);
-+		break;
-+	default:
-+		break;
++		ath12k_warn(ar->ab, "invalid eht phy cap info for 160 Mhz\n");
++		return MODE_11BE_EHT160;
 +	}
 +
-+	ath12k_mac_copy_eht_mcs_nss(band_cap, &eht_cap->eht_mcs_nss_supp,
-+				    he_cap_elem, eht_cap_elem);
++	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
++		return MODE_11BE_EHT80;
 +
-+	if (eht_cap_elem->phy_cap_info[5] &
-+	    IEEE80211_EHT_PHY_CAP5_PPE_THRESHOLD_PRESENT)
-+		ath12k_mac_copy_eht_ppe_thresh(&band_cap->eht_ppet, eht_cap);
++	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
++		return MODE_11BE_EHT40;
++
++	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_20)
++		return MODE_11BE_EHT20;
++
++	return MODE_UNKNOWN;
 +}
 +
- static int ath12k_mac_copy_sband_iftype_data(struct ath12k *ar,
- 					     struct ath12k_pdev_cap *cap,
- 					     struct ieee80211_sband_iftype_data *data,
-@@ -4290,6 +4416,8 @@ static int ath12k_mac_copy_sband_iftype_data(struct ath12k *ar,
- 			data[idx].he_6ghz_capa.capa =
- 				ath12k_mac_setup_he_6ghz_cap(cap, band_cap);
- 		}
-+		ath12k_mac_copy_eht_cap(band_cap, &he_cap->he_cap_elem, i,
-+					&data[idx].eht_cap);
- 		idx++;
- 	}
+ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
+ 					struct ieee80211_vif *vif,
+ 					struct ieee80211_sta *sta,
+@@ -1950,7 +2003,12 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
  
+ 	switch (band) {
+ 	case NL80211_BAND_2GHZ:
+-		if (sta->deflink.he_cap.has_he) {
++		if (sta->deflink.eht_cap.has_eht) {
++			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
++				phymode = MODE_11BE_EHT40_2G;
++			else
++				phymode = MODE_11BE_EHT20_2G;
++		} else if (sta->deflink.he_cap.has_he) {
+ 			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
+ 				phymode = MODE_11AX_HE80_2G;
+ 			else if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
+@@ -1977,8 +2035,10 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
+ 		break;
+ 	case NL80211_BAND_5GHZ:
+ 	case NL80211_BAND_6GHZ:
+-		/* Check HE first */
+-		if (sta->deflink.he_cap.has_he) {
++		/* Check EHT first */
++		if (sta->deflink.eht_cap.has_eht) {
++			phymode = ath12k_mac_get_phymode_eht(ar, sta);
++		} else if (sta->deflink.he_cap.has_he) {
+ 			phymode = ath12k_mac_get_phymode_he(ar, sta);
+ 		} else if (sta->deflink.vht_cap.vht_supported &&
+ 		    !ath12k_peer_assoc_h_vht_masked(vht_mcs_mask)) {
+diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
+index 57f4295420bb..7b16b70df4fa 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.h
++++ b/drivers/net/wireless/ath/ath12k/mac.h
+@@ -33,7 +33,7 @@ struct ath12k_generic_iter {
+ #define IEEE80211_VHT_MCS_SUPPORT_0_11_MASK	GENMASK(23, 16)
+ #define IEEE80211_DISABLE_VHT_MCS_SUPPORT_0_11	BIT(24)
+ 
+-#define ATH12K_CHAN_WIDTH_NUM			8
++#define ATH12K_CHAN_WIDTH_NUM			14
+ 
+ #define ATH12K_TX_POWER_MAX_VAL	70
+ #define ATH12K_TX_POWER_MIN_VAL	0
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index b722eab281c3..aecc739164ae 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -2796,8 +2796,17 @@ enum wmi_phy_mode {
+ 	MODE_11AX_HE20_2G = 21,
+ 	MODE_11AX_HE40_2G = 22,
+ 	MODE_11AX_HE80_2G = 23,
+-	MODE_UNKNOWN = 24,
+-	MODE_MAX = 24
++	MODE_11BE_EHT20 = 24,
++	MODE_11BE_EHT40 = 25,
++	MODE_11BE_EHT80 = 26,
++	MODE_11BE_EHT80_80 = 27,
++	MODE_11BE_EHT160 = 28,
++	MODE_11BE_EHT160_160 = 29,
++	MODE_11BE_EHT320 = 30,
++	MODE_11BE_EHT20_2G = 31,
++	MODE_11BE_EHT40_2G = 32,
++	MODE_UNKNOWN = 33,
++	MODE_MAX = 33,
+ };
+ 
+ struct wmi_vdev_start_req_arg {
 -- 
 2.39.0
 
