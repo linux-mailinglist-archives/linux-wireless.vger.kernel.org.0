@@ -2,109 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15CC771FA6F
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 09:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DF2720F82
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 12:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233837AbjFBHAP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 03:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
+        id S229539AbjFCKoz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Jun 2023 06:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231407AbjFBHAN (ORCPT
+        with ESMTP id S237135AbjFCKox (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 03:00:13 -0400
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E78128
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 00:00:11 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:5410:0:640:fb19:0])
-        by forward100c.mail.yandex.net (Yandex) with ESMTP id 1B3A1600C8;
-        Fri,  2 Jun 2023 10:00:10 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id jxIPnoDDSmI0-TZhR9jIh;
-        Fri, 02 Jun 2023 10:00:09 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685689209;
-        bh=TKC3Xi4ujQC0qwOxUi2i/LhoS+Dbjriv6ZLqqr0awKE=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=nhrnQhT7/3wSQapAhD8QXXSzLOf8M13uxY/i6itbynJmoGeMLWM3B5yNRhZM52KaU
-         jXNi+4fgj45BT09E7O+rpFDbkeFKIF2+xXn5z/NX/e164Y0GJxOwcQ6XvssdIBl5ud
-         2N9upcHS0gthM3JJ7Aw9EQ9L04UEKA+6lN+O0gJU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] [v2] wifi: rtlwifi: remove unused dualmac control leftovers
-Date:   Fri,  2 Jun 2023 09:59:40 +0300
-Message-Id: <20230602065940.149198-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230602065940.149198-1-dmantipov@yandex.ru>
-References: <20230602052936.114649-1-dmantipov@yandex.ru>
- <20230602065940.149198-1-dmantipov@yandex.ru>
+        Sat, 3 Jun 2023 06:44:53 -0400
+X-Greylist: delayed 4200 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Jun 2023 03:44:52 PDT
+Received: from mail.webtopbits.pl (mail.webtopbits.pl [195.231.64.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11E3DF5
+        for <linux-wireless@vger.kernel.org>; Sat,  3 Jun 2023 03:44:51 -0700 (PDT)
+Received: by mail.webtopbits.pl (Postfix, from userid 1001)
+        id 79FB9A3887; Fri,  2 Jun 2023 09:55:50 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=webtopbits.pl;
+        s=mail; t=1685696159;
+        bh=Eh8ECMiYd4baGAwPAzhz8mhJACXX7NSRkYjh+plaY18=;
+        h=Date:From:To:Subject:From;
+        b=obHs3PdIlL4lIolhIXVZIK9CYHknOcbR/zGLnKfh1YrarL9K1L2EANKdKOyuUIjjO
+         6OZOxjQqSQyvJ6V4AKa5wTp8yOtZYp+L5cCSnBu77DgrnqBkb+vnOszawlofPol869
+         DGr9Ot6lvxqxEktmktVezx25mF6XGyWGa0MBv8rEmUxzDzSDoCXbd6vVYonu2gIKTo
+         XZjQ4HhpAC2YaZAUtSdUU57twN0kk/n496zTZzx5p3E1fV6Ue5l9GvfTJdkmnon/zN
+         O786oyb50XrlmlNs8GUz+9RL3natpMo/+jVCRZXbg7edMl2rCYppIDxkZfRhYbMwon
+         q2yIX1Lfw7bYw==
+Received: by mail.webtopbits.pl for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 08:55:46 GMT
+Message-ID: <20230602085530-0.1.8w.5l28.0.u8jv2pk0v9@webtopbits.pl>
+Date:   Fri,  2 Jun 2023 08:55:46 GMT
+From:   "Kamil Durjasz" <kamil.durjasz@webtopbits.pl>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?Q?Wy=C5=BCsza_konwersja_w_e-sklepie_?=
+X-Mailer: mail.webtopbits.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove 'struct rtl_dualmac_easy_concurrent_ctl' of 'struct rtl_priv'
-and related code in '_rtl_pci_tx_chk_waitq()'.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: include into patchset (Ping-Ke Shih)
----
- drivers/net/wireless/realtek/rtlwifi/pci.c  | 5 -----
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 9 ---------
- 2 files changed, 14 deletions(-)
+w jaki spos=C3=B3b docieraj=C4=85 Pa=C5=84stwo do odbiorc=C3=B3w?
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index ca79f652fef3..028a7c97bacf 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -482,11 +482,6 @@ static void _rtl_pci_tx_chk_waitq(struct ieee80211_hw *hw)
- 	if (!rtlpriv->rtlhal.earlymode_enable)
- 		return;
- 
--	if (rtlpriv->dm.supp_phymode_switch &&
--	    (rtlpriv->easy_concurrent_ctl.switch_in_process ||
--	    (rtlpriv->buddy_priv &&
--	    rtlpriv->buddy_priv->easy_concurrent_ctl.switch_in_process)))
--		return;
- 	/* we just use em for BE/BK/VI/VO */
- 	for (tid = 7; tid >= 0; tid--) {
- 		u8 hw_queue = ac_to_hwq[rtl_tid_to_ac(tid)];
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index bc1d68cb9183..307e059ec8aa 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -2496,14 +2496,6 @@ struct rtl_debug {
- #define MIMO_PS_DYNAMIC			1
- #define MIMO_PS_NOLIMIT			3
- 
--struct rtl_dualmac_easy_concurrent_ctl {
--	enum band_type currentbandtype_backfordmdp;
--	bool close_bbandrf_for_dmsp;
--	bool change_to_dmdp;
--	bool change_to_dmsp;
--	bool switch_in_process;
--};
--
- struct rtl_dmsp_ctl {
- 	bool activescan_for_slaveofdmsp;
- 	bool scan_for_anothermac_fordmsp;
-@@ -2744,7 +2736,6 @@ struct rtl_priv {
- 	struct list_head list;
- 	struct rtl_priv *buddy_priv;
- 	struct rtl_global_var *glb_var;
--	struct rtl_dualmac_easy_concurrent_ctl easy_concurrent_ctl;
- 	struct rtl_dmsp_ctl dmsp_ctl;
- 	struct rtl_locks locks;
- 	struct rtl_works works;
--- 
-2.40.1
+Tworzymy pot=C4=99=C5=BCne narz=C4=99dzia sprzeda=C5=BCy, kt=C3=B3re pozw=
+alaj=C4=85 kompleksowo rozwi=C4=85za=C4=87 problemy potencjalnych klient=C3=
+=B3w i skutecznie wp=C5=82yn=C4=85=C4=87 na ich decyzje zakupowe.=20
 
+Skupiamy si=C4=99 na Pa=C5=84stwa potrzebach zwi=C4=85zanych z obs=C5=82u=
+g=C4=85 sklepu, oczekiwaniach i planach sprzeda=C5=BCowych. Szczeg=C3=B3=C5=
+=82owo dopasowujemy grafik=C4=99, funkcjonalno=C5=9Bci, struktur=C4=99 i =
+mikrointerakcje do Pa=C5=84stwa grupy docelowej, co przek=C5=82ada si=C4=99=
+ na oczekiwane rezultaty.
+
+Ch=C4=99tnie przedstawi=C4=99 dotychczasowe realizacje, aby mogli Pa=C5=84=
+stwo przekona=C4=87 si=C4=99 o naszych mo=C5=BCliwo=C5=9Bciach. Mog=C4=99=
+ si=C4=99 skontaktowa=C4=87?
+
+
+Pozdrawiam
+Kamil Durjasz
