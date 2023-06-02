@@ -2,198 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D58E720AE3
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 23:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 770AF720C22
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 00:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236281AbjFBVOf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 17:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39440 "EHLO
+        id S236720AbjFBW6f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 18:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236164AbjFBVOa (ORCPT
+        with ESMTP id S236675AbjFBW6c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 17:14:30 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D75A6E4A
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 14:14:28 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 3C8BFB00090
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 21:14:27 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id AD27213C2B0;
-        Fri,  2 Jun 2023 14:14:26 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AD27213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1685740466;
-        bh=mbkvui7xnX0cuQ9/Ex8+/x3wmauz9WAtPDhdotDLlkk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=PBxA2GL6+LKM679iuA4Tqs3OK+OlEP3OEYNLTfiUY+npHrz+/Q8Yb+zbyAvyKDV5q
-         FTxEWDvB+u4QJ2pAvPXAQovFy4hcoM1x21olkjGMydu8aOEAYnH2I7XObDZEeRpA7q
-         YnABB4we1IpVWM61fRsI2QUUzszQ8rP4Jrpv0bkQ=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v3] wifi: mt76: mt7921: Support temp sensor
-Date:   Fri,  2 Jun 2023 14:14:24 -0700
-Message-Id: <20230602211424.3916486-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.40.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-MDID: 1685740467-jSpEm2XebsGJ
-X-MDID-O: us5;ut7;1685740467;jSpEm2XebsGJ;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        Fri, 2 Jun 2023 18:58:32 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAB7E40
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 15:58:31 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-ba81b24b878so3553887276.3
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Jun 2023 15:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1685746710; x=1688338710;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3ZyKSFX9mbFEpxkW7+RsW7XcjXG7U8cVIRswtejyB9g=;
+        b=2pzXrZilZ7Bcom6WaEPYFcREl/2z+mMdTIIoCasFOVp9elYTIBqUsvNruRF80xUTQl
+         UYILmU4EAjQ/LBj98zr08NdA1slg/dEucypM65FWCKjN4/kmu/x1LttRWgcf5UMI/VXM
+         4TGtOTT8so+PXbZU+JvNwM32WfRiVmyGWpS9PZfaCE3/Chv9b9+z02bZdk3wl+5olaj+
+         No1xbklWaYq4CvHLQvb73CFx4ybbBq6a8xuFfOOsLPDEXHbKJZKSiXMyP9inSmeIU/Vh
+         uleJ3m8sg5mVBnQLbSSn09+BqgcWDzeOFHSPTQwltSAXX2AejOYSeyBKHUo9RiQ9QR6p
+         czCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685746710; x=1688338710;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3ZyKSFX9mbFEpxkW7+RsW7XcjXG7U8cVIRswtejyB9g=;
+        b=S0Ads+sBKPOUHRPp3FyDhC65BZm4pEHPfhn7JCXyxqppO3zowvpuLnnGVkG0ugaeWZ
+         xkz31wcdIhkB7bKOPpNYYrapChfe8M8MsVFJQ9F4oafiW8XnIDXo9iaUueaZ9vZJ1H8N
+         C7QrpbYsA8/r0khhjRcgr+rE8PhHfCjLGeIfPGo/UBPhk9CeRyqHBtqXOQ3Gr/SA9ygH
+         sBWTk4rtlugkMMg/bsaKXluC83Jkok2V/8/38nl3whgeaN5KvykLraQHEI7mqck3LIy6
+         uOODy+g7/ruEOwsORDtEenqlQV7SGACqmsYMwyMWRC4HrfC67MMyi/sZSscf+OqLyADp
+         XVbQ==
+X-Gm-Message-State: AC+VfDzCt85qDKRRondye6AVi86vLeX6HeYoAxo0y3xtGur/M6VdiLdR
+        w8Qd77c41pWmv6G/krgcTgPxI3OPP7I=
+X-Google-Smtp-Source: ACHHUZ5epWr+KLvsq4wxXvbLgvhJs9/CIEEGvPBMJz7lOWLRL813+U+/wlzLqS+S4C/NlymbtACQaVJf4Bk=
+X-Received: from kglund1.bld.corp.google.com ([2620:15c:183:200:a5cd:5418:e5f2:aca5])
+ (user=kglund job=sendgmr) by 2002:a25:e443:0:b0:ba8:1e5f:850f with SMTP id
+ b64-20020a25e443000000b00ba81e5f850fmr1465907ybh.10.1685746710076; Fri, 02
+ Jun 2023 15:58:30 -0700 (PDT)
+Date:   Fri,  2 Jun 2023 16:57:50 -0600
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
+Message-ID: <20230602225751.164525-1-kglund@google.com>
+Subject: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same BSSID
+From:   Kevin Lund <kglund@google.com>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Cc:     Kevin Lund <kglund@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+Within cfg80211_connect, reject the (re-)association request if we are
+already connected to the exact BSSID which is being requested. This
+prevents an unnecessary attempt to connect which in the best case
+leaves us back where we started.
 
-Allow sensors tool to read radio's temperature, example:
+There is precedent for behaving this way over on the userspace SME side
+of things in cfg80211_mlme_auth. Further, cfg80211_connect already makes
+several basic checks to ensure the connection attempt is reasonable, so
+this fits in that context.
 
-mt7921_phy17-pci-1800
-Adapter: PCI adapter
-temp1:        +72.0°C
-
-Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Kevin Lund <kglund@google.com>
 ---
+ net/wireless/sme.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-v3:  Fix patch title
-  Fix spelling of Celsius
-
- .../net/wireless/mediatek/mt76/mt7921/init.c  | 57 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 17 ++++++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- 3 files changed, 75 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index c15ce1a19000..c37f465183dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -2,6 +2,9 @@
- /* Copyright (C) 2020 MediaTek Inc. */
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 7bdeb8eea92dc..8f88e66bc85fc 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -1442,7 +1442,8 @@ int cfg80211_connect(struct cfg80211_registered_device *rdev,
  
- #include <linux/etherdevice.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
-+#include <linux/thermal.h>
- #include <linux/firmware.h>
- #include "mt7921.h"
- #include "../mt76_connac2_mac.h"
-@@ -58,6 +61,54 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
- 	}
- };
- 
-+static ssize_t mt7921_thermal_temp_show(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
-+{
-+	switch (to_sensor_dev_attr(attr)->index) {
-+	case 0: {
-+		struct mt7921_phy *phy = dev_get_drvdata(dev);
-+		struct mt7921_dev *mdev = phy->dev;
-+		int temperature;
-+
-+		mt7921_mutex_acquire(mdev);
-+		temperature = mt7921_mcu_get_temperature(phy);
-+		mt7921_mutex_release(mdev);
-+
-+		if (temperature < 0)
-+			return temperature;
-+		/* display in millidegree Celsius */
-+		return sprintf(buf, "%u\n", temperature * 1000);
-+	}
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+static SENSOR_DEVICE_ATTR_RO(temp1_input, mt7921_thermal_temp, 0);
-+
-+static struct attribute *mt7921_hwmon_attrs[] = {
-+	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(mt7921_hwmon);
-+
-+static int mt7921_thermal_init(struct mt7921_phy *phy)
-+{
-+	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+	struct device *hwmon;
-+	const char *name;
-+
-+	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
-+			      wiphy_name(wiphy));
-+
-+	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
-+						       mt7921_hwmon_groups);
-+	if (IS_ERR(hwmon))
-+		return PTR_ERR(hwmon);
-+
-+	return 0;
-+}
-+
- static void
- mt7921_regd_notifier(struct wiphy *wiphy,
- 		     struct regulatory_request *request)
-@@ -384,6 +435,12 @@ static void mt7921_init_work(struct work_struct *work)
- 		return;
+ 	/*
+ 	 * If connected, reject (re-)association unless prev_bssid
+-	 * matches the current BSSID.
++	 * matches the current BSSID. Also reject if the current BSSID matches
++	 * the desired BSSID.
+ 	 */
+ 	if (wdev->connected) {
+ 		if (!prev_bssid)
+@@ -1450,6 +1451,9 @@ int cfg80211_connect(struct cfg80211_registered_device *rdev,
+ 		if (!ether_addr_equal(prev_bssid,
+ 				      wdev->u.client.connected_addr))
+ 			return -ENOTCONN;
++		if (ether_addr_equal(wdev->current_bss->pub.bssid,
++				     connect->bssid))
++			return -EALREADY;
  	}
  
-+	ret = mt7921_thermal_init(&dev->phy);
-+	if (ret) {
-+		dev_err(dev->mt76.dev, "thermal_init failed\n");
-+		return;
-+	}
-+
- 	/* we support chip reset now */
- 	dev->hw_init_done = true;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 9c4dcc0e5a7c..abeedacc28f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1346,6 +1346,23 @@ int mt7921_mcu_set_clc(struct mt7921_dev *dev, u8 *alpha2,
- 	return 0;
- }
- 
-+int mt7921_mcu_get_temperature(struct mt7921_phy *phy)
-+{
-+	struct mt7921_dev *dev = phy->dev;
-+	struct {
-+		u8 ctrl_id;
-+		u8 action;
-+		u8 band_idx;
-+		u8 rsv[5];
-+	} req = {
-+		.ctrl_id = THERMAL_SENSOR_TEMP_QUERY,
-+		.band_idx = phy->mt76->band_idx,
-+	};
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(THERMAL_CTRL), &req,
-+				 sizeof(req), true);
-+}
-+
- int mt7921_mcu_set_rxfilter(struct mt7921_dev *dev, u32 fif,
- 			    u8 bit_op, u32 bit_map)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 706f00df6836..85fddf99d497 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -568,6 +568,7 @@ int mt7921_mcu_set_sniffer(struct mt7921_dev *dev, struct ieee80211_vif *vif,
- 			   bool enable);
- int mt7921_mcu_config_sniffer(struct mt7921_vif *vif,
- 			      struct ieee80211_chanctx_conf *ctx);
-+int mt7921_mcu_get_temperature(struct mt7921_phy *phy);
- 
- int mt7921_usb_sdio_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 				   enum mt76_txq_id qid, struct mt76_wcid *wcid,
+ 	/*
 -- 
-2.40.0
+2.39.2
 
