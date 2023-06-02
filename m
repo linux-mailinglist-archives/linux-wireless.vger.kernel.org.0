@@ -2,58 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B9707208AE
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 19:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B8B67208D1
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 20:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235496AbjFBR5c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 13:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
+        id S236342AbjFBSIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 14:08:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232978AbjFBR5b (ORCPT
+        with ESMTP id S235598AbjFBSIi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 13:57:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 948719F
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 10:57:30 -0700 (PDT)
+        Fri, 2 Jun 2023 14:08:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FF6C123;
+        Fri,  2 Jun 2023 11:08:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 29A2062B97
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 17:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE93C4339B;
-        Fri,  2 Jun 2023 17:57:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5996611B7;
+        Fri,  2 Jun 2023 18:08:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC27C433D2;
+        Fri,  2 Jun 2023 18:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685728649;
-        bh=mvN5M0iGqD7SXXGwWWLrqk3W79voWGsffhlUFGaufC4=;
+        s=k20201202; t=1685729316;
+        bh=trVIsllqEc81wyDJ+ten0E5hJ8khH0VhpwFVl2U/LAE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=onYFmJogHGFmh+csAtb2E17lDMAY74JSS8/d7doKguBUbNsCFdoPwe/mPD4F+0MRt
-         66o0yNKzN6cu4dwcGdjXrV8hc8CfTF1XLQMjz2qsjBivKMEA8tu4C/0RFZEBD79p5O
-         8m2ujeCGUjNTVzfYZeL11cZA1C//j+iQ0ab3Wn15kvQwq4D2KmpTPAm5yAv/cbpEbg
-         2sAn1bMTLGTptuAKzT/nctNKA4okVJXRe0yhtQsF1F4fj96IV9VhyOYPoz+Fxa4VLm
-         rTbgT/6jqR+vIjwEj2EPn7e7RXEPz+MIXSrnyzPX9htMf+tHDskKP8dVw37iNnHMzX
-         dmLqLHNjGxTAw==
-Date:   Fri, 2 Jun 2023 19:57:25 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Shayne Chen <shayne.chen@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Bo Jiao <Bo.Jiao@mediatek.com>,
-        linux-mediatek <linux-mediatek@lists.infradead.org>,
-        Peter Chiu <chui-hao.chiu@mediatek.com>
-Subject: Re: [PATCH 07/12] wifi: mt76: connac: add a new bss_info tag for
- setting ifs time
-Message-ID: <ZHothb9YzTAUcKz+@lore-desk>
-References: <20230602152108.26860-1-shayne.chen@mediatek.com>
- <20230602152108.26860-7-shayne.chen@mediatek.com>
+        b=Fd8pv5I1oGyCOTYW2Vsa0MLiGAsZvAO0KCNsbGmIRhmjaVRtqO78eyHxKbMXXYB2K
+         amgVLaeVb86YBH8byiFyCoiaeQMR7UvlwkGRzi/Du+OK6Ew1qKi2uyxTDIm6BQ4RRS
+         rlrIZUQIKrdMXzRHtFQnYjRKvPGaalflGWO3BS3lW+vvbbDn/QCUFJ+un6dsUaxkeV
+         iQuVwM2XqLadTF/cSiJQB/rl1ogDZ3u0n94XiF3r35urP1k+914JMLqOp2Wa38xrEf
+         Ld+KriUNvvcApw0Twv8KMaIBkjiQfqPdOl5UtXDao/AxF/wuYCc/TVU1Gmvzwiw3Tk
+         GAXDcLMp3x7JA==
+Date:   Fri, 2 Jun 2023 19:08:30 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     Kalle Valo <kvalo@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Arend Van Spriel <arend@broadcom.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+Subject: Re: [PATCH 2/3] dt-bindings: net: wireless: brcm,bcm4329-fmac: allow
+ generic properties
+Message-ID: <20230602-playgroup-scanning-0d40123d1007@spud>
+References: <20230602135925.14143-1-zajec5@gmail.com>
+ <20230602135925.14143-2-zajec5@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="YvpdQ4zsZ5JQlJO5"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="lZWLL1mZjyEGX5a5"
 Content-Disposition: inline
-In-Reply-To: <20230602152108.26860-7-shayne.chen@mediatek.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <20230602135925.14143-2-zajec5@gmail.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,54 +71,69 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---YvpdQ4zsZ5JQlJO5
-Content-Type: text/plain; charset=us-ascii
+--lZWLL1mZjyEGX5a5
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> From: Peter Chiu <chui-hao.chiu@mediatek.com>
+On Fri, Jun 02, 2023 at 03:59:24PM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
+> From: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
 >=20
-> Add a new bss_info tag id UNI_BSS_INFO_IFS_TIME. This is used for
-> setting IFS time by mcu command.
+> Include ieee80211.yaml to allow using generic 802.11 properties for
+> bindings of Broadcom FullMAC devices. That allows specifying frequencies
+> ranges.
 >=20
-> Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
 > ---
->  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 1 +
->  1 file changed, 1 insertion(+)
+>  .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml  | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> index 4a21c237ea6e..3790d68525e5 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> @@ -1288,6 +1288,7 @@ enum {
->  	UNI_BSS_INFO_UAPSD =3D 19,
->  	UNI_BSS_INFO_PS =3D 21,
->  	UNI_BSS_INFO_BCNFT =3D 22,
-> +	UNI_BSS_INFO_IFS_TIME =3D 23,
->  	UNI_BSS_INFO_OFFLOAD =3D 25,
->  	UNI_BSS_INFO_MLD =3D 26,
-
-same here, this patch can be merged with 8/12.
-
-Regards,
-Lorenzo
-
->  };
+> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-=
+fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fma=
+c.yaml
+> index 527f055a6683..4aa521f1be8c 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.ya=
+ml
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.ya=
+ml
+> @@ -15,6 +15,9 @@ description:
+>    These chips also have a Bluetooth portion described in a separate
+>    binding.
+> =20
+> +allOf:
+> +  - $ref: ieee80211.yaml#
+> +
+>  properties:
+>    compatible:
+>      oneOf:
+> @@ -121,7 +124,7 @@ required:
+>    - compatible
+>    - reg
+> =20
+> -additionalProperties: false
+> +unevaluatedProperties: false
+> =20
+>  examples:
+>    - |
 > --=20
-> 2.39.2
+> 2.35.3
 >=20
 
---YvpdQ4zsZ5JQlJO5
+--lZWLL1mZjyEGX5a5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZHothQAKCRA6cBh0uS2t
-rDtPAP4ouJrh0cFPM8L52UtVpfHvIYXcF8lsYmeK1VuCj4u2ewEA2GKHK9VLMJC1
-p56s+EnJXrXSLbNf7gln3UBxRjT9Aw4=
-=mAYh
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHowHgAKCRB4tDGHoIJi
+0g/uAQDgeMmfqJo6Ytlhdux0U7WWCq0qq2Ep8R3Onnz/oLqzhQD7Bqjz1oHC54JN
+drBQywo42CJUxZCwwQfYgnk+T6BW0wI=
+=KpQ8
 -----END PGP SIGNATURE-----
 
---YvpdQ4zsZ5JQlJO5--
+--lZWLL1mZjyEGX5a5--
