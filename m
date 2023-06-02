@@ -2,85 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 332FA71F9A9
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 07:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3583E71F9EA
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 08:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233597AbjFBFcQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 01:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54958 "EHLO
+        id S233218AbjFBGNX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 02:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233568AbjFBFcP (ORCPT
+        with ESMTP id S232674AbjFBGNW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 01:32:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D6C98
-        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 22:32:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AADC164AF9
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 05:32:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C468C433EF;
-        Fri,  2 Jun 2023 05:32:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685683933;
-        bh=W7z+G3u3NMTuzBLbx/P826d5tMzNU1iKc4JxP+G4Gc0=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=iGFyMPnpCRGjJEFDgT8msFraQsVi2SOOMoYCZr1gv7RHEbik8IVockxoXOhR2io75
-         8pLC2Hz9nVBlp0YmqG/wbtIxn0mpU5M2yGxcx2/PtM1PbLCFYwwMW2uYEgwhN/i4tt
-         GBuhZTm2cy6AhKK65AhgtG08XGF6qCDWigJ9DntiLOpbjPa8S8jP2GRGg9QYU7Lrmx
-         4YmKiPk2tpOtouV3FLX1BJ41NUUG6FETNk+Ndnra7XeJqiYOexX0MMn37JdJWE0NgB
-         wFj/L2Nzso2mslXWPne17Um17tWoCqt17PwVK/6P2v//L+v7tU5x0u3c3Az9MjTgG2
-         NT2WyOc2HvnKA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Neal Sidhwaney <nealsid@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH v2] wifi: brcmfmac: Detect corner error case earlier with log
-References: <20230601054034.43692-1-nealsid@gmail.com>
-Date:   Fri, 02 Jun 2023 08:32:07 +0300
-In-Reply-To: <20230601054034.43692-1-nealsid@gmail.com> (Neal Sidhwaney's
-        message of "Thu, 1 Jun 2023 01:40:36 -0400")
-Message-ID: <878rd2jup4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 2 Jun 2023 02:13:22 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CA713E
+        for <linux-wireless@vger.kernel.org>; Thu,  1 Jun 2023 23:13:18 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3526CsagE007392, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3526CsagE007392
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 2 Jun 2023 14:12:54 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 2 Jun 2023 14:13:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 2 Jun 2023 14:13:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Fri, 2 Jun 2023 14:13:08 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "dmantipov@yandex.ru" <dmantipov@yandex.ru>
+CC:     "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rtlwifi: rtl8188ee: mark RTX_POWER_{BEFORE,AFTER}_IQK_A reads as unused
+Thread-Topic: [PATCH] rtlwifi: rtl8188ee: mark RTX_POWER_{BEFORE,AFTER}_IQK_A
+ reads as unused
+Thread-Index: AQHZlHctas6Xg5gTu0Cgi8yJ5JAmc691Wq+AgAAWMwCAARKcAA==
+Date:   Fri, 2 Jun 2023 06:13:08 +0000
+Message-ID: <dc499da404c21b1d2db71a792d7fb836bc9ef122.camel@realtek.com>
+References: <b2198915-0e92-de99-d950-be46c2bd8e91@yandex.ru>
+         <20230601105215.27013-1-dmantipov@yandex.ru>
+         <3b92f9205003f44187f7ebf7add6c3e0626e9646.camel@realtek.com>
+         <0d1f24b9-a058-52fd-b669-54aa4e9162f9@yandex.ru>
+In-Reply-To: <0d1f24b9-a058-52fd-b669-54aa4e9162f9@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [125.224.72.35]
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <63D003F9F466AD4B85EDB25FB53428D7@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Neal Sidhwaney <nealsid@gmail.com> writes:
-
-> In some corner cases, an I/O read can fail and return -1, and this
-> patch detects this slightly earlier than is done today and logs an
-> appropriate message.
->
-> Signed-off-by: Neal Sidhwaney <nealsid@gmail.com>
-
-The formatting seems to be correct now, at least patchwork looks ok:
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20230601054034.43692-1-nealsid@gmail.com/
-
-But the commit log should always answer to the question "why?". Is there
-a specific reason why you want to do it earlier?
-
-> @@ -980,6 +981,11 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
->  	 */
->  	regdata = ci->ops->read32(ci->ctx,
->  				  CORE_CC_REG(ci->pub.enum_base, chipid));
-> +	if (regdata == READ_FAILED) {
-> +	  brcmf_err("MMIO read failed: 0x%08x\n", regdata);
-> +	  return -ENODEV;
-> +	}
-
-Indentation here does not look correct, did you run checkpatch?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+T24gVGh1LCAyMDIzLTA2LTAxIGF0IDE2OjUwICswMzAwLCBEbWl0cnkgQW50aXBvdiB3cm90ZToN
+Cj4gDQo+IE9uIDYvMS8yMyAxNTozMCwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiANCj4gPiBOb3Jt
+YWxseSwgbWVudGlvbiBhIGNvbW1pdCBieSBgY29tbWl0IDwxMiBkaWdpdHMgU0hBMT4gKCJzdWJq
+ZWN0IilgDQo+IA0KPiBPSw0KPiANCj4gPiBXaHkgbm90IGp1c3QNCj4gPiANCj4gPiBydGxfZ2V0
+X2JicmVnKGh3LCBSVFhfUE9XRVJfQkVGT1JFX0lRS19BLCBNQVNLRFdPUkQpOw0KPiA+IHJ0bF9n
+ZXRfYmJyZWcoaHcsIFJUWF9QT1dFUl9BRlRFUl9JUUtfQSwgTUFTS0RXT1JEKTsNCj4gDQo+IENv
+bXBpbGVyIHdpdGggLVdleHRyYSBldGMuIG9yIHN0YXRpYyBhbmFseXNpcyB0b29sIG1heSBjb21w
+bGFpbiBhYm91dCBhbiB1bnVzZWQNCj4gcmV0dXJuIHZhbHVlLiBBcyBmYXIgYXMgSSBrbm93IEdD
+QyBoYXMgX19hdHRyaWJ1dGVfXygod2Fybl91bnVzZWRfcmVzdWx0KSkgYnV0DQo+IGxhY2tzIGFu
+IG9wcG9zaXRlIHRoaW5nLCBzbyAoc29tZXdoYXQgdWdseSBleHBsaWNpdCkgY2FzdCB0byAndm9p
+ZCcgbWF5IGJlIGhlbHBmdWwuDQo+IA0KDQpEb24ndCB5b3UgdGhpbmsgY2FzdGluZyBvZiAndm9p
+ZCcgb25seSBtYWtlcyB0b29sIGhhcHB5Pw0KDQpQaW5nLUtlDQoNCg==
