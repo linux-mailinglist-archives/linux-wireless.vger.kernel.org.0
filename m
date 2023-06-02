@@ -2,374 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B46C171FDE8
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 11:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F8C720048
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 13:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235023AbjFBJbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 05:31:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48542 "EHLO
+        id S234408AbjFBLUd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 07:20:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235032AbjFBJbU (ORCPT
+        with ESMTP id S235245AbjFBLU3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 05:31:20 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2548FE48
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 02:31:17 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35274oOc014014;
-        Fri, 2 Jun 2023 09:31:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=qcppdkim1;
- bh=9e5K4kUlhRmD3uderWC3q10gQLLT7HNgikE5wiaXYME=;
- b=McjcdF3SVHkHEux7baAvoKSqT4tZVRBwNfcRfQzjgVP0tJoWoQGIMkddESpOUNlfaj+Y
- fVKPhGctQLAKjIqQkzcAj5NXX+DVuDTc3J4nQfJvFaD5lLKL7c58FIN25puFszoId52m
- WTMDAzIWU+3OIYoaqo43EuW52/tPOWw8s677OXGg8IjQBHeMZSxTggaAGKjJzRZL2Frg
- RcHPBcmkwvQoGrRCI6ZHVihe5dQE6vwCAnuh9xCotbpPlqOZ0HQJPUzGbDeJqMoCwcz9
- WT+fUGLdk+oFa8zLizZEm5VkErdvHgjVMlGnvZk3Ioe1ULPsG5PqvuUZTwstMB1Z50QW 2Q== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qyb6f0abk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Jun 2023 09:31:11 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3529VAed018485
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 2 Jun 2023 09:31:10 GMT
-Received: from haric-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Fri, 2 Jun 2023 02:31:09 -0700
-From:   Hari Chandrakanthan <quic_haric@quicinc.com>
-To:     <quic_kvalo@quicinc.com>, <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
+        Fri, 2 Jun 2023 07:20:29 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63237196
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 04:20:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685704828; x=1717240828;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ibySYrNNT3IVJib73vqU6Prg/GfysDkIt45VKN1+9iI=;
+  b=KxydV9wC27tnrTKcRjGreVhRped5FXHs8W1eAQr47HZCS97+wfAb/pSw
+   DX1mb4AlR8wSlJQxCmDcQ46x2Eth50uOCQhsctlgQVaRA9aILVObU36Ez
+   BHey4K694a7rqB7gMbor4zjvI/W+5CYhg8WPg5oQJxBxXEDB8XeHDaYXy
+   9SIe7WYcCIxEt0dW2Cg32nDXu/F7r2lMPhA0GOJvMPL88Yr/lVmSjJl6l
+   uB9ESW/JArQZLQvOW9q7Gwzyg3WGEjeKn31Nz0ai3YbfUV5lQfHiXKHa9
+   AuBSylUahKM6zhYM5EODGk4Lf2c1nPwVeQBge0MdLb8eXaW+AYZyrU34C
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="384127855"
+X-IronPort-AV: E=Sophos;i="6.00,212,1681196400"; 
+   d="scan'208";a="384127855"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 04:20:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="685288774"
+X-IronPort-AV: E=Sophos;i="6.00,212,1681196400"; 
+   d="scan'208";a="685288774"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 02 Jun 2023 04:20:26 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q52pV-0000Nl-2C;
+        Fri, 02 Jun 2023 11:20:25 +0000
+Date:   Fri, 2 Jun 2023 19:19:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Hari Chandrakanthan <quic_haric@quicinc.com>,
+        quic_kvalo@quicinc.com, ath11k@lists.infradead.org
+Cc:     oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
         Hari Chandrakanthan <quic_haric@quicinc.com>
-Subject: [PATCH] wifi: ath11k: add tx delay to TSF
-Date:   Fri, 2 Jun 2023 15:00:50 +0530
-Message-ID: <1685698250-722-1-git-send-email-quic_haric@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+Subject: Re: [PATCH] wifi: ath11k: add tx delay to TSF
+Message-ID: <202306021958.bdB3k531-lkp@intel.com>
+References: <1685698250-722-1-git-send-email-quic_haric@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: epWCuYSJNMPNbbDdQotP7yGP-0IFPRHU
-X-Proofpoint-ORIG-GUID: epWCuYSJNMPNbbDdQotP7yGP-0IFPRHU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-02_06,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 clxscore=1015 bulkscore=0 spamscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306020071
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1685698250-722-1-git-send-email-quic_haric@quicinc.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In ath11k AP, the TSF timestamp mod the beacon interval does not vary
-and is close to 0.
-It is expected to be around 384us for 2 GHz and  54us for 5 GHz/6 GHz.
+Hi Hari,
 
-The value of the TSF timer at TBTT is a multiple of the beacon interval,
-while the value of the TSF timestamp in the beacon accounts for medium access
-delay and physical implementation-specific delays through the PHY,
-which could cause the value of the TSF timestamp mod the beacon interval
-to vary.
+kernel test robot noticed the following build warnings:
 
-An AP sending a beacon frame shall set the value of the beacon frame’s
-timestamp so that it equals the value of the STA’s TSF timer at the
-time that the data symbol containing the first bit of the timestamp
-is transmitted to the PHY plus the transmitting STA’s delays through
-its local PHY from the MAC-PHY interface to its interface with the WM.
+[auto build test WARNING on kvalo-ath/ath-next]
+[also build test WARNING on next-20230602]
+[cannot apply to linus/master v6.4-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-In ath11k the physical implementation-specific delays were not accounted
-for TSF timer and it resulted in incorrent TSF timer values.
+url:    https://github.com/intel-lab-lkp/linux/commits/Hari-Chandrakanthan/wifi-ath11k-add-tx-delay-to-TSF/20230602-173351
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git ath-next
+patch link:    https://lore.kernel.org/r/1685698250-722-1-git-send-email-quic_haric%40quicinc.com
+patch subject: [PATCH] wifi: ath11k: add tx delay to TSF
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20230602/202306021958.bdB3k531-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 12.3.0
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/493e1ad70fff68a5c06b59683ebd453dafcafd19
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Hari-Chandrakanthan/wifi-ath11k-add-tx-delay-to-TSF/20230602-173351
+        git checkout 493e1ad70fff68a5c06b59683ebd453dafcafd19
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=alpha olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash drivers/net/
 
-Add the physical implementation-specific delays in the TSF of beacon
-template and probe response, so that the TSF holds proper values in the
-beacon and probe response.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306021958.bdB3k531-lkp@intel.com/
 
-tx delay for 5 GHz/6 GHz:
-20(lsig)+2(service)+32(6mbps, 24 bytes) = 54us + 2us(MAC/BB DELAY)
-tx delay for 2.4 GHz:
-144 us ( LPREAMBLE) + 48 (PLCP Header) + 192 (1Mbps, 24 ytes)
-= 384 us + 2us(MAC/BB DELAY)
+All warnings (new ones prefixed by >>):
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.4.0.1-00192-QCAHKSWPL_SILICONZ-1
+>> drivers/net/wireless/ath/ath11k/wmi.c:8609:6: warning: no previous prototype for 'ath11k_wmi_event_tbttoffset_update' [-Wmissing-prototypes]
+    8609 | void ath11k_wmi_event_tbttoffset_update(struct ath11k_base *ab, struct sk_buff *skb)
+         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.h |   3 +-
- drivers/net/wireless/ath/ath11k/mac.c  |  36 ++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.c  | 102 ++++++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath11k/wmi.h  |  18 ++++++
- 4 files changed, 157 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 9d15b4390b9c..d937eff876d8 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -365,7 +365,8 @@ struct ath11k_vif {
- 	struct ieee80211_chanctx_conf chanctx;
- 	struct ath11k_arp_ns_offload arp_ns_offload;
- 	struct ath11k_rekey_data rekey_data;
--
-+	u64 tbtt_offset;
-+	struct work_struct update_bcn_template_work;
- #ifdef CONFIG_ATH11K_DEBUGFS
- 	struct dentry *debugfs_twt;
- #endif /* CONFIG_ATH11K_DEBUGFS */
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index a31b8e89684b..51d2f73be06e 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1437,6 +1437,7 @@ static void ath11k_mac_set_vif_params(struct ath11k_vif *arvif,
- {
- 	struct ieee80211_mgmt *mgmt;
- 	u8 *ies;
-+	u64 adjusted_tsf;
- 
- 	ies = bcn->data + ieee80211_get_hdrlen_from_skb(bcn);
- 	mgmt = (struct ieee80211_mgmt *)bcn->data;
-@@ -1453,6 +1454,15 @@ static void ath11k_mac_set_vif_params(struct ath11k_vif *arvif,
- 		arvif->wpaie_present = true;
- 	else
- 		arvif->wpaie_present = false;
-+
-+	/* Make the TSF offset negative so beacons in the same
-+	 * staggered batch have the same TSF.
-+	 */
-+	if (arvif->tbtt_offset) {
-+		adjusted_tsf = cpu_to_le64(0ULL - arvif->tbtt_offset);
-+		memcpy(&mgmt->u.beacon.timestamp, &adjusted_tsf, sizeof(adjusted_tsf));
-+	}
-+
- }
- 
- static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif)
-@@ -6173,9 +6183,11 @@ static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 	struct ieee80211_key_conf *key = info->control.hw_key;
- 	struct ath11k_sta *arsta = NULL;
-+	struct ieee80211_mgmt *mgmt;
- 	u32 info_flags = info->flags;
- 	bool is_prb_rsp;
- 	int ret;
-+	u64 adjusted_tsf;
- 
- 	memset(skb_cb, 0, sizeof(*skb_cb));
- 	skb_cb->vif = vif;
-@@ -6189,6 +6201,12 @@ static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
- 		skb_cb->flags |= ATH11K_SKB_HW_80211_ENCAP;
- 	} else if (ieee80211_is_mgmt(hdr->frame_control)) {
- 		is_prb_rsp = ieee80211_is_probe_resp(hdr->frame_control);
-+		if (is_prb_rsp && arvif->tbtt_offset) {
-+			mgmt = (struct ieee80211_mgmt *)skb->data;
-+			adjusted_tsf = cpu_to_le64(0ULL - arvif->tbtt_offset);
-+			memcpy(&mgmt->u.probe_resp.timestamp, &adjusted_tsf,
-+			       sizeof(adjusted_tsf));
-+		}
- 		ret = ath11k_mac_mgmt_tx(ar, skb, is_prb_rsp);
- 		if (ret) {
- 			ath11k_warn(ar->ab, "failed to queue management frame %d\n",
-@@ -6400,6 +6418,22 @@ static int ath11k_mac_op_start(struct ieee80211_hw *hw)
- 	return ret;
- }
- 
-+static void ath11k_update_bcn_template_work(struct work_struct *work)
-+{
-+	struct ath11k_vif *arvif = container_of(work, struct ath11k_vif,
-+						update_bcn_template_work);
-+	struct ath11k *ar = arvif->ar;
-+	int ret = 0;
-+
-+	mutex_lock(&ar->conf_mutex);
-+	if (arvif->is_up)
-+		ret = ath11k_mac_setup_bcn_tmpl(arvif);
-+	mutex_unlock(&ar->conf_mutex);
-+	if (ret)
-+		ath11k_warn(ar->ab, "failed to submit beacon template for vdev_id : %d ret : %d\n",
-+			    arvif->vdev_id, ret);
-+}
-+
- static void ath11k_mac_op_stop(struct ieee80211_hw *hw)
- {
- 	struct ath11k *ar = hw->priv;
-@@ -6761,6 +6795,7 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 	INIT_LIST_HEAD(&arvif->list);
- 	INIT_DELAYED_WORK(&arvif->connection_loss_work,
- 			  ath11k_mac_vif_sta_connection_loss_work);
-+	INIT_WORK(&arvif->update_bcn_template_work, ath11k_update_bcn_template_work);
- 
- 	for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
- 		arvif->bitrate_mask.control[i].legacy = 0xffffffff;
-@@ -6986,6 +7021,7 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 	int i;
- 
- 	cancel_delayed_work_sync(&arvif->connection_loss_work);
-+	cancel_work_sync(&arvif->update_bcn_template_work);
- 
- 	mutex_lock(&ar->conf_mutex);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 68622a850527..aa598dc1afcc 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8521,6 +8521,104 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
- 	kfree(tb);
- }
- 
-+static int ath11k_wmi_tbtt_offset_subtlv_parser(struct ath11k_base *ab, u16 tag,
-+						u16 len, const void *ptr,
-+						void *data)
-+{
-+	int ret = 0;
-+	struct ath11k *ar;
-+	u64 tx_delay = 0;
-+	struct wmi_tbtt_offset_info *tbtt_offset_info;
-+	struct ieee80211_chanctx_conf *conf;
-+	struct ath11k_vif *arvif;
-+
-+	tbtt_offset_info = (struct wmi_tbtt_offset_info *)ptr;
-+
-+	rcu_read_lock();
-+	ar = ath11k_mac_get_ar_by_vdev_id(ab, tbtt_offset_info->vdev_id);
-+	if (!ar) {
-+		ath11k_warn(ab, "ar not found, vdev_id %d\n", tbtt_offset_info->vdev_id);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	arvif = ath11k_mac_get_arvif(ar, tbtt_offset_info->vdev_id);
-+	if (!arvif) {
-+		ath11k_warn(ab, "arvif not found, vdev_id %d\n",
-+			    tbtt_offset_info->vdev_id);
-+		ret = -EINVAL;
-+		goto exit;
-+	}
-+
-+	if (arvif->vdev_type != WMI_VDEV_TYPE_AP) {
-+		ret = 0;
-+		goto exit;
-+	}
-+
-+	arvif->tbtt_offset = tbtt_offset_info->tbtt_offset;
-+	conf = rcu_dereference(arvif->vif->bss_conf.chanctx_conf);
-+	if (conf && conf->def.chan->band == NL80211_BAND_2GHZ) {
-+		/* 1Mbps Beacon: */
-+		/* 144 us ( LPREAMBLE) + 48 (PLCP Header)
-+		 * + 192 (1Mbps, 24 ytes)
-+		 * = 384 us + 2us(MAC/BB DELAY
-+		 */
-+		tx_delay = 386;
-+	} else if (conf && (conf->def.chan->band == NL80211_BAND_5GHZ ||
-+			    conf->def.chan->band == NL80211_BAND_6GHZ)) {
-+		/* 6Mbps Beacon: */
-+		/* 20(lsig)+2(service)+32(6mbps, 24 bytes)
-+		 * = 54us + 2us(MAC/BB DELAY)
-+		 */
-+		tx_delay = 56;
-+	}
-+	arvif->tbtt_offset -= tx_delay;
-+
-+	ieee80211_queue_work(ar->hw, &arvif->update_bcn_template_work);
-+exit:
-+	rcu_read_unlock();
-+	return ret;
-+}
-+
-+static int ath11k_wmi_tbtt_offset_event_parser(struct ath11k_base *ab,
-+					       u16 tag, u16 len,
-+					       const void *ptr, void *data)
-+{
-+	int ret = 0;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI, "wmi tbtt offset event tag 0x%x of len %d rcvd\n",
-+		   tag, len);
-+
-+	switch (tag) {
-+	case WMI_TAG_TBTT_OFFSET_EXT_EVENT:
-+		break;
-+	case WMI_TAG_ARRAY_STRUCT:
-+		ret = ath11k_wmi_tlv_iter(ab, ptr, len,
-+					  ath11k_wmi_tbtt_offset_subtlv_parser,
-+					  data);
-+		break;
-+	default:
-+		ath11k_warn(ab, "Received invalid tag for wmi tbtt offset event\n");
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+void ath11k_wmi_event_tbttoffset_update(struct ath11k_base *ab, struct sk_buff *skb)
-+{
-+	struct wmi_tbtt_offset_info tbtt_offset_info;
-+	int ret;
-+
-+	ret = ath11k_wmi_tlv_iter(ab, skb->data, skb->len,
-+				  ath11k_wmi_tbtt_offset_event_parser,
-+				  &tbtt_offset_info);
-+	if (ret) {
-+		ath11k_warn(ab, "failed to parse tbtt tlv %d\n", ret);
-+	}
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -8627,8 +8725,10 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_TWT_ADD_DIALOG_EVENTID:
- 		ath11k_wmi_twt_add_dialog_event(ab, skb);
- 		break;
--	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
-+		ath11k_wmi_event_tbttoffset_update(ab, skb);
-+		break;
-+	/* add Unsupported events here */
- 	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
- 	case WMI_TWT_ENABLE_EVENTID:
- 	case WMI_TWT_DISABLE_EVENTID:
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 100bb816b592..534710146e18 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -4541,6 +4541,24 @@ struct wmi_pdev_bss_chan_info_event {
- 	u32 pdev_id;
- } __packed;
- 
-+struct wmi_tbtt_offset_info {
-+	u32 vdev_id;
-+	u32 tbtt_offset;
-+	u32 tbtt_qtime_low_us;
-+	u32 tbtt_qtime_high_us;
-+} __packed;
-+
-+struct wmi_tbtt_offset_event {
-+	u32 num_vdevs;
-+} __packed;
-+
-+struct wmi_tbtt_offset_ev_arg {
-+	u32 vdev_id;
-+	u32 tbtt_offset;
-+	u32 tbtt_qtime_low_us;
-+	u32 tbtt_qtime_high_us;
-+} __packed;
-+
- #define WMI_VDEV_INSTALL_KEY_COMPL_STATUS_SUCCESS 0
- 
- struct wmi_vdev_install_key_compl_event {
+vim +/ath11k_wmi_event_tbttoffset_update +8609 drivers/net/wireless/ath/ath11k/wmi.c
+
+  8608	
+> 8609	void ath11k_wmi_event_tbttoffset_update(struct ath11k_base *ab, struct sk_buff *skb)
+  8610	{
+  8611		struct wmi_tbtt_offset_info tbtt_offset_info;
+  8612		int ret;
+  8613	
+  8614		ret = ath11k_wmi_tlv_iter(ab, skb->data, skb->len,
+  8615					  ath11k_wmi_tbtt_offset_event_parser,
+  8616					  &tbtt_offset_info);
+  8617		if (ret) {
+  8618			ath11k_warn(ab, "failed to parse tbtt tlv %d\n", ret);
+  8619		}
+  8620	}
+  8621	
+
 -- 
-2.7.4
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
