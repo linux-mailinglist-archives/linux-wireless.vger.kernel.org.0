@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FBB77209E6
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 21:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A847209FA
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Jun 2023 21:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235984AbjFBTfI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 15:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39790 "EHLO
+        id S236123AbjFBTmF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 15:42:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236305AbjFBTez (ORCPT
+        with ESMTP id S235923AbjFBTl6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 15:34:55 -0400
+        Fri, 2 Jun 2023 15:41:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98F6319B;
-        Fri,  2 Jun 2023 12:34:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163D9E40;
+        Fri,  2 Jun 2023 12:41:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D3826171E;
-        Fri,  2 Jun 2023 19:34:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93820C433D2;
-        Fri,  2 Jun 2023 19:34:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5A7061070;
+        Fri,  2 Jun 2023 19:41:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCBFC433EF;
+        Fri,  2 Jun 2023 19:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685734489;
-        bh=pVlZKSK7V60KmCp33dUk7C5+KElh0XQCV1KKRWbcQK0=;
+        s=k20201202; t=1685734916;
+        bh=Pg9bfYuqnxQUKFcQcN4GaPtYdl08E/HIAub3ENBrWGc=;
         h=Date:From:To:Cc:Subject:From;
-        b=fHmUyu5c/sVACqPy0gfGn2fBV9FLEDuhZPl3nFcTKs9nXSLp41oJ9HM4l69qFmbiY
-         XPlw6rznp83fjpwBCPoMgtMojFuMDLlD4V9+OiG9lHK9uoRILBDGkADD+k5IMiWMaF
-         IFHN7mtSt1WBWN+zeO+w5QqT6hPog9LsPpx4XQtQ40cvu3Aq25BbadPvEJtm+Lb5+k
-         nyGEIOrXIaHT16sRWebf2QbtKBEPS8P0WxoDiZuTvOIHTX+oZVj+lBdGQ+g6QI/3k+
-         tpJv14XAihBmEiu+x4YE4AFzUxbQTZzR5S5fnKe1ZnTvZyQ33lDUDyNYExeAQZRyfk
-         9chjeT1n3iAvA==
-Date:   Fri, 2 Jun 2023 13:35:41 -0600
+        b=GJNeBrnkVnERGcK4FVpVlecvQosDzKqGVO9hDYAe8lqZNJzYLXb1szRj+t8pe5MUI
+         7RqLwipnz8qsKkuq8qKtp/3VWOTivyeYGSYS1oIgNDhBd94ZV0fa/xFeR/GyH095zF
+         Myk5l+y61plOkgt/vPGTHloNZnhUvANtX9FMiOBs1Fhfzdm4oob5171c/DOuBXIoEv
+         J3WGkdq2ZYTUqS7gCnUUx3x0vngGavfsJLxJCu1V1sY+DZAtWuWUrCAIaVWorZdzNJ
+         lR7w/04uvITch+CvSEajMBb2/YQqRqVhaNjBgocfNTa1v7OSe2sFP677PPaQlKZivS
+         udofzhDnKVl+g==
+Date:   Fri, 2 Jun 2023 13:42:47 -0600
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
 To:     Gregory Greenman <gregory.greenman@intel.com>,
         Kalle Valo <kvalo@kernel.org>,
@@ -41,9 +41,9 @@ To:     Gregory Greenman <gregory.greenman@intel.com>,
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         linux-hardening@vger.kernel.org
-Subject: [PATCH] wifi: iwlwifi: mvm: Fix -Warray-bounds bug in
+Subject: [PATCH v2] wifi: iwlwifi: mvm: Fix -Warray-bounds bug in
  iwl_mvm_wait_d3_notif()
-Message-ID: <ZHpEjTmBys5cCOGZ@work>
+Message-ID: <ZHpGN555FwAKGduH@work>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
@@ -104,7 +104,7 @@ has been allocated for those objects:
 Fix this by allocating space for the whole notif object and zero out the
 remaining space in memory after member station_id.
 
-This also fixes the following -Warray-bouds issues:
+This also fixes the following -Warray-bounds issues:
  CC      drivers/net/wireless/intel/iwlwifi/mvm/d3.o
 drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
 drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2743:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
@@ -131,24 +131,32 @@ Fixes: 905d50ddbc83 ("wifi: iwlwifi: mvm: support wowlan info notification versi
 Cc: stable@vger.kernel.org
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Changes in v2:
+ - Use sizeof(*notif), instead of sizeof(struct iwl_wowlan_info_notif).
+ - Fix typo in the changelog text s/bouds/bounds.
+
+v1:
+ - Link: https://lore.kernel.org/linux-hardening/ZHpEjTmBys5cCOGZ@work/
+
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 37aa4676dc94..1f8658a5ef28 100644
+index 37aa4676dc94..6d1007f24b4a 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2733,8 +2733,7 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+@@ -2732,17 +2732,13 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+ 		if (wowlan_info_ver < 2) {
  			struct iwl_wowlan_info_notif_v1 *notif_v1 = (void *)pkt->data;
  
- 			notif = kmemdup(notif_v1,
+-			notif = kmemdup(notif_v1,
 -					offsetofend(struct iwl_wowlan_info_notif,
 -						    received_beacons),
-+					sizeof(struct iwl_wowlan_info_notif),
- 					GFP_ATOMIC);
- 
+-					GFP_ATOMIC);
+-
++			notif = kmemdup(notif_v1, sizeof(*notif), GFP_ATOMIC);
  			if (!notif)
-@@ -2742,7 +2741,7 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+ 				return false;
  
  			notif->tid_tear_down = notif_v1->tid_tear_down;
  			notif->station_id = notif_v1->station_id;
