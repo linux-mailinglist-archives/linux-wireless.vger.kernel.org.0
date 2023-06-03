@@ -2,64 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 430B4720E00
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 07:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1E39720E05
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 08:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231567AbjFCF4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Jun 2023 01:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33464 "EHLO
+        id S231571AbjFCGBe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Jun 2023 02:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjFCF4Y (ORCPT
+        with ESMTP id S229523AbjFCGBc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Jun 2023 01:56:24 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F131DE55
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 22:56:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685771782; x=1717307782;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OH9x1fFzy1O6DdldqBpam4C5AuoGAgCEPJBE4lDD5ik=;
-  b=X7x48zRIuE/qor8sJEc1EbCr3XZmEH+Iwd2jpnLI4NyDqDIW4zLeNxZB
-   xdb3C/YxCg6z6bvOp/cRfSZq4hQjLs8AUYYNSBK+Q1Sm+Wnork1SZoWsZ
-   Nu3bbWkVghcSIZ0J07k9wO+ASH63N41VFv+v/4yc4faiaF/awI1QgK7Ce
-   USdhFP0Ne12a5RqJuzyFg7+1irFZHKPjSdGTxThUXRp5rGCMD5mxUXuNV
-   0UFeFJjvOFgXmKDI0r3gAKbmntQS57UyFfb8EnqywCMoPCT9NxtXrtDQ1
-   JUXIRaGjPBekLcSGjvB67Eh3olupabdtJZJdMEKJ15R+lscnZXKDZIj/z
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="356051383"
-X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
-   d="scan'208";a="356051383"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 22:56:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="777929534"
-X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
-   d="scan'208";a="777929534"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 02 Jun 2023 22:56:21 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q5KFQ-0001M3-1x;
-        Sat, 03 Jun 2023 05:56:20 +0000
-Date:   Sat, 3 Jun 2023 13:55:55 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kevin Lund <kglund@google.com>, johannes@sipsolutions.net,
-        linux-wireless@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Kevin Lund <kglund@google.com>
-Subject: Re: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same
- BSSID
-Message-ID: <202306031354.S6fuhpkH-lkp@intel.com>
-References: <20230602225751.164525-1-kglund@google.com>
+        Sat, 3 Jun 2023 02:01:32 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92EC3E55
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 23:01:31 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-568af2f6454so29605217b3.1
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Jun 2023 23:01:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685772090; x=1688364090;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sk9Xl9xoxV6Yau2FTfyWrUwCe2JG+DhTDPbuOloks3o=;
+        b=GbpFg6winX4c0G+uDSvU2/O1WqW37zeYE86D3nzF04VLmceBa5JnQyRIOTo1s+WonQ
+         TijaRppQM/JSjE6R9BZac0dFfB2j63QEhOUrYMa3btj2rz73gV0irnaAVtlym0DLlxZ7
+         rLrtaRkO9kyJ0Q0AqrGzFp7YuE3qNoHOXRvgYAaLFVQoZmfXwybBDizlf6JUAKwe+S7M
+         MxKNi/qYPcPeKiVyLg15dCv6wIxvFTHzj87KOQVXE92vdTSOJb6qc07wZ/y8zcZZTI7g
+         E8ldfCoBCdYY3Hm6l+Pqmr7APMU/hH5HkccQqCcLpSE9B8olZIafNtn/BpAxI0bOWrSG
+         SDkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685772090; x=1688364090;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Sk9Xl9xoxV6Yau2FTfyWrUwCe2JG+DhTDPbuOloks3o=;
+        b=QQP5Eq2JEEw8GWz8ec5mRFI5NwSj2LfZwxPkXJRLhIREJUsK2LiCvZ+fyYepslCgV3
+         zlt0p1+yDmg7oXw4aJ9eE/v3lxZQTFiReQAAY+0cdUjzilHFToKXx0d47cl2OJEF2/Un
+         twlWVewCPC5W6N7c/eLZh/MxxfG9iO7YPyZDALONU6Fd2f7yHe3wsn9VuoU02MpBbCfi
+         m8iEGBqVEMMYK23frqLxvpS4JAuiMzZHJvJaJXWFi9OqzsLHbObOJQAQ5Xh7kcltMVi+
+         4fCYcDLkvAg7YXW82GWWtMDYwRJQGMBu+D4Rj25MW6IFxEcAaWP2pQjsMFJryEYcJCrS
+         SAHw==
+X-Gm-Message-State: AC+VfDztOK/uaqGoE0gSjwgBPsxYN3Rf9cnOB13wpwq0iFRCjRJ1GD1M
+        ct7ZMiC7aOHY1QCToHcbu4AC76QxZuNohg==
+X-Google-Smtp-Source: ACHHUZ6EqjU2T2fq4GePyR59f2Jd/FbYuABCm6luhjGAUNTQSCiHgaokzYuIDmbOWbdlzMx9ftIBSw==
+X-Received: by 2002:a81:a0d6:0:b0:565:f16:9d07 with SMTP id x205-20020a81a0d6000000b005650f169d07mr2436595ywg.17.1685772090505;
+        Fri, 02 Jun 2023 23:01:30 -0700 (PDT)
+Received: from localhost.localdomain (107-218-116-63.lightspeed.jcvlfl.sbcglobal.net. [107.218.116.63])
+        by smtp.gmail.com with ESMTPSA id e6-20020a81dd06000000b00559be540b56sm1171288ywn.134.2023.06.02.23.01.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jun 2023 23:01:28 -0700 (PDT)
+From:   Neal Sidhwaney <nealsid@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list.pdl@broadcom.com,
+        Neal Sidhwaney <nealsid@gmail.com>
+Subject: [PATCH v3] wifi: brcmfmac: Detect corner error case earlier with log
+Date:   Sat,  3 Jun 2023 02:00:23 -0400
+Message-Id: <20230603060021.57225-1-nealsid@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230602225751.164525-1-kglund@google.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,169 +69,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kevin,
+In brcmf_chip_recognition, the return value from an MMIO read is
+interpreted as various fields without checking if it failed, which is
+harmless today, as the interpreted fields are checked for validity a
+few lines below.  However, in corner cases (on my MacbookPro 14,1,
+sometimes after waking from sleep or soft reboot), when this happens,
+it causes the logging to be misleading, because the message indicates
+an unsupported chip type ("brcmfmac: brcmf_chip_recognition: chip
+backplane type 15 is not supported").  This patch detects this case
+slightly earlier and logs an appropriate message, with the same return
+result as is the case today.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Neal Sidhwaney <nealsid@gmail.com>
+---
+ v3: Fix indentation and add context to commit message
+ v2: Add const to variable holding error code & fix patch submission
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.4-rc4 next-20230602]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kevin-Lund/wifi-mwifiex-Stop-rejecting-connection-attempts-while-connected/20230603-065907
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20230602225751.164525-1-kglund%40google.com
-patch subject: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same BSSID
-config: mips-ath79_defconfig (https://download.01.org/0day-ci/archive/20230603/202306031354.S6fuhpkH-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 4faf3aaf28226a4e950c103a14f6fc1d1fdabb1b)
-reproduce (this is a W=1 build):
-        mkdir -p ~/bin
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install mips cross compiling tool for clang build
-        # apt-get install binutils-mips-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/09f9fe87fe3588d03dafcaf05b36b3e931f8c8eb
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Kevin-Lund/wifi-mwifiex-Stop-rejecting-connection-attempts-while-connected/20230603-065907
-        git checkout 09f9fe87fe3588d03dafcaf05b36b3e931f8c8eb
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=mips olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash net/wireless/
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+index 9f9bf08a70bb..2ef92ef25517 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+@@ -972,6 +972,7 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
+ 	u32 regdata;
+ 	u32 socitype;
+ 	int ret;
++	const u32 READ_FAILED = 0xFFFFFFFF;
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306031354.S6fuhpkH-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> net/wireless/sme.c:1454:30: error: no member named 'current_bss' in 'struct wireless_dev'
-                   if (ether_addr_equal(wdev->current_bss->pub.bssid,
-                                        ~~~~  ^
-   1 error generated.
-
-
-vim +1454 net/wireless/sme.c
-
-  1418	
-  1419	/*
-  1420	 * API calls for nl80211/wext compatibility code
-  1421	 */
-  1422	int cfg80211_connect(struct cfg80211_registered_device *rdev,
-  1423			     struct net_device *dev,
-  1424			     struct cfg80211_connect_params *connect,
-  1425			     struct cfg80211_cached_keys *connkeys,
-  1426			     const u8 *prev_bssid)
-  1427	{
-  1428		struct wireless_dev *wdev = dev->ieee80211_ptr;
-  1429		int err;
-  1430	
-  1431		ASSERT_WDEV_LOCK(wdev);
-  1432	
-  1433		/*
-  1434		 * If we have an ssid_len, we're trying to connect or are
-  1435		 * already connected, so reject a new SSID unless it's the
-  1436		 * same (which is the case for re-association.)
-  1437		 */
-  1438		if (wdev->u.client.ssid_len &&
-  1439		    (wdev->u.client.ssid_len != connect->ssid_len ||
-  1440		     memcmp(wdev->u.client.ssid, connect->ssid, wdev->u.client.ssid_len)))
-  1441			return -EALREADY;
-  1442	
-  1443		/*
-  1444		 * If connected, reject (re-)association unless prev_bssid
-  1445		 * matches the current BSSID. Also reject if the current BSSID matches
-  1446		 * the desired BSSID.
-  1447		 */
-  1448		if (wdev->connected) {
-  1449			if (!prev_bssid)
-  1450				return -EALREADY;
-  1451			if (!ether_addr_equal(prev_bssid,
-  1452					      wdev->u.client.connected_addr))
-  1453				return -ENOTCONN;
-> 1454			if (ether_addr_equal(wdev->current_bss->pub.bssid,
-  1455					     connect->bssid))
-  1456				return -EALREADY;
-  1457		}
-  1458	
-  1459		/*
-  1460		 * Reject if we're in the process of connecting with WEP,
-  1461		 * this case isn't very interesting and trying to handle
-  1462		 * it would make the code much more complex.
-  1463		 */
-  1464		if (wdev->connect_keys)
-  1465			return -EINPROGRESS;
-  1466	
-  1467		cfg80211_oper_and_ht_capa(&connect->ht_capa_mask,
-  1468					  rdev->wiphy.ht_capa_mod_mask);
-  1469		cfg80211_oper_and_vht_capa(&connect->vht_capa_mask,
-  1470					   rdev->wiphy.vht_capa_mod_mask);
-  1471	
-  1472		if (connkeys && connkeys->def >= 0) {
-  1473			int idx;
-  1474			u32 cipher;
-  1475	
-  1476			idx = connkeys->def;
-  1477			cipher = connkeys->params[idx].cipher;
-  1478			/* If given a WEP key we may need it for shared key auth */
-  1479			if (cipher == WLAN_CIPHER_SUITE_WEP40 ||
-  1480			    cipher == WLAN_CIPHER_SUITE_WEP104) {
-  1481				connect->key_idx = idx;
-  1482				connect->key = connkeys->params[idx].key;
-  1483				connect->key_len = connkeys->params[idx].key_len;
-  1484	
-  1485				/*
-  1486				 * If ciphers are not set (e.g. when going through
-  1487				 * iwconfig), we have to set them appropriately here.
-  1488				 */
-  1489				if (connect->crypto.cipher_group == 0)
-  1490					connect->crypto.cipher_group = cipher;
-  1491	
-  1492				if (connect->crypto.n_ciphers_pairwise == 0) {
-  1493					connect->crypto.n_ciphers_pairwise = 1;
-  1494					connect->crypto.ciphers_pairwise[0] = cipher;
-  1495				}
-  1496			}
-  1497		} else {
-  1498			if (WARN_ON(connkeys))
-  1499				return -EINVAL;
-  1500	
-  1501			/* connect can point to wdev->wext.connect which
-  1502			 * can hold key data from a previous connection
-  1503			 */
-  1504			connect->key = NULL;
-  1505			connect->key_len = 0;
-  1506			connect->key_idx = 0;
-  1507		}
-  1508	
-  1509		wdev->connect_keys = connkeys;
-  1510		memcpy(wdev->u.client.ssid, connect->ssid, connect->ssid_len);
-  1511		wdev->u.client.ssid_len = connect->ssid_len;
-  1512	
-  1513		wdev->conn_bss_type = connect->pbss ? IEEE80211_BSS_TYPE_PBSS :
-  1514						      IEEE80211_BSS_TYPE_ESS;
-  1515	
-  1516		if (!rdev->ops->connect)
-  1517			err = cfg80211_sme_connect(wdev, connect, prev_bssid);
-  1518		else
-  1519			err = rdev_connect(rdev, dev, connect);
-  1520	
-  1521		if (err) {
-  1522			wdev->connect_keys = NULL;
-  1523			/*
-  1524			 * This could be reassoc getting refused, don't clear
-  1525			 * ssid_len in that case.
-  1526			 */
-  1527			if (!wdev->connected)
-  1528				wdev->u.client.ssid_len = 0;
-  1529			return err;
-  1530		}
-  1531	
-  1532		return 0;
-  1533	}
-  1534	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+ 	/* Get CC core rev
+ 	 * Chipid is assume to be at offset 0 from SI_ENUM_BASE
+@@ -980,6 +981,11 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
+ 	 */
+ 	regdata = ci->ops->read32(ci->ctx,
+ 				  CORE_CC_REG(ci->pub.enum_base, chipid));
++	if (regdata == READ_FAILED) {
++		brcmf_err("MMIO read failed: 0x%08x\n", regdata);
++		return -ENODEV;
++	}
++
+ 	ci->pub.chip = regdata & CID_ID_MASK;
+ 	ci->pub.chiprev = (regdata & CID_REV_MASK) >> CID_REV_SHIFT;
+ 	socitype = (regdata & CID_TYPE_MASK) >> CID_TYPE_SHIFT;
+--
+2.40.1
