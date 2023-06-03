@@ -2,55 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AD7F720DA1
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 05:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430B4720E00
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 07:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233659AbjFCDdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 23:33:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        id S231567AbjFCF4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Jun 2023 01:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjFCDdS (ORCPT
+        with ESMTP id S229523AbjFCF4Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 23:33:18 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A10E48
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 20:33:17 -0700 (PDT)
+        Sat, 3 Jun 2023 01:56:24 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F131DE55
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 22:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685763197; x=1717299197;
+  t=1685771782; x=1717307782;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=TAhWdR2IDmmYQXuAKUvg+Y3Ynk1Wwe1dBQFjLGW8M3Q=;
-  b=dq7FAVN6QsJAet05uLHbHvM8lYWQiYGo6qGV7iUw5Sq5L3vYn3HQyggz
-   CxqQ2ItriY/PZQCoqqhNZxhNpPGsJrhm43g1xzGT9Mp+T8ubDOrL6yFgQ
-   agfHThD6hGuhVIpm2zKxMXQnQJwj5PzZPHlgug8SpOyrRV/OsLoyyyW+v
-   PpXZ1UWf3JJyHUXgCNXtonFwbNbqbCJyUMXXhMf2YYu9Og//Dpgw60x8I
-   VTqx6rvU3ilgAcP6meBYvWTWIQm68YvPTHRH8s97q7F4tnozzh/MrNyCw
-   hadLTWGv+w9LHZoa5hgbgUjhxBrFC6vVxbUFgV2A6aqEeYJo3+DolY6xj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="419564513"
-X-IronPort-AV: E=Sophos;i="6.00,214,1681196400"; 
-   d="scan'208";a="419564513"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 20:33:16 -0700
+  bh=OH9x1fFzy1O6DdldqBpam4C5AuoGAgCEPJBE4lDD5ik=;
+  b=X7x48zRIuE/qor8sJEc1EbCr3XZmEH+Iwd2jpnLI4NyDqDIW4zLeNxZB
+   xdb3C/YxCg6z6bvOp/cRfSZq4hQjLs8AUYYNSBK+Q1Sm+Wnork1SZoWsZ
+   Nu3bbWkVghcSIZ0J07k9wO+ASH63N41VFv+v/4yc4faiaF/awI1QgK7Ce
+   USdhFP0Ne12a5RqJuzyFg7+1irFZHKPjSdGTxThUXRp5rGCMD5mxUXuNV
+   0UFeFJjvOFgXmKDI0r3gAKbmntQS57UyFfb8EnqywCMoPCT9NxtXrtDQ1
+   JUXIRaGjPBekLcSGjvB67Eh3olupabdtJZJdMEKJ15R+lscnZXKDZIj/z
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="356051383"
+X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
+   d="scan'208";a="356051383"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 22:56:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="797803581"
-X-IronPort-AV: E=Sophos;i="6.00,214,1681196400"; 
-   d="scan'208";a="797803581"
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="777929534"
+X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
+   d="scan'208";a="777929534"
 Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Jun 2023 20:33:15 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 02 Jun 2023 22:56:21 -0700
 Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1q5I0w-0001EF-0x;
-        Sat, 03 Jun 2023 03:33:14 +0000
-Date:   Sat, 3 Jun 2023 11:32:41 +0800
+        id 1q5KFQ-0001M3-1x;
+        Sat, 03 Jun 2023 05:56:20 +0000
+Date:   Sat, 3 Jun 2023 13:55:55 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Kevin Lund <kglund@google.com>, johannes@sipsolutions.net,
         linux-wireless@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Kevin Lund <kglund@google.com>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Kevin Lund <kglund@google.com>
 Subject: Re: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same
  BSSID
-Message-ID: <202306031152.pDkq23ib-lkp@intel.com>
+Message-ID: <202306031354.S6fuhpkH-lkp@intel.com>
 References: <20230602225751.164525-1-kglund@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -80,31 +81,33 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Kevin-Lund/wifi-mwifiex-S
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
 patch link:    https://lore.kernel.org/r/20230602225751.164525-1-kglund%40google.com
 patch subject: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same BSSID
-config: arm-randconfig-r046-20230602 (https://download.01.org/0day-ci/archive/20230603/202306031152.pDkq23ib-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.3.0
+config: mips-ath79_defconfig (https://download.01.org/0day-ci/archive/20230603/202306031354.S6fuhpkH-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 4faf3aaf28226a4e950c103a14f6fc1d1fdabb1b)
 reproduce (this is a W=1 build):
         mkdir -p ~/bin
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
+        # install mips cross compiling tool for clang build
+        # apt-get install binutils-mips-linux-gnu
         # https://github.com/intel-lab-lkp/linux/commit/09f9fe87fe3588d03dafcaf05b36b3e931f8c8eb
         git remote add linux-review https://github.com/intel-lab-lkp/linux
         git fetch --no-tags linux-review Kevin-Lund/wifi-mwifiex-Stop-rejecting-connection-attempts-while-connected/20230603-065907
         git checkout 09f9fe87fe3588d03dafcaf05b36b3e931f8c8eb
         # save the config file
         mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash net/wireless/
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=mips olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash net/wireless/
 
 If you fix the issue, kindly add following tag where applicable
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306031152.pDkq23ib-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306031354.S6fuhpkH-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   net/wireless/sme.c: In function 'cfg80211_connect':
->> net/wireless/sme.c:1454:42: error: 'struct wireless_dev' has no member named 'current_bss'
-    1454 |                 if (ether_addr_equal(wdev->current_bss->pub.bssid,
-         |                                          ^~
+>> net/wireless/sme.c:1454:30: error: no member named 'current_bss' in 'struct wireless_dev'
+                   if (ether_addr_equal(wdev->current_bss->pub.bssid,
+                                        ~~~~  ^
+   1 error generated.
 
 
 vim +1454 net/wireless/sme.c
