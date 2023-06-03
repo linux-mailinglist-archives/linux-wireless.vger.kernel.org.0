@@ -2,254 +2,231 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C4FA720C76
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 01:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD7F720DA1
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 05:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236825AbjFBX6w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 2 Jun 2023 19:58:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53860 "EHLO
+        id S233659AbjFCDdW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 2 Jun 2023 23:33:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236783AbjFBX6p (ORCPT
+        with ESMTP id S229694AbjFCDdS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 2 Jun 2023 19:58:45 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6007AE42
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 16:58:43 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 352NwePt030965;
-        Fri, 2 Jun 2023 23:58:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=r0SkcjUNftywCDGIrB32GhYdXlvJRxm9blc+4sLh2B4=;
- b=TqRqRQCGalbR2xgfIJQfzEDHQ48S90Y/G21CniEDLWzZtvYeGy62yCyNQMQimY5+6hdm
- n6ke+XG+RIS899J4PUZvfuTRq+kZLx7no8paXsQFAh6oDdbHiKoJhhF9Pyi8hhkwFpPW
- JdaMx0/AbwePPxSdvaZtj9867L5bh7vpNwEvUBdmDHNprNL3RPWUdEtQLQ2vXV/ePRVl
- 7PImWDulSGkCC/sByqemkr/rQMKQCqtc3HoHtEmF3qnLDxr3n/LbrrcsWVaViu+r5pGy
- ZAtw+DhGWu1a9FgMs1K5l9E/iyc7cjnolp/oUH2hQKq/aOBd2z/3UVvGIEfDeBdC2GGN hg== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qys7qr3au-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Jun 2023 23:58:40 +0000
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 352NwdZG021705
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 2 Jun 2023 23:58:39 GMT
-Received: from alokad-linux.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Fri, 2 Jun 2023 16:58:39 -0700
-From:   Aloka Dixit <quic_alokad@quicinc.com>
-To:     <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-CC:     Aloka Dixit <quic_alokad@quicinc.com>,
-        Muna Sinada <quic_msinada@quicinc.com>
-Subject: [PATCH v4 11/11] wifi: ath12k: configure puncturing bitmap
-Date:   Fri, 2 Jun 2023 16:58:20 -0700
-Message-ID: <20230602235820.23912-12-quic_alokad@quicinc.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230602235820.23912-1-quic_alokad@quicinc.com>
-References: <20230602235820.23912-1-quic_alokad@quicinc.com>
+        Fri, 2 Jun 2023 23:33:18 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A10E48
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 20:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685763197; x=1717299197;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TAhWdR2IDmmYQXuAKUvg+Y3Ynk1Wwe1dBQFjLGW8M3Q=;
+  b=dq7FAVN6QsJAet05uLHbHvM8lYWQiYGo6qGV7iUw5Sq5L3vYn3HQyggz
+   CxqQ2ItriY/PZQCoqqhNZxhNpPGsJrhm43g1xzGT9Mp+T8ubDOrL6yFgQ
+   agfHThD6hGuhVIpm2zKxMXQnQJwj5PzZPHlgug8SpOyrRV/OsLoyyyW+v
+   PpXZ1UWf3JJyHUXgCNXtonFwbNbqbCJyUMXXhMf2YYu9Og//Dpgw60x8I
+   VTqx6rvU3ilgAcP6meBYvWTWIQm68YvPTHRH8s97q7F4tnozzh/MrNyCw
+   hadLTWGv+w9LHZoa5hgbgUjhxBrFC6vVxbUFgV2A6aqEeYJo3+DolY6xj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="419564513"
+X-IronPort-AV: E=Sophos;i="6.00,214,1681196400"; 
+   d="scan'208";a="419564513"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 20:33:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="797803581"
+X-IronPort-AV: E=Sophos;i="6.00,214,1681196400"; 
+   d="scan'208";a="797803581"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 02 Jun 2023 20:33:15 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q5I0w-0001EF-0x;
+        Sat, 03 Jun 2023 03:33:14 +0000
+Date:   Sat, 3 Jun 2023 11:32:41 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kevin Lund <kglund@google.com>, johannes@sipsolutions.net,
+        linux-wireless@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, Kevin Lund <kglund@google.com>
+Subject: Re: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same
+ BSSID
+Message-ID: <202306031152.pDkq23ib-lkp@intel.com>
+References: <20230602225751.164525-1-kglund@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: zqzs1HZmCR7dcZV8kbwqrVuntMvth0Sr
-X-Proofpoint-ORIG-GUID: zqzs1HZmCR7dcZV8kbwqrVuntMvth0Sr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-02_18,2023-06-02_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0
- suspectscore=0 impostorscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306020189
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230602225751.164525-1-kglund@google.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable the feature flag to indicate the driver support for
-preamble puncturing. Firmware will support this feature
-by default from IEEE 802.11be onwards.
-Configure the bitmap as part of VDEV start/restart and
-peer association commands.
+Hi Kevin,
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
----
-v4: No change from v3.
-v3: No change from v2.
-v2: No change from v1.
+kernel test robot noticed the following build errors:
 
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/mac.c  | 16 ++++++++++++++--
- drivers/net/wireless/ath/ath12k/wmi.c  |  2 ++
- drivers/net/wireless/ath/ath12k/wmi.h  | 12 +++++++++++-
- 4 files changed, 28 insertions(+), 3 deletions(-)
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.4-rc4 next-20230602]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index df762cabacc2..5ecf535cce53 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -238,6 +238,7 @@ struct ath12k_vif {
- 	u32 key_cipher;
- 	u8 tx_encap_type;
- 	u8 vdev_stats_id;
-+	u32 punct_bitmap;
- };
- 
- struct ath12k_vif_iter {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 446a0db67516..c2f488cbc70e 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -842,6 +842,7 @@ static int ath12k_mac_monitor_vdev_start(struct ath12k *ar, int vdev_id,
- 
- 	arg.pref_tx_streams = ar->num_tx_chains;
- 	arg.pref_rx_streams = ar->num_rx_chains;
-+	arg.punct_bitmap = 0xFFFFFFFF;
- 
- 	arg.passive |= !!(chandef->chan->flags & IEEE80211_CHAN_NO_IR);
- 
-@@ -2141,6 +2142,7 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- {
- 	const struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
- 	const struct ieee80211_eht_mcs_nss_supp_bw *bw;
-+	struct ath12k_vif *arvif = (struct ath12k_vif *)vif->drv_priv;
- 	u32 *rx_mcs, *tx_mcs;
- 
- 	if (!sta->deflink.he_cap.has_he || !eht_cap->has_eht)
-@@ -2206,6 +2208,8 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 		arg->peer_eht_mcs_count++;
- 		break;
- 	}
-+
-+	arg->punct_bitmap = ~arvif->punct_bitmap;
- }
- 
- static void ath12k_peer_assoc_prepare(struct ath12k *ar,
-@@ -2759,6 +2763,9 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 	    changed & BSS_CHANGED_UNSOL_BCAST_PROBE_RESP)
- 		ath12k_mac_fils_discovery(arvif, info);
- 
-+	if (changed & BSS_CHANGED_EHT_PUNCTURING)
-+		arvif->punct_bitmap = info->eht_puncturing;
-+
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
-@@ -5801,6 +5808,7 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
- 	arg.vdev_id = arvif->vdev_id;
- 	arg.dtim_period = arvif->dtim_period;
- 	arg.bcn_intval = arvif->beacon_interval;
-+	arg.punct_bitmap = ~arvif->punct_bitmap;
- 
- 	arg.freq = chandef->chan->center_freq;
- 	arg.band_center_freq1 = chandef->center_freq1;
-@@ -5843,9 +5851,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
- 	arg.passive |= !!(chandef->chan->flags & IEEE80211_CHAN_NO_IR);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac vdev %d start center_freq %d phymode %s\n",
-+		   "mac vdev %d start center_freq %d phymode %s punct_bitmap 0x%x\n",
- 		   arg.vdev_id, arg.freq,
--		   ath12k_mac_phymode_str(arg.mode));
-+		   ath12k_mac_phymode_str(arg.mode), arg.punct_bitmap);
- 
- 	ret = ath12k_wmi_vdev_start(ar, &arg, restart);
- 	if (ret) {
-@@ -6172,6 +6180,8 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 		   "mac chanctx assign ptr %pK vdev_id %i\n",
- 		   ctx, arvif->vdev_id);
- 
-+	arvif->punct_bitmap = link_conf->eht_puncturing;
-+
- 	/* for some targets bss peer must be created before vdev_start */
- 	if (ab->hw_params->vdev_start_delay &&
- 	    arvif->vdev_type != WMI_VDEV_TYPE_AP &&
-@@ -7279,6 +7289,8 @@ static int __ath12k_mac_register(struct ath12k *ar)
- 				      NL80211_EXT_FEATURE_UNSOL_BCAST_PROBE_RESP);
- 	}
- 
-+	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_PUNCT);
-+
- 	ath12k_reg_init(ar);
- 
- 	if (!test_bit(ATH12K_FLAG_RAW_MODE, &ab->dev_flags)) {
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index df7609b4adda..8914d5780f94 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1021,6 +1021,7 @@ int ath12k_wmi_vdev_start(struct ath12k *ar, struct wmi_vdev_start_req_arg *arg,
- 	cmd->cac_duration_ms = cpu_to_le32(arg->cac_duration_ms);
- 	cmd->regdomain = cpu_to_le32(arg->regdomain);
- 	cmd->he_ops = cpu_to_le32(arg->he_ops);
-+	cmd->punct_bitmap = cpu_to_le32(arg->punct_bitmap);
- 
- 	if (!restart) {
- 		if (arg->ssid) {
-@@ -1942,6 +1943,7 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
- 
- 	cmd->peer_new_assoc = cpu_to_le32(arg->peer_new_assoc);
- 	cmd->peer_associd = cpu_to_le32(arg->peer_associd);
-+	cmd->punct_bitmap = cpu_to_le32(arg->punct_bitmap);
- 
- 	ath12k_wmi_copy_peer_flags(cmd, arg,
- 				   test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED,
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index f41092137565..9ebae5467250 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2775,6 +2775,11 @@ struct wmi_vdev_start_request_cmd {
- 	__le32 he_ops;
- 	__le32 cac_duration_ms;
- 	__le32 regdomain;
-+	__le32 min_data_rate;
-+	__le32 mbssid_flags;
-+	__le32 mbssid_tx_vdev_id;
-+	__le32 eht_ops;
-+	__le32 punct_bitmap;
- } __packed;
- 
- #define MGMT_TX_DL_FRM_LEN		     64
-@@ -2874,6 +2879,10 @@ struct wmi_vdev_start_req_arg {
- 	u32 pref_rx_streams;
- 	u32 pref_tx_streams;
- 	u32 num_noa_descriptors;
-+	u32 min_data_rate;
-+	u32 mbssid_flags;
-+	u32 mbssid_tx_vdev_id;
-+	u32 punct_bitmap;
- };
- 
- struct ath12k_wmi_peer_create_arg {
-@@ -3605,6 +3614,7 @@ struct ath12k_wmi_peer_assoc_arg {
- 	u32 peer_eht_rx_mcs_set[WMI_MAX_EHTCAP_RATE_SET];
- 	u32 peer_eht_tx_mcs_set[WMI_MAX_EHTCAP_RATE_SET];
- 	struct ath12k_wmi_ppe_threshold_arg peer_eht_ppet;
-+	u32 punct_bitmap;
- };
- 
- struct wmi_peer_assoc_complete_cmd {
-@@ -3640,7 +3650,7 @@ struct wmi_peer_assoc_complete_cmd {
- 	__le32 bss_max_idle_option;
- 	__le32 auth_mode;
- 	__le32 peer_flags_ext;
--	__le32 puncture_20mhz_bitmap;
-+	__le32 punct_bitmap;
- 	__le32 peer_eht_cap_mac[WMI_MAX_EHTCAP_MAC_SIZE];
- 	__le32 peer_eht_cap_phy[WMI_MAX_EHTCAP_PHY_SIZE];
- 	__le32 peer_eht_ops;
+url:    https://github.com/intel-lab-lkp/linux/commits/Kevin-Lund/wifi-mwifiex-Stop-rejecting-connection-attempts-while-connected/20230603-065907
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20230602225751.164525-1-kglund%40google.com
+patch subject: [PATCH 1/2] wifi: cfg80211: Reject (re-)association to the same BSSID
+config: arm-randconfig-r046-20230602 (https://download.01.org/0day-ci/archive/20230603/202306031152.pDkq23ib-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 12.3.0
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/09f9fe87fe3588d03dafcaf05b36b3e931f8c8eb
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Kevin-Lund/wifi-mwifiex-Stop-rejecting-connection-attempts-while-connected/20230603-065907
+        git checkout 09f9fe87fe3588d03dafcaf05b36b3e931f8c8eb
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash net/wireless/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306031152.pDkq23ib-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   net/wireless/sme.c: In function 'cfg80211_connect':
+>> net/wireless/sme.c:1454:42: error: 'struct wireless_dev' has no member named 'current_bss'
+    1454 |                 if (ether_addr_equal(wdev->current_bss->pub.bssid,
+         |                                          ^~
+
+
+vim +1454 net/wireless/sme.c
+
+  1418	
+  1419	/*
+  1420	 * API calls for nl80211/wext compatibility code
+  1421	 */
+  1422	int cfg80211_connect(struct cfg80211_registered_device *rdev,
+  1423			     struct net_device *dev,
+  1424			     struct cfg80211_connect_params *connect,
+  1425			     struct cfg80211_cached_keys *connkeys,
+  1426			     const u8 *prev_bssid)
+  1427	{
+  1428		struct wireless_dev *wdev = dev->ieee80211_ptr;
+  1429		int err;
+  1430	
+  1431		ASSERT_WDEV_LOCK(wdev);
+  1432	
+  1433		/*
+  1434		 * If we have an ssid_len, we're trying to connect or are
+  1435		 * already connected, so reject a new SSID unless it's the
+  1436		 * same (which is the case for re-association.)
+  1437		 */
+  1438		if (wdev->u.client.ssid_len &&
+  1439		    (wdev->u.client.ssid_len != connect->ssid_len ||
+  1440		     memcmp(wdev->u.client.ssid, connect->ssid, wdev->u.client.ssid_len)))
+  1441			return -EALREADY;
+  1442	
+  1443		/*
+  1444		 * If connected, reject (re-)association unless prev_bssid
+  1445		 * matches the current BSSID. Also reject if the current BSSID matches
+  1446		 * the desired BSSID.
+  1447		 */
+  1448		if (wdev->connected) {
+  1449			if (!prev_bssid)
+  1450				return -EALREADY;
+  1451			if (!ether_addr_equal(prev_bssid,
+  1452					      wdev->u.client.connected_addr))
+  1453				return -ENOTCONN;
+> 1454			if (ether_addr_equal(wdev->current_bss->pub.bssid,
+  1455					     connect->bssid))
+  1456				return -EALREADY;
+  1457		}
+  1458	
+  1459		/*
+  1460		 * Reject if we're in the process of connecting with WEP,
+  1461		 * this case isn't very interesting and trying to handle
+  1462		 * it would make the code much more complex.
+  1463		 */
+  1464		if (wdev->connect_keys)
+  1465			return -EINPROGRESS;
+  1466	
+  1467		cfg80211_oper_and_ht_capa(&connect->ht_capa_mask,
+  1468					  rdev->wiphy.ht_capa_mod_mask);
+  1469		cfg80211_oper_and_vht_capa(&connect->vht_capa_mask,
+  1470					   rdev->wiphy.vht_capa_mod_mask);
+  1471	
+  1472		if (connkeys && connkeys->def >= 0) {
+  1473			int idx;
+  1474			u32 cipher;
+  1475	
+  1476			idx = connkeys->def;
+  1477			cipher = connkeys->params[idx].cipher;
+  1478			/* If given a WEP key we may need it for shared key auth */
+  1479			if (cipher == WLAN_CIPHER_SUITE_WEP40 ||
+  1480			    cipher == WLAN_CIPHER_SUITE_WEP104) {
+  1481				connect->key_idx = idx;
+  1482				connect->key = connkeys->params[idx].key;
+  1483				connect->key_len = connkeys->params[idx].key_len;
+  1484	
+  1485				/*
+  1486				 * If ciphers are not set (e.g. when going through
+  1487				 * iwconfig), we have to set them appropriately here.
+  1488				 */
+  1489				if (connect->crypto.cipher_group == 0)
+  1490					connect->crypto.cipher_group = cipher;
+  1491	
+  1492				if (connect->crypto.n_ciphers_pairwise == 0) {
+  1493					connect->crypto.n_ciphers_pairwise = 1;
+  1494					connect->crypto.ciphers_pairwise[0] = cipher;
+  1495				}
+  1496			}
+  1497		} else {
+  1498			if (WARN_ON(connkeys))
+  1499				return -EINVAL;
+  1500	
+  1501			/* connect can point to wdev->wext.connect which
+  1502			 * can hold key data from a previous connection
+  1503			 */
+  1504			connect->key = NULL;
+  1505			connect->key_len = 0;
+  1506			connect->key_idx = 0;
+  1507		}
+  1508	
+  1509		wdev->connect_keys = connkeys;
+  1510		memcpy(wdev->u.client.ssid, connect->ssid, connect->ssid_len);
+  1511		wdev->u.client.ssid_len = connect->ssid_len;
+  1512	
+  1513		wdev->conn_bss_type = connect->pbss ? IEEE80211_BSS_TYPE_PBSS :
+  1514						      IEEE80211_BSS_TYPE_ESS;
+  1515	
+  1516		if (!rdev->ops->connect)
+  1517			err = cfg80211_sme_connect(wdev, connect, prev_bssid);
+  1518		else
+  1519			err = rdev_connect(rdev, dev, connect);
+  1520	
+  1521		if (err) {
+  1522			wdev->connect_keys = NULL;
+  1523			/*
+  1524			 * This could be reassoc getting refused, don't clear
+  1525			 * ssid_len in that case.
+  1526			 */
+  1527			if (!wdev->connected)
+  1528				wdev->u.client.ssid_len = 0;
+  1529			return err;
+  1530		}
+  1531	
+  1532		return 0;
+  1533	}
+  1534	
+
 -- 
-2.39.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
