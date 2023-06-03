@@ -2,63 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E39720E05
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 08:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909EA720E09
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Jun 2023 08:07:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231571AbjFCGBe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 3 Jun 2023 02:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33778 "EHLO
+        id S231579AbjFCGHn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 3 Jun 2023 02:07:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjFCGBc (ORCPT
+        with ESMTP id S229523AbjFCGHl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 3 Jun 2023 02:01:32 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92EC3E55
-        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 23:01:31 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-568af2f6454so29605217b3.1
-        for <linux-wireless@vger.kernel.org>; Fri, 02 Jun 2023 23:01:31 -0700 (PDT)
+        Sat, 3 Jun 2023 02:07:41 -0400
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4C1E58
+        for <linux-wireless@vger.kernel.org>; Fri,  2 Jun 2023 23:07:40 -0700 (PDT)
+Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6af896f0908so2044228a34.0
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Jun 2023 23:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685772090; x=1688364090;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sk9Xl9xoxV6Yau2FTfyWrUwCe2JG+DhTDPbuOloks3o=;
-        b=GbpFg6winX4c0G+uDSvU2/O1WqW37zeYE86D3nzF04VLmceBa5JnQyRIOTo1s+WonQ
-         TijaRppQM/JSjE6R9BZac0dFfB2j63QEhOUrYMa3btj2rz73gV0irnaAVtlym0DLlxZ7
-         rLrtaRkO9kyJ0Q0AqrGzFp7YuE3qNoHOXRvgYAaLFVQoZmfXwybBDizlf6JUAKwe+S7M
-         MxKNi/qYPcPeKiVyLg15dCv6wIxvFTHzj87KOQVXE92vdTSOJb6qc07wZ/y8zcZZTI7g
-         E8ldfCoBCdYY3Hm6l+Pqmr7APMU/hH5HkccQqCcLpSE9B8olZIafNtn/BpAxI0bOWrSG
-         SDkQ==
+        d=gmail.com; s=20221208; t=1685772460; x=1688364460;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q0OiChVWQd79cihyrYsJS8Wpx3DInpcPihNV8fH8Ysg=;
+        b=lmd7tJVvhk1eS2pbacK/xvdxd3viS18mRj0Z9d3/nV87mIXCYeD3qZF+Y2Wr/pWtBY
+         /fFFkOZbxd3tnd++8kjTlogFvpp18sVVd/C1mqFxp6Z+A2NcNzF+xRyTFzQlXndlVzIP
+         1g5DyDPt9MDAhaPGOg9OtT0bDVQWpx5Etg7W60RNrLLu4J4bYBu6UP5Y8gQDKrMsL036
+         XPUxLTq+JfmM3mPvvIWxBVHXeiJB4JO43dmnGAoLVUnYIzcxtSdvoaMiFson01izIc8p
+         mX+ICXIzqiwlcAVihJUiU2/yUwaVE2iFrr9CuvY22esE2vblVtG72Rimv22GmVuMCgyB
+         HSeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685772090; x=1688364090;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Sk9Xl9xoxV6Yau2FTfyWrUwCe2JG+DhTDPbuOloks3o=;
-        b=QQP5Eq2JEEw8GWz8ec5mRFI5NwSj2LfZwxPkXJRLhIREJUsK2LiCvZ+fyYepslCgV3
-         zlt0p1+yDmg7oXw4aJ9eE/v3lxZQTFiReQAAY+0cdUjzilHFToKXx0d47cl2OJEF2/Un
-         twlWVewCPC5W6N7c/eLZh/MxxfG9iO7YPyZDALONU6Fd2f7yHe3wsn9VuoU02MpBbCfi
-         m8iEGBqVEMMYK23frqLxvpS4JAuiMzZHJvJaJXWFi9OqzsLHbObOJQAQ5Xh7kcltMVi+
-         4fCYcDLkvAg7YXW82GWWtMDYwRJQGMBu+D4Rj25MW6IFxEcAaWP2pQjsMFJryEYcJCrS
-         SAHw==
-X-Gm-Message-State: AC+VfDztOK/uaqGoE0gSjwgBPsxYN3Rf9cnOB13wpwq0iFRCjRJ1GD1M
-        ct7ZMiC7aOHY1QCToHcbu4AC76QxZuNohg==
-X-Google-Smtp-Source: ACHHUZ6EqjU2T2fq4GePyR59f2Jd/FbYuABCm6luhjGAUNTQSCiHgaokzYuIDmbOWbdlzMx9ftIBSw==
-X-Received: by 2002:a81:a0d6:0:b0:565:f16:9d07 with SMTP id x205-20020a81a0d6000000b005650f169d07mr2436595ywg.17.1685772090505;
-        Fri, 02 Jun 2023 23:01:30 -0700 (PDT)
-Received: from localhost.localdomain (107-218-116-63.lightspeed.jcvlfl.sbcglobal.net. [107.218.116.63])
-        by smtp.gmail.com with ESMTPSA id e6-20020a81dd06000000b00559be540b56sm1171288ywn.134.2023.06.02.23.01.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 23:01:28 -0700 (PDT)
-From:   Neal Sidhwaney <nealsid@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     brcm80211-dev-list.pdl@broadcom.com,
-        Neal Sidhwaney <nealsid@gmail.com>
-Subject: [PATCH v3] wifi: brcmfmac: Detect corner error case earlier with log
-Date:   Sat,  3 Jun 2023 02:00:23 -0400
-Message-Id: <20230603060021.57225-1-nealsid@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        d=1e100.net; s=20221208; t=1685772460; x=1688364460;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q0OiChVWQd79cihyrYsJS8Wpx3DInpcPihNV8fH8Ysg=;
+        b=iGl0EZJUIPPrglVsHytdbtICXDn/igDCYNUQqUkFZj3oD9zwv466cobqQ9rnaqVrak
+         YXPBl9lHYK7LlD3/rjiGYfYVPA+kczbb5k9gMxKeBMTxCDHSErmH87yarlu/uO8V9KYn
+         WYULhkPOHyKpTc/p7Dp9Rd1NgBC5/hB5xe08SODHfzpysfDdfAg8pLzM6muEcxLQoJCD
+         xg81DE12VfUyPlltVlNLrM/l1QlywmnU7t5aibRv7Q4rimi6Kl9mR3SkW9vZKc6OS8pF
+         u1rnYKVSr1z0KumW92+595NrHpfPeeEKa6wdkRj/VUGbBFtV7lFh9IX9nJkLE7BCYDFI
+         TEAQ==
+X-Gm-Message-State: AC+VfDzRS6Vix2e2fwgCX2ivDHGZ5e8wMXHdwh954eBKO44bRIgBDe0/
+        tNOOuhZcuBuuMxKMwqb+KMncd7EpMmO29YvVr4ilsEP+
+X-Google-Smtp-Source: ACHHUZ7A9ujBPKz9XirdTnjA/1BOdVPSBlN/nY/bVCxFowTtr3Pp0J2zKOaDuvUhuBa2M2GJuNoq8LbV9O/36hmOqlY=
+X-Received: by 2002:a9d:6a87:0:b0:6b1:5672:b290 with SMTP id
+ l7-20020a9d6a87000000b006b15672b290mr51474otq.23.1685772459945; Fri, 02 Jun
+ 2023 23:07:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230601054034.43692-1-nealsid@gmail.com> <878rd2jup4.fsf@kernel.org>
+In-Reply-To: <878rd2jup4.fsf@kernel.org>
+From:   Neal Sidhwaney <nealsid@gmail.com>
+Date:   Sat, 3 Jun 2023 02:07:03 -0400
+Message-ID: <CAJ4cxaRAvaVqu6n2x-Oq2Y=QZ8ry1WMczikKhj+8D0mde9=3fg@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: brcmfmac: Detect corner error case earlier with log
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -69,48 +68,20 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In brcmf_chip_recognition, the return value from an MMIO read is
-interpreted as various fields without checking if it failed, which is
-harmless today, as the interpreted fields are checked for validity a
-few lines below.  However, in corner cases (on my MacbookPro 14,1,
-sometimes after waking from sleep or soft reboot), when this happens,
-it causes the logging to be misleading, because the message indicates
-an unsupported chip type ("brcmfmac: brcmf_chip_recognition: chip
-backplane type 15 is not supported").  This patch detects this case
-slightly earlier and logs an appropriate message, with the same return
-result as is the case today.
+On Fri, Jun 2, 2023 at 1:32=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote:
+> But the commit log should always answer to the question "why?". Is there
+> a specific reason why you want to do it earlier?
 
-Signed-off-by: Neal Sidhwaney <nealsid@gmail.com>
----
- v3: Fix indentation and add context to commit message
- v2: Add const to variable holding error code & fix patch submission
+Added context & motivation to the commit log.
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+>
+> Indentation here does not look correct, did you run checkpatch?
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 9f9bf08a70bb..2ef92ef25517 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -972,6 +972,7 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
- 	u32 regdata;
- 	u32 socitype;
- 	int ret;
-+	const u32 READ_FAILED = 0xFFFFFFFF;
+Sorry, my mistake again.  I ran checkpatch for this version of the
+patch, but missed it in the docs the first time because it's in the
+"large patches" paragraph, which is very much not the case with this
+patch ;)
 
- 	/* Get CC core rev
- 	 * Chipid is assume to be at offset 0 from SI_ENUM_BASE
-@@ -980,6 +981,11 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
- 	 */
- 	regdata = ci->ops->read32(ci->ctx,
- 				  CORE_CC_REG(ci->pub.enum_base, chipid));
-+	if (regdata == READ_FAILED) {
-+		brcmf_err("MMIO read failed: 0x%08x\n", regdata);
-+		return -ENODEV;
-+	}
-+
- 	ci->pub.chip = regdata & CID_ID_MASK;
- 	ci->pub.chiprev = (regdata & CID_REV_MASK) >> CID_REV_SHIFT;
- 	socitype = (regdata & CID_TYPE_MASK) >> CID_TYPE_SHIFT;
---
-2.40.1
+Thank you,
+
+Neal
