@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8D947215B7
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jun 2023 11:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAFC7215B8
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Jun 2023 11:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbjFDJL6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Jun 2023 05:11:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
+        id S231162AbjFDJMA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 4 Jun 2023 05:12:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231150AbjFDJL4 (ORCPT
+        with ESMTP id S231158AbjFDJL6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Jun 2023 05:11:56 -0400
+        Sun, 4 Jun 2023 05:11:58 -0400
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A506CE3
-        for <linux-wireless@vger.kernel.org>; Sun,  4 Jun 2023 02:11:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CBF3E3
+        for <linux-wireless@vger.kernel.org>; Sun,  4 Jun 2023 02:11:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685869915; x=1717405915;
+  t=1685869917; x=1717405917;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rCuDsU87b4c1bQPJ6a3Kjnnfph40jSykkRNmbCcbc3Y=;
-  b=KUmhVFXjYhCLaNomqJ89gEIkCalhS6BB+4sHTZ3t4IsYvhiynq27rJCv
-   SHYsDVZH199XU8fePUSg1ddJ2SeZIAFiumBTIHcw7pQElOpeWnLe2AzEg
-   Q00rNKUgIrLF2kpW7UXDx9maZxMQA1agiyu+0aO8GgMPPo6CUI1cx++84
-   EEhmQB/yDzVNDf1LqUxv3GMk0UvqvSTei3i15P+0xki2W5sh18SPoz4FP
-   O1ajwlIwk7kdiN/mvfb8q18LBW1rndjCMcEGifrBUbZ9VIGBwiM2TnAJj
-   Y+8WS3WIaOA6/5CvonDF5UQrQV4gTDkXX5tqBj22WCd1OekMZILuu8OI2
+  bh=UtiKfALdwL26rTrCrAFSEV1TF56KhOcEbmoI8kUW3Fw=;
+  b=nbh3XYozBzCoDBmA+R/o2MeFTfKrdsgu4W+Iut5Roo8UoSvoOKjkcT7I
+   HwxFyaMTxZMlqgL/QFWCEXUdv/dHf/6F2K4XWPiXhHWh8thUUC40HKTzc
+   6Y9YBa1FjqezohfeID4+MTh9xpxtzSVGg7bQGNW8htRBvu2eqNXHrAN2o
+   phtQkXe6+yqEfVNxtTWw8bUW4ulZjPFevPwy/KAJWvKzG/ZKwWS5E+LZS
+   PjG81g4CZ6gfSWMdQwm6P4tsEV04PtrWAOZAYkaBKRXNRvt2bzImxjSG+
+   dgfFfzNhdnUtH28R12yp73ftD6nFTyFBHs4dtW3DqABWh5FUQS55cP74o
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10730"; a="336526498"
+X-IronPort-AV: E=McAfee;i="6600,9927,10730"; a="336526501"
 X-IronPort-AV: E=Sophos;i="6.00,217,1681196400"; 
-   d="scan'208";a="336526498"
+   d="scan'208";a="336526501"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2023 02:11:55 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2023 02:11:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10730"; a="820804434"
+X-IronPort-AV: E=McAfee;i="6600,9927,10730"; a="820804481"
 X-IronPort-AV: E=Sophos;i="6.00,217,1681196400"; 
-   d="scan'208";a="820804434"
+   d="scan'208";a="820804481"
 Received: from yfruchte-mobl3.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.219.60])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2023 02:11:53 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2023 02:11:55 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 04/16] wifi: mac80211: mlme: fix non-inheritence element
-Date:   Sun,  4 Jun 2023 12:11:16 +0300
-Message-Id: <20230604120651.3addaa5c4782.If3a78f9305997ad7ef4ba7ffc17a8234c956f613@changeid>
+Subject: [PATCH 05/16] wifi: mac80211: provide a helper to fetch the medium synchronization delay
+Date:   Sun,  4 Jun 2023 12:11:17 +0300
+Message-Id: <20230604120651.b1043f3126e2.Iad3806f8bf8df07f52ef0a02cc3d0373c44a8c93@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230604091128.609335-1-gregory.greenman@intel.com>
 References: <20230604091128.609335-1-gregory.greenman@intel.com>
@@ -62,65 +62,103 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-There were two bugs when creating the non-inheritence
-element:
- 1) 'at_extension' needs to be declared outside the loop,
-    otherwise the value resets every iteration and we
-    can never really switch properly
- 2) 'added' never got set to true, so we always cut off
-    the extension element again at the end of the function
+There are drivers which need this information.
 
-This shows another issue that we might add a list but no
-extension list, but we need to make the extension list a
-zero-length one in that case.
-
-Fix all these issues. While at it, add a comment explaining
-the trim.
-
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/mlme.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/ieee80211.h | 35 +++++++++++++++++++++++++++++++++++
+ include/net/mac80211.h    |  3 +++
+ net/mac80211/mlme.c       |  5 ++++-
+ 3 files changed, 42 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index fba4c44da832..516cd32d6196 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4635,6 +4635,41 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
+ 	return sizeof(*mle) + common + mle->variable[0];
+ }
+ 
++/**
++ * ieee80211_mle_get_eml_sync_delay - returns the medium sync delay
++ * @data: pointer to the multi link EHT IE
++ *
++ * The element is assumed to be big enough. This must be checked by
++ * ieee80211_mle_size_ok().
++ * If the medium synchronization can't be found (the type is not basic, or
++ * the medium sync presence bit is clear), 0 will be returned.
++ */
++static inline u16 ieee80211_mle_get_eml_med_sync_delay(const u8 *data)
++{
++	const struct ieee80211_multi_link_elem *mle = (const void *)data;
++	u16 control = le16_to_cpu(mle->control);
++	const u8 *common = mle->variable;
++
++	if (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE) !=
++	    IEEE80211_ML_CONTROL_TYPE_BASIC)
++		return 0;
++
++	/* common points now at the beginning of
++	 * ieee80211_mle_basic_common_info
++	 */
++	common += sizeof(struct ieee80211_mle_basic_common_info);
++
++	if (!(control & IEEE80211_MLC_BASIC_PRES_MED_SYNC_DELAY))
++		return 0;
++
++	if (control & IEEE80211_MLC_BASIC_PRES_LINK_ID)
++		common += 1;
++	if (control & IEEE80211_MLC_BASIC_PRES_BSS_PARAM_CH_CNT)
++		common += 1;
++
++	return get_unaligned_le16(common);
++}
++
+ /**
+  * ieee80211_mle_get_eml_cap - returns the EML capability
+  * @data: pointer to the multi link EHT IE
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index f75d941eece8..f4516c034da2 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1791,6 +1791,8 @@ enum ieee80211_offload_flags {
+  *	offchannel/dynamic_ps operations.
+  * @aid: association ID number, valid only when @assoc is true
+  * @eml_cap: EML capabilities as described in P802.11be_D2.2 Figure 9-1002k.
++ * @eml_med_sync_delay: Medium Synchronization delay as described in
++ *	P802.11be_D2.2 Figure 9-1002j.
+  * @arp_addr_list: List of IPv4 addresses for hardware ARP filtering. The
+  *	may filter ARP queries targeted for other addresses than listed here.
+  *	The driver must allow ARP queries targeted for all address listed here
+@@ -1814,6 +1816,7 @@ struct ieee80211_vif_cfg {
+ 	bool ps;
+ 	u16 aid;
+ 	u16 eml_cap;
++	u16 eml_med_sync_delay;
+ 
+ 	__be32 arp_addr_list[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
+ 	int arp_addr_cnt;
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 4ea383aafcac..97671734427c 100644
+index 97671734427c..a404448eb84e 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -1217,6 +1217,7 @@ static void ieee80211_add_non_inheritance_elem(struct sk_buff *skb,
- 					       const u16 *inner)
- {
- 	unsigned int skb_len = skb->len;
-+	bool at_extension = false;
- 	bool added = false;
- 	int i, j;
- 	u8 *len, *list_len = NULL;
-@@ -1228,7 +1229,6 @@ static void ieee80211_add_non_inheritance_elem(struct sk_buff *skb,
- 	for (i = 0; i < PRESENT_ELEMS_MAX && outer[i]; i++) {
- 		u16 elem = outer[i];
- 		bool have_inner = false;
--		bool at_extension = false;
- 
- 		/* should at least be sorted in the sense of normal -> ext */
- 		WARN_ON(at_extension && elem < PRESENT_ELEM_EXT_OFFS);
-@@ -1257,8 +1257,14 @@ static void ieee80211_add_non_inheritance_elem(struct sk_buff *skb,
- 		}
- 		*list_len += 1;
- 		skb_put_u8(skb, (u8)elem);
-+		added = true;
+@@ -4862,9 +4862,12 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 		/* data + 1 / datalen - 1 since it's an extended element */
+ 		if (eht_ml_elem &&
+ 		    ieee80211_mle_size_ok(eht_ml_elem->data + 1,
+-					  eht_ml_elem->datalen - 1))
++					  eht_ml_elem->datalen - 1)) {
+ 			sdata->vif.cfg.eml_cap =
+ 				ieee80211_mle_get_eml_cap(eht_ml_elem->data + 1);
++			sdata->vif.cfg.eml_med_sync_delay =
++				ieee80211_mle_get_eml_med_sync_delay(eht_ml_elem->data + 1);
++		}
  	}
  
-+	/* if we added a list but no extension list, make a zero-len one */
-+	if (added && (!at_extension || !list_len))
-+		skb_put_u8(skb, 0);
-+
-+	/* if nothing added remove extension element completely */
- 	if (!added)
- 		skb_trim(skb, skb_len);
- 	else
+ 	/* Allow VHT if at least one channel on the sband supports 80 MHz */
 -- 
 2.38.1
 
