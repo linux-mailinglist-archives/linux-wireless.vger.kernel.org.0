@@ -2,44 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 514A07224C4
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 13:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EDAF72250A
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 13:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232641AbjFELiu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jun 2023 07:38:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55528 "EHLO
+        id S233140AbjFEL6e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jun 2023 07:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231322AbjFELit (ORCPT
+        with ESMTP id S233152AbjFEL6c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jun 2023 07:38:49 -0400
+        Mon, 5 Jun 2023 07:58:32 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B85B9196
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 04:38:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA0D131
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 04:58:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=Q05Sht0M/UTJAa12ckxTm287Qi60jCMnj7q/oBAgy3Q=;
-        t=1685965117; x=1687174717; b=SgsqyDwyxDlJ0mJPoEynOWL3U+Dd/7T7huxMNBv890eYek1
-        aH4ZuzCFJvw24tVc8HkprUKaXAxEuO1ZIDKt2XJP1v/NrLe0hfrP1BXgMdbE6ErgxAOlN4sWfEuwn
-        B2g1wpbUwrcNpU6OswAy5TEo86jBT059qh95jdIT402yhn6UuP9SMkHbyx3AyOK/s88dzfzM//dsh
-        tGN1pktDKDHAez4Voz9fPEbe3qGIpt0fwYq+42F3azxP1npQ2fDk0RVyzNVrxiW6SYpZ1H5QJH0uM
-        LAnP6tyaYjn4YspXypEcphNQx667ri0J3oNXDse7itbsQl4AMxlyoZq4zcwiXdpw==;
+        Resent-Cc:Resent-Message-ID; bh=DtgsoVFYt/Q+J8AhlsjT89LVYTX0qwrmzXOLODF2GmA=;
+        t=1685966304; x=1687175904; b=mcrDRe46J++LIvY0Vd+ZQJ0lrCY6j+4KkUZolnbfHb5Nq53
+        WZvPNBhbaUThCHmMXzB9JICK60um8C6DG4lejmd4rZ9VA0kSDCdRDo90v4EvXvJKe9SUw7chqDGCY
+        zfJvlnLczDPRLKDOFidMCuYNngBYrCAi6DM7Kyqg6J3EOJg6Gu2fP6pU6Sjs7oY3M274C/vh2vss6
+        /dn/EmfU0c2I4vnnspxXyliSw1LzED5eDwIVm8xj0VlzKLH1mIGciDm7qFVFXbyGva9sNBdQizgS6
+        wAGrOvigwH162UshQaRnYwNQ58BNdMceF61KpUaeJ7aeg2t2dGiZ9W3UXeIZF0tg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1q68Xi-00ER1W-2c;
-        Mon, 05 Jun 2023 13:38:34 +0200
-Message-ID: <74f52855912292d48ea80d76f4685998a1c3beec.camel@sipsolutions.net>
-Subject: Re: [PATCH 09/11] wifi: cfg80211: Add null check for ie data
+        id 1q68qr-00ERWy-2T;
+        Mon, 05 Jun 2023 13:58:21 +0200
+Message-ID: <9a691000231beaf82c4f83aa0ac54fde8f74b133.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211 : Add support to track mesh peer beacon miss
+ event
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     gregory.greenman@intel.com
-Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Date:   Mon, 05 Jun 2023 13:38:34 +0200
-In-Reply-To: <20230504134511.828474-10-gregory.greenman@intel.com>
-References: <20230504134511.828474-1-gregory.greenman@intel.com>
-         <20230504134511.828474-10-gregory.greenman@intel.com>
+To:     quic_haric@quicinc.com
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 05 Jun 2023 13:58:20 +0200
+In-Reply-To: <1653893292-11092-1-git-send-email-quic_haric@quicinc.com>
+References: <1653893292-11092-1-git-send-email-quic_haric@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.2 (3.48.2-1.fc38) 
@@ -54,19 +53,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-05-04 at 16:45 +0300, gregory.greenman@intel.com wrote:
-> From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+On Mon, 2022-05-30 at 12:18 +0530, quic_haric@quicinc.com wrote:
 >=20
-> It's valid to pass NULL "ies" pointer to cfg80211_sme_get_conn_ies().
-> Add the corresponding NULL-check to avoid NULL pointer access.
+> =20
+> +static ssize_t dbg_mask_read(struct file *file, char __user *user_buf,
+> +			     size_t count, loff_t *ppos)
+> +{
+> +	struct ieee80211_local *local =3D file->private_data;
+> +	char buf[128];
+> +	int len;
+> +
+> +	len =3D scnprintf(buf, sizeof(buf), "0x%x\n", local->hw.dbg_mask);
+> +
+> +	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
+> +}
+>=20
 
-Yes ... but it's not valid to do that when ies_len is 0, since you can't
-have NULL ies with a length ...
-
-So ... maybe we can do this patch but certainly the description is
-bogus. Maybe you're trying to fix some static checker warnings or
-something, which maybe is fine, but there was never any chance for an
-NPD.
+I'm also really not sure I want to get behind another bespoke debug
+configuration system ...
 
 johannes
-
