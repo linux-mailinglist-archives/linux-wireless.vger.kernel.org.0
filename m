@@ -2,98 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE82721B4F
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 02:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35189721DBF
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 08:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232449AbjFEAuU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 4 Jun 2023 20:50:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34732 "EHLO
+        id S229489AbjFEGAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jun 2023 02:00:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjFEAuT (ORCPT
+        with ESMTP id S229441AbjFEGAX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 4 Jun 2023 20:50:19 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD7A6AB
-        for <linux-wireless@vger.kernel.org>; Sun,  4 Jun 2023 17:50:18 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3550nu8O3000674, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3550nu8O3000674
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Mon, 5 Jun 2023 08:49:56 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 5 Jun 2023 08:50:11 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 5 Jun 2023 08:50:10 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Mon, 5 Jun 2023 08:50:10 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 2/2] [v2] wifi: rtlwifi: remove unused dualmac control leftovers
-Thread-Topic: [PATCH 2/2] [v2] wifi: rtlwifi: remove unused dualmac control
- leftovers
-Thread-Index: AQHZlR/i3i9GkJkXzUqoZMOeliwNDq97Y/UA
-Date:   Mon, 5 Jun 2023 00:50:10 +0000
-Message-ID: <af4ef3bb49ce4b42946847e3b9bb17a1@realtek.com>
-References: <20230602052936.114649-1-dmantipov@yandex.ru>
- <20230602065940.149198-1-dmantipov@yandex.ru>
- <20230602065940.149198-2-dmantipov@yandex.ru>
-In-Reply-To: <20230602065940.149198-2-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 5 Jun 2023 02:00:23 -0400
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28985D3
+        for <linux-wireless@vger.kernel.org>; Sun,  4 Jun 2023 23:00:21 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-9741caaf9d4so655480366b.0
+        for <linux-wireless@vger.kernel.org>; Sun, 04 Jun 2023 23:00:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685944820; x=1688536820;
+        h=content-transfer-encoding:in-reply-to:subject:from:content-language
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ix5DN157aDhdZs5uwttdNoqkK0G/+qbEmd+ldVidlQw=;
+        b=JXHWiFzWXSW6GU5JYUAUvkJeE7eAMQMHP4QRQlaD8gDPIJMR9fWFqqBCgb8I23+pm/
+         0GP5SYcIBe0RXk1rILJwjxIb9QsUv8rbMwFTvswKUeqpJiIyQlGoEZVgVXP9auc61wMe
+         JZ+iYW3Y5pwNSeRRaeyyw6a1cBvR/ptwyEMjHR0ZEJBxPrIfGbRkf3hZpNcdF3bhBnu0
+         uGeLMmhZtfBBc0NLLqQvYNDkhswyjFR+dhi5htWZdXuHKxN5E9u+1uQvgqf8FLTgP07D
+         q4j+R6qfMQgVf3pdAvbGYTUTsuCSImjS1qzGnw/ZdzlWhFdxbEd8QV5ZaU2iQ6Z+LTfu
+         X0Yw==
+X-Gm-Message-State: AC+VfDzs2i3/7V+2ETLgnoXVIEZ2qAB3XI8/5TvSc0p6atvVxkTw0wNn
+        VoTqrkefaajt8y5DUiz5uLU=
+X-Google-Smtp-Source: ACHHUZ6iFtG5pWvtnMh2+ByEerRldu3i+gftohAV9jmOxQBzPIuChpjc7xHITKg13ceyu77pmQ6+Fg==
+X-Received: by 2002:a17:907:2cc3:b0:973:dd61:d420 with SMTP id hg3-20020a1709072cc300b00973dd61d420mr6157286ejc.74.1685944820203;
+        Sun, 04 Jun 2023 23:00:20 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id jo8-20020a170906f6c800b0094f1b8901e1sm3785126ejb.68.2023.06.04.23.00.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Jun 2023 23:00:19 -0700 (PDT)
+Message-ID: <92aacacd-b33f-f86a-700c-98fc90b79cbe@kernel.org>
+Date:   Mon, 5 Jun 2023 08:00:18 +0200
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+To:     Christian Lamparter <chunkeey@gmail.com>,
+        linux-wireless@vger.kernel.org
+Cc:     ansuelsmth@gmail.com, kvalo@kernel.org, mcgrof@kernel.org,
+        mickflemm@gmail.com, robimarko@gmail.com, toke@toke.dk,
+        yangshiji66@qq.com, Shiji Yang <yangshiji66@outlook.com>
+References: <TYAP286MB0315EC437BF53C8DB2B5D022BC4EA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+ <TYAP286MB0315FA0080ABAE79CC842899BC4CA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM>
+ <582d6f32-23f8-6175-19da-f0b4c97393f5@gmail.com>
+Content-Language: en-US
+From:   Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH] wifi: ath: add struct_group for struct ath_cycle_counters
+In-Reply-To: <582d6f32-23f8-6175-19da-f0b4c97393f5@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Friday, June 2, 2023 3:00 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org; Dmitry Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH 2/2] [v2] wifi: rtlwifi: remove unused dualmac control leftovers
-
-Different versions in the same patchset could be confusing. 
-
-[PATCH 1/2] [v6] ...
-[PATCH 2/2] [v2] ...
-
-Suggest
-[PATCH 1/2 v6]
-[PATCH 2/2 v6]
-with changelog -- add patch 2/2 by v6.
-
-
+On 04. 06. 23, 13:11, Christian Lamparter wrote:
+> On 6/4/23 03:48, Shiji Yang wrote:
+>> Thank you all,
+>> This patch may not look so beautiful, but its main purpose is to raise
+>> some awareness about this strange compilation warning.
+>>
+>> This problem only occurs in mips gcc 12.3 (maybe only on arc mips/ath79).
 > 
-> Remove 'struct rtl_dualmac_easy_concurrent_ctl' of 'struct rtl_priv'
-> and related code in '_rtl_pci_tx_chk_waitq()'.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> It also occures with PPC464/APM82181. Could it be that that it occurs on
+> "big-endian" archs?
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Whatever, to me this very looks like a compiler bug.
 
+So NACK to this one for now.
+
+If this still happens on the latest tree (e.g. 6.4-rc) and with gcc 13, 
+we might need to fix fortify or report to the gcc bugzilla [1] instead 
+-- attach a preprocessed source there (the output of your make 
+CROSSblabla=xyz drivers/net/wireless/ath/ath9k/main.i).
+
+[1] https://gcc.gnu.org/bugzilla/enter_bug.cgi
+
+thanks,
+-- 
+js
+suse labs
 
