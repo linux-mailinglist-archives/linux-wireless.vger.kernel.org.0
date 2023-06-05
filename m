@@ -2,170 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 869FC7222CA
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 11:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6097222EE
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 12:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbjFEJ7v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jun 2023 05:59:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
+        id S231463AbjFEKHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jun 2023 06:07:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231624AbjFEJ7t (ORCPT
+        with ESMTP id S229604AbjFEKHd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jun 2023 05:59:49 -0400
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EBCB0;
-        Mon,  5 Jun 2023 02:59:44 -0700 (PDT)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id A97BA8467E;
-        Mon,  5 Jun 2023 11:59:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1685959182;
-        bh=yzbvSbjMl2YsxvMpDx5BjJDvIMXshX3uhOceQVaVxY0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=BfeQy4uEUo7AB4FOoIvmC4FJ4E9Z+0xqfKR0xig5ibbGvSQXKXho9lpOeHnC6c2T3
-         KaxGAaS2VYZo5X5wgkjgieo0quT7f2Qha1UUcjMD1+4AH96zoQE4wwT2ZwnWv2V3YT
-         6RIQKVwprTDJCHLwAGXQvF5UO3pSShrJhx+A9Emhd3uqC/rWwj2LbA6h75kVpYCVtU
-         t+CovtAB/LF9DK6wGSdUCZwXbTCoxL7jJ9Bn/GgEswtIlAwwlcaYKfltVc/VEI+SuV
-         EZ4K9eyYPpiAXbyX2VoKtLkQi32JCjptXBnh3XhRZiyclaJvW8INEyPXAlavd2CdH7
-         3M3tlRBorghNg==
-Message-ID: <dd9a86af-e41a-3450-5e52-6473561a3e18@denx.de>
-Date:   Mon, 5 Jun 2023 11:59:41 +0200
+        Mon, 5 Jun 2023 06:07:33 -0400
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D2EE3
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 03:07:32 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
+        by forward103b.mail.yandex.net (Yandex) with ESMTP id 2DF0360049;
+        Mon,  5 Jun 2023 13:07:30 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id H7P24T2DaCg0-zt906IQZ;
+        Mon, 05 Jun 2023 13:07:29 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685959649;
+        bh=k3I2MRzPWJPZNPqE9Rqsvoq435M/fRntrShOV0+g3oQ=;
+        h=Message-Id:Date:Cc:Subject:To:From;
+        b=lHx0+L94XeVUpW1NzeQR5suzKQ5N9yR9s8TAh67/Ox4OqrozyRe1T5EbBviGuFki6
+         EuMOB+rh7ruHgAMrLUusJ9Nyw9Qly1ldNc8UQechWniuJTb4LuZ1LsPg8tIRLTXkow
+         fWzb4rFCYEwWGeJrOGcoYFvw73qsHhn1LwMWMzis=
+Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: rtlwifi: remove misused flag from HAL data
+Date:   Mon,  5 Jun 2023 13:07:00 +0300
+Message-Id: <20230605100700.111644-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3] MAINTAINERS: Add new maintainers to Redpine driver
-Content-Language: en-US
-To:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Amol Hanwate <amol.hanwate@silabs.com>,
-        Angus Ainslie <angus@akkea.ca>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Narasimha Anumolu <narasimha.anumolu@silabs.com>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Shivanadam Gude <shivanadam.gude@silabs.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Srinivas Chappidi <srinivas.chappidi@silabs.com>,
-        netdev@vger.kernel.org
-References: <1675433281-6132-1-git-send-email-ganapathi.kondraju@silabs.com>
- <87lekj1jx2.fsf@kernel.org> <8eb3f1fc-0dee-3e5d-b309-e62349820be8@denx.de>
- <112376890.nniJfEyVGO@pc-42>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <112376890.nniJfEyVGO@pc-42>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/1/23 12:47, Jérôme Pouiller wrote:
-> On Saturday 27 May 2023 23:12:16 CEST Marek Vasut wrote:
->> On 2/27/23 11:28, Kalle Valo wrote:
->>> Ganapathi Kondraju <ganapathi.kondraju@silabs.com> writes:
->>>
->>>> Silicon Labs acquired Redpine Signals recently. It needs to continue
->>>> giving support to the existing REDPINE WIRELESS DRIVER. This patch adds
->>>> new Maintainers for it.
->>>>
->>>> Signed-off-by: Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
->>>> ---
->>>> V2:
->>>> - Add proper prefix for patch subject.
->>>> - Reorder the maintainers list alphabetically.
->>>> - Add a new member to the list.
->>>> ---
->>>> V3:
->>>> - Fix sentence formation in the patch subject and description.
->>>> ---
->>>>
->>>>    MAINTAINERS | 8 +++++++-
->>>>    1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index ea941dc..04a08c7 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -17709,8 +17709,14 @@ S:  Maintained
->>>>    F: drivers/net/wireless/realtek/rtw89/
->>>>
->>>>    REDPINE WIRELESS DRIVER
->>>> +M:  Amol Hanwate <amol.hanwate@silabs.com>
->>>> +M:  Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
->>>> +M:  Jérôme Pouiller <jerome.pouiller@silabs.com>
->>>> +M:  Narasimha Anumolu <narasimha.anumolu@silabs.com>
->>>> +M:  Shivanadam Gude <shivanadam.gude@silabs.com>
->>>> +M:  Srinivas Chappidi <srinivas.chappidi@silabs.com>
->>>>    L: linux-wireless@vger.kernel.org
->>>> -S:  Orphan
->>>> +S:  Maintained
->>>>    F: drivers/net/wireless/rsi/
->>>
->>> For me six maintainers is way too much. Just last November I marked this
->>> driver as orphan, I really do not want to add all these people to
->>> MAINTAINERS and never hear from them again.
->>>
->>> Ideally I would prefer to have one or two maintainers who would be
->>> actively working with the drivers. And also I would like to see some
->>> proof (read: reviewing patches and providing feedback) that the
->>> maintainers are really parciticiping in upstream before changing the
->>> status.
->>
->> Has there been any progress on improving this driver maintainership
->> since this patch ?
-> 
-> Hello Marek,
-> 
-> The situation is still blurry. There is a willing to maintain this driver
-> (and several people would like I take care of that). However, the effort
-> to properly support this driver is still unknown (in fact, I have not yet
-> started to really look at the situation).
+Always rely on 'driver_is_goingto_unload' of 'struct rtl_hal'
+and remove (presumably misused) 'driver_going2unload' from it.
 
-I have to admit, the aforementioned paragraph is quite disturbing, 
-considering that this patch adds 6 maintainers, is already in V3, and so 
-far it is not even clear to silabs how much effort it would be to 
-maintain driver for their own hardware, worse, silabs didn't even check. 
-What is the point of adding those maintainers then ?
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/wifi.h         | 2 --
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-> Is this driver blocking some architectural changes? Kalle is talking about
-> patches to review. Can you point me on them?
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+index a8b5bf45b1bb..4ae8f69c64f9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/hw.c
+@@ -1302,7 +1302,7 @@ static void _rtl92s_phy_set_rfhalt(struct ieee80211_hw *hw)
+ 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+ 	u8 u1btmp;
+ 
+-	if (rtlhal->driver_going2unload)
++	if (rtlhal->driver_is_goingto_unload)
+ 		rtl_write_byte(rtlpriv, 0x560, 0x0);
+ 
+ 	/* Power save for BB/RF */
+@@ -1323,7 +1323,7 @@ static void _rtl92s_phy_set_rfhalt(struct ieee80211_hw *hw)
+ 	rtl_write_word(rtlpriv, CMDR, 0x57FC);
+ 	rtl_write_word(rtlpriv, CMDR, 0x0000);
+ 
+-	if (rtlhal->driver_going2unload) {
++	if (rtlhal->driver_is_goingto_unload) {
+ 		u1btmp = rtl_read_byte(rtlpriv, (REG_SYS_FUNC_EN + 1));
+ 		u1btmp &= ~(BIT(0));
+ 		rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN + 1, u1btmp);
+@@ -1345,7 +1345,7 @@ static void _rtl92s_phy_set_rfhalt(struct ieee80211_hw *hw)
+ 
+ 	/* Power save for MAC */
+ 	if (ppsc->rfoff_reason == RF_CHANGE_BY_IPS  &&
+-		!rtlhal->driver_going2unload) {
++		!rtlhal->driver_is_goingto_unload) {
+ 		/* enable LED function */
+ 		rtl_write_byte(rtlpriv, 0x03, 0xF9);
+ 	/* SW/HW radio off or halt adapter!! For example S3/S4 */
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 307e059ec8aa..a16b779080cb 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -1673,8 +1673,6 @@ struct rtl_hal {
+ 	bool fw_clk_change_in_progress;
+ 	bool allow_sw_to_change_hwclc;
+ 	u8 fw_ps_state;
+-	/**/
+-	bool driver_going2unload;
+ 
+ 	/*AMPDU init min space*/
+ 	u8 minspace_cfg;	/*For Min spacing configurations */
+-- 
+2.40.1
 
-You can look up patches at patchwork.kernel.org or lore.kernel.org and 
-search for "rsi:" or "wifi: rsi:" tags.
-
-This driver is basically unusable and I am tempted to send a patch to 
-move it to staging and possibly remove it altogether.
-
-WiFi/BT coex is broken, WiFi stability is flaky at best, BT often 
-crashes the firmware. There are very iffy design decisions in the driver 
-and other weird defects I keep finding.
-
-Multiple people tried to fix at least a couple of basic problems, so the 
-driver can be used at all, but there is no documentation and getting 
-support regarding anything from RSI is a total waste of time. Sadly, the 
-only reference material I could find and work with is some downstream 
-goo, which is released in enormous single-commit code dumps with +/- 
-thousands of lines of changes and with zero explanation what each change 
-means.
-
-> Anyway, I would like to come back with a plan by the end of the summer.
-
-Sure.
-
-In the meantime, since RSI neglected this driver for years, what would 
-be the suggestion for people who are stuck with the RSI WiFi hardware?
