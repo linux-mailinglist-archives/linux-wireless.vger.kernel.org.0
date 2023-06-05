@@ -2,39 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7BBA722ADF
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 17:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FEA1722ADD
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 17:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbjFEPWP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jun 2023 11:22:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60066 "EHLO
+        id S234701AbjFEPWO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jun 2023 11:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233741AbjFEPWI (ORCPT
+        with ESMTP id S231854AbjFEPWI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 5 Jun 2023 11:22:08 -0400
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B568187
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 08:21:58 -0700 (PDT)
-X-UUID: b27f92f203b411ee9cb5633481061a41-20230605
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C72196
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 08:21:59 -0700 (PDT)
+X-UUID: b26d9f9803b411ee9cb5633481061a41-20230605
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=w+L2Tpb+dUNC8ni2FPWrhFjsr9duAkRXBdpvppSWils=;
-        b=bNxQQ0fh0NAiJWNjoEz4oDyUCfCQxxHPCQnqVte87+QP5Wf0kMs/OzuU8TfhLSoDUnCvz9yPLw0U1RkRol/vmshlVWIunSisVlhJZX4rlA0Xv+LVU25DltHSpfFbkMPEp1R+TB6eJ8x108K6nOgC8IBQzlHVy4bFukUuXQwxZmY=;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=2/is1QcOB7DUDxr9dMCEWLGgopjOcL59vT6R4xIDfaM=;
+        b=TsUeXzV1Qw1PP94cWugDT4B8vRnXpG/jRzRaXq7hDELkXqGLiSz0xfrNqQ9Ttn9DuN3+llJWfRIWVwUh3KkAgTdjCIs1CbkUbk5ITuRkQI/b79NpqUkglL4yRdmAZ60E0lLDNYk0fJe3HFh69kJUcLHEjzD4SmXTi6DLitLAbgg=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.25,REQID:2e3897aa-e2cc-4520-8fe1-04d724eb48b9,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:d5b0ae3,CLOUDID:ee17a23d-7aa7-41f3-a6bd-0433bee822f3,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+X-CID-O-INFO: VERSION:1.1.25,REQID:1b2717d0-5a5e-46f8-b532-1537562fe57f,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:100
+X-CID-INFO: VERSION:1.1.25,REQID:1b2717d0-5a5e-46f8-b532-1537562fe57f,IP:0,URL
+        :0,TC:0,Content:0,EDM:0,RT:0,SF:100,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTIO
+        N:quarantine,TS:100
+X-CID-META: VersionHash:d5b0ae3,CLOUDID:be5d713d-de1e-4348-bc35-c96f92f1dcbb,B
+        ulkID:230605162100PWN4I49L,BulkQuantity:7,Recheck:0,SF:29|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:0,File:nil,Bulk:41,QS:nil,BEC:nil,COL:0,OSI
+        :0,OSA:0,AV:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
-X-UUID: b27f92f203b411ee9cb5633481061a41-20230605
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+X-UUID: b26d9f9803b411ee9cb5633481061a41-20230605
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
         (envelope-from <shayne.chen@mediatek.com>)
         (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1479974864; Mon, 05 Jun 2023 23:21:51 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+        with ESMTP id 1008782415; Mon, 05 Jun 2023 23:21:51 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1118.26; Mon, 5 Jun 2023 23:21:50 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
@@ -50,9 +54,9 @@ CC:     linux-wireless <linux-wireless@vger.kernel.org>,
         linux-mediatek <linux-mediatek@lists.infradead.org>,
         Peter Chiu <chui-hao.chiu@mediatek.com>,
         Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v3 04/10] wifi: mt76: mt7996: init he and eht cap for AP_VLAN
-Date:   Mon, 5 Jun 2023 23:21:35 +0800
-Message-ID: <20230605152141.17434-4-shayne.chen@mediatek.com>
+Subject: [PATCH v3 05/10] wifi: mt76: mt7996: enable VHT extended NSS BW feature
+Date:   Mon, 5 Jun 2023 23:21:36 +0800
+Message-ID: <20230605152141.17434-5-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20230605152141.17434-1-shayne.chen@mediatek.com>
 References: <20230605152141.17434-1-shayne.chen@mediatek.com>
@@ -71,27 +75,28 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-Init he and eht capabilities for AP_VLAN type. Without this patch, the
-BA response from AP_VLAN will not include the ADDBA extension tag.
+Set SUPPORTS_VHT_EXT_NSS_BW to let the max BW capability correctly be
+parsed by different devices.
 
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index f1b48cdda58f..004575a0479b 100644
+index 004575a0479b..8247153d082d 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -808,6 +808,7 @@ __mt7996_set_stream_he_eht_caps(struct mt7996_phy *phy,
- 		switch (i) {
- 		case NL80211_IFTYPE_STATION:
- 		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_AP_VLAN:
- #ifdef CONFIG_MAC80211_MESH
- 		case NL80211_IFTYPE_MESH_POINT:
- #endif
+@@ -217,6 +217,8 @@ mt7996_init_wiphy(struct ieee80211_hw *hw)
+ 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ;
+ 		phy->mt76->sband_5g.sband.ht_cap.ampdu_density =
+ 			IEEE80211_HT_MPDU_DENSITY_1;
++
++		ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
+ 	}
+ 
+ 	mt76_set_stream_caps(phy->mt76, true);
 -- 
 2.39.2
 
