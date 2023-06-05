@@ -2,103 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1BC722268
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 11:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869FC7222CA
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Jun 2023 11:59:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231325AbjFEJnf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jun 2023 05:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58502 "EHLO
+        id S229815AbjFEJ7v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jun 2023 05:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbjFEJne (ORCPT
+        with ESMTP id S231624AbjFEJ7t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jun 2023 05:43:34 -0400
-Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10030BD
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 02:43:31 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:5d0f:0:640:79fc:0])
-        by forward502a.mail.yandex.net (Yandex) with ESMTP id BAED45E86E;
-        Mon,  5 Jun 2023 12:43:29 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ShOwSu7DaqM0-1pu7pXBz;
-        Mon, 05 Jun 2023 12:43:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1685958209;
-        bh=lM9AoMErlXYfwIyKJseB7F/ELuNG29Q3JCv3jmk6KOM=;
-        h=In-Reply-To:Subject:To:From:Cc:Date:References:Message-ID;
-        b=nrYlDdT5qChLtWmQQfxrsjF7h8IRQVQIojeewjn24KTwV3N3Z+AJuky8t2LhhXROc
-         tpdf/mjZK0pTXFJWqbx1jhKccW8dWku7ArdjXc+Q/xTWI3TCq/vW3+DfDBOYxAXchp
-         ykK2sMd7kyvsveqob4cwOb6Rs1DMzepXzRcfMRsA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <6e54f08f-96f9-4d7d-48b7-553ac1a5bf1b@yandex.ru>
-Date:   Mon, 5 Jun 2023 12:43:23 +0300
+        Mon, 5 Jun 2023 05:59:49 -0400
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EBCB0;
+        Mon,  5 Jun 2023 02:59:44 -0700 (PDT)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id A97BA8467E;
+        Mon,  5 Jun 2023 11:59:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1685959182;
+        bh=yzbvSbjMl2YsxvMpDx5BjJDvIMXshX3uhOceQVaVxY0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=BfeQy4uEUo7AB4FOoIvmC4FJ4E9Z+0xqfKR0xig5ibbGvSQXKXho9lpOeHnC6c2T3
+         KaxGAaS2VYZo5X5wgkjgieo0quT7f2Qha1UUcjMD1+4AH96zoQE4wwT2ZwnWv2V3YT
+         6RIQKVwprTDJCHLwAGXQvF5UO3pSShrJhx+A9Emhd3uqC/rWwj2LbA6h75kVpYCVtU
+         t+CovtAB/LF9DK6wGSdUCZwXbTCoxL7jJ9Bn/GgEswtIlAwwlcaYKfltVc/VEI+SuV
+         EZ4K9eyYPpiAXbyX2VoKtLkQi32JCjptXBnh3XhRZiyclaJvW8INEyPXAlavd2CdH7
+         3M3tlRBorghNg==
+Message-ID: <dd9a86af-e41a-3450-5e52-6473561a3e18@denx.de>
+Date:   Mon, 5 Jun 2023 11:59:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <b2198915-0e92-de99-d950-be46c2bd8e91@yandex.ru>
- <20230601105215.27013-1-dmantipov@yandex.ru>
- <3b92f9205003f44187f7ebf7add6c3e0626e9646.camel@realtek.com>
- <0d1f24b9-a058-52fd-b669-54aa4e9162f9@yandex.ru>
- <dc499da404c21b1d2db71a792d7fb836bc9ef122.camel@realtek.com>
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] MAINTAINERS: Add new maintainers to Redpine driver
 Content-Language: en-US
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- tx98MCutXbJWn55RtnVKbpIiMfBrcB8=
-Subject: Re: [PATCH] rtlwifi: rtl8188ee: mark RTX_POWER_{BEFORE,AFTER}_IQK_A
- reads as unused
-In-Reply-To: <dc499da404c21b1d2db71a792d7fb836bc9ef122.camel@realtek.com>
+To:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Amol Hanwate <amol.hanwate@silabs.com>,
+        Angus Ainslie <angus@akkea.ca>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Martin Kepplinger <martink@posteo.de>,
+        Narasimha Anumolu <narasimha.anumolu@silabs.com>,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        Shivanadam Gude <shivanadam.gude@silabs.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Srinivas Chappidi <srinivas.chappidi@silabs.com>,
+        netdev@vger.kernel.org
+References: <1675433281-6132-1-git-send-email-ganapathi.kondraju@silabs.com>
+ <87lekj1jx2.fsf@kernel.org> <8eb3f1fc-0dee-3e5d-b309-e62349820be8@denx.de>
+ <112376890.nniJfEyVGO@pc-42>
+From:   Marek Vasut <marex@denx.de>
+In-Reply-To: <112376890.nniJfEyVGO@pc-42>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/2/23 09:13, Ping-Ke Shih wrote:
+On 6/1/23 12:47, Jérôme Pouiller wrote:
+> On Saturday 27 May 2023 23:12:16 CEST Marek Vasut wrote:
+>> On 2/27/23 11:28, Kalle Valo wrote:
+>>> Ganapathi Kondraju <ganapathi.kondraju@silabs.com> writes:
+>>>
+>>>> Silicon Labs acquired Redpine Signals recently. It needs to continue
+>>>> giving support to the existing REDPINE WIRELESS DRIVER. This patch adds
+>>>> new Maintainers for it.
+>>>>
+>>>> Signed-off-by: Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
+>>>> ---
+>>>> V2:
+>>>> - Add proper prefix for patch subject.
+>>>> - Reorder the maintainers list alphabetically.
+>>>> - Add a new member to the list.
+>>>> ---
+>>>> V3:
+>>>> - Fix sentence formation in the patch subject and description.
+>>>> ---
+>>>>
+>>>>    MAINTAINERS | 8 +++++++-
+>>>>    1 file changed, 7 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>> index ea941dc..04a08c7 100644
+>>>> --- a/MAINTAINERS
+>>>> +++ b/MAINTAINERS
+>>>> @@ -17709,8 +17709,14 @@ S:  Maintained
+>>>>    F: drivers/net/wireless/realtek/rtw89/
+>>>>
+>>>>    REDPINE WIRELESS DRIVER
+>>>> +M:  Amol Hanwate <amol.hanwate@silabs.com>
+>>>> +M:  Ganapathi Kondraju <ganapathi.kondraju@silabs.com>
+>>>> +M:  Jérôme Pouiller <jerome.pouiller@silabs.com>
+>>>> +M:  Narasimha Anumolu <narasimha.anumolu@silabs.com>
+>>>> +M:  Shivanadam Gude <shivanadam.gude@silabs.com>
+>>>> +M:  Srinivas Chappidi <srinivas.chappidi@silabs.com>
+>>>>    L: linux-wireless@vger.kernel.org
+>>>> -S:  Orphan
+>>>> +S:  Maintained
+>>>>    F: drivers/net/wireless/rsi/
+>>>
+>>> For me six maintainers is way too much. Just last November I marked this
+>>> driver as orphan, I really do not want to add all these people to
+>>> MAINTAINERS and never hear from them again.
+>>>
+>>> Ideally I would prefer to have one or two maintainers who would be
+>>> actively working with the drivers. And also I would like to see some
+>>> proof (read: reviewing patches and providing feedback) that the
+>>> maintainers are really parciticiping in upstream before changing the
+>>> status.
+>>
+>> Has there been any progress on improving this driver maintainership
+>> since this patch ?
+> 
+> Hello Marek,
+> 
+> The situation is still blurry. There is a willing to maintain this driver
+> (and several people would like I take care of that). However, the effort
+> to properly support this driver is still unknown (in fact, I have not yet
+> started to really look at the situation).
 
-> Don't you think casting of 'void' only makes tool happy?
+I have to admit, the aforementioned paragraph is quite disturbing, 
+considering that this patch adds 6 maintainers, is already in V3, and so 
+far it is not even clear to silabs how much effort it would be to 
+maintain driver for their own hardware, worse, silabs didn't even check. 
+What is the point of adding those maintainers then ?
 
-The point is in commenting the pieces of code which looks like
-leftovers and probably should be reconsidered. Explicit casts
-to void should be considered as an extra annotations rather than
-an attempts to fix something.
+> Is this driver blocking some architectural changes? Kalle is talking about
+> patches to review. Can you point me on them?
 
-Dmitry
+You can look up patches at patchwork.kernel.org or lore.kernel.org and 
+search for "rsi:" or "wifi: rsi:" tags.
+
+This driver is basically unusable and I am tempted to send a patch to 
+move it to staging and possibly remove it altogether.
+
+WiFi/BT coex is broken, WiFi stability is flaky at best, BT often 
+crashes the firmware. There are very iffy design decisions in the driver 
+and other weird defects I keep finding.
+
+Multiple people tried to fix at least a couple of basic problems, so the 
+driver can be used at all, but there is no documentation and getting 
+support regarding anything from RSI is a total waste of time. Sadly, the 
+only reference material I could find and work with is some downstream 
+goo, which is released in enormous single-commit code dumps with +/- 
+thousands of lines of changes and with zero explanation what each change 
+means.
+
+> Anyway, I would like to come back with a plan by the end of the summer.
+
+Sure.
+
+In the meantime, since RSI neglected this driver for years, what would 
+be the suggestion for people who are stuck with the RSI WiFi hardware?
