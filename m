@@ -2,199 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD247244B1
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 15:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 244D97244EE
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 15:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233325AbjFFNmu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jun 2023 09:42:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33484 "EHLO
+        id S237991AbjFFNwf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jun 2023 09:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232371AbjFFNmt (ORCPT
+        with ESMTP id S237466AbjFFNwe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jun 2023 09:42:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389A9E6B;
-        Tue,  6 Jun 2023 06:42:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 6 Jun 2023 09:52:34 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61BEE7E
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 06:52:32 -0700 (PDT)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9A2E4900085
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 13:52:30 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.35.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C847161AE4;
-        Tue,  6 Jun 2023 13:42:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D69C433EF;
-        Tue,  6 Jun 2023 13:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686058967;
-        bh=U3h883flvEqS2X1clqH4TWWLP/40FL+WE/MAXYrRcIs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=RT4Poi/FKBXFHXZbkEflbrtpDU7xwQq43Cyho27XMxZtrJ6nwUGLwOiJ14V66N/6o
-         aQ/qvtgaL1WIwtAlayzsuqYY/ki08wD6wlOhG8b+gZgEHBUYQrk+S84lj9G7t6UG40
-         BCIaN6WqMVHwvOh+6AaRW/e2ONpZzC9auCHpRTXsUJ2m87E4GoT7XDFah+d3v9VB7b
-         1AV1QYHZW14nxr2nYqP6tu/4fI+T5JLKfumi8/XePna7WV0tYucwqId17Tv1e1ljKd
-         B+ufRw2u7WQaw3VPJp70Q6yR2O0+7zz8NYx3K/h1nOV7L27M65z7XsHOjxW8Xmwbhs
-         SHMP6ejCV8HFA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     oe-kbuild@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
-        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475 mt76x02_set_key() warn: variable dereferenced before check 'key' (see line 415)
-References: <2f121202-5846-44a9-8b83-e2ba1fa671d0@kadam.mountain>
-Date:   Tue, 06 Jun 2023 16:42:43 +0300
-In-Reply-To: <2f121202-5846-44a9-8b83-e2ba1fa671d0@kadam.mountain> (Dan
-        Carpenter's message of "Tue, 6 Jun 2023 08:38:37 +0300")
-Message-ID: <87mt1ciu5o.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id E218413C2B0
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 06:52:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com E218413C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1686059550;
+        bh=tsdfktztIh21HJogh6GNLJlXZBm5zR2+XTTgORyJ1CQ=;
+        h=Subject:From:To:References:Date:In-Reply-To:From;
+        b=D6Qxq++7WGvgUnHJ6WOxggfxZossMLrM7cDj6aEx1RvEienFcKlfHVQ9qeFWDHTjh
+         s5nlFQGSW7nanTBkhsBOUcV1/gm5vAcMR6/lGMwQbPPsOutkPZ6crVLw6FcutpoFiV
+         IUmjbe5Y4ShOHDEuVaJyh79UqTINEdMB2afY4IM8=
+Subject: Re: iwlwifi: tx-fail reported with zero retry count.
+From:   Ben Greear <greearb@candelatech.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <6b920700-e9a2-bbeb-98ce-7a2d09e76975@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <2fbaa2cb-9193-32cd-66ef-ffd6b48c049d@candelatech.com>
+Date:   Tue, 6 Jun 2023 06:52:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <6b920700-e9a2-bbeb-98ce-7a2d09e76975@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
+Content-Transfer-Encoding: 8bit
+X-MDID: 1686059551-m2TpKQkt-BIs
+X-MDID-O: us5;at1;1686059551;m2TpKQkt-BIs;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Adding linux-wireless, top posting so that the whole report is included.
+On 6/6/23 6:36 AM, Ben Greear wrote:
+> It seems that when tx fails (due to TX_STATUS_FAIL_LONG_LIMIT in this case), the
+> retry-count is sometimes reported as zero.  I would expect that it actually must have retried
+> many times (15 it seems?).  At least for fail-long-limit failures, is there a known constant amount of
+> times the firmware retransmits the frame before giving up?  If so, I can just hack that
+> value into the retry counter in this case.
+> 
+> Debug patch:
+> 
+> [greearb@ben-dt5 iwlwifi]$ git diff
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+> index 1cddc65dd51e..6544dabb092b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+> @@ -1929,8 +1929,14 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+>                  mvm->ethtool_stats.tx_mpdu_attempts += info->status.rates[0].count;
+>                  mvm->ethtool_stats.tx_mpdu_retry += tx_resp->failure_frame;
+>                  if (cb.flags & IWL_TX_CB_TXO_USED) {
+> +                       u32 idx = status & TX_STATUS_MSK;
+> +
+>                          mvm->ethtool_stats.txo_tx_mpdu_attempts += info->status.rates[0].count;
+>                          mvm->ethtool_stats.txo_tx_mpdu_retry += tx_resp->failure_frame;
+> +                       if (idx != TX_STATUS_SUCCESS) {
+> +                               pr_info("txo tx status failed: %d  tx_resp->failure_frame: %d\n",
+> +                                       idx, tx_resp->failure_frame);
+> +                       }
+>                  }
+> 
+>                  iwl_mvm_hwrate_to_tx_status(mvm, mvm->fw,
+> 
+> 
+>  From dmesg:
+> 
+> Jun 06 06:29:40 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:29:43 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:29:48 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:29:49 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:29:52 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:29:57 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 0
+> Jun 06 06:29:57 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 0
+> Jun 06 06:29:58 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 0
+> Jun 06 06:30:01 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:30:02 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
+> Jun 06 06:30:03 ct523c-0b29 kernel: txo tx status failed: 131  tx_resp->failure_frame: 15
 
-Dan Carpenter <dan.carpenter@linaro.org> writes:
+I think it has some other weirdness too.  I added printout to show any non-zero failure_frame:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-> head:   f8dba31b0a826e691949cd4fdfa5c30defaac8c5
-> commit: e6db67fa871dee37d22701daba806bfcd4d9df49 wifi: mt76: ignore
-> key disable commands
-> config: riscv-randconfig-m031-20230605
-> (https://download.01.org/0day-ci/archive/20230606/202306060332.WbIToDHL-lkp@intel.com/config)
-> compiler: riscv64-linux-gcc (GCC) 12.3.0
->
-> If you fix the issue, kindly add following tag where applicable
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202306060332.WbIToDHL-lkp@intel.com/
->
-> smatch warnings:
-> drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
-> mt76x02_set_key() warn: variable dereferenced before check 'key' (see
-> line 415)
->
-> vim +/key +475 drivers/net/wireless/mediatek/mt76/mt76x02_util.c
->
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 407 int
-> mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 408 struct ieee80211_vif
-> *vif, struct ieee80211_sta *sta,
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 409 struct
-> ieee80211_key_conf *key)
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  410  {
-> d87cf75f111183 Lorenzo Bianconi 2018-10-07 411 struct mt76x02_dev *dev
-> = hw->priv;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 412 struct mt76x02_vif
-> *mvif = (struct mt76x02_vif *)vif->drv_priv;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  413  	struct mt76x02_sta *msta;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  414  	struct mt76_wcid *wcid;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @415  	int idx = key->keyidx;
->
-> "key" is dereferenced here
->
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  416  	int ret;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  417  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 418 /* fall back to sw
-> encryption for unsupported ciphers */
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  419  	switch (key->cipher) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  420  	case WLAN_CIPHER_SUITE_WEP40:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  421  	case WLAN_CIPHER_SUITE_WEP104:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  422  	case WLAN_CIPHER_SUITE_TKIP:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  423  	case WLAN_CIPHER_SUITE_CCMP:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  424  		break;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  425  	default:
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  426  		return -EOPNOTSUPP;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  427  	}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  428  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  429  	/*
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 430 * The hardware does
-> not support per-STA RX GTK, fall back
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  431  	 * to software mode for these.
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  432  	 */
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 433 if ((vif->type ==
-> NL80211_IFTYPE_ADHOC ||
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 434 vif->type ==
-> NL80211_IFTYPE_MESH_POINT) &&
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 435 (key->cipher ==
-> WLAN_CIPHER_SUITE_TKIP ||
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 436 key->cipher ==
-> WLAN_CIPHER_SUITE_CCMP) &&
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 437 !(key->flags &
-> IEEE80211_KEY_FLAG_PAIRWISE))
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  438  		return -EOPNOTSUPP;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  439  
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  440  	/*
-> b98558e2529986 Stanislaw Gruszka 2019-03-19 441 * In USB AP mode,
-> broadcast/multicast frames are setup in beacon
-> b98558e2529986 Stanislaw Gruszka 2019-03-19 442 * data registers and
-> sent via HW beacons engine, they require to
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  443  	 * be already encrypted.
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  444  	 */
-> 61c51a74a4e586 Lorenzo Bianconi  2019-10-29  445  	if (mt76_is_usb(&dev->mt76) &&
-> b98558e2529986 Stanislaw Gruszka 2019-03-19 446 vif->type ==
-> NL80211_IFTYPE_AP &&
-> b98558e2529986 Stanislaw Gruszka 2019-03-19 447 !(key->flags &
-> IEEE80211_KEY_FLAG_PAIRWISE))
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  448  		return -EOPNOTSUPP;
-> b98558e2529986 Stanislaw Gruszka 2019-03-19  449  
-> 4b36cc6b390f18 David Bauer 2021-02-07 450 /* MT76x0 GTK offloading
-> does not work with more than one VIF */
-> 4b36cc6b390f18 David Bauer 2021-02-07 451 if (is_mt76x0(dev) &&
-> !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> 4b36cc6b390f18 David Bauer       2021-02-07  452  		return -EOPNOTSUPP;
-> 4b36cc6b390f18 David Bauer       2021-02-07  453  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 454 msta = sta ? (struct
-> mt76x02_sta *)sta->drv_priv : NULL;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 455 wcid = msta ?
-> &msta->wcid : &mvif->group_wcid;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  456  
-> e6db67fa871dee Felix Fietkau     2023-03-30  457  	if (cmd != SET_KEY) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 458 if (idx ==
-> wcid->hw_key_idx) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 459 wcid->hw_key_idx = -1;
-> f2f6a47b504b8f Felix Fietkau 2019-01-25 460 wcid->sw_iv = false;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  461  		}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  462  
-> e6db67fa871dee Felix Fietkau     2023-03-30  463  		return 0;
-> e6db67fa871dee Felix Fietkau     2023-03-30  464  	}
-> e6db67fa871dee Felix Fietkau     2023-03-30  465  
-> e6db67fa871dee Felix Fietkau     2023-03-30  466  	key->hw_key_idx = wcid->idx;
-> e6db67fa871dee Felix Fietkau     2023-03-30  467  	wcid->hw_key_idx = idx;
-> e6db67fa871dee Felix Fietkau 2023-03-30 468 if (key->flags &
-> IEEE80211_KEY_FLAG_RX_MGMT) {
-> e6db67fa871dee Felix Fietkau 2023-03-30 469 key->flags |=
-> IEEE80211_KEY_FLAG_SW_MGMT_TX;
-> e6db67fa871dee Felix Fietkau     2023-03-30  470  		wcid->sw_iv = true;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  471  	}
-> d87cf75f111183 Lorenzo Bianconi 2018-10-07 472
-> mt76_wcid_key_setup(&dev->mt76, wcid, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  473  
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  474  	if (!msta) {
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @475 if (key ||
-> wcid->hw_key_idx == idx) {
->
-> This NULL check is too late.
->
-> 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 476 ret =
-> mt76x02_mac_wcid_set_key(dev, wcid->idx, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  477  			if (ret)
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04 478 return ret;
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  479  		}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  480  
-> 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 481 return
-> mt76x02_mac_shared_key_setup(dev, mvif->idx, idx, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  482  	}
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  483  
-> 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 484 return
-> mt76x02_mac_wcid_set_key(dev, msta->wcid.idx, key);
-> 60c26859e863c1 Stanislaw Gruszka 2018-09-04  485  }
++                       if (idx != TX_STATUS_SUCCESS || tx_resp->failure_frame) {
++                               pr_info("txo tx status: %d  tx_resp->failure_frame: %d\n",
++                                       idx, tx_resp->failure_frame);
++                       }
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+For a while, it showed the status 131 and failure_frame of 0, then it started reporting lots
+of smaller numbers of retries (more like what I would expect to see).
+And then it seemed to stick in a case where it was reporting
+lots of successes with 15 retries:
+
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+Jun 06 06:44:50 ct523c-0b29 kernel: txo tx status: 1  tx_resp->failure_frame: 15
+
+
+I think it is quite unlikely that it reliably succeeded on the very last retry
+so many times in a row.  Maybe the FW has some issues in reporting the failure_frame
+count properly?
+
+Thanks,
+Ben
