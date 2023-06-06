@@ -2,251 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F4887233B7
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 01:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BEED723445
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 03:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233417AbjFEXit (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 5 Jun 2023 19:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56530 "EHLO
+        id S233376AbjFFBDX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 5 Jun 2023 21:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231521AbjFEXis (ORCPT
+        with ESMTP id S231268AbjFFBDW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 5 Jun 2023 19:38:48 -0400
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0348CD
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 16:38:47 -0700 (PDT)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2CA92B80067
-        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 23:38:45 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 6624513C2B0;
-        Mon,  5 Jun 2023 16:38:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 6624513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1686008324;
-        bh=91GlGhrl0r5GqtGFm1UzBW8mY52sMLHQ8cpqebx7Sv8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rhRNpZStxYz6Yuch2oHXcYlrYiwDK5rPVVOhJOpMCkrQ0Fj2sWXoK7rMNVHm+C4A8
-         vk/nE0qybrl9bP95BHEsaRa0UIA295SmiNvbml9H8Std/eq5teKq7GaNbw2oFjS79M
-         Y4oj06CEDHbsTHfzwJwrfjxwvTKxqMI79O5SHTw4=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wifi: iwlwifi: Add ethtool stats for txo frames
-Date:   Mon,  5 Jun 2023 16:38:42 -0700
-Message-Id: <20230605233842.497070-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.40.0
+        Mon, 5 Jun 2023 21:03:22 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20960EA
+        for <linux-wireless@vger.kernel.org>; Mon,  5 Jun 2023 18:03:21 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b0236ee816so40319865ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Jun 2023 18:03:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1686013400; x=1688605400;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=P+MUoCOufjL+jgfYX81aknXyDcs0G9ERx0AOhezKwvw=;
+        b=HLXWeH9ydbwyjK2QQ2/FJYVRGGXWTlX/tgfxpc7B/NTahljnX7/GOTEa83lr3MjpNk
+         /Ze73Ehjg/OgWeWM5bYdduqVL7QukbHTf3XYFzHvflh4+GWtFKGv3qM1LLgUa8JR9c19
+         wucBprADLLGkv4uaUW81HEmxDAjHVpP/iFMQQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686013400; x=1688605400;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P+MUoCOufjL+jgfYX81aknXyDcs0G9ERx0AOhezKwvw=;
+        b=bO2IMCpBPeuWwzy/poRyBXcZgIO4TQgQ60B0HG+hhNN9kkX6Ia1ERy9jr+d8V7Xe39
+         W9yIsljDbhdm0JObJrzCJAnDOhIM3SDLqRBRfsJhQ+LFk0/MI8AJ8BjSHYBSYSD7hcAO
+         oA1CVywUeAM7J8SVJ5kDJS1t39d2uNgMye0RIKlLQ48Db27tBGDYqIFE+IInQ5ooIgvI
+         Sbwd9E3bb0+JY/OHIVSjzcVLAoKMPs/f9d7uT4uS90RU2vBpWKIR1rKmnDupsF5Twc10
+         d/3XIxZPUDSr33cOkarFeSK2+zqZpPlurMo6MOSpvaZtfheLoyz1gox42Cif6KlDj9EQ
+         lN+w==
+X-Gm-Message-State: AC+VfDzCLfGU3ZT4mZjIcf4ZPOGJNe9ajmZbkSIjgLqD6DQB9PwrDu+H
+        X75gaSBzCJp6BGudEE55PfGE5w==
+X-Google-Smtp-Source: ACHHUZ6YVOiHbysOOAh2pnyOQ50zFHy6l3cr7qmte9qDKRcu8rilGyc0pA/1SxZkjc/xHX3RvgkpXw==
+X-Received: by 2002:a17:902:8343:b0:1b0:3ab6:5133 with SMTP id z3-20020a170902834300b001b03ab65133mr9426752pln.24.1686013400562;
+        Mon, 05 Jun 2023 18:03:20 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id q5-20020a170902c74500b001ac55a5e5eesm7204234plq.121.2023.06.05.18.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jun 2023 18:03:19 -0700 (PDT)
+Date:   Mon, 5 Jun 2023 18:03:19 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: iwlwifi: mvm: Fix -Warray-bounds bug in
+ iwl_mvm_wait_d3_notif()
+Message-ID: <202306051758.CD86F1E638@keescook>
+References: <ZHpGN555FwAKGduH@work>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-MDID: 1686008325-bxqmXxOFsXyp
-X-MDID-O: us5;at1;1686008325;bxqmXxOFsXyp;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZHpGN555FwAKGduH@work>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On Fri, Jun 02, 2023 at 01:42:47PM -0600, Gustavo A. R. Silva wrote:
+> kmemdup() at line 2735 is not duplicating enough memory for
+> notif->tid_tear_down and notif->station_id. As it only duplicates
+> 612 bytes: up to offsetofend(struct iwl_wowlan_info_notif,
+> received_beacons), this is the range of [0, 612) bytes.
+> 
+> 2735	notif = kmemdup(notif_v1,
+> 2736			offsetofend(struct iwl_wowlan_info_notif,
+> 2737				    received_beacons),
+> 2738			GFP_ATOMIC);
+> 
+> which evidently does not cover bytes 612 and 613 for members
+> tid_tear_down and station_id in struct iwl_wowlan_info_notif.
+> See below:
+> 
+> $ pahole -C iwl_wowlan_info_notif drivers/net/wireless/intel/iwlwifi/mvm/d3.o
+> struct iwl_wowlan_info_notif {
+> 	struct iwl_wowlan_gtk_status_v3 gtk[2];          /*     0   488 */
+> 	/* --- cacheline 7 boundary (448 bytes) was 40 bytes ago --- */
+> 	struct iwl_wowlan_igtk_status igtk[2];           /*   488    80 */
+> 	/* --- cacheline 8 boundary (512 bytes) was 56 bytes ago --- */
+> 	__le64                     replay_ctr;           /*   568     8 */
+> 	/* --- cacheline 9 boundary (576 bytes) --- */
+> 	__le16                     pattern_number;       /*   576     2 */
+> 	__le16                     reserved1;            /*   578     2 */
+> 	__le16                     qos_seq_ctr[8];       /*   580    16 */
+> 	__le32                     wakeup_reasons;       /*   596     4 */
+> 	__le32                     num_of_gtk_rekeys;    /*   600     4 */
+> 	__le32                     transmitted_ndps;     /*   604     4 */
+> 	__le32                     received_beacons;     /*   608     4 */
+> 	u8                         tid_tear_down;        /*   612     1 */
+> 	u8                         station_id;           /*   613     1 */
+> 	u8                         reserved2[2];         /*   614     2 */
+> 
+> 	/* size: 616, cachelines: 10, members: 13 */
+> 	/* last cacheline: 40 bytes */
+> };
+> 
+> Therefore, when the following assignments take place, actually no memory
+> has been allocated for those objects:
+> 
+> 2743	notif->tid_tear_down = notif_v1->tid_tear_down;
+> 2744	notif->station_id = notif_v1->station_id;
+> 
+> Fix this by allocating space for the whole notif object and zero out the
+> remaining space in memory after member station_id.
+> 
+> This also fixes the following -Warray-bounds issues:
+>  CC      drivers/net/wireless/intel/iwlwifi/mvm/d3.o
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2743:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
+>  2743 |                         notif->tid_tear_down = notif_v1->tid_tear_down;
+>       |
+>                  from drivers/net/wireless/intel/iwlwifi/mvm/d3.c:7:
+> In function ‘kmemdup’,
+>     inlined from ‘iwl_mvm_wait_d3_notif’ at drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2735:12:
+> include/linux/fortify-string.h:765:16: note: object of size 612 allocated by ‘__real_kmemdup’
+>   765 |         return __real_kmemdup(p, size, gfp);
+>       |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
+> drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2744:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
+>  2744 |                         notif->station_id = notif_v1->station_id;
+>       |                              ^~
+> In function ‘kmemdup’,
+>     inlined from ‘iwl_mvm_wait_d3_notif’ at drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2735:12:
+> include/linux/fortify-string.h:765:16: note: object of size 612 allocated by ‘__real_kmemdup’
+>   765 |         return __real_kmemdup(p, size, gfp);
+>       |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Link: https://github.com/KSPP/linux/issues/306
+> Fixes: 905d50ddbc83 ("wifi: iwlwifi: mvm: support wowlan info notification version 2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Flag skbs that have txo settings applied, and gather
-some tx stats specific to those.  Used for more
-detailed reporting.
+Nice catch!
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
+> ---
+> Changes in v2:
+>  - Use sizeof(*notif), instead of sizeof(struct iwl_wowlan_info_notif).
+>  - Fix typo in the changelog text s/bouds/bounds.
+> 
+> v1:
+>  - Link: https://lore.kernel.org/linux-hardening/ZHpEjTmBys5cCOGZ@work/
+> 
+>  drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> index 37aa4676dc94..6d1007f24b4a 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+> @@ -2732,17 +2732,13 @@ static bool iwl_mvm_wait_d3_notif(struct iwl_notif_wait_data *notif_wait,
+>  		if (wowlan_info_ver < 2) {
+>  			struct iwl_wowlan_info_notif_v1 *notif_v1 = (void *)pkt->data;
+>  
+> -			notif = kmemdup(notif_v1,
+> -					offsetofend(struct iwl_wowlan_info_notif,
+> -						    received_beacons),
+> -					GFP_ATOMIC);
+> -
+> +			notif = kmemdup(notif_v1, sizeof(*notif), GFP_ATOMIC);
 
-Based on iwlwifi-backports tree, and on top of my
-previous patches to iwlwifi.
+The only question I have here is whether or not pkt->data actually
+contains sizeof(*notif)-many bytes? It seems the length isn't checked
+until after this area:
 
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 26 +++++++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 33 ++++++++++++++++---
- 3 files changed, 65 insertions(+), 4 deletions(-)
+                len = iwl_rx_packet_payload_len(pkt);
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index b5703687d990..daf6a0eab682 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -6485,6 +6485,11 @@ static const char iwl_mvm_gstrings_stats[][ETH_GSTRING_LEN] = {
- 	"tx_mpdu_fail",  /* frames that failed even after retry */
- 	"tx_mpdu_retry", /* number of times frames were retried */
- 
-+	"txo_tx_mpdu_attempts", /* counting any retries, txo frames */
-+	"txo_tx_mpdu_fail",  /* frames that failed even after retry, txo frames */
-+	"txo_tx_mpdu_retry", /* number of times frames were retried, txo frames */
-+	"txo_tx_mpdu_ok", /* frames that succeeded, perhaps after retry, txo frames */
-+
- 	"tx_direct_done",
- 	"tx_postpone_delay",
- 	"tx_postpone_few_bytes",
-@@ -6649,6 +6654,11 @@ void iwl_mvm_get_et_stats(struct ieee80211_hw *hw,
- 	data[ei++] = mib->tx_mpdu_fail;
- 	data[ei++] = mib->tx_mpdu_retry;
- 
-+	data[ei++] = mib->txo_tx_mpdu_attempts;
-+	data[ei++] = mib->txo_tx_mpdu_fail;
-+	data[ei++] = mib->txo_tx_mpdu_retry;
-+	data[ei++] = mib->txo_tx_mpdu_ok;
-+
- 	data[ei++] = mib->tx_status_counts[TX_STATUS_DIRECT_DONE];
- 	data[ei++] = mib->tx_status_counts[TX_STATUS_POSTPONE_DELAY];
- 	data[ei++] = mib->tx_status_counts[TX_STATUS_POSTPONE_FEW_BYTES];
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index a0f3075d19ed..d322ee000e0b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -579,6 +579,11 @@ struct iwl_mvm_ethtool_stats {
- 	u64 tx_mpdu_fail; /* Failed even after retry */
- 	u64 tx_mpdu_retry; /* Number of times frames were retried */
- 
-+	unsigned long txo_tx_mpdu_attempts; /* counting any retries, txo frames */
-+	unsigned long txo_tx_mpdu_fail; /* frames that failed even after retry, txo frames */
-+	unsigned long txo_tx_mpdu_ok; /* tx frames */
-+	unsigned long txo_tx_mpdu_retry; /* number of times frames were retried, txo frames */
-+
- 	/* maps to iwl_tx_status enum
- 	 * (TX_STATUS_INTERNAL_ABORT + 1) gathers all larger values.
- 	 */
-@@ -902,6 +907,27 @@ struct iwl_time_sync_data {
- 	bool active;
- };
- 
-+/* skb->cb usage for mvm
-+ * driver_data[0]: Holds iwl_tx_cb struct.
-+ * driver_data[1]: holds pointer to struct iwl_device_tx_cmd (maybe unused?)
-+ * driver_data[2]: cb + cb_data_offs, points to mac header page.
-+ * driver_data[3]: dev_cmd_offs: cb + cb_data_offs + sizeof(void*),
-+ *                 holds pointer to struct iwl_device_tx_cmd.
-+ * driver_data[4]: unused
-+ */
-+
-+#define IWL_TX_CB_TXO_USED		BIT(0)
-+struct iwl_tx_cb {
-+	u8 flags;
-+};
-+
-+static inline struct iwl_tx_cb *iwl_tx_skb_cb(struct sk_buff *skb)
-+{
-+	BUILD_BUG_ON(sizeof(struct iwl_tx_cb) >
-+		     sizeof(IEEE80211_SKB_CB(skb)->driver_data[0]));
-+	return ((void *)&(IEEE80211_SKB_CB(skb)->driver_data[0]));
-+}
-+
- struct iwl_txo_data {
- 	struct rcu_head rcu_head;
- 	u8 txo_active; /* tx overrides are active */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index f14aea39b70e..975df8f082ee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -677,6 +677,9 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	struct iwl_device_tx_cmd *dev_cmd;
- 	struct iwl_tx_cmd *tx_cmd;
- 	__le16 fc = hdr->frame_control;
-+	struct iwl_tx_cb *cb = iwl_tx_skb_cb(skb);
-+
-+	cb->flags = 0;
- 
- 	dev_cmd = iwl_trans_alloc_tx_cmd(mvm->trans);
- 
-@@ -718,6 +721,7 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 
- 			/* Check td again, un-protected access above was lazy check. */
- 			if (td && td->txo_active) {
-+				cb->flags |= IWL_TX_CB_TXO_USED;
- 				flags |= IWL_TX_FLAGS_CMD_RATE;
- 				rate_n_flags = iwl_mvm_get_txo_rate_n_flags(mvm, td);
- 			}
-@@ -779,11 +783,13 @@ static void iwl_mvm_skb_prepare_status(struct sk_buff *skb,
- 				       struct iwl_device_tx_cmd *cmd)
- {
- 	struct ieee80211_tx_info *skb_info = IEEE80211_SKB_CB(skb);
-+	struct iwl_tx_cb cb = *iwl_tx_skb_cb(skb);
- 
- 	memset(&skb_info->status, 0, sizeof(skb_info->status));
- 	memset(skb_info->driver_data, 0, sizeof(skb_info->driver_data));
- 
- 	skb_info->driver_data[1] = cmd;
-+	*iwl_tx_skb_cb(skb) = cb; /* re-apply this driver info */
- }
- 
- static int iwl_mvm_get_ctrl_vif_queue(struct iwl_mvm *mvm,
-@@ -1761,7 +1767,8 @@ static void iwl_mvm_tx_status_check_trigger(struct iwl_mvm *mvm,
- 	}
- }
- 
--static void iwl_mvm_update_tx_stats(struct iwl_mvm *mvm, struct sk_buff *skb, u32 status)
-+static void iwl_mvm_update_tx_stats(struct iwl_mvm *mvm, struct sk_buff *skb, u32 status,
-+				    struct iwl_tx_cb *cb)
- {
- 	u32 idx = status & TX_STATUS_MSK;
- 
-@@ -1769,10 +1776,15 @@ static void iwl_mvm_update_tx_stats(struct iwl_mvm *mvm, struct sk_buff *skb, u3
- 		idx = TX_STATUS_INTERNAL_ABORT + 1;
- 
- 	mvm->ethtool_stats.tx_status_counts[idx]++;
--	if (idx == TX_STATUS_SUCCESS)
-+	if (idx == TX_STATUS_SUCCESS) {
- 		mvm->ethtool_stats.tx_bytes_nic += skb->len;
--	else
-+		if (cb->flags & IWL_TX_CB_TXO_USED)
-+			mvm->ethtool_stats.txo_tx_mpdu_ok++;
-+	} else {
- 		mvm->ethtool_stats.tx_mpdu_fail++;
-+		if (cb->flags & IWL_TX_CB_TXO_USED)
-+			mvm->ethtool_stats.txo_tx_mpdu_fail++;
-+	}
- }
- 
- /*
-@@ -1867,6 +1879,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 		struct ieee80211_hdr *hdr = (void *)skb->data;
- 		bool flushed = false;
-+		struct iwl_tx_cb cb = *iwl_tx_skb_cb(skb);
- 
- 		skb_freed++;
- 
-@@ -1915,6 +1928,10 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 
- 		mvm->ethtool_stats.tx_mpdu_attempts += info->status.rates[0].count;
- 		mvm->ethtool_stats.tx_mpdu_retry += tx_resp->failure_frame;
-+		if (cb.flags & IWL_TX_CB_TXO_USED) {
-+			mvm->ethtool_stats.txo_tx_mpdu_attempts += info->status.rates[0].count;
-+			mvm->ethtool_stats.txo_tx_mpdu_retry += tx_resp->failure_frame;
-+		}
- 
- 		iwl_mvm_hwrate_to_tx_status(mvm, mvm->fw,
- 					    le32_to_cpu(tx_resp->initial_rate),
-@@ -1963,7 +1980,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 		info->status.status_driver_data[0] =
- 			RS_DRV_DATA_PACK(lq_color, tx_resp->reduced_tpc);
- 
--		iwl_mvm_update_tx_stats(mvm, skb, status);
-+		iwl_mvm_update_tx_stats(mvm, skb, status, &cb);
- 
- #ifdef CONFIG_IWLMVM_TDLS_PEER_CACHE
- 		if (info->flags & IEEE80211_TX_STAT_ACK)
-@@ -2229,6 +2246,14 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 
- 	skb_queue_walk(&reclaimed_skbs, skb) {
- 		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+		struct iwl_tx_cb *cb = iwl_tx_skb_cb(skb);
-+
-+		if (!is_flush) {
-+			if (cb->flags & IWL_TX_CB_TXO_USED) {
-+				mvm->ethtool_stats.txo_tx_mpdu_attempts++;
-+				mvm->ethtool_stats.txo_tx_mpdu_ok++;
-+			}
-+		}
- 
- 		iwl_trans_free_tx_cmd(mvm->trans, info->driver_data[1]);
- 
+So, perhaps this needs to be changed instead, and the length
+double-checked, etc. Perhaps a regular kzalloc + memcpy is needed to
+handle pkt->data not being large enough?
+
+>  			if (!notif)
+>  				return false;
+>  
+>  			notif->tid_tear_down = notif_v1->tid_tear_down;
+>  			notif->station_id = notif_v1->station_id;
+> -
+> +			memset_after(notif, 0, station_id);
+>  		} else {
+>  			notif = (void *)pkt->data;
+>  		}
+> -- 
+> 2.34.1
+> 
+
 -- 
-2.40.0
-
+Kees Cook
