@@ -2,58 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83CF07248B6
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 18:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1BB724A5F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 19:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238289AbjFFQOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jun 2023 12:14:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48726 "EHLO
+        id S237454AbjFFRf5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jun 2023 13:35:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237959AbjFFQOE (ORCPT
+        with ESMTP id S237936AbjFFRfd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jun 2023 12:14:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB691995;
-        Tue,  6 Jun 2023 09:13:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD70F63078;
-        Tue,  6 Jun 2023 16:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1499C433EF;
-        Tue,  6 Jun 2023 16:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686068022;
-        bh=QwM7DUTQAmP5CKDLGISPOe3AvYarrqjMTLKruYcs9PU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SJy6gvAh/zvD96T9SPZvmnhkT7brSRIfmeZMKpeEhfunsDeST1CcgNsaiBZlPEHyD
-         4fMeCfNwFvFtE8GFIa8WqMLkAjyePqldvpEvky9b05OEThINNaqTYkk+0XJSmLsibE
-         PHBFvv5Lm9EmRsvvwre9VXrBbi53IBFiVlHZ+KOjWVEM5bR67tkFlUzF1ICmaROFqz
-         PDzIuK2bEkQzgkFgosobbvI3iTSYzKAZyyzOWcUUegdVnMrqhzi83tyXADxRnxsAod
-         sCMH5SdA7/5cKBZb2QOsy1ZjhFbLhePF6n9HAPDtRoS5s5BgyvF7fxhzHzKMtN7Aal
-         ZmwHP1ZDVO2Qg==
-Date:   Tue, 6 Jun 2023 18:13:36 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
-        oe-kbuild@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
-        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
- mt76x02_set_key() warn: variable dereferenced before check 'key' (see line
- 415)
-Message-ID: <ZH9bMMyN/UMPBTq1@lore-desk>
-References: <2f121202-5846-44a9-8b83-e2ba1fa671d0@kadam.mountain>
- <87mt1ciu5o.fsf@kernel.org>
+        Tue, 6 Jun 2023 13:35:33 -0400
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1326170B
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 10:35:29 -0700 (PDT)
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+        by cmsmtp with ESMTP
+        id 6VXBqyPFaWU1c6aaeqAUes; Tue, 06 Jun 2023 17:35:28 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with ESMTPS
+        id 6aadqgqwPovBq6aadqyi95; Tue, 06 Jun 2023 17:35:27 +0000
+X-Authority-Analysis: v=2.4 cv=E6reGIRl c=1 sm=1 tr=0 ts=647f6e5f
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10 a=of4jigFt-DYA:10
+ a=wYkD_t78qR0A:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=iZmTPvbfiRjpTRcFDqwA:9
+ a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=TNXHp03C81TzQxB0Nx0rxgtRLz59GHTTR4umt/LIWNo=; b=NxOdtAjzBHaNvBAX0bwt8CK5fx
+        eAHVuF623LHiCAO4VnUdF8riD1BkF2qokDqyzi43LRcavkTkM27k85P5DhATttNrCEO2wvgMDdb28
+        AYvIuJksnUGe3HykASrKRLdQUQq4RSNwsTxTSvZFswHPvFUR3bd6qeC/zSY2+caFeOrbGYoAE3sy+
+        BnFQopPjHsKZWncQlluFwLYO2fQrPL1jWmRoR3Mcv+JpmpEQOzaAb9btOwtKu5UfRpWZb4lKrF3rO
+        508y5pinHs98XJK6TkH29d7b5tHKYednZ4pE+LiVV0v69NNfvCBQmqqRs0H/MVhs6tPvpOFfvQtoC
+        lipxXAhg==;
+Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:39590 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1q6aac-002w4x-H5;
+        Tue, 06 Jun 2023 12:35:26 -0500
+Message-ID: <62ed7ac9-71bf-1fa5-1ae3-9c2060393b4b@embeddedor.com>
+Date:   Tue, 6 Jun 2023 11:36:14 -0600
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="p6BjL3/uPCwCbsuy"
-Content-Disposition: inline
-In-Reply-To: <87mt1ciu5o.fsf@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] wifi: iwlwifi: mvm: Fix -Warray-bounds bug in
+ iwl_mvm_wait_d3_notif()
+Content-Language: en-US
+To:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Gregory Greenman <gregory.greenman@intel.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+References: <ZHpGN555FwAKGduH@work> <202306051758.CD86F1E638@keescook>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <202306051758.CD86F1E638@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.21.192
+X-Source-L: No
+X-Exim-ID: 1q6aac-002w4x-H5
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.8]) [187.162.21.192]:39590
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org:  HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDcrCetOB8ixZt0hp2R+0Pwc7qagQKoiFjb0xGZcNpxcGR0puO5MVXCmJbzrZDqv/JcxzgQ2IE4o6OPBv/OLNwWYfHNHl/FmaFWCywJvYwLiQIFPWpxq
+ rUSvjmiIrlzR02KgDzaq4X4L7lS1JuFt50XV497DgyAXqaE4RJvH+Khr6UN+iQ73WQdHgkWqgwFn7b48HFs84SSxDXTzC4Ep1dkiYqZtRNrs1Ci57CvzyvcQ
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -61,190 +96,42 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---p6BjL3/uPCwCbsuy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-> Adding linux-wireless, top posting so that the whole report is included.
->=20
-> Dan Carpenter <dan.carpenter@linaro.org> writes:
->=20
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.=
-git master
-> > head:   f8dba31b0a826e691949cd4fdfa5c30defaac8c5
-> > commit: e6db67fa871dee37d22701daba806bfcd4d9df49 wifi: mt76: ignore
-> > key disable commands
-> > config: riscv-randconfig-m031-20230605
-> > (https://download.01.org/0day-ci/archive/20230606/202306060332.WbIToDHL=
--lkp@intel.com/config)
-> > compiler: riscv64-linux-gcc (GCC) 12.3.0
-> >
-> > If you fix the issue, kindly add following tag where applicable
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > | Closes: https://lore.kernel.org/r/202306060332.WbIToDHL-lkp@intel.com/
-> >
-> > smatch warnings:
-> > drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
-> > mt76x02_set_key() warn: variable dereferenced before check 'key' (see
-> > line 415)
-> >
-> > vim +/key +475 drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-> >
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 407 int
-> > mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 408 struct ieee80211_vif
-> > *vif, struct ieee80211_sta *sta,
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 409 struct
-> > ieee80211_key_conf *key)
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  410  {
-> > d87cf75f111183 Lorenzo Bianconi 2018-10-07 411 struct mt76x02_dev *dev
-> > =3D hw->priv;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 412 struct mt76x02_vif
-> > *mvif =3D (struct mt76x02_vif *)vif->drv_priv;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  413  	struct mt76x02_sta *=
-msta;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  414  	struct mt76_wcid *wc=
-id;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @415  	int idx =3D key->key=
-idx;
-> >
-> > "key" is dereferenced here
+On 6/5/23 19:03, Kees Cook wrote:
 
-I think I have already fixed it here:
+>>
+>> Link: https://github.com/KSPP/linux/issues/306
+>> Fixes: 905d50ddbc83 ("wifi: iwlwifi: mvm: support wowlan info notification version 2")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> 
+> Nice catch!
 
-https://patchwork.kernel.org/project/linux-wireless/patch/d560f1a16c9024b6e=
-4029bd0baf53384f4552f5a.1683020788.git.lorenzo@kernel.org/
+(dancy-dance):D
 
-Regards,
-Lorenzo
+,
+>>   		if (wowlan_info_ver < 2) {
+>>   			struct iwl_wowlan_info_notif_v1 *notif_v1 = (void *)pkt->data;
+>>   
+>> -			notif = kmemdup(notif_v1,
+>> -					offsetofend(struct iwl_wowlan_info_notif,
+>> -						    received_beacons),
+>> -					GFP_ATOMIC);
+>> -
+>> +			notif = kmemdup(notif_v1, sizeof(*notif), GFP_ATOMIC);
+> 
+> The only question I have here is whether or not pkt->data actually
+> contains sizeof(*notif)-many bytes? It seems the length isn't checked
+> until after this area:
+> 
+>                  len = iwl_rx_packet_payload_len(pkt);
+> 
+> So, perhaps this needs to be changed instead, and the length
+> double-checked, etc. Perhaps a regular kzalloc + memcpy is needed to
+> handle pkt->data not being large enough?
 
-> >
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  416  	int ret;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  417 =20
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 418 /* fall back to sw
-> > encryption for unsupported ciphers */
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  419  	switch (key->cipher)=
- {
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  420  	case WLAN_CIPHER_SUI=
-TE_WEP40:
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  421  	case WLAN_CIPHER_SUI=
-TE_WEP104:
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  422  	case WLAN_CIPHER_SUI=
-TE_TKIP:
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  423  	case WLAN_CIPHER_SUI=
-TE_CCMP:
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  424  		break;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  425  	default:
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  426  		return -EOPNOTSUPP;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  427  	}
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  428 =20
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  429  	/*
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 430 * The hardware does
-> > not support per-STA RX GTK, fall back
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  431  	 * to software mode =
-for these.
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  432  	 */
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 433 if ((vif->type =3D=3D
-> > NL80211_IFTYPE_ADHOC ||
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 434 vif->type =3D=3D
-> > NL80211_IFTYPE_MESH_POINT) &&
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 435 (key->cipher =3D=3D
-> > WLAN_CIPHER_SUITE_TKIP ||
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 436 key->cipher =3D=3D
-> > WLAN_CIPHER_SUITE_CCMP) &&
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 437 !(key->flags &
-> > IEEE80211_KEY_FLAG_PAIRWISE))
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  438  		return -EOPNOTSUPP;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  439 =20
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19  440  	/*
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19 441 * In USB AP mode,
-> > broadcast/multicast frames are setup in beacon
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19 442 * data registers and
-> > sent via HW beacons engine, they require to
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19  443  	 * be already encryp=
-ted.
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19  444  	 */
-> > 61c51a74a4e586 Lorenzo Bianconi  2019-10-29  445  	if (mt76_is_usb(&dev=
-->mt76) &&
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19 446 vif->type =3D=3D
-> > NL80211_IFTYPE_AP &&
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19 447 !(key->flags &
-> > IEEE80211_KEY_FLAG_PAIRWISE))
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19  448  		return -EOPNOTSUPP;
-> > b98558e2529986 Stanislaw Gruszka 2019-03-19  449 =20
-> > 4b36cc6b390f18 David Bauer 2021-02-07 450 /* MT76x0 GTK offloading
-> > does not work with more than one VIF */
-> > 4b36cc6b390f18 David Bauer 2021-02-07 451 if (is_mt76x0(dev) &&
-> > !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
-> > 4b36cc6b390f18 David Bauer       2021-02-07  452  		return -EOPNOTSUPP;
-> > 4b36cc6b390f18 David Bauer       2021-02-07  453 =20
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 454 msta =3D sta ? (struct
-> > mt76x02_sta *)sta->drv_priv : NULL;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 455 wcid =3D msta ?
-> > &msta->wcid : &mvif->group_wcid;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  456 =20
-> > e6db67fa871dee Felix Fietkau     2023-03-30  457  	if (cmd !=3D SET_KEY=
-) {
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 458 if (idx =3D=3D
-> > wcid->hw_key_idx) {
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 459 wcid->hw_key_idx =3D -1;
-> > f2f6a47b504b8f Felix Fietkau 2019-01-25 460 wcid->sw_iv =3D false;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  461  		}
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  462 =20
-> > e6db67fa871dee Felix Fietkau     2023-03-30  463  		return 0;
-> > e6db67fa871dee Felix Fietkau     2023-03-30  464  	}
-> > e6db67fa871dee Felix Fietkau     2023-03-30  465 =20
-> > e6db67fa871dee Felix Fietkau     2023-03-30  466  	key->hw_key_idx =3D =
-wcid->idx;
-> > e6db67fa871dee Felix Fietkau     2023-03-30  467  	wcid->hw_key_idx =3D=
- idx;
-> > e6db67fa871dee Felix Fietkau 2023-03-30 468 if (key->flags &
-> > IEEE80211_KEY_FLAG_RX_MGMT) {
-> > e6db67fa871dee Felix Fietkau 2023-03-30 469 key->flags |=3D
-> > IEEE80211_KEY_FLAG_SW_MGMT_TX;
-> > e6db67fa871dee Felix Fietkau     2023-03-30  470  		wcid->sw_iv =3D tru=
-e;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  471  	}
-> > d87cf75f111183 Lorenzo Bianconi 2018-10-07 472
-> > mt76_wcid_key_setup(&dev->mt76, wcid, key);
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  473 =20
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  474  	if (!msta) {
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @475 if (key ||
-> > wcid->hw_key_idx =3D=3D idx) {
-> >
-> > This NULL check is too late.
-> >
-> > 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 476 ret =3D
-> > mt76x02_mac_wcid_set_key(dev, wcid->idx, key);
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  477  			if (ret)
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 478 return ret;
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  479  		}
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  480 =20
-> > 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 481 return
-> > mt76x02_mac_shared_key_setup(dev, mvif->idx, idx, key);
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  482  	}
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  483 =20
-> > 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 484 return
-> > mt76x02_mac_wcid_set_key(dev, msta->wcid.idx, key);
-> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  485  }
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+As per Gregory's reply, it seems that the length is just fine.
 
---p6BjL3/uPCwCbsuy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZH9bMAAKCRA6cBh0uS2t
-rN4LAQDNL8BEsPgt6S7+dsLWJDD11V9cJztRbP8Tqks8IYLJigD+KVOZQuZZHTQB
-XRpFvLs0ahWuT/EK3WJqArXr2tovgwc=
-=cLR/
------END PGP SIGNATURE-----
-
---p6BjL3/uPCwCbsuy--
+Thanks
+--
+Gustavo
