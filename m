@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83126724306
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB21724305
 	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 14:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237721AbjFFMuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jun 2023 08:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48920 "EHLO
+        id S236452AbjFFMuN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jun 2023 08:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237729AbjFFMuI (ORCPT
+        with ESMTP id S237503AbjFFMuH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jun 2023 08:50:08 -0400
+        Tue, 6 Jun 2023 08:50:07 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B851719
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 05:49:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401B71712
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 05:49:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=xO4zHhc2wDSuJK9bddkQbFb1BCmNxZ2aKeUBvUa21SY=;
-        t=1686055784; x=1687265384; b=QRdFlRTogD4lQ0SK43JUbu5elE7vEZNCyAKs2/ZY8rUA7OE
-        zAy2GocV1CfoSBGIcPjFZHAvPm5FG4BT/rO5c1XZp+QkUsanfu05SMJUA8X9HE6s2dbmj7R8caXvn
-        6fm852EtENGt9X8IfvJhy5SOy64obKD54AYwF+EG+GSw0N2s7dJaOHcXkr+1k3FphVOPATsdxIoo2
-        ppupS0S1GU9BK2EBooLDhf8NgMLPECx44XctrMJi+DjdtxIpyVhVceaiSfmmcV4s04t8I78tyjElG
-        Y4SYLZWeU31BhXMDtAh5MhL2ox2AFgnKEXEZffFPfiAiHHq+HBZXjOFzfeFS1X4Q==;
+        Resent-Cc:Resent-Message-ID; bh=sikd8GjhPyFxwB1dWvjPkSHNpeFn+yDcCi5PGsqo8Pc=;
+        t=1686055782; x=1687265382; b=nNOUfPFAuysofh94dnlQqvKDe0rdDaa+8rXstUFD34N0qS9
+        MVtOhui8mzrIzDMdTTOqtGR6174Sg+KTEm6nCJlR0LU5YTIbYBSOjuVzqeEIfKrI265qorr/kriWz
+        4g9Iga2FQoiu6dYWSNWflysfFFQpZcUA15/h9l+2KQJbPCuAEIK/Vf9lK70voSFdI4m8ZmTMlhbnB
+        +ZrCJt+AwZYSAjuvm1M/dQrAFuZw04MC40Ys9tUkeUZtDoquDDcMfSQiZZTQFSyG+RywuDMULLoN8
+        lsOFZlIYxCbU8VRe6P7A2z4emyPgsHbVnR5CwL4GqcHU3k//NLef1ViNC/7jLTgg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1q6W83-00FZDP-0I;
+        id 1q6W83-00FZDP-11;
         Tue, 06 Jun 2023 14:49:39 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 06/14] wifi: cfg80211: add a work abstraction with special semantics
-Date:   Tue,  6 Jun 2023 14:49:25 +0200
-Message-Id: <20230606144753.3c9a1a90db92.I28a06f59bf647db6dea519e6fca1894f94227d73@changeid>
+Subject: [PATCH 07/14] wifi: mac80211: use wiphy work for sdata->work
+Date:   Tue,  6 Jun 2023 14:49:26 +0200
+Message-Id: <20230606144753.89e5fe4948eb.Iad50f5a8fe16979c230459b3c0fd73910a755068@changeid>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606124933.181107-1-johannes@sipsolutions.net>
 References: <20230606124933.181107-1-johannes@sipsolutions.net>
@@ -53,369 +53,330 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Add a work abstraction at the cfg80211 level that will always
-hold the wiphy_lock() for any work executed and therefore also
-can be canceled safely (without waiting) while holding that.
-This improves on what we do now as with the new wiphy works we
-don't have to worry about locking while cancelling them safely.
-
-Also, don't let such works run while the device is suspended,
-since they'll likely need to interact with the device. Flush
-them before suspend though.
+We'll need this later to convert other works that might
+be cancelled from here, so convert this one first.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/cfg80211.h |  95 ++++++++++++++++++++++++++++++--
- net/wireless/core.c    | 122 +++++++++++++++++++++++++++++++++++++++++
- net/wireless/core.h    |   7 +++
- net/wireless/sysfs.c   |   8 ++-
- 4 files changed, 227 insertions(+), 5 deletions(-)
+ net/mac80211/ibss.c        |  8 ++++----
+ net/mac80211/ieee80211_i.h |  2 +-
+ net/mac80211/iface.c       | 10 +++++-----
+ net/mac80211/mesh.c        | 10 +++++-----
+ net/mac80211/mesh_hwmp.c   |  6 +++---
+ net/mac80211/mlme.c        |  6 +++---
+ net/mac80211/ocb.c         |  6 +++---
+ net/mac80211/rx.c          |  2 +-
+ net/mac80211/scan.c        |  2 +-
+ net/mac80211/status.c      |  6 +++---
+ net/mac80211/util.c        |  2 +-
+ 11 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 9e04f69712b1..1b8619685bf6 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5724,12 +5724,17 @@ struct cfg80211_cqm_config;
-  * wiphy_lock - lock the wiphy
-  * @wiphy: the wiphy to lock
-  *
-- * This is mostly exposed so it can be done around registering and
-- * unregistering netdevs that aren't created through cfg80211 calls,
-- * since that requires locking in cfg80211 when the notifiers is
-- * called, but that cannot differentiate which way it's called.
-+ * This is needed around registering and unregistering netdevs that
-+ * aren't created through cfg80211 calls, since that requires locking
-+ * in cfg80211 when the notifiers is called, but that cannot
-+ * differentiate which way it's called.
-+ *
-+ * It can also be used by drivers for their own purposes.
-  *
-  * When cfg80211 ops are called, the wiphy is already locked.
-+ *
-+ * Note that this makes sure that no workers that have been queued
-+ * with wiphy_queue_work() are running.
-  */
- static inline void wiphy_lock(struct wiphy *wiphy)
- 	__acquires(&wiphy->mtx)
-@@ -5749,6 +5754,88 @@ static inline void wiphy_unlock(struct wiphy *wiphy)
- 	mutex_unlock(&wiphy->mtx);
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index faa01ee11d32..19017810024b 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -743,7 +743,7 @@ static void ieee80211_csa_connection_drop_work(struct work_struct *work)
+ 	skb_queue_purge(&sdata->skb_queue);
+ 
+ 	/* trigger a scan to find another IBSS network to join */
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 
+ 	sdata_unlock(sdata);
+ }
+@@ -1244,7 +1244,7 @@ void ieee80211_ibss_rx_no_sta(struct ieee80211_sub_if_data *sdata,
+ 	spin_lock(&ifibss->incomplete_lock);
+ 	list_add(&sta->list, &ifibss->incomplete_stations);
+ 	spin_unlock(&ifibss->incomplete_lock);
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
  }
  
-+struct wiphy_work;
-+typedef void (*wiphy_work_func_t)(struct wiphy *, struct wiphy_work *);
-+
-+struct wiphy_work {
-+	struct list_head entry;
-+	wiphy_work_func_t func;
-+};
-+
-+static inline void wiphy_work_init(struct wiphy_work *work,
-+				   wiphy_work_func_t func)
-+{
-+	INIT_LIST_HEAD(&work->entry);
-+	work->func = func;
-+}
-+
-+/**
-+ * wiphy_work_queue - queue work for the wiphy
-+ * @wiphy: the wiphy to queue for
-+ * @work: the work item
-+ *
-+ * This is useful for work that must be done asynchronously, and work
-+ * queued here has the special property that the wiphy mutex will be
-+ * held as if wiphy_lock() was called, and that it cannot be running
-+ * after wiphy_lock() was called. Therefore, wiphy_cancel_work() can
-+ * use just cancel_work() instead of cancel_work_sync(), it requires
-+ * being in a section protected by wiphy_lock().
-+ */
-+void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work);
-+
-+/**
-+ * wiphy_work_cancel - cancel previously queued work
-+ * @wiphy: the wiphy, for debug purposes
-+ * @work: the work to cancel
-+ *
-+ * Cancel the work *without* waiting for it, this assumes being
-+ * called under the wiphy mutex acquired by wiphy_lock().
-+ */
-+void wiphy_work_cancel(struct wiphy *wiphy, struct wiphy_work *work);
-+
-+struct wiphy_delayed_work {
+ static void ieee80211_ibss_sta_expire(struct ieee80211_sub_if_data *sdata)
+@@ -1723,7 +1723,7 @@ static void ieee80211_ibss_timer(struct timer_list *t)
+ 	struct ieee80211_sub_if_data *sdata =
+ 		from_timer(sdata, t, u.ibss.timer);
+ 
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ }
+ 
+ void ieee80211_ibss_setup_sdata(struct ieee80211_sub_if_data *sdata)
+@@ -1858,7 +1858,7 @@ int ieee80211_ibss_join(struct ieee80211_sub_if_data *sdata,
+ 	sdata->deflink.needed_rx_chains = local->rx_chains;
+ 	sdata->control_port_over_nl80211 = params->control_port_over_nl80211;
+ 
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ 
+ 	return 0;
+ }
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 865210726d54..91bc4982d6b9 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1061,7 +1061,7 @@ struct ieee80211_sub_if_data {
+ 	/* used to reconfigure hardware SM PS */
+ 	struct work_struct recalc_smps;
+ 
+-	struct work_struct work;
 +	struct wiphy_work work;
-+	struct wiphy *wiphy;
-+	struct timer_list timer;
-+};
-+
-+void wiphy_delayed_work_timer(struct timer_list *t);
-+
-+static inline void wiphy_delayed_work_init(struct wiphy_delayed_work *dwork,
-+					   wiphy_work_func_t func)
-+{
-+	timer_setup(&dwork->timer, wiphy_delayed_work_timer, 0);
-+	wiphy_work_init(&dwork->work, func);
-+}
-+
-+/**
-+ * wiphy_delayed_work_queue - queue delayed work for the wiphy
-+ * @wiphy: the wiphy to queue for
-+ * @dwork: the delayable worker
-+ * @delay: number of jiffies to wait before queueing
-+ *
-+ * This is useful for work that must be done asynchronously, and work
-+ * queued here has the special property that the wiphy mutex will be
-+ * held as if wiphy_lock() was called, and that it cannot be running
-+ * after wiphy_lock() was called. Therefore, wiphy_cancel_work() can
-+ * use just cancel_work() instead of cancel_work_sync(), it requires
-+ * being in a section protected by wiphy_lock().
-+ */
-+void wiphy_delayed_work_queue(struct wiphy *wiphy,
-+			      struct wiphy_delayed_work *dwork,
-+			      unsigned long delay);
-+
-+/**
-+ * wiphy_delayed_work_cancel - cancel previously queued delayed work
-+ * @wiphy: the wiphy, for debug purposes
-+ * @dwork: the delayed work to cancel
-+ *
-+ * Cancel the work *without* waiting for it, this assumes being
-+ * called under the wiphy mutex acquired by wiphy_lock().
-+ */
-+void wiphy_delayed_work_cancel(struct wiphy *wiphy,
-+			       struct wiphy_delayed_work *dwork);
-+
- /**
-  * struct wireless_dev - wireless device state
-  *
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 97f01b94c3e2..3b37bbc4e8d2 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -413,6 +413,34 @@ static void cfg80211_propagate_cac_done_wk(struct work_struct *work)
- 	rtnl_unlock();
- }
+ 	struct sk_buff_head skb_queue;
+ 	struct sk_buff_head status_queue;
  
-+static void cfg80211_wiphy_work(struct work_struct *work)
-+{
-+	struct cfg80211_registered_device *rdev;
-+	struct wiphy_work *wk;
-+
-+	rdev = container_of(work, struct cfg80211_registered_device, wiphy_work);
-+
-+	wiphy_lock(&rdev->wiphy);
-+	if (rdev->suspended)
-+		goto out;
-+
-+	spin_lock_irq(&rdev->wiphy_work_lock);
-+	wk = list_first_entry_or_null(&rdev->wiphy_work_list,
-+				      struct wiphy_work, entry);
-+	if (wk) {
-+		list_del_init(&wk->entry);
-+		if (!list_empty(&rdev->wiphy_work_list))
-+			schedule_work(work);
-+		spin_unlock_irq(&rdev->wiphy_work_lock);
-+
-+		wk->func(&rdev->wiphy, wk);
-+	} else {
-+		spin_unlock_irq(&rdev->wiphy_work_lock);
-+	}
-+out:
-+	wiphy_unlock(&rdev->wiphy);
-+}
-+
- /* exported functions */
- 
- struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
-@@ -538,6 +566,9 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- 		return NULL;
- 	}
- 
-+	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
-+	INIT_LIST_HEAD(&rdev->wiphy_work_list);
-+	spin_lock_init(&rdev->wiphy_work_lock);
- 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
- 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
- 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
-@@ -1035,6 +1066,31 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy)
- }
- EXPORT_SYMBOL(wiphy_rfkill_start_polling);
- 
-+void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev)
-+{
-+	unsigned int runaway_limit = 100;
-+	unsigned long flags;
-+
-+	lockdep_assert_held(&rdev->wiphy.mtx);
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	while (!list_empty(&rdev->wiphy_work_list)) {
-+		struct wiphy_work *wk;
-+
-+		wk = list_first_entry(&rdev->wiphy_work_list,
-+				      struct wiphy_work, entry);
-+		list_del_init(&wk->entry);
-+		spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+
-+		wk->func(&rdev->wiphy, wk);
-+
-+		spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+		if (WARN_ON(--runaway_limit == 0))
-+			INIT_LIST_HEAD(&rdev->wiphy_work_list);
-+	}
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+}
-+
- void wiphy_unregister(struct wiphy *wiphy)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-@@ -1077,9 +1133,15 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	if (rdev->wiphy.wowlan_config && rdev->ops->set_wakeup)
- 		rdev_set_wakeup(rdev, false);
- #endif
-+
-+	/* surely nothing is reachable now, clean up work */
-+	cfg80211_process_wiphy_works(rdev);
- 	wiphy_unlock(&rdev->wiphy);
- 	rtnl_unlock();
- 
-+	/* this has nothing to do now but make sure it's gone */
-+	cancel_work_sync(&rdev->wiphy_work);
-+
- 	flush_work(&rdev->scan_done_wk);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
-@@ -1569,6 +1631,66 @@ static struct pernet_operations cfg80211_pernet_ops = {
- 	.exit = cfg80211_pernet_exit,
- };
- 
-+void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	if (list_empty(&work->entry))
-+		list_add_tail(&work->entry, &rdev->wiphy_work_list);
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+
-+	schedule_work(&rdev->wiphy_work);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_work_queue);
-+
-+void wiphy_work_cancel(struct wiphy *wiphy, struct wiphy_work *work)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	unsigned long flags;
-+
-+	lockdep_assert_held(&wiphy->mtx);
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	if (!list_empty(&work->entry))
-+		list_del_init(&work->entry);
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_work_cancel);
-+
-+void wiphy_delayed_work_timer(struct timer_list *t)
-+{
-+	struct wiphy_delayed_work *dwork = from_timer(dwork, t, timer);
-+
-+	wiphy_work_queue(dwork->wiphy, &dwork->work);
-+}
-+EXPORT_SYMBOL(wiphy_delayed_work_timer);
-+
-+void wiphy_delayed_work_queue(struct wiphy *wiphy,
-+			      struct wiphy_delayed_work *dwork,
-+			      unsigned long delay)
-+{
-+	if (!delay) {
-+		wiphy_work_queue(wiphy, &dwork->work);
-+		return;
-+	}
-+
-+	dwork->wiphy = wiphy;
-+	mod_timer(&dwork->timer, jiffies + delay);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_delayed_work_queue);
-+
-+void wiphy_delayed_work_cancel(struct wiphy *wiphy,
-+			       struct wiphy_delayed_work *dwork)
-+{
-+	lockdep_assert_held(&wiphy->mtx);
-+
-+	del_timer_sync(&dwork->timer);
-+	wiphy_work_cancel(wiphy, &dwork->work);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_delayed_work_cancel);
-+
- static int __init cfg80211_init(void)
- {
- 	int err;
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 7c61752f6d83..435060dad81e 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -108,6 +108,12 @@ struct cfg80211_registered_device {
- 	/* lock for all wdev lists */
- 	spinlock_t mgmt_registrations_lock;
- 
-+	struct work_struct wiphy_work;
-+	struct list_head wiphy_work_list;
-+	/* protects the list above */
-+	spinlock_t wiphy_work_lock;
-+	bool suspended;
-+
- 	/* must be last because of the way we do wiphy_priv(),
- 	 * and it should at least be aligned to NETDEV_ALIGN */
- 	struct wiphy wiphy __aligned(NETDEV_ALIGN);
-@@ -453,6 +459,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 			  struct net_device *dev, enum nl80211_iftype ntype,
- 			  struct vif_params *params);
- void cfg80211_process_rdev_events(struct cfg80211_registered_device *rdev);
-+void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev);
- void cfg80211_process_wdev_events(struct wireless_dev *wdev);
- 
- bool cfg80211_does_bw_fit_range(const struct ieee80211_freq_range *freq_range,
-diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
-index 268f670835e9..c629bac3f298 100644
---- a/net/wireless/sysfs.c
-+++ b/net/wireless/sysfs.c
-@@ -5,7 +5,7 @@
-  *
-  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2020-2021 Intel Corporation
-+ * Copyright (C) 2020-2021, 2023 Intel Corporation
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 2e2115af38f5..f820098e6a70 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -43,7 +43,7 @@
+  * by either the RTNL, the iflist_mtx or RCU.
   */
  
- #include <linux/device.h>
-@@ -105,14 +105,18 @@ static int wiphy_suspend(struct device *dev)
- 			cfg80211_leave_all(rdev);
- 			cfg80211_process_rdev_events(rdev);
- 		}
-+		cfg80211_process_wiphy_works(rdev);
- 		if (rdev->ops->suspend)
- 			ret = rdev_suspend(rdev, rdev->wiphy.wowlan_config);
- 		if (ret == 1) {
- 			/* Driver refuse to configure wowlan */
- 			cfg80211_leave_all(rdev);
- 			cfg80211_process_rdev_events(rdev);
-+			cfg80211_process_wiphy_works(rdev);
- 			ret = rdev_suspend(rdev, NULL);
- 		}
-+		if (ret == 0)
-+			rdev->suspended = true;
- 	}
- 	wiphy_unlock(&rdev->wiphy);
- 	rtnl_unlock();
-@@ -132,6 +136,8 @@ static int wiphy_resume(struct device *dev)
- 	wiphy_lock(&rdev->wiphy);
- 	if (rdev->wiphy.registered && rdev->ops->resume)
- 		ret = rdev_resume(rdev);
-+	rdev->suspended = false;
-+	schedule_work(&rdev->wiphy_work);
- 	wiphy_unlock(&rdev->wiphy);
+-static void ieee80211_iface_work(struct work_struct *work);
++static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work);
  
- 	if (ret)
+ bool __ieee80211_recalc_txpower(struct ieee80211_sub_if_data *sdata)
+ {
+@@ -614,7 +614,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 		RCU_INIT_POINTER(local->p2p_sdata, NULL);
+ 		fallthrough;
+ 	default:
+-		cancel_work_sync(&sdata->work);
++		wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->work);
+ 		/*
+ 		 * When we get here, the interface is marked down.
+ 		 * Free the remaining keys, if there are any
+@@ -1173,7 +1173,7 @@ int ieee80211_add_virtual_monitor(struct ieee80211_local *local)
+ 
+ 	skb_queue_head_init(&sdata->skb_queue);
+ 	skb_queue_head_init(&sdata->status_queue);
+-	INIT_WORK(&sdata->work, ieee80211_iface_work);
++	wiphy_work_init(&sdata->work, ieee80211_iface_work);
+ 
+ 	return 0;
+ }
+@@ -1625,7 +1625,7 @@ static void ieee80211_iface_process_status(struct ieee80211_sub_if_data *sdata,
+ 	}
+ }
+ 
+-static void ieee80211_iface_work(struct work_struct *work)
++static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_sub_if_data *sdata =
+ 		container_of(work, struct ieee80211_sub_if_data, work);
+@@ -1737,7 +1737,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 
+ 	skb_queue_head_init(&sdata->skb_queue);
+ 	skb_queue_head_init(&sdata->status_queue);
+-	INIT_WORK(&sdata->work, ieee80211_iface_work);
++	wiphy_work_init(&sdata->work, ieee80211_iface_work);
+ 	INIT_WORK(&sdata->recalc_smps, ieee80211_recalc_smps_work);
+ 	INIT_WORK(&sdata->activate_links_work, ieee80211_activate_links_work);
+ 
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index a4d8764073bf..af8c5fc2db14 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -45,7 +45,7 @@ static void ieee80211_mesh_housekeeping_timer(struct timer_list *t)
+ 
+ 	set_bit(MESH_WORK_HOUSEKEEPING, &ifmsh->wrkq_flags);
+ 
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ }
+ 
+ /**
+@@ -703,7 +703,7 @@ static void ieee80211_mesh_path_timer(struct timer_list *t)
+ 	struct ieee80211_sub_if_data *sdata =
+ 		from_timer(sdata, t, u.mesh.mesh_path_timer);
+ 
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ }
+ 
+ static void ieee80211_mesh_path_root_timer(struct timer_list *t)
+@@ -714,7 +714,7 @@ static void ieee80211_mesh_path_root_timer(struct timer_list *t)
+ 
+ 	set_bit(MESH_WORK_ROOT, &ifmsh->wrkq_flags);
+ 
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ }
+ 
+ void ieee80211_mesh_root_setup(struct ieee80211_if_mesh *ifmsh)
+@@ -1177,7 +1177,7 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	for_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE)
+ 		set_bit(bit, &ifmsh->mbss_changed);
+ 	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ }
+ 
+ int ieee80211_start_mesh(struct ieee80211_sub_if_data *sdata)
+@@ -1202,7 +1202,7 @@ int ieee80211_start_mesh(struct ieee80211_sub_if_data *sdata)
+ 	ifmsh->sync_offset_clockdrift_max = 0;
+ 	set_bit(MESH_WORK_HOUSEKEEPING, &ifmsh->wrkq_flags);
+ 	ieee80211_mesh_root_setup(ifmsh);
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ 	sdata->vif.bss_conf.ht_operation_mode =
+ 				ifmsh->mshcfg.ht_opmode;
+ 	sdata->vif.bss_conf.enable_beacon = true;
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 5217e1d97dd6..51369072984e 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * Copyright (c) 2008, 2009 open80211s Ltd.
+- * Copyright (C) 2019, 2021-2022 Intel Corporation
++ * Copyright (C) 2019, 2021-2023 Intel Corporation
+  * Author:     Luis Carlos Cobo <luisca@cozybit.com>
+  */
+ 
+@@ -1026,14 +1026,14 @@ static void mesh_queue_preq(struct mesh_path *mpath, u8 flags)
+ 	spin_unlock_bh(&ifmsh->mesh_preq_queue_lock);
+ 
+ 	if (time_after(jiffies, ifmsh->last_preq + min_preq_int_jiff(sdata)))
+-		ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++		wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 
+ 	else if (time_before(jiffies, ifmsh->last_preq)) {
+ 		/* avoid long wait if did not send preqs for a long time
+ 		 * and jiffies wrapped around
+ 		 */
+ 		ifmsh->last_preq = jiffies - min_preq_int_jiff(sdata) - 1;
+-		ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++		wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 	} else
+ 		mod_timer(&ifmsh->mesh_path_timer, ifmsh->last_preq +
+ 						min_preq_int_jiff(sdata));
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 9af755388171..6c659609abee 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3155,7 +3155,7 @@ void ieee80211_sta_tx_notify(struct ieee80211_sub_if_data *sdata,
+ 		sdata->u.mgd.probe_send_count = 0;
+ 	else
+ 		sdata->u.mgd.nullfunc_failed = true;
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ }
+ 
+ static void ieee80211_mlme_send_probe_req(struct ieee80211_sub_if_data *sdata,
+@@ -6068,7 +6068,7 @@ static void ieee80211_sta_timer(struct timer_list *t)
+ 	struct ieee80211_sub_if_data *sdata =
+ 		from_timer(sdata, t, u.mgd.timer);
+ 
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ }
+ 
+ void ieee80211_sta_connection_lost(struct ieee80211_sub_if_data *sdata,
+@@ -6212,7 +6212,7 @@ void ieee80211_mgd_conn_tx_status(struct ieee80211_sub_if_data *sdata,
+ 	sdata->u.mgd.status_acked = acked;
+ 	sdata->u.mgd.status_received = true;
+ 
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ }
+ 
+ void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata)
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index cf205762ab96..b44896e14522 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -81,7 +81,7 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
+ 	spin_lock(&ifocb->incomplete_lock);
+ 	list_add(&sta->list, &ifocb->incomplete_stations);
+ 	spin_unlock(&ifocb->incomplete_lock);
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ }
+ 
+ static struct sta_info *ieee80211_ocb_finish_sta(struct sta_info *sta)
+@@ -157,7 +157,7 @@ static void ieee80211_ocb_housekeeping_timer(struct timer_list *t)
+ 
+ 	set_bit(OCB_WORK_HOUSEKEEPING, &ifocb->wrkq_flags);
+ 
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ }
+ 
+ void ieee80211_ocb_setup_sdata(struct ieee80211_sub_if_data *sdata)
+@@ -197,7 +197,7 @@ int ieee80211_ocb_join(struct ieee80211_sub_if_data *sdata,
+ 	ifocb->joined = true;
+ 
+ 	set_bit(OCB_WORK_HOUSEKEEPING, &ifocb->wrkq_flags);
+-	ieee80211_queue_work(&local->hw, &sdata->work);
++	wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ 
+ 	netif_carrier_on(sdata->dev);
+ 	return 0;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 58222c077898..035e3cb28a1e 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -229,7 +229,7 @@ static void __ieee80211_queue_skb_to_iface(struct ieee80211_sub_if_data *sdata,
+ 	}
+ 
+ 	skb_queue_tail(&sdata->skb_queue, skb);
+-	ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 	if (sta)
+ 		sta->deflink.rx_stats.packets++;
+ }
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index 32fa8aca7005..ea5383136fff 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -502,7 +502,7 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
+ 	 */
+ 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+ 		if (ieee80211_sdata_running(sdata))
+-			ieee80211_queue_work(&sdata->local->hw, &sdata->work);
++			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 	}
+ 
+ 	if (was_scanning)
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index 2b13a52ce96c..44d83da60aee 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2008-2010	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright 2021-2022  Intel Corporation
++ * Copyright 2021-2023  Intel Corporation
+  */
+ 
+ #include <linux/export.h>
+@@ -747,8 +747,8 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
+ 					if (qskb) {
+ 						skb_queue_tail(&sdata->status_queue,
+ 							       qskb);
+-						ieee80211_queue_work(&local->hw,
+-								     &sdata->work);
++						wiphy_work_queue(local->hw.wiphy,
++								 &sdata->work);
+ 					}
+ 				}
+ 			} else {
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index a027b9e24160..755fd85dd552 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2942,7 +2942,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 
+ 		/* Requeue all works */
+ 		list_for_each_entry(sdata, &local->interfaces, list)
+-			ieee80211_queue_work(&local->hw, &sdata->work);
++			wiphy_work_queue(local->hw.wiphy, &sdata->work);
+ 	}
+ 
+ 	ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
 -- 
 2.40.1
 
