@@ -2,123 +2,249 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8AFE724740
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 17:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83CF07248B6
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 18:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237606AbjFFPIV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jun 2023 11:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39776 "EHLO
+        id S238289AbjFFQOW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jun 2023 12:14:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233077AbjFFPIU (ORCPT
+        with ESMTP id S237959AbjFFQOE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jun 2023 11:08:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81FAB12D
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 08:08:19 -0700 (PDT)
+        Tue, 6 Jun 2023 12:14:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB691995;
+        Tue,  6 Jun 2023 09:13:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D3B661B98
-        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 15:08:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC133C433D2;
-        Tue,  6 Jun 2023 15:08:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD70F63078;
+        Tue,  6 Jun 2023 16:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1499C433EF;
+        Tue,  6 Jun 2023 16:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686064098;
-        bh=YeEj91g22JQm1LSU9NfRKOwY7xsSDqfsQpRE1PHC374=;
-        h=From:Subject:To:Cc:Date:From;
-        b=gEKPe4OggxafQc5oLKPiwGM1z+DDeYqsifGdcIs74M5RlOw6AsqSehn7Ztx07hjts
-         W+XTDEniTPG5CvSWZPEtmDqQcz7CUVf6L3ri9VPkmjOiRFttp2cUx+TrKyRGMox4c3
-         L/4f4VjttgNcU+vh34EV3jBm2jQc9eALSHiIZD46a6MUyiacmnp1bIMNXWf0bcVTPb
-         Ol3PCsXVWKY60S8M0T1DX7zmObaFzybZlgAieOoTmh8F+zM+zwRhLE0t3+V0Xz6zNZ
-         3guBTFYxoJn40HPY54+1R+fIIhjcol9sETsjBvhMWf6wGWw1ylZFw+6+FtlsGYIESI
-         LeTMvug5tYX2A==
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1686068022;
+        bh=QwM7DUTQAmP5CKDLGISPOe3AvYarrqjMTLKruYcs9PU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SJy6gvAh/zvD96T9SPZvmnhkT7brSRIfmeZMKpeEhfunsDeST1CcgNsaiBZlPEHyD
+         4fMeCfNwFvFtE8GFIa8WqMLkAjyePqldvpEvky9b05OEThINNaqTYkk+0XJSmLsibE
+         PHBFvv5Lm9EmRsvvwre9VXrBbi53IBFiVlHZ+KOjWVEM5bR67tkFlUzF1ICmaROFqz
+         PDzIuK2bEkQzgkFgosobbvI3iTSYzKAZyyzOWcUUegdVnMrqhzi83tyXADxRnxsAod
+         sCMH5SdA7/5cKBZb2QOsy1ZjhFbLhePF6n9HAPDtRoS5s5BgyvF7fxhzHzKMtN7Aal
+         ZmwHP1ZDVO2Qg==
+Date:   Tue, 6 Jun 2023 18:13:36 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Dan Carpenter <dan.carpenter@linaro.org>,
+        oe-kbuild@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
+        lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
+ mt76x02_set_key() warn: variable dereferenced before check 'key' (see line
+ 415)
+Message-ID: <ZH9bMMyN/UMPBTq1@lore-desk>
+References: <2f121202-5846-44a9-8b83-e2ba1fa671d0@kadam.mountain>
+ <87mt1ciu5o.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@kernel.org>
-Subject: pull-request: wireless-2023-06-06
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20230606150817.EC133C433D2@smtp.kernel.org>
-Date:   Tue,  6 Jun 2023 15:08:17 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="p6BjL3/uPCwCbsuy"
+Content-Disposition: inline
+In-Reply-To: <87mt1ciu5o.fsf@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+--p6BjL3/uPCwCbsuy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Kalle
+> Adding linux-wireless, top posting so that the whole report is included.
+>=20
+> Dan Carpenter <dan.carpenter@linaro.org> writes:
+>=20
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.=
+git master
+> > head:   f8dba31b0a826e691949cd4fdfa5c30defaac8c5
+> > commit: e6db67fa871dee37d22701daba806bfcd4d9df49 wifi: mt76: ignore
+> > key disable commands
+> > config: riscv-randconfig-m031-20230605
+> > (https://download.01.org/0day-ci/archive/20230606/202306060332.WbIToDHL=
+-lkp@intel.com/config)
+> > compiler: riscv64-linux-gcc (GCC) 12.3.0
+> >
+> > If you fix the issue, kindly add following tag where applicable
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > | Closes: https://lore.kernel.org/r/202306060332.WbIToDHL-lkp@intel.com/
+> >
+> > smatch warnings:
+> > drivers/net/wireless/mediatek/mt76/mt76x02_util.c:475
+> > mt76x02_set_key() warn: variable dereferenced before check 'key' (see
+> > line 415)
+> >
+> > vim +/key +475 drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+> >
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 407 int
+> > mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 408 struct ieee80211_vif
+> > *vif, struct ieee80211_sta *sta,
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 409 struct
+> > ieee80211_key_conf *key)
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  410  {
+> > d87cf75f111183 Lorenzo Bianconi 2018-10-07 411 struct mt76x02_dev *dev
+> > =3D hw->priv;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 412 struct mt76x02_vif
+> > *mvif =3D (struct mt76x02_vif *)vif->drv_priv;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  413  	struct mt76x02_sta *=
+msta;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  414  	struct mt76_wcid *wc=
+id;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @415  	int idx =3D key->key=
+idx;
+> >
+> > "key" is dereferenced here
 
-The following changes since commit 212457ccbd60dba34f965e4ffbe62f0e4f970538:
+I think I have already fixed it here:
 
-  wifi: b43: fix incorrect __packed annotation (2023-05-17 09:24:09 +0300)
+https://patchwork.kernel.org/project/linux-wireless/patch/d560f1a16c9024b6e=
+4029bd0baf53384f4552f5a.1683020788.git.lorenzo@kernel.org/
 
-are available in the Git repository at:
+Regards,
+Lorenzo
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2023-06-06
+> >
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  416  	int ret;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  417 =20
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 418 /* fall back to sw
+> > encryption for unsupported ciphers */
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  419  	switch (key->cipher)=
+ {
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  420  	case WLAN_CIPHER_SUI=
+TE_WEP40:
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  421  	case WLAN_CIPHER_SUI=
+TE_WEP104:
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  422  	case WLAN_CIPHER_SUI=
+TE_TKIP:
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  423  	case WLAN_CIPHER_SUI=
+TE_CCMP:
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  424  		break;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  425  	default:
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  426  		return -EOPNOTSUPP;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  427  	}
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  428 =20
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  429  	/*
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 430 * The hardware does
+> > not support per-STA RX GTK, fall back
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  431  	 * to software mode =
+for these.
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  432  	 */
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 433 if ((vif->type =3D=3D
+> > NL80211_IFTYPE_ADHOC ||
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 434 vif->type =3D=3D
+> > NL80211_IFTYPE_MESH_POINT) &&
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 435 (key->cipher =3D=3D
+> > WLAN_CIPHER_SUITE_TKIP ||
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 436 key->cipher =3D=3D
+> > WLAN_CIPHER_SUITE_CCMP) &&
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 437 !(key->flags &
+> > IEEE80211_KEY_FLAG_PAIRWISE))
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  438  		return -EOPNOTSUPP;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  439 =20
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19  440  	/*
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19 441 * In USB AP mode,
+> > broadcast/multicast frames are setup in beacon
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19 442 * data registers and
+> > sent via HW beacons engine, they require to
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19  443  	 * be already encryp=
+ted.
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19  444  	 */
+> > 61c51a74a4e586 Lorenzo Bianconi  2019-10-29  445  	if (mt76_is_usb(&dev=
+->mt76) &&
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19 446 vif->type =3D=3D
+> > NL80211_IFTYPE_AP &&
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19 447 !(key->flags &
+> > IEEE80211_KEY_FLAG_PAIRWISE))
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19  448  		return -EOPNOTSUPP;
+> > b98558e2529986 Stanislaw Gruszka 2019-03-19  449 =20
+> > 4b36cc6b390f18 David Bauer 2021-02-07 450 /* MT76x0 GTK offloading
+> > does not work with more than one VIF */
+> > 4b36cc6b390f18 David Bauer 2021-02-07 451 if (is_mt76x0(dev) &&
+> > !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+> > 4b36cc6b390f18 David Bauer       2021-02-07  452  		return -EOPNOTSUPP;
+> > 4b36cc6b390f18 David Bauer       2021-02-07  453 =20
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 454 msta =3D sta ? (struct
+> > mt76x02_sta *)sta->drv_priv : NULL;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 455 wcid =3D msta ?
+> > &msta->wcid : &mvif->group_wcid;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  456 =20
+> > e6db67fa871dee Felix Fietkau     2023-03-30  457  	if (cmd !=3D SET_KEY=
+) {
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 458 if (idx =3D=3D
+> > wcid->hw_key_idx) {
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 459 wcid->hw_key_idx =3D -1;
+> > f2f6a47b504b8f Felix Fietkau 2019-01-25 460 wcid->sw_iv =3D false;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  461  		}
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  462 =20
+> > e6db67fa871dee Felix Fietkau     2023-03-30  463  		return 0;
+> > e6db67fa871dee Felix Fietkau     2023-03-30  464  	}
+> > e6db67fa871dee Felix Fietkau     2023-03-30  465 =20
+> > e6db67fa871dee Felix Fietkau     2023-03-30  466  	key->hw_key_idx =3D =
+wcid->idx;
+> > e6db67fa871dee Felix Fietkau     2023-03-30  467  	wcid->hw_key_idx =3D=
+ idx;
+> > e6db67fa871dee Felix Fietkau 2023-03-30 468 if (key->flags &
+> > IEEE80211_KEY_FLAG_RX_MGMT) {
+> > e6db67fa871dee Felix Fietkau 2023-03-30 469 key->flags |=3D
+> > IEEE80211_KEY_FLAG_SW_MGMT_TX;
+> > e6db67fa871dee Felix Fietkau     2023-03-30  470  		wcid->sw_iv =3D tru=
+e;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  471  	}
+> > d87cf75f111183 Lorenzo Bianconi 2018-10-07 472
+> > mt76_wcid_key_setup(&dev->mt76, wcid, key);
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  473 =20
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  474  	if (!msta) {
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 @475 if (key ||
+> > wcid->hw_key_idx =3D=3D idx) {
+> >
+> > This NULL check is too late.
+> >
+> > 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 476 ret =3D
+> > mt76x02_mac_wcid_set_key(dev, wcid->idx, key);
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  477  			if (ret)
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04 478 return ret;
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  479  		}
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  480 =20
+> > 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 481 return
+> > mt76x02_mac_shared_key_setup(dev, mvif->idx, idx, key);
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  482  	}
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  483 =20
+> > 8d66af49a3db9a Lorenzo Bianconi 2018-10-07 484 return
+> > mt76x02_mac_wcid_set_key(dev, msta->wcid.idx, key);
+> > 60c26859e863c1 Stanislaw Gruszka 2018-09-04  485  }
+>=20
+> --=20
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>=20
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
-for you to fetch changes up to f7e60032c6618dfd643c7210d5cba2789e2de2e2:
+--p6BjL3/uPCwCbsuy
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  wifi: cfg80211: fix locking in regulatory disconnect (2023-06-06 14:51:32 +0200)
+-----BEGIN PGP SIGNATURE-----
 
-----------------------------------------------------------------
-wireless fixes for v6.4
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZH9bMAAKCRA6cBh0uS2t
+rN4LAQDNL8BEsPgt6S7+dsLWJDD11V9cJztRbP8Tqks8IYLJigD+KVOZQuZZHTQB
+XRpFvLs0ahWuT/EK3WJqArXr2tovgwc=
+=cLR/
+-----END PGP SIGNATURE-----
 
-Both rtw88 and rtw89 have a 802.11 powersave fix for a regression
-introduced in v6.0. mt76 fixes a race and a null pointer dereference.
-iwlwifi fixes an issue where not enough memory was allocated for a
-firmware event. And finally the stack has several smaller fixes all
-over.
-
-----------------------------------------------------------------
-Aditya Kumar Singh (1):
-      wifi: mac80211: fix switch count in EMA beacons
-
-Gustavo A. R. Silva (1):
-      wifi: iwlwifi: mvm: Fix -Warray-bounds bug in iwl_mvm_wait_d3_notif()
-
-Johannes Berg (6):
-      wifi: mac80211: use correct iftype HE cap
-      wifi: cfg80211: reject bad AP MLD address
-      wifi: mac80211: mlme: fix non-inheritence element
-      wifi: mac80211: don't translate beacon/presp addrs
-      wifi: cfg80211: fix locking in sched scan stop work
-      wifi: cfg80211: fix locking in regulatory disconnect
-
-Lorenzo Bianconi (2):
-      wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
-      wifi: mt76: mt7996: fix possible NULL pointer dereference in mt7996_mac_write_txwi()
-
-Ping-Ke Shih (3):
-      wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
-      wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS
-      wifi: rtw89: remove redundant check of entering LPS
-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c     |  8 ++---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c |  3 ++
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 19 +++++++----
- drivers/net/wireless/realtek/rtw88/mac80211.c   | 14 +++-----
- drivers/net/wireless/realtek/rtw88/main.c       |  4 +--
- drivers/net/wireless/realtek/rtw88/ps.c         | 43 +++++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/ps.h         |  2 ++
- drivers/net/wireless/realtek/rtw89/core.c       |  3 --
- drivers/net/wireless/realtek/rtw89/mac80211.c   | 15 ++++-----
- drivers/net/wireless/realtek/rtw89/ps.c         | 26 +++++++++++++++
- drivers/net/wireless/realtek/rtw89/ps.h         |  1 +
- net/mac80211/he.c                               | 15 ++++++---
- net/mac80211/mlme.c                             |  8 ++++-
- net/mac80211/rx.c                               |  4 ++-
- net/mac80211/tx.c                               |  2 +-
- net/wireless/core.c                             |  4 +--
- net/wireless/nl80211.c                          |  2 ++
- net/wireless/reg.c                              |  4 +--
- 18 files changed, 129 insertions(+), 48 deletions(-)
+--p6BjL3/uPCwCbsuy--
