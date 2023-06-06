@@ -2,106 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D994C7238DF
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 09:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4099723A5A
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Jun 2023 09:46:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236101AbjFFHW2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 6 Jun 2023 03:22:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41850 "EHLO
+        id S236788AbjFFHqq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jun 2023 03:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236020AbjFFHW1 (ORCPT
+        with ESMTP id S237314AbjFFHqF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 6 Jun 2023 03:22:27 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85016118;
-        Tue,  6 Jun 2023 00:22:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=lukvM++GAOnz292P3XNo5CThWaSgbcPVUM1tK0UdEWA=;
-        t=1686036144; x=1687245744; b=pgaC+XTjCcO9zLd69xnBTnhrQOyJmrt+A/Td2/Vem+0cZ6l
-        La0PSgh6gj7Gx82kzrJuiCcVcjuKRlbmOIZgHkH7glzb9Md7jgfOXTkIppGysY4T7vXkLbKg8naJG
-        VSEmO+e5O+cSekhFgYLmuMlhAVEYLqeDaqXiKPvr7CE+0fwh81x2cHdH6qYWQtujXJ83xbP2MUA1v
-        hWcJ8An7dojZmdAYNLNqATFcFKcwZ8s6Btn8u0pbUYSwvDKBMWkU3TK0IRYGl8zKvVCUY8E6U57vC
-        e3+ZLRpgKSYp8BL6O6XHGWG6M1bvxLsLFA4ienFBO437kyg4ABerKjYoM22dA2Rw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1q6R1I-00FR5a-33;
-        Tue, 06 Jun 2023 09:22:21 +0200
-Message-ID: <3d734a1a20ed2e895a0a7177f3789c72e26e7fd5.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] PCI/PM: enable runtime PM later during device
- scanning
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, rafael@kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>
-Date:   Tue, 06 Jun 2023 09:22:19 +0200
-In-Reply-To: <20230605205017.GA23596@wunner.de>
-References: <20230605121621.4259f1be6cd2.Idbaa55b93f780838af44ebccb84c36f60716df04@changeid>
-         <20230605203519.bc4232207449.Idbaa55b93f780838af44ebccb84c36f60716df04@changeid>
-         <20230605205017.GA23596@wunner.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.2 (3.48.2-1.fc38) 
+        Tue, 6 Jun 2023 03:46:05 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E113310C2
+        for <linux-wireless@vger.kernel.org>; Tue,  6 Jun 2023 00:43:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686037403; x=1717573403;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WiwTKNW5nqu2r12VFG0azIa+7X8VutGhdHFxs6gKC9U=;
+  b=ECa+/ic0djhIicWIrgaKM8dtuWbx2vCM1o0l6IlDDHeU9Jn5vkZGEF1A
+   4lfGjOK6l2kzGd9k9GFBWMOo76Vr+NIMjimAo7x3h8a5L7+GaIwBaSfZK
+   MYXokjJynnztJ9Wy2z8/rYCqdZCbJV8K3OKhlsEYEaiz6gvCEtKkknOsB
+   FPzsLyZCeKrw6FXygTt6DNzwAkI4kwZmr5UGj1auxoxyhdZlHGvgmMzl+
+   jYrB4+UvmuIOOOS5H9/Qe9wcDPWHPEwM549K9ZR7J1qMR9zk92zgLAx+Y
+   VMhWcX0N/pU23WEksr3JTATzGj4G4G07E9JW6eRZGB1nR4FCPU4F+iAQo
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="422419035"
+X-IronPort-AV: E=Sophos;i="6.00,219,1681196400"; 
+   d="scan'208";a="422419035"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 00:43:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="821516206"
+X-IronPort-AV: E=Sophos;i="6.00,219,1681196400"; 
+   d="scan'208";a="821516206"
+Received: from oniamir-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.217.62])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 00:43:20 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/13] wifi: iwlwifi: updates intended for v6.5 2023-06-06 
+Date:   Tue,  6 Jun 2023 10:42:57 +0300
+Message-Id: <20230606074310.889520-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-06-05 at 22:50 +0200, Lukas Wunner wrote:
-> On Mon, Jun 05, 2023 at 08:35:45PM +0200, Johannes Berg wrote:
-> > v2: use pm_runtime_get_noresume()/pm_runtime_put_noidle()
-> >     instead as advised by Rafael
->=20
-> You've changed the code but seemingly did not update the commit
-> message and code comment.
->=20
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Yeah. I actually _considered_ that, but didn't feel it was really any
-different (or let's say wrong) now.
+Hi,
 
-That said, I probably don't understand the lingo around runtime PM well
-enough, and am more or less conflating "runtime PM" and "runtime
-suspend" in my head, which is still not allowed, and indeed that's the
-whole point of the patch.
+This patch set includes iwlwifi patches intended for v6.5.
+All the patches are related to the same feature - adding support
+for fragmented PNVM image.
 
->   Technically you're not "allowing"
-> runtime PM, you just stop keeping the device runtime active.
->=20
-> A more fitting subject might thus be:
->=20
-> PCI/PM: Keep devices runtime active during enumeration
+Thanks,
+Gregory
 
-*shrug*
+Alon Giladi (10):
+  wifi: iwlwifi: Generalize the parsing of the pnvm image
+  wifi: iwlwifi: Separate loading and setting of pnvm image into two functions
+  wifi: iwlwifi: Take loading and setting of pnvm image out of parsing part
+  wifi: iwlwifi: Allow trans_pcie track more than 1 pnvm DRAM region
+  wifi: iwlwifi: Add support for fragmented pnvm images
+  wifi: iwlwifi: Implement loading and setting of fragmented pnvm image
+  wifi: iwlwifi: Separate loading and setting of power reduce tables
+  wifi: iwlwifi: Use iwl_pnvm_image in reduce power tables flow
+  wifi: iwlwifi: Enable loading of reduce-power tables into several segments
+  wifi: iwlwifi: Separate reading and parsing of reduce power table
 
-Like I said, terminology I'm not familiar with. I guess I can change it,
-or if anyone ends up committing it as is (rather than treating it as an
-extended bug report) they can :-)
+Gregory Greenman (2):
+  wifi: iwlwifi: fw: don't use constant size with efi.get_variable
+  wifi: iwlwifi: pnvm: handle memory descriptor tlv
 
-> > --- a/drivers/pci/pci-driver.c
-> > +++ b/drivers/pci/pci-driver.c
-> > @@ -1278,6 +1278,9 @@ static int pci_pm_runtime_suspend(struct device *=
-dev)
-> >  	pci_power_t prev =3D pci_dev->current_state;
-> >  	int error;
-> > =20
-> > +	if (WARN_ON(!pci_dev_is_added(pci_dev)))
-> > +		return -EBUSY;
-> > +
->=20
-> If this can't happen (as the commit message says), why warn?
+Johannes Berg (1):
+  wifi: iwlwifi: fw: clean up PNVM loading code
 
-The code here causes quite some trouble if it _does_ happen and it was
-incredibly tricky to debug.
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   2 +
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.c  | 234 +++++++++------
+ drivers/net/wireless/intel/iwlwifi/fw/pnvm.h  |   5 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  | 272 ++++++++---------
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |  47 +--
+ .../intel/iwlwifi/iwl-context-info-gen3.h     |  32 +-
+ .../wireless/intel/iwlwifi/iwl-context-info.h |   5 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  95 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   3 +-
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c       | 273 +++++++++++++++---
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   |   8 +-
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  12 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  39 ++-
+ 13 files changed, 694 insertions(+), 333 deletions(-)
 
-johannes
+-- 
+2.38.1
+
