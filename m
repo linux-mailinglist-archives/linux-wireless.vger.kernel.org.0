@@ -2,94 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DFE72672F
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jun 2023 19:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D25F1726733
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jun 2023 19:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbjFGRYS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Jun 2023 13:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
+        id S230045AbjFGRZS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 7 Jun 2023 13:25:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230042AbjFGRYQ (ORCPT
+        with ESMTP id S229563AbjFGRZR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Jun 2023 13:24:16 -0400
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01olkn2075.outbound.protection.outlook.com [40.92.53.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE2B211C;
-        Wed,  7 Jun 2023 10:24:07 -0700 (PDT)
+        Wed, 7 Jun 2023 13:25:17 -0400
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01olkn2109.outbound.protection.outlook.com [40.92.53.109])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68EE11FE9;
+        Wed,  7 Jun 2023 10:25:04 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L9Sv8N3ciING5ls6RTPbBMpGU6weYwCfhU2pkQ1i2Pe7ItXgOYYmo8ev/9s93v9eL+fDytQmXK4xwUsAoJ7b4bn1Txm4jTaOgFiggAI7lmmXTs4bs39lMM1xBdxzFLOn7kiUPLsPpNstBiVqffaZR7spMsvVjukpKA41FJ63lmQmpJj3ebDG3WY/sFVtEcpw7sr7E6MKzLGSStMzLeAla9jASjPlFomyPDCOto4RWms6Dl/kJ5oB1xwWrLo1laWYS6l+XZpMifVEG9d7liAZLMHIjzuOk2kLaUtGe13vgFKRuwokP3st+wX5wEGgn0+ybKTnawj1YbM51tGKfjGKkg==
+ b=OIMQUlGY8ix9icudO8ibb91fnMbnFH0LsxJbQKW/zhqiOmsuwlWGqzQxWv4KYjKWuAmzbvgnN98SGKepndLV8WbvAhs1/uuCKiaJy7lYdvnyDm3l/0Vexc+W2Ag1BJkAoJ6BqVzT55gqVWiYbMkAO/sUxHGxlAsgMRLkkiIh43547b9Q8p9K/ULJSLCONitmQNvBC5DHP5Oll/CeGnO8uriTV2TT4u7TvcaVqw9jei7XfFtDc9aOdny0lyY/4mnjyns8avlOANVirtFqaCvnJYroOtmlMKDXZXhNYFd38zbrSrDHCvPbrC6DA/Dvy219R/dYpiE3q3gVGsSgdA6Ohg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f33TL65L+W1/+oRk1KEhe7DHLVC1ecKeaiUIWK4X/Yw=;
- b=EQlXeimPVV3SkyUhhgNQR5XRXc1VcHh/NFBZCflNhbhklJl/o9UEPuoJJd8JYR3XRiMfyLs60NyExwhkOjJ32X2azrv975xDdBAqu3UiBnOHrszd/l2R0MThL9kmNvwtmz4FSiQTTKDkIqPHGa2m3vO7Qr3NmG7mA7uPcvnAY70UEhbs9GGuFdXiPV0dblGIFeGltDAbcSLZdOZInjUl/R9DcCwKcwWGT5iEYX66s/CGsxu8pv3aClvjzb7cMo5Cx/bVQPAkLb4pY0GqoncLxNTGa+BvWd0Y6xaJFYvTNGfX8feCUd2P/XqahAH5ylrByp3/5AZ/2AOrvs3aEyMN1A==
+ bh=xaF1w8VO8XGhwWF/rwXqBwwfIRSACmUXPpupGkJsg4w=;
+ b=UrCTfJiFRCRlGXQ/evDyTtPMqaGoctf1mT9vCKHtN8AFAaUyG9WEuqzggFXoq+1/Fi3RpM8UY1F0DKRai6p3UqwG0AMiXEVtPEzIS77b6kF7llznLoX574zAbndxj2B3oLcjvTxiQGqRvC3MLP6m7W/pMwuH5xltpd6P6i82PBx+1tBqToRnZ7IY5U+scNviTuprkvfvqf8deGQzXDbUbIX1XNfbrmpLq/8JeCm6CTqpmVLrI1UeUrnyVQh9urUXun2NjhsDqpP7BseSyAQ968QbS6Ry/oj6eCQW2WTbXzPg/LKgKHOLnjuh81f5Fqj6OA593ksLTkWljdYPP65bTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f33TL65L+W1/+oRk1KEhe7DHLVC1ecKeaiUIWK4X/Yw=;
- b=utzeflnbLHcBVpEbM93EF0lQuLX8+gYdu/+pi9utZsljtv3ywDn/Sku9ZLeWMKhHHYzd14dZdYR7r5SkUfN2qFjOzKGoRai5xdHBpU9BLexmCRxxspLHcfxvkf7YME1se/XwqXvT5FRwj+a50hgVR4NVx1xDV7uiRvdbmKkYtT2odTwvJNYSMeXvHEEuSpLuSWaO2KqkjgXkUiRrF5AcIoyUWnrRMf13bwsUAJazGMXV4XVjhDOsdeykf4D7NrAEwdDPmsj61VxPhGdq/yLktnuleofjg/cXbm1VONaKIwNPxfguEez4aZoIT7sVd/SNqs7DkG3WNr2zBLbxcwUokA==
+ bh=xaF1w8VO8XGhwWF/rwXqBwwfIRSACmUXPpupGkJsg4w=;
+ b=mmb8uDEMOOroi4qPHNIlsweSitULAKSodtaCMT22XlYr+d0AX0i7EX84Bk1F45Skwr0+RvdSOxBNoWTAQBT/+4SEUbtW7zzqLkX7N6WSJFDtiC8ormzzHzfgSOggcAhgWNcZ8oJyBKO73iMA1myMQs+O6U0jU4FLsV/B89jowXurgCyqUY+Xque4oO0tYq5ZiXdf0GGTGmpBJg4ScbMPdSPEmJi0ST6Qq4QmVj7+BelnMYQsFK1hpRVPW6SRYkZ2amzJIvO9LgDsDWadFWVOBzkUUSjuZ5SxiHYPjTuymmxS3zZIXezeaXh19meUZmA5/tmvE26zTry4+SbSIvY5Fg==
 Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
  (2603:1096:400:363::9) by SI2PR01MB4396.apcprd01.prod.exchangelabs.com
  (2603:1096:4:1b3::5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Wed, 7 Jun
- 2023 17:24:03 +0000
+ 2023 17:25:00 +0000
 Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
  ([fe80::5b31:f8db:585d:f204]) by TYZPR01MB5556.apcprd01.prod.exchangelabs.com
  ([fe80::5b31:f8db:585d:f204%7]) with mapi id 15.20.6411.021; Wed, 7 Jun 2023
- 17:24:03 +0000
+ 17:25:00 +0000
 From:   Ziyang Huang <hzyitc@outlook.com>
 To:     kvalo@kernel.org
 Cc:     quic_srirrama@quicinc.com, quic_kathirve@quicinc.com,
         ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
-Subject: [PATCH 0/3] wifi: ath11k: Fix runtime issues for IPQ5018
-Date:   Wed,  7 Jun 2023 17:23:16 +0000
-Message-ID: <TYZPR01MB5556F7C9F8E5BB5F5E1C8770C953A@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+Subject: [PATCH 1/3] wifi: ath11k: Add missing ops config for IPQ5018 in ath11k_ahb_probe()
+Date:   Wed,  7 Jun 2023 17:24:37 +0000
+Message-ID: <TYZPR01MB5556D7AA10ABEDDDD2D8F39EC953A@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <TYZPR01MB5556F7C9F8E5BB5F5E1C8770C953A@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+References: <TYZPR01MB5556F7C9F8E5BB5F5E1C8770C953A@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-TMN:  [yl7HxIGS7K46dCY8V62DMej7eIOPo2aH6PWBOLeb/+E=]
-X-ClientProxiedBy: SJ0PR05CA0192.namprd05.prod.outlook.com
- (2603:10b6:a03:330::17) To TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+X-TMN:  [FpcJ3u87YcuYIGVpuOHeodVHoyG3T5CiLiZxi8nKzY0=]
+X-ClientProxiedBy: PH7PR13CA0024.namprd13.prod.outlook.com
+ (2603:10b6:510:174::10) To TYZPR01MB5556.apcprd01.prod.exchangelabs.com
  (2603:1096:400:363::9)
-X-Microsoft-Original-Message-ID: <20230607172316.2258278-1-hzyitc@outlook.com>
+X-Microsoft-Original-Message-ID: <20230607172439.2258343-1-hzyitc@outlook.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TYZPR01MB5556:EE_|SI2PR01MB4396:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a91e872-dc66-4a38-e01d-08db677bfd45
-X-MS-Exchange-SLBlob-MailProps: dx7TrgQSB6cnTu4xI/FKWkMgAUSlrozNByv3waylnVfc7LOQkKuwdoTDj6/k8SSvAM8dzgnqRcJVqBQKhFyIKzmB2NHcWopPB8SOjljTsq8RwC0BGdXP+HeW32ICwq4pc3RoMFkuZKZyHrlwrsoylMplajJIgN2/TrnM9CAf0PYwiixW2ryNAGu95HEMRLvFyHKVQidr6wIG+sX9IkeKLIvPu169FCj+UjJw61BNSMoD3sa7V9Wb4AI4RW6XrVMv0zIsyGxyhBbPmkzsnIwbskYg1EwRLOYpki2ZilznjLc/e5pxZvwu+y5F47o8FokD5GTTPRHSqy9LPMuA5LqtdEasSbcePE3iqa4T9GtF3kAmv3dmWjj4xq1E4h4eijwhP9+qI7tH+fuctTAz5W9iXLmI4OVtuRtCa4XpjqquvmIw8Z/pMFC+cV75gzYjB5/PQTb7Ch2kKKKlud14LH62ZD3/k/DvdZKJDKpS18WyXqRbQm8Q2vEM4RbcpidAVG/+PAVztm0X8TRLfQwHHvEdvXz4E/6yt7elxziuav9u4NM53P6lXyAVx7Pdmc0o5jz9pyLyA+8WDPAX+lDkibsOe94QBxC9TxnbLx5V4IO8Qoc7wVgU+LDA8o7i0al7t3+bKUUCYp7R3aFJW+glW2vlGlE4f2l3nOtBFSrTBYpiVvOLlkylSeo9TEmwUMS+psurBXSjiv3rPy5//kVRARfRuEuJw1Vs4ghA9c5ihmOSbxzoGMxwtLoIJGw7/IS44HvMLiW7xLGV8B0=
+X-MS-Office365-Filtering-Correlation-Id: 63519b4f-7301-4026-0dec-08db677c1eef
+X-MS-Exchange-SLBlob-MailProps: znQPCv1HvwXpdfrfzfVGwTZpgc3WKBgZZ1x/hoAx3TQvdZC6sFjWhcwX0ir1I2cIEhkvHSWBESfoG09YSU24NzA9ot1wvFy6BLe5lj+BX4Dkr19NxMrueaRzCFuFwpIPCcsuYQ1swXUabgn49B8/1p6IsyeiUUhBjYI9vrIda8Ui5cTWQj9+5tvLWIRTDMHBBqva98TIYZz/0dKhpPe8fvv1aCoNCCv9vbfagmS9b/mgsFlOcUt0ZGntSWsyYsNrOsBIgrVNtMi6/Xe1ctiNBGit3606KK/8ZzCJFrvNBN8+XwZGzVOMb3nFfFohv0oY77B/O6IZ9h3EgRsSmcjMAbq3HPo0QaPnhFMCKPqea3tgR00DuR3IXzITjxOSH2bGjsSrQcySOdfWI9R137v8ap6lyAN54rUFfxZOvGo7JsvtYPiQaXH1P3KZzKybw3uI0DhMjOg8a6elmV3aaVyQcSgOwHGeX0huj0GtT5otOcte45eHg5HGZvM3PMP/Yh5yhWCxJlGtimpsNrRkQnjHmT5mKY4393MmDh6rVV4F12G/GH+f41+1BuVvOZ4BFo+7Oi7MQZzpDG2FEjpjF/zVvjccZa4TgJusXd2s1tkMRBEhybVbh/pTrjTQZGsh+RyTiRKUGgXBkYb/2ejR3LVWWyQQe4VQRymZnqGW7K39eObeb33xyYlh6witzPQia2qCCYAtWZBpykxGJTqZ0NPMau0AWxJSeU8+6YUKeZABTVHfxcINN0rMZ+Vx0HxbXaLBfot4J6XoSn4=
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: n4sdrrfZnM/K26VzKzZvkiMo+3BaIb+C7lkbOt85kqVhjRPQ+1qthIBJ5l42PLcwRbRo5ghtyAXAyjP95bshuyuQtLfZ6ENWakq02fGI60K/JcR9PLBn/C/gHdtr0CwXTpVmHGOrhdVATBvfw1yqfQ9Hkc9p+oiLElXKThkCuydfQIX/tfTDFellfuTxINcYu5frPyYaoO0iS1cNzSONvl6YExMyinbkmtvrMh6vY2BDI0Z6FG28npb7xmfIhhf/n8LcbDg20GUUcDuxCvDJV1DZBckMGeC1haJFq1Eepla99F4Etp6d6FsCWqwRcxoksa3du605af2hk08e1if5K1ZVLuIB8xK4It+Ohsy2NMse8Eq5mu9Aa/ryW9oj6qHYgDkdeOXb+oR0KymTstnSi3IWEfyp0mNJObFi23T9IwLJ/8vH8Ll/tSmBKr+DKHm26AbFc4PStrMhsJ/oFxCz39/hP0eW+d499Le/ttPIbL6XIYOoQISIYcyEna/JdiNjDTeaDXtdfUrPBowGVH1jbcRTu61FOhVd+7jCVlJwPBYMPh8Rpuga2lvqr3QteHsNEaBc4F7qLyn9eENfTSIOOZZFdveBfWlm5kCDna5zZWo=
+X-Microsoft-Antispam-Message-Info: cwxCwGq1uKCwIuX63DcBHzr/QYFlYrjF6mSTraBFf2XybHnlNAQANTiUvB1LgjG4TMhiBvlb0EpPspu4XI85O24aXUoUmwjQrTxDFsgtdatbv8YkCfRHiDH57XAfeLCCFB14j0k/u+vo0n3o6tec04/XScHxUcC0QyQ7B9DwvIrI8KeQnrLsk1BJ+HcDt466FYulh2sJEN8AR7iKVLgxQrp6ZQr+Kmyevq0U3vKhPHxpoR0zcAhvq+VCJjz7uFjqqHhC4AuS8jjPy6h2kBVk+CbaEXQ3wykcsMWguChVpui7MhZ3cU6OvR2Pk/pRXWHZydnrQijgROXXuqS/s/lyYaoxbA1v5YdfJOjwwOM4bQyvzjjAB+X790q6qAx51fcdp6GhWpTjVvMjFAr9J3LCzituZqIqfWKgzCTEol5nIPr2tlvUK7fhsF5hs3kFkWS6GnhhFc1f89CMKRLfVYuRF8hkdq89TnEn0Dqb0DO2H6x0RAaEeV4zEZEXFOc4Ynr4Uf94KRnev1wG1dDXE6OY89VgkskjJgu75wFVWjS/s221zL3xXoWqOyJOcsFp4+Id+HqIquYxlV8C9oOFXgLpkH5LevF+iLVoKs30t9s+xcWAqDwlJwP3yWSWa0n1COCH
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?x4rPDnrGJ+hbvkZuGSespSGSe6M0fP3sANp/cjqqRSvEbVab5pKL3E9BaulC?=
- =?us-ascii?Q?y823boqW7bx8PgrmjX7OlfQlhQoKCASAvD+NvgMoAM/zJjj88BOLy0wZ/Ltj?=
- =?us-ascii?Q?Smst+ovDHnSvPZ+xzZXX6vVbTvD+0b4GMJ+Op5w6AibcVUv+uHTNq4dF3TPa?=
- =?us-ascii?Q?g2Lghb+iNQbmk4uZLy7EZfiSqZQtERhHln2W9KA+c1oSaySwLfuqidkfeDdW?=
- =?us-ascii?Q?nEvUJKOIjKmi4hwQPI2vHCH2cT5BjtzvUBZyIEWq3t/3am0PyQQE5qJYrVqE?=
- =?us-ascii?Q?L4kzyaryULeeZQhNi2bN3z55/tguyTF/a5KDA03YGjUMqDpSrl0lxtjayqq9?=
- =?us-ascii?Q?ksTTdHWYkX7yhn83rShVmRmflBStA0lrwGIVlXo3Eb/5GkEmIWee4bPDAUkO?=
- =?us-ascii?Q?sZZhMoteLIdC1QGuRmu9lCGROh9OsiMiY3yuNYwxzaM03kKsWA4f3kguZGI6?=
- =?us-ascii?Q?RHEsyEeCZCQzAaFenOcjwXBFFTW8/buWseZ66zEV1H+zM67FIpp4TBfeLpOT?=
- =?us-ascii?Q?cX3yjLyXq0eDvUNVpEjhMCZF5WKj8AXfYyr/7YEvrIi20g+NEJXaPsWlfbC5?=
- =?us-ascii?Q?jZzX0TrL9ehOKeG8zyl0dIm8wgiRtlEXExo18mQjP7fpyC5UHx6BStkCdWYo?=
- =?us-ascii?Q?4hs0zTOvcjzqirCFUyt+qd3pWXbiukdk7DG8zVJ+j+zx4bVsOJDhm7M/zVsX?=
- =?us-ascii?Q?YxLyVxhL843AP2DduXSf7NbEB0qpQH/FhxIJsEICbagKzs6sfAwskKS3QxYY?=
- =?us-ascii?Q?sW88vz/vyrcY+PnlsyCoyEX5uszFMIs80UQ4pe+rbX58Kikm6mdQXk3eSIOW?=
- =?us-ascii?Q?wqWJoLLcLBIZzplolHDb6CFjrDBOjYmbrp6zWQuJCHA7dVlWdWrnghAvKlsO?=
- =?us-ascii?Q?LHQsmV/yfFYqDxvFITvuLCCca21T/3C0Mi1dum7stl+vGxOZC3Uo91UG94ca?=
- =?us-ascii?Q?+Gocbn9xK8ZKYs/ACYtMxOesBe1yaUiJMfmOxe/wifCx2qm2vasD0Ai5kBYS?=
- =?us-ascii?Q?zyIippfyIA8B79lhfTc5COo7EEY2/F9HrWW22FzoX10lfKernOKz7wLhcu1s?=
- =?us-ascii?Q?QsbrLwGKH3OEMdUbiLuWYtb3FP7fxE45mk7oIwih+veRs4hubiMIfrG1UGNL?=
- =?us-ascii?Q?BphPYvkhEdgSOpNTnjwFQwfSezc5p4m3NBTIJFBvyfj7axrbtdwS+eeEBk6c?=
- =?us-ascii?Q?aIR6NBm8Wdziz6Lwgc3KhAtj1jB+eWpxBoVJI/VIfpZLDfgOnJoaxxzPJSc?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QwyavinE5Vjncv5fbmSTgo9m7qtC4xdCDTKhZgjMfE7LRNduYhYMKBy3298k?=
+ =?us-ascii?Q?+eMoNN3n+66oF97P4O5dw4DBcrmvYnL/quX59nhatmfsE5sWp5X5G+rR2okY?=
+ =?us-ascii?Q?e/Bgm2cW6wIm5IjLw7tnVByKF2rnqjTgiF0e/M20NSfBMoCyQeZ4QpRm0F+q?=
+ =?us-ascii?Q?yXScGr0wtJIlVdg/AwUEP9QZPa5JDaIsteaiwRJbZKqB7mrCW9QkZvtEMKEB?=
+ =?us-ascii?Q?79WaTx2Z9DHWIWjYVd2a3tc+3SQynYZLyknJf9oCJOxGvKPE3rGzcNWq2dDK?=
+ =?us-ascii?Q?IgkLgYUezGBiCRw6PjAKQUcmPm410BiiL+1RnEM8K9NxSwKOXQv7iUKrUGyx?=
+ =?us-ascii?Q?ODCB/8RhxEgLHZZkjRcXoZC1wx7kFZEWJwhrmxS0Ba/u+OnJZ+DlIoDpl1Re?=
+ =?us-ascii?Q?kgwh27IZzsJtVCMeN+dVjwEQMMJzalEAN54SYvWPd3qHLN4JsIRffMfMfYo+?=
+ =?us-ascii?Q?HdB2C5nsihDWipBmObbUDIJPbkSJ/0ixeWgoDk7c4aH4P/LoU6YbhYQD7wg8?=
+ =?us-ascii?Q?JD4Q2Y6EdyMfjrQTA/CbjYAQAsDM5h5jFAtdukajwyu6DUAjsGdUJe9hvAkV?=
+ =?us-ascii?Q?d092RbNyo87Mfdu68QRroXHh+1bsnD2JE0DQJl8vRGMwOXdJGH2Gcm5Wb3rN?=
+ =?us-ascii?Q?BTuDJ6rhadwte14oPOM6tihQ4+qRv+fhLLvCwKvO1j3PElIo8wcKF5OTeHmA?=
+ =?us-ascii?Q?UsBN+Gc1sIFMsClNVKtpgAJWwcseUN0acb/cBlTSlhAluWwjJklvFbhmUZ7F?=
+ =?us-ascii?Q?8+94R5d5XiOMqPj/L60ceNDBd7iotKz+crJujJjflff/fRpp9s1ZsEStllY5?=
+ =?us-ascii?Q?jlPej2yIYaD8M+WRvPMyVEeHKmXNkbpGqiJbuXdcKNrZ4pMyWUTlnyqNNNSW?=
+ =?us-ascii?Q?leAlVk2eHoWAu6FzNUw5oDtpHctv8WYs/O1pt3Vl7SGOdad0Fm1OZSZApCfW?=
+ =?us-ascii?Q?9rINHkvCnOiQRhEBvLotniHyzwFLpgBvmgzRfBDTZnP+tRhHakHa0t4dynO1?=
+ =?us-ascii?Q?xOkDmokPiThWXEOj4/XEO5l4wtYUosaLUd05ODJOqEZ3RofFT1Nqtjf5EQ6I?=
+ =?us-ascii?Q?agwlYvB3DCv2BG/3A68PILiuYhxj7dEOzW63UIRgixe+0//DOM4PoOpdsXcJ?=
+ =?us-ascii?Q?h/zbxJ+IvOV4TE3Zd0tkWU2gyKQgUCZtrthi5p9UoyTX+pdxaXymSijUkts2?=
+ =?us-ascii?Q?MgjH4EvnNMPvkqA/gfLZwGojPKqdU965rvb352y1a/BGWl5uGP8228/mwRw?=
  =?us-ascii?Q?=3D?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a91e872-dc66-4a38-e01d-08db677bfd45
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63519b4f-7301-4026-0dec-08db677c1eef
 X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB5556.apcprd01.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 17:24:03.5661
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 17:25:00.0523
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -105,19 +107,30 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When I try to boot the IPQ5018 WiFi, I found some runtime issues. This
-series of patches will fix them.
+Without this patch, the IPQ5018 WiFi will fail and print the following
+logs:
 
-Ziyang Huang (3):
-  wifi: ath11k: Add missing ops config for IPQ5018 in ath11k_ahb_probe()
-  wifi: ath11k: Restart firmware after cold boot calibration for IPQ5018
-  wifi: ath11k: Add missing hw_ops->get_ring_selector() for IPQ5018
+	[   11.033179] ath11k c000000.wifi: unsupported device type 7
+	[   11.033223] ath11k: probe of c000000.wifi failed with error -95
 
- drivers/net/wireless/ath/ath11k/ahb.c  | 1 +
- drivers/net/wireless/ath/ath11k/core.c | 1 +
- drivers/net/wireless/ath/ath11k/hw.c   | 2 +-
- 3 files changed, 3 insertions(+), 1 deletion(-)
+Fixes: 25edca7bb18a ("wifi: ath11k: add ipq5018 device support")
+Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+---
+ drivers/net/wireless/ath/ath11k/ahb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 5cbba9a8b6ba..396548e57022 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -1127,6 +1127,7 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
+ 	switch (hw_rev) {
+ 	case ATH11K_HW_IPQ8074:
+ 	case ATH11K_HW_IPQ6018_HW10:
++	case ATH11K_HW_IPQ5018_HW10:
+ 		hif_ops = &ath11k_ahb_hif_ops_ipq8074;
+ 		pci_ops = NULL;
+ 		break;
 -- 
 2.25.1
 
