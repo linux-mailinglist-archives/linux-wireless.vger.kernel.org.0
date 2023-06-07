@@ -2,87 +2,168 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE79725CC6
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jun 2023 13:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFA772512B
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Jun 2023 02:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235826AbjFGLLm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 7 Jun 2023 07:11:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49692 "EHLO
+        id S234662AbjFGAj6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 6 Jun 2023 20:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238175AbjFGLLl (ORCPT
+        with ESMTP id S239789AbjFGAjw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 7 Jun 2023 07:11:41 -0400
-X-Greylist: delayed 23446 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Jun 2023 04:11:35 PDT
-Received: from correo.avilatv.gob.ve (correo.avilatv.gob.ve [200.11.241.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5C41702
-        for <linux-wireless@vger.kernel.org>; Wed,  7 Jun 2023 04:11:34 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.avilatv.gob.ve (Postfix) with ESMTP id 3A5BE9A78F4;
-        Wed,  7 Jun 2023 02:22:14 +0000 (UTC)
-Received: from correo.avilatv.gob.ve ([127.0.0.1])
-        by localhost (correo.avilatv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Yv8d9n_C7Hzy; Wed,  7 Jun 2023 02:22:14 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.avilatv.gob.ve (Postfix) with ESMTP id 69BCE9A63EC;
-        Wed,  7 Jun 2023 01:29:06 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.10.3 correo.avilatv.gob.ve 69BCE9A63EC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=avilatv.gob.ve;
-        s=3C9F8150-641D-11ED-9363-DE8E269BDBCD; t=1686101346;
-        bh=Aor/WLwl4h5zbhGzya8ajVmHiT+79UPpoXAPFDddDh4=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=anyptlkTWeClS/yh/3VE3aZs/UBT6KrmgjNdelS0yrjH02JzeRr1BHWUd5yLg1SH1
-         nWKbE0uFRq1bp/m9cb+k0whusaUU6i96n4kLapRTH2d17aQKMvE1J8edzWjCzgEQX1
-         63u2KUhGKKmD190uxN0ZMiru+STT/DAxE4TpcZ3fShN8CoVsshVKSXsHnoU4Efx/kb
-         VJRu1VH9A2I4387MAr7qs6aLj5I/kZfznKariytRTxqUdW2ZKDJfGpLD9gLLce6ZUF
-         AIe2bsW8yz65o/mB3Vf9KoDFu+oLq9zubvuqUuzxZ4GbS47F+90XFfZtlBCLkU6Mfv
-         ClXiuNRcYhT0Q==
-X-Virus-Scanned: amavisd-new at avilatv.gob.ve
-Received: from correo.avilatv.gob.ve ([127.0.0.1])
-        by localhost (correo.avilatv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id omao9sAb7tLS; Wed,  7 Jun 2023 01:29:06 +0000 (UTC)
-Received: from [192.168.0.176] (unknown [105.8.6.233])
-        by correo.avilatv.gob.ve (Postfix) with ESMTPSA id A773D9AA5FE;
-        Tue,  6 Jun 2023 23:12:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Tue, 6 Jun 2023 20:39:52 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF841732;
+        Tue,  6 Jun 2023 17:39:47 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3570ctqE7023305, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3570ctqE7023305
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 7 Jun 2023 08:38:56 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Wed, 7 Jun 2023 08:39:11 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 7 Jun 2023 08:39:11 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 7 Jun 2023 08:39:11 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+CC:     "oe-kbuild@lists.linux.dev" <oe-kbuild@lists.linux.dev>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "lkp@intel.com" <lkp@intel.com>,
+        "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: drivers/net/wireless/realtek/rtw88/mac.c:748 __rtw_download_firmware() warn: missing unwind goto?
+Thread-Topic: drivers/net/wireless/realtek/rtw88/mac.c:748
+ __rtw_download_firmware() warn: missing unwind goto?
+Thread-Index: AQHZmHuag55w+g5GcEOE/p9zkxvpX69+fBZQ
+Date:   Wed, 7 Jun 2023 00:39:11 +0000
+Message-ID: <585222e490c34494b80474059207b788@realtek.com>
+References: <291c3208-39c1-4eb5-bbca-b1331c346782@kadam.mountain>
+ <87r0qoiuk1.fsf@kernel.org>
+In-Reply-To: <87r0qoiuk1.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?RHVsZcW+aXTDoSB6cHLDoXZhOyDigqwgMiwwMDAsMDAwJzAwIEVVUg==?=
-To:     Recipients <jrodriguez@avilatv.gob.ve>
-From:   "Pan Richard Wahl" <jrodriguez@avilatv.gob.ve>
-Date:   Tue, 06 Jun 2023 16:12:07 -0700
-Reply-To: povertfoundationorg@gmail.com
-Message-Id: <20230606231221.A773D9AA5FE@correo.avilatv.gob.ve>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L5,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: **
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Drah=C3=BD pr=C3=ADteli,
 
-Jsem pan Richard Wahl, mega v=C3=ADtez 533 milionu $ v jackpotu Mega Millio=
-ns. Daruji 5 n=C3=A1hodne vybran=C3=BDm lidem. Pokud obdr=C5=BE=C3=ADte ten=
-to e-mail, byl v=C3=A1=C5=A1 e-mail vybr=C3=A1n po roztocen=C3=AD koule. Ve=
-t=C5=A1inu sv=C3=A9ho majetku jsem rozdal rade charitativn=C3=ADch organiza=
-c=C3=AD a organizac=C3=AD. Dobrovolne jsem se rozhodl venovat v=C3=A1m c=C3=
-=A1stku =E2=82=AC 2,000,000'00 EUR jako jednomu z 5 vybran=C3=BDch, abych s=
-i overil sv=C3=A9 v=C3=BDhry prostrednictv=C3=ADm n=C3=AD=C5=BEe uveden=C3=
-=A9 str=C3=A1nky YouTube.
 
-VID=C3=8DTE ME ZDE https://www.youtube.com/watch?v=3Dtne02ExNDrw
+> -----Original Message-----
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Tuesday, June 6, 2023 9:34 PM
+> To: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: oe-kbuild@lists.linux.dev; Sascha Hauer <s.hauer@pengutronix.de>; lkp@intel.com;
+> oe-kbuild-all@lists.linux.dev; linux-kernel@vger.kernel.org; linux-wireless@vger.kernel.org
+> Subject: Re: drivers/net/wireless/realtek/rtw88/mac.c:748 __rtw_download_firmware() warn: missing unwind
+> goto?
+> 
+> Adding linux-wireless, top posting so that the whole report is included.
+> 
+> Dan Carpenter <dan.carpenter@linaro.org> writes:
+> 
+> > Hi Sascha,
+> >
+> > First bad commit (maybe != root cause):
+> >
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> > head:   9561de3a55bed6bdd44a12820ba81ec416e705a7
+> > commit: 45794099f5e1d7abc5eb07e6eec7e1e5c6cb540d wifi: rtw88: Add
+> > rtw8822bu chipset support
+> > config: riscv-randconfig-m031-20230605
+> > (https://download.01.org/0day-ci/archive/20230605/202306052310.OVhcUjZ3-lkp@intel.com/config)
+> > compiler: riscv64-linux-gcc (GCC) 12.3.0
+> >
+> > If you fix the issue, kindly add following tag where applicable
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > | Closes: https://lore.kernel.org/r/202306052310.OVhcUjZ3-lkp@intel.com/
+> >
+> > smatch warnings:
+> > drivers/net/wireless/realtek/rtw88/mac.c:748 __rtw_download_firmware()
+> > warn: missing unwind goto?
+> >
+> > vim +748 drivers/net/wireless/realtek/rtw88/mac.c
+> >
+> > 3d8bf50860c7de Yan-Hsuan Chuang 2020-04-24 717 static int
+> > __rtw_download_firmware(struct rtw_dev *rtwdev,
+> > 3d8bf50860c7de Yan-Hsuan Chuang 2020-04-24 718 struct rtw_fw_state
+> > *fw)
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  719  {
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 720 struct rtw_backup_info
+> > bckp[DLFW_RESTORE_REG_NUM];
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 721 const u8 *data =
+> > fw->firmware->data;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  722       u32 size = fw->firmware->size;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  723       u32 ltecoex_bckp;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  724       int ret;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  725
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 726 if
+> > (!check_firmware_size(data, size))
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  727               return -EINVAL;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  728
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 729 if
+> > (!ltecoex_read_reg(rtwdev, 0x38, &ltecoex_bckp))
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  730               return -EBUSY;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  731
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 732 wlan_cpu_enable(rtwdev,
+> > false);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  733
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 734
+> > download_firmware_reg_backup(rtwdev, bckp);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 735
+> > download_firmware_reset_platform(rtwdev);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  736
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 737 ret =
+> > start_download_firmware(rtwdev, data, size);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  738       if (ret)
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  739               goto dlfw_fail;
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  740
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 741
+> > download_firmware_reg_restore(rtwdev, bckp, DLFW_RESTORE_REG_NUM);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  742
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 743
+> > download_firmware_end_flow(rtwdev);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  744
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  745       wlan_cpu_enable(rtwdev, true);
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26  746
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 747 if
+> > (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp))
+> > e3037485c68ec1 Yan-Hsuan Chuang 2019-04-26 @748               return -EBUSY;
+> >
+> > All the other error paths goto dlfw_fail;
 
-TOTO JE V=C3=81=C5=A0 DAROVAC=C3=8D K=C3=93D: [DFDW43034RW2023]
+At this point, the things of 'dlfw_fail:' have been done by
+download_firmware_end_flow() and wlan_cpu_enable() at L743 and L745 normally. 
+An exception is download_firmware_end_flow() clear BIT_MCUFWDL_EN bit conditionally,
+so I think it would be better to goto dlfw_fail. 
 
-Odpovezte na tento e-mail a uvedte k=C3=B3d daru: info@wahlfoundation.org
+I can make a patch for this.
 
-Douf=C3=A1m, =C5=BEe v=C3=A1m a va=C5=A1=C3=AD rodine udel=C3=A1m radost.
+Ping-Ke
 
-Pozdravy,
-Pan Richard Wahl
