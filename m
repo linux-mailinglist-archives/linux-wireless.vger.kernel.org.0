@@ -2,159 +2,265 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F0E727836
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jun 2023 09:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD5972791F
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jun 2023 09:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235239AbjFHHIk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jun 2023 03:08:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47834 "EHLO
+        id S233062AbjFHHrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jun 2023 03:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235014AbjFHHIj (ORCPT
+        with ESMTP id S232888AbjFHHrF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jun 2023 03:08:39 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722C29E
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 00:08:38 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3584xTD8027888;
-        Thu, 8 Jun 2023 07:08:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=BB3+lszmKQtAlx4U5sSVdW+Zu5pz4AUF2nLwLE014z4=;
- b=UjM8gulsTI7yVlJzxAifmiHnpWadWCBpiRwuhUtyp2HuvBZ8axjbvrk7+qpD9HKspois
- qvvhHTFYTIkYSTlxLe6t/CBExbYn2MApzGBx/QbzJ7xMXzdGgZ5NfUYbbiSLI2PvmLaf
- 4lT3PejGAf2qd8RahLZepxEr3GIMv5okj9RnI/d1779/HPkeAoYacD7nS6bDEedMACSI
- CZY3TOopwK3Wz4JkXj4ajUi/y3VNh4gtaT5XZQkB4BGQHrdM3TIbxz14v21SRXxVlP/Y
- H+oVeyOnolrlkt8RgyMwT9fBgQldo6MACoWgUNIQjXUfBp83RxvEE7cA/kcxepVSMI9y gQ== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r36pdrbns-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 08 Jun 2023 07:08:25 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35878OnE022291
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 8 Jun 2023 07:08:24 GMT
-Received: from aarasahu-linux.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Thu, 8 Jun 2023 00:08:22 -0700
-From:   Aaradhana Sahu <quic_aarasahu@quicinc.com>
-To:     <ath11k@lists.infradead.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
-        Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Subject: [PATCH v2 3/3] wifi: ath11k: add 802.3 undecap support to fix TKIP MIC error reporting
-Date:   Thu, 8 Jun 2023 12:37:54 +0530
-Message-ID: <20230608070754.7161-4-quic_aarasahu@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230608070754.7161-1-quic_aarasahu@quicinc.com>
-References: <20230608070754.7161-1-quic_aarasahu@quicinc.com>
+        Thu, 8 Jun 2023 03:47:05 -0400
+Received: from forward102c.mail.yandex.net (forward102c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A862102
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 00:47:01 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2891:0:640:3c15:0])
+        by forward102c.mail.yandex.net (Yandex) with ESMTP id 5327E60031;
+        Thu,  8 Jun 2023 10:47:00 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ikPKiG3Wp0U0-qxElgjrS;
+        Thu, 08 Jun 2023 10:46:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686210419;
+        bh=sB5hZs1Qa94m5VHVYXgIxOIOPFE1K8W4xefdkwMijoQ=;
+        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+        b=q515UTAt9gIKQgyipIDPBJeva3AJz1+6QsbjdNwMZbaC5hWq4RtBjKvdWsOfyjUbE
+         SMR1RxAPy+ivnjBnp+qI1EA6GCf83r+FEN4MNrzd41w8edhxoBy7c9AErZ7l8pwEOy
+         /8wj+8HtVVWDIad5DbVIoRmCS4GPu9Lbw3HMFT08=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] [v2] wifi: rtw89: cleanup rtw89_iqk_info and related code
+Date:   Thu,  8 Jun 2023 10:45:25 +0300
+Message-Id: <20230608074525.29568-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230606140806.606352-2-dmantipov@yandex.ru>
+References: <20230606140806.606352-2-dmantipov@yandex.ru>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ZF9eAxh2szP4A8ET45KbWwkdrmWrOexV
-X-Proofpoint-ORIG-GUID: ZF9eAxh2szP4A8ET45KbWwkdrmWrOexV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-08_04,2023-06-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 malwarescore=0 adultscore=0 spamscore=0 lowpriorityscore=0
- mlxscore=0 clxscore=1015 bulkscore=0 phishscore=0 impostorscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306080058
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+Drop useless '_iqk_track()' and 'rtw8852a_iqk_track()' (they
+just change 'thermal_rek_en' field which is set but unused
+and so removed as well) functions, set but unused 'kcount'
+field of 'struct rtw89_iqk_info', convert 'thermal' to local
+variables where appropriate (it doesn't need to have longer
+storage duration because it is actually used for debugging
+purposes only), fix typos.
 
-Currently DECAP_TYPE_8023 frames with TKIP MIC error is not undecaped
-and hence fails to do TKIP MIC error reporting in ieee80211_rx_napi()
-path.
-
-Fix this by adding undecap support for ieee80211_rx_napi() to process
-these frames and perform TKIP counter-measures when there is MIC error
-reported.
-
-Tested with STA triggering TKIP MIC error frames (using debugfs
-"tkip_mic_test" in SW encryption mode) twice within a minute and
-verify TKIP counter-measures are performed as expected.
-
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
-Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 39 ++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+v2: integer format specifier quirks (Ping-Ke Shih)
+---
+ drivers/net/wireless/realtek/rtw89/core.h     |  3 --
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 -
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c | 36 ++-----------------
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.h |  1 -
+ .../net/wireless/realtek/rtw89/rtw8852b_rfk.c |  8 +----
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 11 ++----
+ 6 files changed, 6 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 03eeb3dfbb15..ce14cb09b9c1 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2143,6 +2143,42 @@ static void ath11k_dp_rx_h_undecap_eth(struct ath11k *ar,
- 	ether_addr_copy(ieee80211_get_SA(hdr), sa);
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index bea2e7210b70..5e703d617e26 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3540,7 +3540,6 @@ struct rtw89_iqk_info {
+ 	u8 iqk_band[RTW89_IQK_PATH_NR];
+ 	u8 iqk_ch[RTW89_IQK_PATH_NR];
+ 	u8 iqk_bw[RTW89_IQK_PATH_NR];
+-	u8 kcount;
+ 	u8 iqk_times;
+ 	u8 version;
+ 	u32 nb_txcfir[RTW89_IQK_PATH_NR];
+@@ -3555,8 +3554,6 @@ struct rtw89_iqk_info {
+ 	bool iqk_xym_en;
+ 	bool iqk_sram_en;
+ 	bool iqk_cfir_en;
+-	u8 thermal[RTW89_IQK_PATH_NR];
+-	bool thermal_rek_en;
+ 	u32 syn1to2;
+ 	u8 iqk_mcc_ch[RTW89_IQK_CHS_NR][RTW89_IQK_PATH_NR];
+ 	u8 iqk_table_idx[RTW89_IQK_PATH_NR];
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+index d7930efd89b7..e798f395b32d 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
+@@ -1332,7 +1332,6 @@ static void rtw8852a_rfk_scan(struct rtw89_dev *rtwdev, bool start)
+ static void rtw8852a_rfk_track(struct rtw89_dev *rtwdev)
+ {
+ 	rtw8852a_dpk_track(rtwdev);
+-	rtw8852a_iqk_track(rtwdev);
+ 	rtw8852a_tssi_track(rtwdev);
  }
  
-+static void ath11k_dp_rx_h_undecap_snap(struct ath11k *ar,
-+					struct sk_buff *msdu,
-+					u8 *first_hdr,
-+					enum hal_encrypt_type enctype,
-+					struct ieee80211_rx_status *status)
-+{
-+	struct ieee80211_hdr *hdr;
-+	size_t hdr_len;
-+	u8 l3_pad_bytes;
-+	struct hal_rx_desc *rx_desc;
-+
-+	/* Delivered decapped frame:
-+	 * [amsdu header] <-- replaced with 802.11 hdr
-+	 * [rfc1042/llc]
-+	 * [payload]
-+	 */
-+
-+	rx_desc = (void *)msdu->data - sizeof(*rx_desc);
-+	l3_pad_bytes = ath11k_dp_rx_h_msdu_end_l3pad(ar->ab, rx_desc);
-+
-+	skb_put(msdu, l3_pad_bytes);
-+	skb_pull(msdu, sizeof(struct ath11k_dp_amsdu_subframe_hdr) + l3_pad_bytes);
-+
-+	hdr = (struct ieee80211_hdr *)first_hdr;
-+	hdr_len = ieee80211_hdrlen(hdr->frame_control);
-+
-+	if (!(status->flag & RX_FLAG_IV_STRIPPED)) {
-+		memcpy(skb_push(msdu,
-+				ath11k_dp_rx_crypto_param_len(ar, enctype)),
-+		       (void *)hdr + hdr_len,
-+			ath11k_dp_rx_crypto_param_len(ar, enctype));
-+	}
-+
-+	memcpy(skb_push(msdu, hdr_len), hdr, hdr_len);
-+}
-+
- static void ath11k_dp_rx_h_undecap(struct ath11k *ar, struct sk_buff *msdu,
- 				   struct hal_rx_desc *rx_desc,
- 				   enum hal_encrypt_type enctype,
-@@ -2189,7 +2225,8 @@ static void ath11k_dp_rx_h_undecap(struct ath11k *ar, struct sk_buff *msdu,
- 						   enctype, status);
- 		break;
- 	case DP_RX_DECAP_TYPE_8023:
--		/* TODO: Handle undecap for these formats */
-+		ath11k_dp_rx_h_undecap_snap(ar, msdu, first_hdr,
-+					    enctype, status);
- 		break;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index cd6c39b7f802..d86429e4a35f 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -1284,11 +1284,8 @@ static void _iqk_info_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 	u32 tmp = 0x0;
+ 	bool flag = 0x0;
+ 
+-	iqk_info->thermal[path] =
+-		ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
+-	iqk_info->thermal_rek_en = false;
+-	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_thermal = %d\n", path,
+-		    iqk_info->thermal[path]);
++	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_thermal = %lu\n", path,
++		    ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]));
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_LOK_COR_fail= %d\n", path,
+ 		    iqk_info->lok_cor_fail[0][path]);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_LOK_FIN_fail= %d\n", path,
+@@ -1536,28 +1533,6 @@ static void _iqk_dbcc(struct rtw89_dev *rtwdev, u8 path)
+ 	_iqk_afebb_restore(rtwdev, phy_idx, path);
  }
+ 
+-static void _iqk_track(struct rtw89_dev *rtwdev)
+-{
+-	struct rtw89_iqk_info *iqk = &rtwdev->iqk;
+-	u8 path = 0x0;
+-	u8 cur_ther;
+-
+-	if (iqk->iqk_band[0] == RTW89_BAND_2G)
+-		return;
+-	if (iqk->iqk_bw[0] < RTW89_CHANNEL_WIDTH_80)
+-		return;
+-
+-	/* only check path 0 */
+-	for (path = 0; path < 1; path++) {
+-		cur_ther = ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
+-
+-		if (abs(cur_ther - iqk->thermal[path]) > RTW8852A_IQK_THR_REK)
+-			iqk->thermal_rek_en = true;
+-		else
+-			iqk->thermal_rek_en = false;
+-	}
+-}
+-
+ static void _rck(struct rtw89_dev *rtwdev, enum rtw89_rf_path path)
+ {
+ 	u32 rf_reg5, rck_val = 0;
+@@ -1616,7 +1591,6 @@ static void _iqk_init(struct rtw89_dev *rtwdev)
+ 	iqk_info->iqk_sram_en = false;
+ 	iqk_info->iqk_cfir_en = false;
+ 	iqk_info->iqk_xym_en = false;
+-	iqk_info->thermal_rek_en = false;
+ 	iqk_info->iqk_times = 0x0;
+ 
+ 	for (ch = 0; ch < RTW89_IQK_CHS_NR; ch++) {
+@@ -1645,7 +1619,6 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+ 		    "[IQK]==========IQK start!!!!!==========\n");
+ 	iqk_info->iqk_times++;
+-	iqk_info->kcount = 0;
+ 	iqk_info->version = RTW8852A_IQK_VER;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]Test Ver 0x%x\n", iqk_info->version);
+@@ -3655,11 +3628,6 @@ void rtw8852a_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_STOP);
+ }
+ 
+-void rtw8852a_iqk_track(struct rtw89_dev *rtwdev)
+-{
+-	_iqk_track(rtwdev);
+-}
+-
+ void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 		     bool is_afe)
+ {
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.h b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.h
+index ea36553a76b7..fa058ccc8616 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.h
+@@ -10,7 +10,6 @@
+ void rtw8852a_rck(struct rtw89_dev *rtwdev);
+ void rtw8852a_dack(struct rtw89_dev *rtwdev);
+ void rtw8852a_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx);
+-void rtw8852a_iqk_track(struct rtw89_dev *rtwdev);
+ void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 		     bool is_afe);
+ void rtw8852a_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+index 722ae34b09c1..fa018e1f499b 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+@@ -1317,10 +1317,6 @@ static void _iqk_info_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 	u32 tmp;
+ 	bool flag;
+ 
+-	iqk_info->thermal[path] =
+-		ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
+-	iqk_info->thermal_rek_en = false;
+-
+ 	flag = iqk_info->lok_cor_fail[0][path];
+ 	rtw89_phy_write32_mask(rtwdev, R_IQKINF, B_IQKINF_FCOR << (path * 4), flag);
+ 	flag = iqk_info->lok_fin_fail[0][path];
+@@ -1568,7 +1564,6 @@ static void _iqk_init(struct rtw89_dev *rtwdev)
+ 	iqk_info->iqk_sram_en = false;
+ 	iqk_info->iqk_cfir_en = false;
+ 	iqk_info->iqk_xym_en = false;
+-	iqk_info->thermal_rek_en = false;
+ 	iqk_info->iqk_times = 0x0;
+ 
+ 	for (idx = 0; idx < RTW89_IQK_CHS_NR; idx++) {
+@@ -1622,9 +1617,8 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+-		    "[IQK]==========IQK strat!!!!!==========\n");
++		    "[IQK]==========IQK start!!!!!==========\n");
+ 	iqk_info->iqk_times++;
+-	iqk_info->kcount = 0;
+ 	iqk_info->version = RTW8852B_IQK_VER;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]Test Ver 0x%x\n", iqk_info->version);
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+index 2c0bc3a4ab3b..de7714f871d5 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
+@@ -1261,11 +1261,8 @@ static void _iqk_info_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
+ 	u32 tmp;
+ 	bool flag;
+ 
+-	iqk_info->thermal[path] =
+-		ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]);
+-	iqk_info->thermal_rek_en = false;
+-	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_thermal = %d\n", path,
+-		    iqk_info->thermal[path]);
++	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_thermal = %lu\n", path,
++		    ewma_thermal_read(&rtwdev->phystat.avg_thermal[path]));
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_LOK_COR_fail= %d\n", path,
+ 		    iqk_info->lok_cor_fail[0][path]);
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]S%d_LOK_FIN_fail= %d\n", path,
+@@ -1502,7 +1499,6 @@ static void _iqk_init(struct rtw89_dev *rtwdev)
+ 	iqk_info->iqk_sram_en = false;
+ 	iqk_info->iqk_cfir_en = false;
+ 	iqk_info->iqk_xym_en = false;
+-	iqk_info->thermal_rek_en = false;
+ 	iqk_info->iqk_times = 0x0;
+ 
+ 	for (ch = 0; ch < RTW89_IQK_CHS_NR; ch++) {
+@@ -1529,9 +1525,8 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
+ 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
+-		    "[IQK]==========IQK strat!!!!!==========\n");
++		    "[IQK]==========IQK start!!!!!==========\n");
+ 	iqk_info->iqk_times++;
+-	iqk_info->kcount = 0;
+ 	iqk_info->version = RTW8852C_IQK_VER;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[IQK]Test Ver 0x%x\n", iqk_info->version);
 -- 
-2.17.1
+2.40.1
 
