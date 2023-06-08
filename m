@@ -2,212 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9863727FB7
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jun 2023 14:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C336728165
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jun 2023 15:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235017AbjFHMQs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jun 2023 08:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44364 "EHLO
+        id S236742AbjFHNcb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jun 2023 09:32:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233626AbjFHMQq (ORCPT
+        with ESMTP id S236728AbjFHNca (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jun 2023 08:16:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81879184
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 05:16:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 159B564D04
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 12:16:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D230CC433D2;
-        Thu,  8 Jun 2023 12:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686226604;
-        bh=aQXNFWs3V3lBJGx35S5YoWBnWH225+QG4DJld0VTV7w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=m4DOC24UcHgm9gm75X996UtcPIug04PpHQcJofc/OCne5qwZP0CXloHC7yExzJFW0
-         ue0a40FG/IbaYfgqYYO1/Y24Gb8fjbrpblEFgwFAjb48NzsxJsFRymiULKdWBoZDVA
-         bKp+Kgk/ssCL3isVRBxpVRwjJeM6o4VOG+oibcuSVSSqqa4/8faZRMh+Pd8ctxx9b0
-         PmdJYm2GgiOnrHeKCfFQgHHYdDmNuByuf2WbeYuU4lpDRJrYSIsf9y1k0uTSxleYUZ
-         40GDtWuJ2aR2kCtRXa3UtZwGVUUaLLxqco3o46kArV1vgoWtfMN7Mm0+LkJxyf82eI
-         CVEOoUF/Bf5XA==
-Date:   Thu, 8 Jun 2023 17:46:38 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     mhi@lists.linux.dev, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] bus: mhi: host: allow MHI client drivers to
- provide the firmware via a pointer
-Message-ID: <20230608121638.GB5672@thinkpad>
-References: <20230530141813.29333-1-kvalo@kernel.org>
- <20230530141813.29333-2-kvalo@kernel.org>
+        Thu, 8 Jun 2023 09:32:30 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10055268E;
+        Thu,  8 Jun 2023 06:32:29 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-53f7bef98b7so385418a12.3;
+        Thu, 08 Jun 2023 06:32:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686231148; x=1688823148;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mKuPQbcDXEDTbQg5IlNEBVSbNApnUsiE30Zl4xCvysE=;
+        b=a3ihC8Jb7VSgDNtee2BzJlhd02bP9qLThPAty1R/pUygyUp287UJWvu92ojdkZG+Pt
+         hax6IUF7dkDqB2y3L+/YwEC/gjoy1YjXEeSttEZTcGgUt9K6MxDebjHmut6eYj1JThCK
+         B7xvAlga9Ms+AKQD0aZIzSHPYtruGC1W1FYbXamdmjQZkj2AmNwmSimhDsJ3j19FxL7R
+         8CkPX+tIouZbj1XvySlYvhZEgxyN3YdsbQumztVJysdxwLAo5VuntQmV+6/4nhMhGKZP
+         Jfwhd9iO9ZEeKbshNwgSW/Tm9kDec4qP6d9wtYWJ0WV7i1rewZxBoyfIGdikdW9hzITR
+         fB3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686231148; x=1688823148;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mKuPQbcDXEDTbQg5IlNEBVSbNApnUsiE30Zl4xCvysE=;
+        b=UcD1cmkyx9VdVcNTX/M03vpIhBu+XPkySWPhbhAPba3ySRhLoGmiy2eCj3wFt/vhz0
+         foFLfzJBoiXmfzXc7Q9YjJnWlLg5i0hOMONAQ9Hi2T3h2MtXKukafyf8jRFVVpzFkh6G
+         DQFNbBQ0EEkNAR4SRosW8sbJKuoIPYAK6sL15DmKfRccHSQDTTG8LdOKp0ygJuFIPtz3
+         oFceow79MJkrC99s8p03gCm2+wEi9JTFLkKrb9F7NEzWMJsuB7ioz7fC9rhQVoI/1OtW
+         sufqRIBSrP4q/DJJlNkoEI/6VZZoMFeG9iBgywArNeeX1ifi6rrZaBk+rmveH1ATocSl
+         OZeA==
+X-Gm-Message-State: AC+VfDxobuOE/ANH5szsbwX/mL0PTvK8nGG0E0Snn5rki5VkumSaKA6e
+        uqPr2i+eMhwQGofUdiRLgXo=
+X-Google-Smtp-Source: ACHHUZ7PHGRSAoYcpZ8O6w/mA3Ym2Zk5KMOPorRkI6kVX3bVOimkaVaG+sK9sm4Vo/S2Imo6sPIBew==
+X-Received: by 2002:a17:90a:8417:b0:256:c632:9848 with SMTP id j23-20020a17090a841700b00256c6329848mr7532847pjn.29.1686231148298;
+        Thu, 08 Jun 2023 06:32:28 -0700 (PDT)
+Received: from [192.168.43.80] (subs09a-223-255-225-66.three.co.id. [223.255.225.66])
+        by smtp.gmail.com with ESMTPSA id 30-20020a17090a191e00b0025632363477sm1379148pjg.14.2023.06.08.06.32.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jun 2023 06:32:27 -0700 (PDT)
+Message-ID: <31ab2156-e93e-4e0d-73a7-313d9d24ee6b@gmail.com>
+Date:   Thu, 8 Jun 2023 20:32:22 +0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230530141813.29333-2-kvalo@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Content-Language: en-US
+To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        dbnusr495 <se6gtm+8fyzh7983xt40@guerrillamail.org>
+Cc:     Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: rtl8xxxu kernel module deauthenticate session from public open
+ Wifi AP
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, May 30, 2023 at 05:18:11PM +0300, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Currently MHI loads the firmware image from the path provided by client
-> devices. ath11k needs to support firmware image embedded along with meta data
-> (named as firmware-2.bin). So allow the client driver to request the firmware
-> file from user space on it's own and provide the firmware image data and size
-> to MHI via a pointer struct mhi_controller::fw_data.
-> 
-> This is an optional feature, if fw_data is NULL MHI load the firmware using the
-> name from struct mhi_controller::fw_image string as before.
-> 
-> Tested with ath11k and WCN6855 hw2.0.
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Hi,
 
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+I notice a bug report on Bugzilla [1]. Quoting from it:
 
-- Mani
+> With Debian Sid, trying to use two different Realtek USB Wifi Adapters (with
+> Antenna).
+> 
+> Using kernels including various Liquorix 6.2.x, 6.3.x , and the most recent
+> 
+>     linux-image-6.3.4-1-liquorix-amd64
+> 
+> also, Debian experimental
+> 
+>     Debian (experimental) linux-image-6.3.0-0-amd64-unsigned
+> 6.3.5-1~exp1
+> 
+>     Debian's linux-image-6.3.0-0-amd64 (Linux  6.3.0-0-amd64 #1 SMP
+> PREEMPT_DYNAMIC Debian 6.3.2-1~exp1 (2023-05-15) x86_64 GNU/Linux)
+> 
+> same problem.
+> 
+> At local library's public open wifi, no password required.  Using either
+> 
+>     0bda:0179 (rtl8188eu) USB Wifi adapter,
+> 
+> or
+> 
+>     0bda:f179 (rtl8188fu) USB Wifi adapter
+> 
+> Both adapters are loading
+> 
+>     rtl8xxxu kernel module
+> 
+> Using ( manual Wifi connection ) script , the system was able to obtain DHCP IP
+> address.  Normally, all HTTP(S) requests get redirected to a public usage
+> policy web page, where users have to click on "I agree" to continue.  Which
+> works fine with another USB adapter (mt7601 kernel module).
+> 
+> However, with both Realtek adapters above, web browser will just time out, will
+> NOT even get redirect to a "Public Use Notice" web page.
+> 
+> The relevant error message from system log shows
+> 
+>     2023-05-15T16:57:48.491567-04:00 usrhostname kernel: wlan1: deauthenticated
+> from 7a:83:c2:8a:f1:13 (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA)
+> 
+> Apparently, the rtl8xxxu driver assumes an error condition, and immediately
+> deauthenticates and drops the Wifi connection, will not complete the
+> redirection to the "Public Use Notice" web page.
+> 
+> Try to connect again, same problem, repeating itself, not allowing any
+> additional wifi traffic at all.
 
-> ---
->  drivers/bus/mhi/host/boot.c | 34 +++++++++++++++++++++++++---------
->  include/linux/mhi.h         |  6 ++++++
->  2 files changed, 31 insertions(+), 9 deletions(-)
+See Bugzilla for the full thread.
+
+The reporter said that this is known rtl8xxxu issue (unusable on public,
+open WiFi access points [no WPA authentication?]). From his analysis:
+
+> Let me know if I need to do anything else.  I looek at the code briefly, I belive the rtl8xxxu called a function from 802.11 layer to handle the return code (Reason code 6), which promptly call a function to deauthenticate the session, thus disconnected the device from further wifi traffic.
 > 
-> diff --git a/drivers/bus/mhi/host/boot.c b/drivers/bus/mhi/host/boot.c
-> index d2a19b07ccb8..edc0ec5a0933 100644
-> --- a/drivers/bus/mhi/host/boot.c
-> +++ b/drivers/bus/mhi/host/boot.c
-> @@ -365,12 +365,10 @@ int mhi_alloc_bhie_table(struct mhi_controller *mhi_cntrl,
->  }
->  
->  static void mhi_firmware_copy(struct mhi_controller *mhi_cntrl,
-> -			      const struct firmware *firmware,
-> +			      const u8 *buf, size_t remainder,
->  			      struct image_info *img_info)
->  {
-> -	size_t remainder = firmware->size;
->  	size_t to_cpy;
-> -	const u8 *buf = firmware->data;
->  	struct mhi_buf *mhi_buf = img_info->mhi_buf;
->  	struct bhi_vec_entry *bhi_vec = img_info->bhi_vec;
->  
-> @@ -393,9 +391,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
->  	enum mhi_pm_state new_state;
->  	const char *fw_name;
-> +	const u8 *fw_data;
->  	void *buf;
->  	dma_addr_t dma_addr;
-> -	size_t size;
-> +	size_t size, fw_sz;
->  	int i, ret;
->  
->  	if (MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)) {
-> @@ -425,6 +424,20 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	fw_name = (mhi_cntrl->ee == MHI_EE_EDL) ?
->  		mhi_cntrl->edl_image : mhi_cntrl->fw_image;
->  
-> +	/* check if the driver has already provided the firmware data */
-> +	if (!fw_name && mhi_cntrl->fbc_download &&
-> +	    mhi_cntrl->fw_data && mhi_cntrl->fw_sz) {
-> +		if (!mhi_cntrl->sbl_size) {
-> +			dev_err(dev, "fw_data provided but no sbl_size\n");
-> +			goto error_fw_load;
-> +		}
-> +
-> +		size = mhi_cntrl->sbl_size;
-> +		fw_data = mhi_cntrl->fw_data;
-> +		fw_sz = mhi_cntrl->fw_sz;
-> +		goto skip_req_fw;
-> +	}
-> +
->  	if (!fw_name || (mhi_cntrl->fbc_download && (!mhi_cntrl->sbl_size ||
->  						     !mhi_cntrl->seg_len))) {
->  		dev_err(dev,
-> @@ -444,6 +457,10 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	if (size > firmware->size)
->  		size = firmware->size;
->  
-> +	fw_data = firmware->data;
-> +	fw_sz = firmware->size;
-> +
-> +skip_req_fw:
->  	buf = dma_alloc_coherent(mhi_cntrl->cntrl_dev, size, &dma_addr,
->  				 GFP_KERNEL);
->  	if (!buf) {
-> @@ -452,7 +469,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	}
->  
->  	/* Download image using BHI */
-> -	memcpy(buf, firmware->data, size);
-> +	memcpy(buf, fw_data, size);
->  	ret = mhi_fw_load_bhi(mhi_cntrl, dma_addr, size);
->  	dma_free_coherent(mhi_cntrl->cntrl_dev, size, buf, dma_addr);
->  
-> @@ -464,7 +481,7 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	}
->  
->  	/* Wait for ready since EDL image was loaded */
-> -	if (fw_name == mhi_cntrl->edl_image) {
-> +	if (fw_name && fw_name == mhi_cntrl->edl_image) {
->  		release_firmware(firmware);
->  		goto fw_load_ready_state;
->  	}
-> @@ -478,15 +495,14 @@ void mhi_fw_load_handler(struct mhi_controller *mhi_cntrl)
->  	 * device transitioning into MHI READY state
->  	 */
->  	if (mhi_cntrl->fbc_download) {
-> -		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image,
-> -					   firmware->size);
-> +		ret = mhi_alloc_bhie_table(mhi_cntrl, &mhi_cntrl->fbc_image, fw_sz);
->  		if (ret) {
->  			release_firmware(firmware);
->  			goto error_fw_load;
->  		}
->  
->  		/* Load the firmware into BHIE vec table */
-> -		mhi_firmware_copy(mhi_cntrl, firmware, mhi_cntrl->fbc_image);
-> +		mhi_firmware_copy(mhi_cntrl, fw_data, fw_sz, mhi_cntrl->fbc_image);
->  	}
->  
->  	release_firmware(firmware);
-> diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-> index f6de4b6ecfc7..7bd58fcb7e58 100644
-> --- a/include/linux/mhi.h
-> +++ b/include/linux/mhi.h
-> @@ -299,6 +299,10 @@ struct mhi_controller_config {
->   * @iova_start: IOMMU starting address for data (required)
->   * @iova_stop: IOMMU stop address for data (required)
->   * @fw_image: Firmware image name for normal booting (optional)
-> + * @fw_data: Firmware image data content for normal booting, used only
-> + *           if fw_image is NULL (optional)
-> + * @fw_sz: Firmware image data size for normal booting, used only if fw_image
-> + *         is NULL and fbc_download is true (optional)
->   * @edl_image: Firmware image name for emergency download mode (optional)
->   * @rddm_size: RAM dump size that host should allocate for debugging purpose
->   * @sbl_size: SBL image size downloaded through BHIe (optional)
-> @@ -384,6 +388,8 @@ struct mhi_controller {
->  	dma_addr_t iova_start;
->  	dma_addr_t iova_stop;
->  	const char *fw_image;
-> +	const u8 *fw_data;
-> +	size_t fw_sz;
->  	const char *edl_image;
->  	size_t rddm_size;
->  	size_t sbl_size;
-> -- 
-> 2.30.2
+> I believe the 802.11 level handling is too harsh for public open AP.  However, i think the Realtek level code is too lazy.  Realtek driver code should check for reasonable return codes for situations like this and allow paasing at least a few of these before considering these as hacking attempts, which require deauthenticating, or disconnecting.  But then again, this would also be too strict for monitor mode handling of traffic.
 > 
-> 
+> Don't know if 802.11 level specs even have considerations for situations like these at all, or they simply handle lower level logic and leave these things for the device drivers to cooperate with application layers to handle these.
+
+Jes and Kalle, would you like to take a look on checking return codes
+(as reporter demands)?
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217531
 
 -- 
-மணிவண்ணன் சதாசிவம்
+An old man doll... just what I always wanted! - Clara
