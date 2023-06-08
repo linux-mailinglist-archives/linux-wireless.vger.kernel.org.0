@@ -2,73 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1800F72848B
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Jun 2023 18:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C31F72A713
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jun 2023 02:30:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231238AbjFHQD7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jun 2023 12:03:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51648 "EHLO
+        id S232647AbjFJAak convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 20:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232432AbjFHQDj (ORCPT
+        with ESMTP id S232462AbjFJAaj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jun 2023 12:03:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E0D430D8
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 09:03:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB5B0618B9
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 16:03:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60690C4339B;
-        Thu,  8 Jun 2023 16:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686240206;
-        bh=FgTRkTfcB8xOAPM0OyjbLgrmPYSUNf1AkM9cFCELobU=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=gVZRs5AB0Q5N026Ep8ObE0GlIJ9vGUWL9xEEvF7TkrT51Lo7gaj2S6L4XoNAdkEGb
-         9lIlA7DpXa4hWb+nAyKqSzQeKhD9EZ8LjvYifY9KoIWOmWmm4Z8hDLNqZQwDUgaTdP
-         zMeDubcWSyyup7sVMhnLcFljZ6u1627AUy0TKeZYnAGyoQII1PpGwkY1P3/3ec6FzJ
-         GfHpfiswJBTQAE3WfO/esIvVFjIA7RkpE5rH0gh4q/igYS1q2/T72tEtcLALCVyF7O
-         MymThd0cAzqOtOJwq4tKYBSamfhMxdVWefjT4MCnSJe5Zdb9MVLCz7ejlO4w8PWTSd
-         vcZmz6iOqVVkg==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 9 Jun 2023 20:30:39 -0400
+X-Greylist: delayed 954 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 17:30:38 PDT
+Received: from es.pcb.gov.my (es.pcb.gov.my [202.75.7.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 32E203A89
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 17:30:38 -0700 (PDT)
+X-ASG-Debug-ID: 1686355966-1488a971bf06c40002-9xRsGE
+Received: from mail.pcb.gov.my (mail.pcb.gov.my [10.28.173.47]) by es.pcb.gov.my with ESMTP id guoQw61C1IWDFSSQ for <linux-wireless@vger.kernel.org>; Sat, 10 Jun 2023 08:13:42 +0800 (+08)
+X-Barracuda-Envelope-From: herdayu@pcb.gov.my
+Received: from [193.169.254.61] (193.169.254.61) by EXCHANGE01.BPA.pcb.gov.my
+ (10.28.173.47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.721.2; Fri, 9 Jun 2023
+ 01:18:56 +0800
+Reply-To: <alicewalt63@gmail.com>
+X-Barracuda-Effective-Source-IP: UNKNOWN[193.169.254.61]
+X-Barracuda-Apparent-Source-IP: 193.169.254.61
+From:   Alice Walton <herdayu@pcb.gov.my>
+To:     <linux-wireless@vger.kernel.org>
+Subject: =?UTF-8?B?xI1lc3RpdGFt?=
+Date:   Thu, 8 Jun 2023 10:18:48 -0700
+X-ASG-Orig-Subj: =?UTF-8?B?xI1lc3RpdGFt?=
+Message-ID: <20230608101847.8F55B2595D395F86@pcb.gov.my>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: rtlwifi: remove misused flag from HAL data
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230605100700.111644-1-dmantipov@yandex.ru>
-References: <20230605100700.111644-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168624020331.5828.12429802348098485707.kvalo@kernel.org>
-Date:   Thu,  8 Jun 2023 16:03:25 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-ClientProxiedBy: EXCHANGE01.BPA.pcb.gov.my (10.28.173.47) To
+ EXCHANGE01.BPA.pcb.gov.my (10.28.173.47)
+X-Barracuda-Connect: mail.pcb.gov.my[10.28.173.47]
+X-Barracuda-Start-Time: 1686356002
+X-Barracuda-URL: https://10.28.173.25:443/cgi-mod/mark.cgi
+X-Barracuda-License: Expired
+X-Barracuda-BRTS-Status: 1
+X-Virus-Scanned: by bsmtpd at pcb.gov.my
+X-Barracuda-Scan-Msg-Size: 570
+X-Spam-Status: Yes, score=7.4 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,
+        MONEY_FREEMAIL_REPTO,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [193.169.254.61 listed in zen.spamhaus.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [alicewalt63[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+čestitam,
 
-> Always rely on 'driver_is_goingto_unload' of 'struct rtl_hal'
-> and remove (presumably misused) 'driver_going2unload' from it.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+      Vaša e-pošta osvojila je 5.000.000,00 USD od strane Alice 
+Walton 2023 humanitarnog programa podrške donacijama. 
+Kontaktirajte nas za više pojedinosti o tome kako možete 
+zatražiti svoj donacijski fond.
 
-Patch applied to wireless-next.git, thanks.
+Hvala i Bog blagoslovio
+Zaklada Alice Walton
+=========================================
+Congratulation,
 
-fef0f427f712 wifi: rtlwifi: remove misused flag from HAL data
+     Your email has won $5,000,000.00 USD by Alice Walton 2023 
+humanitarian donation support program. Contact us for more 
+details on how you can claim your donation fund.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230605100700.111644-1-dmantipov@yandex.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Thanks And God Bless
+Alice Walton Foundation
