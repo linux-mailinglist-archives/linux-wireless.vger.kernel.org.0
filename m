@@ -2,116 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4901372A139
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 19:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6165872A176
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 19:42:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjFIR12 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 13:27:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
+        id S231274AbjFIRmR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 13:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbjFIR11 (ORCPT
+        with ESMTP id S231266AbjFIRmP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 13:27:27 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A53A30DD;
-        Fri,  9 Jun 2023 10:27:26 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-97467e06511so338961366b.2;
-        Fri, 09 Jun 2023 10:27:26 -0700 (PDT)
+        Fri, 9 Jun 2023 13:42:15 -0400
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BDF35B5
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 10:42:03 -0700 (PDT)
+Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-777a6ebb542so85071539f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Jun 2023 10:42:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686331645; x=1688923645;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dBlvpkapb3S5TXw3HEYTW+PcvrpF6HWECZJi4X+Mzp4=;
-        b=jwxV/JhDrE1JIYNpbRXRvZR1eNbyK/P25a726MCS7/SOEBr2f4HMFnEsw0ebCNyQJR
-         N17IGdjnrKWElfV0q5RbTjZXw29COnTMQOYmy51xn0XqAA/HP28oUsq5eiO3dOgLYe6L
-         ggXuNLh4+VXOPRH6iJ0tGv0rJDEq2fbc3Hd5Vj3r85I5dknUhdlqTtPV+GSMsuLCbvD7
-         nl8JPdUeq8FBrJ9CdLoxzT+oAelsLTyEUkyBOMp4ZJLowOHuZLJ94XKetc/G8UwJqKyp
-         V/KuYLkSZHWii4YpeEXDYxTNpvWUQBf5tS2o6BQ/lxm49M5lTkMIa3z5t3baWCvVZnPB
-         KDbw==
+        d=chromium.org; s=google; t=1686332522; x=1688924522;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+WH76zqrenLLRU4W8LhvZYi9PSsVioQ+x5GUbNwlick=;
+        b=RmtFayTsh4XJVrVmpZNZe8tEtm1JuOMEEJvvpOrv76BOZv6b5Uoe1z8hxb1Ajy5tVc
+         993QugpmD2JIQMp8ysP4C3qIFz1QULTkhaj4u7oA0xtML4/8chtGYFTyBJilzHG5nMvE
+         8/RflVemJii5ujd3iu9pvJ+vL6XKdV1Un72KQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686331645; x=1688923645;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dBlvpkapb3S5TXw3HEYTW+PcvrpF6HWECZJi4X+Mzp4=;
-        b=a7ymlv4PX4uCF4BuE7zWUUqZEY4b5SyxY18Hx33QLajgXdLbwmJzif2kHh4Kz6LWSM
-         1tTM0D0lXJarPpic2Yg8LzxGciav4TWlBq+H2oqoNdowGvrOyVVinPpQUC+2tdfbn8Lu
-         vbxdoZQyMJi++UkgipjFwOwdrtJafpNzfXaUBOJiYnW1csq0PeRfrB+TWjO/QV6+WsZe
-         KtnOAaFan6tpn5HJ4u2PIrvwNHHREQJhSj3iL/GEJyg3A8wKlgn1+ZLEystlk9SwFoPW
-         ByyoHQGE4ooyOD3yblODAKZ988PpqtIHE1C6VOd+Fo9z/RYi95TxMgNgn/tehfoGBpxx
-         frvw==
-X-Gm-Message-State: AC+VfDwV1RydTbPttPtHKG1wAuT1mS3/4YW4UyRWicHE2VEXpfz3f7N4
-        NS4qW9Iyh+JUYXzVLkTTmP1KLQWopC4=
-X-Google-Smtp-Source: ACHHUZ7cF5TdfCz0QzjlZXBNor2s9JlusjzWgB/1lzfd+n3faNH1UWC1izdjrIK6ae//QPBZBLjeEQ==
-X-Received: by 2002:a17:907:741:b0:958:801b:9945 with SMTP id xc1-20020a170907074100b00958801b9945mr2510182ejb.31.1686331644733;
-        Fri, 09 Jun 2023 10:27:24 -0700 (PDT)
-Received: from shift.daheim (pd9e2959c.dip0.t-ipconnect.de. [217.226.149.156])
-        by smtp.gmail.com with ESMTPSA id l15-20020a170906a40f00b0097d9e2b5f9csm11048ejz.170.2023.06.09.10.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 10:27:24 -0700 (PDT)
-Received: from chuck by shift.daheim with local (Exim 4.96)
-        (envelope-from <chuck@shift.daheim>)
-        id 1q7ftT-001k9b-2Q;
-        Fri, 09 Jun 2023 19:27:23 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Cc:     kvalo@kernel.org, conor+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org
-Subject: [PATCH v1] dt-bindings: net: wireless: ath10k: add ieee80211-freq-limit property
-Date:   Fri,  9 Jun 2023 19:27:23 +0200
-Message-Id: <f30552d1bfdb4c56f99ca79d8fbf52d3fcf71686.1686331623.git.chunkeey@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        d=1e100.net; s=20221208; t=1686332522; x=1688924522;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+WH76zqrenLLRU4W8LhvZYi9PSsVioQ+x5GUbNwlick=;
+        b=NqSBltNtF6hfOB12XiGBUEQYHJxYZMrhFuCSoVPPevCWthy9Zu0hyJLCigLeU5fW6Q
+         ZuSH8TloSL5YK2oqyCoqj0jqFv02dT5QbzMSnST7Y5+KLm18Wzw0H//aMJi+TncNAzvY
+         eCpuotKSWzRuoksFbiLUTeZUqtKxg3o/je81rx+we2FyqDL35LgmZF5Eqi9Qj2McLxlK
+         IPxQCm0EWEtF+0EPe6TKOj7nDwP1x35urF94JW896jLSPh+wNvKuSL2ZQrmlWt3i/rO4
+         1e0+/kDP4xp0RBteg32g8hcXgDImeU2sUPpmdvmlP6qK54KXqFj4ezoxOSZNU2s4RzF5
+         Bb/w==
+X-Gm-Message-State: AC+VfDzzId9bIv4WslenRLDKkeUJDzL+UwlgJqEzyHf3UtGBp+UAdSRH
+        rWbTNYGuNfMy7z6dGH+Ug0R+T5/7dTOwAlhr2I2b/w==
+X-Google-Smtp-Source: ACHHUZ5tcn0SDgMLFFvev/k4QmQfCwN6bBEVv5LtQYgZyeTQYk91kQAFXrT/mFmQSRXpntXkkUOakQeTVn4JM/1Ae/g=
+X-Received: by 2002:a92:d690:0:b0:33b:c914:a771 with SMTP id
+ p16-20020a92d690000000b0033bc914a771mr1926446iln.6.1686332522428; Fri, 09 Jun
+ 2023 10:42:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230609103651.313194-1-treapking@chromium.org> <87o7lohq9e.fsf@kernel.org>
+In-Reply-To: <87o7lohq9e.fsf@kernel.org>
+From:   Pin-yen Lin <treapking@chromium.org>
+Date:   Sat, 10 Jun 2023 01:41:51 +0800
+Message-ID: <CAEXTbpdDsoghsxbJqszx0OWWw1o9D8p9f_9-4OgOM-a-w7OzSA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mwifiex: Replace RX workqueues with kthreads
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an existing optional property that ieee80211.yaml/cfg80211
-provides. It's useful to further restrict supported frequencies
-for a specified device through device-tree.
+Hi Kalle,
 
-The driver supported this since ~2018 by
-commit 34d5629d2ca8 ("ath10k: limit available channels via DT ieee80211-freq-limit")
+On Fri, Jun 9, 2023 at 6:41=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Pin-yen Lin <treapking@chromium.org> writes:
+>
+> > This improves the RX throughput likely by better locality for the work
+> > loads.
+> >
+> > We tested this patch on Mediatek MT8173 Chromebooks, and it shows ~80%
+> > Rx throughput improvement on high data rate test cases.
+>
+> 80%? That's huge from so small patch like this! What are the before and
+> after numbers?
 
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
----
+I realized that I might have over-simplified the background and the
+impact of this patch...
 
-Note: this is for ath10k. The other patch is for a different driver (ath11k).
----
- .../devicetree/bindings/net/wireless/qcom,ath10k.yaml        | 5 +++++
- 1 file changed, 5 insertions(+)
+The short answer to the question is that the throughput improved from
+100 mbps to 180 mbps. The test was run on ChromeOS's v5.15 kernel
+fork. More detailed test setting is mentioned in [1].
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
-index c85ed330426d..99db442cef92 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
-@@ -12,6 +12,9 @@ maintainers:
- description:
-   Qualcomm Technologies, Inc. IEEE 802.11ac devices.
- 
-+allOf:
-+  - $ref: ieee80211.yaml#
-+
- properties:
-   compatible:
-     enum:
-@@ -84,6 +87,8 @@ properties:
-     required:
-       - iommus
- 
-+  ieee80211-freq-limit: true
-+
-   qcom,ath10k-calibration-data:
-     $ref: /schemas/types.yaml#/definitions/uint8-array
-     description:
--- 
-2.40.1
+However, the throughput of the same test case on our v4.19 kernel is
+320 mbps. That is, we observed a 320 mbps --> 100 mbps regression when
+we tried to update the kernel version. This patch is more like a
+mitigation of the regression. It improves the throughput, even though
+it is still not as good as the older kernel.
 
+That being said, this patch does improve the throughput, so we think
+this patch can be landed into the mainline kernel.
+
+Best regards,
+Pin-yen
+
+[1]: https://lore.kernel.org/all/ZFvpJb9Dh0FCkLQA@google.com/
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
