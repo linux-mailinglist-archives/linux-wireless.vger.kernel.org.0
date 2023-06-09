@@ -2,101 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A62E7729F4D
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 17:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0F7729F22
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 17:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241122AbjFIPzf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 11:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48100 "EHLO
+        id S241930AbjFIPuG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 11:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240769AbjFIPze (ORCPT
+        with ESMTP id S241911AbjFIPuF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 11:55:34 -0400
-X-Greylist: delayed 544 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 08:55:33 PDT
-Received: from node.akkea.ca (li1434-30.members.linode.com [45.33.107.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2D83588
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 08:55:33 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by node.akkea.ca (Postfix) with ESMTP id D9E464E200E;
-        Fri,  9 Jun 2023 15:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
-        t=1686325588; bh=LAlFToPdxEjfDDOxau4rnrHY/5HdHkZYkM3bM6GWhss=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=THoZhJEcLFt2yQ73IygMtJS0dPoRZd3dAhP/UOyicRHfbLJ4/p84ZPM8/XKpT2Pqo
-         lEd42rn5GK7ZprF77LPoUZq6OS2G0VK4gM8yHLai6M4MC4HSKjyeB6rdXWz0NueQCl
-         VTwjMQhUTvLaE7zbXY6OIf9/v2B5D0j/byHFwUsQ=
-X-Virus-Scanned: Debian amavisd-new at mail.akkea.ca
-Received: from node.akkea.ca ([127.0.0.1])
-        by localhost (mail.akkea.ca [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6LidfUErIBoC; Fri,  9 Jun 2023 15:46:28 +0000 (UTC)
-Received: from www.akkea.ca (localhost [127.0.0.1])
-        by node.akkea.ca (Postfix) with ESMTP id 505664E200C;
-        Fri,  9 Jun 2023 15:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
-        t=1686325588; bh=LAlFToPdxEjfDDOxau4rnrHY/5HdHkZYkM3bM6GWhss=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=THoZhJEcLFt2yQ73IygMtJS0dPoRZd3dAhP/UOyicRHfbLJ4/p84ZPM8/XKpT2Pqo
-         lEd42rn5GK7ZprF77LPoUZq6OS2G0VK4gM8yHLai6M4MC4HSKjyeB6rdXWz0NueQCl
-         VTwjMQhUTvLaE7zbXY6OIf9/v2B5D0j/byHFwUsQ=
+        Fri, 9 Jun 2023 11:50:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC60635BC;
+        Fri,  9 Jun 2023 08:49:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DC0661C5A;
+        Fri,  9 Jun 2023 15:49:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053D2C433D2;
+        Fri,  9 Jun 2023 15:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686325788;
+        bh=VujHTb3Jst7P7AKBSUf6SEnI2gqNIkp0cYDL1jRQ5Uw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VWXiQoWUZrbEzGfv1didX1XWnGpeFeM3Z0E5xFzq1wZBaoT+OTdszCqjUwy0vmHzA
+         X/7EPPA2WhjAo3F3jVs4bVDMkDHGijdyvrla3eg+6VFKx6NOtifHDjTLZ+ygZaxcpp
+         Ca8sGBOFBEoK2g5OG66BiWNwPKQM/z0CikQQvwqFbgL2nGGf/sGRdSjTy+bqT3iLOD
+         7WMHt+XsklMQxtJCVebXjk07aKWzN3RADgbrC/gOV0KkoVn3jrhAcnnmolSu2uRnI9
+         HrMbHmE6SyFeoiplswxjwGxg70IF2hXNATe6aE4Mbr9UEsrIzUWBwXu/HLL04U2oXh
+         W/z4gj442vyrg==
+Date:   Fri, 9 Jun 2023 16:49:44 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Christian Lamparter <chunkeey@gmail.com>
+Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, kvalo@kernel.org, conor+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org
+Subject: Re: [PATCH v1 1/2] dt-bindings: net: ath11k: add
+ ieee80211-freq-limit property
+Message-ID: <20230609-carded-stipulate-439950812469@spud>
+References: <a3075482150d342f71ec235badacec32cdd6c553.1686300243.git.chunkeey@gmail.com>
 MIME-Version: 1.0
-Date:   Fri, 09 Jun 2023 08:46:28 -0700
-From:   Angus Ainslie <angus@akkea.ca>
-To:     =?UTF-8?Q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Ganapathi Kondraju <ganapathi.kondraju@silabs.com>,
-        Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Amol Hanwate <amol.hanwate@silabs.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Martin Kepplinger <martink@posteo.de>,
-        Narasimha Anumolu <narasimha.anumolu@silabs.com>,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Shivanadam Gude <shivanadam.gude@silabs.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Srinivas Chappidi <srinivas.chappidi@silabs.com>,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v3] MAINTAINERS: Add new maintainers to Redpine driver
-In-Reply-To: <3166282.5fSG56mABF@pc-42>
-References: <1675433281-6132-1-git-send-email-ganapathi.kondraju@silabs.com>
- <112376890.nniJfEyVGO@pc-42> <dd9a86af-e41a-3450-5e52-6473561a3e18@denx.de>
- <3166282.5fSG56mABF@pc-42>
-Message-ID: <50ab38c7104b99277bca512ba8f59255@akkea.ca>
-X-Sender: angus@akkea.ca
-User-Agent: Roundcube Webmail/1.3.17
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Hr0x/gMYpYr/cxtg"
+Content-Disposition: inline
+In-Reply-To: <a3075482150d342f71ec235badacec32cdd6c553.1686300243.git.chunkeey@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jérôme,
 
-On 2023-06-09 08:10, Jérôme Pouiller wrote:
-> 
-> You are talking about this driver[1] I assume?
-> 
-> [1]: https://github.com/SiliconLabs/RS911X-nLink-OSD
-> 
-> [...]
->> In the meantime, since RSI neglected this driver for years, what would
->> be the suggestion for people who are stuck with the RSI WiFi hardware?
-> 
-> Unfortunately, my only suggestion is to use the downstream driver we
-> mentioned above.
+--Hr0x/gMYpYr/cxtg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That driver isn't really a solution as it rarely applies cleanly to 
-recent kernels.
+On Fri, Jun 09, 2023 at 10:44:54AM +0200, Christian Lamparter wrote:
+> This is an existing optional property that ieee80211.yaml/cfg80211
+> provides. It's useful to further restrict supported frequencies
+> for a specified device through device-tree.
+>=20
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 
-The lack of proper commit messages also makes the changes opaque.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Cheers
-Angus
+Cheers,
+Conor.
+
+--Hr0x/gMYpYr/cxtg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZINKGAAKCRB4tDGHoIJi
+0g+3AQCFQ8p2CNxwxmughCknWM1xVeucR0xBQ1yAXg8iamMwtAD/RLoywsac7z6f
+gp1X+1swDTOiyPsYQXc2tf41bBIHxw0=
+=CDm6
+-----END PGP SIGNATURE-----
+
+--Hr0x/gMYpYr/cxtg--
