@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A53F729CC1
+	by mail.lfdr.de (Postfix) with ESMTP id DB0E6729CC3
 	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 16:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241307AbjFIOZR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 10:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49052 "EHLO
+        id S241145AbjFIOZT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 10:25:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241269AbjFIOYx (ORCPT
+        with ESMTP id S241323AbjFIOY4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 10:24:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4A130CB
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 07:24:51 -0700 (PDT)
+        Fri, 9 Jun 2023 10:24:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080C530F2
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 07:24:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBA2F612DC
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 14:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA87C4339B;
-        Fri,  9 Jun 2023 14:24:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC6CF6587F
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 14:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AE5C433EF;
+        Fri,  9 Jun 2023 14:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686320691;
-        bh=Fl2pPLBw28hP0W9JqhqkFKCzbiCQMgAgej6YusvbAV4=;
+        s=k20201202; t=1686320692;
+        bh=Zcyt6xbAylX9CV7NA7i4sNHKr45rynMirLVmA4I5KCI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bo2HmS6EOv7M1EL297mr0zkGkEfUDXl2OOZJHccThy/0w1ZjgLJ1Wqo4wTsw3bZoS
-         Mt1P9pC9A4poo/MaEy0/K1MWYuxGCu++wJkkR4HqvRdjul5C89wPT86+iP3WpNwgtN
-         K13flDaA5NM3I511qvPbUQ8FGs62ko8X41yamslp6TSZsmk4XsUkaNyl6XR5ulEw8B
-         hDw7LFOY85CqvlGnZ19CV26zHiRjjAfp7mEkOgoIGz1HCORl5LfTrPraIM6WrL9X4F
-         u94E6zmgrAiCgLfkBsvyG3o4TU01quReBZcadgcSw3bziJOmmPHseNuUnNMtiIrn2A
-         elwYw/n2VmF+A==
+        b=h4bJF+C7xXNn/BZDuGNZ9QeMyPFv2HESK+tn2zMRh9pkKsq5ApRX8nJ9x+bYPVlXF
+         I1yF6Yz296WF3jbAgv7V55WFW6Gy4hRIn0nTVMWroSXb6YquW6YinFGuXIhOa4zicF
+         2F3nrB289D7rvf4nf/xVkEmg6a6BLZ1YxccPUDnba/KKsWPDgiMyJGWCh0cZ1i6C/X
+         WLgWk5GqZ+/zagXLcA/Uj3h/u90JFHVj5FnTYWwqIGZLJKiaqOdHRVEU3gHDxKPJ19
+         5bjeS1cMmCvd1GMKt60Ex99HUC0QZmGc2j1XpUTGMoeEw60jx5W4Yg3gwcpN4AjrTK
+         N00nZzLw2ljDA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH 07/15] wifi: ath11k: wmi: use common error handling style
-Date:   Fri,  9 Jun 2023 17:24:32 +0300
-Message-Id: <20230609142440.24643-8-kvalo@kernel.org>
+Subject: [PATCH 08/15] wifi: ath11k: wmi: add unified command debug messages
+Date:   Fri,  9 Jun 2023 17:24:33 +0300
+Message-Id: <20230609142440.24643-9-kvalo@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230609142440.24643-1-kvalo@kernel.org>
 References: <20230609142440.24643-1-kvalo@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,267 +55,1040 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Kalle Valo <quic_kvalo@quicinc.com>
 
-Also these functions don't follow the preferred style so fix those.
+Add debug messages for every command and cleanup the existing ones to make them
+all follow the same style. For better readability start every message with
+"cmd". Print the debug message after a successful ath11k_wmi_cmd_send() call.
 
 Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 80 +++++++++++++++++++--------
- 1 file changed, 56 insertions(+), 24 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c | 328 +++++++++++++++-----------
+ 1 file changed, 185 insertions(+), 143 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 3b26e227e80c..972f282a3032 100644
+index 972f282a3032..17d565b03238 100644
 --- a/drivers/net/wireless/ath/ath11k/wmi.c
 +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -3181,10 +3181,12 @@ int ath11k_wmi_send_twt_enable_cmd(struct ath11k *ar, u32 pdev_id,
- 	if (ret) {
- 		ath11k_warn(ab, "Failed to send WMI_TWT_ENABLE_CMDID");
+@@ -692,6 +692,8 @@ int ath11k_wmi_mgmt_send(struct ath11k *ar, u32 vdev_id, u32 buf_id,
  		dev_kfree_skb(skb);
--	} else {
--		ar->twt_enabled = 1;
-+		return ret;
  	}
--	return ret;
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd mgmt tx send");
 +
-+	ar->twt_enabled = 1;
-+
-+	return 0;
+ 	return ret;
  }
  
- int
-@@ -3211,10 +3213,12 @@ ath11k_wmi_send_twt_disable_cmd(struct ath11k *ar, u32 pdev_id)
- 	if (ret) {
- 		ath11k_warn(ab, "Failed to send WMI_TWT_DISABLE_CMDID");
- 		dev_kfree_skb(skb);
--	} else {
--		ar->twt_enabled = 0;
-+		return ret;
+@@ -768,7 +770,7 @@ int ath11k_wmi_vdev_create(struct ath11k *ar, u8 *macaddr,
  	}
--	return ret;
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "vdev create: id %d type %d subtype %d macaddr %pM pdevid %d\n",
++		   "cmd vdev create id %d type %d subtype %d macaddr %pM pdevid %d\n",
+ 		   param->if_id, param->type, param->subtype,
+ 		   macaddr, param->pdev_id);
+ 
+@@ -797,7 +799,7 @@ int ath11k_wmi_vdev_delete(struct ath11k *ar, u8 vdev_id)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "vdev delete id %d\n", vdev_id);
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd vdev delete id %d\n", vdev_id);
+ 
+ 	return ret;
+ }
+@@ -825,7 +827,7 @@ int ath11k_wmi_vdev_stop(struct ath11k *ar, u8 vdev_id)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "vdev stop id 0x%x\n", vdev_id);
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd vdev stop id 0x%x\n", vdev_id);
+ 
+ 	return ret;
+ }
+@@ -853,7 +855,7 @@ int ath11k_wmi_vdev_down(struct ath11k *ar, u8 vdev_id)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "vdev down id 0x%x\n", vdev_id);
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd vdev down id 0x%x\n", vdev_id);
+ 
+ 	return ret;
+ }
+@@ -996,7 +998,7 @@ int ath11k_wmi_vdev_start(struct ath11k *ar, struct wmi_vdev_start_req_arg *arg,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "vdev %s id 0x%x freq 0x%x mode 0x%x\n",
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd vdev %s id 0x%x freq 0x%x mode 0x%x\n",
+ 		   restart ? "restart" : "start", arg->vdev_id,
+ 		   arg->channel.freq, arg->channel.mode);
+ 
+@@ -1051,7 +1053,7 @@ int ath11k_wmi_vdev_up(struct ath11k *ar, u32 vdev_id, u32 aid, const u8 *bssid,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "mgmt vdev up id 0x%x assoc id %d bssid %pM\n",
++		   "cmd vdev up id 0x%x assoc id %d bssid %pM\n",
+ 		   vdev_id, aid, bssid);
+ 
+ 	return ret;
+@@ -1084,7 +1086,7 @@ int ath11k_wmi_send_peer_create_cmd(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "peer create vdev_id %d peer_addr %pM\n",
++		   "cmd peer create vdev_id %d peer_addr %pM\n",
+ 		   param->vdev_id, param->peer_addr);
+ 
+ 	return ret;
+@@ -1109,16 +1111,16 @@ int ath11k_wmi_send_peer_delete_cmd(struct ath11k *ar,
+ 	ether_addr_copy(cmd->peer_macaddr.addr, peer_addr);
+ 	cmd->vdev_id = vdev_id;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "peer delete vdev_id %d peer_addr %pM\n",
+-		   vdev_id,  peer_addr);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_PEER_DELETE_CMDID);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab, "failed to send WMI_PEER_DELETE cmd\n");
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd peer delete vdev_id %d peer_addr %pM\n",
++		   vdev_id,  peer_addr);
 +
-+	ar->twt_enabled = 0;
-+
-+	return 0;
+ 	return ret;
  }
  
- int ath11k_wmi_send_twt_add_dialog_cmd(struct ath11k *ar,
-@@ -3266,8 +3270,10 @@ int ath11k_wmi_send_twt_add_dialog_cmd(struct ath11k *ar,
+@@ -1147,11 +1149,6 @@ int ath11k_wmi_send_pdev_set_regdomain(struct ath11k *ar,
+ 	cmd->dfs_domain = param->dfs_domain;
+ 	cmd->pdev_id = param->pdev_id;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "pdev regd rd %d rd2g %d rd5g %d domain %d pdev id %d\n",
+-		   param->current_rd_in_use, param->current_rd_2g,
+-		   param->current_rd_5g, param->dfs_domain, param->pdev_id);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_SET_REGDOMAIN_CMDID);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab,
+@@ -1159,6 +1156,11 @@ int ath11k_wmi_send_pdev_set_regdomain(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev regd rd %d rd2g %d rd5g %d domain %d pdev id %d\n",
++		   param->current_rd_in_use, param->current_rd_2g,
++		   param->current_rd_5g, param->dfs_domain, param->pdev_id);
++
+ 	return ret;
+ }
+ 
+@@ -1189,7 +1191,7 @@ int ath11k_wmi_set_peer_param(struct ath11k *ar, const u8 *peer_addr,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "vdev %d peer 0x%pM set param %d value %d\n",
++		   "cmd peer set param vdev %d peer 0x%pM set param %d value %d\n",
+ 		   vdev_id, peer_addr, param_id, param_val);
+ 
+ 	return ret;
+@@ -1224,7 +1226,7 @@ int ath11k_wmi_send_peer_flush_tids_cmd(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "peer flush vdev_id %d peer_addr %pM tids %08x\n",
++		   "cmd peer flush tids vdev_id %d peer_addr %pM tids %08x\n",
+ 		   param->vdev_id, peer_addr, param->peer_tid_bitmap);
+ 
+ 	return ret;
+@@ -1267,7 +1269,7 @@ int ath11k_wmi_peer_rx_reorder_queue_setup(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "rx reorder queue setup addr %pM vdev_id %d tid %d\n",
++		   "cmd peer reorder queue setup addr %pM vdev_id %d tid %d\n",
+ 		   addr, vdev_id, tid);
+ 
+ 	return ret;
+@@ -1295,10 +1297,6 @@ ath11k_wmi_rx_reord_queue_remove(struct ath11k *ar,
+ 	cmd->vdev_id = param->vdev_id;
+ 	cmd->tid_mask = param->peer_tid_bitmap;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "%s: peer_macaddr %pM vdev_id %d, tid_map %d", __func__,
+-		   param->peer_macaddr, param->vdev_id, param->peer_tid_bitmap);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PEER_REORDER_QUEUE_REMOVE_CMDID);
+ 	if (ret) {
+@@ -1307,6 +1305,10 @@ ath11k_wmi_rx_reord_queue_remove(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd peer reorder queue remove peer_macaddr %pM vdev_id %d tid_map %d",
++		   param->peer_macaddr, param->vdev_id, param->peer_tid_bitmap);
++
+ 	return ret;
+ }
+ 
+@@ -1336,7 +1338,7 @@ int ath11k_wmi_pdev_set_param(struct ath11k *ar, u32 param_id,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "pdev set param %d pdev id %d value %d\n",
++		   "cmd pdev set param %d pdev id %d value %d\n",
+ 		   param_id, pdev_id, param_value);
+ 
+ 	return ret;
+@@ -1367,7 +1369,7 @@ int ath11k_wmi_pdev_set_ps_mode(struct ath11k *ar, int vdev_id,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "vdev set psmode %d vdev id %d\n",
++		   "cmd sta powersave mode psmode %d vdev id %d\n",
+ 		   psmode, vdev_id);
+ 
+ 	return ret;
+@@ -1400,7 +1402,7 @@ int ath11k_wmi_pdev_suspend(struct ath11k *ar, u32 suspend_opt,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "pdev suspend pdev_id %d\n", pdev_id);
++		   "cmd pdev suspend pdev_id %d\n", pdev_id);
+ 
+ 	return ret;
+ }
+@@ -1422,15 +1424,15 @@ int ath11k_wmi_pdev_resume(struct ath11k *ar, u32 pdev_id)
+ 			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
+ 	cmd->pdev_id = pdev_id;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "pdev resume pdev id %d\n", pdev_id);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_RESUME_CMDID);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab, "failed to send WMI_PDEV_RESUME cmd\n");
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev resume pdev id %d\n", pdev_id);
++
+ 	return ret;
+ }
+ 
+@@ -1458,9 +1460,6 @@ int ath11k_wmi_pdev_bss_chan_info_request(struct ath11k *ar,
+ 	cmd->req_type = type;
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "bss chan info req type %d\n", type);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_BSS_CHAN_INFO_REQUEST_CMDID);
+ 	if (ret) {
+@@ -1469,6 +1468,9 @@ int ath11k_wmi_pdev_bss_chan_info_request(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev bss chan info request type %d\n", type);
++
+ 	return ret;
+ }
+ 
+@@ -1501,7 +1503,7 @@ int ath11k_wmi_send_set_ap_ps_param_cmd(struct ath11k *ar, u8 *peer_addr,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "set ap ps vdev id %d peer %pM param %d value %d\n",
++		   "cmd ap ps peer param vdev id %d peer %pM param %d value %d\n",
+ 		   param->vdev_id, peer_addr, param->param, param->value);
+ 
+ 	return ret;
+@@ -1528,16 +1530,16 @@ int ath11k_wmi_set_sta_ps_param(struct ath11k *ar, u32 vdev_id,
+ 	cmd->param = param;
+ 	cmd->value = param_value;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "set sta ps vdev_id %d param %d value %d\n",
+-		   vdev_id, param, param_value);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_STA_POWERSAVE_PARAM_CMDID);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab, "failed to send WMI_STA_POWERSAVE_PARAM_CMDID");
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd set powersave param vdev_id %d param %d value %d\n",
++		   vdev_id, param, param_value);
++
+ 	return ret;
+ }
+ 
+@@ -1567,6 +1569,9 @@ int ath11k_wmi_force_fw_hang_cmd(struct ath11k *ar, u32 type, u32 delay_time_ms)
+ 		ath11k_warn(ar->ab, "Failed to send WMI_FORCE_FW_HANG_CMDID");
+ 		dev_kfree_skb(skb);
+ 	}
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd force fw hang");
++
+ 	return ret;
+ }
+ 
+@@ -1598,7 +1603,7 @@ int ath11k_wmi_vdev_set_param_cmd(struct ath11k *ar, u32 vdev_id,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "vdev id 0x%x set param %d value %d\n",
++		   "cmd vdev set param vdev 0x%x param %d value %d\n",
+ 		   vdev_id, param_id, param_value);
+ 
+ 	return ret;
+@@ -1631,7 +1636,7 @@ int ath11k_wmi_send_stats_request_cmd(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "request stats 0x%x vdev id %d pdev id %d\n",
++		   "cmd request stats 0x%x vdev id %d pdev id %d\n",
+ 		   param->stats_id, param->vdev_id, param->pdev_id);
+ 
+ 	return ret;
+@@ -1660,7 +1665,7 @@ int ath11k_wmi_send_pdev_temperature_cmd(struct ath11k *ar)
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "pdev get temperature for pdev_id %d\n", ar->pdev->pdev_id);
++		   "cmd pdev get temperature for pdev_id %d\n", ar->pdev->pdev_id);
+ 
+ 	return ret;
+ }
+@@ -1685,10 +1690,6 @@ int ath11k_wmi_send_bcn_offload_control_cmd(struct ath11k *ar,
+ 	cmd->vdev_id = vdev_id;
+ 	cmd->bcn_ctrl_op = bcn_ctrl_op;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "bcn ctrl offload vdev id %d ctrl_op %d\n",
+-		   vdev_id, bcn_ctrl_op);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_BCN_OFFLOAD_CTRL_CMDID);
+ 	if (ret) {
+ 		ath11k_warn(ar->ab,
+@@ -1696,6 +1697,10 @@ int ath11k_wmi_send_bcn_offload_control_cmd(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd bcn offload ctrl vdev id %d ctrl_op %d\n",
++		   vdev_id, bcn_ctrl_op);
++
+ 	return ret;
+ }
+ 
+@@ -1765,6 +1770,8 @@ int ath11k_wmi_bcn_tmpl(struct ath11k *ar, u32 vdev_id,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd bcn tmpl");
++
+ 	return ret;
+ }
+ 
+@@ -1814,7 +1821,7 @@ int ath11k_wmi_vdev_install_key(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "vdev install key idx %d cipher %d len %d\n",
++		   "cmd vdev install key idx %d cipher %d len %d\n",
+ 		   arg->key_idx, arg->key_cipher, arg->key_len);
+ 
+ 	return ret;
+@@ -2050,7 +2057,7 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "peer assoc vdev id %d assoc id %d peer mac %pM peer_flags %x rate_caps %x peer_caps %x listen_intval %d ht_caps %x max_mpdu %d nss %d phymode %d peer_mpdu_density %d vht_caps %x he cap_info %x he ops %x he cap_info_ext %x he phy %x %x %x peer_bw_rxnss_override %x\n",
++		   "cmd peer assoc vdev id %d assoc id %d peer mac %pM peer_flags %x rate_caps %x peer_caps %x listen_intval %d ht_caps %x max_mpdu %d nss %d phymode %d peer_mpdu_density %d vht_caps %x he cap_info %x he ops %x he cap_info_ext %x he phy %x %x %x peer_bw_rxnss_override %x\n",
+ 		   cmd->vdev_id, cmd->peer_associd, param->peer_mac,
+ 		   cmd->peer_flags, cmd->peer_rate_caps, cmd->peer_caps,
+ 		   cmd->peer_listen_intval, cmd->peer_ht_caps,
+@@ -2367,6 +2374,8 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd start scan");
++
+ 	return ret;
+ }
+ 
+@@ -2415,6 +2424,8 @@ int ath11k_wmi_send_scan_stop_cmd(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd stop scan");
++
+ 	return ret;
+ }
+ 
+@@ -2533,6 +2544,9 @@ int ath11k_wmi_send_scan_chan_list_cmd(struct ath11k *ar,
+ 			return ret;
+ 		}
+ 
++		ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd scan chan list channels %d",
++			   num_send_chans);
++
+ 		num_sends++;
+ 	}
+ 
+@@ -2605,6 +2619,8 @@ int ath11k_wmi_send_wmm_update_cmd_tlv(struct ath11k *ar, u32 vdev_id,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd vdev set wmm params");
++
+ 	return ret;
+ }
+ 
+@@ -2628,9 +2644,6 @@ int ath11k_wmi_send_dfs_phyerr_offload_enable_cmd(struct ath11k *ar,
+ 
+ 	cmd->pdev_id = pdev_id;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "dfs phy err offload enable pdev id %d\n", pdev_id);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_DFS_PHYERR_OFFLOAD_ENABLE_CMDID);
+ 	if (ret) {
+@@ -2639,6 +2652,9 @@ int ath11k_wmi_send_dfs_phyerr_offload_enable_cmd(struct ath11k *ar,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev dfs phyerr offload enable pdev id %d\n", pdev_id);
++
+ 	return ret;
+ }
+ 
+@@ -2663,10 +2679,6 @@ int ath11k_wmi_delba_send(struct ath11k *ar, u32 vdev_id, const u8 *mac,
+ 	cmd->initiator = initiator;
+ 	cmd->reasoncode = reason;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "delba send vdev_id 0x%X mac_addr %pM tid %u initiator %u reason %u\n",
+-		   vdev_id, mac, tid, initiator, reason);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_DELBA_SEND_CMDID);
+ 
+ 	if (ret) {
+@@ -2675,6 +2687,10 @@ int ath11k_wmi_delba_send(struct ath11k *ar, u32 vdev_id, const u8 *mac,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd delba send vdev_id 0x%X mac_addr %pM tid %u initiator %u reason %u\n",
++		   vdev_id, mac, tid, initiator, reason);
++
+ 	return ret;
+ }
+ 
+@@ -2699,10 +2715,6 @@ int ath11k_wmi_addba_set_resp(struct ath11k *ar, u32 vdev_id, const u8 *mac,
+ 	cmd->tid = tid;
+ 	cmd->statuscode = status;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "addba set resp vdev_id 0x%X mac_addr %pM tid %u status %u\n",
+-		   vdev_id, mac, tid, status);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_ADDBA_SET_RESP_CMDID);
+ 
+ 	if (ret) {
+@@ -2711,6 +2723,10 @@ int ath11k_wmi_addba_set_resp(struct ath11k *ar, u32 vdev_id, const u8 *mac,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd addba set resp vdev_id 0x%X mac_addr %pM tid %u status %u\n",
++		   vdev_id, mac, tid, status);
++
+ 	return ret;
+ }
+ 
+@@ -2734,10 +2750,6 @@ int ath11k_wmi_addba_send(struct ath11k *ar, u32 vdev_id, const u8 *mac,
+ 	cmd->tid = tid;
+ 	cmd->buffersize = buf_size;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "addba send vdev_id 0x%X mac_addr %pM tid %u bufsize %u\n",
+-		   vdev_id, mac, tid, buf_size);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_ADDBA_SEND_CMDID);
+ 
+ 	if (ret) {
+@@ -2746,6 +2758,10 @@ int ath11k_wmi_addba_send(struct ath11k *ar, u32 vdev_id, const u8 *mac,
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd addba send vdev_id 0x%X mac_addr %pM tid %u bufsize %u\n",
++		   vdev_id, mac, tid, buf_size);
++
+ 	return ret;
+ }
+ 
+@@ -2767,10 +2783,6 @@ int ath11k_wmi_addba_clear_resp(struct ath11k *ar, u32 vdev_id, const u8 *mac)
+ 	cmd->vdev_id = vdev_id;
+ 	ether_addr_copy(cmd->peer_macaddr.addr, mac);
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "addba clear resp vdev_id 0x%X mac_addr %pM\n",
+-		   vdev_id, mac);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_ADDBA_CLEAR_RESP_CMDID);
+ 
+ 	if (ret) {
+@@ -2779,6 +2791,10 @@ int ath11k_wmi_addba_clear_resp(struct ath11k *ar, u32 vdev_id, const u8 *mac)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd addba clear resp vdev_id 0x%X mac_addr %pM\n",
++		   vdev_id, mac);
++
+ 	return ret;
+ }
+ 
+@@ -2827,6 +2843,8 @@ int ath11k_wmi_pdev_peer_pktlog_filter(struct ath11k *ar, u8 *addr, u8 enable)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd pdev pktlog filter");
++
+ 	return ret;
+ }
+ 
+@@ -2881,6 +2899,8 @@ ath11k_wmi_send_init_country_cmd(struct ath11k *ar,
+ 		goto err;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd set init country");
++
+ 	return 0;
+ 
+ err:
+@@ -2907,20 +2927,20 @@ int ath11k_wmi_send_set_current_country_cmd(struct ath11k *ar,
+ 
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(&cmd->new_alpha2, &param->alpha2, 3);
++
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_SET_CURRENT_COUNTRY_CMDID);
+-
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "set current country pdev id %d alpha2 %c%c\n",
+-		   ar->pdev->pdev_id,
+-		   param->alpha2[0],
+-		   param->alpha2[1]);
+-
+ 	if (ret) {
+ 		ath11k_warn(ar->ab,
+ 			    "failed to send WMI_SET_CURRENT_COUNTRY_CMDID: %d\n", ret);
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd set current country pdev id %d alpha2 %c%c\n",
++		   ar->pdev->pdev_id,
++		   param->alpha2[0],
++		   param->alpha2[1]);
++
+ 	return ret;
+ }
+ 
+@@ -2981,7 +3001,7 @@ ath11k_wmi_send_thermal_mitigation_param_cmd(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "vdev set thermal throt pdev_id %d enable %d dc %d dc_per_event %x levels %d\n",
++		   "cmd therm throt set conf pdev_id %d enable %d dc %d dc_per_event %x levels %d\n",
+ 		   ar->pdev->pdev_id, param->enable, param->dc,
+ 		   param->dc_per_event, THERMAL_LEVELS);
+ 
+@@ -3008,20 +3028,20 @@ int ath11k_wmi_send_11d_scan_start_cmd(struct ath11k *ar,
+ 	cmd->vdev_id = param->vdev_id;
+ 	cmd->scan_period_msec = param->scan_period_msec;
+ 	cmd->start_interval_msec = param->start_interval_msec;
++
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_11D_SCAN_START_CMDID);
+-
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "send 11d scan start vdev id %d period %d ms internal %d ms\n",
+-		   cmd->vdev_id,
+-		   cmd->scan_period_msec,
+-		   cmd->start_interval_msec);
+-
+ 	if (ret) {
+ 		ath11k_warn(ar->ab,
+ 			    "failed to send WMI_11D_SCAN_START_CMDID: %d\n", ret);
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd 11d scan start vdev id %d period %d ms internal %d ms\n",
++		   cmd->vdev_id,
++		   cmd->scan_period_msec,
++		   cmd->start_interval_msec);
++
+ 	return ret;
+ }
+ 
+@@ -3042,18 +3062,18 @@ int ath11k_wmi_send_11d_scan_stop_cmd(struct ath11k *ar, u32 vdev_id)
+ 		FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
+ 
+ 	cmd->vdev_id = vdev_id;
++
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_11D_SCAN_STOP_CMDID);
+-
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "send 11d scan stop vdev id %d\n",
+-		   cmd->vdev_id);
+-
+ 	if (ret) {
+ 		ath11k_warn(ar->ab,
+ 			    "failed to send WMI_11D_SCAN_STOP_CMDID: %d\n", ret);
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd 11d scan stop vdev id %d\n",
++		   cmd->vdev_id);
++
+ 	return ret;
+ }
+ 
+@@ -3084,6 +3104,8 @@ int ath11k_wmi_pdev_pktlog_enable(struct ath11k *ar, u32 pktlog_filter)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd pdev pktlog enable");
++
+ 	return ret;
+ }
+ 
+@@ -3112,6 +3134,8 @@ int ath11k_wmi_pdev_pktlog_disable(struct ath11k *ar)
+ 		dev_kfree_skb(skb);
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd pdev pktlog disable");
++
+ 	return ret;
+ }
+ 
+@@ -3186,6 +3210,8 @@ int ath11k_wmi_send_twt_enable_cmd(struct ath11k *ar, u32 pdev_id,
+ 
+ 	ar->twt_enabled = 1;
+ 
++	ath11k_dbg(ab, ATH11K_DBG_WMI, "cmd twt enable");
++
+ 	return 0;
+ }
+ 
+@@ -3216,6 +3242,8 @@ ath11k_wmi_send_twt_disable_cmd(struct ath11k *ar, u32 pdev_id)
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ab, ATH11K_DBG_WMI, "cmd twt disable");
++
+ 	ar->twt_enabled = 0;
+ 
+ 	return 0;
+@@ -3257,14 +3285,7 @@ int ath11k_wmi_send_twt_add_dialog_cmd(struct ath11k *ar,
+ 	if (params->flag_protection)
+ 		cmd->flags |= WMI_TWT_ADD_DIALOG_FLAG_PROTECTION;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "add twt dialog vdev %u dialog id %u wake interval %u mantissa %u wake duration %u service period offset %u flags 0x%x\n",
+-		   cmd->vdev_id, cmd->dialog_id, cmd->wake_intvl_us,
+-		   cmd->wake_intvl_mantis, cmd->wake_dura_us, cmd->sp_offset_us,
+-		   cmd->flags);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_TWT_ADD_DIALOG_CMDID);
+-
+ 	if (ret) {
+ 		ath11k_warn(ab,
  			    "failed to send wmi command to add twt dialog: %d",
- 			    ret);
- 		dev_kfree_skb(skb);
-+		return ret;
+@@ -3273,6 +3294,12 @@ int ath11k_wmi_send_twt_add_dialog_cmd(struct ath11k *ar,
+ 		return ret;
  	}
--	return ret;
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd twt add dialog vdev %u dialog id %u wake interval %u mantissa %u wake duration %u service period offset %u flags 0x%x\n",
++		   cmd->vdev_id, cmd->dialog_id, cmd->wake_intvl_us,
++		   cmd->wake_intvl_mantis, cmd->wake_dura_us, cmd->sp_offset_us,
++		   cmd->flags);
 +
-+	return 0;
+ 	return 0;
  }
  
- int ath11k_wmi_send_twt_del_dialog_cmd(struct ath11k *ar,
-@@ -3303,8 +3309,10 @@ int ath11k_wmi_send_twt_del_dialog_cmd(struct ath11k *ar,
- 			    "failed to send wmi command to delete twt dialog: %d",
- 			    ret);
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
+@@ -3299,10 +3326,6 @@ int ath11k_wmi_send_twt_del_dialog_cmd(struct ath11k *ar,
+ 	ether_addr_copy(cmd->peer_macaddr.addr, params->peer_macaddr);
+ 	cmd->dialog_id = params->dialog_id;
  
- int ath11k_wmi_send_twt_pause_dialog_cmd(struct ath11k *ar,
-@@ -3341,8 +3349,10 @@ int ath11k_wmi_send_twt_pause_dialog_cmd(struct ath11k *ar,
- 			    "failed to send wmi command to pause twt dialog: %d",
- 			    ret);
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
- 
- int ath11k_wmi_send_twt_resume_dialog_cmd(struct ath11k *ar,
-@@ -3382,8 +3392,10 @@ int ath11k_wmi_send_twt_resume_dialog_cmd(struct ath11k *ar,
- 			    "failed to send wmi command to resume twt dialog: %d",
- 			    ret);
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
- 
- int
-@@ -3417,8 +3429,10 @@ ath11k_wmi_send_obss_spr_cmd(struct ath11k *ar, u32 vdev_id,
- 		ath11k_warn(ab,
- 			    "Failed to send WMI_PDEV_OBSS_PD_SPATIAL_REUSE_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
- 
- int
-@@ -3453,9 +3467,10 @@ ath11k_wmi_pdev_set_srg_bss_color_bitmap(struct ath11k *ar, u32 *bitmap)
- 		ath11k_warn(ab,
- 			    "failed to send WMI_PDEV_SET_SRG_BSS_COLOR_BITMAP_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- int
-@@ -3491,9 +3506,10 @@ ath11k_wmi_pdev_set_srg_patial_bssid_bitmap(struct ath11k *ar, u32 *bitmap)
- 		ath11k_warn(ab,
- 			    "failed to send WMI_PDEV_SET_SRG_PARTIAL_BSSID_BITMAP_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- int
-@@ -3529,9 +3545,10 @@ ath11k_wmi_pdev_srg_obss_color_enable_bitmap(struct ath11k *ar, u32 *bitmap)
- 		ath11k_warn(ab,
- 			    "failed to send WMI_PDEV_SET_SRG_OBSS_COLOR_ENABLE_BITMAP_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- int
-@@ -3567,9 +3584,10 @@ ath11k_wmi_pdev_srg_obss_bssid_enable_bitmap(struct ath11k *ar, u32 *bitmap)
- 		ath11k_warn(ab,
- 			    "failed to send WMI_PDEV_SET_SRG_OBSS_BSSID_ENABLE_BITMAP_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- int
-@@ -3605,9 +3623,10 @@ ath11k_wmi_pdev_non_srg_obss_color_enable_bitmap(struct ath11k *ar, u32 *bitmap)
- 		ath11k_warn(ab,
- 			    "failed to send WMI_PDEV_SET_NON_SRG_OBSS_COLOR_ENABLE_BITMAP_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- int
-@@ -3643,9 +3662,10 @@ ath11k_wmi_pdev_non_srg_obss_bssid_enable_bitmap(struct ath11k *ar, u32 *bitmap)
- 		ath11k_warn(ab,
- 			    "failed to send WMI_PDEV_SET_NON_SRG_OBSS_BSSID_ENABLE_BITMAP_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- int
-@@ -3688,8 +3708,10 @@ ath11k_wmi_send_obss_color_collision_cfg_cmd(struct ath11k *ar, u32 vdev_id,
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "delete twt dialog vdev %u dialog id %u\n",
+-		   cmd->vdev_id, cmd->dialog_id);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_TWT_DEL_DIALOG_CMDID);
  	if (ret) {
- 		ath11k_warn(ab, "Failed to send WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
+ 		ath11k_warn(ab,
+@@ -3312,6 +3335,10 @@ int ath11k_wmi_send_twt_del_dialog_cmd(struct ath11k *ar,
+ 		return ret;
  	}
--	return ret;
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd twt del dialog vdev %u dialog id %u\n",
++		   cmd->vdev_id, cmd->dialog_id);
 +
-+	return 0;
+ 	return 0;
  }
  
- int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
-@@ -3722,8 +3744,10 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
+@@ -3339,10 +3366,6 @@ int ath11k_wmi_send_twt_pause_dialog_cmd(struct ath11k *ar,
+ 	ether_addr_copy(cmd->peer_macaddr.addr, params->peer_macaddr);
+ 	cmd->dialog_id = params->dialog_id;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "pause twt dialog vdev %u dialog id %u\n",
+-		   cmd->vdev_id, cmd->dialog_id);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_TWT_PAUSE_DIALOG_CMDID);
  	if (ret) {
- 		ath11k_warn(ab, "Failed to send WMI_BSS_COLOR_CHANGE_ENABLE_CMDID");
- 		dev_kfree_skb(skb);
-+		return ret;
+ 		ath11k_warn(ab,
+@@ -3352,6 +3375,10 @@ int ath11k_wmi_send_twt_pause_dialog_cmd(struct ath11k *ar,
+ 		return ret;
  	}
--	return ret;
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd twt pause dialog vdev %u dialog id %u\n",
++		   cmd->vdev_id, cmd->dialog_id);
 +
-+	return 0;
+ 	return 0;
  }
  
- int ath11k_wmi_fils_discovery_tmpl(struct ath11k *ar, u32 vdev_id,
-@@ -3765,8 +3789,10 @@ int ath11k_wmi_fils_discovery_tmpl(struct ath11k *ar, u32 vdev_id,
- 			    "WMI vdev %i failed to send FILS discovery template command\n",
- 			    vdev_id);
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
+@@ -3381,11 +3408,6 @@ int ath11k_wmi_send_twt_resume_dialog_cmd(struct ath11k *ar,
+ 	cmd->sp_offset_us = params->sp_offset_us;
+ 	cmd->next_twt_size = params->next_twt_size;
  
- int ath11k_wmi_probe_resp_tmpl(struct ath11k *ar, u32 vdev_id,
-@@ -3818,8 +3844,10 @@ int ath11k_wmi_probe_resp_tmpl(struct ath11k *ar, u32 vdev_id,
- 			    "WMI vdev %i failed to send probe response template command\n",
- 			    vdev_id);
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
- 
- int ath11k_wmi_fils_discovery(struct ath11k *ar, u32 vdev_id, u32 interval,
-@@ -3853,8 +3881,10 @@ int ath11k_wmi_fils_discovery(struct ath11k *ar, u32 vdev_id, u32 interval,
- 			    "WMI vdev %i failed to send FILS discovery enable/disable command\n",
- 			    vdev_id);
- 		dev_kfree_skb(skb);
-+		return ret;
- 	}
--	return ret;
-+
-+	return 0;
- }
- 
- static void
-@@ -4122,9 +4152,10 @@ static int ath11k_init_cmd_send(struct ath11k_pdev_wmi *wmi,
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "resume twt dialog vdev %u dialog id %u service period offset %u next twt subfield size %u\n",
+-		   cmd->vdev_id, cmd->dialog_id, cmd->sp_offset_us,
+-		   cmd->next_twt_size);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_TWT_RESUME_DIALOG_CMDID);
  	if (ret) {
- 		ath11k_warn(ab, "failed to send WMI_INIT_CMDID\n");
- 		dev_kfree_skb(skb);
-+		return ret;
+ 		ath11k_warn(ab,
+@@ -3395,6 +3417,11 @@ int ath11k_wmi_send_twt_resume_dialog_cmd(struct ath11k *ar,
+ 		return ret;
  	}
  
--	return ret;
-+	return 0;
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd twt resume dialog vdev %u dialog id %u service period offset %u next twt subfield size %u\n",
++		   cmd->vdev_id, cmd->dialog_id, cmd->sp_offset_us,
++		   cmd->next_twt_size);
++
+ 	return 0;
  }
  
- int ath11k_wmi_pdev_lro_cfg(struct ath11k *ar,
-@@ -4213,9 +4244,10 @@ int ath11k_wmi_set_hw_mode(struct ath11k_base *ab,
+@@ -3432,6 +3459,8 @@ ath11k_wmi_send_obss_spr_cmd(struct ath11k *ar, u32 vdev_id,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ab, ATH11K_DBG_WMI, "cmd pdev obss pd spatial reuse");
++
+ 	return 0;
+ }
+ 
+@@ -3457,10 +3486,6 @@ ath11k_wmi_pdev_set_srg_bss_color_bitmap(struct ath11k *ar, u32 *bitmap)
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(cmd->bitmap, bitmap, sizeof(cmd->bitmap));
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "obss pd pdev_id %d bss color bitmap %08x %08x\n",
+-		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_SET_SRG_BSS_COLOR_BITMAP_CMDID);
  	if (ret) {
- 		ath11k_warn(ab, "failed to send WMI_PDEV_SET_HW_MODE_CMDID\n");
- 		dev_kfree_skb(skb);
-+		return ret;
+@@ -3470,6 +3495,10 @@ ath11k_wmi_pdev_set_srg_bss_color_bitmap(struct ath11k *ar, u32 *bitmap)
+ 		return ret;
  	}
  
--	return ret;
-+	return 0;
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev set srg bss color bitmap pdev_id %d bss color bitmap %08x %08x\n",
++		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
++
+ 	return 0;
  }
  
- int ath11k_wmi_cmd_init(struct ath11k_base *ab)
+@@ -3496,10 +3525,6 @@ ath11k_wmi_pdev_set_srg_patial_bssid_bitmap(struct ath11k *ar, u32 *bitmap)
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(cmd->bitmap, bitmap, sizeof(cmd->bitmap));
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "obss pd pdev_id %d partial bssid bitmap %08x %08x\n",
+-		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_SET_SRG_PARTIAL_BSSID_BITMAP_CMDID);
+ 	if (ret) {
+@@ -3509,6 +3534,10 @@ ath11k_wmi_pdev_set_srg_patial_bssid_bitmap(struct ath11k *ar, u32 *bitmap)
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev set srg partial bssid bitmap pdev_id %d partial bssid bitmap %08x %08x\n",
++		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
++
+ 	return 0;
+ }
+ 
+@@ -3535,10 +3564,6 @@ ath11k_wmi_pdev_srg_obss_color_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(cmd->bitmap, bitmap, sizeof(cmd->bitmap));
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "obss pd srg pdev_id %d bss color enable bitmap %08x %08x\n",
+-		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_SET_SRG_OBSS_COLOR_ENABLE_BITMAP_CMDID);
+ 	if (ret) {
+@@ -3548,6 +3573,10 @@ ath11k_wmi_pdev_srg_obss_color_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev set srg obsscolor enable pdev_id %d bss color enable bitmap %08x %08x\n",
++		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
++
+ 	return 0;
+ }
+ 
+@@ -3574,10 +3603,6 @@ ath11k_wmi_pdev_srg_obss_bssid_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(cmd->bitmap, bitmap, sizeof(cmd->bitmap));
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "obss pd srg pdev_id %d bssid enable bitmap %08x %08x\n",
+-		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_SET_SRG_OBSS_BSSID_ENABLE_BITMAP_CMDID);
+ 	if (ret) {
+@@ -3587,6 +3612,10 @@ ath11k_wmi_pdev_srg_obss_bssid_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev set srg obss bssid enable bitmap pdev_id %d bssid enable bitmap %08x %08x\n",
++		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
++
+ 	return 0;
+ }
+ 
+@@ -3613,10 +3642,6 @@ ath11k_wmi_pdev_non_srg_obss_color_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(cmd->bitmap, bitmap, sizeof(cmd->bitmap));
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "obss pd non_srg pdev_id %d bss color enable bitmap %08x %08x\n",
+-		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_SET_NON_SRG_OBSS_COLOR_ENABLE_BITMAP_CMDID);
+ 	if (ret) {
+@@ -3626,6 +3651,10 @@ ath11k_wmi_pdev_non_srg_obss_color_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev set non srg obss color enable bitmap pdev_id %d bss color enable bitmap %08x %08x\n",
++		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
++
+ 	return 0;
+ }
+ 
+@@ -3652,10 +3681,6 @@ ath11k_wmi_pdev_non_srg_obss_bssid_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 	cmd->pdev_id = ar->pdev->pdev_id;
+ 	memcpy(cmd->bitmap, bitmap, sizeof(cmd->bitmap));
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "obss pd non_srg pdev_id %d bssid enable bitmap %08x %08x\n",
+-		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_PDEV_SET_NON_SRG_OBSS_BSSID_ENABLE_BITMAP_CMDID);
+ 	if (ret) {
+@@ -3665,6 +3690,10 @@ ath11k_wmi_pdev_non_srg_obss_bssid_enable_bitmap(struct ath11k *ar, u32 *bitmap)
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd pdev set non srg obss bssid enable bitmap pdev_id %d bssid enable bitmap %08x %08x\n",
++		   cmd->pdev_id, cmd->bitmap[0], cmd->bitmap[1]);
++
+ 	return 0;
+ }
+ 
+@@ -3698,11 +3727,6 @@ ath11k_wmi_send_obss_color_collision_cfg_cmd(struct ath11k *ar, u32 vdev_id,
+ 	cmd->free_slot_expiry_time_ms = 0;
+ 	cmd->flags = 0;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "wmi_send_obss_color_collision_cfg id %d type %d bss_color %d detect_period %d scan_period %d\n",
+-		   cmd->vdev_id, cmd->evt_type, cmd->current_bss_color,
+-		   cmd->detection_period_ms, cmd->scan_period_ms);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID);
+ 	if (ret) {
+@@ -3711,6 +3735,11 @@ ath11k_wmi_send_obss_color_collision_cfg_cmd(struct ath11k *ar, u32 vdev_id,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd obss color collision det config id %d type %d bss_color %d detect_period %d scan_period %d\n",
++		   cmd->vdev_id, cmd->evt_type, cmd->current_bss_color,
++		   cmd->detection_period_ms, cmd->scan_period_ms);
++
+ 	return 0;
+ }
+ 
+@@ -3735,10 +3764,6 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
+ 	cmd->vdev_id = vdev_id;
+ 	cmd->enable = enable ? 1 : 0;
+ 
+-	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "wmi_send_bss_color_change_enable id %d enable %d\n",
+-		   cmd->vdev_id, cmd->enable);
+-
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_BSS_COLOR_CHANGE_ENABLE_CMDID);
+ 	if (ret) {
+@@ -3747,6 +3772,10 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "cmd bss color change enable id %d enable %d\n",
++		   cmd->vdev_id, cmd->enable);
++
+ 	return 0;
+ }
+ 
+@@ -3792,6 +3821,8 @@ int ath11k_wmi_fils_discovery_tmpl(struct ath11k *ar, u32 vdev_id,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd fils discovery tmpl");
++
+ 	return 0;
+ }
+ 
+@@ -3847,6 +3878,8 @@ int ath11k_wmi_probe_resp_tmpl(struct ath11k *ar, u32 vdev_id,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd ");
++
+ 	return 0;
+ }
+ 
+@@ -3884,6 +3917,8 @@ int ath11k_wmi_fils_discovery(struct ath11k *ar, u32 vdev_id, u32 interval,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd enable fils");
++
+ 	return 0;
+ }
+ 
+@@ -4155,6 +4190,8 @@ static int ath11k_init_cmd_send(struct ath11k_pdev_wmi *wmi,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ab, ATH11K_DBG_WMI, "cmd wmi init");
++
+ 	return 0;
+ }
+ 
+@@ -4186,7 +4223,7 @@ int ath11k_wmi_pdev_lro_cfg(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "lro cfg cmd pdev_id 0x%x\n", pdev_id);
++		   "cmd lro config pdev_id 0x%x\n", pdev_id);
+ 	return 0;
+ err:
+ 	dev_kfree_skb(skb);
+@@ -4247,6 +4284,8 @@ int ath11k_wmi_set_hw_mode(struct ath11k_base *ab,
+ 		return ret;
+ 	}
+ 
++	ath11k_dbg(ab, ATH11K_DBG_WMI, "cmd pdev set hw mode %d", cmd->hw_mode_index);
++
+ 	return 0;
+ }
+ 
+@@ -4308,7 +4347,7 @@ int ath11k_wmi_vdev_spectral_conf(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "spectral scan config cmd vdev_id 0x%x\n",
++		   "cmd vdev spectral scan configure vdev_id 0x%x\n",
+ 		   param->vdev_id);
+ 
+ 	return 0;
+@@ -4346,7 +4385,7 @@ int ath11k_wmi_vdev_spectral_enable(struct ath11k *ar, u32 vdev_id,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "spectral enable cmd vdev id 0x%x\n",
++		   "cmd vdev spectral scan enable vdev id 0x%x\n",
+ 		   vdev_id);
+ 
+ 	return 0;
+@@ -4392,7 +4431,7 @@ int ath11k_wmi_pdev_dma_ring_cfg(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "DMA ring cfg req cmd pdev_id 0x%x\n",
++		   "cmd pdev dma ring cfg req pdev_id 0x%x\n",
+ 		   param->pdev_id);
+ 
+ 	return 0;
+@@ -8818,7 +8857,7 @@ ath11k_wmi_send_unit_test_cmd(struct ath11k *ar,
+ 	}
+ 
+ 	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-		   "unit test : module %d vdev %d n_args %d token %d\n",
++		   "cmd unit test module %d vdev %d n_args %d token %d\n",
+ 		   cmd->module_id, cmd->vdev_id, cmd->num_args,
+ 		   cmd->diag_token);
+ 
+@@ -8910,6 +8949,9 @@ int ath11k_wmi_fw_dbglog_cfg(struct ath11k *ar, u32 *module_id_bitmap,
+ 			    "failed to send WMI_DBGLOG_CFG_CMDID\n");
+ 		dev_kfree_skb(skb);
+ 	}
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI, "cmd dbglog cfg");
++
+ 	return ret;
+ }
+ 
 -- 
 2.30.2
 
