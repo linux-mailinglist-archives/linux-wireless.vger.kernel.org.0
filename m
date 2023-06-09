@@ -2,1008 +2,716 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ACFB72A03A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 18:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AA872A046
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 18:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbjFIQd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 12:33:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43538 "EHLO
+        id S229458AbjFIQiv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 12:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbjFIQdz (ORCPT
+        with ESMTP id S229436AbjFIQit (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 12:33:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E7E1AB
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 09:33:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686328387;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=jxkCZ4MTBtkw4uVek38lYlZhaBekJuFqdcXxX/wxTX4=;
-        b=HGBB4baBG6Y6e2n2xA5m/sW8QLWrZ96Tt4V4M39BqPyUpbXiSUtL2OknVcn7yqhEQ2HTLS
-        dDV2EQvQpefSWjS8ENbMh+i6XtqledcUqWbo1j8NXfEDDCj1B2FUnpVH4WxXfR5u/jIHu+
-        1AYr/H9IzIqfBUZpgThamTk6bXLu0+Q=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-CSNzWaxoPHyERveSgAswLQ-1; Fri, 09 Jun 2023 12:33:05 -0400
-X-MC-Unique: CSNzWaxoPHyERveSgAswLQ-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-621257e86daso25989026d6.1
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Jun 2023 09:33:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686328381; x=1688920381;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jxkCZ4MTBtkw4uVek38lYlZhaBekJuFqdcXxX/wxTX4=;
-        b=Ah8Azww8NGwKTPL4EuckFvi+AO4H42iw7sndoLIYU3Y2Cq3rgpXj/q1zNU1Nzi47Zc
-         zlR9RLHhiRB8Es33BtMpKjhtj0JSWXR18b3UpCd/0ZxdY0MrE38/f6/PGJ69Qy4y4glV
-         ILTf/ifhmpSyVRPwiy1A9Bo0t57GGH0wE2W1SxF1rTnVAuztncOXO5j2H27mQJ7CgyfE
-         GDGqC+smecgqunKJJCo77FHfdWHvFlFIYFnwWCfFJos0mcrzlIox8aqieULzwupozAdr
-         HefgfwFatQiiO0SoEceoW6Kxw+LQBWKnAUrFaOamzLU1WM8ElHoVmvjlbBJNgFxnj8dL
-         5n1w==
-X-Gm-Message-State: AC+VfDyZcS9RXe2HK47jjTw8RxpB/vSr/WD55b8UtAJrbkyHhIDTd9zX
-        CFQl+6LIt7dWVrxlJt6dwi/91OYpRb81uoe7Qw/96wKBVRe3T0Q2NPiyNa29a4j9qlXVU28a0Xd
-        JOBpg+lknwUJ3K7Jru2N0Z2hWnXg=
-X-Received: by 2002:a05:6214:224c:b0:621:68e8:99a4 with SMTP id c12-20020a056214224c00b0062168e899a4mr3042301qvc.8.1686328380553;
-        Fri, 09 Jun 2023 09:33:00 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7L2Xzn/RO03HXO/GPDAv7IB2kqh97gsl0l6D/eXIF2L+Qocux1JOVuuuRiVo/dfpa0TGZ4Iw==
-X-Received: by 2002:a05:6214:224c:b0:621:68e8:99a4 with SMTP id c12-20020a056214224c00b0062168e899a4mr3042278qvc.8.1686328380117;
-        Fri, 09 Jun 2023 09:33:00 -0700 (PDT)
-Received: from localhost (host-95-234-37-184.retail.telecomitalia.it. [95.234.37.184])
-        by smtp.gmail.com with ESMTPSA id x15-20020a05620a12af00b0075cda118f83sm1132440qki.73.2023.06.09.09.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 09:32:59 -0700 (PDT)
-Date:   Fri, 9 Jun 2023 18:34:38 +0200
-From:   "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>
-To:     Ryder Lee <Ryder.Lee@mediatek.com>
-Cc:     "nbd@nbd.name" <nbd@nbd.name>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+        Fri, 9 Jun 2023 12:38:49 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F79F2D71
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 09:38:44 -0700 (PDT)
+X-UUID: 162e6f9406e411eeb20a276fd37b9834-20230610
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=0CHLEDa8rrt1QBcYmV2ZZsLfcAC3InUUh9aaWiKwqdA=;
+        b=AIJdXC/GYdbM0Mfivy5q/C/85hsXQfNCPAWYxYIJBkSN8WuyC+azpVNz9O3DGUm/rXSHggtKMN8A+sRm6gNX96m8dVwW7AwUEu9PVs5RB+KTwGLdXwC+YeSdjWDpfjteydpPkTby7vTmFAc2ipeSuTVd/S3bTI+a5X5JSmvcJ7U=;
+X-CID-CACHE: Type:Local,Time:202306100015+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.26,REQID:70b84e90-976c-4ad0-a534-39f84db720f7,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:cb9a4e1,CLOUDID:0a37f33d-de1e-4348-bc35-c96f92f1dcbb,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 162e6f9406e411eeb20a276fd37b9834-20230610
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1758573312; Sat, 10 Jun 2023 00:38:38 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Sat, 10 Jun 2023 00:38:37 +0800
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Sat, 10 Jun 2023 00:38:37 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TQYvcmPRRCkPsPaLqjgD9reI31WJSdChEYmJxx0/T52Oi0gKbl4AJAsBFhNAHu1qLl80V13TG8uaYyzxBz6F106mqQfH6CetaIYrs+v0fC8q7fKkQhQANgVSUGODEV8b4BwMG6IfGPvSBxmv+Y25dHWcJYkLEn/NWTt27oIYfOAFY3o/3/mYpYFRr0VO1tN6wKIw9ffG6tovdtUuwqoSdB1bd+SStUFNY3eiAVd9Jr/6tQFXDSXj/nVxy5F0xfVM5XT+9KJsBf8Hq3+eOjYu0uTPMjCRjwlXw+GyxRNvHmqB4rqEQ0N+b/S/nb2xQDTwCzxU2zSZ3Ps8AGSlcZaBuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0CHLEDa8rrt1QBcYmV2ZZsLfcAC3InUUh9aaWiKwqdA=;
+ b=d+APIYNXgYCAY7QfLlE+XbaXgWe0Nhe46ceKU/AeJc21eQOb+XaR+qqe4KrPN7go4rraIEudmNiXWIFCVfr7uEmryRypBTyDWzjGJkgTytsfNR0PQ+/MsDlPodUNYJxEcAA6co+jNmgvm/p4YKbmXuM0xnLXq3nS3uRxvJtal4JtLTJcW7WYqG6kvqIYDsgLYbR2xDBTdAxNOuGxWaVpRAqWcc71qULzFzQBk31rHLLj8sZFj5QJtBMxyO2+MOU+nVt5/rCSAPE2z4RwKmEIgGWMlLW8lZ4PsTpYsZhjWmOJJBn0Lxh/WMW4xgXjWZMpA7qgE7l4mjZiLvuy7/4E9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0CHLEDa8rrt1QBcYmV2ZZsLfcAC3InUUh9aaWiKwqdA=;
+ b=QaIfFVI+81clwQT+d6Afd2N0YwGomMoL13vn89ACX0mdXRXWSZ8eqrarbka/JyYblTaMKJvSwS0+mwsXWAwOPbl5NHC+plua2W2dg7UYq71KmIVos9Ajr+ttUO7qIpwkqKwIjJAku+LrULdqnxtSt1EBouMOU0ibpGuJQkegqZo=
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com (2603:1096:400:14a::9)
+ by KL1PR03MB7580.apcprd03.prod.outlook.com (2603:1096:820:ed::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.42; Fri, 9 Jun
+ 2023 16:38:34 +0000
+Received: from TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::7f66:e6d5:9578:c978]) by TY0PR03MB6354.apcprd03.prod.outlook.com
+ ([fe80::7f66:e6d5:9578:c978%2]) with mapi id 15.20.6477.016; Fri, 9 Jun 2023
+ 16:38:34 +0000
+From:   Ryder Lee <Ryder.Lee@mediatek.com>
+To:     "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>
 Subject: Re: [PATCH v2 15/15] wifi: mt76: connac: add connac3 mac library
-Message-ID: <ZINUnqkElqSOITxT@localhost.localdomain>
+Thread-Topic: [PATCH v2 15/15] wifi: mt76: connac: add connac3 mac library
+Thread-Index: AQHZmqriDZefVRx/SEe6qlAreeLN3a+CpeOAgAAFVwCAAAEYgA==
+Date:   Fri, 9 Jun 2023 16:38:33 +0000
+Message-ID: <82971c76999ae90be44a524fb95141c5051a9ba0.camel@mediatek.com>
 References: <cover.1686298162.git.lorenzo@kernel.org>
- <b7a029d6dfee8e58c58f483ea9e9e7b3bc8012b9.1686298162.git.lorenzo@kernel.org>
- <5010e5e508e89041451288659390fde5ded94db5.camel@mediatek.com>
+         <b7a029d6dfee8e58c58f483ea9e9e7b3bc8012b9.1686298162.git.lorenzo@kernel.org>
+         <5010e5e508e89041451288659390fde5ded94db5.camel@mediatek.com>
+         <ZINUnqkElqSOITxT@localhost.localdomain>
+In-Reply-To: <ZINUnqkElqSOITxT@localhost.localdomain>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY0PR03MB6354:EE_|KL1PR03MB7580:EE_
+x-ms-office365-filtering-correlation-id: 1f752f51-683d-4e7d-cc40-08db6907f75a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ToB5uxsVQDveo77BG3xlM6+GGDsFAHOAdFqbxI9UuxCglKn+TuzTkmTO/l9bYgydlgFnXWgJC5uW4hoRPLQeKcUzUzpjWiBnu3q3f+7njuftVuudc5UV4JvbeHZ0NDLecowSW2kiWqFRH0HYMBnjwFC3flQYjmGtdqY8UUuO2PxoN801xM79q+ZZ8Qnl++GRsOa+yP5uUziON+0scTf+RuyAAbc5WHGZKh2GPFor7Lh9A4nDMXOfY64b6gKsxhSPs+Lxu/w1rXElwHSAgkzUUZ7PYVb6/fJpqcf+hBT4DJwm6atXGWbVqxgUK7uuL0TiFwZLb52NQhRX+gd5F9lc4sUlNX/8MxWRQUp9t8XWyND0YQnpyKcrlYxM1uDr5/NDqtdhkFIs8Smp/Uc0YYUFvOHwDgBTRLiaZbsX6JT0S+O5LxjtScCpy68R8oeInjX/p4cPUUKm0r+Wab5cXl3z1GCgLzlooreFSs0WI72UF2BoKsQp9BiWrLMJbq8hIdwXxKS4B5nwYs0LSmPeUd6qw/kKwH7y6uIHih1Km1to2nISIzs28bsmPqsq5sEFzYHMR7V8W/U18ypKvVYReiG8J7WDo94mFwk268NS+7SFnO3NDsj1f0OovE2XburW9o8hAOXNv1l/fAAHvnwzDl+/Qg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY0PR03MB6354.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(39860400002)(346002)(376002)(366004)(396003)(451199021)(76116006)(54906003)(66946007)(478600001)(64756008)(4326008)(6916009)(66476007)(66446008)(66556008)(71200400001)(316002)(38100700002)(122000001)(6486002)(41300700001)(83380400001)(26005)(6506007)(30864003)(2906002)(36756003)(6512007)(186003)(8936002)(8676002)(5660300002)(38070700005)(86362001)(2616005)(559001)(579004)(309714004);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TzY1b01FOURUOTBCc0pkS3ltMGFKbTJ2T0Q1OTMyeW9GY1Z0UyttbzBadXdE?=
+ =?utf-8?B?T0ZFY0ZlZVVFN0Q0K2d3VEFzOW1na29VbjM0UEszQ3pPMTBrREgrclhzcW12?=
+ =?utf-8?B?anlFT0c3OVpQN2dacTN0aWp1TU52TFpPRkFxaVV1MEpXV3p3SnZsSnFoOUZz?=
+ =?utf-8?B?QXF5aVlWNDFyRCttZ2NhWW5TSllZbzRxeTR5RWc0eFFHRWZUN0RDSTlOZWtl?=
+ =?utf-8?B?Z0dESXJ4Y3NVTWZJN1FTR0ZqWW5udXBiaktqRkhPSWdsMmdla2F5OFhvbGhw?=
+ =?utf-8?B?MnVkUktPY2NYQmduazJHWDBxd0YvTk1DSzNROW1Ed1hITlNWNEZobzlVQ0Uy?=
+ =?utf-8?B?TTFZV2doYnBmY0VFZTcvMnZhazJBaXJlZmhtYjE5K2pCMjNUZERCUWhIQ2d2?=
+ =?utf-8?B?L1VPclJjTTNtZFRuMlhNNTk0OWsyb2UyTUpnY2dVd2xCbm1aa0VvYytDZlQz?=
+ =?utf-8?B?Y01kVFB3Z0FYazB4NjcxSEUyakUvQlNKNnJML2hxZTR2eE9aUmxrUGl0UnNO?=
+ =?utf-8?B?K0VLZGZaYkxtQ1laUmRTQnBTWVQ0eFlVRUJEQmprZk9oQ2ExQzFoZzc0NWdI?=
+ =?utf-8?B?L3JGdWR5Riszb3FZalpEZG5oTXVyQlNFREdCUE1DU1ZCRUVOc2JSRHNabHRQ?=
+ =?utf-8?B?R1p4U2RzOXZkdlN0NlFvSk4wVzBvenZnSVpYMFZaL3hmSHp2ZnMyYzdvSDdn?=
+ =?utf-8?B?R2hmd3ppUXJ6bG5pSTVCdG1wYmdwWlM3RHJLWEs0UTBTcDM2UUczZ3l4b1Qr?=
+ =?utf-8?B?UTZRVUMzTzNoeTNwUUU0eHpnQlBVYisxM2RjYTViZ1FnbUdTendOZUlGaUps?=
+ =?utf-8?B?N3ZZREdSRVEvRHp1dG1CQThuNVRkQzFRM3hqMUtkM2orOWozY29yd1JablE4?=
+ =?utf-8?B?N3dPT3l4QUdHMzhvbWl1aVhWblB4OGdwNHAvQ2RtTnVORm11U3BINnNzNUhK?=
+ =?utf-8?B?cHNzL3lOOEV1WEY3ejdtYjFaYnpFWG1OYm1QUzNROW03Z0VzclFpZlFHM0tw?=
+ =?utf-8?B?L3V1K2w2WU5jVzFTMnRlb2lUQ0ovV2x1MlF1RjJIcHlldno3b2xNbThQNGJZ?=
+ =?utf-8?B?K1NxTHp5b1hMNkFLM2lWQm1vdTJGR3A1RVE2R1VzTWY1S05XZHlDRytKeXFk?=
+ =?utf-8?B?V0JJRG1BMWM0dExoQlhwd0NWYmhPejFDK29nZ3oySVU2ZnVxdlczQnNIZ1Nz?=
+ =?utf-8?B?VjRJYkxINnEyd0lOMGMxU0FLSVQ0WHBxNExPYnFqa2xFNkdld01xVXk3QjZ2?=
+ =?utf-8?B?aXRiQ2JhQTVBRGQ1cEtHZ296V0lia2JPRkRFM253YkNobTQ2Z0Rlb2dad3Mr?=
+ =?utf-8?B?QXUxbUVFV2plTWJDcTRZWUlnNEZBaWJ1MVJ4NjkxZ05wUVg0T1pWUmY1dFNY?=
+ =?utf-8?B?bTlNc3JHUzlpbTFIMFFJZ2FYWGFGVk8wbjVZSTVEQktsMy9FZ2pBdWlXWXRF?=
+ =?utf-8?B?NEtwK05MUEV3ZXhCU2U3c0x4a1lqZjRNdWpheUVpczNuNStVdzBsaUlRbFQz?=
+ =?utf-8?B?OHRIMCtMZThDVFp4RVhUUnhLR2FzQk85UUhjMjdKak9VT1h1MDNxTlhFRnZZ?=
+ =?utf-8?B?YUpmQkZjSjVtWEhzZUF3QTBnYjQzOVFoZ1ZlT050N0R1MjZZZnh0dld6VmFM?=
+ =?utf-8?B?S01WRU1QS1YyNWtZRlhZSzlDV3RtY1RmdGtGV0RhZGxVRStzaHNsU3R5d2I2?=
+ =?utf-8?B?UXBpL1BxdTJYbGs4eVo2NG9jMWhxYzVDeklGYWZNZ0FWRGJ0ZkxmeXYvVXpO?=
+ =?utf-8?B?am1RZHI0U1ZwNi9sWTltcEtERzNGT1o4RGdROGxSSy9ZTG9SdHE2c0diZmI1?=
+ =?utf-8?B?RFVUVnZybUJLNFkzRVdlRHNmVWo2dERiaDhoZy9QakRqTVc5R1l4dDdVSjVk?=
+ =?utf-8?B?MlZrMXpBY3ZDbzNDckFXNnRFTUk5djdqbmcwUTVFdnVOTGFJV3ZHU1d6b0x4?=
+ =?utf-8?B?ZG5NUTdmVlJXZ3BUS05xQW9YUDB3UUg2ejJnYmR5aHdnRUV1a2MrLzRaZW14?=
+ =?utf-8?B?NHNjNmNkYWhnaTljd1Q1OVl6RjhNdHdYbmkyeGxheDdXdTdPSzEzNGFFSHRm?=
+ =?utf-8?B?YzBWSUk5WDVyQ2psVVczQWZJdVhoWkIrNytvNG5TQkxsM3JkZjc3eHV4MWVQ?=
+ =?utf-8?B?QVMzTUtDVmJXN1hOQ1JmN2xzckt1SkxQc0Y1OFBoRTZvWEU5Mng1M093dGJs?=
+ =?utf-8?B?QVE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2FB67AB9C4F19D49A6919A2CA94ECDC0@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="eD6xSrpIfFVXd0TH"
-Content-Disposition: inline
-In-Reply-To: <5010e5e508e89041451288659390fde5ded94db5.camel@mediatek.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY0PR03MB6354.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f752f51-683d-4e7d-cc40-08db6907f75a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jun 2023 16:38:33.8572
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dDThMmUOrzpcHbNnBgQya9bgJzl/cLJmIXRsXrXnaRh/AX23GUoILJ98NLYF+xh52Ays4YObrD4OSkd4K2hmKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB7580
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---eD6xSrpIfFVXd0TH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Jun 09, Ryder Lee wrote:
-> On Fri, 2023-06-09 at 10:15 +0200, Lorenzo Bianconi wrote:
-> >  	=20
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >  Introduce connac3_mac in mt76_connac library to reuse mac code
-> > shared
-> > between WiFi7 chipsets.
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
-> >  .../net/wireless/mediatek/mt76/mt76_connac.h  |  19 +
-> >  .../wireless/mediatek/mt76/mt76_connac3_mac.c | 742
-> > +++++++++++++++++
-> >  .../wireless/mediatek/mt76/mt76_connac3_mac.h |  18 +
-> >  .../net/wireless/mediatek/mt76/mt7996/init.c  |   4 +-
-> >  .../net/wireless/mediatek/mt76/mt7996/mac.c   | 761 +---------------
-> > --
-> >  .../net/wireless/mediatek/mt76/mt7996/main.c  |   8 +-
-> >  .../net/wireless/mediatek/mt76/mt7996/mcu.c   |   9 +-
-> >  .../wireless/mediatek/mt76/mt7996/mt7996.h    |  28 +-
-> >  9 files changed, 807 insertions(+), 784 deletions(-)
-> >  create mode 100644
-> > drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-> >=20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/Makefile
-> > b/drivers/net/wireless/mediatek/mt76/Makefile
-> > index 84c99b7e57f9..d8e8079c8b54 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/Makefile
-> > +++ b/drivers/net/wireless/mediatek/mt76/Makefile
-> > @@ -27,7 +27,7 @@ mt76x02-lib-y :=3D mt76x02_util.o mt76x02_mac.o
-> > mt76x02_mcu.o \
-> > =20
-> >  mt76x02-usb-y :=3D mt76x02_usb_mcu.o mt76x02_usb_core.o
-> > =20
-> > -mt76-connac-lib-y :=3D mt76_connac_mcu.o mt76_connac_mac.o
-> > +mt76-connac-lib-y :=3D mt76_connac_mcu.o mt76_connac_mac.o
-> > mt76_connac3_mac.o
-> > =20
-> >  obj-$(CONFIG_MT76x0_COMMON) +=3D mt76x0/
-> >  obj-$(CONFIG_MT76x2_COMMON) +=3D mt76x2/
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > index 68bdeada1421..20111678537b 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-> > @@ -415,4 +415,23 @@ void mt76_connac2_txwi_free(struct mt76_dev
-> > *dev, struct mt76_txwi_cache *t,
-> >  			    struct list_head *free_list);
-> >  void mt76_connac2_tx_token_put(struct mt76_dev *dev);
-> > =20
-> > +/* connac3 */
-> > +void mt76_connac3_tx_check_aggr(struct ieee80211_sta *sta, __le32
-> > *txwi);
-> > +void mt76_connac3_mac_decode_he_radiotap(struct sk_buff *skb, __le32
-> > *rxv,
-> > +					 u8 mode);
-> > +int mt76_connac3_mac_fill_rx_rate(struct mt76_dev *dev,
-> > +				  struct mt76_rx_status *status,
-> > +				  struct ieee80211_supported_band
-> > *sband,
-> > +				  __le32 *rxv, u8 *mode);
-> > +void mt76_connac3_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
-> > +				 struct sk_buff *skb, struct mt76_wcid
-> > *wcid,
-> > +				 struct ieee80211_key_conf *key, int
-> > pid,
-> > +				 enum mt76_txq_id qid, u32 changed);
-> > +void mt76_connac3_txwi_free(struct mt76_dev *dev, struct
-> > mt76_txwi_cache *t,
-> > +			    struct ieee80211_sta *sta,
-> > +			    struct list_head *free_list);
-> > +void mt76_connac3_mac_add_txs(struct mt76_dev *dev, void *data,
-> > +			      u32 max_wtbl_size);
-> > +void mt76_connac3_tx_token_put(struct mt76_dev *dev);
-> > +
-> >  #endif /* __MT76_CONNAC_H */
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-> > b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-> > new file mode 100644
-> > index 000000000000..4b745bb74ca0
-> > --- /dev/null
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-> > @@ -0,0 +1,742 @@
-> > +// SPDX-License-Identifier: ISC
-> > +/* Copyright (C) 2023 MediaTek Inc. */
-> > +
-> > +#include "mt76_connac.h"
-> > +#include "mt76_connac3_mac.h"
-> > +#include "dma.h"
-> > +
-> > +#define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
-> > +#define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v,
-> > MT_CRXV_HE_##m),\
-> > +						 IEEE80211_RADIOTAP_HE_
-> > ##f)
-> > +
-> > +void mt76_connac3_tx_check_aggr(struct ieee80211_sta *sta, __le32
-> > *txwi)
-> > +{
-> > +	struct mt76_wcid *wcid;
-> > +	u16 fc, tid;
-> > +	u32 val;
-> > +
-> > +	if (!sta ||
-> > +	    !(sta->deflink.ht_cap.ht_supported || sta-
-> > >deflink.he_cap.has_he))
-> > +		return;
-> > +
-> > +	tid =3D le32_get_bits(txwi[1], MT_TXD1_TID);
-> > +	if (tid >=3D 6) /* skip VO queue */
-> > +		return;
-> > +
-> > +	val =3D le32_to_cpu(txwi[2]);
-> > +	fc =3D FIELD_GET(MT_TXD2_FRAME_TYPE, val) << 2 |
-> > +	     FIELD_GET(MT_TXD2_SUB_TYPE, val) << 4;
-> > +	if (unlikely(fc !=3D (IEEE80211_FTYPE_DATA |
-> > IEEE80211_STYPE_QOS_DATA)))
-> > +		return;
-> > +
-> > +	wcid =3D (struct mt76_wcid *)sta->drv_priv;
-> > +	if (!test_and_set_bit(tid, &wcid->ampdu_state))
-> > +		ieee80211_start_tx_ba_session(sta, tid, 0);
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_tx_check_aggr);
-> > +
-> > +static void
-> > +mt76_connac3_mac_decode_he_radiotap_ru(struct mt76_rx_status
-> > *status,
-> > +				       struct ieee80211_radiotap_he
-> > *he,
-> > +				       __le32 *rxv)
-> > +{
-> > +	u32 ru =3D le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC), offs =3D 0;
-> > +
-> > +	status->bw =3D RATE_INFO_BW_HE_RU;
-> > +
-> > +	switch (ru) {
-> > +	case 0 ... 36:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_26;
-> > +		offs =3D ru;
-> > +		break;
-> > +	case 37 ... 52:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_52;
-> > +		offs =3D ru - 37;
-> > +		break;
-> > +	case 53 ... 60:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_106;
-> > +		offs =3D ru - 53;
-> > +		break;
-> > +	case 61 ... 64:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_242;
-> > +		offs =3D ru - 61;
-> > +		break;
-> > +	case 65 ... 66:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_484;
-> > +		offs =3D ru - 65;
-> > +		break;
-> > +	case 67:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_996;
-> > +		break;
-> > +	case 68:
-> > +		status->he_ru =3D NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
-> > +		break;
-> > +	}
-> > +
-> > +	he->data1 |=3D HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
-> > +	he->data2 |=3D HE_BITS(DATA2_RU_OFFSET_KNOWN) |
-> > +		     le16_encode_bits(offs,
-> > +				      IEEE80211_RADIOTAP_HE_DATA2_RU_OF
-> > FSET);
-> > +}
-> > +
-> > +#define MU_PREP(f, v)	le16_encode_bits(v,
-> > IEEE80211_RADIOTAP_HE_MU_##f)
-> > +static void
-> > +mt76_connac3_mac_decode_he_mu_radiotap(struct sk_buff *skb, __le32
-> > *rxv)
-> > +{
-> > +	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb-
-> > >cb;
-> > +	static const struct ieee80211_radiotap_he_mu mu_known =3D {
-> > +		.flags1 =3D HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
-> > +			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
-> > +			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
-> > +			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KNOWN),
-> > +		.flags2 =3D HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN),
-> > +	};
-> > +	struct ieee80211_radiotap_he_mu *he_mu;
-> > +
-> > +	status->flag |=3D RX_FLAG_RADIOTAP_HE_MU;
-> > +
-> > +	he_mu =3D skb_push(skb, sizeof(mu_known));
-> > +	memcpy(he_mu, &mu_known, sizeof(mu_known));
-> > +
-> > +	he_mu->flags1 |=3D MU_PREP(FLAGS1_SIG_B_MCS, status->rate_idx);
-> > +	if (status->he_dcm)
-> > +		he_mu->flags1 |=3D MU_PREP(FLAGS1_SIG_B_DCM, status-
-> > >he_dcm);
-> > +
-> > +	he_mu->flags2 |=3D MU_PREP(FLAGS2_BW_FROM_SIG_A_BW, status->bw) |
-> > +			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
-> > +				 le32_get_bits(rxv[4],
-> > MT_CRXV_HE_NUM_USER));
-> > +
-> > +	he_mu->ru_ch1[0] =3D le32_get_bits(rxv[16], MT_CRXV_HE_RU0) &
-> > 0xff;
-> > +
-> > +	if (status->bw >=3D RATE_INFO_BW_40) {
-> > +		he_mu->flags1 |=3D HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
-> > +		he_mu->ru_ch2[0] =3D le32_get_bits(rxv[16],
-> > MT_CRXV_HE_RU1) & 0xff;
-> > +	}
-> > +
-> > +	if (status->bw >=3D RATE_INFO_BW_80) {
-> > +		u32 ru_h, ru_l;
-> > +
-> > +		he_mu->ru_ch1[1] =3D le32_get_bits(rxv[16],
-> > MT_CRXV_HE_RU2) & 0xff;
-> > +
-> > +		ru_l =3D le32_get_bits(rxv[16], MT_CRXV_HE_RU3_L);
-> > +		ru_h =3D le32_get_bits(rxv[17], MT_CRXV_HE_RU3_H) & 0x7;
-> > +		he_mu->ru_ch2[1] =3D (u8)(ru_l | ru_h << 4);
-> > +	}
-> > +}
-> > +
-> > +void mt76_connac3_mac_decode_he_radiotap(struct sk_buff *skb, __le32
-> > *rxv,
-> > +					 u8 mode)
-> > +{
-> > +	struct mt76_rx_status *status =3D (struct mt76_rx_status *)skb-
-> > >cb;
-> > +	static const struct ieee80211_radiotap_he known =3D {
-> > +		.data1 =3D HE_BITS(DATA1_DATA_MCS_KNOWN) |
-> > +			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
-> > +			 HE_BITS(DATA1_STBC_KNOWN) |
-> > +			 HE_BITS(DATA1_CODING_KNOWN) |
-> > +			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
-> > +			 HE_BITS(DATA1_DOPPLER_KNOWN) |
-> > +			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
-> > +			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
-> > +		.data2 =3D HE_BITS(DATA2_GI_KNOWN) |
-> > +			 HE_BITS(DATA2_TXBF_KNOWN) |
-> > +			 HE_BITS(DATA2_PE_DISAMBIG_KNOWN) |
-> > +			 HE_BITS(DATA2_TXOP_KNOWN),
-> > +	};
-> > +	u32 ltf_size =3D le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
-> > +	struct ieee80211_radiotap_he *he;
-> > +
-> > +	status->flag |=3D RX_FLAG_RADIOTAP_HE;
-> > +
-> > +	he =3D skb_push(skb, sizeof(known));
-> > +	memcpy(he, &known, sizeof(known));
-> > +
-> > +	he->data3 =3D HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[9]) |
-> > +		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM, rxv[4]);
-> > +	he->data4 =3D HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK, rxv[13]);
-> > +	he->data5 =3D HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG, rxv[5]) |
-> > +		    le16_encode_bits(ltf_size,
-> > +				     IEEE80211_RADIOTAP_HE_DATA5_LTF_SI
-> > ZE);
-> > +	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
-> > +		he->data5 |=3D HE_BITS(DATA5_TXBF);
-> > +	he->data6 =3D HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[9]) |
-> > +		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[9]);
-> > +
-> > +	switch (mode) {
-> > +	case MT_PHY_TYPE_HE_SU:
-> > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_SU) |
-> > +			     HE_BITS(DATA1_UL_DL_KNOWN) |
-> > +			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
-> > +			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
-> > +
-> > +		he->data3 |=3D HE_PREP(DATA3_BEAM_CHANGE, BEAM_CHNG,
-> > rxv[8]) |
-> > +			     HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
-> > +		break;
-> > +	case MT_PHY_TYPE_HE_EXT_SU:
-> > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_EXT_SU) |
-> > +			     HE_BITS(DATA1_UL_DL_KNOWN) |
-> > +			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
-> > +
-> > +		he->data3 |=3D HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
-> > +		break;
-> > +	case MT_PHY_TYPE_HE_MU:
-> > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_MU) |
-> > +			     HE_BITS(DATA1_UL_DL_KNOWN);
-> > +
-> > +		he->data3 |=3D HE_PREP(DATA3_UL_DL, UPLINK, rxv[5]);
-> > +		he->data4 |=3D HE_PREP(DATA4_MU_STA_ID, MU_AID, rxv[8]);
-> > +
-> > +		mt76_connac3_mac_decode_he_radiotap_ru(status, he,
-> > rxv);
-> > +		mt76_connac3_mac_decode_he_mu_radiotap(skb, rxv);
-> > +		break;
-> > +	case MT_PHY_TYPE_HE_TB:
-> > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_TRIG) |
-> > +			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
-> > +			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
-> > +			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
-> > +
-> > +		he->data4 |=3D HE_PREP(DATA4_TB_SPTL_REUSE1, SR_MASK,
-> > rxv[13]) |
-> > +			     HE_PREP(DATA4_TB_SPTL_REUSE2, SR1_MASK,
-> > rxv[13]) |
-> > +			     HE_PREP(DATA4_TB_SPTL_REUSE3, SR2_MASK,
-> > rxv[13]) |
-> > +			     HE_PREP(DATA4_TB_SPTL_REUSE4, SR3_MASK,
-> > rxv[13]);
-> > +
-> > +		mt76_connac3_mac_decode_he_radiotap_ru(status, he,
-> > rxv);
-> > +		break;
-> > +	default:
-> > +		break;
-> > +	}
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_decode_he_radiotap);
-> > +
-> > +int mt76_connac3_mac_fill_rx_rate(struct mt76_dev *dev,
-> > +				  struct mt76_rx_status *status,
-> > +				  struct ieee80211_supported_band
-> > *sband,
-> > +				  __le32 *rxv, u8 *mode)
-> > +{
-> > +	u8 stbc, gi, bw, dcm, nss;
-> > +	bool cck =3D false;
-> > +	u32 v0, v2;
-> > +	int i, idx;
-> > +
-> > +	v0 =3D le32_to_cpu(rxv[0]);
-> > +	v2 =3D le32_to_cpu(rxv[2]);
-> > +
-> > +	idx =3D FIELD_GET(MT_PRXV_TX_RATE, v0);
-> > +	i =3D idx;
-> > +	nss =3D FIELD_GET(MT_PRXV_NSTS, v0) + 1;
-> > +
-> > +	stbc =3D FIELD_GET(MT_PRXV_HT_STBC, v2);
-> > +	gi =3D FIELD_GET(MT_PRXV_HT_SHORT_GI, v2);
-> > +	*mode =3D FIELD_GET(MT_PRXV_TX_MODE, v2);
-> > +	dcm =3D FIELD_GET(MT_PRXV_DCM, v2);
-> > +	bw =3D FIELD_GET(MT_PRXV_FRAME_MODE, v2);
-> > +
-> > +	switch (*mode) {
-> > +	case MT_PHY_TYPE_CCK:
-> > +		cck =3D true;
-> > +		fallthrough;
-> > +	case MT_PHY_TYPE_OFDM:
-> > +		i =3D mt76_get_rate(dev, sband, i, cck);
-> > +		break;
-> > +	case MT_PHY_TYPE_HT_GF:
-> > +	case MT_PHY_TYPE_HT:
-> > +		status->encoding =3D RX_ENC_HT;
-> > +		if (gi)
-> > +			status->enc_flags |=3D RX_ENC_FLAG_SHORT_GI;
-> > +		if (i > 31)
-> > +			return -EINVAL;
-> > +		break;
-> > +	case MT_PHY_TYPE_VHT:
-> > +		status->nss =3D nss;
-> > +		status->encoding =3D RX_ENC_VHT;
-> > +		if (gi)
-> > +			status->enc_flags |=3D RX_ENC_FLAG_SHORT_GI;
-> > +		if (i > 11)
-> > +			return -EINVAL;
-> > +		break;
-> > +	case MT_PHY_TYPE_HE_MU:
-> > +	case MT_PHY_TYPE_HE_SU:
-> > +	case MT_PHY_TYPE_HE_EXT_SU:
-> > +	case MT_PHY_TYPE_HE_TB:
-> > +		status->nss =3D nss;
-> > +		status->encoding =3D RX_ENC_HE;
-> > +		i &=3D GENMASK(3, 0);
-> > +
-> > +		if (gi <=3D NL80211_RATE_INFO_HE_GI_3_2)
-> > +			status->he_gi =3D gi;
-> > +
-> > +		status->he_dcm =3D dcm;
-> > +		break;
-> > +	case MT_PHY_TYPE_EHT_SU:
-> > +	case MT_PHY_TYPE_EHT_TRIG:
-> > +	case MT_PHY_TYPE_EHT_MU:
-> > +		status->nss =3D nss;
-> > +		status->encoding =3D RX_ENC_EHT;
-> > +		i &=3D GENMASK(3, 0);
-> > +
-> > +		if (gi <=3D NL80211_RATE_INFO_EHT_GI_3_2)
-> > +			status->eht.gi =3D gi;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +	status->rate_idx =3D i;
-> > +
-> > +	switch (bw) {
-> > +	case IEEE80211_STA_RX_BW_20:
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_40:
-> > +		if (*mode & MT_PHY_TYPE_HE_EXT_SU &&
-> > +		    (idx & MT_PRXV_TX_ER_SU_106T)) {
-> > +			status->bw =3D RATE_INFO_BW_HE_RU;
-> > +			status->he_ru =3D
-> > +				NL80211_RATE_INFO_HE_RU_ALLOC_106;
-> > +		} else {
-> > +			status->bw =3D RATE_INFO_BW_40;
-> > +		}
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_80:
-> > +		status->bw =3D RATE_INFO_BW_80;
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_160:
-> > +		status->bw =3D RATE_INFO_BW_160;
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_320:
-> > +		status->bw =3D RATE_INFO_BW_320;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	status->enc_flags |=3D RX_ENC_FLAG_STBC_MASK * stbc;
-> > +	if (*mode < MT_PHY_TYPE_HE_SU && gi)
-> > +		status->enc_flags |=3D RX_ENC_FLAG_SHORT_GI;
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_fill_rx_rate);
-> > +
-> > +static void
-> > +mt76_connac3_mac_write_txwi_8023(__le32 *txwi, struct sk_buff *skb,
-> > +				 struct mt76_wcid *wcid)
-> > +{
-> > +	u8 tid =3D skb->priority & IEEE80211_QOS_CTL_TID_MASK;
-> > +	u8 fc_type, fc_stype;
-> > +	u16 ethertype;
-> > +	bool wmm =3D false;
-> > +	u32 val;
-> > +
-> > +	if (wcid->sta) {
-> > +		struct ieee80211_sta *sta;
-> > +
-> > +		sta =3D container_of((void *)wcid, struct ieee80211_sta,
-> > drv_priv);
-> > +		wmm =3D sta->wme;
-> > +	}
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD1_HDR_FORMAT, MT_HDR_FORMAT_802_3) |
-> > +	      FIELD_PREP(MT_TXD1_TID, tid);
-> > +
-> > +	ethertype =3D get_unaligned_be16(&skb->data[12]);
-> > +	if (ethertype >=3D ETH_P_802_3_MIN)
-> > +		val |=3D MT_TXD1_ETH_802_3;
-> > +
-> > +	txwi[1] |=3D cpu_to_le32(val);
-> > +
-> > +	fc_type =3D IEEE80211_FTYPE_DATA >> 2;
-> > +	fc_stype =3D wmm ? IEEE80211_STYPE_QOS_DATA >> 4 : 0;
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
-> > +	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
-> > +
-> > +	txwi[2] |=3D cpu_to_le32(val);
-> > +}
-> > +
-> > +static void
-> > +mt76_connac3_mac_write_txwi_80211(struct mt76_dev *dev, __le32
-> > *txwi,
-> > +				  struct sk_buff *skb,
-> > +				  struct ieee80211_key_conf *key)
-> > +{
-> > +	struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr *)skb->data;
-> > +	struct ieee80211_mgmt *mgmt =3D (struct ieee80211_mgmt *)skb-
-> > >data;
-> > +	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
-> > +	bool multicast =3D is_multicast_ether_addr(hdr->addr1);
-> > +	u8 tid =3D skb->priority & IEEE80211_QOS_CTL_TID_MASK;
-> > +	__le16 fc =3D hdr->frame_control;
-> > +	u8 fc_type, fc_stype;
-> > +	u32 val;
-> > +
-> > +	if (ieee80211_is_action(fc) &&
-> > +	    mgmt->u.action.category =3D=3D WLAN_CATEGORY_BACK &&
-> > +	    mgmt->u.action.u.addba_req.action_code =3D=3D
-> > WLAN_ACTION_ADDBA_REQ)
-> > +		tid =3D MT_TX_ADDBA;
-> > +	else if (ieee80211_is_mgmt(hdr->frame_control))
-> > +		tid =3D MT_TX_NORMAL;
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD1_HDR_FORMAT, MT_HDR_FORMAT_802_11) |
-> > +	      FIELD_PREP(MT_TXD1_HDR_INFO,
-> > +			 ieee80211_get_hdrlen_from_skb(skb) / 2) |
-> > +	      FIELD_PREP(MT_TXD1_TID, tid);
-> > +
-> > +	if (!ieee80211_is_data(fc) || multicast ||
-> > +	    info->flags & IEEE80211_TX_CTL_USE_MINRATE)
-> > +		val |=3D MT_TXD1_FIXED_RATE;
-> > +
-> > +	if (key && multicast && ieee80211_is_robust_mgmt_frame(skb) &&
-> > +	    key->cipher =3D=3D WLAN_CIPHER_SUITE_AES_CMAC) {
-> > +		val |=3D MT_TXD1_BIP;
-> > +		txwi[3] &=3D ~cpu_to_le32(MT_TXD3_PROTECT_FRAME);
-> > +	}
-> > +
-> > +	txwi[1] |=3D cpu_to_le32(val);
-> > +
-> > +	fc_type =3D (le16_to_cpu(fc) & IEEE80211_FCTL_FTYPE) >> 2;
-> > +	fc_stype =3D (le16_to_cpu(fc) & IEEE80211_FCTL_STYPE) >> 4;
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
-> > +	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
-> > +
-> > +	txwi[2] |=3D cpu_to_le32(val);
-> > +
-> > +	txwi[3] |=3D cpu_to_le32(FIELD_PREP(MT_TXD3_BCM, multicast));
-> > +	if (ieee80211_is_beacon(fc)) {
-> > +		txwi[3] &=3D ~cpu_to_le32(MT_TXD3_SW_POWER_MGMT);
-> > +		txwi[3] |=3D cpu_to_le32(MT_TXD3_REM_TX_COUNT);
-> > +	}
-> > +
-> > +	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
-> > +		u16 seqno =3D le16_to_cpu(hdr->seq_ctrl);
-> > +
-> > +		if (ieee80211_is_back_req(hdr->frame_control)) {
-> > +			struct ieee80211_bar *bar;
-> > +
-> > +			bar =3D (struct ieee80211_bar *)skb->data;
-> > +			seqno =3D le16_to_cpu(bar->start_seq_num);
-> > +		}
-> > +
-> > +		val =3D MT_TXD3_SN_VALID |
-> > +		      FIELD_PREP(MT_TXD3_SEQ,
-> > IEEE80211_SEQ_TO_SN(seqno));
-> > +		txwi[3] |=3D cpu_to_le32(val);
-> > +		txwi[3] &=3D ~cpu_to_le32(MT_TXD3_HW_AMSDU);
-> > +	}
-> > +}
-> > +
-> > +void mt76_connac3_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
-> > +				 struct sk_buff *skb, struct mt76_wcid
-> > *wcid,
-> > +				 struct ieee80211_key_conf *key, int
-> > pid,
-> > +				 enum mt76_txq_id qid, u32 changed)
-> > +{
-> > +	u32 val, sz_txd =3D mt76_is_mmio(dev) ? MT_TXD_SIZE :
-> > MT_SDIO_TXD_SIZE;
-> > +	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
-> > +	struct ieee80211_vif *vif =3D info->control.vif;
-> > +	u8 band_idx =3D (info->hw_queue & MT_TX_HW_QUEUE_PHY) >> 2;
-> > +	u8 p_fmt, q_idx, omac_idx =3D 0, wmm_idx =3D 0;
-> > +	bool is_8023 =3D info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
-> > +	struct mt76_vif *mvif;
-> > +	u16 tx_count =3D 15;
-> > +	bool beacon =3D !!(changed & (BSS_CHANGED_BEACON |
-> > +				    BSS_CHANGED_BEACON_ENABLED));
-> > +	bool inband_disc =3D !!(changed &
-> > (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
-> > +					 BSS_CHANGED_FILS_DISCOVERY));
-> > +
-> > +	mvif =3D vif ? (struct mt76_vif *)vif->drv_priv : NULL;
-> > +	if (mvif) {
-> > +		omac_idx =3D mvif->omac_idx;
-> > +		wmm_idx =3D mvif->wmm_idx;
-> > +		band_idx =3D mvif->band_idx;
-> > +	}
-> > +
-> > +	if (inband_disc) {
-> > +		p_fmt =3D MT_TX_TYPE_FW;
-> > +		q_idx =3D MT_LMAC_ALTX0;
-> > +	} else if (beacon) {
-> > +		p_fmt =3D MT_TX_TYPE_FW;
-> > +		q_idx =3D MT_LMAC_BCN0;
-> > +	} else if (qid >=3D MT_TXQ_PSD) {
-> > +		p_fmt =3D mt76_is_mmio(dev) ? MT_TX_TYPE_CT :
-> > MT_TX_TYPE_SF;
-> > +		q_idx =3D MT_LMAC_ALTX0;
-> > +	} else {
-> > +		p_fmt =3D mt76_is_mmio(dev) ? MT_TX_TYPE_CT :
-> > MT_TX_TYPE_SF;
-> > +		q_idx =3D wmm_idx * MT76_CONNAC_MAX_WMM_SETS +
-> > +			mt76_connac_lmac_mapping(skb_get_queue_mapping(
-> > skb));
-> > +	}
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD0_TX_BYTES, skb->len + sz_txd) |
-> > +	      FIELD_PREP(MT_TXD0_PKT_FMT, p_fmt) |
-> > +	      FIELD_PREP(MT_TXD0_Q_IDX, q_idx);
-> > +	txwi[0] =3D cpu_to_le32(val);
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD1_WLAN_IDX, wcid->idx) |
-> > +	      FIELD_PREP(MT_TXD1_OWN_MAC, omac_idx);
-> > +
-> > +	if (band_idx)
-> > +		val |=3D FIELD_PREP(MT_TXD1_TGID, band_idx);
-> > +
-> > +	txwi[1] =3D cpu_to_le32(val);
-> > +	txwi[2] =3D 0;
-> > +
-> > +	val =3D MT_TXD3_SW_POWER_MGMT |
-> > +	      FIELD_PREP(MT_TXD3_REM_TX_COUNT, tx_count);
-> > +	if (key)
-> > +		val |=3D MT_TXD3_PROTECT_FRAME;
-> > +	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
-> > +		val |=3D MT_TXD3_NO_ACK;
-> > +	if (wcid->amsdu)
-> > +		val |=3D MT_TXD3_HW_AMSDU;
-> > +
-> > +	txwi[3] =3D cpu_to_le32(val);
-> > +	txwi[4] =3D 0;
-> > +
-> > +	val =3D FIELD_PREP(MT_TXD5_PID, pid);
-> > +	if (pid >=3D MT_PACKET_ID_FIRST)
-> > +		val |=3D MT_TXD5_TX_STATUS_HOST;
-> > +	txwi[5] =3D cpu_to_le32(val);
-> > +
-> > +	val =3D MT_TXD6_DIS_MAT | MT_TXD6_DAS |
-> > +	      FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
-> > +	txwi[6] =3D cpu_to_le32(val);
-> > +	txwi[7] =3D 0;
-> > +
-> > +	if (is_8023)
-> > +		mt76_connac3_mac_write_txwi_8023(txwi, skb, wcid);
-> > +	else
-> > +		mt76_connac3_mac_write_txwi_80211(dev, txwi, skb, key);
-> > +
-> > +	if (txwi[1] & cpu_to_le32(MT_TXD1_FIXED_RATE)) {
-> > +		struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr
-> > *)skb->data;
-> > +		bool mcast =3D ieee80211_is_data(hdr->frame_control) &&
-> > +			     is_multicast_ether_addr(hdr->addr1);
-> > +		u8 idx =3D MT76_CONNAC3_BASIC_RATES_TBL;
-> > +
-> > +		if (mvif) {
-> > +			if (mcast && mvif->mcast_rates_idx)
-> > +				idx =3D mvif->mcast_rates_idx;
-> > +			else if (beacon && mvif->beacon_rates_idx)
-> > +				idx =3D mvif->beacon_rates_idx;
-> > +			else
-> > +				idx =3D mvif->basic_rates_idx;
-> > +		}
-> > +
-> > +		txwi[6] |=3D cpu_to_le32(FIELD_PREP(MT_TXD6_TX_RATE,
-> > idx));
-> > +		txwi[3] |=3D cpu_to_le32(MT_TXD3_BA_DISABLE);
-> > +	}
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_write_txwi);
-> > +
-> > +void mt76_connac3_txwi_free(struct mt76_dev *dev, struct
-> > mt76_txwi_cache *t,
-> > +			    struct ieee80211_sta *sta,
-> > +			    struct list_head *free_list)
-> > +{
-> > +	__le32 *txwi;
-> > +	u16 wcid_idx;
-> > +
-> > +	mt76_connac_txp_skb_unmap(dev, t);
-> > +	if (!t->skb)
-> > +		goto out;
-> > +
-> > +	txwi =3D (__le32 *)mt76_get_txwi_ptr(dev, t);
-> > +	if (sta) {
-> > +		struct mt76_wcid *wcid =3D (struct mt76_wcid *)sta-
-> > >drv_priv;
-> > +
-> > +		wcid_idx =3D wcid->idx;
-> > +		if (likely(t->skb->protocol !=3D cpu_to_be16(ETH_P_PAE)))
-> > +			mt76_connac3_tx_check_aggr(sta, txwi);
-> > +	} else {
-> > +		wcid_idx =3D le32_get_bits(txwi[1], MT_TXD1_WLAN_IDX);
-> > +	}
-> > +
-> > +	__mt76_tx_complete_skb(dev, wcid_idx, t->skb, free_list);
-> > +out:
-> > +	t->skb =3D NULL;
-> > +	mt76_put_txwi(dev, t);
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_txwi_free);
-> > +
-> > +static bool
-> > +mt76_connac3_mac_add_txs_skb(struct mt76_dev *dev, struct mt76_wcid
-> > *wcid,
-> > +			     int pid, __le32 *txs_data)
-> > +{
-> > +	struct mt76_sta_stats *stats =3D &wcid->stats;
-> > +	struct ieee80211_supported_band *sband;
-> > +	struct ieee80211_tx_info *info;
-> > +	u32 txrate, txs, mode, stbc;
-> > +	struct rate_info rate =3D {};
-> > +	struct sk_buff_head list;
-> > +	struct mt76_phy *mphy;
-> > +	struct sk_buff *skb;
-> > +	bool cck =3D false;
-> > +
-> > +	mt76_tx_status_lock(dev, &list);
-> > +	skb =3D mt76_tx_status_skb_get(dev, wcid, pid, &list);
-> > +	if (!skb)
-> > +		goto out_no_skb;
-> > +
-> > +	txs =3D le32_to_cpu(txs_data[0]);
-> > +
-> > +	info =3D IEEE80211_SKB_CB(skb);
-> > +	if (!(txs & MT_TXS0_ACK_ERROR_MASK))
-> > +		info->flags |=3D IEEE80211_TX_STAT_ACK;
-> > +
-> > +	info->status.ampdu_len =3D 1;
-> > +	info->status.ampdu_ack_len =3D !!(info->flags &
-> > +					IEEE80211_TX_STAT_ACK);
-> > +	info->status.rates[0].idx =3D -1;
-> > +
-> > +	txrate =3D FIELD_GET(MT_TXS0_TX_RATE, txs);
-> > +
-> > +	rate.mcs =3D FIELD_GET(MT_TX_RATE_IDX, txrate);
-> > +	rate.nss =3D FIELD_GET(MT_TX_RATE_NSS, txrate) + 1;
-> > +	stbc =3D le32_get_bits(txs_data[3], MT_TXS3_RATE_STBC);
-> > +
-> > +	if (stbc && rate.nss > 1)
-> > +		rate.nss >>=3D 1;
-> > +
-> > +	if (rate.nss - 1 < ARRAY_SIZE(stats->tx_nss))
-> > +		stats->tx_nss[rate.nss - 1]++;
-> > +	if (rate.mcs < ARRAY_SIZE(stats->tx_mcs))
-> > +		stats->tx_mcs[rate.mcs]++;
-> > +
-> > +	mode =3D FIELD_GET(MT_TX_RATE_MODE, txrate);
-> > +	switch (mode) {
-> > +	case MT_PHY_TYPE_CCK:
-> > +		cck =3D true;
-> > +		fallthrough;
-> > +	case MT_PHY_TYPE_OFDM:
-> > +		mphy =3D mt76_dev_phy(dev, wcid->phy_idx);
-> > +
-> > +		if (mphy->chandef.chan->band =3D=3D NL80211_BAND_5GHZ)
-> > +			sband =3D &mphy->sband_5g.sband;
-> > +		else if (mphy->chandef.chan->band =3D=3D NL80211_BAND_6GHZ)
-> > +			sband =3D &mphy->sband_6g.sband;
-> > +		else
-> > +			sband =3D &mphy->sband_2g.sband;
-> > +
-> > +		rate.mcs =3D mt76_get_rate(mphy->dev, sband, rate.mcs,
-> > cck);
-> > +		rate.legacy =3D sband->bitrates[rate.mcs].bitrate;
-> > +		break;
-> > +	case MT_PHY_TYPE_HT:
-> > +	case MT_PHY_TYPE_HT_GF:
-> > +		if (rate.mcs > 31)
-> > +			goto out;
-> > +
-> > +		rate.flags =3D RATE_INFO_FLAGS_MCS;
-> > +		if (wcid->rate.flags & RATE_INFO_FLAGS_SHORT_GI)
-> > +			rate.flags |=3D RATE_INFO_FLAGS_SHORT_GI;
-> > +		break;
-> > +	case MT_PHY_TYPE_VHT:
-> > +		if (rate.mcs > 9)
-> > +			goto out;
-> > +
-> > +		rate.flags =3D RATE_INFO_FLAGS_VHT_MCS;
-> > +		break;
-> > +	case MT_PHY_TYPE_HE_SU:
-> > +	case MT_PHY_TYPE_HE_EXT_SU:
-> > +	case MT_PHY_TYPE_HE_TB:
-> > +	case MT_PHY_TYPE_HE_MU:
-> > +		if (rate.mcs > 11)
-> > +			goto out;
-> > +
-> > +		rate.he_gi =3D wcid->rate.he_gi;
-> > +		rate.he_dcm =3D FIELD_GET(MT_TX_RATE_DCM, txrate);
-> > +		rate.flags =3D RATE_INFO_FLAGS_HE_MCS;
-> > +		break;
-> > +	case MT_PHY_TYPE_EHT_SU:
-> > +	case MT_PHY_TYPE_EHT_TRIG:
-> > +	case MT_PHY_TYPE_EHT_MU:
-> > +		if (rate.mcs > 13)
-> > +			goto out;
-> > +
-> > +		rate.eht_gi =3D wcid->rate.eht_gi;
-> > +		rate.flags =3D RATE_INFO_FLAGS_EHT_MCS;
-> > +		break;
-> > +	default:
-> > +		goto out;
-> > +	}
-> > +
-> > +	stats->tx_mode[mode]++;
-> > +
-> > +	switch (FIELD_GET(MT_TXS0_BW, txs)) {
-> > +	case IEEE80211_STA_RX_BW_320:
-> > +		rate.bw =3D RATE_INFO_BW_320;
-> > +		stats->tx_bw[4]++;
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_160:
-> > +		rate.bw =3D RATE_INFO_BW_160;
-> > +		stats->tx_bw[3]++;
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_80:
-> > +		rate.bw =3D RATE_INFO_BW_80;
-> > +		stats->tx_bw[2]++;
-> > +		break;
-> > +	case IEEE80211_STA_RX_BW_40:
-> > +		rate.bw =3D RATE_INFO_BW_40;
-> > +		stats->tx_bw[1]++;
-> > +		break;
-> > +	default:
-> > +		rate.bw =3D RATE_INFO_BW_20;
-> > +		stats->tx_bw[0]++;
-> > +		break;
-> > +	}
-> > +	wcid->rate =3D rate;
-> > +
-> > +out:
-> > +	mt76_tx_status_skb_done(dev, skb, &list);
-> > +
-> > +out_no_skb:
-> > +	mt76_tx_status_unlock(dev, &list);
-> > +
-> > +	return !!skb;
-> > +}
-> > +
-> > +void mt76_connac3_mac_add_txs(struct mt76_dev *dev, void *data,
-> > +			      u32 max_wtbl_size)
-> > +{
-> > +	struct mt76_wcid *wcid;
-> > +	__le32 *txs_data =3D data;
-> > +	u16 wcidx;
-> > +	u8 pid;
-> > +
-> > +	if (le32_get_bits(txs_data[0], MT_TXS0_TXS_FORMAT) > 1)
-> > +		return;
-> > +
-> > +	wcidx =3D le32_get_bits(txs_data[2], MT_TXS2_WCID);
-> > +	pid =3D le32_get_bits(txs_data[3], MT_TXS3_PID);
-> > +
-> > +	if (pid < MT_PACKET_ID_FIRST)
-> > +		return;
-> > +
-> > +	if (wcidx >=3D max_wtbl_size)
-> > +		return;
-> > +
-> > +	rcu_read_lock();
-> > +
-> > +	wcid =3D rcu_dereference(dev->wcid[wcidx]);
-> > +	if (!wcid)
-> > +		goto out;
-> > +
-> > +	mt76_connac3_mac_add_txs_skb(dev, wcid, pid, txs_data);
-> > +	if (!wcid->sta)
-> > +		goto out;
-> > +
-> > +	spin_lock_bh(&dev->sta_poll_lock);
-> > +	if (list_empty(&wcid->poll_list))
-> > +		list_add_tail(&wcid->poll_list, &dev->sta_poll_list);
-> > +	spin_unlock_bh(&dev->sta_poll_lock);
-> > +
-> > +out:
-> > +	rcu_read_unlock();
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_add_txs);
-> > +
-> > +void mt76_connac3_tx_token_put(struct mt76_dev *dev)
-> > +{
-> > +	struct mt76_txwi_cache *txwi;
-> > +	int id;
-> > +
-> > +	spin_lock_bh(&dev->token_lock);
-> > +	idr_for_each_entry(&dev->token, txwi, id) {
-> > +		mt76_connac3_txwi_free(dev, txwi, NULL, NULL);
-> > +		dev->token_count--;
-> > +	}
-> > +	spin_unlock_bh(&dev->token_lock);
-> > +	idr_destroy(&dev->token);
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt76_connac3_tx_token_put);
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-> > b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-> > index 6663a0b46541..bcc1d976b2b0 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-> > @@ -4,6 +4,24 @@
-> >  #ifndef __MT76_CONNAC3_MAC_H
-> >  #define __MT76_CONNAC3_MAC_H
-> > =20
-> > +/* NOTE: used to map mt76_rates. idx may change if firmware expands
-> > table */
-> > +#define MT76_CONNAC3_BASIC_RATES_TBL	11
-> > +#define MT76_CONNAC3_BEACON_RATES_TBL	25
-> >=20
->=20
-> Different devices may have different defined value.=20
-
-The other WiFi7 device I am working on relies on the values I moved in
-mt76_connac3_mac.h (in common with mt7996). Moreover you can still
-have per-device values in mt7996/mac.h (I have not removed it).
-
->=20
-> I'm thinking if it's too early to create this patch for just moving
-> mt7996 to connac3_lib?
-
-The code I moved is used by the other device as well. This series is a
-preliminary series to support it.
-
-Regards,
-Lorenzo
-
->=20
-> Ryder
->=20
-
---eD6xSrpIfFVXd0TH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZINUmwAKCRA6cBh0uS2t
-rCiPAP93n7L/KxXzhg3Sj+srmRqO5c98Zb33whe18xZmJWNkAgD+L/5BG6EloYOU
-83hL8Y6dWu8J+43FMvcAzThi1GkuBgc=
-=5HSa
------END PGP SIGNATURE-----
-
---eD6xSrpIfFVXd0TH--
-
+T24gRnJpLCAyMDIzLTA2LTA5IGF0IDE4OjM0ICswMjAwLCBsb3JlbnpvLmJpYW5jb25pQHJlZGhh
+dC5jb20gd3JvdGU6DQo+IE9uIEp1biAwOSwgUnlkZXIgTGVlIHdyb3RlOg0KPiA+IE9uIEZyaSwg
+MjAyMy0wNi0wOSBhdCAxMDoxNSArMDIwMCwgTG9yZW56byBCaWFuY29uaSB3cm90ZToNCj4gPiA+
+ICAJIA0KPiA+ID4gRXh0ZXJuYWwgZW1haWwgOiBQbGVhc2UgZG8gbm90IGNsaWNrIGxpbmtzIG9y
+IG9wZW4gYXR0YWNobWVudHMNCj4gPiA+IHVudGlsDQo+ID4gPiB5b3UgaGF2ZSB2ZXJpZmllZCB0
+aGUgc2VuZGVyIG9yIHRoZSBjb250ZW50Lg0KPiA+ID4gIEludHJvZHVjZSBjb25uYWMzX21hYyBp
+biBtdDc2X2Nvbm5hYyBsaWJyYXJ5IHRvIHJldXNlIG1hYyBjb2RlDQo+ID4gPiBzaGFyZWQNCj4g
+PiA+IGJldHdlZW4gV2lGaTcgY2hpcHNldHMuDQo+ID4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6
+IExvcmVuem8gQmlhbmNvbmkgPGxvcmVuem9Aa2VybmVsLm9yZz4NCj4gPiA+IC0tLQ0KPiA+ID4g
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvTWFrZWZpbGUgICB8ICAgMiArLQ0K
+PiA+ID4gIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hYy5oICB8ICAx
+OSArDQo+ID4gPiAgLi4uL3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Nl9jb25uYWMzX21hYy5j
+IHwgNzQyDQo+ID4gPiArKysrKysrKysrKysrKysrKw0KPiA+ID4gIC4uLi93aXJlbGVzcy9tZWRp
+YXRlay9tdDc2L210NzZfY29ubmFjM19tYWMuaCB8ICAxOCArDQo+ID4gPiAgLi4uL25ldC93aXJl
+bGVzcy9tZWRpYXRlay9tdDc2L210Nzk5Ni9pbml0LmMgIHwgICA0ICstDQo+ID4gPiAgLi4uL25l
+dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzk5Ni9tYWMuYyAgIHwgNzYxICstLS0tLS0tLS0t
+LQ0KPiA+ID4gLS0tLQ0KPiA+ID4gLS0NCj4gPiA+ICAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3OTk2L21haW4uYyAgfCAgIDggKy0NCj4gPiA+ICAuLi4vbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvbXQ3OTk2L21jdS5jICAgfCAgIDkgKy0NCj4gPiA+ICAuLi4vd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc5OTYvbXQ3OTk2LmggICAgfCAgMjggKy0NCj4gPiA+ICA5IGZpbGVz
+IGNoYW5nZWQsIDgwNyBpbnNlcnRpb25zKCspLCA3ODQgZGVsZXRpb25zKC0pDQo+ID4gPiAgY3Jl
+YXRlIG1vZGUgMTAwNjQ0DQo+ID4gPiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzZfY29ubmFjM19tYWMuYw0KPiA+ID4gDQo+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9NYWtlZmlsZQ0KPiA+ID4gYi9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L01ha2VmaWxlDQo+ID4gPiBpbmRleCA4NGM5OWI3ZTU3Zjku
+LmQ4ZTgwNzljOGI1NCAxMDA2NDQNCj4gPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvTWFrZWZpbGUNCj4gPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvTWFrZWZpbGUNCj4gPiA+IEBAIC0yNyw3ICsyNyw3IEBAIG10NzZ4MDItbGli
+LXkgOj0gbXQ3NngwMl91dGlsLm8gbXQ3NngwMl9tYWMubw0KPiA+ID4gbXQ3NngwMl9tY3UubyBc
+DQo+ID4gPiAgDQo+ID4gPiAgbXQ3NngwMi11c2IteSA6PSBtdDc2eDAyX3VzYl9tY3UubyBtdDc2
+eDAyX3VzYl9jb3JlLm8NCj4gPiA+ICANCj4gPiA+IC1tdDc2LWNvbm5hYy1saWIteSA6PSBtdDc2
+X2Nvbm5hY19tY3UubyBtdDc2X2Nvbm5hY19tYWMubw0KPiA+ID4gK210NzYtY29ubmFjLWxpYi15
+IDo9IG10NzZfY29ubmFjX21jdS5vIG10NzZfY29ubmFjX21hYy5vDQo+ID4gPiBtdDc2X2Nvbm5h
+YzNfbWFjLm8NCj4gPiA+ICANCj4gPiA+ICBvYmotJChDT05GSUdfTVQ3NngwX0NPTU1PTikgKz0g
+bXQ3NngwLw0KPiA+ID4gIG9iai0kKENPTkZJR19NVDc2eDJfQ09NTU9OKSArPSBtdDc2eDIvDQo+
+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2
+X2Nvbm5hYy5oDQo+ID4gPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
+Nl9jb25uYWMuaA0KPiA+ID4gaW5kZXggNjhiZGVhZGExNDIxLi4yMDExMTY3ODUzN2IgMTAwNjQ0
+DQo+ID4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29u
+bmFjLmgNCj4gPiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
+Nl9jb25uYWMuaA0KPiA+ID4gQEAgLTQxNSw0ICs0MTUsMjMgQEAgdm9pZCBtdDc2X2Nvbm5hYzJf
+dHh3aV9mcmVlKHN0cnVjdCBtdDc2X2Rldg0KPiA+ID4gKmRldiwgc3RydWN0IG10NzZfdHh3aV9j
+YWNoZSAqdCwNCj4gPiA+ICAJCQkgICAgc3RydWN0IGxpc3RfaGVhZCAqZnJlZV9saXN0KTsNCj4g
+PiA+ICB2b2lkIG10NzZfY29ubmFjMl90eF90b2tlbl9wdXQoc3RydWN0IG10NzZfZGV2ICpkZXYp
+Ow0KPiA+ID4gIA0KPiA+ID4gKy8qIGNvbm5hYzMgKi8NCj4gPiA+ICt2b2lkIG10NzZfY29ubmFj
+M190eF9jaGVja19hZ2dyKHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEsDQo+ID4gPiBfX2xlMzIN
+Cj4gPiA+ICp0eHdpKTsNCj4gPiA+ICt2b2lkIG10NzZfY29ubmFjM19tYWNfZGVjb2RlX2hlX3Jh
+ZGlvdGFwKHN0cnVjdCBza19idWZmICpza2IsDQo+ID4gPiBfX2xlMzINCj4gPiA+ICpyeHYsDQo+
+ID4gPiArCQkJCQkgdTggbW9kZSk7DQo+ID4gPiAraW50IG10NzZfY29ubmFjM19tYWNfZmlsbF9y
+eF9yYXRlKHN0cnVjdCBtdDc2X2RldiAqZGV2LA0KPiA+ID4gKwkJCQkgIHN0cnVjdCBtdDc2X3J4
+X3N0YXR1cyAqc3RhdHVzLA0KPiA+ID4gKwkJCQkgIHN0cnVjdCBpZWVlODAyMTFfc3VwcG9ydGVk
+X2JhbmQNCj4gPiA+ICpzYmFuZCwNCj4gPiA+ICsJCQkJICBfX2xlMzIgKnJ4diwgdTggKm1vZGUp
+Ow0KPiA+ID4gK3ZvaWQgbXQ3Nl9jb25uYWMzX21hY193cml0ZV90eHdpKHN0cnVjdCBtdDc2X2Rl
+diAqZGV2LCBfX2xlMzINCj4gPiA+ICp0eHdpLA0KPiA+ID4gKwkJCQkgc3RydWN0IHNrX2J1ZmYg
+KnNrYiwgc3RydWN0IG10NzZfd2NpZA0KPiA+ID4gKndjaWQsDQo+ID4gPiArCQkJCSBzdHJ1Y3Qg
+aWVlZTgwMjExX2tleV9jb25mICprZXksIGludA0KPiA+ID4gcGlkLA0KPiA+ID4gKwkJCQkgZW51
+bSBtdDc2X3R4cV9pZCBxaWQsIHUzMiBjaGFuZ2VkKTsNCj4gPiA+ICt2b2lkIG10NzZfY29ubmFj
+M190eHdpX2ZyZWUoc3RydWN0IG10NzZfZGV2ICpkZXYsIHN0cnVjdA0KPiA+ID4gbXQ3Nl90eHdp
+X2NhY2hlICp0LA0KPiA+ID4gKwkJCSAgICBzdHJ1Y3QgaWVlZTgwMjExX3N0YSAqc3RhLA0KPiA+
+ID4gKwkJCSAgICBzdHJ1Y3QgbGlzdF9oZWFkICpmcmVlX2xpc3QpOw0KPiA+ID4gK3ZvaWQgbXQ3
+Nl9jb25uYWMzX21hY19hZGRfdHhzKHN0cnVjdCBtdDc2X2RldiAqZGV2LCB2b2lkICpkYXRhLA0K
+PiA+ID4gKwkJCSAgICAgIHUzMiBtYXhfd3RibF9zaXplKTsNCj4gPiA+ICt2b2lkIG10NzZfY29u
+bmFjM190eF90b2tlbl9wdXQoc3RydWN0IG10NzZfZGV2ICpkZXYpOw0KPiA+ID4gKw0KPiA+ID4g
+ICNlbmRpZiAvKiBfX01UNzZfQ09OTkFDX0ggKi8NCj4gPiA+IGRpZmYgLS1naXQNCj4gPiA+IGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hYzNfbWFjLmMNCj4g
+PiA+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hYzNfbWFj
+LmMNCj4gPiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+ID4gPiBpbmRleCAwMDAwMDAwMDAwMDAu
+LjRiNzQ1YmI3NGNhMA0KPiA+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ID4gKysrIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hYzNfbWFjLmMNCj4gPiA+IEBAIC0w
+LDAgKzEsNzQyIEBADQo+ID4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IElTQw0KPiA+
+ID4gKy8qIENvcHlyaWdodCAoQykgMjAyMyBNZWRpYVRlayBJbmMuICovDQo+ID4gPiArDQo+ID4g
+PiArI2luY2x1ZGUgIm10NzZfY29ubmFjLmgiDQo+ID4gPiArI2luY2x1ZGUgIm10NzZfY29ubmFj
+M19tYWMuaCINCj4gPiA+ICsjaW5jbHVkZSAiZG1hLmgiDQo+ID4gPiArDQo+ID4gPiArI2RlZmlu
+ZSBIRV9CSVRTKGYpCQljcHVfdG9fbGUxNihJRUVFODAyMTFfUkFESU9UQVBfDQo+ID4gPiBIRV8j
+I2YpDQo+ID4gPiArI2RlZmluZSBIRV9QUkVQKGYsIG0sIHYpCWxlMTZfZW5jb2RlX2JpdHMobGUz
+Ml9nZXRfYml0cyh2LA0KPiA+ID4gTVRfQ1JYVl9IRV8jI20pLFwNCj4gPiA+ICsJCQkJCQkgSUVF
+RTgwMjExX1JBRElPVEFQX0hFXw0KPiA+ID4gIyNmKQ0KPiA+ID4gKw0KPiA+ID4gK3ZvaWQgbXQ3
+Nl9jb25uYWMzX3R4X2NoZWNrX2FnZ3Ioc3RydWN0IGllZWU4MDIxMV9zdGEgKnN0YSwNCj4gPiA+
+IF9fbGUzMg0KPiA+ID4gKnR4d2kpDQo+ID4gPiArew0KPiA+ID4gKwlzdHJ1Y3QgbXQ3Nl93Y2lk
+ICp3Y2lkOw0KPiA+ID4gKwl1MTYgZmMsIHRpZDsNCj4gPiA+ICsJdTMyIHZhbDsNCj4gPiA+ICsN
+Cj4gPiA+ICsJaWYgKCFzdGEgfHwNCj4gPiA+ICsJICAgICEoc3RhLT5kZWZsaW5rLmh0X2NhcC5o
+dF9zdXBwb3J0ZWQgfHwgc3RhLQ0KPiA+ID4gPiBkZWZsaW5rLmhlX2NhcC5oYXNfaGUpKQ0KPiA+
+ID4gDQo+ID4gPiArCQlyZXR1cm47DQo+ID4gPiArDQo+ID4gPiArCXRpZCA9IGxlMzJfZ2V0X2Jp
+dHModHh3aVsxXSwgTVRfVFhEMV9USUQpOw0KPiA+ID4gKwlpZiAodGlkID49IDYpIC8qIHNraXAg
+Vk8gcXVldWUgKi8NCj4gPiA+ICsJCXJldHVybjsNCj4gPiA+ICsNCj4gPiA+ICsJdmFsID0gbGUz
+Ml90b19jcHUodHh3aVsyXSk7DQo+ID4gPiArCWZjID0gRklFTERfR0VUKE1UX1RYRDJfRlJBTUVf
+VFlQRSwgdmFsKSA8PCAyIHwNCj4gPiA+ICsJICAgICBGSUVMRF9HRVQoTVRfVFhEMl9TVUJfVFlQ
+RSwgdmFsKSA8PCA0Ow0KPiA+ID4gKwlpZiAodW5saWtlbHkoZmMgIT0gKElFRUU4MDIxMV9GVFlQ
+RV9EQVRBIHwNCj4gPiA+IElFRUU4MDIxMV9TVFlQRV9RT1NfREFUQSkpKQ0KPiA+ID4gKwkJcmV0
+dXJuOw0KPiA+ID4gKw0KPiA+ID4gKwl3Y2lkID0gKHN0cnVjdCBtdDc2X3djaWQgKilzdGEtPmRy
+dl9wcml2Ow0KPiA+ID4gKwlpZiAoIXRlc3RfYW5kX3NldF9iaXQodGlkLCAmd2NpZC0+YW1wZHVf
+c3RhdGUpKQ0KPiA+ID4gKwkJaWVlZTgwMjExX3N0YXJ0X3R4X2JhX3Nlc3Npb24oc3RhLCB0aWQs
+IDApOw0KPiA+ID4gK30NCj4gPiA+ICtFWFBPUlRfU1lNQk9MX0dQTChtdDc2X2Nvbm5hYzNfdHhf
+Y2hlY2tfYWdncik7DQo+ID4gPiArDQo+ID4gPiArc3RhdGljIHZvaWQNCj4gPiA+ICttdDc2X2Nv
+bm5hYzNfbWFjX2RlY29kZV9oZV9yYWRpb3RhcF9ydShzdHJ1Y3QgbXQ3Nl9yeF9zdGF0dXMNCj4g
+PiA+ICpzdGF0dXMsDQo+ID4gPiArCQkJCSAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX3JhZGlvdGFw
+X2hlDQo+ID4gPiAqaGUsDQo+ID4gPiArCQkJCSAgICAgICBfX2xlMzIgKnJ4dikNCj4gPiA+ICt7
+DQo+ID4gPiArCXUzMiBydSA9IGxlMzJfZ2V0X2JpdHMocnh2WzBdLCBNVF9QUlhWX0hFX1JVX0FM
+TE9DKSwgb2ZmcyA9IDA7DQo+ID4gPiArDQo+ID4gPiArCXN0YXR1cy0+YncgPSBSQVRFX0lORk9f
+QldfSEVfUlU7DQo+ID4gPiArDQo+ID4gPiArCXN3aXRjaCAocnUpIHsNCj4gPiA+ICsJY2FzZSAw
+IC4uLiAzNjoNCj4gPiA+ICsJCXN0YXR1cy0+aGVfcnUgPSBOTDgwMjExX1JBVEVfSU5GT19IRV9S
+VV9BTExPQ18yNjsNCj4gPiA+ICsJCW9mZnMgPSBydTsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4g
+KwljYXNlIDM3IC4uLiA1MjoNCj4gPiA+ICsJCXN0YXR1cy0+aGVfcnUgPSBOTDgwMjExX1JBVEVf
+SU5GT19IRV9SVV9BTExPQ181MjsNCj4gPiA+ICsJCW9mZnMgPSBydSAtIDM3Ow0KPiA+ID4gKwkJ
+YnJlYWs7DQo+ID4gPiArCWNhc2UgNTMgLi4uIDYwOg0KPiA+ID4gKwkJc3RhdHVzLT5oZV9ydSA9
+IE5MODAyMTFfUkFURV9JTkZPX0hFX1JVX0FMTE9DXzEwNjsNCj4gPiA+ICsJCW9mZnMgPSBydSAt
+IDUzOw0KPiA+ID4gKwkJYnJlYWs7DQo+ID4gPiArCWNhc2UgNjEgLi4uIDY0Og0KPiA+ID4gKwkJ
+c3RhdHVzLT5oZV9ydSA9IE5MODAyMTFfUkFURV9JTkZPX0hFX1JVX0FMTE9DXzI0MjsNCj4gPiA+
+ICsJCW9mZnMgPSBydSAtIDYxOw0KPiA+ID4gKwkJYnJlYWs7DQo+ID4gPiArCWNhc2UgNjUgLi4u
+IDY2Og0KPiA+ID4gKwkJc3RhdHVzLT5oZV9ydSA9IE5MODAyMTFfUkFURV9JTkZPX0hFX1JVX0FM
+TE9DXzQ4NDsNCj4gPiA+ICsJCW9mZnMgPSBydSAtIDY1Ow0KPiA+ID4gKwkJYnJlYWs7DQo+ID4g
+PiArCWNhc2UgNjc6DQo+ID4gPiArCQlzdGF0dXMtPmhlX3J1ID0gTkw4MDIxMV9SQVRFX0lORk9f
+SEVfUlVfQUxMT0NfOTk2Ow0KPiA+ID4gKwkJYnJlYWs7DQo+ID4gPiArCWNhc2UgNjg6DQo+ID4g
+PiArCQlzdGF0dXMtPmhlX3J1ID0gTkw4MDIxMV9SQVRFX0lORk9fSEVfUlVfQUxMT0NfMng5OTY7
+DQo+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJfQ0KPiA+ID4gKw0KPiA+ID4gKwloZS0+ZGF0YTEg
+fD0gSEVfQklUUyhEQVRBMV9CV19SVV9BTExPQ19LTk9XTik7DQo+ID4gPiArCWhlLT5kYXRhMiB8
+PSBIRV9CSVRTKERBVEEyX1JVX09GRlNFVF9LTk9XTikgfA0KPiA+ID4gKwkJICAgICBsZTE2X2Vu
+Y29kZV9iaXRzKG9mZnMsDQo+ID4gPiArCQkJCSAgICAgIElFRUU4MDIxMV9SQURJT1RBUF9IRV9E
+QVRBMl9SVV9PRg0KPiA+ID4gRlNFVCk7DQo+ID4gPiArfQ0KPiA+ID4gKw0KPiA+ID4gKyNkZWZp
+bmUgTVVfUFJFUChmLCB2KQlsZTE2X2VuY29kZV9iaXRzKHYsDQo+ID4gPiBJRUVFODAyMTFfUkFE
+SU9UQVBfSEVfTVVfIyNmKQ0KPiA+ID4gK3N0YXRpYyB2b2lkDQo+ID4gPiArbXQ3Nl9jb25uYWMz
+X21hY19kZWNvZGVfaGVfbXVfcmFkaW90YXAoc3RydWN0IHNrX2J1ZmYgKnNrYiwNCj4gPiA+IF9f
+bGUzMg0KPiA+ID4gKnJ4dikNCj4gPiA+ICt7DQo+ID4gPiArCXN0cnVjdCBtdDc2X3J4X3N0YXR1
+cyAqc3RhdHVzID0gKHN0cnVjdCBtdDc2X3J4X3N0YXR1cyAqKXNrYi0NCj4gPiA+ID4gY2I7DQo+
+ID4gPiANCj4gPiA+ICsJc3RhdGljIGNvbnN0IHN0cnVjdCBpZWVlODAyMTFfcmFkaW90YXBfaGVf
+bXUgbXVfa25vd24gPSB7DQo+ID4gPiArCQkuZmxhZ3MxID0gSEVfQklUUyhNVV9GTEFHUzFfU0lH
+X0JfTUNTX0tOT1dOKSB8DQo+ID4gPiArCQkJICBIRV9CSVRTKE1VX0ZMQUdTMV9TSUdfQl9EQ01f
+S05PV04pIHwNCj4gPiA+ICsJCQkgIEhFX0JJVFMoTVVfRkxBR1MxX0NIMV9SVV9LTk9XTikgfA0K
+PiA+ID4gKwkJCSAgSEVfQklUUyhNVV9GTEFHUzFfU0lHX0JfU1lNU19VU0VSU19LTk9XTiksDQo+
+ID4gPiArCQkuZmxhZ3MyID0gSEVfQklUUyhNVV9GTEFHUzJfQldfRlJPTV9TSUdfQV9CV19LTk9X
+TiksDQo+ID4gPiArCX07DQo+ID4gPiArCXN0cnVjdCBpZWVlODAyMTFfcmFkaW90YXBfaGVfbXUg
+KmhlX211Ow0KPiA+ID4gKw0KPiA+ID4gKwlzdGF0dXMtPmZsYWcgfD0gUlhfRkxBR19SQURJT1RB
+UF9IRV9NVTsNCj4gPiA+ICsNCj4gPiA+ICsJaGVfbXUgPSBza2JfcHVzaChza2IsIHNpemVvZiht
+dV9rbm93bikpOw0KPiA+ID4gKwltZW1jcHkoaGVfbXUsICZtdV9rbm93biwgc2l6ZW9mKG11X2tu
+b3duKSk7DQo+ID4gPiArDQo+ID4gPiArCWhlX211LT5mbGFnczEgfD0gTVVfUFJFUChGTEFHUzFf
+U0lHX0JfTUNTLCBzdGF0dXMtPnJhdGVfaWR4KTsNCj4gPiA+ICsJaWYgKHN0YXR1cy0+aGVfZGNt
+KQ0KPiA+ID4gKwkJaGVfbXUtPmZsYWdzMSB8PSBNVV9QUkVQKEZMQUdTMV9TSUdfQl9EQ00sIHN0
+YXR1cy0NCj4gPiA+ID4gaGVfZGNtKTsNCj4gPiA+IA0KPiA+ID4gKw0KPiA+ID4gKwloZV9tdS0+
+ZmxhZ3MyIHw9IE1VX1BSRVAoRkxBR1MyX0JXX0ZST01fU0lHX0FfQlcsIHN0YXR1cy0+YncpIHwN
+Cj4gPiA+ICsJCQkgTVVfUFJFUChGTEFHUzJfU0lHX0JfU1lNU19VU0VSUywNCj4gPiA+ICsJCQkJ
+IGxlMzJfZ2V0X2JpdHMocnh2WzRdLA0KPiA+ID4gTVRfQ1JYVl9IRV9OVU1fVVNFUikpOw0KPiA+
+ID4gKw0KPiA+ID4gKwloZV9tdS0+cnVfY2gxWzBdID0gbGUzMl9nZXRfYml0cyhyeHZbMTZdLCBN
+VF9DUlhWX0hFX1JVMCkgJg0KPiA+ID4gMHhmZjsNCj4gPiA+ICsNCj4gPiA+ICsJaWYgKHN0YXR1
+cy0+YncgPj0gUkFURV9JTkZPX0JXXzQwKSB7DQo+ID4gPiArCQloZV9tdS0+ZmxhZ3MxIHw9IEhF
+X0JJVFMoTVVfRkxBR1MxX0NIMl9SVV9LTk9XTik7DQo+ID4gPiArCQloZV9tdS0+cnVfY2gyWzBd
+ID0gbGUzMl9nZXRfYml0cyhyeHZbMTZdLA0KPiA+ID4gTVRfQ1JYVl9IRV9SVTEpICYgMHhmZjsN
+Cj4gPiA+ICsJfQ0KPiA+ID4gKw0KPiA+ID4gKwlpZiAoc3RhdHVzLT5idyA+PSBSQVRFX0lORk9f
+QldfODApIHsNCj4gPiA+ICsJCXUzMiBydV9oLCBydV9sOw0KPiA+ID4gKw0KPiA+ID4gKwkJaGVf
+bXUtPnJ1X2NoMVsxXSA9IGxlMzJfZ2V0X2JpdHMocnh2WzE2XSwNCj4gPiA+IE1UX0NSWFZfSEVf
+UlUyKSAmIDB4ZmY7DQo+ID4gPiArDQo+ID4gPiArCQlydV9sID0gbGUzMl9nZXRfYml0cyhyeHZb
+MTZdLCBNVF9DUlhWX0hFX1JVM19MKTsNCj4gPiA+ICsJCXJ1X2ggPSBsZTMyX2dldF9iaXRzKHJ4
+dlsxN10sIE1UX0NSWFZfSEVfUlUzX0gpICYgMHg3Ow0KPiA+ID4gKwkJaGVfbXUtPnJ1X2NoMlsx
+XSA9ICh1OCkocnVfbCB8IHJ1X2ggPDwgNCk7DQo+ID4gPiArCX0NCj4gPiA+ICt9DQo+ID4gPiAr
+DQo+ID4gPiArdm9pZCBtdDc2X2Nvbm5hYzNfbWFjX2RlY29kZV9oZV9yYWRpb3RhcChzdHJ1Y3Qg
+c2tfYnVmZiAqc2tiLA0KPiA+ID4gX19sZTMyDQo+ID4gPiAqcnh2LA0KPiA+ID4gKwkJCQkJIHU4
+IG1vZGUpDQo+ID4gPiArew0KPiA+ID4gKwlzdHJ1Y3QgbXQ3Nl9yeF9zdGF0dXMgKnN0YXR1cyA9
+IChzdHJ1Y3QgbXQ3Nl9yeF9zdGF0dXMgKilza2ItDQo+ID4gPiA+IGNiOw0KPiA+ID4gDQo+ID4g
+PiArCXN0YXRpYyBjb25zdCBzdHJ1Y3QgaWVlZTgwMjExX3JhZGlvdGFwX2hlIGtub3duID0gew0K
+PiA+ID4gKwkJLmRhdGExID0gSEVfQklUUyhEQVRBMV9EQVRBX01DU19LTk9XTikgfA0KPiA+ID4g
+KwkJCSBIRV9CSVRTKERBVEExX0RBVEFfRENNX0tOT1dOKSB8DQo+ID4gPiArCQkJIEhFX0JJVFMo
+REFUQTFfU1RCQ19LTk9XTikgfA0KPiA+ID4gKwkJCSBIRV9CSVRTKERBVEExX0NPRElOR19LTk9X
+TikgfA0KPiA+ID4gKwkJCSBIRV9CSVRTKERBVEExX0xEUENfWFNZTVNFR19LTk9XTikgfA0KPiA+
+ID4gKwkJCSBIRV9CSVRTKERBVEExX0RPUFBMRVJfS05PV04pIHwNCj4gPiA+ICsJCQkgSEVfQklU
+UyhEQVRBMV9TUFRMX1JFVVNFX0tOT1dOKSB8DQo+ID4gPiArCQkJIEhFX0JJVFMoREFUQTFfQlNT
+X0NPTE9SX0tOT1dOKSwNCj4gPiA+ICsJCS5kYXRhMiA9IEhFX0JJVFMoREFUQTJfR0lfS05PV04p
+IHwNCj4gPiA+ICsJCQkgSEVfQklUUyhEQVRBMl9UWEJGX0tOT1dOKSB8DQo+ID4gPiArCQkJIEhF
+X0JJVFMoREFUQTJfUEVfRElTQU1CSUdfS05PV04pIHwNCj4gPiA+ICsJCQkgSEVfQklUUyhEQVRB
+Ml9UWE9QX0tOT1dOKSwNCj4gPiA+ICsJfTsNCj4gPiA+ICsJdTMyIGx0Zl9zaXplID0gbGUzMl9n
+ZXRfYml0cyhyeHZbNF0sIE1UX0NSWFZfSEVfTFRGX1NJWkUpICsgMTsNCj4gPiA+ICsJc3RydWN0
+IGllZWU4MDIxMV9yYWRpb3RhcF9oZSAqaGU7DQo+ID4gPiArDQo+ID4gPiArCXN0YXR1cy0+Zmxh
+ZyB8PSBSWF9GTEFHX1JBRElPVEFQX0hFOw0KPiA+ID4gKw0KPiA+ID4gKwloZSA9IHNrYl9wdXNo
+KHNrYiwgc2l6ZW9mKGtub3duKSk7DQo+ID4gPiArCW1lbWNweShoZSwgJmtub3duLCBzaXplb2Yo
+a25vd24pKTsNCj4gPiA+ICsNCj4gPiA+ICsJaGUtPmRhdGEzID0gSEVfUFJFUChEQVRBM19CU1Nf
+Q09MT1IsIEJTU19DT0xPUiwgcnh2WzldKSB8DQo+ID4gPiArCQkgICAgSEVfUFJFUChEQVRBM19M
+RFBDX1hTWU1TRUcsIExEUENfRVhUX1NZTSwgcnh2WzRdKTsNCj4gPiA+ICsJaGUtPmRhdGE0ID0g
+SEVfUFJFUChEQVRBNF9TVV9NVV9TUFRMX1JFVVNFLCBTUl9NQVNLLCByeHZbMTNdKTsNCj4gPiA+
+ICsJaGUtPmRhdGE1ID0gSEVfUFJFUChEQVRBNV9QRV9ESVNBTUJJRywgUEVfRElTQU1CSUcsIHJ4
+dls1XSkgfA0KPiA+ID4gKwkJICAgIGxlMTZfZW5jb2RlX2JpdHMobHRmX3NpemUsDQo+ID4gPiAr
+CQkJCSAgICAgSUVFRTgwMjExX1JBRElPVEFQX0hFX0RBVEE1X0xURl9TSQ0KPiA+ID4gWkUpOw0K
+PiA+ID4gKwlpZiAobGUzMl90b19jcHUocnh2WzBdKSAmIE1UX1BSWFZfVFhCRikNCj4gPiA+ICsJ
+CWhlLT5kYXRhNSB8PSBIRV9CSVRTKERBVEE1X1RYQkYpOw0KPiA+ID4gKwloZS0+ZGF0YTYgPSBI
+RV9QUkVQKERBVEE2X1RYT1AsIFRYT1BfRFVSLCByeHZbOV0pIHwNCj4gPiA+ICsJCSAgICBIRV9Q
+UkVQKERBVEE2X0RPUFBMRVIsIERPUFBMRVIsIHJ4dls5XSk7DQo+ID4gPiArDQo+ID4gPiArCXN3
+aXRjaCAobW9kZSkgew0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hFX1NVOg0KPiA+ID4gKwkJ
+aGUtPmRhdGExIHw9IEhFX0JJVFMoREFUQTFfRk9STUFUX1NVKSB8DQo+ID4gPiArCQkJICAgICBI
+RV9CSVRTKERBVEExX1VMX0RMX0tOT1dOKSB8DQo+ID4gPiArCQkJICAgICBIRV9CSVRTKERBVEEx
+X0JFQU1fQ0hBTkdFX0tOT1dOKSB8DQo+ID4gPiArCQkJICAgICBIRV9CSVRTKERBVEExX0JXX1JV
+X0FMTE9DX0tOT1dOKTsNCj4gPiA+ICsNCj4gPiA+ICsJCWhlLT5kYXRhMyB8PSBIRV9QUkVQKERB
+VEEzX0JFQU1fQ0hBTkdFLCBCRUFNX0NITkcsDQo+ID4gPiByeHZbOF0pIHwNCj4gPiA+ICsJCQkg
+ICAgIEhFX1BSRVAoREFUQTNfVUxfREwsIFVQTElOSywgcnh2WzVdKTsNCj4gPiA+ICsJCWJyZWFr
+Ow0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hFX0VYVF9TVToNCj4gPiA+ICsJCWhlLT5kYXRh
+MSB8PSBIRV9CSVRTKERBVEExX0ZPUk1BVF9FWFRfU1UpIHwNCj4gPiA+ICsJCQkgICAgIEhFX0JJ
+VFMoREFUQTFfVUxfRExfS05PV04pIHwNCj4gPiA+ICsJCQkgICAgIEhFX0JJVFMoREFUQTFfQldf
+UlVfQUxMT0NfS05PV04pOw0KPiA+ID4gKw0KPiA+ID4gKwkJaGUtPmRhdGEzIHw9IEhFX1BSRVAo
+REFUQTNfVUxfREwsIFVQTElOSywgcnh2WzVdKTsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwlj
+YXNlIE1UX1BIWV9UWVBFX0hFX01VOg0KPiA+ID4gKwkJaGUtPmRhdGExIHw9IEhFX0JJVFMoREFU
+QTFfRk9STUFUX01VKSB8DQo+ID4gPiArCQkJICAgICBIRV9CSVRTKERBVEExX1VMX0RMX0tOT1dO
+KTsNCj4gPiA+ICsNCj4gPiA+ICsJCWhlLT5kYXRhMyB8PSBIRV9QUkVQKERBVEEzX1VMX0RMLCBV
+UExJTkssIHJ4dls1XSk7DQo+ID4gPiArCQloZS0+ZGF0YTQgfD0gSEVfUFJFUChEQVRBNF9NVV9T
+VEFfSUQsIE1VX0FJRCwgcnh2WzhdKTsNCj4gPiA+ICsNCj4gPiA+ICsJCW10NzZfY29ubmFjM19t
+YWNfZGVjb2RlX2hlX3JhZGlvdGFwX3J1KHN0YXR1cywgaGUsDQo+ID4gPiByeHYpOw0KPiA+ID4g
+KwkJbXQ3Nl9jb25uYWMzX21hY19kZWNvZGVfaGVfbXVfcmFkaW90YXAoc2tiLCByeHYpOw0KPiA+
+ID4gKwkJYnJlYWs7DQo+ID4gPiArCWNhc2UgTVRfUEhZX1RZUEVfSEVfVEI6DQo+ID4gPiArCQlo
+ZS0+ZGF0YTEgfD0gSEVfQklUUyhEQVRBMV9GT1JNQVRfVFJJRykgfA0KPiA+ID4gKwkJCSAgICAg
+SEVfQklUUyhEQVRBMV9TUFRMX1JFVVNFMl9LTk9XTikgfA0KPiA+ID4gKwkJCSAgICAgSEVfQklU
+UyhEQVRBMV9TUFRMX1JFVVNFM19LTk9XTikgfA0KPiA+ID4gKwkJCSAgICAgSEVfQklUUyhEQVRB
+MV9TUFRMX1JFVVNFNF9LTk9XTik7DQo+ID4gPiArDQo+ID4gPiArCQloZS0+ZGF0YTQgfD0gSEVf
+UFJFUChEQVRBNF9UQl9TUFRMX1JFVVNFMSwgU1JfTUFTSywNCj4gPiA+IHJ4dlsxM10pIHwNCj4g
+PiA+ICsJCQkgICAgIEhFX1BSRVAoREFUQTRfVEJfU1BUTF9SRVVTRTIsIFNSMV9NQVNLLA0KPiA+
+ID4gcnh2WzEzXSkgfA0KPiA+ID4gKwkJCSAgICAgSEVfUFJFUChEQVRBNF9UQl9TUFRMX1JFVVNF
+MywgU1IyX01BU0ssDQo+ID4gPiByeHZbMTNdKSB8DQo+ID4gPiArCQkJICAgICBIRV9QUkVQKERB
+VEE0X1RCX1NQVExfUkVVU0U0LCBTUjNfTUFTSywNCj4gPiA+IHJ4dlsxM10pOw0KPiA+ID4gKw0K
+PiA+ID4gKwkJbXQ3Nl9jb25uYWMzX21hY19kZWNvZGVfaGVfcmFkaW90YXBfcnUoc3RhdHVzLCBo
+ZSwNCj4gPiA+IHJ4dik7DQo+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJZGVmYXVsdDoNCj4gPiA+
+ICsJCWJyZWFrOw0KPiA+ID4gKwl9DQo+ID4gPiArfQ0KPiA+ID4gK0VYUE9SVF9TWU1CT0xfR1BM
+KG10NzZfY29ubmFjM19tYWNfZGVjb2RlX2hlX3JhZGlvdGFwKTsNCj4gPiA+ICsNCj4gPiA+ICtp
+bnQgbXQ3Nl9jb25uYWMzX21hY19maWxsX3J4X3JhdGUoc3RydWN0IG10NzZfZGV2ICpkZXYsDQo+
+ID4gPiArCQkJCSAgc3RydWN0IG10NzZfcnhfc3RhdHVzICpzdGF0dXMsDQo+ID4gPiArCQkJCSAg
+c3RydWN0IGllZWU4MDIxMV9zdXBwb3J0ZWRfYmFuZA0KPiA+ID4gKnNiYW5kLA0KPiA+ID4gKwkJ
+CQkgIF9fbGUzMiAqcnh2LCB1OCAqbW9kZSkNCj4gPiA+ICt7DQo+ID4gPiArCXU4IHN0YmMsIGdp
+LCBidywgZGNtLCBuc3M7DQo+ID4gPiArCWJvb2wgY2NrID0gZmFsc2U7DQo+ID4gPiArCXUzMiB2
+MCwgdjI7DQo+ID4gPiArCWludCBpLCBpZHg7DQo+ID4gPiArDQo+ID4gPiArCXYwID0gbGUzMl90
+b19jcHUocnh2WzBdKTsNCj4gPiA+ICsJdjIgPSBsZTMyX3RvX2NwdShyeHZbMl0pOw0KPiA+ID4g
+Kw0KPiA+ID4gKwlpZHggPSBGSUVMRF9HRVQoTVRfUFJYVl9UWF9SQVRFLCB2MCk7DQo+ID4gPiAr
+CWkgPSBpZHg7DQo+ID4gPiArCW5zcyA9IEZJRUxEX0dFVChNVF9QUlhWX05TVFMsIHYwKSArIDE7
+DQo+ID4gPiArDQo+ID4gPiArCXN0YmMgPSBGSUVMRF9HRVQoTVRfUFJYVl9IVF9TVEJDLCB2Mik7
+DQo+ID4gPiArCWdpID0gRklFTERfR0VUKE1UX1BSWFZfSFRfU0hPUlRfR0ksIHYyKTsNCj4gPiA+
+ICsJKm1vZGUgPSBGSUVMRF9HRVQoTVRfUFJYVl9UWF9NT0RFLCB2Mik7DQo+ID4gPiArCWRjbSA9
+IEZJRUxEX0dFVChNVF9QUlhWX0RDTSwgdjIpOw0KPiA+ID4gKwlidyA9IEZJRUxEX0dFVChNVF9Q
+UlhWX0ZSQU1FX01PREUsIHYyKTsNCj4gPiA+ICsNCj4gPiA+ICsJc3dpdGNoICgqbW9kZSkgew0K
+PiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0NDSzoNCj4gPiA+ICsJCWNjayA9IHRydWU7DQo+ID4g
+PiArCQlmYWxsdGhyb3VnaDsNCj4gPiA+ICsJY2FzZSBNVF9QSFlfVFlQRV9PRkRNOg0KPiA+ID4g
+KwkJaSA9IG10NzZfZ2V0X3JhdGUoZGV2LCBzYmFuZCwgaSwgY2NrKTsNCj4gPiA+ICsJCWJyZWFr
+Ow0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hUX0dGOg0KPiA+ID4gKwljYXNlIE1UX1BIWV9U
+WVBFX0hUOg0KPiA+ID4gKwkJc3RhdHVzLT5lbmNvZGluZyA9IFJYX0VOQ19IVDsNCj4gPiA+ICsJ
+CWlmIChnaSkNCj4gPiA+ICsJCQlzdGF0dXMtPmVuY19mbGFncyB8PSBSWF9FTkNfRkxBR19TSE9S
+VF9HSTsNCj4gPiA+ICsJCWlmIChpID4gMzEpDQo+ID4gPiArCQkJcmV0dXJuIC1FSU5WQUw7DQo+
+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJY2FzZSBNVF9QSFlfVFlQRV9WSFQ6DQo+ID4gPiArCQlz
+dGF0dXMtPm5zcyA9IG5zczsNCj4gPiA+ICsJCXN0YXR1cy0+ZW5jb2RpbmcgPSBSWF9FTkNfVkhU
+Ow0KPiA+ID4gKwkJaWYgKGdpKQ0KPiA+ID4gKwkJCXN0YXR1cy0+ZW5jX2ZsYWdzIHw9IFJYX0VO
+Q19GTEFHX1NIT1JUX0dJOw0KPiA+ID4gKwkJaWYgKGkgPiAxMSkNCj4gPiA+ICsJCQlyZXR1cm4g
+LUVJTlZBTDsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hFX01V
+Og0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hFX1NVOg0KPiA+ID4gKwljYXNlIE1UX1BIWV9U
+WVBFX0hFX0VYVF9TVToNCj4gPiA+ICsJY2FzZSBNVF9QSFlfVFlQRV9IRV9UQjoNCj4gPiA+ICsJ
+CXN0YXR1cy0+bnNzID0gbnNzOw0KPiA+ID4gKwkJc3RhdHVzLT5lbmNvZGluZyA9IFJYX0VOQ19I
+RTsNCj4gPiA+ICsJCWkgJj0gR0VOTUFTSygzLCAwKTsNCj4gPiA+ICsNCj4gPiA+ICsJCWlmIChn
+aSA8PSBOTDgwMjExX1JBVEVfSU5GT19IRV9HSV8zXzIpDQo+ID4gPiArCQkJc3RhdHVzLT5oZV9n
+aSA9IGdpOw0KPiA+ID4gKw0KPiA+ID4gKwkJc3RhdHVzLT5oZV9kY20gPSBkY207DQo+ID4gPiAr
+CQlicmVhazsNCj4gPiA+ICsJY2FzZSBNVF9QSFlfVFlQRV9FSFRfU1U6DQo+ID4gPiArCWNhc2Ug
+TVRfUEhZX1RZUEVfRUhUX1RSSUc6DQo+ID4gPiArCWNhc2UgTVRfUEhZX1RZUEVfRUhUX01VOg0K
+PiA+ID4gKwkJc3RhdHVzLT5uc3MgPSBuc3M7DQo+ID4gPiArCQlzdGF0dXMtPmVuY29kaW5nID0g
+UlhfRU5DX0VIVDsNCj4gPiA+ICsJCWkgJj0gR0VOTUFTSygzLCAwKTsNCj4gPiA+ICsNCj4gPiA+
+ICsJCWlmIChnaSA8PSBOTDgwMjExX1JBVEVfSU5GT19FSFRfR0lfM18yKQ0KPiA+ID4gKwkJCXN0
+YXR1cy0+ZWh0LmdpID0gZ2k7DQo+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJZGVmYXVsdDoNCj4g
+PiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiA+ID4gKwl9DQo+ID4gPiArCXN0YXR1cy0+cmF0ZV9p
+ZHggPSBpOw0KPiA+ID4gKw0KPiA+ID4gKwlzd2l0Y2ggKGJ3KSB7DQo+ID4gPiArCWNhc2UgSUVF
+RTgwMjExX1NUQV9SWF9CV18yMDoNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwljYXNlIElFRUU4
+MDIxMV9TVEFfUlhfQldfNDA6DQo+ID4gPiArCQlpZiAoKm1vZGUgJiBNVF9QSFlfVFlQRV9IRV9F
+WFRfU1UgJiYNCj4gPiA+ICsJCSAgICAoaWR4ICYgTVRfUFJYVl9UWF9FUl9TVV8xMDZUKSkgew0K
+PiA+ID4gKwkJCXN0YXR1cy0+YncgPSBSQVRFX0lORk9fQldfSEVfUlU7DQo+ID4gPiArCQkJc3Rh
+dHVzLT5oZV9ydSA9DQo+ID4gPiArCQkJCU5MODAyMTFfUkFURV9JTkZPX0hFX1JVX0FMTE9DXzEw
+NjsNCj4gPiA+ICsJCX0gZWxzZSB7DQo+ID4gPiArCQkJc3RhdHVzLT5idyA9IFJBVEVfSU5GT19C
+V180MDsNCj4gPiA+ICsJCX0NCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwljYXNlIElFRUU4MDIx
+MV9TVEFfUlhfQldfODA6DQo+ID4gPiArCQlzdGF0dXMtPmJ3ID0gUkFURV9JTkZPX0JXXzgwOw0K
+PiA+ID4gKwkJYnJlYWs7DQo+ID4gPiArCWNhc2UgSUVFRTgwMjExX1NUQV9SWF9CV18xNjA6DQo+
+ID4gPiArCQlzdGF0dXMtPmJ3ID0gUkFURV9JTkZPX0JXXzE2MDsNCj4gPiA+ICsJCWJyZWFrOw0K
+PiA+ID4gKwljYXNlIElFRUU4MDIxMV9TVEFfUlhfQldfMzIwOg0KPiA+ID4gKwkJc3RhdHVzLT5i
+dyA9IFJBVEVfSU5GT19CV18zMjA7DQo+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJZGVmYXVsdDoN
+Cj4gPiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiA+ID4gKwl9DQo+ID4gPiArDQo+ID4gPiArCXN0
+YXR1cy0+ZW5jX2ZsYWdzIHw9IFJYX0VOQ19GTEFHX1NUQkNfTUFTSyAqIHN0YmM7DQo+ID4gPiAr
+CWlmICgqbW9kZSA8IE1UX1BIWV9UWVBFX0hFX1NVICYmIGdpKQ0KPiA+ID4gKwkJc3RhdHVzLT5l
+bmNfZmxhZ3MgfD0gUlhfRU5DX0ZMQUdfU0hPUlRfR0k7DQo+ID4gPiArDQo+ID4gPiArCXJldHVy
+biAwOw0KPiA+ID4gK30NCj4gPiA+ICtFWFBPUlRfU1lNQk9MX0dQTChtdDc2X2Nvbm5hYzNfbWFj
+X2ZpbGxfcnhfcmF0ZSk7DQo+ID4gPiArDQo+ID4gPiArc3RhdGljIHZvaWQNCj4gPiA+ICttdDc2
+X2Nvbm5hYzNfbWFjX3dyaXRlX3R4d2lfODAyMyhfX2xlMzIgKnR4d2ksIHN0cnVjdCBza19idWZm
+DQo+ID4gPiAqc2tiLA0KPiA+ID4gKwkJCQkgc3RydWN0IG10NzZfd2NpZCAqd2NpZCkNCj4gPiA+
+ICt7DQo+ID4gPiArCXU4IHRpZCA9IHNrYi0+cHJpb3JpdHkgJiBJRUVFODAyMTFfUU9TX0NUTF9U
+SURfTUFTSzsNCj4gPiA+ICsJdTggZmNfdHlwZSwgZmNfc3R5cGU7DQo+ID4gPiArCXUxNiBldGhl
+cnR5cGU7DQo+ID4gPiArCWJvb2wgd21tID0gZmFsc2U7DQo+ID4gPiArCXUzMiB2YWw7DQo+ID4g
+PiArDQo+ID4gPiArCWlmICh3Y2lkLT5zdGEpIHsNCj4gPiA+ICsJCXN0cnVjdCBpZWVlODAyMTFf
+c3RhICpzdGE7DQo+ID4gPiArDQo+ID4gPiArCQlzdGEgPSBjb250YWluZXJfb2YoKHZvaWQgKil3
+Y2lkLCBzdHJ1Y3QgaWVlZTgwMjExX3N0YSwNCj4gPiA+IGRydl9wcml2KTsNCj4gPiA+ICsJCXdt
+bSA9IHN0YS0+d21lOw0KPiA+ID4gKwl9DQo+ID4gPiArDQo+ID4gPiArCXZhbCA9IEZJRUxEX1BS
+RVAoTVRfVFhEMV9IRFJfRk9STUFULCBNVF9IRFJfRk9STUFUXzgwMl8zKSB8DQo+ID4gPiArCSAg
+ICAgIEZJRUxEX1BSRVAoTVRfVFhEMV9USUQsIHRpZCk7DQo+ID4gPiArDQo+ID4gPiArCWV0aGVy
+dHlwZSA9IGdldF91bmFsaWduZWRfYmUxNigmc2tiLT5kYXRhWzEyXSk7DQo+ID4gPiArCWlmIChl
+dGhlcnR5cGUgPj0gRVRIX1BfODAyXzNfTUlOKQ0KPiA+ID4gKwkJdmFsIHw9IE1UX1RYRDFfRVRI
+XzgwMl8zOw0KPiA+ID4gKw0KPiA+ID4gKwl0eHdpWzFdIHw9IGNwdV90b19sZTMyKHZhbCk7DQo+
+ID4gPiArDQo+ID4gPiArCWZjX3R5cGUgPSBJRUVFODAyMTFfRlRZUEVfREFUQSA+PiAyOw0KPiA+
+ID4gKwlmY19zdHlwZSA9IHdtbSA/IElFRUU4MDIxMV9TVFlQRV9RT1NfREFUQSA+PiA0IDogMDsN
+Cj4gPiA+ICsNCj4gPiA+ICsJdmFsID0gRklFTERfUFJFUChNVF9UWEQyX0ZSQU1FX1RZUEUsIGZj
+X3R5cGUpIHwNCj4gPiA+ICsJICAgICAgRklFTERfUFJFUChNVF9UWEQyX1NVQl9UWVBFLCBmY19z
+dHlwZSk7DQo+ID4gPiArDQo+ID4gPiArCXR4d2lbMl0gfD0gY3B1X3RvX2xlMzIodmFsKTsNCj4g
+PiA+ICt9DQo+ID4gPiArDQo+ID4gPiArc3RhdGljIHZvaWQNCj4gPiA+ICttdDc2X2Nvbm5hYzNf
+bWFjX3dyaXRlX3R4d2lfODAyMTEoc3RydWN0IG10NzZfZGV2ICpkZXYsIF9fbGUzMg0KPiA+ID4g
+KnR4d2ksDQo+ID4gPiArCQkJCSAgc3RydWN0IHNrX2J1ZmYgKnNrYiwNCj4gPiA+ICsJCQkJICBz
+dHJ1Y3QgaWVlZTgwMjExX2tleV9jb25mICprZXkpDQo+ID4gPiArew0KPiA+ID4gKwlzdHJ1Y3Qg
+aWVlZTgwMjExX2hkciAqaGRyID0gKHN0cnVjdCBpZWVlODAyMTFfaGRyICopc2tiLT5kYXRhOw0K
+PiA+ID4gKwlzdHJ1Y3QgaWVlZTgwMjExX21nbXQgKm1nbXQgPSAoc3RydWN0IGllZWU4MDIxMV9t
+Z210ICopc2tiLQ0KPiA+ID4gPiBkYXRhOw0KPiA+ID4gDQo+ID4gPiArCXN0cnVjdCBpZWVlODAy
+MTFfdHhfaW5mbyAqaW5mbyA9IElFRUU4MDIxMV9TS0JfQ0Ioc2tiKTsNCj4gPiA+ICsJYm9vbCBt
+dWx0aWNhc3QgPSBpc19tdWx0aWNhc3RfZXRoZXJfYWRkcihoZHItPmFkZHIxKTsNCj4gPiA+ICsJ
+dTggdGlkID0gc2tiLT5wcmlvcml0eSAmIElFRUU4MDIxMV9RT1NfQ1RMX1RJRF9NQVNLOw0KPiA+
+ID4gKwlfX2xlMTYgZmMgPSBoZHItPmZyYW1lX2NvbnRyb2w7DQo+ID4gPiArCXU4IGZjX3R5cGUs
+IGZjX3N0eXBlOw0KPiA+ID4gKwl1MzIgdmFsOw0KPiA+ID4gKw0KPiA+ID4gKwlpZiAoaWVlZTgw
+MjExX2lzX2FjdGlvbihmYykgJiYNCj4gPiA+ICsJICAgIG1nbXQtPnUuYWN0aW9uLmNhdGVnb3J5
+ID09IFdMQU5fQ0FURUdPUllfQkFDSyAmJg0KPiA+ID4gKwkgICAgbWdtdC0+dS5hY3Rpb24udS5h
+ZGRiYV9yZXEuYWN0aW9uX2NvZGUgPT0NCj4gPiA+IFdMQU5fQUNUSU9OX0FEREJBX1JFUSkNCj4g
+PiA+ICsJCXRpZCA9IE1UX1RYX0FEREJBOw0KPiA+ID4gKwllbHNlIGlmIChpZWVlODAyMTFfaXNf
+bWdtdChoZHItPmZyYW1lX2NvbnRyb2wpKQ0KPiA+ID4gKwkJdGlkID0gTVRfVFhfTk9STUFMOw0K
+PiA+ID4gKw0KPiA+ID4gKwl2YWwgPSBGSUVMRF9QUkVQKE1UX1RYRDFfSERSX0ZPUk1BVCwgTVRf
+SERSX0ZPUk1BVF84MDJfMTEpIHwNCj4gPiA+ICsJICAgICAgRklFTERfUFJFUChNVF9UWEQxX0hE
+Ul9JTkZPLA0KPiA+ID4gKwkJCSBpZWVlODAyMTFfZ2V0X2hkcmxlbl9mcm9tX3NrYihza2IpIC8g
+MikgfA0KPiA+ID4gKwkgICAgICBGSUVMRF9QUkVQKE1UX1RYRDFfVElELCB0aWQpOw0KPiA+ID4g
+Kw0KPiA+ID4gKwlpZiAoIWllZWU4MDIxMV9pc19kYXRhKGZjKSB8fCBtdWx0aWNhc3QgfHwNCj4g
+PiA+ICsJICAgIGluZm8tPmZsYWdzICYgSUVFRTgwMjExX1RYX0NUTF9VU0VfTUlOUkFURSkNCj4g
+PiA+ICsJCXZhbCB8PSBNVF9UWEQxX0ZJWEVEX1JBVEU7DQo+ID4gPiArDQo+ID4gPiArCWlmIChr
+ZXkgJiYgbXVsdGljYXN0ICYmIGllZWU4MDIxMV9pc19yb2J1c3RfbWdtdF9mcmFtZShza2IpICYm
+DQo+ID4gPiArCSAgICBrZXktPmNpcGhlciA9PSBXTEFOX0NJUEhFUl9TVUlURV9BRVNfQ01BQykg
+ew0KPiA+ID4gKwkJdmFsIHw9IE1UX1RYRDFfQklQOw0KPiA+ID4gKwkJdHh3aVszXSAmPSB+Y3B1
+X3RvX2xlMzIoTVRfVFhEM19QUk9URUNUX0ZSQU1FKTsNCj4gPiA+ICsJfQ0KPiA+ID4gKw0KPiA+
+ID4gKwl0eHdpWzFdIHw9IGNwdV90b19sZTMyKHZhbCk7DQo+ID4gPiArDQo+ID4gPiArCWZjX3R5
+cGUgPSAobGUxNl90b19jcHUoZmMpICYgSUVFRTgwMjExX0ZDVExfRlRZUEUpID4+IDI7DQo+ID4g
+PiArCWZjX3N0eXBlID0gKGxlMTZfdG9fY3B1KGZjKSAmIElFRUU4MDIxMV9GQ1RMX1NUWVBFKSA+
+PiA0Ow0KPiA+ID4gKw0KPiA+ID4gKwl2YWwgPSBGSUVMRF9QUkVQKE1UX1RYRDJfRlJBTUVfVFlQ
+RSwgZmNfdHlwZSkgfA0KPiA+ID4gKwkgICAgICBGSUVMRF9QUkVQKE1UX1RYRDJfU1VCX1RZUEUs
+IGZjX3N0eXBlKTsNCj4gPiA+ICsNCj4gPiA+ICsJdHh3aVsyXSB8PSBjcHVfdG9fbGUzMih2YWwp
+Ow0KPiA+ID4gKw0KPiA+ID4gKwl0eHdpWzNdIHw9IGNwdV90b19sZTMyKEZJRUxEX1BSRVAoTVRf
+VFhEM19CQ00sIG11bHRpY2FzdCkpOw0KPiA+ID4gKwlpZiAoaWVlZTgwMjExX2lzX2JlYWNvbihm
+YykpIHsNCj4gPiA+ICsJCXR4d2lbM10gJj0gfmNwdV90b19sZTMyKE1UX1RYRDNfU1dfUE9XRVJf
+TUdNVCk7DQo+ID4gPiArCQl0eHdpWzNdIHw9IGNwdV90b19sZTMyKE1UX1RYRDNfUkVNX1RYX0NP
+VU5UKTsNCj4gPiA+ICsJfQ0KPiA+ID4gKw0KPiA+ID4gKwlpZiAoaW5mby0+ZmxhZ3MgJiBJRUVF
+ODAyMTFfVFhfQ1RMX0lOSkVDVEVEKSB7DQo+ID4gPiArCQl1MTYgc2Vxbm8gPSBsZTE2X3RvX2Nw
+dShoZHItPnNlcV9jdHJsKTsNCj4gPiA+ICsNCj4gPiA+ICsJCWlmIChpZWVlODAyMTFfaXNfYmFj
+a19yZXEoaGRyLT5mcmFtZV9jb250cm9sKSkgew0KPiA+ID4gKwkJCXN0cnVjdCBpZWVlODAyMTFf
+YmFyICpiYXI7DQo+ID4gPiArDQo+ID4gPiArCQkJYmFyID0gKHN0cnVjdCBpZWVlODAyMTFfYmFy
+ICopc2tiLT5kYXRhOw0KPiA+ID4gKwkJCXNlcW5vID0gbGUxNl90b19jcHUoYmFyLT5zdGFydF9z
+ZXFfbnVtKTsNCj4gPiA+ICsJCX0NCj4gPiA+ICsNCj4gPiA+ICsJCXZhbCA9IE1UX1RYRDNfU05f
+VkFMSUQgfA0KPiA+ID4gKwkJICAgICAgRklFTERfUFJFUChNVF9UWEQzX1NFUSwNCj4gPiA+IElF
+RUU4MDIxMV9TRVFfVE9fU04oc2Vxbm8pKTsNCj4gPiA+ICsJCXR4d2lbM10gfD0gY3B1X3RvX2xl
+MzIodmFsKTsNCj4gPiA+ICsJCXR4d2lbM10gJj0gfmNwdV90b19sZTMyKE1UX1RYRDNfSFdfQU1T
+RFUpOw0KPiA+ID4gKwl9DQo+ID4gPiArfQ0KPiA+ID4gKw0KPiA+ID4gK3ZvaWQgbXQ3Nl9jb25u
+YWMzX21hY193cml0ZV90eHdpKHN0cnVjdCBtdDc2X2RldiAqZGV2LCBfX2xlMzINCj4gPiA+ICp0
+eHdpLA0KPiA+ID4gKwkJCQkgc3RydWN0IHNrX2J1ZmYgKnNrYiwgc3RydWN0IG10NzZfd2NpZA0K
+PiA+ID4gKndjaWQsDQo+ID4gPiArCQkJCSBzdHJ1Y3QgaWVlZTgwMjExX2tleV9jb25mICprZXks
+IGludA0KPiA+ID4gcGlkLA0KPiA+ID4gKwkJCQkgZW51bSBtdDc2X3R4cV9pZCBxaWQsIHUzMiBj
+aGFuZ2VkKQ0KPiA+ID4gK3sNCj4gPiA+ICsJdTMyIHZhbCwgc3pfdHhkID0gbXQ3Nl9pc19tbWlv
+KGRldikgPyBNVF9UWERfU0laRSA6DQo+ID4gPiBNVF9TRElPX1RYRF9TSVpFOw0KPiA+ID4gKwlz
+dHJ1Y3QgaWVlZTgwMjExX3R4X2luZm8gKmluZm8gPSBJRUVFODAyMTFfU0tCX0NCKHNrYik7DQo+
+ID4gPiArCXN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYgPSBpbmZvLT5jb250cm9sLnZpZjsNCj4g
+PiA+ICsJdTggYmFuZF9pZHggPSAoaW5mby0+aHdfcXVldWUgJiBNVF9UWF9IV19RVUVVRV9QSFkp
+ID4+IDI7DQo+ID4gPiArCXU4IHBfZm10LCBxX2lkeCwgb21hY19pZHggPSAwLCB3bW1faWR4ID0g
+MDsNCj4gPiA+ICsJYm9vbCBpc184MDIzID0gaW5mby0+ZmxhZ3MgJiBJRUVFODAyMTFfVFhfQ1RM
+X0hXXzgwMjExX0VOQ0FQOw0KPiA+ID4gKwlzdHJ1Y3QgbXQ3Nl92aWYgKm12aWY7DQo+ID4gPiAr
+CXUxNiB0eF9jb3VudCA9IDE1Ow0KPiA+ID4gKwlib29sIGJlYWNvbiA9ICEhKGNoYW5nZWQgJiAo
+QlNTX0NIQU5HRURfQkVBQ09OIHwNCj4gPiA+ICsJCQkJICAgIEJTU19DSEFOR0VEX0JFQUNPTl9F
+TkFCTEVEKSk7DQo+ID4gPiArCWJvb2wgaW5iYW5kX2Rpc2MgPSAhIShjaGFuZ2VkICYNCj4gPiA+
+IChCU1NfQ0hBTkdFRF9VTlNPTF9CQ0FTVF9QUk9CRV9SRVNQIHwNCj4gPiA+ICsJCQkJCSBCU1Nf
+Q0hBTkdFRF9GSUxTX0RJU0NPVkVSWSkpOw0KPiA+ID4gKw0KPiA+ID4gKwltdmlmID0gdmlmID8g
+KHN0cnVjdCBtdDc2X3ZpZiAqKXZpZi0+ZHJ2X3ByaXYgOiBOVUxMOw0KPiA+ID4gKwlpZiAobXZp
+Zikgew0KPiA+ID4gKwkJb21hY19pZHggPSBtdmlmLT5vbWFjX2lkeDsNCj4gPiA+ICsJCXdtbV9p
+ZHggPSBtdmlmLT53bW1faWR4Ow0KPiA+ID4gKwkJYmFuZF9pZHggPSBtdmlmLT5iYW5kX2lkeDsN
+Cj4gPiA+ICsJfQ0KPiA+ID4gKw0KPiA+ID4gKwlpZiAoaW5iYW5kX2Rpc2MpIHsNCj4gPiA+ICsJ
+CXBfZm10ID0gTVRfVFhfVFlQRV9GVzsNCj4gPiA+ICsJCXFfaWR4ID0gTVRfTE1BQ19BTFRYMDsN
+Cj4gPiA+ICsJfSBlbHNlIGlmIChiZWFjb24pIHsNCj4gPiA+ICsJCXBfZm10ID0gTVRfVFhfVFlQ
+RV9GVzsNCj4gPiA+ICsJCXFfaWR4ID0gTVRfTE1BQ19CQ04wOw0KPiA+ID4gKwl9IGVsc2UgaWYg
+KHFpZCA+PSBNVF9UWFFfUFNEKSB7DQo+ID4gPiArCQlwX2ZtdCA9IG10NzZfaXNfbW1pbyhkZXYp
+ID8gTVRfVFhfVFlQRV9DVCA6DQo+ID4gPiBNVF9UWF9UWVBFX1NGOw0KPiA+ID4gKwkJcV9pZHgg
+PSBNVF9MTUFDX0FMVFgwOw0KPiA+ID4gKwl9IGVsc2Ugew0KPiA+ID4gKwkJcF9mbXQgPSBtdDc2
+X2lzX21taW8oZGV2KSA/IE1UX1RYX1RZUEVfQ1QgOg0KPiA+ID4gTVRfVFhfVFlQRV9TRjsNCj4g
+PiA+ICsJCXFfaWR4ID0gd21tX2lkeCAqIE1UNzZfQ09OTkFDX01BWF9XTU1fU0VUUyArDQo+ID4g
+PiArCQkJbXQ3Nl9jb25uYWNfbG1hY19tYXBwaW5nKHNrYl9nZXRfcXVldWVfbWFwcGluZygNCj4g
+PiA+IHNrYikpOw0KPiA+ID4gKwl9DQo+ID4gPiArDQo+ID4gPiArCXZhbCA9IEZJRUxEX1BSRVAo
+TVRfVFhEMF9UWF9CWVRFUywgc2tiLT5sZW4gKyBzel90eGQpIHwNCj4gPiA+ICsJICAgICAgRklF
+TERfUFJFUChNVF9UWEQwX1BLVF9GTVQsIHBfZm10KSB8DQo+ID4gPiArCSAgICAgIEZJRUxEX1BS
+RVAoTVRfVFhEMF9RX0lEWCwgcV9pZHgpOw0KPiA+ID4gKwl0eHdpWzBdID0gY3B1X3RvX2xlMzIo
+dmFsKTsNCj4gPiA+ICsNCj4gPiA+ICsJdmFsID0gRklFTERfUFJFUChNVF9UWEQxX1dMQU5fSURY
+LCB3Y2lkLT5pZHgpIHwNCj4gPiA+ICsJICAgICAgRklFTERfUFJFUChNVF9UWEQxX09XTl9NQUMs
+IG9tYWNfaWR4KTsNCj4gPiA+ICsNCj4gPiA+ICsJaWYgKGJhbmRfaWR4KQ0KPiA+ID4gKwkJdmFs
+IHw9IEZJRUxEX1BSRVAoTVRfVFhEMV9UR0lELCBiYW5kX2lkeCk7DQo+ID4gPiArDQo+ID4gPiAr
+CXR4d2lbMV0gPSBjcHVfdG9fbGUzMih2YWwpOw0KPiA+ID4gKwl0eHdpWzJdID0gMDsNCj4gPiA+
+ICsNCj4gPiA+ICsJdmFsID0gTVRfVFhEM19TV19QT1dFUl9NR01UIHwNCj4gPiA+ICsJICAgICAg
+RklFTERfUFJFUChNVF9UWEQzX1JFTV9UWF9DT1VOVCwgdHhfY291bnQpOw0KPiA+ID4gKwlpZiAo
+a2V5KQ0KPiA+ID4gKwkJdmFsIHw9IE1UX1RYRDNfUFJPVEVDVF9GUkFNRTsNCj4gPiA+ICsJaWYg
+KGluZm8tPmZsYWdzICYgSUVFRTgwMjExX1RYX0NUTF9OT19BQ0spDQo+ID4gPiArCQl2YWwgfD0g
+TVRfVFhEM19OT19BQ0s7DQo+ID4gPiArCWlmICh3Y2lkLT5hbXNkdSkNCj4gPiA+ICsJCXZhbCB8
+PSBNVF9UWEQzX0hXX0FNU0RVOw0KPiA+ID4gKw0KPiA+ID4gKwl0eHdpWzNdID0gY3B1X3RvX2xl
+MzIodmFsKTsNCj4gPiA+ICsJdHh3aVs0XSA9IDA7DQo+ID4gPiArDQo+ID4gPiArCXZhbCA9IEZJ
+RUxEX1BSRVAoTVRfVFhENV9QSUQsIHBpZCk7DQo+ID4gPiArCWlmIChwaWQgPj0gTVRfUEFDS0VU
+X0lEX0ZJUlNUKQ0KPiA+ID4gKwkJdmFsIHw9IE1UX1RYRDVfVFhfU1RBVFVTX0hPU1Q7DQo+ID4g
+PiArCXR4d2lbNV0gPSBjcHVfdG9fbGUzMih2YWwpOw0KPiA+ID4gKw0KPiA+ID4gKwl2YWwgPSBN
+VF9UWEQ2X0RJU19NQVQgfCBNVF9UWEQ2X0RBUyB8DQo+ID4gPiArCSAgICAgIEZJRUxEX1BSRVAo
+TVRfVFhENl9NU0RVX0NOVCwgMSk7DQo+ID4gPiArCXR4d2lbNl0gPSBjcHVfdG9fbGUzMih2YWwp
+Ow0KPiA+ID4gKwl0eHdpWzddID0gMDsNCj4gPiA+ICsNCj4gPiA+ICsJaWYgKGlzXzgwMjMpDQo+
+ID4gPiArCQltdDc2X2Nvbm5hYzNfbWFjX3dyaXRlX3R4d2lfODAyMyh0eHdpLCBza2IsIHdjaWQp
+Ow0KPiA+ID4gKwllbHNlDQo+ID4gPiArCQltdDc2X2Nvbm5hYzNfbWFjX3dyaXRlX3R4d2lfODAy
+MTEoZGV2LCB0eHdpLCBza2IsIGtleSk7DQo+ID4gPiArDQo+ID4gPiArCWlmICh0eHdpWzFdICYg
+Y3B1X3RvX2xlMzIoTVRfVFhEMV9GSVhFRF9SQVRFKSkgew0KPiA+ID4gKwkJc3RydWN0IGllZWU4
+MDIxMV9oZHIgKmhkciA9IChzdHJ1Y3QgaWVlZTgwMjExX2hkcg0KPiA+ID4gKilza2ItPmRhdGE7
+DQo+ID4gPiArCQlib29sIG1jYXN0ID0gaWVlZTgwMjExX2lzX2RhdGEoaGRyLT5mcmFtZV9jb250
+cm9sKSAmJg0KPiA+ID4gKwkJCSAgICAgaXNfbXVsdGljYXN0X2V0aGVyX2FkZHIoaGRyLT5hZGRy
+MSk7DQo+ID4gPiArCQl1OCBpZHggPSBNVDc2X0NPTk5BQzNfQkFTSUNfUkFURVNfVEJMOw0KPiA+
+ID4gKw0KPiA+ID4gKwkJaWYgKG12aWYpIHsNCj4gPiA+ICsJCQlpZiAobWNhc3QgJiYgbXZpZi0+
+bWNhc3RfcmF0ZXNfaWR4KQ0KPiA+ID4gKwkJCQlpZHggPSBtdmlmLT5tY2FzdF9yYXRlc19pZHg7
+DQo+ID4gPiArCQkJZWxzZSBpZiAoYmVhY29uICYmIG12aWYtPmJlYWNvbl9yYXRlc19pZHgpDQo+
+ID4gPiArCQkJCWlkeCA9IG12aWYtPmJlYWNvbl9yYXRlc19pZHg7DQo+ID4gPiArCQkJZWxzZQ0K
+PiA+ID4gKwkJCQlpZHggPSBtdmlmLT5iYXNpY19yYXRlc19pZHg7DQo+ID4gPiArCQl9DQo+ID4g
+PiArDQo+ID4gPiArCQl0eHdpWzZdIHw9IGNwdV90b19sZTMyKEZJRUxEX1BSRVAoTVRfVFhENl9U
+WF9SQVRFLA0KPiA+ID4gaWR4KSk7DQo+ID4gPiArCQl0eHdpWzNdIHw9IGNwdV90b19sZTMyKE1U
+X1RYRDNfQkFfRElTQUJMRSk7DQo+ID4gPiArCX0NCj4gPiA+ICt9DQo+ID4gPiArRVhQT1JUX1NZ
+TUJPTF9HUEwobXQ3Nl9jb25uYWMzX21hY193cml0ZV90eHdpKTsNCj4gPiA+ICsNCj4gPiA+ICt2
+b2lkIG10NzZfY29ubmFjM190eHdpX2ZyZWUoc3RydWN0IG10NzZfZGV2ICpkZXYsIHN0cnVjdA0K
+PiA+ID4gbXQ3Nl90eHdpX2NhY2hlICp0LA0KPiA+ID4gKwkJCSAgICBzdHJ1Y3QgaWVlZTgwMjEx
+X3N0YSAqc3RhLA0KPiA+ID4gKwkJCSAgICBzdHJ1Y3QgbGlzdF9oZWFkICpmcmVlX2xpc3QpDQo+
+ID4gPiArew0KPiA+ID4gKwlfX2xlMzIgKnR4d2k7DQo+ID4gPiArCXUxNiB3Y2lkX2lkeDsNCj4g
+PiA+ICsNCj4gPiA+ICsJbXQ3Nl9jb25uYWNfdHhwX3NrYl91bm1hcChkZXYsIHQpOw0KPiA+ID4g
+KwlpZiAoIXQtPnNrYikNCj4gPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ID4gKw0KPiA+ID4gKwl0eHdp
+ID0gKF9fbGUzMiAqKW10NzZfZ2V0X3R4d2lfcHRyKGRldiwgdCk7DQo+ID4gPiArCWlmIChzdGEp
+IHsNCj4gPiA+ICsJCXN0cnVjdCBtdDc2X3djaWQgKndjaWQgPSAoc3RydWN0IG10NzZfd2NpZCAq
+KXN0YS0NCj4gPiA+ID4gZHJ2X3ByaXY7DQo+ID4gPiANCj4gPiA+ICsNCj4gPiA+ICsJCXdjaWRf
+aWR4ID0gd2NpZC0+aWR4Ow0KPiA+ID4gKwkJaWYgKGxpa2VseSh0LT5za2ItPnByb3RvY29sICE9
+IGNwdV90b19iZTE2KEVUSF9QX1BBRSkpKQ0KPiA+ID4gKwkJCW10NzZfY29ubmFjM190eF9jaGVj
+a19hZ2dyKHN0YSwgdHh3aSk7DQo+ID4gPiArCX0gZWxzZSB7DQo+ID4gPiArCQl3Y2lkX2lkeCA9
+IGxlMzJfZ2V0X2JpdHModHh3aVsxXSwgTVRfVFhEMV9XTEFOX0lEWCk7DQo+ID4gPiArCX0NCj4g
+PiA+ICsNCj4gPiA+ICsJX19tdDc2X3R4X2NvbXBsZXRlX3NrYihkZXYsIHdjaWRfaWR4LCB0LT5z
+a2IsIGZyZWVfbGlzdCk7DQo+ID4gPiArb3V0Og0KPiA+ID4gKwl0LT5za2IgPSBOVUxMOw0KPiA+
+ID4gKwltdDc2X3B1dF90eHdpKGRldiwgdCk7DQo+ID4gPiArfQ0KPiA+ID4gK0VYUE9SVF9TWU1C
+T0xfR1BMKG10NzZfY29ubmFjM190eHdpX2ZyZWUpOw0KPiA+ID4gKw0KPiA+ID4gK3N0YXRpYyBi
+b29sDQo+ID4gPiArbXQ3Nl9jb25uYWMzX21hY19hZGRfdHhzX3NrYihzdHJ1Y3QgbXQ3Nl9kZXYg
+KmRldiwgc3RydWN0DQo+ID4gPiBtdDc2X3djaWQNCj4gPiA+ICp3Y2lkLA0KPiA+ID4gKwkJCSAg
+ICAgaW50IHBpZCwgX19sZTMyICp0eHNfZGF0YSkNCj4gPiA+ICt7DQo+ID4gPiArCXN0cnVjdCBt
+dDc2X3N0YV9zdGF0cyAqc3RhdHMgPSAmd2NpZC0+c3RhdHM7DQo+ID4gPiArCXN0cnVjdCBpZWVl
+ODAyMTFfc3VwcG9ydGVkX2JhbmQgKnNiYW5kOw0KPiA+ID4gKwlzdHJ1Y3QgaWVlZTgwMjExX3R4
+X2luZm8gKmluZm87DQo+ID4gPiArCXUzMiB0eHJhdGUsIHR4cywgbW9kZSwgc3RiYzsNCj4gPiA+
+ICsJc3RydWN0IHJhdGVfaW5mbyByYXRlID0ge307DQo+ID4gPiArCXN0cnVjdCBza19idWZmX2hl
+YWQgbGlzdDsNCj4gPiA+ICsJc3RydWN0IG10NzZfcGh5ICptcGh5Ow0KPiA+ID4gKwlzdHJ1Y3Qg
+c2tfYnVmZiAqc2tiOw0KPiA+ID4gKwlib29sIGNjayA9IGZhbHNlOw0KPiA+ID4gKw0KPiA+ID4g
+KwltdDc2X3R4X3N0YXR1c19sb2NrKGRldiwgJmxpc3QpOw0KPiA+ID4gKwlza2IgPSBtdDc2X3R4
+X3N0YXR1c19za2JfZ2V0KGRldiwgd2NpZCwgcGlkLCAmbGlzdCk7DQo+ID4gPiArCWlmICghc2ti
+KQ0KPiA+ID4gKwkJZ290byBvdXRfbm9fc2tiOw0KPiA+ID4gKw0KPiA+ID4gKwl0eHMgPSBsZTMy
+X3RvX2NwdSh0eHNfZGF0YVswXSk7DQo+ID4gPiArDQo+ID4gPiArCWluZm8gPSBJRUVFODAyMTFf
+U0tCX0NCKHNrYik7DQo+ID4gPiArCWlmICghKHR4cyAmIE1UX1RYUzBfQUNLX0VSUk9SX01BU0sp
+KQ0KPiA+ID4gKwkJaW5mby0+ZmxhZ3MgfD0gSUVFRTgwMjExX1RYX1NUQVRfQUNLOw0KPiA+ID4g
+Kw0KPiA+ID4gKwlpbmZvLT5zdGF0dXMuYW1wZHVfbGVuID0gMTsNCj4gPiA+ICsJaW5mby0+c3Rh
+dHVzLmFtcGR1X2Fja19sZW4gPSAhIShpbmZvLT5mbGFncyAmDQo+ID4gPiArCQkJCQlJRUVFODAy
+MTFfVFhfU1RBVF9BQ0spOw0KPiA+ID4gKwlpbmZvLT5zdGF0dXMucmF0ZXNbMF0uaWR4ID0gLTE7
+DQo+ID4gPiArDQo+ID4gPiArCXR4cmF0ZSA9IEZJRUxEX0dFVChNVF9UWFMwX1RYX1JBVEUsIHR4
+cyk7DQo+ID4gPiArDQo+ID4gPiArCXJhdGUubWNzID0gRklFTERfR0VUKE1UX1RYX1JBVEVfSURY
+LCB0eHJhdGUpOw0KPiA+ID4gKwlyYXRlLm5zcyA9IEZJRUxEX0dFVChNVF9UWF9SQVRFX05TUywg
+dHhyYXRlKSArIDE7DQo+ID4gPiArCXN0YmMgPSBsZTMyX2dldF9iaXRzKHR4c19kYXRhWzNdLCBN
+VF9UWFMzX1JBVEVfU1RCQyk7DQo+ID4gPiArDQo+ID4gPiArCWlmIChzdGJjICYmIHJhdGUubnNz
+ID4gMSkNCj4gPiA+ICsJCXJhdGUubnNzID4+PSAxOw0KPiA+ID4gKw0KPiA+ID4gKwlpZiAocmF0
+ZS5uc3MgLSAxIDwgQVJSQVlfU0laRShzdGF0cy0+dHhfbnNzKSkNCj4gPiA+ICsJCXN0YXRzLT50
+eF9uc3NbcmF0ZS5uc3MgLSAxXSsrOw0KPiA+ID4gKwlpZiAocmF0ZS5tY3MgPCBBUlJBWV9TSVpF
+KHN0YXRzLT50eF9tY3MpKQ0KPiA+ID4gKwkJc3RhdHMtPnR4X21jc1tyYXRlLm1jc10rKzsNCj4g
+PiA+ICsNCj4gPiA+ICsJbW9kZSA9IEZJRUxEX0dFVChNVF9UWF9SQVRFX01PREUsIHR4cmF0ZSk7
+DQo+ID4gPiArCXN3aXRjaCAobW9kZSkgew0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0NDSzoN
+Cj4gPiA+ICsJCWNjayA9IHRydWU7DQo+ID4gPiArCQlmYWxsdGhyb3VnaDsNCj4gPiA+ICsJY2Fz
+ZSBNVF9QSFlfVFlQRV9PRkRNOg0KPiA+ID4gKwkJbXBoeSA9IG10NzZfZGV2X3BoeShkZXYsIHdj
+aWQtPnBoeV9pZHgpOw0KPiA+ID4gKw0KPiA+ID4gKwkJaWYgKG1waHktPmNoYW5kZWYuY2hhbi0+
+YmFuZCA9PSBOTDgwMjExX0JBTkRfNUdIWikNCj4gPiA+ICsJCQlzYmFuZCA9ICZtcGh5LT5zYmFu
+ZF81Zy5zYmFuZDsNCj4gPiA+ICsJCWVsc2UgaWYgKG1waHktPmNoYW5kZWYuY2hhbi0+YmFuZCA9
+PSBOTDgwMjExX0JBTkRfNkdIWikNCj4gPiA+ICsJCQlzYmFuZCA9ICZtcGh5LT5zYmFuZF82Zy5z
+YmFuZDsNCj4gPiA+ICsJCWVsc2UNCj4gPiA+ICsJCQlzYmFuZCA9ICZtcGh5LT5zYmFuZF8yZy5z
+YmFuZDsNCj4gPiA+ICsNCj4gPiA+ICsJCXJhdGUubWNzID0gbXQ3Nl9nZXRfcmF0ZShtcGh5LT5k
+ZXYsIHNiYW5kLCByYXRlLm1jcywNCj4gPiA+IGNjayk7DQo+ID4gPiArCQlyYXRlLmxlZ2FjeSA9
+IHNiYW5kLT5iaXRyYXRlc1tyYXRlLm1jc10uYml0cmF0ZTsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+
+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hUOg0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hUX0dG
+Og0KPiA+ID4gKwkJaWYgKHJhdGUubWNzID4gMzEpDQo+ID4gPiArCQkJZ290byBvdXQ7DQo+ID4g
+PiArDQo+ID4gPiArCQlyYXRlLmZsYWdzID0gUkFURV9JTkZPX0ZMQUdTX01DUzsNCj4gPiA+ICsJ
+CWlmICh3Y2lkLT5yYXRlLmZsYWdzICYgUkFURV9JTkZPX0ZMQUdTX1NIT1JUX0dJKQ0KPiA+ID4g
+KwkJCXJhdGUuZmxhZ3MgfD0gUkFURV9JTkZPX0ZMQUdTX1NIT1JUX0dJOw0KPiA+ID4gKwkJYnJl
+YWs7DQo+ID4gPiArCWNhc2UgTVRfUEhZX1RZUEVfVkhUOg0KPiA+ID4gKwkJaWYgKHJhdGUubWNz
+ID4gOSkNCj4gPiA+ICsJCQlnb3RvIG91dDsNCj4gPiA+ICsNCj4gPiA+ICsJCXJhdGUuZmxhZ3Mg
+PSBSQVRFX0lORk9fRkxBR1NfVkhUX01DUzsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwljYXNl
+IE1UX1BIWV9UWVBFX0hFX1NVOg0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0hFX0VYVF9TVToN
+Cj4gPiA+ICsJY2FzZSBNVF9QSFlfVFlQRV9IRV9UQjoNCj4gPiA+ICsJY2FzZSBNVF9QSFlfVFlQ
+RV9IRV9NVToNCj4gPiA+ICsJCWlmIChyYXRlLm1jcyA+IDExKQ0KPiA+ID4gKwkJCWdvdG8gb3V0
+Ow0KPiA+ID4gKw0KPiA+ID4gKwkJcmF0ZS5oZV9naSA9IHdjaWQtPnJhdGUuaGVfZ2k7DQo+ID4g
+PiArCQlyYXRlLmhlX2RjbSA9IEZJRUxEX0dFVChNVF9UWF9SQVRFX0RDTSwgdHhyYXRlKTsNCj4g
+PiA+ICsJCXJhdGUuZmxhZ3MgPSBSQVRFX0lORk9fRkxBR1NfSEVfTUNTOw0KPiA+ID4gKwkJYnJl
+YWs7DQo+ID4gPiArCWNhc2UgTVRfUEhZX1RZUEVfRUhUX1NVOg0KPiA+ID4gKwljYXNlIE1UX1BI
+WV9UWVBFX0VIVF9UUklHOg0KPiA+ID4gKwljYXNlIE1UX1BIWV9UWVBFX0VIVF9NVToNCj4gPiA+
+ICsJCWlmIChyYXRlLm1jcyA+IDEzKQ0KPiA+ID4gKwkJCWdvdG8gb3V0Ow0KPiA+ID4gKw0KPiA+
+ID4gKwkJcmF0ZS5laHRfZ2kgPSB3Y2lkLT5yYXRlLmVodF9naTsNCj4gPiA+ICsJCXJhdGUuZmxh
+Z3MgPSBSQVRFX0lORk9fRkxBR1NfRUhUX01DUzsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwlk
+ZWZhdWx0Og0KPiA+ID4gKwkJZ290byBvdXQ7DQo+ID4gPiArCX0NCj4gPiA+ICsNCj4gPiA+ICsJ
+c3RhdHMtPnR4X21vZGVbbW9kZV0rKzsNCj4gPiA+ICsNCj4gPiA+ICsJc3dpdGNoIChGSUVMRF9H
+RVQoTVRfVFhTMF9CVywgdHhzKSkgew0KPiA+ID4gKwljYXNlIElFRUU4MDIxMV9TVEFfUlhfQldf
+MzIwOg0KPiA+ID4gKwkJcmF0ZS5idyA9IFJBVEVfSU5GT19CV18zMjA7DQo+ID4gPiArCQlzdGF0
+cy0+dHhfYndbNF0rKzsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwljYXNlIElFRUU4MDIxMV9T
+VEFfUlhfQldfMTYwOg0KPiA+ID4gKwkJcmF0ZS5idyA9IFJBVEVfSU5GT19CV18xNjA7DQo+ID4g
+PiArCQlzdGF0cy0+dHhfYndbM10rKzsNCj4gPiA+ICsJCWJyZWFrOw0KPiA+ID4gKwljYXNlIElF
+RUU4MDIxMV9TVEFfUlhfQldfODA6DQo+ID4gPiArCQlyYXRlLmJ3ID0gUkFURV9JTkZPX0JXXzgw
+Ow0KPiA+ID4gKwkJc3RhdHMtPnR4X2J3WzJdKys7DQo+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJ
+Y2FzZSBJRUVFODAyMTFfU1RBX1JYX0JXXzQwOg0KPiA+ID4gKwkJcmF0ZS5idyA9IFJBVEVfSU5G
+T19CV180MDsNCj4gPiA+ICsJCXN0YXRzLT50eF9id1sxXSsrOw0KPiA+ID4gKwkJYnJlYWs7DQo+
+ID4gPiArCWRlZmF1bHQ6DQo+ID4gPiArCQlyYXRlLmJ3ID0gUkFURV9JTkZPX0JXXzIwOw0KPiA+
+ID4gKwkJc3RhdHMtPnR4X2J3WzBdKys7DQo+ID4gPiArCQlicmVhazsNCj4gPiA+ICsJfQ0KPiA+
+ID4gKwl3Y2lkLT5yYXRlID0gcmF0ZTsNCj4gPiA+ICsNCj4gPiA+ICtvdXQ6DQo+ID4gPiArCW10
+NzZfdHhfc3RhdHVzX3NrYl9kb25lKGRldiwgc2tiLCAmbGlzdCk7DQo+ID4gPiArDQo+ID4gPiAr
+b3V0X25vX3NrYjoNCj4gPiA+ICsJbXQ3Nl90eF9zdGF0dXNfdW5sb2NrKGRldiwgJmxpc3QpOw0K
+PiA+ID4gKw0KPiA+ID4gKwlyZXR1cm4gISFza2I7DQo+ID4gPiArfQ0KPiA+ID4gKw0KPiA+ID4g
+K3ZvaWQgbXQ3Nl9jb25uYWMzX21hY19hZGRfdHhzKHN0cnVjdCBtdDc2X2RldiAqZGV2LCB2b2lk
+ICpkYXRhLA0KPiA+ID4gKwkJCSAgICAgIHUzMiBtYXhfd3RibF9zaXplKQ0KPiA+ID4gK3sNCj4g
+PiA+ICsJc3RydWN0IG10NzZfd2NpZCAqd2NpZDsNCj4gPiA+ICsJX19sZTMyICp0eHNfZGF0YSA9
+IGRhdGE7DQo+ID4gPiArCXUxNiB3Y2lkeDsNCj4gPiA+ICsJdTggcGlkOw0KPiA+ID4gKw0KPiA+
+ID4gKwlpZiAobGUzMl9nZXRfYml0cyh0eHNfZGF0YVswXSwgTVRfVFhTMF9UWFNfRk9STUFUKSA+
+IDEpDQo+ID4gPiArCQlyZXR1cm47DQo+ID4gPiArDQo+ID4gPiArCXdjaWR4ID0gbGUzMl9nZXRf
+Yml0cyh0eHNfZGF0YVsyXSwgTVRfVFhTMl9XQ0lEKTsNCj4gPiA+ICsJcGlkID0gbGUzMl9nZXRf
+Yml0cyh0eHNfZGF0YVszXSwgTVRfVFhTM19QSUQpOw0KPiA+ID4gKw0KPiA+ID4gKwlpZiAocGlk
+IDwgTVRfUEFDS0VUX0lEX0ZJUlNUKQ0KPiA+ID4gKwkJcmV0dXJuOw0KPiA+ID4gKw0KPiA+ID4g
+KwlpZiAod2NpZHggPj0gbWF4X3d0Ymxfc2l6ZSkNCj4gPiA+ICsJCXJldHVybjsNCj4gPiA+ICsN
+Cj4gPiA+ICsJcmN1X3JlYWRfbG9jaygpOw0KPiA+ID4gKw0KPiA+ID4gKwl3Y2lkID0gcmN1X2Rl
+cmVmZXJlbmNlKGRldi0+d2NpZFt3Y2lkeF0pOw0KPiA+ID4gKwlpZiAoIXdjaWQpDQo+ID4gPiAr
+CQlnb3RvIG91dDsNCj4gPiA+ICsNCj4gPiA+ICsJbXQ3Nl9jb25uYWMzX21hY19hZGRfdHhzX3Nr
+YihkZXYsIHdjaWQsIHBpZCwgdHhzX2RhdGEpOw0KPiA+ID4gKwlpZiAoIXdjaWQtPnN0YSkNCj4g
+PiA+ICsJCWdvdG8gb3V0Ow0KPiA+ID4gKw0KPiA+ID4gKwlzcGluX2xvY2tfYmgoJmRldi0+c3Rh
+X3BvbGxfbG9jayk7DQo+ID4gPiArCWlmIChsaXN0X2VtcHR5KCZ3Y2lkLT5wb2xsX2xpc3QpKQ0K
+PiA+ID4gKwkJbGlzdF9hZGRfdGFpbCgmd2NpZC0+cG9sbF9saXN0LCAmZGV2LT5zdGFfcG9sbF9s
+aXN0KTsNCj4gPiA+ICsJc3Bpbl91bmxvY2tfYmgoJmRldi0+c3RhX3BvbGxfbG9jayk7DQo+ID4g
+PiArDQo+ID4gPiArb3V0Og0KPiA+ID4gKwlyY3VfcmVhZF91bmxvY2soKTsNCj4gPiA+ICt9DQo+
+ID4gPiArRVhQT1JUX1NZTUJPTF9HUEwobXQ3Nl9jb25uYWMzX21hY19hZGRfdHhzKTsNCj4gPiA+
+ICsNCj4gPiA+ICt2b2lkIG10NzZfY29ubmFjM190eF90b2tlbl9wdXQoc3RydWN0IG10NzZfZGV2
+ICpkZXYpDQo+ID4gPiArew0KPiA+ID4gKwlzdHJ1Y3QgbXQ3Nl90eHdpX2NhY2hlICp0eHdpOw0K
+PiA+ID4gKwlpbnQgaWQ7DQo+ID4gPiArDQo+ID4gPiArCXNwaW5fbG9ja19iaCgmZGV2LT50b2tl
+bl9sb2NrKTsNCj4gPiA+ICsJaWRyX2Zvcl9lYWNoX2VudHJ5KCZkZXYtPnRva2VuLCB0eHdpLCBp
+ZCkgew0KPiA+ID4gKwkJbXQ3Nl9jb25uYWMzX3R4d2lfZnJlZShkZXYsIHR4d2ksIE5VTEwsIE5V
+TEwpOw0KPiA+ID4gKwkJZGV2LT50b2tlbl9jb3VudC0tOw0KPiA+ID4gKwl9DQo+ID4gPiArCXNw
+aW5fdW5sb2NrX2JoKCZkZXYtPnRva2VuX2xvY2spOw0KPiA+ID4gKwlpZHJfZGVzdHJveSgmZGV2
+LT50b2tlbik7DQo+ID4gPiArfQ0KPiA+ID4gK0VYUE9SVF9TWU1CT0xfR1BMKG10NzZfY29ubmFj
+M190eF90b2tlbl9wdXQpOw0KPiA+ID4gZGlmZiAtLWdpdA0KPiA+ID4gYS9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29ubmFjM19tYWMuaA0KPiA+ID4gYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29ubmFjM19tYWMuaA0KPiA+ID4gaW5k
+ZXggNjY2M2EwYjQ2NTQxLi5iY2MxZDk3NmIyYjAgMTAwNjQ0DQo+ID4gPiAtLS0gYS9kcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZfY29ubmFjM19tYWMuaA0KPiA+ID4gKysr
+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2X2Nvbm5hYzNfbWFjLmgN
+Cj4gPiA+IEBAIC00LDYgKzQsMjQgQEANCj4gPiA+ICAjaWZuZGVmIF9fTVQ3Nl9DT05OQUMzX01B
+Q19IDQo+ID4gPiAgI2RlZmluZSBfX01UNzZfQ09OTkFDM19NQUNfSA0KPiA+ID4gIA0KPiA+ID4g
+Ky8qIE5PVEU6IHVzZWQgdG8gbWFwIG10NzZfcmF0ZXMuIGlkeCBtYXkgY2hhbmdlIGlmIGZpcm13
+YXJlDQo+ID4gPiBleHBhbmRzDQo+ID4gPiB0YWJsZSAqLw0KPiA+ID4gKyNkZWZpbmUgTVQ3Nl9D
+T05OQUMzX0JBU0lDX1JBVEVTX1RCTAkxMQ0KPiA+ID4gKyNkZWZpbmUgTVQ3Nl9DT05OQUMzX0JF
+QUNPTl9SQVRFU19UQkwJMjUNCj4gPiA+IA0KPiA+IA0KPiA+IERpZmZlcmVudCBkZXZpY2VzIG1h
+eSBoYXZlIGRpZmZlcmVudCBkZWZpbmVkIHZhbHVlLiANCj4gDQo+IFRoZSBvdGhlciBXaUZpNyBk
+ZXZpY2UgSSBhbSB3b3JraW5nIG9uIHJlbGllcyBvbiB0aGUgdmFsdWVzIEkgbW92ZWQNCj4gaW4N
+Cj4gbXQ3Nl9jb25uYWMzX21hYy5oIChpbiBjb21tb24gd2l0aCBtdDc5OTYpLiBNb3Jlb3ZlciB5
+b3UgY2FuIHN0aWxsDQo+IGhhdmUgcGVyLWRldmljZSB2YWx1ZXMgaW4gbXQ3OTk2L21hYy5oIChJ
+IGhhdmUgbm90IHJlbW92ZWQgaXQpLg0KPiANCg0KUGxlYXNlIGRvdWJsZSBjaGVjayB3aXRoIHRo
+ZSBtdGsgZm9sayB5b3Ugd29yayB3aXRoLiBUaGUgMTEgYW5kIDI1IGlzDQp0aGUgdmFsdWUgSSBk
+aXNjdXNzZWQgd2l0aCBmaXJtd2FyZSBmb2xrcyB0byBhdm9pZCBvdmVybGFwcGluZyB0aGUgdGJs
+DQptdDc5OTYgdXNlIChNVS9vdGhlciBhbGdvIGluIGZ3KSwgb3IgaXQgY2F1c2VzIHNvbWV0aGlu
+ZyBoYXJkbHkgc29sdmluZw0KaXNzdWUNCiANCj4gPiANCj4gPiBJJ20gdGhpbmtpbmcgaWYgaXQn
+cyB0b28gZWFybHkgdG8gY3JlYXRlIHRoaXMgcGF0Y2ggZm9yIGp1c3QgbW92aW5nDQo+ID4gbXQ3
+OTk2IHRvIGNvbm5hYzNfbGliPw0KPiANCj4gVGhlIGNvZGUgSSBtb3ZlZCBpcyB1c2VkIGJ5IHRo
+ZSBvdGhlciBkZXZpY2UgYXMgd2VsbC4gVGhpcyBzZXJpZXMgaXMNCj4gYQ0KPiBwcmVsaW1pbmFy
+eSBzZXJpZXMgdG8gc3VwcG9ydCBpdC4NCj4gDQo+IFJlZ2FyZHMsDQo+IExvcmVuem8NCj4gDQo+
+ID4gDQo+ID4gUnlkZXINCj4gPiANCg==
