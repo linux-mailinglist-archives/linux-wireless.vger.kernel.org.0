@@ -2,127 +2,146 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFBB772A42C
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 22:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8216072A55B
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 23:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbjFIUOX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 16:14:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
+        id S230015AbjFIV3w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 17:29:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjFIUOW (ORCPT
+        with ESMTP id S232498AbjFIV3v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 16:14:22 -0400
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49FB9B9;
-        Fri,  9 Jun 2023 13:14:21 -0700 (PDT)
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-33b04c8f3eeso8724765ab.0;
-        Fri, 09 Jun 2023 13:14:21 -0700 (PDT)
+        Fri, 9 Jun 2023 17:29:51 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6616B35BE
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 14:29:50 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-568ba7abc11so20473967b3.3
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Jun 2023 14:29:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686346189; x=1688938189;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oQDHQv5QQ7F49jvnNaX5O624EPUVQF/yKUfjfHQuFnc=;
+        b=LePNwit0ABp1ENxorce8Sa7Bd4LjKtNLwa/pG6o1QxykmRLbH0P/yLOw/MmeYRuxBU
+         q6Jrud4gYRsmAksqaqXcQmg5APEXk5xOkWEcVkUt+7+I+m9sjJ/lfi3LTs2oaDj9qGtq
+         FqAAM5W7r38V/bKGdhcIRGRwyQYNBQJrUKdVY+GeNDUQUcUrQqxa+0OHKBldHawIOPw7
+         5UVSaZlkQwYT5bOtcT9zG3ykVFoXtoJMwxzBJABVSh98ICXyKXC30TEVoan1/9xKPduX
+         MeEUqzMSUINxKI7NBNQ1qRWak6K2y3wGJJpJOugPT1YrBnuhxTy/dMD/BQ0o3MPkCm45
+         NNIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686341660; x=1688933660;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dm3YQcYKNWwZSM4iR7CtEb9BHyaQ/m2Q8HtJl86RiRU=;
-        b=T9GSe8ftSsJ0da+//C8PGdR6Luu791ezmPHJ2RfhMCWyv/SeTvmuwl/NHP9TR7HkvJ
-         WGzwC9HJ/QY50hysPfnkPK+q7MZ4UNGsnkWIc3QQhHBH1hT8c8bUMDaGy/J/DVp2e+8X
-         miytYSeVv6dmlHCI9Rg0ughOFV7TX11cRB2Xt1WqZipUck82KD+Yz6DoIbNmPiFvbhrq
-         hAtxdZPdfLz5gfMDazu6+7/aPjXKUPZuP7qoQvMMxEbkSLdixF4TpWT8XP8VAvpIKn02
-         HtxE1VhlUDnQqR+Z8IYhQDnrQjLb/LnJGsONwmFSlkzAjQcdZ1o8rlBLET2+QrpoVNEN
-         xegw==
-X-Gm-Message-State: AC+VfDyVkO/rXRZdECROA/AR0bIbzcr3DXHx1lc1Pw7HtohWwKSEPMvd
-        MTt3FkwemfvfdmzRb3jfIa5D+5N72g==
-X-Google-Smtp-Source: ACHHUZ5HLQ62qVYYmTaI/TXCWHChzO0EtCriKFYSmrqmniVxwa3NdMPVMwSdaJU0phW928qsX1qZPw==
-X-Received: by 2002:a92:cd4a:0:b0:33e:8adf:17a with SMTP id v10-20020a92cd4a000000b0033e8adf017amr2321162ilq.16.1686341660462;
-        Fri, 09 Jun 2023 13:14:20 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id g9-20020a926b09000000b0033e4937640esm1257957ilc.80.2023.06.09.13.14.18
+        d=1e100.net; s=20221208; t=1686346189; x=1688938189;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oQDHQv5QQ7F49jvnNaX5O624EPUVQF/yKUfjfHQuFnc=;
+        b=YuI2qm6qlBukknqE2Ohq1MKWQdHS7Mg/fNLrGwSJzN12CujCd03QkJo1ziR0xz/WCQ
+         hxH+AQuCuZiIhcu72p9bpSRA5nEMtXGgsjaXCZZWLl5aA57hWG2n0R6QXwTWW3dLe8SB
+         UF/ByxUuHC5wF6x1N9UguyfeWQOWcnDWegPRHfJYj4F3+w5VEJRQNsQGwKSKGjp4cxJX
+         4vaiwF5oBeeKBrjXDdIJkBCttCJbfIeYZR8OuCLlnuiWSTTUuSeIlz2eV93xnhzCNE7G
+         uwCUtZvwntBAcLyoQLy3mus+bVhqEZr0MaOLtRALVa3g65biVEVAKg8LKT3eCpFnygSg
+         spBg==
+X-Gm-Message-State: AC+VfDyQM9HookFEKCrU87VVMr1XIvF/Xtic3dpc0C1LPS/OzJbtNjL4
+        X3Qr0LVCD+XFZrO9d3dJSxriOw==
+X-Google-Smtp-Source: ACHHUZ6zVT6zy2xPQU6h6zNxSgG3a9+hAx3/LLoy1GtDkJTTgoju5XlmXUOBA28ACU3lez+R9dzHTA==
+X-Received: by 2002:a25:c78b:0:b0:ba8:f70:1eb9 with SMTP id w133-20020a25c78b000000b00ba80f701eb9mr2046657ybe.57.1686346189501;
+        Fri, 09 Jun 2023 14:29:49 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id f6-20020a5b0d46000000b00bc41075297fsm7249ybr.23.2023.06.09.14.29.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 13:14:19 -0700 (PDT)
-Received: (nullmailer pid 2082637 invoked by uid 1000);
-        Fri, 09 Jun 2023 20:14:18 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 09 Jun 2023 14:29:49 -0700 (PDT)
+Date:   Fri, 9 Jun 2023 14:29:39 -0700 (PDT)
+From:   Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To:     Gregory Greenman <gregory.greenman@intel.com>
+cc:     Ariel Malamud <ariel.malamud@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@lists.linux.dev
+Subject: [PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep
+ regression
+Message-ID: <79ffcc22-9775-cb6d-3ffd-1a517c40beef@google.com>
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     krzysztof.kozlowski+dt@linaro.org, ath10k@lists.infradead.org,
-        kvalo@kernel.org, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org, robh+dt@kernel.org,
-        conor+dt@kernel.org
-In-Reply-To: <f30552d1bfdb4c56f99ca79d8fbf52d3fcf71686.1686331623.git.chunkeey@gmail.com>
-References: <f30552d1bfdb4c56f99ca79d8fbf52d3fcf71686.1686331623.git.chunkeey@gmail.com>
-Message-Id: <168634165805.2082604.10984266765372350762.robh@kernel.org>
-Subject: Re: [PATCH v1] dt-bindings: net: wireless: ath10k: add
- ieee80211-freq-limit property
-Date:   Fri, 09 Jun 2023 14:14:18 -0600
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Lockdep on 6.4-rc on ThinkPad X1 Carbon 5th says
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+6.4.0-rc5 #1 Not tainted
+-----------------------------------------------------
+kworker/3:1/49 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
+ffff8881066fa368 (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}, at: rs_drv_get_rate+0x46/0xe7
 
-On Fri, 09 Jun 2023 19:27:23 +0200, Christian Lamparter wrote:
-> This is an existing optional property that ieee80211.yaml/cfg80211
-> provides. It's useful to further restrict supported frequencies
-> for a specified device through device-tree.
-> 
-> The driver supported this since ~2018 by
-> commit 34d5629d2ca8 ("ath10k: limit available channels via DT ieee80211-freq-limit")
-> 
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
-> 
-> Note: this is for ath10k. The other patch is for a different driver (ath11k).
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath10k.yaml        | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+and this task is already holding:
+ffff8881066f80a8 (&sta->rate_ctrl_lock){+.-.}-{2:2}, at: rate_control_get_rate+0xbd/0x126
+which would create a new lock dependency:
+ (&sta->rate_ctrl_lock){+.-.}-{2:2} -> (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+but this new dependency connects a SOFTIRQ-irq-safe lock:
+ (&sta->rate_ctrl_lock){+.-.}-{2:2}
+etc. etc. etc.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml:171:1: [error] duplication of key "allOf" in mapping (key-duplicates)
+Changing the spin_lock() in rs_drv_get_rate() to spin_lock_bh() was not
+enough to pacify lockdep, but changing them all on pers.lock has worked.
 
-dtschema/dtc warnings/errors:
-make[1]: *** Deleting file 'Documentation/devicetree/bindings/net/wireless/qcom,ath10k.example.dts'
-Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml:171:1: found duplicate key "allOf" with value "[]" (original value: "[]")
-make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/net/wireless/qcom,ath10k.example.dts] Error 1
-make[1]: *** Waiting for unfinished jobs....
-./Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml:171:1: found duplicate key "allOf" with value "[]" (original value: "[]")
-Traceback (most recent call last):
-  File "/usr/local/bin/dt-doc-validate", line 62, in <module>
-    ret |= check_doc(f)
-  File "/usr/local/bin/dt-doc-validate", line 31, in check_doc
-    for error in sorted(dtschema.DTValidator.iter_schema_errors(testtree), key=lambda e: e.linecol):
-  File "/usr/local/lib/python3.10/dist-packages/dtschema/lib.py", line 736, in iter_schema_errors
-    cls.annotate_error(error, meta_schema, error.schema_path)
-  File "/usr/local/lib/python3.10/dist-packages/dtschema/lib.py", line 712, in annotate_error
-    schema = schema[p]
-KeyError: 'type'
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml: ignoring, error parsing file
-make: *** [Makefile:1512: dt_binding_check] Error 2
+Fixes: a8938bc881d2 ("wifi: iwlwifi: mvm: Add locking to the rate read flow")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
 
-doc reference errors (make refcheckdocs):
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/f30552d1bfdb4c56f99ca79d8fbf52d3fcf71686.1686331623.git.chunkeey@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+--- 6.4-rc5/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ linux/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -2692,7 +2692,7 @@ static void rs_drv_get_rate(void *mvm_r,
+ 
+ 	lq_sta = mvm_sta;
+ 
+-	spin_lock(&lq_sta->pers.lock);
++	spin_lock_bh(&lq_sta->pers.lock);
+ 	iwl_mvm_hwrate_to_tx_rate_v1(lq_sta->last_rate_n_flags,
+ 				     info->band, &info->control.rates[0]);
+ 	info->control.rates[0].count = 1;
+@@ -2707,7 +2707,7 @@ static void rs_drv_get_rate(void *mvm_r,
+ 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
+ 					     &txrc->reported_rate);
+ 	}
+-	spin_unlock(&lq_sta->pers.lock);
++	spin_unlock_bh(&lq_sta->pers.lock);
+ }
+ 
+ static void *rs_drv_alloc_sta(void *mvm_rate, struct ieee80211_sta *sta,
+@@ -3264,11 +3264,11 @@ void iwl_mvm_rs_tx_status(struct iwl_mvm
+ 	/* If it's locked we are in middle of init flow
+ 	 * just wait for next tx status to update the lq_sta data
+ 	 */
+-	if (!spin_trylock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
++	if (!spin_trylock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
+ 		return;
+ 
+ 	__iwl_mvm_rs_tx_status(mvm, sta, tid, info, ndp);
+-	spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++	spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ }
+ 
+ #ifdef CONFIG_MAC80211_DEBUGFS
+@@ -4117,9 +4117,9 @@ void iwl_mvm_rs_rate_init(struct iwl_mvm
+ 	} else {
+ 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 
+-		spin_lock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++		spin_lock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ 		rs_drv_rate_init(mvm, sta, band);
+-		spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++		spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ 	}
+ }
+ 
