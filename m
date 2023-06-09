@@ -2,127 +2,210 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6E17296CA
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 12:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C8BE729719
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 12:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbjFIKZ1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 06:25:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34382 "EHLO
+        id S238744AbjFIKjO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 06:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241616AbjFIKZA (ORCPT
+        with ESMTP id S239858AbjFIKii (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 06:25:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494108A6B;
-        Fri,  9 Jun 2023 03:15:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 150BD65674;
-        Fri,  9 Jun 2023 10:15:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89486C433EF;
-        Fri,  9 Jun 2023 10:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686305735;
-        bh=69i66ox8ltEgL7P8307OpSEFPOK7ge4DxS4uiN/dP78=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=cg6IWFuxqv09zXT72fguVqtyCBgiTwtFNBa8tvGamnt4MY4ymz+ncSpIeKky8SqPv
-         pW+TE/qUpmBjmEY6XQl+sPzBlcZjXD4NQRm+DdI14BFVhdnzZ4riUaMdpMmkbxGj1d
-         XnXGKBC8R+qpA8CFqn1MXSahpTr4+P3M7/9sAyERl8JeRK2yf+Ve6qi00dNeuiyUiW
-         pXqds5te6TQVBcuJYpR04MMRf1bt+Mtba/79ghQbLQirBu0NuOFqNe+syHsVFF4sbq
-         Gx3W/R5cELcFGcm7taPUhLdAxcQSraloLhTlrtJJobj2+tuG6a+GfParBHAnneyuuF
-         eEbfxTq8Bg7kg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Remi Pommarel <repk@triplefau.lt>
-Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ath9k: Fix possible stall on ath9k_txq_list_has_key()
-References: <20230609093744.1985-1-repk@triplefau.lt>
-Date:   Fri, 09 Jun 2023 13:15:32 +0300
-In-Reply-To: <20230609093744.1985-1-repk@triplefau.lt> (Remi Pommarel's
-        message of "Fri, 9 Jun 2023 11:37:44 +0200")
-Message-ID: <87sfb1gcvv.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 9 Jun 2023 06:38:38 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FD654201
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 03:37:01 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b24b34b59fso6474035ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 09 Jun 2023 03:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1686307021; x=1688899021;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C/mMvigJL/P3XLjW5mZdClcY+WmwFZZzzoiJhKTDQkc=;
+        b=DkNUuTXB0JIT0AXio19/Jo3070HAKtDbCtYGrpkRTrTxcGxe0IBqINmdRq7ZK6co1y
+         iiCh++Uonsk7uWIL2TzvKebJ0+FSry8nq63iz7LAFNScMsbd88E64wizfp5Mbh+EEVn0
+         4TVj+Z94mfLDGGqOrDQZ4T6lYKa3ADJONQHmQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686307021; x=1688899021;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C/mMvigJL/P3XLjW5mZdClcY+WmwFZZzzoiJhKTDQkc=;
+        b=LeKu1xQ7awEeZS/rgVp9pZ7YIS2F9BXWz6NRDNcYwGvBZTpcFobYx0Y1hmZoJ4DYeJ
+         gnhxg5Dc8/WIdhiA+tObT3vcHH0b25Ne9dERRqFK9HvdSAOA4hP8uVmmko9xgpcPn/ep
+         xmT7kb7ZKfsDYrq5JMpDb10f47Or50bdu9koA33wxTrPtuZV7t1ZK6kAoAeOCEYjYCwm
+         s48ZyJblIV2cgEUGdPzoPHQauO60QpRa4XLxwNhR5Vn6JcRAgiCRardzojfce3ECrxBV
+         7s/q0IKafrAHbvW8w0DQe1t/pSNgv7pqG6ZgePFExFHxPUyHCooX3xrgG5wzifqIBlsq
+         153g==
+X-Gm-Message-State: AC+VfDz5as4l6q3A83iPybgIfQQ5xb/7QaldPaf78yXNtOEK9j4fcWdC
+        XXW9o+rThRGVT8SPMdWpEBxgNw==
+X-Google-Smtp-Source: ACHHUZ4/tjNrUSzT1tnZZD6sxOJEB9j+rcJeEl5E91K3jwKxL+7t9skx3rdOFvvC+tUnYjjRfdQotA==
+X-Received: by 2002:a17:902:f547:b0:1af:fbb6:23b7 with SMTP id h7-20020a170902f54700b001affbb623b7mr914456plf.3.1686307020776;
+        Fri, 09 Jun 2023 03:37:00 -0700 (PDT)
+Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:6df7:6572:8bac:cbd6])
+        by smtp.gmail.com with ESMTPSA id p18-20020a170902ebd200b001acaf7e26bbsm2949733plg.53.2023.06.09.03.36.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jun 2023 03:37:00 -0700 (PDT)
+From:   Pin-yen Lin <treapking@chromium.org>
+To:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     Brian Norris <briannorris@chromium.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pin-yen Lin <treapking@chromium.org>
+Subject: [PATCH] wifi: mwifiex: Replace RX workqueues with kthreads
+Date:   Fri,  9 Jun 2023 18:35:01 +0800
+Message-ID: <20230609103651.313194-1-treapking@chromium.org>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remi Pommarel <repk@triplefau.lt> writes:
+This improves the RX throughput likely by better locality for the work
+loads.
 
-> On EDMA capable hardware, ath9k_txq_list_has_key() can enter infinite
-> loop if it is called while all txq_fifos have packets that use different
-> key that the one we are looking for. Fix it by exiting the loop if all
-> txq_fifos have been checked already.
->
-> Because this loop is called under spin_lock_bh() (see ath_txq_lock) it
-> causes the following rcu stall:
->
-> rcu: INFO: rcu_sched self-detected stall on CPU
-> ath10k_pci 0000:01:00.0: failed to read temperature -11
-> rcu:    1-....: (5254 ticks this GP) idle=189/1/0x4000000000000002 softirq=8442983/8442984 fqs=2579
->         (t=5257 jiffies g=17983297 q=334)
-> Task dump for CPU 1:
-> task:hostapd         state:R  running task     stack:    0 pid:  297 ppid:   289 flags:0x0000000a
-> Call trace:
->  dump_backtrace+0x0/0x170
->  show_stack+0x1c/0x24
->  sched_show_task+0x140/0x170
->  dump_cpu_task+0x48/0x54
->  rcu_dump_cpu_stacks+0xf0/0x134
->  rcu_sched_clock_irq+0x8d8/0x9fc
->  update_process_times+0xa0/0xec
->  tick_sched_timer+0x5c/0xd0
->  __hrtimer_run_queues+0x154/0x320
->  hrtimer_interrupt+0x120/0x2f0
->  arch_timer_handler_virt+0x38/0x44
->  handle_percpu_devid_irq+0x9c/0x1e0
->  handle_domain_irq+0x64/0x90
->  gic_handle_irq+0x78/0xb0
->  call_on_irq_stack+0x28/0x38
->  do_interrupt_handler+0x54/0x5c
->  el1_interrupt+0x2c/0x4c
->  el1h_64_irq_handler+0x14/0x1c
->  el1h_64_irq+0x74/0x78
->  ath9k_txq_has_key+0x1bc/0x250 [ath9k]
->  ath9k_set_key+0x1cc/0x3dc [ath9k]
->  drv_set_key+0x78/0x170
->  ieee80211_key_replace+0x564/0x6cc
->  ieee80211_key_link+0x174/0x220
->  ieee80211_add_key+0x11c/0x300
->  nl80211_new_key+0x12c/0x330
->  genl_family_rcv_msg_doit+0xbc/0x11c
->  genl_rcv_msg+0xd8/0x1c4
->  netlink_rcv_skb+0x40/0x100
->  genl_rcv+0x3c/0x50
->  netlink_unicast+0x1ec/0x2c0
->  netlink_sendmsg+0x198/0x3c0
->  ____sys_sendmsg+0x210/0x250
->  ___sys_sendmsg+0x78/0xc4
->  __sys_sendmsg+0x4c/0x90
->  __arm64_sys_sendmsg+0x28/0x30
->  invoke_syscall.constprop.0+0x60/0x100
->  do_el0_svc+0x48/0xd0
->  el0_svc+0x14/0x50
->  el0t_64_sync_handler+0xa8/0xb0
->  el0t_64_sync+0x158/0x15c
->
-> This rcu stall is hard to reproduce as is, but changing ATH_TXFIFO_DEPTH
-> from 8 to 2 makes it reasonably easy to reproduce.
->
-> Fixes: ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
-> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+We tested this patch on Mediatek MT8173 Chromebooks, and it shows ~80%
+Rx throughput improvement on high data rate test cases.
 
-Title is missing "wifi:" but I can add that.
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+---
 
+ .../wireless/marvell/mwifiex/11n_rxreorder.c  |  2 +-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  2 +-
+ drivers/net/wireless/marvell/mwifiex/main.c   | 29 ++++++++-----------
+ drivers/net/wireless/marvell/mwifiex/main.h   |  5 ++--
+ 4 files changed, 17 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+index 391793a16adc..431f6dc61f5b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -198,7 +198,7 @@ mwifiex_del_rx_reorder_entry(struct mwifiex_private *priv,
+ 	priv->adapter->rx_locked = true;
+ 	if (priv->adapter->rx_processing) {
+ 		spin_unlock_bh(&priv->adapter->rx_proc_lock);
+-		flush_workqueue(priv->adapter->rx_workqueue);
++		kthread_flush_worker(priv->adapter->rx_thread);
+ 	} else {
+ 		spin_unlock_bh(&priv->adapter->rx_proc_lock);
+ 	}
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index bcd564dc3554..f985bff4e52c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -872,7 +872,7 @@ static int mwifiex_deinit_priv_params(struct mwifiex_private *priv)
+ 	adapter->rx_locked = true;
+ 	if (adapter->rx_processing) {
+ 		spin_unlock_bh(&adapter->rx_proc_lock);
+-		flush_workqueue(adapter->rx_workqueue);
++		kthread_flush_worker(adapter->rx_thread);
+ 	} else {
+ 	spin_unlock_bh(&adapter->rx_proc_lock);
+ 	}
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+index ea22a08e6c08..bab963f3db83 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -168,7 +168,7 @@ static void mwifiex_queue_rx_work(struct mwifiex_adapter *adapter)
+ 		spin_unlock_bh(&adapter->rx_proc_lock);
+ 	} else {
+ 		spin_unlock_bh(&adapter->rx_proc_lock);
+-		queue_work(adapter->rx_workqueue, &adapter->rx_work);
++		kthread_queue_work(adapter->rx_thread, &adapter->rx_work);
+ 	}
+ }
+ 
+@@ -526,9 +526,10 @@ static void mwifiex_terminate_workqueue(struct mwifiex_adapter *adapter)
+ 		adapter->workqueue = NULL;
+ 	}
+ 
+-	if (adapter->rx_workqueue) {
+-		destroy_workqueue(adapter->rx_workqueue);
+-		adapter->rx_workqueue = NULL;
++	if (adapter->rx_thread) {
++		kthread_flush_worker(adapter->rx_thread);
++		kthread_destroy_worker(adapter->rx_thread);
++		adapter->rx_thread = NULL;
+ 	}
+ }
+ 
+@@ -1394,7 +1395,7 @@ int is_command_pending(struct mwifiex_adapter *adapter)
+  *
+  * It handles the RX operations.
+  */
+-static void mwifiex_rx_work_queue(struct work_struct *work)
++static void mwifiex_rx_work_queue(struct kthread_work *work)
+ {
+ 	struct mwifiex_adapter *adapter =
+ 		container_of(work, struct mwifiex_adapter, rx_work);
+@@ -1554,13 +1555,10 @@ mwifiex_reinit_sw(struct mwifiex_adapter *adapter)
+ 	INIT_WORK(&adapter->main_work, mwifiex_main_work_queue);
+ 
+ 	if (adapter->rx_work_enabled) {
+-		adapter->rx_workqueue = alloc_workqueue("MWIFIEX_RX_WORK_QUEUE",
+-							WQ_HIGHPRI |
+-							WQ_MEM_RECLAIM |
+-							WQ_UNBOUND, 1);
+-		if (!adapter->rx_workqueue)
++		adapter->rx_thread = kthread_create_worker(0, "MWIFIEX_RX");
++		if (IS_ERR(adapter->rx_thread))
+ 			goto err_kmalloc;
+-		INIT_WORK(&adapter->rx_work, mwifiex_rx_work_queue);
++		kthread_init_work(&adapter->rx_work, mwifiex_rx_work_queue);
+ 	}
+ 
+ 	/* Register the device. Fill up the private data structure with
+@@ -1709,14 +1707,11 @@ mwifiex_add_card(void *card, struct completion *fw_done,
+ 	INIT_WORK(&adapter->main_work, mwifiex_main_work_queue);
+ 
+ 	if (adapter->rx_work_enabled) {
+-		adapter->rx_workqueue = alloc_workqueue("MWIFIEX_RX_WORK_QUEUE",
+-							WQ_HIGHPRI |
+-							WQ_MEM_RECLAIM |
+-							WQ_UNBOUND, 1);
+-		if (!adapter->rx_workqueue)
++		adapter->rx_thread = kthread_create_worker(0, "MWIFIEX_RX");
++		if (!adapter->rx_thread)
+ 			goto err_kmalloc;
+ 
+-		INIT_WORK(&adapter->rx_work, mwifiex_rx_work_queue);
++		kthread_init_work(&adapter->rx_work, mwifiex_rx_work_queue);
+ 	}
+ 
+ 	/* Register the device. Fill up the private data structure with relevant
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index b95886e1413e..3255f9a5c2d4 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -32,6 +32,7 @@
+ #include <linux/gfp.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/kthread.h>
+ #include <linux/of_gpio.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+@@ -886,8 +887,8 @@ struct mwifiex_adapter {
+ 	atomic_t tx_hw_pending;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct main_work;
+-	struct workqueue_struct *rx_workqueue;
+-	struct work_struct rx_work;
++	struct kthread_worker *rx_thread;
++	struct kthread_work rx_work;
+ 	struct workqueue_struct *dfs_workqueue;
+ 	struct work_struct dfs_work;
+ 	bool rx_work_enabled;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.41.0.162.gfafddb0af9-goog
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
