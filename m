@@ -2,104 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCC3672938F
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 10:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 505947295AA
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 11:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239725AbjFIIpN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 04:45:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
+        id S241774AbjFIJln (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 05:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241143AbjFIIpC (ORCPT
+        with ESMTP id S241771AbjFIJlR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 04:45:02 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814491B9;
-        Fri,  9 Jun 2023 01:44:58 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-977d4a1cf0eso233377766b.1;
-        Fri, 09 Jun 2023 01:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686300297; x=1688892297;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sV5kS4uFTylsIKBTpLATpLjmqF+bm2uJbZFR1pKIFFU=;
-        b=ev/gO9W54hYaCq9ean5DupK1uYMYJe2cw12AnKy5KCgHrVvXscqgta6p77dUi9PpD0
-         SQ/8RR5w1cKmN9AKkuezoVkYeu8oxjL1GovQ4Th659JBhce999+AcsmOkaqYQRkfCm1B
-         XRWej+p7auDkDaBPPqeKDPymHRTSJ/6iIV6W0Dy2kd0/SlXCXuwYrgaWzMSURucXRWye
-         DtfnyXC6hIDfEHOf0t09TwpMGqxWhV9Mf2oBVG2Q8AiLCiT+jxjU4rGtWrajThtnCXqq
-         2PEDII6gwra9FL/ixUsC2wZaUb+0bKHxfjioOC4g5KRZd2t7PvGuy9u83kxaIzbUAFma
-         oMKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686300297; x=1688892297;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sV5kS4uFTylsIKBTpLATpLjmqF+bm2uJbZFR1pKIFFU=;
-        b=EMc0SkIwX3CsWxHP+aC/Wm7Evj4NeaiQz/YR606uPmwMgfaM9QWcYWtnuYWa2e409L
-         uYeIVdoH7Y6HAGbfKwVpXZZsdBRdo5+GbNc33ZE6hJqxabsLizZgUSjKYCCwFnzrbiF2
-         MQ1XMg37jOyDxJ0SXWDrExTMZb6RdAYJYktbvijXTWYrpY3ZYrUn9TQELAx3Bi0I2Uy+
-         3rvmaTfwPAjUK1AXi4/0kja/HwnwsUJpHavH7HRGSdhUF0Y+mLRiK6CbtAQlfJwzfm6u
-         2pJCdzJHbvKQZFR1Oh/0OWPZhq8WhgM6ldVtw21UAhiEtklQzJie5v1jzXJFFnftp22R
-         QwnA==
-X-Gm-Message-State: AC+VfDx81B2TxGYYR2TTXzBikuQxZmOF7w3sW6OBB8mx3RZsdxc/PBuH
-        QJiA12BjEVmuYQTvVRC36pufcLFfXuM=
-X-Google-Smtp-Source: ACHHUZ6BRxs/pXjmvDXY/Ix/M6PsYGHPtG5nSO4nq825Yv/jpYmkLikZjzLYUPDhzmiNY3syp+zKHg==
-X-Received: by 2002:a17:907:9349:b0:973:e4c2:2bcd with SMTP id bv9-20020a170907934900b00973e4c22bcdmr1042732ejc.18.1686300296517;
-        Fri, 09 Jun 2023 01:44:56 -0700 (PDT)
-Received: from shift.daheim (pd9e2959c.dip0.t-ipconnect.de. [217.226.149.156])
-        by smtp.gmail.com with ESMTPSA id jw19-20020a17090776b300b00973fac6065esm974199ejc.223.2023.06.09.01.44.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 01:44:56 -0700 (PDT)
-Received: from chuck by shift.daheim with local (Exim 4.96)
-        (envelope-from <chuck@shift.daheim>)
-        id 1q7Xjr-0004fR-1N;
-        Fri, 09 Jun 2023 10:44:55 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Cc:     kvalo@kernel.org, conor+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org
-Subject: [PATCH v1 2/2] wifi: ath11k: add support DT ieee80211-freq-limit
-Date:   Fri,  9 Jun 2023 10:44:55 +0200
-Message-Id: <a57a3e1e23b5ac4a18d772e3b82527498ac85bb5.1686300243.git.chunkeey@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <a3075482150d342f71ec235badacec32cdd6c553.1686300243.git.chunkeey@gmail.com>
-References: <a3075482150d342f71ec235badacec32cdd6c553.1686300243.git.chunkeey@gmail.com>
+        Fri, 9 Jun 2023 05:41:17 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A80D76B4;
+        Fri,  9 Jun 2023 02:36:00 -0700 (PDT)
+X-GND-Sasl: repk@triplefau.lt
+X-GND-Sasl: repk@triplefau.lt
+X-GND-Sasl: repk@triplefau.lt
+X-GND-Sasl: repk@triplefau.lt
+X-GND-Sasl: repk@triplefau.lt
+X-GND-Sasl: repk@triplefau.lt
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E5ECC24000C;
+        Fri,  9 Jun 2023 09:34:55 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        Jouni Malinen <jouni@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH] ath9k: Fix possible stall on ath9k_txq_list_has_key()
+Date:   Fri,  9 Jun 2023 11:37:44 +0200
+Message-Id: <20230609093744.1985-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The common DT property can be used to limit the available
-channels/frequencies. But ath11k has to manually call
-wiphy_read_of_freq_limits().
+On EDMA capable hardware, ath9k_txq_list_has_key() can enter infinite
+loop if it is called while all txq_fifos have packets that use different
+key that the one we are looking for. Fix it by exiting the loop if all
+txq_fifos have been checked already.
 
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
----
-compile-tested only.
----
- drivers/net/wireless/ath/ath11k/mac.c | 1 +
- 1 file changed, 1 insertion(+)
+Because this loop is called under spin_lock_bh() (see ath_txq_lock) it
+causes the following rcu stall:
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index c947d1c8d8c1..7e43f2770f27 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9414,6 +9414,7 @@ static int __ath11k_mac_register(struct ath11k *ar)
- 	if (ret)
- 		goto err;
+rcu: INFO: rcu_sched self-detected stall on CPU
+ath10k_pci 0000:01:00.0: failed to read temperature -11
+rcu:    1-....: (5254 ticks this GP) idle=189/1/0x4000000000000002 softirq=8442983/8442984 fqs=2579
+        (t=5257 jiffies g=17983297 q=334)
+Task dump for CPU 1:
+task:hostapd         state:R  running task     stack:    0 pid:  297 ppid:   289 flags:0x0000000a
+Call trace:
+ dump_backtrace+0x0/0x170
+ show_stack+0x1c/0x24
+ sched_show_task+0x140/0x170
+ dump_cpu_task+0x48/0x54
+ rcu_dump_cpu_stacks+0xf0/0x134
+ rcu_sched_clock_irq+0x8d8/0x9fc
+ update_process_times+0xa0/0xec
+ tick_sched_timer+0x5c/0xd0
+ __hrtimer_run_queues+0x154/0x320
+ hrtimer_interrupt+0x120/0x2f0
+ arch_timer_handler_virt+0x38/0x44
+ handle_percpu_devid_irq+0x9c/0x1e0
+ handle_domain_irq+0x64/0x90
+ gic_handle_irq+0x78/0xb0
+ call_on_irq_stack+0x28/0x38
+ do_interrupt_handler+0x54/0x5c
+ el1_interrupt+0x2c/0x4c
+ el1h_64_irq_handler+0x14/0x1c
+ el1h_64_irq+0x74/0x78
+ ath9k_txq_has_key+0x1bc/0x250 [ath9k]
+ ath9k_set_key+0x1cc/0x3dc [ath9k]
+ drv_set_key+0x78/0x170
+ ieee80211_key_replace+0x564/0x6cc
+ ieee80211_key_link+0x174/0x220
+ ieee80211_add_key+0x11c/0x300
+ nl80211_new_key+0x12c/0x330
+ genl_family_rcv_msg_doit+0xbc/0x11c
+ genl_rcv_msg+0xd8/0x1c4
+ netlink_rcv_skb+0x40/0x100
+ genl_rcv+0x3c/0x50
+ netlink_unicast+0x1ec/0x2c0
+ netlink_sendmsg+0x198/0x3c0
+ ____sys_sendmsg+0x210/0x250
+ ___sys_sendmsg+0x78/0xc4
+ __sys_sendmsg+0x4c/0x90
+ __arm64_sys_sendmsg+0x28/0x30
+ invoke_syscall.constprop.0+0x60/0x100
+ do_el0_svc+0x48/0xd0
+ el0_svc+0x14/0x50
+ el0t_64_sync_handler+0xa8/0xb0
+ el0t_64_sync+0x158/0x15c
+
+This rcu stall is hard to reproduce as is, but changing ATH_TXFIFO_DEPTH
+from 8 to 2 makes it reasonably easy to reproduce.
+
+Fixes: ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+ drivers/net/wireless/ath/ath9k/main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index a4197c14f0a9..7f9f06ea8a05 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -850,7 +850,7 @@ static bool ath9k_txq_list_has_key(struct list_head *txq_list, u32 keyix)
+ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
+ {
+ 	struct ath_hw *ah = sc->sc_ah;
+-	int i;
++	int i, j;
+ 	struct ath_txq *txq;
+ 	bool key_in_use = false;
  
-+	wiphy_read_of_freq_limits(ar->hw->wiphy);
- 	ath11k_mac_setup_ht_vht_cap(ar, cap, &ht_cap);
- 	ath11k_mac_setup_he_cap(ar, cap);
+@@ -868,8 +868,9 @@ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
+ 		if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
+ 			int idx = txq->txq_tailidx;
  
+-			while (!key_in_use &&
+-			       !list_empty(&txq->txq_fifo[idx])) {
++			for (j = 0; !key_in_use &&
++			     !list_empty(&txq->txq_fifo[idx]) &&
++			     j < ATH_TXFIFO_DEPTH; j++) {
+ 				key_in_use = ath9k_txq_list_has_key(
+ 					&txq->txq_fifo[idx], keyix);
+ 				INCR(idx, ATH_TXFIFO_DEPTH);
 -- 
-2.40.1
+2.40.0
 
