@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40361728C1A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 02:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFD7C728C1E
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 02:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237136AbjFIAA5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 8 Jun 2023 20:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36314 "EHLO
+        id S237516AbjFIABJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 8 Jun 2023 20:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbjFIAA4 (ORCPT
+        with ESMTP id S229609AbjFIABH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 8 Jun 2023 20:00:56 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003C92738
-        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 17:00:54 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-3f80fef8b48so6748431cf.0
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Jun 2023 17:00:54 -0700 (PDT)
+        Thu, 8 Jun 2023 20:01:07 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E796630D3
+        for <linux-wireless@vger.kernel.org>; Thu,  8 Jun 2023 17:01:06 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-3f6a494810fso10137611cf.1
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Jun 2023 17:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1686268854; x=1688860854;
+        d=broadcom.com; s=google; t=1686268866; x=1688860866;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kj/kAmO6RDhJYY74lnwTWrBJXs8pYOjb1zFuCLaJ6yc=;
-        b=HctF1+vUHPwVzFPqhuP16RIE9wzoUwLVBMjSkBggP5WjLXD5jqEPFrswFWcHUytkc9
-         N5ZNhcc2NmR/fWEWHcjeoMER6fviBGv24jY8o/TYQQ/QBgh9lALhFvgstwqvkYqsUH/j
-         WkgWrShtka+uf4YTXqn5hvrbYovyKYSu8S+fY=
+        bh=Ac7jfTXrbP024twC9KnG6oUuMIjstkobwqYQZBzmz4w=;
+        b=dkJ7zeuAtyHNrjKDzjsEc/IUeCPujuRL44y06KOg+BRlYAQVagu6arfpmY6xEMIV7G
+         cgxL/U+qDSiv2HBtthBuclR/4slE4sYDpZpEDj13dBf7EU0AdtR3ts6y4UAUPJtO8ytr
+         FpK0CXmoOO9U06LQcwqmHPggW4WS0GEgEV0Ms=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686268854; x=1688860854;
+        d=1e100.net; s=20221208; t=1686268866; x=1688860866;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kj/kAmO6RDhJYY74lnwTWrBJXs8pYOjb1zFuCLaJ6yc=;
-        b=flsApiTpI1Gw+GpTcHGB0vB2IX0IRRtc90Lqg7pmpZDni6QBtv1srnRKCUUjGrSVIO
-         1uwpeguO5oqdWeezHjDgOXhMZs7vjwnHmNm0frDX6xML95wYRRcEAUCaxVL9re+fcXnn
-         647nw30S3rVAZfUIuHuIyMcfW3ABlMJvKfTLpgVw+/UC84Ssd93IUjw1Fg+86JAPgBzW
-         xjxL1yzs8EECIfbV1UD3cdC3Y/vOvc0PrbnOq5L/OattVbejwBy5rt1sc9IcZhbYr6ej
-         U7IDkSRTItu4M8yHNApWynipQ5uXyMgTNdl8pw2AV+PNNFSf/fozvfW+SPEIcJLEmLrS
-         LAwA==
-X-Gm-Message-State: AC+VfDwFJLXSWA9mJtwC4eJfeDB/SGgAMkYt7o8V54BlM2Xo5vh6zjXv
-        QGC7bbzyBfqxXSMaY245KmVJOQ==
-X-Google-Smtp-Source: ACHHUZ4s45lAPH6Y+drnrhqbzpj8plY2+oVJoqNvW6AvXkkg0gX+Nn3vk7faxBSlcaw3jATp+nMV0A==
-X-Received: by 2002:a05:622a:4b:b0:3f6:adda:afd6 with SMTP id y11-20020a05622a004b00b003f6addaafd6mr270680qtw.10.1686268854067;
-        Thu, 08 Jun 2023 17:00:54 -0700 (PDT)
+        bh=Ac7jfTXrbP024twC9KnG6oUuMIjstkobwqYQZBzmz4w=;
+        b=SODjf8d3/eo806q8qRY88rmgHPgjiqxsMjo29jmRPYpen6Q+ADDnpoV6XPbYXFBjt3
+         ppi0DTPeyzLyM7y8PhAgcjXDnvPy5yW2cBqpWM3cbhKr/5tVSR+H2V+BYTluSrdyKmqg
+         j+snMg8gO+ih9YPFJ0/lkQ/X2ObZyth8h/vXYLu9lnUZOuLE9ERRry/7s0KXEZbKEQ/X
+         q3by4jpcXH7LSG3bHjVTzCG9kEDpLC1vDMBNyuw/MKRJnNMheMxt+cZ2PL7YKtabEPDW
+         ZG9oiPfOhQE4RX+2JfMDeCHLuoCUpQZYRNC8QbTj6mmFqeTJtXJN/fBAOVM1Dwe2fN5Z
+         QCjw==
+X-Gm-Message-State: AC+VfDxOdeaHT/N+F/yP28/f6JPnXkyhHX9LnIouMXga35UCxO/UONhd
+        yJMTvMT4xv0+emtL9EYSTK18Xw==
+X-Google-Smtp-Source: ACHHUZ7SZLAaO4dOBHnHZyK7z766ToaMHLVaVTK1diI4fuZwk0ylFKFEbDqWTSvqhaqCv8AGbJCzig==
+X-Received: by 2002:a05:622a:112:b0:3f4:ee64:e30c with SMTP id u18-20020a05622a011200b003f4ee64e30cmr9455790qtw.52.1686268866027;
+        Thu, 08 Jun 2023 17:01:06 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id x13-20020a05622a000d00b003e3918f350dsm741295qtw.25.2023.06.08.17.00.51
+        by smtp.gmail.com with ESMTPSA id t15-20020ac8760f000000b003f90562e54csm732628qtq.36.2023.06.08.17.01.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 17:00:53 -0700 (PDT)
+        Thu, 08 Jun 2023 17:01:05 -0700 (PDT)
 From:   Florian Fainelli <florian.fainelli@broadcom.com>
 To:     bcm-kernel-feedback-list@broadcom.com,
         =?iso-8859-2?q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
@@ -62,15 +62,15 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         =?iso-8859-2?q?Rafa=B3_Mi=B3ecki?= <rafal@milecki.pl>
-Subject: Re: [PATCH 1/3] dt-bindings: net: wireless: brcm,bcm4329-fmac: add BCM4366 binding
-Date:   Thu,  8 Jun 2023 17:00:50 -0700
-Message-Id: <20230609000050.2986414-1-florian.fainelli@broadcom.com>
+Subject: Re: [PATCH 2/3] dt-bindings: net: wireless: brcm,bcm4329-fmac: allow generic properties
+Date:   Thu,  8 Jun 2023 17:01:02 -0700
+Message-Id: <20230609000102.2986501-1-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230602135925.14143-1-zajec5@gmail.com>
-References: <20230602135925.14143-1-zajec5@gmail.com>
+In-Reply-To: <20230602135925.14143-2-zajec5@gmail.com>
+References: <20230602135925.14143-1-zajec5@gmail.com> <20230602135925.14143-2-zajec5@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000000f51b205fda7102e"
+        boundary="000000000000c5a82805fda710fa"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -81,17 +81,18 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000000f51b205fda7102e
+--000000000000c5a82805fda710fa
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Florian Fainelli <f.fainelli@gmail.com>
 
-On Fri,  2 Jun 2023 15:59:23 +0200, Rafał Miłecki <zajec5@gmail.com> wrote:
+On Fri,  2 Jun 2023 15:59:24 +0200, Rafał Miłecki <zajec5@gmail.com> wrote:
 > From: Rafał Miłecki <rafal@milecki.pl>
 > 
-> It's an 802.11ac chipset that can be found hardwired in a lot of
-> Northstar based routers.
+> Include ieee80211.yaml to allow using generic 802.11 properties for
+> bindings of Broadcom FullMAC devices. That allows specifying frequencies
+> ranges.
 > 
 > Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 > ---
@@ -100,7 +101,7 @@ Applied to https://github.com/Broadcom/stblinux/commits/devicetree/next, thanks!
 --
 Florian
 
---0000000000000f51b205fda7102e
+--000000000000c5a82805fda710fa
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -171,14 +172,14 @@ kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
 NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
 AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
 LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEINy1EKe5iRSeIEAM
-sTSLhJ6Yq0TFdKTkBCLXTiLEj/xtMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTIzMDYwOTAwMDA1NFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIBO+Tf064cPmkOk7
+GEenybzPXSZBJXRCU4APynv8ApKbMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDYwOTAwMDEwNlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
 AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCuqBl/WC0t5awiziiHhhLHoFj8TDG1/uDY
-AGNehtkLaNGxbmPCqMW/Q/E3C7UyNEfz05AxQcVNYTI/8Kh6Z/CJMTS1PbmAN7d6CWoz4u1hzrn4
-xYel3eKPV/GOY3YZytbcq2CPz52yNhVewx27GPlMAs1APdld6ouAodCEzb9SPHquY0Rw8pQvljF1
-OL6q8oYdQTc3gnagHr1DGH6ujXLH92Hv+u+d6GOATu6G9fYJo81cZrWQiWUtYGfSuDN2e3SVPCPP
-36eNMP/uKQbvDzv7PZ4qYBy8rpyZo20gtQzsLJ3g78czXwAdB/KWiS3/od/UvkyUC0LDvZC6tSGi
-EX6C
---0000000000000f51b205fda7102e--
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDeS6PWrmyvgND/OfrjFS2BuX1pblsxy/Qy
+LEkSsYvRu5i+IaePJYnoFj4b12xOhxJVXgwtJZ4JuZ8qCePTqKMXl4F4FJA6wumKywgVkXivI+cA
+2szfMHJAJfQbbnpx+doGS34teoyNnb0Myuc+1kMtRA4bb+yEmZgJX038gq+6QT1UvoNnYEFp8yRN
+RkJ6fK4V+i2/+27+BLLUoORKjGGMDEKpnQdFOzNXZCME80UCpUK5tNFGdRc2kHdru++iD0toOfH9
+u8FjMhXMUcYTY81GdP5jNHFWTTyHhq0nX0+llrzyhBs+Tzu49FXYoVHrA1mkZeAri0z/pufVNx/l
+kf3l
+--000000000000c5a82805fda710fa--
