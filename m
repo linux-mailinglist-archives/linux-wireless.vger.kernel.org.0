@@ -2,99 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC7E072975C
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 12:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71B67299EB
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Jun 2023 14:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230431AbjFIKsz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 9 Jun 2023 06:48:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46916 "EHLO
+        id S230182AbjFIM23 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 9 Jun 2023 08:28:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbjFIKsy (ORCPT
+        with ESMTP id S239179AbjFIM22 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 9 Jun 2023 06:48:54 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0C59E
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 03:48:52 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-30e57e0a0c7so1124472f8f.2
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Jun 2023 03:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686307731; x=1688899731;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h404KYyxPqBgdsZFQTSqrIFdDjIjrnyWGpNK6shhs8c=;
-        b=T5pzOVJf1wSan8hg1huNkSKWU1tlZJ+b9/U451RG7XIKSClXBjAMLDFetpf3edH3fz
-         su5xU8d3wpy1TEjCXZ3siGDoRDd/1jmoU0eiqX2qmNNetgcFNxb9dGKv++S2o5nIwlZ6
-         BDLl4fgEr/YZXzAE/PnymQATUaRfECCQXQyHSzqQZJ14wY0O0a9b4ZWCVTr5h0/7CvKl
-         xsUGgOGzrEg8cj1ITQFlM5vury/tfP87vrIeOTcf39Oaaoz2zjn5zEmASj/xKY5M4Ety
-         JKIYl+rI63XsrLUMlaeSyJQOkWRCGWyds5bCrtdFJMZutSafmJmFHJMA7ug/mxcfLVNH
-         SF2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686307731; x=1688899731;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h404KYyxPqBgdsZFQTSqrIFdDjIjrnyWGpNK6shhs8c=;
-        b=ET2K/A7Cq6Z75GFAs3HnJQ1wMJCGGbEP+5Pn0xgCh6RmVRXNfWXniI6Bcwym8lumyP
-         RtFv2gBrlha3ubvA8Fjs0rYa90x07y10G47DCyPHgjcYYGrdnKi94gRNuVsvxBGD2GrW
-         TQ1X6CVJlQdujgKPx/VQQcj+E6VbRrfKJx/ToDsOi0o69nnG0ZSFlYmNE0Xh7Rv/CPQN
-         LjR1scCQlGPXomNrwDlofuZjP7WiBloadXWe4SjXTKn+8xHE02TdYuZXKWWjibH+/BDR
-         baZufYHy3vPOHOMFLEA3me2ucBTW/bf8lJpmxMEag5YvTcd+MjUJGdac3G/JQIzG3FF1
-         5r0g==
-X-Gm-Message-State: AC+VfDxkXlDTyD+TVfLEUIOEXqxV88N/Ze2IC5T43KpRnYOKhAvBj3Y0
-        /cv2Nr5YTey3rgzcFY5S1rKNfw==
-X-Google-Smtp-Source: ACHHUZ6fr5fp42SB4k5MPauPJ85Z9R6r45D01KOEIoJHHP9tkYY/LNVl7bPHVHQKgdrmOGkZuuybLg==
-X-Received: by 2002:adf:fe8c:0:b0:30a:b0e7:34b with SMTP id l12-20020adffe8c000000b0030ab0e7034bmr646219wrr.66.1686307731386;
-        Fri, 09 Jun 2023 03:48:51 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id d6-20020adffd86000000b0030ae87bd3e3sm4112507wrr.18.2023.06.09.03.48.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 03:48:49 -0700 (PDT)
-Date:   Fri, 9 Jun 2023 13:48:44 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: fix double lock bug in reg_wdev_chan_valid()
-Message-ID: <40c4114a-6cb4-4abf-b013-300b598aba65@moroto.mountain>
+        Fri, 9 Jun 2023 08:28:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F04E3C02
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 05:27:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8516B61B48
+        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 12:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0799C433EF;
+        Fri,  9 Jun 2023 12:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686313574;
+        bh=sDqla35NPLBYgl0LPzzm4JHUqVVdHhzJ++zG4Cv5Xm0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=eEtoTdP4K0F3D0sRvNPo9UU3ja3ErKFH0iXPQYeueJxBwx5a1Rn8L8h3R85zzgTIJ
+         9+3tlPmHmGmaRPU87DLa818VcH1SXKSuWXOw+P7vE93+asqPEMitbE01DOnHvsQED/
+         QazJhUxfZpF5XglJoNl3F1BzhEmFGE1pf+M7tsfUQphVfuF7qDYvLH3DrAnAgTWxLD
+         dr5JuuhWQnDZoUgYHrm2q8KVw6VKRn7n5Xk2Qrvc5k4EGd/UzXBhYulZfv+2pIL61T
+         vGc6zz5qO7D9XFOAGNyAhK/D4tuGiz4LyQdIPpHsDLPn2XjzgYd6lQNLHXFwhB49oh
+         oAtAfFNB//4eg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Baochen Qiang <quic_bqiang@quicinc.com>,
+        Manikanta Pubbisetty <quic_mpubbise@quicinc.com>
+Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: fix boot failure with one MSI vector
+References: <20230601033840.2997-1-quic_bqiang@quicinc.com>
+Date:   Fri, 09 Jun 2023 15:26:10 +0300
+In-Reply-To: <20230601033840.2997-1-quic_bqiang@quicinc.com> (Baochen Qiang's
+        message of "Thu, 1 Jun 2023 11:38:40 +0800")
+Message-ID: <87fs70hlel.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The locking was changed recently so now the caller holds the wiphy_lock()
-lock.  Taking the lock inside the reg_wdev_chan_valid() function will
-lead to a deadlock.
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-Fixes: f7e60032c661 ("wifi: cfg80211: fix locking in regulatory disconnect")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- net/wireless/reg.c | 3 ---
- 1 file changed, 3 deletions(-)
+> Commit 5b32b6dd96633 ("ath11k: Remove core PCI references from
+> PCI common code") breaks with one MSI vector because it moves
+> affinity setting after IRQ request, see below log:
+>
+> [ 1417.278835] ath11k_pci 0000:02:00.0: failed to receive control response completion, polling..
+> [ 1418.302829] ath11k_pci 0000:02:00.0: Service connect timeout
+> [ 1418.302833] ath11k_pci 0000:02:00.0: failed to connect to HTT: -110
+> [ 1418.303669] ath11k_pci 0000:02:00.0: failed to start core: -110
+>
+> The detail is, if do affinity request after IRQ activated,
+> which is done in request_irq(), kernel caches that request and
+> returns success directly. Later when a subsequent MHI interrupt is
+> fired, kernel will do the real affinity setting work, as a result,
+> changs the MSI vector. However at that time host has configured
+> old vector to hardware, so host never receives CE or DP interrupts.
+>
+> Fix it by setting affinity before registering MHI controller
+> where host is, for the first time, doing IRQ request.
+>
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+>
+> Fixes: 5b32b6dd9663 ("ath11k: Remove core PCI references from PCI common code")
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 949e1fb3bec6..26f11e4746c0 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2404,11 +2404,8 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
- 		case NL80211_IFTYPE_P2P_GO:
- 		case NL80211_IFTYPE_ADHOC:
- 		case NL80211_IFTYPE_MESH_POINT:
--			wiphy_lock(wiphy);
- 			ret = cfg80211_reg_can_beacon_relax(wiphy, &chandef,
- 							    iftype);
--			wiphy_unlock(wiphy);
--
- 			if (!ret)
- 				return ret;
- 			break;
+I'm worried if this breaks WCN6750 support. Manikanta, would able to
+test this patch on WCN6750 and let us know if breaks anything?
+
 -- 
-2.39.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
