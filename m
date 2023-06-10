@@ -2,149 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB5072A974
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jun 2023 08:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057F672A9E0
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jun 2023 09:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229945AbjFJGoJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 10 Jun 2023 02:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57496 "EHLO
+        id S229823AbjFJH2h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 10 Jun 2023 03:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjFJGoJ (ORCPT
+        with ESMTP id S229470AbjFJH2e (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 10 Jun 2023 02:44:09 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358F43A89
-        for <linux-wireless@vger.kernel.org>; Fri,  9 Jun 2023 23:44:08 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-651f2f38634so2650123b3a.0
-        for <linux-wireless@vger.kernel.org>; Fri, 09 Jun 2023 23:44:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686379447; x=1688971447;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9028RCYhy0wUCoYOed6ZfhpUYbRnkrP1YsKrCE12Bj8=;
-        b=ovR/GYdBQyiemHONPmM5TJdwY8+SHiZ/Q7msRoBEkXXtGY8i+EGoMk4rnoJE9CHf80
-         HwVCL1QsLSNTxp+5ayaQtILzC2vlGaK3pMU+Ee+sGBAmlO+n2f1yOe425sOTtxSwSEXM
-         OiyQyPC2wQBvhRxDe026rOvfSVyhkX/37GC3xjrNGsITRhG+9ryNT6pUkbsq/XDQJNzH
-         eIw8YiVnbriz1ZWB8YBbBWOKUq/uad09R3VsIYu8551GKJfrsDCKdT4hOsYafODdrXTK
-         jdTQSGqLw3pZlTaaaFGrb2ImveCf9jdM4Q48n+hJSZt50Rm8nFIq4gfrjgKdIcaZWCxz
-         xOqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686379447; x=1688971447;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9028RCYhy0wUCoYOed6ZfhpUYbRnkrP1YsKrCE12Bj8=;
-        b=HCpby2K4WkHHBiRRGQl9U1yTH0vhAqaBNeI52GGiq2ijF/BuAa/w2h2ZvHiAH7kanQ
-         zI1w6wG8aK9uCTVVwjKepjDGGcdS7e7aeKaisryJeTxoKZ50bEY1d0DW0co5rIA+8LJ6
-         P9rZStKyUduOTFMEoB5WIurH84fJlQ+XVANj9a1vr952lfBFfGdMOH/t0FT1UOSR584E
-         WpPeVI/uLJakbin1zJkhMxOsr2/qniWBJvKauFNYABqCSoYZlDvEYyoN6/EYmtWqh29J
-         ybIovI0V1VB+iyvzZl5o7LEoDQJ1aigo+oE4YtZg7Dj8rZozBU/WpqKBpksy+BQIc/mW
-         5Yaw==
-X-Gm-Message-State: AC+VfDxatsS+id9pKjfrAeAzrLqhHVo+tRPuBW6mXwy1DCoSZAF9ww54
-        GKtFLgODM42hjjhcDVMp+aZSgsABQWc=
-X-Google-Smtp-Source: ACHHUZ4vYhETxEs/w9/FVf1Gl+uDCEWXTwPOi3yFwtPwNyS09TWtQGWr/VaLzt1ERAsJo82k+Md6mQ==
-X-Received: by 2002:a05:6a21:30ca:b0:10e:e813:46ed with SMTP id yf10-20020a056a2130ca00b0010ee81346edmr3081409pzb.43.1686379447522;
-        Fri, 09 Jun 2023 23:44:07 -0700 (PDT)
-Received: from debian.me (subs28-116-206-12-58.three.co.id. [116.206.12.58])
-        by smtp.gmail.com with ESMTPSA id c16-20020aa781d0000000b0063f0068cf6csm3550562pfn.198.2023.06.09.23.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 23:44:07 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id DBDBC106AB1; Sat, 10 Jun 2023 13:44:03 +0700 (WIB)
-Date:   Sat, 10 Jun 2023 13:44:03 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Nicolas Escande <nico.escande@gmail.com>, nbd@nbd.name,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Linux Regressions <regressions@lists.linux.dev>
-Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
-Message-ID: <ZIQbs0wqdRh7c0Kx@debian.me>
-References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse>
+        Sat, 10 Jun 2023 03:28:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0DD30E3;
+        Sat, 10 Jun 2023 00:28:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50D7E61135;
+        Sat, 10 Jun 2023 07:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61232C433EF;
+        Sat, 10 Jun 2023 07:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686382112;
+        bh=A9IISf+44oVN6lf+g6hfV1UzlUMGhIY+Uui3vWKpb6c=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=s9y+QooN8f4fyrHyF+NzF0qwS8S8r/avD15+aPDTrjEns1/967RVI2zJkfYwmzMlp
+         M+HTU8heZS117L9Em2Nkz14ZavA+yx7XpnGLNxjuYm4D0n+s8edPK4fvpdiDoeO/mM
+         AVuwtVYcA6BHnnOJdEboB0uB0MZ/E1PT8aMuf8tDkQVmUslwHf33timaXCGQB92GPU
+         0E6ylgujBLWRV7tWudQCfK/Y0OZnoZMIsQsV7k9DJhiDTryjw5JiFVHAj6BM2bw8Hv
+         D2i5cPLjAKQzGNjuTL+LepHITxk/JFI65nRBYr/LUgQQaw73OQ+OuAETGbHlNYkmhU
+         Vn5TcsfR9WT+Q==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        dbnusr495 <dbnusr4950@proton.me>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: Fwd: rtl8xxxu kernel module deauthenticate session from public open Wifi AP
+References: <31ab2156-e93e-4e0d-73a7-313d9d24ee6b@gmail.com>
+        <f969c91f-f7a1-bea8-ae72-67543bb3df83@gmail.com>
+Date:   Sat, 10 Jun 2023 10:28:27 +0300
+In-Reply-To: <f969c91f-f7a1-bea8-ae72-67543bb3df83@gmail.com> (Bagas Sanjaya's
+        message of "Sat, 10 Jun 2023 13:35:30 +0700")
+Message-ID: <877csbhj38.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="AnK2bowbY2wzP825"
-Content-Disposition: inline
-In-Reply-To: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Bagas Sanjaya <bagasdotme@gmail.com> writes:
 
---AnK2bowbY2wzP825
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 6/8/23 20:32, Bagas Sanjaya wrote:
+>> Hi,
+>> 
+>
+> (also changing reporter's email to the proper one).
+>
+>> I notice a bug report on Bugzilla [1]. Quoting from it:
+>> 
+>>> With Debian Sid, trying to use two different Realtek USB Wifi Adapters (with
+>>> Antenna).
+>>>
+>>> Using kernels including various Liquorix 6.2.x, 6.3.x , and the most recent
+>>>
+>>>     linux-image-6.3.4-1-liquorix-amd64
+>>>
+>>> also, Debian experimental
+>>>
+>>>     Debian (experimental) linux-image-6.3.0-0-amd64-unsigned
+>>> 6.3.5-1~exp1
+>>>
+>>>     Debian's linux-image-6.3.0-0-amd64 (Linux  6.3.0-0-amd64 #1 SMP
+>>> PREEMPT_DYNAMIC Debian 6.3.2-1~exp1 (2023-05-15) x86_64 GNU/Linux)
+>>>
+>>> same problem.
+>>>
+>>> At local library's public open wifi, no password required.  Using either
+>>>
+>>>     0bda:0179 (rtl8188eu) USB Wifi adapter,
+>>>
+>>> or
+>>>
+>>>     0bda:f179 (rtl8188fu) USB Wifi adapter
+>>>
+>>> Both adapters are loading
+>>>
+>>>     rtl8xxxu kernel module
+>>>
+>>> Using ( manual Wifi connection ) script , the system was able to obtain DHCP IP
+>>> address.  Normally, all HTTP(S) requests get redirected to a public usage
+>>> policy web page, where users have to click on "I agree" to continue.  Which
+>>> works fine with another USB adapter (mt7601 kernel module).
+>>>
+>>> However, with both Realtek adapters above, web browser will just time out, will
+>>> NOT even get redirect to a "Public Use Notice" web page.
+>>>
+>>> The relevant error message from system log shows
+>>>
+>>>     2023-05-15T16:57:48.491567-04:00 usrhostname kernel: wlan1: deauthenticated
+>>> from 7a:83:c2:8a:f1:13 (Reason: 6=CLASS2_FRAME_FROM_NONAUTH_STA)
+>>>
+>>> Apparently, the rtl8xxxu driver assumes an error condition, and immediately
+>>> deauthenticates and drops the Wifi connection, will not complete the
+>>> redirection to the "Public Use Notice" web page.
+>>>
+>>> Try to connect again, same problem, repeating itself, not allowing any
+>>> additional wifi traffic at all.
+>> 
+>> See Bugzilla for the full thread.
+>> 
+>> The reporter said that this is known rtl8xxxu issue (unusable on public,
+>> open WiFi access points [no WPA authentication?]). From his analysis:
+>> 
+>>> Let me know if I need to do anything else. I looek at the code
+>>> briefly, I belive the rtl8xxxu called a function from 802.11 layer
+>>> to handle the return code (Reason code 6), which promptly call a
+>>> function to deauthenticate the session, thus disconnected the
+>>> device from further wifi traffic.
+>>>
+>>> I believe the 802.11 level handling is too harsh for public open
+>>> AP. However, i think the Realtek level code is too lazy. Realtek
+>>> driver code should check for reasonable return codes for situations
+>>> like this and allow paasing at least a few of these before
+>>> considering these as hacking attempts, which require
+>>> deauthenticating, or disconnecting. But then again, this would also
+>>> be too strict for monitor mode handling of traffic.
+>>>
+>>> Don't know if 802.11 level specs even have considerations for
+>>> situations like these at all, or they simply handle lower level
+>>> logic and leave these things for the device drivers to cooperate
+>>> with application layers to handle these.
+>> 
+>> Jes and Kalle, would you like to take a look on checking return codes
+>> (as reporter demands)?
+>> 
+>
+> FYI, from Bugzilla [1], the reporter posted (untested) fix. Would you
+> like to review it?
+>
+> Thanks.
+>
+> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217531#c8
 
-On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
-> Hello Felix,
->=20
-> As user of the mesh part of mac80211 on multiple products at work let me =
-say
-> thank you for all the work you do on wifi, especially on 80211s, and espe=
-cially
-> the recent improvements you made for mesh fast RX/TX & cross vendor AMSDU=
- compat
->=20
-> We upgraded our kernel from an older (5.15) to a newer 6.4. The problem i=
-s STP=20
-> doesn't work anymore and alas we use it for now (for the better or worse).
->=20
-> What I gathered so far from my setup:
->  - we use ath9k & ath10k
->  - in my case STP frames are received as regular packet and not as amsdu
->  - the received packets have a wrong length of 44 in tcpdump
->    (instead of 38 with our previous kernel)
->  - llc_fixup_skb() tries to pull some 41 bytes out of a 35 bytes packet
->    this makes llc_rcv() discard the frames & breaks STP
->=20
-> >From bisecting the culprit seems to be 986e43b19ae9176093da35e0a844e65c8=
-bf9ede7
-> (wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces)
->=20
-> I guess that your changes to handle both ampdu subframes & normal frames =
-in the
-> same datapath ends up putting a wrong skb->len for STP (multicast) frames=
- ?
-> Honestly I don't understand enough of the 80211 internals & spec to pinpo=
-int the
-> exact problem.
->=20
-> It seems this change was already in the 6.3 kernel so I guess someone sho=
-uld
-> have seen it before (but I didn't find anything..) ? Maybe I missed somet=
-hing...
->=20
-> Anyway I'm happy to provide more info or try anything you throw at me.
->=20
+I'm not seeing any fix from the reporter, where is it?
 
-Thanks for the regression report. I'm adding it to regzbot:
+Also more information would be good to have to pinpoint where the actual
+problem is. For example, it would be good to test different APs with
+different encryption methods and make a list what works and what doesn't
+on his device. There can be numerous reasons for the problem.
 
-(Felix: it looks like this regression is introcued by a commit authored by =
-you.
-Would you like to take a look on it?)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-#regzbot ^introduced: 986e43b19ae917
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---AnK2bowbY2wzP825
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZIQbrwAKCRD2uYlJVVFO
-o6mfAPwKDa60GgI6OLmQE2Azp1jDptNJ1AD+/oDHNObrFjqZCAEAm+tAyXvMCHPG
-aE8UayLKE+V/ziT/lC2I6IDiS4+f6Qs=
-=Wcw6
------END PGP SIGNATURE-----
-
---AnK2bowbY2wzP825--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
