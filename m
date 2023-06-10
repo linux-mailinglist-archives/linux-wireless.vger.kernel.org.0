@@ -2,111 +2,1154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 768AE72A9F3
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jun 2023 09:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC9472A9FE
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Jun 2023 09:47:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjFJHjH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 10 Jun 2023 03:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41184 "EHLO
+        id S229746AbjFJHrd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 10 Jun 2023 03:47:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbjFJHjG (ORCPT
+        with ESMTP id S229470AbjFJHrc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 10 Jun 2023 03:39:06 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729BF35B0;
-        Sat, 10 Jun 2023 00:39:04 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1b24cd75989so11994345ad.1;
-        Sat, 10 Jun 2023 00:39:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686382744; x=1688974744;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GsNUoF97Ojf8i4nmjXrcSgoP9RKyKJanJ2CtBfvra6I=;
-        b=E2++uQgpt6i01Zb9xtZ4zaxEauzl8V0qDODOXlnopq6D1JRcm1A9wuLwcsyZMq3zOz
-         1Gv4Cke8VXo7AJ5cRFDZullSPyECiJikHr7WxxM96sPAE6T3fnX+Jb2QOSYmo5cy4haU
-         xGipf5UnUbHEqZe9iafH94Omh6tF3w6URoih/mEhg2vbmNuSmh/208BxgZD6lXkdCRaB
-         vMnAjkra5Vuf74YefM1DCi938GH/fMQLbizHfv6gAtOIkPGwKbl5mOZUvTX5oPxboRxs
-         rZe7EBonyN7rdgarx+R2VuY65t00pb8nVvoo9FjWW7a246Q7L/t1ytWJdWLLO475Z09D
-         fMvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686382744; x=1688974744;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GsNUoF97Ojf8i4nmjXrcSgoP9RKyKJanJ2CtBfvra6I=;
-        b=dt3F9nIBMV+vJD74zRukzv95N6Fm4X5FPRRm07k/w5KaoiRVtDbW7NAkz27fx3NqYz
-         dbHjOIyu9dewagm4kBAZeu72fq77Ji1TurlyECCBb5Cu5Ll/SNLicQhBhruzxMppH9eo
-         c9cMi/7Lq9smV7Y01GVa5VbONMXOU8g0MPxyTeJ8dsrRDofpSHmxvW5yfczFY6aCc9yW
-         ogcThkCHQj4yz5hJT9wAHn8QIcK9zJYTjUaUp5Sw3ZTvNHHi1s/iQ/tEoBQPU+8sGo6H
-         k3d8M6bbvYnhMVHNs8+Z9pzNgj9GeTZ+QRy+/Nkd76bM62uOs1tICcPa5qh0KcR+ngTu
-         N+/Q==
-X-Gm-Message-State: AC+VfDxmyia5G7pVb7chbAo+hMFNoH9bKErqFtIYCakaLzLsd4W0vePS
-        rhuH9WA+c1U3WJ/NodvWjws=
-X-Google-Smtp-Source: ACHHUZ5MRqYSis2oCTgqmli//xNpQt7In/tGIP5SV0p3yGoBfy+MsOY+Iwvwe28NlmEhGBVsIVtH3g==
-X-Received: by 2002:a17:902:c111:b0:1b3:95a9:3fb3 with SMTP id 17-20020a170902c11100b001b395a93fb3mr1064209pli.3.1686382743838;
-        Sat, 10 Jun 2023 00:39:03 -0700 (PDT)
-Received: from [192.168.43.80] (subs09a-223-255-225-69.three.co.id. [223.255.225.69])
-        by smtp.gmail.com with ESMTPSA id w10-20020a17090a1b8a00b00247164c1947sm7587181pjc.0.2023.06.10.00.39.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Jun 2023 00:39:03 -0700 (PDT)
-Message-ID: <08dd7a08-62d2-8efe-91ea-fb4ffd4548f2@gmail.com>
-Date:   Sat, 10 Jun 2023 14:38:59 +0700
+        Sat, 10 Jun 2023 03:47:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48BB53A8C
+        for <linux-wireless@vger.kernel.org>; Sat, 10 Jun 2023 00:47:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C714360DBC
+        for <linux-wireless@vger.kernel.org>; Sat, 10 Jun 2023 07:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793C2C433D2;
+        Sat, 10 Jun 2023 07:47:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686383247;
+        bh=TV9plsnFyq0r23ZSjcqRfRIhESqFTfgnn1FeC4rCh0c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EiYgJY9058XJJtGEyyF6VwRPrSFGzodBmrf6vp0P+KyYsajzRMuqmOVYzbDQoWHk1
+         0QYBN6oZRPlQ1WuDlFNtEH2y3ry+DJToAKlB3KMpR39eubZ+hLWbH7ZDyBhLowgymZ
+         O+ecMUAf7LMZZJWUgw21dap44po5A27SuKCM/sc0U9pDlXJLYzrWRT6anH5n2/581L
+         nNubpplQImpUBrSfVrG8xvzpgQ6mJjsr8VhPENDt6FSWpyen8s5JZZ6ZR4HypZUXvM
+         VE1niNu3ScCkvNv+3/KUFoew0niB0CLH6hKTAgUykHtN2qqGfIASd9hACyTARayBTo
+         84gMbBHjoF4JA==
+Date:   Sat, 10 Jun 2023 09:49:06 +0200
+From:   "lorenzo@kernel.org" <lorenzo@kernel.org>
+To:     Deren Wu =?utf-8?B?KOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
+Cc:     Shayne Chen =?utf-8?B?KOmZs+i7kuS4nik=?= 
+        <Shayne.Chen@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
+        "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "nbd@nbd.name" <nbd@nbd.name>
+Subject: Re: [PATCH v2 15/15] wifi: mt76: connac: add connac3 mac library
+Message-ID: <ZIQq8uFMgjphE+v+@localhost.localdomain>
+References: <cover.1686298162.git.lorenzo@kernel.org>
+ <b7a029d6dfee8e58c58f483ea9e9e7b3bc8012b9.1686298162.git.lorenzo@kernel.org>
+ <5010e5e508e89041451288659390fde5ded94db5.camel@mediatek.com>
+ <ZINUnqkElqSOITxT@localhost.localdomain>
+ <82971c76999ae90be44a524fb95141c5051a9ba0.camel@mediatek.com>
+ <ZINXGP6TmDLaZ+lu@localhost.localdomain>
+ <79bfbe146c7f19cd22007f759bde92c9083c5594.camel@mediatek.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: Fwd: rtl8xxxu kernel module deauthenticate session from public
- open Wifi AP
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        dbnusr495 <dbnusr4950@proton.me>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <31ab2156-e93e-4e0d-73a7-313d9d24ee6b@gmail.com>
- <f969c91f-f7a1-bea8-ae72-67543bb3df83@gmail.com> <877csbhj38.fsf@kernel.org>
-Content-Language: en-US
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <877csbhj38.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="07nnVrTSYJQHspp2"
+Content-Disposition: inline
+In-Reply-To: <79bfbe146c7f19cd22007f759bde92c9083c5594.camel@mediatek.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/10/23 14:28, Kalle Valo wrote:
->> FYI, from Bugzilla [1], the reporter posted (untested) fix. Would you
->> like to review it?
->>
->> Thanks.
->>
->> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217531#c8
-> 
-> I'm not seeing any fix from the reporter, where is it?
-> 
 
-Oops, the Bugzilla diff link above just adds pr_warn() debugging info.
-No fixes yet.
+--07nnVrTSYJQHspp2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry for inconvenience...
+On Jun 10, Deren Wu wrote:
+> On Fri, 2023-06-09 at 18:45 +0200, lorenzo@kernel.org wrote:
+> > > On Fri, 2023-06-09 at 18:34 +0200, lorenzo.bianconi@redhat.com
+> > > wrote:
+> > > > On Jun 09, Ryder Lee wrote:
+> > > > > On Fri, 2023-06-09 at 10:15 +0200, Lorenzo Bianconi wrote:
+> > > > > >  	=20
+> > > > > > External email : Please do not click links or open
+> > > > > > attachments
+> > > > > > until
+> > > > > > you have verified the sender or the content.
+> > > > > >  Introduce connac3_mac in mt76_connac library to reuse mac
+> > > > > > code
+> > > > > > shared
+> > > > > > between WiFi7 chipsets.
+> > > > > >=20
+> > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > > > ---
+> > > > > >  drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
+> > > > > >  .../net/wireless/mediatek/mt76/mt76_connac.h  |  19 +
+> > > > > >  .../wireless/mediatek/mt76/mt76_connac3_mac.c | 742
+> > > > > > +++++++++++++++++
+> > > > > >  .../wireless/mediatek/mt76/mt76_connac3_mac.h |  18 +
+> > > > > >  .../net/wireless/mediatek/mt76/mt7996/init.c  |   4 +-
+> > > > > >  .../net/wireless/mediatek/mt76/mt7996/mac.c   | 761 +-------
+> > > > > > ----
+> > > > > > ----
+> > > > > > --
+> > > > > >  .../net/wireless/mediatek/mt76/mt7996/main.c  |   8 +-
+> > > > > >  .../net/wireless/mediatek/mt76/mt7996/mcu.c   |   9 +-
+> > > > > >  .../wireless/mediatek/mt76/mt7996/mt7996.h    |  28 +-
+> > > > > >  9 files changed, 807 insertions(+), 784 deletions(-)
+> > > > > >  create mode 100644
+> > > > > > drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+> > > > > >=20
+> > > > > > diff --git a/drivers/net/wireless/mediatek/mt76/Makefile
+> > > > > > b/drivers/net/wireless/mediatek/mt76/Makefile
+> > > > > > index 84c99b7e57f9..d8e8079c8b54 100644
+> > > > > > --- a/drivers/net/wireless/mediatek/mt76/Makefile
+> > > > > > +++ b/drivers/net/wireless/mediatek/mt76/Makefile
+> > > > > > @@ -27,7 +27,7 @@ mt76x02-lib-y :=3D mt76x02_util.o
+> > > > > > mt76x02_mac.o
+> > > > > > mt76x02_mcu.o \
+> > > > > > =20
+> > > > > >  mt76x02-usb-y :=3D mt76x02_usb_mcu.o mt76x02_usb_core.o
+> > > > > > =20
+> > > > > > -mt76-connac-lib-y :=3D mt76_connac_mcu.o mt76_connac_mac.o
+> > > > > > +mt76-connac-lib-y :=3D mt76_connac_mcu.o mt76_connac_mac.o
+> > > > > > mt76_connac3_mac.o
+> > > > > > =20
+> > > > > >  obj-$(CONFIG_MT76x0_COMMON) +=3D mt76x0/
+> > > > > >  obj-$(CONFIG_MT76x2_COMMON) +=3D mt76x2/
+> > > > > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+> > > > > > b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+> > > > > > index 68bdeada1421..20111678537b 100644
+> > > > > > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+> > > > > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+> > > > > > @@ -415,4 +415,23 @@ void mt76_connac2_txwi_free(struct
+> > > > > > mt76_dev
+> > > > > > *dev, struct mt76_txwi_cache *t,
+> > > > > >  			    struct list_head *free_list);
+> > > > > >  void mt76_connac2_tx_token_put(struct mt76_dev *dev);
+> > > > > > =20
+> > > > > > +/* connac3 */
+> > > > > > +void mt76_connac3_tx_check_aggr(struct ieee80211_sta *sta,
+> > > > > > __le32
+> > > > > > *txwi);
+> > > > > > +void mt76_connac3_mac_decode_he_radiotap(struct sk_buff
+> > > > > > *skb,
+> > > > > > __le32
+> > > > > > *rxv,
+> > > > > > +					 u8 mode);
+> > > > > > +int mt76_connac3_mac_fill_rx_rate(struct mt76_dev *dev,
+> > > > > > +				  struct mt76_rx_status
+> > > > > > *status,
+> > > > > > +				  struct
+> > > > > > ieee80211_supported_band
+> > > > > > *sband,
+> > > > > > +				  __le32 *rxv, u8 *mode);
+> > > > > > +void mt76_connac3_mac_write_txwi(struct mt76_dev *dev,
+> > > > > > __le32
+> > > > > > *txwi,
+> > > > > > +				 struct sk_buff *skb, struct
+> > > > > > mt76_wcid
+> > > > > > *wcid,
+> > > > > > +				 struct ieee80211_key_conf
+> > > > > > *key, int
+> > > > > > pid,
+> > > > > > +				 enum mt76_txq_id qid, u32
+> > > > > > changed);
+> > > > > > +void mt76_connac3_txwi_free(struct mt76_dev *dev, struct
+> > > > > > mt76_txwi_cache *t,
+> > > > > > +			    struct ieee80211_sta *sta,
+> > > > > > +			    struct list_head *free_list);
+> > > > > > +void mt76_connac3_mac_add_txs(struct mt76_dev *dev, void
+> > > > > > *data,
+> > > > > > +			      u32 max_wtbl_size);
+> > > > > > +void mt76_connac3_tx_token_put(struct mt76_dev *dev);
+> > > > > > +
+> > > > > >  #endif /* __MT76_CONNAC_H */
+> > > > > > diff --git
+> > > > > > a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+> > > > > > b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..4b745bb74ca0
+> > > > > > --- /dev/null
+> > > > > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+> > > > > > @@ -0,0 +1,742 @@
+> > > > > > +// SPDX-License-Identifier: ISC
+> > > > > > +/* Copyright (C) 2023 MediaTek Inc. */
+> > > > > > +
+> > > > > > +#include "mt76_connac.h"
+> > > > > > +#include "mt76_connac3_mac.h"
+> > > > > > +#include "dma.h"
+> > > > > > +
+> > > > > > +#define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_
+> > > > > > HE_##f)
+> > > > > > +#define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(
+> > > > > > v,
+> > > > > > MT_CRXV_HE_##m),\
+> > > > > > +						 IEEE80211_RADI
+> > > > > > OTAP_HE_
+> > > > > > ##f)
+> > > > > > +
+> > > > > > +void mt76_connac3_tx_check_aggr(struct ieee80211_sta *sta,
+> > > > > > __le32
+> > > > > > *txwi)
+> > > > > > +{
+> > > > > > +	struct mt76_wcid *wcid;
+> > > > > > +	u16 fc, tid;
+> > > > > > +	u32 val;
+> > > > > > +
+> > > > > > +	if (!sta ||
+> > > > > > +	    !(sta->deflink.ht_cap.ht_supported || sta-
+> > > > > > > deflink.he_cap.has_he))
+> > > > > >=20
+> > > > > > +		return;
+> > > > > > +
+> > > > > > +	tid =3D le32_get_bits(txwi[1], MT_TXD1_TID);
+> > > > > > +	if (tid >=3D 6) /* skip VO queue */
+> > > > > > +		return;
+> > > > > > +
+> > > > > > +	val =3D le32_to_cpu(txwi[2]);
+> > > > > > +	fc =3D FIELD_GET(MT_TXD2_FRAME_TYPE, val) << 2 |
+> > > > > > +	     FIELD_GET(MT_TXD2_SUB_TYPE, val) << 4;
+> > > > > > +	if (unlikely(fc !=3D (IEEE80211_FTYPE_DATA |
+> > > > > > IEEE80211_STYPE_QOS_DATA)))
+> > > > > > +		return;
+> > > > > > +
+> > > > > > +	wcid =3D (struct mt76_wcid *)sta->drv_priv;
+> > > > > > +	if (!test_and_set_bit(tid, &wcid->ampdu_state))
+> > > > > > +		ieee80211_start_tx_ba_session(sta, tid, 0);
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_tx_check_aggr);
+> > > > > > +
+> > > > > > +static void
+> > > > > > +mt76_connac3_mac_decode_he_radiotap_ru(struct mt76_rx_status
+> > > > > > *status,
+> > > > > > +				       struct
+> > > > > > ieee80211_radiotap_he
+> > > > > > *he,
+> > > > > > +				       __le32 *rxv)
+> > > > > > +{
+> > > > > > +	u32 ru =3D le32_get_bits(rxv[0], MT_PRXV_HE_RU_ALLOC),
+> > > > > > offs =3D 0;
+> > > > > > +
+> > > > > > +	status->bw =3D RATE_INFO_BW_HE_RU;
+> > > > > > +
+> > > > > > +	switch (ru) {
+> > > > > > +	case 0 ... 36:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_26;
+> > > > > > +		offs =3D ru;
+> > > > > > +		break;
+> > > > > > +	case 37 ... 52:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_52;
+> > > > > > +		offs =3D ru - 37;
+> > > > > > +		break;
+> > > > > > +	case 53 ... 60:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_106;
+> > > > > > +		offs =3D ru - 53;
+> > > > > > +		break;
+> > > > > > +	case 61 ... 64:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_242;
+> > > > > > +		offs =3D ru - 61;
+> > > > > > +		break;
+> > > > > > +	case 65 ... 66:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_484;
+> > > > > > +		offs =3D ru - 65;
+> > > > > > +		break;
+> > > > > > +	case 67:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_996;
+> > > > > > +		break;
+> > > > > > +	case 68:
+> > > > > > +		status->he_ru =3D
+> > > > > > NL80211_RATE_INFO_HE_RU_ALLOC_2x996;
+> > > > > > +		break;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	he->data1 |=3D HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
+> > > > > > +	he->data2 |=3D HE_BITS(DATA2_RU_OFFSET_KNOWN) |
+> > > > > > +		     le16_encode_bits(offs,
+> > > > > > +				      IEEE80211_RADIOTAP_HE_DAT
+> > > > > > A2_RU_OF
+> > > > > > FSET);
+> > > > > > +}
+> > > > > > +
+> > > > > > +#define MU_PREP(f, v)	le16_encode_bits(v,
+> > > > > > IEEE80211_RADIOTAP_HE_MU_##f)
+> > > > > > +static void
+> > > > > > +mt76_connac3_mac_decode_he_mu_radiotap(struct sk_buff *skb,
+> > > > > > __le32
+> > > > > > *rxv)
+> > > > > > +{
+> > > > > > +	struct mt76_rx_status *status =3D (struct mt76_rx_status
+> > > > > > *)skb-
+> > > > > > > cb;
+> > > > > >=20
+> > > > > > +	static const struct ieee80211_radiotap_he_mu mu_known =3D
+> > > > > > {
+> > > > > > +		.flags1 =3D HE_BITS(MU_FLAGS1_SIG_B_MCS_KNOWN) |
+> > > > > > +			  HE_BITS(MU_FLAGS1_SIG_B_DCM_KNOWN) |
+> > > > > > +			  HE_BITS(MU_FLAGS1_CH1_RU_KNOWN) |
+> > > > > > +			  HE_BITS(MU_FLAGS1_SIG_B_SYMS_USERS_KN
+> > > > > > OWN),
+> > > > > > +		.flags2 =3D
+> > > > > > HE_BITS(MU_FLAGS2_BW_FROM_SIG_A_BW_KNOWN),
+> > > > > > +	};
+> > > > > > +	struct ieee80211_radiotap_he_mu *he_mu;
+> > > > > > +
+> > > > > > +	status->flag |=3D RX_FLAG_RADIOTAP_HE_MU;
+> > > > > > +
+> > > > > > +	he_mu =3D skb_push(skb, sizeof(mu_known));
+> > > > > > +	memcpy(he_mu, &mu_known, sizeof(mu_known));
+> > > > > > +
+> > > > > > +	he_mu->flags1 |=3D MU_PREP(FLAGS1_SIG_B_MCS, status-
+> > > > > > >rate_idx);
+> > > > > > +	if (status->he_dcm)
+> > > > > > +		he_mu->flags1 |=3D MU_PREP(FLAGS1_SIG_B_DCM,
+> > > > > > status-
+> > > > > > > he_dcm);
+> > > > > >=20
+> > > > > > +
+> > > > > > +	he_mu->flags2 |=3D MU_PREP(FLAGS2_BW_FROM_SIG_A_BW,
+> > > > > > status->bw) |
+> > > > > > +			 MU_PREP(FLAGS2_SIG_B_SYMS_USERS,
+> > > > > > +				 le32_get_bits(rxv[4],
+> > > > > > MT_CRXV_HE_NUM_USER));
+> > > > > > +
+> > > > > > +	he_mu->ru_ch1[0] =3D le32_get_bits(rxv[16],
+> > > > > > MT_CRXV_HE_RU0) &
+> > > > > > 0xff;
+> > > > > > +
+> > > > > > +	if (status->bw >=3D RATE_INFO_BW_40) {
+> > > > > > +		he_mu->flags1 |=3D
+> > > > > > HE_BITS(MU_FLAGS1_CH2_RU_KNOWN);
+> > > > > > +		he_mu->ru_ch2[0] =3D le32_get_bits(rxv[16],
+> > > > > > MT_CRXV_HE_RU1) & 0xff;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	if (status->bw >=3D RATE_INFO_BW_80) {
+> > > > > > +		u32 ru_h, ru_l;
+> > > > > > +
+> > > > > > +		he_mu->ru_ch1[1] =3D le32_get_bits(rxv[16],
+> > > > > > MT_CRXV_HE_RU2) & 0xff;
+> > > > > > +
+> > > > > > +		ru_l =3D le32_get_bits(rxv[16],
+> > > > > > MT_CRXV_HE_RU3_L);
+> > > > > > +		ru_h =3D le32_get_bits(rxv[17], MT_CRXV_HE_RU3_H)
+> > > > > > & 0x7;
+> > > > > > +		he_mu->ru_ch2[1] =3D (u8)(ru_l | ru_h << 4);
+> > > > > > +	}
+> > > > > > +}
+> > > > > > +
+> > > > > > +void mt76_connac3_mac_decode_he_radiotap(struct sk_buff
+> > > > > > *skb,
+> > > > > > __le32
+> > > > > > *rxv,
+> > > > > > +					 u8 mode)
+> > > > > > +{
+> > > > > > +	struct mt76_rx_status *status =3D (struct mt76_rx_status
+> > > > > > *)skb-
+> > > > > > > cb;
+> > > > > >=20
+> > > > > > +	static const struct ieee80211_radiotap_he known =3D {
+> > > > > > +		.data1 =3D HE_BITS(DATA1_DATA_MCS_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_DATA_DCM_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_STBC_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_CODING_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_LDPC_XSYMSEG_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_DOPPLER_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_SPTL_REUSE_KNOWN) |
+> > > > > > +			 HE_BITS(DATA1_BSS_COLOR_KNOWN),
+> > > > > > +		.data2 =3D HE_BITS(DATA2_GI_KNOWN) |
+> > > > > > +			 HE_BITS(DATA2_TXBF_KNOWN) |
+> > > > > > +			 HE_BITS(DATA2_PE_DISAMBIG_KNOWN) |
+> > > > > > +			 HE_BITS(DATA2_TXOP_KNOWN),
+> > > > > > +	};
+> > > > > > +	u32 ltf_size =3D le32_get_bits(rxv[4],
+> > > > > > MT_CRXV_HE_LTF_SIZE) + 1;
+> > > > > > +	struct ieee80211_radiotap_he *he;
+> > > > > > +
+> > > > > > +	status->flag |=3D RX_FLAG_RADIOTAP_HE;
+> > > > > > +
+> > > > > > +	he =3D skb_push(skb, sizeof(known));
+> > > > > > +	memcpy(he, &known, sizeof(known));
+> > > > > > +
+> > > > > > +	he->data3 =3D HE_PREP(DATA3_BSS_COLOR, BSS_COLOR, rxv[9])
+> > > > > > |
+> > > > > > +		    HE_PREP(DATA3_LDPC_XSYMSEG, LDPC_EXT_SYM,
+> > > > > > rxv[4]);
+> > > > > > +	he->data4 =3D HE_PREP(DATA4_SU_MU_SPTL_REUSE, SR_MASK,
+> > > > > > rxv[13]);
+> > > > > > +	he->data5 =3D HE_PREP(DATA5_PE_DISAMBIG, PE_DISAMBIG,
+> > > > > > rxv[5]) |
+> > > > > > +		    le16_encode_bits(ltf_size,
+> > > > > > +				     IEEE80211_RADIOTAP_HE_DATA
+> > > > > > 5_LTF_SI
+> > > > > > ZE);
+> > > > > > +	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
+> > > > > > +		he->data5 |=3D HE_BITS(DATA5_TXBF);
+> > > > > > +	he->data6 =3D HE_PREP(DATA6_TXOP, TXOP_DUR, rxv[9]) |
+> > > > > > +		    HE_PREP(DATA6_DOPPLER, DOPPLER, rxv[9]);
+> > > > > > +
+> > > > > > +	switch (mode) {
+> > > > > > +	case MT_PHY_TYPE_HE_SU:
+> > > > > > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_SU) |
+> > > > > > +			     HE_BITS(DATA1_UL_DL_KNOWN) |
+> > > > > > +			     HE_BITS(DATA1_BEAM_CHANGE_KNOWN) |
+> > > > > > +			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
+> > > > > > +
+> > > > > > +		he->data3 |=3D HE_PREP(DATA3_BEAM_CHANGE,
+> > > > > > BEAM_CHNG,
+> > > > > > rxv[8]) |
+> > > > > > +			     HE_PREP(DATA3_UL_DL, UPLINK,
+> > > > > > rxv[5]);
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HE_EXT_SU:
+> > > > > > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_EXT_SU) |
+> > > > > > +			     HE_BITS(DATA1_UL_DL_KNOWN) |
+> > > > > > +			     HE_BITS(DATA1_BW_RU_ALLOC_KNOWN);
+> > > > > > +
+> > > > > > +		he->data3 |=3D HE_PREP(DATA3_UL_DL, UPLINK,
+> > > > > > rxv[5]);
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HE_MU:
+> > > > > > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_MU) |
+> > > > > > +			     HE_BITS(DATA1_UL_DL_KNOWN);
+> > > > > > +
+> > > > > > +		he->data3 |=3D HE_PREP(DATA3_UL_DL, UPLINK,
+> > > > > > rxv[5]);
+> > > > > > +		he->data4 |=3D HE_PREP(DATA4_MU_STA_ID, MU_AID,
+> > > > > > rxv[8]);
+> > > > > > +
+> > > > > > +		mt76_connac3_mac_decode_he_radiotap_ru(status,
+> > > > > > he,
+> > > > > > rxv);
+> > > > > > +		mt76_connac3_mac_decode_he_mu_radiotap(skb,
+> > > > > > rxv);
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HE_TB:
+> > > > > > +		he->data1 |=3D HE_BITS(DATA1_FORMAT_TRIG) |
+> > > > > > +			     HE_BITS(DATA1_SPTL_REUSE2_KNOWN) |
+> > > > > > +			     HE_BITS(DATA1_SPTL_REUSE3_KNOWN) |
+> > > > > > +			     HE_BITS(DATA1_SPTL_REUSE4_KNOWN);
+> > > > > > +
+> > > > > > +		he->data4 |=3D HE_PREP(DATA4_TB_SPTL_REUSE1,
+> > > > > > SR_MASK,
+> > > > > > rxv[13]) |
+> > > > > > +			     HE_PREP(DATA4_TB_SPTL_REUSE2,
+> > > > > > SR1_MASK,
+> > > > > > rxv[13]) |
+> > > > > > +			     HE_PREP(DATA4_TB_SPTL_REUSE3,
+> > > > > > SR2_MASK,
+> > > > > > rxv[13]) |
+> > > > > > +			     HE_PREP(DATA4_TB_SPTL_REUSE4,
+> > > > > > SR3_MASK,
+> > > > > > rxv[13]);
+> > > > > > +
+> > > > > > +		mt76_connac3_mac_decode_he_radiotap_ru(status,
+> > > > > > he,
+> > > > > > rxv);
+> > > > > > +		break;
+> > > > > > +	default:
+> > > > > > +		break;
+> > > > > > +	}
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_decode_he_radiotap);
+> > > > > > +
+> > > > > > +int mt76_connac3_mac_fill_rx_rate(struct mt76_dev *dev,
+> > > > > > +				  struct mt76_rx_status
+> > > > > > *status,
+> > > > > > +				  struct
+> > > > > > ieee80211_supported_band
+> > > > > > *sband,
+> > > > > > +				  __le32 *rxv, u8 *mode)
+> > > > > > +{
+> > > > > > +	u8 stbc, gi, bw, dcm, nss;
+> > > > > > +	bool cck =3D false;
+> > > > > > +	u32 v0, v2;
+> > > > > > +	int i, idx;
+> > > > > > +
+> > > > > > +	v0 =3D le32_to_cpu(rxv[0]);
+> > > > > > +	v2 =3D le32_to_cpu(rxv[2]);
+> > > > > > +
+> > > > > > +	idx =3D FIELD_GET(MT_PRXV_TX_RATE, v0);
+> > > > > > +	i =3D idx;
+> > > > > > +	nss =3D FIELD_GET(MT_PRXV_NSTS, v0) + 1;
+> > > > > > +
+> > > > > > +	stbc =3D FIELD_GET(MT_PRXV_HT_STBC, v2);
+> > > > > > +	gi =3D FIELD_GET(MT_PRXV_HT_SHORT_GI, v2);
+> > > > > > +	*mode =3D FIELD_GET(MT_PRXV_TX_MODE, v2);
+> > > > > > +	dcm =3D FIELD_GET(MT_PRXV_DCM, v2);
+> > > > > > +	bw =3D FIELD_GET(MT_PRXV_FRAME_MODE, v2);
+> > > > > > +
+> > > > > > +	switch (*mode) {
+> > > > > > +	case MT_PHY_TYPE_CCK:
+> > > > > > +		cck =3D true;
+> > > > > > +		fallthrough;
+> > > > > > +	case MT_PHY_TYPE_OFDM:
+> > > > > > +		i =3D mt76_get_rate(dev, sband, i, cck);
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HT_GF:
+> > > > > > +	case MT_PHY_TYPE_HT:
+> > > > > > +		status->encoding =3D RX_ENC_HT;
+> > > > > > +		if (gi)
+> > > > > > +			status->enc_flags |=3D
+> > > > > > RX_ENC_FLAG_SHORT_GI;
+> > > > > > +		if (i > 31)
+> > > > > > +			return -EINVAL;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_VHT:
+> > > > > > +		status->nss =3D nss;
+> > > > > > +		status->encoding =3D RX_ENC_VHT;
+> > > > > > +		if (gi)
+> > > > > > +			status->enc_flags |=3D
+> > > > > > RX_ENC_FLAG_SHORT_GI;
+> > > > > > +		if (i > 11)
+> > > > > > +			return -EINVAL;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HE_MU:
+> > > > > > +	case MT_PHY_TYPE_HE_SU:
+> > > > > > +	case MT_PHY_TYPE_HE_EXT_SU:
+> > > > > > +	case MT_PHY_TYPE_HE_TB:
+> > > > > > +		status->nss =3D nss;
+> > > > > > +		status->encoding =3D RX_ENC_HE;
+> > > > > > +		i &=3D GENMASK(3, 0);
+> > > > > > +
+> > > > > > +		if (gi <=3D NL80211_RATE_INFO_HE_GI_3_2)
+> > > > > > +			status->he_gi =3D gi;
+> > > > > > +
+> > > > > > +		status->he_dcm =3D dcm;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_EHT_SU:
+> > > > > > +	case MT_PHY_TYPE_EHT_TRIG:
+> > > > > > +	case MT_PHY_TYPE_EHT_MU:
+> > > > > > +		status->nss =3D nss;
+> > > > > > +		status->encoding =3D RX_ENC_EHT;
+> > > > > > +		i &=3D GENMASK(3, 0);
+> > > > > > +
+> > > > > > +		if (gi <=3D NL80211_RATE_INFO_EHT_GI_3_2)
+> > > > > > +			status->eht.gi =3D gi;
+> > > > > > +		break;
+> > > > > > +	default:
+> > > > > > +		return -EINVAL;
+> > > > > > +	}
+> > > > > > +	status->rate_idx =3D i;
+> > > > > > +
+> > > > > > +	switch (bw) {
+> > > > > > +	case IEEE80211_STA_RX_BW_20:
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_40:
+> > > > > > +		if (*mode & MT_PHY_TYPE_HE_EXT_SU &&
+> > > > > > +		    (idx & MT_PRXV_TX_ER_SU_106T)) {
+> > > > > > +			status->bw =3D RATE_INFO_BW_HE_RU;
+> > > > > > +			status->he_ru =3D
+> > > > > > +				NL80211_RATE_INFO_HE_RU_ALLOC_1
+> > > > > > 06;
+> > > > > > +		} else {
+> > > > > > +			status->bw =3D RATE_INFO_BW_40;
+> > > > > > +		}
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_80:
+> > > > > > +		status->bw =3D RATE_INFO_BW_80;
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_160:
+> > > > > > +		status->bw =3D RATE_INFO_BW_160;
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_320:
+> > > > > > +		status->bw =3D RATE_INFO_BW_320;
+> > > > > > +		break;
+> > > > > > +	default:
+> > > > > > +		return -EINVAL;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	status->enc_flags |=3D RX_ENC_FLAG_STBC_MASK * stbc;
+> > > > > > +	if (*mode < MT_PHY_TYPE_HE_SU && gi)
+> > > > > > +		status->enc_flags |=3D RX_ENC_FLAG_SHORT_GI;
+> > > > > > +
+> > > > > > +	return 0;
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_fill_rx_rate);
+> > > > > > +
+> > > > > > +static void
+> > > > > > +mt76_connac3_mac_write_txwi_8023(__le32 *txwi, struct
+> > > > > > sk_buff
+> > > > > > *skb,
+> > > > > > +				 struct mt76_wcid *wcid)
+> > > > > > +{
+> > > > > > +	u8 tid =3D skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+> > > > > > +	u8 fc_type, fc_stype;
+> > > > > > +	u16 ethertype;
+> > > > > > +	bool wmm =3D false;
+> > > > > > +	u32 val;
+> > > > > > +
+> > > > > > +	if (wcid->sta) {
+> > > > > > +		struct ieee80211_sta *sta;
+> > > > > > +
+> > > > > > +		sta =3D container_of((void *)wcid, struct
+> > > > > > ieee80211_sta,
+> > > > > > drv_priv);
+> > > > > > +		wmm =3D sta->wme;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD1_HDR_FORMAT,
+> > > > > > MT_HDR_FORMAT_802_3) |
+> > > > > > +	      FIELD_PREP(MT_TXD1_TID, tid);
+> > > > > > +
+> > > > > > +	ethertype =3D get_unaligned_be16(&skb->data[12]);
+> > > > > > +	if (ethertype >=3D ETH_P_802_3_MIN)
+> > > > > > +		val |=3D MT_TXD1_ETH_802_3;
+> > > > > > +
+> > > > > > +	txwi[1] |=3D cpu_to_le32(val);
+> > > > > > +
+> > > > > > +	fc_type =3D IEEE80211_FTYPE_DATA >> 2;
+> > > > > > +	fc_stype =3D wmm ? IEEE80211_STYPE_QOS_DATA >> 4 : 0;
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
+> > > > > > +	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
+> > > > > > +
+> > > > > > +	txwi[2] |=3D cpu_to_le32(val);
+> > > > > > +}
+> > > > > > +
+> > > > > > +static void
+> > > > > > +mt76_connac3_mac_write_txwi_80211(struct mt76_dev *dev,
+> > > > > > __le32
+> > > > > > *txwi,
+> > > > > > +				  struct sk_buff *skb,
+> > > > > > +				  struct ieee80211_key_conf
+> > > > > > *key)
+> > > > > > +{
+> > > > > > +	struct ieee80211_hdr *hdr =3D (struct ieee80211_hdr
+> > > > > > *)skb->data;
+> > > > > > +	struct ieee80211_mgmt *mgmt =3D (struct ieee80211_mgmt
+> > > > > > *)skb-
+> > > > > > > data;
+> > > > > >=20
+> > > > > > +	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+> > > > > > +	bool multicast =3D is_multicast_ether_addr(hdr->addr1);
+> > > > > > +	u8 tid =3D skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+> > > > > > +	__le16 fc =3D hdr->frame_control;
+> > > > > > +	u8 fc_type, fc_stype;
+> > > > > > +	u32 val;
+> > > > > > +
+> > > > > > +	if (ieee80211_is_action(fc) &&
+> > > > > > +	    mgmt->u.action.category =3D=3D WLAN_CATEGORY_BACK &&
+> > > > > > +	    mgmt->u.action.u.addba_req.action_code =3D=3D
+> > > > > > WLAN_ACTION_ADDBA_REQ)
+> > > > > > +		tid =3D MT_TX_ADDBA;
+> > > > > > +	else if (ieee80211_is_mgmt(hdr->frame_control))
+> > > > > > +		tid =3D MT_TX_NORMAL;
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD1_HDR_FORMAT,
+> > > > > > MT_HDR_FORMAT_802_11) |
+> > > > > > +	      FIELD_PREP(MT_TXD1_HDR_INFO,
+> > > > > > +			 ieee80211_get_hdrlen_from_skb(skb) /
+> > > > > > 2) |
+> > > > > > +	      FIELD_PREP(MT_TXD1_TID, tid);
+> > > > > > +
+> > > > > > +	if (!ieee80211_is_data(fc) || multicast ||
+> > > > > > +	    info->flags & IEEE80211_TX_CTL_USE_MINRATE)
+> > > > > > +		val |=3D MT_TXD1_FIXED_RATE;
+> > > > > > +
+> > > > > > +	if (key && multicast &&
+> > > > > > ieee80211_is_robust_mgmt_frame(skb) &&
+> > > > > > +	    key->cipher =3D=3D WLAN_CIPHER_SUITE_AES_CMAC) {
+> > > > > > +		val |=3D MT_TXD1_BIP;
+> > > > > > +		txwi[3] &=3D ~cpu_to_le32(MT_TXD3_PROTECT_FRAME);
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	txwi[1] |=3D cpu_to_le32(val);
+> > > > > > +
+> > > > > > +	fc_type =3D (le16_to_cpu(fc) & IEEE80211_FCTL_FTYPE) >>
+> > > > > > 2;
+> > > > > > +	fc_stype =3D (le16_to_cpu(fc) & IEEE80211_FCTL_STYPE) >>
+> > > > > > 4;
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD2_FRAME_TYPE, fc_type) |
+> > > > > > +	      FIELD_PREP(MT_TXD2_SUB_TYPE, fc_stype);
+> > > > > > +
+> > > > > > +	txwi[2] |=3D cpu_to_le32(val);
+> > > > > > +
+> > > > > > +	txwi[3] |=3D cpu_to_le32(FIELD_PREP(MT_TXD3_BCM,
+> > > > > > multicast));
+> > > > > > +	if (ieee80211_is_beacon(fc)) {
+> > > > > > +		txwi[3] &=3D ~cpu_to_le32(MT_TXD3_SW_POWER_MGMT);
+> > > > > > +		txwi[3] |=3D cpu_to_le32(MT_TXD3_REM_TX_COUNT);
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	if (info->flags & IEEE80211_TX_CTL_INJECTED) {
+> > > > > > +		u16 seqno =3D le16_to_cpu(hdr->seq_ctrl);
+> > > > > > +
+> > > > > > +		if (ieee80211_is_back_req(hdr->frame_control))
+> > > > > > {
+> > > > > > +			struct ieee80211_bar *bar;
+> > > > > > +
+> > > > > > +			bar =3D (struct ieee80211_bar *)skb-
+> > > > > > >data;
+> > > > > > +			seqno =3D le16_to_cpu(bar-
+> > > > > > >start_seq_num);
+> > > > > > +		}
+> > > > > > +
+> > > > > > +		val =3D MT_TXD3_SN_VALID |
+> > > > > > +		      FIELD_PREP(MT_TXD3_SEQ,
+> > > > > > IEEE80211_SEQ_TO_SN(seqno));
+> > > > > > +		txwi[3] |=3D cpu_to_le32(val);
+> > > > > > +		txwi[3] &=3D ~cpu_to_le32(MT_TXD3_HW_AMSDU);
+> > > > > > +	}
+> > > > > > +}
+> > > > > > +
+> > > > > > +void mt76_connac3_mac_write_txwi(struct mt76_dev *dev,
+> > > > > > __le32
+> > > > > > *txwi,
+> > > > > > +				 struct sk_buff *skb, struct
+> > > > > > mt76_wcid
+> > > > > > *wcid,
+> > > > > > +				 struct ieee80211_key_conf
+> > > > > > *key, int
+> > > > > > pid,
+> > > > > > +				 enum mt76_txq_id qid, u32
+> > > > > > changed)
+> > > > > > +{
+> > > > > > +	u32 val, sz_txd =3D mt76_is_mmio(dev) ? MT_TXD_SIZE :
+> > > > > > MT_SDIO_TXD_SIZE;
+> > > > > > +	struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+> > > > > > +	struct ieee80211_vif *vif =3D info->control.vif;
+> > > > > > +	u8 band_idx =3D (info->hw_queue & MT_TX_HW_QUEUE_PHY) >>
+> > > > > > 2;
+> > > > > > +	u8 p_fmt, q_idx, omac_idx =3D 0, wmm_idx =3D 0;
+> > > > > > +	bool is_8023 =3D info->flags &
+> > > > > > IEEE80211_TX_CTL_HW_80211_ENCAP;
+> > > > > > +	struct mt76_vif *mvif;
+> > > > > > +	u16 tx_count =3D 15;
+> > > > > > +	bool beacon =3D !!(changed & (BSS_CHANGED_BEACON |
+> > > > > > +				    BSS_CHANGED_BEACON_ENABLED)
+> > > > > > );
+> > > > > > +	bool inband_disc =3D !!(changed &
+> > > > > > (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
+> > > > > > +					 BSS_CHANGED_FILS_DISCO
+> > > > > > VERY));
+> > > > > > +
+> > > > > > +	mvif =3D vif ? (struct mt76_vif *)vif->drv_priv : NULL;
+> > > > > > +	if (mvif) {
+> > > > > > +		omac_idx =3D mvif->omac_idx;
+> > > > > > +		wmm_idx =3D mvif->wmm_idx;
+> > > > > > +		band_idx =3D mvif->band_idx;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	if (inband_disc) {
+> > > > > > +		p_fmt =3D MT_TX_TYPE_FW;
+> > > > > > +		q_idx =3D MT_LMAC_ALTX0;
+> > > > > > +	} else if (beacon) {
+> > > > > > +		p_fmt =3D MT_TX_TYPE_FW;
+> > > > > > +		q_idx =3D MT_LMAC_BCN0;
+> > > > > > +	} else if (qid >=3D MT_TXQ_PSD) {
+> > > > > > +		p_fmt =3D mt76_is_mmio(dev) ? MT_TX_TYPE_CT :
+> > > > > > MT_TX_TYPE_SF;
+> > > > > > +		q_idx =3D MT_LMAC_ALTX0;
+> > > > > > +	} else {
+> > > > > > +		p_fmt =3D mt76_is_mmio(dev) ? MT_TX_TYPE_CT :
+> > > > > > MT_TX_TYPE_SF;
+> > > > > > +		q_idx =3D wmm_idx * MT76_CONNAC_MAX_WMM_SETS +
+> > > > > > +			mt76_connac_lmac_mapping(skb_get_queue_
+> > > > > > mapping(
+> > > > > > skb));
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD0_TX_BYTES, skb->len + sz_txd) |
+> > > > > > +	      FIELD_PREP(MT_TXD0_PKT_FMT, p_fmt) |
+> > > > > > +	      FIELD_PREP(MT_TXD0_Q_IDX, q_idx);
+> > > > > > +	txwi[0] =3D cpu_to_le32(val);
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD1_WLAN_IDX, wcid->idx) |
+> > > > > > +	      FIELD_PREP(MT_TXD1_OWN_MAC, omac_idx);
+> > > > > > +
+> > > > > > +	if (band_idx)
+> > > > > > +		val |=3D FIELD_PREP(MT_TXD1_TGID, band_idx);
+> > > > > > +
+> > > > > > +	txwi[1] =3D cpu_to_le32(val);
+> > > > > > +	txwi[2] =3D 0;
+> > > > > > +
+> > > > > > +	val =3D MT_TXD3_SW_POWER_MGMT |
+> > > > > > +	      FIELD_PREP(MT_TXD3_REM_TX_COUNT, tx_count);
+> > > > > > +	if (key)
+> > > > > > +		val |=3D MT_TXD3_PROTECT_FRAME;
+> > > > > > +	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+> > > > > > +		val |=3D MT_TXD3_NO_ACK;
+> > > > > > +	if (wcid->amsdu)
+> > > > > > +		val |=3D MT_TXD3_HW_AMSDU;
+> > > > > > +
+> > > > > > +	txwi[3] =3D cpu_to_le32(val);
+> > > > > > +	txwi[4] =3D 0;
+> > > > > > +
+> > > > > > +	val =3D FIELD_PREP(MT_TXD5_PID, pid);
+> > > > > > +	if (pid >=3D MT_PACKET_ID_FIRST)
+> > > > > > +		val |=3D MT_TXD5_TX_STATUS_HOST;
+> > > > > > +	txwi[5] =3D cpu_to_le32(val);
+> > > > > > +
+> > > > > > +	val =3D MT_TXD6_DIS_MAT | MT_TXD6_DAS |
+> > > > > > +	      FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
+> > > > > > +	txwi[6] =3D cpu_to_le32(val);
+> > > > > > +	txwi[7] =3D 0;
+> > > > > > +
+> > > > > > +	if (is_8023)
+> > > > > > +		mt76_connac3_mac_write_txwi_8023(txwi, skb,
+> > > > > > wcid);
+> > > > > > +	else
+> > > > > > +		mt76_connac3_mac_write_txwi_80211(dev, txwi,
+> > > > > > skb, key);
+> > > > > > +
+> > > > > > +	if (txwi[1] & cpu_to_le32(MT_TXD1_FIXED_RATE)) {
+> > > > > > +		struct ieee80211_hdr *hdr =3D (struct
+> > > > > > ieee80211_hdr
+> > > > > > *)skb->data;
+> > > > > > +		bool mcast =3D ieee80211_is_data(hdr-
+> > > > > > >frame_control) &&
+> > > > > > +			     is_multicast_ether_addr(hdr-
+> > > > > > >addr1);
+> > > > > > +		u8 idx =3D MT76_CONNAC3_BASIC_RATES_TBL;
+> > > > > > +
+> > > > > > +		if (mvif) {
+> > > > > > +			if (mcast && mvif->mcast_rates_idx)
+> > > > > > +				idx =3D mvif->mcast_rates_idx;
+> > > > > > +			else if (beacon && mvif-
+> > > > > > >beacon_rates_idx)
+> > > > > > +				idx =3D mvif->beacon_rates_idx;
+> > > > > > +			else
+> > > > > > +				idx =3D mvif->basic_rates_idx;
+> > > > > > +		}
+> > > > > > +
+> > > > > > +		txwi[6] |=3D
+> > > > > > cpu_to_le32(FIELD_PREP(MT_TXD6_TX_RATE,
+> > > > > > idx));
+> > > > > > +		txwi[3] |=3D cpu_to_le32(MT_TXD3_BA_DISABLE);
+> > > > > > +	}
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_write_txwi);
+> > > > > > +
+> > > > > > +void mt76_connac3_txwi_free(struct mt76_dev *dev, struct
+> > > > > > mt76_txwi_cache *t,
+> > > > > > +			    struct ieee80211_sta *sta,
+> > > > > > +			    struct list_head *free_list)
+> > > > > > +{
+> > > > > > +	__le32 *txwi;
+> > > > > > +	u16 wcid_idx;
+> > > > > > +
+> > > > > > +	mt76_connac_txp_skb_unmap(dev, t);
+> > > > > > +	if (!t->skb)
+> > > > > > +		goto out;
+> > > > > > +
+> > > > > > +	txwi =3D (__le32 *)mt76_get_txwi_ptr(dev, t);
+> > > > > > +	if (sta) {
+> > > > > > +		struct mt76_wcid *wcid =3D (struct mt76_wcid
+> > > > > > *)sta-
+> > > > > > > drv_priv;
+> > > > > >=20
+> > > > > > +
+> > > > > > +		wcid_idx =3D wcid->idx;
+> > > > > > +		if (likely(t->skb->protocol !=3D
+> > > > > > cpu_to_be16(ETH_P_PAE)))
+> > > > > > +			mt76_connac3_tx_check_aggr(sta, txwi);
+> > > > > > +	} else {
+> > > > > > +		wcid_idx =3D le32_get_bits(txwi[1],
+> > > > > > MT_TXD1_WLAN_IDX);
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	__mt76_tx_complete_skb(dev, wcid_idx, t->skb,
+> > > > > > free_list);
+> > > > > > +out:
+> > > > > > +	t->skb =3D NULL;
+> > > > > > +	mt76_put_txwi(dev, t);
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_txwi_free);
+> > > > > > +
+> > > > > > +static bool
+> > > > > > +mt76_connac3_mac_add_txs_skb(struct mt76_dev *dev, struct
+> > > > > > mt76_wcid
+> > > > > > *wcid,
+> > > > > > +			     int pid, __le32 *txs_data)
+> > > > > > +{
+> > > > > > +	struct mt76_sta_stats *stats =3D &wcid->stats;
+> > > > > > +	struct ieee80211_supported_band *sband;
+> > > > > > +	struct ieee80211_tx_info *info;
+> > > > > > +	u32 txrate, txs, mode, stbc;
+> > > > > > +	struct rate_info rate =3D {};
+> > > > > > +	struct sk_buff_head list;
+> > > > > > +	struct mt76_phy *mphy;
+> > > > > > +	struct sk_buff *skb;
+> > > > > > +	bool cck =3D false;
+> > > > > > +
+> > > > > > +	mt76_tx_status_lock(dev, &list);
+> > > > > > +	skb =3D mt76_tx_status_skb_get(dev, wcid, pid, &list);
+> > > > > > +	if (!skb)
+> > > > > > +		goto out_no_skb;
+> > > > > > +
+> > > > > > +	txs =3D le32_to_cpu(txs_data[0]);
+> > > > > > +
+> > > > > > +	info =3D IEEE80211_SKB_CB(skb);
+> > > > > > +	if (!(txs & MT_TXS0_ACK_ERROR_MASK))
+> > > > > > +		info->flags |=3D IEEE80211_TX_STAT_ACK;
+> > > > > > +
+> > > > > > +	info->status.ampdu_len =3D 1;
+> > > > > > +	info->status.ampdu_ack_len =3D !!(info->flags &
+> > > > > > +					IEEE80211_TX_STAT_ACK);
+> > > > > > +	info->status.rates[0].idx =3D -1;
+> > > > > > +
+> > > > > > +	txrate =3D FIELD_GET(MT_TXS0_TX_RATE, txs);
+> > > > > > +
+> > > > > > +	rate.mcs =3D FIELD_GET(MT_TX_RATE_IDX, txrate);
+> > > > > > +	rate.nss =3D FIELD_GET(MT_TX_RATE_NSS, txrate) + 1;
+> > > > > > +	stbc =3D le32_get_bits(txs_data[3], MT_TXS3_RATE_STBC);
+> > > > > > +
+> > > > > > +	if (stbc && rate.nss > 1)
+> > > > > > +		rate.nss >>=3D 1;
+> > > > > > +
+> > > > > > +	if (rate.nss - 1 < ARRAY_SIZE(stats->tx_nss))
+> > > > > > +		stats->tx_nss[rate.nss - 1]++;
+> > > > > > +	if (rate.mcs < ARRAY_SIZE(stats->tx_mcs))
+> > > > > > +		stats->tx_mcs[rate.mcs]++;
+> > > > > > +
+> > > > > > +	mode =3D FIELD_GET(MT_TX_RATE_MODE, txrate);
+> > > > > > +	switch (mode) {
+> > > > > > +	case MT_PHY_TYPE_CCK:
+> > > > > > +		cck =3D true;
+> > > > > > +		fallthrough;
+> > > > > > +	case MT_PHY_TYPE_OFDM:
+> > > > > > +		mphy =3D mt76_dev_phy(dev, wcid->phy_idx);
+> > > > > > +
+> > > > > > +		if (mphy->chandef.chan->band =3D=3D
+> > > > > > NL80211_BAND_5GHZ)
+> > > > > > +			sband =3D &mphy->sband_5g.sband;
+> > > > > > +		else if (mphy->chandef.chan->band =3D=3D
+> > > > > > NL80211_BAND_6GHZ)
+> > > > > > +			sband =3D &mphy->sband_6g.sband;
+> > > > > > +		else
+> > > > > > +			sband =3D &mphy->sband_2g.sband;
+> > > > > > +
+> > > > > > +		rate.mcs =3D mt76_get_rate(mphy->dev, sband,
+> > > > > > rate.mcs,
+> > > > > > cck);
+> > > > > > +		rate.legacy =3D sband-
+> > > > > > >bitrates[rate.mcs].bitrate;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HT:
+> > > > > > +	case MT_PHY_TYPE_HT_GF:
+> > > > > > +		if (rate.mcs > 31)
+> > > > > > +			goto out;
+> > > > > > +
+> > > > > > +		rate.flags =3D RATE_INFO_FLAGS_MCS;
+> > > > > > +		if (wcid->rate.flags &
+> > > > > > RATE_INFO_FLAGS_SHORT_GI)
+> > > > > > +			rate.flags |=3D RATE_INFO_FLAGS_SHORT_GI;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_VHT:
+> > > > > > +		if (rate.mcs > 9)
+> > > > > > +			goto out;
+> > > > > > +
+> > > > > > +		rate.flags =3D RATE_INFO_FLAGS_VHT_MCS;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_HE_SU:
+> > > > > > +	case MT_PHY_TYPE_HE_EXT_SU:
+> > > > > > +	case MT_PHY_TYPE_HE_TB:
+> > > > > > +	case MT_PHY_TYPE_HE_MU:
+> > > > > > +		if (rate.mcs > 11)
+> > > > > > +			goto out;
+> > > > > > +
+> > > > > > +		rate.he_gi =3D wcid->rate.he_gi;
+> > > > > > +		rate.he_dcm =3D FIELD_GET(MT_TX_RATE_DCM,
+> > > > > > txrate);
+> > > > > > +		rate.flags =3D RATE_INFO_FLAGS_HE_MCS;
+> > > > > > +		break;
+> > > > > > +	case MT_PHY_TYPE_EHT_SU:
+> > > > > > +	case MT_PHY_TYPE_EHT_TRIG:
+> > > > > > +	case MT_PHY_TYPE_EHT_MU:
+> > > > > > +		if (rate.mcs > 13)
+> > > > > > +			goto out;
+> > > > > > +
+> > > > > > +		rate.eht_gi =3D wcid->rate.eht_gi;
+> > > > > > +		rate.flags =3D RATE_INFO_FLAGS_EHT_MCS;
+> > > > > > +		break;
+> > > > > > +	default:
+> > > > > > +		goto out;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	stats->tx_mode[mode]++;
+> > > > > > +
+> > > > > > +	switch (FIELD_GET(MT_TXS0_BW, txs)) {
+> > > > > > +	case IEEE80211_STA_RX_BW_320:
+> > > > > > +		rate.bw =3D RATE_INFO_BW_320;
+> > > > > > +		stats->tx_bw[4]++;
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_160:
+> > > > > > +		rate.bw =3D RATE_INFO_BW_160;
+> > > > > > +		stats->tx_bw[3]++;
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_80:
+> > > > > > +		rate.bw =3D RATE_INFO_BW_80;
+> > > > > > +		stats->tx_bw[2]++;
+> > > > > > +		break;
+> > > > > > +	case IEEE80211_STA_RX_BW_40:
+> > > > > > +		rate.bw =3D RATE_INFO_BW_40;
+> > > > > > +		stats->tx_bw[1]++;
+> > > > > > +		break;
+> > > > > > +	default:
+> > > > > > +		rate.bw =3D RATE_INFO_BW_20;
+> > > > > > +		stats->tx_bw[0]++;
+> > > > > > +		break;
+> > > > > > +	}
+> > > > > > +	wcid->rate =3D rate;
+> > > > > > +
+> > > > > > +out:
+> > > > > > +	mt76_tx_status_skb_done(dev, skb, &list);
+> > > > > > +
+> > > > > > +out_no_skb:
+> > > > > > +	mt76_tx_status_unlock(dev, &list);
+> > > > > > +
+> > > > > > +	return !!skb;
+> > > > > > +}
+> > > > > > +
+> > > > > > +void mt76_connac3_mac_add_txs(struct mt76_dev *dev, void
+> > > > > > *data,
+> > > > > > +			      u32 max_wtbl_size)
+> > > > > > +{
+> > > > > > +	struct mt76_wcid *wcid;
+> > > > > > +	__le32 *txs_data =3D data;
+> > > > > > +	u16 wcidx;
+> > > > > > +	u8 pid;
+> > > > > > +
+> > > > > > +	if (le32_get_bits(txs_data[0], MT_TXS0_TXS_FORMAT) > 1)
+> > > > > > +		return;
+> > > > > > +
+> > > > > > +	wcidx =3D le32_get_bits(txs_data[2], MT_TXS2_WCID);
+> > > > > > +	pid =3D le32_get_bits(txs_data[3], MT_TXS3_PID);
+> > > > > > +
+> > > > > > +	if (pid < MT_PACKET_ID_FIRST)
+> > > > > > +		return;
+> > > > > > +
+> > > > > > +	if (wcidx >=3D max_wtbl_size)
+> > > > > > +		return;
+> > > > > > +
+> > > > > > +	rcu_read_lock();
+> > > > > > +
+> > > > > > +	wcid =3D rcu_dereference(dev->wcid[wcidx]);
+> > > > > > +	if (!wcid)
+> > > > > > +		goto out;
+> > > > > > +
+> > > > > > +	mt76_connac3_mac_add_txs_skb(dev, wcid, pid, txs_data);
+> > > > > > +	if (!wcid->sta)
+> > > > > > +		goto out;
+> > > > > > +
+> > > > > > +	spin_lock_bh(&dev->sta_poll_lock);
+> > > > > > +	if (list_empty(&wcid->poll_list))
+> > > > > > +		list_add_tail(&wcid->poll_list, &dev-
+> > > > > > >sta_poll_list);
+> > > > > > +	spin_unlock_bh(&dev->sta_poll_lock);
+> > > > > > +
+> > > > > > +out:
+> > > > > > +	rcu_read_unlock();
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_mac_add_txs);
+> > > > > > +
+> > > > > > +void mt76_connac3_tx_token_put(struct mt76_dev *dev)
+> > > > > > +{
+> > > > > > +	struct mt76_txwi_cache *txwi;
+> > > > > > +	int id;
+> > > > > > +
+> > > > > > +	spin_lock_bh(&dev->token_lock);
+> > > > > > +	idr_for_each_entry(&dev->token, txwi, id) {
+> > > > > > +		mt76_connac3_txwi_free(dev, txwi, NULL, NULL);
+> > > > > > +		dev->token_count--;
+> > > > > > +	}
+> > > > > > +	spin_unlock_bh(&dev->token_lock);
+> > > > > > +	idr_destroy(&dev->token);
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(mt76_connac3_tx_token_put);
+> > > > > > diff --git
+> > > > > > a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+> > > > > > b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+> > > > > > index 6663a0b46541..bcc1d976b2b0 100644
+> > > > > > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+> > > > > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+> > > > > > @@ -4,6 +4,24 @@
+> > > > > >  #ifndef __MT76_CONNAC3_MAC_H
+> > > > > >  #define __MT76_CONNAC3_MAC_H
+> > > > > > =20
+> > > > > > +/* NOTE: used to map mt76_rates. idx may change if firmware
+> > > > > > expands
+> > > > > > table */
+> > > > > > +#define MT76_CONNAC3_BASIC_RATES_TBL	11
+> > > > > > +#define MT76_CONNAC3_BEACON_RATES_TBL	25
+> > > > > >=20
+> > > > >=20
+> > > > > Different devices may have different defined value.=20
+> > > >=20
+> > > > The other WiFi7 device I am working on relies on the values I
+> > > > moved
+> > > > in
+> > > > mt76_connac3_mac.h (in common with mt7996). Moreover you can
+> > > > still
+> > > > have per-device values in mt7996/mac.h (I have not removed it).
+> > > >=20
+> > >=20
+> > > Please double check with the mtk folk you work with. The 11 and 25
+> > > is
+> > > the value I discussed with firmware folks to avoid overlapping the
+> > > tbl
+> > > mt7996 use (MU/other algo in fw), or it causes something hardly
+> > > solving
+> > > issue
+> >=20
+> > sure, thx for pointing this out.
+> > @Deren: can you please double check?
+> >=20
+> > Regards,
+> > Lorenzo
+> >=20
+> The idx is defined by different flow in fw and may be changed in next
+> stage development. I think it's better to keep them in per-chip header.
 
-> Also more information would be good to have to pinpoint where the actual
-> problem is. For example, it would be good to test different APs with
-> different encryption methods and make a list what works and what doesn't
-> on his device. There can be numerous reasons for the problem.
-> 
+ack, I will fix it.
 
-In the starting BZ thread, the reporter had issue with WPA enterprise
-(as he can't reach login and usage disclaimer page).
+Regards,
+Lorenzo
 
-Thanks.
+>=20
+> Regards,
+> Deren
+>=20
+> > > =20
+> > > > >=20
+> > > > > I'm thinking if it's too early to create this patch for just
+> > > > > moving
+> > > > > mt7996 to connac3_lib?
+> > > >=20
+> > > > The code I moved is used by the other device as well. This series
+> > > > is
+> > > > a
+> > > > preliminary series to support it.
+> > > >=20
+> > > > Regards,
+> > > > Lorenzo
+> > > >=20
+> > > > >=20
+> > > > > Ryder
+> > > > >=20
 
--- 
-An old man doll... just what I always wanted! - Clara
+--07nnVrTSYJQHspp2
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZIQq7wAKCRA6cBh0uS2t
+rORhAQCaQmU7K1+L1Ps08drEGsiAzku8IBgPXxvtYxn59DCBiQEAtvS6XZ58TZBi
+uq/3LptB23i/NFM6N5Q+hPdv/3qCxAU=
+=SzLL
+-----END PGP SIGNATURE-----
+
+--07nnVrTSYJQHspp2--
