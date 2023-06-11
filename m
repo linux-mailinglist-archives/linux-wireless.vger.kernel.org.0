@@ -2,136 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D34F72B114
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jun 2023 11:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58EAF72B1DB
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jun 2023 14:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233581AbjFKJPB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Jun 2023 05:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46490 "EHLO
+        id S233234AbjFKMhi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Jun 2023 08:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjFKJOw (ORCPT
+        with ESMTP id S229562AbjFKMhh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Jun 2023 05:14:52 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6889B173B
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Jun 2023 02:14:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686474891; x=1718010891;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=l1AJCMFaqPP3njOut+AdPOVV5yyBnGLxJE/AsJNI7aM=;
-  b=fFW3ZyzhyKNnCfP8mrKhsrhPhYLISUdx0kg50zZEe0IhTo1akp6Z9PXD
-   sx7m8sMOzz45uuvaSwCga6AVlt10cI8ysMHH2NHWJGQCekAEFoPAqo2/M
-   nxAgnqjzR4mctGPEohCU0bX81vjqXbS50ZoVHpB/p5iXWsGPOPXqoj2+2
-   pMJ/wjZpG9yB6Y4JxG7iyvZbZ0UCUtUT6opTZenglkbyWz4+W6uicAcJI
-   304Ajlzw+avNujmLjhp4sEzBc4s38w4rOaacogMLwHwomb3Y4162/SlGj
-   +nCt0KIcp/9cQKZkWIy7a55nqkWxyuElUbV/j4+nXaFUxVj9QdMQNRMUk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10737"; a="347488944"
-X-IronPort-AV: E=Sophos;i="6.00,234,1681196400"; 
-   d="scan'208";a="347488944"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2023 02:14:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10737"; a="688249753"
-X-IronPort-AV: E=Sophos;i="6.00,234,1681196400"; 
-   d="scan'208";a="688249753"
-Received: from rganonx-mobl1.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.222.121])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2023 02:14:49 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 4/4] wifi: mac80211: fragment per STA profile correctly
-Date:   Sun, 11 Jun 2023 12:14:29 +0300
-Message-Id: <20230611121219.9b5c793d904b.I7dad952bea8e555e2f3139fbd415d0cd2b3a08c3@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230611091429.24517-1-gregory.greenman@intel.com>
-References: <20230611091429.24517-1-gregory.greenman@intel.com>
+        Sun, 11 Jun 2023 08:37:37 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15559E63;
+        Sun, 11 Jun 2023 05:37:36 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-977d55ac17bso619311966b.3;
+        Sun, 11 Jun 2023 05:37:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686487054; x=1689079054;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aKDEqVBNJxLHyWcpWhxYEDcaagbwl62DkbQPgzzJEqQ=;
+        b=E0p+bg1sj7/jjAdpQm12mb9yfZuRaSIHsKURrMBsPg2Qc+YYVpDKF3tnuveUOXhcDO
+         o30y4uhNOG0sjjRyMlJD7MiHeodHxRZCTohRQTZMH6m5VU5kTwg9/lXTADcRaY0yPERL
+         10SAWyArRExkxSaZZFJxKQQjxS4tjW06bvz34CD4njybQrP0DkX2k3/mNIW/KW9DrFTL
+         Kji3fG3WNgGwd8rb5Tx8z/RAZlYnL2ReY28lTqeXANbbY9PLgROnGD3/NlM0jVsdzsIc
+         9k1mxxnrsMvhRvvihBwwEgCKY6coxlnrYf9GyRISExPu4Fa6hDe+E5pTFavMV1UH9sAM
+         51QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686487054; x=1689079054;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aKDEqVBNJxLHyWcpWhxYEDcaagbwl62DkbQPgzzJEqQ=;
+        b=USp3do78CWGhpY08EOo+xtdbadEFlQgZ7K2/laKRxantm/WcQIAsik/ehZ1iVdZe58
+         TI02EaohV3eUQT1hJQU0VPuIn/0Wpk31Rq1knXyIsrnv7Jmt0YpALi0ynKISegm5/jRZ
+         dVKvlB/DMOFQK8XBuNacRJtnfzYi5pkd5fUQP/v1hwkUmADFJcL4jQLG3PJC2MuMihgI
+         lhd8hvab3KX3iDt8vSW6ZjioR3gCrc4thB0/Xdpe59zqy0KCjPYCpDEjtG5LD+J6gptj
+         eVV70Ew4n+nM1HCVUVGW+4NZymzazZjrTmGQ/j78HWAbCV5LLn7NxJyBIkHV53uybC0n
+         HomA==
+X-Gm-Message-State: AC+VfDy0JxDIXOhfVwwFql/A5+2P5x8ae4MIOBTMj4CjhLI8EzZUb1Lm
+        DGNpk+jjPWysKx7wkZ0gClZQ7uuPDFE=
+X-Google-Smtp-Source: ACHHUZ4kwduvkYS33AizAyoJQ6d6KJtRYPJOcLthUw+LV4CKh7RnIjj1QFaMFbRCtPkVbhDpaSri8Q==
+X-Received: by 2002:a17:907:16a4:b0:974:216f:dc36 with SMTP id hc36-20020a17090716a400b00974216fdc36mr6680424ejc.17.1686487054314;
+        Sun, 11 Jun 2023 05:37:34 -0700 (PDT)
+Received: from shift.daheim (p4fd09ff6.dip0.t-ipconnect.de. [79.208.159.246])
+        by smtp.gmail.com with ESMTPSA id p17-20020a1709060dd100b0094f282fc29asm3709170eji.207.2023.06.11.05.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Jun 2023 05:37:33 -0700 (PDT)
+Received: from chuck by shift.daheim with local (Exim 4.96)
+        (envelope-from <chuck@shift.daheim>)
+        id 1q8KK4-000LMu-2R;
+        Sun, 11 Jun 2023 14:37:32 +0200
+From:   Christian Lamparter <chunkeey@gmail.com>
+To:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com
+Cc:     rafal@milecki.pl, kvalo@kernel.org, f.fainelli@gmail.com,
+        conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        robh+dt@kernel.org
+Subject: [PATCH v1] dt-bindings: net: wireless: bcm4329-fmac: add ieee80211-freq-limit property
+Date:   Sun, 11 Jun 2023 14:37:29 +0200
+Message-Id: <288fc9a0db6c292bc132e828611c41785b075078.1686486461.git.chunkeey@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+This is an existing optional property that ieee80211.yaml/cfg80211
+provides. It's useful to further restrict supported frequencies
+for a specified device through device-tree.
 
-When fragmenting the ML per STA profile, the element ID should be
-IEEE80211_MLE_SUBELEM_PER_STA_PROFILE rather than WLAN_EID_FRAGMENT.
+The driver supported this since ~2017 by
+commit 0f83ff697356 ("brcmfmac: use wiphy_read_of_freq_limits to respect limits from DT")
 
-Change the helper function to take the to be used element ID and pass
-the appropriate value for each of the fragmentation levels.
+This property is already being used by:
+arch/arm/dts/bcm4709-netgear-r8000.dts
 
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 ---
- net/mac80211/ieee80211_i.h | 2 +-
- net/mac80211/mlme.c        | 5 +++--
- net/mac80211/util.c        | 4 ++--
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml  | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 561a2980f92f..4afd5095366c 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2317,7 +2317,7 @@ ieee802_11_parse_elems(const u8 *start, size_t len, bool action,
- 	return ieee802_11_parse_elems_crc(start, len, action, 0, 0, bss);
- }
+diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+index fec1cc9b9a08..44e5f6677289 100644
+--- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+@@ -15,6 +15,9 @@ description:
+   These chips also have a Bluetooth portion described in a separate
+   binding.
  
--void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos);
-+void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos, u8 frag_id);
++allOf:
++  - $ref: ieee80211.yaml#
++
+ properties:
+   compatible:
+     oneOf:
+@@ -63,6 +66,8 @@ properties:
+     description: Name for the OOB IRQ, this must be set to "host-wake".
+     const: host-wake
  
- extern const int ieee802_1d_to_ac[8];
- 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 6970d5e7ac8f..738822b82d3e 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1367,10 +1367,11 @@ static void ieee80211_assoc_add_ml_elem(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_add_non_inheritance_elem(skb, outer_present_elems,
- 						   link_present_elems);
- 
--		ieee80211_fragment_element(skb, subelem_len);
-+		ieee80211_fragment_element(skb, subelem_len,
-+					   IEEE80211_MLE_SUBELEM_FRAGMENT);
- 	}
- 
--	ieee80211_fragment_element(skb, ml_elem_len);
-+	ieee80211_fragment_element(skb, ml_elem_len, WLAN_EID_FRAGMENT);
- }
- 
- static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 3aa363bdb6e0..2fc07717bcad 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -5128,7 +5128,7 @@ u8 *ieee80211_ie_build_eht_cap(u8 *pos,
- 	return pos;
- }
- 
--void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos)
-+void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos, u8 frag_id)
- {
- 	unsigned int elem_len;
- 
-@@ -5148,7 +5148,7 @@ void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos)
- 		memmove(len_pos + 255 + 3, len_pos + 255 + 1, elem_len);
- 		/* place the fragment ID */
- 		len_pos += 255 + 1;
--		*len_pos = WLAN_EID_FRAGMENT;
-+		*len_pos = frag_id;
- 		/* and point to fragment length to update later */
- 		len_pos++;
- 	}
++  ieee80211-freq-limit: true
++
+   brcm,drive-strength:
+     $ref: /schemas/types.yaml#/definitions/uint32
+     description: Drive strength used for the SDIO pins on the device in mA.
 -- 
-2.38.1
+2.40.1
 
