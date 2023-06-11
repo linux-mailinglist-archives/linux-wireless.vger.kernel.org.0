@@ -2,146 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2897F72B3B7
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jun 2023 21:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9787572B3EA
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jun 2023 22:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233464AbjFKThq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Jun 2023 15:37:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43432 "EHLO
+        id S229749AbjFKUXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Jun 2023 16:23:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231877AbjFKThp (ORCPT
+        with ESMTP id S229441AbjFKUXU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Jun 2023 15:37:45 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE377D2
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Jun 2023 12:37:43 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-77aec4dcd9bso148863339f.2
-        for <linux-wireless@vger.kernel.org>; Sun, 11 Jun 2023 12:37:43 -0700 (PDT)
+        Sun, 11 Jun 2023 16:23:20 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7993AE46;
+        Sun, 11 Jun 2023 13:23:18 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5148e4a2f17so6535830a12.1;
+        Sun, 11 Jun 2023 13:23:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686512263; x=1689104263;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YM7OM9iK+U+PV5SZtotWJ9eP4Pea45UXoIm4m6gjQgw=;
-        b=fI/JS3uYbxcaUh8+namFMchJfNqzXabCbDqmSZUwXxXs72ORPtoJmidB4ksYDKPQjc
-         wwR6C4Q78yzT9T/aIBKJiwUwOmgfvtCn7cYp0ueW+Zv95l5Ca2/f5dOloPLlDmfnlurf
-         od85w+3THcorDk7r8x9UYM4OdxNapjiRMIGyE=
+        d=googlemail.com; s=20221208; t=1686514996; x=1689106996;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+tFnAn28hiPk2ZM+sMsKYnGj/GCEN4oSZGqvN8a4mfg=;
+        b=qW/pMZT/anLIyPT2bgUC6MQjAUvt5u6CwXLr6ZEmrqDBWgag2lbUeCKe5HFeR0B2Vs
+         FX1aGwHopbfJcv5Nh9Ie8IbVnhn/eF9wa7X3FuUTGx5i/Dv9JsOEIvAoz7KA93L7VGO+
+         ILI2CquqTiKEFUXWvNjEyMxeqpt/VLhFnCQ0Tbr6a0bo5zC9Af8dlNL/M1YWCnGtQx6I
+         E2rT2emvfPS6HgeVtyUapZHj463GLBlEO8p5Gj02NyhpBPAWQOJnpzbYtzapCD1cU3zA
+         SwB8n7VsD7d3EPcaT2GLFDzYKvYRBSnqfeaI717CFC9K6m6hRluKQPly/kYHkFQEHuRP
+         Yl4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686512263; x=1689104263;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YM7OM9iK+U+PV5SZtotWJ9eP4Pea45UXoIm4m6gjQgw=;
-        b=JxEyBJGrVD5LpqZmDZrsOhLEfQFIUbAdp6Y0uavY8jotY09ZzO6qvXjKD59+7xCwHi
-         Vbc5qs7b7C5zTwUVvirF9e2otdQR7tN3VPBZ8NkEVtjUz/pkEzBqC7heKVHLNuxwOkKT
-         JFeT/89Qf7clnkxj/B3GMntzXVDVxrxJboGzQB+2LWiTWXfR2HeU7vB+CMuwSNt87DBu
-         Ggif0vyDdgReMpqgmLlV8nDnJn8BpF4DBz2+trPQY5l26AhP2nBrFhohsWGW5YjMQqPX
-         26tx9NCL4QrTCuq4jp23tueDfeV2H7PHuIcLUGwsJX5IcXdmMPOs49vnm1ciw/A0czwQ
-         1+Lw==
-X-Gm-Message-State: AC+VfDyedVvsYwc9h7A7JpuAHu5Eht8yycq/TjJJrpurNzKXLiW1CEm6
-        UzZhPnMAY6NMiqF6VFchKYXNTm/pT2zKVtjX8egCA01rJGPMvWUl
-X-Google-Smtp-Source: ACHHUZ7thqAggR7Av1USvcj3PSsn7/WY2NPYsKDUZC2xNkkpn0rPjeFsgAStZf3RB4OqK/j85lSN+TBvP7MsIU6Fz40=
-X-Received: by 2002:a5e:9412:0:b0:779:89db:37b9 with SMTP id
- q18-20020a5e9412000000b0077989db37b9mr6981251ioj.9.1686512263254; Sun, 11 Jun
- 2023 12:37:43 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686514996; x=1689106996;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+tFnAn28hiPk2ZM+sMsKYnGj/GCEN4oSZGqvN8a4mfg=;
+        b=j9IAFcY3ENCySJoZ2MKKzEYaI1+6HcoNsfhm/c+TUqqyT9SI0ysE3BARzs7j7tO+ka
+         kx9VyYmRkN389FJLRo5z32NAc+l0+8I67/icpX15GTzrgP2yHp8kIHmJGe4R3D2ZsUuF
+         HBKGTj+mT9ioSRdRcuRHI0RJzIIaEtQ5DbWuSpcQ6aNAkOT/1+yCq71IdTbXjVrvECb3
+         IKzP2AdMUFqgKR6sWFbMBDP4c1iozyiSWU3DiMcVLiZgcnSdTqIuudImjKjXY5e/Ti3d
+         V+oLE+CXiPf10e96pzSHVocCGrPZ+ht3zvJI42hQvxbg9MNqw1nExLKBxKJsWQ0ng/wj
+         Vsxw==
+X-Gm-Message-State: AC+VfDxfzKfVAmD6JMdf6jyJB99JQANdbygjzOkaizZWYLsJYiiGyms9
+        x8y4X6leCvL0GRnwqiUDodWy+tj8EGvQRNDvEnNg8gv6vSs=
+X-Google-Smtp-Source: ACHHUZ6pXTRoO4yNU2J8Qkd3PO++uzrbAZqi7HhmK3+47ERwIYKNuO0CYsTawmlj5mD3SCzpzobUH6/K0NwY9qbPPqo=
+X-Received: by 2002:a17:907:9306:b0:974:1e85:6a69 with SMTP id
+ bu6-20020a170907930600b009741e856a69mr7731621ejc.16.1686514995636; Sun, 11
+ Jun 2023 13:23:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230302095551.5510-1-quic_youghand@quicinc.com> <20230302095551.5510-2-quic_youghand@quicinc.com>
-In-Reply-To: <20230302095551.5510-2-quic_youghand@quicinc.com>
-From:   Abhishek Kumar <kuabhs@chromium.org>
-Date:   Sun, 11 Jun 2023 12:37:32 -0700
-Message-ID: <CACTWRwtz6HpszX4Dp2jJ5YmcZ2Mg2KxmyipfSQW4W-ELBkkCVw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] wifi: cfg80211: Add beacon hint notifier support
-To:     Youghandhar Chintala <quic_youghand@quicinc.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mpubbise@qti.qualcomm.com
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Sun, 11 Jun 2023 22:23:04 +0200
+Message-ID: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
+Subject: wifi: rtw88: question about SDIO RX aggregation limiting
+To:     linux-wireless@vger.kernel.org, pkshih@realtek.com
+Cc:     "Lukas F. Hartmann" <lukas@mntre.com>,
+        linux-kernel@vger.kernel.org, tony0620emma@gmail.com,
+        jernej.skrabec@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Mar 2, 2023 at 1:57=E2=80=AFAM Youghandhar Chintala
-<quic_youghand@quicinc.com> wrote:
->
-> There are connection failures in hidden SSID case when the device is
-> with default reg domain WW.
-> For WW reg domain most of the 5 GHz channels are passive. When device
-> listens to the beacon on that channel, the driver is updating its
-> channel flag but firmware is not aware of it and firmware is not
-> sending probes on that channels.
-> Due to this, we are seeing connection failures when the device is trying
-> to connect with hidden SSID AP.
->
-> In the case of devices using the ath10k driver, it is required to update
-> the change in channel flags to firmware as well. Therefore, we need a
-> mechanism to notify the driver from the regulatory core regarding the
-> channel flag changes.
-> Adding a beacon hint notifier logic, so that drivers can register
-> callbacks to get notified whenever there is a change in channel flags.
->
-> Signed-off-by: Youghandhar Chintala <quic_youghand@quicinc.com>
-> ---
->  include/net/cfg80211.h | 7 +++++++
->  net/wireless/reg.c     | 5 ++++-
->  2 files changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 11a370e64143..7a00f5317e1f 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -5096,6 +5096,10 @@ struct wiphy_iftype_akm_suites {
->   * @reg_notifier: the driver's regulatory notification callback,
->   *     note that if your driver uses wiphy_apply_custom_regulatory()
->   *     the reg_notifier's request can be passed as NULL
-> + * @beacon_hint_notifier: the driver's beacon hint notification callback=
-,
-> + *     which will trigger when there is channel flag updates seen in
-> + *     beacon hints. The beacon_hint_notifier's request can be passed
-> + *     with chan context.
->   * @regd: the driver's regulatory domain, if one was requested via
->   *     the regulatory_hint() API. This can be used by the driver
->   *     on the reg_notifier() if it chooses to ignore future
-> @@ -5386,6 +5390,9 @@ struct wiphy {
->         void (*reg_notifier)(struct wiphy *wiphy,
->                              struct regulatory_request *request);
->
-> +       void (*beacon_hint_notifier)(struct wiphy *wiphy,
-> +                                    struct ieee80211_channel *chan);
-Is the second argument required. Your 2/2 patch does not use this
-argument and thus will cause build failure. If it is not used, I would
-recommend to drop it.
-> +
->         /* fields below are read-only, assigned by cfg80211 */
->
->         const struct ieee80211_regdomain __rcu *regd;
-> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-> index c3d950d29432..2dc6880a28c5 100644
-> --- a/net/wireless/reg.c
-> +++ b/net/wireless/reg.c
-> @@ -2219,8 +2219,11 @@ static void handle_reg_beacon(struct wiphy *wiphy,=
- unsigned int chan_idx,
->                 channel_changed =3D true;
->         }
->
-> -       if (channel_changed)
-> +       if (channel_changed) {
->                 nl80211_send_beacon_hint_event(wiphy, &chan_before, chan)=
-;
-> +               if (wiphy->beacon_hint_notifier)
-> +                       wiphy->beacon_hint_notifier(wiphy, chan);
-> +       }
->  }
->
->  /*
-> --
-> 2.38.0
->
+Hello Ping-Ke,
 
-Thanks
-Abhishek
+certain Amlogic SDIO host controllers have a limit of
+receiving/transmitting at most 1536 bytes at a time.
+It turns out that rtw_sdio_enable_rx_aggregation() from rtw88/sdio.c
+is not taking this into account currently.
+For any RX buffer that is bigger than 1536 bytes (which can happen due
+to RX aggregation) we're unable to do any processing on the host side
+because all bytes beyond the 1536 bytes mark are lost.
+
+Lukas found that limiting BIT_RXDMA_AGG_PG_TH to 0x6 makes his
+RTL8822CS work on the affected Amlogic SoCs.
+
+My question now is: how can we properly limit BIT_RXDMA_AGG_PG_TH
+without hard-coding a one-fits-all value (which may reduce
+performance)?
+
+Initially I thought that we could just calculate it:
+  host_max_pages = mmc_host->max_req_size / rtwdev->chip->page_size
+max_req_size for the affected controller is 1536 and chip->page_size
+is 128, so the result would be 12 (I thought it would be close to this
+number, maybe +/-1).
+Unfortunately this doesn't fix the issue and for his board
+BIT_RXDMA_AGG_PG_TH the limit is 6 or 7.
+
+If you could describe how BIT_RXDMA_AGG_PG_TH generally works I can
+come up with the algorithm to calculate the limit on my own (at least
+I hope so).
+Lukas has been very patient with testing so far and I understood that
+he's willing to test further patches if we think that it fixes the
+rtw88 driver issue he's seeing.
+
+
+Thank you and best regards,
+Martin
