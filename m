@@ -2,76 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBCDA72BAFF
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 10:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C9472BB80
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 11:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbjFLImc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 04:42:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46912 "EHLO
+        id S232294AbjFLJCY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jun 2023 05:02:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbjFLImb (ORCPT
+        with ESMTP id S232389AbjFLJBi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 04:42:31 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60F6FD
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 01:42:29 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51830f2523fso2446461a12.2
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 01:42:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686559348; x=1689151348;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XkAtBHZAqEexY8XTljgfOwsv5AHv1wbpBye0cnGEpPM=;
-        b=WAs0JyvzR/RmxmAKv7lxMooExqSxJ6YuKowpuEU2Qt6hMQf6H+nnwhPntikudB0dUZ
-         7TADMWUlyNANhU/YTU+qUUGWDV44jVW8N2Lc1zTfJBQBq2rLD2OFPUZBHMQW7SrFFjII
-         HSRv5en4jt+Bb2ZhPjmIzQqbPArSvkaShCSwtDYUCX+SZ9usJ46ojQByrS4s4sYMp96T
-         ++ocKGHoC3WH7KnO75QjxdsRtCxo97Ev6Q5GeiOijXa+V41a5mWmHULCQN1bd60RwyWs
-         6/NrUAD3sfTXPsWtwSf8e13eDy7f0AGRtQOWMP33lIGglyYrGnD3CsvgO8qMycoidaPh
-         I0DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686559348; x=1689151348;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XkAtBHZAqEexY8XTljgfOwsv5AHv1wbpBye0cnGEpPM=;
-        b=OdWoJuANpRifz20yTo/1MrgTzgFjZ5lnwdIMK8Z7Gq8y2U68SVdABZlXgUCgdIbSfN
-         QLIfPdTlGptCCt9eimslNfu+2bl2YE5vAkGmw88ysH5faR7GAiInb4bCh/m/w0Ro2xgQ
-         /5shLCIPGgJf+bknCpGE4Ni+PheuoOSVt/Cuqi11MwgrzsTwOO9nWGVwSLjitr1DQiTU
-         cUJd/1O3H/Ew7ZLdyr/MAaoxYNbF5t9H2t0zipqljRgfvqPLI/OBkshOuClUwzLJvksF
-         1fkP40HTtlmymGjXpL4oP4a0ryf0f3Sws9NeqBs77DraUumpcpEL7/Oc5hLwyQcnmfbZ
-         kE2Q==
-X-Gm-Message-State: AC+VfDz6VQ+JTixWlqogq6S/ASb/xZgcWYLwE5Qw30ntRJNzCbvSr4RE
-        fZrODOpgFZSUCBuGs8PcyFptCw==
-X-Google-Smtp-Source: ACHHUZ67uLX939dGXEu+gmLKwNEWbxc2E5Y5xg5PACugaEyWHvaaHh3LVIz6TsgWNz3YcgwtPwHl4A==
-X-Received: by 2002:a05:6402:2058:b0:514:9500:7e51 with SMTP id bc24-20020a056402205800b0051495007e51mr4218423edb.9.1686559348281;
-        Mon, 12 Jun 2023 01:42:28 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id g6-20020a170906594600b00968db60e070sm4893676ejr.67.2023.06.12.01.42.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jun 2023 01:42:27 -0700 (PDT)
-Message-ID: <c8e5772e-0781-0799-0ab8-03694746a3e1@linaro.org>
-Date:   Mon, 12 Jun 2023 10:42:25 +0200
+        Mon, 12 Jun 2023 05:01:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2759113
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 01:58:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DC6161358
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 08:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376F3C433EF;
+        Mon, 12 Jun 2023 08:58:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686560294;
+        bh=oTtc31fgR9yIREoxJm78IfnfB6txNUPj6ELcbjX9zjk=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=JlDdurCthD/LB2xXxHUksysZZv4f4GNxBP3LBDqD88/xeO15U20Jb3+4yTDCe1TpY
+         edQW4WjJhEveJXMW9D4Jtker0c1oQDLTonAR03GCB1o9ofoxG3wOSifNz6Pp77Thn/
+         IffTXrDzU6FNcYNlSnBwdLJhB2exYBQ9rhFVECbQgWAnruWKhzMJUBRNweGwTvxYk0
+         14h9xru2AqLyE3+LsgdViCrBBqx5M6jSop4T3OO/0sVz3OJ8YqdRjXnhFGxiTnIzt+
+         LFAGNmbW1wML4zQOFENHpJI+A1d7UH099de0zs+FuBfQTZiQYBWk66LtSzUQIE6yvN
+         KRQZZaRzFw3mg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     "lorenzo\@kernel.org" <lorenzo@kernel.org>
+Cc:     Deren Wu =?utf-8?B?KOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>,
+        Shayne Chen =?utf-8?B?KOmZs+i7kuS4nik=?= 
+        <Shayne.Chen@mediatek.com>, Ryder Lee <Ryder.Lee@mediatek.com>,
+        "lorenzo.bianconi\@redhat.com" <lorenzo.bianconi@redhat.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "nbd\@nbd.name" <nbd@nbd.name>
+Subject: Re: [PATCH v2 15/15] wifi: mt76: connac: add connac3 mac library
+References: <cover.1686298162.git.lorenzo@kernel.org>
+        <b7a029d6dfee8e58c58f483ea9e9e7b3bc8012b9.1686298162.git.lorenzo@kernel.org>
+        <5010e5e508e89041451288659390fde5ded94db5.camel@mediatek.com>
+        <ZINUnqkElqSOITxT@localhost.localdomain>
+        <82971c76999ae90be44a524fb95141c5051a9ba0.camel@mediatek.com>
+        <ZINXGP6TmDLaZ+lu@localhost.localdomain>
+        <79bfbe146c7f19cd22007f759bde92c9083c5594.camel@mediatek.com>
+        <ZIQq8uFMgjphE+v+@localhost.localdomain>
+Date:   Mon, 12 Jun 2023 11:58:09 +0300
+In-Reply-To: <ZIQq8uFMgjphE+v+@localhost.localdomain> (lorenzo@kernel.org's
+        message of "Sat, 10 Jun 2023 09:49:06 +0200")
+Message-ID: <871qihgiqm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v1] dt-bindings: net: wireless: bcm4329-fmac: add
- ieee80211-freq-limit property
-Content-Language: en-US
-To:     Christian Lamparter <chunkeey@gmail.com>,
-        devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com
-Cc:     rafal@milecki.pl, kvalo@kernel.org, f.fainelli@gmail.com,
-        conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org
-References: <288fc9a0db6c292bc132e828611c41785b075078.1686486461.git.chunkeey@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <288fc9a0db6c292bc132e828611c41785b075078.1686486461.git.chunkeey@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,22 +66,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/06/2023 14:37, Christian Lamparter wrote:
-> This is an existing optional property that ieee80211.yaml/cfg80211
-> provides. It's useful to further restrict supported frequencies
-> for a specified device through device-tree.
-> 
-> The driver supported this since ~2017 by
-> commit 0f83ff697356 ("brcmfmac: use wiphy_read_of_freq_limits to respect limits from DT")
-> 
-> This property is already being used by:
-> arch/arm/dts/bcm4709-netgear-r8000.dts
-> 
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
+"lorenzo@kernel.org" <lorenzo@kernel.org> writes:
 
-So this is superseded?
+> On Jun 10, Deren Wu wrote:
+>> On Fri, 2023-06-09 at 18:45 +0200, lorenzo@kernel.org wrote:
+>> > > On Fri, 2023-06-09 at 18:34 +0200, lorenzo.bianconi@redhat.com
+>> > > wrote:
+>> > > > On Jun 09, Ryder Lee wrote:
+>> > > > > On Fri, 2023-06-09 at 10:15 +0200, Lorenzo Bianconi wrote:
+>> > > > > >  	 
 
-Best regards,
-Krzysztof
+Guys, please edit your quotes. You are now sending mails with 1000 lines
+and that makes it unreadable in patchwork:
 
+https://patchwork.kernel.org/project/linux-wireless/patch/b7a029d6dfee8e58c58f483ea9e9e7b3bc8012b9.1686298162.git.lorenzo@kernel.org/
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
