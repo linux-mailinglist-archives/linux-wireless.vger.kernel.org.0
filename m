@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B75572CAAC
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 17:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AC372CAAD
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 17:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237670AbjFLPvv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 11:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41298 "EHLO
+        id S238398AbjFLPvz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jun 2023 11:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237808AbjFLPvu (ORCPT
+        with ESMTP id S238033AbjFLPvx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 11:51:50 -0400
+        Mon, 12 Jun 2023 11:51:53 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0279ACA
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 08:51:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DB110C7
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 08:51:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686585106; x=1718121106;
+  t=1686585108; x=1718121108;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VhjU8x+TFm14+FhzchqbvbRFCgIWzI9qsjyKva6DRok=;
-  b=b6XBQQV/P+gPPgFpV0hbEN6CblSyTSOmT2pRUCBdYspdgv+uG6IeDvuw
-   NWKql4paEempefpxI6iFsMckIvpHkXzj3y66NQ0q5DbLyHmvf/W8wFgwl
-   6InAMxNK2pwOYst8neR7YeaR3sQbCpUIs+xTFRkuzXrpKL86pQUULbwBL
-   TZ/gb+T0lxanXRWbE8bpDAYQsqsVE147XIoPxMJBSj/rN6aHGvGDk1FxE
-   tn83EywPh08bhDMSoSF4fk1t23pLn810U3c7xdEtCIyR+LUisH/sCQWGG
-   LN1pQ5gcR4d1gEGfNqSXlESiHqQTuX0Ce+u+t+eg43h74mtsZvm5N/WCS
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="421674224"
+  bh=wUgsLydm42k1NLWRGtiGNHBwLqEZKDnCnXT7L1Ax4GM=;
+  b=euhKsw53irDk1elTPWpd8gPaY2ttSsgUkJtBqQl00QXi9NqeZnh2taJo
+   rj8I8DGjpXThDVjQit+eM9hv+o4HENSAHAvlVKHObwe0UssX1uGlxuOM1
+   VWe2Df9kapknnn9WQD2erI11DQ6l+7jayxq1HdHGFpi7ldyevBGTN1pH0
+   yDJS6irA1XlTZVcXHOVaZkag/pvrTIai+N//pW4ZW7sjK7N4aY8r+xh6F
+   uLrOgR2M/cU0UbSnmCGf3A9XPibPBPQLHY4O4iG2wWjMLtCPeNh7qjONi
+   wHAyYhYyynvVQ/CXfuP/7AAdqxDXXTAJt/G2ikyRo5dgDuzaeS4vLBfXV
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="421674246"
 X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="421674224"
+   d="scan'208";a="421674246"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:45 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="885499324"
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="885499336"
 X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="885499324"
+   d="scan'208";a="885499336"
 Received: from azvuluno-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.202.109])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:43 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:45 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 07/15] wifi: iwlwifi: mvm: fix getting LDPC/STBC support
-Date:   Mon, 12 Jun 2023 18:51:08 +0300
-Message-Id: <20230612184434.5a8856739b11.I6af4a55b22ed856f484ba77f87723dceec4904f2@changeid>
+Subject: [PATCH 08/15] wifi: iwlwifi: mvm: Add NULL check before dereferencing the pointer
+Date:   Mon, 12 Jun 2023 18:51:09 +0300
+Message-Id: <20230612184434.cf7a5ce82fb0.Id3c05d13eeee6638f0930f750e93fb928d5c9dee@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230612155116.168000-1-gregory.greenman@intel.com>
 References: <20230612155116.168000-1-gregory.greenman@intel.com>
@@ -64,32 +64,61 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-Use flags field from struct ieee80211_tx_info in order to get
-LDPC/STBC support. The rate parameter, used originally, is 16
-bits only and does not have details of LDPC/STBC support.
+The p2p, bss and ap vif pointers are assigned based on the mode.
+All pointers will not have valid value at same time and can be
+NULL, based on configured mode. This can lead to NULL pointer
+access. Add NULL pointer check before accessing the data from
+vif pointer.
 
 Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/power.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 5fa6f98b8e55..ccd1e41604f3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -343,9 +343,9 @@ static u32 iwl_mvm_get_inject_tx_rate(struct iwl_mvm *mvm,
- 			result |= RATE_MCS_SGI_MSK_V1;
- 		if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
- 			result |= u32_encode_bits(1, RATE_MCS_CHAN_WIDTH_MSK_V1);
--		if (rate->flags & IEEE80211_TX_CTL_LDPC)
-+		if (info->flags & IEEE80211_TX_CTL_LDPC)
- 			result |= RATE_MCS_LDPC_MSK_V1;
--		if (u32_get_bits(rate->flags, IEEE80211_TX_CTL_STBC))
-+		if (u32_get_bits(info->flags, IEEE80211_TX_CTL_STBC))
- 			result |= RATE_MCS_STBC_MSK;
- 	} else {
- 		return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+index ac1dae52556f..19839cc44eb3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
+@@ -647,30 +647,32 @@ static void iwl_mvm_power_set_pm(struct iwl_mvm *mvm,
+ 		return;
+ 
+ 	/* enable PM on bss if bss stand alone */
+-	if (vifs->bss_active && !vifs->p2p_active && !vifs->ap_active) {
++	if (bss_mvmvif && vifs->bss_active && !vifs->p2p_active &&
++	    !vifs->ap_active) {
+ 		bss_mvmvif->pm_enabled = true;
+ 		return;
+ 	}
+ 
+ 	/* enable PM on p2p if p2p stand alone */
+-	if (vifs->p2p_active && !vifs->bss_active && !vifs->ap_active) {
++	if (p2p_mvmvif && vifs->p2p_active && !vifs->bss_active &&
++	    !vifs->ap_active) {
+ 		p2p_mvmvif->pm_enabled = true;
+ 		return;
+ 	}
+ 
+-	if (vifs->bss_active && vifs->p2p_active)
++	if (p2p_mvmvif && bss_mvmvif && vifs->bss_active && vifs->p2p_active)
+ 		client_same_channel =
+ 			iwl_mvm_have_links_same_channel(bss_mvmvif, p2p_mvmvif);
+ 
+-	if (vifs->bss_active && vifs->ap_active)
++	if (bss_mvmvif && ap_mvmvif && vifs->bss_active && vifs->ap_active)
+ 		ap_same_channel =
+ 			iwl_mvm_have_links_same_channel(bss_mvmvif, ap_mvmvif);
+ 
+ 	/* clients are not stand alone: enable PM if DCM */
+ 	if (!(client_same_channel || ap_same_channel)) {
+-		if (vifs->bss_active)
++		if (bss_mvmvif && vifs->bss_active)
+ 			bss_mvmvif->pm_enabled = true;
+-		if (vifs->p2p_active)
++		if (p2p_mvmvif && vifs->p2p_active)
+ 			p2p_mvmvif->pm_enabled = true;
+ 		return;
+ 	}
 -- 
 2.38.1
 
