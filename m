@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A59072CAB6
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 17:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF19E72CABA
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 17:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237467AbjFLPwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 11:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41782 "EHLO
+        id S235891AbjFLPw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jun 2023 11:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232732AbjFLPwX (ORCPT
+        with ESMTP id S237426AbjFLPwY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 11:52:23 -0400
+        Mon, 12 Jun 2023 11:52:24 -0400
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB24610E3
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41B010E4
         for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 08:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1686585141; x=1718121141;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Od8OEAKzgSmzxF3jRO9uPZD3XabZVs9vs48Wed/8HqU=;
-  b=j02MgfMHWxGc8UqiXrpFcW9CXxiqLdmDhSjbCKTwwwIDlfOVTEwWJbRg
-   G5lq19Nb4bPkMutmwvsN9oM7ArAEPuTnZlhTvkUQMHqvoMKYhZDGzsG5o
-   SbvRM8b+YEK3loSA2hMJgzENcYUxS2A5QLsTndtAMnxVjktXuqd7SaHUf
-   cQpE7aPYtcyGKhwxzkoeldUUHFUMxDCXnKEnO96D3gFIObTZo3SDYsNpq
-   33fTwq0SdejmMmNZ5D+zAxLkLzYMchoL0C7kD0wdJ9/WiS73MusB9WmHa
-   6VWwx0+b2Tb0ZRrn8XPNXB9gc34PSCQfRZuwP7Ghb51JV/8aTCMw6V5vc
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="421674301"
+  bh=iujXkE5sAKNBMeSSGiuzQc7IZKZsfD3pnyXuEC/aRFI=;
+  b=gB8hVVNTMIrY4zUqCKRqpM3OeoHS+2x9Iq+e0LtzTrH9N+NKtn3GAdu2
+   5cpGJuNMeyEuJmrEBfDIZbQWL3Wew+EqvBzN2O+ssUSOFqQI54zB7xaKO
+   ZkENHYULfvsZKLvnphf2mxcy5VwsKnhETjCs1l/exL0zD0ZYUpR7BU1uy
+   hN0NkdsceXNqaUo8M1/ro+t/hbXH3ibPHzBiIJoCer1ApghJSvzmQRdr+
+   YAbA9ou/HA761JwoM41GocS7W8IBJQvzobJrAL3jMWlttS+VpaMaRdTvs
+   EDaMcYmKIE5jDMaXmh3zVn7k+RrnLyRRqqg4skMrsp5jUSJORoRVl2GkN
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="421674307"
 X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="421674301"
+   d="scan'208";a="421674307"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:58 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:52:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="885499408"
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="885499422"
 X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="885499408"
+   d="scan'208";a="885499422"
 Received: from azvuluno-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.202.109])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:56 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 08:51:59 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Avraham Stern <avraham.stern@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 13/15] wifi: iwlwifi: pass ESR parameters to the firmware
-Date:   Mon, 12 Jun 2023 18:51:14 +0300
-Message-Id: <20230612184434.09fa06820d03.Ie9a9fd37d4948f8c5dd91161de254184b1a093c0@changeid>
+Subject: [PATCH 14/15] wifi: iwlwifi: mvm: FTM responder MLO support
+Date:   Mon, 12 Jun 2023 18:51:15 +0300
+Message-Id: <20230612184434.b367f9bd19b8.I158c71998f39a6c15463ff5ae30129da8ad46d22@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230612155116.168000-1-gregory.greenman@intel.com>
 References: <20230612155116.168000-1-gregory.greenman@intel.com>
@@ -62,112 +62,165 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-The firmware needs to know the esr_transtition_timeout to time the
-transition between EMLSR and single radio with the AP.
-Add the EMLSR support bit to the wiphy extended capabilities so that
-it'll be sent in our association request frame. There are some
-limitations in the implementation so we cannot use zero
-padding/transition delay; fill the correct values.
+Add a link configuration parameter to FTM responder start instead
+of using the default link.
 
-Also, feed the medium_synchronization delay to the firmware.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h |  4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c   | 11 ++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c    | 12 ++++++++++++
- 3 files changed, 24 insertions(+), 3 deletions(-)
+ .../intel/iwlwifi/mvm/ftm-responder.c         | 23 +++++++++++--------
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ++--
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  4 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 +++--
+ 4 files changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index a4cb24934a01..184db5a6f06f 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -236,7 +236,7 @@ struct iwl_mac_low_latency_cmd {
-  *	Available only from version 2 of the command.
-  *	This values comes from the EMLSR transition delay in the EML
-  *	Capabilities subfield.
-- * @reserved: alignment
-+ * @medium_sync_delay: the value as it appeasr in P802.11be_D2.2 Figure 9-1002j.
-  * @assoc_id: unique ID assigned by the AP during association
-  * @reserved1: alignment
-  * @data_policy: see &enum iwl_mac_data_policy
-@@ -247,7 +247,7 @@ struct iwl_mac_low_latency_cmd {
- struct iwl_mac_client_data {
- 	u8 is_assoc;
- 	u8 esr_transition_timeout;
--	__le16 reserved;
-+	__le16 medium_sync_delay;
- 
- 	__le16 assoc_id;
- 	__le16 reserved1;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 96577dcc22b7..f7e2ca7eebf0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -245,12 +245,21 @@ static const u8 tm_if_types_ext_capa_sta[] = {
- /* Additional interface types for which extended capabilities are
-  * specified separately
-  */
-+
-+#define IWL_MVM_EMLSR_CAPA	(IEEE80211_EML_CAP_EMLSR_SUPP | \
-+				 IEEE80211_EML_CAP_EMLSR_PADDING_DELAY_32US << \
-+					__bf_shf(IEEE80211_EML_CAP_EMLSR_PADDING_DELAY) | \
-+				 IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY_64US << \
-+					__bf_shf(IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY))
-+
- static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
- 	{
- 		.iftype = NL80211_IFTYPE_STATION,
- 		.extended_capabilities = he_if_types_ext_capa_sta,
- 		.extended_capabilities_mask = he_if_types_ext_capa_sta,
- 		.extended_capabilities_len = sizeof(he_if_types_ext_capa_sta),
-+		/* relevant only if EHT is supported */
-+		.eml_capabilities = IWL_MVM_EMLSR_CAPA,
- 	},
- 	{
- 		.iftype = NL80211_IFTYPE_STATION,
-@@ -258,7 +267,7 @@ static const struct wiphy_iftype_ext_capab add_iftypes_ext_capa[] = {
- 		.extended_capabilities_mask = tm_if_types_ext_capa_sta,
- 		.extended_capabilities_len = sizeof(tm_if_types_ext_capa_sta),
- 		/* relevant only if EHT is supported */
--		.eml_capabilities = IEEE80211_EML_CAP_EMLSR_SUPP,
-+		.eml_capabilities = IWL_MVM_EMLSR_CAPA,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
-index 99bf71a2b690..0ff99deb0ae7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac.c
-@@ -96,6 +96,7 @@ static int iwl_mvm_mld_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
- 					u32 action, bool force_assoc_off)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
+index 1b6fb73ddfc7..b49781d1a07a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
+@@ -104,7 +104,8 @@ iwl_mvm_ftm_responder_set_ndp(struct iwl_mvm *mvm,
+ static int
+ iwl_mvm_ftm_responder_cmd(struct iwl_mvm *mvm,
+ 			  struct ieee80211_vif *vif,
+-			  struct cfg80211_chan_def *chandef)
++			  struct cfg80211_chan_def *chandef,
++			  struct ieee80211_bss_conf *link_conf)
  {
- 	struct iwl_mac_config_cmd cmd = {};
-+	u16 esr_transition_timeout;
+ 	u32 cmd_id = WIDE_ID(LOCATION_GROUP, TOF_RESPONDER_CONFIG_CMD);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+@@ -119,7 +120,7 @@ iwl_mvm_ftm_responder_cmd(struct iwl_mvm *mvm,
+ 			cpu_to_le32(IWL_TOF_RESPONDER_CMD_VALID_CHAN_INFO |
+ 				    IWL_TOF_RESPONDER_CMD_VALID_BSSID |
+ 				    IWL_TOF_RESPONDER_CMD_VALID_STA_ID),
+-		.sta_id = mvmvif->deflink.bcast_sta.sta_id,
++		.sta_id = mvmvif->link[link_conf->link_id]->bcast_sta.sta_id,
+ 	};
+ 	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 6);
+ 	int err;
+@@ -386,7 +387,8 @@ int iwl_mvm_ftm_resp_remove_pasn_sta(struct iwl_mvm *mvm,
+ 	return -EINVAL;
+ }
  
- 	WARN_ON(vif->type != NL80211_IFTYPE_STATION);
+-int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
++int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++				struct ieee80211_bss_conf *bss_conf)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct ieee80211_ftm_responder_params *params;
+@@ -395,11 +397,11 @@ int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	struct iwl_mvm_phy_ctxt *phy_ctxt;
+ 	int ret;
  
-@@ -133,6 +134,17 @@ static int iwl_mvm_mld_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
+-	params = vif->bss_conf.ftmr_params;
++	params = bss_conf->ftmr_params;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+-	if (WARN_ON_ONCE(!vif->bss_conf.ftm_responder))
++	if (WARN_ON_ONCE(!bss_conf->ftm_responder))
+ 		return -EINVAL;
+ 
+ 	if (vif->p2p || vif->type != NL80211_IFTYPE_AP ||
+@@ -409,7 +411,7 @@ int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
  	}
  
- 	cmd.client.assoc_id = cpu_to_le16(vif->cfg.aid);
-+	if (ieee80211_vif_is_mld(vif)) {
-+		esr_transition_timeout =
-+			u16_get_bits(vif->cfg.eml_cap,
-+				     IEEE80211_EML_CAP_TRANSITION_TIMEOUT);
-+
-+		cmd.client.esr_transition_timeout =
-+			min_t(u16, IEEE80211_EML_CAP_TRANSITION_TIMEOUT_128TU,
-+			      esr_transition_timeout);
-+		cmd.client.medium_sync_delay =
-+			cpu_to_le16(vif->cfg.eml_med_sync_delay);
-+	}
+ 	rcu_read_lock();
+-	pctx = rcu_dereference(vif->bss_conf.chanctx_conf);
++	pctx = rcu_dereference(bss_conf->chanctx_conf);
+ 	/* Copy the ctx to unlock the rcu and send the phy ctxt. We don't care
+ 	 * about changes in the ctx after releasing the lock because the driver
+ 	 * is still protected by the mutex. */
+@@ -424,7 +426,7 @@ int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	if (ret)
+ 		return ret;
  
- 	if (vif->probe_req_reg && vif->cfg.assoc && vif->p2p)
- 		cmd.filter_flags |= cpu_to_le32(MAC_CFG_FILTER_ACCEPT_PROBE_REQ);
+-	ret = iwl_mvm_ftm_responder_cmd(mvm, vif, &ctx.def);
++	ret = iwl_mvm_ftm_responder_cmd(mvm, vif, &ctx.def, bss_conf);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -446,13 +448,14 @@ void iwl_mvm_ftm_responder_clear(struct iwl_mvm *mvm,
+ }
+ 
+ void iwl_mvm_ftm_restart_responder(struct iwl_mvm *mvm,
+-				   struct ieee80211_vif *vif)
++				   struct ieee80211_vif *vif,
++				   struct ieee80211_bss_conf *bss_conf)
+ {
+-	if (!vif->bss_conf.ftm_responder)
++	if (!bss_conf->ftm_responder)
+ 		return;
+ 
+ 	iwl_mvm_ftm_responder_clear(mvm, vif);
+-	iwl_mvm_ftm_start_responder(mvm, vif);
++	iwl_mvm_ftm_start_responder(mvm, vif, bss_conf);
+ }
+ 
+ void iwl_mvm_ftm_responder_stats(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index f7e2ca7eebf0..bf78b7df4700 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -2890,7 +2890,7 @@ static int iwl_mvm_start_ap_ibss(struct ieee80211_hw *hw,
+ 	if (iwl_mvm_phy_ctx_count(mvm) > 1)
+ 		iwl_mvm_teardown_tdls_peers(mvm);
+ 
+-	iwl_mvm_ftm_restart_responder(mvm, vif);
++	iwl_mvm_ftm_restart_responder(mvm, vif, &vif->bss_conf);
+ 
+ 	goto out_unlock;
+ 
+@@ -3032,7 +3032,7 @@ iwl_mvm_bss_info_changed_ap_ibss(struct iwl_mvm *mvm,
+ 		IWL_WARN(mvm, "Failed updating beacon data\n");
+ 
+ 	if (changes & BSS_CHANGED_FTM_RESPONDER) {
+-		int ret = iwl_mvm_ftm_start_responder(mvm, vif);
++		int ret = iwl_mvm_ftm_start_responder(mvm, vif, &vif->bss_conf);
+ 
+ 		if (ret)
+ 			IWL_WARN(mvm, "Failed to enable FTM responder (%d)\n",
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 5e28a1645aa9..ff99bf91f931 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -422,7 +422,7 @@ static int iwl_mvm_mld_start_ap_ibss(struct ieee80211_hw *hw,
+ 	if (iwl_mvm_phy_ctx_count(mvm) > 1)
+ 		iwl_mvm_teardown_tdls_peers(mvm);
+ 
+-	iwl_mvm_ftm_restart_responder(mvm, vif);
++	iwl_mvm_ftm_restart_responder(mvm, vif, link_conf);
+ 
+ 	goto out_unlock;
+ 
+@@ -711,7 +711,7 @@ iwl_mvm_mld_link_info_changed_ap_ibss(struct iwl_mvm *mvm,
+ 
+ 	/* FIXME: need to decide if we need FTM responder per link */
+ 	if (changes & BSS_CHANGED_FTM_RESPONDER) {
+-		int ret = iwl_mvm_ftm_start_responder(mvm, vif);
++		int ret = iwl_mvm_ftm_start_responder(mvm, vif, link_conf);
+ 
+ 		if (ret)
+ 			IWL_WARN(mvm, "Failed to enable FTM responder (%d)\n",
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index cb0a8b860e67..3f9cc4502db1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2242,9 +2242,11 @@ int iwl_mvm_sf_update(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		      bool added_vif);
+ 
+ /* FTM responder */
+-int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
++int iwl_mvm_ftm_start_responder(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++				struct ieee80211_bss_conf *bss_conf);
+ void iwl_mvm_ftm_restart_responder(struct iwl_mvm *mvm,
+-				   struct ieee80211_vif *vif);
++				   struct ieee80211_vif *vif,
++				   struct ieee80211_bss_conf *bss_conf);
+ void iwl_mvm_ftm_responder_stats(struct iwl_mvm *mvm,
+ 				 struct iwl_rx_cmd_buffer *rxb);
+ int iwl_mvm_ftm_resp_remove_pasn_sta(struct iwl_mvm *mvm,
 -- 
 2.38.1
 
