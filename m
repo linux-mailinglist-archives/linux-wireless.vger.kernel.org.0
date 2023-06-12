@@ -2,101 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9787572B3EA
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Jun 2023 22:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6397872B4FE
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 02:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbjFKUXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 11 Jun 2023 16:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48332 "EHLO
+        id S229464AbjFLAiv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 11 Jun 2023 20:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjFKUXU (ORCPT
+        with ESMTP id S229441AbjFLAiu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 11 Jun 2023 16:23:20 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7993AE46;
-        Sun, 11 Jun 2023 13:23:18 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5148e4a2f17so6535830a12.1;
-        Sun, 11 Jun 2023 13:23:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1686514996; x=1689106996;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+tFnAn28hiPk2ZM+sMsKYnGj/GCEN4oSZGqvN8a4mfg=;
-        b=qW/pMZT/anLIyPT2bgUC6MQjAUvt5u6CwXLr6ZEmrqDBWgag2lbUeCKe5HFeR0B2Vs
-         FX1aGwHopbfJcv5Nh9Ie8IbVnhn/eF9wa7X3FuUTGx5i/Dv9JsOEIvAoz7KA93L7VGO+
-         ILI2CquqTiKEFUXWvNjEyMxeqpt/VLhFnCQ0Tbr6a0bo5zC9Af8dlNL/M1YWCnGtQx6I
-         E2rT2emvfPS6HgeVtyUapZHj463GLBlEO8p5Gj02NyhpBPAWQOJnpzbYtzapCD1cU3zA
-         SwB8n7VsD7d3EPcaT2GLFDzYKvYRBSnqfeaI717CFC9K6m6hRluKQPly/kYHkFQEHuRP
-         Yl4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686514996; x=1689106996;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+tFnAn28hiPk2ZM+sMsKYnGj/GCEN4oSZGqvN8a4mfg=;
-        b=j9IAFcY3ENCySJoZ2MKKzEYaI1+6HcoNsfhm/c+TUqqyT9SI0ysE3BARzs7j7tO+ka
-         kx9VyYmRkN389FJLRo5z32NAc+l0+8I67/icpX15GTzrgP2yHp8kIHmJGe4R3D2ZsUuF
-         HBKGTj+mT9ioSRdRcuRHI0RJzIIaEtQ5DbWuSpcQ6aNAkOT/1+yCq71IdTbXjVrvECb3
-         IKzP2AdMUFqgKR6sWFbMBDP4c1iozyiSWU3DiMcVLiZgcnSdTqIuudImjKjXY5e/Ti3d
-         V+oLE+CXiPf10e96pzSHVocCGrPZ+ht3zvJI42hQvxbg9MNqw1nExLKBxKJsWQ0ng/wj
-         Vsxw==
-X-Gm-Message-State: AC+VfDxfzKfVAmD6JMdf6jyJB99JQANdbygjzOkaizZWYLsJYiiGyms9
-        x8y4X6leCvL0GRnwqiUDodWy+tj8EGvQRNDvEnNg8gv6vSs=
-X-Google-Smtp-Source: ACHHUZ6pXTRoO4yNU2J8Qkd3PO++uzrbAZqi7HhmK3+47ERwIYKNuO0CYsTawmlj5mD3SCzpzobUH6/K0NwY9qbPPqo=
-X-Received: by 2002:a17:907:9306:b0:974:1e85:6a69 with SMTP id
- bu6-20020a170907930600b009741e856a69mr7731621ejc.16.1686514995636; Sun, 11
- Jun 2023 13:23:15 -0700 (PDT)
+        Sun, 11 Jun 2023 20:38:50 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F4D135
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Jun 2023 17:38:46 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35C0cOAU1005175, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35C0cOAU1005175
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Mon, 12 Jun 2023 08:38:24 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 12 Jun 2023 08:38:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 12 Jun 2023 08:38:41 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Mon, 12 Jun 2023 08:38:41 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Kevin Lo <kevlo@kevlo.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw89: use the correct bit in the R_AX_PLE_INI_STATUS register
+Thread-Topic: [PATCH] wifi: rtw89: use the correct bit in the
+ R_AX_PLE_INI_STATUS register
+Thread-Index: AQHZmqVjsIXsIWMjREWpyKsynom8xq+GVpMg
+Date:   Mon, 12 Jun 2023 00:38:41 +0000
+Message-ID: <b630340d34224c2a8d66ccb344f060ad@realtek.com>
+References: <ZILW8Uct7yUjsVyh@ns.kevlo.org>
+In-Reply-To: <ZILW8Uct7yUjsVyh@ns.kevlo.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Sun, 11 Jun 2023 22:23:04 +0200
-Message-ID: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
-Subject: wifi: rtw88: question about SDIO RX aggregation limiting
-To:     linux-wireless@vger.kernel.org, pkshih@realtek.com
-Cc:     "Lukas F. Hartmann" <lukas@mntre.com>,
-        linux-kernel@vger.kernel.org, tony0620emma@gmail.com,
-        jernej.skrabec@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Ping-Ke,
-
-certain Amlogic SDIO host controllers have a limit of
-receiving/transmitting at most 1536 bytes at a time.
-It turns out that rtw_sdio_enable_rx_aggregation() from rtw88/sdio.c
-is not taking this into account currently.
-For any RX buffer that is bigger than 1536 bytes (which can happen due
-to RX aggregation) we're unable to do any processing on the host side
-because all bytes beyond the 1536 bytes mark are lost.
-
-Lukas found that limiting BIT_RXDMA_AGG_PG_TH to 0x6 makes his
-RTL8822CS work on the affected Amlogic SoCs.
-
-My question now is: how can we properly limit BIT_RXDMA_AGG_PG_TH
-without hard-coding a one-fits-all value (which may reduce
-performance)?
-
-Initially I thought that we could just calculate it:
-  host_max_pages = mmc_host->max_req_size / rtwdev->chip->page_size
-max_req_size for the affected controller is 1536 and chip->page_size
-is 128, so the result would be 12 (I thought it would be close to this
-number, maybe +/-1).
-Unfortunately this doesn't fix the issue and for his board
-BIT_RXDMA_AGG_PG_TH the limit is 6 or 7.
-
-If you could describe how BIT_RXDMA_AGG_PG_TH generally works I can
-come up with the algorithm to calculate the limit on my own (at least
-I hope so).
-Lukas has been very patient with testing so far and I understood that
-he's willing to test further patches if we think that it fixes the
-rtw88 driver issue he's seeing.
 
 
-Thank you and best regards,
-Martin
+> -----Original Message-----
+> From: Kevin Lo <kevlo@kevlo.org>
+> Sent: Friday, June 9, 2023 3:38 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: linux-wireless@vger.kernel.org
+> Subject: [PATCH] wifi: rtw89: use the correct bit in the R_AX_PLE_INI_STATUS register
+> 
+> Use the PLE_MGN_INI_RDY bit rather than WDE_MGN_INI_RDY to check if
+> PLE cfg ready runs into a timeout.
+> 
+> Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+> ---
+> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+> index 512de491a064..4e0cec7c59a2 100644
+> --- a/drivers/net/wireless/realtek/rtw89/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
+> @@ -1814,7 +1814,7 @@ static int dle_init(struct rtw89_dev *rtwdev, enum rtw89_qta_mode mode,
+>         }
+> 
+>         ret = read_poll_timeout(rtw89_read32, ini,
+> -                               (ini & WDE_MGN_INI_RDY) == WDE_MGN_INI_RDY, 1,
+> +                               (ini & PLE_MGN_INI_RDY) == PLE_MGN_INI_RDY, 1,
+
+Luckily, definitions of WDE_MGN_INI_RDY and PLE_MGN_INI_RDY are the same, so
+I don't really need to verify it.
+
+>                                 2000, false, rtwdev, R_AX_PLE_INI_STATUS);
+>         if (ret) {
+>                 rtw89_err(rtwdev, "[ERR]PLE cfg ready\n");
+> 
+> 
+> ------Please consider the environment before printing this e-mail.
