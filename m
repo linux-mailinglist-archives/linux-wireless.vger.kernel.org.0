@@ -2,67 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D02472C488
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 14:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1813872C569
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 15:05:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233578AbjFLMjr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 08:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60840 "EHLO
+        id S236037AbjFLNF3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jun 2023 09:05:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233303AbjFLMjq (ORCPT
+        with ESMTP id S235962AbjFLNF0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 08:39:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 326B8E52
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 05:39:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DC136164E
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 12:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AB9C433EF;
-        Mon, 12 Jun 2023 12:39:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686573580;
-        bh=s5OWn+vJ8rm4xIEu+0N/EO9cIklh3sUq0qSuiTLWKFw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=snyk9/+Y+WRpdb3l80ci5t40I0wV7ygI6u3QQSl3/aa5IDM7bsPHc8maQwJDxur2e
-         pj6O2+5Q6p6nx1LUfY5qH64QxsTekbTwPKYwBG32GD2Fb9gw2nWvuDdYPExOasA6L/
-         WDz/AzRja0GR/GMJUXi0QpeKw/ls7TCZHSSwi5avRxM87LI7bHk1B/nINGg1sGgFIg
-         s9yzcLd5jr9MnR24M1ZAMHQ+rsAIzLFjFl42DzhD9CmFk5zQWKeM2Wk9+toYMXew7B
-         q3ctxoOolEXArYeMAgHEwW9A6X3/ZWAFleAkJ2SnsHZjO0KlesP+ra+FVJYPcQAj9v
-         +hTiyEuBP9Ldg==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Andrey Rakhmatullin <wrar@wrar.name>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        linux-wireless@vger.kernel.org, Neil Chen <yn.chen@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>,
+        Mon, 12 Jun 2023 09:05:26 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9AEE7D;
+        Mon, 12 Jun 2023 06:05:22 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QfsKN076yzLqgt;
+        Mon, 12 Jun 2023 21:02:16 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 12 Jun 2023 21:05:20 +0800
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+To:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        netdev <netdev@vger.kernel.org>
-Subject: Re: MT7922 problem with "fix rx filter incorrect by drv/fw inconsistent"
-References: <ZGY4peApQnPAmDkY@durkon.wrar.name>
-        <ad948b42-74d3-b4f1-bbd6-449f71703083@leemhuis.info>
-        <ZGtsNO0VZQDWJG+A@durkon.wrar.name>
-        <cd7d298b-2b46-770e-ed54-7ae3f33b97ee@leemhuis.info>
-        <c647de2d-fbb5-4793-99b3-b800c95c04c2@leemhuis.info>
-Date:   Mon, 12 Jun 2023 15:39:35 +0300
-In-Reply-To: <c647de2d-fbb5-4793-99b3-b800c95c04c2@leemhuis.info> (Thorsten
-        Leemhuis's message of "Fri, 2 Jun 2023 14:03:59 +0200")
-Message-ID: <87jzw8g8hk.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
+Date:   Mon, 12 Jun 2023 21:02:55 +0800
+Message-ID: <20230612130256.4572-5-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20230612130256.4572-1-linyunsheng@huawei.com>
+References: <20230612130256.4572-1-linyunsheng@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.69.192.56]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,94 +72,114 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thorsten Leemhuis <regressions@leemhuis.info> writes:
+PP_FLAG_PAGE_FRAG is not really needed after pp_frag_count
+handling is unified and page_pool_alloc_frag() is supported
+in 32-bit arch with 64-bit DMA, so remove it.
 
-> [CCing the wifi-driver and the net developers, as a "JFYI" to ensure
-> they are aware of this "newer kernel requires newer firmware"
-> regression, so they can jump in if they want]
->
-> On 22.05.23 16:12, Thorsten Leemhuis wrote:
->> On 22.05.23 15:20, Andrey Rakhmatullin wrote:
->>> On Mon, May 22, 2023 at 03:00:30PM +0200, Linux regression tracking
->>> #adding (Thorsten Leemhuis) wrote:
->>>> On 18.05.23 16:39, Andrey Rakhmatullin wrote:
->>>>> Hello. I have a "MEDIATEK Corp. MT7922 802.11ax PCI Express Wireless
->>>>> Network Adapter" (14c3:0616) and when the commit c222f77fd4 ("wifi: m=
-t76:
->>>>> mt7921: fix rx filter incorrect by drv/fw inconsistent") is applied (=
-found
->>>>> by bisecting, checked by reverting it on v6.3) I have the following
->>>>> problem on my machine: when I connect to my router no DHCPv4 exchange
->>>>> happens, I don't see responses in tcpdump. My network setup is non-tr=
-ivial
->>>>> though, and it looks like the problem is specific to it, but I still
->>>>> wonder if it's some bug in the aforementioned patch as my setup works=
- with
->>>>> all other devices and I would expect it to work as long as the network
->>>>> packets sent by the device are the same.
->>>>>
->>>>> My setup is as follows: I have an ISP router which provides a 2.4GHz
->>>>> network and another router (Xiaomi R4AC with OpenWRT) connected by
->>>>> Ethernet to it that provides a 5GHz network and is configured as a "R=
-elay
->>>>> bridge" (using relayd) to forward packets to the ISP router and back.=
- This
->>>>> includes DHCPv4 packets, which are handled by the ISP router. tcpdump=
- on
->>>>> the machine with MT7922 shows that the DHCP requests are sent while t=
-he
->>>>> responses are not received, while tcpdump on the bridge router shows =
-both
->>>>> requests and responses.
->>>>>
->>>>> I've tried connecting the machine to the ISP router network directly =
-and
->>>>> also to another AP (one on my phone) and those work correctly on all
->>>>> kernels.
->>>
->>> Deren Wu asked me privately
->>> if I'm using the latest firmware, and I
->>> wasn't. I updated the firmware and now the problem doesn't happen.
->>> The firmware where the problem happens is
->>> mediatek/WIFI_RAM_CODE_MT7922_1.bin from the linux-firmware commit
->>> e2d11744ef (file size 826740, md5sum 8ff1bdc0f54f255bb2a1d6825781506b),
->>> the one where the problem doesn't happen is from the commit 6569484e6b
->>> (file size 827124, md5sum 14c08c8298b639ee52409b5e9711a083).
->>=20
->> FWIW, just checked: that commit is from 2023-05-15, so quite recent.
->>=20
->>> I haven't
->>> tried the version committed between these ones.
->>> Not sure if this should be reported to regzbot and if there are any
->>> further actions needed by the kernel maintainers.
->>=20
->> Well, to quote the first sentence from
->> Documentation/driver-api/firmware/firmware-usage-guidelines.rst
->>=20
->> ```Users switching to a newer kernel should *not* have to install newer
->> firmware files to keep their hardware working.```
->>=20
->> IOW: the problem you ran into should not happen. This afaics makes it a
->> regression that needs to be addressed -- at least if it's something that
->> is likely to hit others users as well. But I'd guess that's the case.
->
-> Well, until now I didn't see any other report about a problem like this.
-> Maybe things work better for others with that hardware =E2=80=93 in that =
-case it
-> might be something not worth making a fuzz about. But I'll wait another
-> week or two before I remove this from the tracking.
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+CC: Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c          | 3 +--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
+ include/net/page_pool.h                                  | 7 ++-----
+ net/core/skbuff.c                                        | 2 +-
+ 6 files changed, 7 insertions(+), 11 deletions(-)
 
-Yeah, this is bad. mt76 (or any other wireless driver) must not require
-a new firmware whenever upgrading the kernel. Instead the old and new
-firmware should coexist (for example have firmware-2.bin for the new
-version and firmware.bin for the old version). Then mt76 should first
-try loading the new firmware (eg. firmware-2.bin) and then try the old
-one (eg. firmware.bin).
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index b676496ec6d7..4e613d5bf1fd 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -4925,8 +4925,7 @@ static void hns3_put_ring_config(struct hns3_nic_priv *priv)
+ static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
+ {
+ 	struct page_pool_params pp_params = {
+-		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
+-				PP_FLAG_DMA_SYNC_DEV,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.order = hns3_page_order(ring),
+ 		.pool_size = ring->desc_num * hns3_buf_size(ring) /
+ 				(PAGE_SIZE << hns3_page_order(ring)),
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index a79cb680bb23..404caec467af 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1426,7 +1426,7 @@ int otx2_pool_init(struct otx2_nic *pfvf, u16 pool_id,
+ 		return 0;
+ 	}
+ 
+-	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
++	pp_params.flags = PP_FLAG_DMA_MAP;
+ 	pp_params.pool_size = numptrs;
+ 	pp_params.nid = NUMA_NO_NODE;
+ 	pp_params.dev = pfvf->dev;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 593cdfbfc035..79f2f5e51ae0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -843,7 +843,7 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
+ 		}
+ 
+ 		pp_params.order     = 0;
+-		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | PP_FLAG_PAGE_FRAG;
++		pp_params.flags     = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+ 		pp_params.pool_size = pool_size;
+ 		pp_params.nid       = node;
+ 		pp_params.dev       = rq->pdev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 467afef98ba2..ee72869e5572 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -566,7 +566,7 @@ int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
+ {
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+-		.flags = PP_FLAG_PAGE_FRAG,
++		.flags = 0,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = dev->dma_dev,
+ 	};
+diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+index c135cd157cea..f4fc339ff020 100644
+--- a/include/net/page_pool.h
++++ b/include/net/page_pool.h
+@@ -46,10 +46,8 @@
+ 					* Please note DMA-sync-for-CPU is still
+ 					* device driver responsibility
+ 					*/
+-#define PP_FLAG_PAGE_FRAG	BIT(2) /* for page frag feature */
+ #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP |\
+-				 PP_FLAG_DMA_SYNC_DEV |\
+-				 PP_FLAG_PAGE_FRAG)
++				 PP_FLAG_DMA_SYNC_DEV)
+ 
+ #define PAGE_POOL_DMA_USE_PP_FRAG_COUNT	\
+ 		(sizeof(dma_addr_t) > sizeof(unsigned long))
+@@ -235,8 +233,7 @@ static inline struct page *page_pool_alloc_frag(struct page_pool *pool,
+ 
+ 	size = ALIGN(size, dma_get_cache_alignment());
+ 
+-	if (WARN_ON(!(pool->p.flags & PP_FLAG_PAGE_FRAG) ||
+-		    size > max_size))
++	if (WARN_ON(size > max_size))
+ 		return NULL;
+ 
+ 	/* Don't allow page splitting and allocate one big frag
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 7c4338221b17..ca2316cc1e7e 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5652,7 +5652,7 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
+ 	/* In general, avoid mixing page_pool and non-page_pool allocated
+ 	 * pages within the same SKB. Additionally avoid dealing with clones
+ 	 * with page_pool pages, in case the SKB is using page_pool fragment
+-	 * references (PP_FLAG_PAGE_FRAG). Since we only take full page
++	 * references (page_pool_alloc_frag()). Since we only take full page
+ 	 * references for cloned SKBs at the moment that would result in
+ 	 * inconsistent reference counts.
+ 	 * In theory we could take full references if @from is cloned and
+-- 
+2.33.0
 
-Should we revert commit c222f77fd4 or how to solve this?
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
