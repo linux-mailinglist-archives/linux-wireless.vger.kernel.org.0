@@ -2,41 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7580572C637
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 15:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 554B172C64F
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Jun 2023 15:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235788AbjFLNlH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 09:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35090 "EHLO
+        id S235566AbjFLNrJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jun 2023 09:47:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236431AbjFLNlD (ORCPT
+        with ESMTP id S235581AbjFLNrI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 09:41:03 -0400
-Received: from vsp-unauthed02.binero.net (vsp-unauthed02.binero.net [195.74.38.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0C610E7
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 06:40:55 -0700 (PDT)
-X-Halon-ID: bd2469d8-0926-11ee-9190-9961c02482a6
-Authorized-sender: petter@technux.se
-Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
-        by bin-vsp-out-02.atm.binero.net (Halon) with ESMTPSA
-        id bd2469d8-0926-11ee-9190-9961c02482a6;
-        Mon, 12 Jun 2023 15:40:51 +0200 (CEST)
-From:   petter@technux.se
-To:     pkshih@realtek.com
-Cc:     Larry.Finger@lwfinger.net, andreas@fatal.se, iam@valdikss.org.ru,
-        kernel@pengutronix.de, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, linux@ulli-kroll.de,
-        petter.mabacker@esab.se, petter@technux.se, s.hauer@pengutronix.de
-Subject: RE: [PATCH] wifi: rtw88: usb: Make work queues high prio
-Date:   Mon, 12 Jun 2023 15:40:48 +0200
-Message-Id: <20230612134048.321500-1-petter@technux.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230530130917.2716182-1-petter@technux.se>
-References: <96e0b705b5a64679a14ce5440674f4b0@realtek.com>
+        Mon, 12 Jun 2023 09:47:08 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8771708
+        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 06:47:03 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1q8hso-0006i7-EA; Mon, 12 Jun 2023 15:46:58 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1q8hsl-0008Tn-Ja; Mon, 12 Jun 2023 15:46:55 +0200
+Date:   Mon, 12 Jun 2023 15:46:55 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     petter@technux.se
+Cc:     pkshih@realtek.com, linux-wireless@vger.kernel.org,
+        Larry.Finger@lwfinger.net, andreas@fatal.se, iam@valdikss.org.ru,
+        kernel@pengutronix.de, kvalo@kernel.org, linux@ulli-kroll.de,
+        petter.mabacker@esab.se
+Subject: Re: rtw8822cu (LM842) stalls when running HW offload scan
+Message-ID: <20230612134655.GD18491@pengutronix.de>
+References: <20230612133023.321060-1-petter@technux.se>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612133023.321060-1-petter@technux.se>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,125 +55,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Mon, Jun 12, 2023 at 03:30:23PM +0200, petter@technux.se wrote:
+> Some time ago https://bugzilla.kernel.org/show_bug.cgi?id=217034 was
+> created. From the beginning it was just about some error printouts.
+> Then Andreas (who created the bug report) mentioned that it seems to
+> work worse after bumping the firmware to > 9.9.10. After some fixes
+> from Sascha the error printouts dissappeared. But when I also started
+> to run this using firmware > 9.9.10 I also got problems. On my i.MX8
+> and RPi4 board it works fine, but on some of my less powerful boards
+> such as and older RPi and my i.MX6 SoloX board, it always fails using
+> 9.9.10 firmware. After some digging in the git log, I discovered
+> that HW scan offload was introduced in a later firmware. So when I
+> disable HW offload scan it seems to work again on all my boards. But
+> still I want to understand why the HW offload scan don't work for
+> me.
 
+Could it be that the number of CPU cores makes the difference? Can you
+try with maxcpus=1 on your boards with more than one CPU?
 
->> -----Original Message-----
->> From: petter@technux.se <petter@technux.se>
->> Sent: Tuesday, May 30, 2023 9:09 PM
->> To: kvalo@kernel.org
->> Cc: Larry.Finger@lwfinger.net; andreas@fatal.se; iam@valdikss.org.ru; kernel@pengutronix.de;
->> linux-wireless@vger.kernel.org; linux@ulli-kroll.de; petter.mabacker@esab.se; petter@technux.se; Ping-Ke
->> Shih <pkshih@realtek.com>; s.hauer@pengutronix.de
->> Subject: Re: [PATCH] wifi: rtw88: usb: Make work queues high prio
->> 
->> petter@technux.se writes:
->> 
->> >> From: Petter Mabacker <petter.mabacker@esab.se>
->> >>
->> >> The rtw8822cu driver have problem to handle high rx or tx rates compared
->> >> with high load (such as high I/O) on slower systems, such as for example
->> >> i.MX6 SoloX and similar platforms.
->> >>
->> >> The problems are more frequent when having the access point close to the
->> >> device. On slower systems it's often enough to download a large file,
->> >> combined with generating I/O load to trigger:
->> >>
->> >> [  374.763424] rtw_8822cu 1-1.2:1.2: failed to get tx report from firmware
->> >> [  377.771790] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> >> [  407.813460] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->> >> [  414.965826] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> >> [  444.993462] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->> >> [  452.144551] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> >> [  482.183445] rtw_8822cu 1-1.2:1.2: firmware failed to report density after scan
->> >> [  489.426263] rtw_8822cu 1-1.2:1.2: failed to send h2c command
->> >>
->> >> Another way is to simply perform a wifi rescan.
->> >>
->> >> Benchmarking shows that setting a high prio workqueue for tx/rx will
->> >> significally improve things. Also compared alloc_workqueue with
->> >> alloc_ordered_workqueue, but even thou the later seems to slightly
->> >> improve things it's still quite easy to reproduce the above issues. So
->> >> that leads to the decision to go for alloc_workqueue.
->> >>
->> >> Thanks to Ping-Ke Shih <pkshih@realtek.com> that came up with the idea
->> >> of exploring tweaking of the work queue's within a similar discussion.
->> >>
->> >> Fixes: a82dfd33d1237 ("wifi: rtw88: Add common USB chip support")
->> >> Signed-off-by: Petter Mabacker <petter.mabacker@esab.se>
->> >> ---
->> >>  drivers/net/wireless/realtek/rtw88/usb.c | 4 ++--
->> >>  1 file changed, 2 insertions(+), 2 deletions(-)
->> >>
->> >> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
->> >> index 44a5fafb9905..bfe0845528ec 100644
->> >> --- a/drivers/net/wireless/realtek/rtw88/usb.c
->> >> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
->> >> @@ -716,7 +716,7 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
->> >>      struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
->> >>      int i;
->> >>
->> >> -    rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
->> >> +    rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
->> >>      if (!rtwusb->rxwq) {
->> >>              rtw_err(rtwdev, "failed to create RX work queue\n");
->> >>              return -ENOMEM;
->> >> @@ -750,7 +750,7 @@ static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
->> >>      struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
->> >>      int i;
->> >>
->> >> -    rtwusb->txwq = create_singlethread_workqueue("rtw88_usb: tx wq");
->> >> +    rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
->> >>      if (!rtwusb->txwq) {
->> >>              rtw_err(rtwdev, "failed to create TX work queue\n");
->> >>              return -ENOMEM;
->> 
->> >Should this workqueue be ordered or not? Please check Tejun's patchset
->> >about using ordered queues:
->> 
->> >https://lore.kernel.org/lkml/20230421025046.4008499-1-tj@kernel.org/
->> 
->> Thanks for pointing out this interesting patchset. As described in the
->> commit msg, I did play around with alloc_ordered_workqueue. But at least
->> on the slower systems I tested it on (i.MX6 SoloX and BCM2835) it worked
->> a bit better, but I was still able to reproduce the above mention issue.
->> So I tried to instead use alloc_workqueue and set max_active=0 and that
->> seems to be enough to make things a lot more stable.
->> 
->> However after reading Tejun's patchet I'm very intersted of feedback if
->> you or someone else have comments about using alloc_workqueue with
->> max_active=0 , or if this can give some other issues? It seems to work
->> fine for me when running it also on a i.MX8 multicore system.
->> 
+I have a i.MX6s board here that I can use to try to reproduce your
+problem in the meantime.
 
->Both rtwusb->rxwq and rtwusb->txwq are only queued single one work respectively,
->so I thought alloc_workqueue() and alloc_ordered_workqueue() would get the same
->results, but it seems not. That is a little weird to me.
->
->I'm not familiar with workqueue, but I think we can bisect arguments to address
->what impact the results.
->
->First we can expand macro alloc_ordered_workqueue() below
->    rtwusb->txwq = alloc_ordered_workqueue("rtw88_usb: tx wq", WQ_HIGHPRI);
->into
->    rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq",
->                                   WQ_UNBOUND | __WQ_ORDERED | __WQ_ORDERED_EXPLICIT |
->                                   WQ_HIGHPRI, 1);
->
->Secondly, compare the one you are using:
->    rtwusb->txwq = alloc_workqueue("rtw88_usb: tx wq", WQ_UNBOUND | WQ_HIGHPRI, 0);
->
->Then, we can align the arguments one-by-one to know which argument dominates
->the result. 
->
->Ping-Ke
->
+Sascha
 
-Thanks for feedback. I have encountered some issues with HW offload
-scan, that might have fooled me during my benchmarking (I used rescan as
-part of my stresstest). See
-https://lore.kernel.org/linux-wireless/20230612133023.321060-1-petter@technux.se/T/#u
-for more info. But I have temporarily disabled the HW offload scan so I
-will re-try my benchmarking with above suggestions in mind. I will post
-here when I have some results.
-
-BR Petter
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
