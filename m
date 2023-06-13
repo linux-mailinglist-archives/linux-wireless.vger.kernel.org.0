@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6890172E375
+	by mail.lfdr.de (Postfix) with ESMTP id B41A572E376
 	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 14:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241151AbjFMM5u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 08:57:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52174 "EHLO
+        id S242310AbjFMM5v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 08:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241003AbjFMM5q (ORCPT
+        with ESMTP id S241164AbjFMM5s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 08:57:46 -0400
+        Tue, 13 Jun 2023 08:57:48 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81EFA6
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:57:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16A6198D
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:57:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686661064; x=1718197064;
+  t=1686661066; x=1718197066;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7Gt7jsfu/NwIHAX+uk22jitrBoUz/VAhTZw3cnNnPVM=;
-  b=fBTP2JM0CLt7llXHHx8EBysFSIGeRPy/mYI9bGV8Vug5xbQqKZdZd9JG
-   LyNEParORbRROvNNfIDWd2EgNLNZ6Yh1UVb8/l1RGzND6sLEM0gfjNKWH
-   O/cNCDSBB+KzuJS4S5n0Nyoxb9WRSJaGr7DjENHEqg1RbALTRHWCiVGFV
-   waH38Oys0f77bgck/4BkT5P3xB/ZAlbbr4L9s+gmGfrd/G4vnWNF5mp+l
-   J2KM8z5/7esf2w8Wemcyy9LS6MbxG2GfC4+CAcafX/wMV2qGwcifbBK+N
-   J1cmpb4QFSQErPdY3nXcIF0M496FPgiLpSKcIe3rr0sbVefrBd+599omZ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973713"
+  bh=sgRwDGsyj9LsTitWBWTUPxY4xsbZ+/HeOIW/vkoMmhM=;
+  b=lIkuoMSp0KpQToum1vIxV+TOfQDVgfZtTZH1x/vG8fIqVS2T2Wg8yBzM
+   NtCrRfn/9KmTRwUfmfGwFMPJ/Xan+KIZsy1HYXs/V/biLProsDZ3Y9gYb
+   0C5/1YBmCcftZsTtqyskYhrkvnBw14FWnHMHcQyT7brTvcTv+qwqNIEbx
+   czg44lfjIy385fMjJB+EKt+YkFd+snW8qVJRg5OKAJVvEs7LIe2ol2PA0
+   ADt8/qpVQzv+KkMZNlQXMC8hnEjwYGoDb49G76qrRRN1EGTUrrudksA52
+   a/mOs2Y0x3xKVoz5JRKZnyZz5SuHUetvpsjQqC2csW6vhsjNHi/CrQB4o
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973719"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="347973713"
+   d="scan'208";a="347973719"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:44 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880774"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880782"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="835880774"
+   d="scan'208";a="835880782"
 Received: from slerer-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.249.90.17])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:42 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:45 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/14] wifi: iwlwifi: mvm: rename BTM support flag and its TLV
-Date:   Tue, 13 Jun 2023 15:57:15 +0300
-Message-Id: <20230613155501.ad20f10668d1.Icbb3fbae50b2302b97225b183dd336b02a4f37ee@changeid>
+Subject: [PATCH 03/14] wifi: iwlwifi: mvm: initialize the rx_vec before using it.
+Date:   Tue, 13 Jun 2023 15:57:16 +0300
+Message-Id: <20230613155501.a6bb856f04bc.I9a15075f3dad61dcabdcd1ed0d34cf3e8ec5453f@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613125727.300445-1-gregory.greenman@intel.com>
 References: <20230613125727.300445-1-gregory.greenman@intel.com>
@@ -63,69 +63,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Haim Dreyfuss <haim.dreyfuss@intel.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-Currently, we only need to support BTM rejection.
-However, in the future we might want to support other BTM modes.
-Rephrase its naming.
+Initialize the phy_data.rx_vec for both version-3 and above
+where it is 4-byte data size and below version which has
+data size of 2-byte.
+The data will be sent uninitialized in called function if
+notification version is less than three.
 
-Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/d3.h      | 4 ++--
- drivers/net/wireless/intel/iwlwifi/fw/file.h        | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/offloading.c | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-index 37ac2364e714..380eeb2363c7 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
-@@ -47,14 +47,14 @@ struct iwl_d3_manager_config {
-  * @IWL_D3_PROTO_OFFLOAD_NS: NS (Neighbor Solicitation) is enabled
-  * @IWL_D3_PROTO_IPV4_VALID: IPv4 data is valid
-  * @IWL_D3_PROTO_IPV6_VALID: IPv6 data is valid
-- * @IWL_D3_PROTO_REJECT_BTM: reject BTM request
-+ * @IWL_D3_PROTO_OFFLOAD_BTM: BTM offload is enabled
-  */
- enum iwl_proto_offloads {
- 	IWL_D3_PROTO_OFFLOAD_ARP = BIT(0),
- 	IWL_D3_PROTO_OFFLOAD_NS = BIT(1),
- 	IWL_D3_PROTO_IPV4_VALID = BIT(2),
- 	IWL_D3_PROTO_IPV6_VALID = BIT(3),
--	IWL_D3_PROTO_REJECT_BTM = BIT(4),
-+	IWL_D3_PROTO_OFFLOAD_BTM = BIT(4),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 70db4fef6290..9d8d9def9391 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -2642,6 +2642,8 @@ void iwl_mvm_rx_monitor_no_data(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 	phy_data.energy_b = u32_get_bits(rssi, RX_NO_DATA_CHAIN_B_MSK);
+ 	phy_data.channel = u32_get_bits(rssi, RX_NO_DATA_CHANNEL_MSK);
+ 	phy_data.with_data = false;
++	phy_data.rx_vec[0] = desc->rx_vec[0];
++	phy_data.rx_vec[1] = desc->rx_vec[1];
  
- #define IWL_PROTO_OFFLOAD_NUM_IPV6_ADDRS_V1	2
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index 1a4f7c04ebae..b36e9613a52c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -465,7 +465,7 @@ enum iwl_ucode_tlv_capa {
- 	IWL_UCODE_TLV_CAPA_MLD_API_SUPPORT		= (__force iwl_ucode_tlv_capa_t)110,
- 	IWL_UCODE_TLV_CAPA_SCAN_DONT_TOGGLE_ANT         = (__force iwl_ucode_tlv_capa_t)111,
- 	IWL_UCODE_TLV_CAPA_PPAG_CHINA_BIOS_SUPPORT	= (__force iwl_ucode_tlv_capa_t)112,
--	IWL_UCODE_TLV_CAPA_OFFLOAD_REJ_BTM_SUPPORT	= (__force iwl_ucode_tlv_capa_t)113,
-+	IWL_UCODE_TLV_CAPA_OFFLOAD_BTM_SUPPORT		= (__force iwl_ucode_tlv_capa_t)113,
- 	IWL_UCODE_TLV_CAPA_STA_EXP_MFP_SUPPORT		= (__force iwl_ucode_tlv_capa_t)114,
- 	IWL_UCODE_TLV_CAPA_SNIFF_VALIDATE_SUPPORT	= (__force iwl_ucode_tlv_capa_t)116,
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c b/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c
-index 797b1f70937e..dfb16ca5b438 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/offloading.c
-@@ -199,8 +199,8 @@ int iwl_mvm_send_proto_offload(struct iwl_mvm *mvm,
- 	}
- 
- 	if (fw_has_capa(&mvm->fw->ucode_capa,
--			IWL_UCODE_TLV_CAPA_OFFLOAD_REJ_BTM_SUPPORT))
--		enabled |= IWL_D3_PROTO_REJECT_BTM;
-+			IWL_UCODE_TLV_CAPA_OFFLOAD_BTM_SUPPORT))
-+		enabled |= IWL_D3_PROTO_OFFLOAD_BTM;
- 
- 	if (!disable_offloading)
- 		common->enabled = cpu_to_le32(enabled);
+ 	if (iwl_fw_lookup_notif_ver(mvm->fw, DATA_PATH_GROUP,
+ 				    RX_NO_DATA_NOTIF, 0) < 2) {
+@@ -2660,7 +2662,8 @@ void iwl_mvm_rx_monitor_no_data(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 		    sizeof(struct iwl_rx_no_data_ver_3)))
+ 		/* invalid len for ver 3 */
+ 			return;
+-		memcpy(phy_data.rx_vec, desc->rx_vec, sizeof(phy_data.rx_vec));
++		phy_data.rx_vec[2] = desc->rx_vec[2];
++		phy_data.rx_vec[3] = desc->rx_vec[3];
+ 	} else {
+ 		if (format == RATE_MCS_EHT_MSK)
+ 			/* no support for EHT before version 3 API */
 -- 
 2.38.1
 
