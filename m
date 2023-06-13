@@ -2,83 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E65C72E571
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 16:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DBE172E55E
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 16:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240907AbjFMOLC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 10:11:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34848 "EHLO
+        id S240402AbjFMOMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 10:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242897AbjFMOJx (ORCPT
+        with ESMTP id S240919AbjFMOMF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 10:09:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111B6F4
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 07:09:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6AD56369C
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 14:09:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4F1C433F1
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 14:09:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686665365;
-        bh=UWviLmUQtcOm7LzTkSJw98/7WABHY5pbWNAmzo5BxxI=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=HHPscYgjiFynln4B7eHkS9jFtXArrNMn+Rj2UmPZmiKGa9F7HpYz6MYXAlPvEPwt4
-         dSeXUGmuufEynKxdEGC2tVB/T3+zAl5NvdHvj23q+Tjld/yryqhhsFYw2eHSvPv6bv
-         /9VUNk+m9xluyxE0KgGw2pw2scMXI3aHCNftI+d0lWCV+7REr1O39fcHK3MvJA1bu/
-         5kuCLMLkLi7Wd0H2aHrzZisUa7Xo5snQmYzhYMOmPEiW79QJvHg8LAikbO/TJcQ+y4
-         /vCOWTXlF5yy205RedbEM7itqTzJBMGE8qqMiM3DNTpGsMFUm5kbk/2YGF2Lt7U/Wc
-         PYhxDGIFtAYfw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 4/4] wifi: ray_cs: fix stringop-truncation GCC warning
-Date:   Tue, 13 Jun 2023 17:09:18 +0300
-Message-Id: <20230613140918.389690-5-kvalo@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230613140918.389690-1-kvalo@kernel.org>
-References: <20230613140918.389690-1-kvalo@kernel.org>
+        Tue, 13 Jun 2023 10:12:05 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63C4010FE;
+        Tue, 13 Jun 2023 07:11:39 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30af56f5f52so3798847f8f.1;
+        Tue, 13 Jun 2023 07:11:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686665498; x=1689257498;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2YTrJ+Te3mEYu4FIASWLgAG2xDCPqUruxk2W5WEUHHA=;
+        b=i6oIRqkykFQzwuOvBxb6qZIcBlZ2d6Q/5DRiOjk6giQ4jHLWS7gsZx8Qp6D8cc0E47
+         JWYecVEA5KRO8qW8+ugcnxHY40r9mJsSxm5CYUfKfV0Q1pfYY8I+OJ8ckUWmaDlNfQDl
+         9IaTq/acmToOnYIRZtdCDpILoinmZ9U3q7iIgwxdBndEKQEp08t21YWu8EQ/ErAvVYBG
+         RLZxNyulmYOgdhJh8kgK2M1ESyuLjzEkw0IQs0POZPUxTkS4jqQCeQzOsvhqPEtIy3fk
+         QDxRIiCaFqF3oquUkQOXEgJqYxPVpw+MIaKIaJT/m+BsvGydaBHuojrAk5gO4VG6kG8X
+         4W+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686665498; x=1689257498;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2YTrJ+Te3mEYu4FIASWLgAG2xDCPqUruxk2W5WEUHHA=;
+        b=BWgCiYJShmpcOVJK8DLehTXBdD1vHQB+tQ9g6Oux8B6V/vXfakMKsI1S1WgHD2V6kr
+         6Rmn5Bt5E89XiBdGa/wv5+j+Tnan456XDUU6EEdXXz0XeU+pXkPSnGFe7QXG1qftzMgS
+         gAbf/1qukq3DIjwheFmtKfTZl7GbUwnRWkxZwGUOwqhxTIYjvpBYDyaJ0MQU5DDDB37u
+         esqprhzAeE4SBDu1eCS7vUBGtuUz0UxRt/MaqN/AU1g5K5fCGVbED7EirbrihnpWNHtR
+         EWvEMKc9PH2jUDeU5Ai5WG1/dyRc2song2t9nz8iXIJ9PW5vjbB5X79drgRo/gLF4X5x
+         vwWA==
+X-Gm-Message-State: AC+VfDzts1rmyOkuZ2bezIqvIFymeD40KdOGRITeHwJVsDnqt8nlThyl
+        9DfmdxYdSNQizlFb0GPZKF9WS7Jh71mON3DJoq8=
+X-Google-Smtp-Source: ACHHUZ6HJtQFIWy/NvPsomkdG9TpfAza2q/H2iM1saotn3Rv4pIY5RRCYqqraIW+JKieSgOnaH/kr7HaX+kpOB4ehx8=
+X-Received: by 2002:a5d:4f87:0:b0:30d:af7c:5046 with SMTP id
+ d7-20020a5d4f87000000b0030daf7c5046mr6347092wru.60.1686665497532; Tue, 13 Jun
+ 2023 07:11:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230613003458.3538812-1-azeemshaikh38@gmail.com> <168664533370.24637.14116409515016851485.kvalo@kernel.org>
+In-Reply-To: <168664533370.24637.14116409515016851485.kvalo@kernel.org>
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+Date:   Tue, 13 Jun 2023 10:11:26 -0400
+Message-ID: <CADmuW3XHVjULa9506RwowHoQ2TSB1XCofgQ0=nizpjPZvfBUjA@mail.gmail.com>
+Subject: Re: [PATCH] net/mediatek: strlcpy withreturn
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-hardening@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-GCC 12.2 with W=1 warns:
+On Tue, Jun 13, 2023 at 4:35=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote=
+:
+>
+> Azeem Shaikh <azeemshaikh38@gmail.com> wrote:
+>
+> > strlcpy() reads the entire source buffer first.
+> > This read may exceed the destination size limit.
+> > This is both inefficient and can lead to linear read
+> > overflows if a source string is not NUL-terminated [1].
+> > In an effort to remove strlcpy() completely [2], replace
+> > strlcpy() here with strscpy().
+> >
+> > Direct replacement is safe here since DEV_ASSIGN is only used by
+> > TRACE macros and the return values are ignored.
+> >
+> > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strl=
+cpy
+> > [2] https://github.com/KSPP/linux/issues/89
+> >
+> > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+>
+> The title should be:
+>
+> wifi: mt7601u: replace strlcpy() with strscpy()
+>
+> I can fix that, no need to resend because of this.
+>
 
-drivers/net/wireless/legacy/ray_cs.c:630:17: warning: 'strncpy' specified bound 32 equals destination size [-Wstringop-truncation]
+Thanks Kalle!
 
-The driver uses SSID as a string which is just wrong, it should be treated as a
-byte array instead. But as the driver is ancient and most likely there are no
-users so convert it to use strscpy(). This makes sure that the string is
-NUL-terminated and also the warning is fixed.
-
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
----
- drivers/net/wireless/legacy/ray_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/legacy/ray_cs.c b/drivers/net/wireless/legacy/ray_cs.c
-index 4b53a9c70e7e..8ace797ce951 100644
---- a/drivers/net/wireless/legacy/ray_cs.c
-+++ b/drivers/net/wireless/legacy/ray_cs.c
-@@ -627,7 +627,7 @@ static void init_startup_params(ray_dev_t *local)
- 	local->sparm.b4.a_acting_as_ap_status = TYPE_STA;
- 
- 	if (essid != NULL)
--		strncpy(local->sparm.b4.a_current_ess_id, essid, ESSID_SIZE);
-+		strscpy(local->sparm.b4.a_current_ess_id, essid, ESSID_SIZE);
- } /* init_startup_params */
- 
- /*===========================================================================*/
--- 
-2.30.2
-
+> --
+> https://patchwork.kernel.org/project/linux-wireless/patch/20230613003458.=
+3538812-1-azeemshaikh38@gmail.com/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+>
