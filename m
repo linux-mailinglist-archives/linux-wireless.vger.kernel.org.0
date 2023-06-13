@@ -2,51 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6314D72E378
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 14:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB77672E373
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 14:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241946AbjFMM56 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 08:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52254 "EHLO
+        id S241074AbjFMM57 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 08:57:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242232AbjFMM5w (ORCPT
+        with ESMTP id S233941AbjFMM5y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 08:57:52 -0400
+        Tue, 13 Jun 2023 08:57:54 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 333491996
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:57:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A3219B9
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686661071; x=1718197071;
+  t=1686661073; x=1718197073;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wuRA6/Hl0RGt6ckEO3CBWaQhWlrsMJ1QFks1+XSZBE4=;
-  b=SjWjD4uEUYs4NMPG4KW3rowfMhO2HpVNiCkzulbiBVoH/kiqsKU4Yyyn
-   wftkH3Y8bUNwM11y5HgJ7g9rcUMXhZFA57THvs4guv7lEPv85ZsYtNxrN
-   CSrLsJdJ60TxIRsGd7QYoVY/XxTvpuLJfjptAtSnT6c/vKJsSf48UYg3+
-   Vr8LC+meS8FL7LLVlfhAFuwrPkmbuxHb1WK/2mh4OJa7bAj+AyHcJcaIS
-   aME1jfrNfly/joRkya2G/0BHig3Po31KtVa7lW2SF0Pt9qfN43Zz+jmnA
-   DTQ4avsQnSbIbpJeP5rjrlOMNbT2DUHqiIYtQX4j0oqj/so7fP74VmH1c
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973728"
+  bh=VyNTg/k4yV7PB37q1/DlyFkVB/XqUWvSawvGPtWoQfg=;
+  b=mOmRkJe9VQ7hgAGiA0wC+6CTmCzfv3H/htK/AZW4BSBV74ieouzvO2DO
+   Mndwz6+38cVjmTO9AHiKOTmNB7AHKvGwBmm5yTmlOmencPfXylf1c+6eq
+   YY6Vf4q+TwGQecmEFxgIcjD/TZY17nNJcJXg0T4ykIe+UGdLQ/9DuzBA6
+   QXYTeSxAEXtXrIY5irxknRNatS2QUl2Zci3njr9ojnlXfPSalZDAoUm3q
+   FlnMCuCCe6NhBq7xG0xfHBSYnrelbWihGZouPnsJtennjQTFiQwZZWbAF
+   w4bl6moZxpGQEjq8BgGn2tKC66pFqHOJK1eSx9BfnmczdhmnCJyARk/r8
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973734"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="347973728"
+   d="scan'208";a="347973734"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:51 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880797"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880801"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="835880797"
+   d="scan'208";a="835880801"
 Received: from slerer-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.249.90.17])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:49 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:51 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Ariel Malamud <ariel.malamud@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 05/14] wifi: iwlwifi: mvm: Refactor iwl_mvm_get_lmac_id()
-Date:   Tue, 13 Jun 2023 15:57:18 +0300
-Message-Id: <20230613155501.507b2f9f64eb.I0ec91310e1911c33faf396b5e17bcb11a164f6ea@changeid>
+Subject: [PATCH 06/14] wifi: iwlwifi: mvm: add support for Extra EHT LTF
+Date:   Tue, 13 Jun 2023 15:57:19 +0300
+Message-Id: <20230613155501.de019d7cc174.I806f0f6042b89274192701a60b4f7900822db666@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613125727.300445-1-gregory.greenman@intel.com>
 References: <20230613125727.300445-1-gregory.greenman@intel.com>
@@ -63,122 +62,90 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ariel Malamud <ariel.malamud@intel.com>
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-The iwl_mvm_get_lmac_id() function is currently
-defined as a static inline function under fw/api
-and receives mvm's fw pointer. It will need the
-ability to access other mvm struct members for
-future capabilities such as debug. Move the function
-out of the fw/api and into mvm proper as a regular
-function and have it receive the pointer to mvm.
+Add support for Extra EHT LTF defined in 9.4.2.313
+EHT Capabilities element.
 
-Signed-off-by: Ariel Malamud <ariel.malamud@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/binding.h |  8 --------
- drivers/net/wireless/intel/iwlwifi/mvm/binding.c    | 10 +++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c   |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h        |  1 +
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c   |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c         |  2 +-
- 6 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/rs.h    |  2 ++
+ .../net/wireless/intel/iwlwifi/iwl-nvm-parse.c    |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 15 +++++++++++++++
+ include/linux/ieee80211.h                         |  1 +
+ 4 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/binding.h b/drivers/net/wireless/intel/iwlwifi/fw/api/binding.h
-index b6b5959cb259..d9044ada6a43 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/binding.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/binding.h
-@@ -59,14 +59,6 @@ struct iwl_binding_cmd {
- #define IWL_LMAC_24G_INDEX		0
- #define IWL_LMAC_5G_INDEX		1
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
+index c9a48fc5fac8..a1a272433b09 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rs.h
+@@ -21,6 +21,7 @@
+  * @IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_2_MSK: enable HE Dual Carrier Modulation
+  *					    for BPSK (MCS 0) with 2 spatial
+  *					    streams
++ * @IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK: enable support for EHT extra LTF
+  */
+ enum iwl_tlc_mng_cfg_flags {
+ 	IWL_TLC_MNG_CFG_FLAGS_STBC_MSK			= BIT(0),
+@@ -28,6 +29,7 @@ enum iwl_tlc_mng_cfg_flags {
+ 	IWL_TLC_MNG_CFG_FLAGS_HE_STBC_160MHZ_MSK	= BIT(2),
+ 	IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_1_MSK		= BIT(3),
+ 	IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_2_MSK		= BIT(4),
++	IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK		= BIT(6),
+ };
  
--static inline u32 iwl_mvm_get_lmac_id(const struct iwl_fw *fw,
--				      enum nl80211_band band){
--	if (!fw_has_capa(&fw->ucode_capa, IWL_UCODE_TLV_CAPA_CDB_SUPPORT) ||
--	    band == NL80211_BAND_2GHZ)
--		return IWL_LMAC_24G_INDEX;
--	return IWL_LMAC_5G_INDEX;
--}
--
- /* The maximal number of fragments in the FW's schedule session */
- #define IWL_MVM_MAX_QUOTA 128
+ /**
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 7edb98ef8093..fad71f490313 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -1012,6 +1012,8 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
+ 		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[6] &=
+ 			~(IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK |
+ 			  IEEE80211_EHT_PHY_CAP6_EHT_DUP_6GHZ_SUPP);
++		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] |=
++			IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF;
+ 	}
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/binding.c b/drivers/net/wireless/intel/iwlwifi/mvm/binding.c
-index ef50ccabcc73..458b97930059 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/binding.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/binding.c
-@@ -32,7 +32,7 @@ static int iwl_mvm_binding_cmd(struct iwl_mvm *mvm, u32 action,
- 	if (fw_has_capa(&mvm->fw->ucode_capa,
- 			IWL_UCODE_TLV_CAPA_BINDING_CDB_SUPPORT)) {
- 		size = sizeof(cmd);
--		cmd.lmac_id = cpu_to_le32(iwl_mvm_get_lmac_id(mvm->fw,
-+		cmd.lmac_id = cpu_to_le32(iwl_mvm_get_lmac_id(mvm,
- 							      phyctxt->channel->band));
- 	} else {
- 		size = IWL_BINDING_CMD_SIZE_V1;
-@@ -164,3 +164,11 @@ int iwl_mvm_binding_remove_vif(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	if (fw_has_capa(&fw->ucode_capa, IWL_UCODE_TLV_CAPA_BROADCAST_TWT))
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+index 992642edfcbe..782d53d15a1b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+@@ -592,6 +592,21 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
+ 	int cmd_ver;
+ 	int ret;
  
- 	return ret;
- }
++	/* Enable external EHT LTF only for GL device and if there's
++	 * mutual support by AP and client
++	 */
++	if (CSR_HW_REV_TYPE(mvm->trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
++	    sband->iftype_data->eht_cap.has_eht &&
++	    sband->iftype_data->eht_cap.eht_cap_elem.phy_cap_info[5] &
++	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF &&
++	    link_sta->eht_cap.has_eht &&
++	    link_sta->eht_cap.eht_cap_elem.phy_cap_info[5] &
++	    IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF) {
++		IWL_DEBUG_RATE(mvm, "Set support for Extra EHT LTF\n");
++		cfg_cmd.flags |=
++			cpu_to_le16(IWL_TLC_MNG_CFG_FLAGS_EHT_EXTRA_LTF_MSK);
++	}
 +
-+u32 iwl_mvm_get_lmac_id(struct iwl_mvm *mvm, enum nl80211_band band)
-+{
-+	if (!fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_CDB_SUPPORT) ||
-+	    band == NL80211_BAND_2GHZ)
-+		return IWL_LMAC_24G_INDEX;
-+	return IWL_LMAC_5G_INDEX;
-+}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index bf78b7df4700..f1c7d0bef609 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4595,7 +4595,7 @@ int iwl_mvm_roc_common(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	rcu_read_lock();
+ 	mvm_link_sta = rcu_dereference(mvmsta->link[link_id]);
+ 	if (WARN_ON_ONCE(!mvm_link_sta)) {
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 516cd32d6196..5dfed1a6625c 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2859,6 +2859,7 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
  
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_STATION:
--		lmac_id = iwl_mvm_get_lmac_id(mvm->fw, channel->band);
-+		lmac_id = iwl_mvm_get_lmac_id(mvm, channel->band);
+ /* Maximum number of supported EHT LTF is split */
+ #define IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK	0xc0
++#define IEEE80211_EHT_PHY_CAP5_SUPP_EXTRA_EHT_LTF		0x40
+ #define IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK	0x07
  
- 		/* Use aux roc framework (HS20) */
- 		ret = ops->add_aux_sta_for_hs20(mvm, lmac_id);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 3f9cc4502db1..b1b46a50f764 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1844,6 +1844,7 @@ void iwl_mvm_channel_switch_error_notif(struct iwl_mvm *mvm,
- /* Bindings */
- int iwl_mvm_binding_add_vif(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
- int iwl_mvm_binding_remove_vif(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-+u32 iwl_mvm_get_lmac_id(struct iwl_mvm *mvm, enum nl80211_band band);
- 
- /* Links */
- int iwl_mvm_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index 3ab6fb83a175..55541e90770a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -151,7 +151,7 @@ static void iwl_mvm_phy_ctxt_cmd_data(struct iwl_mvm *mvm,
- 				      struct cfg80211_chan_def *chandef,
- 				      u8 chains_static, u8 chains_dynamic)
- {
--	cmd->lmac_id = cpu_to_le32(iwl_mvm_get_lmac_id(mvm->fw,
-+	cmd->lmac_id = cpu_to_le32(iwl_mvm_get_lmac_id(mvm,
- 						       chandef->chan->band));
- 
- 	/* Set the channel info data */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 547694c89ffa..bacc3045ea16 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -896,7 +896,7 @@ unsigned int iwl_mvm_max_amsdu_size(struct iwl_mvm *mvm,
- 			band = mvmsta->vif->bss_conf.chandef.chan->band;
- 		}
- 
--		lmac = iwl_mvm_get_lmac_id(mvm->fw, band);
-+		lmac = iwl_mvm_get_lmac_id(mvm, band);
- 	} else if (fw_has_capa(&mvm->fw->ucode_capa,
- 			       IWL_UCODE_TLV_CAPA_CDB_SUPPORT)) {
- 		/* for real MLO restrict to both LMACs if they exist */
+ #define IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK			0x78
 -- 
 2.38.1
 
