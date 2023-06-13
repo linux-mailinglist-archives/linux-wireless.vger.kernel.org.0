@@ -2,86 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DB872E59A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 16:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0DF72E5D3
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 16:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242708AbjFMOW5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 10:22:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44420 "EHLO
+        id S242925AbjFMOd3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 10:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242670AbjFMOWz (ORCPT
+        with ESMTP id S242942AbjFMOd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 10:22:55 -0400
+        Tue, 13 Jun 2023 10:33:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C2B187;
-        Tue, 13 Jun 2023 07:22:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300141984
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 07:33:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F0E361846;
-        Tue, 13 Jun 2023 14:22:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66085C433F0;
-        Tue, 13 Jun 2023 14:22:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C9AB62DB7
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 14:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F29AC433D9;
+        Tue, 13 Jun 2023 14:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686666172;
-        bh=uaFeJzmCxlczQeNB4wjNR1p0Vrwz4zgph2jIve82GkA=;
+        s=k20201202; t=1686666799;
+        bh=iScOvt15RIgGNMQjItLYG7tD+GDZ1I6fMgOOi7/RBWM=;
         h=From:To:Cc:Subject:Date:From;
-        b=ZuISURTvbhSW/SoXlALwokHgjZzX5GB4acwTW7pOvOm1WaVJ/yM9OPv3mQ1wQn1z7
-         OGMI/SlP7+KxqnTJUzRHls3cnE0tKBjg57xnBXrTWTR2uuhy8K+/y6xTmxWs2LITc9
-         +EzI1xlyUA4Zc5z3L3kU9LyU6r6EBk+iu1mjDa4o+kxiTL6/DgLS4PWjYzTfBbcmTn
-         V1k30kU/KwJ8ZOeP6V5+tMiJmJ75luLSSMBrxr+oaCE4Mx0TJWfweH0RcfDZvjMDVE
-         9Pm+KV5djfrgBR5SYq3ya90zL5dG93tkzvOExr0cVX+qbH2EkE6wJ6dK0G3LCNRg7L
-         7h7sz1ezBqNUQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Closing down the wireless trees for a summer break?
-Date:   Tue, 13 Jun 2023 17:22:47 +0300
-Message-ID: <87y1kncuh4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        b=P277r1FlluEbN8wCMq9+4pAt1KBizMenrVsSp2qicssAloedPk9ckRve3003YN3Yz
+         MttvFHKHZTEYc6uG65aUGOi2qg+OE3K5KDWWbiaC176CiJXUrKQShUZa1+kXsZcaFh
+         3P+4lZo1lAx4kQRAkdrdAt+ed7OuCfoPRjAyf6e8vNVmNOtritaP+Axu5/kn1YRh2+
+         zdW9sWPjy/fKOyt8rJJj/M5+0aT2akXcgnrpOUkn2e1mPenGpIaV1meeNkUI01Lnqu
+         m3YVVLgOy4PS8znzS2mp6eiP4uF5KWXp/csr2K0u1EvBOiz/tBqi6Sv5m4AT1JXS9q
+         y7DYMugBAV+Uw==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        shayne.chen@mediatek.com, ryder.lee@mediatek.com,
+        deren.wu@mediatek.com
+Subject: [PATCH v3 00/15] mt76: introduce connac3_mac support
+Date:   Tue, 13 Jun 2023 16:32:28 +0200
+Message-Id: <cover.1686664917.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Me and Johannes are planning to take a longer break from upstream this
-summer. To keep things simple my suggestion is that we would official
-close wireless and wireless-next trees from June 23rd to August 14th
-(approximately).
+Introduce connac3_mac in mt76_connac library to reuse mac code shared
+between WiFi7 chipsets.
+Move the following common mac fields in mt76_struct/mt76_wcid:
+- sta_poll_list
+- sta_poll_lock
+- poll_list
+- ampdu_state
 
-During that time urgent fixes would need go directly to the net tree.
-Patches can keep flowing to the wireless list but the the net
-maintainers will follow the list and they'll just apply them to the
-net tree directly.
+Move the following routines in mt76-connac lib since they are shared
+between mt7915 and mt7921:
+- mt76_connac2_tx_check_aggr
+- mt76_connac2_txwi_free
+- mt76_connac2_tx_token_put
 
-The plan here is that -next patches would have to wait for
-wireless-next to open. Luckily the merge window for v6.6 most likely
-opens beginning of September[1] so after our break we would have few
-weeks to get -next patches ready for v6.6.
+Changes since v2:
+- move back the some mt7996 mac routines in mt7996 folder for the moment.
+Changes since v1:
+- rebase on top wireless-next tree
+- fix connac3_mac library
+- fix compilation warnings
 
-And the v6.5 -next patches should be ready by Monday June 19th so that we
-have enough time to get them into the tree before we close the trees.
+Lorenzo Bianconi (15):
+  wifi: mt76: mt7915: move sta_poll_list and sta_poll_lock in mt76_dev
+  wifi: mt76: mt7603: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7615: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7996: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7921: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7915: move poll_list in mt76_wcid
+  wifi: mt76: mt7603: rely on shared poll_list field
+  wifi: mt76: mt7615: rely on shared poll_list field
+  wifi: mt76: mt7996: rely on shared poll_list field
+  wifi: mt76: mt7921: rely on shared poll_list field
+  wifi: mt76: move ampdu_state in mt76_wcid
+  mt76: connac: move more mt7921/mt7915 mac shared code in connac lib
+  wifi: mt76: move rate info in mt76_vif
+  wifi: mt76: connac: move connac3 definitions in mt76_connac3_mac.h
+  wifi: mt76: connac: add connac3 mac library
 
-What do people think, would this work? This is the first time we are
-doing this so we would like to hear any comments about this, both
-negative and positive. You can also reply to me and Johannes privately,
-if that's easier.
-
-Kalle
-
-[1] https://phb-crystal-ball.sipsolutions.net/
+ drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   2 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   9 +
+ .../net/wireless/mediatek/mt76/mt7603/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   |  22 +-
+ .../net/wireless/mediatek/mt76/mt7603/main.c  |  20 +-
+ .../wireless/mediatek/mt76/mt7603/mt7603.h    |   4 -
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |  31 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  20 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   4 -
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  10 +-
+ .../wireless/mediatek/mt76/mt76_connac3_mac.c | 182 ++++++++++
+ .../wireless/mediatek/mt76/mt76_connac3_mac.h | 325 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |  82 +++++
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |   4 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 140 ++------
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  30 +-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |   5 -
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 104 ++----
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  26 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |   9 -
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |   2 +-
+ .../wireless/mediatek/mt76/mt7921/pci_mac.c   |  16 +-
+ .../net/wireless/mediatek/mt76/mt7996/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 242 ++-----------
+ .../net/wireless/mediatek/mt76/mt7996/mac.h   | 315 +----------------
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  40 +--
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |   2 +-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |   8 -
+ 31 files changed, 797 insertions(+), 867 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.40.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
