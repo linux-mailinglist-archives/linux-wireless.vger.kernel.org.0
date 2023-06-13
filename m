@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0AFF72DD69
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 11:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCBA72DE37
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 11:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241833AbjFMJPe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 05:15:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43268 "EHLO
+        id S241975AbjFMJtC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 05:49:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241837AbjFMJPG (ORCPT
+        with ESMTP id S241767AbjFMJsM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 05:15:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B38B1B0
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 02:15:05 -0700 (PDT)
+        Tue, 13 Jun 2023 05:48:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9901B1FF9;
+        Tue, 13 Jun 2023 02:47:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A32706326D
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 09:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99B1C4339B;
-        Tue, 13 Jun 2023 09:15:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35CD062B60;
+        Tue, 13 Jun 2023 09:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF32C433EF;
+        Tue, 13 Jun 2023 09:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686647704;
-        bh=JKBkTIwWYa/gnKOWIS3YMlHF+x0MovPcQPCPXxXUptY=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Igv3dXfHmRtoB0Ey7FvNp43NFTWMUSh2iBLNuhjCqyZ9JLb9fUHxddVQ2kx2KVV6G
-         BzCI2UVSKOjxrTtub8QZE+WQWUvVjHQJrq0C2K2DWmocO7EaNYtzCicSKNaT4WVC77
-         FFx/KYxlIxJj1dbwFTChkqeR8XniiPOiNQ21SM0TlypVSvYUKMeQVOwa/sY+wCvibs
-         uExqGRKKLg2NHbM12AfBqozfz4nTpiIildoy7xLJld8pJYurBr/81/vLo6mp7IM4Go
-         PbZsZ1rwZeO15TiRkmuAeeSOb1y9Bie8QFyFsBch7C8gDL8t+SHssmdthltrYzopuS
-         TgiO6JnykxE9g==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: fix memory leak in WMI firmware stats
+        s=k20201202; t=1686649646;
+        bh=3C/9k3Wp2q74e5Kj4lNKZVGCxlcGfqV9JqY5As7yd24=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=XHczFg4HXbJp609NdfE1ms1DT9DpefdHDAzhkAexPPtZMyJr+vkm1d7t/NFAnc8cU
+         6mwp8q9o4goDQf8DQgkcLS7iOlW1Xf8kzVvn+u1+du8pj06wCTpPk3EebXxwzA7WzS
+         JjKsTchxuutlmQjmke7oyJbK/d6odL1U+tcaZFCbEx0H65kPP6VQja3ORNVOmXWxt8
+         rkZCBfbuLI2L0ScSPv8K/RGqjwPsuznFwFq9dT+shvGlw9DHIdtAsmZPC+hmkEYFpi
+         3gXGgklHp27nGDW7ZKXADMfg8GbvLDSXV2/t/cL4cep1C8ving+gBfAIr8jBsYyOUB
+         4sQ2g330/QnHQ==
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230606091128.14202-1-quic_adisi@quicinc.com>
-References: <20230606091128.14202-1-quic_adisi@quicinc.com>
-To:     Aditya Kumar Singh <quic_adisi@quicinc.com>
-Cc:     <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168664770075.2274.7742799592706415506.kvalo@kernel.org>
-Date:   Tue, 13 Jun 2023 09:15:02 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+To:     baomingtong001@208suo.com
+Cc:     toke@toke.dk, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath: Remove unneeded variable
+References: <20230613093757.5380-1-luojianhong@cdjrlc.com>
+        <b41c50989125dec782e1fbd2793d0ecf@208suo.com>
+Date:   Tue, 13 Jun 2023 12:47:20 +0300
+In-Reply-To: <b41c50989125dec782e1fbd2793d0ecf@208suo.com> (baomingtong's
+        message of "Tue, 13 Jun 2023 17:43:53 +0800")
+Message-ID: <87352velsn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,31 +56,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aditya Kumar Singh <quic_adisi@quicinc.com> wrote:
+baomingtong001@208suo.com writes:
 
-> Memory allocated for firmware pdev, vdev and beacon statistics
-> are not released during rmmod.
-> 
-> Fix it by calling ath11k_fw_stats_free() function before hardware
-> unregister.
-> 
-> While at it, avoid calling ath11k_fw_stats_free() while processing
-> the firmware stats received in the WMI event because the local list
-> is getting spliced and reinitialised and hence there are no elements
-> in the list after splicing.
-> 
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> Fix the following coccicheck warning:
+>
+> drivers/net/wireless/ath/ath9k/gpio.c:501:5-8: Unneeded variable: "len".
+>
+> Signed-off-by: Mingtong Bao <baomingtong001@208suo.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+No HTML emails, our lists drop those automatically. Please use 'git
+send-email', more info in the wiki below.
 
-6aafa1c2d3e3 wifi: ath11k: fix memory leak in WMI firmware stats
+This is not the first time I'm commenting about this for a patch from
+208suo.com:
+
+https://lore.kernel.org/linux-wireless/87zg57fne1.fsf@kernel.org/
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230606091128.14202-1-quic_adisi@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
