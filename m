@@ -2,75 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDBEF72DEAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 12:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B56D72E377
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 14:58:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233071AbjFMKCq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 06:02:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42098 "EHLO
+        id S241047AbjFMM5q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 08:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239336AbjFMKCi (ORCPT
+        with ESMTP id S235739AbjFMM5n (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 06:02:38 -0400
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1581FFB
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 03:02:16 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1e2b:0:640:94b5:0])
-        by forward102b.mail.yandex.net (Yandex) with ESMTP id 7A9E060151;
-        Tue, 13 Jun 2023 13:02:14 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id v1XYgBqDVuQ0-o1MNOcUd;
-        Tue, 13 Jun 2023 13:02:13 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686650534;
-        bh=aRNue0nsH3LSJJI24SBCk//4xemJp23FEDfSY2jQccc=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=pfOBSbXeFIbxZVd+uhB9kj/FuAFpd5eBI7OODEPAjPAMp6vvzvZPO1zHZsopZj07u
-         V55Ng4SXdHQefCOQMkYZHImAjr7d9miq5bOaTP2JOhHZsRZtUT6xT131+yPRlnAbb2
-         mpevUA89HfdcK+7DBvWccFEW01ManfpT4+SEvfCM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 3/3] wifi: rtw89: fix typo
-Date:   Tue, 13 Jun 2023 13:01:54 +0300
-Message-Id: <20230613100154.116586-3-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230613100154.116586-1-dmantipov@yandex.ru>
-References: <975dee84-fa8f-1dbd-a2b8-2aba5a880b60@yandex.ru>
- <20230613100154.116586-1-dmantipov@yandex.ru>
+        Tue, 13 Jun 2023 08:57:43 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A91919A7
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686661059; x=1718197059;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=05/2/gPtsXiXIUL8HkQxGzGw7yyeSpRXquZc5EtO/DY=;
+  b=M76iBPpNKlpd1PcVE9Tp8kvLbTWNo1CqvxP7xAy+fzbUvMNl6V2NB0EQ
+   h8ehL1bc9VK6Rr7P8T+JuIFav4jV8SRrtFC5bb9JBZ5mEAesu3dGSdYEC
+   Df870uWBwuUWdkJlOuY2hdLQukJJlh0EdNgGeN+hniDUVMKp6FdDR+cdV
+   KVz/VFsNB68Ulmqu/fiXtZa3a58IiM8eJCx5hu0hB8PTZkoBDdm7xeI3b
+   mwUc09ykwZ21RxHggd2Uga8f/usElZfP9pA5sGC219vMIWSo04prt0XeJ
+   sV3/n1G9eptVoPcq4ACJXtDB2CTTPtaSjXX+7BSJsgSZt6NPwMTrWYPlF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973693"
+X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
+   d="scan'208";a="347973693"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880745"
+X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
+   d="scan'208";a="835880745"
+Received: from slerer-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.249.90.17])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:36 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/14] wifi: iwlwifi: updates intended for v6.5 2023-06-13 
+Date:   Tue, 13 Jun 2023 15:57:13 +0300
+Message-Id: <20230613125727.300445-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix typo in '_doiqk()'.
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-index 466fa8e406da..48f1bcc46eda 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-@@ -1586,7 +1586,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 			      BTC_WRFK_ONESHOT_START);
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[IQK]==========IQK strat!!!!!==========\n");
-+		    "[IQK]==========IQK start!!!!!==========\n");
- 	iqk_info->iqk_times++;
- 	iqk_info->version = RTW8851B_IQK_VER;
- 
+This patch set includes iwlwifi patches intended for v6.5.
+
+It contains normal developement, cleanups and bugfixes.
+It depends on the previous patch sets I've sent.  
+
+Thanks,
+Gregory
+
+Alon Giladi (1):
+  wifi: iwlwifi: improve debug prints in iwl_read_ppag_table()
+
+Ariel Malamud (1):
+  wifi: iwlwifi: mvm: Refactor iwl_mvm_get_lmac_id()
+
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mvm: allow ADD_STA not to be advertised by the firwmare
+
+Gregory Greenman (2):
+  wifi: iwlwifi: mvm: add support for Extra EHT LTF
+  wifi: iwlwifi: mvm: fix potential array out of bounds access
+
+Haim Dreyfuss (1):
+  wifi: iwlwifi: mvm: rename BTM support flag and its TLV
+
+Johannes Berg (6):
+  wifi: iwlwifi: mvm: support U-SIG EHT validate checks
+  wifi: iwlwifi: mvm: put only a single IGTK into FW
+  wifi: iwlwifi: dbg-tlv: fix DRAM data init
+  wifi: iwlwifi: pcie: clear FW debug memory on init
+  wifi: iwlwifi: pcie: remove redundant argument
+  wifi: iwlwifi: dbg-tlv: clear FW debug memory on init
+
+Mukesh Sisodiya (2):
+  wifi: iwlwifi: mvm: initialize the rx_vec before using it.
+  wifi: iwlwifi: support version C0 of BZ and GL devices
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    | 27 +++++++
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 37 ++++++----
+ .../wireless/intel/iwlwifi/fw/api/binding.h   |  8 ---
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  4 +-
+ .../net/wireless/intel/iwlwifi/fw/api/rs.h    |  2 +
+ .../net/wireless/intel/iwlwifi/fw/api/rx.h    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |  3 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 +
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  | 49 +++++++------
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  2 +
+ .../net/wireless/intel/iwlwifi/mvm/binding.c  | 10 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  6 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  7 +-
+ .../net/wireless/intel/iwlwifi/mvm/mld-key.c  | 72 ++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 12 +++-
+ .../wireless/intel/iwlwifi/mvm/offloading.c   |  4 +-
+ .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 15 ++++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 14 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 10 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  4 +-
+ .../wireless/intel/iwlwifi/mvm/time-event.c   |  4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 14 +++-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 16 ++---
+ include/linux/ieee80211.h                     |  1 +
+ include/net/ieee80211_radiotap.h              |  2 +
+ 27 files changed, 249 insertions(+), 82 deletions(-)
+
 -- 
-2.40.1
+2.38.1
 
