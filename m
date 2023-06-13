@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19EF272E37C
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 14:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F40172E382
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 14:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241040AbjFMM6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 08:58:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52710 "EHLO
+        id S241923AbjFMM6W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 08:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242138AbjFMM6R (ORCPT
+        with ESMTP id S241991AbjFMM6V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 08:58:17 -0400
+        Tue, 13 Jun 2023 08:58:21 -0400
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B25A219A7
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:58:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972F91984
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 05:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686661081; x=1718197081;
+  t=1686661086; x=1718197086;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uBlYQc5iUSEyLsN1MwLmsYxIX56sUQw1nA6kryoNBCU=;
-  b=Rflqw+7K1DDhFao6ggLubGJ6bBzsoMMxaNh6UWNBB+mgiCShU56VA0pS
-   kM7Gko2V7eZhJLnKLYTkUv4nKJhgnAKU6wNF0L1iTDHZidTiUUAmNeOoE
-   cHcgyidqsHmY8MBlvsAcCf0CCyp4gQX1p1rRRgXL8No3LwNJTPH2q3S8r
-   TtStl2PaJ0xQNcChgXBkskpSrz43b7om0S7p+IqmaS2WvyuYMNwnk75Ox
-   zjt6XNOplb46JmC46yAHzn7guZ2rudiwKPpdUipiR5rSup2DQK5xKc1/e
-   lh7VhLB6f9huzdqvdvDW/fKEZ0ecZrzukA9n2XOGjLEGKdak7V9gel2+u
+  bh=7kfB8jwrvISjAOsElfqu8BRzYgFf8quTAnuxH78M5z8=;
+  b=J2JEFCbdCwJzEnQNTrbRbeH6jSMi9aj/EAspUAOKULca5c5JV4yJke97
+   pgD0RfR373JodXhOEMtSp9lKZMSbDfbnahUsnlu72+hXViN0tzRvV5gyI
+   QO+Uqve2ufhEhJlTKpJCGNvNDqmvg+sGZ1sqfaPlpc5NcPoMh6UEJM1qb
+   9Td+5k818AkwSKcCm9MMx92urkP5hMBW2c6FItie+EokFO9RuXYVseSfq
+   1OmdxDc3tOCpgIO2nF4LbNs970QiqZtZfmUXanqg/dwMOD2WnrW7HLa9d
+   36hxdceIR4pxbnuE2KqAdqorAdUGoZbXWoYf82qYb7IihWi6pOSIkb1bo
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973759"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="347973762"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="347973759"
+   d="scan'208";a="347973762"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:58:01 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:58:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880823"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="835880831"
 X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="835880823"
+   d="scan'208";a="835880831"
 Received: from slerer-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.249.90.17])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:57:59 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 05:58:01 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 10/14] wifi: iwlwifi: mvm: allow ADD_STA not to be advertised by the firwmare
-Date:   Tue, 13 Jun 2023 15:57:23 +0300
-Message-Id: <20230613155501.4b9305510223.I7cc143d87186f8441e9b8435cc550b76734c7eef@changeid>
+Subject: [PATCH 11/14] wifi: iwlwifi: dbg-tlv: fix DRAM data init
+Date:   Tue, 13 Jun 2023 15:57:24 +0300
+Message-Id: <20230613155501.87cf5528f4bc.I26ac907a4162297808b33467fc7f5d8177474a34@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230613125727.300445-1-gregory.greenman@intel.com>
 References: <20230613125727.300445-1-gregory.greenman@intel.com>
@@ -63,184 +63,87 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Newest firmware don't advertise the version of ADD_STA because it has
-been replaced by another command. There are old firmware images
-that also don't advertise it. Replace all the checks with a new
-inline, and in that check for either MLD API or the ADD_STA
-command version.
+Given the existing code in iwl_dbg_tlv_update_drams(), the
+following can happen and cause firmware asserts, and even
+the device to become unusable:
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+ * We set the magic so the firmware will use the data;
+ * we try to fill multiple allocation IDs, with at least
+   one successful, but - crucially - one failing and thus
+   not touching the data;
+ * we don't clear the data since there was one success.
+
+This doesn't seem like much of a problem just yet, however,
+what happens now is that the allocation ID(s) that failed
+are not initialized.
+
+There are two additional things to know:
+ * we never free these allocations across FW restart or
+   interface down/up etc., in fact we never free them until
+   the driver is unbound from the device (e.g. unloaded)
+ * the firmware uses the DRAM info structure for real debug
+   data when it has used it completely
+
+Given that, and the fact that we never initialize the data
+on restart, we can be unlucky and end up with an allocation
+that looks for the most part valid (valid ID, valid number
+of buffers, etc.) but has bad sizes - causing the firmware
+to throw an assert we can never recover from.
+
+Fixing the code to have the entire buffers cleared (which
+we should do so old debug data isn't sticking around) is a
+bit more complex, so as a first step make the actual code
+that fills the information more robust by clearing the
+structure first, and filling the magic values only if it
+actually succeeded for one, rather than doing it the other
+way around.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c         |  6 +++---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c   |  4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h        |  6 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c       | 10 +++++-----
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c        |  4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c |  4 ++--
- 6 files changed, 20 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index d1a559c4c6b9..ed9370aac1b6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+index fb0277bd12cf..3f9d4670f6c6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
 @@ -1,6 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2023 Intel Corporation
   */
-@@ -1637,7 +1637,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	 * internal aux station for all aux activities that don't
- 	 * requires a dedicated data queue.
- 	 */
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) < 12) {
-+	if (!iwl_mvm_has_new_station_api(mvm->fw)) {
- 		 /*
- 		  * In old version the aux station uses mac id like other
- 		  * station and not lmac id
-@@ -1806,7 +1806,7 @@ int iwl_mvm_load_d3_fw(struct iwl_mvm *mvm)
- 		RCU_INIT_POINTER(mvm->fw_id_to_link_sta[i], NULL);
+ #include <linux/firmware.h>
+ #include "iwl-drv.h"
+@@ -795,8 +795,7 @@ static void iwl_dbg_tlv_update_drams(struct iwl_fw_runtime *fwrt)
+ 			 IWL_UCODE_TLV_CAPA_DRAM_FRAG_SUPPORT))
+ 		return;
+ 
+-	dram_info->first_word = cpu_to_le32(DRAM_INFO_FIRST_MAGIC_WORD);
+-	dram_info->second_word = cpu_to_le32(DRAM_INFO_SECOND_MAGIC_WORD);
++	memset(dram_info, 0, sizeof(*dram_info));
+ 
+ 	for (i = IWL_FW_INI_ALLOCATION_ID_DBGC1;
+ 	     i < IWL_FW_INI_ALLOCATION_NUM; i++) {
+@@ -813,11 +812,10 @@ static void iwl_dbg_tlv_update_drams(struct iwl_fw_runtime *fwrt)
+ 				 i, ret);
  	}
  
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) < 12) {
-+	if (!iwl_mvm_has_new_station_api(mvm->fw)) {
- 		/*
- 		 * Add auxiliary station for scanning.
- 		 * Newer versions of this command implies that the fw uses
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 8267ff08e38d..ee838dd60f4e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1243,7 +1243,7 @@ void __iwl_mvm_mac_stop(struct iwl_mvm *mvm)
- 
- 	/* async_handlers_wk is now blocked */
- 
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) < 12)
-+	if (!iwl_mvm_has_new_station_api(mvm->fw))
- 		iwl_mvm_rm_aux_sta(mvm);
- 
- 	iwl_mvm_stop_device(mvm);
-@@ -4521,7 +4521,7 @@ static int iwl_mvm_add_aux_sta_for_hs20(struct iwl_mvm *mvm, u32 lmac_id)
- 		return -EINVAL;
- 	}
- 
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) >= 12) {
-+	if (iwl_mvm_has_new_station_api(mvm->fw)) {
- 		ret = iwl_mvm_add_aux_sta(mvm, lmac_id);
- 		WARN(ret, "Failed to allocate aux station");
- 	}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 8043f5fd26c7..d8d6681e9411 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1436,6 +1436,12 @@ static inline bool iwl_mvm_has_mld_api(const struct iwl_fw *fw)
- 			   IWL_UCODE_TLV_CAPA_MLD_API_SUPPORT);
+-	if (dram_alloc)
+-		IWL_DEBUG_FW(fwrt, "block data after  %08x\n",
+-			     dram_info->first_word);
+-	else
+-		memset(frags->block, 0, sizeof(*dram_info));
++	if (dram_alloc) {
++		dram_info->first_word = cpu_to_le32(DRAM_INFO_FIRST_MAGIC_WORD);
++		dram_info->second_word = cpu_to_le32(DRAM_INFO_SECOND_MAGIC_WORD);
++	}
  }
  
-+static inline bool iwl_mvm_has_new_station_api(const struct iwl_fw *fw)
-+{
-+	return iwl_mvm_has_mld_api(fw) ||
-+	       iwl_fw_lookup_cmd_ver(fw, ADD_STA, 0) >= 12;
-+}
-+
- static inline bool iwl_mvm_has_new_tx_api(struct iwl_mvm *mvm)
- {
- 	/* TODO - replace with TLV once defined */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 175615755d9d..d7ac9ddbcfba 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -647,7 +647,7 @@ static void iwl_mvm_scan_fill_tx_cmd(struct iwl_mvm *mvm,
- 							   NL80211_BAND_2GHZ,
- 							   no_cck);
- 
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) < 12) {
-+	if (!iwl_mvm_has_new_station_api(mvm->fw)) {
- 		tx_cmd[0].sta_id = mvm->aux_sta.sta_id;
- 		tx_cmd[1].sta_id = mvm->aux_sta.sta_id;
- 
-@@ -1084,7 +1084,7 @@ static void iwl_mvm_fill_scan_config_v1(struct iwl_mvm *mvm, void *config,
- 	memcpy(&cfg->mac_addr, &mvm->addresses[0].addr, ETH_ALEN);
- 
- 	/* This function should not be called when using ADD_STA ver >=12 */
--	WARN_ON_ONCE(iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) >= 12);
-+	WARN_ON_ONCE(iwl_mvm_has_new_station_api(mvm->fw));
- 
- 	cfg->bcast_sta_id = mvm->aux_sta.sta_id;
- 	cfg->channel_flags = channel_flags;
-@@ -1135,7 +1135,7 @@ static void iwl_mvm_fill_scan_config_v2(struct iwl_mvm *mvm, void *config,
- 	memcpy(&cfg->mac_addr, &mvm->addresses[0].addr, ETH_ALEN);
- 
- 	/* This function should not be called when using ADD_STA ver >=12 */
--	WARN_ON_ONCE(iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) >= 12);
-+	WARN_ON_ONCE(iwl_mvm_has_new_station_api(mvm->fw));
- 
- 	cfg->bcast_sta_id = mvm->aux_sta.sta_id;
- 	cfg->channel_flags = channel_flags;
-@@ -1250,7 +1250,7 @@ int iwl_mvm_config_scan(struct iwl_mvm *mvm)
- 
- 	memset(&cfg, 0, sizeof(cfg));
- 
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) < 12) {
-+	if (!iwl_mvm_has_new_station_api(mvm->fw)) {
- 		cfg.bcast_sta_id = mvm->aux_sta.sta_id;
- 	} else if (iwl_fw_lookup_cmd_ver(mvm->fw, SCAN_CFG_CMD, 0) < 5) {
- 		/*
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 5e11b101d02e..ff1ce990a9d8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2015, 2018-2022 Intel Corporation
-+ * Copyright (C) 2012-2015, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -1679,7 +1679,7 @@ static int iwl_mvm_add_int_sta_common(struct iwl_mvm *mvm,
- 	memset(&cmd, 0, sizeof(cmd));
- 	cmd.sta_id = sta->sta_id;
- 
--	if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) >= 12 &&
-+	if (iwl_mvm_has_new_station_api(mvm->fw) &&
- 	    sta->type == IWL_STA_AUX_ACTIVITY)
- 		cmd.mac_id_n_color = cpu_to_le32(mac_id);
- 	else
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 6b7b6250f1bb..5f0e7144a951 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2017 Intel Deutschland GmbH
-  */
-@@ -103,7 +103,7 @@ void iwl_mvm_roc_done_wk(struct work_struct *wk)
- 		/* In newer version of this command an aux station is added only
- 		 * in cases of dedicated tx queue and need to be removed in end
- 		 * of use */
--		if (iwl_fw_lookup_cmd_ver(mvm->fw, ADD_STA, 0) >= 12)
-+		if (iwl_mvm_has_new_station_api(mvm->fw))
- 			iwl_mvm_rm_aux_sta(mvm);
- 	}
- 
+ static void iwl_dbg_tlv_send_hcmds(struct iwl_fw_runtime *fwrt,
 -- 
 2.38.1
 
