@@ -2,51 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B37E72DC84
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 10:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5F572DC91
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 10:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240553AbjFMIb7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 04:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42694 "EHLO
+        id S241373AbjFMIf4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 04:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241237AbjFMIb4 (ORCPT
+        with ESMTP id S241364AbjFMIfv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 04:31:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B231E188
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 01:31:53 -0700 (PDT)
+        Tue, 13 Jun 2023 04:35:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6783C12A;
+        Tue, 13 Jun 2023 01:35:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C518163210
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 08:31:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C869C433EF;
-        Tue, 13 Jun 2023 08:31:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFA9F632B6;
+        Tue, 13 Jun 2023 08:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAFDC433EF;
+        Tue, 13 Jun 2023 08:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686645112;
-        bh=810ANMJOJe05cXQJf2iu3tB0bGE5HE0U1LC3MB7XogY=;
+        s=k20201202; t=1686645341;
+        bh=7POap0BgReJndSfBWnUr9sOIww6wKlvURWhxSuQYNcQ=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=pPZhDlWculNdB7/aU4yNG9abO/dxRjdnxP2IyQoB3I+/h/1H8s0ZSA1pOFZdACwra
-         Og7IYfK7eUTEpSyUPmyDmah87bUMaMbWhaxxd7r5TOtvFtfelyi0MbdwH9PTNweaqQ
-         nv68Rh3fKJhyoxyH7MEFORuk+5BPMu1j2IJSeZvt7uAv3AtwzEsbda+T0gAtTVkAnv
-         lZa4khGbvaIB3hN/CfuBNjS8GHxBSgQqN3swbjb9ub+OgMIMAdMXTGkJtdCdRrPtXC
-         dFF2+vCPZuZgDuOZYhDoEPThjUirp/Y55YghYic/vRrhqgxVmOsMfiwcCZWauN/2kc
-         V3jqtLmKAJbsg==
+        b=PIIvhn49fkhAq5d5lg+8yqih8TDoT9cLzsUMkI1hZK6IuCtrV+MgYvkckz7ek3Bqm
+         7+iNMMqJ4QzXPtJyHDGjhhKFlB9E8s41xREM+Yvo8iR9+rqbUIQ5uBJz8MBMwQGXgh
+         i5UdQz0UiCPpZvdXGqV4kufnN2fg+MtrX1Y1gp6WGFJT9clzGezrM9jFT5SHMo2KCz
+         beTt1JHCMjiF5zEg1FQe64GCMRw7bSzE1+koyqcQE5LLgMV5agu+wtQ9BI10z6XXit
+         sYL2u2h/0As18Gh0lyKJvqLwFoEqzUBy1ZTNkF07HkfyEhauJOhEvVIjs7Ym6pylVH
+         sz669fxJrD7UA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 4/4] [v2] wifi: rtlwifi: simplify LED management
+Subject: Re: [PATCH] net/mediatek: strlcpy withreturn
 From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230608095051.116702-4-dmantipov@yandex.ru>
-References: <20230608095051.116702-4-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <20230613003458.3538812-1-azeemshaikh38@gmail.com>
+References: <20230613003458.3538812-1-azeemshaikh38@gmail.com>
+To:     Azeem Shaikh <azeemshaikh38@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <168664510862.24637.10587241603155144086.kvalo@kernel.org>
-Date:   Tue, 13 Jun 2023 08:31:51 +0000 (UTC)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-ID: <168664533370.24637.14116409515016851485.kvalo@kernel.org>
+Date:   Tue, 13 Jun 2023 08:35:39 +0000 (UTC)
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,26 +61,31 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+Azeem Shaikh <azeemshaikh38@gmail.com> wrote:
 
-> Introduce 'rtl_init_sw_leds()' to replace per-chip LED
-> initialization code (and so drop 'struct rtl_led' as no
-> longer used), drop 'init_sw_leds' and 'deinit_sw_leds'
-> fields from 'struct rtl_hal_ops', adjust related code.
+> strlcpy() reads the entire source buffer first.
+> This read may exceed the destination size limit.
+> This is both inefficient and can lead to linear read
+> overflows if a source string is not NUL-terminated [1].
+> In an effort to remove strlcpy() completely [2], replace
+> strlcpy() here with strscpy().
 > 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Direct replacement is safe here since DEV_ASSIGN is only used by
+> TRACE macros and the return values are ignored.
+> 
+> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+> [2] https://github.com/KSPP/linux/issues/89
+> 
+> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-Is there a reason why you are changing error messages to debug messages like here:
+The title should be:
 
--		pr_err("switch case %#x not processed\n",
--		       pled->ledpin);
-+		rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
-+			"unknown LED pin %d\n", pin);
+wifi: mt7601u: replace strlcpy() with strscpy()
 
-The commit log mentions nothing about that.
+I can fix that, no need to resend because of this.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230608095051.116702-4-dmantipov@yandex.ru/
+https://patchwork.kernel.org/project/linux-wireless/patch/20230613003458.3538812-1-azeemshaikh38@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
