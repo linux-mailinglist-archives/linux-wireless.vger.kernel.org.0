@@ -2,95 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4831972EA9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 20:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE6AD72EAA8
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 20:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232511AbjFMSOr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 14:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52504 "EHLO
+        id S231803AbjFMSPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 14:15:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232792AbjFMSOq (ORCPT
+        with ESMTP id S233782AbjFMSPg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 14:14:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF44419A7;
-        Tue, 13 Jun 2023 11:14:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 843DC6395A;
-        Tue, 13 Jun 2023 18:14:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC10CC433D9;
-        Tue, 13 Jun 2023 18:14:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686680083;
-        bh=fjT4gpdjI8bzfc0kSPvWLMcKfBFEaXgHEzlFBmmWqkQ=;
+        Tue, 13 Jun 2023 14:15:36 -0400
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9EEC19B5
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 11:15:33 -0700 (PDT)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+        t=1686680132; bh=jzSKSaw6yFODVr7w5QacycAN66wxVkHmAf2GWtVMqBg=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=YPBwCeRUs39kxlaLzdOB3U/bmTyHUsAgwUCs8NioF14TZY5ElTAYwBY3aLoc8t+wS
-         e7bjbenC0hl1zrZBBwEJynjtkv3y8YHI3Y0EL41PdFbkLqqmFNzGbNGIRl/VZnFsYI
-         CEwTLDbyKWuoN9nk3I/ejgmZ+2WowJN20sz99hVWF4I8TU1yLWxTHyDtznWvx7r7qp
-         Vri8t/fEYXoWjE2p8JoArbh5O2YE0NPTL2eCwWxwE7P/vGrX8992LrfTUUX5KaU5v4
-         52tJPG2/TK+wz8hZw12VOptpVSyRZhteeSItM9u2L0OhNiloXN3I+k9XVhutsfKh78
-         0Uq9DJwQX5BaA==
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 64961BBEAD1; Tue, 13 Jun 2023 20:14:40 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: Closing down the wireless trees for a summer break?
-In-Reply-To: <87y1kncuh4.fsf@kernel.org>
-References: <87y1kncuh4.fsf@kernel.org>
+        b=o0DCqnkU0/4epID3YCiHsyKVvHm4Ucfjl5NZBucmiOAW0fcLP6qpG9NwCjhqWZVpx
+         fiCAtFdOzOCojn/klZ93Sb3xzLcWIDtfKUdUrh5027EWjKQOYc2MiX5cpOMcDyNp3t
+         oLhHm5MFrH44RNT9Y7UIkybqZTxEzQDCbzeu4Megd+rZ5sWeVy+MGS3BjIngoKn2n2
+         CoaSpz6RhAJy5NcKwWemSJGEj3md8EEeoWrel8aA9MNUpJq8vYCerN6TUTDBKS1MQC
+         xNmtKbz6rf7w1qZqji9WIrlk9r5cQJgq5GjkSSzQQKVPcWxUX0povjvEzC6g4Kxl3g
+         lcLKasf1HYYAg==
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH] wifi: ath9k: convert msecs to jiffies where needed
+In-Reply-To: <20230613134655.248728-1-dmantipov@yandex.ru>
+References: <20230613134655.248728-1-dmantipov@yandex.ru>
+Date:   Tue, 13 Jun 2023 20:15:31 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 13 Jun 2023 20:14:40 +0200
-Message-ID: <871qifxm9b.fsf@toke.dk>
+Message-ID: <87y1knw7ng.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Dmitry Antipov <dmantipov@yandex.ru> writes:
 
-> Me and Johannes are planning to take a longer break from upstream this
-> summer. To keep things simple my suggestion is that we would official
-> close wireless and wireless-next trees from June 23rd to August 14th
-> (approximately).
+> Since 'ieee80211_queue_delayed_work()' expects timeout in
+> jiffies and not milliseconds, 'msecs_to_jiffies()' should
+> be used in 'ath_restart_work()' and '__ath9k_flush()'.
 >
-> During that time urgent fixes would need go directly to the net tree.
-> Patches can keep flowing to the wireless list but the the net
-> maintainers will follow the list and they'll just apply them to the
-> net tree directly.
->
-> The plan here is that -next patches would have to wait for
-> wireless-next to open. Luckily the merge window for v6.6 most likely
-> opens beginning of September[1] so after our break we would have few
-> weeks to get -next patches ready for v6.6.
->
-> And the v6.5 -next patches should be ready by Monday June 19th so that we
-> have enough time to get them into the tree before we close the trees.
->
-> What do people think, would this work? This is the first time we are
-> doing this so we would like to hear any comments about this, both
-> negative and positive. You can also reply to me and Johannes privately,
-> if that's easier.
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-I think this sounds reasonable, and I applaud the effort to take some
-time off during the summer :)
+I believe this warrants a:
 
-One question that comes to mind is how would this work for patchwork?
-Would we keep using the wireless patchwork instance for the patches
-going to -net in that period, or will there be some other process for
-this? I realise the setup we have for ath9k is a bit special in this
-regard with the ack-on-list+delegation, so I'm obviously mostly
-interested in what to do about that... :)
+Fixes: d63ffc45c5d3 ("ath9k: rename tx_complete_work to hw_check_work")
 
--Toke
+with that:
+
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
