@@ -2,110 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D37572D755
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 04:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E629672D8FD
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 07:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238996AbjFMCUh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 22:20:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
+        id S238463AbjFMFMw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 01:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238977AbjFMCUc (ORCPT
+        with ESMTP id S232951AbjFMFMu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 22:20:32 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1ED71734;
-        Mon, 12 Jun 2023 19:20:25 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35D2JutN6011000, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35D2JutN6011000
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 13 Jun 2023 10:19:56 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 13 Jun 2023 10:20:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 13 Jun 2023 10:20:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Tue, 13 Jun 2023 10:20:13 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "Lukas F. Hartmann" <lukas@mntre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>
-Subject: RE: wifi: rtw88: question about SDIO RX aggregation limiting
-Thread-Topic: wifi: rtw88: question about SDIO RX aggregation limiting
-Thread-Index: AQHZnKKRatqDIe8IxUOv8mL1iw8+va+H/hkQ
-Date:   Tue, 13 Jun 2023 02:20:13 +0000
-Message-ID: <9ab8cc85d4d440bfa63dcade4e4f9ecf@realtek.com>
-References: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
-In-Reply-To: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 13 Jun 2023 01:12:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F6EFE62;
+        Mon, 12 Jun 2023 22:12:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C15261E69;
+        Tue, 13 Jun 2023 05:12:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF78BC433EF;
+        Tue, 13 Jun 2023 05:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686633168;
+        bh=4kqAAS3SX9JNXmuGjywNhA17eJxvCECeHra6VxQaDBw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=rbAhe7NZu5CJGvuBXPpPG9QRfEHcXU6mWWC3lAqUMgJzZksZaGuq9abalEXyNQYGq
+         hwydWjeaSTHnGfeihlk8Kmug70g1h7hY7vlcCGy91OCznH28V746nwhAY8RT6HZxMp
+         s2Pq9aTX4hi3DPFQBSnRlrM/x32KueeG78qNoPb5g7g/fplZXe+qnav5lGsE/IQMW9
+         Kd8/aDie78OS+g09yFMTWQNuNMUHjrAAh/wWl0mVa8mcXlJYb4M2yPxkhPYUM68Spd
+         DONz2xi4bc1UsrQZ9oTFlgrGtdWdwj5bNqxIdfHHSSGfp+j00IZDGDJkv+xjyCKcaj
+         svkSn+eGuYPTg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Pin-yen Lin <treapking@chromium.org>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi017@gmail.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: mwifiex: Replace RX workqueues with kthreads
+References: <20230609103651.313194-1-treapking@chromium.org>
+        <87o7lohq9e.fsf@kernel.org>
+        <CAEXTbpdDsoghsxbJqszx0OWWw1o9D8p9f_9-4OgOM-a-w7OzSA@mail.gmail.com>
+        <ZIeuhU/vnoL1yWmQ@google.com>
+Date:   Tue, 13 Jun 2023 08:12:42 +0300
+In-Reply-To: <ZIeuhU/vnoL1yWmQ@google.com> (Brian Norris's message of "Mon, 12
+        Jun 2023 16:47:17 -0700")
+Message-ID: <87r0qgdjxx.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEJsdW1lbnN0
-aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4NCj4gU2VudDogTW9uZGF5
-LCBKdW5lIDEyLCAyMDIzIDQ6MjMgQU0NCj4gVG86IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVs
-Lm9yZzsgUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiBMdWthcyBGLiBI
-YXJ0bWFubiA8bHVrYXNAbW50cmUuY29tPjsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsg
-dG9ueTA2MjBlbW1hQGdtYWlsLmNvbTsNCj4gamVybmVqLnNrcmFiZWNAZ21haWwuY29tDQo+IFN1
-YmplY3Q6IHdpZmk6IHJ0dzg4OiBxdWVzdGlvbiBhYm91dCBTRElPIFJYIGFnZ3JlZ2F0aW9uIGxp
-bWl0aW5nDQo+IA0KPiBIZWxsbyBQaW5nLUtlLA0KPiANCj4gY2VydGFpbiBBbWxvZ2ljIFNESU8g
-aG9zdCBjb250cm9sbGVycyBoYXZlIGEgbGltaXQgb2YNCj4gcmVjZWl2aW5nL3RyYW5zbWl0dGlu
-ZyBhdCBtb3N0IDE1MzYgYnl0ZXMgYXQgYSB0aW1lLg0KPiBJdCB0dXJucyBvdXQgdGhhdCBydHdf
-c2Rpb19lbmFibGVfcnhfYWdncmVnYXRpb24oKSBmcm9tIHJ0dzg4L3NkaW8uYw0KPiBpcyBub3Qg
-dGFraW5nIHRoaXMgaW50byBhY2NvdW50IGN1cnJlbnRseS4NCj4gRm9yIGFueSBSWCBidWZmZXIg
-dGhhdCBpcyBiaWdnZXIgdGhhbiAxNTM2IGJ5dGVzICh3aGljaCBjYW4gaGFwcGVuIGR1ZQ0KPiB0
-byBSWCBhZ2dyZWdhdGlvbikgd2UncmUgdW5hYmxlIHRvIGRvIGFueSBwcm9jZXNzaW5nIG9uIHRo
-ZSBob3N0IHNpZGUNCj4gYmVjYXVzZSBhbGwgYnl0ZXMgYmV5b25kIHRoZSAxNTM2IGJ5dGVzIG1h
-cmsgYXJlIGxvc3QuDQo+IA0KPiBMdWthcyBmb3VuZCB0aGF0IGxpbWl0aW5nIEJJVF9SWERNQV9B
-R0dfUEdfVEggdG8gMHg2IG1ha2VzIGhpcw0KPiBSVEw4ODIyQ1Mgd29yayBvbiB0aGUgYWZmZWN0
-ZWQgQW1sb2dpYyBTb0NzLg0KPiANCj4gTXkgcXVlc3Rpb24gbm93IGlzOiBob3cgY2FuIHdlIHBy
-b3Blcmx5IGxpbWl0IEJJVF9SWERNQV9BR0dfUEdfVEgNCj4gd2l0aG91dCBoYXJkLWNvZGluZyBh
-IG9uZS1maXRzLWFsbCB2YWx1ZSAod2hpY2ggbWF5IHJlZHVjZQ0KPiBwZXJmb3JtYW5jZSk/DQo+
-IA0KPiBJbml0aWFsbHkgSSB0aG91Z2h0IHRoYXQgd2UgY291bGQganVzdCBjYWxjdWxhdGUgaXQ6
-DQo+ICAgaG9zdF9tYXhfcGFnZXMgPSBtbWNfaG9zdC0+bWF4X3JlcV9zaXplIC8gcnR3ZGV2LT5j
-aGlwLT5wYWdlX3NpemUNCj4gbWF4X3JlcV9zaXplIGZvciB0aGUgYWZmZWN0ZWQgY29udHJvbGxl
-ciBpcyAxNTM2IGFuZCBjaGlwLT5wYWdlX3NpemUNCj4gaXMgMTI4LCBzbyB0aGUgcmVzdWx0IHdv
-dWxkIGJlIDEyIChJIHRob3VnaHQgaXQgd291bGQgYmUgY2xvc2UgdG8gdGhpcw0KPiBudW1iZXIs
-IG1heWJlICsvLTEpLg0KPiBVbmZvcnR1bmF0ZWx5IHRoaXMgZG9lc24ndCBmaXggdGhlIGlzc3Vl
-IGFuZCBmb3IgaGlzIGJvYXJkDQo+IEJJVF9SWERNQV9BR0dfUEdfVEggdGhlIGxpbWl0IGlzIDYg
-b3IgNy4NCj4gDQo+IElmIHlvdSBjb3VsZCBkZXNjcmliZSBob3cgQklUX1JYRE1BX0FHR19QR19U
-SCBnZW5lcmFsbHkgd29ya3MgSSBjYW4NCj4gY29tZSB1cCB3aXRoIHRoZSBhbGdvcml0aG0gdG8g
-Y2FsY3VsYXRlIHRoZSBsaW1pdCBvbiBteSBvd24gKGF0IGxlYXN0DQo+IEkgaG9wZSBzbykuDQo+
-IEx1a2FzIGhhcyBiZWVuIHZlcnkgcGF0aWVudCB3aXRoIHRlc3Rpbmcgc28gZmFyIGFuZCBJIHVu
-ZGVyc3Rvb2QgdGhhdA0KPiBoZSdzIHdpbGxpbmcgdG8gdGVzdCBmdXJ0aGVyIHBhdGNoZXMgaWYg
-d2UgdGhpbmsgdGhhdCBpdCBmaXhlcyB0aGUNCj4gcnR3ODggZHJpdmVyIGlzc3VlIGhlJ3Mgc2Vl
-aW5nLg0KPiANCg0KVGhlIHVuaXQgb2YgQklUX1JYRE1BX0FHR19QR19USCBpcyAxayBieXRlcywg
-c28gSSB0aGluayB5b3UgY2FuDQpzZXQgbW1jX2hvc3QtPm1heF9yZXFfc2l6ZS8xMDI0Lg0KDQpJ
-IHdvbmRlciB3aHkgMHg2IHdvcmtzIG9uIEFtbG9naWMgU29Dcy4gQ291bGQgeW91IG9yIEx1a2Fz
-IGNvbXBhcmUgcGVyZm9ybWFuY2UNCmJldHdlZW4gdGhlIHNldHRpbmdzIG9mIDB4MSBhbmQgMHg2
-Pw0KDQpQaW5nLUtlDQoNCg==
+Brian Norris <briannorris@chromium.org> writes:
+
+> Hi,
+>
+> Thanks Pin-yen for most of the investigation here and for pushing the
+> patch. With some additional information though, I might suggest *not*
+> landing this patch at the moment. More details appended:
+>
+> On Sat, Jun 10, 2023 at 01:41:51AM +0800, Pin-yen Lin wrote:
+>> I realized that I might have over-simplified the background and the
+>> impact of this patch...
+>> 
+>> The short answer to the question is that the throughput improved from
+>> 100 mbps to 180 mbps. The test was run on ChromeOS's v5.15 kernel
+>> fork. More detailed test setting is mentioned in [1].
+>> 
+>> However, the throughput of the same test case on our v4.19 kernel is
+>> 320 mbps. That is, we observed a 320 mbps --> 100 mbps regression when
+>> we tried to update the kernel version. This patch is more like a
+>> mitigation of the regression. It improves the throughput, even though
+>> it is still not as good as the older kernel.
+>> 
+>> That being said, this patch does improve the throughput, so we think
+>> this patch can be landed into the mainline kernel.
+>> 
+>> Best regards,
+>> Pin-yen
+>> 
+>> [1]: https://lore.kernel.org/all/ZFvpJb9Dh0FCkLQA@google.com/
+>
+> I (we?) was optimistic this would be an improvement (or at least, no
+> worse) due to some of the reasoning at [1]. And, the work here is just a
+> single work item, queued repeatedly to the same unbound workqueue. So
+> conceptually, it shouldn't be much different than a kthread_worker,
+> except for scheduler details -- where again, we'd think this should be
+> an improvement, as the scheduler would now better track load for the
+> task (mwifiex RX) in question.
+>
+> But additional testing on other mwifiex-based systems (RK3399 + PCIE
+> 8997) showed the inverse: some throughput drops on similar benchmarks,
+> from 110 Mbps to 80 Mbps. (Frankly, both numbers are significantly below
+> where we might like...)
+>
+> Considering we still don't have a full explanation for all the
+> performance differences we've been seeing (on either test platform), and
+> that at least one of our platforms showed a (smaller) regression, I
+> think we might want to do more research before committing to this.
+
+Yeah, I agree and I'll drop this. This is a really weird problem, I hope
+you can get to the bottom of it.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
