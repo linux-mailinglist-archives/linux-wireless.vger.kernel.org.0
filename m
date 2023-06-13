@@ -2,110 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0590872EB04
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 20:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD83472EBE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 21:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231823AbjFMS3Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 14:29:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
+        id S239374AbjFMTYR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 15:24:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232924AbjFMS3O (ORCPT
+        with ESMTP id S229559AbjFMTYE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 14:29:14 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F099E1709
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 11:29:13 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1a694ac3238so1985170fac.3
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 11:29:13 -0700 (PDT)
+        Tue, 13 Jun 2023 15:24:04 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09B991BFB
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 12:24:02 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1b3c4c1fbd7so18516465ad.2
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 12:24:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686680953; x=1689272953;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=TPk4mgdBLNFYseP/hsh3OVeTLpGIYx4k3HWN7Myz56w=;
-        b=g/gHHMyndM5ru3FdjxSlLv/t2a6eX5pDNNTziA8Fr6JUjfuNG14MqrNesDYVR2NKnK
-         eFlEpK6ly/BfZfQnnsXeZG7HOgLOZEEwjrwABJsHZeHlBLyIY6aRdhcjTlMa9/aSJOUv
-         OsD9Jdm9Iduairc64X84FcWhnO+94U2XNpCVBInq4TCuqqGW5xze169sNSvc1cFE9YLd
-         JSpSSBVAU0Np6yKhzYJ6qkqMOoIasDa4f6+ggLAtP4CianENTQjECzDp50OucqiLdS5U
-         VXKO9sgWvov0L6lRgNRONduqYQyMQEW/1RImbvM01P3ylj/m76xDZMsgpwfPzYlJmjJD
-         Dmxg==
+        d=chromium.org; s=google; t=1686684241; x=1689276241;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JTjIPDpkQa3VuoP57lMJ7BntaNSVpd5s/6n5Z5BophI=;
+        b=BFk+KLo8AyFTwl75dvJrkMUiU5O0zBWVIuH3k1X/cMgHY+owCkN+GbwZQm98xJlt6d
+         Eg6pHt468GyNfzv2T3adVh2PhUhofAjkRdB2N2I1Nz2lYJwZtNtROyN6Whx4xrMUTxaE
+         bnPQigDrbnYNXENBT6muXhyfb6bwSDjoEZGWg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686680953; x=1689272953;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TPk4mgdBLNFYseP/hsh3OVeTLpGIYx4k3HWN7Myz56w=;
-        b=AiXqlaPT1iqwF9baFNLXsXs0I4lxPejkhNMSewzq9fAcsc6ZwADvHPEfJTYHsyeXxF
-         vh+ENLNMJk0NUdRwN5F7XOWoH4p/d0H8Rj7ekMYMQ6pjpE4MRThwB9luEeu+W4CQUvXk
-         8je1+20Y2zmE90PIdeu2RYygPJ6EUoe5naAGDZWxEft2zv1cE2Ussg8TK+bTizYhk+J1
-         V+9X3jnKFLibpQ8HokojXF1ogpr7Mx9bBUFoBYfSwgbcY2nTrELVNmmBwm3WBmH6I/Ie
-         MqnJTRY4EpfaS79UXSZsMu2MeNH1QHFWN8EmJ2our32Vs0J7Kec3AjWn7j1NaKETa0Jt
-         0m1Q==
-X-Gm-Message-State: AC+VfDy0LkN0xt9QsJMB9Z0xNFEIG3VwNapqTAUCF53itC3mGWM7cFzH
-        FFozFsc0A0ES7KzW6JJJTdg=
-X-Google-Smtp-Source: ACHHUZ671NJiBnQ90/50tMx2GPQFbXSlOxialvyRhpDT5X0Wx+Ze5ew/zhu3ogrg/9vbR2bX8/aPgA==
-X-Received: by 2002:a05:6870:5b2f:b0:1a6:98de:e458 with SMTP id ds47-20020a0568705b2f00b001a698dee458mr4284367oab.8.1686680953250;
-        Tue, 13 Jun 2023 11:29:13 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id t14-20020a4ad0ae000000b0054fd0b7af2bsm4343490oor.31.2023.06.13.11.29.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jun 2023 11:29:12 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <91f3ecc2-7ae4-b17d-acda-f3f7e4b48f6f@lwfinger.net>
-Date:   Tue, 13 Jun 2023 13:29:11 -0500
+        d=1e100.net; s=20221208; t=1686684241; x=1689276241;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JTjIPDpkQa3VuoP57lMJ7BntaNSVpd5s/6n5Z5BophI=;
+        b=GT79alFHSL3PnVuZWakyVUf0Fyzbk/QolieNztbIasvqO9u+2tb9bfrpshrL7Aqj8D
+         Xo/4SEpMy34RwuTrQnsPGRw8YYyzwpW8GtDbaB3DmW5OjmzzXYpLhopVS1Z/eTIT35Fu
+         mV1IzhJftiWrbdlaIAowXPiNhWsnD+ZbtjGn0R38nFNRx0oQOOOYDj7LrfevbL0gYaf4
+         dH3/xTDNWj1ED4RzMSgbbZCNwFxpVQd+MoI2+kflvOXLDoZjPEaauZvBGQkQfhWgZGdU
+         FxB7gaQK54ueXX2T/nzbe+Wurph2wO6umM5TIgCIRm+0vSmn36cHtqIpIesa6SK4GtyQ
+         71aA==
+X-Gm-Message-State: AC+VfDw8PRb71xL69IKhT4cGOUYr7rgyukOBYroLsHKAjqejwVOrw8PE
+        d0vBJtsuoAI4Iw2M05vHXFNBDg==
+X-Google-Smtp-Source: ACHHUZ5Xio21b+oMrhdUH1aEbO1e1KiOm+5dj7FNMCh/97l936Jqv0lrNd7Ra4B1IM3emNt/o72jiw==
+X-Received: by 2002:a17:902:e74c:b0:1b0:e0a:b7ab with SMTP id p12-20020a170902e74c00b001b00e0ab7abmr9998246plf.31.1686684241406;
+        Tue, 13 Jun 2023 12:24:01 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d15-20020a170902cecf00b001ab09f5ca61sm10631831plg.55.2023.06.13.12.24.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 12:24:00 -0700 (PDT)
+Date:   Tue, 13 Jun 2023 12:23:59 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Azeem Shaikh <azeemshaikh38@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, linux-hardening@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] net/mediatek: strlcpy withreturn
+Message-ID: <202306131223.F8F403D386@keescook>
+References: <20230613003458.3538812-1-azeemshaikh38@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: Linux mainline support for RTL8811AU/RTL8821AU
-To:     petter@technux.se, linux-wireless@vger.kernel.org
-Cc:     pkshih@realtek.com, morrownr@gmail.com, kernel@pengutronix.de,
-        kvalo@kernel.org, linux@ulli-kroll.de, petter.mabacker@esab.se,
-        s.hauer@pengutronix.de
-References: <20230613080907.328548-1-petter@technux.se>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20230613080907.328548-1-petter@technux.se>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230613003458.3538812-1-azeemshaikh38@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/13/23 03:09, petter@technux.se wrote:
-> Hi,
+On Tue, Jun 13, 2023 at 12:34:57AM +0000, Azeem Shaikh wrote:
+> strlcpy() reads the entire source buffer first.
+> This read may exceed the destination size limit.
+> This is both inefficient and can lead to linear read
+> overflows if a source string is not NUL-terminated [1].
+> In an effort to remove strlcpy() completely [2], replace
+> strlcpy() here with strscpy().
 > 
-> I'm investigating a wifi dongle (LM808) that is based on the RTL8811AU chipset.
+> Direct replacement is safe here since DEV_ASSIGN is only used by
+> TRACE macros and the return values are ignored.
 > 
-> $ lsusb
-> ..
-> Bus 003 Device 066: ID 0bda:a811 Realtek Semiconductor Corp. RTL8811AU 802.11a/b/g/n/ac WLAN Adapter
-> ..
+> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+> [2] https://github.com/KSPP/linux/issues/89
 > 
-> I cannot find any driver support in mainline for that chipset (8811cu/8821cu, seems to exists). Just curious if anyone knows if there are any ongoing efforts to get this driver included in mainline?
-> 
-> I can see that both:
-> 
-> https://www.lm-technologies.com/product/wifi-usb-adapter-433mbps-lm808/?template=driver
-> 
-> and
-> 
-> https://github.com/morrownr/8821au-20210708
-> 
-> exists for non-mainline support, so will play a bit with them. But for maintenance etc I'm interested to learn about possible mainline efforts within this area.
+> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-It seems that the RTW8821AE has never been built or released. If it had been, 
-then extending that driver to the 8821AU would be easy as there would be a file 
-rtw8821a.c that contained all the details of that chip. Without that, there is 
-little that anyone outside Realtek can do. The vendor driver, which is the one 
-in the link you posted, will likely work.
+Yup double-checked the users of the macros. Looks good to me.
 
-Larry
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
+-- 
+Kees Cook
