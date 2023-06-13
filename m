@@ -2,45 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5364572E48A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 15:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8520472E561
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 16:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239169AbjFMNrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 09:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49896 "EHLO
+        id S242564AbjFMOLG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 10:11:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240124AbjFMNrP (ORCPT
+        with ESMTP id S242863AbjFMOJr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 09:47:15 -0400
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6BD110DA
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 06:47:14 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1e2b:0:640:94b5:0])
-        by forward100b.mail.yandex.net (Yandex) with ESMTP id CEBC4600DE;
-        Tue, 13 Jun 2023 16:47:12 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wka7QGsDTW20-aokR6FWz;
-        Tue, 13 Jun 2023 16:47:12 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686664032;
-        bh=PUVPnEcSBpXHviFcoMikLWFZsHJISsWRrJCZqe/yfSw=;
-        h=Message-Id:Date:Cc:Subject:To:From;
-        b=tmAl7ygg3o0pw0fyHWwOFGsmL0+Ar+u+fYMqoAhw+2HMWR7tChRh6anttS3KEJC1I
-         uksEGL6kCiFo8C/TDfiPk+6t8Kev5xAEYE1dLo13tHB/aDo9b/YJmTVIC8x896/lSu
-         zuT2FH5wWIexJSYUyd5Q6XENxpTseod4/H/rh2Ac=
-Authentication-Results: mail-nwsmtp-smtp-production-main-59.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath9k: convert msecs to jiffies where needed
-Date:   Tue, 13 Jun 2023 16:46:55 +0300
-Message-Id: <20230613134655.248728-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.40.1
+        Tue, 13 Jun 2023 10:09:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A1AF1BDA
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 07:09:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D5C162CFD
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 14:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEECC433F0
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 14:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686665360;
+        bh=M37Sv73b8CvSrciyd7DmeQQ3VCJY4QyyCJDDEgG1ejQ=;
+        h=From:To:Subject:Date:From;
+        b=McV8OTQsdqMDMp0oTIfwGtwNctQNWYoe671iI6KGQSS3Vcl7jEDTq/sJWuc6NG4bF
+         G4y9NHp4at1h6cNcQ6J8hgkaaB+tTgtCqdGgI1q5E5UmB5LeDJuRR0dY1g++lB2gtF
+         GoOjBognz1aAcs6f2Be/Aqx7VrJ9+5a2DjtzAVISDbreskH8yQ53E2PjWMR9VQsME5
+         lCJKAmcZGnOaeowS6gA5MtcHUWVlYkruJKCqsft3hTlRjwfiNa1cVnEGSBGcwKSGvF
+         EpvRz6QPzMKqK6PAaIymOqeuL06b6Yq8uojvKj5U0GxwEnodaXJ3iG7pBwQm3qckxa
+         pU5VhrtI6FWMw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 0/4] wifi: drivers: fix remaining W=1 warnings
+Date:   Tue, 13 Jun 2023 17:09:14 +0300
+Message-Id: <20230613140918.389690-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,37 +50,25 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Since 'ieee80211_queue_delayed_work()' expects timeout in
-jiffies and not milliseconds, 'msecs_to_jiffies()' should
-be used in 'ath_restart_work()' and '__ath9k_flush()'.
+Here are the final fixes and workarounds I see with W=1. After this patchset my
+plan is to compile wireless driver patches with W=1 before applying them.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath9k/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Please review.
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index a4197c14f0a9..8311a45c5ea8 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -203,7 +203,7 @@ void ath_cancel_work(struct ath_softc *sc)
- void ath_restart_work(struct ath_softc *sc)
- {
- 	ieee80211_queue_delayed_work(sc->hw, &sc->hw_check_work,
--				     ATH_HW_CHECK_POLL_INT);
-+				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
- 
- 	if (AR_SREV_9340(sc->sc_ah) || AR_SREV_9330(sc->sc_ah))
- 		ieee80211_queue_delayed_work(sc->hw, &sc->hw_pll_work,
-@@ -2239,7 +2239,7 @@ void __ath9k_flush(struct ieee80211_hw *hw, u32 queues, bool drop,
- 	}
- 
- 	ieee80211_queue_delayed_work(hw, &sc->hw_check_work,
--				     ATH_HW_CHECK_POLL_INT);
-+				     msecs_to_jiffies(ATH_HW_CHECK_POLL_INT));
- }
- 
- static bool ath9k_tx_frames_pending(struct ieee80211_hw *hw)
+Kalle Valo (4):
+  wifi: brcmfmac: fix gnu_printf warnings
+  wifi: brcmsmac: fix gnu_printf warnings
+  wifi: hostap: fix stringop-truncations GCC warning
+  wifi: ray_cs: fix stringop-truncation GCC warning
+
+ .../net/wireless/broadcom/brcm80211/brcmfmac/tracepoint.h | 7 +++++++
+ .../brcm80211/brcmsmac/brcms_trace_brcmsmac_msg.h         | 8 ++++++++
+ drivers/net/wireless/intersil/hostap/hostap_ioctl.c       | 2 +-
+ drivers/net/wireless/legacy/ray_cs.c                      | 2 +-
+ 4 files changed, 17 insertions(+), 2 deletions(-)
+
+
+base-commit: cabb8b48e542e1401f6881c4f7d3bb82f723ee40
 -- 
-2.40.1
+2.30.2
 
