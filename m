@@ -2,122 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD38372D526
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 01:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA7572D674
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 02:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235728AbjFLXrX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 12 Jun 2023 19:47:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43642 "EHLO
+        id S237099AbjFMAeK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 12 Jun 2023 20:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjFLXrW (ORCPT
+        with ESMTP id S230445AbjFMAeI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 12 Jun 2023 19:47:22 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD211101
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 16:47:20 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-25bf6902882so940960a91.1
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Jun 2023 16:47:20 -0700 (PDT)
+        Mon, 12 Jun 2023 20:34:08 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B1D13E;
+        Mon, 12 Jun 2023 17:34:07 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-77b210292c5so32400339f.1;
+        Mon, 12 Jun 2023 17:34:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686613640; x=1689205640;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zWh9DZ7JNAtNpX17CUlzUgnxqEqVKUVt17wNyTVgk7U=;
-        b=mh62KYaIhX54gxKQBEA84fQptOqik2Nrlcs0XWMfo8rWSGUGdnyqQWnsXJpwxFUUmj
-         WPjJR9oIxKuFjlVPI6LGnxFwDZCh9sqIcfMswRUIqRMX7YhrUPH1qEYJnTtZGak9LkOR
-         1rbxXj4tPlQd8QLE14SDpXlB/EkstSaea7ZF8=
+        d=gmail.com; s=20221208; t=1686616447; x=1689208447;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ZyJW6d4bROLzUBlQENsOphZCVnHp3HjRNgKHqO3CTA=;
+        b=plyiZsTwLOCz5jJaWXoCQyBlO8UjThua51T0gwTk++Yy3YxMemPc9mBETyZL3KnoN5
+         ZtH7AYEQMHXhnxfxoAFdXlNGNfocRpOPZ0VJ7ksSDEJlfO/u1eAfNtgaT/woLXeXukf4
+         b1x541aR9H/w8R8wFxlWsscgmXNwYO/yo7+bxL1GnVla4Aw5HLLeYFZZBAwmTY3hqyR2
+         BZRf7PTHpa+Sc2uydd0YRAgsuTK9WX+GxPeS9gwP9jfpPKKPjJo58vFG1zWge6Yw6luX
+         sszMnumkqYDq7ED9Zhb0/RRVy4nXpBgKKDTPjjMgaoGQwebk4HHpuqLXC4J4EFJjNERA
+         IxGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686613640; x=1689205640;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zWh9DZ7JNAtNpX17CUlzUgnxqEqVKUVt17wNyTVgk7U=;
-        b=TBUI6nmh9T9RSy4/Nth76AXgBhC8mJ6lU8b4euEwb2fQvlK2dyeXMT9Iwqo5wbF/nY
-         zyKN1kGfKf9CNiLO7lsN1E5TshY19iO2GA0/nvqDfDzRBAh9mxsUz/sUaELIt0/jQQBd
-         7CFlCj8gI7llHP5EItwGdR3AfxHyU9E3XTX3Xpzrwj9XwjKHj/4LR3OaZoSQypw8Y+y9
-         ytG8A8lKpHX+3S+mTuGpxDD8w+3raiLCOa2Cl+i/bi8rNCcmfMx9LkwJCtqlMgZQAlDf
-         el660l0VeFzwpwV6EcMD8HMT1QLz6+dTSZTkeHbdHlRmswxeqjyfIxd/bbrWXEcKqckc
-         YBug==
-X-Gm-Message-State: AC+VfDxTfMIwuHR3nluf+a/l73Ghfh6s4I/pBMqYseEkUWgGBtBV+WUZ
-        ZwulLQOF/BmFkSu3mI2uysHxhw==
-X-Google-Smtp-Source: ACHHUZ6S3uXqC10URUIxLfvyUJkV3JjJEA+SksA7trdtqV0rSStSAgODHAYpPSMlLu95aA8eqvTtwQ==
-X-Received: by 2002:a17:90a:9109:b0:23f:9445:318e with SMTP id k9-20020a17090a910900b0023f9445318emr12274874pjo.3.1686613640044;
-        Mon, 12 Jun 2023 16:47:20 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:5666:8195:ab60:72b3])
-        by smtp.gmail.com with ESMTPSA id b12-20020a170902d88c00b001ac40488620sm8800152plz.92.2023.06.12.16.47.19
+        d=1e100.net; s=20221208; t=1686616447; x=1689208447;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5ZyJW6d4bROLzUBlQENsOphZCVnHp3HjRNgKHqO3CTA=;
+        b=U1ghphAO/KDjdWL9V/2r++ZzX0KuARUz6Y+9NvbdKUPUEmg6WjPtHS44Er6mnnlFAH
+         zcFzE2ARwq+EqCasIceWpV0cZygoHXvIHBJIbJcW/nFH6jgGrVNgj+Etv0U/DMbGHFRp
+         9RIa9ooC/hOjudHBZc9Q7HRuMiglmVUjni8fAVOM6JY7jEPEqH1lIDSaOFU+8iKJUHTL
+         S8rYZ5K9l8Ggsz/tsr3QHJknT8Jf8EDfOPi826aj+addOsJR+T9KBg31bhgGI407qIUL
+         SKdkVIUDO9ISBizXC0rieSxxaKBp+cN+70ajc7MpbQMGnAu5tQ+wLtx6CCQAHb2Le9yh
+         liMA==
+X-Gm-Message-State: AC+VfDzUMXJCmUAjVRCAL4Bbjj3jZ3cZhEMcCzZWf6L6AtWACYhGAwR0
+        XKD+on2RFF4AicW0vmm9YZw=
+X-Google-Smtp-Source: ACHHUZ5nWGpcSmeIrHIFjUJkjgZR4nOixtAXzLoekNMP0wOxE0qS/8tnIAMblPmXtXFL1R9IhTaEGA==
+X-Received: by 2002:a5e:c64d:0:b0:777:b464:6ff9 with SMTP id s13-20020a5ec64d000000b00777b4646ff9mr8858679ioo.21.1686616447193;
+        Mon, 12 Jun 2023 17:34:07 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id h14-20020a0566380f0e00b0041cea93e589sm3049909jas.152.2023.06.12.17.34.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 16:47:19 -0700 (PDT)
-Date:   Mon, 12 Jun 2023 16:47:17 -0700
-From:   Brian Norris <briannorris@chromium.org>
-To:     Pin-yen Lin <treapking@chromium.org>
-Cc:     Kalle Valo <kvalo@kernel.org>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi017@gmail.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: Replace RX workqueues with kthreads
-Message-ID: <ZIeuhU/vnoL1yWmQ@google.com>
-References: <20230609103651.313194-1-treapking@chromium.org>
- <87o7lohq9e.fsf@kernel.org>
- <CAEXTbpdDsoghsxbJqszx0OWWw1o9D8p9f_9-4OgOM-a-w7OzSA@mail.gmail.com>
+        Mon, 12 Jun 2023 17:34:06 -0700 (PDT)
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Subject: [PATCH] mac80211: Replace strlcpy with strscpy
+Date:   Tue, 13 Jun 2023 00:34:04 +0000
+Message-ID: <20230613003404.3538524-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEXTbpdDsoghsxbJqszx0OWWw1o9D8p9f_9-4OgOM-a-w7OzSA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
 
-Thanks Pin-yen for most of the investigation here and for pushing the
-patch. With some additional information though, I might suggest *not*
-landing this patch at the moment. More details appended:
+Direct replacement is safe here since LOCAL_ASSIGN is only used by
+TRACE macros and the return values are ignored.
 
-On Sat, Jun 10, 2023 at 01:41:51AM +0800, Pin-yen Lin wrote:
-> I realized that I might have over-simplified the background and the
-> impact of this patch...
-> 
-> The short answer to the question is that the throughput improved from
-> 100 mbps to 180 mbps. The test was run on ChromeOS's v5.15 kernel
-> fork. More detailed test setting is mentioned in [1].
-> 
-> However, the throughput of the same test case on our v4.19 kernel is
-> 320 mbps. That is, we observed a 320 mbps --> 100 mbps regression when
-> we tried to update the kernel version. This patch is more like a
-> mitigation of the regression. It improves the throughput, even though
-> it is still not as good as the older kernel.
-> 
-> That being said, this patch does improve the throughput, so we think
-> this patch can be landed into the mainline kernel.
-> 
-> Best regards,
-> Pin-yen
-> 
-> [1]: https://lore.kernel.org/all/ZFvpJb9Dh0FCkLQA@google.com/
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-I (we?) was optimistic this would be an improvement (or at least, no
-worse) due to some of the reasoning at [1]. And, the work here is just a
-single work item, queued repeatedly to the same unbound workqueue. So
-conceptually, it shouldn't be much different than a kthread_worker,
-except for scheduler details -- where again, we'd think this should be
-an improvement, as the scheduler would now better track load for the
-task (mwifiex RX) in question.
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+---
+ net/mac80211/trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-But additional testing on other mwifiex-based systems (RK3399 + PCIE
-8997) showed the inverse: some throughput drops on similar benchmarks,
-from 110 Mbps to 80 Mbps. (Frankly, both numbers are significantly below
-where we might like...)
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index db0d0132c58c..c51c6e3feac9 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -17,7 +17,7 @@
+ 
+ #define MAXNAME		32
+ #define LOCAL_ENTRY	__array(char, wiphy_name, 32)
+-#define LOCAL_ASSIGN	strlcpy(__entry->wiphy_name, wiphy_name(local->hw.wiphy), MAXNAME)
++#define LOCAL_ASSIGN	strscpy(__entry->wiphy_name, wiphy_name(local->hw.wiphy), MAXNAME)
+ #define LOCAL_PR_FMT	"%s"
+ #define LOCAL_PR_ARG	__entry->wiphy_name
+ 
+-- 
+2.41.0.162.gfafddb0af9-goog
 
-Considering we still don't have a full explanation for all the
-performance differences we've been seeing (on either test platform), and
-that at least one of our platforms showed a (smaller) regression, I
-think we might want to do more research before committing to this.
 
-Brian
