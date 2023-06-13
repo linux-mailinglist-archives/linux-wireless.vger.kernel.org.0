@@ -2,50 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BC1B72EA2A
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 19:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4831972EA9E
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Jun 2023 20:15:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231201AbjFMRoz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 13:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39862 "EHLO
+        id S232511AbjFMSOr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 14:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240139AbjFMRoy (ORCPT
+        with ESMTP id S232792AbjFMSOq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 13:44:54 -0400
-X-Greylist: delayed 398 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 13 Jun 2023 10:44:52 PDT
-Received: from mx4.wp.pl (mx1.wp.pl [212.77.101.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 976A7E1
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 10:44:52 -0700 (PDT)
-Received: (wp-smtpd smtp.wp.pl 16475 invoked from network); 13 Jun 2023 19:38:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1686677890; bh=tqrOnhUqBSSsn9DlIaYHlugnQjEi/zvdG1LzqC/nqdM=;
-          h=From:To:Cc:Subject;
-          b=ooUufiOF3S/gX2T/vLbzkCkzpOPK9R34asDzgcP8+K/oR+s87L0rWJcMzISXvwgmM
-           9iWdwoB9HNvQBQdFkfH6ZL/QAw8yt1NckAMrI+JuUyYj5IhObzoZKRAMhcuMBS5clJ
-           JkvOAQREaiGCoOP5Vp9SZdlscRi5EEyZlaL5YhZE=
-Received: from 89-64-14-253.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.14.253])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <wangdeming@inspur.com>; 13 Jun 2023 19:38:10 +0200
-Date:   Tue, 13 Jun 2023 19:38:11 +0200
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Deming Wang <wangdeming@inspur.com>
-Cc:     helmut.schaa@googlemail.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rt2x00: fix the typo in comments
-Message-ID: <20230613173811.GA305477@wp.pl>
-References: <20230612114612.1640-1-wangdeming@inspur.com>
+        Tue, 13 Jun 2023 14:14:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF44419A7;
+        Tue, 13 Jun 2023 11:14:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 843DC6395A;
+        Tue, 13 Jun 2023 18:14:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC10CC433D9;
+        Tue, 13 Jun 2023 18:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686680083;
+        bh=fjT4gpdjI8bzfc0kSPvWLMcKfBFEaXgHEzlFBmmWqkQ=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=YPBwCeRUs39kxlaLzdOB3U/bmTyHUsAgwUCs8NioF14TZY5ElTAYwBY3aLoc8t+wS
+         e7bjbenC0hl1zrZBBwEJynjtkv3y8YHI3Y0EL41PdFbkLqqmFNzGbNGIRl/VZnFsYI
+         CEwTLDbyKWuoN9nk3I/ejgmZ+2WowJN20sz99hVWF4I8TU1yLWxTHyDtznWvx7r7qp
+         Vri8t/fEYXoWjE2p8JoArbh5O2YE0NPTL2eCwWxwE7P/vGrX8992LrfTUUX5KaU5v4
+         52tJPG2/TK+wz8hZw12VOptpVSyRZhteeSItM9u2L0OhNiloXN3I+k9XVhutsfKh78
+         0Uq9DJwQX5BaA==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 64961BBEAD1; Tue, 13 Jun 2023 20:14:40 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@lists.linux.dev,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: Re: Closing down the wireless trees for a summer break?
+In-Reply-To: <87y1kncuh4.fsf@kernel.org>
+References: <87y1kncuh4.fsf@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 13 Jun 2023 20:14:40 +0200
+Message-ID: <871qifxm9b.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612114612.1640-1-wangdeming@inspur.com>
-X-WP-MailID: b0b96eb4450f14852bbf4387fc221b21
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [wVNl]                               
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,28 +58,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 07:46:12AM -0400, Deming Wang wrote:
-> Fix typo in the description of 'non-succesfull'.
-> 
-> Signed-off-by: Deming Wang <wangdeming@inspur.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-> ---
->  drivers/net/wireless/ralink/rt2x00/rt2x00link.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00link.c b/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-> index b052c96347d6..6cf7e7c997c2 100644
-> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00link.c
-> @@ -192,7 +192,7 @@ void rt2x00link_update_stats(struct rt2x00_dev *rt2x00dev,
->  		return;
->  
->  	/*
-> -	 * Frame was received successfully since non-succesfull
-> +	 * Frame was received successfully since non-successful
->  	 * frames would have been dropped by the hardware.
->  	 */
->  	qual->rx_success++;
-> -- 
-> 2.27.0
-> 
+Kalle Valo <kvalo@kernel.org> writes:
+
+> Me and Johannes are planning to take a longer break from upstream this
+> summer. To keep things simple my suggestion is that we would official
+> close wireless and wireless-next trees from June 23rd to August 14th
+> (approximately).
+>
+> During that time urgent fixes would need go directly to the net tree.
+> Patches can keep flowing to the wireless list but the the net
+> maintainers will follow the list and they'll just apply them to the
+> net tree directly.
+>
+> The plan here is that -next patches would have to wait for
+> wireless-next to open. Luckily the merge window for v6.6 most likely
+> opens beginning of September[1] so after our break we would have few
+> weeks to get -next patches ready for v6.6.
+>
+> And the v6.5 -next patches should be ready by Monday June 19th so that we
+> have enough time to get them into the tree before we close the trees.
+>
+> What do people think, would this work? This is the first time we are
+> doing this so we would like to hear any comments about this, both
+> negative and positive. You can also reply to me and Johannes privately,
+> if that's easier.
+
+I think this sounds reasonable, and I applaud the effort to take some
+time off during the summer :)
+
+One question that comes to mind is how would this work for patchwork?
+Would we keep using the wireless patchwork instance for the patches
+going to -net in that period, or will there be some other process for
+this? I realise the setup we have for ath9k is a bit special in this
+regard with the ack-on-list+delegation, so I'm obviously mostly
+interested in what to do about that... :)
+
+-Toke
