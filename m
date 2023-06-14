@@ -2,54 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BDB872F797
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 10:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A009472F7B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 10:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243162AbjFNIRT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 04:17:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48538 "EHLO
+        id S243126AbjFNIW1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 04:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243038AbjFNIRQ (ORCPT
+        with ESMTP id S231875AbjFNIW0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 04:17:16 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94F4199C;
-        Wed, 14 Jun 2023 01:17:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=hss47gyp6BYYMhFB7hAoae1QAy3auKS104enX9ZgrIY=;
-        t=1686730630; x=1687940230; b=MX5Q1OKNaxE0pbxo5ugU8AJumLk781/uUL6I1kbJzJdPBDi
-        jk12HTceTWGFIwu/CXwcmOY6wmZ9zz0rVXIpgUyN/svuQMlHtpcCl/+uRbfrueJg5xGjQT/RaX32k
-        4UhoIWHXVXGvInF5NRHgiK3Ys4IuKYQuczgGOpyc30nrDQ1vVT8ZfwkbvDA4jVCQ9FWgZH2l+haC2
-        er+4EjXg4XMPxwlMZGuLPM0asGs70+XuKnLEfujzVF6flZA/G2kQ58vLyN6rNJyzrQNY+OO1lCDjJ
-        Pa1lHfGLEut5F+N8R0d92pp16rcZyvvHjbrPIg9QxjUwZs3UbeUa9ZXXrROBziyA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1q9LgY-0060G9-2h;
-        Wed, 14 Jun 2023 10:16:59 +0200
-Message-ID: <058dd31ef48495f8641f5b66839aaea039af0f08.camel@sipsolutions.net>
-Subject: Re: [PATCH] b43legacy: Remove unneeded variable
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     wuyonggang001@208suo.com, Larry.Finger@lwfinger.net,
-        kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 14 Jun 2023 10:16:57 +0200
-In-Reply-To: <12c1079d6e73f8f62c33b8a53dff7ff4de0728dc.camel@sipsolutions.net>
-References: <20230614075250.29097-1-zhanglibing@cdjrlc.com>
-         <194e8e87fda5f02664fcfac3717458f2@208suo.com>
-         <12c1079d6e73f8f62c33b8a53dff7ff4de0728dc.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        Wed, 14 Jun 2023 04:22:26 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09740CA
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 01:22:23 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35E8LqtrE005312, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35E8LqtrE005312
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Wed, 14 Jun 2023 16:21:52 +0800
+Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 14 Jun 2023 16:22:10 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Wed, 14 Jun 2023 16:22:10 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 14 Jun 2023 16:22:10 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Kalle Valo" <kvalo@kernel.org>
+Subject: RE: [PATCH 3/3] [v6] wifi: rtw89: fix spelling typo of IQK debug messages
+Thread-Topic: [PATCH 3/3] [v6] wifi: rtw89: fix spelling typo of IQK debug
+ messages
+Thread-Index: AQHZnph8k+grYMg94EegHUdD+8T1qq+J9Pbg
+Date:   Wed, 14 Jun 2023 08:22:10 +0000
+Message-ID: <2df6ca14ec254119a79edbfd3648eef8@realtek.com>
+References: <20230614051116.20968-3-dmantipov@yandex.ru>
+ <20230614081555.91395-1-dmantipov@yandex.ru>
+ <20230614081555.91395-3-dmantipov@yandex.ru>
+In-Reply-To: <20230614081555.91395-3-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXMBS05.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,23 +72,22 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-06-14 at 10:02 +0200, Johannes Berg wrote:
-> On Wed, 2023-06-14 at 15:55 +0800, wuyonggang001@208suo.com wrote:
-> > Fix the following coccicheck warning:
-> >=20
-> > drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded=20
-> > variable: "count".
->=20
-> Hey, no. Please stop it already. This won't even _compile_. Just don't.
-> There's really not much value in cleaning up those coccicheck warnings
-> in the first place. You're just wasting everyone's time (including your
-> own).
 
-And BTW, I've just looked at all your other contributions to other areas
-of the kernel, and heard from others as well - not doing any better!
 
-I can only suggest that you stop all of your patch submissions and re-
-evaluate what you're even trying to do. And not just you personally, but
-all of the @208suo.com folks who popped up recently.
+> -----Original Message-----
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+> Sent: Wednesday, June 14, 2023 4:16 PM
+> To: Ping-Ke Shih <pkshih@realtek.com>
+> Cc: linux-wireless@vger.kernel.org; Kalle Valo <kvalo@kernel.org>; Dmitry Antipov <dmantipov@yandex.ru>
+> Subject: [PATCH 3/3] [v6] wifi: rtw89: fix spelling typo of IQK debug messages
+> 
+> Fix spelling typo of IQK debug messages.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-johannes
+It looks not so good to have the same subject and commit message, but this
+patch is just to correct typo, so ... 
+
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+
