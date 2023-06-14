@@ -2,53 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ABBA730018
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 15:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABC43730055
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 15:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245002AbjFNNaX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 09:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
+        id S245088AbjFNNq2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 09:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245020AbjFNNaV (ORCPT
+        with ESMTP id S245076AbjFNNq1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 09:30:21 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCCE91FF9;
-        Wed, 14 Jun 2023 06:30:18 -0700 (PDT)
-Received: from evilbit.green-communications.fr ([92.154.77.116]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis)
- id 1MDQqe-1qJuy03YJS-00ARru; Wed, 14 Jun 2023 15:29:58 +0200
-From:   Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Ilan Peer <ilan.peer@intel.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        Wed, 14 Jun 2023 09:46:27 -0400
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5545D2118;
+        Wed, 14 Jun 2023 06:46:08 -0700 (PDT)
+Received: by mail-io1-xd34.google.com with SMTP id ca18e2360f4ac-777a78739ccso374236139f.3;
+        Wed, 14 Jun 2023 06:46:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686750367; x=1689342367;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zQY5/Z9V92asgUBqQZpuZOlLV7pXFKrCuP0E34yfs0w=;
+        b=V4ahN5BL99HDOMgXDQGo0/tyx6nm9sWOfshsWhVthyRTSNZrfjK4M658jtS2RiHGus
+         pIZSdvbKF8hDIHAI2cKQYbUM/Fav7dOixRf6F65xHPWd9B/egU92Qve8NHblaGLxlgLN
+         7RxtK3F9/R2+uvf66wGBHpfzUTTESC3mj0Yhm5stSPgYhoiMSxm0NTEwruyezQ56xjWV
+         EThigOax2hhtA8OzSNU3F/oZ0kcj1n+7IbNsqo+yTz2zC3kxO3jHegCSSI6T1fVF9U4M
+         5bwzbHJI+45CBp+cNesnSPfEjWwKoFuhIY1S2CMD3SF45btXTAkAgwPkH5rQcMDHRQd0
+         Y4rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686750367; x=1689342367;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zQY5/Z9V92asgUBqQZpuZOlLV7pXFKrCuP0E34yfs0w=;
+        b=hclyDKQE4yKXQH4SgOpZUMegqhY/r4WfKd+hCevgUfAulp3SwKAxSwW63rcCXdv3E2
+         9GhpSgiRsjSwRtgujv+RUmLNEq0fzj6xNE20Z9xKDIO6EnMOk9LnvRGg8eC2ezzacAA+
+         ks2PRFsIOfpjsGEEisFw97uzk6NKfVu8SdPJi8mc+8w6ZPqAf3pbQsoG3xoOmnNeAnup
+         NXmZQ6bmsVQ4BbkzfFF5PJgvr4cdPLyWhM9dLAIRzmAX7tAJZiO1iW4YiGABeF8D5UDN
+         Z3X4u1mqmKy/D3LuYc5mIH893jH6Ov6o84gs+Zm4Frnp61sgzvvtl4lpwMG0A0ZPkZWD
+         kSYg==
+X-Gm-Message-State: AC+VfDxsXJhZXutqtqeCEwIcnDh8MxhmYY1rtQaC5uNcGCe6Gm/x7nH6
+        WsCPOA7KgLn8HPhMIfMbQf8=
+X-Google-Smtp-Source: ACHHUZ6jTKwwclu9yoql3y/RRuy36VHdIgQDbVqS33PxEzmA14MKgVLgpgLm9ZC+sGbXkm4sxDv11w==
+X-Received: by 2002:a05:6e02:108:b0:33f:a995:31ab with SMTP id t8-20020a056e02010800b0033fa99531abmr13648127ilm.11.1686750366930;
+        Wed, 14 Jun 2023 06:46:06 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id cu13-20020a05663848cd00b0040bb600eb81sm5021586jab.149.2023.06.14.06.46.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 06:46:06 -0700 (PDT)
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: Remove "Missing iftype sband data/EHT cap" spam
-Date:   Wed, 14 Jun 2023 15:26:48 +0200
-Message-Id: <20230614132648.28995-1-nicolas.cavallari@green-communications.fr>
-X-Mailer: git-send-email 2.40.1
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH v2] wifi: cfg80211: replace strlcpy() with strlscpy()
+Date:   Wed, 14 Jun 2023 13:45:52 +0000
+Message-ID: <20230614134552.2108471-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:p5lfg+3UXicIZGYb0JHBflhBj7jnvcIRt9qFuBHqNbyMdrCOc2e
- AY5V5fkpw+FrSQwtCzbsyHwZw6KZe+FwpLyj0M9Si4vhJkS+OK+cxqg4msBOVR1UQmAbh08
- 67myYFo30cXM0zBRZQI/NeoydyJAUiGzEiIEPhQG1rxq+f6n3/uSLYAastEy7utVuY/S8ew
- Pc2DM4R5u7mQetJkpcSFQ==
-UI-OutboundReport: notjunk:1;M01:P0:3IuVxyuHRuI=;tkE++l+Jmdeqi4kp51P6qk9MIRK
- WzSJcETRA8pw79iwFGrvBdV1LlyK/i17+3e2ryao3Kwv4akqfc+Q4/AELW7E0C8Do/CyG3TTX
- C+rY3ztWJrEhpg5iS1cf3z5/JP4r2foy9qAzypp6w5p+tnY/XSzuDKZa4FxM5jIbF3fA5WV+E
- smpUfP5EYd7r4pKs0800NaQobSDWjzs6L0KNJF/RkOAo4MaiDHFKDQA9u7/heBY9Cx8MFjRq1
- EqnC+wOSjeEbsA51bw9/DsN8klHJab7xPOmR0rZA0rf0y+dvrKQkYWDXLwtB2LU9RnkbWkLT7
- Vz7g5DpWOXA9jM14F8PGsIJY4/5Y48iDqZWo4B6baLXNAQVUkjz0qudOOSsy/g4ZUY7GJw+kD
- +a68zkLk04MtMNuQCXtR5KYdC+A+UfEyQhmwKIq2nxsv7yTNiRJxhplZ3Ppsq2VbW2Js6yZoS
- uzCbBqaSvApwmLMag0mpusr4KodSHutAc+XcUhKRXwV0MclEAxv6dVWMpDbAx4mf/8PntwNhb
- KKfUw1q/XnKz3dAZ9pezO5ZnNbcvQtf2fKJpHuKnJJYhijUm7wx4DCvv91Zo16gYq/FbSrFa3
- AdRT9aygAr36WMNbmHBklq+otL1wXDrbxvmgjyPbPwz+FUMQfL92PtkBAtVcpo1bG9jbip9dy
- sFTkOgmMqTbsV8GHRvWJYVhd+M+sUtJUoXKHdOJ6Vg==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,39 +75,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In mesh mode, ieee80211_chandef_he_6ghz_oper() is called by
-mesh_matches_local() for every received mesh beacon.
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
 
-On a 6 GHz mesh of a HE-only phy, this spams that the hardware does not
-have EHT capabilities, even if the received mesh beacon does not have an
-EHT element.
+Direct replacement is safe here since WIPHY_ASSIGN is only used by
+TRACE macros and the return values are ignored.
 
-Unlike HE, not supporting EHT in the 6 GHz band is not an error so do
-not print anything in this case.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-Fixes: 5dca295dd767 ("mac80211: Add initial support for EHT and 320 MHz channels")
-
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
 ---
- net/mac80211/util.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh38@gmail.com/
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 3bd07a0a782f..325a1e107240 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3801,10 +3801,8 @@ bool ieee80211_chandef_he_6ghz_oper(struct ieee80211_sub_if_data *sdata,
- 	}
+Changes from v1 - updated patch title.
+
+ net/wireless/trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 716a1fa70069..a00da3ebfed5 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -22,7 +22,7 @@
  
- 	eht_cap = ieee80211_get_eht_iftype_cap(sband, iftype);
--	if (!eht_cap) {
--		sdata_info(sdata, "Missing iftype sband data/EHT cap");
-+	if (!eht_cap)
- 		eht_oper = NULL;
--	}
- 
- 	he_6ghz_oper = ieee80211_he_6ghz_oper(he_oper);
+ #define MAXNAME		32
+ #define WIPHY_ENTRY	__array(char, wiphy_name, 32)
+-#define WIPHY_ASSIGN	strlcpy(__entry->wiphy_name, wiphy_name(wiphy), MAXNAME)
++#define WIPHY_ASSIGN	strscpy(__entry->wiphy_name, wiphy_name(wiphy), MAXNAME)
+ #define WIPHY_PR_FMT	"%s"
+ #define WIPHY_PR_ARG	__entry->wiphy_name
  
 -- 
-2.40.1
+2.41.0.162.gfafddb0af9-goog
+
 
