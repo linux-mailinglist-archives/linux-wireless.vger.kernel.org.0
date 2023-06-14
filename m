@@ -2,141 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD70972F497
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 08:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C9072F4C6
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 08:28:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243010AbjFNGTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 02:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
+        id S242677AbjFNG2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 02:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242654AbjFNGSt (ORCPT
+        with ESMTP id S234691AbjFNG2c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 02:18:49 -0400
-Received: from forward101c.mail.yandex.net (forward101c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7B21739
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 23:18:48 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:440b:0:640:fa3a:0])
-        by forward101c.mail.yandex.net (Yandex) with ESMTP id DBDA8600DC;
-        Wed, 14 Jun 2023 09:18:46 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ZIU6oK2DVa60-cVfY5Q7M;
-        Wed, 14 Jun 2023 09:18:46 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686723526;
-        bh=UO6cBaVlAhrhVAeqWV4LJGoKhOtjuy4yV2frEdteu6o=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=v65qefVTIyvZv7y6bqrwE38AuSq8A9hStp0/xqym7W+ZyQhDxsF2qgKdBcrtmR6Ep
-         rmVqwhDnyPbeTUgsPfkxrGhwjxuT3pCXgLa2nnRVgD0OyVXB9U/FMntB+xZezzMV3A
-         TPDmQxmVZDjMIU8/T2Y4VqylJtPfEbRASOPWLOak=
-Authentication-Results: mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] [v3] wifi: rtlwifi: cleanup USB interface
-Date:   Wed, 14 Jun 2023 09:18:32 +0300
-Message-Id: <20230614061832.40882-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230614061832.40882-1-dmantipov@yandex.ru>
-References: <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru>
- <20230614061832.40882-1-dmantipov@yandex.ru>
+        Wed, 14 Jun 2023 02:28:32 -0400
+Received: from mail.208.org (unknown [183.242.55.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B92199
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 23:28:30 -0700 (PDT)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTP id 4QgwV41cNtzBQgpD
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 14:28:28 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+        content-transfer-encoding:content-type:message-id:user-agent
+        :references:in-reply-to:subject:to:from:date:mime-version; s=
+        dkim; t=1686724108; x=1689316109; bh=uzV5IRMvn+xjooRI4ST/VUkNmJE
+        0mM4D/yBYv59E2J4=; b=OEMPUrdH+ElMTwD2vHZWY4u1D16Vyz9lew1NmE97VQT
+        BPrKK3SeywTLBuWEFUijFPcs/5tFhE8gck3rt/3FbWXIXQ/inKkb8IdcaDDhTBJZ
+        UVl5iTacfGd7dMGPjtRm5avZWcMIhUOa3k7VO9Y9ibjhn7irMo1sbShaQZS63Ii6
+        vTWQ1TI5dPaua4b3JA/p4rHUDyPVzMFekEqu4t9thOtNrlii9i2xbNVf1B9Osl4y
+        AkWdQLxH3lRXkbLYpciy+EEFp28oNYkYLuq8TSO0sIYGq5OkULtJH35F4dJkMSGe
+        G6zkgkRxf5aWuIlCWyWF7FpsBEkTVU9sltgtlipk8FQ==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id I5-MmUHcWlR0 for <linux-wireless@vger.kernel.org>;
+        Wed, 14 Jun 2023 14:28:28 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTPSA id 4QgwV36l4GzBQgpC;
+        Wed, 14 Jun 2023 14:28:27 +0800 (CST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Date:   Wed, 14 Jun 2023 14:28:27 +0800
+From:   xuanzhenggang001@208suo.com
+To:     pkshih@realtek.com, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wifi: rtw89: Remove unneeded variable
+In-Reply-To: <a4bd77fc102a60ebac4e036842015eac@208suo.com>
+References: <20230610131734.21134-1-denghuilong@cdjrlc.com>
+ <a4bd77fc102a60ebac4e036842015eac@208suo.com>
+User-Agent: Roundcube Webmail
+Message-ID: <bef94b1701cd3a9718dff8aff1f4e7f4@208suo.com>
+X-Sender: xuanzhenggang001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Drop unused '_usb_writen_sync()' and relevant pointer
-from 'struct rtl_io', handle possible write error in
-'_usb_write_async()', adjust related code.
+Fix the following coccicheck warning:
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+drivers/net/wireless/realtek/rtw89/pci.c:239:5-8: Unneeded variable: 
+"cnt".
+
+Signed-off-by: Zhenggang Xuan <xuanzhenggang001@208suo.com>
 ---
-v3: readjust to new series and keep pr_{info,err}() things (Kalle Valo)
----
- drivers/net/wireless/realtek/rtlwifi/usb.c  | 31 ++++-----------------
- drivers/net/wireless/realtek/rtlwifi/wifi.h |  2 --
- 2 files changed, 6 insertions(+), 27 deletions(-)
+  drivers/net/wireless/realtek/rtw89/pci.c | 5 ++---
+  1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 96207b237bf0..30bf2775a335 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -164,13 +164,17 @@ static void _usb_write_async(struct usb_device *udev, u32 addr, u32 val,
- 	u16 wvalue;
- 	u16 index;
- 	__le32 data;
-+	int ret;
- 
- 	request = REALTEK_USB_VENQT_CMD_REQ;
- 	index = REALTEK_USB_VENQT_CMD_IDX; /* n/a */
- 	wvalue = (u16)(addr&0x0000ffff);
- 	data = cpu_to_le32(val);
--	_usbctrl_vendorreq_async_write(udev, request, wvalue, index, &data,
--				       len);
-+
-+	ret = _usbctrl_vendorreq_async_write(udev, request, wvalue,
-+					     index, &data, len);
-+	if (ret < 0)
-+		dev_err(&udev->dev, "error %d writing at 0x%x\n", ret, addr);
- }
- 
- static void _usb_write8_async(struct rtl_priv *rtlpriv, u32 addr, u8 val)
-@@ -194,28 +198,6 @@ static void _usb_write32_async(struct rtl_priv *rtlpriv, u32 addr, u32 val)
- 	_usb_write_async(to_usb_device(dev), addr, val, 4);
- }
- 
--static void _usb_writen_sync(struct rtl_priv *rtlpriv, u32 addr, void *data,
--			     u16 len)
--{
--	struct device *dev = rtlpriv->io.dev;
--	struct usb_device *udev = to_usb_device(dev);
--	u8 request = REALTEK_USB_VENQT_CMD_REQ;
--	u8 reqtype =  REALTEK_USB_VENQT_WRITE;
--	u16 wvalue;
--	u16 index = REALTEK_USB_VENQT_CMD_IDX;
--	int pipe = usb_sndctrlpipe(udev, 0); /* write_out */
--	u8 *buffer;
--
--	wvalue = (u16)(addr & 0x0000ffff);
--	buffer = kmemdup(data, len, GFP_ATOMIC);
--	if (!buffer)
--		return;
--	usb_control_msg(udev, pipe, request, reqtype, wvalue,
--			index, buffer, len, 50);
--
--	kfree(buffer);
--}
--
- static void _rtl_usb_io_handler_init(struct device *dev,
- 				     struct ieee80211_hw *hw)
- {
-@@ -229,7 +211,6 @@ static void _rtl_usb_io_handler_init(struct device *dev,
- 	rtlpriv->io.read8_sync		= _usb_read8_sync;
- 	rtlpriv->io.read16_sync		= _usb_read16_sync;
- 	rtlpriv->io.read32_sync		= _usb_read32_sync;
--	rtlpriv->io.writen_sync		= _usb_writen_sync;
- }
- 
- static void _rtl_usb_io_handler_release(struct ieee80211_hw *hw)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 5b4979771dbf..2e7e04f91279 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1457,8 +1457,6 @@ struct rtl_io {
- 	void (*write8_async)(struct rtl_priv *rtlpriv, u32 addr, u8 val);
- 	void (*write16_async)(struct rtl_priv *rtlpriv, u32 addr, u16 val);
- 	void (*write32_async)(struct rtl_priv *rtlpriv, u32 addr, u32 val);
--	void (*writen_sync)(struct rtl_priv *rtlpriv, u32 addr, void *buf,
--			    u16 len);
- 
- 	u8 (*read8_sync)(struct rtl_priv *rtlpriv, u32 addr);
- 	u16 (*read16_sync)(struct rtl_priv *rtlpriv, u32 addr);
--- 
-2.40.1
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c 
+b/drivers/net/wireless/realtek/rtw89/pci.c
+index 9402f1a0caea..591b7b9a6eca 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -236,7 +236,6 @@ static u32 rtw89_pci_rxbd_deliver_skbs(struct 
+rtw89_dev *rtwdev,
+      struct sk_buff *skb;
+      u32 rxinfo_size = sizeof(struct rtw89_pci_rxbd_info);
+      u32 offset;
+-    u32 cnt = 1;
+      bool fs, ls;
+      int ret;
 
+@@ -297,7 +296,7 @@ static u32 rtw89_pci_rxbd_deliver_skbs(struct 
+rtw89_dev *rtwdev,
+          desc_info->ready = false;
+      }
+
+-    return cnt;
++    return 1;
+
+  err_sync_device:
+      rtw89_pci_sync_skb_for_device(rtwdev, skb);
+@@ -308,7 +307,7 @@ static u32 rtw89_pci_rxbd_deliver_skbs(struct 
+rtw89_dev *rtwdev,
+      rx_ring->diliver_skb = NULL;
+      desc_info->ready = false;
+
+-    return cnt;
++    return 1;
+  }
+
+  static void rtw89_pci_rxbd_deliver(struct rtw89_dev *rtwdev,
