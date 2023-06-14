@@ -2,78 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 394D6730231
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 16:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D00CA73027B
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 16:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244549AbjFNOrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 10:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34978 "EHLO
+        id S245394AbjFNOze (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 10:55:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243918AbjFNOrM (ORCPT
+        with ESMTP id S244810AbjFNOzb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 10:47:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A845107
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 07:47:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4B84636F6
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 14:47:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3FFC433CB
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 14:47:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686754030;
-        bh=TBMehHk6esWKTvB9WJckmGaUwFBGSOmjgnWwa452Dww=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=aKqXqWJuDP5kYtCu0ZLUe0GLSkILyQqVr1V1zPR+fT9yDswgjTpKqSiKQHbLmpPM1
-         mIgy/ax2oVgmLd2EQFIRt9jZw3Dif2S17BD6bK5W8BuTH+2ZaDYnM9YQqxC2XW4BW/
-         /kiwy9CYow7nf38+g5Y3szBcomuSwHvyQbNeGt/NDJVR1oNih0HcAeJUbBSMmssMuW
-         kM1tj9FD27t45n7hEulaYMVL90ZCTyqIdm67jfzpzWPgE0v3Tot2xXxU4qyozmQj+G
-         K+fJycONRl0fk7xhCgTOy6vaJqLBc9/JBSIl2OOBVim/nGZEiip3KnHJWWJFeKH0Cn
-         kxsEx5OCoDk3A==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 3/3] MAINTAINERS: ath11k: add wiki and bugreport page
-Date:   Wed, 14 Jun 2023 17:47:04 +0300
-Message-Id: <20230614144704.505553-3-kvalo@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230614144704.505553-1-kvalo@kernel.org>
-References: <20230614144704.505553-1-kvalo@kernel.org>
+        Wed, 14 Jun 2023 10:55:31 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1762D1BF9;
+        Wed, 14 Jun 2023 07:55:27 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3f8cc042ea9so6885355e9.2;
+        Wed, 14 Jun 2023 07:55:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686754525; x=1689346525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T4N1c6zVQK/GqEbZwTQjJCqHfXHnX5xa7l1nDf0Hm1o=;
+        b=XUhpmQmpGLIkkPyyztg9FS6mkJm/S+i1/rxI0FinKgy5fImau9FTl8c5yHMWMGCrRP
+         Oa5Gq46hVL+JosJ6mBsQQiKy6sKfvVYNwkj3xDmO2hmqY0a3zQYT907/Qdf7aJKpZqnS
+         M+ur12nvDU9IGaTsYSvAYKVzerQtm9Co/cW7f6uwqevQIdukkrv63+3rkIWKx79ZVQD5
+         C96FAFTWVc+Dkcl+yl2k5Wo43luOAV/uMTfuBRcjAUNw3uU4gEhvRnuVeMZh/BJYnx1K
+         s0Tg5YsK/R2VJPnYtId87WqPHj/MV5oiw0oXFhMFjlJ3ApVgbDKmQPx3F2N2uT4gZORQ
+         llvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686754525; x=1689346525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T4N1c6zVQK/GqEbZwTQjJCqHfXHnX5xa7l1nDf0Hm1o=;
+        b=K0Oa8Ax+X3Y7vA98GE2Nwotph6JbBAzPtFnsp/wD9yg9Kyf81//o8vWExZUw7sY3me
+         9cXzS7qokKs2dhssOLk19Z/xpfsgqnlAS2PwmC4h1j4V4G32g9Obqtnr+hPyDZ5soO7H
+         Put/2sId0II82kKIt5AMPJmzCh0/IuATC4GNjlL6Vr2LnicuO64gJVMvQlMM65TcO640
+         PxrSV3BrtjsC4yVKEM2FupTFNwXqh6s8gxUwX+nftuOlXdHSun+pt5HR9xPqYcuvy13i
+         aCpdLsZNDeYlQJbWCPE+Jw0TRduZeL7o+f84mnJXlyDcNVzX0AkvuNkECaqmScrY8QP/
+         CRsQ==
+X-Gm-Message-State: AC+VfDwC5zEeasi/KLb1nlOdWS5Rj/CvT4bqngvkPH2mq1D/4htGYH8t
+        cYRSlhESj/kfoVLCphX0BhWuBCiLGBHI70auHmI=
+X-Google-Smtp-Source: ACHHUZ4msgwE+q6HFYQwwH4Mk0z8/+q5/cKdOb2qnWR4s+MB1DC7r49BI4Ozw43XZkMTuGJsmBD2YFfwWrfuLaKzu8U=
+X-Received: by 2002:a5d:6949:0:b0:311:101f:6c17 with SMTP id
+ r9-20020a5d6949000000b00311101f6c17mr690308wrw.2.1686754525211; Wed, 14 Jun
+ 2023 07:55:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230614134956.2109252-1-azeemshaikh38@gmail.com> <874jnaf7fv.fsf@kernel.org>
+In-Reply-To: <874jnaf7fv.fsf@kernel.org>
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+Date:   Wed, 14 Jun 2023 10:55:13 -0400
+Message-ID: <CADmuW3WEUgnpGXg=ajpRvwON6mFLQD9cPKnhsg35CcNqwcywxA@mail.gmail.com>
+Subject: Re: [PATCH v3] wifi: cfg80211: replace strlcpy() with strscpy()
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath11k has a wiki and a separate page about reporting bugs, add those so
-hopefully people find them easier.
+On Wed, Jun 14, 2023 at 10:24=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrot=
+e:
+>
+> Azeem Shaikh <azeemshaikh38@gmail.com> writes:
+>
+> > strlcpy() reads the entire source buffer first.
+> > This read may exceed the destination size limit.
+> > This is both inefficient and can lead to linear read
+> > overflows if a source string is not NUL-terminated [1].
+> > In an effort to remove strlcpy() completely [2], replace
+> > strlcpy() here with strscpy().
+> >
+> > Direct replacement is safe here since WIPHY_ASSIGN is only used by
+> > TRACE macros and the return values are ignored.
+> >
+> > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strl=
+cpy
+> > [2] https://github.com/KSPP/linux/issues/89
+> >
+> > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+> > ---
+> > v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh38@=
+gmail.com/
+> > v2: https://lore.kernel.org/all/20230614134552.2108471-1-azeemshaikh38@=
+gmail.com/
+>
+> In the change log (after the "---" line) you should also describe what
+> changes you made, more info in the wiki below. In this case it's clear
+> as the patch is simple but please keep this in mind for future patches.
+>
+> No need to resend because of this.
+>
 
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks Kalle. I did have the below line in my changelog. For future
+patches, do you mean that changelog descriptions need to be more
+specific than this? For example - updated title from "x" -> "y"?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ddeae82230c6..ac365fc4ea6c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17362,6 +17362,8 @@ QUALCOMM ATHEROS ATH11K WIRELESS DRIVER
- M:	Kalle Valo <kvalo@kernel.org>
- L:	ath11k@lists.infradead.org
- S:	Supported
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath11k
-+B:	https://wireless.wiki.kernel.org/en/users/Drivers/ath11k/bugreport
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
- F:	Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
- F:	drivers/net/wireless/ath/ath11k/
--- 
-2.30.2
-
+> Changes from v1 and v2 - updated patch title.
