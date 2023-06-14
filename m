@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1187F72F998
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5382972F9B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244150AbjFNJp2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 05:45:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45750 "EHLO
+        id S244285AbjFNJp5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 05:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244327AbjFNJow (ORCPT
+        with ESMTP id S244329AbjFNJow (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Wed, 14 Jun 2023 05:44:52 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E8D294B
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8682718
         for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 02:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1686735838; x=1718271838;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+AKH+sItKrSY4tD4VKmzffujsEhzQBK5iCUX41dIp88=;
-  b=mAZhHyzwSmF1OlcDelflx/EVR/IbSCY9SWaWndSC4d0B1u0pO5pbkyzk
-   Whbf0vTNOypOUjn0+TxEhYoJ6g++H25joHAbYPIxo28j3GrgwH8ZS+edZ
-   uZ4V2n+448a+TG9FRGokOhw10NyJ4gHa32bsELH+JYCe7NifSo39G969c
-   gzytHW0e0xOqxa46JlBv0KW3/5TJGja2l8jIPnCZT6VbZp4l/8txMfZYt
-   6z2m8XS9TkDo/cD4BaClwiBSFth/ckF4OybIUc/nFBEnXwf62pqswSCbF
-   sEc2hcSHYIaYyEr5CiQtNZbQbjDJyHyqc1mIVSX2oVfB1Zoo0SKnz6HMy
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049912"
+  bh=nhvN+EHxnhNwPjf53yuSu39kH5ShuTGUixrptlcxMuA=;
+  b=Sl1PO//jCbvmWmes2dxXKjnMBVcggUIwrHM+QKVOg9TmgWnqBOan4GxK
+   hVdn4I5KUhSNlPyygVAwH5R8szn/iu+UbvpufdILyPVufvhSHj1wsO0qe
+   b2DcrTNeqQRxAa0b2J8Uu7IcbHGyhO5XuhULPfdgiymIdOLCcV4pE0M+E
+   sCckT5uFRb9tS0im4Un3jvxW8royf7+NC/Tb4iNtcDTvo01Bj/bR7n8Lc
+   rPQtj4lRSP4CGgeo3dHXBmqywTR74xeTauvngn1G+F4XuFkx05Ugxpvx7
+   LR3qvVVyJQTAjVFosUEHe817O5SEYdnedH+ZvXKAtrN4H6j2T56CbZqcW
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049920"
 X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
-   d="scan'208";a="361049912"
+   d="scan'208";a="361049920"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:33 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989905"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989913"
 X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
-   d="scan'208";a="711989905"
+   d="scan'208";a="711989913"
 Received: from basharil-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.203.45])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:31 -0700
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:33 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 17/20] wifi: iwlwifi: mvm: track u-APSD misbehaving AP by AP address
-Date:   Wed, 14 Jun 2023 12:41:34 +0300
-Message-Id: <20230614123447.b6a4f7edd10c.Ie5a8029ed686b9441620ba06596d430432f65559@changeid>
+Subject: [PATCH 18/20] wifi: iwlwifi: mvm: Validate tid is in valid range before using it
+Date:   Wed, 14 Jun 2023 12:41:35 +0300
+Message-Id: <20230614123447.cea75e1f57e7.I03bc0a81d2c1bdbf4784c12c4c62b8538892ccba@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230614094137.379897-1-gregory.greenman@intel.com>
 References: <20230614094137.379897-1-gregory.greenman@intel.com>
@@ -63,130 +63,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-If the AP is an AP MLD, then we shouldn't track just the BSSID
-but the MLD address. Just generally use ap_addr since it has
-the BSSID in the non-MLD case.
+Validate tid is less then MAX TID when it is used to access
+corresponding arrays.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  6 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/power.c    | 35 ++++++++++++-------
- 3 files changed, 26 insertions(+), 17 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 10 +++++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  9 ++++++---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-index 762bce70e262..92c325ff3e88 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index b38b24246675..542c192698a4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
 @@ -1,6 +1,6 @@
  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
  /*
-- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
+- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
 + * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
   * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
   * Copyright (C) 2016-2017 Intel Deutschland GmbH
   */
-@@ -554,7 +554,7 @@ static ssize_t iwl_dbgfs_uapsd_misbehaving_read(struct file *file,
- 	char buf[20];
- 	int len;
+@@ -213,8 +213,12 @@ static void iwl_mvm_rx_handle_tcm(struct iwl_mvm *mvm,
+ 	};
+ 	u16 thr;
  
--	len = sprintf(buf, "%pM\n", mvmvif->uapsd_misbehaving_bssid);
-+	len = sprintf(buf, "%pM\n", mvmvif->uapsd_misbehaving_ap_addr);
- 	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
- }
- 
-@@ -567,7 +567,7 @@ static ssize_t iwl_dbgfs_uapsd_misbehaving_write(struct ieee80211_vif *vif,
- 	bool ret;
- 
- 	mutex_lock(&mvm->mutex);
--	ret = mac_pton(buf, mvmvif->uapsd_misbehaving_bssid);
-+	ret = mac_pton(buf, mvmvif->uapsd_misbehaving_ap_addr);
- 	mutex_unlock(&mvm->mutex);
- 
- 	return ret ? count : -EINVAL;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 3be67ec5cd4b..c1430e707f8f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -419,7 +419,7 @@ struct iwl_mvm_vif {
- #endif
- 
- 	/* FW identified misbehaving AP */
--	u8 uapsd_misbehaving_bssid[ETH_ALEN];
-+	u8 uapsd_misbehaving_ap_addr[ETH_ALEN] __aligned(2);
- 	struct delayed_work uapsd_nonagg_detected_wk;
- 
- 	bool csa_countdown;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-index 19839cc44eb3..34d4b7a94d82 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2019, 2021 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2019, 2021-2023 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-  */
-@@ -237,8 +237,8 @@ static bool iwl_mvm_power_allow_uapsd(struct iwl_mvm *mvm,
- {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 
--	if (!memcmp(mvmvif->uapsd_misbehaving_bssid, vif->bss_conf.bssid,
--		    ETH_ALEN))
-+	if (ether_addr_equal(mvmvif->uapsd_misbehaving_ap_addr,
-+			     vif->cfg.ap_addr))
- 		return false;
- 
- 	/*
-@@ -502,9 +502,9 @@ void iwl_mvm_power_vif_assoc(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
- {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 
--	if (memcmp(vif->bss_conf.bssid, mvmvif->uapsd_misbehaving_bssid,
--		   ETH_ALEN))
--		eth_zero_addr(mvmvif->uapsd_misbehaving_bssid);
-+	if (!ether_addr_equal(mvmvif->uapsd_misbehaving_ap_addr,
-+			      vif->cfg.ap_addr))
-+		eth_zero_addr(mvmvif->uapsd_misbehaving_ap_addr);
- }
- 
- static void iwl_mvm_power_uapsd_misbehav_ap_iterator(void *_data, u8 *mac,
-@@ -512,14 +512,23 @@ static void iwl_mvm_power_uapsd_misbehav_ap_iterator(void *_data, u8 *mac,
- {
- 	u8 *ap_sta_id = _data;
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-+	struct ieee80211_bss_conf *link_conf;
-+	unsigned int link_id;
- 
--	/* The ap_sta_id is not expected to change during current association
--	 * so no explicit protection is needed
--	 */
--	if (mvmvif->deflink.ap_sta_id == *ap_sta_id)
--		memcpy(mvmvif->uapsd_misbehaving_bssid,
--		       vif->bss_conf.bssid,
--		       ETH_ALEN);
-+	rcu_read_lock();
-+	for_each_vif_active_link(vif, link_conf, link_id) {
-+		struct iwl_mvm_vif_link_info *link_info = mvmvif->link[link_id];
+-	if (ieee80211_is_data_qos(hdr->frame_control))
+-		ac = tid_to_mac80211_ac[ieee80211_get_tid(hdr)];
++	if (ieee80211_is_data_qos(hdr->frame_control)) {
++		u8 tid = ieee80211_get_tid(hdr);
 +
-+		/* The ap_sta_id is not expected to change during current
-+		 * association so no explicit protection is needed
-+		 */
-+		if (link_info->ap_sta_id == *ap_sta_id) {
-+			ether_addr_copy(mvmvif->uapsd_misbehaving_ap_addr,
-+					vif->cfg.ap_addr);
-+			break;
-+		}
++		if (tid < IWL_MAX_TID_COUNT)
++			ac = tid_to_mac80211_ac[tid];
 +	}
-+	rcu_read_unlock();
+ 
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 	mac = mvmsta->mac_id_n_color & FW_CTXT_ID_MSK;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 5c06839b87c2..9dbe71d299ae 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -484,7 +484,7 @@ static void iwl_mvm_rx_csum(struct iwl_mvm *mvm,
  }
  
- void iwl_mvm_power_uapsd_misbehaving_ap_notif(struct iwl_mvm *mvm,
+ /*
+- * returns true if a packet is a duplicate and should be dropped.
++ * returns true if a packet is a duplicate or invalid tid and should be dropped.
+  * Updates AMSDU PN tracking info
+  */
+ static bool iwl_mvm_is_dup(struct ieee80211_sta *sta, int queue,
+@@ -513,11 +513,14 @@ static bool iwl_mvm_is_dup(struct ieee80211_sta *sta, int queue,
+ 		return false;
+ 	}
+ 
+-	if (ieee80211_is_data_qos(hdr->frame_control))
++	if (ieee80211_is_data_qos(hdr->frame_control)) {
+ 		/* frame has qos control */
+ 		tid = ieee80211_get_tid(hdr);
+-	else
++		if (tid >= IWL_MAX_TID_COUNT)
++			return true;
++	} else {
+ 		tid = IWL_MAX_TID_COUNT;
++	}
+ 
+ 	/* If this wasn't a part of an A-MSDU the sub-frame index will be 0 */
+ 	sub_frame_idx = desc->amsdu_info &
 -- 
 2.38.1
 
