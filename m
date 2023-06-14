@@ -2,109 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C83E172F5F0
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 09:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CBE72F667
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 09:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243383AbjFNHTk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 03:19:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
+        id S243343AbjFNHeG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 03:34:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243337AbjFNHS4 (ORCPT
+        with ESMTP id S235414AbjFNHeB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 03:18:56 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0F21FC2
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 00:18:20 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35E7GjdhE013490, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35E7GjdhE013490
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 14 Jun 2023 15:16:45 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 14 Jun 2023 15:17:03 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 14 Jun 2023 15:17:03 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Wed, 14 Jun 2023 15:17:03 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        "petter@technux.se" <petter@technux.se>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "morrownr@gmail.com" <morrownr@gmail.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux@ulli-kroll.de" <linux@ulli-kroll.de>,
-        "petter.mabacker@esab.se" <petter.mabacker@esab.se>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Subject: RE: Linux mainline support for RTL8811AU/RTL8821AU
-Thread-Topic: Linux mainline support for RTL8811AU/RTL8821AU
-Thread-Index: AQHZnc5dl9i8HjN9rEOIrsiwl7X/wK+IiCyAgAFbh4A=
-Date:   Wed, 14 Jun 2023 07:17:03 +0000
-Message-ID: <e1d49f94865f4a69b3b3228b00697ad1@realtek.com>
-References: <20230613080907.328548-1-petter@technux.se>
- <91f3ecc2-7ae4-b17d-acda-f3f7e4b48f6f@lwfinger.net>
-In-Reply-To: <91f3ecc2-7ae4-b17d-acda-f3f7e4b48f6f@lwfinger.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 14 Jun 2023 03:34:01 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AFBE62;
+        Wed, 14 Jun 2023 00:34:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=/ux0V+hWpeqZe1y6Lv0wFsb0Uq7wh+rm8EMEdQa6UWo=;
+        t=1686728040; x=1687937640; b=XXxC/lfv3V4KdPXsq5JEyIrE7wTw1Whrk1J98ady22jRjmg
+        IlaueyK02wtP9MI6kpxIY25I+ShlX6yhThv0dDQeKa8V3lVk0L05nj9jLOYOIyvAmmh7m/zqqN4jI
+        XG789tczscFmBnN9m616m6yk19cnASCn82i9l3RQiHbHC26mhOvDj5WyzWGfYxrMjKAKdOnDE7SFf
+        z9588qNlH2EVAleKR4o1VC3NQNqDNir9J6qQKrk+9GJpQ93G2NaF7UWMisjrmtAPZtirF/S749zge
+        0WriF/r9NKn1j9UIswTsHYtQpTAv4ybPKCWPV7v1syKXYKJMfbP4FS2GohR6B9wQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1q9L0l-005yrq-2x;
+        Wed, 14 Jun 2023 09:33:47 +0200
+Message-ID: <bb17265969d1850462bd1d89df71d43f6d40967b.camel@sipsolutions.net>
+Subject: Re: [PATCH] b43legacy: Remove unneeded variable
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     wuyonggang001@208suo.com, Larry.Finger@lwfinger.net,
+        kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 14 Jun 2023 09:33:46 +0200
+In-Reply-To: <5e1b466986b2371f71f99d7123f1de6d@208suo.com>
+References: <20230612044742.58785-1-zhanglibing@cdjrlc.com>
+         <2caa7e16691b9cecab28aec323785a35@208suo.com>
+         <e598894f5a32c00ff905b010bd8e286f@208suo.com>
+         <5e1b466986b2371f71f99d7123f1de6d@208suo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTGFycnkgRmluZ2VyIDxs
-YXJyeS5maW5nZXJAZ21haWwuY29tPiBPbiBCZWhhbGYgT2YgTGFycnkgRmluZ2VyDQo+IFNlbnQ6
-IFdlZG5lc2RheSwgSnVuZSAxNCwgMjAyMyAyOjI5IEFNDQo+IFRvOiBwZXR0ZXJAdGVjaG51eC5z
-ZTsgbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IENjOiBQaW5nLUtlIFNoaWggPHBr
-c2hpaEByZWFsdGVrLmNvbT47IG1vcnJvd25yQGdtYWlsLmNvbTsga2VybmVsQHBlbmd1dHJvbml4
-LmRlOyBrdmFsb0BrZXJuZWwub3JnOw0KPiBsaW51eEB1bGxpLWtyb2xsLmRlOyBwZXR0ZXIubWFi
-YWNrZXJAZXNhYi5zZTsgcy5oYXVlckBwZW5ndXRyb25peC5kZQ0KPiBTdWJqZWN0OiBSZTogTGlu
-dXggbWFpbmxpbmUgc3VwcG9ydCBmb3IgUlRMODgxMUFVL1JUTDg4MjFBVQ0KPiANCj4gT24gNi8x
-My8yMyAwMzowOSwgcGV0dGVyQHRlY2hudXguc2Ugd3JvdGU6DQo+ID4gSGksDQo+ID4NCj4gPiBJ
-J20gaW52ZXN0aWdhdGluZyBhIHdpZmkgZG9uZ2xlIChMTTgwOCkgdGhhdCBpcyBiYXNlZCBvbiB0
-aGUgUlRMODgxMUFVIGNoaXBzZXQuDQo+ID4NCj4gPiAkIGxzdXNiDQo+ID4gLi4NCj4gPiBCdXMg
-MDAzIERldmljZSAwNjY6IElEIDBiZGE6YTgxMSBSZWFsdGVrIFNlbWljb25kdWN0b3IgQ29ycC4g
-UlRMODgxMUFVIDgwMi4xMWEvYi9nL24vYWMgV0xBTiBBZGFwdGVyDQo+ID4gLi4NCj4gPg0KPiA+
-IEkgY2Fubm90IGZpbmQgYW55IGRyaXZlciBzdXBwb3J0IGluIG1haW5saW5lIGZvciB0aGF0IGNo
-aXBzZXQgKDg4MTFjdS84ODIxY3UsIHNlZW1zIHRvIGV4aXN0cykuIEp1c3QgY3VyaW91cw0KPiBp
-ZiBhbnlvbmUga25vd3MgaWYgdGhlcmUgYXJlIGFueSBvbmdvaW5nIGVmZm9ydHMgdG8gZ2V0IHRo
-aXMgZHJpdmVyIGluY2x1ZGVkIGluIG1haW5saW5lPw0KPiA+DQo+ID4gSSBjYW4gc2VlIHRoYXQg
-Ym90aDoNCj4gPg0KPiA+IGh0dHBzOi8vd3d3LmxtLXRlY2hub2xvZ2llcy5jb20vcHJvZHVjdC93
-aWZpLXVzYi1hZGFwdGVyLTQzM21icHMtbG04MDgvP3RlbXBsYXRlPWRyaXZlcg0KPiA+DQo+ID4g
-YW5kDQo+ID4NCj4gPiBodHRwczovL2dpdGh1Yi5jb20vbW9ycm93bnIvODgyMWF1LTIwMjEwNzA4
-DQo+ID4NCj4gPiBleGlzdHMgZm9yIG5vbi1tYWlubGluZSBzdXBwb3J0LCBzbyB3aWxsIHBsYXkg
-YSBiaXQgd2l0aCB0aGVtLiBCdXQgZm9yIG1haW50ZW5hbmNlIGV0YyBJJ20gaW50ZXJlc3RlZA0K
-PiB0byBsZWFybiBhYm91dCBwb3NzaWJsZSBtYWlubGluZSBlZmZvcnRzIHdpdGhpbiB0aGlzIGFy
-ZWEuDQo+IA0KPiBJdCBzZWVtcyB0aGF0IHRoZSBSVFc4ODIxQUUgaGFzIG5ldmVyIGJlZW4gYnVp
-bHQgb3IgcmVsZWFzZWQuIElmIGl0IGhhZCBiZWVuLA0KPiB0aGVuIGV4dGVuZGluZyB0aGF0IGRy
-aXZlciB0byB0aGUgODgyMUFVIHdvdWxkIGJlIGVhc3kgYXMgdGhlcmUgd291bGQgYmUgYSBmaWxl
-DQo+IHJ0dzg4MjFhLmMgdGhhdCBjb250YWluZWQgYWxsIHRoZSBkZXRhaWxzIG9mIHRoYXQgY2hp
-cC4gV2l0aG91dCB0aGF0LCB0aGVyZSBpcw0KPiBsaXR0bGUgdGhhdCBhbnlvbmUgb3V0c2lkZSBS
-ZWFsdGVrIGNhbiBkby4gVGhlIHZlbmRvciBkcml2ZXIsIHdoaWNoIGlzIHRoZSBvbmUNCj4gaW4g
-dGhlIGxpbmsgeW91IHBvc3RlZCwgd2lsbCBsaWtlbHkgd29yay4NCj4gDQoNCnJ0bHdpZmkgY2Fu
-IHN1cHBvcnQgUlRMODgyMUFFL1JUTDg4MTJBRSBhbmQgYmFzaWMgVVNCIGluZnJhc3RydWN0dXJl
-LCBzbyBpdCBsb29rcw0KbGlrZSBwb3NzaWJsZSB0byBzdXBwb3J0IDg4MjFBVSBieSBydGx3aWZp
-Lg0KDQpQaW5nLUtlDQoNCg==
+On Wed, 2023-06-14 at 13:52 +0800, wuyonggang001@208suo.com wrote:
+> Fix the following coccicheck warning:
+>=20
+> drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded=20
+> variable: "count".
+
+That may be a warning that it gives.
+
+> Signed-off-by: Yonggang Wu <wuyonggang001@208suo.com>
+> ---
+>   drivers/net/wireless/broadcom/b43legacy/debugfs.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c=20
+> b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+> index 6b0e8d117061..55a067eaa52d 100644
+> --- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+> +++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+> @@ -73,7 +73,7 @@ static ssize_t tsf_read_file(struct b43legacy_wldev=20
+> *dev, char *buf, size_t bufs
+>           (unsigned int)((tsf & 0xFFFFFFFF00000000ULL) >> 32),
+>           (unsigned int)(tsf & 0xFFFFFFFFULL));
+>=20
+> -    return count;
+> +    return 0;
+>=20
+
+However, that doesn't even fix the warning, and it is actually also
+completely wrong.
+
+Please don't submit patches where you don't even understand the code.
+
+johannes
