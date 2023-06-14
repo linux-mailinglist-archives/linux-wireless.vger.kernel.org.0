@@ -2,69 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FD0272F73F
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 10:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029A072F74D
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 10:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238164AbjFNIDR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 04:03:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37072 "EHLO
+        id S234248AbjFNIF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 04:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243018AbjFNIC4 (ORCPT
+        with ESMTP id S243654AbjFNIFG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 04:02:56 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9709426B0;
-        Wed, 14 Jun 2023 01:02:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=dVSXEn0iiAGSkxkpTSrJSP4GcGEkjq1CULMPAClVb+k=;
-        t=1686729742; x=1687939342; b=hIrxg+jlyKYbkzXDBkSYr81cpv3/Zri/jGdpVwA3+zUdytb
-        wor943IT1iiwrbm3MplqSy/hEdshWXnZbrOp83MBqGaj+xMfd4Kv667pJiTaTcaxNxuDfFwK0hhup
-        JTK47WL6k9BQ2H07mDSmL3w8YA7pH3s8UMa56/V7ey/itDqQh2Xx/kdguTRjIjUN9mmeAQXxYeFye
-        4ioWu5Op1oIo5jI/i8pSsXmBC86SNHYuxZYCO3caVp6tpgf8ucrTlvfm/owhbpL/GyyisfB5e/taS
-        y6+ETyzqmtKgAENmT2L969+WMho3qnfWVeC60ofWKPXrgdnnvYZbouBWwVCwCXDw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1q9LSE-005zlN-31;
-        Wed, 14 Jun 2023 10:02:11 +0200
-Message-ID: <12c1079d6e73f8f62c33b8a53dff7ff4de0728dc.camel@sipsolutions.net>
-Subject: Re: [PATCH] b43legacy: Remove unneeded variable
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     wuyonggang001@208suo.com, Larry.Finger@lwfinger.net,
-        kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 14 Jun 2023 10:02:10 +0200
-In-Reply-To: <194e8e87fda5f02664fcfac3717458f2@208suo.com>
-References: <20230614075250.29097-1-zhanglibing@cdjrlc.com>
-         <194e8e87fda5f02664fcfac3717458f2@208suo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        Wed, 14 Jun 2023 04:05:06 -0400
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE3C910E6
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 01:05:03 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2c95:0:640:f90:0])
+        by forward500a.mail.yandex.net (Yandex) with ESMTP id E9B785EA66;
+        Wed, 14 Jun 2023 11:05:01 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 15WEvw5DZGk0-QsNqZeeV;
+        Wed, 14 Jun 2023 11:05:01 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686729901;
+        bh=jWxBh/uZB7xo+MgbwaDbhA+YmI0quhbQfTKhDdhLiXU=;
+        h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+        b=cD0JBWSTGjMxQSY4W5INR3Gh20TfnsnwVIuZfp3mMgZbk5/VdlJH0E1F8vkIyhP8S
+         HtacalnNZ3AZQZ8W5ga5UWrqogqZXi/sRHBTe696FpRyuY90QygfyT8ZKJFQPYGoL3
+         bbEPd/AP8c5TnY5tcWOe6pqG5/PLlqzCFYBB1RV0=
+Authentication-Results: mail-nwsmtp-smtp-production-main-67.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <33e23046-c80b-d55a-a8c9-996ca641e6b8@yandex.ru>
+Date:   Wed, 14 Jun 2023 11:05:00 +0300
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 2/2] [v3] wifi: rtlwifi: cleanup USB interface
+To:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru>
+ <20230614061832.40882-1-dmantipov@yandex.ru>
+ <20230614061832.40882-2-dmantipov@yandex.ru>
+ <dcf1857e8fe9484dac9d269ae5384971@realtek.com>
+Content-Language: en-US
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+In-Reply-To: <dcf1857e8fe9484dac9d269ae5384971@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-06-14 at 15:55 +0800, wuyonggang001@208suo.com wrote:
-> Fix the following coccicheck warning:
->=20
-> drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded=20
-> variable: "count".
+On 6/14/23 10:08, Ping-Ke Shih wrote:
 
-Hey, no. Please stop it already. This won't even _compile_. Just don't.
-There's really not much value in cleaning up those coccicheck warnings
-in the first place. You're just wasting everyone's time (including your
-own).
+> I think this patch doesn't change pr_{info,err}, right ?
 
-johannes
+Yes but the previous version did, and Kalle has suggested
+to avoid such a changes for rtlwifi.
+
+Dmitry
+
