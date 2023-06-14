@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 668A272F999
+	by mail.lfdr.de (Postfix) with ESMTP id B26BD72F99A
 	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244164AbjFNJp3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 05:45:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
+        id S237322AbjFNJpb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 05:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244298AbjFNJor (ORCPT
+        with ESMTP id S244306AbjFNJos (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 05:44:47 -0400
+        Wed, 14 Jun 2023 05:44:48 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8244D2708
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 02:43:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8F12709
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 02:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686735830; x=1718271830;
+  t=1686735831; x=1718271831;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZdrH+0fm+EyPDVvKWUDpYe/CxE09ZUKG7S0mnLcE3bM=;
-  b=VATPI3tnQUyuXS3sfVlPLaund8G2g/G4xrSXOS8z/AlTnlQN1vamuO8I
-   69Lfrr+AJx7TjGqFu2GrVEG3QwCSVxRDMrFPhTA3cnrLl1o1NCA3OdPqY
-   whUWOI5CZhRiTQAYUC+E5cuNBykxZ+yNqeIhGmzZlSPTUf2xjvnwO3SoA
-   kp6Vr7NND7/DarPOVC0h9eu2dD/dth1ob+/tfzslxnhRk0Hye1OqMH2Xb
-   qLCCY3F/5Tgfi1sp+HQ8Gxrkp10whO8BwgJ1uXUFUZwR6UvNxgcZ5QmG8
-   I9TUgOw3g/c+Eclzhb+DwjD+TCGOkWLck4J6+DVFKRh4/Il8mlWWj7l/r
+  bh=xjZ3DuTADVkP/z+VaKdesRTGe6LdrHm/wZ5DT7S0g3I=;
+  b=LK/6oeHKClTdU1pc7HZQKdJMxyAVv5SIOXNOHn2uSa2xLYTRXifT1i+R
+   MMk1k+fBqAPwXXFbIaS6m9dRs/3juG8v24HBXr14ZpmBq0xWlOfaauvgb
+   x9N3IO9WyRx7mpKHM0luieNhCHcX0imZhRSeHodMY6ygPkyWIsoP67z2e
+   WqzncM6usdnEW1cJKZi1UomMplxRmu63aaBeMWST+yXwXd7mx+xFp8Ixj
+   CGBhEU6AhnNl4RYxQlluLAlNFKid6giFozP0pkxsAsNwJKvv+WZtsvo+N
+   Fqm8do8Q1tafqqr0YBx4myEGLS/XNPSpKBU6luOa0M4LeY0gpVUnlcbi/
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049861"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049866"
 X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
-   d="scan'208";a="361049861"
+   d="scan'208";a="361049866"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:17 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:19 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989867"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989874"
 X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
-   d="scan'208";a="711989867"
+   d="scan'208";a="711989874"
 Received: from basharil-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.203.45])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:15 -0700
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:17 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 10/20] wifi: iwlwifi: mvm: disable new TX csum mode completely
-Date:   Wed, 14 Jun 2023 12:41:27 +0300
-Message-Id: <20230614123446.aded25a6c288.Ia6921e4b8a9624d4f57489ac775105ed0e400313@changeid>
+Subject: [PATCH 11/20] wifi: iwlwifi: mvm: store WMM params per link
+Date:   Wed, 14 Jun 2023 12:41:28 +0300
+Message-Id: <20230614123446.332c4949a1be.Icae03975d578b0cc82279911a1ea7cbc313046d6@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230614094137.379897-1-gregory.greenman@intel.com>
 References: <20230614094137.379897-1-gregory.greenman@intel.com>
@@ -65,37 +65,76 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-For now, disable this mode completely; we need to do some
-real validation/integration of this new feature on some of
-the hardware first.
+We have the data structure set up to store the parameters
+per link, but weren't using them. Fix that and store them
+in the right link.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c   | 13 +++++++++----
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c   |  8 ++++++--
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index d8d6681e9411..97ec100103b4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1545,15 +1545,7 @@ static inline bool iwl_mvm_is_ctdp_supported(struct iwl_mvm *mvm)
- 
- static inline bool iwl_mvm_has_new_tx_csum(struct iwl_mvm *mvm)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 954ea9ac8e5b..61c1ec46a2fb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -470,19 +470,24 @@ void iwl_mvm_set_fw_qos_params(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			       struct iwl_ac_qos *ac, __le32 *qos_flags)
  {
--	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ)
--		return false;
--
--	if (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_BZ &&
--	    CSR_HW_REV_TYPE(mvm->trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
--	    mvm->trans->hw_rev_step <= SILICON_B_STEP)
--		return false;
--
--	return true;
-+	return false;
- }
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	struct iwl_mvm_vif_link_info *mvm_link =
++		mvmvif->link[link_conf->link_id];
+ 	int i;
  
- extern const u8 iwl_mvm_ac_to_tx_fifo[];
++	if (!mvm_link)
++		return;
++
+ 	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
+ 		u8 txf = iwl_mvm_mac_ac_to_tx_fifo(mvm, i);
+ 		u8 ucode_ac = iwl_mvm_mac80211_ac_to_ucode_ac(i);
+ 
+ 		ac[ucode_ac].cw_min =
+-			cpu_to_le16(mvmvif->deflink.queue_params[i].cw_min);
++			cpu_to_le16(mvm_link->queue_params[i].cw_min);
+ 		ac[ucode_ac].cw_max =
+-			cpu_to_le16(mvmvif->deflink.queue_params[i].cw_max);
++			cpu_to_le16(mvm_link->queue_params[i].cw_max);
+ 		ac[ucode_ac].edca_txop =
+-			cpu_to_le16(mvmvif->deflink.queue_params[i].txop * 32);
+-		ac[ucode_ac].aifsn = mvmvif->deflink.queue_params[i].aifs;
++			cpu_to_le16(mvm_link->queue_params[i].txop * 32);
++		ac[ucode_ac].aifsn = mvm_link->queue_params[i].aifs;
+ 		ac[ucode_ac].fifos_mask = BIT(txf);
+ 	}
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index cb4df8c6f9de..8cd03357ce79 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2022 Intel Corporation
++ * Copyright (C) 2022-2023 Intel Corporation
+  */
+ #include "mvm.h"
+ 
+@@ -820,8 +820,12 @@ iwl_mvm_mld_mac_conf_tx(struct ieee80211_hw *hw,
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	struct iwl_mvm_vif_link_info *mvm_link = mvmvif->link[link_id];
+ 
+-	mvmvif->deflink.queue_params[ac] = *params;
++	if (!mvm_link)
++		return -EINVAL;
++
++	mvm_link->queue_params[ac] = *params;
+ 
+ 	/* No need to update right away, we'll get BSS_CHANGED_QOS
+ 	 * The exception is P2P_DEVICE interface which needs immediate update.
 -- 
 2.38.1
 
