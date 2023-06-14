@@ -2,79 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 398DF72FA1C
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 12:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8D4672FC43
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 13:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235121AbjFNKIG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 06:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
+        id S235014AbjFNLUT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 07:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243789AbjFNKHm (ORCPT
+        with ESMTP id S243818AbjFNLTa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 06:07:42 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B218B1FD6
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 03:07:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=bv33olME/P1SJGBsr2FZLMiFk6Mc9y73BiLXf0hBm88=;
-        t=1686737251; x=1687946851; b=mndXLMPpAt7iTWr+nfVWV8E52tuz1b0b1MND7Qn5sXPfdtD
-        cEBlK79nN7TpJIZJROJzD7wGXknAt6HldQlitUorJ7UTuzLnAJguWbPT2J5+RAdTFHfL08lcqYZ5b
-        cYxQuebUKvg8zckOnTf4sx9Gsa4FXVlp/cWnE+hQ1v6AOJy9JZto/DQbYWU6eXlgWYWn4fxUTx1ek
-        CAFgTs/pONTtseqVtRt0fZmTTo1kT8bAW2fbQMrdQIKGcbRAZpZ64df2EXrh3EZ/oxB6N+Xbw9DB4
-        FEbyXNdAPF4MapjwQKzo5q88PatQane20TEp2SBJpYXP+O365n+fWMuyTT1l7R4Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1q9NPV-0063tW-2r;
-        Wed, 14 Jun 2023 12:07:29 +0200
-Message-ID: <416fc1eba88e13c245fac4499ee0af2efbd5485a.camel@sipsolutions.net>
-Subject: Re: [PATCH 08/15] wifi: iwlwifi: mvm: Add NULL check before
- dereferencing the pointer
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     gregory.greenman@intel.com
-Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Date:   Wed, 14 Jun 2023 12:07:28 +0200
-In-Reply-To: <20230612184434.cf7a5ce82fb0.Id3c05d13eeee6638f0930f750e93fb928d5c9dee@changeid>
-References: <20230612155116.168000-1-gregory.greenman@intel.com>
-         <20230612184434.cf7a5ce82fb0.Id3c05d13eeee6638f0930f750e93fb928d5c9dee@changeid>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        Wed, 14 Jun 2023 07:19:30 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B142959;
+        Wed, 14 Jun 2023 04:18:52 -0700 (PDT)
+Received: from [IPV6:2001:b07:2ed:14ed:c5f8:7372:f042:90a2] (unknown [IPv6:2001:b07:2ed:14ed:c5f8:7372:f042:90a2])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B290C6606EFD;
+        Wed, 14 Jun 2023 12:18:50 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1686741531;
+        bh=mk2/pYLZgRMBhvKuJCtJgo6lcTKdBXdHOm/hXqC0BjM=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=iUAS0uxPuy2foVhRuBpIM5v7NFPSfDtuBUlldSsGIwybe918agelnbtPIrgEiAH22
+         xvU8SGWTLtOx3WpQ1VMgdK8PntWdp3RvRD6XRrNLqG3Uoe4bNgwp4jDJ0I3dBK06qV
+         85KOE3NEAeQJsKNQDgPshrc8PsBmrXeKy3fTlzjJsWRdkPyAVtw9kTaO+Xu9vSfoXQ
+         9BnGMGdn2T3Y9M5HbGMRVHqmBchCOoxzp0yX8FzuZdUAyzRepzeuxG6g7ZLKP3JA4Y
+         C1ZHCGRBCEsDC1mIi6uZKoUFas9QRCoEPD8fMIYBLmMZ9sfTx1jzoLmmz7WDdTeSW+
+         qagE+vpSxDP9Q==
+Message-ID: <d9e3009b-1fd0-e81b-715e-d93c9343b55c@collabora.com>
+Date:   Wed, 14 Jun 2023 13:18:48 +0200
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH] wifi: mt76: mt7921e: Perform FLR to recovery the device
+Content-Language: en-US
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>, nbd@nbd.name,
+        lorenzo@kernel.org, ryder.lee@mediatek.com
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+References: <20230614063252.1650824-1-kai.heng.feng@canonical.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230614063252.1650824-1-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2023-06-12 at 18:51 +0300, gregory.greenman@intel.com wrote:
-> From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
->=20
-> The p2p, bss and ap vif pointers are assigned based on the mode.
-> All pointers will not have valid value at same time and can be
-> NULL, based on configured mode. This can lead to NULL pointer
-> access.
+Il 14/06/23 08:32, Kai-Heng Feng ha scritto:
+> When "Pre-boot WiFi" is enabled in BIOS, the mt7921e device may not
+> work:
+> mt7921e 0000:02:00.0: ASIC revision: 79220010
+> mt7921e 0000:02:00.0: Message 00000010 (seq 1) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 2) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 3) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 4) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 5) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 6) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 7) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 8) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 9) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: Message 00000010 (seq 10) timeout
+> mt7921e 0000:02:00.0: Failed to get patch semaphore
+> mt7921e 0000:02:00.0: hardware init failed
+> 
+> After some trials and errors, it shows that PCI function level reset can
+> recover the device back to a functional state.
+> 
+> So perform FLR at probe routine to workaround the issue.
 
-This is not true.
+Is there any way to check if the device was enabled before booting Linux?
 
->  	/* enable PM on bss if bss stand alone */
-> -	if (vifs->bss_active && !vifs->p2p_active && !vifs->ap_active) {
-> +	if (bss_mvmvif && vifs->bss_active && !vifs->p2p_active &&
-> +	    !vifs->ap_active) {
->=20
+I'm thinking of something like
 
-The pointers can only be NULL iff *_active is false, however, it may be
-false even if the pointer is non-NULL, so it's not exactly the same.
+if (device_is_already_enabled)
+	ret = pci_reset_function_locked(....)
 
-Probably a static checker thing that didn't understand it?
+Regards,
+Angelo
 
-johannes
+> 
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> index ddb1fa4ee01d..9671fbe35a8e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> @@ -262,6 +262,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+>   	int ret;
+>   	u16 cmd;
+>   
+> +	ret = pci_reset_function_locked(pdev);
+> +	if (ret)
+> +		pci_info(pdev, "Unable to perform FLR\n");
+> +
+>   	ret = pcim_enable_device(pdev);
+>   	if (ret)
+>   		return ret;
+
+
