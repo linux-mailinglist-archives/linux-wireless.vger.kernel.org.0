@@ -2,68 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38F0B730067
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 15:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18910730093
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 15:50:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245173AbjFNNr6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 09:47:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52388 "EHLO
+        id S245236AbjFNNuP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 09:50:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245146AbjFNNru (ORCPT
+        with ESMTP id S245203AbjFNNuL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 09:47:50 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817FA2114;
-        Wed, 14 Jun 2023 06:47:45 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-30aeee7c8a0so5064098f8f.1;
-        Wed, 14 Jun 2023 06:47:45 -0700 (PDT)
+        Wed, 14 Jun 2023 09:50:11 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E691FF7;
+        Wed, 14 Jun 2023 06:50:00 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id e9e14a558f8ab-340a05c22deso2187135ab.1;
+        Wed, 14 Jun 2023 06:50:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686750464; x=1689342464;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AP5ftKd7wT4eV9g/VbxZ/AE3CMEtv7WQyJn0k4RoWns=;
-        b=eCvv43moeko1ro/ZKiPW9DobGQEhEHREsOIW3VbfGIEAM/FrZaejQgnijxLEHJUCw8
-         Ow0193V/VnxmVvNzTjwwCyUBQqbsbvkhzTUe5Ux4W1xMKKZ3DpCs4PMYcRptjSuONW+Y
-         lykhkpFgTOHLRg6JsVN6TYHY58EsSLUkPyM5cOD6jTO94EjPJ3c0vc+xxpF2Z2KkhCGM
-         xPcpbHP59HbBiKTf1D3vGMsa4EUTMGGaNBOqeRkBMqn4F2PfIiGBw4F1ZeKy6TpkDQhm
-         Ic64O3aZ1ZFYFBGtDAZqt91rl54yJHrvb+PIdivgJop+uy0M7eha2l3AKpHdtLn5s7+K
-         9gmw==
+        d=gmail.com; s=20221208; t=1686750599; x=1689342599;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZEPuphakaNp1fYcyZ4pObojDdVaUBwTgM8okY278g5E=;
+        b=ipsgnUCS9NMIbr5fKQnk6kUv67E3x/wY8Rq+aGR0dr6qp/ctIpczO2KxLo1i9Cez3l
+         y8qlys4Sx5KpiBn9Nnjg44K0M0X/fQ3mvM5r9ErMiOAADRI5WwBa5rpflBHNJ87ta5qN
+         Vj33y4B2iKVL/rP7Wi/cm2uV+G8nxboYFqLXVv1CuqLQ/MJq23RcFH3XD7OUkDBvQJCc
+         Wt/8MaUcl1t5faWXnbe3x198W8AabOJRZ0a+UaFI+MjqVfGYlZceaEqLt/FpCCw0q+co
+         /m0OOa1RD0pmujC8dngUrmQcYCRaL/5JGUqS9jRI14oY9K361mymCboKbWJACZHWfH02
+         cXWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686750464; x=1689342464;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AP5ftKd7wT4eV9g/VbxZ/AE3CMEtv7WQyJn0k4RoWns=;
-        b=HjHnpOGQOWA8Oh8uXQIcmoYZ9+MkLOWIdDuuQMN9yv+T7G8n0G/cT0ttRwxG7xRKcb
-         xWsSIIffBOHoWknF8wIo1FKQ7KiMUIES97XFf/79/OpqN1Z7cRPol+1LPxjNOFbCkRfV
-         ZxW+EW+BwRJPIcOIkOKxU5huCtkyQctAgybyIJlyRDSQxdgMulmoN7d0aYYhMM4JN21i
-         WeCUXDZpn/5iaOg2waDNpZAB16Le5Qfk9afFv0C0WLPol+9VioinESE2bGTRrsbDfbOw
-         M2do91gXfR2KcuHs4UphdhZyECnfoJxuTdJdrL5FjGs200269o6BSX/4SLo4Thzu6vfr
-         m4uA==
-X-Gm-Message-State: AC+VfDw00+BxbWdLEQPrpbKSXdLGwdyLFhFVqd4a49MYU4nxkzKD6Qqw
-        xwx5LvxfOQt94xddwxRUpVRTvu4Ea2e/x3jNEJ4=
-X-Google-Smtp-Source: ACHHUZ6jxLLGneuKDGxLeZPAkGc72aGOLMzHb5scf00d9bCLr0d5pAAO7HUC96P6Zw68vDqVpOoTx1gqE3ixXHDxDlI=
-X-Received: by 2002:a5d:5005:0:b0:30f:cb3a:2c46 with SMTP id
- e5-20020a5d5005000000b0030fcb3a2c46mr1591603wrt.20.1686750463416; Wed, 14 Jun
- 2023 06:47:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230614134552.2108471-1-azeemshaikh38@gmail.com>
-In-Reply-To: <20230614134552.2108471-1-azeemshaikh38@gmail.com>
+        d=1e100.net; s=20221208; t=1686750599; x=1689342599;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZEPuphakaNp1fYcyZ4pObojDdVaUBwTgM8okY278g5E=;
+        b=foYcaPNq4OHEIJ7vwPJaMP7oIgoOOR2VBZiw8NERWdIhAK476WqfF6CUXexdpjjBIJ
+         B/mMs+6y2Tf96NCzZnuEfxLDNnvo2wM6jSexljXxNg0sxy3rkK6wtEi0nHtl6xx5C0e5
+         0MJegbbFAxxGYbbeRlRWDrsiZAltPs2pkaQzXbTgZ9kWe2pA+kWsEmyIMmKSwNAsxG8a
+         Hm2nr7DMzFCmGt0qJbwUNfoQtiNQdHRawxLcJUrY4eDAdeqNx1/WnGGymswGQJgXNMFE
+         mPhbv+Aj5cRdV8xf7JDBvYlC3yfIiDjdUGg/Xl0ux/uWju0MCoD6Vx4YziH+/Qaqky0L
+         h3Ng==
+X-Gm-Message-State: AC+VfDwud9kqottb5ItIQTftJp0p7DEsGXnq2+jY1ECHIP0R6kawTJL4
+        gL1QnPi1q23lyMIxy0mhcf0=
+X-Google-Smtp-Source: ACHHUZ4Q+vvd86epl/4PhLMQWi6vLCuv0c4ale/GTY/nnvGPX8Z/2yHYNXQj/hF9L+IuVhfQH7e0pg==
+X-Received: by 2002:a92:cacd:0:b0:33a:5bb5:f8f6 with SMTP id m13-20020a92cacd000000b0033a5bb5f8f6mr11581580ilq.18.1686750599414;
+        Wed, 14 Jun 2023 06:49:59 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id a26-20020a056638019a00b004182f88c368sm5072190jaq.67.2023.06.14.06.49.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 06:49:59 -0700 (PDT)
 From:   Azeem Shaikh <azeemshaikh38@gmail.com>
-Date:   Wed, 14 Jun 2023 09:47:32 -0400
-Message-ID: <CADmuW3XyYacFAX_S=mAkD8xB6a2P04kCCZHFr0EY45stt99exg@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: cfg80211: replace strlcpy() with strlscpy()
 To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+Cc:     linux-hardening@vger.kernel.org,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
         Johannes Berg <johannes@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH v3] wifi: cfg80211: replace strlcpy() with strscpy()
+Date:   Wed, 14 Jun 2023 13:49:56 +0000
+Message-ID: <20230614134956.2109252-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -74,51 +75,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Please ignore this patch. I made a typo in the title. Resending.
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
 
-On Wed, Jun 14, 2023 at 9:46=E2=80=AFAM Azeem Shaikh <azeemshaikh38@gmail.c=
-om> wrote:
->
-> strlcpy() reads the entire source buffer first.
-> This read may exceed the destination size limit.
-> This is both inefficient and can lead to linear read
-> overflows if a source string is not NUL-terminated [1].
-> In an effort to remove strlcpy() completely [2], replace
-> strlcpy() here with strscpy().
->
-> Direct replacement is safe here since WIPHY_ASSIGN is only used by
-> TRACE macros and the return values are ignored.
->
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcp=
-y
-> [2] https://github.com/KSPP/linux/issues/89
->
-> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-> ---
-> v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh38@gm=
-ail.com/
->
-> Changes from v1 - updated patch title.
->
->  net/wireless/trace.h |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-> index 716a1fa70069..a00da3ebfed5 100644
-> --- a/net/wireless/trace.h
-> +++ b/net/wireless/trace.h
-> @@ -22,7 +22,7 @@
->
->  #define MAXNAME                32
->  #define WIPHY_ENTRY    __array(char, wiphy_name, 32)
-> -#define WIPHY_ASSIGN   strlcpy(__entry->wiphy_name, wiphy_name(wiphy), M=
-AXNAME)
-> +#define WIPHY_ASSIGN   strscpy(__entry->wiphy_name, wiphy_name(wiphy), M=
-AXNAME)
->  #define WIPHY_PR_FMT   "%s"
->  #define WIPHY_PR_ARG   __entry->wiphy_name
->
-> --
-> 2.41.0.162.gfafddb0af9-goog
->
->
+Direct replacement is safe here since WIPHY_ASSIGN is only used by
+TRACE macros and the return values are ignored.
+
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
+
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+---
+v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh38@gmail.com/
+v2: https://lore.kernel.org/all/20230614134552.2108471-1-azeemshaikh38@gmail.com/
+
+Changes from v1 and v2 - updated patch title.
+
+ net/wireless/trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 716a1fa70069..a00da3ebfed5 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -22,7 +22,7 @@
+ 
+ #define MAXNAME		32
+ #define WIPHY_ENTRY	__array(char, wiphy_name, 32)
+-#define WIPHY_ASSIGN	strlcpy(__entry->wiphy_name, wiphy_name(wiphy), MAXNAME)
++#define WIPHY_ASSIGN	strscpy(__entry->wiphy_name, wiphy_name(wiphy), MAXNAME)
+ #define WIPHY_PR_FMT	"%s"
+ #define WIPHY_PR_ARG	__entry->wiphy_name
+ 
+-- 
+2.41.0.162.gfafddb0af9-goog
+
+
