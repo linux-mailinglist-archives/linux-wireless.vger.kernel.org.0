@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8907C72F995
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 668A272F999
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240888AbjFNJp1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 05:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
+        id S244164AbjFNJp3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 05:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244295AbjFNJoq (ORCPT
+        with ESMTP id S244298AbjFNJor (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 05:44:46 -0400
+        Wed, 14 Jun 2023 05:44:47 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C6C1FDD
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 02:43:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8244D2708
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 02:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686735827; x=1718271827;
+  t=1686735830; x=1718271830;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+t9IOG/SEHehcfbdbe8npsEo1sjRSjqTZUkR5nHErDU=;
-  b=gY1njajXzqWpWBnnXfcaMTs5Flv0CucF6R7bHMkaw8fuwug8yHxDCjhg
-   zRU9Kt2otOx9JA8enWApmzFu/O79j3eQUbYmlBUZrpBlP/SZLoSKDkcQf
-   KdXYzXcWmE3pl1T5wTth8Ldj+WD5myQoA/SWQBtpRdVAzZFYTwwa3xy1/
-   YpsEPuhPMiRqy8xOWTpUashY/93yCwFuD5XjcO0ibKVjzOOWAZ6auzpF7
-   0bdsDgDpAW4jyv9MgmXmZl8nG6l5L9xVH0XXTZe5E7w4RVucSG7EJlpK3
-   YZrG4I/8klcs2TOXBzfzr2YGAmciS9/9fVTuwOk1l3MjnmI+KyTrcok6r
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049855"
+  bh=ZdrH+0fm+EyPDVvKWUDpYe/CxE09ZUKG7S0mnLcE3bM=;
+  b=VATPI3tnQUyuXS3sfVlPLaund8G2g/G4xrSXOS8z/AlTnlQN1vamuO8I
+   69Lfrr+AJx7TjGqFu2GrVEG3QwCSVxRDMrFPhTA3cnrLl1o1NCA3OdPqY
+   whUWOI5CZhRiTQAYUC+E5cuNBykxZ+yNqeIhGmzZlSPTUf2xjvnwO3SoA
+   kp6Vr7NND7/DarPOVC0h9eu2dD/dth1ob+/tfzslxnhRk0Hye1OqMH2Xb
+   qLCCY3F/5Tgfi1sp+HQ8Gxrkp10whO8BwgJ1uXUFUZwR6UvNxgcZ5QmG8
+   I9TUgOw3g/c+Eclzhb+DwjD+TCGOkWLck4J6+DVFKRh4/Il8mlWWj7l/r
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049861"
 X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
-   d="scan'208";a="361049855"
+   d="scan'208";a="361049861"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:15 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989860"
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989867"
 X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
-   d="scan'208";a="711989860"
+   d="scan'208";a="711989867"
 Received: from basharil-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.203.45])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:13 -0700
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:42:15 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 09/20] wifi: iwlwifi: mvm: check link during TX
-Date:   Wed, 14 Jun 2023 12:41:26 +0300
-Message-Id: <20230614123446.cee48479deec.I4eef58f7b67afafb7b3294adbeb6e0067b68419d@changeid>
+Subject: [PATCH 10/20] wifi: iwlwifi: mvm: disable new TX csum mode completely
+Date:   Wed, 14 Jun 2023 12:41:27 +0300
+Message-Id: <20230614123446.aded25a6c288.Ia6921e4b8a9624d4f57489ac775105ed0e400313@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230614094137.379897-1-gregory.greenman@intel.com>
 References: <20230614094137.379897-1-gregory.greenman@intel.com>
@@ -65,38 +65,37 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Again, during some (botched) FW restart scenarios we can end
-up with a NULL link in the driver but mac80211 thinking all
-is still going OK. If we try to TX at the same time, we can
-crash there. Fix that by checking for a NULL link during TX.
+For now, disable this mode completely; we need to do some
+real validation/integration of this new feature on some of
+the hardware first.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index bacc3045ea16..06fb4b72ee9b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -805,6 +805,8 @@ int iwl_mvm_tx_skb_non_sta(struct iwl_mvm *mvm, struct sk_buff *skb)
- 			}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index d8d6681e9411..97ec100103b4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1545,15 +1545,7 @@ static inline bool iwl_mvm_is_ctdp_supported(struct iwl_mvm *mvm)
  
- 			link = mvmvif->link[link_id];
-+			if (WARN_ON(!link))
-+				return -1;
+ static inline bool iwl_mvm_has_new_tx_csum(struct iwl_mvm *mvm)
+ {
+-	if (mvm->trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_BZ)
+-		return false;
+-
+-	if (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_BZ &&
+-	    CSR_HW_REV_TYPE(mvm->trans->hw_rev) == IWL_CFG_MAC_TYPE_GL &&
+-	    mvm->trans->hw_rev_step <= SILICON_B_STEP)
+-		return false;
+-
+-	return true;
++	return false;
+ }
  
- 			if (!ieee80211_is_data(hdr->frame_control))
- 				sta_id = link->bcast_sta.sta_id;
+ extern const u8 iwl_mvm_ac_to_tx_fifo[];
 -- 
 2.38.1
 
