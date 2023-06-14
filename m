@@ -2,105 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FC2072F2DC
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 04:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5D772F2EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 05:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232022AbjFNC4s convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 22:56:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
+        id S242303AbjFNDJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 23:09:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbjFNC4q (ORCPT
+        with ESMTP id S233436AbjFNDJN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 22:56:46 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10B58E6F
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 19:56:45 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35E2uLfpD029021, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35E2uLfpD029021
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 14 Jun 2023 10:56:21 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Wed, 14 Jun 2023 10:56:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 14 Jun 2023 10:56:39 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Wed, 14 Jun 2023 10:56:39 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Kalle Valo" <kvalo@kernel.org>
-Subject: RE: [PATCH 3/3] wifi: rtw89: fix typo
-Thread-Topic: [PATCH 3/3] wifi: rtw89: fix typo
-Thread-Index: AQHZnd4lYeopVUYrUUOZRrgC7ldGua+Jm1GQ
-Date:   Wed, 14 Jun 2023 02:56:38 +0000
-Message-ID: <1fa19bca19604997a94d523d8da6eb9b@realtek.com>
-References: <975dee84-fa8f-1dbd-a2b8-2aba5a880b60@yandex.ru>
- <20230613100154.116586-1-dmantipov@yandex.ru>
- <20230613100154.116586-3-dmantipov@yandex.ru>
-In-Reply-To: <20230613100154.116586-3-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 13 Jun 2023 23:09:13 -0400
+Received: from mail.208.org (unknown [183.242.55.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEA5CD
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 20:09:11 -0700 (PDT)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTP id 4Qgr442Bq8zBJL9m
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 11:09:08 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+        content-transfer-encoding:content-type:message-id:user-agent
+        :references:in-reply-to:subject:to:from:date:mime-version; s=
+        dkim; t=1686712148; x=1689304149; bh=PwxsVOAzDDB8Ivc12dEAldwl7Yl
+        B/uooNnvQoX6R+iY=; b=kUxljA41uAdGJMMUiWBePOjN/b+HHAezKTVq9ep205+
+        sLxrXCmc+Z6J4E5hou87nSPcypYJFzsd5YSSohZSI1QGlwZMEncmmvBfuScxgLOK
+        NIx6XvkGdf+HGIoMnkMj2qMaqEkGUUbVLlwV8DytsHIkhpSGiOAsZYOBYxd4AoOc
+        z7s7v8sxHFwMQX1k/ePtTaGkBaxJnxgHOw7Xl2uoRG0zwtgyFg1h+nTrSUtbVVVh
+        A5YkHcb1VONQTRVz/PZJ8wIYDRW6CB01hZt/q70EDVyt6DKQxWlRutDu3stXEBpI
+        TtEgGdGJDt59mIqAr2pwYzFL4xf0Ha2g5P9CKyjfRlg==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id UyaZHtx1Q4ki for <linux-wireless@vger.kernel.org>;
+        Wed, 14 Jun 2023 11:09:08 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTPSA id 4Qgr435LQkzBJ9pH;
+        Wed, 14 Jun 2023 11:09:07 +0800 (CST)
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Date:   Wed, 14 Jun 2023 11:09:07 +0800
+From:   baomingtong001@208suo.com
+To:     toke@toke.dk, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ath: Remove unneeded variable
+In-Reply-To: <b41c50989125dec782e1fbd2793d0ecf@208suo.com>
+References: <20230613093757.5380-1-luojianhong@cdjrlc.com>
+ <b41c50989125dec782e1fbd2793d0ecf@208suo.com>
+User-Agent: Roundcube Webmail
+Message-ID: <209fbe59213d89c3e7e3a5fe6030e19e@208suo.com>
+X-Sender: baomingtong001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix the following coccicheck warning:
 
+drivers/net/wireless/ath/ath9k/gpio.c:501:5-8: Unneeded variable: "len".
 
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Tuesday, June 13, 2023 6:02 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: linux-wireless@vger.kernel.org; Kalle Valo <kvalo@kernel.org>; Dmitry Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH 3/3] wifi: rtw89: fix typo
+Signed-off-by: Mingtong Bao <baomingtong001@208suo.com>
+---
+  drivers/net/wireless/ath/ath9k/gpio.c | 3 +--
+  1 file changed, 1 insertion(+), 2 deletions(-)
 
-If you will send next version, please make subject more specific. 
-I means something like "wifi: rtw89: fix spelling typo of IQK debug messages". 
+diff --git a/drivers/net/wireless/ath/ath9k/gpio.c 
+b/drivers/net/wireless/ath/ath9k/gpio.c
+index b457e52dd365..f3d1bc02e633 100644
+--- a/drivers/net/wireless/ath/ath9k/gpio.c
++++ b/drivers/net/wireless/ath/ath9k/gpio.c
+@@ -498,14 +498,13 @@ static int ath9k_dump_legacy_btcoex(struct 
+ath_softc *sc, u8 *buf, u32 size)
+  {
 
-> 
-> Fix typo in '_doiqk()'.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->  drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-> b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-> index 466fa8e406da..48f1bcc46eda 100644
-> --- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-> +++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-> @@ -1586,7 +1586,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
->                               BTC_WRFK_ONESHOT_START);
-> 
->         rtw89_debug(rtwdev, RTW89_DBG_RFK,
-> -                   "[IQK]==========IQK strat!!!!!==========\n");
-> +                   "[IQK]==========IQK start!!!!!==========\n");
->         iqk_info->iqk_times++;
->         iqk_info->version = RTW8851B_IQK_VER;
-> 
-> --
-> 2.40.1
+      struct ath_btcoex *btcoex = &sc->btcoex;
+-    u32 len = 0;
 
+      ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+      ATH_DUMP_BTCOEX("BTCoex Period (msec)", btcoex->btcoex_period);
+      ATH_DUMP_BTCOEX("Duty Cycle", btcoex->duty_cycle);
+      ATH_DUMP_BTCOEX("BT Wait time", btcoex->bt_wait_time);
+
+-    return len;
++    return 0;
+  }
+
+  int ath9k_dump_btcoex(struct ath_softc *sc, u8 *buf, u32 size)
