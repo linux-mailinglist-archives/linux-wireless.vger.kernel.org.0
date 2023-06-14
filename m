@@ -2,55 +2,54 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0822372F447
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 07:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 308AD72F478
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 08:13:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242930AbjFNFwF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 01:52:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
+        id S243037AbjFNGNo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 02:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234103AbjFNFwE (ORCPT
+        with ESMTP id S234356AbjFNGNn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 01:52:04 -0400
+        Wed, 14 Jun 2023 02:13:43 -0400
 Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79B519B9
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 22:52:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC791739
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 23:13:40 -0700 (PDT)
 Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4Qgvh04GJWzBQJYT
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 13:52:00 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTP id 4Qgw8x3QTFzBQJYd
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 14:13:37 +0800 (CST)
 Authentication-Results: mail.208.org (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)" header.d=208.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
         content-transfer-encoding:content-type:message-id:user-agent
         :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1686721920; x=1689313921; bh=Nv20kQTwcZdEAsdjCJJB4K+xOfi
-        bojtHceoQOd15qBI=; b=BhauDtUmLU5GFK77Yz/WrEVEVEN6ND6U/YYGX/is2aW
-        mkhmEfZ9v1HvV0TNcDbzLfS86t1vlnjA8uKpBb6wG3Txpr0hvaHr7BWx9UBvRc2J
-        Vn6OZ17lK22T9XhiuD23tSF7rKxXFEwh00nk6sTvvvAcuXgKly7CDmW5bjryFJ1x
-        +y6AV/B5LBWbqWdsBYfH7kJc9m+dntLiyaMQ/N8nAG0qfNJj8uX9cx0Dd3NoepJz
-        i5YfWbCXVSY5dCnkXH5ZuFUqWN+8Q/iLWfcGuUz2/0OYPmiM0XpOzB205xspSRpx
-        jU2RM9noqDyEBnYz2UJZBT/UiRMHU2mr//autMfJ2qg==
+        dkim; t=1686723217; x=1689315218; bh=PwxsVOAzDDB8Ivc12dEAldwl7Yl
+        B/uooNnvQoX6R+iY=; b=YuV5NN3qO2AE+bdZH6AFy7NlcTu79SFS8vnsOOG4KhI
+        Ex/3tKTa0tkTaf/h6uoTEMxmHvVqIQADwGtABARUWrEADD/7ldgA1BjhK/2MH3gP
+        XwP0mITBUmveB2Dm4AFS1UmBkeKFuxLwqmgR6aakmTUz4xwUJHdv2vJD4IsmYMW6
+        GD2ixj/NC4QWGL/wGuoA+QOcHtJH5lMzSCDtKxsYp/NnX8eoLS8DQiVFV+8f8s+f
+        qgfpiqtrM8Yhib110ZulsZ/7CPRaIc1MGWl+QTy1trs9x2OxHGxUGQxyHUr0jIom
+        /27Zylr4MeJD9rtdOQIqBT5k9qYbUUAIefhxo68ln7w==
 X-Virus-Scanned: amavisd-new at mail.208.org
 Received: from mail.208.org ([127.0.0.1])
         by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id BV7MLpjgsWCh for <linux-wireless@vger.kernel.org>;
-        Wed, 14 Jun 2023 13:52:00 +0800 (CST)
+        with ESMTP id dhLaMLfLGHtl for <linux-wireless@vger.kernel.org>;
+        Wed, 14 Jun 2023 14:13:37 +0800 (CST)
 Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4Qgvh020JDzBJLB3;
-        Wed, 14 Jun 2023 13:52:00 +0800 (CST)
+        by mail.208.org (Postfix) with ESMTPSA id 4Qgw8x276rzBJLB3;
+        Wed, 14 Jun 2023 14:13:37 +0800 (CST)
 MIME-Version: 1.0
-Date:   Wed, 14 Jun 2023 13:52:00 +0800
-From:   wuyonggang001@208suo.com
-To:     Larry.Finger@lwfinger.net, kvalo@kernel.org
+Date:   Wed, 14 Jun 2023 14:13:37 +0800
+From:   baomingtong001@208suo.com
+To:     kvalo@kernel.org
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] b43legacy: Remove unneeded variable
-In-Reply-To: <e598894f5a32c00ff905b010bd8e286f@208suo.com>
-References: <20230612044742.58785-1-zhanglibing@cdjrlc.com>
- <2caa7e16691b9cecab28aec323785a35@208suo.com>
- <e598894f5a32c00ff905b010bd8e286f@208suo.com>
+Subject: [PATCH] wifi: ath9k: remove unneeded variable from
+ ath9k_dump_legacy_btcoex()
+In-Reply-To: <20230614061007.62077-1-luojianhong@cdjrlc.com>
+References: <20230614061007.62077-1-luojianhong@cdjrlc.com>
 User-Agent: Roundcube Webmail
-Message-ID: <5e1b466986b2371f71f99d7123f1de6d@208suo.com>
-X-Sender: wuyonggang001@208suo.com
+Message-ID: <695b68601eecd648b7531f2e40561edb@208suo.com>
+X-Sender: baomingtong001@208suo.com
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
@@ -65,46 +64,32 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fix the following coccicheck warning:
 
-drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded 
-variable: "count".
+drivers/net/wireless/ath/ath9k/gpio.c:501:5-8: Unneeded variable: "len".
 
-Signed-off-by: Yonggang Wu <wuyonggang001@208suo.com>
+Signed-off-by: Mingtong Bao <baomingtong001@208suo.com>
 ---
-  drivers/net/wireless/broadcom/b43legacy/debugfs.c | 6 +++---
-  1 file changed, 3 insertions(+), 3 deletions(-)
+  drivers/net/wireless/ath/ath9k/gpio.c | 3 +--
+  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c 
-b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-index 6b0e8d117061..55a067eaa52d 100644
---- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-@@ -73,7 +73,7 @@ static ssize_t tsf_read_file(struct b43legacy_wldev 
-*dev, char *buf, size_t bufs
-          (unsigned int)((tsf & 0xFFFFFFFF00000000ULL) >> 32),
-          (unsigned int)(tsf & 0xFFFFFFFFULL));
+diff --git a/drivers/net/wireless/ath/ath9k/gpio.c 
+b/drivers/net/wireless/ath/ath9k/gpio.c
+index b457e52dd365..f3d1bc02e633 100644
+--- a/drivers/net/wireless/ath/ath9k/gpio.c
++++ b/drivers/net/wireless/ath/ath9k/gpio.c
+@@ -498,14 +498,13 @@ static int ath9k_dump_legacy_btcoex(struct 
+ath_softc *sc, u8 *buf, u32 size)
+  {
 
--    return count;
+      struct ath_btcoex *btcoex = &sc->btcoex;
+-    u32 len = 0;
+
+      ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+      ATH_DUMP_BTCOEX("BTCoex Period (msec)", btcoex->btcoex_period);
+      ATH_DUMP_BTCOEX("Duty Cycle", btcoex->duty_cycle);
+      ATH_DUMP_BTCOEX("BT Wait time", btcoex->bt_wait_time);
+
+-    return len;
 +    return 0;
   }
 
-  /* wl->irq_lock is locked */
-@@ -99,7 +99,7 @@ static ssize_t ucode_regs_read_file(struct 
-b43legacy_wldev *dev, char *buf, size
-              b43legacy_shm_read16(dev, B43legacy_SHM_WIRELESS, i));
-      }
-
--    return count;
-+    return 0;
-  }
-
-  /* wl->irq_lock is locked */
-@@ -166,7 +166,7 @@ static ssize_t txstat_read_file(struct 
-b43legacy_wldev *dev, char *buf, size_t b
-  out_unlock:
-      spin_unlock_irqrestore(&log->lock, flags);
-
--    return count;
-+    return 0;
-  }
-
-  /* wl->irq_lock is locked */
+  int ath9k_dump_btcoex(struct ath_softc *sc, u8 *buf, u32 size)
