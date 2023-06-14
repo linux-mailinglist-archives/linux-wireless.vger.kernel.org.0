@@ -2,39 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 709C1730342
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 17:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94BD27303B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 17:23:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343661AbjFNPPi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 11:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54330 "EHLO
+        id S1343703AbjFNPXU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 11:23:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343660AbjFNPPh (ORCPT
+        with ESMTP id S236842AbjFNPXT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 11:15:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 616061FC4;
-        Wed, 14 Jun 2023 08:15:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E73FB638D3;
-        Wed, 14 Jun 2023 15:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37623C433C9;
-        Wed, 14 Jun 2023 15:15:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686755735;
-        bh=IYlo4kFJO2TVbRcxmRqgX52nQUD+JoUM4Xtdb77hYmo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=L8/y2njeA9dvpmBLDS9b9VOFgU7bn/6Axd3gCwGdy5yLR9y2TYpTtK5sQOQ8kSSRS
-         3H+GT2aah72MhN7h0rby9iSLNoJa+QoW5WquxOJBh3bDbqieaEQFyVWttfVypNXAoD
-         E4yHAzZnziz/TpDvEUQdU22jT6S3EBYJ1Dhj5qhI1kq+I0pwIsf39kOnOrMygtN9Jv
-         pwSdfpNe43i8pavv/T5Ol0odDnE6xBW0s6vX/mMy6sbAOkrA9iocie8/zty1E5JlfF
-         XYEHdBWtm3z4qKiolcKU/fEMYGs9F/mi74EM079kBrQJtYIYfR+dTBMr2KQ559SGXu
-         rRGOJuArVX5yw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Azeem Shaikh <azeemshaikh38@gmail.com>
+        Wed, 14 Jun 2023 11:23:19 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE431C3;
+        Wed, 14 Jun 2023 08:23:17 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-311099fac92so846073f8f.0;
+        Wed, 14 Jun 2023 08:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686756196; x=1689348196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qhf32x37vTVya41Yn/yYo21KaAVD4j09MI6p+WfuOew=;
+        b=aB7MHRSZQBZBZwM8Uy53rKUb+dAJM7WTeXpr8dYqkWfP/g5y/6m5DPRmiR4a+L0TD7
+         5EC4FVC2i9suYbmZEEwOHiIHXwinruiPw9supcH4QHObo0zu0nwk+MfKbDtAfFBfx7fj
+         vMT3KPIzhI5EhDEi/6vTpyVjIXcCTs/5EWh/M4PxFjA968BpzHTGlPUOx2h7UaeeB5Rw
+         Psrh71AulEQ/L8T2nTi8+JWjMvOyiitRQQVOs64MIfjHSeb4cFhifPfiHD9JQO7bXENt
+         5qKeqsUGTFSpC/dfAyIrxowYmwIHv5/tHdZJ02RmL3futuwo1sksttwhibK1HewEjqMb
+         K/dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686756196; x=1689348196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qhf32x37vTVya41Yn/yYo21KaAVD4j09MI6p+WfuOew=;
+        b=KOb/3YC2YsqQpbCNgj2sO7DtI0QPWqCYvD5//P15K9QxrE9qVazX7hNklYPbNWIhCO
+         0TL9ovm5L9Q9P6FfOVEVF9jg7cCPX0GwbsXaDjELqUrpQevkOtsQf79jTEPHYJv4UFnh
+         BliISEoJv8N+U7o3DnQm838gh9bTz+faE6eGRunzObmllsjwHWLyfqrSYlHf8GqTJj4q
+         tfSH72YEJmE/nVeaxoq2y+zZtHCKFStM0sZXt79guw4SD40TXIPMRnpuNhYUaaYtiQkN
+         B38zHEIXa9wqpogxsUrI+hkF4VRTZf6PdFSrTT3tqlVxXeiKE+9kQAM/km4J5vVhQhsO
+         kzPg==
+X-Gm-Message-State: AC+VfDxMtrvBmU28JJ5gjPSTZ03Jitiw4kZqfSg6TBZHw4FBi+gaaG/T
+        6GUmsayi/wumlc4v8VLg9GDWxgufNotRWyeY1Jg=
+X-Google-Smtp-Source: ACHHUZ4dBnhZLONvjP6mCHhadCKYEhrkmEpVxotqFkfSDi0sq67OmByiUVQzk3EBkY5MgdLJezKpJqr/cStWi6yeCcE=
+X-Received: by 2002:a5d:69ce:0:b0:30e:3d9a:9955 with SMTP id
+ s14-20020a5d69ce000000b0030e3d9a9955mr9705064wrw.52.1686756195948; Wed, 14
+ Jun 2023 08:23:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230614134956.2109252-1-azeemshaikh38@gmail.com>
+ <874jnaf7fv.fsf@kernel.org> <CADmuW3WEUgnpGXg=ajpRvwON6mFLQD9cPKnhsg35CcNqwcywxA@mail.gmail.com>
+ <875y7qcbxo.fsf@kernel.org>
+In-Reply-To: <875y7qcbxo.fsf@kernel.org>
+From:   Azeem Shaikh <azeemshaikh38@gmail.com>
+Date:   Wed, 14 Jun 2023 11:23:04 -0400
+Message-ID: <CADmuW3U6WU7f0ifZun615xNoZAwvH-R8=2JMqCngp7rpeu5-GQ@mail.gmail.com>
+Subject: Re: [PATCH v3] wifi: cfg80211: replace strlcpy() with strscpy()
+To:     Kalle Valo <kvalo@kernel.org>
 Cc:     linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
@@ -42,88 +64,79 @@ Cc:     linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
         Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH v3] wifi: cfg80211: replace strlcpy() with strscpy()
-References: <20230614134956.2109252-1-azeemshaikh38@gmail.com>
-        <874jnaf7fv.fsf@kernel.org>
-        <CADmuW3WEUgnpGXg=ajpRvwON6mFLQD9cPKnhsg35CcNqwcywxA@mail.gmail.com>
-Date:   Wed, 14 Jun 2023 18:15:31 +0300
-In-Reply-To: <CADmuW3WEUgnpGXg=ajpRvwON6mFLQD9cPKnhsg35CcNqwcywxA@mail.gmail.com>
-        (Azeem Shaikh's message of "Wed, 14 Jun 2023 10:55:13 -0400")
-Message-ID: <875y7qcbxo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Azeem Shaikh <azeemshaikh38@gmail.com> writes:
-
-> On Wed, Jun 14, 2023 at 10:24=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wr=
-ote:
+On Wed, Jun 14, 2023 at 11:15=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrot=
+e:
 >
->>
->> Azeem Shaikh <azeemshaikh38@gmail.com> writes:
->>
->> > strlcpy() reads the entire source buffer first.
->> > This read may exceed the destination size limit.
->> > This is both inefficient and can lead to linear read
->> > overflows if a source string is not NUL-terminated [1].
->> > In an effort to remove strlcpy() completely [2], replace
->> > strlcpy() here with strscpy().
->> >
->> > Direct replacement is safe here since WIPHY_ASSIGN is only used by
->> > TRACE macros and the return values are ignored.
->> >
->> > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#str=
-lcpy
->> > [2] https://github.com/KSPP/linux/issues/89
->> >
->> > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
->> > ---
->> > v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh38=
-@gmail.com/
->> > v2: https://lore.kernel.org/all/20230614134552.2108471-1-azeemshaikh38=
-@gmail.com/
->>
->> In the change log (after the "---" line) you should also describe what
->> changes you made, more info in the wiki below. In this case it's clear
->> as the patch is simple but please keep this in mind for future patches.
->>
->> No need to resend because of this.
->>
+> Azeem Shaikh <azeemshaikh38@gmail.com> writes:
 >
-> Thanks Kalle. I did have the below line in my changelog. For future
-> patches, do you mean that changelog descriptions need to be more
-> specific than this? For example - updated title from "x" -> "y"?
+> > On Wed, Jun 14, 2023 at 10:24=E2=80=AFAM Kalle Valo <kvalo@kernel.org> =
+wrote:
+> >
+> >>
+> >> Azeem Shaikh <azeemshaikh38@gmail.com> writes:
+> >>
+> >> > strlcpy() reads the entire source buffer first.
+> >> > This read may exceed the destination size limit.
+> >> > This is both inefficient and can lead to linear read
+> >> > overflows if a source string is not NUL-terminated [1].
+> >> > In an effort to remove strlcpy() completely [2], replace
+> >> > strlcpy() here with strscpy().
+> >> >
+> >> > Direct replacement is safe here since WIPHY_ASSIGN is only used by
+> >> > TRACE macros and the return values are ignored.
+> >> >
+> >> > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#s=
+trlcpy
+> >> > [2] https://github.com/KSPP/linux/issues/89
+> >> >
+> >> > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+> >> > ---
+> >> > v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh=
+38@gmail.com/
+> >> > v2: https://lore.kernel.org/all/20230614134552.2108471-1-azeemshaikh=
+38@gmail.com/
+> >>
+> >> In the change log (after the "---" line) you should also describe what
+> >> changes you made, more info in the wiki below. In this case it's clear
+> >> as the patch is simple but please keep this in mind for future patches=
+.
+> >>
+> >> No need to resend because of this.
+> >>
+> >
+> > Thanks Kalle. I did have the below line in my changelog. For future
+> > patches, do you mean that changelog descriptions need to be more
+> > specific than this? For example - updated title from "x" -> "y"?
+> >
+> >> Changes from v1 and v2 - updated patch title.
 >
->> Changes from v1 and v2 - updated patch title.
+> Ah, I missed that because the format was not what we usually use. I
+> recommend something like this:
+>
+> v3:
+>
+> * add bar
+>
+> v2:
+>
+> * https://
+> * fix foo
+>
+> v1:
+>
+> * https://
+>
 
-Ah, I missed that because the format was not what we usually use. I
-recommend something like this:
-
-v3:
-
-* add bar
-
-v2:
-
-* https://
-* fix foo
-
-v1:
-
-* https://
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Got it, thanks a lot!
