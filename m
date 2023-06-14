@@ -2,116 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18910730093
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 15:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFDCE73019E
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 16:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245236AbjFNNuP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 09:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
+        id S245547AbjFNOWF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 10:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245203AbjFNNuL (ORCPT
+        with ESMTP id S245544AbjFNOWD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 09:50:11 -0400
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E691FF7;
-        Wed, 14 Jun 2023 06:50:00 -0700 (PDT)
-Received: by mail-il1-x133.google.com with SMTP id e9e14a558f8ab-340a05c22deso2187135ab.1;
-        Wed, 14 Jun 2023 06:50:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686750599; x=1689342599;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZEPuphakaNp1fYcyZ4pObojDdVaUBwTgM8okY278g5E=;
-        b=ipsgnUCS9NMIbr5fKQnk6kUv67E3x/wY8Rq+aGR0dr6qp/ctIpczO2KxLo1i9Cez3l
-         y8qlys4Sx5KpiBn9Nnjg44K0M0X/fQ3mvM5r9ErMiOAADRI5WwBa5rpflBHNJ87ta5qN
-         Vj33y4B2iKVL/rP7Wi/cm2uV+G8nxboYFqLXVv1CuqLQ/MJq23RcFH3XD7OUkDBvQJCc
-         Wt/8MaUcl1t5faWXnbe3x198W8AabOJRZ0a+UaFI+MjqVfGYlZceaEqLt/FpCCw0q+co
-         /m0OOa1RD0pmujC8dngUrmQcYCRaL/5JGUqS9jRI14oY9K361mymCboKbWJACZHWfH02
-         cXWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686750599; x=1689342599;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZEPuphakaNp1fYcyZ4pObojDdVaUBwTgM8okY278g5E=;
-        b=foYcaPNq4OHEIJ7vwPJaMP7oIgoOOR2VBZiw8NERWdIhAK476WqfF6CUXexdpjjBIJ
-         B/mMs+6y2Tf96NCzZnuEfxLDNnvo2wM6jSexljXxNg0sxy3rkK6wtEi0nHtl6xx5C0e5
-         0MJegbbFAxxGYbbeRlRWDrsiZAltPs2pkaQzXbTgZ9kWe2pA+kWsEmyIMmKSwNAsxG8a
-         Hm2nr7DMzFCmGt0qJbwUNfoQtiNQdHRawxLcJUrY4eDAdeqNx1/WnGGymswGQJgXNMFE
-         mPhbv+Aj5cRdV8xf7JDBvYlC3yfIiDjdUGg/Xl0ux/uWju0MCoD6Vx4YziH+/Qaqky0L
-         h3Ng==
-X-Gm-Message-State: AC+VfDwud9kqottb5ItIQTftJp0p7DEsGXnq2+jY1ECHIP0R6kawTJL4
-        gL1QnPi1q23lyMIxy0mhcf0=
-X-Google-Smtp-Source: ACHHUZ4Q+vvd86epl/4PhLMQWi6vLCuv0c4ale/GTY/nnvGPX8Z/2yHYNXQj/hF9L+IuVhfQH7e0pg==
-X-Received: by 2002:a92:cacd:0:b0:33a:5bb5:f8f6 with SMTP id m13-20020a92cacd000000b0033a5bb5f8f6mr11581580ilq.18.1686750599414;
-        Wed, 14 Jun 2023 06:49:59 -0700 (PDT)
-Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
-        by smtp.gmail.com with ESMTPSA id a26-20020a056638019a00b004182f88c368sm5072190jaq.67.2023.06.14.06.49.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 06:49:59 -0700 (PDT)
-From:   Azeem Shaikh <azeemshaikh38@gmail.com>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-hardening@vger.kernel.org,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>
-Subject: [PATCH v3] wifi: cfg80211: replace strlcpy() with strscpy()
-Date:   Wed, 14 Jun 2023 13:49:56 +0000
-Message-ID: <20230614134956.2109252-1-azeemshaikh38@gmail.com>
-X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
+        Wed, 14 Jun 2023 10:22:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9FC10CB
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 07:22:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4463A6366A
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 14:22:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47A2C433C8;
+        Wed, 14 Jun 2023 14:22:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686752521;
+        bh=GfQJxl85hzKrEjkYhXQ3HB9Y5yFJayBpHrbM0fIs25E=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=tPKRIBRjYs+mehBhz3KfiPFDcNxPcjHuJg5tHglpb5qU9TocepAuSuHt2yIfZNaNz
+         peHoTGYOVfrauooqK1I2rzr6GyKbandGK2FrBMMl3+uwCKoZpQ67TCBXRFOwxaFzNC
+         iODbtPU7R84UN/CE0fz7grfkdmNnjHTsCly2rUo81L9LTkZYgJDVNPzPL4QA0pdQfl
+         zxc6pQioHDu0zgZT+1ab3R2ZcKunitTIdi7C1e5mDLm3Q9qG+Ft2hqr+lU1SoMobnZ
+         d4WNMU0LIjbU9HKW4yzlHYiST9VpCWjwE7EJ2HWZjqGOY0puHapoJ/4SkxSWZUrgMt
+         sjMe3ptBf6+Gw==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath9k: convert msecs to jiffies where needed
+References: <20230613134655.248728-1-dmantipov@yandex.ru>
+        <87y1knw7ng.fsf@toke.dk> <87pm5yd3rz.fsf@kernel.org>
+        <87a5x2l1bt.fsf@toke.dk>
+Date:   Wed, 14 Jun 2023 17:21:58 +0300
+In-Reply-To: <87a5x2l1bt.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
+ \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
+        "Wed, 14 Jun 2023 13:39:50 +0200")
+Message-ID: <878rcmf7jt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-strlcpy() reads the entire source buffer first.
-This read may exceed the destination size limit.
-This is both inefficient and can lead to linear read
-overflows if a source string is not NUL-terminated [1].
-In an effort to remove strlcpy() completely [2], replace
-strlcpy() here with strscpy().
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
 
-Direct replacement is safe here since WIPHY_ASSIGN is only used by
-TRACE macros and the return values are ignored.
+> Kalle Valo <kvalo@kernel.org> writes:
+>
+>> Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk> writes:
+>>
+>>> Dmitry Antipov <dmantipov@yandex.ru> writes:
+>>>
+>>>> Since 'ieee80211_queue_delayed_work()' expects timeout in
+>>>> jiffies and not milliseconds, 'msecs_to_jiffies()' should
+>>>> be used in 'ath_restart_work()' and '__ath9k_flush()'.
+>>>>
+>>>> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+>>>
+>>> I believe this warrants a:
+>>>
+>>> Fixes: d63ffc45c5d3 ("ath9k: rename tx_complete_work to hw_check_work")
+>>
+>> I can add that.
+>
+> I was hoping you'd say that - thanks :)
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-[2] https://github.com/KSPP/linux/issues/89
+BTW you can always assume that I can change or fix the commit messages.
+Just let me know exactly what to change, being able to copy paste is
+best :)
 
-Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
----
-v1: https://lore.kernel.org/all/20230612232301.2572316-1-azeemshaikh38@gmail.com/
-v2: https://lore.kernel.org/all/20230614134552.2108471-1-azeemshaikh38@gmail.com/
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Changes from v1 and v2 - updated patch title.
-
- net/wireless/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 716a1fa70069..a00da3ebfed5 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -22,7 +22,7 @@
- 
- #define MAXNAME		32
- #define WIPHY_ENTRY	__array(char, wiphy_name, 32)
--#define WIPHY_ASSIGN	strlcpy(__entry->wiphy_name, wiphy_name(wiphy), MAXNAME)
-+#define WIPHY_ASSIGN	strscpy(__entry->wiphy_name, wiphy_name(wiphy), MAXNAME)
- #define WIPHY_PR_FMT	"%s"
- #define WIPHY_PR_ARG	__entry->wiphy_name
- 
--- 
-2.41.0.162.gfafddb0af9-goog
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
