@@ -2,107 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C9072F4C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 08:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC0A72F4EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 08:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242677AbjFNG2d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 02:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
+        id S242815AbjFNGfj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 02:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234691AbjFNG2c (ORCPT
+        with ESMTP id S243281AbjFNGfH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 02:28:32 -0400
-Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B92199
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 23:28:30 -0700 (PDT)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4QgwV41cNtzBQgpD
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 14:28:28 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-        content-transfer-encoding:content-type:message-id:user-agent
-        :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1686724108; x=1689316109; bh=uzV5IRMvn+xjooRI4ST/VUkNmJE
-        0mM4D/yBYv59E2J4=; b=OEMPUrdH+ElMTwD2vHZWY4u1D16Vyz9lew1NmE97VQT
-        BPrKK3SeywTLBuWEFUijFPcs/5tFhE8gck3rt/3FbWXIXQ/inKkb8IdcaDDhTBJZ
-        UVl5iTacfGd7dMGPjtRm5avZWcMIhUOa3k7VO9Y9ibjhn7irMo1sbShaQZS63Ii6
-        vTWQ1TI5dPaua4b3JA/p4rHUDyPVzMFekEqu4t9thOtNrlii9i2xbNVf1B9Osl4y
-        AkWdQLxH3lRXkbLYpciy+EEFp28oNYkYLuq8TSO0sIYGq5OkULtJH35F4dJkMSGe
-        G6zkgkRxf5aWuIlCWyWF7FpsBEkTVU9sltgtlipk8FQ==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id I5-MmUHcWlR0 for <linux-wireless@vger.kernel.org>;
-        Wed, 14 Jun 2023 14:28:28 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4QgwV36l4GzBQgpC;
-        Wed, 14 Jun 2023 14:28:27 +0800 (CST)
+        Wed, 14 Jun 2023 02:35:07 -0400
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75971709;
+        Tue, 13 Jun 2023 23:33:48 -0700 (PDT)
+Received: from localhost.localdomain (unknown [10.101.196.174])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id ECD893FE8F;
+        Wed, 14 Jun 2023 06:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1686724426;
+        bh=+hqis1W8nQ4EkQUmco7jTscaaZbuSwY0XCyi+/U9QfM=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=wIVM1sNd+ojHp6usjuvn93Ejfp9bdZeFSaG46lVPT9zOIp8wytXooK36JiMTSSn0l
+         2eDxchP16vkMHZh9WMeLMOU2uMYGl2IC72DT9wEtoCN8kE1SKDZyKISm6VclhVjH/K
+         pM7P3JTy9iTfu8Met2cxNQk3SUybNSvxw4H3B5ZkrdBYvUX6a3HdEqTVRdIWGKE4bN
+         cGy0m6IQJBwBfD+iG9SDVbKk8b6BQnCCFks9n+yETD6WkkbiY/dOe28fNPPKk/AY1w
+         t7LdI6MxufhU+CLvZ7/233P6hdL4RZwqhDqF6cvYqn1aXRlc7irfxVq2mCg44OOzkJ
+         Wu9959Z93e1Kg==
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+To:     nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com
+Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Leon Yen <Leon.Yen@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH] wifi: mt76: mt7921e: Perform FLR to recovery the device
+Date:   Wed, 14 Jun 2023 14:32:50 +0800
+Message-Id: <20230614063252.1650824-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Date:   Wed, 14 Jun 2023 14:28:27 +0800
-From:   xuanzhenggang001@208suo.com
-To:     pkshih@realtek.com, kvalo@kernel.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: rtw89: Remove unneeded variable
-In-Reply-To: <a4bd77fc102a60ebac4e036842015eac@208suo.com>
-References: <20230610131734.21134-1-denghuilong@cdjrlc.com>
- <a4bd77fc102a60ebac4e036842015eac@208suo.com>
-User-Agent: Roundcube Webmail
-Message-ID: <bef94b1701cd3a9718dff8aff1f4e7f4@208suo.com>
-X-Sender: xuanzhenggang001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warning:
+When "Pre-boot WiFi" is enabled in BIOS, the mt7921e device may not
+work:
+mt7921e 0000:02:00.0: ASIC revision: 79220010
+mt7921e 0000:02:00.0: Message 00000010 (seq 1) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 2) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 3) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 4) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 5) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 6) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 7) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 8) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 9) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: Message 00000010 (seq 10) timeout
+mt7921e 0000:02:00.0: Failed to get patch semaphore
+mt7921e 0000:02:00.0: hardware init failed
 
-drivers/net/wireless/realtek/rtw89/pci.c:239:5-8: Unneeded variable: 
-"cnt".
+After some trials and errors, it shows that PCI function level reset can
+recover the device back to a functional state.
 
-Signed-off-by: Zhenggang Xuan <xuanzhenggang001@208suo.com>
+So perform FLR at probe routine to workaround the issue.
+
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
-  drivers/net/wireless/realtek/rtw89/pci.c | 5 ++---
-  1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c 
-b/drivers/net/wireless/realtek/rtw89/pci.c
-index 9402f1a0caea..591b7b9a6eca 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -236,7 +236,6 @@ static u32 rtw89_pci_rxbd_deliver_skbs(struct 
-rtw89_dev *rtwdev,
-      struct sk_buff *skb;
-      u32 rxinfo_size = sizeof(struct rtw89_pci_rxbd_info);
-      u32 offset;
--    u32 cnt = 1;
-      bool fs, ls;
-      int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index ddb1fa4ee01d..9671fbe35a8e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -262,6 +262,10 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	int ret;
+ 	u16 cmd;
+ 
++	ret = pci_reset_function_locked(pdev);
++	if (ret)
++		pci_info(pdev, "Unable to perform FLR\n");
++
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret)
+ 		return ret;
+-- 
+2.34.1
 
-@@ -297,7 +296,7 @@ static u32 rtw89_pci_rxbd_deliver_skbs(struct 
-rtw89_dev *rtwdev,
-          desc_info->ready = false;
-      }
-
--    return cnt;
-+    return 1;
-
-  err_sync_device:
-      rtw89_pci_sync_skb_for_device(rtwdev, skb);
-@@ -308,7 +307,7 @@ static u32 rtw89_pci_rxbd_deliver_skbs(struct 
-rtw89_dev *rtwdev,
-      rx_ring->diliver_skb = NULL;
-      desc_info->ready = false;
-
--    return cnt;
-+    return 1;
-  }
-
-  static void rtw89_pci_rxbd_deliver(struct rtw89_dev *rtwdev,
