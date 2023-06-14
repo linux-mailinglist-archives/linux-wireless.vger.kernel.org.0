@@ -2,106 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB58B72F793
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 10:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDB872F797
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 10:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243268AbjFNIQP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 04:16:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47992 "EHLO
+        id S243162AbjFNIRT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 04:17:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243174AbjFNIQK (ORCPT
+        with ESMTP id S243038AbjFNIRQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 04:16:10 -0400
-Received: from forward100c.mail.yandex.net (forward100c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D3FC7
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 01:16:09 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:4212:0:640:eaad:0])
-        by forward100c.mail.yandex.net (Yandex) with ESMTP id 7DD006010A;
-        Wed, 14 Jun 2023 11:16:07 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id vFWJkY3DSiE0-07QflHCf;
-        Wed, 14 Jun 2023 11:16:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686730567;
-        bh=nBnOEbUc46HozPPwzdafkzCCGz3joJB/wRrqBKBGOeM=;
-        h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=Nl8vux276vxdC3pPj0Nbu72PcOV3wOftlYkFT0ra3HrclJdn18y5DZOK77QgJzqJ7
-         n0OcqDewTWct6uNAOpq/PkFUD/0Qxc3IJ0T2bvO1/iWOiOKXaCjoYfTBv3kJ8P+FcE
-         2/Nz5R0N3Q4uUVFOTpm54CO/fDtxdDMbRS8rpu+E=
-Authentication-Results: mail-nwsmtp-smtp-production-main-46.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 3/3] [v6] wifi: rtw89: fix spelling typo of IQK debug messages
-Date:   Wed, 14 Jun 2023 11:15:55 +0300
-Message-Id: <20230614081555.91395-3-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230614081555.91395-1-dmantipov@yandex.ru>
-References: <20230614051116.20968-3-dmantipov@yandex.ru>
- <20230614081555.91395-1-dmantipov@yandex.ru>
+        Wed, 14 Jun 2023 04:17:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94F4199C;
+        Wed, 14 Jun 2023 01:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=hss47gyp6BYYMhFB7hAoae1QAy3auKS104enX9ZgrIY=;
+        t=1686730630; x=1687940230; b=MX5Q1OKNaxE0pbxo5ugU8AJumLk781/uUL6I1kbJzJdPBDi
+        jk12HTceTWGFIwu/CXwcmOY6wmZ9zz0rVXIpgUyN/svuQMlHtpcCl/+uRbfrueJg5xGjQT/RaX32k
+        4UhoIWHXVXGvInF5NRHgiK3Ys4IuKYQuczgGOpyc30nrDQ1vVT8ZfwkbvDA4jVCQ9FWgZH2l+haC2
+        er+4EjXg4XMPxwlMZGuLPM0asGs70+XuKnLEfujzVF6flZA/G2kQ58vLyN6rNJyzrQNY+OO1lCDjJ
+        Pa1lHfGLEut5F+N8R0d92pp16rcZyvvHjbrPIg9QxjUwZs3UbeUa9ZXXrROBziyA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1q9LgY-0060G9-2h;
+        Wed, 14 Jun 2023 10:16:59 +0200
+Message-ID: <058dd31ef48495f8641f5b66839aaea039af0f08.camel@sipsolutions.net>
+Subject: Re: [PATCH] b43legacy: Remove unneeded variable
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     wuyonggang001@208suo.com, Larry.Finger@lwfinger.net,
+        kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Date:   Wed, 14 Jun 2023 10:16:57 +0200
+In-Reply-To: <12c1079d6e73f8f62c33b8a53dff7ff4de0728dc.camel@sipsolutions.net>
+References: <20230614075250.29097-1-zhanglibing@cdjrlc.com>
+         <194e8e87fda5f02664fcfac3717458f2@208suo.com>
+         <12c1079d6e73f8f62c33b8a53dff7ff4de0728dc.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix spelling typo of IQK debug messages.
+On Wed, 2023-06-14 at 10:02 +0200, Johannes Berg wrote:
+> On Wed, 2023-06-14 at 15:55 +0800, wuyonggang001@208suo.com wrote:
+> > Fix the following coccicheck warning:
+> >=20
+> > drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded=20
+> > variable: "count".
+>=20
+> Hey, no. Please stop it already. This won't even _compile_. Just don't.
+> There's really not much value in cleaning up those coccicheck warnings
+> in the first place. You're just wasting everyone's time (including your
+> own).
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v6: add missing commit message (Ping-Ke Shih)
-v5: adjust to match series and consolidate all typo fixes (Ping-Ke Shih)
----
- drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c | 2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c | 2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+And BTW, I've just looked at all your other contributions to other areas
+of the kernel, and heard from others as well - not doing any better!
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-index 466fa8e406da..48f1bcc46eda 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-@@ -1586,7 +1586,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 			      BTC_WRFK_ONESHOT_START);
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[IQK]==========IQK strat!!!!!==========\n");
-+		    "[IQK]==========IQK start!!!!!==========\n");
- 	iqk_info->iqk_times++;
- 	iqk_info->version = RTW8851B_IQK_VER;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index 3107eed52f15..fa018e1f499b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -1617,7 +1617,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[IQK]==========IQK strat!!!!!==========\n");
-+		    "[IQK]==========IQK start!!!!!==========\n");
- 	iqk_info->iqk_times++;
- 	iqk_info->version = RTW8852B_IQK_VER;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-index 3423bdacc23c..de7714f871d5 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-@@ -1525,7 +1525,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
--		    "[IQK]==========IQK strat!!!!!==========\n");
-+		    "[IQK]==========IQK start!!!!!==========\n");
- 	iqk_info->iqk_times++;
- 	iqk_info->version = RTW8852C_IQK_VER;
- 
--- 
-2.40.1
+I can only suggest that you stop all of your patch submissions and re-
+evaluate what you're even trying to do. And not just you personally, but
+all of the @208suo.com folks who popped up recently.
 
+johannes
