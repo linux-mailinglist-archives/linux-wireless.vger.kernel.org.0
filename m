@@ -2,46 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3CBE72F667
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 09:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3938D72F682
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 09:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243343AbjFNHeG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 03:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
+        id S242895AbjFNHi2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 03:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235414AbjFNHeB (ORCPT
+        with ESMTP id S234592AbjFNHi0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 03:34:01 -0400
+        Wed, 14 Jun 2023 03:38:26 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AFBE62;
-        Wed, 14 Jun 2023 00:34:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA13E62;
+        Wed, 14 Jun 2023 00:38:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
         Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=/ux0V+hWpeqZe1y6Lv0wFsb0Uq7wh+rm8EMEdQa6UWo=;
-        t=1686728040; x=1687937640; b=XXxC/lfv3V4KdPXsq5JEyIrE7wTw1Whrk1J98ady22jRjmg
-        IlaueyK02wtP9MI6kpxIY25I+ShlX6yhThv0dDQeKa8V3lVk0L05nj9jLOYOIyvAmmh7m/zqqN4jI
-        XG789tczscFmBnN9m616m6yk19cnASCn82i9l3RQiHbHC26mhOvDj5WyzWGfYxrMjKAKdOnDE7SFf
-        z9588qNlH2EVAleKR4o1VC3NQNqDNir9J6qQKrk+9GJpQ93G2NaF7UWMisjrmtAPZtirF/S749zge
-        0WriF/r9NKn1j9UIswTsHYtQpTAv4ybPKCWPV7v1syKXYKJMfbP4FS2GohR6B9wQ==;
+        Resent-Cc:Resent-Message-ID; bh=WID80vYS4EtWRNtZsTHqjGXaq8KNYNCjE5M7eGOJcaY=;
+        t=1686728305; x=1687937905; b=XOTxWAyaYtdz0GZwilfC+Vey4F321f5F84G/nxkRMRYL9td
+        YmQV6w/Y02TNGLpfKJT9g8zbJjzTYl2TyjgE1SMSlqX4hgGc9klUS2MZTKVws853zyWPET+ikhFH1
+        Z+3EBcgnYQAvS8Eu5NFP2XGOjOSEE5nmexm0Xq/f+TxkpWegI2HTjsJfFL+clK/ge0h7ZYkbUxFEp
+        TE7HHUVn+puMndIJl+E2pUbGND9UjGQhQF8bJw8Ur6vQH2ijeg9GhU5XAlwGPXTDTyTnm2qVa0YPS
+        HKrK+kbcMf/PHzofiY7D0GFHg4ribj2B3dTxQg6hHW10qpgjTboZh3bMs2vsTj3Q==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1q9L0l-005yrq-2x;
-        Wed, 14 Jun 2023 09:33:47 +0200
-Message-ID: <bb17265969d1850462bd1d89df71d43f6d40967b.camel@sipsolutions.net>
-Subject: Re: [PATCH] b43legacy: Remove unneeded variable
+        id 1q9L56-005yyv-2C;
+        Wed, 14 Jun 2023 09:38:16 +0200
+Message-ID: <02650a6d4c82bce62a9625714540ea75f7b3f571.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: ath9k: remove unneeded variable from
+ ath9k_dump_legacy_btcoex()
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     wuyonggang001@208suo.com, Larry.Finger@lwfinger.net,
-        kvalo@kernel.org
+To:     baomingtong001@208suo.com, kvalo@kernel.org
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 14 Jun 2023 09:33:46 +0200
-In-Reply-To: <5e1b466986b2371f71f99d7123f1de6d@208suo.com>
-References: <20230612044742.58785-1-zhanglibing@cdjrlc.com>
-         <2caa7e16691b9cecab28aec323785a35@208suo.com>
-         <e598894f5a32c00ff905b010bd8e286f@208suo.com>
-         <5e1b466986b2371f71f99d7123f1de6d@208suo.com>
+Date:   Wed, 14 Jun 2023 09:38:15 +0200
+In-Reply-To: <695b68601eecd648b7531f2e40561edb@208suo.com>
+References: <20230614061007.62077-1-luojianhong@cdjrlc.com>
+         <695b68601eecd648b7531f2e40561edb@208suo.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
@@ -57,36 +55,47 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-06-14 at 13:52 +0800, wuyonggang001@208suo.com wrote:
+On Wed, 2023-06-14 at 14:13 +0800, baomingtong001@208suo.com wrote:
 > Fix the following coccicheck warning:
 >=20
-> drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded=20
-> variable: "count".
+> drivers/net/wireless/ath/ath9k/gpio.c:501:5-8: Unneeded variable: "len".
+>=20
+> Signed-off-by: Mingtong Bao <baomingtong001@208suo.com>
 
-That may be a warning that it gives.
+Same here. I'm even wondering if there are different people behind this?
 
-> Signed-off-by: Yonggang Wu <wuyonggang001@208suo.com>
+Also, I'm wondering what you're up to - are you all training or
+something? I see the same kind of patches that are the same kind of
+broken from a handful of different people?
+
 > ---
->   drivers/net/wireless/broadcom/b43legacy/debugfs.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   drivers/net/wireless/ath/ath9k/gpio.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c=20
-> b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-> index 6b0e8d117061..55a067eaa52d 100644
-> --- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-> +++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-> @@ -73,7 +73,7 @@ static ssize_t tsf_read_file(struct b43legacy_wldev=20
-> *dev, char *buf, size_t bufs
->           (unsigned int)((tsf & 0xFFFFFFFF00000000ULL) >> 32),
->           (unsigned int)(tsf & 0xFFFFFFFFULL));
+> diff --git a/drivers/net/wireless/ath/ath9k/gpio.c=20
+> b/drivers/net/wireless/ath/ath9k/gpio.c
+> index b457e52dd365..f3d1bc02e633 100644
+> --- a/drivers/net/wireless/ath/ath9k/gpio.c
+> +++ b/drivers/net/wireless/ath/ath9k/gpio.c
+> @@ -498,14 +498,13 @@ static int ath9k_dump_legacy_btcoex(struct=20
+> ath_softc *sc, u8 *buf, u32 size)
+>   {
 >=20
-> -    return count;
+>       struct ath_btcoex *btcoex =3D &sc->btcoex;
+> -    u32 len =3D 0;
+>=20
+>       ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+>       ATH_DUMP_BTCOEX("BTCoex Period (msec)", btcoex->btcoex_period);
+>       ATH_DUMP_BTCOEX("Duty Cycle", btcoex->duty_cycle);
+>       ATH_DUMP_BTCOEX("BT Wait time", btcoex->bt_wait_time);
+>=20
+> -    return len;
 > +    return 0;
 >=20
 
-However, that doesn't even fix the warning, and it is actually also
-completely wrong.
+This won't even build.
 
-Please don't submit patches where you don't even understand the code.
+Please try to understand the code you're modifying before you do. And
+no, build-testing it (and fixing it) will not result anything better.
 
 johannes
