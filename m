@@ -2,91 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96DE272F2D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 04:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A44472F2D3
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 04:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233652AbjFNCvt convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 13 Jun 2023 22:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37212 "EHLO
+        id S242231AbjFNCwB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 13 Jun 2023 22:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231720AbjFNCvk (ORCPT
+        with ESMTP id S242165AbjFNCv6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 13 Jun 2023 22:51:40 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3AED2112
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 19:51:26 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35E2nv2lB018848, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35E2nv2lB018848
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Wed, 14 Jun 2023 10:49:57 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Wed, 14 Jun 2023 10:50:15 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Wed, 14 Jun 2023 10:50:15 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Wed, 14 Jun 2023 10:50:15 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Kalle Valo" <kvalo@kernel.org>
-Subject: RE: [PATCH 1/3] [v4] wifi: rtw89: cleanup private data structures
-Thread-Topic: [PATCH 1/3] [v4] wifi: rtw89: cleanup private data structures
-Thread-Index: AQHZnd4jjITdNzmVT06NsVxYkpUqeK+Jmg4A
-Date:   Wed, 14 Jun 2023 02:50:15 +0000
-Message-ID: <79daaf514a6f4e53887c852886f6a3e2@realtek.com>
-References: <975dee84-fa8f-1dbd-a2b8-2aba5a880b60@yandex.ru>
- <20230613100154.116586-1-dmantipov@yandex.ru>
-In-Reply-To: <20230613100154.116586-1-dmantipov@yandex.ru>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Tue, 13 Jun 2023 22:51:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958D92690;
+        Tue, 13 Jun 2023 19:51:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 099A962F37;
+        Wed, 14 Jun 2023 02:51:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0878AC433C0;
+        Wed, 14 Jun 2023 02:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686711097;
+        bh=N3q6ixAinHSWilzVMCv++DW3xSimSHnyP2PRlOaULYE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=aHS8GGlVpVMza8fUd10dHWgjcsEcnhYF6mtda1PEif73/gG8DJjgjRD496BZG2+IQ
+         yZb0yLikA3pccFbH6043Pq5QZcqOroZdRH/n0aPMe6tt6rd6svMoQlkxrdOQGMmm5p
+         gPTCRZNFuEphlrZWYkI0t495rTPGdcZJ6IzKlD2J5Zsf62F+leEV0MUgVETVEw0vup
+         sMwdFgG4EQYtmZ9JqLK5OUrSJZXnIspVyWrfW0tKAsYBWwuyMLC6UVSY84A9XKx8KM
+         hmEOCqZIbZ55Y5QXW5euBztlUDZTHbx6k9Q1KnD2gow6ubRUlJEXvAxIGp7m80p1TK
+         vqIb4LmfdSHew==
+Date:   Tue, 13 Jun 2023 19:51:36 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        regressions@lists.linux.dev
+Subject: Re: Closing down the wireless trees for a summer break?
+Message-ID: <20230613195136.6815df9b@kernel.org>
+In-Reply-To: <ba933d6e3d360298e400196371e37735aef3b1eb.camel@sipsolutions.net>
+References: <87y1kncuh4.fsf@kernel.org>
+        <871qifxm9b.fsf@toke.dk>
+        <20230613112834.7df36e95@kernel.org>
+        <ba933d6e3d360298e400196371e37735aef3b1eb.camel@sipsolutions.net>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 13 Jun 2023 22:00:35 +0200 Johannes Berg wrote:
+> On Tue, 2023-06-13 at 11:28 -0700, Jakub Kicinski wrote:
+> > On Tue, 13 Jun 2023 20:14:40 +0200 Toke H=C3=B8iland-J=C3=B8rgensen wro=
+te: =20
+> > > I think this sounds reasonable, and I applaud the effort to take some
+> > > time off during the summer :)
+> > >=20
+> > > One question that comes to mind is how would this work for patchwork?
+> > > Would we keep using the wireless patchwork instance for the patches
+> > > going to -net in that period, or will there be some other process for
+> > > this? I realise the setup we have for ath9k is a bit special in this
+> > > regard with the ack-on-list+delegation, so I'm obviously mostly
+> > > interested in what to do about that... :) =20
+> >=20
+> > Whatever's easiest :) It's probably a good idea for Kalle to write
+> > down all the local rules and customs and share those with us.
+>=20
+> While that's probably a good idea regardless, I'd think that patchwork
+> doesn't really matter that much - we'll have some catching up to do
+> anyway after the vacations, so looking through patchwork etc. would be
+> perfectly acceptable. Worst case we'd notice when a patch doesn't apply,
+> right? :)
 
+Right, I meant it more in terms of patch flow. Is looking at which
+drivers have a tree specified in MAINTAINERS enough to know what
+should be applied directly?
 
-> -----Original Message-----
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> Sent: Tuesday, June 13, 2023 6:02 PM
-> To: Ping-Ke Shih <pkshih@realtek.com>
-> Cc: linux-wireless@vger.kernel.org; Kalle Valo <kvalo@kernel.org>; Dmitry Antipov <dmantipov@yandex.ru>
-> Subject: [PATCH 1/3] [v4] wifi: rtw89: cleanup private data structures
-> 
-> Remove a bunch of unused (and set but unused) fields
-> from 'struct rtw89_btc_wl_nhm', 'struct rtw89_dle_info',
-> 'struct rtw89_hal' and 'struct rtw89_env_monitor_info'
-> driver-specific data structures, adjust related bits.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Wrt. ath9k patches I guess "delegate in patchwork" won't work anymore,
+> but "resend to netdev" or something perhaps?
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
-[...]
-
+We can watch PW state and apply from linux-wireless, I reckon.
+That said I don't know how you use delegation :)
