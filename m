@@ -2,82 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF2B972F982
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A64F172F9AE
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 11:46:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235473AbjFNJlb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 05:41:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41614 "EHLO
+        id S244277AbjFNJpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 05:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244263AbjFNJkX (ORCPT
+        with ESMTP id S244190AbjFNJo1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 05:40:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9165212A;
-        Wed, 14 Jun 2023 02:39:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3568E618EA;
-        Wed, 14 Jun 2023 09:39:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FAAC433C8;
-        Wed, 14 Jun 2023 09:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686735545;
-        bh=3dwGe7NBdzXEbIELVlW6d1uX67nXdWAeWyq/2PZLMRU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vySnYjmakgnaf6AEEztSRXrsR3h8XSRiPnxGet/fxNQPrrELN8Ig1s40OlktoLCcm
-         sOt2QWc8Xmb0xLit2YUDQw+0neV/yqbbB0D8Kk897ARFpHoua6P7DviRmpg3mHMcsZ
-         z7HUAMqyHFiEOWWq7CTcmDsplknix2T6ax52xWZA=
-Date:   Wed, 14 Jun 2023 11:39:02 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: Re: Closing down the wireless trees for a summer break?
-Message-ID: <2023061447-sneezing-engraved-e7a1@gregkh>
-References: <87y1kncuh4.fsf@kernel.org>
+        Wed, 14 Jun 2023 05:44:27 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F62B294F
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 02:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686735762; x=1718271762;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=F8i6ngU3V0afFCAoBN36JVI876C1xlJ5U3ElbMoPXKk=;
+  b=HaENZw1mc0X1d5PJ+OdMAR8FDxzt5WdJU9mZTQGbX5FKKEcyjVXzgZMu
+   4yKuA0NVQgfk+T7E4/NfNtyw4IoQUg0/DbAP0LMxQnCe1JSd4nJUDFjKw
+   6U8jKeKPjYKeOOgzyKDarZERY/SlkX91En7q0gsAaEGpS+0EFAC1gnQmq
+   71V64MY7AYKEgqQDOzXHY6Z03J/SSqpmSjka7gpne15+eeODIXGnx7AsV
+   2YFYrIay5O8d4dHTvMgAZdZvgviPjsgWm2ceE4vr3WABI/0Ge/NM8LcPg
+   kRl3PpTmbBmD4yV+nrsrDeHGEXYfjQyTsj3ghXn3b2NFWIXUsrJH9CjKo
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="361049788"
+X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
+   d="scan'208";a="361049788"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:41:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711989766"
+X-IronPort-AV: E=Sophos;i="6.00,242,1681196400"; 
+   d="scan'208";a="711989766"
+Received: from basharil-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.203.45])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 02:41:51 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/20] wifi: iwlwifi: updates intended for v6.5 2023-06-14 
+Date:   Wed, 14 Jun 2023 12:41:17 +0300
+Message-Id: <20230614094137.379897-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y1kncuh4.fsf@kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 05:22:47PM +0300, Kalle Valo wrote:
-> Me and Johannes are planning to take a longer break from upstream this
-> summer. To keep things simple my suggestion is that we would official
-> close wireless and wireless-next trees from June 23rd to August 14th
-> (approximately).
-> 
-> During that time urgent fixes would need go directly to the net tree.
-> Patches can keep flowing to the wireless list but the the net
-> maintainers will follow the list and they'll just apply them to the
-> net tree directly.
-> 
-> The plan here is that -next patches would have to wait for
-> wireless-next to open. Luckily the merge window for v6.6 most likely
-> opens beginning of September[1] so after our break we would have few
-> weeks to get -next patches ready for v6.6.
-> 
-> And the v6.5 -next patches should be ready by Monday June 19th so that we
-> have enough time to get them into the tree before we close the trees.
-> 
-> What do people think, would this work? This is the first time we are
-> doing this so we would like to hear any comments about this, both
-> negative and positive. You can also reply to me and Johannes privately,
-> if that's easier.
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-Sounds reasonable to me, have a nice vacation!
+Hi,
 
-greg k-h
+This patch set includes iwlwifi patches intended for v6.5.
+
+It contains normal developement, cleanups and bugfixes.
+It depends on the previous patch sets I've sent.  
+
+Thanks,
+Gregory
+
+Anjaneyulu (4):
+  wifi: iwlwifi: pcie: fix NULL pointer dereference in iwl_pcie_irq_rx_msix_handler()
+  wifi: iwlwifi: mvm: Validate tid is in valid range before using it
+  wifi: iwlwifi: Validate slots_num before allocating memory
+  wifi: iwlwifi: add a few rate index validity checks
+
+Ariel Malamud (1):
+  wifi: iwlwifi: fw: Add new FSEQ defines to fw dump
+
+Ilan Peer (1):
+  wifi: iwlwifi: Correctly indicate support for VHT TX STBC
+
+Johannes Berg (14):
+  wifi: iwlwifi: mvm: correctly access HE/EHT sband capa
+  wifi: iwlwifi: fw: make some ACPI functions static
+  wifi: iwlwifi: mvm: use iwl_mvm_is_vendor_in_approved_list()
+  wifi: iwlwifi: pull from TXQs with softirqs disabled
+  wifi: iwlwifi: pcie: double-check ACK interrupt after timeout
+  wifi: iwlwifi: mvm: add a few NULL pointer checks
+  wifi: iwlwifi: mvm: check link during TX
+  wifi: iwlwifi: mvm: disable new TX csum mode completely
+  wifi: iwlwifi: mvm: store WMM params per link
+  wifi: iwlwifi: use array as array argument
+  wifi: iwlwifi: mvm: always send spec link ID in link commands
+  wifi: iwlwifi: add some FW misbehaviour check infrastructure
+  wifi: iwlwifi: implement WPFC ACPI table loading
+  wifi: iwlwifi: mvm: track u-APSD misbehaving AP by AP address
+
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c   |  9 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 64 ++++++++++++++++---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  | 41 ++++--------
+ .../wireless/intel/iwlwifi/fw/api/config.h    | 15 ++---
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h   | 16 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/dump.c  |  6 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |  4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  6 +-
+ .../wireless/intel/iwlwifi/mvm/constants.h    |  6 +-
+ .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 45 +++----------
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c |  4 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 21 ++++--
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  8 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  8 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 16 ++---
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  9 ++-
+ .../net/wireless/intel/iwlwifi/mvm/power.c    | 35 ++++++----
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 46 +++++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   | 11 ++--
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 10 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 19 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 19 ++++--
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  5 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  | 13 ++--
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c |  5 +-
+ 26 files changed, 265 insertions(+), 182 deletions(-)
+
+-- 
+2.38.1
+
