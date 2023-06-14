@@ -2,87 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B3B72F41C
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 07:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0822372F447
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Jun 2023 07:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234048AbjFNFVg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 01:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
+        id S242930AbjFNFwF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 01:52:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233240AbjFNFVf (ORCPT
+        with ESMTP id S234103AbjFNFwE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 01:21:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E781A3
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 22:21:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48A89636F6
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 05:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8CCC433C8;
-        Wed, 14 Jun 2023 05:21:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686720092;
-        bh=YFl7JkAlPByIvT7viYOGAQdr74o93Wn+L4fRDjxXg9k=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=VTW87qqUKlgWmBWoWzLvQlMCANscJ8CmWl/HSqkyr2lEQOtI75GjKmihADFF+cmOo
-         6Bb2OnoDNivOVC00Z8KT+FD5j7wSEOZjC9FhhZMtrRyQZq0manej2+IayvNK5jmyS3
-         TbOtDKRaBundF9J3E6H71fSccNlsjN+eW9u0+WQr4YHMNnKOI1Vp37ajsuaXbn8/zJ
-         fiDh5M736+FRX20laOkdbEcQiuHrcUEwRyMCF9TN8877kfbqePizC2RVoZppfuKtit
-         xG6JP/w+UAg9Z/WcAnDcCCxYGYkZMNoOMm2yodGQaibP9obXiPogBrqtnaybVxJjtt
-         dyci2TS3ieNkA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 4/4] [v2] wifi: rtlwifi: simplify LED management
-References: <20230608095051.116702-4-dmantipov@yandex.ru>
-        <168664510862.24637.10587241603155144086.kvalo@kernel.org>
-        <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru>
-Date:   Wed, 14 Jun 2023 08:21:30 +0300
-In-Reply-To: <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru> (Dmitry
-        Antipov's message of "Tue, 13 Jun 2023 11:36:05 +0300")
-Message-ID: <87h6rad3fp.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Wed, 14 Jun 2023 01:52:04 -0400
+Received: from mail.208.org (unknown [183.242.55.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79B519B9
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Jun 2023 22:52:02 -0700 (PDT)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTP id 4Qgvh04GJWzBQJYT
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 13:52:00 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+        content-transfer-encoding:content-type:message-id:user-agent
+        :references:in-reply-to:subject:to:from:date:mime-version; s=
+        dkim; t=1686721920; x=1689313921; bh=Nv20kQTwcZdEAsdjCJJB4K+xOfi
+        bojtHceoQOd15qBI=; b=BhauDtUmLU5GFK77Yz/WrEVEVEN6ND6U/YYGX/is2aW
+        mkhmEfZ9v1HvV0TNcDbzLfS86t1vlnjA8uKpBb6wG3Txpr0hvaHr7BWx9UBvRc2J
+        Vn6OZ17lK22T9XhiuD23tSF7rKxXFEwh00nk6sTvvvAcuXgKly7CDmW5bjryFJ1x
+        +y6AV/B5LBWbqWdsBYfH7kJc9m+dntLiyaMQ/N8nAG0qfNJj8uX9cx0Dd3NoepJz
+        i5YfWbCXVSY5dCnkXH5ZuFUqWN+8Q/iLWfcGuUz2/0OYPmiM0XpOzB205xspSRpx
+        jU2RM9noqDyEBnYz2UJZBT/UiRMHU2mr//autMfJ2qg==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id BV7MLpjgsWCh for <linux-wireless@vger.kernel.org>;
+        Wed, 14 Jun 2023 13:52:00 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+        by mail.208.org (Postfix) with ESMTPSA id 4Qgvh020JDzBJLB3;
+        Wed, 14 Jun 2023 13:52:00 +0800 (CST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Wed, 14 Jun 2023 13:52:00 +0800
+From:   wuyonggang001@208suo.com
+To:     Larry.Finger@lwfinger.net, kvalo@kernel.org
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] b43legacy: Remove unneeded variable
+In-Reply-To: <e598894f5a32c00ff905b010bd8e286f@208suo.com>
+References: <20230612044742.58785-1-zhanglibing@cdjrlc.com>
+ <2caa7e16691b9cecab28aec323785a35@208suo.com>
+ <e598894f5a32c00ff905b010bd8e286f@208suo.com>
+User-Agent: Roundcube Webmail
+Message-ID: <5e1b466986b2371f71f99d7123f1de6d@208suo.com>
+X-Sender: wuyonggang001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+Fix the following coccicheck warning:
 
-> On 6/13/23 11:31, Kalle Valo wrote:
->
->> Is there a reason why you are changing error messages to debug messages like here:
->>
->> -		pr_err("switch case %#x not processed\n",
->> -		       pled->ledpin);
->> +		rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
->> +			"unknown LED pin %d\n", pin);
->
-> Well, this sounds to be more problem-specific rather than
-> generic "something unexpected in the switch statement".
->
->> The commit log mentions nothing about that.
->
-> It seems I have to write more detailed commit message.
-> Should I resend?
+drivers/net/wireless/broadcom/b43legacy/debugfs.c:68:9-14: Unneeded 
+variable: "count".
 
-We prefer one logical change per patch, so it's better to remove all the
-pr_err() conversions and resend as v3. And let's just drop the pr_err()
-conversions, rtlwifi is an old driver and we want to keep changes to
-that driver to the minimum. rtlw8xxxu, rtw88 and rtw89 are the active
-Realtek drivers.
+Signed-off-by: Yonggang Wu <wuyonggang001@208suo.com>
+---
+  drivers/net/wireless/broadcom/b43legacy/debugfs.c | 6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c 
+b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+index 6b0e8d117061..55a067eaa52d 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
++++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+@@ -73,7 +73,7 @@ static ssize_t tsf_read_file(struct b43legacy_wldev 
+*dev, char *buf, size_t bufs
+          (unsigned int)((tsf & 0xFFFFFFFF00000000ULL) >> 32),
+          (unsigned int)(tsf & 0xFFFFFFFFULL));
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+-    return count;
++    return 0;
+  }
+
+  /* wl->irq_lock is locked */
+@@ -99,7 +99,7 @@ static ssize_t ucode_regs_read_file(struct 
+b43legacy_wldev *dev, char *buf, size
+              b43legacy_shm_read16(dev, B43legacy_SHM_WIRELESS, i));
+      }
+
+-    return count;
++    return 0;
+  }
+
+  /* wl->irq_lock is locked */
+@@ -166,7 +166,7 @@ static ssize_t txstat_read_file(struct 
+b43legacy_wldev *dev, char *buf, size_t b
+  out_unlock:
+      spin_unlock_irqrestore(&log->lock, flags);
+
+-    return count;
++    return 0;
+  }
+
+  /* wl->irq_lock is locked */
