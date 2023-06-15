@@ -2,97 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0525D730FAE
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 08:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DF82731063
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 09:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244286AbjFOGt0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 02:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53684 "EHLO
+        id S244784AbjFOHSs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 03:18:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244237AbjFOGtL (ORCPT
+        with ESMTP id S243258AbjFOHSE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 02:49:11 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95BBF297F
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 23:47:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686811664; x=1718347664;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UrvD9GwwfkXKhsSDMoLCr4OR3Kjcuh9IApIdDhSRBxs=;
-  b=nfAlKLzvVvWpmJRbHpC4uvA7qRHeGfucTyhnKgDbWnLWatRcOEXohaQd
-   ww5oxfmpz6LX5PN+52D25Jdg4NrqABT0nXi2hF2DzJAkKOvhIe5IYa3+6
-   /tMIkz9NsFaxhwijzBtepkOe5vmZp+TT5aqKqOpDz7EBhy9sfjUT1aHHY
-   fF4VWmMssmuTb/TpF1euBXFHKStq77DF+6zOn6JulFJcWS6eQxmoWSdEm
-   zqSNAbLrTLYR5og5Ghq89pvAbf0v3t8sgLE0tTIleBz73/zywPXqQTxWf
-   qVMrouV5TV7PSg1kqKWSgIBb8/olH0V6HXpnR1J5ALXxYvXpyI4rB1MkA
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="362212263"
-X-IronPort-AV: E=Sophos;i="6.00,244,1681196400"; 
-   d="scan'208";a="362212263"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 23:47:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="782395975"
-X-IronPort-AV: E=Sophos;i="6.00,244,1681196400"; 
-   d="scan'208";a="782395975"
-Received: from uabekas-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.220.240])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 23:47:42 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 5/5] wifi: iwlwifi: bump FW API to 81 for AX devices
-Date:   Thu, 15 Jun 2023 09:47:20 +0300
-Message-Id: <20230615094410.e61fdc474d89.I3d9823231fa7fc47158b8aa3561b43822c8c86cd@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230615064720.459645-1-gregory.greenman@intel.com>
-References: <20230615064720.459645-1-gregory.greenman@intel.com>
+        Thu, 15 Jun 2023 03:18:04 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518112D58;
+        Thu, 15 Jun 2023 00:17:43 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.55])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QhYQf3z32z18LrV;
+        Thu, 15 Jun 2023 15:12:42 +0800 (CST)
+Received: from [10.69.30.204] (10.69.30.204) by dggpemm500005.china.huawei.com
+ (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 15 Jun
+ 2023 15:17:40 +0800
+Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
+To:     Jakub Kicinski <kuba@kernel.org>
+CC:     <davem@davemloft.net>, <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+References: <20230612130256.4572-1-linyunsheng@huawei.com>
+ <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org>
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+Date:   Thu, 15 Jun 2023 15:17:39 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230614101954.30112d6e@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.69.30.204]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gregory Greenman <gregory.greenman@intel.com>
+On 2023/6/15 1:19, Jakub Kicinski wrote:
+> On Mon, 12 Jun 2023 21:02:55 +0800 Yunsheng Lin wrote:
+>>  	struct page_pool_params pp_params = {
+>> -		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
+>> -				PP_FLAG_DMA_SYNC_DEV,
+>> +		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+>>  		.order = hns3_page_order(ring),
+> 
+> Does hns3_page_order() set a good example for the users?
+> 
+> static inline unsigned int hns3_page_order(struct hns3_enet_ring *ring)
+> {
+> #if (PAGE_SIZE < 8192)
+> 	if (ring->buf_size > (PAGE_SIZE / 2))
+> 		return 1;
+> #endif
+> 	return 0;
+> }
+> 
+> Why allocate order 1 pages for buffers which would fit in a single page?
+> I feel like this soft of heuristic should be built into the API itself.
 
-Start supporting API version 81 for AX devices.
+hns3 only support fixed buf size per desc by 512 byte, 1024 bytes, 2048 bytes
+4096 bytes, see hns3_buf_size2type(), I think the order 1 pages is for buf size
+with 4096 bytes and system page size with 4K, as hns3 driver still support the
+per-desc ping-pong way of page splitting when page_pool_enabled is false.
 
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+With page pool enabled, you are right that order 0 pages is enough, and I am not
+sure about the exact reason we use the some order as the ping-pong way of page
+splitting now.
+As 2048 bytes buf size seems to be the default one, and I has not heard any one
+changing it. Also, it caculates the pool_size using something as below, so the
+memory usage is almost the same for order 0 and order 1:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 29dded1531a0..5ac9416331de 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2023 Intel Corporation
-  */
- #include <linux/module.h>
- #include <linux/stringify.h>
-@@ -10,7 +10,7 @@
- #include "fw/api/txq.h"
- 
- /* Highest firmware API version supported */
--#define IWL_22000_UCODE_API_MAX	79
-+#define IWL_22000_UCODE_API_MAX	81
- #define IWL_22500_UCODE_API_MAX	77
- 
- /* Lowest firmware API version supported */
--- 
-2.38.1
+.pool_size = ring->desc_num * hns3_buf_size(ring) /
+		(PAGE_SIZE << hns3_page_order(ring)),
 
+I am not sure it worth changing it, maybe just change it to set good example for
+the users:) anyway I need to discuss this with other colleague internally and do
+some testing before doing the change.
+
+> .
+> 
