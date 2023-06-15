@@ -2,101 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6C57311C9
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 10:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE96731282
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 10:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245245AbjFOIKJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 04:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45336 "EHLO
+        id S245146AbjFOInp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 04:43:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239593AbjFOIJt (ORCPT
+        with ESMTP id S238198AbjFOInX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 04:09:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA5B21A3
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 01:09:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 345C261E6D
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 08:09:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18941C433C8;
-        Thu, 15 Jun 2023 08:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686816587;
-        bh=ZAt5rBYCwVr1kW0vzedsjGJ19usAHQ8JPGxfPNMQXTA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pHPhE/9deuZaO7L1R5Ji1N8NgXBwDYX2IoWDgHTVxR/B3J6Sm9ZHsGJEi9HMCdz+J
-         qGWCkrIWrH/wdFLPXHXV5VYOAjzZKcGpkTFRDf5m1CZSibWXiREio8VXsW+qbyJxon
-         sr7AIiLSo90iC46NB2a+9Y9jx1e2YSk9ZeVHD9a3iLEy0yFXaTQqM/TDPLJG+2AUD6
-         T9wpdczeYYeqeD60/VAyJJMhrqXhPHqnQkBHyRyC2VUVTh24rBSoa4aF26wTtnPwWL
-         DitmG6dhszoUUVbbQ7uCqa3mkkybGY2KKOOYDm1j4Q+Oo/gL1423M0PKDBZU9T8Xkh
-         Dq4XxMaRWoBdw==
-Date:   Thu, 15 Jun 2023 10:09:43 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/3] MAINTAINERS: mt76: add git tree
-Message-ID: <ZIrHR53jAUPeDg/F@lore-desk>
-References: <20230614144704.505553-1-kvalo@kernel.org>
+        Thu, 15 Jun 2023 04:43:23 -0400
+Received: from forward501c.mail.yandex.net (forward501c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d501])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2462942
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 01:43:20 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2d2c:0:640:8fff:0])
+        by forward501c.mail.yandex.net (Yandex) with ESMTP id 38E5D6E3D1;
+        Thu, 15 Jun 2023 11:30:54 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id rUXJKb9DV0U0-5Vf7gV7x;
+        Thu, 15 Jun 2023 11:30:53 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1686817853;
+        bh=/liri3UZbGJ2KsypG4Ag5N4yIol72rCbP647zEmQ4/c=;
+        h=Subject:From:In-Reply-To:Cc:Date:References:To:Message-ID;
+        b=HkpX3NGwE71T9l0Pg6xKVfe9j7AW8thG0o9JIC2clnVUPcXTgycM53nDHabaRM2dY
+         urg0CEw6svBqVjdPqUjL4OQ+SPuLscK8OauPR2FQUAiHWv+2TcfSI3wR19P2HOvNT5
+         e002pj4Gc+ju1ZwBpTfJFSnAJgw9zSTOAP3s7cOo=
+Authentication-Results: mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <4eb7080b-34f6-af68-6bf1-8b767d59ed61@yandex.ru>
+Date:   Thu, 15 Jun 2023 11:30:53 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VewxizL/3ceCZg2v"
-Content-Disposition: inline
-In-Reply-To: <20230614144704.505553-1-kvalo@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Franky Lin <franky.lin@broadcom.com>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
+References: <20230607161611.85106-1-dmantipov@yandex.ru>
+ <168681437386.8111.5132863492672751351.kvalo@kernel.org>
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH 1/3] wifi: brcmfmac: handle possible WOWL configuration
+ error
+In-Reply-To: <168681437386.8111.5132863492672751351.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 6/15/23 10:32, Kalle Valo wrote:
 
---VewxizL/3ceCZg2v
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> This patchset feels like random cleanup which makes me wary
 
-> Felix has a git tree for mt76 patches, document that.
->=20
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Note series v2 was posted a few days ago.
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0971854323a7..f7d7fdf47dd8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13212,6 +13212,7 @@ R:	Shayne Chen <shayne.chen@mediatek.com>
->  R:	Sean Wang <sean.wang@mediatek.com>
->  L:	linux-wireless@vger.kernel.org
->  S:	Maintained
-> +T:	git https://github.com/nbd168/wireless
->  F:	Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
->  F:	drivers/net/wireless/mediatek/mt76/
-> =20
->=20
-> base-commit: 93ae81454b1107843ad36dcdc457dd10ee0f2cbe
-> --=20
-> 2.30.2
->=20
+> How are these 3 patches tested?
 
---VewxizL/3ceCZg2v
-Content-Type: application/pgp-signature; name="signature.asc"
+It was quickly checked to not break (cheap noname) BCM43236-based
+USB Wi-Fi adapter I occasionally have.
 
------BEGIN PGP SIGNATURE-----
+Dmitry
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZIrHRwAKCRA6cBh0uS2t
-rAA9AQC1Ow2hhTh42yTsiZk/Fs10aKD/Zp03+Tn4JBnKncyeSgD/WUSCb5tJoAk0
-90tpVR8I1tKAzihfTjLBByLGidiu9Q0=
-=uOTf
------END PGP SIGNATURE-----
-
---VewxizL/3ceCZg2v--
