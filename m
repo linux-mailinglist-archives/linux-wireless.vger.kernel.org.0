@@ -2,241 +2,274 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF468731AAD
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 16:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A436A731B28
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 16:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343820AbjFOOAP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 10:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35376 "EHLO
+        id S1344145AbjFOOVR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 10:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345109AbjFON76 (ORCPT
+        with ESMTP id S240067AbjFOOVQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 09:59:58 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EB642D59;
-        Thu, 15 Jun 2023 06:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686837595; x=1718373595;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=WAturMWj/JV4WTKfVibx5E668Eo8V2ENKnzfH1IhlBM=;
-  b=N3iXQELzfwG/RfFecrRgE97oKu1XWltnrBCr+yW7WyjuLD8YcWFSp0f6
-   +taRfvENPQGnIUuxz8AJa05ZD9lizb64e1zKydswcqEVyWLDzAb/ePYtj
-   eVX6rz/74XopChl7b1KRn5oripvOAnYknqeAEK1kaGGuLszPaHmbjDhXj
-   KS7uqM7/B8kejWl23G88eY0RXXUcX0tCUA0IbnPBrF26y3VKxaPSELP8V
-   NkmncGvoezjKZiw1AphPElqrtI9Tex1L1kjuSCtuIfyONag/OI4h42Bjp
-   yrfQYYOlq2MhYpdG4numuO91Kr0oJaZOeAVuuLtSQEyXGBJ2puoHCYunJ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="338544797"
-X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="338544797"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 06:59:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="742236863"
-X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="742236863"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga008.jf.intel.com with ESMTP; 15 Jun 2023 06:59:53 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 15 Jun 2023 06:59:53 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Thu, 15 Jun 2023 06:59:53 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Thu, 15 Jun 2023 06:59:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fWEBDNT5q41SzVu83CRP5lqdKWPoQG4bdWOUqlIk/VBcYzbcAjiGYjAmvi8BIzznTn++0AhtYMs8sShUOmDb9dHEmllaZyadFvlkF3gERo73oxLcLfwgr+t4Gr08Jj8OtFRy3Hp7aKewZHdv0CpKIqS6YHFqlcQnrvKT+Rl41DfyFa7yE7jn4ED/sNWWF/9oftoF9SZXc5RalF6kAjkGZUIQfn0A5huTMdRjvexdCTeg/43NDnpM+o4aFK5e4Sl5rRmSJRpUj0eSxwRzMgiVaoP0D4BgVLTwhGDYfJ5Qsxw01O0AlN4hIrGdjqDBIO/5HGV9NA6Nl2f16+Pi2ZOgzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+K2B5Hf0vub4O/YP2IsN9/yGj+0YYrSXxua9dvtjb7I=;
- b=DjXGUZyoCtTLLuLTe4pw0J8yzG2pAsvD7+w/H6liJaLYVz4VIos5oL8JEeFnDYnju7elbXx0jn8k9MRzpv8c5NWKwfI2DonpVnWR4jAuccoT6Bu9P1gHJQUhBosqxo8pMeFeBcAEGpWkI+Q2/u7EKiMjSMPXw1YCqXg4gjYvkP/fAZCHgmEsUaT/l55x69aW+v0vtdz9Mw+rE+wh6DDymkfNinhRtKTXs82XMyo9n04lsdD7xcDnpxvLDl7zDU0kpWcDFykcV/lngmT279CQqHklW4oSOVrZwxZ8pbg9SoZpM1C0WlLbjdexV4NVot5Tg0zqeqiFAEt5073Tl/bRBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM6PR11MB3625.namprd11.prod.outlook.com (2603:10b6:5:13a::21)
- by MN6PR11MB8172.namprd11.prod.outlook.com (2603:10b6:208:478::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.42; Thu, 15 Jun
- 2023 13:59:49 +0000
-Received: from DM6PR11MB3625.namprd11.prod.outlook.com
- ([fe80::82b6:7b9d:96ce:9325]) by DM6PR11MB3625.namprd11.prod.outlook.com
- ([fe80::82b6:7b9d:96ce:9325%6]) with mapi id 15.20.6455.030; Thu, 15 Jun 2023
- 13:59:49 +0000
-Message-ID: <b7253d36-26cc-e5a3-e34a-d28d6fd8fde0@intel.com>
-Date:   Thu, 15 Jun 2023 15:59:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.1
-Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Yunsheng Lin <linyunsheng@huawei.com>
-CC:     <davem@davemloft.net>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Alexander Duyck <alexander.duyck@gmail.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        David Christensen <drc@linux.vnet.ibm.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Jesper Dangaard Brouer" <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
- <20230612130256.4572-5-linyunsheng@huawei.com>
- <20230614101954.30112d6e@kernel.org>
-Content-Language: en-US
-From:   Alexander Lobakin <aleksander.lobakin@intel.com>
-In-Reply-To: <20230614101954.30112d6e@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0076.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9a::18) To DM6PR11MB3625.namprd11.prod.outlook.com
- (2603:10b6:5:13a::21)
+        Thu, 15 Jun 2023 10:21:16 -0400
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5129C272D;
+        Thu, 15 Jun 2023 07:21:10 -0700 (PDT)
+Received: from workstation5.fritz.box (ip-084-119-033-219.um24.pools.vodafone-ip.de [84.119.33.219])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id F093C3F259;
+        Thu, 15 Jun 2023 14:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1686838868;
+        bh=eC5qQ/JyyQIBjyDctp6iNTZGn5tmDA+jJ9lX2qPLCSs=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=DyGjdr2VWuhQZPV2BO2ZzF8oIPnQEjxWRusqkHpuVFQcFbsnlhnqeTunI6nCZnLLp
+         LMuvc2JwNIKkomRJfbKjn7xv7JLZ3lwFLzbqWuGPNElnDzddzqNWGpk6mdD5DzObqJ
+         4k+Y7pzkPNlHg5X8a4r/hgRRoYQLTO3yKdPdeX1l45iEkhI8ufY2WgQis4m7PMR3jl
+         cbM0jBGIbderK19ulb/HB9etrPjGwxoG8ol2fKgP5XiNFqKfQY8B3gQgjR5KHtNtrr
+         rcrndIiQG8px7L+LCxtuKE1RVA1mXKnGfubAqvYa3VJgMZV6XNby1yvsqpP7J1QiS6
+         ztW2U/YXSW94A==
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [RFC 1/1] wifi: rtw88: Add support for the SDIO based RTL8723DS chipset
+Date:   Thu, 15 Jun 2023 16:20:44 +0200
+Message-Id: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR11MB3625:EE_|MN6PR11MB8172:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2427c4bd-1ead-4a08-a366-08db6da8c8bb
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: emRHLxOdarMHYQyD9p6pHDpyZJNHFLX9FaQ2SSvlj5xhpOkxOQafMxR/DaWmRfETTJkMH0SwSoQDj189vbukjpTcySwFyAj5aDvO9+GzS+3zNU9o9IfoCOMGAsVdVs+9vuBRZc7fhNkUkvvo66AInxujvU3XM87pm3KZkvCNIFZwjlEjB8y1U8dQ2aRlgwPKE2VB9eLktSdHGmvBzB7igiC1oyS4CSB7pw5831NGGznApoc+MEskODIE0qznjtoaH2FbRNZmG9yQC1FS+OFMpYWSUGdiNBov0icUs8su7U2Yeels5I/Sj9ByyMrdHS03hJjhn2g1PM3GDQ/Y3KuXqNrMlmTN7CVj5XjTQwvRGAUOmdpiaPL2LGfbFKkZ0CifxaZ0SmxclISbVwC/c4BtVke8yEXmYMIBZN6XHuN6EktZhDb5Ei99hb+50AdVpMD4Cc+X1gHFnlhquKeyqOrwwHN9nVb7vjJFn5o/JgFRidh3K6+TxUc4nLCjfiJetq5/GLlLumKUqgn9N6F60x6IydLLbg9E/ItS5k5aliT58hTVD3h2WOwJMT9DUREiUCPZQWaGqbBF9DecaZyq4Vjp9DY48Hq2NRP1iw2z7sOOs3PABLtPok7g428oo1Oc4LXBr9/s2Zu49NUlVpExNyYUTw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3625.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(366004)(39860400002)(136003)(376002)(396003)(451199021)(82960400001)(2616005)(83380400001)(38100700002)(31696002)(86362001)(36756003)(478600001)(110136005)(54906003)(4326008)(6486002)(6666004)(8936002)(8676002)(2906002)(7416002)(5660300002)(66556008)(66476007)(7406005)(66946007)(31686004)(41300700001)(186003)(316002)(6512007)(6506007)(26005)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZG1EaEJ5Y1RQMHdWc0gvd3Jua2tXQWhLcFN4QUd5RkpaKzhaL0M1bGZweXFI?=
- =?utf-8?B?OXpTT09kSUFHWmdlZ0Z3N1l4c2tXL0o3dnRzVmk3K3o5bDIzaG45c2hpakRR?=
- =?utf-8?B?ejB0OWJvZUdRVElFQVJReTE5NmNmUjlaQksvQTJFVm1qZ3FURXRZZUlobHRs?=
- =?utf-8?B?R205QXFaVFNOeHRRYzFwVlR0Zmo4MERGT3Z4SHoyM0RmeUZTTGN0ZDh3Nmxl?=
- =?utf-8?B?bFFOY0VPL25sSUhVcTcrUkY1L2xKTlFHV0NGMzR2TEZmSTAva2puK0pKODU4?=
- =?utf-8?B?VWUxb3lZbGNmb3NXMkpDbzB2LzFxckpCdUg4WTRURzdEN3I0SFdwbUVNT016?=
- =?utf-8?B?WXRNVFNnaHhzb3lnYnozV0xkcU1VV3F2ZlA1TDZiTTRCcXNwUlREVjU4enZl?=
- =?utf-8?B?aDhTUlp4enZrQUpvMEZjYVlheUVOTkFSZWtOcnJLeWJnTmE4UU1BT1FJVGFl?=
- =?utf-8?B?NjF3TWM4NVFISHVheFFnM1lZQ2grNHdqRWRXQXdSUlZlaUpkZVFzejJFZWZT?=
- =?utf-8?B?NVN6RGk0OEpRUWZMenIwRktrSS9OMXJjdG5wL01Jb3ZEaUttOXBGN2FPL2FT?=
- =?utf-8?B?S1pqeG4vREIvd2t0NHI2ZEJnZ3dXak5PeGhkNHR4cnhrV1dlZVZJUDU4Y0ZN?=
- =?utf-8?B?VGkzSEFBQXc0SFk2Ym5wV3oraEhPbnk0SjZ0WHlHTnVkWVZFWXJhYjNzRUh4?=
- =?utf-8?B?aXZuWjBwMjdHbE1pQllSYWJvd3RIWmV1TjgraDhuT0ZuQTFHNzJ4UnY3Wms5?=
- =?utf-8?B?SVY5anF2dUloK2MxTS9CRUowY1d4WUlYemF5ZnlibmhYUXc5UXErNlNMNWQ4?=
- =?utf-8?B?b2kzSWFNV2VUd3pRMThENEhSU1MvRGVIZjhoT2xtWEoySCttR0RPUmYrTC91?=
- =?utf-8?B?SFlkN2M3UXV2NmF3MXhjU3p1NGkxN2wxT0Y1Q1VuOHhDNi9VMHh5TEhCTVk0?=
- =?utf-8?B?L2RwR2J6SlhzTlBqdzFHb1JzTzZUTzhMczFNb2JhZTBxcmdjZ05iV1U4NlFW?=
- =?utf-8?B?RUV0Zk5taGpNUncxNml0RUNCUnhtblNFbTJHZ2pvV2dkYlZpSnVSUzBvRFJG?=
- =?utf-8?B?cVRlSHRPWEVOU09XZFFPQ2RzMjdobHI2VnI4SlNNNUxtWk9jK0VJT25hcVZC?=
- =?utf-8?B?azZUaSsvWUZxeDdTWUdDSWNVK1N5WW9mNnU3VHpxQlFLKzIrY2s0ZllVQXY1?=
- =?utf-8?B?TlU5eFd0a1YyamRQRFFxOCtlcTZBUnlEdFRYWUhMQ0VSdTBmTHhtODZIRFR3?=
- =?utf-8?B?UXBaYk5jcVBYUkpKWkxNREVtaG83Mm5uejk3aS9PdndnZzdjWkdzaCs4Mlpm?=
- =?utf-8?B?a0F0QW01ellscXN4dFRrZURWYkRyL0hCUU1qNXpuSFNQNlZueWlRTGhqbGNm?=
- =?utf-8?B?Mm1YdmV5ZlRmbm5oczFETU5QOXAxN3RZeGNHQ2ZEYmlKVW94dnMxUkdhTWJ1?=
- =?utf-8?B?eHJuSkk1ekhJNXVsdWlINURvMVpvbUZkNFo3enBjcmRVU0hNcnVCNjZhSDh6?=
- =?utf-8?B?VExLTEQ4VTVZVTFyVlNPQTNyVk82NXZOcE1jalg1UGN0R1Q1eXRJRmR5cGZZ?=
- =?utf-8?B?dkViRlN5eEQxSVNMOHlQRDdqOTgybEwrWjVtaTlPb2lxbXE2ZXZjUkFpZHF1?=
- =?utf-8?B?eXU1NkhjQlBUUU43RFlFOE5YVEwwd1VKMy9md2x2WXVTUkFJa0dYdTVndER0?=
- =?utf-8?B?ZTVXekU0R3VBQktrUTkvSm95d1dQQ2h4dzJiVEtHbk5qSEdoMmN2T0dJbW5L?=
- =?utf-8?B?MUNXVWNwZW03ZTBZb0dZdk5QMVp1aS9uMzErMTJCU3FTQW1VZThwZkg0dFJm?=
- =?utf-8?B?eUtTQ3d0WUFvVGtGMFduWDJFNC9OdGMvb1A0cTBsaWlkS3BvUTF2Z3FyS1RX?=
- =?utf-8?B?Z1FObW9MR2JndFpyM3liRExWYWNVTzIxTkdPZm9iWUcrQ3FCZTF1Q1gwZjBW?=
- =?utf-8?B?Tk9KQzFwZERNdUczRUxMYU5lOXJVTXZLQ25OUnVORy9BTnNUMVBsMEFuTjBH?=
- =?utf-8?B?MWF5a2JzQ2paNy9TekdiNlI3a0RWRG1aM1ZDaWdET3p5YVhrMWJGYzcvdVdW?=
- =?utf-8?B?U2phNHlPK1FBd2I0L2dEcmpXRzdxeGxaMzVoS0VmU0xqdmtScDQ4ZjlHSmVI?=
- =?utf-8?B?YXNKM3FGNTVDN0N4R3EwcjdWZW5mTHR1OE5FTWdTdXFuOXpoeFk5dWd6M1J2?=
- =?utf-8?B?Y0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2427c4bd-1ead-4a08-a366-08db6da8c8bb
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3625.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2023 13:59:49.5277
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zf3/FqU1/RcGgweR0e7M6UbRN5uJhfexIYo064dpExFoFEVubR2Up3jhQ76q9FDWZHqCcRnPUz0e8fBhI7o6kxaFqVNsDYZK9/y69j2gHAs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8172
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
-Date: Wed, 14 Jun 2023 10:19:54 -0700
+Wire up RTL8723DS chipset support using the rtw88 SDIO HCI code as
+well as the existing RTL8723D chipset code.
 
-> On Mon, 12 Jun 2023 21:02:55 +0800 Yunsheng Lin wrote:
->>  	struct page_pool_params pp_params = {
->> -		.flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
->> -				PP_FLAG_DMA_SYNC_DEV,
->> +		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
->>  		.order = hns3_page_order(ring),
-> 
-> Does hns3_page_order() set a good example for the users?
-> 
-> static inline unsigned int hns3_page_order(struct hns3_enet_ring *ring)
-> {
-> #if (PAGE_SIZE < 8192)
-> 	if (ring->buf_size > (PAGE_SIZE / 2))
-> 		return 1;
-> #endif
-> 	return 0;
-> }
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
 
-Oh lol, just what Intel drivers do. They don't have a pool to keep some
-bunch of pages (they can recycle a page only within its buffer), so in
-order to still recycle them, they allocate order-1 pages to be able to
-flip the halves >_<
+On my Lichee RV Dock board this patch is enough to make The RTL8723DS
+work. But unfortunately after running some time the driver crashes.
+My impression is that the crash is not specific to my patch but must
+be hidden in one of the existing functions it is invoking.
 
-> 
-> Why allocate order 1 pages for buffers which would fit in a single page?
-> I feel like this soft of heuristic should be built into the API itself.
+This seems to be related to not checking pkt_stat->pkt_len.
 
-Offtop:
+My kernel was built against v6.4-rc6.
 
-I tested this series with IAVF: very little perf regression* (almost
-stddev) comparing to just 1-page-per-frame Page Pool series, but 21 Mb
-less RAM taken comparing to both "old" PP series and baseline, nice :D
+Best regards
 
-(+Cc David Christensen, he'll be glad to hear we're stopping eating 64Kb
- pages)
+Heinrich
 
-* this might be caused by that in the previous version I was hardcoding
-truesize, but now it depends on what page_pool_alloc() returns. Same for
-Rx offset: it was always 0 previously, as every frame was placed at the
-start of page, now depends on how PP places** it.
-With MTU of 1500 and no XDP, two frames fit into one 4k page. With XDP
-on (increased headroom) or increased MTU, PP starts effectively do
-1-frame-per-page with literally no changes in performance (increased RAM
-usage obviously -- I mean, it gets restored to the baseline numbers).
 
-** BTW, instead of 2048 + 2048, I'm getting 1920 + 2176. Maybe the stack
-would be happier to see more consistent truesize for cache purposes.
-I'll try to play with it.
+[ 1276.644590] rtw_sdio_rx_skb: pkt_stat->pkt_len = 385
+[ 1276.747000] rtw_sdio_rx_skb: pkt_stat->pkt_len = 385
+[ 1276.951761] rtw_sdio_rx_skb: pkt_stat->pkt_len = 385
+[ 1277.054174] rtw_sdio_rx_skb: pkt_stat->pkt_len = 385
+[ 1277.160354] rtw_sdio_rx_skb: pkt_stat->pkt_len = 436
+[ 1277.259033] rtw_sdio_rx_skb: pkt_stat->pkt_len = 385
+[ 1277.264710] rtw_sdio_rx_skb: pkt_stat->pkt_len = 437
+[ 1277.270457] rtw_sdio_rx_skb: pkt_stat->pkt_len = 471
+[ 1277.276234] rtw_sdio_rx_skb: pkt_stat->pkt_len = 3338
+[ 1277.281557] skbuff: skb_over_panic: text:ffffffff052a1ea2 len:3338 put:3338
+head:ffffffd81146fa80 data:ffffffd81146fac0 tail:0xd4a end:0x440 dev:<NULL>
+[ 1277.295471] ------------[ cut here ]------------
+[ 1277.295485] kernel BUG at net/core/skbuff.c:200!
+[ 1277.295507] Kernel BUG [#1]
+[ 1277.295520] Modules linked in: ccm rtw88_8723ds rtw88_8723d rtw88_sdio
+rtw88_core mac80211 hci_uart btqca btrtl sr9700 btbcm dm9601 btintel usbnet mii
+bluetooth libarc4 snd_soc_simple_card snd_soc_simple_card_utils sun50i_dmic
+snd_soc_dmic cfg80211 snd_soc_core pwrseq_simple sun8i_mixer sun4i_tcon
+drm_dma_helper drm_kms_helper sunxi snd_compress phy_generic ac97_bus
+snd_pcm_dmaengine musb_hdrc sun8i_tcon_top snd_pcm syscopyarea sysfillrect
+sysimgblt ohci_platform ehci_platform udc_core ecdh_generic snd_timer sun8i_ce
+ecc crypto_engine snd sun6i_dma virt_dma soundcore leds_gpio cpufreq_dt
+binfmt_misc nls_iso8859_1 drm dm_multipath scsi_dh_rdac scsi_dh_emc scsi_dh_alua
+backlight efi_pstore ip_tables x_tables autofs4 raid10 raid456 libcrc32c
+async_raid6_recov async_memcpy async_pq async_xor xor async_tx raid6_pq raid1
+raid0 multipath linear sunxi_mmc phy_sun4i_usb phy_sun6i_mipi_dphy
+uio_pdrv_genirq uio
+[ 1277.296331] CPU: 0 PID: 464 Comm: ksdioirqd/mmc1 Tainted: G        W          6.4.0-rc6 #118
+[ 1277.296361] Hardware name: Sipeed Lichee RV Dock (DT)
+[ 1277.296373] epc : skb_panic+0x4e/0x50
+[ 1277.296422]  ra : skb_panic+0x4e/0x50
+[ 1277.296454] epc : ffffffff80ba3be4 ra : ffffffff80ba3be4 sp : ffffffd804c9fc70
+[ 1277.296475]  gp : ffffffff81e4dff0 tp : ffffffd81230cf80 t0 : ffffffff80b96a1c
+[ 1277.296495]  t1 : 0000000000000000 t2 : 73203a666675626b s0 : ffffffd804c9fc90
+[ 1277.296514]  s1 : ffffffd804cb8b00 a0 : 000000000000008b a1 : 0000000000000000
+[ 1277.296531]  a2 : 0000000000000000 a3 : 0000000000000000 a4 : 0000000000000000
+[ 1277.296548]  a5 : 0000000000000000 a6 : 0000000000000000 a7 : 0000000000000000
+[ 1277.296564]  s2 : ffffffd804c9fd08 s3 : 000000000000006b s4 : ffffffd804c8a040
+[ 1277.296584]  s5 : 0000000000000018 s6 : 0000000000000820 s7 : ffffffff053324b0
+[ 1277.296602]  s8 : 000000000000006b s9 : 0000000000000400 s10: 000000000000e002
+[ 1277.296619]  s11: ffffffd81146fac0 t3 : ffffffd802504f00 t4 : ffffffd802504f00
+[ 1277.296639]  t5 : ffffffd802504000 t6 : ffffffd804c9fa78
+[ 1277.296655] status: 0000000200000120 badaddr: 0000000000000000 cause: 0000000000000003
+[ 1277.296675] [<ffffffff80ba3be4>] skb_panic+0x4e/0x50
+[ 1277.296713] [<ffffffff80975156>] warn_crc32c_csum_combine+0x0/0x40
+[ 1277.296774] [<ffffffff052a1ea2>] rtw_sdio_rx_skb+0x80/0x11de [rtw88_sdio]
+[ 1277.297363] [<ffffffff052a0460>] rtw_sdio_rxfifo_recv+0x1ce/0x270 [rtw88_sdio]
+[ 1277.297944] [<ffffffff052a05c6>] rtw_sdio_handle_interrupt+0xc4/0xec [rtw88_sdio]
+[ 1277.298521] [<ffffffff80932454>] process_sdio_pending_irqs+0xde/0x18c
+[ 1277.298567] [<ffffffff80932578>] sdio_irq_thread+0x76/0x196
+[ 1277.298602] [<ffffffff800410c4>] kthread+0xc4/0xe4
+[ 1277.298654] [<ffffffff800040d6>] ret_from_fork+0xe/0x20
+[ 1277.298720] Code: e076 86f2 b517 0084 0513 c945 4097 ffff 80e7 7940 (9002) 4603 
+[ 1277.560399] ---[ end trace 0000000000000000 ]---
+[ 1277.560417] Kernel panic - not syncing: Fatal exception in interrupt
+[ 1277.571501] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
 
-Thanks,
-Olek
+---
+ drivers/net/wireless/realtek/rtw88/Kconfig    | 11 ++++++
+ drivers/net/wireless/realtek/rtw88/Makefile   |  3 ++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  9 +++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h |  6 ++++
+ .../net/wireless/realtek/rtw88/rtw8723ds.c    | 36 +++++++++++++++++++
+ 5 files changed, 65 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723ds.c
+
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index 29eb2f8e0eb7..4f0d301230fb 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -111,6 +111,17 @@ config RTW88_8723DE
+ 
+ 	  802.11n PCIe wireless network adapter
+ 
++config RTW88_8723DS
++	tristate "Realtek 8723DS SDIO wireless network adapter"
++	depends on PCI
++	select RTW88_CORE
++	select RTW88_SDIO
++	select RTW88_8723D
++	help
++	  Selecting this option will enable support for the 8723DS chipset.
++
++	  802.11n SDIO wireless network adapter
++
+ config RTW88_8723DU
+ 	tristate "Realtek 8723DU USB wireless network adapter"
+ 	depends on USB
+diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
+index 82979b30ae8d..fd212c09d88a 100644
+--- a/drivers/net/wireless/realtek/rtw88/Makefile
++++ b/drivers/net/wireless/realtek/rtw88/Makefile
+@@ -50,6 +50,9 @@ rtw88_8723d-objs		:= rtw8723d.o rtw8723d_table.o
+ obj-$(CONFIG_RTW88_8723DE)	+= rtw88_8723de.o
+ rtw88_8723de-objs		:= rtw8723de.o
+ 
++obj-$(CONFIG_RTW88_8723DS)	+= rtw88_8723ds.o
++rtw88_8723ds-objs		:= rtw8723ds.o
++
+ obj-$(CONFIG_RTW88_8723DU)	+= rtw88_8723du.o
+ rtw88_8723du-objs		:= rtw8723du.o
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 06e7454c9ca6..2545daddceba 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -210,6 +210,12 @@ static void rtw8723de_efuse_parsing(struct rtw_efuse *efuse,
+ 	ether_addr_copy(efuse->addr, map->e.mac_addr);
+ }
+ 
++static void rtw8723ds_efuse_parsing(struct rtw_efuse *efuse,
++				    struct rtw8723d_efuse *map)
++{
++	ether_addr_copy(efuse->addr, map->s.mac_addr);
++}
++
+ static void rtw8723du_efuse_parsing(struct rtw_efuse *efuse,
+ 				    struct rtw8723d_efuse *map)
+ {
+@@ -245,6 +251,9 @@ static int rtw8723d_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
+ 	case RTW_HCI_TYPE_PCIE:
+ 		rtw8723de_efuse_parsing(efuse, map);
+ 		break;
++	case RTW_HCI_TYPE_SDIO:
++		rtw8723ds_efuse_parsing(efuse, map);
++		break;
+ 	case RTW_HCI_TYPE_USB:
+ 		rtw8723du_efuse_parsing(efuse, map);
+ 		break;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index a356318a5c15..c510a0f76dcd 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -41,6 +41,11 @@ struct rtw8723de_efuse {
+ 	u8 sub_device_id[2];
+ };
+ 
++struct rtw8723ds_efuse {
++	u8 res4[0x4a];			/* 0xd0 */
++	u8 mac_addr[ETH_ALEN];		/* 0x11a */
++};
++
+ struct rtw8723du_efuse {
+ 	u8 res4[48];                    /* 0xd0 */
+ 	u8 vender_id[2];                /* 0x100 */
+@@ -79,6 +84,7 @@ struct rtw8723d_efuse {
+ 	u8 res[3];
+ 	union {
+ 		struct rtw8723de_efuse e;
++		struct rtw8723ds_efuse s;
+ 		struct rtw8723du_efuse u;
+ 	};
+ };
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723ds.c b/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
+new file mode 100644
+index 000000000000..679a9f50cfad
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723ds.c
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++/* Copyright(c) Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
++ */
++
++#include <linux/mmc/sdio_func.h>
++#include <linux/mmc/sdio_ids.h>
++#include <linux/module.h>
++#include "main.h"
++#include "rtw8723d.h"
++#include "sdio.h"
++
++static const struct sdio_device_id rtw_8723ds_id_table[] =  {
++	{
++		SDIO_DEVICE(SDIO_VENDOR_ID_REALTEK,
++			    SDIO_DEVICE_ID_REALTEK_RTW8723DS),
++		.driver_data = (kernel_ulong_t)&rtw8723d_hw_spec,
++	},
++	{}
++};
++MODULE_DEVICE_TABLE(sdio, rtw_8723ds_id_table);
++
++static struct sdio_driver rtw_8723ds_driver = {
++	.name = "rtw_8723ds",
++	.probe = rtw_sdio_probe,
++	.remove = rtw_sdio_remove,
++	.id_table = rtw_8723ds_id_table,
++	.drv = {
++		.pm = &rtw_sdio_pm_ops,
++		.shutdown = rtw_sdio_shutdown,
++	}
++};
++module_sdio_driver(rtw_8723ds_driver);
++
++MODULE_AUTHOR("Heinrich Schuchardt <heinrich.schuchardt@canonical.com>");
++MODULE_DESCRIPTION("Realtek 802.11n wireless 8723ds driver");
++MODULE_LICENSE("Dual BSD/GPL");
+-- 
+2.40.1
+
