@@ -2,80 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C498F731CEC
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 17:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F84731E3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 18:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240676AbjFOPpr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 11:45:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39844 "EHLO
+        id S237546AbjFOQvQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 12:51:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344392AbjFOPpg (ORCPT
+        with ESMTP id S230373AbjFOQvG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 11:45:36 -0400
-Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C210F2728;
-        Thu, 15 Jun 2023 08:45:34 -0700 (PDT)
-Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-558b04141e2so1688008eaf.0;
-        Thu, 15 Jun 2023 08:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686843934; x=1689435934;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=7uP2GIK/pJgBMyLexQ3e7d03sdWuNsvi/ReuDEmt6yw=;
-        b=Qwcly8aXM9oXm39Xr5Zsr1LNNGDQKCua51uPH+5kg/H7DfqImXe3gyUq6otsAEf/AF
-         tFZbxMTcRs6NWaPOXI/hHGVdh1FuRIuqo8bLOMST2wBFbAD6VdGSZUxjSIfAesT9rcPn
-         Fit3KGGWSS6m14HDc4ZBrO6xUj22FybcJU/MfR0Wsg38uW27idBNu7c2iocsBEnSmOQr
-         walzJNexY/Cp+2V/YAFCXd3SAGLGeojsfND/VtOhksAIS/gEjeF54LHh/7tSkUeL6ol5
-         08hj+l513uCE2/7yHQA4PH6kZIQkHBQQnCB6OJae3OPne5Xd0IaWFbJGZ5rYYlbpmh3K
-         1Yxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686843934; x=1689435934;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7uP2GIK/pJgBMyLexQ3e7d03sdWuNsvi/ReuDEmt6yw=;
-        b=ZF0bogKG3V6CaKXeYB2/wk817yckxdsMqFIMbRMfe+izoQq9V9QOI6MgvIQm4VZ/Y0
-         Havp8atflzYj0PDprudoYs2VhJiQiLE7kK7B5y0IvbMSE6Iq9C19tUOanocc73ThG084
-         pexepsZPm8u6mjTcBoP85O6NzlEhGTvAlrALK78Z9aZfiH5ZR/HgP0MKL0Rs8pir5FO2
-         sEq6dxpsra6RpEl5QZ70xt3A+SXKMCCCeji8EUC+DS2eps0+rejcixFxkpmJktopPMMo
-         HPYuPSW7Hkip29IYyOCYsBWlsd3JzlW1kRyO29nGHogNabmAQnoPqzP32Qo/3CX+ZBCe
-         rF6g==
-X-Gm-Message-State: AC+VfDwnQBOLAbSgq6hadeIWn4GCDUwZPVUCz86SviAwfgzCyIvsaBpr
-        6bITIOc+DBf2lEwMW3TPVlM=
-X-Google-Smtp-Source: ACHHUZ6BOIWCI6ss6eWnwOMKIBHAp+H7S9m9epWiLO3mc6eaUeUkaCMPA8xHRQ+o2z2X4fr6o6tRww==
-X-Received: by 2002:a05:6820:319:b0:555:722e:3ce with SMTP id l25-20020a056820031900b00555722e03cemr12060105ooe.9.1686843933676;
-        Thu, 15 Jun 2023 08:45:33 -0700 (PDT)
-Received: from [192.168.0.200] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id s3-20020a4aa543000000b0054f85f67f31sm5984474oom.46.2023.06.15.08.45.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 08:45:33 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <11412b24-c107-247b-5e6f-1a95a737a9f7@lwfinger.net>
-Date:   Thu, 15 Jun 2023 10:45:26 -0500
+        Thu, 15 Jun 2023 12:51:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6832944;
+        Thu, 15 Jun 2023 09:51:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E977462061;
+        Thu, 15 Jun 2023 16:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC4EC433C0;
+        Thu, 15 Jun 2023 16:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686847862;
+        bh=SA2pNBT9rXkOkMo0yrYksTMes4Qn7xpsHyRRGfSHrNs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jauPT1FygcEqkemg87cpPo2q0s6WnGOR/z9X8SQIeQ2UOZtal0IEaMOZ1U6qMFJxi
+         8RvOBwTnfOM195A/XxTOVm9lg2OClPekxb+nwFewy0B/Eg1usS5/bI3sBpfoN4HP8d
+         f4EG3W6qKy4APMHvImUGOTMOmjcJmi1YCnb4RxYumDCQSMcDK90u9h9T+xf6zujQHO
+         jDe/5lsd5J7mhBtBaKtP0ugCcWTGi9pBLt4FwsDy5v5c015Y1TrbIMhz2fmFQ3B2ni
+         0ztYO5fqWx+Fy+mZKHK9Aedf+gD8zYbw0+JLr1y2JbYMGih/FFiIjIcjXFEbtQxYU3
+         jPlcCKwf/NIbQ==
+Date:   Thu, 15 Jun 2023 09:51:00 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     <davem@davemloft.net>, <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Alexander Duyck <alexander.duyck@gmail.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG
+ flag
+Message-ID: <20230615095100.35c5eb10@kernel.org>
+In-Reply-To: <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+References: <20230612130256.4572-1-linyunsheng@huawei.com>
+        <20230612130256.4572-5-linyunsheng@huawei.com>
+        <20230614101954.30112d6e@kernel.org>
+        <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC 1/1] wifi: rtw88: Add support for the SDIO based RTL8723DS
- chipset
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Emil Renner Berthing <emil.renner.berthing@canonical.com>
-References: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
-Content-Language: en-US
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,31 +83,49 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/15/23 09:20, Heinrich Schuchardt wrote:
-> Wire up RTL8723DS chipset support using the rtw88 SDIO HCI code as
-> well as the existing RTL8723D chipset code.
+On Thu, 15 Jun 2023 15:17:39 +0800 Yunsheng Lin wrote:
+> > Does hns3_page_order() set a good example for the users?
+> > 
+> > static inline unsigned int hns3_page_order(struct hns3_enet_ring *ring)
+> > {
+> > #if (PAGE_SIZE < 8192)
+> > 	if (ring->buf_size > (PAGE_SIZE / 2))
+> > 		return 1;
+> > #endif
+> > 	return 0;
+> > }
+> > 
+> > Why allocate order 1 pages for buffers which would fit in a single page?
+> > I feel like this soft of heuristic should be built into the API itself.  
 > 
-> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> ---
+> hns3 only support fixed buf size per desc by 512 byte, 1024 bytes, 2048 bytes
+> 4096 bytes, see hns3_buf_size2type(), I think the order 1 pages is for buf size
+> with 4096 bytes and system page size with 4K, as hns3 driver still support the
+> per-desc ping-pong way of page splitting when page_pool_enabled is false.
 > 
-> On my Lichee RV Dock board this patch is enough to make The RTL8723DS
-> work. But unfortunately after running some time the driver crashes.
-> My impression is that the crash is not specific to my patch but must
-> be hidden in one of the existing functions it is invoking.
+> With page pool enabled, you are right that order 0 pages is enough, and I am not
+> sure about the exact reason we use the some order as the ping-pong way of page
+> splitting now.
+> As 2048 bytes buf size seems to be the default one, and I has not heard any one
+> changing it. Also, it caculates the pool_size using something as below, so the
+> memory usage is almost the same for order 0 and order 1:
 > 
-> This seems to be related to not checking pkt_stat->pkt_len.
+> .pool_size = ring->desc_num * hns3_buf_size(ring) /
+> 		(PAGE_SIZE << hns3_page_order(ring)),
 > 
-> My kernel was built against v6.4-rc6.
+> I am not sure it worth changing it, maybe just change it to set good example for
+> the users:) anyway I need to discuss this with other colleague internally and do
+> some testing before doing the change.
 
-Heinrich,
+Right, I think this may be a leftover from the page flipping mode of
+operation. But AFAIU we should leave the recycling fully to the page
+pool now. If we make any improvements try to make them at the page pool
+level.
 
-Martin Blumenstingl has written a driver for the 8723ds chip. It has been merged 
-into the wireless-next tree, and will be in mainline kernel 6.5. In addition, it 
-is available at https://github.com/lwfinger/rtw88.git.
+I like your patches as they isolate the drivers from having to make the
+fragmentation decisions based on the system page size (4k vs 64k but
+we're hearing more and more about ARM w/ 16k pages). For that use case
+this is great. 
 
-Please try it to see if it files your crash problem. Several users of rtw88 have 
-reported success.
-
-Larry
-
-
+What we don't want is drivers to start requesting larger page sizes
+because it looks good in iperf on a freshly booted, idle system :(
