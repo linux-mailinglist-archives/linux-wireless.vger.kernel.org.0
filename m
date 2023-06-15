@@ -2,103 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9310073194D
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 14:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7159F731987
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 15:05:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231382AbjFOM4p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 08:56:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51102 "EHLO
+        id S239272AbjFONFa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 09:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343650AbjFOMy6 (ORCPT
+        with ESMTP id S230128AbjFONF3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 08:54:58 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0488D26A1
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 05:54:51 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1q9mUy-0007NP-Fd; Thu, 15 Jun 2023 14:54:48 +0200
-Message-ID: <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
-Date:   Thu, 15 Jun 2023 14:54:48 +0200
+        Thu, 15 Jun 2023 09:05:29 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E5951BC9
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 06:05:27 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35FD50LC0032311, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35FD50LC0032311
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Thu, 15 Jun 2023 21:05:00 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Thu, 15 Jun 2023 21:05:19 +0800
+Received: from [127.0.1.1] (172.16.16.227) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Thu, 15 Jun
+ 2023 21:05:18 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/5] wifi: rtw89: 8851b: update 8851b to improve abnormal samples
+Date:   Thu, 15 Jun 2023 21:04:37 +0800
+Message-ID: <20230615130442.18116-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
-Content-Language: en-US, de-DE
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Nicolas Escande <nico.escande@gmail.com>, nbd@nbd.name,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Linux Regressions <regressions@lists.linux.dev>
-References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <ZIQbs0wqdRh7c0Kx@debian.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1686833692;00721cc6;
-X-HE-SMSGID: 1q9mUy-0007NP-Fd
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.16.16.227]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 10.06.23 08:44, Bagas Sanjaya wrote:
-> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
->> Hello Felix,
->>
->> As user of the mesh part of mac80211 on multiple products at work let me say
->> thank you for all the work you do on wifi, especially on 80211s, and especially
->> the recent improvements you made for mesh fast RX/TX & cross vendor AMSDU compat
->>
->> We upgraded our kernel from an older (5.15) to a newer 6.4. The problem is STP 
->> doesn't work anymore and alas we use it for now (for the better or worse).
->>
->> What I gathered so far from my setup:
->>  - we use ath9k & ath10k
->>  - in my case STP frames are received as regular packet and not as amsdu
->>  - the received packets have a wrong length of 44 in tcpdump
->>    (instead of 38 with our previous kernel)
->>  - llc_fixup_skb() tries to pull some 41 bytes out of a 35 bytes packet
->>    this makes llc_rcv() discard the frames & breaks STP
->>
->> >From bisecting the culprit seems to be 986e43b19ae9176093da35e0a844e65c8bf9ede7
->> (wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces)
->>
->> I guess that your changes to handle both ampdu subframes & normal frames in the
->> same datapath ends up putting a wrong skb->len for STP (multicast) frames ?
->> Honestly I don't understand enough of the 80211 internals & spec to pinpoint the
->> exact problem.
->>
->> It seems this change was already in the 6.3 kernel so I guess someone should
->> have seen it before (but I didn't find anything..) ? Maybe I missed something...
->>
->> Anyway I'm happy to provide more info or try anything you throw at me.
->>
-> 
-> Thanks for the regression report. I'm adding it to regzbot:
-> 
-> (Felix: it looks like this regression is introcued by a commit authored by you.
-> Would you like to take a look on it?)
-> 
-> #regzbot ^introduced: 986e43b19ae917
+We found some samples work improperly in field. Some have poor RF
+performance, and some can't transmit suddenly.
 
-Hmmm, Felix did not reply. But let's ignore that for now.
+To fix these problems, update RF parameter, TX power table and IQK to the
+latest version. LCK track is to improve poor RF performance result from
+growing thermal value after stress test. The last patch is to fix some
+samples can't transmit in certain situations.
 
-Nicolas, I noticed there are a few patches in next that refer to the
-culprit. Might be worth giving this series a try:
+Ping-Ke Shih (4):
+  wifi: rtw89: 8851b: update RF radio A parameters to R28
+  wifi: rtw89: 8851b: rfk: add LCK track
+  wifi: rtw89: 8851b: rfk: update IQK to version 0x8
+  wifi: rtw89: 8851b: configure to force 1 TX power value
 
-https://lore.kernel.org/all/20230314095956.62085-1-nbd@nbd.name/
+Zong-Zhe Yang (1):
+  wifi: rtw89: 8851b: update TX power tables to R28
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+ drivers/net/wireless/realtek/rtw89/reg.h      |  23 ++
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |   5 +
+ .../net/wireless/realtek/rtw89/rtw8851b_rfk.c | 180 +++++++++----
+ .../net/wireless/realtek/rtw89/rtw8851b_rfk.h |   2 +
+ .../wireless/realtek/rtw89/rtw8851b_table.c   | 250 ++++++++++--------
+ 5 files changed, 289 insertions(+), 171 deletions(-)
+
+-- 
+2.25.1
+
