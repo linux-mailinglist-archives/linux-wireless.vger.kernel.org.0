@@ -2,82 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928EC731900
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 14:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9310073194D
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 14:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240358AbjFOMdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 08:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42454 "EHLO
+        id S231382AbjFOM4p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 08:56:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjFOMdE (ORCPT
+        with ESMTP id S1343650AbjFOMy6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 08:33:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EA271FD4;
-        Thu, 15 Jun 2023 05:33:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AD29618EB;
-        Thu, 15 Jun 2023 12:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573D9C433C8;
-        Thu, 15 Jun 2023 12:33:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686832380;
-        bh=7SJSooLHw1XqH2UYNvRcPE3YydGNfm0xAFxd/c7vKJo=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=e9DQHLZiLiYiczEKwCFXENboEz+vMXQomeNyJgQhiOS6DV2nBjiexJ3MOToPtBfS1
-         pPwRD735PQTbUQQNhPbSwamMRH9gjnmQI+71KBuz0Wk5kOMqBUCmb6YqM0IR2NOZa7
-         iec3qB+xHUVB6wtdkeaNQaEudyxzUtsnjj+xwZUluYWBxOlNmrPZGtXVyqfT9a0Bi1
-         8T4twX0pgNKlaYYJf/zXkzeOp1vnl3EFSy+IvaBS+XScfiRasUb6mo7Tjxxma2rBco
-         GNBuVNzZslNh8Gbk2IBJdFIgm94rnlylbeEYmS1TF3f0zshwQm4/tDQVDoRXo/24YP
-         yhtIIFO4BZc+w==
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id D1851BBEC2D; Thu, 15 Jun 2023 14:32:56 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: Closing down the wireless trees for a summer break?
-In-Reply-To: <20230614122153.640292b9@kernel.org>
-References: <87y1kncuh4.fsf@kernel.org> <871qifxm9b.fsf@toke.dk>
- <20230613112834.7df36e95@kernel.org>
- <ba933d6e3d360298e400196371e37735aef3b1eb.camel@sipsolutions.net>
- <20230613195136.6815df9b@kernel.org>
- <c7c9418bcd5ac1035a007d336004eff48994dde7.camel@sipsolutions.net>
- <87a5x2ccao.fsf@kernel.org> <20230614122153.640292b9@kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 15 Jun 2023 14:32:56 +0200
-Message-ID: <87sfasgb2f.fsf@toke.dk>
+        Thu, 15 Jun 2023 08:54:58 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0488D26A1
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 05:54:51 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1q9mUy-0007NP-Fd; Thu, 15 Jun 2023 14:54:48 +0200
+Message-ID: <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
+Date:   Thu, 15 Jun 2023 14:54:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
+Content-Language: en-US, de-DE
+To:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Nicolas Escande <nico.escande@gmail.com>, nbd@nbd.name,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Linux Regressions <regressions@lists.linux.dev>
+References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <ZIQbs0wqdRh7c0Kx@debian.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1686833692;00721cc6;
+X-HE-SMSGID: 1q9mUy-0007NP-Fd
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On 10.06.23 08:44, Bagas Sanjaya wrote:
+> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
+>> Hello Felix,
+>>
+>> As user of the mesh part of mac80211 on multiple products at work let me say
+>> thank you for all the work you do on wifi, especially on 80211s, and especially
+>> the recent improvements you made for mesh fast RX/TX & cross vendor AMSDU compat
+>>
+>> We upgraded our kernel from an older (5.15) to a newer 6.4. The problem is STP 
+>> doesn't work anymore and alas we use it for now (for the better or worse).
+>>
+>> What I gathered so far from my setup:
+>>  - we use ath9k & ath10k
+>>  - in my case STP frames are received as regular packet and not as amsdu
+>>  - the received packets have a wrong length of 44 in tcpdump
+>>    (instead of 38 with our previous kernel)
+>>  - llc_fixup_skb() tries to pull some 41 bytes out of a 35 bytes packet
+>>    this makes llc_rcv() discard the frames & breaks STP
+>>
+>> >From bisecting the culprit seems to be 986e43b19ae9176093da35e0a844e65c8bf9ede7
+>> (wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces)
+>>
+>> I guess that your changes to handle both ampdu subframes & normal frames in the
+>> same datapath ends up putting a wrong skb->len for STP (multicast) frames ?
+>> Honestly I don't understand enough of the 80211 internals & spec to pinpoint the
+>> exact problem.
+>>
+>> It seems this change was already in the 6.3 kernel so I guess someone should
+>> have seen it before (but I didn't find anything..) ? Maybe I missed something...
+>>
+>> Anyway I'm happy to provide more info or try anything you throw at me.
+>>
+> 
+> Thanks for the regression report. I'm adding it to regzbot:
+> 
+> (Felix: it looks like this regression is introcued by a commit authored by you.
+> Would you like to take a look on it?)
+> 
+> #regzbot ^introduced: 986e43b19ae917
 
-> On Wed, 14 Jun 2023 18:07:43 +0300 Kalle Valo wrote:
->> But do note that above is _only_ for -next patches. For patches going to
->> -rc releases we apply the patches directly to wireless, no other trees
->> are involved. My proposal was that net maintainers would take only fixes
->> for -rc releases, my guess from history is that it would be maximum of
->> 10-15 patches. And once me and Johannes are back we would sort out -next
->> patches before the merge window. But of course you guys can do whatever
->> you think is best :)
->
-> Ah, good note, I would have guessed that fixes go via special trees,
-> too. In that case it should indeed be easy. We'll just look out for
-> maintainer acks on the list and ping people if in doubt.
+Hmmm, Felix did not reply. But let's ignore that for now.
 
-SGTM! :)
+Nicolas, I noticed there are a few patches in next that refer to the
+culprit. Might be worth giving this series a try:
 
--Toke
+https://lore.kernel.org/all/20230314095956.62085-1-nbd@nbd.name/
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
