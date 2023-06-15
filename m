@@ -2,206 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72663730C71
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 02:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123AF730D3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Jun 2023 04:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236131AbjFOA6U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 14 Jun 2023 20:58:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33600 "EHLO
+        id S238201AbjFOC1H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 14 Jun 2023 22:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjFOA6T (ORCPT
+        with ESMTP id S230144AbjFOC1G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 14 Jun 2023 20:58:19 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57F326A6
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 17:58:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686790698; x=1718326698;
-  h=date:from:to:cc:subject:message-id;
-  bh=QVUURO2Wq1priacyyL04Tux/MM15WFUyyDVOHrc5Lo8=;
-  b=GRvhUT95/BcjbOtL1BzWCNxb64JDWl/0xjQJPDzBofNh7FLwYwN8mTty
-   7idw2+5a2HwY1uYPAaE/EULX6GObvupnV07KTMn7D8xqUI85wnPy8m7Y9
-   6VWofuWsxT3jokPaJFQVCPJG5KwcBZCrRHxe9Ju5kq5XJL47lFR4c1KWM
-   TMtguOt+BBmRcjkEY0vXzbsZkDNJV3+aTukCD2gDTKVkALQeTNkfJ/gAc
-   JVti6Hqap8Dr9R/SMePikUfr+fvKxyAOdC+wO0oNxqGjPOmJ1UT9+RPv+
-   q5RCVvvsW8/HC4r8HOGu5CziZ2+0YF6DKS46RI+FIp5GYzOocR6bkefxi
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="422380159"
-X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
-   d="scan'208";a="422380159"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 17:58:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="1042427901"
-X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
-   d="scan'208";a="1042427901"
-Received: from lkp-server02.sh.intel.com (HELO d59cacf64e9e) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 14 Jun 2023 17:58:16 -0700
-Received: from kbuild by d59cacf64e9e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q9bJX-0001Dh-0a;
-        Thu, 15 Jun 2023 00:58:15 +0000
-Date:   Thu, 15 Jun 2023 08:58:05 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 93ae81454b1107843ad36dcdc457dd10ee0f2cbe
-Message-ID: <202306150802.bsQH9j1g-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 14 Jun 2023 22:27:06 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514591BF8
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Jun 2023 19:27:05 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35F1pW5W031795;
+        Thu, 15 Jun 2023 02:26:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=85CY28qY/Z7AbTsQPkZwoI55W/MMosYt1HZ/RFuZZv4=;
+ b=SBaP0vYM3c1bZtokS95AgI5FzxZCGUQzZJSxjVv/RYzbcdRkjsj0f4QryG20OtqpiDcT
+ d9qc9YKJnQVjmRvo0jRgbL/e6zHskBoKdwlsOJQn5fxJWobm0UN++gQORPbZ1eHuZSDM
+ 7QEB1HE0yT0CDnc1gE+oDenThfUgRsYI8A/U/PZt7m49XByqBIzpXlXvd/KfQEKB5+sJ
+ XwvgCi+OAAvObxCR6QM5ikrwMMe8DOaP2lUB/BJ7HQ/zmyxDaZAA6LhA3B0fpvUTc+xC
+ Qw23z6JPlY4+FzsSRN3CUINNcHqlTK0j1sHR7ZuN2XwOYkcT+tHhgTBSNKaejjEjxnWM Kg== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r7ks68hcd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 15 Jun 2023 02:26:56 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35F2QtaW015885
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 15 Jun 2023 02:26:55 GMT
+Received: from [10.231.195.204] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 14 Jun
+ 2023 19:26:54 -0700
+Message-ID: <a7093d7a-0179-7b5f-cc61-a501331d35c6@quicinc.com>
+Date:   Thu, 15 Jun 2023 10:26:52 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 10/27] wifi: mac80211: isolate driver from inactive links
+Content-Language: en-US
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC:     <ath11k@lists.infradead.org>
+References: <20220902141259.377789-1-johannes@sipsolutions.net>
+ <20220902161143.5ce3dad3be7c.I92e9f7a6c120cd4a3631baf486ad8b6aafcd796f@changeid>
+ <5d82e564-86bf-c26b-077a-d0bc14e2d3c3@quicinc.com>
+ <74f3eb848326607b15336c31a02bdd861ccafb47.camel@sipsolutions.net>
+ <d10b88b4-0bd7-a38c-e8d7-8982a281c4b3@quicinc.com>
+ <e5adbed1524b27228c152ba14f78c550c8730baa.camel@sipsolutions.net>
+ <c15e368e-2fea-a1d8-9c0d-db9278ded5e5@quicinc.com>
+ <113761966918b2f390d3c9304307b42a0b4a829b.camel@sipsolutions.net>
+ <76863dec-1b2f-b933-7c5e-21c732de4bc6@quicinc.com>
+ <2cc79101249548f2a92c14af6aff6121143907d6.camel@sipsolutions.net>
+ <1c26c205-0240-7670-117d-02a7af068724@quicinc.com>
+ <6f8db032286923845202c7d658f1d39db79a758c.camel@sipsolutions.net>
+From:   Wen Gong <quic_wgong@quicinc.com>
+In-Reply-To: <6f8db032286923845202c7d658f1d39db79a758c.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: nLW19K9csLgH6zPzyLETVEXVFu7LdDv0
+X-Proofpoint-GUID: nLW19K9csLgH6zPzyLETVEXVFu7LdDv0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-14_14,2023-06-14_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=892 bulkscore=0
+ impostorscore=0 suspectscore=0 mlxscore=0 priorityscore=1501 adultscore=0
+ spamscore=0 malwarescore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306150017
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 93ae81454b1107843ad36dcdc457dd10ee0f2cbe  wifi: iwlwifi: dbg-tlv: clear FW debug memory on init
 
-elapsed time: 722m
+On 6/15/2023 2:32 AM, Johannes Berg wrote:
+> On Wed, 2023-05-24 at 15:41 +0800, Wen Gong wrote:
+>> May I add a new ops in struct ieee80211_ops? like this:
+>>
+>> u16 active_links(struct ieee80211_hw *hw, struct ieee80211_vif vif, u16
+>> new_links)"
+>>
+>> then ieee80211_set_vif_links_bitmaps() call the ops to get the links for
+>> station and set the sdata->vif.active_links with the return value from
+>> lower driver,
+>> it means lower driver will dynamic select the links count at this moment.
+>>
+>> If lower driver not register ops active_links, then keep current logic.
+>>
+> I guess you can can send patches for whatever you want :)
+>
+> But I have no idea what you're trying to do? Why would you need to have
+> a callback?
 
-configs tested: 128
-configs skipped: 8
+Currently driver could use ieee80211_set_active_links_async() to active 
+links after connection completed.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+But I would like to allow driver to select active links in a early time, 
+it will be more convenient for driver.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r005-20230614   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r025-20230612   gcc  
-arc                  randconfig-r043-20230612   gcc  
-arc                  randconfig-r043-20230614   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r003-20230612   gcc  
-arm                  randconfig-r024-20230612   clang
-arm                  randconfig-r046-20230612   clang
-arm                  randconfig-r046-20230614   clang
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r001-20230614   clang
-arm64                               defconfig   gcc  
-csky         buildonly-randconfig-r002-20230614   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r034-20230614   gcc  
-hexagon              randconfig-r016-20230614   clang
-hexagon              randconfig-r032-20230612   clang
-hexagon              randconfig-r036-20230614   clang
-hexagon              randconfig-r041-20230612   clang
-hexagon              randconfig-r041-20230614   clang
-hexagon              randconfig-r045-20230612   clang
-hexagon              randconfig-r045-20230614   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230614   clang
-i386                 randconfig-i002-20230614   clang
-i386                 randconfig-i003-20230614   clang
-i386                 randconfig-i004-20230614   clang
-i386                 randconfig-i005-20230614   clang
-i386                 randconfig-i006-20230614   clang
-i386                 randconfig-i011-20230612   gcc  
-i386                 randconfig-i012-20230612   gcc  
-i386                 randconfig-i013-20230612   gcc  
-i386                 randconfig-i014-20230612   gcc  
-i386                 randconfig-i015-20230612   gcc  
-i386                 randconfig-i016-20230612   gcc  
-i386                 randconfig-r021-20230612   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r004-20230612   gcc  
-loongarch            randconfig-r031-20230612   gcc  
-loongarch            randconfig-r035-20230612   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r002-20230612   gcc  
-m68k                 randconfig-r005-20230612   gcc  
-m68k                 randconfig-r006-20230612   gcc  
-m68k                 randconfig-r023-20230612   gcc  
-microblaze           randconfig-r003-20230612   gcc  
-microblaze           randconfig-r031-20230614   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r005-20230614   gcc  
-mips                 randconfig-r001-20230612   gcc  
-mips                 randconfig-r011-20230614   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r001-20230612   gcc  
-nios2                randconfig-r002-20230612   gcc  
-nios2                randconfig-r013-20230614   gcc  
-nios2                randconfig-r022-20230612   gcc  
-nios2                randconfig-r034-20230612   gcc  
-openrisc     buildonly-randconfig-r006-20230614   gcc  
-openrisc             randconfig-r004-20230612   gcc  
-openrisc             randconfig-r024-20230612   gcc  
-parisc                           allyesconfig   gcc  
-parisc       buildonly-randconfig-r003-20230614   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv        buildonly-randconfig-r004-20230614   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r005-20230612   clang
-riscv                randconfig-r015-20230614   gcc  
-riscv                randconfig-r042-20230612   gcc  
-riscv                randconfig-r042-20230614   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r025-20230612   gcc  
-s390                 randconfig-r026-20230612   gcc  
-s390                 randconfig-r032-20230614   clang
-s390                 randconfig-r044-20230612   gcc  
-s390                 randconfig-r044-20230614   gcc  
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r003-20230614   gcc  
-sh                   randconfig-r035-20230614   gcc  
-sh                   randconfig-r036-20230612   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r022-20230612   gcc  
-sparc                randconfig-r033-20230614   gcc  
-sparc64              randconfig-r021-20230612   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230614   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230612   clang
-x86_64               randconfig-a002-20230612   clang
-x86_64               randconfig-a003-20230612   clang
-x86_64               randconfig-a004-20230612   clang
-x86_64               randconfig-a005-20230612   clang
-x86_64               randconfig-a006-20230612   clang
-x86_64               randconfig-a011-20230612   gcc  
-x86_64               randconfig-a012-20230612   gcc  
-x86_64               randconfig-a013-20230612   gcc  
-x86_64               randconfig-a014-20230612   gcc  
-x86_64               randconfig-a015-20230612   gcc  
-x86_64               randconfig-a016-20230612   gcc  
-x86_64               randconfig-r026-20230612   gcc  
-x86_64               randconfig-r033-20230612   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+>
+> Was this for link selection in the driver? We should have a patch
+> somewhere that adds a BSS_CHANGE flag for when the valid links change,
+> so the driver can select others.
+>
+> johannes
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yes, it is for link selection in driver at a early time before 
+connection completed.
+
+Could you tell detail about how the BSS_CHANGE flag works?😁
+
