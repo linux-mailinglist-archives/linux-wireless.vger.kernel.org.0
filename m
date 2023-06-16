@@ -2,54 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 168557325F7
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 05:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C866273266E
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 06:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239284AbjFPDpd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 23:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45760 "EHLO
+        id S232562AbjFPE5x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 00:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231232AbjFPDp2 (ORCPT
+        with ESMTP id S229762AbjFPE5w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 23:45:28 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135CD18D
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 20:45:26 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35G3j1inD029371, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35G3j1inD029371
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Fri, 16 Jun 2023 11:45:01 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 16 Jun 2023 11:45:20 +0800
-Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 16 Jun
- 2023 11:45:19 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
-CC:     <phhuang@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/6] wifi: rtw88: fix not entering PS mode after AP stops
-Date:   Fri, 16 Jun 2023 11:44:31 +0800
-Message-ID: <20230616034431.17403-7-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230616034431.17403-1-pkshih@realtek.com>
-References: <20230616034431.17403-1-pkshih@realtek.com>
+        Fri, 16 Jun 2023 00:57:52 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292FA268C
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 21:57:49 -0700 (PDT)
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 832803F182
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 04:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1686891468;
+        bh=SZ1z3iFCuctvpDLXu03zvj3Ivp+6TOQT0ngCLOJqvUM=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=re0oWHBNfQuppDzUl4WRusVURcnpCy3TCezfXvU0vc9njq3ZFJJvOFp+O3LGw33oP
+         nR+r7bTzUQPK/f2Oiyua7FVzCd9etrA7qLyf0QMCf2gUs/RwrY/Feok7IAFr+/uW30
+         iVcP/gB3a9rpNmHMJ23FWzpwoIWDUUTmNap7by1x325Z6KMuj8LdStUgV/rt3anS/g
+         QPCN4ewzWdTeuAt+vneSlHCJC6aAe7qLFWiVZc5QBUiWe/+JledKX0PHOv9X1ldgg6
+         qqrmtwJqbLVTr8UbwQv+YR0py5B834LA1GeKV8+oeGLLRboxoHor1//pSaevSTundo
+         /WtOV4v/YQ6Ug==
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-50a16ab50e6so142560a12.0
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 21:57:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686891468; x=1689483468;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SZ1z3iFCuctvpDLXu03zvj3Ivp+6TOQT0ngCLOJqvUM=;
+        b=FWMsiKF1F8UwU82tDvoT81K/KqoEPhEW+eks3pceQ2tFpgGjhb77CsrRG9nc8OmNqQ
+         sgEP85IB+bJUGUedWFCO+8DP9iRLadajUnoCKkCXHKXXlcLQIiUsvgM4N+aCv9xTRL8X
+         Ge5FMB+MA/UUpg08aIUgix2MsOt55R5HD5AhT73/AWyY0j17jl/NHHzsZ2WPNHhZ09Z5
+         DPTo6SjdhqU9HZDPUrxE5ykjZ89qtX9iYEx35KkOv8xoZLFnhYFaIJz8i+hM+MQEUo15
+         +pCl/XI4RGj1TTM9iR9xwCtK63PE2VxL3HtlxekVLN2BIlRPpyYtw9LwxgtwGRoYCYW/
+         2IkQ==
+X-Gm-Message-State: AC+VfDw5nJe4M5HFiVJqDJZ0hhKQth1iyJ/2TtkJ842l0W8G3kekZbDb
+        zek88Gs5/tEachj0O1QrezgqAc965mC0zUe5RZhfb0uD7ZwKXfr3ta1wBM/j1WMKdmNz42PhJzz
+        8b88MOuO6aW8BgmVQSS8ohyqnGO8ZpKsbrB7BBSd4msed
+X-Received: by 2002:a17:907:7f9e:b0:961:a67:296 with SMTP id qk30-20020a1709077f9e00b009610a670296mr875497ejc.11.1686891468104;
+        Thu, 15 Jun 2023 21:57:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6jN4pd+MWptJyqeTblIv0eB11pe/b9g8vwziyU9GWzQNswt2di9XfJC6ufsG7/Ic5Kf+Yieg==
+X-Received: by 2002:a17:907:7f9e:b0:961:a67:296 with SMTP id qk30-20020a1709077f9e00b009610a670296mr875481ejc.11.1686891467705;
+        Thu, 15 Jun 2023 21:57:47 -0700 (PDT)
+Received: from [172.25.0.170] (ip-084-119-033-219.um24.pools.vodafone-ip.de. [84.119.33.219])
+        by smtp.gmail.com with ESMTPSA id d18-20020a170906371200b0098282bb8effsm2638419ejc.196.2023.06.15.21.57.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Jun 2023 21:57:47 -0700 (PDT)
+Message-ID: <49f9687e-39ef-aad2-b02a-eb54a21b70f2@canonical.com>
+Date:   Fri, 16 Jun 2023 06:57:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.21.69.188]
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [RFC 1/1] wifi: rtw88: Add support for the SDIO based RTL8723DS
+ chipset
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
+        Emil Renner Berthing <emil.renner.berthing@canonical.com>
+References: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
+ <CAFBinCAEFvmxnBDJPSs+mGqAraGUDFkCB3SjRTEyC9waA3P8JQ@mail.gmail.com>
+Content-Language: en-US
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <CAFBinCAEFvmxnBDJPSs+mGqAraGUDFkCB3SjRTEyC9waA3P8JQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,150 +88,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Po-Hao Huang <phhuang@realtek.com>
 
-Without this patch, firmware only track beacons for port 0 and since
-we will always start AP on port 0, this results in misbehavior of
-power saving mode on other ports after AP stops.
 
-The "default port" H2C command is used to notify which port should
-firmware track. Update the correct settings to firmware so power
-saving mode can work properly.
+On 6/16/23 00:13, Martin Blumenstingl wrote:
+> Hello Heinrich,
+> 
+> On Thu, Jun 15, 2023 at 4:21 PM Heinrich Schuchardt
+> <heinrich.schuchardt@canonical.com> wrote:
+> [...]
+>> On my Lichee RV Dock board this patch is enough to make The RTL8723DS
+>> work. But unfortunately after running some time the driver crashes.
+>> My impression is that the crash is not specific to my patch but must
+>> be hidden in one of the existing functions it is invoking.
+>>
+>> This seems to be related to not checking pkt_stat->pkt_len.
+>>
+>> My kernel was built against v6.4-rc6.
+> As Larry has mentioned: support for the RTL8723DS chipset is in
+> wireless-next.git
+> You can find the whole series here: [0]
+> 
+> It seems you're missing at least "wifi: rtw88: sdio: Check the HISR
+> RX_REQUEST bit in rtw_sdio_rx_isr()" [1]
+> That patch should fix the exact issue that you described.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c       | 17 +++++++++++++++++
- drivers/net/wireless/realtek/rtw88/fw.h       |  8 ++++++++
- drivers/net/wireless/realtek/rtw88/mac80211.c |  1 +
- drivers/net/wireless/realtek/rtw88/main.c     |  8 ++++++++
- drivers/net/wireless/realtek/rtw88/main.h     |  1 +
- 5 files changed, 35 insertions(+)
+Thanks for your great work.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 5e329bb95bb89..567bbedd8ee09 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -519,6 +519,23 @@ void rtw_fw_query_bt_info(struct rtw_dev *rtwdev)
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
- }
- 
-+void rtw_fw_default_port(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
-+{
-+	struct rtw_h2c_register h2c = {};
-+
-+	if (rtwvif->net_type != RTW_NET_MGD_LINKED)
-+		return;
-+
-+	/* Leave LPS before default port H2C so FW timer is correct */
-+	rtw_leave_lps(rtwdev);
-+
-+	h2c.w0 = u32_encode_bits(H2C_CMD_DEFAULT_PORT, RTW_H2C_W0_CMDID) |
-+		 u32_encode_bits(rtwvif->port, RTW_H2C_DEFAULT_PORT_W0_PORTID) |
-+		 u32_encode_bits(rtwvif->mac_id, RTW_H2C_DEFAULT_PORT_W0_MACID);
-+
-+	rtw_fw_send_h2c_command_register(rtwdev, &h2c);
-+}
-+
- void rtw_fw_wl_ch_info(struct rtw_dev *rtwdev, u8 link, u8 ch, u8 bw)
- {
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 11a77d86cd144..43ccdf9965ac4 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -86,6 +86,12 @@ struct rtw_h2c_register {
- 	u32 w1;
- } __packed;
- 
-+#define RTW_H2C_W0_CMDID		GENMASK(7, 0)
-+
-+/* H2C_CMD_DEFAULT_PORT command */
-+#define RTW_H2C_DEFAULT_PORT_W0_PORTID	GENMASK(15, 8)
-+#define RTW_H2C_DEFAULT_PORT_W0_MACID	GENMASK(23, 16)
-+
- struct rtw_h2c_cmd {
- 	__le32 msg;
- 	__le32 msg_ext;
-@@ -535,6 +541,7 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
- #define H2C_CMD_MEDIA_STATUS_RPT	0x01
- #define H2C_CMD_SET_PWR_MODE		0x20
- #define H2C_CMD_LPS_PG_INFO		0x2b
-+#define H2C_CMD_DEFAULT_PORT		0x2c
- #define H2C_CMD_RA_INFO			0x40
- #define H2C_CMD_RSSI_MONITOR		0x42
- #define H2C_CMD_BCN_FILTER_OFFLOAD_P0	0x56
-@@ -806,6 +813,7 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
- void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb);
- void rtw_fw_send_general_info(struct rtw_dev *rtwdev);
- void rtw_fw_send_phydm_info(struct rtw_dev *rtwdev);
-+void rtw_fw_default_port(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif);
- 
- void rtw_fw_do_iqk(struct rtw_dev *rtwdev, struct rtw_iqk_para *para);
- void rtw_fw_inform_rfk_status(struct rtw_dev *rtwdev, bool start);
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 0dc83c2f420da..c5a07285fa541 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -378,6 +378,7 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 
- 			rtw_fw_download_rsvd_page(rtwdev);
- 			rtw_send_rsvd_page_h2c(rtwdev);
-+			rtw_fw_default_port(rtwdev, rtwvif);
- 			rtw_coex_media_status_notify(rtwdev, vif->cfg.assoc);
- 			if (rtw_bf_support)
- 				rtw_bf_assoc(rtwdev, vif, conf);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index d55b041a6bb93..c853e2f2d448f 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -334,12 +334,15 @@ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
- 		struct ieee80211_vif *vif)
- {
- 	struct rtw_sta_info *si = (struct rtw_sta_info *)sta->drv_priv;
-+	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
- 	int i;
- 
- 	si->mac_id = rtw_acquire_macid(rtwdev);
- 	if (si->mac_id >= RTW_MAX_MAC_ID_NUM)
- 		return -ENOSPC;
- 
-+	if (vif->type == NL80211_IFTYPE_STATION && vif->cfg.assoc == 0)
-+		rtwvif->mac_id = si->mac_id;
- 	si->rtwdev = rtwdev;
- 	si->sta = sta;
- 	si->vif = vif;
-@@ -2340,6 +2343,9 @@ static void rtw_port_switch_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
- 	rtw_dbg(rtwdev, RTW_DBG_STATE, "AP port switch from %d -> %d\n",
- 		rtwvif_ap->port, rtwvif_target->port);
- 
-+	/* Leave LPS so the value swapped are not in PS mode */
-+	rtw_leave_lps(rtwdev);
-+
- 	reg1 = &rtwvif_ap->conf->net_type;
- 	reg2 = &rtwvif_target->conf->net_type;
- 	rtw_swap_reg_mask(rtwdev, reg1, reg2);
-@@ -2358,6 +2364,8 @@ static void rtw_port_switch_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
- 
- 	swap(rtwvif_target->port, rtwvif_ap->port);
- 	swap(rtwvif_target->conf, rtwvif_ap->conf);
-+
-+	rtw_fw_default_port(rtwdev, rtwvif_target);
- }
- 
- void rtw_core_port_switch(struct rtw_dev *rtwdev, struct ieee80211_vif *vif)
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 9e841f6991a9a..f9dd2ab941c8f 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -803,6 +803,7 @@ struct rtw_bf_info {
- struct rtw_vif {
- 	enum rtw_net_type net_type;
- 	u16 aid;
-+	u8 mac_id; /* for STA mode only */
- 	u8 mac_addr[ETH_ALEN];
- 	u8 bssid[ETH_ALEN];
- 	u8 port;
--- 
-2.25.1
+With the series on top of v6.4 my RISC-V LicheeRV Dock runs fine.
 
+Best regards
+
+Heinrich
+
+> [0] https://lore.kernel.org/linux-wireless/20230522202425.1827005-1-martin.blumenstingl@googlemail.com/
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=e967229ead0e6c5047a1cfd5a0db58ceb930800b
