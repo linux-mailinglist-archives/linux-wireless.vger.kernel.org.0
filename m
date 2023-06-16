@@ -2,111 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F4507330F9
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 178B6733104
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbjFPMRi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 08:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56686 "EHLO
+        id S245325AbjFPMTg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 08:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243101AbjFPMRf (ORCPT
+        with ESMTP id S245256AbjFPMTf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 08:17:35 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357AD30C6
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:17:34 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6667643e4b3so584804b3a.2
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:17:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686917853; x=1689509853;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Yi99fLv6YTyMW2x91KoXyXg12oz007UXSsco3xPyJqk=;
-        b=DcIdfxzZPOT+L/X+mX1Ag6TQ4aH81opJIeSvVK0KbGWQHG8W5Akhhld1e3YmUK2/N/
-         zZ0A7wpkemxlvcTP2QSZEI/Ki5ZncxH9V/jF2lJwCKYHjQ7r2lfwZOa+HY/XMs6ClM5D
-         ccBVysx8qZfMCCSl/PjtAfu/8wek+WavKvpw2juh/4IXyZkYjnl16fhUOtYsYifdpRRv
-         ZRF0Fdv1S1Hw6J5f69BbBHmmXkwsMRaqNYR2QMyU9/RwgFfhoDG6huk+/1LKOg6yTbup
-         t9CY+WpNbn61Hye0+nXsqaN+PMAR7/yQf/0OlfZ7WKrt0SN3FEgUknzMp+rpev6Q6wLn
-         p0vA==
+        Fri, 16 Jun 2023 08:19:35 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5286E30DD
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:19:31 -0700 (PDT)
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6E5703F15F
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 12:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1686917968;
+        bh=HbcVOb9efJYkmDhGqloOhMxTQvtdvJNNFO77juvfdww=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=KGkPNJGTePXS4xExPuFo7ryl4VdsiT8NDSCLpD3qtQDMbXP8QkWTBH0lrGQYWdtdU
+         Q5bVgIH1DaKqF57s8rZOnnKTSxR8MV4kQcOuCer03HVsfPB0j5AIIPtmCwzL5D/uIw
+         cYIEd6+e0c09D44JQp+1iAoWQ0fgzcsVwTKlTpeqPCUfN5xHoWzetXYLooSu1k/Pgw
+         5Pk6/Vg5hRj29sSziCcIDzjvVL8lm4xsolbmELgCLcZzbf1F5lvvFv7C3QDL0njttA
+         rPMPU5Yxh3FmkYPPfvrRPWv2QAk618jPmKoCcsuvuvvzfCxjpvR7nB8LciEBIlyJal
+         ky7ld4IqMdCvg==
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3f739a73ba4so2470065e9.3
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:19:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686917853; x=1689509853;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yi99fLv6YTyMW2x91KoXyXg12oz007UXSsco3xPyJqk=;
-        b=AAJHPXV54VCprbtzZ/CM6DzVZLilPrBXtkL57PWocTp02ZpCbmUjwT0ENSPEDDWPmW
-         pgObwOvXXmtmJ1x96qrfZ4A/6a6naEM3zX2yJwQWk4fy/7GMZ2MZX8TBYtQ0kC3RGila
-         6krD12LJ81cOgxmrtCkZWc4TJzBFVxwj9Z7TvJVSluC6hMBhvBqIJ79dApgFW1GY40zz
-         NLqdCTCRYlTc2MTzEdY8oiRquQhEd2nnRgfn7jM9pTmnwOukcgi5r4Ff1Chjlz2A08qN
-         mSOEIIhQgYvNSGp4p7x6L8Hi2c0XzbJnBXx/yFsNSEZK5mpO6O4Vp9PnYYL/S0QQd4de
-         iAbA==
-X-Gm-Message-State: AC+VfDxZ66ICHY2ONRyWA9IZ1RxjfR0vdWhpvd+bETmFweIkvHcmHk/Y
-        3lJJcxbZ8TBKzzm/stU1+Ug=
-X-Google-Smtp-Source: ACHHUZ4wHk1/pTm81xVV98FexsQMvN1MHJuEClbfKfoLcAp1FqqCs64b9SADoV/jkPg4TDoNOCljhA==
-X-Received: by 2002:a05:6a00:13a9:b0:65c:8195:e6a2 with SMTP id t41-20020a056a0013a900b0065c8195e6a2mr2310658pfg.1.1686917853598;
-        Fri, 16 Jun 2023 05:17:33 -0700 (PDT)
-Received: from [192.168.0.103] ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id a18-20020a62bd12000000b0064ff855751fsm13397014pff.4.2023.06.16.05.17.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 05:17:33 -0700 (PDT)
-Message-ID: <b33d3dd1-9765-c90e-4408-941e7d8025cf@gmail.com>
-Date:   Fri, 16 Jun 2023 19:17:27 +0700
+        d=1e100.net; s=20221208; t=1686917968; x=1689509968;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HbcVOb9efJYkmDhGqloOhMxTQvtdvJNNFO77juvfdww=;
+        b=GKa1VK8jnmxuM10wEXHUhkAFNq7tBafLePEUtyFwx9idxNO4ueNpMRErFGKBHYBB64
+         ZfVgjIYdYWBUo3xoDtU5vRgllx2orbjNgGJht/1OjQiPrFecwf1JS5BTrErRQYTxAFiV
+         4yeyW7SIvEbaY9VWgn//7diQu/QCrQOAQhdFlAcn6T7j7orAMHqvl3aTRkrUnLtE0aPb
+         w7fdDSIECFOsSBfrrHU+C6mtcsbtcdHzJ4af0HdPMF+QyFSYkKf/QeTX0ODY92Jw2ZYI
+         dxp55SCItedzQ2ZQJKaHsFQOG1yHuk3419+kOKsWYMwuFcFt6gTUVRQy6n6RZDWmX2pY
+         pEPA==
+X-Gm-Message-State: AC+VfDx5W2GhidjrTfKMmGFSfOfEshcxXrgSPxd5vbxjLlwSfjVKI+pa
+        NXv6LBYA9QmGzq/nZcISyF40M9kA3nU6u1FO7BnSdNHJ1vLdo3YLxjC01DOExF4eM0bBOiP4T+H
+        SZ3snEDYYYK5drISgxik6ZjU+voBTuHlQVB3SyREsdW0V
+X-Received: by 2002:a05:600c:2909:b0:3f1:bb10:c865 with SMTP id i9-20020a05600c290900b003f1bb10c865mr1638903wmd.38.1686917968183;
+        Fri, 16 Jun 2023 05:19:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4LkTRN+lXP5TPRN5U/LZrINkJySpHEGjs2adWFiI6ByNCqvMTGtn3cXgsmPahIPjYjoPA2Hw==
+X-Received: by 2002:a05:600c:2909:b0:3f1:bb10:c865 with SMTP id i9-20020a05600c290900b003f1bb10c865mr1638888wmd.38.1686917967904;
+        Fri, 16 Jun 2023 05:19:27 -0700 (PDT)
+Received: from localhost ([194.191.244.86])
+        by smtp.gmail.com with ESMTPSA id k24-20020a7bc318000000b003f733c1129fsm2017151wmj.33.2023.06.16.05.19.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jun 2023 05:19:27 -0700 (PDT)
+From:   Juerg Haefliger <juerg.haefliger@canonical.com>
+To:     chunkeey@googlemail.com, kvalo@kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Juerg Haefliger <juerg.haefliger@canonical.com>
+Subject: [PATCH] wifi: p54: Add missing MODULE_FIRMWARE macro
+Date:   Fri, 16 Jun 2023 14:19:17 +0200
+Message-Id: <20230616121917.1034761-1-juerg.haefliger@canonical.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
-Content-Language: en-US
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Nicolas Escande <nico.escande@gmail.com>, nbd@nbd.name,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
- <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
- <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
- <50f7f64c-fe32-4362-fd4e-89ee99c4f581@leemhuis.info>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <50f7f64c-fe32-4362-fd4e-89ee99c4f581@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/16/23 16:25, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 16.06.23 09:45, Nicolas Escande wrote:
->> On Thu Jun 15, 2023 at 2:54 PM CEST, Linux regression tracking (Thorsten Leemhuis) wrote:
->>> On 10.06.23 08:44, Bagas Sanjaya wrote:
->>>> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
-> 
->>> Hmmm, Felix did not reply. But let's ignore that for now.
->> I haven't seen mails from felix on the list for a few days, I'm guessing he's
->> unavailable for now but I'll hapilly wait.
-> 
-> Okay.
-> 
->>> Nicolas, I noticed there are a few patches in next that refer to the
->>> culprit. Might be worth giving this series a try:
->>> https://lore.kernel.org/all/20230314095956.62085-1-nbd@nbd.name/
->> Well this series already landed in 6.4 and that is the version I did my initial
->> testing with. So no luck there.
-> 
-> What? Ohh, sorry for the noise, I had missed that they were in mainline
-> already.
-> 
+Add the missing MODULE_FIRMWARE macro for "3826.eeprom".
 
-Hi Thorsten,
+Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+---
+ drivers/net/wireless/intersil/p54/p54spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Should this be removed from tracking as inconclusive?
-
+diff --git a/drivers/net/wireless/intersil/p54/p54spi.c b/drivers/net/wireless/intersil/p54/p54spi.c
+index 19152fd449ba..ce0179b8ab36 100644
+--- a/drivers/net/wireless/intersil/p54/p54spi.c
++++ b/drivers/net/wireless/intersil/p54/p54spi.c
+@@ -28,6 +28,7 @@
+ #endif /* CONFIG_P54_SPI_DEFAULT_EEPROM */
+ 
+ MODULE_FIRMWARE("3826.arm");
++MODULE_FIRMWARE("3826.eeprom");
+ 
+ /* gpios should be handled in board files and provided via platform data,
+  * but because it's currently impossible for p54spi to have a header file
 -- 
-An old man doll... just what I always wanted! - Clara
+2.37.2
 
