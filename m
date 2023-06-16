@@ -2,167 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A638F733AD7
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 22:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 825DA733B1D
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 22:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229990AbjFPU2y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 16:28:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53610 "EHLO
+        id S230045AbjFPUn1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 16:43:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230045AbjFPU2x (ORCPT
+        with ESMTP id S229518AbjFPUn0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 16:28:53 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5151C35BE
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 13:28:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=wMaQMttb1dCT9AYpokEQN34FgVGlFQazr7x2rrX0res=;
-        t=1686947332; x=1688156932; b=WNCUa7Hne24fvTMe47WNI8CMmO/KD2gZlxNJ0yjW3Tu8Myc
-        LGl2fs4MyCooaueIDlI2N/DfNOf3XM47ntT3d2eLtftlEmWBEHQe39ATuXWBkRoi4j56ZKX4pw49q
-        8xsiKY9GQwRtDHADj8AgjbjwvkaOGrRPjdy5BoSkwQaJUpbxlSxWSckW7oM4q791X1GKvycV+HekO
-        tFisQgp4r5UpchkiUXgK1YzVcNZkaXVjoBKBD3gZByq/WAkGYSmQibpKaiSAvII2wMc0YBhxVjtGw
-        eJo9AMlf08I2lIiooQSCtB4PzmlPm6yoM82HKT+oP2qlSUkDrFJS/wZrOSi+ZaXg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qAG3s-008bzE-1M;
-        Fri, 16 Jun 2023 22:28:48 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v2 2/2] wifi: cfg80211: fix regulatory disconnect with OCB/NAN
-Date:   Fri, 16 Jun 2023 22:28:45 +0200
-Message-Id: <20230616222844.2794d1625a26.I8e78a3789a29e6149447b3139df724a6f1b46fc3@changeid>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230616222844.eb073d650c75.I72739923ef80919889ea9b50de9e4ba4baa836ae@changeid>
-References: <20230616222844.eb073d650c75.I72739923ef80919889ea9b50de9e4ba4baa836ae@changeid>
+        Fri, 16 Jun 2023 16:43:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB033AA5
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 13:42:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686948160;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NSJLIyj9LMYS53Im9VxxQ75KAnWRMymE9tH9+QGjBNs=;
+        b=c2RjwrsRtZ2UodpnaZbHhL1TvE4NnmjHTU8PAXlk+MDxCNF+4KMo8woWaasYPRG/isZm2b
+        Jx5UtHLQT7DEuy/lPpUq4RKPj20J2xI8rQp5bsbqbNlITqygBs9z1wkpjNZ/IIQX4JCcPk
+        6ACfiwSoN9+sO9psN1htuoJt7FqQyYg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-djAZHkt_M3ClHKp4cQM4hQ-1; Fri, 16 Jun 2023 16:42:39 -0400
+X-MC-Unique: djAZHkt_M3ClHKp4cQM4hQ-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-94a34d3e5ebso77178766b.3
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 13:42:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686948158; x=1689540158;
+        h=content-transfer-encoding:in-reply-to:references:to
+         :content-language:subject:cc:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NSJLIyj9LMYS53Im9VxxQ75KAnWRMymE9tH9+QGjBNs=;
+        b=UG72VLnRQ2FMEDc+s2WEX9M7GVGtkAWNAi5sgiiR7+MaXnlDTubCs4ceZpANv0A/t5
+         0QR2t1DB9hWTGohD98VBkRS3JCi9ZXt+A6Nisa5/BUJ95T1u7q4pnh09Dkd7dsHVQTh3
+         yCXBfvo5D6m5LiVMTbsdgLmJ2ABTOFzhddhE0tlr5pOAj9xv0iOS2Kk6DmjSWrODDjRw
+         iSGiw9Ihy0KGYyNT1O1w70TfosAPShxPe7yNqShzbeBjHzxXDCroPQhTyKgbQoY4o6Nc
+         aPO8IGZglksYJBZ5zFb+TIKBwZDCoyWNybHD9ZUd/1Ge8/5WPk6L5xkFhGNCNGHFz0d2
+         WsgA==
+X-Gm-Message-State: AC+VfDzFRuGVUASGXFLp+YVtkpQfPtx1hOW8Qc0qzbZmc8pwY31Zfbip
+        cCmYJV9dpwvroOmz46fvH2njawV9rCOdh9+tLteE+cWGaB6xPxC5FI8tdxneaWQfdmGwoKjGzmZ
+        TQI7KuX7xaVPCJ8XoHXorBgDrrMU=
+X-Received: by 2002:a17:907:97cb:b0:969:f9e8:a77c with SMTP id js11-20020a17090797cb00b00969f9e8a77cmr2710824ejc.64.1686948158075;
+        Fri, 16 Jun 2023 13:42:38 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5ehYaK04S4/TY2b/iTlXKHTkxro6SsSNCPMtcO8/kHNHdFogckXjJZEm+Tpaj5nWU8CSFc3g==
+X-Received: by 2002:a17:907:97cb:b0:969:f9e8:a77c with SMTP id js11-20020a17090797cb00b00969f9e8a77cmr2710788ejc.64.1686948157766;
+        Fri, 16 Jun 2023 13:42:37 -0700 (PDT)
+Received: from [192.168.42.222] (194-45-78-10.static.kviknet.net. [194.45.78.10])
+        by smtp.gmail.com with ESMTPSA id b19-20020a170906491300b00985036aced0sm1439806ejq.163.2023.06.16.13.42.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jun 2023 13:42:37 -0700 (PDT)
+From:   Jesper Dangaard Brouer <jbrouer@redhat.com>
+X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
+Message-ID: <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
+Date:   Fri, 16 Jun 2023 22:42:35 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Cc:     brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Lemon <jonathan.lemon@gmail.com>
+Subject: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
+ page_pool: remove PP_FLAG_PAGE_FRAG flag)
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <jbrouer@redhat.com>
+References: <20230612130256.4572-1-linyunsheng@huawei.com>
+ <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org>
+ <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org>
+ <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+ <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
+ <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+ <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
+ <20230616122140.6e889357@kernel.org>
+In-Reply-To: <20230616122140.6e889357@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
 
-Since regulatory disconnect was added, OCB and NAN interface
-types were added, which made it completely unusable for any
-driver that allowed OCB/NAN. Add OCB/NAN (though NAN doesn't
-do anything, we don't have any info) and also remove all the
-logic that opts out, so it won't be broken again if/when new
-interface types are added.
 
-Fixes: 6e0bd6c35b02 ("cfg80211: 802.11p OCB mode handling")
-Fixes: cb3b7d87652a ("cfg80211: add start / stop NAN commands")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
-v2: add fixes tags
----
- include/net/regulatory.h | 13 +------------
- net/wireless/core.c      | 16 ----------------
- net/wireless/reg.c       | 14 ++++++++++----
- 3 files changed, 11 insertions(+), 32 deletions(-)
+On 16/06/2023 21.21, Jakub Kicinski wrote:
+> On Fri, 16 Jun 2023 20:59:12 +0200 Jesper Dangaard Brouer wrote:
+>> +       if (mem_type == MEM_TYPE_PP_NETMEM)
+>> +               pp_netmem_put_page(pp, page, allow_direct);
+>> +       else
+>> +               page_pool_put_full_page(pp, page, allow_direct);
+> 
+> Interesting, what is the netmem type? I was thinking about extending
+> page pool for other mem providers and what came to mind was either
+> optionally replacing the free / alloc with a function pointer:
+> 
+> https://github.com/torvalds/linux/commit/578ebda5607781c0abb26c1feae7ec8b83840768
+> 
+> or wrapping the PP calls with static inlines which can direct to
+> a different implementation completely (like zctap / io_uring zc).
+> 
 
-diff --git a/include/net/regulatory.h b/include/net/regulatory.h
-index 896191f420d5..b2cb4a9eb04d 100644
---- a/include/net/regulatory.h
-+++ b/include/net/regulatory.h
-@@ -140,17 +140,6 @@ struct regulatory_request {
-  *      otherwise initiating radiation is not allowed. This will enable the
-  *      relaxations enabled under the CFG80211_REG_RELAX_NO_IR configuration
-  *      option
-- * @REGULATORY_IGNORE_STALE_KICKOFF: the regulatory core will _not_ make sure
-- *	all interfaces on this wiphy reside on allowed channels. If this flag
-- *	is not set, upon a regdomain change, the interfaces are given a grace
-- *	period (currently 60 seconds) to disconnect or move to an allowed
-- *	channel. Interfaces on forbidden channels are forcibly disconnected.
-- *	Currently these types of interfaces are supported for enforcement:
-- *	NL80211_IFTYPE_ADHOC, NL80211_IFTYPE_STATION, NL80211_IFTYPE_AP,
-- *	NL80211_IFTYPE_AP_VLAN, NL80211_IFTYPE_MONITOR,
-- *	NL80211_IFTYPE_P2P_CLIENT, NL80211_IFTYPE_P2P_GO,
-- *	NL80211_IFTYPE_P2P_DEVICE. The flag will be set by default if a device
-- *	includes any modes unsupported for enforcement checking.
-  * @REGULATORY_WIPHY_SELF_MANAGED: for devices that employ wiphy-specific
-  *	regdom management. These devices will ignore all regdom changes not
-  *	originating from their own wiphy.
-@@ -177,7 +166,7 @@ enum ieee80211_regulatory_flags {
- 	REGULATORY_COUNTRY_IE_FOLLOW_POWER	= BIT(3),
- 	REGULATORY_COUNTRY_IE_IGNORE		= BIT(4),
- 	REGULATORY_ENABLE_RELAX_NO_IR           = BIT(5),
--	REGULATORY_IGNORE_STALE_KICKOFF         = BIT(6),
-+	/* reuse bit 6 next time */
- 	REGULATORY_WIPHY_SELF_MANAGED		= BIT(7),
- };
- 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index b3ec9eaec36b..609b79fe4a74 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -721,22 +721,6 @@ int wiphy_register(struct wiphy *wiphy)
- 			return -EINVAL;
- 	}
- 
--	/*
--	 * if a wiphy has unsupported modes for regulatory channel enforcement,
--	 * opt-out of enforcement checking
--	 */
--	if (wiphy->interface_modes & ~(BIT(NL80211_IFTYPE_STATION) |
--				       BIT(NL80211_IFTYPE_P2P_CLIENT) |
--				       BIT(NL80211_IFTYPE_AP) |
--				       BIT(NL80211_IFTYPE_MESH_POINT) |
--				       BIT(NL80211_IFTYPE_P2P_GO) |
--				       BIT(NL80211_IFTYPE_ADHOC) |
--				       BIT(NL80211_IFTYPE_P2P_DEVICE) |
--				       BIT(NL80211_IFTYPE_NAN) |
--				       BIT(NL80211_IFTYPE_AP_VLAN) |
--				       BIT(NL80211_IFTYPE_MONITOR)))
--		wiphy->regulatory_flags |= REGULATORY_IGNORE_STALE_KICKOFF;
--
- 	if (WARN_ON((wiphy->regulatory_flags & REGULATORY_WIPHY_SELF_MANAGED) &&
- 		    (wiphy->regulatory_flags &
- 					(REGULATORY_CUSTOM_REG |
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index f5ea1f373ab7..f9e03850d71b 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2391,9 +2391,17 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
- 		case NL80211_IFTYPE_P2P_DEVICE:
- 			/* no enforcement required */
- 			break;
-+		case NL80211_IFTYPE_OCB:
-+			if (!wdev->u.ocb.chandef.chan)
-+				continue;
-+			chandef = wdev->u.ocb.chandef;
-+			break;
-+		case NL80211_IFTYPE_NAN:
-+			/* we have no info, but NAN is also pretty universal */
-+			continue;
- 		default:
- 			/* others not implemented for now */
--			WARN_ON(1);
-+			WARN_ON_ONCE(1);
- 			break;
- 		}
- 
-@@ -2452,9 +2460,7 @@ static void reg_check_chans_work(struct work_struct *work)
- 	rtnl_lock();
- 
- 	list_for_each_entry(rdev, &cfg80211_rdev_list, list)
--		if (!(rdev->wiphy.regulatory_flags &
--		      REGULATORY_IGNORE_STALE_KICKOFF))
--			reg_leave_invalid_chans(&rdev->wiphy);
-+		reg_leave_invalid_chans(&rdev->wiphy);
- 
- 	rtnl_unlock();
- }
--- 
-2.40.1
+I *LOVE* this idea!!!
+It have been my master plan since day-1 to have other mem providers.
+Notice how ZC xsk/AF_XDP have it's own memory allocator implementation.
+
+The page_pool was never meant to be the final and best solution, I want
+to see other, better and faster solutions competing with page_pool and
+maybe some day replacing page_pool (I even see it as a success if PP get
+depreciated and remove from the kernel due to a better solution).
+
+See[1] how net/core/xdp.c simply have a switch statement
+(is fast, because ASM wise it becomes a jump table):
+
+  [1] 
+https://github.com/torvalds/linux/blob/v6.4-rc6/net/core/xdp.c#L382-L402
+
+> Former is better for huge pages, latter is better for IO mem
+> (peer-to-peer DMA). I wonder if you have different use case which
+> requires a different model :(
+> 
+
+I want for the network stack SKBs (and XDP) to support different memory
+types for the "head" frame and "data-frags". Eric have described this
+idea before, that hardware will do header-split, and we/he can get TCP
+data part is another page/frag, making it faster for TCP-streams, but
+this can be used for much more.
+
+My proposed use-cases involves more that TCP.  We can easily imagine
+NVMe protocol header-split, and the data-frag could be a mem_type that
+actually belongs to the harddisk (maybe CPU cannot even read this).  The
+same scenario goes for GPU memory, which is for the AI use-case.  IIRC
+then Jonathan have previously send patches for the GPU use-case.
+
+I really hope we can work in this direction together,
+--Jesper
 
