@@ -2,102 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E843732291
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 00:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BDBB732478
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 03:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238927AbjFOWOS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 18:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54592 "EHLO
+        id S230115AbjFPBL0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 21:11:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238959AbjFOWOQ (ORCPT
+        with ESMTP id S229991AbjFPBLY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 18:14:16 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 969D8BA;
-        Thu, 15 Jun 2023 15:14:11 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9741caaf9d4so334206466b.0;
-        Thu, 15 Jun 2023 15:14:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1686867250; x=1689459250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=38f3zMiD2iJLYkWKmro5ZH5L9YJl3p+FlUUNQWER8tI=;
-        b=qi7+rM589uiI8RO0fZvte5ptItF5GUV26VlUnfmPeefjBHPJwODjrd6Y4+2Vbg1Fin
-         rjkmdFUBf45J4FRZACWcLVq4T0OByfURRPBaPM3ey9kONaIjummSbKpleg5gS6EfzM1o
-         u7kXt5E/wqQUoZHMfy28LceQV006JWs0Kvcp4wVV+W9c+1/wB1H/o0wetzlRSy/aO6VS
-         gZcJpJ/otWogRDnyIk5BIaRlsvOABZsvmLIzXO7bnBGPH8/TB5bpguzTn+e/rlWZsKwt
-         luvftRK547DkoAxEccbez+8JZR73DI0kp8Gre+apgcN1o4y5GEO1FsN4eVqXbM8cAEMD
-         J6aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686867250; x=1689459250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=38f3zMiD2iJLYkWKmro5ZH5L9YJl3p+FlUUNQWER8tI=;
-        b=TmrwMeLiX6FlrkzXs4/huqoZmCdam+sE7jK/H2LWkzQ6bnL+k7JfUgfVgE5nU4fXbJ
-         Of0Kh/fTEkz3zbbjvv+INP2vQd3abcJhH1IkmKXHRpbrHWwyD5AhzVUfGoBgpshHZ4WM
-         Da4A8gL01sOFQTJ50NTBSrbx1BL6Nz5Bty7hWEFSIeKLIDDELV1O/Fz+InbusOIKjhUH
-         E82Xd4UIqgEuI21yFVy+7DDylUlhKNwZhMik3u7HTGLVuwG5gFDZC4NkZGJ9236dDsjA
-         TptLBVHCncdQCNYd3UMpcARVJI52e35GY5BvYCu+IblSimml9ARnAxbUA7es6UDEWrbw
-         0JUA==
-X-Gm-Message-State: AC+VfDzH9wTU7A85Z9HHi+TpHg84cxqn/Pvv8g2By+qMcruzXFjNdaUo
-        nT5ioxtGn+fuhmCiq3W5UwThu8Fqsz4Ajwz6gDI=
-X-Google-Smtp-Source: ACHHUZ6DXHkFqzYuv6gmwEeYzxVonBfQJzMjslZlAaPmBnJHUG6Dk8ufUQERFFsNvjfkW/Sf67e9fYs86Nss2YmI5fA=
-X-Received: by 2002:a17:907:a41e:b0:97a:e496:c121 with SMTP id
- sg30-20020a170907a41e00b0097ae496c121mr228921ejc.69.1686867249862; Thu, 15
- Jun 2023 15:14:09 -0700 (PDT)
+        Thu, 15 Jun 2023 21:11:24 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98A51FE2
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 18:11:20 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35G1Aqu16032174, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35G1Aqu16032174
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 16 Jun 2023 09:10:52 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 16 Jun 2023 09:11:10 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Fri, 16 Jun 2023 09:11:10 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Fri, 16 Jun 2023 09:11:10 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     Dmitry Antipov <dmantipov@yandex.ru>, Kalle Valo <kvalo@kernel.org>
+CC:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] [v2] wifi: rtw88: delete timer and free skb queue when unloading
+Thread-Topic: [PATCH] [v2] wifi: rtw88: delete timer and free skb queue when
+ unloading
+Thread-Index: AQHZn5zgajoIIGul30uNrZf2KgsQxa+MmiZw
+Date:   Fri, 16 Jun 2023 01:11:10 +0000
+Message-ID: <5fb6969687da47b2a12cb35041accca2@realtek.com>
+References: <87leglaqkl.fsf@kernel.org>
+ <20230615151911.5793-1-dmantipov@yandex.ru>
+In-Reply-To: <20230615151911.5793-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.188]
+x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
-In-Reply-To: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Fri, 16 Jun 2023 00:13:59 +0200
-Message-ID: <CAFBinCAEFvmxnBDJPSs+mGqAraGUDFkCB3SjRTEyC9waA3P8JQ@mail.gmail.com>
-Subject: Re: [RFC 1/1] wifi: rtw88: Add support for the SDIO based RTL8723DS chipset
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Heinrich,
-
-On Thu, Jun 15, 2023 at 4:21=E2=80=AFPM Heinrich Schuchardt
-<heinrich.schuchardt@canonical.com> wrote:
-[...]
-> On my Lichee RV Dock board this patch is enough to make The RTL8723DS
-> work. But unfortunately after running some time the driver crashes.
-> My impression is that the crash is not specific to my patch but must
-> be hidden in one of the existing functions it is invoking.
->
-> This seems to be related to not checking pkt_stat->pkt_len.
->
-> My kernel was built against v6.4-rc6.
-As Larry has mentioned: support for the RTL8723DS chipset is in
-wireless-next.git
-You can find the whole series here: [0]
-
-It seems you're missing at least "wifi: rtw88: sdio: Check the HISR
-RX_REQUEST bit in rtw_sdio_rx_isr()" [1]
-That patch should fix the exact issue that you described.
 
 
-Best regards,
-Martin
+> -----Original Message-----
+> From: Dmitry Antipov <dmantipov@yandex.ru>
+> Sent: Thursday, June 15, 2023 11:19 PM
+> To: Kalle Valo <kvalo@kernel.org>
+> Cc: Yan-Hsuan Chuang <tony0620emma@gmail.com>; linux-wireless@vger.kernel.org; Dmitry Antipov
+> <dmantipov@yandex.ru>
+> Subject: [PATCH] [v2] wifi: rtw88: delete timer and free skb queue when unloading
+> 
+> Fix possible crash and memory leak on driver unload by deleting
+> TX purge timer and freeing C2H queue in 'rtw_core_deinit()'.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+> v2: fix title and commit message (Kalle Valo)
+> ---
+>  drivers/net/wireless/realtek/rtw88/main.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+> index 9447a3aae3b5..572fc126b9de 100644
+> --- a/drivers/net/wireless/realtek/rtw88/main.c
+> +++ b/drivers/net/wireless/realtek/rtw88/main.c
+> @@ -2180,9 +2180,11 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
+>                 release_firmware(wow_fw->firmware);
+> 
+>         destroy_workqueue(rtwdev->tx_wq);
+> +       timer_delete_sync(&rtwdev->tx_report.purge_timer);
+>         spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
+>         skb_queue_purge(&rtwdev->tx_report.queue);
+>         skb_queue_purge(&rtwdev->coex.queue);
+> +       skb_queue_purge(&rtwdev->c2h_queue);
 
+rtwdev->tx_report.q_lock is used to protect rtwdev->tx_report.queue, so don't
+add to purge c2h queue in this critical section. I think coex.queue is
+the bad example.
 
-[0] https://lore.kernel.org/linux-wireless/20230522202425.1827005-1-martin.=
-blumenstingl@googlemail.com/
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.=
-git/commit/?id=3De967229ead0e6c5047a1cfd5a0db58ceb930800b
+>         spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
+> 
+>         list_for_each_entry_safe(rsvd_pkt, tmp, &rtwdev->rsvd_page_list,
+> --
+> 2.40.1
+
