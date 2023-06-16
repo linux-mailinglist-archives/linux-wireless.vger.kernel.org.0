@@ -2,192 +2,279 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD9873371D
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 19:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42FE47338AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 21:01:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346047AbjFPREX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 13:04:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
+        id S1345815AbjFPTBE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 15:01:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244204AbjFPRED (ORCPT
+        with ESMTP id S1345744AbjFPTAp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 13:04:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 489C13C10;
-        Fri, 16 Jun 2023 10:03:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA72D63EF2;
-        Fri, 16 Jun 2023 17:03:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894DAC433C0;
-        Fri, 16 Jun 2023 17:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686935008;
-        bh=AXStpl5ukr0pjZfA+v+TDZ1tI5AAWimXjj+HdNCQLDg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=OaEWLE5ZcI0HtHDX6XuKVwV19IfvKqsoJsiuqB79bClgWYcVM1WFl8pm+UuAbfu1I
-         USelhXrgNWUjYwaHjBUyu3XQdfKDkna0Js9x1R5+HwSWw88Xx477WaZ/F/xVu+YUky
-         BGo6eTBgcrma640rFZ75QHgbYRwVLb7LJGp2gMeH3nHn62Xjur+1nVnXoYcAMc4QlM
-         G76/58Qr2VvWW2KCdCJzq+XNO3+18CODgol5NHrhGsbG0YDWaiq1Xpqw/A385Xgiu6
-         9W7DeUb5HU3TrAYeao6n596/4NNUD8ImEzEZaznl50IC7qvB1FHg7MUI4EVu4JS1sv
-         WlxFpzsINcgJw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Sebastian Gottschall <s.gottschall@dd-wrt.com>,
-        Steve deRosier <derosier@cal-sierra.com>,
-        Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for various chipsets
-References: <20230611080505.17393-1-ansuelsmth@gmail.com>
-Date:   Fri, 16 Jun 2023 20:03:23 +0300
-In-Reply-To: <20230611080505.17393-1-ansuelsmth@gmail.com> (Christian
-        Marangi's message of "Sun, 11 Jun 2023 10:05:05 +0200")
-Message-ID: <878rcjbaqs.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 16 Jun 2023 15:00:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091BB3A89
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 11:59:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686941958;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zjmzfQ64PaDZl/zNxOmcx+GiAABq8ykFQF94nXy/DjI=;
+        b=NzTV6gHDPyONhhUZKz+N997WYZihaqA7MfvUITCUs6nnMEJZwCmtzSgHJ/nNS0AwXanJzD
+        fBeqFWkmtVYfxOwimk4hVX2jUEcAIgs6URTBm5VNKLdAJ2q7y3LAbFVgeCmah9MExPQaaP
+        K0Kg4pv/Ec/UOjZdCy3HLrwj0vdaL/I=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-261-MGCbQwltOfiWklPRVuV-_w-1; Fri, 16 Jun 2023 14:59:16 -0400
+X-MC-Unique: MGCbQwltOfiWklPRVuV-_w-1
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-50ddef368e4so606400a12.0
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 11:59:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686941955; x=1689533955;
+        h=content-transfer-encoding:in-reply-to:references:to
+         :content-language:subject:cc:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zjmzfQ64PaDZl/zNxOmcx+GiAABq8ykFQF94nXy/DjI=;
+        b=QiEb5PVXlgzqnNX2fu3baKK0XKPu1Kq+bXFK5R/2CgbmCmTz+gjfuxfAV1gEor0XE2
+         Iz05GQWlKfeubraBgKAD8ocepad/LCJLuaf+YxJ0AnvsAKmqjUiv6RMiwgIF8ZyRORKu
+         Lp/TkU51VFiw3FOJgJlIcJzqXQOrt+fiRLfac4ICUbnngPJQ/bmkUyPOLtWw28f9pkDK
+         8oG+wlfIVnxPw3edS59pjW/MipCdhfGNn8tk9wlf5O7BAIkMVf/svUswqrExWezyDpVB
+         rkM8NJXggKsRIJpNVvzM67hOvgTy5GXaWKKchUmfF8pzEZEQ9e9UZ8hTQw77ojf+gKJV
+         Gw+g==
+X-Gm-Message-State: AC+VfDyic+TYvYRR+s/pr6tl6TznJdpG5aaqWeRoWjmMUvbThkxr634p
+        +T1V2gbiNtNumUiRIxA4xWEAKI04I1ipGK/eUEjI74eRaIrl0/5Zj9fx9ArLftlKnTug7KUN/K4
+        ZEs4w2qHrExuQb6NKXHm0+JNXu/Q=
+X-Received: by 2002:a05:6402:28c:b0:518:6bb9:1d5e with SMTP id l12-20020a056402028c00b005186bb91d5emr2072118edv.8.1686941955586;
+        Fri, 16 Jun 2023 11:59:15 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7vlBCAtmkvYL1Wt50Zt/pUXvHXtQyLrJjFLIR+365bedhzoAme9s2GbKhNhGuAwS9jK5D0SQ==
+X-Received: by 2002:a05:6402:28c:b0:518:6bb9:1d5e with SMTP id l12-20020a056402028c00b005186bb91d5emr2072085edv.8.1686941955188;
+        Fri, 16 Jun 2023 11:59:15 -0700 (PDT)
+Received: from [192.168.42.222] (194-45-78-10.static.kviknet.net. [194.45.78.10])
+        by smtp.gmail.com with ESMTPSA id b13-20020aa7c90d000000b0051879590e06sm495742edt.24.2023.06.16.11.59.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jun 2023 11:59:14 -0700 (PDT)
+From:   Jesper Dangaard Brouer <jbrouer@redhat.com>
+X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
+Message-ID: <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
+Date:   Fri, 16 Jun 2023 20:59:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Cc:     brouer@redhat.com, Jakub Kicinski <kuba@kernel.org>,
+        davem@davemloft.net, pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
+Content-Language: en-US
+To:     Alexander Duyck <alexander.duyck@gmail.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>
+References: <20230612130256.4572-1-linyunsheng@huawei.com>
+ <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org>
+ <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org>
+ <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+ <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
+ <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+In-Reply-To: <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Christian Marangi <ansuelsmth@gmail.com> writes:
 
-> From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
->
-> Adds LED and GPIO Control support for 988x, 9887, 9888, 99x0, 9984
-> based chipsets with on chipset connected led's using WMI Firmware API.
-> The LED device will get available named as "ath10k-phyX" at sysfs and
-> can be controlled with various triggers.
-> Adds also debugfs interface for gpio control.
->
-> Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-> Reviewed-by: Steve deRosier <derosier@cal-sierra.com>
-> [kvalo: major reorg and cleanup]
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-> [ansuel: rebase and small cleanup]
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-> ---
->
-> Hi,
-> this is a very old patch from 2018 that somehow was talked till 2020
-> with Kavlo asked to rebase and resubmit and nobody did.
-> So here we are in 2023 with me trying to finally have this upstream.
->
-> A summarize of the situation.
-> - The patch is from years in OpenWRT. Used by anything that has ath10k
->   card and a LED connected.
-> - This patch is also used by the fw variant from Candela Tech with no
->   problem reported.
-> - It was pointed out that this caused some problem with ipq4019 SoC
->   but the problem was actually caused by a different bug related to
->   interrupts.
->
-> I honestly hope we can have this feature merged since it's really
-> funny to have something that was so near merge and jet still not
-> present and with devices not supporting this simple but useful
-> feature.
 
-Indeed, we should finally get this in. Thanks for working on it.
+On 16/06/2023 17.01, Alexander Duyck wrote:
+> On Fri, Jun 16, 2023 at 5:21 AM Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>>
+>> On 2023/6/16 2:26, Alexander Duyck wrote:
+>>> On Thu, Jun 15, 2023 at 9:51 AM Jakub Kicinski <kuba@kernel.org> wrote:
+>>>>
+>>>> On Thu, 15 Jun 2023 15:17:39 +0800 Yunsheng Lin wrote:
+[...]
+>>>>
+>>>> I like your patches as they isolate the drivers from having to make the
+>>>> fragmentation decisions based on the system page size (4k vs 64k but
+>>>> we're hearing more and more about ARM w/ 16k pages). For that use case
+>>>> this is great.
 
-I did some minor changes to the patch, they are in my pending branch:
++1
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=686464864538158f22842dc49eddea6fa50e59c1
+[...]
+>>>
+>>> In the case of the standard page size being 4K a standard page would
+>>> just have to take on the CPU overhead of the atomic_set and
+>>> atomic_read for pp_ref_count (new name) which should be minimal as on
+>>> most sane systems those just end up being a memory write and read.
+>>
+>> If I understand you correctly, I think what you are trying to do
+>> may break some of Jesper' benchmarking:)
+>>
+>> [1] https://github.com/netoptimizer/prototype-kernel/blob/master/kernel/lib/bench_page_pool_simple.c
+> 
+> So? If it breaks an out-of-tree benchmark the benchmark can always be
+> fixed. 
 
-My comments below, please review my changes. No need to resend because
-of these.
+It doesn't matter if this is out-of-tree (I should have upstreamed it 
+when AKPM asked me to.)
 
-> --- a/drivers/net/wireless/ath/ath10k/Kconfig
-> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
-> @@ -67,6 +67,23 @@ config ATH10K_DEBUGFS
->  
->  	  If unsure, say Y to make it easier to debug problems.
->  
-> +config ATH10K_LEDS
-> +	bool "Atheros ath10k LED support"
-> +	depends on ATH10K
-> +	select MAC80211_LEDS
-> +	select LEDS_CLASS
-> +	select NEW_LEDS
-> +	default y
-> +	help
-> +	  This option enables LEDs support for chipset LED pins.
-> +	  Each pin is connected via GPIO and can be controlled using
-> +	  WMI Firmware API.
-> +
-> +	  The LED device will get available named as "ath10k-phyX" at sysfs and
-> +    	  can be controlled with various triggers.
-> +
-> +	  Say Y, if you have LED pins connected to the ath10k wireless card.
+Point is don't break my page_pool fast-path!!! :-P
 
-I'm not sure anymore if we should ask anything from the user, better to
-enable automatically if LED support is enabled in the kernel. So I
-simplified this to:
+> The point is enabling a use case that can add value across the
+> board instead of trying to force the community to support a niche use
+> case.
 
-config ATH10K_LEDS
-	bool
-	depends on ATH10K
-	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
-	default y
+I'm all for creating a new API, lets call it netmem, that takes care of 
+this use-case.
+I'm *not* okay with this new API slowing down the page_pool fast-path.
 
-This follows what mt76 does:
+Why not multiplex on a MEM_TYPE, like XDP_MEM_TYPE is prepared for?!?
+Meaning the caller can choose which is the correct API call.
+(thus, we can stay away from adding code to fast-path case)
 
-config MT76_LEDS
-	bool
-	depends on MT76_CORE
-	depends on LEDS_CLASS=y || MT76_CORE=LEDS_CLASS
-	default y
+See below, copy-paste of code that shows what I mean by multiplex on a 
+MEM_TYPE.
 
-> @@ -65,6 +66,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
->  		.dev_id = QCA988X_2_0_DEVICE_ID,
->  		.bus = ATH10K_BUS_PCI,
->  		.name = "qca988x hw2.0",
-> +		.led_pin = 1,
->  		.patch_load_addr = QCA988X_HW_2_0_PATCH_LOAD_ADDR,
->  		.uart_pin = 7,
->  		.cc_wraparound_type = ATH10K_HW_CC_WRAP_SHIFTED_ALL,
+> 
+> Ideally we should get away from using the pages directly for most
+> cases in page pool. In my mind the page pool should start operating
+> more like __get_free_pages where what you get is a virtual address
+> instead of the actual page. That way we could start abstracting it
+> away and eventually get to something more like a true page_pool api
+> instead of what feels like a set of add-ons for the page allocator.
 
-I prefer following the field order from struct ath10k_hw_params
-declaration and also setting fields explicitly to zero (even though
-there are gaps still) so I changed that for every entry.
+Yes, I agree with Alex Duyck here.
+Like when I looked at veth proposed changes, it also felt like a virtual 
+address would be better than a page.
 
-> +int ath10k_leds_register(struct ath10k *ar)
-> +{
-> +	int ret;
-> +
-> +	if (ar->hw_params.led_pin == 0)
-> +		/* leds not supported */
-> +		return 0;
-> +
-> +	snprintf(ar->leds.label, sizeof(ar->leds.label), "ath10k-%s",
-> +		 wiphy_name(ar->hw->wiphy));
-> +	ar->leds.wifi_led.active_low = 1;
-> +	ar->leds.wifi_led.gpio = ar->hw_params.led_pin;
-> +	ar->leds.wifi_led.name = ar->leds.label;
-> +	ar->leds.wifi_led.default_state = LEDS_GPIO_DEFSTATE_KEEP;
-> +
-> +	ar->leds.cdev.name = ar->leds.label;
-> +	ar->leds.cdev.brightness_set_blocking = ath10k_leds_set_brightness_blocking;
-> +
-> +	/* FIXME: this assignment doesn't make sense as it's NULL, remove it? */
-> +	ar->leds.cdev.default_trigger = ar->leds.wifi_led.default_trigger;
+  addr = netmem_alloc(rq->page_pool, &truesize);
 
-But what to do with this FIXME?
+> Although at the end of the day this still feels more like we are just
+> reimplementing slab so it is hard for me to say this is necessarily
+> the best solution either.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Yes, we have to be careful not to re-implement the MM layer in network 
+land ;-)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+(below code copy-paste broke whitespaces)
+
+$ git show
+commit fe38c642d629f8361f76b25aa8732e5e331d0925 (HEAD -> pp_rm_workqueue04)
+Author: Jesper Dangaard Brouer <brouer@redhat.com>
+Date:   Fri Jun 16 20:54:08 2023 +0200
+
+     page_pool: code examplifying multiplexing on mem_type
+
+     Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
+
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index d1c5381fc95f..c02ac82a1d79 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -42,6 +42,7 @@ enum xdp_mem_type {
+         MEM_TYPE_PAGE_ORDER0,     /* Orig XDP full page model */
+         MEM_TYPE_PAGE_POOL,
+         MEM_TYPE_XSK_BUFF_POOL,
++       MEM_TYPE_PP_NETMEM,
+         MEM_TYPE_MAX,
+  };
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index d03448a4c411..68be76efef00 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -353,7 +353,7 @@ static void page_pool_set_pp_info(struct page_pool 
+*pool,
+                                   struct page *page)
+  {
+         page->pp = pool;
+-       page->pp_magic |= PP_SIGNATURE;
++       page->pp_magic |= PP_SIGNATURE | (MEM_TYPE_PAGE_POOL << 8);
+         if (pool->p.init_callback)
+                 pool->p.init_callback(page, pool->p.init_arg);
+  }
+@@ -981,6 +981,7 @@ bool page_pool_return_skb_page(struct page *page, 
+bool napi_safe)
+         struct napi_struct *napi;
+         struct page_pool *pp;
+         bool allow_direct;
++       int mem_type;
+
+         page = compound_head(page);
+
+@@ -991,9 +992,10 @@ bool page_pool_return_skb_page(struct page *page, 
+bool napi_safe)
+          * and page_is_pfmemalloc() is checked in __page_pool_put_page()
+          * to avoid recycling the pfmemalloc page.
+          */
+-       if (unlikely((page->pp_magic & ~0x3UL) != PP_SIGNATURE))
++       if (unlikely((page->pp_magic & ~0xF03UL) != PP_SIGNATURE))
+                 return false;
+
++       mem_type = (page->pp_magic & 0xF00) >> 8;
+         pp = page->pp;
+
+         /* Allow direct recycle if we have reasons to believe that we are
+@@ -1009,7 +1011,10 @@ bool page_pool_return_skb_page(struct page *page, 
+bool napi_safe)
+          * The page will be returned to the pool here regardless of the
+          * 'flipped' fragment being in use or not.
+          */
+-       page_pool_put_full_page(pp, page, allow_direct);
++       if (mem_type == MEM_TYPE_PP_NETMEM)
++               pp_netmem_put_page(pp, page, allow_direct);
++       else
++               page_pool_put_full_page(pp, page, allow_direct);
+
+         return true;
+  }
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index 41e5ca8643ec..dc4bfbe8f002 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -380,6 +380,11 @@ void __xdp_return(void *data, struct xdp_mem_info 
+*mem, bool napi_direct,
+         struct page *page;
+
+         switch (mem->type) {
++       case MEM_TYPE_PP_NETMEM:
++               if (napi_direct && xdp_return_frame_no_direct())
++                       napi_direct = false;
++               pp_netmem_put(page->pp, data, napi_direct);
++               break;
+         case MEM_TYPE_PAGE_POOL:
+                 page = virt_to_head_page(data);
+                 if (napi_direct && xdp_return_frame_no_direct())
+
