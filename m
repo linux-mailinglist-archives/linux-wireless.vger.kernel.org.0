@@ -2,174 +2,248 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 825DA733B1D
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 22:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D0C733C23
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Jun 2023 00:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230045AbjFPUn1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 16:43:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59406 "EHLO
+        id S1345405AbjFPWO0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 18:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjFPUn0 (ORCPT
+        with ESMTP id S233378AbjFPWOX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 16:43:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB033AA5
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 13:42:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686948160;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NSJLIyj9LMYS53Im9VxxQ75KAnWRMymE9tH9+QGjBNs=;
-        b=c2RjwrsRtZ2UodpnaZbHhL1TvE4NnmjHTU8PAXlk+MDxCNF+4KMo8woWaasYPRG/isZm2b
-        Jx5UtHLQT7DEuy/lPpUq4RKPj20J2xI8rQp5bsbqbNlITqygBs9z1wkpjNZ/IIQX4JCcPk
-        6ACfiwSoN9+sO9psN1htuoJt7FqQyYg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-djAZHkt_M3ClHKp4cQM4hQ-1; Fri, 16 Jun 2023 16:42:39 -0400
-X-MC-Unique: djAZHkt_M3ClHKp4cQM4hQ-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-94a34d3e5ebso77178766b.3
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 13:42:38 -0700 (PDT)
+        Fri, 16 Jun 2023 18:14:23 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AC81FD7;
+        Fri, 16 Jun 2023 15:14:22 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3f8c65020dfso11152955e9.2;
+        Fri, 16 Jun 2023 15:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686953660; x=1689545660;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=tT6ObQCSQqj+wxVkfoL0mcp4+39BD0tg2ud99zqanQk=;
+        b=jFtHLeHp/x6+zDJx8LT5tFnxLhYrna3jSCJKiSFKkveDkm+FDvcPIXQiAgr5DdLwX+
+         6uow5DqJUxee2fzm98kcfgYXF/G4S7MZrTSXylsga+4ruWtaJ88Vgt51BnAh6NdlyjF2
+         ADKUmyHwzWv0Hk1pP2Ry1+IeJSplsPD63l0lzD0GD9kUkfGZq47ooQpP47wVsMckfB4S
+         z4CKCuTTr1Z7wzSsxS4He67IJhZBLqT8GaWwAHpvsYPT6LVUJqM/+zPN09nECr+E0jBt
+         AKaZ5iAwdeqkBiwAktpKEtFFrrtFGbRugVC+p8R942K/eY4klFRC3jX0SX39W7o+VrCO
+         hxPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686948158; x=1689540158;
-        h=content-transfer-encoding:in-reply-to:references:to
-         :content-language:subject:cc:user-agent:mime-version:date:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NSJLIyj9LMYS53Im9VxxQ75KAnWRMymE9tH9+QGjBNs=;
-        b=UG72VLnRQ2FMEDc+s2WEX9M7GVGtkAWNAi5sgiiR7+MaXnlDTubCs4ceZpANv0A/t5
-         0QR2t1DB9hWTGohD98VBkRS3JCi9ZXt+A6Nisa5/BUJ95T1u7q4pnh09Dkd7dsHVQTh3
-         yCXBfvo5D6m5LiVMTbsdgLmJ2ABTOFzhddhE0tlr5pOAj9xv0iOS2Kk6DmjSWrODDjRw
-         iSGiw9Ihy0KGYyNT1O1w70TfosAPShxPe7yNqShzbeBjHzxXDCroPQhTyKgbQoY4o6Nc
-         aPO8IGZglksYJBZ5zFb+TIKBwZDCoyWNybHD9ZUd/1Ge8/5WPk6L5xkFhGNCNGHFz0d2
-         WsgA==
-X-Gm-Message-State: AC+VfDzFRuGVUASGXFLp+YVtkpQfPtx1hOW8Qc0qzbZmc8pwY31Zfbip
-        cCmYJV9dpwvroOmz46fvH2njawV9rCOdh9+tLteE+cWGaB6xPxC5FI8tdxneaWQfdmGwoKjGzmZ
-        TQI7KuX7xaVPCJ8XoHXorBgDrrMU=
-X-Received: by 2002:a17:907:97cb:b0:969:f9e8:a77c with SMTP id js11-20020a17090797cb00b00969f9e8a77cmr2710824ejc.64.1686948158075;
-        Fri, 16 Jun 2023 13:42:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5ehYaK04S4/TY2b/iTlXKHTkxro6SsSNCPMtcO8/kHNHdFogckXjJZEm+Tpaj5nWU8CSFc3g==
-X-Received: by 2002:a17:907:97cb:b0:969:f9e8:a77c with SMTP id js11-20020a17090797cb00b00969f9e8a77cmr2710788ejc.64.1686948157766;
-        Fri, 16 Jun 2023 13:42:37 -0700 (PDT)
-Received: from [192.168.42.222] (194-45-78-10.static.kviknet.net. [194.45.78.10])
-        by smtp.gmail.com with ESMTPSA id b19-20020a170906491300b00985036aced0sm1439806ejq.163.2023.06.16.13.42.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 13:42:37 -0700 (PDT)
-From:   Jesper Dangaard Brouer <jbrouer@redhat.com>
-X-Google-Original-From: Jesper Dangaard Brouer <brouer@redhat.com>
-Message-ID: <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
-Date:   Fri, 16 Jun 2023 22:42:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Cc:     brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
+        d=1e100.net; s=20221208; t=1686953660; x=1689545660;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tT6ObQCSQqj+wxVkfoL0mcp4+39BD0tg2ud99zqanQk=;
+        b=H54K552jg5vQ8wWi9neR4lDqQVoK7lnOhvO1gqesr6eL7ZVYPfSk2XuUvjpD1AYZa9
+         1YJcjhzrJ7AhFlJutaDxl0dbuxaZChVciqT/HLvyXdFMj9rBCGjiRR6HIWptUWoYU4XE
+         gLdFYYXsBh0ayfd5Ut/XQiC/XqZpfptL+RTLwgNpI+Ie8QnEVb9rajTY0rzeK4Dl6zkD
+         lZoaRzCoj/+cLnJP9A8O3HzMEr4O8tLPviVWL7kIetK15cy+dOH74oxGfM31RhKiDhLg
+         0sdLSCsF7Dlf/v49dAf32+oCXLGnLenRV+A8cN/t0f0ivfwZjiJ8Rgax/ALhvcwIlLNm
+         yYlw==
+X-Gm-Message-State: AC+VfDxnpreHHtkODuewhhr+hAAWsgYwQJ8kZEzF4YeaW2W+Wd9IOchs
+        pYCKSKHi2uDcgVVzpMeGuxI=
+X-Google-Smtp-Source: ACHHUZ443J3rJAiWjyHbG8G9CKQv+opL+1Z/scP/JsH3FhFXwZC/8XLMBg6O2u920MbvcbuIrH4mwQ==
+X-Received: by 2002:a5d:6ad1:0:b0:2f5:d3d7:7af4 with SMTP id u17-20020a5d6ad1000000b002f5d3d77af4mr2290949wrw.63.1686953660049;
+        Fri, 16 Jun 2023 15:14:20 -0700 (PDT)
+Received: from Ansuel-xps. (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
+        by smtp.gmail.com with ESMTPSA id u9-20020a5d4349000000b003079c402762sm24550729wrr.19.2023.06.16.15.14.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jun 2023 15:14:19 -0700 (PDT)
+Message-ID: <648cdebb.5d0a0220.be7f8.a096@mx.google.com>
+X-Google-Original-Message-ID: <ZIxI6Eo0q8sbJMDs@Ansuel-xps.>
+Date:   Fri, 16 Jun 2023 13:35:04 +0200
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-Subject: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <jbrouer@redhat.com>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
- <20230612130256.4572-5-linyunsheng@huawei.com>
- <20230614101954.30112d6e@kernel.org>
- <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
- <20230615095100.35c5eb10@kernel.org>
- <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
- <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
- <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
- <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
- <20230616122140.6e889357@kernel.org>
-In-Reply-To: <20230616122140.6e889357@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Sebastian Gottschall <s.gottschall@dd-wrt.com>,
+        Steve deRosier <derosier@cal-sierra.com>,
+        Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for
+ various chipsets
+References: <20230611080505.17393-1-ansuelsmth@gmail.com>
+ <878rcjbaqs.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878rcjbaqs.fsf@kernel.org>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 16/06/2023 21.21, Jakub Kicinski wrote:
-> On Fri, 16 Jun 2023 20:59:12 +0200 Jesper Dangaard Brouer wrote:
->> +       if (mem_type == MEM_TYPE_PP_NETMEM)
->> +               pp_netmem_put_page(pp, page, allow_direct);
->> +       else
->> +               page_pool_put_full_page(pp, page, allow_direct);
+On Fri, Jun 16, 2023 at 08:03:23PM +0300, Kalle Valo wrote:
+> Christian Marangi <ansuelsmth@gmail.com> writes:
 > 
-> Interesting, what is the netmem type? I was thinking about extending
-> page pool for other mem providers and what came to mind was either
-> optionally replacing the free / alloc with a function pointer:
+> > From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+> >
+> > Adds LED and GPIO Control support for 988x, 9887, 9888, 99x0, 9984
+> > based chipsets with on chipset connected led's using WMI Firmware API.
+> > The LED device will get available named as "ath10k-phyX" at sysfs and
+> > can be controlled with various triggers.
+> > Adds also debugfs interface for gpio control.
+> >
+> > Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+> > Reviewed-by: Steve deRosier <derosier@cal-sierra.com>
+> > [kvalo: major reorg and cleanup]
+> > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> > [ansuel: rebase and small cleanup]
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+> > ---
+> >
+> > Hi,
+> > this is a very old patch from 2018 that somehow was talked till 2020
+> > with Kavlo asked to rebase and resubmit and nobody did.
+> > So here we are in 2023 with me trying to finally have this upstream.
+> >
+> > A summarize of the situation.
+> > - The patch is from years in OpenWRT. Used by anything that has ath10k
+> >   card and a LED connected.
+> > - This patch is also used by the fw variant from Candela Tech with no
+> >   problem reported.
+> > - It was pointed out that this caused some problem with ipq4019 SoC
+> >   but the problem was actually caused by a different bug related to
+> >   interrupts.
+> >
+> > I honestly hope we can have this feature merged since it's really
+> > funny to have something that was so near merge and jet still not
+> > present and with devices not supporting this simple but useful
+> > feature.
 > 
-> https://github.com/torvalds/linux/commit/578ebda5607781c0abb26c1feae7ec8b83840768
+> Indeed, we should finally get this in. Thanks for working on it.
 > 
-> or wrapping the PP calls with static inlines which can direct to
-> a different implementation completely (like zctap / io_uring zc).
+> I did some minor changes to the patch, they are in my pending branch:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=686464864538158f22842dc49eddea6fa50e59c1
+> 
+> My comments below, please review my changes. No need to resend because
+> of these.
+>
+
+Hi,
+very happy this is going further.
+
+> > --- a/drivers/net/wireless/ath/ath10k/Kconfig
+> > +++ b/drivers/net/wireless/ath/ath10k/Kconfig
+> > @@ -67,6 +67,23 @@ config ATH10K_DEBUGFS
+> >  
+> >  	  If unsure, say Y to make it easier to debug problems.
+> >  
+> > +config ATH10K_LEDS
+> > +	bool "Atheros ath10k LED support"
+> > +	depends on ATH10K
+> > +	select MAC80211_LEDS
+> > +	select LEDS_CLASS
+> > +	select NEW_LEDS
+> > +	default y
+> > +	help
+> > +	  This option enables LEDs support for chipset LED pins.
+> > +	  Each pin is connected via GPIO and can be controlled using
+> > +	  WMI Firmware API.
+> > +
+> > +	  The LED device will get available named as "ath10k-phyX" at sysfs and
+> > +    	  can be controlled with various triggers.
+> > +
+> > +	  Say Y, if you have LED pins connected to the ath10k wireless card.
+> 
+> I'm not sure anymore if we should ask anything from the user, better to
+> enable automatically if LED support is enabled in the kernel. So I
+> simplified this to:
+> 
+> config ATH10K_LEDS
+> 	bool
+> 	depends on ATH10K
+> 	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
+> 	default y
+> 
+> This follows what mt76 does:
+> 
+> config MT76_LEDS
+> 	bool
+> 	depends on MT76_CORE
+> 	depends on LEDS_CLASS=y || MT76_CORE=LEDS_CLASS
+> 	default y
 > 
 
-I *LOVE* this idea!!!
-It have been my master plan since day-1 to have other mem providers.
-Notice how ZC xsk/AF_XDP have it's own memory allocator implementation.
+I remember there was the same discussion in a previous series. OK for me
+for making this by default, only concern is any buildbot error (if any)
 
-The page_pool was never meant to be the final and best solution, I want
-to see other, better and faster solutions competing with page_pool and
-maybe some day replacing page_pool (I even see it as a success if PP get
-depreciated and remove from the kernel due to a better solution).
+Anyway OK for the change.
 
-See[1] how net/core/xdp.c simply have a switch statement
-(is fast, because ASM wise it becomes a jump table):
-
-  [1] 
-https://github.com/torvalds/linux/blob/v6.4-rc6/net/core/xdp.c#L382-L402
-
-> Former is better for huge pages, latter is better for IO mem
-> (peer-to-peer DMA). I wonder if you have different use case which
-> requires a different model :(
+> > @@ -65,6 +66,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+> >  		.dev_id = QCA988X_2_0_DEVICE_ID,
+> >  		.bus = ATH10K_BUS_PCI,
+> >  		.name = "qca988x hw2.0",
+> > +		.led_pin = 1,
+> >  		.patch_load_addr = QCA988X_HW_2_0_PATCH_LOAD_ADDR,
+> >  		.uart_pin = 7,
+> >  		.cc_wraparound_type = ATH10K_HW_CC_WRAP_SHIFTED_ALL,
+> 
+> I prefer following the field order from struct ath10k_hw_params
+> declaration and also setting fields explicitly to zero (even though
+> there are gaps still) so I changed that for every entry.
 > 
 
-I want for the network stack SKBs (and XDP) to support different memory
-types for the "head" frame and "data-frags". Eric have described this
-idea before, that hardware will do header-split, and we/he can get TCP
-data part is another page/frag, making it faster for TCP-streams, but
-this can be used for much more.
+Thanks for the change, np for me.
 
-My proposed use-cases involves more that TCP.  We can easily imagine
-NVMe protocol header-split, and the data-frag could be a mem_type that
-actually belongs to the harddisk (maybe CPU cannot even read this).  The
-same scenario goes for GPU memory, which is for the AI use-case.  IIRC
-then Jonathan have previously send patches for the GPU use-case.
+> > +int ath10k_leds_register(struct ath10k *ar)
+> > +{
+> > +	int ret;
+> > +
+> > +	if (ar->hw_params.led_pin == 0)
+> > +		/* leds not supported */
+> > +		return 0;
+> > +
+> > +	snprintf(ar->leds.label, sizeof(ar->leds.label), "ath10k-%s",
+> > +		 wiphy_name(ar->hw->wiphy));
+> > +	ar->leds.wifi_led.active_low = 1;
+> > +	ar->leds.wifi_led.gpio = ar->hw_params.led_pin;
+> > +	ar->leds.wifi_led.name = ar->leds.label;
+> > +	ar->leds.wifi_led.default_state = LEDS_GPIO_DEFSTATE_KEEP;
+> > +
+> > +	ar->leds.cdev.name = ar->leds.label;
+> > +	ar->leds.cdev.brightness_set_blocking = ath10k_leds_set_brightness_blocking;
+> > +
+> > +	/* FIXME: this assignment doesn't make sense as it's NULL, remove it? */
+> > +	ar->leds.cdev.default_trigger = ar->leds.wifi_led.default_trigger;
+> 
+> But what to do with this FIXME?
+>
 
-I really hope we can work in this direction together,
---Jesper
+It was pushed by you in v13.
 
+I could be wrong but your idea was to prepare for future support of
+other patch that would set the default_trigger to the mac80211 tpt.
+
+We might got both confused by default_trigger and default_state.
+default_trigger is actually never set and is NULL (actually it's 0)
+
+We have other 2 patch that adds tpt rates for the mac80211 LED trigger
+and set this trigger as the default one but honestly I would chose a
+different implementation than hardcoding everything.
+
+If it's ok for you, I would drop the comment and the default_trigger and
+I will send a follow-up patch to this adding DT support by using
+led_classdev_register_ext and defining init_data.
+(and this indirectly would permit better LED naming and defining of
+default-trigger in DT)
+
+Also ideally I will also send a patch for default_state following
+standard LED implementation. (to set default_state in DT)
+
+I would prefer this approach as the LED patch already took way too much
+time and I think it's better to merge this initial version and then
+improve it.
+
+-- 
+	Ansuel
