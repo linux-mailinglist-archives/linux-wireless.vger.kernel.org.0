@@ -2,94 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C70F733128
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A03733144
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbjFPM00 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 08:26:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34474 "EHLO
+        id S231367AbjFPMdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 08:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjFPM0Z (ORCPT
+        with ESMTP id S229952AbjFPMdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 08:26:25 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5937230DE
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:26:24 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qA8Wv-0005mB-IE; Fri, 16 Jun 2023 14:26:17 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qA8Wq-0000ek-NG; Fri, 16 Jun 2023 14:26:12 +0200
-Date:   Fri, 16 Jun 2023 14:26:12 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     petter@technux.se
-Cc:     pkshih@realtek.com, linux-wireless@vger.kernel.org,
-        Larry.Finger@lwfinger.net, andreas@fatal.se, iam@valdikss.org.ru,
-        kernel@pengutronix.de, kvalo@kernel.org, linux@ulli-kroll.de,
-        petter.mabacker@esab.se
-Subject: Re: rtw8822cu (LM842) stalls when running HW offload scan
-Message-ID: <20230616122612.GL18491@pengutronix.de>
-References: <20230612133023.321060-1-petter@technux.se>
+        Fri, 16 Jun 2023 08:33:13 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3788D268A
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:33:11 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qA8dV-00074Q-OF; Fri, 16 Jun 2023 14:33:05 +0200
+Message-ID: <b7c6a794-8d6f-c380-7f39-0c9f60e6642c@leemhuis.info>
+Date:   Fri, 16 Jun 2023 14:33:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612133023.321060-1-petter@technux.se>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
+Content-Language: en-US, de-DE
+To:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Nicolas Escande <nico.escande@gmail.com>, nbd@nbd.name,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
+ <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
+ <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
+ <50f7f64c-fe32-4362-fd4e-89ee99c4f581@leemhuis.info>
+ <b33d3dd1-9765-c90e-4408-941e7d8025cf@gmail.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <b33d3dd1-9765-c90e-4408-941e7d8025cf@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1686918791;a2fece5f;
+X-HE-SMSGID: 1qA8dV-00074Q-OF
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 03:30:23PM +0200, petter@technux.se wrote:
-> Some time ago https://bugzilla.kernel.org/show_bug.cgi?id=217034 was
-> created. From the beginning it was just about some error printouts.
-> Then Andreas (who created the bug report) mentioned that it seems to
-> work worse after bumping the firmware to > 9.9.10. After some fixes
-> from Sascha the error printouts dissappeared. But when I also started
-> to run this using firmware > 9.9.10 I also got problems. On my i.MX8
-> and RPi4 board it works fine, but on some of my less powerful boards
-> such as and older RPi and my i.MX6 SoloX board, it always fails using
-> 9.9.10 firmware. After some digging in the git log, I discovered
-> that HW scan offload was introduced in a later firmware. So when I
-> disable HW offload scan it seems to work again on all my boards. But
-> still I want to understand why the HW offload scan don't work for
-> me.
+On 16.06.23 14:17, Bagas Sanjaya wrote:
+> On 6/16/23 16:25, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> On 16.06.23 09:45, Nicolas Escande wrote:
+>>> On Thu Jun 15, 2023 at 2:54 PM CEST, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>>> On 10.06.23 08:44, Bagas Sanjaya wrote:
+>>>>> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
+>>
+>>>> Hmmm, Felix did not reply. But let's ignore that for now.
+>>> I haven't seen mails from felix on the list for a few days, I'm guessing he's
+>>> unavailable for now but I'll hapilly wait.
+>>
+>> Okay.
+>>
+>>>> Nicolas, I noticed there are a few patches in next that refer to the
+>>>> culprit. Might be worth giving this series a try:
+>>>> https://lore.kernel.org/all/20230314095956.62085-1-nbd@nbd.name/
+>>> Well this series already landed in 6.4 and that is the version I did my initial
+>>> testing with. So no luck there.
+>>
+>> What? Ohh, sorry for the noise, I had missed that they were in mainline
+>> already.
 > 
-> Like described in the bug report I get below when running on latest
-> 6.4 mainline with all relevant patches around rtw88 applied.
+> Should this be removed from tracking as inconclusive?
 
-I can't reproduce this here. I am currently running v6.4-rc3 plus:
+Ehh, why? Afaics this is still a regression, just not one the reporter
+considers urgent; that is fine for me, unless more people start to
+report the problem.
 
-wifi: rtw88: usb: silence log flooding error message
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-I tested on a i.MX6S (not SoloX) board with Firmware 9.9.14.
-
-A "nmcli dev wifi rescan" works just fine and the link also continues to
-work.
-
-I verified that FW_FEATURE_SCAN_OFFLOAD is set and used in the driver,
-also that it's not set in Firmware 9.9.9. I also tried to put some
-load on the link by running iperf3, still no difference.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
