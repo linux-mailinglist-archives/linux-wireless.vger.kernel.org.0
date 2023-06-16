@@ -2,52 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5547C7327F3
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB8F7327F6
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242175AbjFPGyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 02:54:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45250 "EHLO
+        id S241499AbjFPGym (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 02:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232839AbjFPGyf (ORCPT
+        with ESMTP id S240492AbjFPGyh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 02:54:35 -0400
+        Fri, 16 Jun 2023 02:54:37 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BEB52961
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495FE2966
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686898474; x=1718434474;
+  t=1686898476; x=1718434476;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jKS8ac917x6fG3VAiEprkoHJsX3ftSXRKxyl6hub3f4=;
-  b=CdLN2lPUPI4UfAusxw2h3QC7vzFFsCS8Si0YwJAH4FTR63vECDFfy3lY
-   WZ6SCFD55YqkIzDdAbKQc+DaxV4J7vtqWbG/qE2nlmNH6Kh3WL0RGx/4h
-   G2GcC/q4vaM6I2QMCln/Ibheae/jWU99f9x8V40WkxGbqWWH4T+dJ/2pE
-   o5ixv8v7mcRbBZb0Vi1h4Pu5r61fnu0EBA0/3gwwdvv4xppqSbi7/SMky
-   viuidwTHqycFpo4Vh+BTQqodBhoqse8Zs2e+qxnvSgxz0BceuwrYW0IZ4
-   xjAiVFGUGwN1giD3Fip7x1SlFIjbtxvVwlkFlzZofjmYg4eTC/Wsta7Q4
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078805"
+  bh=ZYlS4uJnjR0mN6ENuQdy9ue2iFVPEiYOsiDxM+qZjAo=;
+  b=aNOyDkQvaYXxb3U3w0j3Is2aWlhExE0LcMB1Ovkagi/fuIqXCWPrWCOV
+   QHekukK+2D7Yf/oGOx9OH2qdnqEy59S3Swby8GCgelTke2ZOxDYSLL+xH
+   BZrf/7XYv6AdxdifzScIBbqs1W7foZJeMHyKHW7hn6H3AXDF/azb4ApwL
+   nT22TLzj74B1PPnu7KP8k5ZSfUw98dv22+H33FJOGmUPCHht0J0edFtBT
+   rFBn0ONLs5YMPK+VBYAPCATcXsWR/N+eyhwRjRqNDpv91LAAofoXe5nEK
+   4gDiPJFCxJLcP24l5JEw3IjE+g+qljsxskYuQCU8xEf7iE/oM4FhBBPvA
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078810"
 X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="425078805"
+   d="scan'208";a="425078810"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:34 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802720006"
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802720027"
 X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="802720006"
+   d="scan'208";a="802720027"
 Received: from ereznaim-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.237.118])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:32 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:34 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Abhishek Naik <abhishek.naik@intel.com>,
         Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 04/20] wifi: mac80211: Add HE and EHT capa elements in TDLS frames
-Date:   Fri, 16 Jun 2023 09:53:53 +0300
-Message-Id: <20230616094948.c77128828b0d.Ied2d8800847c759718c2c35e8f6c0902afd6bca1@changeid>
+Subject: [PATCH 05/20] wifi: mac80211: Extend AID element addition for TDLS frames
+Date:   Fri, 16 Jun 2023 09:53:54 +0300
+Message-Id: <20230616094948.483bf44ce684.Ia2387eb24c06fa41febc213923160bedafce2085@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230616065409.633290-1-gregory.greenman@intel.com>
 References: <20230616065409.633290-1-gregory.greenman@intel.com>
@@ -63,155 +62,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Abhishek Naik <abhishek.naik@intel.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-Add HE and EHT capabilities IE in TDLS setup request,
-response, confirm and discovery response frames.
+Extend AID element addition in TDLS setup request and response
+frames to add it when HE or EHT capabilities are supported.
 
-Signed-off-by: Abhishek Naik <abhishek.naik@intel.com>
 Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/ieee80211_i.h |  1 +
- net/mac80211/tdls.c        | 85 ++++++++++++++++++++++++++++++++++++++
- net/mac80211/util.c        |  2 +-
- 3 files changed, 87 insertions(+), 1 deletion(-)
+ net/mac80211/tdls.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index ca8a1e1c8bbd..f8d5f37ebe9a 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2426,6 +2426,7 @@ void ieee80211_send_deauth_disassoc(struct ieee80211_sub_if_data *sdata,
- 				    const u8 *da, const u8 *bssid,
- 				    u16 stype, u16 reason,
- 				    bool send_frame, u8 *frame_buf);
-+u8 *ieee80211_write_he_6ghz_cap(u8 *pos, __le16 cap, u8 *end);
- 
- enum {
- 	IEEE80211_PROBE_FLAG_DIRECTED		= BIT(0),
 diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 8f59f92ea9d9..c085c076aaef 100644
+index c085c076aaef..5ffa3b752720 100644
 --- a/net/mac80211/tdls.c
 +++ b/net/mac80211/tdls.c
-@@ -372,6 +372,8 @@ ieee80211_tdls_add_setup_start_ies(struct ieee80211_link_data *link,
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_sta_ht_cap ht_cap;
- 	struct ieee80211_sta_vht_cap vht_cap;
-+	const struct ieee80211_sta_he_cap *he_cap;
-+	const struct ieee80211_sta_eht_cap *eht_cap;
- 	struct sta_info *sta = NULL;
- 	size_t offset = 0, noffset;
- 	u8 *pos;
-@@ -533,6 +535,82 @@ ieee80211_tdls_add_setup_start_ies(struct ieee80211_link_data *link,
- 			ieee80211_tdls_chandef_vht_upgrade(sdata, sta);
+@@ -503,17 +503,21 @@ ieee80211_tdls_add_setup_start_ies(struct ieee80211_link_data *link,
+ 		offset = noffset;
  	}
  
-+	/* add any custom IEs that go before HE capabilities */
-+	if (extra_ies_len) {
-+		static const u8 before_he_cap[] = {
-+			WLAN_EID_EXTENSION,
-+			WLAN_EID_EXT_FILS_REQ_PARAMS,
-+			WLAN_EID_AP_CSN,
-+		};
-+		noffset = ieee80211_ie_split(extra_ies, extra_ies_len,
-+					     before_he_cap,
-+					     ARRAY_SIZE(before_he_cap),
-+					     offset);
-+		skb_put_data(skb, extra_ies + offset, noffset - offset);
-+		offset = noffset;
-+	}
-+
-+	/* build the HE-cap from sband */
+-	/* build the VHT-cap similarly to the HT-cap */
++	/* add AID if VHT, HE or EHT capabilities supported */
+ 	memcpy(&vht_cap, &sband->vht_cap, sizeof(vht_cap));
 +	he_cap = ieee80211_get_he_iftype_cap_vif(sband, &sdata->vif);
-+	if (he_cap &&
-+	    (action_code == WLAN_TDLS_SETUP_REQUEST ||
-+	     action_code == WLAN_TDLS_SETUP_RESPONSE ||
-+	     action_code == WLAN_PUB_ACTION_TDLS_DISCOVER_RES)) {
-+		__le16 he_6ghz_capa;
-+		u8 cap_size;
-+
-+		cap_size =
-+			2 + 1 + sizeof(he_cap->he_cap_elem) +
-+			ieee80211_he_mcs_nss_size(&he_cap->he_cap_elem) +
-+			ieee80211_he_ppe_size(he_cap->ppe_thres[0],
-+					      he_cap->he_cap_elem.phy_cap_info);
-+		pos = skb_put(skb, cap_size);
-+		pos = ieee80211_ie_build_he_cap(0, pos, he_cap, pos + cap_size);
-+
-+		/* Build HE 6Ghz capa IE from sband */
-+		if (sband->band == NL80211_BAND_6GHZ) {
-+			cap_size = 2 + 1 + sizeof(struct ieee80211_he_6ghz_capa);
-+			pos = skb_put(skb, cap_size);
-+			he_6ghz_capa =
-+				ieee80211_get_he_6ghz_capa_vif(sband, &sdata->vif);
-+			pos = ieee80211_write_he_6ghz_cap(pos, he_6ghz_capa,
-+							  pos + cap_size);
-+		}
-+	}
-+
-+	/* add any custom IEs that go before EHT capabilities */
-+	if (extra_ies_len) {
-+		static const u8 before_he_cap[] = {
-+			WLAN_EID_EXTENSION,
-+			WLAN_EID_EXT_FILS_REQ_PARAMS,
-+			WLAN_EID_AP_CSN,
-+		};
-+
-+		noffset = ieee80211_ie_split(extra_ies, extra_ies_len,
-+					     before_he_cap,
-+					     ARRAY_SIZE(before_he_cap),
-+					     offset);
-+		skb_put_data(skb, extra_ies + offset, noffset - offset);
-+		offset = noffset;
-+	}
-+
-+	/* build the EHT-cap from sband */
 +	eht_cap = ieee80211_get_eht_iftype_cap_vif(sband, &sdata->vif);
-+	if (he_cap && eht_cap &&
++	if ((vht_cap.vht_supported || he_cap || eht_cap) &&
 +	    (action_code == WLAN_TDLS_SETUP_REQUEST ||
-+	     action_code == WLAN_TDLS_SETUP_RESPONSE ||
-+	     action_code == WLAN_PUB_ACTION_TDLS_DISCOVER_RES)) {
-+		u8 cap_size;
++	     action_code == WLAN_TDLS_SETUP_RESPONSE))
++		ieee80211_tdls_add_aid(sdata, skb);
 +
-+		cap_size =
-+			2 + 1 + sizeof(eht_cap->eht_cap_elem) +
-+			ieee80211_eht_mcs_nss_size(&he_cap->he_cap_elem,
-+						   &eht_cap->eht_cap_elem, false) +
-+			ieee80211_eht_ppe_size(eht_cap->eht_ppe_thres[0],
-+					       eht_cap->eht_cap_elem.phy_cap_info);
-+		pos = skb_put(skb, cap_size);
-+		ieee80211_ie_build_eht_cap(pos, he_cap, eht_cap, pos + cap_size, false);
-+	}
- 	mutex_unlock(&local->sta_mtx);
++	/* build the VHT-cap similarly to the HT-cap */
+ 	if ((action_code == WLAN_TDLS_SETUP_REQUEST ||
+ 	     action_code == WLAN_PUB_ACTION_TDLS_DISCOVER_RES) &&
+ 	    vht_cap.vht_supported) {
+ 		ieee80211_apply_vhtcap_overrides(sdata, &vht_cap);
  
- 	/* add any remaining IEs */
-@@ -897,6 +975,13 @@ ieee80211_tdls_build_mgmt_packet_data(struct ieee80211_sub_if_data *sdata,
- 				       sizeof(struct ieee80211_ht_operation)) +
- 			       2 + max(sizeof(struct ieee80211_vht_cap),
- 				       sizeof(struct ieee80211_vht_operation)) +
-+			       2 + 1 + sizeof(struct ieee80211_he_cap_elem) +
-+				       sizeof(struct ieee80211_he_mcs_nss_supp) +
-+				       IEEE80211_HE_PPE_THRES_MAX_LEN +
-+			       2 + 1 + sizeof(struct ieee80211_he_6ghz_capa) +
-+			       2 + 1 + sizeof(struct ieee80211_eht_cap_elem) +
-+				       sizeof(struct ieee80211_eht_mcs_nss_supp) +
-+				       IEEE80211_EHT_PPE_THRES_MAX_LEN +
- 			       50 + /* supported channels */
- 			       3 + /* 40/20 BSS coex */
- 			       4 + /* AID */
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 2fc07717bcad..b81089fc51e1 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1918,7 +1918,7 @@ void ieee80211_send_deauth_disassoc(struct ieee80211_sub_if_data *sdata,
+-		/* the AID is present only when VHT is implemented */
+-		if (action_code == WLAN_TDLS_SETUP_REQUEST)
+-			ieee80211_tdls_add_aid(sdata, skb);
+-
+ 		pos = skb_put(skb, sizeof(struct ieee80211_vht_cap) + 2);
+ 		ieee80211_ie_build_vht_cap(pos, &vht_cap, vht_cap.cap);
+ 	} else if (action_code == WLAN_TDLS_SETUP_RESPONSE &&
+@@ -521,9 +525,6 @@ ieee80211_tdls_add_setup_start_ies(struct ieee80211_link_data *link,
+ 		/* the peer caps are already intersected with our own */
+ 		memcpy(&vht_cap, &sta->sta.deflink.vht_cap, sizeof(vht_cap));
+ 
+-		/* the AID is present only when VHT is implemented */
+-		ieee80211_tdls_add_aid(sdata, skb);
+-
+ 		pos = skb_put(skb, sizeof(struct ieee80211_vht_cap) + 2);
+ 		ieee80211_ie_build_vht_cap(pos, &vht_cap, vht_cap.cap);
+ 
+@@ -551,7 +552,6 @@ ieee80211_tdls_add_setup_start_ies(struct ieee80211_link_data *link,
  	}
- }
  
--static u8 *ieee80211_write_he_6ghz_cap(u8 *pos, __le16 cap, u8 *end)
-+u8 *ieee80211_write_he_6ghz_cap(u8 *pos, __le16 cap, u8 *end)
- {
- 	if ((end - pos) < 5)
- 		return pos;
+ 	/* build the HE-cap from sband */
+-	he_cap = ieee80211_get_he_iftype_cap_vif(sband, &sdata->vif);
+ 	if (he_cap &&
+ 	    (action_code == WLAN_TDLS_SETUP_REQUEST ||
+ 	     action_code == WLAN_TDLS_SETUP_RESPONSE ||
+@@ -595,7 +595,6 @@ ieee80211_tdls_add_setup_start_ies(struct ieee80211_link_data *link,
+ 	}
+ 
+ 	/* build the EHT-cap from sband */
+-	eht_cap = ieee80211_get_eht_iftype_cap_vif(sband, &sdata->vif);
+ 	if (he_cap && eht_cap &&
+ 	    (action_code == WLAN_TDLS_SETUP_REQUEST ||
+ 	     action_code == WLAN_TDLS_SETUP_RESPONSE ||
 -- 
 2.38.1
 
