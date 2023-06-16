@@ -2,123 +2,333 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C866273266E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 06:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A200732709
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232562AbjFPE5x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 00:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
+        id S242043AbjFPGGH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 02:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbjFPE5w (ORCPT
+        with ESMTP id S231148AbjFPGGG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 00:57:52 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292FA268C
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 21:57:49 -0700 (PDT)
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 832803F182
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 04:57:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1686891468;
-        bh=SZ1z3iFCuctvpDLXu03zvj3Ivp+6TOQT0ngCLOJqvUM=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=re0oWHBNfQuppDzUl4WRusVURcnpCy3TCezfXvU0vc9njq3ZFJJvOFp+O3LGw33oP
-         nR+r7bTzUQPK/f2Oiyua7FVzCd9etrA7qLyf0QMCf2gUs/RwrY/Feok7IAFr+/uW30
-         iVcP/gB3a9rpNmHMJ23FWzpwoIWDUUTmNap7by1x325Z6KMuj8LdStUgV/rt3anS/g
-         QPCN4ewzWdTeuAt+vneSlHCJC6aAe7qLFWiVZc5QBUiWe/+JledKX0PHOv9X1ldgg6
-         qqrmtwJqbLVTr8UbwQv+YR0py5B834LA1GeKV8+oeGLLRboxoHor1//pSaevSTundo
-         /WtOV4v/YQ6Ug==
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-50a16ab50e6so142560a12.0
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 21:57:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686891468; x=1689483468;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SZ1z3iFCuctvpDLXu03zvj3Ivp+6TOQT0ngCLOJqvUM=;
-        b=FWMsiKF1F8UwU82tDvoT81K/KqoEPhEW+eks3pceQ2tFpgGjhb77CsrRG9nc8OmNqQ
-         sgEP85IB+bJUGUedWFCO+8DP9iRLadajUnoCKkCXHKXXlcLQIiUsvgM4N+aCv9xTRL8X
-         Ge5FMB+MA/UUpg08aIUgix2MsOt55R5HD5AhT73/AWyY0j17jl/NHHzsZ2WPNHhZ09Z5
-         DPTo6SjdhqU9HZDPUrxE5ykjZ89qtX9iYEx35KkOv8xoZLFnhYFaIJz8i+hM+MQEUo15
-         +pCl/XI4RGj1TTM9iR9xwCtK63PE2VxL3HtlxekVLN2BIlRPpyYtw9LwxgtwGRoYCYW/
-         2IkQ==
-X-Gm-Message-State: AC+VfDw5nJe4M5HFiVJqDJZ0hhKQth1iyJ/2TtkJ842l0W8G3kekZbDb
-        zek88Gs5/tEachj0O1QrezgqAc965mC0zUe5RZhfb0uD7ZwKXfr3ta1wBM/j1WMKdmNz42PhJzz
-        8b88MOuO6aW8BgmVQSS8ohyqnGO8ZpKsbrB7BBSd4msed
-X-Received: by 2002:a17:907:7f9e:b0:961:a67:296 with SMTP id qk30-20020a1709077f9e00b009610a670296mr875497ejc.11.1686891468104;
-        Thu, 15 Jun 2023 21:57:48 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6jN4pd+MWptJyqeTblIv0eB11pe/b9g8vwziyU9GWzQNswt2di9XfJC6ufsG7/Ic5Kf+Yieg==
-X-Received: by 2002:a17:907:7f9e:b0:961:a67:296 with SMTP id qk30-20020a1709077f9e00b009610a670296mr875481ejc.11.1686891467705;
-        Thu, 15 Jun 2023 21:57:47 -0700 (PDT)
-Received: from [172.25.0.170] (ip-084-119-033-219.um24.pools.vodafone-ip.de. [84.119.33.219])
-        by smtp.gmail.com with ESMTPSA id d18-20020a170906371200b0098282bb8effsm2638419ejc.196.2023.06.15.21.57.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 21:57:47 -0700 (PDT)
-Message-ID: <49f9687e-39ef-aad2-b02a-eb54a21b70f2@canonical.com>
-Date:   Fri, 16 Jun 2023 06:57:47 +0200
+        Fri, 16 Jun 2023 02:06:06 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25CA12D5F
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:05:59 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35G65Wx84032650, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35G65Wx84032650
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 16 Jun 2023 14:05:32 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Fri, 16 Jun 2023 14:05:51 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 16 Jun
+ 2023 14:05:50 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <kevin_yang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw89: TX power stuffs replace confusing naming of _max with _num
+Date:   Fri, 16 Jun 2023 14:05:23 +0800
+Message-ID: <20230616060523.28396-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC 1/1] wifi: rtw88: Add support for the SDIO based RTL8723DS
- chipset
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     Yan-Hsuan Chuang <tony0620emma@gmail.com>,
-        Kalle Valo <kvalo@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Emil Renner Berthing <emil.renner.berthing@canonical.com>
-References: <20230615142044.1357257-1-heinrich.schuchardt@canonical.com>
- <CAFBinCAEFvmxnBDJPSs+mGqAraGUDFkCB3SjRTEyC9waA3P8JQ@mail.gmail.com>
-Content-Language: en-US
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <CAFBinCAEFvmxnBDJPSs+mGqAraGUDFkCB3SjRTEyC9waA3P8JQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
+Some old declarations about TX power stuffs were named with confusing
+`_max`. But, they mean "the number of". So we change them to be named
+with `_num`.
 
-On 6/16/23 00:13, Martin Blumenstingl wrote:
-> Hello Heinrich,
-> 
-> On Thu, Jun 15, 2023 at 4:21 PM Heinrich Schuchardt
-> <heinrich.schuchardt@canonical.com> wrote:
-> [...]
->> On my Lichee RV Dock board this patch is enough to make The RTL8723DS
->> work. But unfortunately after running some time the driver crashes.
->> My impression is that the crash is not specific to my patch but must
->> be hidden in one of the existing functions it is invoking.
->>
->> This seems to be related to not checking pkt_stat->pkt_len.
->>
->> My kernel was built against v6.4-rc6.
-> As Larry has mentioned: support for the RTL8723DS chipset is in
-> wireless-next.git
-> You can find the whole series here: [0]
-> 
-> It seems you're missing at least "wifi: rtw88: sdio: Check the HISR
-> RX_REQUEST bit in rtw_sdio_rx_isr()" [1]
-> That patch should fix the exact issue that you described.
+(No logic is changed.)
 
-Thanks for your great work.
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/core.h     | 34 ++++++++--------
+ drivers/net/wireless/realtek/rtw89/phy.c      | 40 +++++++++----------
+ .../wireless/realtek/rtw89/rtw8851b_table.c   |  2 +-
+ .../wireless/realtek/rtw89/rtw8851b_table.h   |  2 +-
+ .../wireless/realtek/rtw89/rtw8852b_table.c   |  2 +-
+ .../wireless/realtek/rtw89/rtw8852b_table.h   |  2 +-
+ .../wireless/realtek/rtw89/rtw8852c_table.c   |  2 +-
+ .../wireless/realtek/rtw89/rtw8852c_table.h   |  2 +-
+ 8 files changed, 43 insertions(+), 43 deletions(-)
 
-With the series on top of v6.4 my RISC-V LicheeRV Dock runs fine.
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index c085dff3ae35e..d2c67db97db1a 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -251,7 +251,7 @@ enum rtw89_band {
+ 	RTW89_BAND_2G = 0,
+ 	RTW89_BAND_5G = 1,
+ 	RTW89_BAND_6G = 2,
+-	RTW89_BAND_MAX,
++	RTW89_BAND_NUM,
+ };
+ 
+ enum rtw89_hw_rate {
+@@ -434,27 +434,27 @@ enum rtw89_rate_section {
+ 	RTW89_RS_MCS, /* for HT/VHT/HE */
+ 	RTW89_RS_HEDCM,
+ 	RTW89_RS_OFFSET,
+-	RTW89_RS_MAX,
++	RTW89_RS_NUM,
+ 	RTW89_RS_LMT_NUM = RTW89_RS_MCS + 1,
+ 	RTW89_RS_TX_SHAPE_NUM = RTW89_RS_OFDM + 1,
+ };
+ 
+-enum rtw89_rate_max {
+-	RTW89_RATE_CCK_MAX	= 4,
+-	RTW89_RATE_OFDM_MAX	= 8,
+-	RTW89_RATE_MCS_MAX	= 12,
+-	RTW89_RATE_HEDCM_MAX	= 4, /* for HEDCM MCS0/1/3/4 */
+-	RTW89_RATE_OFFSET_MAX	= 5, /* for HE(HEDCM)/VHT/HT/OFDM/CCK offset */
++enum rtw89_rate_num {
++	RTW89_RATE_CCK_NUM	= 4,
++	RTW89_RATE_OFDM_NUM	= 8,
++	RTW89_RATE_MCS_NUM	= 12,
++	RTW89_RATE_HEDCM_NUM	= 4, /* for HEDCM MCS0/1/3/4 */
++	RTW89_RATE_OFFSET_NUM	= 5, /* for HE(HEDCM)/VHT/HT/OFDM/CCK offset */
+ };
+ 
+ enum rtw89_nss {
+ 	RTW89_NSS_1		= 0,
+ 	RTW89_NSS_2		= 1,
+ 	/* HE DCM only support 1ss and 2ss */
+-	RTW89_NSS_HEDCM_MAX	= RTW89_NSS_2 + 1,
++	RTW89_NSS_HEDCM_NUM	= RTW89_NSS_2 + 1,
+ 	RTW89_NSS_3		= 2,
+ 	RTW89_NSS_4		= 3,
+-	RTW89_NSS_MAX,
++	RTW89_NSS_NUM,
+ };
+ 
+ enum rtw89_ntx {
+@@ -512,11 +512,11 @@ enum rtw89_fw_pkt_ofld_type {
+ };
+ 
+ struct rtw89_txpwr_byrate {
+-	s8 cck[RTW89_RATE_CCK_MAX];
+-	s8 ofdm[RTW89_RATE_OFDM_MAX];
+-	s8 mcs[RTW89_NSS_MAX][RTW89_RATE_MCS_MAX];
+-	s8 hedcm[RTW89_NSS_HEDCM_MAX][RTW89_RATE_HEDCM_MAX];
+-	s8 offset[RTW89_RATE_OFFSET_MAX];
++	s8 cck[RTW89_RATE_CCK_NUM];
++	s8 ofdm[RTW89_RATE_OFDM_NUM];
++	s8 mcs[RTW89_NSS_NUM][RTW89_RATE_MCS_NUM];
++	s8 hedcm[RTW89_NSS_HEDCM_NUM][RTW89_RATE_HEDCM_NUM];
++	s8 offset[RTW89_RATE_OFFSET_NUM];
+ };
+ 
+ enum rtw89_bandwidth_section_num {
+@@ -3815,7 +3815,7 @@ struct rtw89_power_trim_info {
+ 
+ struct rtw89_regd {
+ 	char alpha2[3];
+-	u8 txpwr_regd[RTW89_BAND_MAX];
++	u8 txpwr_regd[RTW89_BAND_NUM];
+ };
+ 
+ struct rtw89_regulatory_info {
+@@ -4111,7 +4111,7 @@ struct rtw89_dev {
+ 	bool is_bt_iqk_timeout;
+ 
+ 	struct rtw89_fem_info fem;
+-	struct rtw89_txpwr_byrate byr[RTW89_BAND_MAX];
++	struct rtw89_txpwr_byrate byr[RTW89_BAND_NUM];
+ 	struct rtw89_tssi_info tssi;
+ 	struct rtw89_power_trim_info pwr_trim;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index e94390b248244..fb15c852fdd48 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -1494,19 +1494,19 @@ void rtw89_phy_write_reg3_tbl(struct rtw89_dev *rtwdev,
+ }
+ EXPORT_SYMBOL(rtw89_phy_write_reg3_tbl);
+ 
+-static const u8 rtw89_rs_idx_max[] = {
+-	[RTW89_RS_CCK] = RTW89_RATE_CCK_MAX,
+-	[RTW89_RS_OFDM] = RTW89_RATE_OFDM_MAX,
+-	[RTW89_RS_MCS] = RTW89_RATE_MCS_MAX,
+-	[RTW89_RS_HEDCM] = RTW89_RATE_HEDCM_MAX,
+-	[RTW89_RS_OFFSET] = RTW89_RATE_OFFSET_MAX,
++static const u8 rtw89_rs_idx_num[] = {
++	[RTW89_RS_CCK] = RTW89_RATE_CCK_NUM,
++	[RTW89_RS_OFDM] = RTW89_RATE_OFDM_NUM,
++	[RTW89_RS_MCS] = RTW89_RATE_MCS_NUM,
++	[RTW89_RS_HEDCM] = RTW89_RATE_HEDCM_NUM,
++	[RTW89_RS_OFFSET] = RTW89_RATE_OFFSET_NUM,
+ };
+ 
+-static const u8 rtw89_rs_nss_max[] = {
++static const u8 rtw89_rs_nss_num[] = {
+ 	[RTW89_RS_CCK] = 1,
+ 	[RTW89_RS_OFDM] = 1,
+-	[RTW89_RS_MCS] = RTW89_NSS_MAX,
+-	[RTW89_RS_HEDCM] = RTW89_NSS_HEDCM_MAX,
++	[RTW89_RS_MCS] = RTW89_NSS_NUM,
++	[RTW89_RS_HEDCM] = RTW89_NSS_HEDCM_NUM,
+ 	[RTW89_RS_OFFSET] = 1,
+ };
+ 
+@@ -1519,9 +1519,9 @@ static const u8 _byr_of_rs[] = {
+ };
+ 
+ #define _byr_seek(rs, raw) ((s8 *)(raw) + _byr_of_rs[rs])
+-#define _byr_idx(rs, nss, idx) ((nss) * rtw89_rs_idx_max[rs] + (idx))
++#define _byr_idx(rs, nss, idx) ((nss) * rtw89_rs_idx_num[rs] + (idx))
+ #define _byr_chk(rs, nss, idx) \
+-	((nss) < rtw89_rs_nss_max[rs] && (idx) < rtw89_rs_idx_max[rs])
++	((nss) < rtw89_rs_nss_num[rs] && (idx) < rtw89_rs_idx_num[rs])
+ 
+ void rtw89_phy_load_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 				 const struct rtw89_txpwr_table *tbl)
+@@ -2084,19 +2084,19 @@ void rtw89_phy_set_txpwr_byrate(struct rtw89_dev *rtwdev,
+ 	rtw89_debug(rtwdev, RTW89_DBG_TXPWR,
+ 		    "[TXPWR] set txpwr byrate with ch=%d\n", ch);
+ 
+-	BUILD_BUG_ON(rtw89_rs_idx_max[RTW89_RS_CCK] % 4);
+-	BUILD_BUG_ON(rtw89_rs_idx_max[RTW89_RS_OFDM] % 4);
+-	BUILD_BUG_ON(rtw89_rs_idx_max[RTW89_RS_MCS] % 4);
+-	BUILD_BUG_ON(rtw89_rs_idx_max[RTW89_RS_HEDCM] % 4);
++	BUILD_BUG_ON(rtw89_rs_idx_num[RTW89_RS_CCK] % 4);
++	BUILD_BUG_ON(rtw89_rs_idx_num[RTW89_RS_OFDM] % 4);
++	BUILD_BUG_ON(rtw89_rs_idx_num[RTW89_RS_MCS] % 4);
++	BUILD_BUG_ON(rtw89_rs_idx_num[RTW89_RS_HEDCM] % 4);
+ 
+ 	addr = R_AX_PWR_BY_RATE;
+ 	for (cur.nss = 0; cur.nss < max_nss_num; cur.nss++) {
+ 		for (i = 0; i < ARRAY_SIZE(rs); i++) {
+-			if (cur.nss >= rtw89_rs_nss_max[rs[i]])
++			if (cur.nss >= rtw89_rs_nss_num[rs[i]])
+ 				continue;
+ 
+ 			cur.rs = rs[i];
+-			for (cur.idx = 0; cur.idx < rtw89_rs_idx_max[rs[i]];
++			for (cur.idx = 0; cur.idx < rtw89_rs_idx_num[rs[i]];
+ 			     cur.idx++) {
+ 				v[cur.idx % 4] =
+ 					rtw89_phy_read_txpwr_byrate(rtwdev,
+@@ -2129,15 +2129,15 @@ void rtw89_phy_set_txpwr_offset(struct rtw89_dev *rtwdev,
+ 		.rs = RTW89_RS_OFFSET,
+ 	};
+ 	u8 band = chan->band_type;
+-	s8 v[RTW89_RATE_OFFSET_MAX] = {};
++	s8 v[RTW89_RATE_OFFSET_NUM] = {};
+ 	u32 val;
+ 
+ 	rtw89_debug(rtwdev, RTW89_DBG_TXPWR, "[TXPWR] set txpwr offset\n");
+ 
+-	for (desc.idx = 0; desc.idx < RTW89_RATE_OFFSET_MAX; desc.idx++)
++	for (desc.idx = 0; desc.idx < RTW89_RATE_OFFSET_NUM; desc.idx++)
+ 		v[desc.idx] = rtw89_phy_read_txpwr_byrate(rtwdev, band, &desc);
+ 
+-	BUILD_BUG_ON(RTW89_RATE_OFFSET_MAX != 5);
++	BUILD_BUG_ON(RTW89_RATE_OFFSET_NUM != 5);
+ 	val = FIELD_PREP(GENMASK(3, 0), v[0]) |
+ 	      FIELD_PREP(GENMASK(7, 4), v[1]) |
+ 	      FIELD_PREP(GENMASK(11, 8), v[2]) |
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_table.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_table.c
+index bb724140df4f7..0eccef574c35d 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b_table.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_table.c
+@@ -3305,7 +3305,7 @@ static const s8 _txpwr_track_delta_swingidx_2g_cck_a_p[] = {
+ 	 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4
+ };
+ 
+-const u8 rtw89_8851b_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
++const u8 rtw89_8851b_tx_shape[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM]
+ 			     [RTW89_REGD_NUM] = {
+ 	[0][0][RTW89_ACMA] = 0,
+ 	[0][0][RTW89_CN] = 0,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_table.h b/drivers/net/wireless/realtek/rtw89/rtw8851b_table.h
+index f2e673ba39c8c..a8737de02f669 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851b_table.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_table.h
+@@ -13,7 +13,7 @@ extern const struct rtw89_phy_table rtw89_8851b_phy_radioa_table;
+ extern const struct rtw89_phy_table rtw89_8851b_phy_nctl_table;
+ extern const struct rtw89_txpwr_table rtw89_8851b_byr_table;
+ extern const struct rtw89_txpwr_track_cfg rtw89_8851b_trk_cfg;
+-extern const u8 rtw89_8851b_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
++extern const u8 rtw89_8851b_tx_shape[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM]
+ 				    [RTW89_REGD_NUM];
+ extern const struct rtw89_rfe_parms rtw89_8851b_dflt_parms;
+ extern const struct rtw89_rfe_parms_conf rtw89_8851b_rfe_parms_conf[];
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c
+index 904cdb9e56fa7..17124d851a228 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.c
+@@ -14666,7 +14666,7 @@ static const s8 _txpwr_track_delta_swingidx_2g_cck_a_p[] = {
+ 	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+ 	 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+ 
+-const u8 rtw89_8852b_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
++const u8 rtw89_8852b_tx_shape[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM]
+ 			     [RTW89_REGD_NUM] = {
+ 	[0][0][RTW89_ACMA] = 0,
+ 	[0][0][RTW89_CHILE] = 0,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h
+index 5f4161496a589..7ef217629f46f 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_table.h
+@@ -14,7 +14,7 @@ extern const struct rtw89_phy_table rtw89_8852b_phy_radiob_table;
+ extern const struct rtw89_phy_table rtw89_8852b_phy_nctl_table;
+ extern const struct rtw89_txpwr_table rtw89_8852b_byr_table;
+ extern const struct rtw89_txpwr_track_cfg rtw89_8852b_trk_cfg;
+-extern const u8 rtw89_8852b_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
++extern const u8 rtw89_8852b_tx_shape[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM]
+ 				    [RTW89_REGD_NUM];
+ extern const struct rtw89_rfe_parms rtw89_8852b_dflt_parms;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
+index 8fda2c2e9833d..4b272fdf1fd7a 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.c
+@@ -31525,7 +31525,7 @@ static const s8 _txpwr_track_delta_swingidx_2g_cck_a_p[] = {
+ 	 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5
+ };
+ 
+-const u8 rtw89_8852c_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
++const u8 rtw89_8852c_tx_shape[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM]
+ 			     [RTW89_REGD_NUM] = {
+ 	[0][0][RTW89_ACMA] = 0,
+ 	[0][0][RTW89_CHILE] = 0,
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
+index 6da1849fb1fac..3eb0c49951744 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_table.h
+@@ -15,7 +15,7 @@ extern const struct rtw89_phy_table rtw89_8852c_phy_nctl_table;
+ extern const struct rtw89_txpwr_table rtw89_8852c_byr_table;
+ extern const struct rtw89_phy_tssi_dbw_table rtw89_8852c_tssi_dbw_table;
+ extern const struct rtw89_txpwr_track_cfg rtw89_8852c_trk_cfg;
+-extern const u8 rtw89_8852c_tx_shape[RTW89_BAND_MAX][RTW89_RS_TX_SHAPE_NUM]
++extern const u8 rtw89_8852c_tx_shape[RTW89_BAND_NUM][RTW89_RS_TX_SHAPE_NUM]
+ 				    [RTW89_REGD_NUM];
+ extern const struct rtw89_rfe_parms rtw89_8852c_dflt_parms;
+ 
+-- 
+2.25.1
 
-Best regards
-
-Heinrich
-
-> [0] https://lore.kernel.org/linux-wireless/20230522202425.1827005-1-martin.blumenstingl@googlemail.com/
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git/commit/?id=e967229ead0e6c5047a1cfd5a0db58ceb930800b
