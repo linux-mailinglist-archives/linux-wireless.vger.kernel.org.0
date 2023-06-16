@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3D4D7327FC
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE298732803
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:55:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231452AbjFPGy7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 02:54:59 -0400
+        id S243107AbjFPGzC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 02:55:02 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243313AbjFPGyq (ORCPT
+        with ESMTP id S243431AbjFPGyr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 02:54:46 -0400
+        Fri, 16 Jun 2023 02:54:47 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27C9B1FE8
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F4782965
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686898485; x=1718434485;
+  t=1686898486; x=1718434486;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bSiwSDUtBRojHisQFABP50ysAph75Bvd/nyXMbVHAQY=;
-  b=H73B5ZJZtPtNPol67L2CGerJPHd5j1HCCZQCbKDN0Wj5tz5GWZyKR/RN
-   FMLabMW2stwRriCMPo4hVfcEOKfmpw9xggej7nCLc3u8Z3eW6nUpQ0hv8
-   28TwkORUSwo+9fMnoammdyQ4dW+Tj8qRTfMMaXim5Z69CezJWXDo/yqRO
-   SbizW1z0Mh5stGCcJe/3K3k3pan/TS8/G3DicW21M1Yq3tGK0y+n7yZ7E
-   N/Vpvvbta55jGta8NIWX4w7lc/XHWz+TQCjeX+LljOEaj9jyzfOc3Vsz1
-   rlFwbOPFbYFwKddEPXBp7am0REavhXVXittfAikIBjcoDEF2bbsSzzW4g
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078859"
+  bh=Z7hwSfDKiy630sJ/J6AQ6Fc8dquSVM/FwxTkleLgXhA=;
+  b=BmowvnMIFHvC0xersb+lvxmUrU2Y6eRPov7b2XwdyLJVQt3MUW9gtnsm
+   klV3b7V3Fsq27kZsxvmuYU3aif4M0mIsOFMrupLKTCXPBfWTIGLd4IdPq
+   g0mnwixdJcMJWLaSQgYX4zdfaU4fTg4Gq9CZoc3BiWffMeUJlH0forgsJ
+   NZwh7gRAAIwc2JOFFQyE7NspHeELB2mXcBt2Vl3WPUqMyH9qZ+MnNONJB
+   O/APDZNjJ+LJdognTBFhfQi0hJRWWxXeURlOkZF/ML9fFb3S/aEXv59TC
+   A7NLCL9GbIkxKIMWx+U0JpdqScZBfLls46c0ICa2a7guuCzP9pB9n8lUQ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078862"
 X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="425078859"
+   d="scan'208";a="425078862"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
   by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:44 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802720061"
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802720086"
 X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="802720061"
+   d="scan'208";a="802720086"
 Received: from ereznaim-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.237.118])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:38 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:42 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 07/20] wifi: mac80211: add consistency check for compat chandef
-Date:   Fri, 16 Jun 2023 09:53:56 +0300
-Message-Id: <20230616094948.ae0f10dfd36b.Iea98c74aeb87bf6ef49f6d0c8687bba0dbea2abd@changeid>
+Subject: [PATCH 08/20] wifi: mac80211: feed the link_id to cfg80211_ch_switch_started_notify
+Date:   Fri, 16 Jun 2023 09:53:57 +0300
+Message-Id: <20230616094948.41e662ba1d68.I8faae5acb45c58cfeeb6bc6247aedbdaf9249d32@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230616065409.633290-1-gregory.greenman@intel.com>
 References: <20230616065409.633290-1-gregory.greenman@intel.com>
@@ -62,35 +62,33 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Add NULL check for compat variable to avoid crash in
-cfg80211_chandef_compatible() if it got called with
-some mixed up channel context where not all the users
-compatible with each other, which shouldn't happen.
+For now, fix this only in station mode. We'll need to fix
+the AP mode later.
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/chan.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mac80211/mlme.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 168bf3edd4b4..68952752b599 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -802,6 +802,11 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
- 		}
- 	}
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 171ba9d237c2..1fc66f09cbb8 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1981,8 +1981,9 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
+ 					  IEEE80211_QUEUE_STOP_REASON_CSA);
+ 	mutex_unlock(&local->mtx);
  
-+	if (WARN_ON_ONCE(!compat)) {
-+		rcu_read_unlock();
-+		return;
-+	}
-+
- 	/* TDLS peers can sometimes affect the chandef width */
- 	list_for_each_entry_rcu(sta, &local->sta_list, list) {
- 		if (!sta->uploaded ||
+-	cfg80211_ch_switch_started_notify(sdata->dev, &csa_ie.chandef, 0,
+-					  csa_ie.count, csa_ie.mode, 0);
++	cfg80211_ch_switch_started_notify(sdata->dev, &csa_ie.chandef,
++					  link->link_id, csa_ie.count,
++					  csa_ie.mode, 0);
+ 
+ 	if (local->ops->channel_switch) {
+ 		/* use driver's channel switch callback */
 -- 
 2.38.1
 
