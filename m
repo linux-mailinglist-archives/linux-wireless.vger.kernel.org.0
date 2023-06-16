@@ -2,108 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DC77339CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 21:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AAD733ABE
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 22:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344031AbjFPTZ7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 15:25:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54460 "EHLO
+        id S232827AbjFPUVj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 16:21:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346138AbjFPTYo (ORCPT
+        with ESMTP id S232355AbjFPUVi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 15:24:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1FB4222;
-        Fri, 16 Jun 2023 12:22:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA93362E38;
-        Fri, 16 Jun 2023 19:21:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D73FC433C0;
-        Fri, 16 Jun 2023 19:21:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686943302;
-        bh=hUURytXlMcDfitAbduozrB5DyB72nWHC+HvK485KkJY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ad6swJdWo1IwISr5c/t9icf18UMj2lCExyhlgLv+O+KgaYu/qZg8ZZ19ks7CRln5E
-         th4SmFbPGuTwMIGWdBPmtnkEM1h2OX6Nib1afv4AR2f2DybEiJNrBhoHPj7vetKS+D
-         RcEols5/yqQmNho1ySddtpAimBACwAUt7LSdNXjRvv3zf2+ztH5QxDP7FrFynityCd
-         WEcYDgO2xfbntUyjU4vDS/KZxH/Y5WpDdFnzn7ZNIBTuOYk7HBxSz12lldH6KT9VV4
-         FIMWxf5Rxd7oFaVbCxDughxs/4yROiz12DdTIU7tVLWKYHhXtEt8eESRjH8vAEURe4
-         nw+TGWsF+9gZg==
-Date:   Fri, 16 Jun 2023 12:21:40 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Jesper Dangaard Brouer <jbrouer@redhat.com>
-Cc:     Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, brouer@redhat.com,
-        davem@davemloft.net, pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG
- flag
-Message-ID: <20230616122140.6e889357@kernel.org>
-In-Reply-To: <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
-        <20230612130256.4572-5-linyunsheng@huawei.com>
-        <20230614101954.30112d6e@kernel.org>
-        <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
-        <20230615095100.35c5eb10@kernel.org>
-        <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
-        <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
-        <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
-        <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
+        Fri, 16 Jun 2023 16:21:38 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 937713A89
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 13:21:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=CfoxS913FyegojNdFD4GB2iCKhWvdrmeQUpbSYPRuYQ=; t=1686946895; x=1688156495; 
+        b=cMc96272f00WpYJaDCaMiXbgd+gSD5N/DdKgzaIYIvU5t0YBIM2iRvIVv8lpvYrPQIz5poAx+YD
+        lLZWHtZbG/2SOer7GX5VWfuIoBwqZjypz79y0KRfn7vRn1wOPjFV8GPY0DvHwcn/1U1QBXE0yPbrp
+        tKuQ9tzTR0z2nhRqibpoXpab+QsaeIpwFy6m1eD3Y0GPkEujvyqVdhTOLe88ntfmKQvI7bpY8/YtC
+        vMzfxIRZpCFyIhUZiWt32R1Iyc0Mp5DZrMvhsaCEL1APk1NkP51hItW8q9NItBGX+wBdTIX5UUpsl
+        dM//wy3klY3S8IQ4JQTEiAiFOHQaPxCTjacg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qAFwo-008bm6-2Q;
+        Fri, 16 Jun 2023 22:21:30 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 1/2] wifi: cfg80211: fix regulatory disconnect for non-MLO
+Date:   Fri, 16 Jun 2023 22:21:26 +0200
+Message-Id: <20230616222122.eb073d650c75.I72739923ef80919889ea9b50de9e4ba4baa836ae@changeid>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 16 Jun 2023 20:59:12 +0200 Jesper Dangaard Brouer wrote:
-> +       if (mem_type == MEM_TYPE_PP_NETMEM)
-> +               pp_netmem_put_page(pp, page, allow_direct);
-> +       else
-> +               page_pool_put_full_page(pp, page, allow_direct);
+From: Johannes Berg <johannes.berg@intel.com>
 
-Interesting, what is the netmem type? I was thinking about extending
-page pool for other mem providers and what came to mind was either
-optionally replacing the free / alloc with a function pointer:
+The multi-link loop here broke disconnect when multi-link
+operation (MLO) isn't active for a given interface, since
+in that case valid_links is 0 (indicating no links, i.e.
+no MLO.)
 
-https://github.com/torvalds/linux/commit/578ebda5607781c0abb26c1feae7ec8b83840768
+Fix this by taking that into account properly and skipping
+the link only if there are valid_links in the first place.
 
-or wrapping the PP calls with static inlines which can direct to 
-a different implementation completely (like zctap / io_uring zc).
+Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/reg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Former is better for huge pages, latter is better for IO mem
-(peer-to-peer DMA). I wonder if you have different use case which
-requires a different model :(
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 26f11e4746c0..f5ea1f373ab7 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2352,7 +2352,7 @@ static bool reg_wdev_chan_valid(struct wiphy *wiphy, struct wireless_dev *wdev)
+ 
+ 		if (!wdev->valid_links && link > 0)
+ 			break;
+-		if (!(wdev->valid_links & BIT(link)))
++		if (wdev->valid_links && !(wdev->valid_links & BIT(link)))
+ 			continue;
+ 		switch (iftype) {
+ 		case NL80211_IFTYPE_AP:
+-- 
+2.40.1
+
