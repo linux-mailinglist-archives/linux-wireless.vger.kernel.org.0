@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB56C7327FF
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A21E732805
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:55:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242017AbjFPGzM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 02:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45396 "EHLO
+        id S241228AbjFPGzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 02:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231208AbjFPGy6 (ORCPT
+        with ESMTP id S238285AbjFPGzA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 02:54:58 -0400
+        Fri, 16 Jun 2023 02:55:00 -0400
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF07F2961
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22551FE8
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686898496; x=1718434496;
+  t=1686898498; x=1718434498;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PB8iQIL4GpB297n0ZlNz4mTpgxs0bitfXw5uuwii3x4=;
-  b=ntVjruPlurHp62x4U98NVSCCZNgx8Ui7CtOGKAvkDi0JgpI1Ka6Qygv5
-   kfMSFD8Gsm3WIuYLfdNulp1xUPBgktBL16XgiX8XK2l+er79dH+V+RjkA
-   oObLhYHMIAAx+YhyYY5hBEuLSM03W22dTWfoql3+CY3PolitqTudsHgtq
-   t0isxVIgER0elDGlBdnZH3lMzR6/IO+nVoX2ONMIHZMctZjWqxIQoOUCa
-   I0W46WuPz4DF5uE2oCYvi2E2naWgx3JhSoVptf+L3vk45ThlrzZsOR+A7
-   L6sW0obsgFzR52NFml46tty1Iwbtm0EhLyDo5JYoH12X/sXhUfvIewnRH
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078899"
+  bh=lvgnJ1YZBBx0kX2/lFRCbQIBYi6EAFSB3/MZv4prikA=;
+  b=GRq/A1fFoRYygV290R36CWidiwVotCzmDwWyhwPy3/InVTARpUIFxSyE
+   f6S9wJASwIir1qvqvc9ZYERGhPTrKloG3yTPpCTaIbrKyOMRk1/hDoXQs
+   Mu5KHfBrIwBRUXrFJjuZHomC69Fe258fzOth+h5/xJfTyvBB7OpxbjYCi
+   +rnFhH0/T1hYp+Lrfe/bJT4CV83AHcsJB2xCD8ASTxBNqanwcLNWIuQJT
+   gGXhMkfCzI8goqQayiEQCPDq46+1oIVgRGTkMHZjMi7juBgD4pV9UMFys
+   NB3Q7F4F3J1GVEIT1M6NR418+6itdjDgk5pU5LXongbQ/1pkDWtaG4QCH
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078905"
 X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="425078899"
+   d="scan'208";a="425078905"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:56 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:58 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802720151"
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802720164"
 X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="802720151"
+   d="scan'208";a="802720164"
 Received: from ereznaim-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.237.118])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:55 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:57 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Benjamin Berg <benjamin.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 14/20] wifi: cfg80211: rewrite merging of inherited elements
-Date:   Fri, 16 Jun 2023 09:54:03 +0300
-Message-Id: <20230616094949.bc6152e146db.I2b5f3bc45085e1901e5b5192a674436adaf94748@changeid>
+Subject: [PATCH 15/20] wifi: cfg80211: drop incorrect nontransmitted BSS update code
+Date:   Fri, 16 Jun 2023 09:54:04 +0300
+Message-Id: <20230616094949.cfd6d8db1f26.Ia1044902b86cd7d366400a4bfb93691b8f05d68c@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230616065409.633290-1-gregory.greenman@intel.com>
 References: <20230616065409.633290-1-gregory.greenman@intel.com>
@@ -64,281 +64,209 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-The cfg80211_gen_new_ie function merges the IEs using inheritance rules.
-Rewrite this function to fix issues around inheritance rules. In
-particular, vendor elements do not require any special handling, as they
-are either all inherited or overridden by the subprofile.
-Also, add fragmentation handling as this may be needed in some cases.
+The removed code ran for any BSS that was not included in the MBSSID
+element in order to update it. However, instead of using the correct
+inheritance rules, it would simply copy the elements from the
+transmitting AP. The result is that we would report incorrect elements
+in this case.
 
-This also changes the function to not require making a copy. The new
-version could be optimized a bit by explicitly tracking which IEs have
-been handled already rather than looking that up again every time.
-
-Note that a small behavioural change is the removal of the SSID special
-handling. This should be fine for the MBSSID element, as the SSID must
-be included in the subelement.
+After some discussions, it seems that there are likely not even APs
+actually using this feature. Either way, removing the code decreases
+complexity and makes the cfg80211 behaviour more correct.
 
 Fixes: 0b8fb8235be8 ("cfg80211: Parsing of Multiple BSSID information in scanning")
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/wireless/scan.c | 213 ++++++++++++++++++++++++++------------------
- 1 file changed, 124 insertions(+), 89 deletions(-)
+ net/wireless/scan.c | 154 ++++----------------------------------------
+ 1 file changed, 11 insertions(+), 143 deletions(-)
 
 diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 2212e6d24204..b9eb91f485f8 100644
+index b9eb91f485f8..75e6e032bb3a 100644
 --- a/net/wireless/scan.c
 +++ b/net/wireless/scan.c
-@@ -259,117 +259,152 @@ bool cfg80211_is_element_inherited(const struct element *elem,
+@@ -2312,118 +2312,6 @@ cfg80211_inform_bss_data(struct wiphy *wiphy,
  }
- EXPORT_SYMBOL(cfg80211_is_element_inherited);
+ EXPORT_SYMBOL(cfg80211_inform_bss_data);
  
--static size_t cfg80211_gen_new_ie(const u8 *ie, size_t ielen,
--				  const u8 *subelement, size_t subie_len,
--				  u8 *new_ie, gfp_t gfp)
-+static size_t cfg80211_copy_elem_with_frags(const struct element *elem,
-+					    const u8 *ie, size_t ie_len,
-+					    u8 **pos, u8 *buf, size_t buf_len)
- {
--	u8 *pos, *tmp;
--	const u8 *tmp_old, *tmp_new;
--	const struct element *non_inherit_elem;
--	u8 *sub_copy;
-+	if (WARN_ON((u8 *)elem < ie || elem->data > ie + ie_len ||
-+		    elem->data + elem->datalen > ie + ie_len))
-+		return 0;
- 
--	/* copy subelement as we need to change its content to
--	 * mark an ie after it is processed.
--	 */
--	sub_copy = kmemdup(subelement, subie_len, gfp);
--	if (!sub_copy)
-+	if (elem->datalen + 2 > buf + buf_len - *pos)
- 		return 0;
- 
--	pos = &new_ie[0];
-+	memcpy(*pos, elem, elem->datalen + 2);
-+	*pos += elem->datalen + 2;
- 
--	/* set new ssid */
--	tmp_new = cfg80211_find_ie(WLAN_EID_SSID, sub_copy, subie_len);
--	if (tmp_new) {
--		memcpy(pos, tmp_new, tmp_new[1] + 2);
--		pos += (tmp_new[1] + 2);
-+	/* Finish if it is not fragmented  */
-+	if (elem->datalen != 255)
-+		return *pos - buf;
-+
-+	ie_len = ie + ie_len - elem->data - elem->datalen;
-+	ie = (const u8 *)elem->data + elem->datalen;
-+
-+	for_each_element(elem, ie, ie_len) {
-+		if (elem->id != WLAN_EID_FRAGMENT)
-+			break;
-+
-+		if (elem->datalen + 2 > buf + buf_len - *pos)
-+			return 0;
-+
-+		memcpy(*pos, elem, elem->datalen + 2);
-+		*pos += elem->datalen + 2;
-+
-+		if (elem->datalen != 255)
-+			break;
- 	}
- 
--	/* get non inheritance list if exists */
--	non_inherit_elem =
--		cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
--				       sub_copy, subie_len);
-+	return *pos - buf;
-+}
- 
--	/* go through IEs in ie (skip SSID) and subelement,
--	 * merge them into new_ie
-+static size_t cfg80211_gen_new_ie(const u8 *ie, size_t ielen,
-+				  const u8 *subie, size_t subie_len,
-+				  u8 *new_ie, size_t new_ie_len)
-+{
-+	const struct element *non_inherit_elem, *parent, *sub;
-+	u8 *pos = new_ie;
-+	u8 id, ext_id;
-+	unsigned int match_len;
-+
-+	non_inherit_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
-+						  subie, subie_len);
-+
-+	/* We copy the elements one by one from the parent to the generated
-+	 * elements.
-+	 * If they are not inherited (included in subie or in the non
-+	 * inheritance element), then we copy all occurrences the first time
-+	 * we see this element type.
- 	 */
--	tmp_old = cfg80211_find_ie(WLAN_EID_SSID, ie, ielen);
--	tmp_old = (tmp_old) ? tmp_old + tmp_old[1] + 2 : ie;
+-static void
+-cfg80211_parse_mbssid_frame_data(struct wiphy *wiphy,
+-				 struct cfg80211_inform_bss *data,
+-				 struct ieee80211_mgmt *mgmt, size_t len,
+-				 struct cfg80211_non_tx_bss *non_tx_data,
+-				 gfp_t gfp)
+-{
+-	enum cfg80211_bss_frame_type ftype;
+-	const u8 *ie = mgmt->u.probe_resp.variable;
+-	size_t ielen = len - offsetof(struct ieee80211_mgmt,
+-				      u.probe_resp.variable);
 -
--	while (tmp_old + 2 - ie <= ielen &&
--	       tmp_old + tmp_old[1] + 2 - ie <= ielen) {
--		if (tmp_old[0] == 0) {
--			tmp_old++;
-+	for_each_element(parent, ie, ielen) {
-+		if (parent->id == WLAN_EID_FRAGMENT)
- 			continue;
-+
-+		if (parent->id == WLAN_EID_EXTENSION) {
-+			if (parent->datalen < 1)
-+				continue;
-+
-+			id = WLAN_EID_EXTENSION;
-+			ext_id = parent->data[0];
-+			match_len = 1;
-+		} else {
-+			id = parent->id;
-+			match_len = 0;
- 		}
+-	ftype = ieee80211_is_beacon(mgmt->frame_control) ?
+-		CFG80211_BSS_FTYPE_BEACON : CFG80211_BSS_FTYPE_PRESP;
+-
+-	cfg80211_parse_mbssid_data(wiphy, data, ftype, mgmt->bssid,
+-				   le64_to_cpu(mgmt->u.probe_resp.timestamp),
+-				   le16_to_cpu(mgmt->u.probe_resp.beacon_int),
+-				   ie, ielen, non_tx_data, gfp);
+-}
+-
+-static void
+-cfg80211_update_notlisted_nontrans(struct wiphy *wiphy,
+-				   struct cfg80211_bss *nontrans_bss,
+-				   struct ieee80211_mgmt *mgmt, size_t len)
+-{
+-	u8 *ie, *new_ie, *pos;
+-	const struct element *nontrans_ssid;
+-	const u8 *trans_ssid, *mbssid;
+-	size_t ielen = len - offsetof(struct ieee80211_mgmt,
+-				      u.probe_resp.variable);
+-	size_t new_ie_len;
+-	struct cfg80211_bss_ies *new_ies;
+-	const struct cfg80211_bss_ies *old;
+-	size_t cpy_len;
+-
+-	lockdep_assert_held(&wiphy_to_rdev(wiphy)->bss_lock);
+-
+-	ie = mgmt->u.probe_resp.variable;
+-
+-	new_ie_len = ielen;
+-	trans_ssid = cfg80211_find_ie(WLAN_EID_SSID, ie, ielen);
+-	if (!trans_ssid)
+-		return;
+-	new_ie_len -= trans_ssid[1];
+-	mbssid = cfg80211_find_ie(WLAN_EID_MULTIPLE_BSSID, ie, ielen);
+-	/*
+-	 * It's not valid to have the MBSSID element before SSID
+-	 * ignore if that happens - the code below assumes it is
+-	 * after (while copying things inbetween).
+-	 */
+-	if (!mbssid || mbssid < trans_ssid)
+-		return;
+-	new_ie_len -= mbssid[1];
+-
+-	nontrans_ssid = ieee80211_bss_get_elem(nontrans_bss, WLAN_EID_SSID);
+-	if (!nontrans_ssid)
+-		return;
+-
+-	new_ie_len += nontrans_ssid->datalen;
+-
+-	/* generate new ie for nontrans BSS
+-	 * 1. replace SSID with nontrans BSS' SSID
+-	 * 2. skip MBSSID IE
+-	 */
+-	new_ie = kzalloc(new_ie_len, GFP_ATOMIC);
+-	if (!new_ie)
+-		return;
+-
+-	new_ies = kzalloc(sizeof(*new_ies) + new_ie_len, GFP_ATOMIC);
+-	if (!new_ies)
+-		goto out_free;
+-
+-	pos = new_ie;
+-
+-	/* copy the nontransmitted SSID */
+-	cpy_len = nontrans_ssid->datalen + 2;
+-	memcpy(pos, nontrans_ssid, cpy_len);
+-	pos += cpy_len;
+-	/* copy the IEs between SSID and MBSSID */
+-	cpy_len = trans_ssid[1] + 2;
+-	memcpy(pos, (trans_ssid + cpy_len), (mbssid - (trans_ssid + cpy_len)));
+-	pos += (mbssid - (trans_ssid + cpy_len));
+-	/* copy the IEs after MBSSID */
+-	cpy_len = mbssid[1] + 2;
+-	memcpy(pos, mbssid + cpy_len, ((ie + ielen) - (mbssid + cpy_len)));
+-
+-	/* update ie */
+-	new_ies->len = new_ie_len;
+-	new_ies->tsf = le64_to_cpu(mgmt->u.probe_resp.timestamp);
+-	new_ies->from_beacon = ieee80211_is_beacon(mgmt->frame_control);
+-	memcpy(new_ies->data, new_ie, new_ie_len);
+-	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
+-		old = rcu_access_pointer(nontrans_bss->proberesp_ies);
+-		rcu_assign_pointer(nontrans_bss->proberesp_ies, new_ies);
+-		rcu_assign_pointer(nontrans_bss->ies, new_ies);
+-		if (old)
+-			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
+-	} else {
+-		old = rcu_access_pointer(nontrans_bss->beacon_ies);
+-		rcu_assign_pointer(nontrans_bss->beacon_ies, new_ies);
+-		cfg80211_update_hidden_bsses(bss_from_pub(nontrans_bss),
+-					     new_ies, old);
+-		rcu_assign_pointer(nontrans_bss->ies, new_ies);
+-		if (old)
+-			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
+-	}
+-
+-out_free:
+-	kfree(new_ie);
+-}
+-
+ /* cfg80211_inform_bss_width_frame helper */
+ static struct cfg80211_bss *
+ cfg80211_inform_single_bss_frame_data(struct wiphy *wiphy,
+@@ -2565,51 +2453,31 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
+ 			       struct ieee80211_mgmt *mgmt, size_t len,
+ 			       gfp_t gfp)
+ {
+-	struct cfg80211_bss *res, *tmp_bss;
++	struct cfg80211_bss *res;
+ 	const u8 *ie = mgmt->u.probe_resp.variable;
+-	const struct cfg80211_bss_ies *ies1, *ies2;
+ 	size_t ielen = len - offsetof(struct ieee80211_mgmt,
+ 				      u.probe_resp.variable);
++	enum cfg80211_bss_frame_type ftype;
+ 	struct cfg80211_non_tx_bss non_tx_data = {};
  
--		if (tmp_old[0] == WLAN_EID_EXTENSION)
--			tmp = (u8 *)cfg80211_find_ext_ie(tmp_old[2], sub_copy,
--							 subie_len);
--		else
--			tmp = (u8 *)cfg80211_find_ie(tmp_old[0], sub_copy,
--						     subie_len);
-+		/* Find first occurrence in subie */
-+		sub = cfg80211_find_elem_match(id, subie, subie_len,
-+					       &ext_id, match_len, 0);
+ 	res = cfg80211_inform_single_bss_frame_data(wiphy, data, mgmt,
+ 						    len, gfp);
++	if (!res)
++		return NULL;
  
--		if (!tmp) {
--			const struct element *old_elem = (void *)tmp_old;
-+		/* Copy from parent if not in subie and inherited */
-+		if (!sub &&
-+		    cfg80211_is_element_inherited(parent, non_inherit_elem)) {
-+			if (!cfg80211_copy_elem_with_frags(parent,
-+							   ie, ielen,
-+							   &pos, new_ie,
-+							   new_ie_len))
-+				return 0;
+ 	/* don't do any further MBSSID handling for S1G */
+ 	if (ieee80211_is_s1g_beacon(mgmt->frame_control))
+ 		return res;
  
--			/* ie in old ie but not in subelement */
--			if (cfg80211_is_element_inherited(old_elem,
--							  non_inherit_elem)) {
--				memcpy(pos, tmp_old, tmp_old[1] + 2);
--				pos += tmp_old[1] + 2;
--			}
--		} else {
--			/* ie in transmitting ie also in subelement,
--			 * copy from subelement and flag the ie in subelement
--			 * as copied (by setting eid field to WLAN_EID_SSID,
--			 * which is skipped anyway).
--			 * For vendor ie, compare OUI + type + subType to
--			 * determine if they are the same ie.
--			 */
--			if (tmp_old[0] == WLAN_EID_VENDOR_SPECIFIC) {
--				if (tmp_old[1] >= 5 && tmp[1] >= 5 &&
--				    !memcmp(tmp_old + 2, tmp + 2, 5)) {
--					/* same vendor ie, copy from
--					 * subelement
--					 */
--					memcpy(pos, tmp, tmp[1] + 2);
--					pos += tmp[1] + 2;
--					tmp[0] = WLAN_EID_SSID;
--				} else {
--					memcpy(pos, tmp_old, tmp_old[1] + 2);
--					pos += tmp_old[1] + 2;
--				}
--			} else {
--				/* copy ie from subelement into new ie */
--				memcpy(pos, tmp, tmp[1] + 2);
--				pos += tmp[1] + 2;
--				tmp[0] = WLAN_EID_SSID;
--			}
-+			continue;
- 		}
+-	if (!res || !wiphy->support_mbssid ||
+-	    !cfg80211_find_elem(WLAN_EID_MULTIPLE_BSSID, ie, ielen))
+-		return res;
+-	if (wiphy->support_only_he_mbssid &&
+-	    !cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY, ie, ielen))
+-		return res;
+-
++	ftype = ieee80211_is_beacon(mgmt->frame_control) ?
++		CFG80211_BSS_FTYPE_BEACON : CFG80211_BSS_FTYPE_PRESP;
+ 	non_tx_data.tx_bss = res;
+-	/* process each non-transmitting bss */
+-	cfg80211_parse_mbssid_frame_data(wiphy, data, mgmt, len,
+-					 &non_tx_data, gfp);
+-
+-	spin_lock_bh(&wiphy_to_rdev(wiphy)->bss_lock);
  
--		if (tmp_old + tmp_old[1] + 2 - ie == ielen)
--			break;
-+		/* Already copied if an earlier element had the same type */
-+		if (cfg80211_find_elem_match(id, ie, (u8 *)parent - ie,
-+					     &ext_id, match_len, 0))
-+			continue;
+-	/* check if the res has other nontransmitting bss which is not
+-	 * in MBSSID IE
+-	 */
+-	ies1 = rcu_access_pointer(res->ies);
+-
+-	/* go through nontrans_list, if the timestamp of the BSS is
+-	 * earlier than the timestamp of the transmitting BSS then
+-	 * update it
+-	 */
+-	list_for_each_entry(tmp_bss, &res->nontrans_list,
+-			    nontrans_list) {
+-		ies2 = rcu_access_pointer(tmp_bss->ies);
+-		if (ies2->tsf < ies1->tsf)
+-			cfg80211_update_notlisted_nontrans(wiphy, tmp_bss,
+-							   mgmt, len);
+-	}
+-	spin_unlock_bh(&wiphy_to_rdev(wiphy)->bss_lock);
++	/* process each non-transmitting bss */
++	cfg80211_parse_mbssid_data(wiphy, data, ftype, mgmt->bssid,
++				   le64_to_cpu(mgmt->u.probe_resp.timestamp),
++				   le16_to_cpu(mgmt->u.probe_resp.beacon_int),
++				   ie, ielen, &non_tx_data, gfp);
  
--		tmp_old += tmp_old[1] + 2;
-+		/* Not inheriting, copy all similar elements from subie */
-+		while (sub) {
-+			if (!cfg80211_copy_elem_with_frags(sub,
-+							   subie, subie_len,
-+							   &pos, new_ie,
-+							   new_ie_len))
-+				return 0;
-+
-+			sub = cfg80211_find_elem_match(id,
-+						       sub->data + sub->datalen,
-+						       subie_len + subie -
-+						       (sub->data +
-+							sub->datalen),
-+						       &ext_id, match_len, 0);
-+		}
- 	}
- 
--	/* go through subelement again to check if there is any ie not
--	 * copied to new ie, skip ssid, capability, bssid-index ie
-+	/* The above misses elements that are included in subie but not in the
-+	 * parent, so do a pass over subie and append those.
-+	 * Skip the non-tx BSSID caps and non-inheritance element.
- 	 */
--	tmp_new = sub_copy;
--	while (tmp_new + 2 - sub_copy <= subie_len &&
--	       tmp_new + tmp_new[1] + 2 - sub_copy <= subie_len) {
--		if (!(tmp_new[0] == WLAN_EID_NON_TX_BSSID_CAP ||
--		      tmp_new[0] == WLAN_EID_SSID)) {
--			memcpy(pos, tmp_new, tmp_new[1] + 2);
--			pos += tmp_new[1] + 2;
-+	for_each_element(sub, subie, subie_len) {
-+		if (sub->id == WLAN_EID_NON_TX_BSSID_CAP)
-+			continue;
-+
-+		if (sub->id == WLAN_EID_FRAGMENT)
-+			continue;
-+
-+		if (sub->id == WLAN_EID_EXTENSION) {
-+			if (sub->datalen < 1)
-+				continue;
-+
-+			id = WLAN_EID_EXTENSION;
-+			ext_id = sub->data[0];
-+			match_len = 1;
-+
-+			if (ext_id == WLAN_EID_EXT_NON_INHERITANCE)
-+				continue;
-+		} else {
-+			id = sub->id;
-+			match_len = 0;
- 		}
--		if (tmp_new + tmp_new[1] + 2 - sub_copy == subie_len)
--			break;
--		tmp_new += tmp_new[1] + 2;
-+
-+		/* Processed if one was included in the parent */
-+		if (cfg80211_find_elem_match(id, ie, ielen,
-+					     &ext_id, match_len, 0))
-+			continue;
-+
-+		if (!cfg80211_copy_elem_with_frags(sub, subie, subie_len,
-+						   &pos, new_ie, new_ie_len))
-+			return 0;
- 	}
- 
--	kfree(sub_copy);
- 	return pos - new_ie;
+ 	return res;
  }
- 
-@@ -2228,7 +2263,7 @@ static void cfg80211_parse_mbssid_data(struct wiphy *wiphy,
- 			new_ie_len = cfg80211_gen_new_ie(ie, ielen,
- 							 profile,
- 							 profile_len, new_ie,
--							 gfp);
-+							 IEEE80211_MAX_DATA_LEN);
- 			if (!new_ie_len)
- 				continue;
- 
 -- 
 2.38.1
 
