@@ -2,118 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11673732F79
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 13:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4507330F9
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230311AbjFPLKn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 07:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33826 "EHLO
+        id S230209AbjFPMRi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 08:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235100AbjFPLKl (ORCPT
+        with ESMTP id S243101AbjFPMRf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 07:10:41 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93DE3137
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 04:10:40 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3f8cc04c287so4482575e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 04:10:40 -0700 (PDT)
+        Fri, 16 Jun 2023 08:17:35 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357AD30C6
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:17:34 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6667643e4b3so584804b3a.2
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:17:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686913839; x=1689505839;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1686917853; x=1689509853;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=IyMpKkbH0XmOyh8QNnC/KLoFb+Js0ZHVPuwpXLgDUOs=;
-        b=ipQ8xOfOu7iESiAZ2qumxxp+ISSjk4ITpXmwZTGIUxd9M6WkXAKfyAN+ZqFWTQW4y6
-         ueOWQoN1+hetv6u8xjN/9JgnHtahb+T4YO7KM9OsQn7bEKzbndwn8BHO0AA6yWv42III
-         1zWsww3LzWeeH8dZdoFPo909hldi1072RlxVXXqiP4lqPllrqq0O/A1nh924xumpNMpo
-         Gl+twSzz5qGUNpuoh9xIFCzfvIA0yM10/ISXiZC8cmemxJ/1qvuqyNy78YCwDYIIZbkX
-         QkmWZqruj0SAUCOaD5QuHOiuiVy5ptatOfmcjNRvfgjypidj26jPeQKPcImeie/j/N+1
-         8Kiw==
+        bh=Yi99fLv6YTyMW2x91KoXyXg12oz007UXSsco3xPyJqk=;
+        b=DcIdfxzZPOT+L/X+mX1Ag6TQ4aH81opJIeSvVK0KbGWQHG8W5Akhhld1e3YmUK2/N/
+         zZ0A7wpkemxlvcTP2QSZEI/Ki5ZncxH9V/jF2lJwCKYHjQ7r2lfwZOa+HY/XMs6ClM5D
+         ccBVysx8qZfMCCSl/PjtAfu/8wek+WavKvpw2juh/4IXyZkYjnl16fhUOtYsYifdpRRv
+         ZRF0Fdv1S1Hw6J5f69BbBHmmXkwsMRaqNYR2QMyU9/RwgFfhoDG6huk+/1LKOg6yTbup
+         t9CY+WpNbn61Hye0+nXsqaN+PMAR7/yQf/0OlfZ7WKrt0SN3FEgUknzMp+rpev6Q6wLn
+         p0vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686913839; x=1689505839;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1686917853; x=1689509853;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IyMpKkbH0XmOyh8QNnC/KLoFb+Js0ZHVPuwpXLgDUOs=;
-        b=RmKeDvsrnXC70/Rs91gFt8GnHshTEbM0TuBu3Qj36QKGuB1vXJh5Gg6KsJ4MYmOcql
-         XuqymNDTtd3q/uzfaGva0eg5HeOJdor7oRxvQWY9Hcy1IVp2UGYn3a1Kjs5ltIqfSmsl
-         5fP54KQakCRSoSOu3HjdXtOpVhURW/qdrCovWFjSbMYlVqUhtp+SSB5P96RfG/z9wrG6
-         U0U5CbbEa9hKIiOhnUr72jqc3ROnm8ojQVwLnyCnXlkuiVtUySoSxI5AVTwcp+6FuDXt
-         h99yB0iI2J0q7P6VxISXwPZF8vi7q98sKSqIP5C794ewlvuQX0Zyh4Z0dxZxcNzIDT4o
-         bYeA==
-X-Gm-Message-State: AC+VfDwznTNse4hk70FIHnIlZzJ6pxcUHKH/8RsvmYiFiAPzu6300Zqx
-        bdijREQu1H8FF7QiTZX0IjE=
-X-Google-Smtp-Source: ACHHUZ6Xy1XN4d2BJsRti7vFSDgxEM+kAvD33xbaJwEjaHUTqb+x2uWWTKZL8K1UBAyLIWDmt49Htw==
-X-Received: by 2002:a05:600c:21cc:b0:3f6:13bb:f00b with SMTP id x12-20020a05600c21cc00b003f613bbf00bmr1460052wmj.8.1686913838861;
-        Fri, 16 Jun 2023 04:10:38 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.174])
-        by smtp.gmail.com with ESMTPSA id n20-20020a1c7214000000b003f8d85b481esm1900111wmc.21.2023.06.16.04.10.37
+        bh=Yi99fLv6YTyMW2x91KoXyXg12oz007UXSsco3xPyJqk=;
+        b=AAJHPXV54VCprbtzZ/CM6DzVZLilPrBXtkL57PWocTp02ZpCbmUjwT0ENSPEDDWPmW
+         pgObwOvXXmtmJ1x96qrfZ4A/6a6naEM3zX2yJwQWk4fy/7GMZ2MZX8TBYtQ0kC3RGila
+         6krD12LJ81cOgxmrtCkZWc4TJzBFVxwj9Z7TvJVSluC6hMBhvBqIJ79dApgFW1GY40zz
+         NLqdCTCRYlTc2MTzEdY8oiRquQhEd2nnRgfn7jM9pTmnwOukcgi5r4Ff1Chjlz2A08qN
+         mSOEIIhQgYvNSGp4p7x6L8Hi2c0XzbJnBXx/yFsNSEZK5mpO6O4Vp9PnYYL/S0QQd4de
+         iAbA==
+X-Gm-Message-State: AC+VfDxZ66ICHY2ONRyWA9IZ1RxjfR0vdWhpvd+bETmFweIkvHcmHk/Y
+        3lJJcxbZ8TBKzzm/stU1+Ug=
+X-Google-Smtp-Source: ACHHUZ4wHk1/pTm81xVV98FexsQMvN1MHJuEClbfKfoLcAp1FqqCs64b9SADoV/jkPg4TDoNOCljhA==
+X-Received: by 2002:a05:6a00:13a9:b0:65c:8195:e6a2 with SMTP id t41-20020a056a0013a900b0065c8195e6a2mr2310658pfg.1.1686917853598;
+        Fri, 16 Jun 2023 05:17:33 -0700 (PDT)
+Received: from [192.168.0.103] ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id a18-20020a62bd12000000b0064ff855751fsm13397014pff.4.2023.06.16.05.17.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 04:10:38 -0700 (PDT)
-Message-ID: <0ce62044-b6a1-ca14-899d-47f7aa807df9@gmail.com>
-Date:   Fri, 16 Jun 2023 14:10:36 +0300
+        Fri, 16 Jun 2023 05:17:33 -0700 (PDT)
+Message-ID: <b33d3dd1-9765-c90e-4408-941e7d8025cf@gmail.com>
+Date:   Fri, 16 Jun 2023 19:17:27 +0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 1/6] wifi: rtw88: use struct instead of macros to set TX
- desc
-To:     Ping-Ke Shih <pkshih@realtek.com>, tony0620emma@gmail.com,
-        kvalo@kernel.org
-Cc:     phhuang@realtek.com, linux-wireless@vger.kernel.org
-References: <20230616034431.17403-1-pkshih@realtek.com>
- <20230616034431.17403-2-pkshih@realtek.com>
+ Thunderbird/102.12.0
+Subject: Re: [regression] STP on 80211s is broken in 6.4-rc4
 Content-Language: en-US
-From:   Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20230616034431.17403-2-pkshih@realtek.com>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Nicolas Escande <nico.escande@gmail.com>, nbd@nbd.name,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <CT5GNZSK28AI.2K6M69OXM9RW5@syracuse> <ZIQbs0wqdRh7c0Kx@debian.me>
+ <a9d02800-2cd6-a27b-7998-4c97cf2eb692@leemhuis.info>
+ <CTDWJJDKSYYD.XBG1CAZB3A5W@syracuse>
+ <50f7f64c-fe32-4362-fd4e-89ee99c4f581@leemhuis.info>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <50f7f64c-fe32-4362-fd4e-89ee99c4f581@leemhuis.info>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 16/06/2023 06:44, Ping-Ke Shih wrote:
-> From: Po-Hao Huang <phhuang@realtek.com>
+On 6/16/23 16:25, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 16.06.23 09:45, Nicolas Escande wrote:
+>> On Thu Jun 15, 2023 at 2:54 PM CEST, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>> On 10.06.23 08:44, Bagas Sanjaya wrote:
+>>>> On Tue, Jun 06, 2023 at 12:55:57PM +0200, Nicolas Escande wrote:
 > 
-> Remove macros that set TX descriptors. Use struct and
-> le32_encode_bits() with mask definitions.
+>>> Hmmm, Felix did not reply. But let's ignore that for now.
+>> I haven't seen mails from felix on the list for a few days, I'm guessing he's
+>> unavailable for now but I'll hapilly wait.
 > 
-> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8723d.c |   5 +-
->  drivers/net/wireless/realtek/rtw88/tx.c       |  79 +++++++-----
->  drivers/net/wireless/realtek/rtw88/tx.h       | 121 +++++++-----------
->  drivers/net/wireless/realtek/rtw88/usb.c      |  12 +-
->  4 files changed, 104 insertions(+), 113 deletions(-)
+> Okay.
+> 
+>>> Nicolas, I noticed there are a few patches in next that refer to the
+>>> culprit. Might be worth giving this series a try:
+>>> https://lore.kernel.org/all/20230314095956.62085-1-nbd@nbd.name/
+>> Well this series already landed in 6.4 and that is the version I did my initial
+>> testing with. So no luck there.
+> 
+> What? Ohh, sorry for the noise, I had missed that they were in mainline
+> already.
 > 
 
-[...]
+Hi Thorsten,
 
-> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> index 976eafa739a2d..dbfd5576cc120 100644
-> --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> @@ -24,11 +24,12 @@ struct rtw_usb_txcb {
->  static void rtw_usb_fill_tx_checksum(struct rtw_usb *rtwusb,
->  				     struct sk_buff *skb, int agg_num)
->  {
-> +	struct rtw_tx_desc *tx_desc = (struct rtw_tx_desc *)skb->data;
->  	struct rtw_dev *rtwdev = rtwusb->rtwdev;
->  	struct rtw_tx_pkt_info pkt_info;
->  
-> -	SET_TX_DESC_DMA_TXAGG_NUM(skb->data, agg_num);
-> -	pkt_info.pkt_offset = GET_TX_DESC_PKT_OFFSET(skb->data);
-> +	le32_replace_bits(tx_desc->w7, agg_num, RTW_TX_DESC_W7_TXDESC_CHECKSUM);
+Should this be removed from tracking as inconclusive?
 
-This looks like the wrong mask. Should it be RTW_TX_DESC_W7_DMA_TXAGG_NUM ?
+-- 
+An old man doll... just what I always wanted! - Clara
 
-> +	pkt_info.pkt_offset = le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_PKT_OFFSET);
->  	rtw_tx_fill_txdesc_checksum(rtwdev, &pkt_info, skb->data);
->  }
->  
