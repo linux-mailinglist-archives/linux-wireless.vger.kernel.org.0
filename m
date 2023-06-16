@@ -2,69 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A8773260A
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 05:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0367B7325C8
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 05:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233175AbjFPDzm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 15 Jun 2023 23:55:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
+        id S232947AbjFPDSj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 15 Jun 2023 23:18:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbjFPDzk (ORCPT
+        with ESMTP id S241365AbjFPDSB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 15 Jun 2023 23:55:40 -0400
-X-Greylist: delayed 4345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Jun 2023 20:55:39 PDT
-Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C8CF271E
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 20:55:39 -0700 (PDT)
-Received: by mail.durme.pl (Postfix, from userid 1002)
-        id 569E069703; Thu, 15 Jun 2023 08:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
-        t=1686820667; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
-        h=Date:From:To:Subject:From;
-        b=DSxH1VgJ9Tm68AgleZUFQGd+D2wVeFX2OMceLebWNBFvqn9LFxGN7NUUCx9lYbTX5
-         Lw+HEpZ+YTZMTMUozMQE26T4miFOqeEPnfKn/4ebytpb6apw8CM1EfLc6lqKtp/6GS
-         7SZFIgtO8E5c8HR+h4xGSwa1NngIqgvAXG8l5zKymdZXkMUA0j6cry7jwus0aURKVT
-         MdybvEnEB2y02OT4Uhbtdfr70ZbYnpfRnKx5Zw1aJACuOIdbc/sYGqJ6WEptyTxfla
-         4oomdnbTbFi3nhGn6YfprIfb8VGDhaCpolQ6gezpDYJqRO0saOLH7YFhJVvHLu2YLh
-         5pQtU6GbskHWw==
-Received: by mail.durme.pl for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 08:00:33 GMT
-Message-ID: <20230615064501-0.1.2i.ahdq.0.b7r28q5lun@durme.pl>
-Date:   Thu, 15 Jun 2023 08:00:33 GMT
-From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: W sprawie samochodu
-X-Mailer: mail.durme.pl
+        Thu, 15 Jun 2023 23:18:01 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD5F30E6
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 20:17:52 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35G3HN6x8032026, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35G3HN6x8032026
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
+        Fri, 16 Jun 2023 11:17:23 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Fri, 16 Jun 2023 11:17:42 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Fri, 16 Jun
+ 2023 11:17:42 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <tony0620emma@gmail.com>, <kvalo@kernel.org>
+CC:     <gary.chang@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw88: process VO packets without workqueue to avoid PTK rekey failed
+Date:   Fri, 16 Jun 2023 11:17:13 +0800
+Message-ID: <20230616031713.16769-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
-, je=C5=9Bli chodzi o system monitoringu GPS.
+In the wpa_supplicant rekey flow, it sends an EAPOL packet 4/4 through
+nl80211_tx_control_port() and triggers wake_tx_queue() in the driver.
+Then, it sends nl80211_new_key() to configure a new key in mac80211.
+However, in wake_tx_queue(), a workqueue is used to process the tx packet,
+which might cause the driver to process the EAPOL packet later than
+nl80211_new_key(). As a result, the EAPOL 4/4 packet is dropped by mac80211
+due to the rekey configuration being finished. The EAPOL packets belongs to
+VO packets that need high priority. Therefore, we process VO packets
+directly without workqueue to ensure that packets can process immediately.
 
-Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
-e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
-a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
+VO is normally used by voice application that is low traffic load and low
+latency, that doesn't affect user experience.
+We test iperf with VO packets(iperf3 -P4 -u -b 10000M -S 0xdf)
+                          before       after
+TX throughput             162M         162M
+ping RTT                  3.8ms        3.7ms
 
-Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
-dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
-szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
-mne znaczenie.
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  6 +++++-
+ drivers/net/wireless/realtek/rtw88/tx.c       | 10 ++++++++--
+ drivers/net/wireless/realtek/rtw88/tx.h       |  1 +
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
-Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
-b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 09bcc2345bb05..4241027902832 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -43,7 +43,11 @@ static void rtw_ops_wake_tx_queue(struct ieee80211_hw *hw,
+ 		list_add_tail(&rtwtxq->list, &rtwdev->txqs);
+ 	spin_unlock_bh(&rtwdev->txq_lock);
+ 
+-	queue_work(rtwdev->tx_wq, &rtwdev->tx_work);
++	/* ensure to dequeue EAPOL (4/4) at the right time */
++	if (txq->ac == IEEE80211_AC_VO)
++		__rtw_tx_work(rtwdev);
++	else
++		queue_work(rtwdev->tx_wq, &rtwdev->tx_work);
+ }
+ 
+ static int rtw_ops_start(struct ieee80211_hw *hw)
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index bb5c7492c98b0..b6c97a986a1ac 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -635,9 +635,8 @@ static void rtw_txq_push(struct rtw_dev *rtwdev,
+ 	rcu_read_unlock();
+ }
+ 
+-void rtw_tx_work(struct work_struct *w)
++void __rtw_tx_work(struct rtw_dev *rtwdev)
+ {
+-	struct rtw_dev *rtwdev = container_of(w, struct rtw_dev, tx_work);
+ 	struct rtw_txq *rtwtxq, *tmp;
+ 
+ 	spin_lock_bh(&rtwdev->txq_lock);
+@@ -658,6 +657,13 @@ void rtw_tx_work(struct work_struct *w)
+ 	spin_unlock_bh(&rtwdev->txq_lock);
+ }
+ 
++void rtw_tx_work(struct work_struct *w)
++{
++	struct rtw_dev *rtwdev = container_of(w, struct rtw_dev, tx_work);
++
++	__rtw_tx_work(rtwdev);
++}
++
+ void rtw_txq_init(struct rtw_dev *rtwdev, struct ieee80211_txq *txq)
+ {
+ 	struct rtw_txq *rtwtxq;
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
+index 197d5868c8ad9..544133643a1bb 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.h
++++ b/drivers/net/wireless/realtek/rtw88/tx.h
+@@ -111,6 +111,7 @@ void rtw_tx(struct rtw_dev *rtwdev,
+ void rtw_txq_init(struct rtw_dev *rtwdev, struct ieee80211_txq *txq);
+ void rtw_txq_cleanup(struct rtw_dev *rtwdev, struct ieee80211_txq *txq);
+ void rtw_tx_work(struct work_struct *w);
++void __rtw_tx_work(struct rtw_dev *rtwdev);
+ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
+ 			    struct rtw_tx_pkt_info *pkt_info,
+ 			    struct ieee80211_sta *sta,
+-- 
+2.25.1
 
-
-Pozdrawiam
-Krystian Wieczorek
