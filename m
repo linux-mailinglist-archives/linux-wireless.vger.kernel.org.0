@@ -2,76 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F140B73310C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C70F733128
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344246AbjFPMVO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 08:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59130 "EHLO
+        id S233955AbjFPM00 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 08:26:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241493AbjFPMVM (ORCPT
+        with ESMTP id S230050AbjFPM0Z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 08:21:12 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB27358C;
-        Fri, 16 Jun 2023 05:20:59 -0700 (PDT)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QjJ642Bt3z18MFb;
-        Fri, 16 Jun 2023 20:15:56 +0800 (CST)
-Received: from [10.69.30.204] (10.69.30.204) by dggpemm500005.china.huawei.com
- (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 16 Jun
- 2023 20:20:55 +0800
-Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
-To:     Alexander Duyck <alexander.duyck@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     <davem@davemloft.net>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
- <20230612130256.4572-5-linyunsheng@huawei.com>
- <20230614101954.30112d6e@kernel.org>
- <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
- <20230615095100.35c5eb10@kernel.org>
- <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
-From:   Yunsheng Lin <linyunsheng@huawei.com>
-Message-ID: <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
-Date:   Fri, 16 Jun 2023 20:20:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.0
+        Fri, 16 Jun 2023 08:26:25 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5937230DE
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:26:24 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qA8Wv-0005mB-IE; Fri, 16 Jun 2023 14:26:17 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qA8Wq-0000ek-NG; Fri, 16 Jun 2023 14:26:12 +0200
+Date:   Fri, 16 Jun 2023 14:26:12 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     petter@technux.se
+Cc:     pkshih@realtek.com, linux-wireless@vger.kernel.org,
+        Larry.Finger@lwfinger.net, andreas@fatal.se, iam@valdikss.org.ru,
+        kernel@pengutronix.de, kvalo@kernel.org, linux@ulli-kroll.de,
+        petter.mabacker@esab.se
+Subject: Re: rtw8822cu (LM842) stalls when running HW offload scan
+Message-ID: <20230616122612.GL18491@pengutronix.de>
+References: <20230612133023.321060-1-petter@technux.se>
 MIME-Version: 1.0
-In-Reply-To: <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.69.30.204]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500005.china.huawei.com (7.185.36.74)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612133023.321060-1-petter@technux.se>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,85 +55,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2023/6/16 2:26, Alexander Duyck wrote:
-> On Thu, Jun 15, 2023 at 9:51 AM Jakub Kicinski <kuba@kernel.org> wrote:
->>
->> On Thu, 15 Jun 2023 15:17:39 +0800 Yunsheng Lin wrote:
->>>> Does hns3_page_order() set a good example for the users?
->>>>
->>>> static inline unsigned int hns3_page_order(struct hns3_enet_ring *ring)
->>>> {
->>>> #if (PAGE_SIZE < 8192)
->>>>     if (ring->buf_size > (PAGE_SIZE / 2))
->>>>             return 1;
->>>> #endif
->>>>     return 0;
->>>> }
->>>>
->>>> Why allocate order 1 pages for buffers which would fit in a single page?
->>>> I feel like this soft of heuristic should be built into the API itself.
->>>
->>> hns3 only support fixed buf size per desc by 512 byte, 1024 bytes, 2048 bytes
->>> 4096 bytes, see hns3_buf_size2type(), I think the order 1 pages is for buf size
->>> with 4096 bytes and system page size with 4K, as hns3 driver still support the
->>> per-desc ping-pong way of page splitting when page_pool_enabled is false.
->>>
->>> With page pool enabled, you are right that order 0 pages is enough, and I am not
->>> sure about the exact reason we use the some order as the ping-pong way of page
->>> splitting now.
->>> As 2048 bytes buf size seems to be the default one, and I has not heard any one
->>> changing it. Also, it caculates the pool_size using something as below, so the
->>> memory usage is almost the same for order 0 and order 1:
->>>
->>> .pool_size = ring->desc_num * hns3_buf_size(ring) /
->>>               (PAGE_SIZE << hns3_page_order(ring)),
->>>
->>> I am not sure it worth changing it, maybe just change it to set good example for
->>> the users:) anyway I need to discuss this with other colleague internally and do
->>> some testing before doing the change.
->>
->> Right, I think this may be a leftover from the page flipping mode of
->> operation. But AFAIU we should leave the recycling fully to the page
->> pool now. If we make any improvements try to make them at the page pool
->> level.
-
-I checked, the per-desc buf with 4096 bytes for hnse does not seem to
-be used mainly because of the larger memory usage you mentioned below.
-
->>
->> I like your patches as they isolate the drivers from having to make the
->> fragmentation decisions based on the system page size (4k vs 64k but
->> we're hearing more and more about ARM w/ 16k pages). For that use case
->> this is great.
-
-Yes, That is my point. For hw case, the page splitting in page pool is
-mainly to enble multi-descs to use the same page as my understanding.
-
->>
->> What we don't want is drivers to start requesting larger page sizes
->> because it looks good in iperf on a freshly booted, idle system :(
+On Mon, Jun 12, 2023 at 03:30:23PM +0200, petter@technux.se wrote:
+> Some time ago https://bugzilla.kernel.org/show_bug.cgi?id=217034 was
+> created. From the beginning it was just about some error printouts.
+> Then Andreas (who created the bug report) mentioned that it seems to
+> work worse after bumping the firmware to > 9.9.10. After some fixes
+> from Sascha the error printouts dissappeared. But when I also started
+> to run this using firmware > 9.9.10 I also got problems. On my i.MX8
+> and RPi4 board it works fine, but on some of my less powerful boards
+> such as and older RPi and my i.MX6 SoloX board, it always fails using
+> 9.9.10 firmware. After some digging in the git log, I discovered
+> that HW scan offload was introduced in a later firmware. So when I
+> disable HW offload scan it seems to work again on all my boards. But
+> still I want to understand why the HW offload scan don't work for
+> me.
 > 
-> Actually that would be a really good direction for this patch set to
-> look at going into. Rather than having us always allocate a "page" it
-> would make sense for most drivers to allocate a 4K fragment or the
-> like in the case that the base page size is larger than 4K. That might
-> be a good use case to justify doing away with the standard page pool
-> page and look at making them all fragmented.
+> Like described in the bug report I get below when running on latest
+> 6.4 mainline with all relevant patches around rtw88 applied.
 
-I am not sure if I understand the above, isn't the frag API able to
-support allocating a 4K fragment when base page size is larger than
-4K before or after this patch? what more do we need to do?
+I can't reproduce this here. I am currently running v6.4-rc3 plus:
 
-> 
-> In the case of the standard page size being 4K a standard page would
-> just have to take on the CPU overhead of the atomic_set and
-> atomic_read for pp_ref_count (new name) which should be minimal as on
-> most sane systems those just end up being a memory write and read.
+wifi: rtw88: usb: silence log flooding error message
 
-If I understand you correctly, I think what you are trying to do
-may break some of Jesper' benchmarking:)
+I tested on a i.MX6S (not SoloX) board with Firmware 9.9.14.
 
-[1] https://github.com/netoptimizer/prototype-kernel/blob/master/kernel/lib/bench_page_pool_simple.c
+A "nmcli dev wifi rescan" works just fine and the link also continues to
+work.
 
-> .
-> 
+I verified that FW_FEATURE_SCAN_OFFLOAD is set and used in the driver,
+also that it's not set in Firmware 9.9.9. I also tried to put some
+load on the link by running iperf3, still no difference.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
