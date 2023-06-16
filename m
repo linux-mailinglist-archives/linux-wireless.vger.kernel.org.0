@@ -2,101 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 178B6733104
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F140B73310C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 14:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245325AbjFPMTg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 08:19:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57752 "EHLO
+        id S1344246AbjFPMVO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 08:21:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245256AbjFPMTf (ORCPT
+        with ESMTP id S241493AbjFPMVM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 08:19:35 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5286E30DD
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:19:31 -0700 (PDT)
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 6E5703F15F
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 12:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1686917968;
-        bh=HbcVOb9efJYkmDhGqloOhMxTQvtdvJNNFO77juvfdww=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=KGkPNJGTePXS4xExPuFo7ryl4VdsiT8NDSCLpD3qtQDMbXP8QkWTBH0lrGQYWdtdU
-         Q5bVgIH1DaKqF57s8rZOnnKTSxR8MV4kQcOuCer03HVsfPB0j5AIIPtmCwzL5D/uIw
-         cYIEd6+e0c09D44JQp+1iAoWQ0fgzcsVwTKlTpeqPCUfN5xHoWzetXYLooSu1k/Pgw
-         5Pk6/Vg5hRj29sSziCcIDzjvVL8lm4xsolbmELgCLcZzbf1F5lvvFv7C3QDL0njttA
-         rPMPU5Yxh3FmkYPPfvrRPWv2QAk618jPmKoCcsuvuvvzfCxjpvR7nB8LciEBIlyJal
-         ky7ld4IqMdCvg==
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3f739a73ba4so2470065e9.3
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 05:19:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686917968; x=1689509968;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HbcVOb9efJYkmDhGqloOhMxTQvtdvJNNFO77juvfdww=;
-        b=GKa1VK8jnmxuM10wEXHUhkAFNq7tBafLePEUtyFwx9idxNO4ueNpMRErFGKBHYBB64
-         ZfVgjIYdYWBUo3xoDtU5vRgllx2orbjNgGJht/1OjQiPrFecwf1JS5BTrErRQYTxAFiV
-         4yeyW7SIvEbaY9VWgn//7diQu/QCrQOAQhdFlAcn6T7j7orAMHqvl3aTRkrUnLtE0aPb
-         w7fdDSIECFOsSBfrrHU+C6mtcsbtcdHzJ4af0HdPMF+QyFSYkKf/QeTX0ODY92Jw2ZYI
-         dxp55SCItedzQ2ZQJKaHsFQOG1yHuk3419+kOKsWYMwuFcFt6gTUVRQy6n6RZDWmX2pY
-         pEPA==
-X-Gm-Message-State: AC+VfDx5W2GhidjrTfKMmGFSfOfEshcxXrgSPxd5vbxjLlwSfjVKI+pa
-        NXv6LBYA9QmGzq/nZcISyF40M9kA3nU6u1FO7BnSdNHJ1vLdo3YLxjC01DOExF4eM0bBOiP4T+H
-        SZ3snEDYYYK5drISgxik6ZjU+voBTuHlQVB3SyREsdW0V
-X-Received: by 2002:a05:600c:2909:b0:3f1:bb10:c865 with SMTP id i9-20020a05600c290900b003f1bb10c865mr1638903wmd.38.1686917968183;
-        Fri, 16 Jun 2023 05:19:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4LkTRN+lXP5TPRN5U/LZrINkJySpHEGjs2adWFiI6ByNCqvMTGtn3cXgsmPahIPjYjoPA2Hw==
-X-Received: by 2002:a05:600c:2909:b0:3f1:bb10:c865 with SMTP id i9-20020a05600c290900b003f1bb10c865mr1638888wmd.38.1686917967904;
-        Fri, 16 Jun 2023 05:19:27 -0700 (PDT)
-Received: from localhost ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id k24-20020a7bc318000000b003f733c1129fsm2017151wmj.33.2023.06.16.05.19.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jun 2023 05:19:27 -0700 (PDT)
-From:   Juerg Haefliger <juerg.haefliger@canonical.com>
-To:     chunkeey@googlemail.com, kvalo@kernel.org,
-        linux-wireless@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Juerg Haefliger <juerg.haefliger@canonical.com>
-Subject: [PATCH] wifi: p54: Add missing MODULE_FIRMWARE macro
-Date:   Fri, 16 Jun 2023 14:19:17 +0200
-Message-Id: <20230616121917.1034761-1-juerg.haefliger@canonical.com>
-X-Mailer: git-send-email 2.37.2
+        Fri, 16 Jun 2023 08:21:12 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB27358C;
+        Fri, 16 Jun 2023 05:20:59 -0700 (PDT)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QjJ642Bt3z18MFb;
+        Fri, 16 Jun 2023 20:15:56 +0800 (CST)
+Received: from [10.69.30.204] (10.69.30.204) by dggpemm500005.china.huawei.com
+ (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 16 Jun
+ 2023 20:20:55 +0800
+Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
+To:     Alexander Duyck <alexander.duyck@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+CC:     <davem@davemloft.net>, <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+References: <20230612130256.4572-1-linyunsheng@huawei.com>
+ <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org>
+ <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org>
+ <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+From:   Yunsheng Lin <linyunsheng@huawei.com>
+Message-ID: <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
+Date:   Fri, 16 Jun 2023 20:20:55 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
+In-Reply-To: <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+X-Originating-IP: [10.69.30.204]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the missing MODULE_FIRMWARE macro for "3826.eeprom".
+On 2023/6/16 2:26, Alexander Duyck wrote:
+> On Thu, Jun 15, 2023 at 9:51 AM Jakub Kicinski <kuba@kernel.org> wrote:
+>>
+>> On Thu, 15 Jun 2023 15:17:39 +0800 Yunsheng Lin wrote:
+>>>> Does hns3_page_order() set a good example for the users?
+>>>>
+>>>> static inline unsigned int hns3_page_order(struct hns3_enet_ring *ring)
+>>>> {
+>>>> #if (PAGE_SIZE < 8192)
+>>>>     if (ring->buf_size > (PAGE_SIZE / 2))
+>>>>             return 1;
+>>>> #endif
+>>>>     return 0;
+>>>> }
+>>>>
+>>>> Why allocate order 1 pages for buffers which would fit in a single page?
+>>>> I feel like this soft of heuristic should be built into the API itself.
+>>>
+>>> hns3 only support fixed buf size per desc by 512 byte, 1024 bytes, 2048 bytes
+>>> 4096 bytes, see hns3_buf_size2type(), I think the order 1 pages is for buf size
+>>> with 4096 bytes and system page size with 4K, as hns3 driver still support the
+>>> per-desc ping-pong way of page splitting when page_pool_enabled is false.
+>>>
+>>> With page pool enabled, you are right that order 0 pages is enough, and I am not
+>>> sure about the exact reason we use the some order as the ping-pong way of page
+>>> splitting now.
+>>> As 2048 bytes buf size seems to be the default one, and I has not heard any one
+>>> changing it. Also, it caculates the pool_size using something as below, so the
+>>> memory usage is almost the same for order 0 and order 1:
+>>>
+>>> .pool_size = ring->desc_num * hns3_buf_size(ring) /
+>>>               (PAGE_SIZE << hns3_page_order(ring)),
+>>>
+>>> I am not sure it worth changing it, maybe just change it to set good example for
+>>> the users:) anyway I need to discuss this with other colleague internally and do
+>>> some testing before doing the change.
+>>
+>> Right, I think this may be a leftover from the page flipping mode of
+>> operation. But AFAIU we should leave the recycling fully to the page
+>> pool now. If we make any improvements try to make them at the page pool
+>> level.
 
-Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
----
- drivers/net/wireless/intersil/p54/p54spi.c | 1 +
- 1 file changed, 1 insertion(+)
+I checked, the per-desc buf with 4096 bytes for hnse does not seem to
+be used mainly because of the larger memory usage you mentioned below.
 
-diff --git a/drivers/net/wireless/intersil/p54/p54spi.c b/drivers/net/wireless/intersil/p54/p54spi.c
-index 19152fd449ba..ce0179b8ab36 100644
---- a/drivers/net/wireless/intersil/p54/p54spi.c
-+++ b/drivers/net/wireless/intersil/p54/p54spi.c
-@@ -28,6 +28,7 @@
- #endif /* CONFIG_P54_SPI_DEFAULT_EEPROM */
- 
- MODULE_FIRMWARE("3826.arm");
-+MODULE_FIRMWARE("3826.eeprom");
- 
- /* gpios should be handled in board files and provided via platform data,
-  * but because it's currently impossible for p54spi to have a header file
--- 
-2.37.2
+>>
+>> I like your patches as they isolate the drivers from having to make the
+>> fragmentation decisions based on the system page size (4k vs 64k but
+>> we're hearing more and more about ARM w/ 16k pages). For that use case
+>> this is great.
 
+Yes, That is my point. For hw case, the page splitting in page pool is
+mainly to enble multi-descs to use the same page as my understanding.
+
+>>
+>> What we don't want is drivers to start requesting larger page sizes
+>> because it looks good in iperf on a freshly booted, idle system :(
+> 
+> Actually that would be a really good direction for this patch set to
+> look at going into. Rather than having us always allocate a "page" it
+> would make sense for most drivers to allocate a 4K fragment or the
+> like in the case that the base page size is larger than 4K. That might
+> be a good use case to justify doing away with the standard page pool
+> page and look at making them all fragmented.
+
+I am not sure if I understand the above, isn't the frag API able to
+support allocating a 4K fragment when base page size is larger than
+4K before or after this patch? what more do we need to do?
+
+> 
+> In the case of the standard page size being 4K a standard page would
+> just have to take on the CPU overhead of the atomic_set and
+> atomic_read for pp_ref_count (new name) which should be minimal as on
+> most sane systems those just end up being a memory write and read.
+
+If I understand you correctly, I think what you are trying to do
+may break some of Jesper' benchmarking:)
+
+[1] https://github.com/netoptimizer/prototype-kernel/blob/master/kernel/lib/bench_page_pool_simple.c
+
+> .
+> 
