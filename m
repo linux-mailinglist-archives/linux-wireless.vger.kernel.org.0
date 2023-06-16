@@ -2,227 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D2F733425
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 17:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FD81733565
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 18:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345812AbjFPPCK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 11:02:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58256 "EHLO
+        id S231265AbjFPQHK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 12:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345808AbjFPPBy (ORCPT
+        with ESMTP id S231432AbjFPQHJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 11:01:54 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223CC1FF9;
-        Fri, 16 Jun 2023 08:01:44 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-25bec2512f3so687515a91.0;
-        Fri, 16 Jun 2023 08:01:44 -0700 (PDT)
+        Fri, 16 Jun 2023 12:07:09 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6306C2D76
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 09:07:05 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6b28fc7a6dcso761373a34.0
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Jun 2023 09:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686927703; x=1689519703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FwOiF1tuQY0sMSzPSitIXKF3uUPCmzP49g6125H5nno=;
-        b=iFSLtmOZxcYOYrhk8SjOyBfNSdHP6AxxWzy1ZOozDYnPcQghaoGALev11CBsXLS2oJ
-         W1TblpdgaZjZFhzAjUdJr7Gm50KRcc6rVYkEzZYfX1SokDSLSRnFQHqd5JalEqOM18Ts
-         84h3OHZV3xEWlkzCH27P0UJdHBP1r4S3d2pZLTm5yhCeO3WtQnOWAKzcipwkZAprXZ9t
-         g0LKmiM/GmvN9axhV8Vo7vXmG/+3s6dro6zqfVJneOimcIxrBYfIuoMI16rU5yNmrYrZ
-         E3O2Mplnv4X1vaPEQcTVZ6hJTbeVbFCYOw62zOSZITHBFAGXhVyzIY3yWAtnX/rVuXU3
-         xKqg==
+        d=gmail.com; s=20221208; t=1686931624; x=1689523624;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=3mi3YmJ92UC2+IcFEqEllItRr/kLsrWEjxNTefsoZfI=;
+        b=dHlEmjTaocqsi/Msza76NOa/NBqx8OJ4DLGaBYpKOGwDIUBa7/N2MEvzJNktdyY+em
+         L0TrYyX/HrDab8/Y75FXitwFhynzdlydTzQT/rKFZ7gfB90xsj7aaNFB9PiVtFgUENl4
+         z9cGqj8aRRYfn9n0mLO+GbcepQswigt1+P7By2S0VfSiU+P5l8oITceuM+AQjAmqTPJn
+         lS2Ck3ac4nJznGTVMEstAbLssa5HgD2qIIRBlto0WyYPwnYk7t0y93nb9+wupG0NuaNn
+         m4oGkona0aFP47T246mHgs+BeKyO+iJSuZ2RtvJD3dIbldQHkK/RBJDilJKpbqEUp28b
+         Tahw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686927703; x=1689519703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FwOiF1tuQY0sMSzPSitIXKF3uUPCmzP49g6125H5nno=;
-        b=TFC/j2N+/6CHfidwTOl+CDbkywzQpBGkrcM9fim4Co5Xhi/YzOzSNvSPWMb7Wkv0su
-         8A4td+5hQJKdfBkRLn9UdhNs54IqjTWpp9dH1jwL5ALNUHpM3CBRnlPHf6+QYCWKzlko
-         vxcnTlNSDmnZDk+bTDwxZnjOf7IDkH+irZzlAiNrTSzYrhBsuwGCy6V8Mbxc9wX0C7xk
-         bmvpDlgul57Dq6VRTQ9JRnXDVHGZl+hiuk17t2Rs6wkca3w+gDkUxwgLiuDnj/56f3Vo
-         yhXWaRFjTVKQSSBmZ6IQNAYey2DRoClNWJiiCGq0CR5GmYyLnnw6IvFlPkmuS5nbsLH2
-         3rdw==
-X-Gm-Message-State: AC+VfDxJeY2TLlDnbqrrKkQfpxqushITZJCD5rtEG+HtPmpcOr7iqL5Q
-        5rFns0S4YEgBMU0OCvrwPyFxsNE/dcthXhQv3A4=
-X-Google-Smtp-Source: ACHHUZ77zEMr391VkMkn9d2iAhClJSSjtNS9e51eYfXDvhlQE+zZedlzrQdlBGNPeFhzQ6xAip3Q4qDF+0aRqQmqwIE=
-X-Received: by 2002:a17:90a:7f05:b0:250:648b:781d with SMTP id
- k5-20020a17090a7f0500b00250648b781dmr10488732pjl.23.1686927703194; Fri, 16
- Jun 2023 08:01:43 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686931624; x=1689523624;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3mi3YmJ92UC2+IcFEqEllItRr/kLsrWEjxNTefsoZfI=;
+        b=WXL4YtQOjx2TgdeG9TGkaxkk83wqC6YRw4GDo7xZ871YC2hzcoajThGfPjXqrkU5Tw
+         CP7NvdzNN3EjNvr27qu8IKMcTaGjyQBT1ork4+AC/tNRPQNhHOXU2L8ugsNCk1P/nG5a
+         xq/E7miBE7gYnJ+gCH6Wo1dAwICIm/x+wlMjBSogx2k57b7iIRu5wHuza9/Z9IDcfIWm
+         2ARRwBnBGRHqcKvSpOrOibYyDLBHfByb7etzyhslU8JtXdlB0I7BfuGfsSGaVq3HTKth
+         fcUlr/8hdWtWGImfeu03GEXL+PokZrjLwOfvn8FXEHbQRT4gLH72g5RLEFF0t0Y9DFsZ
+         hDTQ==
+X-Gm-Message-State: AC+VfDwImszTn7DRzFbCvdqR6fsnzICzAJHC9EMMTJ6MzgcIw9ZZEMAV
+        lh7vZuqDWnxKovQ8RGXyFCg=
+X-Google-Smtp-Source: ACHHUZ6YmC3DwEfXGCCuNGyYkHXiiubLeDAzQW6uRYSekcwBB1tO/3JXOepCm08HGgsPm4e9w5WQmA==
+X-Received: by 2002:a9d:6247:0:b0:6ab:1338:fed5 with SMTP id i7-20020a9d6247000000b006ab1338fed5mr2586093otk.11.1686931624637;
+        Fri, 16 Jun 2023 09:07:04 -0700 (PDT)
+Received: from [192.168.0.200] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id q12-20020a9d654c000000b006b2f16af2c3sm4506838otl.76.2023.06.16.09.07.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jun 2023 09:07:03 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <fe6b1abc-d529-c20f-3fcb-43d891091080@lwfinger.net>
+Date:   Fri, 16 Jun 2023 11:06:59 -0500
 MIME-Version: 1.0
-References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
- <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
- <20230615095100.35c5eb10@kernel.org> <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
- <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
-In-Reply-To: <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
-From:   Alexander Duyck <alexander.duyck@gmail.com>
-Date:   Fri, 16 Jun 2023 08:01:06 -0700
-Message-ID: <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
-To:     Yunsheng Lin <linyunsheng@huawei.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 4/4] [v2] wifi: rtlwifi: simplify LED management
+To:     Dmitry Antipov <dmantipov@yandex.ru>, Kalle Valo <kvalo@kernel.org>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
+References: <20230608095051.116702-4-dmantipov@yandex.ru>
+ <168664510862.24637.10587241603155144086.kvalo@kernel.org>
+ <e030e496-b667-b1de-492b-8b0cc04ffe14@yandex.ru> <87h6rad3fp.fsf@kernel.org>
+ <bccf723a-9f57-73a7-37af-badc6c156daa@yandex.ru> <87cz1vbulk.fsf@kernel.org>
+ <2e78d1f5-4dc5-9665-e3a1-ee00dcc41630@yandex.ru>
+Content-Language: en-US
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <2e78d1f5-4dc5-9665-e3a1-ee00dcc41630@yandex.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 5:21=E2=80=AFAM Yunsheng Lin <linyunsheng@huawei.co=
-m> wrote:
->
-> On 2023/6/16 2:26, Alexander Duyck wrote:
-> > On Thu, Jun 15, 2023 at 9:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org=
-> wrote:
-> >>
-> >> On Thu, 15 Jun 2023 15:17:39 +0800 Yunsheng Lin wrote:
-> >>>> Does hns3_page_order() set a good example for the users?
-> >>>>
-> >>>> static inline unsigned int hns3_page_order(struct hns3_enet_ring *ri=
-ng)
-> >>>> {
-> >>>> #if (PAGE_SIZE < 8192)
-> >>>>     if (ring->buf_size > (PAGE_SIZE / 2))
-> >>>>             return 1;
-> >>>> #endif
-> >>>>     return 0;
-> >>>> }
-> >>>>
-> >>>> Why allocate order 1 pages for buffers which would fit in a single p=
-age?
-> >>>> I feel like this soft of heuristic should be built into the API itse=
-lf.
-> >>>
-> >>> hns3 only support fixed buf size per desc by 512 byte, 1024 bytes, 20=
-48 bytes
-> >>> 4096 bytes, see hns3_buf_size2type(), I think the order 1 pages is fo=
-r buf size
-> >>> with 4096 bytes and system page size with 4K, as hns3 driver still su=
-pport the
-> >>> per-desc ping-pong way of page splitting when page_pool_enabled is fa=
-lse.
-> >>>
-> >>> With page pool enabled, you are right that order 0 pages is enough, a=
-nd I am not
-> >>> sure about the exact reason we use the some order as the ping-pong wa=
-y of page
-> >>> splitting now.
-> >>> As 2048 bytes buf size seems to be the default one, and I has not hea=
-rd any one
-> >>> changing it. Also, it caculates the pool_size using something as belo=
-w, so the
-> >>> memory usage is almost the same for order 0 and order 1:
-> >>>
-> >>> .pool_size =3D ring->desc_num * hns3_buf_size(ring) /
-> >>>               (PAGE_SIZE << hns3_page_order(ring)),
-> >>>
-> >>> I am not sure it worth changing it, maybe just change it to set good =
-example for
-> >>> the users:) anyway I need to discuss this with other colleague intern=
-ally and do
-> >>> some testing before doing the change.
-> >>
-> >> Right, I think this may be a leftover from the page flipping mode of
-> >> operation. But AFAIU we should leave the recycling fully to the page
-> >> pool now. If we make any improvements try to make them at the page poo=
-l
-> >> level.
->
-> I checked, the per-desc buf with 4096 bytes for hnse does not seem to
-> be used mainly because of the larger memory usage you mentioned below.
->
-> >>
-> >> I like your patches as they isolate the drivers from having to make th=
-e
-> >> fragmentation decisions based on the system page size (4k vs 64k but
-> >> we're hearing more and more about ARM w/ 16k pages). For that use case
-> >> this is great.
->
-> Yes, That is my point. For hw case, the page splitting in page pool is
-> mainly to enble multi-descs to use the same page as my understanding.
->
-> >>
-> >> What we don't want is drivers to start requesting larger page sizes
-> >> because it looks good in iperf on a freshly booted, idle system :(
-> >
-> > Actually that would be a really good direction for this patch set to
-> > look at going into. Rather than having us always allocate a "page" it
-> > would make sense for most drivers to allocate a 4K fragment or the
-> > like in the case that the base page size is larger than 4K. That might
-> > be a good use case to justify doing away with the standard page pool
-> > page and look at making them all fragmented.
->
-> I am not sure if I understand the above, isn't the frag API able to
-> support allocating a 4K fragment when base page size is larger than
-> 4K before or after this patch? what more do we need to do?
+On 6/16/23 05:20, Dmitry Antipov wrote:
+> Note MAINTAINERS marks drivers/net/wireless/realtek/rtl818x/rtl8180 as
+> orphaned but drivers/net/wireless/realtek/rtl818x/rtl8187 as maintained.
 
-I'm not talking about the frag API. I am talking about the
-non-fragmented case. Right now standard page_pool will allocate an
-order 0 page. So if a driver is using just pages expecting 4K pages
-that isn't true on these ARM or PowerPC systems where the page size is
-larger than 4K.
+Driver rtl8187 is certainly maintained, not that it gets many bug reports. 
+Devices that support 802.11g are not used very often, but at least once a year I 
+use my device to get online to retrieve the drivers for a fancier wifi card that 
+does not have a driver in Linux or Windows. Drivers for the USB-based 8187A and 
+8187B have been in Linux since version 2.6.38 (December 2010), and also in 
+Windows 7, if not in older versions.
 
-For a bit of historical reference on igb/ixgbe they had a known issue
-where they would potentially run a system out of memory when page size
-was larger than 4K. I had originally implemented things with just the
-refcounting hack and at the time it worked great on systems with 4K
-pages. However on a PowerPC it would trigger OOM errors because they
-could run with 64K pages. To fix that I started adding all the
-PAGE_SIZE checks in the driver and moved over to a striping model for
-those that would free the page when it reached the end in order to
-force it to free the page and make better use of the available memory.
+The driver for rtl8180 is not very important, and could be removed as the card 
+uses PCI, not PCIe, slots. I do not have such a device, nor do I have any 
+hardware old enough to support it, even though I do have some stuff that tends 
+to match my age. :)
 
-> >
-> > In the case of the standard page size being 4K a standard page would
-> > just have to take on the CPU overhead of the atomic_set and
-> > atomic_read for pp_ref_count (new name) which should be minimal as on
-> > most sane systems those just end up being a memory write and read.
->
-> If I understand you correctly, I think what you are trying to do
-> may break some of Jesper' benchmarking:)
->
-> [1] https://github.com/netoptimizer/prototype-kernel/blob/master/kernel/l=
-ib/bench_page_pool_simple.c
+Larry
 
-So? If it breaks an out-of-tree benchmark the benchmark can always be
-fixed. The point is enabling a use case that can add value across the
-board instead of trying to force the community to support a niche use
-case.
-
-Ideally we should get away from using the pages directly for most
-cases in page pool. In my mind the page pool should start operating
-more like __get_free_pages where what you get is a virtual address
-instead of the actual page. That way we could start abstracting it
-away and eventually get to something more like a true page_pool api
-instead of what feels like a set of add-ons for the page allocator.
-Although at the end of the day this still feels more like we are just
-reimplementing slab so it is hard for me to say this is necessarily
-the best solution either.
