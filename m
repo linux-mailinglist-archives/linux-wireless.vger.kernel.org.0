@@ -2,87 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1DBD73272C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F2C7327F2
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 08:54:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242908AbjFPGNL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 02:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51608 "EHLO
+        id S241423AbjFPGyc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 02:54:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233966AbjFPGNE (ORCPT
+        with ESMTP id S240269AbjFPGyZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 02:13:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB90F2D61;
-        Thu, 15 Jun 2023 23:13:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D05D62508;
-        Fri, 16 Jun 2023 06:13:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5238C433C0;
-        Fri, 16 Jun 2023 06:12:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686895980;
-        bh=pKKs+ikvQgBhv6OujYCF/JO0CWWZMx7/sLxq/+FmgdQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=vNRjrKr9yva3IsiQbnaBccQwUvpLA1Mgw8uGTj52RWGNiBcMHo5TPqwe/0GfYuVU7
-         sODW+rKfd7imcYUfgnAmV7X5fokV9FGT4idRwxYuzezDCjETiZ8vsNjZD/2CNM7yIi
-         XAp2tdoLzYlzESCvh81lxdN1g+UnXKZFD4JwZU8e7hKVrDE+7IUzcjhD7r1kp0wbJz
-         C0IPCSJHRRzCg4znmH0DERGNv0MJyfbSoI8zMvtsVA6hgDTINYsPXtftO8MKe2fO5v
-         zLRW8KfW067zj84LG93/RGiLAuEn/fVYKCjvjv/AdtJA3GE0UYAL36WIDNNRBWXIH1
-         ZPNlsSGJGLJkA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Toke =?utf-8?Q?H=C3=B8ilan?= =?utf-8?Q?d-J=C3=B8rgensen?= 
-        <toke@kernel.org>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev
-Subject: Re: Closing down the wireless trees for a summer break?
-References: <87y1kncuh4.fsf@kernel.org> <871qifxm9b.fsf@toke.dk>
-        <20230613112834.7df36e95@kernel.org>
-        <ba933d6e3d360298e400196371e37735aef3b1eb.camel@sipsolutions.net>
-        <20230613195136.6815df9b@kernel.org>
-        <c7c9418bcd5ac1035a007d336004eff48994dde7.camel@sipsolutions.net>
-        <87a5x2ccao.fsf@kernel.org> <20230614122153.640292b9@kernel.org>
-Date:   Fri, 16 Jun 2023 09:12:55 +0300
-In-Reply-To: <20230614122153.640292b9@kernel.org> (Jakub Kicinski's message of
-        "Wed, 14 Jun 2023 12:21:53 -0700")
-Message-ID: <87h6r8aqag.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Fri, 16 Jun 2023 02:54:25 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F64F2961
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Jun 2023 23:54:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686898464; x=1718434464;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NjUJ66GGsV54J5cU8sRdSzBTg/M7ilRIao1Xf21onUA=;
+  b=kfZqV2dp6f9mw+XRX19u+pO9gCzmL3txPp+qXEc1wVpl2WuAgQXTGg6t
+   ZHj4qCSEXlJACSFnJrOI/EaX0Y59CsW4IPD+xsVgFfrN7AbayIgxPmoCr
+   Xw2jXFCdfsSvJ9TkM5e7hp7O7r2oo8XaJnnuJapUYVOybe31F/QaHFeug
+   gF/MT2PPbN8SMWeg6+H9AJYXrpmP7DQdiG0xUjVMnmdCj68uP2mQ6alfj
+   8C3HrSkG+K9mvpjO0NTFOukeqaAyQKp+99PVHEsUwENMiwQMZ9ovLx4L2
+   FJ0xipJdvFZCXswATjvbEA1WW9Wliy/5UCJNMrvN+XFWlcpyASlbvblDn
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="425078768"
+X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
+   d="scan'208";a="425078768"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802719921"
+X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
+   d="scan'208";a="802719921"
+Received: from ereznaim-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.237.118])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 23:54:21 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH 00/20] cfg80211/mac80211 patches from our internal tree 2023-06-16 
+Date:   Fri, 16 Jun 2023 09:53:49 +0300
+Message-Id: <20230616065409.633290-1-gregory.greenman@intel.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
+From: Gregory Greenman <gregory.greenman@intel.com>
 
-> On Wed, 14 Jun 2023 18:07:43 +0300 Kalle Valo wrote:
->> But do note that above is _only_ for -next patches. For patches going to
->> -rc releases we apply the patches directly to wireless, no other trees
->> are involved. My proposal was that net maintainers would take only fixes
->> for -rc releases, my guess from history is that it would be maximum of
->> 10-15 patches. And once me and Johannes are back we would sort out -next
->> patches before the merge window. But of course you guys can do whatever
->> you think is best :)
->
-> Ah, good note, I would have guessed that fixes go via special trees,
-> too. In that case it should indeed be easy. We'll just look out for
-> maintainer acks on the list and ping people if in doubt.
+Hi,
 
-Sounds good. And do note that not all drivers have active maintainers,
-so you might have to take some patches without acks.
+A bunch of patches from our internal tree with mac80211 and
+cfg80211 changes. It's the usual developement, cleanups and
+bugfixes.
+
+Thanks,
+Gregory
+
+Abhishek Naik (2):
+  wifi: mac80211: handle TDLS data frames with MLO
+  wifi: mac80211: Add HE and EHT capa elements in TDLS frames
+
+Anjaneyulu (1):
+  wifi: mac80211: add consistency check for compat chandef
+
+Benjamin Berg (10):
+  wifi: mac80211: stop passing cbss to parser
+  wifi: cfg80211: move regulatory_hint_found_beacon to be earlier
+  wifi: cfg80211: keep bss_lock held when informing
+  wifi: cfg80211: add inform_bss op to update BSS
+  wifi: mac80211: use new inform_bss callback
+  wifi: cfg80211: ignore invalid TBTT info field types
+  wifi: cfg80211: rewrite merging of inherited elements
+  wifi: cfg80211: drop incorrect nontransmitted BSS update code
+  wifi: cfg80211: add element defragmentation helper
+  wifi: mac80211: use cfg80211 defragmentation helper
+
+Emmanuel Grumbach (1):
+  wifi: mac80211: feed the link_id to cfg80211_ch_switch_started_notify
+
+Ilan Peer (3):
+  wifi: mac80211: Rename multi_link
+  wifi: mac80211: Add support for parsing Reconfiguration Multi Link element
+  wifi: mac80211: Rename ieee80211_mle_sta_prof_size_ok()
+
+Mukesh Sisodiya (3):
+  wifi: cfg80211: make TDLS management link-aware
+  wifi: mac80211: handle TDLS negotiation with MLO
+  wifi: mac80211: Extend AID element addition for TDLS frames
+
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |   8 +-
+ include/linux/ieee80211.h                     |   8 +-
+ include/net/cfg80211.h                        |  42 +-
+ net/mac80211/cfg.c                            |   1 +
+ net/mac80211/chan.c                           |   5 +
+ net/mac80211/ieee80211_i.h                    |  24 +-
+ net/mac80211/mlme.c                           |  14 +-
+ net/mac80211/scan.c                           |  93 ++-
+ net/mac80211/tdls.c                           | 257 ++++++---
+ net/mac80211/tx.c                             |  22 +-
+ net/mac80211/util.c                           | 118 ++--
+ net/wireless/nl80211.c                        |   7 +-
+ net/wireless/rdev-ops.h                       |  27 +-
+ net/wireless/scan.c                           | 542 +++++++++---------
+ net/wireless/trace.h                          |  30 +-
+ 15 files changed, 697 insertions(+), 501 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.38.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
