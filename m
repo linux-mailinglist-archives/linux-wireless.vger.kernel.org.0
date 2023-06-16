@@ -2,225 +2,227 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 381F9733354
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 16:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43D2F733425
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Jun 2023 17:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345492AbjFPOSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 16 Jun 2023 10:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34162 "EHLO
+        id S1345812AbjFPPCK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 16 Jun 2023 11:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345416AbjFPOR6 (ORCPT
+        with ESMTP id S1345808AbjFPPBy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 16 Jun 2023 10:17:58 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48AE30F4;
-        Fri, 16 Jun 2023 07:17:51 -0700 (PDT)
-X-UUID: 909658020c5011eeb20a276fd37b9834-20230616
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=vWEK/lbC6CIj0dHE7ta715/ZRV7EOAV+MWjGGZz4Ilg=;
-        b=sCmxvHLjtXGOrCfbJoqtmRHapo0F53VUoJvjyzwVt8jRz4XS1qHRQrA3tgxdrfZ+4HGvl17bhkfVQxBsiBHm0kIJDP/wa458Fc6MEezV3FDejiVgU1eG8H8RGC1PJCqF8UjPuFFLoPmL3hnGJSpM+qqUU+Eok5W9sIWxeeABvxo=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.26,REQID:b6854300-fdcc-41ef-ae0e-8f6a2e47e510,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-        release,TS:0
-X-CID-META: VersionHash:cb9a4e1,CLOUDID:3dcfdb3e-7aa7-41f3-a6bd-0433bee822f3,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 909658020c5011eeb20a276fd37b9834-20230616
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
-        (envelope-from <deren.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1351612000; Fri, 16 Jun 2023 22:17:45 +0800
-Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 16 Jun 2023 22:17:44 +0800
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 16 Jun 2023 22:17:44 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SRCL/ezOvmgsM2Kb9NbpolagFrjcN68VF5J0gNPSjOA6Sxb8zZac1q5x72H8Tg/MuCbOD7bdOtygCEMHyNRpXieuyjUIq03wS27p+DxEBwiMvoxexuBQUnZ26g95G+GHwHMY5Ip6ylz0vpZViephOKjm+juQfTKR5ARkcUlvKxLXSCQVsSXGEcArDKsgTtMuepgYBO+ofj+rjx3Iv0S6SmfIuj+9xyYTghInOm2iQt8eOzmkg7evQYkJ+MZuXKPB4JKQDthI+Wbj0Oqf1Bk1OsLfNVRWU2NFvQqcNP42swkDza/BC8h1riLxU8fJ5S81Rj0QO3brJskGWYQ+18MHxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vWEK/lbC6CIj0dHE7ta715/ZRV7EOAV+MWjGGZz4Ilg=;
- b=dmkEp5MQYiWegTDGlbmLk/hFKl73pVU3pbrsCgC/69wEy8t6b4AO5zic3LLpIAQ8DOZmgMRMLvjlnfar+1N0cONd6IycpFh/JZuWKEr2aNIsyKdAnoSUqTm3vMxnMUGpZ+cvvE+gSVmkm3hUS4jwwMbBWaLX5rn1stzk56WF7xfOv//cRUMKmrEAeOFwrWZmb1Kbl6wADvu+4Irkj6+ENc3shUu/en3BcBwcEBc/hu06PH6Zd8u5ZYmR5rqNnnaadgOcy2GWOZIlWsrwBML/jZmAU/HgH6KG8moy/8yVVdJ/MN0Ibg89rtoTZKAGBknUU6+lv80q/7cmRHHw+JdQRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
+        Fri, 16 Jun 2023 11:01:54 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223CC1FF9;
+        Fri, 16 Jun 2023 08:01:44 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-25bec2512f3so687515a91.0;
+        Fri, 16 Jun 2023 08:01:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vWEK/lbC6CIj0dHE7ta715/ZRV7EOAV+MWjGGZz4Ilg=;
- b=eBdSyZztglJLtXe+Kqd676ybQnXzeuJBnrN0XDU9wqVacv7xQSdS5Cb4D99YbGj3IpNXnvNEhuP4+myR3fNSsEsTtNd3fBYiNSQ7myB2Pn08EdzaVc5LLr17E76gIcHelv+BCnmQqeW0VCxPCsxrlnQ+pKkfS/N+4t7P4iTlwMw=
-Received: from SI2PR03MB6194.apcprd03.prod.outlook.com (2603:1096:4:14e::9) by
- SG2PR03MB6455.apcprd03.prod.outlook.com (2603:1096:4:1c3::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6500.29; Fri, 16 Jun 2023 14:17:42 +0000
-Received: from SI2PR03MB6194.apcprd03.prod.outlook.com
- ([fe80::284f:6d81:d91a:5b7]) by SI2PR03MB6194.apcprd03.prod.outlook.com
- ([fe80::284f:6d81:d91a:5b7%6]) with mapi id 15.20.6500.029; Fri, 16 Jun 2023
- 14:17:42 +0000
-From:   =?utf-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>
-To:     "kai.heng.feng@canonical.com" <kai.heng.feng@canonical.com>,
-        "nbd@nbd.name" <nbd@nbd.name>,
-        "angelogioacchino.delregno@collabora.com" 
-        <angelogioacchino.delregno@collabora.com>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>,
-        Ryder Lee <Ryder.Lee@mediatek.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        =?utf-8?B?TGVvbiBZZW4gKOmhj+iJr+WEkik=?= <Leon.Yen@mediatek.com>,
-        =?utf-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= 
-        <Shayne.Chen@mediatek.com>, "Sean Wang" <Sean.Wang@mediatek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: mt76: mt7921e: Perform FLR to recovery the device
-Thread-Topic: [PATCH] wifi: mt76: mt7921e: Perform FLR to recovery the device
-Thread-Index: AQHZnoo6X7xp66YYEkK0Hf6gQJ79Da+KJuYAgANWowA=
-Date:   Fri, 16 Jun 2023 14:17:41 +0000
-Message-ID: <10d7045eca2bdf40d7a69df7c2d7eafad2584d05.camel@mediatek.com>
-References: <20230614063252.1650824-1-kai.heng.feng@canonical.com>
-         <d9e3009b-1fd0-e81b-715e-d93c9343b55c@collabora.com>
-In-Reply-To: <d9e3009b-1fd0-e81b-715e-d93c9343b55c@collabora.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI2PR03MB6194:EE_|SG2PR03MB6455:EE_
-x-ms-office365-filtering-correlation-id: d2c9ea8f-29c6-4809-db63-08db6e747257
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: cgtfFiZPyV86QOOtRKKE/cLsnH4jRmNHIYhjVZ1S95aFr+BreTG/V7Ikgm6GzbRkBVE9Lvy2Jl2vH7UJ28LREiNqx3/BdXv0niRdZ94oBWDszKSAXv1lZ/gWFqvgJm/oYx/Dw9VpP+3ttrG6Ud7vtijX3r3Hdcs2miWy2p/t/4RnZRVrNVRNkDM5MovTgEv7Tgg1ZvRVyb+H3LtvFppRFgCGi2/Vr6zHavVXHej3raauDO74eu/NmmJLCFJ6FwOq9pR/PmfcnRcQ004usCeE6Oy7X2sBHellTb9MCvYHQJF8Jlu1iAVswGLBtRAFcVcnE1dNKL9j+XwJLwkKgNK3ocjHXd4qaKi47YdZ8Md56Hbpw5bBIOA406FkF+zuyrtY5TzjWnJtuFgMPUuGGv24dwdd7XuXKQOGXZ/o/VjEqSVNwtS5oZOgkfiuLgCLU3x9uiWyEfshrI3UtsqYYbcXb6zcFEjEgRsKNVL/jq879L/PW8IgpWAMAMTIrVV5wFKuYcuMIbPT5CoZUeMDyUYvrUldb64lgWhWZHcfTulVrViOl3X8+A+d8qp1zDJwao7RJ7fJ7RE9r5EjRAuV9ceSv25krqHEJDNgccB/lbbLkbKwytKwOUJgaovESgRkrWW85B4Dup5YXUAokPvCrxPjjTtmqZEr2QPs6r5jiW4ZAIQ=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR03MB6194.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(366004)(136003)(346002)(376002)(451199021)(8936002)(8676002)(122000001)(5660300002)(86362001)(83380400001)(38100700002)(7416002)(316002)(38070700005)(41300700001)(64756008)(66946007)(66556008)(66476007)(66446008)(6636002)(91956017)(76116006)(4326008)(110136005)(2616005)(54906003)(186003)(85182001)(478600001)(6506007)(6512007)(36756003)(26005)(71200400001)(2906002)(6486002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cXc0WFhRbmw3aXMya1hyYVZyT0lqZ3B2N0VneEUrdW1Vbkdwci84ZTFubHVa?=
- =?utf-8?B?U0c0ZVAvYllBclZVQVN4RnkxSzF1bjBXOUt2eEdYTy9HSDY0S2dXWGpCZlZq?=
- =?utf-8?B?d2U1RWFYbmxWSnR6ZnA4M3JrV2prREo1RzJTTXE2YXNYVXNYNFp2dVpzR3kz?=
- =?utf-8?B?VkRJSGp2OEtPTWs2WnJ3KzBMdnZJWWRQYzF3ajlpZjd1WklSelExaXBYMU9o?=
- =?utf-8?B?R09YK2QxYkRRZDk5a0owcmV6K1Azem9yMmVLS0V2QytIVllVRFo1cndIakh4?=
- =?utf-8?B?RDZSa0g1cys2c1ZFYlFBeE1TOFF0b3NHRzdaNm1pTDVrY3pnaEN0RVUrRXNP?=
- =?utf-8?B?dWMvS3pUSjAzYmhubTBWQzIwSlRDRFJpcWpjSm9FeW9xVXQwNkVMZ0lOQmNV?=
- =?utf-8?B?TzlnVTRZSWwwTnNWdzVkSHA3bWxrcWpsZzR2cFJXaE15dVhIQmRtZnZXTmxP?=
- =?utf-8?B?UzhsdUU5amhOS3hzaHRIam9NQXZ1RHZFN0xSbEtLUEsvY0I0cnpGd1gvdDVT?=
- =?utf-8?B?V3pEKzZMWGlYZ2xrUGVwd2lhb2YwWXhkQmgxMGJZYWY0d01uUTFsNU15cWs0?=
- =?utf-8?B?aFU0M3F4N2J0c00wNEQ1TVFxUHNPTDRsUkRVMWcxb2NtYlpZc1lJQ1czcjVo?=
- =?utf-8?B?U1RoTUNuSjk0VXJ5aW9RN2RScVovVUMrdTB0bWhwWFdPUFlOZlBlUG9kbnVI?=
- =?utf-8?B?OFVPSzJGWDNoSUxKYXJ4ZVBKOUc3eUtCZWJUenREcUpaMmpLZVhBL2VYQ3gv?=
- =?utf-8?B?RWIvcFZBZ1ZsQmxzMGxRWWYwcEpxdFA4R1drVnluRDc5MGNndSt0USt1WGty?=
- =?utf-8?B?dlZiSmljWFErU3VsN2JlQmg2VjNzMVdpTElDZ1d4MjhUYk1uaE40Tyt5ME15?=
- =?utf-8?B?TE92QWNYOVpZWUtNL0p2Q2xocGJ0bXZXQU8wbUxjTiswNERUV3Z3V1IyUFZo?=
- =?utf-8?B?K0FqRGJuYTRxWWlnekY3TytOdDZEWVA4ZEd5K000NzNlL1NqeUVRNkZMV1Zt?=
- =?utf-8?B?bEhVWlM0MWhYYmRLOVlmdUU3UDlyRkhmL0RONWpqQTBTQzllWjNmUVRBTjhO?=
- =?utf-8?B?SmJ2Qk5keE5tSkZ6dzFHTWhJcU9MSVVxQklhQ0RRY3NWMTh2cmIrZ1F3K3Uz?=
- =?utf-8?B?L0VvVHU1QUNoTUMzaFdjWisyangvM2wxSTE2TUJzd1p0WmNKRDJiaEJ6YTBr?=
- =?utf-8?B?ZE5WVnVhTmZDOTJveHVuZDR1MWJFOFByVEFZRXgvbUJtT0dkbkFZTkk3UENQ?=
- =?utf-8?B?T1g4RVN2N2UxdUVVZ0ZRYXlxYlB5TXZsUCtMdktuSS9hUDF3S0ZUK2ordWhq?=
- =?utf-8?B?TExmQi9kWEM5c0Q5OFc4SWN0VlNVMHRhc1BiWFhvMzdqRnU3ODVyQXd5Rnpp?=
- =?utf-8?B?Y25MSVhmSEx0dEpiZlZaSk5qWGgvWmUxeldMTDZ6OEYwbDlxTFI5VllvUWdT?=
- =?utf-8?B?UlI2cU82ZVMwMFZjN3V1ZXEzVFB2bDF5bThaekQ5Z3NzSHdGYmN2cmZkMWlU?=
- =?utf-8?B?QngzWFFMNlBmZ1RmTlI1ZkE5N0N0dkhjNnF1STRvRWczdVdiMnZiMGVIWVo3?=
- =?utf-8?B?T2RDa21mT1BWYUZOYUdyUHlsTlR0RFl5WHpvZ2xBZW5QaXVqVTNkQzR5V2FV?=
- =?utf-8?B?d2p2a01SV0xvTFN4Q0hyNjN3YlNLaTFVVGFBQ0dkTWVXRWpmMnA3eXQ0Vkxl?=
- =?utf-8?B?WTRvc3h5Rm03c2ZON1QvcEJCanZvWkdicnk2dVVxYVBUVVl5d0wybkRpM25m?=
- =?utf-8?B?Ymw3UE9KTW5GdmdhN05KTXQrTkw2YXBISUppNXZXUmUvRnVzanZ2Q3h0Wnpp?=
- =?utf-8?B?Z01reng4bFFDS2xjWTdYNjdOenZDSlpva0pLNWx0Z3hnbjBkeC80S3BoMmxU?=
- =?utf-8?B?bWs3bHA4R1l5RFQvUmt0UTNtQk94d3JRWWFsT0dvMHg0TWZ0UVl3RDVPS2hW?=
- =?utf-8?B?YU44cHJ5WEhDdXV4cmFkUmhrekZyRW53aHFKazB0NVI1c1B6QS9SRk1zMFlp?=
- =?utf-8?B?ZGkvM0VOY3gyelFaQzEycFN4Y0Fsb2Y2WDJLbTJOM3g0c2JvUzdKdEc4b0Nt?=
- =?utf-8?B?UkJORU04aTNrblpQdGZMa0JtMDl2L3h3NkozOUNVMjk0NUVENzc4dWFselI0?=
- =?utf-8?B?Z2ZPdjhhRkJnUHRBMzNiWmdxSFY4T0syTnlBVE83K3ZlMGxWd1hXbTNuZFVm?=
- =?utf-8?B?R0E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D0B0BBC54A18C44ABAD94E59C4094F0A@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20221208; t=1686927703; x=1689519703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FwOiF1tuQY0sMSzPSitIXKF3uUPCmzP49g6125H5nno=;
+        b=iFSLtmOZxcYOYrhk8SjOyBfNSdHP6AxxWzy1ZOozDYnPcQghaoGALev11CBsXLS2oJ
+         W1TblpdgaZjZFhzAjUdJr7Gm50KRcc6rVYkEzZYfX1SokDSLSRnFQHqd5JalEqOM18Ts
+         84h3OHZV3xEWlkzCH27P0UJdHBP1r4S3d2pZLTm5yhCeO3WtQnOWAKzcipwkZAprXZ9t
+         g0LKmiM/GmvN9axhV8Vo7vXmG/+3s6dro6zqfVJneOimcIxrBYfIuoMI16rU5yNmrYrZ
+         E3O2Mplnv4X1vaPEQcTVZ6hJTbeVbFCYOw62zOSZITHBFAGXhVyzIY3yWAtnX/rVuXU3
+         xKqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686927703; x=1689519703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FwOiF1tuQY0sMSzPSitIXKF3uUPCmzP49g6125H5nno=;
+        b=TFC/j2N+/6CHfidwTOl+CDbkywzQpBGkrcM9fim4Co5Xhi/YzOzSNvSPWMb7Wkv0su
+         8A4td+5hQJKdfBkRLn9UdhNs54IqjTWpp9dH1jwL5ALNUHpM3CBRnlPHf6+QYCWKzlko
+         vxcnTlNSDmnZDk+bTDwxZnjOf7IDkH+irZzlAiNrTSzYrhBsuwGCy6V8Mbxc9wX0C7xk
+         bmvpDlgul57Dq6VRTQ9JRnXDVHGZl+hiuk17t2Rs6wkca3w+gDkUxwgLiuDnj/56f3Vo
+         yhXWaRFjTVKQSSBmZ6IQNAYey2DRoClNWJiiCGq0CR5GmYyLnnw6IvFlPkmuS5nbsLH2
+         3rdw==
+X-Gm-Message-State: AC+VfDxJeY2TLlDnbqrrKkQfpxqushITZJCD5rtEG+HtPmpcOr7iqL5Q
+        5rFns0S4YEgBMU0OCvrwPyFxsNE/dcthXhQv3A4=
+X-Google-Smtp-Source: ACHHUZ77zEMr391VkMkn9d2iAhClJSSjtNS9e51eYfXDvhlQE+zZedlzrQdlBGNPeFhzQ6xAip3Q4qDF+0aRqQmqwIE=
+X-Received: by 2002:a17:90a:7f05:b0:250:648b:781d with SMTP id
+ k5-20020a17090a7f0500b00250648b781dmr10488732pjl.23.1686927703194; Fri, 16
+ Jun 2023 08:01:43 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR03MB6194.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2c9ea8f-29c6-4809-db63-08db6e747257
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jun 2023 14:17:41.6168
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: W2VXlYomLSiry7NoOAyV6junHPV9l2OWnDOZ+DdzhRxma1utpdyhbMspq19ywWP+Z5hj8EAUN2+R8xvZdcFzKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR03MB6455
+References: <20230612130256.4572-1-linyunsheng@huawei.com> <20230612130256.4572-5-linyunsheng@huawei.com>
+ <20230614101954.30112d6e@kernel.org> <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
+ <20230615095100.35c5eb10@kernel.org> <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
+ <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
+In-Reply-To: <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
+From:   Alexander Duyck <alexander.duyck@gmail.com>
+Date:   Fri, 16 Jun 2023 08:01:06 -0700
+Message-ID: <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 4/5] page_pool: remove PP_FLAG_PAGE_FRAG flag
+To:     Yunsheng Lin <linyunsheng@huawei.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        hariprasad <hkelam@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDIzLTA2LTE0IGF0IDEzOjE4ICswMjAwLCBBbmdlbG9HaW9hY2NoaW5vIERlbCBS
-ZWdubyB3cm90ZToNCj4gIAkgDQo+IEV4dGVybmFsIGVtYWlsIDogUGxlYXNlIGRvIG5vdCBjbGlj
-ayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVudGlsDQo+IHlvdSBoYXZlIHZlcmlmaWVkIHRo
-ZSBzZW5kZXIgb3IgdGhlIGNvbnRlbnQuDQo+ICBJbCAxNC8wNi8yMyAwODozMiwgS2FpLUhlbmcg
-RmVuZyBoYSBzY3JpdHRvOg0KPiA+IFdoZW4gIlByZS1ib290IFdpRmkiIGlzIGVuYWJsZWQgaW4g
-QklPUywgdGhlIG10NzkyMWUgZGV2aWNlIG1heSBub3QNCj4gPiB3b3JrOg0KPiA+IG10NzkyMWUg
-MDAwMDowMjowMC4wOiBBU0lDIHJldmlzaW9uOiA3OTIyMDAxMA0KPiA+IG10NzkyMWUgMDAwMDow
-MjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgMSkgdGltZW91dA0KPiA+IG10NzkyMWUgMDAw
-MDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9yZQ0KPiA+IG10NzkyMWUgMDAw
-MDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgMikgdGltZW91dA0KPiA+IG10NzkyMWUg
-MDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9yZQ0KPiA+IG10NzkyMWUg
-MDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgMykgdGltZW91dA0KPiA+IG10Nzky
-MWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9yZQ0KPiA+IG10Nzky
-MWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgNCkgdGltZW91dA0KPiA+IG10
-NzkyMWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9yZQ0KPiA+IG10
-NzkyMWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgNSkgdGltZW91dA0KPiA+
-IG10NzkyMWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9yZQ0KPiA+
-IG10NzkyMWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgNikgdGltZW91dA0K
-PiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9yZQ0K
-PiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgNykgdGltZW91
-dA0KPiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFwaG9y
-ZQ0KPiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgOCkgdGlt
-ZW91dA0KPiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNlbWFw
-aG9yZQ0KPiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEgOSkg
-dGltZW91dA0KPiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBGYWlsZWQgdG8gZ2V0IHBhdGNoIHNl
-bWFwaG9yZQ0KPiA+IG10NzkyMWUgMDAwMDowMjowMC4wOiBNZXNzYWdlIDAwMDAwMDEwIChzZXEg
-MTApIHRpbWVvdXQNCj4gPiBtdDc5MjFlIDAwMDA6MDI6MDAuMDogRmFpbGVkIHRvIGdldCBwYXRj
-aCBzZW1hcGhvcmUNCj4gPiBtdDc5MjFlIDAwMDA6MDI6MDAuMDogaGFyZHdhcmUgaW5pdCBmYWls
-ZWQNCj4gPiANCj4gPiBBZnRlciBzb21lIHRyaWFscyBhbmQgZXJyb3JzLCBpdCBzaG93cyB0aGF0
-IFBDSSBmdW5jdGlvbiBsZXZlbA0KPiByZXNldCBjYW4NCj4gPiByZWNvdmVyIHRoZSBkZXZpY2Ug
-YmFjayB0byBhIGZ1bmN0aW9uYWwgc3RhdGUuDQo+ID4gDQo+ID4gU28gcGVyZm9ybSBGTFIgYXQg
-cHJvYmUgcm91dGluZSB0byB3b3JrYXJvdW5kIHRoZSBpc3N1ZS4NCj4gDQo+IElzIHRoZXJlIGFu
-eSB3YXkgdG8gY2hlY2sgaWYgdGhlIGRldmljZSB3YXMgZW5hYmxlZCBiZWZvcmUgYm9vdGluZw0K
-PiBMaW51eD8NCj4gDQo+IEknbSB0aGlua2luZyBvZiBzb21ldGhpbmcgbGlrZQ0KPiANCj4gaWYg
-KGRldmljZV9pc19hbHJlYWR5X2VuYWJsZWQpDQo+IHJldCA9IHBjaV9yZXNldF9mdW5jdGlvbl9s
-b2NrZWQoLi4uLikNCj4gDQo+IFJlZ2FyZHMsDQo+IEFuZ2Vsbw0KDQpIaSBLYWktSGVuZywNCg0K
-VGhhbmtzIGZvciB0aGUgcGF0Y2guIEJ1dCB3ZSBmb3VuZCB0aGVyZSBhcmUgc29tZSBwcm9ibGVt
-cyBvbiBkaWZmZXJlbnQNCnBsYXRmb3JtLiBXZSB3aWxsIHByb3ZpZGUgYW5vdGhlciBzb2x1dGlv
-biBmb3IgdGhpcyBjYXNlLg0KDQoNCkhpIEFuZ2VsbywNCg0KQmVjYXVzZSB0aGUgcHJvYmxlbSBp
-cyBjYXVzZWQgYnkgbXQ3OTEyZSBlbmFibGVkIGFuZCBzb21lIHN0YXR1cyB3YXMNCmNoYW5nZWQg
-dG8gYW4gdW5wcmVkaXRhYmxlIHZhbHVlIGR1cmdpbiBib290IHByb2Nlc3MsIHdlIG1heSBoYXZl
-IHRvDQpmb3JjZSByZXNldCBkZXZpY2VzIGluIHByb2JlKCkuIFdlIHN0aWxsIHRyeSB0byBmaW5k
-IG91dCBhIGdvb2Qgd2F5IHRvDQpkbyBpdCBhbmQgd2lsbCBwb3N0IHRoZSBwYXRjaCBvbmNlIHRo
-ZSB2ZXJpZmljYXRpb24gaXMgZG9uZS4NCg0KDQpSZWdhcmRzLA0KRGVyZW4NCg0KPiANCj4gPiAN
-Cj4gPiBTaWduZWQtb2ZmLWJ5OiBLYWktSGVuZyBGZW5nIDxrYWkuaGVuZy5mZW5nQGNhbm9uaWNh
-bC5jb20+DQo+ID4gLS0tDQo+ID4gICBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzkyMS9wY2kuYyB8IDQgKysrKw0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9u
-cygrKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzkyMS9wY2kuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
-NzYvbXQ3OTIxL3BjaS5jDQo+ID4gaW5kZXggZGRiMWZhNGVlMDFkLi45NjcxZmJlMzVhOGUgMTAw
-NjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MjEv
-cGNpLmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzky
-MS9wY2kuYw0KPiA+IEBAIC0yNjIsNiArMjYyLDEwIEBAIHN0YXRpYyBpbnQgbXQ3OTIxX3BjaV9w
-cm9iZShzdHJ1Y3QgcGNpX2Rldg0KPiAqcGRldiwNCj4gPiAgIGludCByZXQ7DQo+ID4gICB1MTYg
-Y21kOw0KPiA+ICAgDQo+ID4gK3JldCA9IHBjaV9yZXNldF9mdW5jdGlvbl9sb2NrZWQocGRldik7
-DQo+ID4gK2lmIChyZXQpDQo+ID4gK3BjaV9pbmZvKHBkZXYsICJVbmFibGUgdG8gcGVyZm9ybSBG
-TFJcbiIpOw0KPiA+ICsNCj4gPiAgIHJldCA9IHBjaW1fZW5hYmxlX2RldmljZShwZGV2KTsNCj4g
-PiAgIGlmIChyZXQpDQo+ID4gICByZXR1cm4gcmV0Ow0KPiANCj4gDQo=
+On Fri, Jun 16, 2023 at 5:21=E2=80=AFAM Yunsheng Lin <linyunsheng@huawei.co=
+m> wrote:
+>
+> On 2023/6/16 2:26, Alexander Duyck wrote:
+> > On Thu, Jun 15, 2023 at 9:51=E2=80=AFAM Jakub Kicinski <kuba@kernel.org=
+> wrote:
+> >>
+> >> On Thu, 15 Jun 2023 15:17:39 +0800 Yunsheng Lin wrote:
+> >>>> Does hns3_page_order() set a good example for the users?
+> >>>>
+> >>>> static inline unsigned int hns3_page_order(struct hns3_enet_ring *ri=
+ng)
+> >>>> {
+> >>>> #if (PAGE_SIZE < 8192)
+> >>>>     if (ring->buf_size > (PAGE_SIZE / 2))
+> >>>>             return 1;
+> >>>> #endif
+> >>>>     return 0;
+> >>>> }
+> >>>>
+> >>>> Why allocate order 1 pages for buffers which would fit in a single p=
+age?
+> >>>> I feel like this soft of heuristic should be built into the API itse=
+lf.
+> >>>
+> >>> hns3 only support fixed buf size per desc by 512 byte, 1024 bytes, 20=
+48 bytes
+> >>> 4096 bytes, see hns3_buf_size2type(), I think the order 1 pages is fo=
+r buf size
+> >>> with 4096 bytes and system page size with 4K, as hns3 driver still su=
+pport the
+> >>> per-desc ping-pong way of page splitting when page_pool_enabled is fa=
+lse.
+> >>>
+> >>> With page pool enabled, you are right that order 0 pages is enough, a=
+nd I am not
+> >>> sure about the exact reason we use the some order as the ping-pong wa=
+y of page
+> >>> splitting now.
+> >>> As 2048 bytes buf size seems to be the default one, and I has not hea=
+rd any one
+> >>> changing it. Also, it caculates the pool_size using something as belo=
+w, so the
+> >>> memory usage is almost the same for order 0 and order 1:
+> >>>
+> >>> .pool_size =3D ring->desc_num * hns3_buf_size(ring) /
+> >>>               (PAGE_SIZE << hns3_page_order(ring)),
+> >>>
+> >>> I am not sure it worth changing it, maybe just change it to set good =
+example for
+> >>> the users:) anyway I need to discuss this with other colleague intern=
+ally and do
+> >>> some testing before doing the change.
+> >>
+> >> Right, I think this may be a leftover from the page flipping mode of
+> >> operation. But AFAIU we should leave the recycling fully to the page
+> >> pool now. If we make any improvements try to make them at the page poo=
+l
+> >> level.
+>
+> I checked, the per-desc buf with 4096 bytes for hnse does not seem to
+> be used mainly because of the larger memory usage you mentioned below.
+>
+> >>
+> >> I like your patches as they isolate the drivers from having to make th=
+e
+> >> fragmentation decisions based on the system page size (4k vs 64k but
+> >> we're hearing more and more about ARM w/ 16k pages). For that use case
+> >> this is great.
+>
+> Yes, That is my point. For hw case, the page splitting in page pool is
+> mainly to enble multi-descs to use the same page as my understanding.
+>
+> >>
+> >> What we don't want is drivers to start requesting larger page sizes
+> >> because it looks good in iperf on a freshly booted, idle system :(
+> >
+> > Actually that would be a really good direction for this patch set to
+> > look at going into. Rather than having us always allocate a "page" it
+> > would make sense for most drivers to allocate a 4K fragment or the
+> > like in the case that the base page size is larger than 4K. That might
+> > be a good use case to justify doing away with the standard page pool
+> > page and look at making them all fragmented.
+>
+> I am not sure if I understand the above, isn't the frag API able to
+> support allocating a 4K fragment when base page size is larger than
+> 4K before or after this patch? what more do we need to do?
+
+I'm not talking about the frag API. I am talking about the
+non-fragmented case. Right now standard page_pool will allocate an
+order 0 page. So if a driver is using just pages expecting 4K pages
+that isn't true on these ARM or PowerPC systems where the page size is
+larger than 4K.
+
+For a bit of historical reference on igb/ixgbe they had a known issue
+where they would potentially run a system out of memory when page size
+was larger than 4K. I had originally implemented things with just the
+refcounting hack and at the time it worked great on systems with 4K
+pages. However on a PowerPC it would trigger OOM errors because they
+could run with 64K pages. To fix that I started adding all the
+PAGE_SIZE checks in the driver and moved over to a striping model for
+those that would free the page when it reached the end in order to
+force it to free the page and make better use of the available memory.
+
+> >
+> > In the case of the standard page size being 4K a standard page would
+> > just have to take on the CPU overhead of the atomic_set and
+> > atomic_read for pp_ref_count (new name) which should be minimal as on
+> > most sane systems those just end up being a memory write and read.
+>
+> If I understand you correctly, I think what you are trying to do
+> may break some of Jesper' benchmarking:)
+>
+> [1] https://github.com/netoptimizer/prototype-kernel/blob/master/kernel/l=
+ib/bench_page_pool_simple.c
+
+So? If it breaks an out-of-tree benchmark the benchmark can always be
+fixed. The point is enabling a use case that can add value across the
+board instead of trying to force the community to support a niche use
+case.
+
+Ideally we should get away from using the pages directly for most
+cases in page pool. In my mind the page pool should start operating
+more like __get_free_pages where what you get is a virtual address
+instead of the actual page. That way we could start abstracting it
+away and eventually get to something more like a true page_pool api
+instead of what feels like a set of add-ons for the page allocator.
+Although at the end of the day this still feels more like we are just
+reimplementing slab so it is hard for me to say this is necessarily
+the best solution either.
