@@ -2,50 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE4037347CE
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jun 2023 20:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 144737347CF
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jun 2023 20:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbjFRSvQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Jun 2023 14:51:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34948 "EHLO
+        id S229679AbjFRSvU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Jun 2023 14:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjFRSvP (ORCPT
+        with ESMTP id S229573AbjFRSvT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Jun 2023 14:51:15 -0400
+        Sun, 18 Jun 2023 14:51:19 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406D7E72
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Jun 2023 11:51:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD57E64
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Jun 2023 11:51:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687114264; x=1718650264;
+  t=1687114267; x=1718650267;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0c2/wKWdYa0n3zzQ8JO5F+2h68IrTvIYwoOFtF9XiBU=;
-  b=n9+jZXuv8mxfvBWBMdMO7q0YKxZ9t9+1m35N4Tq1TM8GcVepI1j95AcY
-   XxnkKaRTA0Rsp5zmBVNn7MMmfnYlXUJ0ZeFTjxdOkoZqNUocn16frdPGo
-   c+EvNg9FxsYQyeemKQ1HOIm60FOyu4cAvEeQGhwtBV59GSN2BHphSBbaa
-   lOueE6/Vk1AU8IJAbQyPTppKJvZQ65P7faar+ZybHKO1dGsCkGLEVVv0t
-   Zah3yXh1dMC9o8XIOPI1pWshwdB+QPUjL3NIOE45rM+YTyGSBFlesMxBc
-   L4HMJfa3kcllpWvKMn7b04Ia23V/1xQ07slAoR9kONnuDTNaaE0olauJi
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="339116677"
+  bh=FX+VqwJfvdTxVNkST+Sy1h96484hs2psU+SUNnRx9CE=;
+  b=IxeQnEPM1Y85cp9cjS63q2Bi01Pq+FRUE8ogh+fugVjG+t13XVFToWyZ
+   OtfYtekxoc6zzLTdv7/KVcZay3vS5wzBOFR70yfnZyqiW4mL3h0vAu9Bt
+   ni6p+iVyjLYZjuulMqFD9Z/vy3+e89CpA8eulRc+Xy+c3TSsoLoRGAeWa
+   nAADHVLC/BRDJpIzMxVwb4DdPVrU+5Btie+V61s3ggeJGJgSbsViZJhFt
+   VIk58LD8t6T5EwOyTCv3LqlbE03S8eZ0k7GjIUVjT0OMauFdDtMDqDiJQ
+   rHMhS/w8N6Zk2rH5FoWmDJL/5BABa6+ekDcT61k5V+jpQZ1Mb7p1onga2
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="339116682"
 X-IronPort-AV: E=Sophos;i="6.00,253,1681196400"; 
-   d="scan'208";a="339116677"
+   d="scan'208";a="339116682"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:51:03 -0700
-X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="747234133"
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:51:06 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="747234150"
 X-IronPort-AV: E=Sophos;i="6.00,253,1681196400"; 
-   d="scan'208";a="747234133"
+   d="scan'208";a="747234150"
 Received: from aflumen-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.178.161])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:51:01 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:51:04 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Benjamin Berg <benjamin.berg@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 19/20] wifi: cfg80211: search all RNR elements for colocated APs
-Date:   Sun, 18 Jun 2023 21:50:01 +0300
-Message-Id: <20230618214436.ffe2c014f478.I372a4f96c88f7ea28ac39e94e0abfc465b5330d4@changeid>
+Subject: [PATCH 20/20] wifi: mac80211: check EHT basic MCS/NSS set
+Date:   Sun, 18 Jun 2023 21:50:02 +0300
+Message-Id: <20230618214436.737827c906c9.I0c11a3cd46ab4dcb774c11a5bbc30aecfb6fce11@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230618185002.817236-1-gregory.greenman@intel.com>
 References: <20230618185002.817236-1-gregory.greenman@intel.com>
@@ -61,176 +61,187 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-An AP reporting colocated APs may send more than one reduced neighbor
-report element. As such, iterate all elements instead of only parsing
-the first one when looking for colocated APs.
+Check that all the NSS in the EHT basic MCS/NSS set
+are actually supported, otherwise disable EHT for the
+connection.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/wireless/scan.c | 127 ++++++++++++++++++++++----------------------
- 1 file changed, 63 insertions(+), 64 deletions(-)
+ include/linux/ieee80211.h | 28 ++++++++----
+ net/mac80211/mlme.c       | 89 ++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 108 insertions(+), 9 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index b2cf7abd5ad0..465334b3960e 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -643,90 +643,89 @@ static int cfg80211_parse_colocated_ap(const struct cfg80211_bss_ies *ies,
- 	int n_coloc = 0, ret;
- 	LIST_HEAD(ap_list);
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index d2025c986b0f..fa679613c562 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -1996,12 +1996,18 @@ struct ieee80211_mu_edca_param_set {
+  * @rx_tx_mcs13_max_nss: indicates the maximum number of spatial streams
+  *     supported for reception and the maximum number of spatial streams
+  *     supported for transmission for MCS 12 - 13.
++ * @rx_tx_max_nss: array of the previous fields for easier loop access
+  */
+ struct ieee80211_eht_mcs_nss_supp_20mhz_only {
+-	u8 rx_tx_mcs7_max_nss;
+-	u8 rx_tx_mcs9_max_nss;
+-	u8 rx_tx_mcs11_max_nss;
+-	u8 rx_tx_mcs13_max_nss;
++	union {
++		struct {
++			u8 rx_tx_mcs7_max_nss;
++			u8 rx_tx_mcs9_max_nss;
++			u8 rx_tx_mcs11_max_nss;
++			u8 rx_tx_mcs13_max_nss;
++		};
++		u8 rx_tx_max_nss[4];
++	};
+ };
  
--	elem = cfg80211_find_elem(WLAN_EID_REDUCED_NEIGHBOR_REPORT, ies->data,
--				  ies->len);
--	if (!elem)
--		return 0;
--
--	pos = elem->data;
--	end = pos + elem->datalen;
--
- 	ret = cfg80211_calc_short_ssid(ies, &ssid_elem, &s_ssid_tmp);
- 	if (ret)
- 		return ret;
+ /**
+@@ -2021,11 +2027,17 @@ struct ieee80211_eht_mcs_nss_supp_20mhz_only {
+  * @rx_tx_mcs13_max_nss: indicates the maximum number of spatial streams
+  *     supported for reception and the maximum number of spatial streams
+  *     supported for transmission for MCS 12 - 13.
++ * @rx_tx_max_nss: array of the previous fields for easier loop access
+  */
+ struct ieee80211_eht_mcs_nss_supp_bw {
+-	u8 rx_tx_mcs9_max_nss;
+-	u8 rx_tx_mcs11_max_nss;
+-	u8 rx_tx_mcs13_max_nss;
++	union {
++		struct {
++			u8 rx_tx_mcs9_max_nss;
++			u8 rx_tx_mcs11_max_nss;
++			u8 rx_tx_mcs13_max_nss;
++		};
++		u8 rx_tx_max_nss[3];
++	};
+ };
  
--	/* RNR IE may contain more than one NEIGHBOR_AP_INFO */
--	while (pos + sizeof(*ap_info) <= end) {
--		enum nl80211_band band;
--		int freq;
--		u8 length, i, count;
-+	for_each_element_id(elem, WLAN_EID_REDUCED_NEIGHBOR_REPORT,
-+			    ies->data, ies->len) {
-+		pos = elem->data;
-+		end = elem->data + elem->datalen;
+ /**
+@@ -2078,7 +2090,7 @@ struct ieee80211_eht_cap_elem {
+  */
+ struct ieee80211_eht_operation {
+ 	u8 params;
+-	__le32 basic_mcs_nss;
++	struct ieee80211_eht_mcs_nss_supp_20mhz_only basic_mcs_nss;
+ 	u8 optional[];
+ } __packed;
  
--		ap_info = (void *)pos;
--		count = u8_get_bits(ap_info->tbtt_info_hdr,
--				    IEEE80211_AP_INFO_TBTT_HDR_COUNT) + 1;
--		length = ap_info->tbtt_info_len;
-+		/* RNR IE may contain more than one NEIGHBOR_AP_INFO */
-+		while (pos + sizeof(*ap_info) <= end) {
-+			enum nl80211_band band;
-+			int freq;
-+			u8 length, i, count;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 06ba809f83a1..13226349e80e 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4692,6 +4692,89 @@ ieee80211_verify_sta_he_mcs_support(struct ieee80211_sub_if_data *sdata,
+ 	return false;
+ }
  
--		pos += sizeof(*ap_info);
-+			ap_info = (void *)pos;
-+			count = u8_get_bits(ap_info->tbtt_info_hdr,
-+					    IEEE80211_AP_INFO_TBTT_HDR_COUNT) + 1;
-+			length = ap_info->tbtt_info_len;
- 
--		if (!ieee80211_operating_class_to_band(ap_info->op_class,
--						       &band))
--			break;
-+			pos += sizeof(*ap_info);
- 
--		freq = ieee80211_channel_to_frequency(ap_info->channel, band);
-+			if (!ieee80211_operating_class_to_band(ap_info->op_class,
-+							       &band))
-+				break;
- 
--		if (end - pos < count * length)
--			break;
-+			freq = ieee80211_channel_to_frequency(ap_info->channel,
-+							      band);
- 
--		if (u8_get_bits(ap_info->tbtt_info_hdr,
--				IEEE80211_AP_INFO_TBTT_HDR_TYPE) !=
--		    IEEE80211_TBTT_INFO_TYPE_TBTT) {
--			pos += count * length;
--			continue;
--		}
-+			if (end - pos < count * length)
-+				break;
- 
--		/*
--		 * TBTT info must include bss param + BSSID +
--		 * (short SSID or same_ssid bit to be set).
--		 * ignore other options, and move to the
--		 * next AP info
--		 */
--		if (band != NL80211_BAND_6GHZ ||
--		    !(length == offsetofend(struct ieee80211_tbtt_info_7_8_9,
--					    bss_params) ||
--		      length == sizeof(struct ieee80211_tbtt_info_7_8_9) ||
--		      length >= offsetofend(struct ieee80211_tbtt_info_ge_11,
--					    bss_params))) {
--			pos += count * length;
--			continue;
--		}
-+			if (u8_get_bits(ap_info->tbtt_info_hdr,
-+					IEEE80211_AP_INFO_TBTT_HDR_TYPE) !=
-+			    IEEE80211_TBTT_INFO_TYPE_TBTT) {
-+				pos += count * length;
-+				continue;
-+			}
- 
--		for (i = 0; i < count; i++) {
--			struct cfg80211_colocated_ap *entry;
-+			/* TBTT info must include bss param + BSSID +
-+			 * (short SSID or same_ssid bit to be set).
-+			 * ignore other options, and move to the
-+			 * next AP info
-+			 */
-+			if (band != NL80211_BAND_6GHZ ||
-+			    !(length == offsetofend(struct ieee80211_tbtt_info_7_8_9,
-+						    bss_params) ||
-+			      length == sizeof(struct ieee80211_tbtt_info_7_8_9) ||
-+			      length >= offsetofend(struct ieee80211_tbtt_info_ge_11,
-+						    bss_params))) {
-+				pos += count * length;
-+				continue;
-+			}
- 
--			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
--					GFP_ATOMIC);
-+			for (i = 0; i < count; i++) {
-+				struct cfg80211_colocated_ap *entry;
- 
--			if (!entry)
--				goto error;
-+				entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
-+						GFP_ATOMIC);
- 
--			entry->center_freq = freq;
-+				if (!entry)
-+					goto error;
- 
--			if (!cfg80211_parse_ap_info(entry, pos, length,
--						    ssid_elem, s_ssid_tmp)) {
--				n_coloc++;
--				list_add_tail(&entry->list, &ap_list);
--			} else {
--				kfree(entry);
--			}
-+				entry->center_freq = freq;
++static u8
++ieee80211_get_eht_cap_mcs_nss(const struct ieee80211_sta_he_cap *sta_he_cap,
++			      const struct ieee80211_sta_eht_cap *sta_eht_cap,
++			      unsigned int idx, int bw)
++{
++	u8 he_phy_cap0 = sta_he_cap->he_cap_elem.phy_cap_info[0];
++	u8 eht_phy_cap0 = sta_eht_cap->eht_cap_elem.phy_cap_info[0];
 +
-+				if (!cfg80211_parse_ap_info(entry, pos, length,
-+							    ssid_elem,
-+							    s_ssid_tmp)) {
-+					n_coloc++;
-+					list_add_tail(&entry->list, &ap_list);
-+				} else {
-+					kfree(entry);
-+				}
- 
--			pos += length;
-+				pos += length;
-+			}
- 		}
--	}
- 
- error:
--	if (pos != end) {
--		cfg80211_free_coloc_ap_list(&ap_list);
--		return 0;
-+		if (pos != end) {
-+			cfg80211_free_coloc_ap_list(&ap_list);
-+			return 0;
++	/* handle us being a 20 MHz-only EHT STA - with four values
++	 * for MCS 0-7, 8-9, 10-11, 12-13.
++	 */
++	if (!(he_phy_cap0 & IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_MASK_ALL))
++		return sta_eht_cap->eht_mcs_nss_supp.only_20mhz.rx_tx_max_nss[idx];
++
++	/* the others have MCS 0-9 together, rather than separately from 0-7 */
++	if (idx > 0)
++		idx--;
++
++	switch (bw) {
++	case 0:
++		return sta_eht_cap->eht_mcs_nss_supp.bw._80.rx_tx_max_nss[idx];
++	case 1:
++		if (!(he_phy_cap0 &
++		      (IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G |
++		       IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)))
++			return 0xff; /* pass check */
++		return sta_eht_cap->eht_mcs_nss_supp.bw._160.rx_tx_max_nss[idx];
++	case 2:
++		if (!(eht_phy_cap0 & IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ))
++			return 0xff; /* pass check */
++		return sta_eht_cap->eht_mcs_nss_supp.bw._320.rx_tx_max_nss[idx];
++	}
++
++	WARN_ON(1);
++	return 0;
++}
++
++static bool
++ieee80211_verify_sta_eht_mcs_support(struct ieee80211_sub_if_data *sdata,
++				     struct ieee80211_supported_band *sband,
++				     const struct ieee80211_eht_operation *eht_op)
++{
++	const struct ieee80211_sta_he_cap *sta_he_cap =
++		ieee80211_get_he_iftype_cap_vif(sband, &sdata->vif);
++	const struct ieee80211_sta_eht_cap *sta_eht_cap =
++		ieee80211_get_eht_iftype_cap_vif(sband, &sdata->vif);
++	const struct ieee80211_eht_mcs_nss_supp_20mhz_only *req;
++	unsigned int i;
++
++	if (!sta_he_cap || !sta_eht_cap || !eht_op)
++		return false;
++
++	req = &eht_op->basic_mcs_nss;
++
++	for (i = 0; i < ARRAY_SIZE(req->rx_tx_max_nss); i++) {
++		u8 req_rx_nss, req_tx_nss;
++		unsigned int bw;
++
++		req_rx_nss = u8_get_bits(req->rx_tx_max_nss[i],
++					 IEEE80211_EHT_MCS_NSS_RX);
++		req_tx_nss = u8_get_bits(req->rx_tx_max_nss[i],
++					 IEEE80211_EHT_MCS_NSS_TX);
++
++		for (bw = 0; bw < 3; bw++) {
++			u8 have, have_rx_nss, have_tx_nss;
++
++			have = ieee80211_get_eht_cap_mcs_nss(sta_he_cap,
++							     sta_eht_cap,
++							     i, bw);
++			have_rx_nss = u8_get_bits(have,
++						  IEEE80211_EHT_MCS_NSS_RX);
++			have_tx_nss = u8_get_bits(have,
++						  IEEE80211_EHT_MCS_NSS_TX);
++
++			if (req_rx_nss > have_rx_nss ||
++			    req_tx_nss > have_tx_nss)
++				return false;
 +		}
- 	}
++	}
++
++	return true;
++}
++
+ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 				  struct ieee80211_link_data *link,
+ 				  struct cfg80211_bss *cbss,
+@@ -4847,11 +4930,15 @@ static int ieee80211_prep_channel(struct ieee80211_sub_if_data *sdata,
+ 		else
+ 			eht_oper = NULL;
  
- 	list_splice_tail(&ap_list, list);
++		if (!ieee80211_verify_sta_eht_mcs_support(sdata, sband, eht_oper))
++			*conn_flags |= IEEE80211_CONN_DISABLE_EHT;
++
+ 		eht_ml_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_MULTI_LINK,
+ 						     cbss_ies->data, cbss_ies->len);
+ 
+ 		/* data + 1 / datalen - 1 since it's an extended element */
+-		if (eht_ml_elem &&
++		if (!(*conn_flags & IEEE80211_CONN_DISABLE_EHT) &&
++		    eht_ml_elem &&
+ 		    ieee80211_mle_type_ok(eht_ml_elem->data + 1,
+ 					  IEEE80211_ML_CONTROL_TYPE_BASIC,
+ 					  eht_ml_elem->datalen - 1)) {
 -- 
 2.38.1
 
