@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E36B97347BD
-	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jun 2023 20:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 399F17347BE
+	for <lists+linux-wireless@lfdr.de>; Sun, 18 Jun 2023 20:50:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjFRSu0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 18 Jun 2023 14:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34200 "EHLO
+        id S229649AbjFRSu1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 18 Jun 2023 14:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbjFRSuZ (ORCPT
+        with ESMTP id S229554AbjFRSu0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 18 Jun 2023 14:50:25 -0400
+        Sun, 18 Jun 2023 14:50:26 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A39E49
-        for <linux-wireless@vger.kernel.org>; Sun, 18 Jun 2023 11:50:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8521AA
+        for <linux-wireless@vger.kernel.org>; Sun, 18 Jun 2023 11:50:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687114220; x=1718650220;
+  t=1687114223; x=1718650223;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yeRHfD7QTKsnlqvpAmbv04xuz3H8LYHVHxmzj5GAKSc=;
-  b=eIIA0Mg2kfB12HPt9gOtTaAYDbrsEE23cch/dUiyWM+yy+K9H0MvluxK
-   05AV1XiyJ5Ctji8GIPEhnbhLyqEGdOU0Wp7PFxS+0mQhg4ftSuSBIaTGe
-   x9sKaFJWktoUpoaIk8C3dyn/uCcKMMfRWycKaugzxyAPA1VJGx9cTc60i
-   ZdluZ4xMYWU3BeCscobbUzp90yE5b3wW1hfwRdru0SfWd3tCML8EiMhvJ
-   cq7EdXSr3O450JIWyYvCe+34+oP0LjbuSFfFfxO+j+OBBp2O/ObYulTpg
-   +v9kdgFkB/BVR31afpuVAbG9ie4dHLQstiB3HPTio/uTroSZ9TT7gugjK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="339116628"
+  bh=Ql71OeA89ZxajN4zCl2gjFygo4KKXIYWMcjSxGpKBR4=;
+  b=AYm33XBMCJ5fhT8WxYmROLYJhYOhBquIrEiyfhSwB6XZ6m2uOL5b1tFp
+   tDqbDffIWPfxr4FNUZH5ooZtVBe/hpnlODGKImR2DRg0Ulugm4vBQzEpR
+   //ULu3PwVJh0KTevxQBeVqzKRk2dkYELl/zgHxVP+5XuUXCBTESX/Ooh0
+   31Kris6GKIVPuRt1RMVhwSSsOLka7kY/SSsfXTsjw4RKjWYvi3yOD9N19
+   nhSSIMd9UtgPCV8i1y1OtFyNMpjDZmbgVJm14+c5mXuJQZrF6HZYDNc7d
+   bza+WngbTS/qQ04o5KS+Oh6OrtT8A/PaP+ak/u2WtamkQDxXAeTu0bwlO
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="339116632"
 X-IronPort-AV: E=Sophos;i="6.00,253,1681196400"; 
-   d="scan'208";a="339116628"
+   d="scan'208";a="339116632"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:50:20 -0700
-X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="747233848"
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:50:23 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10745"; a="747233866"
 X-IronPort-AV: E=Sophos;i="6.00,253,1681196400"; 
-   d="scan'208";a="747233848"
+   d="scan'208";a="747233866"
 Received: from aflumen-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.251.178.161])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:50:18 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2023 11:50:21 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/20] wifi: mac80211: Include Multi-Link in CRC calculation
-Date:   Sun, 18 Jun 2023 21:49:44 +0300
-Message-Id: <20230618214435.ae8246b93d85.Ia64b45198de90ff7f70abcc997841157f148ea40@changeid>
+Subject: [PATCH 03/20] wifi: ieee80211: Fix the common size calculation for reconfiguration ML
+Date:   Sun, 18 Jun 2023 21:49:45 +0300
+Message-Id: <20230618214435.3c7ed4817338.I42ef706cb827b4dade6e4ffbb6e7f341eaccd398@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230618185002.817236-1-gregory.greenman@intel.com>
 References: <20230618185002.817236-1-gregory.greenman@intel.com>
@@ -62,31 +62,37 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ilan Peer <ilan.peer@intel.com>
 
-Include the Multi-Link elements found in beacon frames
-in the CRC calculation, as these elements are intended
-to reflect changes in the AP MLD state.
+The common information length is found in the first octet of the common
+information.
 
+Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
 Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- net/mac80211/util.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/ieee80211.h | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 2c53f6e17cfe..35701316dccf 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -987,6 +987,10 @@ ieee80211_parse_extension_element(u32 *crc,
- 			const struct ieee80211_multi_link_elem *mle =
- 				(void *)data;
- 
-+			if (crc)
-+				*crc = crc32_be(*crc, (void *)elem,
-+						elem->datalen + 2);
-+
- 			switch (le16_get_bits(mle->control,
- 					      IEEE80211_ML_CONTROL_TYPE)) {
- 			case IEEE80211_ML_CONTROL_TYPE_BASIC:
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index aeedd49e5101..97edc3b404dd 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4617,15 +4617,12 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
+ 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
+ 	case IEEE80211_ML_CONTROL_TYPE_PREQ:
+ 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
++	case IEEE80211_ML_CONTROL_TYPE_RECONF:
+ 		/*
+ 		 * The length is the first octet pointed by mle->variable so no
+ 		 * need to add anything
+ 		 */
+ 		break;
+-	case IEEE80211_ML_CONTROL_TYPE_RECONF:
+-		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
+-			common += ETH_ALEN;
+-		return common;
+ 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+ 		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
+ 			common += ETH_ALEN;
 -- 
 2.38.1
 
