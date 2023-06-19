@@ -2,47 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 964357352F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 12:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D723735738
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 14:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231996AbjFSKk2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jun 2023 06:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
+        id S231128AbjFSMtM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jun 2023 08:49:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232076AbjFSKkP (ORCPT
+        with ESMTP id S230307AbjFSMtL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jun 2023 06:40:15 -0400
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3C8102
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 03:39:59 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2d23:0:640:2dd6:0])
-        by forward103b.mail.yandex.net (Yandex) with ESMTP id 534D1600D7;
-        Mon, 19 Jun 2023 13:39:57 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ZddVL5hDR8c0-QmVnjIaj;
-        Mon, 19 Jun 2023 13:39:56 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687171196;
-        bh=FZKFBiQVDyShcC1qqzGWcNfoLpNCQzZvn3yzgg9sSMY=;
-        h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-        b=OWEr32cyphGzzXRDWw1lyy3qsmCivOx1ELJlWrxshr/nDrRMfnGnRua03xuteDTQ8
-         3GPQaGlQuVztZ1aj/ro0qz9N1RzKdQsnHRdAeTJBMo13tDsT+gmSyOxRqijTeRb6W9
-         GxVKJ8q0m2vaYIRbqhg4JRXF8Ew8M4DtUK/9pazc=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From:   Dmitry Antipov <dmantipov@yandex.ru>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] [v2] wifi: iwlwifi: dvm: fix -Wunused-const-variable gcc warning
-Date:   Mon, 19 Jun 2023 13:38:56 +0300
-Message-ID: <20230619103900.300628-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <6abc24f254fd265f8f533ef52e2798c617e30359.camel@sipsolutions.net>
-References: <6abc24f254fd265f8f533ef52e2798c617e30359.camel@sipsolutions.net>
+        Mon, 19 Jun 2023 08:49:11 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30DC2E65;
+        Mon, 19 Jun 2023 05:49:06 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qBEJX-0004Li-PH; Mon, 19 Jun 2023 14:48:59 +0200
+Message-ID: <e3af69f2-d3e5-8039-c6e5-5b00fe066cc0@leemhuis.info>
+Date:   Mon, 19 Jun 2023 14:48:59 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: MT7922 problem with "fix rx filter incorrect by drv/fw
+ inconsistent"
+Content-Language: en-US, de-DE
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Andrey Rakhmatullin <wrar@wrar.name>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        linux-wireless@vger.kernel.org, Neil Chen <yn.chen@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        netdev <netdev@vger.kernel.org>
+References: <ZGY4peApQnPAmDkY@durkon.wrar.name>
+ <ad948b42-74d3-b4f1-bbd6-449f71703083@leemhuis.info>
+ <ZGtsNO0VZQDWJG+A@durkon.wrar.name>
+ <cd7d298b-2b46-770e-ed54-7ae3f33b97ee@leemhuis.info>
+ <c647de2d-fbb5-4793-99b3-b800c95c04c2@leemhuis.info>
+ <87jzw8g8hk.fsf@kernel.org>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <87jzw8g8hk.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687178946;12f71e4a;
+X-HE-SMSGID: 1qBEJX-0004Li-PH
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,74 +61,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following gcc 13.1 warning observed with W=1:
+On 12.06.23 14:39, Kalle Valo wrote:
+> Thorsten Leemhuis <regressions@leemhuis.info> writes:
+>> On 22.05.23 16:12, Thorsten Leemhuis wrote:
+>>> On 22.05.23 15:20, Andrey Rakhmatullin wrote:
+>>>> On Mon, May 22, 2023 at 03:00:30PM +0200, Linux regression tracking
+>>>> #adding (Thorsten Leemhuis) wrote:
+>>>>> On 18.05.23 16:39, Andrey Rakhmatullin wrote:
+>>>> I updated the firmware and now the problem doesn't happen.
+>>>> The firmware where the problem happens is
+>>>> mediatek/WIFI_RAM_CODE_MT7922_1.bin from the linux-firmware commit
+>>>> e2d11744ef (file size 826740, md5sum 8ff1bdc0f54f255bb2a1d6825781506b),
+>>>> the one where the problem doesn't happen is from the commit 6569484e6b
+>>>> (file size 827124, md5sum 14c08c8298b639ee52409b5e9711a083).
+>>> FWIW, just checked: that commit is from 2023-05-15, so quite recent.
+>>>
+>>>> I haven't
+>>>> tried the version committed between these ones.
+>>>> Not sure if this should be reported to regzbot and if there are any
+>>>> further actions needed by the kernel maintainers.
+>>>
+>>> Well, to quote the first sentence from
+>>> Documentation/driver-api/firmware/firmware-usage-guidelines.rst
+>>>
+>>> ```Users switching to a newer kernel should *not* have to install newer
+>>> firmware files to keep their hardware working.```
+>>>
+>>> IOW: the problem you ran into should not happen. This afaics makes it a
+>>> regression that needs to be addressed -- at least if it's something that
+>>> is likely to hit others users as well. But I'd guess that's the case.
+>>
+>> Well, until now I didn't see any other report about a problem like this.
+>> Maybe things work better for others with that hardware – in that case it
+>> might be something not worth making a fuzz about. But I'll wait another
+>> week or two before I remove this from the tracking.
+> 
+> Yeah, this is bad. mt76 (or any other wireless driver) must not require
+> a new firmware whenever upgrading the kernel. Instead the old and new
+> firmware should coexist (for example have firmware-2.bin for the new
+> version and firmware.bin for the old version). Then mt76 should first
+> try loading the new firmware (eg. firmware-2.bin) and then try the old
+> one (eg. firmware.bin).
+> 
+> Should we revert commit c222f77fd4 or how to solve this?
 
-drivers/net/wireless/intel/iwlwifi/dvm/rs.c:207:39: warning:
-‘iwl_rate_mcs’ defined but not used [-Wunused-const-variable=]
+I had hoped someone would rely with an opinion on this, but nobody did
+(and the reporter didn't reply to Lorenzo inquiry). So if you asked for
+mine:
 
-This table is actually used in 'rs_sta_dbgfs_scale_table_read()'
-only if CONFIG_MAC80211_DEBUGFS is enabled, so the whole thing
-may be moved close to its actual use.
+Hmmm. Tricky. This was the only such report I noticed. Giving that and
+the risk that a revert might cause regressions on its own, I guess it
+might be better to leave everything as it is for now - and re-evaluate
+the situation in case more problems show up.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v2: fix title and move iwl_rate_mcs to rs_sta_dbgfs_scale_table_read() (Johannes Berg)
----
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 34 ++++++++++-----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index 687c906a9d72..e0c3563da8a2 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -203,23 +203,6 @@ static const u16 expected_tpt_mimo3_40MHz[4][IWL_RATE_COUNT] = {
- 	{0, 0, 0, 0, 277, 0, 478, 624, 737, 911, 1026, 1070, 1109}, /* AGG+SGI */
- };
- 
--/* mbps, mcs */
--static const struct iwl_rate_mcs_info iwl_rate_mcs[IWL_RATE_COUNT] = {
--	{  "1", "BPSK DSSS"},
--	{  "2", "QPSK DSSS"},
--	{"5.5", "BPSK CCK"},
--	{ "11", "QPSK CCK"},
--	{  "6", "BPSK 1/2"},
--	{  "9", "BPSK 1/2"},
--	{ "12", "QPSK 1/2"},
--	{ "18", "QPSK 3/4"},
--	{ "24", "16QAM 1/2"},
--	{ "36", "16QAM 3/4"},
--	{ "48", "64QAM 2/3"},
--	{ "54", "64QAM 3/4"},
--	{ "60", "64QAM 5/6"},
--};
--
- #define MCS_INDEX_PER_STREAM	(8)
- 
- static void rs_rate_scale_clear_window(struct iwl_rate_scale_data *window)
-@@ -3089,6 +3072,23 @@ static ssize_t rs_sta_dbgfs_scale_table_read(struct file *file,
- 	int index = 0;
- 	ssize_t ret;
- 
-+	/* mbps, mcs */
-+	static const struct iwl_rate_mcs_info iwl_rate_mcs[IWL_RATE_COUNT] = {
-+		{  "1", "BPSK DSSS"},
-+		{  "2", "QPSK DSSS"},
-+		{"5.5", "BPSK CCK"},
-+		{ "11", "QPSK CCK"},
-+		{  "6", "BPSK 1/2"},
-+		{  "9", "BPSK 1/2"},
-+		{ "12", "QPSK 1/2"},
-+		{ "18", "QPSK 3/4"},
-+		{ "24", "16QAM 1/2"},
-+		{ "36", "16QAM 3/4"},
-+		{ "48", "64QAM 2/3"},
-+		{ "54", "64QAM 3/4"},
-+		{ "60", "64QAM 5/6"},
-+	};
-+
- 	struct iwl_lq_sta *lq_sta = file->private_data;
- 	struct iwl_priv *priv;
- 	struct iwl_scale_tbl_info *tbl = &(lq_sta->lq_info[lq_sta->active_tbl]);
--- 
-2.41.0
-
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
