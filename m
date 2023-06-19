@@ -2,67 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8C77350A2
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 11:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A3B473516A
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 12:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbjFSJn1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jun 2023 05:43:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34496 "EHLO
+        id S230388AbjFSKCr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jun 2023 06:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230464AbjFSJnZ (ORCPT
+        with ESMTP id S231966AbjFSKC2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jun 2023 05:43:25 -0400
-Received: from mail.durme.pl (mail.durme.pl [217.182.69.186])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B111DB
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 02:43:25 -0700 (PDT)
-Received: by mail.durme.pl (Postfix, from userid 1002)
-        id 1088F4A207; Mon, 19 Jun 2023 09:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=durme.pl; s=mail;
-        t=1687167722; bh=hFxZwVw4rIL+JwfEOGI47p+fdoVOAeqVswP6NWoHSHQ=;
-        h=Date:From:To:Subject:From;
-        b=dJM+OL+l60NlAosvZ3WFasmqw7FniYq3nN/N6aGFsjgJktfHApCJeKEOHvH4YamYb
-         tGIU9jdL869VBLyOxnkqc3VD8PhcvTA+6Sm9OYs7x9/JBafbEd2eFY3RRSZ/1uZjbZ
-         vwoZBdMSEBxvmAAt86fwnHjSuIoT02OH+1H4uZDiZmYQuA26NqJc4xwsYUUYJNUG8w
-         Edrg05UiTUZMofvzvdzToWYkrjxWVfXbBVDKreTGZKrVyzEjhnkN0yR3/pc1UDER2B
-         shC7cJsdXPFvhcq9ETJlSMWD5aYcF9pDMYeSmmn9SUEKWhEJTwKJGjqZCD4iPI0WGT
-         8BuMU0nqAxt1g==
-Received: by mail.durme.pl for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 09:41:18 GMT
-Message-ID: <20230619090058-0.1.2k.clvb.0.qbcao63kx4@durme.pl>
-Date:   Mon, 19 Jun 2023 09:41:18 GMT
-From:   "Krystian Wieczorek" <krystian.wieczorek@durme.pl>
-To:     <linux-wireless@vger.kernel.org>
-Subject: W sprawie samochodu
-X-Mailer: mail.durme.pl
+        Mon, 19 Jun 2023 06:02:28 -0400
+Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C801B5
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 03:02:01 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:2d2c:0:640:8fff:0])
+        by forward101b.mail.yandex.net (Yandex) with ESMTP id 278BC60143;
+        Mon, 19 Jun 2023 13:01:59 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id c1deSmgWoiE0-xsUJ0iEM;
+        Mon, 19 Jun 2023 13:01:58 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687168918;
+        bh=wwPYMNt8fn1ICVVJoKhP6jwf9IwAtMcq0I4uvItKMZI=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=fnLDf+Enn06EU4IrboAMTtmexDs+ovy9ng+hGmzweUpla3tT2nhkWThxsii63sC9M
+         iDmHDez9b9wf65bC4rkdmI2FDBwwGExNkx38w4YCXHcJvxHEPppCqh7jRGmt9P98TP
+         +OYnX8CMCVaWbGpndYOSn73dSoxMpEREZBH/XHYE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Gregory Greenman <gregory.greenman@intel.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: iwlfifi: fix -Wunused-const-variable gcc warning
+Date:   Mon, 19 Jun 2023 13:00:25 +0300
+Message-ID: <20230619100030.284920-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Fix the following gcc 13.1 warning observed with W=1:
 
-chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
-, je=C5=9Bli chodzi o system monitoringu GPS.
+drivers/net/wireless/intel/iwlwifi/dvm/rs.c:207:39: warning:
+‘iwl_rate_mcs’ defined but not used [-Wunused-const-variable=]
 
-Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
-e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
-a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
+This table is actually used in 'rs_sta_dbgfs_scale_table_read()'
+only if CONFIG_MAC80211_DEBUGFS is enabled.
 
-Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
-dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
-szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
-mne znaczenie.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
-b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+index 687c906a9d72..ecad7403ec96 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -203,6 +203,8 @@ static const u16 expected_tpt_mimo3_40MHz[4][IWL_RATE_COUNT] = {
+ 	{0, 0, 0, 0, 277, 0, 478, 624, 737, 911, 1026, 1070, 1109}, /* AGG+SGI */
+ };
+ 
++#ifdef CONFIG_MAC80211_DEBUGFS
++
+ /* mbps, mcs */
+ static const struct iwl_rate_mcs_info iwl_rate_mcs[IWL_RATE_COUNT] = {
+ 	{  "1", "BPSK DSSS"},
+@@ -220,6 +222,8 @@ static const struct iwl_rate_mcs_info iwl_rate_mcs[IWL_RATE_COUNT] = {
+ 	{ "60", "64QAM 5/6"},
+ };
+ 
++#endif
++
+ #define MCS_INDEX_PER_STREAM	(8)
+ 
+ static void rs_rate_scale_clear_window(struct iwl_rate_scale_data *window)
+-- 
+2.41.0
 
-
-Pozdrawiam
-Krystian Wieczorek
