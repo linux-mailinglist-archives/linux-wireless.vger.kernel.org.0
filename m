@@ -2,50 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F3B735886
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 15:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCCED735887
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 15:27:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231756AbjFSN13 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jun 2023 09:27:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
+        id S231925AbjFSN1a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jun 2023 09:27:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbjFSN12 (ORCPT
+        with ESMTP id S231936AbjFSN12 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 19 Jun 2023 09:27:28 -0400
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D675AE62
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 06:27:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9932CE54
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 06:27:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687181243; x=1718717243;
+  t=1687181244; x=1718717244;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6rNblBFPCjMCNSaTl+wAvEW0duQ4B03BqCPI1K3GSIM=;
-  b=ORqXiAP4Jr5xbnqc7VFbTxp0I/l7D8SDTghsUaUS6fUzkVtXvTMG4WV7
-   UiM4mzElqpgPLg8BpYGD4Bz72srSl8xGM6reTIbGVGOACXlVdeR9zmnDp
-   MFl0wKjAbcgiDcrDjBmShtti01ppITn8oO6dpVkoFTsIfYVldTRUJm00f
-   t8fBeA2CVc81/r1Tgn4kR243/9fy1Lw2gjxT7Zx3CbS5BW0/lD5uechho
-   b6nBQKEwg+XwQ1ilU1M85ANCfYCRCy2AJc4rtxXUUUpQUTErM7GkDPAeH
-   dVZXXH0EKG7fsRDekSgvd53i7jNfhdNS4OF57T0ESSVYl5YydNbWj8EAY
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="339240704"
+  bh=7cl8/ZpMdD4tIANGj37psl52UQ72RPe/+wHd/8yHEcg=;
+  b=lAHzx8FGfwVL4Tbfq0umQUYUhenXmvbmXKlMHPqnFDZQq9GmdFrjDk/j
+   HmoprYf3vLN4XVaP1eiUTMvWYVRRZDZg5YmC8v5UeUL+6nPQ52ilxbbHI
+   rIL+VyWfJ7s2SSPc9a81gsB4lXQzasy8C6+EusJQtj2UWX0NS10qLzLsb
+   sda1DNJRM2vYidDveGvmgNntsLJ6se9cTbM7N0p+R3+vWBnV1qxPqsexJ
+   czgv/wXSphD4Qr3uwiPELZ0J9rgCshREhNkSQNbyZjtPyu2AbAyGHj5X3
+   XWrJlBi9e0CZ4JGG1TEeoFm3Z3e7N52Ta4CB7OEps4x1HvYVA7FdwImX8
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="339240711"
 X-IronPort-AV: E=Sophos;i="6.00,254,1681196400"; 
-   d="scan'208";a="339240704"
+   d="scan'208";a="339240711"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 06:27:22 -0700
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 06:27:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="716871761"
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="716871778"
 X-IronPort-AV: E=Sophos;i="6.00,254,1681196400"; 
-   d="scan'208";a="716871761"
+   d="scan'208";a="716871778"
 Received: from aadawii-mobl2.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.201.44])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 06:27:20 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2023 06:27:22 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, Ilan Peer <ilan.peer@intel.com>,
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 8/9] wifi: cfg80211: Retrieve PSD information from RNR AP information
-Date:   Mon, 19 Jun 2023 16:26:52 +0300
-Message-Id: <20230619161906.067ded2b8fc3.I9f407ab5800cbb07045a0537a513012960ced740@changeid>
+Subject: [PATCH 9/9] wifi: nl80211/reg: add no-EHT regulatory flag
+Date:   Mon, 19 Jun 2023 16:26:53 +0300
+Message-Id: <20230619161906.74ce2983aed8.Ifa343ba89c11760491daad5aee5a81209d5735a7@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230619132653.902084-1-gregory.greenman@intel.com>
 References: <20230619132653.902084-1-gregory.greenman@intel.com>
@@ -61,132 +62,60 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Retrieve the Power Spectral Density (PSD) value from RNR AP
-information entry and store it so it could be used by the drivers.
+This just propagates to the channel flags, like no-HE and
+similar other flags before it.
 
-PSD value is explained in Section 9.4.2.170 of Draft
-P802.11Revme_D2.0.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- include/linux/ieee80211.h |  7 +++++--
- include/net/cfg80211.h    |  2 ++
- net/wireless/scan.c       | 13 +++++++++++++
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ include/uapi/linux/nl80211.h | 2 ++
+ net/wireless/reg.c           | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 15c4e12b6fc7..6f1747a9c106 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -4504,6 +4504,9 @@ static inline bool for_each_element_completed(const struct element *element,
- #define IEEE80211_RNR_TBTT_PARAMS_PROBE_ACTIVE			0x20
- #define IEEE80211_RNR_TBTT_PARAMS_COLOC_AP			0x40
- 
-+#define IEEE80211_RNR_TBTT_PARAMS_PSD_NO_LIMIT			127
-+#define IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED			-128
-+
- struct ieee80211_neighbor_ap_info {
- 	u8 tbtt_info_hdr;
- 	u8 tbtt_info_len;
-@@ -4539,7 +4542,7 @@ struct ieee80211_tbtt_info_7_8_9 {
- 
- 	/* The following element is optional, structure may not grow */
- 	u8 bss_params;
--	u8 psd_20;
-+	s8 psd_20;
- } __packed;
- 
- /* Format of the TBTT information element if it has >= 11 bytes */
-@@ -4550,7 +4553,7 @@ struct ieee80211_tbtt_info_ge_11 {
- 
- 	/* The following elements are optional, structure may grow */
- 	u8 bss_params;
--	u8 psd_20;
-+	s8 psd_20;
- 	struct ieee80211_rnr_mld_params mld_params;
- } __packed;
- 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 9eba57d35e98..41c5248eb7f4 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2466,6 +2466,7 @@ struct cfg80211_scan_info {
-  * @short_ssid_valid: @short_ssid is valid and can be used
-  * @psc_no_listen: when set, and the channel is a PSC channel, no need to wait
-  *       20 TUs before starting to send probe requests.
-+ * @psd_20: The AP's 20 MHz PSD value.
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index fece687054ef..b96ab2c9a5a5 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -4443,6 +4443,7 @@ enum nl80211_sched_scan_match_attr {
+  * @NL80211_RRF_NO_160MHZ: 160MHz operation not allowed
+  * @NL80211_RRF_NO_HE: HE operation not allowed
+  * @NL80211_RRF_NO_320MHZ: 320MHz operation not allowed
++ * @NL80211_RRF_NO_EHT: EHT operation not allowed
   */
- struct cfg80211_scan_6ghz_params {
- 	u32 short_ssid;
-@@ -2474,6 +2475,7 @@ struct cfg80211_scan_6ghz_params {
- 	bool unsolicited_probe;
- 	bool short_ssid_valid;
- 	bool psc_no_listen;
-+	s8 psd_20;
+ enum nl80211_reg_rule_flags {
+ 	NL80211_RRF_NO_OFDM		= 1<<0,
+@@ -4462,6 +4463,7 @@ enum nl80211_reg_rule_flags {
+ 	NL80211_RRF_NO_160MHZ		= 1<<16,
+ 	NL80211_RRF_NO_HE		= 1<<17,
+ 	NL80211_RRF_NO_320MHZ		= 1<<18,
++	NL80211_RRF_NO_EHT		= 1<<19,
  };
  
- /**
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 465334b3960e..e38c51512f97 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -96,6 +96,7 @@ MODULE_PARM_DESC(bss_entries_limit,
-  *	colocated and can be discovered via legacy bands.
-  * @short_ssid_valid: short_ssid is valid and can be used
-  * @short_ssid: the short SSID for this SSID
-+ * @psd_20: The 20MHz PSD EIRP of the primary 20MHz channel for the reported AP
-  */
- struct cfg80211_colocated_ap {
- 	struct list_head list;
-@@ -111,6 +112,7 @@ struct cfg80211_colocated_ap {
- 	   transmitted_bssid:1,
- 	   colocated_ess:1,
- 	   short_ssid_valid:1;
-+	s8 psd_20;
- };
+ #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 949e1fb3bec6..ead3c74439b8 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -5,7 +5,7 @@
+  * Copyright 2008-2011	Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright      2017  Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2022 Intel Corporation
++ * Copyright (C) 2018 - 2023 Intel Corporation
+  *
+  * Permission to use, copy, modify, and/or distribute this software for any
+  * purpose with or without fee is hereby granted, provided that the above
+@@ -1587,6 +1587,8 @@ static u32 map_regdom_flags(u32 rd_flags)
+ 		channel_flags |= IEEE80211_CHAN_NO_HE;
+ 	if (rd_flags & NL80211_RRF_NO_320MHZ)
+ 		channel_flags |= IEEE80211_CHAN_NO_320MHZ;
++	if (rd_flags & NL80211_RRF_NO_EHT)
++		channel_flags |= IEEE80211_CHAN_NO_EHT;
+ 	return channel_flags;
+ }
  
- static void bss_free(struct cfg80211_internal_bss *bss)
-@@ -578,6 +580,8 @@ static int cfg80211_parse_ap_info(struct cfg80211_colocated_ap *entry,
- {
- 	u8 bss_params;
- 
-+	entry->psd_20 = IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED;
-+
- 	/* The length is already verified by the caller to contain bss_params */
- 	if (length > sizeof(struct ieee80211_tbtt_info_7_8_9)) {
- 		struct ieee80211_tbtt_info_ge_11 *tbtt_info = (void *)pos;
-@@ -594,12 +598,20 @@ static int cfg80211_parse_ap_info(struct cfg80211_colocated_ap *entry,
- 					  IEEE80211_RNR_MLD_PARAMS_DISABLED_LINK))
- 				return -EINVAL;
- 		}
-+
-+		if (length >= offsetofend(struct ieee80211_tbtt_info_ge_11,
-+					  psd_20))
-+			entry->psd_20 = tbtt_info->psd_20;
- 	} else {
- 		struct ieee80211_tbtt_info_7_8_9 *tbtt_info = (void *)pos;
- 
- 		memcpy(entry->bssid, tbtt_info->bssid, ETH_ALEN);
- 
- 		bss_params = tbtt_info->bss_params;
-+
-+		if (length == offsetofend(struct ieee80211_tbtt_info_7_8_9,
-+					  psd_20))
-+			entry->psd_20 = tbtt_info->psd_20;
- 	}
- 
- 	/* ignore entries with invalid BSSID */
-@@ -904,6 +916,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 		scan_6ghz_params->short_ssid = ap->short_ssid;
- 		scan_6ghz_params->short_ssid_valid = ap->short_ssid_valid;
- 		scan_6ghz_params->unsolicited_probe = ap->unsolicited_probe;
-+		scan_6ghz_params->psd_20 = ap->psd_20;
- 
- 		/*
- 		 * If a PSC channel is added to the scan and 'need_scan_psc' is
 -- 
 2.38.1
 
