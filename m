@@ -2,140 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70328735D43
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 20:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D789735E98
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 22:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232159AbjFSSHK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jun 2023 14:07:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45294 "EHLO
+        id S229710AbjFSUiu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jun 2023 16:38:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230184AbjFSSHK (ORCPT
+        with ESMTP id S229530AbjFSUit (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jun 2023 14:07:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD9D120;
-        Mon, 19 Jun 2023 11:07:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45EB360DF4;
-        Mon, 19 Jun 2023 18:07:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85C3C433C8;
-        Mon, 19 Jun 2023 18:07:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687198027;
-        bh=XNrWx0e+VFb0jaH8wmeXcZNg0osk8eDrh+qYB5nAfyk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hnq0AOiprtBC3qrex4NKnoSCrfoj8sJY8nyfDOYmMWS+LAdWlLROaAKj8NrHdAqKV
-         gVhM8EURFdB3wFLNb5+cKug0R7eGHAYnxKLQtws1cQD1w4jy4qo3Hb7J1+QEk+tsBU
-         CwaUfd+n40I3VQBfJ115llahzE5XrSWAEPqImjrhQ0Q9+4yBUo9WuCwv+e9Jgp1nFc
-         JK4Y6V1bPN+wKsKswtz5r475G3cj3+O1jsBSXMG326is1pnTd64o/YSXvOjdb2TDxy
-         /MScaTumbH45kNF4b2HPmMzPaXxYXkmbDyTzbrZl34qcyt4Si2iWxAdohcw8Fn2wxj
-         eAVJ5xQrBneyw==
-Date:   Mon, 19 Jun 2023 11:07:05 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Jesper Dangaard Brouer <jbrouer@redhat.com>
-Cc:     brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <20230619110705.106ec599@kernel.org>
-In-Reply-To: <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
-        <20230612130256.4572-5-linyunsheng@huawei.com>
-        <20230614101954.30112d6e@kernel.org>
-        <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
-        <20230615095100.35c5eb10@kernel.org>
-        <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
-        <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
-        <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
-        <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
-        <20230616122140.6e889357@kernel.org>
-        <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
+        Mon, 19 Jun 2023 16:38:49 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E8F710CA;
+        Mon, 19 Jun 2023 13:38:37 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-518b69d5b5dso5509582a12.1;
+        Mon, 19 Jun 2023 13:38:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1687207115; x=1689799115;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DtpLE5qHPtOxz3JvnqVEB0bNkepX8kdOysdckRMyYgg=;
+        b=rvkLawxz9hc+T0TGLFdmddivEyr/FgkvAGyk3Nz/wHgxDuAu4DgeqxTMFeEaIi8z5J
+         MCFO6egg5SHEO5wprUe4CJQBfLkWJCjxXD8pGOvb5LeT72XFiNgCQfv9c6y+CNYUJNSe
+         O/IY8PLuUB2mOEfHzX4V3dLLibRmAy6bUrsyXNHwOwkeaPjRR6N5D/4AMTqPwGmBhjJM
+         TfXisLpOdbIJgOYQEx9A7YycweOmNLrsbf4YJGEV42Cr3LC+V0lKwAxPPs5ED5Zv/PfL
+         Y6nL9CqtzfVwoHdZ7tw2Pj6K1uV/gihO4RmpOy0nCS5HbnuyJHs3aaH3OZrkyhF6iH+D
+         uBCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687207115; x=1689799115;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DtpLE5qHPtOxz3JvnqVEB0bNkepX8kdOysdckRMyYgg=;
+        b=kDuIbmtV4CMrwVcEb/bPzwquFZXiJV/CqnahZFrLT1zfrhALXCERzuZvZopsTpDYCo
+         enLmw8y5KtKnkJvPjlUEmLuERKgpfh/i8sdSCx3sX9WFtEZC7fN/4YQwAGFJOkX36Xju
+         qrigStA1poCi7o4TyM9R/Z4LTJ1VQVMy+edW12CpQESX+wJfnvUYDDyWMl3A7p+3UFcI
+         j3g88aiDSTWA+iwYiR8ZszTXRJWma1WuLnROHIv5bfB8OoIbwXZkIJ+XGmzY79PsXy37
+         o8eDLyeinkUFuK/PLbtXSttDxOc7TT/Lw7TdynhvPb8aEQsOlxDYvb5+xtfU4eNblGT7
+         f24Q==
+X-Gm-Message-State: AC+VfDyTHpAOWrqCou0Gvj6kKoqlQv4b8IpGxEgHNjJ/jljRCRJevp3T
+        u/gSt/t6CVVRj38S/p1Lcbab7bsQkbxyQ50qUM0=
+X-Google-Smtp-Source: ACHHUZ5656w+75CZwaycJ08wqwHTB7XWmi9eQwSvdSiUDoZni5WOjx/IqOE1/dpvNL7oM0FrDtWW3CMsfhXDuaV60vA=
+X-Received: by 2002:a17:907:3f17:b0:969:93f2:259a with SMTP id
+ hq23-20020a1709073f1700b0096993f2259amr10368612ejc.73.1687207115503; Mon, 19
+ Jun 2023 13:38:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
+ <9ab8cc85d4d440bfa63dcade4e4f9ecf@realtek.com>
+In-Reply-To: <9ab8cc85d4d440bfa63dcade4e4f9ecf@realtek.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Mon, 19 Jun 2023 22:38:24 +0200
+Message-ID: <CAFBinCBsg8jPhpqSOr9w2JhwN5YjPeME1Uye7meSY8h=b_N4Qg@mail.gmail.com>
+Subject: Re: wifi: rtw88: question about SDIO RX aggregation limiting
+To:     Ping-Ke Shih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Lukas F. Hartmann" <lukas@mntre.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
+        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 16 Jun 2023 22:42:35 +0200 Jesper Dangaard Brouer wrote:
-> > Former is better for huge pages, latter is better for IO mem
-> > (peer-to-peer DMA). I wonder if you have different use case which
-> > requires a different model :(
-> 
-> I want for the network stack SKBs (and XDP) to support different memory
-> types for the "head" frame and "data-frags". Eric have described this
-> idea before, that hardware will do header-split, and we/he can get TCP
-> data part is another page/frag, making it faster for TCP-streams, but
-> this can be used for much more.
-> 
-> My proposed use-cases involves more that TCP.  We can easily imagine
-> NVMe protocol header-split, and the data-frag could be a mem_type that
-> actually belongs to the harddisk (maybe CPU cannot even read this).  The
-> same scenario goes for GPU memory, which is for the AI use-case.  IIRC
-> then Jonathan have previously send patches for the GPU use-case.
-> 
-> I really hope we can work in this direction together,
+Hello Ping-Ke,
 
-Perfect, that's also the use case I had in mind. The huge page thing
-was just a quick thing to implement as a PoC (although useful in its
-own right, one day I'll find the time to finish it, sigh).
+apologies for the long delay.
 
-That said I couldn't convince myself that for a peer-to-peer setup we
-have enough space in struct page to store all the information we need.
-Or that we'd get a struct page at all, and not just a region of memory
-with no struct page * allocated :S
+On Tue, Jun 13, 2023 at 4:20=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+[...]
+> The unit of BIT_RXDMA_AGG_PG_TH is 1k bytes, so I think you can
+> set mmc_host->max_req_size/1024.
+I tried this but I got a result that I don't understand.
+I've been testing with three BIT_RXDMA_AGG_PG_TH values on a SoC that
+can handle 255 * 1024 bytes. Each time I connected to the same AP and
+downloaded a bigger file over http(s).
+BIT_RXDMA_AGG_PG_TH: biggest observed rx_len in rtw_sdio_rxfifo_recv()
+255: 20968
+6: 5122
+1: 1602
 
-That'd require serious surgery on the page pool's fast paths to work
-around.
+The biggest rx_len I have observed for BIT_RXDMA_AGG_PG_TH 1 looks suspicio=
+us:
+My understanding is that I shouldn't be seeing rx_len larger than
+BIT_RXDMA_AGG_PG_TH * 1024.
+BIT_RXDMA_AGG_PG_TH =3D 6 is within this limit but BIT_RXDMA_AGG_PG_TH =3D
+1 isn't (I'm seeing 578 extra bytes in addition to the 1024 bytes that
+I was expecting).
+Do you have any idea where this is coming from? I'm worried that we
+can still end up with the problem that Lukas described but seems to
+not have hit in his testing with BIT_RXDMA_AGG_PG_TH =3D 6
 
-I haven't dug into the details, tho. If you think we can use page pool
-as a frontend for iouring and/or p2p memory that'd be awesome!
+> I wonder why 0x6 works on Amlogic SoCs. Could you or Lukas compare perfor=
+mance
+> between the settings of 0x1 and 0x6?
+I can do this later this week but I'd like to understand the above
+results first.
 
-The workaround solution I had in mind would be to create a narrower API
-for just data pages. Since we'd need to sprinkle ifs anyway, pull them
-up close to the call site. Allowing to switch page pool for a
-completely different implementation, like the one Jonathan coded up for
-iouring. Basically
 
-$name_alloc_page(queue)
-{
-	if (queue->pp)
-		return page_pool_dev_alloc_pages(queue->pp);
-	else if (queue->iouring..)
-		...
-}
+Best regards,
+Martin
