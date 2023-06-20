@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D1A7368C2
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13BE97368C3
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbjFTKFI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 06:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38728 "EHLO
+        id S231826AbjFTKFJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 06:05:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231723AbjFTKEs (ORCPT
+        with ESMTP id S231949AbjFTKEt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 06:04:48 -0400
+        Tue, 20 Jun 2023 06:04:49 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A2DA130
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C464135
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687255485; x=1718791485;
+  t=1687255487; x=1718791487;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=s6zleulbu3g8glQJ8qWAhyXNPkWxuSFu4Yq0LnSBJm4=;
-  b=DibIzF0+yIr9hLu6KcI6kAUVwKbPizyDKK0V3BSZnFeZb29zHVEBammC
-   5qn7QFTJJF/LsqM7TYiN8KI7BwdLmmbnZUveEtvliJzlcXDKf1EOaSTiA
-   5ico7aMmZe2HRf20s8UGIvcb3P8/DN1L/+ax0ukc0AXYVWJrftjAxY+ld
-   gTeTaRVkO5lVBJheuaX+O4m9fUUFKHynF04wcS21Z3miuEzdgRmCfgSWD
-   1HdLApI4GpZDelU5nshxTc6eV9o9HiVjrbhPW9mnWDCZgmnmHKbofrL9+
-   GJauJ27zqDlcmACXlLQcN19aXbW6jNqDad8kkDqQigzBLK257YLFXBQBZ
+  bh=zCq8DJcrGAEFJ7kcqg1GtzSzwaz0gndPR58OI2eSRA0=;
+  b=K1I5zHR58AjfAyZ5VhKJfHP4BIz0JCKH9Nl7yzv+mmHCZ+qb3MgzB1YO
+   EOTXiUPJflDoPMBe3o4LFuES/O4j1q8v0Y3uYmXFY4RUyMv+V+yNEzpb7
+   /+A7D4ALkHqFla4q3c8wHY8y72iNMP4NIJiqIZ+WZVrZ8Lu6GVtN9mLN4
+   gXlASSqrkmoEf9NmB4myKfc5cwON0WVRVh72Zhe3oxw4q7+7qFzGrrVlg
+   ZgQ5ouiPEHoP/yqaM23Bj3e4JUB/WqJzHNBHXEFFtvLAowVS9WUor4wpQ
+   kSeTx1Q23cMA0GsX+LmJoOyo892Mp+2qrMQIZiIDerpbi65OVLhfILSOP
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819623"
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819631"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="359819623"
+   d="scan'208";a="359819631"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:44 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838143537"
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838143546"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="838143537"
+   d="scan'208";a="838143546"
 Received: from rafist-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.208.68])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:43 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:45 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Benjamin Berg <benjamin.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 11/19] wifi: iwlwifi: remove disable_dummy_notification
-Date:   Tue, 20 Jun 2023 13:03:57 +0300
-Message-Id: <20230620125813.e7c96d0aa805.I5b158ce15e48393d2896c0bff9f644d983f0e92d@changeid>
+Subject: [PATCH 12/19] wifi: iwlwifi: mvm: send LARI configuration earlier
+Date:   Tue, 20 Jun 2023 13:03:58 +0300
+Message-Id: <20230620125813.80742497eb3f.I3e599a796290082e6d331ea495a5591d55de4726@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230620100405.45117-1-gregory.greenman@intel.com>
 References: <20230620100405.45117-1-gregory.greenman@intel.com>
@@ -62,53 +62,39 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-This struct member is read-only, so can never change away
-from the default value of zero. Remove the code that's in
-an if on the value, since it's effectively dead code.
+Sending the LARI configuration may trigger calibration, which can have
+undesired side effects. Move the command to be send earlier (before the
+phy contexts are registered) to avoid unintended side effects.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-config.h | 1 -
- drivers/net/wireless/intel/iwlwifi/mvm/sf.c     | 5 +----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 17c357634455..115ea8d9198a 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -388,7 +388,6 @@ struct iwl_cfg {
- 	    high_temp:1,
- 	    mac_addr_from_csr:10,
- 	    lp_xtal_workaround:1,
--	    disable_dummy_notification:1,
- 	    apmg_not_supported:1,
- 	    vht_mu_mimo_supported:1,
- 	    cdb:1,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sf.c b/drivers/net/wireless/intel/iwlwifi/mvm/sf.c
-index 98f330fcf678..30d4233595e8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sf.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sf.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2013-2014, 2018-2019, 2022 Intel Corporation
-+ * Copyright (C) 2013-2014, 2018-2019, 2022-2023 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  */
- #include "mvm.h"
-@@ -180,9 +180,6 @@ static int iwl_mvm_sf_config(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	};
- 	int ret = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 77cdfb4a5ba3..1f5db65a088d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1566,6 +1566,8 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
+ 			goto error;
+ 	}
  
--	if (mvm->cfg->disable_dummy_notification)
--		sf_cmd.state |= cpu_to_le32(SF_CFG_DUMMY_NOTIF_OFF);
--
++	iwl_mvm_lari_cfg(mvm);
++
+ 	/* Init RSS configuration */
+ 	ret = iwl_configure_rxq(&mvm->fwrt);
+ 	if (ret)
+@@ -1676,7 +1678,6 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
+ 	if (ret)
+ 		goto error;
+ 
+-	iwl_mvm_lari_cfg(mvm);
  	/*
- 	 * If an associated AP sta changed its antenna configuration, the state
- 	 * will remain FULL_ON but SF parameters need to be reconsidered.
+ 	 * RTNL is not taken during Ct-kill, but we don't need to scan/Tx
+ 	 * anyway, so don't init MCC.
 -- 
 2.38.1
 
