@@ -2,181 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1229D73751C
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 21:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E18973775C
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 00:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230404AbjFTTcl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 15:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58994 "EHLO
+        id S229576AbjFTWTT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 18:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbjFTTck (ORCPT
+        with ESMTP id S229989AbjFTWTR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 15:32:40 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C06170A
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 12:32:38 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b4f95833c7so26328975ad.1
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 12:32:38 -0700 (PDT)
+        Tue, 20 Jun 2023 18:19:17 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 939E91726
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 15:19:12 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-55e04a83465so3452041eaf.3
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 15:19:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1687289557; x=1689881557;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C26TRXbQhLRFwaqH8jM0Sdsl04Y8gvs4Z9WiQwYuZkA=;
-        b=gG/qXO330ggyb+itcXm50J3zpko2jxwgCS1GP5J/P2Tgh9GZerDPJeHA92elhgFtvX
-         BBuFV+OuIz888TJfT0yRaBd+rtFFu6vY+ZhwFLDRkcntlcZ3bfnyknrDmIiQj5+Cpbun
-         e7i/9Zmuv6+1Sd5YixUF4UDDVe1oqkeptVKcs=
+        d=gmail.com; s=20221208; t=1687299551; x=1689891551;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:sender:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ce4QfuuodxHFezw7VCzltNktuKT6CSbcqfGp2refbzw=;
+        b=cIPFh/DNYYbSBhcM8dRfb5bOb5+wVuuXSg5AKwN0bMrGywjnqCDF2rgJ4yaCSHTj8p
+         rmzrkCSuDIusUYT7izkGwQHd6UwPi4zLYNYvdILlvoFM+0qRWs0mqsmZXTBN7nQdVO7N
+         MxcMnNCspj5+aK0+bZa2KripVvK3ccawN1/Jk7Nzf3PV8lhH+mpmsXmyTIGl8LBJXv7e
+         Z+KIg/4B2lDwjSQhxUYLx+Ju79iY+2iN0x7zc58WENDPuIC0xDxvCutY57ebAxhGecb2
+         e6iHTpOY86HD/go8e8iB86SN0bIeqxnzDCmqCFUjA1OvJCFPRka0a2rqVilfubjwmiPS
+         YGmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687289557; x=1689881557;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C26TRXbQhLRFwaqH8jM0Sdsl04Y8gvs4Z9WiQwYuZkA=;
-        b=WuRGrMIFWgT3p/z9Um8CRAWSh/nwccc0KazlQVTfgwhx1Ux73au+g7TQsEAmav7kwS
-         zR0HUPFU3QVXQVMjyaZ7bFWraETzEDmW27xt/gOcTZ94f6t5WsgJPgebNXzav+5RX0xe
-         f4yde8GE+jtJ+SCRI/r/KY70X3gJshaWgWjETAOjaL4/8Mgu2kqIT75vbGDWBq0G3yQi
-         oYzxWh92XKwr8o1X4nhuy12fCCtbD3zbjnx1dj3toFgU60kvAE7ku447eZcaaXf9qRE4
-         Ripw+2lEMywSliWNyl/VSQqWW5AspHUMvH9XgTFhFjcilFDQ54TC8UJepbLeaWBs0TNf
-         CdOA==
-X-Gm-Message-State: AC+VfDyuw5ermdrTSWSrjpTwWo2CNjLwLE75ZsxUlDLWVS8bFlM894sH
-        oeR6K504Sf6H6zgNC6sZOD2Ayw==
-X-Google-Smtp-Source: ACHHUZ7x+h4efpg0biJJ47ft7s5D2i0Uu4CfJW4LdWEnyWQ2Kpp/TzI2R8wEx4qiLF2796wsQYWPyg==
-X-Received: by 2002:a17:903:110d:b0:1b1:9802:a31b with SMTP id n13-20020a170903110d00b001b19802a31bmr12006889plh.41.1687289557508;
-        Tue, 20 Jun 2023 12:32:37 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id u9-20020a17090341c900b001ac741dfd29sm1933348ple.295.2023.06.20.12.32.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 12:32:36 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 12:32:36 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Florian Klink <flokli@flokli.de>,
-        linux-hardening@vger.kernel.org
-Subject: Re: Fwd: iosm: detected field-spanning write for XMM7360
-Message-ID: <202306201148.716CFF3@keescook>
-References: <dbfa25f5-64c8-5574-4f5d-0151ba95d232@gmail.com>
- <0826b484-8bbc-d58f-2caf-7015bd30f827@leemhuis.info>
+        d=1e100.net; s=20221208; t=1687299551; x=1689891551;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:sender:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ce4QfuuodxHFezw7VCzltNktuKT6CSbcqfGp2refbzw=;
+        b=fLMZ66bxkud9qZFrNensNvm8E40qw+MIOJ2CzRBRN4DG8dOg4wmWF3jJoC0r7jV2wS
+         WiS9xVL3//3+xfLFTUor74RwbdnOEG6Fgy4y3NdHo9b+SHl/xR498o0eiXGWuJMm+KFM
+         yr832Mg8PXyICF+Pw/ScCaWIeXrNL7i887GNedjnVuuOKbg535bNzkwi3+EfxcjX4av8
+         nNxA6KsBfNf0CFwC8HnHFXYUfFK8HKhKRK6cfI4Hi/usYN318Eh3g0HSb+dGwlNQR4xN
+         bcTTrUwNAZhxDIvaTJJgJMc6VURT/Mm8fYsBFwx1gz1f0L8kAU36xXS3QO8RFxBNzbjp
+         zXnA==
+X-Gm-Message-State: AC+VfDw9aaxoMeFqya6catWmDRAfRqwwO/mZHxWREOeIr0KxnSCn2JCI
+        VqiAPv+Rq9gJWFNKKcGw5q+ezThTTaA2Og==
+X-Google-Smtp-Source: ACHHUZ4YifOrMoGYGt+0r1l+MyiRzsLRw4gjNrrut01oVwRkbyMWouq0A6KC5qT2ZOk7nmroVTat2A==
+X-Received: by 2002:a4a:deca:0:b0:558:b4cb:b18a with SMTP id w10-20020a4adeca000000b00558b4cbb18amr9721150oou.6.1687299551335;
+        Tue, 20 Jun 2023 15:19:11 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id d21-20020a056830045500b006a62aac5736sm1379317otc.28.2023.06.20.15.19.10
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Jun 2023 15:19:10 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <9b2a7e8f-f875-cd74-2f79-dae385be901a@lwfinger.net>
+Date:   Tue, 20 Jun 2023 17:19:10 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0826b484-8bbc-d58f-2caf-7015bd30f827@leemhuis.info>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Wanted: GitHub successor maintainer
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[regressions list to Bcc]
+Hi,
 
-On Tue, Jun 20, 2023 at 11:12:40AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 20.06.23 10:44, Bagas Sanjaya wrote:
-> > I notice a regression report on Bugzilla [1]. Quoting from it:
-> [...]
-> >> [Sa Jun 17 20:10:09 2023] memcpy: detected field-spanning write (size 16) of single field "&adth->dg" at drivers/net/wwan/iosm/iosm_ipc_mux_codec.c:852 (size 8)
-> [...]
-> > [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217569
+A resent event reinforced my feelings of mortality, thus I am asking here if 
+anyone is interested in assuming the role of surviving maintainer of the GitHub 
+repos for Realtek wifi devices.
 
-This looks like a legitimate bug.
+The major repos are the ones for rtw88, rtw89, and to a lessor extent rtl8xxxu. 
+These repos make the latest wireless codes from wireless-next available for 
+users with older kernels, at least for v5.4 or newer.
 
-Here are the structures used by drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
-leading up to the memcpy() triggering this warning at line 852, with
-commentary from me added:
+I also have a number of repos that support the vendor drivers for devices that 
+have never had an in-kernel driver. Maintenance of these involves updating them 
+for the latest API changes.
 
-struct mux_adb {
-        struct sk_buff *dest_skb;
-        u8 *buf;			// <- unbounded array
-	...
-};
+I feel quite strongly that this work is too important to be abandoned, this my 
+request here. I plan to keep doing it as long as I can, but just in case...
 
-/**
- * struct mux_adth - Structure of the Aggregated Datagram Table Header.
- ...
- * @dg:	datagramm table with variable length	// variable length you say? :)
- */
-struct mux_adth {
-	...
-        struct mux_adth_dg dg;		// <- destination of memcpy
-};
+Thanks,
 
-struct mux_adth_dg {
-        __le32 datagram_index;
-        __le16 datagram_length;
-        u8 service_class;
-        u8 reserved;
-};					// 8 byte structure
+Larry
 
-static void ipc_mux_ul_encode_adth(struct iosm_mux *ipc_mux,
-                                   struct mux_adb *ul_adb, int *out_offset)
-{
-	...
-        struct mux_adth *adth;
-	...
-			// Assignment of fixed-sized structure on an
-			// unbounded string (i.e. minimum size
-			// constraint is now defined by structure
-			// layout, which is a good thing.)
-                        adth = (struct mux_adth *)&ul_adb->buf[offset];
-			...
-			// This appears to be preparing for having
-			// _multiple_ "dg" structs at the end of
-			// struct mux_adth_dg, not just 1. (And, if so,
-			// should be using the struct_size(), or really,
-			// given the later subtraction, the flex_size(),
-			// helper.)
-                        adth_dg_size = offsetof(struct mux_adth, dg) +
-                                        ul_adb->dg_count[i] * sizeof(*dg);
-			...
-                        adth_dg_size -= offsetof(struct mux_adth, dg);
-                        memcpy(&adth->dg, ul_adb->dg[i], adth_dg_size);
-
-
-&adth->dg is 8 bytes, so the warning message is correct. However, it
-seems like "ul_adb->dg_count[i]" contains a _count_ of "dg" structures
-to copy, and, in the reported case, is "2".
-
-The fix appears to be adjusting struct mux_adth with:
-
--       struct mux_adth_dg dg;
-+       struct mux_adth_dg dg[];
-
-But, since this is an implicit "1-element array to flexible array"
-conversion[1], we need to double-check "sizeof" uses.
-
-I only see 3 cases of sizeof(struct mux_adth). This one removes the
-"extra" "dg" element for bounds checking:
-
-                if (le16_to_cpu(adth->table_length) < (sizeof(struct mux_adth) -
-                                sizeof(struct mux_adth_dg)))
-
-This one adds it back in after subtracting 1 too many:
-
-                nr_of_dg = (le16_to_cpu(adth->table_length) -
-                                        sizeof(struct mux_adth) +
-                                        sizeof(struct mux_adth_dg)) /
-                                        sizeof(struct mux_adth_dg);
-
-As does this one:
-
-                        nr_of_dg = (le16_to_cpu(adth->table_length) -
-                                        sizeof(struct mux_adth) +
-                                        sizeof(struct mux_adth_dg)) /
-                                        sizeof(struct mux_adth_dg);
-
-So they can be simplified to avoid the extra math.
-
-I'll send a patch...
-
--Kees
-
-[1] https://github.com/KSPP/linux/issues/79
-
--- 
-Kees Cook
