@@ -2,51 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27DB17368C6
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7C77368C7
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231954AbjFTKFR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 06:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
+        id S231320AbjFTKFX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 06:05:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232147AbjFTKEz (ORCPT
+        with ESMTP id S231735AbjFTKE6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 06:04:55 -0400
+        Tue, 20 Jun 2023 06:04:58 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B4D8E7F
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B46C118
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687255494; x=1718791494;
+  t=1687255497; x=1718791497;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/Pv7DpwL6dPY29Hb3/kRW9xlFtGj7Dzef9kp10Zyr2Q=;
-  b=AsYjErlVMls1xeMhsBfH75atokFTcgmO3BOLVzZc9VwWVTy8IYReO9BL
-   a868LaEovX9HdnGeujZE/5ROTDxFNgshRpTvGAjR76xOSOLmUbrBaDjPg
-   yDuK21sDxZ+vIstlnz2inreVFHLCP0MRglYhZBMfNe+DN4hk5eG0cJNRf
-   9GkfTMQE9SLnJfjq0kewJXb8Q7b4koBwqyJYpmV8fjK7JOApT19TIwZhi
-   6r/CmL9xm04RA1Xax+BYyhdiLMoPo/9tSfb5mj7KgvkDNFyaKoWeN5E97
-   N8AM+sEmB/yVUv7k6X/95Tg/JmWKCR7q6bvHScmjNNnoz2Lj6n+eZl4rE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819652"
+  bh=ggwMVEJ0/oSmkoPg6/+Le0nDMhajGjBs67w+Nlcx8zU=;
+  b=VW4zKmKNHJ5/CEvGtYDRm5ONndIzjSXtD7ODX7E6/IY96rvOMuCRlGz+
+   z4sBOCIqEykEMR5nSgrzHHbeJsMNCwGP7zOqCDWxtwXOFbgfvuW3Cxswz
+   mTcM1a9nFxeblgyZ1WcK6JGUGCuZih720UwzoeCz+e4C/VZLr7ElNIvSc
+   X+R70W5QhSUCv5a3XAYFmnJL5A+cVwP7Q4AuLBIc+icZLR2XLh15/LHpJ
+   +yB8/LseDlzzJunViVqtoZJX3zwzZWeg9m5Ee9wLXK0TibiY2lBVm2lWw
+   2bHRzWpLaVVYArpA0Cutdt20VFYr+YqCbXEx3zOe5sq+YHvunIwOFMBQE
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819660"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="359819652"
+   d="scan'208";a="359819660"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:54 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838143568"
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838143576"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="838143568"
+   d="scan'208";a="838143576"
 Received: from rafist-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.208.68])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:52 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:55 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
+        Roee Goldfiner <roee.h.goldfiner@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 15/19] wifi: iwlwifi: mvm: indicate HW decrypt for beacon protection
-Date:   Tue, 20 Jun 2023 13:04:01 +0300
-Message-Id: <20230620125813.a50cf68fbf2e.Ieceacbe3789d81ea02ae085ad8d1f8813a33c31b@changeid>
+Subject: [PATCH 16/19] wifi: iwlwifi: mvm: avoid baid size integer overflow
+Date:   Tue, 20 Jun 2023 13:04:02 +0300
+Message-Id: <20230620125813.f428c856030d.I2c2bb808e945adb71bc15f5b2bac2d8957ea90eb@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230620100405.45117-1-gregory.greenman@intel.com>
 References: <20230620100405.45117-1-gregory.greenman@intel.com>
@@ -64,51 +65,38 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-We've already done the 'decryption' here, so tell
-mac80211 it need not do it again.
+Roee reported various hard-to-debug crashes with pings in
+EHT aggregation scenarios. Enabling KASAN showed that we
+access the BAID allocation out of bounds, and looking at
+the code a bit shows that since the reorder buffer entry
+(struct iwl_mvm_reorder_buf_entry) is 128 bytes if debug
+such as lockdep is enabled, then staring from an agg size
+512 we overflow the size calculation, and allocate a much
+smaller structure than we should, causing slab corruption
+once we initialize this.
 
-Fixes: b1fdc2505abc ("iwlwifi: mvm: advertise BIGTK client support if available")
+Fix this by simply using u32 instead of u16.
+
+Reported-by: Roee Goldfiner <roee.h.goldfiner@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 9dbe71d299ae..8d1e44fd9de7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -279,7 +279,8 @@ static void iwl_mvm_get_signal_strength(struct iwl_mvm *mvm,
- static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
- 				struct ieee80211_hdr *hdr,
- 				struct iwl_rx_mpdu_desc *desc,
--				u32 status)
-+				u32 status,
-+				struct ieee80211_rx_status *stats)
- {
- 	struct iwl_mvm_sta *mvmsta;
- 	struct iwl_mvm_vif *mvmvif;
-@@ -308,8 +309,10 @@ static int iwl_mvm_rx_mgmt_prot(struct ieee80211_sta *sta,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 37a52ffa8897..3b9a343d4f67 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2885,7 +2885,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 	}
  
- 	/* good cases */
- 	if (likely(status & IWL_RX_MPDU_STATUS_MIC_OK &&
--		   !(status & IWL_RX_MPDU_STATUS_REPLAY_ERROR)))
-+		   !(status & IWL_RX_MPDU_STATUS_REPLAY_ERROR))) {
-+		stats->flag |= RX_FLAG_DECRYPTED;
- 		return 0;
-+	}
+ 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
+-		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
++		u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
  
- 	if (!sta)
- 		return -1;
-@@ -378,7 +381,7 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 
- 	if (unlikely(ieee80211_is_mgmt(hdr->frame_control) &&
- 		     !ieee80211_has_protected(hdr->frame_control)))
--		return iwl_mvm_rx_mgmt_prot(sta, hdr, desc, status);
-+		return iwl_mvm_rx_mgmt_prot(sta, hdr, desc, status, stats);
- 
- 	if (!ieee80211_has_protected(hdr->frame_control) ||
- 	    (status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
+ 		/* sparse doesn't like the __align() so don't check */
+ #ifndef __CHECKER__
 -- 
 2.38.1
 
