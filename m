@@ -2,141 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B07E735EC0
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Jun 2023 22:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2926073615E
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 04:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbjFSUz1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 19 Jun 2023 16:55:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45112 "EHLO
+        id S229639AbjFTCDg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 19 Jun 2023 22:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjFSUz0 (ORCPT
+        with ESMTP id S229453AbjFTCDf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 19 Jun 2023 16:55:26 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2049.outbound.protection.outlook.com [40.107.92.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302311BE
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 13:55:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VM8matCEcqo0X87TqQAa1UzefkH4WB+VYCPvg2ReNbu/C8lUpS/ZPR3i9qljG7FXHPZFXrJ/V0fQK2nVgN+zfWFbZsC7wKsg/4i6m48PFY+ohF+IBOGWQW7f+qhGqzNy2rNsqPwE8A0KAfH5Zp+Zl8jUl2ju47jVLZjrBfy2BNi6Nt399RMQEerjsMTsE1UOY3n855l8fKurqPhLkMg2jhGjJy/+sIxkyfEWISvyHJtpUGnW1Jc6s6qEDtzrvluWnGMVDF8hkFyDkrZxIOQZCifjCMw59Xh2n1CkX+I61jr2THhexj5CnYtJSLW6mZhAt/h+wBU7en1wJR1lZgs9+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uwRIRXNQ0OgjSOeeDNfIl56gt7qbnUstuWlsAvoKxqU=;
- b=AaDAQHR62L83MW4E/BtHSlGetehQ0JWFuCr9Kt+Jv/t1VsjI2d0+jd2/+aPZmHI9Dr+J4gO+15a8A20ZoZWfoIoHnH8kZIzQHhHujsmu1p+53RNLEhpJoe0Pmp+oT8kVmWBmpeHnP0vtPbEQ1VNwMOtOI10AIgEgALagSfnEtYDODZJburN/j5t3vCoZ6FWlKCUt0uLI1xjwWliorEu6flBeYQ2AJu1TvRGuc5+VCdVc8rxuUyOc9Gnr9rmGH935P+vtt7CxwLjCnMPa/iF++FNAAxqus8W37U8lL85WRUXM2r2YZguF4ZbJSh5V977prRS8uAXqe+cZQOG04c6CRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uwRIRXNQ0OgjSOeeDNfIl56gt7qbnUstuWlsAvoKxqU=;
- b=sHCvGM1T2jz+ICD4r956U11QwYu9LP7UJA6UUzJ/pKn2tXt6CpKiFUwjtDNIhclFNW180k/yfK1eCxSr0zvJDMAqqnZBaomN9KaeMRi0bmLMKhyrhvtjokmLDlFKH02dKnaD0j2wfv00l/2XvV1Rl4vhuBRd6eWOPGjEMcWwXjs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH2PR12MB4312.namprd12.prod.outlook.com (2603:10b6:610:af::14)
- by BL3PR12MB6642.namprd12.prod.outlook.com (2603:10b6:208:38e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Mon, 19 Jun
- 2023 20:55:22 +0000
-Received: from CH2PR12MB4312.namprd12.prod.outlook.com
- ([fe80::70c5:ee54:f2f2:5b16]) by CH2PR12MB4312.namprd12.prod.outlook.com
- ([fe80::70c5:ee54:f2f2:5b16%5]) with mapi id 15.20.6500.036; Mon, 19 Jun 2023
- 20:55:21 +0000
-Message-ID: <0127bc28-a089-83be-0bbc-b79a16a3d61c@amd.com>
-Date:   Mon, 19 Jun 2023 15:54:55 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-From:   "Martinez, Juan" <juan.martinez@amd.com>
-Subject: Re: [PATCH] wifi: mt76: mt7921e: fix init command fail with enabled
- device
-To:     deren.wu@mediatek.com
-Cc:     Eric-SY.Chang@mediatek.com, Leon.Yen@mediatek.com,
-        Soul.Huang@mediatek.com, Stella.Chang@mediatek.com,
-        ch.yeh@mediatek.com, km.lin@mediatek.com,
-        linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
-        lorenzo@kernel.org, mingyen.hsieh@mediatek.com, nbd@nbd.name,
-        posh.sun@mediatek.com, quan.zhou@mediatek.com,
-        robin.chiu@mediatek.com, ryder.lee@mediatek.com,
-        sean.wang@mediatek.com, shayne.chen@mediatek.com
-References: <19f1aae1ab9ea867eb42742fc5b72ed4d7307b0a.1687159671.git.deren.wu@mediatek.com>
-Content-Language: en-US
-In-Reply-To: <19f1aae1ab9ea867eb42742fc5b72ed4d7307b0a.1687159671.git.deren.wu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR13CA0014.namprd13.prod.outlook.com
- (2603:10b6:806:130::19) To CH2PR12MB4312.namprd12.prod.outlook.com
- (2603:10b6:610:af::14)
+        Mon, 19 Jun 2023 22:03:35 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398A1DC
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 19:03:32 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b6824141b4so802295ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 19:03:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687226611; x=1689818611;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3tAsvE1pinGCofjVRzp2jxO2djEmDqJJ+2E/EZW9AG4=;
+        b=YqguyFufPwAYJfbpy3ngdUkmEBWkObhlBL+rC5njA+wR4y2gd8J8HMas5qlf1u9EfO
+         8sac5zDDBfYgFpEKYZTMK8pu62JVBuHCgg+jvBcGchyCeq5o2AWqcv1JWMEJ+Y5brVLV
+         1y3imPnBIHD5bjbz2LwUqWvklwPtr70BgXsgevkYzGaPeu7ZRSweoPxVF0cl2uq7bQH7
+         YaDQ0pYJEwT4c9lYUlbOT7wmPDhCyFJtQmabHS4BMicZOJk7Ubpth3gRvjm8CJmKp2GX
+         Jqy9d2vsPqqV45fOZtT9YkDo8NG2yHrbCGfhRrQSeeGImT/K3rr4sgqFjvNT/1Wznk8B
+         Qq7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687226611; x=1689818611;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3tAsvE1pinGCofjVRzp2jxO2djEmDqJJ+2E/EZW9AG4=;
+        b=YVcwZaET1tl3v6nYRD/lpn6325k/3BQszVUeeL4aw2P/Xf51QLLXn9xY3Eo2Oj8hLT
+         JMZVoF2IsQp0N3fbcx6+AUhRMk9Ft/VO9ZtrOTT6XwZaU0iyOiSSMhVoKgZ1dp2GtLDn
+         DAw5te2SPUzm03Hrzla2vm2Nh6Y8g1GNAsX8CSTTDjnvMxsJFnzGmdwta2fz1+YFJnGh
+         xns5wdSzF0XT6uBPFLAObCujJZu3VlevHOyemF7niZcxSutfCI5doi4GH71kxcTaMcuE
+         kPFOTqbPWNnACH4n26984+6WlxzzjhMSLxX6y/9asbeONomKIjDwhSIfUzWQ2hSJj/rs
+         Hz2A==
+X-Gm-Message-State: AC+VfDzAKgmIhCW9Xwd2Z3wImY0nzpK8GMvbVpjT1jr79qF4Htt436C3
+        m/3uNCYFZALklQKOGVZbSf7K7LhY0iF3+MTkclMSpSHgV8pVdw==
+X-Google-Smtp-Source: ACHHUZ57ck1uR4bUCzAJR5TyfajwxAXqwZisQ93voU2/UUCbAZbzg8uU1WuVKFBQ8r7eVK38E3Z27CWUzkIdWJs/shU=
+X-Received: by 2002:a17:903:22c4:b0:1b1:1168:656b with SMTP id
+ y4-20020a17090322c400b001b11168656bmr16246307plg.26.1687226611487; Mon, 19
+ Jun 2023 19:03:31 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB4312:EE_|BL3PR12MB6642:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ba2c6da-d230-441d-3594-08db71077f3d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dHLeoeMdGvqptykOGucCkl3/8P09lBB1D0e7OgUaZ+M3U989dfvWgIIuv0xSeKfaJVw9T4cijIVbdqt4YEUC5T1jgFs3foBD+QJd2TgaUVcQYDdaDK7HywrZyljXw5eBNK8TwB9WoDGzZrMWfyLQyGt/kNunZJJqUkzQXWROB6e678ulOl5HQgoGv5Pgjk/CBVfRizWxVCWWF1n8OmTC1BvYEg4S72BjjOhA4TbAmy5Sje+ZXQmLBf34VsE7SEAcfe83PNXM5ifFHBVsL940l4cniWxim6D67pSFfGtkszRp9I3Ohwaq4d6/0343bfi7Zzwi5JrbiSyBIkOeharFslQyRgdFJO0EAVyyOi5luRg6B5/jPyNHitaV9f1lkyY3wEkxm1t5JTDiTQUunj/ksDDAuF4d/5phBa5+GtxqxDCLoVtsoKz2iXG+247x9LHUC34stfhOwQoIC+4MYBz7AjLtJycM/rlzO0tDwEZppDOzwFOCi0dVsHgcQ/r0434I2dBAqwP7LW+nkex4x5kjOIRcBoIqVBoIvk+ws2gCQmhyqQA7nKjeFQ9s3CTNpWzOZ1Hz4YYkYJSMenvCze+4eM3EunJD/AeMtuCaeUs+fjIWnlq+1wIxFyNhIzLuk4eRDDj4iQm/Y3nrVAaFvlqiSQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4312.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(136003)(39860400002)(346002)(396003)(376002)(451199021)(8936002)(7416002)(66946007)(8676002)(66556008)(66476007)(26005)(186003)(6506007)(6512007)(36756003)(83380400001)(31686004)(41300700001)(38100700002)(5660300002)(6916009)(4326008)(316002)(558084003)(2616005)(6666004)(6486002)(31696002)(478600001)(2906002)(86362001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WFVpMmphRnkvWFNsd0k3YXpnaDRNN2hrTnBXOFJXUE12NDlONktJQlk3L2w3?=
- =?utf-8?B?L3FGYmNqc1V5bFUwV25DWmFqKzd4b1RZakJ4bEhLNHl2SkhMeElxbG9pUGtL?=
- =?utf-8?B?V3FCemU5SnB3L1JCVGtHdGdndURielpYNytxcGU5MkI4cnZpdnVjZGdvYjdk?=
- =?utf-8?B?MUV0Tnp6SmRValp1UFNJMVQ2K3d4M2JxeUFWU21IUGNKcnNOWU9vMjdVRmJ0?=
- =?utf-8?B?R2tTdi8yWU1GYWZBOWhnbnJTUEtzR2I4Rmc2QW4xMks1Z05sNzBuaHhJdW5N?=
- =?utf-8?B?bmplQzJvRXJEUGhEVjVadGNpc3l5WHRUVHJHR2ZCYngvNUlQWVhnSnl1aHor?=
- =?utf-8?B?RG13OWtqQUdBTWliWXYvc054U0Jtek9wYVNCOUlyS0IvcFBvM2JPa1g2TXBU?=
- =?utf-8?B?YU9mc1NaV0RxblYxOEpGTHdtZG5YRlNsbkFXUnlJNDBxV1JxNmsxR2J3T0w0?=
- =?utf-8?B?bDI0RVlzcWI0QlJVb3lta2FoLzVtdWhxMlNzSDBOUlZhY1pWUlZCTE1NVTI1?=
- =?utf-8?B?cTNYLzRtVmphUzhlRXNhMFdWbjF2S1cyNGhRY29CQ0FjNUlJODR6OXMvWjd6?=
- =?utf-8?B?ZS9UZGlRMW4wTisvZXZlSGpHaithU3Z5R1JiYTBsL28rbnc1ajV3MXRqdEZT?=
- =?utf-8?B?WTl0bVNPQVd3eXFEMEZUSEc3QmdMa25iU01DdkNrdUlncnQ4MWEzWWVsZmVm?=
- =?utf-8?B?anB3WCsyamYzVmJVM1NNSVlGNmJKa1p5cUpSVGtnUVhjTmxCbWx4cWpNckFq?=
- =?utf-8?B?TGllVmxJNEk2MysvWC8wVG5DOWlqQy9rSTFhYTlRR2U5VG5lU3FMNzEweCtI?=
- =?utf-8?B?YWdHMDNYR1U3eUhhRExHQ3AzbEx1WmZxYXFSKzNDUUsyVHhCT001ZTdBclVt?=
- =?utf-8?B?UXNMNkdUR24walpyemNlMnE1N1BySlRLRE42MHlPdTJ2R1RFMWpwT216TWZt?=
- =?utf-8?B?aFJFYXlMREJqUXpGNHI3bWF2L25aQjZYNDZCYXl2K2hGdzdwUnlFWWpwWjVo?=
- =?utf-8?B?akxVdmozZWRHTmgxZ0JFWjFmaVFXMDkwcERxYzIyL2hPWHN0L0F0cGc2UzNT?=
- =?utf-8?B?bnhhZzQ3V0w2MGtzVnRLVVVXUEs3WUlTUEYza0Q1ZVgzaEdKcXRXdDIxTW9i?=
- =?utf-8?B?RTBpZGtVSEs5ci82MHd3VnJXTVFEdU9xSjMvS1VTSjNkOTZ4UG1jTXBUTWV6?=
- =?utf-8?B?ZjRTd1dCZEFnMGpaZUNWWjBSck9GT2V6TlVHb0FhdGVnZDIvV3dRenR3aytx?=
- =?utf-8?B?d2VkY2VuU24wczNhWWtEMFR2QjZPalJEam9EODhCbnAxQWFQRnFqd1Vkd2pj?=
- =?utf-8?B?VDV3U0o4aE9jdGVjNFFRK1kyQ1F0VVZRUFh4N0xZSkR5OUM1RWN1OUNwbFRC?=
- =?utf-8?B?TktVc2lKQXB5bTRUZXdWK08wTGhuQWhZakdCQ2NLRG4wcmI0RmpDRGI4WTUv?=
- =?utf-8?B?SnUxOVQrdnFTdjhENWRyblZZOHFNMllleVYxVElRckpQNWZzakp2QXh0MzVE?=
- =?utf-8?B?RUxXNWNWT3JIUHB4OTdjVUovLzFnSUVTNjhOK1MrTEk4ODVtUk1IRHQ3dFk1?=
- =?utf-8?B?UWF6NjVNb2pKMUJvU05OSVd6enhVbDJPb0M3RllqNlVlbkpVQXFzVisyNDgz?=
- =?utf-8?B?ZXM2Ym4vZzF1NTN6SW9yWmp3VHZ4WDdVd1BMWHdRNEZseldkOUtqdndnaEE5?=
- =?utf-8?B?VDJLMmJwTmE2TEFhZXE3MGRNdU53VUFCRHFTZCtWTkZmVEw2bk5WQkxqV1g3?=
- =?utf-8?B?V1VKa0dEeGN4SzNjbmNHTmxhR3hKc0pxV0kyK3AveFNKZWl2UjFJWEpWV0NX?=
- =?utf-8?B?aTZ1cGVnRDg1dUJydi9VMGUwK1hnTTIwNS9qTHdkb25mWnhjN0EwMlpjbjQ0?=
- =?utf-8?B?dzZjZ1JzbmlxQThLaTRKZWl3dWFGRGpaQmVXNTg3OWpNenMwYmRYT0UxdlNI?=
- =?utf-8?B?SndFcmRaL3UxVHR1TWtlNTdBdDdHZHlvY0lNUFI3S0x0UzBHMFNnY0s0b0E5?=
- =?utf-8?B?ZUgxUy9Jb294YWIza0RzbHc0UWZPN1d3OUs1NFVaWGlQQmJNYmRGWU9ib1Nl?=
- =?utf-8?B?Qml0NUROZHZZYnlKTldDNTk4YUFKSmtuQkk2QWFGTjFXK21KYkU1bzNlaGpv?=
- =?utf-8?Q?2zK/86rOWQUSUk3/r3KPYDcBr?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ba2c6da-d230-441d-3594-08db71077f3d
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4312.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2023 20:55:21.8548
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 55JELX4S40ShzcJSeBGeG4ogZNnxz91wcnpgt1O293C3hwBLMUYWXlKwMjRQiCka8zlXYpO0Qr7B08hi5kBIBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6642
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <CALKa4bRo2DxK56pxDhqMJtr8C08OVsJ7KpVFyaELnttZaxgguQ@mail.gmail.com>
+ <CALKa4bQ6quTd6PoHCt9wQ-x6LznzmSz3Vbw1aOTc21USgdnctQ@mail.gmail.com>
+ <f622ae86-eead-b22c-10d1-c098754c34db@lockie.ca> <CALKa4bRr8z7FowCtZ-rSR0XMNEyoRbYsDu+Mswc-gs+s9Z0U=w@mail.gmail.com>
+ <d443a746-106f-4626-85a8-deefe318b46a@lockie.ca> <1bafa8c6-fc0f-2928-712d-c24dc0a6d18a@lwfinger.net>
+ <CALKa4bTJMQqhH5rDcReMWehdc1=Dj3J+danGToMpqe0hj6nNSg@mail.gmail.com> <1231d03d-722a-4282-8066-27dd8a516163@lwfinger.net>
+In-Reply-To: <1231d03d-722a-4282-8066-27dd8a516163@lwfinger.net>
+From:   Utkarsh Verma <utkarsh.naveen@gmail.com>
+Date:   Tue, 20 Jun 2023 07:33:20 +0530
+Message-ID: <CALKa4bSUR8UOjpue8nxkS61PkO6U6xygCdVqR-MMDH2w4XVwWg@mail.gmail.com>
+Subject: Re: RTL8822BE not working after suspend
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, James <bjlockie@lockie.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Deren,
+Hi,
 
-I have tested this patch with mt7921e on AMD's PHX APU (on Mayan board) against an internal 6.1.x kernel and can confirm that it works as expected.
+I just wanted to that after a couple of weeks of testing, I still
+couldn't get reliable behaviour. I installed the new Realtek drivers
+with the systems loading/unloading script. Sometimes my WiFi works
+after resume, sometimes it doesn't. I tried finding patterns, but
+couldn't. Please let me know how we can investigate this.
 
-Tested-by: Juan Martinez <juan.martinez@amd.com>
+Regards,
+Utkarsh
 
-Thanks,
-Juan
 
+On Wed, Jun 7, 2023 at 9:25=E2=80=AFPM Larry Finger <Larry.Finger@lwfinger.=
+net> wrote:
+>
+> On 6/6/23 20:04, Utkarsh Verma wrote:
+> > I have a small request from my side as a user. Please mention on the
+> > GitHub repo that these drivers are not in the kernel yet and will be
+> > merged around Linux 6.5. This is because I stumbled upon this repo a
+> > couple of times before as well, but I did not trust it enough and even
+> > thought that they might be older than the kernel's drivers.
+> >
+> > Additionally, is there any way we can have this working without the
+> > systems module loading/unloading shenanigans? I would love to see this
+> > work by default, as it does on Windows. I can help you with the driver
+> > testing if you wish.
+>
+> I could make it more clear in the README.md that the rtw88 repo has code =
+that
+> will be in a future kernel, but that information is available in the git =
+logs. I
+> cannot help your trust issues!
+>
+> The problems with your BIOS that require unloading and reloading the driv=
+er when
+> suspending or hibernating are found only in some HP or Lenovo laptops. It=
+ is
+> beyond my capability to fix the actual bug, thus we give you a workaround=
+. What
+> does the Windows driver actually do to overcome this problem? As none of =
+us have
+> seen that code, we have no idea!!
+>
+> What harm is there in running the unload/restore script? On my laptop, it=
+ is
+> totally transparent except for a few extra lines in the log.
+>
+> Larry
+>
