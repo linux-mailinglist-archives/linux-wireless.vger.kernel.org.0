@@ -2,63 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A37BA737131
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 18:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F85273717B
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 18:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232313AbjFTQIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 12:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46980 "EHLO
+        id S229596AbjFTQ0w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 12:26:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjFTQIe (ORCPT
+        with ESMTP id S229638AbjFTQ0u (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 12:08:34 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5548A1AC
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 09:08:33 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-666e6541c98so4024927b3a.2
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 09:08:33 -0700 (PDT)
+        Tue, 20 Jun 2023 12:26:50 -0400
+Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD4D11985
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 09:26:25 -0700 (PDT)
+Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-55e163e93d5so3150222eaf.3
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 09:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1687277313; x=1689869313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UugMBbrXbpNr6FVTWuQghLjlVmb0aWMjn3jdyW7ePjo=;
-        b=WMjAvrao4hgRMU34vzwb2970KqX5vIyTpUo+S+xXY4Z2Qpy87ncjWyEU+YJRHWd0hd
-         IQk0Z5AHZIvNcEU6dfCfUQDcbBTU4Q8wobx5uq4id0xhbLs9ffGEYf+UFdvqaSSgGprq
-         pRuSikgFbvbpRJR8S2JoUZDXAIsF7Nymdeoqw=
+        d=chromium.org; s=google; t=1687278385; x=1689870385;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AF/L5yTpy3GASMY2xxrkK1Ed/a2eXFLzC2S7HBF7534=;
+        b=oVhQ0UkmxZZyrKQmcvUD5ToGLp+FJemwQaa7j1M/ul9kM2FDKNHRvAac83NWQp13Uq
+         AL+so0QJCyxb/lSono99ixvwrBsH5YHQ/Lq46Aj1j+JbMGTWrQL/DyBPCnfck/FE+CNU
+         LhfUoXU2eZ4sPtcqJZypAlDCCi6lz2xKPpBjc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687277313; x=1689869313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UugMBbrXbpNr6FVTWuQghLjlVmb0aWMjn3jdyW7ePjo=;
-        b=QRPai8X4MPMukMPKDiMhiGMUq57JPGAOAfNZ9eK1BIUjJeGQUGopSx4raJNtOPUlf4
-         1w2KSDFzqODetMWGfBXPKisiEltVgje8uTXS8EDgRrkimCt0Zzr/44ihbHRK0FO+JSXA
-         V5Gb1OScvkkc6hj/BplFfAnwHLy+waniEzRzC3EEJGgSsX4zD0XTgU6+AldZ0lFv9QmG
-         cOnMk2ZGNCqBhMjqGsatQ3k/tO9K53pJWXzou3cR4/LJW5aUljKM9c4s/Zy8sU+sINP9
-         x26l6kg6Ot+FEfv7uUiN/0fJLxeocufChE2kSWMouCxS3dnONuErSjfkzQCILQFqLDVn
-         7TsQ==
-X-Gm-Message-State: AC+VfDztCq4aI/pAaWykmKNVZYzFJp8VYe3YVa+OotyHnbhgBgL3cqj8
-        lwlK89riczA2BljP+JtzoBqEurC9a72+9sIDDK4=
-X-Google-Smtp-Source: ACHHUZ6mi8F7FWDY7IM9gn8O+AgLQ7ydOQG7OZv28ca4Vx6VFW18aW+f0EnWxCDhJ/IN5g9HOX1mSg==
-X-Received: by 2002:a05:6a00:a86:b0:666:7ec0:22d7 with SMTP id b6-20020a056a000a8600b006667ec022d7mr19176336pfl.24.1687277312794;
-        Tue, 20 Jun 2023 09:08:32 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687278385; x=1689870385;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AF/L5yTpy3GASMY2xxrkK1Ed/a2eXFLzC2S7HBF7534=;
+        b=DzmYifupAL2xK9piR2XFLEzRAOFaYL2FqkreLwnvc+bVZ6h86U+UaCae/jDOXt0P9E
+         OscwpoRH+GuhxaizVj9MBy+PrNigt9XNoh8c7oh8V7/lt4fo9PB6LEnUeJ7Kq45R4WBT
+         Uzq3v8+788aPv6sKikJTTNLhVejc7hbaXMhiiyTK9qkL8K9IBeOJkPRgayRqJuGCen6a
+         hJmmdzFF5nIxZWewxTr+Rpr80Zb8E9SFMwSAByHM95qyohMo1w6Vuk5anK95YPe0+bbX
+         jWCozf/R+47UsRI1I/csqwlwQD//6UYf8QQsInvIx8FItomE000BziCUHaakEcrzsVsF
+         N4mA==
+X-Gm-Message-State: AC+VfDyefg3Ef++AnABDEB2PmFY/tdAh3CmdrC5mbVt5syZVrFWTUKUF
+        B6oXI7WE+6IY8qqiPUFEm1Cxsw==
+X-Google-Smtp-Source: ACHHUZ672/h85yQRWM2xlwgV9j8ZMZD36kiIaQ0Bsz+twb7ZNfFSJaUTqfj8XfO7PVIsWn6kmDhNrg==
+X-Received: by 2002:aca:903:0:b0:39e:a493:65fc with SMTP id 3-20020aca0903000000b0039ea49365fcmr11860962oij.57.1687278385153;
+        Tue, 20 Jun 2023 09:26:25 -0700 (PDT)
 Received: from google.com ([2620:15c:9d:2:64b6:fe8c:2779:6abf])
-        by smtp.gmail.com with ESMTPSA id d17-20020aa78151000000b0066a2e8431a0sm391127pfn.183.2023.06.20.09.08.31
+        by smtp.gmail.com with ESMTPSA id nt18-20020a17090b249200b0025ec54be16asm7229636pjb.2.2023.06.20.09.26.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 09:08:32 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 09:08:30 -0700
+        Tue, 20 Jun 2023 09:26:24 -0700 (PDT)
+Date:   Tue, 20 Jun 2023 09:26:22 -0700
 From:   Brian Norris <briannorris@chromium.org>
 To:     Dmitry Antipov <dmantipov@yandex.ru>
 Cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
         Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] [v2] wifi: mwifiex: avoid strlcpy() and use
- strscpy() where appropriate
-Message-ID: <ZJHO/pa7JB49j3rN@google.com>
+Subject: Re: [PATCH 2/2] [v2] wifi: mwifiex: fix fortify warningg
+Message-ID: <ZJHTLhQNM4oj40Zn@google.com>
 References: <20230620100803.519926-1-dmantipov@yandex.ru>
+ <20230620100803.519926-2-dmantipov@yandex.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230620100803.519926-1-dmantipov@yandex.ru>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230620100803.519926-2-dmantipov@yandex.ru>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -69,68 +71,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jun 20, 2023 at 01:07:36PM +0300, Dmitry Antipov wrote:
-> Prefer 'strscpy()' over unsafe 'strlcpy()' and 'strcpy()' in
-> 'mwifiex_init_hw_fw()' and 'mwifiex_register_dev()', respectively.
-> All other calls to 'strcpy(adapter->name, ...)' should be safe
-> because the firmware name is a compile-time constant of known
-> length and so guaranteed to fit into a destination buffer.
+On Tue, Jun 20, 2023 at 01:07:37PM +0300, Dmitry Antipov wrote:
+> When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+> I've noticed the following:
+> 
+> In function ‘fortify_memcpy_chk’,
+>     inlined from ‘mwifiex_construct_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:765:3,
+>     inlined from ‘mwifiex_send_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:856:6:
+> ./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+> declared with attribute warning: detected read beyond size of field (2nd parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   529 |                         __read_overflow2_field(q_size_field, size);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> The compiler actually complains on:
+> 
+> memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+> 	sizeof(mgmt->u.action.u.tdls_discover_resp));
+> 
+> and it happens because the fortification logic interprets this
+> as an attempt to overread 1-byte 'u.action.category' member of
+> 'struct ieee80211_mgmt'. To silence this warning, it's enough
+> to pass an address of 'u.action' itself instead of an address
+> of its first member.
 > 
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 > ---
->  drivers/net/wireless/marvell/mwifiex/main.c | 11 +++--------
->  drivers/net/wireless/marvell/mwifiex/sdio.c |  4 +++-
->  2 files changed, 6 insertions(+), 9 deletions(-)
+>  drivers/net/wireless/marvell/mwifiex/tdls.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-> index ea22a08e6c08..64512b00e8b5 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/main.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
-> @@ -724,14 +724,9 @@ static int mwifiex_init_hw_fw(struct mwifiex_adapter *adapter,
->  	/* Override default firmware with manufacturing one if
->  	 * manufacturing mode is enabled
->  	 */
-> -	if (mfg_mode) {
-> -		if (strlcpy(adapter->fw_name, MFG_FIRMWARE,
-> -			    sizeof(adapter->fw_name)) >=
-> -			    sizeof(adapter->fw_name)) {
-> -			pr_err("%s: fw_name too long!\n", __func__);
-> -			return -1;
-> -		}
-> -	}
-> +	if (mfg_mode)
-> +		strscpy(adapter->fw_name, MFG_FIRMWARE,
-> +			sizeof(adapter->fw_name));
+> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> index 97bb87c3676b..5a2941965757 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> @@ -762,7 +762,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+>  		mgmt->u.action.u.tdls_discover_resp.capability =
+>  							     cpu_to_le16(capab);
+>  		/* move back for addr4 */
+> -		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+> +		memmove(pos + ETH_ALEN, &mgmt->u.action,
+>  			sizeof(mgmt->u.action.u.tdls_discover_resp));
 
-I'm not sure how a compile-time constant makes this "unsafe" at all, but
-if you feel the need to change this, then sure, this works too.
+This invocation seems a bit suspect, as it uses a 'sizeof' of a field
+that doesn't match the actual pointer (it's off by 1 byte), but that's
+not your fault. I suppose it's no wonder we had so many problems with
+TDLS support on mwifiex...
 
->  
->  	if (req_fw_nowait) {
->  		ret = request_firmware_nowait(THIS_MODULE, 1, adapter->fw_name,
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> index a24bd40dd41a..a5d3128d7922 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> @@ -2483,7 +2483,9 @@ static int mwifiex_register_dev(struct mwifiex_adapter *adapter)
->  		if ((val & card->reg->host_strap_mask) == card->reg->host_strap_value)
->  			firmware = card->firmware_sdiouart;
->  	}
-> -	strcpy(adapter->fw_name, firmware);
-> +	ret = strscpy(adapter->fw_name, firmware, sizeof(adapter->fw_name));
-
-FWIW, this 'firmware' pointer is all derived from compile-time constants
-too. So the commit messages seems misleading ("all other calls [...]
-should be safe" --> well, *all* calls are safe). But the changes are all
-fine, so:
+Anyway, the refactor looks fine:
 
 Reviewed-by: Brian Norris <briannorris@chromium.org>
 
-> +	if (ret < 0)
-> +		return ret;
->  
->  	if (card->fw_dump_enh) {
->  		adapter->mem_type_mapping_tbl = generic_mem_type_map;
+>  		/* init address 4 */
+>  		eth_broadcast_addr(pos);
 > -- 
 > 2.41.0
 > 
