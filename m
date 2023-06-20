@@ -2,136 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1285B7370AD
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 17:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37BA737131
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 18:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231974AbjFTPjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 11:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59808 "EHLO
+        id S232313AbjFTQIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 12:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjFTPjW (ORCPT
+        with ESMTP id S229519AbjFTQIe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 11:39:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982C191;
-        Tue, 20 Jun 2023 08:39:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B916612DF;
-        Tue, 20 Jun 2023 15:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65912C433C8;
-        Tue, 20 Jun 2023 15:39:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687275560;
-        bh=eh34y9JToGjs/7tQpZPrFocGaATF0555w4p+49MYf6I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BChDFjZiWdpXuqeqasgk2boOiqjtppRkgXuquTvIS7LVqDZY7gCCSAcUsDL7RE6qk
-         dL/oIyufJi7RFC3c58IfogutCWO72JdOcfN9fVjrt3UTLWIqa2pnFgA6FJSphu1ueg
-         z7tSuJhyX8tTDSCa29z9nXZtfBp1REMty8YJjGxpdOxfnC4icpAjyx2hEXIp0mYOnQ
-         ab906KaL1s0MOlgX7shSm1SCOplTvhRtuvwZpTQIoIKUAEshyWBChMc4hXy2YSlq+R
-         M5dhBkPvYZmRffUG3qsa6RT5P2sRHMwfrW5N5bcyC0CFwpau0zNisO0bSKP53O9mvr
-         pjZRXwa2lBxnA==
-Date:   Tue, 20 Jun 2023 08:39:18 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Jesper Dangaard Brouer <jbrouer@redhat.com>
-Cc:     brouer@redhat.com, Alexander Duyck <alexander.duyck@gmail.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Jonathan Lemon <jonathan.lemon@gmail.com>
-Subject: Re: Memory providers multiplexing (Was: [PATCH net-next v4 4/5]
- page_pool: remove PP_FLAG_PAGE_FRAG flag)
-Message-ID: <20230620083918.2e3dbade@kernel.org>
-In-Reply-To: <6909d28b-0ffc-a02a-235b-7bdce594965d@redhat.com>
-References: <20230612130256.4572-1-linyunsheng@huawei.com>
-        <20230612130256.4572-5-linyunsheng@huawei.com>
-        <20230614101954.30112d6e@kernel.org>
-        <8c544cd9-00a3-2f17-bd04-13ca99136750@huawei.com>
-        <20230615095100.35c5eb10@kernel.org>
-        <CAKgT0Uc6Xoyh3Edgt+83b+HTM5j4JDr3fuxcyL9qDk+Wwt9APg@mail.gmail.com>
-        <908b8b17-f942-f909-61e6-276df52a5ad5@huawei.com>
-        <CAKgT0UeZfbxDYaeUntrQpxHmwCh6zy0dEpjxghiCNxPxv=kdoQ@mail.gmail.com>
-        <72ccf224-7b45-76c5-5ca9-83e25112c9c6@redhat.com>
-        <20230616122140.6e889357@kernel.org>
-        <eadebd58-d79a-30b6-87aa-1c77acb2ec17@redhat.com>
-        <20230619110705.106ec599@kernel.org>
-        <6909d28b-0ffc-a02a-235b-7bdce594965d@redhat.com>
+        Tue, 20 Jun 2023 12:08:34 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5548A1AC
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 09:08:33 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-666e6541c98so4024927b3a.2
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 09:08:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1687277313; x=1689869313;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UugMBbrXbpNr6FVTWuQghLjlVmb0aWMjn3jdyW7ePjo=;
+        b=WMjAvrao4hgRMU34vzwb2970KqX5vIyTpUo+S+xXY4Z2Qpy87ncjWyEU+YJRHWd0hd
+         IQk0Z5AHZIvNcEU6dfCfUQDcbBTU4Q8wobx5uq4id0xhbLs9ffGEYf+UFdvqaSSgGprq
+         pRuSikgFbvbpRJR8S2JoUZDXAIsF7Nymdeoqw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687277313; x=1689869313;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UugMBbrXbpNr6FVTWuQghLjlVmb0aWMjn3jdyW7ePjo=;
+        b=QRPai8X4MPMukMPKDiMhiGMUq57JPGAOAfNZ9eK1BIUjJeGQUGopSx4raJNtOPUlf4
+         1w2KSDFzqODetMWGfBXPKisiEltVgje8uTXS8EDgRrkimCt0Zzr/44ihbHRK0FO+JSXA
+         V5Gb1OScvkkc6hj/BplFfAnwHLy+waniEzRzC3EEJGgSsX4zD0XTgU6+AldZ0lFv9QmG
+         cOnMk2ZGNCqBhMjqGsatQ3k/tO9K53pJWXzou3cR4/LJW5aUljKM9c4s/Zy8sU+sINP9
+         x26l6kg6Ot+FEfv7uUiN/0fJLxeocufChE2kSWMouCxS3dnONuErSjfkzQCILQFqLDVn
+         7TsQ==
+X-Gm-Message-State: AC+VfDztCq4aI/pAaWykmKNVZYzFJp8VYe3YVa+OotyHnbhgBgL3cqj8
+        lwlK89riczA2BljP+JtzoBqEurC9a72+9sIDDK4=
+X-Google-Smtp-Source: ACHHUZ6mi8F7FWDY7IM9gn8O+AgLQ7ydOQG7OZv28ca4Vx6VFW18aW+f0EnWxCDhJ/IN5g9HOX1mSg==
+X-Received: by 2002:a05:6a00:a86:b0:666:7ec0:22d7 with SMTP id b6-20020a056a000a8600b006667ec022d7mr19176336pfl.24.1687277312794;
+        Tue, 20 Jun 2023 09:08:32 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:64b6:fe8c:2779:6abf])
+        by smtp.gmail.com with ESMTPSA id d17-20020aa78151000000b0066a2e8431a0sm391127pfn.183.2023.06.20.09.08.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jun 2023 09:08:32 -0700 (PDT)
+Date:   Tue, 20 Jun 2023 09:08:30 -0700
+From:   Brian Norris <briannorris@chromium.org>
+To:     Dmitry Antipov <dmantipov@yandex.ru>
+Cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] [v2] wifi: mwifiex: avoid strlcpy() and use
+ strscpy() where appropriate
+Message-ID: <ZJHO/pa7JB49j3rN@google.com>
+References: <20230620100803.519926-1-dmantipov@yandex.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230620100803.519926-1-dmantipov@yandex.ru>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 20 Jun 2023 17:12:41 +0200 Jesper Dangaard Brouer wrote:
-> > The workaround solution I had in mind would be to create a narrower API
-> > for just data pages. Since we'd need to sprinkle ifs anyway, pull them
-> > up close to the call site. Allowing to switch page pool for a
-> > completely different implementation, like the one Jonathan coded up for
-> > iouring. Basically
-> > 
-> > $name_alloc_page(queue)
-> > {
-> > 	if (queue->pp)
-> > 		return page_pool_dev_alloc_pages(queue->pp);
-> > 	else if (queue->iouring..)
-> > 		...
-> > }  
+On Tue, Jun 20, 2023 at 01:07:36PM +0300, Dmitry Antipov wrote:
+> Prefer 'strscpy()' over unsafe 'strlcpy()' and 'strcpy()' in
+> 'mwifiex_init_hw_fw()' and 'mwifiex_register_dev()', respectively.
+> All other calls to 'strcpy(adapter->name, ...)' should be safe
+> because the firmware name is a compile-time constant of known
+> length and so guaranteed to fit into a destination buffer.
 > 
-> Yes, this is more the direction I'm thinking.
-> In many cases, you don't need this if-statement helper in the driver, as
-> driver RX side code will know the API used upfront.
-
-Meaning that the driver "knows" if it's in the XDP, AF_XDP, iouring 
-or "normal" Rx path?  I hope we can avoid extra code in the driver
-completely, for data pages.
-
-> The TX completion side will need this kind of multiplexing return
-> helper, to return the pages to the correct memory allocator type (e.g.
-> page_pool being one).  See concept in [1] __xdp_return().
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/main.c | 11 +++--------
+>  drivers/net/wireless/marvell/mwifiex/sdio.c |  4 +++-
+>  2 files changed, 6 insertions(+), 9 deletions(-)
 > 
-> Performance wise, function pointers are slow due to RETPOLINE, but
-> switch-case statements (below certain size) becomes a jump table, which
-> is fast.  See[1].
+> diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+> index ea22a08e6c08..64512b00e8b5 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/main.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.c
+> @@ -724,14 +724,9 @@ static int mwifiex_init_hw_fw(struct mwifiex_adapter *adapter,
+>  	/* Override default firmware with manufacturing one if
+>  	 * manufacturing mode is enabled
+>  	 */
+> -	if (mfg_mode) {
+> -		if (strlcpy(adapter->fw_name, MFG_FIRMWARE,
+> -			    sizeof(adapter->fw_name)) >=
+> -			    sizeof(adapter->fw_name)) {
+> -			pr_err("%s: fw_name too long!\n", __func__);
+> -			return -1;
+> -		}
+> -	}
+> +	if (mfg_mode)
+> +		strscpy(adapter->fw_name, MFG_FIRMWARE,
+> +			sizeof(adapter->fw_name));
+
+I'm not sure how a compile-time constant makes this "unsafe" at all, but
+if you feel the need to change this, then sure, this works too.
+
+>  
+>  	if (req_fw_nowait) {
+>  		ret = request_firmware_nowait(THIS_MODULE, 1, adapter->fw_name,
+> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> index a24bd40dd41a..a5d3128d7922 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+> @@ -2483,7 +2483,9 @@ static int mwifiex_register_dev(struct mwifiex_adapter *adapter)
+>  		if ((val & card->reg->host_strap_mask) == card->reg->host_strap_value)
+>  			firmware = card->firmware_sdiouart;
+>  	}
+> -	strcpy(adapter->fw_name, firmware);
+> +	ret = strscpy(adapter->fw_name, firmware, sizeof(adapter->fw_name));
+
+FWIW, this 'firmware' pointer is all derived from compile-time constants
+too. So the commit messages seems misleading ("all other calls [...]
+should be safe" --> well, *all* calls are safe). But the changes are all
+fine, so:
+
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+
+> +	if (ret < 0)
+> +		return ret;
+>  
+>  	if (card->fw_dump_enh) {
+>  		adapter->mem_type_mapping_tbl = generic_mem_type_map;
+> -- 
+> 2.41.0
 > 
-> [1] https://elixir.bootlin.com/linux/v6.4-rc7/source/net/core/xdp.c#L377
-
-SG!
-
-> Regarding room in "struct page", notice that page->pp_magic will have
-> plenty room for e.g. storing xdp_mem_type or even xdp_mem_info (which
-> also contains an ID).
-
-I was worried about fitting the DMA address, if the pages code from user
-space.
