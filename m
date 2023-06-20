@@ -2,265 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF403736690
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 10:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7F37366C4
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 10:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232009AbjFTIos (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 04:44:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49430 "EHLO
+        id S231620AbjFTI6L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 04:58:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232032AbjFTIor (ORCPT
+        with ESMTP id S231748AbjFTI6H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 04:44:47 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2BC7E71;
-        Tue, 20 Jun 2023 01:44:45 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b52e55f45bso18726815ad.2;
-        Tue, 20 Jun 2023 01:44:45 -0700 (PDT)
+        Tue, 20 Jun 2023 04:58:07 -0400
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2043.outbound.protection.outlook.com [40.107.12.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4331708;
+        Tue, 20 Jun 2023 01:57:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HSIx/PAIIU7HuhVAsC8IEmVEPaNFl9MFQRWQpb2wO3ER9Clo+Bk5fgvr6wL3LMdXY+aHq3dG0ek1ypThv/tfggzMXPh6xq5imlSJ+8g0JVPwBggU+nJFAtlY9FQcYugkVdtevQTbBomu0qhtTasYcciz+TIzyUKWCHqtuXIsv7jZYMBuNV5CWA64kv4h0bsygELm7Uiiax83wMRKIQ/m2hZEiJOF/hTHrE9CBB2hQ8mZcygDxyr7xmVajY3uVoXMC58RGyAI9CYHg/5ilIBFpkUjlrVxiEnDkKiM2RoeoVcfuKfgFEW/4sLErySraE5I6xqusni3/WlZYA7/SUudDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fC/Jb6R30cGYs/J87811RrpiPE2r2t7JMNktTYK0uik=;
+ b=HBufZU7LrlXRMYzQivhdqzfRHZdhPsppZ/4mdOyKozkKRhT282+qsbRdofLVIcrCfZQ99P1aV5nVUNb9MFk4lve9W+vdOyTadpOTyJSDEfFy1B/c8ZnTB4O9dzdLKP4CJ9xkYQvGRy0XjT096MzFzJp6df8G7H19xRNwdkPrMvoGySTqgktcY/hLtCMRYFNyuyyMzRATPYl+eaoN9Dmi/Xsd83kYLUsjLXmpzDYHX7cfQ0ixxx6BcwI8RvCfzqtiiEi/BNY6MjGV9oOX4+MOD/WI7xoi29JqicMk9d4C7ETuaVZOHIm4wbfjNl4uNtVILa9SEUaQkXc1xjMRlrFmVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.6.166.170) smtp.rcpttodomain=davemloft.net smtp.mailfrom=softathome.com;
+ dmarc=bestguesspass action=none header.from=softathome.com; dkim=none
+ (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687250685; x=1689842685;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iiVO44Bmw/slZHbXkcnh+CmEPPQRB8XJKAU2tOpfE5U=;
-        b=qCfR9MZHqM//GGBuxOJ7ZDyLXE4JTuNEJUxeEuq4SO0HJzqkMjmaq5W0pOZQzOAbUu
-         IsWuLkMynS3YE83w9CbyF5uOCmSugxH69jKXdVzOIbk0vhEyKzj329LX+pP4qIGT4CnU
-         x8oJ/1D2Me/Fh6EsExHqj8LZfc7chjqSU1m4hsAck3ZPXGZA62XyVMWkrtEYgDCeaSAS
-         JHc8Fn0MT8Au8zafW64rHozUul3sKPXOVlrg7MM3hKagxlIHeTG/50yvu0nF/GH1bizx
-         iwXsPqhb7xU7zAazdxSonCRA+HO3wCpz7l4ZIS7Is9EENFT90rOnbO7iLCm8rX2R6kHz
-         NcpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687250685; x=1689842685;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iiVO44Bmw/slZHbXkcnh+CmEPPQRB8XJKAU2tOpfE5U=;
-        b=V/dfV7Gl0TA3sc2DxY36wWI3TpTvwIGDbRfdDIVTENiStDrhjWflokwpnR8DcPw5eg
-         HlTZqlJaV4gzt0o1/2+FVi3DTKHm10WZto38HoQtY9N338PUjT9xSL9jb2u2zgFIcg62
-         EHxqmRLd8qRqZ4b/SXnLW4C9J1NAY/tEw/1De+wiHTnY0H2cHLIs6oS6xYnxQL4GKM3X
-         7FxVMglOf2aKSrt1exhDHUbyriGRv/WIvcfiN/D+094Qc97OcaMIoAFVoD2twg4fPSk0
-         CZDQt9JGVezeyPz1RIdvweS6c93B/RZJ20oNJ4HNCjEy+4QOFPhrd1EWQPjK6UYnqlIX
-         lnyg==
-X-Gm-Message-State: AC+VfDyTytN2YuIgpf2PuroOgCvuqEOKCYXCWqt8WMCx6rzzmQw9E46+
-        iKTkH1dsHkzsunmiHdd3gZJAJLnvzHX4pw==
-X-Google-Smtp-Source: ACHHUZ4NC4rJxY6xrn1wBTK/AvuKpYmOlJbienbRZZETbZpig9EBQEMgILuK8jYFTNbR9tfrGu9HOQ==
-X-Received: by 2002:a17:903:278e:b0:1b3:cd90:79bb with SMTP id jw14-20020a170903278e00b001b3cd9079bbmr6347466plb.25.1687250685066;
-        Tue, 20 Jun 2023 01:44:45 -0700 (PDT)
-Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id m14-20020a170902db0e00b001aad714400asm1069392plx.229.2023.06.20.01.44.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jun 2023 01:44:44 -0700 (PDT)
-Message-ID: <dbfa25f5-64c8-5574-4f5d-0151ba95d232@gmail.com>
-Date:   Tue, 20 Jun 2023 15:44:34 +0700
+ d=softathome1.onmicrosoft.com; s=selector1-softathome1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fC/Jb6R30cGYs/J87811RrpiPE2r2t7JMNktTYK0uik=;
+ b=RDWQLvklk97tdWaW8DdQMGf/T+pGpQ4vi8MLsaEZA+QbmVYI1iwgI+DSUeFx/LLO6B7CqtftchkDDB2GsyZmOa+UAt9qf+ssynHLLUqPzCKDSfHrPwXFZybuT3KWTk/+JIMdOGmfGg7hOz6QbQBUvfRPDQUo49vClnAnInnqAJ6kZuEjPU45ANpNK/LtLTyG9nl7zzj04r6L6cE0Gn6Do7uhh8xjgYMhX6dRPZpLunlsQ5ktcHK96gCwumlCAL/mEGDPXv1jqvDDB4W77vHRqcbo6RzbV29fiFPxHX3BYxkyWoR8fH7Me8lWSe6aGNmVkL70rAb4uFguAByb3J7Raw==
+Received: from MR2P264CA0051.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:31::15)
+ by PAYP264MB3439.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:126::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Tue, 20 Jun
+ 2023 08:57:55 +0000
+Received: from MR2FRA01FT002.eop-fra01.prod.protection.outlook.com
+ (2603:10a6:500:31:cafe::7) by MR2P264CA0051.outlook.office365.com
+ (2603:10a6:500:31::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37 via Frontend
+ Transport; Tue, 20 Jun 2023 08:57:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.6.166.170)
+ smtp.mailfrom=softathome.com; dkim=none (message not signed)
+ header.d=none;dmarc=bestguesspass action=none header.from=softathome.com;
+Received-SPF: Pass (protection.outlook.com: domain of softathome.com
+ designates 149.6.166.170 as permitted sender)
+ receiver=protection.outlook.com; client-ip=149.6.166.170;
+ helo=proxy.softathome.com; pr=C
+Received: from proxy.softathome.com (149.6.166.170) by
+ MR2FRA01FT002.mail.protection.outlook.com (10.152.50.92) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6500.27 via Frontend Transport; Tue, 20 Jun 2023 08:57:53 +0000
+Received: from sah1lpt481.softathome.com (unknown [192.168.75.142])
+        by proxy.softathome.com (Postfix) with ESMTPSA id C0A811FF1E;
+        Tue, 20 Jun 2023 10:57:53 +0200 (CEST)
+From:   "quentin.feraboli" <quentin.feraboli@softathome.com>
+To:     johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quentin.feraboli@softathome.com
+Subject: [PATCH 1/1] wifi: cfg80211: Allow multiple userpsace applications to receive the same registered management frame.
+Date:   Tue, 20 Jun 2023 10:57:51 +0200
+Message-Id: <20230620085751.31329-1-quentin.feraboli@softathome.com>
+X-Mailer: git-send-email 2.17.1
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MR2FRA01FT002:EE_|PAYP264MB3439:EE_
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To:     M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Florian Klink <flokli@flokli.de>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: iosm: detected field-spanning write for XMM7360
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+X-MS-Office365-Filtering-Correlation-Id: 3ed9ebe7-94b4-40c0-325c-08db716c6f28
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: WFvu8aFI1n8xathtM16Fm8GE6Qzfkhs+o0yLxo/NJkVqxGnkFuMwYySQymtNQzbARsjlGsA2iJWbDebRIZabQFE8F3DBrjB3tpEIS6l8DrYJiRNebVavVbE1y/UHp92N/lncvNQRnIP/HEwm4DPj3zitS3lHrk+wtDvHwyhDMDlSyJvI1nGAq1LXE/i/LFnkXJYW7oH0PA/GGM7lCVemswDPbBYwG3H9ZcQ+LFqjJHeQdYWxFbWgNaTglqilX+CEWmNek/qma+eAgY2GD+0XVpOJ8RpFbjZ2+Au4KWhd1ZnpgZ2gVC6ZyGUEntnPBwjtyy1AidJrWbKlD/nr74tSMhW23Kml2c7TR4fW04NHsc4lp2FS2+pTbBqTTtCQspBoWE5+qYK8eNS0ptSgxHWCrDo0NTFfDJG29ueBnvcc1sImlARVHmqG7Qk0N4f58yVdliHwjvTKUmP0GK/wjspRQ4YyI2819ixNxn8iK9uIzvIm51XwPigzicX5UyTmcYO2s4MCRDpCcTv6W18WvIho39hbq9sOpMv7Giu5QGaq9ajVcL32YsnaAT2XrwNYFyU70g3FqFPEoP1G/O5qQNnjqpohsA6v5jORBcY5tvzaeSk+JQfgpeSigdvBG3YR2gUSS6OtYLN9wX19NwUs0NlXkqSNeoSfg0kTCH2hnhSv4DbYeFTPYpIIwf5qKMkxgwJPQnyumPb1crsOM/LjTJBFNTE1T+MnqlXH8GOzgeTphinmnHpFuiDJFWPRgxbMxQNW87y46dD5ZaU53buGg11ylA==
+X-Forefront-Antispam-Report: CIP:149.6.166.170;CTRY:FR;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:proxy.softathome.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39850400004)(346002)(396003)(136003)(376002)(451199021)(36840700001)(40470700004)(46966006)(40460700003)(2906002)(186003)(7696005)(82310400005)(82740400003)(356005)(2616005)(81166007)(83380400001)(82960400001)(426003)(1076003)(26005)(336012)(6266002)(47076005)(36860700001)(41300700001)(86362001)(478600001)(6966003)(316002)(40480700001)(70586007)(70206006)(8676002)(8936002)(36756003)(5660300002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: softathome.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2023 08:57:53.7587
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ed9ebe7-94b4-40c0-325c-08db716c6f28
+X-MS-Exchange-CrossTenant-Id: aa10e044-e405-4c10-8353-36b4d0cce511
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=aa10e044-e405-4c10-8353-36b4d0cce511;Ip=[149.6.166.170];Helo=[proxy.softathome.com]
+X-MS-Exchange-CrossTenant-AuthSource: MR2FRA01FT002.eop-fra01.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAYP264MB3439
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Currently, only one application can listen to a management frame type.
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
+Signed-off-by: quentin.feraboli <quentin.feraboli@softathome.com>
+---
+ net/wireless/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Hey!
->=20
-> I'm using Linux 6.3.0 on x86_64. Distro is NixOS.
->=20
-> I'm using the XMM7360 WWAN device:
->=20
-> 05:00.0 Wireless controller [0d40]: Intel Corporation XMM7360 LTE Advan=
-ced Modem (rev 01)
->=20
-> As discussed in https://gitlab.freedesktop.org/mobile-broadband/ModemMa=
-nager/-/issues/612, the device currently needs some manual babysitting du=
-e to broken suspend/resume, and some (slightly patched) python script sen=
-ding commands to `/dev/wwan0xmmrpc0`:
->=20
-> ```
-> echo 1 > /sys/bus/pci/devices/0000:05:00.0/reset
-> echo 1 > /sys/bus/pci/devices/0000:05:00.0/remove
-> echo 1 > /sys/bus/pci/rescan
-> # wait
-> open_xdatachannel.py --apn "internet"
-> ```
->=20
->=20
-> I saw the following messages in dmesg:
-> ```
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:01: Allocating resources
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:02: Allocating resources
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:03: Allocating resources
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:04: Allocating resources
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:05: Allocating resources
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:06: Allocating resources
-> [Sa Jun 17 20:09:42 2023] pci_bus 0000:07: Allocating resources
-> [Sa Jun 17 20:09:49 2023] iosm 0000:05:00.0: msg timeout
-> [Sa Jun 17 20:09:49 2023] iosm 0000:05:00.0: msg timeout
-> [Sa Jun 17 20:09:49 2023] pci 0000:05:00.0: Removing from iommu group 1=
-5
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: [8086:7360] type 00 class 0=
-x0d4000
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: reg 0x10: [mem 0xfd500000-0=
-xfd500fff 64bit]
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: reg 0x18: [mem 0xfd501000-0=
-xfd5013ff 64bit]
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: PME# supported from D0 D3ho=
-t D3cold
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: Adding to iommu group 15
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: BAR 0: assigned [mem 0xfd50=
-0000-0xfd500fff 64bit]
-> [Sa Jun 17 20:09:52 2023] pci 0000:05:00.0: BAR 2: assigned [mem 0xfd50=
-1000-0xfd5013ff 64bit]
-> [Sa Jun 17 20:10:09 2023] ------------[ cut here ]------------
-> [Sa Jun 17 20:10:09 2023] memcpy: detected field-spanning write (size 1=
-6) of single field "&adth->dg" at drivers/net/wwan/iosm/iosm_ipc_mux_code=
-c.c:852 (size 8)
-> [Sa Jun 17 20:10:09 2023] WARNING: CPU: 11 PID: 0 at drivers/net/wwan/i=
-osm/iosm_ipc_mux_codec.c:852 ipc_mux_ul_adb_finish+0x17e/0x290 [iosm]
-> [Sa Jun 17 20:10:09 2023] Modules linked in: hid_multitouch qrtr ccm sn=
-d_seq_dummy snd_hrtimer snd_seq snd_seq_device hid_lenovo uhid xt_CHECKSU=
-M xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp nft_comp=
-at nft_chain_nat nf_tables nfnetlink af_packet rfcomm cmac algif_hash alg=
-if_skcipher af_alg bnep nls_iso8859_1 nls_cp437 vfat fat joydev mousedev =
-amdgpu iwlmvm r8153_ecm cdc_ether snd_soc_dmic snd_acp3x_pdm_dma snd_acp3=
-x_rn usbnet snd_sof_amd_rembrandt snd_sof_amd_renoir snd_sof_amd_acp mac8=
-0211 snd_sof_pci snd_sof_xtensa_dsp snd_ctl_led snd_sof snd_hda_codec_rea=
-ltek snd_sof_utils intel_rapl_msr snd_hda_codec_generic libarc4 iommu_v2 =
-snd_hda_codec_hdmi snd_soc_core uvcvideo btusb gpu_sched snd_compress eda=
-c_mce_amd videobuf2_vmalloc drm_ttm_helper btrtl snd_hda_intel ac97_bus e=
-dac_core snd_pcm_dmaengine uvc btbcm videobuf2_memops ttm snd_intel_dspcf=
-g intel_rapl_common videobuf2_v4l2 snd_intel_sdw_acpi crc32_pclmul btinte=
-l tps6598x snd_pci_ps polyval_clmulni regmap_i2c snd_hda_codec btmtk snd_=
-rpl_pci_acp6x think_lmi
-> [Sa Jun 17 20:10:09 2023]  polyval_generic iwlwifi wmi_bmof firmware_at=
-tributes_class videodev drm_display_helper snd_acp_pci gf128mul snd_hda_c=
-ore bluetooth ghash_clmulni_intel thinkpad_acpi r8152 r8169 videobuf2_com=
-mon snd_pci_acp6x snd_hwdep nvram drm_kms_helper cfg80211 snd_pci_acp5x u=
-csi_acpi mii sp5100_tco rapl ledtrig_audio mc psmouse ecdh_generic snd_pc=
-m drm_buddy platform_profile typec_ucsi snd_rn_pci_acp3x ecc watchdog rea=
-ltek snd_acp_config snd_timer crc16 agpgart iosm k10temp typec i2c_algo_b=
-it ipmi_devintf snd_soc_acpi mdio_devres syscopyarea snd sysfillrect vide=
-o snd_pci_acp3x libphy sysimgblt wwan 8250_pci ipmi_msghandler rfkill i2c=
-_piix4 ac soundcore roles thermal battery tiny_power_button serial_multi_=
-instantiate evdev i2c_scmi i2c_designware_platform wmi acpi_cpufreq mac_h=
-id button i2c_designware_core serio_raw sch_cake ctr loop xt_nat nf_nat n=
-f_conntrack nf_defrag_ipv6 nf_defrag_ipv4 br_netfilter veth tun tap macvl=
-an bridge stp llc kvm_amd ccp kvm irqbypass tcp_bbr i2c_dev drm fuse back=
-light i2c_core deflate
-> [Sa Jun 17 20:10:09 2023]  efi_pstore configfs efivarfs dmi_sysfs ip_ta=
-bles x_tables dm_crypt cbc encrypted_keys trusted asn1_encoder tee hid_ge=
-neric usbhid hid mmc_block dm_mod dax btrfs rtsx_pci_sdmmc nvme mmc_core =
-nvme_core input_leds led_class xhci_pci atkbd tpm_crb xhci_pci_renesas t1=
-0_pi libps2 vivaldi_fmap xhci_hcd sha512_ssse3 ehci_pci crc64_rocksoft eh=
-ci_hcd sha512_generic crc64 blake2b_generic crc_t10dif aesni_intel rtsx_p=
-ci xor usbcore libaes libcrc32c tpm_tis crct10dif_generic crypto_simd tpm=
-_tis_core cryptd crct10dif_pclmul crc32c_generic crc32c_intel tpm mfd_cor=
-e crct10dif_common usb_common i8042 rng_core rtc_cmos serio raid6_pq auto=
-fs4
-> [Sa Jun 17 20:10:09 2023] CPU: 11 PID: 0 Comm: swapper/11 Tainted: G   =
-     W          6.3.0 #1-NixOS
-> [Sa Jun 17 20:10:09 2023] Hardware name: LENOVO 20UF000LGE/20UF000LGE, =
-BIOS R1CET72W(1.41 ) 06/27/2022
-> [Sa Jun 17 20:10:09 2023] RIP: 0010:ipc_mux_ul_adb_finish+0x17e/0x290 [=
-iosm]
-> [Sa Jun 17 20:10:09 2023] Code: 00 00 0f 85 44 ff ff ff b9 08 00 00 00 =
-48 c7 c2 a8 1d 20 c1 48 89 ee 48 c7 c7 e0 1c 20 c1 c6 05 e8 e9 00 00 01 e=
-8 92 65 ea eb <0f> 0b e9 1b ff ff ff 48 8b 83 b4 02 00 00 c7 00 00 00 00 =
-00 0f b7
-> [Sa Jun 17 20:10:09 2023] RSP: 0018:ffff9b9b80424ef0 EFLAGS: 00010282
-> [Sa Jun 17 20:10:09 2023] RAX: 0000000000000000 RBX: ffff8d1bbe562000 R=
-CX: 0000000000000027
-> [Sa Jun 17 20:10:09 2023] RDX: ffff8d1e212e14c8 RSI: 0000000000000001 R=
-DI: ffff8d1e212e14c0
-> [Sa Jun 17 20:10:09 2023] RBP: 0000000000000010 R08: 0000000000000000 R=
-09: ffff9b9b80424d98
-> [Sa Jun 17 20:10:09 2023] R10: 0000000000000003 R11: ffffffffae938888 R=
-12: 0000000000000000
-> [Sa Jun 17 20:10:09 2023] R13: 00000000000000d8 R14: ffff8d1bbe5622e4 R=
-15: ffff8d1ba1c40108
-> [Sa Jun 17 20:10:09 2023] FS:  0000000000000000(0000) GS:ffff8d1e212c00=
-00(0000) knlGS:0000000000000000
-> [Sa Jun 17 20:10:09 2023] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005=
-0033
-> [Sa Jun 17 20:10:09 2023] CR2: 000026180d354000 CR3: 0000000033b0c000 C=
-R4: 0000000000350ee0
-> [Sa Jun 17 20:10:09 2023] Call Trace:
-> [Sa Jun 17 20:10:09 2023]  <IRQ>
-> [Sa Jun 17 20:10:09 2023]  ipc_imem_tq_adb_timer_cb+0x12/0x20 [iosm]
-> [Sa Jun 17 20:10:09 2023]  ipc_task_queue_handler+0xa1/0x100 [iosm]
-> [Sa Jun 17 20:10:09 2023]  tasklet_action_common.constprop.0+0x132/0x14=
-0
-> [Sa Jun 17 20:10:09 2023]  __do_softirq+0xca/0x2ae
-> [Sa Jun 17 20:10:09 2023]  __irq_exit_rcu+0xab/0xe0
-> [Sa Jun 17 20:10:09 2023]  sysvec_apic_timer_interrupt+0x72/0x90
-> [Sa Jun 17 20:10:09 2023]  </IRQ>
-> [Sa Jun 17 20:10:09 2023]  <TASK>
-> [Sa Jun 17 20:10:09 2023]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-> [Sa Jun 17 20:10:09 2023] RIP: 0010:cpuidle_enter_state+0xcc/0x440
-> [Sa Jun 17 20:10:09 2023] Code: 2a d8 66 ff e8 25 f2 ff ff 8b 53 04 49 =
-89 c5 0f 1f 44 00 00 31 ff e8 a3 eb 65 ff 45 84 ff 0f 85 57 02 00 00 fb 0=
-f 1f 44 00 00 <45> 85 f6 0f 88 85 01 00 00 49 63 d6 48 8d 04 52 48 8d 04 =
-82 49 8d
-> [Sa Jun 17 20:10:09 2023] RSP: 0018:ffff9b9b801d7e90 EFLAGS: 00000246
-> [Sa Jun 17 20:10:09 2023] RAX: ffff8d1e212f2780 RBX: ffff8d1b83198c00 R=
-CX: 0000000000000000
-> [Sa Jun 17 20:10:09 2023] RDX: 000000000000000b RSI: 0000000cb4e6e5b9 R=
-DI: 0000000000000000
-> [Sa Jun 17 20:10:09 2023] RBP: 0000000000000002 R08: 0000000000000004 R=
-09: 000000003d113146
-> [Sa Jun 17 20:10:09 2023] R10: 0000000000000018 R11: 000000000000055e R=
-12: ffffffffae9b3860
-> [Sa Jun 17 20:10:09 2023] R13: 0000052a93e6f49a R14: 0000000000000002 R=
-15: 0000000000000000
-> [Sa Jun 17 20:10:09 2023]  cpuidle_enter+0x2d/0x40
-> [Sa Jun 17 20:10:09 2023]  do_idle+0x1bf/0x220
-> [Sa Jun 17 20:10:09 2023]  cpu_startup_entry+0x1d/0x20
-> [Sa Jun 17 20:10:09 2023]  start_secondary+0x115/0x140
-> [Sa Jun 17 20:10:09 2023]  secondary_startup_64_no_verify+0xe5/0xeb
-> [Sa Jun 17 20:10:09 2023]  </TASK>
-> [Sa Jun 17 20:10:09 2023] ---[ end trace 0000000000000000 ]---
-> ```
->=20
-> `drivers/net/wwan/iosm/iosm_ipc_mux_codec.c:852` was introduced in 1f52=
-d7b622854b8bd7a1be3de095ca2e1f77098e ("net: wwan: iosm: Enable M.2 7360 W=
-WAN card support")
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index ac059cefbeb3..0f2e83fa63cb 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -572,7 +572,7 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wd=
+ev, u32 snd_portid,
+        list_for_each_entry(reg, &wdev->mgmt_registrations, list) {
+                int mlen =3D min(match_len, reg->match_len);
 
+-               if (frame_type !=3D le16_to_cpu(reg->frame_type))
++               if (frame_type !=3D le16_to_cpu(reg->frame_type) || snd_por=
+tid !=3D nreg->nlportid)
+                        continue;
 
-See Bugzilla for the full thread.
+                if (memcmp(reg->match, match_data, mlen) =3D=3D 0) {
+--
+2.17.1
 
-M Chetan Kumar: Can you take a look on this issue please?
-
-Anyway, to be sure this issue doesn't fall through the cracks unnoticed,
-I'm adding it to regzbot:
-
-#regzbot introduced: 1f52d7b622854b https://bugzilla.kernel.org/show_bug.=
-cgi?id=3D217569
-#regzbot title: field-spanning write (memcpy) detected on Intel XMM7360
-#regzbot link: https://gitlab.freedesktop.org/mobile-broadband/ModemManag=
-er/-/issues/612
-
-Thanks.
-
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D217569
-
---=20
-An old man doll... just what I always wanted! - Clara
+-- This message and any attachments herein are confidential, intended solel=
+y for the addressees and are SoftAtHome=E2=80=99s ownership. Any unauthoriz=
+ed use or dissemination is prohibited. If you are not the intended addresse=
+e of this message, please cancel it immediately and inform the sender.
