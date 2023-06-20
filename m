@@ -2,90 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25276736BFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 14:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD43C736D2C
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 15:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232698AbjFTMej (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 08:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
+        id S232967AbjFTNWF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 09:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232681AbjFTMef (ORCPT
+        with ESMTP id S232970AbjFTNVv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 08:34:35 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C27310F4;
-        Tue, 20 Jun 2023 05:34:34 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qBaZ5-0001MI-KF; Tue, 20 Jun 2023 14:34:31 +0200
-Message-ID: <7e18f4f2-a05a-2738-426b-31482c58af35@leemhuis.info>
-Date:   Tue, 20 Jun 2023 14:34:30 +0200
+        Tue, 20 Jun 2023 09:21:51 -0400
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17FF9210B
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 06:20:43 -0700 (PDT)
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+        by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8101F283C15
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 13:19:39 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+        by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 93145340064;
+        Tue, 20 Jun 2023 13:19:27 +0000 (UTC)
+Received: from [192.168.1.115] (unknown [98.97.35.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id A074513C2B0;
+        Tue, 20 Jun 2023 06:19:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A074513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1687267167;
+        bh=rrMv3DVJ+9vsd1XBWLV8ryZqPd2LEYh+BJ3vSDQZwmQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=GWyWVytPuhK0SJvtp2FGZvEi1uy41lnycMrQfXryBzfLTIoPSN3F6qrSFJ+fL9c7V
+         y9/UV1y/OU1UGi4aFW1K6ANWUiMSda/qgkQYtpnO/lm2XLT0A1HKm3rSYSp4+c8wEk
+         CQ6IQjDdXMF3KLUIJ+WFkvV03xRG9e6sQ4jrh/0o=
+Subject: Re: [PATCH 10/19] wifi: iwlwifi: limit EHT capabilities based on PCIe
+ link speed
+To:     gregory.greenman@intel.com, johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>
+References: <20230620100405.45117-1-gregory.greenman@intel.com>
+ <20230620125813.b77a1574a0a7.Id4120c161fb7df6dedc70d5f3e3829e9117b8cb1@changeid>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <d220c5b6-7c8f-19cd-12d0-ceb484e29e48@candelatech.com>
+Date:   Tue, 20 Jun 2023 06:19:26 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 1/3] wifi: rtw88: Move register access from
- rtw_bf_assoc() outside the RCU
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-To:     Sascha Hauer <s.hauer@pengutronix.de>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-wireless@vger.kernel.org, tony0620emma@gmail.com,
-        kvalo@kernel.org, pkshih@realtek.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
-          Linux regressions mailing list 
-          <regressions@lists.linux.dev>
-References: <20230108211324.442823-1-martin.blumenstingl@googlemail.com>
- <20230108211324.442823-2-martin.blumenstingl@googlemail.com>
- <20230331125906.GF15436@pengutronix.de>
- <8ab36d80-8417-628f-9f51-e75eaf6b1a51@leemhuis.info>
-In-Reply-To: <8ab36d80-8417-628f-9f51-e75eaf6b1a51@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20230620125813.b77a1574a0a7.Id4120c161fb7df6dedc70d5f3e3829e9117b8cb1@changeid>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-MW
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687264474;636107cb;
-X-HE-SMSGID: 1qBaZ5-0001MI-KF
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MDID: 1687267168-CJVsEtA90vdk
+X-MDID-O: us5;ut7;1687267168;CJVsEtA90vdk;<greearb@candelatech.com>;5c90bc175759a0446550edff92160f2f
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 02.04.23 13:30, Linux regression tracking #adding (Thorsten Leemhuis)
-wrote:
-> On 31.03.23 14:59, Sascha Hauer wrote:
->> On Sun, Jan 08, 2023 at 10:13:22PM +0100, Martin Blumenstingl wrote:
->>> USB and (upcoming) SDIO support may sleep in the read/write handlers.
->>> Shrink the RCU critical section so it only cover the call to
->>> ieee80211_find_sta() and finding the ic_vht_cap/vht_cap based on the
->>> found station. This moves the chip's BFEE configuration outside the
->>> rcu_read_lock section and thus prevent "scheduling while atomic" or
->>> "Voluntary context switch within RCU read-side critical section!"
->>> warnings when accessing the registers using an SDIO card (which is
->>> where this issue has been spotted in the real world - but it also
->>> affects USB cards).
->>
->> Unfortunately this introduces a regression on my RTW8821CU chip. With
->> this it constantly looses connection to the AP and reconnects shortly
->> after:
+On 6/20/23 3:03 AM, gregory.greenman@intel.com wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> #regzbot ^introduced c7eca79def44
-> #regzbot title net: wifi: rtw88: RTW8821CU constantly looses connection
-> to the AP and reconnects shortly after
-> #regzbot ignore-activity
+> If a discrete NIC is connected to a PCIe link hat isn't at least
+> Gen3 (8.0 GT/s), then we cannot sustain 320 MHz traffic, so remove
+> that from EHT capabilities in that case.
+> 
+> While at it, also move setting 320 MHz beamformee to the right
+> place in the code so it's not set while not supporting 320 MHz.
 
-Forgot to resolve this in regzbot:
+Is there not an advantage to allowing 320Mhz for longer distance connections
+where signal is relatively weak, so over-all tput would easily fit in lesser
+pcie bus?  Especially on 6E band where the US regdom allows more over-all power
+when using wider bandwidths?
 
-#regzbot resolve: turn's out this wasn't a regression, see
-https://lore.kernel.org/lkml/20230403100043.GT19113@pengutronix.de/
-#regzbot ignore-activity
+Thanks,
+Ben
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
