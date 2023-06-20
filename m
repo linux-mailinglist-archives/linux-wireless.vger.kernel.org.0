@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07ABA7368BD
+	by mail.lfdr.de (Postfix) with ESMTP id D6FD67368BE
 	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231429AbjFTKFD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 06:05:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38400 "EHLO
+        id S231805AbjFTKFE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 06:05:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232004AbjFTKEh (ORCPT
+        with ESMTP id S231244AbjFTKEk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 06:04:37 -0400
+        Tue, 20 Jun 2023 06:04:40 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DEFE1717
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A13F10A
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687255476; x=1718791476;
+  t=1687255478; x=1718791478;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HQiXLMDZo58yFwu6FvNYxXsLFQtezWfDWtVVc7n+RBU=;
-  b=WHNaPVyLKpzoMI8DaTShxpB0sfctpagAeJBy9voURccZZLaC/iNRLvry
-   vkQfQ2uqgIqlyoLKj9VOlPLD/tOar2ZN7WLO/rMgv0GZ4+V6YsB0QfDOE
-   u2l9cDAbHHHePj1dck4+Yj6xX3+A9REVB4ixTLWqE5qak0A484wUSmQu0
-   DrP6KlAJrEWJ6mVKv57SJzaIIRGj9QK6P/TYrYqWyEHEeMQ7bqHI7BLIu
-   XwLrIk6TLhJkcXqLf6jTufUcRTODl0q/Uig0V0CTJUyI6hywKL8qzBULU
-   /csjTxVnB4sQ7zVDbVH9xzlwS4Kk/03H2QGalWrnRmPncOMzzfRWdrkCo
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819592"
+  bh=MmYfxIqr99KMnXM6VI3ZDp89DhhLHh4P8n783TZGI2E=;
+  b=ZVH45XM6dbkTwmCPiNILocq9E6zOSgvE73LwCxlVUVSs52iCw3pator0
+   jYwrJfCo65W+f6JxyM3sogJP8Q9qYHNZj74hZvJ5dR4G9XBlHXNAeKA1u
+   HCeYo7FvGwlOZSZA1UDJfprwjOUGgHpt2RPT38HsYIudhs+6JPD5B4MGM
+   ZE5vquKMuMOlRxLejdXPYnQzKiOQ2BZkB8OZmrpM5fx7kGjoWJQpgW8jO
+   t1AkvrcmTVkGluRVQCeWoey7Y8giKjNPAgSxwBCXo5TG9YzbPZtF0ZpSt
+   7jlr+jSRWTLE0JJepjF9yRLGhekrgpNkhLBse1NzbBnothEIMQiSdJInI
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819598"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="359819592"
+   d="scan'208";a="359819598"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:35 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838143290"
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838143394"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="838143290"
+   d="scan'208";a="838143394"
 Received: from rafist-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.208.68])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:33 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:35 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Johannes Berg <johannes.berg@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 07/19] wifi: iwlwifi: mvm: use EHT maximum MPDU length on 2.4 GHz
-Date:   Tue, 20 Jun 2023 13:03:53 +0300
-Message-Id: <20230620125813.fd5322bb48a4.Ic471045f83229ceaacce25edcf992d3ce2c75de5@changeid>
+Subject: [PATCH 08/19] wifi: iwlwifi: mvm: use min_t() for agg_size
+Date:   Tue, 20 Jun 2023 13:03:54 +0300
+Message-Id: <20230620125813.211768036c1f.I78b7eea32eaae20cc9f32869aa3f42814634ce9a@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230620100405.45117-1-gregory.greenman@intel.com>
 References: <20230620100405.45117-1-gregory.greenman@intel.com>
@@ -64,49 +64,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-On 2.4 GHz there's no VHT, so EHT defines its own bits for
-the maximum MPDU length. Use them when telling firmware
-about the maximum.
+We can use min_t() for the agg_size and avoid
+spelling out the (firmware) limit twice.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index 2382725f25bd..6cba8a353b53 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -523,6 +523,7 @@ u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta,
- {
- 	const struct ieee80211_sta_vht_cap *vht_cap = &link_sta->vht_cap;
- 	const struct ieee80211_sta_ht_cap *ht_cap = &link_sta->ht_cap;
-+	const struct ieee80211_sta_eht_cap *eht_cap = &link_sta->eht_cap;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index ff1ce990a9d8..3c24b25fe661 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -92,9 +92,8 @@ u32 iwl_mvm_get_sta_ampdu_dens(struct ieee80211_link_sta *link_sta,
+ 				    IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK);
  
- 	if (WARN_ON_ONCE(!link_conf->chandef.chan))
- 		return IEEE80211_MAX_MPDU_LEN_VHT_3895;
-@@ -537,8 +538,18 @@ u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta,
- 		default:
- 			return IEEE80211_MAX_MPDU_LEN_VHT_3895;
- 		}
--	} else
--	if (vht_cap->vht_supported) {
-+	} else if (link_conf->chandef.chan->band == NL80211_BAND_2GHZ &&
-+		   eht_cap->has_eht) {
-+		switch (u8_get_bits(eht_cap->eht_cap_elem.mac_cap_info[0],
-+				    IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK)) {
-+		case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454:
-+			return IEEE80211_MAX_MPDU_LEN_VHT_11454;
-+		case IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_7991:
-+			return IEEE80211_MAX_MPDU_LEN_VHT_7991;
-+		default:
-+			return IEEE80211_MAX_MPDU_LEN_VHT_3895;
-+		}
-+	} else if (vht_cap->vht_supported) {
- 		switch (vht_cap->cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK) {
- 		case IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454:
- 			return IEEE80211_MAX_MPDU_LEN_VHT_11454;
+ 	/* Limit to max A-MPDU supported by FW */
+-	if (agg_size > (STA_FLG_MAX_AGG_SIZE_4M >> STA_FLG_MAX_AGG_SIZE_SHIFT))
+-		agg_size = (STA_FLG_MAX_AGG_SIZE_4M >>
+-			    STA_FLG_MAX_AGG_SIZE_SHIFT);
++	agg_size = min_t(u32, agg_size,
++			 STA_FLG_MAX_AGG_SIZE_4M >> STA_FLG_MAX_AGG_SIZE_SHIFT);
+ 
+ 	*_agg_size = agg_size;
+ 	return mpdu_dens;
 -- 
 2.38.1
 
