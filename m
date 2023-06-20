@@ -2,115 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE70A736324
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 07:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 595E473637C
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 08:18:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230335AbjFTF0s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 01:26:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55576 "EHLO
+        id S229917AbjFTGSM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 02:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230190AbjFTF0q (ORCPT
+        with ESMTP id S229519AbjFTGSL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 01:26:46 -0400
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EECC1AC;
-        Mon, 19 Jun 2023 22:26:31 -0700 (PDT)
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35K5Q01n8003506, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35K5Q01n8003506
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK);
-        Tue, 20 Jun 2023 13:26:00 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 20 Jun 2023 13:26:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 20 Jun 2023 13:26:20 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
- RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
- 15.01.2375.007; Tue, 20 Jun 2023 13:26:20 +0800
-From:   Ping-Ke Shih <pkshih@realtek.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Lukas F. Hartmann" <lukas@mntre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tony0620emma@gmail.com" <tony0620emma@gmail.com>,
-        "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>
-Subject: RE: wifi: rtw88: question about SDIO RX aggregation limiting
-Thread-Topic: wifi: rtw88: question about SDIO RX aggregation limiting
-Thread-Index: AQHZnKKRatqDIe8IxUOv8mL1iw8+va+H/hkQgAoeggCAARZ68A==
-Date:   Tue, 20 Jun 2023 05:26:20 +0000
-Message-ID: <e87abbe35f4945cba3440232880424b1@realtek.com>
-References: <CAFBinCBaXtebixKbjkWKW_WXc5k=NdGNaGUjVE8NCPNxOhsb2g@mail.gmail.com>
- <9ab8cc85d4d440bfa63dcade4e4f9ecf@realtek.com>
- <CAFBinCBsg8jPhpqSOr9w2JhwN5YjPeME1Uye7meSY8h=b_N4Qg@mail.gmail.com>
-In-Reply-To: <CAFBinCBsg8jPhpqSOr9w2JhwN5YjPeME1Uye7meSY8h=b_N4Qg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.188]
-x-kse-serverinfo: RTEXDAG02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 20 Jun 2023 02:18:11 -0400
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8995C6
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Jun 2023 23:18:08 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:26a7:0:640:a2d5:0])
+        by forward101a.mail.yandex.net (Yandex) with ESMTP id F37F846C8B;
+        Tue, 20 Jun 2023 09:18:04 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3IagSMrDVCg0-5RhEpYfg;
+        Tue, 20 Jun 2023 09:18:04 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687241884;
+        bh=j2I35tbv6d4WIXmoB8QlWamzuNzsL2b2lM+9mrl2CXk=;
+        h=Subject:From:Cc:To:Date:Message-ID;
+        b=DXG4FId0w7wVUyTEGTC2iHaYuwxoOGuwUdkKOglWhKsXiXfd0iaLI/pXUiQzhUqB8
+         p/4WMN0Nzv5ACUNjGgYXvpujKjgn6sGwPVbA+FtKNCuPL8PhRORNi/vgyT5456k7tj
+         ztPXw2fw6il9n18ajVnVLHtPLsizngeT96GYqLVI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <5c114ed7-6e8a-76a7-c0da-4193d1288686@yandex.ru>
+Date:   Tue, 20 Jun 2023 09:18:03 +0300
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+Subject: ath12k: memcpy() source buffer overread
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFydGluIEJsdW1lbnN0
-aW5nbCA8bWFydGluLmJsdW1lbnN0aW5nbEBnb29nbGVtYWlsLmNvbT4NCj4gU2VudDogVHVlc2Rh
-eSwgSnVuZSAyMCwgMjAyMyA0OjM4IEFNDQo+IFRvOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFs
-dGVrLmNvbT4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZzsgTHVrYXMgRi4g
-SGFydG1hbm4gPGx1a2FzQG1udHJlLmNvbT47IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7
-DQo+IHRvbnkwNjIwZW1tYUBnbWFpbC5jb207IGplcm5lai5za3JhYmVjQGdtYWlsLmNvbQ0KPiBT
-dWJqZWN0OiBSZTogd2lmaTogcnR3ODg6IHF1ZXN0aW9uIGFib3V0IFNESU8gUlggYWdncmVnYXRp
-b24gbGltaXRpbmcNCj4gDQo+IEhlbGxvIFBpbmctS2UsDQo+IA0KPiBhcG9sb2dpZXMgZm9yIHRo
-ZSBsb25nIGRlbGF5Lg0KPiANCj4gT24gVHVlLCBKdW4gMTMsIDIwMjMgYXQgNDoyMOKAr0FNIFBp
-bmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gWy4uLl0NCj4gPiBUaGUg
-dW5pdCBvZiBCSVRfUlhETUFfQUdHX1BHX1RIIGlzIDFrIGJ5dGVzLCBzbyBJIHRoaW5rIHlvdSBj
-YW4NCj4gPiBzZXQgbW1jX2hvc3QtPm1heF9yZXFfc2l6ZS8xMDI0Lg0KPiBJIHRyaWVkIHRoaXMg
-YnV0IEkgZ290IGEgcmVzdWx0IHRoYXQgSSBkb24ndCB1bmRlcnN0YW5kLg0KPiBJJ3ZlIGJlZW4g
-dGVzdGluZyB3aXRoIHRocmVlIEJJVF9SWERNQV9BR0dfUEdfVEggdmFsdWVzIG9uIGEgU29DIHRo
-YXQNCj4gY2FuIGhhbmRsZSAyNTUgKiAxMDI0IGJ5dGVzLiBFYWNoIHRpbWUgSSBjb25uZWN0ZWQg
-dG8gdGhlIHNhbWUgQVAgYW5kDQo+IGRvd25sb2FkZWQgYSBiaWdnZXIgZmlsZSBvdmVyIGh0dHAo
-cykuDQo+IEJJVF9SWERNQV9BR0dfUEdfVEg6IGJpZ2dlc3Qgb2JzZXJ2ZWQgcnhfbGVuIGluIHJ0
-d19zZGlvX3J4Zmlmb19yZWN2KCkNCj4gMjU1OiAyMDk2OA0KPiA2OiA1MTIyDQo+IDE6IDE2MDIN
-Cg0KUGxlYXNlIGFsc28gcHJpbnQgb3V0IG51bWJlciBvZiBwYWNrZXRzIHlvdSByZWNlaXZlLCBh
-bmQgdGhlbiB3ZSBjYW4gc2VlIGhvdw0KbWFueSBwYWNrZXRzIGFnZ3JlZ2F0ZS4NCg0KPiANCj4g
-VGhlIGJpZ2dlc3QgcnhfbGVuIEkgaGF2ZSBvYnNlcnZlZCBmb3IgQklUX1JYRE1BX0FHR19QR19U
-SCAxIGxvb2tzIHN1c3BpY2lvdXM6DQo+IE15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCBJIHNob3Vs
-ZG4ndCBiZSBzZWVpbmcgcnhfbGVuIGxhcmdlciB0aGFuDQo+IEJJVF9SWERNQV9BR0dfUEdfVEgg
-KiAxMDI0Lg0KPiBCSVRfUlhETUFfQUdHX1BHX1RIID0gNiBpcyB3aXRoaW4gdGhpcyBsaW1pdCBi
-dXQgQklUX1JYRE1BX0FHR19QR19USCA9DQo+IDEgaXNuJ3QgKEknbSBzZWVpbmcgNTc4IGV4dHJh
-IGJ5dGVzIGluIGFkZGl0aW9uIHRvIHRoZSAxMDI0IGJ5dGVzIHRoYXQNCj4gSSB3YXMgZXhwZWN0
-aW5nKS4NCg0KQXNzdW1lIHRocmVzaG9sZCBpcyAxaywgYW5kIHNpbmdsZSBvbmUgcGFja2V0IGlz
-IGxhcmdlciB0aGFuIDFrLiBIYXJkd2FyZQ0Kd2lsbCBub3Qgc3BsaXQgaXQgaW50byB0d28uIEFs
-c28sIHBsZWFzZSBtYWtlIHN1cmUgMHgyODBbMjldIEJJVF9FTl9QUkVfQ0FMQw0KaXMgMS4gT3Ro
-ZXJ3aXNlLCBpdCB3aWxsIHBvc3NpYmx5IGFnZ3JlZ2F0ZSBhZGRpdGlvbmFsIG9uZSBwYWNrZXQg
-dG8gb3Zlcg0KdGhlIHRocmVzaG9sZC4NCg0KMHgyODBbMTU6OF0gaXMgdGltZW91dCB0aW1lIGlu
-IHVuaXQgb2YgMXVzIGZvciBTRElPIGludGVyZmFjZS4gV2hlbiBzZXQNCnRocmVzaG9sZCB0byAy
-NTUsIHlvdSBjYW4gZW5sYXJnZSB0aGlzIHRvIHNlZSBpZiBpdCBjYW4gYWdncmVnYXRlIG1vcmUg
-YXMNCmV4cGVjdGVkLiANCg0KPiBEbyB5b3UgaGF2ZSBhbnkgaWRlYSB3aGVyZSB0aGlzIGlzIGNv
-bWluZyBmcm9tPyBJJ20gd29ycmllZCB0aGF0IHdlDQo+IGNhbiBzdGlsbCBlbmQgdXAgd2l0aCB0
-aGUgcHJvYmxlbSB0aGF0IEx1a2FzIGRlc2NyaWJlZCBidXQgc2VlbXMgdG8NCj4gbm90IGhhdmUg
-aGl0IGluIGhpcyB0ZXN0aW5nIHdpdGggQklUX1JYRE1BX0FHR19QR19USCA9IDYNCj4gDQo+ID4g
-SSB3b25kZXIgd2h5IDB4NiB3b3JrcyBvbiBBbWxvZ2ljIFNvQ3MuIENvdWxkIHlvdSBvciBMdWth
-cyBjb21wYXJlIHBlcmZvcm1hbmNlDQo+ID4gYmV0d2VlbiB0aGUgc2V0dGluZ3Mgb2YgMHgxIGFu
-ZCAweDY/DQo+IEkgY2FuIGRvIHRoaXMgbGF0ZXIgdGhpcyB3ZWVrIGJ1dCBJJ2QgbGlrZSB0byB1
-bmRlcnN0YW5kIHRoZSBhYm92ZQ0KPiByZXN1bHRzIGZpcnN0Lg0KPiANCg0KUGluZy1LZQ0KDQo=
+V2hlbiBjb21waWxpbmcgd2l0aCBnY2MgMTMuMSBhbmQgQ09ORklHX0ZPUlRJRllfU09VUkNF
+PXksIEkndmUgbm90aWNlZCB0aGUgZm9sbG93aW5nOg0KDQouLi4NCkluIGZ1bmN0aW9uIOKA
+mGZvcnRpZnlfbWVtY3B5X2Noa+KAmSwNCiAgICAgaW5saW5lZCBmcm9tIOKAmGF0aDEya19w
+ZWVyX2Fzc29jX2hfaGXigJkgYXQgZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEyay9t
+YWMuYzoxNjQwOjIsDQogICAgIGlubGluZWQgZnJvbSDigJhhdGgxMmtfcGVlcl9hc3NvY19w
+cmVwYXJl4oCZIGF0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGgxMmsvbWFjLmM6MjAy
+NzoyOg0KLi9pbmNsdWRlL2xpbnV4L2ZvcnRpZnktc3RyaW5nLmg6NTI5OjI1OiB3YXJuaW5n
+OiBjYWxsIHRvIOKAmF9fcmVhZF9vdmVyZmxvdzJfZmllbGTigJkgZGVjbGFyZWQgd2l0aA0K
+YXR0cmlidXRlIHdhcm5pbmc6IGRldGVjdGVkIHJlYWQgYmV5b25kIHNpemUgb2YgZmllbGQg
+KDJuZCBwYXJhbWV0ZXIpOyBtYXliZSB1c2Ugc3RydWN0X2dyb3VwKCk/DQpbLVdhdHRyaWJ1
+dGUtd2FybmluZ10NCiAgIDUyOSB8ICAgICAgICAgICAgICAgICAgICAgICAgIF9fcmVhZF9v
+dmVyZmxvdzJfZmllbGQocV9zaXplX2ZpZWxkLCBzaXplKTsNCiAgICAgICB8ICAgICAgICAg
+ICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fg0KSW4gZnVuY3Rpb24g4oCYZm9ydGlmeV9tZW1jcHlfY2hr4oCZLA0KICAgICBpbmxp
+bmVkIGZyb20g4oCYYXRoMTJrX3BlZXJfYXNzb2NfaF9oZeKAmSBhdCBkcml2ZXJzL25ldC93
+aXJlbGVzcy9hdGgvYXRoMTJrL21hYy5jOjE2NDM6MiwNCiAgICAgaW5saW5lZCBmcm9tIOKA
+mGF0aDEya19wZWVyX2Fzc29jX3ByZXBhcmXigJkgYXQgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+YXRoL2F0aDEyay9tYWMuYzoyMDI3OjI6DQouL2luY2x1ZGUvbGludXgvZm9ydGlmeS1zdHJp
+bmcuaDo1Mjk6MjU6IHdhcm5pbmc6IGNhbGwgdG8g4oCYX19yZWFkX292ZXJmbG93Ml9maWVs
+ZOKAmSBkZWNsYXJlZCB3aXRoDQphdHRyaWJ1dGUgd2FybmluZzogZGV0ZWN0ZWQgcmVhZCBi
+ZXlvbmQgc2l6ZSBvZiBmaWVsZCAoMm5kIHBhcmFtZXRlcik7IG1heWJlIHVzZSBzdHJ1Y3Rf
+Z3JvdXAoKT8NClstV2F0dHJpYnV0ZS13YXJuaW5nXQ0KICAgNTI5IHwgICAgICAgICAgICAg
+ICAgICAgICAgICAgX19yZWFkX292ZXJmbG93Ml9maWVsZChxX3NpemVfZmllbGQsIHNpemUp
+Ow0KICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQouLi4NCg0KQW5kIHRoaXMgc2VlbXMgY29ycmVj
+dCBiZWNhdXNlOg0KDQovKiBkc3Q6IHUzMlsyXSwgc3JjOiB1OFs2XSwgc2l6ZTogOCBzbyAy
+IGJ5dGUgc291cmNlIG92ZXJyZWFkICovDQptZW1jcHkoJmFyZy0+cGVlcl9oZV9jYXBfbWFj
+aW5mbywgaGVfY2FwLT5oZV9jYXBfZWxlbS5tYWNfY2FwX2luZm8sDQogICAgICAgIHNpemVv
+ZihhcmctPnBlZXJfaGVfY2FwX21hY2luZm8pKTsNCg0KYW5kOg0KDQovKiBkc3Q6IHUzMlsz
+XSwgc3JjOiB1OFsxMV0sIHNpemU6IDEyIHNvIDEgYnl0ZSBzb3VyY2Ugb3ZlcnJlYWQgKi8N
+Cm1lbWNweSgmYXJnLT5wZWVyX2hlX2NhcF9waHlpbmZvLCBoZV9jYXAtPmhlX2NhcF9lbGVt
+LnBoeV9jYXBfaW5mbywNCiAgICAgICAgc2l6ZW9mKGFyZy0+cGVlcl9oZV9jYXBfcGh5aW5m
+bykpOw0KDQpEbWl0cnkNCg==
