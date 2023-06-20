@@ -2,45 +2,47 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5B0E736B87
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 14:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC56D736B8B
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 14:05:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232654AbjFTMFg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 08:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
+        id S232705AbjFTMFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 08:05:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbjFTMF3 (ORCPT
+        with ESMTP id S232490AbjFTMFe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 08:05:29 -0400
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596BB1709
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 05:05:26 -0700 (PDT)
+        Tue, 20 Jun 2023 08:05:34 -0400
+Received: from mail.toke.dk (mail.toke.dk [IPv6:2a0c:4d80:42:2001::664])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAFE10FE
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 05:05:33 -0700 (PDT)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1687262723; bh=7b2cfT4q4kUSUpHOVSXR2A8k+9G4TngwBe2H5LXpB0w=;
+        t=1687262731; bh=iEvcG1hfUI3EmH+FYz733tQLDNTMqJ93GoyIPa5mB+0=;
         h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=PLQ4NS5EdnNExMH7NbfFqheRYeAdEc+sLBuT3E7EK7ztPW7ubILitPNco5c+9GHav
-         lTvsH66wl4lkZayDd+Id/SIy9ojrtMHF9B5qZgpT0zb/JktPR09VJ5iHNI+l8wsaxd
-         010+0PSt5VMLH+q6w2s9WH80gUXE/eX9qJQDTJ5bZGwhp4sYUSJpuMwSB0bZpUJgub
-         iz/HhQDM6ZqXyUnHboSJFrLE+psTuqqhPkPCr0zcC2Y70yaJMvkYWXYag3WwkUdAyn
-         FteCqb0PAwQlOcdhM5pbR1dgnIlOF8g8H+909XcfqCyszbTuuEZvFbb4n05T+SkCFx
-         dxlovadKiqezQ==
+        b=XZDpRP7wol6lCFJpBufe1nO0Dz2XaZVjWOOs96K96tjrPbZixyMn0gWnhTeAIy07A
+         DOfCHegiQsR7JNecu0A6KZx3Qu8LT3ekxwDiKiRO1788d5V72gUcookkd0js/jMb0l
+         3SAL+w8WnwuuDTKJ2CbE7dVXv6g21kh8RHIaVu938n35jSQM7hEVbw1MkrtxKi9EgC
+         rCALm/kNMH8jdR3Q4NG/yu9dlnqW5VIJpguFKr4LOxOuNsl4rENZ40nBChYtD6SiAn
+         THfiKOvClblybReIJPZ3v/DW4RbJVIHf2nrKaQvoCdBgD+4D6HHK4hdMvLJ4tCzYVx
+         i9qqwhdgrFNPQ==
 To:     Dmitry Antipov <dmantipov@yandex.ru>
 Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-Subject: Re: [PATCH 1/2] [v2] wifi: ath9k: avoid using uninitialized array
-In-Reply-To: <20230620080855.396851-1-dmantipov@yandex.ru>
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH 2/2] [v2] wifi: ath9k: fix fortify warnings
+In-Reply-To: <20230620080855.396851-2-dmantipov@yandex.ru>
 References: <20230620080855.396851-1-dmantipov@yandex.ru>
-Date:   Tue, 20 Jun 2023 14:05:22 +0200
+ <20230620080855.396851-2-dmantipov@yandex.ru>
+Date:   Tue, 20 Jun 2023 14:05:31 +0200
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87a5wue3ul.fsf@toke.dk>
+Message-ID: <877crye3uc.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,9 +51,50 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Dmitry Antipov <dmantipov@yandex.ru> writes:
 
-> In 'ath_tx_count_frames()', 'ba' array may be used uninitialized, so
-> add 'memset()' call similar to one used in 'ath_tx_complete_aggr()'.
+> When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=3Dy,
+> I've noticed the following:
 >
+> In function =E2=80=98fortify_memcpy_chk=E2=80=99,
+>     inlined from =E2=80=98ath_tx_complete_aggr=E2=80=99 at drivers/net/wi=
+reless/ath/ath9k/xmit.c:556:4,
+>     inlined from =E2=80=98ath_tx_process_buffer=E2=80=99 at drivers/net/w=
+ireless/ath/ath9k/xmit.c:773:3:
+> ./include/linux/fortify-string.h:529:25: warning: call to =E2=80=98__read=
+_overflow2_field=E2=80=99
+> declared with attribute warning: detected read beyond size of field (2nd =
+parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   529 |                         __read_overflow2_field(q_size_field, size=
+);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> In function =E2=80=98fortify_memcpy_chk=E2=80=99,
+>     inlined from =E2=80=98ath_tx_count_frames=E2=80=99 at drivers/net/wir=
+eless/ath/ath9k/xmit.c:473:3,
+>     inlined from =E2=80=98ath_tx_complete_aggr=E2=80=99 at drivers/net/wi=
+reless/ath/ath9k/xmit.c:572:2,
+>     inlined from =E2=80=98ath_tx_process_buffer=E2=80=99 at drivers/net/w=
+ireless/ath/ath9k/xmit.c:773:3:
+> ./include/linux/fortify-string.h:529:25: warning: call to =E2=80=98__read=
+_overflow2_field=E2=80=99
+> declared with attribute warning: detected read beyond size of field (2nd =
+parameter);
+> maybe use struct_group()? [-Wattribute-warning]
+>   529 |                         __read_overflow2_field(q_size_field, size=
+);
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> In both cases, the compiler complains on:
+>
+> memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
+>
+> which is the legal way to copy both 'ba_low' and following 'ba_high'
+> members of 'struct ath_tx_status' at once (that is, issue one 8-byte
+> 'memcpy()' for two 4-byte fields). Since the fortification logic seems
+> interprets this trick as an attempt to overread 4-byte 'ba_low', silence
+> relevant warnings by using the convenient 'struct_group()' quirk.
+>
+> Suggested-by: Johannes Berg <johannes@sipsolutions.net>
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
 Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
