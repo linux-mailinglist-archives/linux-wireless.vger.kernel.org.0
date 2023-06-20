@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27EC47368BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B757368B9
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Jun 2023 12:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231140AbjFTKFB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 20 Jun 2023 06:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38796 "EHLO
+        id S231773AbjFTKE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 20 Jun 2023 06:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231970AbjFTKEg (ORCPT
+        with ESMTP id S231918AbjFTKEf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 20 Jun 2023 06:04:36 -0400
+        Tue, 20 Jun 2023 06:04:35 -0400
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA14170A
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228B410FE
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Jun 2023 03:04:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687255475; x=1718791475;
+  t=1687255474; x=1718791474;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xkc1CTFyJB127sT2X9YtR5meF92MSH89pGlRicmhgQc=;
-  b=mVP3LIH+ELG8a4dmW7KKCD6UT2wegTMBL1WNoKVVylsFjT2aUlw1kQdU
-   I1d1E7kBA3lXgWR7PuX+Zlam4WcvQaQIp2TgUjlmtvxhnJKF9i0cBw7yu
-   e1DPfcsvs2bkAnoatRLbieeG4kMeL6VSUrj8e/M9qlv4SljWNsLCMiKD9
-   Xu3aG74Avq6vrO5z10S6kQEyS4GH80LHJhWJOI3S3LxPdnOl28Kh2GofR
-   SPegQJ5QM/iSDk/HFK3nAIAx93Fp8TV15j1v2wBVxipF5arIuGS3kz8X4
-   98v1itg45Ecz/VyKQkHddvoGmK8yAruamum/SS3EWXsUN7LS80QOEnjKS
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819525"
+  bh=PF2XlS9VLjgnVjIqT3HPYQyeN9AiYx7ZWBUnR2/+U9I=;
+  b=GKnejD+7dZA0qlydcBh/6IAPPsBE2O77ZeRjtLpXBWq603BbEle0AdP8
+   1aunU8h6vpUdfEWeuaRxD5T6SBqY9Rqmu4dM+nffs7zUxFOaQvb0+IeSw
+   dbjaIJMbRYS2wFaMBKZG4YaGhnCTNTYUIJmx18Wh7+TTjuK+G7uYHsS3l
+   bcifUOTU6FosQhj0LCSL0WX/Erz905o441KdTP1TFxYWkpHoK42KXVUY6
+   hKO4/HiHd+Vj0I3lxpSOK5vjIAoSjjbJCg/phIhQgni/Yl8IytVvUtJ6R
+   Fvt7IUXElIR6Egfzv+5ieS5j3m5xZHd6HNhrpjt9Unn1LYnGR9YZEPNsG
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="359819531"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="359819525"
+   d="scan'208";a="359819531"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:23 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838142796"
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="838142897"
 X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="scan'208";a="838142796"
+   d="scan'208";a="838142897"
 Received: from rafist-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.intel.com) ([10.214.208.68])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:21 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 03:04:23 -0700
 From:   gregory.greenman@intel.com
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 02/19] wifi: iwlwifi: pcie: add size assertions
-Date:   Tue, 20 Jun 2023 13:03:48 +0300
-Message-Id: <20230620125813.8f54f2990b92.If19a038dfd633d4601e3d44dd0ff678bc0a851e9@changeid>
+Subject: [PATCH 03/19] wifi: iwlwifi: mvm: check the right csa_active
+Date:   Tue, 20 Jun 2023 13:03:49 +0300
+Message-Id: <20230620125813.63f835a4f578.I0bb2a231e4da506b7c751dc23a428558f9ecfa75@changeid>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230620100405.45117-1-gregory.greenman@intel.com>
 References: <20230620100405.45117-1-gregory.greenman@intel.com>
@@ -62,59 +62,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Ensure that the TX command scratch fits into the buffer
-provided by the first TB. It does, of course, but add
-some build-time validations in case we touch this code.
+When the firmware says that the channel switch is happening, we check
+that we know about that switch by checking the csa_active bit.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Until now, we checked the bss_conf from the vif instead of taking the
+bss_conf of the link.
+Fix that.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 5 ++++-
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 7 +++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index 3546c5269c3b..1337fa95f657 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2003-2014, 2018-2021 Intel Corporation
-+ * Copyright (C) 2003-2014, 2018-2021, 2023 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -1547,6 +1547,9 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index b8143ae8b403..7369a45f7f2b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1763,6 +1763,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
+ 	u32 id;
+ 	u8 notif_ver = iwl_fw_lookup_notif_ver(mvm->fw, MAC_CONF_GROUP,
+ 					       CHANNEL_SWITCH_START_NOTIF, 0);
++	bool csa_active;
  
- 	/* there must be data left over for TB1 or this code must be changed */
- 	BUILD_BUG_ON(sizeof(struct iwl_tx_cmd) < IWL_FIRST_TB_SIZE);
-+	BUILD_BUG_ON(sizeof(struct iwl_cmd_header) +
-+		     offsetofend(struct iwl_tx_cmd, scratch) >
-+		     IWL_FIRST_TB_SIZE);
+ 	rcu_read_lock();
  
- 	/* map the data for TB1 */
- 	tb1_addr = ((u8 *)&dev_cmd->hdr) + IWL_FIRST_TB_SIZE;
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index 245bff01b4f8..fbacbe9ada15 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -648,6 +648,13 @@ struct iwl_tfh_tfd *iwl_txq_gen2_build_tfd(struct iwl_trans *trans,
+@@ -1778,6 +1779,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
+ 			goto out_unlock;
  
- 	/* There must be data left over for TB1 or this code must be changed */
- 	BUILD_BUG_ON(sizeof(struct iwl_tx_cmd_gen2) < IWL_FIRST_TB_SIZE);
-+	BUILD_BUG_ON(sizeof(struct iwl_cmd_header) +
-+		     offsetofend(struct iwl_tx_cmd_gen2, dram_info) >
-+		     IWL_FIRST_TB_SIZE);
-+	BUILD_BUG_ON(sizeof(struct iwl_tx_cmd_gen3) < IWL_FIRST_TB_SIZE);
-+	BUILD_BUG_ON(sizeof(struct iwl_cmd_header) +
-+		     offsetofend(struct iwl_tx_cmd_gen3, dram_info) >
-+		     IWL_FIRST_TB_SIZE);
+ 		id = mac_id;
++		csa_active = vif->bss_conf.csa_active;
+ 	} else {
+ 		struct iwl_channel_switch_start_notif *notif = (void *)pkt->data;
+ 		u32 link_id = le32_to_cpu(notif->link_id);
+@@ -1789,6 +1791,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
  
- 	memset(tfd, 0, sizeof(*tfd));
+ 		id = link_id;
+ 		vif = bss_conf->vif;
++		csa_active = bss_conf->csa_active;
+ 	}
  
+ 	mvmvif = iwl_mvm_vif_from_mac80211(vif);
+@@ -1828,7 +1831,7 @@ void iwl_mvm_channel_switch_start_notif(struct iwl_mvm *mvm,
+ 		 */
+ 		if (iwl_fw_lookup_notif_ver(mvm->fw, MAC_CONF_GROUP,
+ 					    CHANNEL_SWITCH_ERROR_NOTIF,
+-					    0) && !vif->bss_conf.csa_active) {
++					    0) && !csa_active) {
+ 			IWL_DEBUG_INFO(mvm, "Channel Switch was canceled\n");
+ 			iwl_mvm_cancel_channel_switch(mvm, vif, id);
+ 			break;
 -- 
 2.38.1
 
