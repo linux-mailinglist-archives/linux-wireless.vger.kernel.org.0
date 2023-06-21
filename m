@@ -2,39 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1F1739006
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 21:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5DAC739266
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 00:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbjFUTZr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 15:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58884 "EHLO
+        id S229871AbjFUWUG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 18:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbjFUTZq (ORCPT
+        with ESMTP id S229657AbjFUWUE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 15:25:46 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33569D;
-        Wed, 21 Jun 2023 12:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=Ydv7rknf/qg04R5ykTH8bT9gjwv3JKQJcB/9WtHJVxA=; b=YjyDrjI7OLOW2QG+3Na9IiiqdL
-        NkAxHgfwgWZiTl7LfxqeR3IazWmI/+vkxvJFzjOQQKa1Rx4W6mc/7Dfekv2xq8myipVX901Sm3UcW
-        AvT8L5NwZcVoeP8evmWIPC1GdK6l9DuaXcDoOoqihybEEdpGMYeHV5hHVK2vZli1tZ/s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qC3SC-00HBLB-BX; Wed, 21 Jun 2023 21:25:20 +0200
-Date:   Wed, 21 Jun 2023 21:25:20 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Evan Quan <evan.quan@amd.com>, rafael@kernel.org,
-        lenb@kernel.org, alexander.deucher@amd.com,
-        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
+        Wed, 21 Jun 2023 18:20:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D14FD1733;
+        Wed, 21 Jun 2023 15:20:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=cP+HR2GmRZPnSeQ8lcOfEZ7k5nuBFTrLSVTHUrZopt8=;
+        t=1687386003; x=1688595603; b=BadH4QmJO0jxGMFzOXm+RhV89LkXMjHB0hoOxRuGYgfUbzG
+        av+OdABdyK0I8912nMNYGlYwCqnM5nK3D7OnE2Qn0pqjI8TbUYgx9TtG/GJLmdFtPmKjqECxvno7T
+        NNETC/vZErGTR5zfyAJx7alhIxudK0fjArwjPUTUhT3sPZcWuuSVSpFf4oGsHU4SjN5pz59oK9Ufp
+        NQv9gDn72dULGVVJ6Olmr3YDQDGHgNE7aFtmrQ6RG4NeguZ8GQVcbHmfcUNfLe+LZLSx//XTFJd4C
+        3f7V/Eyjmbj7EzROJn1nZWV+LGNP1O90ZLURxRQzYrp1OqAQcN3uSLVY7E/tzxzQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qC6AD-00Duer-15;
+        Thu, 22 Jun 2023 00:18:58 +0200
+Message-ID: <3e337dc0482e16e2aaa4090b613dc8dea7803fa8.camel@sipsolutions.net>
+Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
+ mitigations
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mdaenzer@redhat.com,
         maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
         hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
         jim.cromie@gmail.com, bellosilicio@gmail.com,
@@ -43,23 +49,24 @@ Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
- mitigations
-Message-ID: <08dd8d17-6825-4e53-8441-85c709326f48@lunn.ch>
+Date:   Thu, 22 Jun 2023 00:18:53 +0200
+In-Reply-To: <08dd8d17-6825-4e53-8441-85c709326f48@lunn.ch>
 References: <20230621054603.1262299-2-evan.quan@amd.com>
- <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
- <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
- <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
- <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
- <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
- <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
- <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
- <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
- <07ad6860-8ffb-cc6c-a8e5-e8dc4db4e87a@amd.com>
+         <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
+         <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
+         <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
+         <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
+         <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
+         <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
+         <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
+         <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
+         <07ad6860-8ffb-cc6c-a8e5-e8dc4db4e87a@amd.com>
+         <08dd8d17-6825-4e53-8441-85c709326f48@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <07ad6860-8ffb-cc6c-a8e5-e8dc4db4e87a@amd.com>
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -70,24 +77,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> ACPI core does has notifiers that are used, but they don't work the same.
-> If you look at patch 4, you'll see amdgpu registers and unregisters using
-> both
-> 
-> acpi_install_notify_handler()
-> and
-> acpi_remove_notify_handler()
-> 
-> If we supported both ACPI notifications and non-ACPI notifications
-> all consumers would have to have support to register and use both types.
+On Wed, 2023-06-21 at 21:25 +0200, Andrew Lunn wrote:
+> > ACPI core does has notifiers that are used, but they don't work the sam=
+e.
+> > If you look at patch 4, you'll see amdgpu registers and unregisters usi=
+ng
+> > both
+> >=20
+> > acpi_install_notify_handler()
+> > and
+> > acpi_remove_notify_handler()
+> >=20
+> > If we supported both ACPI notifications and non-ACPI notifications
+> > all consumers would have to have support to register and use both types=
+.
+>=20
+> Why would you want to support ACPI notifications and non-ACPI
+> notifications? All you need is wbrf notification.
+>=20
+> The new wbrf.c should implement wbrf_install_notify_handler() and
+> wbrf_remove_notify_handler().
+>=20
+> As to where to put wbrf.c? I guess either drivers/base/ or
+> drivers/wbrf/. Maybe ask GregKH?
 
-Why would you want to support ACPI notifications and non-ACPI
-notifications? All you need is wbrf notification.
+Not sure it should even be called WBRF at that point, but hey :)
 
-The new wbrf.c should implement wbrf_install_notify_handler() and
-wbrf_remove_notify_handler().
+Honestly I'm not sure though we need this complexity right now? I mean,
+it'd be really easy to replace the calls in mac80211 with some other
+more generalised calls in the future?
 
-As to where to put wbrf.c? I guess either drivers/base/ or
-drivers/wbrf/. Maybe ask GregKH?
+You need some really deep platform/hardware level knowledge and
+involvement to do this, so I don't think it's something that someone
+will come up with very easily for a DT-based platform...
 
-   Andrew
+If we do something with a notifier chain in the future, we can just
+install one in the ACPI code too, and react indirectly rather than
+calling from wifi to the ACPI directly.
+
+johannes
