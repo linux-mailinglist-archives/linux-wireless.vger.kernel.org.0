@@ -2,232 +2,151 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF8D73819B
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3955673814B
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbjFUKOn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 06:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
+        id S231578AbjFUKXU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 06:23:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232444AbjFUKOD (ORCPT
+        with ESMTP id S231450AbjFUKXQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 06:14:03 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B967170A
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 03:13:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687342434; x=1718878434;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3kguiE9pX8IzX/xHLNo3eAvbvRNyWTdqOZsJXGXfkj4=;
-  b=AVTzLqsG/FipUxv380k5C8yUAFCNJ8I2OtFaswcpDcMYIctKoOOWpXJj
-   //lO01ljc5s6DhX7v6Qr8mbQYAI2FaMHPikRPiScqMwula2c0GI9cjgAF
-   Fcu5mTJiMDoXyqoZUihO8EBhPQboWEDddGNsX5iCet9vUsaka82THje6k
-   qTRa3/amyG8/VG3q2rOosPzI6sDE23V7Zck4YfCsO1N4fh4MHAm25IVZY
-   y2YDkSBz0dBK4xPTlCkyKqBJR7ZBNrCCDLxlSTcnX9rS1YV5lqdwUND53
-   A7eO8Zzg5pFMcU5yhYsiXfwwDFlKhHNBsCSm+FxhY2naScyE/9ftSKXtQ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="446506528"
-X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="446506528"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 03:13:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="664599325"
-X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="664599325"
-Received: from ggreenma-mobl2.jer.intel.com ([10.13.17.65])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 03:13:29 -0700
-From:   gregory.greenman@intel.com
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>
-Subject: [PATCH 18/18] wifi: iwlwifi: remove support of A0 version of FM RF
-Date:   Wed, 21 Jun 2023 13:12:22 +0300
-Message-Id: <20230621130444.269d55ffbc8e.I4740f32c3d95d4474a82cc153891c92b9bc465db@changeid>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230621101222.218083-1-gregory.greenman@intel.com>
-References: <20230621101222.218083-1-gregory.greenman@intel.com>
+        Wed, 21 Jun 2023 06:23:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8ED197;
+        Wed, 21 Jun 2023 03:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=E5J3XlE1FsUIlBpFkRpwctJVhjB2FlOiEwVbSdNHhcE=;
+        t=1687342994; x=1688552594; b=RWtUxkjg4xYJmfKtMvXoXY9u+ktdikFpu3EU1sEVWoOMMT8
+        yRPhfqWwcpIRVq2h6WbdY9kJCvIzY9xs8/Qr6cZfqCHenSBeZLYwBgO77nmZ6gf4WvSYn0FyE8mHP
+        51bLL5TzE65XoYEAS6u4PLvWulm7ONYEtwqRvaVuaQTo20BMVnj6onpPUlYOSLqS3GbMnWne6qqMK
+        +0mehziktlLvAymbu56uiTIU0buVLRi2HfzI15d6sNYtAahLoQkxL1Z1lEMJgeFO1vEWAK8YWPq7C
+        CLnZFUcHwp7PjPGPHrrcyA3K52ALg/sg+96X9HEfYrQuZd8rVewPngW3ff6+fHqw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qBuym-00DagI-0V;
+        Wed, 21 Jun 2023 12:22:24 +0200
+Message-ID: <3eb2c16cb0692c8d6b03bd57cb049b1fb3457e92.camel@sipsolutions.net>
+Subject: Re: [PATCH V4 3/8] wifi: mac80211: Add support for ACPI WBRF
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mario.limonciello@amd.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date:   Wed, 21 Jun 2023 12:22:21 +0200
+In-Reply-To: <20230621054603.1262299-4-evan.quan@amd.com>
+References: <20230621054603.1262299-1-evan.quan@amd.com>
+         <20230621054603.1262299-4-evan.quan@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+On Wed, 2023-06-21 at 13:45 +0800, Evan Quan wrote:
+> To support AMD's WBRF interference mitigation mechanism, Wifi adapters
+> utilized in the system must register the frequencies in use(or unregister
+> those frequencies no longer used) via the dedicated APCI calls. So that,
+> other drivers responding to the frequencies can take proper actions to
+> mitigate possible interference.
+>=20
+> To make WBRF feature functional, the kernel needs to be configured with
+> CONFIG_ACPI_WBRF and the platform is equipped with WBRF support(from
+> BIOS and drivers).
+>=20
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Co-developed-by: Evan Quan <evan.quan@amd.com>
+> Signed-off-by: Evan Quan <evan.quan@amd.com>
 
-Remove the support for A0 step of latest wifi-7
-FM RF as it is no longer supported.
+I was going to say this looks good ... but still have a few nits, sorry.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
----
- .../net/wireless/intel/iwlwifi/cfg/ax210.c    |  8 -----
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   | 30 +------------------
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  1 -
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  5 ----
- 4 files changed, 1 insertion(+), 43 deletions(-)
+But then the next question anyway is how we merge this? The wifi parts
+sort of depend on the first patch, although technically I guess I could
+merge them since it's all hidden behind the CONFIG_ symbol, assuming you
+get that in via some other tree it can combine upstream.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-index 73736f7372d2..8d5f9dce71d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/ax210.c
-@@ -36,12 +36,10 @@
- #define IWL_MA_A_GF_A_FW_PRE		"iwlwifi-ma-a0-gf-a0"
- #define IWL_MA_A_GF4_A_FW_PRE		"iwlwifi-ma-a0-gf4-a0"
- #define IWL_MA_A_MR_A_FW_PRE		"iwlwifi-ma-a0-mr-a0"
--#define IWL_MA_A_FM_A_FW_PRE		"iwlwifi-ma-a0-fm-a0"
- #define IWL_MA_B_HR_B_FW_PRE		"iwlwifi-ma-b0-hr-b0"
- #define IWL_MA_B_GF_A_FW_PRE		"iwlwifi-ma-b0-gf-a0"
- #define IWL_MA_B_GF4_A_FW_PRE		"iwlwifi-ma-b0-gf4-a0"
- #define IWL_MA_B_MR_A_FW_PRE		"iwlwifi-ma-b0-mr-a0"
--#define IWL_MA_B_FM_A_FW_PRE		"iwlwifi-ma-b0-fm-a0"
- 
- #define IWL_SO_A_JF_B_MODULE_FIRMWARE(api) \
- 	IWL_SO_A_JF_B_FW_PRE "-" __stringify(api) ".ucode"
-@@ -59,8 +57,6 @@
- 	IWL_MA_A_GF4_A_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_MA_A_MR_A_FW_MODULE_FIRMWARE(api) \
- 	IWL_MA_A_MR_A_FW_PRE "-" __stringify(api) ".ucode"
--#define IWL_MA_A_FM_A_FW_MODULE_FIRMWARE(api)		\
--	IWL_MA_A_FM_A_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(api)		\
- 	IWL_MA_B_HR_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_MA_B_GF_A_FW_MODULE_FIRMWARE(api)		\
-@@ -69,8 +65,6 @@
- 	IWL_MA_B_GF4_A_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_MA_B_MR_A_FW_MODULE_FIRMWARE(api) \
- 	IWL_MA_B_MR_A_FW_PRE "-" __stringify(api) ".ucode"
--#define IWL_MA_B_FM_A_FW_MODULE_FIRMWARE(api)		\
--	IWL_MA_B_FM_A_FW_PRE "-" __stringify(api) ".ucode"
- 
- static const struct iwl_base_params iwl_ax210_base_params = {
- 	.eeprom_size = OTP_LOW_IMAGE_SIZE_32K,
-@@ -301,9 +295,7 @@ MODULE_FIRMWARE(IWL_MA_A_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_A_GF_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_A_GF4_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_A_MR_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
--MODULE_FIRMWARE(IWL_MA_A_FM_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_HR_B_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_GF_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_GF4_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_MA_B_MR_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
--MODULE_FIRMWARE(IWL_MA_B_FM_A_FW_MODULE_FIRMWARE(IWL_AX210_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index c15dcd9bc323..b9893b22e41d 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -29,12 +29,9 @@
- #define IWL_BZ_A_HR_B_FW_PRE		"iwlwifi-bz-a0-hr-b0"
- #define IWL_BZ_A_GF_A_FW_PRE		"iwlwifi-bz-a0-gf-a0"
- #define IWL_BZ_A_GF4_A_FW_PRE		"iwlwifi-bz-a0-gf4-a0"
--#define IWL_BZ_A_FM_A_FW_PRE		"iwlwifi-bz-a0-fm-a0"
--#define IWL_BZ_A_FM4_A_FW_PRE		"iwlwifi-bz-a0-fm4-a0"
- #define IWL_BZ_A_FM_B_FW_PRE		"iwlwifi-bz-a0-fm-b0"
- #define IWL_BZ_A_FM_C_FW_PRE		"iwlwifi-bz-a0-fm-c0"
- #define IWL_BZ_A_FM4_B_FW_PRE		"iwlwifi-bz-a0-fm4-b0"
--#define IWL_GL_A_FM_A_FW_PRE		"iwlwifi-gl-a0-fm-a0"
- #define IWL_GL_B_FM_B_FW_PRE		"iwlwifi-gl-b0-fm-b0"
- #define IWL_GL_C_FM_C_FW_PRE		"iwlwifi-gl-c0-fm-c0"
- 
-@@ -44,18 +41,12 @@
- 	IWL_BZ_A_GF_A_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_BZ_A_GF4_A_MODULE_FIRMWARE(api) \
- 	IWL_BZ_A_GF4_A_FW_PRE "-" __stringify(api) ".ucode"
--#define IWL_BZ_A_FM_A_MODULE_FIRMWARE(api) \
--	IWL_BZ_A_FM_A_FW_PRE "-" __stringify(api) ".ucode"
--#define IWL_BZ_A_FM4_A_MODULE_FIRMWARE(api) \
--	IWL_BZ_A_FM4_A_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_BZ_A_FM_B_MODULE_FIRMWARE(api) \
- 	IWL_BZ_A_FM_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_BZ_A_FM_C_MODULE_FIRMWARE(api) \
--		IWL_BZ_A_FM_C_FW_PRE "-" __stringify(api) ".ucode"
-+	IWL_BZ_A_FM_C_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_BZ_A_FM4_B_MODULE_FIRMWARE(api) \
- 	IWL_BZ_A_FM4_B_FW_PRE "-" __stringify(api) ".ucode"
--#define IWL_GL_A_FM_A_MODULE_FIRMWARE(api) \
--	IWL_GL_A_FM_A_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_GL_B_FM_B_MODULE_FIRMWARE(api) \
- 	IWL_GL_B_FM_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_GL_C_FM_C_MODULE_FIRMWARE(api) \
-@@ -73,13 +64,6 @@ static const struct iwl_base_params iwl_bz_base_params = {
- 	.pcie_l1_allowed = true,
- };
- 
--static const struct iwl_ht_params iwl_gl_a_ht_params = {
--	.stbc = false, /* we explicitly disable STBC for GL step A */
--	.ldpc = true,
--	.ht40_bands = BIT(NL80211_BAND_2GHZ) | BIT(NL80211_BAND_5GHZ) |
--		      BIT(NL80211_BAND_6GHZ),
--};
--
- #define IWL_DEVICE_BZ_COMMON						\
- 	.ucode_api_max = IWL_BZ_UCODE_API_MAX,			\
- 	.ucode_api_min = IWL_BZ_UCODE_API_MIN,			\
-@@ -180,14 +164,6 @@ const struct iwl_cfg iwl_cfg_bz = {
- 	.num_rbds = IWL_NUM_RBDS_BZ_HE,
- };
- 
--const struct iwl_cfg iwl_cfg_gl_a0_fm_a0 = {
--	.fw_name_pre = IWL_GL_A_FM_A_FW_PRE,
--	.uhb_supported = true,
--	IWL_DEVICE_GL_A,
--	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
--	.num_rbds = IWL_NUM_RBDS_BZ_HE,
--};
--
- const struct iwl_cfg iwl_cfg_gl = {
- 	.fw_name_mac = "gl",
- 	.uhb_supported = true,
-@@ -200,12 +176,8 @@ const struct iwl_cfg iwl_cfg_gl = {
- MODULE_FIRMWARE(IWL_BZ_A_HR_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_GF_A_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_GF4_A_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
--MODULE_FIRMWARE(IWL_BZ_A_FM_A_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_FM_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
--MODULE_FIRMWARE(IWL_BZ_A_FM4_A_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_BZ_A_FM4_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
--
--MODULE_FIRMWARE(IWL_GL_A_FM_A_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_GL_B_FM_B_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_GL_C_FM_C_MODULE_FIRMWARE(IWL_BZ_UCODE_API_MAX));
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 1c0cfbb6c427..742096c5a36a 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -640,7 +640,6 @@ extern const struct iwl_cfg iwl_cfg_so_a0_ms_a0;
- extern const struct iwl_cfg iwl_cfg_quz_a0_hr_b0;
- 
- extern const struct iwl_cfg iwl_cfg_bz;
--extern const struct iwl_cfg iwl_cfg_gl_a0_fm_a0;
- extern const struct iwl_cfg iwl_cfg_gl;
- 
- extern const struct iwl_cfg iwl_cfg_sc;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index d3e0ea6aeb41..f46cafb538db 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1008,11 +1008,6 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, IWL_CFG_ANY,
- 		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
- 		      iwl_cfg_gl, iwl_bz_name),
--	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
--		      IWL_CFG_MAC_TYPE_GL, SILICON_A_STEP,
--		      IWL_CFG_RF_TYPE_FM, IWL_CFG_ANY, SILICON_A_STEP,
--		      IWL_CFG_ANY, IWL_CFG_ANY, IWL_CFG_NO_CDB,
--		      iwl_cfg_gl_a0_fm_a0, iwl_bz_name),
- 
- /* SoF with JF2 */
- 	_IWL_DEV_INFO(IWL_CFG_ANY, IWL_CFG_ANY,
--- 
-2.38.1
+I'd also say you can merge those parts elsewhere but I'm planning to
+also land some locking rework that I've been working on, so it will
+probably conflict somewhere.
 
+> +++ b/net/mac80211/chan.c
+> @@ -506,11 +506,16 @@ static void _ieee80211_change_chanctx(struct ieee80=
+211_local *local,
+> =20
+>  	WARN_ON(!cfg80211_chandef_compatible(&ctx->conf.def, chandef));
+> =20
+> +	ieee80211_remove_wbrf(local, &ctx->conf.def);
+> +
+>  	ctx->conf.def =3D *chandef;
+> =20
+>  	/* check if min chanctx also changed */
+>  	changed =3D IEEE80211_CHANCTX_CHANGE_WIDTH |
+>  		  _ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
+> +
+> +	ieee80211_add_wbrf(local, &ctx->conf.def);
+
+You ignore the return value here.
+
+
+> @@ -668,6 +673,10 @@ static int ieee80211_add_chanctx(struct ieee80211_lo=
+cal *local,
+>  	lockdep_assert_held(&local->mtx);
+>  	lockdep_assert_held(&local->chanctx_mtx);
+> =20
+> +	err =3D ieee80211_add_wbrf(local, &ctx->conf.def);
+> +	if (err)
+> +		return err;
+
+But not here.
+
+In the code, there are basically two error paths:
+
+> +int ieee80211_add_wbrf(struct ieee80211_local *local,
+> +		       struct cfg80211_chan_def *chandef)
+> +{
+> +	struct device *dev =3D local->hw.wiphy->dev.parent;
+> +	struct wbrf_ranges_in ranges_in =3D {0};
+> +	int ret;
+> +
+> +	if (!local->wbrf_supported)
+> +		return 0;
+> +
+> +	ret =3D wbrf_get_ranges_from_chandef(chandef, &ranges_in);
+> +	if (ret)
+> +		return ret;
+
+This really won't fail, just if the bandwidth calculation was bad, but
+that's an internal error that WARNs anyway and we can ignore it.
+
+> +	return wbrf_add_exclusion(ACPI_COMPANION(dev), &ranges_in);
+
+This I find a bit confusing, why do we even propagate the error? If the
+platform has some issue with it, should we really fail the connection?
+
+
+I think it seems better to me to just make this void, and have it be
+only a notification interface?
+
+johannes
