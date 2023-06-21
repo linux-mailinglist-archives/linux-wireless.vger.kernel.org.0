@@ -2,50 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E89A4738365
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 14:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AE3738332
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 14:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231420AbjFUL6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 07:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34640 "EHLO
+        id S231816AbjFUMGO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 08:06:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231325AbjFUL6Q (ORCPT
+        with ESMTP id S229822AbjFUMGG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 07:58:16 -0400
+        Wed, 21 Jun 2023 08:06:06 -0400
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06581706
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 04:58:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EB81BEF;
+        Wed, 21 Jun 2023 05:05:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=+nZBb2oJzuhDKQpCWy5UN11fCiSArQF3qKmuf9I0HmE=;
-        t=1687348684; x=1688558284; b=YS9yPAF1gFh7lrcVPURvl+pEITQ1qEJkzy4v0kQIafqK5YU
-        80vTKqSE+L43+GKKGd0N0NCJzOpXZZ3lkUVgVB0T2bHnpX9t28ZIzsMfBtzqJx+rETky37dGgdYDC
-        wou1MYfsLa8OuBjqiirWLw5RJx61z/5Rs/5MsLDN/1KVLPhSUw/a8D7CmkYj6Wr6+B/Kg6a6nxjHM
-        pTPD3Etwf8eWoNzU7HvNTZTbim4MqCM+wiYkY/Qh75FmMRGH7nu/p8ZYt7AXzgGdWsafa4KDtef7g
-        9Qn1HQlbKOOP0ekTbpy1kNaEvC+80sAhWCOM+th3suTedlhksDpQvlL4bN3E/rsg==;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References;
+        bh=eXNGbaU61EwoS23wrTMtGmzgg8KS+S58oSW7W2/6C08=; t=1687349149; x=1688558749; 
+        b=mXSTFVvsBY8gHoZhuUjb01jjjfQWq1uAFCydIAtNP3gy8je1oDjhfaRzEEv61EGSirffD0A7z91
+        uk1F9MrkXcOuIejzhg2Np6Z2KHSF9lrEw6Z+Afh4wmqIhCbDwrhijESv3ZLbso22h6/lt2YHZ1xgh
+        tMkSCBU0znSSmd2wRs7GdiRYpwozj/JXwu5pU1eVoyEaBDlTrcTeZ1NPpa+AKmOkmF8bBFlMjaiKU
+        sHgXZB2EGuzdsyuM97FSFluer2xHGCUTVK7Wnz8TMAmBC+6LbhH9tnZQkEi2WeUl34kQIOxtHnCQ4
+        Yo5KNrnpr1Rldq1/EKJPjYJpf7QRaNynzw3g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.96)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1qBwTC-00DeK0-0v;
-        Wed, 21 Jun 2023 13:57:54 +0200
-Message-ID: <53612acba151d031f636626db20c1c60db09fdd0.camel@sipsolutions.net>
-Subject: Re: [PATCH 10/19] wifi: iwlwifi: limit EHT capabilities based on
- PCIe link speed
+        id 1qBwao-00DeSb-1U;
+        Wed, 21 Jun 2023 14:05:46 +0200
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>, gregory.greenman@intel.com
-Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 21 Jun 2023 13:57:53 +0200
-In-Reply-To: <d220c5b6-7c8f-19cd-12d0-ceb484e29e48@candelatech.com>
-References: <20230620100405.45117-1-gregory.greenman@intel.com>
-         <20230620125813.b77a1574a0a7.Id4120c161fb7df6dedc70d5f3e3829e9117b8cb1@changeid>
-         <d220c5b6-7c8f-19cd-12d0-ceb484e29e48@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH net] wifi: mac80211: report all unusable beacon frames
+Date:   Wed, 21 Jun 2023 14:05:44 +0200
+Message-ID: <20230621120543.412920-2-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -56,28 +50,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2023-06-20 at 06:19 -0700, Ben Greear wrote:
-> On 6/20/23 3:03 AM, gregory.greenman@intel.com wrote:
-> > From: Johannes Berg <johannes.berg@intel.com>
-> >=20
-> > If a discrete NIC is connected to a PCIe link hat isn't at least
-> > Gen3 (8.0 GT/s), then we cannot sustain 320 MHz traffic, so remove
-> > that from EHT capabilities in that case.
-> >=20
-> > While at it, also move setting 320 MHz beamformee to the right
-> > place in the code so it's not set while not supporting 320 MHz.
->=20
-> Is there not an advantage to allowing 320Mhz for longer distance connecti=
-ons
-> where signal is relatively weak, so over-all tput would easily fit in les=
-ser
-> pcie bus?  Especially on 6E band where the US regdom allows more over-all=
- power
-> when using wider bandwidths?
->=20
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-I actually don't know. This surely isn't ideal, but it's the only way to
-really force the AP to not send too much than the NIC can pass out, and
-it gets unhappy if it can't.
+Properly check for RX_DROP_UNUSABLE now that the new drop reason
+infrastructure is used. Without this change, the comparison will always
+be false as a more specific reason is given in the lower bits of result.
 
-johannes
+Fixes: baa951a1c177 ("mac80211: use the new drop reasons infrastructure")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+Another straggler for net, please, so we don't have this regression
+in 6.4. If it's too late now, I'll take it through wireless for the
+next version.
+---
+ net/mac80211/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index e579581441de..4f707d2a160f 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2110,7 +2110,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 	/* either the frame has been decrypted or will be dropped */
+ 	status->flag |= RX_FLAG_DECRYPTED;
+ 
+-	if (unlikely(ieee80211_is_beacon(fc) && result == RX_DROP_UNUSABLE &&
++	if (unlikely(ieee80211_is_beacon(fc) && (result & RX_DROP_UNUSABLE) &&
+ 		     rx->sdata->dev))
+ 		cfg80211_rx_unprot_mlme_mgmt(rx->sdata->dev,
+ 					     skb->data, skb->len);
+-- 
+2.41.0
+
