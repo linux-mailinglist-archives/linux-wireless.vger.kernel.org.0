@@ -2,142 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C96D173812A
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E469737FDC
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbjFUJbd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 05:31:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34900 "EHLO
+        id S230050AbjFUJfV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 05:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbjFUJbG (ORCPT
+        with ESMTP id S231901AbjFUJec (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 05:31:06 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 629142102
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 02:30:41 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qBuAb-00066z-FZ; Wed, 21 Jun 2023 11:30:33 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qBuAa-0000pP-6D; Wed, 21 Jun 2023 11:30:32 +0200
-Date:   Wed, 21 Jun 2023 11:30:32 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 3/3] [v4] wifi: rtw88: remove unused USB bulkout size set
-Message-ID: <20230621093032.GF18491@pengutronix.de>
-References: <20230621092313.65965-1-dmantipov@yandex.ru>
- <20230621092313.65965-3-dmantipov@yandex.ru>
+        Wed, 21 Jun 2023 05:34:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBA11BC7
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 02:32:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DCC0614B6
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 09:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057D8C433C0;
+        Wed, 21 Jun 2023 09:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687339959;
+        bh=/iCNRmmomHR8mEwjqDMj0Boz/zJRnjQXqYJaolxNT3o=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=M/WVnIJ8EpmnX1lNlHoVYzZbqXpZ2ZFkvsQgeMb0TKcXJIgs1jeSVJ5XutaZ8SVY5
+         qwvxcIlamwsYhLDag+Hftl/M9KQNSXcEUPQxl4n1I7hSgbgxiSf2Mtx/CCYXiTlVfl
+         WTeSsfKGi9SSg7fX68QFZe2moWsMT7jl/2ZOlhy6DSwAA26lX+9aeixAWRgEbRC5Y5
+         /+D2RoXEGOhyjQEtxgddpJhaEBjuKVQuFuvv4SFxkNPAGS7sUi/jRbCWRQHaHYkSDb
+         TURbBZrJ6ntsc312KsWYcefCm1PyHla8Wf52PePlctyu+3zH2PSsQWgKwYApp0YKIl
+         GqRG8cavnbaOQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     <Amisha.Patel@microchip.com>
+Cc:     <linux-wireless@vger.kernel.org>, <Ajay.Kathat@microchip.com>,
+        <Claudiu.Beznea@microchip.com>
+Subject: Re: [PATCH v2] wifi: wilc1000: add SPI commands retry mechanism
+References: <20230614203215.9652-1-amisha.patel@microchip.com>
+Date:   Wed, 21 Jun 2023 12:32:36 +0300
+In-Reply-To: <20230614203215.9652-1-amisha.patel@microchip.com> (Amisha
+        Patel's message of "Wed, 14 Jun 2023 20:32:46 +0000")
+Message-ID: <87zg4tdutn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230621092313.65965-3-dmantipov@yandex.ru>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jun 21, 2023 at 12:22:15PM +0300, Dmitry Antipov wrote:
-> Drop no longer used 'bulkout_size' of 'struct rtw_usb' as well
-> as related macros from usb.h and leftovers in 'rtw_usb_parse()'.
-> This follows commit 462c8db6a011 ("wifi: rtw88: usb: drop
-> now unnecessary URB size check").
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+<Amisha.Patel@microchip.com> writes:
 
-Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+> From: Amisha Patel <amisha.patel@microchip.com>
+>
+> In some situations like, chip wake-up with powersave enabled, SPI
+> commands are failing temporarily. Reissuing commands after reset helps
+> to overcome the failure. So, add the retry limit and reset command
+> sequence API for read/write SPI commands.
+>
+> Signed-off-by: Amisha Patel <amisha.patel@microchip.com>
 
-Sascha
+[...]
 
-> ---
-> v4: remove all bulkout size leftovers (Ping-Ke Shih, Sascha Hauer)
-> ---
->  drivers/net/wireless/realtek/rtw88/usb.c | 17 -----------------
->  drivers/net/wireless/realtek/rtw88/usb.h |  5 -----
->  2 files changed, 22 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> index 6862338b1d51..6423140c6005 100644
-> --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> @@ -141,7 +141,6 @@ static int rtw_usb_parse(struct rtw_dev *rtwdev,
->  	struct usb_host_interface *host_interface = &interface->altsetting[0];
->  	struct usb_interface_descriptor *interface_desc = &host_interface->desc;
->  	struct usb_endpoint_descriptor *endpoint;
-> -	struct usb_device *usbd = interface_to_usbdev(interface);
->  	int num_out_pipes = 0;
->  	int i;
->  	u8 num;
-> @@ -183,22 +182,6 @@ static int rtw_usb_parse(struct rtw_dev *rtwdev,
->  		}
+> +retry:
+>  	result = wilc_spi_single_read(wilc, cmd, addr, data, clockless);
+>  	if (result) {
+>  		dev_err(&spi->dev, "Failed cmd, read reg (%08x)...\n", addr);
+> -		return result;
+> +
+> +		/* retry is not applicable for clockless registers */
+> +		if (clockless || !retry_limit)
+> +			return result;
+> +
+> +		wilc_spi_reset_cmd_sequence(wilc, retry_limit, addr);
+> +		retry_limit--;
+> +		goto retry;
 >  	}
->  
-> -	switch (usbd->speed) {
-> -	case USB_SPEED_LOW:
-> -	case USB_SPEED_FULL:
-> -		rtwusb->bulkout_size = RTW_USB_FULL_SPEED_BULK_SIZE;
-> -		break;
-> -	case USB_SPEED_HIGH:
-> -		rtwusb->bulkout_size = RTW_USB_HIGH_SPEED_BULK_SIZE;
-> -		break;
-> -	case USB_SPEED_SUPER:
-> -		rtwusb->bulkout_size = RTW_USB_SUPER_SPEED_BULK_SIZE;
-> -		break;
-> -	default:
-> -		rtw_err(rtwdev, "failed to detect usb speed\n");
-> -		return -EINVAL;
-> -	}
-> -
->  	rtwdev->hci.bulkout_num = num_out_pipes;
->  
->  	if (num_out_pipes < 1 || num_out_pipes > 4) {
-> diff --git a/drivers/net/wireless/realtek/rtw88/usb.h b/drivers/net/wireless/realtek/rtw88/usb.h
-> index fad998005ec8..86697a5c0103 100644
-> --- a/drivers/net/wireless/realtek/rtw88/usb.h
-> +++ b/drivers/net/wireless/realtek/rtw88/usb.h
-> @@ -18,10 +18,6 @@
->  
->  #define RTW_USB_VENQT_CMD_IDX		0x00
->  
-> -#define RTW_USB_SUPER_SPEED_BULK_SIZE	1024
-> -#define RTW_USB_HIGH_SPEED_BULK_SIZE	512
-> -#define RTW_USB_FULL_SPEED_BULK_SIZE	64
-> -
->  #define RTW_USB_TX_SEL_HQ		BIT(0)
->  #define RTW_USB_TX_SEL_LQ		BIT(1)
->  #define RTW_USB_TX_SEL_NQ		BIT(2)
-> @@ -73,7 +69,6 @@ struct rtw_usb {
->  	__le32 *usb_data;
->  	unsigned int usb_data_index;
->  
-> -	u32 bulkout_size;
->  	u8 pipe_interrupt;
->  	u8 pipe_in;
->  	u8 out_ep[RTW_USB_EP_MAX];
-> -- 
-> 2.41.0
-> 
-> 
+
+A for loop is recommended over a goto loop. Also in this case I find
+'retry_limit == 0' more readable than '!retry_limit', it's a counter
+anyway.
+
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
