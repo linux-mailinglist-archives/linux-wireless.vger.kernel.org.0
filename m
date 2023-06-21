@@ -2,62 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3955673814B
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEBF7382BF
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 14:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231578AbjFUKXU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 06:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42028 "EHLO
+        id S232075AbjFULX6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 07:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231450AbjFUKXQ (ORCPT
+        with ESMTP id S232721AbjFULXv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 06:23:16 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8ED197;
-        Wed, 21 Jun 2023 03:23:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=E5J3XlE1FsUIlBpFkRpwctJVhjB2FlOiEwVbSdNHhcE=;
-        t=1687342994; x=1688552594; b=RWtUxkjg4xYJmfKtMvXoXY9u+ktdikFpu3EU1sEVWoOMMT8
-        yRPhfqWwcpIRVq2h6WbdY9kJCvIzY9xs8/Qr6cZfqCHenSBeZLYwBgO77nmZ6gf4WvSYn0FyE8mHP
-        51bLL5TzE65XoYEAS6u4PLvWulm7ONYEtwqRvaVuaQTo20BMVnj6onpPUlYOSLqS3GbMnWne6qqMK
-        +0mehziktlLvAymbu56uiTIU0buVLRi2HfzI15d6sNYtAahLoQkxL1Z1lEMJgeFO1vEWAK8YWPq7C
-        CLnZFUcHwp7PjPGPHrrcyA3K52ALg/sg+96X9HEfYrQuZd8rVewPngW3ff6+fHqw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qBuym-00DagI-0V;
-        Wed, 21 Jun 2023 12:22:24 +0200
-Message-ID: <3eb2c16cb0692c8d6b03bd57cb049b1fb3457e92.camel@sipsolutions.net>
-Subject: Re: [PATCH V4 3/8] wifi: mac80211: Add support for ACPI WBRF
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Evan Quan <evan.quan@amd.com>, rafael@kernel.org, lenb@kernel.org,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, mario.limonciello@amd.com, mdaenzer@redhat.com,
-        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
-        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
-        jim.cromie@gmail.com, bellosilicio@gmail.com,
-        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
-        arnd@arndb.de
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date:   Wed, 21 Jun 2023 12:22:21 +0200
-In-Reply-To: <20230621054603.1262299-4-evan.quan@amd.com>
-References: <20230621054603.1262299-1-evan.quan@amd.com>
-         <20230621054603.1262299-4-evan.quan@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        Wed, 21 Jun 2023 07:23:51 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 12B5E170F
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 04:23:32 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35LBMFPt8024612, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35LBMFPt8024612
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 21 Jun 2023 19:22:16 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Wed, 21 Jun 2023 19:22:36 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Wed, 21 Jun 2023 19:22:36 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d]) by
+ RTEXMBS04.realtek.com.tw ([fe80::e138:e7f1:4709:ff4d%5]) with mapi id
+ 15.01.2375.007; Wed, 21 Jun 2023 19:22:36 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     "dmantipov@yandex.ru" <dmantipov@yandex.ru>
+CC:     "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 1/3] [v4] wifi: rtw88: delete timer and free skb queue when unloading
+Thread-Topic: [PATCH 1/3] [v4] wifi: rtw88: delete timer and free skb queue
+ when unloading
+Thread-Index: AQHZpCIHrL40d7wEp02hNp6w9+wjQ6+UlviA
+Date:   Wed, 21 Jun 2023 11:22:36 +0000
+Message-ID: <9fdea7c3c26ede8e744b50dba008cef8da866d09.camel@realtek.com>
+References: <20230621092313.65965-1-dmantipov@yandex.ru>
+In-Reply-To: <20230621092313.65965-1-dmantipov@yandex.ru>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.36.1-2 
+x-originating-ip: [172.16.16.25]
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <08A3CF83C3D98043956EAD41A79D77A6@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,88 +72,11 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2023-06-21 at 13:45 +0800, Evan Quan wrote:
-> To support AMD's WBRF interference mitigation mechanism, Wifi adapters
-> utilized in the system must register the frequencies in use(or unregister
-> those frequencies no longer used) via the dedicated APCI calls. So that,
-> other drivers responding to the frequencies can take proper actions to
-> mitigate possible interference.
->=20
-> To make WBRF feature functional, the kernel needs to be configured with
-> CONFIG_ACPI_WBRF and the platform is equipped with WBRF support(from
-> BIOS and drivers).
->=20
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Co-developed-by: Evan Quan <evan.quan@amd.com>
-> Signed-off-by: Evan Quan <evan.quan@amd.com>
-
-I was going to say this looks good ... but still have a few nits, sorry.
-
-But then the next question anyway is how we merge this? The wifi parts
-sort of depend on the first patch, although technically I guess I could
-merge them since it's all hidden behind the CONFIG_ symbol, assuming you
-get that in via some other tree it can combine upstream.
-
-I'd also say you can merge those parts elsewhere but I'm planning to
-also land some locking rework that I've been working on, so it will
-probably conflict somewhere.
-
-> +++ b/net/mac80211/chan.c
-> @@ -506,11 +506,16 @@ static void _ieee80211_change_chanctx(struct ieee80=
-211_local *local,
-> =20
->  	WARN_ON(!cfg80211_chandef_compatible(&ctx->conf.def, chandef));
-> =20
-> +	ieee80211_remove_wbrf(local, &ctx->conf.def);
-> +
->  	ctx->conf.def =3D *chandef;
-> =20
->  	/* check if min chanctx also changed */
->  	changed =3D IEEE80211_CHANCTX_CHANGE_WIDTH |
->  		  _ieee80211_recalc_chanctx_min_def(local, ctx, rsvd_for);
-> +
-> +	ieee80211_add_wbrf(local, &ctx->conf.def);
-
-You ignore the return value here.
-
-
-> @@ -668,6 +673,10 @@ static int ieee80211_add_chanctx(struct ieee80211_lo=
-cal *local,
->  	lockdep_assert_held(&local->mtx);
->  	lockdep_assert_held(&local->chanctx_mtx);
-> =20
-> +	err =3D ieee80211_add_wbrf(local, &ctx->conf.def);
-> +	if (err)
-> +		return err;
-
-But not here.
-
-In the code, there are basically two error paths:
-
-> +int ieee80211_add_wbrf(struct ieee80211_local *local,
-> +		       struct cfg80211_chan_def *chandef)
-> +{
-> +	struct device *dev =3D local->hw.wiphy->dev.parent;
-> +	struct wbrf_ranges_in ranges_in =3D {0};
-> +	int ret;
-> +
-> +	if (!local->wbrf_supported)
-> +		return 0;
-> +
-> +	ret =3D wbrf_get_ranges_from_chandef(chandef, &ranges_in);
-> +	if (ret)
-> +		return ret;
-
-This really won't fail, just if the bandwidth calculation was bad, but
-that's an internal error that WARNs anyway and we can ignore it.
-
-> +	return wbrf_add_exclusion(ACPI_COMPANION(dev), &ranges_in);
-
-This I find a bit confusing, why do we even propagate the error? If the
-platform has some issue with it, should we really fail the connection?
-
-
-I think it seems better to me to just make this void, and have it be
-only a notification interface?
-
-johannes
+T24gV2VkLCAyMDIzLTA2LTIxIGF0IDEyOjIyICswMzAwLCBEbWl0cnkgQW50aXBvdiB3cm90ZToN
+Cj4gDQo+IEZpeCBwb3NzaWJsZSBjcmFzaCBhbmQgbWVtb3J5IGxlYWsgb24gZHJpdmVyIHVubG9h
+ZCBieSBkZWxldGluZw0KPiBUWCBwdXJnZSB0aW1lciBhbmQgZnJlZWluZyBDMkggcXVldWUgaW4g
+J3J0d19jb3JlX2RlaW5pdCgpJywNCj4gc2hyaW5rIGNyaXRpY2FsIHNlY3Rpb24gaW4gdGhlIGxh
+dHRlciBieSBmcmVlaW5nIENPRVggcXVldWUNCj4gb3V0IG9mIFRYIHJlcG9ydCBsb2NrIHNjb3Bl
+Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogRG1pdHJ5IEFudGlwb3YgPGRtYW50aXBvdkB5YW5kZXgu
+cnU+DQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0KWy4u
+Ll0NCg0KDQoNCg==
