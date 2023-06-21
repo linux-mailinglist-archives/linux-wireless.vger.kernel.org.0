@@ -2,80 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15EBA738813
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 16:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8015573882D
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 16:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232657AbjFUO4F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 10:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
+        id S232119AbjFUO5z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 10:57:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232994AbjFUOyi (ORCPT
+        with ESMTP id S232528AbjFUO5j (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 10:54:38 -0400
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B65B3598
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 07:50:16 -0700 (PDT)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-52cb8e5e9f5so3907507a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 07:50:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687358983; x=1689950983;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8XPvnsVHuvnzruH4m0ob+U9HvAcv1H+gfTUuHjNwMqk=;
-        b=ZFccJ/zz5QpXLJ86bO9oQ53CiCtBlyR9BcYMHe8wri2iY8sy+yHT8lyAQe16PlMHOm
-         FBkttF9vQO/Jpc9OOvF9ipw1hMTfVEmYct0GE7WTRZ95jb3RCOTJOkitkK42+d9selBb
-         lgUlPRAl1QR1O0uWE3M2DLF6CYSrcfHeh9bLPMCSV96H8VO3HCl3g8uISJH1lFGtRZJM
-         6Z3T/pOrfHwdpCw9++AwLA0XwqSw0LzpsGmvMp2mbJRe7/WnmofMXcmipfnrOA80TZ9w
-         HL7zlvURh4IUB1bCMBjbmhrnLndSMSrmUctMEAuxyFAaqZx3cAcNP/YhPNp7FjlO8kB+
-         vX+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687358983; x=1689950983;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8XPvnsVHuvnzruH4m0ob+U9HvAcv1H+gfTUuHjNwMqk=;
-        b=ZGpHIOGbXQDUsA6ss+DNdgr8rqyzZT2ww+TcTMFfrgUWWdN7rSATqXUV3DyErkOHEg
-         /iGl/ZzPwf39QhgEaAyOaO2TataTC5gvHYRUUC1ZEvGKLufU2boo+BX71IMiSR8PGyhE
-         U0WGeHwMBAvXQxiF3ldg3vUjUv++3aIF5vdMg9sXEexwlwBUvXNkLuDiIjV77vVgfno1
-         O5sv0Z6eOIe3CO1E/wJdE67yuaXHgZYyTINDQmnhQaRGtHXSeRrqctQWcgRpNF+oswc4
-         VUyxNfkxAmTi3Pu949bCNI06pizAfWGu10Lu1zoeIzH/SNpta8+YN4WUG0TaImYw6dKi
-         CcMQ==
-X-Gm-Message-State: AC+VfDztp4mLtVTpyjPmZ2iDPVj2u52PpEEIc4EotVvKNlESdUnvsz5p
-        oj22kkKxPK3HNXWpcxWIvdSytVRfDnWwqJTrwn0=
-X-Google-Smtp-Source: ACHHUZ6mtjrO5+BEYS3rFPvhTFT7EkI1Z0BiBRGxnXdfcVTT6SJozADaRzleS5Q4dcH6gvT77K2bAzLQ9T1Lri0bY84=
-X-Received: by 2002:a17:90b:1e0e:b0:261:110e:30c1 with SMTP id
- pg14-20020a17090b1e0e00b00261110e30c1mr126446pjb.4.1687358983381; Wed, 21 Jun
- 2023 07:49:43 -0700 (PDT)
-MIME-Version: 1.0
-Sender: marchallthierry@gmail.com
-Received: by 2002:a05:6a10:f48e:b0:4c1:804b:a102 with HTTP; Wed, 21 Jun 2023
- 07:49:42 -0700 (PDT)
-From:   Miss Marybeth <marybethmonson009@gmail.com>
-Date:   Wed, 21 Jun 2023 14:49:42 +0000
-X-Google-Sender-Auth: kviwOA1IVbbrqp63pmwRo1ue1WA
-Message-ID: <CAN3qK0XShJU-E46_B+n6yCb8q4MXjhxXnH7GTZBRtNxkiWxjFw@mail.gmail.com>
-Subject: Re: Hello Dear
-To:     undisclosed-recipients:;
+        Wed, 21 Jun 2023 10:57:39 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4269830ED
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 07:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=wzdeVBLuwidYP9CFAx3kh0aCaQYbJmp2pdK3//zkB0E=;
+        t=1687359137; x=1688568737; b=S1xlh2KX6Bcc+T9JIonBW7KFK+76EPT7odHji0ArVIKbVoB
+        mM2tkd8agJ/MUBayOqRXLbgf/FMWuiacz0bq/g7PaoKskbTuM+yT1t4G8Nbrt/EVaDLVXGV8EAF4K
+        p/OEcYCVPjwNMs3rYpNEdEg3M8ysHlfE5F2YS9Mem5b4vBCyxORyIB55+jWf/Lwc17ufzcn+d6Hp3
+        wLPpIGx4qQI0JqBtDjhe/HgZNaxZGRyKphemb4PXTB2WRxItcHRDNU8vcBIhQDH8BY5Qa8y6j8FY3
+        /qExw/paDfDzsSA6hdGXAmGU3gg6yp6uyWZCBW26RiIWFdUWVN3oKj0DMWAFMmhQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1qBzAu-00Dibv-13;
+        Wed, 21 Jun 2023 16:51:12 +0200
+Message-ID: <6ee9c93cfa5a8f6dbb6e07dc2c72e26bb0e57121.camel@sipsolutions.net>
+Subject: Re: [PATCH 10/19] wifi: iwlwifi: limit EHT capabilities based on
+ PCIe link speed
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ben Greear <greearb@candelatech.com>, gregory.greenman@intel.com
+Cc:     linux-wireless@vger.kernel.org
+Date:   Wed, 21 Jun 2023 16:51:11 +0200
+In-Reply-To: <9f4c589a-2160-cedb-d79a-1f57ea5244da@candelatech.com>
+References: <20230620100405.45117-1-gregory.greenman@intel.com>
+         <20230620125813.b77a1574a0a7.Id4120c161fb7df6dedc70d5f3e3829e9117b8cb1@changeid>
+         <d220c5b6-7c8f-19cd-12d0-ceb484e29e48@candelatech.com>
+         <53612acba151d031f636626db20c1c60db09fdd0.camel@sipsolutions.net>
+         <9f4c589a-2160-cedb-d79a-1f57ea5244da@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hallo,
+On Wed, 2023-06-21 at 07:48 -0700, Ben Greear wrote:
+> On 6/21/23 4:57 AM, Johannes Berg wrote:
+> > On Tue, 2023-06-20 at 06:19 -0700, Ben Greear wrote:
+> > > On 6/20/23 3:03 AM, gregory.greenman@intel.com wrote:
+> > > > From: Johannes Berg <johannes.berg@intel.com>
+> > > >=20
+> > > > If a discrete NIC is connected to a PCIe link hat isn't at least
+> > > > Gen3 (8.0 GT/s), then we cannot sustain 320 MHz traffic, so remove
+> > > > that from EHT capabilities in that case.
+> > > >=20
+> > > > While at it, also move setting 320 MHz beamformee to the right
+> > > > place in the code so it's not set while not supporting 320 MHz.
+> > >=20
+> > > Is there not an advantage to allowing 320Mhz for longer distance conn=
+ections
+> > > where signal is relatively weak, so over-all tput would easily fit in=
+ lesser
+> > > pcie bus?  Especially on 6E band where the US regdom allows more over=
+-all power
+> > > when using wider bandwidths?
+> > >=20
+> >=20
+> > I actually don't know. This surely isn't ideal, but it's the only way t=
+o
+> > really force the AP to not send too much than the NIC can pass out, and
+> > it gets unhappy if it can't.
+>=20
+> So this is to work around hardware/firmware bug in NIC?  If so, that shou=
+ld
+> be mentioned.
 
-Du hast meine vorherige Nachricht erhalten? Ich habe Sie schon einmal
-kontaktiert, aber die Nachricht kam nicht zur=C3=BCck, also beschloss ich,
-Ihnen noch einmal zu schreiben. Bitte best=C3=A4tigen Sie, ob Sie dies
-erhalten, damit ich fortfahren kann.
+I'm not sure that's really even a _bug_, it just doesn't have a lot of
+buffer space inside of it; as far as I know, given how the HW
+architecture works, the FW doesn't have a lot of options.
 
-warte auf deine Antwort.
+> I have heard in the past that higher bandwidth works better than higher N=
+SS
+> in a lot of cases, so if HW/FW can be made to deal with floods in unlikel=
+y
+> case that the RF is perfect enough to saturate the PCI bus, then I think =
+you
+> should allow 320Mhz even on slower PCI bus configurations.
 
-Gr=C3=BC=C3=9Fe,
-Fr=C3=A4ulein Marybeth
+Right. I don't think it's likely that the firmware will do, but hey, I
+can let them know :)
+
+johannes
