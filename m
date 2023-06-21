@@ -2,77 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AABC738ED8
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 20:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75909738F29
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 20:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbjFUSbg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 14:31:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56262 "EHLO
+        id S230523AbjFUSuo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 14:50:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231156AbjFUSbd (ORCPT
+        with ESMTP id S229549AbjFUSum (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 14:31:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF18519C
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 11:31:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 481E661689
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 18:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD3CC433C8;
-        Wed, 21 Jun 2023 18:31:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687372290;
-        bh=26DsCrIvi2n7+WNnF3Wmc/ljoQ46A1T8FWgd3kvsX60=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=UfGPv6Sso9/4S5ejhNR3THgt9u8wECiZrIfxEQXXbTVNKNDd+6/wl1xb199sRpJgp
-         zg4tQnp/iLYeaAOlP31DQWRgSwwiUf8CjZerTdiK5fsLBSngA+Lrv9wU38ev76W/Cd
-         RfYS9X7JCR5ZOAdOJPEti0o+LoqPvFthzqor03YduBH2G48/a6+l69JmrS2Hu4lsla
-         Ki71h9i3+VKxJLIKsIqEJVU23RtPfVMsJsDWr/9v3qzjahoMicgsTfP3WEt5mH6Lhd
-         QA48OYfMUiOrSAYIVPzQYltgAICUC0d1p1WX79mQWZoUMY1rp5JApslljltg5doxdo
-         g1zWkBujLE30w==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 21 Jun 2023 14:50:42 -0400
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2075.outbound.protection.outlook.com [40.107.100.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC97185;
+        Wed, 21 Jun 2023 11:50:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=T64V+dMoaV+KQE/EXkEPIYHBf37CTchBSr75y8/emNJwMMkD4hVjRwWYSFMMcJSzpjxGiQARuGZev3cN6FgYQ3GG2myA9osjf4we4aCaZS4in7Pn6g25gG3wpO/b9VHYxjQu8iTE2Z1+9XCdtmaM0F0zdO2bpA6/s7FeXNG1oKD6QcnmnxblLJkypQ9hiixB8lbY60qYf7XDavXaE8Txm9DkwYDg8muAEt2+mYN3j8PH0UV3V1OUWD2qNUalyXMkIx6rE8Gbi+fzeMdsnZeoQaNuYdHAvgiFUTbhY4aoVn2kTHdUqkSGz3gQj0P6YY7p9Do7fOCgcp/L4CMW1I+HSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9vzajxK6jmcnW0W0LSnPn+KaIU/2VDE6hzkCuIqoNlE=;
+ b=F949O33n8Of+t/Br8UySSs7glSuCl2F57Z7Vgz+Qx9L67/Ia6JUEglBqqRLr/hQwchqlZWOda3N5Bu3+CbcwS+OB3yuU7ypW9i0Lwa3W4CTb7vwhzd+umr6dOWWRbyBW6vI7v7aBWTv66czpAUt0VASooUuqeeyNfziM4e9iWBaEZ9Bfi9w8Vwen9KMKAwtQKGnKLlLEkPU/P6kQLb+KjfJr868uKi8ezIPkFpPEkolm56U+Z8yoztxuc6f6sVviKjBHmWFPslNH1MWG031RbsZjq+getSkcBNLzYi92NJ/aDv/GZHJS352Cr3tjTh93/jhTNQsSFowHLkKe4rmCOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9vzajxK6jmcnW0W0LSnPn+KaIU/2VDE6hzkCuIqoNlE=;
+ b=ftdAeeUIG70BonAVFJNut7Tgq1VDs/F8xlQrRr6IZMJTAcKj84PiFnhtYpmTG/me4ShE5+TAciqev0bB85d1GxdIXJEFmKXjl0D8BwSWVtsSFAd9AdFyhyNSfpce/OicPJWv1IUBtgFcRMw4ziuqM69uKSBowUdV7UuE33AlFSY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by MW5PR12MB5622.namprd12.prod.outlook.com (2603:10b6:303:198::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.21; Wed, 21 Jun
+ 2023 18:50:39 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dfcf:f53c:c778:6f70]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dfcf:f53c:c778:6f70%5]) with mapi id 15.20.6521.020; Wed, 21 Jun 2023
+ 18:50:39 +0000
+Message-ID: <07ad6860-8ffb-cc6c-a8e5-e8dc4db4e87a@amd.com>
+Date:   Wed, 21 Jun 2023 13:50:34 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH V4 1/8] drivers/acpi: Add support for Wifi band RF
+ mitigations
+Content-Language: en-US
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Evan Quan <evan.quan@amd.com>, rafael@kernel.org,
+        lenb@kernel.org, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mdaenzer@redhat.com,
+        maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+        hdegoede@redhat.com, jingyuwang_vip@163.com, lijo.lazar@amd.com,
+        jim.cromie@gmail.com, bellosilicio@gmail.com,
+        andrealmeid@igalia.com, trix@redhat.com, jsg@jsg.id.au,
+        arnd@arndb.de, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+References: <20230621054603.1262299-1-evan.quan@amd.com>
+ <20230621054603.1262299-2-evan.quan@amd.com>
+ <3a7c8ffa-de43-4795-ae76-5cd9b00c52b5@lunn.ch>
+ <216f3c5aa1299100a0009ddf4e95b019855a32be.camel@sipsolutions.net>
+ <b1abec47-04df-4481-d680-43c5ff3cbb48@amd.com>
+ <36902dda-9e51-41b3-b5fc-c641edf6f1fb@lunn.ch>
+ <33d80292-e639-91d0-4d0f-3ed973f89e14@amd.com>
+ <9159c3a5-390f-4403-854d-9b5e87b58d8c@lunn.ch>
+ <a80c215a-c1d9-4c76-d4a8-9b5fd320a2b1@amd.com>
+ <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
+From:   "Limonciello, Mario" <mario.limonciello@amd.com>
+In-Reply-To: <8d3340de-34f6-47ad-8024-f6f5ecd9c4bb@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA1P222CA0170.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::26) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] [v3] wifi: rtlwifi: simplify LED management
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20230614061832.40882-1-dmantipov@yandex.ru>
-References: <20230614061832.40882-1-dmantipov@yandex.ru>
-To:     Dmitry Antipov <dmantipov@yandex.ru>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org,
-        Dmitry Antipov <dmantipov@yandex.ru>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <168737228474.1194246.13140069499978583848.kvalo@kernel.org>
-Date:   Wed, 21 Jun 2023 18:31:29 +0000 (UTC)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MW5PR12MB5622:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4fa8b6f-5b7e-4cb7-b909-08db72886811
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: PiXe0IPIoZ7T8W83wcG58t3JAu4aCOAFypK4bezP7PBorMLcBurDVPgd2hlpECezhLgVZv5MCQ9ej0PANHPa/iD6QzvLKLAGM2maLZzTqYUXmilGuU8x2nyrhnRKHP+uZvnSjNMCkpeqn69rfg84qKyxmJDdnCwjNGYAutxEtWnGEZXze5wLK+LGh3Oc6V/YXHxCmvg56VRNpnwwzX2E06oes8PolzS19kpPcFMAJP6NKGykaXu6MJo+O+Wcv4ZRIgkZggEVB9Fk2+tAAoQ/zbBGsS93EKS0ojBJFYhQBzCMijjWT5Br8LLCe5ElQCWPu7A8lZJE+LJ+ENsfYt5Cp/cKmizE3oNLg+o1ogGDq8HaRevBrcUa80h3PIsiG8l3Ofm8vIZEOsPj3mRerkiAkBuSnSyh4/a1su0pPWx75v8vl7k223Ifh0JcfzwHllQeg/WXcZJ+zmvF04uGSTpqEnMeqt9wOhiESl+EiStpFuEY1RmlF5gL7zpR5f/w3VYl7izzxynwuiuKcIOg4tyD/ZBoAab3kPPmAX/Qd74U+Papc+1OV3qoJB9R4c25H4HA92LR5FuLDgVQvbCaw1yBZsA8ZuqVxwwLDO2ijep2eWDMCtirKq5EEuZc/XgXIpvAG0YTdDeLPkkX5xVoxJsvug==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(39860400002)(346002)(396003)(136003)(451199021)(5660300002)(7416002)(2906002)(8676002)(8936002)(83380400001)(31696002)(36756003)(86362001)(38100700002)(31686004)(186003)(54906003)(6916009)(66476007)(6666004)(4326008)(6486002)(66946007)(478600001)(66556008)(26005)(6512007)(41300700001)(316002)(2616005)(6506007)(53546011)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TXJDVHd3WDFCaU9qaEEyVEl1UG5tbEZCN2dudHBtVlRGN3dTN1RDVUNZenJn?=
+ =?utf-8?B?ZzE2dlhuWms4cU9oM2hTQXVuSWxSUVhCTW9JRkM5NmxhV2t2cDB6bDdTY0FX?=
+ =?utf-8?B?UkxFNHZNbzBzd2hPR2lHVkV2T3ZPcUxjdXNkamZwZWNiV3o2QnIzRStWbkJW?=
+ =?utf-8?B?MFcwdXNmcUc5SktSd0R2ZUd0UmoybHNFVkM4eCtsRCtXbTlZZHVtNGhXYWYy?=
+ =?utf-8?B?V2l5YnlPM0wrK0FGOFNmOVBwdlVBN1ZVZ3FPQ1lGR29XMW1jalVBTG1oempX?=
+ =?utf-8?B?TGlzeFV4cFhvMjI4VnNNbzNnK3lPY2xzYzlTYWJUUy9KOFVjRU14SkZYemd6?=
+ =?utf-8?B?ZzhQcXJmckRsRlc0aWRYTGJ1ei9vZDlLVitEcjA1RHR5Zzh5djM3NDZGajRW?=
+ =?utf-8?B?K0t0MEwrREUzR3lDcmx5R2liNTJuckc0cUNEMGluTWtrZSs1UERlQWtLN3Vp?=
+ =?utf-8?B?MlJMK3BpSlVDVGZ4NlFma3BiTW9FTkEwUXJnK0VvMHh4U01pYXpaSkVLcGlH?=
+ =?utf-8?B?Vkx1Yk5ldlY1NThHRGIraTUzZU41MnFTUkh2aURtS1FDaGJJSVd4cjZ0T0RV?=
+ =?utf-8?B?SGozZEZKQ2Z6UXg4SUVuUGlsWGJuRExkZ1VuMno1K0dKUXMxaWFFMTNYdm5L?=
+ =?utf-8?B?WFVlVXdWbFJtMWVsaENKbHdLOG5pdk91TE5Ma091ZWNRdTV6WFFnR0pJVVRp?=
+ =?utf-8?B?bUk3byt2YXZOQW1RWFQ1bnhrUGQ2dkllbFBBQTlLYnEwNHdvR05EN3V3WVFY?=
+ =?utf-8?B?YWV0dVQvaWZxL1MvMVVRZi9XYlRoQ2QzYVlLQytuajRLUDR6dWNnYUM4SzJn?=
+ =?utf-8?B?TVRKOVJLSkVEZTVUMk1Sc3FTTXlsWWNOWk1WOTl1NTg4NFMvQWpDTytCRUQ2?=
+ =?utf-8?B?VDAzR04rQ1lFK3ptUTdJbUx4MFIvQzNHWUZCdng4bXN6bEl1QkkvR0R2QnZG?=
+ =?utf-8?B?aGNFYXNiS0dEc0VJSTArZnlOUEl0SFJzNzhhMlY1VUlQVlFXeStwdnBhSXNL?=
+ =?utf-8?B?ck5vSzVURzlaK1E4ZmZtWEZCdXdvKzdYWWtMSnlwNTUzTEl1NmlSZGxRY2N5?=
+ =?utf-8?B?Y1hzd2E0Rm1UUWJUTzlMZTc4VkEwUmNlZEplNnFtMWJQNUY3SDZmV0R5OWZm?=
+ =?utf-8?B?RGt3SmlzM2JBeUxaZW92VFNETTArdmg3MWNUQWQwS2ZZdC9qaXQ2azRMeHda?=
+ =?utf-8?B?SnI0OU1keUM3L3hCQU8zQVR3UEJtVWphdm83YlRvQWNXYndMekJ1alVrb1RI?=
+ =?utf-8?B?am5TSC9SaUZ2ODFtaTVhcFFYYUtTbUh1MWU2dGlHSWVsM1M5Y3ljeWtBZXdU?=
+ =?utf-8?B?dDdpd0R1aTZMZG1jc3N3Y1RkcCtyRElMV2lJSE9QcXg2OEZlSzY2OG5RL00z?=
+ =?utf-8?B?Y0t4TzNZZ3NvNVFpVXprYlBpT2VadGtmLzRxU0M5Q2FvZUtuU29TY2NrN2hp?=
+ =?utf-8?B?L3VyVys4SGorbzFHTG55bkFKSjBCL2gyVHlMOERZWDdBSVVCSFF5eEpUWGxy?=
+ =?utf-8?B?MXJSVWlpd3lrUGJTR0JWUUJqeWxPZjZidVFCYVQyd00rNi9HMUc0UXZYNjd5?=
+ =?utf-8?B?K1NPMW9iclRqV0VFSmQ1YVdHT1N6UkRybWtOWm14NGViKzIvd0VMdGFpRUJG?=
+ =?utf-8?B?WElIdnFKRnlrZlZNTm1RNCt5dDdINXpkVC8zbGswOXVpWU4vcmdZN3JjeTBN?=
+ =?utf-8?B?U2ZQdmFtSkZLYWVpOE9sTXZBQk1WR2RBSUdXeUlpdlRGbmlkdk1yNFZoZDFF?=
+ =?utf-8?B?NzBNK2lJYVVTTVV0OFdXc1lnNTVqN0U2a1dzc0haYm15dUNEQU1xY3JabW85?=
+ =?utf-8?B?QUpUeExTVGtmZ3RVWW1HbW53QUZLRHFxbmJuaTV4QlRabll1RG5ld2tJUjdk?=
+ =?utf-8?B?TWU1SExhQmhMM2twb0VEYTdQWVc0OTRQUXdocEhDRExXM0tYWFVZMXBSME9X?=
+ =?utf-8?B?QVNpM016ZHN6WGM5K1daNFFLbEVJeC9EQzNQMG9HaklyeE5KVHVQU1Y3YTlL?=
+ =?utf-8?B?cG5rclRvWVRtcnJ1NnQ5ckcyUmYrV3JlTEhaK1AzZjRkR0plcllwNU5qb1ht?=
+ =?utf-8?B?bVBBRVdNRVZHV2RBLzBiNy9xbDJlMGNIT2x4Uk9scFBndmZhU25VVEM4TEk4?=
+ =?utf-8?Q?8hW+xY8WEQ2tPOeGdihVZ5ALz?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4fa8b6f-5b7e-4cb7-b909-08db72886811
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 18:50:39.1870
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1A3uIbhd/5+NY3IdInUvZx1BeSVfucusEti98y3ow+2styoHtgn7d18PSeYjfsQLMijr1SLgd7jy1OR5qecGjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5622
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> wrote:
+So if we go down this path of CONFIG_WBRF and CONFIG_WBRF_ACPI, another
+question would be where should the new "wbrf.c" be stored?  The ACPI only
+version most certainly made sense in drivers/acpi/wbrf.c, but a generic
+version that only has an ACPI implementation right now not so much.
 
-> Introduce 'rtl_init_sw_leds()' to replace per-chip LED
-> initialization code (and so drop 'struct rtl_led' as no
-> longer used), drop 'init_sw_leds' and 'deinit_sw_leds'
-> fields from 'struct rtl_hal_ops', adjust related code.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+On 6/21/2023 1:30 PM, Andrew Lunn wrote:
+>> And consumer would need to call it, but only if CONFIG_WBRF_ACPI isn't set.
+> Why? How is ACPI special that it does not need notifiers?
+ACPI core does has notifiers that are used, but they don't work the same.
+If you look at patch 4, you'll see amdgpu registers and unregisters using
+both
 
-2 patches applied to wireless-next.git, thanks.
+acpi_install_notify_handler()
+and
+acpi_remove_notify_handler()
 
-084f1f552f8d wifi: rtlwifi: simplify LED management
-5f743f576d3f wifi: rtlwifi: cleanup USB interface
+If we supported both ACPI notifications and non-ACPI notifications
+all consumers would have to have support to register and use both types.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230614061832.40882-1-dmantipov@yandex.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+>
+>> I don't see why it couldn't be a DT/ACPI hybrid solution for ARM64.
+> As said somewhere else, nobody does hybrid. In fact, turn it
+> around. Why not implement all this in DT, and make X86 hybrid? That
+> will make arm, powerpc, risc-v and mips much simpler :-)
+>
+> 	Andrew
+Doesn't coreboot do something hybrid with device tree?  I thought they
+generate their ACPI tables from a combination of DT and some static ASL.
