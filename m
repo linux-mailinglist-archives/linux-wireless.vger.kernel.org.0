@@ -2,72 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3CC73801D
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D9E5738060
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Jun 2023 13:10:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbjFUJV3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 21 Jun 2023 05:21:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55584 "EHLO
+        id S230361AbjFUJXy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 21 Jun 2023 05:23:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbjFUJV0 (ORCPT
+        with ESMTP id S230296AbjFUJXx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 21 Jun 2023 05:21:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D8B1B4
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 02:21:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F04CF614C7
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 09:21:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E157C433C8;
-        Wed, 21 Jun 2023 09:21:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687339279;
-        bh=nsVwiMkVL0ODjNvgmiZTSWnr0tfEycFYv1F01wZoxPc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=gkMvHoNmph3INS0Snn7Xf9+ONo66zes9q7k/pYzOI82XzDW+Mc3vyT3ua3mbbmsPi
-         CnXYj8CeIgqSXtNlsSDz4zXzNB5t8zT/3oRp/On46cEx6cUfE9whpYZuAXQcOoxFXu
-         LA3M6HyN9EWqdKgGV5699+SVOWm6dUcSJbv9pNJPOln2YrrTotrJS4BxzX4zEy5sqZ
-         VT9jTxcM1BfNwaCxnpKjWecA6tUkUwEddaYgB8OW0JD9BwMM7oAWPmyBEwC6AJoyaD
-         b7RyaQK6GitdccsJXMoH2X5s6c1seDkEPYvlpvPgRqkGUEGYJSuthPB7NgkW/Tw98q
-         w0l4QGEO71kPw==
-From:   Kalle Valo <kvalo@kernel.org>
+        Wed, 21 Jun 2023 05:23:53 -0400
+Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5744419B3
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 02:23:21 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:f15:0:640:e80a:0])
+        by forward103a.mail.yandex.net (Yandex) with ESMTP id 98FFB46D2A;
+        Wed, 21 Jun 2023 12:23:16 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id FNeUOg7DXeA0-qmIzZr1i;
+        Wed, 21 Jun 2023 12:23:16 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687339396;
+        bh=oDvZXCvxpLuuDDgHCVXgl5cE7EXMbEjEY77S7+sNfJE=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=t8Rl9MECBKHOSAANG80zI9dLuvcrRqLP63coq24QdD25npsThnGawGFmC46qDeqHh
+         Rue9zJXm2mGn/d9mgnloZeUzOBSi25dMsydBgg3LjjQ2yXRhLqQk1qHZ8yNy1Q4e4p
+         MLjeeowQgmaK3+yvHkx/WpdoG75Xet06cKAvvPag=
+Authentication-Results: mail-nwsmtp-smtp-production-main-54.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
 To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     <tony0620emma@gmail.com>, <phhuang@realtek.com>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 0/6] wifi: rtw88: correct AP and PS mode behaviors
-References: <20230616125540.36877-1-pkshih@realtek.com>
-Date:   Wed, 21 Jun 2023 12:21:14 +0300
-In-Reply-To: <20230616125540.36877-1-pkshih@realtek.com> (Ping-Ke Shih's
-        message of "Fri, 16 Jun 2023 20:55:34 +0800")
-Message-ID: <87edm59nn9.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/3] [v4] wifi: rtw88: delete timer and free skb queue when unloading
+Date:   Wed, 21 Jun 2023 12:22:13 +0300
+Message-ID: <20230621092313.65965-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Fix possible crash and memory leak on driver unload by deleting
+TX purge timer and freeing C2H queue in 'rtw_core_deinit()',
+shrink critical section in the latter by freeing COEX queue
+out of TX report lock scope.
 
-> Note: The patch 5/6 ("wifi: rtw88: refine register based H2C command")
-> adds new static function that is used by patch 6/6, so compiler will
-> warn unused function if we build this path.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v4: adjust to match series
+v3: shrink critical section in rtw_core_deinit() (Ping-Ke Shih)
+v2: fix title and commit message (Kalle Valo)
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks for the note, this is always good to know. In general it would be
-better to avoid having the warning at all, for example in this case one
-solution would have been to merge patches 5 and 6 into one patch. But no
-need to resend because of this.
-
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 9447a3aae3b5..c190598c47c3 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2180,10 +2180,12 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
+ 		release_firmware(wow_fw->firmware);
+ 
+ 	destroy_workqueue(rtwdev->tx_wq);
++	timer_delete_sync(&rtwdev->tx_report.purge_timer);
+ 	spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
+ 	skb_queue_purge(&rtwdev->tx_report.queue);
+-	skb_queue_purge(&rtwdev->coex.queue);
+ 	spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
++	skb_queue_purge(&rtwdev->coex.queue);
++	skb_queue_purge(&rtwdev->c2h_queue);
+ 
+ 	list_for_each_entry_safe(rsvd_pkt, tmp, &rtwdev->rsvd_page_list,
+ 				 build_list) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.41.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
