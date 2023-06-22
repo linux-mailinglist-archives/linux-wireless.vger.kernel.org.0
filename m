@@ -2,155 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C24A573A024
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 13:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F3173A37F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 16:47:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbjFVL4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jun 2023 07:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        id S231955AbjFVOrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jun 2023 10:47:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230450AbjFVL4U (ORCPT
+        with ESMTP id S231954AbjFVOrf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jun 2023 07:56:20 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A1BA1FD2
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 04:56:10 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-311275efaf8so5511687f8f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 04:56:10 -0700 (PDT)
+        Thu, 22 Jun 2023 10:47:35 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90D71710
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 07:47:30 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fa71db4208so8535635e9.0
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 07:47:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687434968; x=1690026968;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1687445249; x=1690037249;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=iudEYsggi64U3UdoD1sUVcXvLGzfjsdo/x/MjoGCvsg=;
-        b=PM4xBtENWwGFdFEw8JfA8z1C4N6FxxW1nUBww9f/T+k3SaJbBv9fCf6RX5KUbH1c3X
-         k/H7W7P8jXN94VnjFXxOx1DQ/TC/BUxpmz7FjGjMLpuYITeMgKVl/NK8736CVPG3Zt3y
-         9jIceY+AtZWZyBtT9Y6FtY97lBgqt8Y9lo4e6qW6+DSIVxvNBzOHt+VoX4foVWixijpc
-         8CgCGUwcifKKgdZQdK/D42yKOSro0UyKLMDSn3pTJxS9YiKC4Rsp3U2GiDkuzrH7QwiC
-         feNYOSyz8WIURk0KMpdfyPqfmnUL7I581R10iMAIHmtZc1tKNihFtnp41/PmeRaK/69o
-         ZEig==
+        bh=pJYjzoIWILoYD4M2I4Y8Zk3AWtuJ/URIlwu5Up6nBZY=;
+        b=FhheVUIjJYSb5O2QwdZBZVBHNT3FGYxH70psi2UHulqKmntmNqzAASKzFtz1X8Y5NT
+         XzTKtoZLmFxYQPOXH1Nw8yaGl6fhiVJ4IJCloa96UKfJt7OwLCINuc+MxE+95I75/rBY
+         ajfoCOidJJ1S4k+74+J9iZA61MhDDO53yjITz7Yp5FhKkZ6TuU24WZVnzWtDDIpTPRzm
+         waDolHj99v+JyxUjsXjitMymlDOh5eI/s13iZqDcz4djvvPZXWr5w2/XfZ9ZUBDKKaqT
+         GTb0bZ69fy76lJrSNmuIb2jRqa8PQR7zEBc58VE+D0XRF6HYLFTzkdSDN0jLcF6oZ1zz
+         9moA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687434968; x=1690026968;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1687445249; x=1690037249;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iudEYsggi64U3UdoD1sUVcXvLGzfjsdo/x/MjoGCvsg=;
-        b=J70radbekcj28X7+ezq0Mxpr3mO6C6VgqMxgx4Yd9tVHmKWla3fAGCnf7Bmei10T3z
-         cw1z8iGbgvdJSEwEvcNxUskCeghQ7O4HrOLRRNFz1byVAZkx6YBuLVeOatQCcMHQY5jh
-         McIzpaF+HiL7lWpdWEXAtDDPzm9flq3YgDh5F2LgXLYFyghZG5cLTk7H8b8QA9k37tSu
-         3ZOyKSTlXUupkLXK5LIxwE4JPnF7voQrNpThul48FiBPz3YwCFk1SxhUI7+EKPm02R+m
-         wcY9LdoEfAH0fcBIxTFVKmMX5qYLwUhZCbxEjanilb8hSLTeb3z3GA6pDHtklHXN9ZYb
-         XbZw==
-X-Gm-Message-State: AC+VfDzahA/SfCX55SczM+lB18ZFJeZDQ7JjD6xgUr0V1gPqFRJjs6dg
-        imMpqkhzK13buE+s7mAA58chXZIS6dk=
-X-Google-Smtp-Source: ACHHUZ66SJ0dJX7sCLtaKJZ6k/au5sC8lH98FREQYQCHmxa9JO5VJ2g7X/gfewzti0hsqN+5INCG2w==
-X-Received: by 2002:adf:e489:0:b0:311:d3c:df0 with SMTP id i9-20020adfe489000000b003110d3c0df0mr11811084wrm.43.1687434968258;
-        Thu, 22 Jun 2023 04:56:08 -0700 (PDT)
-Received: from [192.168.26.149] (031011218106.poznan.vectranet.pl. [31.11.218.106])
-        by smtp.googlemail.com with ESMTPSA id l8-20020a05600012c800b0030ae4350212sm6889139wrx.66.2023.06.22.04.56.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jun 2023 04:56:07 -0700 (PDT)
-Message-ID: <707ebcf8-bd24-2131-ab55-4e3a8c03f5bb@gmail.com>
-Date:   Thu, 22 Jun 2023 13:56:05 +0200
+        bh=pJYjzoIWILoYD4M2I4Y8Zk3AWtuJ/URIlwu5Up6nBZY=;
+        b=jFvYotWBlH4iE7sgjgyw1xTG2V6+RbVG9v1Ae9VTRc45jugqKmcW32xixYCFNiiyAw
+         25zkJgpZQsonYiFFprk3GnyEV+oVL3oG9qdgEUjQZ30lplE+H3XbqkW8QKLrq+msJpDd
+         9Va0VcjbqF2T2toFEdKy0DXO8PxeK2+G9t/v+y3VBnje34Fj/GCYmdrnIyK1DmU7WKkA
+         7GwpCmvfClA1UoyCd5hhdecHsHqWE44iHnuBWtE8CKK/TrW9QYI81VFVxu4R/8IEMFxY
+         r5nnzpdf1xAkznat2cC5u5mAnLSWUJKOa/dZl3E/q25iiTZFvtAWVTaT+b2sb03ACMOM
+         PaQg==
+X-Gm-Message-State: AC+VfDzAORmnJZWh16lqNg0ol9Ja9YIR5i9M1esVLkDb28ouzn9D1V83
+        DyNoYzl4AO1xO5j5CnnhAEUIfel2Bk4uvlACQzM=
+X-Google-Smtp-Source: ACHHUZ5oht0vWMikWC6Jsx9F6qX288zTDOSsYZGZA3svsjKd5P29k4/OXpGz2NbcsHn7sPPwoa9NzA==
+X-Received: by 2002:a7b:c84f:0:b0:3f8:fed0:1c5c with SMTP id c15-20020a7bc84f000000b003f8fed01c5cmr2087883wml.8.1687445249129;
+        Thu, 22 Jun 2023 07:47:29 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id f23-20020a7bc8d7000000b003f907bdeef3sm15174961wml.26.2023.06.22.07.47.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jun 2023 07:47:27 -0700 (PDT)
+Date:   Thu, 22 Jun 2023 17:47:24 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     johannes.berg@intel.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: [bug report] wifi: mac80211: store BSS param change count from assoc
+ response
+Message-ID: <1c031edf-a2ab-4548-a181-16b8c641d786@moroto.mountain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] brcm: add CLM BLOB files for Luxul devices
-To:     Josh Boyer <jwboyer@kernel.org>, Rip Route <riproute@gmail.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     linux-firmware@kernel.org, Kalle Valo <kvalo@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, openwrt-devel@lists.openwrt.org,
-        Dan Haab <dan.haab@legrand.com>
-References: <20230601173046.3185925-1-riproute@gmail.com>
- <CA+5PVA46VWBL7ZVskFiSEUYvWoH7W75gRMw3smFysVRX90YFZg@mail.gmail.com>
- <CALZrXOk+2gy3useDj8cpzyzyDMHcXq_wpHkdSnE3C7RVQbvLkg@mail.gmail.com>
- <CA+5PVA6CRyMioY5XV0QbzMsOrmqv5NqSTyfHZoTuWtpW6igY=g@mail.gmail.com>
-Content-Language: en-US
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-In-Reply-To: <CA+5PVA6CRyMioY5XV0QbzMsOrmqv5NqSTyfHZoTuWtpW6igY=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Josh,
+[ Unpublished Smatch stuff. -dan ]
 
-I'm OpenWrt developer and those CLM BLOBs have significant meaning for
-this project. They allow OpenWrt users to use their devices with full
-WiFi support (not limited to some generic fallback setup level).
+Hello Johannes Berg,
 
-For that let me speak up regarding this PATCH case.
+The patch 5c1f97537bfb: "wifi: mac80211: store BSS param change count
+from assoc response" from Jun 19, 2023, leads to the following Smatch
+static checker warning:
 
-On 12.06.2023 18:57, Josh Boyer wrote:
-> On Mon, Jun 12, 2023 at 11:05 AM Rip Route <riproute@gmail.com> wrote:
->>
->> The files were compiled from source obtained through Luxul's contract manufacturer of these devices.
-> 
-> OK, it's not clear to me whether we can accept these.  We have no idea
-> what your contract specified, what sources were used, what the license
-> on them is, or if you had authority to release them at all.  I'm not
-> questioning your integrity by any means, but we have very little way
-> to know Broadcom is agreeable to these being included in the
-> linux-firmware repo.  If Broadcom wants to submit them or provide a
-> Signed-off-by statement, we might be able to take them then.
+	include/linux/ieee80211.h:4924 ieee80211_mle_basic_sta_prof_size_ok()
+	warn: duplicate check 'control & 1024' (previous on line 4923)
 
-I fully understand your concerns. Those are binary files and it's hard
-to tell what they contain at first sight.
+include/linux/ieee80211.h
+    4901 static inline bool ieee80211_mle_basic_sta_prof_size_ok(const u8 *data,
+    4902                                                         size_t len)
+    4903 {
+    4904         const struct ieee80211_mle_per_sta_profile *prof = (const void *)data;
+    4905         u16 control;
+    4906         u8 fixed = sizeof(*prof);
+    4907         u8 info_len = 1;
+    4908 
+    4909         if (len < fixed)
+    4910                 return false;
+    4911 
+    4912         control = le16_to_cpu(prof->control);
+    4913 
+    4914         if (control & IEEE80211_MLE_STA_CONTROL_STA_MAC_ADDR_PRESENT)
+    4915                 info_len += 6;
+    4916         if (control & IEEE80211_MLE_STA_CONTROL_BEACON_INT_PRESENT)
+    4917                 info_len += 2;
+    4918         if (control & IEEE80211_MLE_STA_CONTROL_TSF_OFFS_PRESENT)
+    4919                 info_len += 8;
+    4920         if (control & IEEE80211_MLE_STA_CONTROL_DTIM_INFO_PRESENT)
+    4921                 info_len += 2;
+    4922         if (control & IEEE80211_MLE_STA_CONTROL_COMPLETE_PROFILE &&
+                                                                          ^^
+Should this be ||?
 
-It'd be perfect to have Broadcom simply approve them but I'm afraid it's
-unlikely. I see linux-wireless@ and Broadcom lists were cc-ed but we
-didn't get any feedback. I know some firmware contributions took
-Broadcom months or years in the past.
+    4923             control & IEEE80211_MLE_STA_CONTROL_NSTR_BITMAP_SIZE) {
+    4924                 if (control & IEEE80211_MLE_STA_CONTROL_NSTR_BITMAP_SIZE)
 
-So I'd try to analyze what we have here and try to review it.
+This is always true because it's checked on the previous line.
 
+    4925                         info_len += 2;
+    4926                 else
+    4927                         info_len += 1;
+    4928         }
+    4929         if (control & IEEE80211_MLE_STA_CONTROL_BSS_PARAM_CHANGE_CNT_PRESENT)
+    4930                 info_len += 1;
+    4931 
+    4932         return prof->sta_info_len >= info_len &&
+    4933                fixed + prof->sta_info_len <= len;
+    4934 }
 
-First of all: CLM (BLOB) is a binary formatted data. It doesn't contain
-any actual CPU-executable code. It gets uploaded to FullMAC (closed
-source) firmware and gets parsed by it.
-
-So what we have here is not actual firmware (executable binary) built
-from proprietary C sources full of logic and possibly some patent. We
-have binary files containing (literally) numbers and strings. They just
-use a binary undocumented format.
-
-
-I actually took a moment to reverse engineer those files and write basic
-tools for them.
-
-BLOB is a simple container format with header containing offsets, sizes
-and CRC32 sums. I developed "bcmblob" tool for parsing BLOBs and
-extracting from them:
-https://git.openwrt.org/?p=project/firmware-utils.git;a=commitdiff;h=f730ad2fa0b4728e2bd66771d22cf642909e020e
-
-CLM BLOB is a BLOB file containing CLM and chipset version. I also
-developed absolutely basic tool "bcmclm" for parsing CLM files:
-https://git.openwrt.org/?p=project/firmware-utils.git;a=commitdiff;h=916633160dc92ccae6a0ad8fd900f2d75b5b5ff0
-
-
-Given that, in my I-am-not-a-lawyer opinion, those files are safe to
-accept and distribute.
-
-If I were to compare them to something it'd be an XLS stylesheet file.
-It's a binary undocumented format but what it actually contains are
-sets of values.
-
-I don't think it raises any concerns to use a custom binary format.
-We're clearly fine sharing .xls, .exe or .rar files.
-
-I also don't think you can stop anyone from sharing a list of 2 GHz,
-5 GHz or 6 GHz channels. Or their rates. Or flags (like radar etc.).
-Or allowed TX power levels. Just numbers in general.
-
-
-Do you think that with my basic technical summary and Luxul-provided
-info you can accept those files?
+regards,
+dan carpenter
