@@ -2,48 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1B68739795
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 08:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CCCC7397A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 08:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbjFVGoh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jun 2023 02:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
+        id S229809AbjFVGwJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jun 2023 02:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230080AbjFVGof (ORCPT
+        with ESMTP id S229618AbjFVGwI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jun 2023 02:44:35 -0400
-Received: from forward103c.mail.yandex.net (forward103c.mail.yandex.net [178.154.239.214])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BFD19B4
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 23:44:34 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
-        by forward103c.mail.yandex.net (Yandex) with ESMTP id 369016005E;
-        Thu, 22 Jun 2023 09:44:32 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Qi9Pt8GDVCg0-F02oqkzl;
-        Thu, 22 Jun 2023 09:44:31 +0300
+        Thu, 22 Jun 2023 02:52:08 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4758A198
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 23:52:07 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:5329:0:640:44d3:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id BBD0D60039;
+        Thu, 22 Jun 2023 09:52:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4q9mMBHDa0U0-SHMvcouK;
+        Thu, 22 Jun 2023 09:52:05 +0300
 X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687416271;
-        bh=N0aePcvnBDz4VThBctEeYCN/uxFiH3ywQarGa2uleiY=;
-        h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-        b=SYf7BH82i8hm8pMN+0x2Y3MGFAO1+4gLMcWH+eW3kvY5j0wnBzl26f9lrjpx+jb0y
-         r4YchCMHIYKWwfbUK0VZB1w2hM7gXPBw1HqKlqgYa/+K342VhL2AzLOhdMuXqgtgpw
-         R9d1thjKhPqS9Yo3I9VjNfQZiA02Qrrx11yPbkPk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687416725;
+        bh=a4IhitbmqxDArXObgzjk/nuMgWZhSHRNrsb2a6ahwMU=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=Cej9k/IzVNx2zOHE8KsiP8gSczmg0KN3GKrKGUpQBNoItsQiWyaMcWteh7JlhSqZf
+         esG0TKZco5QjDCSrlv1zxeXkJ1AnQBZ+uCBHQbK4LeeEgj+T1ch2n174vR9IbmEW+D
+         /BLEqMtIjjpQymYi3bCObZQco5Y/FgoHK9xUSSs8=
+Authentication-Results: mail-nwsmtp-smtp-production-main-42.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From:   Dmitry Antipov <dmantipov@yandex.ru>
 To:     Po-Hao Huang <phhuang@realtek.com>
 Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
         Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 4/4] [v5] wifi: rtw88: simplify vif iterators
-Date:   Thu, 22 Jun 2023 09:44:18 +0300
-Message-ID: <20230622064424.38498-4-dmantipov@yandex.ru>
+Subject: [PATCH 4/4] [v5, typo fix] wifi: rtw88: simplify vif iterators
+Date:   Thu, 22 Jun 2023 09:51:47 +0300
+Message-ID: <20230622065203.43425-1-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230622064424.38498-1-dmantipov@yandex.ru>
-References: <20230622064424.38498-1-dmantipov@yandex.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,7 +49,7 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 Since all iterators called by 'rtw_iterate_vifs()' never uses
-'mac' argument, it may be omited, and 'struct rtw_vifs_entry'
+'mac' argument, it may be omitted, and 'struct rtw_vifs_entry'
 may be simplified accordingly.
 
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
