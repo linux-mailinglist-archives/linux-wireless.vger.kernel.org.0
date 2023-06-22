@@ -2,94 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E72D73A642
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 18:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E27873A66F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 18:50:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbjFVQlW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jun 2023 12:41:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37194 "EHLO
+        id S231169AbjFVQux (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jun 2023 12:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230445AbjFVQlV (ORCPT
+        with ESMTP id S230129AbjFVQuw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jun 2023 12:41:21 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F0F1BF7
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 09:41:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-        Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ZInLCT6H7j05FEcvDUb75tPJKJHmh6+6Gsy7X8bW39I=;
-        t=1687452080; x=1688661680; b=KfOBWrMoyhUe3QfImKQKTfdY916pwt5zQBPXm+CRO+75kuo
-        OWC3u494ron0VPbeBAjkrfCLICRhrZSSteIVnrupaMnUOJMF+QnIKmz0GcGMGN7NVgSu//HHYVbHk
-        0/WD7vbvXHOi8+84KOBVPV+9oNzDtbwmc+ygKyO+XTADNiYSG2KRzI+aj5ec61m03RKBdsYtYiZQG
-        YB9oSEuBL1lIyPNCmxCjf6kP0QqCDX5tErAHs7G6g36FgxCCdv4sBzU+dkW7l33kiJl4SMOpkaM/B
-        as9m5rSXIUCg9A3yeYDKACQRG+cP2NbmGdLqqFmLTxqN+/Nuv8LPgcFUW2b9VrLA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qCNN0-00Eosz-0M;
-        Thu, 22 Jun 2023 18:41:18 +0200
-Message-ID: <f717c60c24bf3dcec7cd3b0308c6bd804683276a.camel@sipsolutions.net>
-Subject: Re: [PATCH] cfg80211: fix sband iftype data lookup for AP_VLAN
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Date:   Thu, 22 Jun 2023 18:41:17 +0200
-In-Reply-To: <2815ff55-5b5d-1412-5694-7692337bc473@nbd.name>
-References: <20230622160501.40666-1-nbd@nbd.name>
-         <adf8c1b8ea96c0c6ddc12579eacb8d9948440dcf.camel@sipsolutions.net>
-         <2815ff55-5b5d-1412-5694-7692337bc473@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        Thu, 22 Jun 2023 12:50:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F9BEE9
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 09:50:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9460618B0
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 16:50:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE36C433C0;
+        Thu, 22 Jun 2023 16:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687452650;
+        bh=GfZpT0oudUv4XcLXUoqPdiGMbr1aQwRlBOtwfH54WyU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=aTPTSiN3kfzLUYkaaaKDOQvyCOsR0PT3CcrgmJa0CoIQdmVWgSCS8d1jUypBso4sX
+         Q4TUi3WOA9XsVtWYp7Q/Ictol/l0SKOrcSXMuhvNhWeOcjmX8ctPih81wxIZl3UAja
+         ORgLTUm8CuxVnZYARodbkIp9DGFrDOX4k47jIIazrY4X0Z7CZdib4o+1aVm+ylfWWN
+         lfoUKi3rvykhwUKkjRqm9Qf+I5jFd6b12XzjgJDYpzv8HStaK+blX9RzyR0eGOq/Gm
+         j4MuO+z9PbUZm7LEWo4GDl9hR9MBQ/KMYboM0Gh57567ZNlARFE7Kh+k/va9Hyh7N3
+         Z0WjvRiF1Oc7w==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com, deren.wu@mediatek.com,
+        shayne.chen@mediatek.com
+Subject: [PATCH v4 00/15] mt76: introduce connac3_mac support
+Date:   Thu, 22 Jun 2023 18:50:17 +0200
+Message-ID: <cover.1687452202.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2023-06-22 at 18:25 +0200, Felix Fietkau wrote:
-> On 22.06.23 18:07, Johannes Berg wrote:
-> > On Thu, 2023-06-22 at 18:05 +0200, Felix Fietkau wrote:
-> > > Since AP_VLAN interfaces are not pushed to the driver,=20
-> > >=20
-> > That's a mac80211 thing though.
-> >=20
-> > > the driver should not
-> > > be expected to register iftype data for them.
-> > > Map them to the regular AP iftype on lookup.
-> >=20
-> > And this is in cfg80211 - not sure that seems right?
-> >=20
-> > OTOH I'd expect no callers with VLAN here, it doesn't really make sense
-> > since they're not a standalone mode that actually has HE/EHT, but still=
-,
-> > seems odd this way?
-> >=20
-> > What's actually calling it? I'm guessing somewhere in mac80211?
->=20
-> Yes, I guess only mac80211 is affected. I put in the cfg80211 prefix
-> because that's what the header file belongs to.
->=20
-> I made the patch in response to this:
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230605152141.=
-17434-4-shayne.chen@mediatek.com/
+Introduce connac3_mac in mt76_connac library to reuse mac code shared
+between WiFi7 chipsets.
+Move the following common mac fields in mt76_struct/mt76_wcid:
+- sta_poll_list
+- sta_poll_lock
+- poll_list
+- ampdu_state
 
-OK, sure, that also doesn't really make sense.
+Move the following routines in mt76-connac lib since they are shared
+between mt7915 and mt7921:
+- mt76_connac2_tx_check_aggr
+- mt76_connac2_txwi_free
+- mt76_connac2_tx_token_put
 
-> I found that there are several calls to ieee80211_get_he_iftype_cap and
-> ieee80211_get_eht_iftype_cap, which could be affected by this issue.
-> I thought dealing with this in a single place would be better than playin=
-g
-> whac-a-mole by fixing it at the call sites.
->=20
+Changes since v3:
+- rebase on top of mt76 main tree
+Changes since v2:
+- move back the some mt7996 mac routines in mt7996 folder for the moment.
+Changes since v1:
+- rebase on top wireless-next tree
+- fix connac3_mac library
+- fix compilation warnings
 
-I replaced almost all of them with ieee80211_get_he_iftype_cap_vif() so
-it shouldn't be that bad? Looks like I forgot some though.
+Lorenzo Bianconi (15):
+  wifi: mt76: mt7915: move sta_poll_list and sta_poll_lock in mt76_dev
+  wifi: mt76: mt7603: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7615: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7996: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7921: rely on shared sta_poll_list and sta_poll_lock
+  wifi: mt76: mt7915: move poll_list in mt76_wcid
+  wifi: mt76: mt7603: rely on shared poll_list field
+  wifi: mt76: mt7615: rely on shared poll_list field
+  wifi: mt76: mt7996: rely on shared poll_list field
+  wifi: mt76: mt7921: rely on shared poll_list field
+  wifi: mt76: move ampdu_state in mt76_wcid
+  mt76: connac: move more mt7921/mt7915 mac shared code in connac lib
+  wifi: mt76: move rate info in mt76_vif
+  wifi: mt76: connac: move connac3 definitions in mt76_connac3_mac.h
+  wifi: mt76: connac: add connac3 mac library
 
-johannes
+ drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c |   2 +
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   9 +
+ .../net/wireless/mediatek/mt76/mt7603/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   |  22 +-
+ .../net/wireless/mediatek/mt76/mt7603/main.c  |  20 +-
+ .../wireless/mediatek/mt76/mt7603/mt7603.h    |   4 -
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |  31 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  20 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   4 -
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  10 +-
+ .../wireless/mediatek/mt76/mt76_connac3_mac.c | 182 ++++++++++
+ .../wireless/mediatek/mt76/mt76_connac3_mac.h | 325 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  |  82 +++++
+ .../net/wireless/mediatek/mt76/mt7915/init.c  |   4 +-
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 140 ++------
+ .../net/wireless/mediatek/mt76/mt7915/main.c  |  30 +-
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |   5 -
+ .../net/wireless/mediatek/mt76/mt7921/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   | 101 ++----
+ .../net/wireless/mediatek/mt76/mt7921/main.c  |  26 +-
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |   9 -
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |   2 +-
+ .../wireless/mediatek/mt76/mt7921/pci_mac.c   |  16 +-
+ .../net/wireless/mediatek/mt76/mt7996/init.c  |   2 -
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 242 ++-----------
+ .../net/wireless/mediatek/mt76/mt7996/mac.h   | 315 +----------------
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  40 +--
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |   2 +-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |   8 -
+ 31 files changed, 797 insertions(+), 864 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+
+-- 
+2.41.0
+
