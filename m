@@ -2,94 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320597396E3
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 07:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4A873971D
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 08:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230419AbjFVFhX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jun 2023 01:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
+        id S231151AbjFVGAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jun 2023 02:00:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjFVFhU (ORCPT
+        with ESMTP id S231149AbjFVGAW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jun 2023 01:37:20 -0400
-X-Greylist: delayed 567 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 21 Jun 2023 22:37:18 PDT
-Received: from out-29.mta1.migadu.com (out-29.mta1.migadu.com [95.215.58.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1131996
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 22:37:18 -0700 (PDT)
-Message-ID: <f6670c07-e74c-5a08-aca9-4fe9b0df1b6c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1687411667;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=X3cuEUtIKpAwkocZiKXgxM2cGh8M3wkSOHpMOxpe36I=;
-        b=qtIvtezbJ9Q3ZCP98FmxaORDc5/91HWUcpafIMUicDY95cBFaFfVwiSxEO0wu2rhdaH3UG
-        rRyQanJfxdlGl0H1DA3DhW2Uhpx90bRviXBz+j4QEL4KSlvS8PxrtJId2dubuWXMraMxiR
-        JVxxCzFY5T9DTyGCioFGIusiK6ioTWg=
-Date:   Thu, 22 Jun 2023 13:27:34 +0800
+        Thu, 22 Jun 2023 02:00:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB070EA
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 23:00:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B2B461766
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 06:00:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 98C98C433C9;
+        Thu, 22 Jun 2023 06:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687413620;
+        bh=4ycCoCeRkBDkknDeFkT/nYWCaO7H6Sz2TzFIfeHuK3M=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=gxuptOm/nFfVaeXfI1SjIsEKs0J/oMTi9Y93dKZaPfCh2UMPi9Q339x04N+hBZyA0
+         fgmFuIIHYNC+SlJLm5D7b5+qtG7mL/+fUtfnm3fiu35kN8U1B4+1jSFvr2C69lyXQl
+         B6jZeN7LOOeOdt2xd/+wJbaTWlF+88kafrsKw2CxfE2oZl4hcJZrv5tCqhljo3ylME
+         DIIibALaYeo+QGALwjrCS+ws/B4JoJBPZWV/TAkHoXfJa0UmTx+EIfiskxoLStghKc
+         ZbUKhDJM6nIRkHYX2aNA7wngN3Rsz8ZcHvql4mGM7gA37ffLwKkWDweQ4WikbN5lAN
+         oxCc9Z6eB6VnA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7C431E2A034;
+        Thu, 22 Jun 2023 06:00:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/8] RDMA/rxe: fix comment typo
-To:     Yueh-Shun Li <shamrocklee@posteo.net>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@kernel.org>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        Joe Perches <joe@perches.com>
-Cc:     linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
-        mptcp@lists.linux.dev, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230622012627.15050-1-shamrocklee@posteo.net>
- <20230622012627.15050-2-shamrocklee@posteo.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20230622012627.15050-2-shamrocklee@posteo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH net] wifi: mac80211: report all unusable beacon frames
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168741362050.8755.11408593794457778367.git-patchwork-notify@kernel.org>
+Date:   Thu, 22 Jun 2023 06:00:20 +0000
+References: <20230621120543.412920-2-johannes@sipsolutions.net>
+In-Reply-To: <20230621120543.412920-2-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        benjamin.berg@intel.com
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-在 2023/6/22 9:26, Yueh-Shun Li 写道:
-> Spell "retransmitting" properly.
-> 
-> Found by searching for keyword "tranm".
-> 
-> Signed-off-by: Yueh-Shun Li <shamrocklee@posteo.net>
+Hello:
 
-Thanks.
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Zhu Yanjun
-
-> ---
->   drivers/infiniband/sw/rxe/rxe_verbs.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 21 Jun 2023 14:05:44 +0200 you wrote:
+> From: Benjamin Berg <benjamin.berg@intel.com>
 > 
-> diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.h b/drivers/infiniband/sw/rxe/rxe_verbs.h
-> index 26a20f088692..aca0f4c7a5cd 100644
-> --- a/drivers/infiniband/sw/rxe/rxe_verbs.h
-> +++ b/drivers/infiniband/sw/rxe/rxe_verbs.h
-> @@ -237,7 +237,7 @@ struct rxe_qp {
->   	atomic_t		skb_out;
->   	int			need_req_skb;
->   
-> -	/* Timer for retranmitting packet when ACKs have been lost. RC
-> +	/* Timer for retransmitting packet when ACKs have been lost. RC
->   	 * only. The requester sets it when it is not already
->   	 * started. The responder resets it whenever an ack is
->   	 * received.
+> Properly check for RX_DROP_UNUSABLE now that the new drop reason
+> infrastructure is used. Without this change, the comparison will always
+> be false as a more specific reason is given in the lower bits of result.
+> 
+> Fixes: baa951a1c177 ("mac80211: use the new drop reasons infrastructure")
+> Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] wifi: mac80211: report all unusable beacon frames
+    https://git.kernel.org/netdev/net/c/7f4e09700bdc
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
