@@ -2,87 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4A873971D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 08:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9520D739792
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Jun 2023 08:44:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231151AbjFVGAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jun 2023 02:00:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38320 "EHLO
+        id S230221AbjFVGoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jun 2023 02:44:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231149AbjFVGAW (ORCPT
+        with ESMTP id S229673AbjFVGod (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jun 2023 02:00:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB070EA
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 23:00:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B2B461766
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 06:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 98C98C433C9;
-        Thu, 22 Jun 2023 06:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687413620;
-        bh=4ycCoCeRkBDkknDeFkT/nYWCaO7H6Sz2TzFIfeHuK3M=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=gxuptOm/nFfVaeXfI1SjIsEKs0J/oMTi9Y93dKZaPfCh2UMPi9Q339x04N+hBZyA0
-         fgmFuIIHYNC+SlJLm5D7b5+qtG7mL/+fUtfnm3fiu35kN8U1B4+1jSFvr2C69lyXQl
-         B6jZeN7LOOeOdt2xd/+wJbaTWlF+88kafrsKw2CxfE2oZl4hcJZrv5tCqhljo3ylME
-         DIIibALaYeo+QGALwjrCS+ws/B4JoJBPZWV/TAkHoXfJa0UmTx+EIfiskxoLStghKc
-         ZbUKhDJM6nIRkHYX2aNA7wngN3Rsz8ZcHvql4mGM7gA37ffLwKkWDweQ4WikbN5lAN
-         oxCc9Z6eB6VnA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7C431E2A034;
-        Thu, 22 Jun 2023 06:00:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 22 Jun 2023 02:44:33 -0400
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5087A19AF
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Jun 2023 23:44:30 -0700 (PDT)
+Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:6e01:0:640:627f:0])
+        by forward102b.mail.yandex.net (Yandex) with ESMTP id 87CF56002F;
+        Thu, 22 Jun 2023 09:44:27 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Qi9Pt8GDVCg0-yqIMKypt;
+        Thu, 22 Jun 2023 09:44:27 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1687416267;
+        bh=GP8UjbhXzWfTOijSVhz39D09FTFIms4JHl4jpigR9rg=;
+        h=Message-ID:Date:Cc:Subject:To:From;
+        b=IleDaqamKF4bzY2Cz4amK74Fyr8RMKzGcJPo6392zeLIR1MYHzh4mk4/c/ZY6Nrbt
+         WmC3NDIKsfx8WbJ3jFom4gpwl9n4XjhRDRpKM3mZMEBJzbU9hsVhK02e6oBudtbYEL
+         5P9yCiJuF0VIyNm3zAVUUR2OkGBBOYUkice0+5BQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From:   Dmitry Antipov <dmantipov@yandex.ru>
+To:     Po-Hao Huang <phhuang@realtek.com>
+Cc:     Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 1/4] [v5] wifi: rtw88: delete timer and free skb queue when unloading
+Date:   Thu, 22 Jun 2023 09:44:15 +0300
+Message-ID: <20230622064424.38498-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] wifi: mac80211: report all unusable beacon frames
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168741362050.8755.11408593794457778367.git-patchwork-notify@kernel.org>
-Date:   Thu, 22 Jun 2023 06:00:20 +0000
-References: <20230621120543.412920-2-johannes@sipsolutions.net>
-In-Reply-To: <20230621120543.412920-2-johannes@sipsolutions.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        benjamin.berg@intel.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello:
+Fix possible crash and memory leak on driver unload by deleting
+TX purge timer and freeing C2H queue in 'rtw_core_deinit()',
+shrink critical section in the latter by freeing COEX queue
+out of TX report lock scope.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v5: adjust to match recent changes
+v4: adjust to match series
+v3: shrink critical section in rtw_core_deinit() (Ping-Ke Shih)
+v2: fix title and commit message (Kalle Valo)
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On Wed, 21 Jun 2023 14:05:44 +0200 you wrote:
-> From: Benjamin Berg <benjamin.berg@intel.com>
-> 
-> Properly check for RX_DROP_UNUSABLE now that the new drop reason
-> infrastructure is used. Without this change, the comparison will always
-> be false as a more specific reason is given in the lower bits of result.
-> 
-> Fixes: baa951a1c177 ("mac80211: use the new drop reasons infrastructure")
-> Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] wifi: mac80211: report all unusable beacon frames
-    https://git.kernel.org/netdev/net/c/7f4e09700bdc
-
-You are awesome, thank you!
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index c853e2f2d448..c2ddb4d382af 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2183,10 +2183,12 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
+ 		release_firmware(wow_fw->firmware);
+ 
+ 	destroy_workqueue(rtwdev->tx_wq);
++	timer_delete_sync(&rtwdev->tx_report.purge_timer);
+ 	spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
+ 	skb_queue_purge(&rtwdev->tx_report.queue);
+-	skb_queue_purge(&rtwdev->coex.queue);
+ 	spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
++	skb_queue_purge(&rtwdev->coex.queue);
++	skb_queue_purge(&rtwdev->c2h_queue);
+ 
+ 	list_for_each_entry_safe(rsvd_pkt, tmp, &rtwdev->rsvd_page_list,
+ 				 build_list) {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.41.0
 
