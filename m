@@ -2,89 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB08B73B089
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jun 2023 08:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D130573B0D1
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jun 2023 08:35:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230165AbjFWGKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jun 2023 02:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41312 "EHLO
+        id S230090AbjFWGfm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jun 2023 02:35:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229902AbjFWGKR (ORCPT
+        with ESMTP id S229449AbjFWGfl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jun 2023 02:10:17 -0400
-Received: from bin-mail-out-05.binero.net (bin-mail-out-05.binero.net [195.74.38.228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A18EA10DB
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 23:10:12 -0700 (PDT)
-X-Halon-ID: 98de02d7-118c-11ee-80b4-ade5659629c7
+        Fri, 23 Jun 2023 02:35:41 -0400
+Received: from bin-mail-out-06.binero.net (bin-mail-out-06.binero.net [195.74.38.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E661BCC
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 23:35:38 -0700 (PDT)
+X-Halon-ID: 24eae003-1190-11ee-b7d6-cf458ee68324
 Authorized-sender: petter@technux.se
 Received: from localhost.localdomain (user33.85-195-12.netatonce.net [85.195.12.33])
-        by bin-vsp-out-01.atm.binero.net (Halon) with ESMTPSA
-        id 98de02d7-118c-11ee-80b4-ade5659629c7;
-        Fri, 23 Jun 2023 08:10:09 +0200 (CEST)
+        by bin-vsp-out-03.atm.binero.net (Halon) with ESMTPSA
+        id 24eae003-1190-11ee-b7d6-cf458ee68324;
+        Fri, 23 Jun 2023 08:35:34 +0200 (CEST)
 From:   petter@technux.se
-To:     s.hauer@pengutronix.de
-Cc:     Larry.Finger@lwfinger.net, andreas@fatal.se, iam@valdikss.org.ru,
-        kernel@pengutronix.de, kvalo@kernel.org,
+To:     pkshih@realtek.com
+Cc:     Larry.Finger@lwfinger.net, kernel@pengutronix.de, kvalo@kernel.org,
         linux-wireless@vger.kernel.org, linux@ulli-kroll.de,
-        petter.mabacker@esab.se, petter@technux.se, pkshih@realtek.com
-Subject: Re: rtw8822cu (LM842) stalls when running HW offload scan
-Date:   Fri, 23 Jun 2023 08:10:03 +0200
-Message-Id: <20230623061003.472077-1-petter@technux.se>
+        morrownr@gmail.com, petter.mabacker@esab.se, petter@technux.se,
+        s.hauer@pengutronix.de
+Subject: RE: Linux mainline support for RTL8811AU/RTL8821AU
+Date:   Fri, 23 Jun 2023 08:35:28 +0200
+Message-Id: <20230623063528.472664-1-petter@technux.se>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230616122612.GL18491@pengutronix.de>
-References: <20230616122612.GL18491@pengutronix.de>
+In-Reply-To: <e1d49f94865f4a69b3b3228b00697ad1@realtek.com>
+References: <e1d49f94865f4a69b3b3228b00697ad1@realtek.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 03:30:23PM +0200, petter@technux.se wrote:
->> Some time ago https://bugzilla.kernel.org/show_bug.cgi?id=217034 was
->> created. From the beginning it was just about some error printouts.
->> Then Andreas (who created the bug report) mentioned that it seems to
->> work worse after bumping the firmware to > 9.9.10. After some fixes
->> from Sascha the error printouts dissappeared. But when I also started
->> to run this using firmware > 9.9.10 I also got problems. On my i.MX8
->> and RPi4 board it works fine, but on some of my less powerful boards
->> such as and older RPi and my i.MX6 SoloX board, it always fails using
->> 9.9.10 firmware. After some digging in the git log, I discovered
-<> that HW scan offload was introduced in a later firmware. So when I
->> disable HW offload scan it seems to work again on all my boards. But
->> still I want to understand why the HW offload scan don't work for
->> me.
+>> -----Original Message-----
+>> From: Larry Finger <larry.finger@gmail.com> On Behalf Of Larry Finger
+>> Sent: Wednesday, June 14, 2023 2:29 AM
+>> To: petter@technux.se; linux-wireless@vger.kernel.org
+>> Cc: Ping-Ke Shih <pkshih@realtek.com>; morrownr@gmail.com; kernel@pengutronix.de; kvalo@kernel.org;
+>> linux@ulli-kroll.de; petter.mabacker@esab.se; s.hauer@pengutronix.de
+>> Subject: Re: Linux mainline support for RTL8811AU/RTL8821AU
 >> 
->> Like described in the bug report I get below when running on latest
->> 6.4 mainline with all relevant patches around rtw88 applied.
+>> On 6/13/23 03:09, petter@technux.se wrote:
+>> > Hi,
+>> >
+>> > I'm investigating a wifi dongle (LM808) that is based on the RTL8811AU chipset.
+>> >
+>> > $ lsusb
+>> > ..
+>> > Bus 003 Device 066: ID 0bda:a811 Realtek Semiconductor Corp. RTL8811AU 802.11a/b/g/n/ac WLAN Adapter
+>> > ..
+>> >
+>> > I cannot find any driver support in mainline for that chipset (8811cu/8821cu, seems to exists). Just curious
+>> if anyone knows if there are any ongoing efforts to get this driver included in mainline?
+>> >
+>> > I can see that both:
+>> >
+>> > https://www.lm-technologies.com/product/wifi-usb-adapter-433mbps-lm808/?template=driver
+>> >
+>> > and
+>> >
+>> > https://github.com/morrownr/8821au-20210708
+>> >
+>> > exists for non-mainline support, so will play a bit with them. But for maintenance etc I'm interested
+>> to learn about possible mainline efforts within this area.
+>> 
+>> It seems that the RTW8821AE has never been built or released. If it had been,
+>> then extending that driver to the 8821AU would be easy as there would be a file
+>> rtw8821a.c that contained all the details of that chip. Without that, there is
+>> little that anyone outside Realtek can do. The vendor driver, which is the one
+>> in the link you posted, will likely work.
+>> 
 
->I can't reproduce this here. I am currently running v6.4-rc3 plus:
+>rtlwifi can support RTL8821AE/RTL8812AE and basic USB infrastructure, so it looks
+>like possible to support 8821AU by rtlwifi.
 >
->wifi: rtw88: usb: silence log flooding error message
->
->I tested on a i.MX6S (not SoloX) board with Firmware 9.9.14.
->
->A "nmcli dev wifi rescan" works just fine and the link also continues to
->work.
->
->I verified that FW_FEATURE_SCAN_OFFLOAD is set and used in the driver,
->also that it's not set in Firmware 9.9.9. I also tried to put some
->load on the link by running iperf3, still no difference.
->
->Sascha
->
-Thanks for your valuable feedback, this finding made think in another direction about this.
-First I tried to reproduced the issue using the same setup 6.4-rc3 + 'wifi: rtw88: usb: silence log flooding error message' but instead of using
-NM, I used wpa_cli to perform the scan. This time it works fine. After some digging I realised that I had a business application still running,
-that uses libnm and among other things reacts on some callback during scan. So I agree with your finding that this doesn't seems to be related to the actual HW offload scanning after all, instead it seems like using nmcli + HW offload scan + our internal application using libnm might trigger the same behavior that I reported in:
+>Ping-Ke
 
-https://lore.kernel.org/linux-wireless/20230526055551.1823094-1-petter@technux.se/T/#t
-
-I will try to do some investigations if I can use this info to find a better way to reproduce that issue. However it's still the case that I cannot reproduce above problem on for example an i.MX8 using maxcpus=1.
+So since no rtw8821a.c is available, like Larry pointed out in another response. Then it sounds like investigating
+rtlwifi is the best way forward then. Do you mean that it should be possible to get the 8821AU up-and-running just by
+making use of the info in ./drivers/net/wireless/realtek/rtlwifi/rtl8821ae then? Are there any plans to release a rtl8821au fw through linux-firmware, since
+I guess that will be needed also.
 
 Thanks,
 Petter
