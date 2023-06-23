@@ -2,59 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA66473AEC2
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jun 2023 04:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B244C73AF00
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jun 2023 05:21:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231450AbjFWCuc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 22 Jun 2023 22:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51456 "EHLO
+        id S230245AbjFWDUw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 22 Jun 2023 23:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231421AbjFWCu3 (ORCPT
+        with ESMTP id S229930AbjFWDUv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 22 Jun 2023 22:50:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4D132112;
-        Thu, 22 Jun 2023 19:50:27 -0700 (PDT)
+        Thu, 22 Jun 2023 23:20:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C2A2130
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Jun 2023 20:20:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AAC761957;
-        Fri, 23 Jun 2023 02:50:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6FCC6C433C9;
-        Fri, 23 Jun 2023 02:50:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 653626194F
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jun 2023 03:20:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B51C4C433C9;
+        Fri, 23 Jun 2023 03:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687488626;
-        bh=9EiFCNHJdUpB+XW1zu/aSkMUksAqJahEysCGpYwwpD4=;
+        s=k20201202; t=1687490448;
+        bh=DwbACjbiiSYkZEcEzktTKHsfX0I+KAANaVcOSfX8VAk=;
         h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=mOVmqgTDkzxHjY/uKaDRNHHy7gKk4xXwchepy/RBKuwnGRuz8kKXVdUGZvFxDmzPz
-         8e28RgQQzGfDmaHmJ5CZIUCEHWy8MOIs+IGJq54kKbkqCmo8kcZfnlWHfCG/cpQ7t/
-         MQl6UoXAIgGTFsYgoL5gyRtlpZiGoohwjv+gRsfU/oCd7QyvEIMzl+kpunI8vRDcou
-         RExwmgEqUX0YrOnw+RosZ3PVJDdq13xLqhoxRRTw/6SK+Sa1GgONnFaEuv/177fnz4
-         7vybmUpQMpWQ80Qg4SZ4AcFQB/b9h8coL/lrQOZgmgniG12C6Si1Ql29RqDwSeNqzH
-         l+5pDpsclDNKw==
+        b=l/9YC1BPnkMkKsOpWwJUgf4Yqpg3n9FXEpR6nN5fsth7BLkKBXVBoolDYz3Vt7EFe
+         eW4MliApAUETHd+dUCNzKW3YMAUdDakCDGi1md94a4c7yIoUm8gWhtRU7rZHBL2SCZ
+         jb/0P6X9AXm9UzZGnFzVFCXaKd+Pma+3/B0SnqcEe/YuTruCB35X+Zbh5VGBDWxFRc
+         t7YiBhUe6JX71IAVm7HFpXddp3TmUIQvRfjuCEenVxPe8StmqTv+JMbX9krion0yyA
+         r/Bohtvzsa4eouHqxqGzgiJkQ3wqHvkQgOERPibhbdtwK7M4EjIhoyCSatfM5SvI/o
+         0abMl6IRJZy/g==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 54D53C395F1;
-        Fri, 23 Jun 2023 02:50:26 +0000 (UTC)
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 91F31C395D9;
+        Fri, 23 Jun 2023 03:20:48 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/8] Fix comment typos about "transmit"
+Subject: Re: pull-request: wireless-next-2023-06-22
 From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168748862634.32034.1394302200661050543.git-patchwork-notify@kernel.org>
-Date:   Fri, 23 Jun 2023 02:50:26 +0000
-References: <20230622012627.15050-1-shamrocklee@posteo.net>
-In-Reply-To: <20230622012627.15050-1-shamrocklee@posteo.net>
-To:     Yueh-Shun Li <shamrocklee@posteo.net>
-Cc:     jgg@ziepe.ca, leon@kernel.org, anthony.l.nguyen@intel.com,
-        davem@davemloft.net, kvalo@kernel.org, jejb@linux.ibm.com,
-        kuba@kernel.org, pabeni@redhat.com, apw@canonical.com,
-        joe@perches.com, linux-rdma@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, mptcp@lists.linux.dev,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Message-Id: <168749044858.15040.8646713875880229434.git-patchwork-notify@kernel.org>
+Date:   Fri, 23 Jun 2023 03:20:48 +0000
+References: <20230622185602.147650-2-johannes@sipsolutions.net>
+In-Reply-To: <20230622185602.147650-2-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,36 +59,24 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This pull request was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 22 Jun 2023 01:26:21 +0000 you wrote:
-> Fix typos about "transmit" missing the first "s"
-> found by searching with keyword "tram" in the first 7
-> patches.
+On Thu, 22 Jun 2023 20:56:03 +0200 you wrote:
+> Hi,
 > 
-> Add related patterns to "scripts/spelling.txt" in the
-> last patch.
+> Here's another set of updates for -next, almost certainly
+> the last as we go off into the vacation period soon. Have
+> a great summer, and already thanks for all the help!
+> 
+> Please pull and let me know if there's any problem. I'll
+> likely be around a little bit at times if needed.
 > 
 > [...]
 
 Here is the summary with links:
-  - [1/8] RDMA/rxe: fix comment typo
-    (no matching commit)
-  - [2/8] i40e, xsk: fix comment typo
-    https://git.kernel.org/netdev/net-next/c/b028813ac973
-  - [3/8] zd1211rw: fix comment typo
-    (no matching commit)
-  - [4/8] scsi: fix comment typo
-    (no matching commit)
-  - [5/8] tcp: fix comment typo
-    https://git.kernel.org/netdev/net-next/c/304b1875ba02
-  - [6/8] net/tls: fix comment typo
-    https://git.kernel.org/netdev/net-next/c/a0e128ef88e4
-  - [7/8] selftests: mptcp: connect: fix comment typo
-    (no matching commit)
-  - [8/8] scripts/spelling.txt: Add "transmit" patterns
-    (no matching commit)
+  - pull-request: wireless-next-2023-06-22
+    https://git.kernel.org/netdev/net-next/c/e6988447c15d
 
 You are awesome, thank you!
 -- 
