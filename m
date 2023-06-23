@@ -2,122 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03F0273BB9D
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jun 2023 17:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3B273BBD1
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Jun 2023 17:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjFWP0C (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jun 2023 11:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42788 "EHLO
+        id S232345AbjFWPiP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jun 2023 11:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232532AbjFWPZy (ORCPT
+        with ESMTP id S232181AbjFWPiO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jun 2023 11:25:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28E692129;
-        Fri, 23 Jun 2023 08:25:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4AE461A9D;
-        Fri, 23 Jun 2023 15:25:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02DBC433C0;
-        Fri, 23 Jun 2023 15:25:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687533946;
-        bh=NvWgTGjsHRqDtvBYDx/2FZ7WiFRdFqxIOJ2GEgQdP5s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jjSV3khYn7DQtMsuDg9EoNpKhthnIYHAR3qxDpF7Arr09pVBiSIRwUoI5OImA8F3s
-         qmlveYBP11wTA/VaTOeOK/7UPuOJpMlPgbxtyOfpAb7MCX8PGdeVw8AX2mWpyCMGL/
-         pkngpeZ4JGYxGMlzpLK1o860FrlWOZPNVFSi7u08r2V15VEqmBbkab00TOFCACUWYH
-         qtq0Jf3f/vajbOgUJdUm+WzWV7Ycb5rkdLKbMJIkjBXxGD5sCB3mTP3mKs5YT28mI7
-         8dwmjH+dAP0xRobOCLzn27EAfNnGTez82/9NOZJ5i1Hx9WiBXLPIU4DNp17r5a4SQV
-         4BuY8MkMhjXJg==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Benjamin Berg <benjamin.berg@intel.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Ilan Peer <ilan.peer@intel.com>, Felix Fietkau <nbd@nbd.name>,
-        Aloka Dixit <quic_alokad@quicinc.com>,
-        Avraham Stern <avraham.stern@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        netdev@vger.kernel.org
-Subject: [PATCH 2/2] mac80211: make ieee80211_tx_info padding explicit
-Date:   Fri, 23 Jun 2023 17:24:00 +0200
-Message-Id: <20230623152443.2296825-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230623152443.2296825-1-arnd@kernel.org>
-References: <20230623152443.2296825-1-arnd@kernel.org>
+        Fri, 23 Jun 2023 11:38:14 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA2A2E5B;
+        Fri, 23 Jun 2023 08:38:12 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-312824aa384so781759f8f.1;
+        Fri, 23 Jun 2023 08:38:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687534691; x=1690126691;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qNXbjuOqHdtzZtqUY4ByxrF/CgsTtwnSlgbUWKLQCLw=;
+        b=IJdAgbrD9Tw+m6nq97yBcx8ID+jzUjScesGwDUwKrjfPLl5/AxNIiEKlLQ9uLPdSGk
+         TVWr9HscdRRAXLpg6/uiP+nrYj0I6HP/q0RUNGiCrUwcxsq01V2sRb9Cc/zVWfm+qMbQ
+         pKuA2mnKlA/RV+P/cHzD9oaoTZyX9zu8EQWze7WubA7nHbwCt5Xz4bcMUzfdROdL9qSs
+         D9kxcRaOyW3UgmjmcMaGp+DJm2xyarPlEsbl5JhUq3wrZW0eXXJMWCcaLfK76ovr6xnX
+         yKN19K6d/wHuVNxVOs3iPX8m5WU/vOR6h9TYMagzOxk8jqhzgDH/Y0/GwZCWSlLKpilZ
+         bLmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687534691; x=1690126691;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qNXbjuOqHdtzZtqUY4ByxrF/CgsTtwnSlgbUWKLQCLw=;
+        b=MN/ffxdUWMF0YQgbrBDqbpj5ttkKYsdwP6EZnTi48NG32OypwoK77Eq3AQaXU3xU2J
+         urvSQnTMvx1qLSlwf7T1C5lsThcxY/eukqdgFG0U2aAokyz/I+Y55I6qFzuR1WXNCCyI
+         K1Q8mK2eBZYVZq0N/DSVULZtJDM45rJ+0tQoJ9X+ZRZYD+bgEwMATwGofSkRIb7d2NKa
+         /Qq/H96jG85lZPg8bVFvfWSKckpWvo2ofiWT1Y7APF5+6zWL5DUHVh0lBoHAgXgbl9L7
+         fOwj6V7r9KXF9Y6GpG1tIX0tjbaBR87Fjkrzxkz003NdBgmTTEyDBdKHpLDFJqmqmwKN
+         ld6g==
+X-Gm-Message-State: AC+VfDyTMC/6gBoVAN/CWROnqPvo4fAuUP6BFi/2Rp4gyeYLFoaA6vhg
+        jIe7XqP2vY3Jw9OqOYjyaHY=
+X-Google-Smtp-Source: ACHHUZ5fQsTepIAGmk+q7diQzlvb77qb9u3WmJzUDuQEmEeTWTEimHchssqUJ9Wh4vD/Z9igZB0dzQ==
+X-Received: by 2002:a5d:4008:0:b0:2ff:f37:9d0f with SMTP id n8-20020a5d4008000000b002ff0f379d0fmr14901207wrp.57.1687534690924;
+        Fri, 23 Jun 2023 08:38:10 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff176500aaa159fffeeb01f1.dip0.t-ipconnect.de. [2003:d5:ff17:6500:aaa1:59ff:feeb:1f1])
+        by smtp.gmail.com with ESMTPSA id k10-20020adff5ca000000b0030ae87bd3e3sm9844115wrp.18.2023.06.23.08.38.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jun 2023 08:38:10 -0700 (PDT)
+Received: from localhost ([127.0.0.1])
+        by shift.daheim with esmtp (Exim 4.96)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1qCirR-000CFs-22;
+        Fri, 23 Jun 2023 17:38:09 +0200
+Message-ID: <7c4622e7-d7a8-ae5d-e381-f726cb511228@gmail.com>
+Date:   Fri, 23 Jun 2023 17:38:09 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] carl9170: re-fix fortified-memset warning
+To:     Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Shiji Yang <yangshiji66@outlook.com>,
+        Nick Kossifidis <mickflemm@gmail.com>, jirislaby@kernel.org,
+        Ansuel Smith <ansuelsmth@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230623152443.2296825-1-arnd@kernel.org>
+Content-Language: de-DE
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20230623152443.2296825-1-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 6/23/23 17:23, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The carl9170_tx_release() function sometimes triggers a fortified-memset
+> warning in my randconfig builds:
+> 
+> In file included from include/linux/string.h:254,
+>                   from drivers/net/wireless/ath/carl9170/tx.c:40:
+> In function 'fortify_memset_chk',
+>      inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
+>      inlined from 'kref_put' at include/linux/kref.h:65:3,
+>      inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
+> include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+>    493 |                         __write_overflow_field(p_size_field, size);
+> 
+> Kees previously tried to avoid this by using memset_after(), but it seems
+> this does not fully address the problem. I noticed that the memset_after()
+> here is done on a different part of the union (status) than the original
+> cast was from (rate_driver_data), which may confuse the compiler.
+> 
+> Unfortunately, the memset_after() trick does not work on driver_rates[]
+> because that is part of an anonymous struct, and I could not get
+> struct_group() to do this either. Using two separate memset() calls
+> on the two members does address the warning though.
+> 
+> Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-While looking at a bug, I got rather confused by the layout of the
-'status' field in ieee80211_tx_info. Apparently, the intention is that
-status_driver_data[] is used for driver specific data, and fills up the
-size of the union to 40 bytes, just like the other ones.
 
-This is indeed what actually happens, but only because of the
-combination of two mistakes:
+Wait! I want to point out this funny thing is happening in ath too!
 
- - "void *status_driver_data[18 / sizeof(void *)];" is intended
-   to be 18 bytes long but is actually two bytes shorter because of
-   rounding-down in the division, to a multiple of the pointer
-   size (4 bytes or 8 bytes).
+https://lore.kernel.org/linux-wireless/TYAP286MB03154F9AAFD4C35BEEDE4A99BC4CA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM/T/#mf1b8919a000fe661803c17073f48b3c410888541
 
- - The other fields combined are intended to be 22 bytes long, but
-   are actually 24 bytes because of padding in front of the
-   unaligned tx_time member, and in front of the pointer array.
+And that patch got NACK by Jiri Slaby because like me he suspects that
+this is a compiler bug.
 
-The two mistakes cancel out. so the size ends up fine, but it seems
-more helpful to make this explicit, by having a multiple of 8 bytes
-in the size calculation and explicitly describing the padding.
+so, what's going wrong with fortified there?
 
-Fixes: ea5907db2a9cc ("mac80211: fix struct ieee80211_tx_info size")
-Fixes: 02219b3abca59 ("mac80211: add WMM admission control support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- include/net/mac80211.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 3a8a2d2c58c38..ca4dc8a14f1bb 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1192,9 +1192,11 @@ struct ieee80211_tx_info {
- 			u8 ampdu_ack_len;
- 			u8 ampdu_len;
- 			u8 antenna;
-+			u8 pad;
- 			u16 tx_time;
- 			u8 flags;
--			void *status_driver_data[18 / sizeof(void *)];
-+			u8 pad2;
-+			void *status_driver_data[16 / sizeof(void *)];
- 		} status;
- 		struct {
- 			struct ieee80211_tx_rate driver_rates[
--- 
-2.39.2
-
+Thanks,
+Christian
