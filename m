@@ -2,76 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D966673C5BE
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jun 2023 03:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A97073C5F4
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jun 2023 03:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbjFXBNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jun 2023 21:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
+        id S231634AbjFXBog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jun 2023 21:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjFXBNt (ORCPT
+        with ESMTP id S232009AbjFXBof (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jun 2023 21:13:49 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2592126BD;
-        Fri, 23 Jun 2023 18:13:48 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-666fb8b1bc8so1066188b3a.1;
-        Fri, 23 Jun 2023 18:13:48 -0700 (PDT)
+        Fri, 23 Jun 2023 21:44:35 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5E32738;
+        Fri, 23 Jun 2023 18:44:34 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-39ee19cfb77so1060304b6e.0;
+        Fri, 23 Jun 2023 18:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687569227; x=1690161227;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=XPifuwGr7qotS1J4egDcigsPGqIRoWlg/6w0xflvqXc=;
-        b=os0PUm6FrKL+A1DoENP/u20TiGluWujR7+ihWm5WpvDPntOiaFqI+zagF77EPxUeFd
-         gr58N43P9mAq2znfThw1PfGQKEPSYSXsYzcEoKK9A5Du4HKGvzQScblJDy/iGqZAKuWT
-         a4wWxbqnCDJ7t06JAr5Z8X0hOH//fnXZWeq9NqYVRLpKrC6kx5piOAgW//ZY9LTxMEnL
-         jqOhCNst0AIt7XcCt8LzYtm++QMHG2HaCRrv86PEx6ef3m7DMWmPFU5054WCk+Mv5os1
-         kXSEIEH24AbdO3seGYjPXpcaT5TcOUwYnekVdahikCV0h8quKcRXl8JnajWrTwBJOX4a
-         9cMw==
+        d=gmail.com; s=20221208; t=1687571073; x=1690163073;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fnVE3e7VprhRGPi15l7LQGONQqGj0Q6nNTdPJOtqQbo=;
+        b=kvzkcyhJbM0nREMhPOJRvwctQ6qdgX1pOw2/sxokIetkKFtZy2ZAszQvyaOUh4jY6e
+         0//L7Ycwar7QkIPWhGJzoWZmyoyJx+GCjc8FFLytjLBAwLKexAIBGe8s4krFs9kcgo4r
+         5eyPaAfi2hr318gydUSGc7vTlhiutWi66QjtMcdkLmG54oZajRNGl6A58jOkdksiizfI
+         gtIEc5OQA0/HLocl5PTK5uK9byccmoRQzJr0elUvnmEN/vfvcYiI8Zwa2le0wmbj+Qbw
+         rXCC+YFsTRLYRUZVINnrm9mkBalM+7LO3jidF7VXI6X59rdsg7JjYxpq00wE9pOBSQ7C
+         28ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687569227; x=1690161227;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XPifuwGr7qotS1J4egDcigsPGqIRoWlg/6w0xflvqXc=;
-        b=PBV1HigZeZkxB88zXxbYyiW2UCu4s/R/TLBwUif7/sSDF1hLnIYNOkhioT3Eu1eq9O
-         WJVEMkmUyaCqJNkZS5KmECIuzjhtxMA786mgfdvujZk4OG7zJZr5edOH3IJiYzvKYLxF
-         vPPqf/nbV+bLyJ4pR0ubvpBu52LNsp2/7xtYa/CDbw6u6Yq8GTPboC7BjjER1+g93XXF
-         efFwJCQaEAMigK/uhC89Bsj3/JVIIgTA74Pr9aimJb6Dm/ujDs1xjUV18EhwKJn+IllP
-         tdAKeHqo7CAvYWtpLnPN3FNgmaKxXiXtgSq2EonHNLs4SrHLoqr+Z2jtJvN8xaDfeXiO
-         8Vdw==
-X-Gm-Message-State: AC+VfDw5OYWez6HoUN96BV26uAoJwCbcsKXidG8DKEAMU8ksBgQKCWun
-        vZSQ/jjR/j4J+io0hjPXPb8=
-X-Google-Smtp-Source: ACHHUZ606czjila05woldXKyuDA7Rq8dbV1i+0k6tpmn1h59UzY57EaMRyDQG9n05OaV37lSyFMttw==
-X-Received: by 2002:a05:6a20:12d1:b0:121:b440:2820 with SMTP id v17-20020a056a2012d100b00121b4402820mr19195240pzg.19.1687569227466;
-        Fri, 23 Jun 2023 18:13:47 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687571073; x=1690163073;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fnVE3e7VprhRGPi15l7LQGONQqGj0Q6nNTdPJOtqQbo=;
+        b=engUgDIeSftvD6NJ5vCg4lkIR3+LVMZIDYyVg+Iq20gGzwOkyD0uVFX0lgKlEtOotX
+         SM5MTTT/VVQrGojOhJTsyEZvsamqTQyb7BG/K7LDxf27YgVtFPcZlv9KAub2cJEZitQA
+         neTUb+umzfbokP9mBtoscHWy2VspXDWWR/sPcmDx/3T151GMMtrWiK8L26FZro4k2cds
+         ggnM4YARV2u3y14rqpDo/yJevjDPEn9z89fB66HVTgkz+SVMH5mW1kSkSd/Nqk8K85i4
+         +vPkspXxLODniEWIQSqLU5UgcylLBQSZgm+m+GQBvTs5juR9gA1wkE4gmRqSKeEURmsv
+         eKJg==
+X-Gm-Message-State: AC+VfDwUZjAdFhsI84YpovlzWcaCGGvH4JogRMPLqUedyN2r/zy69EEI
+        EkcQPCww3Rrepjvby5cRwjaPs3RwFVNhsA==
+X-Google-Smtp-Source: ACHHUZ4pFCWhhOk7YUC51N0jfTbZ5Z66AN3uM1u47fjDBvIBVBp0WPXlFzFVVKVccAykpJVeNa1BNg==
+X-Received: by 2002:a05:6808:1827:b0:3a0:5993:be86 with SMTP id bh39-20020a056808182700b003a05993be86mr10093464oib.3.1687571073050;
+        Fri, 23 Jun 2023 18:44:33 -0700 (PDT)
 Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id j6-20020a655586000000b0054fe7736ac1sm195469pgs.76.2023.06.23.18.13.41
+        by smtp.gmail.com with ESMTPSA id t12-20020a170902b20c00b001a95f632340sm184560plr.46.2023.06.23.18.44.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Jun 2023 18:13:47 -0700 (PDT)
-Message-ID: <0e85ca99-d1d6-097b-2e04-4cd6492098a1@gmail.com>
-Date:   Sat, 24 Jun 2023 08:13:26 +0700
+        Fri, 23 Jun 2023 18:44:32 -0700 (PDT)
+Message-ID: <27829c69-515c-36a6-4beb-3210225f8936@gmail.com>
+Date:   Sat, 24 Jun 2023 08:44:15 +0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: Fwd: Dell XPS 13 ath10k_pci firmware crashed!
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Kalle Valo <kvalo@kernel.org>,
-        Thorsten Leemhuis <linux@leemhuis.info>,
-        Garry Williams <gtwilliams@gmail.com>
-Cc:     Linux Atheros 10K <ath10k@lists.infradead.org>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>
-References: <2db51694-aa57-cbfd-096e-4925b76232b0@gmail.com>
 Content-Language: en-US
-In-Reply-To: <2db51694-aa57-cbfd-096e-4925b76232b0@gmail.com>
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Networking <netdev@vger.kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        =?UTF-8?Q?Michael_B=c3=bcsch?= <m@bues.ch>,
+        kernel test robot <lkp@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Kalle Valo <kvalo@kernel.org>, sardonimous@hotmail.com
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: After kernel 6.3.7 or 6.3.8 b43 driver fails
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,61 +80,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 6/14/23 08:15, Bagas Sanjaya wrote:
-> Hi,
-> 
-> I notice a regression report on Bugzilla [1]. Quoting from it:
-> 
->> Beginning with kernel 6.2.15-300.fc38.x86_64 and continuing through 6.3.7-200.fc38.x86_64, the wifi connection fails periodically with these log messages:
->>
->> ath10k_pci 0000:02:00.0: firmware crashed! (guid 6c545da0-593c-4a0e-b5ad-3ef2b91cdebf)
->> ath10k_pci 0000:02:00.0: qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1a56:143a
->> ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 0 dfs 0 testmode 0
->> ath10k_pci 0000:02:00.0: firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp crc32 bf907c7c
->> ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 d2863f91
->> ath10k_pci 0000:02:00.0: htt-ver 3.87 wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
->> ath10k_pci 0000:02:00.0: failed to get memcpy hi address for firmware address 4: -16
->> ath10k_pci 0000:02:00.0: failed to read firmware dump area: -16
->> ath10k_pci 0000:02:00.0: Copy Engine register dump:
->> ath10k_pci 0000:02:00.0: [00]: 0x00034400  12  12   3   3
->> ath10k_pci 0000:02:00.0: [01]: 0x00034800  14  14 347 348
->> ath10k_pci 0000:02:00.0: [02]: 0x00034c00   8   2   0   1
->> ath10k_pci 0000:02:00.0: [03]: 0x00035000  16  15  16  14
->> ath10k_pci 0000:02:00.0: [04]: 0x00035400 2995 2987  22 214
->> ath10k_pci 0000:02:00.0: [05]: 0x00035800   0   0  64   0
->> ath10k_pci 0000:02:00.0: [06]: 0x00035c00   0   0  18  18
->> ath10k_pci 0000:02:00.0: [07]: 0x00036000   1   1   1   0
->> ath10k_pci 0000:02:00.0: could not request stats (-108)
->> ath10k_pci 0000:02:00.0: could not request peer stats info: -108
->> ath10k_pci 0000:02:00.0: failed to read hi_board_data address: -28
->> ieee80211 phy0: Hardware restart was requested
->> ath10k_pci 0000:02:00.0: could not request stats (-108)
->> ath10k_pci 0000:02:00.0: device successfully recovered
->>
->>
->> If I disconnect and reconnect using network manager, the connection is restored.  But this same failure recurs over and over after some few minutes to a few hours.
->>
->> This is a regression.  The error was not reported with any previous kernel since 6.2.14-300.fc38.x86_64
-> 
-> See Bugzilla for the full thread.
-> 
-> Unfortunately, the reporter can't bisect this regression (he only tries
-> distribution kernels instead).
-> 
-> Anyway, I'm adding it to regzbot (as mainline regression because v6.2.x
-> has already EOL):
-> 
-> #regzbot introduced: v6.2..v6.3 https://bugzilla.kernel.org/show_bug.cgi?id=217549
-> #regzbot title: ath10k_pci firmware crashed on Dell XPS 13
-> 
+Hi,
 
-It comes out that the regression is due to Fedora patches (see Bugzilla thread),
-thus:
+I notice a regression report on Bugzilla [1]. Quoting from it:
 
-#regzbot invalid: regression caused by downstream patch
+> After upgrading to linux 6.3.8-arch1-1 from 6.3.6-arch1-1, b43 broadcom wireless driver fails.  downgrading back to 6.3.6-arch1-1 resolves.
+> 
+> Jun 16 20:56:37 askasleikir kernel: Hardware name: Apple Inc. MacBookPro7,1/Mac-F222BEC8, BIOS MBP71.88Z.0039.B15.1702241313 02/24/17
+> Jun 16 20:56:37 askasleikir kernel: Workqueue: phy0 b43_tx_work [b43]
+> Jun 16 20:56:37 askasleikir kernel: RIP: 0010:__ieee80211_stop_queue+0xcc/0xe0 [mac80211]
+> Jun 16 20:56:37 askasleikir kernel: Code: 74 11 48 8b 78 08 0f b7 d6 89 e9 4c 89 e6 e8 5b eb 00 00 65 ff 0d 0c dd b5 3e 0f 85 55 ff ff ff e8 b9 f4 12 de e9 4b ff>
+> Jun 16 20:56:37 askasleikir kernel: RSP: 0000:ffffc36b0013bdb8 EFLAGS: 00010097
+> Jun 16 20:56:37 askasleikir kernel: RAX: 0000000000000001 RBX: 0000000000000002 RCX: 0000000000000000
+> Jun 16 20:56:37 askasleikir kernel: RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff9f85d1c108e0
+> Jun 16 20:56:37 askasleikir kernel: RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9f85c0819674
+> Jun 16 20:56:37 askasleikir kernel: R10: 0000000000000005 R11: 0000000000000181 R12: ffff9f85d1c108e0
+> Jun 16 20:56:37 askasleikir kernel: R13: 0000000000000000 R14: ffff9f85d1c12238 R15: ffff9f85d1c12090
+> Jun 16 20:56:37 askasleikir kernel: FS: 0000000000000000(0000) GS:ffff9f85fbe00000(0000) knlGS:0000000000000000
+> Jun 16 20:56:37 askasleikir kernel: CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> Jun 16 20:56:37 askasleikir kernel: CR2: 000055b33bbd5d70 CR3: 0000000022620000 CR4: 00000000000406f0
+> Jun 16 20:56:37 askasleikir kernel: Call Trace:
+> Jun 16 20:56:37 askasleikir kernel: <TASK>
+> Jun 16 20:56:37 askasleikir kernel: ? __ieee80211_stop_queue+0xcc/0xe0 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
+> Jun 16 20:56:37 askasleikir kernel: ? __warn+0x81/0x130
+> Jun 16 20:56:37 askasleikir kernel: ? __ieee80211_stop_queue+0xcc/0xe0 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
+> Jun 16 20:56:37 askasleikir kernel: ? report_bug+0x171/0x1a0
+> Jun 16 20:56:37 askasleikir kernel: ? handle_bug+0x3c/0x80
+> Jun 16 20:56:37 askasleikir kernel: ? exc_invalid_op+0x17/0x70
+> Jun 16 20:56:37 askasleikir kernel: ? asm_exc_invalid_op+0x1a/0x20
+> Jun 16 20:56:37 askasleikir kernel: ? __ieee80211_stop_queue+0xcc/0xe0 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
+> Jun 16 20:56:37 askasleikir kernel: ieee80211_stop_queue+0x36/0x50 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
+> Jun 16 20:56:37 askasleikir kernel: b43_pio_tx+0x373/0x390 [b43 0f6039cbd530df6f28ebbb52898f2f67b84598dd]
+> Jun 16 20:56:37 askasleikir kernel: ? __schedule+0x44b/0x1400
+> Jun 16 20:56:37 askasleikir kernel: b43_tx_work+0x57/0x130 [b43 0f6039cbd530df6f28ebbb52898f2f67b84598dd]
+> Jun 16 20:56:37 askasleikir kernel: process_one_work+0x1c7/0x3d0
+> Jun 16 20:56:37 askasleikir kernel: worker_thread+0x51/0x390
+> Jun 16 20:56:37 askasleikir kernel: ? __pfx_worker_thread+0x10/0x10
+> Jun 16 20:56:37 askasleikir kernel: kthread+0xde/0x110
+> Jun 16 20:56:37 askasleikir kernel: ? __pfx_kthread+0x10/0x10
+> Jun 16 20:56:37 askasleikir kernel: ret_from_fork+0x2c/0x50
+> Jun 16 20:56:37 askasleikir kernel: </TASK>
+> Jun 16 20:56:37 askasleikir kernel: ---[ end trace 0000000000000000 ]---
+> 
+> I suspect change introduced when addressing a compiler warning cased the error.
+> 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20230516183442.536589-1-arnd%40kernel.org/
+> 
+> The is arch linux and they referred me here.
+
+See Bugzilla for the full thread.
+
+Unfortunately, the reporter can't perform bisection to confirm that
+backport of 212457ccbd60db triggers this regression.
+
+Anyway, I'm adding it to regzbot to be sure that it doesn't fall
+through cracks unnoticed:
+
+#regzbot introduced: 212457ccbd60db https://bugzilla.kernel.org/show_bug.cgi?id=217582
+#regzbot title: fixing incorrect __packed annotation for Clang causes b43 driver fail to start
 
 Thanks.
 
 -- 
 An old man doll... just what I always wanted! - Clara
-
