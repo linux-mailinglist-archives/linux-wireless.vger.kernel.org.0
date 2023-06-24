@@ -2,144 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A97073C5F4
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jun 2023 03:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C9773C639
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jun 2023 04:04:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbjFXBog (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jun 2023 21:44:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
+        id S230478AbjFXCEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jun 2023 22:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbjFXBof (ORCPT
+        with ESMTP id S232237AbjFXCEj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jun 2023 21:44:35 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5E32738;
-        Fri, 23 Jun 2023 18:44:34 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-39ee19cfb77so1060304b6e.0;
-        Fri, 23 Jun 2023 18:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687571073; x=1690163073;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fnVE3e7VprhRGPi15l7LQGONQqGj0Q6nNTdPJOtqQbo=;
-        b=kvzkcyhJbM0nREMhPOJRvwctQ6qdgX1pOw2/sxokIetkKFtZy2ZAszQvyaOUh4jY6e
-         0//L7Ycwar7QkIPWhGJzoWZmyoyJx+GCjc8FFLytjLBAwLKexAIBGe8s4krFs9kcgo4r
-         5eyPaAfi2hr318gydUSGc7vTlhiutWi66QjtMcdkLmG54oZajRNGl6A58jOkdksiizfI
-         gtIEc5OQA0/HLocl5PTK5uK9byccmoRQzJr0elUvnmEN/vfvcYiI8Zwa2le0wmbj+Qbw
-         rXCC+YFsTRLYRUZVINnrm9mkBalM+7LO3jidF7VXI6X59rdsg7JjYxpq00wE9pOBSQ7C
-         28ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687571073; x=1690163073;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fnVE3e7VprhRGPi15l7LQGONQqGj0Q6nNTdPJOtqQbo=;
-        b=engUgDIeSftvD6NJ5vCg4lkIR3+LVMZIDYyVg+Iq20gGzwOkyD0uVFX0lgKlEtOotX
-         SM5MTTT/VVQrGojOhJTsyEZvsamqTQyb7BG/K7LDxf27YgVtFPcZlv9KAub2cJEZitQA
-         neTUb+umzfbokP9mBtoscHWy2VspXDWWR/sPcmDx/3T151GMMtrWiK8L26FZro4k2cds
-         ggnM4YARV2u3y14rqpDo/yJevjDPEn9z89fB66HVTgkz+SVMH5mW1kSkSd/Nqk8K85i4
-         +vPkspXxLODniEWIQSqLU5UgcylLBQSZgm+m+GQBvTs5juR9gA1wkE4gmRqSKeEURmsv
-         eKJg==
-X-Gm-Message-State: AC+VfDwUZjAdFhsI84YpovlzWcaCGGvH4JogRMPLqUedyN2r/zy69EEI
-        EkcQPCww3Rrepjvby5cRwjaPs3RwFVNhsA==
-X-Google-Smtp-Source: ACHHUZ4pFCWhhOk7YUC51N0jfTbZ5Z66AN3uM1u47fjDBvIBVBp0WPXlFzFVVKVccAykpJVeNa1BNg==
-X-Received: by 2002:a05:6808:1827:b0:3a0:5993:be86 with SMTP id bh39-20020a056808182700b003a05993be86mr10093464oib.3.1687571073050;
-        Fri, 23 Jun 2023 18:44:33 -0700 (PDT)
-Received: from [192.168.0.103] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id t12-20020a170902b20c00b001a95f632340sm184560plr.46.2023.06.23.18.44.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Jun 2023 18:44:32 -0700 (PDT)
-Message-ID: <27829c69-515c-36a6-4beb-3210225f8936@gmail.com>
-Date:   Sat, 24 Jun 2023 08:44:15 +0700
+        Fri, 23 Jun 2023 22:04:39 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA0D32955
+        for <linux-wireless@vger.kernel.org>; Fri, 23 Jun 2023 19:04:27 -0700 (PDT)
+X-UUID: 6cb9345c123311eeb20a276fd37b9834-20230624
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=mdBJu5Y3AOIrw1CB5Gdk1NzvwZhl7p/0c17OHhPgCXE=;
+        b=PBD0asoQ/ZJi783HI2SW4UcAQcv/A0MoFr+Kq2fAmZZZAgItEU6oH2HhTFxn7clX1Lc7n2pQSJ/ngl6sUdVnRkisPjIn5Jw1B2mdVpzE6zD8eyWTPXUwbO9uryCdP/qJFR1GCZRQNXk3sltjcvwNEI7CxpmDNtPa00Gq9X/qwhE=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.27,REQID:f025f80a-d4c1-4a94-9fb4-a99ef1d9902b,IP:0,U
+        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+        release,TS:0
+X-CID-META: VersionHash:01c9525,CLOUDID:a890823f-7aa7-41f3-a6bd-0433bee822f3,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 6cb9345c123311eeb20a276fd37b9834-20230624
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
+        (envelope-from <sean.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 148020950; Sat, 24 Jun 2023 10:04:17 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Sat, 24 Jun 2023 10:04:15 +0800
+Received: from mtkswgap22.mediatek.inc (172.21.77.33) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Sat, 24 Jun 2023 10:04:15 +0800
+From:   <sean.wang@mediatek.com>
+To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
+CC:     <sean.wang@mediatek.com>, <Soul.Huang@mediatek.com>,
+        <Leon.Yen@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+        <Deren.Wu@mediatek.com>, <km.lin@mediatek.com>,
+        <jenhao.yang@mediatek.com>, <robin.chiu@mediatek.com>,
+        <Eddie.Chen@mediatek.com>, <ch.yeh@mediatek.com>,
+        <ted.huang@mediatek.com>, <Stella.Chang@mediatek.com>,
+        <Tom.Chou@mediatek.com>, <steve.lee@mediatek.com>,
+        <jsiuda@google.com>, <arowa@google.org>, <frankgor@google.com>,
+        <kuabhs@google.com>, <druth@google.com>,
+        <abhishekpandit@google.com>, <shawnku@google.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH v7 1/3] Bluetooth: btusb: mediatek: use readx_poll_timeout instead of open coding
+Date:   Sat, 24 Jun 2023 10:04:10 +0800
+Message-ID: <2d7bef70b876e4cbd447c5109956f716bad5bc2d.1687565769.git.objelf@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Wireless <linux-wireless@vger.kernel.org>,
-        Linux Networking <netdev@vger.kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?Q?Michael_B=c3=bcsch?= <m@bues.ch>,
-        kernel test robot <lkp@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>, sardonimous@hotmail.com
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: After kernel 6.3.7 or 6.3.8 b43 driver fails
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,RDNS_NONE,SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,
+        T_SPF_TEMPERROR,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Sean Wang <sean.wang@mediatek.com>
 
-I notice a regression report on Bugzilla [1]. Quoting from it:
+Use readx_poll_timeout instead of open coding to poll the hardware reset
+status until it is done.
 
-> After upgrading to linux 6.3.8-arch1-1 from 6.3.6-arch1-1, b43 broadcom wireless driver fails.  downgrading back to 6.3.6-arch1-1 resolves.
-> 
-> Jun 16 20:56:37 askasleikir kernel: Hardware name: Apple Inc. MacBookPro7,1/Mac-F222BEC8, BIOS MBP71.88Z.0039.B15.1702241313 02/24/17
-> Jun 16 20:56:37 askasleikir kernel: Workqueue: phy0 b43_tx_work [b43]
-> Jun 16 20:56:37 askasleikir kernel: RIP: 0010:__ieee80211_stop_queue+0xcc/0xe0 [mac80211]
-> Jun 16 20:56:37 askasleikir kernel: Code: 74 11 48 8b 78 08 0f b7 d6 89 e9 4c 89 e6 e8 5b eb 00 00 65 ff 0d 0c dd b5 3e 0f 85 55 ff ff ff e8 b9 f4 12 de e9 4b ff>
-> Jun 16 20:56:37 askasleikir kernel: RSP: 0000:ffffc36b0013bdb8 EFLAGS: 00010097
-> Jun 16 20:56:37 askasleikir kernel: RAX: 0000000000000001 RBX: 0000000000000002 RCX: 0000000000000000
-> Jun 16 20:56:37 askasleikir kernel: RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff9f85d1c108e0
-> Jun 16 20:56:37 askasleikir kernel: RBP: 0000000000000000 R08: 0000000000000000 R09: ffff9f85c0819674
-> Jun 16 20:56:37 askasleikir kernel: R10: 0000000000000005 R11: 0000000000000181 R12: ffff9f85d1c108e0
-> Jun 16 20:56:37 askasleikir kernel: R13: 0000000000000000 R14: ffff9f85d1c12238 R15: ffff9f85d1c12090
-> Jun 16 20:56:37 askasleikir kernel: FS: 0000000000000000(0000) GS:ffff9f85fbe00000(0000) knlGS:0000000000000000
-> Jun 16 20:56:37 askasleikir kernel: CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> Jun 16 20:56:37 askasleikir kernel: CR2: 000055b33bbd5d70 CR3: 0000000022620000 CR4: 00000000000406f0
-> Jun 16 20:56:37 askasleikir kernel: Call Trace:
-> Jun 16 20:56:37 askasleikir kernel: <TASK>
-> Jun 16 20:56:37 askasleikir kernel: ? __ieee80211_stop_queue+0xcc/0xe0 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
-> Jun 16 20:56:37 askasleikir kernel: ? __warn+0x81/0x130
-> Jun 16 20:56:37 askasleikir kernel: ? __ieee80211_stop_queue+0xcc/0xe0 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
-> Jun 16 20:56:37 askasleikir kernel: ? report_bug+0x171/0x1a0
-> Jun 16 20:56:37 askasleikir kernel: ? handle_bug+0x3c/0x80
-> Jun 16 20:56:37 askasleikir kernel: ? exc_invalid_op+0x17/0x70
-> Jun 16 20:56:37 askasleikir kernel: ? asm_exc_invalid_op+0x1a/0x20
-> Jun 16 20:56:37 askasleikir kernel: ? __ieee80211_stop_queue+0xcc/0xe0 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
-> Jun 16 20:56:37 askasleikir kernel: ieee80211_stop_queue+0x36/0x50 [mac80211 136d1d948548ad6cca697df0da0a13c0a2333310]
-> Jun 16 20:56:37 askasleikir kernel: b43_pio_tx+0x373/0x390 [b43 0f6039cbd530df6f28ebbb52898f2f67b84598dd]
-> Jun 16 20:56:37 askasleikir kernel: ? __schedule+0x44b/0x1400
-> Jun 16 20:56:37 askasleikir kernel: b43_tx_work+0x57/0x130 [b43 0f6039cbd530df6f28ebbb52898f2f67b84598dd]
-> Jun 16 20:56:37 askasleikir kernel: process_one_work+0x1c7/0x3d0
-> Jun 16 20:56:37 askasleikir kernel: worker_thread+0x51/0x390
-> Jun 16 20:56:37 askasleikir kernel: ? __pfx_worker_thread+0x10/0x10
-> Jun 16 20:56:37 askasleikir kernel: kthread+0xde/0x110
-> Jun 16 20:56:37 askasleikir kernel: ? __pfx_kthread+0x10/0x10
-> Jun 16 20:56:37 askasleikir kernel: ret_from_fork+0x2c/0x50
-> Jun 16 20:56:37 askasleikir kernel: </TASK>
-> Jun 16 20:56:37 askasleikir kernel: ---[ end trace 0000000000000000 ]---
-> 
-> I suspect change introduced when addressing a compiler warning cased the error.
-> 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20230516183442.536589-1-arnd%40kernel.org/
-> 
-> The is arch linux and they referred me here.
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+v2: use 20ms as the unit to poll according to the requirement of
+    readx_poll_timeout
+v3: refine btusb_mtk_reset_done and drop the necessary error check
+    in btusb_mtk_cmd_timeout
+v4, v5, v6 and v7: rebase onto the latest codebase
+---
+ drivers/bluetooth/btusb.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-See Bugzilla for the full thread.
-
-Unfortunately, the reporter can't perform bisection to confirm that
-backport of 212457ccbd60db triggers this regression.
-
-Anyway, I'm adding it to regzbot to be sure that it doesn't fall
-through cracks unnoticed:
-
-#regzbot introduced: 212457ccbd60db https://bugzilla.kernel.org/show_bug.cgi?id=217582
-#regzbot title: fixing incorrect __packed annotation for Clang causes b43 driver fail to start
-
-Thanks.
-
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 1c0879601735..71b119bcff29 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2654,8 +2654,6 @@ static int btusb_recv_event_realtek(struct hci_dev *hdev, struct sk_buff *skb)
+ #define MTK_EP_RST_OPT		0x74011890
+ #define MTK_EP_RST_IN_OUT_OPT	0x00010001
+ #define MTK_BT_RST_DONE		0x00000100
+-#define MTK_BT_RESET_WAIT_MS	100
+-#define MTK_BT_RESET_NUM_TRIES	10
+ #define MTK_BT_RESET_REG_CONNV3	0x70028610
+ #define MTK_BT_READ_DEV_ID	0x70010200
+ 
+@@ -3029,6 +3027,16 @@ static int btusb_mtk_id_get(struct btusb_data *data, u32 reg, u32 *id)
+ 	return btusb_mtk_reg_read(data, reg, id);
+ }
+ 
++static u32 btusb_mtk_reset_done(struct hci_dev *hdev)
++{
++	struct btusb_data *data = hci_get_drvdata(hdev);
++	u32 val = 0;
++
++	btusb_mtk_uhw_reg_read(data, MTK_BT_MISC, &val);
++
++	return val & MTK_BT_RST_DONE;
++}
++
+ static int btusb_mtk_setup(struct hci_dev *hdev)
+ {
+ 	struct btusb_data *data = hci_get_drvdata(hdev);
+@@ -3229,7 +3237,7 @@ static void btusb_mtk_cmd_timeout(struct hci_dev *hdev)
+ {
+ 	struct btusb_data *data = hci_get_drvdata(hdev);
+ 	u32 val;
+-	int err, retry = 0;
++	int err;
+ 	struct btmediatek_data *mediatek;
+ 
+ 	/* It's MediaTek specific bluetooth reset mechanism via USB */
+@@ -3281,18 +3289,10 @@ static void btusb_mtk_cmd_timeout(struct hci_dev *hdev)
+ 		btusb_mtk_uhw_reg_read(data, MTK_BT_SUBSYS_RST, &val);
+ 	}
+ 
+-	/* Poll the register until reset is completed */
+-	do {
+-		btusb_mtk_uhw_reg_read(data, MTK_BT_MISC, &val);
+-		if (val & MTK_BT_RST_DONE) {
+-			bt_dev_dbg(hdev, "Bluetooth Reset Successfully");
+-			break;
+-		}
+-
+-		bt_dev_dbg(hdev, "Polling Bluetooth Reset CR");
+-		retry++;
+-		msleep(MTK_BT_RESET_WAIT_MS);
+-	} while (retry < MTK_BT_RESET_NUM_TRIES);
++	err = readx_poll_timeout(btusb_mtk_reset_done, hdev, val,
++				 val & MTK_BT_RST_DONE, 20000, 1000000);
++	if (err < 0)
++		bt_dev_err(hdev, "Reset timeout");
+ 
+ 	btusb_mtk_id_get(data, 0x70010200, &val);
+ 	if (!val)
 -- 
-An old man doll... just what I always wanted! - Clara
+2.25.1
+
