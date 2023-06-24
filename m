@@ -2,73 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2FE73C4D0
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jun 2023 01:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D966673C5BE
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Jun 2023 03:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231272AbjFWXdv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 23 Jun 2023 19:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54010 "EHLO
+        id S230129AbjFXBNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 23 Jun 2023 21:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230088AbjFWXds (ORCPT
+        with ESMTP id S229487AbjFXBNt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 23 Jun 2023 19:33:48 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81B9C269A
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Jun 2023 16:33:47 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1b516978829so9038065ad.1
-        for <linux-wireless@vger.kernel.org>; Fri, 23 Jun 2023 16:33:47 -0700 (PDT)
+        Fri, 23 Jun 2023 21:13:49 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2592126BD;
+        Fri, 23 Jun 2023 18:13:48 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-666fb8b1bc8so1066188b3a.1;
+        Fri, 23 Jun 2023 18:13:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1687563227; x=1690155227;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5BXr6eTNbrAAPMLfItUNBU1GV8gA8JI1s3w/GXSgtiQ=;
-        b=T4eNDvej4BSP1rQm+6xqQqAO5mSaxmUuOD4yVwd/MW16mp1HkVi7Gmt8TqmlwIPBsJ
-         yWUZHfhdLKjlPSoVnhyEAptnwbesES/JLcrRcxguBJzZNKQ7kUnz9gQDo7szvdxlsGwg
-         TX5y4PyA9zFvXsB2PFcRGADDVkbC3NKC14NSI=
+        d=gmail.com; s=20221208; t=1687569227; x=1690161227;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XPifuwGr7qotS1J4egDcigsPGqIRoWlg/6w0xflvqXc=;
+        b=os0PUm6FrKL+A1DoENP/u20TiGluWujR7+ihWm5WpvDPntOiaFqI+zagF77EPxUeFd
+         gr58N43P9mAq2znfThw1PfGQKEPSYSXsYzcEoKK9A5Du4HKGvzQScblJDy/iGqZAKuWT
+         a4wWxbqnCDJ7t06JAr5Z8X0hOH//fnXZWeq9NqYVRLpKrC6kx5piOAgW//ZY9LTxMEnL
+         jqOhCNst0AIt7XcCt8LzYtm++QMHG2HaCRrv86PEx6ef3m7DMWmPFU5054WCk+Mv5os1
+         kXSEIEH24AbdO3seGYjPXpcaT5TcOUwYnekVdahikCV0h8quKcRXl8JnajWrTwBJOX4a
+         9cMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687563227; x=1690155227;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5BXr6eTNbrAAPMLfItUNBU1GV8gA8JI1s3w/GXSgtiQ=;
-        b=iM6DaMZM9YL4q3cS4B1UDxynY2S6USvqwl26QGAO5xqRY6KQqcmygJ0g9mMAZ/cYR1
-         fXRRnjnlMPqg17/FIZBwazDqmcyCiFgc4EkjKIZ/l51MhLxEJIEvJFr44xb/lAYfkts1
-         pOnQf0Ljk4v+tVT0cY/1k0xhFAoMKqx/mo715x9a06pxk/G6eodWGaPMe37fAAuotwTN
-         l7NCGmfmXCjwPHRJ70e8POel/xVuI/taBSGc9dpd8F75YuPOMB+RlAAo6VmprDYP9hL3
-         vgiyEh/xYHQNtkucfCD8acE7WONIQ0s4EsLSkVWsbQrTV26qOhXpxsBWV4O6AGvme+il
-         k63A==
-X-Gm-Message-State: AC+VfDzXgyDLNoGjAhMZtkQYKBX5MAaHDXlN5ySII8WVskIRn/GdNHIV
-        KeZ4Jnfb0I7BGHuXkNpurcUcrg==
-X-Google-Smtp-Source: ACHHUZ69mWqFU5agnEl+Q83+Js77SJdoh72Y42y83F4lW+t475KKF3wSlBzxef4eC2MLbMqu1PNchw==
-X-Received: by 2002:a17:902:f68d:b0:1b6:ba60:780e with SMTP id l13-20020a170902f68d00b001b6ba60780emr703673plg.24.1687563227001;
-        Fri, 23 Jun 2023 16:33:47 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id lg13-20020a170902fb8d00b001b061dcdb6bsm112977plb.28.2023.06.23.16.33.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jun 2023 16:33:46 -0700 (PDT)
-Date:   Fri, 23 Jun 2023 16:33:45 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Christian Lamparter <chunkeey@gmail.com>,
-        Arnd Bergmann <arnd@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Shiji Yang <yangshiji66@outlook.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] carl9170: re-fix fortified-memset warning
-Message-ID: <202306231607.8632EBE15@keescook>
-References: <20230623152443.2296825-1-arnd@kernel.org>
- <7c4622e7-d7a8-ae5d-e381-f726cb511228@gmail.com>
- <24986b5e-5cd1-4cd5-aff3-b5eab2c0fdde@app.fastmail.com>
+        d=1e100.net; s=20221208; t=1687569227; x=1690161227;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XPifuwGr7qotS1J4egDcigsPGqIRoWlg/6w0xflvqXc=;
+        b=PBV1HigZeZkxB88zXxbYyiW2UCu4s/R/TLBwUif7/sSDF1hLnIYNOkhioT3Eu1eq9O
+         WJVEMkmUyaCqJNkZS5KmECIuzjhtxMA786mgfdvujZk4OG7zJZr5edOH3IJiYzvKYLxF
+         vPPqf/nbV+bLyJ4pR0ubvpBu52LNsp2/7xtYa/CDbw6u6Yq8GTPboC7BjjER1+g93XXF
+         efFwJCQaEAMigK/uhC89Bsj3/JVIIgTA74Pr9aimJb6Dm/ujDs1xjUV18EhwKJn+IllP
+         tdAKeHqo7CAvYWtpLnPN3FNgmaKxXiXtgSq2EonHNLs4SrHLoqr+Z2jtJvN8xaDfeXiO
+         8Vdw==
+X-Gm-Message-State: AC+VfDw5OYWez6HoUN96BV26uAoJwCbcsKXidG8DKEAMU8ksBgQKCWun
+        vZSQ/jjR/j4J+io0hjPXPb8=
+X-Google-Smtp-Source: ACHHUZ606czjila05woldXKyuDA7Rq8dbV1i+0k6tpmn1h59UzY57EaMRyDQG9n05OaV37lSyFMttw==
+X-Received: by 2002:a05:6a20:12d1:b0:121:b440:2820 with SMTP id v17-20020a056a2012d100b00121b4402820mr19195240pzg.19.1687569227466;
+        Fri, 23 Jun 2023 18:13:47 -0700 (PDT)
+Received: from [192.168.0.103] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id j6-20020a655586000000b0054fe7736ac1sm195469pgs.76.2023.06.23.18.13.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jun 2023 18:13:47 -0700 (PDT)
+Message-ID: <0e85ca99-d1d6-097b-2e04-4cd6492098a1@gmail.com>
+Date:   Sat, 24 Jun 2023 08:13:26 +0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <24986b5e-5cd1-4cd5-aff3-b5eab2c0fdde@app.fastmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Fwd: Dell XPS 13 ath10k_pci firmware crashed!
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Kalle Valo <kvalo@kernel.org>,
+        Thorsten Leemhuis <linux@leemhuis.info>,
+        Garry Williams <gtwilliams@gmail.com>
+Cc:     Linux Atheros 10K <ath10k@lists.infradead.org>,
+        Linux Wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+References: <2db51694-aa57-cbfd-096e-4925b76232b0@gmail.com>
+Content-Language: en-US
+In-Reply-To: <2db51694-aa57-cbfd-096e-4925b76232b0@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,16 +80,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jun 23, 2023 at 06:05:57PM +0200, Arnd Bergmann wrote:
-> Doing the randconfig builds with the latest compilers, carl9170 is the
-> only one I see with fortified-string warnings, and there are a few
-> dozen other drivers that I see with W=1, including one that affects
-> all wireless drivers.
+On 6/14/23 08:15, Bagas Sanjaya wrote:
+> Hi,
+> 
+> I notice a regression report on Bugzilla [1]. Quoting from it:
+> 
+>> Beginning with kernel 6.2.15-300.fc38.x86_64 and continuing through 6.3.7-200.fc38.x86_64, the wifi connection fails periodically with these log messages:
+>>
+>> ath10k_pci 0000:02:00.0: firmware crashed! (guid 6c545da0-593c-4a0e-b5ad-3ef2b91cdebf)
+>> ath10k_pci 0000:02:00.0: qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1a56:143a
+>> ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 0 dfs 0 testmode 0
+>> ath10k_pci 0000:02:00.0: firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp crc32 bf907c7c
+>> ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 d2863f91
+>> ath10k_pci 0000:02:00.0: htt-ver 3.87 wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
+>> ath10k_pci 0000:02:00.0: failed to get memcpy hi address for firmware address 4: -16
+>> ath10k_pci 0000:02:00.0: failed to read firmware dump area: -16
+>> ath10k_pci 0000:02:00.0: Copy Engine register dump:
+>> ath10k_pci 0000:02:00.0: [00]: 0x00034400  12  12   3   3
+>> ath10k_pci 0000:02:00.0: [01]: 0x00034800  14  14 347 348
+>> ath10k_pci 0000:02:00.0: [02]: 0x00034c00   8   2   0   1
+>> ath10k_pci 0000:02:00.0: [03]: 0x00035000  16  15  16  14
+>> ath10k_pci 0000:02:00.0: [04]: 0x00035400 2995 2987  22 214
+>> ath10k_pci 0000:02:00.0: [05]: 0x00035800   0   0  64   0
+>> ath10k_pci 0000:02:00.0: [06]: 0x00035c00   0   0  18  18
+>> ath10k_pci 0000:02:00.0: [07]: 0x00036000   1   1   1   0
+>> ath10k_pci 0000:02:00.0: could not request stats (-108)
+>> ath10k_pci 0000:02:00.0: could not request peer stats info: -108
+>> ath10k_pci 0000:02:00.0: failed to read hi_board_data address: -28
+>> ieee80211 phy0: Hardware restart was requested
+>> ath10k_pci 0000:02:00.0: could not request stats (-108)
+>> ath10k_pci 0000:02:00.0: device successfully recovered
+>>
+>>
+>> If I disconnect and reconnect using network manager, the connection is restored.  But this same failure recurs over and over after some few minutes to a few hours.
+>>
+>> This is a regression.  The error was not reported with any previous kernel since 6.2.14-300.fc38.x86_64
+> 
+> See Bugzilla for the full thread.
+> 
+> Unfortunately, the reporter can't bisect this regression (he only tries
+> distribution kernels instead).
+> 
+> Anyway, I'm adding it to regzbot (as mainline regression because v6.2.x
+> has already EOL):
+> 
+> #regzbot introduced: v6.2..v6.3 https://bugzilla.kernel.org/show_bug.cgi?id=217549
+> #regzbot title: ath10k_pci firmware crashed on Dell XPS 13
+> 
 
-Can you post the config that triggers this? I can't reproduce this
-warning...
+It comes out that the regression is due to Fedora patches (see Bugzilla thread),
+thus:
 
--Kees
+#regzbot invalid: regression caused by downstream patch
+
+Thanks.
 
 -- 
-Kees Cook
+An old man doll... just what I always wanted! - Clara
+
